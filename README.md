@@ -7,7 +7,7 @@ Plataforma **gratuita** de inteligência analítica sobre setores da economia br
 - **Next.js 14** (App Router, Server Components) + **TypeScript**
 - **Tailwind CSS** com design tokens centralizados
 - **Drizzle ORM (pg-core)** — **PGlite** (Postgres embarcado) em desenvolvimento, **node-postgres** em produção (ver [ARCHITECTURE.md](./ARCHITECTURE.md))
-- Autenticação **passwordless** exclusivamente por **código SMS** (Twilio Verify) no telefone verificado; o e-mail é apenas dado de contato. A sessão nasce na confirmação do telefone.
+- Autenticação por **e-mail + senha** (hash **scrypt** do `node:crypto`, sem dependência externa); a senha é criada na **etapa 3 do cadastro**, após a validação do telefone por **código SMS** (Twilio Verify). O SMS permanece como **entrada alternativa e recuperação** (`/entrar/sms`): quem esqueceu a senha entra por SMS e define uma nova em Conta.
 - **Recharts** para gráficos, **vitest** para testes
 
 ## Como rodar
@@ -25,13 +25,13 @@ Aplicação em `http://localhost:3000`. O banco de desenvolvimento é um PGlite 
 [dev-verify] código para +55 •• •••••-4321: 654321
 ```
 
-Use esse código para completar o cadastro e o login localmente.
+Use esse código para completar o cadastro e o login por SMS localmente. O login principal (e-mail + senha) não depende de Twilio.
 
 ## Configuração de produção
 
 Defina as variáveis de ambiente (lista completa, com propósito e obrigatoriedade, em [ARCHITECTURE.md](./ARCHITECTURE.md#variáveis-de-ambiente)):
 
-- **Twilio Verify (SMS):** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_VERIFY_SERVICE_SID` — crie um serviço Verify no console da Twilio; com as três presentes, o modo simulado é desativado automaticamente.
+- **Twilio Verify (SMS):** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_VERIFY_SERVICE_SID` — crie um serviço Verify no console da Twilio; com as três presentes, o modo simulado é desativado automaticamente. Usado na validação do telefone (cadastro) e no login alternativo/recuperação por SMS.
 - **E-mail (SMTP):** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM` — usados apenas para comunicações por e-mail (o login e a validação não dependem de e-mail).
 - **Segurança:** `COOKIE_SECRET` (ou `SESSION_SECRET`) com valor aleatório longo.
 - **Acesso antecipado:** `ACCESS_CODES` com os códigos válidos separados por vírgula (case-insensitive, com trim). Vazio → ninguém entra; todos vão para a lista de espera.

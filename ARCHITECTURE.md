@@ -12,19 +12,21 @@ Registro das decisões técnicas da plataforma. Curto por intenção: cada seç�
 - **Um único schema Postgres** (`src/lib/schema.ts`, `drizzle-orm/pg-core`, `TIMESTAMPTZ`/`BOOLEAN`) serve os dois ambientes. O antigo driver **better-sqlite3 foi removido**.
 - **Produção (Vercel):** `DATABASE_URL=postgres://...` (ou `postgresql://`) usa `drizzle-orm/node-postgres` com `Pool` do `pg`; TLS habilitado quando a URL contém `sslmode=require` ou `PGSSL=1` (`ssl: { rejectUnauthorized: false }`).
 - **Desenvolvimento:** sem `DATABASE_URL` (ou com `pglite://caminho`), usa `drizzle-orm/pglite` com **PGlite** (Postgres embarcado, sem instalar nada) persistido em `./.pglite`. Os testes usam `DATABASE_URL=pglite-memory:` (banco em memória por processo).
-- **Acesso sempre via `getDb()`** (`src/lib/db.ts`): função async cujo singleton (Promise em `globalThis`) garante que a **migração idempotente** (`CREATE TABLE IF NOT EXISTS ...`) rodou antes de qualquer consulta e sobrevive ao hot reload do Next. Toda a camada de dados (`session.ts`, `onboarding.ts`, `events.ts`, `audit.ts`) é assíncrona.
+- **Acesso sempre via `getDb()`** (`src/lib/db.ts`): função async cujo singleton (Promise em `globalThis`) garante que a **migração idempotente** (`CREATE TABLE IF NOT EXISTS ...` e `ALTER TABLE ... ADD COLUMN IF NOT EXISTS ...` para colunas adicionadas depois) rodou antes de qualquer consulta e sobrevive ao hot reload do Next. Toda a camada de dados (`session.ts`, `onboarding.ts`, `events.ts`, `audit.ts`) é assíncrona.
 - **Por que não Prisma:** o Prisma exige download de engines binárias em tempo de build, bloqueado no ambiente de build desta plataforma. Drizzle não baixa nada.
 
 ### Modelo de dados (`src/lib/schema.ts`)
 
-`users`, `verification_tokens` (somente **hash** de códigos, nunca em claro), `sessions` (token de sessão também só como hash), `audit_logs` (auditoria de mudanças sensíveis, detalhes sempre mascarados) e `product_events` (telemetria **sem PII**).
+`users` (inclui `password_hash` scrypt, `NULL` em contas antigas sem senha), `verification_tokens` (somente **hash** de códigos, nunca em claro), `sessions` (token de sessão também só como hash), `audit_logs` (auditoria de mudanças sensíveis, detalhes sempre mascarados) e `product_events` (telemetria **sem PII**).
 
-## Autenticação passwordless (somente SMS)
+## Autenticação: e-mail + senha, com SMS como alternativa e recuperação
 
-- **Sem senha e sem código por e-mail:** a validação do usuário, o login e a recuperação de acesso usam **exclusivamente código SMS de 6 dígitos** (Twilio Verify) no telefone verificado. O e-mail é **dado de contato simples**, coletado na etapa 1 do cadastro sem verificação. Não há senha para vazar nem "esqueci minha senha" — **recuperação de acesso é o mesmo fluxo de login por SMS**.
-- **A sessão nasce na confirmação do telefone** (`phone/check` aprovado no cadastro, ou `entrar/check` no login). Antes disso, o usuário pendente é identificado pelo **cookie assinado com HMAC-SHA256** (`signedEmailCookie`: `onboarding_email` no cadastro, `login_phone` no login), nunca por URL.
+- **Login principal por e-mail + senha** (`/entrar` → `POST /api/auth/login`). A senha é criada na **etapa 3 do cadastro** (`/cadastro/perfil`, junto com empresa e cargo), depois da validação do telefone por SMS. Armazenamento: **scrypt do `node:crypto`** (`src/lib/password.ts`, sem dependência externa), formato autodescritivo `scrypt:N:r:p:saltHex:hashHex` com salt aleatório de 16 bytes e `N=16384, r=8, p=1`; verificação com `timingSafeEqual`. Limites: 8..72 caracteres. Senhas **nunca** aparecem em logs, eventos ou auditoria — só o hash é persistido.
+- **SMS como entrada alternativa e recuperação** (`/entrar/sms` → `api/auth/entrar/start|check`, Twilio Verify no telefone verificado). Não há fluxo separado de "esqueci minha senha": quem esqueceu entra por SMS e **define uma nova senha em `/app/conta`** (`POST /api/conta/senha` — exige a senha atual quando existe; contas antigas sem senha definem direto; a troca gera `PASSWORD_CHANGED` na auditoria). A rota antiga `/entrar/verificar` redireciona para `/entrar/sms/verificar`.
+- **A sessão nasce na confirmação do telefone durante o cadastro** (`phone/check` aprovado) **ou no login** (`api/auth/login` com senha, ou `entrar/check` por SMS). Antes disso, o usuário pendente é identificado pelo **cookie assinado com HMAC-SHA256** (`signedEmailCookie`: `onboarding_email` no cadastro, `login_phone` no login por SMS), nunca por URL.
 - **Sessões em banco** (`sessions`) com token aleatório de 32 bytes entregue em **cookie httpOnly** (`secure` em produção, `SameSite=Lax`, 14 dias). Revogação server-side (logout e "encerrar todas as sessões") funciona de imediato, ao contrário de JWT puro.
-- Enumeração de contas: `email/start` responde de forma genérica mesmo para e-mail já cadastrado, e `entrar/start` só envia SMS quando o telefone pertence a uma conta verificada, mas responde sempre a mesma mensagem genérica.
+- Enumeração de contas: `api/auth/login` responde o mesmo **401 genérico** ("E-mail ou senha inválidos.") para e-mail inexistente, conta sem senha e senha errada; `email/start` responde de forma genérica mesmo para e-mail já cadastrado; `entrar/start` só envia SMS quando o telefone pertence a uma conta verificada, mas responde sempre a mesma mensagem genérica.
+- **Contas criadas antes da senha existir** (`password_hash NULL`): o login por senha responde o 401 genérico; o caminho é entrar por `/entrar/sms` e definir a senha em Conta.
 - O código legado por e-mail (`startEmailVerification`/`checkEmailCode`, hash SHA-256, TTL 15 min, uso único, trava após 5 tentativas) permanece em `src/lib/onboarding.ts` coberto por testes, mas **nenhum fluxo o chama**.
 
 ## Verificação de telefone: Twilio Verify
@@ -47,7 +49,7 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 
 ## Rate limiting
 
-- Em memória com **backoff progressivo** (`src/lib/ratelimit.ts`): dentro da janela cada estouro dobra o bloqueio (`backoffBaseMs × 2^n`, teto em 2⁶). Políticas nomeadas em `POLICIES` (por telefone, por e-mail, por IP, intervalo mínimo de reenvio).
+- Em memória com **backoff progressivo** (`src/lib/ratelimit.ts`): dentro da janela cada estouro dobra o bloqueio (`backoffBaseMs × 2^n`, teto em 2⁶). Políticas nomeadas em `POLICIES` (por telefone, por e-mail, por IP, intervalo mínimo de reenvio; o login por senha usa `loginPerEmail` — 8/15 min — e `loginPerIp` — 30/15 min).
 - **Limitação consciente:** o `Map` é por processo. Em implantação multi-instância, trocar o armazenamento por Redis **mantendo a mesma interface** `checkRateLimit(key, policy)`.
 
 ## Design tokens e tipografia

@@ -5,16 +5,17 @@ import { getSessionUser } from "@/lib/session";
 import { nextStepPath } from "@/lib/onboarding";
 import type { OnboardingStatus } from "@/lib/schema";
 import { LogoWordmark } from "@/components/ui/Logo";
-import { EntrarSenhaForm } from "@/components/onboarding/EntrarSenhaForm";
+import { EntrarForm } from "@/components/onboarding/EntrarForm";
 
-export const metadata: Metadata = { title: "Entrar" };
+export const metadata: Metadata = { title: "Entrar com código por SMS" };
 export const dynamic = "force-dynamic";
 
 /**
- * Login principal: e-mail + senha (senha criada na etapa 3 do cadastro).
- * O código por SMS permanece como alternativa e recuperação em /entrar/sms.
+ * Entrada alternativa por código SMS no telefone verificado. Também cobre
+ * recuperação de acesso de quem esqueceu a senha: depois de entrar,
+ * a nova senha é definida em /app/conta.
  */
-export default async function EntrarPage() {
+export default async function EntrarSmsPage() {
   const user = await getSessionUser();
   if (user) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
@@ -36,12 +37,16 @@ export default async function EntrarPage() {
       <main className="flex flex-1 justify-center px-6 py-12 md:py-20">
         <div className="w-full max-w-md">
           <section className="border border-linha bg-papel p-8 md:p-10">
-            <h1 className="font-serif text-3xl text-carvao">Entrar</h1>
+            <h1 className="font-serif text-3xl text-carvao">Entrar com código por SMS</h1>
             <p className="mt-3 text-sm text-carvao-muted">
-              Use o e-mail e a senha da sua conta.
+              Enviamos um código por SMS para o telefone cadastrado.
+            </p>
+            <p className="mt-2 text-sm text-mineral">
+              Use também este caminho se esqueceu sua senha: depois de entrar,
+              defina uma nova em Conta.
             </p>
             <div className="mt-8">
-              <EntrarSenhaForm />
+              <EntrarForm />
             </div>
           </section>
         </div>

@@ -6,6 +6,7 @@ export type AuditAction =
   | "PHONE_CHANGE_REQUESTED"
   | "PHONE_CHANGED"
   | "SESSION_REVOKED"
+  | "PASSWORD_CHANGED"
   | "ACCOUNT_DELETED";
 
 /** Auditoria de mudanças sensíveis. detail deve conter apenas dados mascarados. */

@@ -5,6 +5,7 @@ import { getSessionUser } from "@/lib/session";
 import { maskEmail, maskPhone } from "@/lib/crypto";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { PerfilForm } from "@/components/conta/PerfilForm";
+import { AlterarSenha } from "@/components/conta/AlterarSenha";
 import { AlterarTelefone } from "@/components/conta/AlterarTelefone";
 import { EncerrarSessoes } from "@/components/conta/EncerrarSessoes";
 
@@ -57,18 +58,23 @@ export default async function ContaPage() {
           <PerfilForm companyInicial={user.company ?? ""} jobTitleInicial={user.jobTitle ?? ""} />
         </section>
 
+        <section aria-label="Senha" className="border border-linha bg-papel p-8">
+          <SectionHeading number="02" label="Segurança do acesso" title="Senha" />
+          <AlterarSenha temSenha={Boolean(user.passwordHash)} />
+        </section>
+
         <section aria-label="Alterar telefone" className="border border-linha bg-papel p-8">
-          <SectionHeading number="02" label="Segurança do acesso" title="Alterar telefone" />
+          <SectionHeading number="03" label="Segurança do acesso" title="Alterar telefone" />
           <AlterarTelefone />
         </section>
 
         <section aria-label="Sessões e segurança" className="border border-linha bg-papel p-8">
-          <SectionHeading number="03" label="Dispositivos" title="Sessões e segurança" />
+          <SectionHeading number="04" label="Dispositivos" title="Sessões e segurança" />
           <EncerrarSessoes />
         </section>
 
         <section aria-label="Privacidade e dados" className="border border-linha bg-papel p-8">
-          <SectionHeading number="04" label="Seus dados" title="Privacidade e dados" />
+          <SectionHeading number="05" label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
               Pedimos apenas o necessário: o e-mail é seu dado de contato e recebe comunicações

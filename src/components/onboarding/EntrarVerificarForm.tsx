@@ -8,7 +8,7 @@ import { Alert } from "@/components/ui/Alert";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
 
-/** Verificação do código SMS de acesso (login sem senha). */
+/** Verificação do código SMS de acesso (login alternativo, /entrar/sms). */
 export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
   const router = useRouter();
   const [code, setCode] = useState("");
@@ -42,7 +42,7 @@ export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
         return;
       }
       if (res.status === 401) {
-        router.push("/entrar");
+        router.push("/entrar/sms");
         return;
       }
       setError(
@@ -104,7 +104,7 @@ export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
       <div className="flex items-center justify-between gap-4">
         <ResendCountdown onResend={resend} />
         <Link
-          href="/entrar"
+          href="/entrar/sms"
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
           Alterar telefone

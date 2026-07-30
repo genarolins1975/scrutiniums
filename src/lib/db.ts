@@ -74,6 +74,8 @@ async function migrate(db: Db): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL,
       updated_at TIMESTAMPTZ NOT NULL
     )`,
+    // Coluna adicionada depois do lançamento: senha (hash scrypt) opcional.
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT`,
     `CREATE TABLE IF NOT EXISTS verification_tokens (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,

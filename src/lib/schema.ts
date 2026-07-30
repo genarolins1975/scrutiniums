@@ -28,6 +28,8 @@ export const users = pgTable("users", {
   phoneVerifiedAt: timestamp("phone_verified_at", { withTimezone: true, mode: "date" }),
   company: text("company"),
   jobTitle: text("job_title"),
+  /** Hash scrypt da senha ("scrypt:N:r:p:salt:hash"); null em contas antigas sem senha. */
+  passwordHash: text("password_hash"),
   onboardingStatus: text("onboarding_status").notNull().default("EMAIL_PENDING"),
   termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true, mode: "date" }),
   privacyVersion: text("privacy_version"),

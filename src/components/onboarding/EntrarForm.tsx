@@ -8,7 +8,10 @@ import { Alert } from "@/components/ui/Alert";
 import { CountrySelect } from "./CountrySelect";
 import { PhoneField } from "./PhoneField";
 
-/** Login sem senha: telefone → código SMS. Cobre entrada e recuperação. */
+/**
+ * Login alternativo sem senha: telefone → código SMS (rota /entrar/sms).
+ * Cobre entrada e recuperação de quem esqueceu a senha.
+ */
 export function EntrarForm() {
   const router = useRouter();
   const [country, setCountry] = useState("BR");
@@ -33,7 +36,7 @@ export function EntrarForm() {
         body: JSON.stringify({ country, phone }),
       });
       if (res.ok) {
-        router.push("/entrar/verificar");
+        router.push("/entrar/sms/verificar");
         return;
       }
       setServerError(
@@ -66,6 +69,12 @@ export function EntrarForm() {
       </Button>
 
       <div className="flex flex-col items-center gap-2 border-t border-linha pt-5 text-center">
+        <Link
+          href="/entrar"
+          className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
+        >
+          Entrar com e-mail e senha
+        </Link>
         <Link
           href="/cadastro"
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"

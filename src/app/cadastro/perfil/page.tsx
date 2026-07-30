@@ -6,10 +6,10 @@ import type { OnboardingStatus } from "@/lib/schema";
 import { StepIndicator } from "@/components/ui/StepIndicator";
 import { PerfilForm } from "@/components/onboarding/PerfilForm";
 
-export const metadata: Metadata = { title: "Complete seu perfil" };
+export const metadata: Metadata = { title: "Crie sua senha e complete seu perfil" };
 export const dynamic = "force-dynamic";
 
-/** Etapa 3: empresa e cargo. Sem sessão → /cadastro; etapa diferente → redireciona. */
+/** Etapa 3: senha, empresa e cargo. Sem sessão → /cadastro; etapa diferente → redireciona. */
 export default async function PerfilPage() {
   const user = await getSessionUser();
   if (!user) {
@@ -22,7 +22,7 @@ export default async function PerfilPage() {
   return (
     <section className="border border-linha bg-papel p-8 md:p-10">
       <StepIndicator current={3} />
-      <h1 className="mt-6 font-serif text-3xl text-carvao">Complete seu perfil</h1>
+      <h1 className="mt-6 font-serif text-3xl text-carvao">Crie sua senha e complete seu perfil</h1>
       <div className="mt-8">
         <PerfilForm />
       </div>
