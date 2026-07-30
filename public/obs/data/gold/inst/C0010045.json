@@ -1,0 +1,1052 @@
+{
+ "cod_inst": "C0010045",
+ "caso": null,
+ "cabecalho": {
+  "nome_comercial": "Bradesco",
+  "razao_social_fonte_bcb": "BRADESCO",
+  "codigo_bcb": "C0010045",
+  "tcb": "B1",
+  "sede": "Osasco/SP",
+  "segmento": "S1",
+  "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+  "n_pares": 11,
+  "conglomerado_prudencial": "C0080075",
+  "capital": "não classificado",
+  "modelo": null,
+  "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
+  "data_base": "2026-T1",
+  "atualizado_em": "2026-07-29T01:57:33+00:00",
+  "aviso_pares": null,
+  "cnpj": "não disponível nas fontes integradas",
+  "participante_open_finance": true
+ },
+ "resumo_executivo": {
+  "avaliacao_geral": {
+   "texto": "Capitalização abaixo da mediana do grupo S1, rentabilidade do período acima da mediana.",
+   "base": "BCB IF.data (Informações de Capital) + medianas do grupo S1"
+  },
+  "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Carteira cresceu 10.4% em 4 trimestres.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "tipo": "ok",
+    "texto": "ROE do período de 2.8%.",
+    "base": "calculado sobre IF.data"
+   }
+  ],
+  "pontos_atencao": [
+   {
+    "tipo": "warn",
+    "texto": "Basileia de 14.9% (abaixo da mediana do grupo S1: 15.1%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
+   {
+    "tipo": "warn",
+    "texto": "Índice de reclamações 84.9 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+    "base": "BCB rdrweb"
+   }
+  ],
+  "mudancas_recentes": [
+   {
+    "texto": "Ativos totais: +4.3% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: -0.87p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
+   {
+    "texto": "Score relativo subiu 8.4 pontos no grupo de pares.",
+    "base": "Observatório (calculado)"
+   }
+  ],
+  "limitacoes_informacionais": [
+   "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "LCR / NSFR e composição de funding",
+   "Composição de receita, margem e eficiência",
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+  ]
+ },
+ "grupo_pares_composicao": {
+  "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
+  "quantidade": 11,
+  "maiores_membros": [
+   {
+    "cod": "C0010069",
+    "nome": "ITAU"
+   },
+   {
+    "cod": "C0049906",
+    "nome": "BB"
+   },
+   {
+    "cod": "C0051626",
+    "nome": "CAIXA ECONÔMICA FEDERAL"
+   },
+   {
+    "cod": "C0010045",
+    "nome": "BRADESCO"
+   },
+   {
+    "cod": "C0030379",
+    "nome": "SANTANDER"
+   },
+   {
+    "cod": "C0049944",
+    "nome": "BTG PACTUAL"
+   },
+   {
+    "cod": "01425787",
+    "nome": "REDECARD INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "10440482",
+    "nome": "GETNET ADQUIRÊNCIA E SERVIÇOS PARA MEIOS"
+   },
+   {
+    "cod": "15011719",
+    "nome": "BITZ INSTITUICAO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "44815065",
+    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA"
+   },
+   {
+    "cod": "40473435",
+    "nome": "REPASSES FINANCEIROS E SOLUCOES TECNOLOG"
+   }
+  ],
+  "quartis_basileia": null,
+  "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
+ },
+ "score_meta": {
+  "cobertura_dados_pct": 100,
+  "confianca": "moderada",
+  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+ },
+ "kpis": [
+  {
+   "label": "Ativos totais",
+   "v": 2022759229603.23,
+   "unit": "R$",
+   "d_tri": 4.3,
+   "d_tri_tipo": "%",
+   "hist": [
+    1701659830684.29,
+    1770027358055.49,
+    1826149501950.42,
+    1939636826445.57,
+    2022759229603.23
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Patrimônio líquido",
+   "v": 184194644575.03,
+   "unit": "R$",
+   "d_tri": 0.8,
+   "d_tri_tipo": "%",
+   "hist": [
+    174607449038.92,
+    177439074487.22,
+    179837706398.67,
+    182737197413.1,
+    184194644575.03
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Carteira de crédito",
+   "v": 894567349144.29,
+   "unit": "R$",
+   "d_tri": 0.9,
+   "d_tri_tipo": "%",
+   "hist": [
+    810372377949.04,
+    821791477839.23,
+    842463315586.87,
+    886881185907.67,
+    894567349144.29
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Lucro líquido (acum. ano IF.data)",
+   "v": 5232613778.79999,
+   "unit": "R$",
+   "d_tri": null,
+   "d_tri_tipo": "%",
+   "hist": [
+    5926607015.27,
+    11971037919.77,
+    6384369313.36,
+    13063783490.22,
+    5232613778.8
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Índice de Basileia",
+   "v": 14.9044552671766,
+   "unit": "%",
+   "d_tri": -0.87,
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    15.4475,
+    15.4738,
+    15.8545,
+    15.7777,
+    14.9045
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "label": "ROE do período (padronizado)",
+   "v": 2.84,
+   "unit": "%",
+   "d_tri": null,
+   "d_tri_tipo": "p.p.",
+   "hist": [],
+   "fonte": "calculado"
+  }
+ ],
+ "destaques": [
+  {
+   "tipo": "warn",
+   "texto": "Basileia de 14.9% (abaixo da mediana do grupo S1: 15.1%).",
+   "base": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "Carteira cresceu 10.4% em 4 trimestres.",
+   "base": "BCB IF.data (Olinda)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "ROE do período de 2.8%.",
+   "base": "calculado sobre IF.data"
+  },
+  {
+   "tipo": "warn",
+   "texto": "Índice de reclamações 84.9 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
+   "base": "BCB rdrweb"
+  }
+ ],
+ "capital_tabela": [
+  {
+   "indicador": "Índice de Basileia",
+   "valor": 14.9,
+   "unit": "%",
+   "d_tri": -0.87,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 15.13,
+   "percentil": 33.3
+  },
+  {
+   "indicador": "Ativo ÷ PL (alavancagem contábil)",
+   "valor": 10.98,
+   "unit": "×",
+   "d_tri": null,
+   "vs_pares": "na média",
+   "mediana_grupo": 10.98,
+   "percentil": 50.0
+  },
+  {
+   "indicador": "ROE do período",
+   "valor": 2.84,
+   "unit": "%",
+   "d_tri": null,
+   "vs_pares": "na média",
+   "mediana_grupo": 2.84,
+   "percentil": 50.0
+  }
+ ],
+ "carteira": {
+  "donut_cliente": [
+   {
+    "label": "Pessoa Física",
+    "v": 457752104472.36
+   },
+   {
+    "label": "Pessoa Jurídica",
+    "v": 387995083383.14
+   }
+  ],
+  "perfil": {
+   "hhi_setorial": 1988,
+   "top_cnae": [
+    [
+     "comercio_reparacao_de_veiculos_automotores_e_mot",
+     27.2
+    ],
+    [
+     "outros",
+     23.8
+    ],
+    [
+     "industrias_de_transformacao",
+     21.2
+    ],
+    [
+     "transporte_armazenagem_e_correio",
+     11.4
+    ],
+    [
+     "construcao",
+     9.4
+    ]
+   ],
+   "pme_share_pct": 34.0,
+   "top_mod_pf": [
+    [
+     "habitacao",
+     24.2
+    ],
+    [
+     "emprestimo_com_consignacao_em_folha",
+     23.9
+    ],
+    [
+     "cartao_de_credito",
+     17.6
+    ],
+    [
+     "emprestimo_sem_consignacao_em_folha",
+     11.0
+    ]
+   ],
+   "top_mod_pj": [
+    [
+     "capital_de_giro",
+     37.7
+    ],
+    [
+     "investimento",
+     13.0
+    ],
+    [
+     "financiamento_de_infraestrutura_desenvolvimento_",
+     11.4
+    ],
+    [
+     "outros_creditos",
+     11.1
+    ]
+   ]
+  },
+  "total_pf": 457752104472.36,
+  "total_pj": 387995083383.14
+ },
+ "evolucao_base100": {
+  "Ativos": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 104.0
+   },
+   {
+    "p": "2025-T3",
+    "v": 107.3
+   },
+   {
+    "p": "2025-T4",
+    "v": 114.0
+   },
+   {
+    "p": "2026-T1",
+    "v": 118.9
+   }
+  ],
+  "Carteira": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 101.4
+   },
+   {
+    "p": "2025-T3",
+    "v": 104.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 109.4
+   },
+   {
+    "p": "2026-T1",
+    "v": 110.4
+   }
+  ],
+  "PL": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 101.6
+   },
+   {
+    "p": "2025-T3",
+    "v": 103.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 104.7
+   },
+   {
+    "p": "2026-T1",
+    "v": 105.5
+   }
+  ]
+ },
+ "comparacao_grupo": {
+  "roe": {
+   "valores": [
+    2.07,
+    5.82,
+    -0.15,
+    -48.85,
+    24.06,
+    2.84,
+    5.78,
+    3.98,
+    1.68,
+    6.11,
+    2.69
+   ],
+   "meu": 2.84,
+   "mediana": 2.84
+  },
+  "basileia": {
+   "valores": [
+    37.77,
+    14.9,
+    14.77,
+    15.15,
+    14.23,
+    15.91,
+    15.13
+   ],
+   "meu": 14.9,
+   "mediana": 15.13
+  },
+  "alav": {
+   "valores": [
+    4.12,
+    21.01,
+    1.02,
+    2.61,
+    6.59,
+    10.98,
+    13.58,
+    13.26,
+    13.88,
+    10.85,
+    20.38
+   ],
+   "meu": 10.98,
+   "mediana": 10.98
+  }
+ },
+ "score_ref": {
+  "score": 58.1,
+  "score_delta": 8.4,
+  "faixa": "atenção",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 14.9,
+    "percentil_pares": 40.0,
+    "risco": 60.0,
+    "mediana_pares": 15.02,
+    "q1_pares": 14.8,
+    "q3_pares": 15.15
+   },
+   "rentabilidade": {
+    "valor": 2.84,
+    "percentil_pares": 42.9,
+    "risco": 57.1,
+    "mediana_pares": 3.41,
+    "q1_pares": 2.54,
+    "q3_pares": 5.79
+   },
+   "alavancagem": {
+    "valor": 10.98,
+    "percentil_pares": 28.6,
+    "risco": 28.6,
+    "mediana_pares": 13.42,
+    "q1_pares": 10.95,
+    "q3_pares": 15.51
+   },
+   "concentracao_credito": {
+    "valor": 44.23,
+    "percentil_pares": 85.7,
+    "risco": 85.7,
+    "mediana_pares": 41.35,
+    "q1_pares": 17.37,
+    "q3_pares": 43.29
+   },
+   "dependencia_captacoes": {
+    "valor": 78.11,
+    "percentil_pares": 57.1,
+    "risco": 57.1,
+    "mediana_pares": 77.23,
+    "q1_pares": 54.32,
+    "q3_pares": 78.85
+   },
+   "concentracao_setorial": {
+    "valor": 1988,
+    "percentil_pares": 60.0,
+    "risco": 60.0,
+    "mediana_pares": 1986.0,
+    "q1_pares": 1791.25,
+    "q3_pares": 2084.0
+   }
+  },
+  "historico_score": [
+   {
+    "anomes": "202503",
+    "score": 53.7
+   },
+   {
+    "anomes": "202506",
+    "score": 60.6
+   },
+   {
+    "anomes": "202509",
+    "score": 56.6
+   },
+   {
+    "anomes": "202512",
+    "score": 49.7
+   },
+   {
+    "anomes": "202603",
+    "score": 58.1
+   }
+  ],
+  "vulnerabilidade": {
+   "tipo": "CENÁRIO",
+   "cenario": "severamente adverso",
+   "delta_inad_pp": [
+    0.12,
+    1.26
+   ],
+   "impacto_basileia_pp": [
+    -0.51,
+    -0.05
+   ],
+   "basileia_atual_pct": 14.9,
+   "basileia_pos_choque_pct": [
+    14.39,
+    14.85
+   ],
+   "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+  },
+  "dimensoes_disponiveis": "6/6"
+ },
+ "atraso_produtos": {
+  "data_base": "2026-T1",
+  "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+  "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
+  "itens": [
+   {
+    "slug": "capital-de-giro-pj",
+    "produto": "Capital de giro",
+    "seg": "PJ",
+    "carteira_brl": 115229277268.76,
+    "atraso15_pct": 1.52,
+    "mediana_produto_pct": 1.72,
+    "percentil_no_produto": 44.8,
+    "n_universo": 755,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 1.71
+     },
+     {
+      "p": "2025-T2",
+      "pct": 1.59
+     },
+     {
+      "p": "2025-T3",
+      "pct": 1.43
+     },
+     {
+      "p": "2025-T4",
+      "pct": 1.6
+     },
+     {
+      "p": "2026-T1",
+      "pct": 1.52
+     }
+    ]
+   },
+   {
+    "slug": "imobiliario-pf",
+    "produto": "Crédito imobiliário (habitação)",
+    "seg": "PF",
+    "carteira_brl": 108284361121.78,
+    "atraso15_pct": 0.17,
+    "mediana_produto_pct": 0.15,
+    "percentil_no_produto": 53.3,
+    "n_universo": 123,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.14
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.15
+     },
+     {
+      "p": "2025-T3",
+      "pct": 0.15
+     },
+     {
+      "p": "2025-T4",
+      "pct": 0.16
+     },
+     {
+      "p": "2026-T1",
+      "pct": 0.17
+     }
+    ]
+   },
+   {
+    "slug": "consignado-pf",
+    "produto": "Crédito consignado",
+    "seg": "PF",
+    "carteira_brl": 107015998812.98,
+    "atraso15_pct": 0.43,
+    "mediana_produto_pct": 0.62,
+    "percentil_no_produto": 38.1,
+    "n_universo": 776,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.43
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.42
+     },
+     {
+      "p": "2025-T3",
+      "pct": 0.51
+     },
+     {
+      "p": "2025-T4",
+      "pct": 0.49
+     },
+     {
+      "p": "2026-T1",
+      "pct": 0.43
+     }
+    ]
+   },
+   {
+    "slug": "cartao-de-credito-pf",
+    "produto": "Cartão de crédito",
+    "seg": "PF",
+    "carteira_brl": 78685325374.34,
+    "atraso15_pct": 10.9,
+    "mediana_produto_pct": 7.31,
+    "percentil_no_produto": 72.1,
+    "n_universo": 223,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 10.87
+     },
+     {
+      "p": "2025-T2",
+      "pct": 10.85
+     },
+     {
+      "p": "2025-T3",
+      "pct": 10.9
+     },
+     {
+      "p": "2025-T4",
+      "pct": 10.33
+     },
+     {
+      "p": "2026-T1",
+      "pct": 10.9
+     }
+    ]
+   },
+   {
+    "slug": "credito-pessoal-pf",
+    "produto": "Crédito pessoal não consignado",
+    "seg": "PF",
+    "carteira_brl": 49244702798.04,
+    "atraso15_pct": 3.45,
+    "mediana_produto_pct": 3.32,
+    "percentil_no_produto": 51.7,
+    "n_universo": 877,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 3.18
+     },
+     {
+      "p": "2025-T2",
+      "pct": 3.06
+     },
+     {
+      "p": "2025-T3",
+      "pct": 2.94
+     },
+     {
+      "p": "2025-T4",
+      "pct": 3.38
+     },
+     {
+      "p": "2026-T1",
+      "pct": 3.45
+     }
+    ]
+   },
+   {
+    "slug": "veiculos-pf",
+    "produto": "Financiamento de veículos",
+    "seg": "PF",
+    "carteira_brl": 46252762928.89,
+    "atraso15_pct": 2.77,
+    "mediana_produto_pct": 1.16,
+    "percentil_no_produto": 79.0,
+    "n_universo": 600,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 2.23
+     },
+     {
+      "p": "2025-T2",
+      "pct": 2.32
+     },
+     {
+      "p": "2025-T3",
+      "pct": 2.57
+     },
+     {
+      "p": "2025-T4",
+      "pct": 2.47
+     },
+     {
+      "p": "2026-T1",
+      "pct": 2.77
+     }
+    ]
+   },
+   {
+    "slug": "investimento-pj",
+    "produto": "Financiamento de investimentos",
+    "seg": "PJ",
+    "carteira_brl": 39641293731.99,
+    "atraso15_pct": 1.39,
+    "mediana_produto_pct": 1.07,
+    "percentil_no_produto": 58.6,
+    "n_universo": 624,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 1.11
+     },
+     {
+      "p": "2025-T2",
+      "pct": 1.03
+     },
+     {
+      "p": "2025-T3",
+      "pct": 1.09
+     },
+     {
+      "p": "2025-T4",
+      "pct": 1.14
+     },
+     {
+      "p": "2026-T1",
+      "pct": 1.39
+     }
+    ]
+   },
+   {
+    "slug": "rural-pf",
+    "produto": "Crédito rural PF",
+    "seg": "PF",
+    "carteira_brl": 36439223568.42,
+    "atraso15_pct": 4.83,
+    "mediana_produto_pct": 0.9,
+    "percentil_no_produto": 89.7,
+    "n_universo": 427,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 1.97
+     },
+     {
+      "p": "2025-T2",
+      "pct": 3.62
+     },
+     {
+      "p": "2025-T3",
+      "pct": 4.28
+     },
+     {
+      "p": "2025-T4",
+      "pct": 4.91
+     },
+     {
+      "p": "2026-T1",
+      "pct": 4.83
+     }
+    ]
+   },
+   {
+    "slug": "infraestrutura-pj",
+    "produto": "Infraestrutura e desenvolvimento",
+    "seg": "PJ",
+    "carteira_brl": 34851200242.02,
+    "atraso15_pct": 0.34,
+    "mediana_produto_pct": 0.74,
+    "percentil_no_produto": 33.8,
+    "n_universo": 202,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.24
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.22
+     },
+     {
+      "p": "2025-T3",
+      "pct": 0.26
+     },
+     {
+      "p": "2025-T4",
+      "pct": 0.29
+     },
+     {
+      "p": "2026-T1",
+      "pct": 0.34
+     }
+    ]
+   },
+   {
+    "slug": "recebiveis-pj",
+    "produto": "Antecipação de recebíveis",
+    "seg": "PJ",
+    "carteira_brl": 29363604677.51,
+    "atraso15_pct": 1.48,
+    "mediana_produto_pct": 4.11,
+    "percentil_no_produto": 25.7,
+    "n_universo": 613,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.53
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.8
+     },
+     {
+      "p": "2025-T3",
+      "pct": 0.86
+     },
+     {
+      "p": "2025-T4",
+      "pct": 1.01
+     },
+     {
+      "p": "2026-T1",
+      "pct": 1.48
+     }
+    ]
+   },
+   {
+    "slug": "comercio-exterior-pj",
+    "produto": "Comércio exterior",
+    "seg": "PJ",
+    "carteira_brl": 28896000345.38,
+    "atraso15_pct": 0.23,
+    "mediana_produto_pct": 0.0,
+    "percentil_no_produto": 73.2,
+    "n_universo": 83,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.21
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.07
+     },
+     {
+      "p": "2025-T3",
+      "pct": 0.02
+     },
+     {
+      "p": "2025-T4",
+      "pct": 0.19
+     },
+     {
+      "p": "2026-T1",
+      "pct": 0.23
+     }
+    ]
+   },
+   {
+    "slug": "conta-garantida-pj",
+    "produto": "Cheque especial e conta garantida",
+    "seg": "PJ",
+    "carteira_brl": 8012488177.46,
+    "atraso15_pct": 12.88,
+    "mediana_produto_pct": 9.31,
+    "percentil_no_produto": 59.8,
+    "n_universo": 583,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 8.55
+     },
+     {
+      "p": "2025-T2",
+      "pct": 9.15
+     },
+     {
+      "p": "2025-T3",
+      "pct": 9.81
+     },
+     {
+      "p": "2025-T4",
+      "pct": 12.78
+     },
+     {
+      "p": "2026-T1",
+      "pct": 12.88
+     }
+    ]
+   },
+   {
+    "slug": "rural-pj",
+    "produto": "Crédito rural PJ",
+    "seg": "PJ",
+    "carteira_brl": 2700095371.86,
+    "atraso15_pct": 0.97,
+    "mediana_produto_pct": 0.0,
+    "percentil_no_produto": 91.4,
+    "n_universo": 302,
+    "serie": [
+     {
+      "p": "2025-T1",
+      "pct": 0.28
+     },
+     {
+      "p": "2025-T2",
+      "pct": 0.27
+     },
+     {
+      "p": "2025-T3",
+      "pct": 2.22
+     },
+     {
+      "p": "2025-T4",
+      "pct": 1.0
+     },
+     {
+      "p": "2026-T1",
+      "pct": 0.97
+     }
+    ]
+   }
+  ]
+ },
+ "openfinance": {
+  "organisation": "BRADESCO",
+  "chamadas_semana": 4581293389.0,
+  "share_pct": 7.2,
+  "familias_api": 15,
+  "papeis": [
+   "CCORR",
+   "DADOS"
+  ],
+  "dimensoes": {
+   "escala_chamadas": 28.9,
+   "cobertura_funcional": 26.8
+  },
+  "maturidade_estrutural": 27.9,
+  "match_diretorio": true
+ },
+ "reclamacoes": [
+  {
+   "periodo": "2026-T2",
+   "indice": 84.9,
+   "reclamacoes": 46204,
+   "clientes": 110412514.0,
+   "posicao_arquivo": 49,
+   "nome_fonte": "BRADESCO (conglomerado)"
+  },
+  {
+   "periodo": "2026-T1",
+   "indice": 48.92,
+   "reclamacoes": 35387,
+   "clientes": 110328071.0,
+   "posicao_arquivo": 55,
+   "nome_fonte": "BRADESCO (conglomerado)"
+  },
+  {
+   "periodo": "2025-T4",
+   "indice": 43.89,
+   "reclamacoes": 34725,
+   "clientes": 110474071.0,
+   "posicao_arquivo": 52,
+   "nome_fonte": "BRADESCO (conglomerado)"
+  },
+  {
+   "periodo": "2025-T3",
+   "indice": 51.74,
+   "reclamacoes": 33228,
+   "clientes": 110494968.0,
+   "posicao_arquivo": 58,
+   "nome_fonte": "BRADESCO (conglomerado)"
+  }
+ ],
+ "rj_citacoes": {
+  "casos": 150,
+  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
+ },
+ "indisponiveis": [
+  {
+   "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "motivo": "Não exposta por instituição no corte público do IF.data."
+  },
+  {
+   "indicador": "LCR / NSFR e composição de funding",
+   "motivo": "Exigem Pilar 3 por instituição — não integrado."
+  },
+  {
+   "indicador": "Composição de receita, margem e eficiência",
+   "motivo": "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."
+  },
+  {
+   "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  }
+ ]
+}

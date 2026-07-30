@@ -1,0 +1,195 @@
+{
+ "cod": "49654502",
+ "nome": "COOPERATIVA DE CRÉDITO RURAL DOS FORNECEDORES DE CANA DA REGIÃO DE CATANDUVA-COFOCRED",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 151950783.98,
+   "202506": 152057311.88,
+   "202509": 160925918.43,
+   "202512": 166693694.08,
+   "202603": 163679902.36
+  },
+  "patrimonio_liquido": {
+   "202503": 140574357.14,
+   "202506": 140349268.75,
+   "202509": 149155397.23,
+   "202512": 153664668.15,
+   "202603": 149922490.79
+  },
+  "carteira_credito": {
+   "202503": 58226762.88,
+   "202506": 59774183.13,
+   "202509": 60542999.72,
+   "202512": 62648083.32,
+   "202603": 66039380.93
+  },
+  "carteira_pf": {
+   "202503": 54990936.69,
+   "202506": 54268199.14,
+   "202509": 55007590.88,
+   "202512": 58859119.5,
+   "202603": 60592417.26
+  },
+  "carteira_pj": {
+   "202503": 5694268.62,
+   "202506": 7925535.98,
+   "202509": 7945614.29,
+   "202512": 6674026.37,
+   "202603": 8688127.81
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 2784905.48,
+   "202506": 7386898.55,
+   "202509": 6543938.92,
+   "202512": 11447112.56,
+   "202603": 4677294.59
+  },
+  "indice_basileia": {
+   "202503": 98.85405803421689,
+   "202506": 99.7002302070632,
+   "202509": 99.8149424118174,
+   "202512": 98.377378573247,
+   "202603": 98.4354234408943
+  },
+  "patrimonio_referencia": {
+   "202503": 140574357.14,
+   "202506": 140349268.75,
+   "202509": 149155397.23,
+   "202512": 153664668.15,
+   "202603": 149922490.79
+  },
+  "rwa": {
+   "202503": 136795325.21,
+   "202506": 135362652.0,
+   "202509": 143676581.87,
+   "202512": 150443839.18,
+   "202603": 146192036.35
+  },
+  "provisao_credito": {
+   "202503": 2350549.51,
+   "202506": 2309462.5,
+   "202509": 2297849.86,
+   "202512": 2808617.0,
+   "202603": 3163179.48
+  },
+  "roe_periodo": {
+   "202503": 1.9810906744723529,
+   "202506": 5.263225534262001,
+   "202509": 4.387329618323594,
+   "202512": 7.449410913916714,
+   "202603": 3.119808485940644
+  },
+  "npl_pct": {
+   "202503": 0.3318795396195389,
+   "202506": 0.32382969058122074,
+   "202509": 0.31992299590804135,
+   "202512": 0.30732811209693267,
+   "202603": 0.2907046701155523
+  },
+  "ativos_problematicos_pct": {
+   "202503": 9.351333312643282,
+   "202506": 8.84323811616735,
+   "202509": 8.855586947392913,
+   "202512": 0.30732811209693267,
+   "202603": 0.2907046701155523
+  },
+  "cobertura_pct": {
+   "202503": 1167.0947049226675,
+   "202506": 1146.6941851258714,
+   "202509": 1140.9282777937713,
+   "202512": 1394.534348206853,
+   "202603": 1570.581689993008
+  },
+  "cart_ativo_pct": {
+   "202503": 38.3194882940939,
+   "202506": 39.31029845981518,
+   "202509": 37.621658655523014,
+   "202512": 37.58275540401294,
+   "202603": 40.34666442111629
+  },
+  "atraso15_rural_pf": {
+   "202503": 0.46896318262412484,
+   "202506": 0.46528442931972924,
+   "202509": 0.4629718971101112,
+   "202512": 0.4341775056473803,
+   "202603": 0.42994728918225184
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "46277273",
+    "nome": "GPATIVA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO PÃO DE AÇÚCAR",
+    "sr": "S5",
+    "ativo_brl": 167801723.98
+   },
+   {
+    "cod": "04572960",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MILITARES ESTADUAIS DE SANTA CATARINA - CREDPOM",
+    "sr": "S5",
+    "ativo_brl": 169815438.59
+   },
+   {
+    "cod": "02794761",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DE LIVRE ADMISSÃO DOS SERVIDORES DA UNIVERSIDADE FEDERAL DE VIÇOSA LTDA. - SICOOB UFVCREDI",
+    "sr": "S5",
+    "ativo_brl": 149447841.18
+   },
+   {
+    "cod": "03212823",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS MILITARES ESTADUAIS E SERVIDORES DA SEGURANÇA DO ESTADO DO RIO GRANDE DO SUL - SICREDI TRADIÇÃO RS",
+    "sr": "S4",
+    "ativo_brl": 147121948.28
+   },
+   {
+    "cod": "37122487",
+    "nome": "CALCRED S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 182996851.36
+   },
+   {
+    "cod": "52046299",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO ATACADÃO",
+    "sr": "S5",
+    "ativo_brl": 184487937.71
+   },
+   {
+    "cod": "34006497",
+    "nome": "ASTRO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 142521519.53
+   },
+   {
+    "cod": "04751713",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTOS DE RONDÔNIA - SICOOB CREDJURD",
+    "sr": "S5",
+    "ativo_brl": 141831598.45
+   }
+  ]
+ }
+}

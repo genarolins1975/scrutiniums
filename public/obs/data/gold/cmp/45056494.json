@@ -1,0 +1,140 @@
+{
+ "cod": "45056494",
+ "nome": "MARMARIS CORRETORA DE CÂMBIO LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 861239.43,
+   "202506": 1950926.81,
+   "202509": 1538567.76,
+   "202512": 991931.83,
+   "202603": 1630311.57
+  },
+  "patrimonio_liquido": {
+   "202503": 503567.3,
+   "202506": 755272.88,
+   "202509": 520048.12,
+   "202512": 530911.56,
+   "202603": 669136.31
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -241966.36,
+   "202506": -277680.78,
+   "202509": -235224.76,
+   "202512": -224361.32,
+   "202603": 138224.74
+  },
+  "indice_basileia": {
+   "202503": 24.684992231516702,
+   "202506": 17.7733914854913,
+   "202509": 15.8025359744946,
+   "202512": 24.6605959073286,
+   "202603": 25.210091027338798
+  },
+  "patrimonio_referencia": {
+   "202503": 503567.3,
+   "202506": 467852.88,
+   "202509": 520048.12,
+   "202512": 530911.56,
+   "202603": 669136.31
+  },
+  "rwa": {
+   "202503": 462242.99,
+   "202506": 755866.31,
+   "202509": 708955.3,
+   "202512": 625665.74,
+   "202603": 760363.14
+  },
+  "roe_periodo": {
+   "202503": -48.050451250508125,
+   "202506": -36.765623042098376,
+   "202509": -45.23134513013911,
+   "202512": -42.25964113495664,
+   "202603": 20.65718717311873
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "07327045",
+    "nome": "CORPORE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1621080.78
+   },
+   {
+    "cod": "19324634",
+    "nome": "LAMARA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1648390.41
+   },
+   {
+    "cod": "51982600",
+    "nome": "DELEND INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 1610654.42
+   },
+   {
+    "cod": "10548608",
+    "nome": "COOPERATIVA DE CRÉDITO DE SERVIDORES DA UESC - UESCOOP",
+    "sr": "S5",
+    "ativo_brl": 1664152.8
+   },
+   {
+    "cod": "15122605",
+    "nome": "LÚMINA CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1525796.35
+   },
+   {
+    "cod": "27348513",
+    "nome": "FINANCRED - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E A EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1751059.09
+   },
+   {
+    "cod": "20177390",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS TRABALHADORES DO GRUPO EMPRESARIAL ITATIAIA LTDA. - COOPERITA",
+    "sr": "S5",
+    "ativo_brl": 1500935.74
+   },
+   {
+    "cod": "10749264",
+    "nome": "GDC PARTNERS SERVIÇOS FIDUCIÁRIOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1782900.03
+   }
+  ]
+ }
+}

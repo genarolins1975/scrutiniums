@@ -1,0 +1,154 @@
+{
+ "cod": "89960090",
+ "nome": "RB INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LIMITADA",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 57840463.52,
+   "202506": 33079936.96,
+   "202509": 21750581.93,
+   "202512": 30065905.29,
+   "202603": 30991907.92
+  },
+  "patrimonio_liquido": {
+   "202503": 8614876.81,
+   "202506": 7853703.78,
+   "202509": 8295601.7,
+   "202512": 8840777.66,
+   "202603": 9151898.47
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 46483578.04,
+   "202506": 22827004.36,
+   "202509": 11068804.88,
+   "202512": 19572851.62,
+   "202603": 19714449.44
+  },
+  "lucro_liquido": {
+   "202503": -1549089.9,
+   "202506": -2310262.93,
+   "202509": 441897.92,
+   "202512": 987073.88,
+   "202603": 311120.809999999
+  },
+  "indice_basileia": {
+   "202503": 15.8716240171289,
+   "202506": 14.4022309810404,
+   "202509": 16.1392428379185,
+   "202512": 17.6159846993834,
+   "202603": 18.2884792944186
+  },
+  "indice_capital_principal": {
+   "202503": 15.8716240171289,
+   "202506": 14.4022309810404,
+   "202509": 16.1392428379185,
+   "202512": 17.6159846993834,
+   "202603": 18.2884792944186
+  },
+  "indice_capital_nivel1": {
+   "202503": 15.8716240171289,
+   "202506": 14.4022309810404,
+   "202509": 16.1392428379185,
+   "202512": 17.6159846993834,
+   "202603": 18.2884792944186
+  },
+  "patrimonio_referencia": {
+   "202503": 6215988.95,
+   "202506": 5612200.61,
+   "202509": 6013151.8,
+   "202512": 6509927.66,
+   "202603": 6921439.77
+  },
+  "rwa": {
+   "202503": 780012.93,
+   "202506": 437223.15,
+   "202509": 1252120.4,
+   "202512": 946979.38,
+   "202603": 1215716.36
+  },
+  "roe_periodo": {
+   "202503": -17.981567631957812,
+   "202506": -29.41622188353022,
+   "202509": 5.326894129933938,
+   "202512": 11.165011924980364,
+   "202603": 3.399522088448158
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "35274306",
+    "nome": "PINTOS S.A. CREDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S5",
+    "ativo_brl": 30716782.63
+   },
+   {
+    "cod": "51118615",
+    "nome": "INTEGRAÇÃO DE CRÉDITO E COBRANÇA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 30634661.3
+   },
+   {
+    "cod": "04831810",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DE PINHÃO - CRESERV CREDISIS",
+    "sr": "S5",
+    "ativo_brl": 30634043.26
+   },
+   {
+    "cod": "48718183",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ERICSSON - COOPERICSSON",
+    "sr": "S5",
+    "ativo_brl": 31551551.63
+   },
+   {
+    "cod": "18394228",
+    "nome": "CDC SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 30340777.18
+   },
+   {
+    "cod": "18684408",
+    "nome": "AZIMUT BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 31675967.85
+   },
+   {
+    "cod": "40434681",
+    "nome": "AZUMI DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 31699325.86
+   },
+   {
+    "cod": "03535065",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB CREDMETAL",
+    "sr": "S5",
+    "ativo_brl": 30011301.34
+   }
+  ]
+ }
+}

@@ -1,0 +1,878 @@
+{
+ "gerado_em": "2026-07-28T21:32:07+00:00",
+ "diagnostico": {
+  "ok": true,
+  "tipo": "DADO CALCULADO",
+  "frase": "As condições de crédito permanecem restritivas (IBCC 93.1, percentil histórico 5), em fase de contração, com sinais mistos entre os indicadores monitorados.",
+  "ref": "2026-04-01",
+  "confianca": "moderada",
+  "confianca_motivo": "qualidade média dos dados 69/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "evidencias": [
+   {
+    "texto": "componente mais negativo do IBCC: Qualidade da carteira (-2.92)",
+    "area": "overview",
+    "status": "calculado"
+   },
+   {
+    "texto": "IBC-Br (atividade): 113.994 → 109.53 índice (2002=100) (-4.46 em 1m)",
+    "area": "pulse",
+    "status": "observado",
+    "fonte": "BCB/SGS",
+    "ref": "2026-05-01"
+   },
+   {
+    "texto": "Inadimplência total (>90d): 4.63 → 4.74 % (+0.11 em 1m)",
+    "area": "pulse",
+    "status": "observado",
+    "fonte": "BCB/SGS",
+    "ref": "2026-05-01"
+   },
+   {
+    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 65.5, melhorando)",
+    "area": "sectors",
+    "status": "calculado (componentes parcialmente demonstrativos)"
+   }
+  ],
+  "percentil_ibcc": 5.1,
+  "metodo": "Frase montada por regras determinísticas a partir do IBCC (nível/fase/percentil), da tabela de mudanças (Δ1m normalizado pelo desvio histórico) e do ranking setorial. Não é texto gerado livremente."
+ },
+ "mudancas": {
+  "tabela": [
+   {
+    "key": "inad_total",
+    "indicador": "Inadimplência total (>90d)",
+    "area": "pulse",
+    "anterior": 4.63,
+    "atual": 4.74,
+    "delta_1m": 0.11,
+    "delta_3m": 0.1,
+    "relevancia_z": 1.05,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21082",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "inad_pf",
+    "indicador": "Inadimplência PF",
+    "area": "pulse",
+    "anterior": 5.51,
+    "atual": 5.62,
+    "delta_1m": 0.11,
+    "delta_3m": 0.06,
+    "relevancia_z": 1.02,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21084",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "inad_pj",
+    "indicador": "Inadimplência PJ",
+    "area": "pulse",
+    "anterior": 3.15,
+    "atual": 3.24,
+    "delta_1m": 0.09,
+    "delta_3m": 0.17,
+    "relevancia_z": 0.73,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21083",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "concessoes_total",
+    "indicador": "Concessões (nível)",
+    "area": "pulse",
+    "anterior": 692469.0,
+    "atual": 694151.0,
+    "delta_1m": 1682.0,
+    "delta_3m": 84002.0,
+    "relevancia_z": 0.04,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "R$ milhões",
+    "fonte": "BCB/SGS",
+    "serie": "20631",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "saldo_total",
+    "indicador": "Saldo de crédito",
+    "area": "pulse",
+    "anterior": 7258599.0,
+    "atual": 7299615.0,
+    "delta_1m": 41016.0,
+    "delta_3m": 142628.0,
+    "relevancia_z": 1.3,
+    "classificacao": "melhora",
+    "interpretacao": "melhora moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "R$ milhões",
+    "fonte": "BCB/SGS",
+    "serie": "20539",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "taxa_total",
+    "indicador": "Taxa média de juros",
+    "area": "pulse",
+    "anterior": 33.51,
+    "atual": 33.42,
+    "delta_1m": -0.09,
+    "delta_3m": 0.64,
+    "relevancia_z": 0.14,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "% a.a.",
+    "fonte": "BCB/SGS",
+    "serie": "20714",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "spread_total",
+    "indicador": "Spread médio",
+    "area": "pulse",
+    "anterior": 22.24,
+    "atual": 22.09,
+    "delta_1m": -0.15,
+    "delta_3m": 0.11,
+    "relevancia_z": 0.27,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "p.p.",
+    "fonte": "BCB/SGS",
+    "serie": "20783",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "comprometimento",
+    "indicador": "Comprometimento de renda",
+    "area": "pulse",
+    "anterior": 28.24,
+    "atual": 28.19,
+    "delta_1m": -0.05,
+    "delta_3m": -0.07,
+    "relevancia_z": 0.15,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "29034",
+    "ref_anterior": "2026-03-01",
+    "ref_atual": "2026-04-01"
+   },
+   {
+    "key": "endividamento",
+    "indicador": "Endividamento das famílias",
+    "area": "pulse",
+    "anterior": 49.83,
+    "atual": 49.79,
+    "delta_1m": -0.04,
+    "delta_3m": -0.14,
+    "relevancia_z": 0.14,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "29037",
+    "ref_anterior": "2026-03-01",
+    "ref_atual": "2026-04-01"
+   },
+   {
+    "key": "desemprego",
+    "indicador": "Taxa de desocupação",
+    "area": "pulse",
+    "anterior": 5.8,
+    "atual": 5.6,
+    "delta_1m": -0.2,
+    "delta_3m": -0.2,
+    "relevancia_z": 0.65,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "IBGE",
+    "serie": "6381/4099",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "ibc_br",
+    "indicador": "IBC-Br (atividade)",
+    "area": "pulse",
+    "anterior": 113.994,
+    "atual": 109.53,
+    "delta_1m": -4.464,
+    "delta_3m": 2.709,
+    "relevancia_z": 1.18,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "índice (2002=100)",
+    "fonte": "BCB/SGS",
+    "serie": "24363",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "papelao",
+    "indicador": "Papelão ondulado (antecedente)",
+    "area": "sectors",
+    "anterior": 359799.0,
+    "atual": 356538.0,
+    "delta_1m": -3261.0,
+    "delta_3m": -5961.0,
+    "relevancia_z": 0.2,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "toneladas",
+    "fonte": "Ipeadata",
+    "serie": "ABPO12_PAPEL12",
+    "ref_anterior": "2026-05-01",
+    "ref_atual": "2026-06-01"
+   }
+  ],
+  "top_deterioracoes": [
+   {
+    "key": "ibc_br",
+    "indicador": "IBC-Br (atividade)",
+    "area": "pulse",
+    "anterior": 113.994,
+    "atual": 109.53,
+    "delta_1m": -4.464,
+    "delta_3m": 2.709,
+    "relevancia_z": 1.18,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "índice (2002=100)",
+    "fonte": "BCB/SGS",
+    "serie": "24363",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "inad_total",
+    "indicador": "Inadimplência total (>90d)",
+    "area": "pulse",
+    "anterior": 4.63,
+    "atual": 4.74,
+    "delta_1m": 0.11,
+    "delta_3m": 0.1,
+    "relevancia_z": 1.05,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21082",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "inad_pf",
+    "indicador": "Inadimplência PF",
+    "area": "pulse",
+    "anterior": 5.51,
+    "atual": 5.62,
+    "delta_1m": 0.11,
+    "delta_3m": 0.06,
+    "relevancia_z": 1.02,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21084",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "inad_pj",
+    "indicador": "Inadimplência PJ",
+    "area": "pulse",
+    "anterior": 3.15,
+    "atual": 3.24,
+    "delta_1m": 0.09,
+    "delta_3m": 0.17,
+    "relevancia_z": 0.73,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "21083",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "papelao",
+    "indicador": "Papelão ondulado (antecedente)",
+    "area": "sectors",
+    "anterior": 359799.0,
+    "atual": 356538.0,
+    "delta_1m": -3261.0,
+    "delta_3m": -5961.0,
+    "relevancia_z": 0.2,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "toneladas",
+    "fonte": "Ipeadata",
+    "serie": "ABPO12_PAPEL12",
+    "ref_anterior": "2026-05-01",
+    "ref_atual": "2026-06-01"
+   }
+  ],
+  "top_melhoras": [
+   {
+    "key": "saldo_total",
+    "indicador": "Saldo de crédito",
+    "area": "pulse",
+    "anterior": 7258599.0,
+    "atual": 7299615.0,
+    "delta_1m": 41016.0,
+    "delta_3m": 142628.0,
+    "relevancia_z": 1.3,
+    "classificacao": "melhora",
+    "interpretacao": "melhora moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "R$ milhões",
+    "fonte": "BCB/SGS",
+    "serie": "20539",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "desemprego",
+    "indicador": "Taxa de desocupação",
+    "area": "pulse",
+    "anterior": 5.8,
+    "atual": 5.6,
+    "delta_1m": -0.2,
+    "delta_3m": -0.2,
+    "relevancia_z": 0.65,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "IBGE",
+    "serie": "6381/4099",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "spread_total",
+    "indicador": "Spread médio",
+    "area": "pulse",
+    "anterior": 22.24,
+    "atual": 22.09,
+    "delta_1m": -0.15,
+    "delta_3m": 0.11,
+    "relevancia_z": 0.27,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "p.p.",
+    "fonte": "BCB/SGS",
+    "serie": "20783",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   },
+   {
+    "key": "comprometimento",
+    "indicador": "Comprometimento de renda",
+    "area": "pulse",
+    "anterior": 28.24,
+    "atual": 28.19,
+    "delta_1m": -0.05,
+    "delta_3m": -0.07,
+    "relevancia_z": 0.15,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "29034",
+    "ref_anterior": "2026-03-01",
+    "ref_atual": "2026-04-01"
+   },
+   {
+    "key": "taxa_total",
+    "indicador": "Taxa média de juros",
+    "area": "pulse",
+    "anterior": 33.51,
+    "atual": 33.42,
+    "delta_1m": -0.09,
+    "delta_3m": 0.64,
+    "relevancia_z": 0.14,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "% a.a.",
+    "fonte": "BCB/SGS",
+    "serie": "20714",
+    "ref_anterior": "2026-04-01",
+    "ref_atual": "2026-05-01"
+   }
+  ]
+ },
+ "ibcc_posicao": {
+  "atual": 93.1,
+  "ref": "2026-04-01",
+  "percentil_historico": 5.1,
+  "m1": 95.82,
+  "m3": 94.05,
+  "m12": 96.59,
+  "delta_1m": -2.72,
+  "delta_3m": -0.95,
+  "delta_12m": -3.49
+ },
+ "projecoes_resumo": {
+  "inad_total": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-06-01",
+     "p50": 4.7736,
+     "p10": 4.6244,
+     "p90": 4.9563
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-08-01",
+     "p50": 4.8132,
+     "p10": 4.61,
+     "p90": 5.0948
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-11-01",
+     "p50": 4.8603,
+     "p10": 4.559,
+     "p90": 5.3988
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-02-01",
+     "p50": 4.9802,
+     "p10": 4.4651,
+     "p90": 5.6362
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-05-01",
+     "p50": 5.0535,
+     "p10": 4.4527,
+     "p90": 5.851
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.336,
+      "drift": 0.336,
+      "ar1_diferencas": 0.329
+     },
+     "mae_ensemble_backtest": 0.0887,
+     "mae_naive_backtest": 0.088,
+     "ganho_vs_naive_pct": -0.8,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.33,
+      "drift": 0.333,
+      "ar1_diferencas": 0.337
+     },
+     "mae_ensemble_backtest": 0.1676,
+     "mae_naive_backtest": 0.1694,
+     "ganho_vs_naive_pct": 1.1,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.333,
+      "ar1_diferencas": 0.334
+     },
+     "mae_ensemble_backtest": 0.3076,
+     "mae_naive_backtest": 0.3084,
+     "ganho_vs_naive_pct": 0.2,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.257,
+      "drift": 0.256,
+      "media_movel_6m": 0.231,
+      "ar1_diferencas": 0.256
+     },
+     "mae_ensemble_backtest": 0.4502,
+     "mae_naive_backtest": 0.4379,
+     "ganho_vs_naive_pct": -2.8,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.203,
+      "sazonal_ingenuo": 0.203,
+      "drift": 0.199,
+      "media_movel_6m": 0.196,
+      "ar1_diferencas": 0.199
+     },
+     "mae_ensemble_backtest": 0.5636,
+     "mae_naive_backtest": 0.5556,
+     "ganho_vs_naive_pct": -1.4,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-05-01",
+    "v": 4.74
+   }
+  },
+  "concessoes_total": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-06-01",
+     "p50": 707831.8463,
+     "p10": 646385.6515,
+     "p90": 757827.4088
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-08-01",
+     "p50": 722671.9574,
+     "p10": 648871.8856,
+     "p90": 765257.7049
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-11-01",
+     "p50": 731629.9953,
+     "p10": 660070.6499,
+     "p90": 795716.5319
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-02-01",
+     "p50": 739320.0091,
+     "p10": 692238.3241,
+     "p90": 816575.4656
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-05-01",
+     "p50": 766417.0331,
+     "p10": 710964.8762,
+     "p90": 818012.3136
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.196,
+      "drift": 0.196,
+      "media_movel_6m": 0.197,
+      "ar1_diferencas": 0.196,
+      "holt": 0.216
+     },
+     "mae_ensemble_backtest": 37144.0326,
+     "mae_naive_backtest": 37990.4857,
+     "ganho_vs_naive_pct": 2.2,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.192,
+      "drift": 0.2,
+      "media_movel_6m": 0.189,
+      "ar1_diferencas": 0.215,
+      "holt": 0.204
+     },
+     "mae_ensemble_backtest": 39717.5016,
+     "mae_naive_backtest": 41423.3824,
+     "ganho_vs_naive_pct": 4.1,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.192,
+      "drift": 0.209,
+      "media_movel_6m": 0.18,
+      "ar1_diferencas": 0.224,
+      "holt": 0.195
+     },
+     "mae_ensemble_backtest": 45663.1488,
+     "mae_naive_backtest": 47562.8065,
+     "ganho_vs_naive_pct": 4.0,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.207,
+      "drift": 0.267,
+      "ar1_diferencas": 0.286,
+      "holt": 0.24
+     },
+     "mae_ensemble_backtest": 43148.9546,
+     "mae_naive_backtest": 52101.2143,
+     "ganho_vs_naive_pct": 17.2,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.151,
+      "sazonal_ingenuo": 0.151,
+      "drift": 0.259,
+      "ar1_diferencas": 0.243,
+      "holt": 0.196
+     },
+     "mae_ensemble_backtest": 49837.4885,
+     "mae_naive_backtest": 66129.32,
+     "ganho_vs_naive_pct": 24.6,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-05-01",
+    "v": 694151.0
+   }
+  },
+  "spread_total": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-06-01",
+     "p50": 22.0861,
+     "p10": 21.7269,
+     "p90": 22.6716
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-08-01",
+     "p50": 22.0668,
+     "p10": 21.3032,
+     "p90": 23.2106
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-11-01",
+     "p50": 22.3443,
+     "p10": 20.7682,
+     "p90": 24.1007
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-02-01",
+     "p50": 23.0908,
+     "p10": 20.1532,
+     "p90": 24.4919
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-05-01",
+     "p50": 23.5353,
+     "p10": 19.6514,
+     "p90": 25.0731
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.334,
+      "drift": 0.333,
+      "ar1_diferencas": 0.333
+     },
+     "mae_ensemble_backtest": 0.3153,
+     "mae_naive_backtest": 0.3143,
+     "ganho_vs_naive_pct": -0.3,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.329,
+      "drift": 0.329,
+      "ar1_diferencas": 0.342
+     },
+     "mae_ensemble_backtest": 0.6189,
+     "mae_naive_backtest": 0.6271,
+     "ganho_vs_naive_pct": 1.3,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.332,
+      "drift": 0.331,
+      "ar1_diferencas": 0.337
+     },
+     "mae_ensemble_backtest": 1.1524,
+     "mae_naive_backtest": 1.1571,
+     "ganho_vs_naive_pct": 0.4,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.259,
+      "drift": 0.256,
+      "media_movel_6m": 0.227,
+      "ar1_diferencas": 0.258
+     },
+     "mae_ensemble_backtest": 1.688,
+     "mae_naive_backtest": 1.6296,
+     "ganho_vs_naive_pct": -3.6,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.204,
+      "sazonal_ingenuo": 0.204,
+      "drift": 0.201,
+      "media_movel_6m": 0.191,
+      "ar1_diferencas": 0.201
+     },
+     "mae_ensemble_backtest": 2.0366,
+     "mae_naive_backtest": 2.0008,
+     "ganho_vs_naive_pct": -1.8,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-05-01",
+    "v": 22.09
+   }
+  },
+  "rj": {
+   "demo": false,
+   "selo": "PREVISÃO",
+   "previsao": {
+    "ok": true,
+    "tipo": "PREVISÃO",
+    "pontos": [
+     {
+      "h": 1,
+      "ref_date": "2026-06-01",
+      "p50": 96.4303,
+      "p10": 60.15,
+      "p90": 127.0713
+     },
+     {
+      "h": 3,
+      "ref_date": "2026-08-01",
+      "p50": 98.28,
+      "p10": 57.186,
+      "p90": 127.3704
+     },
+     {
+      "h": 6,
+      "ref_date": "2026-11-01",
+      "p50": 107.8883,
+      "p10": 72.9362,
+      "p90": 141.1109
+     },
+     {
+      "h": 9,
+      "ref_date": "2027-02-01",
+      "p50": 87.6937,
+      "p10": 66.7667,
+      "p90": 122.5812
+     },
+     {
+      "h": 12,
+      "ref_date": "2027-05-01",
+      "p50": 93.9252,
+      "p10": 76.7085,
+      "p90": 121.9468
+     }
+    ],
+    "diagnostico": {
+     "1": {
+      "pesos": {
+       "ultimo_valor": 0.162,
+       "sazonal_ingenuo": 0.165,
+       "drift": 0.161,
+       "media_movel_6m": 0.172,
+       "ar1_diferencas": 0.176,
+       "holt": 0.165
+      },
+      "mae_ensemble_backtest": 21.4088,
+      "mae_naive_backtest": 22.0286,
+      "ganho_vs_naive_pct": 2.8,
+      "n_backtests": 35
+     },
+     "3": {
+      "pesos": {
+       "ultimo_valor": 0.153,
+       "sazonal_ingenuo": 0.217,
+       "drift": 0.15,
+       "media_movel_6m": 0.18,
+       "ar1_diferencas": 0.158,
+       "holt": 0.141
+      },
+      "mae_ensemble_backtest": 23.5076,
+      "mae_naive_backtest": 25.5294,
+      "ganho_vs_naive_pct": 7.9,
+      "n_backtests": 34
+     },
+     "6": {
+      "pesos": {
+       "ultimo_valor": 0.17,
+       "sazonal_ingenuo": 0.289,
+       "drift": 0.159,
+       "media_movel_6m": 0.213,
+       "ar1_diferencas": 0.168
+      },
+      "mae_ensemble_backtest": 23.6129,
+      "mae_naive_backtest": 27.7419,
+      "ganho_vs_naive_pct": 14.9,
+      "n_backtests": 31
+     },
+     "9": {
+      "pesos": {
+       "ultimo_valor": 0.166,
+       "sazonal_ingenuo": 0.247,
+       "drift": 0.15,
+       "media_movel_6m": 0.27,
+       "ar1_diferencas": 0.167
+      },
+      "mae_ensemble_backtest": 19.745,
+      "mae_naive_backtest": 23.75,
+      "ganho_vs_naive_pct": 16.9,
+      "n_backtests": 28
+     },
+     "12": {
+      "pesos": {
+       "ultimo_valor": 0.243,
+       "sazonal_ingenuo": 0.243,
+       "media_movel_6m": 0.274,
+       "ar1_diferencas": 0.24
+      },
+      "mae_ensemble_backtest": 15.7329,
+      "mae_naive_backtest": 16.2,
+      "ganho_vs_naive_pct": 2.9,
+      "n_backtests": 25
+     }
+    },
+    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos. Quantis truncados em zero (série de contagem)."
+   },
+   "cobertura": "TJSP, TJRJ, TJMG, TJRS, TJPR, TJSC, TJBA, TJGO",
+   "nota": "Ajuizamentos de RJ (CNJ/DataJud) — agregado dos tribunais cobertos."
+  }
+ }
+}

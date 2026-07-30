@@ -1,0 +1,83 @@
+{
+ "cod": "03575699",
+ "nome": "MEDCRED COOPERATIVA DE CRÉDITO",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 37292945.41
+  },
+  "patrimonio_liquido": {
+   "202503": 2364391.84
+  },
+  "carteira_credito": {
+   "202503": 24333900.46
+  },
+  "carteira_pf": {
+   "202503": 17679302.87
+  },
+  "carteira_pj": {
+   "202503": 9838079.04
+  },
+  "captacoes": {
+   "202503": 34108195.06
+  },
+  "lucro_liquido": {
+   "202503": 169154.03
+  },
+  "indice_basileia": {
+   "202503": 12.6919307207203
+  },
+  "patrimonio_referencia": {
+   "202503": 3240786.01
+  },
+  "rwa": {
+   "202503": 23885828.43
+  },
+  "provisao_credito": {
+   "202503": 3080239.58
+  },
+  "roe_periodo": {
+   "202503": 7.154229985838557
+  },
+  "npl_pct": {
+   "202503": 7.099310706190652
+  },
+  "ativos_problematicos_pct": {
+   "202503": 10.696053060667063
+  },
+  "cobertura_pct": {
+   "202503": 157.67440540026826
+  },
+  "cart_ativo_pct": {
+   "202503": 65.25067996767811
+  },
+  "atraso15_consignado_pf": {
+   "202503": 11.352270012309468
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 1.2527054708760976
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 3.5309314745213456
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 5.678307848006593
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": 69.48594868717872
+  },
+  "atraso15_investimento_pj": {
+   "202503": 6.606237719708477
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

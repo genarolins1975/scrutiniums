@@ -1,0 +1,149 @@
+{
+ "cod": "65697260",
+ "nome": "REPOM INSTITUIÇÃO DE PAGAMENTO HUSA S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 594496876.82,
+   "202506": 689506750.86,
+   "202509": 843333299.68,
+   "202512": 806193011.69,
+   "202603": 820057030.26
+  },
+  "patrimonio_liquido": {
+   "202503": 145382944.88,
+   "202506": 141857401.03,
+   "202509": 168369527.8,
+   "202512": 129081117.67,
+   "202603": 134626814.78
+  },
+  "carteira_credito": {
+   "202503": 210845363.29,
+   "202506": 229374711.76,
+   "202509": 318164207.4,
+   "202512": 218260626.98,
+   "202603": 339100871.86
+  },
+  "carteira_pj": {
+   "202509": 428470926.96,
+   "202512": 328724696.49,
+   "202603": 453053609.83
+  },
+  "captacoes": {
+   "202503": 77322112.45,
+   "202506": 66779083.41,
+   "202509": 77142455.25,
+   "202512": 92460152.74,
+   "202603": 98417446.25
+  },
+  "lucro_liquido": {
+   "202503": 1794794.09,
+   "202506": -710325.920000009,
+   "202509": 26512126.77,
+   "202512": 19653663.26,
+   "202603": 1727424.54
+  },
+  "indice_basileia": {
+   "202509": 16.0559615132323,
+   "202512": 10.9162920576508,
+   "202603": 8.51093785826053
+  },
+  "patrimonio_referencia": {
+   "202509": 176233553.69,
+   "202512": 129963301.29,
+   "202603": 111587272.75
+  },
+  "rwa": {
+   "202509": 759586965.2,
+   "202512": 760497508.58,
+   "202603": 716287566.36
+  },
+  "roe_periodo": {
+   "202503": 1.2345286384736769,
+   "202506": -0.500732365630884,
+   "202509": 15.746392542891005,
+   "202512": 15.22582358656455,
+   "202603": 1.283120708770289
+  },
+  "npl_pct": {
+   "202509": 3.778613075307078,
+   "202512": 6.685314034708838,
+   "202603": 5.057593777610095
+  },
+  "ativos_problematicos_pct": {
+   "202509": 4.6552295371634616,
+   "202512": 8.05434939410019,
+   "202603": 5.898835415973845
+  },
+  "cart_ativo_pct": {
+   "202503": 35.46618519138816,
+   "202506": 33.266492528740024,
+   "202509": 37.726982620124964,
+   "202512": 27.072999122439214,
+   "202603": 41.35088894396621
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "01152097",
+    "nome": "COOPERATIVA DE CRÉDITO CREDIMATA LTDA. - SICOOB CREDIMATA",
+    "sr": "S5",
+    "ativo_brl": 829339280.65
+   },
+   {
+    "cod": "01559914",
+    "nome": "SICOOB AC CREDI - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO LESTE E NORDESTE MINEIRO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 835231600.53
+   },
+   {
+    "cod": "53935029",
+    "nome": "COOPERATIVA DE CRÉDITO COOCRELIVRE",
+    "sr": "S4",
+    "ativo_brl": 836098897.99
+   },
+   {
+    "cod": "01009908",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DE PARA DE MINAS LTDA - SICOOB ASCICRED",
+    "sr": "S5",
+    "ativo_brl": 799260415.04
+   },
+   {
+    "cod": "05940203",
+    "nome": "AGENCIA DE FOMENTO DO ESTADO DO RIO DE JANEIRO S.A.",
+    "sr": "S4",
+    "ativo_brl": 842197518.94
+   },
+   {
+    "cod": "71243034",
+    "nome": "COOPERATIVA DE CRÉDITO CREDIJEQUITINHONHA LTDA. - SICOOB CREDIJEQUITINHONHA",
+    "sr": "S5",
+    "ativo_brl": 843839224.68
+   },
+   {
+    "cod": "26960328",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO TOCANTINS LTDA",
+    "sr": "S5",
+    "ativo_brl": 845130182.88
+   },
+   {
+    "cod": "34991938",
+    "nome": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 789243371.65
+   }
+  ]
+ }
+}

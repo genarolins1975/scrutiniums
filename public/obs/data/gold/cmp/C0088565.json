@@ -1,0 +1,32 @@
+{
+ "cod": "C0088565",
+ "nome": "APUSDIGITAL IP - PRUDENCIAL",
+ "sr": null,
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "indice_basileia": {
+   "202509": 361.793529811155,
+   "202512": 351.640983903309,
+   "202603": 268.61826652106504
+  },
+  "patrimonio_referencia": {
+   "202509": 4910153.14,
+   "202512": 4944232.16,
+   "202603": 4987509.52
+  },
+  "rwa": {
+   "202509": 1355889.84,
+   "202512": 1405220.35,
+   "202603": 1855937.61
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

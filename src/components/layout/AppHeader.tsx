@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
 
 const NAV = [
+  { href: "/observatorio", label: "Observatório" },
   { href: "/app", label: "Visão geral" },
   { href: "/app/atividade", label: "Atividade setorial" },
   { href: "/app/risco", label: "Risco de crédito" },

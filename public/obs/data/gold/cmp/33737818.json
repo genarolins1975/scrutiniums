@@ -1,0 +1,161 @@
+{
+ "cod": "33737818",
+ "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DE MATO GROSSO DO SUL, GOIÁS, DISTRITO FEDERAL E TOCANTINS - CENTRAL SICREDI BRASIL CENTRAL",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 2223512219.19,
+   "202506": 2169108785.29,
+   "202509": 2366413967.95,
+   "202512": 2258034762.53,
+   "202603": 1066055240.5
+  },
+  "patrimonio_liquido": {
+   "202503": 524275772.68,
+   "202506": 554532506.17,
+   "202509": 582579444.48,
+   "202512": 584128427.43,
+   "202603": 585021864.57
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 210.419999994747,
+   "202506": 0.0,
+   "202509": -1.30385160446167e-08,
+   "202512": 3539980.74999999,
+   "202603": 2251181.90999999
+  },
+  "indice_basileia": {
+   "202503": 42.4493328119673,
+   "202506": 38.6945428030418,
+   "202509": 34.1240394548519,
+   "202512": 34.9273064555112,
+   "202603": 49.5824556256095
+  },
+  "indice_capital_principal": {
+   "202503": 42.4493328119673,
+   "202506": 38.6945428030418,
+   "202509": 34.1240394548519,
+   "202512": 34.9273064555112,
+   "202603": 49.5824556256095
+  },
+  "indice_capital_nivel1": {
+   "202503": 42.4493328119673,
+   "202506": 38.6945428030418,
+   "202509": 34.1240394548519,
+   "202512": 34.9273064555112,
+   "202603": 49.5824556256095
+  },
+  "patrimonio_referencia": {
+   "202503": 132826587.55,
+   "202506": 130243321.08,
+   "202509": 132171738.88,
+   "202512": 132885093.26,
+   "202603": 135846059.19
+  },
+  "rwa": {
+   "202503": 223187016.5,
+   "202506": 246874345.54,
+   "202509": 301625894.58,
+   "202512": 294787953.72,
+   "202603": 113018371.97
+  },
+  "razao_alavancagem": {
+   "202503": 7.467774979252289,
+   "202506": 7.850873061143219,
+   "202509": 7.1278093527384705,
+   "202512": 7.598700553976689,
+   "202603": 24.4584214650804
+  },
+  "roe_periodo": {
+   "202503": 4.013536595809476e-05,
+   "202506": 0.0,
+   "202509": -2.2380666136023123e-15,
+   "202512": 0.6060278157621785,
+   "202603": 0.38480303837099195
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "81292278",
+    "nome": "COOPERATIVA DE CRÉDITO ORIGINAL - SICOOB ORIGINAL",
+    "sr": "S5",
+    "ativo_brl": 1065562190.56
+   },
+   {
+    "cod": "05979692",
+    "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DOS CREAS E DEMAIS ÁREAS TECNOLÓGICAS - CREDCREA",
+    "sr": "S5",
+    "ativo_brl": 1062733120.89
+   },
+   {
+    "cod": "70241658",
+    "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI RECIFE",
+    "sr": "S4",
+    "ativo_brl": 1072371088.56
+   },
+   {
+    "cod": "06126780",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA GRANDES LAGOS PR/SP - CRESOL GRANDES LAGOS PR/SP",
+    "sr": "S5",
+    "ativo_brl": 1073178502.91
+   },
+   {
+    "cod": "02173447",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO CENTRO NORDESTE MINEIRO LTDA - SICOOB CREDICENM",
+    "sr": "S5",
+    "ativo_brl": 1054576848.47
+   },
+   {
+    "cod": "04484490",
+    "nome": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO DA ALTA NOROESTE DE SÃO PAULO - SICREDI ALTA NOROESTE SP",
+    "sr": "S4",
+    "ativo_brl": 1079428506.21
+   },
+   {
+    "cod": "05277312",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA HORIZONTE - CRESOL HORIZONTE",
+    "sr": "S5",
+    "ativo_brl": 1051735433.9
+   },
+   {
+    "cod": "69346856",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS PROFISSIONAIS DA SAÚDE DA REGIÃO DA ALTA MOGIANA - SICOOB CREDIMOGIANA",
+    "sr": "S5",
+    "ativo_brl": 1081304187.77
+   }
+  ]
+ }
+}

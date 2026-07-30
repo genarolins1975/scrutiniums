@@ -1,0 +1,45 @@
+{
+ "cod": "02732968",
+ "nome": "FORTBRASIL INSTITUIÇÃO DE PAGAMENTO S/A",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 979766174.82,
+   "202506": 954833841.36
+  },
+  "patrimonio_liquido": {
+   "202503": 61219915.08,
+   "202506": 69271669.42
+  },
+  "carteira_credito": {
+   "202503": 814545616.0,
+   "202506": 795360959.25
+  },
+  "captacoes": {
+   "202503": 13063966.54,
+   "202506": 10583823.93
+  },
+  "lucro_liquido": {
+   "202503": -848913.169999978,
+   "202506": 12106146.68
+  },
+  "roe_periodo": {
+   "202503": -1.386661789534743,
+   "202506": 17.47633163941727
+  },
+  "cart_ativo_pct": {
+   "202503": 83.1367357777631,
+   "202506": 83.2983630028385
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

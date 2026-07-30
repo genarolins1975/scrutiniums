@@ -1,0 +1,152 @@
+{
+ "cod": "44728700",
+ "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 9034118.23,
+   "202506": 12642770.26,
+   "202509": 17213039.14,
+   "202512": 17802353.2,
+   "202603": 15942714.66
+  },
+  "patrimonio_liquido": {
+   "202503": 4258565.69,
+   "202506": 7018175.36,
+   "202509": 9808185.6,
+   "202512": 10239488.22,
+   "202603": 10689216.65
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 1590043.14,
+   "202603": 591330.23
+  },
+  "carteira_pj": {
+   "202512": 1637247.06,
+   "202603": 603292.79
+  },
+  "captacoes": {
+   "202503": 2519592.2,
+   "202506": 4242367.26,
+   "202509": 6114501.57,
+   "202512": 5329403.83,
+   "202603": 3493585.83
+  },
+  "lucro_liquido": {
+   "202503": 97824.5200000001,
+   "202506": 341702.23,
+   "202509": 305742.2,
+   "202512": 737044.82,
+   "202603": 449728.43
+  },
+  "indice_basileia": {
+   "202503": 161.13611438348,
+   "202506": 82.3390625980597,
+   "202509": 161.720549286877,
+   "202512": 157.491962292778,
+   "202603": 176.452907170023
+  },
+  "patrimonio_referencia": {
+   "202503": 771408.0,
+   "202506": 1115072.91,
+   "202509": 6520602.32,
+   "202512": 7051705.73,
+   "202603": 7601224.36
+  },
+  "rwa": {
+   "202503": 53877.01,
+   "202506": 71323.85,
+   "202509": 2433852.4,
+   "202512": 1939560.91,
+   "202603": 898756.52
+  },
+  "provisao_credito": {
+   "202512": 31107.69,
+   "202603": 11462.56
+  },
+  "roe_periodo": {
+   "202503": 2.29712365902239,
+   "202506": 4.868818638353316,
+   "202509": 3.1172146660846227,
+   "202512": 7.198063068820054,
+   "202603": 4.207309522536433
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 8.931645845561585,
+   "202603": 3.709093730966894
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "04062902",
+    "nome": "OZ CORRETORA DE CÂMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 16107405.13
+   },
+   {
+    "cod": "00714671",
+    "nome": "EWALLY INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 15748009.35
+   },
+   {
+    "cod": "45860531",
+    "nome": "IDEA MAKER INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 15668205.42
+   },
+   {
+    "cod": "56392166",
+    "nome": "PLUG FINANCEIRA S.A. - SOCIEDADE DE CREDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 16254005.71
+   },
+   {
+    "cod": "42066258",
+    "nome": "RJI CORRETORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 16259672.6
+   },
+   {
+    "cod": "51604356",
+    "nome": "GALLERIA - SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": "S5",
+    "ativo_brl": 16284142.46
+   },
+   {
+    "cod": "39321657",
+    "nome": "FACEBOOK INSTITUIÇÃO DE PAGAMENTO DO BRASIL LTDA.",
+    "sr": null,
+    "ativo_brl": 16317602.77
+   },
+   {
+    "cod": "29341260",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS SERVIDORES DA COMLURB LTDA",
+    "sr": "S5",
+    "ativo_brl": 16421176.97
+   }
+  ]
+ }
+}

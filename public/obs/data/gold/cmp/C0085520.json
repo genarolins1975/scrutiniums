@@ -1,0 +1,132 @@
+{
+ "cod": "C0085520",
+ "nome": "OXY CH - PRUDENCIAL",
+ "sr": "S4",
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202512": 398935575.87,
+   "202603": 429319947.2
+  },
+  "patrimonio_liquido": {
+   "202512": 48833700.17,
+   "202603": 50841327.12
+  },
+  "carteira_credito": {
+   "202512": 295555840.23,
+   "202603": 316942338.27
+  },
+  "carteira_pf": {
+   "202512": 259085300.38,
+   "202603": 272633503.52
+  },
+  "carteira_pj": {
+   "202512": 45394598.44,
+   "202603": 54129882.09
+  },
+  "captacoes": {
+   "202512": 246166933.04,
+   "202603": 265211272.5
+  },
+  "lucro_liquido": {
+   "202512": 6334440.98,
+   "202603": 2007626.95000001
+  },
+  "indice_basileia": {
+   "202512": 23.2342887715447,
+   "202603": 21.4164540649531
+  },
+  "indice_capital_principal": {
+   "202512": 23.2342887715447,
+   "202603": 21.4164540649531
+  },
+  "indice_capital_nivel1": {
+   "202512": 23.2342887715447,
+   "202603": 21.4164540649531
+  },
+  "patrimonio_referencia": {
+   "202512": 47043400.72,
+   "202603": 49217070.19
+  },
+  "rwa": {
+   "202512": 152025345.95,
+   "202603": 172111475.64
+  },
+  "provisao_credito": {
+   "202512": 7697504.05,
+   "202603": 8397496.57
+  },
+  "roe_periodo": {
+   "202512": 12.971454053140615,
+   "202603": 3.94880909631143
+  },
+  "npl_pct": {
+   "202512": 1.8246109321273452,
+   "202603": 1.2452061519696407
+  },
+  "ativos_problematicos_pct": {
+   "202512": 7.207471526050871,
+   "202603": 7.713473972289707
+  },
+  "cobertura_pct": {
+   "202512": 138.554624869765,
+   "202603": 206.38360314671337
+  },
+  "cart_ativo_pct": {
+   "202512": 74.08610765922565,
+   "202603": 73.82427495789089
+  },
+  "atraso15_imobiliario_pf": {
+   "202512": 0.0,
+   "202603": 0.45963884589874093
+  },
+  "atraso15_investimento_pj": {
+   "202512": 0.12600969509539175,
+   "202603": 0.4350024656960964
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "C0052041",
+    "nome": "INTL FCSTONE",
+    "sr": "S4",
+    "ativo_brl": 391864252.24
+   },
+   {
+    "cod": "C0051341",
+    "nome": "PLANNER",
+    "sr": "S4",
+    "ativo_brl": 389431589.2
+   },
+   {
+    "cod": "C0051767",
+    "nome": "WESTERN UNION",
+    "sr": "S4",
+    "ativo_brl": 256456265.6
+   },
+   {
+    "cod": "C0052560",
+    "nome": "BRL TRUST",
+    "sr": "S4",
+    "ativo_brl": 812009707.42
+   },
+   {
+    "cod": "C0052027",
+    "nome": "TULLETT PREBON BRASIL",
+    "sr": "S4",
+    "ativo_brl": 204813051.12
+   }
+  ]
+ }
+}

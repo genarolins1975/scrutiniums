@@ -1,0 +1,24 @@
+{
+ "cod": "02206577",
+ "nome": "LUIZACRED S.A. SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+ "sr": "S1",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 2017556684.81,
+   "202506": 2048232867.38,
+   "202509": 1931182550.52,
+   "202512": 1884266487.78,
+   "202603": 1737272338.06
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

@@ -1,0 +1,311 @@
+{
+ "cod_inst": "15011719",
+ "caso": null,
+ "cabecalho": {
+  "nome_comercial": "Bitz Instituicao De Pagamento S.A.",
+  "razao_social_fonte_bcb": "BITZ INSTITUICAO DE PAGAMENTO S.A.",
+  "codigo_bcb": "15011719",
+  "tcb": "N4",
+  "sede": "Osasco/SP",
+  "segmento": "S1",
+  "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+  "n_pares": 11,
+  "conglomerado_prudencial": "C0080075",
+  "capital": "não classificado",
+  "modelo": null,
+  "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
+  "data_base": "2026-T1",
+  "atualizado_em": "2026-07-29T01:57:31+00:00",
+  "aviso_pares": null,
+  "cnpj": "não disponível nas fontes integradas",
+  "participante_open_finance": null
+ },
+ "resumo_executivo": {
+  "avaliacao_geral": {
+   "texto": "Avaliação limitada: capital regulatório não reportado neste corte.",
+   "base": "BCB IF.data (Informações de Capital) + medianas do grupo S1"
+  },
+  "pontos_fortes": [],
+  "pontos_atencao": [
+   {
+    "tipo": "warn",
+    "texto": "ROE do período de -0.1% — resultado negativo no acumulado.",
+    "base": "calculado sobre IF.data"
+   }
+  ],
+  "mudancas_recentes": [],
+  "limitacoes_informacionais": [
+   "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "LCR / NSFR e composição de funding",
+   "Composição de receita, margem e eficiência",
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+  ]
+ },
+ "grupo_pares_composicao": {
+  "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
+  "quantidade": 11,
+  "maiores_membros": [
+   {
+    "cod": "C0010069",
+    "nome": "ITAU"
+   },
+   {
+    "cod": "C0049906",
+    "nome": "BB"
+   },
+   {
+    "cod": "C0051626",
+    "nome": "CAIXA ECONÔMICA FEDERAL"
+   },
+   {
+    "cod": "C0010045",
+    "nome": "BRADESCO"
+   },
+   {
+    "cod": "C0030379",
+    "nome": "SANTANDER"
+   },
+   {
+    "cod": "C0049944",
+    "nome": "BTG PACTUAL"
+   },
+   {
+    "cod": "01425787",
+    "nome": "REDECARD INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "10440482",
+    "nome": "GETNET ADQUIRÊNCIA E SERVIÇOS PARA MEIOS"
+   },
+   {
+    "cod": "15011719",
+    "nome": "BITZ INSTITUICAO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "44815065",
+    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA"
+   },
+   {
+    "cod": "40473435",
+    "nome": "REPASSES FINANCEIROS E SOLUCOES TECNOLOG"
+   }
+  ],
+  "quartis_basileia": null,
+  "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
+ },
+ "score_meta": null,
+ "kpis": [
+  {
+   "label": "Ativos totais",
+   "v": 760908581.89,
+   "unit": "R$",
+   "d_tri": 0.3,
+   "d_tri_tipo": "%",
+   "hist": [
+    833786268.78,
+    728070894.74,
+    744243623.63,
+    758753578.48,
+    760908581.89
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Patrimônio líquido",
+   "v": 744964944.63,
+   "unit": "R$",
+   "d_tri": -0.1,
+   "d_tri_tipo": "%",
+   "hist": [
+    819986032.33,
+    714187838.26,
+    730183478.29,
+    746050950.28,
+    744964944.63
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Carteira de crédito",
+   "v": 0.0,
+   "unit": "R$",
+   "d_tri": 0.0,
+   "d_tri_tipo": "%",
+   "hist": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Lucro líquido (acum. ano IF.data)",
+   "v": -1086005.65,
+   "unit": "R$",
+   "d_tri": null,
+   "d_tri_tipo": "%",
+   "hist": [
+    -30264363.92,
+    -136062557.99,
+    15995640.03,
+    31863112.02,
+    -1086005.65
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "ROE do período (padronizado)",
+   "v": -0.15,
+   "unit": "%",
+   "d_tri": null,
+   "d_tri_tipo": "p.p.",
+   "hist": [],
+   "fonte": "calculado"
+  }
+ ],
+ "destaques": [
+  {
+   "tipo": "warn",
+   "texto": "ROE do período de -0.1% — resultado negativo no acumulado.",
+   "base": "calculado sobre IF.data"
+  }
+ ],
+ "capital_tabela": [
+  {
+   "indicador": "Ativo ÷ PL (alavancagem contábil)",
+   "valor": 1.02,
+   "unit": "×",
+   "d_tri": null,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 10.98,
+   "percentil": 0.0
+  },
+  {
+   "indicador": "ROE do período",
+   "valor": -0.15,
+   "unit": "%",
+   "d_tri": null,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 2.84,
+   "percentil": 10.0
+  }
+ ],
+ "carteira": {
+  "donut_cliente": null,
+  "perfil": null,
+  "total_pf": null,
+  "total_pj": null
+ },
+ "evolucao_base100": {
+  "Ativos": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 87.3
+   },
+   {
+    "p": "2025-T3",
+    "v": 89.3
+   },
+   {
+    "p": "2025-T4",
+    "v": 91.0
+   },
+   {
+    "p": "2026-T1",
+    "v": 91.3
+   }
+  ],
+  "PL": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 87.1
+   },
+   {
+    "p": "2025-T3",
+    "v": 89.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 91.0
+   },
+   {
+    "p": "2026-T1",
+    "v": 90.9
+   }
+  ]
+ },
+ "comparacao_grupo": {
+  "roe": {
+   "valores": [
+    2.07,
+    5.82,
+    -0.15,
+    -48.85,
+    24.06,
+    2.84,
+    5.78,
+    3.98,
+    1.68,
+    6.11,
+    2.69
+   ],
+   "meu": -0.15,
+   "mediana": 2.84
+  },
+  "alav": {
+   "valores": [
+    4.12,
+    21.01,
+    1.02,
+    2.61,
+    6.59,
+    10.98,
+    13.58,
+    13.26,
+    13.88,
+    10.85,
+    20.38
+   ],
+   "meu": 1.02,
+   "mediana": 10.98
+  }
+ },
+ "score_ref": {
+  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+ },
+ "atraso_produtos": null,
+ "openfinance": null,
+ "reclamacoes": [],
+ "rj_citacoes": {
+  "casos": 0,
+  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
+ },
+ "indisponiveis": [
+  {
+   "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "motivo": "Não exposta por instituição no corte público do IF.data."
+  },
+  {
+   "indicador": "LCR / NSFR e composição de funding",
+   "motivo": "Exigem Pilar 3 por instituição — não integrado."
+  },
+  {
+   "indicador": "Composição de receita, margem e eficiência",
+   "motivo": "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."
+  },
+  {
+   "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  }
+ ]
+}

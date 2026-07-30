@@ -1,0 +1,173 @@
+{
+ "cod": "45283173",
+ "nome": "BBVA BRASIL BANCO DE INVESTIMENTO S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 616409014.71,
+   "202506": 1237154026.16,
+   "202509": 1563619358.1,
+   "202512": 1780536621.74,
+   "202603": 2651923239.9
+  },
+  "patrimonio_liquido": {
+   "202503": 601142351.12,
+   "202506": 1094024705.58,
+   "202509": 1091349485.65,
+   "202512": 1107888493.98,
+   "202603": 1101837035.39
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 107689652.52,
+   "202509": 420651675.62,
+   "202512": 542951455.49,
+   "202603": 914556671.35
+  },
+  "carteira_pj": {
+   "202506": 109775384.83,
+   "202509": 428798853.85,
+   "202512": 553467334.85,
+   "202603": 932269797.5
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 118587671.12,
+   "202509": 443382925.39,
+   "202512": 567946339.54,
+   "202603": 1361993554.48
+  },
+  "lucro_liquido": {
+   "202503": -16894296.1,
+   "202506": -14228436.5,
+   "202509": -2711704.70000002,
+   "202512": 13826479.2,
+   "202603": -6094905.20000006
+  },
+  "indice_basileia": {
+   "202503": 457.283302342678,
+   "202506": 489.19604100707994,
+   "202509": 242.206511617406,
+   "202512": 176.999304483602,
+   "202603": 84.594750845649
+  },
+  "indice_capital_principal": {
+   "202503": 457.283302342678,
+   "202506": 489.19604100707994,
+   "202509": 242.206511617406,
+   "202512": 176.999304483602,
+   "202603": 84.594750845649
+  },
+  "indice_capital_nivel1": {
+   "202503": 457.283302342678,
+   "202506": 489.19604100707994,
+   "202509": 242.206511617406,
+   "202512": 176.999304483602,
+   "202603": 84.594750845649
+  },
+  "patrimonio_referencia": {
+   "202503": 601142351.12,
+   "202506": 1076858467.62,
+   "202509": 1075024702.42,
+   "202512": 1062915467.02,
+   "202603": 1045946278.08
+  },
+  "rwa": {
+   "202503": 79371742.72,
+   "202506": 154494762.92,
+   "202509": 364325093.99,
+   "202512": 478095452.67,
+   "202603": 1062886706.24
+  },
+  "razao_alavancagem": {
+   "202503": 97.5232900191795,
+   "202506": 88.2679710432859,
+   "202509": 69.47770126514669,
+   "202512": 60.6570972165392,
+   "202603": 35.655862058412005
+  },
+  "roe_periodo": {
+   "202503": -2.810365310067392,
+   "202506": -1.3005589752616014,
+   "202509": -0.24847262363301964,
+   "202512": 1.2480027796235602,
+   "202603": -0.5531584984201172
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 8.704627737765014,
+   "202509": 26.90243462649032,
+   "202512": 30.49369773475424,
+   "202603": 34.486543863331676
+  },
+  "atraso15_comercio_exterior_pj": {
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "04814563",
+    "nome": "BANCO AFINZ S.A. - BANCO MÚLTIPLO",
+    "sr": "S4",
+    "ativo_brl": 2663148707.72
+   },
+   {
+    "cod": "10878448",
+    "nome": "PAYPAL DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 2671580160.86
+   },
+   {
+    "cod": "87067757",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CENTRO SERRA - SICREDI CENTRO SERRA RS",
+    "sr": "S4",
+    "ativo_brl": 2600781602.62
+   },
+   {
+    "cod": "78858107",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS AURIVERDE -  SICOOB - CREDIAL SC/RS",
+    "sr": "S5",
+    "ativo_brl": 2717001323.89
+   },
+   {
+    "cod": "16668076",
+    "nome": "SUMUP INSTITUICAO DE PAGAMENTO BRASIL LTDA",
+    "sr": "S4",
+    "ativo_brl": 2814576087.81
+   },
+   {
+    "cod": "01604998",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO SUL DE MINAS LTDA - SICOOB CREDIVASS",
+    "sr": "S5",
+    "ativo_brl": 2874812787.62
+   },
+   {
+    "cod": "01736516",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL E OESTE MINEIRO LTDA. - SICOOB DIVICRED",
+    "sr": "S5",
+    "ativo_brl": 2435894504.71
+   },
+   {
+    "cod": "32474884",
+    "nome": "COOPERATIVA DE CRÉDITO SUL-LITORÂNEA DO ESPÍRITO SANTO",
+    "sr": "S5",
+    "ativo_brl": 2388804008.0
+   }
+  ]
+ }
+}

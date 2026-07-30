@@ -1,0 +1,24 @@
+{
+ "cod": "28195667",
+ "nome": "BANCO ABC BRASIL S.A.",
+ "sr": "S3",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 285219163.99,
+   "202506": 298671149.72,
+   "202509": 313047870.89,
+   "202512": 298758094.79,
+   "202603": 245691841.32
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

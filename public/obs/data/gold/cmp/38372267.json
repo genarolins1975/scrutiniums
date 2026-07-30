@@ -1,0 +1,204 @@
+{
+ "cod": "38372267",
+ "nome": "SHPP BRASIL INSTITUIÇÃO DE PAGAMENTO E SERVIÇOS DE PAGAMENTOS LTDA.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 3190767229.31,
+   "202506": 3695425482.1,
+   "202509": 3860024670.54,
+   "202512": 4458808255.59,
+   "202603": 4587603090.87
+  },
+  "patrimonio_liquido": {
+   "202503": 187815286.91,
+   "202506": 191086347.39,
+   "202509": 205226736.54,
+   "202512": 272446157.82,
+   "202603": 326669623.91
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "carteira_pf": {
+   "202503": 652.08,
+   "202506": 1284291.32,
+   "202509": 339883.72,
+   "202512": 176673.15,
+   "202603": 24694422.13
+  },
+  "carteira_pj": {
+   "202503": 4184.63,
+   "202506": 560230.09,
+   "202509": 2034237.02,
+   "202512": 1926177.99,
+   "202603": 1475810.01
+  },
+  "captacoes": {
+   "202503": 772173117.87,
+   "202506": 917115277.53,
+   "202509": 996577808.95,
+   "202512": 1449940577.11,
+   "202603": 1316430293.95
+  },
+  "lucro_liquido": {
+   "202503": -9240887.40000002,
+   "202506": -5787876.63999993,
+   "202509": 15086785.18,
+   "202512": 83709646.7199999,
+   "202603": 53199767.1899999
+  },
+  "indice_basileia": {
+   "202503": 14.0322838597159,
+   "202506": 15.146168232764001,
+   "202509": 14.6730874256728,
+   "202512": 19.4928348644707,
+   "202603": 18.7812604028131
+  },
+  "indice_capital_principal": {
+   "202503": 14.0322838597159,
+   "202506": 15.146168232764001,
+   "202509": 14.6730874256728,
+   "202512": 19.4928348644707,
+   "202603": 18.7812604028131
+  },
+  "indice_capital_nivel1": {
+   "202503": 14.0322838597159,
+   "202506": 15.146168232764001,
+   "202509": 14.6730874256728,
+   "202512": 19.4928348644707,
+   "202603": 18.7812604028131
+  },
+  "patrimonio_referencia": {
+   "202503": 189391100.48,
+   "202506": 207708027.9,
+   "202509": 222358637.6,
+   "202512": 316228463.42,
+   "202603": 380254062.57
+  },
+  "rwa": {
+   "202503": 1111833812.56,
+   "202506": 1133509520.47,
+   "202509": 1359521933.83,
+   "202512": 1466384255.3,
+   "202603": 1691729929.99
+  },
+  "provisao_credito": {
+   "202503": 372.41,
+   "202506": 162414.15,
+   "202509": 468557.21,
+   "202512": 487253.92,
+   "202603": 2626396.32
+  },
+  "roe_periodo": {
+   "202503": -4.92019981548584,
+   "202506": -3.028932584172062,
+   "202509": 7.351276658370236,
+   "202512": 30.725207281251244,
+   "202603": 16.285495588245098
+  },
+  "npl_pct": {
+   "202512": 1.0797659219948397,
+   "202603": 0.32047499445681266
+  },
+  "ativos_problematicos_pct": {
+   "202509": 3.095861501972305,
+   "202512": 2.7122861392842097,
+   "202603": 0.9389064976020499
+  },
+  "cobertura_pct": {
+   "202512": 2145.938120847164,
+   "202603": 3131.5441393458013
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 0.0,
+   "202506": 0.02970622640468022,
+   "202509": 16.130695678643466,
+   "202512": 7.96737931032531,
+   "202603": 0.028718712115090906
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202506": 0.0,
+   "202509": 1.244909995788003,
+   "202512": 5.951705948005355,
+   "202603": 9.74271545969525
+  },
+  "atraso15_investimento_pj": {
+   "202503": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "55230916",
+    "nome": "INTESA SANPAOLO BRASIL S.A. - BANCO MÚLTIPLO",
+    "sr": "S4",
+    "ativo_brl": 4392935020.51
+   },
+   {
+    "cod": "03566655",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CELEIRO CENTRO OESTE - SICREDI CELEIRO CENTRO OESTE",
+    "sr": "S4",
+    "ativo_brl": 4844320655.97
+   },
+   {
+    "cod": "32983165",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO",
+    "sr": "S4",
+    "ativo_brl": 4320158748.13
+   },
+   {
+    "cod": "87733077",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO ESSÊNCIA RS/ES - SICREDI ESSÊNCIA",
+    "sr": "S4",
+    "ativo_brl": 4307081942.94
+   },
+   {
+    "cod": "10371492",
+    "nome": "BANCO YAMAHA MOTOR DO BRASIL S.A.",
+    "sr": "S4",
+    "ativo_brl": 4248745660.42
+   },
+   {
+    "cod": "81723108",
+    "nome": "CREDICOAMO CREDITO RURAL COOPERATIVA",
+    "sr": "S4",
+    "ativo_brl": 5031747242.8
+   },
+   {
+    "cod": "90729369",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO REGIÕES DAS CULTURAS - SICREDI DAS CULTURAS RS/MG",
+    "sr": "S4",
+    "ativo_brl": 4154810017.9
+   },
+   {
+    "cod": "74828799",
+    "nome": "NOVO BANCO CONTINENTAL S.A. - BANCO MÚLTIPLO",
+    "sr": "S4",
+    "ativo_brl": 5067963447.8
+   }
+  ]
+ }
+}

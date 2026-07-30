@@ -1,0 +1,1252 @@
+{
+ "gerado_em": "2026-07-29T02:55:03+00:00",
+ "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
+ "frequencia": "trimestral",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "data_base": "202603",
+ "consolidacao_nota": "Valores por conglomerado prudencial (códigos C…) e instituições individuais; a soma do mercado usa o universo IF.data.",
+ "npl_nota": "A matriz traz DOIS conceitos distintos, sempre rotulados: (1) atraso ≥15d NO PRODUTO (vencido ≥15d ÷ carteira da modalidade, IF.data rel. 123/128 — específico do produto); (2) inadimplência >90d TOTAL da instituição (Res. 4.966 — não específica do produto).",
+ "produtos": [
+  {
+   "slug": "cartao-de-credito-pf",
+   "nome": "Cartão de crédito",
+   "seg": "pf",
+   "natureza": "livre",
+   "definicao": "Carteira ativa total de cartão de crédito de pessoas físicas (todas as submodalidades).",
+   "nota_taxonomia": "O corte integrado do IF.data não separa rotativo, parcelado e compras à vista — o SGS separa apenas no agregado do sistema.",
+   "modalidade_original": "cartao_de_credito",
+   "data_base": "202603",
+   "mercado_total_brl": 739483956219.0298,
+   "n_instituicoes": 223,
+   "share_segmento_pct": 15.49,
+   "crescimento_4t_pct": 17.97,
+   "crescimento_4t_n_pareado": 210,
+   "crescimento_1t_pct": 0.55,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 636543807592.41,
+     "n_inst": 227
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 648181441919.2098,
+     "n_inst": 227
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 667143454407.8103,
+     "n_inst": 227
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 735382361549.24,
+     "n_inst": 227
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 739483956219.0298,
+     "n_inst": 223
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 11.69,
+    "n": 223,
+    "mediana_pct": 7.31,
+    "p25_pct": 4.59,
+    "p75_pct": 12.23,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 9.92,
+      "n": 227
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 10.81,
+      "n": 227
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 11.27,
+      "n": 227
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 11.05,
+      "n": 227
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 11.69,
+      "n": 223
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 20.4,
+    "top5_pct": 65.2,
+    "top10_pct": 80.2,
+    "hhi": 1013,
+    "n_inst": 223,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Cartão de crédito: carteira cresceu 18.0% em 4 trimestres (amostra pareada, n=210); representa 15.5% da carteira PF no universo IF.data; atraso ≥15d agregado de 11.7% da carteira (n=223); top-5 concentra 65% (HHI 1013).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0010069",
+    "nome": "ITAU",
+    "share_pct": 20.43
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "consignado-pf",
+   "nome": "Crédito consignado",
+   "seg": "pf",
+   "natureza": "livre",
+   "definicao": "Empréstimos com consignação em folha de pagamento a pessoas físicas.",
+   "nota_taxonomia": "",
+   "modalidade_original": "emprestimo_com_consignacao_em_folha",
+   "data_base": "202603",
+   "mercado_total_brl": 786297379866.75,
+   "n_instituicoes": 776,
+   "share_segmento_pct": 16.47,
+   "crescimento_4t_pct": 10.79,
+   "crescimento_4t_n_pareado": 740,
+   "crescimento_1t_pct": 4.55,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 711466765482.5494,
+     "n_inst": 778
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 720202821455.7799,
+     "n_inst": 780
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 736332313332.9198,
+     "n_inst": 794
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 751792568123.1298,
+     "n_inst": 786
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 786297379866.75,
+     "n_inst": 776
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 1.17,
+    "n": 776,
+    "mediana_pct": 0.62,
+    "p25_pct": 0.24,
+    "p75_pct": 1.5,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.93,
+      "n": 778
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.95,
+      "n": 780
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.9,
+      "n": 794
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.0,
+      "n": 786
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.17,
+      "n": 776
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 19.3,
+    "top5_pct": 64.7,
+    "top10_pct": 80.6,
+    "hhi": 996,
+    "n_inst": 776,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Crédito consignado: carteira cresceu 10.8% em 4 trimestres (amostra pareada, n=740); representa 16.5% da carteira PF no universo IF.data; atraso ≥15d agregado de 1.2% da carteira (n=776); top-5 concentra 65% (HHI 996).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0049906",
+    "nome": "BB",
+    "share_pct": 19.33
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "credito-pessoal-pf",
+   "nome": "Crédito pessoal não consignado",
+   "seg": "pf",
+   "natureza": "livre",
+   "definicao": "Empréstimos sem consignação em folha a pessoas físicas.",
+   "nota_taxonomia": "",
+   "modalidade_original": "emprestimo_sem_consignacao_em_folha",
+   "data_base": "202603",
+   "mercado_total_brl": 404824117810.4698,
+   "n_instituicoes": 877,
+   "share_segmento_pct": 8.48,
+   "crescimento_4t_pct": 13.96,
+   "crescimento_4t_n_pareado": 845,
+   "crescimento_1t_pct": 3.3,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 358438513680.6499,
+     "n_inst": 891
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 372798662843.2699,
+     "n_inst": 896
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 384658146291.51996,
+     "n_inst": 901
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 392603255503.46,
+     "n_inst": 892
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 404824117810.4698,
+     "n_inst": 877
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 6.57,
+    "n": 877,
+    "mediana_pct": 3.32,
+    "p25_pct": 1.69,
+    "p75_pct": 7.18,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 4.8,
+      "n": 891
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 5.54,
+      "n": 896
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 5.77,
+      "n": 901
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 5.95,
+      "n": 892
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 6.57,
+      "n": 877
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 15.3,
+    "top5_pct": 52.9,
+    "top10_pct": 65.4,
+    "hhi": 701,
+    "n_inst": 877,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Crédito pessoal não consignado: carteira cresceu 14.0% em 4 trimestres (amostra pareada, n=845); representa 8.5% da carteira PF no universo IF.data; atraso ≥15d agregado de 6.6% da carteira (n=877); top-5 concentra 53% (HHI 701).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0052058",
+    "nome": "NUBANK",
+    "share_pct": 15.26
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "veiculos-pf",
+   "nome": "Financiamento de veículos",
+   "seg": "pf",
+   "natureza": "livre",
+   "definicao": "Financiamentos de veículos a pessoas físicas (garantia do próprio bem).",
+   "nota_taxonomia": "",
+   "modalidade_original": "veiculos",
+   "data_base": "202603",
+   "mercado_total_brl": 431184386129.36993,
+   "n_instituicoes": 600,
+   "share_segmento_pct": 9.03,
+   "crescimento_4t_pct": 16.32,
+   "crescimento_4t_n_pareado": 585,
+   "crescimento_1t_pct": 4.28,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 370541690836.88,
+     "n_inst": 604
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 379907183675.16,
+     "n_inst": 600
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 395743495094.4502,
+     "n_inst": 605
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 413490961777.9999,
+     "n_inst": 601
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 431184386129.36993,
+     "n_inst": 600
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 2.63,
+    "n": 600,
+    "mediana_pct": 1.16,
+    "p25_pct": 0.53,
+    "p75_pct": 2.43,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.9,
+      "n": 604
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 2.12,
+      "n": 600
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 2.27,
+      "n": 605
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 2.42,
+      "n": 601
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 2.63,
+      "n": 600
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 19.1,
+    "top5_pct": 60.1,
+    "top10_pct": 85.5,
+    "hhi": 958,
+    "n_inst": 600,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Financiamento de veículos: carteira cresceu 16.3% em 4 trimestres (amostra pareada, n=585); representa 9.0% da carteira PF no universo IF.data; atraso ≥15d agregado de 2.6% da carteira (n=600); top-5 concentra 60% (HHI 958).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0030379",
+    "nome": "SANTANDER",
+    "share_pct": 19.11
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "imobiliario-pf",
+   "nome": "Crédito imobiliário (habitação)",
+   "seg": "pf",
+   "natureza": "direcionado",
+   "definicao": "Financiamentos habitacionais a pessoas físicas (majoritariamente recursos direcionados SFH/SFI).",
+   "nota_taxonomia": "",
+   "modalidade_original": "habitacao",
+   "data_base": "202603",
+   "mercado_total_brl": 1356414580327.2993,
+   "n_instituicoes": 123,
+   "share_segmento_pct": 28.41,
+   "crescimento_4t_pct": 12.38,
+   "crescimento_4t_n_pareado": 110,
+   "crescimento_1t_pct": 2.73,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 1206978996868.39,
+     "n_inst": 117
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 1240993516255.2397,
+     "n_inst": 120
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 1274553170128.53,
+     "n_inst": 122
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 1320404820538.16,
+     "n_inst": 123
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 1356414580327.2993,
+     "n_inst": 123
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 0.53,
+    "n": 123,
+    "mediana_pct": 0.15,
+    "p25_pct": 0.0,
+    "p75_pct": 0.45,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.25,
+      "n": 117
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.23,
+      "n": 120
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.23,
+      "n": 122
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.52,
+      "n": 123
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.53,
+      "n": 123
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 69.5,
+    "top5_pct": 96.7,
+    "top10_pct": 99.2,
+    "hhi": 5043,
+    "n_inst": 123,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Crédito imobiliário (habitação): carteira cresceu 12.4% em 4 trimestres (amostra pareada, n=110); representa 28.4% da carteira PF no universo IF.data; atraso ≥15d agregado de 0.5% da carteira (n=123); top-5 concentra 97% (HHI 5043).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0051626",
+    "nome": "CAIXA ECONÔMICA FEDERAL",
+    "share_pct": 69.46
+   },
+   "taxas_disponiveis": false
+  },
+  {
+   "slug": "rural-pf",
+   "nome": "Crédito rural PF",
+   "seg": "pf",
+   "natureza": "direcionado",
+   "definicao": "Crédito rural e agroindustrial a pessoas físicas.",
+   "nota_taxonomia": "",
+   "modalidade_original": "rural_e_agroindustrial",
+   "data_base": "202603",
+   "mercado_total_brl": 700593908747.19,
+   "n_instituicoes": 427,
+   "share_segmento_pct": 14.67,
+   "crescimento_4t_pct": 6.07,
+   "crescimento_4t_n_pareado": 417,
+   "crescimento_1t_pct": 2.56,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 661910358635.15,
+     "n_inst": 434
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 651870069911.09,
+     "n_inst": 431
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 661097911765.8599,
+     "n_inst": 434
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 683234151786.1304,
+     "n_inst": 430
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 700593908747.19,
+     "n_inst": 427
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 4.57,
+    "n": 427,
+    "mediana_pct": 0.9,
+    "p25_pct": 0.3,
+    "p75_pct": 1.98,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 2.45,
+      "n": 434
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 3.62,
+      "n": 431
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 4.74,
+      "n": 434
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 4.81,
+      "n": 430
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 4.57,
+      "n": 427
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 52.3,
+    "top5_pct": 72.1,
+    "top10_pct": 80.0,
+    "hhi": 2859,
+    "n_inst": 427,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Crédito rural PF: carteira cresceu 6.1% em 4 trimestres (amostra pareada, n=417); representa 14.7% da carteira PF no universo IF.data; atraso ≥15d agregado de 4.6% da carteira (n=427); top-5 concentra 72% (HHI 2859).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0049906",
+    "nome": "BB",
+    "share_pct": 52.31
+   },
+   "taxas_disponiveis": false
+  },
+  {
+   "slug": "capital-de-giro-pj",
+   "nome": "Capital de giro",
+   "seg": "pj",
+   "natureza": "livre",
+   "definicao": "Operações de capital de giro para pessoas jurídicas.",
+   "nota_taxonomia": "",
+   "modalidade_original": "capital_de_giro",
+   "data_base": "202603",
+   "mercado_total_brl": 764163055754.8402,
+   "n_instituicoes": 755,
+   "share_segmento_pct": 23.81,
+   "crescimento_4t_pct": 11.78,
+   "crescimento_4t_n_pareado": 724,
+   "crescimento_1t_pct": 0.92,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 695400262623.1699,
+     "n_inst": 759
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 716199127162.0405,
+     "n_inst": 760
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 727577394107.2007,
+     "n_inst": 766
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 757287942210.9606,
+     "n_inst": 764
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 764163055754.8402,
+     "n_inst": 755
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 2.31,
+    "n": 755,
+    "mediana_pct": 1.72,
+    "p25_pct": 0.79,
+    "p75_pct": 3.43,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.8,
+      "n": 759
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.91,
+      "n": 760
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.98,
+      "n": 766
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 2.0,
+      "n": 764
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 2.31,
+      "n": 755
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 15.1,
+    "top5_pct": 57.4,
+    "top10_pct": 70.2,
+    "hhi": 766,
+    "n_inst": 755,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Capital de giro: carteira cresceu 11.8% em 4 trimestres (amostra pareada, n=724); representa 23.8% da carteira PJ no universo IF.data; atraso ≥15d agregado de 2.3% da carteira (n=755); top-5 concentra 57% (HHI 766).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0010045",
+    "nome": "BRADESCO",
+    "share_pct": 15.08
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "conta-garantida-pj",
+   "nome": "Cheque especial e conta garantida",
+   "seg": "pj",
+   "natureza": "livre",
+   "definicao": "Limites rotativos de cheque especial e conta garantida para PJ.",
+   "nota_taxonomia": "",
+   "modalidade_original": "cheque_especial_e_conta_garantida",
+   "data_base": "202603",
+   "mercado_total_brl": 65573267486.43003,
+   "n_instituicoes": 583,
+   "share_segmento_pct": 2.04,
+   "crescimento_4t_pct": 2.79,
+   "crescimento_4t_n_pareado": 576,
+   "crescimento_1t_pct": 8.63,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 64476381500.56999,
+     "n_inst": 597
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 64421353550.78003,
+     "n_inst": 595
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 61255274974.679985,
+     "n_inst": 590
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 60388942273.009995,
+     "n_inst": 584
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 65573267486.43003,
+     "n_inst": 583
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 11.03,
+    "n": 583,
+    "mediana_pct": 9.31,
+    "p25_pct": 3.89,
+    "p75_pct": 19.6,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 8.26,
+      "n": 597
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 9.15,
+      "n": 595
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 10.2,
+      "n": 590
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 10.77,
+      "n": 584
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 11.03,
+      "n": 583
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 25.8,
+    "top5_pct": 63.1,
+    "top10_pct": 71.3,
+    "hhi": 1077,
+    "n_inst": 583,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Cheque especial e conta garantida: carteira cresceu 2.8% em 4 trimestres (amostra pareada, n=576); representa 2.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 11.0% da carteira (n=583); top-5 concentra 63% (HHI 1077).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0010069",
+    "nome": "ITAU",
+    "share_pct": 25.83
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "recebiveis-pj",
+   "nome": "Antecipação de recebíveis",
+   "seg": "pj",
+   "natureza": "livre",
+   "definicao": "Operações com recebíveis (duplicatas, cartões e afins) para PJ.",
+   "nota_taxonomia": "",
+   "modalidade_original": "operacoes_com_recebiveis",
+   "data_base": "202603",
+   "mercado_total_brl": 206741561658.94998,
+   "n_instituicoes": 613,
+   "share_segmento_pct": 6.44,
+   "crescimento_4t_pct": -5.18,
+   "crescimento_4t_n_pareado": 597,
+   "crescimento_1t_pct": -11.76,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 223914573507.6299,
+     "n_inst": 624
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 208263633999.02,
+     "n_inst": 626
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 202432574056.31,
+     "n_inst": 627
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 234306582165.6401,
+     "n_inst": 618
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 206741561658.94998,
+     "n_inst": 613
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 1.19,
+    "n": 613,
+    "mediana_pct": 4.11,
+    "p25_pct": 1.42,
+    "p75_pct": 8.66,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.88,
+      "n": 624
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.06,
+      "n": 626
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.07,
+      "n": 627
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.93,
+      "n": 618
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.19,
+      "n": 613
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 14.2,
+    "top5_pct": 54.5,
+    "top10_pct": 74.0,
+    "hhi": 750,
+    "n_inst": 613,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Antecipação de recebíveis: carteira recuou 5.2% em 4 trimestres (amostra pareada, n=597); representa 6.4% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.2% da carteira (n=613); top-5 concentra 54% (HHI 750).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0010045",
+    "nome": "BRADESCO",
+    "share_pct": 14.2
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "investimento-pj",
+   "nome": "Financiamento de investimentos",
+   "seg": "pj",
+   "natureza": "livre/direcionado",
+   "definicao": "Financiamentos de investimento para PJ (inclui repasses).",
+   "nota_taxonomia": "",
+   "modalidade_original": "investimento",
+   "data_base": "202603",
+   "mercado_total_brl": 318225389390.35986,
+   "n_instituicoes": 624,
+   "share_segmento_pct": 9.91,
+   "crescimento_4t_pct": 1.6,
+   "crescimento_4t_n_pareado": 600,
+   "crescimento_1t_pct": -0.9,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 309741202317.66003,
+     "n_inst": 633
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 312555764878.48,
+     "n_inst": 632
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 315240940770.49005,
+     "n_inst": 640
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 320968718711.8101,
+     "n_inst": 627
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 318225389390.35986,
+     "n_inst": 624
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 1.3,
+    "n": 624,
+    "mediana_pct": 1.07,
+    "p25_pct": 0.47,
+    "p75_pct": 2.26,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.81,
+      "n": 633
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.9,
+      "n": 632
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.98,
+      "n": 640
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.33,
+      "n": 627
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.3,
+      "n": 624
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 27.0,
+    "top5_pct": 56.4,
+    "top10_pct": 68.8,
+    "hhi": 1031,
+    "n_inst": 624,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Financiamento de investimentos: carteira cresceu 1.6% em 4 trimestres (amostra pareada, n=600); representa 9.9% da carteira PJ no universo IF.data; atraso ≥15d agregado de 1.3% da carteira (n=624); top-5 concentra 56% (HHI 1031).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0049906",
+    "nome": "BB",
+    "share_pct": 27.04
+   },
+   "taxas_disponiveis": false
+  },
+  {
+   "slug": "comercio-exterior-pj",
+   "nome": "Comércio exterior",
+   "seg": "pj",
+   "natureza": "livre",
+   "definicao": "Financiamentos à exportação/importação (ACC/ACE e afins).",
+   "nota_taxonomia": "",
+   "modalidade_original": "comercio_exterior",
+   "data_base": "202603",
+   "mercado_total_brl": 255230580903.7601,
+   "n_instituicoes": 83,
+   "share_segmento_pct": 7.95,
+   "crescimento_4t_pct": 0.27,
+   "crescimento_4t_n_pareado": 58,
+   "crescimento_1t_pct": -1.88,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 252795930647.60992,
+     "n_inst": 60
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 262397722473.02008,
+     "n_inst": 61
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 267190451222.18002,
+     "n_inst": 62
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 260043754709.88998,
+     "n_inst": 82
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 255230580903.7601,
+     "n_inst": 83
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 0.64,
+    "n": 83,
+    "mediana_pct": 0.0,
+    "p25_pct": 0.0,
+    "p75_pct": 0.4,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.84,
+      "n": 60
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.65,
+      "n": 61
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.71,
+      "n": 62
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.71,
+      "n": 82
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.64,
+      "n": 83
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 25.7,
+    "top5_pct": 65.3,
+    "top10_pct": 81.5,
+    "hhi": 1175,
+    "n_inst": 83,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Comércio exterior: carteira cresceu 0.3% em 4 trimestres (amostra pareada, n=58); representa 8.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.6% da carteira (n=83); top-5 concentra 65% (HHI 1175).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0049906",
+    "nome": "BB",
+    "share_pct": 25.74
+   },
+   "taxas_disponiveis": true
+  },
+  {
+   "slug": "infraestrutura-pj",
+   "nome": "Infraestrutura e desenvolvimento",
+   "seg": "pj",
+   "natureza": "direcionado",
+   "definicao": "Financiamento de infraestrutura, desenvolvimento e projeto.",
+   "nota_taxonomia": "",
+   "modalidade_original": "financiamento_de_infraestrutura_desenvolvimento_",
+   "data_base": "202603",
+   "mercado_total_brl": 674148230845.9302,
+   "n_instituicoes": 202,
+   "share_segmento_pct": 21.0,
+   "crescimento_4t_pct": 9.47,
+   "crescimento_4t_n_pareado": 182,
+   "crescimento_1t_pct": 0.54,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 615769959156.64,
+     "n_inst": 195
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 621356547275.3002,
+     "n_inst": 197
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 639034824973.56,
+     "n_inst": 191
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 670493611218.05,
+     "n_inst": 197
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 674148230845.9302,
+     "n_inst": 202
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 0.18,
+    "n": 202,
+    "mediana_pct": 0.73,
+    "p25_pct": 0.04,
+    "p75_pct": 2.35,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.13,
+      "n": 195
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.12,
+      "n": 197
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.15,
+      "n": 191
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.16,
+      "n": 197
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.18,
+      "n": 202
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 51.9,
+    "top5_pct": 83.9,
+    "top10_pct": 90.8,
+    "hhi": 3065,
+    "n_inst": 202,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Infraestrutura e desenvolvimento: carteira cresceu 9.5% em 4 trimestres (amostra pareada, n=182); representa 21.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.2% da carteira (n=202); top-5 concentra 84% (HHI 3065).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "33657248",
+    "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+    "share_pct": 51.91
+   },
+   "taxas_disponiveis": false
+  },
+  {
+   "slug": "rural-pj",
+   "nome": "Crédito rural PJ",
+   "seg": "pj",
+   "natureza": "direcionado",
+   "definicao": "Crédito rural e agroindustrial a pessoas jurídicas.",
+   "nota_taxonomia": "",
+   "modalidade_original": "rural_e_agroindustrial",
+   "data_base": "202603",
+   "mercado_total_brl": 87429355507.06001,
+   "n_instituicoes": 302,
+   "share_segmento_pct": 2.72,
+   "crescimento_4t_pct": 24.4,
+   "crescimento_4t_n_pareado": 266,
+   "crescimento_1t_pct": 6.59,
+   "serie": [
+    {
+     "anomes": "202503",
+     "total_brl": 70364712958.03001,
+     "n_inst": 282
+    },
+    {
+     "anomes": "202506",
+     "total_brl": 77392613374.13998,
+     "n_inst": 281
+    },
+    {
+     "anomes": "202509",
+     "total_brl": 76263534050.95,
+     "n_inst": 292
+    },
+    {
+     "anomes": "202512",
+     "total_brl": 82029850358.94,
+     "n_inst": 303
+    },
+    {
+     "anomes": "202603",
+     "total_brl": 87429355507.06001,
+     "n_inst": 302
+    }
+   ],
+   "atraso15": {
+    "agg_pct": 0.34,
+    "n": 302,
+    "mediana_pct": 0.0,
+    "p25_pct": 0.0,
+    "p75_pct": 0.0,
+    "serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.23,
+      "n": 282
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.34,
+      "n": 281
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.47,
+      "n": 292
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.33,
+      "n": 303
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.34,
+      "n": 302
+     }
+    ],
+    "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+    "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+   },
+   "concentracao": {
+    "top1_pct": 20.2,
+    "top5_pct": 66.0,
+    "top10_pct": 80.9,
+    "hhi": 1025,
+    "n_inst": 302,
+    "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+   },
+   "sintese": "Crédito rural PJ: carteira cresceu 24.4% em 4 trimestres (amostra pareada, n=266); representa 2.7% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.3% da carteira (n=302); top-5 concentra 66% (HHI 1025).",
+   "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+   "lider": {
+    "cod": "C0010069",
+    "nome": "ITAU",
+    "share_pct": 20.18
+   },
+   "taxas_disponiveis": false
+  }
+ ]
+}

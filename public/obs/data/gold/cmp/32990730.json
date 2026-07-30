@@ -1,0 +1,23 @@
+{
+ "cod": "32990730",
+ "nome": "32990730",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 18305565.52,
+   "202509": 29121462.79,
+   "202512": 34659493.29,
+   "202603": 40058760.73
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

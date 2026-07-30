@@ -1,0 +1,89 @@
+{
+ "cod": "12384953",
+ "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DE JARAGUÁ DO SUL E REGIÃO - SICOOB CEJASCRED",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 166746827.16
+  },
+  "patrimonio_liquido": {
+   "202503": 27956125.98
+  },
+  "carteira_credito": {
+   "202503": 61540410.5
+  },
+  "carteira_pf": {
+   "202503": 13919381.71
+  },
+  "carteira_pj": {
+   "202503": 53226705.71
+  },
+  "captacoes": {
+   "202503": 134133979.91
+  },
+  "lucro_liquido": {
+   "202503": 2154378.63
+  },
+  "indice_basileia": {
+   "202503": 32.830983231510004
+  },
+  "patrimonio_referencia": {
+   "202503": 28193280.08
+  },
+  "rwa": {
+   "202503": 78218659.52
+  },
+  "provisao_credito": {
+   "202503": 5379004.09
+  },
+  "roe_periodo": {
+   "202503": 7.706284595874467
+  },
+  "npl_pct": {
+   "202503": 2.692858183515587
+  },
+  "ativos_problematicos_pct": {
+   "202503": 6.777633433105253
+  },
+  "cobertura_pct": {
+   "202503": 297.4867866386071
+  },
+  "cart_ativo_pct": {
+   "202503": 36.906495642612505
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.7667346773670064
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 1.5678794759324735
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 2.263548867384344
+  },
+  "atraso15_rural_pf": {
+   "202503": 0.0
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.940543903902076
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": 25.75497437971312
+  },
+  "atraso15_recebiveis_pj": {
+   "202503": 7.097822537376507
+  },
+  "atraso15_investimento_pj": {
+   "202503": 0.14832852957962386
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

@@ -1,0 +1,189 @@
+{
+ "cod": "62895230",
+ "nome": "CREDI-SHOP S/A - INSTITUIÇÃO DE PAGAMENTO",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 676930443.64,
+   "202506": 672353127.98,
+   "202509": 674937141.95,
+   "202512": 693579459.33,
+   "202603": 665813613.67
+  },
+  "patrimonio_liquido": {
+   "202503": 321484777.25,
+   "202506": 327029959.8,
+   "202509": 331569507.69,
+   "202512": 298506881.7,
+   "202603": 302464334.96
+  },
+  "carteira_credito": {
+   "202503": 435903251.54,
+   "202506": 437378201.33,
+   "202509": 443495599.54,
+   "202512": 448038042.58,
+   "202603": 425277004.3
+  },
+  "carteira_pf": {
+   "202503": 451292821.33,
+   "202506": 444742116.18,
+   "202509": 449912527.24,
+   "202512": 462743641.16,
+   "202603": 429823038.55
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 5221834.45,
+   "202506": 14120694.19,
+   "202509": 4539547.89,
+   "202512": 8724288.61999998,
+   "202603": 3957453.26
+  },
+  "indice_basileia": {
+   "202503": 38.736578061516106,
+   "202506": 37.9112504500431,
+   "202509": 35.2487583257402,
+   "202512": 32.0231441241285,
+   "202603": 28.745936950355897
+  },
+  "patrimonio_referencia": {
+   "202503": 315846593.28,
+   "202506": 321079388.51,
+   "202509": 323706357.05,
+   "202512": 290133850.24,
+   "202603": 292783830.82
+  },
+  "rwa": {
+   "202503": 741245822.39,
+   "202506": 751677319.52,
+   "202509": 878626893.72,
+   "202512": 866539057.38,
+   "202603": 974786871.54
+  },
+  "provisao_credito": {
+   "202503": 11129.93,
+   "202506": 61936.71,
+   "202509": 138881.15,
+   "202512": 264345.47,
+   "202603": 343827.24
+  },
+  "roe_periodo": {
+   "202503": 1.62428669085606,
+   "202506": 4.317859500895795,
+   "202509": 1.3691089755588253,
+   "202512": 2.922642376053463,
+   "202603": 1.3084032735705389
+  },
+  "npl_pct": {
+   "202503": 2.617721076347794,
+   "202506": 2.646094125530722,
+   "202509": 2.2811855613269363,
+   "202512": 2.5946566439901764,
+   "202603": 3.0387889523238303
+  },
+  "ativos_problematicos_pct": {
+   "202503": 2.6292523078543426,
+   "202506": 2.656370363902872,
+   "202509": 2.281276261179751,
+   "202512": 2.5946566439901764,
+   "202603": 3.0387889523238303
+  },
+  "cobertura_pct": {
+   "202503": 0.09421295765089067,
+   "202506": 0.5263014731307284,
+   "202509": 1.3531769899213146,
+   "202512": 2.201666416772343,
+   "202603": 2.6323889083744842
+  },
+  "cart_ativo_pct": {
+   "202503": 64.39409774452673,
+   "202506": 65.05185788962528,
+   "202509": 65.70917082125176,
+   "202512": 64.59793994084055,
+   "202603": 63.873281586396324
+  },
+  "atraso15_cartao_de_credito_pf": {
+   "202503": 5.915386762463887,
+   "202506": 4.8119125998112695,
+   "202509": 4.951793293541291,
+   "202512": 5.0966037973329135,
+   "202603": 6.155567495913911
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 6.153041377911146,
+   "202506": 17.085517529566722,
+   "202509": 25.602472729859866,
+   "202512": 24.20453610367752,
+   "202603": 25.366761847561108
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "03612764",
+    "nome": "COOPERATIVA DE CRÉDITO  DE FRONTEIRAS  LTDA. - SICOOB FRONTEIRAS",
+    "sr": "S5",
+    "ativo_brl": 666875705.78
+   },
+   {
+    "cod": "08055016",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL INTERAÇÃO",
+    "sr": "S5",
+    "ativo_brl": 667466137.24
+   },
+   {
+    "cod": "07412987",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL ALIANÇA",
+    "sr": "S5",
+    "ativo_brl": 669641351.37
+   },
+   {
+    "cod": "02144899",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL DE RONDÔNIA   SICOOB OUROCREDI",
+    "sr": "S5",
+    "ativo_brl": 670186708.99
+   },
+   {
+    "cod": "07252614",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CONFIANÇA - CRESOL CONFIANÇA",
+    "sr": "S5",
+    "ativo_brl": 658442363.81
+   },
+   {
+    "cod": "00968602",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO VALE DO SÃO PATRICIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 674066235.37
+   },
+   {
+    "cod": "21661202",
+    "nome": "COOPERATIVA DE CRÉDITO CREDICAMPO LTDA.- SICOOB CREDICAMPO",
+    "sr": "S5",
+    "ativo_brl": 654766836.27
+   },
+   {
+    "cod": "01705236",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO UNICRED PROSPERAR LTDA. - UNICRED PROSPERAR",
+    "sr": "S5",
+    "ativo_brl": 649143816.52
+   }
+  ]
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "cod": "48703302",
+ "nome": "FINAZO SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 872769.52,
+   "202506": 1327412.3,
+   "202509": 1393675.42,
+   "202512": 1550302.81,
+   "202603": 2701761.34
+  },
+  "patrimonio_liquido": {
+   "202503": 850388.51,
+   "202506": 1313486.24,
+   "202509": 1374092.43,
+   "202512": 1493052.42,
+   "202603": 1667792.4
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -60795.2,
+   "202506": 2302.53000000001,
+   "202509": 60606.19,
+   "202512": 181868.71,
+   "202603": 174739.98
+  },
+  "indice_basileia": {
+   "202503": 77.8841583148425,
+   "202506": 85.6623429241228,
+   "202509": 86.7863753444442,
+   "202512": 90.9320842972095,
+   "202603": 77.0051506790539
+  },
+  "patrimonio_referencia": {
+   "202503": 850388.51,
+   "202506": 1313486.24,
+   "202509": 1374092.43,
+   "202512": 1493052.42,
+   "202603": 1667792.4
+  },
+  "rwa": {
+   "202503": 868947.36,
+   "202506": 1310413.91,
+   "202509": 1371111.9,
+   "202512": 1429749.95,
+   "202603": 1874094.99
+  },
+  "roe_periodo": {
+   "202503": -7.149108823213051,
+   "202506": 0.17529913370086087,
+   "202509": 4.410634152172718,
+   "202512": 12.180999646348653,
+   "202603": 10.477321997629922
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "23010182",
+    "nome": "GOOD CORRETORA DE CÂMBIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 2703379.65
+   },
+   {
+    "cod": "02910387",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS SERVIDORES DO COLEGIO PEDRO II",
+    "sr": "S5",
+    "ativo_brl": 2692089.06
+   },
+   {
+    "cod": "34190991",
+    "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
+    "sr": "S4",
+    "ativo_brl": 2747930.4
+   },
+   {
+    "cod": "44564204",
+    "nome": "FINLEV SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 2833525.16
+   },
+   {
+    "cod": "42445122",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PONTIFÍCIA UNIVERSIDADE CATÓLICA DO RIO DE JANEIRO E EMPREGADOS EM ESTABELECIMENTOS PRIVADOS DE ENSINO DO MUNICÍPIO DO RIO DE JANEIRO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2573805.01
+   },
+   {
+    "cod": "62451088",
+    "nome": "CONLIFE SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": null,
+    "ativo_brl": 2856800.03
+   },
+   {
+    "cod": "62605290",
+    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DAS EMPRESAS DO GRUPO INDORAMA NO BRASIL",
+    "sr": "S5",
+    "ativo_brl": 2554525.59
+   },
+   {
+    "cod": "11165756",
+    "nome": "GLOBAL FINANÇAS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2533084.63
+   }
+  ]
+ }
+}

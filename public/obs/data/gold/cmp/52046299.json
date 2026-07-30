@@ -1,0 +1,184 @@
+{
+ "cod": "52046299",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO ATACADÃO",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 161696718.3,
+   "202506": 168771551.47,
+   "202509": 180440192.53,
+   "202603": 184487937.71
+  },
+  "patrimonio_liquido": {
+   "202503": 149737236.95,
+   "202506": 153075645.23,
+   "202509": 164643562.16,
+   "202603": 167746978.07
+  },
+  "carteira_credito": {
+   "202503": 80243698.88,
+   "202506": 74012117.36,
+   "202509": 78467669.96,
+   "202603": 78536226.17
+  },
+  "carteira_pf": {
+   "202503": 84286751.31,
+   "202506": 78932350.58,
+   "202509": 84104308.69,
+   "202512": 81671651.86,
+   "202603": 84221597.78
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 6321764.02,
+   "202506": 13191428.22,
+   "202509": 7458678.29,
+   "202603": 7431895.09
+  },
+  "indice_basileia": {
+   "202503": 100.191390193435,
+   "202506": 96.850825809943,
+   "202509": 97.19064411189629,
+   "202603": 96.22455115183351
+  },
+  "patrimonio_referencia": {
+   "202503": 150163671.78,
+   "202506": 153502783.51,
+   "202509": 165073403.89,
+   "202603": 167718043.83
+  },
+  "rwa": {
+   "202503": 142010833.96,
+   "202506": 150628048.53,
+   "202509": 161218491.65,
+   "202603": 164792848.38
+  },
+  "provisao_credito": {
+   "202503": 4042733.87,
+   "202506": 4919639.98,
+   "202509": 5636156.73,
+   "202603": 5685112.27
+  },
+  "roe_periodo": {
+   "202503": 4.2219050843785455,
+   "202506": 8.617587860027994,
+   "202509": 4.530197350049852,
+   "202603": 4.430419656739632
+  },
+  "npl_pct": {
+   "202503": 4.224673432842977,
+   "202506": 5.7741892855207055,
+   "202509": 6.061390420305707,
+   "202512": 6.194375838843234,
+   "202603": 6.07245645393644
+  },
+  "ativos_problematicos_pct": {
+   "202503": 4.948922262596574,
+   "202506": 6.817728105722402,
+   "202509": 7.092801537656871,
+   "202512": 7.198584693839692,
+   "202603": 6.990116377723273
+  },
+  "cobertura_pct": {
+   "202503": 113.5331517662494,
+   "202506": 107.9412068709615,
+   "202509": 110.5586069168049,
+   "202603": 111.16067114965445
+  },
+  "cart_ativo_pct": {
+   "202503": 49.62605284983078,
+   "202506": 43.85343188194607,
+   "202509": 43.48680239129868,
+   "202603": 42.569843397269985
+  },
+  "atraso15_consignado_pf": {
+   "202503": 1.8942223240590008,
+   "202506": 1.9490126316363137,
+   "202509": 1.8982838843302274,
+   "202512": 1.7858115812796165,
+   "202603": 1.8817306481426772
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 66.96633332888904,
+   "202506": 75.36145101241753,
+   "202509": 75.9753433116024,
+   "202512": 76.90906438664754,
+   "202603": 75.79921117586886
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 1.0290235981545566,
+   "202506": 1.1575193236895607,
+   "202509": 1.5177002098074557,
+   "202512": 1.675249322996368,
+   "202603": 1.9500918205939535
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "37122487",
+    "nome": "CALCRED S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 182996851.36
+   },
+   {
+    "cod": "07946216",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB UNIÃO SUDESTE",
+    "sr": "S5",
+    "ativo_brl": 181560135.89
+   },
+   {
+    "cod": "27084098",
+    "nome": "TRANSFEERA INSTITUIÇÃO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 190439264.56
+   },
+   {
+    "cod": "02254376",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DE DORES DO INDAIÁ LTDA - SICOOB COOPCREDI",
+    "sr": "S5",
+    "ativo_brl": 173542970.55
+   },
+   {
+    "cod": "07314204",
+    "nome": "VOX INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 197455521.44
+   },
+   {
+    "cod": "37554441",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB UNI SUL MS",
+    "sr": "S5",
+    "ativo_brl": 197511901.21
+   },
+   {
+    "cod": "02179673",
+    "nome": "COOPERATIVA DE CRÉDITO LIVRE ADMISSÃO SICOOB OURICRED",
+    "sr": "S5",
+    "ativo_brl": 197779410.42
+   },
+   {
+    "cod": "04525997",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS PROFESSORES, FUNCIONÁRIOS E ALUNOS DA UNIVERSIDADE DE CAXIAS DO SUL - SICREDI EDUCAÇÃO RS",
+    "sr": "S4",
+    "ativo_brl": 198516987.2
+   }
+  ]
+ }
+}

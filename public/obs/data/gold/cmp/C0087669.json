@@ -1,0 +1,32 @@
+{
+ "cod": "C0087669",
+ "nome": "NAGRO SCD - PRUDENCIAL",
+ "sr": "S5",
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "indice_basileia": {
+   "202503": 100.50770109904501,
+   "202506": 87.2958247955272,
+   "202509": 87.0016133744222
+  },
+  "patrimonio_referencia": {
+   "202503": 2883960.98,
+   "202506": 2717925.58,
+   "202509": 2600264.6
+  },
+  "rwa": {
+   "202503": 2608539.13,
+   "202506": 2830423.38,
+   "202509": 2717049.51
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

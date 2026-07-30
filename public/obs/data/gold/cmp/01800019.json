@@ -1,0 +1,24 @@
+{
+ "cod": "01800019",
+ "nome": "PORTOCRED S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTO",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 25792858.23,
+   "202506": 26100893.58,
+   "202509": 25183083.38,
+   "202512": 22524209.89,
+   "202603": 26188045.17
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

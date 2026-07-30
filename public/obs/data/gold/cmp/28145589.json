@@ -1,0 +1,189 @@
+{
+ "cod": "28145589",
+ "nome": "CRETOVALE - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES DA VALE",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 8991059.58,
+   "202506": 8937463.87,
+   "202509": 9031453.86,
+   "202512": 9140176.59,
+   "202603": 9323375.61
+  },
+  "patrimonio_liquido": {
+   "202503": 7653738.31,
+   "202506": 7757739.25,
+   "202509": 7659067.51,
+   "202512": 7472807.11,
+   "202603": 7736011.6
+  },
+  "carteira_credito": {
+   "202503": 4056983.5,
+   "202506": 3435680.2,
+   "202509": 3713090.53,
+   "202512": 3667124.24,
+   "202603": 1774763.72
+  },
+  "carteira_pf": {
+   "202503": 4231489.9,
+   "202506": 3634513.6,
+   "202509": 3950960.78,
+   "202512": 3893660.06,
+   "202603": 1938457.58
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 108254.75,
+   "202506": 170355.16,
+   "202509": 13661.71,
+   "202512": 109508.61,
+   "202603": 95594.74
+  },
+  "indice_basileia": {
+   "202503": 88.0955057439724,
+   "202506": 88.2599610650917,
+   "202509": 86.7242154689547,
+   "202512": 83.4221990417705,
+   "202603": 80.3718038954946
+  },
+  "patrimonio_referencia": {
+   "202503": 7695119.61,
+   "202506": 7799120.55,
+   "202509": 7700448.81,
+   "202512": 7472807.11,
+   "202603": 7736011.6
+  },
+  "rwa": {
+   "202503": 8018170.56,
+   "202506": 8119729.42,
+   "202509": 8144034.13,
+   "202512": 8222612.94,
+   "202603": 8879357.61
+  },
+  "provisao_credito": {
+   "202503": 174506.4,
+   "202506": 198551.54,
+   "202509": 237870.25,
+   "202512": 226535.82,
+   "202603": 163693.86
+  },
+  "roe_periodo": {
+   "202503": 1.414403597501624,
+   "202506": 2.195938204548445,
+   "202509": 0.17837301972025574,
+   "202512": 1.4654280297621651,
+   "202603": 1.2357109185306807
+  },
+  "npl_pct": {
+   "202503": 2.9874990366868177,
+   "202506": 5.285058776503133,
+   "202509": 5.319393476743143,
+   "202512": 4.960900721261218,
+   "202603": 7.215087987636027
+  },
+  "ativos_problematicos_pct": {
+   "202503": 5.123112547190529,
+   "202506": 7.225742668840199,
+   "202509": 7.170897555707956,
+   "202512": 6.126927526385034,
+   "202603": 10.242486193584902
+  },
+  "cobertura_pct": {
+   "202503": 138.04169291603924,
+   "202506": 103.36586421782141,
+   "202509": 113.18146056603042,
+   "202512": 117.27847618621622,
+   "202603": 117.04003863252636
+  },
+  "cart_ativo_pct": {
+   "202503": 45.122418152188466,
+   "202506": 38.4413324626956,
+   "202509": 41.11287714644871,
+   "202512": 40.120934249914754,
+   "202603": 19.03563466966231
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.675851282517563,
+   "202506": 0.9196498471913308,
+   "202509": 1.3927736937966644,
+   "202512": 1.7910207763493984,
+   "202603": 2.4299942715401035
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 23.8238929523232,
+   "202506": 11.133604366520812,
+   "202509": 5.143705349256746,
+   "202512": 4.140016037616489,
+   "202603": 18.783298511934447
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "04804353",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES DA SEGURANÇA PÚBLICA DE SÃO PAULO - CREDIAFAM",
+    "sr": "S5",
+    "ativo_brl": 9445298.71
+   },
+   {
+    "cod": "53575491",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA DE TOLEDO E REGIÃO - CRESOL PRIMATO CREDI",
+    "sr": "S5",
+    "ativo_brl": 9164192.2
+   },
+   {
+    "cod": "45457891",
+    "nome": "LEV DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 9152889.21
+   },
+   {
+    "cod": "51414521",
+    "nome": "ALL IN CRED SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 9137842.85
+   },
+   {
+    "cod": "34669130",
+    "nome": "LP DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 9099804.69
+   },
+   {
+    "cod": "42100982",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS SERVIDORES DA EMPRESA BRASILEIRA DE CORREIOS E TELEGRAFOS LTDA",
+    "sr": "S5",
+    "ativo_brl": 9055231.18
+   },
+   {
+    "cod": "04849745",
+    "nome": "HBI SOCIEDADE DE CRÉDITO DIRETO S/A.",
+    "sr": "S5",
+    "ativo_brl": 9025990.06
+   },
+   {
+    "cod": "17826860",
+    "nome": "BMS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 9689703.26
+   }
+  ]
+ }
+}

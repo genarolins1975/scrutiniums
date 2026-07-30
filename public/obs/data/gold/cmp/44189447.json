@@ -1,0 +1,189 @@
+{
+ "cod": "44189447",
+ "nome": "BANCO DE LA PROVINCIA DE BUENOS AIRES",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 167227973.34,
+   "202506": 163013386.38,
+   "202509": 182096952.06,
+   "202512": 188951790.73,
+   "202603": 209574227.77
+  },
+  "patrimonio_liquido": {
+   "202503": 140285048.58,
+   "202506": 140821322.86,
+   "202509": 142807163.98,
+   "202512": 146384104.3,
+   "202603": 147761454.97
+  },
+  "carteira_credito": {
+   "202503": 24193265.22,
+   "202506": 19481768.38,
+   "202509": 36608007.31,
+   "202512": 39723049.92,
+   "202603": 57649939.49
+  },
+  "carteira_pj": {
+   "202503": 24661840.18,
+   "202506": 19859091.13,
+   "202509": 37317030.9,
+   "202512": 40492405.63,
+   "202603": 58766503.05
+  },
+  "captacoes": {
+   "202503": 24566189.35,
+   "202506": 20226711.41,
+   "202509": 37072929.21,
+   "202512": 40563049.58,
+   "202603": 58628681.96
+  },
+  "lucro_liquido": {
+   "202503": -6241223.73,
+   "202506": -5704949.45,
+   "202509": 1985841.12,
+   "202512": 5562781.44,
+   "202603": 1377350.67
+  },
+  "indice_basileia": {
+   "202503": 358.368005680269,
+   "202506": 447.021910708672,
+   "202509": 214.792743576638,
+   "202512": 203.200360701816,
+   "202603": 167.9032350981
+  },
+  "indice_capital_principal": {
+   "202503": 358.368005680269,
+   "202506": 447.021910708672,
+   "202509": 214.792743576638,
+   "202512": 203.200360701816,
+   "202603": 167.9032350981
+  },
+  "indice_capital_nivel1": {
+   "202503": 358.368005680269,
+   "202506": 447.021910708672,
+   "202509": 214.792743576638,
+   "202512": 203.200360701816,
+   "202603": 167.9032350981
+  },
+  "patrimonio_referencia": {
+   "202503": 140285048.58,
+   "202506": 140821322.86,
+   "202509": 142807163.98,
+   "202512": 146384104.3,
+   "202603": 147761454.97
+  },
+  "rwa": {
+   "202503": 29435438.94,
+   "202506": 21792018.28,
+   "202509": 52895269.69,
+   "202512": 58448535.06,
+   "202603": 75216716.75
+  },
+  "razao_alavancagem": {
+   "202503": 71.854024824357,
+   "202506": 76.8314979491893,
+   "202509": 64.61302474798771,
+   "202512": 64.3696341249542,
+   "202603": 53.166805509330196
+  },
+  "provisao_credito": {
+   "202503": 446093.25,
+   "202506": 362671.56,
+   "202509": 688271.0,
+   "202512": 747719.83,
+   "202603": 592521.25
+  },
+  "roe_periodo": {
+   "202503": -4.4489585976376045,
+   "202506": -4.051197172513196,
+   "202509": 1.3905752797374473,
+   "202512": 3.8001267054239847,
+   "202603": 0.9321447669012486
+  },
+  "cart_ativo_pct": {
+   "202503": 14.467235796018048,
+   "202506": 11.951023662919381,
+   "202509": 20.103580480544153,
+   "202512": 21.02284914397117,
+   "202603": 27.508124497669
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_comercio_exterior_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "49173791",
+    "nome": "C&A PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 206144144.25
+   },
+   {
+    "cod": "02031139",
+    "nome": "SICOOB CREDIMONTES - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO REGIONAL DE MONTES CLAROS LTDA",
+    "sr": "S5",
+    "ativo_brl": 216102402.06
+   },
+   {
+    "cod": "09576849",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CERES E RIALMA LTDA",
+    "sr": "S5",
+    "ativo_brl": 216194541.84
+   },
+   {
+    "cod": "05463934",
+    "nome": "COOPERATIVA DE CREDITO CREDLIDER - SICOOB CREDLIDER",
+    "sr": "S5",
+    "ativo_brl": 219765622.27
+   },
+   {
+    "cod": "50489148",
+    "nome": "MONTE BRAVO CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 199069450.47
+   },
+   {
+    "cod": "37554441",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB UNI SUL MS",
+    "sr": "S5",
+    "ativo_brl": 197511901.21
+   },
+   {
+    "cod": "04886317",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS INTEGRANTES DA MAGISTRATURA E DO MINISTÉRIO PÚBLICO NO ESTADO DO PARANÁ - SICREDI CREDJURIS",
+    "sr": "S4",
+    "ativo_brl": 226231973.74
+   },
+   {
+    "cod": "22575466",
+    "nome": "SRM BANK INSTITUIÇÃO DE PAGAMENTO S/A",
+    "sr": "S4",
+    "ativo_brl": 227164642.58
+   }
+  ]
+ }
+}

@@ -1,0 +1,83 @@
+{
+ "cod": "20961629",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DA VALE S.A LTDA. - SICOOB CREDIVALE",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 63447161.74
+  },
+  "patrimonio_liquido": {
+   "202503": 2596457.96
+  },
+  "carteira_credito": {
+   "202503": 31894818.28
+  },
+  "carteira_pf": {
+   "202503": 8462195.61
+  },
+  "carteira_pj": {
+   "202503": 30769498.37
+  },
+  "captacoes": {
+   "202503": 58315191.98
+  },
+  "lucro_liquido": {
+   "202503": -1200856.66
+  },
+  "indice_basileia": {
+   "202503": 8.51809657691461
+  },
+  "patrimonio_referencia": {
+   "202503": 3938028.73
+  },
+  "rwa": {
+   "202503": 42010388.24
+  },
+  "provisao_credito": {
+   "202503": 5570962.12
+  },
+  "roe_periodo": {
+   "202503": -46.24980178766307
+  },
+  "npl_pct": {
+   "202503": 11.199884466472382
+  },
+  "ativos_problematicos_pct": {
+   "202503": 19.029936239322183
+  },
+  "cobertura_pct": {
+   "202503": 126.78842352601025
+  },
+  "cart_ativo_pct": {
+   "202503": 50.26988978750809
+  },
+  "atraso15_consignado_pf": {
+   "202503": 3.6919969978730474
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 8.026350601111766
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 2.7917045120728257
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 4.569080460934019
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": 23.953448342182032
+  },
+  "atraso15_investimento_pj": {
+   "202503": 1.3390316777365576
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

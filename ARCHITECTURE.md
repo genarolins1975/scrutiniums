@@ -72,6 +72,13 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 - **Eventos de produto sem PII** (`src/lib/events.ts`): apenas nome do evento e `user_id`; nunca e-mail, telefone, código, empresa ou cargo. Falha de telemetria nunca derruba o fluxo principal.
 - **Auditoria** (`src/lib/audit.ts`) registra mudanças de contato e revogação de sessões; o campo `detail` só aceita dados mascarados (`maskEmail`, `maskPhone`).
 
+## Observatório embutido
+
+- **Rota**: `/observatorio` (e qualquer subrota, ex.: `/observatorio/credit-panorama`) serve a SPA estática do Observatório Brasileiro de Crédito via rewrites em `next.config.mjs` → `public/obs/index.html`. O roteamento entre as 16 abas é feito pela própria SPA (History API com prefixo `BASE = "/observatorio"` em `public/obs/app.js`).
+- **Proteção**: `src/middleware.ts` exige o cookie `scrutiniums_session` para `/observatorio`, `/observatorio/*` e `/obs/*` — os JSONs analíticos em `/obs/data/gold/**` também ficam atrás do login. Sem cookie → redirect `/entrar?de=/observatorio`.
+- **Origem dos dados**: arquivos estáticos da camada gold do pipeline do observatório (BCB/SGS, BCB/IF.data, IBGE, Ipeadata etc.), copiados para `public/obs/data/gold/`. Não há endpoints dinâmicos: a SPA só consome JSON estático.
+- **Atualização futura**: reexecutar o pipeline do observatório e sobrescrever `public/obs/data/gold/`; se `app.js`/`index.html` mudarem, reaplicar o patch mínimo (constante `BASE`, helper `appPath()`, `DATA_BASE = "/obs/data/gold/"` e os caminhos absolutos `/obs/styles.css` e `/obs/app.js` no HTML).
+
 ## Variáveis de ambiente
 
 | Variável | Propósito | Obrigatória? |

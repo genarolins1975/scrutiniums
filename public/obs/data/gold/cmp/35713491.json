@@ -1,0 +1,112 @@
+{
+ "cod": "35713491",
+ "nome": "PROTOTYPE INSTITUICAO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202506": 30853644.1,
+   "202509": 44017952.79,
+   "202512": 24076418.62,
+   "202603": 19419104.81
+  },
+  "patrimonio_liquido": {
+   "202506": 4209947.7,
+   "202509": 12057876.24,
+   "202512": 9001056.72,
+   "202603": 7917545.13
+  },
+  "carteira_credito": {
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202506": 22024961.9,
+   "202509": 18672908.16,
+   "202512": 8663920.11,
+   "202603": 6255670.09
+  },
+  "lucro_liquido": {
+   "202506": 2446739.98,
+   "202509": 8588297.89,
+   "202512": 9091529.8,
+   "202603": -509461.24
+  },
+  "roe_periodo": {
+   "202506": 58.118061181615154,
+   "202509": 71.22562646239268,
+   "202512": 101.00513842779118,
+   "202603": -6.434585867652642
+  },
+  "cart_ativo_pct": {
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "48756121",
+    "nome": "A55 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 19499713.28
+   },
+   {
+    "cod": "53184438",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DA CEBRACE",
+    "sr": "S5",
+    "ativo_brl": 19517033.5
+   },
+   {
+    "cod": "32422628",
+    "nome": "COOPERATIVA DE CREDITO RURAL DE GUACUI - CREDIGUAÇUÍ",
+    "sr": "S5",
+    "ativo_brl": 19521619.33
+   },
+   {
+    "cod": "57440521",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA TICKET SERVIÇOS COMÉRCIO E ADMINISTRAÇÃO",
+    "sr": "S5",
+    "ativo_brl": 19617300.72
+   },
+   {
+    "cod": "18310649",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS MUNICIPAIS EM JOÃO MONLEVADE LTDA. - COPREMON",
+    "sr": "S5",
+    "ativo_brl": 19626662.56
+   },
+   {
+    "cod": "30949267",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DE CHOCOLATES GAROTO LTDA. - CREDI-GAROTO",
+    "sr": "S5",
+    "ativo_brl": 19199310.3
+   },
+   {
+    "cod": "07253654",
+    "nome": "HEDGE INVESTMENTS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 19113182.27
+   },
+   {
+    "cod": "60717928",
+    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": null,
+    "ativo_brl": 19061217.59
+   }
+  ]
+ }
+}

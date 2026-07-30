@@ -1,0 +1,170 @@
+{
+ "cod": "48176336",
+ "nome": "PAGOL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 60185943.73,
+   "202506": 57857839.13,
+   "202509": 47403563.06,
+   "202512": 47845902.23,
+   "202603": 36954407.72
+  },
+  "patrimonio_liquido": {
+   "202503": 18864443.29,
+   "202506": 13415545.61,
+   "202509": 17553575.83,
+   "202512": 17882957.42,
+   "202603": 15570662.58
+  },
+  "carteira_credito": {
+   "202503": 18127.09,
+   "202506": 16741.71,
+   "202509": 15931.75,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "carteira_pf": {
+   "202503": 26050.56,
+   "202506": 25369.23,
+   "202509": 24218.57
+  },
+  "captacoes": {
+   "202503": 24371103.05,
+   "202506": 27636640.37,
+   "202509": 18181285.64,
+   "202512": 19146099.0,
+   "202603": 15943787.59
+  },
+  "lucro_liquido": {
+   "202503": -4898807.0,
+   "202506": -10348931.25,
+   "202509": -2861969.78,
+   "202512": -3628461.92,
+   "202603": -2312294.84
+  },
+  "indice_basileia": {
+   "202503": 2.25511676009101,
+   "202506": -24.9716968091987,
+   "202509": -4.89567759991844,
+   "202512": 12.579725361062199,
+   "202603": 15.4414667156848
+  },
+  "patrimonio_referencia": {
+   "202503": 686914.78,
+   "202506": -6023325.8,
+   "202509": -974877.03,
+   "202512": 2597714.54,
+   "202603": 2881481.76
+  },
+  "rwa": {
+   "202503": 16303139.64,
+   "202506": 9921748.86,
+   "202509": 6302628.41,
+   "202512": 7124704.59,
+   "202603": 6479929.8
+  },
+  "provisao_credito": {
+   "202503": 6256.31,
+   "202506": 8627.52,
+   "202509": 8286.82
+  },
+  "roe_periodo": {
+   "202503": -25.96846842862756,
+   "202506": -77.14133700448133,
+   "202509": -16.30419811733596,
+   "202512": -20.2900551333975,
+   "202603": -14.850330408996633
+  },
+  "npl_pct": {
+   "202503": 40.28427795794025,
+   "202506": 41.366174692728165,
+   "202509": 59.74448532675546
+  },
+  "ativos_problematicos_pct": {
+   "202503": 40.28427795794025,
+   "202506": 41.366174692728165,
+   "202509": 59.74448532675546
+  },
+  "cobertura_pct": {
+   "202503": 59.61638149544323,
+   "202506": 82.2116429140446,
+   "202509": 57.27189918489266
+  },
+  "cart_ativo_pct": {
+   "202503": 0.030118477632119372,
+   "202506": 0.028935940663776392,
+   "202509": 0.03360876054788275,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_consignado_pf": {
+   "202503": 11.04102944428066,
+   "202506": 21.397101922289323,
+   "202509": 33.16054581257275
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "00336036",
+    "nome": "COINVALORES CORRETORA DE CÂMBIO E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S5",
+    "ativo_brl": 37156443.85
+   },
+   {
+    "cod": "02285107",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA UNIVERSIDADE ESTADUAL DE CAMPINAS - COOPERUNICAMP",
+    "sr": "S5",
+    "ativo_brl": 36725986.08
+   },
+   {
+    "cod": "08673569",
+    "nome": "F.D'GOLD - DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 37238148.43
+   },
+   {
+    "cod": "50871921",
+    "nome": "MT INSTITUICAO DE PAGAMENTO SA",
+    "sr": null,
+    "ativo_brl": 37303571.37
+   },
+   {
+    "cod": "12102128",
+    "nome": "SAFETYPAY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 36394187.66
+   },
+   {
+    "cod": "88325113",
+    "nome": "COOPERATIVA    DE    ECONOMIA    E    CRÉDITO   MÚTUO  MINUANO",
+    "sr": "S5",
+    "ativo_brl": 37527325.06
+   },
+   {
+    "cod": "36452762",
+    "nome": "BIGCASH SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 37560866.81
+   },
+   {
+    "cod": "34088029",
+    "nome": "LISTO SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 35953645.4
+   }
+  ]
+ }
+}

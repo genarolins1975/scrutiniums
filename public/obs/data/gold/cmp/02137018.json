@@ -1,0 +1,83 @@
+{
+ "cod": "02137018",
+ "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE RORAIMA LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 110795982.21
+  },
+  "patrimonio_liquido": {
+   "202503": 17939917.42
+  },
+  "carteira_credito": {
+   "202503": 55486458.82
+  },
+  "carteira_pf": {
+   "202503": 46641077.01
+  },
+  "carteira_pj": {
+   "202503": 23928498.61
+  },
+  "captacoes": {
+   "202503": 73828869.15
+  },
+  "lucro_liquido": {
+   "202503": -3467139.04
+  },
+  "indice_basileia": {
+   "202503": 28.240968886068003
+  },
+  "patrimonio_referencia": {
+   "202503": 19952015.56
+  },
+  "rwa": {
+   "202503": 64501058.65
+  },
+  "provisao_credito": {
+   "202503": 14238912.58
+  },
+  "roe_periodo": {
+   "202503": -19.326393532529426
+  },
+  "npl_pct": {
+   "202503": 15.852922072595565
+  },
+  "ativos_problematicos_pct": {
+   "202503": 27.408857627476262
+  },
+  "cobertura_pct": {
+   "202503": 127.27701845452924
+  },
+  "cart_ativo_pct": {
+   "202503": 50.07984740352076
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 23.74524464954201
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 0.0
+  },
+  "atraso15_rural_pf": {
+   "202503": 7.146265910653379
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 3.2211278860676464
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": 19.958592966544426
+  },
+  "atraso15_investimento_pj": {
+   "202503": 0.5525965486966887
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

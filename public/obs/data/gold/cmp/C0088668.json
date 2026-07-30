@@ -1,0 +1,63 @@
+{
+ "cod": "C0088668",
+ "nome": "BANCO PLENO - PRUDENCIAL",
+ "sr": "S4",
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "carteira_pf": {
+   "202509": 22834151.06,
+   "202512": 22787391.61
+  },
+  "carteira_pj": {
+   "202509": 161064348.32,
+   "202512": 179279396.57
+  },
+  "indice_basileia": {
+   "202509": 14.075479735472902
+  },
+  "indice_capital_principal": {
+   "202509": 14.075479735472902
+  },
+  "indice_capital_nivel1": {
+   "202509": 14.075479735472902
+  },
+  "patrimonio_referencia": {
+   "202509": 442220224.96
+  },
+  "rwa": {
+   "202509": 2849451642.61
+  },
+  "razao_alavancagem": {
+   "202509": 6.49191722822778
+  },
+  "npl_pct": {
+   "202509": 8.950376341020908,
+   "202512": 16.95058837649705
+  },
+  "ativos_problematicos_pct": {
+   "202509": 58.21364462511907,
+   "202512": 58.48554545971504
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202509": 13.25790762282059,
+   "202512": 30.548906165900764
+  },
+  "atraso15_investimento_pj": {
+   "202509": 24.39575901364171,
+   "202512": 14.708129974725152
+  },
+  "atraso15_comercio_exterior_pj": {
+   "202509": 65.12613166982446,
+   "202512": 71.00598490743685
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

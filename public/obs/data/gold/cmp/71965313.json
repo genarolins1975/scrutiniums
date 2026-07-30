@@ -1,0 +1,185 @@
+{
+ "cod": "71965313",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO FLEURY",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 11265472.73,
+   "202506": 11595616.98,
+   "202509": 12022904.13,
+   "202512": 12380825.34,
+   "202603": 11729137.8
+  },
+  "patrimonio_liquido": {
+   "202503": 11127632.9,
+   "202506": 11450648.7,
+   "202509": 11867192.93,
+   "202512": 12232223.37,
+   "202603": 11592752.41
+  },
+  "carteira_credito": {
+   "202503": 5664649.54,
+   "202506": 5815634.67,
+   "202509": 6057786.67,
+   "202512": 6083329.19,
+   "202603": 6066359.96
+  },
+  "carteira_pf": {
+   "202503": 5799872.23,
+   "202506": 5976877.64,
+   "202509": 6229167.39,
+   "202512": 6257655.52,
+   "202603": 6257769.36
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 189915.28,
+   "202506": 420180.45,
+   "202509": 297137.8,
+   "202512": 609067.3,
+   "202603": 274641.48
+  },
+  "indice_basileia": {
+   "202503": 112.384314752071,
+   "202506": 107.887154198885,
+   "202509": 108.115422846283,
+   "202512": 107.77716935430699,
+   "202603": 110.038859116679
+  },
+  "patrimonio_referencia": {
+   "202503": 11093317.69,
+   "202506": 11416333.49,
+   "202509": 11832877.72,
+   "202512": 12196147.16,
+   "202603": 11556676.2
+  },
+  "rwa": {
+   "202503": 9379755.85,
+   "202506": 10090614.34,
+   "202509": 10443963.69,
+   "202512": 10815369.04,
+   "202603": 9988726.81
+  },
+  "provisao_credito": {
+   "202503": 135222.69,
+   "202506": 161242.97,
+   "202509": 171380.72,
+   "202512": 174326.33,
+   "202603": 191409.4
+  },
+  "roe_periodo": {
+   "202503": 1.7066997240715946,
+   "202506": 3.6694903582187446,
+   "202509": 2.503859183487632,
+   "202512": 4.979203547686688,
+   "202603": 2.3690791477879927
+  },
+  "npl_pct": {
+   "202503": 1.795662660658302,
+   "202506": 2.421765488911699,
+   "202509": 2.7426024908924465,
+   "202512": 2.6431093797250127,
+   "202603": 2.7283022140656197
+  },
+  "ativos_problematicos_pct": {
+   "202503": 2.4454305952874416,
+   "202506": 2.9829462930079322,
+   "202509": 3.037771794409911,
+   "202512": 3.0423969391015633,
+   "202603": 3.062722497014495
+  },
+  "cobertura_pct": {
+   "202503": 129.83936802650584,
+   "202506": 111.39721619864208,
+   "202509": 100.31574332436011,
+   "202512": 105.39892941019131,
+   "202603": 112.11177639473028
+  },
+  "cart_ativo_pct": {
+   "202503": 50.283283052250574,
+   "202506": 50.15373205264322,
+   "202509": 50.38538613049723,
+   "202512": 49.13508609434919,
+   "202603": 51.72042534959389
+  },
+  "atraso15_consignado_pf": {
+   "202503": 1.1557270115931502,
+   "202506": 1.4673584651132328,
+   "202509": 1.5564596988619375,
+   "202512": 1.6087019221747343,
+   "202603": 1.941372124970742
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202512": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "17312661",
+    "nome": "AMARIL FRANKLIN CORRETORA DE TÍTULOS E VALORES LTDA",
+    "sr": "S4",
+    "ativo_brl": 11905089.54
+   },
+   {
+    "cod": "43050917",
+    "nome": "ACTIVTRADES CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11479160.39
+   },
+   {
+    "cod": "40820176",
+    "nome": "PAY BROKERS IP INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 12064965.39
+   },
+   {
+    "cod": "01788147",
+    "nome": "H.COMMCOR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11315256.62
+   },
+   {
+    "cod": "45548763",
+    "nome": "INSTITUIÇÃO DE PAGAMENTOS MAPS LTDA.",
+    "sr": null,
+    "ativo_brl": 11275053.04
+   },
+   {
+    "cod": "48967968",
+    "nome": "VERT DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 12240861.83
+   },
+   {
+    "cod": "49091119",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA SKF E COLIGADAS",
+    "sr": "S5",
+    "ativo_brl": 12296596.69
+   },
+   {
+    "cod": "62280490",
+    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11173583.47
+   }
+  ]
+ }
+}

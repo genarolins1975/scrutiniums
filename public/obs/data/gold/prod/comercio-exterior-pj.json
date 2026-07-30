@@ -1,0 +1,2536 @@
+{
+ "gerado_em": "2026-07-29T02:55:03+00:00",
+ "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
+ "frequencia": "trimestral",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "data_base": "202603",
+ "consolidacao_nota": "Valores por conglomerado prudencial (códigos C…) e instituições individuais; a soma do mercado usa o universo IF.data.",
+ "npl_nota": "A matriz traz DOIS conceitos distintos, sempre rotulados: (1) atraso ≥15d NO PRODUTO (vencido ≥15d ÷ carteira da modalidade, IF.data rel. 123/128 — específico do produto); (2) inadimplência >90d TOTAL da instituição (Res. 4.966 — não específica do produto).",
+ "produto": {
+  "slug": "comercio-exterior-pj",
+  "nome": "Comércio exterior",
+  "seg": "pj",
+  "natureza": "livre",
+  "definicao": "Financiamentos à exportação/importação (ACC/ACE e afins).",
+  "nota_taxonomia": "",
+  "modalidade_original": "comercio_exterior",
+  "data_base": "202603",
+  "mercado_total_brl": 255230580903.7601,
+  "n_instituicoes": 83,
+  "share_segmento_pct": 7.95,
+  "crescimento_4t_pct": 0.27,
+  "crescimento_4t_n_pareado": 58,
+  "crescimento_1t_pct": -1.88,
+  "serie": [
+   {
+    "anomes": "202503",
+    "total_brl": 252795930647.60992,
+    "n_inst": 60
+   },
+   {
+    "anomes": "202506",
+    "total_brl": 262397722473.02008,
+    "n_inst": 61
+   },
+   {
+    "anomes": "202509",
+    "total_brl": 267190451222.18002,
+    "n_inst": 62
+   },
+   {
+    "anomes": "202512",
+    "total_brl": 260043754709.88998,
+    "n_inst": 82
+   },
+   {
+    "anomes": "202603",
+    "total_brl": 255230580903.7601,
+    "n_inst": 83
+   }
+  ],
+  "atraso15": {
+   "agg_pct": 0.64,
+   "n": 83,
+   "mediana_pct": 0.0,
+   "p25_pct": 0.0,
+   "p75_pct": 0.4,
+   "serie": [
+    {
+     "anomes": "202503",
+     "agg_pct": 0.84,
+     "n": 60
+    },
+    {
+     "anomes": "202506",
+     "agg_pct": 0.65,
+     "n": 61
+    },
+    {
+     "anomes": "202509",
+     "agg_pct": 0.71,
+     "n": 62
+    },
+    {
+     "anomes": "202512",
+     "agg_pct": 0.71,
+     "n": 82
+    },
+    {
+     "anomes": "202603",
+     "agg_pct": 0.64,
+     "n": 83
+    }
+   ],
+   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+   "nota": "Carteira da modalidade com parcelas vencidas há 15 dias ou mais ÷ carteira total da modalidade. Conceito de ATRASO (arrears) — NÃO é a inadimplência >90d (Res. 4.966), que a fonte pública não cruza com modalidade. Zero é zero real quando a modalidade é reportada."
+  },
+  "concentracao": {
+   "top1_pct": 25.7,
+   "top5_pct": 65.3,
+   "top10_pct": 81.5,
+   "hhi": 1175,
+   "n_inst": 83,
+   "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."
+  },
+  "sintese": "Comércio exterior: carteira cresceu 0.3% em 4 trimestres (amostra pareada, n=58); representa 8.0% da carteira PJ no universo IF.data; atraso ≥15d agregado de 0.6% da carteira (n=83); top-5 concentra 65% (HHI 1175).",
+  "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
+  "matriz": [
+   {
+    "cod": "C0049906",
+    "nome": "BB",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 65684303757.59,
+    "atraso15_pct": 1.13,
+    "share_pct": 25.74,
+    "d4t_pct": 1.4,
+    "d1t_pct": -3.7,
+    "pct_carteira_inst": 5.9,
+    "npl_inst_pct": 5.39,
+    "basileia_pct": 14.23
+   },
+   {
+    "cod": "C0010069",
+    "nome": "ITAU",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 38048903732.69,
+    "atraso15_pct": 0.09,
+    "share_pct": 14.91,
+    "d4t_pct": 5.9,
+    "d1t_pct": -6.6,
+    "pct_carteira_inst": 3.2,
+    "npl_inst_pct": 2.25,
+    "basileia_pct": 14.77
+   },
+   {
+    "cod": "C0010045",
+    "nome": "BRADESCO",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 28896000345.38,
+    "atraso15_pct": 0.23,
+    "share_pct": 11.32,
+    "d4t_pct": -12.2,
+    "d1t_pct": 2.8,
+    "pct_carteira_inst": 3.2,
+    "npl_inst_pct": 3.89,
+    "basileia_pct": 14.9
+   },
+   {
+    "cod": "C0030403",
+    "nome": "CITIBANK",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 18448738420.43,
+    "atraso15_pct": 0.16,
+    "share_pct": 7.23,
+    "d4t_pct": -13.3,
+    "d1t_pct": -7.7,
+    "pct_carteira_inst": 62.2,
+    "npl_inst_pct": 1.74,
+    "basileia_pct": 13.42
+   },
+   {
+    "cod": "C0030379",
+    "nome": "SANTANDER",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 15629114317.56,
+    "atraso15_pct": 1.25,
+    "share_pct": 6.12,
+    "d4t_pct": 3.1,
+    "d1t_pct": 3.8,
+    "pct_carteira_inst": 2.9,
+    "npl_inst_pct": 4.04,
+    "basileia_pct": 15.15
+   },
+   {
+    "cod": "C0051626",
+    "nome": "CAIXA ECONÔMICA FEDERAL",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 11542649435.0,
+    "atraso15_pct": 1.64,
+    "share_pct": 4.52,
+    "d4t_pct": 43.0,
+    "d1t_pct": 0.6,
+    "pct_carteira_inst": 0.9,
+    "npl_inst_pct": 3.68,
+    "basileia_pct": 15.13
+   },
+   {
+    "cod": "C0049944",
+    "nome": "BTG PACTUAL",
+    "sr": "S1",
+    "nivel": "conglomerado",
+    "carteira_brl": 8063679506.7,
+    "atraso15_pct": 0.0,
+    "share_pct": 3.16,
+    "d4t_pct": 13.7,
+    "d1t_pct": -5.1,
+    "pct_carteira_inst": 4.3,
+    "npl_inst_pct": 5.74,
+    "basileia_pct": 15.91
+   },
+   {
+    "cod": "75647891",
+    "nome": "BANCO CRÉDIT AGRICOLE BRASIL S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 7925885046.9,
+    "atraso15_pct": 0.0,
+    "share_pct": 3.11,
+    "d4t_pct": 13.5,
+    "d1t_pct": -5.9,
+    "pct_carteira_inst": 82.9,
+    "npl_inst_pct": 0.03,
+    "basileia_pct": 26.02
+   },
+   {
+    "cod": "01023570",
+    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 7506837926.58,
+    "atraso15_pct": 0.02,
+    "share_pct": 2.94,
+    "d4t_pct": -10.0,
+    "d1t_pct": 0.6,
+    "pct_carteira_inst": 19.5,
+    "npl_inst_pct": 3.04,
+    "basileia_pct": 13.48
+   },
+   {
+    "cod": "C0010083",
+    "nome": "SAFRA",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 6318221020.06,
+    "atraso15_pct": 0.17,
+    "share_pct": 2.48,
+    "d4t_pct": -8.0,
+    "d1t_pct": -2.7,
+    "pct_carteira_inst": 4.6,
+    "npl_inst_pct": 1.74,
+    "basileia_pct": 17.35
+   },
+   {
+    "cod": "C0032119",
+    "nome": "CCB",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 5713644831.34,
+    "atraso15_pct": 0.06,
+    "share_pct": 2.24,
+    "d4t_pct": -14.5,
+    "d1t_pct": -6.4,
+    "pct_carteira_inst": 48.5,
+    "npl_inst_pct": 0.14,
+    "basileia_pct": 13.53
+   },
+   {
+    "cod": "01522368",
+    "nome": "BANCO BNP PARIBAS BRASIL S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 3322547590.17,
+    "atraso15_pct": 0.0,
+    "share_pct": 1.3,
+    "d4t_pct": -23.5,
+    "d1t_pct": 9.3,
+    "pct_carteira_inst": 51.3,
+    "npl_inst_pct": 0.2,
+    "basileia_pct": 15.96
+   },
+   {
+    "cod": "60498557",
+    "nome": "BANCO MUFG BRASIL S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 3057761161.72,
+    "atraso15_pct": 0.0,
+    "share_pct": 1.2,
+    "d4t_pct": 124.4,
+    "d1t_pct": 87.4,
+    "pct_carteira_inst": 84.2,
+    "npl_inst_pct": null,
+    "basileia_pct": 25.86
+   },
+   {
+    "cod": "C0041856",
+    "nome": "ABC-BRASIL",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 3039930909.16,
+    "atraso15_pct": 0.36,
+    "share_pct": 1.19,
+    "d4t_pct": -18.3,
+    "d1t_pct": -8.1,
+    "pct_carteira_inst": 14.5,
+    "npl_inst_pct": 0.94,
+    "basileia_pct": 15.83
+   },
+   {
+    "cod": "53518684",
+    "nome": "BANCO HSBC S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 2981926452.54,
+    "atraso15_pct": 0.0,
+    "share_pct": 1.17,
+    "d4t_pct": -4.5,
+    "d1t_pct": 2.3,
+    "pct_carteira_inst": 60.9,
+    "npl_inst_pct": null,
+    "basileia_pct": 22.82
+   },
+   {
+    "cod": "C0051987",
+    "nome": "DAYCOVAL",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 2501987077.34,
+    "atraso15_pct": 3.08,
+    "share_pct": 0.98,
+    "d4t_pct": 38.8,
+    "d1t_pct": 1.6,
+    "pct_carteira_inst": 4.2,
+    "npl_inst_pct": 2.42,
+    "basileia_pct": 13.55
+   },
+   {
+    "cod": "C0030173",
+    "nome": "BANRISUL",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 2480362084.69,
+    "atraso15_pct": 0.08,
+    "share_pct": 0.97,
+    "d4t_pct": 20.4,
+    "d1t_pct": -3.9,
+    "pct_carteira_inst": 4.1,
+    "npl_inst_pct": 4.78,
+    "basileia_pct": 17.47
+   },
+   {
+    "cod": "C0052230",
+    "nome": "SCOTIABANK",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 2165765383.28,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.85,
+    "d4t_pct": 62.8,
+    "d1t_pct": 12.5,
+    "pct_carteira_inst": 100.1,
+    "npl_inst_pct": null,
+    "basileia_pct": 29.55
+   },
+   {
+    "cod": "03609817",
+    "nome": "BANCO CARGILL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 2092846817.81,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.82,
+    "d4t_pct": 14.8,
+    "d1t_pct": -14.1,
+    "pct_carteira_inst": 73.3,
+    "npl_inst_pct": 1.1,
+    "basileia_pct": 163.19
+   },
+   {
+    "cod": "01181521",
+    "nome": "BANCO COOPERATIVO SICREDI S.A.",
+    "sr": "S2",
+    "nivel": "individual",
+    "carteira_brl": 2067826942.9,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.81,
+    "d4t_pct": 14.5,
+    "d1t_pct": 1.7,
+    "pct_carteira_inst": 4.3,
+    "npl_inst_pct": 0.01,
+    "basileia_pct": 19.4
+   },
+   {
+    "cod": "61088183",
+    "nome": "BANCO MIZUHO DO BRASIL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 1825558046.92,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.72,
+    "d4t_pct": 6.5,
+    "d1t_pct": -3.2,
+    "pct_carteira_inst": 53.3,
+    "npl_inst_pct": null,
+    "basileia_pct": 20.04
+   },
+   {
+    "cod": "C0051011",
+    "nome": "VOTORANTIM",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 1753306285.08,
+    "atraso15_pct": 1.82,
+    "share_pct": 0.69,
+    "d4t_pct": -25.6,
+    "d1t_pct": -7.8,
+    "pct_carteira_inst": 2.2,
+    "npl_inst_pct": 8.21,
+    "basileia_pct": 15.01
+   },
+   {
+    "cod": "C0052120",
+    "nome": "XP",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 1094786029.32,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.43,
+    "d4t_pct": 257.7,
+    "d1t_pct": 26.8,
+    "pct_carteira_inst": 3.3,
+    "npl_inst_pct": 0.55,
+    "basileia_pct": 11.93
+   },
+   {
+    "cod": "C0020107",
+    "nome": "JP MORGAN CHASE",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 1065680901.37,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.42,
+    "d4t_pct": 103.7,
+    "d1t_pct": 59.0,
+    "pct_carteira_inst": 39.5,
+    "npl_inst_pct": null,
+    "basileia_pct": 23.79
+   },
+   {
+    "cod": "C0052072",
+    "nome": "C6 BANK",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 1043722108.99,
+    "atraso15_pct": 1.59,
+    "share_pct": 0.41,
+    "d4t_pct": 0.8,
+    "d1t_pct": -2.7,
+    "pct_carteira_inst": 1.1,
+    "npl_inst_pct": 2.95,
+    "basileia_pct": 12.95
+   },
+   {
+    "cod": "45283173",
+    "nome": "BBVA BRASIL BANCO DE INVESTIMENTO S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 932269797.5,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.37,
+    "d4t_pct": null,
+    "d1t_pct": 68.4,
+    "pct_carteira_inst": 101.9,
+    "npl_inst_pct": null,
+    "basileia_pct": 84.59
+   },
+   {
+    "cod": "55230916",
+    "nome": "INTESA SANPAOLO BRASIL S.A. - BANCO MÚLTIPLO",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 857246358.63,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.34,
+    "d4t_pct": -42.9,
+    "d1t_pct": 20.7,
+    "pct_carteira_inst": 77.5,
+    "npl_inst_pct": null,
+    "basileia_pct": 37.39
+   },
+   {
+    "cod": "C0051750",
+    "nome": "BANCO SICOOB",
+    "sr": "S2",
+    "nivel": "conglomerado",
+    "carteira_brl": 721091260.43,
+    "atraso15_pct": 0.57,
+    "share_pct": 0.28,
+    "d4t_pct": 35.1,
+    "d1t_pct": 11.0,
+    "pct_carteira_inst": 1.7,
+    "npl_inst_pct": 0.39,
+    "basileia_pct": 17.97
+   },
+   {
+    "cod": "C0050988",
+    "nome": "INDUSTRIAL DO BRASIL",
+    "sr": "S4",
+    "nivel": "conglomerado",
+    "carteira_brl": 711685645.65,
+    "atraso15_pct": 9.77,
+    "share_pct": 0.28,
+    "d4t_pct": 28.9,
+    "d1t_pct": -2.2,
+    "pct_carteira_inst": 12.8,
+    "npl_inst_pct": 2.64,
+    "basileia_pct": 17.48
+   },
+   {
+    "cod": "C0031873",
+    "nome": "SOFISA",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 674149407.48,
+    "atraso15_pct": 2.1,
+    "share_pct": 0.26,
+    "d4t_pct": -28.5,
+    "d1t_pct": -13.7,
+    "pct_carteira_inst": 9.1,
+    "npl_inst_pct": 6.56,
+    "basileia_pct": 17.29
+   },
+   {
+    "cod": "58616418",
+    "nome": "BANCO FIBRA S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 621786189.6,
+    "atraso15_pct": 8.07,
+    "share_pct": 0.24,
+    "d4t_pct": -6.6,
+    "d1t_pct": -25.8,
+    "pct_carteira_inst": 12.0,
+    "npl_inst_pct": 1.72,
+    "basileia_pct": 11.49
+   },
+   {
+    "cod": "62331228",
+    "nome": "DEUTSCHE BANK S.A. - BANCO ALEMAO",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 606698761.65,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.24,
+    "d4t_pct": -11.0,
+    "d1t_pct": -9.5,
+    "pct_carteira_inst": 16.9,
+    "npl_inst_pct": null,
+    "basileia_pct": 19.04
+   },
+   {
+    "cod": "C0030290",
+    "nome": "BMG",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 595497157.89,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.23,
+    "d4t_pct": 44.2,
+    "d1t_pct": 5.6,
+    "pct_carteira_inst": 2.6,
+    "npl_inst_pct": 3.6,
+    "basileia_pct": 12.1
+   },
+   {
+    "cod": "C0052003",
+    "nome": "BOCOM",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 542339213.17,
+    "atraso15_pct": 0.88,
+    "share_pct": 0.21,
+    "d4t_pct": -34.9,
+    "d1t_pct": -11.7,
+    "pct_carteira_inst": 3.2,
+    "npl_inst_pct": 0.75,
+    "basileia_pct": 17.3
+   },
+   {
+    "cod": "60518222",
+    "nome": "BANCO SUMITOMO MITSUI BRASILEIRO S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 511843206.18,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.2,
+    "d4t_pct": -61.9,
+    "d1t_pct": 22.6,
+    "pct_carteira_inst": 30.2,
+    "npl_inst_pct": 37.19,
+    "basileia_pct": 26.8
+   },
+   {
+    "cod": "C0050304",
+    "nome": "PINE",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 397436076.41,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.16,
+    "d4t_pct": -54.3,
+    "d1t_pct": -17.2,
+    "pct_carteira_inst": 2.8,
+    "npl_inst_pct": 3.38,
+    "basileia_pct": 13.22
+   },
+   {
+    "cod": "07237373",
+    "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
+    "sr": "S2",
+    "nivel": "individual",
+    "carteira_brl": 333896160.42,
+    "atraso15_pct": 10.12,
+    "share_pct": 0.13,
+    "d4t_pct": -26.0,
+    "d1t_pct": 0.0,
+    "pct_carteira_inst": 1.8,
+    "npl_inst_pct": 6.32,
+    "basileia_pct": 15.36
+   },
+   {
+    "cod": "07656500",
+    "nome": "BANCO KDB DO BRASIL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 301368783.42,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.12,
+    "d4t_pct": 41.8,
+    "d1t_pct": 4.9,
+    "pct_carteira_inst": 59.2,
+    "npl_inst_pct": null,
+    "basileia_pct": 42.2
+   },
+   {
+    "cod": "C0051815",
+    "nome": "CAIXA GERAL",
+    "sr": "S4",
+    "nivel": "conglomerado",
+    "carteira_brl": 298343095.32,
+    "atraso15_pct": 6.5,
+    "share_pct": 0.12,
+    "d4t_pct": 1.7,
+    "d1t_pct": -15.3,
+    "pct_carteira_inst": 36.2,
+    "npl_inst_pct": 12.7,
+    "basileia_pct": 21.44
+   },
+   {
+    "cod": "26529420",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO VERDE DO MATO GROSSO - SICREDI OURO VERDE MT",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 287410971.55,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.11,
+    "d4t_pct": null,
+    "d1t_pct": -3.2,
+    "pct_carteira_inst": 3.5,
+    "npl_inst_pct": 4.34,
+    "basileia_pct": 18.37
+   },
+   {
+    "cod": "78632767",
+    "nome": "OURIBANK S.A. BANCO MÚLTIPLO",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 278039956.12,
+    "atraso15_pct": 1.04,
+    "share_pct": 0.11,
+    "d4t_pct": 53.1,
+    "d1t_pct": 12.4,
+    "pct_carteira_inst": 19.4,
+    "npl_inst_pct": 1.94,
+    "basileia_pct": 17.87
+   },
+   {
+    "cod": "04902979",
+    "nome": "BANCO DA AMAZONIA S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 266394912.28,
+    "atraso15_pct": 2.39,
+    "share_pct": 0.1,
+    "d4t_pct": 145.0,
+    "d1t_pct": -5.2,
+    "pct_carteira_inst": 0.7,
+    "npl_inst_pct": 5.54,
+    "basileia_pct": 13.01
+   },
+   {
+    "cod": "71027866",
+    "nome": "BANCO BS2 S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 186521949.61,
+    "atraso15_pct": 2.12,
+    "share_pct": 0.07,
+    "d4t_pct": -21.7,
+    "d1t_pct": 67.0,
+    "pct_carteira_inst": 7.7,
+    "npl_inst_pct": 7.56,
+    "basileia_pct": 13.12
+   },
+   {
+    "cod": "59118133",
+    "nome": "BANCO LUSO BRASILEIRO S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 163071268.69,
+    "atraso15_pct": 0.5,
+    "share_pct": 0.06,
+    "d4t_pct": -13.6,
+    "d1t_pct": -1.6,
+    "pct_carteira_inst": 5.8,
+    "npl_inst_pct": 10.16,
+    "basileia_pct": 16.2
+   },
+   {
+    "cod": "C0030159",
+    "nome": "BANESTES",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 150685331.44,
+    "atraso15_pct": 0.1,
+    "share_pct": 0.06,
+    "d4t_pct": -25.1,
+    "d1t_pct": -9.9,
+    "pct_carteira_inst": 1.2,
+    "npl_inst_pct": 2.41,
+    "basileia_pct": 14.04
+   },
+   {
+    "cod": "17453575",
+    "nome": "ICBC DO BRASIL BANCO MÚLTIPLO S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 144339361.2,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.06,
+    "d4t_pct": -50.1,
+    "d1t_pct": -3.8,
+    "pct_carteira_inst": 154.1,
+    "npl_inst_pct": 50.98,
+    "basileia_pct": 89.84
+   },
+   {
+    "cod": "61533584",
+    "nome": "BANCO SOCIETE GENERALE BRASIL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 134962171.29,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.05,
+    "d4t_pct": 39.2,
+    "d1t_pct": 24.4,
+    "pct_carteira_inst": 77.5,
+    "npl_inst_pct": null,
+    "basileia_pct": 26.48
+   },
+   {
+    "cod": "32995755",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SUDOESTE MT/PA - SICREDI SUDOESTE MT/PA",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 122026605.32,
+    "atraso15_pct": 0.4,
+    "share_pct": 0.05,
+    "d4t_pct": null,
+    "d1t_pct": 32.8,
+    "pct_carteira_inst": 2.4,
+    "npl_inst_pct": 6.78,
+    "basileia_pct": 18.66
+   },
+   {
+    "cod": "C0051884",
+    "nome": "INTER",
+    "sr": "S3",
+    "nivel": "conglomerado",
+    "carteira_brl": 109594238.51,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.04,
+    "d4t_pct": 39.7,
+    "d1t_pct": -7.7,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 4.89,
+    "basileia_pct": 13.98
+   },
+   {
+    "cod": "24654881",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO DOS ESTADOS DE MATO GROSSO DO SUL, TOCANTINS E OESTE DA BAHIA - SICREDI UNIÃO MS/TO",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 93794686.44,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.04,
+    "d4t_pct": null,
+    "d1t_pct": 1.8,
+    "pct_carteira_inst": 1.7,
+    "npl_inst_pct": 6.06,
+    "basileia_pct": 16.65
+   },
+   {
+    "cod": "81099491",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD PR/SP",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 84548495.32,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.03,
+    "d4t_pct": null,
+    "d1t_pct": null,
+    "pct_carteira_inst": 1.1,
+    "npl_inst_pct": 4.95,
+    "basileia_pct": 15.35
+   },
+   {
+    "cod": "04913711",
+    "nome": "BANCO DO ESTADO DO PARÁ S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 80838589.29,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.03,
+    "d4t_pct": -13.9,
+    "d1t_pct": -3.8,
+    "pct_carteira_inst": 0.5,
+    "npl_inst_pct": 3.17,
+    "basileia_pct": 16.82
+   },
+   {
+    "cod": "92894922",
+    "nome": "BANCO ORIGINAL S.A.",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 75711588.7,
+    "atraso15_pct": 0.03,
+    "share_pct": 0.03,
+    "d4t_pct": -62.3,
+    "d1t_pct": -65.2,
+    "pct_carteira_inst": 0.5,
+    "npl_inst_pct": 1.97,
+    "basileia_pct": 16.02
+   },
+   {
+    "cod": "C0051468",
+    "nome": "RENDIMENTO",
+    "sr": "S4",
+    "nivel": "conglomerado",
+    "carteira_brl": 68745179.04,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.03,
+    "d4t_pct": -8.5,
+    "d1t_pct": -8.2,
+    "pct_carteira_inst": 19.8,
+    "npl_inst_pct": 1.38,
+    "basileia_pct": 13.4
+   },
+   {
+    "cod": "91586982",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 67235030.88,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.03,
+    "d4t_pct": null,
+    "d1t_pct": -3.3,
+    "pct_carteira_inst": 1.1,
+    "npl_inst_pct": 4.08,
+    "basileia_pct": 18.25
+   },
+   {
+    "cod": "02318507",
+    "nome": "BANCO KEB HANA DO BRASIL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 61786800.0,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.02,
+    "d4t_pct": 43.5,
+    "d1t_pct": 151.4,
+    "pct_carteira_inst": 35.0,
+    "npl_inst_pct": null,
+    "basileia_pct": 62.94
+   },
+   {
+    "cod": "61820817",
+    "nome": "BANCO PAULISTA S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 51756114.07,
+    "atraso15_pct": 9.47,
+    "share_pct": 0.02,
+    "d4t_pct": -28.6,
+    "d1t_pct": -10.4,
+    "pct_carteira_inst": 5.4,
+    "npl_inst_pct": 10.92,
+    "basileia_pct": 10.59
+   },
+   {
+    "cod": "79342069",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DEXIS - SICREDI DEXIS",
+    "sr": "S3",
+    "nivel": "individual",
+    "carteira_brl": 51631000.64,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.02,
+    "d4t_pct": null,
+    "d1t_pct": 63.0,
+    "pct_carteira_inst": 0.6,
+    "npl_inst_pct": 4.09,
+    "basileia_pct": 15.31
+   },
+   {
+    "cod": "23903068",
+    "nome": "BANCO KOMATSU DO BRASIL S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 51243058.59,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.02,
+    "d4t_pct": null,
+    "d1t_pct": 7.9,
+    "pct_carteira_inst": 4.2,
+    "npl_inst_pct": 0.83,
+    "basileia_pct": 17.44
+   },
+   {
+    "cod": "33603457",
+    "nome": "BANCO RODOBENS S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 35607027.96,
+    "atraso15_pct": 0.16,
+    "share_pct": 0.01,
+    "d4t_pct": 12.7,
+    "d1t_pct": 5.5,
+    "pct_carteira_inst": 1.5,
+    "npl_inst_pct": 3.27,
+    "basileia_pct": 15.97
+   },
+   {
+    "cod": "C0051671",
+    "nome": "CONFIDENCE",
+    "sr": "S4",
+    "nivel": "conglomerado",
+    "carteira_brl": 31109208.67,
+    "atraso15_pct": 5.42,
+    "share_pct": 0.01,
+    "d4t_pct": -35.9,
+    "d1t_pct": -10.6,
+    "pct_carteira_inst": 115.0,
+    "npl_inst_pct": 6.68,
+    "basileia_pct": 12.87
+   },
+   {
+    "cod": "33042151",
+    "nome": "BANCO DE LA NACION ARGENTINA",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 30466040.83,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": -35.2,
+    "d1t_pct": -20.6,
+    "pct_carteira_inst": 93.2,
+    "npl_inst_pct": null,
+    "basileia_pct": 44.62
+   },
+   {
+    "cod": "44189447",
+    "nome": "BANCO DE LA PROVINCIA DE BUENOS AIRES",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 27581174.2,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": 2231.0,
+    "d1t_pct": 2322.1,
+    "pct_carteira_inst": 47.8,
+    "npl_inst_pct": null,
+    "basileia_pct": 167.9
+   },
+   {
+    "cod": "17351180",
+    "nome": "BANCO TRIANGULO S.A.",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 25111461.51,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": 22.6,
+    "d1t_pct": -3.6,
+    "pct_carteira_inst": 1.3,
+    "npl_inst_pct": 19.77,
+    "basileia_pct": 14.31
+   },
+   {
+    "cod": "C0051482",
+    "nome": "HAITONG",
+    "sr": "S4",
+    "nivel": "conglomerado",
+    "carteira_brl": 24712713.79,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": -39.8,
+    "d1t_pct": -28.2,
+    "pct_carteira_inst": 13.1,
+    "npl_inst_pct": 16.79,
+    "basileia_pct": 23.73
+   },
+   {
+    "cod": "90608712",
+    "nome": "COOPERATIVA DE CRÉDITO SICREDI SERRANA RS/ES",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 18584955.78,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": null,
+    "d1t_pct": -2.9,
+    "pct_carteira_inst": 0.3,
+    "npl_inst_pct": 3.61,
+    "basileia_pct": 17.17
+   },
+   {
+    "cod": "33021064",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO ARAGUAIA E XINGU - SICREDI ARAXINGU",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 18352447.55,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": null,
+    "d1t_pct": -30.1,
+    "pct_carteira_inst": 0.6,
+    "npl_inst_pct": 14.14,
+    "basileia_pct": 15.97
+   },
+   {
+    "cod": "81466286",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CAMPOS GERAIS E GRANDE CURITIBA - SICREDI CAMPOS GERAIS E GRANDE CURITIBA PR/SP",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 18108324.28,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": null,
+    "d1t_pct": 75.2,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 4.14,
+    "basileia_pct": 16.89
+   },
+   {
+    "cod": "26408161",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CENTRO SUL DO MATO GROSSO DO SUL E BAHIA - SICREDI CENTRO-SUL MS/BA",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 15462633.04,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.01,
+    "d4t_pct": null,
+    "d1t_pct": -2.4,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 8.23,
+    "basileia_pct": 19.52
+   },
+   {
+    "cod": "35571249",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI EVOLUÇÃO - SICREDI EVOLUÇÃO",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 11551311.81,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.7,
+    "pct_carteira_inst": 0.5,
+    "npl_inst_pct": 2.5,
+    "basileia_pct": 28.86
+   },
+   {
+    "cod": "74828799",
+    "nome": "NOVO BANCO CONTINENTAL S.A. - BANCO MÚLTIPLO",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 10190039.98,
+    "atraso15_pct": 31.07,
+    "share_pct": 0.0,
+    "d4t_pct": -68.6,
+    "d1t_pct": -58.0,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 4.14,
+    "basileia_pct": 12.12
+   },
+   {
+    "cod": "88894548",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO - SICREDI UNIAO RS/ES",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 10185503.1,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.8,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 2.77,
+    "basileia_pct": 16.15
+   },
+   {
+    "cod": "82065285",
+    "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO PARQUE DAS ARAUCARIAS - SICREDI PARQUE DAS ARAUCARIAS PR/SC/SP",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 7989207.47,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.7,
+    "pct_carteira_inst": 0.3,
+    "npl_inst_pct": 3.64,
+    "basileia_pct": 15.92
+   },
+   {
+    "cod": "84974278",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO IGUAÇU - SICREDI IGUAÇU PR/SC E REGIÃO METROPOLITANA DE CAMPINAS/SP",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 7041917.86,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -3.0,
+    "pct_carteira_inst": 0.3,
+    "npl_inst_pct": 3.42,
+    "basileia_pct": 17.71
+   },
+   {
+    "cod": "37442605",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NORTE MATO-GROSSENSE E OESTE PARAENSE - SICREDI GRANDES RIOS MT/PA/AM",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 5420579.18,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.6,
+    "pct_carteira_inst": 0.2,
+    "npl_inst_pct": 10.19,
+    "basileia_pct": 22.43
+   },
+   {
+    "cod": "10348181",
+    "nome": "COOPERATIVA DE CRÉDITO DO VALE DO ITAJAÍ E LITORAL CATARINENSE - SICREDI VALE LITORAL SC",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 4750528.52,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": 160.8,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 4.3,
+    "basileia_pct": 19.75
+   },
+   {
+    "cod": "26555235",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SORRISO - SICREDI CELEIRO MT/RR",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 4469905.53,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -21.0,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 5.0,
+    "basileia_pct": 25.98
+   },
+   {
+    "cod": "87067757",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CENTRO SERRA - SICREDI CENTRO SERRA RS",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 4111698.95,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.4,
+    "pct_carteira_inst": 0.4,
+    "npl_inst_pct": 1.21,
+    "basileia_pct": 41.76
+   },
+   {
+    "cod": "79457883",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO DE LIVRE ADMISSÃO AGROEMPRESARIAL - SICREDI AGROEMPRESARIAL PR/SP",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 3214037.94,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.1,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 5.5,
+    "basileia_pct": 21.53
+   },
+   {
+    "cod": "90497256",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTERESTADOS - SICREDI INTERESTADOS RS/ES",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 2921389.76,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -3.3,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 3.47,
+    "basileia_pct": 20.03
+   },
+   {
+    "cod": "26549311",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTEGRAÇÃO DO SUL DE MATO GROSSO, AMAPÁ E PARÁ - SICREDI INTEGRAÇÃO MT/AP/PA",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 2110436.68,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": null,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 8.45,
+    "basileia_pct": 18.41
+   },
+   {
+    "cod": "87795639",
+    "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES - SICREDI ALIANÇA RS/SC/ES",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 2008657.46,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -62.0,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 4.06,
+    "basileia_pct": 18.48
+   },
+   {
+    "cod": "03566655",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CELEIRO CENTRO OESTE - SICREDI CELEIRO CENTRO OESTE",
+    "sr": "S4",
+    "nivel": "individual",
+    "carteira_brl": 1545147.66,
+    "atraso15_pct": 0.0,
+    "share_pct": 0.0,
+    "d4t_pct": null,
+    "d1t_pct": -2.5,
+    "pct_carteira_inst": 0.1,
+    "npl_inst_pct": 8.67,
+    "basileia_pct": 20.5
+   }
+  ],
+  "taxas": {
+   "disponivel": true,
+   "fonte": "BCB txjuros (Olinda v2)",
+   "nota": "Taxa média das NOVAS operações contratadas na janela divulgada (metodologia BCB/txjuros), por instituição individual (cnpj8) — conceito distinto do estoque da carteira IF.data. Correspondência produto×modalidade aproximada e explícita; modalidades nunca são misturadas.",
+   "itens": [
+    {
+     "segmento": "PESSOA JURÍDICA",
+     "modalidade": "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
+     "inicio": "2026-07-08",
+     "fim": "2026-07-14",
+     "n_inst": 33,
+     "mediana_aa": 6.22,
+     "p25_aa": 5.2,
+     "p75_aa": 7.93,
+     "min_aa": 4.19,
+     "max_aa": 19.0,
+     "moeda_estrangeira": true,
+     "serie": [
+      {
+       "inicio": "2023-11-29",
+       "mediana_aa": 6.73,
+       "p25_aa": 6.19,
+       "p75_aa": 7.95,
+       "n": 17
+      },
+      {
+       "inicio": "2023-12-05",
+       "mediana_aa": 8.81,
+       "p25_aa": 7.6,
+       "p75_aa": 10.49,
+       "n": 27
+      },
+      {
+       "inicio": "2023-12-11",
+       "mediana_aa": 8.81,
+       "p25_aa": 6.7,
+       "p75_aa": 11.02,
+       "n": 27
+      },
+      {
+       "inicio": "2023-12-18",
+       "mediana_aa": 8.65,
+       "p25_aa": 7.04,
+       "p75_aa": 10.06,
+       "n": 32
+      },
+      {
+       "inicio": "2023-12-26",
+       "mediana_aa": 8.29,
+       "p25_aa": 7.11,
+       "p75_aa": 9.9,
+       "n": 25
+      },
+      {
+       "inicio": "2024-01-02",
+       "mediana_aa": 8.53,
+       "p25_aa": 7.44,
+       "p75_aa": 9.2,
+       "n": 23
+      },
+      {
+       "inicio": "2024-01-08",
+       "mediana_aa": 8.96,
+       "p25_aa": 6.74,
+       "p75_aa": 9.98,
+       "n": 27
+      },
+      {
+       "inicio": "2024-01-15",
+       "mediana_aa": 7.86,
+       "p25_aa": 6.94,
+       "p75_aa": 8.96,
+       "n": 31
+      },
+      {
+       "inicio": "2024-01-22",
+       "mediana_aa": 8.69,
+       "p25_aa": 7.56,
+       "p75_aa": 10.25,
+       "n": 28
+      },
+      {
+       "inicio": "2024-01-29",
+       "mediana_aa": 8.41,
+       "p25_aa": 6.38,
+       "p75_aa": 9.84,
+       "n": 30
+      },
+      {
+       "inicio": "2024-02-05",
+       "mediana_aa": 8.15,
+       "p25_aa": 7.04,
+       "p75_aa": 10.51,
+       "n": 34
+      },
+      {
+       "inicio": "2024-02-14",
+       "mediana_aa": 8.41,
+       "p25_aa": 7.1,
+       "p75_aa": 9.23,
+       "n": 31
+      },
+      {
+       "inicio": "2024-02-20",
+       "mediana_aa": 8.42,
+       "p25_aa": 7.29,
+       "p75_aa": 9.09,
+       "n": 28
+      },
+      {
+       "inicio": "2024-02-26",
+       "mediana_aa": 8.88,
+       "p25_aa": 7.21,
+       "p75_aa": 10.26,
+       "n": 33
+      },
+      {
+       "inicio": "2024-03-04",
+       "mediana_aa": 8.57,
+       "p25_aa": 6.57,
+       "p75_aa": 9.54,
+       "n": 29
+      },
+      {
+       "inicio": "2024-03-11",
+       "mediana_aa": 8.79,
+       "p25_aa": 6.88,
+       "p75_aa": 10.2,
+       "n": 34
+      },
+      {
+       "inicio": "2024-03-18",
+       "mediana_aa": 8.41,
+       "p25_aa": 7.67,
+       "p75_aa": 9.2,
+       "n": 30
+      },
+      {
+       "inicio": "2024-03-25",
+       "mediana_aa": 8.82,
+       "p25_aa": 6.68,
+       "p75_aa": 9.49,
+       "n": 32
+      },
+      {
+       "inicio": "2024-04-01",
+       "mediana_aa": 7.92,
+       "p25_aa": 6.6,
+       "p75_aa": 10.13,
+       "n": 30
+      },
+      {
+       "inicio": "2024-04-08",
+       "mediana_aa": 8.27,
+       "p25_aa": 6.65,
+       "p75_aa": 9.81,
+       "n": 33
+      },
+      {
+       "inicio": "2024-04-15",
+       "mediana_aa": 7.88,
+       "p25_aa": 6.67,
+       "p75_aa": 9.37,
+       "n": 30
+      },
+      {
+       "inicio": "2024-04-22",
+       "mediana_aa": 8.59,
+       "p25_aa": 6.07,
+       "p75_aa": 9.92,
+       "n": 27
+      },
+      {
+       "inicio": "2024-04-29",
+       "mediana_aa": 7.75,
+       "p25_aa": 6.4,
+       "p75_aa": 9.15,
+       "n": 31
+      },
+      {
+       "inicio": "2024-05-06",
+       "mediana_aa": 8.49,
+       "p25_aa": 6.78,
+       "p75_aa": 9.89,
+       "n": 31
+      },
+      {
+       "inicio": "2024-05-13",
+       "mediana_aa": 8.59,
+       "p25_aa": 7.11,
+       "p75_aa": 9.72,
+       "n": 28
+      },
+      {
+       "inicio": "2024-05-20",
+       "mediana_aa": 8.6,
+       "p25_aa": 6.76,
+       "p75_aa": 9.59,
+       "n": 27
+      },
+      {
+       "inicio": "2024-05-27",
+       "mediana_aa": 8.48,
+       "p25_aa": 6.35,
+       "p75_aa": 9.7,
+       "n": 35
+      },
+      {
+       "inicio": "2024-06-03",
+       "mediana_aa": 8.15,
+       "p25_aa": 6.65,
+       "p75_aa": 9.95,
+       "n": 37
+      },
+      {
+       "inicio": "2024-06-10",
+       "mediana_aa": 8.2,
+       "p25_aa": 7.0,
+       "p75_aa": 10.2,
+       "n": 35
+      },
+      {
+       "inicio": "2024-06-17",
+       "mediana_aa": 7.99,
+       "p25_aa": 6.56,
+       "p75_aa": 9.44,
+       "n": 35
+      },
+      {
+       "inicio": "2024-06-24",
+       "mediana_aa": 8.33,
+       "p25_aa": 6.69,
+       "p75_aa": 10.1,
+       "n": 30
+      },
+      {
+       "inicio": "2024-07-01",
+       "mediana_aa": 8.23,
+       "p25_aa": 6.94,
+       "p75_aa": 9.37,
+       "n": 28
+      },
+      {
+       "inicio": "2024-07-08",
+       "mediana_aa": 8.5,
+       "p25_aa": 6.7,
+       "p75_aa": 9.53,
+       "n": 33
+      },
+      {
+       "inicio": "2024-07-15",
+       "mediana_aa": 8.09,
+       "p25_aa": 7.08,
+       "p75_aa": 9.33,
+       "n": 31
+      },
+      {
+       "inicio": "2024-07-22",
+       "mediana_aa": 8.23,
+       "p25_aa": 7.08,
+       "p75_aa": 10.17,
+       "n": 34
+      },
+      {
+       "inicio": "2024-07-29",
+       "mediana_aa": 7.85,
+       "p25_aa": 6.54,
+       "p75_aa": 9.34,
+       "n": 27
+      },
+      {
+       "inicio": "2024-08-05",
+       "mediana_aa": 8.46,
+       "p25_aa": 6.63,
+       "p75_aa": 10.2,
+       "n": 30
+      },
+      {
+       "inicio": "2024-08-12",
+       "mediana_aa": 8.37,
+       "p25_aa": 6.62,
+       "p75_aa": 9.51,
+       "n": 27
+      },
+      {
+       "inicio": "2024-08-19",
+       "mediana_aa": 8.0,
+       "p25_aa": 6.8,
+       "p75_aa": 9.45,
+       "n": 28
+      },
+      {
+       "inicio": "2024-08-26",
+       "mediana_aa": 8.33,
+       "p25_aa": 6.51,
+       "p75_aa": 9.18,
+       "n": 32
+      },
+      {
+       "inicio": "2024-09-02",
+       "mediana_aa": 7.8,
+       "p25_aa": 6.27,
+       "p75_aa": 9.11,
+       "n": 33
+      },
+      {
+       "inicio": "2024-09-09",
+       "mediana_aa": 8.09,
+       "p25_aa": 6.31,
+       "p75_aa": 9.68,
+       "n": 27
+      },
+      {
+       "inicio": "2024-09-16",
+       "mediana_aa": 8.11,
+       "p25_aa": 6.54,
+       "p75_aa": 9.19,
+       "n": 26
+      },
+      {
+       "inicio": "2024-09-23",
+       "mediana_aa": 7.91,
+       "p25_aa": 5.98,
+       "p75_aa": 8.97,
+       "n": 33
+      },
+      {
+       "inicio": "2024-09-30",
+       "mediana_aa": 6.92,
+       "p25_aa": 5.61,
+       "p75_aa": 9.07,
+       "n": 35
+      },
+      {
+       "inicio": "2024-10-07",
+       "mediana_aa": 7.34,
+       "p25_aa": 6.28,
+       "p75_aa": 9.14,
+       "n": 30
+      },
+      {
+       "inicio": "2024-10-14",
+       "mediana_aa": 8.16,
+       "p25_aa": 6.36,
+       "p75_aa": 8.77,
+       "n": 28
+      },
+      {
+       "inicio": "2024-10-21",
+       "mediana_aa": 7.95,
+       "p25_aa": 6.28,
+       "p75_aa": 8.58,
+       "n": 31
+      },
+      {
+       "inicio": "2024-10-28",
+       "mediana_aa": 7.62,
+       "p25_aa": 6.06,
+       "p75_aa": 8.81,
+       "n": 29
+      },
+      {
+       "inicio": "2024-11-04",
+       "mediana_aa": 7.8,
+       "p25_aa": 6.3,
+       "p75_aa": 9.6,
+       "n": 36
+      },
+      {
+       "inicio": "2024-11-11",
+       "mediana_aa": 7.52,
+       "p25_aa": 6.68,
+       "p75_aa": 8.16,
+       "n": 31
+      },
+      {
+       "inicio": "2024-11-18",
+       "mediana_aa": 7.97,
+       "p25_aa": 6.86,
+       "p75_aa": 10.5,
+       "n": 29
+      },
+      {
+       "inicio": "2024-11-25",
+       "mediana_aa": 8.09,
+       "p25_aa": 6.33,
+       "p75_aa": 9.22,
+       "n": 30
+      },
+      {
+       "inicio": "2024-12-02",
+       "mediana_aa": 7.65,
+       "p25_aa": 6.5,
+       "p75_aa": 9.17,
+       "n": 31
+      },
+      {
+       "inicio": "2024-12-09",
+       "mediana_aa": 7.22,
+       "p25_aa": 5.87,
+       "p75_aa": 8.42,
+       "n": 34
+      },
+      {
+       "inicio": "2024-12-16",
+       "mediana_aa": 7.84,
+       "p25_aa": 6.63,
+       "p75_aa": 9.69,
+       "n": 32
+      },
+      {
+       "inicio": "2024-12-23",
+       "mediana_aa": 7.96,
+       "p25_aa": 6.13,
+       "p75_aa": 9.32,
+       "n": 31
+      },
+      {
+       "inicio": "2024-12-30",
+       "mediana_aa": 7.61,
+       "p25_aa": 5.5,
+       "p75_aa": 9.52,
+       "n": 26
+      },
+      {
+       "inicio": "2025-01-06",
+       "mediana_aa": 7.62,
+       "p25_aa": 5.7,
+       "p75_aa": 10.0,
+       "n": 26
+      },
+      {
+       "inicio": "2025-01-13",
+       "mediana_aa": 7.52,
+       "p25_aa": 5.52,
+       "p75_aa": 9.53,
+       "n": 29
+      },
+      {
+       "inicio": "2025-01-20",
+       "mediana_aa": 7.25,
+       "p25_aa": 5.95,
+       "p75_aa": 9.66,
+       "n": 27
+      },
+      {
+       "inicio": "2025-01-27",
+       "mediana_aa": 7.47,
+       "p25_aa": 5.71,
+       "p75_aa": 9.8,
+       "n": 30
+      },
+      {
+       "inicio": "2025-02-03",
+       "mediana_aa": 7.04,
+       "p25_aa": 5.97,
+       "p75_aa": 9.01,
+       "n": 27
+      },
+      {
+       "inicio": "2025-02-10",
+       "mediana_aa": 7.1,
+       "p25_aa": 5.89,
+       "p75_aa": 8.42,
+       "n": 26
+      },
+      {
+       "inicio": "2025-02-17",
+       "mediana_aa": 7.86,
+       "p25_aa": 6.25,
+       "p75_aa": 8.42,
+       "n": 28
+      },
+      {
+       "inicio": "2025-02-24",
+       "mediana_aa": 8.15,
+       "p25_aa": 5.79,
+       "p75_aa": 9.21,
+       "n": 32
+      },
+      {
+       "inicio": "2025-03-05",
+       "mediana_aa": 7.31,
+       "p25_aa": 5.91,
+       "p75_aa": 10.15,
+       "n": 30
+      },
+      {
+       "inicio": "2025-03-11",
+       "mediana_aa": 7.73,
+       "p25_aa": 6.23,
+       "p75_aa": 8.32,
+       "n": 23
+      },
+      {
+       "inicio": "2025-03-17",
+       "mediana_aa": 7.37,
+       "p25_aa": 5.95,
+       "p75_aa": 8.2,
+       "n": 26
+      },
+      {
+       "inicio": "2025-03-24",
+       "mediana_aa": 7.66,
+       "p25_aa": 6.54,
+       "p75_aa": 8.85,
+       "n": 31
+      },
+      {
+       "inicio": "2025-03-31",
+       "mediana_aa": 7.57,
+       "p25_aa": 5.55,
+       "p75_aa": 8.72,
+       "n": 25
+      },
+      {
+       "inicio": "2025-04-07",
+       "mediana_aa": 6.84,
+       "p25_aa": 5.28,
+       "p75_aa": 8.27,
+       "n": 29
+      },
+      {
+       "inicio": "2025-04-14",
+       "mediana_aa": 7.78,
+       "p25_aa": 6.04,
+       "p75_aa": 9.9,
+       "n": 29
+      },
+      {
+       "inicio": "2025-04-22",
+       "mediana_aa": 7.56,
+       "p25_aa": 5.6,
+       "p75_aa": 9.33,
+       "n": 28
+      },
+      {
+       "inicio": "2025-04-28",
+       "mediana_aa": 7.3,
+       "p25_aa": 5.47,
+       "p75_aa": 8.39,
+       "n": 31
+      },
+      {
+       "inicio": "2025-05-05",
+       "mediana_aa": 7.67,
+       "p25_aa": 6.1,
+       "p75_aa": 8.88,
+       "n": 27
+      },
+      {
+       "inicio": "2025-05-12",
+       "mediana_aa": 7.49,
+       "p25_aa": 6.03,
+       "p75_aa": 8.66,
+       "n": 28
+      },
+      {
+       "inicio": "2025-05-19",
+       "mediana_aa": 7.37,
+       "p25_aa": 5.72,
+       "p75_aa": 8.3,
+       "n": 29
+      },
+      {
+       "inicio": "2025-05-26",
+       "mediana_aa": 7.53,
+       "p25_aa": 6.1,
+       "p75_aa": 8.46,
+       "n": 30
+      },
+      {
+       "inicio": "2025-06-02",
+       "mediana_aa": 7.13,
+       "p25_aa": 5.78,
+       "p75_aa": 8.65,
+       "n": 28
+      },
+      {
+       "inicio": "2025-06-09",
+       "mediana_aa": 7.19,
+       "p25_aa": 5.68,
+       "p75_aa": 8.43,
+       "n": 28
+      },
+      {
+       "inicio": "2025-06-16",
+       "mediana_aa": 7.1,
+       "p25_aa": 5.83,
+       "p75_aa": 8.73,
+       "n": 26
+      },
+      {
+       "inicio": "2025-06-23",
+       "mediana_aa": 7.9,
+       "p25_aa": 6.46,
+       "p75_aa": 9.36,
+       "n": 30
+      },
+      {
+       "inicio": "2025-06-30",
+       "mediana_aa": 7.27,
+       "p25_aa": 5.65,
+       "p75_aa": 8.37,
+       "n": 29
+      },
+      {
+       "inicio": "2025-07-07",
+       "mediana_aa": 7.6,
+       "p25_aa": 5.62,
+       "p75_aa": 8.54,
+       "n": 27
+      },
+      {
+       "inicio": "2025-07-14",
+       "mediana_aa": 7.44,
+       "p25_aa": 6.21,
+       "p75_aa": 7.84,
+       "n": 28
+      },
+      {
+       "inicio": "2025-07-21",
+       "mediana_aa": 7.7,
+       "p25_aa": 6.13,
+       "p75_aa": 8.62,
+       "n": 31
+      },
+      {
+       "inicio": "2025-07-28",
+       "mediana_aa": 7.51,
+       "p25_aa": 5.79,
+       "p75_aa": 8.16,
+       "n": 33
+      },
+      {
+       "inicio": "2025-08-04",
+       "mediana_aa": 7.78,
+       "p25_aa": 6.07,
+       "p75_aa": 9.27,
+       "n": 30
+      },
+      {
+       "inicio": "2025-08-11",
+       "mediana_aa": 7.64,
+       "p25_aa": 5.58,
+       "p75_aa": 8.82,
+       "n": 30
+      },
+      {
+       "inicio": "2025-08-18",
+       "mediana_aa": 7.53,
+       "p25_aa": 6.14,
+       "p75_aa": 8.67,
+       "n": 28
+      },
+      {
+       "inicio": "2025-08-25",
+       "mediana_aa": 6.98,
+       "p25_aa": 5.62,
+       "p75_aa": 8.16,
+       "n": 28
+      },
+      {
+       "inicio": "2025-09-01",
+       "mediana_aa": 6.99,
+       "p25_aa": 5.86,
+       "p75_aa": 8.64,
+       "n": 26
+      },
+      {
+       "inicio": "2025-09-08",
+       "mediana_aa": 7.65,
+       "p25_aa": 5.95,
+       "p75_aa": 9.0,
+       "n": 29
+      },
+      {
+       "inicio": "2025-09-15",
+       "mediana_aa": 7.33,
+       "p25_aa": 5.65,
+       "p75_aa": 8.5,
+       "n": 28
+      },
+      {
+       "inicio": "2025-09-22",
+       "mediana_aa": 7.1,
+       "p25_aa": 5.73,
+       "p75_aa": 8.66,
+       "n": 27
+      },
+      {
+       "inicio": "2025-09-29",
+       "mediana_aa": 7.5,
+       "p25_aa": 5.78,
+       "p75_aa": 8.55,
+       "n": 32
+      },
+      {
+       "inicio": "2025-10-06",
+       "mediana_aa": 6.59,
+       "p25_aa": 5.48,
+       "p75_aa": 8.78,
+       "n": 30
+      },
+      {
+       "inicio": "2025-10-13",
+       "mediana_aa": 7.22,
+       "p25_aa": 5.79,
+       "p75_aa": 8.37,
+       "n": 28
+      },
+      {
+       "inicio": "2025-10-20",
+       "mediana_aa": 6.84,
+       "p25_aa": 5.55,
+       "p75_aa": 7.9,
+       "n": 31
+      },
+      {
+       "inicio": "2025-10-27",
+       "mediana_aa": 6.62,
+       "p25_aa": 5.87,
+       "p75_aa": 8.15,
+       "n": 28
+      },
+      {
+       "inicio": "2025-11-03",
+       "mediana_aa": 7.07,
+       "p25_aa": 5.89,
+       "p75_aa": 7.93,
+       "n": 28
+      },
+      {
+       "inicio": "2025-11-10",
+       "mediana_aa": 6.88,
+       "p25_aa": 5.36,
+       "p75_aa": 7.7,
+       "n": 34
+      },
+      {
+       "inicio": "2025-11-17",
+       "mediana_aa": 6.73,
+       "p25_aa": 4.58,
+       "p75_aa": 7.98,
+       "n": 30
+      },
+      {
+       "inicio": "2025-11-24",
+       "mediana_aa": 7.0,
+       "p25_aa": 5.67,
+       "p75_aa": 8.5,
+       "n": 34
+      },
+      {
+       "inicio": "2025-12-01",
+       "mediana_aa": 6.6,
+       "p25_aa": 5.3,
+       "p75_aa": 8.61,
+       "n": 30
+      },
+      {
+       "inicio": "2025-12-08",
+       "mediana_aa": 6.42,
+       "p25_aa": 5.25,
+       "p75_aa": 8.16,
+       "n": 36
+      },
+      {
+       "inicio": "2025-12-15",
+       "mediana_aa": 6.97,
+       "p25_aa": 5.31,
+       "p75_aa": 7.73,
+       "n": 32
+      },
+      {
+       "inicio": "2025-12-22",
+       "mediana_aa": 7.19,
+       "p25_aa": 5.26,
+       "p75_aa": 8.95,
+       "n": 35
+      },
+      {
+       "inicio": "2025-12-29",
+       "mediana_aa": 7.4,
+       "p25_aa": 5.5,
+       "p75_aa": 8.85,
+       "n": 25
+      },
+      {
+       "inicio": "2026-01-05",
+       "mediana_aa": 6.52,
+       "p25_aa": 5.37,
+       "p75_aa": 8.54,
+       "n": 26
+      },
+      {
+       "inicio": "2026-01-12",
+       "mediana_aa": 6.93,
+       "p25_aa": 4.77,
+       "p75_aa": 8.55,
+       "n": 32
+      },
+      {
+       "inicio": "2026-01-19",
+       "mediana_aa": 6.6,
+       "p25_aa": 5.41,
+       "p75_aa": 7.6,
+       "n": 31
+      },
+      {
+       "inicio": "2026-01-26",
+       "mediana_aa": 6.49,
+       "p25_aa": 4.78,
+       "p75_aa": 8.76,
+       "n": 31
+      },
+      {
+       "inicio": "2026-02-02",
+       "mediana_aa": 7.23,
+       "p25_aa": 4.91,
+       "p75_aa": 8.53,
+       "n": 31
+      },
+      {
+       "inicio": "2026-02-09",
+       "mediana_aa": 6.02,
+       "p25_aa": 4.99,
+       "p75_aa": 7.5,
+       "n": 31
+      },
+      {
+       "inicio": "2026-02-18",
+       "mediana_aa": 6.01,
+       "p25_aa": 4.9,
+       "p75_aa": 7.8,
+       "n": 30
+      },
+      {
+       "inicio": "2026-02-24",
+       "mediana_aa": 6.88,
+       "p25_aa": 4.79,
+       "p75_aa": 8.35,
+       "n": 33
+      },
+      {
+       "inicio": "2026-03-02",
+       "mediana_aa": 5.85,
+       "p25_aa": 4.78,
+       "p75_aa": 8.7,
+       "n": 31
+      },
+      {
+       "inicio": "2026-03-09",
+       "mediana_aa": 7.19,
+       "p25_aa": 5.31,
+       "p75_aa": 8.42,
+       "n": 34
+      },
+      {
+       "inicio": "2026-03-16",
+       "mediana_aa": 6.73,
+       "p25_aa": 4.97,
+       "p75_aa": 8.5,
+       "n": 33
+      },
+      {
+       "inicio": "2026-03-23",
+       "mediana_aa": 7.12,
+       "p25_aa": 5.02,
+       "p75_aa": 8.04,
+       "n": 34
+      },
+      {
+       "inicio": "2026-03-30",
+       "mediana_aa": 6.17,
+       "p25_aa": 4.97,
+       "p75_aa": 8.08,
+       "n": 34
+      },
+      {
+       "inicio": "2026-04-06",
+       "mediana_aa": 6.61,
+       "p25_aa": 4.92,
+       "p75_aa": 7.99,
+       "n": 34
+      },
+      {
+       "inicio": "2026-04-13",
+       "mediana_aa": 7.3,
+       "p25_aa": 5.81,
+       "p75_aa": 8.7,
+       "n": 37
+      },
+      {
+       "inicio": "2026-04-20",
+       "mediana_aa": 7.24,
+       "p25_aa": 5.31,
+       "p75_aa": 7.69,
+       "n": 32
+      },
+      {
+       "inicio": "2026-04-27",
+       "mediana_aa": 6.89,
+       "p25_aa": 5.0,
+       "p75_aa": 8.38,
+       "n": 36
+      },
+      {
+       "inicio": "2026-05-04",
+       "mediana_aa": 5.85,
+       "p25_aa": 4.97,
+       "p75_aa": 7.47,
+       "n": 31
+      },
+      {
+       "inicio": "2026-05-11",
+       "mediana_aa": 6.24,
+       "p25_aa": 5.01,
+       "p75_aa": 8.2,
+       "n": 33
+      },
+      {
+       "inicio": "2026-05-18",
+       "mediana_aa": 6.58,
+       "p25_aa": 5.54,
+       "p75_aa": 8.04,
+       "n": 34
+      },
+      {
+       "inicio": "2026-05-25",
+       "mediana_aa": 6.75,
+       "p25_aa": 5.04,
+       "p75_aa": 7.82,
+       "n": 32
+      },
+      {
+       "inicio": "2026-06-01",
+       "mediana_aa": 6.45,
+       "p25_aa": 5.02,
+       "p75_aa": 8.11,
+       "n": 36
+      },
+      {
+       "inicio": "2026-06-08",
+       "mediana_aa": 6.8,
+       "p25_aa": 5.09,
+       "p75_aa": 8.36,
+       "n": 33
+      },
+      {
+       "inicio": "2026-06-15",
+       "mediana_aa": 7.14,
+       "p25_aa": 5.65,
+       "p75_aa": 8.23,
+       "n": 34
+      },
+      {
+       "inicio": "2026-06-22",
+       "mediana_aa": 7.14,
+       "p25_aa": 5.37,
+       "p75_aa": 8.19,
+       "n": 31
+      },
+      {
+       "inicio": "2026-06-29",
+       "mediana_aa": 6.98,
+       "p25_aa": 5.05,
+       "p75_aa": 8.05,
+       "n": 34
+      },
+      {
+       "inicio": "2026-07-06",
+       "mediana_aa": 6.85,
+       "p25_aa": 5.34,
+       "p75_aa": 8.34,
+       "n": 31
+      },
+      {
+       "inicio": "2026-07-08",
+       "mediana_aa": 6.22,
+       "p25_aa": 5.2,
+       "p75_aa": 7.93,
+       "n": 33
+      }
+     ],
+     "ranking": [
+      {
+       "cnpj8": "60518222",
+       "nome": "BCO SUMITOMO MITSUI BRASIL S.A.",
+       "taxa_am": 0.34,
+       "taxa_aa": 4.19,
+       "posicao": 1,
+       "cod_congl": "C0081720"
+      },
+      {
+       "cnpj8": "45283173",
+       "nome": "BBVA BRASIL BI S.A.",
+       "taxa_am": 0.35,
+       "taxa_aa": 4.26,
+       "posicao": 2,
+       "cod_congl": "C0081366"
+      },
+      {
+       "cnpj8": "75647891",
+       "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
+       "taxa_am": 0.35,
+       "taxa_aa": 4.29,
+       "posicao": 3,
+       "cod_congl": "C0080491"
+      },
+      {
+       "cnpj8": "62331228",
+       "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
+       "taxa_am": 0.36,
+       "taxa_aa": 4.42,
+       "posicao": 4,
+       "cod_congl": "C0080532"
+      },
+      {
+       "cnpj8": "61088183",
+       "nome": "BCO MIZUHO S.A.",
+       "taxa_am": 0.36,
+       "taxa_aa": 4.44,
+       "posicao": 5,
+       "cod_congl": "C0080697"
+      },
+      {
+       "cnpj8": "01522368",
+       "nome": "BCO BNP PARIBAS BRASIL S A",
+       "taxa_am": 0.36,
+       "taxa_aa": 4.45,
+       "posicao": 6,
+       "cod_congl": "C0080673"
+      },
+      {
+       "cnpj8": "60498557",
+       "nome": "BCO MUFG BRASIL S.A.",
+       "taxa_am": 0.37,
+       "taxa_aa": 4.54,
+       "posicao": 7,
+       "cod_congl": "C0081713"
+      },
+      {
+       "cnpj8": "61533584",
+       "nome": "BCO SOCIETE GENERALE BRASIL",
+       "taxa_am": 0.42,
+       "taxa_aa": 5.09,
+       "posicao": 8,
+       "cod_congl": "C0080264"
+      },
+      {
+       "cnpj8": "60701190",
+       "nome": "ITAÚ UNIBANCO S.A.",
+       "taxa_am": 0.42,
+       "taxa_aa": 5.2,
+       "posicao": 9,
+       "cod_congl": "C0080099"
+      },
+      {
+       "cnpj8": "33479023",
+       "nome": "BCO CITIBANK S.A.",
+       "taxa_am": 0.44,
+       "taxa_aa": 5.38,
+       "posicao": 10,
+       "cod_congl": "C0080192"
+      },
+      {
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 0.44,
+       "taxa_aa": 5.39,
+       "posicao": 11,
+       "cod_congl": "C0080329"
+      },
+      {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 0.44,
+       "taxa_aa": 5.43,
+       "posicao": 12,
+       "cod_congl": "C0080075"
+      },
+      {
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
+       "taxa_am": 0.45,
+       "taxa_aa": 5.54,
+       "posicao": 13,
+       "cod_congl": "C0080312"
+      },
+      {
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 0.45,
+       "taxa_aa": 5.56,
+       "posicao": 14,
+       "cod_congl": "C0080154"
+      },
+      {
+       "cnpj8": "01023570",
+       "nome": "BCO RABOBANK INTL BRASIL S.A.",
+       "taxa_am": 0.48,
+       "taxa_aa": 5.89,
+       "posicao": 15,
+       "cod_congl": "C0081555"
+      },
+      {
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 0.49,
+       "taxa_aa": 6.0,
+       "posicao": 16,
+       "cod_congl": "C0080185"
+      },
+      {
+       "cnpj8": "59588111",
+       "nome": "BCO VOTORANTIM S.A.",
+       "taxa_am": 0.5,
+       "taxa_aa": 6.22,
+       "posicao": 17,
+       "cod_congl": "C0080484"
+      },
+      {
+       "cnpj8": "01181521",
+       "nome": "BCO COOPERATIVO SICREDI S.A.",
+       "taxa_am": 0.53,
+       "taxa_aa": 6.49,
+       "posicao": 18,
+       "cod_congl": "C0080745"
+      },
+      {
+       "cnpj8": "07450604",
+       "nome": "BOC BRASIL",
+       "taxa_am": 0.55,
+       "taxa_aa": 6.85,
+       "posicao": 19,
+       "cod_congl": "C0080295"
+      },
+      {
+       "cnpj8": "78632767",
+       "nome": "OURIBANK S.A.",
+       "taxa_am": 0.59,
+       "taxa_aa": 7.27,
+       "posicao": 20,
+       "cod_congl": "C0081012"
+      },
+      {
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
+       "taxa_am": 0.6,
+       "taxa_aa": 7.4,
+       "posicao": 21,
+       "cod_congl": "C0080738"
+      },
+      {
+       "cnpj8": "31895683",
+       "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+       "taxa_am": 0.6,
+       "taxa_aa": 7.47,
+       "posicao": 22,
+       "cod_congl": "C0080477"
+      },
+      {
+       "cnpj8": "02038232",
+       "nome": "BANCO SICOOB S.A.",
+       "taxa_am": 0.62,
+       "taxa_aa": 7.69,
+       "posicao": 23,
+       "cod_congl": "C0080879"
+      },
+      {
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 0.64,
+       "taxa_aa": 7.9,
+       "posicao": 24,
+       "cod_congl": "C0080659"
+      },
+      {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 0.64,
+       "taxa_aa": 7.93,
+       "posicao": 25,
+       "cod_congl": "C0081593"
+      },
+      {
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 0.65,
+       "taxa_aa": 8.04,
+       "posicao": 26,
+       "cod_congl": "C0080271"
+      },
+      {
+       "cnpj8": "33466988",
+       "nome": "BCO CAIXA GERAL BRASIL S.A.",
+       "taxa_am": 0.67,
+       "taxa_aa": 8.3,
+       "posicao": 27,
+       "cod_congl": "C0080927"
+      },
+      {
+       "cnpj8": "62232889",
+       "nome": "BCO DAYCOVAL S.A",
+       "taxa_am": 0.7,
+       "taxa_aa": 8.66,
+       "posicao": 28,
+       "cod_congl": "C0081744"
+      },
+      {
+       "cnpj8": "58160789",
+       "nome": "BCO SAFRA S.A.",
+       "taxa_am": 0.71,
+       "taxa_aa": 8.89,
+       "posicao": 29,
+       "cod_congl": "C0080109"
+      },
+      {
+       "cnpj8": "71027866",
+       "nome": "BCO BS2 S.A.",
+       "taxa_am": 0.78,
+       "taxa_aa": 9.7,
+       "posicao": 30,
+       "cod_congl": "C0080422"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 0.91,
+       "taxa_aa": 11.5,
+       "posicao": 31,
+       "cod_congl": "C0084844"
+      },
+      {
+       "cnpj8": "11703662",
+       "nome": "BANCO TRAVELEX S.A.",
+       "taxa_am": 1.24,
+       "taxa_aa": 16.0,
+       "posicao": 32,
+       "cod_congl": "C0080783"
+      },
+      {
+       "cnpj8": "59118133",
+       "nome": "BCO LUSO BRASILEIRO S.A.",
+       "taxa_am": 1.46,
+       "taxa_aa": 19.0,
+       "posicao": 33,
+       "cod_congl": "C0081706"
+      }
+     ]
+    }
+   ]
+  },
+  "indisponiveis": [
+   {
+    "metrica": "Inadimplência >90d (Res. 4.966) por produto × instituição",
+    "razao": "IF.data público não cruza o NPL >90d com modalidade. O que existe por modalidade é o ATRASO ≥15 dias (rel. 123/128) — exibido na matriz com essa rotulagem."
+   },
+   {
+    "metrica": "Clientes, operações e ticket médio por produto",
+    "razao": "relatórios de clientes do IF.data e SCR.data não integrados."
+   },
+   {
+    "metrica": "Perfil por renda/ocupação/região",
+    "razao": "exige SCR.data (agregado mensal), não integrado."
+   }
+  ]
+ }
+}

@@ -1,0 +1,32 @@
+{
+ "cod": "C0088613",
+ "nome": "NIUM IP - PRUDENCIAL",
+ "sr": null,
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "indice_basileia": {
+   "202509": 2487.44465333333,
+   "202512": 33844.810927835104,
+   "202603": 33844.81092783505
+  },
+  "patrimonio_referencia": {
+   "202509": 1865583.49,
+   "202512": 1641473.33,
+   "202603": 1641473.33
+  },
+  "rwa": {
+   "202509": 75000.0,
+   "202512": 4850.0,
+   "202603": 4850.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

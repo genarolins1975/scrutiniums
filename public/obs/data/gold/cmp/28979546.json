@@ -1,0 +1,140 @@
+{
+ "cod": "28979546",
+ "nome": "PARTNERBANK INSTITUICAO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 22792364.63,
+   "202506": 25134730.98,
+   "202509": 20935872.25,
+   "202512": 21908503.94,
+   "202603": 17589908.79
+  },
+  "patrimonio_liquido": {
+   "202503": 8610791.18,
+   "202506": 8641015.37,
+   "202509": 8980775.53,
+   "202512": 9466232.57,
+   "202603": 9635717.76
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 8814949.89,
+   "202506": 9527573.37,
+   "202509": 7887722.52,
+   "202512": 9576827.19,
+   "202603": 5121980.86
+  },
+  "lucro_liquido": {
+   "202503": 203600.76,
+   "202506": 233824.949999997,
+   "202509": 339760.16,
+   "202512": 895858.050000002,
+   "202603": 169485.190000001
+  },
+  "indice_basileia": {
+   "202503": 33.7503411221824,
+   "202506": 33.7959495716026,
+   "202509": 37.458128942450806,
+   "202512": 23.8981006979821,
+   "202603": 26.9627163398884
+  },
+  "patrimonio_referencia": {
+   "202503": 4308429.26,
+   "202506": 4447141.98,
+   "202509": 4905178.9,
+   "202512": 2109053.4,
+   "202603": 2523032.28
+  },
+  "rwa": {
+   "202503": 5704461.8,
+   "202506": 5912568.43,
+   "202509": 5544166.55,
+   "202512": 892783.54,
+   "202603": 1112522.15
+  },
+  "roe_periodo": {
+   "202503": 2.36448377093265,
+   "202506": 2.7059892846828375,
+   "202509": 3.7831939888157966,
+   "202512": 9.463723222257595,
+   "202603": 1.7589264673522464
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "45331622",
+    "nome": "BNK DIGITAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 17492267.33
+   },
+   {
+    "cod": "92675578",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO SISTEMA FIERGS - CRESUL",
+    "sr": "S5",
+    "ativo_brl": 17462234.83
+   },
+   {
+    "cod": "20622809",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA SAMARCO MINERAÇÃO S.A. LTDA - CREDISAM",
+    "sr": "S5",
+    "ativo_brl": 17427033.94
+   },
+   {
+    "cod": "02929977",
+    "nome": "AGENCIA DE FOMENTO DO AMAPA S.A.",
+    "sr": "S4",
+    "ativo_brl": 17388222.36
+   },
+   {
+    "cod": "01582158",
+    "nome": "OPPORTUNITY DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 17356014.18
+   },
+   {
+    "cod": "49686505",
+    "nome": "WASU - WALLET SUPPORT INSTITUIÇÃO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 17856086.27
+   },
+   {
+    "cod": "02083914",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS POLICIAIS FEDERAIS E SERVIDORES PÚBLICOS NO ESPÍRITO SANTO - CREDFEDERAL",
+    "sr": "S5",
+    "ativo_brl": 17865499.62
+   },
+   {
+    "cod": "12651789",
+    "nome": "SISPAY INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 17918981.19
+   }
+  ]
+ }
+}

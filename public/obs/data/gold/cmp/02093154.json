@@ -1,0 +1,189 @@
+{
+ "cod": "02093154",
+ "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO MAGAZINE LUIZA, EMPRESAS CONTROLADAS E COLIGADAS - COOPLUIZA",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 70611774.31,
+   "202506": 72737289.98,
+   "202509": 77194494.11,
+   "202512": 82435140.71,
+   "202603": 86715019.72
+  },
+  "patrimonio_liquido": {
+   "202503": 62240984.15,
+   "202506": 66407677.01,
+   "202509": 70329868.14,
+   "202512": 72372695.9,
+   "202603": 75870794.03
+  },
+  "carteira_credito": {
+   "202503": 36012170.02,
+   "202506": 33329929.46,
+   "202509": 31291785.52,
+   "202512": 29445407.33,
+   "202603": 28913722.05
+  },
+  "carteira_pf": {
+   "202503": 38541567.25,
+   "202506": 35956998.28,
+   "202509": 34010355.51,
+   "202512": 31334957.08,
+   "202603": 31085659.49
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 3112349.09,
+   "202506": 6882687.37,
+   "202509": 3862566.4,
+   "202512": 7600195.45,
+   "202603": 3368118.43
+  },
+  "indice_basileia": {
+   "202503": 95.3959235543617,
+   "202506": 96.8557675604025,
+   "202509": 95.14444710177659,
+   "202512": 91.3635901118057,
+   "202603": 90.0236721049441
+  },
+  "patrimonio_referencia": {
+   "202503": 62589979.12,
+   "202506": 66750238.41,
+   "202509": 70638936.44,
+   "202512": 72687970.58,
+   "202603": 76047296.78
+  },
+  "rwa": {
+   "202503": 61384656.32,
+   "202506": 64691062.12,
+   "202509": 69642182.19,
+   "202512": 74957307.56,
+   "202603": 79637026.04
+  },
+  "provisao_credito": {
+   "202503": 2529397.23,
+   "202506": 2626234.06,
+   "202509": 2717739.45,
+   "202512": 1889550.53,
+   "202603": 2171947.33
+  },
+  "roe_periodo": {
+   "202503": 5.000481808737596,
+   "202506": 10.364294732013546,
+   "202509": 5.492071152914861,
+   "202512": 10.501467929979377,
+   "202603": 4.439281904270325
+  },
+  "npl_pct": {
+   "202503": 4.936171608330224,
+   "202506": 5.998853806436258,
+   "202509": 6.660864245696913,
+   "202512": 4.808282794686375,
+   "202603": 5.043791786062571
+  },
+  "ativos_problematicos_pct": {
+   "202503": 6.066630723222601,
+   "202506": 8.340382216131975,
+   "202509": 9.369318497900053,
+   "202512": 6.840761404355495,
+   "202603": 7.194752103359671
+  },
+  "cobertura_pct": {
+   "202503": 132.95277858418223,
+   "202506": 121.75357496164038,
+   "202509": 119.96817836957867,
+   "202512": 125.41208948840834,
+   "202603": 138.52624237294728
+  },
+  "cart_ativo_pct": {
+   "202503": 51.000233844711616,
+   "202506": 45.822341565329786,
+   "202509": 40.53629197363491,
+   "202512": 35.719484526127644,
+   "202603": 33.343384045072554
+  },
+  "atraso15_consignado_pf": {
+   "202503": 3.314652727989557,
+   "202506": 4.222191676605453,
+   "202509": 5.057916566106687,
+   "202512": 3.458682173216406,
+   "202603": 3.8249190914679354
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 28.59224120230099,
+   "202506": 22.67477245619392,
+   "202509": 15.169005978809642,
+   "202512": 11.661823005111922,
+   "202603": 13.756835793089033
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "33959738",
+    "nome": "MOVA SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 87017908.49
+   },
+   {
+    "cod": "28650236",
+    "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 87797536.11
+   },
+   {
+    "cod": "27171974",
+    "nome": "COOPERÁGUIA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO ÁGUIA BRANCA",
+    "sr": "S5",
+    "ativo_brl": 84642731.71
+   },
+   {
+    "cod": "19962468",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA ADVOCACIA E SERVENTUÁRIOS DO PODER JUDICIÁRIO NO ESTADO DO RIO GRANDE DO SUL - SICREDI COOABCRED RS",
+    "sr": "S4",
+    "ativo_brl": 89268641.84
+   },
+   {
+    "cod": "44815065",
+    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": "S1",
+    "ativo_brl": 89599291.33
+   },
+   {
+    "cod": "09579249",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPRESÁRIOS DE AMERICANA, LIMEIRA E REGIÃO - SICOOB ACICRED",
+    "sr": "S5",
+    "ativo_brl": 89961303.21
+   },
+   {
+    "cod": "40768766",
+    "nome": "LIONS TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 82968624.36
+   },
+   {
+    "cod": "42259084",
+    "nome": "SBCASH SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 82375002.1
+   }
+  ]
+ }
+}

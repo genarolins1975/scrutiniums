@@ -1,0 +1,179 @@
+{
+ "cod": "03502131",
+ "nome": "COOPERATIVA CENTRAL DE CRÉDITO DO NORTE DO BRASIL - SICOOB NORTE",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 4383985226.21,
+   "202506": 4912084905.61,
+   "202509": 5229125393.12,
+   "202512": 5312609631.18,
+   "202603": 6100877930.53
+  },
+  "patrimonio_liquido": {
+   "202503": 258362244.8,
+   "202506": 262375327.15,
+   "202509": 298406183.64,
+   "202512": 373791850.01,
+   "202603": 381162349.42
+  },
+  "carteira_credito": {
+   "202503": 103993659.32,
+   "202506": 10184221.25,
+   "202509": 2675450.94,
+   "202512": 1340971.57,
+   "202603": 0.0
+  },
+  "carteira_pj": {
+   "202503": 104157511.56,
+   "202506": 10232187.2,
+   "202509": 2904691.2,
+   "202512": 1455869.84
+  },
+  "captacoes": {
+   "202503": 27868297.72,
+   "202506": 27133755.63,
+   "202509": 24445273.16,
+   "202512": 24526732.8,
+   "202603": 23206631.5
+  },
+  "lucro_liquido": {
+   "202503": 11693185.63,
+   "202506": 20774135.47,
+   "202509": 8052710.47000003,
+   "202512": 17844449.8899999,
+   "202603": 13717243.62
+  },
+  "indice_basileia": {
+   "202503": 19.2391757033423,
+   "202506": 17.7609397657585,
+   "202509": 22.6834456061804,
+   "202512": 25.3371545114633,
+   "202603": 21.0733390670472
+  },
+  "indice_capital_principal": {
+   "202503": 19.2391757033423,
+   "202506": 17.7609397657585,
+   "202509": 22.6834456061804,
+   "202512": 25.3371545114633,
+   "202603": 21.0733390670472
+  },
+  "indice_capital_nivel1": {
+   "202503": 19.2391757033423,
+   "202506": 17.7609397657585,
+   "202509": 22.6834456061804,
+   "202512": 25.3371545114633,
+   "202603": 21.0733390670472
+  },
+  "patrimonio_referencia": {
+   "202503": 155826135.93,
+   "202506": 157346148.63,
+   "202509": 191383401.04,
+   "202512": 269376186.23,
+   "202603": 272391572.53
+  },
+  "rwa": {
+   "202503": 720783445.69,
+   "202506": 796752760.39,
+   "202509": 750376598.85,
+   "202512": 969829308.99,
+   "202603": 1162880580.09
+  },
+  "razao_alavancagem": {
+   "202503": 3.56293492027172,
+   "202506": 3.2280834534096496,
+   "202509": 3.6876180816379702,
+   "202512": 5.13854613745618,
+   "202603": 4.51915949748673
+  },
+  "provisao_credito": {
+   "202503": 163852.24,
+   "202506": 47965.95,
+   "202509": 229240.26,
+   "202512": 114898.27
+  },
+  "roe_periodo": {
+   "202503": 4.525887921066708,
+   "202506": 7.917716843140293,
+   "202509": 2.698573592467807,
+   "202512": 4.773900203956429,
+   "202603": 3.5987929135374985
+  },
+  "cart_ativo_pct": {
+   "202503": 2.372126135331518,
+   "202506": 0.20732991073441734,
+   "202509": 0.05116440587789521,
+   "202512": 0.025241296897286856,
+   "202603": 0.0
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "27351731",
+    "nome": "REALIZE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+    "sr": "S4",
+    "ativo_brl": 6076128255.9
+   },
+   {
+    "cod": "78834975",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO VALE DO CANOINHAS - SICOOB CREDICANOINHAS/SC",
+    "sr": "S5",
+    "ativo_brl": 6051141457.61
+   },
+   {
+    "cod": "52067630",
+    "nome": "BANCO VOLKSWAGEN TRUCK & BUS S.A.",
+    "sr": "S3",
+    "ativo_brl": 6002867527.03
+   },
+   {
+    "cod": "09464032",
+    "nome": "MIDWAY S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 6207708765.47
+   },
+   {
+    "cod": "07202627",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL CENTRAL BRASIL",
+    "sr": "S4",
+    "ativo_brl": 6296633871.57
+   },
+   {
+    "cod": "87795639",
+    "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES - SICREDI ALIANÇA RS/SC/ES",
+    "sr": "S4",
+    "ativo_brl": 6300307587.65
+   },
+   {
+    "cod": "79052122",
+    "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO ALIANÇA - SICREDI ALIANÇA PR/SP",
+    "sr": "S4",
+    "ativo_brl": 5841821550.4
+   },
+   {
+    "cod": "37442605",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NORTE MATO-GROSSENSE E OESTE PARAENSE - SICREDI GRANDES RIOS MT/PA/AM",
+    "sr": "S4",
+    "ativo_brl": 6377378496.49
+   }
+  ]
+ }
+}

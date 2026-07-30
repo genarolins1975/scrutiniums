@@ -1,0 +1,723 @@
+{
+ "ok": true,
+ "tipo": "DADO OBSERVADO",
+ "anomes": "202603",
+ "setores": {
+  "comercio_reparacao_de_veiculos_automotores_e_mot": {
+   "total_brl": 567395701084.9996,
+   "top_volume": [
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 82430536979.98,
+     "share_da_propria_carteira_pj_pct": 14.1
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 82199828795.23,
+     "share_da_propria_carteira_pj_pct": 21.6
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 81164416132.57,
+     "share_da_propria_carteira_pj_pct": 20.9
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 43281437066.25,
+     "share_da_propria_carteira_pj_pct": 19.7
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 42722145009.63,
+     "share_da_propria_carteira_pj_pct": 16.3
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "10573521",
+     "nome": "MERCADO PAGO INSTITUIÇÃO DE PAGAMENTO LTDA.",
+     "volume_brl": 751084808.18,
+     "share_da_propria_carteira_pj_pct": 71.4
+    },
+    {
+     "cod_inst": "C0052508",
+     "nome": "STELLANTIS",
+     "volume_brl": 6507448410.82,
+     "share_da_propria_carteira_pj_pct": 68.0
+    },
+    {
+     "cod_inst": "C0051420",
+     "nome": "BMW",
+     "volume_brl": 1268150473.39,
+     "share_da_propria_carteira_pj_pct": 65.6
+    },
+    {
+     "cod_inst": "59274605",
+     "nome": "BANCO GM S.A.",
+     "volume_brl": 1497144487.67,
+     "share_da_propria_carteira_pj_pct": 53.8
+    },
+    {
+     "cod_inst": "03215790",
+     "nome": "BANCO TOYOTA DO BRASIL S.A.",
+     "volume_brl": 1640885854.39,
+     "share_da_propria_carteira_pj_pct": 51.8
+    }
+   ]
+  },
+  "outros": {
+   "total_brl": 545029607009.3399,
+   "top_volume": [
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 71116674274.87,
+     "share_da_propria_carteira_pj_pct": 18.3
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 65139484909.01,
+     "share_da_propria_carteira_pj_pct": 11.1
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 45482229340.58,
+     "share_da_propria_carteira_pj_pct": 11.9
+    },
+    {
+     "cod_inst": "08561701",
+     "nome": "PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAMENTO S.A.",
+     "volume_brl": 42575172135.47,
+     "share_da_propria_carteira_pj_pct": 99.8
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 39876003186.82,
+     "share_da_propria_carteira_pj_pct": 15.2
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "08561701",
+     "nome": "PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAMENTO S.A.",
+     "volume_brl": 42575172135.47,
+     "share_da_propria_carteira_pj_pct": 99.8
+    },
+    {
+     "cod_inst": "16501555",
+     "nome": "STONE INSTITUIÇÃO DE PAGAMENTO S.A.",
+     "volume_brl": 27800213855.39,
+     "share_da_propria_carteira_pj_pct": 99.1
+    },
+    {
+     "cod_inst": "C0052632",
+     "nome": "PICPAY - FINANCEIRO",
+     "volume_brl": 3524611015.97,
+     "share_da_propria_carteira_pj_pct": 82.6
+    },
+    {
+     "cod_inst": "C0051444",
+     "nome": "PORTO SEGURO",
+     "volume_brl": 811067584.11,
+     "share_da_propria_carteira_pj_pct": 77.6
+    },
+    {
+     "cod_inst": "42898825",
+     "nome": "SICOOB CREDICOM - COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS MEDICOS E PROFISSIONAIS DA AREA DE SAUDE DO BRASIL LTDA.",
+     "volume_brl": 2239467069.79,
+     "share_da_propria_carteira_pj_pct": 67.5
+    }
+   ]
+  },
+  "industrias_de_transformacao": {
+   "total_brl": 496970586428.0501,
+   "top_volume": [
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 85563829860.26,
+     "share_da_propria_carteira_pj_pct": 14.6
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 66322242225.4,
+     "share_da_propria_carteira_pj_pct": 17.4
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 63226472728.25,
+     "share_da_propria_carteira_pj_pct": 16.3
+    },
+    {
+     "cod_inst": "33657248",
+     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+     "volume_brl": 45798774787.94,
+     "share_da_propria_carteira_pj_pct": 12.6
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 32839351606.86,
+     "share_da_propria_carteira_pj_pct": 14.9
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "55230916",
+     "nome": "INTESA SANPAOLO BRASIL S.A. - BANCO MÚLTIPLO",
+     "volume_brl": 1017029028.37,
+     "share_da_propria_carteira_pj_pct": 91.8
+    },
+    {
+     "cod_inst": "C0052230",
+     "nome": "SCOTIABANK",
+     "volume_brl": 1807848923.67,
+     "share_da_propria_carteira_pj_pct": 83.5
+    },
+    {
+     "cod_inst": "75647891",
+     "nome": "BANCO CRÉDIT AGRICOLE BRASIL S.A.",
+     "volume_brl": 5722096409.85,
+     "share_da_propria_carteira_pj_pct": 59.7
+    },
+    {
+     "cod_inst": "61088183",
+     "nome": "BANCO MIZUHO DO BRASIL S.A.",
+     "volume_brl": 1854395958.71,
+     "share_da_propria_carteira_pj_pct": 53.9
+    },
+    {
+     "cod_inst": "03609817",
+     "nome": "BANCO CARGILL S.A.",
+     "volume_brl": 1093351657.44,
+     "share_da_propria_carteira_pj_pct": 51.2
+    }
+   ]
+  },
+  "transporte_armazenagem_e_correio": {
+   "total_brl": 268727783729.71985,
+   "top_volume": [
+    {
+     "cod_inst": "33657248",
+     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+     "volume_brl": 58052409112.72,
+     "share_da_propria_carteira_pj_pct": 16.0
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 34093997024.37,
+     "share_da_propria_carteira_pj_pct": 8.8
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 27387742266.06,
+     "share_da_propria_carteira_pj_pct": 4.7
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 17353514905.36,
+     "share_da_propria_carteira_pj_pct": 4.6
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 15980598184.75,
+     "share_da_propria_carteira_pj_pct": 6.1
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "07441209",
+     "nome": "BANCO MONEO S.A.",
+     "volume_brl": 1383068781.4,
+     "share_da_propria_carteira_pj_pct": 84.1
+    },
+    {
+     "cod_inst": "08075352",
+     "nome": "COOPERATIVA DE CRÉDITO DOS EMPRESÁRIOS E EMPREGADOS DOS TRANSPORTES E CORREIOS DO SUL DO BRASIL - TRANSPOCRED",
+     "volume_brl": 1403208058.94,
+     "share_da_propria_carteira_pj_pct": 79.7
+    },
+    {
+     "cod_inst": "11417016",
+     "nome": "SCANIA BANCO S.A.",
+     "volume_brl": 10669274672.07,
+     "share_da_propria_carteira_pj_pct": 72.9
+    },
+    {
+     "cod_inst": "11476673",
+     "nome": "BANCO RANDON S.A.",
+     "volume_brl": 1406676168.78,
+     "share_da_propria_carteira_pj_pct": 70.4
+    },
+    {
+     "cod_inst": "28517628",
+     "nome": "BANCO PACCAR S.A.",
+     "volume_brl": 5534622799.03,
+     "share_da_propria_carteira_pj_pct": 70.0
+    }
+   ]
+  },
+  "servicos_industriais_de_utilidade_publica": {
+   "total_brl": 247949791892.87,
+   "top_volume": [
+    {
+     "cod_inst": "33657248",
+     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+     "volume_brl": 155114762092.74,
+     "share_da_propria_carteira_pj_pct": 42.8
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 29191796899.2,
+     "share_da_propria_carteira_pj_pct": 11.1
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 15124745628.59,
+     "share_da_propria_carteira_pj_pct": 4.0
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 9142062487.89,
+     "share_da_propria_carteira_pj_pct": 2.4
+    },
+    {
+     "cod_inst": "C0049944",
+     "nome": "BTG PACTUAL",
+     "volume_brl": 7341466283.23,
+     "share_da_propria_carteira_pj_pct": 7.6
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "33657248",
+     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+     "volume_brl": 155114762092.74,
+     "share_da_propria_carteira_pj_pct": 42.8
+    },
+    {
+     "cod_inst": "07237373",
+     "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
+     "volume_brl": 4913809994.76,
+     "share_da_propria_carteira_pj_pct": 31.6
+    },
+    {
+     "cod_inst": "04902979",
+     "nome": "BANCO DA AMAZONIA S.A.",
+     "volume_brl": 5352719109.34,
+     "share_da_propria_carteira_pj_pct": 27.5
+    },
+    {
+     "cod_inst": "92894922",
+     "nome": "BANCO ORIGINAL S.A.",
+     "volume_brl": 2226757859.56,
+     "share_da_propria_carteira_pj_pct": 16.9
+    },
+    {
+     "cod_inst": "92816560",
+     "nome": "BANCO REGIONAL DE DESENVOLVIMENTO DO EXTREMO SUL",
+     "volume_brl": 3109970179.09,
+     "share_da_propria_carteira_pj_pct": 16.1
+    }
+   ]
+  },
+  "administracao_publica_defesa_e_seguridade_social": {
+   "total_brl": 215358579068.27002,
+   "top_volume": [
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 81032194344.78,
+     "share_da_propria_carteira_pj_pct": 21.2
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 72767641147.59,
+     "share_da_propria_carteira_pj_pct": 27.8
+    },
+    {
+     "cod_inst": "33657248",
+     "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+     "volume_brl": 44128865718.41,
+     "share_da_propria_carteira_pj_pct": 12.2
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 2853375899.31,
+     "share_da_propria_carteira_pj_pct": 0.5
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 2661122079.3,
+     "share_da_propria_carteira_pj_pct": 1.2
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "C0030771",
+     "nome": "UBS (BRASIL)",
+     "volume_brl": 1202597394.06,
+     "share_da_propria_carteira_pj_pct": 74.8
+    },
+    {
+     "cod_inst": "03584906",
+     "nome": "AGÊNCIA DE FOMENTO DO PARANÁ S.A.",
+     "volume_brl": 1105960927.95,
+     "share_da_propria_carteira_pj_pct": 62.0
+    },
+    {
+     "cod_inst": "10663610",
+     "nome": "DESENVOLVE SP - AGÊNCIA DE FOMENTO DO ESTADO DE SÃO PAULO S.A.",
+     "volume_brl": 1300452048.21,
+     "share_da_propria_carteira_pj_pct": 51.2
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 72767641147.59,
+     "share_da_propria_carteira_pj_pct": 27.8
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 81032194344.78,
+     "share_da_propria_carteira_pj_pct": 21.2
+    }
+   ]
+  },
+  "construcao": {
+   "total_brl": 158474884750.00003,
+   "top_volume": [
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 34530007436.31,
+     "share_da_propria_carteira_pj_pct": 13.2
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 28130118055.83,
+     "share_da_propria_carteira_pj_pct": 7.3
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 18628030099.6,
+     "share_da_propria_carteira_pj_pct": 3.2
+    },
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 12659534569.89,
+     "share_da_propria_carteira_pj_pct": 3.3
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 7192316198.88,
+     "share_da_propria_carteira_pj_pct": 3.3
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "02658435",
+     "nome": "BANCO CATERPILLAR S.A.",
+     "volume_brl": 2281883664.5,
+     "share_da_propria_carteira_pj_pct": 41.6
+    },
+    {
+     "cod_inst": "C0031976",
+     "nome": "BRB",
+     "volume_brl": 4622124996.99,
+     "share_da_propria_carteira_pj_pct": 41.0
+    },
+    {
+     "cod_inst": "23903068",
+     "nome": "BANCO KOMATSU DO BRASIL S.A.",
+     "volume_brl": 463210127.82,
+     "share_da_propria_carteira_pj_pct": 39.0
+    },
+    {
+     "cod_inst": "04388688",
+     "nome": "COOPERATIVA DE CRÉDITO SICOOB ENGECRED LTDA.",
+     "volume_brl": 389130335.11,
+     "share_da_propria_carteira_pj_pct": 31.0
+    },
+    {
+     "cod_inst": "C0051884",
+     "nome": "INTER",
+     "volume_brl": 2313593522.48,
+     "share_da_propria_carteira_pj_pct": 28.1
+    }
+   ]
+  },
+  "industrias_extrativas": {
+   "total_brl": 60348131137.75998,
+   "top_volume": [
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 19158369196.58,
+     "share_da_propria_carteira_pj_pct": 5.0
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 7605341508.94,
+     "share_da_propria_carteira_pj_pct": 3.5
+    },
+    {
+     "cod_inst": "C0049944",
+     "nome": "BTG PACTUAL",
+     "volume_brl": 7492432810.36,
+     "share_da_propria_carteira_pj_pct": 7.7
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 5268322364.5,
+     "share_da_propria_carteira_pj_pct": 1.4
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 4078702066.27,
+     "share_da_propria_carteira_pj_pct": 0.7
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "60498557",
+     "nome": "BANCO MUFG BRASIL S.A.",
+     "volume_brl": 1574131459.56,
+     "share_da_propria_carteira_pj_pct": 43.0
+    },
+    {
+     "cod_inst": "C0020107",
+     "nome": "JP MORGAN CHASE",
+     "volume_brl": 624037138.08,
+     "share_da_propria_carteira_pj_pct": 23.0
+    },
+    {
+     "cod_inst": "03609817",
+     "nome": "BANCO CARGILL S.A.",
+     "volume_brl": 473901908.21,
+     "share_da_propria_carteira_pj_pct": 22.2
+    },
+    {
+     "cod_inst": "58616418",
+     "nome": "BANCO FIBRA S.A.",
+     "volume_brl": 948067885.66,
+     "share_da_propria_carteira_pj_pct": 17.2
+    },
+    {
+     "cod_inst": "C0052120",
+     "nome": "XP",
+     "volume_brl": 1167086322.17,
+     "share_da_propria_carteira_pj_pct": 14.5
+    }
+   ]
+  },
+  "agricultura_pecuaria_producao_florestal_pesca_e_": {
+   "total_brl": 54395314585.43997,
+   "top_volume": [
+    {
+     "cod_inst": "C0049906",
+     "nome": "BB",
+     "volume_brl": 8688251019.89,
+     "share_da_propria_carteira_pj_pct": 2.3
+    },
+    {
+     "cod_inst": "C0010069",
+     "nome": "ITAU",
+     "volume_brl": 6121125885.74,
+     "share_da_propria_carteira_pj_pct": 1.0
+    },
+    {
+     "cod_inst": "C0010045",
+     "nome": "BRADESCO",
+     "volume_brl": 5469255375.67,
+     "share_da_propria_carteira_pj_pct": 1.4
+    },
+    {
+     "cod_inst": "C0051626",
+     "nome": "CAIXA ECONÔMICA FEDERAL",
+     "volume_brl": 3809954133.31,
+     "share_da_propria_carteira_pj_pct": 1.5
+    },
+    {
+     "cod_inst": "C0030379",
+     "nome": "SANTANDER",
+     "volume_brl": 3371859060.47,
+     "share_da_propria_carteira_pj_pct": 1.5
+    }
+   ],
+   "top_exposicao_relativa": [
+    {
+     "cod_inst": "01023570",
+     "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A.",
+     "volume_brl": 2267647567.81,
+     "share_da_propria_carteira_pj_pct": 25.3
+    },
+    {
+     "cod_inst": "03609817",
+     "nome": "BANCO CARGILL S.A.",
+     "volume_brl": 482274244.75,
+     "share_da_propria_carteira_pj_pct": 22.6
+    },
+    {
+     "cod_inst": "54037916",
+     "nome": "COOPERATIVA DE CREDITO CREDICITRUS",
+     "volume_brl": 268771187.86,
+     "share_da_propria_carteira_pj_pct": 15.2
+    },
+    {
+     "cod_inst": "03320525",
+     "nome": "COOPERATIVA DE CRÉDITO ARACOOP LTDA. - SICOOB ARACOOP",
+     "volume_brl": 149586191.86,
+     "share_da_propria_carteira_pj_pct": 10.6
+    },
+    {
+     "cod_inst": "C0052003",
+     "nome": "BOCOM",
+     "volume_brl": 1226847158.75,
+     "share_da_propria_carteira_pj_pct": 10.3
+    }
+   ]
+  }
+ },
+ "portes_sistema": {
+  "micro": {
+   "total_brl": 126619653938.48999,
+   "share_pct": 5.1
+  },
+  "pequena": {
+   "total_brl": 398537133487.7001,
+   "share_pct": 16.1
+  },
+  "media": {
+   "total_brl": 706723151092.34,
+   "share_pct": 28.5
+  },
+  "grande": {
+   "total_brl": 1249244233975.691,
+   "share_pct": 50.3
+  }
+ },
+ "pme_share_sistema_pct": 21.2,
+ "ranking_pme": [
+  {
+   "cod_inst": "C0031976",
+   "nome": "BRB",
+   "pme_share_pct": 100.0,
+   "carteira_pj_brl": 11277886888.73
+  },
+  {
+   "cod_inst": "08561701",
+   "nome": "PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "pme_share_pct": 100.0,
+   "carteira_pj_brl": 42646472067.39
+  },
+  {
+   "cod_inst": "C0052058",
+   "nome": "NUBANK",
+   "pme_share_pct": 99.9,
+   "carteira_pj_brl": 10327470706.74
+  },
+  {
+   "cod_inst": "C0051444",
+   "nome": "PORTO SEGURO",
+   "pme_share_pct": 90.8,
+   "carteira_pj_brl": 1045586014.67
+  },
+  {
+   "cod_inst": "82639451",
+   "nome": "COOPERATIVA DE CREDITO VALE DO ITAJAI - VIACREDI",
+   "pme_share_pct": 74.8,
+   "carteira_pj_brl": 4121987789.18
+  },
+  {
+   "cod_inst": "37442605",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NORTE MATO-GROSSENSE E OESTE PARAENSE - SICREDI GRANDES RIOS MT/PA/AM",
+   "pme_share_pct": 70.7,
+   "carteira_pj_brl": 1060714355.18
+  },
+  {
+   "cod_inst": "82527557",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO FRONTEIRAS DO PARANÁ, SANTA CATARINA E SÃO PAULO - SICREDI FRONTEIRAS PR/SC/SP",
+   "pme_share_pct": 65.8,
+   "carteira_pj_brl": 1636633701.62
+  },
+  {
+   "cod_inst": "87853206",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO BRANCO - SICREDI OURO BRANCO RS/MG",
+   "pme_share_pct": 59.5,
+   "carteira_pj_brl": 1431246842.59
+  },
+  {
+   "cod_inst": "26408161",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CENTRO SUL DO MATO GROSSO DO SUL E BAHIA - SICREDI CENTRO-SUL MS/BA",
+   "pme_share_pct": 59.3,
+   "carteira_pj_brl": 1500975375.35
+  },
+  {
+   "cod_inst": "78414067",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VANGUARDA - SICREDI VANGUARDA PR/SP/RJ",
+   "pme_share_pct": 57.8,
+   "carteira_pj_brl": 3579756259.08
+  },
+  {
+   "cod_inst": "79052122",
+   "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO ALIANÇA - SICREDI ALIANÇA PR/SP",
+   "pme_share_pct": 57.3,
+   "carteira_pj_brl": 1578635017.19
+  },
+  {
+   "cod_inst": "87795639",
+   "nome": "COOPERATIVA DE CRÉDITO ALIANÇA RS/SC/ES - SICREDI ALIANÇA RS/SC/ES",
+   "pme_share_pct": 57.1,
+   "carteira_pj_brl": 1466464726.64
+  },
+  {
+   "cod_inst": "87733770",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CONEXÃO - SICREDI CONEXÃO",
+   "pme_share_pct": 56.9,
+   "carteira_pj_brl": 1627004687.41
+  },
+  {
+   "cod_inst": "03459850",
+   "nome": "COOPERATIVA DE CRÉDITO SICOOB METROPOLITANO",
+   "pme_share_pct": 56.8,
+   "carteira_pj_brl": 2593136045.33
+  },
+  {
+   "cod_inst": "32995755",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SUDOESTE MT/PA - SICREDI SUDOESTE MT/PA",
+   "pme_share_pct": 56.6,
+   "carteira_pj_brl": 2005420239.59
+  }
+ ],
+ "metodo": "Somas das carteiras PJ por CNAE/porte reportadas por instituição (IF.data UI, 202603, valores em R$). Shares relativas à carteira PJ da própria instituição; rankings de exposição relativa e PME restritos a carteiras PJ >= R$ 1 bi. Setores excluem exterior, atividade não informada e não individualizado.",
+ "limitacoes": "Cobertura: instituições que reportam o detalhamento (grandes cobrem a quase totalidade). CNAE em 9 grupos amplos (abertura por divisão exige SCR agregado, fase futura). Exposição ao setor ≠ risco: não considera garantias nem qualidade das operações."
+}

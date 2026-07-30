@@ -1,0 +1,24 @@
+{
+ "cod": "32062580",
+ "nome": "BANCO UBS (BRASIL) S.A.",
+ "sr": "S3",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 1542.84,
+   "202506": 1283.39,
+   "202509": 21778.5,
+   "202512": 20669.72,
+   "202603": 16160.96
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

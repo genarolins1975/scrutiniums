@@ -1,0 +1,140 @@
+{
+ "cod": "65635377",
+ "nome": "NGO ASSOCIADOS CORRETORA DE CÂMBIO LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1178976.39,
+   "202506": 1051658.05,
+   "202509": 934976.64,
+   "202512": 924127.2,
+   "202603": 851225.8
+  },
+  "patrimonio_liquido": {
+   "202503": 682138.05,
+   "202506": 561699.03,
+   "202509": 425617.51,
+   "202512": 491427.0,
+   "202603": 419062.43
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -5710.38999999998,
+   "202506": -144764.26,
+   "202509": -136081.52,
+   "202512": -124953.87,
+   "202603": -72364.5699999999
+  },
+  "indice_basileia": {
+   "202503": 25.6066409212418,
+   "202506": 21.620545310278498,
+   "202509": 17.009552712927,
+   "202512": 19.2091605634711,
+   "202603": 17.7427677291216
+  },
+  "patrimonio_referencia": {
+   "202503": 681853.13,
+   "202506": 561699.03,
+   "202509": 425617.51,
+   "202512": 491427.0,
+   "202603": 419062.43
+  },
+  "rwa": {
+   "202503": 640108.12,
+   "202506": 575297.43,
+   "202509": 593650.74,
+   "202512": 649719.42,
+   "202603": 618115.79
+  },
+  "roe_periodo": {
+   "202503": -0.8371311349660058,
+   "202506": -25.772567205608315,
+   "202509": -31.972725934137436,
+   "202512": -25.42674089946218,
+   "202603": -17.26820750788848
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "10280601",
+    "nome": "FIDUCIAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S5",
+    "ativo_brl": 850459.45
+   },
+   {
+    "cod": "05424088",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS NAS INDUSTRIAS QUIMICAS, FARMACEUTICAS E SIMILARES DA REGIAO METROPOLITANA DO RIO DE JANEIRO LTDA",
+    "sr": "S5",
+    "ativo_brl": 855815.96
+   },
+   {
+    "cod": "59855096",
+    "nome": "EURO17 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 845382.2
+   },
+   {
+    "cod": "28762249",
+    "nome": "SADOC SOCIEDADE CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 837761.31
+   },
+   {
+    "cod": "71502181",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS BANCÁRIOS DE BELO HORIZONTE E REGIÃO METROPOLITANA LTDA. - COOPEB",
+    "sr": "S5",
+    "ativo_brl": 793113.4
+   },
+   {
+    "cod": "80202872",
+    "nome": "CORREPARTI CORRETORA DE CAMBIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 762149.93
+   },
+   {
+    "cod": "90560434",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES DAS INDÚSTRIAS METALÚRGICAS DE PORTO ALEGRE E GRANDE PORTO ALEGRE",
+    "sr": "S5",
+    "ativo_brl": 951282.88
+   },
+   {
+    "cod": "08520517",
+    "nome": "SOL CORRETORA DE CÂMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 957016.05
+   }
+  ]
+ }
+}

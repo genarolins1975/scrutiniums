@@ -1,0 +1,154 @@
+{
+ "cod": "00329598",
+ "nome": "SEFER INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA - EM LIQUIDAÇÃO EXTRAJUDICIAL",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 96669869.57,
+   "202506": 127299106.17,
+   "202509": 118836862.97,
+   "202512": 86976288.94,
+   "202603": 74170756.07
+  },
+  "patrimonio_liquido": {
+   "202503": 7453443.71,
+   "202506": 11404737.77,
+   "202509": 9486287.91,
+   "202512": 13726849.79,
+   "202603": 14870261.66
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 25386332.16,
+   "202506": 71428723.74,
+   "202509": 90505994.06,
+   "202512": 51461099.97,
+   "202603": 38016972.42
+  },
+  "lucro_liquido": {
+   "202503": -614459.319999998,
+   "202506": 3312516.02000001,
+   "202509": -1919711.24,
+   "202512": 2320787.42,
+   "202603": 1758502.77
+  },
+  "indice_basileia": {
+   "202503": 6.33205102312699,
+   "202506": 11.1118444826453,
+   "202509": 8.85614260122584,
+   "202512": 8.03579328436961,
+   "202603": 7.58621002797447
+  },
+  "indice_capital_principal": {
+   "202503": 6.33205102312699,
+   "202506": 11.1118444826453,
+   "202509": 8.85614260122584,
+   "202512": 8.03579328436961,
+   "202603": 7.58621002797447
+  },
+  "indice_capital_nivel1": {
+   "202503": 6.33205102312699,
+   "202506": 11.1118444826453,
+   "202509": 8.85614260122584,
+   "202512": 8.03579328436961,
+   "202603": 7.58621002797447
+  },
+  "patrimonio_referencia": {
+   "202503": 7453443.71,
+   "202506": 11404737.77,
+   "202509": 9486287.91,
+   "202512": 8963313.45,
+   "202603": 8979020.91
+  },
+  "rwa": {
+   "202503": 43233888.33,
+   "202506": 30778612.44,
+   "202509": 32050682.82,
+   "202512": 29183591.01,
+   "202603": 32647068.56
+  },
+  "roe_periodo": {
+   "202503": -8.24396539247491,
+   "202506": 29.0450871103195,
+   "202509": -20.236695936419245,
+   "202512": 16.906919326025495,
+   "202603": 11.825634344621209
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "13178690",
+    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE PERNAMBUCO S.A.",
+    "sr": "S4",
+    "ativo_brl": 73828291.98
+   },
+   {
+    "cod": "27970567",
+    "nome": "HINOVA PAY INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 74554280.0
+   },
+   {
+    "cod": "35084163",
+    "nome": "SUPERBID PAY INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 73259292.88
+   },
+   {
+    "cod": "45745537",
+    "nome": "EAGLE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 73166141.93
+   },
+   {
+    "cod": "42934794",
+    "nome": "COOPERATIVA DE CRÉDITO CREDIPIMENTA LTDA. - SICOOB CREDIPIMENTA",
+    "sr": "S5",
+    "ativo_brl": 75249461.26
+   },
+   {
+    "cod": "26191078",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO SUL DO MARANHÃO - SICREDI SUL DO MARANHÃO",
+    "sr": "S4",
+    "ativo_brl": 72814643.83
+   },
+   {
+    "cod": "33924028",
+    "nome": "COOPERATIVA DE CRÉDITO CLÁSSICA DOS EMPREGADOS DA VALE S/A E ENTIDADES VINCULADAS LTDA. - SICOOB COOPVALE",
+    "sr": "S5",
+    "ativo_brl": 75823773.0
+   },
+   {
+    "cod": "19402130",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FUNDAÇÃO HOSPITALAR E EMPREGADOS DOS ESTABELECIMENTOS HOSPITALARES DE BELO HORIZONTE, REGIÃO METROPOLITANA E ZONA DA MATA LTDA.- SICOOB CECREF",
+    "sr": "S5",
+    "ativo_brl": 76341527.61
+   }
+  ]
+ }
+}

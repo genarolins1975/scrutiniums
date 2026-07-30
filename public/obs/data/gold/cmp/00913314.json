@@ -1,0 +1,182 @@
+{
+ "cod": "00913314",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA MAGNESITA REFRATÁRIOS S.A. LTDA. - CECREM",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 6873451.12,
+   "202506": 6957980.98,
+   "202509": 6885756.08,
+   "202512": 6980937.97,
+   "202603": 6957697.02
+  },
+  "patrimonio_liquido": {
+   "202503": 6407189.56,
+   "202506": 6391775.9,
+   "202509": 6232254.78,
+   "202512": 6566927.18,
+   "202603": 6476341.76
+  },
+  "carteira_credito": {
+   "202503": 1886760.06,
+   "202506": 1671690.93,
+   "202509": 1575683.04,
+   "202512": 1636491.04,
+   "202603": 1698466.67
+  },
+  "carteira_pf": {
+   "202503": 1909442.83,
+   "202506": 1690644.21,
+   "202509": 1593289.24,
+   "202512": 1650857.03,
+   "202603": 1711236.32
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 85571.8,
+   "202506": 189685.73,
+   "202509": 123741.98,
+   "202512": 178510.39,
+   "202603": 94178.65
+  },
+  "indice_basileia": {
+   "202503": 95.3257133095166,
+   "202506": 93.17839732263829,
+   "202509": 91.2862129614948,
+   "202512": 95.097031358217,
+   "202603": 94.1321635752969
+  },
+  "patrimonio_referencia": {
+   "202503": 6407625.97,
+   "202506": 6391665.79,
+   "202509": 6232594.37,
+   "202512": 6567716.47,
+   "202603": 6476862.09
+  },
+  "rwa": {
+   "202503": 6396858.29,
+   "202506": 6534635.51,
+   "202509": 6491233.0,
+   "202512": 6570033.88,
+   "202603": 6531548.13
+  },
+  "provisao_credito": {
+   "202503": 22682.77,
+   "202506": 18953.28,
+   "202509": 17606.19,
+   "202512": 14365.98,
+   "202603": 12731.53
+  },
+  "roe_periodo": {
+   "202503": 1.3355590496997878,
+   "202506": 2.967653011739664,
+   "202509": 1.9855090070627694,
+   "202512": 2.7183244934353,
+   "202603": 1.4541951844122567
+  },
+  "npl_pct": {
+   "202503": 0.5794973185973837,
+   "202506": 0.7563590212750914,
+   "202509": 0.645229989753775,
+   "202512": 0.32661035462289545,
+   "202603": 0.25592140307073424
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.5794973185973837,
+   "202506": 0.7563590212750914,
+   "202509": 0.645229989753775,
+   "202512": 0.32661035462289545,
+   "202603": 0.25592140307073424
+  },
+  "cobertura_pct": {
+   "202503": 204.9925125416058,
+   "202506": 148.2190979515677,
+   "202509": 171.26010906211638,
+   "202512": 266.43780358205964,
+   "202603": 290.7126971151431
+  },
+  "cart_ativo_pct": {
+   "202503": 27.449966938878877,
+   "202506": 24.02551738507339,
+   "202509": 22.883224756924587,
+   "202512": 23.44228020693901,
+   "202603": 24.41133416873045
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.8986558660151139,
+   "202506": 0.815031922062419,
+   "202509": 0.7047195021539215,
+   "202512": 0.3062263968430991,
+   "202603": 0.3406408531581424
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "50032584",
+    "nome": "LOAN BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 6955029.22
+   },
+   {
+    "cod": "19086249",
+    "nome": "EXECUTIVE CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 6907579.68
+   },
+   {
+    "cod": "59396084",
+    "nome": "BFC SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 7026210.42
+   },
+   {
+    "cod": "00141155",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DAS EMPRESAS DE TRANSPORTES COLETIVOS RODOVIÁRIOS DE PASSAGEIROS DO GRANDE RIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 6884856.65
+   },
+   {
+    "cod": "05419025",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MÚTUO DOS PROFESSORES ESTADUAIS DA REGIÃO METROPOLITANA DE PORTO ALEGRE - EDUCREDI",
+    "sr": "S5",
+    "ativo_brl": 6884211.36
+   },
+   {
+    "cod": "40333582",
+    "nome": "SAYGO CORRETORA DE CÂMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 6862295.57
+   },
+   {
+    "cod": "45756448",
+    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 6855590.11
+   },
+   {
+    "cod": "44077014",
+    "nome": "BR-CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 7113104.31
+   }
+  ]
+ }
+}

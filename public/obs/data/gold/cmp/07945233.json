@@ -1,0 +1,126 @@
+{
+ "cod": "07945233",
+ "nome": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 2130461.63,
+   "202506": 4686838.19,
+   "202509": 6287933.13,
+   "202512": 4828178.7,
+   "202603": 4729430.92
+  },
+  "patrimonio_liquido": {
+   "202503": 2016439.45,
+   "202506": 4601798.17,
+   "202509": 4559226.88,
+   "202512": 4490609.49,
+   "202603": 4468099.28
+  },
+  "carteira_credito": {
+   "202503": 179503.71,
+   "202506": 984096.08,
+   "202509": 2509515.06,
+   "202512": 167457.56,
+   "202603": 133350.82
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 123241.08,
+   "202506": -491400.2,
+   "202509": -42571.29,
+   "202512": -111188.68,
+   "202603": -22510.21
+  },
+  "provisao_credito": {
+   "202503": 9407.01,
+   "202506": 38050.54,
+   "202509": 98785.78,
+   "202512": 83323.97,
+   "202603": 104703.81
+  },
+  "roe_periodo": {
+   "202503": 6.11181654871908,
+   "202506": -10.678438772120249,
+   "202509": -0.9337392308057283,
+   "202512": -2.476026478089503,
+   "202603": -0.5037983399509421
+  },
+  "cart_ativo_pct": {
+   "202503": 8.425578169178292,
+   "202506": 20.997014193912246,
+   "202509": 39.910015073585875,
+   "202512": 3.468338071248274,
+   "202603": 2.8195954704842165
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "52076716",
+    "nome": "AWX BRASIL  INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 4740448.37
+   },
+   {
+    "cod": "62264924",
+    "nome": "QORE DISTRIBUIDORA DE TITULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 4673303.81
+   },
+   {
+    "cod": "44353942",
+    "nome": "CUMBUCA INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 4649526.07
+   },
+   {
+    "cod": "51118718",
+    "nome": "NVIO BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 4595975.5
+   },
+   {
+    "cod": "50286774",
+    "nome": "CV INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 4562033.7
+   },
+   {
+    "cod": "49889190",
+    "nome": "PALMA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 4477019.43
+   },
+   {
+    "cod": "65645137",
+    "nome": "DASCAM CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 5092894.85
+   },
+   {
+    "cod": "57824223",
+    "nome": "WX INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 5258117.66
+   }
+  ]
+ }
+}

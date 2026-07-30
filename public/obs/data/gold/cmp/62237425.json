@@ -1,0 +1,24 @@
+{
+ "cod": "62237425",
+ "nome": "BANCO STELLANTIS S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 23264296.52,
+   "202506": 23858116.06,
+   "202509": 26916047.79,
+   "202512": 31094360.17,
+   "202603": 33772395.77
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

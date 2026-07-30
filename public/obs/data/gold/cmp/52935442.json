@@ -1,0 +1,189 @@
+{
+ "cod": "52935442",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ALIANÇA - COOPERNITRO",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 9012369.5,
+   "202506": 9280634.96,
+   "202509": 9605305.34,
+   "202512": 9210012.37,
+   "202603": 9031484.9
+  },
+  "patrimonio_liquido": {
+   "202503": 8789526.83,
+   "202506": 8940314.55,
+   "202509": 9290077.38,
+   "202512": 8921094.2,
+   "202603": 8846035.92
+  },
+  "carteira_credito": {
+   "202503": 7926520.65,
+   "202506": 6864098.61,
+   "202509": 6854336.05,
+   "202512": 6504761.69,
+   "202603": 6084489.15
+  },
+  "carteira_pf": {
+   "202503": 8160038.14,
+   "202506": 7092433.02,
+   "202509": 7100358.52,
+   "202512": 6754619.41,
+   "202603": 6355468.61
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 173446.2,
+   "202506": 412262.16,
+   "202509": 232475.65,
+   "202512": -201704.14,
+   "202603": 169406.19
+  },
+  "indice_basileia": {
+   "202503": 117.606230183744,
+   "202506": 111.68087323204401,
+   "202509": 111.27159015108701,
+   "202512": 110.925670775797,
+   "202603": 110.61576395779599
+  },
+  "patrimonio_referencia": {
+   "202503": 8771005.0,
+   "202506": 8922187.52,
+   "202509": 9272345.15,
+   "202512": 8901913.21,
+   "202603": 8827249.73
+  },
+  "rwa": {
+   "202503": 7011657.64,
+   "202506": 7542717.45,
+   "202509": 7856709.31,
+   "202512": 7548749.74,
+   "202603": 7477231.15
+  },
+  "provisao_credito": {
+   "202503": 233517.49,
+   "202506": 228334.41,
+   "202509": 246022.47,
+   "202512": 249860.58,
+   "202603": 270979.46
+  },
+  "roe_periodo": {
+   "202503": 1.9733280682186622,
+   "202506": 4.6112713114775135,
+   "202509": 2.502408112342332,
+   "202512": -2.2609798246497617,
+   "202603": 1.915052024794401
+  },
+  "npl_pct": {
+   "202503": 2.2113424827693273,
+   "202506": 2.5425308845567356,
+   "202509": 2.2230377459869453,
+   "202512": 2.632957376350535,
+   "202603": 2.7593420841394103
+  },
+  "ativos_problematicos_pct": {
+   "202503": 2.946956078810681,
+   "202506": 3.5704626224302363,
+   "202509": 3.920752722779413,
+   "202512": 4.086861201851193,
+   "202603": 4.734496045288468
+  },
+  "cobertura_pct": {
+   "202503": 129.41100678157096,
+   "202506": 126.62220861733083,
+   "202509": 155.86466101107015,
+   "202512": 140.4924646991432,
+   "202603": 154.51948438812946
+  },
+  "cart_ativo_pct": {
+   "202503": 87.95157200334496,
+   "202506": 73.96151922346486,
+   "202509": 71.35989755011785,
+   "202512": 70.62706789828124,
+   "202603": 67.36975389285101
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.23012220548944595,
+   "202506": 0.17116469250325808,
+   "202509": 0.06542831597565892,
+   "202512": 0.0582945001542659,
+   "202603": 0.010942915705682215
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 13.663846682891162,
+   "202506": 10.70202521972547,
+   "202509": 8.383870361981296,
+   "202512": 8.184885875339068,
+   "202603": 9.788036124943114
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "49204605",
+    "nome": "NOSSA TERRA COOPERATIVA DE CRÉDITO DOS EMPREGADOS DAS EMPRESAS DE AGRONEGÓCIO E AFINS",
+    "sr": "S5",
+    "ativo_brl": 9063900.23
+   },
+   {
+    "cod": "34669130",
+    "nome": "LP DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 9099804.69
+   },
+   {
+    "cod": "71384697",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES NAS INDÚSTRIAS DE EXTRAÇÃO DE FERRO E METAIS BÁSICOS DA REGIÃO DE CONGONHAS LTDA. - COOFERSE",
+    "sr": "S5",
+    "ativo_brl": 9115614.24
+   },
+   {
+    "cod": "45457891",
+    "nome": "LEV DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 9152889.21
+   },
+   {
+    "cod": "38129006",
+    "nome": "NUMBRS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8708871.93
+   },
+   {
+    "cod": "96409263",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FACULDADE DE ENGENHARIA DE ILHA SOLTEIRA - COOPERFEIS",
+    "sr": "S5",
+    "ativo_brl": 8673376.16
+   },
+   {
+    "cod": "17352220",
+    "nome": "SENSO CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
+    "sr": "S4",
+    "ativo_brl": 8567896.04
+   },
+   {
+    "cod": "56198117",
+    "nome": "SQUID SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8422423.9
+   }
+  ]
+ }
+}

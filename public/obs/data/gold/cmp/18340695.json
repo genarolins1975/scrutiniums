@@ -1,0 +1,178 @@
+{
+ "cod": "18340695",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA INDÚSTRIA DE PAPÉIS SUDESTE LTDA . - CREDESTE",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1653501.19,
+   "202506": 1685873.43,
+   "202509": 1779940.81,
+   "202512": 1865132.87,
+   "202603": 1908970.84
+  },
+  "patrimonio_liquido": {
+   "202503": 1498083.27,
+   "202506": 1535573.79,
+   "202509": 1616200.97,
+   "202512": 1734325.57,
+   "202603": 1760202.48
+  },
+  "carteira_credito": {
+   "202503": 1207573.73,
+   "202506": 1281190.18,
+   "202509": 1285232.77,
+   "202512": 1213863.22,
+   "202603": 1309962.91
+  },
+  "carteira_pf": {
+   "202503": 1213743.97,
+   "202506": 1287661.87,
+   "202509": 1293007.03,
+   "202512": 1221381.61,
+   "202603": 1316563.55
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -8316.60000000001,
+   "202506": 28798.34,
+   "202509": 34835.52,
+   "202512": 83987.6899999999,
+   "202603": -27801.69
+  },
+  "indice_basileia": {
+   "202503": 99.80368784340111,
+   "202506": 101.188805546838,
+   "202509": 99.3281078088303,
+   "202512": 100.283747416379,
+   "202603": 100.11663896209998
+  },
+  "patrimonio_referencia": {
+   "202503": 1499275.8,
+   "202506": 1536766.32,
+   "202509": 1617393.5,
+   "202512": 1734325.57,
+   "202603": 1760202.48
+  },
+  "rwa": {
+   "202503": 1350255.75,
+   "202506": 1366742.69,
+   "202509": 1459093.61,
+   "202512": 1560177.85,
+   "202603": 1579208.81
+  },
+  "provisao_credito": {
+   "202503": 6102.44,
+   "202506": 6471.69,
+   "202509": 7774.26,
+   "202512": 7518.39,
+   "202603": 6600.64
+  },
+  "roe_periodo": {
+   "202503": -0.5551493809820071,
+   "202506": 1.8754123173722572,
+   "202509": 2.1553953157199253,
+   "202512": 4.842671494487618,
+   "202603": -1.5794597676058268
+  },
+  "npl_pct": {
+   "202512": 0.20266802608891413
+  },
+  "ativos_problematicos_pct": {
+   "202509": 0.1914413411967296,
+   "202512": 0.20266802608891413
+  },
+  "cobertura_pct": {
+   "202512": 303.7303815622034
+  },
+  "cart_ativo_pct": {
+   "202503": 73.03131907634128,
+   "202506": 75.99563272077904,
+   "202509": 72.20648927084267,
+   "202512": 65.08186304174673,
+   "202603": 68.62142063940588
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 16.00541337588624,
+   "202512": 36.564160103800525,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "73279093",
+    "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 1916279.57
+   },
+   {
+    "cod": "40819834",
+    "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 1935837.19
+   },
+   {
+    "cod": "48721937",
+    "nome": "CREDPAR - SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": "S5",
+    "ativo_brl": 1964407.52
+   },
+   {
+    "cod": "17772370",
+    "nome": "VIP'S CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1829673.0
+   },
+   {
+    "cod": "59394633",
+    "nome": "SRM DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 1819276.36
+   },
+   {
+    "cod": "52137361",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA PREFEITURA MUNICIPAL DE VOTORANTIM",
+    "sr": "S5",
+    "ativo_brl": 1802864.37
+   },
+   {
+    "cod": "34139916",
+    "nome": "EMCASH SERVIÇOS FINANCEIROS SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 1796345.27
+   },
+   {
+    "cod": "04152107",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA POLÍCIA MILITAR DO ESTADO DE SÃO PAULO DA REGIÃO CENTRO-OESTE PAULISTA - CREDMIL",
+    "sr": "S5",
+    "ativo_brl": 1783500.73
+   }
+  ]
+ }
+}

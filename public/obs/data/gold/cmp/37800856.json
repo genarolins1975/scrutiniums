@@ -1,0 +1,154 @@
+{
+ "cod": "37800856",
+ "nome": "GREEN ALTERNATIVE INVESTMENTS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1630706.61,
+   "202506": 1620620.3,
+   "202509": 1666581.65,
+   "202512": 1586061.55,
+   "202603": 1435844.86
+  },
+  "patrimonio_liquido": {
+   "202503": 1468689.61,
+   "202506": 1427114.44,
+   "202509": 1384673.04,
+   "202512": 1327477.96,
+   "202603": 1245639.1
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -148983.04,
+   "202506": -190558.21,
+   "202509": -42441.4,
+   "202512": -99636.4800000002,
+   "202603": -81838.86
+  },
+  "indice_basileia": {
+   "202503": 35.4727034169929,
+   "202506": 35.4041187029917,
+   "202509": 30.8499888514488,
+   "202512": 29.7386157641479,
+   "202603": 26.5755195069892
+  },
+  "indice_capital_principal": {
+   "202503": 35.4727034169929,
+   "202506": 35.4041187029917,
+   "202509": 30.8499888514488,
+   "202512": 29.7386157641479,
+   "202603": 26.5755195069892
+  },
+  "indice_capital_nivel1": {
+   "202503": 35.4727034169929,
+   "202506": 35.4041187029917,
+   "202509": 30.8499888514488,
+   "202512": 29.7386157641479,
+   "202603": 26.5755195069892
+  },
+  "patrimonio_referencia": {
+   "202503": 1467891.13,
+   "202506": 1426656.61,
+   "202509": 1384555.86,
+   "202512": 1327477.96,
+   "202603": 1245639.1
+  },
+  "rwa": {
+   "202503": 1339692.82,
+   "202506": 1223046.0,
+   "202509": 1310560.29,
+   "202512": 1293728.75,
+   "202603": 1139100.48
+  },
+  "roe_periodo": {
+   "202503": -10.143943212071882,
+   "202506": -13.352693004774025,
+   "202509": -3.065084592099807,
+   "202512": -7.5056974957234095,
+   "202603": -6.570029794344123
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "43010260",
+    "nome": "OMIE INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 1440767.25
+   },
+   {
+    "cod": "43438662",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA EDUCAÇÃO E COMUNICAÇÃO",
+    "sr": "S5",
+    "ativo_brl": 1423275.53
+   },
+   {
+    "cod": "16854999",
+    "nome": "SINGRATUR CORRETORA DE CÂMBIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 1462206.37
+   },
+   {
+    "cod": "29985421",
+    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DO GRUPO NEFFA E DEMAIS ESTABELECIMENTOS DO SETOR DE ALIMENTOS DA GRANDE VITÓRIA.",
+    "sr": "S5",
+    "ativo_brl": 1406292.41
+   },
+   {
+    "cod": "42258376",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA FMC LTDA",
+    "sr": "S5",
+    "ativo_brl": 1405954.8
+   },
+   {
+    "cod": "45597546",
+    "nome": "BIZCAPITAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1398111.65
+   },
+   {
+    "cod": "06369729",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DAS INDÚSTRIAS DO PAPEL, PAPELÃO E CORTIÇA DE OTACÍLIO COSTA, LAGES E CORREA PINTO - PAPELCREDI",
+    "sr": "S5",
+    "ativo_brl": 1478223.23
+   },
+   {
+    "cod": "03657230",
+    "nome": "COOPERATIVA DE CRÉDITO DOS FUNCIONÁRIOS DO GRUPO PPG",
+    "sr": "S5",
+    "ativo_brl": 1377390.61
+   }
+  ]
+ }
+}

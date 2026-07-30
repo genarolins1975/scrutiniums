@@ -1,0 +1,32 @@
+{
+ "cod": "C0087308",
+ "nome": "INSTITUIÇÃO DE PAGAMENTOS MAPS - PRUDENCIAL",
+ "sr": null,
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "indice_basileia": {
+   "202503": -19.273422976327,
+   "202506": -226.149770747869,
+   "202509": -14.2506725795739
+  },
+  "patrimonio_referencia": {
+   "202503": -245033.91,
+   "202506": -1117672.58,
+   "202509": -784727.18
+  },
+  "rwa": {
+   "202503": 1270210.72,
+   "202506": 487834.74,
+   "202509": 5432008.37
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

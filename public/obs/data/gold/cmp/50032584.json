@@ -1,0 +1,119 @@
+{
+ "cod": "50032584",
+ "nome": "LOAN BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 6579651.39,
+   "202506": 6521754.54,
+   "202509": 6616920.33,
+   "202512": 6681724.31,
+   "202603": 6955029.22
+  },
+  "patrimonio_liquido": {
+   "202503": 6145615.33,
+   "202506": 6097539.35,
+   "202509": 6173454.25,
+   "202512": 6235547.05,
+   "202603": 6369553.03
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 14992.24,
+   "202506": -33083.6800000001,
+   "202509": 75914.9,
+   "202512": 138007.7,
+   "202603": 134005.98
+  },
+  "roe_periodo": {
+   "202503": 0.24395018553821524,
+   "202506": -0.5425742762939301,
+   "202509": 1.229698916129491,
+   "202512": 2.213241258439386,
+   "202603": 2.103852175636883
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "00913314",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA MAGNESITA REFRATÁRIOS S.A. LTDA. - CECREM",
+    "sr": "S5",
+    "ativo_brl": 6957697.02
+   },
+   {
+    "cod": "48707451",
+    "nome": "PERCAPITAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 6998887.59
+   },
+   {
+    "cod": "19086249",
+    "nome": "EXECUTIVE CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 6907579.68
+   },
+   {
+    "cod": "00141155",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DAS EMPRESAS DE TRANSPORTES COLETIVOS RODOVIÁRIOS DE PASSAGEIROS DO GRANDE RIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 6884856.65
+   },
+   {
+    "cod": "59396084",
+    "nome": "BFC SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 7026210.42
+   },
+   {
+    "cod": "05419025",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MÚTUO DOS PROFESSORES ESTADUAIS DA REGIÃO METROPOLITANA DE PORTO ALEGRE - EDUCREDI",
+    "sr": "S5",
+    "ativo_brl": 6884211.36
+   },
+   {
+    "cod": "40333582",
+    "nome": "SAYGO CORRETORA DE CÂMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 6862295.57
+   },
+   {
+    "cod": "45756448",
+    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 6855590.11
+   }
+  ]
+ }
+}

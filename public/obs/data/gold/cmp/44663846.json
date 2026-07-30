@@ -1,0 +1,56 @@
+{
+ "cod": "44663846",
+ "nome": "FEATBANK INSTITUICAO DE PAGAMENTO LTDA",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202512": 33867780.14
+  },
+  "patrimonio_liquido": {
+   "202512": 6402124.8
+  },
+  "carteira_credito": {
+   "202512": 0.0
+  },
+  "captacoes": {
+   "202512": 26107876.41
+  },
+  "lucro_liquido": {
+   "202512": -3552433.41
+  },
+  "indice_basileia": {
+   "202503": 95.64117010957301,
+   "202506": 89.2255278790055,
+   "202509": 73.9776116573229,
+   "202512": 30.877110074673503
+  },
+  "patrimonio_referencia": {
+   "202503": 11104005.45,
+   "202506": 9954558.21,
+   "202509": 7638561.85,
+   "202512": 5025166.21
+  },
+  "rwa": {
+   "202503": 11609880.59,
+   "202506": 10971484.24,
+   "202509": 9446538.93,
+   "202512": 5484816.34
+  },
+  "roe_periodo": {
+   "202512": -55.48834989908351
+  },
+  "cart_ativo_pct": {
+   "202512": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

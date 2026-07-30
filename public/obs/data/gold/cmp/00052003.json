@@ -1,0 +1,24 @@
+{
+ "cod": "00052003",
+ "nome": "00052003",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 64966152.65,
+   "202506": 90723188.28,
+   "202509": 100755551.82,
+   "202512": 102428519.34,
+   "202603": 110350559.73
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

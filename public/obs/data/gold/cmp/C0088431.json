@@ -1,0 +1,35 @@
+{
+ "cod": "C0088431",
+ "nome": "PROTOTYPE IP - PRUDENCIAL",
+ "sr": null,
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "indice_basileia": {
+   "202506": 11.0727668937792,
+   "202509": 15.871937236552899,
+   "202512": 10.6283761458547,
+   "202603": 12.0360259030035
+  },
+  "patrimonio_referencia": {
+   "202506": 4209947.7,
+   "202509": 12057876.24,
+   "202512": 8643620.78,
+   "202603": 7887524.95
+  },
+  "rwa": {
+   "202506": 6743311.34,
+   "202509": 7040275.39,
+   "202512": 3430439.29,
+   "202603": 4038576.22
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

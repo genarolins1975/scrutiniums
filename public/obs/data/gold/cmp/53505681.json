@@ -1,0 +1,189 @@
+{
+ "cod": "53505681",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS METALÚRGICAS DE MATÃO - METALCOOPERCRED",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 20673561.07,
+   "202506": 21577656.7,
+   "202509": 22127725.03,
+   "202512": 22993195.72,
+   "202603": 24860403.95
+  },
+  "patrimonio_liquido": {
+   "202503": 19560321.48,
+   "202506": 20211083.47,
+   "202509": 20578679.81,
+   "202512": 21308315.56,
+   "202603": 20907745.74
+  },
+  "carteira_credito": {
+   "202503": 14323802.98,
+   "202506": 14333607.74,
+   "202509": 14573970.99,
+   "202512": 14071225.9,
+   "202603": 16462818.15
+  },
+  "carteira_pf": {
+   "202503": 15034856.01,
+   "202506": 15058394.07,
+   "202509": 15199155.19,
+   "202512": 14673970.93,
+   "202603": 17417029.12
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 2008839.56
+  },
+  "lucro_liquido": {
+   "202503": 461479.99,
+   "202506": 1230850.95,
+   "202509": 618352.15,
+   "202512": 1597711.47,
+   "202603": 139267.5
+  },
+  "indice_basileia": {
+   "202503": 118.34659970764301,
+   "202506": 121.66892266626601,
+   "202509": 115.30237414943201,
+   "202512": 117.558760979075,
+   "202603": 99.0134725279367
+  },
+  "patrimonio_referencia": {
+   "202503": 19598793.84,
+   "202506": 20249555.83,
+   "202509": 20599452.17,
+   "202512": 18270198.15,
+   "202603": 17660213.59
+  },
+  "rwa": {
+   "202503": 14916604.72,
+   "202506": 14999262.27,
+   "202509": 16141381.07,
+   "202512": 13817121.38,
+   "202603": 16042183.98
+  },
+  "provisao_credito": {
+   "202503": 711053.03,
+   "202506": 724786.33,
+   "202509": 625184.2,
+   "202512": 602745.03,
+   "202603": 954210.97
+  },
+  "roe_periodo": {
+   "202503": 2.3592658764420267,
+   "202506": 6.089980044004044,
+   "202509": 3.0048193358813915,
+   "202512": 7.498065558026681,
+   "202603": 0.6661048098244188
+  },
+  "npl_pct": {
+   "202503": 3.1203156165111823,
+   "202506": 3.4466472824880716,
+   "202509": 2.3530071607881253,
+   "202512": 2.032742407783958,
+   "202603": 3.5365990706915693
+  },
+  "ativos_problematicos_pct": {
+   "202503": 5.853916920884432,
+   "202506": 6.8090684520118945,
+   "202509": 6.16792675830294,
+   "202512": 5.897219056300802,
+   "202603": 7.08770342803446
+  },
+  "cobertura_pct": {
+   "202503": 151.56683910318685,
+   "202506": 139.64792721708704,
+   "202509": 174.8096066402039,
+   "202512": 202.0708349689388,
+   "202603": 154.9117994272745
+  },
+  "cart_ativo_pct": {
+   "202503": 69.28561040596767,
+   "202506": 66.42800902472418,
+   "202509": 65.86294329959865,
+   "202512": 61.197347560350345,
+   "202603": 66.22104042681897
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.9748168452172196,
+   "202506": 1.0630012923934706,
+   "202509": 0.6444540926561165,
+   "202512": 0.7222058445000522,
+   "202603": 0.9976451726916571
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 9.133260205180104,
+   "202506": 8.202248134862892,
+   "202509": 5.446426631625171,
+   "202512": 2.9764135470714446,
+   "202603": 5.590735611144228
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "53822116",
+    "nome": "MW INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 24836562.83
+   },
+   {
+    "cod": "44471172",
+    "nome": "INICIADOR INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 25614230.63
+   },
+   {
+    "cod": "68969625",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS CONTROLADAS E COLIGADAS DA USINA SANTA ADELIA - USAGRO",
+    "sr": "S5",
+    "ativo_brl": 24041110.43
+   },
+   {
+    "cod": "00946465",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA PREFEITURA MUNICIPAL DE ORLÂNDIA - CRED SERV",
+    "sr": "S5",
+    "ativo_brl": 23441304.57
+   },
+   {
+    "cod": "54811417",
+    "nome": "WOOVI INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 26666612.25
+   },
+   {
+    "cod": "21040668",
+    "nome": "GLOBAL EXCHANGE DO BRASIL SOCIEDADE CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 22797095.55
+   },
+   {
+    "cod": "04051232",
+    "nome": "COOPER BENEFICIOS INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 27152577.39
+   },
+   {
+    "cod": "13673855",
+    "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A",
+    "sr": "S4",
+    "ativo_brl": 27157224.7
+   }
+  ]
+ }
+}

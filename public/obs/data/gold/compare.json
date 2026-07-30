@@ -1,0 +1,2548 @@
+{
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "consolidacao_nota": "Códigos iniciados em 'C' são conglomerados prudenciais (IF.data tipo 2); códigos numéricos são instituições individuais (CNPJ). O comparador bloqueia a mistura dos dois níveis.",
+ "metric_catalog": [
+  {
+   "metric_id": "ativo_total",
+   "slug": "ativo-total",
+   "name": "Ativos totais",
+   "category": "escala",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Ativo Total (Resumo)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "observado contábil",
+   "comparability_notes": "Ativo total do conglomerado prudencial no fim do trimestre.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "patrimonio_liquido",
+   "slug": "patrimonio-liquido",
+   "name": "Patrimônio líquido",
+   "category": "escala",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Patrimônio Líquido (Resumo)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "observado contábil",
+   "comparability_notes": "Patrimônio líquido contábil.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "carteira_credito",
+   "slug": "carteira-credito",
+   "name": "Carteira de crédito classificada",
+   "category": "escala",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Carteira de Crédito Classificada (Resumo)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana",
+    "pct_ativo"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Carteira de crédito classificada total.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "carteira_pf",
+   "slug": "carteira-pf",
+   "name": "Carteira PF",
+   "category": "carteira",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Total da Carteira de Pessoa Física (rel. 123)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana",
+    "pct_carteira"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1002,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Carteira ativa de pessoas físicas.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "carteira_pj",
+   "slug": "carteira-pj",
+   "name": "Carteira PJ",
+   "category": "carteira",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Total da Carteira de Pessoa Jurídica (rel. 128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana",
+    "pct_carteira"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 842,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Carteira ativa de pessoas jurídicas.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "captacoes",
+   "slug": "captacoes",
+   "name": "Captações",
+   "category": "escala",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Captações (Resumo)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "observado contábil",
+   "comparability_notes": "Captações totais (funding).",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "lucro_liquido",
+   "slug": "lucro-liquido",
+   "name": "Lucro líquido (acum. ano IF.data)",
+   "category": "rentabilidade",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Lucro Líquido (DRE)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "observado contábil",
+   "comparability_notes": "Lucro acumulado no ano-calendário até o trimestre (IF.data). Não anualizado; T1 reinicia a base.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "indice_basileia",
+   "slug": "indice-basileia",
+   "name": "Índice de Basileia",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Índice de Basileia (Informações de Capital)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1330,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "PR ÷ RWA. Requerimento mínimo varia por segmento.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "indice_capital_principal",
+   "slug": "indice-capital-principal",
+   "name": "Capital principal (CET1)",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Índice de Capital Principal",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 446,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Capital principal ÷ RWA.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "indice_capital_nivel1",
+   "slug": "indice-capital-nivel1",
+   "name": "Capital nível I",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Índice de Capital Nível I",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 446,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Capital nível I ÷ RWA.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "patrimonio_referencia",
+   "slug": "patrimonio-referencia",
+   "name": "Patrimônio de referência",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Patrimônio de Referência",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1330,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "PR total para fins prudenciais.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "rwa",
+   "slug": "rwa",
+   "name": "Ativos ponderados pelo risco (RWA)",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "RWA",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "base100",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1329,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Ativos ponderados pelo risco.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "razao_alavancagem",
+   "slug": "razao-alavancagem",
+   "name": "Razão de alavancagem",
+   "category": "capital",
+   "formula": "valor reportado",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Razão de Alavancagem",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 276,
+   "quality_status": "observado regulatório",
+   "comparability_notes": "Nível I ÷ exposição total (quando reportada).",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "provisao_credito",
+   "slug": "provisao-credito",
+   "name": "Provisão de crédito (perda esperada)",
+   "category": "qualidade",
+   "formula": "valor reportado",
+   "unit": "R$",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "Perda esperada — op. de crédito (Ativo, e2)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "pct_carteira"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1236,
+   "quality_status": "observado contábil",
+   "comparability_notes": "Provisão/perda esperada associada a operações de crédito (valor absoluto).",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "roe_periodo",
+   "slug": "roe-periodo",
+   "name": "ROE do período",
+   "category": "rentabilidade",
+   "formula": "lucro_liquido ÷ patrimonio_liquido × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "lucro_liquido + patrimonio_liquido",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "calculado",
+   "comparability_notes": "Lucro acumulado do ano IF.data sobre PL do trimestre. NÃO anualizado — comparável apenas entre trimestres iguais.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "npl_pct",
+   "slug": "npl-pct",
+   "name": "Inadimplência (>90d)",
+   "category": "qualidade",
+   "formula": "carteira inadimplente ÷ carteira total × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "qual:inadimplencia_brl + qual:carteira_total_geral_brl",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 969,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira com atraso >90d sobre carteira total de instrumentos (Res. 4.966, estrutura vigente desde 2025-T1). Inadimplência TOTAL da instituição — não específica de produto.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "ativos_problematicos_pct",
+   "slug": "ativos-problematicos-pct",
+   "name": "Ativos problemáticos",
+   "category": "qualidade",
+   "formula": "ativos problemáticos ÷ carteira total × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "qual:ativos_problematicos_brl + qual:carteira_total_geral_brl",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 984,
+   "quality_status": "calculado",
+   "comparability_notes": "Conceito Res. 4.966 (inclui reestruturados/estágio 3) sobre carteira total.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "cobertura_pct",
+   "slug": "cobertura-pct",
+   "name": "Cobertura contábil aprox.",
+   "category": "qualidade",
+   "formula": "provisão de crédito ÷ carteira inadimplente × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "qual:provisao_credito_brl + qual:inadimplencia_brl",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 930,
+   "quality_status": "calculado",
+   "comparability_notes": "Provisão total de crédito sobre carteira >90d. Aproximação analítica — a provisão cobre também operações em dia; não é razão regulatória.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "cart_ativo_pct",
+   "slug": "cart-ativo-pct",
+   "name": "Carteira ÷ ativos",
+   "category": "estrutura",
+   "formula": "carteira_credito ÷ ativo_total × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "carteira_credito + ativo_total",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 1422,
+   "quality_status": "calculado",
+   "comparability_notes": "Peso do crédito no balanço — proxy de especialização em crédito.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_cartao_de_credito_pf",
+   "slug": "atraso15-cartao-de-credito-pf",
+   "name": "Atraso ≥15d — Cartão de crédito (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:cartao_de_credito ÷ cart_pf_mod:cartao_de_credito (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 223,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_consignado_pf",
+   "slug": "atraso15-consignado-pf",
+   "name": "Atraso ≥15d — Crédito consignado (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:emprestimo_com_consignacao_em_folha ÷ cart_pf_mod:emprestimo_com_consignacao_em_folha (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 776,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_credito_pessoal_pf",
+   "slug": "atraso15-credito-pessoal-pf",
+   "name": "Atraso ≥15d — Crédito pessoal não consignado (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:emprestimo_sem_consignacao_em_folha ÷ cart_pf_mod:emprestimo_sem_consignacao_em_folha (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 877,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_veiculos_pf",
+   "slug": "atraso15-veiculos-pf",
+   "name": "Atraso ≥15d — Financiamento de veículos (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:veiculos ÷ cart_pf_mod:veiculos (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 600,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_imobiliario_pf",
+   "slug": "atraso15-imobiliario-pf",
+   "name": "Atraso ≥15d — Crédito imobiliário (habitação) (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:habitacao ÷ cart_pf_mod:habitacao (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 123,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_rural_pf",
+   "slug": "atraso15-rural-pf",
+   "name": "Atraso ≥15d — Crédito rural PF (PF)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pf_mod_venc15:rural_e_agroindustrial ÷ cart_pf_mod:rural_e_agroindustrial (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 427,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_capital_de_giro_pj",
+   "slug": "atraso15-capital-de-giro-pj",
+   "name": "Atraso ≥15d — Capital de giro (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:capital_de_giro ÷ cart_pj_mod:capital_de_giro (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 755,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_conta_garantida_pj",
+   "slug": "atraso15-conta-garantida-pj",
+   "name": "Atraso ≥15d — Cheque especial e conta garantida (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:cheque_especial_e_conta_garantida ÷ cart_pj_mod:cheque_especial_e_conta_garantida (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 583,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_recebiveis_pj",
+   "slug": "atraso15-recebiveis-pj",
+   "name": "Atraso ≥15d — Antecipação de recebíveis (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:operacoes_com_recebiveis ÷ cart_pj_mod:operacoes_com_recebiveis (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 613,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_investimento_pj",
+   "slug": "atraso15-investimento-pj",
+   "name": "Atraso ≥15d — Financiamento de investimentos (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:investimento ÷ cart_pj_mod:investimento (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 624,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_comercio_exterior_pj",
+   "slug": "atraso15-comercio-exterior-pj",
+   "name": "Atraso ≥15d — Comércio exterior (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:comercio_exterior ÷ cart_pj_mod:comercio_exterior (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 83,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_infraestrutura_pj",
+   "slug": "atraso15-infraestrutura-pj",
+   "name": "Atraso ≥15d — Infraestrutura e desenvolvimento (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:financiamento_de_infraestrutura_desenvolvimento_ ÷ cart_pj_mod:financiamento_de_infraestrutura_desenvolvimento_ (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 202,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  },
+  {
+   "metric_id": "atraso15_rural_pj",
+   "slug": "atraso15-rural-pj",
+   "name": "Atraso ≥15d — Crédito rural PJ (PJ)",
+   "category": "atraso por produto",
+   "formula": "vencido ≥15d da modalidade ÷ carteira da modalidade × 100",
+   "unit": "%",
+   "frequency": "trimestral",
+   "source": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+   "original_field": "cart_pj_mod_venc15:rural_e_agroindustrial ÷ cart_pj_mod:rural_e_agroindustrial (rel. 123/128)",
+   "consolidation_level": "conglomerado prudencial ou instituição individual (nunca misturar)",
+   "aggregation_method": "fim de período",
+   "supported_normalizations": [
+    "abs",
+    "d4t",
+    "rank",
+    "vs_mediana",
+    "zscore"
+   ],
+   "first_reference": "202503",
+   "last_reference": "202603",
+   "coverage_count": 302,
+   "quality_status": "calculado",
+   "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
+   "methodology_version": "v1.0",
+   "is_experimental": false
+  }
+ ],
+ "stats": {
+  "ativo_total": {
+   "202503": {
+    "n": 1416,
+    "mediana": 259418194.5,
+    "q1": 18223176.16,
+    "q3": 1368690976.96,
+    "p10": 3700217.93,
+    "p90": 5384718058.5,
+    "media": 11960936113.050783,
+    "dp": 126036187858.00876
+   },
+   "202506": {
+    "n": 1418,
+    "mediana": 255102875.88,
+    "q1": 17397234.28,
+    "q3": 1428988318.12,
+    "p10": 3742332.52,
+    "p90": 5460773468.32,
+    "media": 12185525666.423151,
+    "dp": 128093704933.24648
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 258944886.73,
+    "q1": 18260208.82,
+    "q3": 1454229340.77,
+    "p10": 3916044.86,
+    "p90": 5654272104.51,
+    "media": 12582161099.83118,
+    "dp": 132668574115.99527
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 260102112.58,
+    "q1": 18419722.45,
+    "q3": 1455330476.62,
+    "p10": 3885630.12,
+    "p90": 5560800120.38,
+    "media": 12818902871.02361,
+    "dp": 134055264325.6519
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 267060672.97,
+    "q1": 18756940.73,
+    "q3": 1546013248.77,
+    "p10": 4037936.95,
+    "p90": 5796990465.87,
+    "media": 13380772227.990782,
+    "dp": 140628251689.0286
+   }
+  },
+  "patrimonio_liquido": {
+   "202503": {
+    "n": 1416,
+    "mediana": 45500459.46,
+    "q1": 8366400.38,
+    "q3": 202600602.74,
+    "p10": 2400260.86,
+    "p90": 759043289.66,
+    "media": 1113356533.5602472,
+    "dp": 10514071374.619207
+   },
+   "202506": {
+    "n": 1418,
+    "mediana": 45515260.53,
+    "q1": 8420798.6,
+    "q3": 205131069.15,
+    "p10": 2494520.43,
+    "p90": 746485482.65,
+    "media": 1134086678.2815514,
+    "dp": 10670394708.63062
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 47818149.39,
+    "q1": 8758085.89,
+    "q3": 216766857.51,
+    "p10": 2700312.65,
+    "p90": 771785162.91,
+    "media": 1159850787.9370155,
+    "dp": 10886768132.747402
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 46452545.9,
+    "q1": 8486900.59,
+    "q3": 212820845.7,
+    "p10": 2712618.22,
+    "p90": 786516029.76,
+    "media": 1154166526.131965,
+    "dp": 10886050711.35372
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 49402741.83,
+    "q1": 9151898.47,
+    "q3": 229200151.08,
+    "p10": 2791699.51,
+    "p90": 880631700.06,
+    "media": 1206992444.6897328,
+    "dp": 11294832242.264881
+   }
+  },
+  "carteira_credito": {
+   "202503": {
+    "n": 1416,
+    "mediana": 50011068.53,
+    "q1": 336298.87,
+    "q3": 535782200.75,
+    "p10": 0.0,
+    "p90": 2215380967.42,
+    "media": 5137729844.77375,
+    "dp": 59626753621.66493
+   },
+   "202506": {
+    "n": 1418,
+    "mediana": 48227361.92,
+    "q1": 274319.32,
+    "q3": 540551027.76,
+    "p10": 0.0,
+    "p90": 2216357700.86,
+    "media": 5162143579.526545,
+    "dp": 59973998419.339294
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 49920844.22,
+    "q1": 250810.83,
+    "q3": 551576744.66,
+    "p10": 0.0,
+    "p90": 2284124828.6,
+    "media": 5250098590.708722,
+    "dp": 60535023740.334724
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 44058389.84,
+    "q1": 67640.49,
+    "q3": 558637770.25,
+    "p10": 0.0,
+    "p90": 2374723197.89,
+    "media": 5429273265.147476,
+    "dp": 62731153109.14829
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 46960487.93,
+    "q1": 57340.51,
+    "q3": 580081089.64,
+    "p10": 0.0,
+    "p90": 2422445104.17,
+    "media": 5508138347.950964,
+    "dp": 63288165851.75184
+   }
+  },
+  "carteira_pf": {
+   "202503": {
+    "n": 1029,
+    "mediana": 90170659.17,
+    "q1": 8676978.36,
+    "q3": 415568131.28,
+    "p10": 1321094.09,
+    "p90": 1532490708.79,
+    "media": 4171491352.393654,
+    "dp": 45774522196.86009
+   },
+   "202506": {
+    "n": 1030,
+    "mediana": 87176683.26,
+    "q1": 7516546.59,
+    "q3": 418621958.56,
+    "p10": 1204909.13,
+    "p90": 1471744478.14,
+    "media": 4238638563.2555437,
+    "dp": 46255344868.30515
+   },
+   "202509": {
+    "n": 1030,
+    "mediana": 92270336.83,
+    "q1": 8075282.64,
+    "q3": 432939696.4,
+    "p10": 1293007.03,
+    "p90": 1602903275.87,
+    "media": 4344448368.726933,
+    "dp": 47142048003.1268
+   },
+   "202512": {
+    "n": 1018,
+    "mediana": 95661084.26,
+    "q1": 8338716.82,
+    "q3": 461584217.98,
+    "p10": 1221381.61,
+    "p90": 1655442558.38,
+    "media": 4571965109.022347,
+    "dp": 49226392858.425804
+   },
+   "202603": {
+    "n": 1002,
+    "mediana": 99462705.59,
+    "q1": 9382765.21,
+    "q3": 477403754.57,
+    "p10": 1418842.76,
+    "p90": 1681462677.28,
+    "media": 4764689263.979451,
+    "dp": 50786335390.55212
+   }
+  },
+  "carteira_pj": {
+   "202503": {
+    "n": 842,
+    "mediana": 143775454.02,
+    "q1": 25350162.49,
+    "q3": 561533623.7,
+    "p10": 1651393.26,
+    "p90": 1893442304.28,
+    "media": 3588683662.351247,
+    "dp": 30765458031.380917
+   },
+   "202506": {
+    "n": 842,
+    "mediana": 152420306.55,
+    "q1": 24552655.25,
+    "q3": 572150770.25,
+    "p10": 1368645.13,
+    "p90": 1927295061.76,
+    "media": 3630219271.091425,
+    "dp": 31173000739.447456
+   },
+   "202509": {
+    "n": 850,
+    "mediana": 153203290.87,
+    "q1": 25213577.97,
+    "q3": 584184572.55,
+    "p10": 1592601.84,
+    "p90": 1938472863.57,
+    "media": 3648945297.257271,
+    "dp": 31695625387.722782
+   },
+   "202512": {
+    "n": 847,
+    "mediana": 143135405.82,
+    "q1": 23110970.34,
+    "q3": 629851047.45,
+    "p10": 1455869.84,
+    "p90": 1978792662.67,
+    "media": 3830091504.8579926,
+    "dp": 33208917518.245533
+   },
+   "202603": {
+    "n": 842,
+    "mediana": 150027561.61,
+    "q1": 24275917.42,
+    "q3": 644345015.66,
+    "p10": 1408864.12,
+    "p90": 1979055813.18,
+    "media": 3811974584.143409,
+    "dp": 32660925601.050106
+   }
+  },
+  "captacoes": {
+   "202503": {
+    "n": 1416,
+    "mediana": 100748533.48,
+    "q1": 0.0,
+    "q3": 739762041.8,
+    "p10": 0.0,
+    "p90": 2849632566.78,
+    "media": 8752810670.723158,
+    "dp": 100081577021.82672
+   },
+   "202506": {
+    "n": 1418,
+    "mediana": 107624836.94,
+    "q1": 0.0,
+    "q3": 780314006.27,
+    "p10": 0.0,
+    "p90": 2800921265.66,
+    "media": 8900030002.820988,
+    "dp": 101513863001.19594
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 117357317.1,
+    "q1": 0.0,
+    "q3": 814254535.39,
+    "p10": 0.0,
+    "p90": 3012772745.58,
+    "media": 9228182856.969627,
+    "dp": 105722570980.83456
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 106755304.37,
+    "q1": 0.0,
+    "q3": 815917962.93,
+    "p10": 0.0,
+    "p90": 3188778326.77,
+    "media": 9417450950.846622,
+    "dp": 106824497691.9653
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 113884572.48,
+    "q1": 0.0,
+    "q3": 869883421.61,
+    "p10": 0.0,
+    "p90": 3204841492.22,
+    "media": 9817488402.077631,
+    "dp": 112090277169.07184
+   }
+  },
+  "lucro_liquido": {
+   "202503": {
+    "n": 1416,
+    "mediana": 983429.2,
+    "q1": 2328.10999999999,
+    "q3": 6391360.06,
+    "p10": -889126.590000002,
+    "p90": 24800995.36,
+    "media": 46173022.7500988,
+    "dp": 463032550.37387794
+   },
+   "202506": {
+    "n": 1417,
+    "mediana": 2034119.16,
+    "q1": 42064.32,
+    "q3": 14320825.87,
+    "p10": -1206956.43,
+    "p90": 49782194.38,
+    "media": 91636196.48992933,
+    "dp": 903385487.8931983
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 757797.7,
+    "q1": 18080.07,
+    "q3": 6402054.43,
+    "p10": -932164.45,
+    "p90": 27107343.9,
+    "media": 42620422.93356751,
+    "dp": 438344936.11232144
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 2342489.3,
+    "q1": 82081.6299999971,
+    "q3": 14720598.44,
+    "p10": -972966.75,
+    "p90": 53761375.54,
+    "media": 95676795.40102111,
+    "dp": 942116225.924743
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 516831.739999999,
+    "q1": -41351.42,
+    "q3": 4695083.2,
+    "p10": -1783508.31999999,
+    "p90": 24721755.01,
+    "media": 39496221.63779887,
+    "dp": 421212201.523407
+   }
+  },
+  "indice_basileia": {
+   "202503": {
+    "n": 1390,
+    "mediana": 27.113266078773,
+    "q1": 17.8112865411063,
+    "q3": 79.9590727551015,
+    "p10": 14.4394038827694,
+    "p90": 118.977882708143,
+    "media": 303.98221257761685,
+    "dp": 6165.578462612368
+   },
+   "202506": {
+    "n": 1393,
+    "mediana": 27.2493408544668,
+    "q1": 18.082274589227403,
+    "q3": 76.4979956308522,
+    "p10": 14.6716142095272,
+    "p90": 116.062913434542,
+    "media": 84.66209183331028,
+    "dp": 394.65309851256063
+   },
+   "202509": {
+    "n": 1408,
+    "mediana": 27.1895086063179,
+    "q1": 17.8907417065743,
+    "q3": 73.7873551692698,
+    "p10": 14.6289177721452,
+    "p90": 114.765553539311,
+    "media": 65.50347990704653,
+    "dp": 230.22837674049651
+   },
+   "202512": {
+    "n": 1358,
+    "mediana": 25.986727155771,
+    "q1": 17.5667916626602,
+    "q3": 74.3446150998346,
+    "p10": 14.1958892445574,
+    "p90": 113.70142709329201,
+    "media": 479.4006384729929,
+    "dp": 13753.93901792651
+   },
+   "202603": {
+    "n": 1330,
+    "mediana": 24.6861006620598,
+    "q1": 16.9305212965095,
+    "q3": 66.47750233463991,
+    "p10": 13.449786509204001,
+    "p90": 112.8882273431354,
+    "media": 131.64170970224376,
+    "dp": 1737.601887107485
+   }
+  },
+  "indice_capital_principal": {
+   "202503": {
+    "n": 442,
+    "mediana": 18.4367008920893,
+    "q1": 14.1820762657274,
+    "q3": 29.673282600310102,
+    "p10": 10.931266258222,
+    "p90": 67.9373211328766,
+    "media": 42.196859120511256,
+    "dp": 140.1506990500007
+   },
+   "202506": {
+    "n": 445,
+    "mediana": 19.1822096136513,
+    "q1": 14.200475318923,
+    "q3": 29.931984204726398,
+    "p10": 11.1118444826453,
+    "p90": 67.1294338030859,
+    "media": 69.08219885089966,
+    "dp": 413.72631837853237
+   },
+   "202509": {
+    "n": 446,
+    "mediana": 19.4131956485755,
+    "q1": 14.4717737905842,
+    "q3": 30.0319163004995,
+    "p10": 11.5507346167165,
+    "p90": 63.011349706108,
+    "media": 44.01422446712026,
+    "dp": 192.36702318986337
+   },
+   "202512": {
+    "n": 439,
+    "mediana": 19.296113665939497,
+    "q1": 14.335827828436601,
+    "q3": 30.286382459952698,
+    "p10": 11.2104854380426,
+    "p90": 61.394864217129296,
+    "media": 42.0594773555188,
+    "dp": 190.85926876085196
+   },
+   "202603": {
+    "n": 446,
+    "mediana": 18.7603203378514,
+    "q1": 13.457236670571199,
+    "q3": 29.0395121173622,
+    "p10": 10.7328037221995,
+    "p90": 60.733452113729705,
+    "media": 180.38297057648902,
+    "dp": 2525.919490878727
+   }
+  },
+  "indice_capital_nivel1": {
+   "202503": {
+    "n": 442,
+    "mediana": 18.730927568637902,
+    "q1": 14.6224358244366,
+    "q3": 29.6845064302406,
+    "p10": 11.6105279681484,
+    "p90": 67.9373211328766,
+    "media": 42.43927373752361,
+    "dp": 140.10589117506132
+   },
+   "202506": {
+    "n": 445,
+    "mediana": 19.404350642394,
+    "q1": 14.4764902550392,
+    "q3": 30.1574958794631,
+    "p10": 11.6279380564472,
+    "p90": 67.1294338030859,
+    "media": 69.33320425407634,
+    "dp": 413.696097716323
+   },
+   "202509": {
+    "n": 446,
+    "mediana": 19.8029296015549,
+    "q1": 14.8076763728063,
+    "q3": 30.1319502833252,
+    "p10": 12.1588825883179,
+    "p90": 63.745964365251496,
+    "media": 44.356240014395176,
+    "dp": 192.34511746290434
+   },
+   "202512": {
+    "n": 439,
+    "mediana": 19.4928348644707,
+    "q1": 14.780207399549,
+    "q3": 30.286382459952698,
+    "p10": 11.631614935359499,
+    "p90": 63.6761300167232,
+    "media": 42.41492607156202,
+    "dp": 190.8374666016896
+   },
+   "202603": {
+    "n": 446,
+    "mediana": 18.9407721360934,
+    "q1": 13.9430918502146,
+    "q3": 29.0395121173622,
+    "p10": 11.5336407786649,
+    "p90": 62.606553223672904,
+    "media": 180.7483497765998,
+    "dp": 2525.897731961527
+   }
+  },
+  "patrimonio_referencia": {
+   "202503": {
+    "n": 1392,
+    "mediana": 40673094.89,
+    "q1": 6238882.12,
+    "q3": 187554150.53,
+    "p10": 1850258.56,
+    "p90": 626081168.01,
+    "media": 1169887091.0460346,
+    "dp": 11595982280.70411
+   },
+   "202506": {
+    "n": 1396,
+    "mediana": 42431369.34,
+    "q1": 6225139.06,
+    "q3": 187360333.44,
+    "p10": 1673039.23,
+    "p90": 655995881.92,
+    "media": 1197722983.3600645,
+    "dp": 11868636165.609842
+   },
+   "202509": {
+    "n": 1411,
+    "mediana": 43098748.93,
+    "q1": 6438497.4,
+    "q3": 199801714.31,
+    "p10": 1845566.99,
+    "p90": 680942301.15,
+    "media": 1224120104.844699,
+    "dp": 12120554663.692719
+   },
+   "202512": {
+    "n": 1359,
+    "mediana": 41359880.42,
+    "q1": 7187562.67,
+    "q3": 204568882.06,
+    "p10": 1918880.09,
+    "p90": 720241944.33,
+    "media": 1286877033.7645402,
+    "dp": 12518098495.763556
+   },
+   "202603": {
+    "n": 1330,
+    "mediana": 45902005.13,
+    "q1": 8441479.06,
+    "q3": 218056599.99,
+    "p10": 2186023.19,
+    "p90": 769603610.59,
+    "media": 1325792072.1390827,
+    "dp": 12727954497.560858
+   }
+  },
+  "rwa": {
+   "202503": {
+    "n": 1389,
+    "mediana": 100033106.82,
+    "q1": 5987383.69,
+    "q3": 665243971.47,
+    "p10": 1140978.75,
+    "p90": 2717106962.88,
+    "media": 5598152788.456904,
+    "dp": 59875670057.86718
+   },
+   "202506": {
+    "n": 1391,
+    "mediana": 107769235.45,
+    "q1": 5875976.86,
+    "q3": 699628704.27,
+    "p10": 1153319.5,
+    "p90": 2740582956.15,
+    "media": 5631378326.550583,
+    "dp": 60024244746.820564
+   },
+   "202509": {
+    "n": 1407,
+    "mediana": 103270941.88,
+    "q1": 6400351.42,
+    "q3": 734108638.9,
+    "p10": 1329062.64,
+    "p90": 2849451642.61,
+    "media": 5719840541.870661,
+    "dp": 60442271124.47264
+   },
+   "202512": {
+    "n": 1357,
+    "mediana": 109975358.26,
+    "q1": 6629200.24,
+    "q3": 762032278.3,
+    "p10": 1275484.11,
+    "p90": 3023402529.02,
+    "media": 6103161813.8073845,
+    "dp": 64040165283.48463
+   },
+   "202603": {
+    "n": 1329,
+    "mediana": 118238475.15,
+    "q1": 7477231.15,
+    "q3": 841581244.12,
+    "p10": 1505900.87,
+    "p90": 3194910650.06,
+    "media": 6423601772.764064,
+    "dp": 65958456508.58255
+   }
+  },
+  "razao_alavancagem": {
+   "202503": {
+    "n": 275,
+    "mediana": 10.8073056453913,
+    "q1": 7.681575099680391,
+    "q3": 16.0411873698488,
+    "p10": 4.48871000403218,
+    "p90": 24.4093085851802,
+    "media": -220.1750128236862,
+    "dp": 3889.764624760407
+   },
+   "202506": {
+    "n": 275,
+    "mediana": 10.8931390939931,
+    "q1": 7.974770306352,
+    "q3": 16.3369292146008,
+    "p10": 4.60264892515141,
+    "p90": 27.153605004430997,
+    "media": 15.686261957356228,
+    "dp": 16.590655851249586
+   },
+   "202509": {
+    "n": 279,
+    "mediana": 10.8692261305723,
+    "q1": 8.032520277652381,
+    "q3": 16.116629310896,
+    "p10": 4.57966951496664,
+    "p90": 27.666870119149,
+    "media": 16.077152195653692,
+    "dp": 16.963775297762815
+   },
+   "202512": {
+    "n": 274,
+    "mediana": 10.842096839646299,
+    "q1": 8.16005860758511,
+    "q3": 16.1157411102316,
+    "p10": 4.77954019702819,
+    "p90": 28.836460891903897,
+    "media": 16.146378783581806,
+    "dp": 18.988604229930772
+   },
+   "202603": {
+    "n": 276,
+    "mediana": 10.8122149948338,
+    "q1": 8.09097583998658,
+    "q3": 16.21501727346,
+    "p10": 4.51915949748673,
+    "p90": 27.979159521102996,
+    "media": 15.799933346630407,
+    "dp": 16.928165784033425
+   }
+  },
+  "provisao_credito": {
+   "202503": {
+    "n": 1254,
+    "mediana": 12001878.89,
+    "q1": 581745.75,
+    "q3": 77765055.33,
+    "p10": 58585.28,
+    "p90": 419197863.76,
+    "media": 851669551.425925,
+    "dp": 5733006169.584022
+   },
+   "202506": {
+    "n": 1253,
+    "mediana": 13635378.34,
+    "q1": 584599.36,
+    "q3": 80689641.14,
+    "p10": 55606.96,
+    "p90": 452557519.6,
+    "media": 897065228.6331365,
+    "dp": 6027328443.719362
+   },
+   "202509": {
+    "n": 1259,
+    "mediana": 14608231.51,
+    "q1": 616455.64,
+    "q3": 82150376.57,
+    "p10": 77889.55,
+    "p90": 482331656.51,
+    "media": 939114989.3200873,
+    "dp": 6346462128.031438
+   },
+   "202512": {
+    "n": 1247,
+    "mediana": 13646886.63,
+    "q1": 686891.53,
+    "q3": 80627623.32,
+    "p10": 76980.43,
+    "p90": 496853083.75,
+    "media": 983525480.7296711,
+    "dp": 6592956160.573851
+   },
+   "202603": {
+    "n": 1236,
+    "mediana": 15890482.18,
+    "q1": 879581.2,
+    "q3": 92701365.39,
+    "p10": 81803.2,
+    "p90": 525189032.39,
+    "media": 1034675798.2042233,
+    "dp": 6835105030.994302
+   }
+  },
+  "roe_periodo": {
+   "202503": {
+    "n": 1416,
+    "mediana": 2.530229634282476,
+    "q1": 0.0503301155571179,
+    "q3": 4.962312739953986,
+    "p10": -5.048760221529083,
+    "p90": 8.248962455509103,
+    "media": -0.26946620476811445,
+    "dp": 54.172861757763314
+   },
+   "202506": {
+    "n": 1417,
+    "mediana": 5.496876919858477,
+    "q1": 0.8890884356398208,
+    "q3": 10.169102764350429,
+    "p10": -9.609178250700872,
+    "p90": 16.294909052920246,
+    "media": 20.090214482084207,
+    "dp": 615.6728031802938
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 2.4473868106538674,
+    "q1": 0.30703311544904244,
+    "q3": 4.790609631547425,
+    "p10": -4.724317455537485,
+    "p90": 8.292598528576882,
+    "media": -1.7839104342146237,
+    "dp": 110.27339854457944
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 5.8385936921237285,
+    "q1": 1.2608209929554224,
+    "q3": 10.117012842133738,
+    "p10": -7.150605735402875,
+    "p90": 17.668861564647127,
+    "media": 3.6987540984082234,
+    "dp": 100.05444972445821
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 1.955032996432788,
+    "q1": -0.48835061733617763,
+    "q3": 3.9895880086829307,
+    "p10": -6.497555422530368,
+    "p90": 7.635783989791356,
+    "media": 0.36360494570597757,
+    "dp": 30.840317426582697
+   }
+  },
+  "npl_pct": {
+   "202503": {
+    "n": 976,
+    "mediana": 3.2978677825360405,
+    "q1": 2.0117202736406505,
+    "q3": 6.020852659665809,
+    "p10": 0.6548970180400304,
+    "p90": 11.078136745087638,
+    "media": 5.808345515811791,
+    "dp": 9.468621066292826
+   },
+   "202506": {
+    "n": 982,
+    "mediana": 3.8842544392080844,
+    "q1": 2.3208941290633023,
+    "q3": 7.152247292035999,
+    "p10": 0.7771284192191967,
+    "p90": 13.282910592798537,
+    "media": 6.978212962514196,
+    "dp": 11.063232074302267
+   },
+   "202509": {
+    "n": 986,
+    "mediana": 4.142653510935341,
+    "q1": 2.387234472458253,
+    "q3": 7.408386273475519,
+    "p10": 0.9714857670264593,
+    "p90": 13.790876794689286,
+    "media": 7.343115685557274,
+    "dp": 11.714785467660036
+   },
+   "202512": {
+    "n": 952,
+    "mediana": 4.137112987399916,
+    "q1": 2.3225722815038634,
+    "q3": 7.0621734192008105,
+    "p10": 0.88050521165046,
+    "p90": 13.516483652970749,
+    "media": 35.8621786733405,
+    "dp": 878.3713156463518
+   },
+   "202603": {
+    "n": 969,
+    "mediana": 4.763143297439354,
+    "q1": 2.6391450755211907,
+    "q3": 8.167736762755263,
+    "p10": 1.0217453860574626,
+    "p90": 15.705236974595419,
+    "media": 7.935258153356604,
+    "dp": 12.10625092619868
+   }
+  },
+  "ativos_problematicos_pct": {
+   "202503": {
+    "n": 988,
+    "mediana": 6.078167049906354,
+    "q1": 3.6383115776625528,
+    "q3": 10.209221622988911,
+    "p10": 1.3008488690155178,
+    "p90": 17.04013257030365,
+    "media": 8.766873690776691,
+    "dp": 10.516256124176936
+   },
+   "202506": {
+    "n": 994,
+    "mediana": 7.074446500040265,
+    "q1": 4.202212739076742,
+    "q3": 11.954340273253361,
+    "p10": 1.601051356703906,
+    "p90": 19.827937007930718,
+    "media": 10.238119858900799,
+    "dp": 12.325190616216693
+   },
+   "202509": {
+    "n": 1003,
+    "mediana": 7.329128610931736,
+    "q1": 4.272727837853349,
+    "q3": 12.606900332053876,
+    "p10": 1.5749204159787251,
+    "p90": 21.23284470475814,
+    "media": 10.89663730124795,
+    "dp": 13.31137387872574
+   },
+   "202512": {
+    "n": 961,
+    "mediana": 7.473548838056984,
+    "q1": 4.401213242883553,
+    "q3": 12.237868378383117,
+    "p10": 1.6371953927750043,
+    "p90": 20.361661552674498,
+    "media": 39.230514603611795,
+    "dp": 874.1631679744513
+   },
+   "202603": {
+    "n": 984,
+    "mediana": 8.018210477297051,
+    "q1": 5.14536889108742,
+    "q3": 12.850778472761014,
+    "p10": 1.9721570097036203,
+    "p90": 22.642575780693456,
+    "media": 11.78233396478432,
+    "dp": 14.287117274511894
+   }
+  },
+  "cobertura_pct": {
+   "202503": {
+    "n": 952,
+    "mediana": 172.00446291865111,
+    "q1": 125.45261674015138,
+    "q3": 231.02533273565896,
+    "p10": 91.09709788223165,
+    "p90": 379.7937370323585,
+    "media": 364.54941892985227,
+    "dp": 1390.8461172121033
+   },
+   "202506": {
+    "n": 956,
+    "mediana": 150.11722437901534,
+    "q1": 115.217046904582,
+    "q3": 196.56092337931793,
+    "p10": 88.04953307890338,
+    "p90": 310.02510466983534,
+    "media": 642.0664385002663,
+    "dp": 9986.786335258583
+   },
+   "202509": {
+    "n": 958,
+    "mediana": 150.53801022297495,
+    "q1": 109.47389543110077,
+    "q3": 192.02610984307543,
+    "p10": 87.27731881492463,
+    "p90": 288.1977662876298,
+    "media": 3779.4047602736896,
+    "dp": 107887.38763187331
+   },
+   "202512": {
+    "n": 919,
+    "mediana": 152.56651267229148,
+    "q1": 111.71568012019151,
+    "q3": 196.81394005295098,
+    "p10": 84.69552559426097,
+    "p90": 286.2150397710001,
+    "media": 297.26235192409615,
+    "dp": 2228.9988789306485
+   },
+   "202603": {
+    "n": 930,
+    "mediana": 147.16060049760168,
+    "q1": 109.6119884892085,
+    "q3": 190.16673276597348,
+    "p10": 82.31329490763694,
+    "p90": 271.7387748427802,
+    "media": 220.53578408521548,
+    "dp": 643.8704785745458
+   }
+  },
+  "cart_ativo_pct": {
+   "202503": {
+    "n": 1416,
+    "mediana": 46.132715450928174,
+    "q1": 1.495524727057114,
+    "q3": 64.91441515401829,
+    "p10": 0.0,
+    "p90": 76.94834911565495,
+    "media": 40.03249879590573,
+    "dp": 29.97033578314677
+   },
+   "202506": {
+    "n": 1418,
+    "mediana": 44.50003304575819,
+    "q1": 1.025907507854447,
+    "q3": 63.40896367869085,
+    "p10": 0.0,
+    "p90": 75.38876161503268,
+    "media": 39.01654809770554,
+    "dp": 29.510913966993577
+   },
+   "202509": {
+    "n": 1424,
+    "mediana": 44.30261347932709,
+    "q1": 0.8916766021089397,
+    "q3": 63.15898833094737,
+    "p10": 0.0,
+    "p90": 75.0564967080081,
+    "media": 38.66005064889901,
+    "dp": 29.48158904768775
+   },
+   "202512": {
+    "n": 1430,
+    "mediana": 42.51386682723425,
+    "q1": 0.18894828344245568,
+    "q3": 62.23574439710132,
+    "p10": 0.0,
+    "p90": 75.16241026222214,
+    "media": 37.733051577542476,
+    "dp": 29.685167240370607
+   },
+   "202603": {
+    "n": 1422,
+    "mediana": 42.2019903109449,
+    "q1": 0.21800775823572288,
+    "q3": 61.348055653032695,
+    "p10": 0.0,
+    "p90": 74.45622534346526,
+    "media": 37.259798940681705,
+    "dp": 29.51291741213879
+   }
+  },
+  "atraso15_cartao_de_credito_pf": {
+   "202503": {
+    "n": 227,
+    "mediana": 6.6119301011600395,
+    "q1": 3.1110017869342013,
+    "q3": 10.0384231594998,
+    "p10": 0.621271366160527,
+    "p90": 22.872424884009032,
+    "media": 12.246546011024085,
+    "dp": 20.791833469337572
+   },
+   "202506": {
+    "n": 227,
+    "mediana": 7.101952695083592,
+    "q1": 3.6514393780186283,
+    "q3": 10.982487806287883,
+    "p10": 0.9891197769413194,
+    "p90": 28.445733176882698,
+    "media": 12.682531849654206,
+    "dp": 19.511430860140813
+   },
+   "202509": {
+    "n": 227,
+    "mediana": 7.056658191555094,
+    "q1": 3.8799532819845597,
+    "q3": 12.177449263077095,
+    "p10": 0.4312701432249437,
+    "p90": 29.21615988920145,
+    "media": 12.936865604794683,
+    "dp": 19.43421847702672
+   },
+   "202512": {
+    "n": 227,
+    "mediana": 6.845196895038214,
+    "q1": 3.7252099735859243,
+    "q3": 11.868462526720148,
+    "p10": 0.30794075494471584,
+    "p90": 31.83913187274914,
+    "media": 12.844321856715895,
+    "dp": 19.74591376534931
+   },
+   "202603": {
+    "n": 223,
+    "mediana": 7.310802954603263,
+    "q1": 4.590623036314801,
+    "q3": 12.231997889121088,
+    "p10": 0.3517624823824004,
+    "p90": 29.55282576209145,
+    "media": 12.942605892750692,
+    "dp": 18.403879315609952
+   }
+  },
+  "atraso15_consignado_pf": {
+   "202509": {
+    "n": 794,
+    "mediana": 0.4648968160308034,
+    "q1": 0.12823345946731063,
+    "q3": 1.2241709042876092,
+    "p10": 0.0,
+    "p90": 3.3251161859377425,
+    "media": 1.917451440400318,
+    "dp": 7.101189383908016
+   },
+   "202512": {
+    "n": 786,
+    "mediana": 0.5468057134260159,
+    "q1": 0.17747034600973577,
+    "q3": 1.3526227857251254,
+    "p10": 0.0,
+    "p90": 3.6019103633857865,
+    "media": 1.9964393926452897,
+    "dp": 6.9034285896211705
+   },
+   "202603": {
+    "n": 776,
+    "mediana": 0.6162483465244949,
+    "q1": 0.24040601724159782,
+    "q3": 1.5016648037463511,
+    "p10": 0.001465739350543962,
+    "p90": 4.303915501486745,
+    "media": 2.0410698075221134,
+    "dp": 5.985517563934924
+   },
+   "202503": {
+    "n": 778,
+    "mediana": 0.43517294332459944,
+    "q1": 0.14071858102158813,
+    "q3": 1.096585614615621,
+    "p10": 0.0,
+    "p90": 2.8485834077264083,
+    "media": 1.5275700705444413,
+    "dp": 5.770973960983518
+   },
+   "202506": {
+    "n": 780,
+    "mediana": 0.506946000918534,
+    "q1": 0.14371478782966754,
+    "q3": 1.2306900730666102,
+    "p10": 0.0,
+    "p90": 3.570448147356048,
+    "media": 1.8365145981216895,
+    "dp": 6.703696203495162
+   }
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": {
+    "n": 891,
+    "mediana": 2.7532314394897344,
+    "q1": 1.4107627850055997,
+    "q3": 5.375365405284995,
+    "p10": 0.3967423164156905,
+    "p90": 15.291810998669106,
+    "media": 6.663539785972571,
+    "dp": 12.624319189446803
+   },
+   "202506": {
+    "n": 896,
+    "mediana": 3.201185451287348,
+    "q1": 1.5515806158626344,
+    "q3": 6.479708100459092,
+    "p10": 0.41924174639022943,
+    "p90": 18.92862991417264,
+    "media": 7.780337865214662,
+    "dp": 14.220435702872106
+   },
+   "202509": {
+    "n": 901,
+    "mediana": 3.1580009687979915,
+    "q1": 1.6274970573685308,
+    "q3": 6.723570675990587,
+    "p10": 0.37874638844880426,
+    "p90": 19.8775445671981,
+    "media": 8.143608329627954,
+    "dp": 15.181818133874655
+   },
+   "202512": {
+    "n": 892,
+    "mediana": 3.250651462499736,
+    "q1": 1.6728540225336652,
+    "q3": 7.398062126007169,
+    "p10": 0.4131822727056118,
+    "p90": 21.20529262483669,
+    "media": 8.577478562148064,
+    "dp": 15.758984524239184
+   },
+   "202603": {
+    "n": 877,
+    "mediana": 3.3176747423082436,
+    "q1": 1.6920320779153868,
+    "q3": 7.181347947077592,
+    "p10": 0.5799235720386365,
+    "p90": 22.301966561126978,
+    "media": 8.78505301525934,
+    "dp": 16.071428910592534
+   }
+  },
+  "atraso15_veiculos_pf": {
+   "202503": {
+    "n": 604,
+    "mediana": 0.8348224595071347,
+    "q1": 0.36810318894314176,
+    "q3": 1.6221486070287356,
+    "p10": 0.020596944447708567,
+    "p90": 3.1720877995703978,
+    "media": 1.7121134610575426,
+    "dp": 5.999328738404926
+   },
+   "202506": {
+    "n": 600,
+    "mediana": 1.0581071602952739,
+    "q1": 0.43533593332694875,
+    "q3": 1.9969012316935826,
+    "p10": 0.021698366084825827,
+    "p90": 3.851747686831141,
+    "media": 2.0192311943399037,
+    "dp": 6.176028814664519
+   },
+   "202509": {
+    "n": 605,
+    "mediana": 0.9377612890032068,
+    "q1": 0.4011219541988938,
+    "q3": 2.038057362975464,
+    "p10": 0.0,
+    "p90": 3.6748355412447644,
+    "media": 1.8543538521990082,
+    "dp": 4.844204205546386
+   },
+   "202512": {
+    "n": 601,
+    "mediana": 0.9997195493484484,
+    "q1": 0.40371845068924606,
+    "q3": 2.1472836008961367,
+    "p10": 0.0,
+    "p90": 3.954510061166677,
+    "media": 2.001128031321712,
+    "dp": 5.091323230325329
+   },
+   "202603": {
+    "n": 600,
+    "mediana": 1.1569820063775205,
+    "q1": 0.5251165811585707,
+    "q3": 2.4335742730631225,
+    "p10": 0.05175280110111041,
+    "p90": 4.637243588575323,
+    "media": 2.246345618701507,
+    "dp": 5.341757265995924
+   }
+  },
+  "atraso15_imobiliario_pf": {
+   "202503": {
+    "n": 117,
+    "mediana": 0.09193060690497877,
+    "q1": 0.0,
+    "q3": 0.3178166041158355,
+    "p10": 0.0,
+    "p90": 1.1585359372326194,
+    "media": 1.2328508674355294,
+    "dp": 8.72475572595694
+   },
+   "202506": {
+    "n": 120,
+    "mediana": 0.09379560607055822,
+    "q1": 0.0,
+    "q3": 0.35442887420507413,
+    "p10": 0.0,
+    "p90": 1.2071826851389003,
+    "media": 1.262292248443965,
+    "dp": 9.096332718748707
+   },
+   "202509": {
+    "n": 122,
+    "mediana": 0.09801173620430231,
+    "q1": 0.0,
+    "q3": 0.2828256883906729,
+    "p10": 0.0,
+    "p90": 0.8092726309864896,
+    "media": 1.1996864256093527,
+    "dp": 9.023418094238052
+   },
+   "202512": {
+    "n": 123,
+    "mediana": 0.09619252469496058,
+    "q1": 0.0,
+    "q3": 0.29494135978000985,
+    "p10": 0.0,
+    "p90": 0.9877408774955484,
+    "media": 1.2461440137198643,
+    "dp": 9.0123505260062
+   },
+   "202603": {
+    "n": 123,
+    "mediana": 0.14533442265891333,
+    "q1": 0.0,
+    "q3": 0.44598338986734504,
+    "p10": 0.0,
+    "p90": 1.0720082583990784,
+    "media": 0.8186845750222762,
+    "dp": 4.007592245814497
+   }
+  },
+  "atraso15_rural_pf": {
+   "202503": {
+    "n": 434,
+    "mediana": 0.5286487307232046,
+    "q1": 0.12380645902193935,
+    "q3": 1.3532797475074279,
+    "p10": 0.0,
+    "p90": 3.4505744743241342,
+    "media": 1.682548268231074,
+    "dp": 5.285980204047474
+   },
+   "202506": {
+    "n": 431,
+    "mediana": 0.8760878514055296,
+    "q1": 0.2801285762001167,
+    "q3": 2.5482209436969527,
+    "p10": 0.0,
+    "p90": 5.5736940588037225,
+    "media": 2.4714291945685867,
+    "dp": 5.790760458942418
+   },
+   "202509": {
+    "n": 434,
+    "mediana": 0.86329260049588,
+    "q1": 0.28206844999524633,
+    "q3": 2.4797949278215126,
+    "p10": 0.0,
+    "p90": 5.560505920440455,
+    "media": 2.7400642325629705,
+    "dp": 7.48183183814749
+   },
+   "202512": {
+    "n": 430,
+    "mediana": 0.8399041538415373,
+    "q1": 0.2856951932889743,
+    "q3": 2.202099042691605,
+    "p10": 0.0,
+    "p90": 5.0682306432103434,
+    "media": 2.2907302883926914,
+    "dp": 6.167915292289658
+   },
+   "202603": {
+    "n": 427,
+    "mediana": 0.8963232791045748,
+    "q1": 0.3049307233005974,
+    "q3": 1.980935088677021,
+    "p10": 0.0,
+    "p90": 4.859805991419789,
+    "media": 2.4237454675784003,
+    "dp": 6.980473745626319
+   }
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": {
+    "n": 759,
+    "mediana": 1.538889695703575,
+    "q1": 0.5828240821739651,
+    "q3": 2.7199320830274902,
+    "p10": 0.0,
+    "p90": 5.3503702112153215,
+    "media": 3.552291526774933,
+    "dp": 9.917419281237533
+   },
+   "202506": {
+    "n": 760,
+    "mediana": 1.6403755584168047,
+    "q1": 0.6470067004080985,
+    "q3": 3.2693538486394225,
+    "p10": 0.0,
+    "p90": 6.209290795920301,
+    "media": 3.8660357113633435,
+    "dp": 10.73023402280719
+   },
+   "202509": {
+    "n": 766,
+    "mediana": 1.6353022806607715,
+    "q1": 0.6403727765659567,
+    "q3": 2.8939353206400225,
+    "p10": 0.0,
+    "p90": 6.177328821340378,
+    "media": 3.981441270576511,
+    "dp": 11.328600064187043
+   },
+   "202512": {
+    "n": 764,
+    "mediana": 1.5519690373916717,
+    "q1": 0.587797077095488,
+    "q3": 3.0580642145002295,
+    "p10": 0.0,
+    "p90": 6.302492467157948,
+    "media": 3.9296987844052813,
+    "dp": 11.0419931120074
+   },
+   "202603": {
+    "n": 755,
+    "mediana": 1.718123354432426,
+    "q1": 0.7850811580781057,
+    "q3": 3.427554062532137,
+    "p10": 0.0,
+    "p90": 7.576832566551234,
+    "media": 4.285031900550112,
+    "dp": 10.26906582183902
+   }
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": {
+    "n": 597,
+    "mediana": 9.637255782435115,
+    "q1": 2.5339832366963817,
+    "q3": 20.80256259192766,
+    "p10": 0.0,
+    "p90": 28.72158592763722,
+    "media": 12.887165156368921,
+    "dp": 12.404009975034228
+   },
+   "202506": {
+    "n": 595,
+    "mediana": 9.710251706758955,
+    "q1": 2.9315710881664585,
+    "q3": 22.402184537609788,
+    "p10": 0.0,
+    "p90": 30.16598562082794,
+    "media": 13.417753704727833,
+    "dp": 12.696615554652666
+   },
+   "202509": {
+    "n": 590,
+    "mediana": 9.503331448283676,
+    "q1": 3.4434171701194574,
+    "q3": 20.90721413995861,
+    "p10": 0.0,
+    "p90": 28.56209320093161,
+    "media": 12.931697232609721,
+    "dp": 11.647626672084078
+   },
+   "202512": {
+    "n": 584,
+    "mediana": 9.57002040822617,
+    "q1": 3.610784823747628,
+    "q3": 20.108605887793345,
+    "p10": 0.0,
+    "p90": 27.46760471371154,
+    "media": 12.415202868570782,
+    "dp": 11.019157533963039
+   },
+   "202603": {
+    "n": 583,
+    "mediana": 9.30721418723993,
+    "q1": 3.886758752854603,
+    "q3": 19.598175684066,
+    "p10": 0.0,
+    "p90": 27.38896655051678,
+    "media": 12.581071621784485,
+    "dp": 11.744760957416004
+   }
+  },
+  "atraso15_recebiveis_pj": {
+   "202503": {
+    "n": 624,
+    "mediana": 3.256633882513306,
+    "q1": 0.8116209680165246,
+    "q3": 7.097822537376507,
+    "p10": 0.0,
+    "p90": 15.349296159741725,
+    "media": 6.922590113770612,
+    "dp": 12.919756039820674
+   },
+   "202506": {
+    "n": 626,
+    "mediana": 3.448284418362725,
+    "q1": 1.0385392798023596,
+    "q3": 7.687729438450722,
+    "p10": 0.0,
+    "p90": 16.068536040678143,
+    "media": 7.417763192524827,
+    "dp": 13.780588405224972
+   },
+   "202509": {
+    "n": 627,
+    "mediana": 3.596102778748599,
+    "q1": 0.9283216689625211,
+    "q3": 7.867611616186157,
+    "p10": 0.0,
+    "p90": 15.833715561697279,
+    "media": 7.645227392936583,
+    "dp": 14.689011450461438
+   },
+   "202512": {
+    "n": 618,
+    "mediana": 3.585929339417271,
+    "q1": 1.0142103327246312,
+    "q3": 8.256062940385794,
+    "p10": 0.0,
+    "p90": 15.739472745774345,
+    "media": 7.882285287734054,
+    "dp": 15.191017909912507
+   },
+   "202603": {
+    "n": 613,
+    "mediana": 4.110709003734387,
+    "q1": 1.4222296645050054,
+    "q3": 8.66206919949158,
+    "p10": 0.0,
+    "p90": 16.04292520807541,
+    "media": 8.254424613699685,
+    "dp": 15.089712543486561
+   }
+  },
+  "atraso15_investimento_pj": {
+   "202503": {
+    "n": 633,
+    "mediana": 0.6868531969349606,
+    "q1": 0.2379436648815189,
+    "q3": 1.4679887283797066,
+    "p10": 0.0,
+    "p90": 2.8938535524649565,
+    "media": 1.8540446990049988,
+    "dp": 6.7104272826808655
+   },
+   "202506": {
+    "n": 632,
+    "mediana": 0.8723271818704024,
+    "q1": 0.3097990758616457,
+    "q3": 1.7135969339188741,
+    "p10": 0.0,
+    "p90": 3.7222875568471383,
+    "media": 2.406125994855599,
+    "dp": 8.423287096821985
+   },
+   "202509": {
+    "n": 640,
+    "mediana": 0.8529331401049824,
+    "q1": 0.3200551520694086,
+    "q3": 1.8814724576395783,
+    "p10": 0.0,
+    "p90": 3.633989834379091,
+    "media": 2.390107139490127,
+    "dp": 7.22826700594259
+   },
+   "202512": {
+    "n": 627,
+    "mediana": 0.9245822480762774,
+    "q1": 0.37088663073927053,
+    "q3": 1.9422931047639365,
+    "p10": 0.022346086065678283,
+    "p90": 3.8336402328008115,
+    "media": 2.827399709357608,
+    "dp": 9.599231879167087
+   },
+   "202603": {
+    "n": 624,
+    "mediana": 1.0694978558559836,
+    "q1": 0.4706542983273858,
+    "q3": 2.260927604303397,
+    "p10": 0.026990205009380496,
+    "p90": 4.494274637342912,
+    "media": 2.723337543115917,
+    "dp": 8.535578982031696
+   }
+  },
+  "atraso15_comercio_exterior_pj": {
+   "202503": {
+    "n": 60,
+    "mediana": 0.010483435928484029,
+    "q1": 0.0,
+    "q3": 0.6236259338795889,
+    "p10": 0.0,
+    "p90": 2.355075816066471,
+    "media": 1.8761222042357488,
+    "dp": 6.046547944044234
+   },
+   "202506": {
+    "n": 61,
+    "mediana": 0.013317236836211051,
+    "q1": 0.0,
+    "q3": 0.8496759439531197,
+    "p10": 0.0,
+    "p90": 2.722455876128325,
+    "media": 1.0766126500687296,
+    "dp": 2.4558352474508434
+   },
+   "202509": {
+    "n": 62,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.8015700508421773,
+    "p10": 0.0,
+    "p90": 4.733217369842042,
+    "media": 2.397333276676021,
+    "dp": 8.539709174665091
+   },
+   "202512": {
+    "n": 82,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.31031477871295715,
+    "p10": 0.0,
+    "p90": 3.1929292284805704,
+    "media": 1.752321499403729,
+    "dp": 8.01542347851316
+   },
+   "202603": {
+    "n": 83,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.3985123479627746,
+    "p10": 0.0,
+    "p90": 2.385415436658504,
+    "media": 1.2334279883198127,
+    "dp": 3.9599507530390756
+   }
+  },
+  "atraso15_infraestrutura_pj": {
+   "202503": {
+    "n": 195,
+    "mediana": 0.49825002770624494,
+    "q1": 0.05500704613349204,
+    "q3": 2.281969867797877,
+    "p10": 0.0,
+    "p90": 11.94444209619508,
+    "media": 7.730608626757869,
+    "dp": 22.58695797895964
+   },
+   "202506": {
+    "n": 197,
+    "mediana": 0.6725839564940295,
+    "q1": 0.1168175262509998,
+    "q3": 2.2360334390167096,
+    "p10": 0.0,
+    "p90": 13.093968275864636,
+    "media": 7.551102915849228,
+    "dp": 22.028490224262956
+   },
+   "202509": {
+    "n": 191,
+    "mediana": 0.8629141389274344,
+    "q1": 0.2533085671825226,
+    "q3": 2.2239471774649475,
+    "p10": 0.0,
+    "p90": 11.58046946800064,
+    "media": 5.594744782281309,
+    "dp": 17.05239508618619
+   },
+   "202512": {
+    "n": 197,
+    "mediana": 0.7489300794730684,
+    "q1": 0.0960946803689884,
+    "q3": 2.1371871738516464,
+    "p10": 0.0,
+    "p90": 5.480287594253532,
+    "media": 4.213914648142462,
+    "dp": 13.8011952405562
+   },
+   "202603": {
+    "n": 202,
+    "mediana": 0.7315151522954254,
+    "q1": 0.03620402530893661,
+    "q3": 2.3547449235016877,
+    "p10": 0.0,
+    "p90": 5.750759129379662,
+    "media": 4.0428891176803505,
+    "dp": 12.752130094365565
+   }
+  },
+  "atraso15_rural_pj": {
+   "202503": {
+    "n": 282,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "p10": 0.0,
+    "p90": 0.2753161849870565,
+    "media": 0.9471221331155154,
+    "dp": 6.746912361490313
+   },
+   "202506": {
+    "n": 281,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "p10": 0.0,
+    "p90": 1.180203650626939,
+    "media": 1.3785941479039263,
+    "dp": 8.904858714295603
+   },
+   "202509": {
+    "n": 292,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "p10": 0.0,
+    "p90": 1.7044758800790636,
+    "media": 1.5722039592217019,
+    "dp": 9.07052431054311
+   },
+   "202512": {
+    "n": 303,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "p10": 0.0,
+    "p90": 1.0041726688878714,
+    "media": 0.8584963203892724,
+    "dp": 6.1374488848999675
+   },
+   "202603": {
+    "n": 302,
+    "mediana": 0.0,
+    "q1": 0.0,
+    "q3": 0.0,
+    "p10": 0.0,
+    "p90": 0.4318950384697854,
+    "media": 0.46718288831375937,
+    "dp": 2.1583259370417127
+   }
+  }
+ },
+ "universo": {
+  "n_total": 1763,
+  "n_conglomerados": 120,
+  "n_individuais": 1643
+ }
+}

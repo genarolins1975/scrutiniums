@@ -1,0 +1,24 @@
+{
+ "cod": "00049944",
+ "nome": "00049944",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 7502186293.82,
+   "202506": 8678963688.22,
+   "202509": 9709750030.47,
+   "202512": 10167731344.5,
+   "202603": 11114028764.19
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

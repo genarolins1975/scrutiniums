@@ -1,0 +1,154 @@
+{
+ "cod": "28650236",
+ "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 115632423.58,
+   "202506": 99916390.17,
+   "202509": 92028187.56,
+   "202512": 92630846.61,
+   "202603": 87797536.11
+  },
+  "patrimonio_liquido": {
+   "202503": 28709048.65,
+   "202506": 28517374.18,
+   "202509": 27639089.73,
+   "202512": 26924732.92,
+   "202603": 27312106.19
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 83775561.15,
+   "202506": 68777346.12,
+   "202509": 58843934.56,
+   "202512": 59879030.05,
+   "202603": 54227469.88
+  },
+  "lucro_liquido": {
+   "202503": 355750.0,
+   "202506": 164075.529999999,
+   "202509": -878284.449999999,
+   "202512": -1592641.26,
+   "202603": 387373.27
+  },
+  "indice_basileia": {
+   "202503": 17.3036515635425,
+   "202506": 18.8699783632531,
+   "202509": 13.1479107946688,
+   "202512": 12.4394332768563,
+   "202603": 11.590291667196901
+  },
+  "indice_capital_principal": {
+   "202503": 17.3036515635425,
+   "202506": 18.8699783632531,
+   "202509": 13.1479107946688,
+   "202512": 12.4394332768563,
+   "202603": 11.590291667196901
+  },
+  "indice_capital_nivel1": {
+   "202503": 17.3036515635425,
+   "202506": 18.8699783632531,
+   "202509": 13.1479107946688,
+   "202512": 12.4394332768563,
+   "202603": 11.590291667196901
+  },
+  "patrimonio_referencia": {
+   "202503": 3494490.5,
+   "202506": 3735986.33,
+   "202509": 2620889.87,
+   "202512": 2240237.58,
+   "202603": 2856635.9
+  },
+  "rwa": {
+   "202503": 957256.38,
+   "202506": 592702.05,
+   "202509": 3543952.54,
+   "202512": 1605708.34,
+   "202603": 558620.76
+  },
+  "roe_periodo": {
+   "202503": 1.239156352190723,
+   "202506": 0.5753528672182925,
+   "202509": -3.17768949187459,
+   "202512": -5.915160847582513,
+   "202603": 1.418320752362306
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "49288113",
+    "nome": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 87708577.57
+   },
+   {
+    "cod": "74248949",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES MUNICIPAIS DE SÃO JOÃO DA BOA VISTA - CREDIVISTA",
+    "sr": "S5",
+    "ativo_brl": 87369818.51
+   },
+   {
+    "cod": "33959738",
+    "nome": "MOVA SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 87017908.49
+   },
+   {
+    "cod": "02093154",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO MAGAZINE LUIZA, EMPRESAS CONTROLADAS E COLIGADAS - COOPLUIZA",
+    "sr": "S5",
+    "ativo_brl": 86715019.72
+   },
+   {
+    "cod": "19962468",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA ADVOCACIA E SERVENTUÁRIOS DO PODER JUDICIÁRIO NO ESTADO DO RIO GRANDE DO SUL - SICREDI COOABCRED RS",
+    "sr": "S4",
+    "ativo_brl": 89268641.84
+   },
+   {
+    "cod": "44815065",
+    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": "S1",
+    "ativo_brl": 89599291.33
+   },
+   {
+    "cod": "09579249",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPRESÁRIOS DE AMERICANA, LIMEIRA E REGIÃO - SICOOB ACICRED",
+    "sr": "S5",
+    "ativo_brl": 89961303.21
+   },
+   {
+    "cod": "71336432",
+    "nome": "SICOOB CREDIMED - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA CIDADE DE UBERABA LTDA.",
+    "sr": "S5",
+    "ativo_brl": 90725348.42
+   }
+  ]
+ }
+}

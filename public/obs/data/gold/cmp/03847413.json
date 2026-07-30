@@ -1,0 +1,119 @@
+{
+ "cod": "03847413",
+ "nome": "MULVI INSTITUICAO DE PAGAMENTO S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1108495587.83,
+   "202506": 1119119431.54,
+   "202509": 1126372699.4,
+   "202512": 1195976256.22,
+   "202603": 1115103786.88
+  },
+  "patrimonio_liquido": {
+   "202503": 92124125.56,
+   "202506": 88000474.49,
+   "202509": 82434075.01,
+   "202512": 75492780.86,
+   "202603": 69090295.45
+  },
+  "carteira_credito": {
+   "202503": 567877961.81,
+   "202506": 584167666.74,
+   "202509": 596942458.01,
+   "202512": 622340925.11,
+   "202603": 600816313.75
+  },
+  "captacoes": {
+   "202503": 16341749.4,
+   "202506": 19401028.71,
+   "202509": 13622569.68,
+   "202512": 4767866.06,
+   "202603": 6104955.96
+  },
+  "lucro_liquido": {
+   "202503": -1881984.92,
+   "202506": -6005635.98999998,
+   "202509": -6495089.75,
+   "202512": -13436383.9,
+   "202603": -6402485.41
+  },
+  "roe_periodo": {
+   "202503": -2.042879548174677,
+   "202506": -6.824549554766815,
+   "202509": -7.87913220256561,
+   "202512": -17.79823679421418,
+   "202603": -9.26683750344275
+  },
+  "cart_ativo_pct": {
+   "202503": 51.2296095757749,
+   "202506": 52.19886727693911,
+   "202509": 52.996886228508664,
+   "202512": 52.036227464663,
+   "202603": 53.879855921846655
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "59869560",
+    "nome": "COOPERATIVA DE CREDITO NOSSO - SICOOB NOSSO",
+    "sr": "S5",
+    "ativo_brl": 1112218802.15
+   },
+   {
+    "cod": "00991143",
+    "nome": "WORLDPAY DO BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 1126993670.02
+   },
+   {
+    "cod": "04484490",
+    "nome": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO DA ALTA NOROESTE DE SÃO PAULO - SICREDI ALTA NOROESTE SP",
+    "sr": "S4",
+    "ativo_brl": 1079428506.21
+   },
+   {
+    "cod": "70241658",
+    "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI RECIFE",
+    "sr": "S4",
+    "ativo_brl": 1072371088.56
+   },
+   {
+    "cod": "33737818",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DE MATO GROSSO DO SUL, GOIÁS, DISTRITO FEDERAL E TOCANTINS - CENTRAL SICREDI BRASIL CENTRAL",
+    "sr": "S4",
+    "ativo_brl": 1066055240.5
+   },
+   {
+    "cod": "81292278",
+    "nome": "COOPERATIVA DE CRÉDITO ORIGINAL - SICOOB ORIGINAL",
+    "sr": "S5",
+    "ativo_brl": 1065562190.56
+   },
+   {
+    "cod": "05979692",
+    "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DOS CREAS E DEMAIS ÁREAS TECNOLÓGICAS - CREDCREA",
+    "sr": "S5",
+    "ativo_brl": 1062733120.89
+   },
+   {
+    "cod": "73647935",
+    "nome": "COOPERATIVA DE CRÉDITO UNIQUE BR",
+    "sr": "S5",
+    "ativo_brl": 1050875467.82
+   }
+  ]
+ }
+}

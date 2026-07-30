@@ -63,6 +63,10 @@ tailwind.config.ts     Design tokens
 vitest.config.ts       Configuração de testes
 ```
 
+## Observatório embutido
+
+O Observatório Brasileiro de Crédito (SPA em JavaScript puro, 16 abas) roda embutido na plataforma em **`/observatorio`**. Os ativos estáticos (HTML, JS, CSS e os JSONs analíticos da camada gold, ~54 MB) vivem em `public/obs/`; rewrites no `next.config.mjs` servem `public/obs/index.html` para qualquer rota sob `/observatorio` (o roteamento fino é da própria SPA, via History API). Tanto `/observatorio` quanto `/obs/**` (inclusive os dados em `/obs/data/gold/**`) exigem a sessão da Scrutiniums (`src/middleware.ts`); sem cookie, redirect para `/entrar?de=/observatorio`. Para atualizar os dados no futuro, rode o pipeline do observatório e sincronize a saída `data/gold/` para `public/obs/data/gold/` (e os ativos `index.html`/`app.js`/`styles.css` se a SPA mudar, reaplicando o prefixo `/observatorio` e o `DATA_BASE=/obs/data/gold/`).
+
 ## Documentação
 
 As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md).

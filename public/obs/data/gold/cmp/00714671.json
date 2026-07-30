@@ -1,0 +1,140 @@
+{
+ "cod": "00714671",
+ "nome": "EWALLY INSTITUIÇÃO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 16919561.97,
+   "202506": 12537403.63,
+   "202509": 9859096.72,
+   "202512": 7486049.77,
+   "202603": 15748009.35
+  },
+  "patrimonio_liquido": {
+   "202503": 5895519.63,
+   "202506": 4748933.31,
+   "202509": 2267249.08,
+   "202512": -239087.45,
+   "202603": 8321192.86
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 6284069.1,
+   "202506": 5587894.02,
+   "202509": 5507306.58,
+   "202512": 5444810.17,
+   "202603": 5177344.9
+  },
+  "lucro_liquido": {
+   "202503": -1552810.35,
+   "202506": -2699396.67,
+   "202509": -2481684.23,
+   "202512": -4988020.76,
+   "202603": -2439719.69
+  },
+  "indice_basileia": {
+   "202503": 4.17669631389327,
+   "202506": -2.15024897178825,
+   "202509": 56.0826928370722,
+   "202512": -6.61907553458983,
+   "202603": -71.0232904939078
+  },
+  "patrimonio_referencia": {
+   "202503": 893519.63,
+   "202506": -253066.69,
+   "202509": 2265249.08,
+   "202512": -241087.45,
+   "202603": -2681737.14
+  },
+  "rwa": {
+   "202503": 2871000.13,
+   "202506": 3706650.34,
+   "202509": 2952866.36,
+   "202512": 2825609.14,
+   "202603": 3064935.32
+  },
+  "roe_periodo": {
+   "202503": -26.338820790254925,
+   "202506": -56.842168415289876,
+   "202509": -109.45794407379358,
+   "202512": 2086.274607889289,
+   "202603": -29.319350374965346
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "47873449",
+    "nome": "SER FINANCE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 15740267.33
+   },
+   {
+    "cod": "20251847",
+    "nome": "SUDACRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 15736346.23
+   },
+   {
+    "cod": "45860531",
+    "nome": "IDEA MAKER INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 15668205.42
+   },
+   {
+    "cod": "42107706",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DE ELEVADORES ATLAS SCHINDLER LTDA.",
+    "sr": "S5",
+    "ativo_brl": 15567399.6
+   },
+   {
+    "cod": "73631483",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DO GRUPO BAYER LTDA",
+    "sr": "S5",
+    "ativo_brl": 15560157.02
+   },
+   {
+    "cod": "44728700",
+    "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 15942714.66
+   },
+   {
+    "cod": "01288797",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ASTRAZENECA DO BRASIL",
+    "sr": "S5",
+    "ativo_brl": 15950376.73
+   },
+   {
+    "cod": "04062902",
+    "nome": "OZ CORRETORA DE CÂMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 16107405.13
+   }
+  ]
+ }
+}

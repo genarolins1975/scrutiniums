@@ -1,0 +1,140 @@
+{
+ "cod": "89784367",
+ "nome": "EBADIVAL - E. BAGGIO DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 758266.8,
+   "202506": 727148.72,
+   "202509": 691977.81,
+   "202512": 644725.9,
+   "202603": 601834.37
+  },
+  "patrimonio_liquido": {
+   "202503": 752516.29,
+   "202506": 721588.84,
+   "202509": 686578.29,
+   "202512": 635994.47,
+   "202603": 596536.94
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -29461.05,
+   "202506": -60388.5,
+   "202509": -35010.55,
+   "202512": -85594.37,
+   "202603": -39457.53
+  },
+  "indice_basileia": {
+   "202503": 154.246423835646,
+   "202506": 149.445283499354,
+   "202509": 139.333154706883,
+   "202512": 132.473299888811,
+   "202603": 141.253500898627
+  },
+  "patrimonio_referencia": {
+   "202503": 752516.29,
+   "202506": 721588.84,
+   "202509": 686578.29,
+   "202512": 635994.47,
+   "202603": 596536.94
+  },
+  "rwa": {
+   "202503": 273410.82,
+   "202506": 270669.83,
+   "202509": 292853.35,
+   "202512": 282963.81,
+   "202603": 216607.46
+  },
+  "roe_periodo": {
+   "202503": -3.9150049495938486,
+   "202506": -8.368823996779108,
+   "202509": -5.0992800835575505,
+   "202512": -13.458351296670864,
+   "202603": -6.614431957893505
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "03165497",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA SANEPAR - CREDISANEPAR",
+    "sr": "S5",
+    "ativo_brl": 565739.5
+   },
+   {
+    "cod": "15168152",
+    "nome": "CONSEGTUR CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 647280.53
+   },
+   {
+    "cod": "03443143",
+    "nome": "AVIPAM CORRETORA DE CAMBIO LTDA",
+    "sr": "S4",
+    "ativo_brl": 648078.23
+   },
+   {
+    "cod": "03219207",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO BANESPA DE BOTUCATU E CIDADES LIMÍTROFES",
+    "sr": "S5",
+    "ativo_brl": 556776.25
+   },
+   {
+    "cod": "02447184",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DO COLEGIO SANTO INACIO - COESI",
+    "sr": "S5",
+    "ativo_brl": 703329.57
+   },
+   {
+    "cod": "00129753",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS SOMART LTDA.",
+    "sr": "S5",
+    "ativo_brl": 727017.05
+   },
+   {
+    "cod": "04158581",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS BANCÁRIOS DE JUIZ DE FORA LTDA. - COCBAN",
+    "sr": "S5",
+    "ativo_brl": 488188.04
+   },
+   {
+    "cod": "43561343",
+    "nome": "CRYSTAL BMC - INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 742803.13
+   }
+  ]
+ }
+}

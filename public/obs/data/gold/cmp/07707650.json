@@ -1,0 +1,24 @@
+{
+ "cod": "07707650",
+ "nome": "AYMORÉ CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+ "sr": "S1",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 6053187761.04,
+   "202506": 6327036570.6,
+   "202509": 6364814301.7,
+   "202512": 5174553080.03,
+   "202603": 5660818315.9
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

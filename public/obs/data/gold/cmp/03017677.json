@@ -1,0 +1,24 @@
+{
+ "cod": "03017677",
+ "nome": "BANCO J. SAFRA S.A.",
+ "sr": "S2",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 136623927.67,
+   "202506": 131495499.21,
+   "202509": 109326901.41,
+   "202512": 96169306.59,
+   "202603": 92497388.31
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

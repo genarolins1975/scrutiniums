@@ -1,0 +1,594 @@
+{
+ "cod_inst": "C0051585",
+ "caso": null,
+ "cabecalho": {
+  "nome_comercial": "Goldman Sachs",
+  "razao_social_fonte_bcb": "GOLDMAN SACHS",
+  "codigo_bcb": "C0051585",
+  "tcb": "B2",
+  "sede": "São Paulo/SP",
+  "segmento": "S3",
+  "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
+  "n_pares": 63,
+  "conglomerado_prudencial": "C0080714",
+  "capital": "não classificado",
+  "modelo": null,
+  "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
+  "data_base": "2026-T1",
+  "atualizado_em": "2026-07-29T01:57:33+00:00",
+  "aviso_pares": null,
+  "cnpj": "não disponível nas fontes integradas",
+  "participante_open_finance": null
+ },
+ "resumo_executivo": {
+  "avaliacao_geral": {
+   "texto": "Capitalização acima da mediana do grupo S3, rentabilidade do período acima da mediana.",
+   "base": "BCB IF.data (Informações de Capital) + medianas do grupo S3"
+  },
+  "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 30.7% (acima da mediana do grupo S3: 16.8%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
+   {
+    "tipo": "ok",
+    "texto": "Carteira caiu 96.4% em 4 trimestres.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "tipo": "ok",
+    "texto": "ROE do período de 5.3%.",
+    "base": "calculado sobre IF.data"
+   }
+  ],
+  "pontos_atencao": [],
+  "mudancas_recentes": [
+   {
+    "texto": "Ativos totais: +12.9% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Patrimônio líquido: +6.6% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Carteira de crédito: +11369645.52% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: -2.6p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
+   }
+  ],
+  "limitacoes_informacionais": [
+   "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "LCR / NSFR e composição de funding",
+   "Composição de receita, margem e eficiência",
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+  ]
+ },
+ "grupo_pares_composicao": {
+  "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
+  "quantidade": 63,
+  "maiores_membros": [
+   {
+    "cod": "C0052058",
+    "nome": "NUBANK"
+   },
+   {
+    "cod": "C0052072",
+    "nome": "C6 BANK"
+   },
+   {
+    "cod": "C0020107",
+    "nome": "JP MORGAN CHASE"
+   },
+   {
+    "cod": "18236120",
+    "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
+   },
+   {
+    "cod": "C0051884",
+    "nome": "INTER"
+   },
+   {
+    "cod": "C0051987",
+    "nome": "DAYCOVAL"
+   },
+   {
+    "cod": "C0041856",
+    "nome": "ABC-BRASIL"
+   },
+   {
+    "cod": "04902979",
+    "nome": "BANCO DA AMAZONIA S.A."
+   },
+   {
+    "cod": "59109165",
+    "nome": "BANCO VOLKSWAGEN S.A."
+   },
+   {
+    "cod": "01023570",
+    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A."
+   },
+   {
+    "cod": "01522368",
+    "nome": "BANCO BNP PARIBAS BRASIL S.A."
+   },
+   {
+    "cod": "C0051956",
+    "nome": "AGIBANK"
+   },
+   {
+    "cod": "C0030290",
+    "nome": "BMG"
+   },
+   {
+    "cod": "C0051255",
+    "nome": "BOFA MERRILL LYNCH"
+   },
+   {
+    "cod": "C0052632",
+    "nome": "PICPAY - FINANCEIRO"
+   }
+  ],
+  "quartis_basileia": {
+   "q1": 13.5,
+   "mediana": 16.8,
+   "q3": 23.3
+  },
+  "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
+ },
+ "score_meta": null,
+ "kpis": [
+  {
+   "label": "Ativos totais",
+   "v": 31160389820.03,
+   "unit": "R$",
+   "d_tri": 12.9,
+   "d_tri_tipo": "%",
+   "hist": [
+    36936141333.15,
+    31199185389.77,
+    35476398633.12,
+    27595337586.65,
+    31160389820.03
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Patrimônio líquido",
+   "v": 5510275746.07,
+   "unit": "R$",
+   "d_tri": 6.6,
+   "d_tri_tipo": "%",
+   "hist": [
+    4536854444.16,
+    4703546985.12,
+    4947049618.99,
+    5169569696.05,
+    5510275746.07
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Carteira de crédito",
+   "v": 11369645.52,
+   "unit": "R$",
+   "d_tri": 11369645.52,
+   "d_tri_tipo": "%",
+   "hist": [
+    313293544.94,
+    0.0,
+    0.0,
+    0.0,
+    11369645.52
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Lucro líquido (acum. ano IF.data)",
+   "v": 291495463.28,
+   "unit": "R$",
+   "d_tri": null,
+   "d_tri_tipo": "%",
+   "hist": [
+    357906885.77,
+    519632190.78,
+    236535216.43,
+    490657535.41,
+    291495463.28
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Índice de Basileia",
+   "v": 30.6668608910227,
+   "unit": "%",
+   "d_tri": -2.6,
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    27.6621,
+    29.6928,
+    28.7105,
+    33.2712,
+    30.6669
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "label": "ROE do período (padronizado)",
+   "v": 5.29,
+   "unit": "%",
+   "d_tri": null,
+   "d_tri_tipo": "p.p.",
+   "hist": [],
+   "fonte": "calculado"
+  }
+ ],
+ "destaques": [
+  {
+   "tipo": "ok",
+   "texto": "Basileia de 30.7% (acima da mediana do grupo S3: 16.8%).",
+   "base": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "Carteira caiu 96.4% em 4 trimestres.",
+   "base": "BCB IF.data (Olinda)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "ROE do período de 5.3%.",
+   "base": "calculado sobre IF.data"
+  }
+ ],
+ "capital_tabela": [
+  {
+   "indicador": "Índice de Basileia",
+   "valor": 30.67,
+   "unit": "%",
+   "d_tri": -2.6,
+   "vs_pares": "acima",
+   "mediana_grupo": 16.82,
+   "percentil": 92.9
+  },
+  {
+   "indicador": "Ativo ÷ PL (alavancagem contábil)",
+   "valor": 5.65,
+   "unit": "×",
+   "d_tri": null,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 9.53,
+   "percentil": 27.4
+  },
+  {
+   "indicador": "ROE do período",
+   "valor": 5.29,
+   "unit": "%",
+   "d_tri": null,
+   "vs_pares": "acima",
+   "mediana_grupo": 2.45,
+   "percentil": 85.5
+  }
+ ],
+ "carteira": {
+  "donut_cliente": [
+   {
+    "label": "Pessoa Jurídica",
+    "v": 22739291.04
+   }
+  ],
+  "perfil": {
+   "pme_share_pct": 0.0,
+   "top_mod_pj": [
+    [
+     "outros_creditos",
+     100.0
+    ]
+   ]
+  },
+  "total_pf": null,
+  "total_pj": 22739291.04
+ },
+ "evolucao_base100": {
+  "Ativos": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 84.5
+   },
+   {
+    "p": "2025-T3",
+    "v": 96.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 74.7
+   },
+   {
+    "p": "2026-T1",
+    "v": 84.4
+   }
+  ],
+  "Carteira": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 0.0
+   },
+   {
+    "p": "2025-T3",
+    "v": 0.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 0.0
+   },
+   {
+    "p": "2026-T1",
+    "v": 3.6
+   }
+  ],
+  "PL": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 103.7
+   },
+   {
+    "p": "2025-T3",
+    "v": 109.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 113.9
+   },
+   {
+    "p": "2026-T1",
+    "v": 121.5
+   }
+  ]
+ },
+ "comparacao_grupo": {
+  "roe": {
+   "valores": [
+    2.45,
+    0.59,
+    1.95,
+    1.27,
+    -0.59,
+    4.47,
+    0.66,
+    1.99,
+    -3.52,
+    0.0,
+    3.99,
+    -2.6,
+    6.72,
+    -0.31,
+    1.32,
+    3.97,
+    3.0,
+    -0.0,
+    3.06,
+    1.72,
+    0.47,
+    1.63,
+    2.43,
+    5.47,
+    -2.13,
+    7.57,
+    0.16,
+    -1.39,
+    2.36,
+    3.68,
+    1.22,
+    1.31,
+    1.31,
+    1.46,
+    3.06,
+    5.22,
+    0.0,
+    2.8,
+    4.78,
+    4.75,
+    9.07,
+    3.72,
+    3.47,
+    -1.11,
+    3.36,
+    3.04,
+    3.31,
+    8.65,
+    4.24,
+    1.21,
+    3.19,
+    -0.98,
+    5.29,
+    4.54,
+    4.17,
+    6.0,
+    6.89,
+    15.61,
+    8.88,
+    2.81,
+    0.08,
+    0.95,
+    -0.61
+   ],
+   "meu": 5.29,
+   "mediana": 2.45
+  },
+  "basileia": {
+   "valores": [
+    13.12,
+    58.12,
+    13.48,
+    15.96,
+    15.41,
+    12.63,
+    13.01,
+    16.82,
+    13.16,
+    36.07,
+    15.13,
+    12.93,
+    17.75,
+    20.6,
+    22.05,
+    22.82,
+    28.92,
+    24.42,
+    11.49,
+    12.82,
+    19.63,
+    25.86,
+    26.8,
+    19.04,
+    18.89,
+    13.12,
+    18.76,
+    26.02,
+    15.31,
+    16.34,
+    34.64,
+    25.39,
+    19.65,
+    16.02,
+    23.79,
+    16.03,
+    14.04,
+    12.1,
+    36.82,
+    17.29,
+    13.53,
+    15.83,
+    13.22,
+    24.96,
+    13.07,
+    23.26,
+    11.6,
+    30.67,
+    13.98,
+    14.68,
+    13.55,
+    17.3,
+    15.1,
+    12.95,
+    29.55,
+    16.9,
+    18.57
+   ],
+   "meu": 30.67,
+   "mediana": 16.82
+  },
+  "alav": {
+   "valores": [
+    26.06,
+    1.45,
+    9.96,
+    11.99,
+    9.63,
+    9.53,
+    9.0,
+    8.77,
+    12.38,
+    14.23,
+    6.93,
+    11.79,
+    5.47,
+    3.14,
+    1.39,
+    4.56,
+    17.94,
+    1.86,
+    1.03,
+    5.98,
+    9.87,
+    5.15,
+    3.97,
+    14.67,
+    11.11,
+    5.95,
+    10.12,
+    4.96,
+    6.56,
+    20.23,
+    8.23,
+    7.24,
+    5.13,
+    10.61,
+    16.62,
+    4.53,
+    1.97,
+    5.82,
+    14.8,
+    10.22,
+    13.46,
+    16.42,
+    11.9,
+    3.48,
+    15.52,
+    10.46,
+    9.35,
+    20.62,
+    6.48,
+    8.5,
+    3.6,
+    17.49,
+    5.65,
+    13.29,
+    14.85,
+    13.13,
+    19.09,
+    19.25,
+    22.67,
+    5.66,
+    16.73,
+    5.23,
+    1.07
+   ],
+   "meu": 5.65,
+   "mediana": 9.53
+  }
+ },
+ "score_ref": {
+  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+ },
+ "atraso_produtos": null,
+ "openfinance": null,
+ "reclamacoes": [],
+ "rj_citacoes": {
+  "casos": 0,
+  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
+ },
+ "indisponiveis": [
+  {
+   "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "motivo": "Não exposta por instituição no corte público do IF.data."
+  },
+  {
+   "indicador": "LCR / NSFR e composição de funding",
+   "motivo": "Exigem Pilar 3 por instituição — não integrado."
+  },
+  {
+   "indicador": "Composição de receita, margem e eficiência",
+   "motivo": "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."
+  },
+  {
+   "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  }
+ ]
+}

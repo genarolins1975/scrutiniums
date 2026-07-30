@@ -1,0 +1,140 @@
+{
+ "cod": "37511258",
+ "nome": "INOVANTI INSTITUIÇÃO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 215139512.2,
+   "202506": 129508771.87,
+   "202509": 106462479.42,
+   "202512": 79258959.49,
+   "202603": 117440118.62
+  },
+  "patrimonio_liquido": {
+   "202503": 17871922.37,
+   "202506": 16364527.23,
+   "202509": 17042043.4,
+   "202512": 12413792.69,
+   "202603": 12466297.65
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 192195483.28,
+   "202506": 112486684.54,
+   "202509": 85417998.54,
+   "202512": 59440552.08,
+   "202603": 96747088.6
+  },
+  "lucro_liquido": {
+   "202503": 2176444.33,
+   "202506": 669049.19,
+   "202509": 1127516.17,
+   "202512": -3500734.54,
+   "202603": 52504.9600000006
+  },
+  "indice_basileia": {
+   "202503": 13.691569669085299,
+   "202506": 12.4582844978574,
+   "202509": 17.0134818198433,
+   "202512": 2.2779487266622898,
+   "202603": 12.3741206066115
+  },
+  "patrimonio_referencia": {
+   "202503": 17662143.94,
+   "202506": 16177531.28,
+   "202509": 16877829.93,
+   "202512": 2272361.7,
+   "202603": 12374715.98
+  },
+  "rwa": {
+   "202503": 10704499.88,
+   "202506": 10501185.15,
+   "202509": 9811932.14,
+   "202512": 12774557.43,
+   "202603": 11269924.06
+  },
+  "roe_periodo": {
+   "202503": 12.178009085656072,
+   "202506": 4.0884113582791235,
+   "202509": 6.616085545234558,
+   "202512": -28.200362511450965,
+   "202603": 0.42117524764861203
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "01374196",
+    "nome": "COOPERATIVA DE CRÉDITO DE SÃO FRANCISCO DE SALES LTDA. - SICOOB CREDISALES",
+    "sr": "S5",
+    "ativo_brl": 117069653.53
+   },
+   {
+    "cod": "37715993",
+    "nome": "ACCREDITO - SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 117862927.66
+   },
+   {
+    "cod": "01648418",
+    "nome": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 118103622.16
+   },
+   {
+    "cod": "10175348",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DE LIVRE ADMISSÃO DA REGIÃO ADMINISTRATIVA DE SOROCABA - SICOOB COOPERASO",
+    "sr": "S5",
+    "ativo_brl": 116147125.03
+   },
+   {
+    "cod": "02685483",
+    "nome": "CM CAPITAL MARKETS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 115606536.23
+   },
+   {
+    "cod": "08041950",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SISTEMA DE JUSTIÇA NO ESTADO DO CEARÁ - SICREDI COOPERJURIS",
+    "sr": "S4",
+    "ativo_brl": 115440102.67
+   },
+   {
+    "cod": "04257795",
+    "nome": "NOVA FUTURA CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 114477878.82
+   },
+   {
+    "cod": "40710595",
+    "nome": "NG CASH INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 114266877.81
+   }
+  ]
+ }
+}

@@ -1,0 +1,161 @@
+{
+ "cod": "09274232",
+ "nome": "STATE STREET BRASIL S.A. - BANCO COMERCIAL",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1796226578.44,
+   "202506": 1555784341.29,
+   "202509": 1319384013.0,
+   "202512": 1879078754.59,
+   "202603": 1647486403.77
+  },
+  "patrimonio_liquido": {
+   "202503": 678542824.85,
+   "202506": 705945977.97,
+   "202509": 711756645.97,
+   "202512": 712110248.98,
+   "202603": 711491109.1
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 1087743903.86,
+   "202506": 815176569.22,
+   "202509": 580285012.39,
+   "202512": 1123457616.41,
+   "202603": 893934842.92
+  },
+  "lucro_liquido": {
+   "202503": -2377740.68999997,
+   "202506": 4896633.24999985,
+   "202509": 4823577.42000001,
+   "202512": 15644328.77,
+   "202603": 2388439.02000001
+  },
+  "indice_basileia": {
+   "202503": 212.343457613823,
+   "202506": 234.28155136240497,
+   "202509": 210.12848420765602,
+   "202512": 329.31310643335803,
+   "202603": 225.700416096037
+  },
+  "indice_capital_principal": {
+   "202503": 212.343457613823,
+   "202506": 234.28155136240497,
+   "202509": 210.12848420765602,
+   "202512": 329.31310643335803,
+   "202603": 225.700416096037
+  },
+  "indice_capital_nivel1": {
+   "202503": 212.343457613823,
+   "202506": 234.28155136240497,
+   "202509": 210.12848420765602,
+   "202512": 329.31310643335803,
+   "202603": 225.700416096037
+  },
+  "patrimonio_referencia": {
+   "202503": 673572759.87,
+   "202506": 701804252.31,
+   "202509": 708151250.18,
+   "202512": 709013772.25,
+   "202603": 708856817.4
+  },
+  "rwa": {
+   "202503": 70323922.53,
+   "202506": 62528611.81,
+   "202509": 47721495.99,
+   "202512": 41840683.76,
+   "202603": 43999332.22
+  },
+  "razao_alavancagem": {
+   "202503": 37.5191481600084,
+   "202506": 45.1196378933703,
+   "202509": 53.7454330854955,
+   "202512": 37.7616943933403,
+   "202603": 43.014318507575396
+  },
+  "roe_periodo": {
+   "202503": -0.3504186623041218,
+   "202506": 0.6936271900125391,
+   "202509": 0.6777003695450313,
+   "202512": 2.19689701031664,
+   "202603": 0.33569485120077797
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "43774196",
+    "nome": "AGROLEND SOCIEDADE DE CREDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1646317967.98
+   },
+   {
+    "cod": "07268499",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA INTEGRAÇÃO - CRESOL INTEGRAÇÃO",
+    "sr": "S5",
+    "ativo_brl": 1641106272.33
+   },
+   {
+    "cod": "95163002",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO UNICRED ELEVA LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1658435607.3
+   },
+   {
+    "cod": "66463407",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ITAÚNA E REGIÃO LTDA - SICOOB CENTRO-OESTE",
+    "sr": "S5",
+    "ativo_brl": 1662520505.88
+   },
+   {
+    "cod": "04529074",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB CREDICAPITAL",
+    "sr": "S5",
+    "ativo_brl": 1611230390.73
+   },
+   {
+    "cod": "03965737",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA VANGUARDA - CRESOL VANGUARDA",
+    "sr": "S5",
+    "ativo_brl": 1605359316.7
+   },
+   {
+    "cod": "08044854",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO SICOOB CENTRO - SICOOB CENTRO",
+    "sr": "S5",
+    "ativo_brl": 1694516764.94
+   },
+   {
+    "cod": "21866694",
+    "nome": "COOPERATIVA DE CRÉDITO CREDINOR LTDA - SICOOB CREDINOR",
+    "sr": "S5",
+    "ativo_brl": 1593667948.3
+   }
+  ]
+ }
+}

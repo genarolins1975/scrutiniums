@@ -1,0 +1,189 @@
+{
+ "cod": "55823094",
+ "nome": "DELTA GLOBAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 236461.3,
+   "202506": 4290187.89,
+   "202509": 3618556.22,
+   "202512": 8291481.68,
+   "202603": 12001895.34
+  },
+  "patrimonio_liquido": {
+   "202503": -646067.65,
+   "202506": 3919678.21,
+   "202509": 2989885.36,
+   "202512": 5733813.35,
+   "202603": 7213680.63
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 55357.43,
+   "202509": 2507217.63,
+   "202512": 7655633.31,
+   "202603": 11187556.34
+  },
+  "carteira_pf": {
+   "202506": 57692.13,
+   "202509": 2580202.86,
+   "202512": 12268019.98,
+   "202603": 18728536.06
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 185219.36
+  },
+  "lucro_liquido": {
+   "202503": -749464.45,
+   "202506": -1440292.77,
+   "202509": -929792.85,
+   "202512": 3414135.14,
+   "202603": 1485025.06
+  },
+  "indice_basileia": {
+   "202503": -249.43981336751602,
+   "202506": 2726.17946674751,
+   "202509": 109.181431769633,
+   "202603": 41.284051025001304
+  },
+  "indice_capital_principal": {
+   "202503": -249.43981336751602,
+   "202506": 2726.17946674751,
+   "202509": 109.181431769633,
+   "202603": 41.284051025001304
+  },
+  "indice_capital_nivel1": {
+   "202503": -249.43981336751602,
+   "202506": 2726.17946674751,
+   "202509": 109.181431769633,
+   "202603": 41.284051025001304
+  },
+  "patrimonio_referencia": {
+   "202503": -646067.65,
+   "202506": 3919678.21,
+   "202509": 2989885.36,
+   "202603": 7213680.63
+  },
+  "rwa": {
+   "202503": 235461.3,
+   "202506": 123196.59,
+   "202509": 2699011.67,
+   "202603": 11543526.27
+  },
+  "razao_alavancagem": {
+   "202503": -64606.765,
+   "202509": 82.6264724995761,
+   "202603": 60.10451204284541
+  },
+  "provisao_credito": {
+   "202506": 2218.06,
+   "202509": 72876.23,
+   "202512": 1525258.85,
+   "202603": 1992316.58
+  },
+  "roe_periodo": {
+   "202503": 116.00402063158555,
+   "202506": -36.74517888548816,
+   "202509": -31.097943166623622,
+   "202512": 59.54388347852307,
+   "202603": 20.586232412676136
+  },
+  "npl_pct": {
+   "202512": 2.1023857999944338,
+   "202603": 15.780567955400567
+  },
+  "ativos_problematicos_pct": {
+   "202512": 4.484232344721042,
+   "202603": 22.642575780693456
+  },
+  "cobertura_pct": {
+   "202512": 591.3664259586973,
+   "202603": 67.41117356736868
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 1.290326470992859,
+   "202509": 69.28778986885547,
+   "202512": 92.33130585654263,
+   "202603": 93.21491333717962
+  },
+  "atraso15_consignado_pf": {
+   "202509": 0.23843123525229556,
+   "202512": 1.1604018201928588,
+   "202603": 2.217213219836691
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202506": 0.0,
+   "202509": 2.5306405513580668,
+   "202512": 10.799633681112399,
+   "202603": 10.415037850161568
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "40820176",
+    "nome": "PAY BROKERS IP INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 12064965.39
+   },
+   {
+    "cod": "17312661",
+    "nome": "AMARIL FRANKLIN CORRETORA DE TÍTULOS E VALORES LTDA",
+    "sr": "S4",
+    "ativo_brl": 11905089.54
+   },
+   {
+    "cod": "48967968",
+    "nome": "VERT DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 12240861.83
+   },
+   {
+    "cod": "26758433",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS PETROLEIROS NO ESTADO DE MINAS GERAIS LTDA. - COPETRO",
+    "sr": "S5",
+    "ativo_brl": 12379963.11
+   },
+   {
+    "cod": "57038408",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA BOMBRIL",
+    "sr": "S5",
+    "ativo_brl": 11587348.7
+   },
+   {
+    "cod": "04608925",
+    "nome": "CREDJUST - COOPERATIVA DE CRÉDITO MÚTUO DOS INTEGRANTES DA JUSTIÇA DO TRABALHO DA 13- REGIÃO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 11539403.46
+   },
+   {
+    "cod": "43050917",
+    "nome": "ACTIVTRADES CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11479160.39
+   },
+   {
+    "cod": "33851064",
+    "nome": "DILLON S/A DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS",
+    "sr": "S4",
+    "ativo_brl": 12586526.0
+   }
+  ]
+ }
+}

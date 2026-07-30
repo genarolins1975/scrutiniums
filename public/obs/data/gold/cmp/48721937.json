@@ -1,0 +1,176 @@
+{
+ "cod": "48721937",
+ "nome": "CREDPAR - SOCIEDADE DE CRÉDITO DIRETO S/A",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 4197990.4,
+   "202506": 3334084.69,
+   "202509": 3189758.66,
+   "202512": 3100460.73,
+   "202603": 1964407.52
+  },
+  "patrimonio_liquido": {
+   "202503": 911348.29,
+   "202506": 1159831.37,
+   "202509": 1910623.0,
+   "202512": 1414640.82,
+   "202603": 1530102.22
+  },
+  "carteira_credito": {
+   "202503": 3750358.89,
+   "202506": 2505230.72,
+   "202509": 1549773.01,
+   "202512": 667666.3,
+   "202603": 0.0
+  },
+  "carteira_pf": {
+   "202503": 5116798.98,
+   "202506": 4057059.2,
+   "202509": 2352113.83,
+   "202512": 1274992.79
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 38739.1600000001,
+   "202506": 88793.2300000001,
+   "202509": 750791.63,
+   "202512": 1182309.07,
+   "202603": 86072.2499999998
+  },
+  "indice_basileia": {
+   "202503": 26.878193993501696,
+   "202506": 31.4459742920993,
+   "202509": 50.5502955727962,
+   "202512": 38.0370399255188,
+   "202603": 57.026559803101094
+  },
+  "patrimonio_referencia": {
+   "202503": 1040768.98,
+   "202506": 961402.36,
+   "202509": 1712193.99,
+   "202512": 1414640.82,
+   "202603": 1530102.22
+  },
+  "rwa": {
+   "202503": 3280141.75,
+   "202506": 2465287.77,
+   "202509": 2599422.0,
+   "202512": 2931426.1,
+   "202603": 1949772.21
+  },
+  "provisao_credito": {
+   "202503": 1366440.09,
+   "202506": 1551828.48,
+   "202509": 802340.82,
+   "202512": 607326.49
+  },
+  "roe_periodo": {
+   "202503": 4.2507524757631465,
+   "202506": 7.655701707740505,
+   "202509": 39.295644928382,
+   "202512": 83.57662618557833,
+   "202603": 5.625261428612252
+  },
+  "npl_pct": {
+   "202503": 23.883401219721158,
+   "202506": 38.240423260276806,
+   "202509": 42.20271133731653,
+   "202512": 59.57540512836938
+  },
+  "ativos_problematicos_pct": {
+   "202503": 23.93697162595979,
+   "202506": 38.240423260276806,
+   "202509": 42.22536627829785,
+   "202512": 59.63861254462466
+  },
+  "cobertura_pct": {
+   "202503": 111.81396943468577,
+   "202506": 100.02525852474243,
+   "202509": 80.82769595636577,
+   "202512": 79.95534307732257
+  },
+  "cart_ativo_pct": {
+   "202503": 89.3370049154948,
+   "202506": 75.13998452150896,
+   "202509": 48.58590179358585,
+   "202512": 21.53442207926304,
+   "202603": 0.0
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 20.336481419191824,
+   "202506": 29.975184393476834,
+   "202509": 27.43241253144752,
+   "202512": 49.8746565749738
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "40819834",
+    "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 1935837.19
+   },
+   {
+    "cod": "63822040",
+    "nome": "GUARDIAN SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1928957.0
+   },
+   {
+    "cod": "73279093",
+    "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 1916279.57
+   },
+   {
+    "cod": "18340695",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA INDÚSTRIA DE PAPÉIS SUDESTE LTDA . - CREDESTE",
+    "sr": "S5",
+    "ativo_brl": 1908970.84
+   },
+   {
+    "cod": "02738981",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA FUNDAÇÃO ARTHUR BERNARDES LTDA. - COOFAB",
+    "sr": "S5",
+    "ativo_brl": 2051269.34
+   },
+   {
+    "cod": "06942423",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS TRABALHADORES DO SISTEMA FINANCEIRO DE CURITIBA E REGIÃO - COOPCREFI",
+    "sr": "S5",
+    "ativo_brl": 1874007.44
+   },
+   {
+    "cod": "37943755",
+    "nome": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 2059919.09
+   },
+   {
+    "cod": "88043187",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PROLEC GE BRASIL TRANSMISSÃO DE ENERGIA S.A.",
+    "sr": "S5",
+    "ativo_brl": 2071164.42
+   }
+  ]
+ }
+}

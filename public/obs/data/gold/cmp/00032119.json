@@ -1,0 +1,24 @@
+{
+ "cod": "00032119",
+ "nome": "00032119",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 134991472.19,
+   "202506": 159879983.55,
+   "202509": 149575566.54,
+   "202512": 129989792.69,
+   "202603": 112487357.33
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

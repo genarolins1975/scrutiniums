@@ -1,0 +1,838 @@
+{
+ "cod_inst": "10868663",
+ "caso": null,
+ "cabecalho": {
+  "nome_comercial": "Acg Instituição De Pagamento S.A.",
+  "razao_social_fonte_bcb": "ACG INSTITUIÇÃO DE PAGAMENTO S.A.",
+  "codigo_bcb": "10868663",
+  "tcb": "N4",
+  "sede": "São Paulo/SP",
+  "segmento": "S?",
+  "grupo_pares": "S?",
+  "n_pares": 139,
+  "conglomerado_prudencial": "C0086093",
+  "capital": "não classificado",
+  "modelo": null,
+  "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
+  "data_base": "2026-T1",
+  "atualizado_em": "2026-07-29T01:57:31+00:00",
+  "aviso_pares": null,
+  "cnpj": "não disponível nas fontes integradas",
+  "participante_open_finance": null
+ },
+ "resumo_executivo": {
+  "avaliacao_geral": {
+   "texto": "Capitalização acima da mediana do grupo S?, rentabilidade do período acima da mediana.",
+   "base": "BCB IF.data (Informações de Capital) + medianas do grupo S?"
+  },
+  "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 37.8% (acima da mediana do grupo S?: 29.2%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
+   {
+    "tipo": "ok",
+    "texto": "Carteira caiu 6.5% em 4 trimestres.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "tipo": "ok",
+    "texto": "ROE do período de 3.7%.",
+    "base": "calculado sobre IF.data"
+   }
+  ],
+  "pontos_atencao": [
+   {
+    "tipo": "warn",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI 5616).",
+    "base": "IF.data carteiras por CNAE"
+   }
+  ],
+  "mudancas_recentes": [
+   {
+    "texto": "Ativos totais: +4.5% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Carteira de crédito: +14.0% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: +3.01p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
+   }
+  ],
+  "limitacoes_informacionais": [
+   "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "LCR / NSFR e composição de funding",
+   "Composição de receita, margem e eficiência",
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+  ]
+ },
+ "grupo_pares_composicao": {
+  "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
+  "quantidade": 139,
+  "maiores_membros": [
+   {
+    "cod": "01027058",
+    "nome": "CIELO S.A. - INSTITUIÇÃO DE PAGAMENTO"
+   },
+   {
+    "cod": "18189547",
+    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SER"
+   },
+   {
+    "cod": "14796606",
+    "nome": "ADYEN DO BRASIL INSTITUICAO DE PAGAMENTO"
+   },
+   {
+    "cod": "10878448",
+    "nome": "PAYPAL DO BRASIL INSTITUIÇÃO DE PAGAMENT"
+   },
+   {
+    "cod": "13370835",
+    "nome": "DOCK INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "32223020",
+    "nome": "FLASH TECNOLOGIA E  INSTITUICAO DE PAGAM"
+   },
+   {
+    "cod": "25021356",
+    "nome": "DLOCAL BRASIL INSTITUIÇÃO DE PAGAMENTO S"
+   },
+   {
+    "cod": "13935893",
+    "nome": "CELCOIN INSTITUICAO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "31680151",
+    "nome": "SWAP INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "21018182",
+    "nome": "EBANX INSTITUICAO DE PAGAMENTOS LTDA."
+   },
+   {
+    "cod": "15111975",
+    "nome": "IUGU INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   {
+    "cod": "33449007",
+    "nome": "EMPRESA BRASILEIRA DE BENEFICIOS E PAGAM"
+   },
+   {
+    "cod": "22121209",
+    "nome": "STRIPE BRASIL SOLUCOES DE PAGAMENTO INST"
+   },
+   {
+    "cod": "03816413",
+    "nome": "PAGUEVELOZ INSTITUIÇÃO DE PAGAMENTO LTDA"
+   },
+   {
+    "cod": "00991143",
+    "nome": "WORLDPAY DO BRASIL INSTITUICAO DE PAGAME"
+   }
+  ],
+  "quartis_basileia": {
+   "q1": 14.8,
+   "mediana": 29.2,
+   "q3": 77.7
+  },
+  "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
+ },
+ "score_meta": null,
+ "kpis": [
+  {
+   "label": "Ativos totais",
+   "v": 256797814.54,
+   "unit": "R$",
+   "d_tri": 4.5,
+   "d_tri_tipo": "%",
+   "hist": [
+    300461108.96,
+    276330375.85,
+    267340641.96,
+    245787912.95,
+    256797814.54
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Patrimônio líquido",
+   "v": 28575959.05,
+   "unit": "R$",
+   "d_tri": 1.5,
+   "d_tri_tipo": "%",
+   "hist": [
+    50343379.92,
+    43313426.29,
+    44707785.27,
+    28157335.33,
+    28575959.05
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Carteira de crédito",
+   "v": 86345694.14,
+   "unit": "R$",
+   "d_tri": 14.0,
+   "d_tri_tipo": "%",
+   "hist": [
+    92317354.03,
+    92019259.4,
+    82018643.12,
+    75719640.76,
+    86345694.14
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Lucro líquido (acum. ano IF.data)",
+   "v": 1044666.69,
+   "unit": "R$",
+   "d_tri": null,
+   "d_tri_tipo": "%",
+   "hist": [
+    2699426.81,
+    6464878.0,
+    2388976.97,
+    5786743.95,
+    1044666.69
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Índice de Basileia",
+   "v": 37.825146078836106,
+   "unit": "%",
+   "d_tri": 3.01,
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    40.5833,
+    43.4949,
+    49.5427,
+    34.8186,
+    37.8251
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "label": "ROE do período (padronizado)",
+   "v": 3.66,
+   "unit": "%",
+   "d_tri": null,
+   "d_tri_tipo": "p.p.",
+   "hist": [],
+   "fonte": "calculado"
+  }
+ ],
+ "destaques": [
+  {
+   "tipo": "ok",
+   "texto": "Basileia de 37.8% (acima da mediana do grupo S?: 29.2%).",
+   "base": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "Carteira caiu 6.5% em 4 trimestres.",
+   "base": "BCB IF.data (Olinda)"
+  },
+  {
+   "tipo": "ok",
+   "texto": "ROE do período de 3.7%.",
+   "base": "calculado sobre IF.data"
+  },
+  {
+   "tipo": "warn",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI 5616).",
+   "base": "IF.data carteiras por CNAE"
+  }
+ ],
+ "capital_tabela": [
+  {
+   "indicador": "Índice de Basileia",
+   "valor": 37.83,
+   "unit": "%",
+   "d_tri": 3.01,
+   "vs_pares": "acima",
+   "mediana_grupo": 29.21,
+   "percentil": 58.4
+  },
+  {
+   "indicador": "Ativo ÷ PL (alavancagem contábil)",
+   "valor": 8.99,
+   "unit": "×",
+   "d_tri": null,
+   "vs_pares": "acima",
+   "mediana_grupo": 3.49,
+   "percentil": 71.7
+  },
+  {
+   "indicador": "ROE do período",
+   "valor": 3.66,
+   "unit": "%",
+   "d_tri": null,
+   "vs_pares": "acima",
+   "mediana_grupo": 1.31,
+   "percentil": 65.2
+  }
+ ],
+ "carteira": {
+  "donut_cliente": [
+   {
+    "label": "Pessoa Jurídica",
+    "v": 87396146.88
+   }
+  ],
+  "perfil": {
+   "hhi_setorial": 5616,
+   "top_cnae": [
+    [
+     "outros",
+     73.4
+    ],
+    [
+     "comercio_reparacao_de_veiculos_automotores_e_mot",
+     13.2
+    ],
+    [
+     "industrias_de_transformacao",
+     5.4
+    ],
+    [
+     "construcao",
+     5.2
+    ],
+    [
+     "transporte_armazenagem_e_correio",
+     1.5
+    ]
+   ],
+   "pme_share_pct": 24.5,
+   "top_mod_pj": [
+    [
+     "outros_creditos",
+     100.0
+    ]
+   ]
+  },
+  "total_pf": null,
+  "total_pj": 87396146.88
+ },
+ "evolucao_base100": {
+  "Ativos": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 92.0
+   },
+   {
+    "p": "2025-T3",
+    "v": 89.0
+   },
+   {
+    "p": "2025-T4",
+    "v": 81.8
+   },
+   {
+    "p": "2026-T1",
+    "v": 85.5
+   }
+  ],
+  "Carteira": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 99.7
+   },
+   {
+    "p": "2025-T3",
+    "v": 88.8
+   },
+   {
+    "p": "2025-T4",
+    "v": 82.0
+   },
+   {
+    "p": "2026-T1",
+    "v": 93.5
+   }
+  ],
+  "PL": [
+   {
+    "p": "2025-T1",
+    "v": 100.0
+   },
+   {
+    "p": "2025-T2",
+    "v": 86.0
+   },
+   {
+    "p": "2025-T3",
+    "v": 88.8
+   },
+   {
+    "p": "2025-T4",
+    "v": 55.9
+   },
+   {
+    "p": "2026-T1",
+    "v": 56.8
+   }
+  ]
+ },
+ "comparacao_grupo": {
+  "roe": {
+   "valores": [
+    -29.32,
+    6.98,
+    2.86,
+    7.73,
+    -0.0,
+    -20.99,
+    6.94,
+    11.42,
+    -3.59,
+    -0.25,
+    11.92,
+    -1.83,
+    16.08,
+    3.66,
+    0.57,
+    -36.29,
+    3.79,
+    10.21,
+    -4.11,
+    8.17,
+    22.45,
+    2.1,
+    -6.23,
+    53.15,
+    4.87,
+    -17.32,
+    18.25,
+    4.92,
+    13.44,
+    15.07,
+    2.38,
+    -2.62,
+    20.06,
+    -9.29,
+    6.0,
+    2.18,
+    1.31,
+    -37.28,
+    0.3,
+    -1.63,
+    13.58,
+    9.23,
+    178.64,
+    -8.38,
+    1.76,
+    -10.17,
+    -16.82,
+    7.52,
+    1.47,
+    5.99,
+    6.68,
+    14.92,
+    -5.06,
+    -0.49,
+    -31.42,
+    -41.15,
+    -6.5,
+    -1017.65,
+    10.89,
+    11.58,
+    -2.29,
+    -2.02,
+    -52.92,
+    5.08,
+    13.37,
+    8.13,
+    1.89,
+    1.49,
+    0.42,
+    2.7,
+    3.23,
+    6.12,
+    -3.94,
+    1.8,
+    -1.67,
+    -0.53,
+    9.5,
+    1.38,
+    -7.43,
+    -15.09,
+    2.66,
+    2.9,
+    2.89,
+    -36.67,
+    1.12,
+    1.98,
+    -0.15,
+    -1.39,
+    31.67,
+    28.41,
+    1.28,
+    -0.37,
+    -3.16,
+    -28.18,
+    -15.88,
+    -3.22,
+    37.77,
+    -1.06,
+    69.03,
+    20.5,
+    -1.04,
+    36.41,
+    21.77,
+    -12.55,
+    12.57,
+    138.96,
+    -34.53,
+    -24.47,
+    0.73,
+    3.03,
+    2.45,
+    -35.35,
+    -3.36,
+    -9.23,
+    0.92,
+    8.95,
+    8.56,
+    -25.82,
+    -6.43,
+    13.16,
+    -2.44,
+    0.54,
+    11.26,
+    -8.6,
+    12.97,
+    -0.79,
+    0.84,
+    -25.96,
+    -3.81,
+    14.64,
+    17.5,
+    -20.17,
+    -16.46,
+    -13.02,
+    0.83,
+    2.48,
+    -1.32,
+    -9.71,
+    2.21
+   ],
+   "meu": 3.66,
+   "mediana": 1.31
+  },
+  "basileia": {
+   "valores": [
+    -71.02,
+    125.44,
+    18.59,
+    22.81,
+    126.47,
+    28.17,
+    31.23,
+    14.77,
+    10.61,
+    37.83,
+    71.12,
+    54.43,
+    -35.63,
+    35.67,
+    40.69,
+    16.43,
+    40.15,
+    15.88,
+    15.49,
+    22.82,
+    74.42,
+    31.14,
+    89.31,
+    48.21,
+    74.25,
+    -286.63,
+    17.44,
+    13.89,
+    29.21,
+    27.41,
+    39.17,
+    15.01,
+    16.12,
+    48.98,
+    81.76,
+    26.96,
+    15.44,
+    1.33,
+    157.09,
+    -21.96,
+    22.98,
+    14.99,
+    215.64,
+    18.47,
+    65.45,
+    15.09,
+    18.41,
+    14.82,
+    -0.76,
+    39.87,
+    10.15,
+    77.66,
+    -12.32,
+    33.41,
+    20.32,
+    23.03,
+    37.23,
+    89.04,
+    12.37,
+    290.92,
+    19.48,
+    63.29,
+    7.77,
+    99.74,
+    -100.1,
+    147.38,
+    203.97,
+    15.65,
+    348.58,
+    -23.14,
+    3.21,
+    -80.11,
+    2328.49,
+    8.08,
+    78.68,
+    8.51,
+    -59.11,
+    -2.15,
+    86.82,
+    10.88,
+    976.0,
+    6.1,
+    0.77,
+    36.25,
+    57.29,
+    -91.06,
+    36.57,
+    283.21,
+    301.1,
+    24.04,
+    103.99,
+    100.99,
+    45.43,
+    12.32,
+    43.52,
+    21.43,
+    202.56,
+    458.76,
+    292.92,
+    42.82,
+    247.09,
+    3954.56
+   ],
+   "meu": 37.83,
+   "mediana": 29.21
+  },
+  "alav": {
+   "valores": [
+    1.89,
+    3.49,
+    10.27,
+    5.94,
+    88.46,
+    14.46,
+    4.01,
+    1.51,
+    5.83,
+    3.08,
+    4.23,
+    16.65,
+    9.37,
+    8.99,
+    4.56,
+    9.4,
+    4.62,
+    9.9,
+    12.99,
+    5.33,
+    4.21,
+    12.26,
+    5.08,
+    12.09,
+    4.32,
+    30.8,
+    3.34,
+    5.19,
+    9.37,
+    1.71,
+    6.18,
+    3.51,
+    12.35,
+    1.36,
+    17.38,
+    7.57,
+    11.05,
+    3.46,
+    21.17,
+    21.18,
+    12.83,
+    4.16,
+    23.13,
+    2.59,
+    1.83,
+    21.8,
+    6.53,
+    3.48,
+    1.5,
+    8.16,
+    16.7,
+    1.61,
+    2.23,
+    10.58,
+    15.46,
+    21.92,
+    20.26,
+    238.82,
+    16.08,
+    17.54,
+    2.07,
+    2.88,
+    2.42,
+    9.86,
+    16.29,
+    4.11,
+    2.48,
+    1.48,
+    9.42,
+    1.23,
+    2.3,
+    8.4,
+    2.29,
+    31.78,
+    1.03,
+    1.0,
+    -0.66,
+    1.06,
+    1.01,
+    10.05,
+    1.11,
+    1.04,
+    1.09,
+    2.69,
+    1.04,
+    1.01,
+    1.29,
+    1.45,
+    36.05,
+    -10.13,
+    6.09,
+    1.02,
+    1.06,
+    2.61,
+    1.06,
+    1.38,
+    1.33,
+    1.0,
+    1.81,
+    9.65,
+    1.01,
+    2.73,
+    3.57,
+    1.25,
+    23.26,
+    -1.44,
+    1.24,
+    44.86,
+    1.04,
+    1.23,
+    1.01,
+    1.11,
+    1.07,
+    3.73,
+    1.01,
+    3.74,
+    2.52,
+    3.79,
+    2.45,
+    5.13,
+    1.57,
+    1.01,
+    3.42,
+    7.43,
+    2.68,
+    7.49,
+    1.0,
+    1.03,
+    1.52,
+    5.42,
+    14.47,
+    6.57,
+    11.98,
+    2.2,
+    1.01,
+    2.77,
+    1.0,
+    1.01,
+    1.02
+   ],
+   "meu": 8.99,
+   "mediana": 3.49
+  }
+ },
+ "score_ref": {
+  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+ },
+ "atraso_produtos": null,
+ "openfinance": null,
+ "reclamacoes": [
+  {
+   "periodo": "2026-T1",
+   "indice": null,
+   "reclamacoes": 3,
+   "clientes": 105561.0,
+   "posicao_arquivo": 3,
+   "nome_fonte": "ACG IP (conglomerado)"
+  },
+  {
+   "periodo": "2025-T4",
+   "indice": null,
+   "reclamacoes": 7,
+   "clientes": 101311.0,
+   "posicao_arquivo": 3,
+   "nome_fonte": "ACG IP (conglomerado)"
+  }
+ ],
+ "rj_citacoes": {
+  "casos": 0,
+  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
+ },
+ "indisponiveis": [
+  {
+   "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "motivo": "Não exposta por instituição no corte público do IF.data."
+  },
+  {
+   "indicador": "LCR / NSFR e composição de funding",
+   "motivo": "Exigem Pilar 3 por instituição — não integrado."
+  },
+  {
+   "indicador": "Composição de receita, margem e eficiência",
+   "motivo": "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."
+  },
+  {
+   "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  }
+ ]
+}

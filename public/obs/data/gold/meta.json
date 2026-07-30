@@ -1,0 +1,49 @@
+{
+ "plataforma": {
+  "name": "Observatório Brasileiro de Crédito",
+  "short_name": "OBC",
+  "version": "0.1.0",
+  "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
+ },
+ "gerado_em": "2026-07-28T21:32:10+00:00",
+ "fontes_status": {
+  "info": "coleta pulada (--skip-fetch); gold reconstruído do silver existente"
+ },
+ "fontes_reais": [
+  "BCB/SGS",
+  "BCB/IF.data (Olinda)",
+  "IBGE",
+  "Ipeadata"
+ ],
+ "fontes_demo": [
+  "Open Finance Brasil (dashboard)",
+  "Recuperação judicial (tribunais)"
+ ],
+ "vintages": {
+  "sgs": "2026-05",
+  "ifdata": "2026-03",
+  "scr": "2026-05",
+  "b3": "2026-07",
+  "fidc": "2026-06",
+  "datajud": "2026-05",
+  "trends": "2026-06",
+  "txjuros": "2026-07"
+ },
+ "inad_conceitos": {
+  "sgs": {
+   "v": 4.74,
+   "ref": "2026-05",
+   "def": "parcelas em atraso superior a 90 dias ÷ carteira do crédito referencial (BCB/SGS 21082)."
+  },
+  "scr": {
+   "v": 4.84,
+   "ref": "2026-05",
+   "def": "inadimplência ARRASTADA: operações com qualquer parcela vencida >90d contadas por inteiro ÷ carteira ativa (SCR.data)."
+  },
+  "atraso15": {
+   "v": null,
+   "ref": "2026-03",
+   "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
+  }
+ }
+}

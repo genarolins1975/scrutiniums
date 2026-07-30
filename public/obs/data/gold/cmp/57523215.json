@@ -1,0 +1,167 @@
+{
+ "cod": "57523215",
+ "nome": "VUON SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 3455071.84,
+   "202506": 6630380.61,
+   "202509": 6368169.79,
+   "202512": 5683212.75,
+   "202603": 5265885.82
+  },
+  "patrimonio_liquido": {
+   "202503": 3362530.05,
+   "202506": 6502890.76,
+   "202509": 6187487.38,
+   "202512": 5530456.45,
+   "202603": 5083892.23
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 7147.67,
+   "202509": 56783.48,
+   "202512": 211842.32,
+   "202603": 155534.52
+  },
+  "carteira_pf": {
+   "202506": 7286.1,
+   "202509": 57883.26,
+   "202512": 216873.4,
+   "202603": 197002.66
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -382171.43,
+   "202506": -741810.72,
+   "202509": -315403.38,
+   "202512": -972434.31,
+   "202603": -446564.22
+  },
+  "indice_basileia": {
+   "202503": 6983.739196589509,
+   "202506": 7274.49766948712,
+   "202509": 3963.80875764646,
+   "202512": 1966.6567358105801,
+   "202603": 1007.11673205801
+  },
+  "patrimonio_referencia": {
+   "202503": 3362530.05,
+   "202506": 6502843.69,
+   "202509": 6187113.45,
+   "202512": 5530456.45,
+   "202603": 5083892.23
+  },
+  "rwa": {
+   "202503": 43770.9,
+   "202506": 81265.76,
+   "202509": 141900.1,
+   "202512": 255646.43,
+   "202603": 248083.25
+  },
+  "provisao_credito": {
+   "202506": 138.43,
+   "202509": 1099.78,
+   "202512": 5031.08,
+   "202603": 41468.14
+  },
+  "roe_periodo": {
+   "202503": -11.365591513449822,
+   "202506": -11.40739937633521,
+   "202509": -5.097438760351864,
+   "202512": -17.583255899248606,
+   "202603": -8.78390413873899
+  },
+  "npl_pct": {
+   "202603": 23.718126445602305
+  },
+  "ativos_problematicos_pct": {
+   "202603": 23.718126445602305
+  },
+  "cobertura_pct": {
+   "202603": 88.74871750531939
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.10780180536272412,
+   "202509": 0.8916766021089397,
+   "202512": 3.727509937051011,
+   "202603": 2.9536249990319763
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 3.6656915970331077,
+   "202603": 22.197334797408317
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "57824223",
+    "nome": "WX INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 5258117.66
+   },
+   {
+    "cod": "57654096",
+    "nome": "APUSDIGITAL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 5290659.04
+   },
+   {
+    "cod": "05740092",
+    "nome": "COOPERATIVA DE CRÉDITO DOS METALÚRGICOS DO ABC - CREDABC",
+    "sr": "S5",
+    "ativo_brl": 5326302.09
+   },
+   {
+    "cod": "08323197",
+    "nome": "IUPI INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 5401578.17
+   },
+   {
+    "cod": "43215815",
+    "nome": "BELVO INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 5429667.63
+   },
+   {
+    "cod": "65645137",
+    "nome": "DASCAM CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 5092894.85
+   },
+   {
+    "cod": "49933388",
+    "nome": "BRCONDOS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 5449665.97
+   },
+   {
+    "cod": "42622791",
+    "nome": "TRYBE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 5703336.6
+   }
+  ]
+ }
+}

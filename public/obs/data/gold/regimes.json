@@ -1,0 +1,158 @@
+{
+ "series": [
+  {
+   "serie": "inad_total",
+   "label": "Inadimplência total (Δ mensal)",
+   "transformacao": "diff",
+   "estado_hipotese": "deterioração persistente",
+   "drift_6m_vs_12m_previos": 0.005,
+   "cusum": {
+    "ultimo_disparo": {
+     "data": "2025-08-01",
+     "direcao": "alta",
+     "estatistica": 5.06
+    },
+    "cusum_atual": 2.02,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2021-04-01",
+    "supF": 11.6,
+    "critico_5pct_aprox": 8.85,
+    "significativa": true,
+    "media_antes": -0.013,
+    "media_depois": 0.041,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  },
+  {
+   "serie": "inad_pf",
+   "label": "Inadimplência PF (Δ mensal)",
+   "transformacao": "diff",
+   "estado_hipotese": "estabilização/melhora",
+   "drift_6m_vs_12m_previos": -0.031,
+   "cusum": {
+    "ultimo_disparo": {
+     "data": "2025-08-01",
+     "direcao": "alta",
+     "estatistica": 6.33
+    },
+    "cusum_atual": 1.67,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2021-07-01",
+    "supF": 16.6,
+    "critico_5pct_aprox": 8.85,
+    "significativa": true,
+    "media_antes": -0.022,
+    "media_depois": 0.046,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  },
+  {
+   "serie": "inad_pj",
+   "label": "Inadimplência PJ (Δ mensal)",
+   "transformacao": "diff",
+   "estado_hipotese": "aceleração",
+   "drift_6m_vs_12m_previos": 0.063,
+   "cusum": {
+    "ultimo_disparo": {
+     "data": "2020-11-01",
+     "direcao": "baixa",
+     "estatistica": -5.34
+    },
+    "cusum_atual": 1.68,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2021-04-01",
+    "supF": 4.5,
+    "critico_5pct_aprox": 8.85,
+    "significativa": false,
+    "media_antes": -0.009,
+    "media_depois": 0.032,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  },
+  {
+   "serie": "concessoes_total",
+   "label": "Concessões (var. interanual)",
+   "transformacao": "yoy",
+   "estado_hipotese": "estabilização/melhora",
+   "drift_6m_vs_12m_previos": 0.65,
+   "cusum": {
+    "ultimo_disparo": {
+     "data": "2022-01-01",
+     "direcao": "alta",
+     "estatistica": 6.23
+    },
+    "cusum_atual": 0.21,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2017-10-01",
+    "supF": 56.3,
+    "critico_5pct_aprox": 8.85,
+    "significativa": true,
+    "media_antes": 0.951,
+    "media_depois": 12.573,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  },
+  {
+   "serie": "saldo_total",
+   "label": "Saldo de crédito (var. interanual)",
+   "transformacao": "yoy",
+   "estado_hipotese": "aceleração",
+   "drift_6m_vs_12m_previos": -1.143,
+   "cusum": {
+    "ultimo_disparo": {
+     "data": "2023-10-01",
+     "direcao": "baixa",
+     "estatistica": -5.12
+    },
+    "cusum_atual": 0.0,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2020-06-01",
+    "supF": 59.8,
+    "critico_5pct_aprox": 8.85,
+    "significativa": true,
+    "media_antes": 6.517,
+    "media_depois": 12.652,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  },
+  {
+   "serie": "spread_total",
+   "label": "Spread médio (Δ mensal)",
+   "transformacao": "diff",
+   "estado_hipotese": "estabilização/melhora",
+   "drift_6m_vs_12m_previos": -0.125,
+   "cusum": {
+    "ultimo_disparo": null,
+    "cusum_atual": 0.0,
+    "limiar": 5.0
+   },
+   "quebra_estrutural": {
+    "data_quebra": "2021-10-01",
+    "supF": 3.6,
+    "critico_5pct_aprox": 8.85,
+    "significativa": false,
+    "media_antes": -0.034,
+    "media_depois": 0.139,
+    "direcao": "deterioração"
+   },
+   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+  }
+ ],
+ "metodo": "CUSUM (k=0,5σ, h=5σ) sobre resíduos AR(1) padronizados + sup-F de quebra na média (trimming 15%, crítico aproximado de Andrews 8,85 a 5%). Séries estacionarizadas antes dos testes.",
+ "limitacoes": "Detecção univariada; uma única quebra por busca (Bai-Perron múltiplo na Fase 2b); valores críticos aproximados; sensível a revisões das séries."
+}

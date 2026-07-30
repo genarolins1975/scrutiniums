@@ -1,0 +1,206 @@
+{
+ "cod": "04608925",
+ "nome": "CREDJUST - COOPERATIVA DE CRÉDITO MÚTUO DOS INTEGRANTES DA JUSTIÇA DO TRABALHO DA 13- REGIÃO LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 10726092.01,
+   "202506": 10831579.12,
+   "202509": 10993990.68,
+   "202512": 11260444.3,
+   "202603": 11539403.46
+  },
+  "patrimonio_liquido": {
+   "202503": 6994530.33,
+   "202506": 7081675.69,
+   "202509": 7148451.79,
+   "202512": 7174404.66,
+   "202603": 7021282.43
+  },
+  "carteira_credito": {
+   "202503": 10005121.74,
+   "202506": 10122817.93,
+   "202509": 10278686.9,
+   "202512": 10130960.27,
+   "202603": 9474064.0
+  },
+  "carteira_pf": {
+   "202503": 10050590.37,
+   "202506": 10173149.12,
+   "202509": 10337497.58,
+   "202512": 10177111.92,
+   "202603": 9539781.91
+  },
+  "carteira_pj": {
+   "202503": 61069.01,
+   "202506": 54081.59,
+   "202509": 46644.49,
+   "202512": 91232.95,
+   "202603": 81065.81
+  },
+  "captacoes": {
+   "202503": 3058420.65,
+   "202506": 3284509.34,
+   "202509": 3511579.56,
+   "202512": 3798941.43,
+   "202603": 3964238.28
+  },
+  "lucro_liquido": {
+   "202503": 40648.23,
+   "202506": 78881.41,
+   "202509": 39559.6500000001,
+   "202512": 89069.7,
+   "202603": 24566.52
+  },
+  "indice_basileia": {
+   "202503": 82.7572492863142,
+   "202506": 83.6730419490993,
+   "202509": 82.9578230654474,
+   "202512": 83.27186888211739,
+   "202603": 76.7148939588425
+  },
+  "patrimonio_referencia": {
+   "202503": 6988172.69,
+   "202506": 7076525.31,
+   "202509": 7144508.67,
+   "202512": 7161494.34,
+   "202603": 7009851.82
+  },
+  "rwa": {
+   "202503": 8117517.74,
+   "202506": 8130689.75,
+   "202509": 8274798.15,
+   "202512": 8262716.47,
+   "202603": 8788420.16
+  },
+  "provisao_credito": {
+   "202503": 106537.64,
+   "202506": 104412.78,
+   "202509": 105455.17,
+   "202512": 137384.6,
+   "202603": 146783.72
+  },
+  "roe_periodo": {
+   "202503": 0.5811430944213234,
+   "202506": 1.1138805764769495,
+   "202509": 0.5534016478272997,
+   "202512": 1.2414925589101076,
+   "202603": 0.34988650926551607
+  },
+  "npl_pct": {
+   "202503": 0.5701356012251274,
+   "202506": 0.5447778736967595,
+   "202509": 0.5284028245195224,
+   "202512": 1.0456629706088163,
+   "202603": 1.1225868358303046
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.8983271349079006,
+   "202506": 0.8415446218089666,
+   "202509": 0.792852981450012,
+   "202512": 1.2840940937348941,
+   "202603": 1.3455576241050824
+  },
+  "cobertura_pct": {
+   "202503": 184.800218282097,
+   "202506": 187.40283033378927,
+   "202509": 192.19059196174237,
+   "202512": 127.95164636533751,
+   "202603": 135.9078694291616
+  },
+  "cart_ativo_pct": {
+   "202503": 93.27835087254674,
+   "202506": 93.45652944831187,
+   "202509": 93.49368395134933,
+   "202512": 89.96945413601486,
+   "202603": 82.10185242972689
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.047783123529382965,
+   "202506": 0.04717334142678558,
+   "202509": 0.05812213487056824,
+   "202512": 0.1056897817320635,
+   "202603": 0.16041657043009303
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_conta_garantida_pj": {
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "57038408",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA BOMBRIL",
+    "sr": "S5",
+    "ativo_brl": 11587348.7
+   },
+   {
+    "cod": "43050917",
+    "nome": "ACTIVTRADES CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11479160.39
+   },
+   {
+    "cod": "02475222",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS SERVIDORES ESTATUTARIOS DA ADMINISTRAÇÃO DIRETA DO ESTADO DO ESPIRITO SANTO - COOPSERVIDOR ES",
+    "sr": "S5",
+    "ativo_brl": 11649859.2
+   },
+   {
+    "cod": "34846868",
+    "nome": "DAUX SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 11714702.83
+   },
+   {
+    "cod": "01788147",
+    "nome": "H.COMMCOR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11315256.62
+   },
+   {
+    "cod": "45548763",
+    "nome": "INSTITUIÇÃO DE PAGAMENTOS MAPS LTDA.",
+    "sr": null,
+    "ativo_brl": 11275053.04
+   },
+   {
+    "cod": "17312661",
+    "nome": "AMARIL FRANKLIN CORRETORA DE TÍTULOS E VALORES LTDA",
+    "sr": "S4",
+    "ativo_brl": 11905089.54
+   },
+   {
+    "cod": "62280490",
+    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 11173583.47
+   }
+  ]
+ }
+}

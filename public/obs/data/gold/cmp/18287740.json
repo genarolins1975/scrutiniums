@@ -1,0 +1,140 @@
+{
+ "cod": "18287740",
+ "nome": "CONECTA CORRETORA DE CÂMBIO LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 7643772.33,
+   "202506": 13213172.23,
+   "202509": 18621046.78,
+   "202512": 17528015.91,
+   "202603": 17132661.71
+  },
+  "patrimonio_liquido": {
+   "202503": 1565937.25,
+   "202506": 3153928.92,
+   "202509": 3021936.06,
+   "202512": 3784330.41,
+   "202603": 3222797.54
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 516597.42,
+   "202506": 2104589.09,
+   "202509": -131992.86,
+   "202512": 730401.490000001,
+   "202603": -561532.87
+  },
+  "indice_basileia": {
+   "202503": 12.0458051507102,
+   "202506": 12.468239131365399,
+   "202509": 15.351869761543899,
+   "202512": 15.9799965098715,
+   "202603": 12.7725390580259
+  },
+  "patrimonio_referencia": {
+   "202503": 1545610.49,
+   "202506": 3133602.16,
+   "202509": 3001609.3,
+   "202512": 3759803.65,
+   "202603": 3198270.78
+  },
+  "rwa": {
+   "202503": 5940655.33,
+   "202506": 11207975.3,
+   "202509": 8898632.58,
+   "202512": 12569572.03,
+   "202603": 13963030.61
+  },
+  "roe_periodo": {
+   "202503": 32.989662899966135,
+   "202506": 66.72912241788886,
+   "202509": -4.367824380771312,
+   "202512": 19.3006796676615,
+   "202603": -17.423771212137638
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "32192325",
+    "nome": "UZZIPAY INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 17128596.25
+   },
+   {
+    "cod": "43167610",
+    "nome": "BNQI SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 17048274.68
+   },
+   {
+    "cod": "02814832",
+    "nome": "COOPERATIVA DE CRÉDITO COOPHARMA",
+    "sr": "S5",
+    "ativo_brl": 17019103.27
+   },
+   {
+    "cod": "20833976",
+    "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES PÚBLICOS MUNICIPAIS DE TIMÓTEO LTDA. - COOPERTIM",
+    "sr": "S5",
+    "ativo_brl": 17248441.7
+   },
+   {
+    "cod": "01582158",
+    "nome": "OPPORTUNITY DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 17356014.18
+   },
+   {
+    "cod": "38320462",
+    "nome": "V3 INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 16891220.2
+   },
+   {
+    "cod": "02929977",
+    "nome": "AGENCIA DE FOMENTO DO AMAPA S.A.",
+    "sr": "S4",
+    "ativo_brl": 17388222.36
+   },
+   {
+    "cod": "20622809",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA SAMARCO MINERAÇÃO S.A. LTDA - CREDISAM",
+    "sr": "S5",
+    "ativo_brl": 17427033.94
+   }
+  ]
+ }
+}

@@ -1,0 +1,138 @@
+{
+ "cod": "05503849",
+ "nome": "SF3 CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 62530453.78,
+   "202506": 56454238.95,
+   "202509": 385715306.42,
+   "202512": 656737436.4,
+   "202603": 701088054.74
+  },
+  "patrimonio_liquido": {
+   "202503": 22837033.86,
+   "202506": 24784436.37,
+   "202509": 37981678.78,
+   "202512": 65155530.79,
+   "202603": 96012669.45
+  },
+  "carteira_credito": {
+   "202503": 6611812.56,
+   "202506": 22397923.52,
+   "202509": 357250213.11,
+   "202512": 546641851.36,
+   "202603": 520918543.74
+  },
+  "carteira_pf": {
+   "202503": 252654.36
+  },
+  "carteira_pj": {
+   "202503": 6670709.8
+  },
+  "captacoes": {
+   "202503": 39133511.28,
+   "202506": 31352371.05,
+   "202509": 338301999.74,
+   "202512": 559776980.86,
+   "202603": 571803993.82
+  },
+  "lucro_liquido": {
+   "202503": -3030260.95,
+   "202506": -1082858.44,
+   "202509": 13197242.41,
+   "202512": 40371094.42,
+   "202603": 30857138.66
+  },
+  "provisao_credito": {
+   "202503": 311551.6,
+   "202506": 1066200.37,
+   "202509": 17705592.67,
+   "202512": 139891466.54,
+   "202603": 261365332.74
+  },
+  "roe_periodo": {
+   "202503": -13.269065363640006,
+   "202506": -4.3691065789607055,
+   "202509": 34.74633779734157,
+   "202512": 61.96111662434053,
+   "202603": 32.13861132781992
+  },
+  "cart_ativo_pct": {
+   "202503": 10.57374792650993,
+   "202506": 39.67447606518482,
+   "202509": 92.62018052272866,
+   "202512": 83.2359815448462,
+   "202603": 74.30144333769654
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 0.0
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "07502031",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO CENTRO OESTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 701910536.23
+   },
+   {
+    "cod": "10209619",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA GRANDE GOIÂNIA LTDA.",
+    "sr": "S5",
+    "ativo_brl": 698479311.27
+   },
+   {
+    "cod": "00068987",
+    "nome": "COOPERATIVA DE CRÉDITO ARACREDI LTDA. - SICOOB ARACREDI",
+    "sr": "S5",
+    "ativo_brl": 697923939.32
+   },
+   {
+    "cod": "04663561",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA VALE DAS ÁGUAS PR/MG - CRESOL VALE DAS ÁGUAS PR/MG",
+    "sr": "S5",
+    "ativo_brl": 707084706.21
+   },
+   {
+    "cod": "07465539",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA ALTO VALE - CRESOL ALTO VALE",
+    "sr": "S5",
+    "ativo_brl": 712613143.08
+   },
+   {
+    "cod": "04891850",
+    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
+    "sr": null,
+    "ativo_brl": 687660524.75
+   },
+   {
+    "cod": "02844024",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA CRESOL EVOLUÇÃO",
+    "sr": "S5",
+    "ativo_brl": 718943319.07
+   },
+   {
+    "cod": "00968602",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO VALE DO SÃO PATRICIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 674066235.37
+   }
+  ]
+ }
+}

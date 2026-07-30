@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang='pt-BR'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Observatório Brasileiro de Crédito — Relatório</title><style>
+body{font-family:Georgia,'Iowan Old Style',serif;max-width:820px;margin:24px auto;padding:0 20px;
+color:#1a2332;line-height:1.55;font-size:14.5px}
+h1{font-size:24px;border-bottom:3px solid #14243a;padding-bottom:8px}
+h2{font-size:17px;margin-top:26px;color:#14243a}
+.meta{color:#667;font-size:12px}
+.tag{display:inline-block;font-family:Helvetica,Arial,sans-serif;font-size:9.5px;font-weight:700;
+letter-spacing:.5px;padding:1px 6px;border-radius:3px;vertical-align:middle;margin-right:6px}
+.obs{background:#e7f3ec;color:#2f7d4f}.interp{background:#eef2f7;color:#1d4e89}
+.calc{background:#eef4f0;color:#33635a}.prev{background:#e8eef7;color:#1d4e89}
+.cen{background:#efe9f7;color:#6b46a3}.demo{background:#fdf0e3;color:#b45309;border:1px dashed #b45309}
+table{border-collapse:collapse;width:100%;font-size:13px;font-family:Helvetica,Arial,sans-serif}
+th,td{border-bottom:1px solid #ddd;padding:5px 8px;text-align:left}
+th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#556}
+.src{color:#778;font-size:11.5px}
+.aviso{background:#fdf6ec;border:1px solid #e8d5b0;border-radius:6px;padding:10px 14px;font-size:12.5px}
+@media print{body{margin:8mm}h2{break-after:avoid}table,p{break-inside:avoid}}
+</style></head><body><h1>Observatório Brasileiro de Crédito — Relatório automático</h1>
+<p class="meta">Gerado pelo pipeline em 2026-07-28T21:32:10+00:00 · versão 0.1.0 · Este texto é produzido por regras determinísticas auditáveis sobre dados públicos — não é redação livre de modelo de linguagem.</p>
+<div class="aviso">Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento.</div>
+<h2>1 · Sumário executivo</h2>
+<p><span class="tag calc">CALCULADO</span> As condições de crédito permanecem restritivas (IBCC 93.1, percentil histórico 5), em fase de contração, com sinais mistos entre os indicadores monitorados. (confiança moderada: qualidade média dos dados 69/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP)</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> A inadimplência total (>90 dias) está em 4,74% (ref. 2026-05, BCB/SGS 21082).</p>
+<p><span class="tag prev">PREVISÃO</span> Projeção para 2027-05: 5,05% [4,45–5,85] — ensemble com backtest, bandas por quantis de resíduos fora da amostra.</p>
+<h2>2 · Pulso do crédito e mudanças desde a última atualização</h2>
+<p><span class="tag calc">CALCULADO</span> Principais deteriorações no mês (Δ normalizado pelo padrão histórico): IBC-Br (atividade) (-4.46); Inadimplência total (>90d) (+0.11); Inadimplência PF (+0.11); Inadimplência PJ (+0.09); Papelão ondulado (antecedente) (-3261.00).</p>
+<p><span class="tag calc">CALCULADO</span> Principais melhoras: Saldo de crédito (+41016.00); Taxa de desocupação (-0.20); Spread médio (-0.15); Comprometimento de renda (-0.05); Taxa média de juros (-0.09).</p>
+<p><span class="tag interp">INTERPRETAÇÃO</span> Leituras de variação mensal devem considerar sazonalidade e revisões; as classificações acima usam a direção econômica de cada indicador.</p>
+<h2>3 · Alertas ativos</h2>
+<table><tr><th>Nível</th><th>Alerta</th><th>Fonte</th></tr><tr><td>atencao</td><td>Comprometimento de renda acima de 28%</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias</td><td class='src'>BCB/SGS</td></tr></table>
+<h2>4 · Risco setorial</h2>
+<p><span class="tag calc">CALCULADO</span> Maior estresse (score 0–100; componentes de atividade e condições de crédito observados; RJ e emprego demonstrativos): 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (65.5, melhorando); 3.28 Fabricação de máquinas e equipamentos (65.4, melhorando); 3.17 Fabricação de celulose, papel e produtos de papel (65.3, piorando); 3.10 Fabricação de produtos alimentícios (63.5, piorando); 3.18 Impressão e reprodução de gravações (62.5, melhorando).</p>
+<p><span class="tag calc">CALCULADO</span> Menor estresse: 3.21 Fabricação de produtos farmoquímicos e farmacêuticos (49.6); 2 Indústrias extrativas (51.8); 3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis (52.5).</p>
+<h2>5 · Instituições financeiras</h2>
+<p><span class="tag calc">CALCULADO</span> Score de risco relativo aos pares (IF.data 202603; maior = mais risco no grupo prudencial). Maiores variações no trimestre: PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAMENTO S.A. (48.9, +19.2); NUBANK (54.8, +11.9); CITIBANK (54.2, +11.7); SAFRA (43.8, -11.2); BANRISUL (60.4, +10.4).</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> Basileia dos cinco maiores por ativo: ITAU 14,8%; BB 14,2%; CAIXA ECONÔMICA FEDERAL 15,1%; BRADESCO 14,9%; SANTANDER 15,2%.</p>
+<p><span class="tag interp">INTERPRETAÇÃO</span> Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento.</p>
+<h2>6 · Recuperações judiciais e falências</h2>
+<p><span class="tag obs">OBSERVAÇÃO</span> Ajuizamentos de RJ (CNJ/DataJud, TJSP, TJRJ, TJMG, TJRS, TJPR, TJSC, TJBA, TJGO): 103 em 2026-05; 1257 em 2025.</p>
+<p><span class="tag prev">PREVISÃO</span> Projeção 12m: 93 [76–121] processos/mês.</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> Credores financeiros citados em listas de credores (60 dias, 371 casos): BANCO DO BRASIL (174 casos); BANCO BRADESCO (142 casos); BANCO SANTANDER (99 casos); CAIXA ECONOMICA FEDERAL (98 casos); ITAU UNIBANCO (91 casos).</p>
+<p><span class="tag interp">INTERPRETAÇÃO</span> Presença em lista de credores não mede exposição total; ver limitações no site.</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> Passivo citado em atos: R$ 2,79 bi em 54 casos.</p>
+<p><span class="tag cen">CENÁRIO</span> Para os 229 casos sem valor citado, o intervalo interquartil implica R$ 257 mi – R$ 5,50 bi (aproximação estatística; níveis nunca somados).</p>
+<h2>7 · Open Finance</h2>
+<p><span class="tag demo">DEMONSTRATIVO</span> Módulo integralmente demonstrativo: não há via pública estável para os dados nominais do dashboard Open Finance Brasil. Método pronto para substituição.</p>
+<h2>8 · Projeções e cenários</h2>
+<p><span class="tag prev">PREVISÃO</span> Concessões em 2027-05: 766.417,0 R$ mi [710.964,9–818.012,3].</p>
+<p><span class="tag prev">PREVISÃO</span> Spread em 2027-05: 23,5 p.p. [19,7–25,1].</p>
+<p><span class="tag cen">CENÁRIO</span> Elasticidades de cenário (empírico): selic_pp 0.098 [0.067–0.129]; desemprego_pp 0.023 [-0.048–0.094]; pib_pp -0.002 [-0.027–0.022]; cambio_pct10 -0.13 [-0.221–-0.039]. Resultados de cenário são condicionais às hipóteses do usuário.</p>
+<h2>9 · Metodologia, fontes e limitações</h2>
+<p><span class="tag obs">OBSERVAÇÃO</span> Fontes reais: BCB/SGS, BCB/IF.data (Olinda e interface), IBGE, Ipeadata, CNJ/DataJud, CNJ/DJEN, BrasilAPI/Receita. Linhagem bronze→gold com SHA-256 e catálogo completo na aba Metodologia & Fontes.</p>
+<p><span class="tag calc">CALCULADO</span> Qualidade média das 79 séries: 69/100.</p>
+<p><span class="tag interp">INTERPRETAÇÃO</span> Limitações completas em docs/LIMITACOES.md e nos rodapés de cada visualização. Scores e projeções não constituem rating nem recomendação.</p><script>/* imprimível: Ctrl/Cmd+P gera o PDF */</script></body></html>

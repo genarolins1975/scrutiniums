@@ -1,0 +1,176 @@
+{
+ "cod": "23241540",
+ "nome": "CREBEL - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DAS EMPRESAS BELGO BEKAERT - CREBEL LTDA.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 27590696.15,
+   "202506": 28036984.88,
+   "202509": 27970016.0,
+   "202512": 28725832.04,
+   "202603": 28394894.87
+  },
+  "patrimonio_liquido": {
+   "202503": 25952713.84,
+   "202506": 25485849.11,
+   "202509": 24433911.87,
+   "202512": 27193219.57,
+   "202603": 26207668.58
+  },
+  "carteira_credito": {
+   "202503": 9875294.04,
+   "202506": 9719404.79,
+   "202509": 9482061.47,
+   "202512": 9449216.7,
+   "202603": 9288637.4
+  },
+  "carteira_pf": {
+   "202503": 9927541.84,
+   "202506": 9770147.8,
+   "202509": 9530823.37,
+   "202512": 9496700.12,
+   "202603": 9335439.78
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 721764.47,
+   "202506": 1569863.78,
+   "202509": 954665.22,
+   "202512": 1907728.98,
+   "202603": 890027.03
+  },
+  "indice_basileia": {
+   "202503": 99.3992650564374,
+   "202506": 95.6022150872342,
+   "202509": 91.37283664743579,
+   "202512": 98.8923767995744,
+   "202603": 96.1533965052887
+  },
+  "patrimonio_referencia": {
+   "202503": 25952273.84,
+   "202506": 25485409.11,
+   "202509": 24433471.87,
+   "202512": 27192779.57,
+   "202603": 26207228.58
+  },
+  "rwa": {
+   "202503": 25027168.23,
+   "202506": 25575807.84,
+   "202509": 25596511.96,
+   "202512": 26353447.73,
+   "202603": 26071578.18
+  },
+  "provisao_credito": {
+   "202503": 52247.8,
+   "202506": 50743.01,
+   "202509": 48761.9,
+   "202512": 47483.42,
+   "202603": 46802.38
+  },
+  "roe_periodo": {
+   "202503": 2.7810751293668945,
+   "202506": 6.159746819594978,
+   "202509": 3.9071321247259614,
+   "202512": 7.015458302350624,
+   "202603": 3.396055728052098
+  },
+  "npl_pct": {
+   "202503": 0.023263462770759774,
+   "202506": 0.022082777499026165,
+   "202509": 0.012554319323200301
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.027881222205959497,
+   "202506": 0.022082777499026165,
+   "202509": 0.012554319323200301
+  },
+  "cobertura_pct": {
+   "202503": 2262.3089946265195,
+   "202506": 2351.9137713671253,
+   "202509": 4075.2760064519903
+  },
+  "cart_ativo_pct": {
+   "202503": 35.79211624930312,
+   "202506": 34.66636955293033,
+   "202509": 33.90080817258024,
+   "202512": 32.89449261849823,
+   "202603": 32.712350028151384
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.030339333226119144,
+   "202506": 0.022082777499026165,
+   "202509": 0.012554319323200301,
+   "202512": 0.0,
+   "202603": 0.003663244668265645
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "37663090",
+    "nome": "LINA INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28344772.69
+   },
+   {
+    "cod": "33444505",
+    "nome": "MR S.A INSTITUICAO DE PAGAMENTO",
+    "sr": null,
+    "ativo_brl": 28243030.84
+   },
+   {
+    "cod": "32708748",
+    "nome": "WE PAY OUT INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 28193394.76
+   },
+   {
+    "cod": "30507541",
+    "nome": "BRASIL CASH INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28826430.62
+   },
+   {
+    "cod": "16944141",
+    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 27809153.21
+   },
+   {
+    "cod": "11491029",
+    "nome": "IP4Y INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 29296808.53
+   },
+   {
+    "cod": "20062766",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DO GRUPO EMPRESARIAL A COSTA LTDA.",
+    "sr": "S5",
+    "ativo_brl": 27505697.16
+   },
+   {
+    "cod": "00250699",
+    "nome": "AGK CORRETORA DE CAMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 27416319.36
+   }
+  ]
+ }
+}

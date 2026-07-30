@@ -1,0 +1,74 @@
+{
+ "cod": "C0084349",
+ "nome": "BANCO RIBEIRÃO PRETO - PRUDENCIAL",
+ "sr": "S4",
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "carteira_pf": {
+   "202603": 120646986.05
+  },
+  "carteira_pj": {
+   "202603": 701596151.41
+  },
+  "indice_basileia": {
+   "202603": 15.8811135955884
+  },
+  "indice_capital_principal": {
+   "202603": 15.8811135955884
+  },
+  "indice_capital_nivel1": {
+   "202603": 15.8811135955884
+  },
+  "patrimonio_referencia": {
+   "202603": 233380547.16
+  },
+  "rwa": {
+   "202603": 1029677869.63
+  },
+  "razao_alavancagem": {
+   "202603": 11.7778402009863
+  },
+  "npl_pct": {
+   "202603": 5.322698900862408
+  },
+  "ativos_problematicos_pct": {
+   "202603": 5.383063111566951
+  },
+  "atraso15_consignado_pf": {
+   "202603": 29.89895386355899
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202603": 0.38133017033699385
+  },
+  "atraso15_imobiliario_pf": {
+   "202603": 2.0251732592296374
+  },
+  "atraso15_rural_pf": {
+   "202603": 23.54187354705547
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202603": 16.41419747760339
+  },
+  "atraso15_conta_garantida_pj": {
+   "202603": 0.0
+  },
+  "atraso15_investimento_pj": {
+   "202603": 0.08167451595799526
+  },
+  "atraso15_infraestrutura_pj": {
+   "202603": 0.0
+  },
+  "atraso15_rural_pj": {
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

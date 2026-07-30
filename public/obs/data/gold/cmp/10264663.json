@@ -1,0 +1,24 @@
+{
+ "cod": "10264663",
+ "nome": "BANCOSEGURO S.A.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202503": 43475653.84,
+   "202506": 51813361.41,
+   "202509": 58495703.82,
+   "202512": 76733381.41,
+   "202603": 94990130.56
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

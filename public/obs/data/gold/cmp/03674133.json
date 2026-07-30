@@ -1,0 +1,182 @@
+{
+ "cod": "03674133",
+ "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS EM INSTITUIÇÕES DO SISTEMA FINANCEIRO NAS REGIÕES DE SÃO PAULO E CAMPINAS (SP) - CREDISCOOP",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 2676639.95,
+   "202506": 2661116.91,
+   "202509": 2329479.24,
+   "202512": 2237009.11,
+   "202603": 2339227.24
+  },
+  "patrimonio_liquido": {
+   "202503": 1014979.34,
+   "202506": 1000321.77,
+   "202509": 887313.83,
+   "202512": 837994.78,
+   "202603": 857911.01
+  },
+  "carteira_credito": {
+   "202503": 1377613.39,
+   "202506": 1112075.49,
+   "202509": 1084391.41,
+   "202512": 1043298.11,
+   "202603": 1062422.6
+  },
+  "carteira_pf": {
+   "202503": 1587643.48,
+   "202506": 1333326.52,
+   "202509": 1319168.48,
+   "202512": 1243339.95,
+   "202603": 1139641.54
+  },
+  "captacoes": {
+   "202503": 1471617.88,
+   "202506": 1518858.58,
+   "202509": 1285390.69,
+   "202512": 1269245.61,
+   "202603": 1354901.45
+  },
+  "lucro_liquido": {
+   "202503": 2420.39000000004,
+   "202506": -35149.68,
+   "202509": -112397.1,
+   "202512": -175726.58,
+   "202603": 21492.05
+  },
+  "indice_basileia": {
+   "202503": 39.0710910392736,
+   "202506": 41.987149508406205,
+   "202509": 42.8501998171903,
+   "202512": 42.3713078256587,
+   "202603": 40.4022436031798
+  },
+  "patrimonio_referencia": {
+   "202503": 1014979.34,
+   "202506": 1178627.32,
+   "202509": 1065619.38,
+   "202512": 1016300.33,
+   "202603": 976781.38
+  },
+  "rwa": {
+   "202503": 2323676.36,
+   "202506": 2533014.98,
+   "202509": 2233806.32,
+   "202512": 2145516.07,
+   "202603": 2183280.53
+  },
+  "provisao_credito": {
+   "202503": 210030.09,
+   "202506": 221251.03,
+   "202509": 234777.07,
+   "202512": 200041.84,
+   "202603": 77218.94
+  },
+  "roe_periodo": {
+   "202503": 0.23846692288338006,
+   "202506": -3.513837352555068,
+   "202509": -12.667119140924472,
+   "202512": -20.96988957377515,
+   "202603": 2.5051607625364314
+  },
+  "npl_pct": {
+   "202503": 10.662960049443846,
+   "202506": 11.7078133269261,
+   "202509": 11.833468004026294,
+   "202512": 5.408228859693602,
+   "202603": 2.4579000516250047
+  },
+  "ativos_problematicos_pct": {
+   "202503": 10.666180545773415,
+   "202506": 12.777561043336929,
+   "202509": 12.809186435382387,
+   "202512": 8.957040268833959,
+   "202603": 6.889412788515941
+  },
+  "cobertura_pct": {
+   "202503": 124.06542060215209,
+   "202506": 141.73365752874793,
+   "202509": 150.39845389638583,
+   "202512": 297.49241069695773,
+   "202603": 275.6711678343523
+  },
+  "cart_ativo_pct": {
+   "202503": 51.46801272244329,
+   "202506": 41.789802087274694,
+   "202509": 46.5508080681586,
+   "202512": 46.63808052171947,
+   "202603": 45.41767391525417
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 1.164289523540333,
+   "202506": 2.365306015093998,
+   "202509": 2.9527279884222217,
+   "202512": 3.8308549339739484,
+   "202603": 1.1052226818249702
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "34254279",
+    "nome": "NEXOOS SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 2364492.69
+   },
+   {
+    "cod": "18145784",
+    "nome": "NUMATUR CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2379030.67
+   },
+   {
+    "cod": "77162881",
+    "nome": "DEBONI DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 2279564.92
+   },
+   {
+    "cod": "25280945",
+    "nome": "AVS CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2417905.51
+   },
+   {
+    "cod": "71590442",
+    "nome": "LASTRO RDV DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 2215283.92
+   },
+   {
+    "cod": "39431423",
+    "nome": "BRCARD SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": "S5",
+    "ativo_brl": 2207193.21
+   },
+   {
+    "cod": "20269566",
+    "nome": "VNK SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2186467.6
+   },
+   {
+    "cod": "62605290",
+    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DAS EMPRESAS DO GRUPO INDORAMA NO BRASIL",
+    "sr": "S5",
+    "ativo_brl": 2554525.59
+   }
+  ]
+ }
+}

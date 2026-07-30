@@ -1,0 +1,172 @@
+{
+ "cod": "01722480",
+ "nome": "QUERO-QUERO VERDECARD INSTITUIÇÃO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 589974966.89,
+   "202506": 582702431.03,
+   "202509": 649793448.77,
+   "202512": 713497735.02,
+   "202603": 713074045.27
+  },
+  "patrimonio_liquido": {
+   "202503": 101829373.34,
+   "202506": 107257303.82,
+   "202509": 102920345.72,
+   "202512": 110757560.36,
+   "202603": 120038507.63
+  },
+  "carteira_credito": {
+   "202503": 373895033.08,
+   "202506": 341926730.44,
+   "202509": 413174657.17,
+   "202512": 464316216.45,
+   "202603": 332941840.04
+  },
+  "carteira_pf": {
+   "202503": 378191057.8,
+   "202506": 347345948.42,
+   "202509": 417270696.4,
+   "202512": 466814012.4,
+   "202603": 333042047.93
+  },
+  "carteira_pj": {
+   "202503": 5998937.34,
+   "202506": 4417027.27,
+   "202509": 6850546.63,
+   "202512": 8670772.03,
+   "202603": 8113984.19
+  },
+  "captacoes": {
+   "202503": 11176145.86,
+   "202506": 13155809.64,
+   "202509": 14913755.01,
+   "202512": 18772012.16,
+   "202603": 17851760.97
+  },
+  "lucro_liquido": {
+   "202503": 3060293.54999999,
+   "202506": 8488224.02999999,
+   "202509": 11230963.75,
+   "202512": 27556402.42,
+   "202603": 9280947.27000001
+  },
+  "indice_basileia": {
+   "202503": 32.949633309576996,
+   "202506": 23.311461363521698,
+   "202509": 24.2341295176016,
+   "202603": 22.809863265996
+  },
+  "patrimonio_referencia": {
+   "202503": 64341357.83,
+   "202506": 69034102.6,
+   "202509": 63924002.47,
+   "202603": 79597568.55
+  },
+  "rwa": {
+   "202503": 23208584.24,
+   "202506": 130299175.78,
+   "202509": 106717487.73,
+   "202603": 208916792.12
+  },
+  "roe_periodo": {
+   "202503": 3.0053151164761847,
+   "202506": 7.913889057145227,
+   "202509": 10.912287236728105,
+   "202512": 24.87992903638565,
+   "202603": 7.7316416650289295
+  },
+  "npl_pct": {
+   "202503": 0.8699352696006805,
+   "202506": 0.9834798654446191,
+   "202509": 0.7566921517706182,
+   "202512": 0.5019829799309568,
+   "202603": 0.5150257490924179
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.8803190564000902,
+   "202506": 0.9884511134748298,
+   "202509": 0.7578918158015095,
+   "202512": 0.5179987689727219,
+   "202603": 0.53059604391321
+  },
+  "cart_ativo_pct": {
+   "202503": 63.37472843143737,
+   "202506": 58.67947553189394,
+   "202509": 63.58553751997687,
+   "202512": 65.07606032372125,
+   "202603": 46.691061362909956
+  },
+  "atraso15_cartao_de_credito_pf": {
+   "202503": 0.5302300169827019,
+   "202506": 0.557747035430355,
+   "202509": 0.4312701432249437,
+   "202512": 0.2715772741015518,
+   "202603": 0.32546037857292487
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "41538335",
+    "nome": "CLARA INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 707944488.83
+   },
+   {
+    "cod": "00068987",
+    "nome": "COOPERATIVA DE CRÉDITO ARACREDI LTDA. - SICOOB ARACREDI",
+    "sr": "S5",
+    "ativo_brl": 697923939.32
+   },
+   {
+    "cod": "13203354",
+    "nome": "FITBANK INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": "S5",
+    "ativo_brl": 733526237.58
+   },
+   {
+    "cod": "39519944",
+    "nome": "OPEA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 737386254.82
+   },
+   {
+    "cod": "04891850",
+    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
+    "sr": null,
+    "ativo_brl": 687660524.75
+   },
+   {
+    "cod": "03046391",
+    "nome": "UNIPRIME CENTRAL NACIONAL - CENTRAL NACIONAL DE COOPERATIVA DE CREDITO",
+    "sr": "S4",
+    "ativo_brl": 757957366.17
+   },
+   {
+    "cod": "02144899",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL DE RONDÔNIA   SICOOB OUROCREDI",
+    "sr": "S5",
+    "ativo_brl": 670186708.99
+   },
+   {
+    "cod": "12392983",
+    "nome": "MIRAE ASSET (BRASIL) CORRETORA DE CÂMBIO, TÍTULOS  E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 760627476.14
+   }
+  ]
+ }
+}

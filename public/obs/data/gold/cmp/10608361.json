@@ -1,0 +1,21 @@
+{
+ "cod": "10608361",
+ "nome": "10608361",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "provisao_credito": {
+   "202512": 30174171.7,
+   "202603": 30155378.07
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

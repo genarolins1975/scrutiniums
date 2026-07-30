@@ -1,0 +1,168 @@
+{
+ "cod": "05040680",
+ "nome": "COOPERATIVA DE CRÉDITO DOS MAGISTRADOS DO ESTADO DO RIO DE JANEIRO LTDA. - MAGICREDI-RJ",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 24118565.01,
+   "202506": 25219108.83,
+   "202509": 26298737.19,
+   "202512": 27098807.27,
+   "202603": 28073336.68
+  },
+  "patrimonio_liquido": {
+   "202503": 10039921.98,
+   "202506": 10327424.84,
+   "202509": 10622885.47,
+   "202512": 10707279.7,
+   "202603": 11041792.4
+  },
+  "carteira_credito": {
+   "202503": 16937816.2,
+   "202506": 17255774.78,
+   "202509": 17605131.01,
+   "202512": 18150133.65,
+   "202603": 18909368.2
+  },
+  "carteira_pf": {
+   "202503": 17047599.22,
+   "202506": 17365819.52,
+   "202509": 17715922.01,
+   "202512": 18262114.39,
+   "202603": 19024437.36
+  },
+  "captacoes": {
+   "202503": 13142005.06,
+   "202506": 13945022.09,
+   "202509": 14674084.31,
+   "202512": 15436502.54,
+   "202603": 16090960.23
+  },
+  "lucro_liquido": {
+   "202503": 113583.02,
+   "202506": 270436.41,
+   "202509": 150029.78,
+   "202512": 182938.7,
+   "202603": 156690.34
+  },
+  "indice_basileia": {
+   "202503": 70.1994818911528,
+   "202506": 70.2700104594724,
+   "202509": 68.4792883851916,
+   "202512": 67.2798148506781,
+   "202603": 65.0108059832764
+  },
+  "patrimonio_referencia": {
+   "202503": 10076099.79,
+   "202506": 10363602.65,
+   "202509": 10659063.28,
+   "202512": 10743457.51,
+   "202603": 11065910.94
+  },
+  "rwa": {
+   "202503": 13655638.47,
+   "202506": 14050372.33,
+   "202509": 14810081.97,
+   "202512": 15213021.36,
+   "202603": 16172601.79
+  },
+  "provisao_credito": {
+   "202503": 109783.02,
+   "202506": 110044.64,
+   "202509": 110791.0,
+   "202512": 111980.74,
+   "202603": 115069.16
+  },
+  "roe_periodo": {
+   "202503": 1.1313137714243473,
+   "202506": 2.6186238504738415,
+   "202509": 1.4123260617249223,
+   "202512": 1.708545075179086,
+   "202603": 1.4190661653809031
+  },
+  "cart_ativo_pct": {
+   "202503": 70.2272966612121,
+   "202506": 68.42341216860518,
+   "202509": 66.94287593662212,
+   "202512": 66.97761074559648,
+   "202603": 67.35703851502414
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "32708748",
+    "nome": "WE PAY OUT INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 28193394.76
+   },
+   {
+    "cod": "33444505",
+    "nome": "MR S.A INSTITUICAO DE PAGAMENTO",
+    "sr": null,
+    "ativo_brl": 28243030.84
+   },
+   {
+    "cod": "16944141",
+    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 27809153.21
+   },
+   {
+    "cod": "37663090",
+    "nome": "LINA INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28344772.69
+   },
+   {
+    "cod": "67341487",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA TETRA PAK",
+    "sr": "S5",
+    "ativo_brl": 28527858.49
+   },
+   {
+    "cod": "00250699",
+    "nome": "AGK CORRETORA DE CAMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 27416319.36
+   },
+   {
+    "cod": "30507541",
+    "nome": "BRASIL CASH INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28826430.62
+   },
+   {
+    "cod": "57563728",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS DO GRUPO ECONÔMICO RHODIA - CREDIRHODIA",
+    "sr": "S5",
+    "ativo_brl": 28852289.68
+   }
+  ]
+ }
+}

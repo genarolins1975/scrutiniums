@@ -1,0 +1,186 @@
+{
+ "cod": "39738065",
+ "nome": "FFCRED SOCIEDADE DE CRÉDITO DIRETO S.A..",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 68479675.48,
+   "202506": 66604059.04,
+   "202509": 52893723.2,
+   "202512": 47494731.85,
+   "202603": 27823585.22
+  },
+  "patrimonio_liquido": {
+   "202503": 12808473.97,
+   "202506": 13618690.45,
+   "202509": 14489944.05,
+   "202512": 13943363.36,
+   "202603": 14228105.51
+  },
+  "carteira_credito": {
+   "202503": 3508738.77,
+   "202506": 3155631.35,
+   "202509": 4093038.55,
+   "202512": 3071680.02,
+   "202603": 3545487.85
+  },
+  "carteira_pf": {
+   "202503": 2559095.21,
+   "202506": 2526753.21,
+   "202512": 2119590.49
+  },
+  "carteira_pj": {
+   "202503": 1387854.58,
+   "202506": 1131366.66,
+   "202512": 1417372.32
+  },
+  "captacoes": {
+   "202503": 54093121.12,
+   "202506": 51119826.0,
+   "202509": 37378608.2,
+   "202512": 32427353.42,
+   "202603": 12917421.65
+  },
+  "lucro_liquido": {
+   "202503": 479573.36,
+   "202506": 1289789.84,
+   "202509": 871253.6,
+   "202512": 1519044.03,
+   "202603": 300316.77
+  },
+  "indice_basileia": {
+   "202503": 28.6729805843901,
+   "202506": 20.166237234015398
+  },
+  "patrimonio_referencia": {
+   "202503": 17211992.39,
+   "202506": 19002094.16
+  },
+  "rwa": {
+   "202503": 31494146.34,
+   "202506": 36413516.01
+  },
+  "provisao_credito": {
+   "202503": 423780.35,
+   "202506": 486802.86,
+   "202509": 561193.69,
+   "202512": 445051.99,
+   "202603": 497964.42
+  },
+  "roe_periodo": {
+   "202503": 3.7441881142379367,
+   "202506": 9.470733215762314,
+   "202509": 6.012815487717496,
+   "202512": 10.894387464345618,
+   "202603": 2.110729146539763
+  },
+  "npl_pct": {
+   "202503": 13.261184911095613,
+   "202506": 15.24008725279962,
+   "202512": 12.858452701683905
+  },
+  "ativos_problematicos_pct": {
+   "202503": 13.261184911095613,
+   "202506": 15.24008725279962,
+   "202512": 12.858452701683905
+  },
+  "cobertura_pct": {
+   "202503": 80.96491845978937,
+   "202506": 87.31879528178496,
+   "202512": 97.85691994847214
+  },
+  "cart_ativo_pct": {
+   "202503": 5.12376664376097,
+   "202506": 4.737896451783579,
+   "202509": 7.73823112153315,
+   "202512": 6.467412069408283,
+   "202603": 12.742742611945824
+  },
+  "atraso15_consignado_pf": {
+   "202512": 12.306578350169934
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 23.74727525802978,
+   "202506": 42.98106974367506,
+   "202512": 13.379901231232077
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 1.48989367968673,
+   "202506": 3.6202340841123983,
+   "202512": 12.471904705488711
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 23.454226356310983,
+   "202506": 30.591268853931386,
+   "202512": 12.823873080328912
+  },
+  "atraso15_investimento_pj": {
+   "202503": 22.645910337567983,
+   "202506": 42.349124001673594,
+   "202512": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "16944141",
+    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 27809153.21
+   },
+   {
+    "cod": "32708748",
+    "nome": "WE PAY OUT INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 28193394.76
+   },
+   {
+    "cod": "00250699",
+    "nome": "AGK CORRETORA DE CAMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 27416319.36
+   },
+   {
+    "cod": "33444505",
+    "nome": "MR S.A INSTITUICAO DE PAGAMENTO",
+    "sr": null,
+    "ativo_brl": 28243030.84
+   },
+   {
+    "cod": "37663090",
+    "nome": "LINA INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28344772.69
+   },
+   {
+    "cod": "13673855",
+    "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A",
+    "sr": "S4",
+    "ativo_brl": 27157224.7
+   },
+   {
+    "cod": "04051232",
+    "nome": "COOPER BENEFICIOS INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 27152577.39
+   },
+   {
+    "cod": "30507541",
+    "nome": "BRASIL CASH INSTITUICAO DE PAGAMENTO S.A",
+    "sr": null,
+    "ativo_brl": 28826430.62
+   }
+  ]
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "cod": "38129006",
+ "nome": "NUMBRS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 4421652.08,
+   "202506": 4432202.06,
+   "202509": 4907299.97,
+   "202512": 7574243.65,
+   "202603": 8708871.93
+  },
+  "patrimonio_liquido": {
+   "202503": 3294612.87,
+   "202506": 3390878.87,
+   "202509": 3422654.63,
+   "202512": 5044088.78,
+   "202603": 5154603.95
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 1095298.56,
+   "202506": 1027036.51,
+   "202509": 1361294.11,
+   "202512": 2023638.23,
+   "202603": 3091170.66
+  },
+  "lucro_liquido": {
+   "202503": 71824.08,
+   "202506": 168090.08,
+   "202509": 31775.76,
+   "202512": 142943.62,
+   "202603": 110515.17
+  },
+  "indice_basileia": {
+   "202503": 488.18256664575097,
+   "202506": 467.27193290336197,
+   "202509": 323.007561602781,
+   "202512": 446.72698886369204,
+   "202603": 680.516644894182
+  },
+  "patrimonio_referencia": {
+   "202503": 3294612.87,
+   "202506": 3390878.87,
+   "202509": 3422654.63,
+   "202512": 5044088.78,
+   "202603": 5154603.95
+  },
+  "rwa": {
+   "202503": 413597.41,
+   "202506": 425955.23,
+   "202509": 650889.44,
+   "202512": 651163.68,
+   "202603": 127856.62
+  },
+  "roe_periodo": {
+   "202503": 2.180046118741714,
+   "202506": 4.9571242867781935,
+   "202509": 0.9283951620908942,
+   "202512": 2.833883903209174,
+   "202603": 2.144008949513958
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "96409263",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FACULDADE DE ENGENHARIA DE ILHA SOLTEIRA - COOPERFEIS",
+    "sr": "S5",
+    "ativo_brl": 8673376.16
+   },
+   {
+    "cod": "44683140",
+    "nome": "MAGNUM SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8775472.13
+   },
+   {
+    "cod": "17352220",
+    "nome": "SENSO CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
+    "sr": "S4",
+    "ativo_brl": 8567896.04
+   },
+   {
+    "cod": "37763847",
+    "nome": "GERU SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8557530.88
+   },
+   {
+    "cod": "00731320",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA MORLAN - CRED MORLAN",
+    "sr": "S5",
+    "ativo_brl": 8881896.76
+   },
+   {
+    "cod": "10853017",
+    "nome": "GET MONEY CORRETORA DE CÂMBIO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8929494.17
+   },
+   {
+    "cod": "56198117",
+    "nome": "SQUID SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 8422423.9
+   },
+   {
+    "cod": "57598120",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO TELEFÔNICA",
+    "sr": "S5",
+    "ativo_brl": 8421334.83
+   }
+  ]
+ }
+}

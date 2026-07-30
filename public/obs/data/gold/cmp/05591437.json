@@ -1,0 +1,194 @@
+{
+ "cod": "05591437",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO SERVIDORES PÚBLICOS ATIVOS, INATIVOS E PENSIONISTAS DA ADMINISTRAÇÃO DIRETA, INDIRETA E ASSEMBLÉIA LEGISLATIVA DO ESTADO DO RIO GRANDE SUL - COOPSERGS",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1753301.39,
+   "202506": 1609617.56,
+   "202509": 1571101.33,
+   "202512": 1417643.56,
+   "202603": 1286521.0
+  },
+  "patrimonio_liquido": {
+   "202503": 535745.08,
+   "202506": 593177.4,
+   "202509": 576856.87,
+   "202512": 467968.09,
+   "202603": 378690.63
+  },
+  "carteira_credito": {
+   "202503": 1168541.2,
+   "202506": 1084255.55,
+   "202509": 1015054.45,
+   "202512": 943630.79,
+   "202603": 778462.47
+  },
+  "carteira_pf": {
+   "202503": 1013269.73,
+   "202506": 941752.14,
+   "202509": 854732.41,
+   "202512": 790175.2,
+   "202603": 627574.28
+  },
+  "carteira_pj": {
+   "202503": 218825.57,
+   "202506": 201594.69,
+   "202509": 177903.08,
+   "202512": 175591.81,
+   "202603": 169590.48
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": -186239.33,
+   "202506": -371708.25,
+   "202509": -187607.78,
+   "202512": -451191.83,
+   "202603": -253352.26
+  },
+  "indice_basileia": {
+   "202503": 32.1056865023482,
+   "202506": 37.5313071240096,
+   "202509": 38.6287656638164,
+   "202512": 33.6930062207651,
+   "202603": 30.209692442484698
+  },
+  "patrimonio_referencia": {
+   "202503": 535745.08,
+   "202506": 593177.4,
+   "202509": 576856.87,
+   "202512": 467968.09,
+   "202603": 378690.63
+  },
+  "rwa": {
+   "202503": 1202916.42,
+   "202506": 1114711.16,
+   "202509": 1111575.96,
+   "202512": 1007158.57,
+   "202603": 932856.9
+  },
+  "provisao_credito": {
+   "202503": 63554.1,
+   "202506": 59091.28,
+   "202509": 17581.04,
+   "202512": 22136.22,
+   "202603": 18702.29
+  },
+  "roe_periodo": {
+   "202503": -34.76267668197718,
+   "202506": -62.66392650832617,
+   "202509": -32.52241409554505,
+   "202512": -96.41508462681718,
+   "202603": -66.90217288978077
+  },
+  "npl_pct": {
+   "202503": 3.5919989306022027,
+   "202506": 3.8584048901416903,
+   "202512": 0.3920603997438264,
+   "202603": 0.3633778291955605
+  },
+  "ativos_problematicos_pct": {
+   "202503": 4.431079316672988,
+   "202506": 3.8584048901416903,
+   "202509": 0.3468310003561857,
+   "202512": 0.3920603997438264,
+   "202603": 0.3633778291955605
+  },
+  "cobertura_pct": {
+   "202503": 143.60285469932904,
+   "202506": 133.94842338028266,
+   "202512": 584.6259893988733,
+   "202603": 645.6367891960564
+  },
+  "cart_ativo_pct": {
+   "202503": 66.64805073815631,
+   "202506": 67.36106619015762,
+   "202509": 64.60782831875012,
+   "202512": 66.56333204095394,
+   "202603": 60.50911489202275
+  },
+  "atraso15_consignado_pf": {
+   "202503": 2.7178567744247135,
+   "202506": 2.5420818263285283,
+   "202509": 0.10038814369985104,
+   "202512": 0.5231206952584693,
+   "202603": 0.4853513117204229
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "60057265",
+    "nome": "EASYCREDITO SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1306675.14
+   },
+   {
+    "cod": "32820711",
+    "nome": "EFEX INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 1251294.34
+   },
+   {
+    "cod": "51982465",
+    "nome": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 1327181.49
+   },
+   {
+    "cod": "57987273",
+    "nome": "COOPERATIVA DE CRÉDITO DE CAPITAL E EMPRÉSTIMO DOS EMPREGADOS CELETISTAS DE COOPERATIVAS DOS ESTADOS DE SÃO PAULO E MINAS GERAIS - COCREUNI",
+    "sr": "S5",
+    "ativo_brl": 1216224.99
+   },
+   {
+    "cod": "42627615",
+    "nome": "PROVU SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1368572.57
+   },
+   {
+    "cod": "45597546",
+    "nome": "BIZCAPITAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1398111.65
+   },
+   {
+    "cod": "42258376",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA FMC LTDA",
+    "sr": "S5",
+    "ativo_brl": 1405954.8
+   },
+   {
+    "cod": "44064068",
+    "nome": "OPPENS SOCIEDADE DE EMPRESTIMO ENTRE PESSOAS S.A",
+    "sr": "S5",
+    "ativo_brl": 1160116.24
+   }
+  ]
+ }
+}

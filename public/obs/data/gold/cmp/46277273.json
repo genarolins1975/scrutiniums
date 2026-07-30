@@ -1,0 +1,182 @@
+{
+ "cod": "46277273",
+ "nome": "GPATIVA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO PÃO DE AÇÚCAR",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 157913443.1,
+   "202506": 160387624.49,
+   "202509": 162060315.08,
+   "202512": 165826783.66,
+   "202603": 167801723.98
+  },
+  "patrimonio_liquido": {
+   "202503": 111135721.9,
+   "202506": 91942235.56,
+   "202509": 93668128.73,
+   "202512": 100873851.43,
+   "202603": 102851071.52
+  },
+  "carteira_credito": {
+   "202503": 59113457.68,
+   "202506": 43771487.86,
+   "202509": 31169870.87,
+   "202512": 43337181.12,
+   "202603": 44965305.34
+  },
+  "carteira_pf": {
+   "202503": 59942628.27,
+   "202506": 44647050.64,
+   "202509": 31982013.36,
+   "202512": 44169468.97,
+   "202603": 45705037.51
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 4940756.89,
+   "202506": 10309813.49,
+   "202509": 4909756.46,
+   "202512": 10324843.78,
+   "202603": 3025111.61
+  },
+  "indice_basileia": {
+   "202503": 178.448157024396,
+   "202506": 186.25604616803798,
+   "202509": 237.04495827637803,
+   "202512": 205.032724056162,
+   "202603": 202.259720664187
+  },
+  "patrimonio_referencia": {
+   "202503": 110762575.7,
+   "202506": 91593212.6,
+   "202509": 93343229.01,
+   "202512": 100571974.95,
+   "202603": 102573318.28
+  },
+  "rwa": {
+   "202503": 52459044.91,
+   "202506": 39565121.82,
+   "202509": 29267764.2,
+   "202512": 38941575.26,
+   "202603": 40567034.36
+  },
+  "provisao_credito": {
+   "202503": 812860.93,
+   "202506": 863811.4,
+   "202509": 804415.31,
+   "202512": 827197.49,
+   "202603": 736081.88
+  },
+  "roe_periodo": {
+   "202503": 4.445696492119515,
+   "202506": 11.21335959171015,
+   "202509": 5.241651057375617,
+   "202512": 10.235401576953548,
+   "202603": 2.941254345037863
+  },
+  "npl_pct": {
+   "202503": 0.8419655002891984,
+   "202506": 1.599916746482764,
+   "202509": 2.244804671671865,
+   "202512": 1.498979352569744,
+   "202603": 1.0389597643281752
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.982417883559379,
+   "202506": 1.601051356703906,
+   "202509": 2.244804671671865,
+   "202512": 1.498979352569744,
+   "202603": 1.180384021962484
+  },
+  "cobertura_pct": {
+   "202503": 161.0594352543733,
+   "202506": 120.92852957832478,
+   "202509": 112.04590011392834,
+   "202512": 124.93708797407102,
+   "202603": 155.01128918930215
+  },
+  "cart_ativo_pct": {
+   "202503": 37.434088269841546,
+   "202506": 27.29106313481755,
+   "202509": 19.233500104336585,
+   "202512": 26.134005715780884,
+   "202603": 26.796688540196012
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.6009614866692264,
+   "202506": 0.9285130239456282,
+   "202509": 1.2800945187273225,
+   "202512": 0.8618762662928161,
+   "202603": 0.7278867672457578
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "64480833",
+    "nome": "COOPERATIVA DE CRÉDITO CREDIMAC LTDA - SICOOB CREDIMAC",
+    "sr": "S5",
+    "ativo_brl": 166682977.48
+   },
+   {
+    "cod": "49654502",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DOS FORNECEDORES DE CANA DA REGIÃO DE CATANDUVA-COFOCRED",
+    "sr": "S5",
+    "ativo_brl": 163679902.36
+   },
+   {
+    "cod": "02254376",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DE DORES DO INDAIÁ LTDA - SICOOB COOPCREDI",
+    "sr": "S5",
+    "ativo_brl": 173542970.55
+   },
+   {
+    "cod": "39587424",
+    "nome": "UY3 SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": "S5",
+    "ativo_brl": 180140498.86
+   },
+   {
+    "cod": "07946216",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB UNIÃO SUDESTE",
+    "sr": "S5",
+    "ativo_brl": 181560135.89
+   },
+   {
+    "cod": "37122487",
+    "nome": "CALCRED S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S4",
+    "ativo_brl": 182996851.36
+   },
+   {
+    "cod": "44128548",
+    "nome": "POMELO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 186920340.6
+   },
+   {
+    "cod": "02794761",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DE LIVRE ADMISSÃO DOS SERVIDORES DA UNIVERSIDADE FEDERAL DE VIÇOSA LTDA. - SICOOB UFVCREDI",
+    "sr": "S5",
+    "ativo_brl": 149447841.18
+   }
+  ]
+ }
+}

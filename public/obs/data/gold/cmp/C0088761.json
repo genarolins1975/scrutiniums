@@ -1,0 +1,41 @@
+{
+ "cod": "C0088761",
+ "nome": "VOX IP - PRUDENCIAL",
+ "sr": null,
+ "nivel": "conglomerado prudencial",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "carteira_pf": {
+   "202512": 94331606.22,
+   "202603": 93534094.5
+  },
+  "carteira_pj": {
+   "202512": 3714639.75,
+   "202603": 3377297.73
+  },
+  "indice_basileia": {
+   "202512": -0.022898516678554602,
+   "202603": 1.9626599206302098
+  },
+  "patrimonio_referencia": {
+   "202512": -157796.12,
+   "202603": 1691278.55
+  },
+  "rwa": {
+   "202512": 620771068.06,
+   "202603": 19897710.28
+  },
+  "atraso15_cartao_de_credito_pf": {
+   "202512": 2.8647764183061737,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

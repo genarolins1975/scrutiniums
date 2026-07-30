@@ -1,0 +1,4918 @@
+{
+ "ok": true,
+ "tipo": "DADO CALCULADO",
+ "anomes": "202603",
+ "anomes_anterior": "202512",
+ "instituicoes": [
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2219,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      28.8
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      27.8
+     ],
+     [
+      "outros",
+      22.0
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      9.2
+     ],
+     [
+      "construcao",
+      6.3
+     ]
+    ],
+    "pme_share_pct": 19.4,
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      30.8
+     ],
+     [
+      "habitacao",
+      29.7
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      16.0
+     ],
+     [
+      "outros_creditos",
+      8.3
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      37.3
+     ],
+     [
+      "comercio_exterior",
+      12.8
+     ],
+     [
+      "operacoes_com_recebiveis",
+      9.8
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      9.7
+     ]
+    ]
+   },
+   "basileia_pct": 14.77,
+   "capital_principal_pct": 11.97,
+   "rwa_brl": 1310657899476.35,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 35.4
+    },
+    {
+     "anomes": "202506",
+     "score": 31.4
+    },
+    {
+     "anomes": "202509",
+     "score": 38.3
+    },
+    {
+     "anomes": "202512",
+     "score": 61.7
+    },
+    {
+     "anomes": "202603",
+     "score": 65.7
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.51,
+     -0.05
+    ],
+    "basileia_atual_pct": 14.77,
+    "basileia_pos_choque_pct": [
+     14.26,
+     14.72
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0010069",
+   "nome": "ITAU",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 2832306405072.48,
+   "carteira_brl": 1176966466520.58,
+   "pl_brl": 208510824472.85,
+   "lucro_brl": 12059014288.35,
+   "score": 65.7,
+   "score_anterior": 61.7,
+   "score_delta": 4.0,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 14.77,
+     "percentil_pares": 20.0,
+     "risco": 80.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 5.78,
+     "percentil_pares": 71.4,
+     "risco": 28.6,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 13.58,
+     "percentil_pares": 57.1,
+     "risco": 57.1,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 41.56,
+     "percentil_pares": 57.1,
+     "risco": 57.1,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 78.58,
+     "percentil_pares": 71.4,
+     "risco": 71.4,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 2219,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 1727,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      23.6
+     ],
+     [
+      "administracao_publica_defesa_e_seguridade_social",
+      23.3
+     ],
+     [
+      "industrias_de_transformacao",
+      19.1
+     ],
+     [
+      "outros",
+      13.1
+     ],
+     [
+      "industrias_extrativas",
+      5.5
+     ]
+    ],
+    "pme_share_pct": 13.5,
+    "top_mod_pf": [
+     [
+      "rural_e_agroindustrial",
+      50.2
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      20.8
+     ],
+     [
+      "cartao_de_credito",
+      10.0
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      7.8
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      24.7
+     ],
+     [
+      "investimento",
+      24.7
+     ],
+     [
+      "comercio_exterior",
+      18.9
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      11.7
+     ]
+    ]
+   },
+   "basileia_pct": 14.23,
+   "capital_principal_pct": 11.59,
+   "rwa_brl": 1093993823936.22,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 77.1
+    },
+    {
+     "anomes": "202506",
+     "score": 82.8
+    },
+    {
+     "anomes": "202509",
+     "score": 85.7
+    },
+    {
+     "anomes": "202512",
+     "score": 74.3
+    },
+    {
+     "anomes": "202603",
+     "score": 74.7
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.58,
+     -0.06
+    ],
+    "basileia_atual_pct": 14.23,
+    "basileia_pos_choque_pct": [
+     13.65,
+     14.17
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0049906",
+   "nome": "BB",
+   "tcb": "B1",
+   "uf": "DF",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 2605857347136.45,
+   "carteira_brl": 1119951053614.74,
+   "pl_brl": 187730514413.37,
+   "lucro_brl": 3156451730.28005,
+   "score": 74.7,
+   "score_anterior": 74.3,
+   "score_delta": 0.4,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 14.23,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 1.68,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 13.88,
+     "percentil_pares": 71.4,
+     "risco": 71.4,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 42.98,
+     "percentil_pares": 71.4,
+     "risco": 71.4,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 79.64,
+     "percentil_pares": 85.7,
+     "risco": 85.7,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 1727,
+     "percentil_pares": 20.0,
+     "risco": 20.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 1682,
+    "top_cnae": [
+     [
+      "administracao_publica_defesa_e_seguridade_social",
+      27.8
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      16.3
+     ],
+     [
+      "outros",
+      15.2
+     ],
+     [
+      "construcao",
+      13.2
+     ],
+     [
+      "servicos_industriais_de_utilidade_publica",
+      11.1
+     ]
+    ],
+    "pme_share_pct": 25.3,
+    "top_mod_pf": [
+     [
+      "habitacao",
+      81.7
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      9.8
+     ],
+     [
+      "rural_e_agroindustrial",
+      4.2
+     ],
+     [
+      "cartao_de_credito",
+      1.9
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      42.6
+     ],
+     [
+      "capital_de_giro",
+      32.1
+     ],
+     [
+      "habitacional",
+      10.0
+     ],
+     [
+      "outros_creditos",
+      6.5
+     ]
+    ]
+   },
+   "basileia_pct": 15.13,
+   "capital_principal_pct": 13.46,
+   "rwa_brl": 846751661397.98,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 72.0
+    },
+    {
+     "anomes": "202506",
+     "score": 73.7
+    },
+    {
+     "anomes": "202509",
+     "score": 71.4
+    },
+    {
+     "anomes": "202512",
+     "score": 71.4
+    },
+    {
+     "anomes": "202603",
+     "score": 66.2
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.89,
+     -0.09
+    ],
+    "basileia_atual_pct": 15.13,
+    "basileia_pos_choque_pct": [
+     14.25,
+     15.05
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0051626",
+   "nome": "CAIXA ECONÔMICA FEDERAL",
+   "tcb": "B1",
+   "uf": "DF",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 2341510303650.14,
+   "carteira_brl": 1326305264862.82,
+   "pl_brl": 114888416558.19,
+   "lucro_brl": 3093792133.29001,
+   "score": 66.2,
+   "score_anterior": 71.4,
+   "score_delta": -5.2,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.13,
+     "percentil_pares": 60.0,
+     "risco": 40.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 2.69,
+     "percentil_pares": 28.6,
+     "risco": 71.4,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 20.38,
+     "percentil_pares": 85.7,
+     "risco": 85.7,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 56.64,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 87.41,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 1682,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 1988,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      27.2
+     ],
+     [
+      "outros",
+      23.8
+     ],
+     [
+      "industrias_de_transformacao",
+      21.2
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      11.4
+     ],
+     [
+      "construcao",
+      9.4
+     ]
+    ],
+    "pme_share_pct": 34.0,
+    "top_mod_pf": [
+     [
+      "habitacao",
+      24.2
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      23.9
+     ],
+     [
+      "cartao_de_credito",
+      17.6
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      11.0
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      37.7
+     ],
+     [
+      "investimento",
+      13.0
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      11.4
+     ],
+     [
+      "outros_creditos",
+      11.1
+     ]
+    ]
+   },
+   "basileia_pct": 14.9,
+   "capital_principal_pct": 10.15,
+   "rwa_brl": 985898064498.13,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 53.7
+    },
+    {
+     "anomes": "202506",
+     "score": 60.6
+    },
+    {
+     "anomes": "202509",
+     "score": 56.6
+    },
+    {
+     "anomes": "202512",
+     "score": 49.7
+    },
+    {
+     "anomes": "202603",
+     "score": 58.1
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.51,
+     -0.05
+    ],
+    "basileia_atual_pct": 14.9,
+    "basileia_pos_choque_pct": [
+     14.39,
+     14.85
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0010045",
+   "nome": "BRADESCO",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 2022759229603.23,
+   "carteira_brl": 894567349144.29,
+   "pl_brl": 184194644575.03,
+   "lucro_brl": 5232613778.79999,
+   "score": 58.1,
+   "score_anterior": 49.7,
+   "score_delta": 8.4,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 14.9,
+     "percentil_pares": 40.0,
+     "risco": 60.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 2.84,
+     "percentil_pares": 42.9,
+     "risco": 57.1,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 10.98,
+     "percentil_pares": 28.6,
+     "risco": 28.6,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 44.23,
+     "percentil_pares": 85.7,
+     "risco": 85.7,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 78.11,
+     "percentil_pares": 57.1,
+     "risco": 57.1,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 1988,
+     "percentil_pares": 60.0,
+     "risco": 60.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2116,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      30.5
+     ],
+     [
+      "industrias_de_transformacao",
+      23.1
+     ],
+     [
+      "outros",
+      23.1
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      7.3
+     ],
+     [
+      "industrias_extrativas",
+      5.4
+     ]
+    ],
+    "pme_share_pct": 26.4,
+    "top_mod_pf": [
+     [
+      "veiculos",
+      25.3
+     ],
+     [
+      "habitacao",
+      21.2
+     ],
+     [
+      "cartao_de_credito",
+      19.5
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      17.8
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      25.3
+     ],
+     [
+      "operacoes_com_recebiveis",
+      17.1
+     ],
+     [
+      "outros_creditos",
+      15.7
+     ],
+     [
+      "investimento",
+      13.5
+     ]
+    ]
+   },
+   "basileia_pct": 15.15,
+   "capital_principal_pct": 11.24,
+   "rwa_brl": 627072212736.13,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 58.9
+    },
+    {
+     "anomes": "202506",
+     "score": 56.0
+    },
+    {
+     "anomes": "202509",
+     "score": 50.3
+    },
+    {
+     "anomes": "202512",
+     "score": 49.2
+    },
+    {
+     "anomes": "202603",
+     "score": 45.3
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.49,
+     -0.05
+    ],
+    "basileia_atual_pct": 15.15,
+    "basileia_pos_choque_pct": [
+     14.67,
+     15.1
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0030379",
+   "nome": "SANTANDER",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 1307068749630.23,
+   "carteira_brl": 537759156943.91,
+   "pl_brl": 98542895644.5101,
+   "lucro_brl": 3919151685.46996,
+   "score": 45.3,
+   "score_anterior": 49.2,
+   "score_delta": -3.9,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.15,
+     "percentil_pares": 80.0,
+     "risco": 20.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 3.98,
+     "percentil_pares": 57.1,
+     "risco": 42.9,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 13.26,
+     "percentil_pares": 42.9,
+     "risco": 42.9,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 41.14,
+     "percentil_pares": 42.9,
+     "risco": 42.9,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 76.35,
+     "percentil_pares": 42.9,
+     "risco": 42.9,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 2116,
+     "percentil_pares": 80.0,
+     "risco": 80.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2770,
+    "top_cnae": [
+     [
+      "servicos_industriais_de_utilidade_publica",
+      45.4
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      17.0
+     ],
+     [
+      "industrias_de_transformacao",
+      13.4
+     ],
+     [
+      "administracao_publica_defesa_e_seguridade_social",
+      12.9
+     ],
+     [
+      "outros",
+      8.0
+     ]
+    ],
+    "pme_share_pct": 0.1,
+    "top_mod_pf": [
+     [
+      "outros_creditos",
+      100.0
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      96.5
+     ],
+     [
+      "rural_e_agroindustrial",
+      3.5
+     ]
+    ]
+   },
+   "basileia_pct": 24.09,
+   "capital_principal_pct": 22.31,
+   "rwa_brl": 748440282901.35,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 27.5
+    },
+    {
+     "anomes": "202506",
+     "score": 27.5
+    },
+    {
+     "anomes": "202509",
+     "score": 32.5
+    },
+    {
+     "anomes": "202512",
+     "score": 32.5
+    },
+    {
+     "anomes": "202603",
+     "score": 41.7
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.28,
+     -0.03
+    ],
+    "basileia_atual_pct": 24.09,
+    "basileia_pos_choque_pct": [
+     23.81,
+     24.06
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "33657248",
+   "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
+   "tcb": "B4",
+   "uf": "RJ",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 992991681842.85,
+   "carteira_brl": 367321095834.08,
+   "pl_brl": 192025449630.49,
+   "lucro_brl": 3748909636.55,
+   "score": 41.7,
+   "score_anterior": 32.5,
+   "score_delta": 9.2,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 24.09,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 1.95,
+     "percentil_pares": 25.0,
+     "risco": 75.0,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 5.17,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 36.99,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 62.81,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2770,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 1984,
+    "top_cnae": [
+     [
+      "outros",
+      29.4
+     ],
+     [
+      "industrias_de_transformacao",
+      23.5
+     ],
+     [
+      "industrias_extrativas",
+      15.2
+     ],
+     [
+      "servicos_industriais_de_utilidade_publica",
+      14.9
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      10.2
+     ]
+    ],
+    "pme_share_pct": 5.3,
+    "top_mod_pf": [
+     [
+      "veiculos",
+      49.9
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      29.0
+     ],
+     [
+      "cartao_de_credito",
+      10.4
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      8.5
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "operacoes_com_recebiveis",
+      33.2
+     ],
+     [
+      "outros_creditos",
+      16.6
+     ],
+     [
+      "comercio_exterior",
+      15.9
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      14.9
+     ]
+    ]
+   },
+   "basileia_pct": 15.91,
+   "capital_principal_pct": 11.36,
+   "rwa_brl": 427027220913.9,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 20.0
+    },
+    {
+     "anomes": "202506",
+     "score": 18.3
+    },
+    {
+     "anomes": "202509",
+     "score": 26.3
+    },
+    {
+     "anomes": "202512",
+     "score": 25.2
+    },
+    {
+     "anomes": "202603",
+     "score": 18.6
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.25,
+     -0.02
+    ],
+    "basileia_atual_pct": 15.91,
+    "basileia_pos_choque_pct": [
+     15.66,
+     15.89
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0049944",
+   "nome": "BTG PACTUAL",
+   "tcb": "B1",
+   "uf": "RJ",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 812198393327.94,
+   "carteira_brl": 188099385929.51,
+   "pl_brl": 74826938356.68,
+   "lucro_brl": 4570395694.50998,
+   "score": 18.6,
+   "score_anterior": 25.2,
+   "score_delta": -6.6,
+   "faixa": "risco muito baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.91,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 15.02,
+     "q1_pares": 14.8,
+     "q3_pares": 15.15
+    },
+    "rentabilidade": {
+     "valor": 6.11,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 10.85,
+     "percentil_pares": 14.3,
+     "risco": 14.3,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 23.16,
+     "percentil_pares": 28.6,
+     "risco": 28.6,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 70.64,
+     "percentil_pares": 28.6,
+     "risco": 28.6,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    },
+    "concentracao_setorial": {
+     "valor": 1984,
+     "percentil_pares": 40.0,
+     "risco": 40.0,
+     "mediana_pares": 1986.0,
+     "q1_pares": 1791.25,
+     "q3_pares": 2084.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 4338,
+    "top_cnae": [
+     [
+      "outros",
+      63.1
+     ],
+     [
+      "industrias_extrativas",
+      15.3
+     ],
+     [
+      "construcao",
+      7.2
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      6.0
+     ],
+     [
+      "industrias_de_transformacao",
+      5.5
+     ]
+    ],
+    "pme_share_pct": 25.2,
+    "top_mod_pf": [
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      55.4
+     ],
+     [
+      "cartao_de_credito",
+      43.6
+     ],
+     [
+      "outros_creditos",
+      1.1
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      0.0
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      66.0
+     ],
+     [
+      "operacoes_com_recebiveis",
+      17.3
+     ],
+     [
+      "comercio_exterior",
+      14.4
+     ],
+     [
+      "habitacional",
+      2.2
+     ]
+    ]
+   },
+   "basileia_pct": 11.93,
+   "capital_principal_pct": 7.17,
+   "rwa_brl": 61511355005.68,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 57.5
+    },
+    {
+     "anomes": "202506",
+     "score": 57.5
+    },
+    {
+     "anomes": "202509",
+     "score": 57.5
+    },
+    {
+     "anomes": "202512",
+     "score": 60.0
+    },
+    {
+     "anomes": "202603",
+     "score": 68.8
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.31,
+     -0.03
+    ],
+    "basileia_atual_pct": 11.93,
+    "basileia_pos_choque_pct": [
+     11.63,
+     11.9
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0052120",
+   "nome": "XP",
+   "tcb": "B1",
+   "uf": "RJ",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 328726081746.45,
+   "carteira_brl": 33290156910.8,
+   "pl_brl": 11488408403.09,
+   "lucro_brl": -33426616.0600014,
+   "score": 68.8,
+   "score_anterior": 60.0,
+   "score_delta": 8.8,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 11.93,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": -0.29,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 28.61,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 10.13,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 73.22,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 4338,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2225,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      29.1
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      27.7
+     ],
+     [
+      "outros",
+      22.0
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      7.0
+     ],
+     [
+      "construcao",
+      6.6
+     ]
+    ],
+    "pme_share_pct": 8.5,
+    "top_mod_pf": [
+     [
+      "veiculos",
+      61.3
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      23.7
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      10.2
+     ],
+     [
+      "cartao_de_credito",
+      2.5
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      32.8
+     ],
+     [
+      "operacoes_com_recebiveis",
+      13.0
+     ],
+     [
+      "outros_creditos",
+      13.0
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      12.7
+     ]
+    ]
+   },
+   "basileia_pct": 17.35,
+   "capital_principal_pct": 10.38,
+   "rwa_brl": 124268285764.79,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 47.5
+    },
+    {
+     "anomes": "202506",
+     "score": 45.0
+    },
+    {
+     "anomes": "202509",
+     "score": 55.0
+    },
+    {
+     "anomes": "202512",
+     "score": 55.0
+    },
+    {
+     "anomes": "202603",
+     "score": 43.8
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.63,
+     -0.06
+    ],
+    "basileia_atual_pct": 17.35,
+    "basileia_pos_choque_pct": [
+     16.72,
+     17.29
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0010083",
+   "nome": "SAFRA",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 288897766100.41,
+   "carteira_brl": 137593165278.99,
+   "pl_brl": 17954898527.04,
+   "lucro_brl": 988941558.799997,
+   "score": 43.8,
+   "score_anterior": 55.0,
+   "score_delta": -11.2,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 17.35,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 5.51,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 16.09,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 47.63,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 78.4,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2225,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 3399,
+    "top_cnae": [
+     [
+      "outros",
+      49.3
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      28.4
+     ],
+     [
+      "industrias_de_transformacao",
+      7.8
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      7.3
+     ],
+     [
+      "construcao",
+      6.6
+     ]
+    ],
+    "pme_share_pct": 99.9,
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      63.2
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      33.7
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      2.7
+     ],
+     [
+      "outros_creditos",
+      0.4
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      49.9
+     ],
+     [
+      "outros_creditos",
+      49.7
+     ],
+     [
+      "operacoes_com_recebiveis",
+      0.4
+     ]
+    ]
+   },
+   "basileia_pct": 15.1,
+   "capital_principal_pct": 11.27,
+   "rwa_brl": 142454262282.35,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 43.2
+    },
+    {
+     "anomes": "202506",
+     "score": 44.2
+    },
+    {
+     "anomes": "202509",
+     "score": 48.9
+    },
+    {
+     "anomes": "202512",
+     "score": 42.9
+    },
+    {
+     "anomes": "202603",
+     "score": 54.8
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.3,
+     -0.03
+    ],
+    "basileia_atual_pct": 15.1,
+    "basileia_pos_choque_pct": [
+     14.8,
+     15.07
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0052058",
+   "nome": "NUBANK",
+   "tcb": "N1",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 249783275162.74,
+   "carteira_brl": 74685961364.61,
+   "pl_brl": 12974267968.95,
+   "lucro_brl": 2025723538.13,
+   "score": 54.8,
+   "score_anterior": 42.9,
+   "score_delta": 11.9,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.1,
+     "percentil_pares": 71.4,
+     "risco": 28.6,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 15.61,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 19.25,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 29.9,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 86.58,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 3399,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2343,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      35.7
+     ],
+     [
+      "industrias_de_transformacao",
+      25.3
+     ],
+     [
+      "outros",
+      14.2
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      13.1
+     ],
+     [
+      "construcao",
+      5.3
+     ]
+    ],
+    "pme_share_pct": 33.6,
+    "top_mod_pf": [
+     [
+      "rural_e_agroindustrial",
+      83.8
+     ],
+     [
+      "habitacao",
+      8.2
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      4.5
+     ],
+     [
+      "outros_creditos",
+      3.4
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      70.6
+     ],
+     [
+      "comercio_exterior",
+      20.3
+     ],
+     [
+      "rural_e_agroindustrial",
+      6.6
+     ],
+     [
+      "capital_de_giro",
+      1.4
+     ]
+    ]
+   },
+   "basileia_pct": 19.4,
+   "capital_principal_pct": 12.95,
+   "rwa_brl": 33932181289.54,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 67.5
+    },
+    {
+     "anomes": "202506",
+     "score": 67.5
+    },
+    {
+     "anomes": "202509",
+     "score": 70.0
+    },
+    {
+     "anomes": "202512",
+     "score": 67.5
+    },
+    {
+     "anomes": "202603",
+     "score": 58.3
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.81,
+     -0.08
+    ],
+    "basileia_atual_pct": 19.4,
+    "basileia_pos_choque_pct": [
+     18.59,
+     19.32
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "01181521",
+   "nome": "BANCO COOPERATIVO SICREDI S.A.",
+   "tcb": "B1",
+   "uf": "RS",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 227959636918.2,
+   "carteira_brl": 48426192917.43,
+   "pl_brl": 5379960857.65,
+   "lucro_brl": 62768143.810001,
+   "score": 58.3,
+   "score_anterior": 67.5,
+   "score_delta": -9.2,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 19.4,
+     "percentil_pares": 87.5,
+     "risco": 12.5,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 1.17,
+     "percentil_pares": 12.5,
+     "risco": 87.5,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 42.37,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 21.24,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 86.01,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2343,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2465,
+    "top_cnae": [
+     [
+      "outros",
+      32.7
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      30.9
+     ],
+     [
+      "industrias_de_transformacao",
+      17.5
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      10.0
+     ],
+     [
+      "construcao",
+      4.9
+     ]
+    ],
+    "pme_share_pct": 14.3,
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      42.9
+     ],
+     [
+      "rural_e_agroindustrial",
+      38.6
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      12.0
+     ],
+     [
+      "habitacao",
+      5.0
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "outros_creditos",
+      44.6
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      29.5
+     ],
+     [
+      "capital_de_giro",
+      15.4
+     ],
+     [
+      "comercio_exterior",
+      5.2
+     ]
+    ]
+   },
+   "basileia_pct": 17.97,
+   "capital_principal_pct": 16.28,
+   "rwa_brl": 30293872296.35,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 45.0
+    },
+    {
+     "anomes": "202506",
+     "score": 50.0
+    },
+    {
+     "anomes": "202509",
+     "score": 60.0
+    },
+    {
+     "anomes": "202512",
+     "score": 57.5
+    },
+    {
+     "anomes": "202603",
+     "score": 47.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.79,
+     -0.08
+    ],
+    "basileia_atual_pct": 17.97,
+    "basileia_pos_choque_pct": [
+     17.18,
+     17.89
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0051750",
+   "nome": "BANCO SICOOB",
+   "tcb": "B1",
+   "uf": "DF",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 203782818085.24,
+   "carteira_brl": 42474028251.09,
+   "pl_brl": 6174658036.88,
+   "lucro_brl": 184675180.17,
+   "score": 47.9,
+   "score_anterior": 57.5,
+   "score_delta": -9.6,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 17.97,
+     "percentil_pares": 75.0,
+     "risco": 25.0,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 2.99,
+     "percentil_pares": 62.5,
+     "risco": 37.5,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 33.0,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 20.84,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 84.1,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2465,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 3037,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      47.4
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      19.2
+     ],
+     [
+      "outros",
+      17.1
+     ],
+     [
+      "industrias_extrativas",
+      10.7
+     ],
+     [
+      "servicos_industriais_de_utilidade_publica",
+      3.4
+     ]
+    ],
+    "pme_share_pct": 2.1,
+    "top_mod_pf": [
+     [
+      "outros_creditos",
+      100.0
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "comercio_exterior",
+      59.6
+     ],
+     [
+      "operacoes_com_recebiveis",
+      31.8
+     ],
+     [
+      "outros_creditos",
+      3.4
+     ],
+     [
+      "capital_de_giro",
+      3.2
+     ]
+    ]
+   },
+   "basileia_pct": 13.42,
+   "capital_principal_pct": 13.42,
+   "rwa_brl": 48514252187.28,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 45.0
+    },
+    {
+     "anomes": "202506",
+     "score": 37.5
+    },
+    {
+     "anomes": "202509",
+     "score": 25.0
+    },
+    {
+     "anomes": "202512",
+     "score": 42.5
+    },
+    {
+     "anomes": "202603",
+     "score": 54.2
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.35,
+     -0.03
+    ],
+    "basileia_atual_pct": 13.42,
+    "basileia_pos_choque_pct": [
+     13.07,
+     13.38
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0030403",
+   "nome": "CITIBANK",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 174907642939.05,
+   "carteira_brl": 29636811047.96,
+   "pl_brl": 10567508082.5,
+   "lucro_brl": 340378341.809996,
+   "score": 54.2,
+   "score_anterior": 42.5,
+   "score_delta": 11.7,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 13.42,
+     "percentil_pares": 12.5,
+     "risco": 87.5,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 3.22,
+     "percentil_pares": 75.0,
+     "risco": 25.0,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 16.55,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 16.94,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 78.25,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 3037,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": null,
+   "basileia_pct": null,
+   "capital_principal_pct": null,
+   "rwa_brl": null,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 25.0
+    },
+    {
+     "anomes": "202506",
+     "score": 25.0
+    },
+    {
+     "anomes": "202509",
+     "score": 21.4
+    },
+    {
+     "anomes": "202512",
+     "score": 25.0
+    },
+    {
+     "anomes": "202603",
+     "score": 25.0
+    }
+   ],
+   "vulnerabilidade": null,
+   "dimensoes_disponiveis": "4/6",
+   "cod_inst": "01425787",
+   "nome": "REDECARD INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 166877544460.02,
+   "carteira_brl": 0.0,
+   "pl_brl": 40551511248.73,
+   "lucro_brl": 840834334.32,
+   "score": 25.0,
+   "score_anterior": 25.0,
+   "score_delta": 0.0,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "rentabilidade": {
+     "valor": 2.07,
+     "percentil_pares": 14.3,
+     "risco": 85.7,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 4.12,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 0.0,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 5.36,
+     "percentil_pares": 14.3,
+     "risco": 14.3,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2746,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      36.1
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      31.9
+     ],
+     [
+      "outros",
+      19.3
+     ],
+     [
+      "construcao",
+      6.5
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      3.0
+     ]
+    ],
+    "pme_share_pct": 18.4,
+    "top_mod_pf": [
+     [
+      "emprestimo_com_consignacao_em_folha",
+      40.0
+     ],
+     [
+      "rural_e_agroindustrial",
+      26.8
+     ],
+     [
+      "habitacao",
+      11.8
+     ],
+     [
+      "outros_creditos",
+      8.4
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      53.9
+     ],
+     [
+      "comercio_exterior",
+      15.4
+     ],
+     [
+      "outros_creditos",
+      9.9
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      9.1
+     ]
+    ]
+   },
+   "basileia_pct": 17.47,
+   "capital_principal_pct": 14.08,
+   "rwa_brl": 60821784591.49,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 67.5
+    },
+    {
+     "anomes": "202506",
+     "score": 70.0
+    },
+    {
+     "anomes": "202509",
+     "score": 62.5
+    },
+    {
+     "anomes": "202512",
+     "score": 50.0
+    },
+    {
+     "anomes": "202603",
+     "score": 60.4
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.56,
+     -0.05
+    ],
+    "basileia_atual_pct": 17.47,
+    "basileia_pos_choque_pct": [
+     16.91,
+     17.41
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0030173",
+   "nome": "BANRISUL",
+   "tcb": "B1",
+   "uf": "RS",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 164087529649.64,
+   "carteira_brl": 60227151544.29,
+   "pl_brl": 11324980040.95,
+   "lucro_brl": 221407096.64,
+   "score": 60.4,
+   "score_anterior": 50.0,
+   "score_delta": 10.4,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 17.47,
+     "percentil_pares": 62.5,
+     "risco": 37.5,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 1.96,
+     "percentil_pares": 37.5,
+     "risco": 62.5,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 14.49,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 36.7,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 86.58,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2746,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 3214,
+    "top_cnae": [
+     [
+      "outros",
+      50.9
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      18.5
+     ],
+     [
+      "industrias_de_transformacao",
+      13.9
+     ],
+     [
+      "construcao",
+      7.7
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      4.4
+     ]
+    ],
+    "pme_share_pct": 39.3,
+    "top_mod_pf": [
+     [
+      "emprestimo_com_consignacao_em_folha",
+      49.4
+     ],
+     [
+      "veiculos",
+      32.0
+     ],
+     [
+      "cartao_de_credito",
+      14.7
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      2.1
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      45.4
+     ],
+     [
+      "comercio_exterior",
+      19.8
+     ],
+     [
+      "outros_creditos",
+      19.4
+     ],
+     [
+      "operacoes_com_recebiveis",
+      8.4
+     ]
+    ]
+   },
+   "basileia_pct": 12.95,
+   "capital_principal_pct": 8.85,
+   "rwa_brl": 63317161505.43,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 57.1
+    },
+    {
+     "anomes": "202506",
+     "score": 65.0
+    },
+    {
+     "anomes": "202509",
+     "score": 64.6
+    },
+    {
+     "anomes": "202512",
+     "score": 62.1
+    },
+    {
+     "anomes": "202603",
+     "score": 61.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.84,
+     -0.08
+    ],
+    "basileia_atual_pct": 12.95,
+    "basileia_pos_choque_pct": [
+     12.1,
+     12.86
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0052072",
+   "nome": "C6 BANK",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 152807876016.23,
+   "carteira_brl": 94270696199.77,
+   "pl_brl": 6740055739.8,
+   "lucro_brl": 598411270.950001,
+   "score": 61.9,
+   "score_anterior": 62.1,
+   "score_delta": -0.2,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 12.95,
+     "percentil_pares": 14.3,
+     "risco": 85.7,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 8.88,
+     "percentil_pares": 87.5,
+     "risco": 12.5,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 22.67,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 61.69,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 72.02,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 3214,
+     "percentil_pares": 85.7,
+     "risco": 85.7,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2662,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      40.9
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      26.1
+     ],
+     [
+      "outros",
+      12.1
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      11.5
+     ],
+     [
+      "agricultura_pecuaria_producao_florestal_pesca_e_",
+      4.5
+     ]
+    ],
+    "pme_share_pct": 0.8,
+    "top_mod_pf": [
+     [
+      "veiculos",
+      79.6
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      12.4
+     ],
+     [
+      "cartao_de_credito",
+      7.5
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      0.4
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "investimento",
+      19.1
+     ],
+     [
+      "comercio_exterior",
+      16.9
+     ],
+     [
+      "operacoes_com_recebiveis",
+      16.4
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      13.2
+     ]
+    ]
+   },
+   "basileia_pct": 15.01,
+   "capital_principal_pct": 11.16,
+   "rwa_brl": 83553895265.36,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 52.5
+    },
+    {
+     "anomes": "202506",
+     "score": 60.0
+    },
+    {
+     "anomes": "202509",
+     "score": 55.0
+    },
+    {
+     "anomes": "202512",
+     "score": 55.0
+    },
+    {
+     "anomes": "202603",
+     "score": 47.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.54,
+     -0.05
+    ],
+    "basileia_atual_pct": 15.01,
+    "basileia_pos_choque_pct": [
+     14.48,
+     14.96
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0051011",
+   "nome": "VOTORANTIM",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 149925948864.65,
+   "carteira_brl": 79568678287.78,
+   "pl_brl": 12685298790.83,
+   "lucro_brl": 475905789.77,
+   "score": 47.9,
+   "score_anterior": 55.0,
+   "score_delta": -7.1,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.01,
+     "percentil_pares": 25.0,
+     "risco": 75.0,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 3.75,
+     "percentil_pares": 87.5,
+     "risco": 12.5,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 11.82,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 53.07,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 72.84,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2662,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 3117,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      42.7
+     ],
+     [
+      "outros",
+      27.0
+     ],
+     [
+      "industrias_extrativas",
+      23.0
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      5.4
+     ],
+     [
+      "construcao",
+      1.9
+     ]
+    ],
+    "pme_share_pct": 0.1,
+    "top_mod_pj": [
+     [
+      "operacoes_com_recebiveis",
+      51.3
+     ],
+     [
+      "comercio_exterior",
+      39.3
+     ],
+     [
+      "capital_de_giro",
+      6.4
+     ],
+     [
+      "cheque_especial_e_conta_garantida",
+      3.0
+     ]
+    ]
+   },
+   "basileia_pct": 23.79,
+   "capital_principal_pct": 23.79,
+   "rwa_brl": 12134188869.09,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 25.0
+    },
+    {
+     "anomes": "202506",
+     "score": 17.5
+    },
+    {
+     "anomes": "202509",
+     "score": 20.0
+    },
+    {
+     "anomes": "202512",
+     "score": 35.0
+    },
+    {
+     "anomes": "202603",
+     "score": 34.8
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.13,
+     -0.01
+    ],
+    "basileia_atual_pct": 23.79,
+    "basileia_pos_choque_pct": [
+     23.66,
+     23.77
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0020107",
+   "nome": "JP MORGAN CHASE",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 121288880175.67,
+   "carteira_brl": 2701253338.35,
+   "pl_brl": 11871386151.96,
+   "lucro_brl": 563536916.709997,
+   "score": 34.8,
+   "score_anterior": 35.0,
+   "score_delta": -0.2,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 23.79,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 4.75,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 10.22,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 2.23,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 76.86,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 3117,
+     "percentil_pares": 71.4,
+     "risco": 71.4,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": null,
+   "basileia_pct": 18.59,
+   "capital_principal_pct": null,
+   "rwa_brl": 6923018264.39,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 38.5
+    },
+    {
+     "anomes": "202506",
+     "score": 38.5
+    },
+    {
+     "anomes": "202509",
+     "score": 33.6
+    },
+    {
+     "anomes": "202512",
+     "score": 19.1
+    },
+    {
+     "anomes": "202603",
+     "score": 21.6
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.0,
+     -0.0
+    ],
+    "basileia_atual_pct": 18.59,
+    "basileia_pos_choque_pct": [
+     18.59,
+     18.59
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "5/6",
+   "cod_inst": "01027058",
+   "nome": "CIELO S.A. - INSTITUIÇÃO DE PAGAMENTO",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S?",
+   "grupo_pares_label": "S?",
+   "grupo_fallback": true,
+   "ativo_total_brl": 117467458409.41,
+   "carteira_brl": 0.0,
+   "pl_brl": 11434227881.08,
+   "lucro_brl": 326580057.04,
+   "score": 21.6,
+   "score_anterior": 19.1,
+   "score_delta": 2.5,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 18.59,
+     "percentil_pares": 88.5,
+     "risco": 11.5,
+     "mediana_pares": 15.01,
+     "q1_pares": 13.76,
+     "q3_pares": 16.63
+    },
+    "rentabilidade": {
+     "valor": 2.86,
+     "percentil_pares": 37.9,
+     "risco": 62.1,
+     "mediana_pares": 3.26,
+     "q1_pares": 1.98,
+     "q3_pares": 5.71
+    },
+    "alavancagem": {
+     "valor": 10.27,
+     "percentil_pares": 24.1,
+     "risco": 24.1,
+     "mediana_pares": 13.28,
+     "q1_pares": 10.42,
+     "q3_pares": 20.1
+    },
+    "concentracao_credito": {
+     "valor": 0.0,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 33.98,
+     "q1_pares": 17.92,
+     "q3_pares": 47.1
+    },
+    "dependencia_captacoes": {
+     "valor": 9.1,
+     "percentil_pares": 10.3,
+     "risco": 10.3,
+     "mediana_pares": 76.21,
+     "q1_pares": 56.24,
+     "q3_pares": 78.54
+    }
+   }
+  },
+  {
+   "carteira_perfil": null,
+   "basileia_pct": null,
+   "capital_principal_pct": null,
+   "rwa_brl": null,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 18.8
+    },
+    {
+     "anomes": "202506",
+     "score": 18.8
+    },
+    {
+     "anomes": "202509",
+     "score": 18.8
+    },
+    {
+     "anomes": "202512",
+     "score": 25.0
+    },
+    {
+     "anomes": "202603",
+     "score": 28.1
+    }
+   ],
+   "vulnerabilidade": null,
+   "dimensoes_disponiveis": "4/6",
+   "cod_inst": "18236120",
+   "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGAMENTO",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 114849760689.1,
+   "carteira_brl": 72339093218.34,
+   "pl_brl": 21000123534.05,
+   "lucro_brl": 1410234352.58,
+   "score": 28.1,
+   "score_anterior": 25.0,
+   "score_delta": 3.1,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "rentabilidade": {
+     "valor": 6.72,
+     "percentil_pares": 75.0,
+     "risco": 25.0,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 5.47,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 62.99,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 2.58,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2571,
+    "top_cnae": [
+     [
+      "outros",
+      33.4
+     ],
+     [
+      "construcao",
+      30.4
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      20.7
+     ],
+     [
+      "industrias_de_transformacao",
+      9.7
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      3.2
+     ]
+    ],
+    "pme_share_pct": 54.8,
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      36.7
+     ],
+     [
+      "habitacao",
+      22.8
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      19.0
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      11.7
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      54.6
+     ],
+     [
+      "operacoes_com_recebiveis",
+      14.5
+     ],
+     [
+      "investimento",
+      14.3
+     ],
+     [
+      "outros_creditos",
+      10.2
+     ]
+    ]
+   },
+   "basileia_pct": 13.98,
+   "capital_principal_pct": 11.56,
+   "rwa_brl": 36760952988.22,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 56.1
+    },
+    {
+     "anomes": "202506",
+     "score": 55.0
+    },
+    {
+     "anomes": "202509",
+     "score": 56.1
+    },
+    {
+     "anomes": "202512",
+     "score": 48.6
+    },
+    {
+     "anomes": "202603",
+     "score": 58.3
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.68,
+     -0.07
+    ],
+    "basileia_atual_pct": 13.98,
+    "basileia_pos_choque_pct": [
+     13.3,
+     13.92
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0051884",
+   "nome": "INTER",
+   "tcb": "B1",
+   "uf": "MG",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 97460109820.66,
+   "carteira_brl": 44354861451.59,
+   "pl_brl": 7331860053.64,
+   "lucro_brl": 332661460.9,
+   "score": 58.3,
+   "score_anterior": 48.6,
+   "score_delta": 9.7,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 13.98,
+     "percentil_pares": 57.1,
+     "risco": 42.9,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 4.54,
+     "percentil_pares": 37.5,
+     "risco": 62.5,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 13.29,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 45.51,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 77.08,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 2571,
+     "percentil_pares": 57.1,
+     "risco": 57.1,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2306,
+    "top_cnae": [
+     [
+      "outros",
+      28.3
+     ],
+     [
+      "industrias_de_transformacao",
+      27.3
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      26.3
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      5.9
+     ],
+     [
+      "construcao",
+      4.2
+     ]
+    ],
+    "pme_share_pct": 8.7,
+    "top_mod_pf": [
+     [
+      "emprestimo_com_consignacao_em_folha",
+      62.0
+     ],
+     [
+      "veiculos",
+      16.3
+     ],
+     [
+      "cartao_de_credito",
+      11.2
+     ],
+     [
+      "outros_creditos",
+      9.3
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "operacoes_com_recebiveis",
+      43.4
+     ],
+     [
+      "capital_de_giro",
+      19.7
+     ],
+     [
+      "investimento",
+      16.3
+     ],
+     [
+      "comercio_exterior",
+      9.6
+     ]
+    ]
+   },
+   "basileia_pct": 13.55,
+   "capital_principal_pct": 9.77,
+   "rwa_brl": 60981349393.3,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 61.4
+    },
+    {
+     "anomes": "202506",
+     "score": 63.3
+    },
+    {
+     "anomes": "202509",
+     "score": 48.2
+    },
+    {
+     "anomes": "202512",
+     "score": 61.4
+    },
+    {
+     "anomes": "202603",
+     "score": 58.0
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.56,
+     -0.05
+    ],
+    "basileia_atual_pct": 13.55,
+    "basileia_pos_choque_pct": [
+     12.99,
+     13.49
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0051987",
+   "nome": "DAYCOVAL",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 96601086208.82,
+   "carteira_brl": 60109398652.51,
+   "pl_brl": 7356622444.34,
+   "lucro_brl": 441285602.16,
+   "score": 58.0,
+   "score_anterior": 61.4,
+   "score_delta": -3.4,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 13.55,
+     "percentil_pares": 42.9,
+     "risco": 57.1,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 6.0,
+     "percentil_pares": 62.5,
+     "risco": 37.5,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 13.13,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 62.22,
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 81.27,
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 2306,
+     "percentil_pares": 28.6,
+     "risco": 28.6,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 5519,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      71.5
+     ],
+     [
+      "outros",
+      19.0
+     ],
+     [
+      "industrias_de_transformacao",
+      7.1
+     ],
+     [
+      "construcao",
+      1.2
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      1.1
+     ]
+    ],
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      69.1
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      30.7
+     ],
+     [
+      "outros_creditos",
+      0.2
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      100.0
+     ],
+     [
+      "investimento",
+      0.0
+     ]
+    ]
+   },
+   "basileia_pct": 12.26,
+   "capital_principal_pct": 10.83,
+   "rwa_brl": 39315000973.73,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 52.3
+    },
+    {
+     "anomes": "202506",
+     "score": 53.8
+    },
+    {
+     "anomes": "202509",
+     "score": 49.6
+    },
+    {
+     "anomes": "202512",
+     "score": 68.3
+    },
+    {
+     "anomes": "202603",
+     "score": 72.7
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.29,
+     -0.03
+    ],
+    "basileia_atual_pct": 12.26,
+    "basileia_pos_choque_pct": [
+     11.97,
+     12.23
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "10573521",
+   "nome": "MERCADO PAGO INSTITUIÇÃO DE PAGAMENTO LTDA.",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S4",
+   "grupo_pares_label": "S4 — porte inferior a 0,1% do PIB",
+   "grupo_fallback": true,
+   "ativo_total_brl": 95878859957.08,
+   "carteira_brl": 19992075310.69,
+   "pl_brl": 3078705076.06,
+   "lucro_brl": -87228121.6600001,
+   "score": 72.7,
+   "score_anterior": 68.3,
+   "score_delta": 4.4,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 12.26,
+     "percentil_pares": 3.8,
+     "risco": 96.2,
+     "mediana_pares": 15.01,
+     "q1_pares": 13.76,
+     "q3_pares": 16.63
+    },
+    "rentabilidade": {
+     "valor": -2.83,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 3.26,
+     "q1_pares": 1.98,
+     "q3_pares": 5.71
+    },
+    "alavancagem": {
+     "valor": 31.14,
+     "percentil_pares": 93.1,
+     "risco": 93.1,
+     "mediana_pares": 13.28,
+     "q1_pares": 10.42,
+     "q3_pares": 20.1
+    },
+    "concentracao_credito": {
+     "valor": 20.85,
+     "percentil_pares": 31.0,
+     "risco": 31.0,
+     "mediana_pares": 33.98,
+     "q1_pares": 17.92,
+     "q3_pares": 47.1
+    },
+    "dependencia_captacoes": {
+     "valor": 54.05,
+     "percentil_pares": 24.1,
+     "risco": 24.1,
+     "mediana_pares": 76.21,
+     "q1_pares": 56.24,
+     "q3_pares": 78.54
+    },
+    "concentracao_setorial": {
+     "valor": 5519,
+     "percentil_pares": 92.0,
+     "risco": 92.0,
+     "mediana_pares": 2478.0,
+     "q1_pares": 2141.75,
+     "q3_pares": 3097.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 9828,
+    "top_cnae": [
+     [
+      "outros",
+      99.1
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      0.7
+     ],
+     [
+      "industrias_de_transformacao",
+      0.1
+     ],
+     [
+      "construcao",
+      0.1
+     ],
+     [
+      "agricultura_pecuaria_producao_florestal_pesca_e_",
+      0.0
+     ]
+    ],
+    "pme_share_pct": 1.3,
+    "top_mod_pf": [
+     [
+      "cartao_de_credito",
+      86.6
+     ],
+     [
+      "outros_creditos",
+      13.4
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      99.1
+     ],
+     [
+      "outros_creditos",
+      0.9
+     ]
+    ]
+   },
+   "basileia_pct": 14.37,
+   "capital_principal_pct": 11.75,
+   "rwa_brl": 17349686165.46,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 28.1
+    },
+    {
+     "anomes": "202506",
+     "score": 28.1
+    },
+    {
+     "anomes": "202509",
+     "score": 40.6
+    },
+    {
+     "anomes": "202512",
+     "score": 48.6
+    },
+    {
+     "anomes": "202603",
+     "score": 44.1
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.0,
+     -0.0
+    ],
+    "basileia_atual_pct": 14.37,
+    "basileia_pos_choque_pct": [
+     14.37,
+     14.37
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "16501555",
+   "nome": "STONE INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S4",
+   "grupo_pares_label": "S4 — porte inferior a 0,1% do PIB",
+   "grupo_fallback": true,
+   "ativo_total_brl": 85506382599.14,
+   "carteira_brl": 0.0,
+   "pl_brl": 3318488035.05,
+   "lucro_brl": 999066599.97,
+   "score": 44.1,
+   "score_anterior": 48.6,
+   "score_delta": -4.5,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 14.37,
+     "percentil_pares": 38.5,
+     "risco": 61.5,
+     "mediana_pares": 15.01,
+     "q1_pares": 13.76,
+     "q3_pares": 16.63
+    },
+    "rentabilidade": {
+     "valor": 30.11,
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 3.26,
+     "q1_pares": 1.98,
+     "q3_pares": 5.71
+    },
+    "alavancagem": {
+     "valor": 25.77,
+     "percentil_pares": 86.2,
+     "risco": 86.2,
+     "mediana_pares": 13.28,
+     "q1_pares": 10.42,
+     "q3_pares": 20.1
+    },
+    "concentracao_credito": {
+     "valor": 0.0,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 33.98,
+     "q1_pares": 17.92,
+     "q3_pares": 47.1
+    },
+    "dependencia_captacoes": {
+     "valor": 36.49,
+     "percentil_pares": 20.7,
+     "risco": 20.7,
+     "mediana_pares": 76.21,
+     "q1_pares": 56.24,
+     "q3_pares": 78.54
+    },
+    "concentracao_setorial": {
+     "valor": 9828,
+     "percentil_pares": 96.0,
+     "risco": 96.0,
+     "mediana_pares": 2478.0,
+     "q1_pares": 2141.75,
+     "q3_pares": 3097.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2028,
+    "top_cnae": [
+     [
+      "servicos_industriais_de_utilidade_publica",
+      31.6
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      24.7
+     ],
+     [
+      "outros",
+      13.7
+     ],
+     [
+      "industrias_de_transformacao",
+      12.6
+     ],
+     [
+      "agricultura_pecuaria_producao_florestal_pesca_e_",
+      5.4
+     ]
+    ],
+    "pme_share_pct": 9.5,
+    "top_mod_pf": [
+     [
+      "outros_creditos",
+      72.1
+     ],
+     [
+      "rural_e_agroindustrial",
+      22.2
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      3.6
+     ],
+     [
+      "cartao_de_credito",
+      1.3
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      44.8
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      36.0
+     ],
+     [
+      "investimento",
+      10.6
+     ],
+     [
+      "rural_e_agroindustrial",
+      4.1
+     ]
+    ]
+   },
+   "basileia_pct": 15.36,
+   "capital_principal_pct": 14.06,
+   "rwa_brl": 95220374219.59,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 40.0
+    },
+    {
+     "anomes": "202506",
+     "score": 35.0
+    },
+    {
+     "anomes": "202509",
+     "score": 32.5
+    },
+    {
+     "anomes": "202512",
+     "score": 30.0
+    },
+    {
+     "anomes": "202603",
+     "score": 27.1
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.11,
+     -0.01
+    ],
+    "basileia_atual_pct": 15.36,
+    "basileia_pos_choque_pct": [
+     15.25,
+     15.35
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "07237373",
+   "nome": "BANCO DO NORDESTE DO BRASIL S.A.",
+   "tcb": "B1",
+   "uf": "CE",
+   "grupo_pares": "S2",
+   "grupo_pares_label": "S2 — porte entre 1% e 10% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 75643743351.56,
+   "carteira_brl": 18145187266.09,
+   "pl_brl": 16600598040.63,
+   "lucro_brl": 488015938.86,
+   "score": 27.1,
+   "score_anterior": 30.0,
+   "score_delta": -2.9,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.36,
+     "percentil_pares": 37.5,
+     "risco": 62.5,
+     "mediana_pares": 17.35,
+     "q1_pares": 15.01,
+     "q3_pares": 17.97
+    },
+    "rentabilidade": {
+     "valor": 2.94,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 2.94,
+     "q1_pares": 1.95,
+     "q3_pares": 3.22
+    },
+    "alavancagem": {
+     "valor": 4.56,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 16.09,
+     "q1_pares": 11.82,
+     "q3_pares": 28.61
+    },
+    "concentracao_credito": {
+     "valor": 23.99,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 23.99,
+     "q1_pares": 20.84,
+     "q3_pares": 36.99
+    },
+    "dependencia_captacoes": {
+     "valor": 29.72,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 78.25,
+     "q1_pares": 72.84,
+     "q3_pares": 84.1
+    },
+    "concentracao_setorial": {
+     "valor": 2028,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 2662.0,
+     "q1_pares": 2343.0,
+     "q3_pares": 2770.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": null,
+   "basileia_pct": null,
+   "capital_principal_pct": null,
+   "rwa_brl": null,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 50.0
+    },
+    {
+     "anomes": "202506",
+     "score": 42.9
+    },
+    {
+     "anomes": "202509",
+     "score": 39.3
+    },
+    {
+     "anomes": "202512",
+     "score": 32.1
+    },
+    {
+     "anomes": "202603",
+     "score": 28.6
+    }
+   ],
+   "vulnerabilidade": null,
+   "dimensoes_disponiveis": "4/6",
+   "cod_inst": "10440482",
+   "nome": "GETNET ADQUIRÊNCIA E SERVIÇOS PARA MEIOS DE PAGAMENTO S.A. INSTITUIÇÃO DE PAGAMENTO",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S1",
+   "grupo_pares_label": "S1 — grandes (≥10% do PIB ou atividade internacional)",
+   "grupo_fallback": false,
+   "ativo_total_brl": 74743715559.79,
+   "carteira_brl": 0.0,
+   "pl_brl": 3557409534.02,
+   "lucro_brl": 207198222.03,
+   "score": 28.6,
+   "score_anterior": 32.1,
+   "score_delta": -3.5,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "rentabilidade": {
+     "valor": 5.82,
+     "percentil_pares": 85.7,
+     "risco": 14.3,
+     "mediana_pares": 3.41,
+     "q1_pares": 2.54,
+     "q3_pares": 5.79
+    },
+    "alavancagem": {
+     "valor": 21.01,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 13.42,
+     "q1_pares": 10.95,
+     "q3_pares": 15.51
+    },
+    "concentracao_credito": {
+     "valor": 0.0,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 41.35,
+     "q1_pares": 17.37,
+     "q3_pares": 43.29
+    },
+    "dependencia_captacoes": {
+     "valor": 0.33,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 77.23,
+     "q1_pares": 54.32,
+     "q3_pares": 78.85
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 9967,
+    "top_cnae": [
+     [
+      "outros",
+      99.8
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      0.1
+     ],
+     [
+      "agricultura_pecuaria_producao_florestal_pesca_e_",
+      0.0
+     ],
+     [
+      "industrias_extrativas",
+      0.0
+     ],
+     [
+      "industrias_de_transformacao",
+      0.0
+     ]
+    ],
+    "pme_share_pct": 100.0,
+    "top_mod_pf": [
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      47.9
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      37.7
+     ],
+     [
+      "cartao_de_credito",
+      14.3
+     ],
+     [
+      "outros_creditos",
+      0.1
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "capital_de_giro",
+      99.7
+     ],
+     [
+      "outros_creditos",
+      0.3
+     ]
+    ]
+   },
+   "basileia_pct": 14.19,
+   "capital_principal_pct": 14.19,
+   "rwa_brl": 7278824381.2,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 29.7
+    },
+    {
+     "anomes": "202506",
+     "score": 29.0
+    },
+    {
+     "anomes": "202509",
+     "score": 28.4
+    },
+    {
+     "anomes": "202512",
+     "score": 29.7
+    },
+    {
+     "anomes": "202603",
+     "score": 48.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.05,
+     -0.01
+    ],
+    "basileia_atual_pct": 14.19,
+    "basileia_pos_choque_pct": [
+     14.14,
+     14.19
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "08561701",
+   "nome": "PAGSEGURO INTERNET INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "tcb": "N4",
+   "uf": "SP",
+   "grupo_pares": "S4",
+   "grupo_pares_label": "S4 — porte inferior a 0,1% do PIB",
+   "grupo_fallback": true,
+   "ativo_total_brl": 72408300908.2,
+   "carteira_brl": 666000403.71,
+   "pl_brl": 5795354990.46,
+   "lucro_brl": 231210787.76,
+   "score": 48.9,
+   "score_anterior": 29.7,
+   "score_delta": 19.2,
+   "faixa": "atenção",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 14.19,
+     "percentil_pares": 30.8,
+     "risco": 69.2,
+     "mediana_pares": 15.01,
+     "q1_pares": 13.76,
+     "q3_pares": 16.63
+    },
+    "rentabilidade": {
+     "valor": 3.99,
+     "percentil_pares": 62.1,
+     "risco": 37.9,
+     "mediana_pares": 3.26,
+     "q1_pares": 1.98,
+     "q3_pares": 5.71
+    },
+    "alavancagem": {
+     "valor": 12.49,
+     "percentil_pares": 41.4,
+     "risco": 41.4,
+     "mediana_pares": 13.28,
+     "q1_pares": 10.42,
+     "q3_pares": 20.1
+    },
+    "concentracao_credito": {
+     "valor": 0.92,
+     "percentil_pares": 13.8,
+     "risco": 13.8,
+     "mediana_pares": 33.98,
+     "q1_pares": 17.92,
+     "q3_pares": 47.1
+    },
+    "dependencia_captacoes": {
+     "valor": 63.42,
+     "percentil_pares": 31.0,
+     "risco": 31.0,
+     "mediana_pares": 76.21,
+     "q1_pares": 56.24,
+     "q3_pares": 78.54
+    },
+    "concentracao_setorial": {
+     "valor": 9967,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 2478.0,
+     "q1_pares": 2141.75,
+     "q3_pares": 3097.0
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2219,
+    "top_cnae": [
+     [
+      "industrias_de_transformacao",
+      33.2
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      25.6
+     ],
+     [
+      "outros",
+      16.5
+     ],
+     [
+      "construcao",
+      12.3
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      4.5
+     ]
+    ],
+    "pme_share_pct": 14.3,
+    "top_mod_pf": [
+     [
+      "rural_e_agroindustrial",
+      54.5
+     ],
+     [
+      "outros_creditos",
+      43.3
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      2.2
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      23.5
+     ],
+     [
+      "capital_de_giro",
+      17.5
+     ],
+     [
+      "comercio_exterior",
+      16.6
+     ],
+     [
+      "rural_e_agroindustrial",
+      12.7
+     ]
+    ]
+   },
+   "basileia_pct": 15.83,
+   "capital_principal_pct": 11.39,
+   "rwa_brl": 47910897023.66,
+   "historico_score": [
+    {
+     "anomes": "202503",
+     "score": 40.4
+    },
+    {
+     "anomes": "202506",
+     "score": 40.8
+    },
+    {
+     "anomes": "202509",
+     "score": 42.9
+    },
+    {
+     "anomes": "202512",
+     "score": 40.7
+    },
+    {
+     "anomes": "202603",
+     "score": 31.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.25,
+     -0.02
+    ],
+    "basileia_atual_pct": 15.83,
+    "basileia_pos_choque_pct": [
+     15.59,
+     15.81
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "C0041856",
+   "nome": "ABC-BRASIL",
+   "tcb": "B1",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 67119517032.35,
+   "carteira_brl": 20984785405.0,
+   "pl_brl": 7177130035.26,
+   "lucro_brl": 237263392.21,
+   "score": 31.9,
+   "score_anterior": 40.7,
+   "score_delta": -8.8,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 15.83,
+     "percentil_pares": 85.7,
+     "risco": 14.3,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 3.31,
+     "percentil_pares": 25.0,
+     "risco": 75.0,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 9.35,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 31.26,
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 76.07,
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 2219,
+     "percentil_pares": 14.3,
+     "risco": 14.3,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 1974,
+    "top_cnae": [
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      27.5
+     ],
+     [
+      "servicos_industriais_de_utilidade_publica",
+      27.5
+     ],
+     [
+      "transporte_armazenagem_e_correio",
+      13.9
+     ],
+     [
+      "outros",
+      10.7
+     ],
+     [
+      "industrias_de_transformacao",
+      9.5
+     ]
+    ],
+    "pme_share_pct": 13.8,
+    "top_mod_pf": [
+     [
+      "rural_e_agroindustrial",
+      91.6
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      6.1
+     ],
+     [
+      "outros_creditos",
+      1.7
+     ],
+     [
+      "veiculos",
+      0.7
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      70.9
+     ],
+     [
+      "capital_de_giro",
+      17.0
+     ],
+     [
+      "rural_e_agroindustrial",
+      10.1
+     ],
+     [
+      "comercio_exterior",
+      1.4
+     ]
+    ]
+   },
+   "basileia_pct": 13.01,
+   "capital_principal_pct": 13.01,
+   "rwa_brl": 48208734656.5,
+   "historico_score": [
+    {
+     "anomes": "202509",
+     "score": 56.8
+    },
+    {
+     "anomes": "202512",
+     "score": 49.3
+    },
+    {
+     "anomes": "202603",
+     "score": 39.0
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.47,
+     -0.05
+    ],
+    "basileia_atual_pct": 13.01,
+    "basileia_pos_choque_pct": [
+     12.54,
+     12.96
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "04902979",
+   "nome": "BANCO DA AMAZONIA S.A.",
+   "tcb": "B1",
+   "uf": "PA",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 64644431231.56,
+   "carteira_brl": 39703382085.18,
+   "pl_brl": 7182830861.31,
+   "lucro_brl": 47537201.1099998,
+   "score": 39.0,
+   "score_anterior": 49.3,
+   "score_delta": -10.3,
+   "faixa": "risco baixo",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 13.01,
+     "percentil_pares": 28.6,
+     "risco": 71.4,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": 0.66,
+     "percentil_pares": 12.5,
+     "risco": 87.5,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 9.0,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 61.42,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 22.97,
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 1974,
+     "percentil_pares": 0.0,
+     "risco": 0.0,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  },
+  {
+   "carteira_perfil": {
+    "hhi_setorial": 2491,
+    "top_cnae": [
+     [
+      "transporte_armazenagem_e_correio",
+      31.9
+     ],
+     [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      29.9
+     ],
+     [
+      "outros",
+      22.2
+     ],
+     [
+      "industrias_de_transformacao",
+      7.2
+     ],
+     [
+      "construcao",
+      6.0
+     ]
+    ],
+    "pme_share_pct": 34.7,
+    "top_mod_pf": [
+     [
+      "veiculos",
+      99.7
+     ],
+     [
+      "emprestimo_com_consignacao_em_folha",
+      0.2
+     ],
+     [
+      "emprestimo_sem_consignacao_em_folha",
+      0.2
+     ]
+    ],
+    "top_mod_pj": [
+     [
+      "investimento",
+      77.8
+     ],
+     [
+      "operacoes_com_recebiveis",
+      19.9
+     ],
+     [
+      "financiamento_de_infraestrutura_desenvolvimento_",
+      1.6
+     ],
+     [
+      "capital_de_giro",
+      0.5
+     ]
+    ]
+   },
+   "basileia_pct": 12.82,
+   "capital_principal_pct": 11.43,
+   "rwa_brl": 42161443224.63,
+   "historico_score": [
+    {
+     "anomes": "202512",
+     "score": 80.0
+    },
+    {
+     "anomes": "202603",
+     "score": 75.9
+    }
+   ],
+   "vulnerabilidade": {
+    "tipo": "CENÁRIO",
+    "cenario": "severamente adverso",
+    "delta_inad_pp": [
+     0.12,
+     1.26
+    ],
+    "impacto_basileia_pp": [
+     -0.65,
+     -0.06
+    ],
+    "basileia_atual_pct": 12.82,
+    "basileia_pos_choque_pct": [
+     12.17,
+     12.75
+    ],
+    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+   },
+   "dimensoes_disponiveis": "6/6",
+   "cod_inst": "59109165",
+   "nome": "BANCO VOLKSWAGEN S.A.",
+   "tcb": "B2",
+   "uf": "SP",
+   "grupo_pares": "S3",
+   "grupo_pares_label": "S3 — porte entre 0,1% e 1% do PIB",
+   "grupo_fallback": false,
+   "ativo_total_brl": 58293902409.67,
+   "carteira_brl": 48315779249.57,
+   "pl_brl": 5248107457.67,
+   "lucro_brl": -111881645.33,
+   "score": 75.9,
+   "score_anterior": 80.0,
+   "score_delta": -4.1,
+   "faixa": "risco elevado",
+   "dimensoes": {
+    "capital_basileia": {
+     "valor": 12.82,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 13.76,
+     "q1_pares": 12.99,
+     "q3_pares": 15.28
+    },
+    "rentabilidade": {
+     "valor": -2.13,
+     "percentil_pares": 0.0,
+     "risco": 100.0,
+     "mediana_pares": 4.75,
+     "q1_pares": 3.31,
+     "q3_pares": 6.72
+    },
+    "alavancagem": {
+     "valor": 11.11,
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 11.11,
+     "q1_pares": 9.35,
+     "q3_pares": 13.29
+    },
+    "concentracao_credito": {
+     "valor": 82.88,
+     "percentil_pares": 100.0,
+     "risco": 100.0,
+     "mediana_pares": 61.42,
+     "q1_pares": 31.26,
+     "q3_pares": 62.22
+    },
+    "dependencia_captacoes": {
+     "valor": 77.01,
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 76.86,
+     "q1_pares": 72.02,
+     "q3_pares": 77.08
+    },
+    "concentracao_setorial": {
+     "valor": 2491,
+     "percentil_pares": 42.9,
+     "risco": 42.9,
+     "mediana_pares": 2531.0,
+     "q1_pares": 2284.25,
+     "q3_pares": 3141.25
+    }
+   }
+  }
+ ],
+ "grupos": {
+  "S1": {
+   "n": 8,
+   "pool_fallback": false,
+   "stats": {
+    "basileia_pct": {
+     "q1": 14.8,
+     "mediana": 15.02,
+     "q3": 15.15
+    },
+    "roe_pct": {
+     "q1": 2.54,
+     "mediana": 3.41,
+     "q3": 5.79
+    },
+    "alavancagem": {
+     "q1": 10.95,
+     "mediana": 13.42,
+     "q3": 15.51
+    },
+    "carteira_ativo_pct": {
+     "q1": 17.37,
+     "mediana": 41.35,
+     "q3": 43.29
+    },
+    "captacoes_ativo_pct": {
+     "q1": 54.32,
+     "mediana": 77.23,
+     "q3": 78.85
+    },
+    "hhi_setorial": {
+     "q1": 1791.25,
+     "mediana": 1986.0,
+     "q3": 2084.0
+    }
+   },
+   "label": "S1 — grandes (≥10% do PIB ou atividade internacional)"
+  },
+  "S2": {
+   "n": 9,
+   "pool_fallback": false,
+   "stats": {
+    "basileia_pct": {
+     "q1": 15.01,
+     "mediana": 17.35,
+     "q3": 17.97
+    },
+    "roe_pct": {
+     "q1": 1.95,
+     "mediana": 2.94,
+     "q3": 3.22
+    },
+    "alavancagem": {
+     "q1": 11.82,
+     "mediana": 16.09,
+     "q3": 28.61
+    },
+    "carteira_ativo_pct": {
+     "q1": 20.84,
+     "mediana": 23.99,
+     "q3": 36.99
+    },
+    "captacoes_ativo_pct": {
+     "q1": 72.84,
+     "mediana": 78.25,
+     "q3": 84.1
+    },
+    "hhi_setorial": {
+     "q1": 2343.0,
+     "mediana": 2662.0,
+     "q3": 2770.0
+    }
+   },
+   "label": "S2 — porte entre 1% e 10% do PIB"
+  },
+  "S3": {
+   "n": 9,
+   "pool_fallback": false,
+   "stats": {
+    "basileia_pct": {
+     "q1": 12.99,
+     "mediana": 13.76,
+     "q3": 15.28
+    },
+    "roe_pct": {
+     "q1": 3.31,
+     "mediana": 4.75,
+     "q3": 6.72
+    },
+    "alavancagem": {
+     "q1": 9.35,
+     "mediana": 11.11,
+     "q3": 13.29
+    },
+    "carteira_ativo_pct": {
+     "q1": 31.26,
+     "mediana": 61.42,
+     "q3": 62.22
+    },
+    "captacoes_ativo_pct": {
+     "q1": 72.02,
+     "mediana": 76.86,
+     "q3": 77.08
+    },
+    "hhi_setorial": {
+     "q1": 2284.25,
+     "mediana": 2531.0,
+     "q3": 3141.25
+    }
+   },
+   "label": "S3 — porte entre 0,1% e 1% do PIB"
+  },
+  "S?": {
+   "n": 1,
+   "pool_fallback": true,
+   "stats": {
+    "basileia_pct": {
+     "q1": 13.76,
+     "mediana": 15.01,
+     "q3": 16.63
+    },
+    "roe_pct": {
+     "q1": 1.98,
+     "mediana": 3.26,
+     "q3": 5.71
+    },
+    "alavancagem": {
+     "q1": 10.42,
+     "mediana": 13.28,
+     "q3": 20.1
+    },
+    "carteira_ativo_pct": {
+     "q1": 17.92,
+     "mediana": 33.98,
+     "q3": 47.1
+    },
+    "captacoes_ativo_pct": {
+     "q1": 56.24,
+     "mediana": 76.21,
+     "q3": 78.54
+    },
+    "hhi_setorial": {
+     "q1": 2141.75,
+     "mediana": 2478.0,
+     "q3": 3097.0
+    }
+   },
+   "label": "S?"
+  },
+  "S4": {
+   "n": 3,
+   "pool_fallback": true,
+   "stats": {
+    "basileia_pct": {
+     "q1": 13.76,
+     "mediana": 15.01,
+     "q3": 16.63
+    },
+    "roe_pct": {
+     "q1": 1.98,
+     "mediana": 3.26,
+     "q3": 5.71
+    },
+    "alavancagem": {
+     "q1": 10.42,
+     "mediana": 13.28,
+     "q3": 20.1
+    },
+    "carteira_ativo_pct": {
+     "q1": 17.92,
+     "mediana": 33.98,
+     "q3": 47.1
+    },
+    "captacoes_ativo_pct": {
+     "q1": 56.24,
+     "mediana": 76.21,
+     "q3": 78.54
+    },
+    "hhi_setorial": {
+     "q1": 2141.75,
+     "mediana": 2478.0,
+     "q3": 3097.0
+    }
+   },
+   "label": "S4 — porte inferior a 0,1% do PIB"
+  }
+ },
+ "metodo": "Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do próprio grupo (IF.data 202603); grupos com <5 membros no corte dos 30 maiores usam o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital (Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório Informações de Capital, indisponível na Olinda). Histórico de score em 5 trimestres. Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto).",
+ "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira.",
+ "aviso": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
+}

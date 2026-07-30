@@ -1,0 +1,154 @@
+{
+ "cod": "04257795",
+ "nome": "NOVA FUTURA CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 129423859.98,
+   "202506": 115011824.69,
+   "202509": 103463373.48,
+   "202512": 107921998.62,
+   "202603": 114477878.82
+  },
+  "patrimonio_liquido": {
+   "202503": 32186802.46,
+   "202506": 33537342.07,
+   "202509": 35796826.09,
+   "202512": 33063176.66,
+   "202603": 33298244.57
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 50196845.58,
+   "202506": 47162072.75,
+   "202509": 47381623.85,
+   "202512": 49774728.78,
+   "202603": 53030538.49
+  },
+  "lucro_liquido": {
+   "202503": -837346.760000001,
+   "202506": 664824.220000004,
+   "202509": 2413901.19,
+   "202512": 2508004.52000001,
+   "202603": 228725.470000004
+  },
+  "indice_basileia": {
+   "202503": 20.0137679483013,
+   "202506": 23.9105221314693,
+   "202509": 27.956045111844702,
+   "202512": 25.687703570501203,
+   "202603": 27.427520813858703
+  },
+  "indice_capital_principal": {
+   "202503": 20.0137679483013,
+   "202506": 23.9105221314693,
+   "202509": 27.956045111844702,
+   "202512": 25.687703570501203,
+   "202603": 27.427520813858703
+  },
+  "indice_capital_nivel1": {
+   "202503": 20.0137679483013,
+   "202506": 23.9105221314693,
+   "202509": 27.956045111844702,
+   "202512": 25.687703570501203,
+   "202603": 27.427520813858703
+  },
+  "patrimonio_referencia": {
+   "202503": 31968866.9,
+   "202506": 33358614.27,
+   "202509": 35651776.2,
+   "202512": 32945333.28,
+   "202603": 33203151.04
+  },
+  "rwa": {
+   "202503": 30759874.96,
+   "202506": 22350479.26,
+   "202509": 17793999.04,
+   "202512": 18880745.12,
+   "202603": 11338194.48
+  },
+  "roe_periodo": {
+   "202503": -2.601522040098919,
+   "202506": 1.9823402182926897,
+   "202509": 6.743338596363251,
+   "202512": 7.585491696066236,
+   "202603": 0.6868994836024294
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "40710595",
+    "nome": "NG CASH INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 114266877.81
+   },
+   {
+    "cod": "03603683",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS - SICOOB COOPERPLAN CREDSEF",
+    "sr": "S5",
+    "ativo_brl": 114076429.15
+   },
+   {
+    "cod": "08041950",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SISTEMA DE JUSTIÇA NO ESTADO DO CEARÁ - SICREDI COOPERJURIS",
+    "sr": "S4",
+    "ativo_brl": 115440102.67
+   },
+   {
+    "cod": "02685483",
+    "nome": "CM CAPITAL MARKETS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 115606536.23
+   },
+   {
+    "cod": "04985665",
+    "nome": "CREDISIS OESTE - COOPERATIVA DE CRÉDITO E INVESTIMENTO DO OESTE",
+    "sr": "S5",
+    "ativo_brl": 113229871.74
+   },
+   {
+    "cod": "10175348",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DE LIVRE ADMISSÃO DA REGIÃO ADMINISTRATIVA DE SOROCABA - SICOOB COOPERASO",
+    "sr": "S5",
+    "ativo_brl": 116147125.03
+   },
+   {
+    "cod": "17315359",
+    "nome": "SITA SOCIEDADE CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
+    "sr": "S4",
+    "ativo_brl": 112701238.4
+   },
+   {
+    "cod": "01374196",
+    "nome": "COOPERATIVA DE CRÉDITO DE SÃO FRANCISCO DE SALES LTDA. - SICOOB CREDISALES",
+    "sr": "S5",
+    "ativo_brl": 117069653.53
+   }
+  ]
+ }
+}

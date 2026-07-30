@@ -1,0 +1,89 @@
+{
+ "cod": "00698609",
+ "nome": "COOPERATIVA DE CRÉDITO DO NORTE E NOROESTE DE MINAS GERAIS LTDA. - SICOOB CREDIGERAIS",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1556205470.77
+  },
+  "patrimonio_liquido": {
+   "202503": 179504585.21
+  },
+  "carteira_credito": {
+   "202503": 1206691818.82
+  },
+  "carteira_pf": {
+   "202503": 731423194.0
+  },
+  "carteira_pj": {
+   "202503": 588520412.64
+  },
+  "captacoes": {
+   "202503": 972912019.23
+  },
+  "lucro_liquido": {
+   "202503": -3112787.77
+  },
+  "indice_basileia": {
+   "202503": 16.543003272958202
+  },
+  "patrimonio_referencia": {
+   "202503": 195813682.06
+  },
+  "rwa": {
+   "202503": 1118506779.16
+  },
+  "provisao_credito": {
+   "202503": 219022737.19
+  },
+  "roe_periodo": {
+   "202503": -1.7340993080251357
+  },
+  "npl_pct": {
+   "202503": 12.907163433571277
+  },
+  "ativos_problematicos_pct": {
+   "202503": 21.546691590405803
+  },
+  "cobertura_pct": {
+   "202503": 128.55915705584061
+  },
+  "cart_ativo_pct": {
+   "202503": 77.5406488079583
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 7.592538101519709
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 5.929197633067431
+  },
+  "atraso15_rural_pf": {
+   "202503": 9.694951128043183
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 3.949984588914004
+  },
+  "atraso15_conta_garantida_pj": {
+   "202503": 36.751745325972166
+  },
+  "atraso15_recebiveis_pj": {
+   "202503": 20.738698382185913
+  },
+  "atraso15_investimento_pj": {
+   "202503": 2.170657983655933
+  },
+  "atraso15_rural_pj": {
+   "202503": 3.0423448477475805
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:10+00:00"
+}

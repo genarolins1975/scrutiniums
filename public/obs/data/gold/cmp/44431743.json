@@ -1,0 +1,126 @@
+{
+ "cod": "44431743",
+ "nome": "RP FINANCEIRA S.A. - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 308049603.46,
+   "202506": 471858287.03,
+   "202509": 587776596.46,
+   "202512": 790830415.64,
+   "202603": 933793033.15
+  },
+  "patrimonio_liquido": {
+   "202503": 103278842.04,
+   "202506": 107625123.45,
+   "202509": 116410415.35,
+   "202512": 126255953.11,
+   "202603": 166873322.89
+  },
+  "carteira_credito": {
+   "202503": 212505023.1,
+   "202506": 396084079.56,
+   "202509": 474431346.42,
+   "202512": 627730278.15,
+   "202603": 692746454.89
+  },
+  "captacoes": {
+   "202503": 197002396.35,
+   "202506": 347792165.57,
+   "202509": 437868356.28,
+   "202512": 645500973.22,
+   "202603": 758192774.62
+  },
+  "lucro_liquido": {
+   "202503": -3746089.89,
+   "202506": 787136.439999983,
+   "202509": 8785291.90000001,
+   "202512": -1380393.25999995,
+   "202603": 617369.779999964
+  },
+  "provisao_credito": {
+   "202503": 34616872.6,
+   "202506": 99402540.32,
+   "202509": 147664169.88,
+   "202512": 236248079.28,
+   "202603": 273414541.96
+  },
+  "roe_periodo": {
+   "202503": -3.6271610099473572,
+   "202506": 0.731368675610084,
+   "202509": 7.546826350190503,
+   "202512": -1.0933292458671535,
+   "202603": 0.3699631368921224
+  },
+  "cart_ativo_pct": {
+   "202503": 68.98402747906593,
+   "202506": 83.94132103794493,
+   "202509": 80.71627031041317,
+   "202512": 79.37609198325953,
+   "202603": 74.18629506724116
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "36658769",
+    "nome": "BANCO XCMG BRASIL S.A.",
+    "sr": "S4",
+    "ativo_brl": 940390015.7
+   },
+   {
+    "cod": "78862083",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS NOVOS CAMPOS - SICOOB NOVOS CAMPOS",
+    "sr": "S5",
+    "ativo_brl": 945869864.19
+   },
+   {
+    "cod": "05158093",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO LESTE DA BACIA DO RIO DOCE LTDA   SICOOB CREDILESTE",
+    "sr": "S5",
+    "ativo_brl": 920630655.25
+   },
+   {
+    "cod": "11969853",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CONEXÃO - CRESOL CONEXÃO",
+    "sr": "S5",
+    "ativo_brl": 961157798.75
+   },
+   {
+    "cod": "24799033",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE DO PARANAÍBA LTDA.",
+    "sr": "S5",
+    "ativo_brl": 971489095.21
+   },
+   {
+    "cod": "01286361",
+    "nome": "UNIPRIME PIONEIRA COOPERATIVA DE CRÉDITO",
+    "sr": "S5",
+    "ativo_brl": 897120142.7
+   },
+   {
+    "cod": "01259518",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB UNIMAIS CENTRO LESTE PAULISTA - SICOOB UNIMAIS CENTRO LESTE PAULISTA",
+    "sr": "S5",
+    "ativo_brl": 895168311.12
+   },
+   {
+    "cod": "16581207",
+    "nome": "DM INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": "S4",
+    "ativo_brl": 980569880.25
+   }
+  ]
+ }
+}

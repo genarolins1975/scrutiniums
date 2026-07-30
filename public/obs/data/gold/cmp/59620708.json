@@ -1,0 +1,189 @@
+{
+ "cod": "59620708",
+ "nome": "COOPERATIVA DE ECONOMIA E CRÉDÍTO MÚTUO DOS FUNCIONÁRIOS DA MWM TUPY DO BRASIL",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 17679489.49,
+   "202506": 16950726.25,
+   "202509": 17398682.24,
+   "202512": 18077819.84,
+   "202603": 18756940.73
+  },
+  "patrimonio_liquido": {
+   "202503": 16131571.91,
+   "202506": 16674992.07,
+   "202509": 17139210.43,
+   "202512": 16541041.5,
+   "202603": 17305720.49
+  },
+  "carteira_credito": {
+   "202503": 12866711.83,
+   "202506": 12629062.69,
+   "202509": 13113551.51,
+   "202512": 13313965.17,
+   "202603": 13739497.94
+  },
+  "carteira_pf": {
+   "202503": 12990711.83,
+   "202506": 12730758.33,
+   "202509": 13239792.76,
+   "202512": 13482264.99,
+   "202603": 13900546.54
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 457193.2,
+   "202506": 901914.03,
+   "202509": 456721.79,
+   "202512": 789883.37,
+   "202603": 473417.98
+  },
+  "indice_basileia": {
+   "202503": 108.561248522881,
+   "202506": 119.40928632913,
+   "202509": 119.24174257907501,
+   "202512": 106.74944246382401,
+   "202603": 110.908295702072
+  },
+  "patrimonio_referencia": {
+   "202503": 16136317.12,
+   "202506": 16679737.28,
+   "202509": 17143955.64,
+   "202512": 16522114.0,
+   "202603": 17286792.99
+  },
+  "rwa": {
+   "202503": 14071770.06,
+   "202506": 13176521.84,
+   "202509": 13563379.29,
+   "202512": 14663372.01,
+   "202603": 14754300.15
+  },
+  "provisao_credito": {
+   "202503": 124000.0,
+   "202506": 101695.64,
+   "202509": 126241.25,
+   "202512": 168299.82,
+   "202603": 161048.6
+  },
+  "roe_periodo": {
+   "202503": 2.834151578970335,
+   "202506": 5.408782362317489,
+   "202509": 2.6647773061970628,
+   "202512": 4.775294046629409,
+   "202603": 2.7356155455854125
+  },
+  "npl_pct": {
+   "202503": 0.2396985662332254,
+   "202506": 0.2211354521879452,
+   "202509": 0.3448234487319876,
+   "202512": 0.4711507305865526,
+   "202603": 0.5828778010047941
+  },
+  "ativos_problematicos_pct": {
+   "202503": 0.531298137493979,
+   "202506": 0.358285098323754,
+   "202509": 0.3448234487319876,
+   "202512": 0.9598359036555325,
+   "202603": 0.6369819326542825
+  },
+  "cobertura_pct": {
+   "202503": 398.2202125660957,
+   "202506": 361.2348866270582,
+   "202509": 276.5179367988415,
+   "202512": 264.94816975403245,
+   "202603": 198.7685008738238
+  },
+  "cart_ativo_pct": {
+   "202503": 72.77762085425466,
+   "202506": 74.50455221645738,
+   "202509": 75.37094665624517,
+   "202512": 73.6480686710948,
+   "202603": 73.2502071514516
+  },
+  "atraso15_consignado_pf": {
+   "202503": 0.12942751012618955,
+   "202506": 0.12285214704605021,
+   "202509": 0.1704547399072136,
+   "202512": 0.20061994870281735,
+   "202603": 0.21265200743766582
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 3.5371331757682056,
+   "202506": 6.614748931093574,
+   "202509": 11.044694744928936,
+   "202512": 14.058668478213775,
+   "202603": 13.994028627684557
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "35977097",
+    "nome": "UP.P SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 18458145.22
+   },
+   {
+    "cod": "60717928",
+    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": null,
+    "ativo_brl": 19061217.59
+   },
+   {
+    "cod": "07253654",
+    "nome": "HEDGE INVESTMENTS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 19113182.27
+   },
+   {
+    "cod": "02232228",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO SBF LTDA. - COOPER ATIVA SBF",
+    "sr": "S5",
+    "ativo_brl": 18345071.52
+   },
+   {
+    "cod": "24361690",
+    "nome": "LIMINE TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 18301005.1
+   },
+   {
+    "cod": "02115870",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS PÚBLICOS MUNICIPAIS DE ITAPIRA - CREDITA",
+    "sr": "S5",
+    "ativo_brl": 18176193.8
+   },
+   {
+    "cod": "35713491",
+    "nome": "PROTOTYPE INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 19419104.81
+   },
+   {
+    "cod": "53184438",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DA CEBRACE",
+    "sr": "S5",
+    "ativo_brl": 19517033.5
+   }
+  ]
+ }
+}

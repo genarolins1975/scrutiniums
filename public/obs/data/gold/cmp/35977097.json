@@ -1,0 +1,196 @@
+{
+ "cod": "35977097",
+ "nome": "UP.P SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 8895309.16,
+   "202506": 7990573.12,
+   "202509": 13907337.94,
+   "202512": 26257203.38,
+   "202603": 18458145.22
+  },
+  "patrimonio_liquido": {
+   "202503": 4530201.89,
+   "202506": 4958408.84,
+   "202509": 6666612.64,
+   "202512": 6678120.95,
+   "202603": 8004539.62
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "carteira_pf": {
+   "202503": 378551922.5,
+   "202506": 401905988.28,
+   "202509": 684569470.84,
+   "202512": 851976131.88,
+   "202603": 1003005551.81
+  },
+  "carteira_pj": {
+   "202503": 8859142.58,
+   "202506": 10009651.4,
+   "202509": 11347040.78,
+   "202512": 12891469.41,
+   "202603": 2750015.7
+  },
+  "captacoes": {
+   "202503": 1216104.41,
+   "202506": 740812.76,
+   "202509": 2229952.26,
+   "202512": 12012326.43,
+   "202603": 3665862.95
+  },
+  "lucro_liquido": {
+   "202503": 432012.9,
+   "202506": 860219.850000002,
+   "202509": 1708203.8,
+   "202512": 3719713.11,
+   "202603": 1326418.67
+  },
+  "indice_basileia": {
+   "202503": 40.6053322612215,
+   "202506": 60.7705439290841,
+   "202509": 46.553932962806,
+   "202512": 44.4009592930933,
+   "202603": 39.3089736294604
+  },
+  "patrimonio_referencia": {
+   "202503": 4181872.63,
+   "202506": 4648033.6,
+   "202509": 6069359.45,
+   "202512": 5900662.91,
+   "202603": 7063562.78
+  },
+  "rwa": {
+   "202503": 3918670.53,
+   "202506": 1325436.33,
+   "202509": 5125630.51,
+   "202512": 5262773.29,
+   "202603": 8164291.02
+  },
+  "roe_periodo": {
+   "202503": 9.536283602583548,
+   "202506": 17.348707574504928,
+   "202509": 25.623264650936733,
+   "202512": 55.69999611941739,
+   "202603": 16.570830215966872
+  },
+  "npl_pct": {
+   "202503": 4.225064647190691,
+   "202506": 4.45815548889236,
+   "202509": 2.9031230331019744,
+   "202512": 3.268170293099268,
+   "202603": 9.709277756399699
+  },
+  "ativos_problematicos_pct": {
+   "202503": 4.225064647190691,
+   "202506": 4.45815548889236,
+   "202509": 2.9031230331019744,
+   "202512": 3.268170293099268,
+   "202603": 9.709277756399699
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "atraso15_consignado_pf": {
+   "202503": 10.828338095254159,
+   "202506": 4.5574482064859945,
+   "202509": 0.0009735250357210319,
+   "202512": 5.014550736316216,
+   "202603": 12.382142933783086
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202503": 1.3211053332808311,
+   "202506": 1.3755875759012102,
+   "202509": 1.4282226512526546,
+   "202512": 1.5501837462317005,
+   "202603": 1.74394583413927
+  },
+  "atraso15_veiculos_pf": {
+   "202503": 98.26973397328997,
+   "202506": 100.0,
+   "202509": 100.0,
+   "202512": 100.0,
+   "202603": 100.0
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 96.11038092131032,
+   "202506": 97.17203248456785,
+   "202509": 98.08622164835474,
+   "202512": 98.74929827723959,
+   "202603": 96.1491147123269
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "02588819",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA UNIÃO MARISTA DO BRASIL E SUAS ASSOCIADAS, PROVÍNCIA MARISTA BRASIL CENTRO-NORTE E UNIÃO BRASILEIRA DE EDUCAÇÃO CATÓLICA.",
+    "sr": "S5",
+    "ativo_brl": 18559877.75
+   },
+   {
+    "cod": "02232228",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO SBF LTDA. - COOPER ATIVA SBF",
+    "sr": "S5",
+    "ativo_brl": 18345071.52
+   },
+   {
+    "cod": "24361690",
+    "nome": "LIMINE TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 18301005.1
+   },
+   {
+    "cod": "53146221",
+    "nome": "FAMÍLIA PAULISTA COMPANHIA HIPOTECÁRIA",
+    "sr": "S5",
+    "ativo_brl": 18737440.08
+   },
+   {
+    "cod": "02115870",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS PÚBLICOS MUNICIPAIS DE ITAPIRA - CREDITA",
+    "sr": "S5",
+    "ativo_brl": 18176193.8
+   },
+   {
+    "cod": "59620708",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDÍTO MÚTUO DOS FUNCIONÁRIOS DA MWM TUPY DO BRASIL",
+    "sr": "S5",
+    "ativo_brl": 18756940.73
+   },
+   {
+    "cod": "12651789",
+    "nome": "SISPAY INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 17918981.19
+   },
+   {
+    "cod": "60717928",
+    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": null,
+    "ativo_brl": 19061217.59
+   }
+  ]
+ }
+}

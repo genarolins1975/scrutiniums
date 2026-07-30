@@ -1,0 +1,126 @@
+{
+ "cod": "03311443",
+ "nome": "PARATI - CREDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+ "sr": "S5",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 140952705.68,
+   "202506": 129173250.89,
+   "202509": 164418733.68,
+   "202512": 266045521.03,
+   "202603": 336134556.05
+  },
+  "patrimonio_liquido": {
+   "202503": 17221870.7,
+   "202506": 21317531.54,
+   "202509": 23742594.44,
+   "202512": 21399613.17,
+   "202603": 33630602.35
+  },
+  "carteira_credito": {
+   "202503": 33762352.77,
+   "202506": 19409294.83,
+   "202509": 52124739.91,
+   "202512": 98179461.11,
+   "202603": 60117097.87
+  },
+  "captacoes": {
+   "202503": 59548201.52,
+   "202506": 62204608.84,
+   "202509": 63046653.36,
+   "202512": 108548328.2,
+   "202603": 140693950.38
+  },
+  "lucro_liquido": {
+   "202503": 1699391.95,
+   "202506": 5795052.79,
+   "202509": 2425062.9,
+   "202512": 82081.6299999971,
+   "202603": 12230989.18
+  },
+  "provisao_credito": {
+   "202503": 2268435.2,
+   "202506": 2132138.5,
+   "202509": 6790416.42,
+   "202512": 3088205.39,
+   "202603": 4449746.52
+  },
+  "roe_periodo": {
+   "202503": 9.867638537084128,
+   "202506": 27.18444571842768,
+   "202509": 10.213976008933587,
+   "202512": 0.3835659520942504,
+   "202603": 36.36862953779357
+  },
+  "cart_ativo_pct": {
+   "202503": 23.952965363183228,
+   "202506": 15.02578490226925,
+   "202509": 31.702433623803344,
+   "202512": 36.90325652914451,
+   "202603": 17.88483117488747
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "07714057",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS PROFISSIONAIS DA ÁREA NOTARIAL E REGISTRAL - COOPNORE",
+    "sr": "S5",
+    "ativo_brl": 335477890.51
+   },
+   {
+    "cod": "47965438",
+    "nome": "EQI INVESTIMENTOS CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 334687593.05
+   },
+   {
+    "cod": "32343119",
+    "nome": "MENTORE BANK INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 334080957.45
+   },
+   {
+    "cod": "19307785",
+    "nome": "BRAZA BANK S.A. BANCO DE CÂMBIO",
+    "sr": "S4",
+    "ativo_brl": 340721305.92
+   },
+   {
+    "cod": "45220646",
+    "nome": "LAUNCH PAD SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 331271210.18
+   },
+   {
+    "cod": "14388516",
+    "nome": "VIC-DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS S/A",
+    "sr": "S4",
+    "ativo_brl": 343063484.46
+   },
+   {
+    "cod": "28080769",
+    "nome": "BOLT CARD INSTITUIÇÃO DE PAGAMENTOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 327449497.4
+   },
+   {
+    "cod": "33862244",
+    "nome": "BGC LIQUIDEZ DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 327135858.54
+   }
+  ]
+ }
+}

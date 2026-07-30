@@ -1,0 +1,182 @@
+{
+ "cod": "33416108",
+ "nome": "COOPERATIVA CENTRAL DE CRÉDITO DE GOIÁS, DISTRITO FEDERAL E TOCANTINS LTDA. - SICOOB NOVA CENTRAL",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 5634973583.24,
+   "202506": 5710517200.12,
+   "202509": 7086808463.92,
+   "202512": 6956981269.99,
+   "202603": 8006613240.49
+  },
+  "patrimonio_liquido": {
+   "202503": 715348294.62,
+   "202506": 739309405.37,
+   "202509": 744216075.2,
+   "202512": 774217364.2,
+   "202603": 789098733.17
+  },
+  "carteira_credito": {
+   "202503": 115619705.13,
+   "202506": 100040201.92,
+   "202509": 79334818.14,
+   "202512": 110298343.24,
+   "202603": 129718111.1
+  },
+  "carteira_pj": {
+   "202503": 116397471.59,
+   "202506": 100204199.64,
+   "202509": 79603653.41,
+   "202512": 111427641.91,
+   "202603": 130959917.25
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "lucro_liquido": {
+   "202503": 25034397.3,
+   "202506": 55153775.94,
+   "202509": 22644198.23,
+   "202512": 49804384.35,
+   "202603": 15281293.95
+  },
+  "indice_basileia": {
+   "202503": 14.6455369655274,
+   "202506": 32.44907092508,
+   "202509": 17.0344720090899,
+   "202512": 17.1213980884383,
+   "202603": 13.8229244421317
+  },
+  "indice_capital_principal": {
+   "202503": 14.6455369655274,
+   "202506": 32.44907092508,
+   "202509": 17.0344720090899,
+   "202512": 17.1213980884383,
+   "202603": 13.8229244421317
+  },
+  "indice_capital_nivel1": {
+   "202503": 14.6455369655274,
+   "202506": 32.44907092508,
+   "202509": 17.0344720090899,
+   "202512": 17.1213980884383,
+   "202603": 13.8229244421317
+  },
+  "patrimonio_referencia": {
+   "202503": 83933912.7,
+   "202506": 175197639.51,
+   "202509": 173972648.56,
+   "202512": 165215503.93,
+   "202603": 165949309.22
+  },
+  "rwa": {
+   "202503": 462256553.43,
+   "202506": 420954995.16,
+   "202509": 890357393.4,
+   "202512": 837101219.23,
+   "202603": 949153299.89
+  },
+  "razao_alavancagem": {
+   "202503": 1.6512758196002402,
+   "202506": 3.35367701696465,
+   "202509": 2.60796423431481,
+   "202512": 2.54195201683244,
+   "202603": 2.22127285915969
+  },
+  "provisao_credito": {
+   "202503": 777766.46,
+   "202506": 163997.72,
+   "202509": 268835.27,
+   "202512": 1129298.67,
+   "202603": 1241806.15
+  },
+  "roe_periodo": {
+   "202503": 3.499609559186622,
+   "202506": 7.460175068704469,
+   "202509": 3.042691361364993,
+   "202512": 6.432868423386879,
+   "202603": 1.93655030830063
+  },
+  "cart_ativo_pct": {
+   "202503": 2.051823374538713,
+   "202506": 1.7518588669673874,
+   "202509": 1.1194717416719446,
+   "202512": 1.5854339541747615,
+   "202603": 1.6201370942211433
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "04962772",
+    "nome": "FISERV DO BRASIL  INSTITUIÇÃO DE PAGAMENTO LTDA",
+    "sr": "S4",
+    "ativo_brl": 7945097534.06
+   },
+   {
+    "cod": "04243780",
+    "nome": "CENTRAL SICOOB UNI DE COOPERATIVAS DE CRÉDITO",
+    "sr": "S4",
+    "ativo_brl": 7630469506.32
+   },
+   {
+    "cod": "21198087",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - CENTRAL CRESOL SICOPER",
+    "sr": "S4",
+    "ativo_brl": 7392298325.1
+   },
+   {
+    "cod": "05036532",
+    "nome": "CENTRAL DAS COOPERATIVAS DE CREDITO UNICOOB - SICOOB CENTRAL UNICOOB",
+    "sr": "S4",
+    "ativo_brl": 7354352549.76
+   },
+   {
+    "cod": "61533584",
+    "nome": "BANCO SOCIETE GENERALE BRASIL S.A.",
+    "sr": "S4",
+    "ativo_brl": 8823356288.1
+   },
+   {
+    "cod": "10398952",
+    "nome": "CONFEDERAÇÃO NACIONAL DAS COOPERATIVAS CENTRAIS DE CRÉDITO E ECONOMIA FAMILIAR E SOLIDÁRIA - CRESOL CONFEDERAÇÃO",
+    "sr": "S4",
+    "ativo_brl": 7157363867.97
+   },
+   {
+    "cod": "92874270",
+    "nome": "BANCO DIGIMAIS S.A.",
+    "sr": "S4",
+    "ativo_brl": 10006111647.18
+   },
+   {
+    "cod": "07202627",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL CENTRAL BRASIL",
+    "sr": "S4",
+    "ativo_brl": 6296633871.57
+   }
+  ]
+ }
+}

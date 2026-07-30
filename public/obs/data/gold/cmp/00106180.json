@@ -1,0 +1,182 @@
+{
+ "cod": "00106180",
+ "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DOS ESTADOS DE MATO GROSSO, MATO GROSSO DO SUL E DO MUNICÍPIO DE CACOAL/RO - SICOOB CENTRAL RONDON",
+ "sr": "S4",
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 1799525873.66,
+   "202506": 1694015435.88,
+   "202509": 1618276136.56,
+   "202512": 1690159105.74,
+   "202603": 1926368157.44
+  },
+  "patrimonio_liquido": {
+   "202503": 144734621.11,
+   "202506": 144592746.93,
+   "202509": 146680347.53,
+   "202512": 153684352.25,
+   "202603": 153560866.49
+  },
+  "carteira_credito": {
+   "202503": 30268536.73,
+   "202506": 54436806.99,
+   "202509": 39587662.6,
+   "202512": 18825521.86,
+   "202603": 3959186.4
+  },
+  "carteira_pj": {
+   "202503": 30597640.21,
+   "202506": 55072353.73,
+   "202509": 40000000.0,
+   "202512": 19000000.0,
+   "202603": 4000000.0
+  },
+  "captacoes": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 143511.0
+  },
+  "lucro_liquido": {
+   "202503": 223649.559999987,
+   "202506": 213222.379999994,
+   "202509": 108159.590000016,
+   "202512": 4852591.66999999,
+   "202603": -172596.570000006
+  },
+  "indice_basileia": {
+   "202503": 21.2325797657639,
+   "202506": 23.2431999226125,
+   "202509": 22.7695918562216,
+   "202512": 16.5226284478491,
+   "202603": 16.7612400323564
+  },
+  "indice_capital_principal": {
+   "202503": 21.2325797657639,
+   "202506": 23.2431999226125,
+   "202509": 22.7695918562216,
+   "202512": 16.5226284478491,
+   "202603": 16.7612400323564
+  },
+  "indice_capital_nivel1": {
+   "202503": 21.2325797657639,
+   "202506": 23.2431999226125,
+   "202509": 22.7695918562216,
+   "202512": 16.5226284478491,
+   "202603": 16.7612400323564
+  },
+  "patrimonio_referencia": {
+   "202503": 75583489.77,
+   "202506": 73924404.98,
+   "202509": 72653749.14,
+   "202512": 78838454.32,
+   "202603": 73683173.17
+  },
+  "rwa": {
+   "202503": 304076747.59,
+   "202506": 266145365.51,
+   "202509": 263524688.32,
+   "202512": 421596771.15,
+   "202603": 360735751.17
+  },
+  "razao_alavancagem": {
+   "202503": 4.2416590384596,
+   "202506": 4.4443009112972,
+   "202509": 4.57966951496664,
+   "202512": 4.77013591141053,
+   "202603": 3.89282450518491
+  },
+  "provisao_credito": {
+   "202503": 329103.48,
+   "202506": 635546.74,
+   "202509": 412337.4,
+   "202512": 174478.14,
+   "202603": 40813.6
+  },
+  "roe_periodo": {
+   "202503": 0.1545238853598205,
+   "202506": 0.14746409106068015,
+   "202509": 0.07373829679391407,
+   "202512": 3.1575053666532202,
+   "202603": -0.11239619438540066
+  },
+  "cart_ativo_pct": {
+   "202503": 1.6820284261008016,
+   "202506": 3.213477624642859,
+   "202509": 2.4462860018533203,
+   "202512": 1.1138313426272166,
+   "202603": 0.20552594708902705
+  },
+  "atraso15_capital_de_giro_pj": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "62318407",
+    "nome": "S3 CACEIS BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 1936018478.97
+   },
+   {
+    "cod": "62931522",
+    "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DO ESTADO DE SÃO PAULO - SICOOB CENTRAL CECRESP",
+    "sr": "S4",
+    "ativo_brl": 1861387509.45
+   },
+   {
+    "cod": "25021356",
+    "nome": "DLOCAL BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 1793366616.44
+   },
+   {
+    "cod": "11275560",
+    "nome": "RECARGAPAY INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 1790628063.73
+   },
+   {
+    "cod": "13935893",
+    "nome": "CELCOIN INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 1789702942.05
+   },
+   {
+    "cod": "34148882",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO DA BAHIA LTDA - SICOOB CENTRAL BA",
+    "sr": "S4",
+    "ativo_brl": 1778530953.31
+   },
+   {
+    "cod": "04836002",
+    "nome": "LEASEPLAN ARRENDAMENTO MERCANTIL S.A.",
+    "sr": "S4",
+    "ativo_brl": 1765310183.47
+   },
+   {
+    "cod": "31680151",
+    "nome": "SWAP INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 1754538055.69
+   }
+  ]
+ }
+}

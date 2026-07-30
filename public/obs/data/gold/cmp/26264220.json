@@ -1,0 +1,140 @@
+{
+ "cod": "26264220",
+ "nome": "ZERO INSTITUIÇÃO DE PAGAMENTO S.A.",
+ "sr": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202503": 81239160.97,
+   "202506": 100183448.76,
+   "202509": 215428328.24,
+   "202512": 304460382.89,
+   "202603": 300053809.15
+  },
+  "patrimonio_liquido": {
+   "202503": 36484721.1,
+   "202506": 30937106.29,
+   "202509": 27682239.71,
+   "202512": 27287221.76,
+   "202603": 14165298.33
+  },
+  "carteira_credito": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  },
+  "captacoes": {
+   "202503": 40377419.19,
+   "202506": 66622163.12,
+   "202509": 178804938.35,
+   "202512": 272441925.27,
+   "202603": 279977719.42
+  },
+  "lucro_liquido": {
+   "202503": -612903.239999999,
+   "202506": -6194272.54,
+   "202509": -3676404.7,
+   "202512": -3451304.49,
+   "202603": -230584.88
+  },
+  "indice_basileia": {
+   "202503": 40.4762505494283,
+   "202506": 33.2190984737732,
+   "202509": 27.922509660825902,
+   "202512": 29.995142385364197,
+   "202603": 15.0143704983454
+  },
+  "patrimonio_referencia": {
+   "202503": 35749736.04,
+   "202506": 30432805.67,
+   "202509": 27337781.51,
+   "202512": 27260393.19,
+   "202603": 14119319.01
+  },
+  "rwa": {
+   "202503": 17038143.56,
+   "202506": 30141141.44,
+   "202509": 28951625.07,
+   "202512": 30578549.82,
+   "202603": 22005770.95
+  },
+  "roe_periodo": {
+   "202503": -1.67989016092547,
+   "202506": -20.022145839807308,
+   "202509": -13.280734284921053,
+   "202512": -12.648061134091797,
+   "202603": -1.627815204651606
+  },
+  "cart_ativo_pct": {
+   "202503": 0.0,
+   "202506": 0.0,
+   "202509": 0.0,
+   "202512": 0.0,
+   "202603": 0.0
+  }
+ },
+ "gerado_em": "2026-07-29T02:03:09+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "09552111",
+    "nome": "COOPERATIVA DE CRÉDITO DOS MAGISTRADOS, SERVIDORES DA JUSTIÇA DO ESTADO DE GOIÁS E EMPREGADOS DA CELG LTDA.",
+    "sr": "S5",
+    "ativo_brl": 299378440.06
+   },
+   {
+    "cod": "54190525",
+    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECNONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
+    "sr": "S5",
+    "ativo_brl": 298509031.8
+   },
+   {
+    "cod": "30798783",
+    "nome": "PLUXEE INSTITUIÇÃO DE PAGAMENTO BRASIL S.A.",
+    "sr": null,
+    "ativo_brl": 297302518.19
+   },
+   {
+    "cod": "71432926",
+    "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DE SAÚDE E DE LIVRE ADMISSÃO DO TRIÂNGULO MINEIRO E SUL DE MINAS LTDA. - UNICRED PROGRESSO",
+    "sr": "S5",
+    "ativo_brl": 296745056.43
+   },
+   {
+    "cod": "39908427",
+    "nome": "STARK SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 296691234.32
+   },
+   {
+    "cod": "03015152",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE SÃO VALENTIM - CRESOL SÃO VALENTIM",
+    "sr": "S5",
+    "ativo_brl": 306033246.83
+   },
+   {
+    "cod": "00952415",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO CREDFAZ LTDA. - SICOOB CREDFAZ",
+    "sr": "S5",
+    "ativo_brl": 291215635.79
+   },
+   {
+    "cod": "00803287",
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVAZ LTDA. - SICOOB CREDIVAZ",
+    "sr": "S5",
+    "ativo_brl": 291117942.43
+   }
+  ]
+ }
+}
