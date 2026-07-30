@@ -10,7 +10,7 @@ import {
   readSignedEmailCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
-export const metadata: Metadata = { title: "Crie seu acesso gratuito" };
+export const metadata: Metadata = { title: "Crie seu acesso" };
 export const dynamic = "force-dynamic";
 
 /**
@@ -30,7 +30,7 @@ export default async function CadastroPage() {
   return (
     <section className="border border-linha bg-papel p-8 md:p-10">
       <StepIndicator current={1} />
-      <h1 className="mt-6 font-serif text-3xl text-carvao">Crie seu acesso gratuito</h1>
+      <h1 className="mt-6 font-serif text-3xl text-carvao">Crie seu acesso</h1>
       <p className="mt-3 text-sm text-carvao-muted">Informe seu e-mail de contato para começar.</p>
       <div className="mt-8">
         <CadastroEmailForm />

@@ -21,7 +21,7 @@ export function Hero() {
             conhecimento útil.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <BotaoLink href="/cadastro">Criar acesso gratuito</BotaoLink>
+            <BotaoLink href="/cadastro">Criar acesso</BotaoLink>
             <Link
               href="/entrar"
               className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline underline-offset-4 hover:text-bronze"

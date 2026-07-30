@@ -45,7 +45,7 @@ export function SecaoPlataforma() {
         </ul>
         <div className="mt-10 flex flex-wrap items-center gap-6">
           <BotaoLink href="/cadastro" variant="dark">
-            Criar acesso gratuito
+            Criar acesso
           </BotaoLink>
           <p className="rotulo text-bronze-soft">100% gratuito · sem assinatura · sem cobrança</p>
         </div>

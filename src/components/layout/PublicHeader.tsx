@@ -31,7 +31,7 @@ export function PublicHeader() {
             href="/cadastro"
             className="rotulo inline-flex min-h-[44px] items-center border border-carvao px-5 text-carvao hover:bg-carvao hover:text-marfim"
           >
-            Criar acesso gratuito
+            Criar acesso
           </Link>
         </div>
       </div>

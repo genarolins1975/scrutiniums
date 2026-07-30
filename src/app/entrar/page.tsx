@@ -28,7 +28,7 @@ export default async function EntrarPage() {
             <LogoWordmark />
           </Link>
           <Link href="/cadastro" className="rotulo min-h-[44px] py-3 text-carvao-muted hover:text-bronze">
-            Criar acesso gratuito
+            Criar acesso
           </Link>
         </div>
       </header>
