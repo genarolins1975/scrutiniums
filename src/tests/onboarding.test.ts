@@ -201,6 +201,6 @@ describe("onboarding.nextStepPath", () => {
     expect(nextStepPath("PROFILE_PENDING")).toBe("/cadastro/perfil");
     expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
     expect(nextStepPath("WAITLIST")).toBe("/cadastro/acesso");
-    expect(nextStepPath("COMPLETE")).toBe("/app");
+    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
   });
 });

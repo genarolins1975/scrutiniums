@@ -81,7 +81,7 @@ describe("máquina de estados do onboarding", () => {
     // Código de acesso recebido depois: entra na plataforma.
     await updateUser(userId, { onboardingStatus: "COMPLETE" });
     expect((await getUser(userId)).onboardingStatus).toBe("COMPLETE");
-    expect(nextStepPath("COMPLETE")).toBe("/app");
+    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
   });
 
   it("fluxo simulado completo: usuário COMPLETE tem e-mail e telefone verificados", async () => {
@@ -136,7 +136,7 @@ describe("máquina de estados do onboarding", () => {
     expect(user.phoneE164).toBe(phone);
     expect(user.company).toBe("Empresa Exemplo");
     expect(user.termsAcceptedAt).not.toBeNull();
-    expect(nextStepPath("COMPLETE")).toBe("/app");
+    expect(nextStepPath("COMPLETE")).toBe("/observatorio");
 
     infoSpy.mockRestore();
   });

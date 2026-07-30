@@ -56,5 +56,5 @@ export async function POST(req: Request) {
   await updateUser(user.id, { onboardingStatus: "COMPLETE" });
   await trackEvent("onboarding_completed", user.id);
 
-  return NextResponse.json({ ok: true, next: "/app" });
+  return NextResponse.json({ ok: true, next: "/observatorio" });
 }

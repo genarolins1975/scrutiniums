@@ -26,7 +26,8 @@ export function nextStepPath(status: OnboardingStatus): string {
     case "WAITLIST":
       return "/cadastro/acesso";
     case "COMPLETE":
-      return "/app";
+      // Destino principal pós-login: o Observatório completo.
+      return "/observatorio";
   }
 }
 
