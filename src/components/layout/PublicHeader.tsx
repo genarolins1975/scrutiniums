@@ -48,7 +48,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
         >
           <LogoWordmark />
         </Link>
-        <nav aria-label="Navegação principal" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
           {NAV.map((item) => (
             <Link
               key={item.href}
@@ -76,7 +76,7 @@ export function PublicHeaderView({ authenticated = false }: { authenticated?: bo
       </div>
       <nav
         aria-label="Navegação principal (celular)"
-        className="tabela-scroll flex gap-6 border-t border-linha px-6 py-3 md:hidden"
+        className="tabela-scroll flex gap-6 border-t border-linha px-6 py-3 lg:hidden"
       >
         {NAV.map((item) => (
           <Link

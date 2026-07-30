@@ -921,7 +921,7 @@ function panScale(vals, kind, brRef) {
     if (v == null) return "var(--surface-2)";
     if (kind === "seq") {
       const t = (v - lo) / Math.max(hi - lo, 1e-9);
-      return `color-mix(in srgb, var(--c-line1) ${Math.round(8 + t * 80)}%, var(--surface))`;
+      return `color-mix(in srgb, var(--accent) ${Math.round(8 + t * 80)}%, var(--surface))`;
     }
     const center = kind === "divbr" ? (brRef || 0) : 0;
     const span = Math.max(Math.abs(hi - center), Math.abs(lo - center), 1e-9);
@@ -969,7 +969,7 @@ function renderPanorama() {
   const k = P.kpis;
   const kpis = `<div class="pan-kpi">
     <div class="card kpi"><h4>Carteira ativa</h4><div class="big">${fmt.money(k.saldo.v)}</div><div class="src">${badge("observado")} SCR.data · ${P.data_base}</div></div>
-    <div class="card kpi"><h4>Crescimento nominal</h4><div class="big" style="color:var(--c-line1)">${fmt.pp(k.saldo.cresc12)}%<small> 12m</small></div><div class="src">3m ${fmt.pp(k.saldo.cresc3)}% · 6m ${fmt.pp(k.saldo.cresc6)}% — estoque entre datas-base (não é concessão)</div></div>
+    <div class="card kpi"><h4>Crescimento nominal</h4><div class="big" style="color:var(--accent-ink)">${fmt.pp(k.saldo.cresc12)}%<small> 12m</small></div><div class="src">3m ${fmt.pp(k.saldo.cresc3)}% · 6m ${fmt.pp(k.saldo.cresc6)}% — estoque entre datas-base (não é concessão)</div></div>
     <div class="card kpi"><h4>Inadimplência (arrastada) ${inadChip("scr")}</h4><div class="big" style="color:var(--c-neg)">${fmt.n(k.inad.v, 1)}%</div><div class="src">${fmt.pp(k.inad.d12m_pp)} p.p. em 12m · <span title="${attr(k.inad.conceito)}">conceito ≠ SGS†</span> · atraso 15–90d: ${fmt.n(k.atraso15_90.v, 2)}%</div></div>
     <div class="card kpi"><h4>Saldo médio por operação</h4><div class="big">R$ ${fmt.n0(k.saldo_medio_op.v)}</div><div class="src" title="${attr(k.saldo_medio_op.conceito)}">${k.saldo_medio_op.parcial ? "cálculo parcial (células suprimidas fora)†" : ""} · nº de clientes não é público</div></div>
     <div class="card kpi"><h4>Maior deterioração</h4><div class="big" style="font-size:16px;font-weight:560;line-height:1.35">${k.grupo_deterioracao.v || "–"}</div><div class="src">inadimplência arrastada · regra publicada em "O que mudou?"</div></div>
@@ -997,7 +997,7 @@ function renderPanorama() {
     return `<path d="${d}" class="${cls}" fill="${scale(m[met])}" data-tip="${tip}" onclick="panSelUF('${m.uf}')" aria-label="${attr(m.nome)}"></path>`;
   }).join("");
   const legend = M.kind === "seq"
-    ? `<div class="maplegend"><span>${M.f(Math.min(...vals.filter(v => v != null)))}</span><span class="grad" style="background:linear-gradient(90deg, color-mix(in srgb, var(--c-line1) 8%, var(--surface)), color-mix(in srgb, var(--c-line1) 88%, var(--surface)))"></span><span>${M.f(Math.max(...vals.filter(v => v != null)))}</span><span>· ${M.desc}</span></div>`
+    ? `<div class="maplegend"><span>${M.f(Math.min(...vals.filter(v => v != null)))}</span><span class="grad" style="background:linear-gradient(90deg, color-mix(in srgb, var(--accent) 8%, var(--surface)), color-mix(in srgb, var(--accent) 88%, var(--surface)))"></span><span>${M.f(Math.max(...vals.filter(v => v != null)))}</span><span>· ${M.desc}</span></div>`
     : `<div class="maplegend"><span style="color:var(--c-line1)">abaixo ${M.kind === "divbr" ? "do Brasil" : "de zero"}</span><span class="grad" style="background:linear-gradient(90deg, color-mix(in srgb, var(--c-line1) 78%, var(--surface)), var(--surface), color-mix(in srgb, var(--c-neg) 78%, var(--surface)))"></span><span style="color:var(--c-neg)">acima</span><span>· ${M.desc}</span></div>`;
   const metsel = `<div class="metsel">${Object.entries(PAN_METS).map(([kk, mm]) =>
     `<button class="${kk === met ? "on" : ""}" onclick="panSet('met','${kk}')" title="${mm.desc}">${mm.l}</button>`).join("")}</div>`;
@@ -2058,7 +2058,7 @@ function inadFanChart(seg) {
     if (rs.cusum && rs.cusum.ultimo_disparo) out2.push({ x: rs.cusum.ultimo_disparo.data, label: "CUSUM " + rs.cusum.ultimo_disparo.direcao, color: "#6b46a3" });
     return out2;
   })();
-  return `<div class="legend"><span><span class="sw" style="background:#1d4e89"></span>observado (linha contínua)</span><span>― ― previsão p50</span><span><span class="sw" style="background:rgba(29,78,137,.25);height:10px"></span>banda p10–p90</span>${annotations.length ? '<span class="src">marcadores = eventos estatísticos (hipóteses, não fatos)</span>' : ""}</div>`
+  return `<div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado (linha contínua)</span><span>― ― previsão p50</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda p10–p90</span>${annotations.length ? '<span class="src">marcadores = eventos estatísticos (hipóteses, não fatos)</span>' : ""}</div>`
     + lineChart({ series, band, h: 220, forecastStart: last.ref, annotations, aria: "inadimplência com projeção", unit: "%", fonte: inad.meta.source + " " + inad.meta.series_code, status: "observado + previsão" })
     + chartFooter({ fonte: inad.meta.source + " série " + inad.meta.series_code, periodo: `${fmt.my(inad.obs[Math.max(0, inad.obs.length - 48)].ref)}–${fmt.my(last.ref)} + 12m projetados`, atualizado: inad.meta.last_collected_at ? inad.meta.last_collected_at.slice(0, 10) : "–", unidade: inad.meta.unit, nota: fInad && fInad.ok ? fInad.metodo : "" });
 }
@@ -2683,7 +2683,7 @@ function renderInstPageData(el, pg) {
       </div>
       <div class="grid g2" style="margin-top:10px">
         <div class="card"><h4>Série (máx. disponível: ${q.serie.length} trimestres — metodologia vigente desde 2025-T1)</h4>
-          <div class="legend"><span><span class="sw" style="background:#1d4e89"></span>instituição</span><span><span class="sw" style="background:#0e7c7b"></span>mediana do grupo (trimestre atual)</span><span><span class="sw" style="background:#b45309"></span>q3 do grupo (atual)</span></div>
+          <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>instituição</span><span><span class="sw" style="background:var(--c-line2)"></span>mediana do grupo (trimestre atual)</span><span><span class="sw" style="background:var(--c-line3)"></span>q3 do grupo (atual)</span></div>
           ${lineChart({ series: [{ pts: serie, color: "#1d4e89" }], hlines: hl, h: 160 })}
           <div class="src">máx/mín de 3 anos indisponível: a estrutura por instrumentos financeiros existe desde 2025-T1 (sem quebra interna na amostra).</div></div>
         <div class="card"><h4>Comparação temporal</h4>
@@ -3033,7 +3033,7 @@ function renderScenarios() {
   <div class="sliders">${sliders}</div>
   <div class="card" style="margin-top:14px">
     <h4>Inadimplência ${segName()}: base ${badge("previsao")} vs. cenário ${badge("cenario")}</h4>
-    <div class="legend"><span><span class="sw" style="background:#1d4e89"></span>observado / base (tracejada)</span><span><span class="sw" style="background:#6b46a3"></span>cenário</span><span><span class="sw" style="background:rgba(29,78,137,.25);height:10px"></span>banda do cenário</span></div>
+    <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado / base (tracejada)</span><span><span class="sw" style="background:var(--c-forecast)"></span>cenário</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda do cenário</span></div>
     ${chart}
     ${chartFooter({ fonte: "BCB/SGS 21082 + elasticidades documentadas", periodo: "36m observados + 12m", atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "%", nota: scenario.nota })}
   </div>

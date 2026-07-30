@@ -41,8 +41,11 @@ function constantTimeEqualHex(a: string, b: string): boolean {
   return diff === 0;
 }
 
-/** Assina token + expiração no formato do cookie. */
+/** Assina token + expiração no formato do cookie. Exige COOKIE_SECRET em produção. */
 export async function signSessionCookie(token: string, expiresAt: Date): Promise<string> {
+  if (!secret()) {
+    throw new Error("COOKIE_SECRET não configurado: impossível emitir sessão em produção.");
+  }
   const exp = Math.floor(expiresAt.getTime() / 1000);
   const payload = `${exp}.${token}`;
   const sig = await hmacHex(payload, secret());
