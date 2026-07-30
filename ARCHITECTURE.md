@@ -36,10 +36,13 @@ Registro das decisões técnicas da plataforma. Curto por intenção: cada seç�
 ## Máquina de estados retomável do onboarding
 
 ```
-EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
+EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPLETE
+                                                       ↓       ↑
+                                                    WAITLIST ──┘
 ```
 
-- O estado vive em `users.onboarding_status`. `nextStepPath` (`src/lib/onboarding.ts`) mapeia estado → rota (`/cadastro`, `/cadastro/telefone`, `/cadastro/perfil`, `/app`), então um usuário que abandona o fluxo **retoma exatamente de onde parou**. No modelo somente-SMS, `email/start` cria o usuário **direto em `PHONE_PENDING`** (o e-mail não é verificado); `EMAIL_PENDING` permanece apenas como estado legado, promovido a `PHONE_PENDING` no próximo `email/start`.
+- O estado vive em `users.onboarding_status`. `nextStepPath` (`src/lib/onboarding.ts`) mapeia estado → rota (`/cadastro`, `/cadastro/telefone`, `/cadastro/perfil`, `/cadastro/acesso`, `/app`), então um usuário que abandona o fluxo **retoma exatamente de onde parou**. No modelo somente-SMS, `email/start` cria o usuário **direto em `PHONE_PENDING`** (o e-mail não é verificado); `EMAIL_PENDING` permanece apenas como estado legado, promovido a `PHONE_PENDING` no próximo `email/start`.
+- **Código de acesso (acesso antecipado):** após o perfil, o usuário fica em `ACCESS_PENDING` e precisa informar um código de `ACCESS_CODES` (lista separada por vírgulas, comparação case-insensitive com trim em `src/lib/access.ts`; lista vazia → nenhum código válido). Código válido → `COMPLETE` (é aqui que `onboarding_completed` é emitido); "Não tenho código" → `WAITLIST` (lista de espera, evento `waitlist_joined`). `ACCESS_PENDING` e `WAITLIST` compartilham `/cadastro/acesso`: quem está na lista de espera pode entrar assim que receber um código.
 - Invariantes: um usuário `COMPLETE` sempre tem `phone_verified_at` e `terms_accepted_at` preenchidos (`email_verified_at` só existe em contas legadas do fluxo antigo).
 
 ## Rate limiting
@@ -77,6 +80,7 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
 | `TWILIO_VERIFY_SERVICE_SID` | SID do serviço Twilio Verify (SMS). | Idem acima. As três precisam estar presentes juntas para sair do modo simulado. |
 | `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Servidor SMTP para comunicações por e-mail (`src/lib/mailer.ts`); o login e a validação não dependem de e-mail. | Não em dev; em produção apenas se e-mails transacionais forem enviados. |
 | `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <nao-responda@scrutiniums.com.br>`). | Junto com `SMTP_*` em produção. |
+| `ACCESS_CODES` | Códigos de acesso antecipado, separados por vírgula (case-insensitive, com trim). Vazio/ausente → nenhum código válido; usuários vão para a lista de espera. | Não; sem ela o acesso fica fechado (todos em `WAITLIST`). |
 | `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`). `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
 
 ## Testes

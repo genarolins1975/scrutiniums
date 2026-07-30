@@ -11,7 +11,8 @@ const EMAIL_MAX_ATTEMPTS = 5;
 
 /**
  * Máquina de estados retomável do onboarding.
- * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
+ * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPLETE
+ * (WAITLIST fica na mesma rota de acesso: pode entrar quando receber código.)
  */
 export function nextStepPath(status: OnboardingStatus): string {
   switch (status) {
@@ -21,6 +22,9 @@ export function nextStepPath(status: OnboardingStatus): string {
       return "/cadastro/telefone";
     case "PROFILE_PENDING":
       return "/cadastro/perfil";
+    case "ACCESS_PENDING":
+    case "WAITLIST":
+      return "/cadastro/acesso";
     case "COMPLETE":
       return "/app";
   }

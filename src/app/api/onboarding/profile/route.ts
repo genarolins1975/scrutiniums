@@ -8,7 +8,9 @@ export const runtime = "nodejs";
 
 /**
  * Etapa 3: empresa e cargo (texto livre, 1..120 caracteres).
- * Conclui o onboarding: status COMPLETE.
+ * Não conclui o onboarding: encaminha para o código de acesso
+ * (ACCESS_PENDING → /cadastro/acesso). "onboarding_completed" só é
+ * emitido na validação do código (api/onboarding/access/check).
  */
 
 const bodySchema = z.object({
@@ -36,11 +38,10 @@ export async function POST(req: Request) {
   await updateUser(user.id, {
     company: parsed.data.company,
     jobTitle: parsed.data.jobTitle,
-    onboardingStatus: "COMPLETE",
+    onboardingStatus: "ACCESS_PENDING",
   });
 
   await trackEvent("profile_completed", user.id);
-  await trackEvent("onboarding_completed", user.id);
 
-  return NextResponse.json({ ok: true, next: "/app" });
+  return NextResponse.json({ ok: true, next: "/cadastro/acesso" });
 }

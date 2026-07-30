@@ -195,10 +195,12 @@ describe("onboarding.registerContactEmail (cadastro somente-SMS)", () => {
 });
 
 describe("onboarding.nextStepPath", () => {
-  it("mapeia os 4 estados da máquina para as rotas corretas", () => {
+  it("mapeia os 6 estados da máquina para as rotas corretas", () => {
     expect(nextStepPath("EMAIL_PENDING")).toBe("/cadastro");
     expect(nextStepPath("PHONE_PENDING")).toBe("/cadastro/telefone");
     expect(nextStepPath("PROFILE_PENDING")).toBe("/cadastro/perfil");
+    expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
+    expect(nextStepPath("WAITLIST")).toBe("/cadastro/acesso");
     expect(nextStepPath("COMPLETE")).toBe("/app");
   });
 });

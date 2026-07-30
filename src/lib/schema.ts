@@ -5,13 +5,17 @@ import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core"
  * Decisão registrada em ARCHITECTURE.md: um único schema pg-core serve
  * PGlite (Postgres embarcado) em desenvolvimento e node-postgres em produção.
  * Máquina de estados do onboarding:
- * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
+ * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPLETE
+ * (ACCESS_PENDING → WAITLIST quando não há código de acesso; WAITLIST →
+ * COMPLETE ao informar um código válido depois.)
  */
 
 export const ONBOARDING_STATUSES = [
   "EMAIL_PENDING",
   "PHONE_PENDING",
   "PROFILE_PENDING",
+  "ACCESS_PENDING",
+  "WAITLIST",
   "COMPLETE",
 ] as const;
 export type OnboardingStatus = (typeof ONBOARDING_STATUSES)[number];

@@ -59,10 +59,29 @@ describe("máquina de estados do onboarding", () => {
     await updateUser(userId, { onboardingStatus: "PROFILE_PENDING" });
     expect((await getUser(userId)).onboardingStatus).toBe("PROFILE_PENDING");
 
+    await updateUser(userId, { onboardingStatus: "ACCESS_PENDING" });
+    expect((await getUser(userId)).onboardingStatus).toBe("ACCESS_PENDING");
+
     await updateUser(userId, { onboardingStatus: "COMPLETE" });
     const user = await getUser(userId);
     expect(user.onboardingStatus).toBe("COMPLETE");
     expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(user.createdAt.getTime());
+  });
+
+  it("ACCESS_PENDING → WAITLIST → COMPLETE (lista de espera que recebe código depois)", async () => {
+    const { userId } = await startEmailVerification("espera@exemplo.com", "EMAIL_VERIFY");
+    await updateUser(userId, { onboardingStatus: "ACCESS_PENDING" });
+    expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
+
+    // "Não tenho código": entra na lista de espera, mas continua na mesma rota.
+    await updateUser(userId, { onboardingStatus: "WAITLIST" });
+    expect((await getUser(userId)).onboardingStatus).toBe("WAITLIST");
+    expect(nextStepPath("WAITLIST")).toBe("/cadastro/acesso");
+
+    // Código de acesso recebido depois: entra na plataforma.
+    await updateUser(userId, { onboardingStatus: "COMPLETE" });
+    expect((await getUser(userId)).onboardingStatus).toBe("COMPLETE");
+    expect(nextStepPath("COMPLETE")).toBe("/app");
   });
 
   it("fluxo simulado completo: usuário COMPLETE tem e-mail e telefone verificados", async () => {
@@ -98,10 +117,18 @@ describe("máquina de estados do onboarding", () => {
       company: "Empresa Exemplo",
       jobTitle: "Analista",
       termsAcceptedAt: new Date(),
-      onboardingStatus: "COMPLETE",
+      onboardingStatus: "ACCESS_PENDING",
     });
 
-    // 4. COMPLETE: invariantes do estado final.
+    // 4. ACCESS_PENDING: código de acesso válido conclui o onboarding.
+    expect(nextStepPath("ACCESS_PENDING")).toBe("/cadastro/acesso");
+    process.env.ACCESS_CODES = "SCRUT-TESTE";
+    const { isValidAccessCode } = await import("@/lib/access");
+    expect(isValidAccessCode("scrut-teste")).toBe(true);
+    await updateUser(userId, { onboardingStatus: "COMPLETE" });
+    delete process.env.ACCESS_CODES;
+
+    // 5. COMPLETE: invariantes do estado final.
     const user = await getUser(userId);
     expect(user.onboardingStatus).toBe("COMPLETE");
     expect(user.emailVerifiedAt).not.toBeNull();
