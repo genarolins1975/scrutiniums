@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { and, eq, gt, isNull } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { generateSessionToken, hashToken } from "./crypto";
+import { signSessionCookie, verifySessionCookie } from "./sessionCookie";
 import type { User } from "./schema";
 
 const COOKIE_NAME = "scrutiniums_session";
@@ -11,14 +12,16 @@ export async function createSession(userId: string): Promise<void> {
   const db = await getDb();
   const token = generateSessionToken();
   const now = Date.now();
+  const expiresAt = new Date(now + SESSION_TTL_MS);
   await db.insert(schema.sessions).values({
     id: newId(),
     userId,
     tokenHash: hashToken(token),
-    expiresAt: new Date(now + SESSION_TTL_MS),
+    expiresAt,
     createdAt: new Date(now),
   });
-  cookies().set(COOKIE_NAME, token, {
+  const signed = await signSessionCookie(token, expiresAt);
+  cookies().set(COOKIE_NAME, signed, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
@@ -28,8 +31,8 @@ export async function createSession(userId: string): Promise<void> {
 }
 
 export async function getSessionUser(): Promise<User | null> {
-  const token = cookies().get(COOKIE_NAME)?.value;
-  if (!token) return null;
+  const verified = await verifySessionCookie(cookies().get(COOKIE_NAME)?.value);
+  if (!verified) return null;
   const db = await getDb();
   const rows = await db
     .select({ user: schema.users, session: schema.sessions })
@@ -37,7 +40,7 @@ export async function getSessionUser(): Promise<User | null> {
     .innerJoin(schema.users, eq(schema.users.id, schema.sessions.userId))
     .where(
       and(
-        eq(schema.sessions.tokenHash, hashToken(token)),
+        eq(schema.sessions.tokenHash, hashToken(verified.token)),
         isNull(schema.sessions.revokedAt),
         gt(schema.sessions.expiresAt, new Date()),
       ),
@@ -47,13 +50,13 @@ export async function getSessionUser(): Promise<User | null> {
 }
 
 export async function destroySession(): Promise<void> {
-  const token = cookies().get(COOKIE_NAME)?.value;
-  if (token) {
+  const verified = await verifySessionCookie(cookies().get(COOKIE_NAME)?.value);
+  if (verified) {
     const db = await getDb();
     await db
       .update(schema.sessions)
       .set({ revokedAt: new Date() })
-      .where(eq(schema.sessions.tokenHash, hashToken(token)));
+      .where(eq(schema.sessions.tokenHash, hashToken(verified.token)));
   }
   cookies().delete(COOKIE_NAME);
 }
