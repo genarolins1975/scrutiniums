@@ -5,7 +5,10 @@
  */
 type Bucket = { count: number; windowStart: number; blockedUntil: number };
 
-const buckets = new Map<string, Bucket>();
+// Em globalThis: o dev server do Next compila cada rota como módulo separado
+// e os buckets precisam ser únicos por processo.
+const globalForRl = globalThis as unknown as { __rlBuckets?: Map<string, Bucket> };
+const buckets = (globalForRl.__rlBuckets ??= new Map<string, Bucket>());
 
 export type RateLimitPolicy = {
   windowMs: number;

@@ -16,7 +16,12 @@ const VERIFY_SERVICE_SID = process.env.TWILIO_VERIFY_SERVICE_SID;
 const isConfigured = Boolean(ACCOUNT_SID && AUTH_TOKEN && VERIFY_SERVICE_SID);
 
 // Modo dev: mantém pendências em memória. Nunca usado em produção.
-const devPending = new Map<string, { code: string; expiresAt: number; attempts: number }>();
+// Em globalThis porque o dev server do Next compila cada rota como módulo
+// separado; sem isso, start e check não compartilhariam o estado.
+const globalForVerify = globalThis as unknown as {
+  __devPendingVerify?: Map<string, { code: string; expiresAt: number; attempts: number }>;
+};
+const devPending = (globalForVerify.__devPendingVerify ??= new Map());
 const DEV_TTL_MS = 10 * 60 * 1000;
 const DEV_MAX_ATTEMPTS = 5;
 
