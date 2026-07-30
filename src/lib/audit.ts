@@ -1,4 +1,4 @@
-import { db, newId, schema } from "./db";
+import { getDb, newId, schema } from "./db";
 
 export type AuditAction =
   | "EMAIL_CHANGE_REQUESTED"
@@ -9,8 +9,9 @@ export type AuditAction =
   | "ACCOUNT_DELETED";
 
 /** Auditoria de mudanças sensíveis. detail deve conter apenas dados mascarados. */
-export function audit(userId: string, action: AuditAction, detail?: string): void {
-  db.insert(schema.auditLogs)
-    .values({ id: newId(), userId, action, detail: detail ?? null, createdAt: new Date() })
-    .run();
+export async function audit(userId: string, action: AuditAction, detail?: string): Promise<void> {
+  const db = await getDb();
+  await db
+    .insert(schema.auditLogs)
+    .values({ id: newId(), userId, action, detail: detail ?? null, createdAt: new Date() });
 }

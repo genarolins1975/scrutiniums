@@ -1,24 +1,15 @@
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
-import fs from "node:fs";
-import path from "node:path";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { eq } from "drizzle-orm";
 
-// Banco temporário exclusivo deste arquivo de teste. Definido ANTES de
-// importar qualquer módulo que toque em src/lib/db (import dinâmico no beforeAll).
-const DB_FILE = "./test-onboarding.db";
-process.env.DATABASE_URL = `file:${DB_FILE}`;
-
-function cleanupDbFiles() {
-  for (const suffix of ["", "-wal", "-shm"]) {
-    fs.rmSync(path.resolve(process.cwd(), `${DB_FILE}${suffix}`), { force: true });
-  }
-}
-cleanupDbFiles();
+// Banco PGlite EM MEMÓRIA exclusivo deste processo de teste (pool "forks":
+// um processo por arquivo). Definido ANTES de importar qualquer módulo que
+// toque em src/lib/db (import dinâmico no beforeAll).
+process.env.DATABASE_URL = "pglite-memory:";
 
 let startEmailVerification: typeof import("@/lib/onboarding").startEmailVerification;
 let checkEmailCode: typeof import("@/lib/onboarding").checkEmailCode;
 let nextStepPath: typeof import("@/lib/onboarding").nextStepPath;
-let db: typeof import("@/lib/db").db;
+let db: Awaited<ReturnType<typeof import("@/lib/db").getDb>>;
 let schema: typeof import("@/lib/db").schema;
 let hashToken: typeof import("@/lib/crypto").hashToken;
 
@@ -27,12 +18,10 @@ beforeAll(async () => {
   startEmailVerification = onboarding.startEmailVerification;
   checkEmailCode = onboarding.checkEmailCode;
   nextStepPath = onboarding.nextStepPath;
-  ({ db, schema } = await import("@/lib/db"));
+  const dbModule = await import("@/lib/db");
+  db = await dbModule.getDb();
+  schema = dbModule.schema;
   ({ hashToken } = await import("@/lib/crypto"));
-});
-
-afterAll(() => {
-  cleanupDbFiles();
 });
 
 function spyInfo() {
@@ -58,8 +47,7 @@ function tokensOf(userId: string) {
   return db
     .select()
     .from(schema.verificationTokens)
-    .where(eq(schema.verificationTokens.userId, userId))
-    .all();
+    .where(eq(schema.verificationTokens.userId, userId));
 }
 
 describe("onboarding.startEmailVerification", () => {
@@ -67,7 +55,8 @@ describe("onboarding.startEmailVerification", () => {
     const { userId } = await startEmailVerification("  Novo@Exemplo.COM ", "EMAIL_VERIFY");
     expect(userId).not.toBe("");
 
-    const user = db.select().from(schema.users).where(eq(schema.users.id, userId)).all()[0];
+    const users = await db.select().from(schema.users).where(eq(schema.users.id, userId));
+    const user = users[0];
     expect(user).toBeDefined();
     expect(user.email).toBe("novo@exemplo.com");
     expect(user.onboardingStatus).toBe("EMAIL_PENDING");
@@ -78,7 +67,7 @@ describe("onboarding.startEmailVerification", () => {
     const { userId } = await startEmailVerification("hash@exemplo.com", "EMAIL_VERIFY");
     const code = lastMailedCode();
 
-    const tokens = tokensOf(userId);
+    const tokens = await tokensOf(userId);
     expect(tokens).toHaveLength(1);
     const token = tokens[0];
 
@@ -93,17 +82,17 @@ describe("onboarding.startEmailVerification", () => {
   });
 
   it("LOGIN para e-mail inexistente não cria usuário nem revela existência", async () => {
-    const before = db.select().from(schema.users).all().length;
+    const before = (await db.select().from(schema.users)).length;
     const { userId } = await startEmailVerification("fantasma@exemplo.com", "LOGIN");
     expect(userId).toBe("");
-    expect(db.select().from(schema.users).all().length).toBe(before);
+    expect((await db.select().from(schema.users)).length).toBe(before);
   });
 
   it("reaproveita usuário existente em novo start (não duplica)", async () => {
     const a = await startEmailVerification("repetido@exemplo.com", "EMAIL_VERIFY");
     const b = await startEmailVerification("repetido@exemplo.com", "EMAIL_VERIFY");
     expect(b.userId).toBe(a.userId);
-    expect(tokensOf(a.userId)).toHaveLength(2);
+    expect(await tokensOf(a.userId)).toHaveLength(2);
   });
 });
 
@@ -112,11 +101,11 @@ describe("onboarding.checkEmailCode", () => {
     const { userId } = await startEmailVerification("aprova@exemplo.com", "EMAIL_VERIFY");
     const code = lastMailedCode();
 
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("approved");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("approved");
     // Token marcado como usado: segunda tentativa com o mesmo código falha.
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("expired");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("expired");
 
-    const token = tokensOf(userId)[0];
+    const token = (await tokensOf(userId))[0];
     expect(token.usedAt).not.toBeNull();
   });
 
@@ -125,11 +114,11 @@ describe("onboarding.checkEmailCode", () => {
     const code = lastMailedCode();
     const wrong = code === "000000" ? "000001" : "000000";
 
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("invalid");
-    expect(tokensOf(userId)[0].attempts).toBe(1);
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("invalid");
+    expect((await tokensOf(userId))[0].attempts).toBe(1);
 
     // O código correto ainda funciona após um erro.
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("approved");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("approved");
   });
 
   it("trava após 5 tentativas erradas, mesmo com o código correto depois", async () => {
@@ -138,27 +127,27 @@ describe("onboarding.checkEmailCode", () => {
     const wrong = code === "000000" ? "000001" : "000000";
 
     for (let i = 0; i < 5; i++) {
-      expect(checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("invalid");
+      expect(await checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("invalid");
     }
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("locked");
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("locked");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", wrong)).toBe("locked");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("locked");
   });
 
   it("retorna expired quando o token venceu (expires_at manipulado no banco)", async () => {
     const { userId } = await startEmailVerification("vencido@exemplo.com", "EMAIL_VERIFY");
     const code = lastMailedCode();
 
-    db.update(schema.verificationTokens)
+    await db
+      .update(schema.verificationTokens)
       .set({ expiresAt: new Date(Date.now() - 1_000) })
-      .where(eq(schema.verificationTokens.userId, userId))
-      .run();
+      .where(eq(schema.verificationTokens.userId, userId));
 
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("expired");
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", code)).toBe("expired");
   });
 
   it("retorna expired quando nunca houve start para o propósito", async () => {
     const { userId } = await startEmailVerification("soemail@exemplo.com", "EMAIL_VERIFY");
-    expect(checkEmailCode(userId, "LOGIN", "123456")).toBe("expired");
+    expect(await checkEmailCode(userId, "LOGIN", "123456")).toBe("expired");
   });
 });
 

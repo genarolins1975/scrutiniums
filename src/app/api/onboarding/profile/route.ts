@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Dados inválidos." }, { status: 400 });
   }
 
-  updateUser(user.id, {
+  await updateUser(user.id, {
     company: parsed.data.company,
     jobTitle: parsed.data.jobTitle,
     onboardingStatus: "COMPLETE",

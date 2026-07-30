@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { getDb, schema } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import { toE164 } from "@/lib/phone";
 import { maskPhone } from "@/lib/crypto";
@@ -64,12 +64,13 @@ export async function POST(req: Request) {
   }
 
   // Telefone de outra conta: mesma resposta genérica do número inválido.
-  const existing = db
+  const db = await getDb();
+  const existingRows = await db
     .select({ id: schema.users.id })
     .from(schema.users)
     .where(eq(schema.users.phoneE164, phoneE164))
-    .limit(1)
-    .all()[0];
+    .limit(1);
+  const existing = existingRows[0];
   if (existing && existing.id !== user.id) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
@@ -85,7 +86,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  audit(user.id, "PHONE_CHANGE_REQUESTED", maskPhone(phoneE164));
+  await audit(user.id, "PHONE_CHANGE_REQUESTED", maskPhone(phoneE164));
   await trackEvent("phone_verification_requested", user.id);
 
   return NextResponse.json({ ok: true });

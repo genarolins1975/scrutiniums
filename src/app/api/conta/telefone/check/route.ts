@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { getDb, schema } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import { updateUser } from "@/lib/onboarding";
 import { toE164 } from "@/lib/phone";
@@ -59,24 +59,25 @@ export async function POST(req: Request) {
   }
 
   // Revalida unicidade no momento da gravação (corrida entre start e check).
-  const existing = db
+  const db = await getDb();
+  const existingRows = await db
     .select({ id: schema.users.id })
     .from(schema.users)
     .where(eq(schema.users.phoneE164, phoneE164))
-    .limit(1)
-    .all()[0];
+    .limit(1);
+  const existing = existingRows[0];
   if (existing && existing.id !== user.id) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
   try {
-    updateUser(user.id, { phoneE164, phoneVerifiedAt: new Date() });
+    await updateUser(user.id, { phoneE164, phoneVerifiedAt: new Date() });
   } catch {
     // Violação de unicidade ou falha de gravação: nunca detalhar.
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  audit(user.id, "PHONE_CHANGED", maskPhone(phoneE164));
+  await audit(user.id, "PHONE_CHANGED", maskPhone(phoneE164));
   await trackEvent("phone_verified", user.id);
 
   return NextResponse.json({ ok: true });

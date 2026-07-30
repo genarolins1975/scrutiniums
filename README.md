@@ -6,7 +6,7 @@ Plataforma **gratuita** de inteligência analítica sobre setores da economia br
 
 - **Next.js 14** (App Router, Server Components) + **TypeScript**
 - **Tailwind CSS** com design tokens centralizados
-- **Drizzle ORM + better-sqlite3** (portável para PostgreSQL — ver [ARCHITECTURE.md](./ARCHITECTURE.md))
+- **Drizzle ORM (pg-core)** — **PGlite** (Postgres embarcado) em desenvolvimento, **node-postgres** em produção (ver [ARCHITECTURE.md](./ARCHITECTURE.md))
 - Autenticação **passwordless** por código de e-mail; verificação de telefone via **Twilio Verify**
 - **Recharts** para gráficos, **vitest** para testes
 
@@ -17,7 +17,7 @@ npm install
 npm run dev
 ```
 
-Aplicação em `http://localhost:3000`. O banco SQLite (`dev.db`) é criado e migrado automaticamente na primeira execução.
+Aplicação em `http://localhost:3000`. O banco de desenvolvimento é um PGlite (Postgres embarcado) criado e migrado automaticamente em `./.pglite` na primeira execução — não é preciso instalar Postgres.
 
 **Modo de desenvolvimento simulado:** sem credenciais de Twilio e SMTP configuradas, nenhuma mensagem externa é enviada — os códigos de verificação (e-mail e SMS) aparecem **no console do servidor**, com destinatário mascarado:
 
@@ -35,7 +35,7 @@ Defina as variáveis de ambiente (lista completa, com propósito e obrigatorieda
 - **Twilio Verify (SMS):** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_VERIFY_SERVICE_SID` — crie um serviço Verify no console da Twilio; com as três presentes, o modo simulado é desativado automaticamente.
 - **E-mail (SMTP):** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`.
 - **Segurança:** `COOKIE_SECRET` (ou `SESSION_SECRET`) com valor aleatório longo.
-- **Banco:** `DATABASE_URL` (ex.: `file:./data/prod.db`; para PostgreSQL, siga as instruções de migração no ARCHITECTURE.md).
+- **Banco:** `DATABASE_URL` com a connection string do Postgres (ex.: `postgres://usuario:senha@host:5432/banco?sslmode=require`). Em dev, vazio (PGlite em `./.pglite`) ou `pglite://caminho`.
 
 As credenciais existem apenas no servidor; o navegador nunca fala com Twilio ou SMTP.
 
@@ -46,7 +46,7 @@ npm test        # vitest run
 npm run test:watch
 ```
 
-Os testes de integração usam bancos SQLite temporários (apagados ao final) e nunca tocam o `dev.db`. Não é preciso servidor rodando.
+Os testes de integração usam bancos PGlite **em memória** (`DATABASE_URL=pglite-memory:`, um por arquivo de teste) e nunca tocam o banco de desenvolvimento. Não é preciso servidor rodando.
 
 ## Estrutura de diretórios
 

@@ -1,7 +1,5 @@
 node_modules/
 .next/
-dev.db
-dev.db-*
-test-*.db*
+.pglite/
 .env
 *.log

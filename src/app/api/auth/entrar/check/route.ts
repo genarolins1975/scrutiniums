@@ -53,13 +53,13 @@ export async function POST(req: Request) {
   const perEmail = checkRateLimit(`login-check:email:${email}`, POLICIES.otpCheckPerPhone);
   if (!perEmail.allowed) return rateLimited(perEmail.retryAfterMs);
 
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user) {
     await trackEvent("verification_failed");
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  const result = checkEmailCode(user.id, "LOGIN", parsed.data.code);
+  const result = await checkEmailCode(user.id, "LOGIN", parsed.data.code);
   if (result !== "approved") {
     await trackEvent("verification_failed", user.id);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });

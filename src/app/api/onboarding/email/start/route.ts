@@ -71,7 +71,7 @@ export async function POST(req: Request) {
   const resendGap = checkRateLimit(`email-start:resend:${email}`, POLICIES.resendMinInterval);
   if (!resendGap.allowed) return rateLimited(resendGap.retryAfterMs);
 
-  const existing = findUserByEmail(email);
+  const existing = await findUserByEmail(email);
   const isNew = !existing;
 
   if (existing && existing.onboardingStatus === "COMPLETE") {
@@ -85,7 +85,7 @@ export async function POST(req: Request) {
 
   if (isNew && userId && !isResend) {
     const data = parsed.data as { marketingOptIn?: boolean };
-    updateUser(userId, {
+    await updateUser(userId, {
       termsAcceptedAt: new Date(),
       privacyVersion: PRIVACY_VERSION,
       marketingOptIn: data.marketingOptIn === true,

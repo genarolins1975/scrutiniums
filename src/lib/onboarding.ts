@@ -1,5 +1,5 @@
-import { and, eq, gt, isNull } from "drizzle-orm";
-import { db, newId, schema } from "./db";
+import { and, desc, eq, gt, isNull } from "drizzle-orm";
+import { getDb, newId, schema } from "./db";
 import { generateOtp, hashToken } from "./crypto";
 import { sendEmailCode } from "./mailer";
 import type { OnboardingStatus, User } from "./schema";
@@ -26,17 +26,20 @@ export function nextStepPath(status: OnboardingStatus): string {
   }
 }
 
-export function findUserByEmail(email: string): User | undefined {
-  return db
+export async function findUserByEmail(email: string): Promise<User | undefined> {
+  const db = await getDb();
+  const rows = await db
     .select()
     .from(schema.users)
     .where(eq(schema.users.email, email.toLowerCase().trim()))
-    .limit(1)
-    .all()[0];
+    .limit(1);
+  return rows[0];
 }
 
-export function findUserById(id: string): User | undefined {
-  return db.select().from(schema.users).where(eq(schema.users.id, id)).limit(1).all()[0];
+export async function findUserById(id: string): Promise<User | undefined> {
+  const db = await getDb();
+  const rows = await db.select().from(schema.users).where(eq(schema.users.id, id)).limit(1);
+  return rows[0];
 }
 
 /**
@@ -49,22 +52,21 @@ export async function startEmailVerification(
   email: string,
   purpose: "EMAIL_VERIFY" | "LOGIN" | "RECOVERY",
 ): Promise<{ userId: string }> {
+  const db = await getDb();
   const normalized = email.toLowerCase().trim();
-  let user = findUserByEmail(normalized);
+  let user = await findUserByEmail(normalized);
   const now = new Date();
 
   if (!user && purpose === "EMAIL_VERIFY") {
     const id = newId();
-    db.insert(schema.users)
-      .values({
-        id,
-        email: normalized,
-        onboardingStatus: "EMAIL_PENDING",
-        createdAt: now,
-        updatedAt: now,
-      })
-      .run();
-    user = findUserById(id)!;
+    await db.insert(schema.users).values({
+      id,
+      email: normalized,
+      onboardingStatus: "EMAIL_PENDING",
+      createdAt: now,
+      updatedAt: now,
+    });
+    user = (await findUserById(id))!;
   }
   if (!user) {
     // LOGIN/RECOVERY de e-mail inexistente: não revelar. Chamador responde genérico.
@@ -72,16 +74,14 @@ export async function startEmailVerification(
   }
 
   const code = generateOtp();
-  db.insert(schema.verificationTokens)
-    .values({
-      id: newId(),
-      userId: user.id,
-      purpose,
-      tokenHash: hashToken(code),
-      expiresAt: new Date(Date.now() + EMAIL_CODE_TTL_MS),
-      createdAt: now,
-    })
-    .run();
+  await db.insert(schema.verificationTokens).values({
+    id: newId(),
+    userId: user.id,
+    purpose,
+    tokenHash: hashToken(code),
+    expiresAt: new Date(Date.now() + EMAIL_CODE_TTL_MS),
+    createdAt: now,
+  });
   await sendEmailCode(user.email, code, purpose);
   return { userId: user.id };
 }
@@ -89,12 +89,13 @@ export async function startEmailVerification(
 export type EmailCheckResult = "approved" | "invalid" | "expired" | "locked";
 
 /** Confere o código de e-mail. Nunca compara em claro: somente hashes. */
-export function checkEmailCode(
+export async function checkEmailCode(
   userId: string,
   purpose: string,
   code: string,
-): EmailCheckResult {
-  const token = db
+): Promise<EmailCheckResult> {
+  const db = await getDb();
+  const tokens = await db
     .select()
     .from(schema.verificationTokens)
     .where(
@@ -105,30 +106,34 @@ export function checkEmailCode(
         gt(schema.verificationTokens.expiresAt, new Date()),
       ),
     )
-    .orderBy(schema.verificationTokens.createdAt)
-    .all()
-    .at(-1);
+    .orderBy(desc(schema.verificationTokens.createdAt))
+    .limit(1);
+  const token = tokens[0];
 
   if (!token) return "expired";
   if (token.attempts >= EMAIL_MAX_ATTEMPTS) return "locked";
 
-  db.update(schema.verificationTokens)
+  await db
+    .update(schema.verificationTokens)
     .set({ attempts: token.attempts + 1 })
-    .where(eq(schema.verificationTokens.id, token.id))
-    .run();
+    .where(eq(schema.verificationTokens.id, token.id));
 
   if (token.tokenHash !== hashToken(code)) return "invalid";
 
-  db.update(schema.verificationTokens)
+  await db
+    .update(schema.verificationTokens)
     .set({ usedAt: new Date() })
-    .where(eq(schema.verificationTokens.id, token.id))
-    .run();
+    .where(eq(schema.verificationTokens.id, token.id));
   return "approved";
 }
 
-export function updateUser(userId: string, values: Partial<typeof schema.users.$inferInsert>): void {
-  db.update(schema.users)
+export async function updateUser(
+  userId: string,
+  values: Partial<typeof schema.users.$inferInsert>,
+): Promise<void> {
+  const db = await getDb();
+  await db
+    .update(schema.users)
     .set({ ...values, updatedAt: new Date() })
-    .where(eq(schema.users.id, userId))
-    .run();
+    .where(eq(schema.users.id, userId));
 }

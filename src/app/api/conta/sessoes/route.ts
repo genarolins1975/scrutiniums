@@ -13,7 +13,7 @@ export async function POST() {
   }
 
   await revokeAllSessions(user.id);
-  audit(user.id, "SESSION_REVOKED");
+  await audit(user.id, "SESSION_REVOKED");
   await destroySession();
 
   return NextResponse.json({ ok: true });

@@ -1,21 +1,12 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
-import fs from "node:fs";
-import path from "node:path";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { eq } from "drizzle-orm";
 
-// Banco temporário exclusivo deste arquivo + modo dev simulado do Twilio.
-const DB_FILE = "./test-state-machine.db";
-process.env.DATABASE_URL = `file:${DB_FILE}`;
+// Banco PGlite EM MEMÓRIA exclusivo deste processo de teste + modo dev
+// simulado do Twilio. Definido ANTES de importar módulos que tocam em db.
+process.env.DATABASE_URL = "pglite-memory:";
 delete process.env.TWILIO_ACCOUNT_SID;
 delete process.env.TWILIO_AUTH_TOKEN;
 delete process.env.TWILIO_VERIFY_SERVICE_SID;
-
-function cleanupDbFiles() {
-  for (const suffix of ["", "-wal", "-shm"]) {
-    fs.rmSync(path.resolve(process.cwd(), `${DB_FILE}${suffix}`), { force: true });
-  }
-}
-cleanupDbFiles();
 
 let startEmailVerification: typeof import("@/lib/onboarding").startEmailVerification;
 let checkEmailCode: typeof import("@/lib/onboarding").checkEmailCode;
@@ -23,7 +14,7 @@ let updateUser: typeof import("@/lib/onboarding").updateUser;
 let nextStepPath: typeof import("@/lib/onboarding").nextStepPath;
 let startPhoneVerification: typeof import("@/lib/twilio").startPhoneVerification;
 let checkPhoneVerification: typeof import("@/lib/twilio").checkPhoneVerification;
-let db: typeof import("@/lib/db").db;
+let db: Awaited<ReturnType<typeof import("@/lib/db").getDb>>;
 let schema: typeof import("@/lib/db").schema;
 
 beforeAll(async () => {
@@ -33,15 +24,14 @@ beforeAll(async () => {
   updateUser = onboarding.updateUser;
   nextStepPath = onboarding.nextStepPath;
   ({ startPhoneVerification, checkPhoneVerification } = await import("@/lib/twilio"));
-  ({ db, schema } = await import("@/lib/db"));
+  const dbModule = await import("@/lib/db");
+  db = await dbModule.getDb();
+  schema = dbModule.schema;
 });
 
-afterAll(() => {
-  cleanupDbFiles();
-});
-
-function getUser(userId: string) {
-  return db.select().from(schema.users).where(eq(schema.users.id, userId)).all()[0];
+async function getUser(userId: string) {
+  const rows = await db.select().from(schema.users).where(eq(schema.users.id, userId));
+  return rows[0];
 }
 
 function spyInfo() {
@@ -61,16 +51,16 @@ function codeFromLog(spy: ReturnType<typeof spyInfo>, tag: string): string {
 describe("máquina de estados do onboarding", () => {
   it("updateUser muda onboarding_status e atualiza updated_at", async () => {
     const { userId } = await startEmailVerification("transicao@exemplo.com", "EMAIL_VERIFY");
-    expect(getUser(userId).onboardingStatus).toBe("EMAIL_PENDING");
+    expect((await getUser(userId)).onboardingStatus).toBe("EMAIL_PENDING");
 
-    updateUser(userId, { onboardingStatus: "PHONE_PENDING" });
-    expect(getUser(userId).onboardingStatus).toBe("PHONE_PENDING");
+    await updateUser(userId, { onboardingStatus: "PHONE_PENDING" });
+    expect((await getUser(userId)).onboardingStatus).toBe("PHONE_PENDING");
 
-    updateUser(userId, { onboardingStatus: "PROFILE_PENDING" });
-    expect(getUser(userId).onboardingStatus).toBe("PROFILE_PENDING");
+    await updateUser(userId, { onboardingStatus: "PROFILE_PENDING" });
+    expect((await getUser(userId)).onboardingStatus).toBe("PROFILE_PENDING");
 
-    updateUser(userId, { onboardingStatus: "COMPLETE" });
-    const user = getUser(userId);
+    await updateUser(userId, { onboardingStatus: "COMPLETE" });
+    const user = await getUser(userId);
     expect(user.onboardingStatus).toBe("COMPLETE");
     expect(user.updatedAt.getTime()).toBeGreaterThanOrEqual(user.createdAt.getTime());
   });
@@ -81,12 +71,12 @@ describe("máquina de estados do onboarding", () => {
 
     // 1. EMAIL_PENDING: cadastro e verificação do e-mail.
     const { userId } = await startEmailVerification("completo@exemplo.com", "EMAIL_VERIFY");
-    expect(getUser(userId).onboardingStatus).toBe("EMAIL_PENDING");
+    expect((await getUser(userId)).onboardingStatus).toBe("EMAIL_PENDING");
     expect(nextStepPath("EMAIL_PENDING")).toBe("/cadastro");
 
     const emailCode = codeFromLog(infoSpy, "[dev-mail]");
-    expect(checkEmailCode(userId, "EMAIL_VERIFY", emailCode)).toBe("approved");
-    updateUser(userId, { emailVerifiedAt: new Date(), onboardingStatus: "PHONE_PENDING" });
+    expect(await checkEmailCode(userId, "EMAIL_VERIFY", emailCode)).toBe("approved");
+    await updateUser(userId, { emailVerifiedAt: new Date(), onboardingStatus: "PHONE_PENDING" });
 
     // 2. PHONE_PENDING: verificação por SMS (modo dev simulado).
     expect(nextStepPath("PHONE_PENDING")).toBe("/cadastro/telefone");
@@ -96,7 +86,7 @@ describe("máquina de estados do onboarding", () => {
     const smsCode = codeFromLog(infoSpy, "[dev-verify]");
     const check = await checkPhoneVerification(phone, smsCode);
     expect(check.status).toBe("approved");
-    updateUser(userId, {
+    await updateUser(userId, {
       phoneE164: phone,
       phoneVerifiedAt: new Date(),
       onboardingStatus: "PROFILE_PENDING",
@@ -104,7 +94,7 @@ describe("máquina de estados do onboarding", () => {
 
     // 3. PROFILE_PENDING: dados de perfil e aceite dos termos.
     expect(nextStepPath("PROFILE_PENDING")).toBe("/cadastro/perfil");
-    updateUser(userId, {
+    await updateUser(userId, {
       company: "Empresa Exemplo",
       jobTitle: "Analista",
       termsAcceptedAt: new Date(),
@@ -112,7 +102,7 @@ describe("máquina de estados do onboarding", () => {
     });
 
     // 4. COMPLETE: invariantes do estado final.
-    const user = getUser(userId);
+    const user = await getUser(userId);
     expect(user.onboardingStatus).toBe("COMPLETE");
     expect(user.emailVerifiedAt).not.toBeNull();
     expect(user.phoneVerifiedAt).not.toBeNull();

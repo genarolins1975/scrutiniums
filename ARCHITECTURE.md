@@ -5,13 +5,15 @@ Registro das decisões técnicas da plataforma. Curto por intenção: cada seç�
 ## Stack
 
 - **Next.js 14 (App Router) com Server Components.** Páginas públicas e painéis renderizam no servidor; JavaScript de cliente entra apenas onde há interatividade (formulários de onboarding, gráficos Recharts). Rotas de API em `src/app/api/**/route.ts`.
-- **TypeScript estrito**, **Tailwind CSS** com design tokens, **Drizzle ORM + better-sqlite3**, **vitest** para testes.
+- **TypeScript estrito**, **Tailwind CSS** com design tokens, **Drizzle ORM (pg-core)** com **PGlite** em dev e **node-postgres** em produção, **vitest** para testes.
 
-## Banco de dados: Drizzle + better-sqlite3
+## Banco de dados: Drizzle (pg-core) — PGlite em dev, node-postgres em produção
 
-- **Por que não Prisma:** o Prisma exige download de engines binárias em tempo de build, bloqueado no ambiente de build desta plataforma. Drizzle é JavaScript puro (o driver better-sqlite3 é o único nativo, já vendorizado) e não baixa nada.
-- **Portabilidade para PostgreSQL:** o schema (`src/lib/schema.ts`) usa a API do Drizzle; para migrar, troque `drizzle-orm/better-sqlite3` por `drizzle-orm/node-postgres` em `src/lib/db.ts`, converta `sqliteTable`/`integer(..., { mode: "timestamp_ms" })` para `pgTable`/`timestamp` e aponte `DATABASE_URL` para o Postgres. As consultas (select/insert/update via Drizzle) permanecem as mesmas.
-- **Migração idempotente** embutida em `src/lib/db.ts` (`CREATE TABLE IF NOT EXISTS ...`), aplicada na inicialização da conexão. SQLite roda em WAL com `foreign_keys = ON`. Conexão única cacheada em `globalThis` para sobreviver ao hot reload do Next.
+- **Um único schema Postgres** (`src/lib/schema.ts`, `drizzle-orm/pg-core`, `TIMESTAMPTZ`/`BOOLEAN`) serve os dois ambientes. O antigo driver **better-sqlite3 foi removido**.
+- **Produção (Vercel):** `DATABASE_URL=postgres://...` (ou `postgresql://`) usa `drizzle-orm/node-postgres` com `Pool` do `pg`; TLS habilitado quando a URL contém `sslmode=require` ou `PGSSL=1` (`ssl: { rejectUnauthorized: false }`).
+- **Desenvolvimento:** sem `DATABASE_URL` (ou com `pglite://caminho`), usa `drizzle-orm/pglite` com **PGlite** (Postgres embarcado, sem instalar nada) persistido em `./.pglite`. Os testes usam `DATABASE_URL=pglite-memory:` (banco em memória por processo).
+- **Acesso sempre via `getDb()`** (`src/lib/db.ts`): função async cujo singleton (Promise em `globalThis`) garante que a **migração idempotente** (`CREATE TABLE IF NOT EXISTS ...`) rodou antes de qualquer consulta e sobrevive ao hot reload do Next. Toda a camada de dados (`session.ts`, `onboarding.ts`, `events.ts`, `audit.ts`) é assíncrona.
+- **Por que não Prisma:** o Prisma exige download de engines binárias em tempo de build, bloqueado no ambiente de build desta plataforma. Drizzle não baixa nada.
 
 ### Modelo de dados (`src/lib/schema.ts`)
 
@@ -69,7 +71,7 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
 
 | Variável | Propósito | Obrigatória? |
 | --- | --- | --- |
-| `DATABASE_URL` | Caminho do banco no formato `file:./dev.db` (SQLite). Após migrar para Postgres, a connection string. | Não em dev (padrão `file:./dev.db`); **sim em produção**. |
+| `DATABASE_URL` | Connection string do Postgres (`postgres://...`) em produção; vazio (PGlite em `./.pglite`), `pglite://caminho` ou `pglite-memory:` (testes) em dev. | Não em dev (padrão PGlite em `./.pglite`); **sim em produção**. |
 | `TWILIO_ACCOUNT_SID` | SID da conta Twilio para o Verify. | Não em dev (sem ela, modo simulado); **sim em produção**. |
 | `TWILIO_AUTH_TOKEN` | Token de autenticação da Twilio. | Idem acima. |
 | `TWILIO_VERIFY_SERVICE_SID` | SID do serviço Twilio Verify (SMS). | Idem acima. As três precisam estar presentes juntas para sair do modo simulado. |
@@ -79,4 +81,4 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
 
 ## Testes
 
-`npx vitest run` (ou `npm test`). Configuração em `vitest.config.ts` (ambiente node, alias `@ → ./src`, pool `forks` por causa do módulo nativo do SQLite). Testes de integração criam **bancos SQLite temporários por arquivo** via `DATABASE_URL` e os apagam ao final — o `dev.db` nunca é tocado.
+`npx vitest run` (ou `npm test`). Configuração em `vitest.config.ts` (ambiente node, alias `@ → ./src`, pool `forks` para isolar um processo por arquivo). Testes de integração criam **bancos PGlite em memória por arquivo** via `DATABASE_URL=pglite-memory:` — o banco de desenvolvimento nunca é tocado.

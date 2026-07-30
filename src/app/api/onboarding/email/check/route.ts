@@ -53,14 +53,14 @@ export async function POST(req: Request) {
   const perEmail = checkRateLimit(`email-check:email:${email}`, POLICIES.otpCheckPerPhone);
   if (!perEmail.allowed) return rateLimited(perEmail.retryAfterMs);
 
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (!user || user.onboardingStatus === "COMPLETE") {
     // Conta inexistente ou já completa (fluxo de cadastro não se aplica).
     await trackEvent("verification_failed", user?.id);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  const result = checkEmailCode(user.id, "EMAIL_VERIFY", parsed.data.code);
+  const result = await checkEmailCode(user.id, "EMAIL_VERIFY", parsed.data.code);
   if (result !== "approved") {
     await trackEvent("verification_failed", user.id);
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
@@ -72,7 +72,7 @@ export async function POST(req: Request) {
       ? "PHONE_PENDING"
       : (user.onboardingStatus as OnboardingStatus);
 
-  updateUser(user.id, { emailVerifiedAt: new Date(), onboardingStatus: status });
+  await updateUser(user.id, { emailVerifiedAt: new Date(), onboardingStatus: status });
   await createSession(user.id);
   await trackEvent("email_verified", user.id);
   clearSignedEmailCookie(ONBOARDING_EMAIL_COOKIE);

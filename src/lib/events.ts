@@ -1,4 +1,4 @@
-import { db, newId, schema } from "./db";
+import { getDb, newId, schema } from "./db";
 
 /**
  * Eventos de produto não sensíveis.
@@ -16,9 +16,10 @@ export type ProductEventName =
 
 export async function trackEvent(name: ProductEventName, userId?: string): Promise<void> {
   try {
-    db.insert(schema.productEvents)
-      .values({ id: newId(), name, userId: userId ?? null, createdAt: new Date() })
-      .run();
+    const db = await getDb();
+    await db
+      .insert(schema.productEvents)
+      .values({ id: newId(), name, userId: userId ?? null, createdAt: new Date() });
   } catch {
     // Telemetria nunca derruba o fluxo principal.
   }

@@ -7,8 +7,8 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/tests/**/*.test.ts"],
-    // Forks: necessário para o módulo nativo better-sqlite3 e para que
-    // cada arquivo de teste tenha seu próprio banco (DATABASE_URL isolado).
+    // Forks: um processo por arquivo de teste, para que cada um tenha seu
+    // próprio banco PGlite em memória (DATABASE_URL=pglite-memory: isolado).
     pool: "forks",
   },
   resolve: {

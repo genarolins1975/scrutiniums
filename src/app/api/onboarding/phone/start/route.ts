@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { and, eq, isNotNull, ne } from "drizzle-orm";
-import { db, schema } from "@/lib/db";
+import { getDb, schema } from "@/lib/db";
 import { getSessionUser } from "@/lib/session";
 import { toE164 } from "@/lib/phone";
 import { startPhoneVerification } from "@/lib/twilio";
@@ -56,7 +56,8 @@ export async function POST(req: Request) {
   }
 
   // Telefone já verificado por outra conta: rejeição genérica.
-  const conflict = db
+  const db = await getDb();
+  const conflictRows = await db
     .select({ id: schema.users.id })
     .from(schema.users)
     .where(
@@ -66,8 +67,8 @@ export async function POST(req: Request) {
         isNotNull(schema.users.phoneVerifiedAt),
       ),
     )
-    .limit(1)
-    .all()[0];
+    .limit(1);
+  const conflict = conflictRows[0];
   if (conflict) {
     console.warn(`[onboarding] telefone em conflito: ${maskPhone(e164)}`);
     return NextResponse.json({ error: GENERIC_PHONE_ERROR }, { status: 400 });

@@ -60,7 +60,7 @@ export async function POST(req: Request) {
   const resendGap = checkRateLimit(`login-start:resend:${email}`, POLICIES.resendMinInterval);
   if (!resendGap.allowed) return rateLimited(resendGap.retryAfterMs);
 
-  const user = findUserByEmail(email);
+  const user = await findUserByEmail(email);
   if (user && user.emailVerifiedAt) {
     await startEmailVerification(email, "LOGIN");
   }
