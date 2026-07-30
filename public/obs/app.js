@@ -160,6 +160,11 @@ const fmt = {
   pp: v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2),
 };
 
+/* escape único para valores interpolados em ATRIBUTOS HTML (aria-label, title, alt, data-*):
+   remove tags (rótulos com badges/chips viram texto puro) e escapa aspas duplas.
+   Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
+const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
+
 const APP_VERSION = "0.28.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
@@ -199,7 +204,7 @@ const BADGES = {
 function badge(kind, title) {
   const b = BADGES[kind];
   if (!b) return "";
-  return `<span class="seal ${b[0]}" ${title ? `title="${title}"` : ""}>${b[1]}</span>`;
+  return `<span class="seal ${b[0]}" ${title ? `title="${attr(title)}"` : ""}>${b[1]}</span>`;
 }
 function sealFor(tipo) {
   if (!tipo) return "";
@@ -219,19 +224,19 @@ function qBadge(q) {
 }
 function confBadge(level, motivo) {
   const c = level === "alta" ? "q-high" : level === "moderada" ? "q-mid" : "q-low";
-  return `<span class="qbadge ${c}" title="${motivo || ""}">confiança ${level}</span>`;
+  return `<span class="qbadge ${c}" title="${attr(motivo || "")}">confiança ${level}</span>`;
 }
 function srcLine(meta, q) {
   if (!meta) return "";
-  return `<div class="src"><b>${meta.source}</b> · série ${meta.series_code} · ${meta.unit} · ${meta.freq} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? meta.last_collected_at.slice(0, 10) : "–"} ${qBadge(q)}<br><span title="${meta.methodology}">${meta.methodology}</span></div>`;
+  return `<div class="src"><b>${meta.source}</b> · série ${meta.series_code} · ${meta.unit} · ${meta.freq} · ref. ${q ? fmt.my(q.ultima_ref) : "–"} · coletado ${meta.last_collected_at ? meta.last_collected_at.slice(0, 10) : "–"} ${qBadge(q)}<br><span title="${attr(meta.methodology)}">${meta.methodology}</span></div>`;
 }
 function chartFooter(opts) {
   // rodapé obrigatório: fonte · período · atualização · unidade · nota metodológica
-  return `<div class="chartfoot">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${opts.nota}">nota metodológica ⓘ</span>` : ""}</div>`;
+  return `<div class="chartfoot">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""}</div>`;
 }
 function favStar(type, key, label) {
   const isFav = state.favorites.some(f => f.type === type && f.key === key);
-  return `<button class="star ${isFav ? "on" : ""}" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
+  return `<button class="star ${isFav ? "on" : ""}" title="${isFav ? "remover dos" : "salvar nos"} favoritos" onclick="toggleFav('${type}','${key}',this,'${attr(label || "").replace(/'/g, "")}')">${isFav ? "★" : "☆"}</button>`;
 }
 window.toggleFav = (type, key, el, label) => {
   const i = state.favorites.findIndex(f => f.type === type && f.key === key);
@@ -284,7 +289,7 @@ function lineChart(opts) {
     unit: opts.unit || "", fonte: opts.fonte || "", status: opts.status || "",
     ml: M.l, mr: M.r, w: W, h: H, mt: M.t, mb: M.b, lo, hi,
   }));
-  let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" tabindex="0" data-ix="1" data-chart="${payload}" aria-label="${opts.aria || "gráfico de série temporal"}${opts.unit ? `, em ${opts.unit}` : ""}. Use as setas para percorrer os valores.">`;
+  let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" tabindex="0" data-ix="1" data-chart="${payload}" aria-label="${attr(opts.aria || "gráfico de série temporal")}${opts.unit ? `, em ${attr(opts.unit)}` : ""}. Use as setas para percorrer os valores.">`;
   for (let i = 0; i <= ticks; i++) {
     const y = Y(tickVals[i]);
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${y}" y2="${y}" style="stroke:var(--c-grid)"/>`;
@@ -456,7 +461,7 @@ function sparkline(vals, w = 90, h = 24) {
   const X = i => 2 + i / (vals.length - 1) * (w - 4);
   const Y = v => hi - lo < 1e-9 ? h / 2 : 3 + (1 - (v - lo) / (hi - lo)) * (h - 6);
   const d = vals.map((v, i) => `${i ? "L" : "M"}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
-  return `<svg width="${w}" height="${h}" style="vertical-align:middle"><path d="${d}" fill="none" style="stroke:var(--c-line1)" stroke-width="1.5"/><circle cx="${X(vals.length - 1)}" cy="${Y(vals[vals.length - 1])}" r="2.4" style="fill:var(--c-line1)"/></svg>`;
+  return `<svg width="${w}" height="${h}" style="vertical-align:middle" aria-hidden="true"><path d="${d}" fill="none" style="stroke:var(--c-line1)" stroke-width="1.5"/><circle cx="${X(vals.length - 1)}" cy="${Y(vals[vals.length - 1])}" r="2.4" style="fill:var(--c-line1)"/></svg>`;
 }
 function contribBar(label, v, scale = 22) {
   const w = Math.min(Math.abs(v) * scale, 140);
@@ -571,7 +576,7 @@ function renderLeading() {
       const pts = s.serie.map(x => ({ x: `${x.p.slice(0, 4)}-${x.p.slice(4)}`, y: x.z }));
       return `<div class="card">
         <h4>${s.nome}</h4>
-        <div class="big" style="font-size:24px" class="${s.z_atual > 1 ? "up" : ""}">${s.z_atual >= 0 ? "+" : ""}${fmt.n(s.z_atual, 2)}σ</div>
+        <div class="big ${s.z_atual > 1 ? "up" : ""}" style="font-size:24px">${s.z_atual >= 0 ? "+" : ""}${fmt.n(s.z_atual, 2)}σ</div>
         <div class="delta ${s.tendencia === "subindo" ? "up" : s.tendencia === "caindo" ? "down good" : "neutral"}">${s.tendencia} · Δ3m ${fmt.pp(s.delta_3m)}σ · ${s.cobertura} · confiança ${s.confianca}</div>
         ${lineChart({ series: [{ pts, color: "#1d4e89", label: "z-score" }], hlines: [{ y: 0, color: "#aaa", label: "média histórica" }], h: 120, unit: "σ", fonte: "componentes abaixo", status: "calculado", dec: 1, noTable: true })}
         <div class="src">componentes (z atual): ${Object.entries(s.contribuicoes).map(([c, z]) => `${c} ${z >= 0 ? "+" : ""}${fmt.n(z, 1)}σ`).join(" · ")}</div>
@@ -679,7 +684,7 @@ function trHeat(rows, cols, zmax) { // rows: [{group}|{label,cells:[{v,tip,parci
   h += `<div class="hcell hhead hlab"></div>` + cols.map(c => `<div class="hcell hhead">${c.l || ""}</div>`).join("");
   rows.forEach(r => {
     if (r.group) { h += `<div class="hcell hgroup" style="grid-column:1/-1">${r.group}</div>`; return; }
-    h += `<div class="hcell hlab" title="${r.label}">${r.label}</div>`;
+    h += `<div class="hcell hlab" title="${attr(r.label)}">${r.label}</div>`;
     h += r.cells.map(c => {
       if (!c || c.v == null) return `<div class="hcell hnull" title="sem observação"></div>`;
       const a = Math.min(Math.abs(c.v) / zmax, 1);
@@ -705,7 +710,7 @@ function renderTrends() {
     return;
   }
   const M = T.meta, parcial = M.mes_parcial, painel = T.painel, byTermo = Object.fromEntries(painel.map(p => [p.termo, p]));
-  const selo = `<span class="seal exp" title="${T.selo}">ASSOCIAÇÃO EXPLORATÓRIA</span>`;
+  const selo = `<span class="seal exp" title="${attr(T.selo)}">ASSOCIAÇÃO EXPLORATÓRIA</span>`;
   const fam = state.tr.fam;
 
   /* ---------- cabeçalho ---------- */
@@ -722,7 +727,7 @@ function renderTrends() {
   /* ---------- 1. hero: temperatura por família ---------- */
   const famCard = f => {
     const chip = f.temperatura === "AQUECIDA" ? "hot" : (f.temperatura.includes("parcial") ? "warm" : "cool");
-    const dots = f.detalhe.map(p => `<i class="${p.direcao === "aquecimento" ? "hot" : p.direcao === "arrefecimento" ? "cool" : ""}" title="${p.termo}: ${p.direcao}"></i>`).join("");
+    const dots = f.detalhe.map(p => `<i class="${p.direcao === "aquecimento" ? "hot" : p.direcao === "arrefecimento" ? "cool" : ""}" title="${attr(`${p.termo}: ${p.direcao}`)}"></i>`).join("");
     return `<div class="tr-fam">
       <h4>${f.familia} <span class="tempchip ${chip}">${f.temperatura}</span></h4>
       <div class="tr-big" style="color:${f.var12m_mediana > 5 ? "var(--c-neg)" : f.var12m_mediana < -5 ? "var(--c-line1)" : "var(--text)"}">${fmt.pp(f.var12m_mediana).replace(",00", "").replace(".00", "")}<small>% em 12m (mediana)</small></div>
@@ -787,7 +792,7 @@ function renderTrends() {
     const dirCls = p.direcao === "aquecimento" ? "up" : p.direcao === "arrefecimento" ? "down" : "";
     return `<div class="tr-card">
       <h5><span><b>${p.termo}</b> <span class="src">· ${p.familia}</span></span><span class="now">${p.valor_atual}</span></h5>
-      <div class="tr-tags"><span class="${dirCls}">${p.direcao === "aquecimento" ? "▲" : p.direcao === "arrefecimento" ? "▼" : "→"} ${p.direcao}</span><span>intensidade ${p.intensidade}</span><span>12m ${fmt.pp(p.var12m).replace(",00", "")}%</span><span>percentil ${fmt.n(p.percentil, 0)}</span>${p.ambiguidade && p.ambiguidade !== "não" ? `<span title="${p.obs_qualidade || ""}">ambiguidade ${p.ambiguidade}</span>` : ""}</div>
+      <div class="tr-tags"><span class="${dirCls}">${p.direcao === "aquecimento" ? "▲" : p.direcao === "arrefecimento" ? "▼" : "→"} ${p.direcao}</span><span>intensidade ${p.intensidade}</span><span>12m ${fmt.pp(p.var12m).replace(",00", "")}%</span><span>percentil ${fmt.n(p.percentil, 0)}</span>${p.ambiguidade && p.ambiguidade !== "não" ? `<span title="${attr(p.obs_qualidade || "")}">ambiguidade ${p.ambiguidade}</span>` : ""}</div>
       ${lineChart({ series: [{ pts, label: p.termo, color: TR_FAM_COLORS[p.familia] }], h: 118, unit: "índice 0–100 (escala própria)", aria: `evolução do interesse de busca por ${p.termo}` })}
     </div>`;
   };
@@ -800,7 +805,7 @@ function renderTrends() {
   const divrow = p => {
     const xpct = (p.var12m - vlo) / (vhi - vlo) * 100;
     const left = Math.min(zpct, xpct), wdt = Math.abs(xpct - zpct);
-    return `<div class="divrow"><span title="${p.familia}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.termo}</span>
+    return `<div class="divrow"><span title="${attr(p.familia)}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${p.termo}</span>
       <div class="divtrack"><span class="zero" style="left:${zpct}%"></span><span class="bar" style="left:${left}%;width:${wdt}%;background:${p.var12m >= 0 ? "color-mix(in srgb, var(--c-neg) 78%, transparent)" : "color-mix(in srgb, var(--c-line1) 78%, transparent)"}"></span></div>
       <span style="text-align:right;font-variant-numeric:tabular-nums"><b class="${p.var12m > 5 ? "up" : p.var12m < -5 ? "down" : ""}">${fmt.pp(p.var12m).replace(",00", "")}%</b> <span class="src">3m ${fmt.n(p.var3m, 1)}%</span></span></div>`;
   };
@@ -936,7 +941,7 @@ function panBar(label, v, vmax, fmtFn, extra, diverge) {
   } else {
     fill = `<span class="fill" style="width:${Math.min(v / Math.max(vmax, 1e-9), 1) * 100}%;background:${diverge === false ? "color-mix(in srgb, var(--c-line1) 70%, transparent)" : "color-mix(in srgb, var(--c-line1) 70%, transparent)"}"></span>`;
   }
-  return `<div class="panbar"><span title="${label}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${label}</span>
+  return `<div class="panbar"><span title="${attr(label)}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${label}</span>
     <div class="track">${fill}</div>
     <span style="text-align:right;font-variant-numeric:tabular-nums"><b>${fmtFn(v)}</b>${extra ? ` <span class="src">${extra}</span>` : ""}</span></div>`;
 }
@@ -965,8 +970,8 @@ function renderPanorama() {
   const kpis = `<div class="pan-kpi">
     <div class="card kpi"><h4>Carteira ativa</h4><div class="big">${fmt.money(k.saldo.v)}</div><div class="src">${badge("observado")} SCR.data · ${P.data_base}</div></div>
     <div class="card kpi"><h4>Crescimento nominal</h4><div class="big" style="color:var(--c-line1)">${fmt.pp(k.saldo.cresc12)}%<small> 12m</small></div><div class="src">3m ${fmt.pp(k.saldo.cresc3)}% · 6m ${fmt.pp(k.saldo.cresc6)}% — estoque entre datas-base (não é concessão)</div></div>
-    <div class="card kpi"><h4>Inadimplência (arrastada) ${inadChip("scr")}</h4><div class="big" style="color:var(--c-neg)">${fmt.n(k.inad.v, 1)}%</div><div class="src">${fmt.pp(k.inad.d12m_pp)} p.p. em 12m · <span title="${k.inad.conceito}">conceito ≠ SGS†</span> · atraso 15–90d: ${fmt.n(k.atraso15_90.v, 2)}%</div></div>
-    <div class="card kpi"><h4>Saldo médio por operação</h4><div class="big">R$ ${fmt.n0(k.saldo_medio_op.v)}</div><div class="src" title="${k.saldo_medio_op.conceito}">${k.saldo_medio_op.parcial ? "cálculo parcial (células suprimidas fora)†" : ""} · nº de clientes não é público</div></div>
+    <div class="card kpi"><h4>Inadimplência (arrastada) ${inadChip("scr")}</h4><div class="big" style="color:var(--c-neg)">${fmt.n(k.inad.v, 1)}%</div><div class="src">${fmt.pp(k.inad.d12m_pp)} p.p. em 12m · <span title="${attr(k.inad.conceito)}">conceito ≠ SGS†</span> · atraso 15–90d: ${fmt.n(k.atraso15_90.v, 2)}%</div></div>
+    <div class="card kpi"><h4>Saldo médio por operação</h4><div class="big">R$ ${fmt.n0(k.saldo_medio_op.v)}</div><div class="src" title="${attr(k.saldo_medio_op.conceito)}">${k.saldo_medio_op.parcial ? "cálculo parcial (células suprimidas fora)†" : ""} · nº de clientes não é público</div></div>
     <div class="card kpi"><h4>Maior deterioração</h4><div class="big" style="font-size:16px;font-weight:560;line-height:1.35">${k.grupo_deterioracao.v || "–"}</div><div class="src">inadimplência arrastada · regra publicada em "O que mudou?"</div></div>
   </div>`;
   const sintese = `<p class="pan-sintese">${P.sintese}</p>
@@ -989,7 +994,7 @@ function renderPanorama() {
       <div class="tt-row"><span class="tt-lbl">per capita</span><span class="tt-val">R$ ${fmt.n0(m.per_capita)}</span></div>
       <div class="tt-meta">produto dominante: ${m.prod_dominante || "–"} · renda dominante: ${m.renda_dominante || "–"}<br>Δ inad 12m: ${fmt.pp(m.d_inad_12m)} p.p. · ${M.l}: ${m[met] != null ? M.f(m[met]) : "n.d."} (${rankOf(m.uf) ? rankOf(m.uf) + "º de " + ranked.length : "sem rank"})<br>clique para abrir o painel estadual</div>`);
     const cls = (pan.uf === m.uf ? "sel" : (pan.uf && pan.uf !== m.uf && !pan.cmp.includes(m.uf) ? "dim2" : ""));
-    return `<path d="${d}" class="${cls}" fill="${scale(m[met])}" data-tip="${tip}" onclick="panSelUF('${m.uf}')" aria-label="${m.nome}"></path>`;
+    return `<path d="${d}" class="${cls}" fill="${scale(m[met])}" data-tip="${tip}" onclick="panSelUF('${m.uf}')" aria-label="${attr(m.nome)}"></path>`;
   }).join("");
   const legend = M.kind === "seq"
     ? `<div class="maplegend"><span>${M.f(Math.min(...vals.filter(v => v != null)))}</span><span class="grad" style="background:linear-gradient(90deg, color-mix(in srgb, var(--c-line1) 8%, var(--surface)), color-mix(in srgb, var(--c-line1) 88%, var(--surface)))"></span><span>${M.f(Math.max(...vals.filter(v => v != null)))}</span><span>· ${M.desc}</span></div>`
@@ -1135,7 +1140,7 @@ function panMatriz(P) {
   let h = `<div class="heatwrap"><div class="heatgrid" style="grid-template-columns:minmax(150px,210px) repeat(${prods.length},minmax(30px,1fr))">`;
   h += `<div class="hcell hhead hlab"></div>` + prods.map(p => `<div class="hcell hhead" style="height:auto;line-height:1.2;padding:2px 2px 6px;white-space:normal;font-size:9.5px">${p.replace("Cartão — ", "Cartão ")}</div>`).join("");
   rendas.forEach(r => {
-    h += `<div class="hcell hlab" title="${r}">${r.replace(" salários mínimos", " SM").replace(" salário mínimo", " SM")}</div>`;
+    h += `<div class="hcell hlab" title="${attr(r)}">${r.replace(" salários mínimos", " SM").replace(" salário mínimo", " SM")}</div>`;
     h += prods.map(p => {
       const c = P.matriz_renda_produto[r][p];
       if (!c || c.inad == null) return `<div class="hcell hnull" title="taxa suprimida ou sem carteira — não é zero"></div>`;
@@ -1743,7 +1748,7 @@ function renderOverview() {
   const last2 = arr => arr && arr.length >= 2 ? [arr[arr.length - 2].v, arr[arr.length - 1].v] : [null, null];
   const sparkOf = (arr, n) => arr ? sparkline(arr.slice(-(n || 24)).map(o => o.v), 150, 30) : "";
   const mcard = (lbl, val, varHtml, spark, target, tip) => {
-    const lblPlain = String(lbl).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
+    const lblPlain = attr(lbl);
     return `
     <div class="mcard" tabindex="0" role="link" aria-label="${lblPlain} — abrir análise" data-tip="${tip || ""}"
       onclick="${target}" onkeydown="if(event.key==='Enter'){${target}}">
@@ -1872,7 +1877,7 @@ function renderOverview() {
       ${rowsA.map(p => {
         const st = p.atraso15.serie || [];
         const d = st.length >= 2 ? p.atraso15.agg_pct - st[0].agg_pct : null;
-        return `<div class="atrasorow" onclick="openProduct('${p.slug}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')openProduct('${p.slug}')" aria-label="abrir produto ${p.nome}">
+        return `<div class="atrasorow" onclick="openProduct('${p.slug}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')openProduct('${p.slug}')" aria-label="abrir produto ${attr(p.nome)}">
         <span class="aname">${p.nome} <span class="src">${p.seg.toUpperCase()}</span></span>
         <span class="abarwrap"><span class="abar" style="width:${Math.max(2, p.atraso15.agg_pct / maxA * 100)}%"></span></span>
         <span class="anum">${fmt.n(p.atraso15.agg_pct, 2)}% <span class="src">${d != null ? "(" + fmt.pp(d) + " pp/4T)" : ""}</span></span></div>`;
@@ -2543,7 +2548,7 @@ function donut(items, size = 130) {
     a0 = a1;
   });
   const legend = items.map((it, i) => `<div class="contrib"><span class="sw" style="background:${ccol(DONUT_COLORS[i % DONUT_COLORS.length])};width:10px;height:10px;border-radius:2px"></span><span class="lbl" style="width:auto">${it.label}</span><span class="num">${fmt.n(it.v / tot * 100, 1)}%${it.v > 1e8 ? ` · ${fmt.money(it.v)}` : ""}</span></div>`).join("");
-  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><svg width="${size}" height="${size}">${paths}</svg><div>${legend}</div></div>`;
+  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><svg width="${size}" height="${size}" aria-hidden="true">${paths}</svg><div>${legend}</div></div>`;
 }
 function histogram(vals, mine, w = 340, h = 90) {
   if (!vals || vals.length < 5 || mine == null) return "";
@@ -2553,7 +2558,7 @@ function histogram(vals, mine, w = 340, h = 90) {
   vals.forEach(v => bins[Math.min(nb - 1, Math.floor((v - lo) / (hi - lo) * nb))]++);
   const mx = Math.max(...bins);
   const bw = w / nb;
-  let out = `<svg width="${w}" height="${h}">`;
+  let out = `<svg width="${w}" height="${h}" aria-hidden="true">`;
   bins.forEach((b, i) => {
     const bh = b / mx * (h - 18);
     const b0 = lo + (hi - lo) * i / nb, b1 = lo + (hi - lo) * (i + 1) / nb;
@@ -2639,7 +2644,7 @@ function renderInstPageData(el, pg) {
         <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
         ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
         ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
-        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} <span title="${smeta.confianca_motivo}">ⓘ</span> · ${smeta.versao_metodologica}</div>` : ""}`
+        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} <span title="${attr(smeta.confianca_motivo)}">ⓘ</span> · ${smeta.versao_metodologica}</div>` : ""}`
       : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
       <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
     </div>
@@ -2824,7 +2829,7 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   const sizes = pairs.map(p => p.size).filter(v => v != null && v > 0);
   const smax = sizes.length ? Math.max(...sizes) : null;
   const R = p => (p.size != null && smax) ? 5 + 13 * Math.sqrt(p.size / smax) : 4.5;
-  let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="dispersão ${xl} × ${yl}">`;
+  let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="dispersão ${attr(xl)} × ${attr(yl)}">`;
   out += `<line x1="40" y1="${h - 26}" x2="${w - 10}" y2="${h - 26}" style="stroke:var(--border-2)"/><line x1="40" y1="10" x2="40" y2="${h - 26}" style="stroke:var(--border-2)"/>`;
   if (opts.refX != null) {
     out += `<line x1="${X(opts.refX)}" x2="${X(opts.refX)}" y1="10" y2="${h - 26}" style="stroke:var(--c-gray)" stroke-dasharray="4,3"/>`;
@@ -3524,6 +3529,33 @@ window.showView = v => {
 };
 document.getElementById("tabs").addEventListener("click", e => { if (e.target.dataset.view) showView(e.target.dataset.view); });
 
+/* ---------- acessibilidade: teclado para clicáveis não nativos (padrão tabindex+keydown da SPA) ---------- */
+const A11Y_NATIVE = ["BUTTON", "A", "INPUT", "SELECT", "TEXTAREA", "SUMMARY", "OPTION", "LABEL"];
+function a11yEnhance(root) {
+  if (!root || !root.querySelectorAll) return;
+  root.querySelectorAll("[onclick]").forEach(el => {
+    const tag = el.tagName.toUpperCase();
+    if (A11Y_NATIVE.includes(tag) || el.hasAttribute("tabindex")) return;
+    if (!(el.getAttribute("onclick") || "").trim()) return;
+    el.setAttribute("tabindex", "0");
+    // tr/td mantêm a semântica de tabela; os demais anunciam-se como link (mesmo padrão do mcard)
+    if (!el.hasAttribute("role") && !["TR", "TD", "TH"].includes(tag)) el.setAttribute("role", "link");
+  });
+}
+document.addEventListener("keydown", e => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  const el = e.target;
+  if (!(el instanceof Element)) return;
+  const tag = el.tagName.toUpperCase();
+  if (A11Y_NATIVE.includes(tag) || el.hasAttribute("onkeydown") || !el.hasAttribute("onclick")) return;
+  e.preventDefault();
+  if (typeof el.click === "function") el.click(); // SVG não tem click(): dispara o evento
+  else el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
+});
+new MutationObserver(muts => {
+  muts.forEach(m => m.addedNodes.forEach(n => { if (n.nodeType === 1) a11yEnhance(n); }));
+}).observe(document.getElementById("main"), { childList: true, subtree: true });
+
 
 /* ================= CAMADA DE PESQUISA: PRODUTOS, MATRIZ E COMPARADOR ================= */
 const SR_COLORS = { S1: "#1d4e89", S2: "#0e7c7b", S3: "#b45309", S4: "#6b46a3", S5: "#64748b" };
@@ -3692,7 +3724,7 @@ function renderProductPageData(el, P) {
   const shown = PMX_STATE.all ? rows : rows.slice(0, 60);
   const th = (k, lbl, title) => `<th onclick="pmxSort('${k}')" title="${title || "ordenar"}">${lbl}${PMX_STATE.sort === k ? (PMX_STATE.dir < 0 ? " ↓" : " ↑") : ""}</th>`;
   const trow = r => `<tr>
-    <td><input type="checkbox" ${PMX_STATE.sel[r.cod] ? "checked" : ""} onchange="pmxSel('${r.cod}', this.checked)" aria-label="selecionar ${r.nome}"></td>
+    <td><input type="checkbox" ${PMX_STATE.sel[r.cod] ? "checked" : ""} onchange="pmxSel('${r.cod}', this.checked)" aria-label="selecionar ${attr(r.nome)}"></td>
     <td><span class="clickable" onclick="${r.cod.startsWith("C") || r.cod.length === 8 ? `openInstPage('${r.cod}')` : ""}"><b>${r.nome.slice(0, 34)}</b></span><div class="src">${r.sr || ""} · ${r.nivel}</div></td>
     <td style="text-align:right">${fmt.money(r.carteira_brl)}</td>
     <td style="text-align:right">${fmt.n(r.share_pct, 2)}%</td>
@@ -3797,7 +3829,7 @@ function taxasSection(p) {
     h: 170, unit: "% a.a.", fonte: "BCB txjuros", status: "observado", dec: 1,
   }) + `<div class="src">banda = quartis (p25–p75) entre instituições da janela · ${it.serie.length} janelas desde ${fmt.d(it.serie[0].inicio)}</div>` : "";
   return `<h3>Taxas de juros por instituição ${badge("observado")}</h3>
-  <div class="controls"><span class="seg">${t.itens.map((x, i) => `<button class="${i === idx ? "active" : ""}" onclick="txSetIdx(${i})" title="${x.modalidade}">${x.modalidade.replace(/ - Prefixado$/, "").replace(/ - Pós-fixado.*$/, " (pós)").slice(0, 42)}</button>`).join("")}</span></div>
+  <div class="controls"><span class="seg">${t.itens.map((x, i) => `<button class="${i === idx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${x.modalidade.replace(/ - Prefixado$/, "").replace(/ - Pós-fixado.*$/, " (pós)").slice(0, 42)}</button>`).join("")}</span></div>
   <div class="card">
     <div class="src" style="margin-bottom:8px">janela ${fmt.d(it.inicio)}–${fmt.d(it.fim)} · ${it.n_inst} instituições · mediana <b>${fmt.n(it.mediana_aa, 1)}% a.a.</b> · quartis ${fmt.n(it.p25_aa, 1)}–${fmt.n(it.p75_aa, 1)}% · amplitude ${fmt.n(it.min_aa, 1)}–${fmt.n(it.max_aa, 1)}%
     ${it.moeda_estrangeira ? ` · <span class="seal aprox">TAXA REFERENCIADA EM MOEDA ESTRANGEIRA — não comparável a taxas em reais</span>` : ""}</div>
@@ -4031,7 +4063,7 @@ function renderCompare() {
       <div class="chips" style="margin-top:8px">${cmp.insts.map(c => {
         const d = state.cmpCache[c]; const ix = state.data.inst_index && state.data.inst_index.instituicoes.find(i => i.cod === c);
         const nome = (d && d.nome) || (ix && ix.nome) || c;
-        return `<span class="chip">${nome.slice(0, 26)} <span class="src" style="display:inline">${c.startsWith("C") ? "congl." : "indiv."}</span> <a href="javascript:void(0)" onclick="cmpDel('${c}')" aria-label="remover ${nome}">×</a></span>`;
+        return `<span class="chip">${nome.slice(0, 26)} <span class="src" style="display:inline">${c.startsWith("C") ? "congl." : "indiv."}</span> <a href="javascript:void(0)" onclick="cmpDel('${c}')" aria-label="remover ${attr(nome)}">×</a></span>`;
       }).join("") || "<span class='src'>nenhuma instituição selecionada</span>"}</div>
       ${nivel ? `<div class="src">nível de consolidação: <b>${nivel}</b> · data-base ${fmtTri(latest)} · fonte ${C.fonte}</div>` : ""}
     </div>`;
@@ -4186,7 +4218,7 @@ function renderCompare() {
       <div class="controls"><input type="search" placeholder="pesquisar métrica… (ex.: inadimplência, ROE, Basileia)" oninput="document.querySelectorAll('[data-mrow]').forEach(r=>r.style.display = r.dataset.mrow.includes(this.value.toLowerCase())?'':'none')" aria-label="pesquisar métrica"></div>
       ${[...new Set(C.metric_catalog.map(m => m.category))].map(cg => `<h3 style="text-transform:capitalize">${cg}</h3>` +
         C.metric_catalog.filter(m => m.category === cg).map(m => `
-        <div class="shortcut" data-mrow="${(m.name + " " + m.metric_id + " " + m.comparability_notes).toLowerCase()}">
+        <div class="shortcut" data-mrow="${attr((m.name + " " + m.metric_id + " " + m.comparability_notes).toLowerCase())}">
           <label style="display:flex;gap:10px;align-items:baseline"><input type="checkbox" ${cmp.mets.includes(m.metric_id) ? "checked" : ""} onchange="cmpToggleMet('${m.metric_id}', this.checked)">
           <span><b>${m.name}</b> <span class="qbadge ${m.coverage_count > 700 ? "q-high" : m.coverage_count > 300 ? "q-mid" : "q-low"}">${m.coverage_count} IFs</span> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}">${m.quality_status}</span>
           <div class="src">${m.comparability_notes} · fórmula: ${m.formula} · campo: ${m.original_field} · ${fmtTri(m.first_reference)}–${fmtTri(m.last_reference)} · normalizações: ${m.supported_normalizations.join(", ")}</div></span></label>

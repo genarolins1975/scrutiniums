@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { findUserByEmail, nextStepPath } from "@/lib/onboarding";
+import { findUserByEmail, nextStepPath, safeInternalPath } from "@/lib/onboarding";
 import { verifyPassword, PASSWORD_MAX_LENGTH } from "@/lib/password";
 import { createSession } from "@/lib/session";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
@@ -21,6 +21,9 @@ const GENERIC_ERROR = "E-mail ou senha inválidos.";
 const bodySchema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
   password: z.string().min(1).max(PASSWORD_MAX_LENGTH),
+  // Destino pós-login (?de= repassado por /entrar). Validado no servidor:
+  // apenas caminho interno; qualquer outro valor é ignorado.
+  de: z.string().max(512).optional(),
 });
 
 function rateLimited(retryAfterMs: number) {
@@ -41,7 +44,7 @@ export async function POST(req: Request) {
   if (!parsed.success) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
-  const { email, password } = parsed.data;
+  const { email, password, de } = parsed.data;
 
   const ip = requestIp(req);
   const perIp = checkRateLimit(`login-pwd:ip:${ip}`, POLICIES.loginPerIp);
@@ -59,8 +62,11 @@ export async function POST(req: Request) {
 
   await createSession(user.id);
 
-  return NextResponse.json({
-    ok: true,
-    next: nextStepPath(user.onboardingStatus as OnboardingStatus),
-  });
+  // Destino solicitado só vale para conta com onboarding completo;
+  // onboarding pendente sempre retoma da etapa correta.
+  const status = user.onboardingStatus as OnboardingStatus;
+  const next =
+    status === "COMPLETE" ? safeInternalPath(de) ?? nextStepPath(status) : nextStepPath(status);
+
+  return NextResponse.json({ ok: true, next });
 }

@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 // toque em src/lib/db (import dinâmico no beforeAll).
 process.env.DATABASE_URL = "pglite-memory:";
 
+let safeInternalPath: typeof import("@/lib/onboarding").safeInternalPath;
 let startEmailVerification: typeof import("@/lib/onboarding").startEmailVerification;
 let checkEmailCode: typeof import("@/lib/onboarding").checkEmailCode;
 let registerContactEmail: typeof import("@/lib/onboarding").registerContactEmail;
@@ -17,6 +18,7 @@ let hashToken: typeof import("@/lib/crypto").hashToken;
 
 beforeAll(async () => {
   const onboarding = await import("@/lib/onboarding");
+  safeInternalPath = onboarding.safeInternalPath;
   startEmailVerification = onboarding.startEmailVerification;
   checkEmailCode = onboarding.checkEmailCode;
   registerContactEmail = onboarding.registerContactEmail;
@@ -191,6 +193,26 @@ describe("onboarding.registerContactEmail (cadastro somente-SMS)", () => {
     const users = await db.select().from(schema.users).where(eq(schema.users.id, userId));
     expect(users[0].onboardingStatus).toBe("PHONE_PENDING");
     expect(users[0].termsAcceptedAt).not.toBeNull();
+  });
+});
+
+describe("onboarding.safeInternalPath (destino pós-login ?de=)", () => {
+  it("aceita apenas caminho interno absoluto", () => {
+    expect(safeInternalPath("/observatorio")).toBe("/observatorio");
+    expect(safeInternalPath("/app/risco")).toBe("/app/risco");
+    expect(safeInternalPath("/observatorio/detalhe?x=1")).toBe("/observatorio/detalhe?x=1");
+  });
+
+  it("rejeita destinos externos, protocol-relative e malformados", () => {
+    expect(safeInternalPath(undefined)).toBeNull();
+    expect(safeInternalPath(null)).toBeNull();
+    expect(safeInternalPath("")).toBeNull();
+    expect(safeInternalPath("observatorio")).toBeNull();
+    expect(safeInternalPath("//evil.example")).toBeNull();
+    expect(safeInternalPath("/\\evil.example")).toBeNull();
+    expect(safeInternalPath("https://evil.example")).toBeNull();
+    expect(safeInternalPath("/x?next=https://evil.example")).toBeNull();
+    expect(safeInternalPath("/api/auth/sair")).toBeNull();
   });
 });
 

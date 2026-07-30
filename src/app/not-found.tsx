@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { PublicHeader } from "@/components/layout/PublicHeader";
+import { PublicHeaderView } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 
 export default function NotFound() {
   return (
     <>
-      <PublicHeader />
+      {/* Variante estática: not-found é pré-renderizada e não pode ler cookies. */}
+      <PublicHeaderView />
       <main>
         <section aria-labelledby="nao-encontrada-titulo" className="bg-marfim">
           <div className="mx-auto max-w-page px-6 py-24 md:py-32">

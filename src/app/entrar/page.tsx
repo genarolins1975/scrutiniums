@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
-import { nextStepPath } from "@/lib/onboarding";
+import { nextStepPath, safeInternalPath } from "@/lib/onboarding";
 import type { OnboardingStatus } from "@/lib/schema";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { EntrarSenhaForm } from "@/components/onboarding/EntrarSenhaForm";
@@ -14,10 +14,19 @@ export const dynamic = "force-dynamic";
  * Login principal: e-mail + senha (senha criada na etapa 3 do cadastro).
  * O código por SMS permanece como alternativa e recuperação em /entrar/sms.
  */
-export default async function EntrarPage() {
+export default async function EntrarPage({
+  searchParams,
+}: {
+  searchParams?: { de?: string };
+}) {
+  // Destino pós-login (?de=...) definido pelo middleware ao barrar rota
+  // protegida; validado como caminho interno antes de qualquer uso.
+  const de = safeInternalPath(searchParams?.de) ?? undefined;
+
   const user = await getSessionUser();
   if (user) {
-    redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
+    const status = user.onboardingStatus as OnboardingStatus;
+    redirect(status === "COMPLETE" ? de ?? nextStepPath(status) : nextStepPath(status));
   }
 
   return (
@@ -41,7 +50,7 @@ export default async function EntrarPage() {
               Use o e-mail e a senha da sua conta.
             </p>
             <div className="mt-8">
-              <EntrarSenhaForm />
+              <EntrarSenhaForm de={de} />
             </div>
           </section>
         </div>

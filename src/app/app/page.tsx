@@ -19,7 +19,7 @@ import {
   TEMAS,
 } from "@/lib/data/paineis";
 
-export const metadata: Metadata = { title: "Visão geral" };
+export const metadata: Metadata = { title: "Painéis Scrutiniums" };
 
 type PontoResumo = { rotulo: string; valor: number };
 
@@ -128,7 +128,7 @@ export default function VisaoGeralPage() {
     <div className="space-y-10">
       <PageTitle
         label="Área interna"
-        title="Visão geral"
+        title="Painéis Scrutiniums"
         description="Leitura mais recente dos quatro indicadores da plataforma, com variação em relação ao período anterior. Cada painel completo declara fontes, metodologia e limitações."
       />
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">

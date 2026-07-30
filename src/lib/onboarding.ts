@@ -31,6 +31,21 @@ export function nextStepPath(status: OnboardingStatus): string {
   }
 }
 
+/**
+ * Valida um destino pós-login vindo da query (?de=...): aceita apenas
+ * caminho interno absoluto ("/...") — nunca "//host", "\", esquema externo
+ * ou rotas de API. Retorna null quando o valor não é seguro.
+ */
+export function safeInternalPath(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  if (!raw.startsWith("/")) return null;
+  if (raw.startsWith("//")) return null;
+  if (raw.includes("\\")) return null;
+  if (raw.includes("://")) return null;
+  if (raw === "/api" || raw.startsWith("/api/")) return null;
+  return raw;
+}
+
 export async function findUserByEmail(email: string): Promise<User | undefined> {
   const db = await getDb();
   const rows = await db

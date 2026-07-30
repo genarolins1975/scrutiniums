@@ -23,7 +23,9 @@ const config: Config = {
           soft: "#B08A67",
         },
         mineral: {
-          DEFAULT: "#878986",
+          // DEFAULT escurecido de #878986 para garantir ≥4.5:1 sobre
+          // marfim/papel (texto pequeno, WCAG AA). `soft` segue para fundos escuros.
+          DEFAULT: "#6B6D6A",
           soft: "#A6A8A4",
         },
         linha: "#D8D2C6",

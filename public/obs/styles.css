@@ -676,3 +676,13 @@ details.decomp summary:hover { text-decoration: underline; }
 .spin { width: 14px; height: 14px; border: 2px solid var(--border-2); border-top-color: var(--accent); border-radius: 50%; display: inline-block; animation: obcspin 0.85s linear infinite; flex: none; vertical-align: -2px; }
 @keyframes obcspin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spin { animation: none; } }
+
+/* Conta e saída (Scrutiniums) — mesmo tratamento visual dos toggles */
+#logoutBtn, #accountBtn {
+  background: transparent; border: 1px solid var(--border-2); color: var(--text-2);
+  width: 30px; height: 30px; border-radius: 8px; cursor: pointer; flex: 0 0 auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background var(--t-fast) var(--ease);
+}
+#logoutBtn:hover, #accountBtn:hover { background: var(--surface-2); color: var(--text); }
+.sb-collapsed #accountBtn, .sb-collapsed #logoutBtn { margin: 0 auto; }

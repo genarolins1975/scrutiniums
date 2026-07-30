@@ -36,8 +36,8 @@ export function Footer() {
       </div>
       <div className="border-t border-linha-escura">
         <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-2 px-6 py-5">
-          <p className="text-xs text-mineral">scrutiniums.com</p>
-          <p className="text-xs text-mineral">
+          <p className="text-xs text-mineral-soft">scrutiniums.com</p>
+          <p className="text-xs text-mineral-soft">
             Dados com fontes, critérios, período de referência e limitações declaradas.
           </p>
         </div>

@@ -7,8 +7,12 @@ import { Button } from "@/components/ui/Button";
 import { Field } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Alert";
 
-/** Login principal: e-mail + senha → POST /api/auth/login. */
-export function EntrarSenhaForm() {
+/**
+ * Login principal: e-mail + senha → POST /api/auth/login.
+ * `de` (destino pós-login, já validado no servidor da página) é repassado
+ * no corpo; a API revalida e só o aplica com onboarding completo.
+ */
+export function EntrarSenhaForm({ de }: { de?: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -32,7 +36,7 @@ export function EntrarSenhaForm() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: em, password }),
+        body: JSON.stringify({ email: em, password, ...(de ? { de } : {}) }),
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.next) {
