@@ -8,6 +8,7 @@ const NAV = [
   { href: "/app/regulatorio", label: "Regulatório" },
   { href: "/glossario", label: "Glossário" },
   { href: "/fontes", label: "Fontes" },
+  { href: "/metodologia", label: "Metodologia" },
 ];
 
 /** Cabeçalho interno da plataforma (área autenticada). */
