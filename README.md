@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scrutiniums
 
-## Getting Started
+Plataforma **gratuita** de inteligência analítica sobre setores da economia brasileira: painéis de atividade setorial, risco de crédito, sentimento regulatório e concentração de mercado, com metodologia aberta e glossário público. A **única exigência de acesso é o cadastro** — e-mail verificado, telefone verificado e perfil básico. Sem plano pago, sem cartão.
 
-First, run the development server:
+## Stack
+
+- **Next.js 14** (App Router, Server Components) + **TypeScript**
+- **Tailwind CSS** com design tokens centralizados
+- **Drizzle ORM + better-sqlite3** (portável para PostgreSQL — ver [ARCHITECTURE.md](./ARCHITECTURE.md))
+- Autenticação **passwordless** por código de e-mail; verificação de telefone via **Twilio Verify**
+- **Recharts** para gráficos, **vitest** para testes
+
+## Como rodar
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Aplicação em `http://localhost:3000`. O banco SQLite (`dev.db`) é criado e migrado automaticamente na primeira execução.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Modo de desenvolvimento simulado:** sem credenciais de Twilio e SMTP configuradas, nenhuma mensagem externa é enviada — os códigos de verificação (e-mail e SMS) aparecem **no console do servidor**, com destinatário mascarado:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+[dev-mail] (EMAIL_VERIFY) código para g•••@g•••.com: 123456
+[dev-verify] código para +55 •• •••••-4321: 654321
+```
 
-## Learn More
+Use esses códigos para completar o cadastro e o login localmente.
 
-To learn more about Next.js, take a look at the following resources:
+## Configuração de produção
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Defina as variáveis de ambiente (lista completa, com propósito e obrigatoriedade, em [ARCHITECTURE.md](./ARCHITECTURE.md#variáveis-de-ambiente)):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Twilio Verify (SMS):** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_VERIFY_SERVICE_SID` — crie um serviço Verify no console da Twilio; com as três presentes, o modo simulado é desativado automaticamente.
+- **E-mail (SMTP):** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM`.
+- **Segurança:** `COOKIE_SECRET` (ou `SESSION_SECRET`) com valor aleatório longo.
+- **Banco:** `DATABASE_URL` (ex.: `file:./data/prod.db`; para PostgreSQL, siga as instruções de migração no ARCHITECTURE.md).
 
-## Deploy on Vercel
+As credenciais existem apenas no servidor; o navegador nunca fala com Twilio ou SMTP.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Testes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm test        # vitest run
+npm run test:watch
+```
+
+Os testes de integração usam bancos SQLite temporários (apagados ao final) e nunca tocam o `dev.db`. Não é preciso servidor rodando.
+
+## Estrutura de diretórios
+
+```
+src/
+  app/                 Rotas (App Router): páginas públicas, /cadastro, /entrar, /app
+    api/               Rotas de API (onboarding, auth, conta)
+  components/          UI, layout, home, onboarding, conta e analytics (PanelShell etc.)
+  lib/                 Núcleo: db, schema, crypto, phone, ratelimit, onboarding,
+                       twilio, mailer, session, events, audit, format
+    data/              glossario.ts (fonte única de definições) e paineis.ts (séries determinísticas)
+  tests/               Testes unitários e de integração (vitest)
+tailwind.config.ts     Design tokens
+vitest.config.ts       Configuração de testes
+```
+
+## Documentação
+
+As decisões técnicas (banco, autenticação, máquina de estados do onboarding, rate limiting, tokens de design, telemetria sem PII) estão registradas em [ARCHITECTURE.md](./ARCHITECTURE.md).

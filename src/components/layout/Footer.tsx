@@ -1,0 +1,47 @@
+import Link from "next/link";
+import { LogoWordmark } from "@/components/ui/Logo";
+
+export function Footer() {
+  return (
+    <footer className="border-t border-linha-escura bg-carvao text-marfim">
+      <div className="mx-auto grid max-w-page gap-10 px-6 py-14 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <LogoWordmark onDark />
+          <p className="mt-4 max-w-sm text-sm text-mineral-soft">
+            Toda a informação relevante para decisões melhores. Plataforma de acesso
+            gratuito: o cadastro é a única exigência.
+          </p>
+          <p className="rotulo mt-6 text-bronze-soft">
+            100% gratuito · sem assinatura · sem cobrança
+          </p>
+        </div>
+        <nav aria-label="Plataforma">
+          <p className="rotulo mb-4 text-mineral-soft">Plataforma</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/app" className="hover:text-bronze-soft">Painéis</Link></li>
+            <li><Link href="/fontes" className="hover:text-bronze-soft">Fontes</Link></li>
+            <li><Link href="/metodologia" className="hover:text-bronze-soft">Metodologia</Link></li>
+            <li><Link href="/glossario" className="hover:text-bronze-soft">Glossário</Link></li>
+          </ul>
+        </nav>
+        <nav aria-label="Institucional">
+          <p className="rotulo mb-4 text-mineral-soft">Institucional</p>
+          <ul className="space-y-2 text-sm">
+            <li><Link href="/termos" className="hover:text-bronze-soft">Termos de uso</Link></li>
+            <li><Link href="/privacidade" className="hover:text-bronze-soft">Privacidade</Link></li>
+            <li><Link href="/entrar" className="hover:text-bronze-soft">Entrar</Link></li>
+            <li><Link href="/cadastro" className="hover:text-bronze-soft">Cadastro</Link></li>
+          </ul>
+        </nav>
+      </div>
+      <div className="border-t border-linha-escura">
+        <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-2 px-6 py-5">
+          <p className="text-xs text-mineral">scrutiniums.com</p>
+          <p className="text-xs text-mineral">
+            Dados com fontes, critérios, período de referência e limitações declaradas.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}

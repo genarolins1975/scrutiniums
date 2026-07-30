@@ -2,26 +2,90 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Tokens centrais em CSS variables para uso fora do Tailwind
+  (gráficos, SVG, estilos calculados). Fonte única de verdade
+  junto com tailwind.config.ts.
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --cor-carvao: #1a1d21;
+  --cor-carvao-soft: #2a2e33;
+  --cor-carvao-muted: #3d4147;
+  --cor-marfim: #f3efe5;
+  --cor-papel: #faf8f2;
+  --cor-bronze: #966b48;
+  --cor-bronze-dark: #7c5638;
+  --cor-bronze-soft: #b08a67;
+  --cor-mineral: #878986;
+  --cor-mineral-soft: #a6a8a4;
+  --cor-linha: #d8d2c6;
+  --cor-erro: #8c3b2e;
+  --cor-sucesso: #4f6b4e;
+
+  /* Paleta categórica dos gráficos: bronze só como destaque */
+  --serie-1: #1a1d21;
+  --serie-2: #878986;
+  --serie-3: #966b48;
+  --serie-4: #4a5158;
+  --serie-5: #b0a894;
+  --serie-6: #6b5d4f;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  background-color: var(--cor-marfim);
+  color: var(--cor-carvao);
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+/* Foco visível consistente (WCAG 2.2 AA) */
+:focus-visible {
+  outline: 2px solid var(--cor-bronze);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--cor-bronze);
+  color: var(--cor-marfim);
+}
+
+/* Utilitário de rótulo editorial em caixa alta */
+.rotulo {
+  font-family: var(--font-label), system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+}
+
+/* Skeleton pulsante discreto */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+.skeleton {
+  background: var(--cor-linha);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+/* Tabelas largas roláveis sem quebrar o layout no celular */
+.tabela-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
