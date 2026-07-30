@@ -1742,12 +1742,15 @@ function renderOverview() {
   /* ---------- 6 métricas centrais com sparkline ---------- */
   const last2 = arr => arr && arr.length >= 2 ? [arr[arr.length - 2].v, arr[arr.length - 1].v] : [null, null];
   const sparkOf = (arr, n) => arr ? sparkline(arr.slice(-(n || 24)).map(o => o.v), 150, 30) : "";
-  const mcard = (lbl, val, varHtml, spark, target, tip) => `
-    <div class="mcard" tabindex="0" role="link" aria-label="${lbl} — abrir análise" data-tip="${tip || ""}"
+  const mcard = (lbl, val, varHtml, spark, target, tip) => {
+    const lblPlain = String(lbl).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
+    return `
+    <div class="mcard" tabindex="0" role="link" aria-label="${lblPlain} — abrir análise" data-tip="${tip || ""}"
       onclick="${target}" onkeydown="if(event.key==='Enter'){${target}}">
       <span class="lbl">${lbl}</span><span class="val">${val}</span>
       <span class="var">${varHtml}</span>${spark}
     </div>`;
+  };
   const cards = [];
   if (ibcc && ibcc.ok && pos) {
     const t = encodeURIComponent(`<div class="tt-date">IBCC — Índice de Condições de Crédito</div><div class="tt-meta">100 = média histórica · índice-síntese calculado (preço, qualidade, capacidade, atividade, oferta, antecedentes) · fase: ${ibcc.fase_ciclo} · percentil ${fmt.n(pos.percentil_historico, 0)}</div>`);
