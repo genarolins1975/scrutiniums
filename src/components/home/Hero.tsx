@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { BotaoLink } from "@/components/home/BotaoLink";
-import { AmostraPainel } from "@/components/home/AmostraPainel";
 
 export function Hero() {
   return (
     <section aria-labelledby="hero-titulo" className="border-b border-linha bg-marfim">
-      <div className="mx-auto grid max-w-page items-center gap-12 px-6 py-16 md:py-24 lg:grid-cols-[7fr_5fr]">
+      <div className="mx-auto max-w-page px-6 py-16 md:py-24">
         <div>
           <p className="rotulo text-mineral">Plataforma de inteligência analítica</p>
           <h1
@@ -32,9 +31,6 @@ export function Hero() {
           <p className="rotulo mt-6 text-bronze">
             100% gratuito · sem assinatura · sem cobrança
           </p>
-        </div>
-        <div className="hidden lg:block">
-          <AmostraPainel />
         </div>
       </div>
     </section>
