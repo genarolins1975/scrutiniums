@@ -1,20 +1,21 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { checkEmailCode, findUserByEmail, nextStepPath } from "@/lib/onboarding";
+import { findUserByVerifiedPhone, nextStepPath } from "@/lib/onboarding";
 import { createSession } from "@/lib/session";
+import { checkPhoneVerification } from "@/lib/twilio";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
 import { trackEvent } from "@/lib/events";
 import type { OnboardingStatus } from "@/lib/schema";
 import {
-  clearSignedEmailCookie,
-  LOGIN_EMAIL_COOKIE,
-  readSignedEmailCookie,
+  clearSignedPhoneCookie,
+  LOGIN_PHONE_COOKIE,
+  readSignedPhoneCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
 /**
- * Conferência do código de acesso (login sem senha). Ao aprovar,
+ * Conferência do código SMS de acesso (login sem senha). Ao aprovar,
  * cria a sessão e devolve nextStepPath(status): onboarding incompleto
  * é retomado da etapa correta. Erros sempre genéricos.
  */
@@ -31,6 +32,11 @@ function rateLimited(retryAfterMs: number) {
 }
 
 export async function POST(req: Request) {
+  const e164 = readSignedPhoneCookie(LOGIN_PHONE_COOKIE);
+  if (!e164) {
+    return NextResponse.json({ error: GENERIC_ERROR }, { status: 401 });
+  }
+
   let json: unknown;
   try {
     json = await req.json();
@@ -42,31 +48,28 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  const email = readSignedEmailCookie(LOGIN_EMAIL_COOKIE);
-  if (!email) {
-    return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
-  }
-
   const ip = requestIp(req);
   const perIp = checkRateLimit(`login-check:ip:${ip}`, POLICIES.otpCheckPerPhone);
   if (!perIp.allowed) return rateLimited(perIp.retryAfterMs);
-  const perEmail = checkRateLimit(`login-check:email:${email}`, POLICIES.otpCheckPerPhone);
-  if (!perEmail.allowed) return rateLimited(perEmail.retryAfterMs);
+  const perPhone = checkRateLimit(`login-check:phone:${e164}`, POLICIES.otpCheckPerPhone);
+  if (!perPhone.allowed) return rateLimited(perPhone.retryAfterMs);
 
-  const user = await findUserByEmail(email);
-  if (!user) {
+  const result = await checkPhoneVerification(e164, parsed.data.code);
+  if (result.status !== "approved") {
     await trackEvent("verification_failed");
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
-  const result = await checkEmailCode(user.id, "LOGIN", parsed.data.code);
-  if (result !== "approved") {
-    await trackEvent("verification_failed", user.id);
+  const user = await findUserByVerifiedPhone(e164);
+  if (!user) {
+    // Telefone sem conta verificada: nunca deveria ter código aprovado,
+    // mas o erro segue genérico de qualquer forma.
+    await trackEvent("verification_failed");
     return NextResponse.json({ error: GENERIC_ERROR }, { status: 400 });
   }
 
   await createSession(user.id);
-  clearSignedEmailCookie(LOGIN_EMAIL_COOKIE);
+  clearSignedPhoneCookie(LOGIN_PHONE_COOKIE);
 
   return NextResponse.json({
     ok: true,

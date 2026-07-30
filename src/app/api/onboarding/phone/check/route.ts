@@ -2,20 +2,28 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { and, eq, isNotNull, ne } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
-import { getSessionUser } from "@/lib/session";
+import { createSession, getSessionUser } from "@/lib/session";
+import { findUserByEmail, updateUser } from "@/lib/onboarding";
 import { toE164 } from "@/lib/phone";
 import { checkPhoneVerification } from "@/lib/twilio";
-import { updateUser } from "@/lib/onboarding";
 import { checkRateLimit, POLICIES } from "@/lib/ratelimit";
 import { trackEvent } from "@/lib/events";
 import { maskPhone } from "@/lib/crypto";
+import {
+  clearSignedEmailCookie,
+  ONBOARDING_EMAIL_COOKIE,
+  readSignedEmailCookie,
+} from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
 /**
- * Conferência do código SMS (etapa 2). SOMENTE status "approved" conclui
- * a etapa; qualquer outro resultado devolve erro genérico. O código nunca
- * é persistido nem logado.
+ * Conferência do código SMS (etapa 2). Usuário identificado pelo cookie
+ * assinado onboarding_email (sem cookie válido, 401 genérico). SOMENTE
+ * status "approved" conclui a etapa; qualquer outro resultado devolve erro
+ * genérico. A SESSÃO NASCE AQUI: com o telefone comprovado, criamos a
+ * sessão e limpamos o cookie de onboarding. O código nunca é persistido
+ * nem logado.
  */
 
 const GENERIC_ERROR = "Código inválido ou expirado.";
@@ -34,7 +42,11 @@ function rateLimited(retryAfterMs: number) {
 }
 
 export async function POST(req: Request) {
-  const user = await getSessionUser();
+  // Identificação primária: cookie assinado da etapa 1. Fallback: sessão
+  // ativa (usuário legado que entrou pelo fluxo antigo). Ambos exigem
+  // PHONE_PENDING; qualquer falha é 401 genérico.
+  const email = readSignedEmailCookie(ONBOARDING_EMAIL_COOKIE);
+  const user = email ? await findUserByEmail(email) : await getSessionUser();
   if (!user || user.onboardingStatus !== "PHONE_PENDING") {
     return NextResponse.json({ error: "Sessão inválida." }, { status: 401 });
   }
@@ -94,6 +106,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Não foi possível usar este telefone." }, { status: 400 });
   }
 
+  // A sessão nasce aqui: telefone comprovado é a validação do usuário.
+  await createSession(user.id);
   await trackEvent("phone_verified", user.id);
+  clearSignedEmailCookie(ONBOARDING_EMAIL_COOKIE);
+
   return NextResponse.json({ ok: true, next: "/cadastro/perfil" });
 }

@@ -2,21 +2,28 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { and, eq, isNotNull, ne } from "drizzle-orm";
 import { getDb, schema } from "@/lib/db";
+import { findUserByEmail } from "@/lib/onboarding";
 import { getSessionUser } from "@/lib/session";
 import { toE164 } from "@/lib/phone";
 import { startPhoneVerification } from "@/lib/twilio";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
 import { trackEvent } from "@/lib/events";
 import { maskPhone } from "@/lib/crypto";
+import {
+  ONBOARDING_EMAIL_COOKIE,
+  readSignedEmailCookie,
+} from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
 /**
- * Envio do código SMS (etapa 2). Sessão obrigatória em PHONE_PENDING.
- * Política explícita: telefone já verificado por OUTRA conta é rejeitado
- * com mensagem genérica — nunca associamos contas nem alteramos dados
- * silenciosamente. Logs apenas com telefone mascarado; código nunca
- * armazenado nem logado aqui.
+ * Envio do código SMS (etapa 2). A sessão ainda não existe neste ponto:
+ * o usuário é identificado pelo cookie httpOnly assinado onboarding_email
+ * gravado na etapa 1. Sem cookie válido (ou conta fora de PHONE_PENDING),
+ * 401 genérico. Política explícita: telefone já verificado por OUTRA conta
+ * é rejeitado com mensagem genérica — nunca associamos contas nem
+ * alteramos dados silenciosamente. Logs apenas com telefone mascarado;
+ * código nunca armazenado nem logado aqui.
  */
 
 const GENERIC_PHONE_ERROR = "Não foi possível usar este telefone.";
@@ -34,7 +41,11 @@ function rateLimited(retryAfterMs: number) {
 }
 
 export async function POST(req: Request) {
-  const user = await getSessionUser();
+  // Identificação primária: cookie assinado da etapa 1. Fallback: sessão
+  // ativa (usuário legado que entrou pelo fluxo antigo). Ambos exigem
+  // PHONE_PENDING; qualquer falha é 401 genérico.
+  const email = readSignedEmailCookie(ONBOARDING_EMAIL_COOKIE);
+  const user = email ? await findUserByEmail(email) : await getSessionUser();
   if (!user || user.onboardingStatus !== "PHONE_PENDING") {
     return NextResponse.json({ error: "Sessão inválida." }, { status: 401 });
   }

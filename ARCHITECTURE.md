@@ -19,13 +19,13 @@ Registro das decisões técnicas da plataforma. Curto por intenção: cada seç�
 
 `users`, `verification_tokens` (somente **hash** de códigos, nunca em claro), `sessions` (token de sessão também só como hash), `audit_logs` (auditoria de mudanças sensíveis, detalhes sempre mascarados) e `product_events` (telemetria **sem PII**).
 
-## Autenticação passwordless
+## Autenticação passwordless (somente SMS)
 
-- **Sem senha:** o login e o cadastro usam código de 6 dígitos enviado por e-mail. Não há hash de senha para vazar nem fluxo de "esqueci minha senha" — **recuperação de acesso é o mesmo fluxo de login**.
-- Códigos são gerados com `crypto.randomInt` (`generateOtp`) e persistidos **apenas como SHA-256** (`hashToken`), com TTL de 15 minutos, uso único (`used_at`) e trava após 5 tentativas (`attempts`).
+- **Sem senha e sem código por e-mail:** a validação do usuário, o login e a recuperação de acesso usam **exclusivamente código SMS de 6 dígitos** (Twilio Verify) no telefone verificado. O e-mail é **dado de contato simples**, coletado na etapa 1 do cadastro sem verificação. Não há senha para vazar nem "esqueci minha senha" — **recuperação de acesso é o mesmo fluxo de login por SMS**.
+- **A sessão nasce na confirmação do telefone** (`phone/check` aprovado no cadastro, ou `entrar/check` no login). Antes disso, o usuário pendente é identificado pelo **cookie assinado com HMAC-SHA256** (`signedEmailCookie`: `onboarding_email` no cadastro, `login_phone` no login), nunca por URL.
 - **Sessões em banco** (`sessions`) com token aleatório de 32 bytes entregue em **cookie httpOnly** (`secure` em produção, `SameSite=Lax`, 14 dias). Revogação server-side (logout e "encerrar todas as sessões") funciona de imediato, ao contrário de JWT puro.
-- O e-mail pendente entre etapas trafega em **cookie assinado com HMAC-SHA256** (`signedEmailCookie`), nunca em URL.
-- Enumeração de contas: `startEmailVerification` com propósito LOGIN/RECOVERY para e-mail inexistente não cria usuário e o chamador responde de forma genérica.
+- Enumeração de contas: `email/start` responde de forma genérica mesmo para e-mail já cadastrado, e `entrar/start` só envia SMS quando o telefone pertence a uma conta verificada, mas responde sempre a mesma mensagem genérica.
+- O código legado por e-mail (`startEmailVerification`/`checkEmailCode`, hash SHA-256, TTL 15 min, uso único, trava após 5 tentativas) permanece em `src/lib/onboarding.ts` coberto por testes, mas **nenhum fluxo o chama**.
 
 ## Verificação de telefone: Twilio Verify
 
@@ -39,8 +39,8 @@ Registro das decisões técnicas da plataforma. Curto por intenção: cada seç�
 EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
 ```
 
-- O estado vive em `users.onboarding_status`. `nextStepPath` (`src/lib/onboarding.ts`) mapeia estado → rota (`/cadastro`, `/cadastro/telefone`, `/cadastro/perfil`, `/app`), então um usuário que abandona o fluxo **retoma exatamente de onde parou** em qualquer dispositivo.
-- Invariantes: um usuário `COMPLETE` sempre tem `email_verified_at`, `phone_verified_at` e `terms_accepted_at` preenchidos (coberto por teste em `src/tests/state-machine.test.ts`).
+- O estado vive em `users.onboarding_status`. `nextStepPath` (`src/lib/onboarding.ts`) mapeia estado → rota (`/cadastro`, `/cadastro/telefone`, `/cadastro/perfil`, `/app`), então um usuário que abandona o fluxo **retoma exatamente de onde parou**. No modelo somente-SMS, `email/start` cria o usuário **direto em `PHONE_PENDING`** (o e-mail não é verificado); `EMAIL_PENDING` permanece apenas como estado legado, promovido a `PHONE_PENDING` no próximo `email/start`.
+- Invariantes: um usuário `COMPLETE` sempre tem `phone_verified_at` e `terms_accepted_at` preenchidos (`email_verified_at` só existe em contas legadas do fluxo antigo).
 
 ## Rate limiting
 
@@ -75,9 +75,9 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
 | `TWILIO_ACCOUNT_SID` | SID da conta Twilio para o Verify. | Não em dev (sem ela, modo simulado); **sim em produção**. |
 | `TWILIO_AUTH_TOKEN` | Token de autenticação da Twilio. | Idem acima. |
 | `TWILIO_VERIFY_SERVICE_SID` | SID do serviço Twilio Verify (SMS). | Idem acima. As três precisam estar presentes juntas para sair do modo simulado. |
-| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Servidor SMTP para envio dos códigos por e-mail (`src/lib/mailer.ts`). | Não em dev (código vai para o log do servidor); **sim em produção**. |
+| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Servidor SMTP para comunicações por e-mail (`src/lib/mailer.ts`); o login e a validação não dependem de e-mail. | Não em dev; em produção apenas se e-mails transacionais forem enviados. |
 | `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <nao-responda@scrutiniums.com.br>`). | Junto com `SMTP_*` em produção. |
-| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de e-mail pendente. `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`). `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
 
 ## Testes
 

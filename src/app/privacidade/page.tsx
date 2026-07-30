@@ -41,14 +41,14 @@ export default function PrivacidadePage() {
               <div>
                 <dt className="rotulo mb-1 text-mineral">E-mail</dt>
                 <dd className="text-sm leading-relaxed text-carvao-muted">
-                  Usado para acesso à conta, recuperação de acesso e comunicações essenciais sobre
-                  o serviço.
+                  Usado para contato e comunicações essenciais sobre o serviço.
                 </dd>
               </div>
               <div>
                 <dt className="rotulo mb-1 text-mineral">Telefone</dt>
                 <dd className="text-sm leading-relaxed text-carvao-muted">
-                  Usado para validação por SMS e proteção da conta contra acesso indevido.
+                  Usado para validação por SMS, acesso (login por código) e proteção da conta
+                  contra acesso indevido.
                 </dd>
               </div>
               <div>

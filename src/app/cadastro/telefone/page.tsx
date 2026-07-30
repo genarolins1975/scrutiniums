@@ -5,18 +5,28 @@ import { nextStepPath } from "@/lib/onboarding";
 import type { OnboardingStatus } from "@/lib/schema";
 import { StepIndicator } from "@/components/ui/StepIndicator";
 import { TelefoneForm } from "@/components/onboarding/TelefoneForm";
+import {
+  ONBOARDING_EMAIL_COOKIE,
+  readSignedEmailCookie,
+} from "@/components/onboarding/signedEmailCookie";
 
 export const metadata: Metadata = { title: "Confirme seu telefone" };
 export const dynamic = "force-dynamic";
 
-/** Etapa 2: SMS. Sem sessão → /cadastro; etapa diferente → redireciona. */
+/**
+ * Etapa 2: SMS. A sessão ainda não existe (ela nasce na confirmação do
+ * telefone): a identificação vem do cookie assinado onboarding_email.
+ * Com sessão ativa em outra etapa, redireciona pela máquina de estados;
+ * sem sessão e sem cookie, volta para /cadastro.
+ */
 export default async function TelefonePage() {
   const user = await getSessionUser();
-  if (!user) {
+  if (user) {
+    if (user.onboardingStatus !== "PHONE_PENDING") {
+      redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
+    }
+  } else if (!readSignedEmailCookie(ONBOARDING_EMAIL_COOKIE)) {
     redirect("/cadastro");
-  }
-  if (user.onboardingStatus !== "PHONE_PENDING") {
-    redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 
   return (

@@ -42,7 +42,6 @@ export default async function ContaPage() {
               <dt className="rotulo mb-2 text-mineral">E-mail</dt>
               <dd className="flex flex-wrap items-center gap-3">
                 <span className="text-carvao">{maskEmail(user.email)}</span>
-                {user.emailVerifiedAt && <Selo>E-mail confirmado</Selo>}
               </dd>
             </div>
             <div>
@@ -72,8 +71,8 @@ export default async function ContaPage() {
           <SectionHeading number="04" label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
-              Pedimos apenas o necessário: o e-mail dá acesso à conta, permite recuperá-la e recebe
-              comunicações essenciais; o telefone valida e protege a conta; empresa e cargo
+              Pedimos apenas o necessário: o e-mail é seu dado de contato e recebe comunicações
+              essenciais; o telefone valida, dá acesso e protege a conta; empresa e cargo
               contextualizam o perfil de uso. Nada disso é exibido publicamente, e telefone,
               e-mail e códigos nunca são enviados a ferramentas de analytics. Os detalhes estão na{" "}
               <Link

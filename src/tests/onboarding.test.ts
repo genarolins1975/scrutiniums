@@ -8,6 +8,8 @@ process.env.DATABASE_URL = "pglite-memory:";
 
 let startEmailVerification: typeof import("@/lib/onboarding").startEmailVerification;
 let checkEmailCode: typeof import("@/lib/onboarding").checkEmailCode;
+let registerContactEmail: typeof import("@/lib/onboarding").registerContactEmail;
+let PRIVACY_VERSION: typeof import("@/lib/onboarding").PRIVACY_VERSION;
 let nextStepPath: typeof import("@/lib/onboarding").nextStepPath;
 let db: Awaited<ReturnType<typeof import("@/lib/db").getDb>>;
 let schema: typeof import("@/lib/db").schema;
@@ -17,6 +19,8 @@ beforeAll(async () => {
   const onboarding = await import("@/lib/onboarding");
   startEmailVerification = onboarding.startEmailVerification;
   checkEmailCode = onboarding.checkEmailCode;
+  registerContactEmail = onboarding.registerContactEmail;
+  PRIVACY_VERSION = onboarding.PRIVACY_VERSION;
   nextStepPath = onboarding.nextStepPath;
   const dbModule = await import("@/lib/db");
   db = await dbModule.getDb();
@@ -148,6 +152,45 @@ describe("onboarding.checkEmailCode", () => {
   it("retorna expired quando nunca houve start para o propósito", async () => {
     const { userId } = await startEmailVerification("soemail@exemplo.com", "EMAIL_VERIFY");
     expect(await checkEmailCode(userId, "LOGIN", "123456")).toBe("expired");
+  });
+});
+
+describe("onboarding.registerContactEmail (cadastro somente-SMS)", () => {
+  it("cria usuário direto em PHONE_PENDING, com aceite de termos e sem código", async () => {
+    const { userId, created } = await registerContactEmail("  Contato@Exemplo.COM ", {
+      marketingOptIn: true,
+    });
+    expect(created).toBe(true);
+
+    const users = await db.select().from(schema.users).where(eq(schema.users.id, userId));
+    const user = users[0];
+    expect(user).toBeDefined();
+    expect(user.email).toBe("contato@exemplo.com");
+    expect(user.onboardingStatus).toBe("PHONE_PENDING"); // nasce direto na etapa do telefone
+    expect(user.emailVerifiedAt).toBeNull(); // e-mail é dado de contato, sem verificação
+    expect(user.termsAcceptedAt).not.toBeNull();
+    expect(user.privacyVersion).toBe(PRIVACY_VERSION);
+    expect(user.marketingOptIn).toBe(true);
+
+    // Nenhum código de verificação é criado no novo fluxo.
+    expect(await tokensOf(userId)).toHaveLength(0);
+  });
+
+  it("reaproveita usuário existente sem duplicar nem rebaixar a etapa", async () => {
+    const a = await registerContactEmail("contato2@exemplo.com", { marketingOptIn: false });
+    const b = await registerContactEmail("contato2@exemplo.com", { marketingOptIn: false });
+    expect(b.created).toBe(false);
+    expect(b.userId).toBe(a.userId);
+  });
+
+  it("promove usuário legado EMAIL_PENDING para PHONE_PENDING", async () => {
+    const { userId } = await startEmailVerification("legado@exemplo.com", "EMAIL_VERIFY");
+    const { created } = await registerContactEmail("legado@exemplo.com", { marketingOptIn: false });
+    expect(created).toBe(false);
+
+    const users = await db.select().from(schema.users).where(eq(schema.users.id, userId));
+    expect(users[0].onboardingStatus).toBe("PHONE_PENDING");
+    expect(users[0].termsAcceptedAt).not.toBeNull();
   });
 });
 

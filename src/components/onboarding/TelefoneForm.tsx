@@ -56,6 +56,11 @@ export function TelefoneForm() {
         setMasked(data.masked);
         return true;
       }
+      if (res.status === 401) {
+        // Identificação de onboarding ausente ou expirada: recomeça na etapa 1.
+        router.push("/cadastro");
+        return false;
+      }
       if (res.status === 429) {
         setServerError("Muitas tentativas. Aguarde um instante e tente novamente.");
       } else {
@@ -99,6 +104,10 @@ export function TelefoneForm() {
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.next) {
         router.push(data.next);
+        return;
+      }
+      if (res.status === 401) {
+        router.push("/cadastro");
         return;
       }
       setCodeError(

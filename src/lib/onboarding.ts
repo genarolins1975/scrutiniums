@@ -1,4 +1,4 @@
-import { and, desc, eq, gt, isNull } from "drizzle-orm";
+import { and, desc, eq, gt, isNotNull, isNull } from "drizzle-orm";
 import { getDb, newId, schema } from "./db";
 import { generateOtp, hashToken } from "./crypto";
 import { sendEmailCode } from "./mailer";
@@ -40,6 +40,62 @@ export async function findUserById(id: string): Promise<User | undefined> {
   const db = await getDb();
   const rows = await db.select().from(schema.users).where(eq(schema.users.id, id)).limit(1);
   return rows[0];
+}
+
+/** Localiza usuário pelo telefone E.164 já verificado (login por SMS). */
+export async function findUserByVerifiedPhone(phoneE164: string): Promise<User | undefined> {
+  const db = await getDb();
+  const rows = await db
+    .select()
+    .from(schema.users)
+    .where(
+      and(eq(schema.users.phoneE164, phoneE164), isNotNull(schema.users.phoneVerifiedAt)),
+    )
+    .limit(1);
+  return rows[0];
+}
+
+/**
+ * Etapa 1 do cadastro (modelo somente-SMS): registra o e-mail como dado de
+ * contato, SEM enviar código. Cria o usuário direto em PHONE_PENDING com o
+ * aceite de termos; usuário legado em EMAIL_PENDING é promovido a
+ * PHONE_PENDING. Contas em etapa posterior (inclusive COMPLETE) não são
+ * alteradas — o chamador responde de forma genérica, sem revelar existência.
+ */
+export async function registerContactEmail(
+  email: string,
+  opts: { marketingOptIn: boolean },
+): Promise<{ userId: string; created: boolean }> {
+  const db = await getDb();
+  const normalized = email.toLowerCase().trim();
+  const existing = await findUserByEmail(normalized);
+  const now = new Date();
+
+  if (!existing) {
+    const id = newId();
+    await db.insert(schema.users).values({
+      id,
+      email: normalized,
+      onboardingStatus: "PHONE_PENDING",
+      termsAcceptedAt: now,
+      privacyVersion: PRIVACY_VERSION,
+      marketingOptIn: opts.marketingOptIn,
+      createdAt: now,
+      updatedAt: now,
+    });
+    return { userId: id, created: true };
+  }
+
+  if (existing.onboardingStatus === "EMAIL_PENDING") {
+    // Usuário legado do fluxo antigo (código por e-mail): promove para a
+    // etapa do telefone, preservando aceite anterior quando houver.
+    await updateUser(existing.id, {
+      onboardingStatus: "PHONE_PENDING",
+      termsAcceptedAt: existing.termsAcceptedAt ?? now,
+      privacyVersion: existing.privacyVersion ?? PRIVACY_VERSION,
+    });
+  }
+  return { userId: existing.id, created: false };
 }
 
 /**

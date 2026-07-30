@@ -4,26 +4,26 @@ import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { nextStepPath } from "@/lib/onboarding";
 import type { OnboardingStatus } from "@/lib/schema";
-import { maskEmail } from "@/lib/crypto";
+import { maskPhone } from "@/lib/crypto";
 import { LogoWordmark } from "@/components/ui/Logo";
 import { EntrarVerificarForm } from "@/components/onboarding/EntrarVerificarForm";
 import {
-  LOGIN_EMAIL_COOKIE,
-  readSignedEmailCookie,
+  LOGIN_PHONE_COOKIE,
+  readSignedPhoneCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
 export const metadata: Metadata = { title: "Código de acesso" };
 export const dynamic = "force-dynamic";
 
-/** Segunda tela do login sem senha: código de 6 dígitos enviado por e-mail. */
+/** Segunda tela do login sem senha: código de 6 dígitos enviado por SMS. */
 export default async function EntrarVerificarPage() {
   const user = await getSessionUser();
   if (user) {
     redirect(nextStepPath(user.onboardingStatus as OnboardingStatus));
   }
 
-  const email = readSignedEmailCookie(LOGIN_EMAIL_COOKIE);
-  if (!email) {
+  const phone = readSignedPhoneCookie(LOGIN_PHONE_COOKIE);
+  if (!phone) {
     redirect("/entrar");
   }
 
@@ -45,10 +45,10 @@ export default async function EntrarVerificarPage() {
           <section className="border border-linha bg-papel p-8 md:p-10">
             <h1 className="font-serif text-3xl text-carvao">Código de acesso</h1>
             <p className="mt-3 text-sm text-carvao-muted">
-              Sem senha: enviamos um código de acesso ao seu e-mail.
+              Sem senha: enviamos um código de acesso por SMS ao telefone cadastrado.
             </p>
             <div className="mt-8">
-              <EntrarVerificarForm maskedEmail={maskEmail(email)} />
+              <EntrarVerificarForm maskedPhone={maskPhone(phone)} />
             </div>
           </section>
         </div>

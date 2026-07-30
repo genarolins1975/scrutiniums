@@ -4,34 +4,33 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/Button";
-import { Field } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Alert";
+import { CountrySelect } from "./CountrySelect";
+import { PhoneField } from "./PhoneField";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-/** Login sem senha: e-mail → código de acesso. Cobre entrada e recuperação. */
+/** Login sem senha: telefone → código SMS. Cobre entrada e recuperação. */
 export function EntrarForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState<string | undefined>();
+  const [country, setCountry] = useState("BR");
+  const [phone, setPhone] = useState("");
+  const [phoneError, setPhoneError] = useState<string | undefined>();
   const [serverError, setServerError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setServerError(undefined);
-    const trimmed = email.trim();
-    if (!EMAIL_RE.test(trimmed)) {
-      setEmailError("Informe um e-mail válido.");
+    if (phone.replace(/\D/g, "").length < 8) {
+      setPhoneError("Informe um telefone válido com DDD.");
       return;
     }
-    setEmailError(undefined);
+    setPhoneError(undefined);
     setSubmitting(true);
     try {
       const res = await fetch("/api/auth/entrar/start", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: trimmed }),
+        body: JSON.stringify({ country, phone }),
       });
       if (res.ok) {
         router.push("/entrar/verificar");
@@ -53,20 +52,17 @@ export function EntrarForm() {
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       {serverError && <Alert kind="erro">{serverError}</Alert>}
 
-      <Field
-        label="E-mail"
-        type="email"
-        name="email"
-        autoComplete="email"
-        inputMode="email"
-        required
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        error={emailError}
+      <CountrySelect value={country} onChange={(c) => { setCountry(c); setPhone(""); }} disabled={submitting} />
+      <PhoneField
+        country={country}
+        value={phone}
+        onChange={setPhone}
+        error={phoneError}
+        disabled={submitting}
       />
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? "Enviando…" : "Receber código de acesso"}
+        {submitting ? "Enviando…" : "Receber código por SMS"}
       </Button>
 
       <div className="flex flex-col items-center gap-2 border-t border-linha pt-5 text-center">

@@ -37,7 +37,8 @@ export function CadastroEmailForm() {
         body: JSON.stringify({ email: trimmed, termsAccepted: true, marketingOptIn: marketing }),
       });
       if (res.ok) {
-        router.push("/cadastro/verificar-email");
+        const data = await res.json().catch(() => ({}));
+        router.push(typeof data.next === "string" ? data.next : "/cadastro/telefone");
         return;
       }
       if (res.status === 429) {
@@ -87,7 +88,7 @@ export function CadastroEmailForm() {
             <Link href="/privacidade" className="underline underline-offset-2 hover:text-bronze">
               Política de privacidade
             </Link>
-            . Seu e-mail é usado para acesso, recuperação e comunicações essenciais.
+            . Seu e-mail é usado para contato e comunicações essenciais.
           </span>
         </label>
         {termsError && (

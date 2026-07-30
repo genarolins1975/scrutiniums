@@ -11,8 +11,8 @@ export const metadata: Metadata = { title: "Entrar" };
 export const dynamic = "force-dynamic";
 
 /**
- * Entrada sem senha por código de e-mail. O mesmo fluxo cobre
- * recuperação de acesso: não existe senha para redefinir.
+ * Entrada sem senha por código SMS no telefone verificado. O mesmo fluxo
+ * cobre recuperação de acesso: não existe senha para redefinir.
  */
 export default async function EntrarPage() {
   const user = await getSessionUser();
@@ -38,10 +38,10 @@ export default async function EntrarPage() {
           <section className="border border-linha bg-papel p-8 md:p-10">
             <h1 className="font-serif text-3xl text-carvao">Entrar</h1>
             <p className="mt-3 text-sm text-carvao-muted">
-              Sem senha: enviamos um código de acesso ao seu e-mail.
+              Enviamos um código por SMS para o telefone cadastrado.
             </p>
             <p className="mt-2 text-sm text-mineral">
-              Perdeu o acesso? Use o mesmo fluxo: o código por e-mail também recupera sua conta.
+              Perdeu o acesso? O mesmo código por SMS recupera sua conta.
             </p>
             <div className="mt-8">
               <EntrarForm />

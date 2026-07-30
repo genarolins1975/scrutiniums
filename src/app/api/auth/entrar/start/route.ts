@@ -1,26 +1,33 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { findUserByEmail, startEmailVerification } from "@/lib/onboarding";
+import { findUserByVerifiedPhone } from "@/lib/onboarding";
+import { toE164 } from "@/lib/phone";
+import { startPhoneVerification } from "@/lib/twilio";
 import { checkRateLimit, POLICIES, requestIp } from "@/lib/ratelimit";
+import { maskPhone } from "@/lib/crypto";
 import {
-  LOGIN_EMAIL_COOKIE,
-  readSignedEmailCookie,
-  setSignedEmailCookie,
+  LOGIN_PHONE_COOKIE,
+  readSignedPhoneCookie,
+  setSignedPhoneCookie,
 } from "@/components/onboarding/signedEmailCookie";
 
 export const runtime = "nodejs";
 
 /**
- * Início do login sem senha (também cobre recuperação de acesso).
- * Só envia código quando o usuário existe com e-mail verificado, mas a
- * resposta é SEMPRE genérica (200) para bloquear enumeração de contas.
+ * Início do login sem senha por SMS (também cobre recuperação de acesso).
+ * Só envia código quando existe usuário com aquele telefone VERIFICADO,
+ * mas a resposta é SEMPRE genérica e idêntica (200) para bloquear
+ * enumeração de contas — inclusive quando o envio do SMS falha.
  */
 
-const GENERIC_MESSAGE = "Se o e-mail for válido, enviamos um código de acesso.";
+const GENERIC_MESSAGE = "Se o telefone estiver cadastrado, enviamos um código por SMS.";
 
 const bodySchema = z.union([
-  z.object({ email: z.string().email().max(254) }),
-  // Reenvio: o e-mail pendente vem do cookie httpOnly assinado.
+  z.object({
+    country: z.string().length(2),
+    phone: z.string().min(5).max(30),
+  }),
+  // Reenvio: o telefone pendente (E.164) vem do cookie httpOnly assinado.
   z.object({ resend: z.literal(true) }),
 ]);
 
@@ -43,29 +50,35 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Requisição inválida." }, { status: 400 });
   }
 
-  const rawEmail =
-    "resend" in parsed.data
-      ? readSignedEmailCookie(LOGIN_EMAIL_COOKIE)
-      : (parsed.data as { email: string }).email;
-  if (!rawEmail || !z.string().email().max(254).safeParse(rawEmail).success) {
+  let e164: string | null;
+  if ("resend" in parsed.data) {
+    e164 = readSignedPhoneCookie(LOGIN_PHONE_COOKIE);
+  } else {
+    e164 = toE164(parsed.data.country.toUpperCase(), parsed.data.phone);
+  }
+  if (!e164) {
     return NextResponse.json({ error: "Requisição inválida." }, { status: 400 });
   }
-  const email = rawEmail.toLowerCase().trim();
-  const ip = requestIp(req);
 
-  const perIp = checkRateLimit(`login-start:ip:${ip}`, POLICIES.emailStartPerIp);
+  const ip = requestIp(req);
+  const perIp = checkRateLimit(`login-start:ip:${ip}`, POLICIES.otpStartPerIp);
   if (!perIp.allowed) return rateLimited(perIp.retryAfterMs);
-  const perEmail = checkRateLimit(`login-start:email:${email}`, POLICIES.emailStartPerEmail);
-  if (!perEmail.allowed) return rateLimited(perEmail.retryAfterMs);
-  const resendGap = checkRateLimit(`login-start:resend:${email}`, POLICIES.resendMinInterval);
+  const perPhone = checkRateLimit(`login-start:phone:${e164}`, POLICIES.otpStartPerPhone);
+  if (!perPhone.allowed) return rateLimited(perPhone.retryAfterMs);
+  const resendGap = checkRateLimit(`login-start:resend:${e164}`, POLICIES.resendMinInterval);
   if (!resendGap.allowed) return rateLimited(resendGap.retryAfterMs);
 
-  const user = await findUserByEmail(email);
-  if (user && user.emailVerifiedAt) {
-    await startEmailVerification(email, "LOGIN");
+  const user = await findUserByVerifiedPhone(e164);
+  if (user) {
+    const result = await startPhoneVerification(e164);
+    if (!result.ok) {
+      // Falha de envio não pode alterar a resposta (anti-enumeração):
+      // registra com telefone mascarado e segue com a mensagem genérica.
+      console.error(`[entrar] falha ao enviar SMS para ${maskPhone(e164)}`);
+    }
   }
-  // E-mail inexistente ou não verificado: nenhum código, mesma resposta.
+  // Telefone não cadastrado ou não verificado: nenhum SMS, mesma resposta.
 
-  setSignedEmailCookie(LOGIN_EMAIL_COOKIE, email);
+  setSignedPhoneCookie(LOGIN_PHONE_COOKIE, e164);
   return NextResponse.json({ ok: true, message: GENERIC_MESSAGE });
 }

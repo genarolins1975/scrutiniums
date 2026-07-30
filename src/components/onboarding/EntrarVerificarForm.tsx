@@ -8,8 +8,8 @@ import { Alert } from "@/components/ui/Alert";
 import { OtpInput } from "./OtpInput";
 import { ResendCountdown } from "./ResendCountdown";
 
-/** Verificação do código de acesso (login sem senha). */
-export function EntrarVerificarForm({ maskedEmail }: { maskedEmail: string }) {
+/** Verificação do código SMS de acesso (login sem senha). */
+export function EntrarVerificarForm({ maskedPhone }: { maskedPhone: string }) {
   const router = useRouter();
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | undefined>();
@@ -41,6 +41,10 @@ export function EntrarVerificarForm({ maskedEmail }: { maskedEmail: string }) {
         router.push(data.next);
         return;
       }
+      if (res.status === 401) {
+        router.push("/entrar");
+        return;
+      }
       setError(
         res.status === 429
           ? "Muitas tentativas. Aguarde um instante e tente novamente."
@@ -64,7 +68,7 @@ export function EntrarVerificarForm({ maskedEmail }: { maskedEmail: string }) {
         body: JSON.stringify({ resend: true }),
       });
       if (res.ok) {
-        setInfo("Se o e-mail for válido, enviamos um novo código.");
+        setInfo("Se o telefone estiver cadastrado, enviamos um novo código por SMS.");
       } else if (res.status === 429) {
         setError("Muitas tentativas. Aguarde um instante e tente novamente.");
       } else {
@@ -78,13 +82,20 @@ export function EntrarVerificarForm({ maskedEmail }: { maskedEmail: string }) {
   return (
     <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
       <p className="text-sm text-carvao-muted">
-        Se houver cadastro para <span className="font-medium text-carvao">{maskedEmail}</span>,
-        você receberá um código de 6 dígitos.
+        Se houver cadastro para <span className="font-medium text-carvao">{maskedPhone}</span>,
+        você receberá um código de 6 dígitos por SMS.
       </p>
 
       {info && <Alert kind="sucesso">{info}</Alert>}
 
-      <OtpInput ref={otpRef} value={code} onChange={setCode} error={error} disabled={submitting} />
+      <OtpInput
+        ref={otpRef}
+        label="Código recebido por SMS"
+        value={code}
+        onChange={setCode}
+        error={error}
+        disabled={submitting}
+      />
 
       <Button type="submit" full disabled={submitting}>
         {submitting ? "Verificando…" : "Entrar"}
@@ -96,7 +107,7 @@ export function EntrarVerificarForm({ maskedEmail }: { maskedEmail: string }) {
           href="/entrar"
           className="rotulo min-h-[44px] py-3 text-carvao-muted underline underline-offset-4 hover:text-bronze"
         >
-          Alterar e-mail
+          Alterar telefone
         </Link>
       </div>
     </form>
