@@ -1,0 +1,299 @@
+{
+  "gerado_em": "2026-07-31T00:00:00+00:00",
+  "versao": "1.0.0",
+  "corte_pesquisa": "2026-07-31",
+  "titulo": "Bets e risco financeiro",
+  "subtitulo": "Como as apostas podem afetar renda disponível, liquidez e capacidade de pagamento das famílias brasileiras.",
+  "aviso": "Associações não implicam causalidade.",
+  "periodo_coberto": "2024 (fluxos pré-regulação) a 2026 (mercado regulado desde jan/2025)",
+  "atualizacao": {
+    "processo": "curadoria manual documentada (sem API pública consolidada); Panoramas semestrais da SPA/MF são a fonte administrativa central",
+    "proxima_esperada": "Panorama SPA do 1º semestre de 2026 (padrão de publicação: fim de agosto)",
+    "verificado_em": "2026-07-31"
+  },
+  "niveis": {
+    "A": { "rotulo": "Dado administrativo oficial", "descricao": "Registro administrativo publicado por órgão público (SPA/SIGAP, BCB, RFB, DATASUS, STF, DOU)." },
+    "B": { "rotulo": "Pesquisa oficial representativa", "descricao": "Pesquisa amostral de órgão público com amostra, campo e margem de erro publicados (DataSenado, IBGE)." },
+    "C": { "rotulo": "Estudo acadêmico com método identificável", "descricao": "Artigo revisado por pares ou working paper com desenho empírico explícito. Working papers são marcados." },
+    "D": { "rotulo": "Estimativa privada com metodologia publicada", "descricao": "Levantamento privado ou setorial cuja amostra, período e definição estão disponíveis. Interesse do emissor declarado." },
+    "E": { "rotulo": "Associação exploratória ou sinal não validado", "descricao": "Correlação, número de imprensa a partir de fonte administrativa, ou sinal ainda sem validação em fonte primária." }
+  },
+  "sintese": [
+    { "id": "apostadores_2025", "rotulo": "Apostadores no mercado regulado", "valor": 25245319, "exibir": "25,2 milhões", "unidade": "CPFs únicos", "conceito": "CPFs únicos que fizeram ao menos uma aposta em operador autorizado no ano; difere de contas (87,7 mi por operador) e de apostadores ativos por mês", "data_ref": "2025 (jan a dez)", "publicado_em": "2026-01-23", "nivel": "A", "fonte": "SPA/MF, 2º Panorama Semestral", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf", "status": "oficial" },
+    { "id": "ggr_2025", "rotulo": "GGR do mercado regulado", "valor": 36.96, "exibir": "R$ 37,0 bi", "unidade": "R$ bilhões", "conceito": "GGR = apostas menos prêmios pagos (receita bruta dos operadores autorizados). Não é volume apostado, não é depósito, não é lucro", "data_ref": "2025 (jan a dez)", "publicado_em": "2026-01-23", "nivel": "A", "fonte": "SPA/MF, 2º Panorama Semestral", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf", "status": "oficial" },
+    { "id": "ggr_por_apostador", "rotulo": "GGR médio mensal por apostador", "valor": 163.8, "exibir": "≈ R$ 164/mês", "unidade": "R$ por apostador ao mês", "conceito": "GGR do 1S2025 (R$ 17,4 bi) dividido por 17,7 mi de apostadores e 6 meses. É média sobre o agregado: a distribuição individual não é publicada e a mediana é desconhecida", "data_ref": "1S2025", "publicado_em": "2025-08-26", "nivel": "A", "fonte": "cálculo próprio sobre SPA/MF, 1º Panorama Semestral", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/copy_of_apresentacao_spamf_relatoriodo1osemestre_versao1.pdf", "status": "calculado", "nota": "Média aritmética, não mediana. Estudos internacionais indicam forte concentração do gasto em poucos apostadores intensos." },
+    { "id": "autoexclusao", "rotulo": "Pessoas em autoexclusão", "valor": 574600, "exibir": "574,6 mil", "unidade": "solicitações acumuladas", "conceito": "Solicitações na Plataforma Centralizada de Autoexclusão (lançada em dez/2025). Demanda voluntária: não é prevalência de dependência", "data_ref": "até 29/05/2026", "publicado_em": "2026-05-29", "nivel": "A", "fonte": "SPA/MF (gov.br)", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/maio/mais-de-meio-milhao-de-pessoas-ja-utilizaram-a-plataforma-centralizada-de-autoexclusao", "status": "oficial", "nota": "Imprensa reportou 925 mil em 09/07/2026 citando a Fazenda; número ainda sem publicação primária em gov.br até o corte desta pesquisa." },
+    { "id": "empresas", "rotulo": "Empresas autorizadas", "valor": 79, "exibir": "79 empresas", "unidade": "empresas (SPA)", "conceito": "Empresas com autorização vigente ao fim de 2025; cada empresa pode operar até 3 marcas. Em maio/2026 a planilha oficial indicava cerca de 85 empresas e 240 domínios", "data_ref": "2025", "publicado_em": "2026-01-23", "nivel": "A", "fonte": "SPA/MF, 2º Panorama e lista oficial de empresas", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/lista-de-empresas", "status": "oficial" },
+    { "id": "bloqueios", "rotulo": "Sites ilegais bloqueados", "valor": 25000, "exibir": "25 mil+", "unidade": "URLs (acumulado)", "conceito": "Bloqueios determinados pela SPA e executados pela Anatel desde out/2024. Bloqueio de URL não equivale a operador único: um operador usa muitos domínios", "data_ref": "1º ano do mercado regulado (2025)", "publicado_em": "2026-01-23", "nivel": "A", "fonte": "SPA/MF (gov.br)", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/janeiro/em-um-ano-de-mercado-regulado-spa-registra-mais-de-25-mil-sites-ilegais-bloqueados", "status": "oficial", "nota": "Imprensa reportou ~50 mil (jun/2026) e ~54 mil (jul/2026); sem publicação primária localizada até o corte." },
+    { "id": "ilegal_share", "rotulo": "Participação estimada do mercado ilegal", "valor": null, "exibir": "41% a 51%", "unidade": "% do volume", "conceito": "ESTIMATIVA consolidada pelo TCU (acórdão de mai/2026, TC 015.852/2025-3) a partir de estudos de mercado (Locomotiva, LCA/IBJR, Yield Sec). Não é medição administrativa", "data_ref": "2025", "publicado_em": "2026-05-19", "nivel": "D", "fonte": "TCU, relatório sobre mercado ilegal de apostas", "url": "https://portal.tcu.gov.br/imprensa/noticias/apostas-on-line-tcu-avalia-acoes-de-prevencao-do-governo", "status": "estimativa", "nota": "Intervalo amplo porque as metodologias diferem (tráfego web, pagamentos, extrapolação). Parte dos estudos é financiada pelo setor regulado, que tem interesse na tese de ilegalidade alta." },
+    { "id": "beneficiarios_impedidos", "rotulo": "Beneficiários BF/BPC impedidos de apostar", "valor": 2800000, "exibir": "2,8 milhões", "unidade": "CPFs", "conceito": "CPFs de beneficiários de Bolsa Família e BPC impedidos de cadastro em bets via API do SIGAP, em cumprimento à liminar do STF (ADI 7.721)", "data_ref": "jul/2026", "publicado_em": "2026-07-11", "nivel": "E", "fonte": "imprensa (O Tempo) a partir de dados SPA/SIGAP", "url": "https://www.otempo.com.br/economia/2026/7/11/fazenda-impediu-2-8-milhoes-de-beneficiarios-do-bolsa-familia-e-do-bpc-de-apostarem-em-bets", "status": "imprensa", "nota": "Aguardando publicação primária da SPA." }
+  ],
+  "series": {
+    "ggr_regulado": {
+      "conceito": "GGR (Gross Gaming Revenue) = total apostado menos prêmios pagos, no mercado autorizado. Equivale à perda líquida agregada dos apostadores no período, antes de tributos das operadoras.",
+      "unidade": "R$ bilhões",
+      "freq": "semestral (publicação oficial); sem interpolação mensal",
+      "obs": [
+        { "ref": "2025-S1", "periodo": "jan a jun/2025", "v": 17.4, "nivel": "A", "status": "oficial", "fonte": "SPA/MF, 1º Panorama", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/copy_of_apresentacao_spamf_relatoriodo1osemestre_versao1.pdf" },
+        { "ref": "2025-S2", "periodo": "jul a dez/2025", "v": 19.56, "nivel": "A", "status": "calculado", "derivacao": "ano 2025 (R$ 36,96 bi) menos 1S2025 (R$ 17,4 bi); mesma fonte e mesmo conceito", "fonte": "cálculo sobre SPA/MF, 2º Panorama", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf" },
+        { "ref": "2026-T1", "periodo": "jan a mar/2026", "v": 7.6, "nivel": "E", "status": "imprensa", "fonte": "SIGAP via imprensa (BNLData/Metrópoles), sem confirmação da SPA", "url": "https://bnldata.com.br/brasileiros-fazem-152-mi-de-apostas-em-bets-reguladas-no-1o-tri-de-2026/", "nota": "Trimestre não comparável diretamente aos semestres. Indica desaceleração." }
+      ],
+      "nota": "A SPA não publica depósitos totais nem prêmios pagos discriminados; apenas GGR. Total apostado (turnover) não é divulgado e NÃO deve ser inferido aplicando payout arbitrário ao GGR."
+    },
+    "apostadores": {
+      "conceito": "Conceitos distintos por período: contas/pessoas no semestre (1S2025), CPFs únicos no ano (2025) e CPFs únicos no trimestre (1T2026). Não formam uma série única.",
+      "unidade": "milhões",
+      "obs": [
+        { "ref": "2025-S1", "v": 17.7, "conceito": "pessoas que apostaram no semestre (1º Panorama)", "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/copy_of_apresentacao_spamf_relatoriodo1osemestre_versao1.pdf" },
+        { "ref": "2025", "v": 25.245, "conceito": "CPFs únicos no ano; 87,7 mi contas por operador e 100,8 mi por marca", "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf" },
+        { "ref": "2026-T1", "v": 15.186, "conceito": "CPFs únicos com ao menos 1 aposta no trimestre", "nivel": "E", "status": "imprensa", "url": "https://bnldata.com.br/brasileiros-fazem-152-mi-de-apostas-em-bets-reguladas-no-1o-tri-de-2026/" }
+      ]
+    },
+    "pix_pre_regulacao": {
+      "quebra_metodologica": true,
+      "conceito": "Transferências Pix BRUTAS de pessoas para contas identificadas como de operadoras (mercado então não regulado, inclui operadores hoje ilegais). NÃO é perda do apostador, NÃO é GGR, NÃO distingue depósito de aposta. O próprio BC estimou retenção de ~15% do fluxo.",
+      "unidade": "R$ bilhões por mês",
+      "obs": [
+        { "ref": "2024-01a08", "faixa": [18, 21], "v": 20.8, "periodo": "agosto/2024 (pico da janela jan a ago)", "nivel": "A", "status": "oficial", "fonte": "BCB, Estudo Especial nº 119/2024", "url": "https://www.bcb.gov.br/conteudo/relatorioinflacao/EstudosEspeciais/EE119_Analise_tecnica_sobre_o_mercado_de_apostas_online_no_Brasil_e_o_perfil_dos_apostadores.pdf" }
+      ],
+      "nota": "Série descontinuada e conceitualmente incompatível com o GGR do SIGAP. Comparar os dois exigiria conhecer payout e cobertura, que não são observados. Esta quebra metodológica (2024 Pix bruto vs 2025+ GGR administrativo) é exibida no painel e jamais unida em uma única curva."
+    },
+    "autoexclusao": {
+      "conceito": "Solicitações acumuladas na Plataforma Centralizada de Autoexclusão (SPA/gov.br), lançada em 12/12/2025.",
+      "unidade": "mil solicitações (acumulado)",
+      "obs": [
+        { "ref": "2026-01-23", "v": 217, "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/janeiro/em-um-ano-de-mercado-regulado-spa-registra-mais-de-25-mil-sites-ilegais-bloqueados", "nota": "primeiros 40 dias" },
+        { "ref": "2026-05-29", "v": 574.6, "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/maio/mais-de-meio-milhao-de-pessoas-ja-utilizaram-a-plataforma-centralizada-de-autoexclusao" },
+        { "ref": "2026-07-09", "v": 925, "nivel": "E", "status": "imprensa", "url": "https://bnldata.com.br/autoexclusao-de-apostas-alcanca-925-mil-usuarios-no-brasil/", "nota": "divulgado pela Fazenda à imprensa; sem publicação primária até o corte" }
+      ],
+      "motivos": { "fonte": "SPA/MF (gov.br), mai/2026", "itens": [ { "rotulo": "Perda de controle e saúde mental", "v": 41 }, { "rotulo": "Prazo indeterminado escolhido", "v": 69 } ], "nota": "41% declararam perda de controle/saúde mental como motivo; 69% escolheram bloqueio por prazo indeterminado (12 meses ou mais). Percentuais sobre bases distintas." }
+    },
+    "bloqueios_ilegais": {
+      "conceito": "URLs de apostas sem autorização bloqueadas (SPA determina, Anatel executa).",
+      "unidade": "mil URLs (acumulado)",
+      "obs": [
+        { "ref": "2025-06-30", "v": 15, "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2025/agosto/no-primeiro-semestre-17-7-milhoes-de-brasileiros-realizaram-apostas-de-quota-fixa-e-ultrapassou-se-o-total-de-15-mil-sites-ilegais-bloqueados" },
+        { "ref": "2025-12-31", "v": 25, "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/janeiro/em-um-ano-de-mercado-regulado-spa-registra-mais-de-25-mil-sites-ilegais-bloqueados" },
+        { "ref": "2026-06-19", "v": 50, "nivel": "E", "status": "imprensa", "url": "https://convergenciadigital.com.br/governo/bets-anatel-bloqueou-50-mil-sites-de-apostas-ilegais/" },
+        { "ref": "2026-07-08", "v": 54, "nivel": "E", "status": "imprensa", "url": "https://www.mobiletime.com.br/noticias/08/07/2026/bets-ilegais-anatel-site/" }
+      ]
+    },
+    "arrecadacao": {
+      "conceito": "Arrecadação e destinações do setor regulado. Conceitos distintos: tributos federais das operadoras, destinações legais (12% do GGR a seguridade, esporte, turismo, saúde etc.), outorgas (até R$ 30 mi por autorização) e taxa de fiscalização.",
+      "unidade": "R$ bilhões",
+      "obs": [
+        { "ref": "2025", "tributos": 9.95, "destinacoes": 4.53, "outorgas": 2.5, "taxa_fiscalizacao": 0.0955, "nivel": "A", "status": "oficial", "url": "https://www.gov.br/fazenda/pt-br/assuntos/noticias/2026/janeiro/em-um-ano-de-mercado-regulado-spa-registra-mais-de-25-mil-sites-ilegais-bloqueados" },
+        { "ref": "2026-jan-mai", "tributos": 5.89, "nivel": "E", "status": "imprensa", "url": "https://bnldata.com.br/receita-federal-arrecada-r-589-bi-com-apostas-online-nos-5-primeiros-meses-de-2026/", "nota": "análise mensal da RFB citada pela imprensa; documento primário não verificado" }
+      ]
+    }
+  },
+  "cadeia": {
+    "descricao": "Cadeia econômica PLAUSÍVEL entre apostas e crédito. Nem todos os elos estão empiricamente mensurados no Brasil: cada elo abaixo declara seu grau de evidência.",
+    "legenda": {
+      "comprovado_brasil": "Comprovado no Brasil (dado administrativo)",
+      "associacao": "Associação observada no Brasil (sem identificação causal)",
+      "internacional": "Evidência causal internacional (mecanismo plausível, não estimativa para o Brasil)",
+      "hipotese": "Hipótese a investigar"
+    },
+    "elos": [
+      { "de": "Renda disponível", "para": "Depósitos em bets", "status": "comprovado_brasil", "evidencia": "Fluxos Pix a operadoras (BCB EE 119/2024) e mercado regulado com 25,2 mi de CPFs e GGR de R$ 37,0 bi em 2025 (SPA/SIGAP)." },
+      { "de": "Depósitos em bets", "para": "Perdas líquidas", "status": "comprovado_brasil", "evidencia": "No agregado, por definição: o GGR é a perda líquida conjunta dos apostadores no mercado regulado. A distribuição individual das perdas não é publicada." },
+      { "de": "Perdas líquidas", "para": "Redução de caixa e poupança", "status": "internacional", "evidencia": "Baker et al. (JFE 2026, EUA, causal): cada US$ 1 apostado reduz ~US$ 0,20 de poupança de longo prazo; queda de ~14% nos aportes líquidos de investimento. Para o Brasil: estimativas de deslocamento de consumo (Itaú 2024) ainda sem desenho causal." },
+      { "de": "Redução de caixa", "para": "Uso de crédito caro (rotativo, cheque especial)", "status": "internacional", "evidencia": "Baker et al. (2026): mais overdraft e dívida de cartão em famílias restritas. Muggleton et al. (Nature HB 2021, UK): dose-resposta entre gasto com apostas e crédito rotativo/payday. No Brasil, apenas declaratório (Serasa 2024: 44% dos endividados apostadores tentaram quitar dívidas apostando)." },
+      { "de": "Uso de crédito caro", "para": "Renegociação de dívidas", "status": "hipotese", "evidencia": "Sem medição empírica brasileira. Existe vínculo INSTITUCIONAL: o Novo Desenrola (MP 1.355/2026) bloqueia apostas de quem renegocia, o que pressupõe esse elo na desenho da política." },
+      { "de": "Renegociação", "para": "Atraso (15 a 90 dias)", "status": "hipotese", "evidencia": "Sem série pública que separe atraso de apostadores e não apostadores no Brasil." },
+      { "de": "Atraso", "para": "Inadimplência (90+ dias)", "status": "associacao", "evidencia": "DataSenado 2024: 42% dos apostadores declararam dívida em atraso acima de 90 dias vs 32% da população geral. Associação transversal autodeclarada, sem controle de renda/idade e sem direção causal. Internacional: Hollenbeck et al. (WP, EUA) estimam queda de score e aumento de falências 3 a 4 anos após legalização online." }
+    ]
+  },
+  "perfil": {
+    "aviso_populacoes": "As fontes abaixo medem POPULAÇÕES e CONCEITOS diferentes (registro administrativo de CPFs vs pesquisas amostrais com recortes distintos de idade e recall). Não são comparáveis entre si e não formam uma série.",
+    "sigap": {
+      "nivel": "A", "fonte": "SPA/MF, 2º Panorama (registro administrativo, ano 2025)",
+      "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf",
+      "itens": [
+        { "rotulo": "Homens", "v": 68.3, "unidade": "% dos CPFs únicos" },
+        { "rotulo": "Faixa 31 a 40 anos", "v": 28.6, "unidade": "% dos CPFs únicos" }
+      ],
+      "nota": "O Panorama público não divulga renda, escolaridade nem UF dos apostadores."
+    },
+    "datasenado_2024": {
+      "nivel": "B", "fonte": "DataSenado, Panorama Político 2024 (CATI, n=21.808, ±1,22 p.p., campo 5 a 28/06/2024, 16+)",
+      "url": "https://www.senado.leg.br/institucional/datasenado/relatorio_online/pesquisa_aposta_esportiva/2024/interativo.html",
+      "prevalencia": { "v": 13, "texto": "13% apostaram nos últimos 30 dias (22,1 milhões de pessoas 16+)" },
+      "itens": [
+        { "rotulo": "Homens", "v": 62, "unidade": "% dos apostadores" },
+        { "rotulo": "16 a 39 anos", "v": 56, "unidade": "% dos apostadores" },
+        { "rotulo": "Renda até 2 salários mínimos", "v": 52, "unidade": "% dos apostadores" },
+        { "rotulo": "Ensino médio completo", "v": 40, "unidade": "% dos apostadores" },
+        { "rotulo": "Ocupados", "v": 68, "unidade": "% dos apostadores" }
+      ],
+      "gasto_30d": { "nota": "percentuais sobre a POPULAÇÃO TOTAL 16+; a pesquisa não publica média nem mediana de gasto", "faixas": [
+        { "rotulo": "até R$ 50", "v": 4 }, { "rotulo": "R$ 50 a 99", "v": 2 }, { "rotulo": "R$ 100 a 499", "v": 4 }, { "rotulo": "R$ 500 ou mais", "v": 3 }
+      ] },
+      "endividamento": { "apostadores": 42, "populacao": 32, "texto": "42% dos apostadores declararam dívida em atraso >90 dias vs 32% da população geral", "nota": "associação transversal autodeclarada; não implica causalidade em nenhuma direção" },
+      "regioes": { "nota": "a amostra não sustenta estimativa confiável por estado; apresentamos apenas extremos regionais com a margem de erro estadual bem maior que a nacional", "itens": [
+        { "rotulo": "Roraima e Pará (maiores)", "v": 17 }, { "rotulo": "Ceará (menor)", "v": 8 }, { "rotulo": "Média nacional", "v": 13 }
+      ] }
+    },
+    "outras_pesquisas": [
+      { "fonte": "Datafolha (mai/2026)", "nivel": "D", "metodo": "presencial probabilística, n=1.907, ±2 p.p., 139 municípios", "achado": "7% dos adultos apostam; gasto médio declarado R$ 241/mês (esportivas) e R$ 232 (cassino online); 35% dos apostadores dizem comprometer as finanças", "url": "https://www.yogonet.com/brasil/noticias/2026/07/15/9610-datafolha-indica-que-7-dos-brasileiros-fazem-apostas-online", "status": "imprensa sobre pesquisa com método publicado" },
+      { "fonte": "ANBIMA/Datafolha, Raio-X do Investidor (abr/2026)", "nivel": "D", "metodo": "amostral nacional, ±1 p.p.", "achado": "17% da população aposta (15% em 2024); 27% na geração Z", "url": "https://investalk.bb.com.br/noticias/mercado/bets-numero-de-apostadores-sobe-para-17-da-populacao-diz-anbimadatafolha", "status": "conceito e recall distintos do Datafolha eleitoral: tratar 7% a 17% como intervalo entre conceitos, não contradição" },
+      { "fonte": "CNDL/SPC Brasil (set/2024)", "nivel": "D", "metodo": "survey online, n=821 apostadores, ±3,42 p.p., campo jun/2024", "achado": "gasto médio declarado R$ 186/mês; 15% deixaram de pagar contas para apostar; 18% já ficaram negativados", "url": "https://cndl.org.br/varejosa/consumidores-gastam-cerca-de-r-6-bilhoes-ao-mes-com-jogos-e-apostas-online-no-brasil-revela-pesquisa-cndl-spc-brasil/", "status": "amostra online pequena; extrapolações monetárias dependem de projeção não detalhada" },
+      { "fonte": "Serasa/Opinion Box (nov/2024)", "nivel": "D", "metodo": "survey, n=4.463 endividados (amostra não probabilística; margem não divulgada)", "achado": "57% dos endividados que apostaram não eram inadimplentes antes de começar a apostar; 44% tentaram usar apostas para quitar dívidas", "url": "https://borainvestir.b3.com.br/noticias/57-dos-endividados-que-apostaram-em-bets-nao-eram-inadimplentes-antes-de-comecarem-a-apostar-revela-pesquisa-da-serasa/", "status": "autodeclarado e condicional: não estabelece causalidade nem prevalência" },
+      { "fonte": "Febraban/IPESPE (dez/2024)", "nivel": "D", "metodo": "n=2.000, campo out/2024 (margem não informada)", "achado": "40% apostam ou têm apostador em casa; 52% dos apostadores admitem perder mais do que ganham", "url": "https://portal.febraban.org.br/noticia/4238/pt-br", "status": "pesquisa de percepção, não de medição de gasto" }
+    ]
+  },
+  "vulnerabilidade": {
+    "bolsa_familia": {
+      "titulo": "Beneficiários de programas sociais",
+      "dado_central": { "texto": "5 milhões de beneficiários do Bolsa Família transferiram R$ 3 bi via Pix a operadoras em agosto/2024 (mediana de R$ 100 por pessoa)", "nivel": "A", "fonte": "BCB, EE 119/2024", "url": "https://www.bcb.gov.br/conteudo/relatorioinflacao/EstudosEspeciais/EE119_Analise_tecnica_sobre_o_mercado_de_apostas_online_no_Brasil_e_o_perfil_dos_apostadores.pdf" },
+      "contestacao": "O número é CONTESTADO: o Pix sai do CPF do responsável familiar (não distingue gasto individual do familiar nem a origem do recurso, benefício ou outra renda); o próprio BC classificou os resultados como preliminares; o MDS pediu apuração à PF e estimativas posteriores citam 1,8 a 3 milhões de beneficiários apostando. O painel exibe o dado com essa ressalva, não como fato pacificado.",
+      "restricao": { "texto": "Desde out/2025, beneficiários de Bolsa Família e BPC não podem se cadastrar em bets (Portaria SPA/MF 2.217/2025 e IN 22/2025, em cumprimento à liminar do STF na ADI 7.721). Em 19/12/2025 o STF manteve a proibição de novos cadastros e suspendeu o bloqueio de contas preexistentes. 2,8 mi de CPFs impedidos até jul/2026 (imprensa).", "nivel": "A" }
+    },
+    "grupos": [
+      { "rotulo": "Baixa renda", "evidencia": "52% dos apostadores declaram renda até 2 SM (DataSenado 2024, B); classes D/E gastariam 1,38% da renda com apostas (Strategy&/PwC 2024, projeção, D)" },
+      { "rotulo": "Jovens", "evidencia": "56% dos apostadores têm 16 a 39 anos (DataSenado, B); 28,6% dos CPFs no SIGAP têm 31 a 40 anos (A); evidência internacional aponta dano concentrado em homens jovens de baixa renda (Hollenbeck et al., C)" },
+      { "rotulo": "Idosos", "evidencia": "BCB EE119: apostadores 60+ tinham gasto médio mensal mais alto (~R$ 3 mil+ via Pix, dado bruto, A); 14% dos apostadores têm 60+ (DataSenado, B)" },
+      { "rotulo": "Pessoas em autoexclusão", "evidencia": "574,6 mil solicitações até mai/2026 (A); 41% citam perda de controle/saúde mental" },
+      { "rotulo": "Jogo problemático atendido no SUS", "evidencia": "10.553 atendimentos por transtorno do jogo (CID F63.0) entre jan/2018 e mai/2025, alta de 104% no período (MS, divulgado em audiência; forte subnotificação e sem painel público dedicado)" }
+    ],
+    "protecoes": [
+      { "data": "2024-04", "texto": "Cartão de crédito, cheque e cripto proibidos para apostar (Portaria SPA/MF 615/2024)" },
+      { "data": "2024-07", "texto": "Jogo responsável e limites de publicidade (Portaria SPA/MF 1.231/2024)" },
+      { "data": "2024-11", "texto": "STF (ADI 7.721): vedação de publicidade a crianças e de apostas com recursos de programas sociais" },
+      { "data": "2025-03", "texto": "Asfixia financeira do mercado ilegal (Portaria SPA/MF 566/2025)" },
+      { "data": "2025-09", "texto": "Bloqueio de cadastro de beneficiários BF/BPC (Portaria 2.217/2025 + IN 22/2025)" },
+      { "data": "2025-11", "texto": "Autoexclusão centralizada nacional (Portaria 2.579/2025 + IN 31/2025; plataforma no ar em 12/12/2025)" },
+      { "data": "2026-05", "texto": "Novo Desenrola: quem renegocia tem CPF bloqueado em bets por 12 meses (MP 1.355/2026; Portaria 1.237/2026 + IN 3/2026)" },
+      { "data": "2026-05", "texto": "Desenrola FIES: vedação de apostas anunciada; ato específico não localizado até o corte (status: anunciado)" }
+    ],
+    "leitura_institucional": "As regras acima criam uma ligação institucional explícita entre apostas, vulnerabilidade e políticas de reequilíbrio financeiro: o desenho regulatório brasileiro passou a tratar apostas como risco à renda de grupos protegidos (beneficiários de transferência de renda) e como comportamento incompatível com programas de reestruturação de dívidas. Isso é um fato normativo, não uma prova empírica de dano individual."
+  },
+  "explorador": {
+    "descricao": "Compare indicadores de crédito das famílias (séries mensais do BCB já auditadas neste Observatório) com os marcos do mercado de apostas. A exposição a bets no mercado regulado tem só 3 observações públicas (2 semestres + 1 trimestre não confirmado): correlações e defasagens NÃO são calculadas com n<8.",
+    "min_obs_correlacao": 8,
+    "indicadores": [
+      { "key": "inad_pf", "rotulo": "Inadimplência PF (90+ dias)" },
+      { "key": "inad_total", "rotulo": "Inadimplência total (90+ dias)" },
+      { "key": "comprometimento", "rotulo": "Comprometimento de renda das famílias" },
+      { "key": "endividamento", "rotulo": "Endividamento das famílias" },
+      { "key": "taxa_pf", "rotulo": "Taxa de juros média PF" },
+      { "key": "concessoes_pf", "rotulo": "Concessões de crédito PF" },
+      { "key": "saldo_pf", "rotulo": "Saldo de crédito PF" },
+      { "key": "desemprego", "rotulo": "Desemprego (controle)" },
+      { "key": "ipca", "rotulo": "IPCA (controle)" },
+      { "key": "selic_meta", "rotulo": "Selic meta (controle)" }
+    ],
+    "indicadores_ausentes": [
+      { "rotulo": "Atraso 15 a 90 dias PF (SGS 21005)", "motivo": "série ainda não integrada ao pipeline deste Observatório; entra na próxima coleta" },
+      { "rotulo": "Cartão rotativo: saldo (SGS 20587), juros (22022) e inadimplência (21127)", "motivo": "idem" },
+      { "rotulo": "Cheque especial: juros (20741) e inadimplência (21113)", "motivo": "idem" },
+      { "rotulo": "Crédito pessoal não consignado e composição de dívidas (20574/20575)", "motivo": "idem" }
+    ],
+    "eventos": [
+      { "x": "2024-09-01", "label": "Estudo BCB (Pix/bets)" },
+      { "x": "2024-10-01", "label": "Período de adequação" },
+      { "x": "2025-01-01", "label": "Início do mercado regulado" },
+      { "x": "2025-10-01", "label": "Bloqueio BF/BPC" },
+      { "x": "2025-12-01", "label": "Autoexclusão nacional" },
+      { "x": "2026-05-01", "label": "Novo Desenrola (veda bets)" }
+    ],
+    "rotulos_validos": ["movimento conjunto", "associação contemporânea", "associação com defasagem", "sem evidência suficiente", "não implica causalidade"]
+  },
+  "mercado_ilegal": {
+    "aviso": "Mercado regulado (medido pelo SIGAP) e mercado ilegal (estimado por terceiros) têm definições incompatíveis: NUNCA são somados neste painel.",
+    "estimativas": [
+      { "fonte": "TCU (acórdão TC 015.852/2025-3, mai/2026)", "nivel": "D", "valor": "41% a 51% do volume; até R$ 40 bi/ano", "metodo": "consolidação de estudos de mercado (Locomotiva, LCA/IBJR, Yield Sec) em auditoria operacional; 8 recomendações à SPA", "url": "https://portal.tcu.gov.br/imprensa/noticias/apostas-on-line-tcu-avalia-acoes-de-prevencao-do-governo" },
+      { "fonte": "Instituto Locomotiva para IBJR (jun/2025)", "nivel": "D", "valor": "61% dos apostadores fizeram ao menos uma aposta ilegal", "metodo": "survey digital autopreenchido, n=2.000, ±2,2 p.p., ponderado por DataSenado 2024; encomendado pelo setor regulado (interesse declarado)", "url": "https://ibjr.org.br/wp-content/uploads/2025/09/Pesquisa-Instituto-Locomotiva_Incidencia-de-Apostas-Ilegais-no-Brasil-2025_divulgacao-10.06.2025.pdf" },
+      { "fonte": "LCA Consultores / IBJR (2024/2025)", "nivel": "D", "valor": "perda fiscal estimada de R$ 7,2 a 10,8 bi/ano", "metodo": "modelo econômico com premissas publicadas; encomendado pelo setor regulado", "url": "https://ibjr.org.br/wp-content/uploads/2024/10/LCA_IBJR_Mercado-de-Apostas-1.pdf" },
+      { "fonte": "Yield Sec e H2 Gambling Capital", "nivel": "E", "valor": "não utilizados como número no painel", "metodo": "monitoramento e modelos proprietários SEM metodologia publicada: citados apenas como existentes", "url": "https://bnldata.com.br/h2-gambling-capital-previsoes-do-mercado-brasileiro-de-igaming/" }
+    ],
+    "acoes": [
+      { "texto": "25 mil+ URLs bloqueadas no 1º ano (A); ~54 mil até jul/2026 (imprensa)", "nivel": "A" },
+      { "texto": "~550 contas bancárias de operadores ilegais encerradas; 1.255 comunicações de 54 instituições financeiras (2º Panorama, A)", "nivel": "A" },
+      { "texto": "Asfixia financeira: Portaria SPA/MF 566/2025; responsabilidade solidária de IFs e veículos de publicidade de bets ilegais (LC 224/2025, art. 6º)", "nivel": "A" },
+      { "texto": "Decreto de jun/2026 endurecendo bloqueio financeiro (contas bloqueadas em 24h): reportado pela imprensa; número do decreto não confirmado até o corte", "nivel": "E" }
+    ],
+    "riscos": "Operadores ilegais não recolhem tributos, não seguem regras de jogo responsável nem de PLD/FT, não respondem à autoexclusão e não oferecem proteção ao consumidor. O apostador não tem garantia de pagamento de prêmios e os fluxos favorecem lavagem de dinheiro e fraude."
+  },
+  "estudos": [
+    { "id": "baker2026", "titulo": "Gambling Away Stability: Sports Betting's Impact on Vulnerable Households", "autores": "Baker, Balthrop, Johnson, Kotter, Pisciotta", "ano": 2026, "veiculo": "Journal of Financial Economics (2026; antes NBER WP 33108, 2024)", "tipo": "revisado por pares", "pais": "EUA", "periodo": "2018 a 2023", "base": "transações bancárias de ~184 mil domicílios", "desenho": "causal: diferenças-em-diferenças escalonado na legalização estadual", "resultado": "apostas não deslocam outro consumo, deslocam POUPANÇA (~US$ 0,20 por dólar apostado; queda de ~14% nos aportes líquidos); em famílias restritas: mais dívida de cartão e overdraft", "limitacoes": "amostra de usuários de agregador financeiro; classificação de transações", "aplicabilidade": "mecanismo plausível para o Brasil (apostas via conta bancária/Pix); NÃO é estimativa do efeito brasileiro", "nivel": "C", "url": "https://www.nber.org/papers/w33108" },
+    { "id": "hollenbeck", "titulo": "The Financial Consequences of Legalized Sports Gambling", "autores": "Hollenbeck, Larsen, Proserpio", "ano": 2024, "veiculo": "working paper SSRN; versão em ACM EC'25", "tipo": "working paper (marcado)", "pais": "EUA", "periodo": "2018 a 2023/24", "base": "bureau de crédito, ~7 milhões de consumidores", "desenho": "causal: diferenças-em-diferenças escalonado (acesso online vs presencial)", "resultado": "queda média de score; aumento de falências da ordem de 25 a 30% após 3 a 4 anos de aposta online; mais dívidas em cobrança; efeito concentrado em homens jovens de condados de baixa renda", "limitacoes": "working paper: números podem mudar entre versões; não observa o gasto individual com apostas", "aplicabilidade": "sugere defasagem de anos entre exposição e inadimplência: a série brasileira pós-2025 ainda é curta demais para capturar esse efeito", "nivel": "C", "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4903302" },
+    { "id": "muggleton2021", "titulo": "The association between gambling and financial, social and health outcomes in big financial data", "autores": "Muggleton, Parpart, Newall, Leake, Gathergood, Stewart", "ano": 2021, "veiculo": "Nature Human Behaviour", "tipo": "revisado por pares", "pais": "Reino Unido", "periodo": "até 7 anos de histórico (Lloyds)", "base": "6,5 milhões de clientes bancários", "desenho": "associação (explicitamente não causal), dose-resposta", "resultado": "maior parcela da renda em apostas associada a mais crédito rotativo e payday loans, mais pagamentos perdidos, menos poupança; no topo da distribuição, mortalidade elevada", "limitacoes": "um único banco; sem variação exógena; causalidade reversa possível", "aplicabilidade": "padrão dose-resposta replicável no Brasil com dados bancários/Pix agregados", "nivel": "C", "url": "https://www.nature.com/articles/s41562-020-01045-w" },
+    { "id": "kearney2005", "titulo": "State lotteries and consumer behavior", "autores": "Kearney", "ano": 2005, "veiculo": "Journal of Public Economics", "tipo": "revisado por pares", "pais": "EUA", "periodo": "décadas de 1980/90", "base": "gasto domiciliar (CEX)", "desenho": "causal: introdução escalonada de loterias estaduais", "resultado": "gasto com loteria financiado por corte de consumo não-jogo (~2,4%), concentrado em domicílios pobres, inclusive alimentação", "limitacoes": "loteria física, contexto pré-digital", "aplicabilidade": "mesmo mecanismo do debate bets vs varejo no Brasil", "nivel": "C", "url": "https://www.sciencedirect.com/science/article/abs/pii/S0047272704001343" },
+    { "id": "hankins2011", "titulo": "The Ticket to Easy Street? The Financial Consequences of Winning the Lottery", "autores": "Hankins, Hoekstra, Skiba", "ano": 2011, "veiculo": "Review of Economics and Statistics", "tipo": "revisado por pares", "pais": "EUA (Flórida)", "periodo": "anos 1990/2000", "base": "ganhadores de loteria vs falências", "desenho": "quase-experimental (comparação entre ganhadores de valores distintos)", "resultado": "ganhos de US$ 50 a 150 mil apenas ADIAM a falência, não a evitam: liquidez não resolve problema estrutural/comportamental", "limitacoes": "população específica (ganhadores)", "aplicabilidade": "cautela com teses de que prêmios compensam perdas de apostadores", "nivel": "C", "url": "https://direct.mit.edu/rest/article/93/3/961/57917" },
+    { "id": "karlsson2018", "titulo": "Gambling disorder, increased mortality, suicidality and associated comorbidity", "autores": "Karlsson, Håkansson", "ano": 2018, "veiculo": "Journal of Behavioral Addictions", "tipo": "revisado por pares", "pais": "Suécia", "periodo": "2005 a 2016", "base": "registro nacional de saúde", "desenho": "coorte de registro (não causal)", "resultado": "transtorno do jogo associado a mortalidade ~1,8x e suicídio ~15x (20 a 49 anos)", "limitacoes": "diagnóstico clínico registrado captura casos graves", "aplicabilidade": "dimensão de saúde pública que motiva a seção de autoexclusão", "nivel": "C", "url": "https://akjournals.com/view/journals/2006/7/4/article-p1091.xml" },
+    { "id": "bcb2024", "titulo": "Análise técnica sobre o mercado de apostas online no Brasil e o perfil dos apostadores (EE 119)", "autores": "Banco Central do Brasil", "ano": 2024, "veiculo": "Estudo Especial do Relatório de Inflação", "tipo": "oficial descritivo", "pais": "Brasil", "periodo": "jan a ago/2024 (pré-regulação)", "base": "transferências Pix identificadas a contas de operadoras", "desenho": "descritivo; sem contrafactual", "resultado": "fluxo bruto de R$ 18 a 21 bi/mês; ~24 mi de pagadores; 5 mi de beneficiários do Bolsa Família transferiram R$ 3 bi em ago/2024 (mediana R$ 100)", "limitacoes": "fluxo bruto não é perda (retenção ~15% estimada pelo BC); não separa mercado legal de ilegal; resultados classificados como preliminares pelo próprio BC; recorte do Bolsa Família contestado (CPF do responsável, origem do recurso)", "aplicabilidade": "melhor base administrativa pré-regulação; incompatível conceitualmente com o GGR do SIGAP", "nivel": "A", "url": "https://www.bcb.gov.br/conteudo/relatorioinflacao/EstudosEspeciais/EE119_Analise_tecnica_sobre_o_mercado_de_apostas_online_no_Brasil_e_o_perfil_dos_apostadores.pdf" },
+    { "id": "itau2024", "titulo": "Macro Visão: apostas on-line, estimativas de tamanho e impacto no consumo", "autores": "Itaú Unibanco (research)", "ano": 2024, "veiculo": "relatório macro do banco", "tipo": "estimativa privada com método publicado", "pais": "Brasil", "periodo": "12 meses até jun/2024", "base": "balanço de pagamentos (BCB) + checagens com dados transacionais", "desenho": "estimativa contábil; não causal", "resultado": "apostas brutas ~R$ 68 bi/ano; perda líquida ~R$ 24 bi/ano (~0,3% da renda disponível)", "limitacoes": "extrapolações fortes; sem identificação de deslocamento causal de consumo", "aplicabilidade": "melhor referência macro privada pré-regulação", "nivel": "D", "url": "https://macroattachment.cloud.itau.com.br/attachments/a77e92d9-319f-45ca-b657-6c721241804b/13082024_MACRO_VISAO_Apostas_on-line.pdf" },
+    { "id": "cnc2026", "titulo": "Impacto das bets no varejo e na inadimplência", "autores": "CNC (Geade)", "ano": 2026, "veiculo": "estudo setorial (abr/2026)", "tipo": "estimativa privada com método parcialmente publicado", "pais": "Brasil", "periodo": "jan/2023 a mar/2026", "base": "microdados da Peic", "desenho": "diferenças-em-diferenças declarado; nota técnica completa não publicada", "resultado": "R$ 143,8 bi drenados do varejo; ~270 mil famílias levadas à inadimplência grave; R$ 30 bi/mês apostados (mar/2026)", "limitacoes": "modelo não replicável publicamente; contestado formalmente pelo IBJR; a estimativa de R$ 30 bi/mês excede em muito o GGR do SIGAP e mistura conceitos (fluxo vs receita)", "aplicabilidade": "entra como estimativa CONTESTADA, não como medição", "nivel": "D", "url": "https://movimentoeconomico.com.br/economia/varejo/2026/04/29/cnc-bets-drenam-r-30-bi-por-mes-e-e-levam-270-mil-familias-a-inadimplencia/" },
+    { "id": "serasa2024", "titulo": "Endividados e apostas (Serasa/Opinion Box)", "autores": "Serasa Experian", "ano": 2024, "veiculo": "pesquisa de opinião (nov/2024)", "tipo": "survey privado (metodologia incompleta)", "pais": "Brasil", "periodo": "2024", "base": "n=4.463 endividados (amostra não probabilística)", "desenho": "transversal autodeclarado", "resultado": "57% dos endividados que apostaram não eram inadimplentes antes de apostar; 44% apostaram para tentar quitar dívidas", "limitacoes": "sem margem de erro divulgada; amostra enviesada por construção; sequência temporal autodeclarada não estabelece causalidade", "aplicabilidade": "sinal declaratório do elo apostas/dívida cara", "nivel": "D", "url": "https://borainvestir.b3.com.br/noticias/57-dos-endividados-que-apostaram-em-bets-nao-eram-inadimplentes-antes-de-comecarem-a-apostar-revela-pesquisa-da-serasa/" }
+  ],
+  "timeline": [
+    { "data": "2018-12-12", "ato": "Lei nº 13.756/2018", "resumo": "Cria a modalidade lotérica de apostas de quota fixa (arts. 29 a 35), prevendo regulamentação posterior.", "url": "https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/L13756.htm", "status": "confirmado" },
+    { "data": "2023-12-29", "ato": "Lei nº 14.790/2023", "resumo": "Regulamenta apostas de quota fixa e jogos online: autorização onerosa, tributação de 12% sobre o GGR, IR sobre prêmios, publicidade e jogo responsável.", "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/L14790.htm", "status": "confirmado" },
+    { "data": "2024-04-16", "ato": "Portaria SPA/MF nº 615/2024", "resumo": "Pagamentos: só conta do próprio apostador; proíbe cartão de crédito, cheque e criptoativos.", "url": "https://www.in.gov.br/en/web/dou/-/portaria-normativa-spa/mf-n-615-de-16-de-abril-de-2024-554928583", "status": "confirmado" },
+    { "data": "2024-05-21", "ato": "Portaria SPA/MF nº 827/2024", "resumo": "Procedimento de autorização: outorga de até R$ 30 milhões por até 3 marcas, validade de 5 anos.", "url": "https://www.in.gov.br/en/web/dou/-/portaria-spa/mf-n-827-de-21-de-maio-de-2024-561240128", "status": "confirmado" },
+    { "data": "2024-07-31", "ato": "Portaria SPA/MF nº 1.231/2024", "resumo": "Jogo responsável e publicidade: vedação a menores, alertas obrigatórios, limites e autoexclusão por operador.", "url": "https://www.in.gov.br/en/web/dou/-/portaria-spa/mf-n-1.231-de-31-de-julho-de-2024-575670297", "status": "confirmado" },
+    { "data": "2024-09-16", "ato": "Portaria SPA/MF nº 1.475/2024", "resumo": "Período de adequação (out a dez/2024): só operam empresas com pedido protocolado; sites irregulares passam a ser bloqueados via Anatel.", "url": "https://www.in.gov.br/web/dou/-/portaria-spa/mf-n-1.475-de-16-de-setembro-de-2024-584820215", "status": "confirmado" },
+    { "data": "2024-09-24", "ato": "BCB, Estudo Especial nº 119/2024", "resumo": "Fluxo Pix a operadoras de R$ 18 a 21 bi/mês (jan a ago/2024); recorte do Bolsa Família de R$ 3 bi em ago/2024 (contestado).", "url": "https://www.bcb.gov.br/conteudo/relatorioinflacao/EstudosEspeciais/EE119_Analise_tecnica_sobre_o_mercado_de_apostas_online_no_Brasil_e_o_perfil_dos_apostadores.pdf", "status": "confirmado" },
+    { "data": "2024-11-12", "ato": "STF, liminar na ADI 7.721 (min. Fux)", "resumo": "Veda publicidade dirigida a crianças e adolescentes e determina impedir apostas com recursos do Bolsa Família e do BPC.", "url": "https://noticias-stf-wp-prd.s3.sa-east-1.amazonaws.com/wp-content/uploads/wpallimport/uploads/2024/11/13134254/ADI-7721-decisao-liminar-fux.pdf", "status": "confirmado" },
+    { "data": "2024-11-04", "ato": "IN SPA/MF nº 11/2024", "resumo": "Obriga o domínio bet.br para operadoras autorizadas.", "url": "https://www.in.gov.br/web/dou/-/instrucao-normativa-spa/mf-n-11-de-4-de-novembro-de-2024-594034121", "status": "confirmado" },
+    { "data": "2025-01-01", "ato": "Início do mercado regulado", "resumo": "Somente empresas autorizadas pela SPA/MF, no domínio bet.br. Origem da quebra estrutural das séries do setor.", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apostas-de-quota-fixa/legislacao", "status": "confirmado" },
+    { "data": "2025-03-20", "ato": "Portaria SPA/MF nº 566/2025", "resumo": "Asfixia financeira do mercado ilegal: bloqueio de operações e contas ligadas a operadores não autorizados (com Coaf e BCB).", "url": "https://www.in.gov.br/en/web/dou/-/portaria-spa/mf-n-566-de-20-de-marco-de-2025-619268422", "status": "confirmado" },
+    { "data": "2025-06-12", "ato": "CPI das Bets: relatório final rejeitado", "resumo": "Relatório da CPI do Senado (16 pedidos de indiciamento) é rejeitado por 4 votos a 3; a comissão encerra sem relatório aprovado.", "url": "https://www12.senado.leg.br/noticias/materias/2025/06/12/cpi-das-bets-rejeita-relatorio-final", "status": "confirmado" },
+    { "data": "2025-08-26", "ato": "SPA/MF, 1º Panorama Semestral", "resumo": "1S2025: 17,7 mi de apostadores, GGR de R$ 17,4 bi, 78 empresas e 182 marcas, 15 mil+ sites bloqueados.", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/copy_of_apresentacao_spamf_relatoriodo1osemestre_versao1.pdf", "status": "confirmado" },
+    { "data": "2025-09-30", "ato": "Portaria SPA/MF nº 2.217/2025 + IN nº 22/2025", "resumo": "Cumprimento da liminar do STF: veda cadastro e apostas de beneficiários de Bolsa Família e BPC.", "url": "https://www.in.gov.br/en/web/dou/-/portaria-spa/mf-n-2.217-de-30-de-setembro-de-2025-659607741", "status": "confirmado" },
+    { "data": "2025-11-07", "ato": "Portaria SPA/MF nº 2.579/2025 + IN nº 31/2025", "resumo": "Institui a autoexclusão centralizada nacional e autolimites; plataforma entra no ar em 12/12/2025.", "url": "https://in.gov.br/web/dou/-/portaria-spa/mf-n-2.579-de-7-de-novembro-de-2025-667755834", "status": "confirmado" },
+    { "data": "2025-12-19", "ato": "STF, decisão na ADI 7.721", "resumo": "Mantém a proibição de novos cadastros de beneficiários e suspende o bloqueio de contas preexistentes; antecipa conciliação para 10/02/2026.", "url": "https://noticias.stf.jus.br/postsnoticias/stf-mantem-proibicao-de-novos-cadastros-de-beneficiarios-sociais-em-bets-e-antecipa-conciliacao/", "status": "confirmado" },
+    { "data": "2025-12-26", "ato": "Lei Complementar nº 224/2025", "resumo": "Eleva gradualmente a tributação sobre GGR (13% em 2026, rumo a 15% em 2028, conforme análises; conferir texto) e cria responsabilidade solidária de IFs e veículos que divulguem bets ilegais.", "url": "https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp224.htm", "status": "parcial" },
+    { "data": "2026-01-23", "ato": "SPA/MF, 2º Panorama Semestral", "resumo": "Ano 2025: 25,2 mi de CPFs únicos, GGR de R$ 37,0 bi, R$ 9,95 bi em tributos, R$ 4,53 bi em destinações, 25 mil+ sites bloqueados.", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas/apresentacoes/apresentacao-spa-mf-relatorio-periodico-2026.pdf", "status": "confirmado" },
+    { "data": "2026-05-04", "ato": "MP nº 1.355/2026 (Novo Desenrola Brasil)", "resumo": "Renegociação de dívidas para famílias, FIES e empresas; participantes ficam impedidos de apostar.", "url": "https://www2.camara.leg.br/legin/fed/medpro/2026/medidaprovisoria-1355-4-maio-2026-799034-publicacaooriginal-179123-pe.html", "status": "confirmado" },
+    { "data": "2026-05-05", "ato": "Portaria SPA/MF nº 1.237/2026 + IN nº 3/2026", "resumo": "Operacionaliza o bloqueio de CPF (até 12 meses) dos participantes do Novo Desenrola nas bets autorizadas.", "url": "https://www.in.gov.br/web/dou/-/portaria-spa/mf-n-1.237-de-5-de-maio-de-2026-703399389", "status": "confirmado" },
+    { "data": "2026-05-19", "ato": "TCU, acórdão TC 015.852/2025-3", "resumo": "Estima mercado ilegal em 41% a 51% do volume (até R$ 40 bi/ano) e faz 8 recomendações à SPA.", "url": "https://portal.tcu.gov.br/imprensa/noticias/apostas-on-line-tcu-avalia-acoes-de-prevencao-do-governo", "status": "confirmado" },
+    { "data": "2026-06-19", "ato": "Endurecimento do bloqueio financeiro", "resumo": "Decreto noticiado (contas de operadores ilegais bloqueadas em 24h; ~50 mil sites bloqueados). Número do decreto não confirmado em fonte primária até o corte.", "url": "https://convergenciadigital.com.br/governo/bets-anatel-bloqueou-50-mil-sites-de-apostas-ilegais/", "status": "parcial" }
+  ],
+  "metodologia": {
+    "principio": "Este painel não parte da conclusão de que bets causam inadimplência. Ele investiga a hipótese e comunica o grau de evidência de cada elo. Correlação temporal não é apresentada como causalidade.",
+    "tipos_de_dado": ["dado observado", "dado administrativo", "estimativa", "pesquisa declaratória", "associação exploratória", "evidência causal", "hipótese ainda não testada"],
+    "conceitos": [
+      { "termo": "Total apostado (turnover)", "def": "soma de todas as apostas feitas; NÃO divulgado pela SPA. Não deve ser inferido aplicando payout arbitrário ao GGR." },
+      { "termo": "Depósitos", "def": "dinheiro enviado pelo apostador à conta de apostas; difere do valor apostado (o mesmo real pode ser apostado várias vezes)." },
+      { "termo": "Saques e prêmios", "def": "valores devolvidos ao apostador; prêmios brutos não são divulgados pela SPA." },
+      { "termo": "Fluxo financeiro bruto", "def": "todas as transferências (ida) a operadoras, como no estudo Pix do BC. Não é perda nem receita." },
+      { "termo": "Perda líquida do apostador", "def": "depósitos menos saques do indivíduo. No agregado do mercado regulado equivale ao GGR." },
+      { "termo": "GGR", "def": "apostas menos prêmios pagos = receita bruta de jogo das operadoras (antes de tributos e custos)." },
+      { "termo": "Arrecadação e destinações", "def": "tributos federais, outorgas e os 12% do GGR destinados por lei; nada disso é gasto do apostador adicional ao GGR." },
+      { "termo": "Apostador: cadastrado, ativo, CPF único, conta", "def": "1 CPF pode ter contas em vários operadores (87,7 mi contas vs 25,2 mi CPFs em 2025). Cadastrado não implica ativo." },
+      { "termo": "Pessoa, família, domicílio", "def": "pesquisas amostrais medem pessoas; o recorte do Bolsa Família mede o CPF do responsável familiar, não o gasto da família inteira." },
+      { "termo": "Mercado regulado vs ilegal", "def": "SIGAP mede só o regulado; o ilegal é estimado por terceiros. Definições incompatíveis: nunca somar." },
+      { "termo": "Média vs mediana", "def": "o gasto com apostas é fortemente concentrado; médias (R$ 164/mês) superam muito a mediana típica. Quando só há média, o painel diz isso." }
+    ],
+    "roadmap": {
+      "fase_atual": "estatística descritiva com hierarquia de evidência. A série regulada tem 3 observações públicas e quebra estrutural em jan/2025: qualquer correlação, defasagem ou índice seria ruído com aparência de ciência.",
+      "proximas_fases": ["correlações contemporâneas e defasadas quando n≥8 semestres (ou SPA passar a divulgar mensal)", "testes de estacionariedade e quebras estruturais", "controles macroeconômicos (renda, desemprego, juros, inflação)", "intervalos de confiança e correção para múltiplos testes", "análise de estabilidade e sensibilidade"],
+      "requisitos_causais": ["choque ou variação plausivelmente exógena", "grupo de comparação válido", "tendências prévias compatíveis", "controles adequados", "ausência de antecipação", "testes placebo", "robustez a especificações", "interpretação economicamente coerente"],
+      "aviso_regulacao": "O início nacional da regulação (jan/2025) NÃO é tratado como experimento causal: não há contrafactual nacional evidente.",
+      "previsao": "Qualquer modelo preditivo futuro usará apenas informação disponível na data simulada (vintages), com treino/validação/teste separados, comparação com benchmarks simples, erros publicados e selo experimental."
+    },
+    "open_finance": {
+      "potencial": "Dados transacionais consentidos permitiriam investigar, em base agregada e anonimizada: depósitos a operadores autorizados, perda líquida mensal, uso de limite após apostas, saldo antes e depois, recorrência, atraso de contas, uso de rotativo e cheque especial, contratação posterior de crédito e redução de poupança.",
+      "salvaguardas": ["dados anonimizados ou agregados com células mínimas", "minimização e finalidade delimitada", "consentimento válido e específico", "controle de reidentificação", "avaliação de impacto à proteção de dados (LGPD)", "revisão jurídica e ética prévia"],
+      "vedacoes": "Este Observatório NÃO implementa monitoramento individual, NÃO cria score de 'apostador de risco' e NÃO recomenda negar crédito automaticamente com base em transações de apostas."
+    },
+    "descartados": [
+      { "item": "Mapa estadual de apostadores", "motivo": "nenhuma fonte publica UF com precisão amostral adequada; DataSenado sustenta apenas leitura regional com margem ampliada" },
+      { "item": "Série mensal de GGR", "motivo": "a SPA publica semestralmente; interpolar criaria série falsa" },
+      { "item": "Índice de risco das bets", "motivo": "n=3 observações e quebra estrutural em jan/2025; sem histórico para validação" },
+      { "item": "Correlações e defasagens bets vs crédito", "motivo": "n abaixo do mínimo (8); o explorador exibe rótulo 'sem evidência suficiente'" },
+      { "item": "Estimativas Yield Sec e H2 Gambling Capital", "motivo": "metodologia não publicada" },
+      { "item": "Soma de mercado regulado e ilegal", "motivo": "definições incompatíveis" },
+      { "item": "'R$ 30 bi/mês em apostas' (CNC) como medição", "motivo": "excede em muito o GGR administrativo e mistura conceitos; entra apenas como estimativa contestada" },
+      { "item": "603 mil autoexclusões (número do briefing)", "motivo": "confirmado como recorte de jun/2026, mas superado; painel usa 574,6 mil (fonte primária, mai/2026) e nota 925 mil (imprensa, jul/2026)" }
+    ]
+  },
+  "links_apoio": {
+    "autoexclusao": { "rotulo": "Plataforma Centralizada de Autoexclusão (gov.br)", "url": "https://www.gov.br/fazenda/pt-br/composicao/orgaos/secretaria-de-premios-e-apostas" },
+    "saude": { "rotulo": "Linha de Cuidado do Ministério da Saúde para problemas com jogos e apostas", "url": "https://bvsms.saude.gov.br/bvs/publicacoes/linha_cuidado_problemas_jogos_apostas.pdf" },
+    "nota": "Este painel não diagnostica usuários. Se as apostas estão afetando suas finanças ou bem-estar, os canais acima são oficiais e gratuitos."
+  }
+}

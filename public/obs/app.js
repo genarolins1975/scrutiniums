@@ -34,7 +34,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.28.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.29.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -182,6 +182,7 @@ const VIEW_DATA = {
   leading: ["leading"],
   trends: ["trends"],
   panorama: ["panorama"],
+  bets: ["bets", "pulse"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -3448,9 +3449,351 @@ window.exportSeries = exportSeries; window.exportInstitutions = exportInstitutio
 window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama };
+/* ================= BETS E RISCO FINANCEIRO ================= */
+/* Painel investigativo: relação entre apostas de quota fixa e crédito das
+   famílias. Princípio: não parte da conclusão de que "bets causam
+   inadimplência"; investiga a hipótese e comunica o grau de evidência.
+   Dados curados em data/gold/bets.json (ver FONTES_BETS.md). */
+
+function betsNivel(n, B) {
+  const meta = (B.niveis || {})[n];
+  if (!meta) return "";
+  return `<span class="nivel n${n.toLowerCase()}" title="${attr(meta.descricao)}">${n} · ${meta.rotulo}</span>`;
+}
+function betsStatus(st) {
+  const map = {
+    oficial: ["obs", "FONTE PRIMÁRIA"], calculado: ["calc", "CALCULADO"],
+    estimativa: ["est", "ESTIMATIVA"], imprensa: ["aprox", "IMPRENSA · AGUARDA FONTE PRIMÁRIA"],
+  };
+  const m = map[st];
+  return m ? `<span class="seal ${m[0]}">${m[1]}</span>` : "";
+}
+function betsEloChip(stKey, B) {
+  const leg = ((B.cadeia || {}).legenda || {})[stKey] || stKey;
+  return `<span class="elo-st ${stKey}">${leg}</span>`;
+}
+function betsBar(lbl, v, max, unit, warn) {
+  const w = max > 0 ? Math.max((v / max) * 100, 1.5) : 0;
+  return `<div class="bets-bar"><span class="lbl">${lbl}</span><span class="track"><span class="fill${warn ? " warn" : ""}" style="width:${w.toFixed(1)}%"></span></span><span class="num">${fmt.n(v, 1)}${unit ? ` <span class="src" style="display:inline">${unit}</span>` : ""}</span></div>`;
+}
+
+const betsExp = { ind: "inad_pf", norm: "nivel", eventos: true };
+window.betsExpSet = (k, v) => {
+  betsExp[k] = k === "eventos" ? !!v : v;
+  renderBets();
+};
+window.betsJSON = () => {
+  const B = state.data.bets;
+  if (B) dlFile("bets_risco_financeiro_" + (B.corte_pesquisa || "") + ".json", JSON.stringify(B, null, 1), "application/json");
+};
+window.betsCSV = () => {
+  const B = state.data.bets;
+  if (!B) return;
+  const rows = [["bloco", "referencia", "indicador", "valor", "unidade", "nivel_evidencia", "status", "fonte", "url"]];
+  (B.sintese || []).forEach(k => rows.push(["sintese", k.data_ref, k.rotulo, k.valor == null ? k.exibir : k.valor, k.unidade, k.nivel, k.status, k.fonte, k.url]));
+  const S = B.series || {};
+  (S.ggr_regulado?.obs || []).forEach(o => rows.push(["ggr_regulado", o.ref, "GGR", o.v, "R$ bi", o.nivel, o.status, o.fonte || "SPA/MF", o.url]));
+  (S.apostadores?.obs || []).forEach(o => rows.push(["apostadores", o.ref, o.conceito, o.v, "milhões", o.nivel, o.status, "SPA/MF", o.url]));
+  (S.autoexclusao?.obs || []).forEach(o => rows.push(["autoexclusao", o.ref, "solicitações acumuladas", o.v, "mil", o.nivel, o.status, "SPA/MF", o.url]));
+  (S.bloqueios_ilegais?.obs || []).forEach(o => rows.push(["bloqueios_ilegais", o.ref, "URLs bloqueadas (acum.)", o.v, "mil", o.nivel, o.status, "SPA/Anatel", o.url]));
+  (S.arrecadacao?.obs || []).forEach(o => rows.push(["arrecadacao", o.ref, "tributos federais", o.tributos, "R$ bi", o.nivel, o.status, "RFB/SPA", o.url]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("bets_dados_" + (B.corte_pesquisa || "") + ".csv", "﻿" + csv, "text/csv");
+};
+window.betsExplorerCSV = () => {
+  const pulse = state.data.pulse, B = state.data.bets;
+  if (!pulse || !B) return;
+  const cfg = (B.explorador.indicadores || []).find(i => i.key === betsExp.ind);
+  const s = pulse.series[betsExp.ind];
+  if (!s) return;
+  const rows = [["referencia", cfg ? cfg.rotulo : betsExp.ind, "fonte", "serie_sgs"]];
+  s.obs.forEach(o => rows.push([o.ref, o.v, s.meta.source, s.meta.series_code]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("bets_explorador_" + betsExp.ind + ".csv", "﻿" + csv, "text/csv");
+};
+
+function renderBets() {
+  const el = document.getElementById("view-bets");
+  const B = state.data.bets;
+  const pulse = state.data.pulse;
+  if (!B) { el.innerHTML = "<p class='src'>Dado público ainda não disponível — o arquivo curado bets.json não foi carregado.</p>"; return; }
+
+  const nv = n => betsNivel(n, B);
+
+  /* ---------- 0 · cabeçalho ---------- */
+  const head = `
+  <div class="pagehead">
+    <div class="ph-left">
+      <h2>${B.titulo}</h2>
+      <p class="viewdesc">${B.subtitulo}</p>
+      <div class="ph-meta">Última atualização: <b>${fmt.d(B.gerado_em.slice(0, 10))}</b> · Período coberto: ${B.periodo_coberto} · Corte da pesquisa: ${fmt.d(B.corte_pesquisa)} (verificação de atualizações posteriores registrada em FONTES_BETS.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${B.aviso}</span></div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn ghost small" onclick="document.getElementById('bets-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
+      <button class="btn ghost small" onclick="betsCSV()">baixar dados (CSV)</button>
+      <button class="btn ghost small" onclick="betsJSON()">baixar dados (JSON)</button>
+    </div>
+  </div>
+  <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
+
+  /* ---------- 1 · síntese ---------- */
+  const kpis = `
+  <h3>Síntese — o que os números oficiais permitem afirmar</h3>
+  <div class="grid g4">${(B.sintese || []).map(k => `
+    <div class="card kpi"><h4>${k.rotulo} ${nv(k.nivel)}</h4>
+      <div class="tr-big">${k.exibir}</div>
+      <div class="src" title="${attr(k.conceito)}">${k.data_ref} · <a href="${k.url}" target="_blank" rel="noopener">${k.fonte}</a> ${betsStatus(k.status)}${k.nota ? `<br><span title="${attr(k.nota)}">nota ⓘ</span>` : ""}</div>
+    </div>`).join("")}</div>
+  <div class="src" style="margin-top:6px">Cada número declara conceito, período e nível de evidência. Números do briefing original que ficaram desatualizados (ex.: 603 mil autoexclusões) estão registrados na seção de metodologia, item "descartados".</div>`;
+
+  /* ---------- 2 · cadeia ---------- */
+  const C = B.cadeia || { elos: [] };
+  const nodes = [C.elos[0]?.de, ...C.elos.map(e => e.para)];
+  const nodeStatus = ["comprovado_brasil", ...C.elos.map(e => e.status)];
+  const chain = `
+  <div class="card">
+    <h3>Como as apostas podem chegar ao crédito</h3>
+    <p class="src">${C.descricao}</p>
+    <div class="bets-chain">${nodes.map((nname, i) => `
+      <div class="node ${nodeStatus[i]}">${nname}<span class="st">${((C.legenda || {})[nodeStatus[i]] || "").split(" (")[0]}</span></div>${i < nodes.length - 1 ? '<span class="arrow" aria-hidden="true">→</span>' : ""}`).join("")}</div>
+    <details class="decomp"><summary>evidência de cada elo</summary>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Elo</th><th>Grau de evidência</th><th>O que sustenta</th></tr></thead><tbody>
+      ${C.elos.map(e => `<tr><td style="white-space:nowrap">${e.de} → ${e.para}</td><td>${betsEloChip(e.status, B)}</td><td>${e.evidencia}</td></tr>`).join("")}
+      </tbody></table></div>
+    </details>
+  </div>`;
+
+  /* ---------- 3 · dimensão e evolução ---------- */
+  const S = B.series || {};
+  const ggr = S.ggr_regulado || { obs: [] };
+  const ggrMax = Math.max(...ggr.obs.map(o => o.v));
+  const ap = S.apostadores || { obs: [] };
+  const arr = (S.arrecadacao || { obs: [] }).obs.find(o => o.ref === "2025");
+  const arr26 = (S.arrecadacao || { obs: [] }).obs.find(o => o.ref !== "2025");
+  const pix = (S.pix_pre_regulacao || { obs: [] });
+  const blo = S.bloqueios_ilegais || { obs: [] };
+  const dim = `
+  <h3>Dimensão e evolução do mercado regulado</h3>
+  <div class="grid g2">
+    <div class="card"><h4>GGR por período oficial ${nv("A")}</h4>
+      ${ggr.obs.map(o => betsBar(`${o.periodo}${o.status === "calculado" ? " (calculado)" : o.status === "imprensa" ? " (imprensa)" : ""}`, o.v, ggrMax, "R$ bi", o.status === "imprensa")).join("")}
+      <div class="src" style="margin-top:6px">${ggr.conceito}</div>
+      <div class="note warn" style="margin-top:8px">Sem série mensal: a SPA publica por semestre e este painel <b>não interpola</b>. O 2S2025 é derivado por subtração (ano menos 1S) da mesma fonte; o 1T2026 é imprensa a partir do SIGAP e aguarda o Panorama oficial.</div>
+      ${chartFooter({ fonte: "SPA/MF (SIGAP)", periodo: "jan/2025 a mar/2026", atualizado: fmt.d(B.corte_pesquisa), unidade: "R$ bilhões", nota: ggr.nota })}</div>
+    <div class="card"><h4>Quantos apostam — conceitos que não se misturam ${nv("A")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Período</th><th style="text-align:right">Valor</th><th>Conceito medido</th><th>Status</th></tr></thead><tbody>
+      ${ap.obs.map(o => `<tr><td>${o.ref}</td><td style="text-align:right"><b>${fmt.n(o.v, 1)} mi</b></td><td class="src">${o.conceito}</td><td>${betsStatus(o.status)}</td></tr>`).join("")}
+      </tbody></table></div>
+      <div class="src">${ap.conceito}</div></div>
+    <div class="card"><h4>Arrecadação e destinações (2025) ${nv("A")}</h4>
+      ${arr ? [
+        betsBar("Tributos federais", arr.tributos, 10, "R$ bi"),
+        betsBar("Destinações legais (12% GGR)", arr.destinacoes, 10, "R$ bi"),
+        betsBar("Outorgas", arr.outorgas, 10, "R$ bi"),
+        betsBar("Taxa de fiscalização", arr.taxa_fiscalizacao, 10, "R$ bi"),
+      ].join("") : "<p class='src'>dado público ainda não disponível</p>"}
+      <div class="src">${(S.arrecadacao || {}).conceito || ""}${arr26 ? `<br>2026 (jan a mai): R$ ${fmt.n(arr26.tributos, 2)} bi em tributos ${betsStatus(arr26.status)}` : ""}</div>
+      <div class="src"><a href="${arr ? arr.url : "#"}" target="_blank" rel="noopener">SPA/MF · gov.br</a></div></div>
+    <div class="card"><h4>Fluxo Pix pré-regulação (2024) — quebra metodológica ${nv("A")}</h4>
+      <div class="tr-big">R$ 18–21 bi<span style="font-size:14px">/mês</span></div>
+      <div class="src">jan a ago/2024 · pico R$ ${fmt.n(pix.obs[0] ? pix.obs[0].v : null, 1)} bi em ago/2024 · <a href="${pix.obs[0] ? pix.obs[0].url : "#"}" target="_blank" rel="noopener">BCB, EE 119/2024</a> ${badge("descontinuada")}</div>
+      <div class="note warn" style="margin-top:8px"><b>Não comparável ao GGR.</b> ${pix.conceito}</div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h4>Fiscalização e bloqueio de sites ilegais</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Data</th><th style="text-align:right">URLs bloqueadas (acum.)</th><th>Status</th><th>Fonte</th></tr></thead><tbody>
+    ${blo.obs.map(o => `<tr><td>${fmt.d(o.ref)}</td><td style="text-align:right"><b>${fmt.n(o.v, 0)} mil</b></td><td>${betsStatus(o.status)}</td><td class="src"><a href="${o.url}" target="_blank" rel="noopener">link</a></td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="src">${blo.conceito} No ano de 2025: 132 processos de fiscalização, ~550 contas bancárias de operadores ilegais encerradas (2º Panorama).</div></div>`;
+
+  /* ---------- 4 · quem aposta ---------- */
+  const P = B.perfil || {};
+  const ds = P.datasenado_2024 || {};
+  const quem = `
+  <h3>Quem aposta — populações e métodos separados</h3>
+  <div class="note warn">${P.aviso_populacoes}</div>
+  <div class="grid g2" style="margin-top:10px">
+    <div class="card"><h4>Registro administrativo (SIGAP, ano 2025) ${nv("A")}</h4>
+      ${(P.sigap?.itens || []).map(i => betsBar(i.rotulo, i.v, 100, "%")).join("")}
+      <div class="src">${P.sigap?.nota || ""} · <a href="${P.sigap?.url}" target="_blank" rel="noopener">${P.sigap?.fonte}</a></div></div>
+    <div class="card"><h4>Pesquisa oficial representativa (DataSenado 2024) ${nv("B")}</h4>
+      <div class="src" style="margin-bottom:6px"><b>${ds.prevalencia?.texto || ""}</b> · ${ds.fonte}</div>
+      ${(ds.itens || []).map(i => betsBar(i.rotulo, i.v, 100, "%")).join("")}
+      <div class="src" style="margin:8px 0 2px"><b>Gasto declarado em 30 dias</b> (${ds.gasto_30d?.nota}):</div>
+      ${(ds.gasto_30d?.faixas || []).map(f => betsBar(f.rotulo, f.v, 13, "% da pop.")).join("")}
+      <div class="src" style="margin-top:8px"><b>Endividamento:</b> ${ds.endividamento?.texto}. <i>${ds.endividamento?.nota}.</i></div>
+      <div class="src" style="margin-top:6px"><b>Regiões</b> (${ds.regioes?.nota}): ${(ds.regioes?.itens || []).map(r => `${r.rotulo}: ${r.v}%`).join(" · ")}</div>
+      <div class="src"><a href="${ds.url}" target="_blank" rel="noopener">relatório interativo</a></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h4>Pesquisas privadas — intervalos, não consenso ${nv("D")}</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Fonte</th><th>Método declarado</th><th>Achado central</th><th>Ressalva</th></tr></thead><tbody>
+    ${(P.outras_pesquisas || []).map(o => `<tr><td style="white-space:nowrap"><a href="${o.url}" target="_blank" rel="noopener">${o.fonte}</a></td><td class="src">${o.metodo}</td><td>${o.achado}</td><td class="src">${o.status}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="src">Prevalências de 7% a 17% refletem conceitos e janelas de recall diferentes: são um intervalo entre definições, não uma contradição. Sem mapa estadual: nenhuma amostra publica UF com precisão adequada.</div></div>`;
+
+  /* ---------- 5 · vulnerabilidade ---------- */
+  const V = B.vulnerabilidade || {};
+  const vuln = `
+  <h3>Vulnerabilidade financeira</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Beneficiários de programas sociais ${nv("A")}</h4>
+      <p style="font-size:13px">${V.bolsa_familia?.dado_central?.texto} · <a href="${V.bolsa_familia?.dado_central?.url}" target="_blank" rel="noopener">${V.bolsa_familia?.dado_central?.fonte}</a></p>
+      <div class="note warn"><b>Dado contestado.</b> ${V.bolsa_familia?.contestacao}</div>
+      <p class="src" style="margin-top:8px">${V.bolsa_familia?.restricao?.texto}</p></div>
+    <div class="card"><h4>Grupos com sinal de exposição</h4>
+      <div class="tblwrap"><table class="data compact"><tbody>
+      ${(V.grupos || []).map(g => `<tr><td style="white-space:nowrap"><b>${g.rotulo}</b></td><td class="src">${g.evidencia}</td></tr>`).join("")}
+      </tbody></table></div></div>
+  </div>
+  <div class="card" style="margin-top:14px"><h4>Evolução das proteções regulatórias</h4>
+    <ul class="bets-tl">${(V.protecoes || []).map(pr => `<li><span class="tld">${pr.data}</span><br>${pr.texto}</li>`).join("")}</ul>
+    <div class="note" style="margin-top:6px">${V.leitura_institucional}</div></div>`;
+
+  /* ---------- 6 · explorador bets × crédito ---------- */
+  const EX = B.explorador || { indicadores: [] };
+  let expChart = "<p class='src'>Séries de crédito não carregadas.</p>";
+  let expFoot = "";
+  const cfgInd = (EX.indicadores || []).find(i => i.key === betsExp.ind) || EX.indicadores[0];
+  if (pulse && cfgInd && pulse.series[cfgInd.key]) {
+    const sr = pulse.series[cfgInd.key];
+    let pts = sr.obs.filter(o => o.ref >= "2023-01-01").map(o => ({ x: o.ref, y: o.v }));
+    if (betsExp.norm === "base100" && pts.length) {
+      const b = pts[0].y;
+      pts = pts.map(pp => ({ x: pp.x, y: b ? pp.y / b * 100 : null }));
+    } else if (betsExp.norm === "z" && pts.length > 2) {
+      const vs = pts.map(pp => pp.y);
+      const mu = vs.reduce((a, b2) => a + b2, 0) / vs.length;
+      const sd = Math.sqrt(vs.reduce((a, b2) => a + (b2 - mu) ** 2, 0) / vs.length) || 1;
+      pts = pts.map(pp => ({ x: pp.x, y: (pp.y - mu) / sd }));
+    }
+    const unit = betsExp.norm === "nivel" ? (sr.meta.unit || "") : betsExp.norm === "base100" ? "base 100 = jan/2023" : "desvios-padrão (janela)";
+    expChart = lineChart({
+      series: [{ pts, label: cfgInd.rotulo, color: "#1d4e89" }],
+      annotations: betsExp.eventos ? (EX.eventos || []) : [],
+      unit, fonte: `${sr.meta.source} ${sr.meta.series_code}`,
+      aria: `série mensal de ${cfgInd.rotulo} com marcos regulatórios do mercado de apostas`,
+      h: 260,
+    });
+    expFoot = chartFooter({ fonte: `${sr.meta.source} · série ${sr.meta.series_code}`, periodo: `jan/2023 a ${fmt.my(sr.qualidade?.ultima_ref)}`, atualizado: sr.meta.last_collected_at ? sr.meta.last_collected_at.slice(0, 10) : "–", unidade: sr.meta.unit, nota: sr.meta.methodology });
+  }
+  const nGGR = (S.ggr_regulado?.obs || []).length;
+  const explorer = `
+  <div class="card">
+    <h3>Bets × indicadores de crédito — explorador</h3>
+    <p class="src">${EX.descricao}</p>
+    <div class="filterbar" style="margin:8px 0">
+      <label class="src">indicador
+        <select onchange="betsExpSet('ind', this.value)" aria-label="indicador de crédito">
+          ${(EX.indicadores || []).map(i => `<option value="${i.key}" ${i.key === betsExp.ind ? "selected" : ""}>${i.rotulo}</option>`).join("")}
+        </select></label>
+      <label class="src">escala
+        <select onchange="betsExpSet('norm', this.value)" aria-label="normalização">
+          <option value="nivel" ${betsExp.norm === "nivel" ? "selected" : ""}>nível</option>
+          <option value="base100" ${betsExp.norm === "base100" ? "selected" : ""}>base 100 (jan/2023)</option>
+          <option value="z" ${betsExp.norm === "z" ? "selected" : ""}>z-score</option>
+        </select></label>
+      <label class="src"><input type="checkbox" ${betsExp.eventos ? "checked" : ""} onchange="betsExpSet('eventos', this.checked)"> marcos regulatórios</label>
+      <button class="btn ghost small" onclick="betsExplorerCSV()">baixar base (CSV)</button>
+    </div>
+    ${expChart}${expFoot}
+    <div class="chips" style="margin-top:8px">
+      <span class="chip">rótulo desta leitura: <b>sem evidência suficiente</b></span>
+      <span class="chip">não implica causalidade</span>
+    </div>
+    <div class="note warn" style="margin-top:8px"><b>Por que não mostramos correlação nem defasagens:</b> a exposição regulada a bets tem n=${nGGR} observações públicas (2 semestres oficiais + 1 trimestre não confirmado), abaixo do mínimo de ${EX.min_obs_correlacao} definido na metodologia. Um único gráfico com dois eixos sobrepondo GGR e inadimplência produziria relação visual artificial; por isso as séries de crédito aparecem sozinhas, com os marcos do mercado de apostas anotados. Quando a série regulada acumular histórico, este explorador passará a exibir correlações contemporâneas e defasadas com intervalo de confiança.</div>
+    <div class="src" style="margin-top:6px">Indicadores ainda não integrados (entram na próxima coleta do pipeline): ${(EX.indicadores_ausentes || []).map(i => i.rotulo).join("; ")}.</div>
+  </div>`;
+
+  /* ---------- 7 · autoexclusão ---------- */
+  const ax = S.autoexclusao || { obs: [] };
+  const axMax = Math.max(...ax.obs.map(o => o.v));
+  const auto = `
+  <div class="card">
+    <h3>Autoexclusão e perda de controle</h3>
+    <div class="grid g2">
+      <div>
+        <h4>Solicitações acumuladas ${nv("A")}</h4>
+        ${ax.obs.map(o => betsBar(`${fmt.d(o.ref)}${o.nota ? ` (${o.nota.split(";")[0]})` : ""}`, o.v, axMax, "mil", o.status === "imprensa")).join("")}
+        <div class="src">${ax.conceito}</div>
+      </div>
+      <div>
+        <h4>Motivos declarados</h4>
+        ${(ax.motivos?.itens || []).map(m => betsBar(m.rotulo, m.v, 100, "%")).join("")}
+        <div class="src">${ax.motivos?.nota} · ${ax.motivos?.fonte}</div>
+      </div>
+    </div>
+    <div class="note warn" style="margin-top:8px"><b>O que este número NÃO é:</b> o total de autoexclusões não é prevalência de dependência. É demanda voluntária, condicionada a conhecer a ferramenta, ter acesso e se autosselecionar. Compare: 574,6 mil solicitações vs 25,2 milhões de CPFs apostadores (≈2,3%), e 10.553 atendimentos por transtorno do jogo no SUS em 7 anos (forte subnotificação).</div>
+    <div class="src" style="margin-top:8px">${B.links_apoio?.nota} · <a href="${B.links_apoio?.autoexclusao?.url}" target="_blank" rel="noopener">${B.links_apoio?.autoexclusao?.rotulo}</a> · <a href="${B.links_apoio?.saude?.url}" target="_blank" rel="noopener">${B.links_apoio?.saude?.rotulo}</a></div>
+  </div>`;
+
+  /* ---------- 8 · mercado ilegal ---------- */
+  const MI = B.mercado_ilegal || {};
+  const ilegal = `
+  <div class="card">
+    <h3>Mercado ilegal — estimativas, não medições</h3>
+    <div class="note warn">${MI.aviso}</div>
+    <div class="tblwrap" style="margin-top:8px"><table class="data compact"><thead><tr><th>Fonte</th><th>Estimativa</th><th>Método</th><th>Nível</th></tr></thead><tbody>
+    ${(MI.estimativas || []).map(e2 => `<tr><td style="white-space:nowrap"><a href="${e2.url}" target="_blank" rel="noopener">${e2.fonte}</a></td><td><b>${e2.valor}</b></td><td class="src">${e2.metodo}</td><td>${nv(e2.nivel)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h4 style="margin-top:10px">Ações de contenção</h4>
+    <ul style="font-size:13px;margin:4px 0 8px 18px">${(MI.acoes || []).map(a => `<li>${a.texto}</li>`).join("")}</ul>
+    <div class="src">${MI.riscos}</div>
+  </div>`;
+
+  /* ---------- 9 · evidências científicas ---------- */
+  const estudos = `
+  <h3>Evidências científicas — biblioteca resumida</h3>
+  <div class="note warn">Evidência causal estrangeira demonstra <b>mecanismos plausíveis</b>; não é estimativa do efeito brasileiro. Working papers estão marcados: os números podem mudar entre versões.</div>
+  <div class="grid g2" style="margin-top:10px">${(B.estudos || []).map(e2 => `
+    <div class="card"><h4><a href="${e2.url}" target="_blank" rel="noopener">${e2.titulo}</a> ${nv(e2.nivel)}</h4>
+      <div class="src">${e2.autores} (${e2.ano}) · ${e2.veiculo} · <b>${e2.tipo}</b> · ${e2.pais} · ${e2.periodo}</div>
+      <div class="src" style="margin-top:4px"><b>Base:</b> ${e2.base} · <b>Desenho:</b> ${e2.desenho}</div>
+      <p style="font-size:13px;margin:6px 0">${e2.resultado}</p>
+      <div class="src"><b>Limitações:</b> ${e2.limitacoes}</div>
+      <div class="src"><b>Aplicabilidade ao Brasil:</b> ${e2.aplicabilidade}</div>
+    </div>`).join("")}</div>`;
+
+  /* ---------- 10 · linha do tempo ---------- */
+  const tl = `
+  <div class="card">
+    <h3>Linha do tempo regulatória (2018 a 2026)</h3>
+    <ul class="bets-tl">${(B.timeline || []).map(t => `
+      <li class="${t.status === "parcial" ? "parcial" : ""}"><span class="tld">${fmt.d(t.data)}</span> ${t.status === "parcial" ? '<span class="seal aprox">PARCIALMENTE CONFIRMADO</span>' : ""}<br>
+      <b><a href="${t.url}" target="_blank" rel="noopener">${t.ato}</a></b><br><span class="src">${t.resumo}</span></li>`).join("")}</ul>
+  </div>`;
+
+  /* ---------- 11 · metodologia ---------- */
+  const M = B.metodologia || {};
+  const met = `
+  <div class="card" id="bets-metodologia">
+    <h3>Metodologia desta aba</h3>
+    <p style="font-size:13px"><b>Princípio.</b> ${M.principio}</p>
+    <p class="src">Tipos de dado distinguidos em todo o painel: ${(M.tipos_de_dado || []).join(" · ")}.</p>
+    <h4>Conceitos que não podem ser confundidos</h4>
+    <div class="tblwrap"><table class="data compact"><tbody>
+    ${(M.conceitos || []).map(c => `<tr><td style="white-space:nowrap"><b>${c.termo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h4 style="margin-top:12px">Roteiro econométrico</h4>
+    <p class="src"><b>Fase atual:</b> ${M.roadmap?.fase_atual}</p>
+    <p class="src"><b>Próximas fases:</b> ${(M.roadmap?.proximas_fases || []).join("; ")}.</p>
+    <p class="src"><b>Um modelo causal só será publicado quando houver:</b> ${(M.roadmap?.requisitos_causais || []).join("; ")}.</p>
+    <p class="src">${M.roadmap?.aviso_regulacao} ${M.roadmap?.previsao}</p>
+    <h4 style="margin-top:12px">Open Finance e pesquisa futura</h4>
+    <p class="src">${M.open_finance?.potencial}</p>
+    <p class="src"><b>Salvaguardas obrigatórias:</b> ${(M.open_finance?.salvaguardas || []).join("; ")}.</p>
+    <div class="note warn">${M.open_finance?.vedacoes}</div>
+    <h4 style="margin-top:12px">Indicadores avaliados e descartados</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Item</th><th>Motivo do descarte</th></tr></thead><tbody>
+    ${(M.descartados || []).map(dd => `<tr><td>${dd.item}</td><td class="src">${dd.motivo}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src" style="margin-top:8px">Rastreabilidade completa (instituição, URL, período, população, limitações e confiabilidade de cada fonte): <b>FONTES_BETS.md</b>, <b>METODOLOGIA_BETS.md</b> e <b>DICIONARIO_DADOS_BETS.md</b> no repositório. Processo de atualização: ${B.atualizacao?.processo}. Próxima atualização esperada: ${B.atualizacao?.proxima_esperada}.</p>
+  </div>`;
+
+  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + quem + "<hr class='sep'>" + vuln + "<hr class='sep'>" + explorer + "<hr class='sep'>" + auto + ilegal + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

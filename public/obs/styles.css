@@ -733,3 +733,37 @@ details.decomp summary:hover { text-decoration: underline; }
 }
 #logoutBtn:hover, #accountBtn:hover { background: var(--surface-2); color: var(--text); }
 .sb-collapsed #accountBtn, .sb-collapsed #logoutBtn { margin: 0 auto; }
+
+/* ================= Bets e risco financeiro ================= */
+.nivel { display: inline-block; padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 650; letter-spacing: .04em; white-space: nowrap; }
+.nivel.na { background: color-mix(in srgb, var(--c-line1) 10%, var(--surface)); color: var(--c-line1); }
+.nivel.nb { background: color-mix(in srgb, var(--teal) 12%, var(--surface)); color: var(--teal); }
+.nivel.nc { background: color-mix(in srgb, var(--forecast) 12%, var(--surface)); color: var(--forecast); }
+.nivel.nd { background: var(--warning-soft); color: var(--warning); }
+.nivel.ne { background: var(--surface-2); color: var(--text-2); border: 1px dashed color-mix(in srgb, var(--c-gray) 55%, transparent); }
+.bets-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: stretch; margin: 10px 0 4px; }
+.bets-chain .node { flex: 1 1 120px; min-width: 118px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--surface); padding: 8px 9px; font-size: 12px; line-height: 1.35; position: relative; }
+.bets-chain .node .st { display: block; margin-top: 5px; font-size: 10px; font-weight: 650; }
+.bets-chain .arrow { align-self: center; color: var(--text-2); font-size: 14px; padding: 0 1px; }
+.bets-chain .node.comprovado_brasil { border-color: color-mix(in srgb, var(--c-line1) 45%, var(--border)); }
+.bets-chain .node.associacao { border-color: color-mix(in srgb, var(--teal) 45%, var(--border)); }
+.bets-chain .node.internacional { border-color: color-mix(in srgb, var(--forecast) 45%, var(--border)); }
+.bets-chain .node.hipotese { border-style: dashed; }
+.elo-st { font-size: 10px; font-weight: 650; padding: 1px 7px; border-radius: 999px; white-space: nowrap; }
+.elo-st.comprovado_brasil { background: color-mix(in srgb, var(--c-line1) 10%, var(--surface)); color: var(--c-line1); }
+.elo-st.associacao { background: color-mix(in srgb, var(--teal) 12%, var(--surface)); color: var(--teal); }
+.elo-st.internacional { background: color-mix(in srgb, var(--forecast) 12%, var(--surface)); color: var(--forecast); }
+.elo-st.hipotese { background: var(--surface-2); color: var(--text-2); border: 1px dashed color-mix(in srgb, var(--c-gray) 55%, transparent); }
+.bets-tl { list-style: none; margin: 8px 0 0; padding: 0 0 0 16px; border-left: 2px solid var(--border); }
+.bets-tl li { position: relative; padding: 0 0 14px 12px; }
+.bets-tl li::before { content: ""; position: absolute; left: -21px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.bets-tl li.parcial::before { background: var(--c-gray); }
+.bets-tl .tld { font-size: 11px; color: var(--text-2); font-variant-numeric: tabular-nums; }
+.bets-bar { display: flex; align-items: center; gap: 8px; margin: 3px 0; font-size: 12px; }
+.bets-bar .lbl { flex: 0 0 190px; color: var(--text-2); }
+.bets-bar .track { flex: 1; height: 8px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.bets-bar .fill { height: 100%; background: var(--c-line1); }
+.bets-bar .fill.warn { background: var(--warning); }
+.bets-bar .num { flex: 0 0 auto; font-weight: 650; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) { .bets-bar .lbl { flex-basis: 120px; } .bets-chain .node { min-width: 100px; } }
+hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }

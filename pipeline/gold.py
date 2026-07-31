@@ -614,3 +614,14 @@ def build_all(con, cfg, fetch_status):
         "fontes_reais": ["BCB/SGS", "BCB/IF.data (Olinda)", "IBGE", "Ipeadata"],
         "fontes_demo": ["Open Finance Brasil (dashboard)", "Recuperação judicial (tribunais)"],
     })
+
+    # ---- Módulo curado: Bets e risco financeiro ----
+    # Dados administrativos semestrais (SPA/SIGAP), pesquisas oficiais e
+    # biblioteca de evidências mantidos por curadoria manual documentada
+    # (FONTES_BETS.md). Sem API pública consolidada: o arquivo curado é a
+    # fonte de verdade e é copiado ao gold para sobreviver ao rsync --delete
+    # do CI. Nunca gerar série sintética a partir dele.
+    curated_bets = os.path.join(os.path.dirname(__file__), "curated", "bets.json")
+    if os.path.exists(curated_bets):
+        with open(curated_bets, encoding="utf-8") as f:
+            common.write_gold("bets.json", json.load(f))
