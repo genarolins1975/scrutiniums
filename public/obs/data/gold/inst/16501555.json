@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-07-29T01:57:31+00:00",
+  "atualizado_em": "2026-07-31T12:12:50+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -59,7 +59,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo caiu 4.5 pontos no grupo de pares.",
+    "texto": "Score relativo caiu 12.4 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -1554,7 +1554,7 @@
  },
  "score_ref": {
   "score": 44.1,
-  "score_delta": -4.5,
+  "score_delta": -12.4,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -1609,19 +1609,19 @@
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 28.1
+    "score": 40.1
    },
    {
     "anomes": "202506",
-    "score": 28.1
+    "score": 39.4
    },
    {
     "anomes": "202509",
-    "score": 40.6
+    "score": 49.8
    },
    {
     "anomes": "202512",
-    "score": 48.6
+    "score": 56.5
    },
    {
     "anomes": "202603",

@@ -18,6 +18,8 @@ from pipeline import common
 MIN_CARTEIRA_TAXA = 50e6  # R$ — abaixo disso a taxa é suprimida (célula pequena)
 LIMIAR_3M_PP = 0.30       # deterioração mínima em 3 datas-base (p.p. de inadimplência)
 LIMIAR_12M_PP = 0.75      # deterioração mínima em 12 datas-base
+SALDO_MIN_ALERTA = 20e9   # R$ — carteira mínima do grupo para virar cartão de alerta
+OSCILACAO_BASE_MAX = 0.30  # variação máxima da carteira na janela (recomposição de base)
 
 RENDA_ORDEM = ["Sem rendimento", "Até 1 salário mínimo", "Mais de 1 a 2 salários mínimos",
                "Mais de 2 a 3 salários mínimos", "Mais de 3 a 5 salários mínimos",
@@ -202,17 +204,38 @@ def build(con, cfg):
                 f"SELECT data, {chave}, SUM(saldo), SUM(inad) FROM {tabela} WHERE cliente=? GROUP BY data, {chave}", (cliente,)):
             t = _taxa(inad, saldo)
             if t is not None:
-                hist_grupo.setdefault((tipo, k), []).append((d, t))
+                hist_grupo.setdefault((tipo, k), []).append((d, t, saldo))
+    # Guardas dos cartões de grupo (aprendizado do falso positivo "Cartão —
+    # rotativo" PJ, mai/2026: carteira de R$ 1-4 bi cujo denominador cai pela
+    # metade entre datas-base e faz a taxa saltar de 0,9% para 4,8% sem
+    # deterioração econômica): (1) carteira mínima; (2) base estável na janela
+    # de 3 datas; (3) segmento SEMPRE declarado no rótulo. Supressões são
+    # contadas e publicadas — nunca silenciosas.
+    alertas_suprimidos = []
+    SEG_ROTULO = {"produto_pf": " · PF", "produto_pj": " · PJ", "renda": " · PF", "ocupacao": " · PF"}
+    NOTA_PRODUTO = ("Inadimplência arrastada por submodalidade do SCR.data: o ciclo do cartão migra saldos "
+                    "entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade "
+                    "não é comparável às séries SGS por modalidade.")
     for (tipo, k), h in hist_grupo.items():
         h.sort()
-        if len(h) >= 13 and persistente(h):
+        if len(h) >= 13 and persistente([(d, t) for d, t, _s in h]):
             d3m = round(h[-1][1] - h[-4][1], 2)
             d12m = round(h[-1][1] - h[-13][1], 2)
             if d3m >= LIMIAR_3M_PP or d12m >= LIMIAR_12M_PP:
-                alertas.append({"tipo": f"{tipo}_deterioracao", "grupo": k,
+                saldo_atual, saldo_3m = h[-1][2], h[-4][2]
+                rotulo = f"{k}{SEG_ROTULO.get(tipo, '')}"
+                if saldo_atual < SALDO_MIN_ALERTA:
+                    alertas_suprimidos.append({"grupo": rotulo, "motivo": f"carteira de R$ {saldo_atual/1e9:.1f} bi abaixo do mínimo de R$ {SALDO_MIN_ALERTA/1e9:.0f} bi: taxa volátil demais para manchete", "delta_pp": d3m})
+                    continue
+                if saldo_3m and abs(saldo_atual / saldo_3m - 1) > OSCILACAO_BASE_MAX:
+                    alertas_suprimidos.append({"grupo": rotulo, "motivo": f"carteira variou {abs(saldo_atual/saldo_3m-1)*100:.0f}% na janela: recomposição de base, não deterioração comparável", "delta_pp": d3m})
+                    continue
+                alertas.append({"tipo": f"{tipo}_deterioracao", "grupo": rotulo,
                                 "indicador": "inadimplência (arrastada)", "atual": h[-1][1], "anterior": h[-4][1],
                                 "delta_pp": d3m, "delta_12m_pp": d12m, "periodo": f"{h[-4][0]} → {h[-1][0]}",
-                                "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+                                "saldo_grupo": round(saldo_atual),
+                                "nota": NOTA_PRODUTO if tipo.startswith("produto") and "Cartão" in k else None,
+                                "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
                                 "link": {"view": "panorama"}})
     melhoras = sorted([m for m in mapa if m["d_inad_12m"] is not None], key=lambda m: m["d_inad_12m"])[:3]
     alertas.sort(key=lambda a: -(a.get("delta_pp") or 0))
@@ -264,6 +287,8 @@ def build(con, cfg):
             "saldo_medio": "saldo por OPERAÇÃO (nº de clientes não é público); parcial quando o grupo contém células suprimidas.",
             "supressao": f"taxas omitidas quando a carteira do grupo é inferior a R$ {MIN_CARTEIRA_TAXA/1e6:.0f} mi; células com nº de operações = -1 preservadas como suprimidas (nunca zero).",
             "crescimento": "variação nominal do estoque entre datas-base; não comparar com concessões (fluxo).",
+            "cartao_submodalidades": "o ciclo de cobrança do cartão migra saldos entre as submodalidades (à vista → rotativo → parcelamento) entre datas-base: taxas por submodalidade têm base que se recompõe e NÃO são comparáveis às séries SGS por modalidade (ex.: SGS 21127).",
+            "alertas_grupo": f"cartões de 'O que mudou?' exigem carteira ≥ R$ {SALDO_MIN_ALERTA/1e9:.0f} bi e base estável (variação ≤ {OSCILACAO_BASE_MAX*100:.0f}% na janela); grupos suprimidos por essas guardas são publicados em alertas_suprimidos.",
         },
         "sintese": sintese, "kpis": kpis,
         "serie_br": serie_br,
@@ -274,6 +299,7 @@ def build(con, cfg):
         "matriz_renda_produto": matriz_renda,
         "matriz_ocup_produto": matriz_ocup,
         "alertas": alertas[:20],
+        "alertas_suprimidos": alertas_suprimidos,
         "melhoras": [{"uf": m["uf"], "nome": m["nome"], "d_inad_12m": m["d_inad_12m"], "inad": m["inad"]} for m in melhoras],
         "populacao_fonte": f"IBGE SIDRA 6579 ({next((g['pop_ano'] for g in geo.values() if g.get('pop_ano')), '?')})",
     })

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-07-30T00:46:07+00:00",
+ "gerado_em": "2026-07-31T12:12:58+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-05",
  "data_base_anterior": "2026-04",
@@ -41,7 +41,9 @@
   "ap": "ativo problemático / carteira (Res. 4.557).",
   "saldo_medio": "saldo por OPERAÇÃO (nº de clientes não é público); parcial quando o grupo contém células suprimidas.",
   "supressao": "taxas omitidas quando a carteira do grupo é inferior a R$ 50 mi; células com nº de operações = -1 preservadas como suprimidas (nunca zero).",
-  "crescimento": "variação nominal do estoque entre datas-base; não comparar com concessões (fluxo)."
+  "crescimento": "variação nominal do estoque entre datas-base; não comparar com concessões (fluxo).",
+  "cartao_submodalidades": "o ciclo de cobrança do cartão migra saldos entre as submodalidades (à vista → rotativo → parcelamento) entre datas-base: taxas por submodalidade têm base que se recompõe e NÃO são comparáveis às séries SGS por modalidade (ex.: SGS 21127).",
+  "alertas_grupo": "cartões de 'O que mudou?' exigem carteira ≥ R$ 20 bi e base estável (variação ≤ 30% na janela); grupos suprimidos por essas guardas são publicados em alertas_suprimidos."
  },
  "sintese": "O crédito segue concentrado em Sudeste e Sul (68% da carteira de R$ 7.59 tri). Em 12 meses a carteira cresceu 10.5% (nominal) e a inadimplência arrastada está em 4.8%. A deterioração recente é maior em MA, TO, RO, na faixa de renda 'Até 1 salário mínimo' e em Cartão — parcelado/financiado.",
  "kpis": {
@@ -3242,71 +3244,65 @@
  },
  "alertas": [
   {
-   "tipo": "produto_pj_deterioracao",
-   "grupo": "Cartão — rotativo",
-   "indicador": "inadimplência (arrastada)",
-   "atual": 4.83,
-   "anterior": 0.89,
-   "delta_pp": 3.94,
-   "delta_12m_pp": 4.35,
-   "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
-   "link": {
-    "view": "panorama"
-   }
-  },
-  {
    "tipo": "produto_pf_deterioracao",
-   "grupo": "Cartão — parcelado/financiado",
+   "grupo": "Cartão — parcelado/financiado · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 41.25,
    "anterior": 39.19,
    "delta_pp": 2.06,
    "delta_12m_pp": 7.37,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 179505389211,
+   "nota": "Inadimplência arrastada por submodalidade do SCR.data: o ciclo do cartão migra saldos entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade não é comparável às séries SGS por modalidade.",
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "renda_deterioracao",
-   "grupo": "Até 1 salário mínimo",
+   "grupo": "Até 1 salário mínimo · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 9.58,
    "anterior": 7.56,
    "delta_pp": 2.02,
    "delta_12m_pp": 3.23,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 323603852751,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "renda_deterioracao",
-   "grupo": "Mais de 1 a 2 salários mínimos",
+   "grupo": "Mais de 1 a 2 salários mínimos · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 8.17,
    "anterior": 7.03,
    "delta_pp": 1.14,
    "delta_12m_pp": 2.23,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 617785131114,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "produto_pf_deterioracao",
-   "grupo": "Crédito pessoal",
+   "grupo": "Crédito pessoal · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 11.19,
    "anterior": 10.48,
    "delta_pp": 0.71,
    "delta_12m_pp": 2.66,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 382964217620,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
@@ -3358,14 +3354,16 @@
   },
   {
    "tipo": "produto_pj_deterioracao",
-   "grupo": "Veículos",
+   "grupo": "Veículos · PJ",
    "indicador": "inadimplência (arrastada)",
    "atual": 4.14,
    "anterior": 3.63,
    "delta_pp": 0.51,
    "delta_12m_pp": 1.35,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 187099352199,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
@@ -3387,28 +3385,32 @@
   },
   {
    "tipo": "renda_deterioracao",
-   "grupo": "Mais de 10 a 20 salários mínimos",
+   "grupo": "Mais de 10 a 20 salários mínimos · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 3.93,
    "anterior": 3.43,
    "delta_pp": 0.5,
    "delta_12m_pp": 1.17,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 604303027107,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "produto_pf_deterioracao",
-   "grupo": "Veículos",
+   "grupo": "Veículos · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 6.52,
    "anterior": 6.08,
    "delta_pp": 0.44,
    "delta_12m_pp": 1.22,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 426847653790,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
@@ -3445,14 +3447,16 @@
   },
   {
    "tipo": "ocupacao_deterioracao",
-   "grupo": "Outros",
+   "grupo": "Outros · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 8.05,
    "anterior": 7.67,
    "delta_pp": 0.38,
    "delta_12m_pp": 1.86,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 1303264604914,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
@@ -3474,59 +3478,95 @@
   },
   {
    "tipo": "ocupacao_deterioracao",
-   "grupo": "MEI",
+   "grupo": "MEI · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 6.88,
    "anterior": 6.62,
    "delta_pp": 0.26,
    "delta_12m_pp": 1.01,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 81425343310,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "produto_pj_deterioracao",
-   "grupo": "Recebíveis descontados",
+   "grupo": "Recebíveis descontados · PJ",
    "indicador": "inadimplência (arrastada)",
    "atual": 4.55,
    "anterior": 4.32,
    "delta_pp": 0.23,
    "delta_12m_pp": 0.84,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 35435688746,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "ocupacao_deterioracao",
-   "grupo": "Servidor ou empregado público",
+   "grupo": "Servidor ou empregado público · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 4.25,
    "anterior": 4.07,
    "delta_pp": 0.18,
    "delta_12m_pp": 0.99,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 697892075630,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
   },
   {
    "tipo": "ocupacao_deterioracao",
-   "grupo": "Empregado de empresa privada",
+   "grupo": "Empregado de empresa privada · PF",
    "indicador": "inadimplência (arrastada)",
    "atual": 4.67,
    "anterior": 4.5,
    "delta_pp": 0.17,
    "delta_12m_pp": 0.76,
    "periodo": "2026-02 → 2026-05",
-   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.)",
+   "saldo_grupo": 1040163658557,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"
    }
+  },
+  {
+   "tipo": "ocupacao_deterioracao",
+   "grupo": "Aposentado/pensionista · PF",
+   "indicador": "inadimplência (arrastada)",
+   "atual": 4.58,
+   "anterior": 4.43,
+   "delta_pp": 0.15,
+   "delta_12m_pp": 0.92,
+   "periodo": "2026-02 → 2026-05",
+   "saldo_grupo": 311197815042,
+   "nota": null,
+   "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
+   "link": {
+    "view": "panorama"
+   }
+  }
+ ],
+ "alertas_suprimidos": [
+  {
+   "grupo": "Cartão — parcelado/financiado · PJ",
+   "motivo": "carteira de R$ 9.4 bi abaixo do mínimo de R$ 20 bi: taxa volátil demais para manchete",
+   "delta_pp": -0.54
+  },
+  {
+   "grupo": "Cartão — rotativo · PJ",
+   "motivo": "carteira de R$ 1.2 bi abaixo do mínimo de R$ 20 bi: taxa volátil demais para manchete",
+   "delta_pp": 3.94
   }
  ],
  "melhoras": [

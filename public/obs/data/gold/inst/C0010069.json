@@ -15,7 +15,7 @@
   "modelo": "banco universal",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-07-29T01:57:33+00:00",
+  "atualizado_em": "2026-07-31T12:12:55+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -57,10 +57,6 @@
    {
     "texto": "Índice de Basileia: -0.41p.p. no trimestre.",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "texto": "Score relativo subiu 4.0 pontos no grupo de pares.",
-    "base": "Observatório (calculado)"
    }
   ],
   "limitacoes_informacionais": [
@@ -460,7 +456,7 @@
  },
  "score_ref": {
   "score": 65.7,
-  "score_delta": 4.0,
+  "score_delta": -2.4,
   "faixa": "risco elevado",
   "dimensoes": {
    "capital_basileia": {
@@ -515,19 +511,19 @@
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 35.4
+    "score": 42.9
    },
    {
     "anomes": "202506",
-    "score": 31.4
+    "score": 42.9
    },
    {
     "anomes": "202509",
-    "score": 38.3
+    "score": 48.6
    },
    {
     "anomes": "202512",
-    "score": 61.7
+    "score": 68.1
    },
    {
     "anomes": "202603",

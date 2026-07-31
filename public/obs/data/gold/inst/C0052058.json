@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-07-29T01:57:33+00:00",
+  "atualizado_em": "2026-07-31T12:12:55+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -57,10 +57,6 @@
    {
     "texto": "Índice de Basileia: -1.47p.p. no trimestre.",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "texto": "Score relativo subiu 11.9 pontos no grupo de pares.",
-    "base": "Observatório (calculado)"
    }
   ],
   "limitacoes_informacionais": [
@@ -630,7 +626,7 @@
  },
  "score_ref": {
   "score": 54.8,
-  "score_delta": 11.9,
+  "score_delta": 2.4,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -685,19 +681,19 @@
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 43.2
+    "score": 50.3
    },
    {
     "anomes": "202506",
-    "score": 44.2
+    "score": 48.7
    },
    {
     "anomes": "202509",
-    "score": 48.9
+    "score": 55.1
    },
    {
     "anomes": "202512",
-    "score": 42.9
+    "score": 52.4
    },
    {
     "anomes": "202603",

@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.30.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.30.1"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -1111,6 +1111,7 @@ function renderPanorama() {
         <div class="num" style="color:var(--c-neg)">${fmt.n(a.atual, 1)}% <span class="src" style="font-size:12px">era ${fmt.n(a.anterior, 1)}% · ${fmt.pp(a.delta_pp)} p.p.</span></div>
         <div class="src">${a.indicador} · ${a.periodo}${a.vs_brasil != null ? ` · ${fmt.pp(a.vs_brasil)} p.p. vs BR` : ""}</div>
         <div class="src" style="margin-top:4px">${a.regra}</div>
+        ${a.nota ? `<div class="src" style="margin-top:4px" title="${attr(a.nota)}"><i>${a.nota}</i></div>` : ""}
         ${a.link && a.link.uf ? `<a href="javascript:void(0)" onclick="panSelUF('${a.link.uf}');window.scrollTo({top:0,behavior:'smooth'})" style="font-size:11.5px">investigar no mapa →</a>` : ""}</div>`).join("")}
       ${P.melhoras.map(m => `<div class="alertcard melhora"><h5>${m.nome} (${m.uf})</h5>
         <div class="num" style="color:var(--c-pos)">${fmt.pp(m.d_inad_12m)} p.p. <span class="src" style="font-size:12px">em 12m</span></div>

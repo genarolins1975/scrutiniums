@@ -5,20 +5,7 @@
   "version": "0.1.0",
   "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
  },
- "gerado_em": "2026-07-28T21:32:10+00:00",
- "fontes_status": {
-  "info": "coleta pulada (--skip-fetch); gold reconstruído do silver existente"
- },
- "fontes_reais": [
-  "BCB/SGS",
-  "BCB/IF.data (Olinda)",
-  "IBGE",
-  "Ipeadata"
- ],
- "fontes_demo": [
-  "Open Finance Brasil (dashboard)",
-  "Recuperação judicial (tribunais)"
- ],
+ "gerado_em": "2026-07-31T12:13:04+00:00",
  "vintages": {
   "sgs": "2026-05",
   "ifdata": "2026-03",
@@ -45,5 +32,18 @@
    "ref": "2026-03",
    "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
   }
- }
+ },
+ "fontes_status": {
+  "info": "coleta pulada (--skip-fetch); gold reconstruído do silver existente"
+ },
+ "fontes_reais": [
+  "BCB/SGS",
+  "BCB/IF.data (Olinda)",
+  "IBGE",
+  "Ipeadata"
+ ],
+ "fontes_demo": [
+  "Open Finance Brasil (dashboard)",
+  "Recuperação judicial (tribunais)"
+ ]
 }

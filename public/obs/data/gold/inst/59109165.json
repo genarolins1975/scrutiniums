@@ -15,7 +15,7 @@
   "modelo": "financeira de montadora (financiamento de veículos)",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-07-29T01:57:32+00:00",
+  "atualizado_em": "2026-07-31T12:12:53+00:00",
   "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela.",
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -43,12 +43,7 @@
     "base": "BCB rdrweb"
    }
   ],
-  "mudancas_recentes": [
-   {
-    "texto": "Score relativo caiu 4.1 pontos no grupo de pares.",
-    "base": "Observatório (calculado)"
-   }
-  ],
+  "mudancas_recentes": [],
   "limitacoes_informacionais": [
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
@@ -595,7 +590,7 @@
  },
  "score_ref": {
   "score": 75.9,
-  "score_delta": -4.1,
+  "score_delta": -0.3,
   "faixa": "risco elevado",
   "dimensoes": {
    "capital_basileia": {
@@ -650,7 +645,7 @@
   "historico_score": [
    {
     "anomes": "202512",
-    "score": 80.0
+    "score": 76.2
    },
    {
     "anomes": "202603",

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-07-29T01:57:31+00:00",
+  "atualizado_em": "2026-07-31T12:12:50+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -66,10 +66,6 @@
    {
     "texto": "Carteira de crédito: +11.1% no trimestre.",
     "base": "BCB IF.data (Olinda)"
-   },
-   {
-    "texto": "Score relativo subiu 4.4 pontos no grupo de pares.",
-    "base": "Observatório (calculado)"
    }
   ],
   "limitacoes_informacionais": [
@@ -1593,7 +1589,7 @@
  },
  "score_ref": {
   "score": 72.7,
-  "score_delta": 4.4,
+  "score_delta": 0.5,
   "faixa": "risco elevado",
   "dimensoes": {
    "capital_basileia": {
@@ -1648,19 +1644,19 @@
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 52.3
+    "score": 58.3
    },
    {
     "anomes": "202506",
-    "score": 53.8
+    "score": 60.2
    },
    {
     "anomes": "202509",
-    "score": 49.6
+    "score": 56.7
    },
    {
     "anomes": "202512",
-    "score": 68.3
+    "score": 72.2
    },
    {
     "anomes": "202603",
