@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.30.1"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.31.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -574,14 +574,28 @@ function renderLeading() {
   let body = "";
   if (t === "geral") {
     const subs = Object.entries(L.subindices);
+    // nomes humanos dos componentes (o catálogo traz signal_id → nome/fonte)
+    const sigNome = id => {
+      const c = (L.catalogo || []).find(x => x.signal_id === id);
+      return c ? c.name : id;
+    };
+    const zPlano = z => {
+      const abs = Math.abs(z);
+      const grau = abs < 0.5 ? "praticamente na" : abs < 1 ? `${fmt.n(abs, 1)} desvio-padrão ${z >= 0 ? "acima da" : "abaixo da"}` : `${fmt.n(abs, 1)} desvios-padrão ${z >= 0 ? "ACIMA da" : "ABAIXO da"}`;
+      return `${grau} própria média histórica${abs >= 1 ? (z >= 0 ? " — estresse acima do usual" : " — folga acima do usual") : ""}`;
+    };
+    const TIT_COB = "cobertura: quantos componentes deste subíndice têm dado atual disponível. 2/2 = todos presentes; se um faltar, o subíndice segue com o que há e a confiança cai.";
+    const TIT_CONF = "confiança: qualidade da leitura, combinando tamanho do histórico, atualidade e cobertura dos componentes. Moderada = útil para acompanhar tendência, insuficiente para decisão isolada.";
+    const TIT_TEND = "tendência do subíndice na janela de 3 meses: subindo = estresse aumentando; caindo = aliviando.";
     const subCard = ([gid, s]) => {
       const pts = s.serie.map(x => ({ x: `${x.p.slice(0, 4)}-${x.p.slice(4)}`, y: x.z }));
       return `<div class="card">
         <h4>${s.nome}</h4>
         <div class="big ${s.z_atual > 1 ? "up" : ""}" style="font-size:24px">${s.z_atual >= 0 ? "+" : ""}${fmt.n(s.z_atual, 2)}σ</div>
-        <div class="delta ${s.tendencia === "subindo" ? "up" : s.tendencia === "caindo" ? "down good" : "neutral"}">${s.tendencia} · Δ3m ${fmt.pp(s.delta_3m)}σ · ${s.cobertura} · confiança ${s.confianca}</div>
+        <div class="src" style="margin:-2px 0 4px">${zPlano(s.z_atual)}</div>
+        <div class="delta ${s.tendencia === "subindo" ? "up" : s.tendencia === "caindo" ? "down good" : "neutral"}"><span title="${TIT_TEND}">${s.tendencia}</span> · <span title="variação do z-score em 3 meses">Δ3m ${fmt.pp(s.delta_3m)}σ</span> · <span title="${TIT_COB}">${s.cobertura}</span> · <span title="${TIT_CONF}">confiança ${s.confianca}</span></div>
         ${lineChart({ series: [{ pts, color: "#1d4e89", label: "z-score" }], hlines: [{ y: 0, color: "#aaa", label: "média histórica" }], h: 120, unit: "σ", fonte: "componentes abaixo", status: "calculado", dec: 1, noTable: true })}
-        <div class="src">componentes (z atual): ${Object.entries(s.contribuicoes).map(([c, z]) => `${c} ${z >= 0 ? "+" : ""}${fmt.n(z, 1)}σ`).join(" · ")}</div>
+        <div class="src">componentes (distância da própria média): ${Object.entries(s.contribuicoes).map(([c, z]) => `<span title="${attr(sigNome(c))}: ${z >= 0 ? "+" : ""}${fmt.n(z, 1)} desvio-padrão vs. a média histórica desta série">${sigNome(c)} ${z >= 0 ? "+" : ""}${fmt.n(z, 1)}σ</span>`).join(" · ")}</div>
       </div>`;
     };
     const vrow = v => {
@@ -600,7 +614,7 @@ function renderLeading() {
       <div class="frase">${L.sintese.texto}</div>
       <div class="src">${badge("calculado", "síntese determinística: tendências dos subíndices (Δ3m do z médio) + reação da inadimplência (Δ3m > 0,1 p.p.)")} confiança ${L.sintese.confianca} · cobertura ${L.sintese.cobertura} · atualizado ${L.gerado_em.slice(0, 10)}</div>
     </div>
-    ${sechead("Subíndices — decompostos, nunca um número único opaco", "z-score sobre a própria história de cada componente")}
+    ${sechead("Subíndices — decompostos, nunca um número único opaco", "como ler: 0 = a média histórica do próprio indicador; +1σ = um desvio-padrão acima dela (estresse fora do usual); valores negativos = folga. Cada componente é comparado só com a própria história.")}
     <div class="ov-2col-eq">${subs.map(subCard).join("")}</div>
     ${sechead("As defasagens sugerem antecedência?", "associação exploratória — promoção plena exige o protocolo da aba Antecedentes")}
     <div class="card">
@@ -1691,6 +1705,37 @@ window.ovLoadView = i => {
   state.filters = { ...state.filters, ...vx.filters };
   saveLS("obc_filters", state.filters); syncHash(); renderOverview();
 };
+/* ---------- Visão geral personalizável ----------
+   Padrões de referência (OWID, OECD Data, FRED, NN/g): conclusão primeiro,
+   poucos números acima da dobra, revelação progressiva e personalização com
+   padrão simples. As seções extras existem, mas o usuário escolhe. */
+const OV_BLOCOS = [
+  ["diagnostico", "Diagnóstico e números centrais", true],
+  ["condicoes", "Condições de crédito (IBCC e mudanças)", true],
+  ["inad", "Inadimplência nas instituições", false],
+  ["prodset", "Produtos, setores e ecossistema", false],
+  ["proj", "Projeções, relações e sinais", false],
+  ["insight", "Leitura analítica", false],
+  ["saude", "Saúde dos dados", false],
+  ["explore", "Acesso rápido", true],
+];
+let ovPersonalizando = false;
+function ovBlocosCfg() {
+  const padrao = Object.fromEntries(OV_BLOCOS.map(([k, , d]) => [k, d]));
+  return { ...padrao, ...(loadLS("obc_ov_blocos", {}) || {}) };
+}
+window.ovBlocoSet = (k, on) => {
+  const cfg = ovBlocosCfg();
+  cfg[k] = !!on;
+  saveLS("obc_ov_blocos", cfg);
+  renderOverview();
+};
+window.ovPreset = modo => {
+  saveLS("obc_ov_blocos", Object.fromEntries(OV_BLOCOS.map(([k, , d]) => [k, modo === "completo" ? true : d])));
+  renderOverview();
+};
+window.ovTogglePersonalizar = () => { ovPersonalizando = !ovPersonalizando; renderOverview(); };
+
 function renderOverview() {
   const el = document.getElementById("view-overview");
   const { pulse, alerts, sectors, overview } = state.data;
@@ -1715,6 +1760,7 @@ function renderOverview() {
     </div>
     <div class="ph-actions">
       ${segTabs()}
+      <button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
       <button class="btn ghost small" onclick="dlFile('overview_'+(state.data.meta&&state.data.meta.gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">exportar dados</button>
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
@@ -1805,7 +1851,7 @@ function renderOverview() {
   const chgLine = r => `<div class="contrib clickable" onclick="nav('${r.area}')" title="abrir a análise de ${r.indicador}">
     <span class="lbl" style="width:210px">${r.indicador}</span>
     <span class="num ${r.classificacao === "deterioração" ? "up" : r.classificacao === "melhora" ? "down good" : "neutral"}">${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""}</span>
-    <span class="src">(z=${r.relevancia_z}) →</span></div>`;
+    <span class="src" title="relevância: a variação deste mês equivale a ${fmt.n(r.relevancia_z, 1)} vez(es) a oscilação mensal típica desta série — acima de 1 é movimento fora do padrão">relev. ${fmt.n(r.relevancia_z, 1)}× →</span></div>`;
   const secCondicoes = `
   <div class="sechead" id="ov-icc"><h3>Condições de crédito</h3><a href="javascript:void(0)" class="seeall" onclick="nav('pulse')">ver pulso do crédito →</a></div>
   <div class="ov-2col">
@@ -2009,18 +2055,36 @@ function renderOverview() {
       `<span class="chip clickable" onclick="nav('${v}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')nav('${v}')">${l} →</span>`).join("")}
     ${favs}</div>`;
 
-  el.innerHTML = `
-  ${pagehead}
-  <div class="ov-hero">${diagcard}${heroStrip}</div>
-  ${segNote}
-  ${secCondicoes}
-  ${secNpl}
-  ${secProdSet}
-  <div class="sechead"><h3>Projeções, relações e sinais</h3></div>
-  <div class="ov-2col">${scatterPanel}<div style="display:flex;flex-direction:column;gap:22px">${projPanel}${alertsPanel}</div></div>
-  <div style="margin-top:22px">${insightPanel}</div>
-  ${saude}
-  ${explore}`;
+  const cfgBlocos = ovBlocosCfg();
+  const HTML_BLOCOS = {
+    diagnostico: `<div class="ov-hero">${diagcard}${heroStrip}</div>${segNote}`,
+    condicoes: secCondicoes,
+    inad: secNpl,
+    prodset: secProdSet,
+    proj: `<div class="sechead"><h3>Projeções, relações e sinais</h3></div>
+  <div class="ov-2col">${scatterPanel}<div style="display:flex;flex-direction:column;gap:22px">${projPanel}${alertsPanel}</div></div>`,
+    insight: `<div style="margin-top:22px">${insightPanel}</div>`,
+    saude,
+    explore,
+  };
+  const painelPersonalizar = ovPersonalizando ? `
+  <div class="card" style="margin-bottom:18px">
+    <h4>Personalizar a Visão geral</h4>
+    <p class="src">Escolha o que esta página mostra. A preferência fica salva neste navegador. O padrão é a leitura simples: diagnóstico, condições de crédito e acesso rápido; todo o resto continua a um clique nas abas.</p>
+    <div class="chips" style="margin:10px 0">
+      ${OV_BLOCOS.map(([k, l]) => `<label class="chip" style="cursor:pointer;user-select:none"><input type="checkbox" ${cfgBlocos[k] ? "checked" : ""} onchange="ovBlocoSet('${k}', this.checked)" style="margin-right:6px;vertical-align:middle">${l}</label>`).join("")}
+    </div>
+    <button class="btn ghost small" onclick="ovPreset('simples')">padrão simples</button>
+    <button class="btn ghost small" onclick="ovPreset('completo')">tudo visível</button>
+    <button class="btn ghost small" onclick="ovTogglePersonalizar()">fechar</button>
+  </div>` : "";
+  const ocultas = OV_BLOCOS.filter(([k]) => !cfgBlocos[k]).map(([, l]) => l);
+  const rodapeOcultas = ocultas.length && !ovPersonalizando
+    ? `<div class="src" style="margin-top:18px">Seções ocultas nesta página: ${ocultas.join(" · ")} · <a href="javascript:void(0)" onclick="ovTogglePersonalizar()">personalizar</a></div>`
+    : "";
+  el.innerHTML = pagehead + painelPersonalizar +
+    OV_BLOCOS.filter(([k]) => cfgBlocos[k]).map(([k]) => HTML_BLOCOS[k]).join("\n") +
+    rodapeOcultas;
 }
 
 function ibccPositionFrom(ibcc) {

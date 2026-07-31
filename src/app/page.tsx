@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { getSessionUser } from "@/lib/session";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/home/Hero";
@@ -14,7 +16,12 @@ export const metadata: Metadata = {
     "Da informação dispersa ao conhecimento verificável: bases públicas, registros oficiais e séries setoriais organizados com estatística e método declarado. Plataforma gratuita — o cadastro é a única exigência.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  // Quem já tem sessão abre o app direto na Visão geral do Observatório:
+  // a página institucional é para quem ainda não entrou.
+  const user = await getSessionUser();
+  if (user && user.onboardingStatus === "COMPLETE") redirect("/observatorio");
+
   return (
     <>
       <PublicHeader />
