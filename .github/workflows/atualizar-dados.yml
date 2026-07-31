@@ -1,0 +1,80 @@
+name: Atualizar dados do Observatório
+
+# Roda o pipeline (BCB, IBGE, Ipeadata, IF.data, CNJ, Open Finance...),
+# reconstrói a camada gold e publica em public/obs/data. O push dispara
+# o deploy automático na Vercel.
+on:
+  schedule:
+    - cron: "0 9 * * *" # 06:00 em São Paulo, diariamente
+  workflow_dispatch:
+    inputs:
+      somente_gold:
+        description: "Pular coleta e só reconstruir o gold do estado atual"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atualizar-dados
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restaurar estado do pipeline (silver e bronze)
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/silver
+            data/bronze
+          key: pipeline-estado-${{ github.run_id }}
+          restore-keys: |
+            pipeline-estado-
+
+      - name: Semear histórico na primeira execução
+        run: |
+          mkdir -p data/silver data/bronze data/gold
+          if [ ! -f data/silver/observatorio.db ]; then
+            echo "Cache vazio: semeando o histórico acumulado."
+            gunzip -kc pipeline/seed/silver-seed.db.gz > data/silver/observatorio.db
+          else
+            echo "Estado restaurado do cache."
+          fi
+
+      - name: Executar pipeline
+        run: |
+          if [ "${{ inputs.somente_gold }}" = "true" ]; then
+            python3 pipeline/run.py --skip-fetch
+          else
+            python3 pipeline/run.py
+          fi
+
+      - name: Publicar gold no site
+        run: |
+          rsync -a --delete data/gold/ public/obs/data/gold/
+          git status --porcelain public/obs/data | head -20
+
+      - name: Commit e push das atualizações
+        run: |
+          git config user.name "pipeline-observatorio[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add public/obs/data
+          if git diff --cached --quiet; then
+            echo "Sem mudanças nos dados publicados."
+          else
+            git commit -m "Atualiza dados do Observatório (pipeline automático)"
+            git push
+          fi

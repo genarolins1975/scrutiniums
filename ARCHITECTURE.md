@@ -95,3 +95,16 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 ## Testes
 
 `npx vitest run` (ou `npm test`). Configuração em `vitest.config.ts` (ambiente node, alias `@ → ./src`, pool `forks` para isolar um processo por arquivo). Testes de integração criam **bancos PGlite em memória por arquivo** via `DATABASE_URL=pglite-memory:` — o banco de desenvolvimento nunca é tocado.
+
+## Atualização automática dos dados (GitHub Actions)
+
+O pipeline Python vive em `pipeline/` (config em `config/`), com o
+histórico acumulado semeado em `pipeline/seed/silver-seed.db.gz` (25 MB).
+O workflow `.github/workflows/atualizar-dados.yml` roda diariamente às
+06:00 (São Paulo): restaura o estado silver/bronze do cache do Actions
+(ou semeia na primeira execução), coleta as fontes públicas, reconstrói a
+camada gold e, havendo mudança, commita `public/obs/data` — o push
+dispara o deploy da Vercel. Execução manual pela aba Actions
+(workflow_dispatch), com opção `somente_gold` para reconstruir sem
+coletar. O estado da CI evolui de forma independente do arquivo
+histórico no Mac de origem, que permanece como arquivo-mestre.
