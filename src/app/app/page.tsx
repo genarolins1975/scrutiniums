@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import {
   SummaryCard,
   type FormatoValor,
@@ -126,6 +127,7 @@ const CARDS: Array<{
 export default function VisaoGeralPage() {
   return (
     <div className="space-y-10">
+      <MarcaVisita secao="app:paineis" />
       <PageTitle
         label="Área interna"
         title="Painéis Scrutiniums"

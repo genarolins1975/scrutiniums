@@ -8,6 +8,7 @@ import { PerfilForm } from "@/components/conta/PerfilForm";
 import { AlterarSenha } from "@/components/conta/AlterarSenha";
 import { AlterarTelefone } from "@/components/conta/AlterarTelefone";
 import { EncerrarSessoes } from "@/components/conta/EncerrarSessoes";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const metadata: Metadata = {
   title: "Conta",
@@ -29,6 +30,7 @@ export default async function ContaPage() {
 
   return (
     <div className="mx-auto w-full max-w-page px-6 py-12">
+      <MarcaVisita secao="app:conta" />
       <PageTitle
         label="Sua conta"
         title="Conta"

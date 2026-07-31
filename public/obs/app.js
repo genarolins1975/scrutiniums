@@ -3451,7 +3451,22 @@ window.setFilter = setFilter;
 const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
 const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes" };
+/* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
+let lastPingedView = null;
+function pingView(v) {
+  if (v === lastPingedView) return;
+  lastPingedView = v;
+  try {
+    const body = JSON.stringify({ secao: "obs:" + v });
+    const blob = new Blob([body], { type: "application/json" });
+    if (!(navigator.sendBeacon && navigator.sendBeacon("/api/telemetria", blob))) {
+      fetch("/api/telemetria", { method: "POST", headers: { "Content-Type": "application/json" }, body, keepalive: true }).catch(() => {});
+    }
+  } catch (e) { /* telemetria nunca interfere na navegação */ }
+}
+
 function showViewSilent(v) {
+  pingView(v);
   document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
@@ -3476,6 +3491,15 @@ function applyTheme(t) {
   const saved = loadLS("obc_theme", null);
   if (saved) applyTheme(saved);
   else if (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches) applyTheme("dark");
+})();
+/* Atalho de administração: só aparece se a sessão atual é de admin
+   (checagem no servidor via /api/admin/eu; para os demais, nada muda). */
+(function initAdminShortcut() {
+  const btn = document.getElementById("adminBtn");
+  if (!btn) return;
+  fetch("/api/admin/eu", { credentials: "same-origin" })
+    .then(r => { if (r.ok) btn.hidden = false; })
+    .catch(() => {});
 })();
 document.getElementById("themeToggle").addEventListener("click", () => {
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";

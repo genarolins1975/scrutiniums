@@ -29,6 +29,8 @@ export const POLICIES = {
   resendMinInterval: { windowMs: 30_000, max: 1, backoffBaseMs: 30_000 },
   /** Disparo de convites da lista de espera: evita duplo clique/reenvio em série. */
   invitesPerAdmin: { windowMs: 10 * 60 * 1000, max: 3, backoffBaseMs: 30_000 },
+  /** Telemetria de visitas: navegação intensa legítima cabe; flood não. */
+  viewsPerUser: { windowMs: 60 * 1000, max: 40, backoffBaseMs: 30_000 },
 } satisfies Record<string, RateLimitPolicy>;
 
 export function checkRateLimit(key: string, policy: RateLimitPolicy): { allowed: boolean; retryAfterMs: number } {
