@@ -1,0 +1,258 @@
+{
+  "gerado_em": "2026-07-31T00:00:00+00:00",
+  "versao": "1.0.0",
+  "corte_pesquisa": "2026-07-31",
+  "titulo": "Fraudes financeiras e risco de crédito",
+  "subtitulo": "Como golpes digitais e fraudes afetam renda, liquidez e capacidade de pagamento das famílias brasileiras.",
+  "aviso": "Associações não implicam causalidade.",
+  "periodo_coberto": "2018 a 2026 (registros policiais desde 2018; MED do Pix desde 2022)",
+  "atualizacao": {
+    "processo": "curadoria manual documentada (FONTES_FRAUDES.md); a base oficial de fraudes no Pix (MED) tem API de dados abertos do BCB catalogada para integração futura ao pipeline",
+    "proxima_esperada": "Anuário FBSP (jul/2027), REF do BCB (semestral), indicador Serasa (mensal) e estatísticas MED (mensais, D+30)",
+    "verificado_em": "2026-07-31"
+  },
+  "niveis": {
+    "A": { "rotulo": "Dado administrativo oficial", "descricao": "Registro administrativo publicado por órgão público ou consolidação padrão de registros oficiais (BCB, MJSP/SINESP via FBSP, PF, CERT.br, STJ)." },
+    "B": { "rotulo": "Pesquisa oficial representativa", "descricao": "Pesquisa amostral de órgão público com amostra, campo e margem publicados (DataSenado, Cetic.br/TIC, IBGE)." },
+    "C": { "rotulo": "Estudo acadêmico com método identificável", "descricao": "Artigo revisado por pares ou working paper com desenho empírico explícito. Working papers são marcados." },
+    "D": { "rotulo": "Estimativa privada com metodologia publicada", "descricao": "Levantamento setorial ou privado com método declarado. Interesse comercial do emissor sempre indicado." },
+    "E": { "rotulo": "Associação exploratória ou sinal não validado", "descricao": "Número de imprensa sobre base oficial ainda não conferida no endpoint, extrapolação agressiva de survey, ou sinal com subnotificação provável." }
+  },
+  "sintese": [
+    { "id": "perdas_bancarias_2024", "rotulo": "Perdas com golpes e fraudes bancárias", "valor": 10.1, "exibir": "R$ 10,1 bi", "unidade": "R$ bilhões em 2024", "conceito": "Perda CONSUMADA de clientes reportada pelos bancos à Febraban (golpes e fraudes em canais eletrônicos e cartões). É um piso: só canal bancário e só o que os bancos contabilizam; sem nota técnica pública", "data_ref": "2024", "publicado_em": "2025-03", "nivel": "D", "fonte": "Febraban com MJSP (divulgação)", "url": "https://www.poder360.com.br/poder-economia/golpes-causaram-prejuizo-de-r-101-bi-em-2024-diz-febraban/", "status": "estimativa", "nota": "2023: R$ 8,6 bi (+17% em 2024). Número de 2025 não publicado até o corte. Fraudes via Pix: R$ 2,7 bi acumulados em 2023 e 2024." },
+    { "id": "estelionato_2025", "rotulo": "Ocorrências de estelionato registradas", "valor": 2261055, "exibir": "2,26 milhões", "unidade": "boletins de ocorrência em 2025", "conceito": "Ocorrências registradas em boletins policiais (não são vítimas totais nem condenações). Taxa de 1.059 por 100 mil habitantes; cerca de 258 golpes registrados por hora", "data_ref": "2025", "publicado_em": "2026-07-28", "nivel": "A", "fonte": "Anuário FBSP 2026 (registros SINESP/SSPs)", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/", "status": "oficial", "nota": "Alta de 429% desde 2018. Consolidação de registros administrativos estaduais pelo Fórum Brasileiro de Segurança Pública (entidade civil de referência)." },
+    { "id": "med_recuperacao", "rotulo": "Recuperação de valores no MED (Pix)", "valor": 9.3, "exibir": "9,3%", "unidade": "% do valor contestado devolvido (2025)", "conceito": "Devoluções efetivadas pelo Mecanismo Especial de Devolução sobre o valor contestado pelas vítimas. Contestação não é fraude comprovada; devolução depende de saldo remanescente na conta destino", "data_ref": "2025", "publicado_em": "2026", "nivel": "A", "fonte": "BCB, documento oficial MED 2.0", "url": "https://www.bcb.gov.br/content/estabilidadefinanceira/pix/MED/MED_2-0_Circuito_Pix-Dia_1.pdf", "status": "oficial", "nota": "Acumulado jan/2022 a abr/2026 compilado da base oficial pela imprensa: R$ 24,5 bi contestados, R$ 2,2 bi devolvidos (8,9%); 61,7% do não devolvido por falta de saldo. Benchmark: Reino Unido devolve 61% a 89% em fraudes por transferência autorizada." },
+    { "id": "vitimas_declaradas", "rotulo": "Vítimas de golpe digital (declarado)", "valor": 24, "exibir": "24%", "unidade": "% da população 16+ em 12 meses", "conceito": "Pessoas que declararam ter perdido dinheiro com crime cibernético nos 12 meses anteriores (≈ 41,6 milhões). Vitimização autodeclarada, conceito distinto de ocorrência registrada", "data_ref": "jun/2024", "publicado_em": "2024-10-01", "nivel": "B", "fonte": "DataSenado (CATI, n=21.808, ±1,22 p.p.)", "url": "https://www12.senado.leg.br/noticias/materias/2024/10/01/golpes-digitais-atingem-24-da-populacao-brasileira-revela-datasenado", "status": "oficial", "nota": "FBSP/Datafolha 2025: 24,5 mi de vítimas de golpe do Pix/boleto (jul/2024 a jun/2025); pesquisa de mar/2026: 15,8% (26,3 mi) vítimas de golpe." },
+    { "id": "tentativas_serasa", "rotulo": "Tentativas de fraude detectadas", "valor": 6.94, "exibir": "6,9 milhões", "unidade": "tentativas no 1º semestre de 2025", "conceito": "TENTATIVAS detectadas/estimadas por modelos da Serasa Experian (uma a cada 2,3 segundos; bancos e cartões 53,7%). Tentativa não é perda consumada e não deve ser somada a perdas", "data_ref": "1S2025", "publicado_em": "2025-07", "nivel": "D", "fonte": "Serasa Experian, Indicador de Tentativas de Fraude", "url": "https://www.serasaexperian.com.br/sala-de-imprensa/indicadores/recorde-quase-7-milhoes-de-tentativas-de-fraude-foram-registradas-no-1-semestre-de-2025-setor-bancario-e-principal-alvo/", "status": "estimativa", "nota": "Emissor vende soluções antifraude (interesse declarado). Jan a set/2025: 10,8 milhões." },
+    { "id": "incidentes_sfn", "rotulo": "Incidentes cibernéticos relevantes no SFN", "valor": 59, "exibir": "59", "unidade": "incidentes reportados ao BC até ago/2025", "conceito": "Incidentes cibernéticos RELEVANTES reportados pelas instituições ao BCB (Res. CMN 4.893). Não mede tentativas nem perdas em reais", "data_ref": "jan a ago/2025", "publicado_em": "2025-11", "nivel": "A", "fonte": "BCB, Relatório de Estabilidade Financeira", "url": "https://www.bcb.gov.br/content/publicacoes/ref/202510/RELESTAB202510-refPub.pdf", "status": "oficial", "nota": "2024: 53 incidentes. Inclui o ataque à C&M Software (jul/2025), maior incidente do SFN, com desvio estimado em centenas de milhões via contas de reserva." },
+    { "id": "subnotificacao", "rotulo": "Razão registro policial / vítimas declaradas", "valor": null, "exibir": "≈ 5% a 10%", "unidade": "BOs por vítima declarada", "conceito": "2,26 mi de ocorrências registradas (2025) contra 26 a 42 mi de vítimas declaradas em surveys: a maioria das fraudes nunca vira boletim. Toda série de registro é um PISO", "data_ref": "2025", "publicado_em": "2026-07-31", "nivel": "E", "fonte": "cálculo próprio sobre FBSP e DataSenado/Datafolha", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/", "status": "calculado", "nota": "Associação exploratória entre bases com conceitos distintos (ocorrência vs vítima); serve para dimensionar a subnotificação, não para medi-la com precisão." },
+    { "id": "estelionato_eletronico", "rotulo": "Estelionato por meio eletrônico", "valor": 346700, "exibir": "346,7 mil", "unidade": "ocorrências em 2025 (art. 171 §2º-A)", "conceito": "Recorte SUBESTIMADO do estelionato total: SP e RJ não destacam a modalidade eletrônica nos registros", "data_ref": "2025", "publicado_em": "2026-07-28", "nivel": "A", "fonte": "Anuário FBSP 2026", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/", "status": "oficial", "nota": "+21% sobre 2024 (286,2 mil). Tipo penal criado pela Lei 14.155/2021." }
+  ],
+  "series": {
+    "estelionato": {
+      "conceito": "Ocorrências de estelionato (todas as modalidades) registradas pelas polícias, consolidadas pelo FBSP a partir do SINESP e das SSPs. Ocorrência registrada, não vítima: a subnotificação estimada supera 90%.",
+      "unidade": "ocorrências por ano",
+      "freq": "anual",
+      "obs": [
+        { "ref": "2018", "v": 426799, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2019", "v": 523820, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2020", "v": 927898, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2021", "v": 1312964, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2022", "v": 1816438, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2023", "v": 2000960, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" },
+        { "ref": "2024", "v": 2193122, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/", "nota": "revisado (edição 2025 trazia 2.166.552)" },
+        { "ref": "2025", "v": 2261055, "nivel": "A", "status": "oficial", "url": "https://forumseguranca.org.br/publicacoes/anuario-brasileiro-de-seguranca-publica/" }
+      ],
+      "nota": "Quebra estrutural em 2020-2021: pandemia, digitalização acelerada e criação do tipo eletrônico (Lei 14.155/2021) mudam o regime da série. Comparações simples com séries de crédito seriam espúrias."
+    },
+    "med": {
+      "conceito": "Transações Pix CONTESTADAS pela vítima via MED e devoluções efetivadas. Contestação não é fraude comprovada; não capta golpes não contestados; devolução limitada ao saldo bloqueável na conta destino.",
+      "unidade": "R$ bilhões (acumulado jan/2022 a abr/2026) e % de recuperação",
+      "quebra_metodologica": true,
+      "obs": [
+        { "ref": "2025", "metrica": "taxa_recuperacao", "v": 9.3, "unidade": "%", "nivel": "A", "status": "oficial", "fonte": "BCB, MED 2.0 (documento oficial)", "url": "https://www.bcb.gov.br/content/estabilidadefinanceira/pix/MED/MED_2-0_Circuito_Pix-Dia_1.pdf" },
+        { "ref": "2022-01a2026-04", "metrica": "valor_contestado", "v": 24.52, "unidade": "R$ bi", "nivel": "E", "status": "imprensa", "fonte": "compilação de imprensa sobre a base oficial de dados abertos do BC", "url": "https://mais.opovo.com.br/reportagens-especiais/2026/07/24/a-cada-rs-100-em-golpes-no-pix-instituicoes-devolvem-apenas-rs-890.html", "nota": "53 mi de solicitações; R$ 2,2 bi devolvidos (8,9%); 73,3% das solicitações rejeitadas; 61,7% do valor não devolvido por falta de saldo. Endpoint oficial catalogado (olinda.bcb.gov.br, EstatisticasFraudesPix) para conferência e integração futura." }
+      ],
+      "nota": "O MED 2.0 (obrigatório desde 02/02/2026, com rastreamento em cadeia e autoatendimento) muda a metodologia: a taxa de recuperação anterior e posterior a fev/2026 NÃO são comparáveis. Esta quebra será exibida quando a série mensal for integrada."
+    },
+    "perdas_febraban": {
+      "conceito": "Perdas consumadas de clientes com golpes e fraudes reportadas pelos bancos (Febraban). Sem nota técnica pública: agregação de reportes das instituições; interesse setorial declarado.",
+      "unidade": "R$ bilhões por ano",
+      "obs": [
+        { "ref": "2023", "v": 8.6, "nivel": "D", "status": "estimativa", "url": "https://www.poder360.com.br/poder-economia/golpes-causaram-prejuizo-de-r-101-bi-em-2024-diz-febraban/" },
+        { "ref": "2024", "v": 10.1, "nivel": "D", "status": "estimativa", "url": "https://www.poder360.com.br/poder-economia/golpes-causaram-prejuizo-de-r-101-bi-em-2024-diz-febraban/" }
+      ],
+      "nota": "Número de 2025 não publicado até o corte. NÃO somar com o indicador Serasa (tentativas) nem com vitimização declarada (Datafolha/DataSenado): o valor da Febraban está contido nas extrapolações de vitimização."
+    },
+    "serasa_tentativas": {
+      "conceito": "Tentativas de fraude detectadas/estimadas por modelos probabilísticos da Serasa (consultas de CPF, biometria, verificação documental). Tentativa bloqueada não é perda; série privada com interesse comercial.",
+      "unidade": "milhões de tentativas",
+      "obs": [
+        { "ref": "2025-01", "v": 1.242, "nivel": "D", "status": "estimativa", "url": "https://www.cnnbrasil.com.br/economia/tentativas-de-fraude-sobem-416-em-1-ano-e-batem-novo-recorde-diz-serasa/", "nota": "+41,6% a/a, recorde da série iniciada em 2023" },
+        { "ref": "2025-S1", "v": 6.938, "nivel": "D", "status": "estimativa", "url": "https://www.serasaexperian.com.br/sala-de-imprensa/indicadores/recorde-quase-7-milhoes-de-tentativas-de-fraude-foram-registradas-no-1-semestre-de-2025-setor-bancario-e-principal-alvo/", "nota": "bancos e cartões 53,7%; uma tentativa a cada 2,3s" },
+        { "ref": "2025-01a09", "v": 10.8, "nivel": "E", "status": "imprensa", "url": "https://diariodejacarei.com.br/geral/brasil-registrou-10-8-milhoes-de-tentativas-de-fraudes-ate-setembro-aponta-serasa-experian" }
+      ]
+    },
+    "incidentes_ciberneticos": {
+      "conceito": "Incidentes cibernéticos RELEVANTES reportados ao BCB pelas instituições (Res. CMN 4.893/2021). Não mede tentativas, nem perdas monetárias, nem fraudes contra clientes.",
+      "unidade": "incidentes por período",
+      "obs": [
+        { "ref": "2024", "v": 53, "nivel": "A", "status": "oficial", "url": "https://www.bcb.gov.br/content/publicacoes/ref/202510/RELESTAB202510-refPub.pdf" },
+        { "ref": "2025-01a08", "v": 59, "nivel": "A", "status": "oficial", "url": "https://www.bcb.gov.br/conteudo/home-ptbr/TextosApresentacoes/REF_novembro2025_Apresentacao_coletiva_imprensa.pdf" }
+      ]
+    }
+  },
+  "tipos": {
+    "descricao": "Tipos de fraude com o melhor dado disponível para cada um. Frequência, perda média e recuperação raramente vêm da mesma fonte: os conceitos de cada célula estão declarados e NÃO são combináveis entre si.",
+    "itens": [
+      { "tipo": "Pix · engenharia social", "frequencia": "53 mi de contestações MED acumuladas (jan/2022 a abr/2026, imprensa sobre base oficial)", "perda_media": "R$ 2.540 por vítima PF (Silverguard 2025, base autosselecionada de relatos)", "recuperacao": "9,3% do valor contestado (2025, BCB oficial)", "nivel": "A", "nota": "65% dos golpes destinam recursos a contas PJ (Silverguard, D)" },
+      { "tipo": "Cartão de crédito · clonagem e chargeback", "frequencia": "dado público consolidado ainda não disponível no Brasil", "perda_media": "não disponível", "recuperacao": "estorno via contestação (sem taxa pública)", "nivel": "E", "nota": "Serasa estima R$ 573 mi em risco no e-commerce no 1S2026 e R$ 3 bi em tentativas em 2024 (D, tentativa ≠ perda)" },
+      { "tipo": "Phishing e páginas falsas", "frequencia": "553 mi de bloqueios em 12 meses até ago/2025 (Kaspersky, telemetria própria, D); CERT.br mantém painel oficial de notificações", "perda_media": "não disponível (bloqueio não é vítima)", "recuperacao": "não se aplica", "nivel": "D", "nota": "Painel CERT.br (stats.cert.br) é nível A, consulta manual pendente de integração" },
+      { "tipo": "Fraude de identidade", "frequencia": "componente principal das 6,9 mi de tentativas Serasa no 1S2025 (49% inconsistências cadastrais)", "perda_media": "não disponível", "recuperacao": "não disponível", "nivel": "D", "nota": "Marcações de fraude no DICT: 1,2 mi em um ano (via LAI, imprensa, E); consulta cidadã no Registrato prevista para 2026" },
+      { "tipo": "Invasão de conta e falsa central", "frequencia": "sem série pública; objeto de decisão repetitiva do STJ (out/2025)", "perda_media": "não disponível", "recuperacao": "indenização judicial quando há falha do banco (Súmula 479 e repetitivo de 2025)", "nivel": "A", "nota": "STJ: bancos e IPs respondem por falhas que viabilizam o golpe da falsa central" },
+      { "tipo": "Golpes de investimento", "frequencia": "sem série pública brasileira; benchmark EUA: US$ 8,65 bi em perdas reportadas (IC3 2025)", "perda_media": "não disponível", "recuperacao": "baixa (fluxos frequentemente via cripto)", "nivel": "E", "nota": "Categoria de maior perda no IC3; no Brasil aparece em surveys privados sem medição administrativa" },
+      { "tipo": "Marketplace e compra não entregue", "frequencia": "7% dos consumidores relataram pagamento antecipado sem entrega (CNDL/SPC 2026, survey online)", "perda_media": "não disponível", "recuperacao": "estorno/consumidor.gov (sem taxa pública)", "nivel": "D", "nota": "Datafolha/FBSP 2025 estima R$ 13 bi/ano em produto não entregue (extrapolação declaratória)" }
+    ]
+  },
+  "cadeia": {
+    "descricao": "Cadeia econômica PLAUSÍVEL entre fraude e crédito. A evidência internacional mais rigorosa (vítimas de roubo de identidade nos EUA) encontra choque de crédito pequeno e transitório quando há remediação eficaz: o elo final depende criticamente da capacidade de recuperação, que no Brasil (MED ~9%) é muito inferior à do benchmark.",
+    "legenda": {
+      "comprovado_brasil": "Comprovado no Brasil (dado administrativo)",
+      "associacao": "Associação observada no Brasil (sem identificação causal)",
+      "internacional": "Evidência internacional (mecanismo plausível, não estimativa para o Brasil)",
+      "hipotese": "Hipótese a investigar"
+    },
+    "elos": [
+      { "de": "Exposição digital", "para": "Fraude", "status": "comprovado_brasil", "evidencia": "141 mi de usuários de internet (TIC Domicílios, B); 2,26 mi de estelionatos registrados em 2025 (+429% desde 2018, A); 24% declaram perda com golpe em 12 meses (DataSenado, B)." },
+      { "de": "Fraude", "para": "Perda de liquidez", "status": "comprovado_brasil", "evidencia": "Perda consumada: R$ 10,1 bi reportados pelos bancos em 2024 (D) e recuperação de só 9,3% no MED (A): a perda da vítima de golpe por transferência é majoritariamente definitiva." },
+      { "de": "Perda de liquidez", "para": "Uso de crédito emergencial", "status": "hipotese", "evidencia": "Sem medição pública brasileira ligando vítimas a contratação de crédito. Serasa (survey, D): 20% das vítimas perderam até R$ 5 mil, valor com potencial de empurrar orçamentos apertados ao rotativo; ainda declaratório." },
+      { "de": "Uso de crédito emergencial", "para": "Aumento de endividamento", "status": "hipotese", "evidencia": "Plausível mas não medido no Brasil; exigiria dados transacionais ou de bureau vinculando evento de fraude a trajetória de dívida." },
+      { "de": "Endividamento", "para": "Atraso", "status": "hipotese", "evidencia": "Sem recorte público de atraso de vítimas de fraude vs não vítimas." },
+      { "de": "Atraso", "para": "Inadimplência", "status": "internacional", "evidencia": "EUA (Philadelphia Fed, painéis de bureau, C): roubo de identidade gera queda de score pequena e TRANSITÓRIA, revertida em ~1 ano com remediação eficaz; casos severos e de menor score sofrem mais e por mais tempo. A transferência ao Brasil é incerta: aqui a devolução é ~9% e não há arcabouço equivalente de correção cadastral." }
+    ]
+  },
+  "perfil": {
+    "aviso_populacoes": "As fontes medem POPULAÇÕES e CONCEITOS diferentes (ocorrência registrada, vítima declarada, tentativa modelada). Recortes demográficos públicos são escassos no Brasil: as lacunas estão declaradas, sem inferência causal de vulnerabilidade.",
+    "grupos": [
+      { "rotulo": "Idosos", "evidencia": "Benchmark EUA: 60+ concentram 37% das perdas reportadas ao FBI (IC3 2025, A do país de origem); susceptibilidade a golpes prediz declínio cognitivo (Boyle et al., Annals 2019, C). No Brasil: majorante penal para fraude contra idoso (Lei 14.155/2021), sem série pública de vitimização por idade." },
+      { "rotulo": "Baixa renda e baixa literacia digital", "evidencia": "Associação plausível e citada em surveys privados; sem medição oficial brasileira com controle. Global Findex 2025 (Banco Mundial) documenta exposição a golpes como custo emergente da inclusão digital." },
+      { "rotulo": "Microempreendedores e PJ", "evidencia": "Silverguard (D): perda média PJ de R$ 5.200 por golpe Pix, o dobro da PF; 65% dos fluxos de golpe destinam a contas PJ (inclusive laranjas)." },
+      { "rotulo": "Usuários intensivos de pagamentos instantâneos", "evidencia": "A fraude migrou para onde o dinheiro circula: golpes de engenharia social via Pix dominam as contestações MED. Uso intensivo é condição de exposição, não causa de dano (sem controle)." }
+    ],
+    "lacunas": "Não existe no Brasil recorte público oficial de vitimização por renda, escolaridade ou região com margem adequada. A PNAD não tem módulo de vitimização digital desde 2009. O painel exibe a lacuna em vez de improvisar demografia a partir de surveys comerciais."
+  },
+  "explorador": {
+    "descricao": "Compare indicadores de crédito das famílias (séries mensais do BCB auditadas neste Observatório) com os marcos de fraude e segurança do sistema de pagamentos. A exposição a fraude tem séries anuais curtas com quebra estrutural (pandemia + digitalização): correlações e defasagens NÃO são calculadas.",
+    "min_obs_correlacao": 24,
+    "justificativa_min_obs": "A série de estelionato é anual (n=8) com quebra de regime em 2020-21 e confundidores macro dominantes; qualquer correlação com inadimplência seria tendência espúria. O limiar de 24 observações comparáveis (mensais) só será atingível com a integração da série mensal do MED.",
+    "indicadores": [
+      { "key": "inad_pf", "rotulo": "Inadimplência PF (90+ dias)" },
+      { "key": "inad_total", "rotulo": "Inadimplência total (90+ dias)" },
+      { "key": "comprometimento", "rotulo": "Comprometimento de renda das famílias" },
+      { "key": "endividamento", "rotulo": "Endividamento das famílias" },
+      { "key": "taxa_pf", "rotulo": "Taxa de juros média PF" },
+      { "key": "concessoes_pf", "rotulo": "Concessões de crédito PF" },
+      { "key": "saldo_pf", "rotulo": "Saldo de crédito PF" },
+      { "key": "desemprego", "rotulo": "Desemprego (controle)" },
+      { "key": "ipca", "rotulo": "IPCA (controle)" },
+      { "key": "selic_meta", "rotulo": "Selic meta (controle)" }
+    ],
+    "indicadores_ausentes": [
+      { "rotulo": "Estatísticas mensais de fraude no Pix (MED) via API de dados abertos do BCB", "motivo": "endpoint oficial catalogado (olinda.bcb.gov.br, EstatisticasFraudesPix); integração ao pipeline na próxima iteração" },
+      { "rotulo": "Cartão rotativo, cheque especial e composição de dívidas (SGS)", "motivo": "séries identificadas, aguardando integração ao pipeline" },
+      { "rotulo": "Reclamações de fraude no consumidor.gov.br", "motivo": "base aberta exige processamento por assunto; sem ranking oficial pronto" }
+    ],
+    "eventos": [
+      { "x": "2020-11-01", "label": "Lançamento do Pix" },
+      { "x": "2021-05-01", "label": "Lei 14.155 (fraude eletrônica)" },
+      { "x": "2021-11-01", "label": "MED + limite noturno" },
+      { "x": "2023-11-01", "label": "Compartilhamento de dados de fraude" },
+      { "x": "2024-11-01", "label": "Dispositivos cadastrados (Res. 403)" },
+      { "x": "2025-07-01", "label": "Ataque C&M Software" },
+      { "x": "2026-02-01", "label": "MED 2.0 obrigatório" }
+    ],
+    "rotulos_validos": ["movimento conjunto", "associação contemporânea", "associação com defasagem", "sem evidência suficiente", "não implica causalidade"]
+  },
+  "mitigacao": {
+    "descricao": "Camadas de recuperação e mitigação existentes, com o que se sabe sobre eficácia. Recuperação baixa transforma tentativa consumada em perda definitiva, e é o elo institucional que liga fraude a liquidez das famílias.",
+    "itens": [
+      { "rotulo": "MED (devolução no Pix)", "eficacia": "9,3% do valor contestado devolvido em 2025 (A); 61,7% do não devolvido falha por falta de saldo na conta destino", "nota": "MED 2.0 (fev/2026) adiciona rastreamento em cadeia e autoatendimento; eficácia ainda sem medição pública pós-mudança" },
+      { "rotulo": "Reembolso obrigatório (benchmark internacional)", "eficacia": "Reino Unido: 61% das perdas APP reembolsadas em 2025; 89% no escopo da regra do PSR (out/2024)", "nota": "Referência de desenho institucional, não de magnitude brasileira" },
+      { "rotulo": "Compartilhamento interbancário de dados de fraude", "eficacia": "obrigatório desde nov/2023 (Res. Conjunta 6/2023); sem métrica pública de resultado", "nota": "" },
+      { "rotulo": "Dispositivos cadastrados e limites (Res. BCB 403/2024)", "eficacia": "R$ 200 por transação e R$ 1.000/dia em dispositivo não cadastrado desde nov/2024; sem avaliação pública de impacto", "nota": "Candidata natural a avaliação de descontinuidade quando houver série mensal de fraude" },
+      { "rotulo": "Marcação de contas e chaves no DICT", "eficacia": "1,2 mi de marcações em um ano (LAI/imprensa, E); consulta cidadã no Registrato prevista para 2026", "nota": "" },
+      { "rotulo": "Autenticação forte, biometria e MFA", "eficacia": "investimento setorial crescente (Pesquisa Febraban de Tecnologia Bancária, D); sem série pública de fraude evitada", "nota": "" },
+      { "rotulo": "Celular Seguro (MJSP)", "eficacia": "bloqueio de linha e apps bancários desde dez/2023; números de bloqueio sem série pública consolidada", "nota": "" },
+      { "rotulo": "Open Finance consentido", "eficacia": "padrões FAPI e certificação de segurança desde 2021; potencial de detecção de padrões com consentimento (seção de pesquisa futura)", "nota": "" }
+    ]
+  },
+  "subnotificacao": {
+    "aviso": "Reportado, contestado, estimado e declarado são camadas diferentes do mesmo fenômeno. NUNCA são somadas neste painel: o valor da Febraban está contido nas extrapolações de vitimização, e tentativas (Serasa) não são perdas.",
+    "camadas": [
+      { "rotulo": "Registro policial (BO)", "valor": "2,26 mi ocorrências (2025)", "nivel": "A", "conceito": "piso administrativo; exige iniciativa da vítima" },
+      { "rotulo": "Contestação no MED", "valor": "53 mi solicitações acumuladas (2022 a abr/2026)", "nivel": "E", "conceito": "só Pix e só quem contesta; imprensa sobre base oficial" },
+      { "rotulo": "Perda reportada pelos bancos", "valor": "R$ 10,1 bi (2024)", "nivel": "D", "conceito": "só canal bancário, agregação sem nota técnica" },
+      { "rotulo": "Vitimização declarada", "valor": "24% da população 16+ (2024); 26,3 mi vítimas (mar/2026)", "nivel": "B", "conceito": "inclui perdas fora do sistema bancário; memória e recall imperfeitos" },
+      { "rotulo": "Extrapolações de survey", "valor": "R$ 29 bi (golpes Pix/boleto, Datafolha 2025) a R$ 99 bi (GASA 2025, survey online)", "nivel": "E", "conceito": "extrapolações agressivas com métodos heterogêneos; usadas apenas como intervalo superior especulativo" }
+    ],
+    "gap": "Entre o piso administrativo (R$ 10,1 bi de perdas bancárias reportadas) e o teto especulativo (R$ 99 bi) há uma ordem de grandeza de incerteza. O painel trabalha com o piso identificado e declara o intervalo."
+  },
+  "estudos": [
+    { "id": "blascak2016", "titulo": "Identity Theft as a Teachable Moment", "autores": "Blascak, Cheney, Hunt, Mikhed, Ritter, Vogan", "ano": 2016, "veiculo": "Federal Reserve Bank of Philadelphia, WP 16-27 (atualizações até WP 25-29, 2025)", "tipo": "working paper (marcado)", "pais": "EUA", "periodo": "anos 2000/2010", "base": "painel anonimizado de bureau de crédito (vítimas com extended fraud alert)", "desenho": "causal: event study/DiD com controle pareado", "resultado": "choque inicial de crédito pequeno e transitório; após remediação, score sobe acima do contrafactual e inadimplência cai (vítima passa a monitorar o próprio crédito)", "limitacoes": "seleção (só vítimas que registram alerta); depende do arcabouço americano de correção cadastral (FCRA)", "aplicabilidade": "mecanismo de remediação importa mais que o choque; no Brasil, com devolução de ~9% no MED e sem FCRA, o resultado pode ser muito pior: hipótese central a testar", "nivel": "C", "url": "https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2859366" },
+    { "id": "phillyfed2021", "titulo": "Financial Consequences of Severe Identity Theft in the U.S.", "autores": "Blascak, Cheney, Hunt, Mikhed, Ritter, Vogan", "ano": 2021, "veiculo": "Philadelphia Fed, WP 21-41", "tipo": "working paper (marcado)", "pais": "EUA", "periodo": "2010s", "base": "bureau de crédito", "desenho": "causal: event study em casos severos (contas novas fraudulentas)", "resultado": "queda temporária de score e alta de registros negativos, revertidas em ~1 ano; efeitos maiores e mais persistentes para vítimas de menor score inicial", "limitacoes": "mesma dependência institucional; casos severos são minoria", "aplicabilidade": "heterogeneidade por score inicial sugere que vítimas de baixa renda sofrem mais: relevante para o Brasil", "nivel": "C", "url": "https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2021/wp21-41.pdf" },
+    { "id": "gurun2018", "titulo": "Trust Busting: The Effect of Fraud on Investor Behavior", "autores": "Gurun, Stoffman, Yonker", "ano": 2018, "veiculo": "Review of Financial Studies", "tipo": "revisado por pares", "pais": "EUA", "periodo": "caso Madoff (2008+)", "base": "assessores de investimento e depósitos", "desenho": "causal: DiD com exposição geográfica/social ao esquema", "resultado": "comunidades expostas retiraram ~US$ 363 bi de assessores e migraram para bancos: fraude destrói confiança além da perda direta", "limitacoes": "choque único e atípico", "aplicabilidade": "canal de confiança: fraudes em massa podem reduzir uso de serviços financeiros formais no Brasil", "nivel": "C", "url": "https://academic.oup.com/rfs/article-abstract/31/4/1341/3958335" },
+    { "id": "boyle2019", "titulo": "Scam Awareness Related to Incident Alzheimer Dementia and MCI", "autores": "Boyle, Bennett et al. (Rush University)", "ano": 2019, "veiculo": "Annals of Internal Medicine", "tipo": "revisado por pares", "pais": "EUA", "periodo": "coorte ~6 anos", "base": "935 idosos sem demência (Rush MAP), com seguimento e autópsia", "desenho": "coorte prospectiva", "resultado": "baixa consciência de golpes prediz demência e comprometimento cognitivo leve: susceptibilidade é marcador precoce de declínio", "limitacoes": "amostra idosa voluntária; escala autodeclarada", "aplicabilidade": "proteção de idosos contra engenharia social como política de saúde e de finanças", "nivel": "C", "url": "https://www.acpjournals.org/doi/10.7326/M18-2711" },
+    { "id": "deliema2020", "titulo": "Fraude contra idosos e custos não financeiros", "autores": "DeLiema, Deevy, Lusardi, Mitchell; FINRA Foundation/FFRC", "ano": 2020, "veiculo": "J. of Gerontology B (2020) e FINRA/FFRC (2015)", "tipo": "revisado por pares + relatório", "pais": "EUA", "periodo": "2010s", "base": "Health and Retirement Study (50+) e surveys de vítimas", "desenho": "prevalência e perfil (correlacional)", "resultado": "cerca de dois terços das vítimas relatam custos não financeiros severos (estresse, saúde, sono) além da perda", "limitacoes": "autodeclarado, subnotificação", "aplicabilidade": "o dano de fraude excede o valor perdido; relevante para custo social brasileiro", "nivel": "C", "url": "https://longevity.stanford.edu/mild-cognitive-impairment-and-susceptibility-to-scams-in-old-age" },
+    { "id": "ftc2024", "titulo": "Consumer Sentinel Network Data Book 2024", "autores": "Federal Trade Commission", "ano": 2025, "veiculo": "base administrativa oficial (EUA)", "tipo": "oficial descritivo", "pais": "EUA", "periodo": "2024", "base": "~6,5 mi de reports de consumidores", "desenho": "registro administrativo (sem contrafactual)", "resultado": "US$ 12,5 bi em perdas reportadas com fraude (+25% a/a); ~1,1 mi de reports de roubo de identidade", "limitacoes": "só o que é reportado: piso", "aplicabilidade": "benchmark de infraestrutura de registro centralizado que o Brasil não tem", "nivel": "A", "url": "https://www.ftc.gov/news-events/explore-data" },
+    { "id": "ic3_2025", "titulo": "FBI IC3 Internet Crime Report 2025", "autores": "FBI Internet Crime Complaint Center", "ano": 2026, "veiculo": "relatório oficial anual (EUA)", "tipo": "oficial descritivo", "pais": "EUA", "periodo": "2025", "base": ">1 mi de queixas", "desenho": "registro administrativo", "resultado": "US$ 20,9 bi em perdas reportadas (+26%); investimento US$ 8,65 bi; vítimas 60+ concentram 37% das perdas", "limitacoes": "perdas reportadas ao FBI: piso; incentivo de reporte varia", "aplicabilidade": "estrutura de categorias e concentração etária como referência", "nivel": "A", "url": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf" },
+    { "id": "ukfinance2026", "titulo": "UK Finance Annual Fraud Report 2026 (dados 2025)", "autores": "UK Finance / PSR", "ano": 2026, "veiculo": "relatório setorial com arcabouço regulatório de reembolso", "tipo": "setorial com método declarado", "pais": "Reino Unido", "periodo": "2025", "base": "reportes padronizados dos bancos", "desenho": "registro setorial", "resultado": "fraude total £1,28 bi; APP fraud £576 mi (+19%) com 61% de reembolso; 89% no escopo do reembolso obrigatório do PSR (out/2024)", "limitacoes": "debate aberto: reembolso obrigatório pode elevar reporte e/ou reduzir cautela", "aplicabilidade": "benchmark direto para o desenho do MED: devolução brasileira de 9% vs 61-89% britânica", "nivel": "D", "url": "https://www.ukfinance.org.uk/news-and-insight/press-release/fraud-report-2026-press-release" },
+    { "id": "accc2025", "titulo": "Targeting Scams 2025 (Austrália)", "autores": "ACCC / National Anti-Scam Centre", "ano": 2026, "veiculo": "relatório oficial", "tipo": "oficial descritivo", "pais": "Austrália", "periodo": "2025", "base": "perdas reportadas a múltiplos canais", "desenho": "registro administrativo consolidado", "resultado": "A$ 2,18 bi em perdas (+7,8% a/a, mas 30% abaixo do pico de 2022): coordenação nacional antifraude precede queda", "limitacoes": "associação temporal, não avaliação causal formal", "aplicabilidade": "evidência sugestiva de que um centro nacional anti-golpe reduz perdas: proposta institucional relevante ao Brasil", "nivel": "A", "url": "https://www.nasc.gov.au/system/files/targeting-scams-report-2025.pdf" },
+    { "id": "gasa2025", "titulo": "State of Scams in Brazil 2025", "autores": "Global Anti-Scam Alliance (GASA)", "ano": 2025, "veiculo": "survey online multi-país", "tipo": "estimativa privada (método publicado, extrapolação agressiva)", "pais": "Brasil", "periodo": "2025", "base": "survey online autopreenchido", "desenho": "extrapolação de vitimização declarada", "resultado": "estimativa de R$ 99 bi/ano em perdas; 70% dos adultos alvo de golpe; 252 tentativas por pessoa/ano", "limitacoes": "amostra online não probabilística; extrapolação monetária sensível a outliers; mudou metodologia entre edições (séries não comparáveis)", "aplicabilidade": "entra APENAS como teto especulativo do intervalo de subnotificação, nunca como medição", "nivel": "E", "url": "https://gasa.org/knowledge-base/reports/state-of-scams-in-brazil-2025" },
+    { "id": "bcbs2025", "titulo": "Digital fraud and banking: supervisory and financial stability implications", "autores": "Comitê de Basileia (BCBS/BIS)", "ano": 2025, "veiculo": "discussion paper", "tipo": "oficial analítico", "pais": "internacional", "periodo": "2025", "base": "revisão supervisora", "desenho": "qualitativo", "resultado": "fraude digital tratada como risco prudencial e de confiança sistêmica; discute divisão de responsabilidade entre bancos, plataformas e telecoms", "limitacoes": "sem estimativas quantitativas", "aplicabilidade": "enquadramento do tema como risco de estabilidade, alinhado ao REF do BCB", "nivel": "A", "url": "https://www.bis.org/bcbs/publ/d558.pdf" }
+  ],
+  "timeline": [
+    { "data": "2012-08-01", "ato": "Súmula 479 do STJ", "resumo": "Bancos respondem objetivamente por fraudes de terceiros em operações bancárias (fortuito interno): base do contencioso de golpes digitais.", "url": "https://www.stj.jus.br/docs_internet/revista/eletronica/stj-revista-sumulas-2017_37_capSumulas479-483.pdf", "status": "confirmado" },
+    { "data": "2020-08-12", "ato": "Resolução BCB nº 1/2020", "resumo": "Institui o Pix e seu regulamento, incluindo o DICT e requisitos de segurança.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=1", "status": "confirmado" },
+    { "data": "2020-11-16", "ato": "Lançamento pleno do Pix", "resumo": "Início da operação para todo o público; a fraude por engenharia social migra para pagamentos instantâneos.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/pix", "status": "confirmado" },
+    { "data": "2021-05-27", "ato": "Lei nº 14.155/2021", "resumo": "Agrava penas de invasão de dispositivo e cria o estelionato por meio eletrônico (art. 171 §2º-A), com majorante contra idosos.", "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/L14155.htm", "status": "confirmado" },
+    { "data": "2021-06-08", "ato": "Resolução BCB nº 103/2021", "resumo": "Cria o MED (Mecanismo Especial de Devolução) e o bloqueio cautelar; operação a partir de 16/11/2021.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=103", "status": "confirmado" },
+    { "data": "2021-10-04", "ato": "Limite noturno do Pix (Resolução BCB nº 142/2021)", "resumo": "R$ 1.000 por padrão entre 20h e 6h para transferências entre pessoas físicas, contra sequestros-relâmpago.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=142", "status": "confirmado" },
+    { "data": "2021-11-16", "ato": "Marcação de fraude no DICT (Resolução BCB nº 147/2021)", "resumo": "Notificação de infração obrigatória e consulta interinstitucional a marcações de fraude em chaves Pix.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=147", "status": "parcial" },
+    { "data": "2023-05-23", "ato": "Resolução Conjunta CMN/BCB nº 6/2023", "resumo": "Compartilhamento obrigatório de dados sobre indícios de fraude entre instituições, em sistema eletrônico interoperável (vigência nov/2023).", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20Conjunta&numero=6", "status": "confirmado" },
+    { "data": "2023-11-06", "ato": "Anatel: Resolução nº 765/2023 e dupla confirmação de portabilidade", "resumo": "Autenticação reforçada do consumidor contra SIM swap e portabilidade fraudulenta.", "url": "https://informacoes.anatel.gov.br/legislacao/resolucoes/2023/1900-resolucao-765", "status": "parcial" },
+    { "data": "2023-12-19", "ato": "Celular Seguro (MJSP)", "resumo": "Plataforma gov.br para bloqueio imediato de linha, aparelho e apps bancários em caso de roubo ou furto.", "url": "https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/celular-seguro", "status": "confirmado" },
+    { "data": "2024-07-22", "ato": "Resoluções BCB nº 402 e 403/2024", "resumo": "Pix acima de R$ 200 (teto diário R$ 1.000) somente em dispositivos cadastrados; gerenciamento de risco de fraude com o DICT; vigência nov/2024.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=403", "status": "confirmado" },
+    { "data": "2025-07-02", "ato": "Ataque à C&M Software (PSTI)", "resumo": "Desvio de centenas de milhões de reais de contas de reserva de instituições clientes: maior incidente cibernético do SFN; gatilho do pacote de setembro.", "url": "https://agenciagov.ebc.com.br/noticias/202509/para-combater-crime-organizado-e-ataques-banco-central-cria-teto-de-r-15-mil-para-pix-e-ted", "status": "parcial" },
+    { "data": "2025-08-28", "ato": "Resolução BCB nº 493/2025 (MED 2.0)", "resumo": "Rastreamento das devoluções em cadeia de contas via DICT, bloqueios de até 7 dias e base para autoatendimento de devolução.", "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=493", "status": "confirmado" },
+    { "data": "2025-09-05", "ato": "Resoluções BCB nº 494 a 498/2025", "resumo": "Teto de R$ 15 mil por Pix/TED para IPs não autorizadas e conexões via PSTI não credenciado; autorização obrigatória de IPs até 31/05/2026; credenciamento de PSTIs.", "url": "https://agenciagov.ebc.com.br/noticias/202509/para-combater-crime-organizado-e-ataques-banco-central-cria-teto-de-r-15-mil-para-pix-e-ted", "status": "confirmado" },
+    { "data": "2025-10-20", "ato": "STJ: repetitivo sobre golpe da falsa central", "resumo": "Bancos e instituições de pagamento devem indenizar clientes quando falhas de proteção de dados ou de detecção de transações atípicas viabilizam o golpe.", "url": "https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2025/21102025-Bancos-e-instituicoes-de-pagamento-devem-indenizar-clientes-por-falhas-que-viabilizam-golpe-da-falsa-central.aspx", "status": "confirmado" },
+    { "data": "2025-12-03", "ato": "Plano nacional antifraude (governo e Febraban)", "resumo": "Plano conjunto de combate a fraudes bancárias digitais anunciado por MJSP e Febraban.", "url": "https://www.otempo.com.br/politica/governo/2025/12/3/governo-e-febraban-lancam-plano-de-combate-a-fraudes-bancarias-digitais", "status": "parcial" },
+    { "data": "2026-02-02", "ato": "MED 2.0 obrigatório", "resumo": "Rastreamento em cadeia e autoatendimento de devolução em vigor para provedores de contas transacionais: quebra metodológica na série de recuperação.", "url": "https://agenciabrasil.ebc.com.br/economia/noticia/2026-02/novas-regras-de-seguranca-do-pix-entram-em-vigor-veja-mudancas", "status": "confirmado" },
+    { "data": "2026-04-30", "ato": "Lei nº 15.397/2026", "resumo": "Endurece penas de estelionato e fraudes digitais, alcança contas laranjas e amplia a atuação do Ministério Público.", "url": "https://www2.camara.leg.br/legin/fed/lei/2026/lei-15397-30-abril-2026-799020-publicacaooriginal-179083-pl.html", "status": "confirmado" },
+    { "data": "2026-05-31", "ato": "Prazo final de autorização de IPs no BC", "resumo": "Instituições de pagamento em operação sem autorização deixam de poder funcionar (Res. 494 a 498/2025).", "url": "https://www.portoepacca.com/post/banco-central-aperta-regras-para-institui%C3%A7%C3%B5es-de-pagamento-e-pstis-resolu%C3%A7%C3%B5es-494-a-498-2025", "status": "confirmado" }
+  ],
+  "metodologia": {
+    "principio": "Este painel não assume que fraudes causam inadimplência. Ele investiga perda direta, efeitos indiretos no uso de crédito, comportamento financeiro e vulnerabilidade digital, comunicando o grau de evidência de cada elo. Correlação temporal não é apresentada como causalidade.",
+    "tipos_de_dado": ["dado observado", "dado administrativo", "estimativa", "pesquisa declaratória", "associação exploratória", "evidência causal", "hipótese ainda não testada"],
+    "conceitos": [
+      { "termo": "Fraude consumada vs tentativa", "def": "tentativa bloqueada (indicador Serasa, bloqueios de phishing) não gera perda; somar tentativas a perdas infla o fenômeno." },
+      { "termo": "Perda bruta vs perda líquida", "def": "perda líquida desconta devoluções (MED, estornos). Com recuperação de ~9% no MED, a perda de golpes Pix é quase toda definitiva; em cartão, o estorno muda o quadro." },
+      { "termo": "Estorno e chargeback vs perda final", "def": "chargeback devolve ao portador e transfere a perda (lojista/emissor); não é ausência de fraude." },
+      { "termo": "Fraude digital vs presencial", "def": "o registro policial de estelionato mistura os dois; o recorte eletrônico (art. 171 §2º-A) é subestimado porque SP e RJ não o destacam." },
+      { "termo": "Engenharia social vs invasão técnica", "def": "no golpe de engenharia social a vítima autoriza a transação (juridicamente distinto de invasão): define responsabilidade e caminho de devolução." },
+      { "termo": "Conta comprometida vs identidade roubada", "def": "invasão de conta existente difere de abertura de contas/crédito em nome da vítima; consequências de crédito distintas." },
+      { "termo": "Fraude reportada vs estimada", "def": "BOs, MED e Febraban medem o reportado (piso); surveys extrapolam o total (teto especulativo). O gap é a subnotificação." },
+      { "termo": "Evento vs vítima vs transação", "def": "uma vítima pode ter várias transações contestadas; contagens de solicitações MED não são contagens de pessoas." },
+      { "termo": "Contas laranjas", "def": "contas intermediárias que pulverizam o dinheiro em minutos: razão central da baixa recuperação e alvo do MED 2.0 e da marcação no DICT." },
+      { "termo": "Deduplicação entre fontes", "def": "Febraban, Serasa, FBSP e surveys cobrem recortes sobrepostos do mesmo fenômeno com conceitos diferentes: nenhum número deste painel soma fontes distintas." }
+    ],
+    "roadmap": {
+      "fase_atual": "estatística descritiva com hierarquia de evidência. As séries de exposição são anuais e curtas (estelionato, n=8, quebra de regime em 2020-21) ou aguardam integração (MED mensal): correlação, defasagem ou índice seriam ruído com aparência de ciência.",
+      "proximas_fases": ["integrar a série mensal oficial do MED (API de dados abertos do BCB) e o CERT.br", "correlações contemporâneas e defasadas com n≥24 observações mensais comparáveis", "controles macroeconômicos (renda, desemprego, juros)", "testes de quebra estrutural (Pix em 2020, MED 2.0 em 2026)", "avaliações de descontinuidade em medidas antifraude (Res. 403/2024, MED 2.0) quando houver série mensal"],
+      "requisitos_causais": ["choque plausivelmente exógeno (mudanças regulatórias com data e escopo definidos são candidatas)", "grupo de comparação válido (instituições ou coortes com exposição distinta)", "tendências prévias compatíveis", "controles adequados", "ausência de antecipação", "testes placebo", "robustez a especificações", "interpretação economicamente coerente"],
+      "aviso": "A adoção do Pix não é experimento causal por si: coincide com pandemia e digitalização forçada. A variação entre instituições e as datas de vigência das medidas antifraude são as fontes de identificação mais promissoras.",
+      "previsao": "Modelos preditivos futuros usarão apenas informação disponível na data simulada (vintages), com treino/validação/teste separados, benchmarks simples, erros publicados e selo experimental."
+    },
+    "open_finance": {
+      "potencial": "Dados transacionais consentidos permitiriam, em base agregada e anonimizada: detecção de padrões de fraude, perda líquida por evento, uso de crédito emergencial pós-fraude, recuperação da vítima ao longo do tempo e efeito em consumo e poupança.",
+      "salvaguardas": ["dados anonimizados ou agregados com células mínimas", "minimização e finalidade delimitada", "consentimento válido e específico", "controle de reidentificação", "avaliação de impacto à proteção de dados (LGPD)", "revisão jurídica e ética prévia"],
+      "vedacoes": "Este Observatório NÃO cria score individual de vítima, NÃO monitora transações sem consentimento e NÃO recomenda decisões automatizadas de crédito baseadas em evento isolado de fraude."
+    },
+    "descartados": [
+      { "item": "Estimativa GASA de R$ 99 bi/ano como medição", "motivo": "survey online não probabilístico com extrapolação agressiva; entra apenas como teto especulativo do intervalo de subnotificação (nível E)" },
+      { "item": "Soma Febraban + Serasa + Datafolha", "motivo": "perda consumada, tentativa modelada e vitimização declarada são conceitos incompatíveis e sobrepostos; nenhuma soma é feita" },
+      { "item": "Série mensal do MED neste release", "motivo": "endpoint oficial de dados abertos do BCB confirmado, mas inacessível do ambiente de build; integração via pipeline na próxima iteração, com agregados atuais marcados como imprensa (E)" },
+      { "item": "ACI Worldwide Scamscope", "motivo": "projeção modelada que destoa fortemente do reportado pela Febraban, sem método detalhado público" },
+      { "item": "PSafe, Visa e Mastercard Brasil", "motivo": "sem divulgação recente com metodologia descrita para o Brasil" },
+      { "item": "Correlação estelionato × inadimplência", "motivo": "série anual n=8 com quebra de regime e confundidores macro dominantes; o explorador exibe rótulo 'sem evidência suficiente'" },
+      { "item": "Recorte consumidor.gov.br de fraudes", "motivo": "exige processamento da base aberta por assunto; sem ranking oficial pronto; próxima iteração" },
+      { "item": "Números da CERT.br pós-2020", "motivo": "painel dinâmico sem endpoint estático conferível no build; integração futura" }
+    ]
+  },
+  "links_apoio": {
+    "med": { "rotulo": "Como pedir devolução no Pix (MED) · Banco Central", "url": "https://www.bcb.gov.br/estabilidadefinanceira/pix" },
+    "celular_seguro": { "rotulo": "Celular Seguro (MJSP)", "url": "https://www.gov.br/mj/pt-br/acesso-a-informacao/acoes-e-programas/celular-seguro" },
+    "consumidor": { "rotulo": "consumidor.gov.br (reclamações)", "url": "https://consumidor.gov.br" },
+    "nota": "Este painel não presta atendimento a vítimas. Em caso de golpe: contate imediatamente seu banco para acionar o MED, registre boletim de ocorrência e use os canais oficiais acima."
+  }
+}

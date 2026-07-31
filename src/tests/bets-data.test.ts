@@ -202,6 +202,7 @@ describe("bets: integração com a plataforma", () => {
     const bloco = app.slice(app.indexOf("function renderBets()"), app.indexOf("const RENDER = {"));
     expect(bloco).not.toMatch(/\bdemo\b|badge\("demo"\)|DEMONSTRATIVO|placeholder/i);
     const gold = readFileSync(join(process.cwd(), "pipeline/gold.py"), "utf-8");
-    expect(gold).toContain('curated", "bets.json');
+    // cópia generalizada: todo pipeline/curated/*.json vai ao gold
+    expect(gold).toContain("curated_dir");
   });
 });

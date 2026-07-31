@@ -34,7 +34,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.29.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.30.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -183,6 +183,7 @@ const VIEW_DATA = {
   trends: ["trends"],
   panorama: ["panorama"],
   bets: ["bets", "pulse"],
+  fraudes: ["fraudes", "pulse"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -3791,9 +3792,290 @@ function renderBets() {
   el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + quem + "<hr class='sep'>" + vuln + "<hr class='sep'>" + explorer + "<hr class='sep'>" + auto + ilegal + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets };
+/* ================= FRAUDES FINANCEIRAS E RISCO DE CRÉDITO ================= */
+/* Painel investigativo: fraudes/golpes digitais e crédito das famílias.
+   Mesmo contrato epistemológico da aba de bets: hierarquia A-E visível,
+   conceitos não misturados (tentativa vs perda; reportado vs estimado),
+   nenhuma soma entre fontes sobrepostas. Dados: data/gold/fraudes.json
+   (curadoria documentada em FONTES_FRAUDES.md). */
+
+const frdExp = { ind: "inad_pf", norm: "nivel", eventos: true };
+window.frdExpSet = (k, v) => {
+  frdExp[k] = k === "eventos" ? !!v : v;
+  renderFraudes();
+};
+window.frdJSON = () => {
+  const F = state.data.fraudes;
+  if (F) dlFile("fraudes_risco_credito_" + (F.corte_pesquisa || "") + ".json", JSON.stringify(F, null, 1), "application/json");
+};
+window.frdCSV = () => {
+  const F = state.data.fraudes;
+  if (!F) return;
+  const rows = [["bloco", "referencia", "indicador", "valor", "unidade", "nivel_evidencia", "status", "fonte", "url"]];
+  (F.sintese || []).forEach(k => rows.push(["sintese", k.data_ref, k.rotulo, k.valor == null ? k.exibir : k.valor, k.unidade, k.nivel, k.status, k.fonte, k.url]));
+  const S = F.series || {};
+  (S.estelionato?.obs || []).forEach(o => rows.push(["estelionato", o.ref, "ocorrências registradas", o.v, "ocorrências", o.nivel, o.status, "FBSP/SINESP", o.url]));
+  (S.perdas_febraban?.obs || []).forEach(o => rows.push(["perdas_febraban", o.ref, "perdas consumadas reportadas", o.v, "R$ bi", o.nivel, o.status, "Febraban", o.url]));
+  (S.serasa_tentativas?.obs || []).forEach(o => rows.push(["serasa_tentativas", o.ref, "tentativas detectadas", o.v, "milhões", o.nivel, o.status, "Serasa Experian", o.url]));
+  (S.incidentes_ciberneticos?.obs || []).forEach(o => rows.push(["incidentes_ciberneticos", o.ref, "incidentes relevantes no SFN", o.v, "incidentes", o.nivel, o.status, "BCB/REF", o.url]));
+  (S.med?.obs || []).forEach(o => rows.push(["med", o.ref, o.metrica, o.v, o.unidade, o.nivel, o.status, o.fonte || "BCB", o.url]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("fraudes_dados_" + (F.corte_pesquisa || "") + ".csv", "﻿" + csv, "text/csv");
+};
+window.frdExplorerCSV = () => {
+  const pulse = state.data.pulse, F = state.data.fraudes;
+  if (!pulse || !F) return;
+  const cfg = (F.explorador.indicadores || []).find(i => i.key === frdExp.ind);
+  const s = pulse.series[frdExp.ind];
+  if (!s) return;
+  const rows = [["referencia", cfg ? cfg.rotulo : frdExp.ind, "fonte", "serie_sgs"]];
+  s.obs.forEach(o => rows.push([o.ref, o.v, s.meta.source, s.meta.series_code]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("fraudes_explorador_" + frdExp.ind + ".csv", "﻿" + csv, "text/csv");
+};
+
+function renderFraudes() {
+  const el = document.getElementById("view-fraudes");
+  const F = state.data.fraudes;
+  const pulse = state.data.pulse;
+  if (!F) { el.innerHTML = "<p class='src'>Dado público ainda não disponível — o arquivo curado fraudes.json não foi carregado.</p>"; return; }
+
+  const nv = n => betsNivel(n, F);
+
+  /* ---------- 0 · cabeçalho ---------- */
+  const head = `
+  <div class="pagehead">
+    <div class="ph-left">
+      <h2>${F.titulo}</h2>
+      <p class="viewdesc">${F.subtitulo}</p>
+      <div class="ph-meta">Última atualização: <b>${fmt.d(F.gerado_em.slice(0, 10))}</b> · Período coberto: ${F.periodo_coberto} · Corte da pesquisa: ${fmt.d(F.corte_pesquisa)} (registro em FONTES_FRAUDES.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${F.aviso}</span></div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn ghost small" onclick="document.getElementById('frd-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
+      <button class="btn ghost small" onclick="frdCSV()">baixar dados (CSV)</button>
+      <button class="btn ghost small" onclick="frdJSON()">baixar dados (JSON)</button>
+    </div>
+  </div>
+  <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
+
+  /* ---------- 1 · síntese ---------- */
+  const kpis = `
+  <h3>Síntese — fraude confirmada, tentativa bloqueada e estimativa são coisas diferentes</h3>
+  <div class="grid g4">${(F.sintese || []).map(k => `
+    <div class="card kpi"><h4>${k.rotulo} ${nv(k.nivel)}</h4>
+      <div class="tr-big">${k.exibir}</div>
+      <div class="src" title="${attr(k.conceito)}">${k.data_ref} · <a href="${k.url}" target="_blank" rel="noopener">${k.fonte}</a> ${betsStatus(k.status)}${k.nota ? `<br><span title="${attr(k.nota)}">nota ⓘ</span>` : ""}</div>
+    </div>`).join("")}</div>
+  <div class="src" style="margin-top:6px">Cada número declara conceito, período e nível de evidência. Nenhum cartão soma fontes distintas: perdas (Febraban), tentativas (Serasa), ocorrências (FBSP) e vitimização (DataSenado) cobrem recortes sobrepostos do mesmo fenômeno.</div>`;
+
+  /* ---------- 2 · cadeia ---------- */
+  const C = F.cadeia || { elos: [] };
+  const nodes = [C.elos[0]?.de, ...C.elos.map(e => e.para)];
+  const nodeStatus = ["comprovado_brasil", ...C.elos.map(e => e.status)];
+  const chain = `
+  <div class="card">
+    <h3>Como fraudes podem chegar ao crédito</h3>
+    <p class="src">${C.descricao}</p>
+    <div class="bets-chain">${nodes.map((nname, i) => `
+      <div class="node ${nodeStatus[i]}">${nname}<span class="st">${((C.legenda || {})[nodeStatus[i]] || "").split(" (")[0]}</span></div>${i < nodes.length - 1 ? '<span class="arrow" aria-hidden="true">→</span>' : ""}`).join("")}</div>
+    <details class="decomp"><summary>evidência de cada elo</summary>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Elo</th><th>Grau de evidência</th><th>O que sustenta</th></tr></thead><tbody>
+      ${C.elos.map(e => `<tr><td style="white-space:nowrap">${e.de} → ${e.para}</td><td>${betsEloChip(e.status, F)}</td><td>${e.evidencia}</td></tr>`).join("")}
+      </tbody></table></div>
+    </details>
+  </div>`;
+
+  /* ---------- 3 · dimensão e evolução ---------- */
+  const S = F.series || {};
+  const est = S.estelionato || { obs: [] };
+  const estMax = Math.max(...est.obs.map(o => o.v));
+  const feb = S.perdas_febraban || { obs: [] };
+  const ser = S.serasa_tentativas || { obs: [] };
+  const inc = S.incidentes_ciberneticos || { obs: [] };
+  const med = S.med || { obs: [] };
+  const medOficial = med.obs.find(o => o.metrica === "taxa_recuperacao");
+  const medImprensa = med.obs.find(o => o.metrica === "valor_contestado");
+  const dim = `
+  <h3>Dimensão e evolução — cada série com seu conceito</h3>
+  <div class="grid g2">
+    <div class="card"><h4>Estelionato registrado por ano ${nv("A")}</h4>
+      ${est.obs.map(o => betsBar(o.ref, o.v / 1e6, estMax / 1e6, "mi")).join("")}
+      <div class="src" style="margin-top:6px">${est.conceito}</div>
+      <div class="note warn" style="margin-top:8px">${est.nota}</div>
+      ${chartFooter({ fonte: "FBSP/SINESP (Anuários 2019 a 2026)", periodo: "2018 a 2025", atualizado: fmt.d(F.corte_pesquisa), unidade: "milhões de ocorrências", nota: est.conceito })}</div>
+    <div class="card"><h4>Devolução no MED (Pix) ${nv("A")}</h4>
+      <div class="tr-big">${medOficial ? fmt.n(medOficial.v, 1) : "–"}%<span style="font-size:14px"> recuperados (2025)</span></div>
+      <div class="src">do valor contestado pelas vítimas · <a href="${medOficial ? medOficial.url : "#"}" target="_blank" rel="noopener">BCB, MED 2.0 (oficial)</a></div>
+      ${medImprensa ? `<div class="src" style="margin-top:6px">Acumulado jan/2022 a abr/2026: R$ ${fmt.n(medImprensa.v, 1)} bi contestados, R$ 2,2 bi devolvidos (8,9%) ${betsStatus("imprensa")}</div>` : ""}
+      <div class="note warn" style="margin-top:8px"><b>Quebra metodológica:</b> ${med.nota}</div></div>
+    <div class="card"><h4>Perdas reportadas pelos bancos ${nv("D")}</h4>
+      ${feb.obs.map(o => betsBar(o.ref, o.v, 11, "R$ bi")).join("")}
+      <div class="src" style="margin-top:6px">${feb.conceito}</div>
+      <div class="src">${feb.nota}</div></div>
+    <div class="card"><h4>Tentativas detectadas (Serasa) ${nv("D")} e incidentes no SFN ${nv("A")}</h4>
+      ${ser.obs.map(o => betsBar(o.ref + (o.status === "imprensa" ? " (imprensa)" : ""), o.v, 11, "mi", o.status === "imprensa")).join("")}
+      <div class="src" style="margin:4px 0 8px">${ser.conceito}</div>
+      ${inc.obs.map(o => betsBar(o.ref, o.v, 60, "incidentes")).join("")}
+      <div class="src">${inc.conceito}</div></div>
+  </div>`;
+
+  /* ---------- 4 · tipos de fraude ---------- */
+  const T = F.tipos || { itens: [] };
+  const tipos = `
+  <div class="card">
+    <h3>Tipos de fraude — o melhor dado disponível para cada um</h3>
+    <p class="src">${T.descricao}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Tipo</th><th>Frequência</th><th>Perda média</th><th>Recuperação</th><th>Nível</th></tr></thead><tbody>
+    ${T.itens.map(t => `<tr><td style="white-space:nowrap"><b>${t.tipo}</b>${t.nota ? `<div class="src">${t.nota}</div>` : ""}</td><td class="src">${t.frequencia}</td><td class="src">${t.perda_media}</td><td class="src">${t.recuperacao}</td><td>${nv(t.nivel)}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="src">"Dado público ainda não disponível" aparece onde não existe medição publicada — nada aqui é preenchido com estimativa improvisada.</div>
+  </div>`;
+
+  /* ---------- 5 · quem é mais afetado ---------- */
+  const P = F.perfil || {};
+  const quem = `
+  <h3>Quem é mais afetado — associações declaradas, lacunas visíveis</h3>
+  <div class="note warn">${P.aviso_populacoes}</div>
+  <div class="card" style="margin-top:10px">
+    <div class="tblwrap"><table class="data compact"><tbody>
+    ${(P.grupos || []).map(g => `<tr><td style="white-space:nowrap"><b>${g.rotulo}</b></td><td class="src">${g.evidencia}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="note" style="margin-top:8px">${P.lacunas}</div>
+  </div>`;
+
+  /* ---------- 6 · subnotificação ---------- */
+  const SUB = F.subnotificacao || { camadas: [] };
+  const sub = `
+  <div class="card">
+    <h3>Fraude reportada vs estimada — o tamanho da subnotificação</h3>
+    <div class="note warn">${SUB.aviso}</div>
+    <div class="tblwrap" style="margin-top:8px"><table class="data compact"><thead><tr><th>Camada de medição</th><th>Valor</th><th>Nível</th><th>O que captura</th></tr></thead><tbody>
+    ${SUB.camadas.map(c => `<tr><td style="white-space:nowrap"><b>${c.rotulo}</b></td><td>${c.valor}</td><td>${nv(c.nivel)}</td><td class="src">${c.conceito}</td></tr>`).join("")}
+    </tbody></table></div>
+    <div class="src" style="margin-top:8px">${SUB.gap}</div>
+  </div>`;
+
+  /* ---------- 7 · explorador ---------- */
+  const EX = F.explorador || { indicadores: [] };
+  let expChart = "<p class='src'>Séries de crédito não carregadas.</p>";
+  let expFoot = "";
+  const cfgInd = (EX.indicadores || []).find(i => i.key === frdExp.ind) || EX.indicadores[0];
+  if (pulse && cfgInd && pulse.series[cfgInd.key]) {
+    const sr = pulse.series[cfgInd.key];
+    let pts = sr.obs.filter(o => o.ref >= "2019-01-01").map(o => ({ x: o.ref, y: o.v }));
+    if (frdExp.norm === "base100" && pts.length) {
+      const b = pts[0].y;
+      pts = pts.map(pp => ({ x: pp.x, y: b ? pp.y / b * 100 : null }));
+    } else if (frdExp.norm === "z" && pts.length > 2) {
+      const vs = pts.map(pp => pp.y);
+      const mu = vs.reduce((a, b2) => a + b2, 0) / vs.length;
+      const sd = Math.sqrt(vs.reduce((a, b2) => a + (b2 - mu) ** 2, 0) / vs.length) || 1;
+      pts = pts.map(pp => ({ x: pp.x, y: (pp.y - mu) / sd }));
+    }
+    const unit = frdExp.norm === "nivel" ? (sr.meta.unit || "") : frdExp.norm === "base100" ? "base 100 = jan/2019" : "desvios-padrão (janela)";
+    expChart = lineChart({
+      series: [{ pts, label: cfgInd.rotulo, color: "#1d4e89" }],
+      annotations: frdExp.eventos ? (EX.eventos || []) : [],
+      unit, fonte: `${sr.meta.source} ${sr.meta.series_code}`,
+      aria: `série mensal de ${cfgInd.rotulo} com marcos de fraude e segurança de pagamentos`,
+      h: 260,
+    });
+    expFoot = chartFooter({ fonte: `${sr.meta.source} · série ${sr.meta.series_code}`, periodo: `jan/2019 a ${fmt.my(sr.qualidade?.ultima_ref)}`, atualizado: sr.meta.last_collected_at ? sr.meta.last_collected_at.slice(0, 10) : "–", unidade: sr.meta.unit, nota: sr.meta.methodology });
+  }
+  const explorer = `
+  <div class="card">
+    <h3>Fraudes × indicadores de crédito — explorador</h3>
+    <p class="src">${EX.descricao}</p>
+    <div class="filterbar" style="margin:8px 0">
+      <label class="src">indicador
+        <select onchange="frdExpSet('ind', this.value)" aria-label="indicador de crédito">
+          ${(EX.indicadores || []).map(i => `<option value="${i.key}" ${i.key === frdExp.ind ? "selected" : ""}>${i.rotulo}</option>`).join("")}
+        </select></label>
+      <label class="src">escala
+        <select onchange="frdExpSet('norm', this.value)" aria-label="normalização">
+          <option value="nivel" ${frdExp.norm === "nivel" ? "selected" : ""}>nível</option>
+          <option value="base100" ${frdExp.norm === "base100" ? "selected" : ""}>base 100 (jan/2019)</option>
+          <option value="z" ${frdExp.norm === "z" ? "selected" : ""}>z-score</option>
+        </select></label>
+      <label class="src"><input type="checkbox" ${frdExp.eventos ? "checked" : ""} onchange="frdExpSet('eventos', this.checked)"> marcos de fraude e segurança</label>
+      <button class="btn ghost small" onclick="frdExplorerCSV()">baixar base (CSV)</button>
+    </div>
+    ${expChart}${expFoot}
+    <div class="chips" style="margin-top:8px">
+      <span class="chip">rótulo desta leitura: <b>sem evidência suficiente</b></span>
+      <span class="chip">não implica causalidade</span>
+    </div>
+    <div class="note warn" style="margin-top:8px"><b>Por que não mostramos correlação nem defasagens:</b> ${EX.justificativa_min_obs} Um gráfico de dois eixos sobrepondo estelionato e inadimplência produziria relação visual artificial; por isso as séries de crédito aparecem sozinhas, com os marcos anotados.</div>
+    <div class="src" style="margin-top:6px">Séries identificadas e ainda não integradas: ${(EX.indicadores_ausentes || []).map(i => i.rotulo).join("; ")}.</div>
+  </div>`;
+
+  /* ---------- 8 · recuperação e mitigação ---------- */
+  const MIT = F.mitigacao || { itens: [] };
+  const mit = `
+  <div class="card">
+    <h3>Recuperação e mitigação — o elo institucional</h3>
+    <p class="src">${MIT.descricao}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Camada</th><th>Eficácia conhecida</th></tr></thead><tbody>
+    ${MIT.itens.map(m => `<tr><td style="white-space:nowrap"><b>${m.rotulo}</b></td><td class="src">${m.eficacia}${m.nota ? `<br><i>${m.nota}</i>` : ""}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`;
+
+  /* ---------- 9 · evidências científicas ---------- */
+  const estudos = `
+  <h3>Evidências científicas e benchmarks — biblioteca resumida</h3>
+  <div class="note warn">Evidência estrangeira demonstra <b>mecanismos plausíveis</b> e desenhos institucionais; não é estimativa do efeito brasileiro. O achado mais contraintuitivo (EUA): com remediação eficaz, o dano de crédito do roubo de identidade é pequeno e transitório — a variável decisiva é a capacidade de recuperação, não o golpe em si.</div>
+  <div class="grid g2" style="margin-top:10px">${(F.estudos || []).map(e2 => `
+    <div class="card"><h4><a href="${e2.url}" target="_blank" rel="noopener">${e2.titulo}</a> ${nv(e2.nivel)}</h4>
+      <div class="src">${e2.autores} (${e2.ano}) · ${e2.veiculo} · <b>${e2.tipo}</b> · ${e2.pais} · ${e2.periodo}</div>
+      <div class="src" style="margin-top:4px"><b>Base:</b> ${e2.base} · <b>Desenho:</b> ${e2.desenho}</div>
+      <p style="font-size:13px;margin:6px 0">${e2.resultado}</p>
+      <div class="src"><b>Limitações:</b> ${e2.limitacoes}</div>
+      <div class="src"><b>Aplicabilidade ao Brasil:</b> ${e2.aplicabilidade}</div>
+    </div>`).join("")}</div>`;
+
+  /* ---------- 10 · linha do tempo ---------- */
+  const tl = `
+  <div class="card">
+    <h3>Linha do tempo — segurança contra fraudes digitais (2020 a 2026)</h3>
+    <ul class="bets-tl">${(F.timeline || []).map(t => `
+      <li class="${t.status === "parcial" ? "parcial" : ""}"><span class="tld">${fmt.d(t.data)}</span> ${t.status === "parcial" ? '<span class="seal aprox">PARCIALMENTE CONFIRMADO</span>' : ""}<br>
+      <b><a href="${t.url}" target="_blank" rel="noopener">${t.ato}</a></b><br><span class="src">${t.resumo}</span></li>`).join("")}</ul>
+  </div>`;
+
+  /* ---------- 11 · metodologia ---------- */
+  const M = F.metodologia || {};
+  const met = `
+  <div class="card" id="frd-metodologia">
+    <h3>Metodologia desta aba</h3>
+    <p style="font-size:13px"><b>Princípio.</b> ${M.principio}</p>
+    <p class="src">Tipos de dado distinguidos em todo o painel: ${(M.tipos_de_dado || []).join(" · ")}.</p>
+    <h4>Conceitos que não podem ser confundidos</h4>
+    <div class="tblwrap"><table class="data compact"><tbody>
+    ${(M.conceitos || []).map(c => `<tr><td style="white-space:nowrap"><b>${c.termo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h4 style="margin-top:12px">Roteiro econométrico</h4>
+    <p class="src"><b>Fase atual:</b> ${M.roadmap?.fase_atual}</p>
+    <p class="src"><b>Próximas fases:</b> ${(M.roadmap?.proximas_fases || []).join("; ")}.</p>
+    <p class="src"><b>Uma leitura causal só será publicada quando houver:</b> ${(M.roadmap?.requisitos_causais || []).join("; ")}.</p>
+    <p class="src">${M.roadmap?.aviso} ${M.roadmap?.previsao}</p>
+    <h4 style="margin-top:12px">Open Finance e pesquisa futura</h4>
+    <p class="src">${M.open_finance?.potencial}</p>
+    <p class="src"><b>Salvaguardas obrigatórias:</b> ${(M.open_finance?.salvaguardas || []).join("; ")}.</p>
+    <div class="note warn">${M.open_finance?.vedacoes}</div>
+    <h4 style="margin-top:12px">Indicadores avaliados e descartados</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Item</th><th>Motivo do descarte</th></tr></thead><tbody>
+    ${(M.descartados || []).map(dd => `<tr><td>${dd.item}</td><td class="src">${dd.motivo}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src" style="margin-top:8px">Rastreabilidade completa: <b>FONTES_FRAUDES.md</b>, <b>METODOLOGIA_FRAUDES.md</b> e <b>DICIONARIO_DADOS_FRAUDES.md</b> no repositório. Processo de atualização: ${F.atualizacao?.processo}. Próximas atualizações esperadas: ${F.atualizacao?.proxima_esperada}.</p>
+    <div class="src" style="margin-top:8px">${F.links_apoio?.nota} · <a href="${F.links_apoio?.med?.url}" target="_blank" rel="noopener">${F.links_apoio?.med?.rotulo}</a> · <a href="${F.links_apoio?.celular_seguro?.url}" target="_blank" rel="noopener">${F.links_apoio?.celular_seguro?.rotulo}</a> · <a href="${F.links_apoio?.consumidor?.url}" target="_blank" rel="noopener">${F.links_apoio?.consumidor?.rotulo}</a></div>
+  </div>`;
+
+  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + tipos + "<hr class='sep'>" + quem + sub + "<hr class='sep'>" + explorer + "<hr class='sep'>" + mit + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
