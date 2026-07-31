@@ -76,6 +76,13 @@ async function migrate(db: Db): Promise<void> {
     )`,
     // Coluna adicionada depois do lançamento: senha (hash scrypt) opcional.
     `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_hash TEXT`,
+    // Perfil estruturado + CPF (unicidade de conta por pessoa; nunca exibido integral).
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS cpf TEXT`,
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_type TEXT`,
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_area TEXT`,
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS org_role TEXT`,
+    `ALTER TABLE users ADD COLUMN IF NOT EXISTS uf TEXT`,
+    `CREATE UNIQUE INDEX IF NOT EXISTS idx_users_cpf ON users(cpf) WHERE cpf IS NOT NULL`,
     `CREATE TABLE IF NOT EXISTS verification_tokens (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL,

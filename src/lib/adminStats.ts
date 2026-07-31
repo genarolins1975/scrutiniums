@@ -40,6 +40,10 @@ export type UsuarioRecente = {
   status: string;
   company: string | null;
   jobTitle: string | null;
+  orgType: string | null;
+  orgArea: string | null;
+  orgRole: string | null;
+  uf: string | null;
   createdAt: Date;
 };
 export type RegistroAuditoria = {
@@ -139,6 +143,10 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
           status: schema.users.onboardingStatus,
           company: schema.users.company,
           jobTitle: schema.users.jobTitle,
+          orgType: schema.users.orgType,
+          orgArea: schema.users.orgArea,
+          orgRole: schema.users.orgRole,
+          uf: schema.users.uf,
           createdAt: schema.users.createdAt,
         })
         .from(schema.users)

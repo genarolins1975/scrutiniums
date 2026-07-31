@@ -56,6 +56,13 @@ export async function findUserByEmail(email: string): Promise<User | undefined> 
   return rows[0];
 }
 
+/** Busca por CPF normalizado (unicidade de conta por pessoa). */
+export async function findUserByCpf(cpf: string): Promise<User | undefined> {
+  const db = await getDb();
+  const rows = await db.select().from(schema.users).where(eq(schema.users.cpf, cpf)).limit(1);
+  return rows[0];
+}
+
 export async function findUserById(id: string): Promise<User | undefined> {
   const db = await getDb();
   const rows = await db.select().from(schema.users).where(eq(schema.users.id, id)).limit(1);

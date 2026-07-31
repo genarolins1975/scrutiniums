@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/session";
 import { maskEmail, maskPhone } from "@/lib/crypto";
+import { maskCpf } from "@/lib/cpf";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { PerfilForm } from "@/components/conta/PerfilForm";
 import { AlterarSenha } from "@/components/conta/AlterarSenha";
@@ -40,7 +41,7 @@ export default async function ContaPage() {
       <div className="mt-12 space-y-14">
         <section aria-label="Perfil" className="border border-linha bg-papel p-8">
           <SectionHeading number="01" label="Dados da conta" title="Perfil" />
-          <dl className="mb-8 grid gap-6 sm:grid-cols-2">
+          <dl className="mb-8 grid gap-6 sm:grid-cols-3">
             <div>
               <dt className="rotulo mb-2 text-mineral">E-mail</dt>
               <dd className="flex flex-wrap items-center gap-3">
@@ -56,8 +57,21 @@ export default async function ContaPage() {
                 {user.phoneE164 && user.phoneVerifiedAt && <Selo>Telefone confirmado</Selo>}
               </dd>
             </div>
+            <div>
+              <dt className="rotulo mb-2 text-mineral">CPF</dt>
+              <dd className="flex flex-wrap items-center gap-3">
+                <span className="text-carvao">{user.cpf ? maskCpf(user.cpf) : "Não informado"}</span>
+                {user.cpf && <Selo>Registrado</Selo>}
+              </dd>
+            </div>
           </dl>
-          <PerfilForm companyInicial={user.company ?? ""} jobTitleInicial={user.jobTitle ?? ""} />
+          <PerfilForm
+            orgTypeInicial={user.orgType ?? ""}
+            orgAreaInicial={user.orgArea ?? ""}
+            orgRoleInicial={user.orgRole ?? ""}
+            ufInicial={user.uf ?? ""}
+            temCpf={Boolean(user.cpf)}
+          />
         </section>
 
         <section aria-label="Senha" className="border border-linha bg-papel p-8">
@@ -79,10 +93,11 @@ export default async function ContaPage() {
           <SectionHeading number="05" label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
-              Pedimos apenas o necessário: o e-mail é seu dado de contato e recebe comunicações
-              essenciais; o telefone valida, dá acesso e protege a conta; empresa e cargo
-              contextualizam o perfil de uso. Nada disso é exibido publicamente, e telefone,
-              e-mail e códigos nunca são enviados a ferramentas de analytics. Os detalhes estão na{" "}
+              Pedimos apenas o necessário: o e-mail é seu dado de contato; o telefone valida, dá
+              acesso e protege a conta; o CPF garante uma conta por pessoa e nunca é exibido
+              integralmente; o perfil (instituição, área, cargo e UF) contextualiza o uso. Nada
+              disso é exibido publicamente, e CPF, telefone, e-mail e códigos nunca são enviados a
+              ferramentas de analytics. Os detalhes estão na{" "}
               <Link
                 href="/privacidade"
                 className="text-bronze underline underline-offset-4 hover:text-bronze-dark"
@@ -92,7 +107,7 @@ export default async function ContaPage() {
               .
             </p>
             <p>
-              Para excluir sua conta e dados, solicite pelo e-mail{" "}
+              Para corrigir o CPF ou excluir sua conta e dados, solicite pelo e-mail{" "}
               <a
                 href="mailto:privacidade@scrutiniums.com"
                 className="text-bronze underline underline-offset-4 hover:text-bronze-dark"
@@ -105,10 +120,6 @@ export default async function ContaPage() {
           </div>
         </section>
       </div>
-
-      <p className="mt-12 border-t border-linha pt-6 text-xs text-mineral">
-        Sua conta é gratuita. Não existem planos, assinaturas ou cobranças.
-      </p>
     </div>
   );
 }

@@ -28,6 +28,13 @@ export const users = pgTable("users", {
   phoneVerifiedAt: timestamp("phone_verified_at", { withTimezone: true, mode: "date" }),
   company: text("company"),
   jobTitle: text("job_title"),
+  /** CPF normalizado (11 dígitos). Finalidade única: uma conta por pessoa. Nunca exibido integralmente. */
+  cpf: text("cpf").unique(),
+  /** Perfil estruturado (allowlists em perfilOpcoes.ts; sem texto livre). */
+  orgType: text("org_type"),
+  orgArea: text("org_area"),
+  orgRole: text("org_role"),
+  uf: text("uf"),
   /** Hash scrypt da senha ("scrypt:N:r:p:salt:hash"); null em contas antigas sem senha. */
   passwordHash: text("password_hash"),
   onboardingStatus: text("onboarding_status").notNull().default("EMAIL_PENDING"),

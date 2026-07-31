@@ -8,6 +8,7 @@ import { maskPhone } from "@/lib/crypto";
 import { fmtDate, fmtDateTime, fmtNumber } from "@/lib/format";
 import { getAdminStats } from "@/lib/adminStats";
 import { sectionLabel } from "@/lib/telemetry";
+import { AREAS_ATUACAO, NIVEIS_CARGO, TIPOS_INSTITUICAO, rotuloDe } from "@/lib/perfilOpcoes";
 import { PageTitle, SectionHeading } from "@/components/ui/SectionHeading";
 import { EmptyState } from "@/components/ui/States";
 import { ConviteForm } from "@/components/admin/ConviteForm";
@@ -193,8 +194,8 @@ export default async function AdminPage() {
                   <tr className="border-b border-linha">
                     <Th>E-mail</Th>
                     <Th>Situação</Th>
-                    <Th>Empresa</Th>
-                    <Th>Cargo</Th>
+                    <Th>Instituição</Th>
+                    <Th>Atuação</Th>
                     <Th>Cadastro em</Th>
                   </tr>
                 </thead>
@@ -209,8 +210,16 @@ export default async function AdminPage() {
                           {STATUS_LABELS[u.status] ?? u.status}
                         </span>
                       </td>
-                      <td className="px-3 py-3 text-carvao-muted">{u.company || "—"}</td>
-                      <td className="px-3 py-3 text-carvao-muted">{u.jobTitle || "—"}</td>
+                      <td className="px-3 py-3 text-carvao-muted">
+                        {u.orgType
+                          ? `${rotuloDe(TIPOS_INSTITUICAO, u.orgType)}${u.uf ? ` · ${u.uf}` : ""}`
+                          : u.company || "—"}
+                      </td>
+                      <td className="px-3 py-3 text-carvao-muted">
+                        {u.orgArea
+                          ? `${rotuloDe(AREAS_ATUACAO, u.orgArea)} · ${rotuloDe(NIVEIS_CARGO, u.orgRole)}`
+                          : u.jobTitle || "—"}
+                      </td>
                       <td className="px-3 py-3 text-carvao-muted">{fmtDate(u.createdAt)}</td>
                     </tr>
                   ))}
