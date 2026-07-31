@@ -11,6 +11,7 @@ export type ProductEventName =
   | "phone_verified"
   | "profile_completed"
   | "waitlist_joined"
+  | "waitlist_invited"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned";

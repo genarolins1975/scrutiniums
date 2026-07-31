@@ -12,8 +12,11 @@ const NAV = [
   { href: "/metodologia", label: "Metodologia" },
 ];
 
+const ADMIN_ITEM = { href: "/app/admin", label: "Admin" };
+
 /** Cabeçalho interno da plataforma (área autenticada). */
-export function AppHeader({ userLabel }: { userLabel?: string }) {
+export function AppHeader({ userLabel, showAdmin = false }: { userLabel?: string; showAdmin?: boolean }) {
+  const nav = showAdmin ? [...NAV, ADMIN_ITEM] : NAV;
   return (
     <header className="border-b border-linha bg-marfim">
       <div className="mx-auto flex max-w-page items-center justify-between gap-6 px-6 py-4">
@@ -25,7 +28,7 @@ export function AppHeader({ userLabel }: { userLabel?: string }) {
           <LogoWordmark />
         </Link>
         <nav aria-label="Navegação da plataforma" className="hidden items-center gap-7 lg:flex">
-          {NAV.map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -53,7 +56,7 @@ export function AppHeader({ userLabel }: { userLabel?: string }) {
         aria-label="Navegação da plataforma (celular)"
         className="tabela-scroll flex gap-6 border-t border-linha px-6 py-3 lg:hidden"
       >
-        {NAV.map((item) => (
+        {nav.map((item) => (
           <Link
             key={item.href}
             href={item.href}

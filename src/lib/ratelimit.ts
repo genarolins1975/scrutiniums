@@ -27,6 +27,8 @@ export const POLICIES = {
   loginPerEmail: { windowMs: 15 * 60 * 1000, max: 8, backoffBaseMs: 30_000 },
   loginPerIp: { windowMs: 15 * 60 * 1000, max: 30, backoffBaseMs: 30_000 },
   resendMinInterval: { windowMs: 30_000, max: 1, backoffBaseMs: 30_000 },
+  /** Disparo de convites da lista de espera: evita duplo clique/reenvio em série. */
+  invitesPerAdmin: { windowMs: 10 * 60 * 1000, max: 3, backoffBaseMs: 30_000 },
 } satisfies Record<string, RateLimitPolicy>;
 
 export function checkRateLimit(key: string, policy: RateLimitPolicy): { allowed: boolean; retryAfterMs: number } {

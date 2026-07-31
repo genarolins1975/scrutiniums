@@ -32,12 +32,13 @@ Use esse código para completar o cadastro e o login por SMS localmente. O login
 Defina as variáveis de ambiente (lista completa, com propósito e obrigatoriedade, em [ARCHITECTURE.md](./ARCHITECTURE.md#variáveis-de-ambiente)):
 
 - **Twilio Verify (SMS):** `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN` e `TWILIO_VERIFY_SERVICE_SID` — crie um serviço Verify no console da Twilio; com as três presentes, o modo simulado é desativado automaticamente. Usado na validação do telefone (cadastro) e no login alternativo/recuperação por SMS.
-- **E-mail (SMTP):** `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` e `MAIL_FROM` — usados apenas para comunicações por e-mail (o login e a validação não dependem de e-mail).
+- **E-mail (Resend):** `RESEND_API_KEY` e `MAIL_FROM` — usados nos e-mails transacionais, inclusive nos convites da lista de espera (o login e a validação não dependem de e-mail). Em dev, sem a chave, o conteúdo aparece no log do servidor com o e-mail mascarado.
+- **Administração:** `ADMIN_EMAILS` com os e-mails dos administradores separados por vírgula (case-insensitive, com trim). Vazio → ninguém é admin.
 - **Segurança:** `COOKIE_SECRET` (ou `SESSION_SECRET`) com valor aleatório longo.
 - **Acesso antecipado:** `ACCESS_CODES` com os códigos válidos separados por vírgula (case-insensitive, com trim). Vazio → ninguém entra; todos vão para a lista de espera.
 - **Banco:** `DATABASE_URL` com a connection string do Postgres (ex.: `postgres://usuario:senha@host:5432/banco?sslmode=require`). Em dev, vazio (PGlite em `./.pglite`) ou `pglite://caminho`.
 
-As credenciais existem apenas no servidor; o navegador nunca fala com Twilio ou SMTP.
+As credenciais existem apenas no servidor; o navegador nunca fala com Twilio ou Resend.
 
 ## Testes
 
@@ -62,6 +63,10 @@ src/
 tailwind.config.ts     Design tokens
 vitest.config.ts       Configuração de testes
 ```
+
+## Convites da lista de espera
+
+Quem completa o cadastro sem código de acesso fica em `WAITLIST`. O dono da plataforma (e-mails em `ADMIN_EMAILS`) acessa **`/app/admin`**, vê a lista de espera (e-mail, telefone mascarado e data de cadastro) e envia um convite por e-mail para toda a lista com um código de acesso — o código precisa constar em `ACCESS_CODES` para funcionar. O envio usa o Resend (`RESEND_API_KEY`/`MAIL_FROM`), é sequencial (com intervalo entre mensagens) e registra o evento `waitlist_invited` por convidado. Usuário autenticado que não é admin recebe 404 em `/app/admin` e 403 na API (`POST /api/admin/convites`).
 
 ## Observatório embutido
 

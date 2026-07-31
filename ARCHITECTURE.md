@@ -87,10 +87,17 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 | `TWILIO_ACCOUNT_SID` | SID da conta Twilio para o Verify. | Não em dev (sem ela, modo simulado); **sim em produção**. |
 | `TWILIO_AUTH_TOKEN` | Token de autenticação da Twilio. | Idem acima. |
 | `TWILIO_VERIFY_SERVICE_SID` | SID do serviço Twilio Verify (SMS). | Idem acima. As três precisam estar presentes juntas para sair do modo simulado. |
-| `SMTP_HOST` / `SMTP_PORT` / `SMTP_USER` / `SMTP_PASS` | Servidor SMTP para comunicações por e-mail (`src/lib/mailer.ts`); o login e a validação não dependem de e-mail. | Não em dev; em produção apenas se e-mails transacionais forem enviados. |
-| `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <nao-responda@scrutiniums.com.br>`). | Junto com `SMTP_*` em produção. |
+| `RESEND_API_KEY` | Chave da API do Resend para e-mails transacionais (`src/lib/mailer.ts`), inclusive convites da lista de espera; o login e a validação não dependem de e-mail. Sem a chave, em dev o conteúdo vai para o log (e-mail mascarado); em produção nada de conteúdo é logado. | Não em dev; em produção apenas se e-mails transacionais forem enviados. |
+| `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <acesso@scrutiniums.com>`). | Não; padrão `Scrutiniums <acesso@scrutiniums.com>`. |
+| `ADMIN_EMAILS` | E-mails dos administradores, separados por vírgula (case-insensitive, com trim). Controla `/app/admin` e `POST /api/admin/convites`. | Não; vazio/ausente → ninguém é admin. |
 | `ACCESS_CODES` | Códigos de acesso antecipado, separados por vírgula (case-insensitive, com trim). Vazio/ausente → nenhum código válido; usuários vão para a lista de espera. | Não; sem ela o acesso fica fechado (todos em `WAITLIST`). |
 | `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`). `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+
+## Convites da lista de espera
+
+- **Quem pode**: `isAdmin` (`src/lib/admin.ts`) compara o e-mail do usuário de sessão com `ADMIN_EMAILS` (trim/lower); lista vazia → ninguém é admin.
+- **Interface**: `/app/admin` (server component) lista os usuários em `WAITLIST` (e-mail, telefone mascarado, data de cadastro) e envia convites via `ConviteForm`. Sem sessão → `/entrar`; com sessão mas sem admin → 404 (`notFound()`, a rota não é revelada). O item "Admin" do `AppHeader` só aparece para admins.
+- **API**: `POST /api/admin/convites` exige sessão + admin (403 genérico), valida o código contra `ACCESS_CODES` (`isValidAccessCode`) e envia, sequencialmente e com intervalo de 350 ms (limites do Resend), o e-mail de convite (`conviteEmail` em `src/lib/mailer.ts`, texto puro) para cada `WAITLIST` via `sendTransactionalEmail`. Por convidado entregue, emite o evento `waitlist_invited`. Rate limit `invitesPerAdmin` (3 disparos / 10 min por admin) evita duplo clique.
 
 ## Testes
 

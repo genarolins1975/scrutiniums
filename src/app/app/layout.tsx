@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { nextStepPath } from "@/lib/onboarding";
 import { getSessionUser } from "@/lib/session";
+import { isAdmin } from "@/lib/admin";
 import type { OnboardingStatus } from "@/lib/schema";
 
 /**
@@ -19,7 +20,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen flex-col">
-      <AppHeader userLabel={userLabel} />
+      <AppHeader userLabel={userLabel} showAdmin={isAdmin(user)} />
       <main className="mx-auto w-full max-w-page flex-1 px-6 py-10">{children}</main>
       <footer className="border-t border-linha">
         <div className="mx-auto max-w-page px-6 py-5">

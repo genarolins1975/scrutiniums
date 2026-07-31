@@ -30,6 +30,28 @@ export async function middleware(request: NextRequest) {
     url.searchParams.set("de", pathname.startsWith("/obs/") ? "/observatorio" : pathname);
     return NextResponse.redirect(url);
   }
+
+  // /app/admin só existe para administradores (ADMIN_EMAILS). O middleware
+  // roda no edge e não acessa o banco, então consulta a rota interna
+  // /api/admin/eu com o cookie da requisição; não-admin recebe rewrite
+  // para um caminho inexistente → 404 real (com streaming/loading.tsx, o
+  // notFound() da página chegaria com status 200). A página ainda chama
+  // notFound() como defesa em profundidade.
+  if (pathname === "/app/admin" || pathname.startsWith("/app/admin/")) {
+    let admin = false;
+    try {
+      const res = await fetch(new URL("/api/admin/eu", request.url), {
+        headers: { cookie: request.headers.get("cookie") ?? "" },
+      });
+      admin = res.ok;
+    } catch {
+      admin = false;
+    }
+    if (!admin) {
+      return NextResponse.rewrite(new URL("/nao-encontrado-404", request.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
