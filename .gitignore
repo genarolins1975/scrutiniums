@@ -6,3 +6,4 @@ node_modules/
 
 # Dados do pipeline (gerados em CI; não versionados na raiz)
 /data/
+*.tsbuildinfo
