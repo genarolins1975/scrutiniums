@@ -181,7 +181,7 @@ describe("fraudes: integração com a plataforma", () => {
   it("view registrada na SPA e pipeline copia todos os curados", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain('fraudes: "/financial-fraud"');
-    expect(app).toContain('fraudes: ["fraudes", "pulse"]');
+    expect(app).toContain('fraudes: ["fraudes"]'); // pulse agora é CORE_FILES
     expect(app).toContain("fraudes: renderFraudes");
     expect(app).toContain("function renderFraudes()");
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");

@@ -6,5 +6,11 @@ node_modules/
 
 # Dados do pipeline (gerados em CI; não versionados na raiz)
 /data/
+
+# Gerado no prebuild (scripts/minify-obs.mjs) a partir do app.js canônico
+/public/obs/app.min.js
 *.tsbuildinfo
 __pycache__/
+
+# Banco local de smoke tests
+.pglite-smoke/

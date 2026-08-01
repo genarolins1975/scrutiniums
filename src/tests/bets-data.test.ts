@@ -188,7 +188,7 @@ describe("bets: integração com a plataforma", () => {
   it("view registrada na SPA (rota, dados, render, navegação)", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain('bets: "/bets-financial-risk"');
-    expect(app).toContain('bets: ["bets", "pulse"]');
+    expect(app).toContain('bets: ["bets"]'); // pulse agora é CORE_FILES
     expect(app).toContain("bets: renderBets");
     expect(app).toContain("function renderBets()");
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");

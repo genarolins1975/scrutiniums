@@ -171,25 +171,31 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.35.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.36.0"; // sincronizada com o cache-buster dos assets no index.html
 
-// núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
-const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
-  "overview", "regimes", "npl", "products"];
+// núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
+// badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
+// página (VIEW_DATA) ou por bloco habilitado da Visão geral (OV_BLOCO_DATA).
+const CORE_FILES = ["meta", "pulse", "ibcc", "overview", "alerts"];
 const VIEW_DATA = {
-  antecedentes: ["antecedentes"],
-  sectors: ["exposures"], sector: ["exposures"],
+  pulse: ["regimes"],
+  antecedentes: ["antecedentes", "regimes"],
+  sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index"], inst: ["inst_pages", "institutions", "inst_index"],
-  method: ["method", "lineage"],
+  institutions: ["institutions", "inst_index", "npl"], inst: ["inst_pages", "institutions", "inst_index", "npl"],
+  method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index"],
-  research: ["institutions", "inst_index"],
+  research: ["institutions", "inst_index", "antecedentes", "regimes"],
   market: ["market"],
   leading: ["leading"],
   trends: ["trends"],
   panorama: ["panorama"],
-  bets: ["bets", "pulse"],
-  fraudes: ["fraudes", "pulse"],
+  openfinance: ["openfinance"],
+  scenarios: ["scenario"],
+  alerts: ["sectors", "scenario", "quality"],
+  products: ["products"], product: ["products"],
+  bets: ["bets"],
+  fraudes: ["fraudes"],
   juros: ["juros"],
 };
 async function fetchGold(f) {
@@ -1776,6 +1782,15 @@ const OV_BLOCOS = [
   ["saude", "Saúde dos dados", false],
   ["explore", "Acesso rápido", true],
 ];
+// arquivos gold que cada bloco opcional exige além do núcleo: só são baixados
+// quando o usuário habilita o bloco (o padrão simples não paga esse custo)
+const OV_BLOCO_DATA = {
+  inad: ["npl", "regimes"],
+  prodset: ["products", "sectors", "openfinance"],
+  proj: ["scenario", "npl"],
+  insight: ["npl"],
+  saude: ["quality"],
+};
 let ovPersonalizando = false;
 function ovBlocosCfg() {
   const padrao = Object.fromEntries(OV_BLOCOS.map(([k, , d]) => [k, d]));
@@ -1798,6 +1813,12 @@ function renderOverview() {
   const el = document.getElementById("view-overview");
   const { pulse, alerts, sectors, overview } = state.data;
   if (!pulse || !overview) { el.innerHTML = "<p>Dados não carregados. Rode <code>python3 pipeline/run.py</code>.</p>"; return; }
+  // carga sob demanda por bloco: baixa os gold dos blocos habilitados que ainda
+  // faltam e re-renderiza ao chegar (fetchGold marca null em erro — sem loop)
+  const cfgLazy = ovBlocosCfg();
+  const faltam = [...new Set(OV_BLOCOS.filter(([k]) => cfgLazy[k]).flatMap(([k]) => OV_BLOCO_DATA[k] || []))]
+    .filter(f => state.data[f] === undefined);
+  if (faltam.length) Promise.all(faltam.map(fetchGold)).then(() => { if (currentView() === "overview") renderOverview(); });
   const seg = state.filters.seg;
   const ibcc = seg === "total" ? state.data.ibcc : (state.data.ibcc.segmentos || {})[seg] || state.data.ibcc;
   const pos = seg === "total" ? overview.ibcc_posicao : ibccPositionFrom(ibcc);
@@ -2155,7 +2176,9 @@ function renderOverview() {
     ? `<div class="src" style="margin-top:18px">Seções ocultas nesta página: ${ocultas.join(" · ")} · <a href="javascript:void(0)" onclick="ovTogglePersonalizar()">personalizar</a></div>`
     : "";
   el.innerHTML = pagehead + boasVindas + painelPersonalizar +
-    OV_BLOCOS.filter(([k]) => cfgBlocos[k]).map(([k]) => HTML_BLOCOS[k]).join("\n") +
+    OV_BLOCOS.filter(([k]) => cfgBlocos[k]).map(([k, l]) =>
+      (OV_BLOCO_DATA[k] || []).some(f => state.data[f] === undefined) ? loadingCard(l.toLowerCase()) : HTML_BLOCOS[k]
+    ).join("\n") +
     rodapeOcultas;
 }
 
