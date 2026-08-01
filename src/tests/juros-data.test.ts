@@ -26,7 +26,7 @@ describe("juros.json: estrutura e conceitos", () => {
     expect(J.conceitos.taxa).toMatch(/NÃO é CET/);
     expect(J.conceitos.spread_selic).toMatch(/APROXIMAÇÃO/i);
     const segs = new Set(J.modalidades.map((m: any) => m.segmento));
-    expect([...segs].sort()).toEqual(["PF", "PJ"]);
+    expect(Array.from(segs).sort()).toEqual(["PF", "PJ"]);
   });
 
   it("modalidades centrais presentes (consignado, pessoal, rotativo, capital de giro)", () => {

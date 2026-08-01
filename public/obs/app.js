@@ -171,7 +171,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.34.2"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.35.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -1792,6 +1792,7 @@ window.ovPreset = modo => {
   renderOverview();
 };
 window.ovTogglePersonalizar = () => { ovPersonalizando = !ovPersonalizando; renderOverview(); };
+window.ovDispensarBoasVindas = () => { saveLS("obc_boas_vindas_ok", true); renderOverview(); };
 
 function renderOverview() {
   const el = document.getElementById("view-overview");
@@ -2112,6 +2113,20 @@ function renderOverview() {
       `<span class="chip clickable" onclick="nav('${v}')" tabindex="0" role="link" onkeydown="if(event.key==='Enter')nav('${v}')">${l} →</span>`).join("")}
     ${favs}</div>`;
 
+  // primeiro uso: carta "comece por aqui" (dispensável; nunca volta depois)
+  const boasVindas = !loadLS("obc_boas_vindas_ok", false) ? `
+  <div class="card" style="margin-bottom:18px;border-left:3px solid var(--accent)">
+    <h4 style="display:flex;justify-content:space-between;gap:10px"><span>Comece por aqui</span>
+      <a href="javascript:void(0)" class="src" onclick="ovDispensarBoasVindas()">dispensar</a></h4>
+    <p class="src" style="max-width:900px">Esta página resume as condições de crédito e é personalizável (botão "personalizar página"). Quatro portas de entrada respondem as perguntas mais comuns:</p>
+    <div class="chips" style="margin-top:8px">
+      <span class="chip clickable" onclick="nav('panorama');ovDispensarBoasVindas()" tabindex="0" role="link">Como está o crédito no meu estado? →</span>
+      <span class="chip clickable" onclick="nav('juros');ovDispensarBoasVindas()" tabindex="0" role="link">Qual banco cobra menos em cada modalidade? →</span>
+      <span class="chip clickable" onclick="nav('compare');ovDispensarBoasVindas()" tabindex="0" role="link">Comparar instituições lado a lado →</span>
+      <span class="chip clickable" onclick="nav('leading');ovDispensarBoasVindas()" tabindex="0" role="link">Há sinais de estresse à frente? →</span>
+    </div>
+    <div class="src" style="margin-top:8px">Todo número tem fonte, período e limitações declaradas — <a href="javascript:void(0)" onclick="nav('method')">metodologia completa</a>. Alertas com regra publicada ficam na aba Alertas (com RSS).</div>
+  </div>` : "";
   const cfgBlocos = ovBlocosCfg();
   const HTML_BLOCOS = {
     diagnostico: `<div class="ov-hero">${diagcard}${heroStrip}</div>${segNote}`,
@@ -2139,7 +2154,7 @@ function renderOverview() {
   const rodapeOcultas = ocultas.length && !ovPersonalizando
     ? `<div class="src" style="margin-top:18px">Seções ocultas nesta página: ${ocultas.join(" · ")} · <a href="javascript:void(0)" onclick="ovTogglePersonalizar()">personalizar</a></div>`
     : "";
-  el.innerHTML = pagehead + painelPersonalizar +
+  el.innerHTML = pagehead + boasVindas + painelPersonalizar +
     OV_BLOCOS.filter(([k]) => cfgBlocos[k]).map(([k]) => HTML_BLOCOS[k]).join("\n") +
     rodapeOcultas;
 }

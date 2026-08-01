@@ -34,12 +34,22 @@ const label = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://scrutiniums.com"),
   title: {
     default: "Scrutiniums — Toda a informação relevante para decisões melhores",
     template: "%s · Scrutiniums",
   },
   description:
     "Plataforma gratuita que reúne bases públicas, registros oficiais, dados econômicos e modelos analíticos para transformar informação dispersa em conhecimento útil.",
+  openGraph: {
+    siteName: "Scrutiniums",
+    locale: "pt_BR",
+    type: "website",
+    title: "Scrutiniums — Observatório Brasileiro de Crédito",
+    description:
+      "Crédito, inadimplência, taxas de juros por instituição, riscos emergentes e mercado — dados oficiais com metodologia aberta. Gratuito, o cadastro é a única exigência.",
+  },
+  alternates: { canonical: "/" },
 };
 
 export default function RootLayout({

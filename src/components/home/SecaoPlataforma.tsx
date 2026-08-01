@@ -2,20 +2,34 @@ import { BotaoLink } from "@/components/home/BotaoLink";
 
 const CONTEUDOS = [
   {
-    titulo: "Painéis analíticos",
-    descricao: "Visões consolidadas por tema, com leitura orientada.",
+    titulo: "Panorama do Crédito por estado",
+    descricao:
+      "Mapa e perfis do SCR: carteira, inadimplência arrastada, renda, ocupação e produto em cada UF, com alertas de deterioração por regras publicadas.",
   },
   {
-    titulo: "Séries setoriais",
-    descricao: "Histórico por setor, comparável entre períodos e recortes.",
+    titulo: "Taxas de juros por instituição",
+    descricao:
+      "20 modalidades PF e PJ, cerca de 200 instituições: ranking completo, dispersão, quem é persistentemente mais barato e a carteira associada.",
   },
   {
-    titulo: "Indicadores de risco",
-    descricao: "Sinais construídos com critérios publicados e limitações declaradas.",
+    titulo: "Comparador de instituições",
+    descricao:
+      "Visão executiva de 2 a 10 bancos e cooperativas (IF.data), com grupo comparável por segmento prudencial e sentido econômico declarado em cada métrica.",
   },
   {
-    titulo: "Monitoramento regulatório",
-    descricao: "Normas e publicações oficiais acompanhadas por área.",
+    titulo: "Sinais antecedentes e alertas",
+    descricao:
+      "Subíndices de estresse decompostos, alertas com persistência mínima e relatório diário automático, tudo com regra publicada.",
+  },
+  {
+    titulo: "Riscos emergentes: bets e fraudes",
+    descricao:
+      "Apostas e golpes digitais versus crédito das famílias, com hierarquia de evidência A a E e a honestidade de dizer o que ainda é hipótese.",
+  },
+  {
+    titulo: "Mercado & valor dos bancos listados",
+    descricao:
+      "Retorno total com proventos reinvestidos, drawdown, valuation e resultados das companhias financeiras da B3.",
   },
   {
     titulo: "Glossário e metodologia abertos",
