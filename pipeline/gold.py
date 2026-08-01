@@ -627,3 +627,7 @@ def build_all(con, cfg, fetch_status):
             if fname.endswith(".json"):
                 with open(os.path.join(curated_dir, fname), encoding="utf-8") as f:
                     common.write_gold(fname, json.load(f))
+
+    # ---- Safras de crédito (coortes) ----
+    from pipeline import safras as safras_mod
+    safras_mod.build(con)

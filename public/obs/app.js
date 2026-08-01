@@ -34,7 +34,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", safras: "/credit-vintages" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.31.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.32.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -184,6 +184,7 @@ const VIEW_DATA = {
   panorama: ["panorama"],
   bets: ["bets", "pulse"],
   fraudes: ["fraudes", "pulse"],
+  safras: ["safras"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -4138,9 +4139,104 @@ function renderFraudes() {
   el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + tipos + "<hr class='sep'>" + quem + sub + "<hr class='sep'>" + explorer + "<hr class='sep'>" + mit + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes };
+/* ================= SAFRAS DE CRÉDITO (COORTES) ================= */
+/* A publicação oficial do BCB (Inadimplência Coorte/SCR) está fora do ar:
+   a aba declara o conceito, o status verificado e o caminho de reativação,
+   e exibe o melhor dado REAL disponível (estoque por modalidade PF via
+   SCR.data), sempre com o aviso de que estoque não é safra. Nunca uma
+   curva de coorte sintética. */
+
+window.safrasCSV = () => {
+  const S = state.data.safras;
+  if (!S) return;
+  const rows = [["modalidade", "referencia", "saldo_R$", "inadimplencia_arrastada_pct", "atraso_15_90_pct"]];
+  Object.values(S.proxy_series.series).forEach(sr =>
+    sr.obs.forEach(o => rows.push([sr.nome, o.ref.slice(0, 7), o.saldo, o.inad, o.atraso15_90])));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("safras_proxy_estoque_" + (S.gerado_em || "").slice(0, 10) + ".csv", "﻿" + csv, "text/csv");
+};
+
+const SAFRAS_CORES = ["#b45309", "#1d4e89", "#0e7c7b", "#6b46a3", "#64748b"];
+
+function renderSafras() {
+  const el = document.getElementById("view-safras");
+  const S = state.data.safras;
+  if (!S) { el.innerHTML = loadingCard("safras de crédito"); return; }
+  const C = S.conceito, F = C.fonte_oficial, ST = C.status_dado, PX = S.proxy_series;
+  const seriesArr = Object.values(PX.series);
+
+  const head = `
+  <div class="pagehead">
+    <div class="ph-left">
+      <h2>Safras de Crédito <span class="chip" style="vertical-align:middle">coortes</span></h2>
+      <p class="viewdesc">Como cada geração de contratos envelhece: a inadimplência por safra de contratação separa a qualidade da originação do efeito do ciclo. Inclui crédito pessoal e consignado.</p>
+      <div class="ph-meta">Fonte oficial: ${F.nome} · dado aberto verificado em ${fmt.d(ST.verificado_em)} · proxy de estoque: SCR.data (${PX.periodo || "–"}) · <a href="${F.notas_metodologicas}" target="_blank" rel="noopener">notas metodológicas do BC</a></div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn ghost small" onclick="safrasCSV()">baixar dados (CSV)</button>
+      <a class="btn ghost small" href="${F.exemplos_graficos}" target="_blank" rel="noopener">exemplos oficiais (PDF)</a>
+    </div>
+  </div>`;
+
+  const conceito = `
+  <div class="card">
+    <h3>O que é análise de safra</h3>
+    <p style="font-size:13.5px;max-width:1000px">${C.o_que_e}</p>
+    <div class="grid g3" style="margin-top:10px">
+      <div><h5>Métricas oficiais do BC</h5><ul style="font-size:12.5px;margin:4px 0 0 16px">${F.metricas.map(m => `<li>${m}</li>`).join("")}</ul></div>
+      <div><h5>Modalidades cobertas</h5><ul style="font-size:12.5px;margin:4px 0 0 16px">${F.modalidades.map(m => `<li>${m}</li>`).join("")}</ul></div>
+      <div><h5>Desenho</h5><div class="src" style="font-size:12.5px">Horizonte: ${F.horizonte}. Frequência original: ${F.frequencia_original}, desde ${fmt.d(F.lancamento)}. Coorte = todas as operações individualizadas cujo mês de contratação coincide com a data-base (documento 3040 do SCR).</div></div>
+    </div>
+  </div>`;
+
+  const status = `
+  <div class="card">
+    <h3>Status do dado oficial ${badge("observado", "verificação documentada da disponibilidade nas fontes públicas")}</h3>
+    <div class="note warn"><b>Publicação retirada do ar.</b> ${ST.detalhe}</div>
+    <p class="src" style="margin-top:8px"><b>Caminho de reativação:</b> ${ST.caminho_reativacao}</p>
+    <p class="src"><b>Política desta aba:</b> ${ST.politica}</p>
+  </div>`;
+
+  const mkChart = (campo, titulo, unidadeDesc) => lineChart({
+    series: seriesArr.map((sr, i) => ({
+      pts: sr.obs.map(o => ({ x: o.ref, y: o[campo] })),
+      label: sr.nome, color: SAFRAS_CORES[i % SAFRAS_CORES.length],
+    })),
+    h: 280, unit: "%", fonte: "BCB SCR.data (agregação nacional PF)",
+    aria: `${titulo} por modalidade PF`, dec: 1,
+  });
+  const ultimo = seriesArr.map(sr => ({ sr, o: sr.obs[sr.obs.length - 1] }));
+  const legenda = seriesArr.map((sr, i) => `<span class="chip"><span style="display:inline-block;width:10px;height:10px;background:${SAFRAS_CORES[i % SAFRAS_CORES.length]};margin-right:5px;vertical-align:middle"></span>${sr.nome}</span>`).join(" ");
+
+  const proxy = `
+  ${sechead("Enquanto o dado de safra não volta: o estoque por modalidade", "dado real do SCR.data — todas as safras misturadas em cada mês")}
+  <div class="note warn"><b>Estoque não é safra.</b> ${C.proxy.por_que_nao_e_safra}</div>
+  <div class="chips" style="margin:10px 0">${legenda}</div>
+  <div class="ov-2col-eq" style="margin-top:6px">
+    <div class="card"><h4>Inadimplência arrastada do estoque (PF) ${badge("observado")}</h4>
+      ${mkChart("inad", "inadimplência arrastada")}
+      ${chartFooter({ fonte: PX.fonte, periodo: PX.periodo, atualizado: (S.gerado_em || "").slice(0, 10), unidade: "% da carteira", nota: PX.conceitos.inad })}</div>
+    <div class="card"><h4>Atraso 15 a 90 dias do estoque (PF) ${badge("observado")}</h4>
+      ${mkChart("atraso15_90", "atraso 15-90 dias")}
+      ${chartFooter({ fonte: PX.fonte, periodo: PX.periodo, atualizado: (S.gerado_em || "").slice(0, 10), unidade: "% da carteira", nota: PX.conceitos.atraso15_90 })}</div>
+  </div>
+  <div class="card" style="margin-top:14px"><h4>Última data-base — níveis por modalidade</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Modalidade (PF)</th><th style="text-align:right">Carteira</th><th style="text-align:right">Inadimplência arrastada</th><th style="text-align:right">Atraso 15-90d</th></tr></thead><tbody>
+    ${ultimo.map(({ sr, o }) => `<tr><td><b>${sr.nome}</b><div class="src">${sr.descricao}</div></td>
+      <td style="text-align:right">${fmt.money(o.saldo)}</td>
+      <td style="text-align:right"><b>${fmt.n(o.inad, 2)}%</b></td>
+      <td style="text-align:right">${fmt.n(o.atraso15_90, 2)}%</td></tr>`).join("")}
+    </tbody></table></div>
+    ${leitura([["Leitura", "a distância entre consignado e crédito pessoal reflete a garantia da folha; a leitura de estoque, porém, não diz se as ORIGINAÇÕES recentes estão melhores ou piores — essa é exatamente a pergunta que só a curva por safra responde"],
+      ["Cuidado", "carteiras em crescimento acelerado diluem a inadimplência do estoque sem que a qualidade da concessão tenha melhorado"]])}
+  </div>`;
+
+  el.innerHTML = head + conceito + status + "<hr class='sep'>" + proxy;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, safras: renderSafras };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", safras: "Safras de Crédito" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
