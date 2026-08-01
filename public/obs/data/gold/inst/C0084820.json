@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -1030,7 +1030,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "MERCADO PAGO",
-  "chamadas_semana": 6592932395.0,
+  "chamadas_semana": 5904437123.0,
   "share_pct": 10.4,
   "familias_api": 34,
   "papeis": [
@@ -1039,10 +1039,10 @@
    "PAGTO"
   ],
   "dimensoes": {
-   "escala_chamadas": 41.7,
+   "escala_chamadas": 41.5,
    "cobertura_funcional": 60.7
   },
-  "maturidade_estrutural": 51.2,
+  "maturidade_estrutural": 51.1,
   "match_diretorio": true
  },
  "reclamacoes": [

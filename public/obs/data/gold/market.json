@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:07+00:00",
+ "gerado_em": "2026-08-01T11:24:55+00:00",
  "aviso": "Plataforma acadêmica e analítica. Nada nesta área constitui recomendação de compra ou venda de valores mobiliários, rating ou aconselhamento de investimento.",
  "piloto": false,
  "universo": "bancos e holdings bancárias listados na B3 (18 companhias validadas em 2026-07; BDRs excluídos — demonstrações fora do padrão CVM DFP)",
@@ -194,7 +194,7 @@
     },
     "2026": {
      "DIV": 0.0,
-     "JCP": 0.8198519999999999
+     "JCP": 0.838034
     }
    }
   },
@@ -550,7 +550,7 @@
     },
     "2026": {
      "DIV": 0.0,
-     "JCP": 0.41118737299999997
+     "JCP": 0.7770571209999999
     }
    }
   },
@@ -688,7 +688,7 @@
     },
     "2026": {
      "DIV": 0.0,
-     "JCP": 1.23668218418
+     "JCP": 1.77137612816
     }
    }
   },
@@ -1258,7 +1258,7 @@
     },
     "2026": {
      "DIV": 0.0272395,
-     "JCP": 0.3255164
+     "JCP": 0.5970443999999999
     }
    }
   },
@@ -1752,7 +1752,7 @@
     },
     "2026": {
      "DIV": 0.0,
-     "JCP": 0.24713984569
+     "JCP": 0.34882166341
     }
    }
   },
@@ -1964,8 +1964,8 @@
      "period_end": "2024-12-31",
      "kind": "anual",
      "stmt": "consolidado",
-     "lucro": 311019000.0,
-     "lucro_ctrl": 311019000.0,
+     "lucro": null,
+     "lucro_ctrl": null,
      "pl": 3535542000.0
     }
    ],
@@ -16931,25 +16931,25 @@
     166.92,
     166.28,
     166.46,
-    166.83,
-    167.75,
-    164.62,
-    163.7,
-    162.51,
-    165.36,
-    173.26,
-    172.43,
-    171.15,
-    170.87,
-    169.12,
-    168.02,
-    169.12,
-    170.41,
-    174.27,
-    171.97,
-    169.77,
-    171.88,
-    172.43
+    167.0,
+    167.92,
+    167.99,
+    167.05,
+    165.83,
+    168.74,
+    176.8,
+    175.95,
+    174.64,
+    174.36,
+    172.58,
+    171.45,
+    172.58,
+    173.89,
+    177.83,
+    175.48,
+    173.23,
+    175.39,
+    175.95
    ],
    "drawdown": [
     0.0,
@@ -17824,25 +17824,25 @@
     -14.87,
     -15.19,
     -15.1,
-    -14.91,
-    -14.45,
-    -16.04,
-    -16.51,
-    -17.12,
-    -15.66,
-    -11.63,
-    -12.06,
-    -12.71,
-    -12.85,
-    -13.74,
-    -14.3,
-    -13.74,
-    -13.09,
-    -11.12,
-    -12.29,
-    -13.41,
-    -12.34,
-    -12.06
+    -14.82,
+    -14.36,
+    -14.32,
+    -14.8,
+    -15.42,
+    -13.94,
+    -9.83,
+    -10.26,
+    -10.93,
+    -11.07,
+    -11.98,
+    -12.55,
+    -11.98,
+    -11.31,
+    -9.3,
+    -10.5,
+    -11.65,
+    -10.55,
+    -10.26
    ],
    "vol21": [
     null,
@@ -18719,23 +18719,23 @@
     18.7,
     18.1,
     16.1,
-    17.6,
-    16.7,
-    16.5,
-    17.0,
-    21.8,
+    16.1,
+    15.0,
+    14.9,
+    15.2,
+    20.3,
+    20.5,
+    20.4,
+    20.5,
+    20.8,
+    20.9,
+    20.9,
+    20.7,
+    21.7,
     21.9,
-    21.8,
-    21.9,
-    22.1,
-    22.2,
+    22.6,
     22.3,
-    22.1,
-    23.0,
-    23.3,
-    23.8,
-    23.5,
-    23.2
+    22.0
    ]
   },
   "SANB11": {
@@ -22305,11 +22305,11 @@
     120.04,
     121.67,
     122.57,
-    121.4,
-    119.95,
-    118.65,
-    123.24,
-    124.64
+    123.8,
+    122.33,
+    121.0,
+    125.69,
+    127.11
    ],
    "drawdown": [
     0.0,
@@ -23198,11 +23198,11 @@
     -27.67,
     -26.69,
     -26.15,
-    -26.86,
-    -27.73,
-    -28.51,
-    -25.74,
-    -24.9
+    -25.41,
+    -26.29,
+    -27.09,
+    -24.27,
+    -23.41
    ],
    "vol21": [
     null,
@@ -24092,10 +24092,10 @@
     26.3,
     26.4,
     26.5,
-    26.4,
-    26.6,
-    29.6,
-    29.2
+    26.3,
+    26.5,
+    29.4,
+    29.1
    ]
   },
   "BPAC11": {
@@ -49100,16 +49100,16 @@
     1059.26,
     1033.77,
     1050.76,
-    1002.34,
-    956.47,
-    965.82,
-    997.25,
-    986.21,
-    1055.01,
-    1111.92,
-    1111.92,
-    1158.64,
-    1153.55
+    1025.41,
+    978.48,
+    988.04,
+    1020.2,
+    1008.9,
+    1079.29,
+    1137.51,
+    1137.51,
+    1185.3,
+    1180.09
    ],
    "drawdown": [
     0.0,
@@ -49993,16 +49993,16 @@
     -22.4,
     -24.27,
     -23.02,
-    -26.57,
-    -29.93,
-    -29.25,
-    -26.94,
-    -27.75,
-    -22.71,
-    -18.54,
-    -18.54,
-    -15.12,
-    -15.49
+    -24.88,
+    -28.32,
+    -27.62,
+    -25.26,
+    -26.09,
+    -20.93,
+    -16.67,
+    -16.67,
+    -13.17,
+    -13.55
    ],
    "vol21": [
     null,
@@ -50886,16 +50886,16 @@
     33.5,
     33.4,
     33.6,
-    36.7,
-    39.1,
-    36.8,
-    38.8,
-    38.6,
-    46.1,
-    49.3,
-    46.8,
-    47.5,
-    47.3
+    34.3,
+    36.9,
+    34.6,
+    36.5,
+    36.3,
+    43.9,
+    47.1,
+    44.3,
+    44.8,
+    44.6
    ]
   },
   "BAZA3": {
@@ -62165,25 +62165,25 @@
     216.01,
     220.29,
     222.06,
-    221.81,
-    220.55,
-    217.77,
-    217.77,
-    217.02,
-    216.51,
-    218.78,
-    220.29,
-    219.29,
-    222.06,
-    220.55,
+    222.53,
+    223.11,
+    220.31,
+    220.31,
     219.54,
-    219.79,
-    221.3,
-    221.3,
-    220.55,
-    218.28,
-    220.04,
-    221.81
+    219.03,
+    221.33,
+    222.86,
+    221.84,
+    224.64,
+    223.11,
+    222.09,
+    222.35,
+    223.88,
+    223.88,
+    223.11,
+    220.82,
+    222.6,
+    224.39
    ],
    "drawdown": [
     0.0,
@@ -63058,25 +63058,25 @@
     -7.25,
     -5.41,
     -4.65,
-    -4.76,
-    -5.3,
-    -6.49,
-    -6.49,
-    -6.82,
-    -7.03,
-    -6.06,
-    -5.41,
-    -5.84,
-    -4.65,
-    -5.3,
+    -4.45,
+    -4.2,
+    -5.4,
+    -5.4,
     -5.73,
-    -5.63,
-    -4.98,
-    -4.98,
-    -5.3,
-    -6.27,
-    -5.52,
-    -4.76
+    -5.95,
+    -4.97,
+    -4.31,
+    -4.75,
+    -3.54,
+    -4.2,
+    -4.64,
+    -4.53,
+    -3.87,
+    -3.87,
+    -4.2,
+    -5.18,
+    -4.42,
+    -3.65
    ],
    "vol21": [
     null,
@@ -63952,24 +63952,24 @@
     15.0,
     15.3,
     15.3,
-    15.3,
-    15.1,
-    14.8,
-    14.8,
-    14.8,
-    14.5,
-    14.5,
-    14.5,
-    14.9,
-    15.1,
     15.2,
-    14.7,
-    14.7,
+    14.9,
     14.6,
-    14.1,
-    12.9,
-    12.9,
-    12.9
+    14.6,
+    14.7,
+    14.3,
+    14.3,
+    14.4,
+    14.7,
+    14.9,
+    15.0,
+    14.5,
+    14.4,
+    14.4,
+    13.9,
+    12.7,
+    12.7,
+    12.6
    ]
   },
   "BMEB4": {
@@ -88379,19 +88379,19 @@
     "desde_inicio": 27.254237288135585
    },
    "total": {
-    "m1": 3.3021463951568464,
-    "m3": -3.890421301309277,
-    "m6": -10.623268983863543,
-    "a12": 29.64951793033872,
-    "a36": 43.68740191557197,
-    "ytd": 5.228275223469825,
-    "desde_inicio": 72.43187997600512
+    "m1": 5.411893504735832,
+    "m3": -1.9275685152037259,
+    "m6": -8.797921626572302,
+    "a12": 32.297359289467195,
+    "a36": 46.62193998136095,
+    "ytd": 7.377359799597349,
+    "desde_inicio": 75.95346856901526
    },
    "drawdown": {
-    "atual": -12.055677330545766,
+    "atual": -10.259584151164724,
     "maximo": -28.545672652861153,
     "data_maximo": "2025-01-10",
-    "vol21_atual": 23.15714393070616
+    "vol21_atual": 21.95774928397725
    }
   },
   "SANB11": {
@@ -88405,19 +88405,19 @@
     "desde_inicio": -0.32420749279512506
    },
    "total": {
-    "m1": 3.169276659209541,
-    "m3": -5.948334466349426,
-    "m6": -23.16133502870973,
-    "a12": 11.158550061789253,
-    "a36": 15.899197087342486,
-    "ytd": -14.800277732454582,
-    "desde_inicio": 24.639548646751308
+    "m1": 5.2161778627151545,
+    "m3": -4.082328678517322,
+    "m6": -21.636838968462722,
+    "a12": 13.36396021168298,
+    "a36": 18.198662719800595,
+    "ytd": -13.109896451369817,
+    "desde_inicio": 27.112424781883703
    },
    "drawdown": {
-    "atual": -24.90301143472564,
+    "atual": -23.4130706185109,
     "maximo": -30.521036961654392,
     "data_maximo": "2026-07-08",
-    "vol21_atual": 29.235515843335953
+    "vol21_atual": 29.088514350083322
    }
   },
   "BPAC11": {
@@ -88443,7 +88443,7 @@
     "atual": -13.211066210755384,
     "maximo": -28.92852817711119,
     "data_maximo": "2025-01-03",
-    "vol21_atual": 31.907708259323762
+    "vol21_atual": 31.90770825932376
    }
   },
   "ABCB4": {
@@ -88469,7 +88469,7 @@
     "atual": -10.830768549476455,
     "maximo": -21.49853085210578,
     "data_maximo": "2023-05-02",
-    "vol21_atual": 23.508588961376418
+    "vol21_atual": 23.508588961376415
    }
   },
   "BRSR6": {
@@ -88535,19 +88535,19 @@
     "desde_inicio": 738.271604938275
    },
    "total": {
-    "m1": 14.213624894869636,
-    "m3": -0.875912408759072,
-    "m6": -7.018911444332576,
-    "a12": 138.5482065974519,
-    "a36": 394.4929472112162,
-    "ytd": 5.750003481775856,
-    "desde_inicio": 1053.5460630902621
+    "m1": 16.841777194908158,
+    "m3": 1.4050168501794635,
+    "m6": -4.879337799133965,
+    "a12": 144.03740299075642,
+    "a36": 405.871648988366,
+    "ytd": 8.183400680538554,
+    "desde_inicio": 1080.0901355833787
    },
    "drawdown": {
-    "atual": -15.494710640945808,
-    "maximo": -29.931549471064045,
+    "atual": -13.550172318141962,
+    "maximo": -28.31921504435041,
     "data_maximo": "2026-07-16",
-    "vol21_atual": 47.304791556660355
+    "vol21_atual": 44.64432740221941
    }
   },
   "BAZA3": {
@@ -88613,19 +88613,19 @@
     "desde_inicio": 69.55684007707134
    },
    "total": {
-    "m1": 2.6837806301050815,
-    "m3": -2.1286649134893976,
-    "m6": 10.715959729162062,
-    "a12": 13.583106278131929,
-    "a36": 18.158797314088957,
-    "ytd": 11.242420788526486,
-    "desde_inicio": 121.80591302826716
+    "m1": 3.8779251608844545,
+    "m3": -0.9904859450441283,
+    "m6": 12.003513196411486,
+    "a12": 14.904002765568025,
+    "a36": 19.53290606534701,
+    "ytd": 12.536096650090279,
+    "desde_inicio": 124.38536926090589
    },
    "drawdown": {
-    "atual": -4.759614781406363,
+    "atual": -3.6520320217902635,
     "maximo": -14.84274322473893,
     "data_maximo": "2025-11-14",
-    "vol21_atual": 12.923875273785178
+    "vol21_atual": 12.63799793867271
    }
   },
   "BMEB4": {
@@ -89071,6 +89071,11 @@
     "ex_ref": "2026-06-30",
     "div": 0.0,
     "jcp": 0.018182
+   },
+   {
+    "ex_ref": "2026-07-31",
+    "div": 0.0,
+    "jcp": 0.018182
    }
   ],
   "BBAS3": [
@@ -89455,6 +89460,16 @@
     "ex_ref": "2026-06-01",
     "div": 0.0,
     "jcp": 0.018975
+   },
+   {
+    "ex_ref": "2026-07-01",
+    "div": 0.0,
+    "jcp": 0.018975
+   },
+   {
+    "ex_ref": "2026-07-03",
+    "div": 0.0,
+    "jcp": 0.346895
    }
   ],
   "SANB11": [
@@ -89532,6 +89547,11 @@
     "ex_ref": "2026-04-20",
     "div": 0.0,
     "jcp": 0.534701
+   },
+   {
+    "ex_ref": "2026-07-21",
+    "div": 0.0,
+    "jcp": 0.534694
    }
   ],
   "BPAC11": [
@@ -89862,6 +89882,11 @@
     "ex_ref": "2026-04-20",
     "div": 0.0,
     "jcp": 0.223044
+   },
+   {
+    "ex_ref": "2026-07-14",
+    "div": 0.0,
+    "jcp": 0.271528
    }
   ],
   "BAZA3": [
@@ -90168,6 +90193,16 @@
     "ex_ref": "2026-06-01",
     "div": 0.0,
     "jcp": 0.028777
+   },
+   {
+    "ex_ref": "2026-07-01",
+    "div": 0.0,
+    "jcp": 0.028777
+   },
+   {
+    "ex_ref": "2026-07-02",
+    "div": 0.0,
+    "jcp": 0.072905
    }
   ],
   "BMEB4": [
@@ -90454,8 +90489,8 @@
    "payout": 116.32760710402525,
    "retencao": -16.327607104025248,
    "g_sustentavel": -3.356895553512057,
-   "prov_12m_por_acao": 3.5277,
-   "yield_12m": 8.230650956602892
+   "prov_12m_por_acao": 3.5458,
+   "yield_12m": 8.273072795146991
   },
   {
    "company_id": "bb",
@@ -90483,7 +90518,7 @@
    "retencao": 59.605813149735766,
    "g_sustentavel": 5.295347302623195,
    "prov_12m_por_acao": 0.5507,
-   "yield_12m": 2.643568977340375
+   "yield_12m": 2.6435689773403745
   },
   {
    "company_id": "bradesco",
@@ -90510,8 +90545,8 @@
    "payout": 60.68761386982441,
    "retencao": 39.31238613017559,
    "g_sustentavel": 5.407062549046019,
-   "prov_12m_por_acao": 1.1895,
-   "yield_12m": 6.337414187533298
+   "prov_12m_por_acao": 1.5554,
+   "yield_12m": 8.286640335641984
   },
   {
    "company_id": "santander",
@@ -90538,8 +90573,8 @@
    "payout": 54.20799907721891,
    "retencao": 45.79200092278109,
    "g_sustentavel": 4.819370560165866,
-   "prov_12m_por_acao": 1.7726,
-   "yield_12m": 6.406056402674376
+   "prov_12m_por_acao": 2.3072,
+   "yield_12m": 8.338452297072642
   },
   {
    "company_id": "btg",
@@ -90623,7 +90658,7 @@
    "retencao": 39.16452605716167,
    "g_sustentavel": 6.136891965513338,
    "prov_12m_por_acao": 1.5868,
-   "yield_12m": 11.213900918727914
+   "yield_12m": 11.213900918727916
   },
   {
    "company_id": "bmg",
@@ -90651,7 +90686,7 @@
    "retencao": 38.803798374365364,
    "g_sustentavel": 4.969764725040977,
    "prov_12m_por_acao": 0.447,
-   "yield_12m": 8.402255639097742
+   "yield_12m": 8.402255639097744
   },
   {
    "company_id": "pine",
@@ -90678,8 +90713,8 @@
    "payout": 38.28283011342323,
    "retencao": 61.71716988657677,
    "g_sustentavel": 21.30022990958134,
-   "prov_12m_por_acao": 0.7088,
-   "yield_12m": 5.2194418262150215
+   "prov_12m_por_acao": 0.9803,
+   "yield_12m": 7.218911634756996
   },
   {
    "company_id": "amazonia",
@@ -90762,8 +90797,8 @@
    "payout": 72.76813375413363,
    "retencao": 27.23186624586637,
    "g_sustentavel": 3.9084064265732685,
-   "prov_12m_por_acao": 0.6733,
-   "yield_12m": 7.650902565909087
+   "prov_12m_por_acao": 0.775,
+   "yield_12m": 8.806377767272727
   },
   {
    "company_id": "mercantil",
@@ -90805,17 +90840,14 @@
     "preferred": 166059947.0,
     "total": 486181087.0
    },
-   "lucro_ref": 311019000.0,
+   "lucro_ref": null,
    "exercicio_ref": "2024",
    "stmt": "consolidado",
-   "pl_ratio": 4.611403826293571,
-   "lpa": 0.6397184265623233,
+   "pl_ratio": null,
+   "lpa": null,
    "pvp": 0.40566176463184433,
    "vpa": 7.272068154308932,
    "pl_base": "2024-12-31",
-   "dist_exercicio": 37260252.46175404,
-   "payout": 11.98005667234286,
-   "retencao": 88.01994332765715,
    "prov_12m_por_acao": 0.3203,
    "yield_12m": 10.856318847457628
   },
@@ -90845,7 +90877,7 @@
    "retencao": 31.757243100227,
    "g_sustentavel": 5.591448019467126,
    "prov_12m_por_acao": 3.6505,
-   "yield_12m": 11.197736107361962
+   "yield_12m": 11.197736107361964
   },
   {
    "company_id": "brpartners",
@@ -90873,7 +90905,7 @@
    "retencao": -11.548902137965314,
    "g_sustentavel": -2.546654353455661,
    "prov_12m_por_acao": 1.56,
-   "yield_12m": 10.916724982505247
+   "yield_12m": 10.916724982505249
   },
   {
    "company_id": "alfa",
@@ -91045,7 +91077,752 @@
   ],
   "nota": "média igual-ponderada dos retornos totais diários dos 3 pilotos (rebalanceamento diário) — referência interna; excesso vs. Ibovespa INDISPONÍVEL (série pública oficial descontinuada em 2019)."
  },
- "pontes": {},
+ "pontes": {
+  "itau": {
+   "lucro_ini": 42128000000.0,
+   "lucro_fim": 45849000000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 3208000000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": 0.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": -74000000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": 0.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": 240000000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -1124000000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": 1027000000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 0.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": 444000000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": 444000000.0,
+   "decomposicao_fecha": true,
+   "frase": "Margem financeira (ex-provisões) foi o principal fator positivo (+R$ 3.2 bi), parcialmente compensado por tributárias (R$ -1.1 bi).",
+   "conceitos": {
+    "lucro": {
+     "2024": 42128000000.0,
+     "2025": 45849000000.0
+    },
+    "margem": {
+     "2024": 135739000000.0,
+     "2025": 138947000000.0
+    },
+    "pdd": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "servicos": {
+     "2024": 47071000000.0,
+     "2025": 46997000000.0
+    },
+    "pessoal": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "admin": {
+     "2024": -79416000000.0,
+     "2025": -79176000000.0
+    },
+    "tributarias": {
+     "2024": -9814000000.0,
+     "2025": -10938000000.0
+    },
+    "impostos": {
+     "2024": -5428000000.0,
+     "2025": -4401000000.0
+    },
+    "participacoes": {
+     "2024": 0.0,
+     "2025": 0.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "btg": {
+   "lucro_ini": 11080445000.0,
+   "lucro_fim": 16663803000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 14671933000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": 0.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": 1644554000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": -1402093000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": 776699000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -3263092000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": -885250000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 0.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": -5959393000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": -5959393000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 11080445000.0,
+     "2025": 16663803000.0
+    },
+    "margem": {
+     "2024": 13473884000.0,
+     "2025": 28145817000.0
+    },
+    "pdd": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "servicos": {
+     "2024": 11461869000.0,
+     "2025": 13106423000.0
+    },
+    "pessoal": {
+     "2024": -6505203000.0,
+     "2025": -7907296000.0
+    },
+    "admin": {
+     "2024": -11628178000.0,
+     "2025": -10851479000.0
+    },
+    "tributarias": {
+     "2024": -3052752000.0,
+     "2025": -6315844000.0
+    },
+    "impostos": {
+     "2024": -1742627000.0,
+     "2025": -2627877000.0
+    },
+    "participacoes": {
+     "2024": 0.0,
+     "2025": 0.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "abc": {
+   "lucro_ini": 971274000.0,
+   "lucro_fim": 1002000000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 68537000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": 0.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": 19419000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": -13914000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": -19803000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -57469000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": -510000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 682000.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": 33784000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": 33784000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 971274000.0,
+     "2025": 1002000000.0
+    },
+    "margem": {
+     "2024": 1586899000.0,
+     "2025": 1655436000.0
+    },
+    "pdd": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "servicos": {
+     "2024": 254787000.0,
+     "2025": 274206000.0
+    },
+    "pessoal": {
+     "2024": -473743000.0,
+     "2025": -487657000.0
+    },
+    "admin": {
+     "2024": -340133000.0,
+     "2025": -359936000.0
+    },
+    "tributarias": {
+     "2024": -70828000.0,
+     "2025": -128297000.0
+    },
+    "impostos": {
+     "2024": 50627000.0,
+     "2025": 50117000.0
+    },
+    "participacoes": {
+     "2024": -247794000.0,
+     "2025": -247112000.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "bmg": {
+   "lucro_ini": 279349000.0,
+   "lucro_fim": 587304000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": -2093856000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": 0.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": -22308000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": 96665000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": -204406000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -50113000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": 61028000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 0.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": 2520945000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": 2520945000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 279349000.0,
+     "2025": 587304000.0
+    },
+    "margem": {
+     "2024": 4713709000.0,
+     "2025": 2619853000.0
+    },
+    "pdd": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "servicos": {
+     "2024": 173042000.0,
+     "2025": 150734000.0
+    },
+    "pessoal": {
+     "2024": -554734000.0,
+     "2025": -458069000.0
+    },
+    "admin": {
+     "2024": -1141464000.0,
+     "2025": -1345870000.0
+    },
+    "tributarias": {
+     "2024": -194117000.0,
+     "2025": -244230000.0
+    },
+    "impostos": {
+     "2024": 157428000.0,
+     "2025": 218456000.0
+    },
+    "participacoes": {
+     "2024": 0.0,
+     "2025": 0.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "amazonia": {
+   "lucro_ini": 1132027000.0,
+   "lucro_fim": 1105418000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 296270000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": -318014000.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": 46427000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": -119449000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": -342774000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -19360000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": 332761000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 15187000.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": 82343000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": 82343000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 1132027000.0,
+     "2025": 1105418000.0
+    },
+    "margem": {
+     "2024": 480244000.0,
+     "2025": 458500000.0
+    },
+    "pdd": {
+     "2024": -1177504000.0,
+     "2025": -1495518000.0
+    },
+    "servicos": {
+     "2024": 807548000.0,
+     "2025": 853975000.0
+    },
+    "pessoal": {
+     "2024": -753816000.0,
+     "2025": -873265000.0
+    },
+    "admin": {
+     "2024": -514908000.0,
+     "2025": -857682000.0
+    },
+    "tributarias": {
+     "2024": -164390000.0,
+     "2025": -183750000.0
+    },
+    "impostos": {
+     "2024": 6069000.0,
+     "2025": 338830000.0
+    },
+    "participacoes": {
+     "2024": -100798000.0,
+     "2025": -85611000.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "nordeste": {
+   "lucro_ini": 2342566000.0,
+   "lucro_fim": 3083510000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 1601799000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": -440918000.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": 282790000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": -253397000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": -309478000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -99654000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": 147072000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": -47481000.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": -139789000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": -139789000.0,
+   "decomposicao_fecha": true,
+   "frase": "Margem financeira (ex-provisões) foi o principal fator positivo (+R$ 1.6 bi), parcialmente compensado por provisões p/ perdas (pdd) (R$ -0.4 bi).",
+   "conceitos": {
+    "lucro": {
+     "2024": 2342566000.0,
+     "2025": 3083510000.0
+    },
+    "margem": {
+     "2024": 3943972000.0,
+     "2025": 5104853000.0
+    },
+    "pdd": {
+     "2024": -437163000.0,
+     "2025": -878081000.0
+    },
+    "servicos": {
+     "2024": 3861193000.0,
+     "2025": 4143983000.0
+    },
+    "pessoal": {
+     "2024": -2916922000.0,
+     "2025": -3170319000.0
+    },
+    "admin": {
+     "2024": -2369026000.0,
+     "2025": -2678504000.0
+    },
+    "tributarias": {
+     "2024": -590203000.0,
+     "2025": -689857000.0
+    },
+    "impostos": {
+     "2024": -1669425000.0,
+     "2025": -1522353000.0
+    },
+    "participacoes": {
+     "2024": -250604000.0,
+     "2025": -298085000.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "brpartners": {
+   "lucro_ini": 193670000.0,
+   "lucro_fim": 175073000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": 0.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": 0.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": 0.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": 17374000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": 42162000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": 3642000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": -11818000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 0.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": -69957000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": -69957000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 193670000.0,
+     "2025": 175073000.0
+    },
+    "margem": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "pdd": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "servicos": {
+     "2024": 0.0,
+     "2025": 0.0
+    },
+    "pessoal": {
+     "2024": -143901000.0,
+     "2025": -126527000.0
+    },
+    "admin": {
+     "2024": -340891000.0,
+     "2025": -298729000.0
+    },
+    "tributarias": {
+     "2024": -45052000.0,
+     "2025": -41410000.0
+    },
+    "impostos": {
+     "2024": -45760000.0,
+     "2025": -57578000.0
+    },
+    "participacoes": {
+     "2024": 0.0,
+     "2025": 0.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  },
+  "bmi": {
+   "lucro_ini": 7187000.0,
+   "lucro_fim": 10396000.0,
+   "passos": [
+    {
+     "label": "Margem financeira (ex-provisões)",
+     "v": -8986000.0,
+     "expl": "resultado bruto de intermediação antes da despesa de provisão"
+    },
+    {
+     "label": "Provisões p/ perdas (PDD)",
+     "v": -4341000.0,
+     "expl": "despesa de provisão — variação negativa reduz o lucro"
+    },
+    {
+     "label": "Receitas de serviços",
+     "v": -1213000.0,
+     "expl": "prestação de serviços e tarifas"
+    },
+    {
+     "label": "Pessoal",
+     "v": -862000.0,
+     "expl": "despesas de pessoal"
+    },
+    {
+     "label": "Administrativas",
+     "v": -649000.0,
+     "expl": "outras despesas administrativas"
+    },
+    {
+     "label": "Tributárias",
+     "v": -2886000.0,
+     "expl": "despesas tributárias"
+    },
+    {
+     "label": "IR/CSLL",
+     "v": 4180000.0,
+     "expl": "imposto de renda e contribuição social"
+    },
+    {
+     "label": "Participações",
+     "v": 0.0,
+     "expl": "participações nos lucros e estatutárias"
+    },
+    {
+     "label": "Outros (não decompostos)",
+     "v": 17966000.0,
+     "expl": "componentes sem linha identificável no plano da companhia (tesouraria, outras operacionais, extraordinários)"
+    }
+   ],
+   "residuo": 17966000.0,
+   "decomposicao_fecha": false,
+   "frase": null,
+   "conceitos": {
+    "lucro": {
+     "2024": 7187000.0,
+     "2025": 10396000.0
+    },
+    "margem": {
+     "2024": 17972000.0,
+     "2025": 4645000.0
+    },
+    "pdd": {
+     "2024": -14000.0,
+     "2025": -4355000.0
+    },
+    "servicos": {
+     "2024": 3562000.0,
+     "2025": 2349000.0
+    },
+    "pessoal": {
+     "2024": -7897000.0,
+     "2025": -8759000.0
+    },
+    "admin": {
+     "2024": -2349000.0,
+     "2025": -2998000.0
+    },
+    "tributarias": {
+     "2024": -953000.0,
+     "2025": -3839000.0
+    },
+    "impostos": {
+     "2024": -4514000.0,
+     "2025": -334000.0
+    },
+    "participacoes": {
+     "2024": 0.0,
+     "2025": 0.0
+    }
+   },
+   "nota": "componentes por correspondência textual das contas (planos variam entre companhias); 'Outros' fecha a identidade contábil — quando grande demais, a leitura automática é suprimida."
+  }
+ },
  "capital": {
   "itau": {
    "congl": "C0010069",
@@ -91219,8 +91996,8 @@
    "pr_inicial": 5494450271.44,
    "pr_final": 6425800923.51,
    "lucro_acumulado_periodo": 184060185.62,
-   "proventos_periodo": 37260252.46175404,
-   "outros": 784550718.9117547,
+   "proventos_periodo": null,
+   "outros": 747290466.4500006,
    "rwa_inicial": 38159933242.02,
    "rwa_final": 45617509105.13,
    "basileia_inicial": 13.4848144763117,

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -705,7 +705,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "PICPAY",
-  "chamadas_semana": 5705697123.0,
+  "chamadas_semana": 5103230849.0,
   "share_pct": 9.0,
   "familias_api": 32,
   "papeis": [
@@ -714,10 +714,10 @@
    "PAGTO"
   ],
   "dimensoes": {
-   "escala_chamadas": 36.1,
+   "escala_chamadas": 35.9,
    "cobertura_funcional": 57.1
   },
-  "maturidade_estrutural": 46.6,
+  "maturidade_estrutural": 46.5,
   "match_diretorio": true
  },
  "reclamacoes": [
@@ -755,7 +755,7 @@
   }
  ],
  "rj_citacoes": {
-  "casos": 1,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

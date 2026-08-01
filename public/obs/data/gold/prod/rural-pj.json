@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -21,7 +21,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "rural_e_agroindustrial",
   "data_base": "202603",
-  "mercado_total_brl": 87429355507.06001,
+  "mercado_total_brl": 87429355507.06,
   "n_instituicoes": 302,
   "share_segmento_pct": 2.72,
   "crescimento_4t_pct": 24.4,
@@ -30,12 +30,12 @@
   "serie": [
    {
     "anomes": "202503",
-    "total_brl": 70364712958.03001,
+    "total_brl": 70364712958.03,
     "n_inst": 282
    },
    {
     "anomes": "202506",
-    "total_brl": 77392613374.13998,
+    "total_brl": 77392613374.14,
     "n_inst": 281
    },
    {
@@ -50,7 +50,7 @@
    },
    {
     "anomes": "202603",
-    "total_brl": 87429355507.06001,
+    "total_brl": 87429355507.06,
     "n_inst": 302
    }
   ],

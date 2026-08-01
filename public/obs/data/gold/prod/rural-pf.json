@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -40,12 +40,12 @@
    },
    {
     "anomes": "202509",
-    "total_brl": 661097911765.8599,
+    "total_brl": 661097911765.86,
     "n_inst": 434
    },
    {
     "anomes": "202512",
-    "total_brl": 683234151786.1304,
+    "total_brl": 683234151786.13,
     "n_inst": 430
    },
    {

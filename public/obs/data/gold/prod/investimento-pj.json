@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -21,7 +21,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "investimento",
   "data_base": "202603",
-  "mercado_total_brl": 318225389390.35986,
+  "mercado_total_brl": 318225389390.36,
   "n_instituicoes": 624,
   "share_segmento_pct": 9.91,
   "crescimento_4t_pct": 1.6,
@@ -40,17 +40,17 @@
    },
    {
     "anomes": "202509",
-    "total_brl": 315240940770.49005,
+    "total_brl": 315240940770.49,
     "n_inst": 640
    },
    {
     "anomes": "202512",
-    "total_brl": 320968718711.8101,
+    "total_brl": 320968718711.81,
     "n_inst": 627
    },
    {
     "anomes": "202603",
-    "total_brl": 318225389390.35986,
+    "total_brl": 318225389390.36,
     "n_inst": 624
    }
   ],

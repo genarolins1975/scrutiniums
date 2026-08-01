@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-08-01T01:09:52+00:00",
+ "gerado_em": "2026-08-01T11:24:46+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-01T01:09:52+00:00",
+    "atualizado_em": "2026-08-01T11:24:46+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -483,17 +483,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.12,
-      1.26
+      0.16,
+      1.28
      ],
      "impacto_basileia_pp": [
-      -0.51,
-      -0.05
+      -0.52,
+      -0.06
      ],
      "basileia_atual_pct": 14.77,
      "basileia_pos_choque_pct": [
-      14.26,
-      14.72
+      14.25,
+      14.71
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -501,14 +501,14 @@
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 5638645840.0,
+    "chamadas_semana": 5054761964.0,
     "share_pct": 8.9,
     "familias_api": null,
     "papeis": null,
     "dimensoes": {
-     "escala_chamadas": 35.6
+     "escala_chamadas": 35.5
     },
-    "maturidade_estrutural": 35.6,
+    "maturidade_estrutural": 35.5,
     "match_diretorio": false
    },
    "reclamacoes": [
@@ -550,7 +550,7 @@
     }
    ],
    "rj_citacoes": {
-    "casos": 115,
+    "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
    "alertas": [],
@@ -576,7 +576,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.26% e 14.72% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.25% e 14.71% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -584,11 +584,6 @@
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 46.87 (posição 101 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
-    },
-    {
-     "frase": "Citado como credor em 115 processos de RJ/falência com publicação recente (exposição observada em listas de credores; não mede exposição total).",
-     "base": "CNJ/DJEN, janela de 60 dias (observado)",
-     "status": "observado"
     },
     {
      "frase": "No Open Finance, responde por 8.9% das chamadas transacionais.",
@@ -619,7 +614,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-01T01:09:52+00:00",
+    "atualizado_em": "2026-08-01T11:24:46+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1004,7 +999,7 @@
    },
    "score_ref": {
     "score": 58.0,
-    "score_delta": 2.0,
+    "score_delta": 2.1,
     "faixa": "atenção",
     "dimensoes": {
      "capital_basileia": {
@@ -1071,7 +1066,7 @@
      },
      {
       "anomes": "202512",
-      "score": 56.0
+      "score": 55.9
      },
      {
       "anomes": "202603",
@@ -1082,17 +1077,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.12,
-      1.26
+      0.16,
+      1.28
      ],
      "impacto_basileia_pp": [
-      -0.56,
-      -0.05
+      -0.57,
+      -0.07
      ],
      "basileia_atual_pct": 13.55,
      "basileia_pos_choque_pct": [
-      12.99,
-      13.49
+      12.98,
+      13.47
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -1138,7 +1133,7 @@
     }
    ],
    "rj_citacoes": {
-    "casos": 14,
+    "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
    "alertas": [],
@@ -1164,7 +1159,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.99% e 13.49% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.98% e 13.47% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -1172,11 +1167,6 @@
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 60.17 (posição 36 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
-    },
-    {
-     "frase": "Citado como credor em 14 processos de RJ/falência com publicação recente (exposição observada em listas de credores; não mede exposição total).",
-     "base": "CNJ/DJEN, janela de 60 dias (observado)",
-     "status": "observado"
     },
     {
      "frase": "Dados de qualidade de carteira, liquidez regulatória (LCR/NSFR) e eficiência não estão disponíveis nas fontes públicas integradas — nenhuma conclusão é oferecida sobre essas dimensões.",
@@ -1202,7 +1192,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-01T01:09:52+00:00",
+    "atualizado_em": "2026-08-01T11:24:46+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -1633,17 +1623,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.12,
-      1.26
+      0.16,
+      1.28
      ],
      "impacto_basileia_pp": [
-      -0.65,
-      -0.06
+      -0.66,
+      -0.08
      ],
      "basileia_atual_pct": 12.82,
      "basileia_pos_choque_pct": [
-      12.17,
-      12.75
+      12.15,
+      12.73
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -1689,7 +1679,7 @@
     }
    ],
    "rj_citacoes": {
-    "casos": 20,
+    "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
    "alertas": [],
@@ -1715,7 +1705,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.17% e 12.75% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.15% e 12.73% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -1723,11 +1713,6 @@
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 243.71 (posição 186 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
-    },
-    {
-     "frase": "Citado como credor em 20 processos de RJ/falência com publicação recente (exposição observada em listas de credores; não mede exposição total).",
-     "base": "CNJ/DJEN, janela de 60 dias (observado)",
-     "status": "observado"
     },
     {
      "frase": "Dados de qualidade de carteira, liquidez regulatória (LCR/NSFR) e eficiência não estão disponíveis nas fontes públicas integradas — nenhuma conclusão é oferecida sobre essas dimensões.",

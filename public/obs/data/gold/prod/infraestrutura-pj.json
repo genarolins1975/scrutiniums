@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -21,7 +21,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "financiamento_de_infraestrutura_desenvolvimento_",
   "data_base": "202603",
-  "mercado_total_brl": 674148230845.9302,
+  "mercado_total_brl": 674148230845.9299,
   "n_instituicoes": 202,
   "share_segmento_pct": 21.0,
   "crescimento_4t_pct": 9.47,
@@ -35,22 +35,22 @@
    },
    {
     "anomes": "202506",
-    "total_brl": 621356547275.3002,
+    "total_brl": 621356547275.3,
     "n_inst": 197
    },
    {
     "anomes": "202509",
-    "total_brl": 639034824973.56,
+    "total_brl": 639034824973.5599,
     "n_inst": 191
    },
    {
     "anomes": "202512",
-    "total_brl": 670493611218.05,
+    "total_brl": 670493611218.0499,
     "n_inst": 197
    },
    {
     "anomes": "202603",
-    "total_brl": 674148230845.9302,
+    "total_brl": 674148230845.9299,
     "n_inst": 202
    }
   ],

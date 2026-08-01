@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -22,7 +22,7 @@
    "nota_taxonomia": "O corte integrado do IF.data não separa rotativo, parcelado e compras à vista — o SGS separa apenas no agregado do sistema.",
    "modalidade_original": "cartao_de_credito",
    "data_base": "202603",
-   "mercado_total_brl": 739483956219.0298,
+   "mercado_total_brl": 739483956219.03,
    "n_instituicoes": 223,
    "share_segmento_pct": 15.49,
    "crescimento_4t_pct": 17.97,
@@ -36,12 +36,12 @@
     },
     {
      "anomes": "202506",
-     "total_brl": 648181441919.2098,
+     "total_brl": 648181441919.21,
      "n_inst": 227
     },
     {
      "anomes": "202509",
-     "total_brl": 667143454407.8103,
+     "total_brl": 667143454407.81,
      "n_inst": 227
     },
     {
@@ -51,7 +51,7 @@
     },
     {
      "anomes": "202603",
-     "total_brl": 739483956219.0298,
+     "total_brl": 739483956219.03,
      "n_inst": 223
     }
    ],
@@ -126,22 +126,22 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 711466765482.5494,
+     "total_brl": 711466765482.5499,
      "n_inst": 778
     },
     {
      "anomes": "202506",
-     "total_brl": 720202821455.7799,
+     "total_brl": 720202821455.78,
      "n_inst": 780
     },
     {
      "anomes": "202509",
-     "total_brl": 736332313332.9198,
+     "total_brl": 736332313332.92,
      "n_inst": 794
     },
     {
      "anomes": "202512",
-     "total_brl": 751792568123.1298,
+     "total_brl": 751792568123.13,
      "n_inst": 786
     },
     {
@@ -212,7 +212,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "emprestimo_sem_consignacao_em_folha",
    "data_base": "202603",
-   "mercado_total_brl": 404824117810.4698,
+   "mercado_total_brl": 404824117810.47,
    "n_instituicoes": 877,
    "share_segmento_pct": 8.48,
    "crescimento_4t_pct": 13.96,
@@ -221,17 +221,17 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 358438513680.6499,
+     "total_brl": 358438513680.65,
      "n_inst": 891
     },
     {
      "anomes": "202506",
-     "total_brl": 372798662843.2699,
+     "total_brl": 372798662843.27,
      "n_inst": 896
     },
     {
      "anomes": "202509",
-     "total_brl": 384658146291.51996,
+     "total_brl": 384658146291.52,
      "n_inst": 901
     },
     {
@@ -241,7 +241,7 @@
     },
     {
      "anomes": "202603",
-     "total_brl": 404824117810.4698,
+     "total_brl": 404824117810.47,
      "n_inst": 877
     }
    ],
@@ -307,7 +307,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "veiculos",
    "data_base": "202603",
-   "mercado_total_brl": 431184386129.36993,
+   "mercado_total_brl": 431184386129.37,
    "n_instituicoes": 600,
    "share_segmento_pct": 9.03,
    "crescimento_4t_pct": 16.32,
@@ -326,17 +326,17 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 395743495094.4502,
+     "total_brl": 395743495094.45,
      "n_inst": 605
     },
     {
      "anomes": "202512",
-     "total_brl": 413490961777.9999,
+     "total_brl": 413490961778.0,
      "n_inst": 601
     },
     {
      "anomes": "202603",
-     "total_brl": 431184386129.36993,
+     "total_brl": 431184386129.37,
      "n_inst": 600
     }
    ],
@@ -402,7 +402,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "habitacao",
    "data_base": "202603",
-   "mercado_total_brl": 1356414580327.2993,
+   "mercado_total_brl": 1356414580327.3,
    "n_instituicoes": 123,
    "share_segmento_pct": 28.41,
    "crescimento_4t_pct": 12.38,
@@ -416,7 +416,7 @@
     },
     {
      "anomes": "202506",
-     "total_brl": 1240993516255.2397,
+     "total_brl": 1240993516255.24,
      "n_inst": 120
     },
     {
@@ -431,7 +431,7 @@
     },
     {
      "anomes": "202603",
-     "total_brl": 1356414580327.2993,
+     "total_brl": 1356414580327.3,
      "n_inst": 123
     }
    ],
@@ -516,12 +516,12 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 661097911765.8599,
+     "total_brl": 661097911765.86,
      "n_inst": 434
     },
     {
      "anomes": "202512",
-     "total_brl": 683234151786.1304,
+     "total_brl": 683234151786.13,
      "n_inst": 430
     },
     {
@@ -592,7 +592,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "capital_de_giro",
    "data_base": "202603",
-   "mercado_total_brl": 764163055754.8402,
+   "mercado_total_brl": 764163055754.84,
    "n_instituicoes": 755,
    "share_segmento_pct": 23.81,
    "crescimento_4t_pct": 11.78,
@@ -601,27 +601,27 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 695400262623.1699,
+     "total_brl": 695400262623.17,
      "n_inst": 759
     },
     {
      "anomes": "202506",
-     "total_brl": 716199127162.0405,
+     "total_brl": 716199127162.04,
      "n_inst": 760
     },
     {
      "anomes": "202509",
-     "total_brl": 727577394107.2007,
+     "total_brl": 727577394107.2,
      "n_inst": 766
     },
     {
      "anomes": "202512",
-     "total_brl": 757287942210.9606,
+     "total_brl": 757287942210.96,
      "n_inst": 764
     },
     {
      "anomes": "202603",
-     "total_brl": 764163055754.8402,
+     "total_brl": 764163055754.84,
      "n_inst": 755
     }
    ],
@@ -687,7 +687,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "cheque_especial_e_conta_garantida",
    "data_base": "202603",
-   "mercado_total_brl": 65573267486.43003,
+   "mercado_total_brl": 65573267486.43,
    "n_instituicoes": 583,
    "share_segmento_pct": 2.04,
    "crescimento_4t_pct": 2.79,
@@ -696,27 +696,27 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 64476381500.56999,
+     "total_brl": 64476381500.57,
      "n_inst": 597
     },
     {
      "anomes": "202506",
-     "total_brl": 64421353550.78003,
+     "total_brl": 64421353550.78,
      "n_inst": 595
     },
     {
      "anomes": "202509",
-     "total_brl": 61255274974.679985,
+     "total_brl": 61255274974.68,
      "n_inst": 590
     },
     {
      "anomes": "202512",
-     "total_brl": 60388942273.009995,
+     "total_brl": 60388942273.01,
      "n_inst": 584
     },
     {
      "anomes": "202603",
-     "total_brl": 65573267486.43003,
+     "total_brl": 65573267486.43,
      "n_inst": 583
     }
    ],
@@ -782,7 +782,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "operacoes_com_recebiveis",
    "data_base": "202603",
-   "mercado_total_brl": 206741561658.94998,
+   "mercado_total_brl": 206741561658.95,
    "n_instituicoes": 613,
    "share_segmento_pct": 6.44,
    "crescimento_4t_pct": -5.18,
@@ -791,7 +791,7 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 223914573507.6299,
+     "total_brl": 223914573507.63,
      "n_inst": 624
     },
     {
@@ -806,12 +806,12 @@
     },
     {
      "anomes": "202512",
-     "total_brl": 234306582165.6401,
+     "total_brl": 234306582165.63998,
      "n_inst": 618
     },
     {
      "anomes": "202603",
-     "total_brl": 206741561658.94998,
+     "total_brl": 206741561658.95,
      "n_inst": 613
     }
    ],
@@ -877,7 +877,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "investimento",
    "data_base": "202603",
-   "mercado_total_brl": 318225389390.35986,
+   "mercado_total_brl": 318225389390.36,
    "n_instituicoes": 624,
    "share_segmento_pct": 9.91,
    "crescimento_4t_pct": 1.6,
@@ -896,17 +896,17 @@
     },
     {
      "anomes": "202509",
-     "total_brl": 315240940770.49005,
+     "total_brl": 315240940770.49,
      "n_inst": 640
     },
     {
      "anomes": "202512",
-     "total_brl": 320968718711.8101,
+     "total_brl": 320968718711.81,
      "n_inst": 627
     },
     {
      "anomes": "202603",
-     "total_brl": 318225389390.35986,
+     "total_brl": 318225389390.36,
      "n_inst": 624
     }
    ],
@@ -972,7 +972,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "comercio_exterior",
    "data_base": "202603",
-   "mercado_total_brl": 255230580903.7601,
+   "mercado_total_brl": 255230580903.76,
    "n_instituicoes": 83,
    "share_segmento_pct": 7.95,
    "crescimento_4t_pct": 0.27,
@@ -981,27 +981,27 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 252795930647.60992,
+     "total_brl": 252795930647.61,
      "n_inst": 60
     },
     {
      "anomes": "202506",
-     "total_brl": 262397722473.02008,
+     "total_brl": 262397722473.02,
      "n_inst": 61
     },
     {
      "anomes": "202509",
-     "total_brl": 267190451222.18002,
+     "total_brl": 267190451222.18,
      "n_inst": 62
     },
     {
      "anomes": "202512",
-     "total_brl": 260043754709.88998,
+     "total_brl": 260043754709.89,
      "n_inst": 82
     },
     {
      "anomes": "202603",
-     "total_brl": 255230580903.7601,
+     "total_brl": 255230580903.76,
      "n_inst": 83
     }
    ],
@@ -1067,7 +1067,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "financiamento_de_infraestrutura_desenvolvimento_",
    "data_base": "202603",
-   "mercado_total_brl": 674148230845.9302,
+   "mercado_total_brl": 674148230845.9299,
    "n_instituicoes": 202,
    "share_segmento_pct": 21.0,
    "crescimento_4t_pct": 9.47,
@@ -1081,22 +1081,22 @@
     },
     {
      "anomes": "202506",
-     "total_brl": 621356547275.3002,
+     "total_brl": 621356547275.3,
      "n_inst": 197
     },
     {
      "anomes": "202509",
-     "total_brl": 639034824973.56,
+     "total_brl": 639034824973.5599,
      "n_inst": 191
     },
     {
      "anomes": "202512",
-     "total_brl": 670493611218.05,
+     "total_brl": 670493611218.0499,
      "n_inst": 197
     },
     {
      "anomes": "202603",
-     "total_brl": 674148230845.9302,
+     "total_brl": 674148230845.9299,
      "n_inst": 202
     }
    ],
@@ -1162,7 +1162,7 @@
    "nota_taxonomia": "",
    "modalidade_original": "rural_e_agroindustrial",
    "data_base": "202603",
-   "mercado_total_brl": 87429355507.06001,
+   "mercado_total_brl": 87429355507.06,
    "n_instituicoes": 302,
    "share_segmento_pct": 2.72,
    "crescimento_4t_pct": 24.4,
@@ -1171,12 +1171,12 @@
    "serie": [
     {
      "anomes": "202503",
-     "total_brl": 70364712958.03001,
+     "total_brl": 70364712958.03,
      "n_inst": 282
     },
     {
      "anomes": "202506",
-     "total_brl": 77392613374.13998,
+     "total_brl": 77392613374.14,
      "n_inst": 281
     },
     {
@@ -1191,7 +1191,7 @@
     },
     {
      "anomes": "202603",
-     "total_brl": 87429355507.06001,
+     "total_brl": 87429355507.06,
      "n_inst": 302
     }
    ],

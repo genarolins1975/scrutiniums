@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:09:49+00:00",
+ "gerado_em": "2026-08-01T11:24:44+00:00",
  "series": {
   "saldo_total": {
    "tipo": "DADO OBSERVADO",
@@ -14,21 +14,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20539/dados",
     "segment": "total",
     "category": "estoque",
-    "last_collected_at": "2026-07-29T12:29:36+00:00"
+    "last_collected_at": "2026-08-01T10:36:44+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -713,15 +713,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 7237735.0
+     "v": 7240551.0
     },
     {
      "ref": "2026-04-01",
-     "v": 7258599.0
+     "v": 7259769.0
     },
     {
      "ref": "2026-05-01",
-     "v": 7299615.0
+     "v": 7303618.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 7355800.0
     }
    ],
    "yoy": [
@@ -1359,15 +1363,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 10.055
+     "v": 10.098
     },
     {
      "ref": "2026-04-01",
-     "v": 9.581
+     "v": 9.599
     },
     {
      "ref": "2026-05-01",
-     "v": 9.5
+     "v": 9.561
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 9.728
     }
    ],
    "yoy_real": [
@@ -2005,15 +2013,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 5.677
+     "v": 5.718
     },
     {
      "ref": "2026-04-01",
-     "v": 4.971
+     "v": 4.988
     },
     {
      "ref": "2026-05-01",
-     "v": 4.56
+     "v": 4.617
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 4.861
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -2031,21 +2043,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20541/dados",
     "segment": "pf",
     "category": "estoque",
-    "last_collected_at": "2026-07-29T12:29:38+00:00"
+    "last_collected_at": "2026-08-01T10:36:46+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -2730,15 +2742,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 4551689.0
+     "v": 4553014.0
     },
     {
      "ref": "2026-04-01",
-     "v": 4573976.0
+     "v": 4574369.0
     },
     {
      "ref": "2026-05-01",
-     "v": 4595065.0
+     "v": 4595657.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 4606799.0
     }
    ],
    "yoy": [
@@ -3376,15 +3392,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 11.61
+     "v": 11.643
     },
     {
      "ref": "2026-04-01",
-     "v": 11.248
+     "v": 11.257
     },
     {
      "ref": "2026-05-01",
-     "v": 11.164
+     "v": 11.179
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 10.848
     }
    ],
    "yoy_real": [
@@ -4022,15 +4042,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 7.17
+     "v": 7.201
     },
     {
      "ref": "2026-04-01",
-     "v": 6.568
+     "v": 6.577
     },
     {
      "ref": "2026-05-01",
-     "v": 6.149
+     "v": 6.163
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 5.931
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -4048,21 +4072,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20540/dados",
     "segment": "pj",
     "category": "estoque",
-    "last_collected_at": "2026-07-29T12:29:37+00:00"
+    "last_collected_at": "2026-08-01T10:36:45+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -4747,15 +4771,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 2686046.0
+     "v": 2687537.0
     },
     {
      "ref": "2026-04-01",
-     "v": 2684623.0
+     "v": 2685400.0
     },
     {
      "ref": "2026-05-01",
-     "v": 2704550.0
+     "v": 2707962.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 2749001.0
     }
    ],
    "yoy": [
@@ -5393,15 +5421,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 7.517
+     "v": 7.576
     },
     {
      "ref": "2026-04-01",
-     "v": 6.854
+     "v": 6.885
     },
     {
      "ref": "2026-05-01",
-     "v": 6.785
+     "v": 6.92
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 7.902
     }
    ],
    "yoy_real": [
@@ -6039,15 +6071,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 3.24
+     "v": 3.297
     },
     {
      "ref": "2026-04-01",
-     "v": 2.359
+     "v": 2.388
     },
     {
      "ref": "2026-05-01",
-     "v": 1.967
+     "v": 2.096
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 3.116
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -6065,21 +6101,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20631/dados",
     "segment": "total",
     "category": "concessoes",
-    "last_collected_at": "2026-07-29T12:29:39+00:00"
+    "last_collected_at": "2026-08-01T10:36:47+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -6764,15 +6800,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 741929.0
+     "v": 742224.0
     },
     {
      "ref": "2026-04-01",
-     "v": 692469.0
+     "v": 692993.0
     },
     {
      "ref": "2026-05-01",
-     "v": 694151.0
+     "v": 701395.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 747095.0
     }
    ],
    "yoy": [
@@ -7410,15 +7450,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 19.575
+     "v": 19.622
     },
     {
      "ref": "2026-04-01",
-     "v": 7.43
+     "v": 7.512
     },
     {
      "ref": "2026-05-01",
-     "v": 7.083
+     "v": 8.2
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 16.516
     }
    ],
    "yoy_real": [
@@ -8056,15 +8100,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 14.818
+     "v": 14.863
     },
     {
      "ref": "2026-04-01",
-     "v": 2.911
+     "v": 2.989
     },
     {
      "ref": "2026-05-01",
-     "v": 2.251
+     "v": 3.318
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 11.348
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -8082,21 +8130,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20633/dados",
     "segment": "pf",
     "category": "concessoes",
-    "last_collected_at": "2026-07-29T12:29:41+00:00"
+    "last_collected_at": "2026-08-01T10:36:48+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -8781,15 +8829,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 397226.0
+     "v": 397284.0
     },
     {
      "ref": "2026-04-01",
-     "v": 378561.0
+     "v": 378707.0
     },
     {
      "ref": "2026-05-01",
-     "v": 373572.0
+     "v": 377092.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 385068.0
     }
    ],
    "yoy": [
@@ -9427,15 +9479,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 17.717
+     "v": 17.734
     },
     {
      "ref": "2026-04-01",
-     "v": 8.47
+     "v": 8.512
     },
     {
      "ref": "2026-05-01",
-     "v": 7.285
+     "v": 8.296
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 9.97
     }
    ],
    "yoy_real": [
@@ -10073,15 +10129,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 13.034
+     "v": 13.051
     },
     {
      "ref": "2026-04-01",
-     "v": 3.907
+     "v": 3.947
     },
     {
      "ref": "2026-05-01",
-     "v": 2.444
+     "v": 3.41
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 5.093
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -10099,21 +10159,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20632/dados",
     "segment": "pj",
     "category": "concessoes",
-    "last_collected_at": "2026-07-29T12:29:40+00:00"
+    "last_collected_at": "2026-08-01T10:36:48+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -10798,15 +10858,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 344703.0
+     "v": 344941.0
     },
     {
      "ref": "2026-04-01",
-     "v": 313908.0
+     "v": 314286.0
     },
     {
      "ref": "2026-05-01",
-     "v": 320579.0
+     "v": 324303.0
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 362028.0
     }
    ],
    "yoy": [
@@ -11444,15 +11508,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 21.789
+     "v": 21.873
     },
     {
      "ref": "2026-04-01",
-     "v": 6.204
+     "v": 6.331
     },
     {
      "ref": "2026-05-01",
-     "v": 6.848
+     "v": 8.089
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 24.391
     }
    ],
    "yoy_real": [
@@ -12090,15 +12158,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 16.945
+     "v": 17.025
     },
     {
      "ref": "2026-04-01",
-     "v": 1.736
+     "v": 1.858
     },
     {
      "ref": "2026-05-01",
-     "v": 2.027
+     "v": 3.212
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 18.874
     }
    ],
    "yoy_real_nota": "DADO CALCULADO: variação a/a nominal deflacionada pelo IPCA acumulado 12m (IBGE via SGS 433)"
@@ -12116,21 +12188,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20714/dados",
     "segment": "total",
     "category": "taxa",
-    "last_collected_at": "2026-07-29T12:29:42+00:00"
+    "last_collected_at": "2026-08-01T10:36:49+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.8,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 1
    },
    "obs": [
     {
@@ -12823,7 +12895,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 33.42
+     "v": 33.22
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 33.44
     }
    ],
    "yoy": [
@@ -13469,7 +13545,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 5.426
+     "v": 4.795
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 4.992
     }
    ]
   },
@@ -13486,21 +13566,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20716/dados",
     "segment": "pf",
     "category": "taxa",
-    "last_collected_at": "2026-07-29T12:29:44+00:00"
+    "last_collected_at": "2026-08-01T10:36:51+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.3,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -14189,11 +14269,15 @@
     },
     {
      "ref": "2026-04-01",
-     "v": 38.94
+     "v": 38.93
     },
     {
      "ref": "2026-05-01",
-     "v": 38.88
+     "v": 38.86
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 39.44
     }
    ],
    "yoy": [
@@ -14835,11 +14919,15 @@
     },
     {
      "ref": "2026-04-01",
-     "v": 6.949
+     "v": 6.921
     },
     {
      "ref": "2026-05-01",
-     "v": 6.143
+     "v": 6.088
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 7.058
     }
    ]
   },
@@ -14856,21 +14944,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20715/dados",
     "segment": "pj",
     "category": "taxa",
-    "last_collected_at": "2026-07-29T12:29:42+00:00"
+    "last_collected_at": "2026-08-01T10:36:50+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.8,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 1
    },
    "obs": [
     {
@@ -15563,7 +15651,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 21.57
+     "v": 21.25
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 20.8
     }
    ],
    "yoy": [
@@ -16209,7 +16301,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 2.763
+     "v": 1.239
+    },
+    {
+     "ref": "2026-06-01",
+     "v": -1.235
     }
    ]
   },
@@ -16226,21 +16322,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20783/dados",
     "segment": "total",
     "category": "spread",
-    "last_collected_at": "2026-07-29T12:30:00+00:00"
+    "last_collected_at": "2026-08-01T10:36:51+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.8,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 1
    },
    "obs": [
     {
@@ -16933,7 +17029,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 22.09
+     "v": 21.89
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 21.99
     }
    ],
    "yoy": [
@@ -17579,7 +17679,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 7.704
+     "v": 6.728
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 6.027
     }
    ]
   },
@@ -17596,21 +17700,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20785/dados",
     "segment": "pf",
     "category": "spread",
-    "last_collected_at": "2026-07-29T12:30:23+00:00"
+    "last_collected_at": "2026-08-01T10:36:53+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.3,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -18299,11 +18403,15 @@
     },
     {
      "ref": "2026-04-01",
-     "v": 28.42
+     "v": 28.41
     },
     {
      "ref": "2026-05-01",
-     "v": 28.19
+     "v": 28.2
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 28.59
     }
    ],
    "yoy": [
@@ -18945,11 +19053,15 @@
     },
     {
      "ref": "2026-04-01",
-     "v": 10.584
+     "v": 10.545
     },
     {
      "ref": "2026-05-01",
-     "v": 8.381
+     "v": 8.42
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 8.956
     }
    ]
   },
@@ -18966,21 +19078,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20784/dados",
     "segment": "pj",
     "category": "spread",
-    "last_collected_at": "2026-07-29T12:30:21+00:00"
+    "last_collected_at": "2026-08-01T10:36:52+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.8,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 1
    },
    "obs": [
     {
@@ -19673,7 +19785,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 8.85
+     "v": 8.51
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 8.08
     }
    ],
    "yoy": [
@@ -20319,7 +20435,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 3.509
+     "v": -0.468
+    },
+    {
+     "ref": "2026-06-01",
+     "v": -8.597
     }
    ]
   },
@@ -20336,21 +20456,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21082/dados",
     "segment": "total",
     "category": "inadimplencia",
-    "last_collected_at": "2026-07-29T12:30:24+00:00"
+    "last_collected_at": "2026-08-01T10:36:54+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.3,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -21035,15 +21155,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 4.52
+     "v": 4.53
     },
     {
      "ref": "2026-04-01",
-     "v": 4.63
+     "v": 4.64
     },
     {
      "ref": "2026-05-01",
      "v": 4.74
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 4.68
     }
    ],
    "yoy": [
@@ -21681,15 +21805,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 31.395
+     "v": 31.686
     },
     {
      "ref": "2026-04-01",
-     "v": 26.158
+     "v": 26.431
     },
     {
      "ref": "2026-05-01",
      "v": 27.419
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 24.8
     }
    ]
   },
@@ -21706,20 +21834,20 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21084/dados",
     "segment": "pf",
     "category": "inadimplencia",
-    "last_collected_at": "2026-07-29T12:30:28+00:00"
+    "last_collected_at": "2026-08-01T10:36:56+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 89.2,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
     "n_revisoes": 0
    },
    "obs": [
@@ -22414,6 +22542,10 @@
     {
      "ref": "2026-05-01",
      "v": 5.62
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 5.57
     }
    ],
    "yoy": [
@@ -23060,6 +23192,10 @@
     {
      "ref": "2026-05-01",
      "v": 28.899
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 26.304
     }
    ]
   },
@@ -23076,21 +23212,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21083/dados",
     "segment": "pj",
     "category": "inadimplencia",
-    "last_collected_at": "2026-07-29T12:30:25+00:00"
+    "last_collected_at": "2026-08-01T10:36:55+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 88.3,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -23775,7 +23911,7 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 3.04
+     "v": 3.06
     },
     {
      "ref": "2026-04-01",
@@ -23783,7 +23919,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 3.24
+     "v": 3.25
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 3.19
     }
    ],
    "yoy": [
@@ -24421,7 +24561,7 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 22.088
+     "v": 22.892
     },
     {
      "ref": "2026-04-01",
@@ -24429,7 +24569,11 @@
     },
     {
      "ref": "2026-05-01",
-     "v": 21.348
+     "v": 21.723
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 19.476
     }
    ]
   },
@@ -24446,21 +24590,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20622/dados",
     "segment": "total",
     "category": "credito_pib",
-    "last_collected_at": "2026-07-29T12:30:29+00:00"
+    "last_collected_at": "2026-08-01T10:36:57+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 87.9,
     "componentes": {
-     "completude": 98.9,
-     "atualidade": 0.0,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 173,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 174,
+    "n_revisoes": 3
    },
    "obs": [
     {
@@ -25145,15 +25289,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 55.83
+     "v": 55.85
     },
     {
      "ref": "2026-04-01",
-     "v": 55.7
+     "v": 55.71
     },
     {
      "ref": "2026-05-01",
-     "v": 55.69
+     "v": 55.72
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 55.76
     }
    ],
    "yoy": [
@@ -25791,15 +25939,19 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 2.197
+     "v": 2.233
     },
     {
      "ref": "2026-04-01",
-     "v": 2.033
+     "v": 2.052
     },
     {
      "ref": "2026-05-01",
-     "v": 2.165
+     "v": 2.22
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 2.349
     }
    ]
   },
@@ -25816,21 +25968,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29037/dados",
     "segment": "pf",
     "category": "capacidade_pagamento",
-    "last_collected_at": "2026-07-29T12:30:30+00:00"
+    "last_collected_at": "2026-08-01T10:36:58+00:00"
    },
    "qualidade": {
-    "score": 69.7,
+    "score": 68.9,
     "componentes": {
-     "completude": 98.3,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.2,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 122,
-    "ultima_ref": "2026-04-01",
-    "n_obs": 172,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 92,
+    "ultima_ref": "2026-05-01",
+    "n_obs": 173,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -26515,11 +26667,15 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 49.83
+     "v": 49.86
     },
     {
      "ref": "2026-04-01",
-     "v": 49.79
+     "v": 49.87
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 49.83
     }
    ],
    "yoy": [
@@ -27157,11 +27313,15 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 1.964
+     "v": 2.026
     },
     {
      "ref": "2026-04-01",
-     "v": 1.758
+     "v": 1.921
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 1.964
     }
    ]
   },
@@ -27178,21 +27338,21 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29034/dados",
     "segment": "pf",
     "category": "capacidade_pagamento",
-    "last_collected_at": "2026-07-29T12:30:32+00:00"
+    "last_collected_at": "2026-08-01T10:36:59+00:00"
    },
    "qualidade": {
-    "score": 69.7,
+    "score": 68.9,
     "componentes": {
-     "completude": 98.3,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
-     "estabilidade": 100.0,
+     "estabilidade": 94.2,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 122,
-    "ultima_ref": "2026-04-01",
-    "n_obs": 172,
-    "n_revisoes": 0
+    "dias_sem_atualizar": 92,
+    "ultima_ref": "2026-05-01",
+    "n_obs": 173,
+    "n_revisoes": 2
    },
    "obs": [
     {
@@ -27877,11 +28037,15 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 28.24
+     "v": 28.21
     },
     {
      "ref": "2026-04-01",
-     "v": 28.19
+     "v": 28.36
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 28.48
     }
    ],
    "yoy": [
@@ -28519,11 +28683,15 @@
     },
     {
      "ref": "2026-03-01",
-     "v": 4.748
+     "v": 4.636
     },
     {
      "ref": "2026-04-01",
-     "v": 3.945
+     "v": 4.572
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 4.744
     }
    ]
   },
@@ -28540,7 +28708,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados",
     "segment": "macro",
     "category": "juros",
-    "last_collected_at": "2026-07-29T12:31:11+00:00"
+    "last_collected_at": "2026-08-01T10:37:35+00:00"
    },
    "qualidade": {
     "score": 100.0,
@@ -30174,7 +30342,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados",
     "segment": "macro",
     "category": "inflacao",
-    "last_collected_at": "2026-07-29T12:31:12+00:00"
+    "last_collected_at": "2026-08-01T10:37:36+00:00"
    },
    "qualidade": {
     "score": 89.2,
@@ -31552,7 +31720,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.24363/dados",
     "segment": "macro",
     "category": "atividade",
-    "last_collected_at": "2026-07-29T12:31:13+00:00"
+    "last_collected_at": "2026-08-01T10:37:37+00:00"
    },
    "qualidade": {
     "score": 69.8,
@@ -32922,20 +33090,20 @@
     "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6381/periodos/-120/variaveis/4099?localidades=N1[all]",
     "segment": "macro",
     "category": "emprego",
-    "last_collected_at": "2026-07-27T16:14:58+00:00"
+    "last_collected_at": "2026-08-01T10:37:38+00:00"
    },
    "qualidade": {
-    "score": 69.7,
+    "score": 89.2,
     "componentes": {
-     "completude": 98.4,
-     "atualidade": 0.0,
+     "completude": 99.2,
+     "atualidade": 64.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 92,
-    "ultima_ref": "2026-05-01",
-    "n_obs": 120,
+    "dias_sem_atualizar": 61,
+    "ultima_ref": "2026-06-01",
+    "n_obs": 121,
     "n_revisoes": 0
    },
    "obs": [
@@ -33418,6 +33586,10 @@
     {
      "ref": "2026-05-01",
      "v": 5.6
+    },
+    {
+     "ref": "2026-06-01",
+     "v": 5.4
     }
    ],
    "yoy": [
@@ -33852,6 +34024,10 @@
     {
      "ref": "2026-05-01",
      "v": -9.677
+    },
+    {
+     "ref": "2026-06-01",
+     "v": -6.897
     }
    ]
   },
@@ -33868,7 +34044,7 @@
     "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='ABPO12_PAPEL12')",
     "segment": "macro",
     "category": "antecedente",
-    "last_collected_at": "2026-07-27T16:14:59+00:00"
+    "last_collected_at": "2026-08-01T10:37:42+00:00"
    },
    "qualidade": {
     "score": 89.3,
@@ -35502,7 +35678,7 @@
     "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='BM12_ERC12')",
     "segment": "macro",
     "category": "antecedente",
-    "last_collected_at": "2026-07-27T16:15:00+00:00"
+    "last_collected_at": "2026-08-01T10:37:43+00:00"
    },
    "qualidade": {
     "score": 89.3,
@@ -37782,72 +37958,289 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 4.7736,
-     "p10": 4.6244,
-     "p90": 4.9563
+     "ref_date": "2026-07-01",
+     "p50": 4.7106,
+     "p10": 4.568,
+     "p90": 4.8899
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 4.8132,
-     "p10": 4.61,
-     "p90": 5.0948
+     "ref_date": "2026-09-01",
+     "p50": 4.8085,
+     "p10": 4.5639,
+     "p90": 5.1048
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 4.8603,
-     "p10": 4.559,
-     "p90": 5.3988
+     "ref_date": "2026-12-01",
+     "p50": 4.915,
+     "p10": 4.5754,
+     "p90": 5.4631
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 4.9802,
-     "p10": 4.4651,
-     "p90": 5.6362
+     "ref_date": "2027-03-01",
+     "p50": 5.0803,
+     "p10": 4.4365,
+     "p90": 5.6026
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 5.0535,
-     "p10": 4.4527,
-     "p90": 5.851
+     "ref_date": "2027-06-01",
+     "p50": 5.1532,
+     "p10": 4.4149,
+     "p90": 5.8162
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.336,
-      "drift": 0.336,
-      "ar1_diferencas": 0.329
+      "ultimo_valor": 0.335,
+      "drift": 0.335,
+      "ar1_diferencas": 0.331
      },
-     "mae_ensemble_backtest": 0.0887,
-     "mae_naive_backtest": 0.088,
-     "ganho_vs_naive_pct": -0.8,
+     "mae_ensemble_backtest": 0.0897,
+     "mae_naive_backtest": 0.0894,
+     "ganho_vs_naive_pct": -0.4,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.33,
-      "drift": 0.333,
-      "ar1_diferencas": 0.337
+      "ultimo_valor": 0.256,
+      "drift": 0.259,
+      "ar1_diferencas": 0.262,
+      "holt": 0.223
      },
-     "mae_ensemble_backtest": 0.1676,
-     "mae_naive_backtest": 0.1694,
-     "ganho_vs_naive_pct": 1.1,
+     "mae_ensemble_backtest": 0.1772,
+     "mae_naive_backtest": 0.1732,
+     "ganho_vs_naive_pct": -2.3,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.333,
-      "drift": 0.333,
-      "ar1_diferencas": 0.334
+      "ultimo_valor": 0.254,
+      "drift": 0.255,
+      "ar1_diferencas": 0.256,
+      "holt": 0.235
      },
-     "mae_ensemble_backtest": 0.3076,
-     "mae_naive_backtest": 0.3084,
+     "mae_ensemble_backtest": 0.3258,
+     "mae_naive_backtest": 0.3206,
+     "ganho_vs_naive_pct": -1.6,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.259,
+      "drift": 0.258,
+      "media_movel_6m": 0.226,
+      "ar1_diferencas": 0.258
+     },
+     "mae_ensemble_backtest": 0.4653,
+     "mae_naive_backtest": 0.45,
+     "ganho_vs_naive_pct": -3.4,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.204,
+      "sazonal_ingenuo": 0.204,
+      "drift": 0.2,
+      "media_movel_6m": 0.192,
+      "ar1_diferencas": 0.201
+     },
+     "mae_ensemble_backtest": 0.5952,
+     "mae_naive_backtest": 0.5848,
+     "ganho_vs_naive_pct": -1.8,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-06-01",
+    "v": 4.68
+   }
+  },
+  "inad_pf": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-07-01",
+     "p50": 5.6062,
+     "p10": 5.4594,
+     "p90": 5.8061
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-09-01",
+     "p50": 5.6925,
+     "p10": 5.3625,
+     "p90": 5.9982
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-12-01",
+     "p50": 5.9823,
+     "p10": 5.4214,
+     "p90": 6.52
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-03-01",
+     "p50": 6.3103,
+     "p10": 5.4809,
+     "p90": 7.0048
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-06-01",
+     "p50": 6.2603,
+     "p10": 5.2233,
+     "p90": 7.0967
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.331,
+      "drift": 0.327,
+      "ar1_diferencas": 0.342
+     },
+     "mae_ensemble_backtest": 0.0984,
+     "mae_naive_backtest": 0.0991,
+     "ganho_vs_naive_pct": 0.8,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.323,
+      "ar1_diferencas": 0.344
+     },
+     "mae_ensemble_backtest": 0.217,
+     "mae_naive_backtest": 0.2174,
      "ganho_vs_naive_pct": 0.2,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.256,
+      "drift": 0.246,
+      "ar1_diferencas": 0.253,
+      "holt": 0.245
+     },
+     "mae_ensemble_backtest": 0.4222,
+     "mae_naive_backtest": 0.4116,
+     "ganho_vs_naive_pct": -2.6,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.265,
+      "drift": 0.247,
+      "ar1_diferencas": 0.251,
+      "holt": 0.236
+     },
+     "mae_ensemble_backtest": 0.6218,
+     "mae_naive_backtest": 0.5871,
+     "ganho_vs_naive_pct": -5.9,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.209,
+      "sazonal_ingenuo": 0.209,
+      "drift": 0.195,
+      "media_movel_6m": 0.19,
+      "ar1_diferencas": 0.197
+     },
+     "mae_ensemble_backtest": 0.8146,
+     "mae_naive_backtest": 0.7804,
+     "ganho_vs_naive_pct": -4.4,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-06-01",
+    "v": 5.57
+   }
+  },
+  "inad_pj": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-07-01",
+     "p50": 3.2228,
+     "p10": 3.0754,
+     "p90": 3.3826
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-09-01",
+     "p50": 3.2389,
+     "p10": 2.9574,
+     "p90": 3.4801
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-12-01",
+     "p50": 3.2287,
+     "p10": 2.9513,
+     "p90": 3.5693
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-03-01",
+     "p50": 3.2991,
+     "p10": 2.8334,
+     "p90": 3.5884
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-06-01",
+     "p50": 3.2256,
+     "p10": 2.8121,
+     "p90": 3.7454
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.335,
+      "drift": 0.336,
+      "ar1_diferencas": 0.329
+     },
+     "mae_ensemble_backtest": 0.0982,
+     "mae_naive_backtest": 0.0977,
+     "ganho_vs_naive_pct": -0.5,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.335,
+      "ar1_diferencas": 0.333
+     },
+     "mae_ensemble_backtest": 0.1558,
+     "mae_naive_backtest": 0.1562,
+     "ganho_vs_naive_pct": 0.2,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.336,
+      "drift": 0.334,
+      "ar1_diferencas": 0.33
+     },
+     "mae_ensemble_backtest": 0.2063,
+     "mae_naive_backtest": 0.2045,
+     "ganho_vs_naive_pct": -0.9,
      "n_backtests": 31
     },
     "9": {
@@ -37857,243 +38250,30 @@
       "media_movel_6m": 0.231,
       "ar1_diferencas": 0.256
      },
-     "mae_ensemble_backtest": 0.4502,
-     "mae_naive_backtest": 0.4379,
+     "mae_ensemble_backtest": 0.2747,
+     "mae_naive_backtest": 0.2671,
      "ganho_vs_naive_pct": -2.8,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.203,
-      "sazonal_ingenuo": 0.203,
-      "drift": 0.199,
-      "media_movel_6m": 0.196,
-      "ar1_diferencas": 0.199
+      "ultimo_valor": 0.2,
+      "sazonal_ingenuo": 0.2,
+      "drift": 0.195,
+      "media_movel_6m": 0.211,
+      "ar1_diferencas": 0.194
      },
-     "mae_ensemble_backtest": 0.5636,
-     "mae_naive_backtest": 0.5556,
-     "ganho_vs_naive_pct": -1.4,
+     "mae_ensemble_backtest": 0.3163,
+     "mae_naive_backtest": 0.316,
+     "ganho_vs_naive_pct": -0.1,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 4.74
-   }
-  },
-  "inad_pf": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 5.6498,
-     "p10": 5.5191,
-     "p90": 5.8674
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 5.725,
-     "p10": 5.4196,
-     "p90": 6.063
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 5.9783,
-     "p10": 5.3694,
-     "p90": 6.5748
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 6.0954,
-     "p10": 5.2767,
-     "p90": 6.8574
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 6.2275,
-     "p10": 5.2091,
-     "p90": 7.1325
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.332,
-      "drift": 0.329,
-      "ar1_diferencas": 0.34
-     },
-     "mae_ensemble_backtest": 0.0983,
-     "mae_naive_backtest": 0.0989,
-     "ganho_vs_naive_pct": 0.5,
-     "n_backtests": 35
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.332,
-      "drift": 0.323,
-      "ar1_diferencas": 0.345
-     },
-     "mae_ensemble_backtest": 0.2181,
-     "mae_naive_backtest": 0.2191,
-     "ganho_vs_naive_pct": 0.5,
-     "n_backtests": 34
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.259,
-      "drift": 0.249,
-      "ar1_diferencas": 0.255,
-      "holt": 0.237
-     },
-     "mae_ensemble_backtest": 0.4264,
-     "mae_naive_backtest": 0.4123,
-     "ganho_vs_naive_pct": -3.4,
-     "n_backtests": 31
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.346,
-      "drift": 0.325,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.6055,
-     "mae_naive_backtest": 0.5839,
-     "ganho_vs_naive_pct": -3.7,
-     "n_backtests": 28
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.208,
-      "sazonal_ingenuo": 0.208,
-      "drift": 0.196,
-      "media_movel_6m": 0.193,
-      "ar1_diferencas": 0.197
-     },
-     "mae_ensemble_backtest": 0.7838,
-     "mae_naive_backtest": 0.7552,
-     "ganho_vs_naive_pct": -3.8,
-     "n_backtests": 25
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 5.62
-   }
-  },
-  "inad_pj": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 3.2749,
-     "p10": 3.1275,
-     "p90": 3.4347
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 3.2915,
-     "p10": 3.0101,
-     "p90": 3.5328
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 3.2821,
-     "p10": 3.0046,
-     "p90": 3.6226
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 3.3768,
-     "p10": 2.887,
-     "p90": 3.65
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 3.2505,
-     "p10": 2.837,
-     "p90": 3.7561
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.335,
-      "drift": 0.335,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.0979,
-     "mae_naive_backtest": 0.0974,
-     "ganho_vs_naive_pct": -0.5,
-     "n_backtests": 35
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.333,
-      "drift": 0.334,
-      "ar1_diferencas": 0.333
-     },
-     "mae_ensemble_backtest": 0.1581,
-     "mae_naive_backtest": 0.1585,
-     "ganho_vs_naive_pct": 0.2,
-     "n_backtests": 34
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.336,
-      "drift": 0.333,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.202,
-     "mae_naive_backtest": 0.2003,
-     "ganho_vs_naive_pct": -0.8,
-     "n_backtests": 31
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.334,
-      "drift": 0.333,
-      "ar1_diferencas": 0.333
-     },
-     "mae_ensemble_backtest": 0.2581,
-     "mae_naive_backtest": 0.2575,
-     "ganho_vs_naive_pct": -0.2,
-     "n_backtests": 28
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.202,
-      "sazonal_ingenuo": 0.202,
-      "drift": 0.196,
-      "media_movel_6m": 0.205,
-      "ar1_diferencas": 0.195
-     },
-     "mae_ensemble_backtest": 0.3057,
-     "mae_naive_backtest": 0.3028,
-     "ganho_vs_naive_pct": -0.9,
-     "n_backtests": 25
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 3.24
+    "ref": "2026-06-01",
+    "v": 3.19
    }
   },
   "concessoes_total": {
@@ -38102,111 +38282,111 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 707831.8463,
-     "p10": 646385.6515,
-     "p90": 757827.4088
+     "ref_date": "2026-07-01",
+     "p50": 738145.6438,
+     "p10": 677808.9454,
+     "p90": 789114.3438
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 722671.9574,
-     "p10": 648871.8856,
-     "p90": 765257.7049
+     "ref_date": "2026-09-01",
+     "p50": 756050.7565,
+     "p10": 683266.6299,
+     "p90": 796852.1854
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 731629.9953,
-     "p10": 660070.6499,
-     "p90": 795716.5319
+     "ref_date": "2026-12-01",
+     "p50": 766724.0871,
+     "p10": 692956.8581,
+     "p90": 832889.0219
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 739320.0091,
-     "p10": 692238.3241,
-     "p90": 816575.4656
+     "ref_date": "2027-03-01",
+     "p50": 790077.4125,
+     "p10": 743390.4495,
+     "p90": 866149.7213
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 766417.0331,
-     "p10": 710964.8762,
-     "p90": 818012.3136
+     "ref_date": "2027-06-01",
+     "p50": 820135.4955,
+     "p10": 763354.6039,
+     "p90": 873471.9796
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.196,
-      "drift": 0.196,
-      "media_movel_6m": 0.197,
+      "ultimo_valor": 0.193,
+      "drift": 0.194,
+      "media_movel_6m": 0.198,
       "ar1_diferencas": 0.196,
-      "holt": 0.216
+      "holt": 0.219
      },
-     "mae_ensemble_backtest": 37144.0326,
-     "mae_naive_backtest": 37990.4857,
-     "ganho_vs_naive_pct": 2.2,
+     "mae_ensemble_backtest": 36664.3233,
+     "mae_naive_backtest": 37952.6857,
+     "ganho_vs_naive_pct": 3.4,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.192,
-      "drift": 0.2,
-      "media_movel_6m": 0.189,
-      "ar1_diferencas": 0.215,
-      "holt": 0.204
+      "ultimo_valor": 0.193,
+      "drift": 0.201,
+      "media_movel_6m": 0.186,
+      "ar1_diferencas": 0.214,
+      "holt": 0.206
      },
-     "mae_ensemble_backtest": 39717.5016,
-     "mae_naive_backtest": 41423.3824,
-     "ganho_vs_naive_pct": 4.1,
+     "mae_ensemble_backtest": 39137.056,
+     "mae_naive_backtest": 40568.1765,
+     "ganho_vs_naive_pct": 3.5,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.192,
-      "drift": 0.209,
-      "media_movel_6m": 0.18,
-      "ar1_diferencas": 0.224,
-      "holt": 0.195
+      "ultimo_valor": 0.19,
+      "drift": 0.202,
+      "media_movel_6m": 0.181,
+      "ar1_diferencas": 0.227,
+      "holt": 0.2
      },
-     "mae_ensemble_backtest": 45663.1488,
-     "mae_naive_backtest": 47562.8065,
-     "ganho_vs_naive_pct": 4.0,
+     "mae_ensemble_backtest": 46037.5549,
+     "mae_naive_backtest": 48462.3871,
+     "ganho_vs_naive_pct": 5.0,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.207,
-      "drift": 0.267,
-      "ar1_diferencas": 0.286,
-      "holt": 0.24
+      "ultimo_valor": 0.204,
+      "drift": 0.271,
+      "ar1_diferencas": 0.281,
+      "holt": 0.244
      },
-     "mae_ensemble_backtest": 43148.9546,
-     "mae_naive_backtest": 52101.2143,
-     "ganho_vs_naive_pct": 17.2,
+     "mae_ensemble_backtest": 43800.9589,
+     "mae_naive_backtest": 53706.5357,
+     "ganho_vs_naive_pct": 18.4,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.151,
-      "sazonal_ingenuo": 0.151,
-      "drift": 0.259,
+      "ultimo_valor": 0.149,
+      "sazonal_ingenuo": 0.149,
+      "drift": 0.252,
       "ar1_diferencas": 0.243,
-      "holt": 0.196
+      "holt": 0.206
      },
-     "mae_ensemble_backtest": 49837.4885,
-     "mae_naive_backtest": 66129.32,
-     "ganho_vs_naive_pct": 24.6,
+     "mae_ensemble_backtest": 50954.8096,
+     "mae_naive_backtest": 68321.0,
+     "ganho_vs_naive_pct": 25.4,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 694151.0
+    "ref": "2026-06-01",
+    "v": 747095.0
    }
   },
   "concessoes_pf": {
@@ -38215,111 +38395,111 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 381748.8432,
-     "p10": 354778.9766,
-     "p90": 404719.5238
+     "ref_date": "2026-07-01",
+     "p50": 387621.9723,
+     "p10": 361189.3059,
+     "p90": 411164.6532
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 387184.4678,
-     "p10": 352448.6342,
-     "p90": 409731.9121
+     "ref_date": "2026-09-01",
+     "p50": 393004.0941,
+     "p10": 359418.1029,
+     "p90": 415096.1357
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 393176.6419,
-     "p10": 353597.269,
-     "p90": 422568.7091
+     "ref_date": "2026-12-01",
+     "p50": 396038.7147,
+     "p10": 358568.3438,
+     "p90": 428055.4743
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 395224.2665,
-     "p10": 370122.2027,
-     "p90": 427587.4501
+     "ref_date": "2027-03-01",
+     "p50": 404823.7853,
+     "p10": 379874.5167,
+     "p90": 437494.0476
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 408811.1872,
-     "p10": 384935.3274,
-     "p90": 434941.9872
+     "ref_date": "2027-06-01",
+     "p50": 417712.0865,
+     "p10": 395411.8777,
+     "p90": 444600.7375
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.194,
-      "drift": 0.196,
-      "media_movel_6m": 0.173,
-      "ar1_diferencas": 0.222,
-      "holt": 0.215
+      "ultimo_valor": 0.195,
+      "drift": 0.198,
+      "media_movel_6m": 0.175,
+      "ar1_diferencas": 0.217,
+      "holt": 0.214
      },
-     "mae_ensemble_backtest": 15195.1185,
-     "mae_naive_backtest": 15691.9143,
-     "ganho_vs_naive_pct": 3.2,
+     "mae_ensemble_backtest": 15130.2949,
+     "mae_naive_backtest": 15484.3429,
+     "ganho_vs_naive_pct": 2.3,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.198,
-      "drift": 0.216,
-      "media_movel_6m": 0.174,
-      "ar1_diferencas": 0.221,
-      "holt": 0.191
+      "ultimo_valor": 0.193,
+      "drift": 0.208,
+      "media_movel_6m": 0.178,
+      "ar1_diferencas": 0.224,
+      "holt": 0.196
      },
-     "mae_ensemble_backtest": 18549.5544,
-     "mae_naive_backtest": 18784.0294,
-     "ganho_vs_naive_pct": 1.2,
+     "mae_ensemble_backtest": 17710.8541,
+     "mae_naive_backtest": 18315.9118,
+     "ganho_vs_naive_pct": 3.3,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
       "ultimo_valor": 0.197,
-      "drift": 0.214,
-      "media_movel_6m": 0.19,
-      "ar1_diferencas": 0.216,
-      "holt": 0.183
+      "drift": 0.208,
+      "media_movel_6m": 0.197,
+      "ar1_diferencas": 0.215,
+      "holt": 0.182
      },
-     "mae_ensemble_backtest": 23655.8558,
-     "mae_naive_backtest": 23964.6129,
-     "ganho_vs_naive_pct": 1.3,
+     "mae_ensemble_backtest": 23404.3521,
+     "mae_naive_backtest": 23727.9355,
+     "ganho_vs_naive_pct": 1.4,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.202,
-      "drift": 0.267,
-      "ar1_diferencas": 0.286,
-      "holt": 0.245
+      "ultimo_valor": 0.198,
+      "drift": 0.27,
+      "ar1_diferencas": 0.284,
+      "holt": 0.248
      },
-     "mae_ensemble_backtest": 20013.543,
-     "mae_naive_backtest": 24751.75,
-     "ganho_vs_naive_pct": 19.1,
+     "mae_ensemble_backtest": 19920.3424,
+     "mae_naive_backtest": 25104.6429,
+     "ganho_vs_naive_pct": 20.7,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.129,
-      "sazonal_ingenuo": 0.129,
-      "drift": 0.267,
-      "ar1_diferencas": 0.266,
-      "holt": 0.208
+      "ultimo_valor": 0.126,
+      "sazonal_ingenuo": 0.126,
+      "drift": 0.262,
+      "ar1_diferencas": 0.267,
+      "holt": 0.22
      },
-     "mae_ensemble_backtest": 21435.9251,
-     "mae_naive_backtest": 33207.2,
-     "ganho_vs_naive_pct": 35.4,
+     "mae_ensemble_backtest": 20900.5482,
+     "mae_naive_backtest": 33215.0,
+     "ganho_vs_naive_pct": 37.1,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 373572.0
+    "ref": "2026-06-01",
+    "v": 385068.0
    }
   },
   "concessoes_pj": {
@@ -38328,114 +38508,113 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 322774.1173,
-     "p10": 283377.9891,
-     "p90": 368092.8115
+     "ref_date": "2026-07-01",
+     "p50": 340748.886,
+     "p10": 302210.0947,
+     "p90": 386924.9171
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 331315.829,
-     "p10": 299462.9865,
-     "p90": 364208.6684
+     "ref_date": "2026-09-01",
+     "p50": 358792.5669,
+     "p10": 326732.6107,
+     "p90": 392321.3597
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 339056.7351,
-     "p10": 303832.8839,
-     "p90": 376135.2351
+     "ref_date": "2026-12-01",
+     "p50": 368015.4377,
+     "p10": 331408.2189,
+     "p90": 408526.0377
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 341241.4815,
-     "p10": 303775.6047,
-     "p90": 379757.9315
+     "ref_date": "2027-03-01",
+     "p50": 386390.6604,
+     "p10": 348652.5562,
+     "p90": 427202.7104
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 361092.3781,
-     "p10": 320400.4431,
-     "p90": 386576.7651
+     "ref_date": "2027-06-01",
+     "p50": 404827.3492,
+     "p10": 362311.0271,
+     "p90": 429656.3492
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.15,
-      "sazonal_ingenuo": 0.157,
-      "drift": 0.149,
-      "media_movel_6m": 0.203,
-      "ar1_diferencas": 0.157,
-      "holt": 0.184
+      "ultimo_valor": 0.149,
+      "sazonal_ingenuo": 0.152,
+      "drift": 0.148,
+      "media_movel_6m": 0.204,
+      "ar1_diferencas": 0.159,
+      "holt": 0.187
      },
-     "mae_ensemble_backtest": 27067.0318,
-     "mae_naive_backtest": 30134.4,
-     "ganho_vs_naive_pct": 10.2,
+     "mae_ensemble_backtest": 26707.7053,
+     "mae_naive_backtest": 29890.8,
+     "ganho_vs_naive_pct": 10.6,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.188,
-      "drift": 0.191,
-      "media_movel_6m": 0.196,
-      "ar1_diferencas": 0.211,
-      "holt": 0.214
+      "ultimo_valor": 0.19,
+      "drift": 0.193,
+      "media_movel_6m": 0.192,
+      "ar1_diferencas": 0.209,
+      "holt": 0.216
      },
-     "mae_ensemble_backtest": 23225.0885,
-     "mae_naive_backtest": 24713.7647,
-     "ganho_vs_naive_pct": 6.0,
+     "mae_ensemble_backtest": 23795.0271,
+     "mae_naive_backtest": 25045.2647,
+     "ganho_vs_naive_pct": 5.0,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.192,
-      "drift": 0.206,
-      "media_movel_6m": 0.186,
-      "ar1_diferencas": 0.221,
-      "holt": 0.195
+      "ultimo_valor": 0.19,
+      "drift": 0.199,
+      "media_movel_6m": 0.181,
+      "ar1_diferencas": 0.228,
+      "holt": 0.202
      },
-     "mae_ensemble_backtest": 26010.4113,
-     "mae_naive_backtest": 27065.5806,
-     "ganho_vs_naive_pct": 3.9,
+     "mae_ensemble_backtest": 26538.6364,
+     "mae_naive_backtest": 27965.3548,
+     "ganho_vs_naive_pct": 5.1,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.164,
-      "sazonal_ingenuo": 0.148,
-      "drift": 0.18,
-      "media_movel_6m": 0.145,
-      "ar1_diferencas": 0.199,
-      "holt": 0.163
+      "ultimo_valor": 0.193,
+      "sazonal_ingenuo": 0.172,
+      "drift": 0.215,
+      "ar1_diferencas": 0.228,
+      "holt": 0.191
      },
-     "mae_ensemble_backtest": 29937.6992,
-     "mae_naive_backtest": 30334.9643,
-     "ganho_vs_naive_pct": 1.3,
+     "mae_ensemble_backtest": 30385.0725,
+     "mae_naive_backtest": 31563.0714,
+     "ganho_vs_naive_pct": 3.7,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.177,
-      "sazonal_ingenuo": 0.177,
-      "drift": 0.24,
+      "ultimo_valor": 0.175,
+      "sazonal_ingenuo": 0.175,
+      "drift": 0.233,
       "ar1_diferencas": 0.225,
-      "holt": 0.182
+      "holt": 0.193
      },
-     "mae_ensemble_backtest": 29592.682,
-     "mae_naive_backtest": 33517.68,
-     "ganho_vs_naive_pct": 11.7,
+     "mae_ensemble_backtest": 31177.137,
+     "mae_naive_backtest": 35701.68,
+     "ganho_vs_naive_pct": 12.7,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 320579.0
+    "ref": "2026-06-01",
+    "v": 362028.0
    }
   },
   "saldo_total": {
@@ -38444,108 +38623,108 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 7364841.4156,
-     "p10": 7310244.5056,
-     "p90": 7413431.7946
+     "ref_date": "2026-07-01",
+     "p50": 7420132.0461,
+     "p10": 7365039.2883,
+     "p90": 7468415.473
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 7487862.2918,
-     "p10": 7403126.0455,
-     "p90": 7581660.7457
+     "ref_date": "2026-09-01",
+     "p50": 7541902.993,
+     "p10": 7458574.7467,
+     "p90": 7635701.4469
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 7698780.8541,
-     "p10": 7561659.7379,
-     "p90": 7873411.4918
+     "ref_date": "2026-12-01",
+     "p50": 7749682.6538,
+     "p10": 7609422.6407,
+     "p90": 7924547.2916
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 7899539.9783,
-     "p10": 7709336.3861,
-     "p90": 8174040.8495
+     "ref_date": "2027-03-01",
+     "p50": 7952005.1656,
+     "p10": 7780934.4241,
+     "p90": 8225119.8852
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 8088922.444,
-     "p10": 7873759.5791,
-     "p90": 8413284.044
+     "ref_date": "2027-06-01",
+     "p50": 8140244.8996,
+     "p10": 7925082.0346,
+     "p90": 8464606.4996
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.17,
-      "drift": 0.276,
-      "ar1_diferencas": 0.272,
-      "holt": 0.283
+      "ultimo_valor": 0.169,
+      "drift": 0.273,
+      "ar1_diferencas": 0.268,
+      "holt": 0.29
      },
-     "mae_ensemble_backtest": 35753.0436,
-     "mae_naive_backtest": 52504.6571,
-     "ganho_vs_naive_pct": 31.9,
+     "mae_ensemble_backtest": 35943.2977,
+     "mae_naive_backtest": 53055.1714,
+     "ganho_vs_naive_pct": 32.3,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.112,
-      "drift": 0.236,
-      "ar1_diferencas": 0.268,
-      "holt": 0.384
+      "ultimo_valor": 0.111,
+      "drift": 0.234,
+      "ar1_diferencas": 0.269,
+      "holt": 0.386
      },
-     "mae_ensemble_backtest": 71011.4828,
-     "mae_naive_backtest": 158173.8529,
-     "ganho_vs_naive_pct": 55.1,
+     "mae_ensemble_backtest": 70620.7024,
+     "mae_naive_backtest": 158699.8235,
+     "ganho_vs_naive_pct": 55.5,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.099,
-      "drift": 0.203,
-      "ar1_diferencas": 0.232,
-      "holt": 0.466
+      "ultimo_valor": 0.1,
+      "drift": 0.207,
+      "ar1_diferencas": 0.235,
+      "holt": 0.459
      },
-     "mae_ensemble_backtest": 127728.4705,
-     "mae_naive_backtest": 321387.6774,
-     "ganho_vs_naive_pct": 60.3,
+     "mae_ensemble_backtest": 128226.8661,
+     "mae_naive_backtest": 320418.5806,
+     "ganho_vs_naive_pct": 60.0,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.093,
-      "drift": 0.189,
-      "ar1_diferencas": 0.205,
-      "holt": 0.514
+      "ultimo_valor": 0.092,
+      "drift": 0.187,
+      "ar1_diferencas": 0.204,
+      "holt": 0.517
      },
-     "mae_ensemble_backtest": 177911.8183,
-     "mae_naive_backtest": 479711.25,
-     "ganho_vs_naive_pct": 62.9,
+     "mae_ensemble_backtest": 179167.5813,
+     "mae_naive_backtest": 485026.8929,
+     "ganho_vs_naive_pct": 63.1,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.085,
-      "sazonal_ingenuo": 0.085,
-      "drift": 0.171,
-      "ar1_diferencas": 0.183,
-      "holt": 0.475
+      "ultimo_valor": 0.084,
+      "sazonal_ingenuo": 0.084,
+      "drift": 0.169,
+      "ar1_diferencas": 0.18,
+      "holt": 0.483
      },
-     "mae_ensemble_backtest": 272293.9477,
-     "mae_naive_backtest": 640479.56,
-     "ganho_vs_naive_pct": 57.5,
+     "mae_ensemble_backtest": 271638.2753,
+     "mae_naive_backtest": 646874.52,
+     "ganho_vs_naive_pct": 58.0,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 7299615.0
+    "ref": "2026-06-01",
+    "v": 7355800.0
    }
   },
   "saldo_pf": {
@@ -38554,108 +38733,108 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 4638888.1812,
-     "p10": 4615192.5067,
-     "p90": 4664540.516
+     "ref_date": "2026-07-01",
+     "p50": 4650215.0492,
+     "p10": 4628535.2124,
+     "p90": 4675769.6976
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 4723340.6304,
-     "p10": 4669618.0738,
-     "p90": 4792812.6284
+     "ref_date": "2026-09-01",
+     "p50": 4729755.7574,
+     "p10": 4672562.259,
+     "p90": 4799227.7554
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 4862130.3339,
-     "p10": 4772340.9098,
-     "p90": 5002964.3905
+     "ref_date": "2026-12-01",
+     "p50": 4863293.8254,
+     "p10": 4771846.6364,
+     "p90": 5004127.8821
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 5019085.6931,
-     "p10": 4892862.0525,
-     "p90": 5225240.9527
+     "ref_date": "2027-03-01",
+     "p50": 5020141.2121,
+     "p10": 4903043.4429,
+     "p90": 5223741.7049
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 5172501.1061,
-     "p10": 4998022.4119,
-     "p90": 5409997.0679
+     "ref_date": "2027-06-01",
+     "p50": 5170304.02,
+     "p10": 4995825.3258,
+     "p90": 5408192.9819
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.12,
-      "drift": 0.242,
-      "ar1_diferencas": 0.357,
-      "holt": 0.282
+      "ultimo_valor": 0.114,
+      "drift": 0.24,
+      "ar1_diferencas": 0.362,
+      "holt": 0.285
      },
-     "mae_ensemble_backtest": 17294.3678,
-     "mae_naive_backtest": 36165.6571,
-     "ganho_vs_naive_pct": 52.2,
+     "mae_ensemble_backtest": 16710.7517,
+     "mae_naive_backtest": 36737.4571,
+     "ganho_vs_naive_pct": 54.5,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.09,
-      "drift": 0.186,
-      "ar1_diferencas": 0.337,
-      "holt": 0.387
+      "ultimo_valor": 0.093,
+      "drift": 0.193,
+      "ar1_diferencas": 0.326,
+      "holt": 0.389
      },
-     "mae_ensemble_backtest": 39756.9999,
-     "mae_naive_backtest": 110922.8235,
-     "ganho_vs_naive_pct": 64.2,
+     "mae_ensemble_backtest": 40873.6642,
+     "mae_naive_backtest": 110271.8824,
+     "ganho_vs_naive_pct": 62.9,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
       "ultimo_valor": 0.082,
-      "drift": 0.167,
-      "ar1_diferencas": 0.268,
-      "holt": 0.483
+      "drift": 0.168,
+      "ar1_diferencas": 0.27,
+      "holt": 0.48
      },
-     "mae_ensemble_backtest": 73256.0127,
-     "mae_naive_backtest": 223806.3226,
-     "ganho_vs_naive_pct": 67.3,
+     "mae_ensemble_backtest": 73232.1565,
+     "mae_naive_backtest": 223537.2903,
+     "ganho_vs_naive_pct": 67.2,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
       "ultimo_valor": 0.072,
-      "drift": 0.147,
-      "ar1_diferencas": 0.213,
-      "holt": 0.567
+      "drift": 0.145,
+      "ar1_diferencas": 0.209,
+      "holt": 0.574
      },
-     "mae_ensemble_backtest": 96745.3769,
-     "mae_naive_backtest": 333637.3929,
-     "ganho_vs_naive_pct": 71.0,
+     "mae_ensemble_backtest": 96207.2805,
+     "mae_naive_backtest": 336271.2143,
+     "ganho_vs_naive_pct": 71.4,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.065,
-      "sazonal_ingenuo": 0.065,
-      "drift": 0.131,
-      "ar1_diferencas": 0.178,
-      "holt": 0.561
+      "ultimo_valor": 0.063,
+      "sazonal_ingenuo": 0.063,
+      "drift": 0.127,
+      "ar1_diferencas": 0.17,
+      "holt": 0.576
      },
-     "mae_ensemble_backtest": 143861.3414,
-     "mae_naive_backtest": 442940.72,
-     "ganho_vs_naive_pct": 67.5,
+     "mae_ensemble_backtest": 140703.5916,
+     "mae_naive_backtest": 446367.32,
+     "ganho_vs_naive_pct": 68.5,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 4595065.0
+    "ref": "2026-06-01",
+    "v": 4606799.0
    }
   },
   "saldo_pj": {
@@ -38664,99 +38843,99 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 2722268.7204,
-     "p10": 2687497.964,
-     "p90": 2764997.4438
+     "ref_date": "2026-07-01",
+     "p50": 2761764.7003,
+     "p10": 2726993.9439,
+     "p90": 2804493.4237
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 2758452.0656,
-     "p10": 2717832.8869,
-     "p90": 2800430.5576
+     "ref_date": "2026-09-01",
+     "p50": 2800554.6757,
+     "p10": 2759914.3116,
+     "p90": 2840955.0679
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 2814818.4591,
-     "p10": 2768815.8391,
-     "p90": 2876190.0977
+     "ref_date": "2026-12-01",
+     "p50": 2856001.1123,
+     "p10": 2803738.4258,
+     "p90": 2917703.251
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 2873420.1333,
-     "p10": 2806330.3343,
-     "p90": 2943274.2534
+     "ref_date": "2027-03-01",
+     "p50": 2917957.4407,
+     "p10": 2854946.0137,
+     "p90": 2998522.564
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 2931727.1245,
-     "p10": 2868678.9374,
-     "p90": 3028322.1591
+     "ref_date": "2027-06-01",
+     "p50": 2977831.4813,
+     "p10": 2925093.1298,
+     "p90": 3074426.516
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.222,
+      "ultimo_valor": 0.221,
       "drift": 0.247,
-      "ar1_diferencas": 0.24,
+      "ar1_diferencas": 0.241,
       "holt": 0.291
      },
-     "mae_ensemble_backtest": 24044.5329,
-     "mae_naive_backtest": 27116.0286,
-     "ganho_vs_naive_pct": 11.3,
+     "mae_ensemble_backtest": 24010.2752,
+     "mae_naive_backtest": 27135.5714,
+     "ganho_vs_naive_pct": 11.5,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.159,
-      "drift": 0.267,
-      "ar1_diferencas": 0.266,
-      "holt": 0.309
+      "ultimo_valor": 0.158,
+      "drift": 0.262,
+      "ar1_diferencas": 0.261,
+      "holt": 0.319
      },
-     "mae_ensemble_backtest": 30599.0159,
-     "mae_naive_backtest": 48193.0882,
-     "ganho_vs_naive_pct": 36.5,
+     "mae_ensemble_backtest": 31059.7968,
+     "mae_naive_backtest": 49282.3235,
+     "ganho_vs_naive_pct": 37.0,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.124,
-      "drift": 0.254,
-      "ar1_diferencas": 0.256,
-      "holt": 0.366
+      "ultimo_valor": 0.125,
+      "drift": 0.257,
+      "ar1_diferencas": 0.259,
+      "holt": 0.358
      },
-     "mae_ensemble_backtest": 48385.8554,
-     "mae_naive_backtest": 97581.3871,
-     "ganho_vs_naive_pct": 50.4,
+     "mae_ensemble_backtest": 48525.876,
+     "mae_naive_backtest": 96881.3548,
+     "ganho_vs_naive_pct": 49.9,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.124,
-      "drift": 0.255,
-      "ar1_diferencas": 0.259,
-      "holt": 0.362
+      "ultimo_valor": 0.125,
+      "drift": 0.253,
+      "ar1_diferencas": 0.257,
+      "holt": 0.365
      },
-     "mae_ensemble_backtest": 72624.0028,
-     "mae_naive_backtest": 146073.9286,
-     "ganho_vs_naive_pct": 50.3,
+     "mae_ensemble_backtest": 74288.6715,
+     "mae_naive_backtest": 148755.7857,
+     "ganho_vs_naive_pct": 50.1,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
       "ultimo_valor": 0.112,
       "sazonal_ingenuo": 0.112,
-      "drift": 0.224,
-      "ar1_diferencas": 0.227,
-      "holt": 0.325
+      "drift": 0.222,
+      "ar1_diferencas": 0.225,
+      "holt": 0.328
      },
-     "mae_ensemble_backtest": 110537.389,
-     "mae_naive_backtest": 197538.88,
+     "mae_ensemble_backtest": 112196.3725,
+     "mae_naive_backtest": 200507.24,
      "ganho_vs_naive_pct": 44.0,
      "n_backtests": 25
     }
@@ -38764,8 +38943,8 @@
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 2704550.0
+    "ref": "2026-06-01",
+    "v": 2749001.0
    }
   },
   "spread_total": {
@@ -38774,105 +38953,104 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 22.0861,
-     "p10": 21.7269,
-     "p90": 22.6716
+     "ref_date": "2026-07-01",
+     "p50": 21.9942,
+     "p10": 21.5997,
+     "p90": 22.5797
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 22.0668,
-     "p10": 21.3032,
-     "p90": 23.2106
+     "ref_date": "2026-09-01",
+     "p50": 21.9753,
+     "p10": 21.2254,
+     "p90": 23.1192
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 22.3443,
-     "p10": 20.7682,
-     "p90": 24.1007
+     "ref_date": "2026-12-01",
+     "p50": 22.4817,
+     "p10": 20.8555,
+     "p90": 24.0081
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 23.0908,
-     "p10": 20.1532,
-     "p90": 24.4919
+     "ref_date": "2027-03-01",
+     "p50": 23.1167,
+     "p10": 20.2584,
+     "p90": 24.4545
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 23.5353,
-     "p10": 19.6514,
-     "p90": 25.0731
+     "ref_date": "2027-06-01",
+     "p50": 23.4557,
+     "p10": 19.7255,
+     "p90": 25.0217
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.334,
+      "ultimo_valor": 0.335,
       "drift": 0.333,
-      "ar1_diferencas": 0.333
+      "ar1_diferencas": 0.332
      },
-     "mae_ensemble_backtest": 0.3153,
-     "mae_naive_backtest": 0.3143,
-     "ganho_vs_naive_pct": -0.3,
+     "mae_ensemble_backtest": 0.3185,
+     "mae_naive_backtest": 0.3171,
+     "ganho_vs_naive_pct": -0.4,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.329,
+      "ultimo_valor": 0.33,
       "drift": 0.329,
-      "ar1_diferencas": 0.342
+      "ar1_diferencas": 0.341
      },
-     "mae_ensemble_backtest": 0.6189,
-     "mae_naive_backtest": 0.6271,
-     "ganho_vs_naive_pct": 1.3,
+     "mae_ensemble_backtest": 0.6036,
+     "mae_naive_backtest": 0.6106,
+     "ganho_vs_naive_pct": 1.1,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.332,
+      "ultimo_valor": 0.331,
       "drift": 0.331,
-      "ar1_diferencas": 0.337
+      "ar1_diferencas": 0.338
      },
-     "mae_ensemble_backtest": 1.1524,
-     "mae_naive_backtest": 1.1571,
-     "ganho_vs_naive_pct": 0.4,
+     "mae_ensemble_backtest": 1.1257,
+     "mae_naive_backtest": 1.1348,
+     "ganho_vs_naive_pct": 0.8,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.259,
-      "drift": 0.256,
-      "media_movel_6m": 0.227,
-      "ar1_diferencas": 0.258
+      "ultimo_valor": 0.333,
+      "drift": 0.332,
+      "ar1_diferencas": 0.335
      },
-     "mae_ensemble_backtest": 1.688,
-     "mae_naive_backtest": 1.6296,
-     "ganho_vs_naive_pct": -3.6,
+     "mae_ensemble_backtest": 1.5988,
+     "mae_naive_backtest": 1.5986,
+     "ganho_vs_naive_pct": -0.0,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
       "ultimo_valor": 0.204,
       "sazonal_ingenuo": 0.204,
-      "drift": 0.201,
-      "media_movel_6m": 0.191,
-      "ar1_diferencas": 0.201
+      "drift": 0.203,
+      "media_movel_6m": 0.184,
+      "ar1_diferencas": 0.204
      },
-     "mae_ensemble_backtest": 2.0366,
-     "mae_naive_backtest": 2.0008,
-     "ganho_vs_naive_pct": -1.8,
+     "mae_ensemble_backtest": 1.9805,
+     "mae_naive_backtest": 1.938,
+     "ganho_vs_naive_pct": -2.2,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 22.09
+    "ref": "2026-06-01",
+    "v": 21.99
    }
   },
   "spread_pf": {
@@ -38881,104 +39059,105 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 28.1216,
-     "p10": 27.6337,
-     "p90": 28.7911
+     "ref_date": "2026-07-01",
+     "p50": 28.5662,
+     "p10": 28.0783,
+     "p90": 29.2317
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 28.1289,
-     "p10": 27.0269,
-     "p90": 29.5579
+     "ref_date": "2026-09-01",
+     "p50": 28.6305,
+     "p10": 27.626,
+     "p90": 30.0211
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 28.601,
-     "p10": 26.1453,
-     "p90": 30.7021
+     "ref_date": "2026-12-01",
+     "p50": 29.4877,
+     "p10": 26.9886,
+     "p90": 31.5436
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 29.6829,
-     "p10": 25.8807,
-     "p90": 31.1037
+     "ref_date": "2027-03-01",
+     "p50": 30.3036,
+     "p10": 26.5513,
+     "p90": 31.5775
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 30.1631,
-     "p10": 25.0365,
-     "p90": 32.2114
+     "ref_date": "2027-06-01",
+     "p50": 30.6524,
+     "p10": 25.6949,
+     "p90": 32.6291
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.338,
-      "drift": 0.339,
-      "ar1_diferencas": 0.323
+      "ultimo_valor": 0.339,
+      "drift": 0.34,
+      "ar1_diferencas": 0.321
      },
-     "mae_ensemble_backtest": 0.4186,
-     "mae_naive_backtest": 0.4123,
-     "ganho_vs_naive_pct": -1.5,
+     "mae_ensemble_backtest": 0.4155,
+     "mae_naive_backtest": 0.408,
+     "ganho_vs_naive_pct": -1.8,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.328,
-      "drift": 0.329,
+      "ultimo_valor": 0.327,
+      "drift": 0.33,
       "ar1_diferencas": 0.343
      },
-     "mae_ensemble_backtest": 0.8141,
-     "mae_naive_backtest": 0.8279,
-     "ganho_vs_naive_pct": 1.7,
+     "mae_ensemble_backtest": 0.7992,
+     "mae_naive_backtest": 0.8135,
+     "ganho_vs_naive_pct": 1.8,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.328,
-      "drift": 0.327,
-      "ar1_diferencas": 0.345
+      "ultimo_valor": 0.254,
+      "drift": 0.254,
+      "ar1_diferencas": 0.268,
+      "holt": 0.224
      },
-     "mae_ensemble_backtest": 1.493,
-     "mae_naive_backtest": 1.5161,
-     "ganho_vs_naive_pct": 1.5,
+     "mae_ensemble_backtest": 1.5118,
+     "mae_naive_backtest": 1.4858,
+     "ganho_vs_naive_pct": -1.8,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
       "ultimo_valor": 0.335,
-      "drift": 0.328,
+      "drift": 0.329,
       "ar1_diferencas": 0.337
      },
-     "mae_ensemble_backtest": 2.0824,
-     "mae_naive_backtest": 2.0729,
-     "ganho_vs_naive_pct": -0.5,
+     "mae_ensemble_backtest": 2.0579,
+     "mae_naive_backtest": 2.0493,
+     "ganho_vs_naive_pct": -0.4,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.205,
-      "sazonal_ingenuo": 0.205,
-      "drift": 0.198,
-      "media_movel_6m": 0.19,
-      "ar1_diferencas": 0.202
+      "ultimo_valor": 0.207,
+      "sazonal_ingenuo": 0.207,
+      "drift": 0.199,
+      "media_movel_6m": 0.184,
+      "ar1_diferencas": 0.204
      },
-     "mae_ensemble_backtest": 2.5781,
-     "mae_naive_backtest": 2.512,
-     "ganho_vs_naive_pct": -2.6,
+     "mae_ensemble_backtest": 2.5439,
+     "mae_naive_backtest": 2.462,
+     "ganho_vs_naive_pct": -3.3,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 28.19
+    "ref": "2026-06-01",
+    "v": 28.59
    }
   },
   "spread_pj": {
@@ -38987,109 +39166,108 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 8.7926,
-     "p10": 8.1486,
-     "p90": 9.4014
+     "ref_date": "2026-07-01",
+     "p50": 8.229,
+     "p10": 7.6,
+     "p90": 8.8528
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 8.77,
-     "p10": 7.9842,
-     "p90": 9.6138
+     "ref_date": "2026-09-01",
+     "p50": 8.0037,
+     "p10": 7.2271,
+     "p90": 8.8567
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 8.6232,
-     "p10": 7.6818,
-     "p90": 9.7267
+     "ref_date": "2026-12-01",
+     "p50": 7.8798,
+     "p10": 6.9833,
+     "p90": 8.9656
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 8.6835,
-     "p10": 7.3442,
-     "p90": 10.2127
+     "ref_date": "2027-03-01",
+     "p50": 8.0734,
+     "p10": 6.8036,
+     "p90": 9.6721
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 9.0091,
-     "p10": 7.3053,
-     "p90": 10.1518
+     "ref_date": "2027-06-01",
+     "p50": 8.2804,
+     "p10": 6.6779,
+     "p90": 9.5244
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.197,
-      "drift": 0.198,
-      "media_movel_6m": 0.191,
+      "ultimo_valor": 0.196,
+      "drift": 0.197,
+      "media_movel_6m": 0.193,
       "ar1_diferencas": 0.212,
-      "holt": 0.201
+      "holt": 0.203
      },
-     "mae_ensemble_backtest": 0.4259,
-     "mae_naive_backtest": 0.4314,
-     "ganho_vs_naive_pct": 1.3,
+     "mae_ensemble_backtest": 0.4334,
+     "mae_naive_backtest": 0.4414,
+     "ganho_vs_naive_pct": 1.8,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.33,
+      "ultimo_valor": 0.331,
       "drift": 0.337,
-      "ar1_diferencas": 0.333
+      "ar1_diferencas": 0.331
      },
-     "mae_ensemble_backtest": 0.4462,
-     "mae_naive_backtest": 0.45,
-     "ganho_vs_naive_pct": 0.9,
+     "mae_ensemble_backtest": 0.4697,
+     "mae_naive_backtest": 0.4726,
+     "ganho_vs_naive_pct": 0.6,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.258,
-      "drift": 0.259,
-      "media_movel_6m": 0.228,
-      "ar1_diferencas": 0.256
+      "ultimo_valor": 0.336,
+      "drift": 0.335,
+      "ar1_diferencas": 0.329
      },
-     "mae_ensemble_backtest": 0.7049,
-     "mae_naive_backtest": 0.6826,
-     "ganho_vs_naive_pct": -3.3,
+     "mae_ensemble_backtest": 0.6789,
+     "mae_naive_backtest": 0.6729,
+     "ganho_vs_naive_pct": -0.9,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
       "ultimo_valor": 0.206,
-      "sazonal_ingenuo": 0.19,
+      "sazonal_ingenuo": 0.193,
       "drift": 0.201,
-      "media_movel_6m": 0.201,
-      "ar1_diferencas": 0.201
+      "media_movel_6m": 0.2,
+      "ar1_diferencas": 0.2
      },
-     "mae_ensemble_backtest": 0.9005,
-     "mae_naive_backtest": 0.8743,
-     "ganho_vs_naive_pct": -3.0,
+     "mae_ensemble_backtest": 0.9286,
+     "mae_naive_backtest": 0.9029,
+     "ganho_vs_naive_pct": -2.8,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.206,
-      "sazonal_ingenuo": 0.206,
-      "drift": 0.195,
-      "media_movel_6m": 0.201,
+      "ultimo_valor": 0.205,
+      "sazonal_ingenuo": 0.205,
+      "drift": 0.194,
+      "media_movel_6m": 0.202,
       "ar1_diferencas": 0.193
      },
-     "mae_ensemble_backtest": 1.0331,
-     "mae_naive_backtest": 1.0048,
-     "ganho_vs_naive_pct": -2.8,
+     "mae_ensemble_backtest": 0.998,
+     "mae_naive_backtest": 0.9736,
+     "ganho_vs_naive_pct": -2.5,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 8.85
+    "ref": "2026-06-01",
+    "v": 8.08
    }
   },
   "taxa_total": {
@@ -39098,104 +39276,103 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 33.4541,
-     "p10": 32.9933,
-     "p90": 34.0335
+     "ref_date": "2026-07-01",
+     "p50": 33.4986,
+     "p10": 33.0537,
+     "p90": 34.078
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 33.6719,
-     "p10": 32.2804,
-     "p90": 35.1386
+     "ref_date": "2026-09-01",
+     "p50": 33.7378,
+     "p10": 32.3647,
+     "p90": 35.1894
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 33.9989,
-     "p10": 31.3849,
-     "p90": 36.7998
+     "ref_date": "2026-12-01",
+     "p50": 34.2505,
+     "p10": 31.9868,
+     "p90": 36.8507
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 34.554,
-     "p10": 31.1296,
-     "p90": 37.4667
+     "ref_date": "2027-03-01",
+     "p50": 34.7667,
+     "p10": 31.5626,
+     "p90": 37.5182
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 35.7583,
-     "p10": 30.4821,
-     "p90": 37.5355
+     "ref_date": "2027-06-01",
+     "p50": 35.7128,
+     "p10": 31.2698,
+     "p90": 37.6978
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.318,
+      "ultimo_valor": 0.319,
       "drift": 0.321,
-      "ar1_diferencas": 0.361
+      "ar1_diferencas": 0.36
      },
-     "mae_ensemble_backtest": 0.3415,
-     "mae_naive_backtest": 0.3577,
-     "ganho_vs_naive_pct": 4.5,
+     "mae_ensemble_backtest": 0.3287,
+     "mae_naive_backtest": 0.3437,
+     "ganho_vs_naive_pct": 4.4,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.322,
+      "ultimo_valor": 0.319,
       "drift": 0.328,
-      "ar1_diferencas": 0.35
+      "ar1_diferencas": 0.353
      },
-     "mae_ensemble_backtest": 0.7931,
-     "mae_naive_backtest": 0.8221,
-     "ganho_vs_naive_pct": 3.5,
+     "mae_ensemble_backtest": 0.7452,
+     "mae_naive_backtest": 0.7791,
+     "ganho_vs_naive_pct": 4.3,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.325,
-      "drift": 0.332,
-      "ar1_diferencas": 0.343
+      "ultimo_valor": 0.323,
+      "drift": 0.333,
+      "ar1_diferencas": 0.344
      },
-     "mae_ensemble_backtest": 1.4639,
-     "mae_naive_backtest": 1.5013,
-     "ganho_vs_naive_pct": 2.5,
+     "mae_ensemble_backtest": 1.4121,
+     "mae_naive_backtest": 1.4571,
+     "ganho_vs_naive_pct": 3.1,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.325,
-      "drift": 0.331,
-      "ar1_diferencas": 0.344
+      "ultimo_valor": 0.323,
+      "drift": 0.333,
+      "ar1_diferencas": 0.345
      },
-     "mae_ensemble_backtest": 2.0782,
-     "mae_naive_backtest": 2.1307,
-     "ganho_vs_naive_pct": 2.5,
+     "mae_ensemble_backtest": 1.9941,
+     "mae_naive_backtest": 2.0589,
+     "ganho_vs_naive_pct": 3.2,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.203,
-      "sazonal_ingenuo": 0.203,
-      "drift": 0.206,
-      "media_movel_6m": 0.177,
-      "ar1_diferencas": 0.21
+      "ultimo_valor": 0.246,
+      "sazonal_ingenuo": 0.246,
+      "drift": 0.251,
+      "ar1_diferencas": 0.257
      },
-     "mae_ensemble_backtest": 2.8401,
-     "mae_naive_backtest": 2.792,
-     "ganho_vs_naive_pct": -1.7,
+     "mae_ensemble_backtest": 2.6445,
+     "mae_naive_backtest": 2.6924,
+     "ganho_vs_naive_pct": 1.8,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 33.42
+    "ref": "2026-06-01",
+    "v": 33.44
    }
   },
   "taxa_pf": {
@@ -39204,38 +39381,38 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 38.9374,
-     "p10": 38.2324,
-     "p90": 39.4519
+     "ref_date": "2026-07-01",
+     "p50": 39.5791,
+     "p10": 38.9538,
+     "p90": 40.0936
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 39.1306,
-     "p10": 37.2712,
-     "p90": 40.5397
+     "ref_date": "2026-09-01",
+     "p50": 39.942,
+     "p10": 37.9988,
+     "p90": 41.2212
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 39.5845,
-     "p10": 35.9073,
-     "p90": 42.4976
+     "ref_date": "2026-12-01",
+     "p50": 40.37,
+     "p10": 37.6657,
+     "p90": 43.1909
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 40.6064,
-     "p10": 35.9108,
-     "p90": 43.1315
+     "ref_date": "2027-03-01",
+     "p50": 41.4104,
+     "p10": 37.2672,
+     "p90": 43.8308
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 41.8768,
-     "p10": 35.2215,
-     "p90": 43.5468
+     "ref_date": "2027-06-01",
+     "p50": 42.6169,
+     "p10": 36.4154,
+     "p90": 44.2638
     }
    ],
    "diagnostico": {
@@ -39243,22 +39420,22 @@
      "pesos": {
       "ultimo_valor": 0.319,
       "drift": 0.319,
-      "ar1_diferencas": 0.362
+      "ar1_diferencas": 0.361
      },
-     "mae_ensemble_backtest": 0.3983,
-     "mae_naive_backtest": 0.4166,
-     "ganho_vs_naive_pct": 4.4,
+     "mae_ensemble_backtest": 0.3819,
+     "mae_naive_backtest": 0.3986,
+     "ganho_vs_naive_pct": 4.2,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.324,
+      "ultimo_valor": 0.322,
       "drift": 0.324,
-      "ar1_diferencas": 0.353
+      "ar1_diferencas": 0.354
      },
-     "mae_ensemble_backtest": 0.9805,
-     "mae_naive_backtest": 1.0103,
-     "ganho_vs_naive_pct": 2.9,
+     "mae_ensemble_backtest": 0.9496,
+     "mae_naive_backtest": 0.9824,
+     "ganho_vs_naive_pct": 3.3,
      "n_backtests": 34
     },
     "6": {
@@ -39267,41 +39444,40 @@
       "drift": 0.325,
       "ar1_diferencas": 0.35
      },
-     "mae_ensemble_backtest": 1.775,
-     "mae_naive_backtest": 1.8181,
-     "ganho_vs_naive_pct": 2.4,
+     "mae_ensemble_backtest": 1.7201,
+     "mae_naive_backtest": 1.7665,
+     "ganho_vs_naive_pct": 2.6,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.332,
-      "drift": 0.325,
+      "ultimo_valor": 0.331,
+      "drift": 0.326,
       "ar1_diferencas": 0.343
      },
-     "mae_ensemble_backtest": 2.5379,
-     "mae_naive_backtest": 2.55,
-     "ganho_vs_naive_pct": 0.5,
+     "mae_ensemble_backtest": 2.4607,
+     "mae_naive_backtest": 2.4775,
+     "ganho_vs_naive_pct": 0.7,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.206,
-      "sazonal_ingenuo": 0.206,
-      "drift": 0.2,
-      "media_movel_6m": 0.182,
-      "ar1_diferencas": 0.207
+      "ultimo_valor": 0.251,
+      "sazonal_ingenuo": 0.251,
+      "drift": 0.245,
+      "ar1_diferencas": 0.254
      },
-     "mae_ensemble_backtest": 3.3803,
-     "mae_naive_backtest": 3.2884,
-     "ganho_vs_naive_pct": -2.8,
+     "mae_ensemble_backtest": 3.2099,
+     "mae_naive_backtest": 3.2012,
+     "ganho_vs_naive_pct": -0.3,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 38.88
+    "ref": "2026-06-01",
+    "v": 39.44
    }
   },
   "taxa_pj": {
@@ -39310,104 +39486,104 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 21.5536,
-     "p10": 20.6176,
-     "p90": 22.7807
+     "ref_date": "2026-07-01",
+     "p50": 20.8807,
+     "p10": 19.9826,
+     "p90": 22.1078
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 21.6548,
-     "p10": 20.5271,
-     "p90": 23.056
+     "ref_date": "2026-09-01",
+     "p50": 20.8849,
+     "p10": 20.0437,
+     "p90": 22.286
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 21.656,
-     "p10": 20.3179,
-     "p90": 24.0313
+     "ref_date": "2026-12-01",
+     "p50": 20.9454,
+     "p10": 19.6161,
+     "p90": 23.2524
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 21.7478,
-     "p10": 20.2464,
-     "p90": 24.9672
+     "ref_date": "2027-03-01",
+     "p50": 20.9822,
+     "p10": 19.5226,
+     "p90": 24.1794
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 22.5428,
-     "p10": 20.1379,
-     "p90": 24.9486
+     "ref_date": "2027-06-01",
+     "p50": 21.7527,
+     "p10": 19.5493,
+     "p90": 24.1586
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.256,
-      "drift": 0.255,
-      "ar1_diferencas": 0.265,
-      "holt": 0.225
+      "ultimo_valor": 0.253,
+      "drift": 0.252,
+      "ar1_diferencas": 0.264,
+      "holt": 0.232
      },
-     "mae_ensemble_backtest": 0.6012,
-     "mae_naive_backtest": 0.5877,
-     "ganho_vs_naive_pct": -2.3,
+     "mae_ensemble_backtest": 0.5828,
+     "mae_naive_backtest": 0.5763,
+     "ganho_vs_naive_pct": -1.1,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
       "ultimo_valor": 0.333,
-      "drift": 0.333,
-      "ar1_diferencas": 0.334
+      "drift": 0.332,
+      "ar1_diferencas": 0.335
      },
-     "mae_ensemble_backtest": 0.7485,
-     "mae_naive_backtest": 0.7485,
-     "ganho_vs_naive_pct": 0.0,
+     "mae_ensemble_backtest": 0.7083,
+     "mae_naive_backtest": 0.7091,
+     "ganho_vs_naive_pct": 0.1,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.336,
+      "ultimo_valor": 0.335,
       "drift": 0.332,
-      "ar1_diferencas": 0.332
+      "ar1_diferencas": 0.333
      },
-     "mae_ensemble_backtest": 1.194,
-     "mae_naive_backtest": 1.1839,
-     "ganho_vs_naive_pct": -0.9,
+     "mae_ensemble_backtest": 1.1575,
+     "mae_naive_backtest": 1.151,
+     "ganho_vs_naive_pct": -0.6,
      "n_backtests": 31
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.339,
-      "drift": 0.333,
-      "ar1_diferencas": 0.328
+      "ultimo_valor": 0.338,
+      "drift": 0.332,
+      "ar1_diferencas": 0.329
      },
-     "mae_ensemble_backtest": 1.4848,
-     "mae_naive_backtest": 1.4604,
-     "ganho_vs_naive_pct": -1.7,
+     "mae_ensemble_backtest": 1.4282,
+     "mae_naive_backtest": 1.4071,
+     "ganho_vs_naive_pct": -1.5,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
       "ultimo_valor": 0.252,
       "sazonal_ingenuo": 0.252,
-      "drift": 0.247,
+      "drift": 0.246,
       "ar1_diferencas": 0.25
      },
-     "mae_ensemble_backtest": 1.7653,
-     "mae_naive_backtest": 1.7524,
-     "ganho_vs_naive_pct": -0.7,
+     "mae_ensemble_backtest": 1.6539,
+     "mae_naive_backtest": 1.6412,
+     "ganho_vs_naive_pct": -0.8,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 21.57
+    "ref": "2026-06-01",
+    "v": 20.8
    }
   }
  }

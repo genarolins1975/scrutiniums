@@ -15,10 +15,10 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:00+00:00",
+  "atualizado_em": "2026-08-01T11:24:50+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
-  "participante_open_finance": null
+  "participante_open_finance": true
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -716,7 +716,22 @@
   "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
  },
  "atraso_produtos": null,
- "openfinance": null,
+ "openfinance": {
+  "organisation": "BELVO IP",
+  "chamadas_semana": 3646.0,
+  "share_pct": 0.0,
+  "familias_api": 8,
+  "papeis": [
+   "DADOS",
+   "PAGTO"
+  ],
+  "dimensoes": {
+   "escala_chamadas": 0.0,
+   "cobertura_funcional": 14.3
+  },
+  "maturidade_estrutural": 7.2,
+  "match_diretorio": true
+ },
  "reclamacoes": [
   {
    "periodo": "2026-T1",

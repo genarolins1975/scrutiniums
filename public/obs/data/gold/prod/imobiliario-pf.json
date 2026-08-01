@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T01:10:12+00:00",
+ "gerado_em": "2026-08-01T11:24:57+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -21,7 +21,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "habitacao",
   "data_base": "202603",
-  "mercado_total_brl": 1356414580327.2993,
+  "mercado_total_brl": 1356414580327.3,
   "n_instituicoes": 123,
   "share_segmento_pct": 28.41,
   "crescimento_4t_pct": 12.38,
@@ -35,7 +35,7 @@
    },
    {
     "anomes": "202506",
-    "total_brl": 1240993516255.2397,
+    "total_brl": 1240993516255.24,
     "n_inst": 120
    },
    {
@@ -50,7 +50,7 @@
    },
    {
     "anomes": "202603",
-    "total_brl": 1356414580327.2993,
+    "total_brl": 1356414580327.3,
     "n_inst": 123
    }
   ],

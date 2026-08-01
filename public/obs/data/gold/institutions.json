@@ -96,17 +96,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.51,
-     -0.05
+     -0.52,
+     -0.06
     ],
     "basileia_atual_pct": 14.77,
     "basileia_pos_choque_pct": [
-     14.26,
-     14.72
+     14.25,
+     14.71
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -262,24 +262,24 @@
     },
     {
      "anomes": "202603",
-     "score": 74.7
+     "score": 74.8
     }
    ],
    "vulnerabilidade": {
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.58,
-     -0.06
+     -0.59,
+     -0.07
     ],
     "basileia_atual_pct": 14.23,
     "basileia_pos_choque_pct": [
-     13.65,
-     14.17
+     13.64,
+     14.15
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -295,9 +295,9 @@
    "carteira_brl": 1119951053614.74,
    "pl_brl": 187730514413.37,
    "lucro_brl": 3156451730.28005,
-   "score": 74.7,
+   "score": 74.8,
    "score_anterior": 65.2,
-   "score_delta": 9.5,
+   "score_delta": 9.6,
    "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
@@ -442,17 +442,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.89,
-     -0.09
+     -0.91,
+     -0.11
     ],
     "basileia_atual_pct": 15.13,
     "basileia_pos_choque_pct": [
-     14.25,
-     15.05
+     14.23,
+     15.02
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -615,17 +615,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.51,
-     -0.05
+     -0.52,
+     -0.07
     ],
     "basileia_atual_pct": 14.9,
     "basileia_pos_choque_pct": [
-     14.39,
-     14.85
+     14.38,
+     14.84
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -788,17 +788,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.49,
-     -0.05
+     -0.5,
+     -0.06
     ],
     "basileia_atual_pct": 15.15,
     "basileia_pos_choque_pct": [
-     14.67,
-     15.1
+     14.66,
+     15.09
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -941,17 +941,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.28,
-     -0.03
+     -0.04
     ],
     "basileia_atual_pct": 24.09,
     "basileia_pos_choque_pct": [
-     23.81,
-     24.06
+     23.8,
+     24.05
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1114,17 +1114,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.25,
-     -0.02
+     -0.03
     ],
     "basileia_atual_pct": 15.91,
     "basileia_pos_choque_pct": [
      15.66,
-     15.89
+     15.88
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1287,17 +1287,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.31,
-     -0.03
+     -0.04
     ],
     "basileia_atual_pct": 11.93,
     "basileia_pos_choque_pct": [
-     11.63,
-     11.9
+     11.62,
+     11.89
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1460,17 +1460,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.63,
-     -0.06
+     -0.64,
+     -0.08
     ],
     "basileia_atual_pct": 17.35,
     "basileia_pos_choque_pct": [
-     16.72,
-     17.29
+     16.71,
+     17.27
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1629,17 +1629,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.3,
-     -0.03
+     -0.04
     ],
     "basileia_atual_pct": 15.1,
     "basileia_pos_choque_pct": [
      14.8,
-     15.07
+     15.06
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1802,17 +1802,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.81,
-     -0.08
+     -0.82,
+     -0.1
     ],
     "basileia_atual_pct": 19.4,
     "basileia_pos_choque_pct": [
-     18.59,
-     19.32
+     18.57,
+     19.29
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -1975,17 +1975,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.79,
-     -0.08
+     -0.81,
+     -0.1
     ],
     "basileia_atual_pct": 17.97,
     "basileia_pos_choque_pct": [
-     17.18,
-     17.89
+     17.16,
+     17.87
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -2136,17 +2136,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.35,
-     -0.03
+     -0.04
     ],
     "basileia_atual_pct": 13.42,
     "basileia_pos_choque_pct": [
-     13.07,
-     13.38
+     13.06,
+     13.37
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -2388,17 +2388,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.56,
-     -0.05
+     -0.57,
+     -0.07
     ],
     "basileia_atual_pct": 17.47,
     "basileia_pos_choque_pct": [
-     16.91,
-     17.41
+     16.9,
+     17.4
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -2561,17 +2561,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.84,
-     -0.08
+     -0.86,
+     -0.11
     ],
     "basileia_atual_pct": 12.95,
     "basileia_pos_choque_pct": [
-     12.1,
-     12.86
+     12.08,
+     12.84
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -2734,17 +2734,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.54,
-     -0.05
+     -0.55,
+     -0.07
     ],
     "basileia_atual_pct": 15.01,
     "basileia_pos_choque_pct": [
-     14.48,
-     14.96
+     14.46,
+     14.95
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -2889,12 +2889,12 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.13,
-     -0.01
+     -0.02
     ],
     "basileia_atual_pct": 23.79,
     "basileia_pos_choque_pct": [
@@ -3001,8 +3001,8 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.0,
@@ -3245,17 +3245,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.68,
-     -0.07
+     -0.7,
+     -0.09
     ],
     "basileia_atual_pct": 13.98,
     "basileia_pos_choque_pct": [
-     13.3,
-     13.92
+     13.29,
+     13.9
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -3407,7 +3407,7 @@
     },
     {
      "anomes": "202512",
-     "score": 56.0
+     "score": 55.9
     },
     {
      "anomes": "202603",
@@ -3418,17 +3418,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.56,
-     -0.05
+     -0.57,
+     -0.07
     ],
     "basileia_atual_pct": 13.55,
     "basileia_pos_choque_pct": [
-     12.99,
-     13.49
+     12.98,
+     13.47
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -3445,8 +3445,8 @@
    "pl_brl": 7356622444.34,
    "lucro_brl": 441285602.16,
    "score": 58.0,
-   "score_anterior": 56.0,
-   "score_delta": 2.0,
+   "score_anterior": 55.9,
+   "score_delta": 2.1,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
@@ -3578,12 +3578,12 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.29,
-     -0.03
+     -0.04
     ],
     "basileia_atual_pct": 12.26,
     "basileia_pos_choque_pct": [
@@ -3735,8 +3735,8 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.0,
@@ -3908,8 +3908,8 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.11,
@@ -3918,7 +3918,7 @@
     "basileia_atual_pct": 15.36,
     "basileia_pos_choque_pct": [
      15.25,
-     15.35
+     15.34
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -4152,8 +4152,8 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.05,
@@ -4314,24 +4314,24 @@
     },
     {
      "anomes": "202603",
-     "score": 31.9
+     "score": 31.8
     }
    ],
    "vulnerabilidade": {
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
      -0.25,
-     -0.02
+     -0.03
     ],
     "basileia_atual_pct": 15.83,
     "basileia_pos_choque_pct": [
-     15.59,
-     15.81
+     15.58,
+     15.8
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -4347,9 +4347,9 @@
    "carteira_brl": 20984785405.0,
    "pl_brl": 7177130035.26,
    "lucro_brl": 237263392.21,
-   "score": 31.9,
+   "score": 31.8,
    "score_anterior": 36.3,
-   "score_delta": -4.4,
+   "score_delta": -4.5,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
@@ -4486,17 +4486,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.47,
-     -0.05
+     -0.48,
+     -0.06
     ],
     "basileia_atual_pct": 13.01,
     "basileia_pos_choque_pct": [
-     12.54,
-     12.96
+     12.53,
+     12.95
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -4643,17 +4643,17 @@
     "tipo": "CENÁRIO",
     "cenario": "severamente adverso",
     "delta_inad_pp": [
-     0.12,
-     1.26
+     0.16,
+     1.28
     ],
     "impacto_basileia_pp": [
-     -0.65,
-     -0.06
+     -0.66,
+     -0.08
     ],
     "basileia_atual_pct": 12.82,
     "basileia_pos_choque_pct": [
-     12.17,
-     12.75
+     12.15,
+     12.73
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },

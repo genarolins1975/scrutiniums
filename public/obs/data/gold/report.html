@@ -16,39 +16,35 @@ th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:#556}
 .aviso{background:#fdf6ec;border:1px solid #e8d5b0;border-radius:6px;padding:10px 14px;font-size:12.5px}
 @media print{body{margin:8mm}h2{break-after:avoid}table,p{break-inside:avoid}}
 </style></head><body><h1>Observatório Brasileiro de Crédito — Relatório automático</h1>
-<p class="meta">Gerado pelo pipeline em 2026-08-01T01:10:03+00:00 · versão 0.1.0 · Este texto é produzido por regras determinísticas auditáveis sobre dados públicos — não é redação livre de modelo de linguagem.</p>
+<p class="meta">Gerado pelo pipeline em 2026-08-01T11:24:52+00:00 · versão 0.1.0 · Este texto é produzido por regras determinísticas auditáveis sobre dados públicos — não é redação livre de modelo de linguagem.</p>
 <div class="aviso">Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento.</div>
 <h2>1 · Sumário executivo</h2>
-<p><span class="tag calc">CALCULADO</span> As condições de crédito permanecem restritivas (IBCC 93.1, percentil histórico 5), em fase de contração, com sinais mistos entre os indicadores monitorados. (confiança moderada: qualidade média dos dados 67/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP)</p>
-<p><span class="tag obs">OBSERVAÇÃO</span> A inadimplência total (>90 dias) está em 4,74% (ref. 2026-05, BCB/SGS 21082).</p>
-<p><span class="tag prev">PREVISÃO</span> Projeção para 2027-05: 5,05% [4,45–5,85] — ensemble com backtest, bandas por quantis de resíduos fora da amostra.</p>
+<p><span class="tag calc">CALCULADO</span> As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com sinais mistos entre os indicadores monitorados. (confiança moderada: qualidade média dos dados 75/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP)</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> A inadimplência total (>90 dias) está em 4,68% (ref. 2026-06, BCB/SGS 21082).</p>
+<p><span class="tag prev">PREVISÃO</span> Projeção para 2027-06: 5,15% [4,41–5,82] — ensemble com backtest, bandas por quantis de resíduos fora da amostra.</p>
 <h2>2 · Pulso do crédito e mudanças desde a última atualização</h2>
-<p><span class="tag calc">CALCULADO</span> Principais deteriorações no mês (Δ normalizado pelo padrão histórico): IBC-Br (atividade) (-4.46); Inadimplência total (>90d) (+0.11); Inadimplência PF (+0.11); Inadimplência PJ (+0.09); Papelão ondulado (antecedente) (-3261.00).</p>
-<p><span class="tag calc">CALCULADO</span> Principais melhoras: Saldo de crédito (+41016.00); Taxa de desocupação (-0.20); Spread médio (-0.15); Comprometimento de renda (-0.05); Taxa média de juros (-0.09).</p>
+<p><span class="tag calc">CALCULADO</span> Principais deteriorações no mês (Δ normalizado pelo padrão histórico): IBC-Br (atividade) (-4.46); Comprometimento de renda (+0.12); Taxa média de juros (+0.22); Papelão ondulado (antecedente) (-3261.00); Spread médio (+0.10).</p>
+<p><span class="tag calc">CALCULADO</span> Principais melhoras: Saldo de crédito (+52182.00); Concessões (nível) (+45700.00); Taxa de desocupação (-0.20); Inadimplência total (>90d) (-0.06); Inadimplência PJ (-0.06).</p>
 <p><span class="tag interp">INTERPRETAÇÃO</span> Leituras de variação mensal devem considerar sazonalidade e revisões; as classificações acima usam a direção econômica de cada indicador.</p>
 <h2>3 · Alertas ativos</h2>
-<table><tr><th>Nível</th><th>Alerta</th><th>Fonte</th></tr><tr><td>atencao</td><td>Comprometimento de renda acima de 28%</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 122 dias</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 122 dias</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 122 dias</td><td class='src'>BCB/SGS</td></tr></table>
+<table><tr><th>Nível</th><th>Alerta</th><th>Fonte</th></tr><tr><td>atencao</td><td>Comprometimento de renda acima de 28%</td><td class='src'>BCB/SGS</td></tr><tr><td>informativo</td><td>Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 122 dias</td><td class='src'>BCB/SGS</td></tr></table>
 <h2>4 · Risco setorial</h2>
-<p><span class="tag calc">CALCULADO</span> Maior estresse (score 0–100; componentes de atividade e condições de crédito observados; RJ e emprego demonstrativos): 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (65.5, melhorando); 3.28 Fabricação de máquinas e equipamentos (65.4, melhorando); 3.17 Fabricação de celulose, papel e produtos de papel (65.3, piorando); 3.10 Fabricação de produtos alimentícios (63.5, piorando); 3.18 Impressão e reprodução de gravações (62.5, melhorando).</p>
-<p><span class="tag calc">CALCULADO</span> Menor estresse: 3.21 Fabricação de produtos farmoquímicos e farmacêuticos (49.6); 2 Indústrias extrativas (51.8); 3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis (52.5).</p>
+<p><span class="tag calc">CALCULADO</span> Maior estresse (score 0–100; componentes de atividade e condições de crédito observados; RJ e emprego demonstrativos): 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (64.1, melhorando); 3.17 Fabricação de celulose, papel e produtos de papel (64.0, piorando); 3.28 Fabricação de máquinas e equipamentos (64.0, melhorando); 3.10 Fabricação de produtos alimentícios (62.2, piorando); 3.18 Impressão e reprodução de gravações (61.2, melhorando).</p>
+<p><span class="tag calc">CALCULADO</span> Menor estresse: 3.21 Fabricação de produtos farmoquímicos e farmacêuticos (48.3); 2 Indústrias extrativas (50.5); 3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis (51.2).</p>
 <h2>5 · Instituições financeiras</h2>
-<p><span class="tag calc">CALCULADO</span> Score de risco relativo aos pares (IF.data 202603; maior = mais risco no grupo prudencial). Maiores variações no trimestre: STONE INSTITUIÇÃO DE PAGAMENTO S.A. (44.1, -12.4); INTER (58.3, +10.7); BB (74.7, +9.5); SANTANDER (45.3, -9.0); BTG PACTUAL (18.6, -9.0).</p>
+<p><span class="tag calc">CALCULADO</span> Score de risco relativo aos pares (IF.data 202603; maior = mais risco no grupo prudencial). Maiores variações no trimestre: STONE INSTITUIÇÃO DE PAGAMENTO S.A. (44.1, -12.4); INTER (58.3, +10.7); BB (74.8, +9.6); SANTANDER (45.3, -9.0); BTG PACTUAL (18.6, -9.0).</p>
 <p><span class="tag obs">OBSERVAÇÃO</span> Basileia dos cinco maiores por ativo: ITAU 14,8%; BB 14,2%; CAIXA ECONÔMICA FEDERAL 15,1%; BRADESCO 14,9%; SANTANDER 15,2%.</p>
 <p><span class="tag interp">INTERPRETAÇÃO</span> Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento.</p>
 <h2>6 · Recuperações judiciais e falências</h2>
-<p><span class="tag obs">OBSERVAÇÃO</span> Ajuizamentos de RJ (CNJ/DataJud, TJSP, TJRJ, TJMG, TJRS, TJPR, TJSC, TJBA, TJGO): 103 em 2026-05; 1257 em 2025.</p>
-<p><span class="tag prev">PREVISÃO</span> Projeção 12m: 93 [76–121] processos/mês.</p>
-<p><span class="tag obs">OBSERVAÇÃO</span> Credores financeiros citados em listas de credores (60 dias, 371 casos): BANCO DO BRASIL (174 casos); BANCO BRADESCO (142 casos); BANCO SANTANDER (99 casos); CAIXA ECONOMICA FEDERAL (98 casos); ITAU UNIBANCO (91 casos).</p>
-<p><span class="tag interp">INTERPRETAÇÃO</span> Presença em lista de credores não mede exposição total; ver limitações no site.</p>
-<p><span class="tag obs">OBSERVAÇÃO</span> Passivo citado em atos: R$ 2,79 bi em 54 casos.</p>
-<p><span class="tag cen">CENÁRIO</span> Para os 229 casos sem valor citado, o intervalo interquartil implica R$ 257 mi – R$ 5,50 bi (aproximação estatística; níveis nunca somados).</p>
+<p><span class="tag obs">OBSERVAÇÃO</span> Ajuizamentos de RJ (CNJ/DataJud, TJSP, TJRJ, TJMG, TJRS, TJPR, TJSC, TJBA, TJGO): 73 em 2026-06; 1092 em 2025.</p>
+<p><span class="tag prev">PREVISÃO</span> Projeção 12m: 61 [45–89] processos/mês.</p>
 <h2>7 · Open Finance</h2>
 <p><span class="tag demo">DEMONSTRATIVO</span> Módulo integralmente demonstrativo: não há via pública estável para os dados nominais do dashboard Open Finance Brasil. Método pronto para substituição.</p>
 <h2>8 · Projeções e cenários</h2>
-<p><span class="tag prev">PREVISÃO</span> Concessões em 2027-05: 766.417,0 R$ mi [710.964,9–818.012,3].</p>
-<p><span class="tag prev">PREVISÃO</span> Spread em 2027-05: 23,5 p.p. [19,7–25,1].</p>
-<p><span class="tag cen">CENÁRIO</span> Elasticidades de cenário (empírico): selic_pp 0.098 [0.067–0.129]; desemprego_pp 0.023 [-0.048–0.094]; pib_pp -0.002 [-0.027–0.022]; cambio_pct10 -0.13 [-0.221–-0.039]. Resultados de cenário são condicionais às hipóteses do usuário.</p>
+<p><span class="tag prev">PREVISÃO</span> Concessões em 2027-06: 820.135,5 R$ mi [763.354,6–873.472,0].</p>
+<p><span class="tag prev">PREVISÃO</span> Spread em 2027-06: 23,5 p.p. [19,7–25,0].</p>
+<p><span class="tag cen">CENÁRIO</span> Elasticidades de cenário (empírico): selic_pp 0.099 [0.068–0.13]; desemprego_pp 0.03 [-0.04–0.1]; pib_pp -0.002 [-0.026–0.022]; cambio_pct10 -0.139 [-0.229–-0.049]. Resultados de cenário são condicionais às hipóteses do usuário.</p>
 <h2>9 · Metodologia, fontes e limitações</h2>
 <p><span class="tag obs">OBSERVAÇÃO</span> Fontes reais: BCB/SGS, BCB/IF.data (Olinda e interface), IBGE, Ipeadata, CNJ/DataJud, CNJ/DJEN, BrasilAPI/Receita. Linhagem bronze→gold com SHA-256 e catálogo completo na aba Metodologia & Fontes.</p>
-<p><span class="tag calc">CALCULADO</span> Qualidade média das 80 séries: 67/100.</p>
+<p><span class="tag calc">CALCULADO</span> Qualidade média das 80 séries: 75/100.</p>
 <p><span class="tag interp">INTERPRETAÇÃO</span> Limitações completas em docs/LIMITACOES.md e nos rodapés de cada visualização. Scores e projeções não constituem rating nem recomendação.</p><script>/* imprimível: Ctrl/Cmd+P gera o PDF */</script></body></html>

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:09:57+00:00",
+  "atualizado_em": "2026-08-01T11:24:49+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -1666,8 +1666,8 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
     -0.05,

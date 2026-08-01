@@ -393,7 +393,7 @@
    ],
    "codigo": "129339",
    "nome": "3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores",
-   "score": 65.5,
+   "score": 64.1,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.25,
@@ -403,7 +403,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 8.5,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -415,440 +415,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
-     "peso": 0.2,
-     "fonte": "BCB/SGS (inad. e spread PJ)",
-     "status": "observado",
-     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
-    },
-    "estresse_empresarial": {
-     "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
-     "status": "demonstrativo"
-    },
-    "capacidade_financeira": {
-     "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
-     "status": "demonstrativo"
-    }
-   }
-  },
-  {
-   "serie_obs": [
-    {
-     "ref": "2022-06-01",
-     "v": 100.90129
-    },
-    {
-     "ref": "2022-07-01",
-     "v": 101.24855
-    },
-    {
-     "ref": "2022-08-01",
-     "v": 111.43296
-    },
-    {
-     "ref": "2022-09-01",
-     "v": 106.33019
-    },
-    {
-     "ref": "2022-10-01",
-     "v": 105.79861
-    },
-    {
-     "ref": "2022-11-01",
-     "v": 100.58192
-    },
-    {
-     "ref": "2022-12-01",
-     "v": 84.52999
-    },
-    {
-     "ref": "2023-01-01",
-     "v": 84.20868
-    },
-    {
-     "ref": "2023-02-01",
-     "v": 88.26971
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 107.55094
-    },
-    {
-     "ref": "2023-04-01",
-     "v": 83.04622
-    },
-    {
-     "ref": "2023-05-01",
-     "v": 100.76491
-    },
-    {
-     "ref": "2023-06-01",
-     "v": 94.78757
-    },
-    {
-     "ref": "2023-07-01",
-     "v": 92.31712
-    },
-    {
-     "ref": "2023-08-01",
-     "v": 106.23707
-    },
-    {
-     "ref": "2023-09-01",
-     "v": 94.02714
-    },
-    {
-     "ref": "2023-10-01",
-     "v": 98.32499
-    },
-    {
-     "ref": "2023-11-01",
-     "v": 90.106
-    },
-    {
-     "ref": "2023-12-01",
-     "v": 73.93421
-    },
-    {
-     "ref": "2024-01-01",
-     "v": 83.0626
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 88.39794
-    },
-    {
-     "ref": "2024-03-01",
-     "v": 91.02445
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 96.03291
-    },
-    {
-     "ref": "2024-05-01",
-     "v": 92.18971
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 96.81762
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 102.32895
-    },
-    {
-     "ref": "2024-08-01",
-     "v": 105.9328
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 99.09926
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 106.17322
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 100.65758
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 81.34479
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 93.49947
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 99.55411
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 99.77504
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 98.17642
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 103.6635
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 97.66388
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 106.73432
-    },
-    {
-     "ref": "2025-08-01",
-     "v": 105.00527
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 103.59294
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 109.27118
-    },
-    {
-     "ref": "2025-11-01",
-     "v": 98.2184
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 81.96819
-    },
-    {
-     "ref": "2026-01-01",
-     "v": 78.41431
-    },
-    {
-     "ref": "2026-02-01",
-     "v": 88.80047
-    },
-    {
-     "ref": "2026-03-01",
-     "v": 99.19198
-    },
-    {
-     "ref": "2026-04-01",
-     "v": 90.75452
-    },
-    {
-     "ref": "2026-05-01",
-     "v": 93.86628
-    }
-   ],
-   "serie_yoy": [
-    {
-     "ref": "2022-06-01",
-     "v": -0.16
-    },
-    {
-     "ref": "2022-07-01",
-     "v": -3.87
-    },
-    {
-     "ref": "2022-08-01",
-     "v": 1.75
-    },
-    {
-     "ref": "2022-09-01",
-     "v": -2.65
-    },
-    {
-     "ref": "2022-10-01",
-     "v": -3.53
-    },
-    {
-     "ref": "2022-11-01",
-     "v": -3.73
-    },
-    {
-     "ref": "2022-12-01",
-     "v": -8.33
-    },
-    {
-     "ref": "2023-01-01",
-     "v": -0.85
-    },
-    {
-     "ref": "2023-02-01",
-     "v": -9.05
-    },
-    {
-     "ref": "2023-03-01",
-     "v": 0.73
-    },
-    {
-     "ref": "2023-04-01",
-     "v": -14.55
-    },
-    {
-     "ref": "2023-05-01",
-     "v": -2.39
-    },
-    {
-     "ref": "2023-06-01",
-     "v": -6.06
-    },
-    {
-     "ref": "2023-07-01",
-     "v": -8.82
-    },
-    {
-     "ref": "2023-08-01",
-     "v": -4.66
-    },
-    {
-     "ref": "2023-09-01",
-     "v": -11.57
-    },
-    {
-     "ref": "2023-10-01",
-     "v": -7.06
-    },
-    {
-     "ref": "2023-11-01",
-     "v": -10.42
-    },
-    {
-     "ref": "2023-12-01",
-     "v": -12.53
-    },
-    {
-     "ref": "2024-01-01",
-     "v": -1.36
-    },
-    {
-     "ref": "2024-02-01",
-     "v": 0.15
-    },
-    {
-     "ref": "2024-03-01",
-     "v": -15.37
-    },
-    {
-     "ref": "2024-04-01",
-     "v": 15.64
-    },
-    {
-     "ref": "2024-05-01",
-     "v": -8.51
-    },
-    {
-     "ref": "2024-06-01",
-     "v": 2.14
-    },
-    {
-     "ref": "2024-07-01",
-     "v": 10.85
-    },
-    {
-     "ref": "2024-08-01",
-     "v": -0.29
-    },
-    {
-     "ref": "2024-09-01",
-     "v": 5.39
-    },
-    {
-     "ref": "2024-10-01",
-     "v": 7.98
-    },
-    {
-     "ref": "2024-11-01",
-     "v": 11.71
-    },
-    {
-     "ref": "2024-12-01",
-     "v": 10.02
-    },
-    {
-     "ref": "2025-01-01",
-     "v": 12.57
-    },
-    {
-     "ref": "2025-02-01",
-     "v": 12.62
-    },
-    {
-     "ref": "2025-03-01",
-     "v": 9.61
-    },
-    {
-     "ref": "2025-04-01",
-     "v": 2.23
-    },
-    {
-     "ref": "2025-05-01",
-     "v": 12.45
-    },
-    {
-     "ref": "2025-06-01",
-     "v": 0.87
-    },
-    {
-     "ref": "2025-07-01",
-     "v": 4.31
-    },
-    {
-     "ref": "2025-08-01",
-     "v": -0.88
-    },
-    {
-     "ref": "2025-09-01",
-     "v": 4.53
-    },
-    {
-     "ref": "2025-10-01",
-     "v": 2.92
-    },
-    {
-     "ref": "2025-11-01",
-     "v": -2.42
-    },
-    {
-     "ref": "2025-12-01",
-     "v": 0.77
-    },
-    {
-     "ref": "2026-01-01",
-     "v": -16.13
-    },
-    {
-     "ref": "2026-02-01",
-     "v": -10.8
-    },
-    {
-     "ref": "2026-03-01",
-     "v": -0.58
-    },
-    {
-     "ref": "2026-04-01",
-     "v": -7.56
-    },
-    {
-     "ref": "2026-05-01",
-     "v": -9.45
-    }
-   ],
-   "codigo": "129337",
-   "nome": "3.28 Fabricação de máquinas e equipamentos",
-   "score": 65.4,
-   "faixa": "elevado",
-   "tendencia": "melhorando",
-   "tendencia_valor_pp": 1.35,
-   "velocidade": "momento melhorando",
-   "velocidade_valor_pp": 9.73,
-   "yoy_producao_pct": -9.45,
-   "ref": "2026-05-01",
-   "contribuicoes": {
-    "atividade": 8.4,
-    "condicoes_credito": 2.6,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
-   },
-   "componentes": {
-    "atividade": {
-     "z": 0.93,
-     "peso": 0.45,
-     "fonte": "IBGE PIM-PF",
-     "status": "observado"
-    },
-    "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -1259,7 +826,7 @@
    ],
    "codigo": "129324",
    "nome": "3.17 Fabricação de celulose, papel e produtos de papel",
-   "score": 65.3,
+   "score": 64.0,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -0.92,
@@ -1269,7 +836,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 8.3,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -1281,7 +848,440 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
+     "peso": 0.2,
+     "fonte": "BCB/SGS (inad. e spread PJ)",
+     "status": "observado",
+     "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
+    },
+    "estresse_empresarial": {
+     "z": 0.8,
+     "peso": 0.2,
+     "fonte": "DEMONSTRATIVO (RJ)",
+     "status": "demonstrativo"
+    },
+    "capacidade_financeira": {
+     "z": 0.4,
+     "peso": 0.15,
+     "fonte": "DEMONSTRATIVO (emprego)",
+     "status": "demonstrativo"
+    }
+   }
+  },
+  {
+   "serie_obs": [
+    {
+     "ref": "2022-06-01",
+     "v": 100.90129
+    },
+    {
+     "ref": "2022-07-01",
+     "v": 101.24855
+    },
+    {
+     "ref": "2022-08-01",
+     "v": 111.43296
+    },
+    {
+     "ref": "2022-09-01",
+     "v": 106.33019
+    },
+    {
+     "ref": "2022-10-01",
+     "v": 105.79861
+    },
+    {
+     "ref": "2022-11-01",
+     "v": 100.58192
+    },
+    {
+     "ref": "2022-12-01",
+     "v": 84.52999
+    },
+    {
+     "ref": "2023-01-01",
+     "v": 84.20868
+    },
+    {
+     "ref": "2023-02-01",
+     "v": 88.26971
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 107.55094
+    },
+    {
+     "ref": "2023-04-01",
+     "v": 83.04622
+    },
+    {
+     "ref": "2023-05-01",
+     "v": 100.76491
+    },
+    {
+     "ref": "2023-06-01",
+     "v": 94.78757
+    },
+    {
+     "ref": "2023-07-01",
+     "v": 92.31712
+    },
+    {
+     "ref": "2023-08-01",
+     "v": 106.23707
+    },
+    {
+     "ref": "2023-09-01",
+     "v": 94.02714
+    },
+    {
+     "ref": "2023-10-01",
+     "v": 98.32499
+    },
+    {
+     "ref": "2023-11-01",
+     "v": 90.106
+    },
+    {
+     "ref": "2023-12-01",
+     "v": 73.93421
+    },
+    {
+     "ref": "2024-01-01",
+     "v": 83.0626
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 88.39794
+    },
+    {
+     "ref": "2024-03-01",
+     "v": 91.02445
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 96.03291
+    },
+    {
+     "ref": "2024-05-01",
+     "v": 92.18971
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 96.81762
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 102.32895
+    },
+    {
+     "ref": "2024-08-01",
+     "v": 105.9328
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 99.09926
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 106.17322
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 100.65758
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 81.34479
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 93.49947
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 99.55411
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 99.77504
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 98.17642
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 103.6635
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 97.66388
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 106.73432
+    },
+    {
+     "ref": "2025-08-01",
+     "v": 105.00527
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 103.59294
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 109.27118
+    },
+    {
+     "ref": "2025-11-01",
+     "v": 98.2184
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 81.96819
+    },
+    {
+     "ref": "2026-01-01",
+     "v": 78.41431
+    },
+    {
+     "ref": "2026-02-01",
+     "v": 88.80047
+    },
+    {
+     "ref": "2026-03-01",
+     "v": 99.19198
+    },
+    {
+     "ref": "2026-04-01",
+     "v": 90.75452
+    },
+    {
+     "ref": "2026-05-01",
+     "v": 93.86628
+    }
+   ],
+   "serie_yoy": [
+    {
+     "ref": "2022-06-01",
+     "v": -0.16
+    },
+    {
+     "ref": "2022-07-01",
+     "v": -3.87
+    },
+    {
+     "ref": "2022-08-01",
+     "v": 1.75
+    },
+    {
+     "ref": "2022-09-01",
+     "v": -2.65
+    },
+    {
+     "ref": "2022-10-01",
+     "v": -3.53
+    },
+    {
+     "ref": "2022-11-01",
+     "v": -3.73
+    },
+    {
+     "ref": "2022-12-01",
+     "v": -8.33
+    },
+    {
+     "ref": "2023-01-01",
+     "v": -0.85
+    },
+    {
+     "ref": "2023-02-01",
+     "v": -9.05
+    },
+    {
+     "ref": "2023-03-01",
+     "v": 0.73
+    },
+    {
+     "ref": "2023-04-01",
+     "v": -14.55
+    },
+    {
+     "ref": "2023-05-01",
+     "v": -2.39
+    },
+    {
+     "ref": "2023-06-01",
+     "v": -6.06
+    },
+    {
+     "ref": "2023-07-01",
+     "v": -8.82
+    },
+    {
+     "ref": "2023-08-01",
+     "v": -4.66
+    },
+    {
+     "ref": "2023-09-01",
+     "v": -11.57
+    },
+    {
+     "ref": "2023-10-01",
+     "v": -7.06
+    },
+    {
+     "ref": "2023-11-01",
+     "v": -10.42
+    },
+    {
+     "ref": "2023-12-01",
+     "v": -12.53
+    },
+    {
+     "ref": "2024-01-01",
+     "v": -1.36
+    },
+    {
+     "ref": "2024-02-01",
+     "v": 0.15
+    },
+    {
+     "ref": "2024-03-01",
+     "v": -15.37
+    },
+    {
+     "ref": "2024-04-01",
+     "v": 15.64
+    },
+    {
+     "ref": "2024-05-01",
+     "v": -8.51
+    },
+    {
+     "ref": "2024-06-01",
+     "v": 2.14
+    },
+    {
+     "ref": "2024-07-01",
+     "v": 10.85
+    },
+    {
+     "ref": "2024-08-01",
+     "v": -0.29
+    },
+    {
+     "ref": "2024-09-01",
+     "v": 5.39
+    },
+    {
+     "ref": "2024-10-01",
+     "v": 7.98
+    },
+    {
+     "ref": "2024-11-01",
+     "v": 11.71
+    },
+    {
+     "ref": "2024-12-01",
+     "v": 10.02
+    },
+    {
+     "ref": "2025-01-01",
+     "v": 12.57
+    },
+    {
+     "ref": "2025-02-01",
+     "v": 12.62
+    },
+    {
+     "ref": "2025-03-01",
+     "v": 9.61
+    },
+    {
+     "ref": "2025-04-01",
+     "v": 2.23
+    },
+    {
+     "ref": "2025-05-01",
+     "v": 12.45
+    },
+    {
+     "ref": "2025-06-01",
+     "v": 0.87
+    },
+    {
+     "ref": "2025-07-01",
+     "v": 4.31
+    },
+    {
+     "ref": "2025-08-01",
+     "v": -0.88
+    },
+    {
+     "ref": "2025-09-01",
+     "v": 4.53
+    },
+    {
+     "ref": "2025-10-01",
+     "v": 2.92
+    },
+    {
+     "ref": "2025-11-01",
+     "v": -2.42
+    },
+    {
+     "ref": "2025-12-01",
+     "v": 0.77
+    },
+    {
+     "ref": "2026-01-01",
+     "v": -16.13
+    },
+    {
+     "ref": "2026-02-01",
+     "v": -10.8
+    },
+    {
+     "ref": "2026-03-01",
+     "v": -0.58
+    },
+    {
+     "ref": "2026-04-01",
+     "v": -7.56
+    },
+    {
+     "ref": "2026-05-01",
+     "v": -9.45
+    }
+   ],
+   "codigo": "129337",
+   "nome": "3.28 Fabricação de máquinas e equipamentos",
+   "score": 64.0,
+   "faixa": "elevado",
+   "tendencia": "melhorando",
+   "tendencia_valor_pp": 1.35,
+   "velocidade": "momento melhorando",
+   "velocidade_valor_pp": 9.73,
+   "yoy_producao_pct": -9.45,
+   "ref": "2026-05-01",
+   "contribuicoes": {
+    "atividade": 8.4,
+    "condicoes_credito": 1.3,
+    "estresse_empresarial": 3.2,
+    "capacidade_financeira": 1.2
+   },
+   "componentes": {
+    "atividade": {
+     "z": 0.93,
+     "peso": 0.45,
+     "fonte": "IBGE PIM-PF",
+     "status": "observado"
+    },
+    "condicoes_credito": {
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -1692,7 +1692,7 @@
    ],
    "codigo": "129317",
    "nome": "3.10 Fabricação de produtos alimentícios",
-   "score": 63.5,
+   "score": 62.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.39,
@@ -1702,7 +1702,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 6.5,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -1714,7 +1714,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -2125,7 +2125,7 @@
    ],
    "codigo": "129325",
    "nome": "3.18 Impressão e reprodução de gravações",
-   "score": 62.5,
+   "score": 61.2,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 3.31,
@@ -2135,7 +2135,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 5.5,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -2147,7 +2147,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -2558,7 +2558,7 @@
    ],
    "codigo": "129322",
    "nome": "3.15 Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados",
-   "score": 62.4,
+   "score": 61.1,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.8,
@@ -2568,7 +2568,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 5.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -2580,7 +2580,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -2991,7 +2991,7 @@
    ],
    "codigo": "129335",
    "nome": "3.26 Fabricação de equipamentos de informática, produtos eletrônicos e ópticos",
-   "score": 62.4,
+   "score": 61.1,
    "faixa": "elevado",
    "tendencia": "estável",
    "tendencia_valor_pp": 0.29,
@@ -3001,7 +3001,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 5.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -3013,7 +3013,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -3424,7 +3424,7 @@
    ],
    "codigo": "129320",
    "nome": "3.13 Fabricação de produtos têxteis",
-   "score": 60.9,
+   "score": 59.5,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.88,
@@ -3434,7 +3434,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 3.9,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -3446,7 +3446,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -3857,7 +3857,7 @@
    ],
    "codigo": "129318",
    "nome": "3.11 Fabricação de bebidas",
-   "score": 60.6,
+   "score": 59.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -8.8,
@@ -3867,7 +3867,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 3.6,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -3879,7 +3879,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -4290,7 +4290,7 @@
    ],
    "codigo": "129323",
    "nome": "3.16 Fabricação de produtos de madeira",
-   "score": 59.4,
+   "score": 58.1,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.32,
@@ -4300,7 +4300,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 2.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -4312,7 +4312,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -4723,7 +4723,7 @@
    ],
    "codigo": "129341",
    "nome": "3.32 Fabricação de produtos diversos",
-   "score": 59.2,
+   "score": 57.9,
    "faixa": "elevado",
    "tendencia": "estável",
    "tendencia_valor_pp": -0.44,
@@ -4733,7 +4733,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 2.2,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -4745,7 +4745,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -5156,7 +5156,7 @@
    ],
    "codigo": "129321",
    "nome": "3.14 Confecção de artigos do vestuário e acessórios",
-   "score": 58.8,
+   "score": 57.5,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 9.63,
@@ -5166,7 +5166,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 1.8,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -5178,7 +5178,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -5589,7 +5589,7 @@
    ],
    "codigo": "129319",
    "nome": "3.12 Fabricação de produtos do fumo",
-   "score": 58.6,
+   "score": 57.3,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 3.84,
@@ -5599,7 +5599,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 1.6,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -5611,7 +5611,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6022,7 +6022,7 @@
    ],
    "codigo": "129316",
    "nome": "3 Indústrias de transformação",
-   "score": 58.4,
+   "score": 57.0,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.25,
@@ -6032,7 +6032,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 1.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -6044,7 +6044,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6455,7 +6455,7 @@
    ],
    "codigo": "129334",
    "nome": "3.25 Fabricação de produtos de metal, exceto máquinas e equipamentos",
-   "score": 58.4,
+   "score": 57.0,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 4.23,
@@ -6465,7 +6465,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 1.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -6477,7 +6477,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -6888,7 +6888,7 @@
    ],
    "codigo": "129314",
    "nome": "1 Indústria geral",
-   "score": 58.0,
+   "score": 56.7,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.97,
@@ -6898,7 +6898,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 1.0,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -6910,7 +6910,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -7321,7 +7321,7 @@
    ],
    "codigo": "129342",
    "nome": "3.33 Manutenção, reparação e instalação de máquinas e equipamentos",
-   "score": 57.7,
+   "score": 56.4,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -4.79,
@@ -7331,7 +7331,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 0.7,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -7343,7 +7343,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -7754,7 +7754,7 @@
    ],
    "codigo": "129340",
    "nome": "3.31 Fabricação de móveis",
-   "score": 57.1,
+   "score": 55.8,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 3.35,
@@ -7764,7 +7764,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": 0.1,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -7776,7 +7776,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -8187,7 +8187,7 @@
    ],
    "codigo": "56689",
    "nome": "3.20 Fabricação de produtos químicos",
-   "score": 56.7,
+   "score": 55.4,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 6.63,
@@ -8197,7 +8197,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -0.3,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -8209,7 +8209,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -8620,7 +8620,7 @@
    ],
    "codigo": "129332",
    "nome": "3.23 Fabricação de produtos de minerais não metálicos",
-   "score": 56.5,
+   "score": 55.2,
    "faixa": "elevado",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 1.44,
@@ -8630,7 +8630,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -0.5,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -8642,7 +8642,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9053,8 +9053,8 @@
    ],
    "codigo": "129333",
    "nome": "3.24 Metalurgia",
-   "score": 55.8,
-   "faixa": "elevado",
+   "score": 54.5,
+   "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 4.17,
    "velocidade": "momento melhorando",
@@ -9063,7 +9063,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -1.2,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -9075,7 +9075,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9486,8 +9486,8 @@
    ],
    "codigo": "129331",
    "nome": "3.22 Fabricação de produtos de borracha e de material plástico",
-   "score": 55.6,
-   "faixa": "elevado",
+   "score": 54.2,
+   "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 4.05,
    "velocidade": "momento melhorando",
@@ -9496,7 +9496,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -1.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -9508,7 +9508,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -9919,7 +9919,7 @@
    ],
    "codigo": "129338",
    "nome": "3.29 Fabricação de veículos automotores, reboques e carrocerias",
-   "score": 54.7,
+   "score": 53.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 13.67,
@@ -9929,7 +9929,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -2.3,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -9941,7 +9941,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -10352,7 +10352,7 @@
    ],
    "codigo": "129336",
    "nome": "3.27 Fabricação de máquinas, aparelhos e materiais elétricos",
-   "score": 54.6,
+   "score": 53.2,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.01,
@@ -10362,7 +10362,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -2.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -10374,7 +10374,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -10785,7 +10785,7 @@
    ],
    "codigo": "129326",
    "nome": "3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis",
-   "score": 52.5,
+   "score": 51.2,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.13,
@@ -10795,7 +10795,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -4.5,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -10807,7 +10807,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -11218,7 +11218,7 @@
    ],
    "codigo": "129315",
    "nome": "2 Indústrias extrativas",
-   "score": 51.8,
+   "score": 50.5,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -6.94,
@@ -11228,7 +11228,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -0.7,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 0.8,
     "capacidade_financeira": -0.9
    },
@@ -11240,7 +11240,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
@@ -11651,7 +11651,7 @@
    ],
    "codigo": "129330",
    "nome": "3.21 Fabricação de produtos farmoquímicos e farmacêuticos",
-   "score": 49.6,
+   "score": 48.3,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -7.31,
@@ -11661,7 +11661,7 @@
    "ref": "2026-05-01",
    "contribuicoes": {
     "atividade": -7.4,
-    "condicoes_credito": 2.6,
+    "condicoes_credito": 1.3,
     "estresse_empresarial": 3.2,
     "capacidade_financeira": 1.2
    },
@@ -11673,7 +11673,7 @@
      "status": "observado"
     },
     "condicoes_credito": {
-     "z": 0.65,
+     "z": 0.32,
      "peso": 0.2,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",

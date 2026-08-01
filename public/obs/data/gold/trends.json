@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-01T01:10:06+00:00",
+ "gerado_em": "2026-08-01T11:24:55+00:00",
  "selo": "ASSOCIAÇÃO EXPLORATÓRIA — índices relativos de busca (0–100 por consulta); não representam volume absoluto, não implicam causalidade e nenhum sinal é tratado como validado.",
  "disclaimer": "O índice do Google Trends mede o interesse RELATIVO de busca (0–100 dentro de cada consulta), não a quantidade absoluta de pessoas ou pesquisas, e não mede inadimplência efetiva.",
  "meta": {
@@ -41130,73 +41130,73 @@
     "termo": "busca e apreensão",
     "familia": "Financiamentos",
     "melhor_lag": 12,
-    "corr": 0.733,
-    "n": 161,
+    "corr": 0.736,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.501,
-      "n": 173
+      "corr": 0.511,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.515,
-      "n": 172
+      "corr": 0.525,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.536,
-      "n": 171
+      "corr": 0.546,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.549,
-      "n": 170
+      "corr": 0.565,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.546,
-      "n": 169
+      "corr": 0.566,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.592,
-      "n": 168
+      "corr": 0.598,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.643,
-      "n": 167
+      "corr": 0.64,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.667,
-      "n": 166
+      "corr": 0.672,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.688,
-      "n": 165
+      "corr": 0.697,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.697,
-      "n": 164
+      "corr": 0.706,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.697,
-      "n": 163
+      "corr": 0.711,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.719,
-      "n": 162
+      "corr": 0.731,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.733,
-      "n": 161
+      "corr": 0.736,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41205,148 +41205,73 @@
     "termo": "financiamento de carro",
     "familia": "Financiamentos",
     "melhor_lag": 0,
-    "corr": 0.641,
-    "n": 173,
+    "corr": 0.659,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.641,
-      "n": 173
+      "corr": 0.659,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.638,
-      "n": 172
-     },
-     {
-      "lag": 2,
-      "corr": 0.629,
-      "n": 171
-     },
-     {
-      "lag": 3,
-      "corr": 0.624,
-      "n": 170
-     },
-     {
-      "lag": 4,
-      "corr": 0.61,
-      "n": 169
-     },
-     {
-      "lag": 5,
-      "corr": 0.578,
-      "n": 168
-     },
-     {
-      "lag": 6,
-      "corr": 0.578,
-      "n": 167
-     },
-     {
-      "lag": 7,
-      "corr": 0.566,
-      "n": 166
-     },
-     {
-      "lag": 8,
-      "corr": 0.542,
-      "n": 165
-     },
-     {
-      "lag": 9,
-      "corr": 0.522,
-      "n": 164
-     },
-     {
-      "lag": 10,
-      "corr": 0.504,
-      "n": 163
-     },
-     {
-      "lag": 11,
-      "corr": 0.481,
-      "n": 162
-     },
-     {
-      "lag": 12,
-      "corr": 0.498,
-      "n": 161
-     }
-    ],
-    "classificacao_conceitual": "associação exploratória"
-   },
-   {
-    "termo": "fatura atrasada",
-    "familia": "Dificuldade financeira",
-    "melhor_lag": 6,
-    "corr": -0.38,
-    "n": 167,
-    "perfil": [
-     {
-      "lag": 0,
-      "corr": -0.26,
+      "corr": 0.658,
       "n": 173
      },
      {
-      "lag": 1,
-      "corr": -0.283,
+      "lag": 2,
+      "corr": 0.647,
       "n": 172
      },
      {
-      "lag": 2,
-      "corr": -0.31,
+      "lag": 3,
+      "corr": 0.644,
       "n": 171
      },
      {
-      "lag": 3,
-      "corr": -0.333,
+      "lag": 4,
+      "corr": 0.631,
       "n": 170
      },
      {
-      "lag": 4,
-      "corr": -0.349,
+      "lag": 5,
+      "corr": 0.603,
       "n": 169
      },
      {
-      "lag": 5,
-      "corr": -0.372,
+      "lag": 6,
+      "corr": 0.595,
       "n": 168
      },
      {
-      "lag": 6,
-      "corr": -0.38,
+      "lag": 7,
+      "corr": 0.584,
       "n": 167
      },
      {
-      "lag": 7,
-      "corr": -0.38,
+      "lag": 8,
+      "corr": 0.562,
       "n": 166
      },
      {
-      "lag": 8,
-      "corr": -0.378,
+      "lag": 9,
+      "corr": 0.545,
       "n": 165
      },
      {
-      "lag": 9,
-      "corr": -0.372,
+      "lag": 10,
+      "corr": 0.523,
       "n": 164
      },
      {
-      "lag": 10,
-      "corr": -0.362,
+      "lag": 11,
+      "corr": 0.507,
       "n": 163
      },
      {
-      "lag": 11,
-      "corr": -0.354,
-      "n": 162
-     },
-     {
       "lag": 12,
-      "corr": -0.342,
-      "n": 161
+      "corr": 0.515,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41355,73 +41280,148 @@
     "termo": "fui demitido",
     "familia": "Emprego e renda",
     "melhor_lag": 12,
-    "corr": 0.376,
-    "n": 161,
+    "corr": 0.399,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.363,
-      "n": 173
+      "corr": 0.389,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.369,
-      "n": 172
+      "corr": 0.398,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.364,
-      "n": 171
+      "corr": 0.394,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.35,
-      "n": 170
+      "corr": 0.392,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.338,
-      "n": 169
+      "corr": 0.376,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.324,
-      "n": 168
+      "corr": 0.363,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.328,
-      "n": 167
+      "corr": 0.359,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.333,
-      "n": 166
+      "corr": 0.359,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.333,
-      "n": 165
+      "corr": 0.363,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.341,
-      "n": 164
+      "corr": 0.371,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.349,
-      "n": 163
+      "corr": 0.378,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.354,
-      "n": 162
+      "corr": 0.384,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.376,
-      "n": 161
+      "corr": 0.399,
+      "n": 162
+     }
+    ],
+    "classificacao_conceitual": "associação exploratória"
+   },
+   {
+    "termo": "fatura atrasada",
+    "familia": "Dificuldade financeira",
+    "melhor_lag": 6,
+    "corr": -0.36,
+    "n": 168,
+    "perfil": [
+     {
+      "lag": 0,
+      "corr": -0.238,
+      "n": 174
+     },
+     {
+      "lag": 1,
+      "corr": -0.258,
+      "n": 173
+     },
+     {
+      "lag": 2,
+      "corr": -0.287,
+      "n": 172
+     },
+     {
+      "lag": 3,
+      "corr": -0.31,
+      "n": 171
+     },
+     {
+      "lag": 4,
+      "corr": -0.325,
+      "n": 170
+     },
+     {
+      "lag": 5,
+      "corr": -0.346,
+      "n": 169
+     },
+     {
+      "lag": 6,
+      "corr": -0.36,
+      "n": 168
+     },
+     {
+      "lag": 7,
+      "corr": -0.358,
+      "n": 167
+     },
+     {
+      "lag": 8,
+      "corr": -0.358,
+      "n": 166
+     },
+     {
+      "lag": 9,
+      "corr": -0.351,
+      "n": 165
+     },
+     {
+      "lag": 10,
+      "corr": -0.342,
+      "n": 164
+     },
+     {
+      "lag": 11,
+      "corr": -0.336,
+      "n": 163
+     },
+     {
+      "lag": 12,
+      "corr": -0.323,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41430,73 +41430,73 @@
     "termo": "falência",
     "familia": "Estresse empresarial",
     "melhor_lag": 0,
-    "corr": 0.33,
-    "n": 173,
+    "corr": 0.352,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.33,
-      "n": 173
+      "corr": 0.352,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.281,
-      "n": 172
+      "corr": 0.319,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.255,
-      "n": 171
+      "corr": 0.285,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.23,
-      "n": 170
+      "corr": 0.256,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.237,
-      "n": 169
+      "corr": 0.263,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.239,
-      "n": 168
+      "corr": 0.284,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.232,
-      "n": 167
+      "corr": 0.246,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.183,
-      "n": 166
+      "corr": 0.229,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.169,
-      "n": 165
+      "corr": 0.19,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.132,
-      "n": 164
+      "corr": 0.167,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.16,
-      "n": 163
+      "corr": 0.179,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.215,
-      "n": 162
+      "corr": 0.22,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.176,
-      "n": 161
+      "corr": 0.195,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41504,74 +41504,74 @@
    {
     "termo": "recuperação judicial",
     "familia": "Estresse empresarial",
-    "melhor_lag": 6,
-    "corr": 0.325,
-    "n": 167,
+    "melhor_lag": 8,
+    "corr": 0.329,
+    "n": 166,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.324,
-      "n": 173
+      "corr": 0.325,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.309,
-      "n": 172
+      "corr": 0.322,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.313,
-      "n": 171
+      "corr": 0.32,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.292,
-      "n": 170
+      "corr": 0.319,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.296,
-      "n": 169
+      "corr": 0.307,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.316,
-      "n": 168
+      "corr": 0.317,
+      "n": 169
      },
      {
       "lag": 6,
       "corr": 0.325,
-      "n": 167
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.316,
-      "n": 166
+      "corr": 0.323,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.305,
-      "n": 165
+      "corr": 0.329,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.304,
-      "n": 164
+      "corr": 0.311,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.303,
-      "n": 163
+      "corr": 0.311,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.308,
-      "n": 162
+      "corr": 0.322,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.282,
-      "n": 161
+      "corr": 0.292,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41580,73 +41580,73 @@
     "termo": "salário atrasado",
     "familia": "Emprego e renda",
     "melhor_lag": 12,
-    "corr": 0.271,
-    "n": 161,
+    "corr": 0.277,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.169,
-      "n": 173
+      "corr": 0.199,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.195,
-      "n": 172
+      "corr": 0.227,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.201,
-      "n": 171
+      "corr": 0.239,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.22,
-      "n": 170
+      "corr": 0.259,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.225,
-      "n": 169
+      "corr": 0.269,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.206,
-      "n": 168
+      "corr": 0.256,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.22,
-      "n": 167
+      "corr": 0.247,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.226,
-      "n": 166
+      "corr": 0.266,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.228,
-      "n": 165
+      "corr": 0.252,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.231,
-      "n": 164
+      "corr": 0.261,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.251,
-      "n": 163
+      "corr": 0.263,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.233,
-      "n": 162
+      "corr": 0.27,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.271,
-      "n": 161
+      "corr": 0.277,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41655,73 +41655,148 @@
     "termo": "cartão atrasado",
     "familia": "Dificuldade financeira",
     "melhor_lag": 0,
-    "corr": 0.237,
-    "n": 173,
+    "corr": 0.272,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.237,
-      "n": 173
+      "corr": 0.272,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.216,
-      "n": 172
+      "corr": 0.269,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.197,
-      "n": 171
+      "corr": 0.243,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.2,
-      "n": 170
+      "corr": 0.242,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.181,
-      "n": 169
+      "corr": 0.233,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.162,
-      "n": 168
+      "corr": 0.214,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.17,
-      "n": 167
+      "corr": 0.205,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.155,
-      "n": 166
+      "corr": 0.201,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.153,
-      "n": 165
+      "corr": 0.185,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.158,
-      "n": 164
+      "corr": 0.193,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.152,
-      "n": 163
+      "corr": 0.188,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.165,
-      "n": 162
+      "corr": 0.183,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.199,
-      "n": 161
+      "corr": 0.21,
+      "n": 162
+     }
+    ],
+    "classificacao_conceitual": "associação exploratória"
+   },
+   {
+    "termo": "crédito consignado",
+    "familia": "Procura por crédito",
+    "melhor_lag": 10,
+    "corr": 0.249,
+    "n": 164,
+    "perfil": [
+     {
+      "lag": 0,
+      "corr": 0.19,
+      "n": 174
+     },
+     {
+      "lag": 1,
+      "corr": 0.17,
+      "n": 173
+     },
+     {
+      "lag": 2,
+      "corr": 0.146,
+      "n": 172
+     },
+     {
+      "lag": 3,
+      "corr": 0.161,
+      "n": 171
+     },
+     {
+      "lag": 4,
+      "corr": 0.183,
+      "n": 170
+     },
+     {
+      "lag": 5,
+      "corr": 0.191,
+      "n": 169
+     },
+     {
+      "lag": 6,
+      "corr": 0.205,
+      "n": 168
+     },
+     {
+      "lag": 7,
+      "corr": 0.227,
+      "n": 167
+     },
+     {
+      "lag": 8,
+      "corr": 0.233,
+      "n": 166
+     },
+     {
+      "lag": 9,
+      "corr": 0.238,
+      "n": 165
+     },
+     {
+      "lag": 10,
+      "corr": 0.249,
+      "n": 164
+     },
+     {
+      "lag": 11,
+      "corr": 0.243,
+      "n": 163
+     },
+     {
+      "lag": 12,
+      "corr": 0.246,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -41730,298 +41805,73 @@
     "termo": "empréstimo",
     "familia": "Procura por crédito",
     "melhor_lag": 12,
-    "corr": 0.227,
-    "n": 161,
+    "corr": 0.241,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.07,
-      "n": 173
+      "corr": 0.097,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.086,
-      "n": 172
-     },
-     {
-      "lag": 2,
-      "corr": 0.093,
-      "n": 171
-     },
-     {
-      "lag": 3,
-      "corr": 0.106,
-      "n": 170
-     },
-     {
-      "lag": 4,
-      "corr": 0.119,
-      "n": 169
-     },
-     {
-      "lag": 5,
-      "corr": 0.122,
-      "n": 168
-     },
-     {
-      "lag": 6,
-      "corr": 0.143,
-      "n": 167
-     },
-     {
-      "lag": 7,
-      "corr": 0.164,
-      "n": 166
-     },
-     {
-      "lag": 8,
-      "corr": 0.177,
-      "n": 165
-     },
-     {
-      "lag": 9,
-      "corr": 0.193,
-      "n": 164
-     },
-     {
-      "lag": 10,
-      "corr": 0.211,
-      "n": 163
-     },
-     {
-      "lag": 11,
-      "corr": 0.217,
-      "n": 162
-     },
-     {
-      "lag": 12,
-      "corr": 0.227,
-      "n": 161
-     }
-    ],
-    "classificacao_conceitual": "associação exploratória"
-   },
-   {
-    "termo": "crédito consignado",
-    "familia": "Procura por crédito",
-    "melhor_lag": 12,
-    "corr": 0.225,
-    "n": 161,
-    "perfil": [
-     {
-      "lag": 0,
-      "corr": 0.127,
+      "corr": 0.113,
       "n": 173
      },
      {
-      "lag": 1,
-      "corr": 0.108,
+      "lag": 2,
+      "corr": 0.121,
       "n": 172
      },
      {
-      "lag": 2,
-      "corr": 0.115,
+      "lag": 3,
+      "corr": 0.135,
       "n": 171
      },
      {
-      "lag": 3,
-      "corr": 0.136,
+      "lag": 4,
+      "corr": 0.152,
       "n": 170
      },
      {
-      "lag": 4,
-      "corr": 0.155,
+      "lag": 5,
+      "corr": 0.158,
       "n": 169
      },
      {
-      "lag": 5,
-      "corr": 0.159,
+      "lag": 6,
+      "corr": 0.168,
       "n": 168
      },
      {
-      "lag": 6,
-      "corr": 0.186,
+      "lag": 7,
+      "corr": 0.187,
       "n": 167
      },
      {
-      "lag": 7,
-      "corr": 0.203,
+      "lag": 8,
+      "corr": 0.198,
       "n": 166
      },
      {
-      "lag": 8,
-      "corr": 0.204,
+      "lag": 9,
+      "corr": 0.213,
       "n": 165
      },
      {
-      "lag": 9,
-      "corr": 0.212,
+      "lag": 10,
+      "corr": 0.228,
       "n": 164
      },
      {
-      "lag": 10,
-      "corr": 0.223,
+      "lag": 11,
+      "corr": 0.234,
       "n": 163
      },
      {
-      "lag": 11,
-      "corr": 0.223,
-      "n": 162
-     },
-     {
       "lag": 12,
-      "corr": 0.225,
-      "n": 161
-     }
-    ],
-    "classificacao_conceitual": "associação exploratória"
-   },
-   {
-    "termo": "empréstimo pessoal",
-    "familia": "Procura por crédito",
-    "melhor_lag": 12,
-    "corr": 0.22,
-    "n": 161,
-    "perfil": [
-     {
-      "lag": 0,
-      "corr": 0.038,
-      "n": 173
-     },
-     {
-      "lag": 1,
-      "corr": 0.06,
-      "n": 172
-     },
-     {
-      "lag": 2,
-      "corr": 0.061,
-      "n": 171
-     },
-     {
-      "lag": 3,
-      "corr": 0.067,
-      "n": 170
-     },
-     {
-      "lag": 4,
-      "corr": 0.067,
-      "n": 169
-     },
-     {
-      "lag": 5,
-      "corr": 0.067,
-      "n": 168
-     },
-     {
-      "lag": 6,
-      "corr": 0.087,
-      "n": 167
-     },
-     {
-      "lag": 7,
-      "corr": 0.106,
-      "n": 166
-     },
-     {
-      "lag": 8,
-      "corr": 0.128,
-      "n": 165
-     },
-     {
-      "lag": 9,
-      "corr": 0.148,
-      "n": 164
-     },
-     {
-      "lag": 10,
-      "corr": 0.169,
-      "n": 163
-     },
-     {
-      "lag": 11,
-      "corr": 0.19,
+      "corr": 0.241,
       "n": 162
-     },
-     {
-      "lag": 12,
-      "corr": 0.22,
-      "n": 161
-     }
-    ],
-    "classificacao_conceitual": "associação exploratória"
-   },
-   {
-    "termo": "seguro desemprego",
-    "familia": "Emprego e renda",
-    "melhor_lag": 5,
-    "corr": -0.219,
-    "n": 168,
-    "perfil": [
-     {
-      "lag": 0,
-      "corr": -0.114,
-      "n": 173
-     },
-     {
-      "lag": 1,
-      "corr": -0.125,
-      "n": 172
-     },
-     {
-      "lag": 2,
-      "corr": -0.152,
-      "n": 171
-     },
-     {
-      "lag": 3,
-      "corr": -0.159,
-      "n": 170
-     },
-     {
-      "lag": 4,
-      "corr": -0.18,
-      "n": 169
-     },
-     {
-      "lag": 5,
-      "corr": -0.219,
-      "n": 168
-     },
-     {
-      "lag": 6,
-      "corr": -0.211,
-      "n": 167
-     },
-     {
-      "lag": 7,
-      "corr": -0.214,
-      "n": 166
-     },
-     {
-      "lag": 8,
-      "corr": -0.213,
-      "n": 165
-     },
-     {
-      "lag": 9,
-      "corr": -0.188,
-      "n": 164
-     },
-     {
-      "lag": 10,
-      "corr": -0.174,
-      "n": 163
-     },
-     {
-      "lag": 11,
-      "corr": -0.169,
-      "n": 162
-     },
-     {
-      "lag": 12,
-      "corr": -0.133,
-      "n": 161
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42030,73 +41880,223 @@
     "termo": "renegociar dívida",
     "familia": "Dificuldade financeira",
     "melhor_lag": 0,
-    "corr": 0.207,
-    "n": 173,
+    "corr": 0.238,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.207,
-      "n": 173
+      "corr": 0.238,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.156,
-      "n": 172
+      "corr": 0.224,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.152,
-      "n": 171
+      "corr": 0.185,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.133,
-      "n": 170
+      "corr": 0.175,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.123,
-      "n": 169
+      "corr": 0.163,
+      "n": 170
      },
      {
       "lag": 5,
+      "corr": 0.152,
+      "n": 169
+     },
+     {
+      "lag": 6,
+      "corr": 0.145,
+      "n": 168
+     },
+     {
+      "lag": 7,
+      "corr": 0.137,
+      "n": 167
+     },
+     {
+      "lag": 8,
+      "corr": 0.131,
+      "n": 166
+     },
+     {
+      "lag": 9,
+      "corr": 0.118,
+      "n": 165
+     },
+     {
+      "lag": 10,
+      "corr": 0.12,
+      "n": 164
+     },
+     {
+      "lag": 11,
+      "corr": 0.108,
+      "n": 163
+     },
+     {
+      "lag": 12,
+      "corr": 0.099,
+      "n": 162
+     }
+    ],
+    "classificacao_conceitual": "associação exploratória"
+   },
+   {
+    "termo": "empréstimo pessoal",
+    "familia": "Procura por crédito",
+    "melhor_lag": 12,
+    "corr": 0.231,
+    "n": 162,
+    "perfil": [
+     {
+      "lag": 0,
+      "corr": 0.06,
+      "n": 174
+     },
+     {
+      "lag": 1,
+      "corr": 0.081,
+      "n": 173
+     },
+     {
+      "lag": 2,
+      "corr": 0.099,
+      "n": 172
+     },
+     {
+      "lag": 3,
+      "corr": 0.102,
+      "n": 171
+     },
+     {
+      "lag": 4,
+      "corr": 0.106,
+      "n": 170
+     },
+     {
+      "lag": 5,
+      "corr": 0.105,
+      "n": 169
+     },
+     {
+      "lag": 6,
       "corr": 0.113,
       "n": 168
      },
      {
-      "lag": 6,
-      "corr": 0.115,
+      "lag": 7,
+      "corr": 0.128,
       "n": 167
      },
      {
-      "lag": 7,
-      "corr": 0.097,
+      "lag": 8,
+      "corr": 0.147,
       "n": 166
      },
      {
-      "lag": 8,
-      "corr": 0.095,
+      "lag": 9,
+      "corr": 0.169,
       "n": 165
      },
      {
-      "lag": 9,
-      "corr": 0.09,
+      "lag": 10,
+      "corr": 0.186,
       "n": 164
      },
      {
-      "lag": 10,
-      "corr": 0.084,
+      "lag": 11,
+      "corr": 0.205,
       "n": 163
      },
      {
-      "lag": 11,
-      "corr": 0.081,
+      "lag": 12,
+      "corr": 0.231,
       "n": 162
+     }
+    ],
+    "classificacao_conceitual": "associação exploratória"
+   },
+   {
+    "termo": "seguro desemprego",
+    "familia": "Emprego e renda",
+    "melhor_lag": 7,
+    "corr": -0.227,
+    "n": 167,
+    "perfil": [
+     {
+      "lag": 0,
+      "corr": -0.13,
+      "n": 174
+     },
+     {
+      "lag": 1,
+      "corr": -0.138,
+      "n": 173
+     },
+     {
+      "lag": 2,
+      "corr": -0.165,
+      "n": 172
+     },
+     {
+      "lag": 3,
+      "corr": -0.169,
+      "n": 171
+     },
+     {
+      "lag": 4,
+      "corr": -0.189,
+      "n": 170
+     },
+     {
+      "lag": 5,
+      "corr": -0.223,
+      "n": 169
+     },
+     {
+      "lag": 6,
+      "corr": -0.225,
+      "n": 168
+     },
+     {
+      "lag": 7,
+      "corr": -0.227,
+      "n": 167
+     },
+     {
+      "lag": 8,
+      "corr": -0.223,
+      "n": 166
+     },
+     {
+      "lag": 9,
+      "corr": -0.198,
+      "n": 165
+     },
+     {
+      "lag": 10,
+      "corr": -0.184,
+      "n": 164
+     },
+     {
+      "lag": 11,
+      "corr": -0.179,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.078,
-      "n": 161
+      "corr": -0.148,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42105,73 +42105,73 @@
     "termo": "empréstimo para negativado",
     "familia": "Procura por crédito",
     "melhor_lag": 12,
-    "corr": 0.19,
-    "n": 161,
+    "corr": 0.205,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": -0.001,
-      "n": 173
+      "corr": 0.023,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.019,
-      "n": 172
+      "corr": 0.045,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.032,
-      "n": 171
+      "corr": 0.061,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.047,
-      "n": 170
+      "corr": 0.077,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.062,
-      "n": 169
+      "corr": 0.093,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": 0.07,
-      "n": 168
+      "corr": 0.103,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.084,
-      "n": 167
+      "corr": 0.115,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": 0.098,
-      "n": 166
+      "corr": 0.127,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.11,
-      "n": 165
+      "corr": 0.137,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.125,
-      "n": 164
+      "corr": 0.152,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.146,
-      "n": 163
+      "corr": 0.167,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.165,
-      "n": 162
+      "corr": 0.184,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.19,
-      "n": 161
+      "corr": 0.205,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42180,73 +42180,73 @@
     "termo": "nome sujo",
     "familia": "Dificuldade financeira",
     "melhor_lag": 0,
-    "corr": 0.183,
-    "n": 173,
+    "corr": 0.201,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.183,
-      "n": 173
+      "corr": 0.201,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": 0.153,
-      "n": 172
+      "corr": 0.182,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": 0.138,
-      "n": 171
+      "corr": 0.152,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": 0.124,
-      "n": 170
+      "corr": 0.148,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": 0.071,
-      "n": 169
+      "corr": 0.098,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.004,
-      "n": 168
+      "corr": 0.031,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": 0.005,
-      "n": 167
+      "corr": -0.001,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.021,
-      "n": 166
+      "corr": -0.019,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": -0.049,
-      "n": 165
+      "corr": -0.046,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": -0.066,
-      "n": 164
+      "corr": -0.067,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": -0.102,
-      "n": 163
+      "corr": -0.104,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": -0.134,
-      "n": 162
+      "corr": -0.13,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": -0.116,
-      "n": 161
+      "corr": -0.127,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42255,73 +42255,73 @@
     "termo": "capital de giro",
     "familia": "Estresse empresarial",
     "melhor_lag": 9,
-    "corr": -0.183,
-    "n": 164,
+    "corr": -0.176,
+    "n": 165,
     "perfil": [
      {
       "lag": 0,
       "corr": -0.014,
-      "n": 173
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.088,
-      "n": 172
+      "corr": -0.081,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.11,
-      "n": 171
+      "corr": -0.113,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.157,
-      "n": 170
+      "corr": -0.155,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.145,
-      "n": 169
+      "corr": -0.148,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.088,
-      "n": 168
+      "corr": -0.099,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.093,
-      "n": 167
+      "corr": -0.101,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.149,
-      "n": 166
+      "corr": -0.143,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": -0.157,
-      "n": 165
+      "corr": -0.161,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": -0.183,
-      "n": 164
+      "corr": -0.176,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": -0.154,
-      "n": 163
+      "corr": -0.157,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": -0.082,
-      "n": 162
+      "corr": -0.095,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": -0.112,
-      "n": 161
+      "corr": -0.113,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42331,72 +42331,72 @@
     "familia": "Emprego e renda",
     "melhor_lag": 0,
     "corr": -0.172,
-    "n": 173,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
       "corr": -0.172,
-      "n": 173
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.139,
-      "n": 172
+      "corr": -0.136,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.118,
-      "n": 171
+      "corr": -0.113,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.091,
-      "n": 170
+      "corr": -0.085,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.078,
-      "n": 169
+      "corr": -0.072,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.095,
-      "n": 168
+      "corr": -0.077,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.047,
-      "n": 167
+      "corr": -0.057,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.017,
-      "n": 166
+      "corr": -0.021,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.001,
-      "n": 165
+      "corr": -0.002,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.033,
-      "n": 164
+      "corr": 0.034,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.062,
-      "n": 163
+      "corr": 0.06,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.093,
-      "n": 162
+      "corr": 0.09,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.158,
-      "n": 161
+      "corr": 0.151,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42405,73 +42405,73 @@
     "termo": "limpar nome",
     "familia": "Dificuldade financeira",
     "melhor_lag": 8,
-    "corr": -0.161,
-    "n": 165,
+    "corr": -0.166,
+    "n": 166,
     "perfil": [
      {
       "lag": 0,
-      "corr": -0.044,
-      "n": 173
+      "corr": -0.043,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.1,
-      "n": 172
+      "corr": -0.085,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.113,
-      "n": 171
+      "corr": -0.11,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.122,
-      "n": 170
+      "corr": -0.116,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.138,
-      "n": 169
+      "corr": -0.125,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.133,
-      "n": 168
+      "corr": -0.13,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.114,
-      "n": 167
+      "corr": -0.119,
+      "n": 168
      },
      {
       "lag": 7,
       "corr": -0.149,
-      "n": 166
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": -0.161,
-      "n": 165
+      "corr": -0.166,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": -0.147,
-      "n": 164
+      "corr": -0.153,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": -0.151,
-      "n": 163
+      "corr": -0.159,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": -0.156,
-      "n": 162
+      "corr": -0.163,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": -0.144,
-      "n": 161
+      "corr": -0.156,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42480,73 +42480,73 @@
     "termo": "financiamento imobiliário",
     "familia": "Financiamentos",
     "melhor_lag": 2,
-    "corr": -0.146,
-    "n": 171,
+    "corr": -0.127,
+    "n": 172,
     "perfil": [
      {
       "lag": 0,
-      "corr": -0.136,
-      "n": 173
+      "corr": -0.12,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.14,
-      "n": 172
+      "corr": -0.119,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.146,
-      "n": 171
+      "corr": -0.127,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.133,
-      "n": 170
+      "corr": -0.114,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.125,
-      "n": 169
+      "corr": -0.106,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.127,
-      "n": 168
+      "corr": -0.102,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.096,
-      "n": 167
+      "corr": -0.084,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.074,
-      "n": 166
+      "corr": -0.06,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": -0.072,
-      "n": 165
+      "corr": -0.043,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": -0.045,
-      "n": 164
+      "corr": -0.027,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": -0.019,
-      "n": 163
+      "corr": -0.004,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.001,
-      "n": 162
+      "corr": 0.019,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.045,
-      "n": 161
+      "corr": 0.054,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42555,73 +42555,73 @@
     "termo": "crédito pessoal",
     "familia": "Procura por crédito",
     "melhor_lag": 12,
-    "corr": 0.091,
-    "n": 161,
+    "corr": 0.105,
+    "n": 162,
     "perfil": [
      {
       "lag": 0,
-      "corr": -0.09,
-      "n": 173
+      "corr": -0.053,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.09,
-      "n": 172
+      "corr": -0.048,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.073,
-      "n": 171
+      "corr": -0.04,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.062,
-      "n": 170
+      "corr": -0.029,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.06,
-      "n": 169
+      "corr": -0.023,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.049,
-      "n": 168
+      "corr": -0.018,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.031,
-      "n": 167
+      "corr": -0.005,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.022,
-      "n": 166
+      "corr": 0.01,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": 0.0,
-      "n": 165
+      "corr": 0.023,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": 0.018,
-      "n": 164
+      "corr": 0.043,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": 0.046,
-      "n": 163
+      "corr": 0.06,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.066,
-      "n": 162
+      "corr": 0.085,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.091,
-      "n": 161
+      "corr": 0.105,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"
@@ -42629,74 +42629,74 @@
    {
     "termo": "empréstimo para empresa",
     "familia": "Estresse empresarial",
-    "melhor_lag": 7,
-    "corr": -0.061,
-    "n": 166,
+    "melhor_lag": 0,
+    "corr": 0.052,
+    "n": 174,
     "perfil": [
      {
       "lag": 0,
-      "corr": 0.014,
-      "n": 173
+      "corr": 0.052,
+      "n": 174
      },
      {
       "lag": 1,
-      "corr": -0.006,
-      "n": 172
+      "corr": 0.036,
+      "n": 173
      },
      {
       "lag": 2,
-      "corr": -0.023,
-      "n": 171
+      "corr": 0.014,
+      "n": 172
      },
      {
       "lag": 3,
-      "corr": -0.05,
-      "n": 170
+      "corr": -0.004,
+      "n": 171
      },
      {
       "lag": 4,
-      "corr": -0.053,
-      "n": 169
+      "corr": -0.008,
+      "n": 170
      },
      {
       "lag": 5,
-      "corr": -0.057,
-      "n": 168
+      "corr": -0.013,
+      "n": 169
      },
      {
       "lag": 6,
-      "corr": -0.06,
-      "n": 167
+      "corr": -0.027,
+      "n": 168
      },
      {
       "lag": 7,
-      "corr": -0.061,
-      "n": 166
+      "corr": -0.021,
+      "n": 167
      },
      {
       "lag": 8,
-      "corr": -0.049,
-      "n": 165
+      "corr": -0.018,
+      "n": 166
      },
      {
       "lag": 9,
-      "corr": -0.061,
-      "n": 164
+      "corr": -0.012,
+      "n": 165
      },
      {
       "lag": 10,
-      "corr": -0.029,
-      "n": 163
+      "corr": -0.005,
+      "n": 164
      },
      {
       "lag": 11,
-      "corr": 0.004,
-      "n": 162
+      "corr": 0.021,
+      "n": 163
      },
      {
       "lag": 12,
-      "corr": 0.013,
-      "n": 161
+      "corr": 0.032,
+      "n": 162
      }
     ],
     "classificacao_conceitual": "associação exploratória"

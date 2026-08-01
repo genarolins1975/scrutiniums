@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:09:59+00:00",
+  "atualizado_em": "2026-08-01T11:24:50+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -1550,7 +1550,7 @@
  "openfinance": null,
  "reclamacoes": [],
  "rj_citacoes": {
-  "casos": 1,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

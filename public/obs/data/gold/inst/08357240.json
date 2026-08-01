@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:09:57+00:00",
+  "atualizado_em": "2026-08-01T11:24:49+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -645,17 +645,17 @@
  },
  "openfinance": {
   "organisation": "BANCO CSF S/A",
-  "chamadas_semana": 29448.0,
+  "chamadas_semana": 28650.0,
   "share_pct": 0.0,
-  "familias_api": 16,
+  "familias_api": 17,
   "papeis": [
    "DADOS"
   ],
   "dimensoes": {
    "escala_chamadas": 0.0,
-   "cobertura_funcional": 28.6
+   "cobertura_funcional": 30.4
   },
-  "maturidade_estrutural": 14.3,
+  "maturidade_estrutural": 15.2,
   "match_diretorio": true
  },
  "reclamacoes": [

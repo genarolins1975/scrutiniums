@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -536,17 +536,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
     -0.35,
-    -0.03
+    -0.04
    ],
    "basileia_atual_pct": 13.42,
    "basileia_pos_choque_pct": [
-    13.07,
-    13.38
+    13.06,
+    13.37
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
@@ -721,7 +721,7 @@
  },
  "openfinance": {
   "organisation": "CITIBANK",
-  "chamadas_semana": 96304.0,
+  "chamadas_semana": 87869.0,
   "share_pct": 0.0,
   "familias_api": 26,
   "papeis": [
@@ -771,7 +771,7 @@
   }
  ],
  "rj_citacoes": {
-  "casos": 4,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

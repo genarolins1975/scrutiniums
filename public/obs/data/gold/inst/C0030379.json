@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -529,17 +529,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
-    -0.49,
-    -0.05
+    -0.5,
+    -0.06
    ],
    "basileia_atual_pct": 15.15,
    "basileia_pos_choque_pct": [
-    14.67,
-    15.1
+    14.66,
+    15.09
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
@@ -970,7 +970,7 @@
  },
  "openfinance": {
   "organisation": "SANTANDER BRASIL",
-  "chamadas_semana": 5956322220.0,
+  "chamadas_semana": 5331587486.0,
   "share_pct": 9.4,
   "familias_api": 53,
   "papeis": [
@@ -980,10 +980,10 @@
    "PAGTO"
   ],
   "dimensoes": {
-   "escala_chamadas": 37.6,
+   "escala_chamadas": 37.5,
    "cobertura_funcional": 94.6
   },
-  "maturidade_estrutural": 66.1,
+  "maturidade_estrutural": 66.0,
   "match_diretorio": true
  },
  "reclamacoes": [
@@ -1021,7 +1021,7 @@
   }
  ],
  "rj_citacoes": {
-  "casos": 109,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

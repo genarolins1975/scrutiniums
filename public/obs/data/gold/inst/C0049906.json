@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -54,7 +54,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo subiu 9.5 pontos no grupo de pares.",
+    "texto": "Score relativo subiu 9.6 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -449,8 +449,8 @@
   }
  },
  "score_ref": {
-  "score": 74.7,
-  "score_delta": 9.5,
+  "score": 74.8,
+  "score_delta": 9.6,
   "faixa": "risco elevado",
   "dimensoes": {
    "capital_basileia": {
@@ -521,24 +521,24 @@
    },
    {
     "anomes": "202603",
-    "score": 74.7
+    "score": 74.8
    }
   ],
   "vulnerabilidade": {
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
-    -0.58,
-    -0.06
+    -0.59,
+    -0.07
    ],
    "basileia_atual_pct": 14.23,
    "basileia_pos_choque_pct": [
-    13.65,
-    14.17
+    13.64,
+    14.15
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -712,17 +712,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
-    -0.84,
-    -0.08
+    -0.86,
+    -0.11
    ],
    "basileia_atual_pct": 12.95,
    "basileia_pos_choque_pct": [
-    12.1,
-    12.86
+    12.08,
+    12.84
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
@@ -1041,7 +1041,7 @@
  },
  "openfinance": {
   "organisation": "NUBANK",
-  "chamadas_semana": 15825191092.0,
+  "chamadas_semana": 14222633794.0,
   "share_pct": 24.9,
   "familias_api": null,
   "papeis": null,
@@ -1086,7 +1086,7 @@
   }
  ],
  "rj_citacoes": {
-  "casos": 10,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

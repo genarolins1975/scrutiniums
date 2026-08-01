@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-01T01:10:03+00:00",
+  "atualizado_em": "2026-08-01T11:24:52+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -541,17 +541,17 @@
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
    "delta_inad_pp": [
-    0.12,
-    1.26
+    0.16,
+    1.28
    ],
    "impacto_basileia_pp": [
     -0.25,
-    -0.02
+    -0.03
    ],
    "basileia_atual_pct": 15.91,
    "basileia_pos_choque_pct": [
     15.66,
-    15.89
+    15.88
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
@@ -950,8 +950,8 @@
  },
  "openfinance": {
   "organisation": "BANCO BTG PACTUAL",
-  "chamadas_semana": 1877612575.0,
-  "share_pct": 3.0,
+  "chamadas_semana": 1672465757.0,
+  "share_pct": 2.9,
   "familias_api": 43,
   "papeis": [
    "CONTA",
@@ -959,10 +959,10 @@
    "PAGTO"
   ],
   "dimensoes": {
-   "escala_chamadas": 11.9,
+   "escala_chamadas": 11.8,
    "cobertura_funcional": 76.8
   },
-  "maturidade_estrutural": 44.4,
+  "maturidade_estrutural": 44.3,
   "match_diretorio": true
  },
  "reclamacoes": [
@@ -1000,7 +1000,7 @@
   }
  ],
  "rj_citacoes": {
-  "casos": 4,
+  "casos": 0,
   "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
  },
  "indisponiveis": [

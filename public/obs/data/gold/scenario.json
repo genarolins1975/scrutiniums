@@ -2,10 +2,10 @@
  "tipo": "CENÁRIO",
  "elasticidades": {
   "selic_pp": {
-   "value": 0.098,
+   "value": 0.099,
    "range": [
-    0.067,
-    0.129
+    0.068,
+    0.13
    ],
    "lag_desc": "por p.p. de Selic, efeito acumulado em 12m",
    "fonte": "empírico",
@@ -13,20 +13,20 @@
    "sinal_esperado_ok": true
   },
   "desemprego_pp": {
-   "value": 0.023,
+   "value": 0.03,
    "range": [
-    -0.048,
-    0.094
+    -0.04,
+    0.1
    ],
    "lag_desc": "por p.p. de desemprego",
    "fonte": "empírico",
-   "erro_padrao": 0.036,
+   "erro_padrao": 0.035,
    "sinal_esperado_ok": true
   },
   "pib_pp": {
    "value": -0.002,
    "range": [
-    -0.027,
+    -0.026,
     0.022
    ],
    "lag_desc": "por p.p. de crescimento do PIB",
@@ -35,14 +35,14 @@
    "sinal_esperado_ok": true
   },
   "cambio_pct10": {
-   "value": -0.13,
+   "value": -0.139,
    "range": [
-    -0.221,
-    -0.039
+    -0.229,
+    -0.049
    ],
    "lag_desc": "por 10% de depreciação cambial",
    "fonte": "empírico (sinal contraintuitivo — usar com cautela)",
-   "erro_padrao": 0.046,
+   "erro_padrao": 0.045,
    "sinal_esperado_ok": false
   }
  },
@@ -79,105 +79,107 @@
   "pontos": [
    {
     "h": 1,
-    "ref_date": "2026-06-01",
-    "p50": 4.7736,
-    "p10": 4.6244,
-    "p90": 4.9563
+    "ref_date": "2026-07-01",
+    "p50": 4.7106,
+    "p10": 4.568,
+    "p90": 4.8899
    },
    {
     "h": 3,
-    "ref_date": "2026-08-01",
-    "p50": 4.8132,
-    "p10": 4.61,
-    "p90": 5.0948
+    "ref_date": "2026-09-01",
+    "p50": 4.8085,
+    "p10": 4.5639,
+    "p90": 5.1048
    },
    {
     "h": 6,
-    "ref_date": "2026-11-01",
-    "p50": 4.8603,
-    "p10": 4.559,
-    "p90": 5.3988
+    "ref_date": "2026-12-01",
+    "p50": 4.915,
+    "p10": 4.5754,
+    "p90": 5.4631
    },
    {
     "h": 9,
-    "ref_date": "2027-02-01",
-    "p50": 4.9802,
-    "p10": 4.4651,
-    "p90": 5.6362
+    "ref_date": "2027-03-01",
+    "p50": 5.0803,
+    "p10": 4.4365,
+    "p90": 5.6026
    },
    {
     "h": 12,
-    "ref_date": "2027-05-01",
-    "p50": 5.0535,
-    "p10": 4.4527,
-    "p90": 5.851
+    "ref_date": "2027-06-01",
+    "p50": 5.1532,
+    "p10": 4.4149,
+    "p90": 5.8162
    }
   ],
   "diagnostico": {
    "1": {
     "pesos": {
-     "ultimo_valor": 0.336,
-     "drift": 0.336,
-     "ar1_diferencas": 0.329
+     "ultimo_valor": 0.335,
+     "drift": 0.335,
+     "ar1_diferencas": 0.331
     },
-    "mae_ensemble_backtest": 0.0887,
-    "mae_naive_backtest": 0.088,
-    "ganho_vs_naive_pct": -0.8,
+    "mae_ensemble_backtest": 0.0897,
+    "mae_naive_backtest": 0.0894,
+    "ganho_vs_naive_pct": -0.4,
     "n_backtests": 35
    },
    "3": {
     "pesos": {
-     "ultimo_valor": 0.33,
-     "drift": 0.333,
-     "ar1_diferencas": 0.337
+     "ultimo_valor": 0.256,
+     "drift": 0.259,
+     "ar1_diferencas": 0.262,
+     "holt": 0.223
     },
-    "mae_ensemble_backtest": 0.1676,
-    "mae_naive_backtest": 0.1694,
-    "ganho_vs_naive_pct": 1.1,
+    "mae_ensemble_backtest": 0.1772,
+    "mae_naive_backtest": 0.1732,
+    "ganho_vs_naive_pct": -2.3,
     "n_backtests": 34
    },
    "6": {
     "pesos": {
-     "ultimo_valor": 0.333,
-     "drift": 0.333,
-     "ar1_diferencas": 0.334
+     "ultimo_valor": 0.254,
+     "drift": 0.255,
+     "ar1_diferencas": 0.256,
+     "holt": 0.235
     },
-    "mae_ensemble_backtest": 0.3076,
-    "mae_naive_backtest": 0.3084,
-    "ganho_vs_naive_pct": 0.2,
+    "mae_ensemble_backtest": 0.3258,
+    "mae_naive_backtest": 0.3206,
+    "ganho_vs_naive_pct": -1.6,
     "n_backtests": 31
    },
    "9": {
     "pesos": {
-     "ultimo_valor": 0.257,
-     "drift": 0.256,
-     "media_movel_6m": 0.231,
-     "ar1_diferencas": 0.256
+     "ultimo_valor": 0.259,
+     "drift": 0.258,
+     "media_movel_6m": 0.226,
+     "ar1_diferencas": 0.258
     },
-    "mae_ensemble_backtest": 0.4502,
-    "mae_naive_backtest": 0.4379,
-    "ganho_vs_naive_pct": -2.8,
+    "mae_ensemble_backtest": 0.4653,
+    "mae_naive_backtest": 0.45,
+    "ganho_vs_naive_pct": -3.4,
     "n_backtests": 28
    },
    "12": {
     "pesos": {
-     "ultimo_valor": 0.203,
-     "sazonal_ingenuo": 0.203,
-     "drift": 0.199,
-     "media_movel_6m": 0.196,
-     "ar1_diferencas": 0.199
+     "ultimo_valor": 0.204,
+     "sazonal_ingenuo": 0.204,
+     "drift": 0.2,
+     "media_movel_6m": 0.192,
+     "ar1_diferencas": 0.201
     },
-    "mae_ensemble_backtest": 0.5636,
-    "mae_naive_backtest": 0.5556,
-    "ganho_vs_naive_pct": -1.4,
+    "mae_ensemble_backtest": 0.5952,
+    "mae_naive_backtest": 0.5848,
+    "ganho_vs_naive_pct": -1.8,
     "n_backtests": 25
    }
   },
   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
   "ultima_obs": {
-   "ref": "2026-05-01",
-   "v": 4.74
+   "ref": "2026-06-01",
+   "v": 4.68
   }
  },
  "base_forecasts": {
@@ -187,72 +189,289 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 4.7736,
-     "p10": 4.6244,
-     "p90": 4.9563
+     "ref_date": "2026-07-01",
+     "p50": 4.7106,
+     "p10": 4.568,
+     "p90": 4.8899
     },
     {
      "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 4.8132,
-     "p10": 4.61,
-     "p90": 5.0948
+     "ref_date": "2026-09-01",
+     "p50": 4.8085,
+     "p10": 4.5639,
+     "p90": 5.1048
     },
     {
      "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 4.8603,
-     "p10": 4.559,
-     "p90": 5.3988
+     "ref_date": "2026-12-01",
+     "p50": 4.915,
+     "p10": 4.5754,
+     "p90": 5.4631
     },
     {
      "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 4.9802,
-     "p10": 4.4651,
-     "p90": 5.6362
+     "ref_date": "2027-03-01",
+     "p50": 5.0803,
+     "p10": 4.4365,
+     "p90": 5.6026
     },
     {
      "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 5.0535,
-     "p10": 4.4527,
-     "p90": 5.851
+     "ref_date": "2027-06-01",
+     "p50": 5.1532,
+     "p10": 4.4149,
+     "p90": 5.8162
     }
    ],
    "diagnostico": {
     "1": {
      "pesos": {
-      "ultimo_valor": 0.336,
-      "drift": 0.336,
-      "ar1_diferencas": 0.329
+      "ultimo_valor": 0.335,
+      "drift": 0.335,
+      "ar1_diferencas": 0.331
      },
-     "mae_ensemble_backtest": 0.0887,
-     "mae_naive_backtest": 0.088,
-     "ganho_vs_naive_pct": -0.8,
+     "mae_ensemble_backtest": 0.0897,
+     "mae_naive_backtest": 0.0894,
+     "ganho_vs_naive_pct": -0.4,
      "n_backtests": 35
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.33,
-      "drift": 0.333,
-      "ar1_diferencas": 0.337
+      "ultimo_valor": 0.256,
+      "drift": 0.259,
+      "ar1_diferencas": 0.262,
+      "holt": 0.223
      },
-     "mae_ensemble_backtest": 0.1676,
-     "mae_naive_backtest": 0.1694,
-     "ganho_vs_naive_pct": 1.1,
+     "mae_ensemble_backtest": 0.1772,
+     "mae_naive_backtest": 0.1732,
+     "ganho_vs_naive_pct": -2.3,
      "n_backtests": 34
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.333,
-      "drift": 0.333,
-      "ar1_diferencas": 0.334
+      "ultimo_valor": 0.254,
+      "drift": 0.255,
+      "ar1_diferencas": 0.256,
+      "holt": 0.235
      },
-     "mae_ensemble_backtest": 0.3076,
-     "mae_naive_backtest": 0.3084,
+     "mae_ensemble_backtest": 0.3258,
+     "mae_naive_backtest": 0.3206,
+     "ganho_vs_naive_pct": -1.6,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.259,
+      "drift": 0.258,
+      "media_movel_6m": 0.226,
+      "ar1_diferencas": 0.258
+     },
+     "mae_ensemble_backtest": 0.4653,
+     "mae_naive_backtest": 0.45,
+     "ganho_vs_naive_pct": -3.4,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.204,
+      "sazonal_ingenuo": 0.204,
+      "drift": 0.2,
+      "media_movel_6m": 0.192,
+      "ar1_diferencas": 0.201
+     },
+     "mae_ensemble_backtest": 0.5952,
+     "mae_naive_backtest": 0.5848,
+     "ganho_vs_naive_pct": -1.8,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-06-01",
+    "v": 4.68
+   }
+  },
+  "pf": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-07-01",
+     "p50": 5.6062,
+     "p10": 5.4594,
+     "p90": 5.8061
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-09-01",
+     "p50": 5.6925,
+     "p10": 5.3625,
+     "p90": 5.9982
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-12-01",
+     "p50": 5.9823,
+     "p10": 5.4214,
+     "p90": 6.52
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-03-01",
+     "p50": 6.3103,
+     "p10": 5.4809,
+     "p90": 7.0048
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-06-01",
+     "p50": 6.2603,
+     "p10": 5.2233,
+     "p90": 7.0967
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.331,
+      "drift": 0.327,
+      "ar1_diferencas": 0.342
+     },
+     "mae_ensemble_backtest": 0.0984,
+     "mae_naive_backtest": 0.0991,
+     "ganho_vs_naive_pct": 0.8,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.323,
+      "ar1_diferencas": 0.344
+     },
+     "mae_ensemble_backtest": 0.217,
+     "mae_naive_backtest": 0.2174,
      "ganho_vs_naive_pct": 0.2,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.256,
+      "drift": 0.246,
+      "ar1_diferencas": 0.253,
+      "holt": 0.245
+     },
+     "mae_ensemble_backtest": 0.4222,
+     "mae_naive_backtest": 0.4116,
+     "ganho_vs_naive_pct": -2.6,
+     "n_backtests": 31
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.265,
+      "drift": 0.247,
+      "ar1_diferencas": 0.251,
+      "holt": 0.236
+     },
+     "mae_ensemble_backtest": 0.6218,
+     "mae_naive_backtest": 0.5871,
+     "ganho_vs_naive_pct": -5.9,
+     "n_backtests": 28
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.209,
+      "sazonal_ingenuo": 0.209,
+      "drift": 0.195,
+      "media_movel_6m": 0.19,
+      "ar1_diferencas": 0.197
+     },
+     "mae_ensemble_backtest": 0.8146,
+     "mae_naive_backtest": 0.7804,
+     "ganho_vs_naive_pct": -4.4,
+     "n_backtests": 25
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-06-01",
+    "v": 5.57
+   }
+  },
+  "pj": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-07-01",
+     "p50": 3.2228,
+     "p10": 3.0754,
+     "p90": 3.3826
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-09-01",
+     "p50": 3.2389,
+     "p10": 2.9574,
+     "p90": 3.4801
+    },
+    {
+     "h": 6,
+     "ref_date": "2026-12-01",
+     "p50": 3.2287,
+     "p10": 2.9513,
+     "p90": 3.5693
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-03-01",
+     "p50": 3.2991,
+     "p10": 2.8334,
+     "p90": 3.5884
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-06-01",
+     "p50": 3.2256,
+     "p10": 2.8121,
+     "p90": 3.7454
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.335,
+      "drift": 0.336,
+      "ar1_diferencas": 0.329
+     },
+     "mae_ensemble_backtest": 0.0982,
+     "mae_naive_backtest": 0.0977,
+     "ganho_vs_naive_pct": -0.5,
+     "n_backtests": 35
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.335,
+      "ar1_diferencas": 0.333
+     },
+     "mae_ensemble_backtest": 0.1558,
+     "mae_naive_backtest": 0.1562,
+     "ganho_vs_naive_pct": 0.2,
+     "n_backtests": 34
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.336,
+      "drift": 0.334,
+      "ar1_diferencas": 0.33
+     },
+     "mae_ensemble_backtest": 0.2063,
+     "mae_naive_backtest": 0.2045,
+     "ganho_vs_naive_pct": -0.9,
      "n_backtests": 31
     },
     "9": {
@@ -262,246 +481,33 @@
       "media_movel_6m": 0.231,
       "ar1_diferencas": 0.256
      },
-     "mae_ensemble_backtest": 0.4502,
-     "mae_naive_backtest": 0.4379,
+     "mae_ensemble_backtest": 0.2747,
+     "mae_naive_backtest": 0.2671,
      "ganho_vs_naive_pct": -2.8,
      "n_backtests": 28
     },
     "12": {
      "pesos": {
-      "ultimo_valor": 0.203,
-      "sazonal_ingenuo": 0.203,
-      "drift": 0.199,
-      "media_movel_6m": 0.196,
-      "ar1_diferencas": 0.199
+      "ultimo_valor": 0.2,
+      "sazonal_ingenuo": 0.2,
+      "drift": 0.195,
+      "media_movel_6m": 0.211,
+      "ar1_diferencas": 0.194
      },
-     "mae_ensemble_backtest": 0.5636,
-     "mae_naive_backtest": 0.5556,
-     "ganho_vs_naive_pct": -1.4,
+     "mae_ensemble_backtest": 0.3163,
+     "mae_naive_backtest": 0.316,
+     "ganho_vs_naive_pct": -0.1,
      "n_backtests": 25
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 4.74
-   }
-  },
-  "pf": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 5.6498,
-     "p10": 5.5191,
-     "p90": 5.8674
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 5.725,
-     "p10": 5.4196,
-     "p90": 6.063
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 5.9783,
-     "p10": 5.3694,
-     "p90": 6.5748
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 6.0954,
-     "p10": 5.2767,
-     "p90": 6.8574
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 6.2275,
-     "p10": 5.2091,
-     "p90": 7.1325
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.332,
-      "drift": 0.329,
-      "ar1_diferencas": 0.34
-     },
-     "mae_ensemble_backtest": 0.0983,
-     "mae_naive_backtest": 0.0989,
-     "ganho_vs_naive_pct": 0.5,
-     "n_backtests": 35
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.332,
-      "drift": 0.323,
-      "ar1_diferencas": 0.345
-     },
-     "mae_ensemble_backtest": 0.2181,
-     "mae_naive_backtest": 0.2191,
-     "ganho_vs_naive_pct": 0.5,
-     "n_backtests": 34
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.259,
-      "drift": 0.249,
-      "ar1_diferencas": 0.255,
-      "holt": 0.237
-     },
-     "mae_ensemble_backtest": 0.4264,
-     "mae_naive_backtest": 0.4123,
-     "ganho_vs_naive_pct": -3.4,
-     "n_backtests": 31
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.346,
-      "drift": 0.325,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.6055,
-     "mae_naive_backtest": 0.5839,
-     "ganho_vs_naive_pct": -3.7,
-     "n_backtests": 28
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.208,
-      "sazonal_ingenuo": 0.208,
-      "drift": 0.196,
-      "media_movel_6m": 0.193,
-      "ar1_diferencas": 0.197
-     },
-     "mae_ensemble_backtest": 0.7838,
-     "mae_naive_backtest": 0.7552,
-     "ganho_vs_naive_pct": -3.8,
-     "n_backtests": 25
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 5.62
-   }
-  },
-  "pj": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-06-01",
-     "p50": 3.2749,
-     "p10": 3.1275,
-     "p90": 3.4347
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-08-01",
-     "p50": 3.2915,
-     "p10": 3.0101,
-     "p90": 3.5328
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-11-01",
-     "p50": 3.2821,
-     "p10": 3.0046,
-     "p90": 3.6226
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-02-01",
-     "p50": 3.3768,
-     "p10": 2.887,
-     "p90": 3.65
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-05-01",
-     "p50": 3.2505,
-     "p10": 2.837,
-     "p90": 3.7561
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.335,
-      "drift": 0.335,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.0979,
-     "mae_naive_backtest": 0.0974,
-     "ganho_vs_naive_pct": -0.5,
-     "n_backtests": 35
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.333,
-      "drift": 0.334,
-      "ar1_diferencas": 0.333
-     },
-     "mae_ensemble_backtest": 0.1581,
-     "mae_naive_backtest": 0.1585,
-     "ganho_vs_naive_pct": 0.2,
-     "n_backtests": 34
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.336,
-      "drift": 0.333,
-      "ar1_diferencas": 0.33
-     },
-     "mae_ensemble_backtest": 0.202,
-     "mae_naive_backtest": 0.2003,
-     "ganho_vs_naive_pct": -0.8,
-     "n_backtests": 31
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.334,
-      "drift": 0.333,
-      "ar1_diferencas": 0.333
-     },
-     "mae_ensemble_backtest": 0.2581,
-     "mae_naive_backtest": 0.2575,
-     "ganho_vs_naive_pct": -0.2,
-     "n_backtests": 28
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.202,
-      "sazonal_ingenuo": 0.202,
-      "drift": 0.196,
-      "media_movel_6m": 0.205,
-      "ar1_diferencas": 0.195
-     },
-     "mae_ensemble_backtest": 0.3057,
-     "mae_naive_backtest": 0.3028,
-     "ganho_vs_naive_pct": -0.9,
-     "n_backtests": 25
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-05-01",
-    "v": 3.24
+    "ref": "2026-06-01",
+    "v": 3.19
    }
   }
  },
  "elasticidades_origem": "empírico",
- "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 71 meses (2020-07 a 2026-05); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade."
+ "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 72 meses (2020-07 a 2026-06); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade."
 }
