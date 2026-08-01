@@ -171,7 +171,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.34.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.34.2"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -278,7 +278,7 @@ function lineChart(opts) {
   for (let i = 0; i <= ticks; i++) { const v = lo + (hi - lo) * i / ticks; tickVals.push(v); tickLbls.push(fmt.n(v, dec)); }
   // margem esquerda dinâmica: nunca truncar rótulos do eixo Y
   const maxLbl = Math.max(...tickLbls.map(t => t.length));
-  const M = { t: 14, r: 16, b: 26, l: Math.max(40, 12 + maxLbl * 6.3) };
+  const M = { t: 14, r: opts.endLabels ? 100 : 16, b: 26, l: Math.max(40, 12 + maxLbl * 6.3) };
   const allX = [...new Set(opts.series.flatMap(s => s.pts.map(p => p.x)).concat(opts.band ? opts.band.pts.map(p => p.x) : []))].sort();
   const xi = x => allX.indexOf(x);
   const X = x => M.l + (xi(x) / Math.max(allX.length - 1, 1)) * (W - M.l - M.r);
@@ -319,11 +319,14 @@ function lineChart(opts) {
     out += `<line x1="${x}" x2="${x}" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--c-axis)" stroke-dasharray="2,3"/>`;
     out += `<text x="${x + 5}" y="${M.t + 9}" font-size="9" style="fill:var(--c-axis-text)">início da previsão</text>`;
   }
-  (opts.annotations || []).forEach(an => {
+  (opts.annotations || []).forEach((an, ai) => {
     if (!allX.includes(an.x)) return;
     const ax = X(an.x);
     out += `<line x1="${ax}" x2="${ax}" y1="${M.t}" y2="${H - M.b}" style="stroke:${ccol(an.color || "#b45309")}" stroke-dasharray="4,3" stroke-width="1.2"/>`;
-    out += `<text x="${ax + 4}" y="${M.t + 10}" font-size="9" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
+    // alturas alternadas e âncora invertida perto da borda direita: rótulos não se sobrepõem
+    const aTy = M.t + 10 + (ai % 3) * 11;
+    const aRight = ax > W - M.r - 90;
+    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="9" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
   });
   (opts.hlines || []).forEach(hl => {
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="10" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
@@ -332,9 +335,30 @@ function lineChart(opts) {
     const d = s.pts.filter(p => p.y != null).map((p, i) => `${i ? "L" : "M"}${X(p.x)},${Y(p.y)}`).join(" ");
     out += `<path class="serie s${si}" d="${d}" fill="none" style="stroke:${ccol(s.color)}" stroke-width="${s.w || 1.8}" stroke-linejoin="round" stroke-linecap="round" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""}/>`;
   });
+  // rótulos DIRETOS no fim de cada linha: nome curto na cor da série, com
+  // anti-colisão vertical simples (melhor prática de identificação de séries)
+  if (opts.endLabels) {
+    const ends = [];
+    opts.series.forEach((sx, si) => {
+      const lp = [...sx.pts].reverse().find(p2 => p2.y != null);
+      if (lp) ends.push({ y: Y(lp.y), x: X(lp.x), label: String(sx.short || sx.label || "").slice(0, 15), color: ccol(sx.color) });
+    });
+    ends.sort((a, b) => a.y - b.y);
+    for (let i = 1; i < ends.length; i++) {
+      if (ends[i].y - ends[i - 1].y < 12) ends[i].y = ends[i - 1].y + 12;
+    }
+    const yMax = H - M.b - 2;
+    for (let i = ends.length - 1; i >= 0; i--) {
+      if (ends[i].y > yMax) ends[i].y = yMax - (ends.length - 1 - i) * 12;
+    }
+    ends.forEach(e2 => {
+      out += `<circle cx="${e2.x}" cy="${Math.min(Math.max(e2.y, M.t + 4), yMax)}" r="0" fill="none"/>`;
+      out += `<text x="${e2.x + 6}" y="${Math.min(Math.max(e2.y, M.t + 8), yMax) + 3}" font-size="10" font-weight="640" style="fill:${e2.color};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${e2.label}</text>`;
+    });
+  }
   // último valor da série principal sempre rotulado (a conclusão não depende do hover)
   const s0 = opts.series[0];
-  if (s0 && !opts.noLast) {
+  if (s0 && !opts.noLast && !opts.endLabels) {
     const lastPt = [...s0.pts].reverse().find(p => p.y != null);
     if (lastPt) {
       const lx = X(lastPt.x), ly = Y(lastPt.y);
@@ -1309,28 +1333,53 @@ function renderMarket() {
   el.innerHTML = head + aviso + nav2 + body;
 }
 
+// nomes curtos verificados contra o cadastro do market.json (identificação humana)
+const MKT_NOME_CURTO = {
+  ITUB4: "Itaú Unibanco", BBAS3: "Banco do Brasil", BBDC4: "Bradesco", SANB11: "Santander",
+  BPAC11: "BTG Pactual", ABCB4: "ABC Brasil", BRSR6: "Banrisul", BMGB4: "BMG", PINE4: "Pine",
+  BAZA3: "Banco da Amazônia", BNBR3: "Banco do Nordeste", BEES3: "Banestes", BMEB4: "Mercantil do Brasil",
+  BSLI4: "BRB", BGIP4: "Banese", BRBI11: "BR Partners", RPAD5: "Alfa Holdings", BMIN4: "Mercantil Invest.",
+};
+function mktNomeCurto(M, tk) {
+  if (MKT_NOME_CURTO[tk]) return MKT_NOME_CURTO[tk];
+  const emp = (M.empresas || []).find(e => e.main_ticker === tk || (e.tickers || []).some(t => (t.ticker || t) === tk));
+  let nome = emp ? (emp.nome_curto || emp.legal_name || "") : "";
+  nome = nome.replace(/\b(S\.?A\.?|Holding[s]?|Participa[çc][õo]es)\b/gi, "").replace(/\s{2,}/g, " ").trim();
+  const palavras = nome.split(" ").filter(Boolean);
+  let corte = Math.min(3, palavras.length);
+  while (corte > 1 && /^(do|da|de|dos|das|e)$/i.test(palavras[corte - 1])) corte--;
+  const out2 = palavras.slice(0, corte).join(" ");
+  return out2 || tk;
+}
+
 function mktAcoes(M, mkt, tks, val) {
   const modos = [["total", "retorno total (base 100)"], ["preco", "preço (base 100)"], ["drawdown", "drawdown"], ["vol", "volatilidade 21d"]];
   const campo = { total: "total100", preco: "base100", drawdown: "drawdown", vol: "vol21" }[mkt.modo];
   const tksChart = tks.slice(0, 8);
+  const nomeDe = {};
+  tks.forEach(tk => nomeDe[tk] = mktNomeCurto(M, tk));
   const series = tksChart.map(tk => {
     const sd = M.series[tk];
-    return { pts: sd.dates.map((d, i) => ({ x: d, y: sd[campo][i] })).filter(p => p.y != null), color: MKT_COLORS[tk], label: tk, w: 2 };
+    return { pts: sd.dates.map((d, i) => ({ x: d, y: sd[campo][i] })).filter(p => p.y != null),
+      color: MKT_COLORS[tk], label: `${nomeDe[tk]} (${tk})`, short: nomeDe[tk], w: 2 };
   });
   if (mkt.modo === "total" && M.cesta) {
-    series.push({ pts: M.cesta.dates.map((d, i) => ({ x: d, y: M.cesta.total100[i] })), color: "#64748b", label: "cesta igual-ponderada", dash: "4,4", w: 1.4 });
+    series.push({ pts: M.cesta.dates.map((d, i) => ({ x: d, y: M.cesta.total100[i] })), color: "#64748b", label: "cesta igual-ponderada", short: "cesta", dash: "4,4", w: 1.4 });
   }
-  // anotações: maiores proventos (ex) do ticker líder de eventos
+  // legenda com NOME + sigla, na cor de cada série (mesma cor em toda a página)
+  const legenda = `<div class="legend" style="margin:6px 0 2px">${tksChart.map(tk =>
+    `<span><span class="sw" style="background:${ccol(MKT_COLORS[tk])}"></span>${nomeDe[tk]} <span class="src" style="display:inline">(${tk})</span></span>`).join("")}${mkt.modo === "total" && M.cesta ? '<span><span class="sw" style="background:#64748b;opacity:.7"></span>cesta igual-ponderada</span>' : ""}</div>`;
+  // anotações: maiores proventos (ex) do ticker líder de eventos — com o NOME da companhia
   const annotations = [];
   tksChart.slice(0, 3).forEach(tk => {
     const evs = (M.eventos[tk] || []).slice().sort((a, b) => (b.div + b.jcp) - (a.div + a.jcp)).slice(0, 2);
-    evs.forEach(e => annotations.push({ x: e.ex_ref, label: `${tk} ex ${e.div > e.jcp ? "DIV" : "JCP"}`, color: MKT_COLORS[tk] }));
+    evs.forEach(e => annotations.push({ x: e.ex_ref, label: `${nomeDe[tk]} ex ${e.div > e.jcp ? "DIV" : "JCP"}`, color: MKT_COLORS[tk] }));
   });
   const jan = M.janelas;
   const jrow = tk => {
     const t = jan[tk], v = val[tk];
     const cell = x => x != null ? `<td style="text-align:right" class="${x >= 0 ? "down good" : "up"}">${fmt.pp(x)}%</td>` : "<td style='text-align:right'>–</td>";
-    return `<tr><td><b style="color:${ccol(MKT_COLORS[tk])}">${tk}</b> <span class="src">R$ ${fmt.n(v.preco, 2)}</span></td>
+    return `<tr><td><b style="color:${ccol(MKT_COLORS[tk])}">${nomeDe[tk]}</b> <span class="src">${tk} · R$ ${fmt.n(v.preco, 2)}</span></td>
       ${cell(t.total.m1)}${cell(t.total.m3)}${cell(t.total.ytd)}${cell(t.total.a12)}${cell(t.total.a36)}
       <td style="text-align:right">${fmt.pp(t.total.a12 - t.preco.a12)} p.p.</td>
       <td style="text-align:right" class="up">${fmt.n(t.drawdown.atual, 1)}%</td>
@@ -1345,16 +1394,17 @@ function mktAcoes(M, mkt, tks, val) {
     <div class="src" style="margin-bottom:6px">${mkt.modo === "total" ? "A base 100 coloca todas as ações no mesmo ponto inicial: 125 = valorização acumulada de 25% no período. O retorno TOTAL reinveste dividendos e JCP (bruto de IR) — é a medida correta para comparar ações que distribuem proventos em ritmos diferentes." : mkt.modo === "drawdown" ? "O drawdown mede a queda em relação ao maior valor anterior: -30% significa preço 30% abaixo do pico até aquele momento. Volatilidade mede oscilação; drawdown mede perda do pico — nenhum dos dois, sozinho, mede o risco econômico da instituição." : mkt.modo === "vol" ? "Desvio-padrão dos retornos diários em janela de 21 pregões, anualizado." : "A base 100 facilita comparar ações com preços nominais diferentes. Sem proventos, subestima o retorno de quem distribui mais."}</div>
     <div class="controls"><span class="seg">${modos.map(([k, l]) => `<button class="${mkt.modo === k ? "active" : ""}" onclick="mktSet('modo','${k}')">${l}</button>`).join("")}</span></div>
     <div class="src" style="margin-bottom:4px">gráfico: 8 maiores por valor de mercado (as ${tks.length} companhias estão na tabela abaixo)</div>
-    ${lineChart({ series, h: 300, annotations: mkt.modo === "total" ? annotations.slice(0, 4) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
+    ${legenda}
+    ${lineChart({ series, h: 320, endLabels: true, annotations: mkt.modo === "total" ? annotations.slice(0, 4) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
     ${chartFooter({ fonte: M.fontes.precos, periodo: `${fmt.my(M.series[tks[0]].dates[0])}–${fmt.my(M.series[tks[0]].dates.slice(-1)[0])} (diário)`, atualizado: M.gerado_em.slice(0, 10), unidade: "base 100 / %", nota: M.cesta ? M.cesta.nota : "" })}
     ${entenda("acoes", [["Pergunta respondida", "como se comparam os retornos dos três perfis, com e sem proventos?"],
       ["Eixos", "tempo × índice base 100 (ou % para drawdown/vol)"],
-      ["Cores", "azul = Itaú (ITUB4, holding), teal = BTG (BPAC11, unit), âmbar = ABC (ABCB4); cinza tracejado = cesta igual-ponderada"],
+      ["Cores", "cada companhia mantém a mesma cor em toda a página; a legenda acima do gráfico traz nome e sigla, e cada linha termina com o nome da companhia"],
       ["Limitações", "retorno total bruto de IR (JCP é tributável); sem excesso vs. Ibovespa (série pública oficial descontinuada em 2019); retorno passado não indica retorno futuro"]])}
   </div>
   ${sechead("Janelas de retorno total e risco de trajetória")}
   <div class="card">
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>Ticker</th><th style="text-align:right">1m</th><th style="text-align:right">3m</th><th style="text-align:right">YTD</th><th style="text-align:right">12m</th><th style="text-align:right">3a</th><th style="text-align:right" title="diferença entre retorno total e retorno de preço em 12m = contribuição dos proventos">proventos 12m</th><th style="text-align:right">DD atual</th><th style="text-align:right">DD máx.</th><th style="text-align:right">vol 21d</th></tr></thead>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">1m</th><th style="text-align:right">3m</th><th style="text-align:right">YTD</th><th style="text-align:right">12m</th><th style="text-align:right">3a</th><th style="text-align:right" title="diferença entre retorno total e retorno de preço em 12m = contribuição dos proventos">proventos 12m</th><th style="text-align:right">DD atual</th><th style="text-align:right">DD máx.</th><th style="text-align:right">vol 21d</th></tr></thead>
     <tbody>${tks.map(jrow).join("")}</tbody></table></div>
     ${leitura([["Como interpretar", "retornos são TOTAIS (com proventos); a coluna 'proventos 12m' mostra quanto os proventos adicionaram ao retorno de preço"],
       ["O que mudou", `contribuição dos proventos em 12m — ${contribuicaoProv}`],
@@ -1391,7 +1441,7 @@ function mktProventos(M, emp, val) {
   <div class="ov-3col">${bars}</div>
   ${sechead("Indicadores associados à capacidade histórica de distribuição", "não é previsão de dividendos")}
   <div class="card">
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>Ticker</th><th style="text-align:right">Yield 12m</th><th style="text-align:right">Payout ${M.valuation[0] ? M.valuation[0].exercicio_ref || "" : ""}</th><th style="text-align:right">Retenção</th><th style="text-align:right">g sustentável</th><th>Leitura</th></tr></thead>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Yield 12m</th><th style="text-align:right">Payout ${M.valuation[0] ? M.valuation[0].exercicio_ref || "" : ""}</th><th style="text-align:right">Retenção</th><th style="text-align:right">g sustentável</th><th>Leitura</th></tr></thead>
     <tbody>${(state.mkt.emp === "todas" ? M.valuation : M.valuation.filter(v => v.company_id === state.mkt.emp)).map(vrow).join("")}</tbody></table></div>
     ${leitura([["Como interpretar", "payout = proventos do exercício ÷ lucro dos controladores; retenção financia crescimento (g = ROE × retenção)"],
       ["Cuidado", "JCP é bruto de IR; payout calculado pela data ex dentro do exercício (aproximação declarada); capacidade histórica ≠ promessa futura"]])}
@@ -1440,7 +1490,7 @@ function mktValuation(M, val, emp) {
     </div>
     <div class="card">
       <h4>Múltiplos e fundamentos — tabela comparativa</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ticker</th><th style="text-align:right">Preço</th><th style="text-align:right">Mercado</th><th style="text-align:right">P/L</th><th style="text-align:right">P/VP</th><th style="text-align:right">E. yield</th><th style="text-align:right">ROE cia</th><th style="text-align:right">Yield 12m</th></tr></thead>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Preço</th><th style="text-align:right">Mercado</th><th style="text-align:right">P/L</th><th style="text-align:right">P/VP</th><th style="text-align:right">E. yield</th><th style="text-align:right">ROE cia</th><th style="text-align:right">Yield 12m</th></tr></thead>
       <tbody>${M.valuation.map(vrow).join("")}</tbody></table></div>
       ${leitura([["Como interpretar", "passe o mouse em cada múltiplo para definição, fórmula, fonte e cuidados (cartão metodológico)"],
         ["Não concluir isoladamente", "P/VP baixo ≠ barato; ROE alto ≠ risco baixo; yield alto ≠ renda garantida"],
