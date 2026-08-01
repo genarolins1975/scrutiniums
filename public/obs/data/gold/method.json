@@ -78,7 +78,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pf",
@@ -96,7 +96,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pj",
@@ -114,7 +114,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_total",
@@ -132,7 +132,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pf",
@@ -150,7 +150,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pj",
@@ -168,7 +168,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_total",
@@ -186,7 +186,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pf",
@@ -204,7 +204,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pj",
@@ -222,7 +222,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_total",
@@ -240,7 +240,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pf",
@@ -258,7 +258,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pj",
@@ -276,7 +276,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_total",
@@ -294,7 +294,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pf",
@@ -312,7 +312,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pj",
@@ -330,7 +330,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "IBCC",
@@ -345,7 +345,7 @@
    "incerteza": "Sensível à janela histórica; pesos fixos",
    "limitacoes": "Pesos iguais entre componentes (versão explicável); PCA/fatores dinâmicos previstos na Fase 2. Sujeito a revisões das séries de origem.",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Score de instituições",
@@ -361,7 +361,7 @@
    "incerteza": "Sem Basileia/liquidez; ROE não anualizado",
    "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira.",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Estresse setorial",
@@ -376,7 +376,7 @@
    "incerteza": "2 de 4 componentes demonstrativos",
    "limitacoes": "Cobertura restrita à indústria (PIM). Condições de crédito ainda sem corte setorial (usa agregado PJ). Componentes de RJ e emprego são DEMONSTRATIVOS — ver selo por componente. Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Protocolo de indicadores antecedentes",
@@ -391,7 +391,7 @@
    "incerteza": "F aproximado por qui-quadrado; sem correção de múltiplos testes formal; sem vintages em tempo real ainda",
    "limitacoes": "Ganho medido em h=1; integração ao ensemble de previsão na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Detector de regimes",
@@ -406,7 +406,7 @@
    "incerteza": "Univariado; uma quebra por busca; sensível a revisões",
    "limitacoes": "Bai-Perron múltiplo e Markov-switching na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   },
   {
    "nome": "Elasticidades de cenário (empíricas)",
@@ -421,7 +421,7 @@
    "incerteza": "Sem HAC (incerteza subestimada com dados sobrepostos); associação, não causalidade",
    "limitacoes": "Identificação causal e heterogeneidade por segmento na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-07-31T12:12:46+00:00"
+   "atualizado_em": "2026-08-01T00:22:10+00:00"
   }
  ],
  "score_cards": [

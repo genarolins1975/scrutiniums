@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-07-31T12:12:43+00:00",
+ "gerado_em": "2026-08-01T00:22:04+00:00",
  "series": {
   "saldo_total": {
    "tipo": "DADO OBSERVADO",
@@ -17,15 +17,15 @@
     "last_collected_at": "2026-07-29T12:29:36+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -2034,15 +2034,15 @@
     "last_collected_at": "2026-07-29T12:29:38+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -4051,15 +4051,15 @@
     "last_collected_at": "2026-07-29T12:29:37+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -6068,15 +6068,15 @@
     "last_collected_at": "2026-07-29T12:29:39+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -8085,15 +8085,15 @@
     "last_collected_at": "2026-07-29T12:29:41+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -10102,15 +10102,15 @@
     "last_collected_at": "2026-07-29T12:29:40+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -12119,15 +12119,15 @@
     "last_collected_at": "2026-07-29T12:29:42+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -13489,15 +13489,15 @@
     "last_collected_at": "2026-07-29T12:29:44+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -14859,15 +14859,15 @@
     "last_collected_at": "2026-07-29T12:29:42+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -16229,15 +16229,15 @@
     "last_collected_at": "2026-07-29T12:30:00+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -17599,15 +17599,15 @@
     "last_collected_at": "2026-07-29T12:30:23+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -18969,15 +18969,15 @@
     "last_collected_at": "2026-07-29T12:30:21+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -20339,15 +20339,15 @@
     "last_collected_at": "2026-07-29T12:30:24+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -21709,15 +21709,15 @@
     "last_collected_at": "2026-07-29T12:30:28+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -23079,15 +23079,15 @@
     "last_collected_at": "2026-07-29T12:30:25+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -24449,15 +24449,15 @@
     "last_collected_at": "2026-07-29T12:30:29+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -25819,15 +25819,15 @@
     "last_collected_at": "2026-07-29T12:30:30+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 69.7,
     "componentes": {
-     "completude": 98.9,
+     "completude": 98.3,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 121,
+    "dias_sem_atualizar": 122,
     "ultima_ref": "2026-04-01",
     "n_obs": 172,
     "n_revisoes": 0
@@ -27181,15 +27181,15 @@
     "last_collected_at": "2026-07-29T12:30:32+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 69.7,
     "componentes": {
-     "completude": 98.9,
+     "completude": 98.3,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 121,
+    "dias_sem_atualizar": 122,
     "ultima_ref": "2026-04-01",
     "n_obs": 172,
     "n_revisoes": 0
@@ -28551,7 +28551,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": -5,
+    "dias_sem_atualizar": -4,
     "ultima_ref": "2026-08-05",
     "n_obs": 2774,
     "n_revisoes": 0
@@ -30177,15 +30177,15 @@
     "last_collected_at": "2026-07-29T12:31:12+00:00"
    },
    "qualidade": {
-    "score": 90.0,
+    "score": 89.2,
     "componentes": {
-     "completude": 100.0,
-     "atualidade": 66.7,
+     "completude": 99.4,
+     "atualidade": 64.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 60,
+    "dias_sem_atualizar": 61,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 0
@@ -31555,15 +31555,15 @@
     "last_collected_at": "2026-07-29T12:31:13+00:00"
    },
    "qualidade": {
-    "score": 69.9,
+    "score": 69.8,
     "componentes": {
-     "completude": 99.4,
+     "completude": 98.9,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 0
@@ -32925,15 +32925,15 @@
     "last_collected_at": "2026-07-27T16:14:58+00:00"
    },
    "qualidade": {
-    "score": 69.8,
+    "score": 69.7,
     "componentes": {
-     "completude": 99.2,
+     "completude": 98.4,
      "atualidade": 0.0,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 91,
+    "dias_sem_atualizar": 92,
     "ultima_ref": "2026-05-01",
     "n_obs": 120,
     "n_revisoes": 0
@@ -33871,15 +33871,15 @@
     "last_collected_at": "2026-07-27T16:14:59+00:00"
    },
    "qualidade": {
-    "score": 90.0,
+    "score": 89.3,
     "componentes": {
-     "completude": 100.0,
-     "atualidade": 66.7,
+     "completude": 99.8,
+     "atualidade": 64.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 60,
+    "dias_sem_atualizar": 61,
     "ultima_ref": "2026-06-01",
     "n_obs": 558,
     "n_revisoes": 0
@@ -35505,15 +35505,15 @@
     "last_collected_at": "2026-07-27T16:15:00+00:00"
    },
    "qualidade": {
-    "score": 90.0,
+    "score": 89.3,
     "componentes": {
-     "completude": 100.0,
-     "atualidade": 66.7,
+     "completude": 99.9,
+     "atualidade": 64.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 60,
+    "dias_sem_atualizar": 61,
     "ultima_ref": "2026-06-01",
     "n_obs": 882,
     "n_revisoes": 0

@@ -1,14 +1,14 @@
 {
  "cambio": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
-   "completude": 100.0,
-   "atualidade": 66.7,
+   "completude": 99.9,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-06-01",
   "n_obs": 882,
   "n_revisoes": 0,
@@ -16,15 +16,15 @@
   "fonte": "Ipeadata"
  },
  "comprometimento": {
-  "score": 69.8,
+  "score": 69.7,
   "componentes": {
-   "completude": 98.9,
+   "completude": 98.3,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 121,
+  "dias_sem_atualizar": 122,
   "ultima_ref": "2026-04-01",
   "n_obs": 172,
   "n_revisoes": 0,
@@ -32,15 +32,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pf": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -48,15 +48,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pj": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -64,15 +64,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_total": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -80,15 +80,15 @@
   "fonte": "BCB/SGS"
  },
  "convolacao_falencia_agregado": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -96,15 +96,15 @@
   "fonte": "CNJ/DataJud"
  },
  "credito_pib": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -112,15 +112,15 @@
   "fonte": "BCB/SGS"
  },
  "desemprego": {
-  "score": 69.8,
+  "score": 69.7,
   "componentes": {
-   "completude": 99.2,
+   "completude": 98.4,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 120,
   "n_revisoes": 0,
@@ -128,15 +128,15 @@
   "fonte": "IBGE"
  },
  "endividamento": {
-  "score": 69.8,
+  "score": 69.7,
   "componentes": {
-   "completude": 98.9,
+   "completude": 98.3,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 121,
+  "dias_sem_atualizar": 122,
   "ultima_ref": "2026-04-01",
   "n_obs": 172,
   "n_revisoes": 0,
@@ -144,15 +144,15 @@
   "fonte": "BCB/SGS"
  },
  "extincao_rj_agregado": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -160,15 +160,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_agregado": {
-  "score": 49.6,
+  "score": 49.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 262,
@@ -176,15 +176,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjba": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -192,15 +192,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjgo": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -208,15 +208,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjmg": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -224,15 +224,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjpr": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -240,15 +240,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrj": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -256,15 +256,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrs": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -272,15 +272,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsc": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -288,15 +288,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsp": {
-  "score": 49.6,
+  "score": 49.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 89,
@@ -304,86 +304,6 @@
   "fonte": "CNJ/DataJud"
  },
  "ibc_br": {
-  "score": 69.9,
-  "componentes": {
-   "completude": 99.4,
-   "atualidade": 0.0,
-   "historico": 100.0,
-   "estabilidade": 100.0,
-   "transparencia": 100.0
-  },
-  "dias_sem_atualizar": 91,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 173,
-  "n_revisoes": 0,
-  "nome": "IBC-Br - Índice de Atividade Econômica do BCB (dessazonalizado)",
-  "fonte": "BCB/SGS"
- },
- "inad_pf": {
-  "score": 69.9,
-  "componentes": {
-   "completude": 99.4,
-   "atualidade": 0.0,
-   "historico": 100.0,
-   "estabilidade": 100.0,
-   "transparencia": 100.0
-  },
-  "dias_sem_atualizar": 91,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 173,
-  "n_revisoes": 0,
-  "nome": "Inadimplência (>90 dias) - Pessoas físicas",
-  "fonte": "BCB/SGS"
- },
- "inad_pj": {
-  "score": 69.9,
-  "componentes": {
-   "completude": 99.4,
-   "atualidade": 0.0,
-   "historico": 100.0,
-   "estabilidade": 100.0,
-   "transparencia": 100.0
-  },
-  "dias_sem_atualizar": 91,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 173,
-  "n_revisoes": 0,
-  "nome": "Inadimplência (>90 dias) - Pessoas jurídicas",
-  "fonte": "BCB/SGS"
- },
- "inad_total": {
-  "score": 69.9,
-  "componentes": {
-   "completude": 99.4,
-   "atualidade": 0.0,
-   "historico": 100.0,
-   "estabilidade": 100.0,
-   "transparencia": 100.0
-  },
-  "dias_sem_atualizar": 91,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 173,
-  "n_revisoes": 0,
-  "nome": "Inadimplência da carteira de crédito (>90 dias) - Total",
-  "fonte": "BCB/SGS"
- },
- "ipca": {
-  "score": 90.0,
-  "componentes": {
-   "completude": 100.0,
-   "atualidade": 66.7,
-   "historico": 100.0,
-   "estabilidade": 100.0,
-   "transparencia": 100.0
-  },
-  "dias_sem_atualizar": 60,
-  "ultima_ref": "2026-06-01",
-  "n_obs": 174,
-  "n_revisoes": 0,
-  "nome": "IPCA - variação mensal",
-  "fonte": "BCB/SGS"
- },
- "ivgr": {
   "score": 69.8,
   "componentes": {
    "completude": 98.9,
@@ -392,7 +312,87 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 121,
+  "dias_sem_atualizar": 92,
+  "ultima_ref": "2026-05-01",
+  "n_obs": 173,
+  "n_revisoes": 0,
+  "nome": "IBC-Br - Índice de Atividade Econômica do BCB (dessazonalizado)",
+  "fonte": "BCB/SGS"
+ },
+ "inad_pf": {
+  "score": 69.8,
+  "componentes": {
+   "completude": 98.9,
+   "atualidade": 0.0,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 92,
+  "ultima_ref": "2026-05-01",
+  "n_obs": 173,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - Pessoas físicas",
+  "fonte": "BCB/SGS"
+ },
+ "inad_pj": {
+  "score": 69.8,
+  "componentes": {
+   "completude": 98.9,
+   "atualidade": 0.0,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 92,
+  "ultima_ref": "2026-05-01",
+  "n_obs": 173,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - Pessoas jurídicas",
+  "fonte": "BCB/SGS"
+ },
+ "inad_total": {
+  "score": 69.8,
+  "componentes": {
+   "completude": 98.9,
+   "atualidade": 0.0,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 92,
+  "ultima_ref": "2026-05-01",
+  "n_obs": 173,
+  "n_revisoes": 0,
+  "nome": "Inadimplência da carteira de crédito (>90 dias) - Total",
+  "fonte": "BCB/SGS"
+ },
+ "ipca": {
+  "score": 89.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 64.4,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 61,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "IPCA - variação mensal",
+  "fonte": "BCB/SGS"
+ },
+ "ivgr": {
+  "score": 69.7,
+  "componentes": {
+   "completude": 98.3,
+   "atualidade": 0.0,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 122,
   "ultima_ref": "2026-04-01",
   "n_obs": 172,
   "n_revisoes": 0,
@@ -408,7 +408,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 7,
+  "dias_sem_atualizar": 8,
   "ultima_ref": "2026-07-24",
   "n_obs": 13,
   "n_revisoes": 0,
@@ -424,7 +424,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -440,7 +440,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -456,7 +456,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -472,7 +472,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -488,7 +488,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 7,
+  "dias_sem_atualizar": 8,
   "ultima_ref": "2026-07-24",
   "n_obs": 13,
   "n_revisoes": 0,
@@ -504,7 +504,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -520,7 +520,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 35,
+  "dias_sem_atualizar": 36,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -528,15 +528,15 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "papelao": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
-   "completude": 100.0,
-   "atualidade": 66.7,
+   "completude": 99.8,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-06-01",
   "n_obs": 558,
   "n_revisoes": 0,
@@ -544,15 +544,15 @@
   "fonte": "Ipeadata"
  },
  "pim_129314": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -560,15 +560,15 @@
   "fonte": "IBGE"
  },
  "pim_129315": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -576,15 +576,15 @@
   "fonte": "IBGE"
  },
  "pim_129316": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -592,15 +592,15 @@
   "fonte": "IBGE"
  },
  "pim_129317": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -608,15 +608,15 @@
   "fonte": "IBGE"
  },
  "pim_129318": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -624,15 +624,15 @@
   "fonte": "IBGE"
  },
  "pim_129319": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -640,15 +640,15 @@
   "fonte": "IBGE"
  },
  "pim_129320": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -656,15 +656,15 @@
   "fonte": "IBGE"
  },
  "pim_129321": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -672,15 +672,15 @@
   "fonte": "IBGE"
  },
  "pim_129322": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -688,15 +688,15 @@
   "fonte": "IBGE"
  },
  "pim_129323": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -704,15 +704,15 @@
   "fonte": "IBGE"
  },
  "pim_129324": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -720,15 +720,15 @@
   "fonte": "IBGE"
  },
  "pim_129325": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -736,15 +736,15 @@
   "fonte": "IBGE"
  },
  "pim_129326": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -752,15 +752,15 @@
   "fonte": "IBGE"
  },
  "pim_129330": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -768,15 +768,15 @@
   "fonte": "IBGE"
  },
  "pim_129331": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -784,15 +784,15 @@
   "fonte": "IBGE"
  },
  "pim_129332": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -800,15 +800,15 @@
   "fonte": "IBGE"
  },
  "pim_129333": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -816,15 +816,15 @@
   "fonte": "IBGE"
  },
  "pim_129334": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -832,15 +832,15 @@
   "fonte": "IBGE"
  },
  "pim_129335": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -848,15 +848,15 @@
   "fonte": "IBGE"
  },
  "pim_129336": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -864,15 +864,15 @@
   "fonte": "IBGE"
  },
  "pim_129337": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -880,15 +880,15 @@
   "fonte": "IBGE"
  },
  "pim_129338": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -896,15 +896,15 @@
   "fonte": "IBGE"
  },
  "pim_129339": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -912,15 +912,15 @@
   "fonte": "IBGE"
  },
  "pim_129340": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -928,15 +928,15 @@
   "fonte": "IBGE"
  },
  "pim_129341": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -944,15 +944,15 @@
   "fonte": "IBGE"
  },
  "pim_129342": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -960,15 +960,15 @@
   "fonte": "IBGE"
  },
  "pim_56689": {
-  "score": 61.7,
+  "score": 61.5,
   "componentes": {
-   "completude": 98.6,
+   "completude": 97.3,
    "atualidade": 0.0,
    "historico": 60.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -976,15 +976,15 @@
   "fonte": "IBGE"
  },
  "recuperacao_judicial_agregado": {
-  "score": 49.6,
+  "score": 49.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 178,
@@ -992,15 +992,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjba": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1008,15 +1008,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjgo": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1024,15 +1024,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjmg": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1040,15 +1040,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjpr": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1056,15 +1056,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrj": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1072,15 +1072,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrs": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1088,15 +1088,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsc": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1104,15 +1104,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsp": {
-  "score": 64.6,
+  "score": 64.4,
   "componentes": {
-   "completude": 98.9,
+   "completude": 97.8,
    "atualidade": 0.0,
    "historico": 74.2,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -1120,15 +1120,15 @@
   "fonte": "CNJ/DataJud"
  },
  "saldo_pf": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1136,15 +1136,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_pj": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1152,15 +1152,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_total": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1176,7 +1176,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": -5,
+  "dias_sem_atualizar": -4,
   "ultima_ref": "2026-08-05",
   "n_obs": 2774,
   "n_revisoes": 0,
@@ -1184,15 +1184,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pf": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1200,15 +1200,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pj": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1216,15 +1216,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_total": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1232,15 +1232,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pf": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1248,15 +1248,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pj": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -1264,15 +1264,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_total": {
-  "score": 69.9,
+  "score": 69.8,
   "componentes": {
-   "completude": 99.4,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 91,
+  "dias_sem_atualizar": 92,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
