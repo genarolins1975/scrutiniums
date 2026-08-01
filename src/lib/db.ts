@@ -118,6 +118,19 @@ async function migrate(db: Db): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL
     )`,
     `CREATE INDEX IF NOT EXISTS idx_events_name ON product_events(name)`,
+    // Sugestões dos usuários (lidas no painel de administração).
+    `CREATE TABLE IF NOT EXISTS suggestions (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      categoria TEXT NOT NULL,
+      texto TEXT NOT NULL,
+      created_at TIMESTAMPTZ NOT NULL
+    )`,
+    `CREATE INDEX IF NOT EXISTS idx_suggestions_created ON suggestions(created_at)`,
+    // Fim do acesso antecipado por código: contas paradas na etapa do código
+    // ou na lista de espera são promovidas a acesso completo (idempotente).
+    `UPDATE users SET onboarding_status = 'COMPLETE'
+      WHERE onboarding_status IN ('ACCESS_PENDING', 'WAITLIST')`,
   ];
   for (const statement of statements) {
     await db.execute(sql.raw(statement));

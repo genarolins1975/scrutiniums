@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LogoWordmark } from "@/components/ui/Logo";
+import { LINKEDIN_URL } from "@/lib/contato";
 
 export function Footer() {
   return (
@@ -33,6 +34,11 @@ export function Footer() {
             <li><Link href="/privacidade" className="hover:text-bronze-soft">Privacidade</Link></li>
             <li><Link href="/entrar" className="hover:text-bronze-soft">Entrar</Link></li>
             <li><Link href="/cadastro" className="hover:text-bronze-soft">Cadastro</Link></li>
+            <li>
+              <a href={LINKEDIN_URL} rel="noopener noreferrer" target="_blank" className="hover:text-bronze-soft">
+                Contato · LinkedIn
+              </a>
+            </li>
           </ul>
         </nav>
       </div>

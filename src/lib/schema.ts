@@ -5,9 +5,9 @@ import { pgTable, text, timestamp, integer, boolean } from "drizzle-orm/pg-core"
  * Decisão registrada em ARCHITECTURE.md: um único schema pg-core serve
  * PGlite (Postgres embarcado) em desenvolvimento e node-postgres em produção.
  * Máquina de estados do onboarding:
- * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPLETE
- * (ACCESS_PENDING → WAITLIST quando não há código de acesso; WAITLIST →
- * COMPLETE ao informar um código válido depois.)
+ * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
+ * (ACCESS_PENDING e WAITLIST são estados LEGADOS do acesso antecipado por
+ * código, extinto; a migração de boot promove essas contas a COMPLETE.)
  */
 
 export const ONBOARDING_STATUSES = [
@@ -80,6 +80,15 @@ export const productEvents = pgTable("product_events", {
   id: text("id").primaryKey(),
   userId: text("user_id"),
   name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
+});
+
+/** Sugestões enviadas pelos usuários; lidas no painel de administração. */
+export const suggestions = pgTable("suggestions", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  categoria: text("categoria").notNull(),
+  texto: text("texto").notNull(),
   createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull(),
 });
 

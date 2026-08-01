@@ -24,6 +24,7 @@ export const POLICIES = {
   emailStartPerEmail: { windowMs: 60 * 60 * 1000, max: 6, backoffBaseMs: 30_000 },
   emailStartPerIp: { windowMs: 60 * 60 * 1000, max: 20, backoffBaseMs: 30_000 },
   accessCheck: { windowMs: 10 * 60 * 1000, max: 10, backoffBaseMs: 30_000 },
+  sugestoesPerUser: { windowMs: 60 * 60 * 1000, max: 10, backoffBaseMs: 30_000 },
   loginPerEmail: { windowMs: 15 * 60 * 1000, max: 8, backoffBaseMs: 30_000 },
   loginPerIp: { windowMs: 15 * 60 * 1000, max: 30, backoffBaseMs: 30_000 },
   resendMinInterval: { windowMs: 30_000, max: 1, backoffBaseMs: 30_000 },

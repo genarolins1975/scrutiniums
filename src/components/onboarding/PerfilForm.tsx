@@ -150,7 +150,7 @@ export function PerfilForm() {
       </div>
 
       <Button type="submit" full disabled={submitting}>
-        {submitting ? "Concluindo…" : "Continuar"}
+        {submitting ? "Concluindo…" : "Concluir cadastro"}
       </Button>
 
       <p className="text-sm text-mineral">

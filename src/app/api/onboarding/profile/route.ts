@@ -17,7 +17,8 @@ export const runtime = "nodejs";
  *   integralmente. Duplicidade responde erro específico sem revelar dados.
  * - Perfil: tipo de instituição, área, nível de cargo e UF, validados
  *   contra as allowlists de perfilOpcoes.ts (mesma lista do cliente).
- * Não conclui o onboarding: encaminha ao código de acesso (ACCESS_PENDING).
+ * Etapa FINAL do cadastro: perfil completo conclui o onboarding (COMPLETE)
+ * e entra direto no Observatório — não existe mais código de acesso.
  */
 
 const bodySchema = z.object({
@@ -71,10 +72,11 @@ export async function POST(req: Request) {
     orgArea: parsed.data.orgArea,
     orgRole: parsed.data.orgRole,
     uf: parsed.data.uf,
-    onboardingStatus: "ACCESS_PENDING",
+    onboardingStatus: "COMPLETE",
   });
 
   await trackEvent("profile_completed", user.id);
+  await trackEvent("onboarding_completed", user.id);
 
-  return NextResponse.json({ ok: true, next: "/cadastro/acesso" });
+  return NextResponse.json({ ok: true, next: "/observatorio" });
 }

@@ -61,11 +61,45 @@ describe("telemetry: allowlist de seções", () => {
   });
 });
 
+describe("sugestões: máquina completa (tabela → estatísticas do painel)", () => {
+  it("sugestão gravada aparece nas estatísticas com e-mail, categoria e texto", async () => {
+    const uid = await criarUsuario("sugestor@exemplo.com", "COMPLETE");
+    await db.insert(schema.suggestions).values({
+      id: newId(),
+      userId: uid,
+      categoria: "dado",
+      texto: "O painel de juros poderia destacar a data da janela de coleta.",
+      createdAt: new Date(),
+    });
+    const stats = await getAdminStats();
+    expect(stats.sugestoesTotal).toBeGreaterThanOrEqual(1);
+    expect(stats.sugestoes30d).toBeGreaterThanOrEqual(1);
+    const s = stats.sugestoesRecentes.find((x) => x.email === "sugestor@exemplo.com");
+    expect(s).toBeTruthy();
+    expect(s!.categoria).toBe("dado");
+    expect(s!.texto).toMatch(/janela de coleta/);
+  });
+
+  it("a view de sugestões do Observatório está registrada (telemetria, SPA e nav)", async () => {
+    expect(isViewSection("obs:sugestoes")).toBe(true);
+    expect(sectionLabel("obs:sugestoes")).toMatch(/Sugest/);
+    const { readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    expect(app).toContain('sugestoes: "/suggestions"');
+    expect(app).toContain("sugestoes: renderSugestoes");
+    expect(app).toContain('fetch("/api/sugestoes"');
+    const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
+    expect(html).toContain('data-view="sugestoes"');
+    expect(html).toContain('id="view-sugestoes"');
+  });
+});
+
 describe("adminStats: agregações do painel", () => {
   it("conta usuários por situação, visitas, ranking e funil", async () => {
     const agora = new Date();
     const u1 = await criarUsuario("a@exemplo.com", "COMPLETE");
-    await criarUsuario("b@exemplo.com", "WAITLIST");
+    await criarUsuario("b@exemplo.com", "PROFILE_PENDING");
     await criarUsuario("c@exemplo.com", "PHONE_PENDING");
 
     await trackView("obs:overview", u1);
@@ -80,7 +114,6 @@ describe("adminStats: agregações do painel", () => {
     const stats = await getAdminStats(agora);
     // + usuários do teste anterior (mesmo banco em memória do arquivo)
     expect(stats.visaoGeral.totalUsuarios).toBeGreaterThanOrEqual(3);
-    expect(stats.visaoGeral.listaEspera).toBe(1);
     expect(stats.visaoGeral.emOnboarding).toBeGreaterThanOrEqual(1);
     expect(stats.visaoGeral.usuariosAtivos7d).toBeGreaterThanOrEqual(1);
 

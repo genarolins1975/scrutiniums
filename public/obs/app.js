@@ -36,7 +36,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -171,7 +171,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.36.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.37.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -4384,9 +4384,63 @@ function renderJuros() {
   el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros };
+/* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
+const SG_CATEGORIAS = [
+  ["analise", "Nova análise ou indicador"],
+  ["dado", "Correção ou dúvida sobre um dado"],
+  ["usabilidade", "Usabilidade e navegação"],
+  ["outra", "Outra sugestão"],
+];
+window.sgEnviar = async () => {
+  const cat = document.getElementById("sgCat");
+  const txt = document.getElementById("sgTexto");
+  const msg = document.getElementById("sgMsg");
+  const btn = document.getElementById("sgBtn");
+  if (!cat || !txt || !msg || !btn) return;
+  const texto = txt.value.trim();
+  if (texto.length < 10) { msg.className = "note"; msg.textContent = "Escreva um pouco mais (mínimo de 10 caracteres) para a sugestão ser útil."; return; }
+  btn.disabled = true; btn.textContent = "enviando…";
+  try {
+    const r = await fetch("/api/sugestoes", { method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ categoria: cat.value, texto }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok) {
+      txt.value = "";
+      msg.className = "note"; msg.textContent = "Sugestão registrada — obrigado. Ela vai direto para a administração da plataforma.";
+    } else {
+      msg.className = "note"; msg.textContent = d.error || "Não foi possível enviar agora. Tente novamente em instantes.";
+    }
+  } catch (e) {
+    msg.className = "note"; msg.textContent = "Falha de conexão. Tente novamente em instantes.";
+  }
+  btn.disabled = false; btn.textContent = "Enviar sugestão";
+};
+function renderSugestoes() {
+  const el = document.getElementById("view-sugestoes");
+  el.innerHTML = `
+  <div class="pagehead"><div class="ph-left">
+    <h2>Sugestões</h2>
+    <p class="viewdesc">Diga o que falta, o que está confuso ou o que merece correção. Cada sugestão vai direto para a administração da plataforma, identificada pela sua conta.</p>
+  </div></div>
+  <div class="card" style="max-width:760px">
+    <h4>Enviar uma sugestão</h4>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
+      <label class="src" for="sgCat">Tipo
+        <select id="sgCat" style="display:block;margin-top:4px">${SG_CATEGORIAS.map(([v, l]) => `<option value="${v}">${l}</option>`).join("")}</select>
+      </label>
+      <label class="src" for="sgTexto">Sua sugestão (até 2.000 caracteres)
+        <textarea id="sgTexto" maxlength="2000" style="display:block;margin-top:4px" aria-describedby="sgMsg"></textarea>
+      </label>
+      <div><button class="btn" id="sgBtn" onclick="sgEnviar()">Enviar sugestão</button></div>
+      <p id="sgMsg" class="src" role="status" aria-live="polite"></p>
+    </div>
+    <div class="src" style="margin-top:10px">O texto é lido apenas pela administração. Para correção de dado, cite a aba, o indicador e a referência (mês/trimestre) — acelera a verificação.</div>
+  </div>`;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

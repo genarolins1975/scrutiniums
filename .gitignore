@@ -12,5 +12,5 @@ node_modules/
 *.tsbuildinfo
 __pycache__/
 
-# Banco local de smoke tests
-.pglite-smoke/
+# Bancos locais de smoke tests
+.pglite-smoke*/

@@ -11,8 +11,11 @@ const EMAIL_MAX_ATTEMPTS = 5;
 
 /**
  * Máquina de estados retomável do onboarding.
- * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPLETE
- * (WAITLIST fica na mesma rota de acesso: pode entrar quando receber código.)
+ * EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → COMPLETE
+ * (A etapa do código de acesso foi extinta: o perfil completo conclui o
+ * cadastro. ACCESS_PENDING e WAITLIST são estados legados — a migração de
+ * boot promove essas contas a COMPLETE e /cadastro/acesso faz o mesmo em
+ * runtime para qualquer retardatário, então nunca há beco sem saída.)
  */
 export function nextStepPath(status: OnboardingStatus): string {
   switch (status) {
@@ -24,6 +27,7 @@ export function nextStepPath(status: OnboardingStatus): string {
       return "/cadastro/perfil";
     case "ACCESS_PENDING":
     case "WAITLIST":
+      // Rota legada: promove a COMPLETE e redireciona ao Observatório.
       return "/cadastro/acesso";
     case "COMPLETE":
       // Destino principal pós-login: o Observatório completo.

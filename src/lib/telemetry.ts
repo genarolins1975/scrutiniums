@@ -33,6 +33,7 @@ export const VIEW_SECTIONS = [
   "obs:bets",
   "obs:fraudes",
   "obs:juros",
+  "obs:sugestoes",
   // Plataforma (páginas Next)
   "app:paineis",
   "app:atividade",
@@ -70,6 +71,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:bets": "Observatório · Bets e risco financeiro",
   "obs:fraudes": "Observatório · Fraudes financeiras e risco de crédito",
   "obs:juros": "Observatório · Taxas de Juros por IF",
+  "obs:sugestoes": "Observatório · Sugestões",
   "app:paineis": "Plataforma · Painéis Scrutiniums",
   "app:atividade": "Plataforma · Atividade setorial",
   "app:risco": "Plataforma · Risco de crédito",

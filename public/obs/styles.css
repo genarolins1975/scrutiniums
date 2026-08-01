@@ -361,12 +361,13 @@ button.btn.ghost { background: transparent; color: var(--accent-ink); border: 1p
 button.btn.ghost:hover { background: var(--accent-soft); color: var(--accent-ink); }
 button.btn.small { padding: 3.5px 10px; font-size: 11.5px; border-radius: 2px; }
 
-select, input[type="text"], input[type="search"] {
+select, input[type="text"], input[type="search"], textarea {
   border: 1px solid var(--border-2); border-radius: 2px; padding: 6px 10px;
   background: var(--surface); font-size: 12.5px; color: var(--text);
   font-family: var(--sans); max-width: 340px;
 }
 select:hover { border-color: var(--text-3); }
+textarea { max-width: 100%; width: 100%; min-height: 130px; resize: vertical; line-height: 1.55; }
 
 .chips { display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {

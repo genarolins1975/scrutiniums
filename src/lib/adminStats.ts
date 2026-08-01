@@ -53,6 +53,13 @@ export type RegistroAuditoria = {
   detail: string | null;
   createdAt: Date;
 };
+export type SugestaoRecente = {
+  id: string;
+  email: string | null;
+  categoria: string;
+  texto: string;
+  createdAt: Date;
+};
 
 export type AdminStats = {
   visaoGeral: {
@@ -60,7 +67,6 @@ export type AdminStats = {
     novos7d: number;
     novos30d: number;
     acessoCompleto: number;
-    listaEspera: number;
     emOnboarding: number;
     sessoesAtivas: number;
     usuariosAtivos7d: number;
@@ -71,9 +77,11 @@ export type AdminStats = {
   ranking: SecaoRanking[];
   funil: EtapaFunil[];
   falhasVerificacao30d: number;
-  convitesEnviadosTotal: number;
   usuariosRecentes: UsuarioRecente[];
   auditoria: RegistroAuditoria[];
+  sugestoesTotal: number;
+  sugestoes30d: number;
+  sugestoesRecentes: SugestaoRecente[];
 };
 
 /** Últimos N dias (fuso local), do mais antigo ao mais recente. */
@@ -102,7 +110,6 @@ const STATUS_ONBOARDING: OnboardingStatus[] = [
   "EMAIL_PENDING",
   "PHONE_PENDING",
   "PROFILE_PENDING",
-  "ACCESS_PENDING",
 ];
 
 export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
@@ -111,7 +118,7 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
   const corte30d = new Date(agora.getTime() - DIAS_SERIE * 24 * 60 * 60 * 1000);
   const janela = janelaDias(agora, DIAS_SERIE);
 
-  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, auditoriaRows] =
+  const [usuariosStatus, sessoesAtivasRows, sessoes30d, eventosTotais, eventos30d, usuariosRecentes, auditoriaRows, sugestoesRows, sugestoesRecentesRows] =
     await Promise.all([
       db
         .select({ status: schema.users.onboardingStatus, createdAt: schema.users.createdAt })
@@ -164,6 +171,21 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
         .leftJoin(schema.users, eq(schema.auditLogs.userId, schema.users.id))
         .orderBy(desc(schema.auditLogs.createdAt))
         .limit(15),
+      db
+        .select({ createdAt: schema.suggestions.createdAt })
+        .from(schema.suggestions),
+      db
+        .select({
+          id: schema.suggestions.id,
+          email: schema.users.email,
+          categoria: schema.suggestions.categoria,
+          texto: schema.suggestions.texto,
+          createdAt: schema.suggestions.createdAt,
+        })
+        .from(schema.suggestions)
+        .leftJoin(schema.users, eq(schema.suggestions.userId, schema.users.id))
+        .orderBy(desc(schema.suggestions.createdAt))
+        .limit(20),
     ]);
 
   // ---- Usuários e status
@@ -221,7 +243,6 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
       novos7d,
       novos30d,
       acessoCompleto: porStatus.get("COMPLETE") ?? 0,
-      listaEspera: porStatus.get("WAITLIST") ?? 0,
       emOnboarding,
       sessoesAtivas: Number(sessoesAtivasRows[0]?.total ?? 0),
       usuariosAtivos7d: ativos7d.size,
@@ -232,8 +253,10 @@ export async function getAdminStats(agora = new Date()): Promise<AdminStats> {
     ranking,
     funil,
     falhasVerificacao30d,
-    convitesEnviadosTotal: totalNome("waitlist_invited"),
     usuariosRecentes,
     auditoria: auditoriaRows,
+    sugestoesTotal: sugestoesRows.length,
+    sugestoes30d: sugestoesRows.filter((s) => s.createdAt >= corte30d).length,
+    sugestoesRecentes: sugestoesRecentesRows,
   };
 }
