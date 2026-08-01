@@ -627,3 +627,7 @@ def build_all(con, cfg, fetch_status):
             if fname.endswith(".json"):
                 with open(os.path.join(curated_dir, fname), encoding="utf-8") as f:
                     common.write_gold(fname, json.load(f))
+
+    # ---- Taxas de juros por modalidade × IF (txjuros) ----
+    from pipeline import juros as juros_mod
+    juros_mod.build(con)

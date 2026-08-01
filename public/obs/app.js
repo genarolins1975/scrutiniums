@@ -34,7 +34,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -165,7 +165,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.32.1"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.33.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -184,6 +184,7 @@ const VIEW_DATA = {
   panorama: ["panorama"],
   bets: ["bets", "pulse"],
   fraudes: ["fraudes", "pulse"],
+  juros: ["juros"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -4138,9 +4139,160 @@ function renderFraudes() {
   el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + tipos + "<hr class='sep'>" + quem + sub + "<hr class='sep'>" + explorer + "<hr class='sep'>" + mit + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes };
+/* ================= TAXAS DE JUROS POR MODALIDADE × IF ================= */
+/* Fonte: BCB txjuros (taxas médias das operações contratadas por IF em
+   janelas de ~5 dias úteis). Três leituras: visão geral das 20 modalidades,
+   painel profundo da modalidade (distribuição, série, ranking, persistência,
+   carteira SCR associada) e perfil transversal por instituição. */
+
+const jurosSel = { mod: null, cnpj: null };
+window.jurosSetMod = id => { jurosSel.mod = id; renderJuros(); };
+window.jurosSetIf = c => { jurosSel.cnpj = c || null; renderJuros(); };
+window.jurosCSV = () => {
+  const J = state.data.juros;
+  if (!J) return;
+  const rows = [["segmento", "modalidade", "janela_inicio", "posicao", "instituicao", "cnpj8", "taxa_aa_pct", "taxa_am_pct", "mediana_modalidade_aa"]];
+  J.modalidades.forEach(m => m.ranking.forEach(r =>
+    rows.push([m.segmento, m.modalidade, m.janela.inicio, r.posicao, r.nome, r.cnpj8, r.taxa_aa, r.taxa_am, m.stats.mediana])));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("taxas_juros_por_if_" + (J.gerado_em || "").slice(0, 10) + ".csv", "﻿" + csv, "text/csv");
+};
+
+function jurosModCurta(m) {
+  return m.replace(" - Prefixado", " · pré").replace(" - Pós-fixado referenciado em juros flutuantes", " · pós")
+    .replace(" - Pós-fixado referenciado em moeda estrangeira", " · cambial").replace("Crédito pessoal consignado", "Consignado")
+    .replace("Cartão de crédito - ", "Cartão ").replace("Capital de giro com prazo", "Capital de giro").replace("Antecipação de faturas de cartão de crédito", "Antecipação de faturas");
+}
+
+function renderJuros() {
+  const el = document.getElementById("view-juros");
+  const J = state.data.juros;
+  if (!J) { el.innerHTML = loadingCard("taxas de juros por instituição"); return; }
+  if (!jurosSel.mod || !J.modalidades.some(m => m.id === jurosSel.mod)) {
+    jurosSel.mod = "pf:Crédito pessoal consignado INSS - Prefixado";
+    if (!J.modalidades.some(m => m.id === jurosSel.mod)) jurosSel.mod = J.modalidades[0].id;
+  }
+  const M = J.modalidades.find(m => m.id === jurosSel.mod);
+
+  const head = `
+  <div class="pagehead">
+    <div class="ph-left">
+      <h2>Taxas de Juros por IF</h2>
+      <p class="viewdesc">Quanto cada instituição cobra em cada modalidade de crédito: distribuição completa, evolução, quem é persistentemente mais barato e a carteira associada — nas 20 modalidades divulgadas pelo BC.</p>
+      <div class="ph-meta">Fonte: BCB txjuros (operações contratadas, janelas de ~5 dias úteis) · Selic meta vigente: <b>${fmt.n(J.selic_meta, 2)}% a.a.</b> · atualizado ${fmt.d((J.gerado_em || "").slice(0, 10))} · <span title="${attr(J.conceitos.taxa)}">o que é esta taxa ⓘ</span></div>
+    </div>
+    <div class="ph-actions">
+      <button class="btn ghost small" onclick="jurosCSV()">baixar rankings (CSV)</button>
+    </div>
+  </div>
+  <div class="note"><b>Como ler:</b> ${J.conceitos.taxa} A mediana entre IFs dá o mesmo peso a cada instituição (${J.conceitos.mediana_vs_media_bc.split(";")[0].replace("a mediana ENTRE IFs dá o mesmo peso a cada instituição", "difere da média do SGS, ponderada pelo valor")}).</div>`;
+
+  /* ---------- 1 · visão geral das modalidades ---------- */
+  const linha = m => {
+    const ativo = m.id === jurosSel.mod;
+    const disp = m.stats.p75 != null && m.stats.p25 != null ? m.stats.p75 - m.stats.p25 : null;
+    return `<tr class="clickable ${ativo ? "sel" : ""}" onclick="jurosSetMod('${m.id.replace(/'/g, "\\'")}')" ${ativo ? 'style="background:var(--accent-soft)"' : ""}>
+      <td><b>${jurosModCurta(m.modalidade)}</b></td>
+      <td style="text-align:right"><b>${fmt.n(m.stats.mediana, 1)}%</b></td>
+      <td style="text-align:right" class="src">${fmt.n(m.stats.min, 1)} a ${fmt.n(m.stats.max, 1)}%</td>
+      <td style="text-align:right" title="distância entre o 1º e o 3º quartil: metade das IFs cobra dentro desta faixa">${disp != null ? fmt.n(disp, 1) : "–"} p.p.</td>
+      <td style="text-align:right">${m.stats.n}</td>
+      <td style="text-align:right" class="${m.delta_3m > 0 ? "up" : m.delta_3m < 0 ? "down good" : "neutral"}">${m.delta_3m != null ? fmt.pp(m.delta_3m) : "–"}</td>
+      <td style="text-align:right" title="${attr(J.conceitos.spread_selic)}">${m.spread_selic != null ? fmt.pp(m.spread_selic) : "–"}</td>
+    </tr>`;
+  };
+  const tabelaSeg = seg => `
+    <div class="card"><h4>${seg === "PF" ? "Pessoa física" : "Pessoa jurídica"}</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Modalidade</th><th style="text-align:right">Mediana a.a.</th><th style="text-align:right">Faixa</th><th style="text-align:right" title="dispersão interquartil">IQR</th><th style="text-align:right">IFs</th><th style="text-align:right">Δ3m</th><th style="text-align:right">vs Selic</th></tr></thead>
+    <tbody>${J.modalidades.filter(m => m.segmento === seg).map(linha).join("")}</tbody></table></div></div>`;
+  const geral = `
+  ${sechead("Mapa das modalidades", "mediana entre IFs na última janela consolidada · clique para abrir o painel da modalidade")}
+  <div class="ov-2col-eq">${tabelaSeg("PF")}${tabelaSeg("PJ")}</div>`;
+
+  /* ---------- 2 · painel da modalidade selecionada ---------- */
+  const serie = M.serie_mensal;
+  const chart = serie.length >= 3 ? lineChart({
+    series: [
+      { pts: serie.map(o => ({ x: o.ref, y: o.mediana })), label: "mediana entre IFs", color: "#1d4e89", w: 2.2 },
+      { pts: serie.map(o => ({ x: o.ref, y: o.min })), label: "IF mais barata", color: "#2f7d4f", dash: "4,3", w: 1.4 },
+    ],
+    band: { pts: serie.map(o => ({ x: o.ref, lo: o.p25, hi: o.p75 })) },
+    h: 260, unit: "% a.a.", fonte: "BCB txjuros", dec: 1,
+    aria: `evolução mensal da taxa da modalidade ${M.modalidade}`,
+  }) : "<p class='src'>histórico mensal ainda curto para gráfico</p>";
+  const maxAbs = Math.max(...M.ranking.map(r => r.taxa_aa));
+  const rankRow = r => `<tr class="${jurosSel.cnpj === r.cnpj8 ? "sel" : ""}">
+    <td style="text-align:right">${r.posicao}º</td>
+    <td><b>${r.nome}</b></td>
+    <td style="text-align:right"><b>${fmt.n(r.taxa_aa, 2)}%</b> <span class="src">a.a.</span></td>
+    <td style="text-align:right" class="src">${fmt.n(r.taxa_am, 2)}% a.m.</td>
+    <td style="text-align:right" class="${r.vs_mediana > 0 ? "up" : "down good"}">${fmt.pp(r.vs_mediana)} p.p.</td>
+    <td style="width:120px"><span style="display:inline-block;height:7px;background:${r.vs_mediana > 0 ? "var(--c-neg)" : "var(--c-pos)"};opacity:.65;width:${Math.max(r.taxa_aa / maxAbs * 100, 2).toFixed(1)}%"></span></td>
+  </tr>`;
+  const cart = M.carteira_scr;
+  const painel = `
+  ${sechead(`${jurosModCurta(M.modalidade)} — ${M.segmento}`, `janela consolidada iniciada em ${fmt.d(M.janela.inicio)} · ${M.stats.n} instituições divulgadas`)}
+  <div class="grid g4">
+    <div class="card kpi"><h4>Mediana entre IFs</h4><div class="tr-big">${fmt.n(M.stats.mediana, 1)}%<small> a.a.</small></div><div class="src">metade das IFs cobra menos, metade mais</div></div>
+    <div class="card kpi"><h4>Faixa completa</h4><div class="tr-big" style="font-size:22px">${fmt.n(M.stats.min, 1)} a ${fmt.n(M.stats.max, 1)}%</div><div class="src">da IF mais barata à mais cara (razão ${M.stats.min > 0 ? fmt.n(M.stats.max / M.stats.min, 1) : "–"}×)</div></div>
+    <div class="card kpi"><h4>Sobre a Selic</h4><div class="tr-big">${M.spread_selic != null ? fmt.pp(M.spread_selic) : "–"}<small> p.p.</small></div><div class="src" title="${attr(J.conceitos.spread_selic)}">mediana menos a meta Selic (aproximação ⓘ)</div></div>
+    <div class="card kpi"><h4>Movimento 3 meses</h4><div class="tr-big ${M.delta_3m > 0 ? "up" : "down good"}">${M.delta_3m != null ? fmt.pp(M.delta_3m) : "–"}<small> p.p.</small></div><div class="src">variação da mediana entre IFs</div></div>
+  </div>
+  <div class="ov-2col" style="margin-top:14px">
+    <div class="card"><h4>Evolução mensal ${badge("observado")} <span class="src">banda = 1º a 3º quartil entre IFs</span></h4>
+      ${chart}
+      ${chartFooter({ fonte: "BCB txjuros (Olinda)", periodo: serie.length ? `${fmt.my(serie[0].ref)}–${fmt.my(serie[serie.length - 1].ref)}` : "–", atualizado: fmt.d((J.gerado_em || "").slice(0, 10)), unidade: "% a.a.", nota: J.conceitos.janela })}</div>
+    <div style="display:flex;flex-direction:column;gap:22px">
+      <div class="card"><h4>Persistentemente mais baratas <span class="src" title="${attr(J.conceitos.persistencia)}">ⓘ</span></h4>
+        ${M.persistentes.map(p => `<div class="contrib"><span class="lbl" style="width:auto;flex:1">${p.nome}</span><span class="num">${p.vezes}/${p.de} janelas</span></div>`).join("") || "<p class='src'>sem dado</p>"}
+        <div class="src" style="margin-top:6px">liderança recorrente importa mais que o retrato de uma janela: taxas por IF oscilam com o mix de clientes de cada semana</div></div>
+      ${cart ? `<div class="card"><h4>Carteira associada (estoque SCR) ${badge("observado")}</h4>
+        <div class="contrib"><span class="lbl">produto</span><span class="num">${cart.produto} · ${cart.cliente}</span></div>
+        <div class="contrib"><span class="lbl">carteira ativa</span><span class="num">${fmt.money(cart.saldo)}</span></div>
+        <div class="contrib"><span class="lbl">inadimplência arrastada</span><span class="num">${fmt.n(cart.inad, 2)}%</span></div>
+        <div class="contrib"><span class="lbl">atraso 15–90 dias</span><span class="num">${fmt.n(cart.atraso15_90, 2)}%</span></div>
+        <div class="src" style="margin-top:6px">${J.conceitos.carteira} Data-base ${cart.data_base}.</div></div>` : ""}
+    </div>
+  </div>
+  <div class="card" style="margin-top:14px"><h4>Ranking completo da janela — ${M.stats.n} instituições</h4>
+    <div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th style="text-align:right">#</th><th>Instituição</th><th style="text-align:right">Taxa a.a.</th><th style="text-align:right">a.m.</th><th style="text-align:right">vs mediana</th><th>escala</th></tr></thead>
+    <tbody>${M.ranking.map(rankRow).join("")}</tbody></table></div>
+    <div class="src" style="margin-top:6px">Taxas médias das operações contratadas: uma IF pode ser barata para um perfil de cliente e cara para outro; a divulgação do BC não abre o mix. Comparações finas exigem simulação individual.</div>
+  </div>`;
+
+  /* ---------- 3 · perfil por instituição ---------- */
+  const perfil = jurosSel.cnpj ? J.perfis_if.find(p => p.cnpj8 === jurosSel.cnpj) : null;
+  const perfilRows = perfil ? perfil.modalidades.map(pm => {
+    const mm = J.modalidades.find(x => x.id === pm.id);
+    return `<tr class="clickable" onclick="jurosSetMod('${pm.id.replace(/'/g, "\\'")}')">
+      <td>${mm ? mm.segmento : ""} · ${jurosModCurta(pm.id.split(":")[1])}</td>
+      <td style="text-align:right"><b>${fmt.n(pm.taxa_aa, 2)}%</b></td>
+      <td style="text-align:right" class="src">${fmt.n(pm.mediana, 2)}%</td>
+      <td style="text-align:right" class="${pm.taxa_aa > pm.mediana ? "up" : "down good"}">${fmt.pp(pm.taxa_aa - pm.mediana)} p.p.</td>
+      <td style="text-align:right">${pm.posicao}º de ${pm.n}</td>
+    </tr>`;
+  }).join("") : "";
+  const ifSec = `
+  ${sechead("Perfil por instituição", "onde cada IF é cara ou barata — posição em todas as modalidades que divulga")}
+  <div class="card">
+    <div class="filterbar" style="margin-bottom:10px">
+      <label class="src">instituição
+        <select onchange="jurosSetIf(this.value)" aria-label="instituição">
+          <option value="">selecione…</option>
+          ${J.perfis_if.slice(0, 120).map(p => `<option value="${p.cnpj8}" ${jurosSel.cnpj === p.cnpj8 ? "selected" : ""}>${p.nome} (${p.modalidades.length})</option>`).join("")}
+        </select></label>
+    </div>
+    ${perfil ? `<div class="tblwrap"><table class="data compact"><thead><tr><th>Modalidade</th><th style="text-align:right">Taxa da IF</th><th style="text-align:right">Mediana do mercado</th><th style="text-align:right">Diferença</th><th style="text-align:right">Posição</th></tr></thead><tbody>${perfilRows}</tbody></table></div>
+      <div class="src" style="margin-top:6px">Clique em uma linha para abrir o painel da modalidade. Posição 1º = mais barata da janela.</div>`
+      : `<p class="src">Escolha uma instituição para ver o retrato transversal (as ${J.perfis_if.length} IFs do seletor estão ordenadas por abrangência de modalidades).</p>`}
+  </div>`;
+
+  el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
