@@ -2,6 +2,8 @@
  "cod": "37679449",
  "nome": "MERCADO CRÉDITO SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
  "sr": "S4",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -48,5 +50,5 @@
    "202506": 36.18425936538436
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

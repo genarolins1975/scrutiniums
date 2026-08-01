@@ -2,6 +2,8 @@
  "cod": "32778350",
  "nome": "AME DIGITAL BRASIL INSTITUICAO DE PAGAMENTO LTDA",
  "sr": "S5",
+ "tcb": "N4",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -84,5 +86,5 @@
    "202509": 0.6961970335926974
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

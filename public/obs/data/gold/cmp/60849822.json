@@ -2,6 +2,8 @@
  "cod": "60849822",
  "nome": "CREDI COOPERALFA COOPERATIVA DE CRÉDITO",
  "sr": null,
+ "tcb": "B3S",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -16,5 +18,5 @@
    "202603": 500000.0
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

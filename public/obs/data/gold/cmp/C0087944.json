@@ -2,6 +2,8 @@
  "cod": "C0087944",
  "nome": "VIVO PAY SCD - PRUDENCIAL",
  "sr": "S5",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "conglomerado prudencial",
  "anomes_list": [
   "202503",
@@ -25,5 +27,5 @@
    "202506": 334749.74
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

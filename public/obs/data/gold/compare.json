@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T00:22:22+00:00",
+ "gerado_em": "2026-08-01T01:10:04+00:00",
  "anomes_list": [
   "202503",
   "202506",
@@ -8,6 +8,1039 @@
   "202603"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "grupos": {
+  "sr:S1": {
+   "label": "Segmento prudencial S1",
+   "n_insts": 39,
+   "stats": {
+    "ativo_total": {
+     "n": 11,
+     "mediana": 812198393327.94,
+     "q1": 760908581.89,
+     "q3": 2341510303650.14
+    },
+    "patrimonio_liquido": {
+     "n": 11,
+     "mediana": 74826938356.68,
+     "q1": 744964944.63,
+     "q3": 184194644575.03
+    },
+    "carteira_credito": {
+     "n": 11,
+     "mediana": 188099385929.51,
+     "q1": 0.0,
+     "q3": 1119951053614.74
+    },
+    "carteira_pf": {
+     "n": 6,
+     "mediana": 457752104472.36,
+     "q1": 329814379727.81,
+     "q3": 734209608966.09
+    },
+    "carteira_pj": {
+     "n": 6,
+     "mediana": 261859430354.92,
+     "q1": 220187844260.43,
+     "q3": 387995083383.14
+    },
+    "captacoes": {
+     "n": 11,
+     "mediana": 573706254716.08,
+     "q1": 56509500.37,
+     "q3": 2046609673002.96
+    },
+    "lucro_liquido": {
+     "n": 11,
+     "mediana": 3093792133.29001,
+     "q1": 3271898.17,
+     "q3": 4570395694.50998
+    },
+    "indice_basileia": {
+     "n": 7,
+     "mediana": 15.134350668324,
+     "q1": 14.9044552671766,
+     "q3": 15.151768229735499
+    },
+    "indice_capital_principal": {
+     "n": 6,
+     "mediana": 11.3561293664567,
+     "q1": 11.2438638063627,
+     "q3": 11.9662610778978
+    },
+    "indice_capital_nivel1": {
+     "n": 6,
+     "mediana": 12.4400315410694,
+     "q1": 12.2667552089114,
+     "q3": 13.588315811541902
+    },
+    "patrimonio_referencia": {
+     "n": 7,
+     "mediana": 153863890558.9,
+     "q1": 115779445274.74,
+     "q3": 171770700948.39
+    },
+    "rwa": {
+     "n": 7,
+     "mediana": 846751661397.98,
+     "q1": 627072212736.13,
+     "q3": 985898064498.13
+    },
+    "razao_alavancagem": {
+     "n": 6,
+     "mediana": 6.4759971818262,
+     "q1": 6.29043039733479,
+     "q3": 7.08282301650542
+    },
+    "provisao_credito": {
+     "n": 33,
+     "mediana": 1327362455.46,
+     "q1": 123149574.33,
+     "q3": 30961958689.55
+    },
+    "roe_periodo": {
+     "n": 11,
+     "mediana": 2.8408066862489765,
+     "q1": 1.6813738246781527,
+     "q3": 5.824412962537338
+    },
+    "npl_pct": {
+     "n": 6,
+     "mediana": 3.8931328298032226,
+     "q1": 3.6767323321593883,
+     "q3": 5.389189013227411
+    },
+    "ativos_problematicos_pct": {
+     "n": 6,
+     "mediana": 6.706945309530791,
+     "q1": 6.36744253858766,
+     "q3": 7.744299212150227
+    },
+    "cobertura_pct": {
+     "n": 6,
+     "mediana": 139.50431546331416,
+     "q1": 125.47714629281327,
+     "q3": 164.18158805314118
+    },
+    "cart_ativo_pct": {
+     "n": 11,
+     "mediana": 23.159290571701664,
+     "q1": 0.0,
+     "q3": 42.97821808417267
+    },
+    "atraso15_cartao_de_credito_pf": {
+     "n": 6,
+     "mediana": 9.37789459099965,
+     "q1": 6.87753715208288,
+     "q3": 12.950900104834062
+    },
+    "atraso15_consignado_pf": {
+     "n": 6,
+     "mediana": 0.736909474079456,
+     "q1": 0.45147817061154644,
+     "q3": 1.4392376337579111
+    },
+    "atraso15_credito_pessoal_pf": {
+     "n": 6,
+     "mediana": 4.368158160958826,
+     "q1": 4.126598106531688,
+     "q3": 5.5665334368147485
+    },
+    "atraso15_veiculos_pf": {
+     "n": 6,
+     "mediana": 2.079726001416145,
+     "q1": 1.9537167577913839,
+     "q3": 6.008123975784519
+    },
+    "atraso15_imobiliario_pf": {
+     "n": 6,
+     "mediana": 0.168777255825948,
+     "q1": 0.16061759580772478,
+     "q3": 0.7285040508055802
+    },
+    "atraso15_rural_pf": {
+     "n": 6,
+     "mediana": 4.832435387388669,
+     "q1": 0.2689835958416241,
+     "q3": 6.742946769903435
+    },
+    "atraso15_capital_de_giro_pj": {
+     "n": 6,
+     "mediana": 2.180204254911408,
+     "q1": 1.5154755223075886,
+     "q3": 3.8048021863296055
+    },
+    "atraso15_conta_garantida_pj": {
+     "n": 6,
+     "mediana": 10.71340180262898,
+     "q1": 10.415468712811242,
+     "q3": 14.201195875085071
+    },
+    "atraso15_recebiveis_pj": {
+     "n": 6,
+     "mediana": 0.9245364735580223,
+     "q1": 0.6761045199687009,
+     "q3": 3.2129892690586552
+    },
+    "atraso15_investimento_pj": {
+     "n": 6,
+     "mediana": 1.390165733075674,
+     "q1": 0.5324023128758949,
+     "q3": 1.6890613021137288
+    },
+    "atraso15_comercio_exterior_pj": {
+     "n": 6,
+     "mediana": 0.22975342170707927,
+     "q1": 0.08759382988836437,
+     "q3": 1.2519472232675275
+    },
+    "atraso15_infraestrutura_pj": {
+     "n": 6,
+     "mediana": 0.18189588890563155,
+     "q1": 0.012589355671335897,
+     "q3": 0.45293676638097846
+    },
+    "atraso15_rural_pj": {
+     "n": 5,
+     "mediana": 0.3127780423389553,
+     "q1": 0.18949845975282406,
+     "q3": 0.9651369696637215
+    }
+   }
+  },
+  "sr:S2": {
+   "label": "Segmento prudencial S2",
+   "n_insts": 25,
+   "stats": {
+    "ativo_total": {
+     "n": 11,
+     "mediana": 174907642939.05,
+     "q1": 75643743351.56,
+     "q3": 288897766100.41
+    },
+    "patrimonio_liquido": {
+     "n": 11,
+     "mediana": 11324980040.95,
+     "q1": 5379960857.65,
+     "q3": 16600598040.63
+    },
+    "carteira_credito": {
+     "n": 11,
+     "mediana": 42474028251.09,
+     "q1": 18145187266.09,
+     "q3": 79568678287.78
+    },
+    "carteira_pf": {
+     "n": 9,
+     "mediana": 28283643371.9,
+     "q1": 4154973256.5,
+     "q3": 42241241744.81
+    },
+    "carteira_pj": {
+     "n": 9,
+     "mediana": 15559286352.17,
+     "q1": 11290267921.13,
+     "q3": 30942468681.49
+    },
+    "captacoes": {
+     "n": 11,
+     "mediana": 142061466875.17,
+     "q1": 22484396140.82,
+     "q3": 226503056348.63
+    },
+    "lucro_liquido": {
+     "n": 11,
+     "mediana": 221407096.64,
+     "q1": 62768143.810001,
+     "q3": 488015938.86
+    },
+    "indice_basileia": {
+     "n": 9,
+     "mediana": 17.3489929712495,
+     "q1": 15.014129066569001,
+     "q3": 17.9690845219551
+    },
+    "indice_capital_principal": {
+     "n": 9,
+     "mediana": 13.4157446932524,
+     "q1": 11.158360159158901,
+     "q3": 14.084200349856198
+    },
+    "indice_capital_nivel1": {
+     "n": 9,
+     "mediana": 14.2950298875647,
+     "q1": 13.600627091504899,
+     "q3": 17.9690845219551
+    },
+    "patrimonio_referencia": {
+     "n": 9,
+     "mediana": 12946274742.62,
+     "q1": 10276149637.89,
+     "q3": 17516441971.0
+    },
+    "rwa": {
+     "n": 9,
+     "mediana": 61511355005.68,
+     "q1": 48514252187.28,
+     "q3": 95220374219.59
+    },
+    "razao_alavancagem": {
+     "n": 9,
+     "mediana": 6.544874182686709,
+     "q1": 3.6748516293463,
+     "q3": 8.70801471727073
+    },
+    "provisao_credito": {
+     "n": 22,
+     "mediana": 678649461.88,
+     "q1": 157071107.46,
+     "q3": 3912690698.35
+    },
+    "roe_periodo": {
+     "n": 11,
+     "mediana": 2.9397491443716666,
+     "q1": 1.1667026112420178,
+     "q3": 3.7516324811680803
+    },
+    "npl_pct": {
+     "n": 9,
+     "mediana": 1.7373777836790771,
+     "q1": 0.390817370154659,
+     "q3": 4.780416395618465
+    },
+    "ativos_problematicos_pct": {
+     "n": 9,
+     "mediana": 4.578770669167756,
+     "q1": 2.944025476657087,
+     "q3": 6.911236125151139
+    },
+    "cobertura_pct": {
+     "n": 9,
+     "mediana": 185.54476608086304,
+     "q1": 128.18039550279775,
+     "q3": 246.00435236769363
+    },
+    "cart_ativo_pct": {
+     "n": 11,
+     "mediana": 23.98769080181407,
+     "q1": 16.944263012158668,
+     "q3": 36.991356780792444
+    },
+    "atraso15_cartao_de_credito_pf": {
+     "n": 6,
+     "mediana": 3.804526908110601,
+     "q1": 1.8099023485839763,
+     "q3": 15.625094332280124
+    },
+    "atraso15_consignado_pf": {
+     "n": 7,
+     "mediana": 1.016341005083095,
+     "q1": 0.5158866466758912,
+     "q3": 1.0708011469250955
+    },
+    "atraso15_credito_pessoal_pf": {
+     "n": 7,
+     "mediana": 2.342515737138071,
+     "q1": 0.3490810752822725,
+     "q3": 3.929943085005536
+    },
+    "atraso15_veiculos_pf": {
+     "n": 5,
+     "mediana": 0.7917646880500839,
+     "q1": 0.0,
+     "q3": 3.7853147904407662
+    },
+    "atraso15_imobiliario_pf": {
+     "n": 4,
+     "mediana": 0.16804164876660657,
+     "q1": 0.09604026058866,
+     "q3": 0.16804164876660657
+    },
+    "atraso15_rural_pf": {
+     "n": 5,
+     "mediana": 0.1186781078457052,
+     "q1": 0.0,
+     "q3": 1.9092598786658355
+    },
+    "atraso15_capital_de_giro_pj": {
+     "n": 8,
+     "mediana": 1.328366804040774,
+     "q1": 0.12185435317356946,
+     "q3": 2.8541962784311647
+    },
+    "atraso15_conta_garantida_pj": {
+     "n": 7,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 7.664018334725385
+    },
+    "atraso15_recebiveis_pj": {
+     "n": 6,
+     "mediana": 0.4073150976942645,
+     "q1": 0.0,
+     "q3": 13.166684654457145
+    },
+    "atraso15_investimento_pj": {
+     "n": 6,
+     "mediana": 2.658125248373962,
+     "q1": 2.6161412390454406,
+     "q3": 3.130034469540092
+    },
+    "atraso15_comercio_exterior_pj": {
+     "n": 8,
+     "mediana": 0.17294048459697975,
+     "q1": 0.08135508127847393,
+     "q3": 0.5657176121601327
+    },
+    "atraso15_infraestrutura_pj": {
+     "n": 7,
+     "mediana": 0.044233412044955706,
+     "q1": 0.016858571291009795,
+     "q3": 0.08330097160962399
+    },
+    "atraso15_rural_pj": {
+     "n": 8,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.009657250683890464
+    }
+   }
+  },
+  "sr:S3": {
+   "label": "Segmento prudencial S3",
+   "n_insts": 101,
+   "stats": {
+    "ativo_total": {
+     "n": 63,
+     "mediana": 20568512313.25,
+     "q1": 14799848554.41,
+     "q3": 40637943022.7
+    },
+    "patrimonio_liquido": {
+     "n": 63,
+     "mediana": 2616472206.15,
+     "q1": 1546506646.27,
+     "q3": 4841853946.46
+    },
+    "carteira_credito": {
+     "n": 63,
+     "mediana": 8968642557.44,
+     "q1": 2251939517.01,
+     "q3": 19015765142.69
+    },
+    "carteira_pf": {
+     "n": 41,
+     "mediana": 7623259685.33,
+     "q1": 517232361.11,
+     "q3": 24226100059.02
+    },
+    "carteira_pj": {
+     "n": 54,
+     "mediana": 3661096590.87,
+     "q1": 1847571712.05,
+     "q3": 10327470706.74
+    },
+    "captacoes": {
+     "n": 63,
+     "mediana": 13030628715.7,
+     "q1": 5556355792.92,
+     "q3": 28934051018.98
+    },
+    "lucro_liquido": {
+     "n": 63,
+     "mediana": 53790621.7800002,
+     "q1": 10888512.07,
+     "q3": 142071371.479999
+    },
+    "indice_basileia": {
+     "n": 57,
+     "mediana": 16.821537133813997,
+     "q1": 13.5282116602731,
+     "q3": 23.255066892259
+    },
+    "indice_capital_principal": {
+     "n": 57,
+     "mediana": 14.7306110425488,
+     "q1": 11.3943859382666,
+     "q3": 23.255066892259
+    },
+    "indice_capital_nivel1": {
+     "n": 57,
+     "mediana": 14.7306110425488,
+     "q1": 12.9333594904431,
+     "q3": 23.255066892259
+    },
+    "patrimonio_referencia": {
+     "n": 57,
+     "mediana": 2918545796.04,
+     "q1": 1688914327.96,
+     "q3": 5091448450.89
+    },
+    "rwa": {
+     "n": 57,
+     "mediana": 12134188869.09,
+     "q1": 5999018398.55,
+     "q3": 20507799116.83
+    },
+    "razao_alavancagem": {
+     "n": 53,
+     "mediana": 10.0674489694926,
+     "q1": 7.304887931962011,
+     "q3": 13.9035688815829
+    },
+    "provisao_credito": {
+     "n": 80,
+     "mediana": 499452203.44,
+     "q1": 8411968.53,
+     "q3": 1403203361.93
+    },
+    "roe_periodo": {
+     "n": 63,
+     "mediana": 2.45365544940845,
+     "q1": 0.6618170750206137,
+     "q3": 4.171020848417418
+    },
+    "npl_pct": {
+     "n": 43,
+     "mediana": 3.38290428912786,
+     "q1": 1.9731415881408392,
+     "q3": 7.5599695435456455
+    },
+    "ativos_problematicos_pct": {
+     "n": 48,
+     "mediana": 6.855440886788122,
+     "q1": 4.044869822328699,
+     "q3": 11.448000654654697
+    },
+    "cobertura_pct": {
+     "n": 41,
+     "mediana": 140.72842209174368,
+     "q1": 111.43572043431784,
+     "q3": 171.9697774465669
+    },
+    "cart_ativo_pct": {
+     "n": 63,
+     "mediana": 45.31711881490486,
+     "q1": 11.540933850871742,
+     "q3": 62.224350689569995
+    },
+    "atraso15_cartao_de_credito_pf": {
+     "n": 19,
+     "mediana": 8.579330697471885,
+     "q1": 5.466963902490299,
+     "q3": 17.91322446566843
+    },
+    "atraso15_consignado_pf": {
+     "n": 21,
+     "mediana": 1.0678538495609025,
+     "q1": 0.7141085415369965,
+     "q3": 2.474533059231328
+    },
+    "atraso15_credito_pessoal_pf": {
+     "n": 32,
+     "mediana": 4.773208550316909,
+     "q1": 2.3439755485511027,
+     "q3": 8.944943667466882
+    },
+    "atraso15_veiculos_pf": {
+     "n": 23,
+     "mediana": 1.5473906911874953,
+     "q1": 0.9299258201341553,
+     "q3": 2.788289255554135
+    },
+    "atraso15_imobiliario_pf": {
+     "n": 12,
+     "mediana": 0.07881582679574557,
+     "q1": 0.057719680138306674,
+     "q3": 0.2026609014213069
+    },
+    "atraso15_rural_pf": {
+     "n": 17,
+     "mediana": 0.7280543699959815,
+     "q1": 0.002409323026478182,
+     "q3": 3.54078228171084
+    },
+    "atraso15_capital_de_giro_pj": {
+     "n": 46,
+     "mediana": 1.0311834521401337,
+     "q1": 0.0,
+     "q3": 3.874295891683027
+    },
+    "atraso15_conta_garantida_pj": {
+     "n": 24,
+     "mediana": 5.699390994465327,
+     "q1": 0.29585709288546624,
+     "q3": 9.626686942628098
+    },
+    "atraso15_recebiveis_pj": {
+     "n": 38,
+     "mediana": 0.022050635513381347,
+     "q1": 0.0,
+     "q3": 1.5225169393079263
+    },
+    "atraso15_investimento_pj": {
+     "n": 31,
+     "mediana": 0.8425327324131501,
+     "q1": 0.2598321812793794,
+     "q3": 1.792311804493931
+    },
+    "atraso15_comercio_exterior_pj": {
+     "n": 25,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.8776962967838944
+    },
+    "atraso15_infraestrutura_pj": {
+     "n": 25,
+     "mediana": 0.4084372301160864,
+     "q1": 0.0,
+     "q3": 1.2489047211839437
+    },
+    "atraso15_rural_pj": {
+     "n": 22,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.9143034778031389
+    }
+   }
+  },
+  "sr:S4": {
+   "label": "Segmento prudencial S4",
+   "n_insts": 451,
+   "stats": {
+    "ativo_total": {
+     "n": 390,
+     "mediana": 1066055240.5,
+     "q1": 79466638.86,
+     "q3": 3990337854.32
+    },
+    "patrimonio_liquido": {
+     "n": 390,
+     "mediana": 164552249.81,
+     "q1": 21093586.0,
+     "q3": 532078763.29
+    },
+    "carteira_credito": {
+     "n": 390,
+     "mediana": 126309732.94,
+     "q1": 0.0,
+     "q3": 1709196377.02
+    },
+    "carteira_pf": {
+     "n": 214,
+     "mediana": 578534401.71,
+     "q1": 56863912.53,
+     "q3": 1621451810.91
+    },
+    "carteira_pj": {
+     "n": 243,
+     "mediana": 403244753.0,
+     "q1": 54129882.09,
+     "q3": 982285615.47
+    },
+    "captacoes": {
+     "n": 390,
+     "mediana": 371657110.74,
+     "q1": 3382586.01,
+     "q3": 2033442690.87
+    },
+    "lucro_liquido": {
+     "n": 390,
+     "mediana": 1221706.62,
+     "q1": -172596.570000006,
+     "q3": 13668121.14
+    },
+    "indice_basileia": {
+     "n": 363,
+     "mediana": 20.4579875137232,
+     "q1": 15.677333632786,
+     "q3": 34.963748868377294
+    },
+    "indice_capital_principal": {
+     "n": 362,
+     "mediana": 20.025026354533303,
+     "q1": 14.5898525786727,
+     "q3": 34.2356253593637
+    },
+    "indice_capital_nivel1": {
+     "n": 362,
+     "mediana": 20.0384372153618,
+     "q1": 15.026339433004601,
+     "q3": 34.4793098354571
+    },
+    "patrimonio_referencia": {
+     "n": 363,
+     "mediana": 188719823.4,
+     "q1": 20566578.26,
+     "q3": 509371902.1
+    },
+    "rwa": {
+     "n": 362,
+     "mediana": 421983730.03,
+     "q1": 22541888.8,
+     "q3": 2069148566.62
+    },
+    "razao_alavancagem": {
+     "n": 205,
+     "mediana": 11.5166302654164,
+     "q1": 8.94275660491307,
+     "q3": 17.941701818689097
+    },
+    "provisao_credito": {
+     "n": 281,
+     "mediana": 63852052.17,
+     "q1": 5224367.74,
+     "q3": 199243132.77
+    },
+    "roe_periodo": {
+     "n": 390,
+     "mediana": 1.9296067685003027,
+     "q1": -0.819405629613502,
+     "q3": 4.081147540719812
+    },
+    "npl_pct": {
+     "n": 217,
+     "mediana": 5.140486120091349,
+     "q1": 3.2341154312403466,
+     "q3": 8.665392521530293
+    },
+    "ativos_problematicos_pct": {
+     "n": 220,
+     "mediana": 7.84308339667308,
+     "q1": 5.611272006128315,
+     "q3": 12.738414328582653
+    },
+    "cobertura_pct": {
+     "n": 210,
+     "mediana": 153.18233414582792,
+     "q1": 103.11576644259756,
+     "q3": 185.9576591157375
+    },
+    "cart_ativo_pct": {
+     "n": 390,
+     "mediana": 29.798466073736744,
+     "q1": 0.0,
+     "q3": 57.94951650342377
+    },
+    "atraso15_cartao_de_credito_pf": {
+     "n": 140,
+     "mediana": 7.891031519486102,
+     "q1": 5.846667993118935,
+     "q3": 11.718088102420374
+    },
+    "atraso15_consignado_pf": {
+     "n": 154,
+     "mediana": 0.7493734085619709,
+     "q1": 0.5395144606809884,
+     "q3": 1.4031714637360921
+    },
+    "atraso15_credito_pessoal_pf": {
+     "n": 185,
+     "mediana": 2.8671623897967597,
+     "q1": 1.5908280133060448,
+     "q3": 6.164968604154967
+    },
+    "atraso15_veiculos_pf": {
+     "n": 141,
+     "mediana": 1.3265427933173533,
+     "q1": 0.709511704098152,
+     "q3": 2.249851041420863
+    },
+    "atraso15_imobiliario_pf": {
+     "n": 56,
+     "mediana": 0.06714261886554275,
+     "q1": 0.0,
+     "q3": 0.3237100230681285
+    },
+    "atraso15_rural_pf": {
+     "n": 107,
+     "mediana": 0.8035533282081633,
+     "q1": 0.3603838480980567,
+     "q3": 1.7420738166594292
+    },
+    "atraso15_capital_de_giro_pj": {
+     "n": 208,
+     "mediana": 1.1217881121814228,
+     "q1": 0.16791965072368153,
+     "q3": 2.6903296611343714
+    },
+    "atraso15_conta_garantida_pj": {
+     "n": 129,
+     "mediana": 5.579524454038031,
+     "q1": 2.602113716230498,
+     "q3": 9.556621464301472
+    },
+    "atraso15_recebiveis_pj": {
+     "n": 148,
+     "mediana": 3.6522731247641667,
+     "q1": 1.180834690821535,
+     "q3": 7.665787794577879
+    },
+    "atraso15_investimento_pj": {
+     "n": 168,
+     "mediana": 1.0218547228757533,
+     "q1": 0.5888600469097297,
+     "q3": 2.245584654393344
+    },
+    "atraso15_comercio_exterior_pj": {
+     "n": 44,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.0
+    },
+    "atraso15_infraestrutura_pj": {
+     "n": 78,
+     "mediana": 1.1282656210668842,
+     "q1": 0.0,
+     "q3": 4.075105826980213
+    },
+    "atraso15_rural_pj": {
+     "n": 84,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.0
+    }
+   }
+  },
+  "sr:S5": {
+   "label": "Segmento prudencial S5",
+   "n_insts": 879,
+   "stats": {
+    "ativo_total": {
+     "n": 808,
+     "mediana": 149447841.18,
+     "q1": 10928577.54,
+     "q3": 692869470.62
+    },
+    "patrimonio_liquido": {
+     "n": 808,
+     "mediana": 34871312.96,
+     "q1": 7344516.39,
+     "q3": 119690266.31
+    },
+    "carteira_credito": {
+     "n": 808,
+     "mediana": 57116768.7,
+     "q1": 2684369.3,
+     "q3": 343788091.56
+    },
+    "carteira_pf": {
+     "n": 718,
+     "mediana": 57061954.43,
+     "q1": 6088282.2,
+     "q3": 212178489.41
+    },
+    "carteira_pj": {
+     "n": 513,
+     "mediana": 86600119.33,
+     "q1": 14092269.3,
+     "q3": 253765403.85
+    },
+    "captacoes": {
+     "n": 808,
+     "mediana": 77932387.37,
+     "q1": 0.0,
+     "q3": 478228225.41
+    },
+    "lucro_liquido": {
+     "n": 808,
+     "mediana": 412025.79,
+     "q1": -16170.89,
+     "q3": 2761851.9
+    },
+    "indice_basileia": {
+     "n": 774,
+     "mediana": 30.209692442484698,
+     "q1": 18.9434060813927,
+     "q3": 91.9139943002929
+    },
+    "indice_capital_principal": {
+     "n": 10,
+     "mediana": 14.7646076848349,
+     "q1": 13.4469790614483,
+     "q3": 29.5298603971702
+    },
+    "indice_capital_nivel1": {
+     "n": 10,
+     "mediana": 14.7646076848349,
+     "q1": 13.4469790614483,
+     "q3": 29.5298603971702
+    },
+    "patrimonio_referencia": {
+     "n": 773,
+     "mediana": 31681089.33,
+     "q1": 7009851.82,
+     "q3": 109420994.43
+    },
+    "rwa": {
+     "n": 774,
+     "mediana": 88559293.32,
+     "q1": 6867568.39,
+     "q3": 410390050.87
+    },
+    "razao_alavancagem": {
+     "n": 3,
+     "mediana": 9.322529834188261,
+     "q1": 7.498553361410901,
+     "q3": 15.980294195783001
+    },
+    "provisao_credito": {
+     "n": 732,
+     "mediana": 6767413.59,
+     "q1": 334155.01,
+     "q3": 28830798.38
+    },
+    "roe_periodo": {
+     "n": 808,
+     "mediana": 2.0120166326381783,
+     "q1": -0.17488832461397563,
+     "q3": 3.707115563807465
+    },
+    "npl_pct": {
+     "n": 686,
+     "mediana": 4.677536330961882,
+     "q1": 2.6281817644273877,
+     "q3": 7.997923813683711
+    },
+    "ativos_problematicos_pct": {
+     "n": 692,
+     "mediana": 8.237630596291744,
+     "q1": 5.158023681741091,
+     "q3": 13.188700014583448
+    },
+    "cobertura_pct": {
+     "n": 662,
+     "mediana": 143.68101092033558,
+     "q1": 109.50156217564518,
+     "q3": 195.275958513547
+    },
+    "cart_ativo_pct": {
+     "n": 808,
+     "mediana": 50.53708520202477,
+     "q1": 30.22490335026048,
+     "q3": 65.03540885105672
+    },
+    "atraso15_cartao_de_credito_pf": {
+     "n": 43,
+     "mediana": 4.643148127586084,
+     "q1": 2.3497131623176966,
+     "q3": 8.313572889020477
+    },
+    "atraso15_consignado_pf": {
+     "n": 587,
+     "mediana": 0.5277577590162941,
+     "q1": 0.16130797212313916,
+     "q3": 1.5147724444217279
+    },
+    "atraso15_credito_pessoal_pf": {
+     "n": 643,
+     "mediana": 3.3756777450715703,
+     "q1": 1.7327894444876102,
+     "q3": 7.4866616939445265
+    },
+    "atraso15_veiculos_pf": {
+     "n": 424,
+     "mediana": 1.0276393339567416,
+     "q1": 0.48697677297916975,
+     "q3": 2.42401387652326
+    },
+    "atraso15_imobiliario_pf": {
+     "n": 45,
+     "mediana": 0.21238012505273218,
+     "q1": 0.027659233371251132,
+     "q3": 0.4691238853219027
+    },
+    "atraso15_rural_pf": {
+     "n": 292,
+     "mediana": 0.9552655815896001,
+     "q1": 0.3049307233005974,
+     "q3": 1.93953841532971
+    },
+    "atraso15_capital_de_giro_pj": {
+     "n": 484,
+     "mediana": 1.9952202208851535,
+     "q1": 1.0514961067526873,
+     "q3": 3.5837906531925223
+    },
+    "atraso15_conta_garantida_pj": {
+     "n": 417,
+     "mediana": 12.178577625694903,
+     "q1": 5.017061927722276,
+     "q3": 21.923921435269424
+    },
+    "atraso15_recebiveis_pj": {
+     "n": 414,
+     "mediana": 4.957577043573033,
+     "q1": 1.969377082533201,
+     "q3": 9.643126428820047
+    },
+    "atraso15_investimento_pj": {
+     "n": 413,
+     "mediana": 1.0873886897765799,
+     "q1": 0.41886854114471994,
+     "q3": 2.24893224207619
+    },
+    "atraso15_infraestrutura_pj": {
+     "n": 86,
+     "mediana": 0.9031295616665633,
+     "q1": 0.488566276359687,
+     "q3": 1.7768958442650928
+    },
+    "atraso15_rural_pj": {
+     "n": 183,
+     "mediana": 0.0,
+     "q1": 0.0,
+     "q3": 0.0
+    }
+   }
+  }
+ },
+ "grupos_nota": "Grupos comparáveis por segmentação prudencial do BC (Res. 4.553): S1 grandes bancos (≥10% do PIB ou ativos no exterior), S2 de 1% a 10% do PIB, S3 de 0,1% a 1%, S4 abaixo de 0,1%, S5 regime simplificado. Estatísticas calculadas SOMENTE com instituições que reportam a métrica (ausência nunca vira zero).",
+ "pendentes": [
+  {
+   "grupo": "Rede e pessoas",
+   "metricas": [
+    "funcionários",
+    "agências",
+    "postos de atendimento",
+    "correspondentes",
+    "municípios atendidos"
+   ],
+   "fonte_prevista": "BCB: relação de agências/postos (dados abertos) e Estban; funcionários via demonstrações/relatórios das IFs",
+   "motivo": "coletores ainda não implementados no pipeline; sem esses denominadores, produtividade por funcionário/agência não é calculada (ausência ≠ zero)"
+  },
+  {
+   "grupo": "Custos e eficiência",
+   "metricas": [
+    "despesas de pessoal",
+    "outras despesas administrativas",
+    "receitas de serviços",
+    "índice de eficiência"
+   ],
+   "fonte_prevista": "IF.data — relatório Demonstração de Resultado (Olinda), e balancetes COSIF",
+   "motivo": "o pipeline coleta hoje Resumo/Capital/Carteiras do IF.data; o relatório de DRE detalhada é a próxima coleta prevista"
+  },
+  {
+   "grupo": "Tecnologia",
+   "metricas": [
+    "despesas de processamento de dados (TI restrita)",
+    "TI ampliada (processamento + comunicações + amortização de sistemas)",
+    "investimento tecnológico"
+   ],
+   "fonte_prevista": "COSIF (balancetes) e notas explicativas das demonstrações (Central de DFs do SFN)",
+   "motivo": "exige extração contábil por rubrica; TI ampliada será sempre apresentada como conceito distinto do restrito, nunca como total exato"
+  },
+  {
+   "grupo": "Complexidade e contingências",
+   "metricas": [
+    "provisões cíveis/trabalhistas/tributárias",
+    "perdas possíveis não provisionadas",
+    "depósitos judiciais",
+    "benefícios pós-emprego"
+   ],
+   "fonte_prevista": "notas explicativas (Central de DFs 9010/9030/9060) e Formulário de Referência (CVM) para as abertas",
+   "motivo": "dados em documentos não estruturados; extração com registro de página/nota planejada"
+  }
+ ],
  "consolidacao_nota": "Códigos iniciados em 'C' são conglomerados prudenciais (IF.data tipo 2); códigos numéricos são instituições individuais (CNPJ). O comparador bloqueia a mistura dos dois níveis.",
  "metric_catalog": [
   {
@@ -33,6 +1066,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "observado contábil",
+   "economic_direction": "neutro",
+   "direction_note": "escala, não qualidade",
    "comparability_notes": "Ativo total do conglomerado prudencial no fim do trimestre.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -60,6 +1095,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "observado contábil",
+   "economic_direction": "neutro",
+   "direction_note": "escala, não qualidade",
    "comparability_notes": "Patrimônio líquido contábil.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -88,6 +1125,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "observado regulatório",
+   "economic_direction": "neutro",
+   "direction_note": "escala/apetite de crédito",
    "comparability_notes": "Carteira de crédito classificada total.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -116,6 +1155,8 @@
    "last_reference": "202603",
    "coverage_count": 1002,
    "quality_status": "observado regulatório",
+   "economic_direction": "neutro",
+   "direction_note": "mix de negócio",
    "comparability_notes": "Carteira ativa de pessoas físicas.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -144,6 +1185,8 @@
    "last_reference": "202603",
    "coverage_count": 842,
    "quality_status": "observado regulatório",
+   "economic_direction": "neutro",
+   "direction_note": "mix de negócio",
    "comparability_notes": "Carteira ativa de pessoas jurídicas.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -171,6 +1214,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "observado contábil",
+   "economic_direction": "neutro",
+   "direction_note": "escala de funding",
    "comparability_notes": "Captações totais (funding).",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -196,6 +1241,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "observado contábil",
+   "economic_direction": "ambiguo",
+   "direction_note": "maior lucro pode refletir mais risco assumido; acumulado no ano IF.data",
    "comparability_notes": "Lucro acumulado no ano-calendário até o trimestre (IF.data). Não anualizado; T1 reinicia a base.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -223,6 +1270,8 @@
    "last_reference": "202603",
    "coverage_count": 1330,
    "quality_status": "observado regulatório",
+   "economic_direction": "ambiguo",
+   "direction_note": "mais folga de capital protege, mas capital ocioso reduz retorno; mínimos variam por segmento",
    "comparability_notes": "PR ÷ RWA. Requerimento mínimo varia por segmento.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -250,6 +1299,8 @@
    "last_reference": "202603",
    "coverage_count": 446,
    "quality_status": "observado regulatório",
+   "economic_direction": "ambiguo",
+   "direction_note": "idem Basileia",
    "comparability_notes": "Capital principal ÷ RWA.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -277,6 +1328,8 @@
    "last_reference": "202603",
    "coverage_count": 446,
    "quality_status": "observado regulatório",
+   "economic_direction": "ambiguo",
+   "direction_note": "idem Basileia",
    "comparability_notes": "Capital nível I ÷ RWA.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -304,6 +1357,8 @@
    "last_reference": "202603",
    "coverage_count": 1330,
    "quality_status": "observado regulatório",
+   "economic_direction": "neutro",
+   "direction_note": "escala prudencial",
    "comparability_notes": "PR total para fins prudenciais.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -331,6 +1386,8 @@
    "last_reference": "202603",
    "coverage_count": 1329,
    "quality_status": "observado regulatório",
+   "economic_direction": "neutro",
+   "direction_note": "escala de risco ponderado",
    "comparability_notes": "Ativos ponderados pelo risco.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -358,6 +1415,8 @@
    "last_reference": "202603",
    "coverage_count": 276,
    "quality_status": "observado regulatório",
+   "economic_direction": "ambiguo",
+   "direction_note": "mais alta = menos alavancada; ótimo depende do modelo de negócio",
    "comparability_notes": "Nível I ÷ exposição total (quando reportada).",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -385,6 +1444,8 @@
    "last_reference": "202603",
    "coverage_count": 1236,
    "quality_status": "observado contábil",
+   "economic_direction": "neutro",
+   "direction_note": "estoque de provisão acompanha o tamanho e o risco da carteira",
    "comparability_notes": "Provisão/perda esperada associada a operações de crédito (valor absoluto).",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -411,6 +1472,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "calculado",
+   "economic_direction": "ambiguo",
+   "direction_note": "retorno maior costuma vir com mais risco; não anualizado",
    "comparability_notes": "Lucro acumulado do ano IF.data sobre PL do trimestre. NÃO anualizado — comparável apenas entre trimestres iguais.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -438,6 +1501,8 @@
    "last_reference": "202603",
    "coverage_count": 969,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "carteira >90d menor indica melhor qualidade corrente",
    "comparability_notes": "Carteira com atraso >90d sobre carteira total de instrumentos (Res. 4.966, estrutura vigente desde 2025-T1). Inadimplência TOTAL da instituição — não específica de produto.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -465,6 +1530,8 @@
    "last_reference": "202603",
    "coverage_count": 984,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "conceito amplo de problema (Res. 4.966)",
    "comparability_notes": "Conceito Res. 4.966 (inclui reestruturados/estágio 3) sobre carteira total.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -491,6 +1558,8 @@
    "last_reference": "202603",
    "coverage_count": 930,
    "quality_status": "calculado",
+   "economic_direction": "ambiguo",
+   "direction_note": "mais cobertura = mais colchão, mas também mais perda esperada reconhecida",
    "comparability_notes": "Provisão total de crédito sobre carteira >90d. Aproximação analítica — a provisão cobre também operações em dia; não é razão regulatória.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -518,6 +1587,8 @@
    "last_reference": "202603",
    "coverage_count": 1422,
    "quality_status": "calculado",
+   "economic_direction": "ambiguo",
+   "direction_note": "especialização em crédito: nem maior nem menor é melhor",
    "comparability_notes": "Peso do crédito no balanço — proxy de especialização em crédito.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -545,6 +1616,8 @@
    "last_reference": "202603",
    "coverage_count": 223,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -572,6 +1645,8 @@
    "last_reference": "202603",
    "coverage_count": 776,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -599,6 +1674,8 @@
    "last_reference": "202603",
    "coverage_count": 877,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -626,6 +1703,8 @@
    "last_reference": "202603",
    "coverage_count": 600,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -653,6 +1732,8 @@
    "last_reference": "202603",
    "coverage_count": 123,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -680,6 +1761,8 @@
    "last_reference": "202603",
    "coverage_count": 427,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -707,6 +1790,8 @@
    "last_reference": "202603",
    "coverage_count": 755,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -734,6 +1819,8 @@
    "last_reference": "202603",
    "coverage_count": 583,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -761,6 +1848,8 @@
    "last_reference": "202603",
    "coverage_count": 613,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -788,6 +1877,8 @@
    "last_reference": "202603",
    "coverage_count": 624,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -815,6 +1906,8 @@
    "last_reference": "202603",
    "coverage_count": 83,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -842,6 +1935,8 @@
    "last_reference": "202603",
    "coverage_count": 202,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false
@@ -869,6 +1964,8 @@
    "last_reference": "202603",
    "coverage_count": 302,
    "quality_status": "calculado",
+   "economic_direction": "menor_melhor",
+   "direction_note": "atraso da modalidade",
    "comparability_notes": "Carteira da modalidade vencida há ≥15 dias ÷ carteira total da modalidade (IF.data rel. 123/128). Conceito de ATRASO específico do produto — não é a inadimplência >90d (Res. 4.966). Zero é zero real quando a modalidade é reportada; instituição sem o produto não tem valor.",
    "methodology_version": "v1.0",
    "is_experimental": false

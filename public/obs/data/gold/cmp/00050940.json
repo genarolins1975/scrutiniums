@@ -2,6 +2,8 @@
  "cod": "00050940",
  "nome": "00050940",
  "sr": null,
+ "tcb": null,
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -20,5 +22,5 @@
    "202603": 616220338.11
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

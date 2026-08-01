@@ -2,6 +2,8 @@
  "cod": "18282093",
  "nome": "OXY COMPANHIA HIPOTECÁRIA",
  "sr": "S4",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -96,5 +98,5 @@
    "202506": 0.0508898103846889
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

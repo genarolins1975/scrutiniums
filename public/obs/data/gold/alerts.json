@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T00:22:10+00:00",
+ "gerado_em": "2026-08-01T01:09:52+00:00",
  "alertas": [
   {
    "id": "comprometimento_high",
@@ -11,7 +11,7 @@
    "limiar": 28.0,
    "fonte": "BCB/SGS",
    "ref": "2026-04-01",
-   "disparos_anteriores": 39,
+   "disparos_anteriores": 40,
    "recorrente": true
   },
   {
@@ -23,7 +23,7 @@
    "valor": 122,
    "limiar": 100,
    "fonte": "BCB/SGS",
-   "disparos_anteriores": 39,
+   "disparos_anteriores": 40,
    "recorrente": true
   },
   {
@@ -35,7 +35,7 @@
    "valor": 122,
    "limiar": 100,
    "fonte": "BCB/SGS",
-   "disparos_anteriores": 39,
+   "disparos_anteriores": 40,
    "recorrente": true
   },
   {
@@ -47,11 +47,39 @@
    "valor": 122,
    "limiar": 100,
    "fonte": "BCB/SGS",
-   "disparos_anteriores": 1,
+   "disparos_anteriores": 2,
    "recorrente": true
   }
  ],
  "historico": [
+  {
+   "run_at": "2026-08-01T01:09:52+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.19
+  },
+  {
+   "run_at": "2026-08-01T01:09:52+00:00",
+   "alert_id": "stale_data:comprometimento",
+   "nivel": "informativo",
+   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 122 dias",
+   "valor": 122.0
+  },
+  {
+   "run_at": "2026-08-01T01:09:52+00:00",
+   "alert_id": "stale_data:endividamento",
+   "nivel": "informativo",
+   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 122 dias",
+   "valor": 122.0
+  },
+  {
+   "run_at": "2026-08-01T01:09:52+00:00",
+   "alert_id": "stale_data:ivgr",
+   "nivel": "informativo",
+   "titulo": "Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 122 dias",
+   "valor": 122.0
+  },
   {
    "run_at": "2026-08-01T00:22:10+00:00",
    "alert_id": "comprometimento_high",
@@ -583,34 +611,6 @@
    "nivel": "informativo",
    "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
    "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T10:02:50+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T02:56:25+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T02:56:25+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 117 dias",
-   "valor": 117.0
-  },
-  {
-   "run_at": "2026-07-28T02:56:25+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 117 dias",
-   "valor": 117.0
   }
  ],
  "regras_configuradas": [

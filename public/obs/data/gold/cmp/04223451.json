@@ -2,6 +2,8 @@
  "cod": "04223451",
  "nome": "CREDILON SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR DA REGIÃO DE LONDRINA LTDA.",
  "sr": "S5",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -103,5 +105,5 @@
    "202509": 74.70876655079337
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

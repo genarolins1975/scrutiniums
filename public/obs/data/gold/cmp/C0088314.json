@@ -2,6 +2,8 @@
  "cod": "C0088314",
  "nome": "EURO17 SCD - PRUDENCIAL",
  "sr": "S5",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "conglomerado prudencial",
  "anomes_list": [
   "202503",
@@ -31,5 +33,5 @@
    "202512": 254139.45
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

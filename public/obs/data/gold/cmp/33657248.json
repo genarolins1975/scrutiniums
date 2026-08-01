@@ -2,6 +2,8 @@
  "cod": "33657248",
  "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONOMICO E SOCIAL",
  "sr": "S2",
+ "tcb": "B4",
+ "porte_quartil": "P4",
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -160,5 +162,5 @@
    "202603": 0.0
   }
  },
- "gerado_em": "2026-08-01T00:22:23+00:00"
+ "gerado_em": "2026-08-01T01:10:05+00:00"
 }

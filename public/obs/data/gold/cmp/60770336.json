@@ -2,6 +2,8 @@
  "cod": "60770336",
  "nome": "BANCO ALFA DE INVESTIMENTO S.A.",
  "sr": "S2",
+ "tcb": "B2",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -20,5 +22,5 @@
    "202603": 103576510.35
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

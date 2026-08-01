@@ -2,6 +2,8 @@
  "cod": "12063256",
  "nome": "MONETAR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
  "sr": "S4",
+ "tcb": "N2",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -28,5 +30,5 @@
    "202603": 47548035.67
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

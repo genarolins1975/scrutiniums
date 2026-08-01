@@ -2,6 +2,8 @@
  "cod": "11271860",
  "nome": "LEBES FINANCEIRA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
  "sr": "S5",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -124,5 +126,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

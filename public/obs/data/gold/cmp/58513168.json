@@ -2,6 +2,8 @@
  "cod": "58513168",
  "nome": "BULLLA SOCIEDADE DE CRÉDITO DIRETO S.A.",
  "sr": "S4",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -17,5 +19,5 @@
    "202603": 35077.84
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

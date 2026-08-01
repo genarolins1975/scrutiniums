@@ -2,6 +2,8 @@
  "cod": "42064545",
  "nome": "QUANTO NETWORK INSTITUICAO DE PAGAMENTO LTDA.",
  "sr": null,
+ "tcb": "N4",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -55,5 +57,5 @@
    "202512": 0.0
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

@@ -2,6 +2,8 @@
  "cod": "56913800",
  "nome": "ASTRA INSTITUIÇÃO DE PAGAMENTO LTDA.",
  "sr": null,
+ "tcb": "N4",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -22,5 +24,5 @@
    "202509": 719862.81
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

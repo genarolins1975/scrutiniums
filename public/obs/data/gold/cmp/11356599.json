@@ -2,6 +2,8 @@
  "cod": "11356599",
  "nome": "COOPERATIVA DE CRÉDITO DOS FUNCIONÁRIOS DA PERPART, DO IPA E DA ADAGRO - COOPEMATER",
  "sr": "S5",
+ "tcb": "B3S",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -112,5 +114,5 @@
    "202512": 53.99480021441608
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

@@ -2,6 +2,8 @@
  "cod": "C0088149",
  "nome": "PB SCD - PRUDENCIAL",
  "sr": "S5",
+ "tcb": "N1",
+ "porte_quartil": null,
  "nivel": "conglomerado prudencial",
  "anomes_list": [
   "202503",
@@ -28,5 +30,5 @@
    "202509": 274384.06
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

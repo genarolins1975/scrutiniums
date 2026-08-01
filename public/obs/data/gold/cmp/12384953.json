@@ -2,6 +2,8 @@
  "cod": "12384953",
  "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DE JARAGUÁ DO SUL E REGIÃO - SICOOB CEJASCRED",
  "sr": "S5",
+ "tcb": "B3S",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -85,5 +87,5 @@
    "202503": 0.14832852957962386
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

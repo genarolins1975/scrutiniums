@@ -17,7 +17,9 @@ const state = {
   favorites: loadLS("obc_favs", []),
 };
 state.cmp = loadLS("obc_cmp", null) || { insts: [], mets: CMP_DEFAULT_METS.slice(), norm: "abs",
-  ctab: "resumo", metric: "carteira_credito", x: "npl_pct", y: "roe_periodo" };
+  ctab: "visao", metric: "carteira_credito", x: "npl_pct", y: "roe_periodo", ref: null, grupo: "auto" };
+if (!state.cmp.grupo) state.cmp.grupo = "auto";
+if (!state.cmp.ctab) state.cmp.ctab = "visao";
 if (!state.cmp.mets || !state.cmp.mets.length) state.cmp.mets = CMP_DEFAULT_METS.slice();
 state.cmpCache = {};
 state.mkt = { tab: "acoes", modo: "total", emp: "todas" };
@@ -93,6 +95,8 @@ function buildQuery(view) {
     if (state.cmp.x) qs.set("cx", state.cmp.x);
     if (state.cmp.y) qs.set("cy", state.cmp.y);
     if (state.cmp.size) qs.set("csize", state.cmp.size);
+    if (state.cmp.ref) qs.set("cref", state.cmp.ref);
+    if (state.cmp.grupo && state.cmp.grupo !== "auto") qs.set("cgrupo", state.cmp.grupo);
   }
   const q = qs.toString();
   return q ? "?" + q : "";
@@ -129,6 +133,8 @@ function parseHash() {
   if (qs.get("cx")) state.cmp.x = qs.get("cx");
   if (qs.get("cy")) state.cmp.y = qs.get("cy");
   if (qs.get("csize")) state.cmp.size = qs.get("csize");
+  if (qs.get("cref")) state.cmp.ref = qs.get("cref");
+  if (qs.get("cgrupo")) state.cmp.grupo = qs.get("cgrupo");
   if (qs.get("ltab")) state.lead.tab = qs.get("ltab");
   if (qs.get("tfam")) state.tr.fam = qs.get("tfam");
   if (qs.get("pmet")) state.pan.met = qs.get("pmet");
@@ -165,7 +171,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.33.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.34.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo: o necessário para a Visão geral e navegação; o resto carrega sob demanda por página
 const CORE_FILES = ["meta", "pulse", "ibcc", "sectors", "openfinance", "scenario", "alerts", "quality",
@@ -4906,6 +4912,54 @@ window.exportCmp = fmtType => {
   dlFile(`comparacao_${latest}.csv`, head.concat(rows).join("\n"));
 };
 
+
+/* ---------- comparador: grupo comparável e sentido econômico ---------- */
+function cmpGrupoDef(C, cmp, datas, latest) {
+  // devolve { key, label, n, stats(mid) -> {mediana,q1,q3,n} } conforme cmp.grupo
+  if (cmp.grupo === "auto" || !cmp.grupo) {
+    // padrão comparável: o segmento prudencial da instituição de referência
+    const refCod2 = cmp.insts.includes(cmp.ref) ? cmp.ref : cmp.insts[0];
+    const sr = refCod2 && datas[refCod2] ? datas[refCod2].sr : null;
+    if (sr && C.grupos && C.grupos["sr:" + sr]) {
+      const g = C.grupos["sr:" + sr];
+      return { key: "auto", label: `pares do segmento ${sr} (automático)`, n: g.n_insts, stats: mid => g.stats[mid] || null };
+    }
+    return { key: "auto", label: "universo IF.data (sem segmento identificado)", n: (C.universo || {}).n_total,
+      stats: mid => ((C.stats[mid] || {})[latest] || null) };
+  }
+  if (cmp.grupo === "sel") {
+    const stats = mid => {
+      const arr = cmp.insts.map(c => (datas[c].metrics[mid] || {})[latest]).filter(v => v != null).sort((a, b) => a - b);
+      if (arr.length < 2) return null;
+      const q = pp => arr[Math.min(arr.length - 1, Math.max(0, Math.round(pp * (arr.length - 1))))];
+      return { mediana: q(0.5), q1: q(0.25), q3: q(0.75), n: arr.length };
+    };
+    return { key: "sel", label: "instituições selecionadas", n: cmp.insts.length, stats };
+  }
+  if (cmp.grupo && cmp.grupo.startsWith("sr:") && C.grupos && C.grupos[cmp.grupo]) {
+    const g = C.grupos[cmp.grupo];
+    return { key: cmp.grupo, label: g.label, n: g.n_insts, stats: mid => g.stats[mid] || null };
+  }
+  return { key: "universo", label: "universo IF.data (mesmo nível não garantido)", n: (C.universo || {}).n_total,
+    stats: mid => ((C.stats[mid] || {})[latest] || null) };
+}
+function cmpSentidoChip(m) {
+  if (!m.economic_direction || m.economic_direction === "neutro") return "";
+  const rot = { maior_melhor: "maior ≈ melhor", menor_melhor: "menor ≈ melhor", ambiguo: "sentido ambíguo" }[m.economic_direction] || "";
+  return `<span class="src" title="${attr(m.direction_note || "")}" style="white-space:nowrap">${rot} ⓘ</span>`;
+}
+function cmpPercentil(C, mid, latest, v) {
+  // percentil aproximado no universo (declarado): posição entre p10/q1/mediana/q3/p90
+  const st = (C.stats[mid] || {})[latest];
+  if (!st || v == null) return null;
+  if (v <= st.p10) return "≤p10";
+  if (v <= st.q1) return "p10–25";
+  if (v <= st.mediana) return "p25–50";
+  if (v <= st.q3) return "p50–75";
+  if (v <= st.p90) return "p75–90";
+  return ">p90";
+}
+
 function renderCompare() {
   const el = document.getElementById("view-compare");
   const C = state.data.compare;
@@ -4913,6 +4967,7 @@ function renderCompare() {
   const cmp = state.cmp;
   const cat = cmpCatalogById();
   const latest = C.anomes_list[C.anomes_list.length - 1];
+  const refCod = cmp.insts.includes(cmp.ref) ? cmp.ref : cmp.insts[0];
   const prevAno = C.anomes_list.length >= 5 ? C.anomes_list[C.anomes_list.length - 5] : null;
   const nivel = cmp.insts.length ? (cmp.insts[0].startsWith("C") ? "conglomerado prudencial" : "instituição individual") : null;
 
@@ -4957,15 +5012,23 @@ function renderCompare() {
 
   const NORMS = [["abs", "valor absoluto"], ["d4t", "Δ 4 trimestres"], ["vs_mediana", "diferença vs. mediana"],
     ["zscore", "z-score (n≥30)"], ["pct_ativo", "% dos ativos"], ["pct_carteira", "% da carteira"], ["rank", "ranking"]];
-  const tabs = [["resumo", "Resumo"], ["serie", "Série histórica"], ["dispersao", "Dispersão"], ["tabela", "Tabela completa"], ["posicoes", "Posições"], ["catalogo", `Catálogo de métricas (${C.metric_catalog.length})`], ["watchlist", `Watchlist (${watchRules().length})`]];
+  const tabs = [["visao", "Visão geral"], ["resumo", "Métricas-chave"], ["serie", "Série histórica"], ["dispersao", "Dispersão"], ["tabela", "Dados completos"], ["custos", "Custos & produtividade"], ["posicoes", "Posições"], ["catalogo", `Catálogo (${C.metric_catalog.length})`], ["watchlist", `Watchlist (${watchRules().length})`]];
+  const gdef = cmpGrupoDef(C, cmp, datas, latest);
+  const grupoOpts = [["auto", "automático (segmento da referência)"], ["universo", "universo IF.data"], ["sel", "as selecionadas"]]
+    .concat(Object.keys(C.grupos || {}).map(k => [k, (C.grupos[k].label || k) + ` (${C.grupos[k].n_insts})`]));
   const ctx = `
   <div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:8px 0;border-bottom:1px solid var(--border)">
     <span class="seg">${tabs.map(([k, l]) => `<button class="${cmp.ctab === k ? "active" : ""}" onclick="cmpSet('ctab','${k}')">${l}</button>`).join("")}</span>
     <label>normalização <select onchange="cmpSet('norm', this.value)" aria-label="normalização">${NORMS.map(([k, l]) => `<option value="${k}" ${cmp.norm === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
-    <button class="btn ghost small" onclick="exportCmp('csv')">CSV</button>
-    <button class="btn ghost small" onclick="exportCmp('xlsx')">XLSX</button>
-    <button class="btn ghost small" onclick="exportCmp('json')">JSON</button>
-    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — a comparação é reproduzível por link'))">copiar URL</button>
+    <label>grupo de referência <select onchange="cmpSet('grupo', this.value)" aria-label="grupo comparável" title="${attr(C.grupos_nota || "")}">${grupoOpts.map(([k, l]) => `<option value="${k}" ${gdef.key === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
+    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — a comparação é reproduzível por link'))">compartilhar</button>
+    <details style="position:relative"><summary class="btn ghost small" style="list-style:none;cursor:pointer">exportar ▾</summary>
+      <div style="position:absolute;right:0;top:110%;background:var(--surface);border:1px solid var(--border);padding:8px;display:flex;flex-direction:column;gap:6px;z-index:9">
+        <button class="btn ghost small" onclick="exportCmp('csv')">CSV (valores + fontes + fórmulas)</button>
+        <button class="btn ghost small" onclick="exportCmp('xlsx')">XLSX</button>
+        <button class="btn ghost small" onclick="exportCmp('json')">JSON completo</button>
+        <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF'">PDF (imprimir)</button>
+      </div></details>
   </div>`;
 
   const metRow = (mid, comRank) => {
@@ -4977,16 +5040,113 @@ function renderCompare() {
       const sorted = vals.filter(v => v != null).sort((a, b) => b - a);
       ranks = vals.map(v => v == null ? null : sorted.indexOf(v) + 1);
     }
-    const st = (C.stats[mid] || {})[latest];
-    const tip = encodeURIComponent(`<div class="tt-date">${m.name}</div><div class="tt-row"><span class="tt-lbl">fórmula</span><span class="tt-val">${m.formula}</span></div><div class="tt-row"><span class="tt-lbl">campo</span><span class="tt-val">${m.original_field}</span></div><div class="tt-row"><span class="tt-lbl">cobertura</span><span class="tt-val">${m.coverage_count} IFs</span></div><div class="tt-meta">${m.quality_status} · ${m.source.slice(0, 60)} · ${m.comparability_notes.slice(0, 140)}</div>`);
-    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:8.5px">${m.quality_status.replace("observado ", "obs. ")}</span><div class="src">${m.unit} · trimestral</div></td>
-    ${cells.map((x, i) => `<td style="text-align:right" ${x.title ? `title="${x.title}"` : ""}>${cmp.norm === "rank" && ranks ? (ranks[i] ? `<b>#${ranks[i]}</b> <span class="src">${x.txt}</span>` : "–") : x.txt}</td>`).join("")}
-    <td style="text-align:right" class="src" title="mediana do universo IF.data (${st ? st.n : 0} instituições)">${st ? cmpFmtVal(m, st.mediana) : "–"}</td></tr>`;
+    const gst = gdef.stats(mid);
+    const tip = encodeURIComponent(`<div class="tt-date">${m.name}</div><div class="tt-row"><span class="tt-lbl">fórmula</span><span class="tt-val">${m.formula}</span></div><div class="tt-row"><span class="tt-lbl">campo</span><span class="tt-val">${m.original_field}</span></div><div class="tt-row"><span class="tt-lbl">cobertura</span><span class="tt-val">${m.coverage_count} IFs</span></div><div class="tt-row"><span class="tt-lbl">sentido</span><span class="tt-val">${m.economic_direction || "neutro"}${m.direction_note ? " — " + m.direction_note : ""}</span></div><div class="tt-meta">${m.quality_status} · ${m.source.slice(0, 60)} · ${m.comparability_notes.slice(0, 140)}</div>`);
+    // barra sutil na célula: proporção do maior valor absoluto entre as selecionadas (apenas norm=abs)
+    const absVals = cells.map(x => x.v).filter(v => v != null && isFinite(v));
+    const maxAbs2 = absVals.length ? Math.max(...absVals.map(Math.abs)) : null;
+    const refIdx = cmp.insts.indexOf(refCod);
+    return `<tr><td data-tip="${tip}" style="position:sticky;left:0;background:var(--surface);z-index:1"><b>${m.name}</b> <span class="seal ${m.quality_status.includes("calculado") ? "calc" : "obs"}" style="font-size:8.5px">${m.quality_status.replace("observado ", "obs. ")}</span> ${cmpSentidoChip(m)}<div class="src">${m.unit} · trimestral</div></td>
+    ${cells.map((x, i) => {
+      const pctl = cmp.norm === "abs" ? cmpPercentil(C, mid, latest, x.v) : null;
+      const vsRef = (cmp.norm === "abs" && i !== refIdx && x.v != null && cells[refIdx] && cells[refIdx].v != null && cells[refIdx].v !== 0)
+        ? `<div class="src" title="diferença vs. ${attr(datas[refCod].nome)} (referência)">${m.unit === "%" ? fmt.pp(x.v - cells[refIdx].v) + " p.p." : fmt.pp((x.v / cells[refIdx].v - 1) * 100) + "%"} vs ref</div>` : "";
+      const bar = (cmp.norm === "abs" && maxAbs2 && x.v != null) ? `<div style="height:3px;background:${ccol(CMP_PALETTE[i % CMP_PALETTE.length])};opacity:.5;width:${Math.max(Math.abs(x.v) / maxAbs2 * 100, 2).toFixed(0)}%;margin-left:auto"></div>` : "";
+      return `<td style="text-align:right" ${x.title ? `title="${x.title}"` : (pctl ? `title="percentil no universo: ${pctl}"` : "")}>${x.v == null && !x.txt.replace("–", "") ? "<span class='src'>não disponível</span>" : (cmp.norm === "rank" && ranks ? (ranks[i] ? `<b>#${ranks[i]}</b> <span class="src">${x.txt}</span>` : "<span class='src'>não disponível</span>") : x.txt)}${vsRef}${bar}</td>`;
+    }).join("")}
+    <td style="text-align:right" class="src" title="mediana do grupo: ${attr(gdef.label)}${gst ? ` (${gst.n} com a métrica)` : ""}${gst && gst.q1 != null ? ` · quartis ${cmpFmtVal(m, gst.q1)} a ${cmpFmtVal(m, gst.q3)}` : ""}">${gst ? cmpFmtVal(m, gst.mediana) : "–"}</td></tr>`;
   };
-  const header = `<tr><th style="position:sticky;left:0;background:var(--surface);z-index:3">Métrica</th>${cmp.insts.map(c => `<th style="text-align:right">${datas[c].nome.slice(0, 18)}</th>`).join("")}<th style="text-align:right">mediana universo</th></tr>`;
+  const header = `<tr><th style="position:sticky;left:0;background:var(--surface);z-index:3">Métrica</th>${cmp.insts.map((c, i) => `<th style="text-align:right;border-bottom:2px solid ${ccol(CMP_PALETTE[i % CMP_PALETTE.length])}">${datas[c].nome.slice(0, 18)}${c === refCod ? ' <span class="src" title="instituição de referência">◈</span>' : ""}</th>`).join("")}<th style="text-align:right" title="${attr((C.grupos_nota || "") + " Mediana calculada só com quem reporta a métrica.")}">mediana · ${gdef.label.slice(0, 22)}</th></tr>`;
 
   let body = "";
-  if (cmp.ctab === "resumo") {
+  if (cmp.ctab === "visao") {
+    const val = (c, mid) => (datas[c].metrics[mid] || {})[latest];
+    const d4t = (c, mid) => {
+      const sv = datas[c].metrics[mid] || {};
+      const prev = C.anomes_list.length >= 5 ? sv[C.anomes_list[C.anomes_list.length - 5]] : null;
+      const cur = sv[latest];
+      return cur != null && prev != null && prev !== 0 ? (cur / prev - 1) * 100 : null;
+    };
+    const spark = (c, mid) => {
+      const sv = datas[c].metrics[mid] || {};
+      const arr = C.anomes_list.map(a => sv[a]).filter(v => v != null);
+      return arr.length >= 3 ? sparkline(arr, 120, 24) : "";
+    };
+    const linhaKpi = (rot, valorHtml, selo) => valorHtml == null
+      ? `<div class="contrib"><span class="lbl">${rot}</span><span class="src">não disponível</span></div>`
+      : `<div class="contrib"><span class="lbl">${rot}</span><span class="num">${valorHtml}</span>${selo || ""}</div>`;
+    const cards = cmp.insts.map((c, i) => {
+      const d = datas[c];
+      const at = val(c, "ativo_total"), ct = val(c, "carteira_credito"), cap = val(c, "captacoes");
+      const ll = val(c, "lucro_liquido"), roe = val(c, "roe_periodo"), bas = val(c, "indice_basileia"), npl = val(c, "npl_pct");
+      return `<div class="card" style="border-top:3px solid ${ccol(CMP_PALETTE[i % CMP_PALETTE.length])}">
+        <h4 style="display:flex;justify-content:space-between;gap:8px"><span>${d.nome.slice(0, 30)}</span>
+          ${c === refCod ? '<span class="chip" title="as diferenças da página são medidas contra esta instituição">referência</span>' : `<a href="javascript:void(0)" class="src" onclick="cmpSet('ref','${c}')" title="usar como referência">usar como ref.</a>`}</h4>
+        <div class="src" style="margin-bottom:8px">${d.nivel}${d.sr ? " · segmento " + d.sr : ""}${d.porte_quartil ? ` · porte ${d.porte_quartil} <span title="quartil de ativos dentro do mesmo nível de consolidação (P4 = maior)">ⓘ</span>` : ""} · data-base ${fmtTri(latest)}</div>
+        ${linhaKpi("ativos totais", at != null ? fmt.money(at) : null)}
+        ${linhaKpi("carteira de crédito", ct != null ? fmt.money(ct) : null)}
+        ${linhaKpi("captações", cap != null ? fmt.money(cap) : null)}
+        ${linhaKpi("lucro (acum. ano)", ll != null ? fmt.money(ll) : null, ' <span class="seal calc" style="font-size:8px" title="acumulado no ano-calendário IF.data — NÃO anualizado; T1 reinicia a base">acum. ano</span>')}
+        ${linhaKpi("ROE do período", roe != null ? fmt.n(roe, 1) + "%" : null, ' <span class="seal calc" style="font-size:8px" title="lucro acumulado no ano ÷ PL do trimestre — não anualizado">não anualiz.</span>')}
+        ${linhaKpi("Basileia", bas != null ? fmt.n(bas, 1) + "%" : null)}
+        ${linhaKpi("inadimplência (>90d)", npl != null ? fmt.n(npl, 2) + "%" : null)}
+        <div style="margin-top:6px">${spark(c, "carteira_credito")} <span class="src">carteira · 5 trim.</span></div>
+      </div>`;
+    }).join("");
+
+    // ---- principais diferenças: geradas dos dados, respeitando o sentido econômico ----
+    const nomeCurto = c => datas[c].nome.split(" ").slice(0, 2).join(" ");
+    const extremos = mid => {
+      const arr = cmp.insts.map(c => ({ c, v: val(c, mid) })).filter(x => x.v != null);
+      if (arr.length < 2) return null;
+      arr.sort((a, b) => b.v - a.v);
+      return { max: arr[0], min: arr[arr.length - 1], n: arr.length };
+    };
+    const difs = [];
+    let e = extremos("ativo_total");
+    if (e) difs.push(`<b>Maior escala:</b> ${nomeCurto(e.max.c)} (${fmt.money(e.max.v)}${e.min.v ? `, ${fmt.n(e.max.v / e.min.v, 1)}× a menor` : ""}). Escala é tamanho, não qualidade.`);
+    e = extremos("cart_ativo_pct");
+    if (e) difs.push(`<b>Especialização em crédito:</b> ${nomeCurto(e.max.c)} tem a maior participação de crédito no ativo (${fmt.n(e.max.v, 0)}%) e ${nomeCurto(e.min.c)} a menor (${fmt.n(e.min.v, 0)}%). Sentido ambíguo: reflete modelo de negócio.`);
+    e = extremos("npl_pct");
+    if (e) difs.push(`<b>Qualidade corrente da carteira:</b> menor inadimplência em ${nomeCurto(e.min.c)} (${fmt.n(e.min.v, 2)}%); maior em ${nomeCurto(e.max.c)} (${fmt.n(e.max.v, 2)}%). Compare com o mix de produtos antes de concluir.`);
+    e = extremos("indice_basileia");
+    if (e) difs.push(`<b>Folga de capital:</b> ${nomeCurto(e.max.c)} opera com a Basileia mais alta (${fmt.n(e.max.v, 1)}%) e ${nomeCurto(e.min.c)} com a mais baixa (${fmt.n(e.min.v, 1)}%). Mais capital protege, mas capital ocioso reduz retorno.`);
+    const cresc = cmp.insts.map(c => ({ c, v: d4t(c, "carteira_credito") })).filter(x => x.v != null).sort((a, b) => b.v - a.v);
+    if (cresc.length >= 2) difs.push(`<b>Crescimento da carteira (4 trim., nominal):</b> ${nomeCurto(cresc[0].c)} ${fmt.pp(cresc[0].v)}% vs ${nomeCurto(cresc[cresc.length - 1].c)} ${fmt.pp(cresc[cresc.length - 1].v)}%. Crescimento acelerado dilui a inadimplência corrente.`);
+    e = extremos("cobertura_pct");
+    if (e) difs.push(`<b>Cobertura de provisões:</b> ${nomeCurto(e.max.c)} (${fmt.n(e.max.v, 0)}%) vs ${nomeCurto(e.min.c)} (${fmt.n(e.min.v, 0)}%). Ambíguo: mais colchão, mas também mais perda esperada reconhecida.`);
+
+    // ---- barras vs. referência (3 métricas de escala) ----
+    const barsMid = ["ativo_total", "carteira_credito", "captacoes"];
+    const barras = barsMid.map(mid => {
+      const arr = cmp.insts.map((c, i) => ({ c, i, v: val(c, mid) })).filter(x => x.v != null);
+      if (!arr.length) return "";
+      const mx = Math.max(...arr.map(x => x.v));
+      return `<div style="margin-bottom:12px"><div class="src" style="margin-bottom:3px"><b>${cat[mid].name}</b></div>
+        ${arr.map(x => `<div class="bets-bar"><span class="lbl" style="flex-basis:150px">${nomeCurto(x.c)}${x.c === refCod ? " ◈" : ""}</span><span class="track"><span class="fill" style="width:${Math.max(x.v / mx * 100, 1.5).toFixed(1)}%;background:${ccol(CMP_PALETTE[x.i % CMP_PALETTE.length])}"></span></span><span class="num">${fmt.money(x.v)}</span></div>`).join("")}</div>`;
+    }).join("");
+
+    body = `
+    <div class="ov-2col-eq" style="margin-top:6px">${cards}</div>
+    <div class="ov-2col" style="margin-top:18px">
+      <div class="card"><h4>Principais diferenças <span class="seal calc" style="font-size:8.5px">DADO CALCULADO</span></h4>
+        <ul style="font-size:13px;margin:6px 0 4px 16px;display:flex;flex-direction:column;gap:7px">${difs.map(d2 => `<li>${d2}</li>`).join("")}</ul>
+        <div class="src">Frases geradas apenas dos dados de ${fmtTri(latest)}, sem julgamento de mérito: "maior" não significa "melhor" — o sentido econômico de cada métrica está declarado nos tooltips.</div></div>
+      <div class="card"><h4>Escala comparada</h4>${barras}<div class="src">Barras proporcionais ao maior valor entre as selecionadas · ◈ = referência</div></div>
+    </div>
+    <div class="src" style="margin-top:10px">Aprofunde nas abas: Métricas-chave, Série histórica, Dispersão e Dados completos. Custos, tecnologia e produtividade têm aba própria com o estado das fontes.</div>`;
+  } else if (cmp.ctab === "custos") {
+    body = `
+    <div class="note"><b>Por que esta aba ainda não tem números:</b> os indicadores de custos, tecnologia e produtividade dependem de fontes que o pipeline ainda não coleta. Nada aqui será estimado ou simulado — cada bloco abaixo declara a fonte prevista e o motivo da ausência (ausência ≠ zero).</div>
+    <div class="grid g2" style="margin-top:12px">
+      ${(C.pendentes || []).map(pdt => `<div class="card"><h4>${pdt.grupo} <span class="seal aprox">NÃO COLETADO</span></h4>
+        <div class="chips" style="margin:6px 0">${pdt.metricas.map(mm => `<span class="chip">${mm}</span>`).join("")}</div>
+        <div class="src"><b>Fonte prevista:</b> ${pdt.fonte_prevista}</div>
+        <div class="src" style="margin-top:4px"><b>Estado:</b> ${pdt.motivo}</div></div>`).join("")}
+    </div>
+    <div class="card" style="margin-top:14px"><h4>O que já é possível hoje</h4>
+      <p class="src" style="max-width:900px">Com os dados coletados (IF.data Resumo, Capital e Carteiras), o comparador cobre escala, funding, capital, mix e qualidade de carteira. Quando a DRE detalhada do IF.data e os balancetes COSIF entrarem no pipeline, esta aba passa a calcular: despesas de pessoal e administrativas agrupadas, índice de eficiência, TI restrita vs TI ampliada (sempre separadas), e produtividade por funcionário e por agência — cada valor com selo reportado/contábil/derivado e nunca um "gasto total com TI" exato a partir de componentes parciais.</p></div>`;
+  } else if (cmp.ctab === "resumo") {
     body = `<div class="tblwrap"><table class="data">${header}<tbody>${cmp.mets.map(m => metRow(m)).join("")}</tbody></table></div>
     <div class="src">Até 15 métricas essenciais (edite no Catálogo). Normalização ativa: <b>${NORMS.find(n => n[0] === cmp.norm)[1]}</b>. Passe o mouse no nome da métrica para fórmula, campo original e cobertura.</div>`;
   } else if (cmp.ctab === "serie") {
@@ -5035,9 +5195,13 @@ function renderCompare() {
       ${chartFooter({ fonte: C.fonte, periodo: fmtTri(latest), atualizado: C.gerado_em.slice(0, 10), unidade: `${cat[mx].unit} × ${cat[my].unit}`, nota: `${cat[mx].comparability_notes} | ${cat[my].comparability_notes}` })}</div>`;
   } else if (cmp.ctab === "tabela") {
     const cats = [...new Set(C.metric_catalog.map(m => m.category))];
-    body = cats.map(cg => `<h3 style="text-transform:capitalize">${cg}</h3>
-      <div class="tblwrap"><table class="data">${header}<tbody>${C.metric_catalog.filter(m => m.category === cg).map(m => metRow(m.metric_id)).join("")}</tbody></table></div>`).join("");
-    body += `<div class="src">Todas as ${C.metric_catalog.length} métricas do catálogo, agrupadas por categoria, com a normalização ativa. Primeira coluna fixa; cabeçalho fixo ao rolar.</div>`;
+    body = `<div class="controls" style="margin-bottom:6px">
+      <input type="search" placeholder="buscar métrica… (filtra as linhas)" aria-label="buscar métrica"
+        oninput="const q=this.value.toLowerCase();document.querySelectorAll('[data-cmprow]').forEach(r=>r.style.display=r.dataset.cmprow.includes(q)?'':'none')" style="min-width:260px">
+      <span class="src">${C.metric_catalog.length} métricas · grupos recolhíveis · ◈ = referência · células com "vs ref" e percentil no tooltip</span>
+    </div>` + cats.map(cg => `<details open><summary style="cursor:pointer"><h3 style="display:inline;text-transform:capitalize">${cg}</h3> <span class="src">(${C.metric_catalog.filter(m => m.category === cg).length})</span></summary>
+      <div class="tblwrap"><table class="data">${header}<tbody>${C.metric_catalog.filter(m => m.category === cg).map(m => `<tr style="display:contents"></tr>`.slice(0,0) + metRow(m.metric_id).replace("<tr>", `<tr data-cmprow="${attr((m.name + " " + m.metric_id).toLowerCase())}">`)).join("")}</tbody></table></div></details>`).join("");
+    body += `<div class="src">Primeira coluna e cabeçalhos fixos ao rolar; "não disponível" nunca é zero; mediana da última coluna segue o grupo de referência selecionado (${gdef.label}).</div>`;
   } else if (cmp.ctab === "posicoes") {
     const mid = cat[cmp.metric] ? cmp.metric : "carteira_credito";
     const m = cat[mid];
@@ -5091,9 +5255,13 @@ function renderCompare() {
         </div>`).join("")).join("")}`;
   }
 
-  el.innerHTML = `${pageHead({ title: "Comparador de Instituições", fontes: "BCB IF.data (Olinda + interface)" })}
-  <p class="viewdesc">Nível de consolidação: <b>${nivel}</b> · data-base ${fmtTri(latest)} · ${cmp.insts.length} instituições · ${cmp.mets.length} métricas selecionadas ${badge("observado")} ${badge("calculado")}</p>
-  ${selHtml}${ctx}${body}`;
+  el.innerHTML = `
+  <div class="pagehead"><div class="ph-left">
+    <h2>Comparador de Instituições</h2>
+    <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>
+  </div></div>
+  <details ${cmp.insts.length < 2 ? "open" : ""} style="margin-bottom:10px"><summary class="src" style="cursor:pointer">alterar seleção de instituições (${cmp.insts.length})</summary>${selHtml}</details>
+  ${ctx}${body}`;
 }
 
 (async function init() {

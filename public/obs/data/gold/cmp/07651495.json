@@ -2,6 +2,8 @@
  "cod": "07651495",
  "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO PODER JUDICIÁRIO E SERVIDORES PÚBLICOS DO ESTADO DE SÃO PAULO - SPCRED",
  "sr": "S5",
+ "tcb": "B3S",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -78,5 +80,5 @@
    "202603": 51.33255594964496
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

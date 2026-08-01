@@ -2,6 +2,8 @@
  "cod": "04332281",
  "nome": "GOLDMAN SACHS DO BRASIL BANCO MULTIPLO S.A.",
  "sr": "S3",
+ "tcb": "B2",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -16,5 +18,5 @@
    "202503": 92314.06
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

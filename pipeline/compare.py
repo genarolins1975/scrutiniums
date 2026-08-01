@@ -85,6 +85,38 @@ DERIVED = {
                        ["abs", "d4t", "rank", "vs_mediana", "zscore"], "calculado"),
 }
 
+
+# ---- sentido econômico: "maior" NUNCA é automaticamente "melhor" ----
+# valores: neutro (escala/estrutura), maior_melhor, menor_melhor, ambiguo
+SENTIDO = {
+    "ativo_total": ("neutro", "escala, não qualidade"),
+    "patrimonio_liquido": ("neutro", "escala, não qualidade"),
+    "carteira_credito": ("neutro", "escala/apetite de crédito"),
+    "carteira_pf": ("neutro", "mix de negócio"),
+    "carteira_pj": ("neutro", "mix de negócio"),
+    "captacoes": ("neutro", "escala de funding"),
+    "lucro_liquido": ("ambiguo", "maior lucro pode refletir mais risco assumido; acumulado no ano IF.data"),
+    "roe_periodo": ("ambiguo", "retorno maior costuma vir com mais risco; não anualizado"),
+    "indice_basileia": ("ambiguo", "mais folga de capital protege, mas capital ocioso reduz retorno; mínimos variam por segmento"),
+    "indice_capital_principal": ("ambiguo", "idem Basileia"),
+    "indice_capital_nivel1": ("ambiguo", "idem Basileia"),
+    "patrimonio_referencia": ("neutro", "escala prudencial"),
+    "rwa": ("neutro", "escala de risco ponderado"),
+    "razao_alavancagem": ("ambiguo", "mais alta = menos alavancada; ótimo depende do modelo de negócio"),
+    "indice_imobilizacao": ("menor_melhor", "quanto menor, mais folga sobre o limite regulatório de 50%"),
+    "provisao_credito": ("neutro", "estoque de provisão acompanha o tamanho e o risco da carteira"),
+    "npl_pct": ("menor_melhor", "carteira >90d menor indica melhor qualidade corrente"),
+    "ativos_problematicos_pct": ("menor_melhor", "conceito amplo de problema (Res. 4.966)"),
+    "cobertura_pct": ("ambiguo", "mais cobertura = mais colchão, mas também mais perda esperada reconhecida"),
+    "cart_ativo_pct": ("ambiguo", "especialização em crédito: nem maior nem menor é melhor"),
+}
+def _sentido(mid):
+    if mid in SENTIDO:
+        return SENTIDO[mid]
+    if mid.startswith("atraso15_"):
+        return ("menor_melhor", "atraso da modalidade")
+    return ("neutro", "")
+
 FONTE = "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)"
 
 # ---- atraso ≥15d por produto: 13 métricas geradas da taxonomia de produtos ----
@@ -194,8 +226,8 @@ def build(con, cfg):
     vals = _load_values(con)
     anomes_list = sorted({a for v in vals.values() for a in v})
     latest = anomes_list[-1] if anomes_list else None
-    cur = con.execute("SELECT cod_inst, name, sr, cod_congl_prud FROM institutions")
-    names = {r[0]: {"nome": r[1], "sr": r[2], "congl": r[3]} for r in cur.fetchall()}
+    cur = con.execute("SELECT cod_inst, name, sr, cod_congl_prud, tcb FROM institutions")
+    names = {r[0]: {"nome": r[1], "sr": r[2], "congl": r[3], "tcb": r[4]} for r in cur.fetchall()}
 
     # ---- valores por instituição/período para todas as métricas ----
     per_inst = {}
@@ -256,13 +288,51 @@ def build(con, cfg):
             "aggregation_method": "fim de período", "supported_normalizations": norms,
             "first_reference": anomes_list[0], "last_reference": latest,
             "coverage_count": len(cross.get(latest, [])), "quality_status": status,
+            "economic_direction": _sentido(mid)[0], "direction_note": _sentido(mid)[1],
             "comparability_notes": desc, "methodology_version": "v1.0", "is_experimental": False,
         })
+
+    # ---- grupos comparáveis: estatísticas por segmento prudencial (S1..S5) ----
+    grupos = {}
+    for sgrp in ("S1", "S2", "S3", "S4", "S5"):
+        membros = [c for c in per_inst if names.get(c, {}).get("sr") == sgrp]
+        if len(membros) < 3:
+            continue
+        gstats = {}
+        for mid in all_metric_ids():
+            arr = sorted(v for c in membros
+                         for v in [per_inst[c].get(mid, {}).get(latest)] if v is not None)
+            if len(arr) >= 3:
+                n = len(arr)
+                q = lambda p: arr[min(n - 1, max(0, round(p * (n - 1))))]
+                gstats[mid] = {"n": n, "mediana": q(0.5), "q1": q(0.25), "q3": q(0.75)}
+        grupos[f"sr:{sgrp}"] = {"label": f"Segmento prudencial {sgrp}", "n_insts": len(membros), "stats": gstats}
+
+    # ---- métricas mapeadas e AINDA NÃO coletadas (interface preparada; nunca simular) ----
+    pendentes = [
+        {"grupo": "Rede e pessoas", "metricas": ["funcionários", "agências", "postos de atendimento", "correspondentes", "municípios atendidos"],
+         "fonte_prevista": "BCB: relação de agências/postos (dados abertos) e Estban; funcionários via demonstrações/relatórios das IFs",
+         "motivo": "coletores ainda não implementados no pipeline; sem esses denominadores, produtividade por funcionário/agência não é calculada (ausência ≠ zero)"},
+        {"grupo": "Custos e eficiência", "metricas": ["despesas de pessoal", "outras despesas administrativas", "receitas de serviços", "índice de eficiência"],
+         "fonte_prevista": "IF.data — relatório Demonstração de Resultado (Olinda), e balancetes COSIF",
+         "motivo": "o pipeline coleta hoje Resumo/Capital/Carteiras do IF.data; o relatório de DRE detalhada é a próxima coleta prevista"},
+        {"grupo": "Tecnologia", "metricas": ["despesas de processamento de dados (TI restrita)", "TI ampliada (processamento + comunicações + amortização de sistemas)", "investimento tecnológico"],
+         "fonte_prevista": "COSIF (balancetes) e notas explicativas das demonstrações (Central de DFs do SFN)",
+         "motivo": "exige extração contábil por rubrica; TI ampliada será sempre apresentada como conceito distinto do restrito, nunca como total exato"},
+        {"grupo": "Complexidade e contingências", "metricas": ["provisões cíveis/trabalhistas/tributárias", "perdas possíveis não provisionadas", "depósitos judiciais", "benefícios pós-emprego"],
+         "fonte_prevista": "notas explicativas (Central de DFs 9010/9030/9060) e Formulário de Referência (CVM) para as abertas",
+         "motivo": "dados em documentos não estruturados; extração com registro de página/nota planejada"},
+    ]
 
     common.write_gold("compare.json", {
         "gerado_em": common.now_utc(),
         "anomes_list": anomes_list,
         "fonte": FONTE,
+        "grupos": grupos,
+        "grupos_nota": ("Grupos comparáveis por segmentação prudencial do BC (Res. 4.553): S1 grandes bancos (≥10% do PIB "
+                        "ou ativos no exterior), S2 de 1% a 10% do PIB, S3 de 0,1% a 1%, S4 abaixo de 0,1%, S5 regime simplificado. "
+                        "Estatísticas calculadas SOMENTE com instituições que reportam a métrica (ausência nunca vira zero)."),
+        "pendentes": pendentes,
         "consolidacao_nota": ("Códigos iniciados em 'C' são conglomerados prudenciais (IF.data tipo 2); códigos numéricos "
                               "são instituições individuais (CNPJ). O comparador bloqueia a mistura dos dois níveis."),
         "metric_catalog": catalog,
@@ -275,6 +345,16 @@ def build(con, cfg):
     # ---- semelhantes por regras explícitas ----
     similares = _similares(per_inst, names, latest) if latest else {}
 
+    # ---- porte por quartil de ativo (dentro do mesmo nível de consolidação) ----
+    portes = {}
+    if latest:
+        for prefixo, teste in (("C", lambda c: c.startswith("C")), ("I", lambda c: not c.startswith("C"))):
+            ativos = sorted((per_inst[c].get("ativo_total", {}).get(latest), c)
+                            for c in per_inst if teste(c) and per_inst[c].get("ativo_total", {}).get(latest))
+            n = len(ativos)
+            for i2, (_a, c) in enumerate(ativos):
+                portes[c] = "P" + str(min(4, int(i2 / n * 4) + 1))  # P1 menor quartil … P4 maior
+
     # ---- arquivos por instituição (sob demanda) ----
     n_files = 0
     for cod, m in per_inst.items():
@@ -283,6 +363,8 @@ def build(con, cfg):
             "cod": cod,
             "nome": info.get("nome") or cod,
             "sr": info.get("sr"),
+            "tcb": info.get("tcb"),
+            "porte_quartil": portes.get(cod),
             "nivel": "conglomerado prudencial" if cod.startswith("C") else "instituição individual",
             "anomes_list": anomes_list,
             "fonte": FONTE,

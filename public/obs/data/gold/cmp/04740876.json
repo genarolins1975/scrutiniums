@@ -2,6 +2,8 @@
  "cod": "04740876",
  "nome": "ALELO INSTITUICAO DE PAGAMENTO SA",
  "sr": null,
+ "tcb": "N4",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "202503",
@@ -88,5 +90,5 @@
    "202509": 9.947668919313813
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }

@@ -2,6 +2,8 @@
  "cod": "C0050201",
  "nome": "MASTER",
  "sr": "S3",
+ "tcb": "B1",
+ "porte_quartil": null,
  "nivel": "conglomerado prudencial",
  "anomes_list": [
   "202503",
@@ -123,5 +125,5 @@
    "202506": 1.3564822598079895
   }
  },
- "gerado_em": "2026-08-01T00:22:24+00:00"
+ "gerado_em": "2026-08-01T01:10:06+00:00"
 }
