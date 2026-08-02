@@ -187,7 +187,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.38.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.38.2"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -288,7 +288,7 @@ const COLOR_VARS = {
 function ccol(c) { return COLOR_VARS[c] || c || "var(--c-line1)"; }
 
 function lineChart(opts) {
-  const W = 720, H = opts.h || 240;
+  const W = opts.w || 720, H = opts.h || 240;
   const all = [];
   opts.series.forEach(s => s.pts.forEach(p => { if (p.y != null) all.push(p.y); }));
   if (opts.band) opts.band.pts.forEach(p => { all.push(p.lo, p.hi); });
@@ -296,6 +296,8 @@ function lineChart(opts) {
   let lo = Math.min(...all), hi = Math.max(...all);
   if (hi - lo < 1e-9) { hi += 1; lo -= 1; }
   const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
+  // séries não negativas (contagens, valores) não devem ganhar eixo negativo pelo respiro
+  if (opts.lo0 !== false && lo < 0 && Math.min(...all) >= 0) lo = 0;
   const dec = opts.dec != null ? opts.dec : (Math.abs(hi) > 200 ? 0 : Math.abs(hi) > 20 ? 1 : 2);
   const ticks = 4, tickVals = [], tickLbls = [];
   for (let i = 0; i <= ticks; i++) { const v = lo + (hi - lo) * i / ticks; tickVals.push(v); tickLbls.push(fmt.n(v, dec)); }
@@ -1038,27 +1040,40 @@ function renderPix() {
   const sintese = `<p class="pan-sintese">${X.sintese}</p><div class="src">Texto automático determinístico · composições cobrem ${X.cobertura_tx_pct}% da quantidade (base transacional/SPI; restante liquidado nos livros dos participantes)</div>`;
 
   /* ---------- 2. evolução ---------- */
-  const sp = X.series.Pix;
+  // o Pix só existe a partir de nov/2020: meses anteriores do MPV são zeros reais
+  // (o instrumento não existia) e achatariam a série — ficam fora desta seção.
+  const sp = X.series.Pix.filter(o => (o.q || 0) > 0);
   const val = o => metr === "q" ? o.q : (real ? o.vr : o.v);
+  // eixo em bilhões de transações / R$ trilhões: rótulos legíveis no lugar de 8.487.719.136
+  const esc = modo !== "nivel" ? 1 : (metr === "q" ? 1e9 : 1e12);
   const mkSerie = arr => {
     let pts = arr.map(o => ({ x: o.p, y: val(o) })).filter(p => p.y != null);
     if (modo === "base100") { const b = pts[0].y; pts = pts.map(p => ({ x: p.x, y: p.y / b * 100 })); }
     if (modo === "var12") pts = pts.map((p, i) => i >= 12 ? { x: p.x, y: (p.y / pts[i - 12].y - 1) * 100 } : null).filter(Boolean);
-    return pts;
+    return esc === 1 ? pts : pts.map(p => ({ x: p.x, y: p.y / esc }));
   };
   const ptsPix = mkSerie(sp);
   const mm = (pts, w) => pts.map((p, i) => i >= w - 1 ? { x: p.x, y: pts.slice(i - w + 1, i + 1).reduce((s, x) => s + x.y, 0) / w } : null).filter(Boolean);
-  const unidade = modo === "var12" ? "% a/a" : modo === "base100" ? "índice (100 = início)" : metr === "q" ? "transações/mês" : (real ? "R$ constantes" : "R$");
+  const unidade = modo === "var12" ? "% a/a" : modo === "base100" ? "índice (100 = nov/2020)"
+    : metr === "q" ? "bilhões de transações por mês" : (real ? "R$ trilhões (constantes)" : "R$ trilhões");
   const evol = sechead("Como o Pix evoluiu desde o lançamento?", `mensal desde 2020-11 · ${metr === "q" ? "quantidade" : real ? "valor real (IPCA)" : "valor nominal"}`) + `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
       <span class="seg">${[["q", "Quantidade"], ["v", "Valor"]].map(([v2, l]) => `<button class="${metr === v2 ? "on" : ""}" onclick="pxSet('metr','${v2}')">${l}</button>`).join("")}</span>
       <span class="seg">${[["nivel", "Nível"], ["base100", "Base 100"], ["var12", "Var. 12m"]].map(([v2, l]) => `<button class="${modo === v2 ? "on" : ""}" onclick="pxSet('modo','${v2}')">${l}</button>`).join("")}</span>
       ${metr === "v" ? `<span class="seg">${[["nominal", "Nominal"], ["real", "Real (IPCA)"]].map(([v2, l]) => `<button class="${px.val === v2 ? "on" : ""}" onclick="pxSet('val','${v2}')">${l}</button>`).join("")}</span>` : ""}
     </div>
-    <div class="card">${lineChart({ series: [{ pts: ptsPix, label: "Pix", color: "var(--pix)" }, { pts: mm(ptsPix, 12), label: "média móvel 12m", color: "#64748b" }], h: 280, unit: unidade, fonte: "BCB MPV", aria: "evolução do Pix" })}
-    ${leitura([["Transações por usuário", sp.length && k.usuarios.v ? `${fmt.n(k.qtd.v / k.usuarios.v, 1)} transações/mês por usuário cadastrado (razão de estoque — chave ≠ usuário)` : "–"],
-      ["Valor por usuário", k.usuarios.v ? `R$ ${fmt.n0(k.valor.v / k.usuarios.v)}/mês por usuário cadastrado` : "–"],
-      ["Cuidado", "valores nominais e reais são séries distintas; a deflação usa o IPCA até seu último mês publicado"]])}</div>`;
+    <div class="ov-2col">
+      <div class="card">${lineChart({ series: [{ pts: ptsPix, label: "Pix", color: "var(--pix)" }, { pts: mm(ptsPix, 12), label: "média móvel 12m", color: "#64748b" }], h: 250, dec: modo === "nivel" ? 2 : 1, unit: unidade, fonte: "BCB MPV", aria: "evolução do Pix" })}</div>
+      <div class="card"><h4 style="margin-top:0">Como ler</h4>
+        <div class="pxstats">
+          <div><span class="src">transações por usuário cadastrado</span><b>${k.usuarios.v ? fmt.n(k.qtd.v / k.usuarios.v, 1) + " / mês" : "–"}</b></div>
+          <div><span class="src">valor por usuário cadastrado</span><b>${k.usuarios.v ? "R$ " + fmt.n0(k.valor.v / k.usuarios.v) + " / mês" : "–"}</b></div>
+          <div><span class="src">crescimento em 12 meses</span><b>${fmt.pp(metr === "q" ? k.qtd.yoy : k.valor.yoy)}%</b></div>
+          <div><span class="src">primeiro mês da série</span><b>${sp.length ? sp[0].p : "–"}</b></div>
+        </div>
+        <div class="src" style="margin-top:12px;line-height:1.65">Razões por usuário usam um ESTOQUE no denominador (cadastros no DICT) — uma pessoa pode ter várias chaves, e cadastro não significa uso.<br><br>Valores nominais e reais são séries distintas: a deflação usa o IPCA até seu último mês publicado.<br><br>Meses anteriores a nov/2020 ficam fora: o Pix ainda não existia.</div>
+      </div>
+    </div>`;
 
   /* ---------- 3. Pix versus outros meios ---------- */
   const mensais = ["Pix", "TED", "Boleto", "Cheque"];
@@ -1077,10 +1092,12 @@ function renderPix() {
         ${foto.map(x => panBar(X.tri.nomes[x.i], x[metr === "q" ? "q" : "v"], fotoMax, v2 => metr === "q" ? fmt.n(v2 / 1e9, 1) + " bi" : fmt.money(v2), `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
         <div class="src" style="margin-top:6px">tíquete = valor ÷ quantidade — TED concentra grandes valores; cartão de crédito embute financiamento; nenhum instrumento é substituto perfeito de outro.</div></div>
     </div>
-    <div class="card" style="margin-top:14px"><h4>Crescimento comparado — instrumentos MENSAIS (base 100 em jun/2021)</h4>${cmpMensal}
+    <div class="ov-2col-eq" style="margin-top:14px">
+    <div class="card"><h4 style="margin-top:0">Crescimento comparado — instrumentos MENSAIS (base 100 em jun/2021)</h4>${cmpMensal}</div>
+    <div class="card"><h4 style="margin-top:0">Como ler esta comparação</h4>
     ${entenda("pxcmp", [["Regra temporal", "Pix, TED, boleto e cheque têm série mensal; cartões e demais são trimestrais — por isso a comparação completa usa trimestres, e os mensais entram somados por trimestre."],
       ["DOC e TEC", "descontinuados em 2024 — os zeros finais são reais, não ausência de dado."],
-      ["Leitura", "quantidade, valor e tíquete contam histórias diferentes: o Pix domina a quantidade; TED domina o valor médio."]])}</div>`;
+      ["Leitura", "quantidade, valor e tíquete contam histórias diferentes: o Pix domina a quantidade; TED domina o valor médio."]])}</div></div>`;
 
   /* ---------- 4. quem usa ---------- */
   const us = X.usuarios_serie;
