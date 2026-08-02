@@ -782,3 +782,13 @@ hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 .pxstats > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-bottom: 1px solid var(--border); padding-bottom: 7px; }
 .pxstats > div:last-child { border-bottom: 0; }
 .pxstats b { font-size: 16px; font-weight: 450; letter-spacing: -0.01em; white-space: nowrap; }
+
+/* ---------- Ações judiciais ---------- */
+.judalerta { border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); background: var(--surface); padding: 16px 18px; margin: 16px 0 6px; }
+.judalerta h4 { margin: 0 0 6px; font-size: 13.5px; }
+.judalerta p { margin: 0; max-width: 1050px; font-size: 13px; line-height: 1.65; color: var(--text-2); }
+.judcamadas { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)); gap: 10px; margin-top: 12px; font-size: 12.4px; color: var(--text-2); }
+.judtag { font-size: 9.6px; font-weight: 700; letter-spacing: 0.06em; padding: 2px 7px; border-radius: 999px; margin-right: 6px; white-space: nowrap; }
+.judtag.nac { background: color-mix(in srgb, var(--c-gray) 18%, transparent); color: var(--text-2); }
+.judtag.nom { background: var(--accent-soft); color: var(--accent-ink); }
+.judif { font-size: 9.4px; font-weight: 700; letter-spacing: 0.05em; padding: 1px 6px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); margin-left: 5px; }

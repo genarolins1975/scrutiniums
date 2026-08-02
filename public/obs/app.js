@@ -26,6 +26,7 @@ state.mkt = { tab: "acoes", modo: "total", emp: "todas" };
 state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
+state.jud = { ramo: "civel", ordem: "bruto" };
 state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
   gmet: "q_hab", gpersp: "pag", setor: null, munq: "" };
 
@@ -38,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -82,6 +83,10 @@ function buildQuery(view) {
     if (state.pan.cmp.length) qs.set("pcmp", state.pan.cmp.join("."));
     if (state.pan.cli !== "PF") qs.set("pcli", state.pan.cli);
     if (state.pan.lens !== "saldo") qs.set("plens", state.pan.lens);
+  }
+  if (view === "judicial" && state.jud) {
+    if (state.jud.ramo !== "civel") qs.set("jramo", state.jud.ramo);
+    if (state.jud.ordem !== "bruto") qs.set("jordem", state.jud.ordem);
   }
   if (view === "pix" && state.px) {
     if (state.px.modo !== "nivel") qs.set("xmodo", state.px.modo);
@@ -152,6 +157,8 @@ function parseHash() {
   if (qs.get("pcmp")) state.pan.cmp = qs.get("pcmp").split(".").filter(Boolean).slice(0, 3);
   if (qs.get("pcli")) state.pan.cli = qs.get("pcli");
   if (qs.get("plens")) state.pan.lens = qs.get("plens");
+  if (qs.get("jramo")) state.jud.ramo = qs.get("jramo");
+  if (qs.get("jordem")) state.jud.ordem = qs.get("jordem");
   if (qs.get("xmodo")) state.px.modo = qs.get("xmodo");
   if (qs.get("xval")) state.px.val = qs.get("xval");
   if (qs.get("xmetr")) state.px.metr = qs.get("xmetr");
@@ -187,7 +194,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.38.2"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.39.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -207,6 +214,7 @@ const VIEW_DATA = {
   trends: ["trends"],
   panorama: ["panorama"],
   pix: ["pix"],
+  judicial: ["judicial"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -965,6 +973,155 @@ function renderSobre() {
     <p style="margin-top:20px"><a href="HREF_LINKEDIN" target="_blank" rel="noopener">LinkedIn</a></p>
   </div>`;
 }
+
+
+/* ================= AÇÕES JUDICIAIS E INSTITUIÇÕES FINANCEIRAS ================= */
+const JUD_CORES = { revisionais: "#1d4e89", indenizatorias: "#6b46a3", garantias_cobranca: "#8d94a3",
+  jornada: "#0e7c7b", rescisao: "#b45309", fgts: "#2f7d4f", adicionais: "#c2540a" };
+window.judSet = (k, v) => { state.jud[k] = v; syncHash(); renderJudicial(); };
+
+function renderJudicial() {
+  const el = document.getElementById("view-judicial");
+  const J = state.data.judicial;
+  if (J === undefined) { el.innerHTML = loadingCard("ações judiciais"); return; }
+  if (!J || !J.disponivel) {
+    el.innerHTML = pageHead({ title: "Ações judiciais por instituição financeira" }) +
+      `<div class="card"><h4>INDISPONÍVEL</h4><p class="src">${(J && (J.motivo || J.error)) || ""}</p></div>`;
+    return;
+  }
+  const N = J.camada_nacional, B = J.camada_nominal, ramo = state.jud.ramo;
+
+  const head = pageHead({
+    title: "Ações judiciais e instituições financeiras",
+    vintage: (J.coletado_em || "").slice(0, 7),
+    seals: `${badge("observado", "metadados processuais do CNJ/DataJud e ranking publicado pelo TST")} ${badge("calculado", "agregações, casos únicos e normalização por escala")}`,
+    desc: "Litigiosidade de temas bancários no Judiciário e os maiores litigantes nominais — em duas camadas que não se misturam.",
+    fontes: "CNJ/DataJud (API pública) · TST (Ranking das Partes) · BCB/IF.data (escala)",
+    actions: `<button class="btn ghost small" onclick="judCSV()">baixar CSV</button>`,
+  });
+
+  /* ---------- alerta metodológico obrigatório ---------- */
+  const alerta = `<div class="judalerta">
+    <h4>Antes de ler estes números</h4>
+    <p>${J.limitacao_central}</p>
+    <div class="judcamadas">
+      <div><span class="judtag nac">Camada nacional</span> ${N.n_tribunais} tribunais · ${fmt.n0(N.total_civel_casos + N.total_trabalhista_casos)} casos únicos · <b>não identifica instituição</b></div>
+      <div><span class="judtag nom">Camada nominal</span> ${B.competencia || "–"} · ${B.n_ifs} instituições entre os 10 maiores litigantes · <b>somente TST</b></div>
+    </div>
+    <p class="src" style="margin:10px 0 0">${J.aviso_permanente}</p></div>`;
+
+  /* ---------- camada nacional ---------- */
+  const cats = N.categorias.filter(c => c.ramo === ramo);
+  const totalRamo = ramo === "civel" ? N.total_civel_casos : N.total_trabalhista_casos;
+  const regs = cats.reduce((s, c) => s + c.registros, 0);
+  const kpis = `<div class="pan-kpi">
+    <div class="card kpi"><h4>Casos únicos</h4><div class="big">${fmt.n0(totalRamo)}</div><div class="src">processos distintos pelo número CNJ · ${ramo === "civel" ? "temas bancários cíveis" : "temas trabalhistas"}</div></div>
+    <div class="card kpi"><h4>Registros (tramitações)</h4><div class="big">${fmt.n0(regs)}</div><div class="src">o mesmo caso em 1º e 2º grau conta duas vezes</div></div>
+    <div class="card kpi"><h4>Registros por caso</h4><div class="big">${totalRamo ? fmt.n(regs / totalRamo, 2) : "–"}</div><div class="src">razão alta indica recorribilidade — não gravidade</div></div>
+    <div class="card kpi"><h4>Tribunais cobertos</h4><div class="big">${N.tribunais.filter(t => t.ramo === ramo).length}</div><div class="src">${N.tribunais.filter(t => t.ramo === ramo).map(t => t.tribunal).join(" · ")}</div></div>
+  </div>`;
+
+  const segRamo = `<span class="seg">${[["civel", "Cível"], ["trabalhista", "Trabalhista"]].map(([v, l]) =>
+    `<button class="${ramo === v ? "on" : ""}" onclick="judSet('ramo','${v}')">${l}</button>`).join("")}</span>`;
+
+  const maxCat = Math.max(...cats.map(c => c.casos_unicos), 1);
+  const composicao = cats.map(c => `<div class="panbar"><span title="${c.rotulo}">${c.rotulo}</span>
+    <div class="track"><span class="fill" style="width:${c.casos_unicos / maxCat * 100}%;background:color-mix(in srgb, ${JUD_CORES[c.categoria] || "var(--c-gray)"} 78%, transparent)"></span></div>
+    <span style="text-align:right;font-variant-numeric:tabular-nums"><b>${fmt.n0(c.casos_unicos)}</b> <span class="src">${fmt.n(c.part, 1)}%</span></span></div>`).join("");
+
+  const ass = N.assuntos.filter(a => a.ramo === ramo).slice(0, 12);
+  const maxAss = Math.max(...ass.map(a => a.casos_unicos), 1);
+  const assuntos = ass.map(a => `<div class="panbar"><span title="${a.nome}">${a.nome}</span>
+    <div class="track"><span class="fill" style="width:${a.casos_unicos / maxAss * 100}%;background:color-mix(in srgb, ${JUD_CORES[a.categoria] || "var(--c-gray)"} 62%, transparent)"></span></div>
+    <span style="text-align:right;font-variant-numeric:tabular-nums"><b>${fmt.n0(a.casos_unicos)}</b> <span class="src">TPU ${a.codigo}</span></span></div>`).join("");
+
+  const tribs = N.tribunais.filter(t => t.ramo === ramo);
+  const catsRamo = ramo === "civel" ? N.cats_civel : N.cats_trabalhista;
+  const maxCel = Math.max(...tribs.flatMap(t => catsRamo.map(c => t.por_categoria[c] || 0)), 1);
+  let heat = `<div class="heatwrap"><div class="heatgrid" style="grid-template-columns:minmax(110px,150px) repeat(${catsRamo.length},minmax(60px,1fr))">`;
+  heat += `<div class="hcell hhead hlab"></div>` + catsRamo.map(c =>
+    `<div class="hcell hhead" style="height:auto;white-space:normal;line-height:1.2;padding-bottom:5px">${(N.categorias.find(x => x.categoria === c) || {}).rotulo || c}</div>`).join("");
+  tribs.forEach(t => {
+    heat += `<div class="hcell hlab">${t.tribunal} <span class="src">${t.uf || ""}</span></div>`;
+    heat += catsRamo.map(c => {
+      const v = t.por_categoria[c] || 0;
+      if (!v) return `<div class="hcell hnull" title="sem casos no acervo coletado"></div>`;
+      const tip = encodeURIComponent(`<div class="tt-date">${t.tribunal} — ${(N.categorias.find(x => x.categoria === c) || {}).rotulo || c}</div><div class="tt-row"><span class="tt-lbl">casos únicos</span><span class="tt-val">${fmt.n0(v)}</span></div>`);
+      return `<div class="hcell hval" data-tip="${tip}" style="background:color-mix(in srgb, ${JUD_CORES[c] || "var(--c-line1)"} ${Math.round(v / maxCel * 80 + 6)}%, var(--surface))"></div>`;
+    }).join("");
+  });
+  heat += `</div></div><div class="heatleg"><span class="lg hnull"></span> sem casos · intensidade = casos únicos no acervo coletado do tribunal</div>`;
+
+  const nacional = sechead("Quais temas bancários mais ocupam o Judiciário?",
+      `acervo do DataJud · ${N.n_tribunais} tribunais · não atribuível a instituição`) +
+    `<div style="margin:8px 0 12px">${segRamo}</div>${kpis}
+    <div class="ov-2col-eq" style="margin-top:14px">
+      <div class="card"><h4 style="margin-top:0">Composição por natureza da ação</h4>${composicao}
+        ${leitura([["Polo processual", N.nota_polo], ["Casos × registros", "a comparação principal usa casos únicos, contados pelo número único do CNJ"]])}</div>
+      <div class="card"><h4 style="margin-top:0">Assuntos mais frequentes (TPU)</h4>${assuntos}
+        <div class="src" style="margin-top:6px">códigos das Tabelas Processuais Unificadas descobertos por agregação nos índices reais — nenhum código foi presumido.</div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h4 style="margin-top:0">Tribunal × natureza da ação</h4>${heat}
+      ${entenda("judheat", [["O que a célula mostra", "casos únicos daquele grupo de assuntos no acervo do tribunal — não é o total de processos do tribunal."],
+        ["Por que não comparar tribunais diretamente", "o acervo indexado varia por tribunal, por sistema de origem e por período de adesão ao DataJud; a leitura válida é a composição interna de cada linha."],
+        ["Sem recorte temporal", N.nota_temporal]])}</div>`;
+
+  /* ---------- camada nominal ---------- */
+  const linhas = B.linhas || [];
+  const maxProc = Math.max(...linhas.map(l => l.processos), 1);
+  const ordem = state.jud.ordem;
+  const ifs = linhas.filter(l => l.eh_if && l.por_100bi_ativo != null);
+  const listaOrd = ordem === "normalizado" && ifs.length ? [...ifs].sort((a, b) => b.por_100bi_ativo - a.por_100bi_ativo) : linhas;
+  const maxNorm = Math.max(...ifs.map(l => l.por_100bi_ativo), 1);
+  const rank = listaOrd.map(l => {
+    const norm = ordem === "normalizado";
+    const v = norm ? l.por_100bi_ativo : l.processos;
+    const mx = norm ? maxNorm : maxProc;
+    return `<div class="panbar"><span title="${l.parte}">${l.eh_if ? "" : "<span class='src'>·</span> "}${l.parte}${l.eh_if ? ' <span class="judif">IF</span>' : ""}</span>
+      <div class="track"><span class="fill" style="width:${Math.min(v / mx, 1) * 100}%;background:${l.eh_if ? "color-mix(in srgb, var(--c-line1) 72%, transparent)" : "var(--border-2)"}"></span></div>
+      <span style="text-align:right;font-variant-numeric:tabular-nums"><b>${norm ? fmt.n(v, 1) : fmt.n0(l.processos)}</b> <span class="src">${norm ? "por R$ 100 bi de ativo" : "processos"}</span></span></div>`;
+  }).join("");
+
+  const nominal = sechead("Quem são os maiores litigantes nominais?", `TST · ${B.competencia || "–"} · casos novos do mês`) +
+    `<div class="ov-2col">
+      <div class="card"><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:8px">
+        <span class="seg">${[["bruto", "Volume"], ["normalizado", "Por escala"]].map(([v, l]) =>
+          `<button class="${ordem === v ? "on" : ""}" onclick="judSet('ordem','${v}')">${l}</button>`).join("")}</span>
+        <span class="src">${ordem === "normalizado" ? "somente as IFs com escala conhecida" : "os dez maiores do mês, incluindo entes públicos e outros setores"}</span></div>
+        ${rank}
+        <div class="src" style="margin-top:8px">${B.cobertura}</div></div>
+      <div class="card"><h4 style="margin-top:0">Como ler</h4>
+        <div class="src" style="line-height:1.7">
+          O ranking do TST é <b>nominal</b> e por isso permite identificar instituições — mas cobre apenas o tribunal superior,
+          apenas os dez maiores e apenas os casos novos do mês. Não é o total de ações trabalhistas de cada instituição.<br><br>
+          A normalização por escala usa o ativo total do IF.data (data-base ${B.data_escala || "–"}). Numerador e denominador
+          têm períodos e perímetros diferentes: é uma leitura de <b>ordem de grandeza</b>, não uma taxa exata.<br><br>
+          Entes públicos e empresas de outros setores aparecem na lista porque o ranking é geral — ficam sem marcação
+          <span class="judif">IF</span> e fora da visão normalizada.
+        </div>
+        <h5 style="margin:14px 0 6px">Resolução de entidades</h5>
+        <div class="tblwrap" style="max-height:190px"><table class="data compact"><thead><tr><th>Parte no TST</th><th>Instituição</th><th>Confiança</th></tr></thead>
+        <tbody>${linhas.filter(l => l.eh_if).map(l => `<tr><td>${l.parte}</td><td>${l.cod_if || "—"}</td><td>${l.confianca}</td></tr>`).join("")}</tbody></table></div>
+      </div></div>`;
+
+  /* ---------- transparência: o que não dá para calcular ---------- */
+  const lacunas = sechead("O que esta página não calcula — e por quê", "indisponibilidade declarada, sem estimativa silenciosa") +
+    `<div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Métrica pedida</th><th>Por que não é calculada</th></tr></thead>
+    <tbody>${J.denominadores_indisponiveis.map(d => `<tr><td><b>${d.metrica}</b></td><td class="src">${d.motivo}</td></tr>`).join("")}</tbody></table></div>
+    <div class="src" style="margin-top:10px">${J.privacidade}</div></div>`;
+
+  const metodo = `<div class="card" style="margin-top:22px"><h4>Catálogo metodológico</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>id</th><th>Indicador</th><th>Definição</th><th>Fórmula</th><th>Unidade</th><th>Fonte</th><th>Cobertura</th><th>Limitações</th></tr></thead>
+    <tbody>${J.catalogo.map(c => `<tr><td class="src">${c.id}</td><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td class="src">${c.formula}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.cobertura}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <div class="src" style="margin-top:8px">Auditoria completa das fontes: docs/AUDITORIA_JUDICIAL.md</div></div>`;
+
+  el.innerHTML = head + alerta + nacional + nominal + lacunas + metodo;
+}
+window.judCSV = () => {
+  const J = state.data.judicial; if (!J || !J.disponivel) return;
+  const linhas = J.camada_nacional.assuntos.map(a => [a.ramo, a.categoria, a.codigo, `"${a.nome}"`, a.casos_unicos, a.registros].join(";"));
+  dlFile("judicial_assuntos.csv", "﻿ramo;categoria;codigo_tpu;assunto;casos_unicos;registros\n" + linhas.join("\n"), "text/csv;charset=utf-8");
+};
 
 /* ================= PIX E MEIOS DE PAGAMENTO (BCB Olinda: Pix, MPV, SPI, EPAE) ================= */
 const PX_COLORS = { Pix: "var(--pix)", TED: "#1d4e89", Boleto: "#b45309", Cheque: "#64748b", DOC: "#8d94a3",
@@ -4768,9 +4925,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre };
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
