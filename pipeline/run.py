@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from pipeline import common, gold
 from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata_carteiras,
                               datajud, djen, djen_credores, openfinance, reclamacoes, txjuros, b3_market, cvm_dfp, fidc,
-                              trends_manual, scr_data, geo_ibge)
+                              trends_manual, scr_data, geo_ibge, pix_bcb)
 
 
 def main():
@@ -34,7 +34,8 @@ def main():
                           ("openfinance", openfinance), ("reclamacoes", reclamacoes),
                           ("txjuros", txjuros),
                           ("b3_market", b3_market), ("cvm_dfp", cvm_dfp), ("fidc", fidc),
-                          ("trends_manual", trends_manual), ("scr_data", scr_data), ("geo_ibge", geo_ibge)]:
+                          ("trends_manual", trends_manual), ("scr_data", scr_data), ("geo_ibge", geo_ibge),
+                          ("pix_bcb", pix_bcb)]:
             print(f"[coleta] {name}...")
             try:
                 results = mod.collect(con, cfg)

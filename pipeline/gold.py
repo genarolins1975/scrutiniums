@@ -549,6 +549,11 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("leading.json", {"ok": False, "error": str(e)})
     try:
+        from pipeline import pix as pix_mod
+        print("pix:", pix_mod.build(con, cfg))
+    except Exception as e:
+        common.write_gold("pix.json", {"disponivel": False, "error": str(e)})
+    try:
         from pipeline import panorama as panorama_mod
         print("panorama:", panorama_mod.build(con, cfg))
     except Exception as e:

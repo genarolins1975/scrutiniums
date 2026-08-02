@@ -14,3 +14,7 @@ __pycache__/
 
 # Bancos locais de smoke tests
 .pglite-smoke*/
+
+# Ferramentas locais
+.vercel/
+.claude/

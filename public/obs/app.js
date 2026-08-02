@@ -26,6 +26,8 @@ state.mkt = { tab: "acoes", modo: "total", emp: "todas" };
 state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
+state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
+  gmet: "q_hab", gpersp: "pag", setor: null, munq: "" };
 
 function loadLS(k, dflt) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : dflt; } catch (e) { return dflt; } }
 function saveLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -36,7 +38,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leadin
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -80,6 +82,14 @@ function buildQuery(view) {
     if (state.pan.cmp.length) qs.set("pcmp", state.pan.cmp.join("."));
     if (state.pan.cli !== "PF") qs.set("pcli", state.pan.cli);
     if (state.pan.lens !== "saldo") qs.set("plens", state.pan.lens);
+  }
+  if (view === "pix" && state.px) {
+    if (state.px.modo !== "nivel") qs.set("xmodo", state.px.modo);
+    if (state.px.val !== "nominal") qs.set("xval", state.px.val);
+    if (state.px.metr !== "q") qs.set("xmetr", state.px.metr);
+    if (state.px.gmet !== "q_hab") qs.set("xgmet", state.px.gmet);
+    if (state.px.gpersp !== "pag") qs.set("xpersp", state.px.gpersp);
+    if (state.px.setor) qs.set("xsetor", state.px.setor);
   }
   if (view === "market" && state.mkt) {
     if (state.mkt.tab !== "acoes") qs.set("mtab", state.mkt.tab);
@@ -142,6 +152,12 @@ function parseHash() {
   if (qs.get("pcmp")) state.pan.cmp = qs.get("pcmp").split(".").filter(Boolean).slice(0, 3);
   if (qs.get("pcli")) state.pan.cli = qs.get("pcli");
   if (qs.get("plens")) state.pan.lens = qs.get("plens");
+  if (qs.get("xmodo")) state.px.modo = qs.get("xmodo");
+  if (qs.get("xval")) state.px.val = qs.get("xval");
+  if (qs.get("xmetr")) state.px.metr = qs.get("xmetr");
+  if (qs.get("xgmet")) state.px.gmet = qs.get("xgmet");
+  if (qs.get("xpersp")) state.px.gpersp = qs.get("xpersp");
+  if (qs.get("xsetor")) state.px.setor = qs.get("xsetor");
   if (qs.get("mtab")) state.mkt.tab = qs.get("mtab");
   if (qs.get("mmodo")) state.mkt.modo = qs.get("mmodo");
   if (qs.get("memp")) state.mkt.emp = qs.get("memp");
@@ -171,7 +187,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.37.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.38.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -190,6 +206,7 @@ const VIEW_DATA = {
   leading: ["leading"],
   trends: ["trends"],
   panorama: ["panorama"],
+  pix: ["pix"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -925,6 +942,302 @@ window.trCSV = () => {
   const head = "familia;termo;valor_jun2026;var_1m_pct;var_3m_pct;var_12m_pct;media_12m;z_score;percentil;direcao;intensidade;aceleracao_3m_pp";
   const rows = T.painel.map(p => [p.familia, p.termo, p.valor_atual, p.var1m, p.var3m, p.var12m, p.media12m, p.z, p.percentil, p.direcao, p.intensidade, p.aceleracao].join(";"));
   dlFile("tendencias_busca_painel.csv", "﻿" + [head, ...rows].join("\n"), "text/csv;charset=utf-8");
+};
+
+/* ================= SOBRE ================= */
+function renderSobre() {
+  const el = document.getElementById("view-sobre");
+  el.innerHTML = `
+  <div class="pagehead">
+    <div class="ph-left">
+      <h2>Sobre o Observatório</h2>
+    </div>
+  </div>
+  <div style="max-width:760px;font-size:14.5px;line-height:1.75">
+    <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
+    <h3 style="margin-top:28px">Sobre o autor</h3>
+    <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
+    <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
+    <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
+    <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
+    <p style="margin-top:20px"><a href="HREF_LINKEDIN" target="_blank" rel="noopener">LinkedIn</a></p>
+  </div>`;
+}
+
+/* ================= PIX E MEIOS DE PAGAMENTO (BCB Olinda: Pix, MPV, SPI, EPAE) ================= */
+const PX_COLORS = { Pix: "var(--pix)", TED: "#1d4e89", Boleto: "#b45309", Cheque: "#64748b", DOC: "#8d94a3",
+  TEC: "#8d94a3", CartaoCredito: "#6b46a3", CartaoDebito: "#0e7c7b", CartaoPrePago: "#b91c1c",
+  TransIntrabancaria: "#525a68", Convenios: "#d9a514", DebitoDireto: "#2f7d4f", Saques: "#c2540a" };
+const PX_DEFAULT_INSTS = ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"];
+window.pxSet = (k, v) => { state.px[k] = v; syncHash(); renderPix(); };
+window.pxToggleInst = i => {
+  const s = state.px.insts;
+  state.px.insts = s.includes(i) ? s.filter(x => x !== i) : [...s, i];
+  if (!state.px.insts.length) state.px.insts = ["Pix"];
+  syncHash(); renderPix();
+};
+window.pxLoadMun = async () => {
+  if (state.data.pix_mun === undefined) {
+    state.data.pix_mun = null; renderPix();
+    try { state.data.pix_mun = await (await fetch(`${DATA_BASE}pix_mun.json?v=${APP_VERSION}`)).json(); }
+    catch (e) { state.data.pix_mun = { erro: true }; }
+    renderPix();
+  }
+};
+window.pxMunFiltro = () => { state.px.munq = (document.getElementById("pxmunq") || {}).value || ""; renderPix(); };
+
+function pxStackedArea(periods, series, opts) {
+  // participação empilhada (0–100%); séries: [{label, color, vals[]}] alinhadas a periods
+  const W = 720, H = opts.h || 260, M = { t: 12, r: 14, b: 26, l: 40 };
+  const n = periods.length;
+  const X = i => M.l + i / Math.max(n - 1, 1) * (W - M.l - M.r);
+  const Y = v => M.t + (1 - v / 100) * (H - M.t - M.b);
+  const totals = periods.map((_, i) => series.reduce((s, sr) => s + (sr.vals[i] || 0), 0));
+  let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.aria || "participação empilhada"}">`;
+  [0, 25, 50, 75, 100].forEach(g => { out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(g)}" y2="${Y(g)}" style="stroke:var(--border)"/><text x="${M.l - 5}" y="${Y(g) + 3}" text-anchor="end" font-size="9" style="fill:var(--c-axis-text)">${g}</text>`; });
+  let base = periods.map(() => 0);
+  series.forEach(sr => {
+    const top = base.map((b, i) => b + (totals[i] ? (sr.vals[i] || 0) / totals[i] * 100 : 0));
+    let d = "M" + periods.map((_, i) => `${X(i)},${Y(top[i])}`).join("L");
+    d += "L" + periods.map((_, i) => `${X(n - 1 - i)},${Y(base[n - 1 - i])}`).join("L") + "Z";
+    const tip = encodeURIComponent(`<div class="tt-date">${sr.label}</div><div class="tt-meta">participação no período final: ${totals[n - 1] ? fmt.n((sr.vals[n - 1] || 0) / totals[n - 1] * 100, 1) : "–"}%</div>`);
+    out += `<path d="${d}" fill="${ccol(sr.color)}" opacity="0.82" data-tip="${tip}"></path>`;
+    base = top;
+  });
+  const step = Math.max(1, Math.ceil(n / 8));
+  periods.forEach((p, i) => { if (i % step === 0 || i === n - 1) out += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="8.6" style="fill:var(--c-axis-text)">${p}</text>`; });
+  out += "</svg>";
+  out += `<div class="stacklegend">${series.map(sr => `<span><span class="sw" style="background:${ccol(sr.color)}"></span>${sr.label}</span>`).join("")}</div>`;
+  out += `<details class="charttable"><summary>dados em tabela (participação %, período final)</summary><div class="tblwrap" style="max-height:220px"><table class="data compact"><thead><tr><th>Instrumento</th><th style="text-align:right">${periods[n - 1]}</th></tr></thead><tbody>${series.map(sr => `<tr><td>${sr.label}</td><td style="text-align:right">${totals[n - 1] ? fmt.n((sr.vals[n - 1] || 0) / totals[n - 1] * 100, 1) : "–"}%</td></tr>`).join("")}</tbody></table></div></details>`;
+  return out;
+}
+
+function renderPix() {
+  const el = document.getElementById("view-pix");
+  const X = state.data.pix;
+  if (X === undefined) { el.innerHTML = loadingCard("Pix e meios de pagamento"); return; }
+  if (!X || !X.disponivel) { el.innerHTML = pageHead({ title: "Pix e Meios de Pagamento" }) + `<div class="card"><h4>INDISPONÍVEL</h4><p class="src">${(X && (X.motivo || X.error)) || ""}</p></div>`; return; }
+  const px = state.px, k = X.kpis;
+  const modo = px.modo, real = px.val === "real", metr = px.metr;
+
+  /* ---------- 1. Pix em uma visão ---------- */
+  const head = pageHead({
+    title: "Pix e Meios de Pagamento", vintage: X.mes,
+    seals: `${badge("observado", "BCB: Pix_DadosAbertos, MPV, SPI")} ${badge("calculado", "valores reais (IPCA), base 100, participações e médias móveis calculados")}`,
+    desc: "Como o Pix evoluiu, quem usa, para quê, onde — e como se compara a cartões, TED, boletos e os demais instrumentos.",
+    fontes: "BCB (Pix, Meios de Pagamento, SPI, EPAE) · IBGE (população, IPCA)",
+    actions: `<button class="btn ghost small" onclick="pxCSV()">baixar CSV</button>`,
+  });
+  const kpis = `<div class="pan-kpi">
+    <div class="card kpi"><h4>Transações no mês</h4><div class="big pixnum">${fmt.n(k.qtd.v / 1e9, 2)} bi</div><div class="src">${fmt.pp(k.qtd.yoy)}% em 12m · ${X.mes} · universo doc 1201 (MPV)</div></div>
+    <div class="card kpi"><h4>Valor movimentado</h4><div class="big pixnum">${fmt.money(k.valor.v)}</div><div class="src">${fmt.pp(k.valor.yoy)}% em 12m (nominal) · ${badge("observado")}</div></div>
+    <div class="card kpi"><h4>Valor médio por transação</h4><div class="big">R$ ${fmt.n(k.ticket.v, 0)}</div><div class="src">${fmt.pp(k.ticket.yoy)}% em 12m — média esconde a diferença P2P × empresas (ver Natureza)</div></div>
+    <div class="card kpi"><h4>Usuários cadastrados (DICT)</h4><div class="big">${fmt.n(k.usuarios.v / 1e6, 1)} mi</div><div class="src">PF ${fmt.n(k.usuarios.pf / 1e6, 0)} mi · PJ ${fmt.n(k.usuarios.pj / 1e6, 1)} mi · estoque em ${k.usuarios.data} — não é "usuário ativo" (sem definição oficial)</div></div>
+    <div class="card kpi"><h4>Participação na quantidade</h4><div class="big pixnum">${fmt.n(k.part_tri.v, 1)}%</div><div class="src">das transações entre os instrumentos comparáveis · ${k.part_tri.tri} (trimestral)</div></div>
+  </div>`;
+  const sintese = `<p class="pan-sintese">${X.sintese}</p><div class="src">Texto automático determinístico · composições cobrem ${X.cobertura_tx_pct}% da quantidade (base transacional/SPI; restante liquidado nos livros dos participantes)</div>`;
+
+  /* ---------- 2. evolução ---------- */
+  const sp = X.series.Pix;
+  const val = o => metr === "q" ? o.q : (real ? o.vr : o.v);
+  const mkSerie = arr => {
+    let pts = arr.map(o => ({ x: o.p, y: val(o) })).filter(p => p.y != null);
+    if (modo === "base100") { const b = pts[0].y; pts = pts.map(p => ({ x: p.x, y: p.y / b * 100 })); }
+    if (modo === "var12") pts = pts.map((p, i) => i >= 12 ? { x: p.x, y: (p.y / pts[i - 12].y - 1) * 100 } : null).filter(Boolean);
+    return pts;
+  };
+  const ptsPix = mkSerie(sp);
+  const mm = (pts, w) => pts.map((p, i) => i >= w - 1 ? { x: p.x, y: pts.slice(i - w + 1, i + 1).reduce((s, x) => s + x.y, 0) / w } : null).filter(Boolean);
+  const unidade = modo === "var12" ? "% a/a" : modo === "base100" ? "índice (100 = início)" : metr === "q" ? "transações/mês" : (real ? "R$ constantes" : "R$");
+  const evol = sechead("Como o Pix evoluiu desde o lançamento?", `mensal desde 2020-11 · ${metr === "q" ? "quantidade" : real ? "valor real (IPCA)" : "valor nominal"}`) + `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
+      <span class="seg">${[["q", "Quantidade"], ["v", "Valor"]].map(([v2, l]) => `<button class="${metr === v2 ? "on" : ""}" onclick="pxSet('metr','${v2}')">${l}</button>`).join("")}</span>
+      <span class="seg">${[["nivel", "Nível"], ["base100", "Base 100"], ["var12", "Var. 12m"]].map(([v2, l]) => `<button class="${modo === v2 ? "on" : ""}" onclick="pxSet('modo','${v2}')">${l}</button>`).join("")}</span>
+      ${metr === "v" ? `<span class="seg">${[["nominal", "Nominal"], ["real", "Real (IPCA)"]].map(([v2, l]) => `<button class="${px.val === v2 ? "on" : ""}" onclick="pxSet('val','${v2}')">${l}</button>`).join("")}</span>` : ""}
+    </div>
+    <div class="card">${lineChart({ series: [{ pts: ptsPix, label: "Pix", color: "var(--pix)" }, { pts: mm(ptsPix, 12), label: "média móvel 12m", color: "#64748b" }], h: 280, unit: unidade, fonte: "BCB MPV", aria: "evolução do Pix" })}
+    ${leitura([["Transações por usuário", sp.length && k.usuarios.v ? `${fmt.n(k.qtd.v / k.usuarios.v, 1)} transações/mês por usuário cadastrado (razão de estoque — chave ≠ usuário)` : "–"],
+      ["Valor por usuário", k.usuarios.v ? `R$ ${fmt.n0(k.valor.v / k.usuarios.v)}/mês por usuário cadastrado` : "–"],
+      ["Cuidado", "valores nominais e reais são séries distintas; a deflação usa o IPCA até seu último mês publicado"]])}</div>`;
+
+  /* ---------- 3. Pix versus outros meios ---------- */
+  const mensais = ["Pix", "TED", "Boleto", "Cheque"];
+  const cmpMensal = lineChart({ series: mensais.map(i => { const arr = X.series[i] || []; const pts = arr.map(o => ({ x: o.p, y: metr === "q" ? o.q : o.v })).filter(p => p.y > 0); const b = pts.length ? pts.find(p => p.x >= "2021-06").y : 1; return { pts: pts.filter(p => p.x >= "2021-06").map(p => ({ x: p.x, y: p.y / b * 100 })), label: i, color: PX_COLORS[i] }; }), h: 250, unit: "base 100 = jun/2021", fonte: "BCB MPV mensal", aria: "crescimento comparado dos instrumentos mensais" });
+  const tris = X.tri.periodos.filter(t => t >= "2019");
+  const instSel = px.insts;
+  const stack = pxStackedArea(tris.map(t => t.slice(0, 7)), Object.keys(X.tri.nomes).filter(i => instSel.includes(i)).map(i => ({ label: X.tri.nomes[i], color: PX_COLORS[i], vals: tris.map(t => ((X.tri.dados[t] || {})[i] || {})[metr === "q" ? "q" : "v"] || 0) })), { aria: "participação por instrumento (trimestral)" });
+  const t0d = X.tri.dados[X.tri.tri0];
+  const foto = Object.keys(X.tri.nomes).filter(i => t0d[i] && (t0d[i].q || 0) > 0).map(i => ({ i, q: t0d[i].q, v: t0d[i].v, t: t0d[i].v / t0d[i].q })).sort((a, b) => b[metr === "q" ? "q" : "v"] - a[metr === "q" ? "q" : "v"]);
+  const fotoMax = Math.max(...foto.map(x => x[metr === "q" ? "q" : "v"]));
+  const versus = sechead("Como o Pix se compara aos outros instrumentos?", `comparação completa é TRIMESTRAL (cartões e outros não têm série mensal); nada foi interpolado`) + `
+    <div class="instpick">${Object.keys(X.tri.nomes).map(i => `<button class="${instSel.includes(i) ? "on" : ""}" onclick="pxToggleInst('${i}')">${X.tri.nomes[i]}</button>`).join("")}</div>
+    <div class="ov-2col-eq">
+      <div class="card"><h4>Participação na ${metr === "q" ? "quantidade" : "soma de valor"} — trimestral</h4>${stack}</div>
+      <div class="card"><h4>Fotografia do trimestre ${X.kpis.part_tri.tri}</h4>
+        ${foto.map(x => panBar(X.tri.nomes[x.i], x[metr === "q" ? "q" : "v"], fotoMax, v2 => metr === "q" ? fmt.n(v2 / 1e9, 1) + " bi" : fmt.money(v2), `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+        <div class="src" style="margin-top:6px">tíquete = valor ÷ quantidade — TED concentra grandes valores; cartão de crédito embute financiamento; nenhum instrumento é substituto perfeito de outro.</div></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h4>Crescimento comparado — instrumentos MENSAIS (base 100 em jun/2021)</h4>${cmpMensal}
+    ${entenda("pxcmp", [["Regra temporal", "Pix, TED, boleto e cheque têm série mensal; cartões e demais são trimestrais — por isso a comparação completa usa trimestres, e os mensais entram somados por trimestre."],
+      ["DOC e TEC", "descontinuados em 2024 — os zeros finais são reais, não ausência de dado."],
+      ["Leitura", "quantidade, valor e tíquete contam histórias diferentes: o Pix domina a quantidade; TED domina o valor médio."]])}</div>`;
+
+  /* ---------- 4. quem usa ---------- */
+  const us = X.usuarios_serie;
+  const chv = X.chaves || {};
+  const quem = sechead("Quem usa o Pix?", "estoques de fim de período — nunca somados no tempo · chave ≠ usuário") + `
+    <div class="ov-2col-eq">
+    <div class="card"><h4>Usuários cadastrados no DICT</h4>
+      ${lineChart({ series: [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }, { pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }], h: 220, unit: "usuários (estoque)", fonte: "DICT", aria: "usuários cadastrados no DICT" })}
+      ${leitura([["PJ", `${fmt.n((us[us.length - 1].pj) / 1e6, 1)} mi de empresas cadastradas`], ["Conceito", "cadastro no DICT = ter chave registrada; não mede atividade"]])}</div>
+    <div class="card"><h4>Chaves Pix — estoque em ${chv.data || "–"}</h4>
+      ${(chv.por_tipo || []).map(t2 => panBar(t2.k, t2.q, chv.por_tipo[0].q, v2 => fmt.n(v2 / 1e6, 1) + " mi")).join("")}
+      ${leitura([["Total", chv.total ? `${fmt.n(chv.total / 1e6, 0)} mi de chaves em ${chv.n_participantes} participantes` : "–"],
+        ["Chaves por usuário", chv.total && k.usuarios.v ? fmt.n(chv.total / k.usuarios.v, 2) + " (uma pessoa pode ter várias chaves)" : "–"],
+        ["Nota", `snapshot completo mais recente publicado pela fonte: ${chv.data}${chv.anterior ? "" : ""}`]])}
+      <details class="charttable"><summary>maiores participantes por chaves</summary><div class="tblwrap" style="max-height:220px"><table class="data compact"><tbody>${(chv.top_participantes || []).map(p2 => `<tr><td>${p2.nome}</td><td class="src">${p2.seg || ""}</td><td style="text-align:right">${fmt.n(p2.q / 1e6, 1)} mi</td></tr>`).join("")}</tbody></table></div></details></div>
+    </div>`;
+
+  /* ---------- 5. natureza ---------- */
+  const NATL = { P2P: "Pessoa → Pessoa (transferência pessoal)", P2B: "Pessoa → Empresa (pagamento comercial)", B2P: "Empresa → Pessoa (salários, repasses)", B2B: "Empresa → Empresa (transferência empresarial)", P2G: "Pessoa → Governo", G2P: "Governo → Pessoa (benefícios)", B2G: "Empresa → Governo", G2B: "Governo → Empresa", G2G: "Governo → Governo" };
+  const natMax = Math.max(...X.natureza.atual.map(x => x.q));
+  const natureza = sechead("Para que o Pix é usado?", `natureza dos fluxos · base transacional ${X.mes_tx} (cobertura ${X.cobertura_tx_pct}%)`) + `
+    <div class="ov-2col-eq">
+    <div class="card"><h4>Quantidade e tíquete por natureza</h4>
+      ${X.natureza.atual.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+      ${leitura([["Leitura", "P2P domina a quantidade com tíquete baixo; B2B tem poucas transações com tíquete alto — o Pix combina papéis de transferência pessoal, maquininha e tesouraria"], ["Governo", "fluxos G2P/P2G identificados pela fonte"]])}</div>
+    <div class="card"><h4>Uso comercial: participação do P2B na quantidade</h4>
+      ${lineChart({ series: [{ pts: X.natureza.serie_p2b.map(o => ({ x: o.p, y: o.v })), label: "P2B", color: "var(--pix)" }, { pts: X.natureza.serie_p2p.map(o => ({ x: o.p, y: o.v })), label: "P2P", color: "#64748b" }], h: 200, unit: "% da quantidade", aria: "participação de P2B e P2P" })}
+      <h4 style="margin-top:12px">Quem paga, por faixa etária</h4>
+      ${X.natureza.idade_pagador.filter(x => !["Nao se aplica", "Nao informado"].includes(x.k)).map(x => panBar(x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}%`)).join("")}
+      <div class="src" style="margin-top:4px">idade disponível apenas para pagadores PF; "não se aplica" = PJ.</div></div>
+    </div>`;
+
+  /* ---------- 6. geografia ---------- */
+  const G = X.geografia;
+  const gmet = px.gmet, persp = px.gpersp;
+  const GMETS = { q_hab: ["Transações por habitante", v2 => fmt.n(v2, 1)], v_hab: ["R$ por habitante", v2 => "R$ " + fmt.n0(v2)], t_pag: ["Valor médio (R$)", v2 => "R$ " + fmt.n(v2, 0)], v_abs: ["Valor total", v2 => fmt.money(v2)], yoy_v: ["Crescimento 12m (%)", v2 => fmt.pp(v2) + "%"] };
+  const gval = u => { if (gmet === "v_abs") return persp === "rec" ? u.v_rec : u.v_pag; if (gmet === "q_hab") return persp === "rec" ? null : u.q_hab; if (gmet === "v_hab") return persp === "rec" ? null : u.v_hab; if (gmet === "t_pag") return u.t_pag; return u.yoy_v; };
+  const gvals = G.ufs.map(gval);
+  const gscale = panScale(gvals, gmet === "yoy_v" ? "div0" : "seq");
+  const gpaths = G.ufs.map(u => {
+    const d = (G.geo.paths || {})[u.uf];
+    if (!d) return "";
+    const tip = encodeURIComponent(`<div class="tt-date">${u.nome} (${u.uf})</div>
+      <div class="tt-row"><span class="tt-lbl">pagador: valor</span><span class="tt-val">${fmt.money(u.v_pag)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">recebedor: valor</span><span class="tt-val">${fmt.money(u.v_rec)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">transações/habitante</span><span class="tt-val">${fmt.n(u.q_hab, 1)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">R$/habitante</span><span class="tt-val">${fmt.n0(u.v_hab)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">valor médio</span><span class="tt-val">R$ ${fmt.n(u.t_pag, 0)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">crescimento 12m</span><span class="tt-val">${fmt.pp(u.yoy_v)}%</span></div>`);
+    return `<path d="${d}" fill="${gscale(gval(u))}" data-tip="${tip}"></path>`;
+  }).join("");
+  const M2 = state.data.pix_mun;
+  const munq = (px.munq || "").toLowerCase();
+  const munRows = M2 && M2.municipios ? M2.municipios.filter(m2 => !munq || m2.mun.toLowerCase().includes(munq) || (m2.uf || "").toLowerCase() === munq).slice(0, 25) : [];
+  const geog = sechead("Onde o Pix acontece?", `${G.mes} · padrão NORMALIZADO por habitante (valores absolutos favorecem estados populosos)`) + `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
+      <span class="seg">${Object.entries(GMETS).map(([k2, [l]]) => `<button class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
+      <span class="seg">${[["pag", "Pagador"], ["rec", "Recebedor"]].map(([v2, l]) => `<button class="${persp === v2 ? "on" : ""}" onclick="pxSet('gpersp','${v2}')">${l}</button>`).join("")}</span>
+    </div>
+    <div class="ov-2col-eq">
+      <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="img" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
+      <div class="src" style="margin-top:6px">${G.nota_perspectiva} Métricas por habitante existem só na perspectiva do pagador (denominador populacional).</div></div>
+      <div class="card"><h4>Municípios — os maiores por valor pago</h4>
+      ${M2 === undefined ? `<button class="btn" onclick="pxLoadMun()">carregar ranking municipal (5,5 mil municípios)</button>` :
+        M2 === null ? `<p class="src"><span class="spin"></span> carregando…</p>` :
+        `<input id="pxmunq" placeholder="filtrar por nome ou sigla da UF" value="${px.munq || ""}" oninput="pxMunFiltro()" style="width:100%;margin:4px 0 8px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)">
+        <div class="tblwrap" style="max-height:340px"><table class="data compact"><thead><tr><th>Município</th><th>UF</th><th style="text-align:right">Valor pago</th><th style="text-align:right">Transações</th><th style="text-align:right">Pessoas pagadoras</th></tr></thead>
+        <tbody>${munRows.map(m2 => `<tr><td>${m2.mun}</td><td>${m2.uf || "–"}</td><td style="text-align:right">${fmt.money(m2.v_pag)}</td><td style="text-align:right">${fmt.n0(m2.q_pag)}</td><td style="text-align:right">${fmt.n0(m2.pes_pag)}</td></tr>`).join("")}</tbody></table></div>
+        <div class="src">mapa municipal coroplético: fase 2 (malha de 5.570 polígonos); rankings e busca já cobrem o nível municipal.</div>`}</div>
+    </div>`;
+
+  /* ---------- 7. EPAE ---------- */
+  const E = X.epae || {};
+  let epae = "";
+  if (E.setores) {
+    const smax = Math.max(...E.setores.map(s => s.v));
+    const NATREL = { "P2B": "de pessoas", "B2B": "de empresas", "G2B": "do governo", "P2P": "entre pessoas", "B2P": "a pessoas", "Nao disponivel": "n.d." };
+    const sel = E.setores.find(s => s.setor === px.setor) || E.setores[0];
+    const mrow = E.matriz_naturezarel[sel.setor] || {};
+    epae = sechead("Pix e atividade econômica — quem recebe, por setor", `EPAE · ${E.mes} · fluxo financeiro RECEBIDO — não é receita, consumo nem faturamento`) + `
+      <div class="ov-2col-eq">
+      <div class="card"><h4>Setores que mais recebem via Pix</h4>
+        ${E.setores.slice(0, 14).map(s => `<div onclick="pxSet('setor','${s.setor.replace(/'/g, "")}')" style="cursor:pointer">${panBar(s.setor.length > 42 ? s.setor.slice(0, 40) + "…" : s.setor, s.v, smax, v2 => fmt.money(v2), `${fmt.n(s.part, 1)}% · ${s.yoy != null ? fmt.pp(s.yoy) + "% 12m" : ""}`)}</div>`).join("")}
+        <div class="src">top 5 concentram ${E.concentracao_top5_pct}% do valor · clique num setor para o detalhe</div></div>
+      <div class="card"><h4>${sel.setor}</h4>
+        <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr))">
+          <div><div class="src">recebe/mês</div><div class="big" style="font-size:19px">${fmt.money(sel.v)}</div></div>
+          <div><div class="src">participação</div><div class="big" style="font-size:19px">${fmt.n(sel.part, 1)}%</div></div>
+          <div><div class="src">tíquete</div><div class="big" style="font-size:19px">R$ ${fmt.n(sel.t, 0)}</div></div>
+          <div><div class="src">crescimento 12m</div><div class="big" style="font-size:19px">${sel.yoy != null ? fmt.pp(sel.yoy) + "%" : "n.d."}</div></div>
+        </div>
+        <h5 style="margin:10px 0 4px">De quem recebe</h5>
+        ${Object.entries(mrow).sort((a, b) => b[1] - a[1]).map(([n2, v2]) => panBar(NATREL[n2] || n2, v2, Math.max(...Object.values(mrow)), vv => fmt.money(vv))).join("")}
+        ${leitura([["MEI", sel.mei_pct != null ? `${fmt.n(sel.mei_pct, 1)}% do valor recebido vai a MEIs` : "n.d."], ["Compras", sel.compra_pct != null ? `${fmt.n(sel.compra_pct, 1)}% marcado como compra` : "n.d."]])}
+        <div class="src" style="margin-top:6px">Limite da fonte pública: o lado PAGADOR aparece apenas como pessoa/empresa/governo — a matriz completa setor-pagador × setor-recebedor não existe na EPAE aberta; o "para quem paga" de cada setor é, portanto, indisponível (declarado).</div></div>
+      </div>`;
+  }
+
+  /* ---------- 8. funcionalidades ---------- */
+  const F = X.formas;
+  const shareChart = (pares) => lineChart({ series: pares.map(([s, l, c]) => ({ pts: s.map(o => ({ x: o.p, y: o.v })).filter(p2 => p2.y != null && p2.x >= "2022-01"), label: l, color: c })), h: 220, unit: "% da quantidade de transações", aria: "participação das funcionalidades" });
+  const func = sechead("Funcionalidades: QR Code, aproximação, Pix Automático e iniciadores", `forma de iniciação · base transacional (cobertura ${X.cobertura_tx_pct}%)`) + `
+    <div class="ov-2col-eq">
+    <div class="card"><h4>Como as transações são iniciadas (${X.mes_tx})</h4>
+      ${F.atual.map(x => panBar(F.nomes[x.k] || x.k, x.q, F.atual[0].q, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}%`)).join("")}
+      ${leitura([["QR dinâmico", "gerado por transação, típico de cobrança comercial — é o proxy observável de 'Pix Cobrança' (a fonte não publica série própria da funcionalidade)"], ["Sem dados públicos", "Pix Cobrança como produto e transações agendadas não têm série oficial — nada foi estimado"]])}</div>
+    <div class="card"><h4>Adoção das funcionalidades novas</h4>
+      ${shareChart([[F.serie_auto, "Pix Automático", "var(--pix)"], [F.serie_inic, "Iniciador (Open Finance)", "#6b46a3"], [F.serie_apdn, "Aproximação (dinâmico)", "#b45309"], [F.serie_apes, "Aproximação (estático)", "#d9a514"]])}
+      <h5 style="margin:10px 0 4px">Pix Saque e Pix Troco (finalidade)</h5>
+      ${X.finalidades.atual.filter(x => x.k !== "Pix").map(x => panBar(x.k, x.q, X.finalidades.atual.find(y => y.k !== "Pix").q, v2 => fmt.n(v2 / 1e6, 1) + " mi", `tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+    </div></div>`;
+
+  /* ---------- 9. MED ---------- */
+  const md = X.med, md0 = md[md.length - 1] || {};
+  const medS = sechead("Segurança: o Mecanismo Especial de Devolução (MED)", "conceitos oficiais — contestação ≠ fraude confirmada") + `
+    <div class="ov-2col-eq">
+    <div class="card"><h4>Contestações aceitas a cada 100 mil transações</h4>
+      ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.aceitas_100mil })), label: "aceitas/100 mil", color: "#b91c1c" }], h: 200, unit: "por 100 mil transações", fonte: "BCB MED", aria: "incidência de contestações aceitas" })}
+      ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.pct_devolucao })), label: "% devolvido", color: "var(--pix)" }], h: 160, unit: "% do valor contestado devolvido", aria: "taxa de devolução do MED" })}</div>
+    <div class="card"><h4>Último mês (${md0.p || "–"})</h4>
+      <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
+        <div><div class="src">Pix contestados</div><div class="big" style="font-size:20px">${fmt.n0(md0.contestados_q)}</div></div>
+        <div><div class="src">contestações aceitas</div><div class="big" style="font-size:20px">${fmt.n0(md0.aceitas_q)}</div></div>
+        <div><div class="src">valor contestado (aceitas)</div><div class="big" style="font-size:20px">${fmt.money(md0.valor_contestado)}</div></div>
+        <div><div class="src">% devolvido</div><div class="big" style="font-size:20px">${fmt.n(md0.pct_devolucao, 1)}%</div></div>
+        <div><div class="src">usuários com marcação de fraude</div><div class="big" style="font-size:20px">${fmt.n0(md0.usuarios_marcados)}</div></div>
+        <div><div class="src">chaves com marcação</div><div class="big" style="font-size:20px">${fmt.n0(md0.chaves_marcadas)}</div></div>
+      </div>
+      ${entenda("pxmed", [["Cadeia de conceitos", "transação CONTESTADA → contestação ACEITA → DEVOLUÇÃO (integral ou parcial). 'Marcação de fraude' é um registro no DICT, não sentença."],
+        ["Por que a devolução parcial", "o MED só alcança o saldo remanescente na conta do recebedor — daí o % devolvido baixo."],
+        ["O que NÃO afirmamos", "nenhum campo aqui é 'fraude confirmada'; a fonte pública não oferece essa classificação."]])}</div>
+    </div>`;
+
+  /* ---------- 10. infraestrutura ---------- */
+  const S = X.spi;
+  const infra = sechead("Infraestrutura: o SPI por dentro", S.nota) + `
+    <div class="ov-3col">
+    <div class="card"><h4>Liquidação diária no SPI (90 dias)</h4>${lineChart({ series: [{ pts: S.diario_ult90.map(o => ({ x: o.p, y: o.q })), label: "transações/dia", color: "var(--pix)" }], h: 180, unit: "transações/dia", aria: "liquidação diária no SPI" })}
+      <div class="src">pico histórico: ${S.pico ? `${fmt.n0(S.pico.q)} transações em ${S.pico.p}` : "–"}</div></div>
+    <div class="card"><h4>Distribuição intradia (média)</h4>${lineChart({ series: [{ pts: S.intradia.map(o => ({ x: o.h, y: o.q })), label: "média por horário", color: "#1d4e89" }], h: 180, unit: "transações", aria: "curva intradia média" })}
+      <div class="src">horário de maior uso: ${S.intradia.length ? S.intradia.reduce((a, b) => (b.q || 0) > (a.q || 0) ? b : a).h : "–"}</div></div>
+    <div class="card"><h4>Disponibilidade do SPI</h4>${lineChart({ series: [{ pts: S.disponibilidade.map(o => ({ x: String(o.p), y: o.i })), label: "índice", color: "#2f7d4f" }], h: 180, unit: "% de disponibilidade", dec: 3, aria: "índice de disponibilidade do SPI" })}
+      <div class="src">mínimo normativo: ${S.disponibilidade.length ? S.disponibilidade[S.disponibilidade.length - 1].min : "–"}% · participantes com chaves: ${chv.n_participantes || "–"}</div></div>
+    </div>`;
+
+  /* ---------- metodologia ---------- */
+  const metodo = `<div class="card" style="margin-top:22px"><h4>Cautelas e conceitos desta página</h4>
+    <ol style="max-width:1100px;line-height:1.7;font-size:12.8px;color:var(--text-2)">${X.cautelas.map(c => `<li>${c}</li>`).join("")}</ol>
+    <details class="charttable"><summary>catálogo de métricas (${X.catalogo.length})</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>id</th><th>Nome</th><th>Conceito</th><th>Fórmula</th><th>Unid.</th><th>Freq.</th><th>Fonte</th><th>Início</th><th>Limitações</th></tr></thead>
+    <tbody>${X.catalogo.map(c => `<tr><td class="src">${c.id}</td><td><b>${c.nome}</b></td><td class="src">${c.conceito}</td><td class="src">${c.formula}</td><td>${c.unidade}</td><td>${c.periodicidade}</td><td class="src">${c.fonte}</td><td>${c.inicio}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div></details></div>`;
+
+  el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + geog + epae + func + medS + infra + metodo;
+}
+window.pxCSV = () => {
+  const X = state.data.pix; if (!X || !X.disponivel) return;
+  const rows = X.series.Pix.map(o => [o.p, o.q, o.v, o.vr ? Math.round(o.vr) : "", o.t].join(";"));
+  dlFile("pix_series_mensais.csv", "﻿mes;quantidade;valor_nominal_brl;valor_real_brl;valor_medio_brl\n" + rows.join("\n"), "text/csv;charset=utf-8");
 };
 
 /* ================= PANORAMA DO CRÉDITO (SCR.data v2 — regional e socioeconômico) ================= */
@@ -4438,9 +4751,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes };
+const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
