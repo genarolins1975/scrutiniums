@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-08-01T11:24:46+00:00"
+ "gerado_em": "2026-08-02T10:59:20+00:00"
 }

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T11:24:46+00:00",
+ "gerado_em": "2026-08-02T10:59:20+00:00",
  "alertas": [
   {
    "id": "comprometimento_high",
@@ -11,23 +11,37 @@
    "limiar": 28.0,
    "fonte": "BCB/SGS",
    "ref": "2026-05-01",
-   "disparos_anteriores": 38,
+   "disparos_anteriores": 39,
    "recorrente": true
   },
   {
    "id": "stale_data:ivgr",
    "nivel": "informativo",
-   "titulo": "Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 122 dias",
+   "titulo": "Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 123 dias",
    "explicacao": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
    "serie": "ivgr",
-   "valor": 122,
+   "valor": 123,
    "limiar": 100,
    "fonte": "BCB/SGS",
-   "disparos_anteriores": 0,
-   "recorrente": false
+   "disparos_anteriores": 1,
+   "recorrente": true
   }
  ],
  "historico": [
+  {
+   "run_at": "2026-08-02T10:59:20+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.48
+  },
+  {
+   "run_at": "2026-08-02T10:59:20+00:00",
+   "alert_id": "stale_data:ivgr",
+   "nivel": "informativo",
+   "titulo": "Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 123 dias",
+   "valor": 123.0
+  },
   {
    "run_at": "2026-08-01T11:24:46+00:00",
    "alert_id": "comprometimento_high",
@@ -573,20 +587,6 @@
    "nivel": "atencao",
    "titulo": "Comprometimento de renda acima de 28%",
    "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T02:30:52+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 117 dias",
-   "valor": 117.0
-  },
-  {
-   "run_at": "2026-07-28T02:30:52+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 117 dias",
-   "valor": 117.0
   }
  ],
  "regras_configuradas": [

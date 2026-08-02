@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-01T11:24:46+00:00",
+ "gerado_em": "2026-08-02T10:59:20+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
@@ -768,104 +768,104 @@
      {
       "h": 1,
       "ref_date": "2026-07-01",
-      "p50": 73.9676,
-      "p10": 41.2801,
-      "p90": 101.0809
+      "p50": 96.4686,
+      "p10": 60.1884,
+      "p90": 118.7672
      },
      {
       "h": 3,
       "ref_date": "2026-09-01",
-      "p50": 71.11,
-      "p10": 37.8092,
-      "p90": 101.7175
+      "p50": 95.1693,
+      "p10": 56.4468,
+      "p90": 126.0373
      },
      {
       "h": 6,
       "ref_date": "2026-12-01",
-      "p50": 60.7283,
-      "p10": 27.4719,
-      "p90": 97.695
+      "p50": 87.7904,
+      "p10": 51.005,
+      "p90": 119.1798
      },
      {
       "h": 9,
       "ref_date": "2027-03-01",
-      "p50": 65.6266,
-      "p10": 45.8063,
-      "p90": 100.9487
+      "p50": 91.9456,
+      "p10": 70.9246,
+      "p90": 126.504
      },
      {
       "h": 12,
       "ref_date": "2027-06-01",
-      "p50": 61.8102,
-      "p10": 45.4935,
-      "p90": 89.3221
+      "p50": 90.9482,
+      "p10": 72.1543,
+      "p90": 117.3925
      }
     ],
     "diagnostico": {
      "1": {
       "pesos": {
-       "ultimo_valor": 0.157,
-       "sazonal_ingenuo": 0.164,
-       "drift": 0.155,
-       "media_movel_6m": 0.176,
-       "ar1_diferencas": 0.18,
-       "holt": 0.167
+       "ultimo_valor": 0.16,
+       "sazonal_ingenuo": 0.168,
+       "drift": 0.158,
+       "media_movel_6m": 0.175,
+       "ar1_diferencas": 0.176,
+       "holt": 0.163
       },
-      "mae_ensemble_backtest": 18.6635,
-      "mae_naive_backtest": 19.8286,
-      "ganho_vs_naive_pct": 5.9,
+      "mae_ensemble_backtest": 18.5167,
+      "mae_naive_backtest": 19.3143,
+      "ganho_vs_naive_pct": 4.1,
       "n_backtests": 35
      },
      "3": {
       "pesos": {
        "ultimo_valor": 0.149,
-       "sazonal_ingenuo": 0.222,
-       "drift": 0.144,
-       "media_movel_6m": 0.176,
-       "ar1_diferencas": 0.164,
-       "holt": 0.144
+       "sazonal_ingenuo": 0.232,
+       "drift": 0.145,
+       "media_movel_6m": 0.179,
+       "ar1_diferencas": 0.156,
+       "holt": 0.139
       },
-      "mae_ensemble_backtest": 22.6133,
-      "mae_naive_backtest": 25.2647,
+      "mae_ensemble_backtest": 22.819,
+      "mae_naive_backtest": 25.5,
       "ganho_vs_naive_pct": 10.5,
       "n_backtests": 34
      },
      "6": {
       "pesos": {
-       "ultimo_valor": 0.174,
-       "sazonal_ingenuo": 0.287,
-       "drift": 0.163,
-       "media_movel_6m": 0.205,
-       "ar1_diferencas": 0.171
+       "ultimo_valor": 0.171,
+       "sazonal_ingenuo": 0.293,
+       "drift": 0.16,
+       "media_movel_6m": 0.208,
+       "ar1_diferencas": 0.168
       },
-      "mae_ensemble_backtest": 23.4585,
+      "mae_ensemble_backtest": 23.127,
       "mae_naive_backtest": 27.0323,
-      "ganho_vs_naive_pct": 13.2,
+      "ganho_vs_naive_pct": 14.4,
       "n_backtests": 31
      },
      "9": {
       "pesos": {
-       "ultimo_valor": 0.164,
-       "sazonal_ingenuo": 0.253,
+       "ultimo_valor": 0.166,
+       "sazonal_ingenuo": 0.249,
        "drift": 0.15,
-       "media_movel_6m": 0.263,
-       "ar1_diferencas": 0.171
+       "media_movel_6m": 0.269,
+       "ar1_diferencas": 0.168
       },
-      "mae_ensemble_backtest": 20.7387,
-      "mae_naive_backtest": 25.3571,
-      "ganho_vs_naive_pct": 18.2,
+      "mae_ensemble_backtest": 19.3638,
+      "mae_naive_backtest": 23.3929,
+      "ganho_vs_naive_pct": 17.2,
       "n_backtests": 28
      },
      "12": {
       "pesos": {
-       "ultimo_valor": 0.247,
-       "sazonal_ingenuo": 0.247,
-       "media_movel_6m": 0.246,
-       "ar1_diferencas": 0.26
+       "ultimo_valor": 0.245,
+       "sazonal_ingenuo": 0.245,
+       "media_movel_6m": 0.27,
+       "ar1_diferencas": 0.24
       },
-      "mae_ensemble_backtest": 16.693,
-      "mae_naive_backtest": 16.88,
-      "ganho_vs_naive_pct": 1.1,
+      "mae_ensemble_backtest": 15.497,
+      "mae_naive_backtest": 15.84,
+      "ganho_vs_naive_pct": 2.2,
       "n_backtests": 25
      }
     },

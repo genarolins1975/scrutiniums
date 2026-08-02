@@ -1,14 +1,14 @@
 {
  "cambio": {
-  "score": 89.3,
+  "score": 88.6,
   "componentes": {
    "completude": 99.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 882,
   "n_revisoes": 0,
@@ -24,7 +24,7 @@
    "estabilidade": 94.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 2,
@@ -32,15 +32,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pf": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -48,15 +48,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pj": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -64,15 +64,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_total": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -88,7 +88,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -96,15 +96,15 @@
   "fonte": "CNJ/DataJud"
  },
  "credito_pib": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -112,15 +112,15 @@
   "fonte": "BCB/SGS"
  },
  "desemprego": {
-  "score": 89.2,
+  "score": 88.5,
   "componentes": {
    "completude": 99.2,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 121,
   "n_revisoes": 0,
@@ -136,7 +136,7 @@
    "estabilidade": 94.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 2,
@@ -152,7 +152,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -160,31 +160,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_agregado": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 351,
+  "n_revisoes": 441,
   "nome": "Falências ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjba": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -192,15 +192,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjgo": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -208,15 +208,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjmg": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -224,15 +224,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjpr": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -240,31 +240,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrj": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 27,
+  "n_revisoes": 54,
   "nome": "Falências ajuizadas — TJRJ (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrs": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -272,34 +272,34 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsc": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 71,
+  "n_revisoes": 143,
   "nome": "Falências ajuizadas — TJSC (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsp": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 178,
+  "n_revisoes": 249,
   "nome": "Falências ajuizadas — TJSP (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
@@ -312,7 +312,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -320,15 +320,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pf": {
-  "score": 89.2,
+  "score": 88.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 0,
@@ -336,15 +336,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pj": {
-  "score": 88.3,
+  "score": 87.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -352,15 +352,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_total": {
-  "score": 88.3,
+  "score": 87.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -368,15 +368,15 @@
   "fonte": "BCB/SGS"
  },
  "ipca": {
-  "score": 89.2,
+  "score": 88.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 0,
@@ -392,7 +392,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 122,
+  "dias_sem_atualizar": 123,
   "ultima_ref": "2026-04-01",
   "n_obs": 172,
   "n_revisoes": 0,
@@ -408,7 +408,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 8,
+  "dias_sem_atualizar": 9,
   "ultima_ref": "2026-07-24",
   "n_obs": 13,
   "n_revisoes": 0,
@@ -424,7 +424,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -440,7 +440,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -456,7 +456,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -472,7 +472,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -488,7 +488,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 8,
+  "dias_sem_atualizar": 9,
   "ultima_ref": "2026-07-24",
   "n_obs": 13,
   "n_revisoes": 0,
@@ -504,7 +504,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -520,7 +520,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 37,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -528,15 +528,15 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "papelao": {
-  "score": 89.3,
+  "score": 88.6,
   "componentes": {
    "completude": 99.8,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 558,
   "n_revisoes": 0,
@@ -552,7 +552,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -568,7 +568,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -584,7 +584,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -600,7 +600,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -616,7 +616,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -632,7 +632,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -648,7 +648,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -664,7 +664,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -680,7 +680,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -696,7 +696,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -712,7 +712,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -728,7 +728,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -744,7 +744,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -760,7 +760,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -776,7 +776,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -792,7 +792,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -808,7 +808,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -824,7 +824,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -840,7 +840,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -856,7 +856,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -872,7 +872,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -888,7 +888,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -904,7 +904,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -920,7 +920,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -936,7 +936,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -952,7 +952,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -968,7 +968,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 92,
+  "dias_sem_atualizar": 93,
   "ultima_ref": "2026-05-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -976,31 +976,31 @@
   "fonte": "IBGE"
  },
  "recuperacao_judicial_agregado": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 267,
+  "n_revisoes": 357,
   "nome": "Recuperações judiciais ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjba": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1008,15 +1008,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjgo": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1024,15 +1024,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjmg": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1040,15 +1040,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjpr": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1056,15 +1056,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrj": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1072,15 +1072,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrs": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1088,15 +1088,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsc": {
-  "score": 84.1,
+  "score": 83.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1104,31 +1104,31 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsp": {
-  "score": 69.1,
+  "score": 68.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 89,
+  "n_revisoes": 179,
   "nome": "Recuperações judiciais ajuizadas — TJSP (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "saldo_pf": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1136,15 +1136,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_pj": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1152,15 +1152,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_total": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1176,7 +1176,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": -4,
+  "dias_sem_atualizar": -3,
   "ultima_ref": "2026-08-05",
   "n_obs": 2774,
   "n_revisoes": 0,
@@ -1184,15 +1184,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pf": {
-  "score": 88.3,
+  "score": 87.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -1200,15 +1200,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pj": {
-  "score": 88.8,
+  "score": 88.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1216,15 +1216,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_total": {
-  "score": 88.8,
+  "score": 88.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1232,15 +1232,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pf": {
-  "score": 88.3,
+  "score": 87.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -1248,15 +1248,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pj": {
-  "score": 88.8,
+  "score": 88.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1264,15 +1264,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_total": {
-  "score": 88.8,
+  "score": 88.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 64.4,
+   "atualidade": 62.2,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 61,
+  "dias_sem_atualizar": 62,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,

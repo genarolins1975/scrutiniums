@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:38+00:00"
+    "last_collected_at": "2026-08-02T10:55:45+00:00"
    },
    "obs": [
     {
@@ -64,7 +64,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -82,7 +82,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:38+00:00"
+    "last_collected_at": "2026-08-02T10:55:45+00:00"
    },
    "obs": [
     {
@@ -131,7 +131,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -149,7 +149,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:39+00:00"
+    "last_collected_at": "2026-08-02T10:55:46+00:00"
    },
    "obs": [
     {
@@ -198,7 +198,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -216,7 +216,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:44+00:00"
+    "last_collected_at": "2026-08-02T10:55:52+00:00"
    },
    "obs": [
     {
@@ -281,7 +281,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 8,
+    "dias_sem_atualizar": 9,
     "ultima_ref": "2026-07-24",
     "n_obs": 13,
     "n_revisoes": 0
@@ -299,7 +299,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:47+00:00"
+    "last_collected_at": "2026-08-02T10:55:55+00:00"
    },
    "obs": [
     {
@@ -348,7 +348,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -366,7 +366,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:43+00:00"
+    "last_collected_at": "2026-08-02T10:55:51+00:00"
    },
    "obs": [
     {
@@ -415,7 +415,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -433,7 +433,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:45+00:00"
+    "last_collected_at": "2026-08-02T10:55:53+00:00"
    },
    "obs": [
     {
@@ -498,7 +498,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 8,
+    "dias_sem_atualizar": 9,
     "ultima_ref": "2026-07-24",
     "n_obs": 13,
     "n_revisoes": 0
@@ -516,7 +516,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-01T11:11:48+00:00"
+    "last_collected_at": "2026-08-02T10:55:56+00:00"
    },
    "obs": [
     {
@@ -565,7 +565,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 36,
+    "dias_sem_atualizar": 37,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -2304,7 +2304,7 @@
   "por_papel": {
    "CONTA": 85,
    "PAGTO": 70,
-   "DADOS": 79,
+   "DADOS": 80,
    "CCORR": 23,
    "RA/CA": 1,
    "FORTEC": 1,
