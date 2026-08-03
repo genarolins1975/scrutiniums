@@ -223,7 +223,7 @@ def build(con, cfg):
             "n": melhor["n"],
             "status": ("antecedente candidato (correlação defasada > contemporânea)" if antecede
                        else "associação contemporânea/exploratória"),
-            "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Antecedentes).",
+            "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes).",
         })
 
     # ---------- alertas (regra transparente: z>1 com alta 3m e persistência ≥2 meses) ----------
@@ -273,7 +273,7 @@ def build(con, cfg):
         "gerado_em": gerado,
         "versao_metodologica": "v1.0 (MVP Fase 1)",
         "principio": ("Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. "
-                      "'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Antecedentes."),
+                      "'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes."),
         "sintese": {"texto": sintese, "confianca": confianca, "n_deteriorando": n_up, "n_melhorando": n_down,
                     "inad_reagiu": inad_reagiu, "cobertura": f"{len(subindices)}/6 subíndices (Buscas integrado via exportação manual — página Tendências de Busca)"},
         "subindices": subindices,

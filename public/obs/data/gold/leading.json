@@ -1,7 +1,7 @@
 {
  "gerado_em": "2026-08-02T10:59:28+00:00",
  "versao_metodologica": "v1.0 (MVP Fase 1)",
- "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Antecedentes.",
+ "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes.",
  "sintese": {
   "texto": "1 de 4 famílias de sinais estão em deterioração e 1 em melhora. As maiores pressões vêm de estresse empresarial e judicial e pressão financeira das famílias. A inadimplência observada também já subiu no período — sinais e materialização caminham juntos.",
   "confianca": "moderada",
@@ -2926,7 +2926,7 @@
    "melhor_corr": -0.312,
    "n": 64,
    "status": "antecedente candidato (correlação defasada > contemporânea)",
-   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Antecedentes)."
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
   },
   {
    "signal_id": "rj_yoy",
@@ -3001,7 +3001,7 @@
    "melhor_corr": 0.307,
    "n": 66,
    "status": "antecedente candidato (correlação defasada > contemporânea)",
-   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Antecedentes)."
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
   },
   {
    "signal_id": "fidc_inad_pct",
@@ -3147,7 +3147,7 @@
    "melhor_corr": 0.849,
    "n": 68,
    "status": "antecedente candidato (correlação defasada > contemporânea)",
-   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Antecedentes)."
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
   },
   {
    "signal_id": "reclamacoes_mediana",

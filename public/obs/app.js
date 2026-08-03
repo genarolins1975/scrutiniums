@@ -34,7 +34,7 @@ function loadLS(k, dflt) { try { const v = localStorage.getItem(k); return v ? J
 function saveLS(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 function setFilter(k, v) { state.filters[k] = v; saveLS("obc_filters", state.filters); syncHash(); rerenderCurrent(); }
 
-const ROUTES = { overview: "/overview", pulse: "/credit", antecedentes: "/leading-indicators",
+const ROUTES = { overview: "/overview", pulse: "/credit",
   sectors: "/sectors", rj: "/recoveries", institutions: "/institutions", inst: "/institutions/",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
@@ -51,9 +51,13 @@ function appPath() {
   return p.startsWith(BASE + "/") ? p.slice(BASE.length) : p;
 }
 
+// Rotas aposentadas que continuam válidas: /leading-indicators era a página
+// "Ciclo & Antecedentes", hoje a aba "Protocolo & regimes" do radar.
+const ROTAS_APOSENTADAS = { "/leading-indicators": { view: "leading", tab: "protocolo" } };
 function currentView() {
   if (PATH_MODE) {
     const p = appPath();
+    if (ROTAS_APOSENTADAS[p]) return ROTAS_APOSENTADAS[p].view;
     if (p.startsWith("/institutions/") && p.length > 14) return "inst";
     if (p.startsWith("/products/") && p.length > 10) return "product";
     if (p.startsWith("/sectors/") && p.length > 9) return "sector";
@@ -61,7 +65,9 @@ function currentView() {
     if (hit) return hit[0];
   }
   const h = location.hash.replace("#", "");
-  return (h.split("?")[0]) || "overview";
+  const nome = h.split("?")[0];
+  if (ROTAS_APOSENTADAS["/" + nome]) return ROTAS_APOSENTADAS["/" + nome].view;
+  return nome || "overview";
 }
 function buildQuery(view) {
   const qs = new URLSearchParams();
@@ -150,6 +156,10 @@ function parseHash() {
   if (qs.get("csize")) state.cmp.size = qs.get("csize");
   if (qs.get("cref")) state.cmp.ref = qs.get("cref");
   if (qs.get("cgrupo")) state.cmp.grupo = qs.get("cgrupo");
+  // a rota aposentada pode chegar pelo caminho (produção) ou pelo hash (uso local)
+  const nomeHash = location.hash.replace("#", "").split("?")[0];
+  const aposentada = ROTAS_APOSENTADAS[appPath()] || (nomeHash ? ROTAS_APOSENTADAS["/" + nomeHash] : null);
+  if (aposentada) state.lead.tab = aposentada.tab;
   if (qs.get("ltab")) state.lead.tab = qs.get("ltab");
   if (qs.get("tfam")) state.tr.fam = qs.get("tfam");
   if (qs.get("pmet")) state.pan.met = qs.get("pmet");
@@ -194,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.40.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.41.2"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -202,7 +212,6 @@ const APP_VERSION = "0.40.0"; // sincronizada com o cache-buster dos assets no i
 const CORE_FILES = ["meta", "pulse", "ibcc", "overview", "alerts"];
 const VIEW_DATA = {
   pulse: ["regimes"],
-  antecedentes: ["antecedentes", "regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
   institutions: ["institutions", "inst_index", "npl"], inst: ["inst_pages", "institutions", "inst_index", "npl"],
@@ -210,7 +219,7 @@ const VIEW_DATA = {
   compare: ["compare", "inst_index"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
   market: ["market"],
-  leading: ["leading"],
+  leading: ["leading", "antecedentes", "regimes"],
   trends: ["trends"],
   panorama: ["panorama"],
   pix: ["pix"],
@@ -626,7 +635,7 @@ function renderLeading() {
   const L = state.data.leading;
   if (!L || !L.subindices) { el.innerHTML = loadingCard("sinais antecedentes"); return; }
   const t = state.lead.tab;
-  const tabs = [["geral", "Visão Geral"], ["garantias", "Garantias"], ["empresarial", "Empresarial & Judicial"], ["naobancario", "Crédito Não Bancário"], ["consumidor", "Consumidor"], ["regional", "Regional"], ["buscas", "Buscas"], ["metodo", "Metodologia & Licenças"]];
+  const tabs = [["geral", "Visão Geral"], ["garantias", "Garantias"], ["empresarial", "Empresarial & Judicial"], ["naobancario", "Crédito Não Bancário"], ["consumidor", "Consumidor"], ["regional", "Regional"], ["buscas", "Buscas"], ["protocolo", "Protocolo & regimes"], ["metodo", "Metodologia & Licenças"]];
   const head = pageHead({
     title: "Sinais Antecedentes de Estresse de Crédito <span class='chip' style='vertical-align:middle'>MVP</span>",
     desc: "Sinais econômicos, patrimoniais, jurídicos e de crédito não bancário que podem aparecer antes da deterioração dos indicadores convencionais — com a distinção explícita entre coincidente, antecedente candidato, contexto e associação.",
@@ -680,7 +689,7 @@ function renderLeading() {
     </div>
     ${sechead("Subíndices — decompostos, nunca um número único opaco", "como ler: 0 = a média histórica do próprio indicador; +1σ = um desvio-padrão acima dela (estresse fora do usual); valores negativos = folga. Cada componente é comparado só com a própria história.")}
     <div class="ov-2col-eq">${subs.map(subCard).join("")}</div>
-    ${sechead("As defasagens sugerem antecedência?", "associação exploratória — promoção plena exige o protocolo da aba Antecedentes")}
+    ${sechead("As defasagens sugerem antecedência?", "associação exploratória — promoção plena exige o protocolo da aba Protocolo e regimes")}
     <div class="card">
       <div class="tblwrap"><table class="data compact"><thead><tr><th>Sinal</th><th style="text-align:right">Melhor lag</th><th style="text-align:right">Correlação</th><th style="text-align:right">n</th><th title="correlação por defasagem (0 a 12 meses)">Perfil de lags</th><th>Classificação</th></tr></thead>
       <tbody>${L.validacao.map(vrow).join("")}</tbody></table></div>
@@ -718,6 +727,8 @@ function renderLeading() {
       ${leitura([["Cobertura", "8 tribunais estaduais — não representa o Brasil inteiro (declarado)"],
         ["Cuidado", "volumes absolutos refletem o tamanho da economia de cada UF; a leitura útil é a VARIAÇÃO"],
         ["Backlog", "desemprego/renda por UF, reclamações regionais e preços de imóveis regionais — sem granularidade municipal por interpolação artificial"]])}</div>`;
+  } else if (t === "protocolo") {
+    body = blocoProtocolo();
   } else if (t === "buscas") {
     const B = L.buscas || {};
     body = B.disponivel
@@ -926,7 +937,7 @@ function renderTrends() {
   const lags = sechead(`Defasagens contra a inadimplência observada ${inadChip("sgs")}`, `alvo: ${T.defasagens.alvo}`) +
     `<div class="card"><p class="src" style="max-width:1050px">${T.defasagens.metodo}</p>
     <h4>Melhor defasagem por termo <span class="seal exp">ASSOCIAÇÃO EXPLORATÓRIA</span></h4>${T.defasagens.linhas.map(lagRow).join("")}
-    ${entenda("trlag", [["O que isto NÃO é", "validação. Correlação defasada é o primeiro filtro; a promoção a 'antecedente' exige o protocolo formal da aba Antecedentes (Granger, ganho fora da amostra, estabilidade)."],
+    ${entenda("trlag", [["O que isto NÃO é", "validação. Correlação defasada é o primeiro filtro; a promoção a 'antecedente' exige o protocolo formal da aba Protocolo e regimes (Granger, ganho fora da amostra, estabilidade)."],
       ["Sinal que se destaca", "“busca e apreensão” — buscas sobre apreensão de veículos antecedem a inadimplência total em ~12 meses com r=0,73; coerente com a economia do atraso de financiamento, mas ainda exploratório."],
       ["Correlações negativas", "podem refletir tendências longas em direções opostas, não proteção — por isso o n e o perfil completo ficam visíveis."]])}</div>`;
 
@@ -2138,7 +2149,7 @@ function mktEntidades(M) {
 /* ---------- cabeçalho editorial padrão (padrão da Visão geral) ---------- */
 
 /* ---------- bloco 1 da auditoria: vintage por página, filtros ativos, conceitos de inadimplência, loading ---------- */
-const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", antecedentes: "sgs", leading: "sgs", scenarios: "sgs",
+const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
   market: "b3", panorama: "scr", trends: "trends", sector: "ifdata" };
@@ -2230,14 +2241,10 @@ const GUIA = {
     importa: "São as séries mensais que o Banco Central publica há décadas: a espinha dorsal de qualquer diagnóstico do ciclo de crédito.",
     ler: "Separe estoque (saldo acumulado) de fluxo (concessões do mês) — são conceitos distintos que respondem a perguntas diferentes. Use o seletor de segmento para isolar PF e PJ.",
     nao: "Não compare o nível do saldo com o das concessões: um é acervo, o outro é vazão. Séries nominais crescem com a inflação; use a opção real quando o interesse for o poder de compra." },
-  antecedentes: { q: "O que costuma anteceder mudanças na inadimplência?",
-    importa: "Identificar indicadores que se movem antes do risco se materializar é o que permite antecipar deterioração em vez de constatá-la.",
-    ler: "Cada candidato passa por um protocolo formal (defasagem, causalidade de Granger, ganho fora da amostra e estabilidade). Só quem sobrevive às quatro etapas é promovido.",
-    nao: "Correlação defasada não é causa. Um indicador que antecipou o último ciclo pode falhar no próximo — relações macro mudam de regime." },
-  leading: { q: "Há sinais de estresse de crédito se formando agora?",
-    importa: "Combina fontes independentes (endividamento das famílias, garantias imobiliárias, crédito não bancário, judicialização) para detectar pressão antes que ela apareça na inadimplência.",
-    ler: "Os subíndices são z-scores: medem a distância da própria história, não um nível absoluto. Alertas exigem persistência de pelo menos duas leituras — um pico isolado não dispara nada.",
-    nao: "Nenhum sinal isolado determina conclusão, e nada aqui é previsão. A classificação conceitual (coincidente, contexto, antecedente candidato) está declarada em cada sinal." },
+  leading: { q: "Há estresse de crédito se formando — e quais sinais realmente antecedem?",
+    importa: "Duas perguntas que só fazem sentido juntas: o radar combina fontes independentes (endividamento das famílias, garantias imobiliárias, crédito não bancário, judicialização) para detectar pressão antes da inadimplência; a aba Protocolo testa quais candidatos sobrevivem a quatro critérios estatísticos e podem, de fato, ser chamados de antecedentes.",
+    ler: "Os subíndices são z-scores: medem a distância da própria história, não um nível absoluto. Alertas exigem persistência de pelo menos duas leituras — um pico isolado não dispara nada. No Protocolo, só é promovido quem passa em defasagem, Granger, ganho fora da amostra e estabilidade; reprovados ficam visíveis.",
+    nao: "Nenhum sinal isolado determina conclusão, e nada aqui é previsão. Correlação defasada não é causa, e um indicador que antecipou o último ciclo pode falhar no próximo — relações macro mudam de regime." },
   trends: { q: "O que os brasileiros procuram no Google sobre dívida e crédito?",
     importa: "A busca é um sinal de intenção que antecede o contrato: quem pesquisa 'renegociar dívida' ainda não renegociou.",
     ler: "O índice é relativo (0–100 dentro de cada consulta) e cada termo tem escala própria — compare a trajetória de um termo ao longo do tempo, nunca o nível entre termos.",
@@ -2750,7 +2757,7 @@ function renderOverview() {
       <h4>Insight ${badge("calculado", "composição determinística: frase do diagnóstico + maior contribuição negativa/positiva do IBCC + contagem NPL — bases citadas")}</h4>
       <div class="itexto">${diag.frase.split(".")[0]}. O componente que mais pressiona o índice é <b>${lbl(pior[0])}</b> (${fmt.pp(pior[1])} pt); o maior suporte vem de <b>${lbl(melhor[0])}</b> (${fmt.pp(melhor[1])} pt).${npl && npl.ok ? ` Nas instituições, ${npl.sistema.subindo_no_trimestre} de ${npl.n_instituicoes} registraram alta da inadimplência no trimestre.` : ""}</div>
       <div class="src" style="margin-top:8px">Evidências: contribuições do IBCC (calculado) · IF.data ${npl && npl.ok ? npl.data_base : ""} (observado) · associação ≠ causalidade.
-      <br><a href="javascript:void(0)" onclick="nav('research')">abrir pesquisa assistida →</a> · <a href="javascript:void(0)" onclick="nav('antecedentes')">indicadores antecedentes →</a></div></div>`;
+      <br><a href="javascript:void(0)" onclick="nav('research')">abrir pesquisa assistida →</a> · <a href="javascript:void(0)" onclick="leadSet('tab','protocolo');nav('leading')">indicadores antecedentes →</a></div></div>`;
   }
 
   /* ---------- saúde dos dados + explorar ---------- */
@@ -2905,7 +2912,7 @@ function renderPulse() {
       <div class="big">${c.fmt(last.v)}</div>
       <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${yoy != null ? (yoy > 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(yoy), 1) + "% " + growthLabel : ""} · ref. ${fmt.my(last.ref)}</div>
       ${lineChart({ series, band, h: 160, forecastStart: fc && fc.ok ? last.ref : null, annotations, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" + (fc && fc.ok ? " + previsão" : "") })}
-      ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Antecedentes) — hipóteses, não fatos.</div>` : ""}
+      ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
       ${fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}%</div>` : ""}
       ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
       ${srcLine(s.meta, s.qualidade)}
@@ -2960,10 +2967,12 @@ function extraCard(k) {
 }
 
 /* ---------- INDICADORES ANTECEDENTES ---------- */
-function renderAntecedentes() {
-  const el = document.getElementById("view-antecedentes");
+/* Protocolo formal de antecedência — antes uma página própria (/leading-indicators),
+   hoje uma aba desta mesma página: o radar levanta candidatos, o protocolo decide
+   quais sobrevivem aos quatro critérios. Retorna HTML para o host renderizar. */
+function blocoProtocolo() {
   const { antecedentes, regimes } = state.data;
-  if (!antecedentes || !antecedentes.targets) { el.innerHTML = "<p>sem dados — rode o pipeline v0.3</p>"; return; }
+  if (!antecedentes || !antecedentes.targets) return `<p class="src">carregando o protocolo de antecedentes…</p>`;
   const seg = state.filters.seg;
   const tgtKey = `inad_${seg}`;
   const r = antecedentes.targets[tgtKey] || antecedentes.targets.inad_total;
@@ -2991,10 +3000,8 @@ function renderAntecedentes() {
       <td class="src">${cs && cs.ultimo_disparo ? `${fmt.my(cs.ultimo_disparo.data)} (${cs.ultimo_disparo.direcao})` : "sem disparo"}</td>
     </tr>`;
   }).join("") : "";
-  el.innerHTML = `
-  ${pageHead({ title: "Indicadores antecedentes", seals: badge("calculado"),
-    desc: "Protocolo de promoção com 4 critérios (defasagem, Granger, ganho fora da amostra, estabilidade) — candidatos aprovados e reprovados são declarados.",
-    fontes: "BCB/SGS, Ipeadata (papelão ondulado)" })}
+  return `
+  ${sechead("Quais indicadores realmente antecedem a inadimplência?", "protocolo de 4 critérios — aprovados e reprovados declarados")}
   <div class="controls">${segTabs()}<span class="src">alvo: Δ mensal da inadimplência ${segName()}</span></div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Candidato / racional</th><th>Status</th><th>Defasagem</th><th>Correlação</th><th>Granger 5%</th><th>Ganho OOS</th><th>Estável</th><th>Correlograma</th></tr></thead><tbody>${rows}</tbody></table></div>
   <div class="note"><b>Método:</b> ${r.metodo}<br><b>Limitações:</b> ${r.limitacoes}</div>
@@ -3084,7 +3091,7 @@ function renderSectorPage() {
       ${Object.entries(s.contribuicoes).map(([k, v]) => contribBar(k.replace(/_/g, " ") + (s.componentes[k].status === "demonstrativo" ? " ⚠demo" : ""), v, 6)).join("")}
       <div class="src">${Object.entries(s.componentes).map(([k, c]) => `${k.replace(/_/g, " ")}: ${c.fonte}`).join(" · ")}</div></div>
     <div class="card"><h4>Antecedentes e previsão</h4>
-      <p class="src">Antecedentes promovidos (agregado): spread (6m) e Selic (8m) — aba Antecedentes; triagem setorial específica na Fase 2b.</p>
+      <p class="src">Antecedentes promovidos (agregado): spread (6m) e Selic (8m) — aba Protocolo e regimes; triagem setorial específica na Fase 2b.</p>
       <p class="src"><b>Previsão setorial:</b> informação não disponível — modelos por setor entram após Caged/RJ setoriais reais.</p></div>
   </div>
   <div class="grid g2" style="margin-top:12px">
@@ -3909,7 +3916,7 @@ const INTENTS = [
           { t: "calc", x: `Antecedentes promovidos que anteciparam o movimento: ${prom.map(c => `${c.candidato} (defasagem ${c.melhor_defasagem_meses}m, corr. ${c.correlacao_melhor_defasagem}, ganho preditivo ${c.ganho_oos_pct}%)`).join("; ") || "nenhum"}.` },
           { t: "interp", x: `Estado de regime (hipótese estatística): ${reg ? reg.estado_hipotese : "–"}. Associações não implicam causalidade.` },
         ],
-        calculo: "Δ mensal da série observada; deteriorações rankeadas por |Δ1m|/desvio-padrão histórico; antecedentes = protocolo de 4 critérios (aba Antecedentes).",
+        calculo: "Δ mensal da série observada; deteriorações rankeadas por |Δ1m|/desvio-padrão histórico; antecedentes = protocolo de 4 critérios (aba Protocolo e regimes).",
         fontes: [_cite(s.meta, s.qualidade), "Protocolo de antecedentes e detector de regimes: aba Metodologia (model cards)"],
       };
     },
@@ -5077,9 +5084,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, antecedentes: renderAntecedentes, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial };
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", antecedentes: "Antecedentes", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
