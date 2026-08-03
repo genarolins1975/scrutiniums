@@ -838,3 +838,41 @@ nav.tabs.buscando .navgroup .navlabel::after { content: none; }
    execução, só onde há rolagem de fato (ver acessibilizaRolagem). */
 [data-rolavel="1"] { outline-offset: 2px; }
 [data-rolavel="1"]:focus-visible { outline: 2px solid var(--accent-ink); }
+
+/* ---------- Desenrola Brasil ----------
+   A página alterna gráfico e lacuna o tempo todo: o bloco de lacuna precisa parecer
+   conteúdo deliberado, não erro de carregamento. */
+.deslacuna { border: 1px dashed color-mix(in srgb, var(--unavail) 55%, transparent);
+  border-radius: 3px; padding: 12px 16px; margin: 12px 0; background: var(--surface-2); }
+.deslacuna h5 { margin: 0 0 6px; font-family: var(--label); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--text-3); }
+.deslacuna ul { margin: 0; padding-left: 18px; font-size: 12.5px; line-height: 1.75; }
+.deslacuna li { margin-bottom: 5px; }
+
+.destl { list-style: none; margin: 0; padding: 0; }
+.destl li { display: flex; gap: 14px; padding: 9px 0 9px 14px; border-left: 2px solid var(--border);
+  position: relative; }
+.destl li::before { content: ""; position: absolute; left: -5px; top: 15px; width: 8px; height: 8px;
+  border-radius: 50%; background: var(--unavail); }
+.destl li.tl-norma::before { background: var(--teal); }
+.destl li.tl-marco::before { background: var(--accent); }
+.destl li.tl-ajuste::before { background: var(--warning); }
+.destl li.tl-avaliacao::before { background: var(--forecast); }
+.destl .tldata { font-family: var(--label); font-size: 11px; color: var(--text-3); white-space: nowrap;
+  min-width: 78px; padding-top: 2px; }
+
+.descomoler { margin: 6px 0 0; font-size: 13px; }
+.descomoler dt { font-weight: 620; margin-top: 8px; }
+.descomoler dd { margin: 2px 0 0; color: var(--text-2); line-height: 1.7; }
+.desdl { margin: 8px 0 0; font-size: 12.3px; display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
+.desdl dt { font-family: var(--label); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--text-3); padding-top: 2px; }
+.desdl dd { margin: 0; color: var(--text-2); line-height: 1.6; }
+
+.descomp { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
+.card.semdado { background: var(--surface-2); }
+@media (max-width: 560px) {
+  .destl li { flex-direction: column; gap: 2px; }
+  .desdl { grid-template-columns: 1fr; gap: 1px 0; }
+  .desdl dd { margin-bottom: 6px; }
+}

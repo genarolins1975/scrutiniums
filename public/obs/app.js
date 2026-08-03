@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.45.3"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.46.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -225,6 +225,7 @@ const VIEW_DATA = {
   pix: ["pix"],
   judicial: ["judicial"],
   pgfn: ["pgfn"],
+  desenrola: ["desenrola", "pulse"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -2310,6 +2311,10 @@ const GUIA = {
     importa: "Dívida ativa é passivo que a empresa e a família já não conseguiram pagar ao Estado — costuma aparecer no mesmo terreno em que o crédito privado se deteriora.",
     ler: "Compare UFs pela participação no total e pela dívida de PF por mil habitantes. A concentração por faixa de valor explica mais do que a contagem de inscrições.",
     nao: "Não é crédito do sistema financeiro e não se soma ao SCR.data. A série por safra mostra o que sobrou de cada ano, não quantas inscrições houve nele." },
+  desenrola: { q: "O que o Desenrola fez, e o que os dados públicos permitem afirmar?",
+    importa: "Foi a maior política de renegociação de dívidas de pessoas físicas já feita no país, e boa parte do que se diz sobre ela não é verificável nos dados abertos.",
+    ler: "Separe sempre o que a base do BCB mede — operações de crédito no SCR — do que o programa fez no total. Os números oficiais e os do SCR não se contradizem: medem coisas diferentes.",
+    nao: "Operação não é pessoa, valor após desconto não é dívida original, e baixa de registro negativo não é pagamento. Nada aqui sustenta afirmação de efeito causal do programa." },
   research: { q: "Como levar estes dados para um relatório ou uma aula?",
     importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
     ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
@@ -4152,6 +4157,435 @@ function renderPgfn() {
 
 function round2(x) { return Math.round(x * 100) / 100; }
 
+
+/* ---------- DESENROLA BRASIL ----------
+   A base do BCB tem sete colunas. Um painel honesto do Desenrola precisa dizer, o
+   tempo todo, o que elas permitem e o que não permitem concluir — e por isso esta
+   página carrega tantos blocos de lacuna quanto de gráfico. Três separações que ela
+   nunca deixa o leitor confundir: SCR não é o programa inteiro; faixas de pessoa
+   física não somam com Pequenos Negócios; e baixa de registro negativo não é
+   pagamento. */
+const DES_SELOS = { reportado: "obs", calculado: "calc", estimado: "est", causal: "cen", associacao: "prev" };
+
+function desSelo(s) {
+  const b = { reportado: ["obs", "REPORTADO"], calculado: ["calc", "CALCULADO"], estimado: ["est", "ESTIMADO"],
+              causal: ["cen", "RESULTADO CAUSAL"], associacao: ["prev", "ASSOCIAÇÃO"] }[s];
+  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+}
+
+window.desFiltra = (campo, valor) => { state.des = { ...(state.des || {}), [campo]: valor }; renderDesenrola(); };
+window.desInst = cod => {
+  const s = new Set((state.des && state.des.comparar) || []);
+  if (s.has(cod)) s.delete(cod); else if (s.size < 5) s.add(cod);
+  state.des = { ...(state.des || {}), comparar: [...s] };
+  renderDesenrola();
+};
+
+/** Bloco de lacuna: o que falta, por que falta e o que seria preciso para ter. */
+function desLacuna(titulo, itens) {
+  return `<div class="deslacuna">
+    <h5>${titulo}</h5>
+    <ul>${itens.map(i => `<li><b>${i.falta}</b> — ${i.porque}${i.precisaria ? ` <span class="src">Seria preciso: ${i.precisaria}.</span>` : ""}</li>`).join("")}</ul>
+  </div>`;
+}
+
+function renderDesenrola() {
+  const el = document.getElementById("view-desenrola");
+  const D = state.data.desenrola;
+  if (!D) { el.innerHTML = loadingCard("Desenrola Brasil"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Desenrola Brasil", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.des || {};
+  const faixa = F.faixa || "ambas";
+  const metrica = F.metrica || "operacoes";
+  const comparar = F.comparar || [];
+  const tipos = faixa === "ambas" ? ["faixa1", "faixa2"] : [faixa];
+  const somaSerie = (m, campo) => tipos.reduce((s, t) => s + ((m[t] || {})[campo] || 0), 0);
+
+  /* ---------- 1. Visão geral ---------- */
+  const ofi = id => D.oficiais.find(o => o.id === id) || {};
+  const cardOfi = o => `<div class="card kpi"><h4>${o.rotulo}</h4>
+    <div class="big">${o.unidade.startsWith("R$") ? fmt.money(o.valor) : fmt.n0(o.valor)}</div>
+    <div class="src">${desSelo(o.selo)} ${o.unidade} · ${o.nota}<br><i>${o.fonte}</i></div></div>`;
+
+  const abertura = `<p class="lead">O Desenrola Brasil foi criado em 2023 para tirar do vermelho quem tinha
+    dívidas pequenas e atrasadas — gente que, por causa da negativação, ficava fora do crédito, do aluguel e
+    às vezes do emprego. O Estado entrou com garantia e com um leilão em que os credores disputavam oferecer
+    o maior desconto. Quem tinha dívida de até R$ 5 mil e renda baixa entrou pela Faixa 1; quem tinha renda
+    até R$ 20 mil e nome negativado até o fim de 2022 entrou pela Faixa 2.</p>
+  <div class="judalerta">
+    <b>Antes do primeiro número: esta base não cobre o programa inteiro.</b>
+    <div style="margin-top:5px">${D.aviso_cobertura}</div>
+    <div style="margin-top:5px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
+  </div>`;
+
+  const kpis = `<div class="pan-kpi">
+    ${[ofi("elegiveis"), ofi("renegociaram"), ofi("regularizado"), ofi("beneficiados")].map(cardOfi).join("")}
+  </div>
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>Operações no SCR (faixas 1 e 2)</h4><div class="big">${fmt.n0(D.totais_scr.operacoes)}</div>
+      <div class="src">${desSelo("reportado")} operações, não pessoas · ${D.totais_scr.periodo}</div></div>
+    <div class="card kpi"><h4>Volume no SCR, após desconto</h4><div class="big">${fmt.money(D.totais_scr.volume)}</div>
+      <div class="src">${desSelo("reportado")} ${D.reconciliacao.razao}× menor que o total oficial regularizado, pelo motivo acima</div></div>
+    <div class="card kpi"><h4>Valor médio por operação</h4><div class="big">R$ ${fmt.n0(D.totais_scr.ticket_medio)}</div>
+      <div class="src">${desSelo("calculado")} volume ÷ operações · não há mediana nem distribuição na fonte</div></div>
+    <div class="card kpi"><h4>Conglomerados credores no SCR</h4><div class="big">${D.totais_scr.conglomerados}</div>
+      <div class="src">${desSelo("reportado")} só quem reporta ao SCR · o leilão da Faixa 1 teve 654 credores</div></div>
+  </div>`;
+
+  const tl = `${sechead("Linha do tempo", "cada marco com a fonte que o sustenta")}
+  <div class="card"><ol class="destl">
+    ${D.linha_do_tempo.map(e => `<li class="tl-${e.tipo}">
+      <span class="tldata">${fmt.d(e.data)}</span>
+      <div><b>${e.rotulo}</b><div class="src">${e.detalhe}<br><i>fonte: ${e.fonte}</i></div></div></li>`).join("")}
+  </ol></div>`;
+
+  const comoLer = `<div class="card"><h4>Como ler estes números</h4>
+    <dl class="descomoler">${D.como_ler.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl></div>`;
+
+  /* ---------- 2. Arquitetura do programa ---------- */
+  const arq = `${sechead("Arquitetura do programa", "componentes com coberturas diferentes — nunca somados")}
+  <div class="descomp">
+    ${D.componentes.filter(c => !c.contexto).map(c => `<div class="card ${c.no_scr ? "" : "semdado"}">
+      <h4>${c.nome}</h4>
+      ${c.no_scr ? `<div class="big" style="font-size:22px">${fmt.n0(c.operacoes)} <span class="src" style="font-size:11px">operações no SCR</span></div>` : `<div class="src"><b>Sem dado desagregado público.</b></div>`}
+      <dl class="desdl">
+        <dt>Quem podia</dt><dd>${c.publico}</dd>
+        <dt>Que dívida</dt><dd>${c.divida}</dd>
+        <dt>Quando</dt><dd>${c.periodo}</dd>
+        <dt>Por onde</dt><dd>${c.canal}</dd>
+        <dt>Garantia pública</dt><dd>${c.garantia}</dd>
+        <dt>Dado disponível</dt><dd>${c.dados}</dd>
+      </dl>
+      ${c.alerta ? `<div class="judalerta" style="margin:8px 0 0"><b>Atenção.</b> ${c.alerta}</div>` : ""}
+      ${c.no_scr ? `<p class="src">${fmt.money(c.volume)} após desconto · ticket médio R$ ${fmt.n0(c.ticket_medio)} · ${c.conglomerados} conglomerados · SCR ${c.periodo_scr}</p>` : ""}
+    </div>`).join("")}
+  </div>
+  ${D.pequenos_negocios ? `<div class="card semdado" style="margin-top:12px">
+    <h4>Quadro de contexto — ${D.pequenos_negocios.nome}</h4>
+    <div class="judalerta" style="margin:0 0 8px"><b>Programa diferente.</b> ${D.aviso_tipo3}</div>
+    <p class="src">${fmt.n0(D.pequenos_negocios.operacoes)} operações · ${fmt.money(D.pequenos_negocios.volume)} ·
+    ticket médio R$ ${fmt.n0(D.pequenos_negocios.ticket_medio)} — cerca de ${Math.round(D.pequenos_negocios.ticket_medio / D.totais_scr.ticket_medio)}× o das faixas de pessoa física, o que mostra que são universos distintos.</p>
+  </div>` : ""}`;
+
+  /* ---------- 3. Alcance e adesão ---------- */
+  const filtros = `<div class="controls">
+    <span class="seg">${[["ambas", "Faixas 1 e 2"], ["faixa1", "Só Faixa 1"], ["faixa2", "Só Faixa 2"]].map(([v, l]) =>
+      `<button class="${faixa === v ? "active" : ""}" onclick="desFiltra('faixa','${v}')">${l}</button>`).join("")}</span>
+    <span class="seg">${[["operacoes", "Operações"], ["volume", "Volume (R$)"]].map(([v, l]) =>
+      `<button class="${metrica === v ? "active" : ""}" onclick="desFiltra('metrica','${v}')">${l}</button>`).join("")}</span>
+  </div>`;
+
+  const serieFiltrada = D.serie.filter(m => tipos.some(t => m[t]));
+  const grafSerie = lineChart({
+    w: 720, h: 260, lo0: true,
+    series: [{ nome: metrica === "operacoes" ? "operações renegociadas" : "volume após desconto",
+               pts: serieFiltrada.map(m => ({ x: m.mes, y: somaSerie(m, metrica) || null })) }],
+    annotations: [{ x: "2023-10", label: "abre a Faixa 1" }, { x: "2024-05", label: "encerramento" }],
+    unidade: metrica === "operacoes" ? "operações" : "R$",
+    aria: "operações do Desenrola informadas ao SCR por mês",
+    fonte: D.fonte, periodo: D.totais_scr.periodo, atualizado: (D.gerado_em || "").slice(0, 10),
+    nota: D.aviso_setembro,
+  });
+
+  const noPrograma = serieFiltrada.filter(m => m.mes >= "2023-09" && m.mes <= "2024-05");
+  const depois = serieFiltrada.filter(m => m.mes > "2024-05");
+  const opPrograma = noPrograma.reduce((s, m) => s + somaSerie(m, "operacoes"), 0);
+  const opDepois = depois.reduce((s, m) => s + somaSerie(m, "operacoes"), 0);
+  const totOp = opPrograma + opDepois;
+
+  const alcance = `${sechead("Alcance e adesão", "o que a base mede, e o que ela não mede")}
+  ${filtros}
+  <div class="card"><h4>Renegociações informadas ao SCR, por mês</h4>${grafSerie}</div>
+  <div class="pan2col">
+    <div class="card"><h4>Concentração no tempo</h4>
+      ${panBar("Durante o programa (set/23 a mai/24)", opPrograma, totOp, () => fmt.n0(opPrograma), `${fmt.n(100 * opPrograma / totOp, 1)}% das operações`)}
+      ${panBar("Depois do encerramento", opDepois, totOp, () => fmt.n0(opDepois), `${fmt.n(100 * opDepois / totOp, 1)}% das operações`)}
+      <p class="src">Continuam entrando registros depois de maio de 2024. A fonte não explica o motivo;
+      retificações de informações já prestadas e operações contratadas no prazo mas informadas depois são
+      as hipóteses compatíveis com o que o BCB documenta. Não é adesão nova ao programa encerrado.</p>
+    </div>
+    <div class="card"><h4>Participação de cada faixa</h4>
+      ${D.componentes.filter(c => c.no_scr && !c.contexto).map(c =>
+        panBar(c.nome, c.operacoes, Math.max(...D.componentes.filter(x => x.no_scr && !x.contexto).map(x => x.operacoes)),
+               () => fmt.n0(c.operacoes), `${fmt.n(100 * c.operacoes / D.totais_scr.operacoes, 1)}% · ticket R$ ${fmt.n0(c.ticket_medio)}`)).join("")}
+      <p class="src">A Faixa 1 responde pela maior parte das operações e a Faixa 2 por valor por operação
+      maior — coerente com os tetos de dívida de cada uma.</p>
+    </div>
+  </div>
+  ${desLacuna("O funil do programa não pode ser construído com dado público", [
+    { falta: "Público elegível por período e região", porque: "só existe o número agregado de 30 milhões, citado para a Faixa 1 inteira", precisaria: "tabulação de elegíveis por UF publicada pelo BCB ou pelo Ministério da Fazenda" },
+    { falta: "Ofertas realizadas na plataforma", porque: "a plataforma do programa não publicou base aberta de ofertas", precisaria: "dados do operador da plataforma" },
+    { falta: "Acordos pagos e acordos em curso", porque: "a base informa a contratação, não o cumprimento", precisaria: "acompanhamento longitudinal das operações" },
+    { falta: "Número médio de dívidas por beneficiário", porque: "a base conta operações e não permite deduplicar pessoas", precisaria: "contagem de CPFs distintos, que é sigilosa" },
+  ])}
+  <div class="card">
+    <h4>Uma razão citada, e por que ela não é uma taxa de adesão</h4>
+    <p>${desSelo("estimado")} Menos de 5 milhões de pessoas renegociaram, num público estimado em 30 milhões
+    de elegíveis — cerca de <b>${fmt.n(100 * 5 / 30, 0)}%</b>. Os dois números vêm do mesmo relatório oficial, mas de
+    conceitos e momentos diferentes: um é a procura observada pelo programa, o outro é uma estimativa de
+    elegibilidade da Faixa 1. A divisão dá ordem de grandeza, não taxa medida sobre um cadastro.</p>
+  </div>`;
+
+  /* ---------- 4. Valores e condições ---------- */
+  const tickets = D.serie.filter(m => tipos.some(t => m[t] && m[t].operacoes));
+  const grafTicket = lineChart({
+    w: 720, h: 220, lo0: true,
+    series: [{ nome: "valor médio por operação", pts: tickets.map(m => {
+      const o = somaSerie(m, "operacoes"), v = somaSerie(m, "volume");
+      return { x: m.mes, y: o ? Math.round(v / o) : null }; }) }],
+    unidade: "R$", aria: "valor médio por operação renegociada, por mês",
+    fonte: D.fonte, periodo: D.totais_scr.periodo, atualizado: (D.gerado_em || "").slice(0, 10),
+    nota: "Valor após o desconto. Média de agregados mensais — a fonte não publica distribuição.",
+  });
+  const valores = `${sechead("Valores e condições", "o que a fonte publica sobre o contrato renegociado")}
+  <div class="card"><h4>Valor médio por operação, ao longo do tempo</h4>${grafTicket}</div>
+  ${desLacuna("Quase tudo o que se esperaria desta seção não existe na fonte", [
+    { falta: "Valor original da dívida", porque: "a base publica somente o valor DEPOIS do desconto", precisaria: "coluna de valor pré-desconto na divulgação do BCB" },
+    { falta: "Desconto médio e mediano por operação", porque: "sem valor original, o desconto é indeterminável; o que existe é o desconto médio de 83% ofertado no leilão da Faixa 1, que é agregado e de outra fonte" },
+    { falta: "Entrada, parcelas, valor da parcela, taxa de juros e prazo", porque: "não há essas colunas" },
+    { falta: "Histogramas, percentis e faixas de valor", porque: "a divulgação é agregada por célula, sem microdado nem distribuição publicada" },
+  ])}
+  <div class="card"><h4>Os conceitos que não se confundem</h4>
+    <dl class="descomoler">
+      <dt>Valor original</dt><dd>Quanto a pessoa devia antes de qualquer abatimento. <b>Não está nesta base.</b></dd>
+      <dt>Valor após desconto</dt><dd>O que virou a nova operação de crédito. <b>É o que esta base publica.</b></dd>
+      <dt>Valor efetivamente pago</dt><dd>Quanto entrou no caixa do credor ao longo do acordo. <b>Não está nesta base.</b></dd>
+      <dt>Desconto nominal</dt><dd>A diferença entre original e renegociado — abatimento concedido pelo credor.</dd>
+      <dt>Perda econômica do credor</dt><dd>Quanto o credor deixou de receber em relação ao que esperava receber, que
+      normalmente é menor que o desconto nominal, porque dívida negativada antiga vale pouco.</dd>
+      <dt>Custo fiscal</dt><dd>Dinheiro público efetivamente gasto. <b>Desconto de credor privado não é gasto
+      público</b> e não deve ser somado a ele.</dd>
+    </dl>
+  </div>`;
+
+  /* ---------- 5. Beneficiários e distribuição regional ---------- */
+  const metMapa = F.metMapa || "operacoes";
+  const MAPAS = { operacoes: ["Operações", m => fmt.n0(m.operacoes)],
+                  op_por_mil_hab: ["Operações por mil habitantes", m => m.op_por_mil_hab != null ? fmt.n(m.op_por_mil_hab, 1) : "n.d."],
+                  ticket_medio: ["Valor médio por operação", m => "R$ " + fmt.n0(m.ticket_medio)],
+                  volume: ["Volume após desconto", m => fmt.money(m.volume)] };
+  const comGeo = D.mapa.filter(m => m.cod && D.geo && D.geo.paths && D.geo.paths[m.cod]);
+  const escMapa = pgfnEscala(comGeo.map(m => m[metMapa]));
+  const pathsMapa = comGeo.map(m => {
+    const tip = encodeURIComponent(`<div class="tt-date">${m.nome} (${m.uf})</div>
+      <div class="tt-row"><span class="tt-lbl">operações</span><span class="tt-val">${fmt.n0(m.operacoes)} (${fmt.n(m.part_op, 1)}% do BR)</span></div>
+      <div class="tt-row"><span class="tt-lbl">volume</span><span class="tt-val">${fmt.money(m.volume)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">por mil hab.</span><span class="tt-val">${m.op_por_mil_hab != null ? fmt.n(m.op_por_mil_hab, 1) : "n.d."}</span></div>
+      <div class="tt-row"><span class="tt-lbl">valor médio</span><span class="tt-val">R$ ${fmt.n0(m.ticket_medio)}</span></div>`);
+    return `<path d="${D.geo.paths[m.cod]}" fill="${escMapa(m[metMapa])}" data-tip="${tip}" role="img" aria-label="${attr(m.nome)}: ${attr(MAPAS[metMapa][1](m))}"></path>`;
+  }).join("");
+  const vmaxMapa = Math.max(...D.mapa.map(m => m[metMapa] || 0));
+  const regional = `${sechead("Onde as renegociações aconteceram", "UF do tomador · faixas 1 e 2")}
+  <div class="controls">${Object.entries(MAPAS).map(([k, v]) =>
+    `<button class="btn ${metMapa === k ? "" : "ghost"} small" onclick="desFiltra('metMapa','${k}')">${v[0]}</button>`).join("")}</div>
+  <div class="pan2col">
+    <div class="card"><h4>${MAPAS[metMapa][0]}</h4>
+      <svg class="panmap" viewBox="${D.geo.viewBox}" role="group" aria-label="mapa das renegociações do Desenrola por UF"><g transform="${D.geo.transform}">${pathsMapa}</g></svg>
+      <p class="src">Sombreado em escala logarítmica — a concentração em São Paulo apagaria os demais numa escala linear.
+      O denominador de "por mil habitantes" é a população total, não o público elegível, que não é publicado por UF.</p>
+    </div>
+    <div class="card"><h4>Ranking</h4>
+      ${D.mapa.slice(0, 12).map(m => panBar(`${m.uf} ${m.nome}`, m[metMapa], vmaxMapa, () => MAPAS[metMapa][1](m), `${fmt.n(m.part_op, 1)}% das operações`)).join("")}
+      <details class="charttable"><summary>dados em tabela (todas as UFs)</summary>
+      <div class="tblwrap"><table class="data"><thead><tr><th>UF</th><th>Operações</th><th>% BR</th><th>Volume</th><th>Valor médio</th><th>Por mil hab.</th></tr></thead><tbody>
+      ${D.mapa.map(m => `<tr><td><b>${m.uf}</b> ${m.nome}</td><td style="text-align:right">${fmt.n0(m.operacoes)}</td>
+        <td style="text-align:right">${fmt.n(m.part_op, 2)}%</td><td style="text-align:right">${fmt.money(m.volume)}</td>
+        <td style="text-align:right">R$ ${fmt.n0(m.ticket_medio)}</td>
+        <td style="text-align:right">${m.op_por_mil_hab != null ? fmt.n(m.op_por_mil_hab, 1) : "n.d."}</td></tr>`).join("")}
+      </tbody></table></div></details>
+    </div>
+  </div>
+  ${desLacuna("Perfil dos beneficiários: a fonte não traz nenhuma variável demográfica", [
+    { falta: "Sexo, idade, faixa de renda e inscrição no CadÚnico", porque: "a base tem sete colunas e nenhuma é demográfica", precisaria: "tabulação demográfica agregada publicada pelo BCB, com supressão de células pequenas" },
+    { falta: "Município", porque: "UF é a menor granularidade geográfica publicada" },
+    { falta: "Produto de crédito da dívida renegociada", porque: "não há coluna de modalidade" },
+    { falta: "Antiguidade da dívida e quantidade anterior de dívidas", porque: "a base descreve a operação nova, não o histórico do devedor" },
+  ])}`;
+
+  /* ---------- 6. Instituições e credores ---------- */
+  const insts = D.instituicoes;
+  const sel = comparar.length ? insts.filter(i => comparar.includes(i.cod)) : insts.slice(0, 5);
+  const maxOp = insts[0].operacoes;
+  const credores = `${sechead("Credores que reportam ao SCR", `${D.concentracao.n_conglomerados} conglomerados financeiros`)}
+  <div class="judalerta"><b>Isto não é um ranking de melhores e piores.</b> Conglomerados têm carteiras,
+  públicos e composições de produto diferentes: quem tinha muitos clientes de baixa renda com dívida pequena
+  aparece com muitas operações e ticket baixo, e isso descreve a carteira, não a qualidade da atuação. Além
+  disso, os credores não financeiros do programa — varejo, serviços, telecomunicações — não reportam ao SCR e
+  não estão em nenhuma linha desta tabela: o leilão da Faixa 1 teve 654 credores, e aqui aparecem ${D.concentracao.n_conglomerados}.</div>
+  <div class="pan2col">
+    <div class="card"><h4>Participação nas operações</h4>
+      ${insts.slice(0, 12).map(i => panBar(i.nome, i.operacoes, maxOp, () => fmt.n0(i.operacoes), `${fmt.n(i.part_op, 1)}% · ticket R$ ${fmt.n0(i.ticket_medio)}`)).join("")}
+    </div>
+    <div class="card"><h4>Concentração</h4>
+      <div class="big">${fmt.n(D.concentracao.top5_operacoes, 1)}%</div>
+      <p class="src">das operações estão nos cinco maiores conglomerados. HHI de ${fmt.n(D.concentracao.hhi_operacoes, 0)}
+      sobre ${D.concentracao.n_conglomerados} conglomerados (índice de 0 a 10.000; acima de 1.800 costuma ser lido como
+      concentração alta em análise antitruste, referência que aqui serve só de régua).</p>
+      <p class="src">A concentração mede o peso entre <b>os credores que reportam ao SCR</b>. Como os não
+      financeiros ficam fora do denominador, ela não descreve a concentração do programa como um todo.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h4>Comparar até cinco conglomerados</h4>
+    <div class="controls" style="flex-wrap:wrap;gap:5px">
+      ${insts.slice(0, 20).map(i => `<button class="btn ${comparar.includes(i.cod) ? "" : "ghost"} small" onclick="desInst('${i.cod}')">${i.nome}</button>`).join("")}
+      ${comparar.length ? `<button class="btn ghost small" onclick="desFiltra('comparar',[])">limpar</button>` : ""}
+    </div>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Conglomerado</th><th>Operações</th><th>% das operações</th>
+      <th>Volume</th><th>% do volume</th><th>Valor médio</th><th>Faixa 1</th><th>Faixa 2</th><th>UFs</th></tr></thead><tbody>
+    ${sel.map(i => `<tr><td><b>${i.nome}</b></td><td style="text-align:right">${fmt.n0(i.operacoes)}</td>
+      <td style="text-align:right">${fmt.n(i.part_op, 2)}%</td><td style="text-align:right">${fmt.money(i.volume)}</td>
+      <td style="text-align:right">${fmt.n(i.part_vol, 2)}%</td><td style="text-align:right">R$ ${fmt.n0(i.ticket_medio)}</td>
+      <td style="text-align:right">${i.por_faixa.faixa1 ? fmt.n0(i.por_faixa.faixa1.operacoes) : "–"}</td>
+      <td style="text-align:right">${i.por_faixa.faixa2 ? fmt.n0(i.por_faixa.faixa2.operacoes) : "–"}</td>
+      <td style="text-align:right">${i.ufs}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src">Sem seleção, aparecem os cinco maiores por número de operações.</p>
+  </div>
+  ${desLacuna("O que não dá para comparar entre instituições", [
+    { falta: "Desconto médio concedido por cada credor", porque: "exigiria o valor original, que a base não publica" },
+    { falta: "Regularidade e inadimplência posteriores dos acordos", porque: "a base registra a contratação e não acompanha a operação depois" },
+    { falta: "Renegociação como proporção da carteira", porque: "o conglomerado do Desenrola é o financeiro e a carteira do IF.data é do prudencial — os perímetros não coincidem", precisaria: "chave de correspondência entre os dois perímetros publicada pelo BCB" },
+  ])}`;
+
+  /* ---------- 7. Depois da renegociação ---------- */
+  const depoisSec = `${sechead("O que aconteceu depois da renegociação", "a pergunta mais importante, e a que a base pública não responde")}
+  <div class="card">
+    <p>Esta seria a seção central de um painel de avaliação: quantos acordos continuaram regulares, quantos
+    voltaram a atrasar, quanto foi liquidado, quem voltou a tomar crédito. A base do BCB informa a
+    <b>renegociação no mês em que ela ocorreu</b> e não acompanha a operação depois. Não há coorte, não há
+    curva de sobrevivência e não há reincidência — não porque o cálculo seja difícil, mas porque o dado
+    longitudinal por operação é sigiloso.</p>
+    <p class="src">Construir esta seção com o que existe exigiria comparar coortes por proxy agregada, o que
+    produziria uma curva plausível e sem sustentação. O Observatório não faz isso: a ausência fica declarada.</p>
+  </div>
+  ${desLacuna("O que seria preciso para responder", [
+    { falta: "Permanência do acordo em situação regular após 3, 6, 12, 18 e 24 meses", porque: "não há painel por operação", precisaria: "série de estoque e situação das operações do programa por safra de contratação" },
+    { falta: "Atraso acima de 15, 30 e 90 dias e entrada em prejuízo", porque: "a base não traz situação da operação", precisaria: "as mesmas variáveis que o SCR.data já publica por modalidade, recortadas para o programa" },
+    { falta: "Novo crédito obtido, exposição total e número de relacionamentos", porque: "exigiria ligar o beneficiário a operações posteriores", precisaria: "microdado individual, que é sigiloso por lei" },
+  ])}
+  <div class="note"><b>Uma advertência de leitura, para quando o dado existir.</b> Nova concessão de crédito
+  a quem renegociou não significa, por si, melhora de bem-estar — pode ser recomposição de dívida. E aumento
+  do endividamento não é automaticamente deterioração: pode ser retorno ao crédito formal, mais barato que a
+  alternativa informal. Qualquer leitura desses números precisa dizer qual das duas histórias está contando e
+  por quê.</div>`;
+
+  /* ---------- 8. Efeitos sobre o mercado de crédito ---------- */
+  const P = state.data.pulse;
+  const serieCtx = F.ctx || "inad_pf";
+  const sc = P && P.series && P.series[serieCtx];
+  const ctxMeta = (D.series_contexto || []).find(s => s.chave === serieCtx) || {};
+  const grafCtx = sc ? lineChart({
+    w: 720, h: 250,
+    series: [{ nome: ctxMeta.rotulo || serieCtx, pts: sc.obs.filter(o => o.ref >= "2019-01").map(o => ({ x: o.ref.slice(0, 7), y: o.v })) }],
+    annotations: [{ x: "2023-07", label: "anúncio" }, { x: "2023-10", label: "Faixa 1" }, { x: "2024-05", label: "fim" }],
+    unidade: ctxMeta.unidade, aria: `série de ${attr(ctxMeta.rotulo || serieCtx)} com marcos do Desenrola`,
+    fonte: "BCB/SGS", periodo: "2019 em diante", atualizado: (D.gerado_em || "").slice(0, 10),
+    nota: "Os marcos indicam quando o programa aconteceu. Coincidência temporal não é efeito.",
+  }) : "<p class='src'>Série do pulso ainda carregando.</p>";
+
+  const efeitos = `${sechead("O Desenrola no contexto do mercado de crédito", "três níveis de evidência, nunca misturados")}
+  <div class="controls">${(D.series_contexto || []).map(s =>
+    `<button class="btn ${serieCtx === s.chave ? "" : "ghost"} small" onclick="desFiltra('ctx','${s.chave}')">${s.rotulo}</button>`).join("")}</div>
+  <div class="card"><h4>${ctxMeta.rotulo || serieCtx}, com os marcos do programa</h4>${grafCtx}</div>
+  <div class="pan2col">
+    <div class="card"><h4>${desSelo("reportado")} Evidências descritivas</h4>
+      <p class="src">O que se observa nas séries: o programa ocorreu entre julho de 2023 e maio de 2024, e as
+      séries de inadimplência, endividamento e comprometimento de renda seguem seus próprios caminhos nesse
+      intervalo. O painel mostra as séries e marca as datas — nada além disso é afirmado aqui.</p>
+    </div>
+    <div class="card"><h4>${desSelo("associacao")} Associações</h4>
+      <p class="src">Movimentos simultâneos ao programa têm muitas causas concorrentes no mesmo período: ciclo
+      da Selic, massa salarial, safra de crédito consignado e mudanças regulatórias do cartão. Nenhuma variação
+      agregada observada nessa janela pode ser atribuída ao Desenrola sem um grupo de comparação.</p>
+    </div>
+  </div>
+  <div class="card">
+    <h4>${desSelo("causal")} Evidência causal disponível</h4>
+    <p><b>${D.avaliacao.titulo}</b> — ${D.avaliacao.autores}, publicado em ${fmt.d(D.avaliacao.publicado)}.</p>
+    <div class="judalerta" style="margin:8px 0"><b>Atenção ao objeto.</b> ${D.avaliacao.objeto}</div>
+    <p class="src"><b>Desenho:</b> ${D.avaliacao.desenho}</p>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Achado</th><th>Selo</th><th>Força da inferência</th></tr></thead><tbody>
+    ${D.avaliacao.resultados.map(r => `<tr><td>${r.achado}</td><td>${desSelo(r.selo)}</td><td class="src">${r.forca}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src" style="margin-top:8px"><b>Conclusão dos autores:</b> ${D.avaliacao.conclusao_dos_autores}</p>
+    <div class="judalerta" style="margin-top:8px"><b>O que continua sem resposta.</b> ${D.avaliacao.limite}</div>
+    <p class="src"><a href="${D.avaliacao.url}" target="_blank" rel="noopener">relatório completo (PDF, Ministério do Planejamento e Orçamento)</a></p>
+  </div>`;
+
+  /* ---------- 9. Garantias e dimensão fiscal ---------- */
+  const fiscal = `${sechead("Garantias e dimensão fiscal")}
+  <div class="card">
+    <p>A Faixa 1 teve garantia do Fundo Garantidor de Operações (FGO): o Estado assumiu parte do risco para que
+    os credores aceitassem descontos grandes em dívidas antigas. Quanto disso virou desembolso efetivo é uma
+    pergunta legítima e sem resposta em base pública desagregada.</p>
+    <div class="judalerta"><b>Não há número aqui porque não há dado — e estimar seria pior.</b>
+    Preencher esta seção com aproximações a partir do volume renegociado produziria um "custo fiscal" que
+    ninguém mediu.</div>
+  </div>
+  ${desLacuna("Lacunas fiscais", [
+    { falta: "Valor garantido e operações cobertas pelo FGO no âmbito do programa", porque: "não publicado de forma desagregada", precisaria: "relatórios do fundo garantidor com identificação do Desenrola" },
+    { falta: "Garantias acionadas, recuperações e perdas realizadas", porque: "não publicado", precisaria: "demonstrações do FGO segregadas por programa" },
+    { falta: "Custo fiscal bruto, líquido e por beneficiário", porque: "depende dos itens acima", precisaria: "execução orçamentária do subsídio com identificação do programa" },
+    { falta: "Alavancagem entre recurso público e dívida renegociada", porque: "o numerador é justamente o que falta" },
+  ])}
+  <div class="note"><b>Desconto de credor não é gasto público.</b> Os R$ 137 bilhões que caíram para cerca de
+  R$ 25 bilhões no leilão da Faixa 1 são abatimento concedido por credores privados sobre dívidas em boa parte
+  já provisionadas. Chamar essa diferença de custo do programa confundiria renúncia privada com desembolso do
+  Tesouro.</div>`;
+
+  /* ---------- 10. Metodologia e limitações ---------- */
+  const st = { viavel: ["obs", "VIÁVEL"], parcial: ["est", "PARCIAL"], indisponivel: ["desc", "INDISPONÍVEL"] };
+  const metodo = `${sechead("Metodologia e limitações")}
+  <div class="card"><h4>Matriz de viabilidade</h4>
+    <p class="src">Cada indicador que se esperaria de um painel do Desenrola, e o que a fonte pública permite.
+    ${D.matriz_viabilidade.filter(m => m.status === "viavel").length} viáveis,
+    ${D.matriz_viabilidade.filter(m => m.status === "parcial").length} parciais e
+    ${D.matriz_viabilidade.filter(m => m.status === "indisponivel").length} indisponíveis.</p>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Área</th><th>Indicador</th><th>Situação</th><th>Base ou motivo</th></tr></thead><tbody>
+    ${D.matriz_viabilidade.map(m => `<tr><td class="src">${m.area}</td><td>${m.indicador}</td>
+      <td><span class="seal ${st[m.status][0]}">${st[m.status][1]}</span></td>
+      <td class="src">${m.base || ""}${m.falta ? `<br>${m.falta}` : ""}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>
+  <div class="card"><h4>Dicionário dos indicadores</h4>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Indicador</th><th>Selo</th><th>Definição</th><th>Fórmula</th>
+      <th>Unidade de análise</th><th>Periodicidade</th><th>Fonte</th><th>Limitações</th></tr></thead><tbody>
+    ${D.catalogo.map(c => `<tr><td><b>${c.nome}</b></td><td>${desSelo(c.selo)}</td><td>${c.definicao}</td>
+      <td class="src">${c.formula}</td><td class="src">${c.unidade_analise}</td><td class="src">${c.periodicidade}</td>
+      <td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>
+  <div class="card"><h4>O que os selos significam</h4>
+    <dl class="descomoler">${Object.entries(D.selos).map(([k, v]) => `<dt>${desSelo(k)}</dt><dd>${v}</dd>`).join("")}</dl>
+  </div>
+  <div class="card"><h4>Procedência e tratamento</h4>
+    <ul class="src" style="line-height:1.9">
+      <li><b>Fonte:</b> ${D.fonte} · <a href="${D.url_dataset}" target="_blank" rel="noopener">página do conjunto</a> · licença ${D.licenca}.</li>
+      <li><b>Coleta:</b> ${(D.coletado_em || "").slice(0, 16).replace("T", " ")} UTC · sha256 do arquivo bruto <code>${(D.bronze_sha || "").slice(0, 16)}…</code>, preservado em bronze com URL e data.</li>
+      <li><b>Cobertura:</b> ${D.meses} data-bases de ${D.data_base_min} a ${D.data_base}, sem meses ausentes · ${fmt.n0(D.linhas_base)} células na base.</li>
+      <li><b>Chave:</b> data-base × faixa × UF × conglomerado, verificada como única na origem.</li>
+      <li><b>Revisões:</b> a fonte republica a série inteira a cada mês e o BCB reflete retificações das entidades
+      remetentes. Por isso a absorção substitui a série completa em vez de acumular, e o hash do arquivo
+      identifica cada vintage.</li>
+      <li><b>Quebra declarada:</b> ${D.aviso_setembro}</li>
+      <li><b>Valores nominais</b>, sem deflação — meses distantes não são diretamente comparáveis em poder de compra.</li>
+      <li><b>Sigilo:</b> a divulgação já vem agregada pelo BCB; o Observatório não recebe nem produz dado individual.</li>
+    </ul>
+  </div>`;
+
+  el.innerHTML = pageHead({
+    title: "Desenrola Brasil",
+    desc: "O que o programa fez, quanto dele aparece nos dados públicos e até onde eles permitem avaliar seus efeitos.",
+    vintage: D.data_base,
+    fontes: `${D.fonte} · Relatório de Avaliação MPO/BID/BCB · IBGE SIDRA 6579`,
+  }) + abertura + kpis + comoLer + tl + arq + alcance + valores + regional + credores + depoisSec + efeitos + fiscal + metodo;
+}
+
 /* ---------- ALERTAS ----------
    Central unificada: as quatro famílias de alerta do Observatório num só lugar.
    O que a página NÃO faz é tão importante quanto o que ela faz — não soma
@@ -5493,9 +5927,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn };
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

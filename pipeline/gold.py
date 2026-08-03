@@ -578,6 +578,12 @@ def build_all(con, cfg, fetch_status):
     # panorama, openfinance, leading) e normaliza. Rodando antes, leria a
     # execução anterior — ou nada, num checkout limpo. O feed alerts.xml mantém
     # a URL: quem já assinava passa a receber todas as famílias, não só a macro.
+    try:
+        from pipeline import desenrola as desenrola_mod
+        print("desenrola:", desenrola_mod.build(con, cfg))
+    except Exception as e:
+        common.write_gold("desenrola.json", {"disponivel": False, "error": str(e)})
+
     from pipeline import central_alertas
     central = central_alertas.build()
     common.write_gold_text("alerts.xml", central_alertas.rss(central))
