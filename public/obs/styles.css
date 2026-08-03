@@ -51,31 +51,31 @@
   --surface-3: #e7e1d1;
   --text: #1a1d21;
   --text-2: #3d4147;
-  --text-3: #6b6d6a;
+  --text-3: #636562;   /* AA: 4,63 sobre --accent-soft, 4,90 sobre --surface-2 */
   --border: #d8d2c6;
   --border-2: #c8c0b0;
-  --accent: #966b48;
+  --accent: #8f6644;   /* AA: 4,76 sobre --surface (era 4,40 em .guiamais) */
   --accent-soft: #ede3d3;
   --accent-ink: #7c5638;
   --positive: #177245;
   --positive-soft: #e3efe4;
   --negative: #b32626;
   --negative-soft: #f6e6e0;
-  --warning: #a2670c;
+  --warning: #925d0b;  /* AA: 4,63 sobre --warning-soft (era 3,91 nos selos) */
   --warning-soft: #f4ead3;
   --forecast: #6d51a8;
   --forecast-soft: #ece5f2;
-  --teal: #0f7c8c;
-  --unavail: #8b8d85;
+  --teal: #0e707f;     /* AA: 4,60 sobre a própria tinta 12% (era 3,94) */
+  --unavail: #6e6f69;  /* AA: 4,61 sobre --surface (era 3,16 em .lvl) */
 
   /* gráficos */
   --c-line1: #1a1d21;
-  --c-line2: #0f7c8c;
-  --c-line3: #a2670c;
+  --c-line2: #0e707f;
+  --c-line3: #925d0b;
   --c-forecast: #6d51a8;
   --c-pos: #177245;
   --c-neg: #b32626;
-  --c-gray: #8b8d85;
+  --c-gray: #6e6f69;
   --c-grid: #e9e3d4;
   --c-axis: #8a867a65;
   --c-axis-text: #7c7970;
@@ -112,7 +112,7 @@
   --surface-3: #2f353b;
   --text: #ece7db;
   --text-2: #c0bbad;
-  --text-3: #94907f;
+  --text-3: #979382;  /* AA: 4,63 sobre --surface-2 escuro (era 4,45) */
   --border: #32373c;
   --border-2: #454a50;
   --accent: #b08a67;
@@ -127,14 +127,14 @@
   --forecast: #a893d4;
   --forecast-soft: #2e2740;
   --teal: #5cb3c2;
-  --unavail: #8a877c;
+  --unavail: #969387;  /* AA: 4,64 sobre --surface escuro (era 3,97) */
   --c-line1: #ece7db;
   --c-line2: #5cb3c2;
   --c-line3: #d3a55a;
   --c-forecast: #a893d4;
   --c-pos: #56b384;
   --c-neg: #d98080;
-  --c-gray: #8a877c;
+  --c-gray: #969387;
   --c-grid: #23282c;
   --c-axis: #3c4147;
   --c-axis-text: #9a958a;
@@ -774,7 +774,7 @@ details.decomp summary:hover { text-decoration: underline; }
 hr.sep { border: 0; border-top: 1px solid var(--border); margin: 22px 0 18px; }
 
 /* ---------- Pix e Meios de Pagamento ---------- */
-:root { --pix: #0e8f80; --pix-soft: color-mix(in srgb, #0e8f80 12%, transparent); }
+:root { --pix: #0a6d61; --pix-soft: color-mix(in srgb, #0a6d61 12%, transparent); }  /* AA: 4,60 sobre a tinta do seletor (era 3,02) */
 [data-theme=dark] { --pix: #4ecdc0; --pix-soft: color-mix(in srgb, #4ecdc0 14%, transparent); }
 .pixnum { color: var(--pix); }
 .stacklegend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 11.3px; color: var(--text-2); margin-top: 8px; }
@@ -831,3 +831,10 @@ nav.tabs.buscando .navgroup .navlabel::after { content: none; }
   .alcab { flex-direction: column; gap: 6px; }
   .alcab select { width: 100%; }
 }
+
+/* WCAG 2.1.1 — região rolável precisa ser alcançável pelo teclado. As tabelas
+   largas e os mapas de calor rolam na horizontal; sem foco, quem navega por
+   teclado não chega às colunas da direita. O tabindex é posto em tempo de
+   execução, só onde há rolagem de fato (ver acessibilizaRolagem). */
+[data-rolavel="1"] { outline-offset: 2px; }
+[data-rolavel="1"]:focus-visible { outline: 2px solid var(--accent-ink); }

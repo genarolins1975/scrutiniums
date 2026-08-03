@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.43.3"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.44.3"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1334,7 +1334,7 @@ function renderPix() {
       <span class="seg">${[["pag", "Pagador"], ["rec", "Recebedor"]].map(([v2, l]) => `<button class="${persp === v2 ? "on" : ""}" onclick="pxSet('gpersp','${v2}')">${l}</button>`).join("")}</span>
     </div>
     <div class="ov-2col-eq">
-      <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="img" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
+      <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
       <div class="src" style="margin-top:6px">${G.nota_perspectiva} Métricas por habitante existem só na perspectiva do pagador (denominador populacional).</div></div>
       <div class="card"><h4>Municípios — os maiores por valor pago</h4>
       ${M2 === undefined ? `<button class="btn" onclick="pxLoadMun()">carregar ranking municipal (5,5 mil municípios)</button>` :
@@ -1562,7 +1562,7 @@ function renderPanorama() {
     `<button class="${kk === met ? "on" : ""}" onclick="panSet('met','${kk}')" title="${mm.desc}">${mm.l}</button>`).join("")}</div>`;
   const mapa = `<div class="card">
     ${metsel}
-    <svg class="panmap" viewBox="${P.geo.viewBox}" role="img" aria-label="mapa do Brasil por UF — ${M.l}"><g transform="${P.geo.transform}">${paths}</g></svg>
+    <svg class="panmap" viewBox="${P.geo.viewBox}" role="group" aria-label="mapa do Brasil por UF — ${M.l}"><g transform="${P.geo.transform}">${paths}</g></svg>
     ${legend}
     <details class="charttable"><summary>dados em tabela (todas as UFs)</summary><div class="tblwrap" style="max-height:340px"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Saldo</th><th style="text-align:right">Part. BR</th><th style="text-align:right">Cresc. 12m</th><th style="text-align:right">Inad.</th><th style="text-align:right">15–90d</th><th style="text-align:right">Per capita</th></tr></thead><tbody>
     ${ranked.map(m => `<tr style="cursor:pointer" onclick="panSelUF('${m.uf}')"><td><b>${m.uf}</b> ${m.nome}</td><td style="text-align:right">${fmt.money(m.saldo)}</td><td style="text-align:right">${fmt.n(m.part_br, 1)}%</td><td style="text-align:right">${fmt.pp(m.cresc12)}%</td><td style="text-align:right">${fmt.n(m.inad, 1)}%</td><td style="text-align:right">${fmt.n(m.atraso15_90, 2)}%</td><td style="text-align:right">R$ ${fmt.n0(m.per_capita)}</td></tr>`).join("")}</tbody></table></div></details>
@@ -5347,6 +5347,45 @@ function pingView(v) {
   } catch (e) { /* telemetria nunca interfere na navegação */ }
 }
 
+
+/* ---------- acessibilidade: regiões roláveis (WCAG 2.1.1 e 2.4.7) ----------
+   Tabelas largas e mapas de calor rolam na horizontal dentro de um contêiner.
+   Quem navega com mouse arrasta; quem navega por teclado não tinha como chegar
+   às colunas da direita, porque o contêiner não recebia foco. O tabindex só
+   entra onde há rolagem de fato — pôr foco em contêiner que não rola criaria
+   paradas de tabulação vazias, que é o defeito oposto. */
+function acessibilizaRolagem(raiz) {
+  (raiz || document).querySelectorAll(".tblwrap, .heatwrap, .cmpwrap, .tblwrap-x").forEach(el => {
+    const rola = el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2;
+    if (rola && !el.hasAttribute("tabindex")) {
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "region");
+      el.dataset.rolavel = "1";
+      if (!el.getAttribute("aria-label")) {
+        const t = el.querySelector("table caption, th");
+        el.setAttribute("aria-label", `área rolável${t ? ": " + attr(t.textContent).slice(0, 60) : ""} — use as setas para percorrer`);
+      }
+    } else if (!rola && el.dataset.rolavel === "1") {
+      el.removeAttribute("tabindex"); el.removeAttribute("role"); delete el.dataset.rolavel;
+    }
+  });
+}
+
+/* Reavalia depois de cada render e a cada mudança de largura: o que rola em
+   375 px pode não rolar em 1440 px, e vice-versa. */
+let _rolagemAgendada = 0;
+function agendaAcessibilidade() {
+  clearTimeout(_rolagemAgendada);
+  _rolagemAgendada = setTimeout(() => acessibilizaRolagem(document.querySelector("section.view.active")), 120);
+}
+window.addEventListener("resize", agendaAcessibilidade);
+// re-renders internos (filtro, aba, busca) não passam por showViewSilent:
+// o observador cobre todos sem que cada render precise se lembrar disso
+document.addEventListener("DOMContentLoaded", () => {
+  const alvo = document.getElementById("main");
+  if (alvo && window.MutationObserver) new MutationObserver(agendaAcessibilidade).observe(alvo, { childList: true, subtree: true });
+});
+
 function showViewSilent(v) {
   try { navPrepara(); navSincroniza(); } catch (e) {}
   pingView(v);
@@ -5363,6 +5402,7 @@ function showViewSilent(v) {
   closeSidebar();
   hideTip();
   window.scrollTo(0, 0);
+  agendaAcessibilidade();
 }
 
 /* ---------- shell: tema, menu móvel, badge de alertas ---------- */

@@ -10,7 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "wcag": "node scripts/auditoria-wcag.mjs"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.5.4",
@@ -39,6 +40,7 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "terser": "^5.49.0",
-    "typescript": "^5"
+    "typescript": "^5",
+    "axe-core": "^4.12.1"
   }
 }
