@@ -204,12 +204,12 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.42.3"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.43.3"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
 // página (VIEW_DATA) ou por bloco habilitado da Visão geral (OV_BLOCO_DATA).
-const CORE_FILES = ["meta", "pulse", "ibcc", "overview", "alerts"];
+const CORE_FILES = ["meta", "pulse", "ibcc", "overview", "alerts", "alertas_central"];
 const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
@@ -543,8 +543,16 @@ function contribBar(label, v, scale = 22) {
   return `<div class="contrib"><span class="lbl">${label}</span><span class="bar ${v >= 0 ? "pos" : "neg"}" style="width:${w}px"></span><span class="num">${v >= 0 ? "+" : ""}${fmt.n(v, 2)}</span></div>`;
 }
 const ALERT_STATES = ["ativo", "em análise", "acompanhado", "resolvido", "descartado"];
-function alertState(id) { return (loadLS("obc_alert_states", {}))[id] || "ativo"; }
-window.setAlertState = (id, st) => { const m = loadLS("obc_alert_states", {}); m[id] = st; saveLS("obc_alert_states", m); renderAlerts(); };
+function alertState(id) {
+  const m = loadLS("obc_alert_states", {});
+  // ids ganharam prefixo de família na unificação; honra o que já estava salvo
+  return m[id] || m[String(id).split(":").slice(1).join(":")] || "ativo";
+}
+window.setAlertState = (id, st) => {
+  const m = loadLS("obc_alert_states", {}); m[id] = st; saveLS("obc_alert_states", m);
+  renderAlerts();
+  updateAlertBadge();  // o contador do cabeçalho é a manchete da central: acompanha na hora
+};
 function alertHtml(a, linkArea, comEstado) {
   const st = alertState(a.id);
   return `<div class="alert ${a.nivel}" style="${st === "descartado" || st === "resolvido" ? "opacity:.55" : ""}">
@@ -2295,8 +2303,8 @@ const GUIA = {
     nao: "Relações estimadas no passado podem não valer em rupturas estruturais. Nenhum cenário aqui tem probabilidade atribuída." },
   alerts: { q: "O que mudou e merece atenção agora?",
     importa: "Monitorar continuamente evita descobrir deterioração só quando ela já está consolidada.",
-    ler: "Cada alerta declara a regra que o disparou, o valor atual, o anterior e o período. Regras exigem persistência.",
-    nao: "Alerta não é diagnóstico nem previsão: é um convite a investigar a série que o originou." },
+    ler: "Os alertas vêm em quatro famílias, cada uma com o seu universo e a sua periodicidade. Leia dentro da família: a ordem de uma seção não vale como prioridade sobre outra.",
+    nao: "Alerta não é diagnóstico nem previsão, e a contagem de famílias diferentes não se soma. Ausência de alerta é ausência de regra disparada, não ausência de risco." },
   research: { q: "Como levar estes dados para um relatório ou uma aula?",
     importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
     ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
@@ -3981,39 +3989,150 @@ function renderScenarios() {
   <div class="note">Impacto em provisões, instituições e setores específicos: preparado arquiteturalmente, depende dos cortes setoriais (Fases 2b/3).</div>`;
 }
 
-/* ---------- ALERTAS ---------- */
+/* ---------- ALERTAS ----------
+   Central unificada: as quatro famílias de alerta do Observatório num só lugar.
+   O que a página NÃO faz é tão importante quanto o que ela faz — não soma
+   famílias, não cria escala comum de gravidade e não ordena uma família contra
+   a outra. Universos e periodicidades são diferentes; a consolidação é de
+   endereço, não de escala. Cada seção declara o seu universo e a sua regra. */
+const ALERTA_FILTRO = { familia: "todas", estado: "abertos", q: "" };
+
+window.alertaFiltra = (campo, valor) => { ALERTA_FILTRO[campo] = valor; renderAlerts(); };
+window.alertaBusca = (v) => {
+  ALERTA_FILTRO.q = v;
+  const el = document.getElementById("alListas");
+  if (el) el.innerHTML = listasAlertas();
+};
+
+function alertasAbertos(itens) {
+  const est = loadLS("obc_alert_states", {});
+  return itens.filter(a => !["resolvido", "descartado"].includes(est[a.id] || est[a.id.split(":").slice(1).join(":")] || "ativo"));
+}
+
+/* o dado guarda o nível sem acento (chave); a tela mostra a palavra */
+const NIVEL_LABEL = { informativo: "informativo", atencao: "atenção", relevante: "relevante", critico: "crítico" };
+
+/** Cartão de um alerta já normalizado pela central. */
+function alertaCard(a) {
+  const st = alertState(a.id);
+  const apagado = st === "descartado" || st === "resolvido";
+  const nivel = a.nivel || "informativo";
+  const linha = [
+    a.valor != null ? `valor <b>${fmt.n(a.valor, 2)}</b>` : null,
+    a.limiar != null ? `limiar ${fmt.n(a.limiar, 2)}` : null,
+    a.referencia ? `ref. ${a.referencia}` : null,
+    a.fonte ? `fonte ${a.fonte}` : null,
+    a.evidencia_persistencia ? `persistência: ${a.evidencia_persistencia}` : null,
+  ].filter(Boolean).join(" · ");
+  return `<div class="alert ${nivel}" style="${apagado ? "opacity:.5" : ""}">
+    <div class="alcab">
+      <div>
+        <span class="lvl">${a.nivel ? NIVEL_LABEL[a.nivel] || a.nivel : "sem nível declarado"}</span>
+        <b>${a.titulo}</b>
+        ${a.recorrente ? ` <span class="qbadge q-mid" title="${attr(a.evidencia_persistencia || "")}">recorrente</span>` : ""}
+      </div>
+      <select onchange="setAlertState('${a.id}', this.value)" aria-label="estado deste alerta">
+        ${ALERT_STATES.map(x => `<option ${x === st ? "selected" : ""}>${x}</option>`).join("")}</select>
+    </div>
+    <div class="expl">${a.detalhe || ""}</div>
+    <div class="src" style="margin-top:5px">${linha}
+      ${a.link && a.link.view ? ` · <a href="javascript:void(0)" onclick="nav('${a.link.view}')">ver em ${VIEW_TITLES[a.link.view] || a.link.view} →</a>` : ""}</div>
+  </div>`;
+}
+
+function listasAlertas() {
+  const C = state.data.alertas_central;
+  const q = _norm(ALERTA_FILTRO.q);
+  const est = loadLS("obc_alert_states", {});
+  return C.familias.map(fam => {
+    if (ALERTA_FILTRO.familia !== "todas" && ALERTA_FILTRO.familia !== fam.id) return "";
+    let itens = C.alertas.filter(a => a.familia === fam.id);
+    if (ALERTA_FILTRO.estado === "abertos") itens = alertasAbertos(itens);
+    if (q) itens = itens.filter(a => _norm(`${a.titulo} ${a.detalhe} ${a.fonte}`).includes(q));
+    const total = C.alertas.filter(a => a.familia === fam.id).length;
+    return `<section style="margin-top:22px">
+      ${sechead(fam.nome, `${itens.length} de ${total} · ${fam.periodicidade}`)}
+      <div class="src" style="margin:-4px 0 10px">
+        <b>Universo:</b> ${fam.universo} · <b>fonte:</b> ${fam.fonte}<br>
+        <b>Regra:</b> ${fam.regra_geral}<br>
+        <b>Ordem desta lista:</b> ${fam.ordenacao} — válida só dentro desta família.<br>
+        <b>Limite:</b> ${fam.limitacao}
+      </div>
+      ${itens.length ? itens.map(a => alertaCard(a)).join("")
+        : `<div class="card"><p class="src">${total ? "Nenhum alerta desta família no filtro atual."
+            : `Nenhuma regra desta família foi disparada nesta data-base. ${C.ausencia}`}</p></div>`}
+    </section>`;
+  }).join("");
+}
+
 function renderAlerts() {
   const el = document.getElementById("view-alerts");
   const { alerts, pulse } = state.data;
-  if (!alerts || !pulse) { el.innerHTML = "<p>sem dados</p>"; return; }
-  const userRules = getUserRules();
-  const userAlerts = evalUserRules();
-  const hist = alerts.historico || [];
+  const C = state.data.alertas_central;
+  if (!C) { el.innerHTML = "<p>sem dados</p>"; return; }
+  const abertos = alertasAbertos(C.alertas);
+  const porFam = f => C.alertas.filter(a => a.familia === f).length;
+  const comNivel = C.alertas.filter(a => a.nivel).length;
+  const userRules = alerts && pulse ? getUserRules() : [];
+  const userAlerts = alerts && pulse ? evalUserRules() : [];
+  const hist = (alerts && alerts.historico) || [];
+
+  const chips = `<div class="controls" style="gap:6px;flex-wrap:wrap">
+    <button class="btn ${ALERTA_FILTRO.familia === "todas" ? "" : "ghost"} small" onclick="alertaFiltra('familia','todas')">todas (${C.total})</button>
+    ${C.familias.map(f => `<button class="btn ${ALERTA_FILTRO.familia === f.id ? "" : "ghost"} small" onclick="alertaFiltra('familia','${f.id}')">${f.nome} (${porFam(f.id)})</button>`).join("")}
+  </div>
+  <div class="controls" style="gap:6px;flex-wrap:wrap;margin-top:-4px">
+    <span class="seg">${[["abertos", "em aberto"], ["todos", "incluir resolvidos"]].map(([v, l]) =>
+      `<button class="${ALERTA_FILTRO.estado === v ? "active" : ""}" onclick="alertaFiltra('estado','${v}')">${l}</button>`).join("")}</span>
+    <input type="search" placeholder="buscar no texto dos alertas" value="${attr(ALERTA_FILTRO.q)}"
+      oninput="alertaBusca(this.value)" style="min-width:220px" aria-label="buscar alertas">
+  </div>`;
+
   el.innerHTML = `
   ${pageHead({ title: "Central de alertas",
-    desc: "Regras determinísticas sobre séries observadas, com estado gerenciável por alerta e feed RSS para assinatura externa.",
-    fontes: "regras sobre BCB/SGS, IF.data e Open Finance" })}
+    desc: "Todos os alertas do Observatório num só lugar, separados por família porque observam universos diferentes. Estado gerenciável por alerta e feed RSS para assinatura externa.",
+    fontes: C.familias.map(f => f.fonte).join(" · ") })}
+  <div class="judalerta" style="margin-bottom:14px">
+    <b>Quatro famílias, quatro universos — não some as contagens.</b>
+    <div style="margin-top:5px">${C.nao_comparavel}</div>
+    <div style="margin-top:5px">${C.sem_nivel}</div>
+  </div>
   <div class="controls">
     <a class="btn ghost small" href="${DATA_BASE}alerts.xml" target="_blank" rel="noopener">📡 assinar alertas (RSS)</a>
     <a class="btn ghost small" href="${DATA_BASE}report.html?v=${APP_VERSION}" target="_blank" rel="noopener">📄 relatório automático diário (HTML → imprimir = PDF)</a>
     <span class="src">para receber por e-mail: assine o RSS em qualquer serviço RSS→e-mail (ex.: Blogtrottr); periodicidade segue o pipeline diário</span>
   </div>
-  <h3>Alertas (${alerts.alertas.length}) — estado gerido localmente</h3>
-  <div class="src" style="margin-bottom:8px">estados: ${ALERT_STATES.join(" · ")} (salvos neste navegador)</div>
-  ${alerts.alertas.map(a => alertHtml(a, a.serie && a.serie !== "*" ? "pulse" : "method", true)).join("") || "<p class='src'>nenhum</p>"}
-  <h3>Minhas regras (avaliadas no navegador, salvas localmente)</h3>
-  <div class="controls">
+  <div class="card" style="margin-top:12px">
+    <h4>Situação nesta execução</h4>
+    <p style="margin:6px 0">${C.total} alertas disparados por regras publicadas, ${abertos.length} em aberto no seu navegador.
+    ${comNivel} trazem nível declarado pela fonte; ${C.total - comNivel} vêm de fontes que não graduam severidade.</p>
+    <div class="src">${C.estado_local}<br>Processado em ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") : "–"} UTC.
+    ${(C.fontes_ausentes || []).length ? `<br><b>Famílias sem dado nesta execução:</b> ${C.fontes_ausentes.map(x => `${x.familia} (${x.motivo})`).join("; ")}` : ""}</div>
+  </div>
+  ${chips}
+  <div id="alListas">${listasAlertas()}</div>
+  ${entenda("al-fam", [
+    ["Por que separado por família", "Um alerta macro descreve o sistema inteiro numa série mensal do BCB. Um alerta de carteira descreve uma submodalidade do SCR.data numa data-base trimestral. Empilhá-los numa lista única sugeriria uma comparação que o dado não sustenta."],
+    ["Por que alguns não têm nível", "Nível é informação da fonte. Onde a fonte não gradua — a carteira do SCR.data —, atribuir um aqui seria inventar."],
+    ["O que significa ausência", C.ausencia],
+    ["Onde fica o meu estado", C.estado_local],
+  ])}
+  <h3 style="margin-top:26px">Minhas regras (avaliadas no navegador, salvas localmente)</h3>
+  ${alerts && pulse ? `<div class="controls">
     <label>série <select id="urSeries">${Object.keys(pulse.series).map(k => `<option value="${k}">${k}</option>`).join("")}</select></label>
     <label>métrica <select id="urMetric"><option value="level">nível</option><option value="yoy">variação a/a</option></select></label>
     <label>direção <select id="urDir"><option value="up">acima de</option><option value="down">abaixo de</option></select></label>
     <label>limiar <input id="urThr" type="number" step="0.1" style="width:80px"></label>
     <button class="btn small" onclick="addUserRule()">adicionar</button>
   </div>
-  ${userRules.map((r, i) => `<div class="alert ${userAlerts[i] ? "atencao" : "informativo"}"><span class="lvl">${userAlerts[i] ? "DISPARADO" : "monitorando"}</span> <b>${r.series}</b> ${r.metric} ${r.dir === "up" ? ">" : "<"} ${r.thr} ${userAlerts[i] ? `— valor atual ${fmt.n(userAlerts[i].val)}` : ""} <button class="btn ghost small" onclick="delUserRule(${i})">remover</button></div>`).join("") || "<p class='src'>nenhuma regra cadastrada. Canais no protótipo: painel e relatório; e-mail na Fase 6.</p>"}
-  <h3>Regras do pipeline (${(alerts.regras_configuradas || []).length})</h3>
+  ${userRules.map((r, i) => `<div class="alert ${userAlerts[i] ? "atencao" : "informativo"}"><span class="lvl">${userAlerts[i] ? "DISPARADO" : "monitorando"}</span> <b>${r.series}</b> ${r.metric} ${r.dir === "up" ? ">" : "<"} ${r.thr} ${userAlerts[i] ? `— valor atual ${fmt.n(userAlerts[i].val)}` : ""} <button class="btn ghost small" onclick="delUserRule(${i})">remover</button></div>`).join("") || "<p class='src'>nenhuma regra cadastrada. Regras suas valem só neste navegador e não entram no RSS.</p>"}`
+    : "<p class='src'>séries do pulso ainda carregando.</p>"}
+  <h3>Regras do pipeline — família macro (${(alerts && alerts.regras_configuradas || []).length})</h3>
+  <div class="src" style="margin-bottom:6px">As regras das outras famílias estão declaradas no cabeçalho de cada seção acima.</div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Regra</th><th>Série</th><th>Métrica</th><th>Limiar</th><th>Nível</th></tr></thead><tbody>
-  ${(alerts.regras_configuradas || []).map(r => `<tr><td>${r.label}</td><td>${r.series}</td><td>${r.metric}</td><td>${r.direction === "up" ? ">" : "<"} ${r.threshold}</td><td>${r.level}</td></tr>`).join("")}</tbody></table></div>
-  <h3>Histórico de disparos (${hist.length})</h3>
+  ${(alerts && alerts.regras_configuradas || []).map(r => `<tr><td>${r.label}</td><td>${r.series}</td><td>${r.metric}</td><td>${r.direction === "up" ? ">" : "<"} ${r.threshold}</td><td>${r.level}</td></tr>`).join("")}</tbody></table></div>
+  <h3>Histórico de disparos — família macro (${hist.length})</h3>
+  <div class="src" style="margin-bottom:6px">O histórico persistido cobre a família macro; as demais declaram persistência no próprio alerta.</div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Quando</th><th>Alerta</th><th>Nível</th><th>Valor</th></tr></thead><tbody>
   ${hist.map(h => `<tr><td class="src">${h.run_at.slice(0, 16).replace("T", " ")}</td><td>${h.titulo}</td><td>${h.nivel}</td><td>${h.valor != null ? fmt.n(h.valor, 2) : "–"}</td></tr>`).join("")}</tbody></table></div>`;
 }
@@ -5296,10 +5415,9 @@ scrimEl.addEventListener("click", closeSidebar);
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSidebar(); });
 function updateAlertBadge() {
   const el = document.getElementById("alertCount");
-  const a = state.data.alerts;
+  const a = state.data.alertas_central;
   if (!el || !a || !a.alertas) { return; }
-  const estados = loadLS("obc_alert_states", {});
-  const n = a.alertas.filter(x => !["resolvido", "descartado"].includes(estados[x.id] || "ativo")).length;
+  const n = alertasAbertos(a.alertas).length;  // as quatro famílias, não só a macro
   el.textContent = n;
   el.hidden = n === 0;
 }

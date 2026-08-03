@@ -34,6 +34,13 @@ def now_utc():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+def xml_escape(s):
+    """Texto seguro dentro de elementos XML (títulos de RSS, sobretudo).
+    Um '&' num nome de submodalidade quebra o feed inteiro no leitor."""
+    return (str(s if s is not None else "")
+            .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
+
+
 def http_get(url, timeout=45, retries=3, backoff=2.0):
     """GET com retry exponencial. Retorna (bytes, meta) ou lança após esgotar tentativas."""
     last_err = None

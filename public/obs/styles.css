@@ -349,17 +349,21 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
 .seg button.active { background: var(--accent); color: #fff; }
 [data-theme="dark"] .seg button.active { color: #10141a; }
 
-button.btn {
+button.btn, a.btn {
   background: var(--accent); color: #fff; border: none; border-radius: 2px;
   padding: 7px 15px; font-size: 12.5px; font-weight: 550; font-family: var(--sans);
   cursor: pointer; transition: background var(--t-fast) var(--ease);
 }
-[data-theme="dark"] button.btn { color: #10141a; }
-button.btn:hover { background: var(--accent-ink); }
-[data-theme="dark"] button.btn:hover { background: var(--accent-ink); color: #10141a; }
-button.btn.ghost { background: transparent; color: var(--accent-ink); border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); }
-button.btn.ghost:hover { background: var(--accent-soft); color: var(--accent-ink); }
-button.btn.small { padding: 3.5px 10px; font-size: 11.5px; border-radius: 2px; }
+[data-theme="dark"] button.btn, [data-theme="dark"] a.btn { color: #10141a; }
+button.btn:hover, a.btn:hover { background: var(--accent-ink); }
+[data-theme="dark"] button.btn:hover, [data-theme="dark"] a.btn:hover { background: var(--accent-ink); color: #10141a; }
+button.btn.ghost, a.btn.ghost { background: transparent; color: var(--accent-ink); border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent); }
+button.btn.ghost:hover, a.btn.ghost:hover { background: var(--accent-soft); color: var(--accent-ink); }
+button.btn.small, a.btn.small { padding: 3.5px 10px; font-size: 11.5px; border-radius: 2px; }
+/* âncoras que fazem papel de botão (RSS, relatório, navegação interna do Open
+   Finance) herdavam nada: o seletor exigia <button>. Ficavam como link solto no
+   meio de uma fila de botões. */
+a.btn { display: inline-block; text-decoration: none; line-height: normal; }
 
 select, input[type="text"], input[type="search"], textarea {
   border: 1px solid var(--border-2); border-radius: 2px; padding: 6px 10px;
@@ -817,3 +821,13 @@ nav.tabs .navgroup:not(.aberto) button[data-view] { display: none; }
 nav.tabs.buscando .navgroup button[data-view] { display: block !important; }
 nav.tabs.buscando .navgroup .navlabel::after { content: none; }
 .navvazio { font-size: 11.5px; color: var(--text-3); padding: 4px 16px; margin: 0; }
+
+/* central de alertas: o seletor de estado é um item do cabeçalho do cartão, não
+   um float — flutuando, o texto do alerta se enrolava em volta dele. */
+.alcab { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.alcab > div { min-width: 0; }
+.alcab select { flex: 0 0 auto; font-size: 11.5px; padding: 3px 8px; }
+@media (max-width: 560px) {
+  .alcab { flex-direction: column; gap: 6px; }
+  .alcab select { width: 100%; }
+}

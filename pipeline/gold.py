@@ -506,17 +506,15 @@ def build_all(con, cfg, fetch_status):
         "pulse": pulse, "sectors": sectors, "institutions": inst, "rj": rj,
         "alerts": {"alertas": alert_list}, "scenario": scenario, "quality": quality_tmp,
     })
-    _rss_items = "".join(
-        f"<item><title>[{a['nivel'].upper()}] {a['titulo']}</title>"
-        f"<description><![CDATA[{a['explicacao']}]]></description>"
-        f"<guid isPermaLink=\"false\">{a['id']}:{today}</guid></item>"
-        for a in alert_list)
-    common.write_gold_text("alerts.xml",
-        f"<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel>"
-        f"<title>{cfg['platform']['name']} — Alertas</title>"
-        f"<link>https://observatorio-credito.vercel.app/#alerts</link>"
-        f"<description>Alertas do pipeline diário. Para receber por e-mail, assine este feed em "
-        f"qualquer serviço RSS-para-e-mail.</description>{_rss_items}</channel></rss>")
+    # ---- Central de alertas: consolida as quatro famílias num só arquivo ----
+    # Roda por último, de propósito: lê os gold já escritos (alerts, panorama,
+    # openfinance, leading) e normaliza. O feed alerts.xml mantém a mesma URL —
+    # quem já assinava passa a receber todas as famílias, não só a macro.
+    from pipeline import central_alertas
+    central = central_alertas.build()
+    common.write_gold_text("alerts.xml", central_alertas.rss(central))
+    print(f"  [central_alertas] {central['total']} alertas em "
+          f"{len([f for f in central['familias'] if f['ativos']])} famílias ativas")
 
     # ---- Qualidade e linhagem ----
     cur = con.execute("SELECT key FROM series_meta ORDER BY key")
