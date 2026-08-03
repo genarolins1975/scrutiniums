@@ -876,3 +876,104 @@ nav.tabs.buscando .navgroup .navlabel::after { content: none; }
   .desdl { grid-template-columns: 1fr; gap: 1px 0; }
   .desdl dd { margin-bottom: 6px; }
 }
+
+/* ---------- Desenrola: refinamento tipográfico e de ritmo ----------
+   O painel tinha 187 caracteres por linha e 35 cartões. O problema não era
+   conteúdo, era medida e ruído de borda: prosa correndo a largura inteira,
+   caixa dentro de caixa e oito KPIs indistintos. */
+
+/* medida de leitura: nenhuma prosa passa de ~70 caracteres por linha */
+.desprosa { max-width: 68ch; }
+.desprosa p { margin: 0 0 10px; line-height: 1.72; }
+.desprosa p:last-child { margin-bottom: 0; }
+
+/* sumário de seções: 14 mil px de rolagem precisam de orientação */
+.desindex { display: flex; flex-wrap: wrap; gap: 2px 0; margin: 18px 0 4px;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 7px 0; }
+.desindex a { font-size: 11.5px; color: var(--text-2); text-decoration: none; padding: 3px 11px;
+  border-right: 1px solid var(--border); line-height: 1.5; }
+.desindex a:last-child { border-right: 0; }
+.desindex a:hover { color: var(--accent-ink); background: var(--accent-soft); }
+
+/* nota lateral: substitui a caixa pesada onde o aviso é contextual, não estrutural */
+.desnota { border-left: 2px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  padding: 2px 0 2px 13px; margin: 10px 0; font-size: 12.6px; line-height: 1.72; color: var(--text-2);
+  max-width: 72ch; }
+.desnota b { color: var(--text); }
+
+/* grupo de indicadores: rótulo que separa universos diferentes sem mais uma borda */
+.desgrupo { margin-top: 22px; }
+.desgrupo > .rot { font-family: var(--label); font-size: 10.5px; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--text-3); margin-bottom: 8px; display: block; }
+.desgrupo .pan-kpi { margin-top: 0; }
+.desgrupo .card.kpi { display: flex; flex-direction: column; }
+.desgrupo .card.kpi .big { margin: 2px 0 6px; }
+.desgrupo .card.kpi .src { margin-top: auto; }
+
+/* comparação da arquitetura: tabela em vez de três cartões de alturas desiguais */
+.desarq { width: 100%; border-collapse: collapse; font-size: 12.7px; }
+.desarq th, .desarq td { text-align: left; vertical-align: top; padding: 9px 14px 9px 0;
+  border-bottom: 1px solid var(--border); line-height: 1.6; }
+.desarq thead th { border-bottom: 1px solid var(--border-2); padding-bottom: 7px; }
+.desarq thead th .n { font-family: var(--serif, var(--sans)); font-size: 19px; font-weight: 600;
+  display: block; line-height: 1.25; }
+.desarq thead th .u { font-size: 10.5px; color: var(--text-3); font-weight: 400; }
+.desarq tbody th { font-family: var(--label); font-size: 10px; letter-spacing: .05em;
+  text-transform: uppercase; color: var(--text-3); font-weight: 500; white-space: nowrap;
+  padding-right: 18px; width: 1%; }
+.desarq td.vazio { color: var(--text-3); font-style: italic; }
+
+/* matriz de viabilidade: 91 linhas viravam parede — agora resume e expande por área */
+.desmatriz { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px;
+  margin: 12px 0 4px; }
+.desmz { border: 1px solid var(--border); border-radius: 3px; padding: 10px 13px; }
+.desmz h6 { margin: 0 0 6px; font-size: 12.5px; font-weight: 620; }
+.desmz .barra { display: flex; height: 5px; border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+.desmz .barra i { display: block; }
+.desmz .v { background: var(--positive); }
+.desmz .p { background: var(--warning); }
+.desmz .i { background: color-mix(in srgb, var(--unavail) 55%, transparent); }
+.desmz .leg { font-size: 11px; color: var(--text-3); }
+
+/* ritmo vertical: seções longas precisam de respiro entre si */
+#view-desenrola .sechead { margin-top: 34px; }
+#view-desenrola > section:first-of-type .sechead { margin-top: 22px; }
+
+@media (max-width: 700px) {
+  .desarq, .desarq thead, .desarq tbody, .desarq tr, .desarq th, .desarq td { display: block; }
+  .desarq thead { margin-bottom: 6px; }
+  .desarq tbody th { border: 0; padding-bottom: 0; }
+  .desarq tbody td { padding-top: 2px; }
+  .desindex { gap: 0; }
+  .desindex a { border-right: 0; padding: 4px 9px 4px 0; }
+}
+
+/* Medida de leitura no escopo da página: qualquer texto corrido para de crescer
+   com a janela. Seletores de filho direto — tabelas, gráficos e mapas ficam de
+   fora, porque neles a largura é informação. */
+#view-desenrola .card > p,
+#view-desenrola .card > .src,
+#view-desenrola .card > ul,
+#view-desenrola .card > ol,
+#view-desenrola .card > dl,
+#view-desenrola .note,
+#view-desenrola .judalerta > div,
+#view-desenrola .deslacuna ul,
+#view-desenrola .destl li > div,
+#view-desenrola .descomoler dd { max-width: 74ch; }
+
+/* a lista da metodologia e as lacunas ganham entrelinha um pouco maior:
+   são leitura densa e sequencial, não varredura */
+#view-desenrola .card > ul.src li { margin-bottom: 4px; }
+
+/* dicionário: verbete em bloco. Em tabela de oito colunas cada célula virava
+   uma coluna de uma palavra por linha. */
+.desdic article { padding: 13px 0; border-bottom: 1px solid var(--border); max-width: 82ch; }
+.desdic article:last-child { border-bottom: 0; padding-bottom: 0; }
+.desdic h5 { margin: 0 0 5px; font-size: 13.5px; font-weight: 620; display: flex; align-items: center;
+  gap: 8px; flex-wrap: wrap; }
+.desdic p { margin: 0 0 5px; font-size: 12.8px; line-height: 1.7; color: var(--text-2); }
+.desdic p:last-child { margin-bottom: 0; }
+.desdic .meta, .desdic .lim { font-size: 11.8px; color: var(--text-3); line-height: 1.75; }
+.desdic .meta b, .desdic .lim b { color: var(--text-2); font-weight: 560; }
+.desdic code { font-size: 11.2px; background: var(--surface-2); padding: 1px 5px; border-radius: 2px; }

@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.46.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.46.3"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -4207,33 +4207,50 @@ function renderDesenrola() {
 
   /* ---------- 1. Visão geral ---------- */
   const ofi = id => D.oficiais.find(o => o.id === id) || {};
-  const cardOfi = o => `<div class="card kpi"><h4>${o.rotulo}</h4>
+  const fonteCurta = x => x.replace("Considerações da SRE/Ministério da Fazenda no Relatório de Avaliação", "SRE/Ministério da Fazenda")
+                           .replace("Relatório de Avaliação MPO/BID/BCB, introdução", "Relatório de Avaliação MPO/BID/BCB");
+  // a nota de cada número oficial é longa: dentro do cartão competia com o próprio
+  // número e desalinhava as alturas da fileira. Vira tooltip.
+  const cardOfi = o => `<div class="card kpi" data-tip="${encodeURIComponent(`<div class="tt-date">${o.rotulo}</div><div class="tt-meta">${o.nota}<br><b>Fonte:</b> ${o.fonte}</div>`)}">
+    <h4>${o.rotulo}</h4>
     <div class="big">${o.unidade.startsWith("R$") ? fmt.money(o.valor) : fmt.n0(o.valor)}</div>
-    <div class="src">${desSelo(o.selo)} ${o.unidade} · ${o.nota}<br><i>${o.fonte}</i></div></div>`;
+    <div class="src">${desSelo(o.selo)} ${o.unidade}<br><i>${fonteCurta(o.fonte)}</i></div></div>`;
 
-  const abertura = `<p class="lead">O Desenrola Brasil foi criado em 2023 para tirar do vermelho quem tinha
-    dívidas pequenas e atrasadas — gente que, por causa da negativação, ficava fora do crédito, do aluguel e
-    às vezes do emprego. O Estado entrou com garantia e com um leilão em que os credores disputavam oferecer
-    o maior desconto. Quem tinha dívida de até R$ 5 mil e renda baixa entrou pela Faixa 1; quem tinha renda
-    até R$ 20 mil e nome negativado até o fim de 2022 entrou pela Faixa 2.</p>
-  <div class="judalerta">
+  const abertura = `<div class="desprosa">
+    <p class="lead">O Desenrola Brasil foi criado em 2023 para tirar do vermelho quem tinha dívidas
+    pequenas e atrasadas — gente que, por causa da negativação, ficava fora do crédito, do aluguel e às
+    vezes do emprego. O Estado entrou com garantia e com um leilão em que os credores disputavam oferecer
+    o maior desconto. Quem tinha dívida de até R$ 5 mil e renda baixa entrou pela Faixa 1; quem tinha
+    renda até R$ 20 mil e nome negativado até o fim de 2022 entrou pela Faixa 2.</p>
+  </div>
+  <div class="judalerta" style="max-width:78ch">
     <b>Antes do primeiro número: esta base não cobre o programa inteiro.</b>
     <div style="margin-top:5px">${D.aviso_cobertura}</div>
-    <div style="margin-top:5px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
-  </div>`;
-
-  const kpis = `<div class="pan-kpi">
-    ${[ofi("elegiveis"), ofi("renegociaram"), ofi("regularizado"), ofi("beneficiados")].map(cardOfi).join("")}
+    <div style="margin-top:6px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
   </div>
-  <div class="pan-kpi">
-    <div class="card kpi"><h4>Operações no SCR (faixas 1 e 2)</h4><div class="big">${fmt.n0(D.totais_scr.operacoes)}</div>
-      <div class="src">${desSelo("reportado")} operações, não pessoas · ${D.totais_scr.periodo}</div></div>
-    <div class="card kpi"><h4>Volume no SCR, após desconto</h4><div class="big">${fmt.money(D.totais_scr.volume)}</div>
-      <div class="src">${desSelo("reportado")} ${D.reconciliacao.razao}× menor que o total oficial regularizado, pelo motivo acima</div></div>
-    <div class="card kpi"><h4>Valor médio por operação</h4><div class="big">R$ ${fmt.n0(D.totais_scr.ticket_medio)}</div>
-      <div class="src">${desSelo("calculado")} volume ÷ operações · não há mediana nem distribuição na fonte</div></div>
-    <div class="card kpi"><h4>Conglomerados credores no SCR</h4><div class="big">${D.totais_scr.conglomerados}</div>
-      <div class="src">${desSelo("reportado")} só quem reporta ao SCR · o leilão da Faixa 1 teve 654 credores</div></div>
+  <nav class="desindex" aria-label="seções desta página">
+    ${[["prog", "O programa"], ["arq", "Arquitetura"], ["alcance", "Alcance"], ["valores", "Valores"],
+       ["regional", "Onde"], ["credores", "Credores"], ["depois", "Depois"], ["efeitos", "Efeitos"],
+       ["fiscal", "Fiscal"], ["metodo", "Metodologia"]].map(([id, l]) =>
+      `<a href="javascript:void(0)" onclick="document.getElementById('des-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
+  </nav>`;
+
+  const kpis = `<div id="des-prog" class="desgrupo">
+    <span class="rot">O que o programa fez — números oficiais</span>
+    <div class="pan-kpi">${[ofi("elegiveis"), ofi("renegociaram"), ofi("regularizado"), ofi("beneficiados")].map(cardOfi).join("")}</div>
+  </div>
+  <div class="desgrupo">
+    <span class="rot">O que aparece na base do Banco Central — faixas 1 e 2</span>
+    <div class="pan-kpi">
+      <div class="card kpi"><h4>Operações no SCR</h4><div class="big">${fmt.n0(D.totais_scr.operacoes)}</div>
+        <div class="src">${desSelo("reportado")} operações, não pessoas<br>${D.totais_scr.periodo}</div></div>
+      <div class="card kpi"><h4>Volume, após desconto</h4><div class="big">${fmt.money(D.totais_scr.volume)}</div>
+        <div class="src">${desSelo("reportado")} ${fmt.n(D.reconciliacao.razao, 1)}× menor que o total oficial<br>pelo motivo explicado acima</div></div>
+      <div class="card kpi"><h4>Valor médio por operação</h4><div class="big">R$ ${fmt.n0(D.totais_scr.ticket_medio)}</div>
+        <div class="src">${desSelo("calculado")} volume ÷ operações<br>a fonte não publica mediana</div></div>
+      <div class="card kpi"><h4>Conglomerados credores</h4><div class="big">${D.totais_scr.conglomerados}</div>
+        <div class="src">${desSelo("reportado")} só quem reporta ao SCR<br>o leilão da Faixa 1 teve 654 credores</div></div>
+    </div>
   </div>`;
 
   const tl = `${sechead("Linha do tempo", "cada marco com a fonte que o sustenta")}
@@ -4247,29 +4264,28 @@ function renderDesenrola() {
     <dl class="descomoler">${D.como_ler.map(([t, d]) => `<dt>${t}</dt><dd>${d}</dd>`).join("")}</dl></div>`;
 
   /* ---------- 2. Arquitetura do programa ---------- */
-  const arq = `${sechead("Arquitetura do programa", "componentes com coberturas diferentes — nunca somados")}
-  <div class="descomp">
-    ${D.componentes.filter(c => !c.contexto).map(c => `<div class="card ${c.no_scr ? "" : "semdado"}">
-      <h4>${c.nome}</h4>
-      ${c.no_scr ? `<div class="big" style="font-size:22px">${fmt.n0(c.operacoes)} <span class="src" style="font-size:11px">operações no SCR</span></div>` : `<div class="src"><b>Sem dado desagregado público.</b></div>`}
-      <dl class="desdl">
-        <dt>Quem podia</dt><dd>${c.publico}</dd>
-        <dt>Que dívida</dt><dd>${c.divida}</dd>
-        <dt>Quando</dt><dd>${c.periodo}</dd>
-        <dt>Por onde</dt><dd>${c.canal}</dd>
-        <dt>Garantia pública</dt><dd>${c.garantia}</dd>
-        <dt>Dado disponível</dt><dd>${c.dados}</dd>
-      </dl>
-      ${c.alerta ? `<div class="judalerta" style="margin:8px 0 0"><b>Atenção.</b> ${c.alerta}</div>` : ""}
-      ${c.no_scr ? `<p class="src">${fmt.money(c.volume)} após desconto · ticket médio R$ ${fmt.n0(c.ticket_medio)} · ${c.conglomerados} conglomerados · SCR ${c.periodo_scr}</p>` : ""}
-    </div>`).join("")}
+  // três cartões de alturas desiguais escondem justamente o que interessa: a
+  // diferença entre os componentes. A tabela põe cada atributo lado a lado.
+  const compPF = D.componentes.filter(c => !c.contexto);
+  const LINHAS_ARQ = [["Quem podia", "publico"], ["Que dívida", "divida"], ["Quando", "periodo"],
+                      ["Por onde", "canal"], ["Garantia pública", "garantia"], ["Dado disponível", "dados"]];
+  const arq = `<section id="des-arq">${sechead("Arquitetura do programa", "componentes com coberturas diferentes — nunca somados")}
+  <div class="card">
+    <div class="tblwrap"><table class="desarq">
+      <thead><tr><th></th>${compPF.map(c => `<th>${c.nome}
+        ${c.no_scr ? `<span class="n">${fmt.n0(c.operacoes)}</span><span class="u">operações no SCR · ${fmt.money(c.volume)} · ticket R$ ${fmt.n0(c.ticket_medio)}</span>`
+                   : `<span class="u" style="display:block;margin-top:5px">sem dado desagregado público</span>`}</th>`).join("")}</tr></thead>
+      <tbody>${LINHAS_ARQ.map(([rot, campo]) => `<tr><th>${rot}</th>${compPF.map(c =>
+        `<td${/INDISPON/i.test(c[campo]) ? ' class="vazio"' : ""}>${c[campo]}</td>`).join("")}</tr>`).join("")}</tbody>
+    </table></div>
+    ${compPF.filter(c => c.alerta).map(c => `<div class="desnota"><b>${c.nome}:</b> ${c.alerta}</div>`).join("")}
   </div>
-  ${D.pequenos_negocios ? `<div class="card semdado" style="margin-top:12px">
+  ${D.pequenos_negocios ? `<div class="card semdado">
     <h4>Quadro de contexto — ${D.pequenos_negocios.nome}</h4>
-    <div class="judalerta" style="margin:0 0 8px"><b>Programa diferente.</b> ${D.aviso_tipo3}</div>
+    <div class="desnota"><b>Programa diferente.</b> ${D.aviso_tipo3}</div>
     <p class="src">${fmt.n0(D.pequenos_negocios.operacoes)} operações · ${fmt.money(D.pequenos_negocios.volume)} ·
     ticket médio R$ ${fmt.n0(D.pequenos_negocios.ticket_medio)} — cerca de ${Math.round(D.pequenos_negocios.ticket_medio / D.totais_scr.ticket_medio)}× o das faixas de pessoa física, o que mostra que são universos distintos.</p>
-  </div>` : ""}`;
+  </div>` : ""}</section>`;
 
   /* ---------- 3. Alcance e adesão ---------- */
   const filtros = `<div class="controls">
@@ -4297,7 +4313,7 @@ function renderDesenrola() {
   const opDepois = depois.reduce((s, m) => s + somaSerie(m, "operacoes"), 0);
   const totOp = opPrograma + opDepois;
 
-  const alcance = `${sechead("Alcance e adesão", "o que a base mede, e o que ela não mede")}
+  const alcance = `<section id="des-alcance">${sechead("Alcance e adesão", "o que a base mede, e o que ela não mede")}
   ${filtros}
   <div class="card"><h4>Renegociações informadas ao SCR, por mês</h4>${grafSerie}</div>
   <div class="pan2col">
@@ -4328,7 +4344,7 @@ function renderDesenrola() {
     de elegíveis — cerca de <b>${fmt.n(100 * 5 / 30, 0)}%</b>. Os dois números vêm do mesmo relatório oficial, mas de
     conceitos e momentos diferentes: um é a procura observada pelo programa, o outro é uma estimativa de
     elegibilidade da Faixa 1. A divisão dá ordem de grandeza, não taxa medida sobre um cadastro.</p>
-  </div>`;
+  </div></section>`;
 
   /* ---------- 4. Valores e condições ---------- */
   const tickets = D.serie.filter(m => tipos.some(t => m[t] && m[t].operacoes));
@@ -4341,7 +4357,7 @@ function renderDesenrola() {
     fonte: D.fonte, periodo: D.totais_scr.periodo, atualizado: (D.gerado_em || "").slice(0, 10),
     nota: "Valor após o desconto. Média de agregados mensais — a fonte não publica distribuição.",
   });
-  const valores = `${sechead("Valores e condições", "o que a fonte publica sobre o contrato renegociado")}
+  const valores = `<section id="des-valores">${sechead("Valores e condições", "o que a fonte publica sobre o contrato renegociado")}
   <div class="card"><h4>Valor médio por operação, ao longo do tempo</h4>${grafTicket}</div>
   ${desLacuna("Quase tudo o que se esperaria desta seção não existe na fonte", [
     { falta: "Valor original da dívida", porque: "a base publica somente o valor DEPOIS do desconto", precisaria: "coluna de valor pré-desconto na divulgação do BCB" },
@@ -4360,7 +4376,7 @@ function renderDesenrola() {
       <dt>Custo fiscal</dt><dd>Dinheiro público efetivamente gasto. <b>Desconto de credor privado não é gasto
       público</b> e não deve ser somado a ele.</dd>
     </dl>
-  </div>`;
+  </div></section>`;
 
   /* ---------- 5. Beneficiários e distribuição regional ---------- */
   const metMapa = F.metMapa || "operacoes";
@@ -4379,7 +4395,7 @@ function renderDesenrola() {
     return `<path d="${D.geo.paths[m.cod]}" fill="${escMapa(m[metMapa])}" data-tip="${tip}" role="img" aria-label="${attr(m.nome)}: ${attr(MAPAS[metMapa][1](m))}"></path>`;
   }).join("");
   const vmaxMapa = Math.max(...D.mapa.map(m => m[metMapa] || 0));
-  const regional = `${sechead("Onde as renegociações aconteceram", "UF do tomador · faixas 1 e 2")}
+  const regional = `<section id="des-regional">${sechead("Onde as renegociações aconteceram", "UF do tomador · faixas 1 e 2")}
   <div class="controls">${Object.entries(MAPAS).map(([k, v]) =>
     `<button class="btn ${metMapa === k ? "" : "ghost"} small" onclick="desFiltra('metMapa','${k}')">${v[0]}</button>`).join("")}</div>
   <div class="pan2col">
@@ -4404,13 +4420,13 @@ function renderDesenrola() {
     { falta: "Município", porque: "UF é a menor granularidade geográfica publicada" },
     { falta: "Produto de crédito da dívida renegociada", porque: "não há coluna de modalidade" },
     { falta: "Antiguidade da dívida e quantidade anterior de dívidas", porque: "a base descreve a operação nova, não o histórico do devedor" },
-  ])}`;
+  ])}</section>`;
 
   /* ---------- 6. Instituições e credores ---------- */
   const insts = D.instituicoes;
   const sel = comparar.length ? insts.filter(i => comparar.includes(i.cod)) : insts.slice(0, 5);
   const maxOp = insts[0].operacoes;
-  const credores = `${sechead("Credores que reportam ao SCR", `${D.concentracao.n_conglomerados} conglomerados financeiros`)}
+  const credores = `<section id="des-credores">${sechead("Credores que reportam ao SCR", `${D.concentracao.n_conglomerados} conglomerados financeiros`)}
   <div class="judalerta"><b>Isto não é um ranking de melhores e piores.</b> Conglomerados têm carteiras,
   públicos e composições de produto diferentes: quem tinha muitos clientes de baixa renda com dívida pequena
   aparece com muitas operações e ticket baixo, e isso descreve a carteira, não a qualidade da atuação. Além
@@ -4450,11 +4466,12 @@ function renderDesenrola() {
     { falta: "Desconto médio concedido por cada credor", porque: "exigiria o valor original, que a base não publica" },
     { falta: "Regularidade e inadimplência posteriores dos acordos", porque: "a base registra a contratação e não acompanha a operação depois" },
     { falta: "Renegociação como proporção da carteira", porque: "o conglomerado do Desenrola é o financeiro e a carteira do IF.data é do prudencial — os perímetros não coincidem", precisaria: "chave de correspondência entre os dois perímetros publicada pelo BCB" },
-  ])}`;
+  ])}</section>`;
 
   /* ---------- 7. Depois da renegociação ---------- */
-  const depoisSec = `${sechead("O que aconteceu depois da renegociação", "a pergunta mais importante, e a que a base pública não responde")}
+  const depoisSec = `<section id="des-depois">${sechead("O que aconteceu depois da renegociação", "a pergunta mais importante, e a que a base pública não responde")}
   <div class="card">
+    <div class="desprosa">
     <p>Esta seria a seção central de um painel de avaliação: quantos acordos continuaram regulares, quantos
     voltaram a atrasar, quanto foi liquidado, quem voltou a tomar crédito. A base do BCB informa a
     <b>renegociação no mês em que ela ocorreu</b> e não acompanha a operação depois. Não há coorte, não há
@@ -4462,6 +4479,7 @@ function renderDesenrola() {
     longitudinal por operação é sigiloso.</p>
     <p class="src">Construir esta seção com o que existe exigiria comparar coortes por proxy agregada, o que
     produziria uma curva plausível e sem sustentação. O Observatório não faz isso: a ausência fica declarada.</p>
+    </div>
   </div>
   ${desLacuna("O que seria preciso para responder", [
     { falta: "Permanência do acordo em situação regular após 3, 6, 12, 18 e 24 meses", porque: "não há painel por operação", precisaria: "série de estoque e situação das operações do programa por safra de contratação" },
@@ -4472,7 +4490,7 @@ function renderDesenrola() {
   a quem renegociou não significa, por si, melhora de bem-estar — pode ser recomposição de dívida. E aumento
   do endividamento não é automaticamente deterioração: pode ser retorno ao crédito formal, mais barato que a
   alternativa informal. Qualquer leitura desses números precisa dizer qual das duas histórias está contando e
-  por quê.</div>`;
+  por quê.</div></section>`;
 
   /* ---------- 8. Efeitos sobre o mercado de crédito ---------- */
   const P = state.data.pulse;
@@ -4488,7 +4506,7 @@ function renderDesenrola() {
     nota: "Os marcos indicam quando o programa aconteceu. Coincidência temporal não é efeito.",
   }) : "<p class='src'>Série do pulso ainda carregando.</p>";
 
-  const efeitos = `${sechead("O Desenrola no contexto do mercado de crédito", "três níveis de evidência, nunca misturados")}
+  const efeitos = `<section id="des-efeitos">${sechead("O Desenrola no contexto do mercado de crédito", "três níveis de evidência, nunca misturados")}
   <div class="controls">${(D.series_contexto || []).map(s =>
     `<button class="btn ${serieCtx === s.chave ? "" : "ghost"} small" onclick="desFiltra('ctx','${s.chave}')">${s.rotulo}</button>`).join("")}</div>
   <div class="card"><h4>${ctxMeta.rotulo || serieCtx}, com os marcos do programa</h4>${grafCtx}</div>
@@ -4515,14 +4533,14 @@ function renderDesenrola() {
     <p class="src" style="margin-top:8px"><b>Conclusão dos autores:</b> ${D.avaliacao.conclusao_dos_autores}</p>
     <div class="judalerta" style="margin-top:8px"><b>O que continua sem resposta.</b> ${D.avaliacao.limite}</div>
     <p class="src"><a href="${D.avaliacao.url}" target="_blank" rel="noopener">relatório completo (PDF, Ministério do Planejamento e Orçamento)</a></p>
-  </div>`;
+  </div></section>`;
 
   /* ---------- 9. Garantias e dimensão fiscal ---------- */
-  const fiscal = `${sechead("Garantias e dimensão fiscal")}
+  const fiscal = `<section id="des-fiscal">${sechead("Garantias e dimensão fiscal")}
   <div class="card">
-    <p>A Faixa 1 teve garantia do Fundo Garantidor de Operações (FGO): o Estado assumiu parte do risco para que
-    os credores aceitassem descontos grandes em dívidas antigas. Quanto disso virou desembolso efetivo é uma
-    pergunta legítima e sem resposta em base pública desagregada.</p>
+    <p class="desprosa">A Faixa 1 teve garantia do Fundo Garantidor de Operações (FGO): o Estado assumiu
+    parte do risco para que os credores aceitassem descontos grandes em dívidas antigas. Quanto disso virou
+    desembolso efetivo é uma pergunta legítima e sem resposta em base pública desagregada.</p>
     <div class="judalerta"><b>Não há número aqui porque não há dado — e estimar seria pior.</b>
     Preencher esta seção com aproximações a partir do volume renegociado produziria um "custo fiscal" que
     ninguém mediu.</div>
@@ -4536,29 +4554,49 @@ function renderDesenrola() {
   <div class="note"><b>Desconto de credor não é gasto público.</b> Os R$ 137 bilhões que caíram para cerca de
   R$ 25 bilhões no leilão da Faixa 1 são abatimento concedido por credores privados sobre dívidas em boa parte
   já provisionadas. Chamar essa diferença de custo do programa confundiria renúncia privada com desembolso do
-  Tesouro.</div>`;
+  Tesouro.</div></section>`;
 
   /* ---------- 10. Metodologia e limitações ---------- */
   const st = { viavel: ["obs", "VIÁVEL"], parcial: ["est", "PARCIAL"], indisponivel: ["desc", "INDISPONÍVEL"] };
-  const metodo = `${sechead("Metodologia e limitações")}
+  const metodo = `<section id="des-metodo">${sechead("Metodologia e limitações")}
   <div class="card"><h4>Matriz de viabilidade</h4>
-    <p class="src">Cada indicador que se esperaria de um painel do Desenrola, e o que a fonte pública permite.
-    ${D.matriz_viabilidade.filter(m => m.status === "viavel").length} viáveis,
+    <p class="src desprosa">Cada indicador que se esperaria de um painel do Desenrola, e o que a fonte
+    pública permite. ${D.matriz_viabilidade.filter(m => m.status === "viavel").length} viáveis,
     ${D.matriz_viabilidade.filter(m => m.status === "parcial").length} parciais e
     ${D.matriz_viabilidade.filter(m => m.status === "indisponivel").length} indisponíveis.</p>
+    <div class="desmatriz">
+      ${[...new Set(D.matriz_viabilidade.map(m => m.area))].map(area => {
+        const itens = D.matriz_viabilidade.filter(m => m.area === area);
+        const c = x => itens.filter(m => m.status === x).length;
+        const pct = n => (100 * n / itens.length).toFixed(1);
+        return `<div class="desmz"><h6>${area}</h6>
+          <div class="barra" role="img" aria-label="${attr(`${c("viavel")} viáveis, ${c("parcial")} parciais, ${c("indisponivel")} indisponíveis`)}">
+            ${c("viavel") ? `<i class="v" style="width:${pct(c("viavel"))}%"></i>` : ""}
+            ${c("parcial") ? `<i class="p" style="width:${pct(c("parcial"))}%"></i>` : ""}
+            ${c("indisponivel") ? `<i class="i" style="width:${pct(c("indisponivel"))}%"></i>` : ""}
+          </div>
+          <div class="leg">${c("viavel")} viáveis · ${c("parcial")} parciais · <b>${c("indisponivel")} indisponíveis</b></div>
+        </div>`;
+      }).join("")}
+    </div>
+    <details class="charttable"><summary>ver os ${D.matriz_viabilidade.length} indicadores, um a um</summary>
     <div class="tblwrap"><table class="data"><thead><tr><th>Área</th><th>Indicador</th><th>Situação</th><th>Base ou motivo</th></tr></thead><tbody>
     ${D.matriz_viabilidade.map(m => `<tr><td class="src">${m.area}</td><td>${m.indicador}</td>
       <td><span class="seal ${st[m.status][0]}">${st[m.status][1]}</span></td>
       <td class="src">${m.base || ""}${m.falta ? `<br>${m.falta}` : ""}</td></tr>`).join("")}
-    </tbody></table></div>
+    </tbody></table></div></details>
   </div>
   <div class="card"><h4>Dicionário dos indicadores</h4>
-    <div class="tblwrap"><table class="data"><thead><tr><th>Indicador</th><th>Selo</th><th>Definição</th><th>Fórmula</th>
-      <th>Unidade de análise</th><th>Periodicidade</th><th>Fonte</th><th>Limitações</th></tr></thead><tbody>
-    ${D.catalogo.map(c => `<tr><td><b>${c.nome}</b></td><td>${desSelo(c.selo)}</td><td>${c.definicao}</td>
-      <td class="src">${c.formula}</td><td class="src">${c.unidade_analise}</td><td class="src">${c.periodicidade}</td>
-      <td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}
-    </tbody></table></div>
+    <div class="desdic">
+    ${D.catalogo.map(c => `<article>
+      <h5>${c.nome} ${desSelo(c.selo)}</h5>
+      <p>${c.definicao}</p>
+      <p class="meta"><b>Fórmula</b> <code>${c.formula}</code> · <b>unidade</b> ${c.unidade} ·
+      <b>análise por</b> ${c.unidade_analise} · <b>periodicidade</b> ${c.periodicidade} ·
+      <b>cobertura</b> ${c.cobertura} · <b>fonte</b> ${c.fonte}</p>
+      <p class="lim"><b>Limitações.</b> ${c.limitacoes}</p>
+    </article>`).join("")}
+    </div>
   </div>
   <div class="card"><h4>O que os selos significam</h4>
     <dl class="descomoler">${Object.entries(D.selos).map(([k, v]) => `<dt>${desSelo(k)}</dt><dd>${v}</dd>`).join("")}</dl>
@@ -4576,7 +4614,7 @@ function renderDesenrola() {
       <li><b>Valores nominais</b>, sem deflação — meses distantes não são diretamente comparáveis em poder de compra.</li>
       <li><b>Sigilo:</b> a divulgação já vem agregada pelo BCB; o Observatório não recebe nem produz dado individual.</li>
     </ul>
-  </div>`;
+  </div></section>`;
 
   el.innerHTML = pageHead({
     title: "Desenrola Brasil",
