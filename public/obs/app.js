@@ -194,7 +194,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.39.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.40.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -2210,6 +2210,158 @@ window.clearPageFilters = view => {
   syncHash(); rerenderCurrent();
 };
 
+
+/* ---------- guia didático por página: divulgação progressiva ----------
+   Toda página do Observatório responde a UMA pergunta central. Este catálogo
+   torna essa pergunta explícita e acrescenta as três camadas que separam um
+   painel de números de um instrumento de análise: por que importa, como ler e —
+   a mais importante — o que os dados NÃO permitem concluir. Renderizado pelo
+   pageHead, colapsado por padrão para não competir com o conteúdo. */
+const GUIA = {
+  overview: { q: "Como está o mercado de crédito brasileiro agora?",
+    importa: "Reúne num só lugar o estoque de crédito, a inadimplência, o custo e os sinais de alerta — os quatro eixos que resumem a saúde do sistema.",
+    ler: "Comece pela classificação determinística no topo: ela posiciona o momento atual contra a própria história da série, não contra uma opinião. Depois desça para os painéis temáticos.",
+    nao: "Um mês isolado não caracteriza mudança de ciclo. Variações de um único indicador podem refletir sazonalidade ou revisão da fonte." },
+  panorama: { q: "Onde está o crédito no Brasil e quem são os tomadores?",
+    importa: "O crédito não é uniforme no território nem entre grupos sociais: a mesma carteira nacional esconde realidades muito diferentes por estado, renda, ocupação e produto.",
+    ler: "O mapa vem normalizado por habitante justamente porque valores absolutos apenas reproduzem o tamanho da população. Use as lentes (saldo, inadimplência, contribuição para o risco) para distinguir volume de risco.",
+    nao: "Volume não é risco, e taxa alta num grupo pequeno não move o sistema. Diferenças demográficas refletem composição de produtos e acesso ao crédito — não causalidade." },
+  pulse: { q: "Como evoluem estoque, concessões, juros e inadimplência?",
+    importa: "São as séries mensais que o Banco Central publica há décadas: a espinha dorsal de qualquer diagnóstico do ciclo de crédito.",
+    ler: "Separe estoque (saldo acumulado) de fluxo (concessões do mês) — são conceitos distintos que respondem a perguntas diferentes. Use o seletor de segmento para isolar PF e PJ.",
+    nao: "Não compare o nível do saldo com o das concessões: um é acervo, o outro é vazão. Séries nominais crescem com a inflação; use a opção real quando o interesse for o poder de compra." },
+  antecedentes: { q: "O que costuma anteceder mudanças na inadimplência?",
+    importa: "Identificar indicadores que se movem antes do risco se materializar é o que permite antecipar deterioração em vez de constatá-la.",
+    ler: "Cada candidato passa por um protocolo formal (defasagem, causalidade de Granger, ganho fora da amostra e estabilidade). Só quem sobrevive às quatro etapas é promovido.",
+    nao: "Correlação defasada não é causa. Um indicador que antecipou o último ciclo pode falhar no próximo — relações macro mudam de regime." },
+  leading: { q: "Há sinais de estresse de crédito se formando agora?",
+    importa: "Combina fontes independentes (endividamento das famílias, garantias imobiliárias, crédito não bancário, judicialização) para detectar pressão antes que ela apareça na inadimplência.",
+    ler: "Os subíndices são z-scores: medem a distância da própria história, não um nível absoluto. Alertas exigem persistência de pelo menos duas leituras — um pico isolado não dispara nada.",
+    nao: "Nenhum sinal isolado determina conclusão, e nada aqui é previsão. A classificação conceitual (coincidente, contexto, antecedente candidato) está declarada em cada sinal." },
+  trends: { q: "O que os brasileiros procuram no Google sobre dívida e crédito?",
+    importa: "A busca é um sinal de intenção que antecede o contrato: quem pesquisa 'renegociar dívida' ainda não renegociou.",
+    ler: "O índice é relativo (0–100 dentro de cada consulta) e cada termo tem escala própria — compare a trajetória de um termo ao longo do tempo, nunca o nível entre termos.",
+    nao: "Não mede quantidade de pessoas nem de pesquisas, e não mede inadimplência efetiva. Todo o módulo é associação exploratória, nunca evidência validada." },
+  sectors: { q: "Quais setores da economia concentram risco de crédito?",
+    importa: "A carteira PJ se distribui de forma muito desigual entre setores, e choques setoriais chegam ao balanço dos bancos por esse canal.",
+    ler: "Compare a exposição (quanto o setor pesa na carteira) com os indicadores de atividade do setor — é o cruzamento que revela vulnerabilidade.",
+    nao: "Exposição elevada não significa perda: depende de garantias, prazos e da situação financeira de cada empresa." },
+  rj: { q: "Como evoluem recuperações judiciais e falências?",
+    importa: "São a materialização extrema do risco de crédito PJ e antecedem perdas nas carteiras dos credores.",
+    ler: "As séries vêm dos tribunais integrados ao DataJud, com cobertura declarada. Leia a variação, não o nível absoluto: cada tribunal aderiu ao sistema em momento diferente.",
+    nao: "A cobertura não é nacional nem homogênea no tempo. Aumento de registros pode refletir melhora da base, não do fenômeno." },
+  institutions: { q: "Qual a situação de cada instituição financeira?",
+    importa: "Capital, inadimplência, rentabilidade e escala determinam a capacidade de uma instituição absorver perdas e continuar emprestando.",
+    ler: "Compare sempre dentro do mesmo nível de consolidação e do mesmo segmento prudencial. Um banco de varejo e uma financeira de nicho não são comparáveis diretamente.",
+    nao: "Indicadores contábeis são fotografias trimestrais e não capturam risco fora do balanço nem eventos posteriores à data-base." },
+  compare: { q: "Como duas ou mais instituições se comparam entre si?",
+    importa: "Comparação é o método básico de análise institucional — desde que universo, período e conceito sejam idênticos nos dois lados.",
+    ler: "As medianas do universo aparecem como linhas de referência. Métricas derivadas só são exibidas quando todos os insumos existem na mesma data-base.",
+    nao: "Não compare instituições de portes muito distintos sem normalizar, e não misture níveis de consolidação — o comparador bloqueia essa mistura por construção." },
+  products: { q: "Como funciona cada produto de crédito e quem o oferece?",
+    importa: "Consignado, cartão, veículos e imobiliário têm dinâmicas de risco e preço completamente diferentes — tratá-los como 'crédito' esconde o essencial.",
+    ler: "O atraso ≥15 dias é específico do produto na instituição; a inadimplência >90d é da instituição inteira. São réguas diferentes e estão rotuladas como tal.",
+    nao: "Participação de mercado não indica qualidade, e produtos com garantia real têm atraso naturalmente menor — a comparação válida é dentro do mesmo produto." },
+  juros: { q: "Quanto cada instituição cobra em cada modalidade?",
+    importa: "A dispersão de taxas entre instituições para o mesmo produto é uma das maiores do mundo no Brasil, e é informação acionável.",
+    ler: "São taxas de novas operações no período, não o custo efetivo total nem a taxa da carteira existente. Compare dentro da modalidade.",
+    nao: "A taxa não é comparável ao CET, que inclui tarifas e seguros. Taxas baixas podem refletir perfil de cliente, não eficiência." },
+  market: { q: "Quanto valem os bancos listados e de onde vem o resultado?",
+    importa: "O mercado precifica expectativas sobre lucro, risco e capital — uma leitura independente da contabilidade.",
+    ler: "O ROE da companhia listada difere do ROE do conglomerado prudencial: perímetros distintos, declarados em cada número. Retorno total reinveste proventos, bruto de imposto.",
+    nao: "Nada aqui é recomendação de investimento. Múltiplos baixos podem indicar risco percebido, não oportunidade." },
+  pix: { q: "Como o Pix evoluiu e como se compara aos outros meios de pagamento?",
+    importa: "Em cinco anos o Pix reorganizou o sistema de pagamentos brasileiro e mudou a relação das pessoas com conta bancária e dinheiro físico.",
+    ler: "Os totais usam o universo completo do BCB; as composições usam a base transacional, que cobre parte dele — a cobertura vem declarada ao lado. A comparação entre instrumentos é trimestral porque cartões não têm série mensal.",
+    nao: "O Pix não é categoria homogênea: mistura transferência pessoal, pagamento comercial e tesouraria empresarial. Não é substituto direto de nenhum instrumento isolado." },
+  openfinance: { q: "Como está a adoção do Open Finance no Brasil?",
+    importa: "O compartilhamento de dados redefine concorrência bancária: quem tem o dado do cliente deixa de ter exclusividade sobre ele.",
+    ler: "Consentimentos ativos medem adoção corrente; o total acumulado inclui os já expirados. São métricas distintas.",
+    nao: "Volume de consentimentos não mede uso efetivo nem receita gerada pelo ecossistema." },
+  judicial: { q: "Quanto e por que o Judiciário é acionado em temas bancários?",
+    importa: "A litigiosidade é custo, sinal de atrito com o cliente e passivo contingente — e no Brasil é excepcionalmente alta.",
+    ler: "Há duas camadas que nunca se cruzam: a nacional (DataJud) não identifica instituições porque a fonte não publica as partes; a nominal (TST) identifica, mas cobre só um tribunal e os dez maiores.",
+    nao: "Volume de processos não é evidência de irregularidade: depende de escala, perfil de cliente, presença geográfica e prática local de litigância." },
+  scenarios: { q: "O que acontece com o crédito sob choques macroeconômicos?",
+    importa: "Testar sensibilidade a juros, desemprego e atividade é o método padrão de supervisão para avaliar resiliência.",
+    ler: "As elasticidades são estimadas nas séries históricas e estão declaradas. Cenário é exercício condicional, não previsão.",
+    nao: "Relações estimadas no passado podem não valer em rupturas estruturais. Nenhum cenário aqui tem probabilidade atribuída." },
+  alerts: { q: "O que mudou e merece atenção agora?",
+    importa: "Monitorar continuamente evita descobrir deterioração só quando ela já está consolidada.",
+    ler: "Cada alerta declara a regra que o disparou, o valor atual, o anterior e o período. Regras exigem persistência.",
+    nao: "Alerta não é diagnóstico nem previsão: é um convite a investigar a série que o originou." },
+  research: { q: "Como levar estes dados para um relatório ou uma aula?",
+    importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
+    ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
+    nao: "Os arquivos refletem a data-base da coleta; fontes oficiais revisam séries retroativamente." },
+  method: { q: "De onde vem cada número e como foi calculado?",
+    importa: "Sem metodologia aberta, um painel é apenas uma opinião com gráficos.",
+    ler: "O dicionário traz definição, fórmula, fonte, periodicidade e limitação de cada indicador; a linhagem liga cada arquivo publicado ao dado bruto que o originou.",
+    nao: "Nenhuma metodologia elimina as limitações das fontes — elas estão declaradas, não resolvidas." },
+};
+function guiaPagina(view) {
+  const g = GUIA[view];
+  if (!g) return "";
+  return `<details class="guia"><summary><span class="guiaq">${g.q}</span><span class="guiamais">entenda esta página</span></summary>
+    <div class="guiabody">
+      <div><h5>Por que importa</h5><p>${g.importa}</p></div>
+      <div><h5>Como ler</h5><p>${g.ler}</p></div>
+      <div><h5>O que os dados não permitem concluir</h5><p>${g.nao}</p></div>
+    </div></details>`;
+}
+
+
+/* ---------- navegação: acordeão + busca ----------
+   Com 24 páginas, a lista inteira aberta vira ruído. Cada grupo agora colapsa e
+   só o grupo da página atual fica aberto; um campo de busca filtra por nome.
+   Nenhuma página foi removida e nenhuma rota mudou. */
+function navGrupoAtivo() {
+  const b = document.querySelector(`#tabs button[data-view="${currentView()}"]`);
+  return b ? b.closest(".navgroup") : null;
+}
+function navSincroniza() {
+  const ativo = navGrupoAtivo();
+  document.querySelectorAll("#tabs .navgroup").forEach(g => {
+    g.classList.toggle("aberto", g === ativo);
+  });
+}
+window.navToggleGrupo = ev => {
+  const g = ev.currentTarget.closest(".navgroup");
+  g.classList.toggle("aberto");
+  ev.stopPropagation();
+};
+window.navFiltra = termo => {
+  const t = (termo || "").trim().toLowerCase();
+  const tabs = document.getElementById("tabs");
+  tabs.classList.toggle("buscando", !!t);
+  let achou = 0;
+  tabs.querySelectorAll(".navgroup").forEach(g => {
+    let visiveis = 0;
+    g.querySelectorAll("button[data-view]").forEach(b => {
+      const ok = !t || b.textContent.toLowerCase().includes(t);
+      b.style.display = ok ? "" : "none";
+      if (ok) visiveis++;
+    });
+    g.style.display = visiveis ? "" : "none";
+    achou += visiveis;
+  });
+  if (!t) navSincroniza();
+  const vazio = document.getElementById("navVazio");
+  if (vazio) vazio.hidden = achou > 0;
+};
+function navPrepara() {
+  const tabs = document.getElementById("tabs");
+  if (!tabs || tabs.dataset.pronto) return;
+  tabs.dataset.pronto = "1";
+  tabs.querySelectorAll(".navgroup .navlabel").forEach(lb => {
+    lb.setAttribute("role", "button");
+    lb.setAttribute("tabindex", "0");
+    lb.addEventListener("click", window.navToggleGrupo);
+    lb.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); window.navToggleGrupo(e); } });
+  });
+  navSincroniza();
+}
+
 function pageHead(o) {
   const meta = state.data.meta || {};
   const upd = meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–";
@@ -2227,7 +2379,7 @@ function pageHead(o) {
       ${(loadLS("obc_views_url", []).length ? `<select onchange="pvLoad(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views_url", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
     </div>
-  </div>${filterBar(currentView())}`;
+  </div>${filterBar(currentView())}${guiaPagina(currentView())}`;
 }
 window.pvSave = () => {
   const nome = prompt("Nome desta visão (a URL atual, com filtros, será salva):");
@@ -2322,7 +2474,7 @@ function renderOverview() {
     <div class="ph-left">
       <h2>Visão geral</h2>
       <p class="viewdesc">Panorama do mercado de crédito no Brasil com dados públicos rastreáveis — monitoramento, diagnóstico e previsão.</p>
-      <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>${filterBar("overview")}
+      <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>${filterBar("overview")}${guiaPagina("overview")}
     </div>
     <div class="ph-actions">
       ${segTabs()}
@@ -4943,6 +5095,7 @@ function pingView(v) {
 }
 
 function showViewSilent(v) {
+  try { navPrepara(); navSincroniza(); } catch (e) {}
   pingView(v);
   document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
