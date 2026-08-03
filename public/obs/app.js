@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.41.2"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.42.3"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -2369,7 +2369,133 @@ function navPrepara() {
   navSincroniza();
 }
 
+
+/* ---------- exportação universal ----------
+   Toda página exporta o que está na tela, sem que cada uma precise implementar
+   o seu próprio botão. Funciona porque cada gráfico já publica a alternativa
+   tabular no DOM (details.charttable): a planilha sai com uma aba por tabela
+   visível, mais uma aba "Sobre" com a procedência — página, pergunta que ela
+   responde, data-base, momento do processamento, fontes e a URL exata da
+   consulta, para que o arquivo continue auditável depois de baixado. */
+let ULTIMO_HEAD = {};
+
+function xlsxMulti(planilhas) {
+  // generaliza xlsxBlob para várias abas (mesmo ZIP store + SpreadsheetML)
+  const partes = [], sheetsXml = [], relsXml = [], overrides = [];
+  planilhas.forEach((pl, i) => {
+    const n = i + 1;
+    const rowsXml = pl.linhas.map((r, ri) => `<row r="${ri + 1}">` + r.map((v, ci) => {
+      if (v == null || v === "") return "";
+      const ref = colLetter(ci) + (ri + 1);
+      return typeof v === "number" && isFinite(v)
+        ? `<c r="${ref}"><v>${v}</v></c>`
+        : `<c r="${ref}" t="inlineStr"><is><t xml:space="preserve">${xmlEsc(String(v))}</t></is></c>`;
+    }).join("") + "</row>").join("");
+    partes.push({ name: `xl/worksheets/sheet${n}.xml`, text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetData>${rowsXml}</sheetData></worksheet>` });
+    sheetsXml.push(`<sheet name="${xmlEsc(pl.nome)}" sheetId="${n}" r:id="rId${n}"/>`);
+    relsXml.push(`<Relationship Id="rId${n}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${n}.xml"/>`);
+    overrides.push(`<Override PartName="/xl/worksheets/sheet${n}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`);
+  });
+  return zipStore([
+    { name: "[Content_Types].xml", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>${overrides.join("")}</Types>` },
+    { name: "_rels/.rels", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>` },
+    { name: "xl/_rels/workbook.xml.rels", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">${relsXml.join("")}</Relationships>` },
+    { name: "xl/workbook.xml", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>${sheetsXml.join("")}</sheets></workbook>` },
+    ...partes,
+  ]);
+}
+
+/** Número em pt-BR vira número de verdade na planilha. Valores com unidade
+    embutida (%, R$) ficam como texto: converter apagaria a unidade em silêncio. */
+function numeroPtBr(txt) {
+  const t = String(txt).trim();
+  if (!t || /[%R$]/.test(t)) return null;
+  if (!/^[-+]?(\d{1,3}(\.\d{3})+|\d+)(,\d+)?$/.test(t)) return null;
+  const n = parseFloat(t.replace(/\./g, "").replace(",", "."));
+  return isFinite(n) ? n : null;
+}
+
+function nomeAba(usados, bruto) {
+  let nome = (bruto || "Tabela").replace(/[\\/?*\[\]:]/g, " ").replace(/\s+/g, " ").trim().slice(0, 28) || "Tabela";
+  let final = nome, i = 2;
+  while (usados.has(final)) final = `${nome.slice(0, 25)} ${i++}`;
+  usados.add(final);
+  return final;
+}
+
+/** Lê as tabelas renderizadas na view ativa, inclusive as alternativas tabulares
+    dos gráficos (que ficam dentro de <details>, fechadas). */
+function tabelasDaPagina(view) {
+  const raiz = document.getElementById(`view-${view}`);
+  if (!raiz) return [];
+  const out = [], usados = new Set();
+  // percorre títulos e tabelas na ORDEM do documento: cada tabela herda o
+  // último título que apareceu antes dela — é como o leitor entende a página.
+  let titulo = "";
+  raiz.querySelectorAll("h2, h3, h4, h5, summary, table").forEach(no => {
+    if (no.closest(".guia")) return;  // o guia didático não titula seção nem exporta
+    if (no.tagName !== "TABLE") {
+      const t = (no.textContent || "").replace(/\s+/g, " ").trim();
+      // "dados em tabela" e afins não nomeiam nada: mantêm o título anterior
+      if (t && !/^(dados em tabela|ver dados|tabela)\b/i.test(t)) titulo = t;
+      return;
+    }
+    const linhas = [];
+    no.querySelectorAll("tr").forEach(tr => {
+      const cels = [...tr.querySelectorAll("th,td")].map(c => {
+        const txt = (c.innerText || c.textContent || "").replace(/\s+/g, " ").trim();
+        const n = numeroPtBr(txt);
+        return n == null ? txt : n;
+      });
+      if (cels.some(c => c !== "")) linhas.push(cels);
+    });
+    if (linhas.length < 2) return;  // tabela de layout, não de dados
+    out.push({ nome: nomeAba(usados, titulo || "Tabela"), linhas });
+  });
+  return out;
+}
+
+window.exportarPagina = () => {
+  const view = currentView();
+  const tabelas = tabelasDaPagina(view);
+  const meta = state.data.meta || {};
+  const g = GUIA[view] || {};
+  const vintage = ULTIMO_HEAD.vintage || pageVintage(view) || "";
+  const sobre = [
+    ["Observatório Brasileiro de Crédito"],
+    [],
+    ["Página", VIEW_TITLES[view] || view],
+    ["Pergunta que responde", g.q || ""],
+    ["Dados até", vintage],
+    ["Processado em", meta.gerado_em || ""],
+    ["Exportado em", new Date().toISOString().slice(0, 19).replace("T", " ")],
+    ["Fontes", ULTIMO_HEAD.fontes || ""],
+    ["URL da consulta", location.href],
+    [],
+    ["Como ler", g.ler || ""],
+    ["O que os dados não permitem concluir", g.nao || ""],
+    [],
+    ["Aviso", "Valores com unidade embutida (%, R$) foram mantidos como texto para não perder a unidade. Células vazias significam dado ausente na fonte — nunca zero."],
+    ["Metodologia", "scrutiniums.com/metodologia"],
+  ];
+  if (!tabelas.length) {
+    alert("Esta página é textual e não tem tabelas de dados para exportar. As páginas com números — Panorama, Pix, Instituições, Taxas, entre outras — exportam normalmente.");
+    return;
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(xlsxMulti([{ nome: "Sobre", linhas: sobre }, ...tabelas]));
+  a.download = `observatorio-${view}${vintage ? "-" + vintage : ""}.xlsx`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
 function pageHead(o) {
+  ULTIMO_HEAD = o || {};
   const meta = state.data.meta || {};
   const upd = meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–";
   return `<div class="pagehead">
@@ -2382,6 +2508,7 @@ function pageHead(o) {
       ${o.controls || ""}
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
       ${o.actions || ""}
+      <button class="btn ghost small" onclick="exportarPagina()" title="planilha com as tabelas desta página e a procedência dos dados">exportar planilha</button>
       <button class="btn ghost small" onclick="pvSave()">salvar visão</button>
       ${(loadLS("obc_views_url", []).length ? `<select onchange="pvLoad(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views_url", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
