@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   });
   return [
     rota("", 1.0, "weekly"),
+    rota("/observatorio-do-credito", 0.95, "daily"),
     rota("/dados", 0.9, "daily"),
     rota("/resumo", 0.9, "daily"),
     ...INDICADORES.map((i) => rota(`/dados/${i.slug}`, 0.8, "daily")),

@@ -24,10 +24,18 @@ export async function middleware(request: NextRequest) {
   );
   if (!verified) {
     const url = request.nextUrl.clone();
-    url.pathname = "/entrar";
     url.search = "";
-    // Ativos em /obs não são destinos navegáveis; após o login, volta à SPA.
-    url.searchParams.set("de", pathname.startsWith("/obs/") ? "/observatorio" : pathname);
+    const destino = pathname.startsWith("/obs/") ? "/observatorio" : pathname;
+    // Visitante que pede a aplicação cai na vitrine pública, que explica o
+    // Observatório e leva ao login com o destino preservado. Ativos em /obs e
+    // rotas de conta seguem direto para /entrar (não são páginas de chegada).
+    if (pathname === "/observatorio" || pathname.startsWith("/observatorio/")) {
+      url.pathname = "/observatorio-do-credito";
+      url.searchParams.set("de", destino);
+    } else {
+      url.pathname = "/entrar";
+      url.searchParams.set("de", destino);
+    }
     return NextResponse.redirect(url);
   }
 

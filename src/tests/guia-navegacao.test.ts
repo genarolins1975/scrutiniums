@@ -14,7 +14,7 @@ const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8")
 function chavesDoGuia(): string[] {
   const i = app.indexOf("const GUIA = {");
   const trecho = app.slice(i, app.indexOf("\nfunction guiaPagina", i));
-  return [...trecho.matchAll(/^\s{2}(\w+):\s*\{\s*q:/gm)].map((m) => m[1]);
+  return (trecho.match(/^\s{2}\w+:\s*\{\s*q:/gm) ?? []).map((l) => l.trim().split(":")[0]);
 }
 
 describe("guia didático das páginas", () => {
@@ -24,7 +24,7 @@ describe("guia didático das páginas", () => {
     const chaves = chavesDoGuia();
     expect(chaves.length).toBeGreaterThanOrEqual(18);
     for (const campo of ["q:", "importa:", "ler:", "nao:"]) {
-      const n = [...trecho.matchAll(new RegExp(`\\b${campo}`, "g"))].length;
+      const n = (trecho.match(new RegExp(`\\b${campo}`, "g")) ?? []).length;
       expect(n, campo).toBeGreaterThanOrEqual(chaves.length);
     }
   });
@@ -32,8 +32,9 @@ describe("guia didático das páginas", () => {
   it("toda pergunta termina em interrogação", () => {
     const i = app.indexOf("const GUIA = {");
     const trecho = app.slice(i, app.indexOf("\nfunction guiaPagina", i));
-    for (const m of trecho.matchAll(/q:\s*"([^"]+)"/g)) {
-      expect(m[1].trim().endsWith("?"), m[1]).toBe(true);
+    for (const bruto of trecho.match(/q:\s*"[^"]+"/g) ?? []) {
+      const texto = bruto.replace(/^q:\s*"/, "").replace(/"$/, "");
+      expect(texto.trim().endsWith("?"), texto).toBe(true);
     }
   });
 

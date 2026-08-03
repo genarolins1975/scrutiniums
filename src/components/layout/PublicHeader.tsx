@@ -4,6 +4,7 @@ import { LogoWordmark } from "@/components/ui/Logo";
 import { getSessionUser } from "@/lib/session";
 
 const NAV = [
+  { href: "/observatorio-do-credito", label: "Observatório" },
   { href: "/dados", label: "Dados" },
   { href: "/resumo", label: "Resumo diário" },
   { href: "/#plataforma", label: "Plataforma" },
