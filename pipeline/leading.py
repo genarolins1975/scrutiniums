@@ -294,7 +294,8 @@ def build(con, cfg):
             {"fonte": "CNJ/DataJud", "status": "API pública documentada", "uso": "integrado (8 tribunais)"},
             {"fonte": "Google Trends", "status": "coleta automatizada segue sem licença; exportação manual da interface oficial é uso pessoal legítimo", "uso": "integrado via carga manual (29/07/2026) — página Tendências de Busca"},
             {"fonte": "Consumidor.gov.br", "status": "download exige autenticação", "uso": "NÃO integrado"},
-            {"fonte": "PGFN dívida ativa", "status": "dados abertos (1,3 GB/trimestre)", "uso": "fase 2"},
+            {"fonte": "PGFN dívida ativa", "status": "dados abertos, trimestral (1,3 GB comprimidos / 9 GB por trimestre)",
+             "uso": "integrado — página Dívida Ativa da União; agregação em fluxo, sem materializar o arquivo"},
             {"fonte": "FIPE veículos", "status": "consulta pública sem API aberta", "uso": "NÃO integrado"},
         ],
     })

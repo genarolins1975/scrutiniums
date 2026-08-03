@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.44.3"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.45.3"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -224,6 +224,7 @@ const VIEW_DATA = {
   panorama: ["panorama"],
   pix: ["pix"],
   judicial: ["judicial"],
+  pgfn: ["pgfn"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -2305,6 +2306,10 @@ const GUIA = {
     importa: "Monitorar continuamente evita descobrir deterioração só quando ela já está consolidada.",
     ler: "Os alertas vêm em quatro famílias, cada uma com o seu universo e a sua periodicidade. Leia dentro da família: a ordem de uma seção não vale como prioridade sobre outra.",
     nao: "Alerta não é diagnóstico nem previsão, e a contagem de famílias diferentes não se soma. Ausência de alerta é ausência de regra disparada, não ausência de risco." },
+  pgfn: { q: "Quanto o país deve ao fisco federal, e onde essa dívida está?",
+    importa: "Dívida ativa é passivo que a empresa e a família já não conseguiram pagar ao Estado — costuma aparecer no mesmo terreno em que o crédito privado se deteriora.",
+    ler: "Compare UFs pela participação no total e pela dívida de PF por mil habitantes. A concentração por faixa de valor explica mais do que a contagem de inscrições.",
+    nao: "Não é crédito do sistema financeiro e não se soma ao SCR.data. A série por safra mostra o que sobrou de cada ano, não quantas inscrições houve nele." },
   research: { q: "Como levar estes dados para um relatório ou uma aula?",
     importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
     ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
@@ -3989,6 +3994,164 @@ function renderScenarios() {
   <div class="note">Impacto em provisões, instituições e setores específicos: preparado arquiteturalmente, depende dos cortes setoriais (Fases 2b/3).</div>`;
 }
 
+
+/* ---------- DÍVIDA ATIVA DA UNIÃO (PGFN) ----------
+   Universo separado do crédito do SFN, e a página diz isso antes do primeiro
+   número. Duas armadilhas da fonte aparecem como conteúdo, não como nota de
+   rodapé: somar todas as linhas dobraria o total (corresponsáveis repetem o
+   valor integral), e a série por safra é sobrevivência, não fluxo. */
+const PGFN_METRICAS = {
+  valor: { l: "Valor consolidado", esc: "seq", fmt: m => fmt.money(m.valor) },
+  inscricoes: { l: "Inscrições", esc: "seq", fmt: m => fmt.n0(m.inscricoes) },
+  insc_pf_por_mil_hab: { l: "Inscrições de PF por mil hab.", esc: "seq", fmt: m => m.insc_pf_por_mil_hab != null ? fmt.n(m.insc_pf_por_mil_hab, 1) : "n.d." },
+  valor_medio: { l: "Valor médio por inscrição", esc: "seq", fmt: m => m.valor_medio != null ? "R$ " + fmt.n0(m.valor_medio) : "n.d." },
+};
+window.pgfnMetrica = m => { state.pgfnMet = m; renderPgfn(); };
+
+/** Sombreado logarítmico. São Paulo concentra 40% do valor: numa escala linear
+    todos os outros 26 estados ficariam brancos e o mapa não informaria nada. O log
+    torna as diferenças visíveis e a legenda diz que a escala é logarítmica —
+    sombreado comparável em ordem de grandeza, não em proporção direta. */
+function pgfnEscala(vals) {
+  const validos = vals.filter(v => v != null && v > 0).map(Math.log10);
+  const lo = Math.min(...validos), hi = Math.max(...validos);
+  return v => {
+    if (v == null || v <= 0) return "var(--surface-2)";
+    const t = (Math.log10(v) - lo) / Math.max(hi - lo, 1e-9);
+    return `color-mix(in srgb, var(--accent) ${Math.round(8 + t * 80)}%, var(--surface))`;
+  };
+}
+
+function renderPgfn() {
+  const el = document.getElementById("view-pgfn");
+  const D = state.data.pgfn;
+  if (!D) { el.innerHTML = loadingCard("dívida ativa da União"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Dívida Ativa da União", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const met = state.pgfnMet || "valor";
+  const M = PGFN_METRICAS[met];
+  const comGeo = D.mapa.filter(m => m.cod && D.geo && D.geo.paths && D.geo.paths[m.cod]);
+  const escala = pgfnEscala(comGeo.map(m => m[met]));
+  const paths = comGeo.map(m => {
+    const tip = encodeURIComponent(`<div class="tt-date">${m.nome} (${m.uf})</div>
+      <div class="tt-row"><span class="tt-lbl">valor</span><span class="tt-val">${fmt.money(m.valor)} (${fmt.n(m.part_br, 1)}% do BR)</span></div>
+      <div class="tt-row"><span class="tt-lbl">inscrições</span><span class="tt-val">${fmt.n0(m.inscricoes)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">pessoa física</span><span class="tt-val">${fmt.n0(m.pf.n)} · ${fmt.money(m.pf.valor)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">pessoa jurídica</span><span class="tt-val">${fmt.n0(m.pj.n)} · ${fmt.money(m.pj.valor)}</span></div>`);
+    return `<path d="${D.geo.paths[m.cod]}" fill="${escala(m[met])}" data-tip="${tip}" role="img" aria-label="${attr(m.nome)}: ${attr(M.fmt(m))}"></path>`;
+  }).join("");
+
+  const indef = D.mapa.find(m => m.uf === "indefinida");
+  const topUF = D.mapa.filter(m => m.uf !== "indefinida").slice(0, 12);
+  const vmaxUF = Math.max(...topUF.map(m => m[met] || 0));
+
+  const gr = D.faixas.filter(f => ["R$ 10 mi a 100 mi", "acima de R$ 100 mi"].includes(f.categoria));
+  const kpis = `<div class="pan-kpi">
+    <div class="card kpi"><h4>Dívida ativa da União</h4><div class="big">${fmt.money(D.totais.valor)}</div>
+      <div class="src">${badge("observado")} PGFN · data-base ${D.data_base}<br>${fmt.n0(D.totais.inscricoes)} inscrições de devedor principal</div></div>
+    <div class="card kpi"><h4>Já ajuizado</h4><div class="big">${fmt.n((D.ajuizado.find(a => a.categoria === "SIM") || {}).part_valor, 1)}%</div>
+      <div class="src">${badge("calculado")} do valor · cobrança já levada ao Judiciário</div></div>
+    <div class="card kpi"><h4>Nas inscrições acima de R$ 10 mi</h4><div class="big">${fmt.n(gr.reduce((a, f) => a + f.part_valor, 0), 1)}%</div>
+      <div class="src">${badge("calculado")} do valor concentrado em ${fmt.n0(gr.reduce((a, f) => a + f.inscricoes, 0))} inscrições</div></div>
+    <div class="card kpi"><h4>Se somasse todas as linhas</h4><div class="big">${fmt.money(D.totais.valor_se_somasse_todas_as_linhas)}</div>
+      <div class="src">${badge("calculado")} = ${fmt.n(D.totais.fator_de_inflacao, 1)}× o correto · corresponsáveis repetem o valor integral</div></div>
+  </div>`;
+
+  const armadilha = `<div class="judalerta">
+    <b>Este painel não é crédito do sistema financeiro.</b>
+    <div style="margin-top:5px">${D.aviso_universo}</div>
+    <div style="margin-top:5px"><b>Como o número foi contado:</b> o arquivo traz ${fmt.n0(D.totais.linhas_no_arquivo)} linhas,
+    mas ${fmt.n0(D.totais.linhas_de_corresponsavel)} delas são corresponsáveis e devedores solidários que repetem o
+    <i>mesmo</i> valor da inscrição. Somando tudo daria ${fmt.money(D.totais.valor_se_somasse_todas_as_linhas)} —
+    ${fmt.n(D.totais.fator_de_inflacao, 1)}× a dívida real. Aqui cada inscrição conta uma vez.</div>
+  </div>`;
+
+  const mapa = `${sechead("Onde está a dívida", `${D.mapa.length - (indef ? 1 : 0)} UFs · data-base ${D.data_base}`)}
+  <div class="controls">${Object.entries(PGFN_METRICAS).map(([k, v]) =>
+    `<button class="btn ${met === k ? "" : "ghost"} small" onclick="pgfnMetrica('${k}')">${v.l}</button>`).join("")}</div>
+  <div class="pan2col">
+    <div class="card"><h4>${M.l} por UF</h4>
+      <svg class="panmap" viewBox="${D.geo.viewBox}" role="group" aria-label="mapa da dívida ativa por UF — ${attr(M.l)}"><g transform="${D.geo.transform}">${paths}</g></svg>
+      <p class="src">Sombreado em escala logarítmica: ${M.l.toLowerCase()} varia em três ordens de grandeza entre as UFs,
+      e numa escala linear só São Paulo apareceria. Compare ordens de grandeza, não proporções diretas — os valores exatos estão no ranking ao lado.<br>
+      UF do devedor, não a unidade da PGFN que administra a cobrança.
+      ${indef ? `${fmt.n0(indef.inscricoes)} inscrições vêm sem UF válida na fonte e ficam fora do mapa — não são redistribuídas.` : ""}</p>
+    </div>
+    <div class="card"><h4>Ranking</h4>
+      ${topUF.map(m => panBar(`${m.uf} ${m.nome}`, m[met], vmaxUF, () => M.fmt(m), `${fmt.n(m.part_br, 1)}% do BR`)).join("")}
+      <details class="charttable"><summary>dados em tabela (todas as UFs)</summary>
+      <div class="tblwrap"><table class="data"><thead><tr><th>UF</th><th>Inscrições</th><th>Valor</th><th>% BR</th><th>PF</th><th>PJ</th><th>Insc. PF/mil hab.</th></tr></thead><tbody>
+      ${D.mapa.map(m => `<tr><td><b>${m.uf}</b> ${m.nome}</td><td style="text-align:right">${fmt.n0(m.inscricoes)}</td>
+        <td style="text-align:right">${fmt.money(m.valor)}</td><td style="text-align:right">${m.part_br != null ? fmt.n(m.part_br, 2) + "%" : "–"}</td>
+        <td style="text-align:right">${fmt.n0(m.pf.n)}</td><td style="text-align:right">${fmt.n0(m.pj.n)}</td>
+        <td style="text-align:right">${m.insc_pf_por_mil_hab != null ? fmt.n(m.insc_pf_por_mil_hab, 1) : "n.d."}</td></tr>`).join("")}
+      </tbody></table></div></details>
+    </div>
+  </div>`;
+
+  const vmaxSafra = Math.max(...D.safras.map(a => a.inscricoes));
+  const safras = `${sechead("Safras: o que sobrou de cada ano", "estoque remanescente, não fluxo de inscrições")}
+  <div class="card">
+    <div class="judalerta" style="margin:0 0 12px"><b>Leia com cuidado.</b> ${D.aviso_safra}</div>
+    ${D.safras.filter(a => a.ano >= "2005").map(a =>
+      panBar(a.ano, a.inscricoes, vmaxSafra, () => fmt.n0(a.inscricoes), fmt.money(a.valor))).join("")}
+    <details class="charttable"><summary>dados em tabela (por ano de inscrição)</summary>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Ano de inscrição</th><th>Inscrições remanescentes</th><th>PF</th><th>PJ</th><th>Valor</th></tr></thead><tbody>
+    ${D.safras.map(a => `<tr><td>${a.ano}</td><td style="text-align:right">${fmt.n0(a.inscricoes)}</td><td style="text-align:right">${fmt.n0(a.pf)}</td><td style="text-align:right">${fmt.n0(a.pj)}</td><td style="text-align:right">${fmt.money(a.valor)}</td></tr>`).join("")}
+    </tbody></table></div></details>
+  </div>`;
+
+  const barrasDe = (titulo, itens, nota) => {
+    const vmax = Math.max(...itens.map(i => i.valor));
+    return `<div class="card"><h4>${titulo}</h4>
+      ${itens.map(i => panBar(i.categoria, i.valor, vmax, () => fmt.money(i.valor), `${fmt.n(i.part_valor, 1)}% · ${fmt.n0(i.inscricoes)} insc.`)).join("")}
+      ${nota ? `<p class="src">${nota}</p>` : ""}
+      <details class="charttable"><summary>dados em tabela</summary>
+      <div class="tblwrap"><table class="data"><thead><tr><th>Categoria</th><th>Inscrições</th><th>Valor</th><th>% do valor</th></tr></thead><tbody>
+      ${itens.map(i => `<tr><td>${i.categoria}</td><td style="text-align:right">${fmt.n0(i.inscricoes)}</td><td style="text-align:right">${fmt.money(i.valor)}</td><td style="text-align:right">${fmt.n(i.part_valor, 2)}%</td></tr>`).join("")}
+      </tbody></table></div></details></div>`;
+  };
+
+  const perfil = `${sechead("Perfil da dívida", "todos os cortes são do mesmo universo — não se somam entre si")}
+  <div class="pan2col">
+    ${barrasDe("Por faixa de valor", D.faixas, "Concentração: poucas inscrições respondem pela maior parte do valor.")}
+    ${barrasDe("Por situação", D.situacao)}
+  </div>
+  <div class="pan2col">
+    ${barrasDe("Ajuizado", D.ajuizado, "Ajuizado significa cobrança já levada ao Judiciário — não indica recuperação.")}
+    ${barrasDe("Por natureza do crédito", D.conjuntos.filter(c => c.disponivel).map(c =>
+      ({ categoria: c.nome, valor: c.valor, inscricoes: c.inscricoes, part_valor: round2(100 * c.valor / D.totais.valor) })))}
+  </div>
+  <div class="card"><h4>Principais receitas inscritas</h4>
+    ${D.receitas.slice(0, 10).map(r => panBar(r.categoria, r.valor, D.receitas[0].valor, () => fmt.money(r.valor), `${fmt.n(r.part_valor, 1)}%`)).join("")}
+    <p class="src">O conjunto previdenciário classifica por tipo de crédito e o não previdenciário por receita: os rótulos convivem sem serem equivalentes.</p>
+  </div>`;
+
+  const metodo = `${sechead("Como este painel foi feito")}
+  <div class="card">
+    <p class="src" style="line-height:1.9"><b>Privacidade:</b> ${D.privacidade}</p>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Indicador</th><th>Definição</th><th>Fórmula</th><th>Fonte</th><th>Limitações</th></tr></thead><tbody>
+    ${D.catalogo.map(c => `<tr><td><b>${c.nome}</b></td><td>${c.definicao}</td><td class="src">${c.formula}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}
+    </tbody></table></div>
+    <h5 style="margin-top:14px">O que estes dados não permitem concluir</h5>
+    <ul class="src" style="line-height:1.8">${D.limitacoes.map(l => `<li>${l}</li>`).join("")}</ul>
+    <p class="src">Trimestres absorvidos: ${D.trimestres_absorvidos.join(", ")} · fonte: ${D.fonte} · ${D.licenca}.
+    Auditoria completa da fonte em docs/AUDITORIA_PGFN.md.</p>
+  </div>`;
+
+  el.innerHTML = pageHead({
+    title: "Dívida Ativa da União",
+    desc: "Crédito tributário federal inscrito em dívida ativa — onde está, de que tamanho, há quanto tempo e quanto já foi ao Judiciário.",
+    vintage: D.data_base,
+    fontes: "PGFN dados abertos (dadosabertos.pgfn.gov.br) · população IBGE SIDRA 6579",
+  }) + armadilha + `<p class="lead">${D.sintese}</p>` + kpis + mapa + safras + perfil + metodo;
+}
+
+function round2(x) { return Math.round(x * 100) / 100; }
+
 /* ---------- ALERTAS ----------
    Central unificada: as quatro famílias de alerta do Observatório num só lugar.
    O que a página NÃO faz é tão importante quanto o que ela faz — não soma
@@ -5330,9 +5493,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial };
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

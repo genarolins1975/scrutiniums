@@ -3,6 +3,12 @@ name: Atualizar dados do Observatório
 # Roda o pipeline (BCB, IBGE, Ipeadata, IF.data, CNJ, Open Finance...),
 # reconstrói a camada gold e publica em public/obs/data. O push dispara
 # o deploy automático na Vercel.
+#
+# Custo da PGFN: a dívida ativa é trimestral e o coletor só baixa quando aparece
+# trimestre novo (idempotente por trimestre+conjunto no silver, que vem do cache
+# abaixo). Nos dias comuns custa uma requisição ao índice. Quando o trimestre vira
+# — ou quando o cache expira —, são ~1,4 GB e cerca de 7 minutos, dentro do
+# timeout de 90. Nada disso vai para o disco: o ZIP é descomprimido em fluxo.
 on:
   schedule:
     - cron: "0 9 * * *" # 06:00 em São Paulo, diariamente

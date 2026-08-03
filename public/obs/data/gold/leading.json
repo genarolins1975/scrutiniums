@@ -3328,8 +3328,8 @@
   },
   {
    "fonte": "PGFN dívida ativa",
-   "status": "dados abertos (1,3 GB/trimestre)",
-   "uso": "fase 2"
+   "status": "dados abertos, trimestral (1,3 GB comprimidos / 9 GB por trimestre)",
+   "uso": "integrado — página Dívida Ativa da União; agregação em fluxo, sem materializar o arquivo"
   },
   {
    "fonte": "FIPE veículos",

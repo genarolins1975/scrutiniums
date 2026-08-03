@@ -567,6 +567,11 @@ def build_all(con, cfg, fetch_status):
         print("products:", products_mod.build(con, cfg))
     except Exception as e:
         common.write_gold("products.json", {"ok": False, "error": str(e)})
+    try:
+        from pipeline import pgfn as pgfn_mod
+        print("pgfn:", pgfn_mod.build(con, cfg))
+    except Exception as e:
+        common.write_gold("pgfn.json", {"disponivel": False, "error": str(e)})
 
     # ---- Central de alertas: consolida as quatro famílias num só arquivo ----
     # Precisa vir DEPOIS de leading e panorama: lê os gold já escritos (alerts,

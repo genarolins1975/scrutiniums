@@ -180,6 +180,19 @@ def get_meta(con, key):
     return dict(zip(cols, row))
 
 
+def ler_gold_opcional(name):
+    """Lê um gold já escrito, ou None. Serve para módulos que reaproveitam algo de
+    outro (a malha do IBGE, por exemplo) sem tornar a dependência obrigatória."""
+    path = os.path.join(GOLD, name)
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
 def write_gold_text(name, text):
     os.makedirs(GOLD, exist_ok=True)
     path = os.path.join(GOLD, name)
