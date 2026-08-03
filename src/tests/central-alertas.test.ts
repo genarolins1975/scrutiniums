@@ -116,6 +116,25 @@ describe("alertas_central.json: integridade dos registros", () => {
   });
 });
 
+describe("pipeline: o consolidador roda depois de quem ele lê", () => {
+  const gold = readFileSync(join(process.cwd(), "pipeline/gold.py"), "utf-8");
+
+  it("é chamado após leading e panorama — antes, leria a execução anterior", () => {
+    const consolidador = gold.indexOf("central_alertas.build()");
+    expect(consolidador).toBeGreaterThan(-1);
+    for (const dep of ["leading_mod.build", "panorama_mod.build", 'write_gold("openfinance.json"', 'write_gold("alerts.json"']) {
+      expect(gold.indexOf(dep), `${dep} precisa vir antes do consolidador`).toBeLessThan(consolidador);
+      expect(gold.indexOf(dep)).toBeGreaterThan(-1);
+    }
+  });
+
+  it("o feed unificado sobrescreve alerts.xml — a URL dos assinantes não muda", () => {
+    expect(gold).toContain('write_gold_text("alerts.xml", central_alertas.rss(central))');
+    // o gerador antigo, só da família macro, não pode ter sobrado
+    expect(gold).not.toContain("_rss_items");
+  });
+});
+
 describe("feed RSS: uma URL, todas as famílias", () => {
   const xml = readFileSync(join(process.cwd(), G + "alerts.xml"), "utf-8");
 

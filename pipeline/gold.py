@@ -506,15 +506,6 @@ def build_all(con, cfg, fetch_status):
         "pulse": pulse, "sectors": sectors, "institutions": inst, "rj": rj,
         "alerts": {"alertas": alert_list}, "scenario": scenario, "quality": quality_tmp,
     })
-    # ---- Central de alertas: consolida as quatro famílias num só arquivo ----
-    # Roda por último, de propósito: lê os gold já escritos (alerts, panorama,
-    # openfinance, leading) e normaliza. O feed alerts.xml mantém a mesma URL —
-    # quem já assinava passa a receber todas as famílias, não só a macro.
-    from pipeline import central_alertas
-    central = central_alertas.build()
-    common.write_gold_text("alerts.xml", central_alertas.rss(central))
-    print(f"  [central_alertas] {central['total']} alertas em "
-          f"{len([f for f in central['familias'] if f['ativos']])} famílias ativas")
 
     # ---- Qualidade e linhagem ----
     cur = con.execute("SELECT key FROM series_meta ORDER BY key")
@@ -576,6 +567,17 @@ def build_all(con, cfg, fetch_status):
         print("products:", products_mod.build(con, cfg))
     except Exception as e:
         common.write_gold("products.json", {"ok": False, "error": str(e)})
+
+    # ---- Central de alertas: consolida as quatro famílias num só arquivo ----
+    # Precisa vir DEPOIS de leading e panorama: lê os gold já escritos (alerts,
+    # panorama, openfinance, leading) e normaliza. Rodando antes, leria a
+    # execução anterior — ou nada, num checkout limpo. O feed alerts.xml mantém
+    # a URL: quem já assinava passa a receber todas as famílias, não só a macro.
+    from pipeline import central_alertas
+    central = central_alertas.build()
+    common.write_gold_text("alerts.xml", central_alertas.rss(central))
+    print(f"  [central_alertas] {central['total']} alertas em "
+          f"{len([f for f in central['familias'] if f['ativos']])} famílias ativas")
 
     # vintages reais por fonte (a UI mostra "dados até X · processado em Y" por página)
     def _vg(sql):
