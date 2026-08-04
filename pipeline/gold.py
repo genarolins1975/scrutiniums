@@ -579,6 +579,12 @@ def build_all(con, cfg, fetch_status):
     # execução anterior — ou nada, num checkout limpo. O feed alerts.xml mantém
     # a URL: quem já assinava passa a receber todas as famílias, não só a macro.
     try:
+        from pipeline import penetracao as pen_mod
+        print("penetracao:", pen_mod.build(con, cfg))
+    except Exception as e:
+        common.write_gold("penetracao.json", {"disponivel": False, "error": str(e)})
+
+    try:
         from pipeline import desenrola as desenrola_mod
         print("desenrola:", desenrola_mod.build(con, cfg))
     except Exception as e:

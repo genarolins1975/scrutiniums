@@ -977,3 +977,60 @@ nav.tabs.buscando .navgroup .navlabel::after { content: none; }
 .desdic .meta, .desdic .lim { font-size: 11.8px; color: var(--text-3); line-height: 1.75; }
 .desdic .meta b, .desdic .lim b { color: var(--text-2); font-weight: 560; }
 .desdic code { font-size: 11.2px; background: var(--surface-2); padding: 1px 5px; border-radius: 2px; }
+
+/* ---------- Penetração e gap de crédito ---------- */
+.penlayout { display: grid; grid-template-columns: 1.55fr 1fr; gap: 14px; align-items: start; }
+.penmapa { width: 100%; height: auto; display: block; }
+.penmapa path { stroke: none; transition: fill .25s ease; }
+.penmapa path.penmun { cursor: pointer; }
+.penmapa path.penmun:hover { filter: brightness(0.86); }
+.penmapa path.sel { stroke: var(--text); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.penmapa path.fora { pointer-events: none; }
+
+.penrank .penlista { list-style: none; margin: 0; padding: 0; max-height: 460px; overflow-y: auto; }
+.penlista li { display: flex; justify-content: space-between; gap: 10px; padding: 5px 8px; cursor: pointer;
+  border-radius: 2px; font-size: 12.4px; align-items: baseline; }
+.penlista li:hover { background: var(--surface-2); }
+.penlista li.sel { background: var(--accent-soft); }
+.penlista .n small { color: var(--text-3); margin-left: 5px; font-size: 10.5px; }
+.penlista .v { font-variant-numeric: tabular-nums; color: var(--text-2); white-space: nowrap; }
+
+.penperfil { margin-top: 14px; }
+.pp-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+.pp-cab h4 { margin: 0 0 2px; }
+.ppgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 9px 18px; }
+.ppgrid dt { font-family: var(--label); font-size: 10px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--text-3); margin-bottom: 1px; }
+.ppgrid dd { margin: 0; font-size: 13.5px; font-weight: 560; }
+
+.pconf { font-family: var(--label); font-size: 9.5px; letter-spacing: .05em; text-transform: uppercase;
+  padding: 1px 6px; border-radius: 2px; }
+.pconf.alta { background: var(--positive-soft); color: var(--positive); }
+.pconf.media { background: var(--warning-soft); color: var(--warning); }
+.pconf.baixa { background: var(--surface-2); color: var(--text-3); }
+tr.selrow { background: var(--accent-soft); }
+
+.penachados { display: grid; gap: 2px; }
+.penachados article { padding: 12px 0; border-bottom: 1px solid var(--border); max-width: 80ch; }
+.penachados article:last-child { border-bottom: 0; }
+.penachados p { margin: 0 0 4px; line-height: 1.72; }
+.penachados .meta, .penachados .lim { font-size: 11.6px; color: var(--text-3); }
+.penachados .meta b, .penachados .lim b { color: var(--text-2); font-weight: 560; }
+
+.pen2col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.pen2col h5 { margin: 0 0 5px; font-size: 13px; display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+#view-penetracao .card > p, #view-penetracao .card > .src, #view-penetracao .card > ul,
+#view-penetracao .note, #view-penetracao .judalerta > div { max-width: 74ch; }
+#view-penetracao .sechead { margin-top: 34px; }
+
+@media (max-width: 900px) {
+  .penlayout, .pen2col { grid-template-columns: 1fr; }
+  .penrank .penlista { max-height: 320px; }
+}
+/* o item da lista guarda o papel de listitem; o botão fica dentro dele */
+.penlista li { padding: 0; }
+.penlista li button { display: flex; justify-content: space-between; gap: 10px; width: 100%;
+  padding: 5px 8px; background: none; border: 0; cursor: pointer; border-radius: 2px;
+  font: inherit; font-size: 12.4px; color: inherit; text-align: left; align-items: baseline; }
+.penlista li button:hover { background: var(--surface-2); }
+.penlista li.sel button { background: var(--accent-soft); }

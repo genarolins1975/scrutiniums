@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.46.3"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.47.1"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -226,6 +226,7 @@ const VIEW_DATA = {
   judicial: ["judicial"],
   pgfn: ["pgfn"],
   desenrola: ["desenrola", "pulse"],
+  penetracao: ["penetracao", "penetracao_malha"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -2315,6 +2316,10 @@ const GUIA = {
     importa: "Foi a maior política de renegociação de dívidas de pessoas físicas já feita no país, e boa parte do que se diz sobre ela não é verificável nos dados abertos.",
     ler: "Separe sempre o que a base do BCB mede — operações de crédito no SCR — do que o programa fez no total. Os números oficiais e os do SCR não se contradizem: medem coisas diferentes.",
     nao: "Operação não é pessoa, valor após desconto não é dívida original, e baixa de registro negativo não é pagamento. Nada aqui sustenta afirmação de efeito causal do programa." },
+  penetracao: { q: "Onde há menos crédito do que o tamanho do município sugeriria?",
+    importa: "Mostra em que lugares o sistema financeiro chega menos do que a renda e a população locais indicariam — o primeiro passo para discutir acesso a crédito no território.",
+    ler: "Compare a penetração de um município com a de seus pares, não com a média nacional. O gap é a distância para municípios parecidos, e vem com faixa de referência.",
+    nao: "O saldo é o contabilizado nas dependências, não o crédito dos moradores. Baixa penetração não prova restrição de oferta, e o gap não é demanda comprovada nem dinheiro que falta." },
   research: { q: "Como levar estes dados para um relatório ou uma aula?",
     importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
     ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
@@ -4624,6 +4629,392 @@ function renderDesenrola() {
   }) + abertura + kpis + comoLer + tl + arq + alcance + valores + regional + credores + depoisSec + efeitos + fiscal + metodo;
 }
 
+
+/* ---------- PENETRAÇÃO E GAP DE CRÉDITO ----------
+   Numerador do ESTBAN (município da dependência), denominador do Censo 2022. O gap é
+   contrafactual — "quanto haveria se este município se parecesse com seus pares" —, e
+   o vocabulário da página inteira respeita isso: potencial não atendido, indício de
+   baixa penetração, diferença em relação a comparáveis. Nunca "falta crédito". */
+const PEN_METRICAS = {
+  penetracao: { l: "Crédito sobre renda anual", u: "%", fmt: m => m.penetracao != null ? fmt.n(m.penetracao, 1) + "%" : "n.d.", esc: "pct" },
+  cred_adulto: { l: "Crédito por adulto", u: "R$", fmt: m => m.cred_adulto != null ? "R$ " + fmt.n0(m.cred_adulto) : "n.d.", esc: "pct" },
+  gap_abs_modelo: { l: "Gap absoluto estimado", u: "R$", fmt: m => m.gap_abs_modelo != null ? fmt.money(m.gap_abs_modelo) : "n.d.", esc: "pct" },
+  gap_rel_modelo: { l: "Gap relativo estimado", u: "%", fmt: m => m.gap_rel_modelo != null ? fmt.n(m.gap_rel_modelo, 0) + "%" : "n.d.", esc: "lin" },
+  confianca: { l: "Confiabilidade do dado", u: "", fmt: m => ({ alta: "alta", media: "média", baixa: "baixa" }[m.confianca] || "–"), esc: "cat" },
+};
+const PEN_CONF = { alta: "var(--positive)", media: "var(--warning)", baixa: "var(--unavail)" };
+
+window.penFiltra = (campo, valor) => {
+  state.pen = { ...(state.pen || {}), [campo]: valor };
+  if (campo !== "sel") state.pen.sel = null;
+  renderPenetracao();
+};
+window.penSel = cod => { state.pen = { ...(state.pen || {}), sel: cod }; renderPenetracao(); };
+window.penBusca = v => {
+  const P = state.data.penetracao;
+  const q = _norm(v);
+  const achou = q.length >= 3 ? P.municipios.find(m => _norm(m.nome).startsWith(q)) : null;
+  if (achou) penSel(achou.cod);
+};
+
+/** Escala por percentis: com distribuição tão assimétrica, escala linear deixaria
+    tudo branco menos São Paulo. Winsorização é só visual — o dado exportado é o bruto. */
+function penEscala(vals, tipo) {
+  const v = vals.filter(x => x != null).sort((a, b) => a - b);
+  if (!v.length) return () => "var(--surface-2)";
+  const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
+  const lo = q(0.05), hi = q(0.95);
+  return x => {
+    if (x == null) return "var(--surface-2)";
+    const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
+    return `color-mix(in srgb, var(--accent) ${Math.round(6 + t * 82)}%, var(--surface))`;
+  };
+}
+
+function renderPenetracao() {
+  const el = document.getElementById("view-penetracao");
+  const P = state.data.penetracao;
+  if (!P) { el.innerHTML = loadingCard("penetração de crédito municipal"); return; }
+  if (!P.disponivel) {
+    el.innerHTML = pageHead({ title: "Penetração e Gap de Crédito", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${P.motivo || P.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.pen || {};
+  const met = F.met || "penetracao";
+  const M = PEN_METRICAS[met];
+  const regiao = F.regiao || "todas";
+  const conf = F.conf || "exclui_baixa";
+  const metodo = F.metodo || "modelo";
+  const cortes = F.cortes !== "sem";
+  const malha = state.data.penetracao_malha;
+
+  const passa = m => (regiao === "todas" || m.regiao === regiao)
+    && (conf === "todas" || m.confianca !== "baixa")
+    && (!cortes || (m.adultos >= P.cobertura.min_adultos && m.renda_anual >= P.cobertura.min_renda_anual));
+  const base = P.municipios.filter(passa);
+  const comSaldo = base.filter(m => m.credito != null);
+
+  /* ---------- cards ---------- */
+  const credFiltro = comSaldo.reduce((s, m) => s + m.credito, 0);
+  const rendaFiltro = base.reduce((s, m) => s + m.renda_anual, 0);
+  const adultosFiltro = base.reduce((s, m) => s + m.adultos, 0);
+  const campoGap = metodo === "modelo" ? "gap_abs_modelo" : "gap_abs_pares";
+  const abaixo = comSaldo.filter(m => (m[campoGap] || 0) > 0);
+  const gapFiltro = abaixo.reduce((s, m) => s + m[campoGap], 0);
+
+  const cards = `<div class="pan-kpi">
+    <div class="card kpi"><h4>Crédito municipal analisado</h4><div class="big">${fmt.money(credFiltro)}</div>
+      <div class="src">${penSelo("observado")} ESTBAN · ${P.data_base_credito} · ${fmt.n0(comSaldo.length)} municípios com saldo</div></div>
+    <div class="card kpi"><h4>Crédito por adulto</h4><div class="big">R$ ${fmt.n0(credFiltro / adultosFiltro)}</div>
+      <div class="src">${penSelo("calculado")} saldo ÷ população de 18 anos ou mais</div></div>
+    <div class="card kpi"><h4>Crédito sobre renda anual</h4><div class="big">${fmt.n(100 * credFiltro / rendaFiltro, 0)}%</div>
+      <div class="src">${penSelo("calculado")} estoque sobre fluxo anual · ${fmt.n(12 * credFiltro / rendaFiltro, 1)} meses de renda</div></div>
+    <div class="card kpi"><h4>Gap absoluto estimado</h4><div class="big">${fmt.money(gapFiltro)}</div>
+      <div class="src">${penSelo("estimado")} soma dos municípios abaixo do ${metodo === "modelo" ? "modelo" : "benchmark de pares"}</div></div>
+    <div class="card kpi"><h4>Adultos em municípios abaixo</h4><div class="big">${fmt.n0(abaixo.reduce((s, m) => s + m.adultos, 0))}</div>
+      <div class="src">${penSelo("calculado")} população de 18+ nos ${fmt.n0(abaixo.length)} municípios com gap positivo</div></div>
+    <div class="card kpi"><h4>Sem dependência bancária</h4><div class="big">${fmt.n0(P.cobertura.sem_saldo_estban)}</div>
+      <div class="src">${penSelo("observado")} municípios sem nenhum saldo no ESTBAN<br>ausência de saldo não é crédito zero</div></div>
+  </div>`;
+
+  /* ---------- filtros ---------- */
+  const filtros = `<div class="controls">
+    <label>região <select onchange="penFiltra('regiao', this.value)">
+      ${["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"].map(r =>
+        `<option ${regiao === r ? "selected" : ""}>${r}</option>`).join("")}</select></label>
+    <label>método do gap <select onchange="penFiltra('metodo', this.value)">
+      <option value="modelo" ${metodo === "modelo" ? "selected" : ""}>modelo estatístico</option>
+      <option value="pares" ${metodo === "pares" ? "selected" : ""}>benchmark de pares</option></select></label>
+    <span class="seg">${[["exclui_baixa", "sem confiabilidade baixa"], ["todas", "incluir todas"]].map(([v, l]) =>
+      `<button class="${conf === v ? "active" : ""}" onclick="penFiltra('conf','${v}')">${l}</button>`).join("")}</span>
+    <span class="seg">${[["com", `cortes mínimos`], ["sem", "sem cortes"]].map(([v, l]) =>
+      `<button class="${(cortes ? "com" : "sem") === v ? "active" : ""}" onclick="penFiltra('cortes','${v}')">${l}</button>`).join("")}</span>
+    <input type="search" placeholder="buscar município" oninput="penBusca(this.value)" style="min-width:180px" aria-label="buscar município">
+    <span class="src">${fmt.n0(base.length)} municípios no recorte${cortes ? ` · mínimo de ${fmt.n0(P.cobertura.min_adultos)} adultos e ${fmt.money(P.cobertura.min_renda_anual)} de renda anual` : ""}</span>
+  </div>`;
+
+  /* ---------- mapa ---------- */
+  const porCod = Object.fromEntries(base.map(m => [m.cod, m]));
+  const escala = met === "confianca" ? null : penEscala(base.map(m => m[met]), M.esc);
+  const paths = malha ? Object.entries(malha.paths).map(([cod, d]) => {
+    const m = porCod[cod];
+    const cor = !m ? "var(--surface-2)"
+      : met === "confianca" ? `color-mix(in srgb, ${PEN_CONF[m.confianca]} 55%, var(--surface))`
+      : escala(m[met]);
+    if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
+    const tip = encodeURIComponent(`<div class="tt-date">${m.nome} (${m.uf}) — ${m.regiao}</div>
+      <div class="tt-row"><span class="tt-lbl">crédito</span><span class="tt-val">${m.credito != null ? fmt.money(m.credito) : "sem saldo"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">por adulto</span><span class="tt-val">${m.cred_adulto != null ? "R$ " + fmt.n0(m.cred_adulto) : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">sobre renda anual</span><span class="tt-val">${m.penetracao != null ? fmt.n(m.penetracao, 1) + "%" : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">gap estimado</span><span class="tt-val">${m[campoGap] != null ? fmt.money(m[campoGap]) : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">confiabilidade</span><span class="tt-val">${m.confianca}</span></div>`);
+    return `<path d="${d}" fill="${cor}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="penSel('${cod}')" aria-label="${attr(m.nome + " " + m.uf + ": " + M.fmt(m))}"></path>`;
+  }).join("") : "";
+
+  const mapa = `<section id="pen-mapa">${sechead("Onde o crédito está, e onde ele é raro", `${M.l} · ${P.data_base_credito}`)}
+  <div class="controls">${Object.entries(PEN_METRICAS).map(([k, v]) =>
+    `<button class="btn ${met === k ? "" : "ghost"} small" onclick="penFiltra('met','${k}')">${v.l}</button>`).join("")}</div>
+  <div class="penlayout">
+    <div class="card">
+      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(M.l)}"><g transform="${malha.transform}">${paths}</g></svg>`
+              : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">Sombreado entre o percentil 5 e o 95 do recorte — winsorização apenas visual, o dado exportado é o bruto.
+      Municípios em cinza estão fora do recorte ou sem saldo no ESTBAN. Clique para abrir o perfil.</p>
+    </div>
+    <div class="card penrank">
+      <h4>${F.rank === "maior" ? "Maior penetração" : "Menor penetração"} <span class="src">no recorte</span></h4>
+      <div class="controls" style="margin:0 0 8px">
+        <span class="seg">${[["menor", "menor"], ["maior", "maior"]].map(([v, l]) =>
+          `<button class="${(F.rank || "menor") === v ? "active" : ""}" onclick="penFiltra('rank','${v}')">${l}</button>`).join("")}</span>
+      </div>
+      <ol class="penlista">
+        ${comSaldo.filter(m => m.penetracao != null)
+          .sort((a, b) => (F.rank === "maior" ? b.penetracao - a.penetracao : a.penetracao - b.penetracao))
+          .slice(0, 30).map(m => `<li class="${F.sel === m.cod ? "sel" : ""}">
+            <button type="button" onclick="penSel('${m.cod}')" aria-label="${attr(`${m.nome} ${m.uf}: ${fmt.n(m.penetracao, 1)}% da renda anual`)}">
+              <span class="n">${m.nome}<small>${m.uf}</small></span>
+              <span class="v">${fmt.n(m.penetracao, 1)}%</span></button></li>`).join("")}
+      </ol>
+    </div>
+  </div></section>`;
+
+  /* ---------- perfil municipal ---------- */
+  const sel = F.sel ? P.municipios.find(m => m.cod === F.sel) : null;
+  const perfil = !sel ? "" : `<div class="card penperfil">
+    <div class="pp-cab"><div><h4>${sel.nome} <span class="src">${sel.uf} · ${sel.regiao}</span></h4>
+      <span class="src">confiabilidade <b>${sel.confianca}</b> — ${sel.confianca_motivo || ""}</span></div>
+      <button class="btn ghost small" onclick="penFiltra('sel', null)">fechar</button></div>
+    <div class="ppgrid">
+      ${[["Saldo de crédito", sel.credito != null ? fmt.money(sel.credito) : "sem saldo no ESTBAN"],
+         ["Renda domiciliar anual", fmt.money(sel.renda_anual)],
+         ["População 18 anos ou mais", fmt.n0(sel.adultos)],
+         ["Crédito por adulto", sel.cred_adulto != null ? "R$ " + fmt.n0(sel.cred_adulto) : "–"],
+         ["Crédito sobre renda anual", sel.penetracao != null ? fmt.n(sel.penetracao, 1) + "%" : "–"],
+         ["Equivale a", sel.meses_renda != null ? fmt.n(sel.meses_renda, 1) + " meses de renda" : "–"],
+         ["Benchmark dos pares", sel.pares_penetracao != null ? fmt.n(sel.pares_penetracao, 1) + "% (" + sel.pares_n + " pares)" : "grupo pequeno demais"],
+         ["Esperado pelo modelo", sel.modelo_esperado != null ? fmt.money(sel.modelo_esperado) : "–"],
+         ["Faixa de referência", sel.modelo_faixa ? fmt.money(sel.modelo_faixa[0]) + " a " + fmt.money(sel.modelo_faixa[1]) : "–"],
+         ["Gap absoluto (modelo)", sel.gap_abs_modelo != null ? fmt.money(sel.gap_abs_modelo) : "–"],
+         ["Gap relativo (modelo)", sel.gap_rel_modelo != null ? fmt.n(sel.gap_rel_modelo, 1) + "%" : "–"],
+         ["Gap absoluto (pares)", sel.gap_abs_pares != null ? fmt.money(sel.gap_abs_pares) : "–"],
+         ["Resíduo padronizado", sel.residuo_padronizado != null ? fmt.n(sel.residuo_padronizado, 2) + " σ" : "–"],
+         ["Participação no crédito da UF", sel.part_cred_uf != null ? fmt.n(sel.part_cred_uf, 2) + "%" : "–"],
+         ["Participação na renda da UF", sel.part_renda_uf != null ? fmt.n(sel.part_renda_uf, 2) + "%" : "–"],
+         ["Participação nos adultos da UF", sel.part_adultos_uf != null ? fmt.n(sel.part_adultos_uf, 2) + "%" : "–"],
+         ["Instituições reportando", sel.instituicoes || 0],
+         ["Urbanização", sel.urbanizacao != null ? fmt.n(sel.urbanizacao, 1) + "%" : "–"]]
+        .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}
+    </div>
+    <div class="desnota">O saldo é o contabilizado nas dependências deste município, não o crédito tomado por
+    seus moradores. Em centro regional o número sobe por atender vizinhos; onde há sede de instituição, sobe por
+    contabilização centralizada.</div>
+  </div>`;
+
+  /* ---------- dispersão ---------- */
+  const disp = comSaldo.filter(m => m.credito > 0 && m.renda_anual > 0);
+  const lx = disp.map(m => Math.log10(m.renda_anual)), ly = disp.map(m => Math.log10(m.credito));
+  const xlo = Math.min(...lx), xhi = Math.max(...lx), ylo = Math.min(...ly), yhi = Math.max(...ly);
+  const W = 720, H = 380, Mg = { t: 16, r: 16, b: 40, l: 58 };
+  const px = v => Mg.l + (v - xlo) / (xhi - xlo) * (W - Mg.l - Mg.r);
+  const py = v => H - Mg.b - (v - ylo) / (yhi - ylo) * (H - Mg.t - Mg.b);
+  const rmax = Math.max(...disp.map(m => m.adultos));
+  const bolhas = disp.map(m => {
+    const r = 1.4 + 7 * Math.sqrt(m.adultos / rmax);
+    const g = m.gap_rel_modelo;
+    const cor = g == null ? "var(--c-gray)" : g > 50 ? "var(--c-neg)" : g > 0 ? "var(--warning)" : "var(--positive)";
+    return `<circle cx="${px(Math.log10(m.renda_anual)).toFixed(1)}" cy="${py(Math.log10(m.credito)).toFixed(1)}" r="${r.toFixed(1)}"
+      fill="${cor}" fill-opacity="${F.sel === m.cod ? 1 : 0.42}" ${F.sel === m.cod ? 'stroke="var(--text)" stroke-width="1.5"' : ""}
+      onclick="penSel('${m.cod}')" style="cursor:pointer" role="button" tabindex="-1"
+      aria-label="${attr(`${m.nome} ${m.uf}: crédito ${fmt.money(m.credito)}, renda anual ${fmt.money(m.renda_anual)}`)}"><title>${attr(m.nome + "/" + m.uf)}</title></circle>`;
+  }).join("");
+  // linha do modelo: mediana do esperado dentro de faixas de renda
+  const faixas = 14, linha = [];
+  for (let i = 0; i < faixas; i++) {
+    const a = xlo + (xhi - xlo) * i / faixas, b = xlo + (xhi - xlo) * (i + 1) / faixas;
+    const dentro = disp.filter(m => { const v = Math.log10(m.renda_anual); return v >= a && v < b && m.modelo_esperado; });
+    if (dentro.length >= 3) {
+      const ord = dentro.map(m => Math.log10(m.modelo_esperado)).sort((x, y) => x - y);
+      linha.push([(a + b) / 2, ord[Math.floor(ord.length / 2)]]);
+    }
+  }
+  const dispersao = `<section id="pen-dispersao">${sechead("Renda e crédito, município a município", "escala logarítmica nos dois eixos")}
+  <div class="card">
+    <svg class="chart" viewBox="0 0 ${W} ${H}" role="group" aria-label="dispersão entre renda domiciliar anual e saldo de crédito por município">
+      <line x1="${Mg.l}" y1="${H - Mg.b}" x2="${W - Mg.r}" y2="${H - Mg.b}" stroke="var(--c-axis)"/>
+      <line x1="${Mg.l}" y1="${Mg.t}" x2="${Mg.l}" y2="${H - Mg.b}" stroke="var(--c-axis)"/>
+      ${bolhas}
+      ${linha.length > 1 ? `<path d="M${linha.map(([x, y]) => px(x).toFixed(1) + "," + py(y).toFixed(1)).join("L")}"
+        fill="none" stroke="var(--text)" stroke-width="1.8" stroke-dasharray="5,3"/>` : ""}
+      ${[0, 0.5, 1].map(t => { const v = xlo + (xhi - xlo) * t;
+        return `<text x="${px(v)}" y="${H - 14}" font-size="9.5" text-anchor="middle" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
+      ${[0, 0.5, 1].map(t => { const v = ylo + (yhi - ylo) * t;
+        return `<text x="${Mg.l - 6}" y="${py(v) + 3}" font-size="9.5" text-anchor="end" style="fill:var(--c-axis-text)">R$ ${fmt.n0(Math.pow(10, v) / 1e6)} mi</text>`; }).join("")}
+    </svg>
+    <div class="legend"><span><span class="sw" style="background:var(--c-neg)"></span>gap acima de 50%</span>
+      <span><span class="sw" style="background:var(--warning)"></span>gap positivo</span>
+      <span><span class="sw" style="background:var(--positive)"></span>acima do esperado</span>
+      <span><span class="sw" style="background:var(--text);height:2px"></span>mediana do esperado pelo modelo</span></div>
+    <p class="src">Eixo horizontal: renda domiciliar anual. Vertical: saldo de crédito. Tamanho da bolha: população adulta.
+    Municípios muito abaixo da linha tracejada são os candidatos a subatendimento — com a ressalva de que a dispersão
+    residual do modelo é alta (σ = ${P.modelo ? fmt.n(P.modelo.sigma_residual, 2) : "–"} em logaritmo).</p>
+  </div></section>`;
+
+  /* ---------- rankings ---------- */
+  const RANK_DEF = [
+    ["oportunidade_escala", "Oportunidade com escala", "combina gap absoluto, gap relativo e porte, em postos normalizados", m => fmt.n(m.escore_oportunidade, 1)],
+    ["gap_absoluto", "Maior gap absoluto", "potencial adicional estimado, em reais", m => fmt.money(m.gap_abs_modelo)],
+    ["gap_relativo", "Maior gap relativo", "distância percentual em relação ao esperado", m => fmt.n(m.gap_rel_modelo, 0) + "%"],
+    ["menor_credito_adulto", "Menor crédito por adulto", "saldo dividido pela população de 18+", m => "R$ " + fmt.n0(m.cred_adulto)],
+    ["menor_penetracao", "Menor crédito sobre renda", "estoque sobre renda domiciliar anual", m => fmt.n(m.penetracao, 1) + "%"],
+    ["maior_penetracao", "Maior penetração", "o outro extremo da mesma distribuição", m => fmt.n(m.penetracao, 1) + "%"],
+    ["mais_atipicos", "Resultados mais atípicos", "maior resíduo padronizado do modelo, nos dois sentidos", m => fmt.n(m.residuo_padronizado, 2) + " σ"],
+  ];
+  const rankAtivo = F.tabela || "oportunidade_escala";
+  const def = RANK_DEF.find(r => r[0] === rankAtivo);
+  const rankings = `<section id="pen-rankings">${sechead("Rankings", "separados de propósito — cada um responde a uma pergunta diferente")}
+  <div class="controls">${RANK_DEF.map(([k, l]) =>
+    `<button class="btn ${rankAtivo === k ? "" : "ghost"} small" onclick="penFiltra('tabela','${k}')">${l}</button>`).join("")}</div>
+  <div class="card">
+    <h4>${def[1]}</h4><p class="src">${def[2]}. Universo: ${fmt.n0(P.cobertura.elegiveis_ranking)} municípios que passam nos cortes mínimos e não têm confiabilidade baixa.</p>
+    <div class="tblwrap"><table class="data"><thead><tr><th>#</th><th>Município</th><th>UF</th><th>${def[1]}</th>
+      <th>Crédito</th><th>Por adulto</th><th>Sobre renda</th><th>Adultos</th><th>Confiança</th></tr></thead><tbody>
+    ${P.rankings[rankAtivo].map((m, i) => `<tr onclick="penSel('${m.cod}')" style="cursor:pointer" class="${F.sel === m.cod ? "selrow" : ""}">
+      <td class="src">${i + 1}</td><td><b>${m.nome}</b></td><td class="src">${m.uf}</td>
+      <td style="text-align:right"><b>${def[3](m)}</b></td>
+      <td style="text-align:right">${m.credito != null ? fmt.money(m.credito) : "–"}</td>
+      <td style="text-align:right">${m.cred_adulto != null ? "R$ " + fmt.n0(m.cred_adulto) : "–"}</td>
+      <td style="text-align:right">${m.penetracao != null ? fmt.n(m.penetracao, 1) + "%" : "–"}</td>
+      <td style="text-align:right">${fmt.n0(m.adultos)}</td>
+      <td><span class="pconf ${m.confianca}">${m.confianca}</span></td></tr>`).join("")}
+    </tbody></table></div>
+    <details class="charttable"><summary>os mesmos rankings sem os cortes mínimos de porte</summary>
+      <p class="src">Sem corte, municípios pequenos ocupam o topo por terem denominador reduzido — é por isso que
+      o painel usa cortes por padrão, e mostra as duas versões.</p>
+      <div class="tblwrap"><table class="data"><thead><tr><th>Município</th><th>UF</th><th>Gap absoluto</th><th>Por adulto</th><th>Adultos</th></tr></thead><tbody>
+      ${(P.rankings.gap_absoluto_sem_corte || []).map(m => `<tr><td>${m.nome}</td><td class="src">${m.uf}</td>
+        <td style="text-align:right">${fmt.money(m.gap_abs_modelo)}</td>
+        <td style="text-align:right">${m.cred_adulto != null ? "R$ " + fmt.n0(m.cred_adulto) : "–"}</td>
+        <td style="text-align:right">${fmt.n0(m.adultos)}</td></tr>`).join("")}
+      </tbody></table></div></details>
+  </div></section>`;
+
+  /* ---------- achados ---------- */
+  const achados = `<section id="pen-achados">${sechead("Principais achados", "gerados dos dados, com filtro, período e ressalva")}
+  <div class="penachados">
+    ${P.achados.map(a => `<article>
+      <p>${a.texto}</p>
+      <p class="meta">${penSelo(a.selo)} <b>filtro</b> ${a.filtro} · <b>período</b> ${a.periodo} · <b>universo</b> ${a.universo}</p>
+      <p class="lim"><b>Ressalva.</b> ${a.ressalva}</p>
+    </article>`).join("")}
+  </div></section>`;
+
+  /* ---------- metodologia ---------- */
+  const metodo_sec = `<section id="pen-metodo">${sechead("Metodologia e limitações")}
+  <div class="card"><h4>De onde vem cada número</h4>
+    <div class="tblwrap"><table class="data"><thead><tr><th>Fonte</th><th>Geografia</th><th>O que mede</th><th>Cobertura</th><th>Principal limitação</th></tr></thead><tbody>
+      <tr><td><b>ESTBAN</b></td><td>Município</td><td>Saldos contabilizados nas dependências bancárias</td>
+        <td>${fmt.n0(P.cobertura.com_saldo_estban)} municípios · ${P.data_base_credito}</td>
+        <td>O município de contabilização pode não ser o do tomador</td></tr>
+      <tr><td><b>SCR.data</b></td><td>UF</td><td>Exposição de crédito dos clientes</td><td>Operações reportadas ao SCR</td>
+        <td>Não permite observação municipal na base pública</td></tr>
+      <tr><td><b>Censo 2022</b></td><td>Município</td><td>População e renda dos residentes</td><td>5.570 municípios</td>
+        <td>Renda referente a 2022</td></tr>
+    </tbody></table></div>
+    <div class="desnota"><b>O SCR não é desagregado aqui.</b> Nenhum saldo municipal desta página vem do SCR, e
+    nenhum número do ESTBAN é rebatizado de SCR. São medidas diferentes de coisas diferentes.</div>
+  </div>
+  <div class="card"><h4>Os dois métodos de gap</h4>
+    <div class="pen2col">
+      <div><h5>Benchmark de pares ${penSelo("estimado")}</h5>
+        <p class="src">${P.benchmark_pares.criterio}. A penetração esperada é a ${P.benchmark_pares.estatistica},
+        exigindo pelo menos ${P.benchmark_pares.minimo_grupo} municípios no grupo — ${P.benchmark_pares.grupos} grupos formados,
+        cobrindo ${fmt.n0(P.benchmark_pares.cobertos)} municípios.</p></div>
+      <div><h5>Modelo estatístico ${penSelo("estimado")}</h5>
+        ${P.modelo ? `<p class="src"><code>${P.modelo.especificacao}</code></p>
+        <p class="src">n = ${fmt.n0(P.modelo.n)} · R² = ${fmt.n(P.modelo.r2, 3)} · R² ajustado = ${fmt.n(P.modelo.r2_ajustado, 3)} ·
+        desvio residual σ = ${fmt.n(P.modelo.sigma_residual, 3)} em logaritmo.</p>
+        <p class="src"><b>Coeficientes:</b> ${Object.entries(P.modelo.coeficientes).map(([k, v]) => `${k} ${fmt.n(v, 3)}`).join(" · ")}</p>
+        <p class="src">${P.modelo.por_que_assim || ""}</p>
+        <p class="src">${P.modelo.nota}</p>` : "<p class='src'>modelo indisponível nesta execução</p>"}</div>
+    </div>
+    <div class="desnota"><b>A precisão individual é baixa.</b> Com σ de ${P.modelo ? fmt.n(P.modelo.sigma_residual, 2) : "–"} em
+    logaritmo, a faixa de referência de um município vai de cerca de um terço a três vezes o valor central. O gap de um
+    município isolado é indicativo; a soma de muitos municípios é mais informativa que qualquer linha do ranking.</div>
+  </div>
+  <div class="card"><h4>Fórmulas</h4>
+    <div class="desdic">
+      ${[["Penetração", "observado ÷ observado", "Saldo de crédito ÷ renda domiciliar anual, em %", "calculado",
+          "Numerador é estoque, denominador é fluxo anual. Por isso aparece também em meses equivalentes de renda."],
+         ["Crédito por adulto", "observado ÷ observado", "Saldo de crédito ÷ população de 18 anos ou mais", "calculado",
+          "População do Censo 2022; o saldo é da data-base corrente."],
+         ["Renda domiciliar anual", "observado × observado × 12", "Moradores em domicílios particulares permanentes × rendimento per capita médio × 12", "calculado",
+          "Produto da média pelo seu próprio denominador, ambos publicados pelo IBGE. Não é estimativa."],
+         ["Gap absoluto", "máx(0, esperado − observado)", "Diferença entre o crédito esperado e o observado, quando positiva", "estimado",
+          "Contrafactual. Não é demanda comprovada nem dinheiro que falta."],
+         ["Gap relativo", "(esperado − observado) ÷ esperado", "Distância percentual em relação ao esperado", "estimado",
+          "Sensível quando o esperado é pequeno; leia junto com o gap absoluto."],
+         ["Escore de oportunidade", "posto médio invertido", "Combina gap absoluto, gap relativo e população adulta em postos normalizados", "estimado",
+          "Postos evitam que uma escala domine as outras. Não é previsão de negócio."]]
+        .map(([n, f, d, selo, lim]) => `<article><h5>${n} ${penSelo(selo)}</h5><p>${d}</p>
+          <p class="meta"><b>Fórmula</b> <code>${f}</code></p><p class="lim"><b>Limitações.</b> ${lim}</p></article>`).join("")}
+    </div>
+  </div>
+  <div class="card"><h4>O que estes dados não autorizam concluir</h4>
+    <ul class="src" style="line-height:1.85">
+      <li>O ESTBAN mostra o município onde o saldo foi <b>contabilizado</b>, que pode não ser o domicílio do tomador.</li>
+      <li>Bancos digitais e instituições com contabilização centralizada distorcem a distribuição municipal — ${P.municipios.filter(m => m.confianca === "baixa" && m.no_estban).length} municípios têm selo de confiabilidade baixa por esse motivo.</li>
+      <li>Municípios que funcionam como centros regionais concentram operações de moradores de cidades vizinhas.</li>
+      <li>O SCR público não oferece detalhamento municipal, e nada aqui o desagrega.</li>
+      <li><b>Baixa penetração não prova restrição de oferta.</b> Pode refletir demanda, informalidade, composição econômica, cooperativismo, crédito não bancário ou deslocamento para municípios vizinhos.</li>
+      <li>O gap é uma estimativa contrafactual, não um valor observado.</li>
+      <li>Não é possível inferir quantas pessoas estão sem acesso a crédito a partir de saldos agregados — por isso o painel não publica esse número.</li>
+      <li>A renda é de 2022 e a população também; o saldo é da data-base corrente. A comparação supõe que a distribuição municipal da renda mudou pouco desde o Censo.</li>
+    </ul>
+  </div>
+  ${P.reconciliacao_scr && P.reconciliacao_scr.disponivel ? `<div class="card"><h4>Reconciliação estadual com o SCR</h4>
+    <p class="src">${P.reconciliacao_scr.nota}</p>
+    <div class="tblwrap"><table class="data"><thead><tr><th>UF</th><th>ESTBAN</th><th>SCR</th><th>Razão</th></tr></thead><tbody>
+    ${P.reconciliacao_scr.linhas.map(l => `<tr><td>${l.uf}</td><td style="text-align:right">${fmt.money(l.estban)}</td>
+      <td style="text-align:right">${fmt.money(l.scr)}</td><td style="text-align:right">${fmt.n(l.razao, 2)}×</td></tr>`).join("")}
+    </tbody></table></div></div>` : `<div class="card"><h4>Reconciliação estadual com o SCR</h4>
+    <p class="src">${(P.reconciliacao_scr || {}).motivo || "indisponível"} — a comparação entra assim que a série estadual do SCR estiver no armazém desta execução.</p></div>`}
+  <div class="card"><h4>Procedência</h4>
+    <ul class="src" style="line-height:1.85">
+      <li><b>Crédito:</b> ${P.fontes.credito} · data-base ${P.data_base_credito} · ${P.datas_credito.length} data-bases absorvidas.</li>
+      <li><b>Demografia e renda:</b> ${P.fontes.demografia} · ano-base ${P.ano_base_censo}.</li>
+      <li><b>Malha:</b> ${P.fontes.malha}.</li>
+      <li><b>Conciliação:</b> o ESTBAN usa código próprio do BCB, não o do IBGE. O casamento é por UF e nome normalizado, com lista explícita de grafias divergentes e agregação das regiões administrativas do Distrito Federal em Brasília. Município que não casa fica de fora e é contado.</li>
+      <li><b>Processado em</b> ${(P.gerado_em || "").slice(0, 16).replace("T", " ")} UTC.</li>
+    </ul>
+  </div></section>`;
+
+  el.innerHTML = pageHead({
+    title: "Penetração e Gap de Crédito",
+    desc: "Quanto crédito existe em cada município, quanto isso representa para quem mora lá e onde a diferença em relação a municípios comparáveis é maior.",
+    vintage: P.data_base_credito,
+    fontes: `ESTBAN ${P.data_base_credito} · Censo IBGE ${P.ano_base_censo} · malha municipal IBGE`,
+  }) + `<div class="desprosa"><p class="lead">O numerador vem do ESTBAN — o saldo de crédito contabilizado nas
+  dependências bancárias de cada município. O denominador vem do Censo 2022: população adulta e renda domiciliar.
+  A razão entre os dois diz quanto crédito existe por ali em relação ao tamanho econômico do lugar. O gap compara
+  esse número ao de municípios parecidos.</p></div>
+  <div class="judalerta" style="max-width:78ch"><b>Antes de ler qualquer ranking.</b> O ESTBAN registra onde o saldo
+  foi <i>contabilizado</i>, não onde mora quem tomou o crédito. Sede de banco e centro regional inflam; município
+  vizinho esvazia. Por isso cada município carrega um selo de confiabilidade, e os de selo baixo ficam fora dos
+  rankings por padrão.</div>
+  <nav class="desindex" aria-label="seções desta página">
+    ${[["mapa", "Mapa"], ["dispersao", "Dispersão"], ["rankings", "Rankings"], ["achados", "Achados"], ["metodo", "Metodologia"]]
+      .map(([id, l]) => `<a href="javascript:void(0)" onclick="document.getElementById('pen-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
+  </nav>`
+  + cards + filtros + mapa + perfil + dispersao + rankings + achados + metodo_sec;
+}
+
+function penSelo(s) {
+  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+              estimado: ["est", "ESTIMADO"], contextual: ["desc", "CONTEXTUAL"] }[s];
+  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+}
+
 /* ---------- ALERTAS ----------
    Central unificada: as quatro famílias de alerta do Observatório num só lugar.
    O que a página NÃO faz é tão importante quanto o que ela faz — não soma
@@ -5965,9 +6356,9 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola };
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
