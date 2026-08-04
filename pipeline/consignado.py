@@ -608,7 +608,19 @@ def _analise_uf(con, muns, scr, fator):
         if e["cons_obs"] and e["op_apos"]:
             e["saldo_por_operacao"] = _r(e["cons_obs"] / e["op_apos"], 0)
 
-    # --- o teste de circularidade ---
+    # --- o teste de circularidade, em quatro especificações ---
+    #
+    # A primeira versão publicava uma correlação só, entre o peso dos benefícios na renda
+    # domiciliar e o saldo de consignado por benefício elegível. Dava -0,72 e estava
+    # inflada por um defeito de construção que passou pela primeira revisão: a QUANTIDADE
+    # de benefícios aparece no numerador do lado esquerdo (valor = quantidade × benefício
+    # médio) e no denominador do lado direito (consignado ÷ quantidade). Isso produz
+    # correlação negativa por aritmética, independentemente do mundo — é uma versão mais
+    # branda da própria circularidade que este módulo existe para evitar.
+    #
+    # As quatro especificações isolam o problema. A de referência é a que não compartilha
+    # termo nenhum: o lado esquerdo vem só do Censo e o direito usa a população de 60 anos
+    # ou mais como denominador, também do Censo.
     def correl(xs, ys):
         n = len(xs)
         if n < 8:
@@ -620,28 +632,127 @@ def _analise_uf(con, muns, scr, fator):
             return None
         return sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / (sx * sy)
 
-    obs = [(e["peso"], e["cons_por_elegivel"]) for e in estados
-           if e.get("peso") and e.get("cons_por_elegivel")]
-    r_obs = correl([x for x, _ in obs], [y for _, y in obs])
+    def cor(ca, cb):
+        par = [(e[ca], e[cb]) for e in estados
+               if e.get(ca) is not None and e.get(cb) is not None]
+        return correl([a for a, _ in par], [b for _, b in par]), len(par)
 
-    # a mesma correlação no nível municipal, onde ela é mecânica por construção
+    def parcial(a, b, c):
+        rab, _ = cor(a, b)
+        rac, _ = cor(a, c)
+        rbc, _ = cor(b, c)
+        if None in (rab, rac, rbc) or abs(rac) >= 1 or abs(rbc) >= 1:
+            return None
+        return (rab - rac * rbc) / math.sqrt((1 - rac ** 2) * (1 - rbc ** 2))
+
+    # Participação do rendimento de outras fontes por unidade da federação, ponderada pela
+    # massa de renda domiciliar. Vem só do Censo e não toca registro da Previdência.
+    outras = {}
+    for m in muns:
+        if m.get("uf") and m.get("outras") is not None and m.get("rdom"):
+            a = outras.setdefault(m["uf"], [0.0, 0.0])
+            a[0] += m["outras"] * m["rdom"]
+            a[1] += m["rdom"]
+    for e in estados:
+        a = outras.get(e["uf"])
+        e["outras_censo"] = _r(a[0] / a[1]) if a and a[1] else None
+        if e.get("cons_obs") and e.get("a60"):
+            e["cons_por_60"] = _r(e["cons_obs"] / e["a60"], 0)
+        if e.get("vreal") and e.get("peso") and e.get("pop"):
+            e["renda_por_hab"] = _r(e["vreal"] / (e["peso"] / 100.0) / e["pop"], 0)
+        if e.get("vdez") and e.get("ben"):
+            e["ben_medio"] = _r(e["vdez"] / e["ben"], 2)
+        e["pass_uf"] = e.get("pass")
+
+    ESPECS = [
+        ("compartilhada", "Peso dos benefícios × consignado por benefício elegível",
+         "peso", "cons_por_elegivel", False,
+         "A quantidade de benefícios está no numerador de um lado e no denominador do "
+         "outro. Foi a especificação publicada na primeira versão desta página, e "
+         "superestima a associação."),
+        ("denominador_censo", "Peso dos benefícios × consignado por pessoa de 60 anos ou mais",
+         "peso", "cons_por_60", False,
+         "Tira a quantidade de benefícios do denominador do lado direito. O lado esquerdo "
+         "continua vindo do registro da Previdência."),
+        ("esquerdo_censo", "Rendimento de outras fontes × consignado por benefício elegível",
+         "outras_censo", "cons_por_elegivel", False,
+         "Troca o lado esquerdo por medida exclusivamente do Censo. Sobra a quantidade de "
+         "benefícios no denominador do lado direito."),
+        ("independente", "Rendimento de outras fontes × consignado por pessoa de 60 anos ou mais",
+         "outras_censo", "cons_por_60", True,
+         "Nenhum termo compartilhado. É a especificação de referência desta página."),
+    ]
+    especificacoes = []
+    for eid, rot, ce, cd, principal, obs in ESPECS:
+        r, n = cor(ce, cd)
+        especificacoes.append({"id": eid, "rotulo": rot, "esquerdo": ce, "direito": cd,
+                               "r": _r(r, 3) if r is not None else None, "n": n,
+                               "referencia": principal, "obs": obs})
+    ref = next((x for x in especificacoes if x["referencia"]), None)
+
+    # A mesma correlação no nível municipal, onde ela é mecânica por construção.
     mm = [(m["peso"], m["cons_ben"]) for m in muns
           if m.get("peso") and m.get("cons_ben")]
     r_mec = correl([x for x, _ in mm], [y for _, y in mm])
 
+    controles = [{"variavel": rot,
+                  "parcial_referencia": _r(parcial("outras_censo", "cons_por_60", cv), 3),
+                  "parcial_compartilhada": _r(parcial("peso", "cons_por_elegivel", cv), 3)}
+                 for cv, rot in (("renda_por_hab", "renda domiciliar por habitante"),
+                                 ("pass_uf", "participação de benefícios assistenciais"),
+                                 ("prural", "participação da clientela rural"))]
+
+    MECANISMOS = [
+        ("ben_medio", "valor médio do benefício",
+         "Margem consignável é percentual do benefício, então benefício maior comportaria "
+         "saldo maior. A associação é fraca demais para sustentar o resultado."),
+        ("pass_uf", "participação de benefícios assistenciais",
+         "Benefício assistencial tem regra de consignação distinta. A associação tem sinal "
+         "oposto ao que a hipótese previa."),
+        ("prural", "participação da clientela rural",
+         "Aposentadoria rural concentra-se no piso previdenciário. Associação fraca."),
+        ("renda_por_hab", "renda domiciliar por habitante",
+         "Estados mais pobres teriam menos crédito de qualquer natureza. Explica parte da "
+         "associação, não a maior parte."),
+    ]
+    mecanismo = {
+        "estabelecido": False,
+        "testados": [{"variavel": rot,
+                      "com_consignado_por_60": _r(cor(cv, "cons_por_60")[0], 3),
+                      "com_peso": _r(cor(cv, "peso")[0], 3),
+                      "leitura": txt} for cv, rot, txt in MECANISMOS],
+        "conclusao": (
+            "Nenhum dos quatro candidatos explica o resultado. Roraima e Amapá são os casos "
+            "que mais contrariam qualquer leitura simples: têm renda domiciliar por habitante "
+            "próxima à do Piauí, maioria de clientela rural e a maior participação de "
+            "benefícios assistenciais do país, e ainda assim registram consignado por pessoa "
+            "idosa duas a três vezes maior. O mecanismo desta associação não está "
+            "estabelecido, e a página não propõe um."),
+    }
+
     return estados, {
         "selo": "observado",
-        "n_uf": len(obs),
-        "correlacao_observada": _r(r_obs, 4) if r_obs is not None else None,
-        "correlacao_mecanica": _r(r_mec, 4) if r_mec is not None else None,
+        "n_uf": len(estados),
+        "referencia": ref["r"] if ref else None,
+        "especificacoes": especificacoes,
+        "correlacao_mecanica": _r(r_mec, 3) if r_mec is not None else None,
+        "controles": controles,
+        "mecanismo": mecanismo,
         "explicacao": (
-            "A correlação observada é calculada entre o peso dos benefícios na renda "
-            "domiciliar e o saldo de consignado por benefício elegível, ambos por unidade "
-            "da federação, ambos medidos e nenhum derivado do outro. A correlação mecânica "
-            "usa os mesmos dois indicadores em nível municipal, onde o consignado é o "
-            "estadual repartido por uma chave previdenciária — e por isso ela mede a "
-            "fórmula de alocação, não o mundo. As duas são publicadas lado a lado "
-            "justamente para que a diferença fique visível."),
+            "Quatro especificações da mesma pergunta. A diferença entre elas não é "
+            "estatística, é de construção: a primeira compartilha a quantidade de benefícios "
+            "entre os dois lados — ela aparece no numerador da dependência e no denominador "
+            "do consignado por benefício — e por isso produz correlação negativa por "
+            "aritmética. A última não compartilha termo nenhum. A correlação mecânica, "
+            "calculada no nível municipal onde o consignado é o estadual repartido por uma "
+            "chave previdenciária, mede a fórmula de alocação e não o mundo."),
+        "leitura": (
+            "A direção é robusta: negativa em todas as especificações e sob todos os "
+            "controles. A magnitude não é — vai de -0,72 na versão com termo compartilhado a "
+            "-0,24 na versão independente com controle de renda. O que se pode afirmar é que "
+            "a hipótese intuitiva, de que mais dependência previdenciária viria com mais "
+            "consignado por beneficiário, não encontra sustentação forte nos dados "
+            "observados. Não que exista relação inversa demonstrada."),
         "conclusao_regra": (
             "Nenhuma afirmação sobre a relação entre dependência previdenciária e "
             "consignado nesta página se apoia no indicador municipal estimado."),

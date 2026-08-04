@@ -333,6 +333,61 @@ consignado municipal estimado é **mecânica**: ela foi construída pela fórmul
 alocação, não observada no mundo. Publicá-la como evidência de associação seria
 circular.
 
+### 7.1 Uma correção: a primeira versão desta auditoria errou a magnitude
+
+A versão inicial publicava uma correlação única, de **−0,72**, entre o peso dos benefícios
+na renda domiciliar e o saldo de consignado por benefício elegível, e a apresentava como
+teste limpo por serem "dois lados observados, nenhum derivado do outro". A afirmação sobre
+as fontes estava certa; a conclusão sobre a independência, não.
+
+O peso é dirigido quase inteiramente pela **quantidade de benefícios por unidade de renda
+local** (correlação de +0,935), e não pelo valor médio do benefício (−0,229). Essa
+quantidade aparece no numerador do lado esquerdo — valor é quantidade vezes benefício
+médio — e no denominador do lado direito. Termo compartilhado com sinais opostos produz
+correlação negativa por aritmética, independentemente do mundo. É uma versão mais branda
+da própria circularidade que este módulo existe para evitar, e ela passou pela primeira
+revisão.
+
+Quatro especificações da mesma pergunta, entre as 27 unidades da federação:
+
+| Especificação | r | Termo compartilhado |
+|---|---|---|
+| Peso × consignado por benefício elegível | **−0,720** | quantidade de benefícios |
+| Peso × consignado por pessoa de 60+ | −0,701 | valor dos benefícios |
+| Outras fontes (Censo) × consignado por benefício | −0,421 | quantidade de benefícios |
+| **Outras fontes (Censo) × consignado por pessoa de 60+** | **−0,406** | **nenhum** |
+
+Correlações parciais, sobre a especificação de referência: −0,235 controlando renda
+domiciliar por habitante, −0,384 controlando participação de assistenciais e −0,337
+controlando clientela rural.
+
+**A direção é robusta; a magnitude não.** Negativa em todas as montagens e sob todos os
+controles, mas variando de −0,72 a −0,24. O que se pode afirmar é que a hipótese intuitiva
+— mais dependência previdenciária viria com mais consignado por beneficiário — **não
+encontra sustentação forte** nos dados observados. Não que exista relação inversa
+demonstrada.
+
+### 7.2 O mecanismo não está estabelecido
+
+Quatro candidatos foram testados contra o consignado por pessoa de 60 anos ou mais, e
+nenhum sustenta o resultado:
+
+| Candidato | r | Situação |
+|---|---|---|
+| Valor médio do benefício | +0,283 | fraco demais |
+| Participação de benefícios assistenciais | +0,450 | **sinal oposto** ao previsto |
+| Participação da clientela rural | −0,297 | fraco |
+| Renda domiciliar por habitante | +0,449 | explica parte, não a maior parte |
+
+Roraima e Amapá são os casos que mais contrariam qualquer leitura simples. Têm renda
+domiciliar por habitante próxima à do Piauí (R$ 1.117 e R$ 1.135 contra R$ 1.006), maioria
+de clientela rural e a maior participação de benefícios assistenciais do país (38,9% e
+46,4%) — e ainda assim registram consignado por pessoa idosa de R$ 7.875 e R$ 11.694,
+contra R$ 3.397 do Piauí. A página publica as quatro especificações, os controles e os
+mecanismos rejeitados, e **não propõe uma explicação**.
+
+### 7.3 A regra
+
 A regra adotada, sem exceção:
 
 - a estimativa municipal existe, é rotulada como estimativa e serve para **ordenar**

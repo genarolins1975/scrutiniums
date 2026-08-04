@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.51.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.51.1"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -7298,57 +7298,89 @@ function cgExposicao(D) {
 /* ============ 6. circularidade ============ */
 function cgCircularidade(D) {
   const C = D.circularidade;
-  const est = D.estados.filter(e => e.peso != null && e.cons_por_elegivel != null);
-  const xs = est.map(e => e.peso), ys = est.map(e => e.cons_por_elegivel);
+  const est = D.estados.filter(e => e.outras_censo != null && e.cons_por_60 != null);
+  const xs = est.map(e => e.outras_censo), ys = est.map(e => e.cons_por_60);
   const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
   const px = v => 60 + 640 * (v - x0) / Math.max(x1 - x0, 1e-9);
   const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
+  const ref = C.especificacoes.find(e => e.referencia);
 
-  return `<section id="cg-circ">${sechead("6. O que é observado e o que é mecânico", "o teste que autoriza — ou não — a leitura")}
+  return `<section id="cg-circ">${sechead("6. O que é observado e o que é mecânico", "quatro especificações da mesma pergunta")}
   <p class="desprosa">A pergunta natural do painel é se municípios mais dependentes de
   benefícios têm mais consignado. Ela não pode ser respondida com o indicador municipal: como
   o consignado municipal é o estadual repartido por uma chave previdenciária, a correlação
-  entre os dois foi construída pela fórmula. Ela existe porque foi feita existir.</p>
-  <p class="desprosa">A resposta só pode vir do nível estadual, onde os dois lados são medidos
-  e nenhum deriva do outro: o consignado por unidade da federação vem do SCR, a dependência
-  vem dos registros da Previdência.</p>
+  entre os dois foi construída pela fórmula. A resposta só pode vir do nível estadual — e,
+  mesmo lá, depende de como cada lado é montado.</p>
 
-  <div class="cg2col">
-    <div class="card">
-      <h4>Correlação observada ${cgSelo("observado")}</h4>
-      <div class="big cgcorr">${fmt.n(C.correlacao_observada, 2)}</div>
-      <p class="src">Entre ${C.n_uf} unidades da federação. Peso dos benefícios na renda
-      domiciliar contra saldo de consignado por benefício elegível. Nenhum dos dois lados foi
-      derivado do outro.</p>
-    </div>
-    <div class="card">
-      <h4>Correlação mecânica ${cgSelo("hipotese")}</h4>
-      <div class="big cgcorr sec">${fmt.n(C.correlacao_mecanica, 2)}</div>
-      <p class="src">Os mesmos dois indicadores no nível municipal, onde o consignado é
-      alocação. Mede a fórmula, não o mundo. Está aqui para comparação, e nenhuma afirmação
-      da página se apoia nela.</p>
-    </div>
+  <div class="judalerta" role="note">
+    <b>Uma correção desta página.</b> A primeira versão publicava uma correlação só, de −0,72,
+    entre o peso dos benefícios na renda e o consignado por benefício elegível. Essa
+    especificação compartilha um termo entre os dois lados: a <b>quantidade de benefícios</b>
+    aparece no numerador da dependência (valor = quantidade × benefício médio) e no denominador
+    do consignado por benefício. Isso produz correlação negativa por aritmética,
+    independentemente do mundo. A tabela abaixo mostra as quatro montagens possíveis, e a
+    referência passou a ser a que não compartilha termo nenhum.
+  </div>
+
+  <div class="card">
+    <table class="data cgespec">
+      <thead><tr><th>Especificação</th><th style="text-align:right">Correlação</th><th>Por que difere</th></tr></thead>
+      <tbody>${C.especificacoes.map(e => `<tr class="${e.referencia ? "cgdestaque" : ""}">
+        <td>${e.rotulo}${e.referencia ? " <b>(referência)</b>" : ""}</td>
+        <td style="text-align:right"><b>${fmt.n(e.r, 3)}</b></td>
+        <td class="src">${e.obs}</td></tr>`).join("")}
+      <tr class="cgtot"><td>A mesma correlação no nível municipal ${cgSelo("hipotese")}</td>
+        <td style="text-align:right">${fmt.n(C.correlacao_mecanica, 3)}</td>
+        <td class="src">Mede a fórmula de alocação, não o mundo. Nenhuma afirmação da página se apoia nela.</td></tr>
+      </tbody></table>
+    <p class="src">${cgSelo("observado")} Correlação de Pearson entre ${C.n_uf} unidades da federação.</p>
+  </div>
+
+  <div class="card">
+    <h4>Correlação parcial, controlando por terceiras variáveis</h4>
+    <table class="data"><thead><tr><th>Controlando por</th>
+      <th style="text-align:right">Especificação de referência</th>
+      <th style="text-align:right">Especificação compartilhada</th></tr></thead>
+      <tbody>${C.controles.map(x => `<tr><td>${x.variavel}</td>
+        <td style="text-align:right">${x.parcial_referencia != null ? fmt.n(x.parcial_referencia, 3) : "–"}</td>
+        <td style="text-align:right" class="src">${x.parcial_compartilhada != null ? fmt.n(x.parcial_compartilhada, 3) : "–"}</td></tr>`).join("")}
+      </tbody></table>
+    <p class="src">${cgSelo("calculado")} ${C.leitura}</p>
   </div>
 
   <div class="card">
     <h4>Dependência previdenciária e consignado, por unidade da federação</h4>
-    <svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre dependência previdenciária e consignado por benefício, por unidade da federação">
+    <svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre participação do rendimento de outras fontes e consignado por pessoa de 60 anos ou mais, por unidade da federação">
       <line x1="60" y1="250" x2="700" y2="250" stroke="var(--border)"></line>
       <line x1="60" y1="40" x2="60" y2="250" stroke="var(--border)"></line>
-      ${est.map(e => `<g role="group" aria-label="${attr(`${e.nome}: peso ${fmt.n(e.peso, 1)}%, consignado por benefício R$ ${fmt.n0(e.cons_por_elegivel)}`)}">
-        <circle cx="${px(e.peso).toFixed(1)}" cy="${py(e.cons_por_elegivel).toFixed(1)}"
+      ${est.map(e => `<g role="group" aria-label="${attr(`${e.nome}: outras fontes ${fmt.n(e.outras_censo, 1)}%, consignado por pessoa de 60 anos ou mais R$ ${fmt.n0(e.cons_por_60)}`)}">
+        <circle cx="${px(e.outras_censo).toFixed(1)}" cy="${py(e.cons_por_60).toFixed(1)}"
           r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
           stroke="var(--teal)"></circle>
-        <text x="${(px(e.peso) + 8).toFixed(1)}" y="${(py(e.cons_por_elegivel) + 4).toFixed(1)}"
+        <text x="${(px(e.outras_censo) + 8).toFixed(1)}" y="${(py(e.cons_por_60) + 4).toFixed(1)}"
           font-size="10" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
-      <text x="380" y="282" text-anchor="middle" font-size="11" fill="var(--text-3)">peso dos benefícios na renda domiciliar (%)</text>
-      <text x="16" y="145" font-size="11" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por benefício elegível (R$)</text>
+      <text x="380" y="282" text-anchor="middle" font-size="11" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
+      <text x="16" y="145" font-size="11" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
     </svg>
-    <p class="src">${cgSelo("observado")} Tamanho do círculo proporcional à população de 60 anos
-    ou mais. A inclinação é negativa: onde os benefícios pesam mais na renda local, o saldo de
-    consignado por benefício é <b>menor</b>, não maior. Uma leitura possível é que benefícios de
-    valor mais baixo geram margem consignável menor em reais — mas isso é hipótese, e o painel
-    não a testa.</p>
+    <p class="src">${cgSelo("observado")} Especificação de referência, r = ${fmt.n(ref ? ref.r : C.referencia, 3)}.
+    Tamanho do círculo proporcional à população de 60 anos ou mais. Os dois eixos vêm de fontes
+    distintas e nenhum termo é compartilhado entre eles.</p>
+  </div>
+
+  <div class="card">
+    <h4>O mecanismo não está estabelecido</h4>
+    <p class="desprosa">A direção da associação é robusta, mas nenhuma explicação testada a
+    sustenta. Quatro candidatos foram medidos, e os quatro falham — um deles com o sinal
+    contrário ao que a hipótese previa.</p>
+    <table class="data"><thead><tr><th>Candidato a mecanismo</th>
+      <th style="text-align:right">Com consignado por 60+</th>
+      <th style="text-align:right">Com dependência</th><th>Leitura</th></tr></thead>
+      <tbody>${C.mecanismo.testados.map(m => `<tr>
+        <td>${m.variavel}</td>
+        <td style="text-align:right">${m.com_consignado_por_60 != null ? fmt.n(m.com_consignado_por_60, 3) : "–"}</td>
+        <td style="text-align:right">${m.com_peso != null ? fmt.n(m.com_peso, 3) : "–"}</td>
+        <td class="src">${m.leitura}</td></tr>`).join("")}</tbody></table>
+    <div class="judalerta" role="note">${C.mecanismo.conclusao}</div>
   </div>
 
   <div class="judalerta" role="note">
