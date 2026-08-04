@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.51.1"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.52.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -747,14 +747,14 @@ function renderLeading() {
     body = B.disponivel
       ? sechead("Comportamento de busca — integrado via exportação manual", "Google Trends · carga manual autorizada · 29/07/2026") +
         `<div class="card"><h4>Tendências de Busca <span class="seal exp">ASSOCIAÇÃO EXPLORATÓRIA</span></h4>
-        <p class="src" style="max-width:880px">${B.modo || ""}</p>
-        <p style="max-width:880px">${B.resumo || ""}</p>
+        <p class="src" >${B.modo || ""}</p>
+        <p >${B.resumo || ""}</p>
         <div class="chips">${(B.familias || []).map(f => `<span class="chip">${f}</span>`).join("")}</div>
         <p style="margin-top:14px"><button class="btn" onclick="nav('trends')">abrir a página Tendências de Busca →</button></p>
         <div class="src">Aviso obrigatório: os índices representam interesse relativo de busca (0–100 por consulta), e não quantidade absoluta de pessoas ou pesquisas. A coleta automatizada permanece não licenciada e não é realizada.</div></div>`
       : sechead("Comportamento de busca — status honesto", "estrutura pronta; fonte aguarda carga manual") +
         `<div class="card"><h4>IBEF — Índice de Busca por Estresse Financeiro <span class="seal aprox">INDISPONÍVEL</span></h4>
-        <p class="src" style="max-width:820px">${B.motivo || ""}</p>
+        <p class="src" >${B.motivo || ""}</p>
         <div class="chips">${(B.familias || []).map(f => `<span class="chip">${f}</span>`).join("")}</div></div>`;
   } else {
     body = sechead("Metodologia, catálogo e licenças") +
@@ -825,7 +825,7 @@ function renderTrends() {
     fontes: "Google Trends (exportação manual autorizada, 29/07/2026) · BCB/SGS 21082 (alvo das defasagens)",
     actions: `<button class="btn ghost small" onclick="trCSV()">baixar CSV</button>`,
   });
-  const aviso = `<div class="note" style="margin-top:12px;max-width:1100px"><b>Leia antes de interpretar:</b> ${T.disclaimer}
+  const aviso = `<div class="note" style="margin-top:12px"><b>Leia antes de interpretar:</b> ${T.disclaimer}
     ${M.diagnostico ? "" : ""} <br><span class="src">${T.licenca} · Configuração: ${M.config} · Último mês completo: jun/2026; <b>jul/2026 é mês parcial</b> e fica fora de todas as comparações. Arquivo auditável (SHA-256 ${M.sha256_arquivo.slice(0, 12)}…), com hash por CSV de origem na aba de dados originais.</span></div>`;
 
   /* ---------- 1. hero: temperatura por família ---------- */
@@ -843,7 +843,7 @@ function renderTrends() {
   const hero = sechead("Temperatura por família", "sem índice agregado único — leitura separada por família (metodologia declarada)") +
     `<div class="tr-hero">${T.familias.map(famCard).join("")}</div>
     <div class="card" style="margin-top:14px"><h4 style="margin-top:0">Diagnóstico (síntese determinística, jun/2026)</h4>
-    <p style="max-width:1100px;line-height:1.65;margin-bottom:0">${M.diagnostico}</p></div>`;
+    <p style="margin-bottom:0">${M.diagnostico}</p></div>`;
 
   /* ---------- 2. destaques ---------- */
   const nivelAlto = painel.filter(p => p.percentil >= 95).length;
@@ -948,7 +948,7 @@ function renderTrends() {
     <div class="divtrack"><span class="zero" style="left:50%"></span><span class="bar" style="${d.corr >= 0 ? `left:50%;width:${Math.abs(d.corr) * 50}%` : `left:${50 - Math.abs(d.corr) * 50}%;width:${Math.abs(d.corr) * 50}%`};background:${d.corr >= 0 ? "color-mix(in srgb, var(--c-neg) 72%, transparent)" : "color-mix(in srgb, var(--c-line1) 72%, transparent)"}"></span></div>
     <span style="text-align:right;font-variant-numeric:tabular-nums"><b>r=${fmt.n(d.corr, 2)}</b> <span class="src">lag ${d.melhor_lag}m · n=${d.n}</span></span></div>`;
   const lags = sechead(`Defasagens contra a inadimplência observada ${inadChip("sgs")}`, `alvo: ${T.defasagens.alvo}`) +
-    `<div class="card"><p class="src" style="max-width:1050px">${T.defasagens.metodo}</p>
+    `<div class="card"><p class="src" >${T.defasagens.metodo}</p>
     <h4>Melhor defasagem por termo <span class="seal exp">ASSOCIAÇÃO EXPLORATÓRIA</span></h4>${T.defasagens.linhas.map(lagRow).join("")}
     ${entenda("trlag", [["O que isto NÃO é", "validação. Correlação defasada é o primeiro filtro; a promoção a 'antecedente' exige o protocolo formal da aba Protocolo e regimes (Granger, ganho fora da amostra, estabilidade)."],
       ["Sinal que se destaca", "“busca e apreensão” — buscas sobre apreensão de veículos antecedem a inadimplência total em ~12 meses com r=0,73; coerente com a economia do atraso de financiamento, mas ainda exploratório."],
@@ -965,7 +965,7 @@ function renderTrends() {
     <div class="tblwrap"><table class="data compact"><thead><tr><th>Termo</th><th>Status</th><th>Motivo</th></tr></thead>
     <tbody>${excluidos.map(c => `<tr><td><b>${c.termo}</b></td><td class="src">${c.status_coleta}</td><td class="src">${c.obs || ""}</td></tr>`).join("")}</tbody></table></div></details>
     <h4 style="margin-top:16px">Limitações declaradas pela fonte</h4>
-    <ol style="max-width:1050px;line-height:1.65;font-size:12.8px;color:var(--text-2)">${(M.limitacoes || []).map(l => `<li>${l.replace(/^\d+\.\s*/, "")}</li>`).join("")}</ol>
+    <ol style="color:var(--text-2)">${(M.limitacoes || []).map(l => `<li>${l.replace(/^\d+\.\s*/, "")}</li>`).join("")}</ol>
     <div class="src" style="margin-top:8px">${M.notas_painel || ""}</div>
     <div class="src" style="margin-top:6px">${M.registro_lotes || ""}</div></div>`;
 
@@ -987,7 +987,7 @@ function renderSobre() {
       <h2>Sobre o Observatório</h2>
     </div>
   </div>
-  <div style="max-width:760px;font-size:14.5px;line-height:1.75">
+  <div >
     <p>O Observatório Brasileiro de Crédito é uma plataforma independente e gratuita que reúne dados públicos sobre crédito e instituições financeiras no Brasil. As informações vêm principalmente das bases públicas do Banco Central e da CVM, complementadas por outras fontes oficiais e por dados divulgados pelas próprias instituições. Cada número indica sua origem, com distinção clara entre dado observado e indicador calculado.</p>
     <h3 style="margin-top:28px">Sobre o autor</h3>
     <p>O Observatório Brasileiro de Crédito é uma iniciativa independente de Genaro Dueire Lins, profissional com mais de vinte anos de atuação no sistema financeiro brasileiro nas áreas de crédito, risco e dados.</p>
@@ -1426,7 +1426,7 @@ function renderPix() {
 
   /* ---------- metodologia ---------- */
   const metodo = `<div class="card" style="margin-top:22px"><h4>Cautelas e conceitos desta página</h4>
-    <ol style="max-width:1100px;line-height:1.7;font-size:12.8px;color:var(--text-2)">${X.cautelas.map(c => `<li>${c}</li>`).join("")}</ol>
+    <ol style="color:var(--text-2)">${X.cautelas.map(c => `<li>${c}</li>`).join("")}</ol>
     <details class="charttable"><summary>catálogo de métricas (${X.catalogo.length})</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>id</th><th>Nome</th><th>Conceito</th><th>Fórmula</th><th>Unid.</th><th>Freq.</th><th>Fonte</th><th>Início</th><th>Limitações</th></tr></thead>
     <tbody>${X.catalogo.map(c => `<tr><td class="src">${c.id}</td><td><b>${c.nome}</b></td><td class="src">${c.conceito}</td><td class="src">${c.formula}</td><td>${c.unidade}</td><td>${c.periodicidade}</td><td class="src">${c.fonte}</td><td>${c.inicio}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div></details></div>`;
 
@@ -1684,7 +1684,7 @@ function renderPanorama() {
   const exp = panExplorer(P);
 
   const metodo = `<div class="card" style="margin-top:22px"><h4>Conceitos e limites desta página</h4>
-    <div class="src" style="line-height:1.8;max-width:1100px">${Object.entries(P.conceitos).map(([kk, v]) => `<b>${kk}</b>: ${v}`).join("<br>")}
+    <div class="src" >${Object.entries(P.conceitos).map(([kk, v]) => `<b>${kk}</b>: ${v}`).join("<br>")}
     <br><b>indisponível no SCR público</b>: sexo, faixa etária, município, nº de clientes, baixas, concessões (fluxo) — não estimamos nem simulamos essas dimensões. Auditoria completa: docs/AUDITORIA_SCR.md.</div></div>`;
 
   el.innerHTML = head + sintese + kpis +
@@ -2945,7 +2945,7 @@ function renderOverview() {
   <div class="card" style="margin-bottom:18px;border-left:3px solid var(--accent)">
     <h4 style="display:flex;justify-content:space-between;gap:10px"><span>Comece por aqui</span>
       <a href="javascript:void(0)" class="src" onclick="ovDispensarBoasVindas()">dispensar</a></h4>
-    <p class="src" style="max-width:900px">Esta página resume as condições de crédito e é personalizável (botão "personalizar página"). Quatro portas de entrada respondem as perguntas mais comuns:</p>
+    <p class="src" >Esta página resume as condições de crédito e é personalizável (botão "personalizar página"). Quatro portas de entrada respondem as perguntas mais comuns:</p>
     <div class="chips" style="margin-top:8px">
       <span class="chip clickable" onclick="nav('panorama');ovDispensarBoasVindas()" tabindex="0" role="link">Como está o crédito no meu estado? →</span>
       <span class="chip clickable" onclick="nav('juros');ovDispensarBoasVindas()" tabindex="0" role="link">Qual banco cobra menos em cada modalidade? →</span>
@@ -4720,26 +4720,27 @@ function renderPenetracao() {
   const abaixo = comSaldo.filter(m => (m[campoGap] || 0) > 0);
   const gapFiltro = abaixo.reduce((s, m) => s + m[campoGap], 0);
 
-  const cards = `<div class="desgrupo">
-    <span class="rot">No recorte selecionado</span>
-    <div class="pan-kpi">
-    <div class="card kpi"><h4>Crédito municipal analisado</h4><div class="big">${fmt.money(credFiltro)}</div>
-      <div class="src">${penSelo("observado")} ESTBAN · ${P.data_base_credito} · ${fmt.n0(comSaldo.length)} municípios com saldo</div></div>
-    <div class="card kpi"><h4>Crédito por adulto</h4><div class="big">R$ ${fmt.n0(credFiltro / adultosFiltro)}</div>
-      <div class="src">${penSelo("calculado")} saldo ÷ população de 18 anos ou mais</div></div>
-    <div class="card kpi"><h4>Crédito sobre renda anual</h4><div class="big">${fmt.n(100 * credFiltro / rendaFiltro, 0)}%</div>
-      <div class="src">${penSelo("calculado")} estoque sobre fluxo anual · ${fmt.n(12 * credFiltro / rendaFiltro, 1)} meses de renda</div></div>
-    <div class="card kpi"><h4>Gap absoluto estimado</h4><div class="big">${fmt.money(gapFiltro)}</div>
-      <div class="src">${penSelo("estimado")} soma dos municípios abaixo do ${metodo === "modelo" ? "modelo" : "benchmark de pares"}</div></div>
-    <div class="card kpi"><h4>Adultos em municípios abaixo</h4><div class="big">${fmt.n0(abaixo.reduce((s, m) => s + m.adultos, 0))}</div>
-      <div class="src">${penSelo("calculado")} população de 18+ nos ${fmt.n0(abaixo.length)} municípios com gap positivo</div></div>
-    </div>
-  </div>
-  <div class="desgrupo">
+  const cards = `<div class="pgkpi">
+    <div class="mk"><span class="r">Crédito municipal analisado</span>
+      <span class="v">${fmt.money(credFiltro)}</span>
+      <span class="n">ESTBAN ${P.data_base_credito} · ${fmt.n0(comSaldo.length)} municípios com saldo ${penSelo("observado")}</span></div>
+    <div class="mk"><span class="r">Crédito por adulto</span>
+      <span class="v">R$ ${fmt.n0(credFiltro / adultosFiltro)}</span>
+      <span class="n">saldo ÷ população de 18 anos ou mais ${penSelo("calculado")}</span></div>
+    <div class="mk"><span class="r">Crédito sobre renda anual</span>
+      <span class="v">${fmt.n(100 * credFiltro / rendaFiltro, 0)}<small>%</small></span>
+      <span class="n">${fmt.n(12 * credFiltro / rendaFiltro, 1)} meses de renda ${penSelo("calculado")}</span></div>
+    <div class="mk destaque"><span class="r">Gap absoluto estimado</span>
+      <span class="v">${fmt.money(gapFiltro)}</span>
+      <span class="n">soma dos ${fmt.n0(abaixo.length)} municípios abaixo do ${metodo === "modelo" ? "modelo" : "benchmark"} ${penSelo("estimado")}</span></div>
+    <div class="mk"><span class="r">Sem dependência bancária</span>
+      <span class="v">${fmt.n0(P.cobertura.sem_saldo_estban)}</span>
+      <span class="n">dos ${fmt.n0(P.cobertura.municipios_brasil)} municípios · ausência não é crédito zero ${penSelo("observado")}</span></div>
+  </div>`;
+
+  const cobertura = `<div class="desgrupo">
     <span class="rot">Cobertura da fonte — não responde aos filtros</span>
     <div class="pan-kpi">
-      <div class="card kpi"><h4>Sem dependência bancária</h4><div class="big">${fmt.n0(P.cobertura.sem_saldo_estban)}</div>
-        <div class="src">${penSelo("observado")} dos ${fmt.n0(P.cobertura.municipios_brasil)} municípios não têm saldo no ESTBAN<br>ausência de saldo não é crédito zero</div></div>
       <div class="card kpi"><h4>Adultos nesses municípios</h4><div class="big">${fmt.n0(P.cobertura.adultos_sem_estban)}</div>
         <div class="src">${penSelo("observado")} ficam fora de qualquer conta de penetração</div></div>
       <div class="card kpi"><h4>Municípios com saldo</h4><div class="big">${fmt.n0(P.cobertura.com_saldo_estban)}</div>
@@ -4748,6 +4749,15 @@ function renderPenetracao() {
         <div class="src">${penSelo("calculado")} passam nos cortes mínimos e não têm confiabilidade baixa</div></div>
     </div>
   </div>`;
+
+  const avisoPen = `<div class="judalerta" style="max-width:78ch"><b>Antes de ler qualquer ranking.</b> O ESTBAN registra onde o saldo
+  foi <i>contabilizado</i>, não onde mora quem tomou o crédito. Sede de banco e centro regional inflam; município
+  vizinho esvazia. Por isso cada município carrega um selo de confiabilidade, e os de selo baixo ficam fora dos
+  rankings por padrão.</div>
+  <nav class="desindex" aria-label="seções desta página">
+    ${[["mapa", "Mapa"], ["dispersao", "Dispersão"], ["rankings", "Rankings"], ["achados", "Achados"], ["metodo", "Metodologia"]]
+      .map(([id, l]) => `<a href="javascript:void(0)" onclick="document.getElementById('pen-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
+  </nav>`;
 
   /* ---------- filtros ---------- */
   const filtros = `<div class="controls">
@@ -5071,15 +5081,8 @@ function renderPenetracao() {
   dependências bancárias de cada município. O denominador vem do Censo 2022: população adulta e renda domiciliar.
   A razão entre os dois diz quanto crédito existe por ali em relação ao tamanho econômico do lugar. O gap compara
   esse número ao de municípios parecidos.</p></div>
-  <div class="judalerta" style="max-width:78ch"><b>Antes de ler qualquer ranking.</b> O ESTBAN registra onde o saldo
-  foi <i>contabilizado</i>, não onde mora quem tomou o crédito. Sede de banco e centro regional inflam; município
-  vizinho esvazia. Por isso cada município carrega um selo de confiabilidade, e os de selo baixo ficam fora dos
-  rankings por padrão.</div>
-  <nav class="desindex" aria-label="seções desta página">
-    ${[["mapa", "Mapa"], ["dispersao", "Dispersão"], ["rankings", "Rankings"], ["achados", "Achados"], ["metodo", "Metodologia"]]
-      .map(([id, l]) => `<a href="javascript:void(0)" onclick="document.getElementById('pen-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
-  </nav>`
-  + cards + filtros + mapa + perfil + dispersao + rankings + achados + metodo_sec;
+`
+  + cards + filtros + mapa + avisoPen + cobertura + perfil + dispersao + rankings + achados + metodo_sec;
 }
 
 function penSelo(s) {
@@ -6413,7 +6416,7 @@ function renderSugestoes() {
     <h2>Sugestões</h2>
     <p class="viewdesc">Diga o que falta, o que está confuso ou o que merece correção. Cada sugestão vai direto para a administração da plataforma, identificada pela sua conta.</p>
   </div></div>
-  <div class="card" style="max-width:760px">
+  <div class="card" >
     <h4>Enviar uma sugestão</h4>
     <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px">
       <label class="src" for="sgCat">Tipo
@@ -6548,7 +6551,6 @@ function renderMoradia() {
     e a do simulador é um cenário construído por quem usa a página.</p>
   </div>
 
-  ${morMapa(base, malha, met, M, F, D)}
   </section>`;
 
   /* ================= 2. onde está o crédito ================= */
@@ -6841,11 +6843,34 @@ function renderMoradia() {
       <h4>${a.t}</h4><p class="src">${a.d}</p>
       <div class="src">${morSelo(a.selo)}</div></div>`).join("")}</div></div>`;
 
+  /* ================= abertura: cinco indicadores e o mapa ================= */
+  const cat = k => C.categorias.find(c => c.k === k) || {};
+  const abertura = `<section id="mor-abertura">
+    <div class="pgkpi">
+      <div class="mk"><span class="r">Domicílios ocupados</span>
+        <span class="v">${fmt.n(C.total / 1e6, 2)} <small>mi</small></span>
+        <span class="n">Censo ${C.ano} ${morSelo("observado")}</span></div>
+      <div class="mk destaque"><span class="r">Ainda sendo pagos</span>
+        <span class="v">${fmt.n(cat("proprio_pagando").pct, 1)}<small>%</small></span>
+        <span class="n">${fmt.n(cat("proprio_pagando").n / 1e6, 2)} milhões de domicílios</span></div>
+      <div class="mk"><span class="r">Alugados</span>
+        <span class="v">${fmt.n(cat("alugado").pct, 1)}<small>%</small></span>
+        <span class="n">${fmt.n(cat("alugado").n / 1e6, 1)} milhões de domicílios</span></div>
+      <div class="mk"><span class="r">Saldo imobiliário contabilizado</span>
+        <span class="v">${fmt.money(D.totais.estban169)}</span>
+        <span class="n">verbete 169 · ESTBAN ${D.datas.estban} ${morSelo("observado")}</span></div>
+      <div class="mk"><span class="r">Taxa de contratação, SFH</span>
+        <span class="v">${fmt.n(B.taxa.sfh, 2)}<small>% a.a.</small></span>
+        <span class="n">LTV de ${fmt.n(B.ltv.sfh, 1)}% · ${D.datas.mi_credito}</span></div>
+    </div>
+    ${morMapa(base, malha, met, M, F, D)}
+  </section>`;
+
   el.innerHTML = pageHead({
     title: "Moradia e Crédito Habitacional",
     desc: "Como o país mora, quanto crédito imobiliário existe e onde ele não chega — com as três bases públicas mantidas separadas.",
     fontes: `IBGE Censo ${C.ano} · BCB ESTBAN ${D.datas.estban} · BCB Mercado Imobiliário ${D.datas.mi_credito} · BCB SCR ${D.datas.scr}`,
-  }) + indice + achados
+  }) + indice + abertura + achados
     + blocoMora + blocoOnde + blocoQuem + blocoPeso + blocoPot + blocoMet;
 
   agendaAcessibilidade();
@@ -7057,33 +7082,35 @@ function renderConsignado() {
   — e não existe. O que há de municipal aqui é demografia e benefício pago; o consignado é
   observado por unidade da federação.</p>
 
-  <div class="pan-kpi">
-    <div class="card kpi"><h4>População com 60 anos ou mais</h4>
-      <div class="big">${fmt.n0(B.a60)}</div>
-      <div class="src">${cgSelo("observado")} ${fmt.n(B.p60, 1)}% do país · 65+ são ${fmt.n0(B.a65)} (${fmt.n(B.p65, 1)}%)</div></div>
-    <div class="card kpi"><h4>Benefícios emitidos</h4>
-      <div class="big">${fmt.n0(B.beneficios)}</div>
-      <div class="src">${cgSelo("observado")} dezembro de ${D.ano} · ${fmt.n0(B.aposentadorias)} aposentadorias e ${fmt.n0(B.pensoes)} pensões</div></div>
-    <div class="card kpi"><h4>Valor líquido mensal</h4>
-      <div class="big">${fmt.money(B.valor_dez)}</div>
-      <div class="src">${cgSelo("observado")} já descontado o consignado · média de R$ ${fmt.n0(B.valor_medio)} por benefício</div></div>
-    <div class="card kpi"><h4>Consignado de aposentados e pensionistas</h4>
-      <div class="big">${fmt.money(S.aposentados_nacional)}</div>
-      <div class="src">${cgSelo("observado")} ${fmt.n(S.part_aposentados, 1)}% do consignado de pessoa física · ${S.data_base}</div></div>
-    <div class="card kpi"><h4>Municípios de alta dependência</h4>
-      <div class="big">${fmt.n0(D.totais.dependencia_acima_50)}</div>
-      <div class="src">${cgSelo("calculado")} benefícios líquidos acima de 50% da renda domiciliar · mais ${fmt.n0(D.totais.dependencia_35_50)} entre 35% e 50%</div></div>
+  <div class="pgkpi">
+    <div class="mk"><span class="r">População com 60 anos ou mais</span>
+      <span class="v">${fmt.n(B.a60 / 1e6, 2)} <small>mi</small></span>
+      <span class="n">${fmt.n(B.p60, 1)}% do país · Censo 2022 ${cgSelo("observado")}</span></div>
+    <div class="mk"><span class="r">Benefícios emitidos</span>
+      <span class="v">${fmt.n(B.beneficios / 1e6, 2)} <small>mi</small></span>
+      <span class="n">dezembro de ${D.ano} ${cgSelo("observado")}</span></div>
+    <div class="mk"><span class="r">Valor líquido mensal</span>
+      <span class="v">${fmt.money(B.valor_dez)}</span>
+      <span class="n">já descontado o consignado · média de R$ ${fmt.n0(B.valor_medio)}</span></div>
+    <div class="mk destaque"><span class="r">Consignado de aposentados</span>
+      <span class="v">${fmt.money(S.aposentados_nacional)}</span>
+      <span class="n">${fmt.n(S.part_aposentados, 1)}% do consignado de pessoa física · ${S.data_base}</span></div>
+    <div class="mk"><span class="r">Municípios de alta dependência</span>
+      <span class="v">${fmt.n0(D.totais.dependencia_acima_50)}</span>
+      <span class="n">benefícios acima de 50% da renda domiciliar ${cgSelo("calculado")}</span></div>
   </div>
 
-  <div class="judalerta" role="note">
+  </section>`;
+
+  const avisoFonte = `<div class="judalerta" role="note">
     <b>Três coisas que este dado não é.</b> O município registrado é o do <b>órgão pagador</b>,
     não o de residência do beneficiário — a agência de um polo regional paga quem mora nas
     cidades vizinhas. O valor é <b>líquido de descontos</b>, e o empréstimo consignado já foi
     subtraído dele. E a contagem é de <b>créditos emitidos</b>, não de pessoas: um benefício
-    pode gerar mais de um crédito, e 11,1% dos beneficiários acumulam mais
-    de um benefício, segundo o Anuário Estatístico da Previdência. Não existe contagem de beneficiários por município em nenhuma fonte pública.
-  </div>
-  </section>`;
+    pode gerar mais de um crédito, e 11,1% dos beneficiários acumulam mais de um benefício,
+    segundo o Anuário Estatístico da Previdência. Não existe contagem de beneficiários por
+    município em nenhuma fonte pública.
+  </div>`;
 
   /* ============ 2. envelhecimento ============ */
   const maxP = Math.max(...B.piramide.map(p => p.pop));
@@ -7220,7 +7247,7 @@ function renderConsignado() {
     title: "Consignado, Previdência e Envelhecimento",
     desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante — separando o que é observado do que é estimado.",
     fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
-  }) + indice + geral + idade + prev + mapa
+  }) + indice + geral + mapa + avisoFonte + idade + prev
     + cgExposicao(D) + cgCircularidade(D) + cgSaturacao(D, base)
     + cgRisco(D, base) + cgInstituicoes(D)
     + cgPerfil(D, sel, comparar) + cgMetodo(D);
@@ -8510,7 +8537,7 @@ function renderCompare() {
         <div class="src" style="margin-top:4px"><b>Estado:</b> ${pdt.motivo}</div></div>`).join("")}
     </div>
     <div class="card" style="margin-top:14px"><h4>O que já é possível hoje</h4>
-      <p class="src" style="max-width:900px">Com os dados coletados (IF.data Resumo, Capital e Carteiras), o comparador cobre escala, funding, capital, mix e qualidade de carteira. Quando a DRE detalhada do IF.data e os balancetes COSIF entrarem no pipeline, esta aba passa a calcular: despesas de pessoal e administrativas agrupadas, índice de eficiência, TI restrita vs TI ampliada (sempre separadas), e produtividade por funcionário e por agência — cada valor com selo reportado/contábil/derivado e nunca um "gasto total com TI" exato a partir de componentes parciais.</p></div>`;
+      <p class="src" >Com os dados coletados (IF.data Resumo, Capital e Carteiras), o comparador cobre escala, funding, capital, mix e qualidade de carteira. Quando a DRE detalhada do IF.data e os balancetes COSIF entrarem no pipeline, esta aba passa a calcular: despesas de pessoal e administrativas agrupadas, índice de eficiência, TI restrita vs TI ampliada (sempre separadas), e produtividade por funcionário e por agência — cada valor com selo reportado/contábil/derivado e nunca um "gasto total com TI" exato a partir de componentes parciais.</p></div>`;
   } else if (cmp.ctab === "resumo") {
     body = `<div class="tblwrap"><table class="data">${header}<tbody>${cmp.mets.map(m => metRow(m)).join("")}</tbody></table></div>
     <div class="src">Até 15 métricas essenciais (edite no Catálogo). Normalização ativa: <b>${NORMS.find(n => n[0] === cmp.norm)[1]}</b>. Passe o mouse no nome da métrica para fórmula, campo original e cobertura.</div>`;
