@@ -297,3 +297,85 @@ describe("escala do mapa: percentis, sem distorcer o dado exportado", () => {
     expect(pagina).toMatch(/o dado exportado é o bruto/i);
   });
 });
+
+describe("série histórica: data-base subcoletada fora, reclassificação sinalizada", () => {
+  it("2025-03 não entra na série publicada, e o motivo está declarado", () => {
+    expect(P.data_base_excluida.data).toBe("2025-03");
+    expect(P.eixo_serie).not.toContain("2025-03");
+    expect(P.data_base_excluida.motivo).toMatch(/subcoletada/i);
+    expect(P.data_base_excluida.motivo).toMatch(/não é comparável/i);
+  });
+
+  it("a série tem o mesmo comprimento do eixo, e mês ausente é nulo, nunca zero", () => {
+    const com = P.municipios.filter((m: any) => m.serie);
+    expect(com.length).toBeGreaterThan(2000);
+    for (const m of com.slice(0, 400)) {
+      expect(m.serie.length, m.nome).toBe(P.eixo_serie.length);
+      for (const v of m.serie) expect(v === null || v > 0, `${m.nome} tem zero na série`).toBe(true);
+    }
+  });
+
+  it("salto mensal acima de 50% rebaixa a confiabilidade", () => {
+    const inst = P.municipios.filter((m: any) => m.serie_instavel);
+    expect(inst.length).toBeGreaterThan(0);
+    for (const m of inst) {
+      expect(m.maior_salto_mensal, m.nome).toBeGreaterThan(50);
+      expect(m.confianca, m.nome).toBe("baixa");
+    }
+  });
+
+  it("Brasília é pega pelo critério — o caso conhecido de reclassificação", () => {
+    const bsb = P.municipios.find((m: any) => m.cod === "5300108");
+    expect(bsb.serie_instavel).toBe(true);
+    expect(bsb.confianca).toBe("baixa");
+    expect(bsb.confianca_motivo).toMatch(/reclassificação/i);
+  });
+
+  it("a página avisa sobre série instável e sobre a data-base excluída", () => {
+    expect(pagina).toMatch(/Série instável/);
+    expect(pagina).toMatch(/reclassificação de carteira entre dependências/i);
+    expect(pagina).toContain("P.data_base_excluida");
+  });
+
+  it("a composição por instituição soma o crédito do município", () => {
+    const com = P.municipios.filter((m: any) => m.instituicoes_top && m.credito);
+    expect(com.length).toBeGreaterThan(500);
+    for (const m of com.slice(0, 150)) {
+      const soma = m.instituicoes_top.reduce((s: number, i: any) => s + i.part, 0);
+      expect(soma, m.nome).toBeGreaterThan(0);
+      expect(soma, m.nome).toBeLessThanOrEqual(100.5);
+    }
+  });
+});
+
+describe("reconciliação estadual com o SCR", () => {
+  it("está disponível e alinhada por data-base", () => {
+    const R = P.reconciliacao_scr;
+    expect(R.disponivel).toBe(true);
+    expect(R.data_base_estban).toBe(P.data_base_credito);
+    expect(R.data_base_scr).toMatch(/^\d{4}-\d{2}$/);
+    if (!R.mesmo_mes) expect(R.aviso_data).toBeTruthy();
+  });
+
+  it("cobre as 27 UFs e a razão é coerente com os totais", () => {
+    const R = P.reconciliacao_scr;
+    expect(R.linhas.length).toBe(27);
+    expect(R.razao_br).toBeCloseTo(R.total_estban / R.total_scr, 2);
+    for (const l of R.linhas) {
+      expect(l.razao, l.uf).toBeCloseTo(l.estban / l.scr, 2);
+      expect(l.estban, l.uf).toBeGreaterThan(0);
+      expect(l.scr, l.uf).toBeGreaterThan(0);
+    }
+  });
+
+  it("é apresentada como diferença de conceito, não como controle de qualidade", () => {
+    expect(P.reconciliacao_scr.nota).toMatch(/não é erro de medição/i);
+    expect(P.reconciliacao_scr.nota).toMatch(/conceitos diferentes/i);
+    expect(P.reconciliacao_scr.nota).toMatch(/contabilizado/);
+  });
+
+  it("o DF aparece com razão alta — a centralização medida em nível estadual", () => {
+    const df = P.reconciliacao_scr.linhas.find((l: any) => l.uf === "DF");
+    expect(df.razao).toBeGreaterThan(2);
+  });
+});

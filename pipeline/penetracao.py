@@ -138,6 +138,38 @@ def build(con, cfg=None):
             m["cred_deposito"] = credito / e["depositos"] if e and e["depositos"] else None
         muns.append(m)
 
+    # série histórica: um vetor por município, alinhado ao mesmo eixo de datas.
+    # Publicar como lista de números (e não de objetos) evita repetir a chave 13 vezes
+    # por município; o eixo vai uma vez só, em "datas_credito".
+    # 2025-03 é uma data-base subcoletada: 94 municípios com saldo zero contra ~3 nos
+    # demais meses, salto de +16,7% em São Paulo de março para abril e 17,2% dos
+    # municípios variando mais de 10%. Fica fora da série publicada — data-base
+    # incompleta não é comparável, e desenhá-la criaria um degrau que não existiu.
+    DATA_BASE_SUBCOLETADA = "2025-03"
+    datas_asc = [d for d in sorted(datas) if d != DATA_BASE_SUBCOLETADA]
+    hist = {}
+    for r in _rows(con, """SELECT cod_ibge, data_base, credito FROM estban_mun
+                           ORDER BY cod_ibge, data_base"""):
+        hist.setdefault(r["cod_ibge"], {})[r["data_base"]] = r["credito"]
+    for m in muns:
+        h = hist.get(m["cod"])
+        if h:
+            # mês sem linha vira None, nunca 0: o município pode ter perdido a agência,
+            # e um zero desenharia queda a crédito onde houve saída da base
+            m["serie"] = [round(h[d], 2) if d in h else None for d in datas_asc]
+            presentes = [v for v in m["serie"] if v is not None]
+            m["serie_completa"] = len(presentes) == len(datas_asc)
+            if len(presentes) >= 2 and presentes[0]:
+                m["var_serie"] = round(100 * (presentes[-1] / presentes[0] - 1), 2)
+            # salto mensal implausível denuncia reclassificação contábil, não crédito
+            # novo. O caso conhecido é o Itaú em Brasília, que alterna entre R$ 3 bi e
+            # R$ 700 bi e sozinho move o total nacional em mais de 10% ao mês.
+            saltos = [abs(presentes[i] / presentes[i - 1] - 1) for i in range(1, len(presentes))
+                      if presentes[i - 1]]
+            if saltos:
+                m["maior_salto_mensal"] = round(100 * max(saltos), 1)
+                m["serie_instavel"] = max(saltos) > 0.5
+
     com_credito = [m for m in muns if m.get("credito")]
     sem_estban = [m for m in muns if not m["no_estban"]]
 
@@ -241,11 +273,15 @@ def build(con, cfg=None):
             motivos.append("crédito por adulto muito acima do universo — forte indício de contabilização centralizada")
         if m.get("meses_renda") and m["meses_renda"] > 120:
             motivos.append("saldo equivalente a mais de 10 anos de renda local")
+        if m.get("serie_instavel"):
+            motivos.append(f"salto de {m['maior_salto_mensal']:.0f}% em um único mês na série — "
+                           "assinatura de reclassificação contábil, não de crédito novo")
         if m["instituicoes"] <= 1:
             motivos.append("uma única instituição reportando")
         if m.get("credito") and m["credito"] < 1e5:
             motivos.append("saldo muito pequeno, sensível a arredondamento")
-        m["confianca"] = "baixa" if len([x for x in motivos if "centraliz" in x or "10 anos" in x]) else \
+        m["confianca"] = "baixa" if len([x for x in motivos if "centraliz" in x or "10 anos" in x
+                                          or "reclassificação" in x]) else \
                          ("media" if motivos else "alta")
         m["confianca_motivo"] = "; ".join(motivos) or "Múltiplas instituições e penetração dentro da faixa do universo."
 
@@ -352,11 +388,30 @@ def build(con, cfg=None):
                      "instituições, não necessariamente crédito tomado por residentes."),
     })
 
+    # ---- composição por instituição na data-base corrente -------------------------------
+    # só para quem entra em algum ranking ou tem porte: guardar as 111 instituições de
+    # 2.900 municípios inflaria o arquivo sem que ninguém abrisse a maioria
+    inst_por_mun = {}
+    for r in _rows(con, """SELECT cod_ibge, instituicao, credito FROM estban_mun_inst
+                           WHERE data_base=? ORDER BY cod_ibge, credito DESC""", (atual,)):
+        inst_por_mun.setdefault(r["cod_ibge"], []).append(r)
+    for m in muns:
+        if not m.get("credito") or m["adultos"] < MIN_ADULTOS:
+            continue
+        linhas = inst_por_mun.get(m["cod"], [])[:8]
+        if linhas:
+            m["instituicoes_top"] = [{"nome": x["instituicao"], "credito": round(x["credito"], 2),
+                                      "part": round(100 * x["credito"] / m["credito"], 2)} for x in linhas]
+
     # ---- reconciliação estadual com o SCR ----------------------------------------------
     reconc = {"disponivel": False, "motivo": "SCR.data estadual não disponível neste armazém"}
     try:
-        scr = _rows(con, """SELECT uf, SUM(saldo) saldo FROM scr_uf
-                            WHERE data=(SELECT MAX(data) FROM scr_uf) GROUP BY uf""")
+        # alinhar a data-base: o SCR costuma estar à frente do ESTBAN. Usa-se a data do
+        # SCR mais próxima da data-base do crédito municipal, e a diferença é declarada.
+        datas_scr = [r["data"] for r in _rows(con, "SELECT DISTINCT data FROM scr_uf ORDER BY data")]
+        data_scr = min(datas_scr, key=lambda d: abs((int(d[:4]) * 12 + int(d[5:7])) -
+                                                    (int(atual[:4]) * 12 + int(atual[5:7])))) if datas_scr else None
+        scr = _rows(con, "SELECT uf, SUM(saldo) saldo FROM scr_uf WHERE data=? GROUP BY uf", (data_scr,)) if data_scr else []
         if scr:
             por_uf_estban = {}
             for m in com_credito:
@@ -367,10 +422,24 @@ def build(con, cfg=None):
                 if eb and r["saldo"]:
                     linhas.append({"uf": r["uf"], "estban": round(eb, 2), "scr": round(r["saldo"], 2),
                                    "razao": round(eb / r["saldo"], 3)})
-            reconc = {"disponivel": True, "linhas": sorted(linhas, key=lambda x: -x["razao"]),
-                      "nota": ("Razão entre o saldo contabilizado no ESTBAN e a exposição do SCR na mesma UF. "
-                               "Não é erro de medição: são conceitos diferentes, e a razão acima de 1 indica "
-                               "contabilização de operações de tomadores de outras UFs.")}
+            tot_eb = sum(l["estban"] for l in linhas)
+            tot_scr = sum(l["scr"] for l in linhas)
+            reconc = {
+                "disponivel": True,
+                "data_base_estban": atual, "data_base_scr": data_scr,
+                "mesmo_mes": data_scr == atual,
+                "linhas": sorted(linhas, key=lambda x: -x["razao"]),
+                "total_estban": round(tot_eb, 2), "total_scr": round(tot_scr, 2),
+                "razao_br": round(tot_eb / tot_scr, 3) if tot_scr else None,
+                "nota": ("Razão entre o saldo contabilizado no ESTBAN e a exposição de crédito do SCR na mesma UF. "
+                         "Não é erro de medição nem controle de qualidade: são conceitos diferentes. O ESTBAN "
+                         "registra onde o saldo foi contabilizado; o SCR, a exposição dos clientes daquela UF. "
+                         "Razão muito acima de 1 indica UF que contabiliza operações de tomadores de outros "
+                         "estados — é o mesmo fenômeno que, no nível municipal, gera o selo de confiabilidade."),
+                "aviso_data": (None if data_scr == atual else
+                               f"As data-bases não coincidem: ESTBAN em {atual} e SCR em {data_scr}. "
+                               "A razão compara o mês mais próximo disponível em cada fonte."),
+            }
     except Exception:
         pass
 
@@ -379,6 +448,13 @@ def build(con, cfg=None):
         "gerado_em": common.now_utc(),
         "data_base_credito": atual,
         "datas_credito": datas,
+        "eixo_serie": datas_asc,
+        "data_base_excluida": {
+            "data": DATA_BASE_SUBCOLETADA,
+            "motivo": ("Data-base subcoletada: 94 municípios com saldo zero contra cerca de 3 nos demais "
+                       "meses, salto de 16,7% em São Paulo no mês seguinte e 17,2% dos municípios variando "
+                       "mais de 10%. Fica fora da série publicada porque não é comparável."),
+        },
         "ano_base_censo": 2022,
         "fontes": {
             "credito": "BCB — ESTBAN, Estatística Bancária Mensal por município (documento 4500), verbete 160",
@@ -479,5 +555,9 @@ def _resumo(m, completo=False):
             "modelo_media": round(m["modelo_media_condicional"], 2) if m.get("modelo_media_condicional") else None,
             "modelo_faixa": [round(x, 2) for x in m["modelo_faixa"]] if m.get("modelo_faixa") else None,
             "confianca_motivo": m.get("confianca_motivo"),
+            "serie": m.get("serie"), "serie_completa": m.get("serie_completa"),
+            "var_serie": m.get("var_serie"), "serie_instavel": m.get("serie_instavel"),
+            "maior_salto_mensal": m.get("maior_salto_mensal"),
+            "instituicoes_top": m.get("instituicoes_top"),
         })
     return base

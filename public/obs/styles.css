@@ -1034,3 +1034,50 @@ tr.selrow { background: var(--accent-soft); }
   font: inherit; font-size: 12.4px; color: inherit; text-align: left; align-items: baseline; }
 .penlista li button:hover { background: var(--surface-2); }
 .penlista li.sel button { background: var(--accent-soft); }
+.ppserie, .ppinst { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+.ppserie h5, .ppinst h5 { margin: 0 0 7px; font-size: 12.5px; font-weight: 620;
+  display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.ppinst { max-width: 78ch; }
+/* ranking: números não quebram, e a coluna do nome absorve a folga */
+.penrankt td, .penrankt th { white-space: nowrap; }
+.penrankt td:nth-child(2) { white-space: normal; min-width: 190px; }
+.penrankt td:nth-child(2) .pconf { margin-left: 3px; }
+
+/* medida de leitura: os parágrafos dentro de .pen2col e de <details> escapavam da
+   regra de filho direto e chegavam a 159 caracteres por linha */
+#view-penetracao .pen2col p, #view-penetracao .pen2col .src,
+#view-penetracao .charttable > p, #view-penetracao .charttable > .src,
+#view-penetracao .desnota, #view-penetracao .ppinst > p { max-width: 74ch; }
+#view-penetracao .card > ul.src li { margin-bottom: 4px; }
+#view-penetracao > section:first-of-type .sechead { margin-top: 22px; }
+
+/* o ranking é o conteúdo principal da seção: não deve rolar dentro de uma página
+   que já rola. O teto continua valendo para as tabelas dentro de <details>. */
+#view-penetracao .card > .tblwrap { max-height: none; }
+
+/* mapa e ranking lado a lado terminavam em alturas muito diferentes */
+.penlayout { grid-template-columns: 1.3fr 1fr; }
+.penlayout .penmapa { max-height: 620px; width: auto; margin: 0 auto; display: block; }
+.penrank .penlista { max-height: none; }
+
+/* 18 campos do perfil em 5 colunas deixavam três órfãos na última linha */
+@media (min-width: 1100px) { .ppgrid { grid-template-columns: repeat(6, 1fr); } }
+
+/* max-width em `ch` no pai não constrange filho de fonte menor: a ressalva em 11,6 px
+   cabia ~120 caracteres dentro de um article limitado a 80ch calculados em 13 px.
+   A medida vai para o próprio elemento, na sua unidade. */
+.penachados article { max-width: none; }
+.penachados article > p { max-width: 74ch; }
+.penachados article > .meta, .penachados article > .lim { max-width: 88ch; }
+#view-penetracao .card > ul.src { max-width: 88ch; }
+
+/* o ranking passou a ser mais alto que o mapa quando tirei o teto da lista */
+.penrank .penlista { max-height: 520px; overflow-y: auto; }
+
+/* a regra de colunas acima foi declarada depois da media query e a anulava:
+   no celular o mapa e o ranking voltaram a ficar lado a lado. Reafirmado por último. */
+@media (max-width: 900px) {
+  .penlayout, .pen2col { grid-template-columns: 1fr; }
+  .penlayout .penmapa { max-height: none; width: 100%; }
+  .penrank .penlista { max-height: 340px; }
+}

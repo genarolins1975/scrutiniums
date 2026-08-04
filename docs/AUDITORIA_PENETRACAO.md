@@ -155,9 +155,35 @@ publicadas** — com e sem cortes.
 
 ## 7. Pendências desta primeira entrega
 
+### Resolvidas nesta segunda entrega
+
+**Reconciliação estadual com o SCR.** A série `scr_uf` entrou no armazém (17 data-bases,
+27 UFs, grade completa) e a comparação está publicada, alinhada por data-base — ESTBAN e
+SCR ambos em 2026-03. Nacionalmente a razão é **0,94×**, o que valida a ordem de grandeza
+do ESTBAN. Por estado ela se desfaz: o **DF contabiliza 7,3×** a exposição de crédito de
+seus residentes, e Santa Catarina apenas 0,31×. É a centralização contábil medida no nível
+estadual — o mesmo fenômeno que, no municipal, gera o selo de confiabilidade.
+
+**Série histórica municipal.** Treze data-bases coletadas, doze publicadas. A auditoria da
+série encontrou dois problemas que teriam ido ao ar:
+
+1. **2025-03 é uma data-base subcoletada** — 94 municípios com saldo zero contra cerca de
+   3 nos demais meses, salto de 16,7% em São Paulo no mês seguinte e 17,2% dos municípios
+   variando mais de 10%. Foi excluída da série publicada, com o motivo declarado. O efeito
+   sobre os números: a variação de São Paulo no período caiu de +32% para **+13,1%**.
+2. **Saltos de reclassificação contábil.** Quarenta e dois municípios apresentam variação
+   superior a 50% em um único mês. O caso maior é Brasília, onde uma instituição alterna
+   entre R$ 3 bi e R$ 750 bi conforme a data-base — sozinha, move o total nacional em mais
+   de 10% ao mês. O salto virou critério do selo, e os 42 foram rebaixados a confiabilidade
+   baixa, ficando fora dos rankings.
+
+**Composição por instituição** no perfil municipal, para os 1.233 municípios que passam nos
+cortes: concentração num único nome é um dos sinais de contabilização centralizada.
+
+### Ainda pendentes
+
 | Pendência | O que resolveria |
 |---|---|
-| Reconciliação estadual com o SCR | Série `scr_uf` no mesmo armazém da execução — o código já está pronto e ativa sozinho |
 | Visão deflacionada pelo IPCA | Série `ipca` no armazém; a comparação 2022 × data-base corrente hoje é nominal |
 | Número de domicílios por município | Tabela do Censo 2022 com domicílios particulares permanentes ocupados |
 | Estrutura econômica no agrupamento de pares | Participação setorial municipal (PIB dos municípios, IBGE) |
