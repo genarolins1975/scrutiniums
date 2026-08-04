@@ -602,6 +602,22 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("moradia.json", {"disponivel": False, "error": str(e)})
 
+    # Consignado depende de censo_idade, prev_mun, scr_uf_ocup_produto, series_obs (IPCA e
+    # séries do consignado) e reclam_consig_*. Fica por último entre os módulos municipais
+    # porque reaproveita helpers de penetracao e moradia.
+    try:
+        from pipeline import consignado as consig_mod
+        r_cg = consig_mod.build(con, cfg)
+        common.write_gold("consignado.json", r_cg)
+        if r_cg.get("ok"):
+            print(f"  [consignado] {r_cg['totais']['municipios']} municípios, "
+                  f"correlação observada {r_cg['circularidade']['correlacao_observada']} "
+                  f"contra mecânica {r_cg['circularidade']['correlacao_mecanica']}")
+        else:
+            print(f"  [consignado] indisponível: {r_cg.get('motivo')}")
+    except Exception as e:
+        common.write_gold("consignado.json", {"ok": False, "error": str(e)})
+
     from pipeline import central_alertas
     central = central_alertas.build()
     common.write_gold_text("alerts.xml", central_alertas.rss(central))

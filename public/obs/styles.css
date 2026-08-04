@@ -1154,3 +1154,75 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
   .morbar .v small { display: inline; margin-left: 8px; }
   .morsim input { width: 100%; }
 }
+
+/* ---------- CONSIGNADO, PREVIDÊNCIA E ENVELHECIMENTO ----------
+   Mesma disciplina de medida da aba de moradia: a régua vale para todo texto corrido,
+   inclusive as notas `.src`, e sai de onde largura é informação. */
+#view-consignado .desprosa { max-width: 74ch; }
+#view-consignado p.src,
+#view-consignado div.src,
+#view-consignado .judalerta,
+#view-consignado .desnota li { max-width: 84ch; }
+#view-consignado table .src,
+#view-consignado .controls .src,
+#view-consignado .sechead .src,
+#view-consignado .penrank .src,
+#view-consignado caption.src,
+#view-consignado .cgtl .src { max-width: none; }
+
+.cg2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.cgpir { display: flex; flex-direction: column; gap: 2px; }
+.cgpirl { display: grid; grid-template-columns: 8ch 1fr 5ch; gap: 8px; align-items: center; font-size: 11px; }
+.cgpirl .g { color: var(--text-3); text-align: right; font-variant-numeric: tabular-nums; }
+.cgpirl .b { display: block; height: 12px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.cgpirl .b > span { display: block; height: 100%; background: color-mix(in srgb, var(--accent) 45%, var(--surface)); }
+.cgpirl .v { color: var(--text-2); text-align: right; font-variant-numeric: tabular-nums; }
+
+.cgfaixas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.cgfx { text-align: center; padding: 10px 4px; background: var(--surface-2); border-radius: 6px; }
+.cgfx .n { display: block; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cgfx .r { display: block; font-size: 11px; color: var(--text-2); margin-top: 2px; }
+
+.cgcorr { font-variant-numeric: tabular-nums; }
+.cgcorr.sec { color: var(--text-2); }
+.cgdisp { width: 100%; height: auto; }
+.cgdisp circle { transition: fill-opacity .15s; }
+.cgdisp circle:hover { fill-opacity: .8; }
+
+.cgseg td, .cgtaxa td, .cgrec td, .cgrisco td, .cgperfil td { font-variant-numeric: tabular-nums; }
+.cgdestaque { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+.cgtot th, .cgtot td { border-top: 1px solid var(--border); font-weight: 600; }
+.cgmelhor { color: var(--positive); }
+.cgpior { color: var(--negative); }
+
+.cgtl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.cgtl li { display: grid; grid-template-columns: 10ch 1fr; gap: 12px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border); }
+.cgtl li:last-child { border-bottom: 0; }
+.cgtl .d { color: var(--text-3); font-size: 12px; font-variant-numeric: tabular-nums; }
+.cgtl .c { display: flex; flex-direction: column; gap: 3px; }
+.cgtl .o { color: var(--text-2); font-size: 12.5px; max-width: 80ch; }
+.cgtl .tp { display: inline-block; padding: 0 7px; border-radius: 999px; font-size: 10px;
+  letter-spacing: .04em; text-transform: uppercase; margin-left: 6px; }
+.tp-margem { background: var(--accent-soft); color: var(--accent-ink); }
+.tp-teto { background: color-mix(in srgb, var(--teal) 14%, var(--surface)); color: var(--teal); }
+.tp-prazo { background: var(--surface-2); color: var(--text-2); }
+.tp-fraude { background: var(--warning-soft); color: var(--warning); }
+.tp-sancao { background: var(--negative-soft, var(--surface-2)); color: var(--negative); }
+
+.cgchip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 8px;
+  background: var(--surface-2); border-radius: 999px; font-size: 12px; }
+.cgchip small { color: var(--text-3); }
+.cgchip button { background: none; border: 0; color: var(--text-3); cursor: pointer;
+  font-size: 15px; line-height: 1; padding: 0 2px; }
+.cgchip button:hover { color: var(--negative); }
+.cgperfil table th[scope="row"] { text-align: left; font-weight: 400; color: var(--text-2); }
+.cgperfil table thead small { display: block; color: var(--text-3); font-weight: 400; }
+.cgperfil table td:last-child { width: 1%; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .cg2col { grid-template-columns: 1fr; }
+  .cgfaixas { grid-template-columns: repeat(2, 1fr); }
+  .cgtl li { grid-template-columns: 1fr; gap: 2px; }
+}

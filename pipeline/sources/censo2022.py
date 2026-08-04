@@ -59,6 +59,45 @@ OCUPACAO = {
 COMODOS_TOTAL = "95810"
 TIPO_TOTAL = "2932"
 
+# --- Estrutura etária: tabela 9514, variável 93, classificação 287 ---
+#
+# Os 21 grupos quinquenais de nível 1 da classificação. Somá-los reproduz o total da
+# categoria 100362, o que serve de validação a cada coleta. Grupos, e não idades
+# simples, porque a idade simples só vai até 100 e a API estoura de qualquer forma.
+#
+# Limite empírico: com N6[all], a API aceita no máximo 8 categorias por requisição —
+# com 11 devolve HTTP 500. Os 21 grupos vêm em três lotes.
+IDADE_GRUPOS = [
+    ("93070", "0 a 4"), ("93084", "5 a 9"), ("93085", "10 a 14"),
+    ("93086", "15 a 19"), ("93087", "20 a 24"), ("93088", "25 a 29"),
+    ("93089", "30 a 34"), ("93090", "35 a 39"), ("93091", "40 a 44"),
+    ("93092", "45 a 49"), ("93093", "50 a 54"), ("93094", "55 a 59"),
+    ("93095", "60 a 64"), ("93096", "65 a 69"), ("93097", "70 a 74"),
+    ("93098", "75 a 79"), ("49108", "80 a 84"), ("49109", "85 a 89"),
+    ("60040", "90 a 94"), ("60041", "95 a 99"), ("6653", "100 ou mais"),
+]
+IDADE_LOTE = 7  # abaixo do teto de 8, com margem
+
+# Massa de rendimento do trabalho: tabela 10289, variável 13424, em reais por mês.
+# É o denominador correto para comparar com a massa de benefícios — rendimento do
+# trabalho, não renda domiciliar total, que já inclui os próprios benefícios.
+MASSA_TRABALHO = ("10289", "13424")
+
+# Composição do rendimento domiciliar: tabela 10297, variável 13504, classificação 11308.
+#
+# Esta tabela é a evidência documental da limitação central desta aba. Ela tem
+# exatamente três categorias — rendimento de todas as fontes (79450), de todos os
+# trabalhos (79451) e de outras fontes (79452). **Não existe categoria de aposentadoria
+# ou pensão.** "Outras fontes" reúne aposentadoria, pensão, BPC, transferências,
+# aluguel, aplicações financeiras, seguro-desemprego e demais origens num único número.
+#
+# Por isso a participação de outras fontes é publicada como **teto** do peso dos
+# benefícios previdenciários, nunca como o peso deles. O peso específico vem dos
+# registros administrativos da Previdência, não daqui.
+COMPOSICAO = ("10297", "13504", {
+    "79450": "todas_fontes", "79451": "trabalho", "79452": "outras_fontes",
+})
+
 
 def _ensure(con):
     con.executescript("""
@@ -71,6 +110,13 @@ def _ensure(con):
         cod_ibge TEXT PRIMARY KEY,
         dom_total REAL, dom_proprio REAL, dom_proprio_pago REAL, dom_proprio_pagando REAL,
         dom_alugado REAL, dom_cedido REAL, dom_outra REAL);
+    CREATE TABLE IF NOT EXISTS censo_idade(
+        cod_ibge TEXT, grupo TEXT, pop REAL, ord INTEGER,
+        PRIMARY KEY(cod_ibge, grupo));
+    CREATE TABLE IF NOT EXISTS censo_trabalho(
+        cod_ibge TEXT PRIMARY KEY, massa_trabalho REAL);
+    CREATE TABLE IF NOT EXISTS censo_composicao(
+        cod_ibge TEXT PRIMARY KEY, pct_trabalho REAL, pct_outras_fontes REAL);
     CREATE TABLE IF NOT EXISTS censo_malha(cod_ibge TEXT PRIMARY KEY, svg_d TEXT);
     CREATE TABLE IF NOT EXISTS censo_meta(chave TEXT PRIMARY KEY, valor TEXT);
     """)
@@ -199,6 +245,81 @@ def collect(con, cfg=None):
         results.append({"key": "censo2022:9930", "ok": True, "municipios": len(mor)})
     except Exception as e:
         results.append({"key": "censo2022:9930", "ok": False, "error": str(e)[:200]})
+
+    # ---- estrutura etária por grupo quinquenal (tabela 9514) ----
+    try:
+        total_lotes, guardadas = 0, 0
+        for i in range(0, len(IDADE_GRUPOS), IDADE_LOTE):
+            lote = IDADE_GRUPOS[i:i + IDADE_LOTE]
+            cats = ",".join(c for c, _ in lote)
+            d, meta, url = _serie("9514", "93", f"2%5B6794%5D%7C287%5B{cats}%5D%7C286%5B113635%5D")
+            _, sha = common.save_bronze("censo2022", f"9514_idade_{i}",
+                                        json.dumps(d).encode("utf-8"), {**meta, "url": url})
+            rot = {c: r for c, r in lote}
+            ordem = {c: IDADE_GRUPOS.index((c, r)) for c, r in lote}
+            for r in d[0]["resultados"]:
+                cid = list(r["classificacoes"][1]["categoria"].keys())[0]
+                if cid not in rot:
+                    continue
+                for srie in r["series"]:
+                    v = _num(srie["serie"]["2022"])
+                    if v is None:
+                        continue
+                    con.execute("INSERT OR REPLACE INTO censo_idade VALUES(?,?,?,?)",
+                                (srie["localidade"]["id"], rot[cid], v, ordem[cid]))
+                    guardadas += 1
+            total_lotes += 1
+        common.record_lineage(con, "consignado.json", "bronze/censo2022/9514_idade_0", sha,
+                              "Censo 2022 tabela 9514 -> população por grupo quinquenal de idade")
+        results.append({"key": "censo2022:9514_idade", "ok": True,
+                        "lotes": total_lotes, "celulas": guardadas})
+    except Exception as e:
+        results.append({"key": "censo2022:9514_idade", "ok": False, "error": str(e)[:200]})
+
+    # ---- massa de rendimento do trabalho (tabela 10289) ----
+    try:
+        tab, var = MASSA_TRABALHO
+        d, meta, url = _serie(tab, var)
+        _, sha = common.save_bronze("censo2022", "10289_massa_trabalho",
+                                    json.dumps(d).encode("utf-8"), {**meta, "url": url})
+        n = 0
+        for srie in d[0]["resultados"][0]["series"]:
+            v = _num(srie["serie"]["2022"])
+            if v is None:
+                continue
+            con.execute("INSERT OR REPLACE INTO censo_trabalho VALUES(?,?)",
+                        (srie["localidade"]["id"], v))
+            n += 1
+        common.record_lineage(con, "consignado.json", "bronze/censo2022/10289_massa_trabalho", sha,
+                              "Censo 2022 tabela 10289 -> massa de rendimento mensal de todos os trabalhos")
+        results.append({"key": "censo2022:10289", "ok": True, "municipios": n})
+    except Exception as e:
+        results.append({"key": "censo2022:10289", "ok": False, "error": str(e)[:200]})
+
+    # ---- composição do rendimento domiciliar (tabela 10297) ----
+    try:
+        tab, var, cats = COMPOSICAO
+        chaves = "%2C".join(cats)
+        d, meta, url = _serie(tab, var, f"11308%5B{chaves}%5D")
+        _, sha = common.save_bronze("censo2022", "10297_composicao",
+                                    json.dumps(d).encode("utf-8"), {**meta, "url": url})
+        por = {}
+        for r in d[0]["resultados"]:
+            cid = list(r["classificacoes"][0]["categoria"].keys())[0]
+            nome = cats.get(cid)
+            if not nome:
+                continue
+            for srie in r["series"]:
+                por.setdefault(srie["localidade"]["id"], {})[nome] = _num(srie["serie"]["2022"])
+        for cod, e in por.items():
+            con.execute("INSERT OR REPLACE INTO censo_composicao VALUES(?,?,?)",
+                        (cod, e.get("trabalho"), e.get("outras_fontes")))
+        common.record_lineage(con, "consignado.json", "bronze/censo2022/10297_composicao", sha,
+                              "Censo 2022 tabela 10297 -> participação de trabalho e de outras "
+                              "fontes no rendimento domiciliar (outras fontes NÃO é renda previdenciária)")
+        results.append({"key": "censo2022:10297", "ok": True, "municipios": len(por)})
+    except Exception as e:
+        results.append({"key": "censo2022:10297", "ok": False, "error": str(e)[:200]})
 
     # ---- malha municipal ----
     if tem_malha < 5500:

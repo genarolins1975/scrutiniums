@@ -93,6 +93,8 @@ def _ensure(con):
         PRIMARY KEY(data, cliente, faixa, produto));
     CREATE TABLE IF NOT EXISTS scr_ocup_produto(data TEXT, cliente TEXT, grupo TEXT, produto TEXT, {metricas},
         PRIMARY KEY(data, cliente, grupo, produto));
+    CREATE TABLE IF NOT EXISTS scr_uf_ocup_produto(data TEXT, uf TEXT, cliente TEXT, grupo TEXT,
+        produto TEXT, {metricas}, PRIMARY KEY(data, uf, cliente, grupo, produto));
     CREATE TABLE IF NOT EXISTS scr_uf_origem(data TEXT, uf TEXT, cliente TEXT, origem TEXT, saldo REAL, inad REAL,
         PRIMARY KEY(data, uf, cliente, origem));
     """)
@@ -118,6 +120,12 @@ def _absorve_mes(con, fh, data_base):
     num = lambda s: float(s.replace(",", ".")) if s else 0.0
     rdr = csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8-sig"), delimiter=";")
     a_uf, a_ufprod, a_ufrenda, a_ufocup, a_rendaprod, a_ocupprod = _Agg(), _Agg(), _Agg(), _Agg(), _Agg(), _Agg()
+    # Corte triplo uf × ocupação × produto, restrito ao consignado. É a única medida
+    # pública que separa consignado de aposentado e pensionista por unidade da federação,
+    # e existe só porque o CSV do SCR vem totalmente cruzado. Guardar o corte triplo
+    # inteiro geraria centenas de milhares de linhas por mês sem uso; a restrição ao
+    # consignado é deliberada e está declarada em docs/AUDITORIA_CONSIGNADO.md.
+    a_ufocupprod = _Agg()
     prazos, a_origem = {}, {}
     n = 0
     for row in rdr:
@@ -138,6 +146,8 @@ def _absorve_mes(con, fh, data_base):
         a_ufocup.add((uf, cli, ocup), *args)
         a_rendaprod.add((cli, faixa, produto), *args)
         a_ocupprod.add((cli, ocup, produto), *args)
+        if produto == "Consignado":
+            a_ufocupprod.add((uf, cli, ocup, produto), *args)
         pz = prazos.setdefault((uf, cli), [0.0] * 6)
         for i, c in enumerate(("a_vencer_ate_90_dias", "a_vencer_de_91_ate_360_dias", "a_vencer_de_361_ate_1080_dias",
                                "a_vencer_de_1081_ate_1800_dias", "a_vencer_de_1801_ate_5400_dias",
@@ -155,6 +165,9 @@ def _absorve_mes(con, fh, data_base):
         con.execute(f"DELETE FROM {tabela} WHERE data=?", (d,))
         con.executemany(f"INSERT INTO {tabela} VALUES(?,?,?,?,?,?,?,?,?,?,?,?)",
                         [(d, *k, *v) for k, v in agg.items()])
+    con.execute("DELETE FROM scr_uf_ocup_produto WHERE data=?", (d,))
+    con.executemany("INSERT INTO scr_uf_ocup_produto VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    [(d, *k, *v) for k, v in a_ufocupprod.items()])
     con.execute("DELETE FROM scr_uf_origem WHERE data=?", (d,))
     con.executemany("INSERT INTO scr_uf_origem VALUES(?,?,?,?,?,?)",
                     [(d, *k, *v) for k, v in a_origem.items()])

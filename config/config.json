@@ -1,617 +1,782 @@
 {
- "platform": {
-  "name": "Observatório Brasileiro de Crédito",
-  "short_name": "OBC",
-  "version": "0.1.0",
-  "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
- },
- "sgs_series": [
-  {
-   "code": 20539,
-   "key": "saldo_total",
-   "name": "Saldo da carteira de crédito - Total",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "estoque",
-   "methodology": "Estatísticas monetárias e de crédito (metodologia mar/2011)",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20539/dados"
+  "platform": {
+    "name": "Observatório Brasileiro de Crédito",
+    "short_name": "OBC",
+    "version": "0.1.0",
+    "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
   },
-  {
-   "code": 20540,
-   "key": "saldo_pj",
-   "name": "Saldo da carteira de crédito - Pessoas jurídicas",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "pj",
-   "category": "estoque",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20540/dados"
-  },
-  {
-   "code": 20541,
-   "key": "saldo_pf",
-   "name": "Saldo da carteira de crédito - Pessoas físicas",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "estoque",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20541/dados"
-  },
-  {
-   "code": 20631,
-   "key": "concessoes_total",
-   "name": "Concessões de crédito - Total",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "concessoes",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20631/dados"
-  },
-  {
-   "code": 20632,
-   "key": "concessoes_pj",
-   "name": "Concessões de crédito - Pessoas jurídicas",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "pj",
-   "category": "concessoes",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20632/dados"
-  },
-  {
-   "code": 20633,
-   "key": "concessoes_pf",
-   "name": "Concessões de crédito - Pessoas físicas",
-   "unit": "R$ milhões",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "concessoes",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20633/dados"
-  },
-  {
-   "code": 20714,
-   "key": "taxa_total",
-   "name": "Taxa média de juros das operações de crédito - Total",
-   "unit": "% a.a.",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "taxa",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20714/dados"
-  },
-  {
-   "code": 20715,
-   "key": "taxa_pj",
-   "name": "Taxa média de juros - Pessoas jurídicas",
-   "unit": "% a.a.",
-   "freq": "mensal",
-   "segment": "pj",
-   "category": "taxa",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20715/dados"
-  },
-  {
-   "code": 20716,
-   "key": "taxa_pf",
-   "name": "Taxa média de juros - Pessoas físicas",
-   "unit": "% a.a.",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "taxa",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20716/dados"
-  },
-  {
-   "code": 20783,
-   "key": "spread_total",
-   "name": "Spread médio das operações de crédito - Total",
-   "unit": "p.p.",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "spread",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20783/dados"
-  },
-  {
-   "code": 20784,
-   "key": "spread_pj",
-   "name": "Spread médio - Pessoas jurídicas",
-   "unit": "p.p.",
-   "freq": "mensal",
-   "segment": "pj",
-   "category": "spread",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20784/dados"
-  },
-  {
-   "code": 20785,
-   "key": "spread_pf",
-   "name": "Spread médio - Pessoas físicas",
-   "unit": "p.p.",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "spread",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20785/dados"
-  },
-  {
-   "code": 21082,
-   "key": "inad_total",
-   "name": "Inadimplência da carteira de crédito (>90 dias) - Total",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "inadimplencia",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21082/dados"
-  },
-  {
-   "code": 21083,
-   "key": "inad_pj",
-   "name": "Inadimplência (>90 dias) - Pessoas jurídicas",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "pj",
-   "category": "inadimplencia",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21083/dados"
-  },
-  {
-   "code": 21084,
-   "key": "inad_pf",
-   "name": "Inadimplência (>90 dias) - Pessoas físicas",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "inadimplencia",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21084/dados"
-  },
-  {
-   "code": 20622,
-   "key": "credito_pib",
-   "name": "Saldo da carteira de crédito em relação ao PIB",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "credito_pib",
-   "methodology": "Estatísticas monetárias e de crédito",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20622/dados"
-  },
-  {
-   "code": 29037,
-   "key": "endividamento",
-   "name": "Endividamento das famílias com o SFN em relação à renda acumulada 12m",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "capacidade_pagamento",
-   "methodology": "Nota econômico-financeira BCB",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29037/dados"
-  },
-  {
-   "code": 29034,
-   "key": "comprometimento",
-   "name": "Comprometimento de renda das famílias com o serviço da dívida do SFN",
-   "unit": "%",
-   "freq": "mensal",
-   "segment": "pf",
-   "category": "capacidade_pagamento",
-   "methodology": "Nota econômico-financeira BCB",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29034/dados"
-  },
-  {
-   "code": 432,
-   "key": "selic_meta",
-   "name": "Meta para a taxa Selic",
-   "unit": "% a.a.",
-   "freq": "diária",
-   "segment": "macro",
-   "category": "juros",
-   "methodology": "Copom/BCB",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados"
-  },
-  {
-   "code": 433,
-   "key": "ipca",
-   "name": "IPCA - variação mensal",
-   "unit": "% a.m.",
-   "freq": "mensal",
-   "segment": "macro",
-   "category": "inflacao",
-   "methodology": "IBGE/SNIPC via SGS",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados"
-  },
-  {
-   "code": 24363,
-   "key": "ibc_br",
-   "name": "IBC-Br - Índice de Atividade Econômica do BCB (dessazonalizado)",
-   "unit": "índice (2002=100)",
-   "freq": "mensal",
-   "segment": "macro",
-   "category": "atividade",
-   "methodology": "BCB, ajuste sazonal oficial",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.24363/dados"
-  },
-  {
-   "code": 21340,
-   "key": "ivgr",
-   "name": "IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados",
-   "unit": "índice",
-   "freq": "mensal",
-   "segment": "total",
-   "category": "garantias",
-   "methodology": "Mediana trimestral móvel dos valores de avaliação de imóveis em financiamentos; metodologia BCB",
-   "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21340/dados"
-  }
- ],
- "sgs_start_date": "01/01/2012",
- "ibge": {
-  "pnad_desemprego": {
-   "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6381/periodos/-120/variaveis/4099?localidades=N1[all]",
-   "name": "Taxa de desocupação (PNAD Contínua, trimestre móvel)",
-   "unit": "%",
-   "freq": "mensal (trimestre móvel)",
-   "methodology": "PNAD Contínua/IBGE",
-   "key": "desemprego"
-  },
-  "pim_setorial": {
-   "url": "https://apisidra.ibge.gov.br/values/t/8888/n1/all/v/12606/p/last%2072/c544/allxt?formato=json",
-   "name": "PIM-PF Número-índice (2022=100) por seções e atividades CNAE 2.0",
-   "unit": "índice (2022=100)",
-   "freq": "mensal",
-   "methodology": "PIM-PF/IBGE, sem ajuste sazonal",
-   "key": "pim_setorial"
-  }
- },
- "ipeadata": [
-  {
-   "sercodigo": "ABPO12_PAPEL12",
-   "key": "papelao",
-   "name": "Papelão ondulado - expedição (ABPO)",
-   "unit": "toneladas",
-   "freq": "mensal",
-   "methodology": "Associação Brasileira do Papelão Ondulado via Ipeadata",
-   "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='ABPO12_PAPEL12')"
-  },
-  {
-   "sercodigo": "BM12_ERC12",
-   "key": "cambio",
-   "name": "Taxa de câmbio comercial R$/US$ - compra - média mensal",
-   "unit": "R$/US$",
-   "freq": "mensal",
-   "methodology": "BCB via Ipeadata",
-   "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='BM12_ERC12')"
-  }
- ],
- "ifdata": {
-  "base_url": "https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata",
-  "anomes_candidates": [
-   "202603",
-   "202512",
-   "202509",
-   "202506",
-   "202503"
+  "sgs_series": [
+    {
+      "code": 20539,
+      "key": "saldo_total",
+      "name": "Saldo da carteira de crédito - Total",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "estoque",
+      "methodology": "Estatísticas monetárias e de crédito (metodologia mar/2011)",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20539/dados"
+    },
+    {
+      "code": 20540,
+      "key": "saldo_pj",
+      "name": "Saldo da carteira de crédito - Pessoas jurídicas",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "pj",
+      "category": "estoque",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20540/dados"
+    },
+    {
+      "code": 20541,
+      "key": "saldo_pf",
+      "name": "Saldo da carteira de crédito - Pessoas físicas",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "estoque",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20541/dados"
+    },
+    {
+      "code": 20631,
+      "key": "concessoes_total",
+      "name": "Concessões de crédito - Total",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "concessoes",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20631/dados"
+    },
+    {
+      "code": 20632,
+      "key": "concessoes_pj",
+      "name": "Concessões de crédito - Pessoas jurídicas",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "pj",
+      "category": "concessoes",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20632/dados"
+    },
+    {
+      "code": 20633,
+      "key": "concessoes_pf",
+      "name": "Concessões de crédito - Pessoas físicas",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "concessoes",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20633/dados"
+    },
+    {
+      "code": 20714,
+      "key": "taxa_total",
+      "name": "Taxa média de juros das operações de crédito - Total",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "taxa",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20714/dados"
+    },
+    {
+      "code": 20715,
+      "key": "taxa_pj",
+      "name": "Taxa média de juros - Pessoas jurídicas",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "segment": "pj",
+      "category": "taxa",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20715/dados"
+    },
+    {
+      "code": 20716,
+      "key": "taxa_pf",
+      "name": "Taxa média de juros - Pessoas físicas",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "taxa",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20716/dados"
+    },
+    {
+      "code": 20783,
+      "key": "spread_total",
+      "name": "Spread médio das operações de crédito - Total",
+      "unit": "p.p.",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "spread",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20783/dados"
+    },
+    {
+      "code": 20784,
+      "key": "spread_pj",
+      "name": "Spread médio - Pessoas jurídicas",
+      "unit": "p.p.",
+      "freq": "mensal",
+      "segment": "pj",
+      "category": "spread",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20784/dados"
+    },
+    {
+      "code": 20785,
+      "key": "spread_pf",
+      "name": "Spread médio - Pessoas físicas",
+      "unit": "p.p.",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "spread",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20785/dados"
+    },
+    {
+      "code": 21082,
+      "key": "inad_total",
+      "name": "Inadimplência da carteira de crédito (>90 dias) - Total",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "inadimplencia",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21082/dados"
+    },
+    {
+      "code": 21083,
+      "key": "inad_pj",
+      "name": "Inadimplência (>90 dias) - Pessoas jurídicas",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "pj",
+      "category": "inadimplencia",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21083/dados"
+    },
+    {
+      "code": 21084,
+      "key": "inad_pf",
+      "name": "Inadimplência (>90 dias) - Pessoas físicas",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "inadimplencia",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21084/dados"
+    },
+    {
+      "code": 20622,
+      "key": "credito_pib",
+      "name": "Saldo da carteira de crédito em relação ao PIB",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "credito_pib",
+      "methodology": "Estatísticas monetárias e de crédito",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20622/dados"
+    },
+    {
+      "code": 29037,
+      "key": "endividamento",
+      "name": "Endividamento das famílias com o SFN em relação à renda acumulada 12m",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "capacidade_pagamento",
+      "methodology": "Nota econômico-financeira BCB",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29037/dados"
+    },
+    {
+      "code": 29034,
+      "key": "comprometimento",
+      "name": "Comprometimento de renda das famílias com o serviço da dívida do SFN",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "pf",
+      "category": "capacidade_pagamento",
+      "methodology": "Nota econômico-financeira BCB",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29034/dados"
+    },
+    {
+      "code": 432,
+      "key": "selic_meta",
+      "name": "Meta para a taxa Selic",
+      "unit": "% a.a.",
+      "freq": "diária",
+      "segment": "macro",
+      "category": "juros",
+      "methodology": "Copom/BCB",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados"
+    },
+    {
+      "code": 433,
+      "key": "ipca",
+      "name": "IPCA - variação mensal",
+      "unit": "% a.m.",
+      "freq": "mensal",
+      "segment": "macro",
+      "category": "inflacao",
+      "methodology": "IBGE/SNIPC via SGS",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados"
+    },
+    {
+      "code": 24363,
+      "key": "ibc_br",
+      "name": "IBC-Br - Índice de Atividade Econômica do BCB (dessazonalizado)",
+      "unit": "índice (2002=100)",
+      "freq": "mensal",
+      "segment": "macro",
+      "category": "atividade",
+      "methodology": "BCB, ajuste sazonal oficial",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.24363/dados"
+    },
+    {
+      "code": 21340,
+      "key": "ivgr",
+      "name": "IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados",
+      "unit": "índice",
+      "freq": "mensal",
+      "segment": "total",
+      "category": "garantias",
+      "methodology": "Mediana trimestral móvel dos valores de avaliação de imóveis em financiamentos; metodologia BCB",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21340/dados"
+    },
+    {
+      "code": 20578,
+      "key": "consig_inss_saldo",
+      "name": "Consignado INSS - saldo da carteira",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20578/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20670,
+      "key": "consig_inss_conc",
+      "name": "Consignado INSS - concessões",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20670/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20746,
+      "key": "consig_inss_taxa",
+      "name": "Consignado INSS - taxa média de juros",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20746/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20883,
+      "key": "consig_inss_prazo_conc",
+      "name": "Consignado INSS - prazo médio das concessões",
+      "unit": "meses",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20883/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20960,
+      "key": "consig_inss_prazo_cart",
+      "name": "Consignado INSS - prazo médio da carteira",
+      "unit": "meses",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20960/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 21039,
+      "key": "consig_inss_atraso",
+      "name": "Consignado INSS - atraso de 15 a 90 dias",
+      "unit": "%",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21039/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 21118,
+      "key": "consig_inss_inad",
+      "name": "Consignado INSS - inadimplência acima de 90 dias",
+      "unit": "%",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21118/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 27677,
+      "key": "consig_inss_icc",
+      "name": "Consignado INSS - custo do crédito",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.27677/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20576,
+      "key": "consig_priv_saldo",
+      "name": "Consignado privado - saldo da carteira",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20576/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 21116,
+      "key": "consig_priv_inad",
+      "name": "Consignado privado - inadimplência acima de 90 dias",
+      "unit": "%",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21116/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20577,
+      "key": "consig_pub_saldo",
+      "name": "Consignado público - saldo da carteira",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20577/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 21117,
+      "key": "consig_pub_inad",
+      "name": "Consignado público - inadimplência acima de 90 dias",
+      "unit": "%",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21117/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20579,
+      "key": "consig_total_saldo",
+      "name": "Consignado total - saldo da carteira",
+      "unit": "R$ milhões",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20579/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 21119,
+      "key": "consig_total_inad",
+      "name": "Consignado total - inadimplência acima de 90 dias",
+      "unit": "%",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21119/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    },
+    {
+      "code": 20747,
+      "key": "consig_total_taxa",
+      "name": "Consignado total - taxa média de juros",
+      "unit": "% a.a.",
+      "freq": "mensal",
+      "methodology": "BCB/SGS, estatísticas de crédito com recursos livres, modalidade consignado por vínculo do tomador.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20747/dados?formato=json",
+      "segment": "PF",
+      "category": "consignado"
+    }
   ],
-  "tipo_instituicao": 2,
-  "relatorio_resumo": "Resumo",
-  "top_n_by_assets": 30,
-  "ui_base": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030"
- },
- "forecast": {
-  "horizons": [
-   1,
-   3,
-   6,
-   9,
-   12
-  ],
-  "backtest_points": 24,
-  "min_history": 48,
-  "targets": [
-   "inad_total",
-   "inad_pf",
-   "inad_pj",
-   "concessoes_total",
-   "concessoes_pf",
-   "concessoes_pj",
-   "saldo_total",
-   "saldo_pf",
-   "saldo_pj",
-   "spread_total",
-   "spread_pf",
-   "spread_pj",
-   "taxa_total",
-   "taxa_pf",
-   "taxa_pj"
-  ]
- },
- "ibcc": {
-  "base_value": 100,
-  "components": {
-   "preco": {
-    "series": [
-     "taxa_total",
-     "spread_total"
-    ],
-    "invert": true,
-    "label": "Preço do crédito"
-   },
-   "qualidade": {
-    "series": [
-     "inad_pf",
-     "inad_pj"
-    ],
-    "invert": true,
-    "label": "Qualidade da carteira"
-   },
-   "capacidade": {
-    "series": [
-     "comprometimento",
-     "endividamento"
-    ],
-    "invert": true,
-    "label": "Capacidade de pagamento"
-   },
-   "atividade": {
-    "series": [
-     "ibc_br:yoy",
-     "desemprego:inv"
-    ],
-    "invert": false,
-    "label": "Atividade econômica"
-   },
-   "oferta": {
-    "series": [
-     "concessoes_total:yoy_real"
-    ],
-    "invert": false,
-    "label": "Oferta de crédito"
-   },
-   "antecedentes": {
-    "series": [
-     "papelao:yoy"
-    ],
-    "invert": false,
-    "label": "Indicadores antecedentes"
-   }
-  }
- },
- "scenario": {
-  "note": "Elasticidades ilustrativas para o protótipo, inspiradas na literatura de testes de estresse (BCB REF, ordem de grandeza). NÃO são estimativas causais; recalibrar na Fase 2 com modelos próprios.",
-  "elasticities_inad_total": {
-   "selic_pp": {
-    "value": 0.08,
-    "lag_desc": "por p.p. de Selic, efeito acumulado em 12m",
-    "range": [
-     0.04,
-     0.15
-    ]
-   },
-   "desemprego_pp": {
-    "value": 0.25,
-    "lag_desc": "por p.p. de desemprego",
-    "range": [
-     0.15,
-     0.4
-    ]
-   },
-   "pib_pp": {
-    "value": -0.15,
-    "lag_desc": "por p.p. de crescimento do PIB",
-    "range": [
-     -0.3,
-     -0.08
-    ]
-   },
-   "cambio_pct10": {
-    "value": 0.05,
-    "lag_desc": "por 10% de depreciação cambial",
-    "range": [
-     0.0,
-     0.12
-    ]
-   }
+  "sgs_start_date": "01/01/2012",
+  "ibge": {
+    "pnad_desemprego": {
+      "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6381/periodos/-120/variaveis/4099?localidades=N1[all]",
+      "name": "Taxa de desocupação (PNAD Contínua, trimestre móvel)",
+      "unit": "%",
+      "freq": "mensal (trimestre móvel)",
+      "methodology": "PNAD Contínua/IBGE",
+      "key": "desemprego"
+    },
+    "pim_setorial": {
+      "url": "https://apisidra.ibge.gov.br/values/t/8888/n1/all/v/12606/p/last%2072/c544/allxt?formato=json",
+      "name": "PIM-PF Número-índice (2022=100) por seções e atividades CNAE 2.0",
+      "unit": "índice (2022=100)",
+      "freq": "mensal",
+      "methodology": "PIM-PF/IBGE, sem ajuste sazonal",
+      "key": "pim_setorial"
+    }
   },
-  "presets": {
-   "base": {
-    "selic_pp": 0,
-    "desemprego_pp": 0,
-    "pib_pp": 0,
-    "cambio_pct10": 0
-   },
-   "otimista": {
-    "selic_pp": -2,
-    "desemprego_pp": -1,
-    "pib_pp": 1,
-    "cambio_pct10": -1
-   },
-   "adverso": {
-    "selic_pp": 3,
-    "desemprego_pp": 2,
-    "pib_pp": -2,
-    "cambio_pct10": 2
-   },
-   "severamente_adverso": {
-    "selic_pp": 6,
-    "desemprego_pp": 4,
-    "pib_pp": -4,
-    "cambio_pct10": 4
-   }
-  }
- },
- "alerts": {
-  "rules": [
-   {
-    "id": "inad_total_mom",
-    "series": "inad_total",
-    "metric": "delta_3m",
-    "threshold": 0.3,
-    "direction": "up",
-    "level": "atencao",
-    "label": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses"
-   },
-   {
-    "id": "inad_pf_level",
-    "series": "inad_pf",
-    "metric": "level",
-    "threshold": 6.0,
-    "direction": "up",
-    "level": "relevante",
-    "label": "Inadimplência PF acima de 6%"
-   },
-   {
-    "id": "concessoes_yoy",
-    "series": "concessoes_total",
-    "metric": "yoy",
-    "threshold": -5.0,
-    "direction": "down",
-    "level": "relevante",
-    "label": "Concessões em queda interanual superior a 5%"
-   },
-   {
-    "id": "credito_boom",
-    "series": "saldo_total",
-    "metric": "yoy",
-    "threshold": 20.0,
-    "direction": "up",
-    "level": "atencao",
-    "label": "Crescimento do crédito acima de 20% a/a (risco de boom)"
-   },
-   {
-    "id": "comprometimento_high",
-    "series": "comprometimento",
-    "metric": "level",
-    "threshold": 28.0,
-    "direction": "up",
-    "level": "atencao",
-    "label": "Comprometimento de renda acima de 28%"
-   },
-   {
-    "id": "spread_jump",
-    "series": "spread_total",
-    "metric": "delta_3m",
-    "threshold": 2.0,
-    "direction": "up",
-    "level": "atencao",
-    "label": "Spread subiu mais de 2 p.p. em 3 meses"
-   },
-   {
-    "id": "stale_data",
-    "series": "*",
-    "metric": "staleness_days",
-    "threshold": 100,
-    "direction": "up",
-    "level": "informativo",
-    "label": "Série sem atualização há mais de 100 dias desde a referência"
-   },
-   {
-    "id": "rj_yoy",
-    "series": "recuperacao_judicial_agregado",
-    "metric": "yoy",
-    "threshold": 30.0,
-    "direction": "up",
-    "level": "relevante",
-    "label": "Ajuizamentos de recuperação judicial em alta superior a 30% a/a (tribunais cobertos)"
-   }
-  ]
- },
- "quality_weights": {
-  "completude": 0.2,
-  "atualidade": 0.3,
-  "historico": 0.2,
-  "estabilidade": 0.15,
-  "transparencia": 0.15
- },
- "datajud": {
-  "base_url": "https://api-publica.datajud.cnj.jus.br",
-  "api_key_publica": "cDZHYzlZa0JadVREZDJCendQbXY6SkJlTzNjLV9TRENyQk1RdnFKZGRQdw==",
-  "api_key_nota": "Chave PÚBLICA divulgada pelo próprio CNJ na wiki oficial do DataJud (datajud-wiki.cnj.jus.br/api-publica/acesso) para acesso aberto.",
-  "tribunais": [
-   "tjsp",
-   "tjrj",
-   "tjmg",
-   "tjrs",
-   "tjpr",
-   "tjsc",
-   "tjba",
-   "tjgo"
+  "ipeadata": [
+    {
+      "sercodigo": "ABPO12_PAPEL12",
+      "key": "papelao",
+      "name": "Papelão ondulado - expedição (ABPO)",
+      "unit": "toneladas",
+      "freq": "mensal",
+      "methodology": "Associação Brasileira do Papelão Ondulado via Ipeadata",
+      "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='ABPO12_PAPEL12')"
+    },
+    {
+      "sercodigo": "BM12_ERC12",
+      "key": "cambio",
+      "name": "Taxa de câmbio comercial R$/US$ - compra - média mensal",
+      "unit": "R$/US$",
+      "freq": "mensal",
+      "methodology": "BCB via Ipeadata",
+      "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='BM12_ERC12')"
+    }
   ],
-  "classes": {
-   "129": "recuperacao_judicial",
-   "108": "falencia"
-  },
-  "serie_inicio": "2019-01",
-  "page_size": 1000,
-  "max_pages_por_consulta": 15,
-  "pausa_entre_requisicoes_s": 2.0
- },
- "djen": {
-  "base_url": "https://comunicaapi.pje.jus.br/api/v1/comunicacao",
-  "tribunais": [
-   "TJSP",
-   "TJRJ",
-   "TJMG",
-   "TJRS",
-   "TJPR",
-   "TJSC",
-   "TJBA",
-   "TJGO"
-  ],
-  "janela_dias": 45,
-  "itens_por_pagina": 100,
-  "max_paginas_por_tribunal": 12,
-  "pausa_s": 1.5,
-  "nota": "DJEN/Comunica PJe: API pública do CNJ com o texto integral das comunicações processuais. Fichas exibem apenas pessoas jurídicas (forma societária identificada)."
- },
- "inst_pages": {
-  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
-  "pilotos": [
-   {
-    "cod_inst": "C0010069",
-    "nome_comercial": "Itaú Unibanco",
-    "capital": "aberto",
-    "modelo": "banco universal",
-    "caso": "grande banco universal de capital aberto",
-    "aliases": [
-     "ITAU",
-     "ITAÚ",
-     "ITAU UNIBANCO",
-     "ITAÚ UNIBANCO"
-    ]
-   },
-   {
-    "cod_inst": "C0051987",
-    "nome_comercial": "Banco Daycoval",
-    "capital": "fechado",
-    "modelo": "banco médio (crédito a empresas e consignado)",
-    "caso": "banco médio",
-    "aliases": [
-     "DAYCOVAL",
-     "BANCO DAYCOVAL"
-    ]
-   },
-   {
-    "cod_inst": "59109165",
-    "nome_comercial": "Banco Volkswagen",
-    "capital": "fechado",
-    "modelo": "financeira de montadora (financiamento de veículos)",
-    "caso": "instituição fechada de menor porte",
-    "aliases": [
-     "VOLKSWAGEN",
-     "BANCO VOLKSWAGEN"
+  "ifdata": {
+    "base_url": "https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata",
+    "anomes_candidates": [
+      "202603",
+      "202512",
+      "202509",
+      "202506",
+      "202503"
     ],
-    "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
-   }
-  ]
- },
- "reclamacoes": {
-  "base_url": "https://www3.bcb.gov.br/rdrweb/rest/ext/ranking",
-  "tipo": "Bancos e financeiras",
-  "ultimos_trimestres": 4
- }
+    "tipo_instituicao": 2,
+    "relatorio_resumo": "Resumo",
+    "top_n_by_assets": 30,
+    "ui_base": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030"
+  },
+  "forecast": {
+    "horizons": [
+      1,
+      3,
+      6,
+      9,
+      12
+    ],
+    "backtest_points": 24,
+    "min_history": 48,
+    "targets": [
+      "inad_total",
+      "inad_pf",
+      "inad_pj",
+      "concessoes_total",
+      "concessoes_pf",
+      "concessoes_pj",
+      "saldo_total",
+      "saldo_pf",
+      "saldo_pj",
+      "spread_total",
+      "spread_pf",
+      "spread_pj",
+      "taxa_total",
+      "taxa_pf",
+      "taxa_pj"
+    ]
+  },
+  "ibcc": {
+    "base_value": 100,
+    "components": {
+      "preco": {
+        "series": [
+          "taxa_total",
+          "spread_total"
+        ],
+        "invert": true,
+        "label": "Preço do crédito"
+      },
+      "qualidade": {
+        "series": [
+          "inad_pf",
+          "inad_pj"
+        ],
+        "invert": true,
+        "label": "Qualidade da carteira"
+      },
+      "capacidade": {
+        "series": [
+          "comprometimento",
+          "endividamento"
+        ],
+        "invert": true,
+        "label": "Capacidade de pagamento"
+      },
+      "atividade": {
+        "series": [
+          "ibc_br:yoy",
+          "desemprego:inv"
+        ],
+        "invert": false,
+        "label": "Atividade econômica"
+      },
+      "oferta": {
+        "series": [
+          "concessoes_total:yoy_real"
+        ],
+        "invert": false,
+        "label": "Oferta de crédito"
+      },
+      "antecedentes": {
+        "series": [
+          "papelao:yoy"
+        ],
+        "invert": false,
+        "label": "Indicadores antecedentes"
+      }
+    }
+  },
+  "scenario": {
+    "note": "Elasticidades ilustrativas para o protótipo, inspiradas na literatura de testes de estresse (BCB REF, ordem de grandeza). NÃO são estimativas causais; recalibrar na Fase 2 com modelos próprios.",
+    "elasticities_inad_total": {
+      "selic_pp": {
+        "value": 0.08,
+        "lag_desc": "por p.p. de Selic, efeito acumulado em 12m",
+        "range": [
+          0.04,
+          0.15
+        ]
+      },
+      "desemprego_pp": {
+        "value": 0.25,
+        "lag_desc": "por p.p. de desemprego",
+        "range": [
+          0.15,
+          0.4
+        ]
+      },
+      "pib_pp": {
+        "value": -0.15,
+        "lag_desc": "por p.p. de crescimento do PIB",
+        "range": [
+          -0.3,
+          -0.08
+        ]
+      },
+      "cambio_pct10": {
+        "value": 0.05,
+        "lag_desc": "por 10% de depreciação cambial",
+        "range": [
+          0.0,
+          0.12
+        ]
+      }
+    },
+    "presets": {
+      "base": {
+        "selic_pp": 0,
+        "desemprego_pp": 0,
+        "pib_pp": 0,
+        "cambio_pct10": 0
+      },
+      "otimista": {
+        "selic_pp": -2,
+        "desemprego_pp": -1,
+        "pib_pp": 1,
+        "cambio_pct10": -1
+      },
+      "adverso": {
+        "selic_pp": 3,
+        "desemprego_pp": 2,
+        "pib_pp": -2,
+        "cambio_pct10": 2
+      },
+      "severamente_adverso": {
+        "selic_pp": 6,
+        "desemprego_pp": 4,
+        "pib_pp": -4,
+        "cambio_pct10": 4
+      }
+    }
+  },
+  "alerts": {
+    "rules": [
+      {
+        "id": "inad_total_mom",
+        "series": "inad_total",
+        "metric": "delta_3m",
+        "threshold": 0.3,
+        "direction": "up",
+        "level": "atencao",
+        "label": "Inadimplência total subiu mais de 0,3 p.p. em 3 meses"
+      },
+      {
+        "id": "inad_pf_level",
+        "series": "inad_pf",
+        "metric": "level",
+        "threshold": 6.0,
+        "direction": "up",
+        "level": "relevante",
+        "label": "Inadimplência PF acima de 6%"
+      },
+      {
+        "id": "concessoes_yoy",
+        "series": "concessoes_total",
+        "metric": "yoy",
+        "threshold": -5.0,
+        "direction": "down",
+        "level": "relevante",
+        "label": "Concessões em queda interanual superior a 5%"
+      },
+      {
+        "id": "credito_boom",
+        "series": "saldo_total",
+        "metric": "yoy",
+        "threshold": 20.0,
+        "direction": "up",
+        "level": "atencao",
+        "label": "Crescimento do crédito acima de 20% a/a (risco de boom)"
+      },
+      {
+        "id": "comprometimento_high",
+        "series": "comprometimento",
+        "metric": "level",
+        "threshold": 28.0,
+        "direction": "up",
+        "level": "atencao",
+        "label": "Comprometimento de renda acima de 28%"
+      },
+      {
+        "id": "spread_jump",
+        "series": "spread_total",
+        "metric": "delta_3m",
+        "threshold": 2.0,
+        "direction": "up",
+        "level": "atencao",
+        "label": "Spread subiu mais de 2 p.p. em 3 meses"
+      },
+      {
+        "id": "stale_data",
+        "series": "*",
+        "metric": "staleness_days",
+        "threshold": 100,
+        "direction": "up",
+        "level": "informativo",
+        "label": "Série sem atualização há mais de 100 dias desde a referência"
+      },
+      {
+        "id": "rj_yoy",
+        "series": "recuperacao_judicial_agregado",
+        "metric": "yoy",
+        "threshold": 30.0,
+        "direction": "up",
+        "level": "relevante",
+        "label": "Ajuizamentos de recuperação judicial em alta superior a 30% a/a (tribunais cobertos)"
+      }
+    ]
+  },
+  "quality_weights": {
+    "completude": 0.2,
+    "atualidade": 0.3,
+    "historico": 0.2,
+    "estabilidade": 0.15,
+    "transparencia": 0.15
+  },
+  "datajud": {
+    "base_url": "https://api-publica.datajud.cnj.jus.br",
+    "api_key_publica": "cDZHYzlZa0JadVREZDJCendQbXY6SkJlTzNjLV9TRENyQk1RdnFKZGRQdw==",
+    "api_key_nota": "Chave PÚBLICA divulgada pelo próprio CNJ na wiki oficial do DataJud (datajud-wiki.cnj.jus.br/api-publica/acesso) para acesso aberto.",
+    "tribunais": [
+      "tjsp",
+      "tjrj",
+      "tjmg",
+      "tjrs",
+      "tjpr",
+      "tjsc",
+      "tjba",
+      "tjgo"
+    ],
+    "classes": {
+      "129": "recuperacao_judicial",
+      "108": "falencia"
+    },
+    "serie_inicio": "2019-01",
+    "page_size": 1000,
+    "max_pages_por_consulta": 15,
+    "pausa_entre_requisicoes_s": 2.0
+  },
+  "djen": {
+    "base_url": "https://comunicaapi.pje.jus.br/api/v1/comunicacao",
+    "tribunais": [
+      "TJSP",
+      "TJRJ",
+      "TJMG",
+      "TJRS",
+      "TJPR",
+      "TJSC",
+      "TJBA",
+      "TJGO"
+    ],
+    "janela_dias": 45,
+    "itens_por_pagina": 100,
+    "max_paginas_por_tribunal": 12,
+    "pausa_s": 1.5,
+    "nota": "DJEN/Comunica PJe: API pública do CNJ com o texto integral das comunicações processuais. Fichas exibem apenas pessoas jurídicas (forma societária identificada)."
+  },
+  "inst_pages": {
+    "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
+    "pilotos": [
+      {
+        "cod_inst": "C0010069",
+        "nome_comercial": "Itaú Unibanco",
+        "capital": "aberto",
+        "modelo": "banco universal",
+        "caso": "grande banco universal de capital aberto",
+        "aliases": [
+          "ITAU",
+          "ITAÚ",
+          "ITAU UNIBANCO",
+          "ITAÚ UNIBANCO"
+        ]
+      },
+      {
+        "cod_inst": "C0051987",
+        "nome_comercial": "Banco Daycoval",
+        "capital": "fechado",
+        "modelo": "banco médio (crédito a empresas e consignado)",
+        "caso": "banco médio",
+        "aliases": [
+          "DAYCOVAL",
+          "BANCO DAYCOVAL"
+        ]
+      },
+      {
+        "cod_inst": "59109165",
+        "nome_comercial": "Banco Volkswagen",
+        "capital": "fechado",
+        "modelo": "financeira de montadora (financiamento de veículos)",
+        "caso": "instituição fechada de menor porte",
+        "aliases": [
+          "VOLKSWAGEN",
+          "BANCO VOLKSWAGEN"
+        ],
+        "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
+      }
+    ]
+  },
+  "reclamacoes": {
+    "base_url": "https://www3.bcb.gov.br/rdrweb/rest/ext/ranking",
+    "tipo": "Bancos e financeiras",
+    "ultimos_trimestres": 4
+  }
 }

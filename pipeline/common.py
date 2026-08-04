@@ -41,12 +41,21 @@ def xml_escape(s):
             .replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
-def http_get(url, timeout=45, retries=3, backoff=2.0):
-    """GET com retry exponencial. Retorna (bytes, meta) ou lança após esgotar tentativas."""
+def http_get(url, timeout=45, retries=3, backoff=2.0, accept="application/json"):
+    """GET com retry exponencial. Retorna (bytes, meta) ou lança após esgotar tentativas.
+
+    `accept` existe porque o portal do Ministério da Previdência devolve **HTTP 401**
+    quando um arquivo binário é pedido com `Accept: application/json` — o bloqueio é do
+    cabeçalho, não do User-Agent, e foi medido em sete combinações. Passe `accept="*/*"`
+    ou `accept=None` para baixar planilhas e ZIPs de fontes que se comportam assim.
+    """
     last_err = None
+    cabecalhos = {"User-Agent": USER_AGENT}
+    if accept:
+        cabecalhos["Accept"] = accept
     for attempt in range(retries):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
+            req = urllib.request.Request(url, headers=cabecalhos)
             t0 = time.time()
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 body = resp.read()

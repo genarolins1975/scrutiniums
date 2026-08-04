@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.50.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.51.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -228,6 +228,7 @@ const VIEW_DATA = {
   desenrola: ["desenrola", "pulse"],
   penetracao: ["penetracao", "penetracao_malha"],
   moradia: ["moradia", "penetracao_malha"],
+  consignado: ["consignado", "penetracao_malha"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -2321,6 +2322,10 @@ const GUIA = {
     importa: "Mostra em que lugares o sistema financeiro chega menos do que a renda e a população locais indicariam — o primeiro passo para discutir acesso a crédito no território.",
     ler: "Compare a penetração de um município com a de seus pares, não com a média nacional. O gap é a distância para municípios parecidos, e vem com faixa de referência.",
     nao: "O saldo é o contabilizado nas dependências, não o crédito dos moradores. Baixa penetração não prova restrição de oferta, e o gap não é demanda comprovada nem dinheiro que falta." },
+  consignado: { q: "Onde envelhecimento e dependência de benefícios tornam o consignado socialmente sensível?",
+    importa: "Aposentadorias e pensões sustentam a economia de centenas de municípios, e o consignado é o crédito que se apoia nessa renda. Ver as duas coisas no território mostra onde decisões de crédito têm mais consequência.",
+    ler: "Separe o que é observado do que é alocado: demografia e benefícios são municipais e medidos; consignado é estadual e medido; a versão municipal do consignado é estimativa. A relação entre dependência e crédito só é lida no nível estadual.",
+    nao: "O município do benefício é o do órgão pagador, o valor já vem líquido do consignado, e a contagem é de créditos e não de pessoas. Reclamação mede propensão a reclamar, não incidência. Nada aqui é evidência causal." },
   moradia: { q: "Como o Brasil mora, e onde o crédito imobiliário chega?",
     importa: "Moradia é o maior ativo das famílias e o crédito imobiliário é a maior carteira de pessoa física do país. Ver as duas coisas juntas mostra a distância entre morar e financiar.",
     ler: "Trate as três bases como medidas distintas: o Censo conta domicílios, o ESTBAN registra saldo contabilizado por município e o Mercado Imobiliário detalha o crédito residencial por estado. Nenhuma se converte na outra.",
@@ -6945,9 +6950,648 @@ window.morSim = (k, v) => {
   renderMoradia();
 };
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia };
+/* ---------- CONSIGNADO, PREVIDÊNCIA E ENVELHECIMENTO ----------
+   Três geografias que não se convertem umas nas outras: o Censo e a Previdência são
+   municipais, o consignado é estadual, e a taxa por instituição é nacional.
+
+   Três definições da fonte previdenciária determinam como cada número é nomeado, e estão
+   repetidas na interface porque cada uma impede uma leitura errada:
+   · o município é o do ÓRGÃO PAGADOR, não o de residência;
+   · o valor é LÍQUIDO — o consignado já foi descontado dele;
+   · é benefício EMITIDO, e a contagem é de créditos, não de pessoas.
+
+   E a restrição de primeira ordem: o consignado municipal é alocação do estadual. A
+   relação entre dependência previdenciária e consignado só é afirmada a partir do dado
+   estadual observado. Ver docs/AUDITORIA_CONSIGNADO.md. */
+
+function cgSelo(s) {
+  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+              estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"],
+              hipotese: ["exp", "HIPÓTESE"], indisponivel: ["aprox", "INDISPONÍVEL"] }[s];
+  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+}
+
+/* Duas paletas deliberadamente distintas: sequencial fria para envelhecimento e
+   previdência, sequencial quente para exposição ao consignado. Envelhecer não é risco, e
+   pintar município idoso de vermelho diria o contrário. */
+const CG_CAMADAS = {
+  p60: { l: "População com 60 anos ou mais", u: "%", pal: "fria", fmt: m => m.p60 != null ? fmt.n(m.p60, 1) + "%" : "n.d." },
+  env: { l: "Índice de envelhecimento", u: "", pal: "fria", fmt: m => m.env != null ? fmt.n(m.env, 0) : "n.d." },
+  ben100_60: { l: "Benefícios por 100 pessoas com 60+", u: "", pal: "fria", fmt: m => m.ben100_60 != null ? fmt.n(m.ben100_60, 0) : "n.d." },
+  v_hab: { l: "Valor líquido por habitante", u: "R$", pal: "fria", fmt: m => m.v_hab != null ? "R$ " + fmt.n0(m.v_hab) : "n.d." },
+  peso: { l: "Benefícios líquidos sobre a renda domiciliar", u: "%", pal: "fria", fmt: m => m.peso != null ? fmt.n(m.peso, 1) + "%" : "n.d." },
+  prural: { l: "Participação da clientela rural", u: "%", pal: "fria", fmt: m => m.prural != null ? fmt.n(m.prural, 1) + "%" : "n.d." },
+  pass: { l: "Participação de benefícios assistenciais", u: "%", pal: "fria", fmt: m => m.pass != null ? fmt.n(m.pass, 1) + "%" : "n.d." },
+  cons_ben: { l: "Exposição estimada por benefício", u: "R$", pal: "quente", fmt: m => m.cons_ben != null ? "R$ " + fmt.n0(m.cons_ben) : "n.d." },
+  indice: { l: "Índice de sensibilidade", u: "", pal: "quente", fmt: m => m.indice != null ? fmt.n(m.indice, 0) : "n.d." },
+};
+
+const CG_FAIXAS = [
+  ["menos de 20%", 0, 20], ["de 20% a 35%", 20, 35],
+  ["de 35% a 50%", 35, 50], ["mais de 50%", 50, Infinity],
+];
+const CG_SATROT = {
+  baixa_penetracao: "Baixa penetração",
+  penetracao_elevada: "Penetração elevada",
+  possivel_saturacao: "Possível saturação",
+};
+const CG_SELCOR = { alta: "var(--positive)", media: "var(--warning)", baixa: "var(--negative)", sem_dado: "var(--text-3)" };
+
+function cgEscala(vals, pal) {
+  const v = vals.filter(x => x != null).sort((a, b) => a - b);
+  if (!v.length) return () => "var(--surface-2)";
+  const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
+  const lo = q(0.05), hi = q(0.95);
+  const base = pal === "quente" ? "var(--warning)" : "var(--teal)";
+  return x => {
+    if (x == null) return "var(--surface-2)";
+    const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
+    return `color-mix(in srgb, ${base} ${Math.round(8 + 62 * t)}%, var(--surface))`;
+  };
+}
+
+function renderConsignado() {
+  const el = document.getElementById("view-consignado");
+  const D = state.data.consignado;
+  if (!D) { el.innerHTML = loadingCard("consignado, previdência e envelhecimento"); return; }
+  if (!D.ok) {
+    el.innerHTML = pageHead({ title: "Consignado, Previdência e Envelhecimento", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.cg || {};
+  const cam = F.cam || "p60";
+  const C = CG_CAMADAS[cam];
+  const regiao = F.regiao || "todas";
+  const conf = F.conf || "exclui_baixa";
+  const malha = state.data.penetracao_malha;
+  const B = D.brasil, S = D.scr;
+
+  const passa = m => (regiao === "todas" || m.reg === regiao)
+    && (conf === "todas" || m.sel !== "baixa");
+  const base = D.municipios.filter(passa);
+  const sel = F.sel ? D.municipios.find(m => m.c === F.sel) : null;
+  const comparar = (F.comp || []).map(c => D.municipios.find(m => m.c === c)).filter(Boolean);
+
+  const secoes = [
+    ["cg-geral", "Visão geral"],
+    ["cg-idade", "Envelhecimento municipal"],
+    ["cg-prev", "A Previdência na economia local"],
+    ["cg-mapa", "Mapa de dependência"],
+    ["cg-expo", "Exposição ao consignado"],
+    ["cg-circ", "O que é observado e o que é mecânico"],
+    ["cg-sat", "Saturação"],
+    ["cg-risco", "Sensibilidade social e regulatória"],
+    ["cg-if", "Instituições"],
+    ["cg-perfil", "Perfil municipal"],
+    ["cg-metodo", "Fontes e limites"],
+  ];
+  const indice = `<nav class="desindex" aria-label="Seções desta página">
+    ${secoes.map(([id, t], i) => `<a href="#${id}">${i + 1}. ${t}</a>`).join("")}</nav>`;
+
+  /* ============ 1. visão geral ============ */
+  const geral = `<section id="cg-geral">
+  <p class="desprosa">O painel combina informações demográficas do Censo 2022, pagamentos da
+  Previdência Social e dados de crédito do Banco Central. A carteira municipal de consignado
+  somente seria apresentada como observada se existisse uma fonte pública nessa granularidade
+  — e não existe. O que há de municipal aqui é demografia e benefício pago; o consignado é
+  observado por unidade da federação.</p>
+
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>População com 60 anos ou mais</h4>
+      <div class="big">${fmt.n0(B.a60)}</div>
+      <div class="src">${cgSelo("observado")} ${fmt.n(B.p60, 1)}% do país · 65+ são ${fmt.n0(B.a65)} (${fmt.n(B.p65, 1)}%)</div></div>
+    <div class="card kpi"><h4>Benefícios emitidos</h4>
+      <div class="big">${fmt.n0(B.beneficios)}</div>
+      <div class="src">${cgSelo("observado")} dezembro de ${D.ano} · ${fmt.n0(B.aposentadorias)} aposentadorias e ${fmt.n0(B.pensoes)} pensões</div></div>
+    <div class="card kpi"><h4>Valor líquido mensal</h4>
+      <div class="big">${fmt.money(B.valor_dez)}</div>
+      <div class="src">${cgSelo("observado")} já descontado o consignado · média de R$ ${fmt.n0(B.valor_medio)} por benefício</div></div>
+    <div class="card kpi"><h4>Consignado de aposentados e pensionistas</h4>
+      <div class="big">${fmt.money(S.aposentados_nacional)}</div>
+      <div class="src">${cgSelo("observado")} ${fmt.n(S.part_aposentados, 1)}% do consignado de pessoa física · ${S.data_base}</div></div>
+    <div class="card kpi"><h4>Municípios de alta dependência</h4>
+      <div class="big">${fmt.n0(D.totais.dependencia_acima_50)}</div>
+      <div class="src">${cgSelo("calculado")} benefícios líquidos acima de 50% da renda domiciliar · mais ${fmt.n0(D.totais.dependencia_35_50)} entre 35% e 50%</div></div>
+  </div>
+
+  <div class="judalerta" role="note">
+    <b>Três coisas que este dado não é.</b> O município registrado é o do <b>órgão pagador</b>,
+    não o de residência do beneficiário — a agência de um polo regional paga quem mora nas
+    cidades vizinhas. O valor é <b>líquido de descontos</b>, e o empréstimo consignado já foi
+    subtraído dele. E a contagem é de <b>créditos emitidos</b>, não de pessoas: um benefício
+    pode gerar mais de um crédito, e 11,1% dos beneficiários acumulam mais
+    de um benefício, segundo o Anuário Estatístico da Previdência. Não existe contagem de beneficiários por município em nenhuma fonte pública.
+  </div>
+  </section>`;
+
+  /* ============ 2. envelhecimento ============ */
+  const maxP = Math.max(...B.piramide.map(p => p.pop));
+  const idade = `<section id="cg-idade">${sechead("2. Envelhecimento municipal", `Censo Demográfico 2022 · idade mediana ${fmt.n(B.idade_mediana, 1)} anos`)}
+  <div class="cg2col">
+    <div class="card">
+      <h4>Pirâmide etária ${cgSelo("observado")}</h4>
+      <div class="cgpir">${B.piramide.slice().reverse().map(p => `<div class="cgpirl">
+        <span class="g">${p.g}</span>
+        <span class="b"><span style="width:${100 * p.pop / maxP}%${p.g >= "60" && /^(6|7|8|9|1)/.test(p.g) && parseInt(p.g) >= 60 ? ";background:var(--teal)" : ""}"></span></span>
+        <span class="v">${fmt.n(p.pop / 1e6, 2)}</span></div>`).join("")}</div>
+      <p class="src">Em milhões de pessoas, por grupo quinquenal. Os 21 grupos somam
+      ${fmt.n0(B.populacao)} habitantes, idêntico ao total do Censo.</p>
+    </div>
+    <div class="card">
+      <h4>Indicadores nacionais</h4>
+      <table class="data cgdef"><tbody>
+        <tr><th scope="row">Participação de 60 anos ou mais</th><td>${fmt.n(B.p60, 2)}%</td></tr>
+        <tr><th scope="row">Participação de 65 anos ou mais</th><td>${fmt.n(B.p65, 2)}%</td></tr>
+        <tr><th scope="row">Participação de 80 anos ou mais</th><td>${fmt.n(B.p80, 2)}%</td></tr>
+        <tr><th scope="row">Índice de envelhecimento</th><td>${fmt.n(B.envelhecimento, 1)}</td></tr>
+        <tr><th scope="row">Razão de dependência idosa</th><td>${fmt.n(B.dep_idosa, 1)}</td></tr>
+        <tr><th scope="row">Idade mediana</th><td>${fmt.n(B.idade_mediana, 1)} anos</td></tr>
+      </tbody></table>
+      ${leitura([
+        ["Índice de envelhecimento", "pessoas de 60 anos ou mais para cada 100 de 0 a 14"],
+        ["Razão de dependência idosa", "pessoas de 65 anos ou mais para cada 100 de 15 a 64"],
+        ["Idade mediana", "interpolada dentro do grupo quinquenal — não é a mediana do microdado"],
+      ])}
+    </div>
+  </div>
+  </section>`;
+
+  /* ============ 3. previdência ============ */
+  const prev = `<section id="cg-prev">${sechead("3. A Previdência na economia local", `dezembro de ${D.ano} · valores líquidos`)}
+  <p class="desprosa">A massa de benefícios é comparada com a renda domiciliar do Censo, que é
+  de julho de 2022. Para que a razão faça sentido, o valor de dezembro de ${D.ano} é trazido a
+  preços de 2022 pelo IPCA — fator de ${fmt.n(D.fator_ipca, 4)}. Sem essa correção o peso dos
+  benefícios apareceria inflado em toda a base.</p>
+
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>Benefícios por 100 pessoas com 60+</h4><div class="big">${fmt.n(B.ben100_60, 1)}</div>
+      <div class="src">${cgSelo("calculado")} acima de 100 porque há benefício pago antes dos 60 e pensão a menores</div></div>
+    <div class="card kpi"><h4>Peso na renda domiciliar</h4><div class="big">${fmt.n(B.peso, 1)}%</div>
+      <div class="src">${cgSelo("calculado")} valor líquido deflacionado sobre a renda domiciliar do Censo</div></div>
+    <div class="card kpi"><h4>Benefício médio</h4><div class="big">R$ ${fmt.n0(B.valor_medio)}</div>
+      <div class="src">${cgSelo("calculado")} valor líquido dividido pela quantidade de créditos</div></div>
+  </div>
+
+  <div class="judalerta" role="note">
+    <b>Este indicador é uma razão entre bases agregadas, não uma decomposição de orçamento
+    doméstico.</b> O numerador vem do registro da Previdência e cobre quem é pago por aquela
+    agência; o denominador vem do Censo e cobre quem mora no município. Onde os dois universos
+    não coincidem, a razão se distorce — e é isso que o teste de coerência da seção seguinte mede.
+  </div>
+
+  <div class="card">
+    <h4>Teste de coerência contra um teto independente</h4>
+    <p class="desprosa">O Censo mede, separadamente, quanto da renda domiciliar <b>não</b> vem do
+    trabalho. Benefícios previdenciários são parte disso, junto com aluguel, aplicações e
+    transferências — então o peso calculado não pode ultrapassar essa participação. Quando
+    ultrapassa, a causa conhecida é o município do órgão pagador.</p>
+    <div class="pan-kpi">
+      <div class="card kpi"><h4>Municípios testados</h4><div class="big">${fmt.n0(D.totais.municipios)}</div>
+        <div class="src">${cgSelo("calculado")} todos têm o teto do Censo disponível</div></div>
+      <div class="card kpi"><h4>Reprovados no teste</h4><div class="big">${fmt.n0(D.totais.incoerentes)}</div>
+        <div class="src">${cgSelo("calculado")} ${fmt.n(100 * D.totais.incoerentes / D.totais.municipios, 1)}% — peso acima do teto, rebaixados a confiabilidade baixa</div></div>
+      <div class="card kpi"><h4>Confiabilidade alta</h4><div class="big">${fmt.n0(D.totais.selos.alta)}</div>
+        <div class="src">${cgSelo("calculado")} passam no teste e têm benefícios por idoso próximos da mediana</div></div>
+    </div>
+  </div>
+  </section>`;
+
+  /* ============ 4. mapa ============ */
+  const porCod = Object.fromEntries(base.map(m => [m.c, m]));
+  const escala = cgEscala(base.map(m => m[cam]), C.pal);
+  const paths = malha ? Object.entries(malha.paths).map(([cod, d]) => {
+    const m = porCod[cod];
+    if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
+    const tip = encodeURIComponent(`<div class="tt-date">${m.n} (${m.uf})</div>
+      <div class="tt-row"><span class="tt-lbl">60 anos ou mais</span><span class="tt-val">${m.p60 != null ? fmt.n(m.p60, 1) + "%" : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">benefícios</span><span class="tt-val">${m.ben != null ? fmt.n0(m.ben) : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">peso na renda</span><span class="tt-val">${m.peso != null ? fmt.n(m.peso, 1) + "%" : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">confiabilidade</span><span class="tt-val">${m.sel.replace("_", " ")}</span></div>`);
+    return `<path d="${d}" fill="${escala(m[cam])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
+      onclick="cgSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + C.fmt(m))}"></path>`;
+  }).join("") : "";
+
+  const lista = base.filter(m => m[cam] != null).sort((a, b) => b[cam] - a[cam]).slice(0, 25);
+  const faixas = CG_FAIXAS.map(([rot, lo, hi]) => ({
+    rot, n: base.filter(m => m.peso != null && m.peso >= lo && m.peso < hi).length,
+  }));
+
+  const mapa = `<section id="cg-mapa">${sechead("4. Mapa de dependência previdenciária", C.l)}
+  <div class="controls">
+    ${Object.entries(CG_CAMADAS).map(([k, v]) =>
+      `<button class="btn ${cam === k ? "" : "ghost"} small" onclick="cgFiltra('cam','${k}')">${v.l}</button>`).join("")}
+  </div>
+  <div class="controls">
+    <label>região <select onchange="cgFiltra('regiao', this.value)">
+      ${["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"].map(r =>
+        `<option ${regiao === r ? "selected" : ""}>${r}</option>`).join("")}</select></label>
+    <span class="seg">${[["exclui_baixa", "sem confiabilidade baixa"], ["todas", "incluir todas"]].map(([v, l]) =>
+      `<button class="${conf === v ? "active" : ""}" onclick="cgFiltra('conf','${v}')">${l}</button>`).join("")}</span>
+    <span class="src">${fmt.n0(base.length)} municípios no recorte</span>
+  </div>
+  <div class="penlayout">
+    <div class="card">
+      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(C.l)}"><g transform="${malha.transform}">${paths}</g></svg>`
+              : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">Paleta fria para envelhecimento e previdência, quente para exposição ao
+      consignado — envelhecer não é risco, e a cor não deve sugerir que seja. Sombreado entre o
+      percentil 5 e o 95 do recorte.</p>
+    </div>
+    <div class="card penrank">
+      <h4>Maiores <span class="src">${C.l.toLowerCase()}</span></h4>
+      <ol class="penlista">${lista.map(m => `<li class="${F.sel === m.c ? "sel" : ""}">
+        <button type="button" onclick="cgSel('${m.c}')" aria-label="${attr(m.n + " " + m.uf + ": " + C.fmt(m))}">
+          <span class="n">${m.n}<small>${m.uf}</small></span>
+          <span class="v">${C.fmt(m)}</span></button></li>`).join("")}</ol>
+    </div>
+  </div>
+  <div class="card">
+    <h4>Distribuição por faixa de dependência ${cgSelo("calculado")}</h4>
+    <div class="cgfaixas">${faixas.map(f => `<div class="cgfx">
+      <span class="n">${fmt.n0(f.n)}</span><span class="r">${f.rot}</span></div>`).join("")}</div>
+    <p class="src">Razão entre o valor líquido de benefícios emitidos e a renda domiciliar do
+    Censo, ambos a preços de 2022. É uma razão entre bases agregadas, não uma decomposição
+    contábil observada de cada domicílio.</p>
+  </div>
+  </section>`;
+
+  el.innerHTML = pageHead({
+    title: "Consignado, Previdência e Envelhecimento",
+    desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante — separando o que é observado do que é estimado.",
+    fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
+  }) + indice + geral + idade + prev + mapa
+    + cgExposicao(D) + cgCircularidade(D) + cgSaturacao(D, base)
+    + cgRisco(D, base) + cgInstituicoes(D)
+    + cgPerfil(D, sel, comparar) + cgMetodo(D);
+
+  agendaAcessibilidade();
+}
+
+/* ============ 5. exposição ============ */
+function cgExposicao(D) {
+  const G = D.sgs, S = D.scr;
+  if (!G) return "";
+  const a = G.atual;
+  const bi = v => v == null ? "–" : "R$ " + fmt.n(v / 1000, 1) + " bi";
+  return `<section id="cg-expo">${sechead("5. Exposição ao consignado", `Banco Central · ${G.data_base.slice(0, 7)}`)}
+  <p class="desprosa">O consignado do INSS tem medida nacional direta e observada. O que não
+  existe é carteira municipal — nem no Banco Central, nem no INSS, nem na Dataprev. O que a
+  página faz adiante é uma estimativa declarada, e o teste da seção 6 mostra por que ela não
+  pode ser usada para afirmar relação entre dependência previdenciária e crédito.</p>
+
+  <div class="card"><table class="data cgseg">
+    <thead><tr><th>Vínculo do tomador</th><th style="text-align:right">Saldo</th>
+      <th style="text-align:right">Inadimplência</th><th style="text-align:right">Taxa a.a.</th>
+      <th style="text-align:right">Prazo da concessão</th></tr></thead>
+    <tbody>
+      <tr class="cgdestaque"><td><b>Beneficiários do INSS</b></td>
+        <td style="text-align:right">${bi(a.inss.saldo)}</td>
+        <td style="text-align:right">${fmt.n(a.inss.inad, 2)}%</td>
+        <td style="text-align:right">${fmt.n(a.inss.taxa, 2)}%</td>
+        <td style="text-align:right">${fmt.n(a.inss.prazo_conc, 1)} meses</td></tr>
+      <tr><td>Servidores públicos</td><td style="text-align:right">${bi(a.publico.saldo)}</td>
+        <td style="text-align:right">${fmt.n(a.publico.inad, 2)}%</td>
+        <td style="text-align:right">–</td><td style="text-align:right">–</td></tr>
+      <tr><td>Trabalhadores do setor privado</td><td style="text-align:right">${bi(a.privado.saldo)}</td>
+        <td style="text-align:right">${fmt.n(a.privado.inad, 2)}%</td>
+        <td style="text-align:right">–</td><td style="text-align:right">–</td></tr>
+      <tr class="cgtot"><td>Total</td><td style="text-align:right">${bi(a.total.saldo)}</td>
+        <td style="text-align:right">${fmt.n(a.total.inad, 2)}%</td>
+        <td style="text-align:right">${fmt.n(a.total.taxa, 2)}%</td><td style="text-align:right">–</td></tr>
+    </tbody></table>
+    <p class="src">${cgSelo("observado")} A inadimplência do consignado do INSS é de
+    ${fmt.n(a.inss.inad, 2)}%, contra ${fmt.n(a.privado.inad, 2)}% no consignado privado. O custo
+    do crédito é de ${fmt.n(a.inss.icc, 2)}% ao ano e o prazo médio de concessão chegou a
+    ${fmt.n(a.inss.prazo_conc, 1)} meses.</p>
+  </div>
+
+  <div class="card">
+    <h4>Saldo por vínculo do tomador</h4>
+    ${lineChart({
+      series: [
+        { name: "INSS", pts: G.series.saldo.map(p => ({ x: p.d, y: p.inss / 1000 })) },
+        { name: "Servidores públicos", pts: G.series.saldo.map(p => ({ x: p.d, y: p.publico / 1000 })) },
+        { name: "Setor privado", pts: G.series.saldo.map(p => ({ x: p.d, y: p.privado / 1000 })) },
+      ], unit: " bi", dec: 0, h: 240,
+      annotations: D.linha_do_tempo.filter(e => e.d >= G.series.saldo[0].d && e.tipo === "margem")
+        .map(e => ({ x: e.d.slice(0, 7), label: e.t.slice(0, 22) })),
+      aria: "saldo de consignado por vínculo do tomador, em bilhões de reais",
+      fonte: "BCB, Sistema Gerenciador de Séries Temporais",
+    })}
+    <p class="src">As marcas indicam mudanças de margem consignável. ${cgSelo("observado")}
+    <b>Coincidência no tempo não é efeito.</b> A página marca as normas para que a inspeção
+    seja possível, e não atribui variação da série a nenhuma delas.</p>
+  </div>
+
+  <div class="judalerta" role="note">
+    <b>Duas medidas distintas do mesmo público, e o motivo de não se somarem.</b> A série do
+    Banco Central acima registra ${bi(a.inss.saldo)} de consignado averbado em benefício do
+    INSS. O grupo “Aposentado/pensionista” do SCR, usado adiante para o único recorte por
+    unidade da federação que existe, soma ${fmt.money(S.aposentados_nacional)} —
+    ${fmt.n(100 * S.aposentados_nacional / (a.inss.saldo * 1e6), 0)}% daquele valor. Classificar
+    pela ocupação declarada do tomador não é o mesmo que identificar a averbação em benefício.
+  </div>
+  </section>`;
+}
+
+/* ============ 6. circularidade ============ */
+function cgCircularidade(D) {
+  const C = D.circularidade;
+  const est = D.estados.filter(e => e.peso != null && e.cons_por_elegivel != null);
+  const xs = est.map(e => e.peso), ys = est.map(e => e.cons_por_elegivel);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+  const px = v => 60 + 640 * (v - x0) / Math.max(x1 - x0, 1e-9);
+  const py = v => 250 - 210 * (v - y0) / Math.max(y1 - y0, 1e-9);
+
+  return `<section id="cg-circ">${sechead("6. O que é observado e o que é mecânico", "o teste que autoriza — ou não — a leitura")}
+  <p class="desprosa">A pergunta natural do painel é se municípios mais dependentes de
+  benefícios têm mais consignado. Ela não pode ser respondida com o indicador municipal: como
+  o consignado municipal é o estadual repartido por uma chave previdenciária, a correlação
+  entre os dois foi construída pela fórmula. Ela existe porque foi feita existir.</p>
+  <p class="desprosa">A resposta só pode vir do nível estadual, onde os dois lados são medidos
+  e nenhum deriva do outro: o consignado por unidade da federação vem do SCR, a dependência
+  vem dos registros da Previdência.</p>
+
+  <div class="cg2col">
+    <div class="card">
+      <h4>Correlação observada ${cgSelo("observado")}</h4>
+      <div class="big cgcorr">${fmt.n(C.correlacao_observada, 2)}</div>
+      <p class="src">Entre ${C.n_uf} unidades da federação. Peso dos benefícios na renda
+      domiciliar contra saldo de consignado por benefício elegível. Nenhum dos dois lados foi
+      derivado do outro.</p>
+    </div>
+    <div class="card">
+      <h4>Correlação mecânica ${cgSelo("hipotese")}</h4>
+      <div class="big cgcorr sec">${fmt.n(C.correlacao_mecanica, 2)}</div>
+      <p class="src">Os mesmos dois indicadores no nível municipal, onde o consignado é
+      alocação. Mede a fórmula, não o mundo. Está aqui para comparação, e nenhuma afirmação
+      da página se apoia nela.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>Dependência previdenciária e consignado, por unidade da federação</h4>
+    <svg viewBox="0 0 720 290" class="cgdisp" role="group" aria-label="dispersão entre dependência previdenciária e consignado por benefício, por unidade da federação">
+      <line x1="60" y1="250" x2="700" y2="250" stroke="var(--border)"></line>
+      <line x1="60" y1="40" x2="60" y2="250" stroke="var(--border)"></line>
+      ${est.map(e => `<g role="group" aria-label="${attr(`${e.nome}: peso ${fmt.n(e.peso, 1)}%, consignado por benefício R$ ${fmt.n0(e.cons_por_elegivel)}`)}">
+        <circle cx="${px(e.peso).toFixed(1)}" cy="${py(e.cons_por_elegivel).toFixed(1)}"
+          r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
+          stroke="var(--teal)"></circle>
+        <text x="${(px(e.peso) + 8).toFixed(1)}" y="${(py(e.cons_por_elegivel) + 4).toFixed(1)}"
+          font-size="10" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
+      <text x="380" y="282" text-anchor="middle" font-size="11" fill="var(--text-3)">peso dos benefícios na renda domiciliar (%)</text>
+      <text x="16" y="145" font-size="11" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por benefício elegível (R$)</text>
+    </svg>
+    <p class="src">${cgSelo("observado")} Tamanho do círculo proporcional à população de 60 anos
+    ou mais. A inclinação é negativa: onde os benefícios pesam mais na renda local, o saldo de
+    consignado por benefício é <b>menor</b>, não maior. Uma leitura possível é que benefícios de
+    valor mais baixo geram margem consignável menor em reais — mas isso é hipótese, e o painel
+    não a testa.</p>
+  </div>
+
+  <div class="judalerta" role="note">
+    <b>${C.conclusao_regra}</b> A página distingue quatro coisas que costumam ser confundidas:
+    associação observada, resultado mecanicamente produzido pela metodologia, hipótese e
+    estimativa. Nenhuma delas é evidência causal, e nenhuma é apresentada como tal.
+  </div>
+  </section>`;
+}
+
+/* ============ 7. saturação ============ */
+function cgSaturacao(D, base) {
+  const t = D.totais.saturacao, cr = D.saturacao_criterios;
+  const cls = ["baixa_penetracao", "penetracao_elevada", "possivel_saturacao"];
+  return `<section id="cg-sat">${sechead("7. Saturação", "critérios explícitos, aplicados só onde há base")}
+  <p class="desprosa">Saturação não é tamanho de carteira. A classificação usa saldo estimado por
+  benefício elegível e serviço da dívida, e tem uma trava: município cujo indicador é apenas
+  alocação proporcional, sem nenhum sinal de intensidade, ou cuja confiabilidade é baixa, <b>não
+  recebe classificação</b>. Rotular de saturado quem só recebeu uma fatia da fórmula seria
+  transformar aritmética em diagnóstico.</p>
+  <div class="pan-kpi">
+    ${cls.map(k => `<div class="card kpi"><h4>${CG_SATROT[k]}</h4>
+      <div class="big">${fmt.n0(t[k])}</div>
+      <div class="src">${cgSelo("estimado")} municípios classificados</div></div>`).join("")}
+    <div class="card kpi"><h4>Sem classificação</h4>
+      <div class="big">${fmt.n0(D.totais.municipios - cls.reduce((s, k) => s + t[k], 0))}</div>
+      <div class="src">${cgSelo("indisponivel")} confiabilidade baixa ou sem sinal de intensidade</div></div>
+  </div>
+  <div class="card">
+    <h4>Critérios, para quem quiser recalcular</h4>
+    <table class="data"><tbody>
+      <tr><th scope="row">Possível saturação</th><td>saldo por benefício acima de R$ ${fmt.n0(cr.cons_ben_alto)}
+        ou serviço da dívida acima de ${fmt.n(cr.servico_alto, 0)}%</td></tr>
+      <tr><th scope="row">Penetração elevada</th><td>saldo por benefício acima de R$ ${fmt.n0(cr.cons_ben_medio)}
+        ou serviço da dívida acima de ${fmt.n(cr.servico_medio, 0)}%</td></tr>
+      <tr><th scope="row">Baixa penetração</th><td>abaixo dos dois limiares</td></tr>
+    </tbody></table>
+    <p class="src">O serviço da dívida é a parcela implícita de um contrato de 84 meses sobre o
+    valor líquido dos benefícios elegíveis. É cenário aritmético, não parcela observada — a
+    parcela real do consignado não é publicada por município.</p>
+  </div>
+  </section>`;
+}
+
+/* ============ 8. risco ============ */
+function cgRisco(D, base) {
+  const v = base.filter(m => m.indice != null && m.sel !== "baixa" && (m.pop || 0) >= 20000)
+    .sort((a, b) => b.indice - a.indice).slice(0, 15);
+  return `<section id="cg-risco">${sechead("8. Sensibilidade social e regulatória", "três dimensões separadas, e depois combinadas")}
+  <div class="judalerta" role="note">
+    <b>Este índice mede a sensibilidade do contexto, não a conduta de ninguém.</b> Ele não
+    classifica moradores nem instituições. Um município no topo da lista é um lugar onde
+    envelhecimento, peso dos benefícios na renda e exposição estimada coincidem — o que torna
+    decisões de crédito ali mais consequentes, e não onde há irregularidade demonstrada.
+  </div>
+  <div class="card"><table class="data cgrisco">
+    <thead><tr><th>#</th><th>Município</th><th>UF</th>
+      <th style="text-align:right">Vulnerabilidade</th><th style="text-align:right">Exposição</th>
+      <th style="text-align:right">Perfil do benefício</th><th style="text-align:right">Índice</th></tr></thead>
+    <tbody>${v.map((m, i) => `<tr>
+      <td>${i + 1}</td>
+      <td><button type="button" class="linkish" onclick="cgSel('${m.c}')">${m.n}</button></td>
+      <td>${m.uf}</td>
+      <td style="text-align:right">${m.vulnerabilidade != null ? fmt.n(m.vulnerabilidade, 0) : "–"}</td>
+      <td style="text-align:right">${m.exposicao != null ? fmt.n(m.exposicao, 0) : "–"}</td>
+      <td style="text-align:right">${m["perfil_benefício"] != null ? fmt.n(m["perfil_benefício"], 0) : "–"}</td>
+      <td style="text-align:right"><b>${fmt.n(m.indice, 0)}</b></td></tr>`).join("")}</tbody></table>
+    <p class="src">${cgSelo("estimado")} Cada dimensão é a posição do município na distribuição
+    nacional, de 0 a 100, entre os percentis 5 e 95. <b>Vulnerabilidade</b> combina participação
+    de 60 anos ou mais, peso dos benefícios na renda e renda domiciliar por habitante invertida.
+    <b>Exposição</b> combina saldo estimado por benefício e serviço da dívida. <b>Perfil do
+    benefício</b> combina participação de assistenciais e de clientela rural. A soma é simples e
+    sem pesos escondidos: as três parcelas estão publicadas para quem quiser outro arranjo.</p>
+  </div>
+  </section>`;
+}
+
+/* ============ 9. instituições ============ */
+function cgInstituicoes(D) {
+  const I = D.instituicoes, R = D.reclamacoes;
+  if (!I && !R) return "";
+  return `<section id="cg-if">${sechead("9. Instituições", "geografia nacional, e assim permanece")}
+  <p class="desprosa">Nem a taxa cobrada nem a reclamação existem por município para cada
+  instituição. Estimar participação municipal por instituição exigiria uma metodologia que
+  nenhuma fonte sustenta, e a página não a inventa: as duas tabelas ficam na geografia em que
+  foram medidas.</p>
+
+  ${I ? `<div class="card">
+    <h4>Taxa de contratação do consignado do INSS ${cgSelo("observado")}</h4>
+    <p class="src">${I.modalidade} · janela iniciada em ${(I.janela && I.janela.inicio) || "–"} ·
+    ${I.ranking.length} instituições · mediana ${fmt.n(I.stats.mediana, 2)}% ao ano ·
+    spread de ${fmt.n(I.spread_selic, 2)} pontos sobre a Selic</p>
+    <table class="data cgtaxa">
+      <thead><tr><th>#</th><th>Instituição</th><th style="text-align:right">Taxa a.a.</th>
+        <th style="text-align:right">Contra a mediana</th></tr></thead>
+      <tbody>${I.ranking.slice(0, 12).map(r => `<tr>
+        <td>${r.posicao}</td><td>${r.nome}</td>
+        <td style="text-align:right">${fmt.n(r.taxa_aa, 2)}%</td>
+        <td style="text-align:right" class="${r.vs_mediana > 0 ? "cgpior" : "cgmelhor"}">${r.vs_mediana > 0 ? "+" : ""}${fmt.n(r.vs_mediana, 2)}</td>
+      </tr>`).join("")}</tbody></table>
+    <p class="src">A mais cara cobra ${fmt.n(100 * (I.stats.max / I.stats.min - 1), 0)}% a mais que
+    a mais barata pelo mesmo produto e o mesmo mecanismo de garantia. Taxa de contratação é preço
+    de operação nova, não carteira — nenhuma participação de mercado é derivada daqui.</p>
+  </div>` : ""}
+
+  ${R ? `<div class="card">
+    <h4>Reclamações sobre consignado de beneficiários do INSS ${cgSelo("observado")}</h4>
+    <p class="src">${fmt.n0(R.total)} reclamações entre ${R.de} e ${R.ate}, em ${fmt.n0(R.municipios)}
+    municípios. Fonte: consumidor.gov.br, categoria dedicada a beneficiários do INSS.</p>
+    <table class="data cgrec">
+      <thead><tr><th>Instituição</th><th style="text-align:right">Reclamações</th>
+        <th style="text-align:right">Com 61 anos ou mais</th>
+        <th style="text-align:right">Resolvidas</th><th style="text-align:right">Nota</th></tr></thead>
+      <tbody>${R.instituicoes.slice(0, 12).map(x => `<tr>
+        <td>${x.nome}</td>
+        <td style="text-align:right">${fmt.n0(x.total)}</td>
+        <td style="text-align:right">${x.part_idosos != null ? fmt.n(x.part_idosos, 1) + "%" : "–"}</td>
+        <td style="text-align:right">${x.taxa_resolucao != null ? fmt.n(x.taxa_resolucao, 1) + "%" : "–"}</td>
+        <td style="text-align:right">${x.nota != null ? fmt.n(x.nota, 1) : "–"}</td>
+      </tr>`).join("")}</tbody></table>
+    <div class="judalerta" role="note">${R.aviso}</div>
+  </div>` : ""}
+  </section>`;
+}
+
+/* ============ 10. perfil ============ */
+function cgPerfil(D, sel, comparar) {
+  const linhas = m => [
+    ["População total", fmt.n0(m.pop), "observado"],
+    ["60 anos ou mais", `${fmt.n0(m.a60)} (${fmt.n(m.p60, 1)}%)`, "observado"],
+    ["65 anos ou mais", `${fmt.n0(m.a65)} (${fmt.n(m.p65, 1)}%)`, "observado"],
+    ["80 anos ou mais", `${fmt.n0(m.a80)} (${fmt.n(m.p80, 1)}%)`, "observado"],
+    ["Idade mediana", `${fmt.n(m.imed, 1)} anos`, "calculado"],
+    ["Índice de envelhecimento", fmt.n(m.env, 1), "calculado"],
+    ["Benefícios emitidos", m.ben != null ? fmt.n0(m.ben) : "–", "observado"],
+    ["Aposentadorias", m.apo != null ? fmt.n0(m.apo) : "–", "observado"],
+    ["Pensões por morte", m.pen != null ? fmt.n0(m.pen) : "–", "observado"],
+    ["Assistenciais e legislação específica", m.ass != null ? fmt.n0(m.ass) : "–", "observado"],
+    ["Clientela rural", m.prural != null ? fmt.n(m.prural, 1) + "%" : "–", "observado"],
+    ["Valor líquido mensal", m.vdez != null ? fmt.money(m.vdez) : "–", "observado"],
+    ["Valor por habitante", m.v_hab != null ? "R$ " + fmt.n0(m.v_hab) : "–", "calculado"],
+    ["Valor por pessoa com 60+", m.v_idoso != null ? "R$ " + fmt.n0(m.v_idoso) : "–", "calculado"],
+    ["Benefícios por 100 pessoas com 60+", m.ben100_60 != null ? fmt.n(m.ben100_60, 1) : "–", "calculado"],
+    ["Peso na renda domiciliar", m.peso != null ? fmt.n(m.peso, 1) + "%" : "–", "calculado"],
+    ["Teto do Censo para rendas não-trabalho", m.outras != null ? fmt.n(m.outras, 1) + "%" : "–", "observado"],
+    ["Exposição estimada ao consignado", m.cons != null ? fmt.money(m.cons) : "–", "estimado"],
+    ["Faixa da estimativa", m.cons_lo != null ? `${fmt.money(m.cons_lo)} a ${fmt.money(m.cons_hi)}` : "–", "estimado"],
+    ["Exposição por benefício elegível", m.cons_ben != null ? "R$ " + fmt.n0(m.cons_ben) : "–", "estimado"],
+    ["Serviço da dívida", m.servico != null ? fmt.n(m.servico, 1) + "%" : "–", "cenario"],
+    ["Saturação", m.sat ? CG_SATROT[m.sat] : "não classificado", "estimado"],
+    ["Reclamações no período", m.rec != null ? fmt.n0(m.rec) : "–", "observado"],
+    ["Reclamações por 100 mil pessoas com 60+", m.rec_100k60 != null ? fmt.n(m.rec_100k60, 1) : "–", "calculado"],
+  ];
+  const alvos = sel ? [sel, ...comparar.filter(m => m.c !== sel.c)] : comparar;
+  if (!alvos.length) {
+    return `<section id="cg-perfil">${sechead("10. Perfil municipal", "selecione no mapa")}
+      <p class="src">Clique num município no mapa da seção 4 para abrir o perfil. É possível
+      comparar até cinco municípios lado a lado.</p></section>`;
+  }
+  const cols = alvos.slice(0, 5);
+  return `<section id="cg-perfil">${sechead("10. Perfil municipal", `${cols.length} município${cols.length > 1 ? "s" : ""} em comparação`)}
+  <div class="controls">
+    ${cols.map(m => `<span class="cgchip">${m.n}<small>${m.uf}</small>
+      <button type="button" onclick="cgTira('${m.c}')" aria-label="${attr("remover " + m.n)}">×</button></span>`).join("")}
+    ${cols.length > 1 ? `<button class="btn ghost small" onclick="cgLimpa()">limpar comparação</button>` : ""}
+  </div>
+  <div class="card cgperfil">
+    <table class="data">
+      <thead><tr><th>Indicador</th>${cols.map(m => `<th style="text-align:right">${m.n}<small>${m.uf}</small></th>`).join("")}<th></th></tr></thead>
+      <tbody>${linhas(cols[0]).map((_, i) => `<tr>
+        <th scope="row">${linhas(cols[0])[i][0]}</th>
+        ${cols.map(m => `<td style="text-align:right">${linhas(m)[i][1]}</td>`).join("")}
+        <td>${cgSelo(linhas(cols[0])[i][2])}</td></tr>`).join("")}</tbody>
+    </table>
+    <p class="src">Confiabilidade: ${cols.map(m => `<span class="morselo" style="--c:${CG_SELCOR[m.sel]}">${m.n}: ${m.sel.replace("_", " ")}</span>`).join(" ")}</p>
+    ${cols.some(m => m.incoerente) ? `<div class="judalerta" role="note">Ao menos um dos municípios
+      selecionados reprova no teste de coerência: o peso calculado supera o teto que o Censo dá
+      para rendas que não vêm do trabalho. A causa conhecida é o município do órgão pagador, e
+      por isso ele fica fora dos rankings e das classificações de saturação.</div>` : ""}
+  </div>
+  </section>`;
+}
+
+/* ============ 11. metodologia ============ */
+function cgMetodo(D) {
+  const tl = D.linha_do_tempo.slice().reverse();
+  const TIPOROT = { margem: "margem", teto: "teto de juros", prazo: "prazo", fraude: "antifraude", sancao: "sanção" };
+  return `<section id="cg-metodo">${sechead("11. Fontes, definições e limites", "auditoria de viabilidade")}
+  <div class="card">
+    <h4>Evolução regulatória</h4>
+    <ol class="cgtl">${tl.map(e => `<li>
+      <span class="d">${e.d.split("-").reverse().join("/")}</span>
+      <span class="c"><b>${e.t}</b> <span class="tp tp-${e.tipo}">${TIPOROT[e.tipo]}</span>
+        <span class="src">${e.norma}</span><span class="o">${e.o}</span></span></li>`).join("")}</ol>
+    <p class="src">${cgSelo("observado")} Cada evento traz a norma que o produziu. As mudanças
+    aparecem marcadas nas séries da seção 5 para permitir inspeção — <b>não</b> para atribuir a
+    elas a variação observada.</p>
+  </div>
+
+  <div class="card">
+    <h4>O que esta página não autoriza concluir</h4>
+    <ul class="desnota">
+      <li>O município dos benefícios é o do <b>órgão pagador</b>, não o de residência. Onde os dois
+        universos divergem, o indicador se distorce — e o teste de coerência mede exatamente isso,
+        reprovando ${fmt.n0(D.totais.incoerentes)} municípios.</li>
+      <li>O valor dos benefícios é <b>líquido de descontos</b>. O consignado já saiu dele, então
+        esse número nunca serve de medida de exposição ao crédito.</li>
+      <li>A contagem é de <b>créditos emitidos</b>, não de pessoas. Não existe contagem de
+        beneficiários por município em nenhuma fonte pública.</li>
+      <li>O Censo <b>não separa</b> aposentadoria e pensão das demais rendas. A participação de
+        outras fontes é publicada como teto, jamais como renda previdenciária.</li>
+      <li>Não existe carteira municipal pública de consignado. Toda exposição municipal aqui é
+        <b>estimativa</b> por alocação do total estadual.</li>
+      <li>A relação entre dependência previdenciária e consignado só é afirmada a partir do dado
+        estadual observado. A versão municipal dessa relação é mecânica.</li>
+      <li>Reclamação mede propensão a reclamar, não incidência de problema, e contagem bruta não
+        é ranking de conduta.</li>
+      <li>Nenhum município é classificado como saturado a partir de alocação proporcional pura.</li>
+    </ul>
+  </div>
+  </section>`;
+}
+
+window.cgFiltra = (k, v) => { state.cg = { ...(state.cg || {}), [k]: v }; renderConsignado(); };
+window.cgSel = cod => {
+  const s = state.cg || {};
+  const comp = s.comp || [];
+  if (s.sel && s.sel !== cod && comp.length < 4 && !comp.includes(s.sel)) comp.push(s.sel);
+  state.cg = { ...s, sel: cod, comp: comp.filter(c => c !== cod) };
+  renderConsignado();
+  const alvo = document.getElementById("cg-perfil");
+  if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+window.cgTira = cod => {
+  const s = state.cg || {};
+  state.cg = { ...s, sel: s.sel === cod ? null : s.sel, comp: (s.comp || []).filter(c => c !== cod) };
+  renderConsignado();
+};
+window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderConsignado(); };
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
