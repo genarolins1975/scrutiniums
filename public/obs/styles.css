@@ -8,37 +8,37 @@
 @font-face {
   font-family: "Playfair Display";
   src: url("fonts/playfair-display-ext.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1EFF, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: "Playfair Display";
   src: url("fonts/playfair-display.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Inter";
   src: url("fonts/inter-ext.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1EFF, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: "Inter";
   src: url("fonts/inter.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
   font-family: "Archivo Narrow";
   src: url("fonts/archivo-narrow-ext.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1EFF, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: "Archivo Narrow";
   src: url("fonts/archivo-narrow.woff2") format("woff2");
-  font-weight: var(--fw-light) 900; font-style: normal; font-display: swap;
+  font-weight: 100 900; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
@@ -385,6 +385,7 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
 .seal.demo { background: var(--warning-soft); color: var(--warning); border: 1px dashed color-mix(in srgb, var(--warning) 55%, transparent); }
 .seal.aprox { background: var(--surface-2); color: var(--text-2); }
 .seal.desc { background: var(--surface-2); color: var(--text-3); text-decoration: line-through; }
+.seal.ctx { background: var(--surface-2); color: var(--text-3); }
 
 .src { color: var(--text-3); font-size: var(--fs-xs); margin-top: 8px; line-height: var(--lh-normal); }
 .src b { color: var(--text-2); font-weight: var(--fw-semibold); }
@@ -925,17 +926,10 @@ nav.tabs.buscando .navgroup .navlabel::after { content: none; }
 .descomoler { margin: 6px 0 0; font-size: var(--fs-base); }
 .descomoler dt { font-weight: var(--fw-bold); margin-top: 8px; }
 .descomoler dd { margin: 2px 0 0; color: var(--text-2); line-height: var(--lh-relaxed); }
-.desdl { margin: 8px 0 0; font-size: var(--fs-sm); display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; }
-.desdl dt { font-family: var(--label); font-size: var(--fs-2xs); text-transform: uppercase; letter-spacing: var(--tr-caps);
-  color: var(--text-3); padding-top: 2px; }
-.desdl dd { margin: 0; color: var(--text-2); line-height: var(--lh-normal); }
 
-.descomp { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 14px; }
 .card.semdado { background: var(--surface-2); }
 @media (max-width: 560px) {
   .destl li { flex-direction: column; gap: 2px; }
-  .desdl { grid-template-columns: 1fr; gap: 1px 0; }
-  .desdl dd { margin-bottom: 6px; }
 }
 
 /* ---------- Desenrola: refinamento tipográfico e de ritmo ----------
@@ -1220,8 +1214,6 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
 .cgfx .n { display: block; font-size: var(--fs-2xl); font-weight: var(--fw-semibold); font-variant-numeric: tabular-nums; }
 .cgfx .r { display: block; font-size: var(--fs-xs); color: var(--text-2); margin-top: 2px; }
 
-.cgcorr { font-variant-numeric: tabular-nums; }
-.cgcorr.sec { color: var(--text-2); }
 .cgdisp { width: 100%; height: auto; }
 .cgdisp circle { transition: fill-opacity .15s; }
 .cgdisp circle:hover { fill-opacity: .8; }
@@ -1267,33 +1259,7 @@ button.linkish { background: none; border: 0; padding: 0; color: var(--accent-in
    Substitui as fileiras de cartões idênticos. Sem borda em volta de cada indicador —
    a separação é feita por uma régua vertical fina, que é o que a imprensa econômica usa
    e que reduz a contagem de caixas na tela sem perder a leitura de grupo. */
-.morkpi { display: grid; grid-template-columns: repeat(5, 1fr);
-  gap: var(--sp-0); margin: var(--sp-5) 0 var(--sp-4);
-  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-.morkpi .mk { display: flex; flex-direction: column; gap: var(--sp-1);
-  padding: var(--sp-4) var(--sp-4) var(--sp-4) var(--sp-4);
-  border-left: 1px solid var(--border); }
-.morkpi .mk:first-child { border-left: 0; padding-left: 0; }
-.morkpi .mk .r { font-family: var(--label); font-size: var(--fs-2xs);
-  letter-spacing: var(--tr-caps); text-transform: uppercase; color: var(--text-3); }
-.morkpi .mk .v { font-size: var(--fs-2xl); font-weight: var(--fw-light);
-  letter-spacing: var(--tr-tight); line-height: var(--lh-tight);
-  font-variant-numeric: tabular-nums; color: var(--text); }
-.morkpi .mk .v small { font-size: var(--fs-md); font-weight: var(--fw-normal); color: var(--text-2); }
-.morkpi .mk.destaque .v { color: var(--accent-ink); }
-.morkpi .mk .n { font-size: var(--fs-xs); color: var(--text-3); line-height: var(--lh-snug); }
 
-@media (max-width: 1100px) {
-  .morkpi { grid-template-columns: repeat(3, 1fr); }
-  .morkpi .mk:nth-child(3n+1) { border-left: 0; padding-left: 0; }
-  .morkpi .mk:nth-child(n+4) { border-top: 1px solid var(--border); }
-}
-@media (max-width: 700px) {
-  .morkpi { grid-template-columns: repeat(2, 1fr); }
-  .morkpi .mk:nth-child(odd) { border-left: 0; padding-left: 0; }
-  .morkpi .mk:nth-child(n+3) { border-top: 1px solid var(--border); }
-  .morkpi .mk .v { font-size: var(--fs-xl); }
-}
 
 /* ---------- ABERTURA DE PÁGINA: indicadores centrais ----------
    Substitui as fileiras de cartões idênticos. Sem caixa em volta de cada indicador — a

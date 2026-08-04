@@ -177,6 +177,12 @@ def build(con, cfg=None):
 
     com_credito = [m for m in muns if m.get("credito")]
     sem_estban = [m for m in muns if not m["no_estban"]]
+    # O universo tem três estados, não dois: além dos que têm saldo e dos que não têm
+    # dependência bancária, existem municípios cuja agência reporta ao ESTBAN com saldo
+    # de crédito igual a zero (2 na data-base corrente: Santa Lúcia/SP e Santa Maria da
+    # Serra/SP). Sem este terceiro grupo, com + sem = 5.568 e o leitor que somasse os
+    # rótulos contra os 5.570 municípios do Brasil encontraria um buraco sem explicação.
+    com_dep_sem_saldo = [m for m in muns if m["no_estban"] and not m.get("credito")]
 
     # participações dentro da UF
     tot_uf = {}
@@ -470,6 +476,7 @@ def build(con, cfg=None):
             "municipios_brasil": len(muns),
             "com_saldo_estban": len(com_credito),
             "sem_saldo_estban": len(sem_estban),
+            "com_dependencia_sem_saldo": len(com_dep_sem_saldo),
             "adultos_sem_estban": sum(m["adultos"] for m in sem_estban),
             "elegiveis_ranking": len(universo),
             "min_adultos": MIN_ADULTOS, "min_renda_anual": MIN_RENDA_ANUAL,

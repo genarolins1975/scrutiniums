@@ -146,7 +146,9 @@ def build(con):
         mod_id = f"{'pf' if seg == 'PESSOA FÍSICA' else 'pj'}:{mod}"
         gold_mods.append({
             "id": mod_id, "segmento": "PF" if seg == "PESSOA FÍSICA" else "PJ", "modalidade": mod,
-            "janela": {"inicio": ultima, "fim": None},
+            "janela": {"inicio": ultima,
+                       "fim": (con.execute("SELECT MAX(fim) FROM taxas_inst WHERE segmento=? AND modalidade=? AND inicio=?",
+                                            (seg, mod, ultima)).fetchone() or [None])[0]},
             "stats": st, "spread_selic": round(st["mediana"] - selic, 2) if selic is not None else None,
             "delta_3m": (round(serie[-1]["mediana"] - serie[-4]["mediana"], 2) if len(serie) >= 4 else None),
             "ranking": ranking, "serie_mensal": serie, "persistentes": persistentes,
@@ -175,7 +177,7 @@ def build(con):
             "janela": "última janela consolidada (cobertura ≥ 80% do pico de IFs da modalidade) — janelas muito recentes chegam incompletas e são ignoradas até consolidar.",
             "mediana_vs_media_bc": "a mediana ENTRE IFs dá o mesmo peso a cada instituição; difere da taxa média da modalidade do SGS, ponderada pelo valor contratado (dominada pelos grandes).",
             "spread_selic": "mediana entre IFs menos a meta Selic vigente — APROXIMAÇÃO declarada; o spread oficial do BC usa custo de captação, não a Selic.",
-            "carteira": "estoque nacional da modalidade no SCR.data (todas as safras), com inadimplência ARRASTADA — conceito distinto das novas operações a que a taxa se refere.",
+            "carteira": "estoque nacional do PRODUTO correspondente no SCR.data (todas as safras), com inadimplência ARRASTADA. O SCR não separa as modalidades do txjuros: as três variantes do consignado (INSS, público e privado) compartilham a mesma carteira do produto Consignado, e o estoque da modalidade isolada não é observável ali — para o consignado do INSS, a série específica é a do SGS. Conceito distinto das novas operações a que a taxa se refere.",
             "persistencia": f"quantas das últimas {JANELAS_PERSISTENCIA} janelas a IF fechou entre as {TOP_PERSISTENCIA} mais baratas da modalidade.",
         },
         "modalidades": gold_mods,

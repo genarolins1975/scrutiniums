@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.52.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.52.1"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1151,7 +1151,6 @@ window.judCSV = () => {
 const PX_COLORS = { Pix: "var(--pix)", TED: "#1d4e89", Boleto: "#b45309", Cheque: "#64748b", DOC: "#8d94a3",
   TEC: "#8d94a3", CartaoCredito: "#6b46a3", CartaoDebito: "#0e7c7b", CartaoPrePago: "#b91c1c",
   TransIntrabancaria: "#525a68", Convenios: "#d9a514", DebitoDireto: "#2f7d4f", Saques: "#c2540a" };
-const PX_DEFAULT_INSTS = ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"];
 window.pxSet = (k, v) => { state.px[k] = v; syncHash(); renderPix(); };
 window.pxToggleInst = i => {
   const s = state.px.insts;
@@ -1167,7 +1166,29 @@ window.pxLoadMun = async () => {
     renderPix();
   }
 };
-window.pxMunFiltro = () => { state.px.munq = (document.getElementById("pxmunq") || {}).value || ""; renderPix(); };
+/* Re-renderiza a view preservando foco e cursor do campo ativo. As buscas que filtram
+   a cada tecla re-renderizam a página inteira, o que recria o <input> e mataria o foco —
+   o usuário digitaria uma letra por clique. Capturar id + posição do cursor antes e
+   restaurar depois resolve sem refatorar os renderizadores. */
+function comFocoPreservado(rerender) {
+  const el = document.activeElement;
+  const id = el && el.id;
+  const pos = el && el.selectionStart;
+  rerender();
+  if (id) {
+    const novo = document.getElementById(id);
+    if (novo) {
+      novo.focus();
+      if (pos != null && novo.setSelectionRange) {
+        try { novo.setSelectionRange(pos, pos); } catch (e) { /* type=search em alguns UAs */ }
+      }
+    }
+  }
+}
+window.pxMunFiltro = () => {
+  state.px.munq = (document.getElementById("pxmunq") || {}).value || "";
+  comFocoPreservado(renderPix);
+};
 
 function pxStackedArea(periods, series, opts) {
   // participação empilhada (0–100%); séries: [{label, color, vals[]}] alinhadas a periods
@@ -2626,7 +2647,10 @@ function renderOverview() {
     .filter(f => state.data[f] === undefined);
   if (faltam.length) Promise.all(faltam.map(fetchGold)).then(() => { if (currentView() === "overview") renderOverview(); });
   const seg = state.filters.seg;
-  const ibcc = seg === "total" ? state.data.ibcc : (state.data.ibcc.segmentos || {})[seg] || state.data.ibcc;
+  // fetchGold marca null quando o gold falha; com filtro de segmento salvo no
+  // localStorage, o acesso encadeado sem guarda derrubava a Visão geral inteira.
+  const ibccBase = state.data.ibcc || {};
+  const ibcc = seg === "total" ? ibccBase : (ibccBase.segmentos || {})[seg] || ibccBase;
   const pos = seg === "total" ? overview.ibcc_posicao : ibccPositionFrom(ibcc);
   const diag = overview.diagnostico;
   const chg = overview.mudancas;
@@ -3322,7 +3346,7 @@ function rjRealSection() {
         ${c.credores && c.credores.passivo_classes && Object.keys(c.credores.passivo_classes).length ? `<b>QGC por classe ${badge("observado", "subtotais por classe extraídos do edital")}:</b> ${Object.entries(c.credores.passivo_classes).map(([k, v]) => `${k.replace(/_/g, " ")}: R$ ${v}`).join(" · ")}<br>` : ""}
         ${c.credores && c.credores.passivo ? `<b>Passivo citado no ato ${badge("estimado", "valor citado em publicação — conferir no processo")}:</b> R$ ${c.credores.passivo}<br>` : ""}
         ${c.credores && c.credores.nivel_passivo ? `<b>Nível da cascata:</b> ${c.credores.nivel_passivo}${c.credores.passivo_estimado_intervalo ? ` (R$ ${fmt.n0(c.credores.passivo_estimado_intervalo[0])} – ${fmt.n0(c.credores.passivo_estimado_intervalo[1])})` : ""}<br>` : ""}
-        ${c.credores && c.credores.bancos.length ? `<b>Credores financeiros citados:</b> ${c.credores.bancos.map(b => `${b.nome}${b.valor ? ` (R$ ${b.valor} — observada)` : " (parcialmente observada)"}`).join("; ")}<br>` : ""}
+        ${c.credores && c.credores.bancos && c.credores.bancos.length ? `<b>Credores financeiros citados:</b> ${c.credores.bancos.map(b => `${b.nome}${b.valor ? ` (R$ ${b.valor} — observada)` : " (parcialmente observada)"}`).join("; ")}<br>` : ""}
         <b>Atos na janela:</b> ${c.n_publicacoes} (${c.tipos_documento.join(", ")})
         ${c.link ? ` · <a href="${c.link}" target="_blank" rel="noopener">consulta pública</a>` : ""}
       </div>
@@ -4180,7 +4204,6 @@ function round2(x) { return Math.round(x * 100) / 100; }
    nunca deixa o leitor confundir: SCR não é o programa inteiro; faixas de pessoa
    física não somam com Pequenos Negócios; e baixa de registro negativo não é
    pagamento. */
-const DES_SELOS = { reportado: "obs", calculado: "calc", estimado: "est", causal: "cen", associacao: "prev" };
 
 function desSelo(s) {
   const b = { reportado: ["obs", "REPORTADO"], calculado: ["calc", "CALCULADO"], estimado: ["est", "ESTIMADO"],
@@ -4667,10 +4690,25 @@ window.penSel = cod => {
   requestAnimationFrame(() => document.getElementById("pen-perfil")
     ?.scrollIntoView({ behavior: "smooth", block: "nearest" }));
 };
-window.penBusca = v => {
+window.penBusca = (v, confirmado) => {
+  /* A primeira versão selecionava (e re-renderizava a página inteira, destruindo o
+     próprio input) ao primeiro prefixo de três letras — digitar "Pau D'Arco" era
+     impossível, porque "pau" já casava outro município e a caixa zerava. A seleção
+     agora só acontece no Enter ou na escolha do datalist; o oninput apenas alimenta
+     as sugestões, sem tocar no DOM do input. */
   const P = state.data.penetracao;
   const q = _norm(v);
-  const achou = q.length >= 3 ? P.municipios.find(m => _norm(m.nome).startsWith(q)) : null;
+  const dl = document.getElementById("penbusca-dl");
+  if (dl && !confirmado) {
+    const ops = q.length >= 2
+      ? P.municipios.filter(m => _norm(m.nome).startsWith(q)).slice(0, 12)
+      : [];
+    dl.innerHTML = ops.map(m => `<option value="${attr(m.nome + " – " + m.uf)}"></option>`).join("");
+    return;
+  }
+  const alvoQ = _norm(String(v).replace(/\s+–\s+\w{2}$/, ""));
+  const achou = P.municipios.find(m => _norm(m.nome) === alvoQ)
+    || (alvoQ.length >= 3 ? P.municipios.find(m => _norm(m.nome).startsWith(alvoQ)) : null);
   if (achou) penSel(achou.cod);
 };
 
@@ -4771,7 +4809,10 @@ function renderPenetracao() {
       `<button class="${conf === v ? "active" : ""}" onclick="penFiltra('conf','${v}')">${l}</button>`).join("")}</span>
     <span class="seg">${[["com", `cortes mínimos`], ["sem", "sem cortes"]].map(([v, l]) =>
       `<button class="${(cortes ? "com" : "sem") === v ? "active" : ""}" onclick="penFiltra('cortes','${v}')">${l}</button>`).join("")}</span>
-    <input type="search" placeholder="buscar município" oninput="penBusca(this.value)" style="min-width:180px" aria-label="buscar município">
+    <input type="search" placeholder="buscar município" list="penbusca-dl" oninput="penBusca(this.value)"
+      onchange="penBusca(this.value, true)"
+      onkeydown="if(event.key==='Enter'){penBusca(this.value, true)}" style="min-width:180px"
+      aria-label="buscar município"><datalist id="penbusca-dl"></datalist>
     <span class="src">${fmt.n0(base.length)} municípios no recorte${cortes ? ` · mínimo de ${fmt.n0(P.cobertura.min_adultos)} adultos e ${fmt.money(P.cobertura.min_renda_anual)} de renda anual` : ""}</span>
   </div>`;
 
@@ -5087,7 +5128,7 @@ function renderPenetracao() {
 
 function penSelo(s) {
   const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
-              estimado: ["est", "ESTIMADO"], contextual: ["desc", "CONTEXTUAL"] }[s];
+              estimado: ["est", "ESTIMADO"], contextual: ["ctx", "CONTEXTUAL"] }[s];
   return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
 }
 
@@ -5560,9 +5601,12 @@ function buildReport() {
 }
 function download(name, content, mime) {
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([content], { type: mime }));
+  const url = URL.createObjectURL(new Blob([content], { type: mime }));
+  a.href = url;
   a.download = name;
   a.click();
+  // sem o revoke, cada exportação deixava um object URL vivo até fechar a aba
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 function exportSeries(key) {
   const s = state.data.pulse.series[key];
@@ -7473,7 +7517,7 @@ function cgRisco(D, base) {
       <td>${m.uf}</td>
       <td style="text-align:right">${m.vulnerabilidade != null ? fmt.n(m.vulnerabilidade, 0) : "–"}</td>
       <td style="text-align:right">${m.exposicao != null ? fmt.n(m.exposicao, 0) : "–"}</td>
-      <td style="text-align:right">${m["perfil_benefício"] != null ? fmt.n(m["perfil_benefício"], 0) : "–"}</td>
+      <td style="text-align:right">${m.perfil_beneficio != null ? fmt.n(m.perfil_beneficio, 0) : "–"}</td>
       <td style="text-align:right"><b>${fmt.n(m.indice, 0)}</b></td></tr>`).join("")}</tbody></table>
     <p class="src">${cgSelo("estimado")} Cada dimensão é a posição do município na distribuição
     nacional, de 0 a 100, entre os percentis 5 e 95. <b>Vulnerabilidade</b> combina participação
@@ -7928,7 +7972,7 @@ function renderProducts() {
 const PMX_STATE = { sort: "carteira_brl", dir: -1, all: false, q: "", sel: {} };
 window.pmxSort = k => { if (PMX_STATE.sort === k) PMX_STATE.dir *= -1; else { PMX_STATE.sort = k; PMX_STATE.dir = -1; } renderProductPage(); };
 window.pmxAll = () => { PMX_STATE.all = !PMX_STATE.all; renderProductPage(); };
-window.pmxQ = v => { PMX_STATE.q = v.toLowerCase(); renderProductPage(); };
+window.pmxQ = v => { PMX_STATE.q = v.toLowerCase(); comFocoPreservado(renderProductPage); };
 window.pmxSel = (cod, on) => { if (on) PMX_STATE.sel[cod] = 1; else delete PMX_STATE.sel[cod]; document.getElementById("pmxCmpBtn").textContent = `comparar selecionadas (${Object.keys(PMX_STATE.sel).length})`; };
 window.pmxCompare = () => {
   const cods = Object.keys(PMX_STATE.sel);
@@ -8026,7 +8070,7 @@ function renderProductPageData(el, P) {
   </div>
   <h3>Matriz produto × instituição <span class="src">(${p.matriz.length} instituições)</span></h3>
   <div class="controls">
-    <input type="search" placeholder="filtrar instituição…" value="${PMX_STATE.q}" oninput="pmxQ(this.value)" aria-label="filtrar instituição">
+    <input type="search" id="pmxq-input" placeholder="filtrar instituição…" value="${PMX_STATE.q}" oninput="pmxQ(this.value)" aria-label="filtrar instituição">
     <button class="btn small" id="pmxCmpBtn" onclick="pmxCompare()">comparar selecionadas (${Object.keys(PMX_STATE.sel).length})</button>
     <button class="btn ghost small" onclick="exportProductCSV('${p.slug}')">CSV</button>
     <button class="btn ghost small" onclick="exportProductXLSX('${p.slug}')">XLSX</button>

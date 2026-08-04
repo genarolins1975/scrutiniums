@@ -491,6 +491,50 @@ def build(con, cfg=None):
         "scr": scr, "estados": estados, "circularidade": circular,
         "municipios": muns, "rankings": rankings,
         "saturacao_criterios": SATURACAO,
+        "dicionario": [
+            {"t": "Valor líquido de benefícios emitidos", "selo": "observado",
+             "d": "Créditos encaminhados à rede bancária, já descontados imposto de renda, "
+                  "pensão alimentícia e demais consignações — o empréstimo consignado "
+                  "inclusive. Não é o valor bruto do benefício.",
+             "f": f"MPS, Estatísticas Municipais da Previdência, dezembro de {ano}.",
+             "l": "O consignado já saiu deste número: município com mais consignado aparece "
+                  "com valor menor. Nunca é usado como medida de exposição ao crédito."},
+            {"t": "Benefícios emitidos", "selo": "observado",
+             "d": "Quantidade de créditos emitidos na competência, por grupo de espécie.",
+             "f": f"MPS, Estatísticas Municipais da Previdência, dezembro de {ano}.",
+             "l": "Conta créditos, não pessoas: um benefício pode gerar mais de um crédito e "
+                  "11,1% dos beneficiários acumulam mais de um benefício. O município é o do "
+                  "órgão pagador, não o de residência do beneficiário."},
+            {"t": "Peso dos benefícios na renda domiciliar", "selo": "calculado",
+             "d": "Valor líquido de dezembro, deflacionado pelo IPCA a preços de julho de "
+                  "2022, dividido pela massa de renda domiciliar do Censo.",
+             "f": "Cálculo sobre MPS e Censo 2022.",
+             "l": "Razão entre bases agregadas de universos distintos — quem recebe na "
+                  "agência local não é necessariamente quem mora no município. O teto de "
+                  "coerência do Censo rebaixa quem ultrapassa a participação de rendas "
+                  "não-trabalho."},
+            {"t": "Consignado de aposentados e pensionistas", "selo": "observado",
+             "d": "Saldo do produto Consignado para o grupo ocupacional Aposentado/pensionista "
+                  "no SCR, por unidade da federação.",
+             "f": f"BCB, SCR.data, data-base {scr['data_base']}.",
+             "l": "Mais amplo que o público do INSS (inclui regimes próprios) e ao mesmo "
+                  "tempo cobre só 57% do saldo que o SGS registra como consignado do INSS. "
+                  "Nunca é somado nem trocado pela série do SGS."},
+            {"t": "Exposição municipal estimada ao consignado", "selo": "estimado",
+             "d": "Saldo estadual observado repartido entre municípios na proporção da "
+                  "quantidade de aposentadorias e pensões.",
+             "f": "Alocação sobre SCR e MPS.",
+             "l": "Não é carteira observada — não existe carteira municipal pública. A chave "
+                  "usa quantidade e não valor porque o valor é líquido do próprio consignado. "
+                  "Correlações com a chave de alocação são mecânicas."},
+            {"t": "Reclamações sobre consignado do INSS", "selo": "observado",
+             "d": "Reclamações da categoria dedicada a beneficiários do INSS no "
+                  "consumidor.gov.br, por município e instituição.",
+             "f": "consumidor.gov.br, publicações mensais.",
+             "l": "Mede propensão a reclamar, não incidência de problema. Depende de acesso "
+                  "digital e do tamanho da base de clientes. Contagem bruta não é ranking "
+                  "de conduta."},
+        ],
         "instituicoes": _instituicoes(con),
         "totais": {
             "municipios": len(muns),
@@ -816,7 +860,7 @@ def _indice_risco(m, cortes):
     d1, d2, d3 = media(vuln), media(expo), media(conc)
     partes = [x for x in (d1, d2, d3) if x is not None]
     return {
-        "vulnerabilidade": d1, "exposicao": d2, "perfil_benefício": d3,
+        "vulnerabilidade": d1, "exposicao": d2, "perfil_beneficio": d3,
         "indice": _r(sum(partes) / len(partes), 1) if partes else None,
     }
 

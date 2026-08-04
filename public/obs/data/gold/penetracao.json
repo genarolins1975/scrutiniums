@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-04T00:50:03+00:00",
+ "gerado_em": "2026-08-04T22:38:41+00:00",
  "data_base_credito": "2026-03",
  "datas_credito": [
   "2026-03",
@@ -45,6 +45,7 @@
   "municipios_brasil": 5570,
   "com_saldo_estban": 2914,
   "sem_saldo_estban": 2654,
+  "com_dependencia_sem_saldo": 2,
   "adultos_sem_estban": 14538872.0,
   "elegiveis_ranking": 1226,
   "min_adultos": 20000,
