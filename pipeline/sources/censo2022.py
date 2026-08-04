@@ -36,6 +36,29 @@ MALHA = ("https://servicodados.ibge.gov.br/api/v3/malhas/paises/BR"
 IDADE_TOTAL = "100362"
 IDADE_MENORES = ["93070", "93084", "93085", "6572", "6573", "6574"]  # 0-4, 5-9, 10-14, 15, 16, 17
 
+# --- Condição de ocupação do domicílio: tabela 9930, variável 381 ---
+#
+# A tabela cruza condição de ocupação (classificação 63) com número de cômodos (65) e
+# tipo de domicílio (125). As duas últimas são neutralizadas pela categoria Total.
+#
+# Nomenclatura de 2022, que mudou em relação a 2010: não existe "Próprio - já pago" e sim
+# "Próprio de algum morador - já pago, herdado ou ganho"; e "Cedido" ganhou três
+# subcategorias. Ver docs/AUDITORIA_MORADIA.md.
+#
+# Limite empírico da API: com N6[all], no máximo 8 categorias da classificação 63 por
+# requisição — com 9 ou mais o servidor devolve HTTP 500 por estouro de payload.
+OCUPACAO = {
+    "total":            "95826",
+    "proprio":          "73554",
+    "proprio_pago":     "73126",  # já pago, herdado ou ganho
+    "proprio_pagando":  "4343",   # ainda pagando
+    "alugado":          "1055",
+    "cedido":           "73553",
+    "outra":            "1058",
+}
+COMODOS_TOTAL = "95810"
+TIPO_TOTAL = "2932"
+
 
 def _ensure(con):
     con.executescript("""
@@ -44,6 +67,10 @@ def _ensure(con):
         pop_total REAL, pop_18mais REAL,
         moradores_dpp REAL, renda_pc_mensal REAL, renda_dom_mensal REAL,
         pop_urbana REAL, urbanizacao REAL);
+    CREATE TABLE IF NOT EXISTS censo_moradia(
+        cod_ibge TEXT PRIMARY KEY,
+        dom_total REAL, dom_proprio REAL, dom_proprio_pago REAL, dom_proprio_pagando REAL,
+        dom_alugado REAL, dom_cedido REAL, dom_outra REAL);
     CREATE TABLE IF NOT EXISTS censo_malha(cod_ibge TEXT PRIMARY KEY, svg_d TEXT);
     CREATE TABLE IF NOT EXISTS censo_meta(chave TEXT PRIMARY KEY, valor TEXT);
     """)
@@ -142,6 +169,36 @@ def collect(con, cfg=None):
                     (cod, e.get("pop_total"), e.get("pop_18mais"), e.get("moradores_dpp"),
                      e.get("renda_pc_mensal"), e.get("renda_dom_mensal"),
                      e.get("pop_urbana"), e.get("urbanizacao")))
+
+    # ---- condição de ocupação do domicílio (tabela 9930) ----
+    try:
+        cats = ",".join(OCUPACAO.values())
+        clas = f"63%5B{cats}%5D%7C65%5B{COMODOS_TOTAL}%5D%7C125%5B{TIPO_TOTAL}%5D"
+        d, meta, url = _serie("9930", "381", clas)
+        _, sha = common.save_bronze("censo2022", "9930_ocupacao",
+                                    json.dumps(d).encode("utf-8"), {**meta, "url": url})
+        por_cat = {}
+        for r in d[0]["resultados"]:
+            cat = list(r["classificacoes"][0]["categoria"].keys())[0]
+            por_cat[cat] = {s["localidade"]["id"]: _num(s["serie"]["2022"]) for s in r["series"]}
+        inv = {v: k for k, v in OCUPACAO.items()}
+        mor = {}
+        for cid, serie in por_cat.items():
+            nome = inv.get(cid)
+            if not nome:
+                continue
+            for cod, v in serie.items():
+                mor.setdefault(cod, {})[nome] = v
+        for cod, e in mor.items():
+            con.execute("INSERT OR REPLACE INTO censo_moradia VALUES(?,?,?,?,?,?,?,?)",
+                        (cod, e.get("total"), e.get("proprio"), e.get("proprio_pago"),
+                         e.get("proprio_pagando"), e.get("alugado"), e.get("cedido"),
+                         e.get("outra")))
+        common.record_lineage(con, "moradia.json", "bronze/censo2022/9930_ocupacao", sha,
+                              "Censo 2022 tabela 9930 variável 381 -> domicílios por condição de ocupação")
+        results.append({"key": "censo2022:9930", "ok": True, "municipios": len(mor)})
+    except Exception as e:
+        results.append({"key": "censo2022:9930", "ok": False, "error": str(e)[:200]})
 
     # ---- malha municipal ----
     if tem_malha < 5500:

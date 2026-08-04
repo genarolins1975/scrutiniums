@@ -590,6 +590,18 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("desenrola.json", {"disponivel": False, "error": str(e)})
 
+    # Moradia depende das mesmas tabelas que penetracao (estban_*, censo_*) mais
+    # mi_serie. Fica depois dela para que a exclusão da data-base subcoletada, que
+    # penetracao define, já esteja aplicada.
+    try:
+        from pipeline import moradia as moradia_mod
+        r_mor = moradia_mod.build(con, cfg)
+        common.write_gold("moradia.json", r_mor)
+        print(f"  [moradia] {r_mor['totais']['municipios_com_saldo']} municípios com saldo, "
+              f"{r_mor['totais']['instituicoes_no_169']} instituições no verbete 169")
+    except Exception as e:
+        common.write_gold("moradia.json", {"disponivel": False, "error": str(e)})
+
     from pipeline import central_alertas
     central = central_alertas.build()
     common.write_gold_text("alerts.xml", central_alertas.rss(central))

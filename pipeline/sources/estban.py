@@ -37,6 +37,12 @@ MUNICIPIOS_IBGE = "https://servicodados.ibge.gov.br/api/v1/localidades/municipio
 # Verbete 160: saldo de operações de crédito. É o numerador de todo o painel.
 COL_CREDITO = "VERBETE_160_OPERACOES_DE_CREDITO"
 COL_DEPOSITOS = "VERBETE_400_DEPOSITOS"
+# Verbete 169: financiamentos imobiliários. Ver docs/AUDITORIA_MORADIA.md — a soma dos
+# subverbetes publicados (161+162+163+167+169+171) dá 70% do verbete 160, então a
+# decomposição do ESTBAN não é exaustiva e 169 não pode ser tratado como "a parte
+# imobiliária de um todo que fecha".
+COL_IMOBILIARIO = "VERBETE_169_FINANCIAMENTOS_IMOBILIARIOS"
+COL_POUPANCA = "VERBETE_420_DEPOSITOS_DE_POUPANCA"
 
 
 # Grafias que o ESTBAN mantém e o IBGE já mudou, mais um caso de sinal trocado.
@@ -91,6 +97,12 @@ def _ensure(con):
     CREATE TABLE IF NOT EXISTS estban_mun_inst(
         data_base TEXT, cod_ibge TEXT, cnpj TEXT, instituicao TEXT, credito REAL,
         PRIMARY KEY(data_base, cod_ibge, cnpj));
+    CREATE TABLE IF NOT EXISTS estban_imob(
+        data_base TEXT, cod_ibge TEXT, uf TEXT, imobiliario REAL, poupanca REAL,
+        instituicoes INTEGER, PRIMARY KEY(data_base, cod_ibge));
+    CREATE TABLE IF NOT EXISTS estban_imob_inst(
+        data_base TEXT, cod_ibge TEXT, cnpj TEXT, instituicao TEXT, imobiliario REAL,
+        PRIMARY KEY(data_base, cod_ibge, cnpj));
     CREATE TABLE IF NOT EXISTS estban_coleta(
         data_base TEXT PRIMARY KEY, coletado_em TEXT, bronze_sha TEXT,
         linhas INTEGER, municipios INTEGER, casados INTEGER, sem_casar TEXT);
@@ -139,12 +151,12 @@ def _absorve(con, data_base, url, chave_ibge):
     # as duas primeiras linhas são preâmbulo; o cabeçalho vem na terceira com '#'
     cab = linhas[2].strip().lstrip("#").split(";")
     col = {c.strip(): i for i, c in enumerate(cab)}
-    for obrig in ("UF", "CODMUN", "MUNICIPIO", "CNPJ", "NOME_INSTITUICAO", COL_CREDITO):
+    for obrig in ("UF", "CODMUN", "MUNICIPIO", "CNPJ", "NOME_INSTITUICAO", COL_CREDITO, COL_IMOBILIARIO):
         if obrig not in col:
             raise RuntimeError(f"coluna {obrig} ausente — esquema do ESTBAN mudou")
 
     num = lambda v: float(v) if str(v).strip().lstrip("-").replace(".", "").isdigit() else 0.0
-    agreg, por_inst, sem_casar, n = {}, {}, set(), 0
+    agreg, por_inst, por_imob, sem_casar, n = {}, {}, {}, set(), 0
     for l in linhas[3:]:
         p = l.rstrip("\r").split(";")
         if len(p) < len(cab):
@@ -157,9 +169,19 @@ def _absorve(con, data_base, url, chave_ibge):
             continue
         cred = num(p[col[COL_CREDITO]])
         dep = num(p[col[COL_DEPOSITOS]]) if COL_DEPOSITOS in col else 0.0
-        a = agreg.setdefault(cod, {"uf": uf, "credito": 0.0, "depositos": 0.0, "inst": set(), "ag": 0})
+        imob = num(p[col[COL_IMOBILIARIO]])
+        poup = num(p[col[COL_POUPANCA]]) if COL_POUPANCA in col else 0.0
+        a = agreg.setdefault(cod, {"uf": uf, "credito": 0.0, "depositos": 0.0, "inst": set(), "ag": 0,
+                                   "imob": 0.0, "poup": 0.0, "inst_imob": set()})
         a["credito"] += cred
         a["depositos"] += dep
+        a["imob"] += imob
+        a["poup"] += poup
+        if imob > 0:
+            a["inst_imob"].add(p[col["CNPJ"]].strip())
+            ki = (cod, p[col["CNPJ"]].strip())
+            pii = por_imob.setdefault(ki, {"nome": p[col["NOME_INSTITUICAO"]].strip(), "imob": 0.0})
+            pii["imob"] += imob
         a["inst"].add(p[col["CNPJ"]].strip())
         a["ag"] += int(num(p[col.get("AGEN_PROCESSADAS", 0)])) if "AGEN_PROCESSADAS" in col else 0
         k = (cod, p[col["CNPJ"]].strip())
@@ -174,6 +196,13 @@ def _absorve(con, data_base, url, chave_ibge):
     for (cod, cnpj), v in por_inst.items():
         con.execute("INSERT OR REPLACE INTO estban_mun_inst VALUES(?,?,?,?,?)",
                     (data_base, cod, cnpj, v["nome"], round(v["credito"], 2)))
+    for cod, a in agreg.items():
+        con.execute("INSERT OR REPLACE INTO estban_imob VALUES(?,?,?,?,?,?)",
+                    (data_base, cod, a["uf"], round(a["imob"], 2), round(a["poup"], 2),
+                     len(a["inst_imob"])))
+    for (cod, cnpj), v in por_imob.items():
+        con.execute("INSERT OR REPLACE INTO estban_imob_inst VALUES(?,?,?,?,?)",
+                    (data_base, cod, cnpj, v["nome"], round(v["imob"], 2)))
     con.execute("INSERT OR REPLACE INTO estban_coleta VALUES(?,?,?,?,?,?,?)",
                 (data_base, common.now_utc(), sha, n, len(agreg), len(agreg),
                  json.dumps(sorted(sem_casar)[:40], ensure_ascii=False)))

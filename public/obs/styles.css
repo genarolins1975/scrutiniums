@@ -1081,3 +1081,76 @@ tr.selrow { background: var(--accent-soft); }
   .penlayout .penmapa { max-height: none; width: 100%; }
   .penrank .penlista { max-height: 340px; }
 }
+
+/* ---------- MORADIA E CRÉDITO HABITACIONAL ----------
+   A régua de leitura mora no próprio elemento de texto, não no pai: max-width em `ch`
+   num contêiner não constrange filho de fonte menor, porque a caixa é a mesma e cabem
+   mais caracteres nela. */
+#view-moradia .desprosa { max-width: 74ch; }
+/* A régua vale para todo texto corrido da página, inclusive as notas `.src` que não são
+   filhas diretas do cartão — foi exatamente onde a medição encontrou 131 caracteres por
+   linha. Ficam de fora os contextos em que largura é informação: célula de tabela,
+   legenda de gráfico, cabeçalho de seção, controles e listas do mapa. */
+#view-moradia p.src,
+#view-moradia div.src,
+#view-moradia .judalerta,
+#view-moradia .morfalta li,
+#view-moradia .desnota li { max-width: 84ch; }
+#view-moradia table .src,
+#view-moradia .controls .src,
+#view-moradia .sechead .src,
+#view-moradia .penrank .src,
+#view-moradia .morbar .src,
+#view-moradia caption.src { max-width: none; }
+
+.morbarras { display: flex; flex-direction: column; gap: 10px; }
+.morbar { display: grid; grid-template-columns: minmax(0, 20ch) 1fr auto; gap: 12px; align-items: center; }
+.morbar .rot { font-size: 13px; color: var(--text-2); }
+.morbar .tr { display: block; height: 22px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.morbar .fill { display: block; height: 100%; background: color-mix(in srgb, var(--teal) 55%, var(--surface)); border-radius: 4px; }
+.morbar .fill.destaque { background: var(--accent); }
+.morbar .v { text-align: right; min-width: 12ch; }
+.morbar .v b { font-variant-numeric: tabular-nums; }
+.morbar .v small { display: block; color: var(--text-3); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+.morfalta ul { margin: 6px 0 10px; padding-left: 20px; }
+.morfalta li { margin: 3px 0; color: var(--text-2); }
+.morverb { padding: 4px 2px; }
+.morverb .desprosa { max-width: 74ch; }
+tr.morfora td, td.morfora { color: var(--text-3); }
+tr.morfora code { opacity: .75; }
+
+.morrec td:last-child, .morinst td, .morseg td { vertical-align: top; }
+.mor2col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.morach h4 { font-size: 14px; margin-bottom: 6px; }
+.morach p { margin: 0 0 8px; }
+
+.morsim { gap: 14px; align-items: flex-end; }
+.morsim label { display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--text-2); }
+.morsim input { width: 13ch; padding: 6px 8px; font-variant-numeric: tabular-nums; }
+.morsimtab td { font-variant-numeric: tabular-nums; }
+
+.morselo { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 11px;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--c);
+  background: color-mix(in srgb, var(--c) 12%, var(--surface)); white-space: nowrap; }
+.morst { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 11px; white-space: nowrap; }
+.morst.viavel { background: var(--positive-soft); color: var(--positive); }
+.morst.parcial { background: var(--warning-soft); color: var(--warning); }
+.morst.indisponivel { background: var(--surface-2); color: var(--text-3); }
+.mormatriz td:first-child { max-width: 34ch; }
+
+.morperfil { margin-top: 16px; }
+.morperfil table th[scope="row"] { text-align: left; font-weight: 400; color: var(--text-2); }
+.morperfil table td:last-child { width: 1%; white-space: nowrap; }
+.morperfil .sechead small { font-weight: 400; color: var(--text-3); }
+.moruf td, .morinst td { font-variant-numeric: tabular-nums; }
+button.linkish { background: none; border: 0; padding: 0; color: var(--accent-ink); cursor: pointer;
+  font: inherit; text-align: left; text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .mor2col { grid-template-columns: 1fr; }
+  .morbar { grid-template-columns: 1fr; gap: 3px; }
+  .morbar .v { text-align: left; }
+  .morbar .v small { display: inline; margin-left: 8px; }
+  .morsim input { width: 100%; }
+}

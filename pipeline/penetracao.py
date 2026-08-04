@@ -46,6 +46,12 @@ def _rows(con, sql, args=()):
 # de Gauss com pivotamento parcial. Cinco regressores e cinco dummies de região — porte
 # em que a solução direta é estável e dispensa dependência externa.
 # --------------------------------------------------------------------------------------
+# Data-base subcoletada do ESTBAN: 94 municípios com saldo zero contra cerca de 3 nos
+# demais meses. Excluída de toda série publicada. Mora no topo do módulo porque a aba de
+# moradia usa a mesma exclusão — as duas leem a mesma tabela `estban_*`.
+DATA_BASE_SUBCOLETADA = "2025-03"
+
+
 def _ols(X, y):
     n, k = len(X), len(X[0])
     xtx = [[sum(X[i][a] * X[i][b] for i in range(n)) for b in range(k)] for a in range(k)]
@@ -145,7 +151,6 @@ def build(con, cfg=None):
     # demais meses, salto de +16,7% em São Paulo de março para abril e 17,2% dos
     # municípios variando mais de 10%. Fica fora da série publicada — data-base
     # incompleta não é comparável, e desenhá-la criaria um degrau que não existiu.
-    DATA_BASE_SUBCOLETADA = "2025-03"
     datas_asc = [d for d in sorted(datas) if d != DATA_BASE_SUBCOLETADA]
     hist = {}
     for r in _rows(con, """SELECT cod_ibge, data_base, credito FROM estban_mun

@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.49.2"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.50.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -227,6 +227,7 @@ const VIEW_DATA = {
   pgfn: ["pgfn"],
   desenrola: ["desenrola", "pulse"],
   penetracao: ["penetracao", "penetracao_malha"],
+  moradia: ["moradia", "penetracao_malha"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -2320,6 +2321,10 @@ const GUIA = {
     importa: "Mostra em que lugares o sistema financeiro chega menos do que a renda e a população locais indicariam — o primeiro passo para discutir acesso a crédito no território.",
     ler: "Compare a penetração de um município com a de seus pares, não com a média nacional. O gap é a distância para municípios parecidos, e vem com faixa de referência.",
     nao: "O saldo é o contabilizado nas dependências, não o crédito dos moradores. Baixa penetração não prova restrição de oferta, e o gap não é demanda comprovada nem dinheiro que falta." },
+  moradia: { q: "Como o Brasil mora, e onde o crédito imobiliário chega?",
+    importa: "Moradia é o maior ativo das famílias e o crédito imobiliário é a maior carteira de pessoa física do país. Ver as duas coisas juntas mostra a distância entre morar e financiar.",
+    ler: "Trate as três bases como medidas distintas: o Censo conta domicílios, o ESTBAN registra saldo contabilizado por município e o Mercado Imobiliário detalha o crédito residencial por estado. Nenhuma se converte na outra.",
+    nao: "Domicílio ainda sendo pago não é contrato bancário, o verbete 169 não é crédito habitacional residencial, e a lacuna estimada não é demanda comprovada. Nenhum comprometimento de renda observado é publicado aqui." },
   research: { q: "Como levar estes dados para um relatório ou uma aula?",
     importa: "Dado público só vira conhecimento quando é reproduzível por terceiros.",
     ler: "Cada exportação carrega fonte, data-base e metodologia. As URLs preservam filtros e podem ser citadas.",
@@ -6419,9 +6424,530 @@ function renderSugestoes() {
   </div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao };
+/* ---------- MORADIA E CRÉDITO HABITACIONAL ----------
+   Combina três bases que medem coisas diferentes e nunca são somadas: a condição de
+   ocupação do Censo 2022 (municipal), o verbete 169 do ESTBAN (municipal, contábil) e as
+   Informações do Mercado Imobiliário do BCB (estadual, com o corte residencial/PF que
+   falta ao 169). A auditoria está em docs/AUDITORIA_MORADIA.md.
+
+   Regras de nomenclatura obedecidas em todo o arquivo, porque cada uma delas impede uma
+   leitura errada que o dado permitiria fazer:
+   · o verbete 169 é "saldo contabilizado no município", jamais "crédito habitacional";
+   · domicílio ainda sendo pago não é contrato bancário;
+   · saldo por operação é "saldo médio por operação em aberto", não ticket médio;
+   · participação de instituição é participação no saldo contabilizado, não de clientes;
+   · lacuna estimada não é demanda comprovada. */
+
+function morSelo(s) {
+  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+              estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"],
+              indisponivel: ["aprox", "INDISPONÍVEL"] }[s];
+  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+}
+
+const MOR_METRICAS = {
+  pgp: { l: "Domicílios ainda sendo pagos", u: "%", fmt: m => m.pgp != null ? fmt.n(m.pgp, 1) + "%" : "n.d.", esc: "pct" },
+  alp: { l: "Domicílios alugados", u: "%", fmt: m => m.alp != null ? fmt.n(m.alp, 1) + "%" : "n.d.", esc: "pct" },
+  sdom: { l: "Saldo do verbete 169 por domicílio", u: "R$", fmt: m => m.sdom != null ? "R$ " + fmt.n0(m.sdom) : "sem saldo", esc: "money" },
+  gd: { l: "Lacuna de penetração", u: "domicílios", fmt: m => m.gd != null ? fmt.n0(m.gd) : "–", esc: "money" },
+};
+
+const MOR_SELCOR = {
+  alta: "var(--positive)", media: "var(--warning)",
+  baixa: "var(--negative)", sem_dependencia: "var(--text-3)",
+};
+
+/* Price e SAC. Aritmética pura sobre parâmetros que o usuário escolhe — nenhum valor
+   aqui é observado, e por isso o bloco inteiro carrega o selo Cenário. */
+function morPrice(pv, iAno, n) {
+  const i = Math.pow(1 + iAno / 100, 1 / 12) - 1;
+  if (i <= 0) return { i: 0, primeira: pv / n, ultima: pv / n, total: pv };
+  const p = pv * i / (1 - Math.pow(1 + i, -n));
+  return { i, primeira: p, ultima: p, total: p * n };
+}
+function morSac(pv, iAno, n) {
+  const i = Math.pow(1 + iAno / 100, 1 / 12) - 1;
+  const amort = pv / n;
+  const primeira = amort + pv * i;
+  const ultima = amort + amort * i;
+  return { i, amort, primeira, ultima, total: (primeira + ultima) / 2 * n };
+}
+
+function renderMoradia() {
+  const el = document.getElementById("view-moradia");
+  const D = state.data.moradia;
+  if (!D) { el.innerHTML = loadingCard("moradia e crédito habitacional"); return; }
+  if (!D.ok) {
+    el.innerHTML = pageHead({ title: "Moradia e Crédito Habitacional", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${D.error || D.motivo || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.mor || {};
+  const met = F.met || "pgp";
+  const M = MOR_METRICAS[met];
+  const regiao = F.regiao || "todas";
+  const metodo = F.metodo || "saldo";
+  const malha = state.data.penetracao_malha;
+  const B = D.brasil, C = D.censo;
+
+  const passa = m => regiao === "todas" || m.reg === regiao;
+  const base = D.municipios.filter(passa);
+  const sel = F.sel ? D.municipios.find(m => m.c === F.sel) : null;
+
+  /* ================= sumário ================= */
+  const secoes = [
+    ["mor-mora", "Como o Brasil mora"],
+    ["mor-onde", "Onde está o crédito imobiliário"],
+    ["mor-quem", "Quem financia"],
+    ["mor-peso", "Quanto a moradia pesa no orçamento"],
+    ["mor-pot", "Onde existe potencial de expansão"],
+    ["mor-metodo", "Fontes, definições e limites"],
+  ];
+  const indice = `<nav class="desindex" aria-label="Seções desta página">
+    ${secoes.map(([id, t], i) => `<a href="#${id}">${i + 1}. ${t}</a>`).join("")}</nav>`;
+
+  /* ================= 1. como o Brasil mora ================= */
+  const maxCat = Math.max(...C.categorias.map(c => c.pct));
+  const barras = `<div class="morbarras">
+    ${C.categorias.map(c => `<div class="morbar">
+      <span class="rot">${c.rot}</span>
+      <span class="tr"><span class="fill${c.k === "proprio_pagando" ? " destaque" : ""}" style="width:${100 * c.pct / maxCat}%"></span></span>
+      <span class="v"><b>${fmt.n(c.pct, 1)}%</b><small>${fmt.n0(c.n)}</small></span>
+    </div>`).join("")}
+  </div>`;
+
+  const blocoMora = `<section id="mor-mora">${sechead("1. Como o Brasil mora", `Censo Demográfico ${C.ano} · ${fmt.n0(C.total)} domicílios`)}
+  <p class="desprosa">O Censo pergunta a cada domicílio se ele é próprio, alugado ou cedido — e, quando
+  próprio, se ainda está sendo pago. É a única medida de moradia que existe para os 5.570 municípios do
+  país. O que ela mostra é um Brasil de casa própria já quitada: ${fmt.n(C.categorias[0].pct, 1)}% dos
+  domicílios não devem mais nada, e só ${fmt.n(C.categorias[1].pct, 1)}% seguem pagando.</p>
+  <div class="card">${barras}
+    <p class="src">${morSelo("observado")} ${C.tabela} A soma das categorias
+    (${fmt.n0(C.categorias.reduce((a, c) => a + c.n, 0))}) difere do total em
+    ${fmt.n0(Math.abs(C.total - C.categorias.reduce((a, c) => a + c.n, 0)))} domicílios.
+    ${C.arredondamento}</p></div>
+
+  <div class="judalerta" role="note">
+    <b>Domicílio ainda sendo pago não é contrato bancário.</b> A pergunta do Censo é sobre a situação do
+    morador, não sobre o credor. A resposta abrange consórcio, financiamento feito direto com construtora
+    ou incorporadora, programas habitacionais, compra parcelada entre particulares e qualquer outra forma
+    de pagamento em curso. O Censo não pergunta quem financiou, quanto falta nem quanto se paga por mês.
+  </div>
+
+  <div class="card morfalta">
+    <h4>O que o Censo 2022 não coletou ${morSelo("indisponivel")}</h4>
+    <ul>${C.nao_coletado.map(x => `<li>${x}</li>`).join("")}</ul>
+    <p class="src">${C.verificacao_ausencia}</p>
+    <p class="src">Por isso esta página <b>não publica comprometimento de renda observado com moradia</b>.
+    A prestação que aparece no bloco 4 é média de estoque por unidade da federação, vinda do Banco Central,
+    e a do simulador é um cenário construído por quem usa a página.</p>
+  </div>
+
+  ${morMapa(base, malha, met, M, F, D)}
+  </section>`;
+
+  /* ================= 2. onde está o crédito ================= */
+  const somaMi = D.estados.reduce((s, e) => s + (e.mi_carteira_pf || 0), 0);
+  const somaScr = D.estados.reduce((s, e) => s + (e.scr_imob_pf || 0), 0);
+  const reconc = [
+    ["Verbete 169 do ESTBAN", D.totais.estban169, "município", D.datas.estban,
+     "Saldo contabilizado na dependência bancária. Inclui imóvel não residencial, pessoa jurídica e infraestrutura."],
+    ["Carteira imobiliária de pessoa física", somaMi, "unidade da federação", D.datas.mi_credito,
+     "Residencial e comercial de pessoa física, por origem dos recursos. Não existe em nível municipal."],
+    ["Exposição imobiliária de pessoa física", somaScr, "unidade da federação", D.datas.scr,
+     "Exposição de crédito dos clientes reportada ao SCR, em " + fmt.n0(D.estados.reduce((s, e) => s + (e.scr_operacoes || 0), 0)) + " operações."],
+  ];
+
+  const blocoOnde = `<section id="mor-onde">${sechead("2. Onde está o crédito imobiliário", "três medidas do mesmo fenômeno")}
+  <p class="desprosa">Não existe uma medida única de crédito imobiliário no Brasil. Existem três, com
+  geografias e conceitos diferentes, e forçá-las à igualdade produziria um número falso. A tabela abaixo
+  mostra as três lado a lado, com o que cada uma abrange.</p>
+
+  <div class="card"><table class="data morrec">
+    <caption class="src">Comparação de conceito, não de qualidade — a diferença entre elas é informação.</caption>
+    <thead><tr><th>Medida</th><th style="text-align:right">Saldo</th><th>Geografia</th><th>Data-base</th><th>O que abrange</th></tr></thead>
+    <tbody>${reconc.map(([n, v, g, d, o]) => `<tr>
+      <td><b>${n}</b></td><td style="text-align:right">${fmt.money(v)}</td>
+      <td>${g}</td><td>${d}</td><td class="src">${o}</td></tr>`).join("")}</tbody></table>
+    <p class="src">${morSelo("observado")} As duas medidas estaduais ficam a
+    ${fmt.n(Math.abs(100 * (somaMi - somaScr) / somaScr), 1)}% uma da outra, o que valida a ordem de grandeza.
+    O ESTBAN é maior porque abrange mais coisa — e é isso que a composição do verbete explica.</p>
+  </div>
+
+  <details class="charttable" open>
+    <summary>O que exatamente está dentro do verbete 169</summary>
+    <div class="morverb">
+      <p class="desprosa">O ESTBAN é a única fonte pública do Banco Central com crédito imobiliário por
+      município. Mas o verbete 169 soma quatro rubricas contábeis distintas, e uma delas não é crédito
+      imobiliário.</p>
+      <table class="data"><thead><tr><th>Conta COSIF</th><th>Título</th><th>Função contábil oficial</th></tr></thead>
+      <tbody>${D.verbete169.contas.map(c => `<tr class="${c.habitacional === false ? "morfora" : ""}">
+        <td><code>${c.conta}</code></td><td>${c.titulo}</td><td class="src">${c.funcao}</td></tr>`).join("")}</tbody></table>
+      <p class="src"><b>Não distingue:</b> ${D.verbete169.nao_distingue.join(" · ")}.</p>
+      <div class="judalerta" role="note">${D.verbete169.alerta}</div>
+      <p class="src">${D.verbete169.fonte} ${D.verbete169.invercao_cosif}</p>
+    </div>
+  </details>
+
+  <div class="judalerta" role="note">
+    <b>${fmt.n(D.concentracao_contabil.part_dessas, 1)}% do saldo está escriturado em um ou dois municípios.</b>
+    ${D.concentracao_contabil.instituicoes_ate_2_municipios} das ${D.concentracao_contabil.instituicoes_total}
+    instituições com saldo no verbete 169 contabilizam em no máximo dois municípios, somando
+    ${fmt.money(D.concentracao_contabil.saldo_dessas)}. ${D.concentracao_contabil.leitura}
+  </div>
+
+  <div class="card">
+    <h4>Carteira de pessoa física por origem dos recursos</h4>
+    ${lineChart({
+      series: [
+        { name: "SFH (poupança)", pts: B.series.carteira.map(p => ({ x: p.d, y: p.sfh })) },
+        { name: "FGTS", pts: B.series.carteira.map(p => ({ x: p.d, y: p.fgts })) },
+        { name: "Taxas de mercado", pts: B.series.carteira.map(p => ({ x: p.d, y: p.livre })) },
+        { name: "Home equity", pts: B.series.carteira.map(p => ({ x: p.d, y: p.home_equity })) },
+      ], unit: " bi", dec: 0, h: 250,
+      aria: "carteira imobiliária de pessoa física por segmento, em bilhões de reais",
+      fonte: `BCB, Informações do Mercado Imobiliário · ${D.datas.mi_credito}`,
+    })}
+    ${leitura([
+      ["SFH e FGTS", "recursos direcionados, com taxa limitada por norma — juntos, a maior parte da carteira"],
+      ["Home equity", "usa o imóvel como garantia mas não financia a compra dele"],
+    ])}
+  </div>
+
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>Aquisição</h4><div class="big">${fmt.money(B.direcionamento.aquisicao)}</div>
+      <div class="src">${morSelo("observado")} recursos da poupança aplicados em habitação residencial</div></div>
+    <div class="card kpi"><h4>Construção</h4><div class="big">${fmt.money(B.direcionamento.construcao)}</div>
+      <div class="src">${morSelo("observado")} um nono do que vai para aquisição</div></div>
+    <div class="card kpi"><h4>Reforma e ampliação</h4><div class="big">${fmt.money(B.direcionamento.reforma_ampliacao)}</div>
+      <div class="src">${morSelo("observado")} praticamente inexistente no direcionamento</div></div>
+  </div>
+  <p class="desprosa">O crédito habitacional brasileiro financia a compra de imóvel pronto. Construir e
+  reformar, no direcionamento da poupança, são resíduo. Isso não é uma falha do dado: é o desenho do
+  sistema, e ajuda a entender por que a lacuna estimada no bloco 5 não se traduz automaticamente em
+  demanda que um banco atenderia.</p>
+  </section>`;
+
+  /* ================= 3. quem financia ================= */
+  const blocoQuem = `<section id="mor-quem">${sechead("3. Quem financia", `${D.totais.instituicoes_no_169} instituições com saldo no verbete 169 · ${D.datas.estban}`)}
+  <p class="desprosa">Onde uma instituição escritura o saldo e onde ela atende pessoas são coisas
+  diferentes. A tabela mostra as duas informações juntas justamente para que a distância entre elas fique
+  visível: um banco pode responder por um quinto do saldo nacional e aparecer em dois municípios.</p>
+  <div class="card"><table class="data morinst">
+    <thead><tr><th>Instituição</th><th style="text-align:right">Saldo</th><th style="text-align:right">Participação</th>
+      <th style="text-align:right">Municípios</th><th style="text-align:right">Quociente locacional</th></tr></thead>
+    <tbody>${D.instituicoes.slice(0, 15).map(i => `<tr>
+      <td>${i.nome}</td>
+      <td style="text-align:right">${fmt.money(i.saldo)}</td>
+      <td style="text-align:right">${fmt.n(i.part_nacional, 2)}%</td>
+      <td style="text-align:right" class="${i.municipios <= 2 ? "morfora" : ""}">${fmt.n0(i.municipios)}</td>
+      <td style="text-align:right">${i.ql_mediano != null ? fmt.n(i.ql_mediano, 2) : `<span class="src">não aplicável</span>`}</td>
+    </tr>`).join("")}</tbody></table>
+    <p class="src">${morSelo("calculado")} Participação é do <b>saldo contabilizado</b>, não de clientes — o
+    ESTBAN não publica clientes. O quociente locacional compara a presença da instituição no município com
+    a presença dela no país: 1 significa proporcional. Publicado apenas para instituições em ao menos 25
+    municípios, porque abaixo disso o quociente é alto por aritmética, não por concentração real.</p>
+  </div>
+  ${sel ? morPerfil(sel, D) : `<p class="src">Selecione um município no mapa do bloco 1 para ver a composição
+    por instituição e os indicadores locais.</p>`}
+  </section>`;
+
+  /* ================= 4. quanto pesa ================= */
+  const sim = D.simulador;
+  const pv = F.pv != null ? F.pv : Math.round(sim.partida.valor_imovel * sim.partida.ltv_pct / 100);
+  const taxa = F.taxa != null ? F.taxa : sim.partida.taxa_aa_pct;
+  const prazo = F.prazo != null ? F.prazo : sim.partida.prazo_meses;
+  const renda = F.renda != null ? F.renda : 6000;
+  const pr = morPrice(pv, taxa, prazo), sa = morSac(pv, taxa, prazo);
+  const ufSim = F.ufSim || "SP";
+  const eSim = D.estados.find(e => e.uf === ufSim) || D.estados[0];
+
+  const blocoPeso = `<section id="mor-peso">${sechead("4. Quanto a moradia pesa no orçamento", `observado por unidade da federação · ${D.datas.mi_credito}`)}
+  <p class="desprosa">Esta é a parte em que a fonte muda de geografia. Taxa, LTV, prestação média e valor
+  do imóvel existem por unidade da federação, não por município, e são publicados aqui exatamente nessa
+  granularidade. Nenhum desses números é desagregado para o nível municipal.</p>
+
+  <div class="card"><table class="data morseg">
+    <thead><tr><th>Segmento</th><th style="text-align:right">Carteira</th><th style="text-align:right">Taxa a.a.</th>
+      <th style="text-align:right">LTV</th><th style="text-align:right">Prestação média</th><th style="text-align:right">Inadimplência</th></tr></thead>
+    <tbody>${MOR_SEGMENTOS.map(([k, rot]) => `<tr>
+      <td>${rot}</td>
+      <td style="text-align:right">${B.carteira_pf[k] != null ? fmt.money(B.carteira_pf[k]) : "–"}</td>
+      <td style="text-align:right">${B.taxa[k] != null ? fmt.n(B.taxa[k], 2) + "%" : "–"}</td>
+      <td style="text-align:right">${B.ltv[k] != null ? fmt.n(B.ltv[k], 1) + "%" : "–"}</td>
+      <td style="text-align:right">${B.parcela[k] != null ? "R$ " + fmt.n0(B.parcela[k]) : "–"}</td>
+      <td style="text-align:right">${B.inad[k] != null ? fmt.n(B.inad[k], 2) + "%" : "–"}</td>
+    </tr>`).join("")}</tbody></table>
+    <p class="src">${morSelo("observado")} Prestação média é do <b>estoque</b> de contratos ativos, com prazos e
+    datas de contratação distintos — não é a prestação de um contrato novo, e não se aplica aos domicílios
+    que o Censo registra como ainda sendo pagos. LTV e taxa referem-se às contratações do mês.</p>
+  </div>
+
+  <div class="card">
+    <h4>Simulador de prestação ${morSelo("cenario")}</h4>
+    <p class="desprosa">Os valores de partida vêm de médias observadas do Banco Central; tudo o mais é
+    escolha de quem usa a página. O resultado é aritmética de tabela Price e de sistema SAC, não uma
+    proposta de crédito.</p>
+    <div class="controls morsim">
+      <label>valor financiado <input type="number" value="${pv}" min="10000" step="10000"
+        onchange="morSim('pv', this.value)" aria-label="valor financiado em reais"></label>
+      <label>taxa % a.a. <input type="number" value="${taxa}" min="0.1" max="60" step="0.01"
+        onchange="morSim('taxa', this.value)" aria-label="taxa de juros anual"></label>
+      <label>prazo (meses) <input type="number" value="${prazo}" min="12" max="480" step="12"
+        onchange="morSim('prazo', this.value)" aria-label="prazo em meses"></label>
+      <label>renda mensal <input type="number" value="${renda}" min="500" step="500"
+        onchange="morSim('renda', this.value)" aria-label="renda mensal para o cálculo de comprometimento"></label>
+    </div>
+    <table class="data morsimtab">
+      <thead><tr><th>Sistema</th><th style="text-align:right">Primeira prestação</th>
+        <th style="text-align:right">Última prestação</th><th style="text-align:right">Sobre a renda informada</th></tr></thead>
+      <tbody>
+        <tr><td>Price (prestação constante)</td>
+          <td style="text-align:right">R$ ${fmt.n0(pr.primeira)}</td>
+          <td style="text-align:right">R$ ${fmt.n0(pr.ultima)}</td>
+          <td style="text-align:right">${fmt.n(100 * pr.primeira / renda, 1)}%</td></tr>
+        <tr><td>SAC (amortização constante)</td>
+          <td style="text-align:right">R$ ${fmt.n0(sa.primeira)}</td>
+          <td style="text-align:right">R$ ${fmt.n0(sa.ultima)}</td>
+          <td style="text-align:right">${fmt.n(100 * sa.primeira / renda, 1)}%</td></tr>
+      </tbody>
+    </table>
+    <p class="src">Taxa mensal equivalente: ${fmt.n(100 * pr.i, 4)}% — obtida por
+    <code>(1 + taxa anual)^(1/12) − 1</code>, não por divisão por doze.</p>
+    <div class="judalerta" role="note">
+      <b>O que não está nesta conta.</b> ${sim.avisos.join(" ")}
+    </div>
+    <p class="src">Para referência, a prestação média do estoque SFH em ${eSim.nome} é de
+    <b>R$ ${fmt.n0(eSim.parcela_sfh)}</b> ${morSelo("observado")} — número de universo diferente do
+    simulado, útil como ordem de grandeza e não como comparação direta.</p>
+  </div>
+
+  <details class="charttable"><summary>Taxa, prestação e valor do imóvel por unidade da federação</summary>
+    <table class="data moruf">
+      <thead><tr><th>UF</th><th style="text-align:right">Domicílios pagando</th><th style="text-align:right">Taxa SFH</th>
+        <th style="text-align:right">LTV</th><th style="text-align:right">Prestação média</th>
+        <th style="text-align:right">Valor de compra</th><th style="text-align:right">Área</th>
+        <th style="text-align:right">Inadimplência</th></tr></thead>
+      <tbody>${D.estados.map(e => `<tr>
+        <td>${e.nome}</td>
+        <td style="text-align:right">${fmt.n(e.pgp, 1)}%</td>
+        <td style="text-align:right">${e.taxa_sfh != null ? fmt.n(e.taxa_sfh, 2) + "%" : "–"}</td>
+        <td style="text-align:right">${e.ltv_sfh != null ? fmt.n(e.ltv_sfh, 1) + "%" : "–"}</td>
+        <td style="text-align:right">${e.parcela_sfh != null ? "R$ " + fmt.n0(e.parcela_sfh) : "–"}</td>
+        <td style="text-align:right">${e.valor_compra != null ? "R$ " + fmt.n0(e.valor_compra) : "–"}</td>
+        <td style="text-align:right">${e.area_privativa != null ? fmt.n(e.area_privativa, 1) + " m²" : "–"}</td>
+        <td style="text-align:right">${e.inad_sfh != null ? fmt.n(e.inad_sfh, 2) + "%" : "–"}</td>
+      </tr>`).join("")}</tbody></table>
+      <p class="src">${morSelo("observado")} Valor de compra e área são da seção Imóveis, com data-base
+      ${D.datas.mi_imoveis} — defasagem maior que a da seção de crédito (${D.datas.mi_credito}). As duas
+      nunca são apresentadas como se fossem do mesmo mês.</p>
+  </details>
+  </section>`;
+
+  /* ================= 5. potencial ================= */
+  const mp = D.modelos.penetracao, ms = D.modelos.saldo;
+  const rk = metodo === "saldo" ? D.rankings.maior_lacuna_saldo : D.rankings.maior_lacuna_domicilios;
+
+  const blocoPot = `<section id="mor-pot">${sechead("5. Onde existe potencial de expansão", "duas lacunas, dois métodos")}
+  <div class="judalerta" role="note">
+    <b>Lacuna não é demanda comprovada.</b> Os dois modelos comparam um município com municípios parecidos
+    e mostram a diferença. Essa diferença pode refletir preferência por aluguel, herança, autoconstrução,
+    informalidade fundiária, um parque domiciliar mais antigo ou crédito tomado fora do município — nada
+    disso é observável nas bases usadas aqui.
+  </div>
+
+  <div class="mor2col">
+    <div class="card">
+      <h4>Lacuna de penetração habitacional ${morSelo("estimado")}</h4>
+      <div class="big">${fmt.n0(mp.lacuna_domicilios)} domicílios</div>
+      <p class="src">Diferença entre a proporção de domicílios ainda sendo pagos e a mediana dessa proporção
+      em municípios comparáveis, somada sobre os ${fmt.n0(mp.municipios_abaixo)} municípios abaixo da mediana
+      do seu grupo.</p>
+      ${leitura([["Agrupamento", mp.criterio], ["Grupos", fmt.n0(mp.grupos) + " cobrindo " + fmt.n0(mp.municipios_cobertos) + " municípios"],
+                 ["Referência", mp.referencia]])}
+    </div>
+    <div class="card">
+      <h4>Lacuna de saldo ${morSelo("estimado")}</h4>
+      <div class="big">${fmt.money(ms.lacuna_total)}</div>
+      <p class="src">Diferença entre a mediana condicional estimada e o saldo do verbete 169 efetivamente
+      contabilizado, somada sobre os ${fmt.n0(ms.municipios_abaixo)} municípios abaixo da referência.</p>
+      ${leitura([["Especificação", ms.especificacao], ["Ajuste", `n = ${fmt.n0(ms.n)} · R² = ${fmt.n(ms.r2, 3)} · σ = ${fmt.n(ms.sigma, 3)}`],
+                 ["Referência", ms.referencia]])}
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>Por que a amostra do modelo de saldo é restrita</h4>
+    <p class="desprosa">O modelo só considera municípios com <b>duas ou mais instituições contabilizando</b>.
+    A restrição foi medida, não arbitrada. Sem ela, o desvio residual sobe de ${fmt.n(ms.sigma, 2)} para 1,45
+    e a lacuna somada chega a R$ 2,5 trilhões — mais que o saldo nacional inteiro, um resultado sem sentido.
+    A razão é substantiva: município com uma única instituição no verbete 169 é, quase sempre, o ponto onde
+    um banco centraliza a escrituração de uma carteira nacional, e o saldo ali não descreve mercado local
+    nenhum.</p>
+    <p class="src">${ms.faixa}</p>
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <span class="seg">${[["saldo", "lacuna de saldo"], ["domicilios", "lacuna de domicílios"]].map(([v, l]) =>
+        `<button class="${metodo === v ? "active" : ""}" onclick="morFiltra('metodo','${v}')">${l}</button>`).join("")}</span>
+    </div>
+    <table class="data"><thead><tr><th>#</th><th>Município</th><th>UF</th>
+      <th style="text-align:right">${metodo === "saldo" ? "Lacuna estimada" : "Domicílios"}</th><th>Confiabilidade</th></tr></thead>
+      <tbody>${rk.map((m, i) => `<tr>
+        <td>${i + 1}</td>
+        <td><button type="button" class="linkish" onclick="morSel('${m.c}')">${m.n}</button></td>
+        <td>${m.uf}</td>
+        <td style="text-align:right">${metodo === "saldo" ? fmt.money(m.v) : fmt.n0(m.v)}</td>
+        <td><span class="morselo" style="--c:${MOR_SELCOR[m.sel]}">${m.sel.replace("_", " ")}</span></td>
+      </tr>`).join("")}</tbody></table>
+    <p class="src">${morSelo("estimado")} ${metodo === "saldo" ? ms.aviso : mp.aviso}</p>
+  </div>
+  </section>`;
+
+  /* ================= 6. metodologia ================= */
+  const stRot = { viavel: "viável", parcial: "parcial", indisponivel: "indisponível" };
+  const blocoMet = `<section id="mor-metodo">${sechead("6. Fontes, definições e limites", "auditoria de viabilidade")}
+  <p class="desprosa">Antes de publicar qualquer número, cada pergunta que a página poderia responder foi
+  testada contra as fontes. A matriz abaixo é o resultado desse teste, e as linhas marcadas como
+  indisponíveis não foram preenchidas por aproximação.</p>
+  <div class="card"><table class="data mormatriz">
+    <thead><tr><th>Pergunta</th><th>Situação</th><th>Fonte</th><th>Observação</th></tr></thead>
+    <tbody>${D.matriz_viabilidade.map(m => `<tr class="mst-${m.status}">
+      <td>${m.pergunta}</td><td><span class="morst ${m.status}">${stRot[m.status]}</span></td>
+      <td class="src">${m.fonte}</td><td class="src">${m.obs}</td></tr>`).join("")}</tbody></table></div>
+
+  <details class="charttable"><summary>Dicionário de indicadores (${D.dicionario.length})</summary>
+    <div class="desdic">${D.dicionario.map(d => `<div class="desdicit">
+      <h5>${d.t} ${morSelo(d.selo)}</h5>
+      <p><b>Definição:</b> ${d.d}</p>
+      <p class="src"><b>Fonte:</b> ${d.f}</p>
+      <p class="src"><b>Limite:</b> ${d.l}</p></div>`).join("")}</div>
+  </details>
+
+  <div class="card">
+    <h4>O que esta página não autoriza concluir</h4>
+    <ul class="desnota">${D.limitacoes.map(l => `<li>${l}</li>`).join("")}</ul>
+  </div>
+  </section>`;
+
+  const achados = `<div class="desgrupo"><span class="rot">O que os dados mostram</span>
+    <div class="pan-kpi">${D.achados.map(a => `<div class="card kpi morach">
+      <h4>${a.t}</h4><p class="src">${a.d}</p>
+      <div class="src">${morSelo(a.selo)}</div></div>`).join("")}</div></div>`;
+
+  el.innerHTML = pageHead({
+    title: "Moradia e Crédito Habitacional",
+    desc: "Como o país mora, quanto crédito imobiliário existe e onde ele não chega — com as três bases públicas mantidas separadas.",
+    fontes: `IBGE Censo ${C.ano} · BCB ESTBAN ${D.datas.estban} · BCB Mercado Imobiliário ${D.datas.mi_credito} · BCB SCR ${D.datas.scr}`,
+  }) + indice + achados
+    + blocoMora + blocoOnde + blocoQuem + blocoPeso + blocoPot + blocoMet;
+
+  agendaAcessibilidade();
+}
+
+const MOR_SEGMENTOS = [
+  ["sfh", "SFH — poupança direcionada"],
+  ["fgts", "FGTS"],
+  ["livre", "Taxas de mercado"],
+  ["home_equity", "Home equity (imóvel em garantia)"],
+  ["comercial", "Imóvel comercial de pessoa física"],
+];
+
+function morMapa(base, malha, met, M, F, D) {
+  const porCod = Object.fromEntries(base.map(m => [m.c, m]));
+  const escala = penEscala(base.map(m => m[met]), M.esc);
+  const paths = malha ? Object.entries(malha.paths).map(([cod, d]) => {
+    const m = porCod[cod];
+    if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
+    const tip = encodeURIComponent(`<div class="tt-date">${m.n} (${m.uf})</div>
+      <div class="tt-row"><span class="tt-lbl">domicílios</span><span class="tt-val">${fmt.n0(m.dt)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">ainda pagando</span><span class="tt-val">${m.pgp != null ? fmt.n(m.pgp, 1) + "%" : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">alugados</span><span class="tt-val">${m.alp != null ? fmt.n(m.alp, 1) + "%" : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">saldo do verbete 169</span><span class="tt-val">${m.s != null ? fmt.money(m.s) : "sem dependência"}</span></div>`);
+    return `<path d="${d}" fill="${escala(m[met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}"
+      onclick="morSel('${cod}')" aria-label="${attr(m.n + " " + m.uf + ": " + M.fmt(m))}"></path>`;
+  }).join("") : "";
+
+  const lista = base.filter(m => m[met] != null).sort((a, b) => b[met] - a[met]).slice(0, 25);
+  return `<div class="controls">${Object.entries(MOR_METRICAS).map(([k, v]) =>
+    `<button class="btn ${met === k ? "" : "ghost"} small" onclick="morFiltra('met','${k}')">${v.l}</button>`).join("")}
+    <label>região <select onchange="morFiltra('regiao', this.value)">
+      ${["todas", "Norte", "Nordeste", "Centro-Oeste", "Sudeste", "Sul"].map(r =>
+        `<option ${(F.regiao || "todas") === r ? "selected" : ""}>${r}</option>`).join("")}</select></label>
+    <span class="src">${fmt.n0(base.length)} municípios no recorte</span>
+  </div>
+  <div class="penlayout">
+    <div class="card">
+      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal de ${attr(M.l)}"><g transform="${malha.transform}">${paths}</g></svg>`
+              : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">Sombreado entre o percentil 5 e o 95 do recorte — winsorização apenas visual. Clique
+      num município para abrir o perfil no bloco 3.</p>
+    </div>
+    <div class="card penrank">
+      <h4>Maiores <span class="src">${M.l.toLowerCase()}</span></h4>
+      <ol class="penlista">${lista.map(m => `<li class="${F.sel === m.c ? "sel" : ""}">
+        <button type="button" onclick="morSel('${m.c}')" aria-label="${attr(m.n + " " + m.uf + ": " + M.fmt(m))}">
+          <span class="n">${m.n}<small>${m.uf}</small></span>
+          <span class="v">${M.fmt(m)}</span></button></li>`).join("")}</ol>
+    </div>
+  </div>`;
+}
+
+function morPerfil(m, D) {
+  const linhas = [
+    ["Domicílios particulares permanentes ocupados", fmt.n0(m.dt), "observado"],
+    ["Próprios já pagos, herdados ou ganhos", m.dpg != null ? `${fmt.n0(m.dpg)} (${fmt.n(100 * m.dpg / m.dt, 1)}%)` : "–", "observado"],
+    ["Próprios ainda sendo pagos", m.dpp != null ? `${fmt.n0(m.dpp)} (${fmt.n(m.pgp, 1)}%)` : "–", "observado"],
+    ["Alugados", m.da != null ? `${fmt.n0(m.da)} (${fmt.n(m.alp, 1)}%)` : "–", "observado"],
+    ["Cedidos ou emprestados", m.dc != null ? fmt.n0(m.dc) : "–", "observado"],
+    ["Renda domiciliar per capita", m.rpc != null ? "R$ " + fmt.n0(m.rpc) : "–", "observado"],
+    ["Urbanização", m.urb != null ? fmt.n(m.urb, 1) + "%" : "–", "observado"],
+    ["Saldo do verbete 169 contabilizado", m.s != null ? fmt.money(m.s) : "sem dependência bancária", "observado"],
+    ["Depósitos de poupança contabilizados", m.pp != null ? fmt.money(m.pp) : "–", "observado"],
+    ["Saldo por domicílio", m.sdom != null ? "R$ " + fmt.n0(m.sdom) : "–", "calculado"],
+    ["Instituições contabilizando", m.ni != null ? fmt.n0(m.ni) : "nenhuma", "observado"],
+    ["Concentração (HHI)", m.hhi != null ? fmt.n0(m.hhi) : "–", "calculado"],
+    ["Proporção esperada de domicílios pagando", m.pesp != null ? fmt.n(m.pesp, 1) + "%" : "grupo pequeno demais", "estimado"],
+    ["Lacuna de penetração", m.gd != null ? fmt.n0(m.gd) + " domicílios" : "acima ou na mediana do grupo", "estimado"],
+    ["Saldo esperado pelo modelo", m.sesp != null ? fmt.money(m.sesp) : "fora da amostra do modelo", "estimado"],
+    ["Faixa de um desvio", m.sfx ? `${fmt.money(m.sfx[0])} a ${fmt.money(m.sfx[1])}` : "–", "estimado"],
+    ["Lacuna de saldo", m.gs != null ? fmt.money(m.gs) : "acima ou na referência", "estimado"],
+  ];
+  const top = m.i1 != null ? D.nomes_instituicoes[m.i1] : null;
+  return `<div class="card morperfil">
+    <div class="sechead"><h3>${m.n} <small>${m.uf} · ${m.reg}</small></h3>
+      <span class="morselo" style="--c:${MOR_SELCOR[m.sel]}">confiabilidade ${m.sel.replace("_", " ")}</span></div>
+    <table class="data"><tbody>${linhas.map(([k, v, s]) => `<tr>
+      <th scope="row">${k}</th><td style="text-align:right">${v}</td><td>${morSelo(s)}</td></tr>`).join("")}</tbody></table>
+    ${top ? `<p class="src"><b>Maior participação no saldo contabilizado:</b> ${top}, com
+      ${fmt.n(m.i1p, 1)}% do saldo do verbete 169 no município. Isso mede escrituração contábil, não
+      clientes atendidos.</p>` : ""}
+    <p class="src">${m.sel === "sem_dependencia"
+      ? "Nenhuma dependência bancária reporta saldo imobiliário neste município. Ausência de saldo não é ausência de crédito: é ausência de agência que o contabilize."
+      : m.sel === "baixa" ? "Confiabilidade baixa: o saldo por domicílio é muito superior à mediana nacional ou a série mensal apresenta salto de reclassificação. Fora dos rankings e da amostra do modelo."
+      : m.sel === "media" ? "Confiabilidade média: uma única instituição contabiliza aqui, ou o saldo por domicílio está acima do triplo da mediana nacional."
+      : "Confiabilidade alta: saldo por domicílio dentro da faixa esperada, série estável e mais de uma instituição contabilizando."}</p>
+  </div>`;
+}
+
+window.morFiltra = (k, v) => { state.mor = { ...(state.mor || {}), [k]: v }; renderMoradia(); };
+window.morSel = cod => {
+  state.mor = { ...(state.mor || {}), sel: cod };
+  renderMoradia();
+  const alvo = document.getElementById("mor-quem");
+  if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+window.morSim = (k, v) => {
+  const n = Number(v);
+  if (!isFinite(n) || n <= 0) return;
+  state.mor = { ...(state.mor || {}), [k]: n };
+  renderMoradia();
+};
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
