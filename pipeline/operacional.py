@@ -40,11 +40,15 @@ REDE_CNPJ8 = {
     "bmi": "34169557",
 }
 
-# Instituições sem listagem na CVM (sem FRE/FCA) mas com rede relevante no
-# ESTBAN: entram só com o bloco de rede, escopo declarado.
+# Instituições sem listagem na CVM (sem FRE/FCA): Caixa e Safra entram pela
+# rede do ESTBAN; Nubank e Inter (listados no exterior, arquivos na SEC)
+# entram pela Fase 2 de clientes — o Inter tem exatamente 1 agência no
+# ESTBAN (banco digital com sede única), o Nubank não tem rede reportada.
 REDE_EXTRA = [
     {"id": "caixa", "nome": "Caixa Econômica Federal", "cnpj8": "00360305"},
     {"id": "safra", "nome": "Banco Safra S.A.", "cnpj8": "58160789"},
+    {"id": "nubank", "nome": "Nu Holdings Ltd. (Nubank)", "cnpj8": "18236120"},
+    {"id": "inter", "nome": "Inter & Co, Inc. (Banco Inter)", "cnpj8": "00416968"},
 ]
 
 # Código IF.data (inst_index/páginas de IF) de cada instituição do piloto,
@@ -269,7 +273,7 @@ def build(con, cfg=None):
             "empregados": None,
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
-            "clientes": None,
+            "clientes": clientes_por_inst.get(extra["id"]) or None,
         })
 
     sfn_rows = con.execute(

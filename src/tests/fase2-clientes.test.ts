@@ -20,13 +20,16 @@ const gold = JSON.parse(
 );
 
 describe("curadoria: toda observação é completa e auditável", () => {
-  it("campos obrigatórios, evidência e documento da CVM em toda observação", () => {
+  it("campos obrigatórios, evidência e documento oficial em toda observação", () => {
     expect(cur.observacoes.length).toBeGreaterThan(0);
+    // Domínios oficiais permitidos: CVM (listadas no Brasil), SEC/EDGAR
+    // (listadas no exterior) e o file manager do RI da Caixa (MZ).
+    const dominios = /^https:\/\/(www\.rad\.cvm\.gov\.br|www\.sec\.gov|api\.mziq\.com)\//;
     for (const o of cur.observacoes) {
       expect(o.evidencia?.length, o.id).toBeGreaterThan(15);
       expect(o.pagina, o.id).toBeGreaterThanOrEqual(1);
-      expect(o.documento.url, o.id).toMatch(/^https:\/\/www\.rad\.cvm\.gov\.br\//);
-      expect(o.documento.protocolo, o.id).toMatch(/IPE/);
+      expect(o.documento.url, o.id).toMatch(dominios);
+      expect(o.documento.protocolo, o.id).toMatch(/IPE|^sec:|^mz:/);
       expect(o.valor, o.id).toBeGreaterThan(0);
       expect(o.period_end, o.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(["review", "aprovado", "rejeitado"]).toContain(o.status);

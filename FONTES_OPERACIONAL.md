@@ -63,6 +63,21 @@ administrativo oficial (mesma escala dos painéis de bets e fraudes).
 - Confiabilidade do protocolo: **A** (registro administrativo da CVM); o valor
   divulgado é `reportado` pela companhia
 
+## 5. Fontes fora da CVM — Fase 2 (Caixa, Nubank e Inter)
+
+- **SEC/EDGAR** (Nubank — Nu Holdings, CIK 1691493; Inter & Co, CIK 1864163):
+  arquivos 6-K com os earnings releases, baixados do domínio da própria SEC
+  (www.sec.gov). A descoberta de 6-K novos é automática (índice EDGAR por CIK,
+  registrada como AVISO em `rel_ext_avisos` para a sessão de curadoria — um
+  6-K pode ser qualquer coisa, então nada é baixado às cegas) · **A**
+  (registro administrativo da SEC); valor `reportado` pela companhia
+- **RI da Caixa** (não listada; plataforma MZ, api.mziq.com): Relatório de
+  Análise de Desempenho trimestral, com URL verificada e registrada no
+  cadastro explícito de `pipeline/sources/releases_ext.py` — sem crawler;
+  documento novo entra no cadastro a cada temporada · valor `reportado`
+- Limitações: mesmos conceitos próprios por companhia (comparabilidade C);
+  o Nubank divulga piso ("mais de 115 milhões no Brasil"), não contagem exata
+
 ## Instituições cobertas no corte
 
 18 companhias listadas do piloto (Itaú, BB, Bradesco, Santander, BTG, ABC,
