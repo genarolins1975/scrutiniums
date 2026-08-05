@@ -22,6 +22,11 @@
    "nome": "Clientes ativos nos canais digitais",
    "conceito": "Clientes ativos especificamente nos canais digitais, conforme divulgação da companhia. Subconjunto com critério próprio — não é a base total nem se compara aos ativos de outros bancos.",
    "comparabilidade": "C"
+  },
+  "clientes_corporativos": {
+   "nome": "Clientes corporativos ativos",
+   "conceito": "Empresas com relacionamento ativo em banco de atacado, conforme critério da companhia. Universo de centenas ou milhares — ordem de grandeza distinta da base de varejo; jamais comparar com clientes pessoa física.",
+   "comparabilidade": "C"
   }
  },
  "ausencias": [
@@ -50,6 +55,26 @@
    "metric_id": "clientes_total",
    "documento": "Análise do Desempenho 1T26 (CVM/IPE 001023IPE310320260122742519-04)",
    "motivo": "o relatório divulga clientes ativos nos canais digitais, mas não a base total de clientes"
+  },
+  {
+   "institution_id": "pine",
+   "documento": "Relatório de Análise Gerencial 1T26 (CVM/IPE)",
+   "motivo": "divulga contagens por linha de negócio (FGTS, INSS, consignado público — não somáveis: o mesmo cliente pode aparecer em mais de uma), não a base total"
+  },
+  {
+   "institution_id": "mercantil",
+   "documento": "Apresentação de resultados 1T2026 (CVM/IPE)",
+   "motivo": "a apresentação não traz contagem de clientes nas páginas com o termo (só percentuais de digitalização)"
+  },
+  {
+   "institution_id": "brpartners",
+   "documento": "Earnings Release 1T26 (CVM/IPE)",
+   "motivo": "divulga 'receita com clientes' (R$), não contagem de clientes"
+  },
+  {
+   "institution_id": "amazonia",
+   "documento": "Divulgação de Resultados 4T25 (CVM/IPE)",
+   "motivo": "comunicado de 2 páginas que remete ao site, sem números operacionais"
   }
  ],
  "observacoes": [
@@ -304,6 +329,188 @@
    "status": "aprovado",
    "revisado_em": "2026-08-05",
    "revisado_por": "proprietário (revisão em sessão Claude Code)"
+  },
+  {
+   "unidade": "clientes",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "bmg:clientes_total:2026-03-31",
+   "institution_id": "bmg",
+   "metric_id": "clientes_total",
+   "valor": 9300000,
+   "exibir": "9,3 milhões",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "escopo": "metodologia do Banco Central (base conjugada do CCS e do SCR), conforme nota do próprio release — o conceito mais bem definido entre os bancos cobertos",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "024600IPE310320260172550122-93",
+    "tipo": "Relatório de Análise Gerencial",
+    "assunto": "Release de Resultados 1T26",
+    "entregue_em": "2026-05-05",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
+   },
+   "pagina": 4,
+   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25) — Outras Informações (Milhões)"
+  },
+  {
+   "unidade": "clientes",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "bmg:clientes_total:2025-12-31",
+   "institution_id": "bmg",
+   "metric_id": "clientes_total",
+   "valor": 9300000,
+   "exibir": "9,3 milhões",
+   "period_end": "2025-12-31",
+   "periodo_rotulo": "4T25",
+   "escopo": "metodologia do Banco Central (CCS + SCR); comparativo publicado na tabela do release do 1T26",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "024600IPE310320260172550122-93",
+    "tipo": "Relatório de Análise Gerencial",
+    "assunto": "Release de Resultados 1T26",
+    "entregue_em": "2026-05-05",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
+   },
+   "pagina": 4,
+   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25)"
+  },
+  {
+   "unidade": "clientes",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "bmg:clientes_total:2025-03-31",
+   "institution_id": "bmg",
+   "metric_id": "clientes_total",
+   "valor": 10400000,
+   "exibir": "10,4 milhões",
+   "period_end": "2025-03-31",
+   "periodo_rotulo": "1T25",
+   "escopo": "metodologia do Banco Central (CCS + SCR); comparativo publicado na tabela do release do 1T26 (-10,6% em 12 meses)",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "024600IPE310320260172550122-93",
+    "tipo": "Relatório de Análise Gerencial",
+    "assunto": "Release de Resultados 1T26",
+    "entregue_em": "2026-05-05",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
+   },
+   "pagina": 4,
+   "evidencia": "Clientes Totais (metodologia BACEN) … 1T25: 10,4 · variação 1T/1T: -10,6%"
+  },
+  {
+   "unidade": "clientes",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "banestes:clientes_total:2026-03-31",
+   "institution_id": "banestes",
+   "metric_id": "clientes_total",
+   "valor": 1500000,
+   "exibir": "≈1,5 milhão",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "escopo": "base de relacionamento, valor aproximado conforme divulgação da companhia",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "001155IPE310320260150909083-03",
+    "tipo": "Press-release",
+    "assunto": "Press Release 1ºT 2026",
+    "entregue_em": "2026-05-13",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1521398&numSequencia=1046104&numVersao=1"
+   },
+   "pagina": 10,
+   "evidencia": "O Banestes encerrou o trimestre com uma base de relacionamento de aproximadamente 1,5 milhão de clientes"
+  },
+  {
+   "unidade": "clientes",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "banestes:clientes_total:2025-12-31",
+   "institution_id": "banestes",
+   "metric_id": "clientes_total",
+   "valor": 1400000,
+   "exibir": "1,4 milhão",
+   "period_end": "2025-12-31",
+   "periodo_rotulo": "2025",
+   "escopo": "base de relacionamento, conforme divulgação da companhia",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "001155IPE311220250129466149-77",
+    "tipo": "Press-release",
+    "assunto": "Press Release 2025",
+    "entregue_em": "2026-02-23",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1480852&numSequencia=1005558&numVersao=1"
+   },
+   "pagina": 8,
+   "evidencia": "o Banestes manteve relacionamento com a base de 1,4 milhão de clientes, expansão de 3,6%"
+  },
+  {
+   "unidade": "empresas",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "abc:clientes_corporativos:2026-03-31",
+   "institution_id": "abc",
+   "metric_id": "clientes_corporativos",
+   "valor": 4525,
+   "exibir": "4.525",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "escopo": "empresas com relacionamento ativo (banco de atacado); a companhia reformulou a segmentação de clientes recentemente",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "020958IPE310320260182834242-08",
+    "tipo": "Press-release",
+    "assunto": "Earnings Release versão Português",
+    "entregue_em": "2026-05-07",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1517352&numSequencia=1042058&numVersao=1"
+   },
+   "pagina": 10,
+   "evidencia": "O ABC Brasil atingiu 4.525 clientes corporativos com relacionamento ativo no 1T26, uma redução de 6,8%"
+  },
+  {
+   "unidade": "empresas",
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-05",
+   "status": "review",
+   "id": "abc:clientes_corporativos:2025-12-31",
+   "institution_id": "abc",
+   "metric_id": "clientes_corporativos",
+   "valor": 4676,
+   "exibir": "4.676",
+   "period_end": "2025-12-31",
+   "periodo_rotulo": "4T25",
+   "escopo": "empresas com relacionamento ativo (banco de atacado)",
+   "documento": {
+    "fonte": "CVM/IPE",
+    "protocolo": "020958IPE311220250135164081-61",
+    "tipo": "Press-release",
+    "assunto": "Press-release",
+    "entregue_em": "2026-02-06",
+    "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1474062&numSequencia=998768&numVersao=1"
+   },
+   "pagina": 10,
+   "evidencia": "O ABC Brasil atingiu 4.676 clientes corporativos com relacionamento ativo no 4T25, uma redução de 10,2%"
   }
  ]
 }

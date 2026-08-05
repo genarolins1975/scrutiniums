@@ -278,10 +278,11 @@ def build(con, cfg=None):
     sfn_serie = [{"mes": db, "agencias": ag, "municipios": mun, "bancos": b}
                  for db, ag, mun, b in sfn_rows]
 
-    # Mapa compacto de rede de TODOS os bancos do ESTBAN (não só o piloto),
-    # chaveado por CNPJ-raiz: alimenta a página de qualquer IF e o comparador
-    # (as páginas de instituição individual do IF.data usam o próprio CNPJ-raiz
-    # como código, então o join é direto).
+    # Mapa de rede de TODOS os bancos do ESTBAN (não só o piloto), chaveado por
+    # CNPJ-raiz e com a SÉRIE mensal completa: alimenta a tabela integral da
+    # aba, a página de qualquer IF (com sparkline) e o comparador. As páginas
+    # de instituição individual do IF.data usam o próprio CNPJ-raiz como
+    # código, então o join é direto.
     rede_por_cnpj8 = {}
     if sfn_serie:
         mes_atual = sfn_serie[-1]["mes"]
@@ -289,6 +290,10 @@ def build(con, cfg=None):
         mes_ref12 = f"{int(ano_a) - 1}-{mes_a}"
         antes = {r[0]: r[1] for r in con.execute(
             "SELECT cnpj8, agencias FROM oper_rede WHERE data_base=?", (mes_ref12,))}
+        series = {}
+        for cnpj8, db, ag, mun in con.execute(
+                "SELECT cnpj8, data_base, agencias, municipios FROM oper_rede ORDER BY data_base"):
+            series.setdefault(cnpj8, []).append({"mes": db, "agencias": ag, "municipios": mun})
         for cnpj8, nome_b, ag, mun in con.execute(
                 "SELECT cnpj8, nome, agencias, municipios FROM oper_rede WHERE data_base=?",
                 (mes_atual,)):
@@ -299,6 +304,7 @@ def build(con, cfg=None):
                 "nome": nome_b, "mes": mes_atual, "agencias": ag, "municipios": mun,
                 "var_12m": (ag - ref) if ref is not None else None,
                 "var_12m_pct": _pct(ag, ref) if ref else None,
+                "serie": series.get(cnpj8, []),
             }
 
     sintese = _sintese(instituicoes, sfn_serie)

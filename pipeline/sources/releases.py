@@ -38,6 +38,20 @@ REGRAS = {
                  "assunto_re": r"(?i)resultados?\s+\dT"},
     "nordeste": {"cnpj": "07.237.373/0001-20", "tipos": ["Apresentações a analistas/agentes do mercado"],
                  "assunto_re": r"(?i)resultados?\s+\dT"},
+    "abc": {"cnpj": "28.195.667/0001-06", "tipos": ["Press-release"],
+            "assunto_re": r"(?i)portugu|^press-?release$"},
+    "bmg": {"cnpj": "61.186.680/0001-74",
+            "tipos": ["Relatório de Análise Gerencial", "Demonstrações Financeiras Adicionais"],
+            "assunto_re": r"(?i)release"},
+    "banestes": {"cnpj": "28.127.603/0001-78", "tipos": ["Press-release"], "assunto_re": None},
+    "mercantil": {"cnpj": "17.184.037/0001-10", "tipos": ["Apresentações a analistas/agentes do mercado"],
+                  "assunto_re": r"(?i)resultados"},
+    "pine": {"cnpj": "62.144.175/0001-20", "tipos": ["Relatório de Análise Gerencial"],
+             "assunto_re": r"(?i)an[áa]lise gerencial"},
+    "brpartners": {"cnpj": "10.739.356/0001-03", "tipos": ["Relatório de Análise Gerencial"],
+                   "assunto_re": r"(?i)earnings? release"},
+    "amazonia": {"cnpj": "04.902.979/0001-44", "tipos": ["Outros Comunicados Não Considerados Fatos Relevantes"],
+                 "assunto_re": r"(?i)divulga[çc][ãa]o de resultados"},
 }
 
 # Termos que marcam uma página como candidata à extração (minúsculas).
