@@ -3885,6 +3885,41 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   return out;
 }
 
+/* Dispersão semanal do SISTEMA: x = consentimentos ativos, y = chamadas de API.
+   Por instituição este gráfico NÃO existe porque a fonte não publica
+   consentimentos por organização (verificação empírica em 05/08/2026: os
+   parâmetros de filtro por organização são ignorados pela rota /consents e o
+   endpoint de organizações responde vazio) — a ausência é declarada ao lado. */
+function scatterConsChamadas(pts) {
+  if (!pts || pts.length < 2) return "<p class='src'>Sem semanas suficientes com as duas séries.</p>";
+  const W = 460, H = 230, M = { t: 14, r: 18, b: 34, l: 52 };
+  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+  const pad = (a, b) => (b - a) * 0.1 || 1;
+  let xlo = Math.min(...xs), xhi = Math.max(...xs); const px = pad(xlo, xhi); xlo -= px; xhi += px;
+  let ylo = Math.min(...ys), yhi = Math.max(...ys); const py = pad(ylo, yhi); ylo -= py; yhi += py;
+  const X = v => M.l + (v - xlo) / (xhi - xlo) * (W - M.l - M.r);
+  const Y = v => M.t + (1 - (v - ylo) / (yhi - ylo)) * (H - M.t - M.b);
+  let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img"
+    aria-label="dispersão semanal: consentimentos ativos no eixo horizontal (milhões), chamadas de API no eixo vertical (bilhões por semana); a tabela ao lado traz os mesmos valores">`;
+  for (let i = 0; i <= 3; i++) {
+    const gy = M.t + (H - M.t - M.b) * i / 3, vy = yhi - (yhi - ylo) * i / 3;
+    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${gy}" y2="${gy}" style="stroke:var(--c-grid)"/>
+      <text x="${M.l - 6}" y="${gy + 3}" text-anchor="end" font-size="10" style="fill:var(--c-axis-text)">${fmt.n(vy / 1e9, 1)}</text>`;
+    const gx = M.l + (W - M.l - M.r) * i / 3, vx = xlo + (xhi - xlo) * i / 3;
+    out += `<line y1="${M.t}" y2="${H - M.b}" x1="${gx}" x2="${gx}" style="stroke:var(--c-grid)"/>
+      <text x="${gx}" y="${H - M.b + 13}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">${fmt.n0(vx / 1e6)}</text>`;
+  }
+  out += `<text x="${(M.l + W - M.r) / 2}" y="${H - 3}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">consentimentos ativos (milhões)</text>`;
+  out += `<text x="11" y="${(M.t + H - M.b) / 2}" text-anchor="middle" font-size="10" transform="rotate(-90 11 ${(M.t + H - M.b) / 2})" style="fill:var(--c-axis-text)">chamadas/semana (bi)</text>`;
+  out += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(" ")}" fill="none" stroke="#1d4e89" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>`;
+  pts.forEach((p, i) => {
+    const ultimo = i === pts.length - 1;
+    out += `<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${ultimo ? 5 : 3.5}" fill="${ultimo ? "#b45309" : "#1d4e89"}" opacity="0.9"><title>${attr(`semana de ${fmt.d(p.ref)}: ${fmt.n0(p.x / 1e6)} mi consentimentos · ${fmt.n(p.y / 1e9, 1)} bi chamadas`)}</title></circle>`;
+    if (i === 0 || ultimo) out += `<text x="${(X(p.x) + (ultimo ? -8 : 8)).toFixed(1)}" y="${(Y(p.y) - 8).toFixed(1)}" text-anchor="${ultimo ? "end" : "start"}" font-size="9" style="fill:var(--c-axis-text)">${fmt.d(p.ref).slice(0, 5)}</text>`;
+  });
+  return out + "</svg>";
+}
+
 function renderOpenFinanceReal(el, of) {
   const sChart = (key, color, h) => {
     const s = of.series[key];
@@ -3905,7 +3940,7 @@ function renderOpenFinanceReal(el, of) {
   const idx2 = of.indices || {};
   const fasesL = { dados_transacionais: "Dados transacionais", dados_abertos: "Dados abertos", iniciacao_pagamento: "Iniciação de pagamento" };
   const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
-    ${[["#of-geral","Visão Geral"],["#of-cons","Consentimentos"],["#of-apis","APIs & Endpoints"],["#of-inic","Iniciação"],["#of-conc","Concentração"],["#of-idx","Índices"],["#of-alertas","Alertas"],["#of-qual","Qualidade"],["#of-inst","Instituições"]].map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
+    ${[["#of-geral","Visão Geral"],["#of-cons","Consentimentos"],["#of-disp","Consentimentos × chamadas"],["#of-apis","APIs & Endpoints"],["#of-inic","Iniciação"],["#of-conc","Concentração"],["#of-idx","Índices"],["#of-alertas","Alertas"],["#of-qual","Qualidade"],["#of-inst","Instituições"]].map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
   const g4tx = of.series.of_consentimentos_transmitidos.obs;
   const cresc4 = g4tx.length > 4 ? ((g4tx[g4tx.length-1].v / g4tx[g4tx.length-5].v - 1) * 100).toFixed(1) : null;
   const sintese = `Consentimentos em ${fmt.n0(cons.v/1e6)} mi (${cresc4 != null ? (cresc4>0?"+":"")+cresc4+"% em 4 semanas" : ""}); concentração transacional top-5 de ${conc.dados_transacionais ? conc.dados_transacionais.top5_pct : "–"}% (HHI parcial ${conc.dados_transacionais ? conc.dados_transacionais.hhi_parcial : "–"}); sucesso técnico ${(idx2.qualidade_tecnica && idx2.qualidade_tecnica.componentes[0].valor) || "–"}% na fase transacional; ${(of.alertas_of||[]).length} alerta(s) ativo(s). Conversão: não publicada pela fonte.`;
@@ -3939,6 +3974,32 @@ function renderOpenFinanceReal(el, of) {
   <div id="of-cons"><h3>Consentimentos ${badge("observado")}</h3>
   <div class="grid g2">${sChart("of_consentimentos_transmitidos", "#1d4e89")}${sChart("of_consentimentos_recebidos", "#0e7c7b")}</div>
   <div class="src">clientes únicos e consentimentos por cliente: não publicados nas rotas — nunca estimados. Chamadas por consentimento: ver Índice de Utilização.</div></div>
+  ${(() => {
+    const consTx = of.series.of_consentimentos_transmitidos ? of.series.of_consentimentos_transmitidos.obs : [];
+    const chamadasPorRef = {};
+    ["of_chamadas_dados_transacionais", "of_chamadas_dados_abertos", "of_chamadas_iniciacao_pagamento"].forEach(k => {
+      ((of.series[k] || {}).obs || []).forEach(o => { chamadasPorRef[o.ref] = (chamadasPorRef[o.ref] || 0) + o.v; });
+    });
+    const ptsDisp = consTx.filter(o => chamadasPorRef[o.ref] != null).map(o => ({ ref: o.ref, x: o.v, y: chamadasPorRef[o.ref] }));
+    return `<div id="of-disp"><h3>Consentimentos × chamadas ${badge("observado")}</h3>
+    <div class="grid g2">
+      <div class="card"><h4>Trajetória semanal do sistema</h4>
+        ${scatterConsChamadas(ptsDisp)}
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Semana</th><th class="num">Consentimentos (mi)</th><th class="num">Chamadas (bi)</th></tr></thead>
+        <tbody>${ptsDisp.map(p => `<tr><td>${fmt.d(p.ref)}</td><td class="num">${fmt.n0(p.x / 1e6)}</td><td class="num">${fmt.n(p.y / 1e9, 1)}</td></tr>`).join("")}</tbody></table></div>
+        <div class="src">Cada ponto é uma semana (o laranja é a mais recente; a linha tracejada liga a ordem cronológica). Eixo x:
+        consentimentos ativos nos transmissores; eixo y: chamadas de API somadas das 3 fases. Dois níveis do mesmo
+        ecossistema — a relação é descritiva, não causal. Fonte: Dashboard do Cidadão (rotas públicas), semanal.</div></div>
+      <div class="card"><h4>Por que este gráfico não existe POR INSTITUIÇÃO</h4>
+        <p class="src" style="font-size:13px;line-height:1.65">As rotas públicas do Dashboard do Cidadão <b>não publicam
+        consentimentos por organização</b> — apenas o agregado do sistema (transmissores e receptores). Verificação
+        empírica em 05/08/2026: os parâmetros de filtro por organização são ignorados pela rota de consentimentos
+        (retornam o agregado até para organização inexistente) e o endpoint de organizações responde vazio para as
+        coleções de consentimento. Por instituição, a fonte publica somente o <b>ranking de chamadas</b> — na seção
+        <a href="javascript:void(0)" onclick="document.querySelector('#of-inst').scrollIntoView({behavior:'smooth'})">Instituições</a>.
+        Seguindo a regra da casa, a ausência é declarada — nunca estimada.</p></div>
+    </div></div>`;
+  })()}
   <div id="of-apis"><h3>APIs, endpoints e desempenho</h3>
   <div class="grid g3">${sChart("of_chamadas_dados_transacionais", "#1d4e89")}${sChart("of_chamadas_dados_abertos", "#0e7c7b")}${sChart("of_chamadas_iniciacao_pagamento", "#6b46a3")}</div>
   <div class="grid g3">${sChart("of_sucesso_dados_transacionais", "#1d4e89")}${sChart("of_sucesso_dados_abertos", "#0e7c7b")}${sChart("of_sucesso_iniciacao_pagamento", "#6b46a3")}</div>
