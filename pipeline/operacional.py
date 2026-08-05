@@ -9,6 +9,7 @@ IF.data; a rede é a soma nacional de agências processadas no ESTBAN por
 CNPJ-raiz do banco operacional (que pode diferir do CNPJ da holding listada).
 """
 import json
+import os
 
 from pipeline import common
 from pipeline.sources.b3_market import COMPANIES
@@ -196,9 +197,51 @@ def _rede(con, cnpj8, flags, nome):
     }
 
 
+CURADO_FASE2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "curated", "fase2_observacoes.json")
+
+
+def _fase2():
+    """Observações da Fase 2 (releases de RI, extração com revisão obrigatória).
+    Publica APENAS status 'aprovado', e apenas observações completas (evidência,
+    página e URL presentes). O restante vira contador — nunca valor."""
+    try:
+        with open(CURADO_FASE2, encoding="utf-8") as fh:
+            cur = json.load(fh)
+    except Exception:
+        return {}, {"em_revisao": 0, "aprovadas": 0, "rejeitadas": 0}, {}
+    contadores = {"em_revisao": 0, "aprovadas": 0, "rejeitadas": 0}
+    por_inst = {}
+    for o in cur.get("observacoes", []):
+        chave = {"review": "em_revisao", "aprovado": "aprovadas", "rejeitado": "rejeitadas"}.get(o.get("status"))
+        if chave:
+            contadores[chave] += 1
+        if o.get("status") != "aprovado":
+            continue
+        if not (o.get("evidencia") and o.get("pagina") and (o.get("documento") or {}).get("url")):
+            continue  # sem evidência completa não se publica, aprovado ou não
+        por_inst.setdefault(o["institution_id"], []).append({
+            "metric_id": o["metric_id"],
+            "valor": o["valor"],
+            "exibir": o["exibir"],
+            "unidade": o["unidade"],
+            "period_end": o["period_end"],
+            "periodo_rotulo": o["periodo_rotulo"],
+            "escopo": o["escopo"],
+            "natureza": o["natureza"],
+            "comparabilidade": o["comparabilidade"],
+            "pagina": o["pagina"],
+            "evidencia": o["evidencia"],
+            "documento": o["documento"],
+        })
+    for itens in por_inst.values():
+        itens.sort(key=lambda x: (x["metric_id"], x["period_end"]))
+    return por_inst, contadores, cur.get("metricas", {})
+
+
 def build(con, cfg=None):
     flags = []
     instituicoes = []
+    clientes_por_inst, fase2_contadores, fase2_metricas = _fase2()
 
     for c in COMPANIES:
         cid = c["company_id"]
@@ -212,6 +255,7 @@ def build(con, cfg=None):
             "empregados": _empregados(con, cid, flags, nome),
             "auditor": _auditor(con, cid, flags, nome),
             "rede": _rede(con, REDE_CNPJ8[cid], flags, nome) if cid in REDE_CNPJ8 else None,
+            "clientes": clientes_por_inst.get(cid) or None,
         }
         instituicoes.append(inst)
 
@@ -225,6 +269,7 @@ def build(con, cfg=None):
             "empregados": None,
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
+            "clientes": None,
         })
 
     sfn_rows = con.execute(
@@ -281,6 +326,13 @@ def build(con, cfg=None):
                                  "contagem de municípios com ao menos uma agência (código de "
                                  "município do próprio ESTBAN)."}},
         "rede_por_cnpj8": rede_por_cnpj8,
+        "fase2": {
+            **fase2_contadores,
+            "metricas": fase2_metricas,
+            "nota": "Clientes vêm dos releases de resultados (descoberta via CVM/IPE), com extração "
+                    "revisada e evidência obrigatória (documento, página e trecho). Comparabilidade C: "
+                    "o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking.",
+        },
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,

@@ -56,8 +56,32 @@ recoletado a cada execução (companhias retificam o FRE o ano inteiro; fica sem
 a **maior versão** por companhia). A execução é diária, junto com o pipeline do
 Observatório (workflow `atualizar-dados.yml`).
 
-## Fases seguintes (não implementadas)
+## Fase 2 — clientes a partir dos releases de resultados
 
-Camada 2 (regras sobre notas padronizadas de PDF) e Camada 3 (extração semântica
-com revisão humana obrigatória) estão descritas na avaliação de viabilidade e só
-serão construídas se/quando decididas. Esta fase não depende delas.
+A Fase 2 cobre o que **não existe** em fonte estruturada: contagens de clientes,
+divulgadas apenas nos releases de resultados. O processo, de ponta a ponta:
+
+1. **Descoberta estruturada, nunca raspagem de RI**: os releases são
+   protocolados na CVM e listados no dataset aberto **IPE**
+   (`pipeline/sources/releases.py`). Regras explícitas por banco (categoria +
+   tipo + filtro de assunto) selecionam os documentos; reentrega do mesmo
+   período substitui a anterior; o PDF é baixado do domínio da própria CVM.
+2. **Extração local primeiro**: texto por página (pypdf) e seleção das páginas
+   candidatas por termos (clientes, correntistas, base de clientes) — só essas
+   páginas seguem para a extração semântica.
+3. **Extração com evidência obrigatória** (camada 3, em sessão Claude Code):
+   toda observação carrega documento (protocolo CVM + URL), página e **trecho
+   literal**. Sem evidência completa, a observação não avança — regra imposta
+   por teste e pelo próprio gold.
+4. **Revisão humana obrigatória**: as observações nascem com status `review`
+   em `pipeline/curated/fase2_observacoes.json` (versionado — o histórico de
+   extrações é ativo do projeto). **Só `aprovado` é publicado.** O gold expõe
+   os contadores (em revisão/aprovadas/rejeitadas), nunca os valores pendentes.
+5. **Comparabilidade C, sempre**: cada companhia define o próprio conceito de
+   cliente (CPF/CNPJ, ativo, digital). Os números aparecem por instituição com
+   o conceito declarado e **nunca** entram em comparação entre bancos nem em
+   ranking. Ausência (banco que não divulga) é registrada com motivo — não é
+   zero.
+
+Conceitos protegidos: base total ≠ clientes ativos ≠ correntistas ≠ ativos nos
+canais digitais — quatro métricas distintas, jamais misturadas na mesma série.

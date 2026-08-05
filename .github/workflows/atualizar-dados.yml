@@ -39,6 +39,11 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Dependências do pipeline
+        # pypdf: extração de texto dos releases de resultados (Fase 2). O
+        # restante do pipeline segue só com a biblioteca padrão.
+        run: pip install pypdf
+
       - name: Restaurar estado do pipeline (silver e bronze)
         id: cache
         uses: actions/cache@v4
