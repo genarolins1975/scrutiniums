@@ -651,11 +651,6 @@
   "papeis": [
    "DADOS"
   ],
-  "dimensoes": {
-   "escala_chamadas": 0.0,
-   "cobertura_funcional": 30.4
-  },
-  "maturidade_estrutural": 15.2,
   "match_diretorio": true
  },
  "reclamacoes": [

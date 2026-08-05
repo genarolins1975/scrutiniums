@@ -713,11 +713,6 @@
    "DADOS",
    "PAGTO"
   ],
-  "dimensoes": {
-   "escala_chamadas": 35.9,
-   "cobertura_funcional": 57.1
-  },
-  "maturidade_estrutural": 46.5,
   "match_diretorio": true
  },
  "reclamacoes": [

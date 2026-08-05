@@ -575,8 +575,6 @@ def build_openfinance_real(con, inst_gold=None):
         parts[nome.upper()] = {"nome": nome, "status": status, "n_auth_servers": n_as,
                                "familias": json.loads(fams or "[]"),
                                "papeis": json.loads(papeis or "[]")}
-    max_fams = max((len(p["familias"]) for p in parts.values()), default=1)
-
     def _match_dir(org_name):
         up = org_name.upper()
         if up in parts:
@@ -592,14 +590,9 @@ def build_openfinance_real(con, inst_gold=None):
         d = _match_dir(nome)
         share = chamadas / total_chamadas * 100
         fams = len(d["familias"]) if d else None
-        dims = {"escala_chamadas": round(min(share / (rank_rows[0][1] / total_chamadas * 100) * 100, 100), 1)}
-        if fams is not None:
-            dims["cobertura_funcional"] = round(fams / max_fams * 100, 1)
-        maturidade = round(sum(dims.values()) / len(dims), 1)
         ranking.append({
             "organisation": nome, "chamadas_semana": chamadas, "share_pct": round(share, 1),
             "familias_api": fams, "papeis": d["papeis"] if d else None,
-            "dimensoes": dims, "maturidade_estrutural": maturidade,
             "match_diretorio": bool(d),
         })
     por_papel = {}
@@ -745,45 +738,23 @@ def build_openfinance_real(con, inst_gold=None):
         "participantes": {"total": len(parts), "por_papel": por_papel},
         "metodo": "Séries semanais das rotas públicas do Dashboard do Cidadão (consentimentos por papel, "
                   "chamadas e taxa de sucesso por fase; ranking de chamadas por organização) + diretório "
-                  "oficial de participantes (papéis e famílias de API). Maturidade ESTRUTURAL = média de "
-                  "escala de chamadas (relativa ao líder) e cobertura de famílias de API — NÃO mede "
-                  "conversão nem qualidade de experiência (indisponíveis por organização).",
+                  "oficial de participantes (papéis e famílias de API).",
         "limitacoes": "Rotas do dashboard não são formalmente documentadas (risco de quebra monitorado pelo "
                       "pipeline); histórico curto (semanas recentes); ranking cobre as maiores organizações "
-                      "divulgadas; latência e conversão por organização não são públicas — por isso o índice "
-                      "de maturidade da versão demo foi APOSENTADO em favor da maturidade estrutural.",
+                      "divulgadas; latência e conversão por organização não são públicas.",
         "fonte_nota": "Open Finance Brasil — Dashboard do Cidadão e diretório oficial de participantes (dados abertos).",
     }
 
 
 def build_openfinance(of_demo):
-    """Índice de maturidade preliminar sobre dados DEMONSTRATIVOS (método real, dados demo)."""
+    """Ranking DEMONSTRATIVO normalizado por consentimento (fallback quando não há dado real)."""
     insts = of_demo["instituicoes"]
-    def norm(vals, v, invert=False):
-        lo, hi = min(vals), max(vals)
-        x = 50.0 if hi - lo < 1e-9 else (v - lo) / (hi - lo) * 100
-        return 100 - x if invert else x
-    ranking = []
-    for i in insts:
-        share_rx = [x["consentimentos_ativos_recebidos"] for x in insts]
-        share_tx = [x["consentimentos_transmitidos"] for x in insts]
-        growth = [x["novos_consentimentos_mes"] / max(x["consentimentos_ativos_recebidos"], 1) for x in insts]
-        g = i["novos_consentimentos_mes"] / max(i["consentimentos_ativos_recebidos"], 1)
-        dims = {
-            "escala_recepcao": round(norm(share_rx, i["consentimentos_ativos_recebidos"]), 1),
-            "capacidade_transmissora": round(norm(share_tx, i["consentimentos_transmitidos"]), 1),
-            "crescimento_relativo": round(norm(growth, g), 1),
-            "taxa_sucesso": round(norm([x["taxa_sucesso_pct"] for x in insts], i["taxa_sucesso_pct"]), 1),
-            "disponibilidade": round(norm([x["disponibilidade_pct"] for x in insts], i["disponibilidade_pct"]), 1),
-            "desempenho_latencia": round(norm([x["latencia_p95_ms"] for x in insts], i["latencia_p95_ms"], invert=True), 1),
-        }
-        ranking.append({**i, "maturidade": round(sum(dims.values()) / len(dims), 1), "dimensoes": dims})
-    ranking.sort(key=lambda x: -x["maturidade"])
+    ranking = sorted(insts, key=lambda x: -x["consentimentos_ativos_recebidos"])
     return {
         "ok": True, "demo": True, "selo": of_demo["selo"], "motivo": of_demo["motivo"],
         "ref_period": of_demo["ref_period"], "ranking": ranking,
         "serie_consentimentos_total": of_demo["serie_consentimentos_total"],
-        "metodo": "Maturidade = média de 6 dimensões normalizadas min-max no grupo (crescimento é relativo à base, evitando confundir volume com maturidade).",
+        "metodo": "Ranking demonstrativo ordenado por consentimentos ativos recebidos; indicadores por consentimento evitam confundir volume com uso.",
         "limitacoes": "TODOS os dados deste módulo são DEMONSTRATIVOS. Método pronto para dados reais do dashboard Open Finance Brasil quando houver via de acesso estável.",
     }
 

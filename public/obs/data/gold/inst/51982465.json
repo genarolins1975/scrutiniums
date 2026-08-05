@@ -660,11 +660,6 @@
    "DADOS",
    "PAGTO"
   ],
-  "dimensoes": {
-   "escala_chamadas": 0.0,
-   "cobertura_funcional": 10.7
-  },
-  "maturidade_estrutural": 5.3,
   "match_diretorio": true
  },
  "reclamacoes": [],

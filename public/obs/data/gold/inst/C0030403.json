@@ -460,56 +460,6 @@
   "score": 54.2,
   "score_delta": 4.2,
   "faixa": "atenção",
-  "dimensoes": {
-   "capital_basileia": {
-    "valor": 13.42,
-    "percentil_pares": 12.5,
-    "risco": 87.5,
-    "mediana_pares": 17.35,
-    "q1_pares": 15.01,
-    "q3_pares": 17.97
-   },
-   "rentabilidade": {
-    "valor": 3.22,
-    "percentil_pares": 75.0,
-    "risco": 25.0,
-    "mediana_pares": 2.94,
-    "q1_pares": 1.95,
-    "q3_pares": 3.22
-   },
-   "alavancagem": {
-    "valor": 16.55,
-    "percentil_pares": 62.5,
-    "risco": 62.5,
-    "mediana_pares": 16.09,
-    "q1_pares": 11.82,
-    "q3_pares": 28.61
-   },
-   "concentracao_credito": {
-    "valor": 16.94,
-    "percentil_pares": 12.5,
-    "risco": 12.5,
-    "mediana_pares": 23.99,
-    "q1_pares": 20.84,
-    "q3_pares": 36.99
-   },
-   "dependencia_captacoes": {
-    "valor": 78.25,
-    "percentil_pares": 50.0,
-    "risco": 50.0,
-    "mediana_pares": 78.25,
-    "q1_pares": 72.84,
-    "q3_pares": 84.1
-   },
-   "concentracao_setorial": {
-    "valor": 3037,
-    "percentil_pares": 87.5,
-    "risco": 87.5,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
-   }
-  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -729,11 +679,6 @@
    "CONTA",
    "DADOS"
   ],
-  "dimensoes": {
-   "escala_chamadas": 0.0,
-   "cobertura_funcional": 46.4
-  },
-  "maturidade_estrutural": 23.2,
   "match_diretorio": true
  },
  "reclamacoes": [

@@ -453,56 +453,6 @@
   "score": 45.3,
   "score_delta": -9.0,
   "faixa": "atenção",
-  "dimensoes": {
-   "capital_basileia": {
-    "valor": 15.15,
-    "percentil_pares": 80.0,
-    "risco": 20.0,
-    "mediana_pares": 15.02,
-    "q1_pares": 14.8,
-    "q3_pares": 15.15
-   },
-   "rentabilidade": {
-    "valor": 3.98,
-    "percentil_pares": 57.1,
-    "risco": 42.9,
-    "mediana_pares": 3.41,
-    "q1_pares": 2.54,
-    "q3_pares": 5.79
-   },
-   "alavancagem": {
-    "valor": 13.26,
-    "percentil_pares": 42.9,
-    "risco": 42.9,
-    "mediana_pares": 13.42,
-    "q1_pares": 10.95,
-    "q3_pares": 15.51
-   },
-   "concentracao_credito": {
-    "valor": 41.14,
-    "percentil_pares": 42.9,
-    "risco": 42.9,
-    "mediana_pares": 41.35,
-    "q1_pares": 17.37,
-    "q3_pares": 43.29
-   },
-   "dependencia_captacoes": {
-    "valor": 76.35,
-    "percentil_pares": 42.9,
-    "risco": 42.9,
-    "mediana_pares": 77.23,
-    "q1_pares": 54.32,
-    "q3_pares": 78.85
-   },
-   "concentracao_setorial": {
-    "valor": 2116,
-    "percentil_pares": 80.0,
-    "risco": 80.0,
-    "mediana_pares": 1986.0,
-    "q1_pares": 1791.25,
-    "q3_pares": 2084.0
-   }
-  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -979,11 +929,6 @@
    "DADOS",
    "PAGTO"
   ],
-  "dimensoes": {
-   "escala_chamadas": 37.5,
-   "cobertura_funcional": 94.6
-  },
-  "maturidade_estrutural": 66.0,
   "match_diretorio": true
  },
  "reclamacoes": [
