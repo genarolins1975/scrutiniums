@@ -2335,10 +2335,10 @@ const GUIA = {
     importa: "Em cinco anos o Pix reorganizou o sistema de pagamentos brasileiro e mudou a relação das pessoas com conta bancária e dinheiro físico.",
     ler: "Os totais usam o universo completo do BCB; as composições usam a base transacional, que cobre parte dele — a cobertura vem declarada ao lado. A comparação entre instrumentos é trimestral porque cartões não têm série mensal.",
     nao: "O Pix não é categoria homogênea: mistura transferência pessoal, pagamento comercial e tesouraria empresarial. Não é substituto direto de nenhum instrumento isolado." },
-  openfinance: { q: "Como está a adoção do Open Finance no Brasil?",
-    importa: "O compartilhamento de dados redefine concorrência bancária: quem tem o dado do cliente deixa de ter exclusividade sobre ele.",
-    ler: "Consentimentos ativos medem adoção corrente; o total acumulado inclui os já expirados. São métricas distintas.",
-    nao: "Volume de consentimentos não mede uso efetivo nem receita gerada pelo ecossistema." },
+  openfinance: { q: "O que o Dashboard do Cidadão publica sobre o Open Finance Brasil?",
+    importa: "É a divulgação oficial da estrutura: consentimentos ativos e chamadas de API, em periodicidade semanal, com aberturas por fase, instituição, família de API e endpoint.",
+    ler: "Consentimentos ativos são apresentados nas visões das instituições transmissoras e receptoras de dados; as chamadas de API são publicadas por fase e nas aberturas divulgadas pela fonte.",
+    nao: "Esta página reproduz exclusivamente as métricas publicadas pelo Dashboard do Cidadão. Métricas não divulgadas pela fonte — como consentimentos por instituição ou clientes únicos — não são apresentadas nem estimadas." },
   judicial: { q: "Quanto e por que o Judiciário é acionado em temas bancários?",
     importa: "A litigiosidade é custo, sinal de atrito com o cliente e passivo contingente — e no Brasil é excepcionalmente alta.",
     ler: "Há duas camadas que nunca se cruzam: a nacional (DataJud) não identifica instituições porque a fonte não publica as partes; a nominal (TST) identifica, mas cobre só um tribunal e os dez maiores.",
@@ -3885,41 +3885,6 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   return out;
 }
 
-/* Dispersão semanal do SISTEMA: x = consentimentos ativos, y = chamadas de API.
-   Por instituição este gráfico NÃO existe porque a fonte não publica
-   consentimentos por organização (verificação empírica em 05/08/2026: os
-   parâmetros de filtro por organização são ignorados pela rota /consents e o
-   endpoint de organizações responde vazio) — a ausência é declarada ao lado. */
-function scatterConsChamadas(pts) {
-  if (!pts || pts.length < 2) return "<p class='src'>Sem semanas suficientes com as duas séries.</p>";
-  const W = 460, H = 230, M = { t: 14, r: 18, b: 34, l: 52 };
-  const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
-  const pad = (a, b) => (b - a) * 0.1 || 1;
-  let xlo = Math.min(...xs), xhi = Math.max(...xs); const px = pad(xlo, xhi); xlo -= px; xhi += px;
-  let ylo = Math.min(...ys), yhi = Math.max(...ys); const py = pad(ylo, yhi); ylo -= py; yhi += py;
-  const X = v => M.l + (v - xlo) / (xhi - xlo) * (W - M.l - M.r);
-  const Y = v => M.t + (1 - (v - ylo) / (yhi - ylo)) * (H - M.t - M.b);
-  let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img"
-    aria-label="dispersão semanal: consentimentos ativos no eixo horizontal (milhões), chamadas de API no eixo vertical (bilhões por semana); a tabela ao lado traz os mesmos valores">`;
-  for (let i = 0; i <= 3; i++) {
-    const gy = M.t + (H - M.t - M.b) * i / 3, vy = yhi - (yhi - ylo) * i / 3;
-    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${gy}" y2="${gy}" style="stroke:var(--c-grid)"/>
-      <text x="${M.l - 6}" y="${gy + 3}" text-anchor="end" font-size="10" style="fill:var(--c-axis-text)">${fmt.n(vy / 1e9, 1)}</text>`;
-    const gx = M.l + (W - M.l - M.r) * i / 3, vx = xlo + (xhi - xlo) * i / 3;
-    out += `<line y1="${M.t}" y2="${H - M.b}" x1="${gx}" x2="${gx}" style="stroke:var(--c-grid)"/>
-      <text x="${gx}" y="${H - M.b + 13}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">${fmt.n0(vx / 1e6)}</text>`;
-  }
-  out += `<text x="${(M.l + W - M.r) / 2}" y="${H - 3}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">consentimentos ativos (milhões)</text>`;
-  out += `<text x="11" y="${(M.t + H - M.b) / 2}" text-anchor="middle" font-size="10" transform="rotate(-90 11 ${(M.t + H - M.b) / 2})" style="fill:var(--c-axis-text)">chamadas/semana (bi)</text>`;
-  out += `<path d="${pts.map((p, i) => `${i ? "L" : "M"}${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(" ")}" fill="none" stroke="#1d4e89" stroke-width="1" stroke-dasharray="3 3" opacity="0.55"/>`;
-  pts.forEach((p, i) => {
-    const ultimo = i === pts.length - 1;
-    out += `<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${ultimo ? 5 : 3.5}" fill="${ultimo ? "#b45309" : "#1d4e89"}" opacity="0.9"><title>${attr(`semana de ${fmt.d(p.ref)}: ${fmt.n0(p.x / 1e6)} mi consentimentos · ${fmt.n(p.y / 1e9, 1)} bi chamadas`)}</title></circle>`;
-    if (i === 0 || ultimo) out += `<text x="${(X(p.x) + (ultimo ? -8 : 8)).toFixed(1)}" y="${(Y(p.y) - 8).toFixed(1)}" text-anchor="${ultimo ? "end" : "start"}" font-size="9" style="fill:var(--c-axis-text)">${fmt.d(p.ref).slice(0, 5)}</text>`;
-  });
-  return out + "</svg>";
-}
-
 function renderOpenFinanceReal(el, of) {
   const sChart = (key, color, h) => {
     const s = of.series[key];
@@ -3927,117 +3892,58 @@ function renderOpenFinanceReal(el, of) {
     const last = s.obs[s.obs.length - 1];
     return `<div class="card"><h4>${s.meta.name} ${badge("observado")}</h4>
       <div class="big" style="font-size:20px">${last.v >= 1e6 ? fmt.n0(last.v / 1e6) + " mi" : fmt.n(last.v, last.v < 200 ? 2 : 0)}${s.meta.unit === "%" ? "%" : ""} <span style="font-size:12px;color:var(--text-3)">semana de ${fmt.d(last.ref)}</span></div>
-      ${lineChart({ series: [{ pts: s.obs.map(o => ({ x: o.ref, y: o.v })), color, label: s.meta.name }], h: h || 130, unit: s.meta.unit, fonte: s.meta.source, status: "observado" })}
-      ${chartFooter({ fonte: s.meta.source, periodo: `${fmt.d(s.obs[0].ref)}–${fmt.d(last.ref)} (semanal)`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}</div>`;
+      ${lineChart({ series: [{ pts: s.obs.map(o => ({ x: o.ref, y: o.v })), color, label: s.meta.name }], h: h || 130, unit: s.meta.unit, fonte: "Dashboard do Cidadão — Open Finance Brasil", status: "observado" })}
+      ${chartFooter({ fonte: "Dashboard do Cidadão — Open Finance Brasil", periodo: `${fmt.d(s.obs[0].ref)}–${fmt.d(last.ref)} (semanal)`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: "Reprodução integral da métrica publicada pela fonte." })}</div>`;
   };
-  const rows = of.ranking.map((r, i) => `
-    <tr><td>${i + 1}</td><td><b>${r.organisation}</b>${r.papeis ? `<div class="src">papéis: ${r.papeis.join(", ")}</div>` : ""}</td>
-      <td>${fmt.n0(r.chamadas_semana / 1e6)} mi</td><td>${r.share_pct}%</td>
-      <td>${r.familias_api != null ? r.familias_api : "<span class='src'>sem match no diretório</span>"}</td>
-      <td><b>${r.maturidade_estrutural}</b></td></tr>`).join("");
   const cons = of.consentimentos_atual;
-  const conc = of.concentracao || {};
-  const idx2 = of.indices || {};
   const fasesL = { dados_transacionais: "Dados transacionais", dados_abertos: "Dados abertos", iniciacao_pagamento: "Iniciação de pagamento" };
-  const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
-    ${[["#of-geral","Visão Geral"],["#of-cons","Consentimentos"],["#of-disp","Consentimentos × chamadas"],["#of-apis","APIs & Endpoints"],["#of-inic","Iniciação"],["#of-conc","Concentração"],["#of-idx","Índices"],["#of-alertas","Alertas"],["#of-qual","Qualidade"],["#of-inst","Instituições"]].map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
-  const g4tx = of.series.of_consentimentos_transmitidos.obs;
-  const cresc4 = g4tx.length > 4 ? ((g4tx[g4tx.length-1].v / g4tx[g4tx.length-5].v - 1) * 100).toFixed(1) : null;
-  const sintese = `Consentimentos em ${fmt.n0(cons.v/1e6)} mi (${cresc4 != null ? (cresc4>0?"+":"")+cresc4+"% em 4 semanas" : ""}); concentração transacional top-5 de ${conc.dados_transacionais ? conc.dados_transacionais.top5_pct : "–"}% (HHI parcial ${conc.dados_transacionais ? conc.dados_transacionais.hhi_parcial : "–"}); sucesso técnico ${(idx2.qualidade_tecnica && idx2.qualidade_tecnica.componentes[0].valor) || "–"}% na fase transacional; ${(of.alertas_of||[]).length} alerta(s) ativo(s). Conversão: não publicada pela fonte.`;
-  const heroChamadas = ["of_chamadas_dados_transacionais", "of_chamadas_dados_abertos", "of_chamadas_iniciacao_pagamento"]
-    .map(k => of.series[k] ? of.series[k].obs[of.series[k].obs.length - 1].v : 0).reduce((a, b) => a + b, 0);
-  const heroSuc = of.series.of_sucesso_dados_transacionais ? of.series.of_sucesso_dados_transacionais.obs.slice(-1)[0].v : null;
-  const heroConsTx = of.series.of_consentimentos_transmitidos.obs;
-  const heroCresc = heroConsTx.length > 4 ? ((heroConsTx[heroConsTx.length - 1].v / heroConsTx[heroConsTx.length - 5].v - 1) * 100) : null;
-  const hero = `<div class="hero-of">
-    <h3 class="heroline">O ecossistema <b>Open Finance Brasil</b> em números — ao vivo</h3>
-    <div class="hero-grid">
-      <div><div class="hero-num">${fmt.n0(cons.v / 1e6)}<small> Mi</small></div><div class="hero-lbl">consentimentos ativos</div>
-        <div class="hero-chev">⌄</div><div class="hero-sub"><b>${heroCresc != null ? (heroCresc >= 0 ? "+" : "") + fmt.n(heroCresc, 1) + "%" : "–"}</b> de crescimento<br>em 4 semanas ${badge("observado")}</div></div>
-      <div><div class="hero-num">${fmt.n(heroChamadas / 1e9, 1)}<small> Bi</small></div><div class="hero-lbl">chamadas de API por semana</div>
-        <div class="hero-chev">⌄</div><div class="hero-sub">soma das 3 fases<br>na última semana ${badge("observado")}</div></div>
-      <div><div class="hero-num">${heroSuc != null ? fmt.n(heroSuc, 1) : "–"}<small>%</small></div><div class="hero-lbl">taxa de sucesso (transacional)</div>
-        <div class="hero-chev">⌄</div><div class="hero-sub">respostas 2xx/3xx sobre o total<br>de chamadas da semana ${badge("calculado")}</div></div>
-      <div><div class="hero-num">${of.participantes.total}</div><div class="hero-lbl">organizações no diretório oficial</div>
-        <div class="hero-chev">⌄</div><div class="hero-sub">bancos, cooperativas, fintechs e<br>instituições de pagamento ${badge("observado")}</div></div>
-    </div>
-    <div class="hero-foot">Fonte: Dashboard do Cidadão (rotas públicas) e diretório oficial de participantes · data-base: semana de ${fmt.d(cons.ref)} · números atualizados a cada execução do pipeline. Clientes únicos não são publicados nas rotas públicas — nunca estimados. O nº de organizações do diretório difere da contagem de "instituições ativas" de materiais institucionais (que somam marcas/entidades dos conglomerados).</div>
+  const ultimaFase = k => { const s = of.series[k]; return s ? s.obs[s.obs.length - 1] : null; };
+  const consTx = ultimaFase("of_consentimentos_transmitidos");
+  const consRx = ultimaFase("of_consentimentos_recebidos");
+  const kpis = `<div class="pan-kpi">
+    ${[["Consentimentos ativos — transmissores", consTx, "mi"], ["Consentimentos ativos — receptores", consRx, "mi"],
+       ["Chamadas na semana — dados transacionais", ultimaFase("of_chamadas_dados_transacionais"), "bi"],
+       ["Chamadas na semana — dados abertos", ultimaFase("of_chamadas_dados_abertos"), "bi"],
+       ["Chamadas na semana — iniciação de pagamento", ultimaFase("of_chamadas_iniciacao_pagamento"), "bi"]]
+      .filter(([, o]) => o).map(([titulo, o, u]) => `<div class="card kpi"><h4>${titulo}</h4>
+      <div class="big" style="font-size:21px">${u === "mi" ? fmt.n0(o.v / 1e6) + " mi" : fmt.n(o.v / 1e9, 1) + " bi"}</div>
+      <div class="src">${badge("observado")} semana de ${fmt.d(o.ref)}</div></div>`).join("")}
   </div>`;
+  const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
+    ${[["#of-cons","Consentimentos"],["#of-chamadas","Chamadas por fase"],["#of-inst","Por instituição"],["#of-detalhe","Famílias e endpoints"],["#of-escopo","Escopo e fonte"]].map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
+  const tabelaFase = (slug) => `<div class="card"><h4>${fasesL[slug]}</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>Organização</th><th class="num">Chamadas</th></tr></thead>
+    <tbody>${(of.rankings_fase[slug] || []).map((r, i) => `<tr><td>${i + 1}</td><td>${r.organisation}</td><td class="num">${fmt.n0(r.chamadas / 1e6)} mi</td></tr>`).join("")}</tbody></table></div>
+    <div class="src">Relação divulgada pela fonte (vinte maiores organizações da fase), em número de chamadas.</div></div>`;
   el.innerHTML = `
   ${pageHead({ title: "Open Finance", seals: badge("observado"),
-    desc: "Adoção, utilização, desempenho técnico e concentração do ecossistema — rotas públicas do Dashboard do Cidadão + diretório oficial de participantes.",
-    fontes: "Open Finance Brasil (Dashboard do Cidadão, diretório)" })}
-  ${hero}
+    desc: "Métricas públicas do Dashboard do Cidadão do Open Finance Brasil: consentimentos ativos e chamadas de API por fase, por instituição, por família de API e por endpoint. Reprodução integral, sem indicadores derivados.",
+    vintage: cons ? fmt.my(cons.ref) : null,
+    fontes: "Open Finance Brasil — Dashboard do Cidadão" })}
+  ${kpis}
   ${subnav}
-  <div id="of-geral" class="card" style="margin-top:10px"><h4>Síntese ${badge("calculado","frase montada por regras determinísticas")}</h4><p>${sintese}</p>
-  <div class="src">data-base: semana de ${fmt.d(cons.ref)} · fonte: Dashboard do Cidadão (rotas públicas) · variação anual indisponível (histórico curto — declarado)</div></div>
-  <div id="of-cons"><h3>Consentimentos ${badge("observado")}</h3>
-  <div class="grid g2">${sChart("of_consentimentos_transmitidos", "#1d4e89")}${sChart("of_consentimentos_recebidos", "#0e7c7b")}</div>
-  <div class="src">clientes únicos e consentimentos por cliente: não publicados nas rotas — nunca estimados. Chamadas por consentimento: ver Índice de Utilização.</div></div>
-  ${(() => {
-    const consTx = of.series.of_consentimentos_transmitidos ? of.series.of_consentimentos_transmitidos.obs : [];
-    const chamadasPorRef = {};
-    ["of_chamadas_dados_transacionais", "of_chamadas_dados_abertos", "of_chamadas_iniciacao_pagamento"].forEach(k => {
-      ((of.series[k] || {}).obs || []).forEach(o => { chamadasPorRef[o.ref] = (chamadasPorRef[o.ref] || 0) + o.v; });
-    });
-    const ptsDisp = consTx.filter(o => chamadasPorRef[o.ref] != null).map(o => ({ ref: o.ref, x: o.v, y: chamadasPorRef[o.ref] }));
-    return `<div id="of-disp"><h3>Consentimentos × chamadas ${badge("observado")}</h3>
-    <div class="grid g2">
-      <div class="card"><h4>Trajetória semanal do sistema</h4>
-        ${scatterConsChamadas(ptsDisp)}
-        <div class="tblwrap"><table class="data compact"><thead><tr><th>Semana</th><th class="num">Consentimentos (mi)</th><th class="num">Chamadas (bi)</th></tr></thead>
-        <tbody>${ptsDisp.map(p => `<tr><td>${fmt.d(p.ref)}</td><td class="num">${fmt.n0(p.x / 1e6)}</td><td class="num">${fmt.n(p.y / 1e9, 1)}</td></tr>`).join("")}</tbody></table></div>
-        <div class="src">Cada ponto é uma semana (o laranja é a mais recente; a linha tracejada liga a ordem cronológica). Eixo x:
-        consentimentos ativos nos transmissores; eixo y: chamadas de API somadas das 3 fases. Dois níveis do mesmo
-        ecossistema — a relação é descritiva, não causal. Fonte: Dashboard do Cidadão (rotas públicas), semanal.</div></div>
-      <div class="card"><h4>Por que este gráfico não existe POR INSTITUIÇÃO</h4>
-        <p class="src" style="font-size:13px;line-height:1.65">As rotas públicas do Dashboard do Cidadão <b>não publicam
-        consentimentos por organização</b> — apenas o agregado do sistema (transmissores e receptores). Verificação
-        empírica em 05/08/2026: os parâmetros de filtro por organização são ignorados pela rota de consentimentos
-        (retornam o agregado até para organização inexistente) e o endpoint de organizações responde vazio para as
-        coleções de consentimento. Por instituição, a fonte publica somente o <b>ranking de chamadas</b> — na seção
-        <a href="javascript:void(0)" onclick="document.querySelector('#of-inst').scrollIntoView({behavior:'smooth'})">Instituições</a>.
-        Seguindo a regra da casa, a ausência é declarada — nunca estimada.</p></div>
-    </div></div>`;
-  })()}
-  <div id="of-apis"><h3>APIs, endpoints e desempenho</h3>
-  <div class="grid g3">${sChart("of_chamadas_dados_transacionais", "#1d4e89")}${sChart("of_chamadas_dados_abertos", "#0e7c7b")}${sChart("of_chamadas_iniciacao_pagamento", "#6b46a3")}</div>
-  <div class="grid g3">${sChart("of_sucesso_dados_transacionais", "#1d4e89")}${sChart("of_sucesso_dados_abertos", "#0e7c7b")}${sChart("of_sucesso_iniciacao_pagamento", "#6b46a3")}</div>
-  <div class="grid g3">${Object.entries(of.endpoints_top || {}).map(([s, e]) => `<div class="card"><h4>Top endpoints — ${fasesL[s]}</h4>
-    ${e.endpoints.slice(0, 8).map(x => `<div class="contrib"><span class="lbl" style="width:170px">${x.nome.slice(0, 26)}</span><span class="num">${fmt.n0(x.chamadas / 1e6)} mi</span></div>`).join("")}
-    <div class="src">acumulado da janela divulgada · sucesso/latência por endpoint: indisponíveis</div></div>`).join("")}</div></div>
-  <div id="of-inic"><h3>Iniciação de pagamentos ${badge("observado")}</h3>
-  <div class="grid g2">
-    <div class="card"><h4>Ranking nominal — chamadas da fase</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>Organização</th><th>Chamadas</th><th>Share</th></tr></thead>
-      <tbody>${(of.rankings_fase.iniciacao_pagamento || []).slice(0, 12).map((r, i) => `<tr><td>${i + 1}</td><td>${r.organisation}</td><td>${fmt.n0(r.chamadas / 1e6)} mi</td><td>${r.share_pct}%</td></tr>`).join("")}</tbody></table></div>
-      <div class="src">a fonte não separa iniciadores de detentores no ranking; pagamentos CONCLUÍDOS e funil não são publicados — apenas chamadas da fase.</div></div>
-    <div class="card"><h4>Concentração — iniciação</h4>
-      ${conc.iniciacao_pagamento ? `<div class="src" style="font-size:13px;line-height:2">top-1: <b>${conc.iniciacao_pagamento.top1_pct}%</b> · top-5: <b>${conc.iniciacao_pagamento.top5_pct}%</b> · top-10: <b>${conc.iniciacao_pagamento.top10_pct}%</b> · fora do top-5: ${conc.iniciacao_pagamento.fora_top5_pct}% · HHI parcial: <b>${conc.iniciacao_pagamento.hhi_parcial}</b><br><i>${conc.iniciacao_pagamento.nota}</i></div>` : ""}</div>
-  </div></div>
-  <div id="of-conc"><h3>Concentração por fase ${badge("calculado")}</h3>
-  <div class="grid g3">${Object.entries(conc).map(([s, c]) => `<div class="card"><h4>${fasesL[s]}</h4>
-    ${["top1_pct","top5_pct","top10_pct","fora_top5_pct"].map(k => `<div class="contrib"><span class="lbl" style="width:90px">${k.replace("_pct","").replace("_"," ")}</span><span class="bar pos" style="width:${(c[k]||0)*1.2}px"></span><span class="num">${c[k]}%</span></div>`).join("")}
-    <div class="src">HHI parcial: <b>${c.hhi_parcial}</b> · ${c.nota}</div></div>`).join("")}</div>
-  <div class="src">mobilidade de ranking: histórico de snapshots iniciado nesta versão (of_ranking_hist) — comparações entre coletas aparecem conforme o histórico acumula.</div></div>
-  <div id="of-idx"><h3>Índices (4 dimensões separadas — sem índice único de maturidade) ${badge("calculado")}</h3>
-  <div class="grid g2">${Object.entries(idx2).map(([k, ix]) => `<div class="card"><h4>Índice de ${k.replace(/_/g, " ")}</h4>
-    ${ix.indisponivel ? `<p class="src"><b>Indisponível:</b> ${ix.indisponivel}</p>` :
-    `${ix.componentes.map(c => `<div class="contrib"><span class="lbl" style="width:280px">${c.nome}</span><span class="num"><b>${c.valor != null ? fmt.n(c.valor, 2) : "n/d"}</b>${c.tendencia_4s_pp != null ? ` <span class="src">(${fmt.pp(c.tendencia_4s_pp)} p.p./4s)</span>` : ""} <span class="src">peso ${c.peso}</span></span></div>`).join("")}
-    <div class="src">cobertura: ${ix.cobertura} · confiança: ${ix.confianca} (${ix.confianca_motivo}) · v${ix.versao}</div>`}</div>`).join("")}</div></div>
-  <div id="of-alertas"><h3>Alertas do Open Finance</h3>
-  ${(of.alertas_of || []).length ? of.alertas_of.map(a => `<div class="alert ${a.severidade}"><span class="lvl">${a.severidade}</span> <b>${a.indicador}: ${fmt.n(a.valor, 2)}</b> (limiar ${a.limiar}; persistência ${a.persistencia_semanas} sem.; ${fmt.d(a.data)})<div class="expl">Regra: ${a.regra} · ${a.fonte}</div></div>`).join("") : "<p class='src'>nenhum alerta ativo.</p>"}</div>
-  <div id="of-qual"><h3>Qualidade dos dados</h3><div class="card">
-    <div class="src" style="line-height:1.9"><b>Semanas por série:</b> ${Object.entries(of.qualidade_dados.semanas_por_serie).map(([k, v]) => `${k.replace("of_", "")}: ${v}`).join(" · ")}<br>
-    <b>Organizações do ranking sem match no diretório:</b> ${of.qualidade_dados.orgs_ranking_sem_match_diretorio}<br>
-    <b>Indisponíveis na fonte (nunca estimados):</b> ${of.qualidade_dados.indisponiveis.join("; ")}<br>
-    <b>${of.qualidade_dados.nota}</b></div></div>
-  ${of.relacao_credito ? `<h3>Relação exploratória com o crédito ${badge("calculado")}</h3><div class="card">
-    ${scatterPlot(of.relacao_credito.pares.map(p => ({ x: p.share_carteira_pct, y: p.share_chamadas_pct, label: p.organisation })), "share da carteira de crédito (%)", "share de chamadas OF (%)")}
-    <div class="src">Spearman ρ = <b>${of.relacao_credito.spearman_rho}</b> (n=${of.relacao_credito.n}). ${of.relacao_credito.leitura}</div></div>` : ""}</div>
-  <div id="of-inst"><h3>Instituições — ranking nominal (fase transacional) ${badge("observado")}</h3>
-  <div class="tblwrap"><table class="data"><thead><tr><th>#</th><th>Organização / papéis</th><th>Chamadas/sem.</th><th>Share</th><th>Famílias de API</th><th>Maturidade estrutural</th></tr></thead><tbody>${rows}</tbody></table></div>
-  <div class="src">sucesso/falha, consentimentos e conversão POR ORGANIZAÇÃO não são publicados — comparações nominais limitam-se a volume, share e cobertura funcional. ${of.fonte_nota}</div></div>`;
+  <div id="of-cons" style="margin-top:10px"><h3>Consentimentos ativos ${badge("observado")}</h3>
+  <p class="src" style="max-width:80ch">Consentimentos ativos registrados na estrutura do Open Finance, nas visões das instituições
+  transmissoras e receptoras de dados, conforme divulgação semanal do Dashboard do Cidadão.</p>
+  <div class="grid g2">${sChart("of_consentimentos_transmitidos", "#1d4e89")}${sChart("of_consentimentos_recebidos", "#0e7c7b")}</div></div>
+  <div id="of-chamadas"><h3>Chamadas de API por fase ${badge("observado")}</h3>
+  <div class="grid g3">${sChart("of_chamadas_dados_transacionais", "#1d4e89")}${sChart("of_chamadas_dados_abertos", "#0e7c7b")}${sChart("of_chamadas_iniciacao_pagamento", "#6b46a3")}</div></div>
+  <div id="of-inst"><h3>Chamadas por instituição ${badge("observado")}</h3>
+  <div class="grid g3">${Object.keys(fasesL).map(tabelaFase).join("")}</div></div>
+  <div id="of-detalhe"><h3>Chamadas por família de API e por endpoint ${badge("observado")}</h3>
+  <div class="grid g3">${Object.entries(of.endpoints_top || {}).map(([s, e]) => `<div class="card"><h4>${fasesL[s]}</h4>
+    ${(e.familias || []).slice(0, 5).map(x => `<div class="contrib"><span class="lbl" style="width:170px">${x.nome.slice(0, 26)}</span><span class="num">${fmt.n0(x.chamadas / 1e6)} mi</span></div>`).join("")}
+    <div class="src" style="margin:6px 0 2px"><b>Endpoints:</b></div>
+    ${(e.endpoints || []).slice(0, 6).map(x => `<div class="contrib"><span class="lbl" style="width:170px">${x.nome.slice(0, 26)}</span><span class="num">${fmt.n0(x.chamadas / 1e6)} mi</span></div>`).join("")}
+    <div class="src">Acumulado da janela divulgada pela fonte.</div></div>`).join("")}</div></div>
+  <div id="of-escopo"><h3>Escopo e fonte</h3><div class="card">
+    <p class="src" style="font-size:13px;line-height:1.8;max-width:88ch">Esta página reproduz exclusivamente as métricas publicadas
+    pelas rotas públicas do <b>Dashboard do Cidadão do Open Finance Brasil</b>, na periodicidade semanal da própria fonte:
+    consentimentos ativos (transmissores e receptores) e chamadas de API por fase, por instituição, por família de API e por
+    endpoint. Nenhum indicador é calculado, estimado ou combinado a outras fontes nesta página. Métricas não divulgadas pelo
+    Dashboard não são apresentadas. Data-base: semana de ${cons ? fmt.d(cons.ref) : "–"} · cobertura das séries:
+    ${Object.entries(of.qualidade_dados.semanas_por_serie).map(([k, v]) => `${k.replace("of_", "").replace(/_/g, " ")}: ${v} semanas`).join(" · ")}.</p>
+  </div></div>`;
 }
 
 /* ---------- CENÁRIOS ---------- */
