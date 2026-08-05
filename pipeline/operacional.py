@@ -46,6 +46,32 @@ REDE_EXTRA = [
     {"id": "safra", "nome": "Banco Safra S.A.", "cnpj8": "58160789"},
 ]
 
+# Código IF.data (inst_index/páginas de IF) de cada instituição do piloto,
+# verificado empiricamente contra o inst_index.json vigente (por código direto
+# ou razão social, sempre a entidade de maior ativo do grupo). Conglomerado
+# prudencial (C…) quando existe; instituição individual (8 dígitos) senão.
+# BRB, Banco Alfa e BMI não constam do universo de páginas do IF.data no
+# corte — ficam sem código (ausência declarada, nunca aproximada).
+COD_IFDATA = {
+    "itau": "C0010069",
+    "bb": "C0049906",
+    "bradesco": "C0010045",
+    "santander": "C0030379",
+    "btg": "C0049944",
+    "abc": "C0041856",
+    "banrisul": "C0030173",
+    "bmg": "C0030290",
+    "pine": "C0050304",
+    "banestes": "C0030159",
+    "mercantil": "C0020152",
+    "amazonia": "04902979",
+    "nordeste": "07237373",
+    "banese": "13009717",
+    "brpartners": "13220493",
+    "caixa": "C0051626",
+    "safra": "C0010083",
+}
+
 FONTES = [
     {"nome": "CVM — Formulário de Referência (FRE), tabela de empregados (item 10.1)",
      "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-fre", "nivel": "A"},
@@ -181,6 +207,7 @@ def build(con, cfg=None):
             "id": cid,
             "nome": nome,
             "listada": True,
+            "cod_ifdata": COD_IFDATA.get(cid),
             "cnpj8_rede": REDE_CNPJ8.get(cid),
             "empregados": _empregados(con, cid, flags, nome),
             "auditor": _auditor(con, cid, flags, nome),
@@ -193,6 +220,7 @@ def build(con, cfg=None):
             "id": extra["id"],
             "nome": extra["nome"],
             "listada": False,
+            "cod_ifdata": COD_IFDATA.get(extra["id"]),
             "cnpj8_rede": extra["cnpj8"],
             "empregados": None,
             "auditor": None,
@@ -204,6 +232,29 @@ def build(con, cfg=None):
     ).fetchall()
     sfn_serie = [{"mes": db, "agencias": ag, "municipios": mun, "bancos": b}
                  for db, ag, mun, b in sfn_rows]
+
+    # Mapa compacto de rede de TODOS os bancos do ESTBAN (não só o piloto),
+    # chaveado por CNPJ-raiz: alimenta a página de qualquer IF e o comparador
+    # (as páginas de instituição individual do IF.data usam o próprio CNPJ-raiz
+    # como código, então o join é direto).
+    rede_por_cnpj8 = {}
+    if sfn_serie:
+        mes_atual = sfn_serie[-1]["mes"]
+        ano_a, mes_a = mes_atual.split("-")
+        mes_ref12 = f"{int(ano_a) - 1}-{mes_a}"
+        antes = {r[0]: r[1] for r in con.execute(
+            "SELECT cnpj8, agencias FROM oper_rede WHERE data_base=?", (mes_ref12,))}
+        for cnpj8, nome_b, ag, mun in con.execute(
+                "SELECT cnpj8, nome, agencias, municipios FROM oper_rede WHERE data_base=?",
+                (mes_atual,)):
+            if ag <= 0:
+                continue
+            ref = antes.get(cnpj8)
+            rede_por_cnpj8[cnpj8] = {
+                "nome": nome_b, "mes": mes_atual, "agencias": ag, "municipios": mun,
+                "var_12m": (ag - ref) if ref is not None else None,
+                "var_12m_pct": _pct(ag, ref) if ref else None,
+            }
 
     sintese = _sintese(instituicoes, sfn_serie)
 
@@ -229,6 +280,7 @@ def build(con, cfg=None):
                          "nota": "Soma de agências processadas de todos os bancos no ESTBAN e "
                                  "contagem de municípios com ao menos uma agência (código de "
                                  "município do próprio ESTBAN)."}},
+        "rede_por_cnpj8": rede_por_cnpj8,
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,

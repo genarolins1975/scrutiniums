@@ -214,9 +214,9 @@ const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index", "npl"], inst: ["inst_pages", "institutions", "inst_index", "npl"],
+  institutions: ["institutions", "inst_index", "npl"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional"],
   method: ["method", "lineage", "quality"],
-  compare: ["compare", "inst_index"],
+  compare: ["compare", "inst_index", "operacional"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
   market: ["market"],
   leading: ["leading", "antecedentes", "regimes"],
@@ -3640,8 +3640,12 @@ function renderInstPageData(el, pg) {
   const re = pg.resumo_executivo;
   const gpc = pg.grupo_pares_composicao;
   const smeta = pg.score_meta;
+  const operSec = operBlocoInst(cab);
+  const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"],["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]]
+    .concat(operSec ? [["#s-oper","Operacional"]] : [])
+    .concat([["#s-limites","Limitações"]]);
   const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
-    ${[["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"],["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"],["#s-limites","Limitações"]].map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}
+    ${subnavItens.map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}
   </div>`;
   el.innerHTML = `
   <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
@@ -3778,6 +3782,7 @@ function renderInstPageData(el, pg) {
     </div>
   </div>
   <div id="instSimilares"></div>
+  ${operSec}
   <div id="s-limites" class="card" style="margin-top:12px"><h4>Não disponível nas fontes públicas integradas (ausência ≠ zero)</h4>
     ${pg.indisponiveis.map(i => `<p class="src"><b>${i.indicador}:</b> ${i.motivo}</p>`).join("")}</div>`;
   fillInstSimilares(state.filters.instCod);
@@ -7724,6 +7729,81 @@ window.cgTira = cod => {
 window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderConsignado(); };
 
 /* ---------- Indicadores operacionais (Fase 0: só fonte estruturada) ---------- */
+/* Resolve a instituição operacional a partir da identidade da página de IF:
+   código IF.data (conglomerado C… ou individual = CNPJ-raiz) ou CNPJ do
+   cabeçalho. Universos distintos por desenho: a rede é do banco operacional
+   no ESTBAN, não do conglomerado prudencial — o bloco declara isso. */
+function operResolve(codIfdata, cnpj) {
+  const O = state.data.operacional;
+  if (!O || !O.disponivel) return null;
+  const cnpj8 = String(cnpj || "").replace(/\D/g, "").slice(0, 8);
+  const piloto = O.instituicoes.find(i =>
+    (codIfdata && i.cod_ifdata === codIfdata) || (cnpj8 && i.cnpj8_rede === cnpj8)) || null;
+  const rede = (piloto && piloto.rede) ? {
+    mes: piloto.rede.atual.mes, agencias: piloto.rede.atual.agencias,
+    municipios: piloto.rede.atual.municipios, var_12m: piloto.rede.var_12m,
+    var_12m_pct: piloto.rede.var_12m_pct, serie: piloto.rede.serie,
+  } : ((O.rede_por_cnpj8 || {})[cnpj8] || ((piloto && piloto.cnpj8_rede) ? (O.rede_por_cnpj8 || {})[piloto.cnpj8_rede] : null) || null);
+  if (!piloto && !rede) return null;
+  return { piloto, rede };
+}
+
+function operBlocoInst(cab) {
+  const r = operResolve(state.filters.instCod, cab && cab.cnpj);
+  if (!r) return "";
+  const { piloto, rede } = r;
+  const emp = piloto && piloto.empregados ? piloto.empregados.serie[piloto.empregados.serie.length - 1] : null;
+  const aud = piloto && piloto.auditor && piloto.auditor.vigente;
+  const dvar = v => v == null ? "" : `<div class="delta ${v < 0 ? "up" : "down good"}">${v > 0 ? "▲ +" : v < 0 ? "▼ " : ""}${fmt.n0(v)} em 12 meses</div>`;
+  const cards = [];
+  if (rede) cards.push(`<div class="card kpi"><h4>Agências (banco operacional)</h4>
+    <div class="big" style="font-size:21px">${fmt.n0(rede.agencias)}</div>${dvar(rede.var_12m)}
+    ${rede.serie ? sparkline(rede.serie.map(p => p.agencias), 150, 30) : ""}
+    <div class="src">${badge("observado")} ${fmt.n0(rede.municipios)} municípios · ESTBAN ${fmt.my(rede.mes)}</div></div>`);
+  if (emp) cards.push(`<div class="card kpi"><h4>Empregados (declarado no FRE)</h4>
+    <div class="big" style="font-size:21px">${fmt.n0(emp.total)}</div>
+    ${emp.var_aa_pct != null ? `<div class="delta ${emp.var_aa_pct < 0 ? "up" : "down good"}">${emp.var_aa_pct > 0 ? "▲ +" : "▼ "}${fmt.n(Math.abs(emp.var_aa_pct), 1)}% a/a</div>` : ""}
+    ${piloto.empregados.serie.length > 2 ? sparkline(piloto.empregados.serie.map(p => p.total), 150, 30) : ""}
+    <div class="src">${badge("observado")} escopo declarado pela companhia · ref. ${fmt.d(emp.ref)}</div></div>`);
+  if (aud) cards.push(`<div class="card kpi"><h4>Auditor independente</h4>
+    <div class="big" style="font-size:15px;line-height:1.25">${aud.nome}</div>
+    <div class="src">${badge("observado")} desde ${fmt.d(aud.desde)} · ${piloto.auditor.historico.filter(h => h.fim).length} troca(s) registrada(s) no FCA</div></div>`);
+  if (!cards.length) return "";
+  return `<div id="s-oper" style="margin-top:12px">${sechead("Indicadores operacionais (Fase 0)", "gente, rede e auditoria — fontes estruturadas oficiais")}
+    <div class="pan-kpi">${cards.join("")}</div>
+    <p class="src">Universos distintos, nunca somados: a rede é do banco operacional no ESTBAN (pode diferir deste
+    ${state.filters.instCod && state.filters.instCod.startsWith("C") ? "conglomerado prudencial" : "nível de consolidação"});
+    empregados são o declarado pela companhia listada no FRE.
+    <a href="javascript:void(0)" onclick="nav('operacional')">ver o painel completo →</a></p></div>`;
+}
+
+function cmpRedeFase0(insts, datas) {
+  const O = state.data.operacional;
+  if (!O || !O.disponivel || !insts.length) return "";
+  const linhas = insts.map(c => {
+    const nome = (datas[c] && datas[c].nome) || c;
+    const r = operResolve(c, c.startsWith("C") ? null : c);
+    if (!r || !r.rede) {
+      const motivo = c.startsWith("C")
+        ? (r && r.piloto ? "sem rede reportada no ESTBAN no mês corrente" : "conglomerado sem mapeamento na Fase 0")
+        : "sem agências no ESTBAN no mês corrente";
+      return `<tr><td>${nome.slice(0, 30)}</td><td class="num" colspan="3"><span class="src">${motivo}</span></td></tr>`;
+    }
+    return `<tr><td>${nome.slice(0, 30)}</td>
+      <td class="num">${fmt.n0(r.rede.agencias)}</td>
+      <td class="num">${r.rede.var_12m == null ? "–" : `${r.rede.var_12m > 0 ? "+" : ""}${fmt.n0(r.rede.var_12m)}${r.rede.var_12m_pct != null ? ` (${r.rede.var_12m_pct > 0 ? "+" : ""}${fmt.n(r.rede.var_12m_pct, 1)}%)` : ""}`}</td>
+      <td class="num">${fmt.n0(r.rede.municipios)}</td></tr>`;
+  }).join("");
+  const mes = Object.values(O.rede_por_cnpj8 || {})[0];
+  return `<div style="margin-top:12px">${sechead("Rede física (Fase 0 · ESTBAN)", `agências do banco operacional · ${mes ? fmt.my(mes.mes) : ""}`)}
+  <div class="card"><div class="tblwrap"><table>
+    <thead><tr><th>Instituição</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th></tr></thead>
+    <tbody>${linhas}</tbody></table></div>
+    <p class="src">${badge("observado")} Universo diferente das métricas do IF.data acima: a rede vem do ESTBAN, do CNPJ do
+    banco operacional — informativo ao lado da comparação, não uma métrica do catálogo. Queda abrupta pode ser migração
+    societária entre CNPJs do grupo. <a href="javascript:void(0)" onclick="nav('operacional')">painel completo →</a></p></div></div>`;
+}
+
 function renderOperacional() {
   const el = document.getElementById("view-operacional");
   const D = state.data.operacional;
@@ -8866,7 +8946,7 @@ function renderCompare() {
     <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>
   </div></div>
   <details ${cmp.insts.length < 2 ? "open" : ""} style="margin-bottom:10px"><summary class="src" style="cursor:pointer">alterar seleção de instituições (${cmp.insts.length})</summary>${selHtml}</details>
-  ${ctx}${body}`;
+  ${ctx}${body}${cmpRedeFase0(cmp.insts, datas)}`;
 }
 
 (async function init() {

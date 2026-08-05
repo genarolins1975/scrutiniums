@@ -134,6 +134,29 @@ describe("rede de agências (BCB/ESTBAN)", () => {
     expect(caixa.auditor).toBeNull();
   });
 
+  it("mapa geral por CNPJ-raiz cobre o SFN e confere com o agregado", () => {
+    const mapa = g.rede_por_cnpj8;
+    const bancos = Object.keys(mapa);
+    expect(bancos.length).toBeGreaterThan(80);
+    const somaMapa = bancos.reduce((s, c) => s + mapa[c].agencias, 0);
+    expect(somaMapa).toBe(g.sfn.rede.serie.at(-1).agencias);
+    for (const c of bancos) {
+      expect(c).toMatch(/^\d{8}$/);
+      expect(mapa[c].agencias).toBeGreaterThan(0);
+    }
+  });
+
+  it("código IF.data: presente só quando verificado; join do piloto consistente", () => {
+    for (const inst of g.instituicoes) {
+      if (inst.cod_ifdata) expect(inst.cod_ifdata).toMatch(/^(C\d{7}|\d{8})$/);
+    }
+    // BRB, Alfa e BMI não constam do universo de páginas do IF.data no corte
+    for (const id of ["brb", "alfa", "bmi"]) {
+      expect(g.instituicoes.find((i: any) => i.id === id).cod_ifdata, id).toBeNull();
+    }
+    expect(g.instituicoes.find((i: any) => i.id === "itau").cod_ifdata).toBe("C0010069");
+  });
+
   it("agregado do SFN: série ordenada, com bancos e municípios plausíveis", () => {
     const serie = g.sfn.rede.serie;
     expect(serie.length).toBeGreaterThanOrEqual(12);

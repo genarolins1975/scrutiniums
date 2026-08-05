@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-05T11:15:31+00:00",
+ "gerado_em": "2026-08-05T11:33:56+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -27,6 +27,7 @@
    "id": "itau",
    "nome": "Itau Unibanco Holding S.A.",
    "listada": true,
+   "cod_ifdata": "C0010069",
    "cnpj8_rede": "60701190",
    "empregados": {
     "serie": [
@@ -330,6 +331,7 @@
    "id": "bb",
    "nome": "Banco Brasil S.A.",
    "listada": true,
+   "cod_ifdata": "C0049906",
    "cnpj8_rede": "00000000",
    "empregados": {
     "serie": [
@@ -638,6 +640,7 @@
    "id": "bradesco",
    "nome": "Banco Bradesco S.A.",
    "listada": true,
+   "cod_ifdata": "C0010045",
    "cnpj8_rede": "60746948",
    "empregados": {
     "serie": [
@@ -946,6 +949,7 @@
    "id": "santander",
    "nome": "Banco Santander (Brasil) S.A.",
    "listada": true,
+   "cod_ifdata": "C0030379",
    "cnpj8_rede": "90400888",
    "empregados": {
     "serie": [
@@ -1249,6 +1253,7 @@
    "id": "btg",
    "nome": "Banco Btg Pactual S.A.",
    "listada": true,
+   "cod_ifdata": "C0049944",
    "cnpj8_rede": "30306294",
    "empregados": {
     "serie": [
@@ -1552,6 +1557,7 @@
    "id": "abc",
    "nome": "Banco Abc Brasil S.A.",
    "listada": true,
+   "cod_ifdata": "C0041856",
    "cnpj8_rede": "28195667",
    "empregados": {
     "serie": [
@@ -1855,6 +1861,7 @@
    "id": "banrisul",
    "nome": "Banco Estado Do Rio Grande Do Sul S.A.",
    "listada": true,
+   "cod_ifdata": "C0030173",
    "cnpj8_rede": "92702067",
    "empregados": {
     "serie": [
@@ -2168,6 +2175,7 @@
    "id": "bmg",
    "nome": "Banco Bmg S.A.",
    "listada": true,
+   "cod_ifdata": "C0030290",
    "cnpj8_rede": "61186680",
    "empregados": {
     "serie": [
@@ -2471,6 +2479,7 @@
    "id": "pine",
    "nome": "Banco Pine S.A.",
    "listada": true,
+   "cod_ifdata": "C0050304",
    "cnpj8_rede": "62144175",
    "empregados": {
     "serie": [
@@ -2774,6 +2783,7 @@
    "id": "amazonia",
    "nome": "Banco Amazonia S.A.",
    "listada": true,
+   "cod_ifdata": "04902979",
    "cnpj8_rede": "04902979",
    "empregados": {
     "serie": [
@@ -3082,6 +3092,7 @@
    "id": "nordeste",
    "nome": "Banco Nordeste Do Brasil S.A.",
    "listada": true,
+   "cod_ifdata": "07237373",
    "cnpj8_rede": "07237373",
    "empregados": {
     "serie": [
@@ -3390,6 +3401,7 @@
    "id": "banestes",
    "nome": "Banestes S.A. - Banco Est Espirito Santo",
    "listada": true,
+   "cod_ifdata": "C0030159",
    "cnpj8_rede": "28127603",
    "empregados": {
     "serie": [
@@ -3698,6 +3710,7 @@
    "id": "mercantil",
    "nome": "Banco Mercantil Do Brasil S.A.",
    "listada": true,
+   "cod_ifdata": "C0020152",
    "cnpj8_rede": "17184037",
    "empregados": {
     "serie": [
@@ -4001,6 +4014,7 @@
    "id": "brb",
    "nome": "Brb Banco De Brasilia S.A.",
    "listada": true,
+   "cod_ifdata": null,
    "cnpj8_rede": "00000208",
    "empregados": {
     "serie": [
@@ -4297,6 +4311,7 @@
    "id": "banese",
    "nome": "Banco Estado De Sergipe S.A. - Banese",
    "listada": true,
+   "cod_ifdata": "13009717",
    "cnpj8_rede": "13009717",
    "empregados": {
     "serie": [
@@ -4605,6 +4620,7 @@
    "id": "brpartners",
    "nome": "Brbi Br Partners S.A.",
    "listada": true,
+   "cod_ifdata": "13220493",
    "cnpj8_rede": "10739356",
    "empregados": {
     "serie": [
@@ -4714,6 +4730,7 @@
    "id": "alfa",
    "nome": "Alfa Holdings S.A.",
    "listada": true,
+   "cod_ifdata": null,
    "cnpj8_rede": "03323840",
    "empregados": {
     "serie": [
@@ -5022,6 +5039,7 @@
    "id": "bmi",
    "nome": "Banco Mercantil De Investimentos S.A.",
    "listada": true,
+   "cod_ifdata": null,
    "cnpj8_rede": "34169557",
    "empregados": {
     "serie": [
@@ -5121,6 +5139,7 @@
    "id": "caixa",
    "nome": "Caixa Econômica Federal",
    "listada": false,
+   "cod_ifdata": "C0051626",
    "cnpj8_rede": "00360305",
    "empregados": null,
    "auditor": null,
@@ -5334,6 +5353,7 @@
    "id": "safra",
    "nome": "Banco Safra S.A.",
    "listada": false,
+   "cod_ifdata": "C0010083",
    "cnpj8_rede": "58160789",
    "empregados": null,
    "auditor": null,
@@ -5777,6 +5797,888 @@
     }
    ],
    "nota": "Soma de agências processadas de todos os bancos no ESTBAN e contagem de municípios com ao menos uma agência (código de município do próprio ESTBAN)."
+  }
+ },
+ "rede_por_cnpj8": {
+  "00000000": {
+   "nome": "BCO DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 3942,
+   "municipios": 2300,
+   "var_12m": -55,
+   "var_12m_pct": -1.4
+  },
+  "00360305": {
+   "nome": "CAIXA ECONOMICA FEDERAL",
+   "mes": "2026-03",
+   "agencias": 2999,
+   "municipios": 1630,
+   "var_12m": -251,
+   "var_12m_pct": -7.7
+  },
+  "00416968": {
+   "nome": "BANCO INTER",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": -15,
+   "var_12m_pct": -93.8
+  },
+  "00517645": {
+   "nome": "BCO RIBEIRAO PRETO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "00556603": {
+   "nome": "BANCO BARI S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "00795423": {
+   "nome": "BANCO SEMEAR",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "00997185": {
+   "nome": "BCO B3 S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01023570": {
+   "nome": "BCO RABOBANK INTL BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 18,
+   "municipios": 18,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01181521": {
+   "nome": "BCO COOPERATIVO SICREDI S.A.",
+   "mes": "2026-03",
+   "agencias": 6,
+   "municipios": 5,
+   "var_12m": 1,
+   "var_12m_pct": 20.0
+  },
+  "01522368": {
+   "nome": "BCO BNP PARIBAS BRASIL S A",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01852137": {
+   "nome": "BCO BRASILEIRO DE CRÉDITO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01858774": {
+   "nome": "BCO BV S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "02038232": {
+   "nome": "BANCO SICOOB S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 4,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "02318507": {
+   "nome": "BCO KEB HANA DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "02801938": {
+   "nome": "BCO MORGAN STANLEY S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03017677": {
+   "nome": "BCO. J.SAFRA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03323840": {
+   "nome": "BCO ALFA S.A.",
+   "mes": "2026-03",
+   "agencias": 9,
+   "municipios": 8,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03532415": {
+   "nome": "BANCO ABN AMRO CLEARING S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03609817": {
+   "nome": "BCO CARGILL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04184779": {
+   "nome": "BANCO BRADESCARD",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04866275": {
+   "nome": "BANCO INBURSA",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04902979": {
+   "nome": "BCO DA AMAZONIA S.A.",
+   "mes": "2026-03",
+   "agencias": 114,
+   "municipios": 105,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04913711": {
+   "nome": "BCO DO EST. DO PA S.A.",
+   "mes": "2026-03",
+   "agencias": 164,
+   "municipios": 144,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "06271464": {
+   "nome": "BCO BBI S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "07207996": {
+   "nome": "BCO BRADESCO FINANC. S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": -1,
+   "var_12m_pct": -50.0
+  },
+  "07237373": {
+   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 300,
+   "municipios": 276,
+   "var_12m": 2,
+   "var_12m_pct": 0.7
+  },
+  "07450604": {
+   "nome": "BOC BRASIL",
+   "mes": "2026-03",
+   "agencias": 7,
+   "municipios": 7,
+   "var_12m": -1,
+   "var_12m_pct": -12.5
+  },
+  "07656500": {
+   "nome": "BCO KDB BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "07679404": {
+   "nome": "BANCO TOPÁZIO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "09274232": {
+   "nome": "STATE STREET BR S.A. BCO COMERCIAL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "09516419": {
+   "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10264663": {
+   "nome": "BANCOSEGURO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10371492": {
+   "nome": "BCO YAMAHA MOTOR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10664513": {
+   "nome": "BCO AGIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10690848": {
+   "nome": "BCO DA CHINA BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10866788": {
+   "nome": "BCO BANDEPE S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "11703662": {
+   "nome": "BANCO TRAVELEX S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": null,
+   "var_12m_pct": null
+  },
+  "11758741": {
+   "nome": "BANCO FINAXIS",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "11970623": {
+   "nome": "BCO SENFF S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "13009717": {
+   "nome": "BCO DO EST. DE SE S.A.",
+   "mes": "2026-03",
+   "agencias": 64,
+   "municipios": 43,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "13720915": {
+   "nome": "BCO WESTERN UNION",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "14388334": {
+   "nome": "PARANA BCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "15114366": {
+   "nome": "BCO BOCOM BBM S.A.",
+   "mes": "2026-03",
+   "agencias": 3,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "15357060": {
+   "nome": "BCO WOORI BANK DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17184037": {
+   "nome": "BCO MERCANTIL DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17351180": {
+   "nome": "BCO TRIANGULO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17453575": {
+   "nome": "ICBC DO BRASIL BM S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "28127603": {
+   "nome": "BCO BANESTES S.A.",
+   "mes": "2026-03",
+   "agencias": 85,
+   "municipios": 59,
+   "var_12m": -2,
+   "var_12m_pct": -2.3
+  },
+  "28195667": {
+   "nome": "BCO ABC BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 12,
+   "municipios": 12,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "28811341": {
+   "nome": "BCO STONEX S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": null,
+   "var_12m_pct": null
+  },
+  "29030467": {
+   "nome": "SCOTIABANK BRASIL",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "30306294": {
+   "nome": "BANCO BTG PACTUAL S.A.",
+   "mes": "2026-03",
+   "agencias": 27,
+   "municipios": 13,
+   "var_12m": 2,
+   "var_12m_pct": 8.0
+  },
+  "31597552": {
+   "nome": "BCO CLASSICO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "31872495": {
+   "nome": "BCO C6 S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "31880826": {
+   "nome": "BCO GUANABARA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "31895683": {
+   "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 9,
+   "municipios": 9,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "32062580": {
+   "nome": "BCO UBS BRASIL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33042151": {
+   "nome": "BCO LA NACION ARGENTINA",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33042953": {
+   "nome": "CITIBANK N.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33132044": {
+   "nome": "BCO CEDULA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "33147315": {
+   "nome": "BCO BRADESCO BERJ S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33172537": {
+   "nome": "BCO J.P. MORGAN S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33264668": {
+   "nome": "BCO XP S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33466988": {
+   "nome": "BCO CAIXA GERAL BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "33479023": {
+   "nome": "BCO CITIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 46,
+   "municipios": 22,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33644196": {
+   "nome": "BCO FATOR S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33885724": {
+   "nome": "BANCO ITAÚ CONSIGNADO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "42272526": {
+   "nome": "BNY MELLON BCO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "44189447": {
+   "nome": "BCO LA PROVINCIA B AIRES BCE",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "45246410": {
+   "nome": "BANCO GENIAL",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "46518205": {
+   "nome": "JPMORGAN CHASE BANK",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "50585090": {
+   "nome": "BANCO BMG CONSIGNADO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "53518684": {
+   "nome": "BCO HSBC S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "54403563": {
+   "nome": "BCO ARBI S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "55230916": {
+   "nome": "INTESA SANPAOLO BRASIL S.A. BM",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "58160789": {
+   "nome": "BCO SAFRA S.A.",
+   "mes": "2026-03",
+   "agencias": 127,
+   "municipios": 55,
+   "var_12m": 4,
+   "var_12m_pct": 3.3
+  },
+  "58616418": {
+   "nome": "BCO FIBRA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59118133": {
+   "nome": "BCO LUSO BRASILEIRO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59285411": {
+   "nome": "BANCO PAN",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59588111": {
+   "nome": "BCO VOTORANTIM S.A.",
+   "mes": "2026-03",
+   "agencias": 3,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60394079": {
+   "nome": "BCO ITAUBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60498557": {
+   "nome": "BCO MUFG BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60518222": {
+   "nome": "BCO SUMITOMO MITSUI BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60701190": {
+   "nome": "ITAÚ UNIBANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1418,
+   "municipios": 814,
+   "var_12m": -515,
+   "var_12m_pct": -26.6
+  },
+  "60746948": {
+   "nome": "BCO BRADESCO S.A.",
+   "mes": "2026-03",
+   "agencias": 2074,
+   "municipios": 1244,
+   "var_12m": -216,
+   "var_12m_pct": -9.4
+  },
+  "60850229": {
+   "nome": "OMNI BANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60889128": {
+   "nome": "BCO SOFISA S.A.",
+   "mes": "2026-03",
+   "agencias": 23,
+   "municipios": 23,
+   "var_12m": 1,
+   "var_12m_pct": 4.5
+  },
+  "61033106": {
+   "nome": "BCO CREFISA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61088183": {
+   "nome": "BCO MIZUHO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61182408": {
+   "nome": "BANCO INVESTCRED UNIBANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61186680": {
+   "nome": "BCO BMG S.A.",
+   "mes": "2026-03",
+   "agencias": 26,
+   "municipios": 22,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61348538": {
+   "nome": "BCO C6 CONSIG",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61533584": {
+   "nome": "BCO SOCIETE GENERALE BRASIL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61820817": {
+   "nome": "BCO PAULISTA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "62073200": {
+   "nome": "BOFA MERRILL LYNCH BM S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62144175": {
+   "nome": "BCO PINE S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62232889": {
+   "nome": "BCO DAYCOVAL S.A",
+   "mes": "2026-03",
+   "agencias": 53,
+   "municipios": 48,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62331228": {
+   "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62421979": {
+   "nome": "BANCO BMG SOLUÇÕES FINANCEIRAS S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "68900810": {
+   "nome": "BCO RENDIMENTO S.A.",
+   "mes": "2026-03",
+   "agencias": 6,
+   "municipios": 6,
+   "var_12m": -1,
+   "var_12m_pct": -14.3
+  },
+  "71027866": {
+   "nome": "BCO BS2 S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "74828799": {
+   "nome": "NOVO BCO CONTINENTAL S.A. - BM",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "75647891": {
+   "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "78626983": {
+   "nome": "BCO VR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "78632767": {
+   "nome": "OURIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "90400888": {
+   "nome": "BCO SANTANDER (BRASIL) S.A.",
+   "mes": "2026-03",
+   "agencias": 1178,
+   "municipios": 573,
+   "var_12m": -1159,
+   "var_12m_pct": -49.6
+  },
+  "91884981": {
+   "nome": "BANCO JOHN DEERE S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "92702067": {
+   "nome": "BCO DO ESTADO DO RS S.A.",
+   "mes": "2026-03",
+   "agencias": 509,
+   "municipios": 366,
+   "var_12m": 1,
+   "var_12m_pct": 0.2
+  },
+  "92874270": {
+   "nome": "BCO DIGIMAIS S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "92894922": {
+   "nome": "BANCO ORIGINAL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
   }
  },
  "sintese": [
