@@ -72,6 +72,7 @@ function carregarPaineis(): Painel[] {
   for (const [slug, rota] of [
     ["bets", "/observatorio/bets-financial-risk"],
     ["fraudes", "/observatorio/financial-fraud"],
+    ["operacional", "/observatorio/operational-indicators"],
   ] as const) {
     const g = lerGold(slug);
     if (!g?.sintese?.length) continue;

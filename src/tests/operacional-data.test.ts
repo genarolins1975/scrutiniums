@@ -165,8 +165,27 @@ describe("flags", () => {
     const nomes = new Set(g.instituicoes.map((i: any) => i.nome));
     for (const f of g.flags) {
       expect(nomes.has(f.instituicao), f.instituicao).toBe(true);
-      expect(["empregados", "rede"]).toContain(f.indicador);
+      expect(["empregados", "rede", "auditoria"]).toContain(f.indicador);
       expect(f.detalhe.length).toBeGreaterThan(20);
     }
+  });
+});
+
+describe("síntese citável (página de imprensa)", () => {
+  it("todo item tem nível A, fonte, URL https e exibição pronta", () => {
+    expect(g.sintese.length).toBeGreaterThanOrEqual(3);
+    for (const s of g.sintese) {
+      expect(s.nivel, s.id).toBe("A");
+      expect(s.url, s.id).toMatch(/^https:\/\//);
+      expect(["oficial", "calculado"]).toContain(s.status);
+      expect(s.exibir.length, s.id).toBeGreaterThan(0);
+      expect(s.conceito.length, s.id).toBeGreaterThan(30);
+      expect(s.data_ref, s.id).toBeTruthy();
+    }
+  });
+
+  it("o total de agências da síntese confere com a série do SFN", () => {
+    const item = g.sintese.find((s: any) => s.id === "agencias_sfn");
+    expect(item.valor).toBe(g.sfn.rede.serie.at(-1).agencias);
   });
 });

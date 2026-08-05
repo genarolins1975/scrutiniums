@@ -175,6 +175,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "fraudes.json",
   },
   {
+    view: "operacional",
+    caminho: "/operational-indicators",
+    titulo: "Indicadores operacionais",
+    descricao:
+      "Gente, rede física e auditoria dos bancos brasileiros: empregados declarados no FRE, agências e municípios atendidos (ESTBAN) e auditor vigente — só fontes estruturadas oficiais.",
+    gold: "operacional.json",
+  },
+  {
     view: "judicial",
     caminho: "/lawsuits",
     titulo: "Ações judiciais e instituições financeiras",

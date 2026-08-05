@@ -83,6 +83,21 @@ FAMILIAS = [
                       "Ausência de alerta não significa ausência de risco."),
         "view": "leading",
     },
+    {
+        "id": "operacional",
+        "nome": "Indicadores operacionais",
+        "universo": "Companhias listadas do piloto (CVM) e rede de agências do ESTBAN",
+        "periodicidade": "mensal (rede) e anual (FRE/FCA)",
+        "fonte": "CVM/FRE, CVM/FCA e BCB/ESTBAN",
+        "regra_geral": ("variação de empregados >30% a/a; queda de rede >15% em 12 meses; "
+                        "troca de auditor nos últimos dois anos"),
+        "ordenacao": "magnitude da variação em módulo, decrescente (trocas de auditor ao fim)",
+        "persistencia": "flags recalculadas a cada execução sobre a série completa",
+        "limitacao": ("Escopos declarados e distintos: empregados são o declarado no FRE (≠ conglomerado "
+                      "prudencial); a rede é do banco operacional — saltos podem ser reorganização "
+                      "societária, não fechamento real; troca de auditor inclui o rodízio obrigatório."),
+        "view": "operacional",
+    },
 ]
 
 NIVEIS = ["informativo", "atencao", "relevante", "critico"]
@@ -207,11 +222,41 @@ def _antecedentes(d):
     return out
 
 
+def _operacional(d):
+    """operacional.json: flags de validação viram alertas. A fonte não gradua
+    severidade — e nós não inventamos uma (mesma regra da família carteira)."""
+    FONTE_POR_INDICADOR = {
+        "empregados": "CVM/FRE (item 10.1)",
+        "rede": "BCB/ESTBAN",
+        "auditoria": "CVM/FCA",
+    }
+    out = []
+    for f in d.get("flags", []):
+        valor = _num(f.get("valor"))
+        out.append({
+            "id": f"operacional:{f.get('indicador')}:{f.get('instituicao')}",
+            "familia": "operacional",
+            "nivel": None,  # flag determinística sem gradação na fonte
+            "titulo": f"{f.get('instituicao')} — {f.get('indicador')}",
+            "detalhe": f.get("detalhe"),
+            "valor": valor,
+            "limiar": None,
+            "referencia": f.get("referencia"),
+            "fonte": FONTE_POR_INDICADOR.get(f.get("indicador"), "CVM/BCB"),
+            "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+            "recorrente": None,
+            "link": {"view": "operacional"},
+            "ordem": round(abs(valor), 6) if valor is not None else 0.0,
+        })
+    return out
+
+
 EXTRATORES = {
     "macro": (_macro, "alerts.json"),
     "carteira": (_carteira, "panorama.json"),
     "openfinance": (_openfinance, "openfinance.json"),
     "antecedentes": (_antecedentes, "leading.json"),
+    "operacional": (_operacional, "operacional.json"),
 }
 
 

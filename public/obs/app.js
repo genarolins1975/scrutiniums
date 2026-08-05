@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -236,6 +236,7 @@ const VIEW_DATA = {
   bets: ["bets"],
   fraudes: ["fraudes"],
   juros: ["juros"],
+  operacional: ["operacional"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2358,6 +2359,10 @@ const GUIA = {
     importa: "Foi a maior política de renegociação de dívidas de pessoas físicas já feita no país, e boa parte do que se diz sobre ela não é verificável nos dados abertos.",
     ler: "Separe sempre o que a base do BCB mede — operações de crédito no SCR — do que o programa fez no total. Os números oficiais e os do SCR não se contradizem: medem coisas diferentes.",
     nao: "Operação não é pessoa, valor após desconto não é dívida original, e baixa de registro negativo não é pagamento. Nada aqui sustenta afirmação de efeito causal do programa." },
+  operacional: { q: "Como os bancos operam por trás do balanço — gente, rede física e auditoria?",
+    importa: "Emprego, presença territorial e quem audita quem são a dimensão operacional do sistema financeiro — e ninguém a reúne em série comparável, embora cada número exista em fonte oficial.",
+    ler: "Compare cada instituição com a própria história. Empregados vêm do FRE, no escopo que a companhia declara; a rede vem do ESTBAN, do banco operacional. São universos diferentes: não os some.",
+    nao: "Queda de agências num CNPJ pode ser migração societária, não fechamento real — as verificações automáticas sinalizam esses casos. Troca de auditor inclui o rodízio obrigatório e não é, por si, sinal de problema." },
   penetracao: { q: "Onde há menos crédito do que o tamanho do município sugeriria?",
     importa: "Mostra em que lugares o sistema financeiro chega menos do que a renda e a população locais indicariam — o primeiro passo para discutir acesso a crédito no território.",
     ler: "Compare a penetração de um município com a de seus pares, não com a média nacional. O gap é a distância para municípios parecidos, e vem com faixa de referência.",
@@ -7718,9 +7723,100 @@ window.cgTira = cod => {
 };
 window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderConsignado(); };
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado };
+/* ---------- Indicadores operacionais (Fase 0: só fonte estruturada) ---------- */
+function renderOperacional() {
+  const el = document.getElementById("view-operacional");
+  const D = state.data.operacional;
+  if (D === undefined) { el.innerHTML = loadingCard("Indicadores operacionais"); return; }
+  if (!D || !D.disponivel) {
+    el.innerHTML = pageHead({ title: "Indicadores operacionais", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${(D && (D.motivo || D.error)) || "sem dados"}</p></div>`;
+    return;
+  }
+  const sfn = (D.sfn && D.sfn.rede && D.sfn.rede.serie) || [];
+  const atual = sfn[sfn.length - 1] || {};
+  const idx12 = atual.mes ? sfn.find(p => p.mes === `${parseInt(atual.mes.slice(0, 4), 10) - 1}-${atual.mes.slice(5, 7)}`) : null;
+  const dSfn12 = idx12 ? atual.agencias - idx12.agencias : null;
+  const flagDe = (nome, ind) => (D.flags || []).some(f => f.instituicao === nome && f.indicador === ind)
+    ? ` <span class="warn" title="${attr(((D.flags.find(f => f.instituicao === nome && f.indicador === ind) || {}).detalhe))}" tabindex="0" role="img" aria-label="verificação automática pendente">⚑</span>` : "";
+
+  const kpis = `<div class="pan-kpi">
+    <div class="card kpi"><h4>Agências no SFN</h4><div class="big">${fmt.n0(atual.agencias)}</div>
+      <div class="src">${badge("observado")} todos os bancos do ESTBAN · ${fmt.my(atual.mes)}${dSfn12 != null ? `<br>${dSfn12 > 0 ? "+" : ""}${fmt.n0(dSfn12)} em 12 meses` : ""}</div></div>
+    <div class="card kpi"><h4>Municípios com agência</h4><div class="big">${fmt.n0(atual.municipios)}</div>
+      <div class="src">${badge("observado")} de 5.570 municípios<br>os demais dependem de postos e canais digitais</div></div>
+    <div class="card kpi"><h4>Bancos com rede física</h4><div class="big">${fmt.n0(atual.bancos)}</div>
+      <div class="src">${badge("observado")} com ao menos 1 agência processada</div></div>
+    <div class="card kpi"><h4>Série disponível</h4><div class="big">${sfn.length} <span style="font-size:.55em">meses</span></div>
+      <div class="src">${sfn.length ? `${fmt.my(sfn[0].mes)} a ${fmt.my(atual.mes)}` : "–"} · atualização mensal</div></div>
+  </div>`;
+
+  const aviso = `<div class="judalerta" style="max-width:78ch"><b>Dois universos, nunca somados.</b>
+    <div style="margin-top:5px">${D.aviso}</div></div>`;
+
+  const comRede = D.instituicoes.filter(i => i.rede).sort((a, b) => b.rede.atual.agencias - a.rede.atual.agencias);
+  const tRede = `${sechead("Rede física por banco", "agências processadas no ESTBAN · CNPJ do banco operacional")}
+  <div class="card"><div class="tblwrap"><table>
+    <thead><tr><th>Banco</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th><th>Tendência (${sfn.length ? `${fmt.my(sfn[0].mes)}–${fmt.my(atual.mes)}` : ""})</th></tr></thead>
+    <tbody>${comRede.map(i => `<tr>
+      <td>${i.nome}${flagDe(i.nome, "rede")}</td>
+      <td class="num">${fmt.n0(i.rede.atual.agencias)}</td>
+      <td class="num">${i.rede.var_12m == null ? "–" : `${i.rede.var_12m > 0 ? "+" : ""}${fmt.n0(i.rede.var_12m)}${i.rede.var_12m_pct != null ? ` (${i.rede.var_12m_pct > 0 ? "+" : ""}${fmt.n(i.rede.var_12m_pct, 1)}%)` : ""}`}</td>
+      <td class="num">${fmt.n0(i.rede.atual.municipios)}</td>
+      <td>${sparkline(i.rede.serie.map(p => p.agencias))}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src">${badge("observado")} Agência processada ≠ posto de atendimento ≠ correspondente. Queda abrupta pode ser
+    migração de agências entre CNPJs do mesmo grupo — os casos sinalizados (⚑) estão nas verificações automáticas abaixo.</p></div>`;
+
+  const comEmp = D.instituicoes.filter(i => i.empregados).map(i => ({ i, u: i.empregados.serie[i.empregados.serie.length - 1] }))
+    .sort((a, b) => b.u.total - a.u.total);
+  const tEmp = `${sechead("Gente — empregados declarados no FRE", "item 10.1 · escopo declarado pela companhia")}
+  <div class="card"><div class="tblwrap"><table>
+    <thead><tr><th>Companhia</th><th class="num">Empregados</th><th class="num">Δ a/a</th><th class="num">% liderança</th><th>Referência</th></tr></thead>
+    <tbody>${comEmp.map(({ i, u }) => `<tr>
+      <td>${i.nome}${flagDe(i.nome, "empregados")}</td>
+      <td class="num">${fmt.n0(u.total)}</td>
+      <td class="num">${u.var_aa_pct == null ? "–" : `${u.var_aa_pct > 0 ? "+" : ""}${fmt.n(u.var_aa_pct, 1)}%`}</td>
+      <td class="num">${u.total ? fmt.n(u.lideranca / u.total * 100, 1) + "%" : "–"}</td>
+      <td>${fmt.d(u.ref)} · FRE/${u.fre_ano} v${u.versao}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src">${badge("observado")} Número DECLARADO pela companhia listada, no escopo que ela declara — pode diferir do
+    conglomerado prudencial do IF.data. Caixa e Safra não têm FRE (não listadas): ausência, não zero.</p></div>`;
+
+  const comAud = D.instituicoes.filter(i => i.auditor);
+  const tAud = `${sechead("Auditoria", "auditor independente vigente e trocas registradas no FCA")}
+  <div class="card"><div class="tblwrap"><table>
+    <thead><tr><th>Companhia</th><th>Auditor vigente</th><th>Desde</th><th class="num">Trocas registradas</th></tr></thead>
+    <tbody>${comAud.map(i => `<tr>
+      <td>${i.nome}${flagDe(i.nome, "auditoria")}</td>
+      <td>${i.auditor.vigente ? i.auditor.vigente.nome : "<i>não identificado no FCA vigente</i>"}</td>
+      <td>${i.auditor.vigente ? fmt.d(i.auditor.vigente.desde) : "–"}</td>
+      <td class="num">${i.auditor.historico.filter(h => h.fim).length}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src">${badge("observado")} Troca de auditor inclui o rodízio obrigatório e não é, por si, sinal de problema.</p></div>`;
+
+  const tFlags = `${sechead("Verificações automáticas", "publicadas junto do dado — nunca correção silenciosa")}
+  <div class="card">${(D.flags || []).length === 0 ? `<p class="src">Nenhuma verificação pendente nesta execução.</p>` : `<div class="tblwrap"><table>
+    <thead><tr><th>Instituição</th><th>Indicador</th><th>O que verificar</th></tr></thead>
+    <tbody>${D.flags.map(f => `<tr><td>${f.instituicao}</td><td>${f.indicador}</td><td>${f.detalhe}</td></tr>`).join("")}</tbody></table></div>`}
+    <p class="src">Regras: variação de empregados &gt;30% a/a · queda de rede &gt;15% em 12 meses · troca de auditor nos
+    últimos dois anos. A flag acompanha o dado publicado; nada é ajustado por trás.</p></div>`;
+
+  const fontes = `<div class="card"><h4>Fontes desta página</h4>
+    <ul class="src" style="margin:6px 0 0;padding-left:18px">${(D.fontes || []).map(f =>
+      `<li><a href="${attr(f.url)}" target="_blank" rel="noopener">${f.nome}</a> · nível ${f.nivel}</li>`).join("")}</ul></div>`;
+
+  el.innerHTML = pageHead({
+    title: "Indicadores operacionais",
+    desc: D.subtitulo,
+    vintage: atual.mes ? fmt.my(atual.mes) : null,
+    fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
+  }) + aviso + kpis + tRede + tEmp + tAud + tFlags + fontes;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

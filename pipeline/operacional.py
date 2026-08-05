@@ -80,10 +80,12 @@ def _empregados(con, company_id, flags, nome):
                       "var_aa_pct": var, "fre_ano": ano_zip, "versao": versao})
         if var is not None and abs(var) > LIMIAR_VAR_EMPREGADOS_PCT:
             flags.append({"instituicao": nome, "indicador": "empregados",
+                          "valor": var, "referencia": data_ref,
                           "detalhe": f"variação de {var}% entre {rows[i-1][1]} e {data_ref} — "
                                      "verificar mudança de escopo ou perímetro no FRE"})
         if total == 0 and i > 0 and rows[i - 1][5] > 0:
             flags.append({"instituicao": nome, "indicador": "empregados",
+                          "valor": -100.0, "referencia": data_ref,
                           "detalhe": f"total zerado em {data_ref} após série positiva — possível falha de declaração"})
     return {
         "serie": serie,
@@ -94,7 +96,25 @@ def _empregados(con, company_id, flags, nome):
     }
 
 
-def _auditor(con, company_id):
+def _flag_troca_auditor(historico, flags, nome):
+    """Troca de auditor nos últimos dois anos-calendário vira flag (nunca juízo:
+    troca é fato administrativo; rodízio obrigatório também produz trocas)."""
+    encerrados = [h for h in historico if h["fim"]]
+    if not encerrados:
+        return
+    ultimo = max(encerrados, key=lambda h: h["fim"])
+    ano_fim = int(ultimo["fim"][:4]) if len(ultimo["fim"]) >= 4 and ultimo["fim"][:4].isdigit() else None
+    ano_corte = int(common.now_utc()[:4]) - 2
+    if ano_fim and ano_fim >= ano_corte:
+        sucessores = [h for h in historico if not h["fim"] and h["inicio"] > ultimo["inicio"]]
+        novo = sucessores[0]["nome"] if sucessores else "sucessor ainda não identificado no FCA"
+        flags.append({"instituicao": nome, "indicador": "auditoria",
+                      "valor": None, "referencia": ultimo["fim"],
+                      "detalhe": f"troca de auditor: {ultimo['nome']} (até {ultimo['fim']}) → {novo} — "
+                                 "o rodízio obrigatório também produz trocas; ver FCA da companhia"})
+
+
+def _auditor(con, company_id, flags, nome):
     rows = con.execute(
         """SELECT ano_zip, auditor, cnpj_auditor, inicio, fim FROM oper_auditores
            WHERE company_id=? ORDER BY ano_zip, inicio""", (company_id,)).fetchall()
@@ -113,6 +133,7 @@ def _auditor(con, company_id):
         vistos.add(chave)
         historico.append({"nome": auditor, "inicio": inicio, "fim": fim or None})
     historico.sort(key=lambda h: h["inicio"])
+    _flag_troca_auditor(historico, flags, nome)
     return {"vigente": vigente, "historico": historico,
             "fonte": "CVM/FCA, tabela de auditores", "nivel": "A", "status": "oficial"}
 
@@ -134,6 +155,7 @@ def _rede(con, cnpj8, flags, nome):
         var_12m_pct = _pct(atual["agencias"], idx[mes_12m]["agencias"])
         if var_12m_pct is not None and var_12m_pct < -LIMIAR_QUEDA_REDE_12M_PCT:
             flags.append({"instituicao": nome, "indicador": "rede",
+                          "valor": var_12m_pct, "referencia": atual["mes"],
                           "detalhe": f"queda de {abs(var_12m_pct)}% nas agências em 12 meses "
                                      f"({idx[mes_12m]['agencias']} → {atual['agencias']}) — verificar reorganização societária"})
     return {
@@ -161,7 +183,7 @@ def build(con, cfg=None):
             "listada": True,
             "cnpj8_rede": REDE_CNPJ8.get(cid),
             "empregados": _empregados(con, cid, flags, nome),
-            "auditor": _auditor(con, cid),
+            "auditor": _auditor(con, cid, flags, nome),
             "rede": _rede(con, REDE_CNPJ8[cid], flags, nome) if cid in REDE_CNPJ8 else None,
         }
         instituicoes.append(inst)
@@ -182,6 +204,8 @@ def build(con, cfg=None):
     ).fetchall()
     sfn_serie = [{"mes": db, "agencias": ag, "municipios": mun, "bancos": b}
                  for db, ag, mun, b in sfn_rows]
+
+    sintese = _sintese(instituicoes, sfn_serie)
 
     com_empregados = sum(1 for i in instituicoes if i["empregados"])
     com_auditor = sum(1 for i in instituicoes if i["auditor"])
@@ -205,7 +229,79 @@ def build(con, cfg=None):
                          "nota": "Soma de agências processadas de todos os bancos no ESTBAN e "
                                  "contagem de municípios com ao menos uma agência (código de "
                                  "município do próprio ESTBAN)."}},
+        "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,
                       "com_auditor": com_auditor, "com_rede": com_rede},
     }
+
+
+def _fmt_milhar(v):
+    return f"{v:,}".replace(",", ".")
+
+
+def _sintese(instituicoes, sfn_serie):
+    """Números citáveis (página /imprensa), no formato da síntese de bets e
+    fraudes: cada item com valor, conceito, nível, fonte primária e URL."""
+    if not sfn_serie:
+        return []
+    url_estban = "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+    atual = sfn_serie[-1]
+    itens = [{
+        "id": "agencias_sfn",
+        "rotulo": "Agências bancárias em funcionamento no país",
+        "valor": atual["agencias"],
+        "exibir": _fmt_milhar(atual["agencias"]),
+        "unidade": f"agências processadas · {atual['mes']}",
+        "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os "
+                    "bancos; não inclui postos de atendimento nem correspondentes",
+        "data_ref": atual["mes"],
+        "nivel": "A", "status": "oficial",
+        "fonte": "BCB/ESTBAN", "url": url_estban,
+    }, {
+        "id": "municipios_com_agencia",
+        "rotulo": "Municípios com ao menos uma agência bancária",
+        "valor": atual["municipios"],
+        "exibir": f"{_fmt_milhar(atual['municipios'])} de 5.570",
+        "unidade": f"municípios · {atual['mes']}",
+        "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de "
+                    "qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
+        "data_ref": atual["mes"],
+        "nivel": "A", "status": "oficial",
+        "fonte": "BCB/ESTBAN", "url": url_estban,
+    }]
+    ano, mes = atual["mes"].split("-")
+    ref_12m = next((p for p in sfn_serie if p["mes"] == f"{int(ano) - 1}-{mes}"), None)
+    if ref_12m:
+        delta = atual["agencias"] - ref_12m["agencias"]
+        itens.append({
+            "id": "var_agencias_sfn_12m",
+            "rotulo": "Variação líquida de agências em 12 meses",
+            "valor": delta,
+            "exibir": f"{delta:+,}".replace(",", "."),
+            "unidade": f"agências · {ref_12m['mes']} → {atual['mes']}",
+            "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de "
+                        "bancos individuais é migração societária entre CNPJs do mesmo grupo",
+            "data_ref": atual["mes"],
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB/ESTBAN (derivação por subtração)", "url": url_estban,
+        })
+        maior = None
+        for i in instituicoes:
+            r = i.get("rede")
+            if r and r.get("var_12m") is not None and (maior is None or r["var_12m"] < maior[1]):
+                maior = (i["nome"], r["var_12m"])
+        if maior and maior[1] < 0:
+            itens.append({
+                "id": "maior_fechamento_12m",
+                "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
+                "valor": abs(maior[1]),
+                "exibir": f"{_fmt_milhar(abs(maior[1]))} ({maior[0]})",
+                "unidade": f"agências · 12 meses até {atual['mes']}",
+                "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir "
+                            "reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
+                "data_ref": atual["mes"],
+                "nivel": "A", "status": "calculado",
+                "fonte": "BCB/ESTBAN (derivação por subtração)", "url": url_estban,
+            })
+    return itens

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-05T11:06:29+00:00",
+ "gerado_em": "2026-08-05T11:15:31+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -5779,40 +5779,115 @@
    "nota": "Soma de agências processadas de todos os bancos no ESTBAN e contagem de municípios com ao menos uma agência (código de município do próprio ESTBAN)."
   }
  },
+ "sintese": [
+  {
+   "id": "agencias_sfn",
+   "rotulo": "Agências bancárias em funcionamento no país",
+   "valor": 13335,
+   "exibir": "13.335",
+   "unidade": "agências processadas · 2026-03",
+   "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os bancos; não inclui postos de atendimento nem correspondentes",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "municipios_com_agencia",
+   "rotulo": "Municípios com ao menos uma agência bancária",
+   "valor": 2926,
+   "exibir": "2.926 de 5.570",
+   "unidade": "municípios · 2026-03",
+   "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "var_agencias_sfn_12m",
+   "rotulo": "Variação líquida de agências em 12 meses",
+   "valor": -2287,
+   "exibir": "-2.287",
+   "unidade": "agências · 2025-03 → 2026-03",
+   "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de bancos individuais é migração societária entre CNPJs do mesmo grupo",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "maior_fechamento_12m",
+   "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
+   "valor": 1159,
+   "exibir": "1.159 (Banco Santander (Brasil) S.A.)",
+   "unidade": "agências · 12 meses até 2026-03",
+   "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  }
+ ],
  "flags": [
   {
    "instituicao": "Itau Unibanco Holding S.A.",
    "indicador": "rede",
+   "valor": -26.6,
+   "referencia": "2026-03",
    "detalhe": "queda de 26.6% nas agências em 12 meses (1933 → 1418) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Santander (Brasil) S.A.",
    "indicador": "rede",
+   "valor": -49.6,
+   "referencia": "2026-03",
    "detalhe": "queda de 49.6% nas agências em 12 meses (2337 → 1178) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Btg Pactual S.A.",
    "indicador": "empregados",
+   "valor": 55.6,
+   "referencia": "2026-12-31",
    "detalhe": "variação de 55.6% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
   },
   {
    "instituicao": "Brb Banco De Brasilia S.A.",
    "indicador": "rede",
+   "valor": -100.0,
+   "referencia": "2026-03",
    "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária"
   },
   {
    "instituicao": "Banco Estado De Sergipe S.A. - Banese",
    "indicador": "empregados",
+   "valor": 49.1,
+   "referencia": "2026-12-31",
    "detalhe": "variação de 49.1% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Brbi Br Partners S.A.",
+   "indicador": "auditoria",
+   "valor": null,
+   "referencia": "2025-12-31",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA — o rodízio obrigatório também produz trocas; ver FCA da companhia"
   },
   {
    "instituicao": "Alfa Holdings S.A.",
    "indicador": "empregados",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
    "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
   },
   {
    "instituicao": "Alfa Holdings S.A.",
    "indicador": "empregados",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
    "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
   }
  ],
