@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-05T19:17:40+00:00",
+ "gerado_em": "2026-08-05T19:30:22+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -5918,6 +5918,232 @@
     },
     "var_12m": 4,
     "var_12m_pct": 3.3,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   },
+   "clientes": null
+  },
+  {
+   "id": "nubank",
+   "nome": "Nu Holdings Ltd. (Nubank)",
+   "listada": false,
+   "cod_ifdata": null,
+   "cnpj8_rede": "18236120",
+   "empregados": null,
+   "auditor": null,
+   "rede": null,
+   "clientes": null
+  },
+  {
+   "id": "inter",
+   "nome": "Inter & Co, Inc. (Banco Inter)",
+   "listada": false,
+   "cod_ifdata": null,
+   "cnpj8_rede": "00416968",
+   "empregados": null,
+   "auditor": null,
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 18,
+      "municipios": 16
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 16,
+      "municipios": 15
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 1,
+      "municipios": 1
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 1,
+     "municipios": 1
+    },
+    "var_12m": -15,
+    "var_12m_pct": -93.8,
     "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
     "nivel": "A",
     "status": "oficial",
@@ -27814,7 +28040,7 @@
   }
  },
  "fase2": {
-  "em_revisao": 0,
+  "em_revisao": 5,
   "aprovadas": 16,
   "rejeitadas": 0,
   "metricas": {
@@ -27825,7 +28051,7 @@
    },
    "clientes_ativos": {
     "nome": "Clientes ativos",
-    "conceito": "Clientes com atividade ou relacionamento efetivo numa janela definida pela própria companhia. O Santander não publica o critério de atividade nem a janela no release — o número é o declarado, sem definição pública. NÃO comparável entre bancos.",
+    "conceito": "Clientes com atividade ou relacionamento efetivo numa janela definida pela própria companhia. O Santander não publica o critério de atividade nem a janela no release — o número é o declarado, sem definição pública. NÃO comparável entre bancos. O Inter publica a definição no apêndice do próprio release.",
     "comparabilidade": "C"
    },
    "correntistas": {
@@ -27956,12 +28182,19 @@
    "valor": -100.0,
    "referencia": "2024-12-31",
    "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
+  },
+  {
+   "instituicao": "Inter & Co, Inc. (Banco Inter)",
+   "indicador": "rede",
+   "valor": -93.8,
+   "referencia": "2026-03",
+   "detalhe": "queda de 93.8% nas agências em 12 meses (16 → 1) — verificar reorganização societária"
   }
  ],
  "cobertura": {
-  "instituicoes": 20,
+  "instituicoes": 22,
   "com_empregados": 18,
   "com_auditor": 18,
-  "com_rede": 18
+  "com_rede": 19
  }
 }
