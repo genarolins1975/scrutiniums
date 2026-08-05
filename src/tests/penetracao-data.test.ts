@@ -15,7 +15,12 @@ import { join } from "node:path";
  */
 const G = "public/obs/data/gold/";
 const P = JSON.parse(readFileSync(join(process.cwd(), G + "penetracao.json"), "utf-8"));
-const bruto = readFileSync(join(process.cwd(), G + "penetracao.json"), "utf-8");
+// O array municipal vive em penetracao_mun.json desde a separação por cache granular;
+// o teste costura como o front costura. O `bruto` das checagens de nomenclatura passa a
+// concatenar os dois arquivos, para que a varredura textual continue cobrindo tudo.
+const brutoMun = readFileSync(join(process.cwd(), G + "penetracao_mun.json"), "utf-8");
+if (!P.municipios) P.municipios = JSON.parse(brutoMun).municipios;
+const bruto = readFileSync(join(process.cwd(), G + "penetracao.json"), "utf-8") + brutoMun;
 const malha = JSON.parse(readFileSync(join(process.cwd(), G + "penetracao_malha.json"), "utf-8"));
 const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
 const coletor = readFileSync(join(process.cwd(), "pipeline/sources/estban.py"), "utf-8");

@@ -23,6 +23,13 @@ const ARQ = join(process.cwd(), "data/gold/moradia.json");
 const existe = existsSync(ARQ);
 const bruto = existe ? readFileSync(ARQ, "utf-8") : "{}";
 const M: any = JSON.parse(bruto);
+// O pipeline separa o array municipal em {nome}_mun.json para cache granular; o teste
+// costura de volta, como o front faz, e continua cobrindo golds antigos com o array
+// embutido.
+const ARQ_MUN = ARQ.replace(".json", "_mun.json");
+if (!M.municipios && existsSync(ARQ_MUN)) {
+  M.municipios = JSON.parse(readFileSync(ARQ_MUN, "utf-8")).municipios;
+}
 // pula gracioso se o gold ainda não foi gerado, em vez de estourar na importação
 const d = existe ? describe : describe.skip;
 

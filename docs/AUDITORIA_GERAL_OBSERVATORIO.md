@@ -208,18 +208,39 @@ zero erros de console, filtros com restauração exata, exportação coletando a
 
 ## 7. Pendências e recomendações
 
-**Pendências reais (P2/P3), em ordem de valor:**
-1. Consolidar as 6 funções de selo e as 4 escalas de mapa numa renderização única
-   parametrizada — os vocabulários por página são deliberados e devem sobreviver.
-2. Normalizar acento nas buscas de instituição e comparador (o helper `_norm` já existe).
-3. Densidade do Desenrola (33 cartões, ~16 mil px) e do consignado — converter
-   comparações em tabela e mover detalhe para `<details>`.
-4. Tabelas em celular: hoje rolam no contêiner; o padrão pedido é visualização móvel
-   própria.
-5. `index.html`: preload dos 2 woff2 latin, `og:image`, `canonical`.
-6. Busca dupla de `inst/{cod}.json` ao abrir a página da IF.
-7. Dividir os golds municipais de 6–7 MB (o CDN comprime para ~1 MB, mas o parse no
-   cliente é integral).
+**Pendências resolvidas em rodada subsequente (v0.53):**
+1. **Selos e escalas consolidados** — renderização única `seloChip` com vocabulário por
+   página (os dicionários deliberados sobrevivem; a divergência acidental de classe não);
+   `cgEscala` delega em `penEscala` com cor parametrizada, preservando o bronze dos mapas
+   de penetração e moradia e as duas paletas do consignado.
+2. **Acento normalizado** nas quatro buscas que só casavam minúscula (instituições,
+   comparador, municípios do Pix, matriz do produto) — "Itau" acha "Itaú".
+3. **Densidade** — no Desenrola, matriz de viabilidade, dicionário e notas de selo
+   viraram `<details>` fechados; no consignado, a linha do tempo regulatória (19 eventos)
+   dobrou e o dicionário do gold ganhou renderização, também dobrado.
+4. **Tabelas em celular** — visualização móvel própria: abaixo de 700px, tabelas de
+   cabeçalho simples com 5+ colunas empilham cada linha num bloco titulado com par
+   rótulo:valor (o rótulo vem do cabeçalho, anotado uma vez por tabela). Tabelas
+   estreitas e de cabeçalho mesclado continuam tabelas, que é o formato certo para elas.
+   Armadilha encontrada e tratada: `innerText` de cabeçalho dentro de `<details>` fechado
+   é vazio — a anotação usa `textContent`. 20 tabelas empilhadas em 7 páginas, zero sem
+   rótulo, verificado a 390px.
+5. **index.html** — preload dos dois woff2 latin, `canonical`, `og:url`, `twitter:card` e
+   `og:image` (1200×630 gerada na identidade da plataforma, 72 KB).
+6. **Busca dupla da página da IF** — a promessa em voo entra no cache; dois renders em
+   sequência deixam de disparar a mesma requisição.
+7. **Golds municipais divididos** — o array de 5.570 municípios sai do corpo e vai para
+   `{nome}_mun.json` (penetração 7,2 MB, consignado 6,6 MB, moradia 2,4 MB), deixando os
+   corpos com 125–155 KB. A razão é granularidade de cache: municípios mudam na data-base
+   mensal, agregados e séries na rodada diária. O front costura via `costuraMunicipios` e
+   continua compatível com golds antigos de array embutido; os testes costuram do mesmo
+   jeito.
+
+**Pendências que permanecem (P3):**
+- KPI de cobertura nacional na régua da penetração não responde ao filtro de região
+  (o rótulo declara o universo — decisão mantida).
+- Uma largura inline restante no app.js, em contexto onde a remoção quebraria o layout.
+- Consolidar os três blocos de mapa municipal copiados (pen/mor/cg) num componente.
 
 **Limitações por indisponibilidade de dados (não são defeitos):** carteira municipal de
 consignado não existe em fonte pública; beneficiários (pessoas) só existem por UF; valor

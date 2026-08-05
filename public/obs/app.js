@@ -204,7 +204,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.52.1"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.53.2"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -226,9 +226,9 @@ const VIEW_DATA = {
   judicial: ["judicial"],
   pgfn: ["pgfn"],
   desenrola: ["desenrola", "pulse"],
-  penetracao: ["penetracao", "penetracao_malha"],
-  moradia: ["moradia", "penetracao_malha"],
-  consignado: ["consignado", "penetracao_malha"],
+  penetracao: ["penetracao", "penetracao_mun", "penetracao_malha"],
+  moradia: ["moradia", "moradia_mun", "penetracao_malha"],
+  consignado: ["consignado", "consignado_mun", "penetracao_malha"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -260,6 +260,25 @@ function badge(kind, title) {
   if (!b) return "";
   return `<span class="seal ${b[0]}" ${title ? `title="${attr(title)}"` : ""}>${b[1]}</span>`;
 }
+/* Renderização única do chip de selo metodológico. Cada página mantém seu vocabulário
+   — "reportado" no Desenrola é deliberado, "hipótese" existe só no consignado — mas a
+   renderização era reimplementada seis vezes, com divergências acidentais de classe
+   (o "contextual" herdava o riscado de série descontinuada). Agora divergência de
+   vocabulário é decisão; divergência de renderização não existe mais. */
+/* Os golds municipais chegam em dois arquivos — o corpo (agregados, séries, modelos) e
+   o array de 5.570 municípios, que muda em ritmo mensal e ganha cache próprio. A costura
+   acontece aqui, uma vez, e o resto da página não sabe da divisão. Golds antigos, com o
+   array embutido, continuam funcionando. */
+function costuraMunicipios(base, mun) {
+  if (base && !base.municipios && mun && mun.municipios) base.municipios = mun.municipios;
+  return base;
+}
+
+function seloChip(dic, s) {
+  const b = dic[s];
+  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
+}
+
 function sealFor(tipo) {
   if (!tipo) return "";
   const t = tipo.toUpperCase();
@@ -1353,7 +1372,7 @@ function renderPix() {
   }).join("");
   const M2 = state.data.pix_mun;
   const munq = (px.munq || "").toLowerCase();
-  const munRows = M2 && M2.municipios ? M2.municipios.filter(m2 => !munq || m2.mun.toLowerCase().includes(munq) || (m2.uf || "").toLowerCase() === munq).slice(0, 25) : [];
+  const munRows = M2 && M2.municipios ? M2.municipios.filter(m2 => !munq || _norm(m2.mun).includes(_norm(munq)) || (m2.uf || "").toLowerCase() === munq).slice(0, 25) : [];
   const geog = sechead("Onde o Pix acontece?", `${G.mes} · padrão NORMALIZADO por habitante (valores absolutos favorecem estados populosos)`) + `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
       <span class="seg">${Object.entries(GMETS).map(([k2, [l]]) => `<button class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
@@ -3574,10 +3593,17 @@ function renderInstPage() {
   state.instCache = state.instCache || {};
   if (state.instCache[cod]) { renderInstPageData(el, state.instCache[cod]); return; }
   el.innerHTML = loadingCard("página da instituição");
-  const base = DATA_BASE;
-  fetch(`${base}inst/${cod}.json?v=${APP_VERSION}`).then(r => { if (!r.ok) throw 0; return r.json(); })
-    .then(p => { state.instCache[cod] = p; renderInstPageData(el, p); })
-    .catch(() => { el.innerHTML = "<p>página indisponível para este código de instituição.</p>"; });
+  // A promessa em voo também entra no cache: dois renders em sequência rápida — o
+  // segundo vinha do fluxo de navegação antes de o primeiro fetch resolver — disparavam
+  // a mesma requisição duas vezes. Cachear só o dado resolvido não impede isso.
+  state.instFetch = state.instFetch || {};
+  if (!state.instFetch[cod]) {
+    state.instFetch[cod] = fetch(`${DATA_BASE}inst/${cod}.json?v=${APP_VERSION}`)
+      .then(r => { if (!r.ok) throw 0; return r.json(); });
+  }
+  state.instFetch[cod]
+    .then(p => { state.instCache[cod] = p; if (state.filters.instCod === cod) renderInstPageData(el, p); })
+    .catch(() => { delete state.instFetch[cod]; el.innerHTML = "<p>página indisponível para este código de instituição.</p>"; });
 }
 
 function renderInstPageData(el, pg) {
@@ -3770,7 +3796,8 @@ window.searchInst = val => {
   let cod = m ? m[1] : null;
   if (!cod) {
     const q = val.toLowerCase();
-    const hit = idx.find(x => x.nome.toLowerCase().includes(q) || x.razao.toLowerCase().includes(q));
+    const qn = _norm(q);
+    const hit = idx.find(x => _norm(x.nome).includes(qn) || _norm(x.razao).includes(qn));
     cod = hit && hit.cod;
   }
   if (cod) openInstPage(cod);
@@ -4205,11 +4232,9 @@ function round2(x) { return Math.round(x * 100) / 100; }
    física não somam com Pequenos Negócios; e baixa de registro negativo não é
    pagamento. */
 
-function desSelo(s) {
-  const b = { reportado: ["obs", "REPORTADO"], calculado: ["calc", "CALCULADO"], estimado: ["est", "ESTIMADO"],
-              causal: ["cen", "RESULTADO CAUSAL"], associacao: ["prev", "ASSOCIAÇÃO"] }[s];
-  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
-}
+const DES_SELO_DIC = { reportado: ["obs", "REPORTADO"], calculado: ["calc", "CALCULADO"],
+  estimado: ["est", "ESTIMADO"], causal: ["cen", "RESULTADO CAUSAL"], associacao: ["ctx", "ASSOCIAÇÃO"] };
+function desSelo(s) { return seloChip(DES_SELO_DIC, s); }
 
 window.desFiltra = (campo, valor) => { state.des = { ...(state.des || {}), [campo]: valor }; renderDesenrola(); };
 window.desInst = cod => {
@@ -4624,6 +4649,7 @@ function renderDesenrola() {
       <td class="src">${m.base || ""}${m.falta ? `<br>${m.falta}` : ""}</td></tr>`).join("")}
     </tbody></table></div></details>
   </div>
+  <details class="charttable"><summary>Dicionário dos indicadores</summary>
   <div class="card"><h4>Dicionário dos indicadores</h4>
     <div class="desdic">
     ${D.catalogo.map(c => `<article>
@@ -4636,6 +4662,8 @@ function renderDesenrola() {
     </article>`).join("")}
     </div>
   </div>
+  </details>
+  <details class="charttable"><summary>Selos e procedência dos dados</summary>
   <div class="card"><h4>O que os selos significam</h4>
     <dl class="descomoler">${Object.entries(D.selos).map(([k, v]) => `<dt>${desSelo(k)}</dt><dd>${v}</dd>`).join("")}</dl>
   </div>
@@ -4652,7 +4680,8 @@ function renderDesenrola() {
       <li><b>Valores nominais</b>, sem deflação — meses distantes não são diretamente comparáveis em poder de compra.</li>
       <li><b>Sigilo:</b> a divulgação já vem agregada pelo BCB; o Observatório não recebe nem produz dado individual.</li>
     </ul>
-  </div></section>`;
+  </div></details>
+  </section>`;
 
   el.innerHTML = pageHead({
     title: "Desenrola Brasil",
@@ -4714,22 +4743,26 @@ window.penBusca = (v, confirmado) => {
 
 /** Escala por percentis: com distribuição tão assimétrica, escala linear deixaria
     tudo branco menos São Paulo. Winsorização é só visual — o dado exportado é o bruto. */
-function penEscala(vals, tipo) {
+function penEscala(vals, tipo, corBase) {
+  /* Escala sequencial por percentis (winsorização p5–p95, só visual — o dado exportado
+     é o bruto). Era duplicada em cgEscala com rampa ligeiramente diferente por acidente;
+     agora a cor é parâmetro e a rampa é uma. */
   const v = vals.filter(x => x != null).sort((a, b) => a - b);
   if (!v.length) return () => "var(--surface-2)";
   const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
   const lo = q(0.05), hi = q(0.95);
+  const base = corBase || "var(--accent)";  /* bronze: a cor dos mapas de penetração e moradia */
   return x => {
     if (x == null) return "var(--surface-2)";
     const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
-    return `color-mix(in srgb, var(--accent) ${Math.round(6 + t * 82)}%, var(--surface))`;
+    return `color-mix(in srgb, ${base} ${Math.round(6 + 82 * t)}%, var(--surface))`;
   };
 }
 
 function renderPenetracao() {
   const el = document.getElementById("view-penetracao");
-  const P = state.data.penetracao;
-  if (!P) { el.innerHTML = loadingCard("penetração de crédito municipal"); return; }
+  const P = costuraMunicipios(state.data.penetracao, state.data.penetracao_mun);
+  if (!P || !P.municipios) { el.innerHTML = loadingCard("penetração de crédito municipal"); return; }
   if (!P.disponivel) {
     el.innerHTML = pageHead({ title: "Penetração e Gap de Crédito", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${P.motivo || P.error || "sem dados"}</p></div>`;
@@ -5126,11 +5159,9 @@ function renderPenetracao() {
   + cards + filtros + mapa + avisoPen + cobertura + perfil + dispersao + rankings + achados + metodo_sec;
 }
 
-function penSelo(s) {
-  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
-              estimado: ["est", "ESTIMADO"], contextual: ["ctx", "CONTEXTUAL"] }[s];
-  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
-}
+const PEN_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+  estimado: ["est", "ESTIMADO"], contextual: ["ctx", "CONTEXTUAL"] };
+function penSelo(s) { return seloChip(PEN_SELO_DIC, s); }
 
 /* ---------- ALERTAS ----------
    Central unificada: as quatro famílias de alerta do Observatório num só lugar.
@@ -6490,12 +6521,9 @@ function renderSugestoes() {
    · participação de instituição é participação no saldo contabilizado, não de clientes;
    · lacuna estimada não é demanda comprovada. */
 
-function morSelo(s) {
-  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
-              estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"],
-              indisponivel: ["aprox", "INDISPONÍVEL"] }[s];
-  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
-}
+const MOR_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+  estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"], indisponivel: ["aprox", "INDISPONÍVEL"] };
+function morSelo(s) { return seloChip(MOR_SELO_DIC, s); }
 
 const MOR_METRICAS = {
   pgp: { l: "Domicílios ainda sendo pagos", u: "%", fmt: m => m.pgp != null ? fmt.n(m.pgp, 1) + "%" : "n.d.", esc: "pct" },
@@ -6527,8 +6555,8 @@ function morSac(pv, iAno, n) {
 
 function renderMoradia() {
   const el = document.getElementById("view-moradia");
-  const D = state.data.moradia;
-  if (!D) { el.innerHTML = loadingCard("moradia e crédito habitacional"); return; }
+  const D = costuraMunicipios(state.data.moradia, state.data.moradia_mun);
+  if (!D || (D.ok && !D.municipios)) { el.innerHTML = loadingCard("moradia e crédito habitacional"); return; }
   if (!D.ok) {
     el.innerHTML = pageHead({ title: "Moradia e Crédito Habitacional", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${D.error || D.motivo || "sem dados"}</p></div>`;
@@ -7033,12 +7061,10 @@ window.morSim = (k, v) => {
    relação entre dependência previdenciária e consignado só é afirmada a partir do dado
    estadual observado. Ver docs/AUDITORIA_CONSIGNADO.md. */
 
-function cgSelo(s) {
-  const b = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
-              estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"],
-              hipotese: ["exp", "HIPÓTESE"], indisponivel: ["aprox", "INDISPONÍVEL"] }[s];
-  return b ? `<span class="seal ${b[0]}">${b[1]}</span>` : "";
-}
+const CG_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
+  estimado: ["est", "ESTIMADO"], cenario: ["cen", "CENÁRIO"], hipotese: ["exp", "HIPÓTESE"],
+  indisponivel: ["aprox", "INDISPONÍVEL"] };
+function cgSelo(s) { return seloChip(CG_SELO_DIC, s); }
 
 /* Duas paletas deliberadamente distintas: sequencial fria para envelhecimento e
    previdência, sequencial quente para exposição ao consignado. Envelhecer não é risco, e
@@ -7067,22 +7093,13 @@ const CG_SATROT = {
 const CG_SELCOR = { alta: "var(--positive)", media: "var(--warning)", baixa: "var(--negative)", sem_dado: "var(--text-3)" };
 
 function cgEscala(vals, pal) {
-  const v = vals.filter(x => x != null).sort((a, b) => a - b);
-  if (!v.length) return () => "var(--surface-2)";
-  const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
-  const lo = q(0.05), hi = q(0.95);
-  const base = pal === "quente" ? "var(--warning)" : "var(--teal)";
-  return x => {
-    if (x == null) return "var(--surface-2)";
-    const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
-    return `color-mix(in srgb, ${base} ${Math.round(8 + 62 * t)}%, var(--surface))`;
-  };
+  return penEscala(vals, null, pal === "quente" ? "var(--warning)" : "var(--teal)");
 }
 
 function renderConsignado() {
   const el = document.getElementById("view-consignado");
-  const D = state.data.consignado;
-  if (!D) { el.innerHTML = loadingCard("consignado, previdência e envelhecimento"); return; }
+  const D = costuraMunicipios(state.data.consignado, state.data.consignado_mun);
+  if (!D || (D.ok && !D.municipios)) { el.innerHTML = loadingCard("consignado, previdência e envelhecimento"); return; }
   if (!D.ok) {
     el.innerHTML = pageHead({ title: "Consignado, Previdência e Envelhecimento", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
@@ -7640,8 +7657,8 @@ function cgMetodo(D) {
   const tl = D.linha_do_tempo.slice().reverse();
   const TIPOROT = { margem: "margem", teto: "teto de juros", prazo: "prazo", fraude: "antifraude", sancao: "sanção" };
   return `<section id="cg-metodo">${sechead("11. Fontes, definições e limites", "auditoria de viabilidade")}
+  <details class="charttable"><summary>Evolução regulatória — ${tl.length} eventos com norma e data</summary>
   <div class="card">
-    <h4>Evolução regulatória</h4>
     <ol class="cgtl">${tl.map(e => `<li>
       <span class="d">${e.d.split("-").reverse().join("/")}</span>
       <span class="c"><b>${e.t}</b> <span class="tp tp-${e.tipo}">${TIPOROT[e.tipo]}</span>
@@ -7650,6 +7667,15 @@ function cgMetodo(D) {
     aparecem marcadas nas séries da seção 5 para permitir inspeção — <b>não</b> para atribuir a
     elas a variação observada.</p>
   </div>
+  </details>
+
+  ${D.dicionario ? `<details class="charttable"><summary>Dicionário de indicadores (${D.dicionario.length})</summary>
+    <div class="desdic">${D.dicionario.map(x => `<div class="desdicit">
+      <h5>${x.t} ${cgSelo(x.selo)}</h5>
+      <p><b>Definição:</b> ${x.d}</p>
+      <p class="src"><b>Fonte:</b> ${x.f}</p>
+      <p class="src"><b>Limite:</b> ${x.l}</p></div>`).join("")}</div>
+  </details>` : ""}
 
   <div class="card">
     <h4>O que esta página não autoriza concluir</h4>
@@ -7736,9 +7762,42 @@ function acessibilizaRolagem(raiz) {
 /* Reavalia depois de cada render e a cada mudança de largura: o que rola em
    375 px pode não rolar em 1440 px, e vice-versa. */
 let _rolagemAgendada = 0;
+/* Tabelas largas em celular: em vez de comprimir a tabela desktop, cada linha vira um
+   bloco com rótulo:valor por célula. O rótulo vem do cabeçalho e é anotado aqui, uma vez
+   por tabela — o CSS só ativa a apresentação empilhada abaixo de 700px, e apenas para
+   tabelas com cinco ou mais colunas (as estreitas, como rankings de três colunas,
+   continuam tabelas, que é o formato certo para elas). */
+function adaptaTabelasMoveis(raiz) {
+  if (!raiz) return;
+  raiz.querySelectorAll("table.data:not([data-movel])").forEach(t => {
+    t.setAttribute("data-movel", "1");
+    // Só cabeçalho simples: uma linha de th, mesma contagem de colunas do corpo.
+    // Cabeçalho mesclado em dois níveis (como os grupos Total/Urbano/Rural) produziria
+    // rótulos desalinhados — essas tabelas continuam roláveis, que é o correto para elas.
+    const linhasThead = t.querySelectorAll("thead tr");
+    if (linhasThead.length !== 1) return;
+    // textContent, não innerText: dentro de um <details> fechado o innerText é vazio
+    // (depende de renderização), e a tabela empilharia com todos os rótulos em branco.
+    const ths = [...linhasThead[0].querySelectorAll("th")].map(th => th.textContent.replace(/[↑↓]/g, "").trim());
+    const corpo = t.querySelector("tbody tr");
+    if (ths.length < 5 || !corpo || corpo.children.length !== ths.length) return;
+    if (ths.filter(Boolean).length < ths.length - 1) return;  // cabeçalho sem texto útil
+    t.classList.add("t-stack");
+    t.querySelectorAll("tbody tr").forEach(tr => {
+      [...tr.children].forEach((td, i) => {
+        if (ths[i] && !td.hasAttribute("data-rotulo")) td.setAttribute("data-rotulo", ths[i]);
+      });
+    });
+  });
+}
+
 function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
-  _rolagemAgendada = setTimeout(() => acessibilizaRolagem(document.querySelector("section.view.active")), 120);
+  _rolagemAgendada = setTimeout(() => {
+    const ativa = document.querySelector("section.view.active");
+    acessibilizaRolagem(ativa);
+    adaptaTabelasMoveis(ativa);
+  }, 120);
 }
 window.addEventListener("resize", agendaAcessibilidade);
 // re-renders internos (filtro, aba, busca) não passam por showViewSilent:
@@ -8023,7 +8082,7 @@ function renderProductPageData(el, P) {
   const c = p.concentracao;
   const serie = p.serie.map(x => ({ x: anomesISO(x.anomes), y: x.total_brl / 1e9 }));
   const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:21px">${val}</div><div class="src">${sub || ""}</div></div>`;
-  let rows = p.matriz.filter(r => !PMX_STATE.q || r.nome.toLowerCase().includes(PMX_STATE.q));
+  let rows = p.matriz.filter(r => !PMX_STATE.q || _norm(r.nome).includes(_norm(PMX_STATE.q)));
   rows = rows.slice().sort((a, b) => {
     const va = a[PMX_STATE.sort], vb = b[PMX_STATE.sort];
     if (va == null) return 1; if (vb == null) return -1;
@@ -8251,7 +8310,8 @@ window.cmpSearch = v => {
   if (!q || q.length < 2) { box.innerHTML = ""; return; }
   const ix = state.data.inst_index;
   if (!ix) return;
-  const hits = ix.instituicoes.filter(i => (i.nome || "").toLowerCase().includes(q) || (i.razao || "").toLowerCase().includes(q) || i.cod.toLowerCase().includes(q)).slice(0, 12);
+  const qn = _norm(q);
+  const hits = ix.instituicoes.filter(i => _norm(i.nome || "").includes(qn) || _norm(i.razao || "").includes(qn) || i.cod.toLowerCase().includes(q)).slice(0, 12);
   box.innerHTML = hits.map(i => `<div class="shortcut clickable" onclick="cmpAdd('${i.cod}')"><b>${i.nome}</b> <span class="src">${i.razao || ""} · ${i.cod} · ${i.sr || "–"} · ${i.cod.startsWith("C") ? "conglomerado prudencial" : "instituição individual"} · ativos ${fmt.money(i.ativo_brl)}</span></div>`).join("") || "<p class='src'>nenhuma instituição encontrada</p>";
 };
 window.cmpAdd = cod => {

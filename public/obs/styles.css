@@ -1372,3 +1372,26 @@ a.src[onclick], a.seeall { display: inline-flex; align-items: center; min-height
    vizinhos: a barra de controles ganha o espaçamento mínimo que o separa. */
 .controls { row-gap: var(--sp-2); }
 .controls .seg { gap: 1px; }
+
+/* ---------- TABELAS EM CELULAR: apresentação empilhada ----------
+   Ativa só abaixo de 700px e só para tabelas anotadas com t-stack (cinco ou mais
+   colunas). Cada linha vira um bloco; cada célula mostra o rótulo da sua coluna. A
+   primeira célula da linha é o título do bloco. Tabelas estreitas continuam tabelas. */
+@media (max-width: 700px) {
+  table.t-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); }
+  table.t-stack, table.t-stack tbody { display: block; width: 100%; }
+  table.t-stack tbody tr { display: block; padding: var(--sp-2) 0 var(--sp-3);
+    border-bottom: 1px solid var(--border); }
+  table.t-stack tbody tr:last-child { border-bottom: 0; }
+  table.t-stack tbody td, table.t-stack tbody th {
+    display: flex; justify-content: space-between; gap: var(--sp-4);
+    border: 0; padding: 2px 0; text-align: right; }
+  table.t-stack tbody td::before, table.t-stack tbody th[data-rotulo]::before {
+    content: attr(data-rotulo); color: var(--text-3); font-size: var(--fs-xs);
+    text-align: left; flex-shrink: 0; }
+  table.t-stack tbody td:first-child, table.t-stack tbody th[scope="row"]:first-child {
+    font-weight: var(--fw-semibold); justify-content: flex-start; text-align: left;
+    padding-bottom: var(--sp-1); }
+  table.t-stack tbody td:first-child::before { content: none; }
+}

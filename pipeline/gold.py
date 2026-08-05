@@ -618,6 +618,29 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("consignado.json", {"ok": False, "error": str(e)})
 
+    # Os três golds municipais carregam um array de 5.570 municípios que domina o
+    # tamanho do arquivo (até 7 MB) e muda em ritmo diferente do resto: municípios na
+    # data-base mensal, agregados e séries na rodada diária. Separar o array em
+    # {nome}_mun.json dá ao navegador cache granular — o arquivo grande só é rebaixado
+    # quando a data-base muda — e o front carrega os dois em paralelo pelo manifesto.
+    def separa_municipios(nome):
+        import json as _json
+        caminho = os.path.join(common.GOLD, f"{nome}.json")
+        if not os.path.exists(caminho):
+            return
+        with open(caminho, encoding="utf-8") as f:
+            g = _json.load(f)
+        muns = g.pop("municipios", None)
+        if muns is None:
+            return
+        g["municipios_arquivo"] = f"{nome}_mun.json"
+        common.write_gold(f"{nome}_mun.json", {"municipios": muns})
+        common.write_gold(f"{nome}.json", g)
+        print(f"  [{nome}] municípios separados: {len(muns)} em {nome}_mun.json")
+    for _nome in ("penetracao", "moradia", "consignado"):
+        separa_municipios(_nome)
+
+
     from pipeline import central_alertas
     central = central_alertas.build()
     common.write_gold_text("alerts.xml", central_alertas.rss(central))
