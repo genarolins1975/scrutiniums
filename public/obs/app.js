@@ -7880,17 +7880,21 @@ function renderOperacional() {
   const metrica = m => ((f2.metricas || {})[m] || {}).nome || m;
   let tCli = "";
   if (comCli.length) {
+    const conceito = m => ((f2.metricas || {})[m] || {}).conceito || "";
     const linhas = comCli.flatMap(i => i.clientes.map(c => `<tr>
       <td>${i.nome}</td>
-      <td>${metrica(c.metric_id)}</td>
+      <td><span title="${attr(conceito(c.metric_id))}">${metrica(c.metric_id)}</span></td>
       <td class="num">${c.exibir}</td>
       <td>${c.periodo_rotulo}</td>
       <td><a href="${attr(c.documento.url)}" target="_blank" rel="noopener"
         title="${attr(`p.${c.pagina}: “${c.evidencia}” — ${c.documento.assunto} (${c.documento.fonte})`)}">${c.documento.assunto.slice(0, 38)} · p.${c.pagina}</a></td></tr>`));
+    const metricasUsadas = Array.from(new Set(comCli.flatMap(i => i.clientes.map(c => c.metric_id))));
     tCli = `${sechead("Clientes — divulgação das companhias (Fase 2)", "releases de resultados via CVM/IPE · extração revisada, evidência obrigatória")}
     <div class="card"><div class="tblwrap"><table>
       <thead><tr><th>Companhia</th><th>Métrica</th><th class="num">Valor</th><th>Período</th><th>Evidência (documento · página)</th></tr></thead>
       <tbody>${linhas.join("")}</tbody></table></div>
+      <h4 style="margin:14px 0 4px">O que cada métrica significa</h4>
+      <dl class="descomoler">${metricasUsadas.map(m => `<dt>${metrica(m)}</dt><dd>${conceito(m)}</dd>`).join("")}</dl>
       <p class="src">${badge("observado")} <b>Comparabilidade C:</b> cada companhia define o próprio conceito de cliente —
       estes números NÃO são comparáveis entre bancos e nunca entram em ranking. A ausência de um banco significa que ele
       não divulga o número no release, não que tenha zero clientes.${f2.em_revisao ? ` · ${f2.em_revisao} extração(ões) aguardando revisão editorial.` : ""}</p></div>`;

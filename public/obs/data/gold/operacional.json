@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-05T18:36:14+00:00",
+ "gerado_em": "2026-08-05T18:45:47+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -636,7 +636,29 @@
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
-   "clientes": null
+   "clientes": [
+    {
+     "metric_id": "clientes_ativos_digitais",
+     "valor": 35600000,
+     "exibir": "35,6 milhões",
+     "unidade": "clientes ativos nos canais digitais",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "clientes ativos especificamente nos canais digitais — a companhia não divulga a base total neste relatório",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 111,
+     "evidencia": "A base de clientes ativos nos canais digitais atingiu 35,6 milhões no 1T26, crescimento de 17,9% na comparação anual",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "001023IPE310320260122742519-04",
+      "tipo": "Relatório de Análise Gerencial",
+      "assunto": "Análise do Desempenho 1T26",
+      "entregue_em": "2026-05-13",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1521600&numSequencia=1046306&numVersao=1"
+     }
+    }
+   ]
   },
   {
    "id": "bradesco",
@@ -946,7 +968,71 @@
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
-   "clientes": null
+   "clientes": [
+    {
+     "metric_id": "clientes_total",
+     "valor": 74300000,
+     "exibir": "74,3 milhões",
+     "unidade": "clientes (por CPF/CNPJ)",
+     "period_end": "2025-12-31",
+     "periodo_rotulo": "Dez/25",
+     "escopo": "quantidade de clientes por CPF/CNPJ; comparativo publicado na mesma tabela do relatório de Mar/26",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 37,
+     "evidencia": "Clientes - Em milhões: Clientes Totais (2) — Mar26: 74,3 · Dez25: 74,3 · Mar25: 73,5",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "000906IPE310320260107909950-57",
+      "tipo": "Relatório de Análise Gerencial",
+      "assunto": "Relatório de Análise Econômica e Financeira",
+      "entregue_em": "2026-05-06",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516958&numSequencia=1041664&numVersao=1"
+     }
+    },
+    {
+     "metric_id": "clientes_total",
+     "valor": 74300000,
+     "exibir": "74,3 milhões",
+     "unidade": "clientes (por CPF/CNPJ)",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "Mar/26",
+     "escopo": "quantidade de clientes por CPF/CNPJ, conforme nota (2) da tabela da companhia",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 37,
+     "evidencia": "Clientes - Em milhões: Clientes Totais (2) 74,3 (Mar26) · (2) Considera a quantidade de clientes por CPF/CNPJ",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "000906IPE310320260107909950-57",
+      "tipo": "Relatório de Análise Gerencial",
+      "assunto": "Relatório de Análise Econômica e Financeira",
+      "entregue_em": "2026-05-06",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516958&numSequencia=1041664&numVersao=1"
+     }
+    },
+    {
+     "metric_id": "correntistas",
+     "valor": 37900000,
+     "exibir": "37,9 milhões",
+     "unidade": "correntistas",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "Mar/26",
+     "escopo": "clientes com conta corrente, conforme a tabela da companhia",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 37,
+     "evidencia": "Clientes - Em milhões: … - Correntistas 37,9 (Mar26)",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "000906IPE310320260107909950-57",
+      "tipo": "Relatório de Análise Gerencial",
+      "assunto": "Relatório de Análise Econômica e Financeira",
+      "entregue_em": "2026-05-06",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516958&numSequencia=1041664&numVersao=1"
+     }
+    }
+   ]
   },
   {
    "id": "santander",
@@ -1251,7 +1337,113 @@
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
-   "clientes": null
+   "clientes": [
+    {
+     "metric_id": "clientes_ativos",
+     "valor": 34200000,
+     "exibir": "34,2 milhões",
+     "unidade": "clientes",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "conforme divulgação da companhia; o critério e a janela de atividade não são publicados no release",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 4,
+     "evidencia": "e os clientes ativos em 3% YoY, totalizando 34,2 milhões",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "020532IPE310320260154228564-35",
+      "tipo": "Press-release",
+      "assunto": "Release de Resultados 1T26",
+      "entregue_em": "2026-04-29",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1510319&numSequencia=1035025&numVersao=1"
+     }
+    },
+    {
+     "metric_id": "clientes_ativos",
+     "valor": 34400000,
+     "exibir": "34,4 milhões",
+     "unidade": "clientes",
+     "period_end": "2026-06-30",
+     "periodo_rotulo": "2T26",
+     "escopo": "conforme divulgação da companhia; o critério e a janela de atividade não são publicados no release",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 4,
+     "evidencia": "e 34,4 milhões de clientes ativos, alta de 3% YoY",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "020532IPE300620260257610962-43",
+      "tipo": "Press-release",
+      "assunto": "Release de Resultados 2T26",
+      "entregue_em": "2026-07-29",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1549115&numSequencia=1073821&numVersao=2"
+     }
+    },
+    {
+     "metric_id": "clientes_total",
+     "valor": 73900000,
+     "exibir": "73,9 milhões",
+     "unidade": "clientes",
+     "period_end": "2025-12-31",
+     "periodo_rotulo": "4T25",
+     "escopo": "conforme divulgação da companhia; a definição de \"base de clientes\" não é publicada no release",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 4,
+     "evidencia": "Expandimos a nossa base de clientes em 6% YoY, atingindo 73,9 milhões",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "020532IPE311220250127944322-50",
+      "tipo": "Press-release",
+      "assunto": "Release de Resultados 4T25 - versão em português",
+      "entregue_em": "2026-02-04",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1472879&numSequencia=997585&numVersao=1"
+     }
+    },
+    {
+     "metric_id": "clientes_total",
+     "valor": 75200000,
+     "exibir": "75,2 milhões",
+     "unidade": "clientes",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "conforme divulgação da companhia; a definição de \"base de clientes\" não é publicada no release",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 4,
+     "evidencia": "Expandimos a nossa base de clientes em 6% YoY, atingindo 75,2 milhões",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "020532IPE310320260154228564-35",
+      "tipo": "Press-release",
+      "assunto": "Release de Resultados 1T26",
+      "entregue_em": "2026-04-29",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1510319&numSequencia=1035025&numVersao=1"
+     }
+    },
+    {
+     "metric_id": "clientes_total",
+     "valor": 76200000,
+     "exibir": "76,2 milhões",
+     "unidade": "clientes",
+     "period_end": "2026-06-30",
+     "periodo_rotulo": "2T26",
+     "escopo": "conforme divulgação da companhia; a definição de \"base de clientes\" não é publicada no release",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 4,
+     "evidencia": "No 2T26, nossa base alcançou 76,2 milhões de clientes, crescimento de 6% YoY",
+     "documento": {
+      "fonte": "CVM/IPE",
+      "protocolo": "020532IPE300620260257610962-43",
+      "tipo": "Press-release",
+      "assunto": "Release de Resultados 2T26",
+      "entregue_em": "2026-07-29",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1549115&numSequencia=1073821&numVersao=2"
+     }
+    }
+   ]
   },
   {
    "id": "btg",
@@ -6702,28 +6894,28 @@
   }
  },
  "fase2": {
-  "em_revisao": 9,
-  "aprovadas": 0,
+  "em_revisao": 0,
+  "aprovadas": 9,
   "rejeitadas": 0,
   "metricas": {
    "clientes_total": {
     "nome": "Base total de clientes",
-    "conceito": "Total de clientes conforme o conceito da própria companhia (CPF/CNPJ, com ou sem conta corrente, critérios variam por banco). NÃO comparável entre bancos.",
+    "conceito": "Todos os clientes (CPF/CNPJ) com algum relacionamento com a companhia, no conceito dela. O Bradesco define em nota da própria tabela (inclui não correntistas com relacionamento via consórcio, consignado, corretora etc.); o Santander não publica a definição no release. NÃO comparável entre bancos.",
     "comparabilidade": "C"
    },
    "clientes_ativos": {
     "nome": "Clientes ativos",
-    "conceito": "Clientes ativos conforme o critério de atividade da própria companhia (janela e definição variam por banco). NÃO comparável entre bancos.",
+    "conceito": "Clientes com atividade ou relacionamento efetivo numa janela definida pela própria companhia. O Santander não publica o critério de atividade nem a janela no release — o número é o declarado, sem definição pública. NÃO comparável entre bancos.",
     "comparabilidade": "C"
    },
    "correntistas": {
     "nome": "Correntistas",
-    "conceito": "Clientes com conta corrente, conforme divulgação da companhia.",
+    "conceito": "Clientes com conta corrente, conforme divulgação da companhia — subconjunto da base total.",
     "comparabilidade": "C"
    },
    "clientes_ativos_digitais": {
     "nome": "Clientes ativos nos canais digitais",
-    "conceito": "Clientes ativos especificamente nos canais digitais, conforme divulgação da companhia. Subconjunto com critério próprio — não é a base total.",
+    "conceito": "Clientes ativos especificamente nos canais digitais, conforme divulgação da companhia. Subconjunto com critério próprio — não é a base total nem se compara aos ativos de outros bancos.",
     "comparabilidade": "C"
    }
   },
