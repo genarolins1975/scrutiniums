@@ -1,0 +1,23 @@
+name: Boletim mensal
+
+# Dispara o envio do boletim da central de alertas para a base cadastrada
+# com consentimento de comunicações. O endpoint aplica duas proteções:
+# autorização por BOLETIM_SECRET e guarda de um envio por mês-calendário
+# (reexecutar o workflow no mesmo mês não duplica e-mails).
+on:
+  schedule:
+    - cron: "0 12 1 * *" # dia 1 de cada mês, 09:00 em São Paulo
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Disparar envio do boletim
+        run: |
+          curl -sS --fail-with-body -X POST \
+            "https://scrutiniums.com/api/boletim/enviar" \
+            -H "Authorization: Bearer ${{ secrets.BOLETIM_SECRET }}"

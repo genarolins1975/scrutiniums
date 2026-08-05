@@ -91,7 +91,15 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 | `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <acesso@scrutiniums.com>`). | Não; padrão `Scrutiniums <acesso@scrutiniums.com>`. |
 | `ADMIN_EMAILS` | E-mails dos administradores, separados por vírgula (case-insensitive, com trim). Controla `/app/admin` e `POST /api/admin/convites`. | Não; vazio/ausente → ninguém é admin. |
 | `ACCESS_CODES` | Códigos de acesso antecipado, separados por vírgula (case-insensitive, com trim). Vazio/ausente → nenhum código válido; usuários vão para a lista de espera. | Não; sem ela o acesso fica fechado (todos em `WAITLIST`). |
-| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`). `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`) e dos links de saída do boletim. `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+| `BOLETIM_SECRET` | Autoriza o disparo do boletim mensal (`POST /api/boletim/enviar`) via header `Authorization: Bearer …`, usado pelo workflow `boletim-mensal.yml`. Mínimo de 16 caracteres. | Não; vazio → apenas administradores logados disparam o envio. |
+
+## Boletim mensal
+
+- **Conteúdo** (`src/lib/boletim.ts`): montado da central de alertas do gold (`alertas_central.json`) + data-bases do `meta.json` — texto puro, corpo único para todos os destinatários, links para as abas públicas do Observatório. Sem gold disponível, o envio é abortado (503): o boletim nunca sai vazio.
+- **Destinatários**: usuários com onboarding `COMPLETE` **e** `marketingOptIn = true` (consentimento dado no cadastro, gerenciável em Conta → Boletim mensal).
+- **Disparo**: `POST /api/boletim/enviar`, autorizado por `BOLETIM_SECRET` (Bearer; usado pelo workflow mensal `boletim-mensal.yml`, dia 1 às 09:00 de São Paulo) ou por sessão de administrador. Guarda de idempotência: um envio por mês-calendário (evento `boletim_enviado` em `product_events`). Envio sequencial com intervalo entre mensagens.
+- **Saída**: todo e-mail traz link `/boletim/sair?token=…` com token HMAC de propósito fixo (`boletim-sair.<userId>`, segredo `COOKIE_SECRET`) — sem login e sem e-mail na URL. A página só efetiva a saída no clique de confirmação (POST), nunca no GET, para que scanners de e-mail não descadastrem ninguém. Eventos `boletim_optin`/`boletim_optout` registram as trocas.
 
 ## Convites da lista de espera
 

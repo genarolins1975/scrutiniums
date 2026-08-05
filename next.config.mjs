@@ -13,6 +13,10 @@ const nextConfig = {
         "./public/obs/data/gold/inst_index.json",
         "./public/obs/data/gold/meta.json",
       ],
+      "/api/boletim/enviar": [
+        "./public/obs/data/gold/alertas_central.json",
+        "./public/obs/data/gold/meta.json",
+      ],
     },
   },
   // As rotas sob /observatorio são servidas pelo route handler
