@@ -110,6 +110,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("npl.json", {"ok": False, "error": str(e)})
 
+    # ---- Indicadores operacionais Fase 0: gente, rede e auditoria ----
+    from pipeline import operacional as oper_mod
+    try:
+        common.write_gold("operacional.json", oper_mod.build(con, cfg))
+    except Exception as e:
+        common.write_gold("operacional.json", {"disponivel": False, "error": str(e)})
+
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
     exposures = build_exposures(con, cfg)
     common.write_gold("exposures.json", exposures)

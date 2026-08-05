@@ -4,11 +4,11 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Vitrine pública do Observatório: existe para que o visitante entenda a
- * proposta ANTES do cadastro. O que precisa ser garantido é que ela seja
- * mesmo pública (fora do middleware), que os números venham do gold real
- * (nunca literais no código) e que o destino de um link compartilhado
- * sobreviva ao desvio pela vitrine.
+ * Vitrine pública do Observatório: a porta de entrada editorial. Com o
+ * Observatório aberto para leitura, o que precisa ser garantido é que a
+ * vitrine e o próprio Observatório estejam fora do middleware, que os
+ * números venham do gold real (nunca literais no código) e que a área
+ * logada (/app) continue protegida.
  */
 const pagina = readFileSync(join(process.cwd(), "src/app/observatorio-do-credito/page.tsx"), "utf-8");
 const middleware = readFileSync(join(process.cwd(), "src/middleware.ts"), "utf-8");
@@ -16,17 +16,18 @@ const header = readFileSync(join(process.cwd(), "src/components/layout/PublicHea
 const sitemap = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf-8");
 
 describe("vitrine pública do Observatório", () => {
-  it("não está protegida pelo middleware", () => {
+  it("não está protegida pelo middleware — nem ela, nem o Observatório", () => {
     const matcher = middleware.slice(middleware.indexOf("matcher:"));
-    expect(matcher).not.toMatch(/observatorio-do-credito/);
-    // e o middleware precisa continuar protegendo a aplicação em si
-    expect(middleware).toMatch(/pathname === "\/observatorio"/);
-    expect(middleware).toMatch(/pathname\.startsWith\("\/obs\/"\)/);
+    expect(matcher).not.toMatch(/observatorio/);
+    expect(matcher).not.toMatch(/\/obs/);
+    // e o middleware precisa continuar protegendo a área logada
+    expect(matcher).toMatch(/\/app\/:path\*/);
+    expect(middleware).toMatch(/pathname\.startsWith\("\/app"\)/);
   });
 
-  it("visitante que pede a aplicação é levado à vitrine, com o destino preservado", () => {
-    expect(middleware).toMatch(/url\.pathname = "\/observatorio-do-credito"/);
-    expect(middleware).toMatch(/url\.searchParams\.set\("de", destino\)/);
+  it("visitante que pede a área logada é levado ao login, com o destino preservado", () => {
+    expect(middleware).toMatch(/url\.pathname = "\/entrar"/);
+    expect(middleware).toMatch(/url\.searchParams\.set\("de", pathname\)/);
   });
 
   it("é estática e indexável", () => {

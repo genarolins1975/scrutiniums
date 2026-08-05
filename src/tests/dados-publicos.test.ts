@@ -84,9 +84,12 @@ describe("integração: rotas públicas registradas", () => {
     }
   });
 
-  it("área logada segue fora da superfície pública (robots)", () => {
+  it("área logada segue fora da superfície pública (robots); Observatório indexável", () => {
     const robots = readFileSync(join(process.cwd(), "src/app/robots.ts"), "utf-8");
-    expect(robots).toContain('"/observatorio"');
     expect(robots).toContain('"/app"');
+    expect(robots).toContain('"/api/"');
+    // o Observatório é público e não pode constar do disallow
+    expect(robots).not.toContain('"/observatorio"');
+    expect(robots).not.toContain('"/obs/"');
   });
 });

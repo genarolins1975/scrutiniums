@@ -104,7 +104,7 @@ describe("adminStats: agregações do painel", () => {
 
     await trackView("obs:overview", u1);
     await trackView("obs:overview", u1);
-    await trackView("app:paineis", u1);
+    await trackView("app:conta", u1);
     for (const nome of ["onboarding_started", "email_verified", "phone_verified"] as const) {
       await db
         .insert(schema.productEvents)

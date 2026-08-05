@@ -1,6 +1,6 @@
 # Scrutiniums
 
-Plataforma **gratuita** de inteligência analítica sobre setores da economia brasileira: painéis de atividade setorial, risco de crédito, sentimento regulatório e concentração de mercado, com metodologia aberta e glossário público. A **única exigência de acesso é o cadastro** — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada na plataforma exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
+Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. A **leitura do Observatório é aberta** — sem cadastro, indexável, compartilhável — para maximizar o uso e o alcance dos painéis. A **área de conta e os painéis personalizados** (`/app`) exigem cadastro — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada nessa área exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
 
 ## Stack
 
@@ -55,10 +55,10 @@ Os testes de integração usam bancos PGlite **em memória** (`DATABASE_URL=pgli
 src/
   app/                 Rotas (App Router): páginas públicas, /cadastro, /entrar, /app
     api/               Rotas de API (onboarding, auth, conta)
-  components/          UI, layout, home, onboarding, conta e analytics (PanelShell etc.)
+  components/          UI, layout, home, onboarding, conta e telemetria
   lib/                 Núcleo: db, schema, crypto, phone, ratelimit, onboarding,
                        twilio, mailer, session, events, audit, format
-    data/              glossario.ts (fonte única de definições) e paineis.ts (séries determinísticas)
+    data/              glossario.ts (fonte única de definições) e observatorioAbas.ts (metadados por aba)
   tests/               Testes unitários e de integração (vitest)
 tailwind.config.ts     Design tokens
 vitest.config.ts       Configuração de testes
@@ -68,9 +68,17 @@ vitest.config.ts       Configuração de testes
 
 Quem completa o cadastro sem código de acesso fica em `WAITLIST`. O dono da plataforma (e-mails em `ADMIN_EMAILS`) acessa **`/app/admin`**, vê a lista de espera (e-mail, telefone mascarado e data de cadastro) e envia um convite por e-mail para toda a lista com um código de acesso — o código precisa constar em `ACCESS_CODES` para funcionar. O envio usa o Resend (`RESEND_API_KEY`/`MAIL_FROM`), é sequencial (com intervalo entre mensagens) e registra o evento `waitlist_invited` por convidado. Usuário autenticado que não é admin recebe 404 em `/app/admin` e 403 na API (`POST /api/admin/convites`).
 
+## Boletim mensal
+
+Uma vez por mês, quem se cadastrou **e aceitou comunicações** recebe por e-mail o resumo da **central de alertas** do Observatório: total de alertas ativos por família, os primeiros da ordenação da central (com nível, fonte e link para a aba pública) e as data-bases das fontes. O disparo é feito pelo workflow `boletim-mensal.yml` (dia 1 de cada mês) contra `POST /api/boletim/enviar`, autorizado por `BOLETIM_SECRET` — administradores logados também podem disparar manualmente. Uma guarda impede dois envios no mesmo mês. Todo e-mail traz link de saída assinado (sem login); a preferência também é gerenciável em **Conta → Boletim mensal**.
+
+## Indicadores operacionais (Fase 0)
+
+Gente, rede física e auditoria das instituições financeiras, **exclusivamente de fontes estruturadas oficiais** — CVM/FRE (empregados por posição e região), CVM/FCA (auditor vigente e histórico) e BCB/ESTBAN (agências por banco e municípios atendidos, série mensal). Sem PDF, sem modelo de linguagem, sem estimativa: coleta idempotente (`pipeline/sources/operacional.py`), validações determinísticas com flags publicadas junto do dado (`pipeline/operacional.py`) e saída em `data/gold/operacional.json`, sincronizada diariamente para `public/obs/data/gold/` pelo workflow. A aba pública fica em **`/observatorio/operational-indicators`**; as flags alimentam a família "Indicadores operacionais" da central de alertas (e, por ela, o boletim mensal), e a síntese citável entra na página **`/imprensa`**. Metodologia em [METODOLOGIA_OPERACIONAL.md](./METODOLOGIA_OPERACIONAL.md); fontes em [FONTES_OPERACIONAL.md](./FONTES_OPERACIONAL.md).
+
 ## Observatório embutido
 
-O Observatório Brasileiro de Crédito (SPA em JavaScript puro, 16 abas) roda embutido na plataforma em **`/observatorio`**. Os ativos estáticos (HTML, JS, CSS e os JSONs analíticos da camada gold, ~54 MB) vivem em `public/obs/`; rewrites no `next.config.mjs` servem `public/obs/index.html` para qualquer rota sob `/observatorio` (o roteamento fino é da própria SPA, via History API). Tanto `/observatorio` quanto `/obs/**` (inclusive os dados em `/obs/data/gold/**`) exigem a sessão da Scrutiniums (`src/middleware.ts`); sem cookie, redirect para `/entrar?de=/observatorio`. Para atualizar os dados no futuro, rode o pipeline do observatório e sincronize a saída `data/gold/` para `public/obs/data/gold/` (e os ativos `index.html`/`app.js`/`styles.css` se a SPA mudar, reaplicando o prefixo `/observatorio` e o `DATA_BASE=/obs/data/gold/`).
+O Observatório Brasileiro de Crédito (SPA em JavaScript puro, 16+ abas) roda embutido na plataforma em **`/observatorio`** e é **público para leitura** — sem cadastro, indexável por buscadores. Os ativos estáticos (HTML, JS, CSS e os JSONs analíticos da camada gold, ~54 MB) vivem em `public/obs/`; o route handler `src/app/observatorio/[[...rota]]/route.ts` serve `public/obs/index.html` para qualquer rota sob `/observatorio`, injetando metadados por aba (title, description, canonical, Open Graph e JSON-LD `Dataset`) a partir do catálogo `src/lib/data/observatorioAbas.ts` — o roteamento fino continua sendo da própria SPA, via History API. A área logada (`/app`) segue protegida pelo `src/middleware.ts`; no rodapé da SPA, o visitante vê "Entrar" e o usuário com sessão vê "Minha conta"/"Sair" (checagem via `GET /api/auth/eu`). A página pública **`/imprensa`** publica os números citáveis dos painéis de bets e fraudes com fonte primária e grau de evidência. Para atualizar os dados no futuro, rode o pipeline do observatório e sincronize a saída `data/gold/` para `public/obs/data/gold/` (e os ativos `index.html`/`app.js`/`styles.css` se a SPA mudar, reaplicando o prefixo `/observatorio` e o `DATA_BASE=/obs/data/gold/`).
 
 ## Documentação
 

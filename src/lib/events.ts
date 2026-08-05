@@ -12,6 +12,9 @@ export type ProductEventName =
   | "profile_completed"
   | "waitlist_joined"
   | "waitlist_invited"
+  | "boletim_enviado"
+  | "boletim_optin"
+  | "boletim_optout"
   | "onboarding_completed"
   | "verification_failed"
   | "onboarding_abandoned";

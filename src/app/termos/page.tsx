@@ -16,7 +16,7 @@ const TERMOS: { numero: string; titulo: string; paragrafos: string[] }[] = [
     numero: "01",
     titulo: "Objeto e acesso",
     paragrafos: [
-      "A Scrutiniums é uma plataforma de informação e análise de acesso gratuito, de natureza acadêmica e analítica. A única exigência para usar os painéis é o cadastro, com e-mail e telefone confirmados. Não existem planos, assinaturas ou cobranças.",
+      "A Scrutiniums é uma plataforma de informação e análise de acesso gratuito, de natureza acadêmica e analítica. A leitura do Observatório e das páginas públicas é aberta, sem cadastro. A área de conta e os painéis personalizados exigem cadastro, com e-mail e telefone confirmados. Não existem planos, assinaturas ou cobranças.",
       "A conta é pessoal e intransferível. Você é responsável por manter seus dados de acesso em sigilo, por todas as atividades realizadas com a sua conta e por atualizar seus dados quando mudarem.",
       "Ao criar a conta ou usar a plataforma, você declara ter lido, compreendido e aceito integralmente estes termos. Se não concordar com qualquer condição, não utilize a plataforma.",
     ],

@@ -59,13 +59,13 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 
 ## Painéis analíticos
 
-- **Anatomia padrão** em `PanelShell` (`src/components/analytics/`): todo painel tem título, definição vinda do glossário, fonte, cobertura, frequência, limitações e exportação CSV — a mesma estrutura em Atividade, Risco e Regulatório.
+- Os painéis da plataforma são os do **Observatório** (ver seção "Observatório embutido"), alimentados pela camada gold do pipeline com dados oficiais reais.
+- Os antigos "Painéis Scrutiniums" (`/app/atividade`, `/app/risco`, `/app/regulatorio`) foram **aposentados**: rodavam sobre séries de exemplo geradas por função (`paineis.ts`) apresentadas com fontes oficiais nos metadados — um risco de credibilidade incompatível com o resto do produto. As rotas antigas redirecionam para o painel real equivalente do Observatório (`redirects()` em `next.config.mjs`); `/app` redireciona para `/observatorio`.
 - Paleta de séries em `CHART_SERIES` (`src/lib/format.ts`); o bronze (`CHART_HIGHLIGHT`) é reservado a destaque e **nunca** entra como série comum (coberto por teste).
-- Dados de exemplo **determinísticos** (`src/lib/data/paineis.ts`): funções puras com ruído senoidal, sem `Math.random`, para render idêntico entre servidor e cliente.
 
 ## Glossário como fonte única
 
-- `src/lib/data/glossario.ts` é a **única** origem de nome, definição, fórmula, interpretação, fonte, cobertura, frequência e limitações de cada indicador. Páginas e painéis consomem `getGlossaryEntry(slug)`; um conceito nunca tem duas definições na plataforma.
+- `src/lib/data/glossario.ts` é a **única** origem de nome, definição, fórmula, interpretação, fonte, cobertura, frequência e limitações de cada conceito. Só entram verbetes de conceitos que a plataforma efetivamente exibe, com fonte primária real; um conceito nunca tem duas definições na plataforma.
 
 ## Telemetria e auditoria
 
@@ -74,8 +74,8 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 
 ## Observatório embutido
 
-- **Rota**: `/observatorio` (e qualquer subrota, ex.: `/observatorio/credit-panorama`) serve a SPA estática do Observatório Brasileiro de Crédito via rewrites em `next.config.mjs` → `public/obs/index.html`. O roteamento entre as 16 abas é feito pela própria SPA (History API com prefixo `BASE = "/observatorio"` em `public/obs/app.js`).
-- **Proteção**: `src/middleware.ts` exige o cookie `scrutiniums_session` para `/observatorio`, `/observatorio/*` e `/obs/*` — os JSONs analíticos em `/obs/data/gold/**` também ficam atrás do login. Sem cookie → redirect `/entrar?de=/observatorio`.
+- **Rota**: `/observatorio` (e qualquer subrota, ex.: `/observatorio/credit-panorama`) serve a SPA estática do Observatório Brasileiro de Crédito via o route handler `src/app/observatorio/[[...rota]]/route.ts`, que entrega `public/obs/index.html` com `<head>` específico por rota — `<title>`, description, canonical, Open Graph e JSON-LD (schema.org `Dataset`, apontando para o JSON gold da aba). O catálogo de metadados vive em `src/lib/data/observatorioAbas.ts` (espelho testado dos mapas `ROUTES`/`VIEW_TITLES` da SPA) e a montagem do HTML em `src/lib/observatorioHead.ts`. O roteamento entre as abas é feito pela própria SPA (History API com prefixo `BASE = "/observatorio"` em `public/obs/app.js`). Rotas desconhecidas respondem 404 com `noindex`. Os arquivos lidos em runtime pelo handler (`index.html`, `inst_index.json`, `meta.json`) entram no bundle serverless via `outputFileTracingIncludes` no `next.config.mjs`.
+- **Acesso**: o Observatório é **público para leitura** — decisão de produto para maximizar uso, alcance e indexação (sitemap cobre todas as abas e as páginas por instituição; robots permite `/observatorio` e `/obs`). `src/middleware.ts` protege apenas `/app` (conta, painéis, admin), com o cookie assinado `scrutiniums_session`. O rodapé da SPA é sensível à sessão: visitante vê "Entrar"; usuário logado vê "Minha conta"/"Sair" (checagem via `GET /api/auth/eu`, resposta mínima sem PII). A telemetria de navegação (`/api/telemetria`) continua exigindo sessão: visitas anônimas não são registradas.
 - **Origem dos dados**: arquivos estáticos da camada gold do pipeline do observatório (BCB/SGS, BCB/IF.data, IBGE, Ipeadata etc.), copiados para `public/obs/data/gold/`. Não há endpoints dinâmicos: a SPA só consome JSON estático.
 - **Atualização futura**: reexecutar o pipeline do observatório e sobrescrever `public/obs/data/gold/`; se `app.js`/`index.html` mudarem, reaplicar o patch mínimo (constante `BASE`, helper `appPath()`, `DATA_BASE = "/obs/data/gold/"` e os caminhos absolutos `/obs/styles.css` e `/obs/app.js` no HTML).
 
@@ -91,7 +91,15 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 | `MAIL_FROM` | Remetente dos e-mails transacionais (ex.: `Scrutiniums <acesso@scrutiniums.com>`). | Não; padrão `Scrutiniums <acesso@scrutiniums.com>`. |
 | `ADMIN_EMAILS` | E-mails dos administradores, separados por vírgula (case-insensitive, com trim). Controla `/app/admin` e `POST /api/admin/convites`. | Não; vazio/ausente → ninguém é admin. |
 | `ACCESS_CODES` | Códigos de acesso antecipado, separados por vírgula (case-insensitive, com trim). Vazio/ausente → nenhum código válido; usuários vão para a lista de espera. | Não; sem ela o acesso fica fechado (todos em `WAITLIST`). |
-| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`). `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+| `COOKIE_SECRET` (ou `SESSION_SECRET`) | Segredo do HMAC dos cookies assinados de onboarding/login pendente (`onboarding_email`, `login_phone`) e dos links de saída do boletim. `COOKIE_SECRET` tem precedência; sem nenhum dos dois, usa fallback fixo **apenas aceitável em dev**. | Não em dev; **sim em produção** (defina pelo menos um, com valor aleatório longo). |
+| `BOLETIM_SECRET` | Autoriza o disparo do boletim mensal (`POST /api/boletim/enviar`) via header `Authorization: Bearer …`, usado pelo workflow `boletim-mensal.yml`. Mínimo de 16 caracteres. | Não; vazio → apenas administradores logados disparam o envio. |
+
+## Boletim mensal
+
+- **Conteúdo** (`src/lib/boletim.ts`): montado da central de alertas do gold (`alertas_central.json`) + data-bases do `meta.json` — texto puro, corpo único para todos os destinatários, links para as abas públicas do Observatório. Sem gold disponível, o envio é abortado (503): o boletim nunca sai vazio.
+- **Destinatários**: usuários com onboarding `COMPLETE` **e** `marketingOptIn = true` (consentimento dado no cadastro, gerenciável em Conta → Boletim mensal).
+- **Disparo**: `POST /api/boletim/enviar`, autorizado por `BOLETIM_SECRET` (Bearer; usado pelo workflow mensal `boletim-mensal.yml`, dia 1 às 09:00 de São Paulo) ou por sessão de administrador. Guarda de idempotência: um envio por mês-calendário (evento `boletim_enviado` em `product_events`). Envio sequencial com intervalo entre mensagens.
+- **Saída**: todo e-mail traz link `/boletim/sair?token=…` com token HMAC de propósito fixo (`boletim-sair.<userId>`, segredo `COOKIE_SECRET`) — sem login e sem e-mail na URL. A página só efetiva a saída no clique de confirmação (POST), nunca no GET, para que scanners de e-mail não descadastrem ninguém. Eventos `boletim_optin`/`boletim_optout` registram as trocas.
 
 ## Convites da lista de espera
 

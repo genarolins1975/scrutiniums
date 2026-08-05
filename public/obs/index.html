@@ -17,8 +17,8 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="https://scrutiniums.com/observatorio">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23966b48'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23f3efe5'/%3E%3C/svg%3E">
-<link rel="preload" href="fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/obs/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/obs/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/obs/styles.css?v=0.53.2">
 </head>
 <body>
@@ -56,6 +56,7 @@
         <button data-view="sectors">Risco setorial</button>
         <button data-view="rj">Recuperações &amp; Falências</button>
         <button data-view="institutions">Instituições</button>
+        <button data-view="operacional">Indicadores operacionais</button>
       </div>
       <div class="navgroup">
         <span class="navlabel">Mercado</span>
@@ -103,11 +104,14 @@
       <a id="adminBtn" href="/app/admin" aria-label="Administração" title="Administração" hidden>
         <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M1.5 4h12M1.5 7.5h12M1.5 11h12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="5" cy="4" r="1.5" fill="var(--bg, #f3efe5)" stroke="currentColor" stroke-width="1.3"/><circle cx="10" cy="7.5" r="1.5" fill="var(--bg, #f3efe5)" stroke="currentColor" stroke-width="1.3"/><circle cx="6.5" cy="11" r="1.5" fill="var(--bg, #f3efe5)" stroke="currentColor" stroke-width="1.3"/></svg>
       </a>
-      <a id="accountBtn" href="/app/conta" aria-label="Minha conta" title="Minha conta">
+      <a id="loginBtn" href="/entrar?de=%2Fobservatorio" aria-label="Entrar na conta" title="Entrar">
+        <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><circle cx="7.5" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2.3 13.2c.7-2.6 2.8-3.9 5.2-3.9s4.5 1.3 5.2 3.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </a>
+      <a id="accountBtn" href="/app/conta" aria-label="Minha conta" title="Minha conta" hidden>
         <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><circle cx="7.5" cy="5" r="2.6" fill="none" stroke="currentColor" stroke-width="1.3"/><path d="M2.3 13.2c.7-2.6 2.8-3.9 5.2-3.9s4.5 1.3 5.2 3.9" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
       </a>
       <form method="post" action="/api/auth/sair" style="display:contents">
-        <button id="logoutBtn" type="submit" aria-label="Sair da conta" title="Sair da conta">
+        <button id="logoutBtn" type="submit" aria-label="Sair da conta" title="Sair da conta" hidden>
           <svg width="15" height="15" viewBox="0 0 15 15" aria-hidden="true"><path d="M9.5 1.5H3.2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h6.3" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M6.5 7.5h6.7M10.7 4.9l2.6 2.6-2.6 2.6" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
       </form>
@@ -120,6 +124,7 @@
       <section class="view" id="view-sectors"></section>
       <section class="view" id="view-rj"></section>
       <section class="view" id="view-institutions"></section>
+      <section class="view" id="view-operacional"></section>
       <section class="view" id="view-openfinance"></section>
       <section class="view" id="view-scenarios"></section>
       <section class="view" id="view-alerts"></section>

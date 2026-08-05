@@ -1,0 +1,6802 @@
+{
+ "gerado_em": "2026-08-05T11:33:56+00:00",
+ "versao": 1,
+ "disponivel": true,
+ "titulo": "Indicadores operacionais",
+ "subtitulo": "Gente, rede física e auditoria das instituições financeiras — só fontes estruturadas oficiais, sem estimativa e sem leitura de PDF.",
+ "aviso": "Empregados: valor declarado pela companhia listada no FRE, no escopo que ela declara — pode diferir do conglomerado prudencial. Rede: agências processadas no ESTBAN, do banco operacional. Instituição sem dado numa fonte aparece sem o bloco, nunca com zero.",
+ "fontes": [
+  {
+   "nome": "CVM — Formulário de Referência (FRE), tabela de empregados (item 10.1)",
+   "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-fre",
+   "nivel": "A"
+  },
+  {
+   "nome": "CVM — Formulário Cadastral (FCA), tabela de auditores",
+   "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-fca",
+   "nivel": "A"
+  },
+  {
+   "nome": "BCB — ESTBAN, Estatística Bancária Mensal por município (agências processadas)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios",
+   "nivel": "A"
+  }
+ ],
+ "instituicoes": [
+  {
+   "id": "itau",
+   "nome": "Itau Unibanco Holding S.A.",
+   "listada": true,
+   "cod_ifdata": "C0010069",
+   "cnpj8_rede": "60701190",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 92791,
+      "lideranca": 12515,
+      "nao_lideranca": 80276,
+      "regioes": {
+       "Norte": 1203,
+       "Nordeste": 4489,
+       "Centro_Oeste": 3142,
+       "Sudeste": 77636,
+       "Sul": 6321,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 11
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 89889,
+      "lideranca": 13602,
+      "nao_lideranca": 76287,
+      "regioes": {
+       "Norte": 1257,
+       "Nordeste": 4533,
+       "Centro_Oeste": 3106,
+       "Sudeste": 74825,
+       "Sul": 6157,
+       "Exterior": 11
+      },
+      "var_aa_pct": -3.1,
+      "fre_ano": 2024,
+      "versao": 18
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 90036,
+      "lideranca": 12266,
+      "nao_lideranca": 77770,
+      "regioes": {
+       "Norte": 1140,
+       "Nordeste": 4483,
+       "Centro_Oeste": 3017,
+       "Sudeste": 75647,
+       "Sul": 5749,
+       "Exterior": 0
+      },
+      "var_aa_pct": 0.2,
+      "fre_ano": 2025,
+      "versao": 13
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 86058,
+      "lideranca": 14571,
+      "nao_lideranca": 71487,
+      "regioes": {
+       "Norte": 1045,
+       "Nordeste": 4222,
+       "Centro_Oeste": 2992,
+       "Sudeste": 72288,
+       "Sul": 5511,
+       "Exterior": 0
+      },
+      "var_aa_pct": -4.4,
+      "fre_ano": 2026,
+      "versao": 2
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2001-01-01"
+    },
+    "historico": [
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES",
+      "inicio": "2001-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 2526,
+      "municipios": 1035
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 2476,
+      "municipios": 1032
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 2427,
+      "municipios": 1030
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 2408,
+      "municipios": 1028
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 2372,
+      "municipios": 1022
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 2318,
+      "municipios": 1025
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 2315,
+      "municipios": 1019
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 2306,
+      "municipios": 1020
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 2299,
+      "municipios": 1021
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 2272,
+      "municipios": 1018
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 2263,
+      "municipios": 1018
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 2212,
+      "municipios": 1018
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 2174,
+      "municipios": 1017
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 2151,
+      "municipios": 1018
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 2126,
+      "municipios": 1015
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 2105,
+      "municipios": 1007
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 2096,
+      "municipios": 1000
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 2075,
+      "municipios": 994
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 2060,
+      "municipios": 989
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 2037,
+      "municipios": 983
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 2024,
+      "municipios": 981
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 2010,
+      "municipios": 981
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 2008,
+      "municipios": 981
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 1983,
+      "municipios": 981
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 1958,
+      "municipios": 976
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 1933,
+      "municipios": 976
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 1920,
+      "municipios": 976
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 1897,
+      "municipios": 976
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 1860,
+      "municipios": 957
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 1766,
+      "municipios": 951
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 1696,
+      "municipios": 921
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 1650,
+      "municipios": 902
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 1591,
+      "municipios": 877
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 1564,
+      "municipios": 870
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 1552,
+      "municipios": 868
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 1498,
+      "municipios": 854
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 1475,
+      "municipios": 842
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 1418,
+      "municipios": 814
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 1418,
+     "municipios": 814
+    },
+    "var_12m": -515,
+    "var_12m_pct": -26.6,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "bb",
+   "nome": "Banco Brasil S.A.",
+   "listada": true,
+   "cod_ifdata": "C0049906",
+   "cnpj8_rede": "00000000",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 85953,
+      "lideranca": 31411,
+      "nao_lideranca": 54542,
+      "regioes": {
+       "Norte": 3897,
+       "Nordeste": 14025,
+       "Centro_Oeste": 16719,
+       "Sudeste": 36100,
+       "Sul": 15193,
+       "Exterior": 19
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 19
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 86220,
+      "lideranca": 31593,
+      "nao_lideranca": 54627,
+      "regioes": {
+       "Norte": 3830,
+       "Nordeste": 13944,
+       "Centro_Oeste": 17762,
+       "Sudeste": 35826,
+       "Sul": 14840,
+       "Exterior": 18
+      },
+      "var_aa_pct": 0.3,
+      "fre_ano": 2024,
+      "versao": 14
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 86574,
+      "lideranca": 31486,
+      "nao_lideranca": 55088,
+      "regioes": {
+       "Norte": 3754,
+       "Nordeste": 13648,
+       "Centro_Oeste": 18793,
+       "Sudeste": 35671,
+       "Sul": 14686,
+       "Exterior": 22
+      },
+      "var_aa_pct": 0.4,
+      "fre_ano": 2025,
+      "versao": 22
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 85206,
+      "lideranca": 30513,
+      "nao_lideranca": 54693,
+      "regioes": {
+       "Norte": 3575,
+       "Nordeste": 13422,
+       "Centro_Oeste": 19362,
+       "Sudeste": 34414,
+       "Sul": 14412,
+       "Exterior": 21
+      },
+      "var_aa_pct": -1.6,
+      "fre_ano": 2026,
+      "versao": 3
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+     "desde": "2024-01-01"
+    },
+    "historico": [
+     {
+      "nome": "Deloitte Touche Tohmatsu Auditores Independentes",
+      "inicio": "2019-01-01",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2024-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 3979,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 3979,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 3978,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 3980,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 3984,
+      "municipios": 2301
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 3992,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 3998,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 3997,
+      "municipios": 2303
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 3997,
+      "municipios": 2303
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 3997,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 4000,
+      "municipios": 2301
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 3994,
+      "municipios": 2300
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 3987,
+      "municipios": 2300
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 3987,
+      "municipios": 2300
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 3970,
+      "municipios": 2300
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 3968,
+      "municipios": 2300
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 3955,
+      "municipios": 2300
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 3948,
+      "municipios": 2300
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 3945,
+      "municipios": 2300
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 3942,
+      "municipios": 2300
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 3942,
+     "municipios": 2300
+    },
+    "var_12m": -55,
+    "var_12m_pct": -1.4,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "bradesco",
+   "nome": "Banco Bradesco S.A.",
+   "listada": true,
+   "cod_ifdata": "C0010045",
+   "cnpj8_rede": "60746948",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 87811,
+      "lideranca": 11709,
+      "nao_lideranca": 76102,
+      "regioes": {
+       "Norte": 3406,
+       "Nordeste": 12258,
+       "Centro_Oeste": 4421,
+       "Sudeste": 56805,
+       "Sul": 10921,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 27
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 85592,
+      "lideranca": 11138,
+      "nao_lideranca": 74454,
+      "regioes": {
+       "Norte": 3341,
+       "Nordeste": 12307,
+       "Centro_Oeste": 4365,
+       "Sudeste": 54995,
+       "Sul": 10584,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.5,
+      "fre_ano": 2024,
+      "versao": 34
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 83285,
+      "lideranca": 10535,
+      "nao_lideranca": 72750,
+      "regioes": {
+       "Norte": 3179,
+       "Nordeste": 12067,
+       "Centro_Oeste": 4089,
+       "Sudeste": 54046,
+       "Sul": 9904,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.7,
+      "fre_ano": 2025,
+      "versao": 30
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 81280,
+      "lideranca": 10315,
+      "nao_lideranca": 70965,
+      "regioes": {
+       "Norte": 2879,
+       "Nordeste": 11482,
+       "Centro_Oeste": 3728,
+       "Sudeste": 53963,
+       "Sul": 9228,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.4,
+      "fre_ano": 2026,
+      "versao": 4
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+     "desde": "2011-03-21"
+    },
+    "historico": [
+     {
+      "nome": "KPMG Auditores Independentes",
+      "inicio": "2011-03-21",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2011-03-21",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 2867,
+      "municipios": 1732
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 2854,
+      "municipios": 1732
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 2792,
+      "municipios": 1727
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 2795,
+      "municipios": 1727
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 2787,
+      "municipios": 1723
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 2786,
+      "municipios": 1723
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 2767,
+      "municipios": 1712
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 2754,
+      "municipios": 1698
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 2765,
+      "municipios": 1698
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 2682,
+      "municipios": 1636
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 2695,
+      "municipios": 1636
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 2703,
+      "municipios": 1636
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 2703,
+      "municipios": 1636
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 2701,
+      "municipios": 1606
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 2641,
+      "municipios": 1561
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 2572,
+      "municipios": 1533
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 2509,
+      "municipios": 1502
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 2454,
+      "municipios": 1475
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 2396,
+      "municipios": 1443
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 2354,
+      "municipios": 1424
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 2325,
+      "municipios": 1410
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 2270,
+      "municipios": 1411
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 2298,
+      "municipios": 1436
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 2299,
+      "municipios": 1366
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 2299,
+      "municipios": 1366
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 2290,
+      "municipios": 1364
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 2282,
+      "municipios": 1360
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 2240,
+      "municipios": 1339
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 2193,
+      "municipios": 1309
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 2157,
+      "municipios": 1296
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 2117,
+      "municipios": 1274
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 2104,
+      "municipios": 1258
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 2094,
+      "municipios": 1253
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 2098,
+      "municipios": 1252
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 2099,
+      "municipios": 1252
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 2096,
+      "municipios": 1252
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 2096,
+      "municipios": 1252
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 2074,
+      "municipios": 1244
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 2074,
+     "municipios": 1244
+    },
+    "var_12m": -216,
+    "var_12m_pct": -9.4,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "santander",
+   "nome": "Banco Santander (Brasil) S.A.",
+   "listada": true,
+   "cod_ifdata": "C0030379",
+   "cnpj8_rede": "90400888",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 52591,
+      "lideranca": 1291,
+      "nao_lideranca": 51300,
+      "regioes": {
+       "Norte": 1134,
+       "Nordeste": 6459,
+       "Centro_Oeste": 2020,
+       "Sudeste": 38488,
+       "Sul": 4490,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 17
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 55611,
+      "lideranca": 1365,
+      "nao_lideranca": 54246,
+      "regioes": {
+       "Norte": 1202,
+       "Nordeste": 6835,
+       "Centro_Oeste": 2137,
+       "Sudeste": 40689,
+       "Sul": 4748,
+       "Exterior": 0
+      },
+      "var_aa_pct": 5.7,
+      "fre_ano": 2024,
+      "versao": 15
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 55646,
+      "lideranca": 5732,
+      "nao_lideranca": 49914,
+      "regioes": {
+       "Norte": 866,
+       "Nordeste": 4954,
+       "Centro_Oeste": 1633,
+       "Sudeste": 35672,
+       "Sul": 12502,
+       "Exterior": 19
+      },
+      "var_aa_pct": 0.1,
+      "fre_ano": 2025,
+      "versao": 23
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 49921,
+      "lideranca": 4744,
+      "nao_lideranca": 45177,
+      "regioes": {
+       "Norte": 759,
+       "Nordeste": 4678,
+       "Centro_Oeste": 1510,
+       "Sudeste": 31898,
+       "Sul": 11076,
+       "Exterior": 0
+      },
+      "var_aa_pct": -10.3,
+      "fre_ano": 2026,
+      "versao": 4
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2016-01-01"
+    },
+    "historico": [
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES",
+      "inicio": "2016-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 2568,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 2567,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 2566,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 2556,
+      "municipios": 851
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 2548,
+      "municipios": 851
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 2544,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 2539,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 2537,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 2534,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 2533,
+      "municipios": 852
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 2529,
+      "municipios": 852
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 2521,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 2517,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 2516,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 2511,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 2509,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 2508,
+      "municipios": 851
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 2483,
+      "municipios": 830
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 2466,
+      "municipios": 813
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 2455,
+      "municipios": 812
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 2448,
+      "municipios": 805
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 2433,
+      "municipios": 784
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 2430,
+      "municipios": 781
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 2393,
+      "municipios": 759
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 2368,
+      "municipios": 739
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 2337,
+      "municipios": 714
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 2288,
+      "municipios": 689
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 2287,
+      "municipios": 688
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 2207,
+      "municipios": 657
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 2161,
+      "municipios": 644
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 2103,
+      "municipios": 631
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 2002,
+      "municipios": 613
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 1920,
+      "municipios": 610
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 1856,
+      "municipios": 601
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 1680,
+      "municipios": 594
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 1542,
+      "municipios": 589
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 1284,
+      "municipios": 580
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 1178,
+      "municipios": 573
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 1178,
+     "municipios": 573
+    },
+    "var_12m": -1159,
+    "var_12m_pct": -49.6,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "btg",
+   "nome": "Banco Btg Pactual S.A.",
+   "listada": true,
+   "cod_ifdata": "C0049944",
+   "cnpj8_rede": "30306294",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 5999,
+      "lideranca": 1788,
+      "nao_lideranca": 4211,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 9,
+       "Centro_Oeste": 44,
+       "Sudeste": 4935,
+       "Sul": 84,
+       "Exterior": 927
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 14
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 6575,
+      "lideranca": 2039,
+      "nao_lideranca": 4536,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 46,
+       "Centro_Oeste": 76,
+       "Sudeste": 5347,
+       "Sul": 87,
+       "Exterior": 1019
+      },
+      "var_aa_pct": 9.6,
+      "fre_ano": 2024,
+      "versao": 7
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 7516,
+      "lideranca": 2308,
+      "nao_lideranca": 5208,
+      "regioes": {
+       "Norte": 1,
+       "Nordeste": 39,
+       "Centro_Oeste": 80,
+       "Sudeste": 6119,
+       "Sul": 90,
+       "Exterior": 1187
+      },
+      "var_aa_pct": 14.3,
+      "fre_ano": 2025,
+      "versao": 10
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 11697,
+      "lideranca": 3035,
+      "nao_lideranca": 8662,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 35,
+       "Centro_Oeste": 89,
+       "Sudeste": 10117,
+       "Sul": 173,
+       "Exterior": 1283
+      },
+      "var_aa_pct": 55.6,
+      "fre_ano": 2026,
+      "versao": 5
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2021-01-01"
+    },
+    "historico": [
+     {
+      "nome": "PricewaterhouseCoopers Auditores Independentes",
+      "inicio": "2021-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 21,
+      "municipios": 10
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 21,
+      "municipios": 10
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 21,
+      "municipios": 10
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 22,
+      "municipios": 10
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 23,
+      "municipios": 11
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 24,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 25,
+      "municipios": 12
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 26,
+      "municipios": 13
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 27,
+      "municipios": 13
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 27,
+      "municipios": 13
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 27,
+     "municipios": 13
+    },
+    "var_12m": 2,
+    "var_12m_pct": 8.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "abc",
+   "nome": "Banco Abc Brasil S.A.",
+   "listada": true,
+   "cod_ifdata": "C0041856",
+   "cnpj8_rede": "28195667",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 1043,
+      "lideranca": 199,
+      "nao_lideranca": 844,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 9,
+       "Centro_Oeste": 13,
+       "Sudeste": 974,
+       "Sul": 47,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 16
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 1105,
+      "lideranca": 214,
+      "nao_lideranca": 891,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 15,
+       "Centro_Oeste": 19,
+       "Sudeste": 1018,
+       "Sul": 53,
+       "Exterior": 0
+      },
+      "var_aa_pct": 5.9,
+      "fre_ano": 2024,
+      "versao": 19
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 1150,
+      "lideranca": 236,
+      "nao_lideranca": 914,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 16,
+       "Centro_Oeste": 30,
+       "Sudeste": 1053,
+       "Sul": 51,
+       "Exterior": 0
+      },
+      "var_aa_pct": 4.1,
+      "fre_ano": 2025,
+      "versao": 14
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 1085,
+      "lideranca": 237,
+      "nao_lideranca": 848,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 16,
+       "Centro_Oeste": 26,
+       "Sudeste": 990,
+       "Sul": 53,
+       "Exterior": 0
+      },
+      "var_aa_pct": -5.7,
+      "fre_ano": 2026,
+      "versao": 3
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "ERNST & YOUNG AUDITORES INDEPENDENTES S/S Ltda",
+     "desde": "2004-01-01"
+    },
+    "historico": [
+     {
+      "nome": "Ernst & Young Auditores Independentes S.S.",
+      "inicio": "2004-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 12,
+      "municipios": 12
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 12,
+      "municipios": 12
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 12,
+     "municipios": 12
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "banrisul",
+   "nome": "Banco Estado Do Rio Grande Do Sul S.A.",
+   "listada": true,
+   "cod_ifdata": "C0030173",
+   "cnpj8_rede": "92702067",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 8660,
+      "lideranca": 1660,
+      "nao_lideranca": 7000,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 8,
+       "Sudeste": 50,
+       "Sul": 8602,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 27
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 9089,
+      "lideranca": 1059,
+      "nao_lideranca": 8030,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 7,
+       "Sudeste": 50,
+       "Sul": 9032,
+       "Exterior": 0
+      },
+      "var_aa_pct": 5.0,
+      "fre_ano": 2024,
+      "versao": 14
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 9471,
+      "lideranca": 1173,
+      "nao_lideranca": 8298,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 7,
+       "Sudeste": 47,
+       "Sul": 9416,
+       "Exterior": 1
+      },
+      "var_aa_pct": 4.2,
+      "fre_ano": 2025,
+      "versao": 21
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 9237,
+      "lideranca": 1141,
+      "nao_lideranca": 8096,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 7,
+       "Sudeste": 44,
+       "Sul": 9186,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.5,
+      "fre_ano": 2026,
+      "versao": 4
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+     "desde": "2026-04-02"
+    },
+    "historico": [
+     {
+      "nome": "KPMG Auditores Independentes",
+      "inicio": "2016-04-01",
+      "fim": null
+     },
+     {
+      "nome": "Deloitte Touche Tohmatsu Auditores Independentes",
+      "inicio": "2021-01-01",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2026-04-02",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 497,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 495,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 508,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 510,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 510,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 511,
+      "municipios": 368
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 509,
+      "municipios": 366
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 509,
+     "municipios": 366
+    },
+    "var_12m": 1,
+    "var_12m_pct": 0.2,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "bmg",
+   "nome": "Banco Bmg S.A.",
+   "listada": true,
+   "cod_ifdata": "C0030290",
+   "cnpj8_rede": "61186680",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 1291,
+      "lideranca": 261,
+      "nao_lideranca": 1030,
+      "regioes": {
+       "Norte": 17,
+       "Nordeste": 67,
+       "Centro_Oeste": 24,
+       "Sudeste": 1159,
+       "Sul": 24,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 15
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 1282,
+      "lideranca": 254,
+      "nao_lideranca": 1028,
+      "regioes": {
+       "Norte": 21,
+       "Nordeste": 62,
+       "Centro_Oeste": 18,
+       "Sudeste": 1158,
+       "Sul": 23,
+       "Exterior": 0
+      },
+      "var_aa_pct": -0.7,
+      "fre_ano": 2024,
+      "versao": 16
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 1415,
+      "lideranca": 279,
+      "nao_lideranca": 1136,
+      "regioes": {
+       "Norte": 22,
+       "Nordeste": 74,
+       "Centro_Oeste": 27,
+       "Sudeste": 1257,
+       "Sul": 35,
+       "Exterior": 0
+      },
+      "var_aa_pct": 10.4,
+      "fre_ano": 2025,
+      "versao": 16
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 1480,
+      "lideranca": 328,
+      "nao_lideranca": 1152,
+      "regioes": {
+       "Norte": 23,
+       "Nordeste": 78,
+       "Centro_Oeste": 32,
+       "Sudeste": 1307,
+       "Sul": 40,
+       "Exterior": 0
+      },
+      "var_aa_pct": 4.6,
+      "fre_ano": 2026,
+      "versao": 4
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2001-01-01"
+    },
+    "historico": [
+     {
+      "nome": "PricewaterhouseCoopers Auditores Independentes",
+      "inicio": "2001-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 27,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 27,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 27,
+      "municipios": 22
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 27,
+      "municipios": 22
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 26,
+      "municipios": 22
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 26,
+      "municipios": 22
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 26,
+     "municipios": 22
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "pine",
+   "nome": "Banco Pine S.A.",
+   "listada": true,
+   "cod_ifdata": "C0050304",
+   "cnpj8_rede": "62144175",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 311,
+      "lideranca": 16,
+      "nao_lideranca": 295,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 306,
+       "Sul": 5,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 33
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 324,
+      "lideranca": 80,
+      "nao_lideranca": 244,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 321,
+       "Sul": 3,
+       "Exterior": 0
+      },
+      "var_aa_pct": 4.2,
+      "fre_ano": 2024,
+      "versao": 23
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 366,
+      "lideranca": 80,
+      "nao_lideranca": 286,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 2,
+       "Centro_Oeste": 3,
+       "Sudeste": 355,
+       "Sul": 6,
+       "Exterior": 0
+      },
+      "var_aa_pct": 13.0,
+      "fre_ano": 2025,
+      "versao": 11
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 436,
+      "lideranca": 101,
+      "nao_lideranca": 335,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 2,
+       "Centro_Oeste": 4,
+       "Sudeste": 426,
+       "Sul": 4,
+       "Exterior": 0
+      },
+      "var_aa_pct": 19.1,
+      "fre_ano": 2026,
+      "versao": 16
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2011-01-01"
+    },
+    "historico": [
+     {
+      "nome": "PricewaterhouseCoopersAuditores Independentes",
+      "inicio": "2011-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 2,
+      "municipios": 2
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 2,
+      "municipios": 2
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 2,
+     "municipios": 2
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "amazonia",
+   "nome": "Banco Amazonia S.A.",
+   "listada": true,
+   "cod_ifdata": "04902979",
+   "cnpj8_rede": "04902979",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 2867,
+      "lideranca": 628,
+      "nao_lideranca": 2239,
+      "regioes": {
+       "Norte": 2662,
+       "Nordeste": 122,
+       "Centro_Oeste": 79,
+       "Sudeste": 4,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 9
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 2835,
+      "lideranca": 596,
+      "nao_lideranca": 2239,
+      "regioes": {
+       "Norte": 2630,
+       "Nordeste": 122,
+       "Centro_Oeste": 79,
+       "Sudeste": 4,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -1.1,
+      "fre_ano": 2024,
+      "versao": 10
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 2869,
+      "lideranca": 649,
+      "nao_lideranca": 2220,
+      "regioes": {
+       "Norte": 2669,
+       "Nordeste": 128,
+       "Centro_Oeste": 67,
+       "Sudeste": 5,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 1.2,
+      "fre_ano": 2025,
+      "versao": 8
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 2810,
+      "lideranca": 705,
+      "nao_lideranca": 2105,
+      "regioes": {
+       "Norte": 2571,
+       "Nordeste": 118,
+       "Centro_Oeste": 112,
+       "Sudeste": 9,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.1,
+      "fre_ano": 2026,
+      "versao": 3
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2023-01-01"
+    },
+    "historico": [
+     {
+      "nome": "KPMG Auditores Independentes",
+      "inicio": "2013-06-03",
+      "fim": null
+     },
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2023-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 118,
+      "municipios": 108
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 117,
+      "municipios": 108
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 116,
+      "municipios": 107
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 116,
+      "municipios": 107
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 116,
+      "municipios": 107
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 116,
+      "municipios": 107
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 114,
+      "municipios": 105
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 115,
+      "municipios": 106
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 114,
+      "municipios": 105
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 114,
+     "municipios": 105
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "nordeste",
+   "nome": "Banco Nordeste Do Brasil S.A.",
+   "listada": true,
+   "cod_ifdata": "07237373",
+   "cnpj8_rede": "07237373",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 6594,
+      "lideranca": 2758,
+      "nao_lideranca": 3836,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 6200,
+       "Centro_Oeste": 381,
+       "Sudeste": 13,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 20
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 6679,
+      "lideranca": 2825,
+      "nao_lideranca": 3854,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 6265,
+       "Centro_Oeste": 17,
+       "Sudeste": 397,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 1.3,
+      "fre_ano": 2024,
+      "versao": 16
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 7099,
+      "lideranca": 2929,
+      "nao_lideranca": 4170,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 6640,
+       "Centro_Oeste": 17,
+       "Sudeste": 442,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 6.3,
+      "fre_ano": 2025,
+      "versao": 17
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 6914,
+      "lideranca": 2927,
+      "nao_lideranca": 3987,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 6437,
+       "Centro_Oeste": 15,
+       "Sudeste": 462,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.6,
+      "fre_ano": 2026,
+      "versao": 2
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2022-01-01"
+    },
+    "historico": [
+     {
+      "nome": "Ernst & Young Terco Auditores Independentes S/S",
+      "inicio": "2012-01-01",
+      "fim": null
+     },
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA - PWC",
+      "inicio": "2022-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 295,
+      "municipios": 271
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 296,
+      "municipios": 272
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 297,
+      "municipios": 273
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 298,
+      "municipios": 274
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 300,
+      "municipios": 276
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 300,
+      "municipios": 276
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 300,
+     "municipios": 276
+    },
+    "var_12m": 2,
+    "var_12m_pct": 0.7,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "banestes",
+   "nome": "Banestes S.A. - Banco Est Espirito Santo",
+   "listada": true,
+   "cod_ifdata": "C0030159",
+   "cnpj8_rede": "28127603",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 2073,
+      "lideranca": 446,
+      "nao_lideranca": 1627,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 2073,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 15
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 2090,
+      "lideranca": 526,
+      "nao_lideranca": 1564,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 2090,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 0.8,
+      "fre_ano": 2024,
+      "versao": 11
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 2241,
+      "lideranca": 541,
+      "nao_lideranca": 1700,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 2241,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 7.2,
+      "fre_ano": 2025,
+      "versao": 13
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 2162,
+      "lideranca": 559,
+      "nao_lideranca": 1603,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 2162,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -3.5,
+      "fre_ano": 2026,
+      "versao": 4
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+     "desde": "2022-04-01"
+    },
+    "historico": [
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES",
+      "inicio": "2017-06-01",
+      "fim": null
+     },
+     {
+      "nome": "KPMG Auditores Independentes Ltda.",
+      "inicio": "2022-04-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 97,
+      "municipios": 71
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 97,
+      "municipios": 71
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 95,
+      "municipios": 70
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 94,
+      "municipios": 69
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 92,
+      "municipios": 67
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 91,
+      "municipios": 66
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 90,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 90,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 90,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 91,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 91,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 91,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 91,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 91,
+      "municipios": 65
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 90,
+      "municipios": 64
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 88,
+      "municipios": 62
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 88,
+      "municipios": 62
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 88,
+      "municipios": 62
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 88,
+      "municipios": 62
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 87,
+      "municipios": 61
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 87,
+      "municipios": 61
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 85,
+      "municipios": 59
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 85,
+      "municipios": 59
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 85,
+     "municipios": 59
+    },
+    "var_12m": -2,
+    "var_12m_pct": -2.3,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "mercantil",
+   "nome": "Banco Mercantil Do Brasil S.A.",
+   "listada": true,
+   "cod_ifdata": "C0020152",
+   "cnpj8_rede": "17184037",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 2828,
+      "lideranca": 705,
+      "nao_lideranca": 2123,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 29,
+       "Centro_Oeste": 138,
+       "Sudeste": 2661,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 9
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 3005,
+      "lideranca": 671,
+      "nao_lideranca": 2334,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 35,
+       "Centro_Oeste": 165,
+       "Sudeste": 2805,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 6.3,
+      "fre_ano": 2024,
+      "versao": 10
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 3096,
+      "lideranca": 658,
+      "nao_lideranca": 2438,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 72,
+       "Centro_Oeste": 200,
+       "Sudeste": 2824,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 3.0,
+      "fre_ano": 2025,
+      "versao": 10
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 3519,
+      "lideranca": 707,
+      "nao_lideranca": 2812,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 217,
+       "Centro_Oeste": 203,
+       "Sudeste": 2955,
+       "Sul": 144,
+       "Exterior": 0
+      },
+      "var_aa_pct": 13.7,
+      "fre_ano": 2026,
+      "versao": 2
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2008-03-19"
+    },
+    "historico": [
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES",
+      "inicio": "2008-03-19",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 1,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 2,
+      "municipios": 1
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 2,
+      "municipios": 1
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 2,
+     "municipios": 1
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "brb",
+   "nome": "Brb Banco De Brasilia S.A.",
+   "listada": true,
+   "cod_ifdata": null,
+   "cnpj8_rede": "00000208",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 3452,
+      "lideranca": 696,
+      "nao_lideranca": 2756,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 126,
+       "Centro_Oeste": 3290,
+       "Sudeste": 36,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 13
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 3376,
+      "lideranca": 733,
+      "nao_lideranca": 2643,
+      "regioes": {
+       "Norte": 2,
+       "Nordeste": 176,
+       "Centro_Oeste": 3166,
+       "Sudeste": 32,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -2.2,
+      "fre_ano": 2024,
+      "versao": 18
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 3359,
+      "lideranca": 765,
+      "nao_lideranca": 2594,
+      "regioes": {
+       "Norte": 12,
+       "Nordeste": 175,
+       "Centro_Oeste": 3133,
+       "Sudeste": 38,
+       "Sul": 1,
+       "Exterior": 0
+      },
+      "var_aa_pct": -0.5,
+      "fre_ano": 2025,
+      "versao": 34
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "Grant Thornton Auditores Independentes Ltda",
+     "desde": "2025-01-01"
+    },
+    "historico": [
+     {
+      "nome": "Ernst & Young Auditores Independentes S.S",
+      "inicio": "2015-01-01",
+      "fim": null
+     },
+     {
+      "nome": "Ernst & Young Auditores Independentes S.S",
+      "inicio": "2015-04-06",
+      "fim": null
+     },
+     {
+      "nome": "Grant Thornton Auditores Independentes Ltda",
+      "inicio": "2025-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 123,
+      "municipios": 34
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 123,
+      "municipios": 34
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 125,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 126,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 126,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 123,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 123,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 123,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 124,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 124,
+      "municipios": 36
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 124,
+      "municipios": 36
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 125,
+      "municipios": 36
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 125,
+      "municipios": 36
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 126,
+      "municipios": 37
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 126,
+      "municipios": 37
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 119,
+      "municipios": 37
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 112,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 112,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 112,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 111,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 111,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 107,
+      "municipios": 38
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 107,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 107,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 86,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 86,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 86,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 86,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 86,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 84,
+      "municipios": 38
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 64,
+      "municipios": 31
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 64,
+      "municipios": 31
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 0,
+      "municipios": 0
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 0,
+      "municipios": 0
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 0,
+     "municipios": 0
+    },
+    "var_12m": -86,
+    "var_12m_pct": -100.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "banese",
+   "nome": "Banco Estado De Sergipe S.A. - Banese",
+   "listada": true,
+   "cod_ifdata": "13009717",
+   "cnpj8_rede": "13009717",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 850,
+      "lideranca": 362,
+      "nao_lideranca": 488,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 850,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 9
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 905,
+      "lideranca": 370,
+      "nao_lideranca": 535,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 905,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 6.5,
+      "fre_ano": 2024,
+      "versao": 13
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 642,
+      "lideranca": 101,
+      "nao_lideranca": 541,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 642,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -29.1,
+      "fre_ano": 2025,
+      "versao": 8
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 957,
+      "lideranca": 359,
+      "nao_lideranca": 598,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 957,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 49.1,
+      "fre_ano": 2026,
+      "versao": 1
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+     "desde": "2023-04-17"
+    },
+    "historico": [
+     {
+      "nome": "Ernst & Young Auditores Independentes S.S.",
+      "inicio": "2012-05-22",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2023-04-17",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 64,
+      "municipios": 44
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 64,
+      "municipios": 44
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 64,
+      "municipios": 43
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 65,
+      "municipios": 44
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 64,
+      "municipios": 43
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 64,
+     "municipios": 43
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "brpartners",
+   "nome": "Brbi Br Partners S.A.",
+   "listada": true,
+   "cod_ifdata": "13220493",
+   "cnpj8_rede": "10739356",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 151,
+      "lideranca": 50,
+      "nao_lideranca": 101,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 151,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 8
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 158,
+      "lideranca": 57,
+      "nao_lideranca": 101,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 158,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 4.6,
+      "fre_ano": 2024,
+      "versao": 5
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 183,
+      "lideranca": 60,
+      "nao_lideranca": 123,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 183,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 15.8,
+      "fre_ano": 2025,
+      "versao": 10
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 183,
+      "lideranca": 60,
+      "nao_lideranca": 123,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 183,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 0.0,
+      "fre_ano": 2026,
+      "versao": 2
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA",
+     "desde": "2026-01-01"
+    },
+    "historico": [
+     {
+      "nome": "KPMG Auditores Independentes",
+      "inicio": "2016-01-01",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2016-01-01",
+      "fim": "2025-12-31"
+     },
+     {
+      "nome": "DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2026-01-01",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": null
+  },
+  {
+   "id": "alfa",
+   "nome": "Alfa Holdings S.A.",
+   "listada": true,
+   "cod_ifdata": null,
+   "cnpj8_rede": "03323840",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 2,
+      "lideranca": 1,
+      "nao_lideranca": 1,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 2,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 13
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 0,
+      "lideranca": 0,
+      "nao_lideranca": 0,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -100.0,
+      "fre_ano": 2024,
+      "versao": 7
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 0,
+      "lideranca": 0,
+      "nao_lideranca": 0,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2025,
+      "versao": 3
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 0,
+      "lideranca": 0,
+      "nao_lideranca": 0,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 0,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2026,
+      "versao": 1
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA",
+     "desde": "2024-05-10"
+    },
+    "historico": [
+     {
+      "nome": "GRANT THORNTON AUDITORES INDEPENDENTES",
+      "inicio": "2020-01-01",
+      "fim": null
+     },
+     {
+      "nome": "DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2024-05-10",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 9,
+      "municipios": 8
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 9,
+      "municipios": 8
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 9,
+     "municipios": 8
+    },
+    "var_12m": 0,
+    "var_12m_pct": 0.0,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "bmi",
+   "nome": "Banco Mercantil De Investimentos S.A.",
+   "listada": true,
+   "cod_ifdata": null,
+   "cnpj8_rede": "34169557",
+   "empregados": {
+    "serie": [
+     {
+      "ref": "2023-12-31",
+      "total": 7,
+      "lideranca": 4,
+      "nao_lideranca": 3,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 7,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": null,
+      "fre_ano": 2023,
+      "versao": 4
+     },
+     {
+      "ref": "2024-12-31",
+      "total": 6,
+      "lideranca": 3,
+      "nao_lideranca": 3,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 6,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": -14.3,
+      "fre_ano": 2024,
+      "versao": 1
+     },
+     {
+      "ref": "2025-12-31",
+      "total": 6,
+      "lideranca": 4,
+      "nao_lideranca": 2,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 6,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 0.0,
+      "fre_ano": 2025,
+      "versao": 4
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 6,
+      "lideranca": 4,
+      "nao_lideranca": 2,
+      "regioes": {
+       "Norte": 0,
+       "Nordeste": 0,
+       "Centro_Oeste": 0,
+       "Sudeste": 6,
+       "Sul": 0,
+       "Exterior": 0
+      },
+      "var_aa_pct": 0.0,
+      "fre_ano": 2026,
+      "versao": 2
+     }
+    ],
+    "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "declarado pela companhia no FRE; pode diferir do conglomerado prudencial (IF.data)"
+   },
+   "auditor": {
+    "vigente": {
+     "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA",
+     "desde": "2008-03-19"
+    },
+    "historico": [
+     {
+      "nome": "PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES",
+      "inicio": "2008-03-19",
+      "fim": null
+     }
+    ],
+    "fonte": "CVM/FCA, tabela de auditores",
+    "nivel": "A",
+    "status": "oficial"
+   },
+   "rede": null
+  },
+  {
+   "id": "caixa",
+   "nome": "Caixa Econômica Federal",
+   "listada": false,
+   "cod_ifdata": "C0051626",
+   "cnpj8_rede": "00360305",
+   "empregados": null,
+   "auditor": null,
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 3371,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 3370,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 3257,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 3257,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 3256,
+      "municipios": 1633
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 3258,
+      "municipios": 1631
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 3258,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 3253,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 3251,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 3250,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 3250,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 3249,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 3249,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 3248,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 3245,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 3207,
+      "municipios": 1631
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 3125,
+      "municipios": 1630
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 3119,
+      "municipios": 1630
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 3117,
+      "municipios": 1630
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 3009,
+      "municipios": 1630
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 3004,
+      "municipios": 1630
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 2999,
+      "municipios": 1630
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 2999,
+     "municipios": 1630
+    },
+    "var_12m": -251,
+    "var_12m_pct": -7.7,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  },
+  {
+   "id": "safra",
+   "nome": "Banco Safra S.A.",
+   "listada": false,
+   "cod_ifdata": "C0010083",
+   "cnpj8_rede": "58160789",
+   "empregados": null,
+   "auditor": null,
+   "rede": {
+    "serie": [
+     {
+      "mes": "2023-02",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-03",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-04",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-05",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-06",
+      "agencias": 120,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-07",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-08",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-09",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-10",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-11",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2023-12",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-01",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-02",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-03",
+      "agencias": 121,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-04",
+      "agencias": 122,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-05",
+      "agencias": 122,
+      "municipios": 54
+     },
+     {
+      "mes": "2024-06",
+      "agencias": 123,
+      "municipios": 55
+     },
+     {
+      "mes": "2024-07",
+      "agencias": 125,
+      "municipios": 56
+     },
+     {
+      "mes": "2024-08",
+      "agencias": 125,
+      "municipios": 56
+     },
+     {
+      "mes": "2024-09",
+      "agencias": 125,
+      "municipios": 56
+     },
+     {
+      "mes": "2024-10",
+      "agencias": 125,
+      "municipios": 56
+     },
+     {
+      "mes": "2024-11",
+      "agencias": 125,
+      "municipios": 55
+     },
+     {
+      "mes": "2024-12",
+      "agencias": 125,
+      "municipios": 55
+     },
+     {
+      "mes": "2025-01",
+      "agencias": 121,
+      "municipios": 51
+     },
+     {
+      "mes": "2025-02",
+      "agencias": 122,
+      "municipios": 51
+     },
+     {
+      "mes": "2025-03",
+      "agencias": 123,
+      "municipios": 52
+     },
+     {
+      "mes": "2025-04",
+      "agencias": 124,
+      "municipios": 52
+     },
+     {
+      "mes": "2025-05",
+      "agencias": 125,
+      "municipios": 53
+     },
+     {
+      "mes": "2025-06",
+      "agencias": 125,
+      "municipios": 53
+     },
+     {
+      "mes": "2025-07",
+      "agencias": 125,
+      "municipios": 53
+     },
+     {
+      "mes": "2025-08",
+      "agencias": 126,
+      "municipios": 54
+     },
+     {
+      "mes": "2025-09",
+      "agencias": 126,
+      "municipios": 54
+     },
+     {
+      "mes": "2025-10",
+      "agencias": 126,
+      "municipios": 54
+     },
+     {
+      "mes": "2025-11",
+      "agencias": 126,
+      "municipios": 54
+     },
+     {
+      "mes": "2025-12",
+      "agencias": 127,
+      "municipios": 55
+     },
+     {
+      "mes": "2026-01",
+      "agencias": 127,
+      "municipios": 55
+     },
+     {
+      "mes": "2026-02",
+      "agencias": 127,
+      "municipios": 55
+     },
+     {
+      "mes": "2026-03",
+      "agencias": 127,
+      "municipios": 55
+     }
+    ],
+    "atual": {
+     "mes": "2026-03",
+     "agencias": 127,
+     "municipios": 55
+    },
+    "var_12m": 4,
+    "var_12m_pct": 3.3,
+    "fonte": "BCB/ESTBAN, agências processadas (soma nacional por CNPJ-raiz)",
+    "nivel": "A",
+    "status": "oficial",
+    "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
+   }
+  }
+ ],
+ "sfn": {
+  "rede": {
+   "serie": [
+    {
+     "mes": "2023-02",
+     "agencias": 17159,
+     "municipios": 3148,
+     "bancos": 116
+    },
+    {
+     "mes": "2023-03",
+     "agencias": 17095,
+     "municipios": 3147,
+     "bancos": 116
+    },
+    {
+     "mes": "2023-04",
+     "agencias": 16982,
+     "municipios": 3145,
+     "bancos": 116
+    },
+    {
+     "mes": "2023-05",
+     "agencias": 16960,
+     "municipios": 3143,
+     "bancos": 116
+    },
+    {
+     "mes": "2023-06",
+     "agencias": 16913,
+     "municipios": 3140,
+     "bancos": 116
+    },
+    {
+     "mes": "2023-07",
+     "agencias": 16850,
+     "municipios": 3140,
+     "bancos": 115
+    },
+    {
+     "mes": "2023-08",
+     "agencias": 16824,
+     "municipios": 3138,
+     "bancos": 117
+    },
+    {
+     "mes": "2023-09",
+     "agencias": 16801,
+     "municipios": 3131,
+     "bancos": 117
+    },
+    {
+     "mes": "2023-10",
+     "agencias": 16803,
+     "municipios": 3131,
+     "bancos": 117
+    },
+    {
+     "mes": "2023-11",
+     "agencias": 16693,
+     "municipios": 3112,
+     "bancos": 117
+    },
+    {
+     "mes": "2023-12",
+     "agencias": 16701,
+     "municipios": 3112,
+     "bancos": 117
+    },
+    {
+     "mes": "2024-01",
+     "agencias": 16657,
+     "municipios": 3111,
+     "bancos": 117
+    },
+    {
+     "mes": "2024-02",
+     "agencias": 16614,
+     "municipios": 3111,
+     "bancos": 117
+    },
+    {
+     "mes": "2024-03",
+     "agencias": 16589,
+     "municipios": 3105,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-04",
+     "agencias": 16501,
+     "municipios": 3099,
+     "bancos": 117
+    },
+    {
+     "mes": "2024-05",
+     "agencias": 16391,
+     "municipios": 3090,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-06",
+     "agencias": 16310,
+     "municipios": 3086,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-07",
+     "agencias": 16211,
+     "municipios": 3069,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-08",
+     "agencias": 16008,
+     "municipios": 3056,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-09",
+     "agencias": 15931,
+     "municipios": 3050,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-10",
+     "agencias": 15881,
+     "municipios": 3040,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-11",
+     "agencias": 15790,
+     "municipios": 3072,
+     "bancos": 116
+    },
+    {
+     "mes": "2024-12",
+     "agencias": 15814,
+     "municipios": 3084,
+     "bancos": 116
+    },
+    {
+     "mes": "2025-01",
+     "agencias": 15743,
+     "municipios": 3021,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-02",
+     "agencias": 15672,
+     "municipios": 3020,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-03",
+     "agencias": 15622,
+     "municipios": 3014,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-04",
+     "agencias": 15557,
+     "municipios": 3009,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-05",
+     "agencias": 15489,
+     "municipios": 3000,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-06",
+     "agencias": 15328,
+     "municipios": 2974,
+     "bancos": 115
+    },
+    {
+     "mes": "2025-07",
+     "agencias": 15126,
+     "municipios": 2965,
+     "bancos": 113
+    },
+    {
+     "mes": "2025-08",
+     "agencias": 14926,
+     "municipios": 2955,
+     "bancos": 111
+    },
+    {
+     "mes": "2025-09",
+     "agencias": 14728,
+     "municipios": 2947,
+     "bancos": 111
+    },
+    {
+     "mes": "2025-10",
+     "agencias": 14412,
+     "municipios": 2936,
+     "bancos": 109
+    },
+    {
+     "mes": "2025-11",
+     "agencias": 14318,
+     "municipios": 2934,
+     "bancos": 109
+    },
+    {
+     "mes": "2025-12",
+     "agencias": 14118,
+     "municipios": 2931,
+     "bancos": 109
+    },
+    {
+     "mes": "2026-01",
+     "agencias": 13809,
+     "municipios": 2929,
+     "bancos": 109
+    },
+    {
+     "mes": "2026-02",
+     "agencias": 13522,
+     "municipios": 2929,
+     "bancos": 110
+    },
+    {
+     "mes": "2026-03",
+     "agencias": 13335,
+     "municipios": 2926,
+     "bancos": 110
+    }
+   ],
+   "nota": "Soma de agências processadas de todos os bancos no ESTBAN e contagem de municípios com ao menos uma agência (código de município do próprio ESTBAN)."
+  }
+ },
+ "rede_por_cnpj8": {
+  "00000000": {
+   "nome": "BCO DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 3942,
+   "municipios": 2300,
+   "var_12m": -55,
+   "var_12m_pct": -1.4
+  },
+  "00360305": {
+   "nome": "CAIXA ECONOMICA FEDERAL",
+   "mes": "2026-03",
+   "agencias": 2999,
+   "municipios": 1630,
+   "var_12m": -251,
+   "var_12m_pct": -7.7
+  },
+  "00416968": {
+   "nome": "BANCO INTER",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": -15,
+   "var_12m_pct": -93.8
+  },
+  "00517645": {
+   "nome": "BCO RIBEIRAO PRETO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "00556603": {
+   "nome": "BANCO BARI S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "00795423": {
+   "nome": "BANCO SEMEAR",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "00997185": {
+   "nome": "BCO B3 S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01023570": {
+   "nome": "BCO RABOBANK INTL BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 18,
+   "municipios": 18,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01181521": {
+   "nome": "BCO COOPERATIVO SICREDI S.A.",
+   "mes": "2026-03",
+   "agencias": 6,
+   "municipios": 5,
+   "var_12m": 1,
+   "var_12m_pct": 20.0
+  },
+  "01522368": {
+   "nome": "BCO BNP PARIBAS BRASIL S A",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01852137": {
+   "nome": "BCO BRASILEIRO DE CRÉDITO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "01858774": {
+   "nome": "BCO BV S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "02038232": {
+   "nome": "BANCO SICOOB S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 4,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "02318507": {
+   "nome": "BCO KEB HANA DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "02801938": {
+   "nome": "BCO MORGAN STANLEY S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03017677": {
+   "nome": "BCO. J.SAFRA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03323840": {
+   "nome": "BCO ALFA S.A.",
+   "mes": "2026-03",
+   "agencias": 9,
+   "municipios": 8,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03532415": {
+   "nome": "BANCO ABN AMRO CLEARING S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "03609817": {
+   "nome": "BCO CARGILL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04184779": {
+   "nome": "BANCO BRADESCARD",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04866275": {
+   "nome": "BANCO INBURSA",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04902979": {
+   "nome": "BCO DA AMAZONIA S.A.",
+   "mes": "2026-03",
+   "agencias": 114,
+   "municipios": 105,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "04913711": {
+   "nome": "BCO DO EST. DO PA S.A.",
+   "mes": "2026-03",
+   "agencias": 164,
+   "municipios": 144,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "06271464": {
+   "nome": "BCO BBI S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "07207996": {
+   "nome": "BCO BRADESCO FINANC. S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": -1,
+   "var_12m_pct": -50.0
+  },
+  "07237373": {
+   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 300,
+   "municipios": 276,
+   "var_12m": 2,
+   "var_12m_pct": 0.7
+  },
+  "07450604": {
+   "nome": "BOC BRASIL",
+   "mes": "2026-03",
+   "agencias": 7,
+   "municipios": 7,
+   "var_12m": -1,
+   "var_12m_pct": -12.5
+  },
+  "07656500": {
+   "nome": "BCO KDB BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "07679404": {
+   "nome": "BANCO TOPÁZIO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "09274232": {
+   "nome": "STATE STREET BR S.A. BCO COMERCIAL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "09516419": {
+   "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10264663": {
+   "nome": "BANCOSEGURO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10371492": {
+   "nome": "BCO YAMAHA MOTOR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10664513": {
+   "nome": "BCO AGIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10690848": {
+   "nome": "BCO DA CHINA BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "10866788": {
+   "nome": "BCO BANDEPE S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "11703662": {
+   "nome": "BANCO TRAVELEX S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": null,
+   "var_12m_pct": null
+  },
+  "11758741": {
+   "nome": "BANCO FINAXIS",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "11970623": {
+   "nome": "BCO SENFF S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "13009717": {
+   "nome": "BCO DO EST. DE SE S.A.",
+   "mes": "2026-03",
+   "agencias": 64,
+   "municipios": 43,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "13720915": {
+   "nome": "BCO WESTERN UNION",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "14388334": {
+   "nome": "PARANA BCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "15114366": {
+   "nome": "BCO BOCOM BBM S.A.",
+   "mes": "2026-03",
+   "agencias": 3,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "15357060": {
+   "nome": "BCO WOORI BANK DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17184037": {
+   "nome": "BCO MERCANTIL DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17351180": {
+   "nome": "BCO TRIANGULO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "17453575": {
+   "nome": "ICBC DO BRASIL BM S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "28127603": {
+   "nome": "BCO BANESTES S.A.",
+   "mes": "2026-03",
+   "agencias": 85,
+   "municipios": 59,
+   "var_12m": -2,
+   "var_12m_pct": -2.3
+  },
+  "28195667": {
+   "nome": "BCO ABC BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 12,
+   "municipios": 12,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "28811341": {
+   "nome": "BCO STONEX S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": null,
+   "var_12m_pct": null
+  },
+  "29030467": {
+   "nome": "SCOTIABANK BRASIL",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "30306294": {
+   "nome": "BANCO BTG PACTUAL S.A.",
+   "mes": "2026-03",
+   "agencias": 27,
+   "municipios": 13,
+   "var_12m": 2,
+   "var_12m_pct": 8.0
+  },
+  "31597552": {
+   "nome": "BCO CLASSICO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "31872495": {
+   "nome": "BCO C6 S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "31880826": {
+   "nome": "BCO GUANABARA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "31895683": {
+   "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 9,
+   "municipios": 9,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "32062580": {
+   "nome": "BCO UBS BRASIL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33042151": {
+   "nome": "BCO LA NACION ARGENTINA",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33042953": {
+   "nome": "CITIBANK N.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33132044": {
+   "nome": "BCO CEDULA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "33147315": {
+   "nome": "BCO BRADESCO BERJ S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33172537": {
+   "nome": "BCO J.P. MORGAN S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33264668": {
+   "nome": "BCO XP S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33466988": {
+   "nome": "BCO CAIXA GERAL BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "33479023": {
+   "nome": "BCO CITIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 46,
+   "municipios": 22,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33644196": {
+   "nome": "BCO FATOR S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "33885724": {
+   "nome": "BANCO ITAÚ CONSIGNADO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "42272526": {
+   "nome": "BNY MELLON BCO S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "44189447": {
+   "nome": "BCO LA PROVINCIA B AIRES BCE",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "45246410": {
+   "nome": "BANCO GENIAL",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "46518205": {
+   "nome": "JPMORGAN CHASE BANK",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "50585090": {
+   "nome": "BANCO BMG CONSIGNADO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "53518684": {
+   "nome": "BCO HSBC S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "54403563": {
+   "nome": "BCO ARBI S.A.",
+   "mes": "2026-03",
+   "agencias": 4,
+   "municipios": 3,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "55230916": {
+   "nome": "INTESA SANPAOLO BRASIL S.A. BM",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "58160789": {
+   "nome": "BCO SAFRA S.A.",
+   "mes": "2026-03",
+   "agencias": 127,
+   "municipios": 55,
+   "var_12m": 4,
+   "var_12m_pct": 3.3
+  },
+  "58616418": {
+   "nome": "BCO FIBRA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59118133": {
+   "nome": "BCO LUSO BRASILEIRO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59285411": {
+   "nome": "BANCO PAN",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "59588111": {
+   "nome": "BCO VOTORANTIM S.A.",
+   "mes": "2026-03",
+   "agencias": 3,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60394079": {
+   "nome": "BCO ITAUBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60498557": {
+   "nome": "BCO MUFG BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60518222": {
+   "nome": "BCO SUMITOMO MITSUI BRASIL S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60701190": {
+   "nome": "ITAÚ UNIBANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1418,
+   "municipios": 814,
+   "var_12m": -515,
+   "var_12m_pct": -26.6
+  },
+  "60746948": {
+   "nome": "BCO BRADESCO S.A.",
+   "mes": "2026-03",
+   "agencias": 2074,
+   "municipios": 1244,
+   "var_12m": -216,
+   "var_12m_pct": -9.4
+  },
+  "60850229": {
+   "nome": "OMNI BANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "60889128": {
+   "nome": "BCO SOFISA S.A.",
+   "mes": "2026-03",
+   "agencias": 23,
+   "municipios": 23,
+   "var_12m": 1,
+   "var_12m_pct": 4.5
+  },
+  "61033106": {
+   "nome": "BCO CREFISA S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61088183": {
+   "nome": "BCO MIZUHO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61182408": {
+   "nome": "BANCO INVESTCRED UNIBANCO S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61186680": {
+   "nome": "BCO BMG S.A.",
+   "mes": "2026-03",
+   "agencias": 26,
+   "municipios": 22,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61348538": {
+   "nome": "BCO C6 CONSIG",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61533584": {
+   "nome": "BCO SOCIETE GENERALE BRASIL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "61820817": {
+   "nome": "BCO PAULISTA S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "62073200": {
+   "nome": "BOFA MERRILL LYNCH BM S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62144175": {
+   "nome": "BCO PINE S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62232889": {
+   "nome": "BCO DAYCOVAL S.A",
+   "mes": "2026-03",
+   "agencias": 53,
+   "municipios": 48,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62331228": {
+   "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "62421979": {
+   "nome": "BANCO BMG SOLUÇÕES FINANCEIRAS S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "68900810": {
+   "nome": "BCO RENDIMENTO S.A.",
+   "mes": "2026-03",
+   "agencias": 6,
+   "municipios": 6,
+   "var_12m": -1,
+   "var_12m_pct": -14.3
+  },
+  "71027866": {
+   "nome": "BCO BS2 S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "74828799": {
+   "nome": "NOVO BCO CONTINENTAL S.A. - BM",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "75647891": {
+   "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "78626983": {
+   "nome": "BCO VR S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "78632767": {
+   "nome": "OURIBANK S.A.",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "90400888": {
+   "nome": "BCO SANTANDER (BRASIL) S.A.",
+   "mes": "2026-03",
+   "agencias": 1178,
+   "municipios": 573,
+   "var_12m": -1159,
+   "var_12m_pct": -49.6
+  },
+  "91884981": {
+   "nome": "BANCO JOHN DEERE S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 2,
+   "var_12m": 1,
+   "var_12m_pct": 100.0
+  },
+  "92702067": {
+   "nome": "BCO DO ESTADO DO RS S.A.",
+   "mes": "2026-03",
+   "agencias": 509,
+   "municipios": 366,
+   "var_12m": 1,
+   "var_12m_pct": 0.2
+  },
+  "92874270": {
+   "nome": "BCO DIGIMAIS S.A.",
+   "mes": "2026-03",
+   "agencias": 2,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  },
+  "92894922": {
+   "nome": "BANCO ORIGINAL",
+   "mes": "2026-03",
+   "agencias": 1,
+   "municipios": 1,
+   "var_12m": 0,
+   "var_12m_pct": 0.0
+  }
+ },
+ "sintese": [
+  {
+   "id": "agencias_sfn",
+   "rotulo": "Agências bancárias em funcionamento no país",
+   "valor": 13335,
+   "exibir": "13.335",
+   "unidade": "agências processadas · 2026-03",
+   "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os bancos; não inclui postos de atendimento nem correspondentes",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "municipios_com_agencia",
+   "rotulo": "Municípios com ao menos uma agência bancária",
+   "valor": 2926,
+   "exibir": "2.926 de 5.570",
+   "unidade": "municípios · 2026-03",
+   "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "var_agencias_sfn_12m",
+   "rotulo": "Variação líquida de agências em 12 meses",
+   "valor": -2287,
+   "exibir": "-2.287",
+   "unidade": "agências · 2025-03 → 2026-03",
+   "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de bancos individuais é migração societária entre CNPJs do mesmo grupo",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "maior_fechamento_12m",
+   "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
+   "valor": 1159,
+   "exibir": "1.159 (Banco Santander (Brasil) S.A.)",
+   "unidade": "agências · 12 meses até 2026-03",
+   "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  }
+ ],
+ "flags": [
+  {
+   "instituicao": "Itau Unibanco Holding S.A.",
+   "indicador": "rede",
+   "valor": -26.6,
+   "referencia": "2026-03",
+   "detalhe": "queda de 26.6% nas agências em 12 meses (1933 → 1418) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Santander (Brasil) S.A.",
+   "indicador": "rede",
+   "valor": -49.6,
+   "referencia": "2026-03",
+   "detalhe": "queda de 49.6% nas agências em 12 meses (2337 → 1178) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Btg Pactual S.A.",
+   "indicador": "empregados",
+   "valor": 55.6,
+   "referencia": "2026-12-31",
+   "detalhe": "variação de 55.6% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Brb Banco De Brasilia S.A.",
+   "indicador": "rede",
+   "valor": -100.0,
+   "referencia": "2026-03",
+   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Estado De Sergipe S.A. - Banese",
+   "indicador": "empregados",
+   "valor": 49.1,
+   "referencia": "2026-12-31",
+   "detalhe": "variação de 49.1% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Brbi Br Partners S.A.",
+   "indicador": "auditoria",
+   "valor": null,
+   "referencia": "2025-12-31",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA — o rodízio obrigatório também produz trocas; ver FCA da companhia"
+  },
+  {
+   "instituicao": "Alfa Holdings S.A.",
+   "indicador": "empregados",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Alfa Holdings S.A.",
+   "indicador": "empregados",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
+  }
+ ],
+ "cobertura": {
+  "instituicoes": 20,
+  "com_empregados": 18,
+  "com_auditor": 18,
+  "com_rede": 18
+ }
+}

@@ -9,6 +9,7 @@ import { PerfilForm } from "@/components/conta/PerfilForm";
 import { AlterarSenha } from "@/components/conta/AlterarSenha";
 import { AlterarTelefone } from "@/components/conta/AlterarTelefone";
 import { EncerrarSessoes } from "@/components/conta/EncerrarSessoes";
+import { BoletimPreferencia } from "@/components/conta/BoletimPreferencia";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const metadata: Metadata = {
@@ -89,8 +90,13 @@ export default async function ContaPage() {
           <EncerrarSessoes />
         </section>
 
+        <section aria-label="Boletim mensal" className="border border-linha bg-papel p-8">
+          <SectionHeading number="05" label="Comunicações" title="Boletim mensal" />
+          <BoletimPreferencia optInInicial={user.marketingOptIn} />
+        </section>
+
         <section aria-label="Privacidade e dados" className="border border-linha bg-papel p-8">
-          <SectionHeading number="05" label="Seus dados" title="Privacidade e dados" />
+          <SectionHeading number="06" label="Seus dados" title="Privacidade e dados" />
           <div className="max-w-prose2 space-y-4 text-sm text-carvao-muted">
             <p>
               Pedimos apenas o necessário: o e-mail é seu dado de contato; o telefone valida, dá
