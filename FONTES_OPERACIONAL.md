@@ -43,6 +43,26 @@ administrativo oficial (mesma escala dos painéis de bets e fraudes).
   saltos reais na série de um CNPJ (flag automática acima de 15% em 12 meses)
 - Confiabilidade: **A**
 
+## 4. CVM — IPE (Informações Periódicas e Eventuais) — Fase 2
+
+- URL do dataset: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/
+  (`ipe_cia_aberta_{ano}.zip`, ≈1,4 MB/ano; PDFs baixados de rad.cvm.gov.br)
+- Uso: descoberta **estruturada** dos releases de resultados dos bancos S1/S2
+  listados (Itaú "Análise Gerencial da Operação", BB "Análise do Desempenho" e
+  "BB Notícias", Bradesco "Relatório de Análise Econômica e Financeira" e
+  "Press Release", Santander "Release de Resultados", BTG "Earnings Release",
+  Banrisul e BNB "Apresentação de Resultados")
+- Regras de seleção explícitas por banco em `pipeline/sources/releases.py`;
+  reentrega substitui a versão anterior (rastreado em `substituido_por`)
+- Conteúdo extraído: contagens de clientes, com página e trecho literal como
+  evidência obrigatória e **revisão humana antes de publicar**
+  (ver METODOLOGIA_OPERACIONAL.md, Fase 2)
+- Limitações: número **reportado pela companhia**, no conceito dela —
+  comparabilidade C (nunca entre bancos, nunca em ranking); cobertura desigual
+  por desenho (quem não divulga aparece como ausência com motivo)
+- Confiabilidade do protocolo: **A** (registro administrativo da CVM); o valor
+  divulgado é `reportado` pela companhia
+
 ## Instituições cobertas no corte
 
 18 companhias listadas do piloto (Itaú, BB, Bradesco, Santander, BTG, ABC,

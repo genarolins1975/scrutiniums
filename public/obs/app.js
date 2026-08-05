@@ -7875,6 +7875,31 @@ function renderOperacional() {
     </tbody></table></div>
     <p class="src">${badge("observado")} Troca de auditor inclui o rodízio obrigatório e não é, por si, sinal de problema.</p></div>`;
 
+  const comCli = D.instituicoes.filter(i => i.clientes && i.clientes.length);
+  const f2 = D.fase2 || {};
+  const metrica = m => ((f2.metricas || {})[m] || {}).nome || m;
+  let tCli = "";
+  if (comCli.length) {
+    const linhas = comCli.flatMap(i => i.clientes.map(c => `<tr>
+      <td>${i.nome}</td>
+      <td>${metrica(c.metric_id)}</td>
+      <td class="num">${c.exibir}</td>
+      <td>${c.periodo_rotulo}</td>
+      <td><a href="${attr(c.documento.url)}" target="_blank" rel="noopener"
+        title="${attr(`p.${c.pagina}: “${c.evidencia}” — ${c.documento.assunto} (${c.documento.fonte})`)}">${c.documento.assunto.slice(0, 38)} · p.${c.pagina}</a></td></tr>`));
+    tCli = `${sechead("Clientes — divulgação das companhias (Fase 2)", "releases de resultados via CVM/IPE · extração revisada, evidência obrigatória")}
+    <div class="card"><div class="tblwrap"><table>
+      <thead><tr><th>Companhia</th><th>Métrica</th><th class="num">Valor</th><th>Período</th><th>Evidência (documento · página)</th></tr></thead>
+      <tbody>${linhas.join("")}</tbody></table></div>
+      <p class="src">${badge("observado")} <b>Comparabilidade C:</b> cada companhia define o próprio conceito de cliente —
+      estes números NÃO são comparáveis entre bancos e nunca entram em ranking. A ausência de um banco significa que ele
+      não divulga o número no release, não que tenha zero clientes.${f2.em_revisao ? ` · ${f2.em_revisao} extração(ões) aguardando revisão editorial.` : ""}</p></div>`;
+  } else if (f2.em_revisao) {
+    tCli = `${sechead("Clientes — divulgação das companhias (Fase 2)", "releases de resultados via CVM/IPE")}
+    <div class="card"><p class="src">${f2.em_revisao} extração(ões) de releases aguardando revisão editorial —
+    nada é publicado sem aprovação humana e evidência (documento, página e trecho). ${f2.nota || ""}</p></div>`;
+  }
+
   const tFlags = `${sechead("Verificações automáticas", "publicadas junto do dado — nunca correção silenciosa")}
   <div class="card">${(D.flags || []).length === 0 ? `<p class="src">Nenhuma verificação pendente nesta execução.</p>` : `<div class="tblwrap"><table>
     <thead><tr><th>Instituição</th><th>Indicador</th><th>O que verificar</th></tr></thead>
@@ -7891,7 +7916,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tEmp + tAud + tFlags + fontes;
+  }) + aviso + kpis + tRede + tEmp + tCli + tAud + tFlags + fontes;
 }
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };

@@ -18,7 +18,7 @@ from pipeline import common, gold
 from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata_carteiras,
                               datajud, djen, djen_credores, openfinance, reclamacoes, txjuros, b3_market, cvm_dfp, fidc,
                               trends_manual, scr_data, geo_ibge, pix_bcb, judicial, pgfn, desenrola, estban, censo2022,
-                              mercado_imobiliario, previdencia, reclamacoes_consig, operacional)
+                              mercado_imobiliario, previdencia, reclamacoes_consig, operacional, releases)
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
                           ("pix_bcb", pix_bcb), ("judicial", judicial), ("pgfn", pgfn), ("desenrola", desenrola), ("censo2022", censo2022), ("estban", estban),
                           ("mercado_imobiliario", mercado_imobiliario),
                           ("previdencia", previdencia), ("reclamacoes_consig", reclamacoes_consig),
-                          ("operacional", operacional)]:
+                          ("operacional", operacional), ("releases", releases)]:
             print(f"[coleta] {name}...")
             try:
                 results = mod.collect(con, cfg)

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-05T11:33:56+00:00",
+ "gerado_em": "2026-08-05T18:36:14+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -325,7 +325,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "bb",
@@ -634,7 +635,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "bradesco",
@@ -943,7 +945,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "santander",
@@ -1247,7 +1250,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "btg",
@@ -1551,7 +1555,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "abc",
@@ -1855,7 +1860,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "banrisul",
@@ -2169,7 +2175,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "bmg",
@@ -2473,7 +2480,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "pine",
@@ -2777,7 +2785,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "amazonia",
@@ -3086,7 +3095,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "nordeste",
@@ -3395,7 +3405,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "banestes",
@@ -3704,7 +3715,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "mercantil",
@@ -4008,7 +4020,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "brb",
@@ -4305,7 +4318,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "banese",
@@ -4614,7 +4628,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "brpartners",
@@ -4724,7 +4739,8 @@
     "nivel": "A",
     "status": "oficial"
    },
-   "rede": null
+   "rede": null,
+   "clientes": null
   },
   {
    "id": "alfa",
@@ -5033,7 +5049,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "bmi",
@@ -5133,7 +5150,8 @@
     "nivel": "A",
     "status": "oficial"
    },
-   "rede": null
+   "rede": null,
+   "clientes": null
   },
   {
    "id": "caixa",
@@ -5347,7 +5365,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   },
   {
    "id": "safra",
@@ -5561,7 +5580,8 @@
     "nivel": "A",
     "status": "oficial",
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
-   }
+   },
+   "clientes": null
   }
  ],
  "sfn": {
@@ -6680,6 +6700,34 @@
    "var_12m": 0,
    "var_12m_pct": 0.0
   }
+ },
+ "fase2": {
+  "em_revisao": 9,
+  "aprovadas": 0,
+  "rejeitadas": 0,
+  "metricas": {
+   "clientes_total": {
+    "nome": "Base total de clientes",
+    "conceito": "Total de clientes conforme o conceito da própria companhia (CPF/CNPJ, com ou sem conta corrente, critérios variam por banco). NÃO comparável entre bancos.",
+    "comparabilidade": "C"
+   },
+   "clientes_ativos": {
+    "nome": "Clientes ativos",
+    "conceito": "Clientes ativos conforme o critério de atividade da própria companhia (janela e definição variam por banco). NÃO comparável entre bancos.",
+    "comparabilidade": "C"
+   },
+   "correntistas": {
+    "nome": "Correntistas",
+    "conceito": "Clientes com conta corrente, conforme divulgação da companhia.",
+    "comparabilidade": "C"
+   },
+   "clientes_ativos_digitais": {
+    "nome": "Clientes ativos nos canais digitais",
+    "conceito": "Clientes ativos especificamente nos canais digitais, conforme divulgação da companhia. Subconjunto com critério próprio — não é a base total.",
+    "comparabilidade": "C"
+   }
+  },
+  "nota": "Clientes vêm dos releases de resultados (descoberta via CVM/IPE), com extração revisada e evidência obrigatória (documento, página e trecho). Comparabilidade C: o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking."
  },
  "sintese": [
   {
