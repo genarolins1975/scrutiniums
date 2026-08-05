@@ -336,7 +336,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "bmg:clientes_total:2026-03-31",
    "institution_id": "bmg",
    "metric_id": "clientes_total",
@@ -354,7 +354,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
    },
    "pagina": 4,
-   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25) — Outras Informações (Milhões)"
+   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25) — Outras Informações (Milhões)",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -362,7 +364,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "bmg:clientes_total:2025-12-31",
    "institution_id": "bmg",
    "metric_id": "clientes_total",
@@ -380,7 +382,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
    },
    "pagina": 4,
-   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25)"
+   "evidencia": "Clientes Totais (metodologia BACEN) 9,3 (1T26) · 9,3 (4T25) · 10,4 (1T25)",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -388,7 +392,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "bmg:clientes_total:2025-03-31",
    "institution_id": "bmg",
    "metric_id": "clientes_total",
@@ -406,7 +410,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
    },
    "pagina": 4,
-   "evidencia": "Clientes Totais (metodologia BACEN) … 1T25: 10,4 · variação 1T/1T: -10,6%"
+   "evidencia": "Clientes Totais (metodologia BACEN) … 1T25: 10,4 · variação 1T/1T: -10,6%",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -414,7 +420,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "banestes:clientes_total:2026-03-31",
    "institution_id": "banestes",
    "metric_id": "clientes_total",
@@ -432,7 +438,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1521398&numSequencia=1046104&numVersao=1"
    },
    "pagina": 10,
-   "evidencia": "O Banestes encerrou o trimestre com uma base de relacionamento de aproximadamente 1,5 milhão de clientes"
+   "evidencia": "O Banestes encerrou o trimestre com uma base de relacionamento de aproximadamente 1,5 milhão de clientes",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -440,7 +448,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "banestes:clientes_total:2025-12-31",
    "institution_id": "banestes",
    "metric_id": "clientes_total",
@@ -458,7 +466,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1480852&numSequencia=1005558&numVersao=1"
    },
    "pagina": 8,
-   "evidencia": "o Banestes manteve relacionamento com a base de 1,4 milhão de clientes, expansão de 3,6%"
+   "evidencia": "o Banestes manteve relacionamento com a base de 1,4 milhão de clientes, expansão de 3,6%",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "empresas",
@@ -466,7 +476,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "abc:clientes_corporativos:2026-03-31",
    "institution_id": "abc",
    "metric_id": "clientes_corporativos",
@@ -484,7 +494,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1517352&numSequencia=1042058&numVersao=1"
    },
    "pagina": 10,
-   "evidencia": "O ABC Brasil atingiu 4.525 clientes corporativos com relacionamento ativo no 1T26, uma redução de 6,8%"
+   "evidencia": "O ABC Brasil atingiu 4.525 clientes corporativos com relacionamento ativo no 1T26, uma redução de 6,8%",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "empresas",
@@ -492,7 +504,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "abc:clientes_corporativos:2025-12-31",
    "institution_id": "abc",
    "metric_id": "clientes_corporativos",
@@ -510,7 +522,9 @@
     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1474062&numSequencia=998768&numVersao=1"
    },
    "pagina": 10,
-   "evidencia": "O ABC Brasil atingiu 4.676 clientes corporativos com relacionamento ativo no 4T25, uma redução de 10,2%"
+   "evidencia": "O ABC Brasil atingiu 4.676 clientes corporativos com relacionamento ativo no 4T25, uma redução de 10,2%",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   }
  ]
 }
