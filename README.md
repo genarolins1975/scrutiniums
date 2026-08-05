@@ -1,6 +1,6 @@
 # Scrutiniums
 
-Plataforma **gratuita** de inteligência analítica sobre setores da economia brasileira: painéis de atividade setorial, risco de crédito, sentimento regulatório e concentração de mercado, com metodologia aberta e glossário público. A **leitura do Observatório é aberta** — sem cadastro, indexável, compartilhável — para maximizar o uso e o alcance dos painéis. A **área de conta e os painéis personalizados** (`/app`) exigem cadastro — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada nessa área exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
+Plataforma **gratuita** de inteligência analítica sobre o crédito e a economia brasileira: o Observatório Brasileiro de Crédito — carteira, inadimplência, instituições, produtos, Pix, bets e fraudes financeiras — com metodologia aberta, dados oficiais e glossário público. A **leitura do Observatório é aberta** — sem cadastro, indexável, compartilhável — para maximizar o uso e o alcance dos painéis. A **área de conta e os painéis personalizados** (`/app`) exigem cadastro — e-mail de contato, telefone verificado por SMS e perfil básico. Sem plano pago, sem cartão. Durante o **acesso antecipado**, a entrada nessa área exige um **código de acesso** (`ACCESS_CODES`, lista separada por vírgulas); quem não tem código fica na **lista de espera** e será contatado quando o produto entrar em produção.
 
 ## Stack
 
@@ -55,10 +55,10 @@ Os testes de integração usam bancos PGlite **em memória** (`DATABASE_URL=pgli
 src/
   app/                 Rotas (App Router): páginas públicas, /cadastro, /entrar, /app
     api/               Rotas de API (onboarding, auth, conta)
-  components/          UI, layout, home, onboarding, conta e analytics (PanelShell etc.)
+  components/          UI, layout, home, onboarding, conta e telemetria
   lib/                 Núcleo: db, schema, crypto, phone, ratelimit, onboarding,
                        twilio, mailer, session, events, audit, format
-    data/              glossario.ts (fonte única de definições) e paineis.ts (séries determinísticas)
+    data/              glossario.ts (fonte única de definições) e observatorioAbas.ts (metadados por aba)
   tests/               Testes unitários e de integração (vitest)
 tailwind.config.ts     Design tokens
 vitest.config.ts       Configuração de testes

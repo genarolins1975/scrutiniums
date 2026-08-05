@@ -158,6 +158,37 @@ describe("metadados por rota", () => {
   });
 });
 
+describe("painéis sintéticos aposentados", () => {
+  it("as séries de exemplo e seus componentes saíram do código", () => {
+    expect(existsSync(join(raiz, "src/lib/data/paineis.ts"))).toBe(false);
+    expect(existsSync(join(raiz, "src/components/analytics"))).toBe(false);
+    expect(existsSync(join(raiz, "src/app/app/(paineis)"))).toBe(false);
+  });
+
+  it("as rotas antigas redirecionam para o painel real equivalente", () => {
+    const config = readFileSync(join(raiz, "next.config.mjs"), "utf-8");
+    expect(config).toContain('source: "/app", destination: "/observatorio"');
+    expect(config).toContain('source: "/app/atividade", destination: "/observatorio/credit"');
+    expect(config).toContain('source: "/app/risco", destination: "/observatorio/sectors"');
+    expect(config).toContain('source: "/app/regulatorio", destination: "/observatorio/alerts"');
+  });
+
+  it("a telemetria não aceita mais as seções aposentadas", () => {
+    const telemetry = readFileSync(join(raiz, "src/lib/telemetry.ts"), "utf-8");
+    for (const secao of ["app:paineis", "app:atividade", "app:risco", "app:regulatorio"]) {
+      expect(telemetry).not.toContain(`"${secao}"`);
+    }
+    expect(telemetry).toContain('"app:conta"');
+  });
+
+  it("o glossário só descreve conceitos reais — os verbetes fabricados saíram", () => {
+    const glossario = readFileSync(join(raiz, "src/lib/data/glossario.ts"), "utf-8");
+    for (const fabricado of ["atividade-setorial", "score-de-sentimento-regulatorio", "dados próprios", "modelo de linguagem"]) {
+      expect(glossario.toLowerCase()).not.toContain(fabricado);
+    }
+  });
+});
+
 describe("página de imprensa (bets e fraudes como carro-chefe)", () => {
   const pagina = readFileSync(join(raiz, "src/app/imprensa/page.tsx"), "utf-8");
 

@@ -20,7 +20,6 @@ export function Footer() {
           <p className="rotulo mb-4 text-mineral-soft">Plataforma</p>
           <ul className="space-y-2 text-sm">
             <li><Link href="/observatorio" className="hover:text-bronze-soft">Observatório</Link></li>
-            <li><Link href="/app" className="hover:text-bronze-soft">Painéis</Link></li>
             <li><Link href="/dados" className="hover:text-bronze-soft">Dados abertos</Link></li>
             <li><Link href="/resumo" className="hover:text-bronze-soft">Resumo diário</Link></li>
             <li><Link href="/fontes" className="hover:text-bronze-soft">Fontes</Link></li>

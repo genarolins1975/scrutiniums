@@ -59,13 +59,13 @@ EMAIL_PENDING → PHONE_PENDING → PROFILE_PENDING → ACCESS_PENDING → COMPL
 
 ## Painéis analíticos
 
-- **Anatomia padrão** em `PanelShell` (`src/components/analytics/`): todo painel tem título, definição vinda do glossário, fonte, cobertura, frequência, limitações e exportação CSV — a mesma estrutura em Atividade, Risco e Regulatório.
+- Os painéis da plataforma são os do **Observatório** (ver seção "Observatório embutido"), alimentados pela camada gold do pipeline com dados oficiais reais.
+- Os antigos "Painéis Scrutiniums" (`/app/atividade`, `/app/risco`, `/app/regulatorio`) foram **aposentados**: rodavam sobre séries de exemplo geradas por função (`paineis.ts`) apresentadas com fontes oficiais nos metadados — um risco de credibilidade incompatível com o resto do produto. As rotas antigas redirecionam para o painel real equivalente do Observatório (`redirects()` em `next.config.mjs`); `/app` redireciona para `/observatorio`.
 - Paleta de séries em `CHART_SERIES` (`src/lib/format.ts`); o bronze (`CHART_HIGHLIGHT`) é reservado a destaque e **nunca** entra como série comum (coberto por teste).
-- Dados de exemplo **determinísticos** (`src/lib/data/paineis.ts`): funções puras com ruído senoidal, sem `Math.random`, para render idêntico entre servidor e cliente.
 
 ## Glossário como fonte única
 
-- `src/lib/data/glossario.ts` é a **única** origem de nome, definição, fórmula, interpretação, fonte, cobertura, frequência e limitações de cada indicador. Páginas e painéis consomem `getGlossaryEntry(slug)`; um conceito nunca tem duas definições na plataforma.
+- `src/lib/data/glossario.ts` é a **única** origem de nome, definição, fórmula, interpretação, fonte, cobertura, frequência e limitações de cada conceito. Só entram verbetes de conceitos que a plataforma efetivamente exibe, com fonte primária real; um conceito nunca tem duas definições na plataforma.
 
 ## Telemetria e auditoria
 
