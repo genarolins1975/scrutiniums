@@ -7736,7 +7736,11 @@ window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderCon
 function operResolve(codIfdata, cnpj) {
   const O = state.data.operacional;
   if (!O || !O.disponivel) return null;
-  const cnpj8 = String(cnpj || "").replace(/\D/g, "").slice(0, 8);
+  // Nas instituições individuais do IF.data o próprio código É o CNPJ-raiz;
+  // o CNPJ do cabeçalho cobre os demais casos (quando a fonte o publica).
+  const soDigitos = String(cnpj || "").replace(/\D/g, "").slice(0, 8);
+  const cnpj8 = (soDigitos.length === 8 ? soDigitos : "") ||
+    (/^\d{8}$/.test(codIfdata || "") ? codIfdata : "");
   const piloto = O.instituicoes.find(i =>
     (codIfdata && i.cod_ifdata === codIfdata) || (cnpj8 && i.cnpj8_rede === cnpj8)) || null;
   const rede = (piloto && piloto.rede) ? {
@@ -7834,19 +7838,31 @@ function renderOperacional() {
   const aviso = `<div class="judalerta" style="max-width:78ch"><b>Dois universos, nunca somados.</b>
     <div style="margin-top:5px">${D.aviso}</div></div>`;
 
-  const comRede = D.instituicoes.filter(i => i.rede).sort((a, b) => b.rede.atual.agencias - a.rede.atual.agencias);
-  const tRede = `${sechead("Rede física por banco", "agências processadas no ESTBAN · CNPJ do banco operacional")}
+  // Todos os bancos do ESTBAN (não só o piloto); flags do piloto casadas por CNPJ-raiz.
+  const flagRedePorCnpj8 = {};
+  D.instituicoes.forEach(i => {
+    if (i.cnpj8_rede && (D.flags || []).some(f => f.instituicao === i.nome && f.indicador === "rede")) {
+      flagRedePorCnpj8[i.cnpj8_rede] = (D.flags.find(f => f.instituicao === i.nome && f.indicador === "rede") || {}).detalhe;
+    }
+  });
+  const todosBancos = Object.entries(D.rede_por_cnpj8 || {})
+    .map(([cnpj8, r]) => ({ cnpj8, ...r }))
+    .sort((a, b) => b.agencias - a.agencias);
+  const tRede = `${sechead("Rede física por banco", `todos os ${todosBancos.length} bancos com agência no ESTBAN · CNPJ do banco operacional`)}
   <div class="card"><div class="tblwrap"><table>
-    <thead><tr><th>Banco</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th><th>Tendência (${sfn.length ? `${fmt.my(sfn[0].mes)}–${fmt.my(atual.mes)}` : ""})</th></tr></thead>
-    <tbody>${comRede.map(i => `<tr>
-      <td>${i.nome}${flagDe(i.nome, "rede")}</td>
-      <td class="num">${fmt.n0(i.rede.atual.agencias)}</td>
-      <td class="num">${i.rede.var_12m == null ? "–" : `${i.rede.var_12m > 0 ? "+" : ""}${fmt.n0(i.rede.var_12m)}${i.rede.var_12m_pct != null ? ` (${i.rede.var_12m_pct > 0 ? "+" : ""}${fmt.n(i.rede.var_12m_pct, 1)}%)` : ""}`}</td>
-      <td class="num">${fmt.n0(i.rede.atual.municipios)}</td>
-      <td>${sparkline(i.rede.serie.map(p => p.agencias))}</td></tr>`).join("")}
+    <thead><tr><th>#</th><th>Banco</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th><th>Tendência (${sfn.length ? `${fmt.my(sfn[0].mes)}–${fmt.my(atual.mes)}` : ""})</th></tr></thead>
+    <tbody>${todosBancos.map((r, ix) => `<tr>
+      <td class="num">${ix + 1}</td>
+      <td>${r.nome}${flagRedePorCnpj8[r.cnpj8] ? ` <span class="warn" title="${attr(flagRedePorCnpj8[r.cnpj8])}" tabindex="0" role="img" aria-label="verificação automática pendente">⚑</span>` : ""}</td>
+      <td class="num">${fmt.n0(r.agencias)}</td>
+      <td class="num">${r.var_12m == null ? "–" : `${r.var_12m > 0 ? "+" : ""}${fmt.n0(r.var_12m)}${r.var_12m_pct != null ? ` (${r.var_12m_pct > 0 ? "+" : ""}${fmt.n(r.var_12m_pct, 1)}%)` : ""}`}</td>
+      <td class="num">${fmt.n0(r.municipios)}</td>
+      <td>${r.serie && r.serie.length > 2 ? sparkline(r.serie.map(p => p.agencias)) : ""}</td></tr>`).join("")}
     </tbody></table></div>
-    <p class="src">${badge("observado")} Agência processada ≠ posto de atendimento ≠ correspondente. Queda abrupta pode ser
-    migração de agências entre CNPJs do mesmo grupo — os casos sinalizados (⚑) estão nas verificações automáticas abaixo.</p></div>`;
+    <p class="src">${badge("observado")} Agência processada ≠ posto de atendimento ≠ correspondente. A posição (#) ordena por
+    número de agências — é contagem de rede física, não ranking de qualidade. Queda abrupta pode ser migração de agências
+    entre CNPJs do mesmo grupo — os casos sinalizados (⚑) estão nas verificações automáticas abaixo. Bancos sem agência
+    processada no mês corrente não aparecem (ausência ≠ zero encerrado).</p></div>`;
 
   const comEmp = D.instituicoes.filter(i => i.empregados).map(i => ({ i, u: i.empregados.serie[i.empregados.serie.length - 1] }))
     .sort((a, b) => b.u.total - a.u.total);
