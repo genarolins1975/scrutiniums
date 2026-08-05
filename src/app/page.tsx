@@ -13,7 +13,7 @@ import { SecaoAcesso } from "@/components/home/SecaoAcesso";
 
 export const metadata: Metadata = {
   description:
-    "Da informação dispersa ao conhecimento verificável: bases públicas, registros oficiais e séries setoriais organizados com estatística e método declarado. Plataforma gratuita — o cadastro é a única exigência.",
+    "Da informação dispersa ao conhecimento verificável: bases públicas, registros oficiais e séries setoriais organizados com estatística e método declarado. Plataforma gratuita, com leitura aberta e sem cadastro.",
 };
 
 export default async function HomePage() {

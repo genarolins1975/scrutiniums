@@ -7,17 +7,16 @@ import { verifySessionCookie } from "@/lib/sessionCookie";
  * banco. Cookies ausentes, forjados, malformados ou vencidos são
  * redirecionados para /entrar. A revogação (logout, encerrar sessões)
  * continua sendo conferida no servidor via banco (getSessionUser) nas
- * rotas de aplicação; o conteúdo estático do Observatório (/obs) fica
- * protegido pela assinatura e expiração.
+ * rotas de aplicação.
+ *
+ * O Observatório (/observatorio e os ativos em /obs) é PÚBLICO por
+ * decisão de produto: leitura aberta e indexável, sem cadastro. Atrás de
+ * login ficam apenas as rotas de conta e aplicação (/app) — onde há dado
+ * por usuário e funções de valor agregado.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isProtected =
-    pathname.startsWith("/app") ||
-    pathname === "/observatorio" ||
-    pathname.startsWith("/observatorio/") ||
-    pathname.startsWith("/obs/");
-  if (!isProtected) return NextResponse.next();
+  if (!pathname.startsWith("/app")) return NextResponse.next();
 
   const verified = await verifySessionCookie(
     request.cookies.get("scrutiniums_session")?.value,
@@ -25,17 +24,8 @@ export async function middleware(request: NextRequest) {
   if (!verified) {
     const url = request.nextUrl.clone();
     url.search = "";
-    const destino = pathname.startsWith("/obs/") ? "/observatorio" : pathname;
-    // Visitante que pede a aplicação cai na vitrine pública, que explica o
-    // Observatório e leva ao login com o destino preservado. Ativos em /obs e
-    // rotas de conta seguem direto para /entrar (não são páginas de chegada).
-    if (pathname === "/observatorio" || pathname.startsWith("/observatorio/")) {
-      url.pathname = "/observatorio-do-credito";
-      url.searchParams.set("de", destino);
-    } else {
-      url.pathname = "/entrar";
-      url.searchParams.set("de", destino);
-    }
+    url.pathname = "/entrar";
+    url.searchParams.set("de", pathname);
     return NextResponse.redirect(url);
   }
 
@@ -64,5 +54,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/app/:path*", "/observatorio", "/observatorio/:path*", "/obs/:path*"],
+  matcher: ["/app/:path*"],
 };

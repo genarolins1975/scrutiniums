@@ -13,11 +13,12 @@ export function SecaoAcesso() {
             id="acesso-titulo"
             className="mt-8 font-serif text-[clamp(2rem,5vw,3rem)] leading-tight text-carvao"
           >
-            O cadastro é a única exigência.
+            A leitura é aberta. A conta é opcional.
           </h2>
           <p className="mx-auto mt-5 max-w-prose2 leading-relaxed text-carvao-muted">
-            Crie seu acesso e entre no acervo completo — análises, séries e
-            metodologia abertas ao seu escrutínio.
+            Explore o Observatório sem cadastro — análises, séries e metodologia
+            abertas ao seu escrutínio. A conta gratuita guarda preferências e dá
+            acesso à área de painéis.
           </p>
           <div className="mt-10 flex justify-center">
             <BotaoLink href="/cadastro">Criar acesso</BotaoLink>

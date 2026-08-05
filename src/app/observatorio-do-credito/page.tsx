@@ -11,11 +11,10 @@ import { fmtRefMes, resumoDiario } from "@/lib/dadosPublicos";
 /**
  * Vitrine pública do Observatório Brasileiro de Crédito.
  *
- * Existe porque quem chegava sem cadastro só via um formulário de login: a
- * proposta, o método e a extensão do acervo ficavam atrás da porta. Aqui o
- * visitante vê números reais da última data-base, as perguntas que cada área
- * responde e o que diferencia o Observatório de consultar as fontes primárias —
- * antes de decidir criar acesso.
+ * Com o Observatório aberto para leitura sem cadastro, esta página é a
+ * porta de entrada editorial: números reais da última data-base, as
+ * perguntas que cada área responde e o que diferencia o Observatório de
+ * consultar as fontes primárias — com o convite direto para explorar.
  *
  * Estática por construção (`force-static`): os números vêm dos arquivos gold no
  * momento do build, que o pipeline diário reescreve. Nenhuma consulta em
@@ -127,6 +126,18 @@ const AREAS = [
     detalhe:
       "Preços, proventos e valuation dos bancos em bolsa, com a ponte do lucro reconstruída da DRE da CVM. Nada aqui é recomendação de investimento.",
   },
+  {
+    titulo: "Bets e risco financeiro",
+    pergunta: "O que as apostas online fazem com a saúde financeira das famílias?",
+    detalhe:
+      "GGR, apostadores, autoexclusão e fluxo Pix com hierarquia de evidências A–E: o painel investiga a hipótese em vez de partir da conclusão, e diz onde a evidência termina.",
+  },
+  {
+    titulo: "Fraudes financeiras",
+    pergunta: "Quanto o Brasil perde com golpes, e o que os dados permitem afirmar?",
+    detalhe:
+      "Perdas reportadas, devoluções via Pix/MED e tipologias — separando dado administrativo oficial de estimativa privada, com a fonte primária de cada número.",
+  },
 ];
 
 const DIFERENCAS = [
@@ -188,13 +199,13 @@ export default function ObservatorioPublicoPage() {
             )}
 
             <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/cadastro">Criar acesso gratuito</BotaoLink>
+              <BotaoLink href="/observatorio">Explorar o Observatório — aberto, sem cadastro</BotaoLink>
               <LinkEntrarComDestino className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze" />
               <Link
                 href="/resumo"
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
-                Ver o resumo diário sem cadastro
+                Ver o resumo diário
               </Link>
             </div>
           </div>
@@ -306,9 +317,15 @@ export default function ObservatorioPublicoPage() {
               </dl>
             )}
             <p className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <BotaoLink href="/cadastro">Criar acesso gratuito</BotaoLink>
+              <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>
+              <Link
+                href="/cadastro"
+                className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
+              >
+                Criar conta gratuita
+              </Link>
               <span className="rotulo text-mineral">
-                sem assinatura · sem cobrança · o cadastro é a única exigência
+                leitura aberta, sem cadastro · a conta guarda preferências e a área de painéis
               </span>
             </p>
           </div>

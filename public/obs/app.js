@@ -7720,7 +7720,7 @@ window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderCon
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -7843,6 +7843,19 @@ function applyTheme(t) {
   if (!btn) return;
   fetch("/api/admin/eu", { credentials: "same-origin" })
     .then(r => { if (r.ok) btn.hidden = false; })
+    .catch(() => {});
+})();
+/* Observatório público: o padrão do rodapé é o visitante (botão "Entrar").
+   Se a sessão existir (/api/auth/eu → 204), troca para "Minha conta"/"Sair". */
+(function initSessionFoot() {
+  const login = document.getElementById("loginBtn");
+  const account = document.getElementById("accountBtn");
+  const logout = document.getElementById("logoutBtn");
+  if (!login || !account || !logout) return;
+  fetch("/api/auth/eu", { credentials: "same-origin" })
+    .then(r => {
+      if (r.status === 204) { login.hidden = true; account.hidden = false; logout.hidden = false; }
+    })
     .catch(() => {});
 })();
 document.getElementById("themeToggle").addEventListener("click", () => {

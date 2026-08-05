@@ -9,8 +9,8 @@ export function Footer() {
         <div className="md:col-span-2">
           <LogoWordmark onDark />
           <p className="mt-4 max-w-sm text-sm text-mineral-soft">
-            Toda a informação relevante para decisões melhores. Plataforma de acesso
-            gratuito: o cadastro é a única exigência.
+            Toda a informação relevante para decisões melhores. Plataforma
+            gratuita: leitura aberta, sem cadastro.
           </p>
           <p className="rotulo mt-6 text-bronze-soft">
             100% gratuito · sem assinatura · sem cobrança
@@ -19,6 +19,7 @@ export function Footer() {
         <nav aria-label="Plataforma">
           <p className="rotulo mb-4 text-mineral-soft">Plataforma</p>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/observatorio" className="hover:text-bronze-soft">Observatório</Link></li>
             <li><Link href="/app" className="hover:text-bronze-soft">Painéis</Link></li>
             <li><Link href="/dados" className="hover:text-bronze-soft">Dados abertos</Link></li>
             <li><Link href="/resumo" className="hover:text-bronze-soft">Resumo diário</Link></li>
@@ -30,6 +31,7 @@ export function Footer() {
         <nav aria-label="Institucional">
           <p className="rotulo mb-4 text-mineral-soft">Institucional</p>
           <ul className="space-y-2 text-sm">
+            <li><Link href="/imprensa" className="hover:text-bronze-soft">Para a imprensa</Link></li>
             <li><Link href="/termos" className="hover:text-bronze-soft">Termos de uso</Link></li>
             <li><Link href="/privacidade" className="hover:text-bronze-soft">Privacidade</Link></li>
             <li><Link href="/entrar" className="hover:text-bronze-soft">Entrar</Link></li>

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     type: "website",
     title: "Scrutiniums — Observatório Brasileiro de Crédito",
     description:
-      "Crédito, inadimplência, taxas de juros por instituição, riscos emergentes e mercado — dados oficiais com metodologia aberta. Gratuito, o cadastro é a única exigência.",
+      "Crédito, inadimplência, taxas de juros por instituição, riscos emergentes e mercado — dados oficiais com metodologia aberta. Gratuito, com leitura aberta e sem cadastro.",
   },
   alternates: { canonical: "/" },
 };
