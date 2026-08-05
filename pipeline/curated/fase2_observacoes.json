@@ -532,7 +532,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "caixa:clientes_total:2026-03-31",
    "institution_id": "caixa",
    "metric_id": "clientes_total",
@@ -550,7 +550,9 @@
     "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
    },
    "pagina": 16,
-   "evidencia": "A CAIXA possui atualmente 159,2 milhões de clientes, que confiam seus recursos à Instituição, aumento de 3,8 milhões em relação a Mar25 e de 2,0 milhões frente a Dez25"
+   "evidencia": "A CAIXA possui atualmente 159,2 milhões de clientes, que confiam seus recursos à Instituição, aumento de 3,8 milhões em relação a Mar25 e de 2,0 milhões frente a Dez25",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -558,7 +560,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "nubank:clientes_total:2026-03-31",
    "institution_id": "nubank",
    "metric_id": "clientes_total",
@@ -576,7 +578,9 @@
     "url": "https://www.sec.gov/Archives/edgar/data/1691493/000129281426003057/nu20260514_6k2.htm"
    },
    "pagina": 1,
-   "evidencia": "In Brazil, Nu surpassed 115 million customers and solidified its position as the largest private financial institution in the country"
+   "evidencia": "In Brazil, Nu surpassed 115 million customers and solidified its position as the largest private financial institution in the country",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -584,7 +588,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "inter:clientes_total:2026-03-31",
    "institution_id": "inter",
    "metric_id": "clientes_total",
@@ -602,7 +606,9 @@
     "url": "https://www.sec.gov/Archives/edgar/data/1864163/000186416326000048/interco1q26earningsrelea.htm"
    },
    "pagina": 1,
-   "evidencia": "Unit Economics — Total Clients mm 44.0 (1Q26) · 43.1 (4Q25) · 37.7 (1Q25) · +16.7% YoY"
+   "evidencia": "Unit Economics — Total Clients mm 44.0 (1Q26) · 43.1 (4Q25) · 37.7 (1Q25) · +16.7% YoY",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -610,7 +616,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "inter:clientes_total:2025-12-31",
    "institution_id": "inter",
    "metric_id": "clientes_total",
@@ -628,7 +634,9 @@
     "url": "https://www.sec.gov/Archives/edgar/data/1864163/000186416326000048/interco1q26earningsrelea.htm"
    },
    "pagina": 1,
-   "evidencia": "Unit Economics — Total Clients mm 44.0 (1Q26) · 43.1 (4Q25) · 37.7 (1Q25)"
+   "evidencia": "Unit Economics — Total Clients mm 44.0 (1Q26) · 43.1 (4Q25) · 37.7 (1Q25)",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "unidade": "clientes",
@@ -636,7 +644,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-05",
-   "status": "review",
+   "status": "aprovado",
    "id": "inter:clientes_ativos:2026-03-31",
    "institution_id": "inter",
    "metric_id": "clientes_ativos",
@@ -654,7 +662,9 @@
     "url": "https://www.sec.gov/Archives/edgar/data/1864163/000186416326000048/interco1q26earningsrelea.htm"
    },
    "pagina": 1,
-   "evidencia": "Unit Economics — Active Clients mm 25.8 (1Q26) · 25.0 (4Q25) · 21.6 (1Q25) · +19.6% YoY"
+   "evidencia": "Unit Economics — Active Clients mm 25.8 (1Q26) · 25.0 (4Q25) · 21.6 (1Q25) · +19.6% YoY",
+   "revisado_em": "2026-08-05",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   }
  ]
 }

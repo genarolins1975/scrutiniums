@@ -273,7 +273,7 @@ def build(con, cfg=None):
             "empregados": None,
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
-            "clientes": None,
+            "clientes": clientes_por_inst.get(extra["id"]) or None,
         })
 
     sfn_rows = con.execute(
