@@ -476,20 +476,6 @@
    "sensibilidade": "contribuições por componente exibidas",
    "validacao": "plena só após RJ/emprego reais",
    "versao": "0.2.0"
-  },
-  {
-   "nome": "Maturidade estrutural Open Finance",
-   "componentes": [
-    "escala de chamadas (relativa ao líder)",
-    "cobertura de famílias de API"
-   ],
-   "pesos": "iguais",
-   "normalizacao": "min-max no grupo divulgado",
-   "tratamento_ausencia": "sem match no diretório → dimensão omitida",
-   "cobertura": "top-20 de chamadas divulgado",
-   "sensibilidade": "—",
-   "validacao": "NÃO mede conversão/latência (não públicas); índice demo anterior foi aposentado",
-   "versao": "0.12.0"
   }
  ],
  "changelog": [
@@ -500,7 +486,7 @@
     "Open Finance v2: subabas (Visão Geral, Consentimentos, APIs & Endpoints, Iniciação, Concentração, Índices, Alertas, Qualidade, Instituições) com síntese determinística.",
     "Novos dados reais: chamadas por ENDPOINT e por família em cada fase (Saldos da Conta lidera com 10,6 bi) e rankings nominais das 3 fases — incluindo iniciação de pagamentos (Nubank 18,8%, Itaú 13,6%).",
     "Concentração por fase: top-1/5/10, fora do top-5 e HHI parcial (rotulado como limite inferior sobre o universo divulgado); histórico de snapshots para mobilidade futura.",
-    "Quatro índices separados (adoção, utilização, conversão, qualidade técnica) com componentes, pesos, cobertura e confiança — conversão declarada INDISPONÍVEL (funil não publicado) em vez de estimada; substituem qualquer índice único de maturidade.",
+    "Quatro índices separados (adoção, utilização, conversão, qualidade técnica) com componentes, pesos, cobertura e confiança — conversão declarada INDISPONÍVEL (funil não publicado) em vez de estimada.",
     "Alertas do OF com regra/limiar/persistência (sucesso <97% nas fases transacional e iniciação disparados); painel de qualidade dos dados com indisponibilidades explícitas.",
     "Relação exploratória OF×crédito: scatter share de chamadas × share de carteira (n=11 matches, Spearman ρ=0,40) — associação, não causalidade."
    ]
@@ -552,7 +538,7 @@
    "data": "2026-07-28",
    "mudancas": [
     "Open Finance REAL — o último módulo demonstrativo foi aposentado: consentimentos ativos semanais por papel (231 mi transmitidos), chamadas de API e taxa de sucesso por fase, ranking nominal de chamadas por organização (rotas públicas do Dashboard do Cidadão, descobertas empiricamente) e diretório oficial de participantes (107 organizações, papéis e famílias de API).",
-    "Índice de maturidade demo substituído por 'maturidade estrutural' honesta (escala de chamadas + cobertura de famílias de API) — conversão/latência por organização não são públicas e o índice antigo foi descartado em vez de simulado."
+    "Índice de maturidade demo descontinuado — conversão e latência por organização não são públicas; nenhum índice sintético o substitui."
    ]
   },
   {

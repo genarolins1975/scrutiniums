@@ -463,56 +463,6 @@
   "score": 60.4,
   "score_delta": 8.3,
   "faixa": "risco elevado",
-  "dimensoes": {
-   "capital_basileia": {
-    "valor": 17.47,
-    "percentil_pares": 62.5,
-    "risco": 37.5,
-    "mediana_pares": 17.35,
-    "q1_pares": 15.01,
-    "q3_pares": 17.97
-   },
-   "rentabilidade": {
-    "valor": 1.96,
-    "percentil_pares": 37.5,
-    "risco": 62.5,
-    "mediana_pares": 2.94,
-    "q1_pares": 1.95,
-    "q3_pares": 3.22
-   },
-   "alavancagem": {
-    "valor": 14.49,
-    "percentil_pares": 37.5,
-    "risco": 37.5,
-    "mediana_pares": 16.09,
-    "q1_pares": 11.82,
-    "q3_pares": 28.61
-   },
-   "concentracao_credito": {
-    "valor": 36.7,
-    "percentil_pares": 62.5,
-    "risco": 62.5,
-    "mediana_pares": 23.99,
-    "q1_pares": 20.84,
-    "q3_pares": 36.99
-   },
-   "dependencia_captacoes": {
-    "valor": 86.58,
-    "percentil_pares": 100.0,
-    "risco": 100.0,
-    "mediana_pares": 78.25,
-    "q1_pares": 72.84,
-    "q3_pares": 84.1
-   },
-   "concentracao_setorial": {
-    "valor": 2746,
-    "percentil_pares": 62.5,
-    "risco": 62.5,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
-   }
-  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -984,10 +934,6 @@
   "share_pct": 0.4,
   "familias_api": null,
   "papeis": null,
-  "dimensoes": {
-   "escala_chamadas": 1.5
-  },
-  "maturidade_estrutural": 1.5,
   "match_diretorio": false
  },
  "reclamacoes": [

@@ -3778,7 +3778,7 @@ function renderInstPageData(el, pg) {
         <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte} · assuntos por instituição não disponíveis no CSV público</div>`
       : "<p class='src'>sem correspondência no Ranking de Reclamações do BCB (pode não atingir o volume mínimo do ranking).</p>"}
       <div class="src" style="margin-top:6px"><b>Citações em RJs (DJEN, 60d):</b> ${pg.rj_citacoes.casos} casos · ${pg.rj_citacoes.nota}</div>
-      ${pg.openfinance ? `<div class="src" style="margin-top:6px"><b>Open Finance:</b> ${pg.openfinance.share_pct}% das chamadas transacionais · maturidade estrutural ${pg.openfinance.maturidade_estrutural}</div>` : ""}
+      ${pg.openfinance ? `<div class="src" style="margin-top:6px"><b>Open Finance:</b> ${pg.openfinance.share_pct}% das chamadas transacionais</div>` : ""}
     </div>
   </div>
   <div id="instSimilares"></div>
@@ -3830,10 +3830,7 @@ function renderOpenFinance() {
       <td>${fmt.n0(i.consentimentos_ativos_recebidos)}</td>
       <td>${fmt.n(i.chamadas_api_mes / Math.max(i.consentimentos_ativos_recebidos, 1), 1)} <span class="src">chamadas/consent.</span></td>
       <td>${fmt.n(i.iniciacoes_pagamento_mes / Math.max(i.consentimentos_ativos_recebidos, 1) * 100, 1)}% <span class="src">iniciações/consent.</span></td>
-      <td>${fmt.n(i.taxa_sucesso_pct, 1)}%</td>
-      <td><b>${i.maturidade}</b>
-        <details class="decomp"><summary>dimensões</summary>${Object.entries(i.dimensoes).map(([k, v]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")}</span><span class="bar pos" style="width:${v * 0.8}px"></span><span class="num">${v}</span></div>`).join("")}</details>
-      </td></tr>`).join("");
+      <td>${fmt.n(i.taxa_sucesso_pct, 1)}%</td></tr>`).join("");
   el.innerHTML = `
   <h2>Open Finance ${badge("demo")}</h2>
   <p class="viewdesc"><b>Todos os números desta aba são demonstrativos</b> — ${of.motivo} Indicadores normalizados (por consentimento) e papéis (transmissor/receptor/misto) evitam confundir volume com maturidade.</p>
@@ -3845,7 +3842,7 @@ function renderOpenFinance() {
     ${["início", "autenticação", "consentimento", "autorização", "compartilhamento", "uso recorrente", "contratação"].map((s, i) => contribBar(s, 7 - i, 16)).join("")}
     <div class="src">Estágios ilustrativos — dados reais de conversão por etapa dependem do dashboard oficial (Fase 5).</div></div></div>
   <h3>Ranking nominal normalizado (demo) — ${of.ref_period}</h3>
-  <div class="tblwrap"><table class="data"><thead><tr><th>#</th><th>Instituição / papel</th><th>Consent. ativos</th><th>Intensidade de uso</th><th>Uso econômico</th><th>Sucesso API</th><th>Maturidade 0–100</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  <div class="tblwrap"><table class="data"><thead><tr><th>#</th><th>Instituição / papel</th><th>Consent. ativos</th><th>Intensidade de uso</th><th>Uso econômico</th><th>Sucesso API</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {

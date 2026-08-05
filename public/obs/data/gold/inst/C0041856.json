@@ -626,56 +626,6 @@
   "score": 31.8,
   "score_delta": -4.5,
   "faixa": "risco baixo",
-  "dimensoes": {
-   "capital_basileia": {
-    "valor": 15.83,
-    "percentil_pares": 85.7,
-    "risco": 14.3,
-    "mediana_pares": 13.76,
-    "q1_pares": 12.99,
-    "q3_pares": 15.28
-   },
-   "rentabilidade": {
-    "valor": 3.31,
-    "percentil_pares": 25.0,
-    "risco": 75.0,
-    "mediana_pares": 4.75,
-    "q1_pares": 3.31,
-    "q3_pares": 6.72
-   },
-   "alavancagem": {
-    "valor": 9.35,
-    "percentil_pares": 25.0,
-    "risco": 25.0,
-    "mediana_pares": 11.11,
-    "q1_pares": 9.35,
-    "q3_pares": 13.29
-   },
-   "concentracao_credito": {
-    "valor": 31.26,
-    "percentil_pares": 25.0,
-    "risco": 25.0,
-    "mediana_pares": 61.42,
-    "q1_pares": 31.26,
-    "q3_pares": 62.22
-   },
-   "dependencia_captacoes": {
-    "valor": 76.07,
-    "percentil_pares": 37.5,
-    "risco": 37.5,
-    "mediana_pares": 76.86,
-    "q1_pares": 72.02,
-    "q3_pares": 77.08
-   },
-   "concentracao_setorial": {
-    "valor": 2219,
-    "percentil_pares": 14.3,
-    "risco": 14.3,
-    "mediana_pares": 2531.0,
-    "q1_pares": 2284.25,
-    "q3_pares": 3141.25
-   }
-  },
   "historico_score": [
    {
     "anomes": "202503",

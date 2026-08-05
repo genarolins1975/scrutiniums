@@ -1579,10 +1579,6 @@
   "share_pct": 0.0,
   "familias_api": null,
   "papeis": null,
-  "dimensoes": {
-   "escala_chamadas": 0.0
-  },
-  "maturidade_estrutural": 0.0,
   "match_diretorio": false
  },
  "reclamacoes": [

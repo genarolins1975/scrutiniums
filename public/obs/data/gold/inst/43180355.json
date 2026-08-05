@@ -1725,11 +1725,6 @@
   "papeis": [
    "CONTA"
   ],
-  "dimensoes": {
-   "escala_chamadas": 0.1,
-   "cobertura_funcional": 17.9
-  },
-  "maturidade_estrutural": 9.0,
   "match_diretorio": true
  },
  "reclamacoes": [
