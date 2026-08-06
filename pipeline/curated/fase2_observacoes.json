@@ -1,6 +1,6 @@
 {
- "versao": 1,
- "atualizado_em": "2026-08-05",
+ "versao": 2,
+ "atualizado_em": "2026-08-06",
  "processo": "Fase 2 (camada 3): extração em sessão Claude Code sobre as páginas candidatas coletadas por pipeline/sources/releases.py (descoberta via CVM/IPE). Revisão humana obrigatória: só observações com status 'aprovado' são publicadas no gold. Evidência (documento, página e trecho literal) é obrigatória em toda observação.",
  "metricas": {
   "clientes_total": {
@@ -26,6 +26,16 @@
   "clientes_corporativos": {
    "nome": "Clientes corporativos ativos",
    "conceito": "Empresas com relacionamento ativo em banco de atacado, conforme critério da companhia. Universo de centenas ou milhares — ordem de grandeza distinta da base de varejo; jamais comparar com clientes pessoa física.",
+   "comparabilidade": "C"
+  },
+  "empregados_reportado": {
+   "nome": "Empregados declarados pela companhia",
+   "conceito": "Quadro de pessoal como a própria instituição divulga em relatório de resultados. Existe para instituições sem registro de companhia aberta na CVM, que por isso não entregam o item 10.1 do Formulário de Referência. NÃO é a mesma medida do FRE: o escopo (companhia, banco ou conglomerado) e a data-base são os da divulgação, e por isso os dois números nunca entram na mesma série nem em ranking conjunto.",
+   "comparabilidade": "C"
+  },
+  "colaboradores_reportado": {
+   "nome": "Colaboradores declarados pela companhia",
+   "conceito": "Conceito mais amplo que empregados, definido pela própria instituição — costuma somar estagiários e aprendizes ao quadro efetivo, e pode abranger o conglomerado em vez de uma única entidade. Publicado ao lado de empregados justamente para que a diferença de conceito fique visível, nunca para substituí-lo.",
    "comparabilidade": "C"
   }
  },
@@ -75,6 +85,11 @@
    "institution_id": "amazonia",
    "documento": "Divulgação de Resultados 4T25 (CVM/IPE)",
    "motivo": "comunicado de 2 páginas que remete ao site, sem números operacionais"
+  },
+  {
+   "institution_id": "safra",
+   "documento": "Resumo Consolidado e Principais Indicadores — mar/2026 (site do Banco Safra)",
+   "motivo": "o resumo divulga colaboradores do conglomerado, mas não separa empregados de estagiários e aprendizes; a métrica de empregados fica ausente, não estimada"
   }
  ],
  "observacoes": [
@@ -665,6 +680,84 @@
    "evidencia": "Unit Economics — Active Clients mm 25.8 (1Q26) · 25.0 (4Q25) · 21.6 (1Q25) · +19.6% YoY",
    "revisado_em": "2026-08-05",
    "revisado_por": "proprietário (revisão em sessão Claude Code)"
+  },
+  {
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-06",
+   "status": "review",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "unidade": "pessoas",
+   "id": "caixa:empregados_reportado:2026-03-31",
+   "institution_id": "caixa",
+   "metric_id": "empregados_reportado",
+   "valor": 84363,
+   "exibir": "84.363",
+   "escopo": "quadro de empregados da CAIXA, conforme a tabela 'Estrutura (Quantidade)' do próprio relatório",
+   "documento": {
+    "fonte": "RI Caixa (plataforma MZ)",
+    "protocolo": "mz:0310f05a-c6b5-b949-3ee4-b1463b04f54b",
+    "tipo": "Relatório de Análise de Desempenho",
+    "assunto": "Relatório de Análise de Desempenho 1T26",
+    "entregue_em": "2026-05",
+    "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
+   },
+   "pagina": 8,
+   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)"
+  },
+  {
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-06",
+   "status": "review",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "unidade": "pessoas",
+   "id": "caixa:colaboradores_reportado:2026-03-31",
+   "institution_id": "caixa",
+   "metric_id": "colaboradores_reportado",
+   "valor": 90039,
+   "exibir": "90.039",
+   "escopo": "empregados da CAIXA mais estagiários e aprendizes, conforme a mesma tabela",
+   "documento": {
+    "fonte": "RI Caixa (plataforma MZ)",
+    "protocolo": "mz:0310f05a-c6b5-b949-3ee4-b1463b04f54b",
+    "tipo": "Relatório de Análise de Desempenho",
+    "assunto": "Relatório de Análise de Desempenho 1T26",
+    "entregue_em": "2026-05",
+    "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
+   },
+   "pagina": 8,
+   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)"
+  },
+  {
+   "natureza": "reportado",
+   "comparabilidade": "C",
+   "confianca": "alta",
+   "extraido_em": "2026-08-06",
+   "status": "review",
+   "period_end": "2026-03-31",
+   "periodo_rotulo": "1T26",
+   "unidade": "pessoas",
+   "id": "safra:colaboradores_reportado:2026-03-31",
+   "institution_id": "safra",
+   "metric_id": "colaboradores_reportado",
+   "valor": 8339,
+   "exibir": "8.339",
+   "escopo": "colaboradores do CONGLOMERADO Safra, em indivíduos, conforme o bloco 'Dados Relevantes' do resumo",
+   "documento": {
+    "fonte": "RI Banco Safra (site institucional)",
+    "protocolo": "safra:resumo-consolidado-mar-2026",
+    "tipo": "Resumo Consolidado e Principais Indicadores",
+    "assunto": "Resumo Consolidado e Principais Indicadores — mar/2026",
+    "entregue_em": "2026-05",
+    "url": "https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf"
+   },
+   "pagina": 1,
+   "evidencia": "Dados Relevantes — Colaboradores do Conglomerado (indivíduos): 8.339 (Mar.26), 8.415 (Dez.25), 8.608 (Mar.25) (transcrição fiel da linha da tabela)"
   }
  ]
 }

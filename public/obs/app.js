@@ -7947,6 +7947,30 @@ function renderOperacional() {
     o painel passa a acumular a série a partir da primeira coleta. Instituição sem ponto cadastrado não aparece na
     tabela: ausência de dependência é informação, não zero de rede encerrada.</p></div>`;
 
+  /* Quadro de pessoal divulgado pela própria instituição (Fase 2). Existe para
+     quem não tem registro de companhia aberta e por isso não entrega o item
+     10.1 do FRE. Fica em tabela separada porque conceito, escopo e data-base
+     são os da divulgação — juntar com a série do FRE criaria comparação falsa. */
+  const f2p = D.fase2 || {};
+  const metricaP = m => ((f2p.metricas || {})[m] || {}).nome || m;
+  const conceitoP = m => ((f2p.metricas || {})[m] || {}).conceito || "";
+  const comPessoal = D.instituicoes.filter(i => i.pessoal_reportado && i.pessoal_reportado.length);
+  const tPessoal = !comPessoal.length ? "" : `
+  <div class="card"><h4>Quadro de pessoal divulgado pela própria instituição ${badge("observado")}</h4>
+    <div class="tblwrap"><table>
+      <thead><tr><th>Instituição</th><th>Métrica</th><th class="num">Pessoas</th><th>Período</th><th>Evidência (documento · página)</th></tr></thead>
+      <tbody>${comPessoal.flatMap(i => i.pessoal_reportado.map(c => `<tr>
+        <td>${i.nome}</td>
+        <td><span title="${attr(conceitoP(c.metric_id))}">${metricaP(c.metric_id)}</span></td>
+        <td class="num">${c.exibir}</td>
+        <td>${c.periodo_rotulo}</td>
+        <td><a href="${attr(c.documento.url)}" target="_blank" rel="noopener"
+          title="${attr(`p.${c.pagina}: “${c.evidencia}” — ${c.documento.assunto} (${c.documento.fonte})`)}">${c.documento.assunto.slice(0, 38)} · p.${c.pagina}</a></td></tr>`)).join("")}
+      </tbody></table></div>
+    <dl class="descomoler" style="margin-top:10px">${Array.from(new Set(comPessoal.flatMap(i => i.pessoal_reportado.map(c => c.metric_id)))).map(m => `<dt>${metricaP(m)}</dt><dd>${conceitoP(m)}</dd>`).join("")}</dl>
+    <p class="src"><b>Comparabilidade C:</b> estes números NÃO entram na série do FRE nem em ranking com ela. Escopo,
+    conceito e data-base são os da divulgação de cada instituição.${f2p.em_revisao ? ` · ${f2p.em_revisao} extração(ões) aguardando revisão editorial.` : ""}</p></div>`;
+
   const comEmp = D.instituicoes.filter(i => i.empregados).map(i => ({ i, u: i.empregados.serie[i.empregados.serie.length - 1] }))
     .sort((a, b) => b.u.total - a.u.total);
   const tEmp = `${sechead("Gente — empregados declarados no FRE", "item 10.1 · escopo declarado pela companhia")}
@@ -7960,7 +7984,11 @@ function renderOperacional() {
       <td>${fmt.d(u.ref)} · FRE/${u.fre_ano} v${u.versao}</td></tr>`).join("")}
     </tbody></table></div>
     <p class="src">${badge("observado")} Número DECLARADO pela companhia listada, no escopo que ela declara — pode diferir do
-    conglomerado prudencial do IF.data. Caixa e Safra não têm FRE (não listadas): ausência, não zero.</p></div>`;
+    conglomerado prudencial do IF.data. Instituições sem registro de companhia aberta não têm FRE: quando divulgam o
+    quadro no próprio relatório, o número aparece na tabela seguinte, separado — nunca somado a esta série.</p></div>` +
+    (comPessoal.length ? tPessoal : (f2p.em_revisao ? `
+    <div class="card"><p class="src">${f2p.em_revisao} extração(ões) de quadro de pessoal ou de clientes aguardando revisão
+    editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>` : ""));
 
   const comAud = D.instituicoes.filter(i => i.auditor);
   const tAud = `${sechead("Auditoria", "auditor independente vigente e trocas registradas no FCA")}

@@ -207,10 +207,23 @@ def _rede(con, cnpj8, flags, nome):
 CURADO_FASE2 = os.path.join(os.path.dirname(os.path.abspath(__file__)), "curated", "fase2_observacoes.json")
 
 
+# Famílias de métrica da Fase 2. A separação existe porque a tela agrupa por
+# assunto: contagem de clientes e quadro de pessoal são coisas diferentes e não
+# podem cair na mesma tabela só porque vieram do mesmo fluxo de extração.
+FAMILIA_FASE2 = {
+    "clientes_total": "clientes", "clientes_ativos": "clientes", "correntistas": "clientes",
+    "clientes_ativos_digitais": "clientes", "clientes_corporativos": "clientes",
+    "empregados_reportado": "pessoal", "colaboradores_reportado": "pessoal",
+}
+
+
 def _fase2():
     """Observações da Fase 2 (releases de RI, extração com revisão obrigatória).
     Publica APENAS status 'aprovado', e apenas observações completas (evidência,
-    página e URL presentes). O restante vira contador — nunca valor."""
+    página e URL presentes). O restante vira contador — nunca valor.
+
+    Devolve as observações já separadas por família (clientes, pessoal): o fluxo
+    de extração é o mesmo, o assunto não."""
     try:
         with open(CURADO_FASE2, encoding="utf-8") as fh:
             cur = json.load(fh)
@@ -226,7 +239,8 @@ def _fase2():
             continue
         if not (o.get("evidencia") and o.get("pagina") and (o.get("documento") or {}).get("url")):
             continue  # sem evidência completa não se publica, aprovado ou não
-        por_inst.setdefault(o["institution_id"], []).append({
+        familia = FAMILIA_FASE2.get(o["metric_id"], "clientes")
+        por_inst.setdefault(o["institution_id"], {}).setdefault(familia, []).append({
             "metric_id": o["metric_id"],
             "valor": o["valor"],
             "exibir": o["exibir"],
@@ -240,8 +254,9 @@ def _fase2():
             "evidencia": o["evidencia"],
             "documento": o["documento"],
         })
-    for itens in por_inst.values():
-        itens.sort(key=lambda x: (x["metric_id"], x["period_end"]))
+    for familias in por_inst.values():
+        for itens in familias.values():
+            itens.sort(key=lambda x: (x["metric_id"], x["period_end"]))
     return por_inst, contadores, cur.get("metricas", {})
 
 
@@ -278,7 +293,8 @@ def build(con, cfg=None):
             "auditor": _auditor(con, cid, flags, nome),
             "rede": _rede(con, c["cnpj8_rede"], flags, nome) if c["cnpj8_rede"] else None,
             "pontos": dep_de(c["cnpj8_rede"]),
-            "clientes": clientes_por_inst.get(cid) or None,
+            "clientes": (clientes_por_inst.get(cid) or {}).get("clientes") or None,
+            "pessoal_reportado": (clientes_por_inst.get(cid) or {}).get("pessoal") or None,
         })
 
     for extra in REDE_EXTRA:
@@ -292,7 +308,8 @@ def build(con, cfg=None):
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
             "pontos": dep_de(extra["cnpj8"]),
-            "clientes": clientes_por_inst.get(extra["id"]) or None,
+            "clientes": (clientes_por_inst.get(extra["id"]) or {}).get("clientes") or None,
+            "pessoal_reportado": (clientes_por_inst.get(extra["id"]) or {}).get("pessoal") or None,
         })
 
     sfn_rows = con.execute(

@@ -112,7 +112,7 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
 - Confiabilidade do protocolo: **A** (registro administrativo da CVM); o valor
   divulgado é `reportado` pela companhia
 
-## 6. Fontes fora da CVM — Fase 2 (Caixa, Nubank e Inter)
+## 6. Fontes fora da CVM — Fase 2 (Caixa, Safra, Nubank e Inter)
 
 - **SEC/EDGAR** (Nubank — Nu Holdings, CIK 1691493; Inter & Co, CIK 1864163):
   arquivos 6-K com os earnings releases, baixados do domínio da própria SEC
@@ -134,3 +134,22 @@ Banrisul, BMG, Pine, Amazônia, Nordeste, Banestes, Mercantil, BRB, Banese,
 BR Partners, Alfa, BMI) + 2 só-rede (Caixa, Safra). Cobertura por bloco no
 próprio gold (`cobertura`): empregados e auditoria para as listadas; rede para
 os CNPJs com dependências no ESTBAN.
+
+## 7. Quadro de pessoal por divulgação própria (Fase 2)
+
+Instituições sem registro de companhia aberta não entregam o item 10.1 do FRE.
+Quando publicam o quadro no próprio relatório, o número entra pela Fase 2, com
+evidência obrigatória e revisão humana, e **em tabela separada da série do FRE**
+— conceito, escopo e data-base são os da divulgação, e somar as duas coisas
+criaria comparação falsa.
+
+| Instituição | Métrica | Valor | Referência | Documento (p.) |
+|---|---|---|---|---|
+| Caixa | Empregados CAIXA | 84.363 | 1T26 | Relatório de Análise de Desempenho 1T26 (p. 8) |
+| Caixa | Colaboradores (inclui estagiários e aprendizes) | 90.039 | 1T26 | idem (p. 8) |
+| Banco Safra | Colaboradores do Conglomerado (indivíduos) | 8.339 | mar/2026 | Resumo Consolidado e Principais Indicadores — mar/2026 (p. 1) |
+
+- Documento da Caixa: plataforma MZ do RI (mesmo protocolo já usado para clientes).
+- Documento do Safra: https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf — identidade conferida pelo CNPJ 58.160.789/0001-28 impresso no cabeçalho.
+- Ausência registrada: o resumo do Safra não separa empregados de estagiários e aprendizes; a métrica de empregados fica ausente, nunca estimada.
+- Um relatório anual de 2025 devolvido por busca como sendo do Safra foi **descartado** na conferência: o documento era de uma companhia agrícola (menciona fazendas e 6.729 colaboradores). Nenhum número dele entrou. Documento só entra depois de conferida a identidade no próprio arquivo.
