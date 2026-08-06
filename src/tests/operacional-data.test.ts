@@ -16,12 +16,51 @@ const g = JSON.parse(
 );
 
 describe("estrutura e cobertura", () => {
+  it("a aba publica a fronteira da cobertura, com os bancos que ficaram de fora", () => {
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    expect(app).toContain("Fronteira da cobertura");
+    expect(app).toContain("C.bancos_cvm_fora");
+    expect(app).toContain("ausência não vira zero");
+  });
+
+
   it("gold disponível, com cobertura consistente", () => {
     expect(g.disponivel).toBe(true);
     expect(g.instituicoes.length).toBe(g.cobertura.instituicoes);
     expect(g.instituicoes.filter((i: any) => i.empregados).length).toBe(g.cobertura.com_empregados);
     expect(g.instituicoes.filter((i: any) => i.auditor).length).toBe(g.cobertura.com_auditor);
     expect(g.instituicoes.filter((i: any) => i.rede).length).toBe(g.cobertura.com_rede);
+  });
+
+  it("a fronteira da cobertura é objetiva e a lacuna é publicada nominalmente", () => {
+    const c = g.cobertura;
+    // critério verificável na fonte, não escolha editorial fechada
+    expect(c.criterio).toMatch(/Formulário Cadastral|FCA/i);
+    expect(c.bancos_cvm).toBeGreaterThan(0);
+    expect(c.bancos_cvm_cobertos).toBeLessThanOrEqual(c.bancos_cvm);
+    expect(c.bancos_cvm_fora.length).toBe(c.bancos_cvm - c.bancos_cvm_cobertos);
+    for (const f of c.bancos_cvm_fora) {
+      expect(f.cnpj, f.nome).toMatch(/^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/);
+      expect(f.nome).toBeTruthy();
+      // a idade do cadastro precisa acompanhar o nome: registro "ativo" antigo
+      // costuma ser caso encerrado, e o leitor tem de poder distinguir
+      expect(f.ultimo_fca, f.nome).toBeGreaterThanOrEqual(2021);
+    }
+    // quem está fora não pode estar dentro, e vice-versa
+    const ids = new Set(g.instituicoes.map((i: any) => i.id));
+    expect(ids.size).toBe(g.instituicoes.length);
+    expect(g.cobertura.bancos_cvm_cobertos).toBeGreaterThanOrEqual(20);
+  });
+
+  it("instituições que entraram pela CVM trazem série de empregados de verdade", () => {
+    // a expansão do cadastro só vale se produzir dado, não linha vazia
+    for (const id of ["banpara", "daycoval", "parana", "pan", "inter"]) {
+      const inst = g.instituicoes.find((i: any) => i.id === id);
+      expect(inst, `instituição ${id} ausente`).toBeTruthy();
+      expect(inst.empregados?.serie?.length, `${id} sem série de empregados`).toBeGreaterThanOrEqual(3);
+      expect(inst.empregados.serie.at(-1).total, `${id} com total não positivo`).toBeGreaterThan(0);
+      expect(inst.auditor, `${id} sem auditor`).toBeTruthy();
+    }
   });
 
   it("fontes com URL https e nível A (dado administrativo oficial)", () => {

@@ -7973,6 +7973,23 @@ function renderOperacional() {
     <p class="src">Regras: variação de empregados &gt;30% a/a · queda de rede &gt;15% em 12 meses · troca de auditor nos
     últimos dois anos. A flag acompanha o dado publicado; nada é ajustado por trás.</p></div>`;
 
+  /* Fronteira da cobertura: o painel não escolhe instituições a dedo. O
+     critério é o setor de atividade do cadastro da CVM, e quem fica de fora
+     aparece com nome e CNPJ — lacuna declarada, nunca silenciosa. */
+  const C = D.cobertura || {};
+  const cob = C.bancos_cvm == null ? "" : `${sechead("Fronteira da cobertura", "quem entra, quem fica de fora e por quê")}
+  <div class="card">
+    <p class="src">O painel cobre <b>${fmt.n0(C.bancos_cvm_cobertos)} dos ${fmt.n0(C.bancos_cvm)}</b> bancos com registro
+    ativo no Formulário Cadastral da CVM, mais Caixa, Safra e Nubank, que não são companhias abertas e entram por fontes
+    próprias — <b>${fmt.n0(C.instituicoes)}</b> instituições ao todo. Critério: ${C.criterio}</p>
+    ${(C.bancos_cvm_fora || []).length ? `<div class="tblwrap" style="margin-top:8px"><table class="data compact">
+      <thead><tr><th>Banco registrado ainda fora do painel</th><th>CNPJ</th><th class="num">Último FCA entregue</th></tr></thead>
+      <tbody>${C.bancos_cvm_fora.map(b => `<tr><td>${b.nome}</td><td class="src">${b.cnpj}</td><td class="num">${b.ultimo_fca}</td></tr>`).join("")}</tbody>
+      </table></div>` : ""}
+    <p class="src">${badge("observado")} Registro ativo com entrega antiga costuma ser caso encerrado que nunca foi
+    baixado na CVM. Nenhuma destas instituições publica a tabela de empregados do FRE: entrariam como linha vazia, e
+    ausência não vira zero.</p></div>`;
+
   const fontes = `<div class="card"><h4>Fontes desta página</h4>
     <ul class="src" style="margin:6px 0 0;padding-left:18px">${(D.fontes || []).map(f =>
       `<li><a href="${attr(f.url)}" target="_blank" rel="noopener">${f.nome}</a> · nível ${f.nivel}</li>`).join("")}</ul></div>`;
@@ -7982,7 +7999,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tEmp + tCli + tAud + tFlags + fontes;
+  }) + aviso + kpis + tRede + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };

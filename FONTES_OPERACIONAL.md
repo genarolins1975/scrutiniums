@@ -1,8 +1,30 @@
 # FONTES_OPERACIONAL.md — registro de fontes dos indicadores operacionais (Fase 0)
 
 Verificação empírica das três fontes: 05/08/2026 (downloads reais, estruturas
-conferidas coluna a coluna). Classificação de confiabilidade: **A** dado
-administrativo oficial (mesma escala dos painéis de bets e fraudes).
+conferidas coluna a coluna); cobertura ampliada e reverificada em 06/08/2026.
+Classificação de confiabilidade: **A** dado administrativo oficial (mesma escala
+dos painéis de bets e fraudes).
+
+## 0. Universo coberto — critério e fronteira
+
+O painel deixou de seguir apenas o recorte da B3 (18 companhias do piloto de
+mercado). O universo passou a ser objetivo e verificável na própria fonte:
+**toda companhia que a CVM classifica no setor de atividade "Bancos" com
+registro ativo**, lido da tabela `fca_cia_aberta_geral_{ano}.csv`. Entram ainda,
+por fontes próprias, três instituições sem registro de companhia aberta: Caixa e
+Safra (rede do ESTBAN) e Nubank (clientes via SEC).
+
+O cadastro inteiro da CVM é guardado no silver (`oper_cadastro_cvm`), o que
+permite publicar no gold — e na tela — **quais bancos registrados ainda estão
+fora**, com nome, CNPJ e o ano da última entrega do FCA. Registro "ativo" com
+entrega antiga costuma ser caso encerrado que nunca foi baixado na CVM; nenhum
+dos que ficam de fora publica a tabela de empregados do FRE, e entrariam como
+linha vazia.
+
+A chave de coleta carrega uma assinatura do conjunto de instituições
+(`CADASTRO_SHA`): incluir uma instituição faz o pipeline reabsorver todos os
+anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
+único ano.
 
 ## 1. CVM — Formulário de Referência (FRE), dados abertos
 
@@ -13,8 +35,13 @@ administrativo oficial (mesma escala dos painéis de bets e fraudes).
   Sudeste/Sul/Exterior)
 - Primeiro ano com a tabela: **2023** (Resolução CVM 59)
 - Frequência: anual, com retificações ao longo do ano (campo `Versao`; fica a maior)
-- População: companhias abertas registradas na CVM — dos 18 bancos do piloto,
-  todos entregam FRE; Caixa e Safra (não listados) ficam fora desta fonte
+- População: companhias abertas registradas na CVM. Além das 18 do piloto de
+  mercado, entram os demais bancos do setor "Bancos" da CVM com tabela de
+  empregados publicada: Banpará, Daycoval, Paraná Banco, Banco Pan, Banco RCI,
+  Investimentos Bemge, Mercantil Financeira e Inter & Co (holding do Banco
+  Inter, CNPJ 42.737.954/0001-21 — distinto do CNPJ 00.416.968 usado no ESTBAN).
+  Caixa, Safra e Nubank não têm registro de companhia aberta e ficam fora desta
+  fonte
 - Limitações: escopo declarado pela companhia (pode ser holding, banco ou
   consolidado — difere entre companhias e do conglomerado prudencial do IF.data);
   data de referência conforme informada pela CVM · Confiabilidade: **A**

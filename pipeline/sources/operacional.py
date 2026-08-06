@@ -19,6 +19,7 @@ Idempotência: FRE/FCA de ano fechado e ESTBAN de mês fechado nunca mudam —
 corrente da CVM é rebaixado a cada execução (companhias retificam o ano todo).
 """
 import csv
+import hashlib
 import io
 import json
 import zipfile
@@ -38,8 +39,61 @@ def _fmt_cnpj(c):
     return f"{c[0:2]}.{c[2:5]}.{c[5:8]}/{c[8:12]}-{c[12:14]}"
 
 
-# CNPJs formatados das companhias do piloto (chave dos CSVs da CVM).
+# Bancos com registro ATIVO na CVM que não fazem parte do piloto de mercado
+# (o piloto segue o recorte da B3; a CVM classifica por setor de atividade e
+# alcança mais instituições). O critério aqui é objetivo e verificável na
+# própria fonte: `Setor_Atividade = "Bancos"` no FCA, registro ativo. Manter a
+# lista explícita — em vez de gerar identificadores automaticamente do nome —
+# preserva ids estáveis nas URLs; a coleta registra o cadastro inteiro da CVM
+# e o gold publica quem ficou de fora, para que a lacuna seja visível.
+#
+# `cnpj8_rede` é o CNPJ-raiz do banco OPERACIONAL no ESTBAN, que pode diferir
+# do CNPJ da companhia registrada (caso do Inter: holding 42737954 na CVM,
+# banco 00416968 no ESTBAN). Ausente do ESTBAN → sem rede reportada.
+BANCOS_CVM = [
+    {"id": "banpara", "cnpj": "04913711000108", "nome": "Banco Do Estado Do Para S.A.",
+     "cnpj8_rede": "04913711", "cod_ifdata": "04913711"},
+    {"id": "daycoval", "cnpj": "62232889000190", "nome": "Banco Daycoval S.A.",
+     "cnpj8_rede": "62232889", "cod_ifdata": "C0051987"},
+    {"id": "parana", "cnpj": "14388334000199", "nome": "Parana Banco S.A.",
+     "cnpj8_rede": "14388334", "cod_ifdata": "C0030881"},
+    {"id": "rci", "cnpj": "62307848000115", "nome": "Banco Rci Brasil S.A.",
+     "cnpj8_rede": None, "cod_ifdata": None},
+    {"id": "bemge", "cnpj": "01548981000179", "nome": "Investimentos Bemge S.A.",
+     "cnpj8_rede": None, "cod_ifdata": None},
+    {"id": "mercfin", "cnpj": "33040601000187",
+     "nome": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+     "cnpj8_rede": None, "cod_ifdata": None},
+    {"id": "pan", "cnpj": "59285411000113", "nome": "Banco Pan S.A.",
+     "cnpj8_rede": "59285411", "cod_ifdata": None},
+    # Inter & Co já aparecia no painel pela rede do ESTBAN e pelos clientes da
+    # SEC; o registro na CVM (holding, CNPJ próprio) traz empregados e auditor.
+    {"id": "inter", "cnpj": "42737954000121", "nome": "Inter & Co, Inc. (Banco Inter)",
+     "cnpj8_rede": "00416968", "cod_ifdata": "C0051884"},
+]
+
+SETOR_BANCOS = "Bancos"
+
+# Registros de CVM que pertencem a instituição JÁ coberta por outro CNPJ
+# (holding e banco operacional registrados separadamente). Servem apenas à
+# contabilidade de cobertura — não entram em CNPJ_CVM, para que as linhas de
+# FRE de uma entidade nunca sobrescrevam as da outra sob o mesmo id.
+CNPJ_ALIAS = {
+    "00.416.968/0001-01": "inter",    # Banco Inter S.A., operacional da holding Inter & Co
+    "24.410.913/0001-44": "nubank",   # Nu Holdings Ltd., registro brasileiro do grupo
+}
+
+# CNPJs formatados (chave dos CSVs da CVM) → identificador da instituição.
 CNPJ_CVM = {_fmt_cnpj(c["cnpj"]): c["company_id"] for c in COMPANIES}
+CNPJ_CVM.update({_fmt_cnpj(b["cnpj"]): b["id"] for b in BANCOS_CVM})
+
+# Assinatura do conjunto de instituições cobertas. Ela entra na chave de
+# coleta: zip de ano fechado não é rebaixado enquanto o cadastro for o mesmo,
+# mas basta incluir uma instituição para que todos os anos sejam reabsorvidos
+# uma vez — do contrário a nova instituição nasceria com um único ano de
+# série, e a diferença ficaria invisível.
+CADASTRO_SHA = hashlib.sha256(
+    "|".join(sorted(CNPJ_CVM)).encode("utf-8")).hexdigest()[:8]
 
 
 def _ensure(con):
@@ -59,6 +113,9 @@ def _ensure(con):
         data_base TEXT PRIMARY KEY, agencias INTEGER, municipios INTEGER, bancos INTEGER);
     CREATE TABLE IF NOT EXISTS oper_coleta(
         chave TEXT PRIMARY KEY, coletado_em TEXT, sha TEXT, detalhe TEXT);
+    CREATE TABLE IF NOT EXISTS oper_cadastro_cvm(
+        cnpj TEXT PRIMARY KEY, ano_zip INTEGER, nome TEXT, setor TEXT,
+        categoria TEXT, situacao_registro TEXT, situacao_emissor TEXT);
     """)
 
 
@@ -118,10 +175,37 @@ def _absorve_fre(con, ano, body, sha):
     return {"empregados": n}
 
 
+def _absorve_cadastro(con, ano, body):
+    """Cadastro de TODAS as companhias do FCA, com o setor de atividade que a
+    própria CVM atribui. Guardar o universo inteiro (e não só as instituições
+    do painel) é o que permite publicar, depois, quais bancos com registro
+    ativo ainda estão fora da cobertura — lacuna visível em vez de silenciosa."""
+    linhas = _le_csv_do_zip(body, f"fca_cia_aberta_geral_{ano}.csv")
+    if linhas is None:
+        return 0
+    melhor = {}
+    for l in linhas:
+        cnpj = (l.get("CNPJ_Companhia") or "").strip()
+        if not cnpj:
+            continue
+        v = _num(l.get("Versao"))
+        if cnpj not in melhor or v >= melhor[cnpj][0]:
+            melhor[cnpj] = (v, l)
+    for cnpj, (_, l) in melhor.items():
+        con.execute("INSERT OR REPLACE INTO oper_cadastro_cvm VALUES(?,?,?,?,?,?,?)",
+                    (cnpj, ano, (l.get("Nome_Empresarial") or "").strip(),
+                     (l.get("Setor_Atividade") or "").strip(),
+                     (l.get("Categoria_Registro_CVM") or "").strip(),
+                     (l.get("Situacao_Registro_CVM") or "").strip(),
+                     (l.get("Situacao_Emissor") or "").strip()))
+    return len(melhor)
+
+
 def _absorve_fca(con, ano, body, sha):
+    cadastradas = _absorve_cadastro(con, ano, body)
     linhas = _le_csv_do_zip(body, f"fca_cia_aberta_auditor_{ano}.csv")
     if linhas is None:
-        return {"auditores": 0, "aviso": "tabela de auditores ausente no zip"}
+        return {"auditores": 0, "cadastro": cadastradas, "aviso": "tabela de auditores ausente no zip"}
     melhor_versao = {}
     for l in linhas:
         cid = CNPJ_CVM.get((l.get("CNPJ_Companhia") or "").strip())
@@ -139,8 +223,8 @@ def _absorve_fca(con, ano, body, sha):
                      (l.get("Data_Fim_Atuacao_Auditor") or "").strip()))
         n += 1
     common.record_lineage(con, "operacional.json", f"fca_cia_aberta_{ano}.zip", sha,
-                          "FCA auditor -> oper_auditores (maior versão por companhia)")
-    return {"auditores": n}
+                          "FCA auditor -> oper_auditores; FCA geral -> oper_cadastro_cvm (setor de atividade)")
+    return {"auditores": n, "cadastro": cadastradas}
 
 
 def _absorve_rede(con, data_base, url):
@@ -184,12 +268,15 @@ def collect(con, cfg=None):
     ano_atual = datetime.now(timezone.utc).year
     ja = {r[0] for r in con.execute("SELECT chave FROM oper_coleta")}
 
+    # FCA primeiro: além dos auditores, ele traz o cadastro com o setor de
+    # atividade de cada companhia, que é a base para saber quais bancos a CVM
+    # registra e quais deles o painel ainda não cobre.
     for rotulo, url_tpl, primeiro, absorve in [
-        ("fre", FRE, FRE_PRIMEIRO_ANO, _absorve_fre),
         ("fca", FCA, FCA_PRIMEIRO_ANO, _absorve_fca),
+        ("fre", FRE, FRE_PRIMEIRO_ANO, _absorve_fre),
     ]:
         for ano in range(primeiro, ano_atual + 1):
-            chave = f"{rotulo}:{ano}"
+            chave = f"{rotulo}:{ano}:{CADASTRO_SHA}"
             # ano fechado já coletado nunca é rebaixado; o ano corrente sempre é
             if chave in ja and ano < ano_atual:
                 continue
