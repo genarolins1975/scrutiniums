@@ -106,3 +106,54 @@ describe("pix.json: MED e geografia", () => {
     expect(X.geografia.nota_perspectiva).toMatch(/perspectivas distintas/);
   });
 });
+
+describe("pix.json: matriz setor-pagador × setor-recebedor (tabela especial EPAE)", () => {
+  const EM = X.epae_matriz;
+  const epaeGold = JSON.parse(
+    readFileSync(join(process.cwd(), "public/obs/data/gold/epae.json"), "utf-8"),
+  );
+
+  it("a matriz existe, cobre as 23 categorias e declara o próprio universo", () => {
+    expect(EM).toBeTruthy();
+    expect(Object.keys(EM.matriz).length).toBe(23);
+    // universos distintos jamais somados: o texto precisa dizer isso
+    expect(EM.universo).toMatch(/SPI/);
+    expect(EM.universo).toMatch(/nunca se somam/i);
+    expect(EM.revisao).toMatch(/m-4|quatro últimos/i);
+  });
+
+  it("o cruzamento com o gold de bets fecha ao centavo (mesma fonte, mesmo mês)", () => {
+    // PF→seção R na matriz == último ponto da série publicada no painel de bets
+    const u = epaeGold.serie.obs.at(-1);
+    expect(EM.mes).toBe(u.ref);
+    expect(EM.matriz["Pessoa Fisica"]["Artes, cultura, esporte e recreacao"])
+      .toBeCloseTo(u.pf_para_secao, 2);
+  });
+
+  it("participação usa o denominador PF→PJ — o mesmo conceito publicado no epae.json", () => {
+    const artes = EM.recebedores_pf.find((r: any) => r.setor.startsWith("Artes"));
+    const u = epaeGold.serie.obs.at(-1);
+    expect(artes.part).toBeCloseTo(u.participacao, 1);
+    // e as participações PF→PJ somam ~100 sobre os setores listados
+    const soma = EM.recebedores_pf.reduce((s: number, r: any) => s + r.part, 0);
+    expect(soma).toBeGreaterThan(99);
+    expect(soma).toBeLessThan(101);
+  });
+
+  it("P2P fica fora do destino setorial, e a nota de bets acompanha a seção R", () => {
+    expect(EM.recebedores_pf.some((r: any) => r.setor === "Pessoa Fisica")).toBe(false);
+    expect(EM.nota_bets).toMatch(/NÃO a isola/);
+  });
+
+  it("o painel monta os capítulos no arco narrativo declarado", () => {
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    // funcionalidades junto de natureza; setores antes da geografia; MED e infra ao fim
+    expect(app).toContain(
+      "el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + func + epae + epaeMatriz + geog + medS + infra + metodo;",
+    );
+    expect(app).toMatch(/Arco narrativo dos capítulos/);
+    // a antiga lacuna declarada virou encaminhamento para a matriz
+    expect(app).not.toMatch(/o "para quem paga" de cada setor é, portanto, indisponível/);
+    expect(app).toContain("vem da tabela especial do BCB, logo abaixo");
+  });
+});
