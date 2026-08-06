@@ -257,6 +257,7 @@ export const PREFIXOS_DINAMICOS = [
   { prefixo: "/institutions/", view: "inst", rotulo: "Instituições financeiras" },
   { prefixo: "/products/", view: "product", rotulo: "Produtos de Crédito" },
   { prefixo: "/sectors/", view: "sector", rotulo: "Risco setorial" },
+  { prefixo: "/presenca/", view: "presmun", rotulo: "Presença bancária municipal" },
 ] as const;
 
 /** Rota aposentada que continua respondendo (espelha ROTAS_APOSENTADAS da SPA). */

@@ -28,6 +28,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     instituicoes = [];
   }
 
+  // Páginas municipais de presença bancária: 5,5 mil rotas de cauda longa,
+  // geradas do mesmo gold que alimenta o mapa (bem abaixo do teto de 50 mil
+  // URLs por sitemap).
+  let municipios: { cod: string }[] = [];
+  try {
+    municipios = JSON.parse(
+      readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "presenca_mun.json"), "utf-8"),
+    ).municipios;
+  } catch {
+    municipios = [];
+  }
+
   return [
     rota("", 1.0, "weekly"),
     rota("/observatorio", 1.0, "daily"),
@@ -38,6 +50,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/resumo", 0.9, "daily"),
     ...INDICADORES.map((i) => rota(`/dados/${i.slug}`, 0.8, "daily")),
     ...instituicoes.map((i) => rota(`/observatorio/institutions/${i.cod}`, 0.6, "weekly")),
+    ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
     rota("/glossario", 0.8, "monthly"),
     rota("/metodologia", 0.8, "monthly"),
     rota("/fontes", 0.7, "monthly"),

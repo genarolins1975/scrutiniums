@@ -158,6 +158,58 @@ describe("metadados por rota", () => {
   });
 });
 
+describe("páginas municipais de presença bancária", () => {
+  const gold = JSON.parse(
+    readFileSync(join(raiz, "public/obs/data/gold/presenca_mun.json"), "utf-8"),
+  ) as { municipios: { cod: string; nome: string; uf: string; classe: string }[] };
+  const porClasse = (c: string) => gold.municipios.find((m) => m.classe === c);
+
+  it("todo município do gold vira página indexável com nome no título e Dataset", () => {
+    const m = gold.municipios[0];
+    const meta = resolverMeta(`/presenca/${m.cod}`);
+    expect(meta.status).toBe(200);
+    expect(meta.indexavel).toBe(true);
+    expect(meta.titulo).toContain(`Presença bancária em ${m.nome} (${m.uf})`);
+    expect(meta.canonico).toBe(`https://scrutiniums.com/observatorio/presenca/${m.cod}`);
+    expect(meta.gold).toBe("presenca_mun.json");
+    const html = montarHtml(meta);
+    expect(html).toContain('"@type":"Dataset"');
+    expect(html).toContain("/obs/data/gold/presenca_mun.json");
+  });
+
+  it("a description diz com todas as letras o que NÃO existe no município", () => {
+    // mesma regra editorial da SPA: ausência nunca vira zero silencioso
+    const comAgencia = porClasse("agencia")!;
+    expect(resolverMeta(`/presenca/${comAgencia.cod}`).descricao).toMatch(/tem \d+ agência/);
+    const soPosto = porClasse("posto")!;
+    expect(resolverMeta(`/presenca/${soPosto.cod}`).descricao).toContain("não tem agência bancária");
+    const soCorresp = porClasse("correspondente")!;
+    expect(resolverMeta(`/presenca/${soCorresp.cod}`).descricao).toContain("não tem agência nem posto bancário");
+  });
+
+  it("código IBGE desconhecido responde 404 com noindex", () => {
+    const m = resolverMeta("/presenca/9999999");
+    expect(m.status).toBe(404);
+    expect(m.indexavel).toBe(false);
+  });
+
+  it("o sitemap lista as rotas municipais a partir do gold", () => {
+    expect(sitemap).toContain("presenca_mun.json");
+    expect(sitemap).toContain("/observatorio/presenca/");
+  });
+
+  it("a SPA conhece a rota, a seção e o render da página municipal", () => {
+    expect(indexHtml).toContain('id="view-presmun"');
+    expect(appJs).toContain('presmun: "/presenca/"');
+    expect(appJs).toContain("function renderPresencaMun");
+    expect(appJs).toContain('presmun: ["presenca_mun"]');
+    // o mapa nacional navega para a página do município clicado
+    expect(appJs).toContain("onclick=\"presNav('${m.cod}')\"");
+    // e a página municipal navega de volta e entre vizinhos da mesma UF
+    expect(appJs).toMatch(/vizinhos\.map/);
+  });
+});
+
 describe("painéis sintéticos aposentados", () => {
   it("as séries de exemplo e seus componentes saíram do código", () => {
     expect(existsSync(join(raiz, "src/lib/data/paineis.ts"))).toBe(false);

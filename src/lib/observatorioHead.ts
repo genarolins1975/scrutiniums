@@ -39,6 +39,54 @@ function nomeInstituicao(cod: string): string | null {
   return instCache.get(cod) ?? null;
 }
 
+type MunPresenca = {
+  cod: string; nome: string; uf: string; classe: string;
+  agencia: number; posto: number; pae: number; corresp: number;
+  ifs_dep: number; ifs_corresp: number;
+};
+let munCache: Map<string, MunPresenca> | null = null;
+function municipioPresenca(cod: string): MunPresenca | null {
+  if (!munCache) {
+    try {
+      const g = JSON.parse(
+        readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "presenca_mun.json"), "utf-8"),
+      ) as { municipios: MunPresenca[] };
+      munCache = new Map(g.municipios.map((m) => [m.cod, m]));
+    } catch {
+      munCache = new Map();
+    }
+  }
+  return munCache.get(cod) ?? null;
+}
+
+/**
+ * Description da página municipal: a frase muda com a classe porque o que
+ * NÃO existe no município é dito com todas as letras — a mesma regra
+ * editorial da SPA (ausência nunca vira zero silencioso).
+ */
+function descricaoPresenca(m: MunPresenca): string {
+  const n = (v: number, um: string, muitos: string) => `${v} ${v === 1 ? um : muitos}`;
+  if (m.classe === "agencia") {
+    return `${m.nome} (${m.uf}) tem ${n(m.agencia, "agência bancária", "agências bancárias")}, ` +
+      `${n(m.posto, "posto de atendimento", "postos de atendimento")}, ` +
+      `${n(m.pae, "posto eletrônico", "postos eletrônicos")} e ` +
+      `${n(m.corresp, "ponto de correspondente", "pontos de correspondente")}, ` +
+      `segundo os cadastros do Banco Central — presença física de ${m.ifs_dep} instituições financeiras.`;
+  }
+  if (m.classe === "posto") {
+    return `${m.nome} (${m.uf}) não tem agência bancária: o atendimento presencial é feito por ` +
+      `${n(m.posto, "posto de atendimento", "postos de atendimento")}, ` +
+      `${n(m.pae, "posto eletrônico", "postos eletrônicos")} e ` +
+      `${n(m.corresp, "ponto de correspondente", "pontos de correspondente")}, segundo os cadastros do Banco Central.`;
+  }
+  if (m.classe === "correspondente") {
+    return `${m.nome} (${m.uf}) não tem agência nem posto bancário: o atendimento presencial existe apenas ` +
+      `pelos ${n(m.corresp, "ponto de correspondente", "pontos de correspondente")} cadastrados no Banco Central.`;
+  }
+  return `${m.nome} (${m.uf}) não tem nenhum ponto físico de atendimento bancário cadastrado no Banco Central — ` +
+    `nem agência, nem posto, nem correspondente.`;
+}
+
 let geradoEmCache: string | null | undefined;
 function geradoEm(): string | null {
   if (geradoEmCache === undefined) {
@@ -110,6 +158,19 @@ export function resolverMeta(caminho: string): MetaObservatorio {
         titulo: `${nome} — ${d.rotulo} · ${NOME_PLATAFORMA}`,
         descricao: `Capital, inadimplência, rentabilidade e carteira de crédito de ${nome}, com dados oficiais do IF.data/Banco Central e comparação com pares.`,
         canonico: `${BASE}/observatorio${d.prefixo}${slug}`,
+        indexavel: true,
+        status: 200,
+      };
+    }
+    if (d.view === "presmun") {
+      // código IBGE desconhecido = 404/noindex: só municípios do gold viram página
+      const m = municipioPresenca(slug);
+      if (!m) break;
+      return {
+        titulo: `Presença bancária em ${m.nome} (${m.uf}) — agências, postos e correspondentes · ${NOME_PLATAFORMA}`,
+        descricao: descricaoPresenca(m),
+        canonico: `${BASE}/observatorio${d.prefixo}${slug}`,
+        gold: "presenca_mun.json",
         indexavel: true,
         status: 200,
       };
