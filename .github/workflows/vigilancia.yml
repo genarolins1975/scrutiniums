@@ -1,0 +1,85 @@
+name: Vigília do Observatório
+
+# Dois olhos que o pipeline diário não tem sobre si mesmo:
+#
+# - **frescor** (diário, 15:00 UTC — depois da janela do pipeline das 9:00):
+#   o gold publicado no main envelheceu além de 2 dias? Cobre o caso em que as
+#   execuções "concluem" sem publicar, que o alerta de falha não enxerga.
+# - **fontes** (semanal, segunda): saiu documento novo nas fontes manuais
+#   documentadas (página de apresentações da SPA/MF)? É o gatilho da
+#   atualização manual do painel de bets — o Panorama do 1S2026 é esperado
+#   para o fim de agosto de 2026.
+#
+# Contrato com scripts/vigilancia.py: saída 0 = silêncio; saída 3 = o stdout é
+# o corpo da issue. Qualquer outra saída = o próprio vigia quebrou, e isso
+# também vira issue, porque vigia cego é pior que alerta falso.
+on:
+  schedule:
+    - cron: "0 15 * * *" # frescor, diário
+    - cron: "30 9 * * 1" # fontes, segunda-feira
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  vigiar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        cheque: [frescor, fontes]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Selecionar cheques do horário
+        id: horario
+        run: |
+          # no agendamento, cada cron roda só o seu cheque; no disparo manual, ambos
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            case "${{ github.event.schedule }}" in
+              "0 15 * * *") [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "30 9 * * 1") [ "${{ matrix.cheque }}" = "fontes" ]  || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
+
+      - name: Executar cheque
+        if: steps.horario.outputs.pular != '1'
+        id: cheque
+        run: |
+          set +e
+          SAIDA=$(python3 scripts/vigilancia.py "${{ matrix.cheque }}" 2>&1)
+          CODIGO=$?
+          set -e
+          echo "codigo=$CODIGO" >> "$GITHUB_OUTPUT"
+          {
+            echo "corpo<<FIM_DO_CORPO"
+            echo "$SAIDA"
+            echo "FIM_DO_CORPO"
+          } >> "$GITHUB_OUTPUT"
+          # 0 = silêncio; 3 = acusação legítima; resto = vigia quebrado (também acusa)
+          [ "$CODIGO" = "0" ] || exit 0
+
+      - name: Abrir ou comentar issue
+        if: steps.horario.outputs.pular != '1' && steps.cheque.outputs.codigo != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CORPO: ${{ steps.cheque.outputs.corpo }}
+          CODIGO: ${{ steps.cheque.outputs.codigo }}
+        run: |
+          case "${{ matrix.cheque }}" in
+            frescor) TITULO="Vigília: gold publicado está defasado" ;;
+            fontes)  TITULO="Vigília: documento novo em fonte manual (SPA/MF)" ;;
+          esac
+          if [ "$CODIGO" != "3" ]; then
+            TITULO="Vigília quebrada: cheque ${{ matrix.cheque }} falhou (código $CODIGO)"
+          fi
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "$CORPO"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi

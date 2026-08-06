@@ -30,8 +30,13 @@ const ARQ_MUN = ARQ.replace(".json", "_mun.json");
 if (!M.municipios && existsSync(ARQ_MUN)) {
   M.municipios = JSON.parse(readFileSync(ARQ_MUN, "utf-8")).municipios;
 }
-// pula gracioso se o gold ainda não foi gerado, em vez de estourar na importação
-const d = existe ? describe : describe.skip;
+// Pula gracioso se o gold ainda não foi gerado OU está parcial (pipeline local
+// interrompido no meio). Atenção de manutenção: o corpo de um describe.skip
+// AINDA executa na coleta do vitest — derivações no topo dos blocos precisam
+// ser null-safe, senão a suíte inteira quebra em clone limpo, como quebrou por
+// semanas até este conserto.
+const completo = existe && M.ok === true && !!M.rankings && Array.isArray(M.municipios);
+const d = completo ? describe : describe.skip;
 
 const SELOS = ["observado", "calculado", "estimado", "cenario", "indisponivel"];
 const SELOS_MUN = ["alta", "media", "baixa", "sem_dependencia"];
@@ -487,8 +492,9 @@ d("instituições e quociente locacional", () => {
 });
 
 d("rankings: sem repetição, sem município fantasma, sem dado frágil", () => {
-  const nomes = Object.keys(M.rankings);
-  const cods = new Set(M.municipios.map((m: any) => m.c));
+  // null-safe: este corpo executa mesmo sob describe.skip (coleta do vitest)
+  const nomes = Object.keys(M.rankings ?? {});
+  const cods = new Set((M.municipios ?? []).map((m: any) => m.c));
 
   it("existe pelo menos um ranking e todos têm no máximo 25 itens sem repetição", () => {
     expect(nomes.length).toBeGreaterThan(0);

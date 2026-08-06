@@ -1,0 +1,52 @@
+name: CI
+
+# Toda mudança passa pelos testes ANTES do merge. Até 06/08/2026 este workflow
+# não existia: dezenove pull requests entraram verificados apenas em sessão, e
+# um teste quebrado em clone limpo (moradia-data) ficou semanas mascarando a
+# cor real da suíte. O CI é o que transforma "testado na minha máquina" em
+# propriedade do repositório.
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Dependências
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tipos
+        run: npx tsc --noEmit
+
+      - name: Módulos Python compilam
+        # sem instalar dependências: o pipeline é stdlib + pypdf, e aqui só
+        # interessa pegar erro de sintaxe/import antes do agendamento das 6h
+        run: python3 -m compileall -q pipeline
+
+      - name: Testes
+        run: npx vitest run
