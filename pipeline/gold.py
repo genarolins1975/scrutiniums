@@ -719,6 +719,10 @@ def build_all(con, cfg, fetch_status):
     from pipeline import epae as epae_mod
     epae_mod.build(con)
 
+    # ---- Presença bancária física por município (dependências + correspondentes) ----
+    from pipeline import presenca as presenca_mod
+    presenca_mod.build(con, cfg)
+
     # ---- Taxas de juros por modalidade × IF (txjuros) ----
     from pipeline import juros as juros_mod
     juros_mod.build(con)

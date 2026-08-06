@@ -203,3 +203,33 @@ criaria comparação falsa.
 - Documento do Safra: https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf — identidade conferida pelo CNPJ 58.160.789/0001-28 impresso no cabeçalho.
 - Ausência registrada: o resumo do Safra não separa empregados de estagiários e aprendizes; a métrica de empregados fica ausente, nunca estimada.
 - Um relatório anual de 2025 devolvido por busca como sendo do Safra foi **descartado** na conferência: o documento era de uma companhia agrícola (menciona fazendas e 6.729 colaboradores). Nenhum número dele entrou. Documento só entra depois de conferida a identidade no próprio arquivo.
+
+## 8. Presença bancária física por município (gold `presenca_mun.json`)
+
+Junção dos dois cadastros do BC no nível do município, contra a lista de
+municípios do IBGE. Construída por `pipeline/presenca.py`; alimenta o mapa
+categórico da aba operacional.
+
+Classes, ordenadas por profundidade do atendimento:
+
+| Classe | Significado | Municípios |
+|---|---|---|
+| Com agência | ao menos uma agência cadastrada | 2.901 (52,1%) |
+| Só posto ou terminal | sem agência, com posto de atendimento ou PAE | 2.291 (41,1%) |
+| Só correspondente | sem dependência própria; atendimento só por terceiro contratado | 379 (6,8%) |
+| Nenhum ponto físico | nada nos dois cadastros | 0 |
+
+Concentração da classe "só correspondente": Piauí (96 de 224 municípios, 43%),
+Paraíba (68 de 223, 30%), Rio Grande do Norte (46 de 167, 28%) e Tocantins
+(39 de 139, 28%).
+
+**O que o mapa não diz** (declarado na tela e travado em teste): não mede
+acesso — canais digitais ficam fora; não mede qualidade, horário nem distância
+percorrida; correspondentes de escopos muito diferentes caem na mesma classe,
+porque o cadastro declara serviço por contrato e não por ponto de forma
+comparável.
+
+**Malha × denominador:** a malha desenha 5.570 polígonos e as contagens usam os
+5.571 municípios da lista do IBGE — Boa Esperança do Norte (MT), instalado
+depois do Censo 2022, entra nas tabelas e ainda não no desenho. A diferença
+aparece na legenda do mapa em vez de ser resolvida em silêncio.
