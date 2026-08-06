@@ -99,8 +99,17 @@ def _absorve(con, texto):
             "municipios": len({m for _c, m in agreg if m})}
 
 
+# O cadastro tem 32 MB e muda devagar; a posição publicada mostra a data. Uma
+# coleta semanal mantém o dado atual sem estourar o tempo do pipeline diário.
+DIAS_ENTRE_COLETAS = 7
+
+
 def collect(con, cfg=None):
     _ensure(con)
+    ts = con.execute("SELECT coletado_em FROM corresp_coleta WHERE chave='correspondentes'").fetchone()
+    if ts and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
+        return [{"key": "correspondentes", "ok": True,
+                 "pulado": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"}]
     try:
         body, meta = common.http_get(URL, timeout=600, accept=None)
     except Exception as e:

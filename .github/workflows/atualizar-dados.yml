@@ -29,7 +29,7 @@ concurrency:
 jobs:
   pipeline:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 150
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -44,9 +44,15 @@ jobs:
         # restante do pipeline segue só com a biblioteca padrão.
         run: pip install pypdf
 
+      # restore/save separados de propósito: com actions/cache@v4 o salvamento
+      # acontece no post-job, que NÃO roda quando o job estoura o tempo ou é
+      # cancelado. Foi assim que a falha de 03/08 virou uma sequência de
+      # timeouts: sem cache salvo, cada execução seguinte tinha mais trabalho a
+      # refazer do que a anterior. Com `if: always()`, o progresso da coleta é
+      # preservado mesmo quando a execução não termina.
       - name: Restaurar estado do pipeline (silver e bronze)
         id: cache
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: |
             data/silver
@@ -73,6 +79,15 @@ jobs:
             python3 pipeline/run.py
           fi
 
+      - name: Guardar estado do pipeline
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/silver
+            data/bronze
+          key: pipeline-estado-${{ github.run_id }}
+
       - name: Publicar gold no site
         run: |
           rsync -a --delete data/gold/ public/obs/data/gold/
@@ -87,5 +102,14 @@ jobs:
             echo "Sem mudanças nos dados publicados."
           else
             git commit -m "Atualiza dados do Observatório (pipeline automático)"
-            git push
+            # a execução leva mais de uma hora: é normal que main tenha andado
+            # nesse intervalo. Sem o rebase, o push é rejeitado e o dia inteiro
+            # de coleta se perde — foi o que aconteceu em 03/08.
+            for tentativa in 1 2 3 4; do
+              git pull --rebase origin main && git push && exit 0
+              echo "push falhou (tentativa $tentativa); nova tentativa em $((tentativa * 5))s"
+              sleep $((tentativa * 5))
+            done
+            echo "::error::não foi possível publicar os dados após 4 tentativas"
+            exit 1
           fi
