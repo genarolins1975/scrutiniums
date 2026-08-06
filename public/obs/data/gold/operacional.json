@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-06T16:51:02+00:00",
+ "gerado_em": "2026-08-06T16:54:57+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -39574,6 +39574,45 @@
    "status": "calculado",
    "fonte": "BCB/ESTBAN (derivação por subtração)",
    "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "municipios_sem_ponto",
+   "rotulo": "Municípios sem nenhum ponto de atendimento bancário",
+   "valor": 377,
+   "exibir": "377 de 5.570",
+   "unidade": "municípios · posição 05/08/2026",
+   "conceito": "Municípios sem agência, sem posto de atendimento e sem posto eletrônico no cadastro do BCB. Não mede acesso: correspondentes bancários e canais digitais ficam fora deste cadastro",
+   "data_ref": "05/08/2026",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB — cadastro de dependências (Unicad)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "municipios_so_posto",
+   "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
+   "valor": 2292,
+   "exibir": "2.292",
+   "unidade": "municípios · posição 05/08/2026",
+   "conceito": "Municípios com posto de atendimento ou posto eletrônico, mas nenhuma agência cadastrada — a presença física existe em formato reduzido",
+   "data_ref": "05/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "postos_atendimento",
+   "rotulo": "Postos de atendimento e postos eletrônicos no país",
+   "valor": 44987,
+   "exibir": "44.987",
+   "unidade": "pontos · posição 05/08/2026",
+   "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
+   "data_ref": "05/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastro de dependências (soma de dois cadastros)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
   }
  ],
  "flags": [

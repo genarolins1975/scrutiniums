@@ -7794,14 +7794,19 @@ function operResolve(codIfdata, cnpj) {
     municipios: piloto.rede.atual.municipios, var_12m: piloto.rede.var_12m,
     var_12m_pct: piloto.rede.var_12m_pct, serie: piloto.rede.serie,
   } : ((O.rede_por_cnpj8 || {})[cnpj8] || ((piloto && piloto.cnpj8_rede) ? (O.rede_por_cnpj8 || {})[piloto.cnpj8_rede] : null) || null);
-  if (!piloto && !rede) return null;
-  return { piloto, rede };
+  // O cadastro de dependências cobre mais de mil instituições — muito além das
+  // do painel —, então a página de QUALQUER IF com CNPJ-raiz conhecido ganha a
+  // rede de atendimento, mesmo sem FRE, sem auditor e sem ESTBAN.
+  const pontos = ((O.dependencias || {}).por_cnpj8 || {})[cnpj8]
+    || ((piloto && piloto.cnpj8_rede) ? ((O.dependencias || {}).por_cnpj8 || {})[piloto.cnpj8_rede] : null) || null;
+  if (!piloto && !rede && !pontos) return null;
+  return { piloto, rede, pontos, posicao: (O.dependencias || {}).posicao };
 }
 
 function operBlocoInst(cab) {
   const r = operResolve(state.filters.instCod, cab && cab.cnpj);
   if (!r) return "";
-  const { piloto, rede } = r;
+  const { piloto, rede, pontos } = r;
   const emp = piloto && piloto.empregados ? piloto.empregados.serie[piloto.empregados.serie.length - 1] : null;
   const aud = piloto && piloto.auditor && piloto.auditor.vigente;
   const dvar = v => v == null ? "" : `<div class="delta ${v < 0 ? "up" : "down good"}">${v > 0 ? "▲ +" : v < 0 ? "▼ " : ""}${fmt.n0(v)} em 12 meses</div>`;
@@ -7815,13 +7820,18 @@ function operBlocoInst(cab) {
     ${emp.var_aa_pct != null ? `<div class="delta ${emp.var_aa_pct < 0 ? "up" : "down good"}">${emp.var_aa_pct > 0 ? "▲ +" : "▼ "}${fmt.n(Math.abs(emp.var_aa_pct), 1)}% a/a</div>` : ""}
     ${piloto.empregados.serie.length > 2 ? sparkline(piloto.empregados.serie.map(p => p.total), 150, 30) : ""}
     <div class="src">${badge("observado")} escopo declarado pela companhia · ref. ${fmt.d(emp.ref)}</div></div>`);
+  if (pontos) cards.push(`<div class="card kpi"><h4>Rede de atendimento (cadastro do BC)</h4>
+    <div class="big" style="font-size:21px">${fmt.n0(pontos.total)}</div>
+    <div class="src" style="margin-top:2px">${fmt.n0(pontos.agencia)} agências · ${fmt.n0(pontos.posto)} postos · ${fmt.n0(pontos.pae)} PAE</div>
+    <div class="src">${badge("observado")} ${fmt.n0(pontos.municipios)} municípios · posição ${r.posicao || "–"}</div></div>`);
   if (aud) cards.push(`<div class="card kpi"><h4>Auditor independente</h4>
     <div class="big" style="font-size:15px;line-height:1.25">${aud.nome}</div>
     <div class="src">${badge("observado")} desde ${fmt.d(aud.desde)} · ${piloto.auditor.historico.filter(h => h.fim).length} troca(s) registrada(s) no FCA</div></div>`);
   if (!cards.length) return "";
   return `<div id="s-oper" style="margin-top:12px">${sechead("Indicadores operacionais (Fase 0)", "gente, rede e auditoria — fontes estruturadas oficiais")}
     <div class="pan-kpi">${cards.join("")}</div>
-    <p class="src">Universos distintos, nunca somados: a rede é do banco operacional no ESTBAN (pode diferir deste
+    <p class="src">Universos distintos, nunca somados: as agências do cadastro do BC são as CADASTRADAS, as do ESTBAN
+    são as PROCESSADAS no mês; a rede é do banco operacional no ESTBAN (pode diferir deste
     ${state.filters.instCod && state.filters.instCod.startsWith("C") ? "conglomerado prudencial" : "nível de consolidação"});
     empregados são o declarado pela companhia listada no FRE.
     <a href="javascript:void(0)" onclick="nav('operacional')">ver o painel completo →</a></p></div>`;
@@ -7837,21 +7847,24 @@ function cmpRedeFase0(insts, datas) {
       const motivo = c.startsWith("C")
         ? (r && r.piloto ? "sem rede reportada no ESTBAN no mês corrente" : "conglomerado sem mapeamento na Fase 0")
         : "sem agências no ESTBAN no mês corrente";
-      return `<tr><td>${nome.slice(0, 30)}</td><td class="num" colspan="3"><span class="src">${motivo}</span></td></tr>`;
+      return `<tr><td>${nome.slice(0, 30)}</td><td class="num" colspan="4"><span class="src">${motivo}</span></td></tr>`;
     }
+    const pt = r.pontos;
     return `<tr><td>${nome.slice(0, 30)}</td>
       <td class="num">${fmt.n0(r.rede.agencias)}</td>
       <td class="num">${r.rede.var_12m == null ? "–" : `${r.rede.var_12m > 0 ? "+" : ""}${fmt.n0(r.rede.var_12m)}${r.rede.var_12m_pct != null ? ` (${r.rede.var_12m_pct > 0 ? "+" : ""}${fmt.n(r.rede.var_12m_pct, 1)}%)` : ""}`}</td>
-      <td class="num">${fmt.n0(r.rede.municipios)}</td></tr>`;
+      <td class="num">${fmt.n0(r.rede.municipios)}</td>
+      <td class="num">${pt ? fmt.n0(pt.posto + pt.pae) : "<span class='src'>sem cadastro</span>"}</td></tr>`;
   }).join("");
   const mes = Object.values(O.rede_por_cnpj8 || {})[0];
   return `<div style="margin-top:12px">${sechead("Rede física (Fase 0 · ESTBAN)", `agências do banco operacional · ${mes ? fmt.my(mes.mes) : ""}`)}
   <div class="card"><div class="tblwrap"><table>
-    <thead><tr><th>Instituição</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th></tr></thead>
+    <thead><tr><th>Instituição</th><th class="num">Agências</th><th class="num">Δ 12 meses</th><th class="num">Municípios</th><th class="num">Postos + PAE</th></tr></thead>
     <tbody>${linhas}</tbody></table></div>
     <p class="src">${badge("observado")} Universo diferente das métricas do IF.data acima: a rede vem do ESTBAN, do CNPJ do
     banco operacional — informativo ao lado da comparação, não uma métrica do catálogo. Queda abrupta pode ser migração
-    societária entre CNPJs do grupo. <a href="javascript:void(0)" onclick="nav('operacional')">painel completo →</a></p></div></div>`;
+    societária entre CNPJs do grupo. A coluna de postos e PAE vem do cadastro do BC, com data-base própria: não se soma
+    às agências processadas ao lado. <a href="javascript:void(0)" onclick="nav('operacional')">painel completo →</a></p></div></div>`;
 }
 
 function renderOperacional() {

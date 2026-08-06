@@ -77,6 +77,15 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
   atendidos) e cobertura municipal do país — 5.193 dos 5.570 municípios têm
   algum ponto; 2.292 são atendidos só por posto ou terminal, sem agência; 377
   não têm nenhum dos três · Confiabilidade: **A**
+- Alcance além do painel: o cadastro traz 1.181 instituições, muito mais do que
+  as 29 do painel. A página de QUALQUER instituição com CNPJ-raiz conhecido
+  passa a exibir a rede de atendimento, inclusive quem não tem FRE, auditor nem
+  ESTBAN — para essas, é o único indicador operacional disponível. O comparador
+  ganha a coluna de postos e PAE, com data-base própria declarada.
+- Números citáveis derivados na síntese de `/imprensa`: municípios sem nenhum
+  ponto (377), municípios só com posto ou terminal (2.292) e total de postos e
+  PAEs (44.987). O conceito registra que **não é medida de acesso**:
+  correspondentes bancários e canais digitais ficam fora deste cadastro.
 
 ## 4. BCB — ESTBAN, Estatística Bancária Mensal por município
 

@@ -347,7 +347,7 @@ def build(con, cfg=None):
                 "serie": series.get(cnpj8, []),
             }
 
-    sintese = _sintese(instituicoes, sfn_serie)
+    sintese = _sintese(instituicoes, sfn_serie, deps)
 
     com_empregados = sum(1 for i in instituicoes if i["empregados"])
     com_auditor = sum(1 for i in instituicoes if i["auditor"])
@@ -492,7 +492,7 @@ def _fmt_milhar(v):
     return f"{v:,}".replace(",", ".")
 
 
-def _sintese(instituicoes, sfn_serie):
+def _sintese(instituicoes, sfn_serie, deps=None):
     """Números citáveis (página /imprensa), no formato da síntese de bets e
     fraudes: cada item com valor, conceito, nível, fonte primária e URL."""
     if not sfn_serie:
@@ -556,4 +556,44 @@ def _sintese(instituicoes, sfn_serie):
                 "nivel": "A", "status": "calculado",
                 "fonte": "BCB/ESTBAN (derivação por subtração)", "url": url_estban,
             })
+
+    if deps:
+        mun = deps["municipios"]
+        url_dep = deps["fonte"]["url"]
+        itens.extend([{
+            "id": "municipios_sem_ponto",
+            "rotulo": "Municípios sem nenhum ponto de atendimento bancário",
+            "valor": mun["sem_ponto"],
+            "exibir": f"{_fmt_milhar(mun['sem_ponto'])} de {_fmt_milhar(mun['total_municipios'])}",
+            "unidade": f"municípios · posição {deps['posicao']}",
+            "conceito": "Municípios sem agência, sem posto de atendimento e sem posto eletrônico no cadastro "
+                        "do BCB. Não mede acesso: correspondentes bancários e canais digitais ficam fora "
+                        "deste cadastro",
+            "data_ref": deps["posicao"],
+            "nivel": "A", "status": "oficial",
+            "fonte": "BCB — cadastro de dependências (Unicad)", "url": url_dep,
+        }, {
+            "id": "municipios_so_posto",
+            "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
+            "valor": mun["so_posto_sem_agencia"],
+            "exibir": _fmt_milhar(mun["so_posto_sem_agencia"]),
+            "unidade": f"municípios · posição {deps['posicao']}",
+            "conceito": "Municípios com posto de atendimento ou posto eletrônico, mas nenhuma agência "
+                        "cadastrada — a presença física existe em formato reduzido",
+            "data_ref": deps["posicao"],
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)", "url": url_dep,
+        }, {
+            "id": "postos_atendimento",
+            "rotulo": "Postos de atendimento e postos eletrônicos no país",
+            "valor": deps["totais"]["posto"] + deps["totais"]["pae"],
+            "exibir": _fmt_milhar(deps["totais"]["posto"] + deps["totais"]["pae"]),
+            "unidade": f"pontos · posição {deps['posicao']}",
+            "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos "
+                        "de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e "
+                        "distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
+            "data_ref": deps["posicao"],
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB — cadastro de dependências (soma de dois cadastros)", "url": url_dep,
+        }])
     return itens
