@@ -686,7 +686,7 @@
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-06",
-   "status": "review",
+   "status": "aprovado",
    "period_end": "2026-03-31",
    "periodo_rotulo": "1T26",
    "unidade": "pessoas",
@@ -705,14 +705,16 @@
     "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
    },
    "pagina": 8,
-   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)"
+   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)",
+   "revisado_em": "2026-08-06",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "natureza": "reportado",
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-06",
-   "status": "review",
+   "status": "aprovado",
    "period_end": "2026-03-31",
    "periodo_rotulo": "1T26",
    "unidade": "pessoas",
@@ -731,14 +733,16 @@
     "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
    },
    "pagina": 8,
-   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)"
+   "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)",
+   "revisado_em": "2026-08-06",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   },
   {
    "natureza": "reportado",
    "comparabilidade": "C",
    "confianca": "alta",
    "extraido_em": "2026-08-06",
-   "status": "review",
+   "status": "aprovado",
    "period_end": "2026-03-31",
    "periodo_rotulo": "1T26",
    "unidade": "pessoas",
@@ -757,7 +761,9 @@
     "url": "https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf"
    },
    "pagina": 1,
-   "evidencia": "Dados Relevantes — Colaboradores do Conglomerado (indivíduos): 8.339 (Mar.26), 8.415 (Dez.25), 8.608 (Mar.25) (transcrição fiel da linha da tabela)"
+   "evidencia": "Dados Relevantes — Colaboradores do Conglomerado (indivíduos): 8.339 (Mar.26), 8.415 (Dez.25), 8.608 (Mar.25) (transcrição fiel da linha da tabela)",
+   "revisado_em": "2026-08-06",
+   "revisado_por": "proprietário (revisão em sessão Claude Code)"
   }
  ]
 }

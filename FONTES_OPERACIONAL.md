@@ -139,7 +139,9 @@ os CNPJs com dependências no ESTBAN.
 
 Instituições sem registro de companhia aberta não entregam o item 10.1 do FRE.
 Quando publicam o quadro no próprio relatório, o número entra pela Fase 2, com
-evidência obrigatória e revisão humana, e **em tabela separada da série do FRE**
+evidência obrigatória e revisão humana (as três observações abaixo foram
+aprovadas pelo proprietário em 06/08/2026 e estão publicadas), e **em tabela
+separada da série do FRE**
 — conceito, escopo e data-base são os da divulgação, e somar as duas coisas
 criaria comparação falsa.
 
