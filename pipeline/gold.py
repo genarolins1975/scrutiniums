@@ -713,6 +713,12 @@ def build_all(con, cfg, fetch_status):
                 with open(os.path.join(curated_dir, fname), encoding="utf-8") as f:
                     common.write_gold(fname, json.load(f))
 
+    # ---- EPAE: fluxos Pix da seção CNAE de artes, cultura, esporte e recreação ----
+    # Insumo público dos estudos que atribuem parcela às bets. Republicado como
+    # dado OBSERVADO da seção inteira; a atribuição a apostas fica com quem a faz.
+    from pipeline import epae as epae_mod
+    epae_mod.build(con)
+
     # ---- Taxas de juros por modalidade × IF (txjuros) ----
     from pipeline import juros as juros_mod
     juros_mod.build(con)

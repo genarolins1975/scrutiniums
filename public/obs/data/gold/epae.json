@@ -1,0 +1,750 @@
+{
+ "gerado_em": "2026-08-06T14:54:19+00:00",
+ "titulo": "Pagamentos Pix por atividade econômica — seção de artes, cultura, esporte e recreação",
+ "aviso": "Série do Banco Central para a SEÇÃO INTEIRA da CNAE: ela reúne academias, clubes, cinemas, parques, loterias e bets, e a EPAE não permite separá-las nem distinguir operador autorizado de operador ilegal.",
+ "fonte": {
+  "nome": "Banco Central do Brasil — Estatísticas de Pagamentos por Atividade Econômica (EPAE)",
+  "instrumento": "Pix liquidado no SPI",
+  "url": "https://www.bcb.gov.br/content/estatisticas/Documents/Tabelas_especiais/EPAE.xlsx",
+  "pagina": "https://www.bcb.gov.br/estatisticas/tabelasespeciais",
+  "nivel": "A",
+  "frequencia": "mensal",
+  "coletado_em": "2026-08-06T14:47:35+00:00",
+  "sha256": "5353acee51cd3ace364767dd9ee03bf3bcc4b34ae385c0c7e15bb187dfdd52bd"
+ },
+ "secao": {
+  "codigo": "R",
+  "rotulo": "Artes, cultura, esporte e recreação",
+  "rotulo_fonte": "Artes, cultura, esporte e recreacao / Arts, entertainment and recreation",
+  "abrange": "academias, clubes esportivos, casas de espetáculo, cinemas, museus, parques, loterias e apostas, entre outras atividades"
+ },
+ "conceitos": [
+  {
+   "termo": "pf_para_secao",
+   "def": "valor pago por pessoas físicas a recebedores classificados na seção R, via Pix no SPI, no mês. Não é aposta, não é depósito em bet, não é GGR."
+  },
+  {
+   "termo": "secao_para_pf",
+   "def": "valor pago por recebedores da seção R a pessoas físicas no mesmo mês (prêmios, saques, reembolsos, salários e qualquer outro pagamento do setor a pessoas)."
+  },
+  {
+   "termo": "liquido",
+   "def": "pf_para_secao menos secao_para_pf. Derivação aritmética sobre dois valores publicados; mede o saldo de recursos que as pessoas transferiram ao setor no mês, não perda com apostas."
+  },
+  {
+   "termo": "pf_para_pj_total",
+   "def": "valor pago por pessoas físicas a TODOS os setores que não são pessoa física (inclui 'Outros'), no mesmo mês e mesmo instrumento. Serve de denominador de escala; a participação da seção é calculada na tela."
+  }
+ ],
+ "limitacoes": [
+  "A seção R da CNAE agrega muito mais do que apostas: nenhuma linha desta série pode ser lida como 'volume de bets'.",
+  "A EPAE não separa operadores autorizados pela SPA de operadores ilegais.",
+  "Só entram transações liquidadas no SPI: Pix entre contas da mesma instituição fica fora, assim como devoluções, saques/troco e transferências de mesma titularidade.",
+  "Pares pagador×recebedor com menos de quatro transações no mês são realocados para 'Outros' por confidencialidade.",
+  "Os quatro últimos meses são provisórios: o BC revisa m-1 a m-3 e fecha m-4 a cada divulgação.",
+  "A série mede fluxo financeiro, não perda: comparar com o GGR do SIGAP exigiria conhecer payout e cobertura, que não são observados aqui."
+ ],
+ "revisao": "O BC revisa os quatro últimos meses a cada divulgação (definitivo em m-4, provisório de m-1 a m-3).",
+ "cobertura": {
+  "inicio": "2020-11",
+  "fim": "2026-06",
+  "meses": 68
+ },
+ "unidades": {
+  "valor": "R$ bilhões",
+  "transacoes": "milhões de transações"
+ },
+ "serie": {
+  "obs": [
+   {
+    "ref": "2020-11",
+    "pf_para_secao": 0.011,
+    "secao_para_pf": 0.018,
+    "liquido": -0.007,
+    "tx_pf_para_secao": 0.02,
+    "tx_secao_para_pf": 0.02,
+    "pf_para_pj_total": 1.4
+   },
+   {
+    "ref": "2020-12",
+    "pf_para_secao": 0.049,
+    "secao_para_pf": 0.105,
+    "liquido": -0.056,
+    "tx_pf_para_secao": 0.1,
+    "tx_secao_para_pf": 0.1,
+    "pf_para_pj_total": 6.3
+   },
+   {
+    "ref": "2021-01",
+    "pf_para_secao": 0.078,
+    "secao_para_pf": 0.135,
+    "liquido": -0.056,
+    "tx_pf_para_secao": 0.19,
+    "tx_secao_para_pf": 0.14,
+    "pf_para_pj_total": 10.7
+   },
+   {
+    "ref": "2021-02",
+    "pf_para_secao": 0.105,
+    "secao_para_pf": 0.182,
+    "liquido": -0.077,
+    "tx_pf_para_secao": 0.28,
+    "tx_secao_para_pf": 0.19,
+    "pf_para_pj_total": 14.5
+   },
+   {
+    "ref": "2021-03",
+    "pf_para_secao": 0.128,
+    "secao_para_pf": 0.225,
+    "liquido": -0.097,
+    "tx_pf_para_secao": 0.37,
+    "tx_secao_para_pf": 0.24,
+    "pf_para_pj_total": 21.5
+   },
+   {
+    "ref": "2021-04",
+    "pf_para_secao": 0.152,
+    "secao_para_pf": 0.227,
+    "liquido": -0.075,
+    "tx_pf_para_secao": 0.51,
+    "tx_secao_para_pf": 0.26,
+    "pf_para_pj_total": 26.8
+   },
+   {
+    "ref": "2021-05",
+    "pf_para_secao": 0.203,
+    "secao_para_pf": 0.274,
+    "liquido": -0.071,
+    "tx_pf_para_secao": 0.73,
+    "tx_secao_para_pf": 0.34,
+    "pf_para_pj_total": 33.3
+   },
+   {
+    "ref": "2021-06",
+    "pf_para_secao": 0.273,
+    "secao_para_pf": 0.333,
+    "liquido": -0.06,
+    "tx_pf_para_secao": 0.96,
+    "tx_secao_para_pf": 0.4,
+    "pf_para_pj_total": 36.2
+   },
+   {
+    "ref": "2021-07",
+    "pf_para_secao": 0.334,
+    "secao_para_pf": 0.38,
+    "liquido": -0.046,
+    "tx_pf_para_secao": 1.09,
+    "tx_secao_para_pf": 0.47,
+    "pf_para_pj_total": 42.3
+   },
+   {
+    "ref": "2021-08",
+    "pf_para_secao": 0.372,
+    "secao_para_pf": 0.438,
+    "liquido": -0.066,
+    "tx_pf_para_secao": 1.26,
+    "tx_secao_para_pf": 0.51,
+    "pf_para_pj_total": 47.4
+   },
+   {
+    "ref": "2021-09",
+    "pf_para_secao": 0.353,
+    "secao_para_pf": 0.495,
+    "liquido": -0.142,
+    "tx_pf_para_secao": 1.42,
+    "tx_secao_para_pf": 0.58,
+    "pf_para_pj_total": 48.9
+   },
+   {
+    "ref": "2021-10",
+    "pf_para_secao": 0.388,
+    "secao_para_pf": 0.558,
+    "liquido": -0.171,
+    "tx_pf_para_secao": 1.59,
+    "tx_secao_para_pf": 0.65,
+    "pf_para_pj_total": 51.7
+   },
+   {
+    "ref": "2021-11",
+    "pf_para_secao": 0.437,
+    "secao_para_pf": 0.642,
+    "liquido": -0.205,
+    "tx_pf_para_secao": 1.8,
+    "tx_secao_para_pf": 0.73,
+    "pf_para_pj_total": 57.0
+   },
+   {
+    "ref": "2021-12",
+    "pf_para_secao": 0.46,
+    "secao_para_pf": 0.792,
+    "liquido": -0.332,
+    "tx_pf_para_secao": 1.81,
+    "tx_secao_para_pf": 0.84,
+    "pf_para_pj_total": 63.2
+   },
+   {
+    "ref": "2022-01",
+    "pf_para_secao": 0.423,
+    "secao_para_pf": 0.625,
+    "liquido": -0.202,
+    "tx_pf_para_secao": 1.89,
+    "tx_secao_para_pf": 0.76,
+    "pf_para_pj_total": 57.5
+   },
+   {
+    "ref": "2022-02",
+    "pf_para_secao": 0.442,
+    "secao_para_pf": 0.649,
+    "liquido": -0.207,
+    "tx_pf_para_secao": 2.31,
+    "tx_secao_para_pf": 0.78,
+    "pf_para_pj_total": 57.7
+   },
+   {
+    "ref": "2022-03",
+    "pf_para_secao": 0.559,
+    "secao_para_pf": 0.795,
+    "liquido": -0.236,
+    "tx_pf_para_secao": 3.18,
+    "tx_secao_para_pf": 0.94,
+    "pf_para_pj_total": 70.1
+   },
+   {
+    "ref": "2022-04",
+    "pf_para_secao": 0.573,
+    "secao_para_pf": 0.836,
+    "liquido": -0.263,
+    "tx_pf_para_secao": 3.58,
+    "tx_secao_para_pf": 1.01,
+    "pf_para_pj_total": 69.3
+   },
+   {
+    "ref": "2022-05",
+    "pf_para_secao": 0.613,
+    "secao_para_pf": 0.935,
+    "liquido": -0.322,
+    "tx_pf_para_secao": 3.47,
+    "tx_secao_para_pf": 1.07,
+    "pf_para_pj_total": 79.6
+   },
+   {
+    "ref": "2022-06",
+    "pf_para_secao": 0.625,
+    "secao_para_pf": 0.996,
+    "liquido": -0.371,
+    "tx_pf_para_secao": 3.49,
+    "tx_secao_para_pf": 1.1,
+    "pf_para_pj_total": 79.5
+   },
+   {
+    "ref": "2022-07",
+    "pf_para_secao": 0.694,
+    "secao_para_pf": 1.132,
+    "liquido": -0.438,
+    "tx_pf_para_secao": 4.34,
+    "tx_secao_para_pf": 1.25,
+    "pf_para_pj_total": 83.5
+   },
+   {
+    "ref": "2022-08",
+    "pf_para_secao": 0.796,
+    "secao_para_pf": 1.206,
+    "liquido": -0.41,
+    "tx_pf_para_secao": 6.52,
+    "tx_secao_para_pf": 1.61,
+    "pf_para_pj_total": 92.3
+   },
+   {
+    "ref": "2022-09",
+    "pf_para_secao": 0.848,
+    "secao_para_pf": 1.271,
+    "liquido": -0.422,
+    "tx_pf_para_secao": 8.71,
+    "tx_secao_para_pf": 2.05,
+    "pf_para_pj_total": 91.6
+   },
+   {
+    "ref": "2022-10",
+    "pf_para_secao": 0.893,
+    "secao_para_pf": 1.256,
+    "liquido": -0.362,
+    "tx_pf_para_secao": 8.72,
+    "tx_secao_para_pf": 1.8,
+    "pf_para_pj_total": 95.5
+   },
+   {
+    "ref": "2022-11",
+    "pf_para_secao": 0.989,
+    "secao_para_pf": 1.391,
+    "liquido": -0.402,
+    "tx_pf_para_secao": 9.89,
+    "tx_secao_para_pf": 2.47,
+    "pf_para_pj_total": 102.0
+   },
+   {
+    "ref": "2022-12",
+    "pf_para_secao": 1.01,
+    "secao_para_pf": 1.566,
+    "liquido": -0.555,
+    "tx_pf_para_secao": 9.94,
+    "tx_secao_para_pf": 2.6,
+    "pf_para_pj_total": 114.4
+   },
+   {
+    "ref": "2023-01",
+    "pf_para_secao": 1.006,
+    "secao_para_pf": 1.319,
+    "liquido": -0.313,
+    "tx_pf_para_secao": 9.95,
+    "tx_secao_para_pf": 2.36,
+    "pf_para_pj_total": 107.1
+   },
+   {
+    "ref": "2023-02",
+    "pf_para_secao": 0.94,
+    "secao_para_pf": 1.354,
+    "liquido": -0.414,
+    "tx_pf_para_secao": 9.52,
+    "tx_secao_para_pf": 2.4,
+    "pf_para_pj_total": 100.1
+   },
+   {
+    "ref": "2023-03",
+    "pf_para_secao": 1.115,
+    "secao_para_pf": 1.579,
+    "liquido": -0.464,
+    "tx_pf_para_secao": 10.81,
+    "tx_secao_para_pf": 2.82,
+    "pf_para_pj_total": 122.1
+   },
+   {
+    "ref": "2023-04",
+    "pf_para_secao": 1.05,
+    "secao_para_pf": 1.499,
+    "liquido": -0.449,
+    "tx_pf_para_secao": 10.4,
+    "tx_secao_para_pf": 2.83,
+    "pf_para_pj_total": 114.7
+   },
+   {
+    "ref": "2023-05",
+    "pf_para_secao": 1.209,
+    "secao_para_pf": 1.738,
+    "liquido": -0.529,
+    "tx_pf_para_secao": 13.23,
+    "tx_secao_para_pf": 3.64,
+    "pf_para_pj_total": 131.0
+   },
+   {
+    "ref": "2023-06",
+    "pf_para_secao": 1.111,
+    "secao_para_pf": 1.701,
+    "liquido": -0.59,
+    "tx_pf_para_secao": 10.75,
+    "tx_secao_para_pf": 3.36,
+    "pf_para_pj_total": 131.6
+   },
+   {
+    "ref": "2023-07",
+    "pf_para_secao": 1.257,
+    "secao_para_pf": 1.819,
+    "liquido": -0.562,
+    "tx_pf_para_secao": 13.77,
+    "tx_secao_para_pf": 3.73,
+    "pf_para_pj_total": 140.4
+   },
+   {
+    "ref": "2023-08",
+    "pf_para_secao": 1.354,
+    "secao_para_pf": 1.916,
+    "liquido": -0.562,
+    "tx_pf_para_secao": 17.18,
+    "tx_secao_para_pf": 4.1,
+    "pf_para_pj_total": 151.2
+   },
+   {
+    "ref": "2023-09",
+    "pf_para_secao": 1.411,
+    "secao_para_pf": 1.959,
+    "liquido": -0.548,
+    "tx_pf_para_secao": 18.1,
+    "tx_secao_para_pf": 4.11,
+    "pf_para_pj_total": 149.1
+   },
+   {
+    "ref": "2023-10",
+    "pf_para_secao": 2.042,
+    "secao_para_pf": 2.568,
+    "liquido": -0.526,
+    "tx_pf_para_secao": 33.05,
+    "tx_secao_para_pf": 8.13,
+    "pf_para_pj_total": 160.0
+   },
+   {
+    "ref": "2023-11",
+    "pf_para_secao": 2.049,
+    "secao_para_pf": 2.586,
+    "liquido": -0.537,
+    "tx_pf_para_secao": 33.6,
+    "tx_secao_para_pf": 8.92,
+    "pf_para_pj_total": 168.1
+   },
+   {
+    "ref": "2023-12",
+    "pf_para_secao": 2.475,
+    "secao_para_pf": 3.121,
+    "liquido": -0.646,
+    "tx_pf_para_secao": 45.03,
+    "tx_secao_para_pf": 8.97,
+    "pf_para_pj_total": 189.2
+   },
+   {
+    "ref": "2024-01",
+    "pf_para_secao": 3.629,
+    "secao_para_pf": 3.728,
+    "liquido": -0.099,
+    "tx_pf_para_secao": 81.31,
+    "tx_secao_para_pf": 15.57,
+    "pf_para_pj_total": 179.2
+   },
+   {
+    "ref": "2024-02",
+    "pf_para_secao": 2.274,
+    "secao_para_pf": 2.77,
+    "liquido": -0.497,
+    "tx_pf_para_secao": 41.36,
+    "tx_secao_para_pf": 8.42,
+    "pf_para_pj_total": 172.9
+   },
+   {
+    "ref": "2024-03",
+    "pf_para_secao": 1.639,
+    "secao_para_pf": 2.315,
+    "liquido": -0.676,
+    "tx_pf_para_secao": 20.69,
+    "tx_secao_para_pf": 5.13,
+    "pf_para_pj_total": 193.2
+   },
+   {
+    "ref": "2024-04",
+    "pf_para_secao": 1.46,
+    "secao_para_pf": 2.157,
+    "liquido": -0.696,
+    "tx_pf_para_secao": 12.31,
+    "tx_secao_para_pf": 3.01,
+    "pf_para_pj_total": 203.6
+   },
+   {
+    "ref": "2024-05",
+    "pf_para_secao": 1.615,
+    "secao_para_pf": 2.377,
+    "liquido": -0.762,
+    "tx_pf_para_secao": 14.65,
+    "tx_secao_para_pf": 3.43,
+    "pf_para_pj_total": 212.9
+   },
+   {
+    "ref": "2024-06",
+    "pf_para_secao": 2.824,
+    "secao_para_pf": 3.729,
+    "liquido": -0.905,
+    "tx_pf_para_secao": 46.18,
+    "tx_secao_para_pf": 13.48,
+    "pf_para_pj_total": 212.2
+   },
+   {
+    "ref": "2024-07",
+    "pf_para_secao": 3.407,
+    "secao_para_pf": 4.382,
+    "liquido": -0.974,
+    "tx_pf_para_secao": 59.6,
+    "tx_secao_para_pf": 17.42,
+    "pf_para_pj_total": 229.6
+   },
+   {
+    "ref": "2024-08",
+    "pf_para_secao": 4.453,
+    "secao_para_pf": 5.507,
+    "liquido": -1.054,
+    "tx_pf_para_secao": 86.35,
+    "tx_secao_para_pf": 25.58,
+    "pf_para_pj_total": 235.6
+   },
+   {
+    "ref": "2024-09",
+    "pf_para_secao": 3.929,
+    "secao_para_pf": 4.495,
+    "liquido": -0.566,
+    "tx_pf_para_secao": 72.97,
+    "tx_secao_para_pf": 18.06,
+    "pf_para_pj_total": 233.0
+   },
+   {
+    "ref": "2024-10",
+    "pf_para_secao": 5.96,
+    "secao_para_pf": 5.923,
+    "liquido": 0.037,
+    "tx_pf_para_secao": 135.73,
+    "tx_secao_para_pf": 31.09,
+    "pf_para_pj_total": 247.8
+   },
+   {
+    "ref": "2024-11",
+    "pf_para_secao": 10.122,
+    "secao_para_pf": 9.011,
+    "liquido": 1.112,
+    "tx_pf_para_secao": 252.21,
+    "tx_secao_para_pf": 57.64,
+    "pf_para_pj_total": 250.9
+   },
+   {
+    "ref": "2024-12",
+    "pf_para_secao": 9.139,
+    "secao_para_pf": 9.502,
+    "liquido": -0.363,
+    "tx_pf_para_secao": 231.31,
+    "tx_secao_para_pf": 60.12,
+    "pf_para_pj_total": 279.1
+   },
+   {
+    "ref": "2025-01",
+    "pf_para_secao": 28.651,
+    "secao_para_pf": 23.326,
+    "liquido": 5.324,
+    "tx_pf_para_secao": 569.1,
+    "tx_secao_para_pf": 122.46,
+    "pf_para_pj_total": 248.1
+   },
+   {
+    "ref": "2025-02",
+    "pf_para_secao": 28.378,
+    "secao_para_pf": 24.019,
+    "liquido": 4.359,
+    "tx_pf_para_secao": 517.38,
+    "tx_secao_para_pf": 117.11,
+    "pf_para_pj_total": 243.7
+   },
+   {
+    "ref": "2025-03",
+    "pf_para_secao": 32.671,
+    "secao_para_pf": 27.926,
+    "liquido": 4.745,
+    "tx_pf_para_secao": 575.78,
+    "tx_secao_para_pf": 133.1,
+    "pf_para_pj_total": 264.5
+   },
+   {
+    "ref": "2025-04",
+    "pf_para_secao": 33.906,
+    "secao_para_pf": 29.088,
+    "liquido": 4.818,
+    "tx_pf_para_secao": 600.41,
+    "tx_secao_para_pf": 142.43,
+    "pf_para_pj_total": 272.9
+   },
+   {
+    "ref": "2025-05",
+    "pf_para_secao": 32.899,
+    "secao_para_pf": 30.976,
+    "liquido": 1.923,
+    "tx_pf_para_secao": 564.36,
+    "tx_secao_para_pf": 144.78,
+    "pf_para_pj_total": 290.6
+   },
+   {
+    "ref": "2025-06",
+    "pf_para_secao": 31.774,
+    "secao_para_pf": 28.749,
+    "liquido": 3.025,
+    "tx_pf_para_secao": 504.16,
+    "tx_secao_para_pf": 131.56,
+    "pf_para_pj_total": 283.2
+   },
+   {
+    "ref": "2025-07",
+    "pf_para_secao": 38.789,
+    "secao_para_pf": 33.923,
+    "liquido": 4.866,
+    "tx_pf_para_secao": 701.36,
+    "tx_secao_para_pf": 174.54,
+    "pf_para_pj_total": 301.0
+   },
+   {
+    "ref": "2025-08",
+    "pf_para_secao": 41.149,
+    "secao_para_pf": 37.088,
+    "liquido": 4.06,
+    "tx_pf_para_secao": 761.97,
+    "tx_secao_para_pf": 194.73,
+    "pf_para_pj_total": 304.8
+   },
+   {
+    "ref": "2025-09",
+    "pf_para_secao": 37.689,
+    "secao_para_pf": 35.711,
+    "liquido": 1.979,
+    "tx_pf_para_secao": 638.19,
+    "tx_secao_para_pf": 168.59,
+    "pf_para_pj_total": 310.6
+   },
+   {
+    "ref": "2025-10",
+    "pf_para_secao": 38.552,
+    "secao_para_pf": 34.82,
+    "liquido": 3.732,
+    "tx_pf_para_secao": 649.13,
+    "tx_secao_para_pf": 160.5,
+    "pf_para_pj_total": 325.9
+   },
+   {
+    "ref": "2025-11",
+    "pf_para_secao": 36.567,
+    "secao_para_pf": 31.666,
+    "liquido": 4.9,
+    "tx_pf_para_secao": 591.33,
+    "tx_secao_para_pf": 141.33,
+    "pf_para_pj_total": 323.3
+   },
+   {
+    "ref": "2025-12",
+    "pf_para_secao": 35.819,
+    "secao_para_pf": 31.876,
+    "liquido": 3.943,
+    "tx_pf_para_secao": 549.74,
+    "tx_secao_para_pf": 128.59,
+    "pf_para_pj_total": 363.6
+   },
+   {
+    "ref": "2026-01",
+    "pf_para_secao": 30.342,
+    "secao_para_pf": 25.591,
+    "liquido": 4.751,
+    "tx_pf_para_secao": 438.42,
+    "tx_secao_para_pf": 97.77,
+    "pf_para_pj_total": 324.4
+   },
+   {
+    "ref": "2026-02",
+    "pf_para_secao": 26.945,
+    "secao_para_pf": 23.408,
+    "liquido": 3.537,
+    "tx_pf_para_secao": 371.03,
+    "tx_secao_para_pf": 80.82,
+    "pf_para_pj_total": 300.6
+   },
+   {
+    "ref": "2026-03",
+    "pf_para_secao": 33.266,
+    "secao_para_pf": 28.2,
+    "liquido": 5.065,
+    "tx_pf_para_secao": 504.52,
+    "tx_secao_para_pf": 119.71,
+    "pf_para_pj_total": 344.0
+   },
+   {
+    "ref": "2026-04",
+    "pf_para_secao": 28.827,
+    "secao_para_pf": 24.951,
+    "liquido": 3.876,
+    "tx_pf_para_secao": 410.12,
+    "tx_secao_para_pf": 90.39,
+    "pf_para_pj_total": 342.3
+   },
+   {
+    "ref": "2026-05",
+    "pf_para_secao": 29.485,
+    "secao_para_pf": 25.426,
+    "liquido": 4.059,
+    "tx_pf_para_secao": 414.98,
+    "tx_secao_para_pf": 93.89,
+    "pf_para_pj_total": 361.4
+   },
+   {
+    "ref": "2026-06",
+    "pf_para_secao": 33.43,
+    "secao_para_pf": 29.557,
+    "liquido": 3.873,
+    "tx_pf_para_secao": 517.23,
+    "tx_secao_para_pf": 133.34,
+    "pf_para_pj_total": 358.0
+   }
+  ]
+ },
+ "anuais": [
+  {
+   "ano": 2020,
+   "meses": 2,
+   "completo": false,
+   "pf_para_secao": 0.06,
+   "secao_para_pf": 0.12,
+   "liquido": -0.06
+  },
+  {
+   "ano": 2021,
+   "meses": 12,
+   "completo": true,
+   "pf_para_secao": 3.28,
+   "secao_para_pf": 4.68,
+   "liquido": -1.4
+  },
+  {
+   "ano": 2022,
+   "meses": 12,
+   "completo": true,
+   "pf_para_secao": 8.46,
+   "secao_para_pf": 12.66,
+   "liquido": -4.19
+  },
+  {
+   "ano": 2023,
+   "meses": 12,
+   "completo": true,
+   "pf_para_secao": 17.02,
+   "secao_para_pf": 23.16,
+   "liquido": -6.14
+  },
+  {
+   "ano": 2024,
+   "meses": 12,
+   "completo": true,
+   "pf_para_secao": 50.45,
+   "secao_para_pf": 55.9,
+   "liquido": -5.44
+  },
+  {
+   "ano": 2025,
+   "meses": 12,
+   "completo": true,
+   "pf_para_secao": 416.84,
+   "secao_para_pf": 369.17,
+   "liquido": 47.67
+  },
+  {
+   "ano": 2026,
+   "meses": 6,
+   "completo": false,
+   "pf_para_secao": 182.3,
+   "secao_para_pf": 157.13,
+   "liquido": 25.16
+  }
+ ],
+ "comparacao": {
+  "ano": 2025,
+  "observado": {
+   "valor": 47.67,
+   "rotulo": "líquido observado na EPAE (seção R inteira)",
+   "status": "calculado",
+   "derivacao": "soma dos 12 meses publicados de (pf_para_secao − secao_para_pf)",
+   "nivel": "A"
+  },
+  "atribuido_estudo": {
+   "valor": 62.5,
+   "rotulo": "atribuído às bets pelo 3º Update do Boletim Fiscal (Comsefaz/Cicef)",
+   "status": "estimativa",
+   "derivacao": "líquido observado menos contrafactual ARIMA estimado com dados até ago/2024",
+   "nivel": "D",
+   "url": "https://comsefaz.org.br/novo/wp-content/uploads/2026/07/boletim_fiscal_3_update_v4.pdf"
+  },
+  "leitura": "A diferença entre os dois números não é erro de nenhum lado: o primeiro é a soma do que o BC publicou para a seção inteira; o segundo é quanto um modelo atribui às apostas, e supera o observado porque o contrafactual projeta que, sem as bets, o setor teria devolvido mais do que recebeu. Nenhum dos dois é medição de perda com apostas."
+ }
+}

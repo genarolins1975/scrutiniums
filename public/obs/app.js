@@ -233,7 +233,7 @@ const VIEW_DATA = {
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
   products: ["products"], product: ["products"],
-  bets: ["bets"],
+  bets: ["bets", "epae"],
   fraudes: ["fraudes"],
   juros: ["juros"],
   operacional: ["operacional"],
@@ -5715,6 +5715,16 @@ window.betsExplorerCSV = () => {
   const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
   dlFile("bets_explorador_" + betsExp.ind + ".csv", "﻿" + csv, "text/csv");
 };
+window.epaeCSV = () => {
+  const E = state.data.epae;
+  if (!E || !E.serie) return;
+  const rows = [["mes", "pf_para_secao_rs_bi", "secao_para_pf_rs_bi", "liquido_rs_bi",
+    "transacoes_pf_para_secao_mi", "transacoes_secao_para_pf_mi", "pf_para_pj_total_rs_bi", "secao_cnae", "fonte"]];
+  E.serie.obs.forEach(o => rows.push([o.ref, o.pf_para_secao, o.secao_para_pf, o.liquido,
+    o.tx_pf_para_secao, o.tx_secao_para_pf, o.pf_para_pj_total, E.secao.rotulo, E.fonte.nome]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  dlFile("epae_artes_cultura_esporte_recreacao.csv", "﻿" + csv, "text/csv");
+};
 
 function renderBets() {
   const el = document.getElementById("view-bets");
@@ -5943,6 +5953,56 @@ function renderBets() {
     <div class="src">${MI.riscos}</div>
   </div>`;
 
+  /* ---------- 8b · EPAE: o insumo público dos estudos de fluxo ---------- */
+  /* Republicamos a série que o BC mede — a seção INTEIRA da CNAE — em vez de
+     repetir a parcela que estudos de terceiros atribuem às apostas. Assim o
+     leitor vê onde termina a medição e onde começa o modelo. */
+  const E = state.data.epae;
+  const epaeCard = !E || !E.serie ? "" : (() => {
+    const o = E.serie.obs;
+    const ult = o[o.length - 1];
+    const chart = lineChart({
+      h: 260, endLabels: true, unit: "R$ bilhões", fonte: "BCB/EPAE",
+      aria: "pagamentos Pix mensais entre pessoas físicas e a seção de artes, cultura, esporte e recreação",
+      series: [
+        { label: "Pessoas → seção", short: "PF → seção", color: "#1d4e89", pts: o.map(p => ({ x: p.ref, y: p.pf_para_secao })) },
+        { label: "Seção → pessoas", short: "seção → PF", color: "#0e7c7b", pts: o.map(p => ({ x: p.ref, y: p.secao_para_pf })) },
+        { label: "Líquido", short: "líquido", color: "#b45309", w: 2.2, pts: o.map(p => ({ x: p.ref, y: p.liquido })) },
+      ],
+    });
+    const comp = E.comparacao;
+    const compBloco = !comp ? "" : `
+      <h4 style="margin-top:12px">O observado e o atribuído não são a mesma grandeza (${comp.ano})</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Grandeza</th><th style="text-align:right">Valor</th><th>Como se obtém</th><th>Nível</th></tr></thead><tbody>
+        <tr><td>${comp.observado.rotulo}</td><td style="text-align:right"><b>R$ ${fmt.n(comp.observado.valor, 1)} bi</b></td><td class="src">${comp.observado.derivacao} ${badge("calculado")}</td><td>${nv(comp.observado.nivel)}</td></tr>
+        <tr><td><a href="${comp.atribuido_estudo.url}" target="_blank" rel="noopener">${comp.atribuido_estudo.rotulo}</a></td><td style="text-align:right"><b>R$ ${fmt.n(comp.atribuido_estudo.valor, 1)} bi</b></td><td class="src">${comp.atribuido_estudo.derivacao} ${badge("estimado")}</td><td>${nv(comp.atribuido_estudo.nivel)}</td></tr>
+      </tbody></table></div>
+      <div class="note warn" style="margin-top:8px">${comp.leitura}</div>`;
+    const anuais = `
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Pessoas → seção</th><th style="text-align:right">Seção → pessoas</th><th style="text-align:right">Líquido</th><th>Meses publicados</th></tr></thead><tbody>
+      ${(E.anuais || []).map(a => `<tr><td><b>${a.ano}</b></td><td style="text-align:right">${fmt.n(a.pf_para_secao, 1)}</td><td style="text-align:right">${fmt.n(a.secao_para_pf, 1)}</td><td style="text-align:right"><b>${fmt.n(a.liquido, 1)}</b></td><td class="src">${a.meses}${a.completo ? "" : " (ano incompleto — sem anualização)"}</td></tr>`).join("")}
+      </tbody></table></div>`;
+    return `
+    <div class="card">
+      <h3>Pagamentos Pix da seção de artes, cultura, esporte e recreação ${nv("A")} ${badge("observado")}</h3>
+      <div class="note warn"><b>Esta não é uma série de apostas.</b> ${E.aviso}</div>
+      <p class="src" style="margin-top:8px">A seção R da CNAE abrange ${E.secao.abrange}. Publicamos aqui o dado do Banco Central sem atribuir parcela alguma a bets: a atribuição é sempre de quem a faz, e aparece separada abaixo.</p>
+      ${chart}
+      ${chartFooter({ fonte: `<a href="${E.fonte.pagina}" target="_blank" rel="noopener">${E.fonte.nome}</a>`, periodo: `${fmt.my(E.cobertura.inicio)} a ${fmt.my(E.cobertura.fim)}`, atualizado: fmt.my(ult.ref), unidade: "R$ bilhões por mês", nota: E.revisao })}
+      <h4 style="margin-top:12px">Por ano civil (soma dos meses publicados, em R$ bi)</h4>
+      ${anuais}
+      <div class="src">O sinal do líquido se inverte em 2025: até 2024 a seção devolvia às pessoas mais do que recebia; a partir de janeiro de 2025 passa a absorver saldo. A coincidência com o início do mercado regulado de apostas é factual, mas a EPAE não permite atribuir a inversão às bets — a seção inteira se move junto.</div>
+      ${compBloco}
+      <details class="decomp" style="margin-top:10px"><summary>conceitos e limites desta série</summary>
+        <div class="tblwrap"><table class="data compact"><tbody>
+        ${(E.conceitos || []).map(c => `<tr><td style="white-space:nowrap"><b>${c.termo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
+        </tbody></table></div>
+        <ul style="font-size:13px;margin:8px 0 0 18px">${(E.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+      </details>
+      <div class="src" style="margin-top:8px">Último mês publicado: <b>${fmt.my(ult.ref)}</b> · pessoas → seção R$ ${fmt.n(ult.pf_para_secao, 1)} bi em ${fmt.n(ult.tx_pf_para_secao, 0)} milhões de transações · <button class="btn ghost small" onclick="epaeCSV()">baixar série (CSV)</button></div>
+    </div>`;
+  })();
+
   /* ---------- 9 · evidências científicas ---------- */
   const estudos = `
   <h3>Evidências científicas — biblioteca resumida</h3>
@@ -5992,7 +6052,7 @@ function renderBets() {
     <p class="src" style="margin-top:8px">Rastreabilidade completa (instituição, URL, período, população, limitações e confiabilidade de cada fonte): <b>FONTES_BETS.md</b>, <b>METODOLOGIA_BETS.md</b> e <b>DICIONARIO_DADOS_BETS.md</b> no repositório. Processo de atualização: ${B.atualizacao?.processo}. Próxima atualização esperada: ${B.atualizacao?.proxima_esperada}.</p>
   </div>`;
 
-  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + quem + "<hr class='sep'>" + vuln + "<hr class='sep'>" + explorer + "<hr class='sep'>" + auto + ilegal + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
+  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + quem + "<hr class='sep'>" + vuln + "<hr class='sep'>" + explorer + "<hr class='sep'>" + auto + ilegal + epaeCard + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
 }
 
 /* ================= FRAUDES FINANCEIRAS E RISCO DE CRÉDITO ================= */
