@@ -117,6 +117,43 @@ describe("epae.json: agregados anuais", () => {
   });
 });
 
+describe("epae.json: por que a série está num painel de bets", () => {
+  it("a taxonomia da CNAE explicita o elo, com a divisão 92 marcada e fonte primária", () => {
+    const t = g.taxonomia;
+    expect(t.divisoes.map((d: any) => d.codigo)).toEqual(["90", "91", "92", "93"]);
+    const jogos = t.divisoes.filter((d: any) => d.jogos);
+    expect(jogos).toHaveLength(1);
+    expect(jogos[0].codigo).toBe("92");
+    expect(jogos[0].nome).toMatch(/jogos de azar e apostas/i);
+    expect(t.explicacao).toMatch(/divisão 92/i);
+    expect(t.granularidade).toMatch(/seção/i);
+    expect(t.url).toMatch(/^https:\/\/concla\.ibge\.gov\.br\//); // classificação oficial, não paráfrase
+  });
+
+  it("a leitura permitida e a proibida vêm juntas, e a proibida é explícita", () => {
+    expect(g.leitura.permite.length).toBeGreaterThanOrEqual(2);
+    expect(g.leitura.nao_permite.length).toBeGreaterThanOrEqual(3);
+    const nao = g.leitura.nao_permite.join(" ");
+    expect(nao).toMatch(/carimbada|nenhuma transação/i);
+    expect(nao).toMatch(/autorizado.*ilegal|ilegal/i);
+    expect(nao).toMatch(/GGR/);
+    expect(nao).toMatch(/fluxo.*perda|perda/i);
+  });
+
+  it("participação é derivação declarada e coerente com os valores publicados", () => {
+    for (const o of obs) {
+      expect(o.participacao).toBeCloseTo((100 * o.pf_para_secao) / o.pf_para_pj_total, 1);
+      expect(o.participacao).toBeGreaterThan(0);
+      expect(o.participacao).toBeLessThan(100);
+    }
+    for (const a of g.anuais) {
+      // peso do ano = soma do numerador sobre soma do denominador, não média das mensais
+      expect(a.participacao).toBeCloseTo((100 * a.pf_para_secao) / a.pf_para_pj_total, 1);
+    }
+    expect(g.conceitos.find((c: any) => c.termo === "participacao").def).toMatch(/não o peso das apostas/i);
+  });
+});
+
 describe("epae: integração com a plataforma", () => {
   it("view de bets carrega o arquivo e a aba renderiza o card", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
@@ -127,6 +164,11 @@ describe("epae: integração com a plataforma", () => {
     const card = app.slice(app.indexOf("8b · EPAE"), app.indexOf("9 · evidências científicas"));
     expect(card).toMatch(/Esta não é uma série de apostas/);
     expect(card).toMatch(/badge\("observado"\)/);
+    // o card precisa explicar o elo taxonômico e os limites de leitura
+    expect(card).toContain("E.taxonomia");
+    expect(card).toContain("as bets se registram aqui");
+    expect(card).toContain("O que esta série permite dizer");
+    expect(card).toContain("O que ela não permite dizer");
   });
 
   it("pipeline registra coletor e builder do epae.json", () => {

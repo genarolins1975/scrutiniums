@@ -5719,9 +5719,10 @@ window.epaeCSV = () => {
   const E = state.data.epae;
   if (!E || !E.serie) return;
   const rows = [["mes", "pf_para_secao_rs_bi", "secao_para_pf_rs_bi", "liquido_rs_bi",
-    "transacoes_pf_para_secao_mi", "transacoes_secao_para_pf_mi", "pf_para_pj_total_rs_bi", "secao_cnae", "fonte"]];
+    "transacoes_pf_para_secao_mi", "transacoes_secao_para_pf_mi", "pf_para_pj_total_rs_bi",
+    "participacao_pct", "secao_cnae", "fonte"]];
   E.serie.obs.forEach(o => rows.push([o.ref, o.pf_para_secao, o.secao_para_pf, o.liquido,
-    o.tx_pf_para_secao, o.tx_secao_para_pf, o.pf_para_pj_total, E.secao.rotulo, E.fonte.nome]));
+    o.tx_pf_para_secao, o.tx_secao_para_pf, o.pf_para_pj_total, o.participacao, E.secao.rotulo, E.fonte.nome]));
   const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
   dlFile("epae_artes_cultura_esporte_recreacao.csv", "﻿" + csv, "text/csv");
 };
@@ -5979,19 +5980,40 @@ function renderBets() {
       </tbody></table></div>
       <div class="note warn" style="margin-top:8px">${comp.leitura}</div>`;
     const anuais = `
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Pessoas → seção</th><th style="text-align:right">Seção → pessoas</th><th style="text-align:right">Líquido</th><th>Meses publicados</th></tr></thead><tbody>
-      ${(E.anuais || []).map(a => `<tr><td><b>${a.ano}</b></td><td style="text-align:right">${fmt.n(a.pf_para_secao, 1)}</td><td style="text-align:right">${fmt.n(a.secao_para_pf, 1)}</td><td style="text-align:right"><b>${fmt.n(a.liquido, 1)}</b></td><td class="src">${a.meses}${a.completo ? "" : " (ano incompleto — sem anualização)"}</td></tr>`).join("")}
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Pessoas → seção</th><th style="text-align:right">Seção → pessoas</th><th style="text-align:right">Líquido</th><th style="text-align:right">% do Pix PF→PJ</th><th>Meses publicados</th></tr></thead><tbody>
+      ${(E.anuais || []).map(a => `<tr><td><b>${a.ano}</b></td><td style="text-align:right">${fmt.n(a.pf_para_secao, 1)}</td><td style="text-align:right">${fmt.n(a.secao_para_pf, 1)}</td><td style="text-align:right"><b>${fmt.n(a.liquido, 1)}</b></td><td style="text-align:right">${a.participacao == null ? "–" : fmt.n(a.participacao, 1) + "%"}</td><td class="src">${a.meses}${a.completo ? "" : " (ano incompleto — sem anualização)"}</td></tr>`).join("")}
       </tbody></table></div>`;
+    /* Sem esta tabela o leitor não fecha o raciocínio: a série está no painel
+       de bets porque a divisão 92 da seção é, literalmente, jogos e apostas. */
+    const T = E.taxonomia;
+    const taxo = !T ? "" : `
+      <details class="decomp" style="margin-top:10px" open><summary>por que uma série desta seção está num painel de bets</summary>
+        <p class="src" style="margin-top:6px">${T.explicacao}</p>
+        <div class="tblwrap" style="margin-top:6px"><table class="data compact"><thead><tr><th>Divisão</th><th>O que reúne</th></tr></thead><tbody>
+        ${T.divisoes.map(d => `<tr${d.jogos ? ' style="font-weight:600"' : ""}><td>${d.codigo}</td><td>${d.nome}${d.jogos ? " ← as bets se registram aqui" : ""}</td></tr>`).join("")}
+        </tbody></table></div>
+        <p class="src" style="margin-top:6px">${T.granularidade} <a href="${T.url}" target="_blank" rel="noopener">${T.fonte}</a>.</p>
+      </details>`;
+    const L = E.leitura;
+    const leitura = !L ? "" : `
+      <div class="grid g2" style="margin-top:12px">
+        <div><h4>O que esta série permite dizer</h4>
+          <ul style="font-size:13px;margin:4px 0 0 18px">${L.permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
+        <div><h4>O que ela não permite dizer</h4>
+          <ul style="font-size:13px;margin:4px 0 0 18px">${L.nao_permite.map(i => `<li>${i}</li>`).join("")}</ul></div>
+      </div>`;
     return `
     <div class="card">
       <h3>Pagamentos Pix da seção de artes, cultura, esporte e recreação ${nv("A")} ${badge("observado")}</h3>
       <div class="note warn"><b>Esta não é uma série de apostas.</b> ${E.aviso}</div>
-      <p class="src" style="margin-top:8px">A seção R da CNAE abrange ${E.secao.abrange}. Publicamos aqui o dado do Banco Central sem atribuir parcela alguma a bets: a atribuição é sempre de quem a faz, e aparece separada abaixo.</p>
+      <p class="src" style="margin-top:8px">A seção R da CNAE abrange ${E.secao.abrange} — e é nela que as casas de apostas são classificadas. Publicamos aqui o dado do Banco Central sem atribuir parcela alguma a bets: a atribuição é sempre de quem a faz, e aparece separada abaixo.</p>
+      ${taxo}
       ${chart}
       ${chartFooter({ fonte: `<a href="${E.fonte.pagina}" target="_blank" rel="noopener">${E.fonte.nome}</a>`, periodo: `${fmt.my(E.cobertura.inicio)} a ${fmt.my(E.cobertura.fim)}`, atualizado: fmt.my(ult.ref), unidade: "R$ bilhões por mês", nota: E.revisao })}
       <h4 style="margin-top:12px">Por ano civil (soma dos meses publicados, em R$ bi)</h4>
       ${anuais}
-      <div class="src">O sinal do líquido se inverte em 2025: até 2024 a seção devolvia às pessoas mais do que recebia; a partir de janeiro de 2025 passa a absorver saldo. A coincidência com o início do mercado regulado de apostas é factual, mas a EPAE não permite atribuir a inversão às bets — a seção inteira se move junto.</div>
+      <div class="src">Duas mudanças de patamar acontecem em 2025. O <b>sinal do líquido se inverte</b>: até 2024 a seção devolvia às pessoas mais do que recebia; a partir de janeiro de 2025 passa a absorver saldo. E o <b>peso da seção salta</b> de cerca de 2% para cerca de 12% de tudo o que pessoas físicas pagam a empresas via Pix ${badge("calculado")} — as demais divisões da seção (espetáculos, patrimônio, esporte e lazer) não crescem nesse ritmo. A coincidência com o início do mercado regulado de apostas é factual e está na linha do tempo desta aba, mas a EPAE não permite atribuir a inversão às bets: a seção inteira se move junto, e nenhuma transação vem carimbada.</div>
+      ${leitura}
       ${compBloco}
       <details class="decomp" style="margin-top:10px"><summary>conceitos e limites desta série</summary>
         <div class="tblwrap"><table class="data compact"><tbody>

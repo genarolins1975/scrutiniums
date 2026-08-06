@@ -62,13 +62,17 @@ Fonte: `pipeline/sources/epae.py` (bronze com hash → tabela `epae_fluxo` no si
 | aviso / limitacoes | texto / lista | negam explicitamente a leitura "isto é volume de bets" |
 | revisao | texto | o BC revisa m-1 a m-3 e fecha m-4 a cada divulgação |
 | cobertura | obj | inicio, fim, meses |
-| serie.obs[] | lista | ref (YYYY-MM), `pf_para_secao`, `secao_para_pf`, `liquido`, `tx_*` (milhões de transações), `pf_para_pj_total` |
-| anuais[] | lista | soma por ano civil com `meses` e `completo`; ano incompleto **nunca** é anualizado |
+| taxonomia | obj | as quatro divisões da seção R, com a divisão 92 (jogos de azar e apostas) marcada em `jogos: true`, mais a explicação da granularidade e a fonte na CNAE do IBGE. É o que responde "por que esta série está num painel de bets" |
+| leitura | obj | duas listas curtas: `permite` e `nao_permite`. Delimitam a leitura da série na tela, inclusive contra a tentação de tratá-la como medição de perda com apostas |
+| serie.obs[] | lista | ref (YYYY-MM), `pf_para_secao`, `secao_para_pf`, `liquido`, `tx_*` (milhões de transações), `pf_para_pj_total`, `participacao` (% da seção no Pix PF→PJ) |
+| anuais[] | lista | soma por ano civil com `meses`, `completo` e `participacao` (soma do numerador sobre soma do denominador, não média das mensais); ano incompleto **nunca** é anualizado |
 | comparacao | obj | confronto entre o líquido observado (A, calculado) e o valor atribuído às bets pelo estudo Comsefaz/Cicef (D, estimativa) |
 
-Unidades: valores em R$ bilhões; transações em milhões. Única derivação: `liquido = pf_para_secao − secao_para_pf`, aritmética sobre dois valores publicados, declarada como calculada.
+Unidades: valores em R$ bilhões; transações em milhões. Duas derivações, ambas aritméticas sobre valores publicados e declaradas como calculadas: `liquido = pf_para_secao − secao_para_pf` e `participacao = 100 × pf_para_secao ÷ pf_para_pj_total`.
 
-**Limite que não pode ser perdido:** a menor abertura pública da EPAE é a SEÇÃO da CNAE. A seção R agrega academias, clubes, cinemas, parques, loterias e apostas; a série não isola bets nem separa operador autorizado de ilegal. Qualquer parcela atribuída a apostas é de terceiro e aparece rotulada como tal.
+**Por que a série está no painel de bets:** a CNAE divide cada seção em divisões de dois dígitos, e as casas de apostas se registram na **divisão 92** ("Atividades de exploração de jogos de azar e apostas") da seção R. O dinheiro das bets está necessariamente nesta série — misturado com as divisões 90, 91 e 93.
+
+**Limite que não pode ser perdido:** a menor abertura pública da EPAE é a SEÇÃO, não a divisão. A série não isola bets nem separa operador autorizado de ilegal. Qualquer parcela atribuída a apostas é de terceiro e aparece rotulada como tal.
 
 ## Transformações
 Únicas transformações aplicadas a dados oficiais: (1) 2S2025 = ano − 1S (mesma fonte/conceito, status `calculado` com campo `derivacao`); (2) GGR médio mensal por apostador = GGR semestre ÷ apostadores ÷ 6 (status `calculado`, média declarada como média). Nenhuma outra derivação, payout implícito ou anualização.

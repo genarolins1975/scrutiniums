@@ -40,6 +40,47 @@ SECAO = {
                 "loterias e apostas, entre outras atividades"),
 }
 
+# Por que uma série da seção R aparece num painel de bets: o elo é taxonômico.
+# A CNAE divide cada seção em divisões de dois dígitos, e as casas de apostas
+# se registram na divisão 92 desta seção. Sem essa tabela, o leitor não tem
+# como fechar o raciocínio e a série parece deslocada na página.
+TAXONOMIA = {
+    "explicacao": ("A CNAE organiza a economia em seções (letras) e divide cada seção em divisões de dois "
+                   "dígitos. As casas de apostas se registram na divisão 92 desta seção — é por isso que o "
+                   "dinheiro que vai para as bets aparece necessariamente nesta série, e é pelo mesmo motivo "
+                   "que ele não pode ser separado do resto."),
+    "granularidade": ("A EPAE publica no nível da SEÇÃO, não da divisão. Se o Banco Central divulgasse a "
+                      "divisão 92 isolada, haveria uma série de jogos e apostas quase limpa; como não "
+                      "divulga, a seção R é a menor unidade pública que contém as bets — nem mais fina, "
+                      "nem mais grossa."),
+    "fonte": "IBGE/CONCLA — Classificação Nacional de Atividades Econômicas (CNAE 2.0)",
+    "url": "https://concla.ibge.gov.br/busca-online-cnae.html?view=secao&tipo=cnae&versao=10&secao=R",
+    "divisoes": [
+        {"codigo": "90", "nome": "Atividades artísticas, criativas e de espetáculos", "jogos": False},
+        {"codigo": "91", "nome": "Atividades ligadas ao patrimônio cultural e ambiental", "jogos": False},
+        {"codigo": "92", "nome": "Atividades de exploração de jogos de azar e apostas", "jogos": True},
+        {"codigo": "93", "nome": "Atividades esportivas e de recreação e lazer", "jogos": False},
+    ],
+}
+
+# O leitor precisa sair da página sabendo exatamente onde termina a leitura
+# permitida. Duas listas curtas, nesta ordem: primeiro o que a série sustenta,
+# depois o que ela não sustenta — inclusive contra a tentação de tratá-la como
+# medição de perda com apostas.
+LEITURA = {
+    "permite": [
+        "acompanhar, mês a mês, quanto as pessoas pagaram e receberam da seção que contém as apostas, com dado administrativo oficial e sem intermediação de modelo;",
+        "medir o tamanho e a data das inflexões da série, e o peso da seção no total que pessoas físicas pagam a empresas via Pix;",
+        "verificar, com a fonte primária na mão, os números que estudos de terceiros derivam desta mesma base.",
+    ],
+    "nao_permite": [
+        "afirmar que qualquer valor desta série é aposta: nenhuma transação vem carimbada, e as divisões 90, 91 e 93 estão somadas junto;",
+        "separar operador autorizado pela SPA de operador ilegal — ambos podem se classificar na seção;",
+        "ler fluxo como perda: depósito não é aposta, o mesmo real pode ser apostado várias vezes e prêmios voltam no sentido inverso;",
+        "comparar diretamente com o GGR do SIGAP, que mede outra grandeza (apostas menos prêmios do mercado autorizado).",
+    ],
+}
+
 CONCEITOS = [
     {"termo": "pf_para_secao",
      "def": "valor pago por pessoas físicas a recebedores classificados na seção R, via Pix no SPI, no mês. "
@@ -52,7 +93,10 @@ CONCEITOS = [
             "mede o saldo de recursos que as pessoas transferiram ao setor no mês, não perda com apostas."},
     {"termo": "pf_para_pj_total",
      "def": "valor pago por pessoas físicas a TODOS os setores que não são pessoa física (inclui 'Outros'), "
-            "no mesmo mês e mesmo instrumento. Serve de denominador de escala; a participação da seção é calculada na tela."},
+            "no mesmo mês e mesmo instrumento. Serve de denominador de escala."},
+    {"termo": "participacao",
+     "def": "pf_para_secao dividido por pf_para_pj_total, em %. Derivação aritmética sobre dois valores "
+            "publicados; mostra o peso da seção no que as pessoas pagam a empresas via Pix, não o peso das apostas."},
 ]
 
 LIMITACOES = [
@@ -89,6 +133,7 @@ def _obs(con):
             "tx_pf_para_secao": round(ida_q / MI, 2),
             "tx_secao_para_pf": round(volta_q / MI, 2),
             "pf_para_pj_total": round(tot_v / BI, 1),
+            "participacao": round(100 * ida_v / tot_v, 2) if tot_v else None,
         })
     return obs
 
@@ -98,10 +143,10 @@ def _anuais(obs):
     nunca anualizado, nunca projetado."""
     anos = {}
     for o in obs:
-        a = anos.setdefault(o["ref"][:4], {"meses": 0, "pf_para_secao": 0.0,
-                                           "secao_para_pf": 0.0, "liquido": 0.0})
+        a = anos.setdefault(o["ref"][:4], {"meses": 0, "pf_para_secao": 0.0, "secao_para_pf": 0.0,
+                                           "liquido": 0.0, "pf_para_pj_total": 0.0})
         a["meses"] += 1
-        for k in ("pf_para_secao", "secao_para_pf", "liquido"):
+        for k in ("pf_para_secao", "secao_para_pf", "liquido", "pf_para_pj_total"):
             a[k] += o[k]
     saida = []
     for ano in sorted(anos):
@@ -111,6 +156,11 @@ def _anuais(obs):
             "pf_para_secao": round(a["pf_para_secao"], 2),
             "secao_para_pf": round(a["secao_para_pf"], 2),
             "liquido": round(a["liquido"], 2),
+            "pf_para_pj_total": round(a["pf_para_pj_total"], 1),
+            # peso da seção no ano: soma do numerador sobre soma do denominador,
+            # não média das participações mensais (que ponderaria meses fracos igual)
+            "participacao": round(100 * a["pf_para_secao"] / a["pf_para_pj_total"], 2)
+            if a["pf_para_pj_total"] else None,
         })
     return saida
 
@@ -173,6 +223,8 @@ def build(con, cfg=None):
             "sha256": row[1] if row else None,
         },
         "secao": SECAO,
+        "taxonomia": TAXONOMIA,
+        "leitura": LEITURA,
         "conceitos": CONCEITOS,
         "limitacoes": LIMITACOES,
         "revisao": "O BC revisa os quatro últimos meses a cada divulgação (definitivo em m-4, provisório de m-1 a m-3).",
