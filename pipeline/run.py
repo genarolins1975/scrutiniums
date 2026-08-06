@@ -19,7 +19,7 @@ from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata
                               datajud, djen, djen_credores, openfinance, reclamacoes, txjuros, b3_market, cvm_dfp, fidc,
                               trends_manual, scr_data, geo_ibge, pix_bcb, judicial, pgfn, desenrola, estban, censo2022,
                               mercado_imobiliario, previdencia, reclamacoes_consig, operacional, releases,
-                              releases_ext, epae)
+                              releases_ext, epae, dependencias)
 
 
 def main():
@@ -41,7 +41,8 @@ def main():
                           ("mercado_imobiliario", mercado_imobiliario),
                           ("previdencia", previdencia), ("reclamacoes_consig", reclamacoes_consig),
                           ("operacional", operacional), ("releases", releases),
-                          ("releases_ext", releases_ext), ("epae", epae)]:
+                          ("releases_ext", releases_ext), ("epae", epae),
+                          ("dependencias", dependencias)]:
             print(f"[coleta] {name}...")
             try:
                 results = mod.collect(con, cfg)

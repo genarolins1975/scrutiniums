@@ -56,7 +56,29 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
 - Uso: auditor vigente (sem data de fim) + histórico de trocas de auditor
 - Confiabilidade: **A**
 
-## 3. BCB — ESTBAN, Estatística Bancária Mensal por município
+## 3. BCB — cadastro de agências, postos e postos eletrônicos (Unicad)
+
+- Página do BC: https://www.bcb.gov.br/fis/info/agencias.asp
+- APIs (Olinda, CSV): `Informes_Agencias/Agencias`, `Informes_PostosDeAtendimento/PostosAtendimento`,
+  `Informes_PostosDeAtendimentoEletronico/PostosAtendimentoEletronico`
+- Granularidade: uma linha por dependência, com CNPJ-raiz da instituição, tipo
+  de posto declarado, município (código IBGE) e UF
+- Volume verificado em 06/08/2026 (posição 05/08/2026): 13.895 agências,
+  22.738 postos de atendimento e 22.249 PAEs
+- **Não é série**: o BC republica o arquivo com a posição corrente e não divulga
+  histórico. O pipeline grava a posição em `dep_unidades` e acumula o agregado
+  por instituição em `dep_hist`, de modo que a série passa a existir a partir da
+  primeira coleta — nunca reconstruída de memória.
+- **Conceito distinto do ESTBAN, jamais somado nem reconciliado**: aqui são
+  agências CADASTRADAS; lá são as PROCESSADAS no mês (as que entregaram
+  balancete). Os totais diferem em conceito e em data-base, e o painel exibe os
+  dois lado a lado dizendo por quê.
+- Uso no painel: contagem por instituição (agências, postos, PAEs, municípios
+  atendidos) e cobertura municipal do país — 5.193 dos 5.570 municípios têm
+  algum ponto; 2.292 são atendidos só por posto ou terminal, sem agência; 377
+  não têm nenhum dos três · Confiabilidade: **A**
+
+## 4. BCB — ESTBAN, Estatística Bancária Mensal por município
 
 - URL: https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios
 - Lista de arquivos via API do próprio site (mesma infraestrutura do painel de
@@ -70,7 +92,7 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
   saltos reais na série de um CNPJ (flag automática acima de 15% em 12 meses)
 - Confiabilidade: **A**
 
-## 4. CVM — IPE (Informações Periódicas e Eventuais) — Fase 2
+## 5. CVM — IPE (Informações Periódicas e Eventuais) — Fase 2
 
 - URL do dataset: https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/IPE/DADOS/
   (`ipe_cia_aberta_{ano}.zip`, ≈1,4 MB/ano; PDFs baixados de rad.cvm.gov.br)
@@ -90,7 +112,7 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
 - Confiabilidade do protocolo: **A** (registro administrativo da CVM); o valor
   divulgado é `reportado` pela companhia
 
-## 5. Fontes fora da CVM — Fase 2 (Caixa, Nubank e Inter)
+## 6. Fontes fora da CVM — Fase 2 (Caixa, Nubank e Inter)
 
 - **SEC/EDGAR** (Nubank — Nu Holdings, CIK 1691493; Inter & Co, CIK 1864163):
   arquivos 6-K com os earnings releases, baixados do domínio da própria SEC
