@@ -1352,7 +1352,7 @@ function renderPix() {
       <div class="src" style="margin-top:4px">idade disponível apenas para pagadores PF; "não se aplica" = PJ.</div></div>
     </div>`;
 
-  /* ---------- 6. geografia ---------- */
+  /* ---------- 8. geografia (exibida após os setores: 'para onde vai') ---------- */
   const G = X.geografia;
   const gmet = px.gmet, persp = px.gpersp;
   const GMETS = { q_hab: ["Transações por habitante", v2 => fmt.n(v2, 1)], v_hab: ["R$ por habitante", v2 => "R$ " + fmt.n0(v2)], t_pag: ["Valor médio (R$)", v2 => "R$ " + fmt.n(v2, 0)], v_abs: ["Valor total", v2 => fmt.money(v2)], yoy_v: ["Crescimento 12m (%)", v2 => fmt.pp(v2) + "%"] };
@@ -1391,7 +1391,7 @@ function renderPix() {
         <div class="src">mapa municipal coroplético: fase 2 (malha de 5.570 polígonos); rankings e busca já cobrem o nível municipal.</div>`}</div>
     </div>`;
 
-  /* ---------- 7. EPAE ---------- */
+  /* ---------- 7. setores — EPAE aberta e matriz da tabela especial ---------- */
   const E = X.epae || {};
   let epae = "";
   if (E.setores) {
@@ -1414,11 +1414,39 @@ function renderPix() {
         <h5 style="margin:10px 0 4px">De quem recebe</h5>
         ${Object.entries(mrow).sort((a, b) => b[1] - a[1]).map(([n2, v2]) => panBar(NATREL[n2] || n2, v2, Math.max(...Object.values(mrow)), vv => fmt.money(vv))).join("")}
         ${leitura([["MEI", sel.mei_pct != null ? `${fmt.n(sel.mei_pct, 1)}% do valor recebido vai a MEIs` : "n.d."], ["Compras", sel.compra_pct != null ? `${fmt.n(sel.compra_pct, 1)}% marcado como compra` : "n.d."]])}
-        <div class="src" style="margin-top:6px">Limite da fonte pública: o lado PAGADOR aparece apenas como pessoa/empresa/governo — a matriz completa setor-pagador × setor-recebedor não existe na EPAE aberta; o "para quem paga" de cada setor é, portanto, indisponível (declarado).</div></div>
+        <div class="src" style="margin-top:6px">Nesta fonte (EPAE aberta), o lado PAGADOR aparece apenas como pessoa/empresa/governo. A matriz completa setor-pagador × setor-recebedor vem da tabela especial do BCB, logo abaixo — universo distinto (SPI), nunca somado a este.</div></div>
       </div>`;
   }
 
-  /* ---------- 8. funcionalidades ---------- */
+  /* A tabela especial preenche a lacuna que este painel declarava: o SETOR do
+     pagador. Universo distinto do bloco acima (SPI apenas) — os dois cartões
+     convivem, nunca se somam, e cada um declara o próprio universo. */
+  const EM = X.epae_matriz || {};
+  let epaeMatriz = "";
+  if (EM.recebedores_pf && EM.recebedores_pf.length) {
+    const topPF = EM.recebedores_pf.slice(0, 12);
+    const maxPF = Math.max(...topPF.map(r => r.v));
+    const selTE = EM.recebedores_pf.find(r => r.setor === px.setorTE) || EM.recebedores_pf[0];
+    const pagadores = Object.entries(EM.matriz)
+      .map(([pag, linha]) => [pag, linha[selTE.setor]])
+      .filter(([pag, v]) => v != null && pag !== selTE.setor)
+      .sort((a, b) => b[1] - a[1]).slice(0, 9);
+    const maxPag = Math.max(...pagadores.map(([, v]) => v));
+    epaeMatriz = `
+    <div class="ov-2col-eq" style="margin-top:10px">
+      <div class="card"><h4>O que as famílias pagam a cada setor ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">Pix de pessoas físicas a cada seção da CNAE · ${fmt.my(EM.mes)} · % sobre o Pix PF→PJ (mesmo conceito do painel de bets)</div>
+        ${topPF.map(r => `<div onclick="pxSet('setorTE','${r.setor.replace(/'/g, "")}')" style="cursor:pointer">${panBar(r.setor.length > 42 ? r.setor.slice(0, 40) + "…" : r.setor, r.v, maxPF, v2 => "R$ " + fmt.n(v2, 1) + " bi", `${fmt.n(r.part, 1)}% · ${r.yoy != null ? fmt.pp(r.yoy) + "% 12m" : ""}${r.ano != null ? ` · ${EM.ano_fechado}: R$ ${fmt.n(r.ano, 0)} bi` : ""}`)}</div>`).join("")}
+        <div class="src">clique num setor para ver de quem ele recebe</div></div>
+      <div class="card"><h4>${selTE.setor} — de quais setores vem o dinheiro ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">matriz setor-pagador × setor-recebedor · ${fmt.my(EM.mes)} · R$ bilhões</div>
+        ${pagadores.map(([pag, v]) => panBar(pag.length > 42 ? pag.slice(0, 40) + "…" : pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
+        ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
+        <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
+    </div>`;
+  }
+
+  /* ---------- 6. funcionalidades (exibida após natureza: 'como se paga') ---------- */
   const F = X.formas;
   const shareChart = (pares) => lineChart({ series: pares.map(([s, l, c]) => ({ pts: s.map(o => ({ x: o.p, y: o.v })).filter(p2 => p2.y != null && p2.x >= "2022-01"), label: l, color: c })), h: 220, unit: "% da quantidade de transações", aria: "participação das funcionalidades" });
   const func = sechead("Funcionalidades: QR Code, aproximação, Pix Automático e iniciadores", `forma de iniciação · base transacional (cobertura ${X.cobertura_tx_pct}%)`) + `
@@ -1471,7 +1499,15 @@ function renderPix() {
     <details class="charttable"><summary>catálogo de métricas (${X.catalogo.length})</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>id</th><th>Nome</th><th>Conceito</th><th>Fórmula</th><th>Unid.</th><th>Freq.</th><th>Fonte</th><th>Início</th><th>Limitações</th></tr></thead>
     <tbody>${X.catalogo.map(c => `<tr><td class="src">${c.id}</td><td><b>${c.nome}</b></td><td class="src">${c.conceito}</td><td class="src">${c.formula}</td><td>${c.unidade}</td><td>${c.periodicidade}</td><td class="src">${c.fonte}</td><td>${c.inicio}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div></details></div>`;
 
-  el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + geog + epae + func + medS + infra + metodo;
+  /* Arco narrativo dos capítulos, reorganizado em 08/2026:
+     I.   o que é e quanto move  → visão · evolução · versus outros meios
+     II.  quem usa e como paga   → quem usa · natureza · funcionalidades
+     III. para onde o dinheiro vai → setores (EPAE + matriz) · geografia
+     IV.  confiança e infraestrutura → MED · SPI
+     A mudança: funcionalidades subiu para junto de natureza (ambos são "como
+     se paga"), e a geografia desceu para junto dos setores (ambos são "para
+     onde vai"). MED e infraestrutura fecham, antes da metodologia. */
+  el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + func + epae + epaeMatriz + geog + medS + infra + metodo;
 }
 window.pxCSV = () => {
   const X = state.data.pix; if (!X || !X.disponivel) return;

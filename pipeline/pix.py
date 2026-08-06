@@ -45,6 +45,79 @@ def _ipca_indice(con):
     return {am: base / v for am, v in idx.items()}  # multiplicador p/ preços do último mês
 
 
+def epae_matriz_te(con):
+    """Matriz setor-pagador × setor-recebedor da tabela especial EPAE (SPI).
+
+    Universo DIFERENTE do bloco pix_cnae (EPAE aberta) e nunca somado a ele: a
+    tabela especial cobre só o Pix liquidado no SPI, desde nov/2020, e traz o
+    que a EPAE aberta não tem — o SETOR do pagador. É ela que preenche a lacuna
+    que este painel declarava ("a matriz completa setor-pagador ×
+    setor-recebedor não existe").
+
+    Função de módulo, e não bloco inline no build: o build completo exige
+    tabelas que só existem no estado do CI, e este pedaço precisa ser
+    computável isoladamente — para teste e para injeção no gold publicado sem
+    esperar o ciclo diário.
+    """
+    try:
+        te_meses = [r[0] for r in _rows(con, "SELECT DISTINCT data FROM epae_fluxo ORDER BY data")]
+    except Exception:
+        return {}
+    if not te_meses:
+        return {}
+    rotulo = lambda s2: s2.split(" / ")[0].strip()
+    ultimo = te_meses[-1]
+    ult12 = te_meses[-13] if len(te_meses) >= 13 else te_meses[0]
+    BI = 1e9
+    # matriz do último mês, em R$ bi — 23×23 células, pequena e completa
+    matriz_te = {}
+    for pag, rec, v in _rows(con,
+            "SELECT pagador, recebedor, valor FROM epae_fluxo WHERE data=?", (ultimo,)):
+        matriz_te.setdefault(rotulo(pag), {})[rotulo(rec)] = round(v / BI, 3)
+    # o que cada setor recebe DE PESSOAS FÍSICAS: último mês, 12m atrás e ano fechado
+    pf = "Pessoa Fisica / Household"
+    de_pf_ult = {rotulo(r): v for r, v in _rows(con,
+        "SELECT recebedor, valor FROM epae_fluxo WHERE data=? AND pagador=?", (ultimo, pf))}
+    de_pf_12m = {rotulo(r): v for r, v in _rows(con,
+        "SELECT recebedor, valor FROM epae_fluxo WHERE data=? AND pagador=?", (ult12, pf))}
+    ano_fechado = None
+    for a in sorted({m[:4] for m in te_meses}, reverse=True):
+        if len([m for m in te_meses if m.startswith(a)]) == 12:
+            ano_fechado = a
+            break
+    de_pf_ano = {}
+    if ano_fechado:
+        de_pf_ano = {rotulo(r): v for r, v in _rows(con,
+            """SELECT recebedor, SUM(valor) FROM epae_fluxo
+               WHERE pagador=? AND data LIKE ? GROUP BY recebedor""", (pf, f"{ano_fechado}-%"))}
+    recebedores_pf = []
+    # denominador exclui PF→PF: a participação publicada é sobre o Pix PF→PJ,
+    # o MESMO conceito da coluna "% do Pix PF→PJ" do epae.json — dois números
+    # com o mesmo nome e denominadores diferentes seria pedir má leitura
+    tot_pf = sum(v for r, v in de_pf_ult.items() if r != "Pessoa Fisica") or 1
+    for rec, v in sorted(de_pf_ult.items(), key=lambda kv: -kv[1]):
+        if rec == "Pessoa Fisica":
+            continue  # P2P fica no capítulo de natureza; aqui é o destino setorial
+        va = de_pf_12m.get(rec)
+        recebedores_pf.append({
+            "setor": rec, "v": round(v / BI, 3), "part": round(v / tot_pf * 100, 2),
+            "yoy": round((v / va - 1) * 100, 1) if va else None,
+            "ano": round(de_pf_ano.get(rec, 0) / BI, 2) if de_pf_ano else None,
+        })
+    return {
+        "mes": ultimo, "mes_yoy": ult12, "ano_fechado": int(ano_fechado) if ano_fechado else None,
+        "universo": ("Pix liquidado no SPI (tabela especial EPAE do BCB): fora ficam transferências "
+                     "internas à mesma instituição, devoluções, saques/troco e mesma titularidade. "
+                     "Universo DIFERENTE do bloco por natureza acima (Pix_DadosAbertos) — os dois "
+                     "nunca se somam, e os totais não têm por que coincidir."),
+        "revisao": "o BC revisa os quatro últimos meses a cada divulgação (definitivo em m-4)",
+        "recebedores_pf": recebedores_pf,
+        "matriz": matriz_te,
+        "nota_bets": ("A seção 'Artes, cultura, esporte e recreacao' inclui a divisão de jogos e "
+                      "apostas, mas NÃO a isola — a leitura dedicada está no painel de bets."),
+    }
+
+
 def build(con, cfg):
     mp = {}
     for am, inst, q, v in _rows(con, "SELECT anomes, instrumento, qtd_mil, valor_mi FROM mp_mensal ORDER BY anomes"):
@@ -225,6 +298,8 @@ def build(con, cfg):
                 "serie": [{"p": f"{m[:4]}-{m[4:6]}", "v": _rows(con, "SELECT SUM(valor) FROM pix_cnae WHERE anomes=?", (m,))[0][0]}
                           for m in cn_meses]}
 
+    epae_matriz = epae_matriz_te(con)
+
     # ---------- MED ----------
     import json as _json
     med = []
@@ -274,6 +349,7 @@ def build(con, cfg):
         {"id": "cobertura_tx", "nome": "Cobertura da base transacional", "conceito": "quanto da quantidade do universo (MPV) está na base transacional usada nas composições", "formula": "qtd_tx/qtd_MPV", "unidade": "%", "periodicidade": "mensal", "fonte": "cálculo próprio", "inicio": "2020-11", "transformacoes": "—", "limitacoes": "gap = liquidação fora do SPI", "versao": "v1"},
         {"id": "med_aceitas_100mil", "nome": "Contestações aceitas por 100 mil transações", "conceito": "incidência oficial do MED; contestação ≠ fraude confirmada", "formula": "campo oficial", "unidade": "por 100 mil", "periodicidade": "mensal", "fonte": "EstatisticasFraudesPix", "inicio": "2021", "transformacoes": "—", "limitacoes": "conceitos do MED, não sentença judicial", "versao": "v1"},
         {"id": "epae_setor", "nome": "Recebimentos Pix por seção CNAE", "conceito": "fluxo financeiro RECEBIDO por setor; NÃO é receita/faturamento/valor adicionado", "formula": "Σ vllanliq", "unidade": "R$", "periodicidade": "mensal", "fonte": "Pix_DadosAbertos CnaePorteRecebedor (EPAE)", "inicio": "2025-01 (recorte carregado)", "transformacoes": "agregação por seção", "limitacoes": "lado pagador só como PF/PJ/G; sinal complementar de atividade", "versao": "v1"},
+        {"id": "epae_matriz", "nome": "Matriz setor-pagador × setor-recebedor", "conceito": "fluxo Pix entre seções da CNAE, com o SETOR de quem paga — a dimensão que a EPAE aberta não tem; NÃO é receita nem consumo", "formula": "valor por par pagador×recebedor no mês", "unidade": "R$ bi", "periodicidade": "mensal (revisão até m-4)", "fonte": "BCB, tabela especial EPAE (SPI apenas)", "inicio": "2020-11", "transformacoes": "rótulo PT; participação de PF→setor sobre o Pix PF→PJ (mesmo conceito do painel de bets)", "limitacoes": "universo SPI ≠ EPAE aberta (nunca somados); seção não isola atividade específica (ex.: bets dentro de artes/recreação)", "versao": "v1"},
     ]
 
     geo_meta = {k: v for k, v in _rows(con, "SELECT k, v FROM geo_meta")}
@@ -307,6 +383,7 @@ def build(con, cfg):
                               "paths": {s: d for s, d in _rows(con, "SELECT uf, svg_d FROM geo_uf WHERE svg_d IS NOT NULL")}},
                       "nota_perspectiva": "município/UF do PAGADOR e do RECEBEDOR são perspectivas distintas — o mapa permite alternar."},
         "epae": epae,
+        "epae_matriz": epae_matriz,
         "med": med,
         "spi": spi,
         "catalogo": catalogo,
