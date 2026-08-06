@@ -927,7 +927,7 @@
    "base": "BCB/EPAE — Estatísticas de Pagamentos por Atividade Econômica: Pix de pessoas físicas para pessoas jurídicas da seção CNAE de artes, cultura, esporte e recreação",
    "desenho": "contrafactual ARIMA estimado com dados até ago/2024; impacto = volume observado menos volume projetado; sem grupo de comparação",
    "resultado": "volume bruto adicional atribuído às bets de R$ 24,1 bi/mês em média (R$ 350,97 bi acumulados em 2025); transferência LÍQUIDA média de R$ 4,7 bi/mês, com R$ 62,5 bi acumulados em 2025 (~0,68% da renda disponível bruta das famílias)",
-   "limitacoes": "a seção CNAE usada agrega todo o setor de artes, cultura, esporte e recreação (não apenas bets) e não separa operadores legais de ilegais; os próprios autores classificam o contrafactual como estimativa de ordem de grandeza, não mensuração causal precisa; a transferência líquida de R$ 62,5 bi em 2025 supera em ~69% o GGR oficial do SIGAP (R$ 36,96 bi) — divergência não conciliada, e o método foi contestado publicamente (BNLData, 29/07/2026)",
+   "limitacoes": "a seção CNAE usada agrega todo o setor de artes, cultura, esporte e recreação (não apenas bets) e não separa operadores legais de ilegais; os próprios autores classificam o contrafactual como estimativa de ordem de grandeza, não mensuração causal precisa; o valor atribuído a 2025 supera o líquido efetivamente observado na seção inteira, porque o contrafactual projeta que sem as bets o setor teria devolvido mais do que recebeu (a comparação numérica entre observado e atribuído está publicada na série EPAE desta aba); supera também em ~69% o GGR oficial do SIGAP (R$ 36,96 bi) — divergência não conciliada, e o método foi contestado publicamente (BNLData, 29/07/2026)",
    "aplicabilidade": "entra como estimativa CONTESTADA de fluxo líquido setorial, não como medição; o conceito (Pix líquido da seção CNAE via EPAE) é incompatível com o GGR do SIGAP e jamais somado ou plotado na mesma série",
    "nivel": "D",
    "url": "https://comsefaz.org.br/novo/wp-content/uploads/2026/07/boletim_fiscal_3_update_v4.pdf"
@@ -1178,14 +1178,14 @@
    }
   ],
   "roadmap": {
-   "fase_atual": "estatística descritiva com hierarquia de evidência. A série regulada tem 3 observações públicas e quebra estrutural em jan/2025: qualquer correlação, defasagem ou índice seria ruído com aparência de ciência.",
+   "fase_atual": "estatística descritiva com hierarquia de evidência. A série mensal da EPAE/BCB (Pix da seção CNAE de artes, cultura, esporte e recreação) já está integrada a esta aba como dado observado da seção inteira, sem atribuição a apostas. A série regulada tem 3 observações públicas e quebra estrutural em jan/2025: qualquer correlação, defasagem ou índice seria ruído com aparência de ciência.",
    "proximas_fases": [
     "correlações contemporâneas e defasadas quando n≥8 semestres (ou SPA passar a divulgar mensal)",
     "testes de estacionariedade e quebras estruturais",
     "controles macroeconômicos (renda, desemprego, juros, inflação)",
     "intervalos de confiança e correção para múltiplos testes",
     "análise de estabilidade e sensibilidade",
-    "integração da série mensal EPAE/BCB (Pix PF→PJ da seção CNAE de artes, cultura, esporte e recreação) como proxy setorial, com a limitação declarada de que a seção não isola bets"
+    "abertura da EPAE abaixo da seção da CNAE, se e quando o BC publicar essa granularidade: hoje a menor unidade pública é a seção inteira, o que impede isolar apostas"
    ],
    "requisitos_causais": [
     "choque ou variação plausivelmente exógena",
