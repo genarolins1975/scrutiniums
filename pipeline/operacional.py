@@ -85,6 +85,8 @@ FONTES = [
      "url": "https://dados.cvm.gov.br/dataset/cia_aberta-doc-fca", "nivel": "A"},
     {"nome": "BCB — ESTBAN, Estatística Bancária Mensal por município (agências processadas)",
      "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios", "nivel": "A"},
+    {"nome": "BCB — cadastro de agências, postos de atendimento e postos eletrônicos (Unicad)",
+     "url": "https://www.bcb.gov.br/fis/info/agencias.asp", "nivel": "A"},
 ]
 
 LIMIAR_VAR_EMPREGADOS_PCT = 30.0
@@ -261,6 +263,9 @@ def build(con, cfg=None):
         for b in BANCOS_CVM
     ]
 
+    deps = _dependencias(con)
+    dep_de = (lambda c8: (deps["por_cnpj8"].get(c8) if deps and c8 else None))
+
     for c in registradas:
         cid, nome = c["id"], c["nome"]
         instituicoes.append({
@@ -272,6 +277,7 @@ def build(con, cfg=None):
             "empregados": _empregados(con, cid, flags, nome),
             "auditor": _auditor(con, cid, flags, nome),
             "rede": _rede(con, c["cnpj8_rede"], flags, nome) if c["cnpj8_rede"] else None,
+            "pontos": dep_de(c["cnpj8_rede"]),
             "clientes": clientes_por_inst.get(cid) or None,
         })
 
@@ -285,6 +291,7 @@ def build(con, cfg=None):
             "empregados": None,
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
+            "pontos": dep_de(extra["cnpj8"]),
             "clientes": clientes_por_inst.get(extra["id"]) or None,
         })
 
@@ -348,6 +355,7 @@ def build(con, cfg=None):
                                  "contagem de municípios com ao menos uma agência (código de "
                                  "município do próprio ESTBAN)."}},
         "rede_por_cnpj8": rede_por_cnpj8,
+        "dependencias": deps,
         "fase2": {
             **fase2_contadores,
             "metricas": fase2_metricas,
@@ -360,6 +368,66 @@ def build(con, cfg=None):
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,
                       "com_auditor": com_auditor, "com_rede": com_rede,
                       **_cobertura_cvm(con, registradas)},
+    }
+
+
+def _dependencias(con):
+    """Rede de atendimento completa: agências, postos e PAEs por instituição e
+    a cobertura municipal que decorre deles.
+
+    Não se mistura com o ESTBAN. Lá são agências PROCESSADAS (as que entregaram
+    o balancete do mês), com série mensal; aqui é CADASTRO, sem série publicada,
+    mas com postos e PAEs que o ESTBAN não enxerga. Os dois números de agência
+    diferem em conceito e em data-base, e o painel diz isso em vez de escolher
+    um deles.
+    """
+    try:
+        linhas = con.execute(
+            "SELECT tipo, cnpj8, nome_if, municipio_ibge, qtd, posicao FROM dep_unidades").fetchall()
+    except Exception:
+        return None
+    if not linhas:
+        return None
+    posicao = linhas[0][5]
+    tipos = ("agencia", "posto", "pae")
+    por_if, nomes = {}, {}
+    mun = {t: set() for t in tipos}
+    for tipo, cnpj8, nome, municipio, qtd, _pos in linhas:
+        d = por_if.setdefault(cnpj8, {t: 0 for t in tipos})
+        d[tipo] += qtd
+        d.setdefault("municipios", set())
+        if municipio:
+            d["municipios"].add(municipio)
+            mun[tipo].add(municipio)
+        nomes[cnpj8] = nome
+    por_cnpj8 = {c: {**{t: d[t] for t in tipos}, "total": sum(d[t] for t in tipos),
+                     "municipios": len(d["municipios"]), "nome": nomes[c]}
+                 for c, d in por_if.items()}
+    com_agencia = mun["agencia"]
+    com_posto = mun["posto"] | mun["pae"]
+    return {
+        "posicao": posicao,
+        "fonte": {"nome": "BCB — cadastro de agências, postos e postos eletrônicos (Unicad)",
+                  "url": "https://www.bcb.gov.br/fis/info/agencias.asp", "nivel": "A"},
+        "totais": {t: sum(d[t] for d in por_cnpj8.values()) for t in tipos},
+        "instituicoes_com_ponto": len(por_cnpj8),
+        "municipios": {
+            "com_agencia": len(com_agencia),
+            "com_posto_ou_pae": len(com_posto),
+            "com_qualquer_ponto": len(com_agencia | com_posto),
+            "so_posto_sem_agencia": len(com_posto - com_agencia),
+            "sem_ponto": 5570 - len(com_agencia | com_posto),
+            "total_municipios": 5570,
+        },
+        "por_cnpj8": por_cnpj8,
+        "escopo": ("Cadastro do BC na posição indicada, não série mensal. As agências aqui são as CADASTRADAS; "
+                   "as do ESTBAN são as PROCESSADAS no mês (entregaram balancete). Os dois números diferem em "
+                   "conceito e data-base e nunca são somados nem reconciliados."),
+        "conceitos": [
+            {"termo": "Agência", "def": "dependência com atendimento completo, sede de conta e caixa."},
+            {"termo": "Posto de atendimento", "def": "ponto com atendimento reduzido ou dedicado — PAB (em empresa ou órgão), PAC (cooperativo), PAA (avançado, em município sem agência), câmbio, microcrédito. O tipo vem declarado pela própria instituição."},
+            {"termo": "PAE", "def": "posto de atendimento eletrônico: terminal fora de agência, sem atendente."},
+        ],
     }
 
 

@@ -78,6 +78,63 @@ describe("estrutura e cobertura", () => {
   });
 });
 
+describe("rede de atendimento (BCB/Unicad)", () => {
+  const d = g.dependencias;
+
+  it("os três cadastros vêm juntos, com posição declarada e fonte nível A", () => {
+    expect(d).toBeTruthy();
+    expect(d.posicao).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
+    expect(d.fonte.url).toMatch(/^https:\/\/www\.bcb\.gov\.br\//);
+    expect(d.fonte.nivel).toBe("A");
+    for (const t of ["agencia", "posto", "pae"]) {
+      expect(d.totais[t], t).toBeGreaterThan(0);
+    }
+  });
+
+  it("cadastro e ESTBAN não são reconciliados nem somados", () => {
+    // o escopo precisa dizer, em texto, que os dois conceitos de agência diferem
+    expect(d.escopo).toMatch(/processadas/i);
+    expect(d.escopo).toMatch(/nunca são somados|não são somados/i);
+    // e os números realmente diferem: se um dia coincidirem, ainda assim não se somam
+    const estban = g.sfn.rede.serie.at(-1).agencias;
+    expect(typeof estban).toBe("number");
+    expect(d.totais.agencia).not.toBe(0);
+  });
+
+  it("cobertura municipal fecha e respeita o total de municípios do país", () => {
+    const m = d.municipios;
+    expect(m.total_municipios).toBe(5570);
+    expect(m.com_agencia).toBeLessThanOrEqual(m.com_qualquer_ponto);
+    expect(m.com_posto_ou_pae).toBeLessThanOrEqual(m.com_qualquer_ponto);
+    expect(m.com_qualquer_ponto).toBeLessThanOrEqual(m.total_municipios);
+    expect(m.sem_ponto).toBe(m.total_municipios - m.com_qualquer_ponto);
+    expect(m.so_posto_sem_agencia).toBe(m.com_qualquer_ponto - m.com_agencia);
+  });
+
+  it("contagem por instituição fecha com o total e não inventa presença", () => {
+    for (const [c8, p] of Object.entries<any>(d.por_cnpj8)) {
+      expect(c8).toMatch(/^\d{8}$/);
+      expect(p.total).toBe(p.agencia + p.posto + p.pae);
+      expect(p.municipios).toBeGreaterThan(0);
+      expect(p.municipios).toBeLessThanOrEqual(5570);
+    }
+    for (const t of ["agencia", "posto", "pae"]) {
+      const soma = Object.values<any>(d.por_cnpj8).reduce((a, p) => a + p[t], 0);
+      expect(soma, t).toBe(d.totais[t]);
+    }
+    // instituição sem ponto cadastrado fica sem o bloco — ausência, não zero
+    const nubank = g.instituicoes.find((i: any) => i.id === "nubank");
+    expect(nubank.pontos).toBeFalsy();
+  });
+
+  it("a aba publica a seção com os dois conceitos e a lacuna municipal", () => {
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    expect(app).toContain("Rede de atendimento além das agências");
+    expect(app).toContain("Municípios sem nenhum ponto");
+    expect(app).toContain("Dois conceitos de agência, nunca somados");
+  });
+});
+
 describe("empregados (CVM/FRE)", () => {
   const comEmpregados = g.instituicoes.filter((i: any) => i.empregados);
 

@@ -7910,6 +7910,43 @@ function renderOperacional() {
     entre CNPJs do mesmo grupo — os casos sinalizados (⚑) estão nas verificações automáticas abaixo. Bancos sem agência
     processada no mês corrente não aparecem (ausência ≠ zero encerrado).</p></div>`;
 
+  /* Rede de atendimento além da agência. O ESTBAN só enxerga agência; o
+     cadastro do BC alcança posto e PAE, e é o que permite dizer em quantos
+     municípios existe algum ponto de atendimento — número que a aba prometia
+     e não tinha. Os dois conceitos de agência ficam lado a lado, sem soma. */
+  const DP = D.dependencias;
+  const comPontos = DP ? D.instituicoes.filter(i => i.pontos).map(i => ({ i, p: i.pontos }))
+    .sort((a, b) => (b.p.agencia + b.p.posto + b.p.pae) - (a.p.agencia + a.p.posto + a.p.pae)) : [];
+  const tPontos = !DP ? "" : `${sechead("Rede de atendimento além das agências", `cadastro do BC · posição ${DP.posicao}`)}
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>Agências cadastradas</h4><div class="big">${fmt.n0(DP.totais.agencia)}</div>
+      <div class="src">${badge("observado")} conceito distinto do ESTBAN<br>lá são as processadas no mês</div></div>
+    <div class="card kpi"><h4>Postos de atendimento</h4><div class="big">${fmt.n0(DP.totais.posto)}</div>
+      <div class="src">${badge("observado")} PAB, PAC, PAA, câmbio, microcrédito</div></div>
+    <div class="card kpi"><h4>Postos eletrônicos (PAE)</h4><div class="big">${fmt.n0(DP.totais.pae)}</div>
+      <div class="src">${badge("observado")} terminal fora de agência, sem atendente</div></div>
+    <div class="card kpi"><h4>Municípios sem nenhum ponto</h4><div class="big">${fmt.n0(DP.municipios.sem_ponto)}</div>
+      <div class="src">${badge("observado")} de ${fmt.n0(DP.municipios.total_municipios)}<br>nem agência, nem posto, nem PAE</div></div>
+  </div>
+  <div class="card">
+    <p class="src">Somando os três tipos, existe ponto de atendimento em <b>${fmt.n0(DP.municipios.com_qualquer_ponto)}</b>
+    dos ${fmt.n0(DP.municipios.total_municipios)} municípios. Só <b>${fmt.n0(DP.municipios.com_agencia)}</b> têm agência:
+    outros <b>${fmt.n0(DP.municipios.so_posto_sem_agencia)}</b> são atendidos apenas por posto ou terminal eletrônico, e
+    <b>${fmt.n0(DP.municipios.sem_ponto)}</b> não têm nenhum dos três.</p>
+    <div class="tblwrap" style="margin-top:10px"><table>
+      <thead><tr><th>Instituição</th><th class="num">Agências</th><th class="num">Postos</th><th class="num">PAE</th><th class="num">Total</th><th class="num">Municípios</th></tr></thead>
+      <tbody>${comPontos.map(({ i, p }) => `<tr>
+        <td>${i.nome}</td><td class="num">${fmt.n0(p.agencia)}</td><td class="num">${fmt.n0(p.posto)}</td>
+        <td class="num">${fmt.n0(p.pae)}</td><td class="num"><b>${fmt.n0(p.total)}</b></td>
+        <td class="num">${fmt.n0(p.municipios)}</td></tr>`).join("")}
+      </tbody></table></div>
+    <div class="note warn" style="margin-top:8px"><b>Dois conceitos de agência, nunca somados.</b> ${DP.escopo}</div>
+    <dl class="descomoler" style="margin-top:10px">${(DP.conceitos || []).map(c => `<dt>${c.termo}</dt><dd>${c.def}</dd>`).join("")}</dl>
+    <p class="src">${badge("observado")} <a href="${attr(DP.fonte.url)}" target="_blank" rel="noopener">${DP.fonte.nome}</a> ·
+    nível ${DP.fonte.nivel}. O cadastro é uma posição, não série: o BC republica o arquivo e não divulga histórico —
+    o painel passa a acumular a série a partir da primeira coleta. Instituição sem ponto cadastrado não aparece na
+    tabela: ausência de dependência é informação, não zero de rede encerrada.</p></div>`;
+
   const comEmp = D.instituicoes.filter(i => i.empregados).map(i => ({ i, u: i.empregados.serie[i.empregados.serie.length - 1] }))
     .sort((a, b) => b.u.total - a.u.total);
   const tEmp = `${sechead("Gente — empregados declarados no FRE", "item 10.1 · escopo declarado pela companhia")}
@@ -7999,7 +8036,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tEmp + tCli + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };
