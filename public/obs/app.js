@@ -236,7 +236,7 @@ const VIEW_DATA = {
   bets: ["bets", "epae"],
   fraudes: ["fraudes"],
   juros: ["juros"],
-  operacional: ["operacional"],
+  operacional: ["operacional", "presenca_mun", "penetracao_malha"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -7968,6 +7968,62 @@ function renderOperacional() {
     o painel passa a acumular a série a partir da primeira coleta. Instituição sem ponto cadastrado não aparece na
     tabela: ausência de dependência é informação, não zero de rede encerrada.</p></div>`;
 
+  /* Mapa municipal: a pergunta que os agregados nacionais não respondem é
+     "no meu município existe o quê?". As classes são ordenadas por
+     profundidade do atendimento e o mapa é categórico de propósito — não há
+     escala contínua honesta entre "tem agência" e "tem lotérica". */
+  const PR = state.data.presenca_mun;
+  const malhaPR = state.data.penetracao_malha;
+  const PR_COR = { agencia: "#1d4e89", posto: "#0e7c7b", correspondente: "#b45309", nenhum: "#b91c1c" };
+  const tPresenca = !PR ? "" : (() => {
+    const porCod = Object.fromEntries(PR.municipios.map(m => [m.cod, m]));
+    const paths = !malhaPR ? "" : Object.entries(malhaPR.paths).map(([cod, d]) => {
+      const m = porCod[cod];
+      if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
+      const tip = encodeURIComponent(`<div class="tt-date">${m.nome} (${m.uf})</div>
+        <div class="tt-row"><span class="tt-lbl">agências</span><span class="tt-val">${fmt.n0(m.agencia)}</span></div>
+        <div class="tt-row"><span class="tt-lbl">postos</span><span class="tt-val">${fmt.n0(m.posto)}</span></div>
+        <div class="tt-row"><span class="tt-lbl">postos eletrônicos</span><span class="tt-val">${fmt.n0(m.pae)}</span></div>
+        <div class="tt-row"><span class="tt-lbl">correspondentes</span><span class="tt-val">${fmt.n0(m.corresp)}</span></div>
+        <div class="tt-row"><span class="tt-lbl">instituições com dependência</span><span class="tt-val">${fmt.n0(m.ifs_dep)}</span></div>`);
+      return `<path d="${d}" fill="${PR_COR[m.classe]}" class="penmun" data-tip="${tip}" aria-label="${attr(`${m.nome} ${m.uf}: ${m.classe}`)}"></path>`;
+    }).join("");
+    const tot = PR.totais;
+    const pct = v => fmt.n(100 * v / tot.municipios, 1) + "%";
+    const legenda = PR.classes.map(c => `<span class="chip" title="${attr(c.def)}">
+      <span style="display:inline-block;width:10px;height:10px;background:${PR_COR[c.id]};border-radius:2px;margin-right:5px"></span>
+      ${c.rotulo}: <b>${fmt.n0(tot[c.id])}</b> (${pct(tot[c.id])})</span>`).join(" ");
+    const ufs = [...PR.por_uf].sort((a, b) =>
+      (b.correspondente / b.municipios) - (a.correspondente / a.municipios));
+    return `${sechead("Presença bancária física por município", `dependências e correspondentes · posição ${PR.posicao.dependencias}`)}
+    <div class="card">
+      <div class="note warn">${PR.aviso}</div>
+      <div class="chips" style="margin:10px 0">${legenda}</div>
+      ${malhaPR ? `<svg class="penmapa" viewBox="${malhaPR.viewBox}" role="img" aria-label="mapa municipal do tipo de presença bancária"><g transform="${malhaPR.transform}">${paths}</g></svg>`
+                : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">Mapa categórico: a cor é o ponto de MAIOR profundidade existente no município, não a quantidade.
+      Um município com agência e mil correspondentes tem a mesma cor de um com uma agência só.
+      ${malhaPR && PR.totais.municipios > Object.keys(malhaPR.paths).length
+        ? `A malha desenha ${fmt.n0(Object.keys(malhaPR.paths).length)} polígonos e as contagens usam ${fmt.n0(PR.totais.municipios)} municípios: os instalados depois do Censo 2022 entram na tabela e ainda não no desenho.` : ""}</p>
+      <h4 style="margin-top:12px">Por unidade da federação</h4>
+      <div class="tblwrap"><table class="data compact">
+        <thead><tr><th>UF</th><th class="num">Municípios</th><th class="num">Com agência</th><th class="num">Só posto ou terminal</th><th class="num">Só correspondente</th><th class="num">Sem nenhum</th></tr></thead>
+        <tbody>${ufs.map(u => `<tr><td>${u.uf}</td><td class="num">${fmt.n0(u.municipios)}</td>
+          <td class="num">${fmt.n0(u.agencia)}</td><td class="num">${fmt.n0(u.posto)}</td>
+          <td class="num"><b>${fmt.n0(u.correspondente)}</b></td><td class="num">${fmt.n0(u.nenhum)}</td></tr>`).join("")}
+        </tbody></table></div>
+      <p class="src" style="margin-top:6px">Ordenado pela fatia de municípios em que o correspondente é a única presença.</p>
+      <details class="decomp" style="margin-top:10px"><summary>o que este mapa não diz</summary>
+        <ul style="font-size:13px;margin:6px 0 0 18px">${PR.limitacoes.map(l => `<li>${l}</li>`).join("")}</ul>
+        <div class="tblwrap" style="margin-top:8px"><table class="data compact"><tbody>
+        ${PR.classes.map(c => `<tr><td style="white-space:nowrap"><b>${c.rotulo}</b></td><td class="src">${c.def}</td></tr>`).join("")}
+        </tbody></table></div>
+      </details>
+      <p class="src" style="margin-top:8px">${badge("observado")} ${(PR.fontes || []).map(f =>
+        `<a href="${attr(f.url)}" target="_blank" rel="noopener">${f.nome}</a>`).join(" · ")}</p>
+    </div>`;
+  })();
+
   /* Correspondentes: é aqui que a presença bancária deixa de ser rede própria.
      Contagem por CNPJ-raiz CONTRATANTE, como o BC publica — sem consolidar
      grupo econômico, o que a fonte não permite. */
@@ -8115,7 +8171,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tCorr + tEmp + tCli + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };
