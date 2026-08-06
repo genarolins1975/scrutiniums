@@ -28,7 +28,7 @@ describe("bets.json: integridade estrutural", () => {
     for (const k of ["gerado_em", "corte_pesquisa", "niveis", "sintese", "series", "cadeia", "perfil", "vulnerabilidade", "explorador", "mercado_ilegal", "estudos", "timeline", "metodologia"]) {
       expect(curado[k], `campo ${k}`).toBeTruthy();
     }
-    expect(curado.corte_pesquisa).toBe("2026-07-31");
+    expect(curado.corte_pesquisa).toBe("2026-08-06");
     expect(curado.aviso).toMatch(/não implicam causalidade/i);
   });
 
@@ -176,6 +176,19 @@ describe("bets.json: cadeia causal e explorador honestos", () => {
     expect(hollenbeck.tipo).toMatch(/working paper/i);
     const cnc = curado.estudos.find((e: any) => e.id === "cnc2026");
     expect(cnc.limitacoes).toMatch(/contestado/i);
+  });
+
+  it("estimativa Comsefaz/EPAE entra como contestada e nunca se mistura ao GGR", () => {
+    const comsefaz = curado.estudos.find((e: any) => e.id === "comsefaz2026");
+    expect(comsefaz.nivel).toBe("D");
+    expect(comsefaz.limitacoes).toMatch(/contestado/i);
+    expect(comsefaz.limitacoes).toMatch(/ordem de grandeza/i);
+    expect(comsefaz.aplicabilidade).toMatch(/incompatível.*GGR/i);
+    // o número contestado não entra na síntese nem nas séries oficiais
+    expect(curado.sintese.some((k: any) => /62,5|comsefaz/i.test(JSON.stringify(k)))).toBe(false);
+    for (const s of Object.values<any>(curado.series)) {
+      expect(JSON.stringify(s)).not.toMatch(/comsefaz/i);
+    }
   });
 });
 

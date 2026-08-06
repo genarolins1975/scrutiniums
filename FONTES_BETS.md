@@ -1,6 +1,6 @@
 # FONTES_BETS.md — Registro de fontes da aba "Bets e risco financeiro"
 
-Data de corte da pesquisa: **31/07/2026**. Verificação de atualizações posteriores: realizada em 31/07/2026 (nenhum Panorama SPA do 1S2026 publicado até o corte; padrão de publicação é fim de agosto). Este arquivo é a fonte de verdade da curadoria de `pipeline/curated/bets.json` (copiado ao gold pelo pipeline).
+Data de corte da pesquisa: **06/08/2026**. Verificações: 31/07/2026 (nenhum Panorama SPA do 1S2026 publicado até então; padrão de publicação é fim de agosto) e 06/08/2026 (incorporação do 3º Update do Boletim Fiscal Comsefaz/Cicef, da Resolução BCB nº 561/2026 e do registro da EPAE como fonte de monitoramento). Este arquivo é a fonte de verdade da curadoria de `pipeline/curated/bets.json` (copiado ao gold pelo pipeline).
 
 Classificação de confiabilidade usada no painel: **A** dado administrativo oficial · **B** pesquisa oficial representativa · **C** estudo acadêmico com método identificável · **D** estimativa privada com metodologia publicada · **E** associação exploratória ou sinal não validado em fonte primária.
 
@@ -40,7 +40,18 @@ Classificação de confiabilidade usada no painel: **A** dado administrativo ofi
 - Conceito: transferências Pix BRUTAS a contas de operadoras (R$ 18 a 21 bi/mês; ago/2024: R$ 20,8 bi; ~24 mi pagadores; recorte Bolsa Família: 5 mi de responsáveis, R$ 3 bi, mediana R$ 100)
 - Método: identificação de contas por CNAE + lista de 56 operadoras + padrão comportamental
 - Limitações (declaradas pelo BC): preliminar; não separa legal/ilegal; não distingue depósito de aposta; fluxo bruto ≠ perda (retenção ~15% estimada); recorte BF contestado (CPF do responsável; origem do recurso)
-- Atualização: NENHUMA publicada até 31/07/2026 (REFs de abr/2025, nov/2025 e mai/2026 verificados: sem boxe de bets) · Confiabilidade: A com contestação documentada
+- Atualização: NENHUMA publicada até 06/08/2026 (REFs de abr/2025, nov/2025 e mai/2026 verificados: sem boxe de bets). A partir de out/2025 o BCB passou a divulgar a EPAE (entrada própria abaixo), que permite monitoramento setorial mensal, mas sem isolar bets · Confiabilidade: A com contestação documentada
+
+### BCB — EPAE (Estatísticas de Pagamentos por Atividade Econômica)
+- Divulgação mensal iniciada em out/2025; séries desde nov/2020 · Conceito: quantidade e valor de pagamentos (Pix) desagregados por seção da CNAE do pagador e do recebedor
+- Box de apresentação: https://www.bcb.gov.br/content/ri/relatorioinflacao/202512/rpm202512b3p.pdf · Dados: portal de estatísticas de meios de pagamento do BCB (https://dadosabertos.bcb.gov.br/dataset/estatisticas-meios-pagamentos)
+- Limitação central para bets: a menor desagregação pública é a seção CNAE "artes, cultura, esporte e recreação" (seção R), que agrega academias, clubes, cinemas etc. — NÃO isola apostas; também não separa operadores legais de ilegais
+- Status no painel: fonte de monitoramento registrada; série ainda NÃO integrada (candidata declarada no roadmap do bets.json) · Confiabilidade: A (dado administrativo), com a limitação setorial acima
+
+### BCB — Resolução BCB nº 561/2026 (eFX e apostas internacionais)
+- Publicada no DOU de 05/05/2026 (Seção 1, p. 188/189); datada de 30/04/2026 · Altera a Resolução BCB nº 277/2022 (serviço de pagamento ou transferência internacional — eFX)
+- Relevância para o painel: cria o código de classificação 34045 para pagamentos internacionais de jogos e apostas, com vigência em 01/10/2026 — primeiro instrumento que dará visibilidade estatística específica a remessas internacionais ligadas a apostas
+- URL: https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=561 (confirmada via API de normativos do BCB) · Confiabilidade: A
 
 ### BCB/SGS — séries de crédito usadas no explorador (via pipeline do Observatório)
 - inad_pf (21084, inadimplência PF >90d, % — carteira total), inad_total (21082), comprometimento (29034), endividamento (29037), taxa_pf, concessoes_pf, saldo_pf, desemprego, ipca, selic_meta
@@ -95,6 +106,7 @@ Classificação de confiabilidade usada no painel: **A** dado administrativo ofi
 - **Datafolha (mai/2026)**: presencial, n=1.907, ±2 p.p.; 7% dos adultos; R$ 241/mês declarado (via imprensa especializada; registro TSE BR-07489/2026)
 - **ANBIMA/Datafolha Raio-X (abr/2026)**: 17% da população (conceito distinto)
 - **CNC (abr/2026)**: DiD sobre Peic declarado, nota técnica completa NÃO publicada; contestado pelo IBJR → entra como estimativa contestada. https://movimentoeconomico.com.br/economia/varejo/2026/04/29/cnc-bets-drenam-r-30-bi-por-mes-e-e-levam-270-mil-familias-a-inadimplencia/
+- **Comsefaz/Cicef — 3º Update do Boletim Fiscal dos Estados (jul/2026)**: box "Impacto das bets no volume de transações por Pix" (p. 38-40; apresentado em 22/07/2026). Base: BCB/EPAE, Pix PF→PJ da seção CNAE "artes, cultura, esporte e recreação". Método: contrafactual ARIMA com dados até ago/2024; impacto = observado − projetado. Resultados: volume bruto adicional de R$ 24,1 bi/mês em média e R$ 350,97 bi acumulados em 2025; transferência LÍQUIDA de R$ 4,7 bi/mês em média e R$ 62,5 bi em 2025 (~0,68% da renda disponível bruta das famílias). Limitações: seção CNAE não isola bets (agrega academias, clubes, cinemas etc.) nem separa legal/ilegal; os próprios autores classificam como "estimativa de ordem de grandeza do impacto, e não mensuração causal precisa" (nota 16); o valor líquido de 2025 supera em ~69% o GGR oficial do SIGAP (R$ 36,96 bi) — divergência não conciliada; método contestado publicamente (BNLData, 29/07/2026). Entra como estimativa CONTESTADA (D), fora da síntese e das séries. https://comsefaz.org.br/novo/wp-content/uploads/2026/07/boletim_fiscal_3_update_v4.pdf
 - **Locomotiva/IBJR (jun/2025)**: n=2.000 digital, ±2,2 p.p.; encomendado pelo setor (interesse declarado). https://ibjr.org.br/wp-content/uploads/2025/09/Pesquisa-Instituto-Locomotiva_Incidencia-de-Apostas-Ilegais-no-Brasil-2025_divulgacao-10.06.2025.pdf
 - **LCA/IBJR (2024-25)**: perda fiscal R$ 7,2 a 10,8 bi/ano; premissas publicadas. https://ibjr.org.br/wp-content/uploads/2024/10/LCA_IBJR_Mercado-de-Apostas-1.pdf
 

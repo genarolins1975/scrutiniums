@@ -1,7 +1,7 @@
 {
- "gerado_em": "2026-07-31T00:00:00+00:00",
- "versao": "1.0.0",
- "corte_pesquisa": "2026-07-31",
+ "gerado_em": "2026-08-06T00:00:00+00:00",
+ "versao": "1.1.0",
+ "corte_pesquisa": "2026-08-06",
  "titulo": "Bets e risco financeiro",
  "subtitulo": "Como as apostas podem afetar renda disponível, liquidez e capacidade de pagamento das famílias brasileiras.",
  "aviso": "Associações não implicam causalidade.",
@@ -9,7 +9,7 @@
  "atualizacao": {
   "processo": "curadoria manual documentada (sem API pública consolidada); Panoramas semestrais da SPA/MF são a fonte administrativa central",
   "proxima_esperada": "Panorama SPA do 1º semestre de 2026 (padrão de publicação: fim de agosto)",
-  "verificado_em": "2026-07-31"
+  "verificado_em": "2026-08-06"
  },
  "niveis": {
   "A": {
@@ -916,6 +916,23 @@
    "url": "https://movimentoeconomico.com.br/economia/varejo/2026/04/29/cnc-bets-drenam-r-30-bi-por-mes-e-e-levam-270-mil-familias-a-inadimplencia/"
   },
   {
+   "id": "comsefaz2026",
+   "titulo": "Impacto das bets no volume de transações por Pix: uma análise contrafactual",
+   "autores": "Comsefaz e Cicef (Centro Celso Furtado)",
+   "ano": 2026,
+   "veiculo": "3º Update do Boletim Fiscal dos Estados Brasileiros (box, p. 38-40; apresentado em 22/07/2026)",
+   "tipo": "estimativa institucional com metodologia publicada",
+   "pais": "Brasil",
+   "periodo": "out/2024 a mar/2026",
+   "base": "BCB/EPAE — Estatísticas de Pagamentos por Atividade Econômica: Pix de pessoas físicas para pessoas jurídicas da seção CNAE de artes, cultura, esporte e recreação",
+   "desenho": "contrafactual ARIMA estimado com dados até ago/2024; impacto = volume observado menos volume projetado; sem grupo de comparação",
+   "resultado": "volume bruto adicional atribuído às bets de R$ 24,1 bi/mês em média (R$ 350,97 bi acumulados em 2025); transferência LÍQUIDA média de R$ 4,7 bi/mês, com R$ 62,5 bi acumulados em 2025 (~0,68% da renda disponível bruta das famílias)",
+   "limitacoes": "a seção CNAE usada agrega todo o setor de artes, cultura, esporte e recreação (não apenas bets) e não separa operadores legais de ilegais; os próprios autores classificam o contrafactual como estimativa de ordem de grandeza, não mensuração causal precisa; a transferência líquida de R$ 62,5 bi em 2025 supera em ~69% o GGR oficial do SIGAP (R$ 36,96 bi) — divergência não conciliada, e o método foi contestado publicamente (BNLData, 29/07/2026)",
+   "aplicabilidade": "entra como estimativa CONTESTADA de fluxo líquido setorial, não como medição; o conceito (Pix líquido da seção CNAE via EPAE) é incompatível com o GGR do SIGAP e jamais somado ou plotado na mesma série",
+   "nivel": "D",
+   "url": "https://comsefaz.org.br/novo/wp-content/uploads/2026/07/boletim_fiscal_3_update_v4.pdf"
+  },
+  {
    "id": "serasa2024",
    "titulo": "Endividados e apostas (Serasa/Opinion Box)",
    "autores": "Serasa Experian",
@@ -1075,6 +1092,13 @@
    "status": "confirmado"
   },
   {
+   "data": "2026-05-05",
+   "ato": "Resolução BCB nº 561/2026 (eFX e apostas internacionais)",
+   "resumo": "Publicada no DOU de 05/05/2026 (Seção 1, p. 188/189), altera a Resolução BCB nº 277/2022 e cria o código 34045 para classificar pagamentos internacionais de jogos e apostas no serviço eFX, a partir de 01/10/2026.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=561",
+   "status": "confirmado"
+  },
+  {
    "data": "2026-05-19",
    "ato": "TCU, acórdão TC 015.852/2025-3",
    "resumo": "Estima mercado ilegal em 41% a 51% do volume (até R$ 40 bi/ano) e faz 8 recomendações à SPA.",
@@ -1087,6 +1111,13 @@
    "resumo": "Decreto noticiado (contas de operadores ilegais bloqueadas em 24h; ~50 mil sites bloqueados). Número do decreto não confirmado em fonte primária até o corte.",
    "url": "https://convergenciadigital.com.br/governo/bets-anatel-bloqueou-50-mil-sites-de-apostas-ilegais/",
    "status": "parcial"
+  },
+  {
+   "data": "2026-07-22",
+   "ato": "Comsefaz/Cicef, 3º Update do Boletim Fiscal dos Estados",
+   "resumo": "Box com contrafactual ARIMA sobre dados EPAE/BCB estima transferência líquida de R$ 62,5 bi das famílias às bets em 2025 — estimativa de ordem de grandeza, contestada e ~69% acima do GGR oficial do SIGAP (ver biblioteca de estudos).",
+   "url": "https://comsefaz.org.br/novo/wp-content/uploads/2026/07/boletim_fiscal_3_update_v4.pdf",
+   "status": "confirmado"
   }
  ],
  "metodologia": {
@@ -1153,7 +1184,8 @@
     "testes de estacionariedade e quebras estruturais",
     "controles macroeconômicos (renda, desemprego, juros, inflação)",
     "intervalos de confiança e correção para múltiplos testes",
-    "análise de estabilidade e sensibilidade"
+    "análise de estabilidade e sensibilidade",
+    "integração da série mensal EPAE/BCB (Pix PF→PJ da seção CNAE de artes, cultura, esporte e recreação) como proxy setorial, com a limitação declarada de que a seção não isola bets"
    ],
    "requisitos_causais": [
     "choque ou variação plausivelmente exógena",
