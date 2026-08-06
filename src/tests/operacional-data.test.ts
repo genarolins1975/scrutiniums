@@ -78,6 +78,40 @@ describe("estrutura e cobertura", () => {
   });
 });
 
+describe("alcance: página da IF, comparador e imprensa", () => {
+  const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+
+  it("a rede de atendimento chega a qualquer IF com CNPJ-raiz, não só às do painel", () => {
+    // o cadastro cobre mais de mil instituições; o painel tem dezenas. Se o
+    // join da página de IF voltar a depender do piloto, este teste cai.
+    expect(Object.keys(g.dependencias.por_cnpj8).length).toBeGreaterThan(500);
+    expect(app).toContain("Rede de atendimento (cadastro do BC)");
+    expect(app).toContain("(O.dependencias || {}).por_cnpj8");
+    expect(app).toContain("if (!piloto && !rede && !pontos) return null;");
+  });
+
+  it("comparador mostra postos e PAE sem somá-los às agências do ESTBAN", () => {
+    expect(app).toContain("Postos + PAE");
+    expect(app).toContain("não se soma");
+  });
+
+  it("síntese citável inclui a lacuna municipal, com conceito e fonte", () => {
+    const ids = g.sintese.map((s: any) => s.id);
+    for (const id of ["municipios_sem_ponto", "municipios_so_posto", "postos_atendimento"]) {
+      expect(ids, `síntese sem ${id}`).toContain(id);
+    }
+    const semPonto = g.sintese.find((s: any) => s.id === "municipios_sem_ponto");
+    expect(semPonto.valor).toBe(g.dependencias.municipios.sem_ponto);
+    expect(semPonto.conceito).toMatch(/não mede acesso/i); // correspondentes e digital ficam fora
+    for (const s of g.sintese) {
+      expect(s.nivel, s.id).toBe("A");
+      expect(s.url, s.id).toMatch(/^https:\/\/www\.bcb\.gov\.br\//);
+      expect(s.conceito.length, s.id).toBeGreaterThan(40);
+      expect(["oficial", "calculado"]).toContain(s.status);
+    }
+  });
+});
+
 describe("rede de atendimento (BCB/Unicad)", () => {
   const d = g.dependencias;
 
