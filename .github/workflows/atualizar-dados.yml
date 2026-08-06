@@ -21,6 +21,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 concurrency:
   group: atualizar-dados
@@ -112,4 +113,39 @@ jobs:
             done
             echo "::error::não foi possível publicar os dados após 4 tentativas"
             exit 1
+          fi
+
+  # A falha de 03-06/08 ficou quatro dias invisível: o pipeline morria em
+  # silêncio e o gold envelhecia sem ninguém saber, até uma checagem manual.
+  # Este job transforma qualquer término anormal em issue aberta no repositório
+  # — visível, com link para o run, e sem duplicar enquanto a anterior estiver
+  # aberta (o comentário acumula as ocorrências no mesmo lugar).
+  alertar:
+    runs-on: ubuntu-latest
+    needs: pipeline
+    if: always() && (needs.pipeline.result == 'failure' || needs.pipeline.result == 'cancelled')
+    timeout-minutes: 5
+    steps:
+      - name: Abrir ou comentar issue de falha
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESULTADO: ${{ needs.pipeline.result }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Pipeline diário interrompido — dados do Observatório podem estar defasados"
+          CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC terminou com **${RESULTADO}**: ${RUN_URL}
+
+          O que verificar, na ordem em que as falhas anteriores aconteceram:
+          1. push rejeitado por main ter andado durante a execução (o retry com rebase deveria cobrir);
+          2. timeout — se repetir com 150 min, o problema é volume de coleta, não transiente;
+          3. fonte fora do ar (o log do passo *Executar pipeline* lista as falhas por coletor).
+
+          Enquanto esta issue estiver aberta, novas falhas viram comentários aqui."
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" \
+              --body "Nova ocorrência (**${RESULTADO}**): ${RUN_URL}"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
           fi
