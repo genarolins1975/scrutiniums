@@ -37,6 +37,12 @@ jobs:
       - name: Dependências
         run: npm ci
 
+      - name: Gerar app.min.js
+        # o minificado é gitignorado (artefato de build) e os testes de
+        # exportação o comparam com o fonte — num clone limpo ele não existe.
+        # Primeira captura real do CI: run nº 2 falhou exatamente aqui (ENOENT).
+        run: node scripts/minify-obs.mjs
+
       - name: Lint
         run: npm run lint
 
