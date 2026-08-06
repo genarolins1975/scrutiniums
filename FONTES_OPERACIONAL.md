@@ -87,6 +87,45 @@ anos de FRE/FCA uma vez, para que ela nasça com a série inteira em vez de um
   PAEs (44.987). O conceito registra que **não é medida de acesso**:
   correspondentes bancários e canais digitais ficam fora deste cadastro.
 
+## 3b. BCB — Correspondentes no País (cadastro por contratante e município)
+
+- Página do BC: https://www.bcb.gov.br/fis/info/correspondentes.asp
+- API (Olinda, CSV): `Informes_Correspondentes/Correspondentes`
+- Granularidade: uma linha por ponto de atendimento de correspondente, com
+  CNPJ-raiz da instituição CONTRATANTE, CNPJ do correspondente, tipo do ponto
+  (sede, filial, posto) e município (código IBGE)
+- Volume verificado em 06/08/2026 (posição 05/08/2026): **215.617 pontos**,
+  279 instituições contratantes, 175.782 correspondentes distintos, 5.571
+  municípios alcançados
+- **Contratante não é grupo econômico.** A contratação é da entidade que assina
+  o contrato — frequentemente a financeira e não o banco (Santander e Safra são
+  os casos maiores). As contagens ficam por CNPJ-raiz contratante, como o BC
+  publica; consolidar por grupo exigiria um mapa de controle que a fonte não traz.
+- **Ponto não é exclusividade.** O mesmo estabelecimento pode ser correspondente
+  de várias instituições e é contado uma vez para cada uma: somar instituições
+  superestima pontos físicos distintos.
+- **Serviço prestado varia** pelos incisos da Resolução 3.954: um ponto que só
+  recebe boleto não faz o mesmo que um que abre conta e origina crédito. O
+  cadastro não é medida de acesso a crédito.
+- Sem série histórica publicada: a coleta grava a posição e acumula o agregado
+  por instituição, como nos demais cadastros · Confiabilidade: **A**
+
+### Correção de um número já publicado
+
+A primeira versão da cobertura municipal usou o literal 5.570 como denominador
+e contou como "com dependência" todo código de município que aparecia no
+cadastro do BC. Dois códigos não pertenciam à malha usada (um inválido e
+**Boa Esperança do Norte/MT**, instalado depois do Censo 2022), e o painel
+publicou **377 municípios sem ponto de atendimento**.
+
+O número correto, contra a lista de municípios do IBGE que o próprio pipeline
+carrega (5.571 registros, incluindo Fernando de Noronha e Boa Esperança do
+Norte), é **379 municípios sem agência, posto ou PAE**. E o mais importante:
+**todos os 379 têm correspondente contratado** — o país tem **zero** municípios
+sem nenhum ponto físico de atendimento. A lacuna real não é de presença, é de
+TIPO de ponto disponível. O denominador passou a vir da tabela `ibge_municipios`
+e um teste proíbe o literal.
+
 ## 4. BCB — ESTBAN, Estatística Bancária Mensal por município
 
 - URL: https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios

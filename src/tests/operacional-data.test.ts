@@ -87,7 +87,7 @@ describe("alcance: página da IF, comparador e imprensa", () => {
     expect(Object.keys(g.dependencias.por_cnpj8).length).toBeGreaterThan(500);
     expect(app).toContain("Rede de atendimento (cadastro do BC)");
     expect(app).toContain("(O.dependencias || {}).por_cnpj8");
-    expect(app).toContain("if (!piloto && !rede && !pontos) return null;");
+    expect(app).toContain("if (!piloto && !rede && !pontos && !corresp) return null;");
   });
 
   it("comparador mostra postos e PAE sem somá-los às agências do ESTBAN", () => {
@@ -97,12 +97,15 @@ describe("alcance: página da IF, comparador e imprensa", () => {
 
   it("síntese citável inclui a lacuna municipal, com conceito e fonte", () => {
     const ids = g.sintese.map((s: any) => s.id);
-    for (const id of ["municipios_sem_ponto", "municipios_so_posto", "postos_atendimento"]) {
+    for (const id of ["municipios_sem_dependencia", "municipios_so_posto", "postos_atendimento",
+      "municipios_sem_nenhum_ponto", "municipios_so_correspondente"]) {
       expect(ids, `síntese sem ${id}`).toContain(id);
     }
-    const semPonto = g.sintese.find((s: any) => s.id === "municipios_sem_ponto");
-    expect(semPonto.valor).toBe(g.dependencias.municipios.sem_ponto);
-    expect(semPonto.conceito).toMatch(/não mede acesso/i); // correspondentes e digital ficam fora
+    const semDep = g.sintese.find((s: any) => s.id === "municipios_sem_dependencia");
+    expect(semDep.valor).toBe(g.dependencias.municipios.sem_dependencia);
+    // o número sozinho enganaria: o conceito precisa dizer que não é ausência de atendimento
+    expect(semDep.conceito).toMatch(/NÃO é ausência de atendimento/i);
+    expect(semDep.conceito).toMatch(/correspondentes/i);
     for (const s of g.sintese) {
       expect(s.nivel, s.id).toBe("A");
       expect(s.url, s.id).toMatch(/^https:\/\/www\.bcb\.gov\.br\//);
@@ -137,12 +140,18 @@ describe("rede de atendimento (BCB/Unicad)", () => {
 
   it("cobertura municipal fecha e respeita o total de municípios do país", () => {
     const m = d.municipios;
-    expect(m.total_municipios).toBe(5570);
+    // o denominador é a lista do IBGE do próprio pipeline, não um literal: foi
+    // exatamente o literal 5570 que produziu o "377" errado na primeira versão
+    expect(m.total_municipios).toBeGreaterThanOrEqual(5570);
+    expect(m.denominador).toMatch(/IBGE/);
     expect(m.com_agencia).toBeLessThanOrEqual(m.com_qualquer_ponto);
     expect(m.com_posto_ou_pae).toBeLessThanOrEqual(m.com_qualquer_ponto);
     expect(m.com_qualquer_ponto).toBeLessThanOrEqual(m.total_municipios);
-    expect(m.sem_ponto).toBe(m.total_municipios - m.com_qualquer_ponto);
+    expect(m.sem_dependencia).toBe(m.total_municipios - m.com_qualquer_ponto);
     expect(m.so_posto_sem_agencia).toBe(m.com_qualquer_ponto - m.com_agencia);
+    // a lacuna de dependência não pode ser publicada como lacuna de atendimento
+    expect(m.sem_dependencia_com_correspondente).toBeLessThanOrEqual(m.sem_dependencia);
+    expect(m.sem_nenhum_ponto).toBe(m.sem_dependencia - m.sem_dependencia_com_correspondente);
   });
 
   it("contagem por instituição fecha com o total e não inventa presença", () => {
@@ -164,8 +173,49 @@ describe("rede de atendimento (BCB/Unicad)", () => {
   it("a aba publica a seção com os dois conceitos e a lacuna municipal", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain("Rede de atendimento além das agências");
-    expect(app).toContain("Municípios sem nenhum ponto");
+    expect(app).toContain("Municípios sem dependência");
     expect(app).toContain("Dois conceitos de agência, nunca somados");
+  });
+});
+
+describe("correspondentes no país (BCB)", () => {
+  const c = g.correspondentes;
+
+  it("cadastro presente, por contratante, com posição e fonte nível A", () => {
+    expect(c).toBeTruthy();
+    expect(c.posicao).toMatch(/^\d{2}\/\d{2}\/\d{4}$/);
+    expect(c.fonte.url).toMatch(/^https:\/\/www\.bcb\.gov\.br\//);
+    expect(c.fonte.nivel).toBe("A");
+    expect(c.totais.pontos).toBeGreaterThan(100000);
+    expect(c.totais.contratantes).toBeGreaterThan(100);
+  });
+
+  it("contagem por contratante fecha com o total e nunca vira exclusividade", () => {
+    const soma = Object.values<any>(c.por_cnpj8).reduce((a, p) => a + p.pontos, 0);
+    expect(soma).toBe(c.totais.pontos);
+    for (const [c8, p] of Object.entries<any>(c.por_cnpj8)) {
+      expect(c8).toMatch(/^\d{8}$/);
+      // correspondentes distintos nunca podem exceder os pontos daquela IF
+      expect(p.correspondentes).toBeLessThanOrEqual(p.pontos);
+      expect(p.municipios).toBeGreaterThan(0);
+    }
+    // o mesmo estabelecimento serve várias IFs: somar instituições superestima
+    expect(c.limitacoes.join(" ")).toMatch(/superestima/i);
+  });
+
+  it("escopo declara que contratante não é grupo econômico", () => {
+    expect(c.escopo).toMatch(/CONTRATANTE/);
+    expect(c.escopo).toMatch(/financeira/i);
+    expect(c.escopo).toMatch(/nada é consolidado por grupo/i);
+    expect(c.limitacoes.join(" ")).toMatch(/3\.954|serviço prestado varia/i);
+  });
+
+  it("a aba e a página da IF publicam correspondentes sem somá-los à rede própria", () => {
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    expect(app).toContain("Correspondentes no País");
+    expect(app).toContain("Contratante não é grupo");
+    expect(app).toContain("Correspondentes contratados"); // cartão da página de IF
+    expect(app).toContain("(O.correspondentes || {}).por_cnpj8");
   });
 });
 

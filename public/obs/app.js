@@ -7799,14 +7799,17 @@ function operResolve(codIfdata, cnpj) {
   // rede de atendimento, mesmo sem FRE, sem auditor e sem ESTBAN.
   const pontos = ((O.dependencias || {}).por_cnpj8 || {})[cnpj8]
     || ((piloto && piloto.cnpj8_rede) ? ((O.dependencias || {}).por_cnpj8 || {})[piloto.cnpj8_rede] : null) || null;
-  if (!piloto && !rede && !pontos) return null;
-  return { piloto, rede, pontos, posicao: (O.dependencias || {}).posicao };
+  const corresp = ((O.correspondentes || {}).por_cnpj8 || {})[cnpj8]
+    || ((piloto && piloto.cnpj8_rede) ? ((O.correspondentes || {}).por_cnpj8 || {})[piloto.cnpj8_rede] : null) || null;
+  if (!piloto && !rede && !pontos && !corresp) return null;
+  return { piloto, rede, pontos, corresp, posicao: (O.dependencias || {}).posicao,
+           posicaoCorresp: (O.correspondentes || {}).posicao };
 }
 
 function operBlocoInst(cab) {
   const r = operResolve(state.filters.instCod, cab && cab.cnpj);
   if (!r) return "";
-  const { piloto, rede, pontos } = r;
+  const { piloto, rede, pontos, corresp } = r;
   const emp = piloto && piloto.empregados ? piloto.empregados.serie[piloto.empregados.serie.length - 1] : null;
   const aud = piloto && piloto.auditor && piloto.auditor.vigente;
   const dvar = v => v == null ? "" : `<div class="delta ${v < 0 ? "up" : "down good"}">${v > 0 ? "▲ +" : v < 0 ? "▼ " : ""}${fmt.n0(v)} em 12 meses</div>`;
@@ -7824,6 +7827,10 @@ function operBlocoInst(cab) {
     <div class="big" style="font-size:21px">${fmt.n0(pontos.total)}</div>
     <div class="src" style="margin-top:2px">${fmt.n0(pontos.agencia)} agências · ${fmt.n0(pontos.posto)} postos · ${fmt.n0(pontos.pae)} PAE</div>
     <div class="src">${badge("observado")} ${fmt.n0(pontos.municipios)} municípios · posição ${r.posicao || "–"}</div></div>`);
+  if (corresp) cards.push(`<div class="card kpi"><h4>Correspondentes contratados</h4>
+    <div class="big" style="font-size:21px">${fmt.n0(corresp.pontos)}</div>
+    <div class="src" style="margin-top:2px">${fmt.n0(corresp.correspondentes)} correspondentes distintos</div>
+    <div class="src">${badge("observado")} ${fmt.n0(corresp.municipios)} municípios · posição ${r.posicaoCorresp || "–"} · contratante, não grupo</div></div>`);
   if (aud) cards.push(`<div class="card kpi"><h4>Auditor independente</h4>
     <div class="big" style="font-size:15px;line-height:1.25">${aud.nome}</div>
     <div class="src">${badge("observado")} desde ${fmt.d(aud.desde)} · ${piloto.auditor.historico.filter(h => h.fim).length} troca(s) registrada(s) no FCA</div></div>`);
@@ -7938,14 +7945,15 @@ function renderOperacional() {
       <div class="src">${badge("observado")} PAB, PAC, PAA, câmbio, microcrédito</div></div>
     <div class="card kpi"><h4>Postos eletrônicos (PAE)</h4><div class="big">${fmt.n0(DP.totais.pae)}</div>
       <div class="src">${badge("observado")} terminal fora de agência, sem atendente</div></div>
-    <div class="card kpi"><h4>Municípios sem nenhum ponto</h4><div class="big">${fmt.n0(DP.municipios.sem_ponto)}</div>
-      <div class="src">${badge("observado")} de ${fmt.n0(DP.municipios.total_municipios)}<br>nem agência, nem posto, nem PAE</div></div>
+    <div class="card kpi"><h4>Municípios sem dependência</h4><div class="big">${fmt.n0(DP.municipios.sem_dependencia)}</div>
+      <div class="src">${badge("observado")} de ${fmt.n0(DP.municipios.total_municipios)}<br>sem agência, posto ou PAE — mas com correspondente</div></div>
   </div>
   <div class="card">
-    <p class="src">Somando os três tipos, existe ponto de atendimento em <b>${fmt.n0(DP.municipios.com_qualquer_ponto)}</b>
-    dos ${fmt.n0(DP.municipios.total_municipios)} municípios. Só <b>${fmt.n0(DP.municipios.com_agencia)}</b> têm agência:
-    outros <b>${fmt.n0(DP.municipios.so_posto_sem_agencia)}</b> são atendidos apenas por posto ou terminal eletrônico, e
-    <b>${fmt.n0(DP.municipios.sem_ponto)}</b> não têm nenhum dos três.</p>
+    <p class="src">Somando os três tipos, existe dependência própria de instituição financeira em
+    <b>${fmt.n0(DP.municipios.com_qualquer_ponto)}</b> dos ${fmt.n0(DP.municipios.total_municipios)} municípios. Só
+    <b>${fmt.n0(DP.municipios.com_agencia)}</b> têm agência: outros <b>${fmt.n0(DP.municipios.so_posto_sem_agencia)}</b>
+    são atendidos apenas por posto ou terminal eletrônico, e <b>${fmt.n0(DP.municipios.sem_dependencia)}</b> não têm
+    nenhum dos três${DP.municipios.sem_dependencia_com_correspondente != null ? ` — mas <b>${fmt.n0(DP.municipios.sem_dependencia_com_correspondente)}</b> desses têm correspondente contratado (ver a seção seguinte), e o país fica com <b>${fmt.n0(DP.municipios.sem_nenhum_ponto)}</b> municípios sem nenhum ponto físico` : ""}.</p>
     <div class="tblwrap" style="margin-top:10px"><table>
       <thead><tr><th>Instituição</th><th class="num">Agências</th><th class="num">Postos</th><th class="num">PAE</th><th class="num">Total</th><th class="num">Municípios</th></tr></thead>
       <tbody>${comPontos.map(({ i, p }) => `<tr>
@@ -7959,6 +7967,36 @@ function renderOperacional() {
     nível ${DP.fonte.nivel}. O cadastro é uma posição, não série: o BC republica o arquivo e não divulga histórico —
     o painel passa a acumular a série a partir da primeira coleta. Instituição sem ponto cadastrado não aparece na
     tabela: ausência de dependência é informação, não zero de rede encerrada.</p></div>`;
+
+  /* Correspondentes: é aqui que a presença bancária deixa de ser rede própria.
+     Contagem por CNPJ-raiz CONTRATANTE, como o BC publica — sem consolidar
+     grupo econômico, o que a fonte não permite. */
+  const CO = D.correspondentes;
+  const comCorr = CO ? D.instituicoes.filter(i => i.correspondentes)
+    .sort((a, b) => b.correspondentes.pontos - a.correspondentes.pontos) : [];
+  const tCorr = !CO ? "" : `${sechead("Correspondentes no País", `pontos contratados por instituição · posição ${CO.posicao}`)}
+  <div class="pan-kpi">
+    <div class="card kpi"><h4>Pontos de correspondente</h4><div class="big">${fmt.n0(CO.totais.pontos)}</div>
+      <div class="src">${badge("observado")} contratados por ${fmt.n0(CO.totais.contratantes)} instituições</div></div>
+    <div class="card kpi"><h4>Municípios alcançados</h4><div class="big">${fmt.n0(CO.totais.municipios)}</div>
+      <div class="src">${badge("observado")} de ${fmt.n0((D.dependencias || {}).municipios ? D.dependencias.municipios.total_municipios : 0)} — cobertura praticamente universal</div></div>
+    <div class="card kpi"><h4>Onde o correspondente é a única presença</h4>
+      <div class="big">${fmt.n0(((D.dependencias || {}).municipios || {}).sem_dependencia_com_correspondente || 0)}</div>
+      <div class="src">${badge("observado")} municípios sem agência, posto ou PAE</div></div>
+  </div>
+  <div class="card">
+    <div class="tblwrap"><table>
+      <thead><tr><th>Instituição contratante</th><th class="num">Pontos</th><th class="num">Correspondentes distintos</th><th class="num">Municípios</th></tr></thead>
+      <tbody>${comCorr.map(i => `<tr><td>${i.nome}</td>
+        <td class="num">${fmt.n0(i.correspondentes.pontos)}</td>
+        <td class="num">${fmt.n0(i.correspondentes.correspondentes)}</td>
+        <td class="num">${fmt.n0(i.correspondentes.municipios)}</td></tr>`).join("")}
+      </tbody></table></div>
+    <div class="note warn" style="margin-top:8px"><b>Contratante não é grupo.</b> ${CO.escopo}</div>
+    <ul style="font-size:13px;margin:8px 0 0 18px">${(CO.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+    <p class="src" style="margin-top:8px">${badge("observado")} <a href="${attr(CO.fonte.url)}" target="_blank" rel="noopener">${CO.fonte.nome}</a> ·
+    nível ${CO.fonte.nivel}. Instituição sem correspondente contratado não aparece na tabela: ausência de contrato é
+    informação, não zero de rede.</p></div>`;
 
   /* Quadro de pessoal divulgado pela própria instituição (Fase 2). Existe para
      quem não tem registro de companhia aberta e por isso não entrega o item
@@ -8077,7 +8115,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tEmp + tCli + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tCorr + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
 const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };
