@@ -100,8 +100,12 @@ describe("curadoria: toda observação é completa e auditável", () => {
 });
 
 describe("gold: publica só o aprovado, com contadores honestos", () => {
+  // TODAS as famílias publicadas entram na reconciliação: se uma família nova
+  // aparecer no gold sem ser lida aqui, a contagem deixa de fechar — foi assim
+  // que a separação clientes/pessoal foi pega.
   const publicados = gold.instituicoes.flatMap((i: any) =>
-    (i.clientes ?? []).map((c: any) => ({ ...c, institution_id: i.id })));
+    [...(i.clientes ?? []), ...(i.pessoal_reportado ?? [])]
+      .map((c: any) => ({ ...c, institution_id: i.id })));
 
   it("cada item publicado corresponde a uma observação aprovada da curadoria", () => {
     const aprovadas = new Map(

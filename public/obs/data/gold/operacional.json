@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-06T16:39:16+00:00",
+ "gerado_em": "2026-08-06T16:51:02+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -7778,7 +7778,50 @@
      }
     }
    ],
-   "pessoal_reportado": null
+   "pessoal_reportado": [
+    {
+     "metric_id": "colaboradores_reportado",
+     "valor": 90039,
+     "exibir": "90.039",
+     "unidade": "pessoas",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "empregados da CAIXA mais estagiários e aprendizes, conforme a mesma tabela",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 8,
+     "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)",
+     "documento": {
+      "fonte": "RI Caixa (plataforma MZ)",
+      "protocolo": "mz:0310f05a-c6b5-b949-3ee4-b1463b04f54b",
+      "tipo": "Relatório de Análise de Desempenho",
+      "assunto": "Relatório de Análise de Desempenho 1T26",
+      "entregue_em": "2026-05",
+      "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
+     }
+    },
+    {
+     "metric_id": "empregados_reportado",
+     "valor": 84363,
+     "exibir": "84.363",
+     "unidade": "pessoas",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "quadro de empregados da CAIXA, conforme a tabela 'Estrutura (Quantidade)' do próprio relatório",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 8,
+     "evidencia": "Estrutura (Quantidade) · 1T26 — Colaboradores 90.039; Empregados CAIXA 84.363; Estagiários e aprendizes 5.676 (transcrição fiel das linhas da tabela)",
+     "documento": {
+      "fonte": "RI Caixa (plataforma MZ)",
+      "protocolo": "mz:0310f05a-c6b5-b949-3ee4-b1463b04f54b",
+      "tipo": "Relatório de Análise de Desempenho",
+      "assunto": "Relatório de Análise de Desempenho 1T26",
+      "entregue_em": "2026-05",
+      "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
+     }
+    }
+   ]
   },
   {
    "id": "safra",
@@ -8002,7 +8045,29 @@
     "nome": "BANCO SAFRA S.A."
    },
    "clientes": null,
-   "pessoal_reportado": null
+   "pessoal_reportado": [
+    {
+     "metric_id": "colaboradores_reportado",
+     "valor": 8339,
+     "exibir": "8.339",
+     "unidade": "pessoas",
+     "period_end": "2026-03-31",
+     "periodo_rotulo": "1T26",
+     "escopo": "colaboradores do CONGLOMERADO Safra, em indivíduos, conforme o bloco 'Dados Relevantes' do resumo",
+     "natureza": "reportado",
+     "comparabilidade": "C",
+     "pagina": 1,
+     "evidencia": "Dados Relevantes — Colaboradores do Conglomerado (indivíduos): 8.339 (Mar.26), 8.415 (Dez.25), 8.608 (Mar.25) (transcrição fiel da linha da tabela)",
+     "documento": {
+      "fonte": "RI Banco Safra (site institucional)",
+      "protocolo": "safra:resumo-consolidado-mar-2026",
+      "tipo": "Resumo Consolidado e Principais Indicadores",
+      "assunto": "Resumo Consolidado e Principais Indicadores — mar/2026",
+      "entregue_em": "2026-05",
+      "url": "https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf"
+     }
+    }
+   ]
   },
   {
    "id": "nubank",
@@ -39415,8 +39480,8 @@
   ]
  },
  "fase2": {
-  "em_revisao": 3,
-  "aprovadas": 21,
+  "em_revisao": 0,
+  "aprovadas": 24,
   "rejeitadas": 0,
   "metricas": {
    "clientes_total": {
