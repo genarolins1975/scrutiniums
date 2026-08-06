@@ -13,6 +13,7 @@ import os
 
 from pipeline import common
 from pipeline.sources.b3_market import COMPANIES
+from pipeline.sources.operacional import BANCOS_CVM, SETOR_BANCOS
 
 # CNPJ-raiz do BANCO OPERACIONAL no ESTBAN, verificado empiricamente contra a
 # data-base 2026-03 (nome retornado pelo próprio arquivo). Holding listada e
@@ -40,15 +41,15 @@ REDE_CNPJ8 = {
     "bmi": "34169557",
 }
 
-# Instituições sem listagem na CVM (sem FRE/FCA): Caixa e Safra entram pela
-# rede do ESTBAN; Nubank e Inter (listados no exterior, arquivos na SEC)
-# entram pela Fase 2 de clientes — o Inter tem exatamente 1 agência no
-# ESTBAN (banco digital com sede única), o Nubank não tem rede reportada.
+# Instituições sem registro de companhia aberta na CVM (sem FRE/FCA): Caixa e
+# Safra entram pela rede do ESTBAN; o Nubank (listado no exterior, arquivos na
+# SEC) entra pela Fase 2 de clientes e não tem rede reportada no ESTBAN.
+# O Inter saiu desta lista: a holding tem registro próprio na CVM e passou a
+# ser coberta por FRE/FCA como as demais (ver BANCOS_CVM).
 REDE_EXTRA = [
     {"id": "caixa", "nome": "Caixa Econômica Federal", "cnpj8": "00360305"},
     {"id": "safra", "nome": "Banco Safra S.A.", "cnpj8": "58160789"},
     {"id": "nubank", "nome": "Nu Holdings Ltd. (Nubank)", "cnpj8": "18236120"},
-    {"id": "inter", "nome": "Inter & Co, Inc. (Banco Inter)", "cnpj8": "00416968"},
 ]
 
 # Código IF.data (inst_index/páginas de IF) de cada instituição do piloto,
@@ -247,21 +248,32 @@ def build(con, cfg=None):
     instituicoes = []
     clientes_por_inst, fase2_contadores, fase2_metricas = _fase2()
 
-    for c in COMPANIES:
-        cid = c["company_id"]
-        nome = c["legal_name"]
-        inst = {
+    # Companhias com registro na CVM: o piloto de mercado (recorte da B3) mais
+    # os demais bancos que a própria CVM classifica no setor "Bancos". Ambos
+    # têm FRE e FCA, então recebem exatamente o mesmo tratamento.
+    registradas = [
+        {"id": c["company_id"], "nome": c["legal_name"],
+         "cnpj8_rede": REDE_CNPJ8.get(c["company_id"]), "cod_ifdata": COD_IFDATA.get(c["company_id"])}
+        for c in COMPANIES
+    ] + [
+        {"id": b["id"], "nome": b["nome"],
+         "cnpj8_rede": b["cnpj8_rede"], "cod_ifdata": b["cod_ifdata"]}
+        for b in BANCOS_CVM
+    ]
+
+    for c in registradas:
+        cid, nome = c["id"], c["nome"]
+        instituicoes.append({
             "id": cid,
             "nome": nome,
             "listada": True,
-            "cod_ifdata": COD_IFDATA.get(cid),
-            "cnpj8_rede": REDE_CNPJ8.get(cid),
+            "cod_ifdata": c["cod_ifdata"],
+            "cnpj8_rede": c["cnpj8_rede"],
             "empregados": _empregados(con, cid, flags, nome),
             "auditor": _auditor(con, cid, flags, nome),
-            "rede": _rede(con, REDE_CNPJ8[cid], flags, nome) if cid in REDE_CNPJ8 else None,
+            "rede": _rede(con, c["cnpj8_rede"], flags, nome) if c["cnpj8_rede"] else None,
             "clientes": clientes_por_inst.get(cid) or None,
-        }
-        instituicoes.append(inst)
+        })
 
     for extra in REDE_EXTRA:
         instituicoes.append({
@@ -346,7 +358,48 @@ def build(con, cfg=None):
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,
-                      "com_auditor": com_auditor, "com_rede": com_rede},
+                      "com_auditor": com_auditor, "com_rede": com_rede,
+                      **_cobertura_cvm(con, registradas)},
+    }
+
+
+def _cobertura_cvm(con, registradas):
+    """Quantos bancos com registro ativo na CVM o painel cobre — e quais ficam
+    de fora, nominalmente.
+
+    A lacuna é publicada em vez de ficar implícita: se a CVM registrar um banco
+    novo, ele aparece aqui na atualização seguinte, antes de qualquer decisão
+    de curadoria. Sem esta lista, "22 instituições" pareceria uma escolha
+    editorial fechada em vez de uma cobertura com fronteira conhecida.
+    """
+    try:
+        linhas = con.execute(
+            "SELECT cnpj, nome, ano_zip FROM oper_cadastro_cvm "
+            "WHERE setor=? AND situacao_registro LIKE 'Ativo%' ORDER BY nome", (SETOR_BANCOS,)
+        ).fetchall()
+    except Exception:
+        return {}
+    if not linhas:
+        return {}
+    cobertos = {c["id"] for c in registradas}
+    from pipeline.sources.operacional import CNPJ_ALIAS, CNPJ_CVM
+    fora = []
+    for cnpj, nome, ano in linhas:
+        ident = CNPJ_CVM.get(cnpj) or CNPJ_ALIAS.get(cnpj)
+        if ident in cobertos or ident in {e["id"] for e in REDE_EXTRA}:
+            continue
+        # o ano da última entrega do FCA diz quão recente é o cadastro: banco
+        # com registro "ativo" e entrega antiga costuma ser caso encerrado que
+        # nunca foi baixado na CVM, não instituição em operação
+        fora.append({"cnpj": cnpj, "nome": nome, "ultimo_fca": ano})
+    return {
+        "bancos_cvm": len(linhas),
+        "bancos_cvm_cobertos": len(linhas) - len(fora),
+        "bancos_cvm_fora": fora,
+        "criterio": ("setor de atividade \"Bancos\" com registro ativo no Formulário Cadastral da CVM. "
+                     "Instituições sem registro de companhia aberta (Caixa, Safra) entram por fontes "
+                     "próprias e não contam neste denominador. Quem está fora não tem tabela de "
+                     "empregados no FRE — entraria como linha vazia, e ausência não vira zero."),
     }
 
 
