@@ -278,7 +278,15 @@ def build(con, cfg=None):
         for b in BANCOS_CVM
     ]
 
-    deps = _dependencias(con)
+    ibge = _municipios_ibge(con)
+    corr = _correspondentes(con, ibge)
+    corr_muns = set()
+    if corr:
+        corr_muns = {r[0] for r in con.execute(
+            "SELECT DISTINCT municipio_ibge FROM corresp_pontos WHERE municipio_ibge<>''")}
+        if ibge:
+            corr_muns &= ibge
+    deps = _dependencias(con, ibge, corr_muns)
     dep_de = (lambda c8: (deps["por_cnpj8"].get(c8) if deps and c8 else None))
 
     for c in registradas:
@@ -289,6 +297,7 @@ def build(con, cfg=None):
             "listada": True,
             "cod_ifdata": c["cod_ifdata"],
             "cnpj8_rede": c["cnpj8_rede"],
+            "correspondentes": (corr["por_cnpj8"].get(c["cnpj8_rede"]) if (corr and c["cnpj8_rede"]) else None),
             "empregados": _empregados(con, cid, flags, nome),
             "auditor": _auditor(con, cid, flags, nome),
             "rede": _rede(con, c["cnpj8_rede"], flags, nome) if c["cnpj8_rede"] else None,
@@ -304,6 +313,7 @@ def build(con, cfg=None):
             "listada": False,
             "cod_ifdata": COD_IFDATA.get(extra["id"]),
             "cnpj8_rede": extra["cnpj8"],
+            "correspondentes": (corr["por_cnpj8"].get(extra["cnpj8"]) if corr else None),
             "empregados": None,
             "auditor": None,
             "rede": _rede(con, extra["cnpj8"], flags, extra["nome"]),
@@ -373,6 +383,7 @@ def build(con, cfg=None):
                                  "município do próprio ESTBAN)."}},
         "rede_por_cnpj8": rede_por_cnpj8,
         "dependencias": deps,
+        "correspondentes": corr,
         "fase2": {
             **fase2_contadores,
             "metricas": fase2_metricas,
@@ -388,7 +399,71 @@ def build(con, cfg=None):
     }
 
 
-def _dependencias(con):
+def _municipios_ibge(con):
+    """Denominador municipal canônico: a lista do IBGE já carregada pelo ESTBAN.
+
+    Usar o total de códigos que aparecem nos cadastros do BC seria circular e
+    dava erro real: a primeira versão desta cobertura contou 5.193 municípios
+    com dependência porque incluiu um código inválido e um município novo,
+    publicando "377 sem ponto" onde o correto era 379.
+    """
+    try:
+        return {r[0] for r in con.execute("SELECT cod_ibge FROM ibge_municipios")}
+    except Exception:
+        return set()
+
+
+def _correspondentes(con, ibge):
+    """Correspondentes no País por instituição CONTRATANTE.
+
+    É o correspondente — lotérica, mercado, farmácia — que sustenta a presença
+    bancária onde não há agência. Publicá-lo muda o sentido da lacuna
+    territorial: os municípios sem agência, posto ou PAE não estão sem
+    atendimento, estão atendidos por outro arranjo, com outro escopo de serviço.
+    """
+    try:
+        linhas = con.execute(
+            "SELECT cnpj8, nome_if, municipio_ibge, qtd, correspondentes, posicao "
+            "FROM corresp_pontos").fetchall()
+    except Exception:
+        return None
+    if not linhas:
+        return None
+    posicao = linhas[0][5]
+    por_if, mun_todos = {}, set()
+    for cnpj8, nome, mun, qtd, unicos, _pos in linhas:
+        d = por_if.setdefault(cnpj8, {"nome": nome, "pontos": 0, "correspondentes": 0, "mun": set()})
+        d["pontos"] += qtd
+        d["correspondentes"] += unicos
+        if mun:
+            d["mun"].add(mun)
+            if not ibge or mun in ibge:
+                mun_todos.add(mun)
+    por_cnpj8 = {c: {"nome": d["nome"], "pontos": d["pontos"],
+                     "correspondentes": d["correspondentes"], "municipios": len(d["mun"])}
+                 for c, d in por_if.items()}
+    return {
+        "posicao": posicao,
+        "fonte": {"nome": "BCB — Correspondentes no País (cadastro por contratante e município)",
+                  "url": "https://www.bcb.gov.br/fis/info/correspondentes.asp", "nivel": "A"},
+        "totais": {"pontos": sum(d["pontos"] for d in por_cnpj8.values()),
+                   "contratantes": len(por_cnpj8),
+                   "municipios": len(mun_todos)},
+        "por_cnpj8": por_cnpj8,
+        "escopo": ("A contagem é por CNPJ-raiz da entidade CONTRATANTE, como o BC publica. Grupos que "
+                   "contratam pela financeira e não pelo banco aparecem sob o CNPJ da financeira "
+                   "(Santander e Safra são os casos maiores) — nada é consolidado por grupo econômico, "
+                   "o que exigiria um mapa de controle que esta fonte não traz."),
+        "limitacoes": [
+            "O mesmo estabelecimento pode ser correspondente de várias instituições e é contado uma vez para cada uma: somar instituições superestima pontos físicos distintos.",
+            "O serviço prestado varia por contrato (incisos da Resolução 3.954): um ponto que só recebe boleto não faz o mesmo que um que abre conta e origina crédito.",
+            "Correspondente não é dependência da instituição: é terceiro contratado, e o cadastro não diz nada sobre horário, estrutura ou permanência do ponto.",
+            "Cadastro em posição corrente, sem série histórica publicada pelo BC.",
+        ],
+    }
+
+
+def _dependencias(con, ibge, corr_muns):
     """Rede de atendimento completa: agências, postos e PAEs por instituição e
     a cobertura municipal que decorre deles.
 
@@ -420,8 +495,10 @@ def _dependencias(con):
     por_cnpj8 = {c: {**{t: d[t] for t in tipos}, "total": sum(d[t] for t in tipos),
                      "municipios": len(d["municipios"]), "nome": nomes[c]}
                  for c, d in por_if.items()}
-    com_agencia = mun["agencia"]
-    com_posto = mun["posto"] | mun["pae"]
+    valido = (lambda ms: (ms & ibge) if ibge else ms)
+    com_agencia = valido(mun["agencia"])
+    com_posto = valido(mun["posto"] | mun["pae"])
+    total_mun = len(ibge) if ibge else len(com_agencia | com_posto)
     return {
         "posicao": posicao,
         "fonte": {"nome": "BCB — cadastro de agências, postos e postos eletrônicos (Unicad)",
@@ -433,8 +510,17 @@ def _dependencias(con):
             "com_posto_ou_pae": len(com_posto),
             "com_qualquer_ponto": len(com_agencia | com_posto),
             "so_posto_sem_agencia": len(com_posto - com_agencia),
-            "sem_ponto": 5570 - len(com_agencia | com_posto),
-            "total_municipios": 5570,
+            "sem_dependencia": total_mun - len(com_agencia | com_posto),
+            # a lacuna de dependência não é lacuna de atendimento: o cadastro de
+            # correspondentes cobre a quase totalidade desses municípios
+            "sem_dependencia_com_correspondente": len(
+                ((set(ibge) if ibge else set()) - com_agencia - com_posto) & corr_muns) if corr_muns else None,
+            "sem_nenhum_ponto": len(
+                (set(ibge) - com_agencia - com_posto - corr_muns)) if (ibge and corr_muns) else None,
+            "total_municipios": total_mun,
+            "denominador": ("lista de municípios do IBGE carregada pelo pipeline; inclui Fernando de Noronha "
+                            "e Boa Esperança do Norte (MT), instalado depois do Censo 2022 e por isso ausente "
+                            "da malha usada nos painéis municipais"),
         },
         "por_cnpj8": por_cnpj8,
         "escopo": ("Cadastro do BC na posição indicada, não série mensal. As agências aqui são as CADASTRADAS; "
@@ -561,17 +647,18 @@ def _sintese(instituicoes, sfn_serie, deps=None):
         mun = deps["municipios"]
         url_dep = deps["fonte"]["url"]
         itens.extend([{
-            "id": "municipios_sem_ponto",
-            "rotulo": "Municípios sem nenhum ponto de atendimento bancário",
-            "valor": mun["sem_ponto"],
-            "exibir": f"{_fmt_milhar(mun['sem_ponto'])} de {_fmt_milhar(mun['total_municipios'])}",
+            "id": "municipios_sem_dependencia",
+            "rotulo": "Municípios sem agência, posto ou posto eletrônico",
+            "valor": mun["sem_dependencia"],
+            "exibir": f"{_fmt_milhar(mun['sem_dependencia'])} de {_fmt_milhar(mun['total_municipios'])}",
             "unidade": f"municípios · posição {deps['posicao']}",
-            "conceito": "Municípios sem agência, sem posto de atendimento e sem posto eletrônico no cadastro "
-                        "do BCB. Não mede acesso: correspondentes bancários e canais digitais ficam fora "
-                        "deste cadastro",
+            "conceito": "Municípios sem nenhuma dependência própria de instituição financeira no cadastro do "
+                        "BCB. NÃO é ausência de atendimento: praticamente todos são atendidos por "
+                        "correspondentes (lotéricas, mercados, farmácias), que são terceiros contratados e "
+                        "prestam serviço de escopo variável",
             "data_ref": deps["posicao"],
-            "nivel": "A", "status": "oficial",
-            "fonte": "BCB — cadastro de dependências (Unicad)", "url": url_dep,
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB — cadastro de dependências (Unicad), contra a lista de municípios do IBGE", "url": url_dep,
         }, {
             "id": "municipios_so_posto",
             "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
@@ -583,6 +670,18 @@ def _sintese(instituicoes, sfn_serie, deps=None):
             "data_ref": deps["posicao"],
             "nivel": "A", "status": "calculado",
             "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)", "url": url_dep,
+        }, {
+            "id": "municipios_sem_nenhum_ponto",
+            "rotulo": "Municípios sem dependência e sem correspondente",
+            "valor": mun.get("sem_nenhum_ponto"),
+            "exibir": _fmt_milhar(mun.get("sem_nenhum_ponto") or 0),
+            "unidade": f"municípios · posição {deps['posicao']}",
+            "conceito": "Municípios sem agência, posto, posto eletrônico E sem correspondente contratado por "
+                        "qualquer instituição. É a lacuna de presença física de fato — e ela é praticamente "
+                        "inexistente, o que desloca a discussão de cobertura para o TIPO de ponto disponível",
+            "data_ref": deps["posicao"],
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB — cadastros de dependências e de correspondentes, contra a lista do IBGE", "url": url_dep,
         }, {
             "id": "postos_atendimento",
             "rotulo": "Postos de atendimento e postos eletrônicos no país",
@@ -596,4 +695,20 @@ def _sintese(instituicoes, sfn_serie, deps=None):
             "nivel": "A", "status": "calculado",
             "fonte": "BCB — cadastro de dependências (soma de dois cadastros)", "url": url_dep,
         }])
+    if deps and deps.get("municipios", {}).get("sem_dependencia_com_correspondente") is not None:
+        mun = deps["municipios"]
+        itens.append({
+            "id": "municipios_so_correspondente",
+            "rotulo": "Municípios sem dependência, mas com correspondente",
+            "valor": mun["sem_dependencia_com_correspondente"],
+            "exibir": _fmt_milhar(mun["sem_dependencia_com_correspondente"]),
+            "unidade": f"municípios · posição {deps['posicao']}",
+            "conceito": "Municípios em que a presença bancária existe apenas por correspondente — lotérica, "
+                        "mercado, farmácia — sem nenhuma dependência própria de instituição financeira. "
+                        "O serviço prestado varia por contrato e não equivale ao de uma agência",
+            "data_ref": deps["posicao"],
+            "nivel": "A", "status": "calculado",
+            "fonte": "BCB — cadastros de dependências e de correspondentes",
+            "url": "https://www.bcb.gov.br/fis/info/correspondentes.asp",
+        })
     return itens
