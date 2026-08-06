@@ -101,10 +101,20 @@ def _absorve(con, tipo, texto, col_cnpj):
     return {"linhas": len(linhas), "instituicoes": len(por_if), "posicao": posicao}
 
 
+# Os três cadastros somam ~13 MB e mudam devagar; a posição publicada mostra a
+# data. Semanal basta e devolve tempo ao pipeline diário.
+DIAS_ENTRE_COLETAS = 7
+
+
 def collect(con, cfg=None):
     _ensure(con)
     resultados = []
     for tipo, servico, recurso, col_cnpj in FONTES:
+        ts = con.execute("SELECT coletado_em FROM dep_coleta WHERE chave=?", (tipo,)).fetchone()
+        if ts and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
+            resultados.append({"key": f"dependencias:{tipo}", "ok": True,
+                               "pulado": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"})
+            continue
         url = BASE.format(servico=servico, recurso=recurso)
         try:
             body, meta = common.http_get(url, timeout=300, accept=None)

@@ -34,6 +34,26 @@ def now_utc():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+def coletado_recentemente(iso, dias):
+    """True se `iso` (carimbo de coleta) for mais novo que `dias`.
+
+    Existe para as fontes cuja periodicidade REAL é semanal ou mensal e cujo
+    arquivo é grande: baixar 32 MB todo dia para reprocessar a mesma posição
+    consome o orçamento de tempo do pipeline diário sem produzir dado novo.
+    A data da posição continua publicada no gold, então pular um dia não
+    esconde nada do leitor.
+    """
+    if not iso:
+        return False
+    try:
+        quando = datetime.fromisoformat(iso)
+    except ValueError:
+        return False
+    if quando.tzinfo is None:
+        quando = quando.replace(tzinfo=timezone.utc)
+    return (datetime.now(timezone.utc) - quando).days < dias
+
+
 def xml_escape(s):
     """Texto seguro dentro de elementos XML (títulos de RSS, sobretudo).
     Um '&' num nome de submodalidade quebra o feed inteiro no leitor."""

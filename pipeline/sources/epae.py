@@ -124,8 +124,16 @@ def _absorve(con, body):
             "inicio": min(meses), "fim": max(meses)}
 
 
+# A EPAE é mensal: baixar a planilha inteira todo dia não traz dado novo e
+# custa tempo do pipeline diário. A posição continua publicada no gold.
+DIAS_ENTRE_COLETAS = 7
+
+
 def collect(con, cfg=None):
     _ensure(con)
+    anterior_ts = con.execute("SELECT coletado_em FROM epae_coleta WHERE chave='epae'").fetchone()
+    if anterior_ts and common.coletado_recentemente(anterior_ts[0], DIAS_ENTRE_COLETAS):
+        return [{"key": "epae", "ok": True, "pulado": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"}]
     try:
         body, meta = common.http_get(URL, timeout=180, accept=None)
     except Exception as e:
