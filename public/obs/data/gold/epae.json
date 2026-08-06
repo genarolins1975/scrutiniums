@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-06T14:54:19+00:00",
+ "gerado_em": "2026-08-06T15:38:44+00:00",
  "titulo": "Pagamentos Pix por atividade econômica — seção de artes, cultura, esporte e recreação",
  "aviso": "Série do Banco Central para a SEÇÃO INTEIRA da CNAE: ela reúne academias, clubes, cinemas, parques, loterias e bets, e a EPAE não permite separá-las nem distinguir operador autorizado de operador ilegal.",
  "fonte": {
@@ -18,6 +18,47 @@
   "rotulo_fonte": "Artes, cultura, esporte e recreacao / Arts, entertainment and recreation",
   "abrange": "academias, clubes esportivos, casas de espetáculo, cinemas, museus, parques, loterias e apostas, entre outras atividades"
  },
+ "taxonomia": {
+  "explicacao": "A CNAE organiza a economia em seções (letras) e divide cada seção em divisões de dois dígitos. As casas de apostas se registram na divisão 92 desta seção — é por isso que o dinheiro que vai para as bets aparece necessariamente nesta série, e é pelo mesmo motivo que ele não pode ser separado do resto.",
+  "granularidade": "A EPAE publica no nível da SEÇÃO, não da divisão. Se o Banco Central divulgasse a divisão 92 isolada, haveria uma série de jogos e apostas quase limpa; como não divulga, a seção R é a menor unidade pública que contém as bets — nem mais fina, nem mais grossa.",
+  "fonte": "IBGE/CONCLA — Classificação Nacional de Atividades Econômicas (CNAE 2.0)",
+  "url": "https://concla.ibge.gov.br/busca-online-cnae.html?view=secao&tipo=cnae&versao=10&secao=R",
+  "divisoes": [
+   {
+    "codigo": "90",
+    "nome": "Atividades artísticas, criativas e de espetáculos",
+    "jogos": false
+   },
+   {
+    "codigo": "91",
+    "nome": "Atividades ligadas ao patrimônio cultural e ambiental",
+    "jogos": false
+   },
+   {
+    "codigo": "92",
+    "nome": "Atividades de exploração de jogos de azar e apostas",
+    "jogos": true
+   },
+   {
+    "codigo": "93",
+    "nome": "Atividades esportivas e de recreação e lazer",
+    "jogos": false
+   }
+  ]
+ },
+ "leitura": {
+  "permite": [
+   "acompanhar, mês a mês, quanto as pessoas pagaram e receberam da seção que contém as apostas, com dado administrativo oficial e sem intermediação de modelo;",
+   "medir o tamanho e a data das inflexões da série, e o peso da seção no total que pessoas físicas pagam a empresas via Pix;",
+   "verificar, com a fonte primária na mão, os números que estudos de terceiros derivam desta mesma base."
+  ],
+  "nao_permite": [
+   "afirmar que qualquer valor desta série é aposta: nenhuma transação vem carimbada, e as divisões 90, 91 e 93 estão somadas junto;",
+   "separar operador autorizado pela SPA de operador ilegal — ambos podem se classificar na seção;",
+   "ler fluxo como perda: depósito não é aposta, o mesmo real pode ser apostado várias vezes e prêmios voltam no sentido inverso;",
+   "comparar diretamente com o GGR do SIGAP, que mede outra grandeza (apostas menos prêmios do mercado autorizado)."
+  ]
+ },
  "conceitos": [
   {
    "termo": "pf_para_secao",
@@ -33,7 +74,11 @@
   },
   {
    "termo": "pf_para_pj_total",
-   "def": "valor pago por pessoas físicas a TODOS os setores que não são pessoa física (inclui 'Outros'), no mesmo mês e mesmo instrumento. Serve de denominador de escala; a participação da seção é calculada na tela."
+   "def": "valor pago por pessoas físicas a TODOS os setores que não são pessoa física (inclui 'Outros'), no mesmo mês e mesmo instrumento. Serve de denominador de escala."
+  },
+  {
+   "termo": "participacao",
+   "def": "pf_para_secao dividido por pf_para_pj_total, em %. Derivação aritmética sobre dois valores publicados; mostra o peso da seção no que as pessoas pagam a empresas via Pix, não o peso das apostas."
   }
  ],
  "limitacoes": [
@@ -63,7 +108,8 @@
     "liquido": -0.007,
     "tx_pf_para_secao": 0.02,
     "tx_secao_para_pf": 0.02,
-    "pf_para_pj_total": 1.4
+    "pf_para_pj_total": 1.4,
+    "participacao": 0.74
    },
    {
     "ref": "2020-12",
@@ -72,7 +118,8 @@
     "liquido": -0.056,
     "tx_pf_para_secao": 0.1,
     "tx_secao_para_pf": 0.1,
-    "pf_para_pj_total": 6.3
+    "pf_para_pj_total": 6.3,
+    "participacao": 0.77
    },
    {
     "ref": "2021-01",
@@ -81,7 +128,8 @@
     "liquido": -0.056,
     "tx_pf_para_secao": 0.19,
     "tx_secao_para_pf": 0.14,
-    "pf_para_pj_total": 10.7
+    "pf_para_pj_total": 10.7,
+    "participacao": 0.73
    },
    {
     "ref": "2021-02",
@@ -90,7 +138,8 @@
     "liquido": -0.077,
     "tx_pf_para_secao": 0.28,
     "tx_secao_para_pf": 0.19,
-    "pf_para_pj_total": 14.5
+    "pf_para_pj_total": 14.5,
+    "participacao": 0.72
    },
    {
     "ref": "2021-03",
@@ -99,7 +148,8 @@
     "liquido": -0.097,
     "tx_pf_para_secao": 0.37,
     "tx_secao_para_pf": 0.24,
-    "pf_para_pj_total": 21.5
+    "pf_para_pj_total": 21.5,
+    "participacao": 0.59
    },
    {
     "ref": "2021-04",
@@ -108,7 +158,8 @@
     "liquido": -0.075,
     "tx_pf_para_secao": 0.51,
     "tx_secao_para_pf": 0.26,
-    "pf_para_pj_total": 26.8
+    "pf_para_pj_total": 26.8,
+    "participacao": 0.57
    },
    {
     "ref": "2021-05",
@@ -117,7 +168,8 @@
     "liquido": -0.071,
     "tx_pf_para_secao": 0.73,
     "tx_secao_para_pf": 0.34,
-    "pf_para_pj_total": 33.3
+    "pf_para_pj_total": 33.3,
+    "participacao": 0.61
    },
    {
     "ref": "2021-06",
@@ -126,7 +178,8 @@
     "liquido": -0.06,
     "tx_pf_para_secao": 0.96,
     "tx_secao_para_pf": 0.4,
-    "pf_para_pj_total": 36.2
+    "pf_para_pj_total": 36.2,
+    "participacao": 0.75
    },
    {
     "ref": "2021-07",
@@ -135,7 +188,8 @@
     "liquido": -0.046,
     "tx_pf_para_secao": 1.09,
     "tx_secao_para_pf": 0.47,
-    "pf_para_pj_total": 42.3
+    "pf_para_pj_total": 42.3,
+    "participacao": 0.79
    },
    {
     "ref": "2021-08",
@@ -144,7 +198,8 @@
     "liquido": -0.066,
     "tx_pf_para_secao": 1.26,
     "tx_secao_para_pf": 0.51,
-    "pf_para_pj_total": 47.4
+    "pf_para_pj_total": 47.4,
+    "participacao": 0.78
    },
    {
     "ref": "2021-09",
@@ -153,7 +208,8 @@
     "liquido": -0.142,
     "tx_pf_para_secao": 1.42,
     "tx_secao_para_pf": 0.58,
-    "pf_para_pj_total": 48.9
+    "pf_para_pj_total": 48.9,
+    "participacao": 0.72
    },
    {
     "ref": "2021-10",
@@ -162,7 +218,8 @@
     "liquido": -0.171,
     "tx_pf_para_secao": 1.59,
     "tx_secao_para_pf": 0.65,
-    "pf_para_pj_total": 51.7
+    "pf_para_pj_total": 51.7,
+    "participacao": 0.75
    },
    {
     "ref": "2021-11",
@@ -171,7 +228,8 @@
     "liquido": -0.205,
     "tx_pf_para_secao": 1.8,
     "tx_secao_para_pf": 0.73,
-    "pf_para_pj_total": 57.0
+    "pf_para_pj_total": 57.0,
+    "participacao": 0.77
    },
    {
     "ref": "2021-12",
@@ -180,7 +238,8 @@
     "liquido": -0.332,
     "tx_pf_para_secao": 1.81,
     "tx_secao_para_pf": 0.84,
-    "pf_para_pj_total": 63.2
+    "pf_para_pj_total": 63.2,
+    "participacao": 0.73
    },
    {
     "ref": "2022-01",
@@ -189,7 +248,8 @@
     "liquido": -0.202,
     "tx_pf_para_secao": 1.89,
     "tx_secao_para_pf": 0.76,
-    "pf_para_pj_total": 57.5
+    "pf_para_pj_total": 57.5,
+    "participacao": 0.74
    },
    {
     "ref": "2022-02",
@@ -198,7 +258,8 @@
     "liquido": -0.207,
     "tx_pf_para_secao": 2.31,
     "tx_secao_para_pf": 0.78,
-    "pf_para_pj_total": 57.7
+    "pf_para_pj_total": 57.7,
+    "participacao": 0.77
    },
    {
     "ref": "2022-03",
@@ -207,7 +268,8 @@
     "liquido": -0.236,
     "tx_pf_para_secao": 3.18,
     "tx_secao_para_pf": 0.94,
-    "pf_para_pj_total": 70.1
+    "pf_para_pj_total": 70.1,
+    "participacao": 0.8
    },
    {
     "ref": "2022-04",
@@ -216,7 +278,8 @@
     "liquido": -0.263,
     "tx_pf_para_secao": 3.58,
     "tx_secao_para_pf": 1.01,
-    "pf_para_pj_total": 69.3
+    "pf_para_pj_total": 69.3,
+    "participacao": 0.83
    },
    {
     "ref": "2022-05",
@@ -225,7 +288,8 @@
     "liquido": -0.322,
     "tx_pf_para_secao": 3.47,
     "tx_secao_para_pf": 1.07,
-    "pf_para_pj_total": 79.6
+    "pf_para_pj_total": 79.6,
+    "participacao": 0.77
    },
    {
     "ref": "2022-06",
@@ -234,7 +298,8 @@
     "liquido": -0.371,
     "tx_pf_para_secao": 3.49,
     "tx_secao_para_pf": 1.1,
-    "pf_para_pj_total": 79.5
+    "pf_para_pj_total": 79.5,
+    "participacao": 0.79
    },
    {
     "ref": "2022-07",
@@ -243,7 +308,8 @@
     "liquido": -0.438,
     "tx_pf_para_secao": 4.34,
     "tx_secao_para_pf": 1.25,
-    "pf_para_pj_total": 83.5
+    "pf_para_pj_total": 83.5,
+    "participacao": 0.83
    },
    {
     "ref": "2022-08",
@@ -252,7 +318,8 @@
     "liquido": -0.41,
     "tx_pf_para_secao": 6.52,
     "tx_secao_para_pf": 1.61,
-    "pf_para_pj_total": 92.3
+    "pf_para_pj_total": 92.3,
+    "participacao": 0.86
    },
    {
     "ref": "2022-09",
@@ -261,7 +328,8 @@
     "liquido": -0.422,
     "tx_pf_para_secao": 8.71,
     "tx_secao_para_pf": 2.05,
-    "pf_para_pj_total": 91.6
+    "pf_para_pj_total": 91.6,
+    "participacao": 0.93
    },
    {
     "ref": "2022-10",
@@ -270,7 +338,8 @@
     "liquido": -0.362,
     "tx_pf_para_secao": 8.72,
     "tx_secao_para_pf": 1.8,
-    "pf_para_pj_total": 95.5
+    "pf_para_pj_total": 95.5,
+    "participacao": 0.94
    },
    {
     "ref": "2022-11",
@@ -279,7 +348,8 @@
     "liquido": -0.402,
     "tx_pf_para_secao": 9.89,
     "tx_secao_para_pf": 2.47,
-    "pf_para_pj_total": 102.0
+    "pf_para_pj_total": 102.0,
+    "participacao": 0.97
    },
    {
     "ref": "2022-12",
@@ -288,7 +358,8 @@
     "liquido": -0.555,
     "tx_pf_para_secao": 9.94,
     "tx_secao_para_pf": 2.6,
-    "pf_para_pj_total": 114.4
+    "pf_para_pj_total": 114.4,
+    "participacao": 0.88
    },
    {
     "ref": "2023-01",
@@ -297,7 +368,8 @@
     "liquido": -0.313,
     "tx_pf_para_secao": 9.95,
     "tx_secao_para_pf": 2.36,
-    "pf_para_pj_total": 107.1
+    "pf_para_pj_total": 107.1,
+    "participacao": 0.94
    },
    {
     "ref": "2023-02",
@@ -306,7 +378,8 @@
     "liquido": -0.414,
     "tx_pf_para_secao": 9.52,
     "tx_secao_para_pf": 2.4,
-    "pf_para_pj_total": 100.1
+    "pf_para_pj_total": 100.1,
+    "participacao": 0.94
    },
    {
     "ref": "2023-03",
@@ -315,7 +388,8 @@
     "liquido": -0.464,
     "tx_pf_para_secao": 10.81,
     "tx_secao_para_pf": 2.82,
-    "pf_para_pj_total": 122.1
+    "pf_para_pj_total": 122.1,
+    "participacao": 0.91
    },
    {
     "ref": "2023-04",
@@ -324,7 +398,8 @@
     "liquido": -0.449,
     "tx_pf_para_secao": 10.4,
     "tx_secao_para_pf": 2.83,
-    "pf_para_pj_total": 114.7
+    "pf_para_pj_total": 114.7,
+    "participacao": 0.92
    },
    {
     "ref": "2023-05",
@@ -333,7 +408,8 @@
     "liquido": -0.529,
     "tx_pf_para_secao": 13.23,
     "tx_secao_para_pf": 3.64,
-    "pf_para_pj_total": 131.0
+    "pf_para_pj_total": 131.0,
+    "participacao": 0.92
    },
    {
     "ref": "2023-06",
@@ -342,7 +418,8 @@
     "liquido": -0.59,
     "tx_pf_para_secao": 10.75,
     "tx_secao_para_pf": 3.36,
-    "pf_para_pj_total": 131.6
+    "pf_para_pj_total": 131.6,
+    "participacao": 0.84
    },
    {
     "ref": "2023-07",
@@ -351,7 +428,8 @@
     "liquido": -0.562,
     "tx_pf_para_secao": 13.77,
     "tx_secao_para_pf": 3.73,
-    "pf_para_pj_total": 140.4
+    "pf_para_pj_total": 140.4,
+    "participacao": 0.9
    },
    {
     "ref": "2023-08",
@@ -360,7 +438,8 @@
     "liquido": -0.562,
     "tx_pf_para_secao": 17.18,
     "tx_secao_para_pf": 4.1,
-    "pf_para_pj_total": 151.2
+    "pf_para_pj_total": 151.2,
+    "participacao": 0.9
    },
    {
     "ref": "2023-09",
@@ -369,7 +448,8 @@
     "liquido": -0.548,
     "tx_pf_para_secao": 18.1,
     "tx_secao_para_pf": 4.11,
-    "pf_para_pj_total": 149.1
+    "pf_para_pj_total": 149.1,
+    "participacao": 0.95
    },
    {
     "ref": "2023-10",
@@ -378,7 +458,8 @@
     "liquido": -0.526,
     "tx_pf_para_secao": 33.05,
     "tx_secao_para_pf": 8.13,
-    "pf_para_pj_total": 160.0
+    "pf_para_pj_total": 160.0,
+    "participacao": 1.28
    },
    {
     "ref": "2023-11",
@@ -387,7 +468,8 @@
     "liquido": -0.537,
     "tx_pf_para_secao": 33.6,
     "tx_secao_para_pf": 8.92,
-    "pf_para_pj_total": 168.1
+    "pf_para_pj_total": 168.1,
+    "participacao": 1.22
    },
    {
     "ref": "2023-12",
@@ -396,7 +478,8 @@
     "liquido": -0.646,
     "tx_pf_para_secao": 45.03,
     "tx_secao_para_pf": 8.97,
-    "pf_para_pj_total": 189.2
+    "pf_para_pj_total": 189.2,
+    "participacao": 1.31
    },
    {
     "ref": "2024-01",
@@ -405,7 +488,8 @@
     "liquido": -0.099,
     "tx_pf_para_secao": 81.31,
     "tx_secao_para_pf": 15.57,
-    "pf_para_pj_total": 179.2
+    "pf_para_pj_total": 179.2,
+    "participacao": 2.02
    },
    {
     "ref": "2024-02",
@@ -414,7 +498,8 @@
     "liquido": -0.497,
     "tx_pf_para_secao": 41.36,
     "tx_secao_para_pf": 8.42,
-    "pf_para_pj_total": 172.9
+    "pf_para_pj_total": 172.9,
+    "participacao": 1.31
    },
    {
     "ref": "2024-03",
@@ -423,7 +508,8 @@
     "liquido": -0.676,
     "tx_pf_para_secao": 20.69,
     "tx_secao_para_pf": 5.13,
-    "pf_para_pj_total": 193.2
+    "pf_para_pj_total": 193.2,
+    "participacao": 0.85
    },
    {
     "ref": "2024-04",
@@ -432,7 +518,8 @@
     "liquido": -0.696,
     "tx_pf_para_secao": 12.31,
     "tx_secao_para_pf": 3.01,
-    "pf_para_pj_total": 203.6
+    "pf_para_pj_total": 203.6,
+    "participacao": 0.72
    },
    {
     "ref": "2024-05",
@@ -441,7 +528,8 @@
     "liquido": -0.762,
     "tx_pf_para_secao": 14.65,
     "tx_secao_para_pf": 3.43,
-    "pf_para_pj_total": 212.9
+    "pf_para_pj_total": 212.9,
+    "participacao": 0.76
    },
    {
     "ref": "2024-06",
@@ -450,7 +538,8 @@
     "liquido": -0.905,
     "tx_pf_para_secao": 46.18,
     "tx_secao_para_pf": 13.48,
-    "pf_para_pj_total": 212.2
+    "pf_para_pj_total": 212.2,
+    "participacao": 1.33
    },
    {
     "ref": "2024-07",
@@ -459,7 +548,8 @@
     "liquido": -0.974,
     "tx_pf_para_secao": 59.6,
     "tx_secao_para_pf": 17.42,
-    "pf_para_pj_total": 229.6
+    "pf_para_pj_total": 229.6,
+    "participacao": 1.48
    },
    {
     "ref": "2024-08",
@@ -468,7 +558,8 @@
     "liquido": -1.054,
     "tx_pf_para_secao": 86.35,
     "tx_secao_para_pf": 25.58,
-    "pf_para_pj_total": 235.6
+    "pf_para_pj_total": 235.6,
+    "participacao": 1.89
    },
    {
     "ref": "2024-09",
@@ -477,7 +568,8 @@
     "liquido": -0.566,
     "tx_pf_para_secao": 72.97,
     "tx_secao_para_pf": 18.06,
-    "pf_para_pj_total": 233.0
+    "pf_para_pj_total": 233.0,
+    "participacao": 1.69
    },
    {
     "ref": "2024-10",
@@ -486,7 +578,8 @@
     "liquido": 0.037,
     "tx_pf_para_secao": 135.73,
     "tx_secao_para_pf": 31.09,
-    "pf_para_pj_total": 247.8
+    "pf_para_pj_total": 247.8,
+    "participacao": 2.4
    },
    {
     "ref": "2024-11",
@@ -495,7 +588,8 @@
     "liquido": 1.112,
     "tx_pf_para_secao": 252.21,
     "tx_secao_para_pf": 57.64,
-    "pf_para_pj_total": 250.9
+    "pf_para_pj_total": 250.9,
+    "participacao": 4.03
    },
    {
     "ref": "2024-12",
@@ -504,7 +598,8 @@
     "liquido": -0.363,
     "tx_pf_para_secao": 231.31,
     "tx_secao_para_pf": 60.12,
-    "pf_para_pj_total": 279.1
+    "pf_para_pj_total": 279.1,
+    "participacao": 3.27
    },
    {
     "ref": "2025-01",
@@ -513,7 +608,8 @@
     "liquido": 5.324,
     "tx_pf_para_secao": 569.1,
     "tx_secao_para_pf": 122.46,
-    "pf_para_pj_total": 248.1
+    "pf_para_pj_total": 248.1,
+    "participacao": 11.55
    },
    {
     "ref": "2025-02",
@@ -522,7 +618,8 @@
     "liquido": 4.359,
     "tx_pf_para_secao": 517.38,
     "tx_secao_para_pf": 117.11,
-    "pf_para_pj_total": 243.7
+    "pf_para_pj_total": 243.7,
+    "participacao": 11.65
    },
    {
     "ref": "2025-03",
@@ -531,7 +628,8 @@
     "liquido": 4.745,
     "tx_pf_para_secao": 575.78,
     "tx_secao_para_pf": 133.1,
-    "pf_para_pj_total": 264.5
+    "pf_para_pj_total": 264.5,
+    "participacao": 12.35
    },
    {
     "ref": "2025-04",
@@ -540,7 +638,8 @@
     "liquido": 4.818,
     "tx_pf_para_secao": 600.41,
     "tx_secao_para_pf": 142.43,
-    "pf_para_pj_total": 272.9
+    "pf_para_pj_total": 272.9,
+    "participacao": 12.42
    },
    {
     "ref": "2025-05",
@@ -549,7 +648,8 @@
     "liquido": 1.923,
     "tx_pf_para_secao": 564.36,
     "tx_secao_para_pf": 144.78,
-    "pf_para_pj_total": 290.6
+    "pf_para_pj_total": 290.6,
+    "participacao": 11.32
    },
    {
     "ref": "2025-06",
@@ -558,7 +658,8 @@
     "liquido": 3.025,
     "tx_pf_para_secao": 504.16,
     "tx_secao_para_pf": 131.56,
-    "pf_para_pj_total": 283.2
+    "pf_para_pj_total": 283.2,
+    "participacao": 11.22
    },
    {
     "ref": "2025-07",
@@ -567,7 +668,8 @@
     "liquido": 4.866,
     "tx_pf_para_secao": 701.36,
     "tx_secao_para_pf": 174.54,
-    "pf_para_pj_total": 301.0
+    "pf_para_pj_total": 301.0,
+    "participacao": 12.88
    },
    {
     "ref": "2025-08",
@@ -576,7 +678,8 @@
     "liquido": 4.06,
     "tx_pf_para_secao": 761.97,
     "tx_secao_para_pf": 194.73,
-    "pf_para_pj_total": 304.8
+    "pf_para_pj_total": 304.8,
+    "participacao": 13.5
    },
    {
     "ref": "2025-09",
@@ -585,7 +688,8 @@
     "liquido": 1.979,
     "tx_pf_para_secao": 638.19,
     "tx_secao_para_pf": 168.59,
-    "pf_para_pj_total": 310.6
+    "pf_para_pj_total": 310.6,
+    "participacao": 12.14
    },
    {
     "ref": "2025-10",
@@ -594,7 +698,8 @@
     "liquido": 3.732,
     "tx_pf_para_secao": 649.13,
     "tx_secao_para_pf": 160.5,
-    "pf_para_pj_total": 325.9
+    "pf_para_pj_total": 325.9,
+    "participacao": 11.83
    },
    {
     "ref": "2025-11",
@@ -603,7 +708,8 @@
     "liquido": 4.9,
     "tx_pf_para_secao": 591.33,
     "tx_secao_para_pf": 141.33,
-    "pf_para_pj_total": 323.3
+    "pf_para_pj_total": 323.3,
+    "participacao": 11.31
    },
    {
     "ref": "2025-12",
@@ -612,7 +718,8 @@
     "liquido": 3.943,
     "tx_pf_para_secao": 549.74,
     "tx_secao_para_pf": 128.59,
-    "pf_para_pj_total": 363.6
+    "pf_para_pj_total": 363.6,
+    "participacao": 9.85
    },
    {
     "ref": "2026-01",
@@ -621,7 +728,8 @@
     "liquido": 4.751,
     "tx_pf_para_secao": 438.42,
     "tx_secao_para_pf": 97.77,
-    "pf_para_pj_total": 324.4
+    "pf_para_pj_total": 324.4,
+    "participacao": 9.35
    },
    {
     "ref": "2026-02",
@@ -630,7 +738,8 @@
     "liquido": 3.537,
     "tx_pf_para_secao": 371.03,
     "tx_secao_para_pf": 80.82,
-    "pf_para_pj_total": 300.6
+    "pf_para_pj_total": 300.6,
+    "participacao": 8.96
    },
    {
     "ref": "2026-03",
@@ -639,7 +748,8 @@
     "liquido": 5.065,
     "tx_pf_para_secao": 504.52,
     "tx_secao_para_pf": 119.71,
-    "pf_para_pj_total": 344.0
+    "pf_para_pj_total": 344.0,
+    "participacao": 9.67
    },
    {
     "ref": "2026-04",
@@ -648,7 +758,8 @@
     "liquido": 3.876,
     "tx_pf_para_secao": 410.12,
     "tx_secao_para_pf": 90.39,
-    "pf_para_pj_total": 342.3
+    "pf_para_pj_total": 342.3,
+    "participacao": 8.42
    },
    {
     "ref": "2026-05",
@@ -657,7 +768,8 @@
     "liquido": 4.059,
     "tx_pf_para_secao": 414.98,
     "tx_secao_para_pf": 93.89,
-    "pf_para_pj_total": 361.4
+    "pf_para_pj_total": 361.4,
+    "participacao": 8.16
    },
    {
     "ref": "2026-06",
@@ -666,7 +778,8 @@
     "liquido": 3.873,
     "tx_pf_para_secao": 517.23,
     "tx_secao_para_pf": 133.34,
-    "pf_para_pj_total": 358.0
+    "pf_para_pj_total": 358.0,
+    "participacao": 9.34
    }
   ]
  },
@@ -677,7 +790,9 @@
    "completo": false,
    "pf_para_secao": 0.06,
    "secao_para_pf": 0.12,
-   "liquido": -0.06
+   "liquido": -0.06,
+   "pf_para_pj_total": 7.7,
+   "participacao": 0.78
   },
   {
    "ano": 2021,
@@ -685,7 +800,9 @@
    "completo": true,
    "pf_para_secao": 3.28,
    "secao_para_pf": 4.68,
-   "liquido": -1.4
+   "liquido": -1.4,
+   "pf_para_pj_total": 453.5,
+   "participacao": 0.72
   },
   {
    "ano": 2022,
@@ -693,7 +810,9 @@
    "completo": true,
    "pf_para_secao": 8.46,
    "secao_para_pf": 12.66,
-   "liquido": -4.19
+   "liquido": -4.19,
+   "pf_para_pj_total": 993.0,
+   "participacao": 0.85
   },
   {
    "ano": 2023,
@@ -701,7 +820,9 @@
    "completo": true,
    "pf_para_secao": 17.02,
    "secao_para_pf": 23.16,
-   "liquido": -6.14
+   "liquido": -6.14,
+   "pf_para_pj_total": 1664.6,
+   "participacao": 1.02
   },
   {
    "ano": 2024,
@@ -709,7 +830,9 @@
    "completo": true,
    "pf_para_secao": 50.45,
    "secao_para_pf": 55.9,
-   "liquido": -5.44
+   "liquido": -5.44,
+   "pf_para_pj_total": 2650.0,
+   "participacao": 1.9
   },
   {
    "ano": 2025,
@@ -717,7 +840,9 @@
    "completo": true,
    "pf_para_secao": 416.84,
    "secao_para_pf": 369.17,
-   "liquido": 47.67
+   "liquido": 47.67,
+   "pf_para_pj_total": 3532.2,
+   "participacao": 11.8
   },
   {
    "ano": 2026,
@@ -725,7 +850,9 @@
    "completo": false,
    "pf_para_secao": 182.3,
    "secao_para_pf": 157.13,
-   "liquido": 25.16
+   "liquido": 25.16,
+   "pf_para_pj_total": 2030.7,
+   "participacao": 8.98
   }
  ],
  "comparacao": {

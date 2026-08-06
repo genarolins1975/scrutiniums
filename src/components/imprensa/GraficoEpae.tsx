@@ -36,6 +36,14 @@ export type DadosEpae = {
   revisao: string;
   fonte: { nome: string; pagina: string; url: string };
   secao: { rotulo: string; abrange: string };
+  taxonomia: {
+    explicacao: string;
+    granularidade: string;
+    fonte: string;
+    url: string;
+    divisoes: Array<{ codigo: string; nome: string; jogos: boolean }>;
+  };
+  leitura: { permite: string[]; nao_permite: string[] };
   cobertura: { inicio: string; fim: string; meses: number };
   serie: { obs: ObsEpae[] };
   anuais: Array<{
@@ -45,6 +53,7 @@ export type DadosEpae = {
     pf_para_secao: number;
     secao_para_pf: number;
     liquido: number;
+    participacao: number | null;
   }>;
   comparacao: {
     ano: number;
@@ -108,6 +117,36 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
           publicamos o dado do Banco Central sem atribuir parcela alguma.
         </p>
       </figcaption>
+
+      {/* Sem a taxonomia o leitor não entende por que a série está aqui: as
+          casas de apostas se registram na divisão 92 desta seção. */}
+      <div className="mt-8 border-l-2 border-linha pl-5">
+        <p className="max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          {dados.taxonomia.explicacao}
+        </p>
+        <ul className="mt-4 space-y-1 text-sm">
+          {dados.taxonomia.divisoes.map((d) => (
+            <li key={d.codigo} className={d.jogos ? "text-carvao" : "text-carvao-muted"}>
+              <span className="tabular-nums">{d.codigo}</span> — {d.nome}
+              {d.jogos && (
+                <strong className="font-medium text-bronze"> ← as bets se registram aqui</strong>
+              )}
+            </li>
+          ))}
+        </ul>
+        <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
+          {dados.taxonomia.granularidade}{" "}
+          <a
+            href={dados.taxonomia.url}
+            rel="noopener noreferrer"
+            target="_blank"
+            className="underline decoration-linha underline-offset-4 hover:text-bronze"
+          >
+            {dados.taxonomia.fonte}
+          </a>
+          .
+        </p>
+      </div>
 
       <svg
         viewBox={`0 0 ${W} ${H}`}
@@ -173,6 +212,7 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
               <th className="rotulo py-2 pr-4 text-right font-normal text-mineral">pessoas → seção</th>
               <th className="rotulo py-2 pr-4 text-right font-normal text-mineral">seção → pessoas</th>
               <th className="rotulo py-2 pr-4 text-right font-normal text-mineral">líquido</th>
+              <th className="rotulo py-2 pr-4 text-right font-normal text-mineral">% do Pix PF→PJ</th>
               <th className="rotulo py-2 font-normal text-mineral">meses publicados</th>
             </tr>
           </thead>
@@ -182,7 +222,10 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
                 <td className="py-2 pr-4 text-carvao">{a.ano}</td>
                 <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{n1(a.pf_para_secao)}</td>
                 <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">{n1(a.secao_para_pf)}</td>
-                <td className="py-2 pr-4 text-right tabular-nums font-medium text-carvao">{n1(a.liquido)}</td>
+                <td className="py-2 pr-4 text-right font-medium tabular-nums text-carvao">{n1(a.liquido)}</td>
+                <td className="py-2 pr-4 text-right tabular-nums text-carvao-muted">
+                  {a.participacao == null ? "–" : `${n1(a.participacao)}%`}
+                </td>
                 <td className="py-2 text-carvao-muted">
                   {a.meses}
                   {a.completo ? "" : " · ano incompleto, sem anualização"}
@@ -193,11 +236,33 @@ export function GraficoEpae({ dados }: { dados: DadosEpae }) {
         </table>
       </div>
       <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-        O sinal do líquido se inverte em 2025: até 2024 a seção devolvia às pessoas mais do que
-        recebia; a partir de janeiro de 2025 passa a absorver saldo. A coincidência com o início do
-        mercado regulado de apostas é factual, mas a EPAE não permite atribuir a inversão às bets —
-        a seção inteira se move junto.
+        Duas mudanças de patamar acontecem em 2025. O sinal do líquido se inverte: até 2024 a seção
+        devolvia às pessoas mais do que recebia; a partir de janeiro de 2025 passa a absorver saldo.
+        E o peso da seção salta de cerca de dois para cerca de doze por cento de tudo o que pessoas
+        físicas pagam a empresas via Pix — as demais divisões da seção não crescem nesse ritmo. A
+        coincidência com o início do mercado regulado de apostas é factual, mas a EPAE não permite
+        atribuir a inversão às bets: a seção inteira se move junto, e nenhuma transação vem
+        carimbada.
       </p>
+
+      <div className="mt-10 grid gap-x-10 gap-y-8 md:grid-cols-2">
+        <div>
+          <h4 className="font-serif text-lg text-carvao">O que esta série permite dizer</h4>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao-muted">
+            {dados.leitura.permite.map((i) => (
+              <li key={i}>{i}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-serif text-lg text-carvao">O que ela não permite dizer</h4>
+          <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-carvao-muted">
+            {dados.leitura.nao_permite.map((i) => (
+              <li key={i}>{i}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
 
       {c && (
         <>

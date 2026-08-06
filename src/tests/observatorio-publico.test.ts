@@ -228,6 +228,10 @@ describe("página de imprensa (bets e fraudes como carro-chefe)", () => {
     // a advertência editorial não pode sumir na versão para a imprensa
     expect(comp).toMatch(/Esta não é uma série de apostas/);
     expect(comp).toMatch(/sem atribuir parcela alguma/);
+    // o elo taxonômico e os limites de leitura acompanham o gráfico na imprensa
+    expect(comp).toContain("dados.taxonomia.divisoes");
+    expect(comp).toContain("as bets se registram aqui");
+    expect(comp).toContain("dados.leitura.nao_permite");
     expect(comp).toMatch(/role="img"/);
     expect(comp).toContain("aria-label");
   });
