@@ -213,6 +213,35 @@ describe("página de imprensa (bets e fraudes como carro-chefe)", () => {
     expect(pagina).toContain("data_ref");
   });
 
+  it("o gráfico da EPAE entra junto do painel de bets, a partir do gold automático", () => {
+    expect(pagina).toContain('lerGold("epae")');
+    expect(pagina).toContain("<GraficoEpae dados={epae} />");
+    expect(pagina).toContain('p.slug === "bets"');
+  });
+
+  it("o gráfico da EPAE é SVG do servidor, sem número escrito à mão e com o limite declarado", () => {
+    const comp = readFileSync(join(raiz, "src/components/imprensa/GraficoEpae.tsx"), "utf-8");
+    expect(comp).not.toMatch(/"use client"/); // zero JS no cliente na página de imprensa
+    expect(comp).toContain("<svg");
+    // valores vêm do gold: nenhum dado citável literal no componente
+    expect(comp).not.toMatch(/R\$ ?\d|\d{2},\d/);
+    // a advertência editorial não pode sumir na versão para a imprensa
+    expect(comp).toMatch(/Esta não é uma série de apostas/);
+    expect(comp).toMatch(/sem atribuir parcela alguma/);
+    expect(comp).toMatch(/role="img"/);
+    expect(comp).toContain("aria-label");
+  });
+
+  it("o gold da EPAE traz o que a página de imprensa precisa citar", () => {
+    const g = JSON.parse(readFileSync(join(raiz, "public/obs/data/gold/epae.json"), "utf-8"));
+    expect(g.serie.obs.length).toBeGreaterThan(24);
+    expect(g.anuais.length).toBeGreaterThan(0);
+    expect(g.fonte.pagina).toMatch(/^https:\/\/www\.bcb\.gov\.br\//);
+    expect(g.comparacao.observado.nivel).toBe("A");
+    expect(g.comparacao.atribuido_estudo.nivel).toBe("D");
+    expect(g.aviso).toMatch(/SEÇÃO INTEIRA/);
+  });
+
   it("os gold de bets e fraudes trazem síntese com nível e URL em todos os itens", () => {
     for (const nome of ["bets", "fraudes"]) {
       const g = JSON.parse(

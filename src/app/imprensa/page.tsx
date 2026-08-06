@@ -5,6 +5,7 @@ import { join } from "node:path";
 import { PublicHeader } from "@/components/layout/PublicHeader";
 import { Footer } from "@/components/layout/Footer";
 import { BotaoLink } from "@/components/home/BotaoLink";
+import { GraficoEpae, type DadosEpae } from "@/components/imprensa/GraficoEpae";
 import { LINKEDIN_URL } from "@/lib/contato";
 
 /**
@@ -89,9 +90,20 @@ function carregarPaineis(): Painel[] {
   return out;
 }
 
+/**
+ * O gráfico da EPAE acompanha o painel de bets: é a série do Banco Central que
+ * estudos de terceiros usam para estimar a parcela das apostas. Vem do gold
+ * automático (não da curadoria), por isso é carregado à parte.
+ */
+function carregarEpae(): DadosEpae | null {
+  const g = lerGold("epae");
+  return g?.serie?.obs?.length ? (g as DadosEpae) : null;
+}
+
 export default function ImprensaPage() {
   const paineis = carregarPaineis();
   const niveis = paineis[0]?.niveis ?? {};
+  const epae = carregarEpae();
 
   return (
     <>
@@ -162,6 +174,7 @@ export default function ImprensaPage() {
                   </article>
                 ))}
               </div>
+              {p.slug === "bets" && epae && <GraficoEpae dados={epae} />}
               <p className="mt-12">
                 <Link
                   href={p.rotaPainel}
