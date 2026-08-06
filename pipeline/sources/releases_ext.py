@@ -65,6 +65,17 @@ DOCS = [
         "formato": "htm",
         "url": "https://www.sec.gov/Archives/edgar/data/1864163/000186416326000048/interco1q26earningsrelea.htm",
     },
+    {
+        "protocolo": "safra:resumo-consolidado-mar-2026",
+        "company_id": "safra",
+        "fonte": "RI Banco Safra (site institucional)",
+        "tipo": "Resumo Consolidado e Principais Indicadores",
+        "assunto": "Resumo Consolidado e Principais Indicadores — mar/2026",
+        "periodo_ref": "2026-03-31",
+        "entregue_em": "2026-05",
+        "formato": "pdf",
+        "url": "https://www.safra.com.br/data/files/D2/E4/8D/BC/1582E910BB0B22D901B9F9C2/Resumo%20Consolidado%20e%20Principais%20Indicadores%20-%20mar%202026.pdf",
+    },
 ]
 
 TERMOS = TERMOS_CLIENTES + ["customers", "clients", "active clients", "total clients"]

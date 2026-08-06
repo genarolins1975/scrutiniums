@@ -19,17 +19,57 @@ const gold = JSON.parse(
   readFileSync(join(raiz, "public/obs/data/gold/operacional.json"), "utf-8"),
 );
 
+describe("famílias de métrica: cliente não é pessoa do quadro", () => {
+  it("cada métrica pertence a uma família declarada no gold builder", () => {
+    const oper = readFileSync(join(process.cwd(), "pipeline/operacional.py"), "utf-8");
+    for (const id of Object.keys(cur.metricas)) {
+      expect(oper, `métrica ${id} sem família em FAMILIA_FASE2`).toContain(`"${id}":`);
+    }
+    expect(oper).toContain('"empregados_reportado": "pessoal"');
+    expect(oper).toContain('"colaboradores_reportado": "pessoal"');
+  });
+
+  it("quadro de pessoal reportado nunca entra na série do FRE", () => {
+    const g = JSON.parse(
+      readFileSync(join(process.cwd(), "public/obs/data/gold/operacional.json"), "utf-8"),
+    );
+    for (const i of g.instituicoes) {
+      if (!i.pessoal_reportado) continue;
+      // quem publica quadro próprio é justamente quem não tem FRE; se um dia
+      // tiver os dois, eles seguem em campos separados e nunca somados
+      for (const p of i.pessoal_reportado) {
+        expect(p.natureza).toBe("reportado");
+        expect(p.comparabilidade).toBe("C");
+        expect(p.evidencia?.length).toBeGreaterThan(15);
+        expect(p.documento.url).toMatch(/^https:\/\//);
+      }
+      const serie = i.empregados?.serie ?? [];
+      for (const s of serie) {
+        expect(s.total).not.toBe(i.pessoal_reportado[0].valor);
+      }
+    }
+    // a tabela da aba precisa existir e declarar a separação
+    const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
+    expect(app).toContain("Quadro de pessoal divulgado pela própria instituição");
+    expect(app).toContain("NÃO entram na série do FRE");
+  });
+});
+
 describe("curadoria: toda observação é completa e auditável", () => {
   it("campos obrigatórios, evidência e documento oficial em toda observação", () => {
     expect(cur.observacoes.length).toBeGreaterThan(0);
     // Domínios oficiais permitidos: CVM (listadas no Brasil), SEC/EDGAR
-    // (listadas no exterior) e o file manager do RI da Caixa (MZ).
-    const dominios = /^https:\/\/(www\.rad\.cvm\.gov\.br|www\.sec\.gov|api\.mziq\.com)\//;
+    // (listadas no exterior) e o canal de RI da própria instituição quando ela
+    // não é companhia aberta — file manager MZ (Caixa) e site do Banco Safra.
+    // Ampliar esta lista é decisão consciente: nenhum documento entra por
+    // agregador, buscador ou espelho.
+    const dominios =
+      /^https:\/\/(www\.rad\.cvm\.gov\.br|www\.sec\.gov|api\.mziq\.com|www\.safra\.com\.br)\//;
     for (const o of cur.observacoes) {
       expect(o.evidencia?.length, o.id).toBeGreaterThan(15);
       expect(o.pagina, o.id).toBeGreaterThanOrEqual(1);
       expect(o.documento.url, o.id).toMatch(dominios);
-      expect(o.documento.protocolo, o.id).toMatch(/IPE|^sec:|^mz:/);
+      expect(o.documento.protocolo, o.id).toMatch(/IPE|^sec:|^mz:|^safra:/);
       expect(o.valor, o.id).toBeGreaterThan(0);
       expect(o.period_end, o.id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       expect(["review", "aprovado", "rejeitado"]).toContain(o.status);
@@ -45,7 +85,9 @@ describe("curadoria: toda observação é completa e auditável", () => {
     expect(new Set(ids).size).toBe(ids.length);
     for (const a of cur.ausencias) {
       expect(a.motivo.length, a.institution_id).toBeGreaterThan(20);
-      expect(a.documento, a.institution_id).toContain("IPE");
+      // a ausência tem de apontar o documento efetivamente conferido, seja ele
+      // da CVM/IPE, da SEC ou do canal de RI da instituição
+      expect(a.documento, a.institution_id).toMatch(/IPE|SEC|MZ|site d|plataforma/i);
     }
   });
 

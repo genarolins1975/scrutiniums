@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-06T16:29:04+00:00",
+ "gerado_em": "2026-08-06T16:39:16+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -19,6 +19,11 @@
   {
    "nome": "BCB — ESTBAN, Estatística Bancária Mensal por município (agências processadas)",
    "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios",
+   "nivel": "A"
+  },
+  {
+   "nome": "BCB — cadastro de agências, postos de atendimento e postos eletrônicos (Unicad)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp",
    "nivel": "A"
   }
  ],
@@ -334,7 +339,8 @@
     "municipios": 845,
     "nome": "ITAÚ UNIBANCO S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "bb",
@@ -674,7 +680,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1521600&numSequencia=1046306&numVersao=1"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "bradesco",
@@ -1056,7 +1063,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516958&numSequencia=1041664&numVersao=1"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "santander",
@@ -1475,7 +1483,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1549115&numSequencia=1073821&numVersao=2"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "btg",
@@ -1788,7 +1797,8 @@
     "municipios": 14,
     "nome": "BANCO BTG PACTUAL S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "abc",
@@ -2144,7 +2154,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1517352&numSequencia=1042058&numVersao=1"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "banrisul",
@@ -2467,7 +2478,8 @@
     "municipios": 463,
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "bmg",
@@ -2844,7 +2856,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516267&numSequencia=1040973&numVersao=1"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "pine",
@@ -3157,7 +3170,8 @@
     "municipios": 4,
     "nome": "BANCO PINE S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "amazonia",
@@ -3475,7 +3489,8 @@
     "municipios": 114,
     "nome": "BANCO DA AMAZONIA S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "nordeste",
@@ -3793,7 +3808,8 @@
     "municipios": 276,
     "nome": "BANCO DO NORDESTE DO BRASIL S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "banestes",
@@ -4154,7 +4170,8 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1521398&numSequencia=1046104&numVersao=1"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "mercantil",
@@ -4467,7 +4484,8 @@
     "municipios": 269,
     "nome": "BANCO MERCANTIL DO BRASIL S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "brb",
@@ -4773,7 +4791,8 @@
     "municipios": 47,
     "nome": "BRB - BANCO DE BRASILIA S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "banese",
@@ -5091,7 +5110,8 @@
     "municipios": 52,
     "nome": "BANCO DO ESTADO DE SERGIPE S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "brpartners",
@@ -5203,7 +5223,8 @@
    },
    "rede": null,
    "pontos": null,
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "alfa",
@@ -5521,7 +5542,8 @@
     "municipios": 8,
     "nome": "BANCO ALFA S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "bmi",
@@ -5630,7 +5652,8 @@
     "municipios": 1,
     "nome": "BANCO MERCANTIL DE INVESTIMENTOS S/A"
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "banpara",
@@ -5953,7 +5976,8 @@
     "municipios": 144,
     "nome": "BANCO DO ESTADO DO PARÁ S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "daycoval",
@@ -6271,7 +6295,8 @@
     "municipios": 48,
     "nome": "BANCO DAYCOVAL S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "parana",
@@ -6594,7 +6619,8 @@
     "municipios": 18,
     "nome": "PARANÁ BANCO S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "rci",
@@ -6631,7 +6657,8 @@
    },
    "rede": null,
    "pontos": null,
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "bemge",
@@ -6743,7 +6770,8 @@
    },
    "rede": null,
    "pontos": null,
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "mercfin",
@@ -6828,7 +6856,8 @@
    },
    "rede": null,
    "pontos": null,
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "pan",
@@ -7124,7 +7153,8 @@
     "municipios": 18,
     "nome": "BANCO PAN S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "inter",
@@ -7501,7 +7531,8 @@
       "url": "https://www.sec.gov/Archives/edgar/data/1864163/000186416326000048/interco1q26earningsrelea.htm"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "caixa",
@@ -7746,7 +7777,8 @@
       "url": "https://api.mziq.com/mzfilemanager/v2/d/fb86b0b8-b4e9-407b-a575-ba3668a566a9/0310f05a-c6b5-b949-3ee4-b1463b04f54b?origin=2"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   },
   {
    "id": "safra",
@@ -7969,7 +8001,8 @@
     "municipios": 60,
     "nome": "BANCO SAFRA S.A."
    },
-   "clientes": null
+   "clientes": null,
+   "pessoal_reportado": null
   },
   {
    "id": "nubank",
@@ -8003,7 +8036,8 @@
       "url": "https://www.sec.gov/Archives/edgar/data/1691493/000129281426003057/nu20260514_6k2.htm"
      }
     }
-   ]
+   ],
+   "pessoal_reportado": null
   }
  ],
  "sfn": {
@@ -39381,7 +39415,7 @@
   ]
  },
  "fase2": {
-  "em_revisao": 0,
+  "em_revisao": 3,
   "aprovadas": 21,
   "rejeitadas": 0,
   "metricas": {
@@ -39408,6 +39442,16 @@
    "clientes_corporativos": {
     "nome": "Clientes corporativos ativos",
     "conceito": "Empresas com relacionamento ativo em banco de atacado, conforme critério da companhia. Universo de centenas ou milhares — ordem de grandeza distinta da base de varejo; jamais comparar com clientes pessoa física.",
+    "comparabilidade": "C"
+   },
+   "empregados_reportado": {
+    "nome": "Empregados declarados pela companhia",
+    "conceito": "Quadro de pessoal como a própria instituição divulga em relatório de resultados. Existe para instituições sem registro de companhia aberta na CVM, que por isso não entregam o item 10.1 do Formulário de Referência. NÃO é a mesma medida do FRE: o escopo (companhia, banco ou conglomerado) e a data-base são os da divulgação, e por isso os dois números nunca entram na mesma série nem em ranking conjunto.",
+    "comparabilidade": "C"
+   },
+   "colaboradores_reportado": {
+    "nome": "Colaboradores declarados pela companhia",
+    "conceito": "Conceito mais amplo que empregados, definido pela própria instituição — costuma somar estagiários e aprendizes ao quadro efetivo, e pode abranger o conglomerado em vez de uma única entidade. Publicado ao lado de empregados justamente para que a diferença de conceito fique visível, nunca para substituí-lo.",
     "comparabilidade": "C"
    }
   },
