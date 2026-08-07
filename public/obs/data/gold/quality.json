@@ -1,16 +1,16 @@
 {
  "cambio": {
-  "score": 88.6,
+  "score": 100.0,
   "componentes": {
-   "completude": 99.9,
-   "atualidade": 62.2,
+   "completude": 100.0,
+   "atualidade": 100.0,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
-  "ultima_ref": "2026-06-01",
-  "n_obs": 882,
+  "dias_sem_atualizar": 37,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 883,
   "n_revisoes": 0,
   "nome": "Taxa de câmbio comercial R$/US$ - compra - média mensal",
   "fonte": "Ipeadata"
@@ -24,7 +24,7 @@
    "estabilidade": 94.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 2,
@@ -32,15 +32,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pf": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -48,15 +48,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pj": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -64,19 +64,259 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_total": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
   "nome": "Concessões de crédito - Total",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_atraso": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - atraso de 15 a 90 dias",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_conc": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - concessões",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_icc": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 162,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - custo do crédito",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_inad": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - inadimplência acima de 90 dias",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_prazo_cart": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - prazo médio da carteira",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_prazo_conc": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - prazo médio das concessões",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_saldo": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - saldo da carteira",
+  "fonte": "BCB/SGS"
+ },
+ "consig_inss_taxa": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado INSS - taxa média de juros",
+  "fonte": "BCB/SGS"
+ },
+ "consig_priv_inad": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado privado - inadimplência acima de 90 dias",
+  "fonte": "BCB/SGS"
+ },
+ "consig_priv_saldo": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado privado - saldo da carteira",
+  "fonte": "BCB/SGS"
+ },
+ "consig_pub_inad": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado público - inadimplência acima de 90 dias",
+  "fonte": "BCB/SGS"
+ },
+ "consig_pub_saldo": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado público - saldo da carteira",
+  "fonte": "BCB/SGS"
+ },
+ "consig_total_inad": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado total - inadimplência acima de 90 dias",
+  "fonte": "BCB/SGS"
+ },
+ "consig_total_saldo": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado total - saldo da carteira",
+  "fonte": "BCB/SGS"
+ },
+ "consig_total_taxa": {
+  "score": 85.2,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 51.1,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 174,
+  "n_revisoes": 0,
+  "nome": "Consignado total - taxa média de juros",
   "fonte": "BCB/SGS"
  },
  "convolacao_falencia_agregado": {
@@ -88,7 +328,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -96,15 +336,15 @@
   "fonte": "CNJ/DataJud"
  },
  "credito_pib": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -112,15 +352,15 @@
   "fonte": "BCB/SGS"
  },
  "desemprego": {
-  "score": 88.5,
+  "score": 85.2,
   "componentes": {
    "completude": 99.2,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 121,
   "n_revisoes": 0,
@@ -136,7 +376,7 @@
    "estabilidade": 94.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 2,
@@ -152,7 +392,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -160,31 +400,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_agregado": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 441,
+  "n_revisoes": 490,
   "nome": "Falências ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjba": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -192,15 +432,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjgo": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -208,31 +448,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjmg": {
-  "score": 83.4,
+  "score": 78.4,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
-   "estabilidade": 100.0,
+   "estabilidade": 88.9,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 0,
+  "n_revisoes": 2,
   "nome": "Falências ajuizadas — TJMG (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjpr": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -240,31 +480,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrj": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 54,
+  "n_revisoes": 102,
   "nome": "Falências ajuizadas — TJRJ (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrs": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -272,15 +512,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsc": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 143,
@@ -288,15 +528,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsp": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 249,
@@ -312,7 +552,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-05-01",
   "n_obs": 173,
   "n_revisoes": 0,
@@ -320,15 +560,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pf": {
-  "score": 88.5,
+  "score": 85.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 0,
@@ -336,15 +576,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pj": {
-  "score": 87.7,
+  "score": 84.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -352,15 +592,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_total": {
-  "score": 87.7,
+  "score": 84.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -368,15 +608,15 @@
   "fonte": "BCB/SGS"
  },
  "ipca": {
-  "score": 88.5,
+  "score": 85.2,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 0,
@@ -384,33 +624,33 @@
   "fonte": "BCB/SGS"
  },
  "ivgr": {
-  "score": 69.7,
+  "score": 54.8,
   "componentes": {
-   "completude": 98.3,
+   "completude": 98.9,
    "atualidade": 0.0,
    "historico": 100.0,
-   "estabilidade": 100.0,
+   "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 123,
-  "ultima_ref": "2026-04-01",
-  "n_obs": 172,
-  "n_revisoes": 0,
+  "dias_sem_atualizar": 98,
+  "ultima_ref": "2026-05-01",
+  "n_obs": 173,
+  "n_revisoes": 148,
   "nome": "IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados",
   "fonte": "BCB/SGS"
  },
  "of_chamadas_dados_abertos": {
-  "score": 82.2,
+  "score": 82.3,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 10.8,
+   "historico": 11.7,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 9,
-  "ultima_ref": "2026-07-24",
-  "n_obs": 13,
+  "dias_sem_atualizar": 7,
+  "ultima_ref": "2026-07-31",
+  "n_obs": 14,
   "n_revisoes": 0,
   "nome": "Chamadas de API — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -424,7 +664,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -440,7 +680,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -456,7 +696,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -472,7 +712,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -480,17 +720,17 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "of_sucesso_dados_abertos": {
-  "score": 82.2,
+  "score": 82.3,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 10.8,
+   "historico": 11.7,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 9,
-  "ultima_ref": "2026-07-24",
-  "n_obs": 13,
+  "dias_sem_atualizar": 7,
+  "ultima_ref": "2026-07-31",
+  "n_obs": 14,
   "n_revisoes": 0,
   "nome": "Taxa de sucesso das chamadas (códigos 2xx/3xx) — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -504,7 +744,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -520,7 +760,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 37,
+  "dias_sem_atualizar": 42,
   "ultima_ref": "2026-06-26",
   "n_obs": 9,
   "n_revisoes": 0,
@@ -528,15 +768,15 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "papelao": {
-  "score": 88.6,
+  "score": 85.3,
   "componentes": {
    "completude": 99.8,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 558,
   "n_revisoes": 0,
@@ -544,463 +784,463 @@
   "fonte": "Ipeadata"
  },
  "pim_129314": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 1 Indústria geral",
   "fonte": "IBGE"
  },
  "pim_129315": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 2 Indústrias extrativas",
   "fonte": "IBGE"
  },
  "pim_129316": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3 Indústrias de transformação",
   "fonte": "IBGE"
  },
  "pim_129317": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.10 Fabricação de produtos alimentícios",
   "fonte": "IBGE"
  },
  "pim_129318": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.11 Fabricação de bebidas",
   "fonte": "IBGE"
  },
  "pim_129319": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.12 Fabricação de produtos do fumo",
   "fonte": "IBGE"
  },
  "pim_129320": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.13 Fabricação de produtos têxteis",
   "fonte": "IBGE"
  },
  "pim_129321": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.14 Confecção de artigos do vestuário e acessórios",
   "fonte": "IBGE"
  },
  "pim_129322": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.15 Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados",
   "fonte": "IBGE"
  },
  "pim_129323": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.16 Fabricação de produtos de madeira",
   "fonte": "IBGE"
  },
  "pim_129324": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.17 Fabricação de celulose, papel e produtos de papel",
   "fonte": "IBGE"
  },
  "pim_129325": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.18 Impressão e reprodução de gravações",
   "fonte": "IBGE"
  },
  "pim_129326": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis",
   "fonte": "IBGE"
  },
  "pim_129330": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.21 Fabricação de produtos farmoquímicos e farmacêuticos",
   "fonte": "IBGE"
  },
  "pim_129331": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.22 Fabricação de produtos de borracha e de material plástico",
   "fonte": "IBGE"
  },
  "pim_129332": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.23 Fabricação de produtos de minerais não metálicos",
   "fonte": "IBGE"
  },
  "pim_129333": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.24 Metalurgia",
   "fonte": "IBGE"
  },
  "pim_129334": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.25 Fabricação de produtos de metal, exceto máquinas e equipamentos",
   "fonte": "IBGE"
  },
  "pim_129335": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.26 Fabricação de equipamentos de informática, produtos eletrônicos e ópticos",
   "fonte": "IBGE"
  },
  "pim_129336": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.27 Fabricação de máquinas, aparelhos e materiais elétricos",
   "fonte": "IBGE"
  },
  "pim_129337": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.28 Fabricação de máquinas e equipamentos",
   "fonte": "IBGE"
  },
  "pim_129338": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.29 Fabricação de veículos automotores, reboques e carrocerias",
   "fonte": "IBGE"
  },
  "pim_129339": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores",
   "fonte": "IBGE"
  },
  "pim_129340": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.31 Fabricação de móveis",
   "fonte": "IBGE"
  },
  "pim_129341": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.32 Fabricação de produtos diversos",
   "fonte": "IBGE"
  },
  "pim_129342": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.33 Manutenção, reparação e instalação de máquinas e equipamentos",
   "fonte": "IBGE"
  },
  "pim_56689": {
-  "score": 61.5,
+  "score": 77.2,
   "componentes": {
-   "completude": 97.3,
-   "atualidade": 0.0,
-   "historico": 60.0,
+   "completude": 98.6,
+   "atualidade": 51.1,
+   "historico": 60.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 93,
-  "ultima_ref": "2026-05-01",
-  "n_obs": 72,
+  "dias_sem_atualizar": 67,
+  "ultima_ref": "2026-06-01",
+  "n_obs": 73,
   "n_revisoes": 0,
   "nome": "PIM-PF (2022=100) — 3.20 Fabricação de produtos químicos",
   "fonte": "IBGE"
  },
  "recuperacao_judicial_agregado": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 357,
+  "n_revisoes": 413,
   "nome": "Recuperações judiciais ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjba": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1008,15 +1248,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjgo": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1024,15 +1264,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjmg": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1040,15 +1280,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjpr": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1056,31 +1296,31 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrj": {
-  "score": 83.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
-   "estabilidade": 100.0,
+   "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
-  "n_revisoes": 0,
+  "n_revisoes": 56,
   "nome": "Recuperações judiciais ajuizadas — TJRJ (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrs": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1088,15 +1328,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsc": {
-  "score": 83.4,
+  "score": 80.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 0,
@@ -1104,15 +1344,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsp": {
-  "score": 68.4,
+  "score": 65.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 75.0,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 179,
@@ -1120,15 +1360,15 @@
   "fonte": "CNJ/DataJud"
  },
  "saldo_pf": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1136,15 +1376,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_pj": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1152,15 +1392,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_total": {
-  "score": 87.2,
+  "score": 83.9,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 3,
@@ -1176,23 +1416,23 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": -3,
-  "ultima_ref": "2026-08-05",
-  "n_obs": 2774,
+  "dias_sem_atualizar": -40,
+  "ultima_ref": "2026-09-16",
+  "n_obs": 2816,
   "n_revisoes": 0,
   "nome": "Meta para a taxa Selic",
   "fonte": "BCB/SGS"
  },
  "spread_pf": {
-  "score": 87.7,
+  "score": 84.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -1200,15 +1440,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pj": {
-  "score": 88.1,
+  "score": 84.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1216,15 +1456,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_total": {
-  "score": 88.1,
+  "score": 84.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1232,15 +1472,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pf": {
-  "score": 87.7,
+  "score": 84.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 2,
@@ -1248,15 +1488,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pj": {
-  "score": 88.1,
+  "score": 84.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,
@@ -1264,15 +1504,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_total": {
-  "score": 88.1,
+  "score": 84.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 62.2,
+   "atualidade": 51.1,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 62,
+  "dias_sem_atualizar": 67,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 1,

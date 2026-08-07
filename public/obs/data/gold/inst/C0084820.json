@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -1030,8 +1030,8 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "MERCADO PAGO",
-  "chamadas_semana": 5904437123.0,
-  "share_pct": 10.4,
+  "chamadas_semana": 5172544694.0,
+  "share_pct": 10.3,
   "familias_api": 34,
   "papeis": [
    "CONTA",

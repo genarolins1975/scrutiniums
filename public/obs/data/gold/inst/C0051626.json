@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -461,6 +461,56 @@
   "score": 66.2,
   "score_delta": 6.7,
   "faixa": "risco elevado",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 15.13,
+    "percentil_pares": 60.0,
+    "risco": 40.0,
+    "mediana_pares": 15.02,
+    "q1_pares": 14.8,
+    "q3_pares": 15.15
+   },
+   "rentabilidade": {
+    "valor": 2.69,
+    "percentil_pares": 28.6,
+    "risco": 71.4,
+    "mediana_pares": 3.41,
+    "q1_pares": 2.54,
+    "q3_pares": 5.79
+   },
+   "alavancagem": {
+    "valor": 20.38,
+    "percentil_pares": 85.7,
+    "risco": 85.7,
+    "mediana_pares": 13.42,
+    "q1_pares": 10.95,
+    "q3_pares": 15.51
+   },
+   "concentracao_credito": {
+    "valor": 56.64,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 41.35,
+    "q1_pares": 17.37,
+    "q3_pares": 43.29
+   },
+   "dependencia_captacoes": {
+    "valor": 87.41,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 77.23,
+    "q1_pares": 54.32,
+    "q3_pares": 78.85
+   },
+   "concentracao_setorial": {
+    "valor": 1682,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 1986.0,
+    "q1_pares": 1791.25,
+    "q3_pares": 2084.0
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -928,7 +978,7 @@
  },
  "openfinance": {
   "organisation": "CAIXA ECONOMICA FEDERAL",
-  "chamadas_semana": 3691816566.0,
+  "chamadas_semana": 3246587928.0,
   "share_pct": 6.5,
   "familias_api": 55,
   "papeis": [

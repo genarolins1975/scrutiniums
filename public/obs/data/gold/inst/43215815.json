@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:24+00:00",
+  "atualizado_em": "2026-08-07T11:11:43+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -718,7 +718,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "BELVO IP",
-  "chamadas_semana": 3646.0,
+  "chamadas_semana": 3681.0,
   "share_pct": 0.0,
   "familias_api": 8,
   "papeis": [

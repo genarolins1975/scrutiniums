@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -1001,7 +1001,7 @@
  },
  "openfinance": {
   "organisation": "BANCO BMG",
-  "chamadas_semana": 180506883.0,
+  "chamadas_semana": 158245867.0,
   "share_pct": 0.3,
   "familias_api": null,
   "papeis": null,

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-02T10:59:30+00:00",
+ "gerado_em": "2026-08-07T11:11:49+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -8510,14 +8510,14 @@
     {
      "segmento": "PESSOA FÍSICA",
      "modalidade": "Aquisição de veículos - Prefixado",
-     "inicio": "2026-07-13",
-     "fim": "2026-07-17",
+     "inicio": "2026-07-20",
+     "fim": "2026-07-24",
      "n_inst": 39,
-     "mediana_aa": 24.47,
-     "p25_aa": 21.39,
-     "p75_aa": 27.89,
-     "min_aa": 7.96,
-     "max_aa": 49.21,
+     "mediana_aa": 24.0,
+     "p25_aa": 20.02,
+     "p75_aa": 27.98,
+     "min_aa": 8.74,
+     "max_aa": 48.84,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -9247,294 +9247,301 @@
        "p25_aa": 21.39,
        "p75_aa": 27.89,
        "n": 39
+      },
+      {
+       "inicio": "2026-07-20",
+       "mediana_aa": 24.0,
+       "p25_aa": 20.02,
+       "p75_aa": 27.98,
+       "n": 39
       }
      ],
      "ranking": [
       {
        "cnpj8": "60814191",
        "nome": "BCO MERCEDES-BENZ S.A.",
-       "taxa_am": 0.64,
-       "taxa_aa": 7.96,
+       "taxa_am": 0.7,
+       "taxa_aa": 8.74,
        "posicao": 1,
        "cod_congl": "C0080563"
       },
       {
        "cnpj8": "04452473",
        "nome": "BMW SA CFI",
-       "taxa_am": 0.87,
-       "taxa_aa": 10.89,
+       "taxa_am": 0.95,
+       "taxa_aa": 12.0,
        "posicao": 2,
        "cod_congl": "C0080635"
       },
       {
        "cnpj8": "62307848",
        "nome": "BCO RCI BRASIL S.A.",
-       "taxa_am": 1.0,
-       "taxa_aa": 12.65,
+       "taxa_am": 0.96,
+       "taxa_aa": 12.16,
        "posicao": 3,
        "cod_congl": "C0080185"
       },
       {
        "cnpj8": "04902979",
        "nome": "BCO DA AMAZONIA S.A.",
-       "taxa_am": 1.08,
-       "taxa_aa": 13.82,
+       "taxa_am": 1.09,
+       "taxa_aa": 13.84,
        "posicao": 4,
        "cod_congl": "C0081249"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 1.14,
-       "taxa_aa": 14.58,
+       "taxa_am": 1.13,
+       "taxa_aa": 14.46,
        "posicao": 5,
        "cod_congl": "C0080738"
       },
       {
+       "cnpj8": "92874270",
+       "nome": "BCO DIGIMAIS S.A.",
+       "taxa_am": 1.3,
+       "taxa_aa": 16.71,
+       "posicao": 6,
+       "cod_congl": "C0081799"
+      },
+      {
        "cnpj8": "30172491",
        "nome": "BANCO HYUNDAI CAPITAL BRASIL",
-       "taxa_am": 1.36,
-       "taxa_aa": 17.58,
-       "posicao": 6,
+       "taxa_am": 1.3,
+       "taxa_aa": 16.75,
+       "posicao": 7,
        "cod_congl": "C0080185"
       },
       {
        "cnpj8": "59274605",
        "nome": "BCO GM S.A.",
-       "taxa_am": 1.4,
-       "taxa_aa": 18.15,
-       "posicao": 7,
-       "cod_congl": "C0080848"
-      },
-      {
-       "cnpj8": "52067630",
-       "nome": "BANCO TRATON BRASIL S.A.",
-       "taxa_am": 1.46,
-       "taxa_aa": 19.04,
+       "taxa_am": 1.34,
+       "taxa_aa": 17.31,
        "posicao": 8,
-       "cod_congl": "C0088534"
+       "cod_congl": "C0080848"
       },
       {
        "cnpj8": "11417016",
        "nome": "SCANIA BCO S.A.",
-       "taxa_am": 1.54,
-       "taxa_aa": 20.15,
+       "taxa_am": 1.45,
+       "taxa_aa": 18.9,
        "posicao": 9,
        "cod_congl": "C0080776"
       },
       {
        "cnpj8": "03502961",
        "nome": "STELLANTIS FINANCIAMENTOS CFI",
-       "taxa_am": 1.56,
-       "taxa_aa": 20.38,
+       "taxa_am": 1.53,
+       "taxa_aa": 19.97,
        "posicao": 10,
        "cod_congl": "C0087298"
       },
       {
-       "cnpj8": "02992446",
-       "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
-       "taxa_am": 1.63,
-       "taxa_aa": 21.39,
+       "cnpj8": "52067630",
+       "nome": "BANCO TRATON BRASIL S.A.",
+       "taxa_am": 1.53,
+       "taxa_aa": 20.02,
        "posicao": 11,
-       "cod_congl": "C0081407"
-      },
-      {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 1.63,
-       "taxa_aa": 21.48,
-       "posicao": 12,
-       "cod_congl": "C0080154"
-      },
-      {
-       "cnpj8": "28517628",
-       "nome": "BCO PACCAR S.A.",
-       "taxa_am": 1.7,
-       "taxa_aa": 22.41,
-       "posicao": 13,
-       "cod_congl": "C0084899"
+       "cod_congl": "C0088534"
       },
       {
        "cnpj8": "59109165",
        "nome": "BCO VOLKSWAGEN S.A",
-       "taxa_am": 1.71,
-       "taxa_aa": 22.55,
-       "posicao": 14,
+       "taxa_am": 1.67,
+       "taxa_aa": 22.0,
+       "posicao": 12,
        "cod_congl": "C0080202"
       },
       {
-       "cnpj8": "33603457",
-       "nome": "BCO RODOBENS S.A.",
-       "taxa_am": 1.71,
-       "taxa_aa": 22.57,
-       "posicao": 15,
-       "cod_congl": "C0080855"
+       "cnpj8": "07441209",
+       "nome": "BANCO MONEO S.A.",
+       "taxa_am": 1.69,
+       "taxa_aa": 22.25,
+       "posicao": 13,
+       "cod_congl": "C0081500"
       },
       {
        "cnpj8": "45437547",
        "nome": "SAFRA SCFI S.A.",
-       "taxa_am": 1.72,
-       "taxa_aa": 22.73,
-       "posicao": 16,
+       "taxa_am": 1.7,
+       "taxa_aa": 22.49,
+       "posicao": 14,
        "cod_congl": "C0080109"
       },
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 1.73,
-       "taxa_aa": 22.83,
-       "posicao": 17,
+       "taxa_am": 1.71,
+       "taxa_aa": 22.6,
+       "posicao": 15,
        "cod_congl": "C0080996"
       },
       {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 1.76,
-       "taxa_aa": 23.25,
-       "posicao": 18,
-       "cod_congl": "C0080075"
+       "cnpj8": "33603457",
+       "nome": "BCO RODOBENS S.A.",
+       "taxa_am": 1.72,
+       "taxa_aa": 22.7,
+       "posicao": 16,
+       "cod_congl": "C0080855"
       },
       {
        "cnpj8": "03215790",
        "nome": "BCO TOYOTA DO BRASIL S.A.",
-       "taxa_am": 1.77,
-       "taxa_aa": 23.42,
-       "posicao": 19,
+       "taxa_am": 1.73,
+       "taxa_aa": 22.79,
+       "posicao": 17,
        "cod_congl": "C0081562"
+      },
+      {
+       "cnpj8": "04913711",
+       "nome": "BCO DO EST. DO PA S.A.",
+       "taxa_am": 1.77,
+       "taxa_aa": 23.48,
+       "posicao": 18,
+       "cod_congl": "C0081586"
+      },
+      {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 1.8,
+       "taxa_aa": 23.86,
+       "posicao": 19,
+       "cod_congl": "C0080075"
+      },
+      {
+       "cnpj8": "22639377",
+       "nome": "SINOSSERRA S/A - SCFI",
+       "taxa_am": 1.81,
+       "taxa_aa": 24.0,
+       "posicao": 20,
+       "cod_congl": "C0084552"
       },
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.84,
-       "taxa_aa": 24.47,
-       "posicao": 20,
+       "taxa_am": 1.82,
+       "taxa_aa": 24.15,
+       "posicao": 21,
        "cod_congl": "C0080329"
       },
       {
        "cnpj8": "07707650",
        "nome": "SANTANDER SCFI S.A.",
-       "taxa_am": 1.85,
-       "taxa_aa": 24.56,
-       "posicao": 21,
+       "taxa_am": 1.82,
+       "taxa_aa": 24.21,
+       "posicao": 22,
        "cod_congl": "C0080185"
       },
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 1.86,
-       "taxa_aa": 24.78,
-       "posicao": 22,
-       "cod_congl": "C0080642"
-      },
-      {
-       "cnpj8": "33136888",
-       "nome": "BRB - CFI S/A",
-       "taxa_am": 1.89,
-       "taxa_aa": 25.19,
-       "posicao": 23,
-       "cod_congl": "C0080288"
-      },
-      {
-       "cnpj8": "22639377",
-       "nome": "SINOSSERRA S/A - SCFI",
-       "taxa_am": 1.9,
-       "taxa_aa": 25.27,
-       "posicao": 24,
-       "cod_congl": "C0084552"
-      },
-      {
-       "cnpj8": "28127603",
-       "nome": "BCO BANESTES S.A.",
        "taxa_am": 1.96,
-       "taxa_aa": 26.17,
-       "posicao": 25,
-       "cod_congl": "C0080147"
+       "taxa_aa": 26.27,
+       "posicao": 23,
+       "cod_congl": "C0080642"
       },
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
        "taxa_am": 1.97,
-       "taxa_aa": 26.42,
-       "posicao": 26,
+       "taxa_aa": 26.32,
+       "posicao": 24,
        "cod_congl": "C0084844"
       },
       {
        "cnpj8": "07207996",
        "nome": "BCO BRADESCO FINANC. S.A.",
-       "taxa_am": 1.99,
-       "taxa_aa": 26.73,
-       "posicao": 27,
+       "taxa_am": 1.97,
+       "taxa_aa": 26.37,
+       "posicao": 25,
        "cod_congl": "C0080075"
+      },
+      {
+       "cnpj8": "02992446",
+       "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
+       "taxa_am": 1.98,
+       "taxa_aa": 26.5,
+       "posicao": 26,
+       "cod_congl": "C0081407"
       },
       {
        "cnpj8": "01852137",
        "nome": "BCO BRASILEIRO DE CRÉDITO S.A.",
-       "taxa_am": 2.0,
-       "taxa_aa": 26.82,
-       "posicao": 28,
+       "taxa_am": 2.02,
+       "taxa_aa": 27.19,
+       "posicao": 27,
        "cod_congl": "C0084480"
+      },
+      {
+       "cnpj8": "28127603",
+       "nome": "BCO BANESTES S.A.",
+       "taxa_am": 2.04,
+       "taxa_aa": 27.37,
+       "posicao": 28,
+       "cod_congl": "C0080147"
       },
       {
        "cnpj8": "60872504",
        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-       "taxa_am": 2.07,
-       "taxa_aa": 27.89,
+       "taxa_am": 2.08,
+       "taxa_aa": 27.98,
        "posicao": 29,
        "cod_congl": "C0080099"
+      },
+      {
+       "cnpj8": "33136888",
+       "nome": "BRB - CFI S/A",
+       "taxa_am": 2.15,
+       "taxa_aa": 29.01,
+       "posicao": 30,
+       "cod_congl": "C0080288"
       },
       {
        "cnpj8": "59588111",
        "nome": "BCO VOTORANTIM S.A.",
        "taxa_am": 2.26,
-       "taxa_aa": 30.8,
-       "posicao": 30,
+       "taxa_aa": 30.77,
+       "posicao": 31,
        "cod_congl": "C0080484"
       },
       {
        "cnpj8": "03634220",
        "nome": "BCO HONDA S.A.",
-       "taxa_am": 2.41,
-       "taxa_aa": 33.13,
-       "posicao": 31,
+       "taxa_am": 2.4,
+       "taxa_aa": 32.88,
+       "posicao": 32,
        "cod_congl": "C0080611"
       },
       {
        "cnpj8": "10371492",
        "nome": "BCO YAMAHA MOTOR S.A.",
-       "taxa_am": 2.58,
-       "taxa_aa": 35.71,
-       "posicao": 32,
+       "taxa_am": 2.57,
+       "taxa_aa": 35.56,
+       "posicao": 33,
        "cod_congl": "C0080721"
       },
       {
        "cnpj8": "36321990",
        "nome": "AGORACRED S/A SCFI",
        "taxa_am": 2.87,
-       "taxa_aa": 40.36,
-       "posicao": 33,
+       "taxa_aa": 40.37,
+       "posicao": 34,
        "cod_congl": "C0083618"
       },
       {
        "cnpj8": "59285411",
        "nome": "BANCO PAN",
-       "taxa_am": 2.89,
-       "taxa_aa": 40.82,
-       "posicao": 34,
-       "cod_congl": "C0080336"
-      },
-      {
-       "cnpj8": "42723848",
-       "nome": "BARU SCFI S/A",
-       "taxa_am": 2.99,
-       "taxa_aa": 42.47,
+       "taxa_am": 2.92,
+       "taxa_aa": 41.33,
        "posicao": 35,
-       "cod_congl": "C0085805"
+       "cod_congl": "C0080336"
       },
       {
        "cnpj8": "00411939",
        "nome": "FINAMAX S.A. CFI",
-       "taxa_am": 3.23,
-       "taxa_aa": 46.45,
+       "taxa_am": 3.18,
+       "taxa_aa": 45.55,
        "posicao": 36,
        "cod_congl": "C0083436"
       },
@@ -9542,23 +9549,23 @@
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
        "taxa_am": 3.24,
-       "taxa_aa": 46.54,
+       "taxa_aa": 46.6,
        "posicao": 37,
        "cod_congl": "C0081744"
       },
       {
        "cnpj8": "34991938",
        "nome": "SIMPALA S.A. CFI",
-       "taxa_am": 3.32,
-       "taxa_aa": 48.0,
+       "taxa_am": 3.28,
+       "taxa_aa": 47.21,
        "posicao": 38,
        "cod_congl": "C0085070"
       },
       {
        "cnpj8": "92228410",
        "nome": "OMNI SA CFI",
-       "taxa_am": 3.39,
-       "taxa_aa": 49.21,
+       "taxa_am": 3.37,
+       "taxa_aa": 48.84,
        "posicao": 39,
        "cod_congl": "C0080460"
       }

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -461,6 +461,56 @@
   "score": 47.9,
   "score_delta": -6.3,
   "faixa": "atenção",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 17.97,
+    "percentil_pares": 75.0,
+    "risco": 25.0,
+    "mediana_pares": 17.35,
+    "q1_pares": 15.01,
+    "q3_pares": 17.97
+   },
+   "rentabilidade": {
+    "valor": 2.99,
+    "percentil_pares": 62.5,
+    "risco": 37.5,
+    "mediana_pares": 2.94,
+    "q1_pares": 1.95,
+    "q3_pares": 3.22
+   },
+   "alavancagem": {
+    "valor": 33.0,
+    "percentil_pares": 87.5,
+    "risco": 87.5,
+    "mediana_pares": 16.09,
+    "q1_pares": 11.82,
+    "q3_pares": 28.61
+   },
+   "concentracao_credito": {
+    "valor": 20.84,
+    "percentil_pares": 25.0,
+    "risco": 25.0,
+    "mediana_pares": 23.99,
+    "q1_pares": 20.84,
+    "q3_pares": 36.99
+   },
+   "dependencia_captacoes": {
+    "valor": 84.1,
+    "percentil_pares": 75.0,
+    "risco": 75.0,
+    "mediana_pares": 78.25,
+    "q1_pares": 72.84,
+    "q3_pares": 84.1
+   },
+   "concentracao_setorial": {
+    "valor": 2465,
+    "percentil_pares": 37.5,
+    "risco": 37.5,
+    "mediana_pares": 2662.0,
+    "q1_pares": 2343.0,
+    "q3_pares": 2770.0
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -880,7 +930,7 @@
  },
  "openfinance": {
   "organisation": "SICOOB",
-  "chamadas_semana": 517477547.0,
+  "chamadas_semana": 449086463.0,
   "share_pct": 0.9,
   "familias_api": 51,
   "papeis": [

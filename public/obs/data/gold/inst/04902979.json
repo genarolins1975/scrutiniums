@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:22+00:00",
+  "atualizado_em": "2026-08-07T11:11:41+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -613,6 +613,56 @@
   "score": 39.0,
   "score_delta": -2.1,
   "faixa": "risco baixo",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 13.01,
+    "percentil_pares": 28.6,
+    "risco": 71.4,
+    "mediana_pares": 13.76,
+    "q1_pares": 12.99,
+    "q3_pares": 15.28
+   },
+   "rentabilidade": {
+    "valor": 0.66,
+    "percentil_pares": 12.5,
+    "risco": 87.5,
+    "mediana_pares": 4.75,
+    "q1_pares": 3.31,
+    "q3_pares": 6.72
+   },
+   "alavancagem": {
+    "valor": 9.0,
+    "percentil_pares": 12.5,
+    "risco": 12.5,
+    "mediana_pares": 11.11,
+    "q1_pares": 9.35,
+    "q3_pares": 13.29
+   },
+   "concentracao_credito": {
+    "valor": 61.42,
+    "percentil_pares": 50.0,
+    "risco": 50.0,
+    "mediana_pares": 61.42,
+    "q1_pares": 31.26,
+    "q3_pares": 62.22
+   },
+   "dependencia_captacoes": {
+    "valor": 22.97,
+    "percentil_pares": 12.5,
+    "risco": 12.5,
+    "mediana_pares": 76.86,
+    "q1_pares": 72.02,
+    "q3_pares": 77.08
+   },
+   "concentracao_setorial": {
+    "valor": 1974,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 2531.0,
+    "q1_pares": 2284.25,
+    "q3_pares": 3141.25
+   }
+  },
   "historico_score": [
    {
     "anomes": "202509",

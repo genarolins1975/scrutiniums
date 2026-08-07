@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -462,6 +462,56 @@
   "score": 58.1,
   "score_delta": 6.7,
   "faixa": "atenção",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 14.9,
+    "percentil_pares": 40.0,
+    "risco": 60.0,
+    "mediana_pares": 15.02,
+    "q1_pares": 14.8,
+    "q3_pares": 15.15
+   },
+   "rentabilidade": {
+    "valor": 2.84,
+    "percentil_pares": 42.9,
+    "risco": 57.1,
+    "mediana_pares": 3.41,
+    "q1_pares": 2.54,
+    "q3_pares": 5.79
+   },
+   "alavancagem": {
+    "valor": 10.98,
+    "percentil_pares": 28.6,
+    "risco": 28.6,
+    "mediana_pares": 13.42,
+    "q1_pares": 10.95,
+    "q3_pares": 15.51
+   },
+   "concentracao_credito": {
+    "valor": 44.23,
+    "percentil_pares": 85.7,
+    "risco": 85.7,
+    "mediana_pares": 41.35,
+    "q1_pares": 17.37,
+    "q3_pares": 43.29
+   },
+   "dependencia_captacoes": {
+    "valor": 78.11,
+    "percentil_pares": 57.1,
+    "risco": 57.1,
+    "mediana_pares": 77.23,
+    "q1_pares": 54.32,
+    "q3_pares": 78.85
+   },
+   "concentracao_setorial": {
+    "valor": 1988,
+    "percentil_pares": 60.0,
+    "risco": 60.0,
+    "mediana_pares": 1986.0,
+    "q1_pares": 1791.25,
+    "q3_pares": 2084.0
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -929,7 +979,7 @@
  },
  "openfinance": {
   "organisation": "BRADESCO",
-  "chamadas_semana": 4102719065.0,
+  "chamadas_semana": 3601998885.0,
   "share_pct": 7.2,
   "familias_api": 15,
   "papeis": [

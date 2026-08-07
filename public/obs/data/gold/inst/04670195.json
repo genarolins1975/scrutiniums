@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:22+00:00",
+  "atualizado_em": "2026-08-07T11:11:40+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -1575,7 +1575,7 @@
  },
  "openfinance": {
   "organisation": "CREDSYSTEM INSTITUICAO DE PAGAMENTO LTDA",
-  "chamadas_semana": 2893071.0,
+  "chamadas_semana": 1871789.0,
   "share_pct": 0.0,
   "familias_api": null,
   "papeis": null,

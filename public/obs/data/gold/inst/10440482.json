@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:23+00:00",
+  "atualizado_em": "2026-08-07T11:11:41+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -302,6 +302,40 @@
   "score": 28.6,
   "score_delta": -3.5,
   "faixa": "risco baixo",
+  "dimensoes": {
+   "rentabilidade": {
+    "valor": 5.82,
+    "percentil_pares": 85.7,
+    "risco": 14.3,
+    "mediana_pares": 3.41,
+    "q1_pares": 2.54,
+    "q3_pares": 5.79
+   },
+   "alavancagem": {
+    "valor": 21.01,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 13.42,
+    "q1_pares": 10.95,
+    "q3_pares": 15.51
+   },
+   "concentracao_credito": {
+    "valor": 0.0,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 41.35,
+    "q1_pares": 17.37,
+    "q3_pares": 43.29
+   },
+   "dependencia_captacoes": {
+    "valor": 0.33,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 77.23,
+    "q1_pares": 54.32,
+    "q3_pares": 78.85
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",

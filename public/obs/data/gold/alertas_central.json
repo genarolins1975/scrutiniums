@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-03T01:47:43+00:00",
+ "gerado_em": "2026-08-07T11:11:51+00:00",
  "familias": [
   {
    "id": "macro",
@@ -12,7 +12,7 @@
    "persistencia": "número de execuções anteriores em que a mesma regra disparou",
    "limitacao": "Séries agregadas: um alerta macro descreve o sistema, nunca uma instituição.",
    "view": "pulse",
-   "ativos": 2,
+   "ativos": 1,
    "arquivo": "alerts.json",
    "disponivel": true
   },
@@ -42,7 +42,7 @@
    "persistencia": "semanas consecutivas fora do limiar",
    "limitacao": "Métrica de disponibilidade técnica do ecossistema; não mede risco de crédito.",
    "view": "openfinance",
-   "ativos": 2,
+   "ativos": 3,
    "arquivo": "openfinance.json",
    "disponivel": true
   },
@@ -60,26 +60,24 @@
    "ativos": 0,
    "arquivo": "leading.json",
    "disponivel": true
+  },
+  {
+   "id": "operacional",
+   "nome": "Indicadores operacionais",
+   "universo": "Companhias listadas do piloto (CVM) e rede de agências do ESTBAN",
+   "periodicidade": "mensal (rede) e anual (FRE/FCA)",
+   "fonte": "CVM/FRE, CVM/FCA e BCB/ESTBAN",
+   "regra_geral": "variação de empregados >30% a/a; queda de rede >15% em 12 meses; troca de auditor nos últimos dois anos",
+   "ordenacao": "magnitude da variação em módulo, decrescente (trocas de auditor ao fim)",
+   "persistencia": "flags recalculadas a cada execução sobre a série completa",
+   "limitacao": "Escopos declarados e distintos: empregados são o declarado no FRE (≠ conglomerado prudencial); a rede é do banco operacional — saltos podem ser reorganização societária, não fechamento real; troca de auditor inclui o rodízio obrigatório.",
+   "view": "operacional",
+   "ativos": 14,
+   "arquivo": "operacional.json",
+   "disponivel": true
   }
  ],
  "alertas": [
-  {
-   "id": "macro:stale_data:ivgr",
-   "familia": "macro",
-   "nivel": "informativo",
-   "titulo": "Série 'IVG-R — Índice de Valores de Garantia de Imóveis Residenciais Financiados' sem atualização há 123 dias",
-   "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 123,
-   "limiar": 100,
-   "referencia": null,
-   "fonte": "BCB/SGS",
-   "evidencia_persistencia": "1 execuções anteriores",
-   "recorrente": true,
-   "link": {
-    "view": "pulse"
-   },
-   "ordem": 0.23
-  },
   {
    "id": "macro:comprometimento_high",
    "familia": "macro",
@@ -90,7 +88,7 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "39 execuções anteriores",
+   "evidencia_persistencia": "40 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -462,6 +460,23 @@
    "ordem": 9
   },
   {
+   "id": "openfinance:taxa de sucesso — dados abertos",
+   "familia": "openfinance",
+   "nivel": "atencao",
+   "titulo": "taxa de sucesso — dados abertos",
+   "detalhe": "96.92 contra limiar 97 há 1 semanas (dado de 2026-07-31).",
+   "valor": 96.92,
+   "limiar": 97,
+   "referencia": "2026-07-31",
+   "fonte": "Dashboard do Cidadão",
+   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
+   "recorrente": false,
+   "link": {
+    "view": "openfinance"
+   },
+   "ordem": 1
+  },
+  {
    "id": "openfinance:taxa de sucesso — iniciacao pagamento",
    "familia": "openfinance",
    "nivel": "atencao",
@@ -477,9 +492,247 @@
     "view": "openfinance"
    },
    "ordem": 1
+  },
+  {
+   "id": "operacional:rede:Brb Banco De Brasilia S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Brb Banco De Brasilia S.A. — rede",
+   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2026-03",
+   "fonte": "BCB/ESTBAN",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Alfa Holdings S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Alfa Holdings S.A. — empregados",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Alfa Holdings S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Alfa Holdings S.A. — empregados",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Investimentos Bemge S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Investimentos Bemge S.A. — empregados",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Investimentos Bemge S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Investimentos Bemge S.A. — empregados",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv — empregados",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:empregados:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv — empregados",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração",
+   "valor": -100.0,
+   "limiar": null,
+   "referencia": "2024-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 100.0
+  },
+  {
+   "id": "operacional:rede:Inter & Co, Inc. (Banco Inter)",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Inter & Co, Inc. (Banco Inter) — rede",
+   "detalhe": "queda de 93.8% nas agências em 12 meses (16 → 1) — verificar reorganização societária",
+   "valor": -93.8,
+   "limiar": null,
+   "referencia": "2026-03",
+   "fonte": "BCB/ESTBAN",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 93.8
+  },
+  {
+   "id": "operacional:empregados:Banco Btg Pactual S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Banco Btg Pactual S.A. — empregados",
+   "detalhe": "variação de 55.6% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE",
+   "valor": 55.6,
+   "limiar": null,
+   "referencia": "2026-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 55.6
+  },
+  {
+   "id": "operacional:rede:Banco Santander (Brasil) S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Banco Santander (Brasil) S.A. — rede",
+   "detalhe": "queda de 49.6% nas agências em 12 meses (2337 → 1178) — verificar reorganização societária",
+   "valor": -49.6,
+   "limiar": null,
+   "referencia": "2026-03",
+   "fonte": "BCB/ESTBAN",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 49.6
+  },
+  {
+   "id": "operacional:empregados:Banco Estado De Sergipe S.A. - Banese",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Banco Estado De Sergipe S.A. - Banese — empregados",
+   "detalhe": "variação de 49.1% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE",
+   "valor": 49.1,
+   "limiar": null,
+   "referencia": "2026-12-31",
+   "fonte": "CVM/FRE (item 10.1)",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 49.1
+  },
+  {
+   "id": "operacional:rede:Itau Unibanco Holding S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Itau Unibanco Holding S.A. — rede",
+   "detalhe": "queda de 26.6% nas agências em 12 meses (1933 → 1418) — verificar reorganização societária",
+   "valor": -26.6,
+   "limiar": null,
+   "referencia": "2026-03",
+   "fonte": "BCB/ESTBAN",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 26.6
+  },
+  {
+   "id": "operacional:auditoria:Brbi Br Partners S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Brbi Br Partners S.A. — auditoria",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA — o rodízio obrigatório também produz trocas; ver FCA da companhia",
+   "valor": null,
+   "limiar": null,
+   "referencia": "2025-12-31",
+   "fonte": "CVM/FCA",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 0.0
+  },
+  {
+   "id": "operacional:auditoria:Banco Rci Brasil S.A.",
+   "familia": "operacional",
+   "nivel": null,
+   "titulo": "Banco Rci Brasil S.A. — auditoria",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → FORVIS MAZARS AUDITORES INDEPENDENTES - SOCIEDADE SIMPLES LTDA. — o rodízio obrigatório também produz trocas; ver FCA da companhia",
+   "valor": null,
+   "limiar": null,
+   "referencia": "2025-12-31",
+   "fonte": "CVM/FCA",
+   "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+   "recorrente": null,
+   "link": {
+    "view": "operacional"
+   },
+   "ordem": 0.0
   }
  ],
- "total": 24,
+ "total": 38,
  "niveis": [
   "informativo",
   "atencao",

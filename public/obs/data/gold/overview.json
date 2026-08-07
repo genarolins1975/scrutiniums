@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-08-02T10:59:20+00:00",
+ "gerado_em": "2026-08-07T11:11:39+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com sinais mistos entre os indicadores monitorados.",
   "ref": "2026-05-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 75/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 79/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.16)",
@@ -28,7 +28,7 @@
     "ref": "2026-05-01"
    },
    {
-    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 64.1, melhorando)",
+    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 70.2, piorando)",
     "area": "sectors",
     "status": "calculado (componentes parcialmente demonstrativos)"
    }
@@ -768,104 +768,104 @@
      {
       "h": 1,
       "ref_date": "2026-07-01",
-      "p50": 96.4686,
-      "p10": 60.1884,
-      "p90": 118.7672
+      "p50": 95.0775,
+      "p10": 56.3838,
+      "p90": 125.9049
      },
      {
       "h": 3,
       "ref_date": "2026-09-01",
-      "p50": 95.1693,
-      "p10": 56.4468,
-      "p90": 126.0373
+      "p50": 97.4212,
+      "p10": 54.0533,
+      "p90": 135.6919
      },
      {
       "h": 6,
       "ref_date": "2026-12-01",
-      "p50": 87.7904,
-      "p10": 51.005,
-      "p90": 119.1798
+      "p50": 84.9567,
+      "p10": 51.2458,
+      "p90": 123.8234
      },
      {
       "h": 9,
       "ref_date": "2027-03-01",
-      "p50": 91.9456,
-      "p10": 70.9246,
-      "p90": 126.504
+      "p50": 90.3018,
+      "p10": 64.3169,
+      "p90": 133.5713
      },
      {
       "h": 12,
       "ref_date": "2027-06-01",
-      "p50": 90.9482,
-      "p10": 72.1543,
-      "p90": 117.3925
+      "p50": 90.6326,
+      "p10": 69.7589,
+      "p90": 122.5492
      }
     ],
     "diagnostico": {
      "1": {
       "pesos": {
-       "ultimo_valor": 0.16,
-       "sazonal_ingenuo": 0.168,
-       "drift": 0.158,
-       "media_movel_6m": 0.175,
-       "ar1_diferencas": 0.176,
+       "ultimo_valor": 0.166,
+       "sazonal_ingenuo": 0.16,
+       "drift": 0.164,
+       "media_movel_6m": 0.173,
+       "ar1_diferencas": 0.174,
        "holt": 0.163
       },
-      "mae_ensemble_backtest": 18.5167,
-      "mae_naive_backtest": 19.3143,
-      "ganho_vs_naive_pct": 4.1,
+      "mae_ensemble_backtest": 20.5006,
+      "mae_naive_backtest": 20.6,
+      "ganho_vs_naive_pct": 0.5,
       "n_backtests": 35
      },
      "3": {
       "pesos": {
-       "ultimo_valor": 0.149,
-       "sazonal_ingenuo": 0.232,
-       "drift": 0.145,
-       "media_movel_6m": 0.179,
-       "ar1_diferencas": 0.156,
-       "holt": 0.139
+       "ultimo_valor": 0.145,
+       "sazonal_ingenuo": 0.239,
+       "drift": 0.142,
+       "media_movel_6m": 0.182,
+       "ar1_diferencas": 0.152,
+       "holt": 0.14
       },
-      "mae_ensemble_backtest": 22.819,
-      "mae_naive_backtest": 25.5,
-      "ganho_vs_naive_pct": 10.5,
+      "mae_ensemble_backtest": 25.5007,
+      "mae_naive_backtest": 29.2647,
+      "ganho_vs_naive_pct": 12.9,
       "n_backtests": 34
      },
      "6": {
       "pesos": {
-       "ultimo_valor": 0.171,
-       "sazonal_ingenuo": 0.293,
-       "drift": 0.16,
-       "media_movel_6m": 0.208,
-       "ar1_diferencas": 0.168
+       "ultimo_valor": 0.165,
+       "sazonal_ingenuo": 0.309,
+       "drift": 0.156,
+       "media_movel_6m": 0.204,
+       "ar1_diferencas": 0.166
       },
-      "mae_ensemble_backtest": 23.127,
-      "mae_naive_backtest": 27.0323,
-      "ganho_vs_naive_pct": 14.4,
+      "mae_ensemble_backtest": 25.1432,
+      "mae_naive_backtest": 30.4516,
+      "ganho_vs_naive_pct": 17.4,
       "n_backtests": 31
      },
      "9": {
       "pesos": {
-       "ultimo_valor": 0.166,
-       "sazonal_ingenuo": 0.249,
-       "drift": 0.15,
-       "media_movel_6m": 0.269,
-       "ar1_diferencas": 0.168
+       "ultimo_valor": 0.16,
+       "sazonal_ingenuo": 0.261,
+       "drift": 0.145,
+       "media_movel_6m": 0.273,
+       "ar1_diferencas": 0.161
       },
-      "mae_ensemble_backtest": 19.3638,
-      "mae_naive_backtest": 23.3929,
-      "ganho_vs_naive_pct": 17.2,
+      "mae_ensemble_backtest": 21.8739,
+      "mae_naive_backtest": 27.3571,
+      "ganho_vs_naive_pct": 20.0,
       "n_backtests": 28
      },
      "12": {
       "pesos": {
-       "ultimo_valor": 0.245,
-       "sazonal_ingenuo": 0.245,
-       "media_movel_6m": 0.27,
-       "ar1_diferencas": 0.24
+       "ultimo_valor": 0.242,
+       "sazonal_ingenuo": 0.242,
+       "media_movel_6m": 0.273,
+       "ar1_diferencas": 0.244
       },
-      "mae_ensemble_backtest": 15.497,
-      "mae_naive_backtest": 15.84,
-      "ganho_vs_naive_pct": 2.2,
+      "mae_ensemble_backtest": 17.0066,
+      "mae_naive_backtest": 17.6,
+      "ganho_vs_naive_pct": 3.4,
       "n_backtests": 25
      }
     },

@@ -15,7 +15,7 @@
   "modelo": "banco universal",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -458,6 +458,56 @@
   "score": 65.7,
   "score_delta": -2.4,
   "faixa": "risco elevado",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 14.77,
+    "percentil_pares": 20.0,
+    "risco": 80.0,
+    "mediana_pares": 15.02,
+    "q1_pares": 14.8,
+    "q3_pares": 15.15
+   },
+   "rentabilidade": {
+    "valor": 5.78,
+    "percentil_pares": 71.4,
+    "risco": 28.6,
+    "mediana_pares": 3.41,
+    "q1_pares": 2.54,
+    "q3_pares": 5.79
+   },
+   "alavancagem": {
+    "valor": 13.58,
+    "percentil_pares": 57.1,
+    "risco": 57.1,
+    "mediana_pares": 13.42,
+    "q1_pares": 10.95,
+    "q3_pares": 15.51
+   },
+   "concentracao_credito": {
+    "valor": 41.56,
+    "percentil_pares": 57.1,
+    "risco": 57.1,
+    "mediana_pares": 41.35,
+    "q1_pares": 17.37,
+    "q3_pares": 43.29
+   },
+   "dependencia_captacoes": {
+    "valor": 78.58,
+    "percentil_pares": 71.4,
+    "risco": 71.4,
+    "mediana_pares": 77.23,
+    "q1_pares": 54.32,
+    "q3_pares": 78.85
+   },
+   "concentracao_setorial": {
+    "valor": 2219,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 1986.0,
+    "q1_pares": 1791.25,
+    "q3_pares": 2084.0
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -925,7 +975,7 @@
  },
  "openfinance": {
   "organisation": "ITAÚ UNIBANCO",
-  "chamadas_semana": 5054761964.0,
+  "chamadas_semana": 4450074284.0,
   "share_pct": 8.9,
   "familias_api": null,
   "papeis": null,

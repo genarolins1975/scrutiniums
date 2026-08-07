@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-02T10:59:26+00:00",
+  "atualizado_em": "2026-08-07T11:11:45+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -472,6 +472,56 @@
   "score": 47.9,
   "score_delta": -6.3,
   "faixa": "atenção",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 15.01,
+    "percentil_pares": 25.0,
+    "risco": 75.0,
+    "mediana_pares": 17.35,
+    "q1_pares": 15.01,
+    "q3_pares": 17.97
+   },
+   "rentabilidade": {
+    "valor": 3.75,
+    "percentil_pares": 87.5,
+    "risco": 12.5,
+    "mediana_pares": 2.94,
+    "q1_pares": 1.95,
+    "q3_pares": 3.22
+   },
+   "alavancagem": {
+    "valor": 11.82,
+    "percentil_pares": 25.0,
+    "risco": 25.0,
+    "mediana_pares": 16.09,
+    "q1_pares": 11.82,
+    "q3_pares": 28.61
+   },
+   "concentracao_credito": {
+    "valor": 53.07,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 23.99,
+    "q1_pares": 20.84,
+    "q3_pares": 36.99
+   },
+   "dependencia_captacoes": {
+    "valor": 72.84,
+    "percentil_pares": 25.0,
+    "risco": 25.0,
+    "mediana_pares": 78.25,
+    "q1_pares": 72.84,
+    "q3_pares": 84.1
+   },
+   "concentracao_setorial": {
+    "valor": 2662,
+    "percentil_pares": 50.0,
+    "risco": 50.0,
+    "mediana_pares": 2662.0,
+    "q1_pares": 2343.0,
+    "q3_pares": 2770.0
+   }
+  },
   "historico_score": [
    {
     "anomes": "202503",
@@ -875,7 +925,7 @@
  },
  "openfinance": {
   "organisation": "BANCO VOTORANTIM",
-  "chamadas_semana": 5283362.0,
+  "chamadas_semana": 3631746.0,
   "share_pct": 0.0,
   "familias_api": 41,
   "papeis": [
