@@ -19,10 +19,10 @@ const G = "public/obs/data/gold/";
 const C = load(G + "alertas_central.json");
 const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
 
-const FAMILIAS = ["macro", "carteira", "openfinance", "antecedentes"];
+const FAMILIAS = ["macro", "carteira", "openfinance", "antecedentes", "operacional"];
 
 describe("alertas_central.json: estrutura das famílias", () => {
-  it("as quatro famílias estão declaradas com universo, periodicidade e regra", () => {
+  it("as cinco famílias estão declaradas com universo, periodicidade e regra", () => {
     expect(C.familias.map((f: any) => f.id).sort()).toEqual([...FAMILIAS].sort());
     for (const f of C.familias) {
       for (const campo of ["nome", "universo", "periodicidade", "fonte", "regra_geral", "ordenacao", "limitacao", "view"]) {
@@ -111,7 +111,8 @@ describe("alertas_central.json: integridade dos registros", () => {
       load(G + "alerts.json").alertas.length +
       load(G + "panorama.json").alertas.length +
       (load(G + "openfinance.json").alertas_of || []).length +
-      (load(G + "leading.json").alertas || []).length;
+      (load(G + "leading.json").alertas || []).length +
+      (load(G + "operacional.json").flags || []).length;
     expect(C.total).toBe(origem);
   });
 });

@@ -26,6 +26,7 @@ A data da posição é publicada no gold: pular dias não esconde nada do leitor
 | Vigia | Quando | O que cobre | Onde acusa |
 |---|---|---|---|
 | job `alertar` (no diário) | a cada execução | término anormal do pipeline | issue "Pipeline diário interrompido" |
+| sentinela de gold (no diário) | a cada execução | build que regride para stub de erro ou some — o workflow termina verde nesses casos | issue "Gold regrediu para stub de erro"; a última publicação íntegra fica no ar |
 | `vigilancia.yml frescor` | diário 15:00 UTC | execução que "conclui" sem publicar | issue "gold publicado está defasado" |
 | `vigilancia.yml fontes` | segunda 9:30 UTC | documento novo nas fontes manuais (SPA/MF) | issue "documento novo em fonte manual" |
 | CI (`ci.yml`) | todo PR/push | regressão de código, dado ou invariante editorial | check vermelho no PR |
@@ -81,3 +82,24 @@ por checagem manual.
 Correções permanentes: push com `pull --rebase` e retry; cache separado em
 restore/save com `if: always()`; timeout 90→150 min; e as duas vigílias acima,
 para que "parado há dias" nunca mais dependa de alguém olhar por acaso.
+
+## A pane dupla de 07-08/08/2026 — a segunda memória
+
+O cache perdido na pane anterior obrigou a reconstrução do silver a partir do
+seed — que não tinha as tabelas mais novas (Pix, judicial/TST, Desenrola,
+correspondentes). A recoleta caiu numa janela de degradação do próprio BCB:
+MPV trimestral e IF.data com HTTP 500, MED devolvendo zero linhas, o CSV do
+Desenrola malformado e o cadastro de correspondentes servido TRUNCADO (70
+contratantes onde há ~280). Resultado: o build do Pix estourou e publicou stub
+de erro, o `pix_mun.json` foi apagado pelo `rsync --delete`, o mapa municipal
+inventou um município "sem nenhum ponto", e o TST sumiu do judicial — tudo com
+o workflow terminando VERDE, porque nenhum vigia olhava o conteúdo do gold.
+
+Correções permanentes: **sentinela de regressão do gold** (tabela acima);
+**carry-forward declarado** nos builders de Pix (trimestral e MED) e judicial
+(TST) — fonte em pane carrega a última publicação íntegra, com cautela no
+próprio payload, e volta ao vivo na primeira coleta que funcionar; **piso de
+completude** nos coletores de correspondentes e dependências — arquivo
+truncado é falha de coleta, nunca posição nova, e silver parcial se recoleta
+todo dia até a fonte sarar. O id dos alertas operacionais ganhou regra e
+referência (as flags da família, ativadas nesta janela, colidiam ids).

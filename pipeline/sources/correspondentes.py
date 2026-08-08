@@ -80,6 +80,20 @@ def _absorve(con, texto):
         total += 1
     if not total:
         raise RuntimeError("cadastro de correspondentes veio vazio")
+    # Piso de completude ANTES de trocar a posição: em 07/08/2026 o BCB serviu
+    # o CSV truncado (70 contratantes onde o cadastro tem ~280 desde a primeira
+    # coleta) e o DELETE+INSERT substituiu a posição íntegra pela parcial. Um
+    # arquivo truncado não é posição nova — é falha de coleta.
+    contratantes_novos = len({c for c, _m in agreg})
+    if contratantes_novos < PISO_CONTRATANTES:
+        raise RuntimeError(f"coleta parcial: {contratantes_novos} contratantes "
+                           f"(piso {PISO_CONTRATANTES}) — arquivo truncado pela fonte")
+    anterior = con.execute(
+        "SELECT COUNT(DISTINCT cnpj8) FROM corresp_hist WHERE posicao = "
+        "(SELECT MAX(posicao) FROM corresp_hist)").fetchone()[0]
+    if anterior and contratantes_novos < anterior / 2:
+        raise RuntimeError(f"coleta parcial: {contratantes_novos} contratantes contra "
+                           f"{anterior} na posição anterior — arquivo truncado pela fonte")
     con.execute("DELETE FROM corresp_pontos")
     for (cnpj, mun), qtd in agreg.items():
         nome, uf = nomes[cnpj]
@@ -102,12 +116,24 @@ def _absorve(con, texto):
 # O cadastro tem 32 MB e muda devagar; a posição publicada mostra a data. Uma
 # coleta semanal mantém o dado atual sem estourar o tempo do pipeline diário.
 DIAS_ENTRE_COLETAS = 7
+# O cadastro tem ~280 contratantes desde a primeira coleta (05/08/2026); menos
+# de 100 só acontece com arquivo truncado — foi o caso servido em 07/08/2026.
+PISO_CONTRATANTES = 100
 
 
 def collect(con, cfg=None):
     _ensure(con)
+    # autocura: posição parcial que tenha entrado no histórico antes do piso
+    # existir (07/08/2026) sai daqui — não é observação, é arquivo truncado
+    con.execute("DELETE FROM corresp_hist WHERE posicao IN (SELECT posicao FROM "
+                "corresp_hist GROUP BY posicao HAVING COUNT(DISTINCT cnpj8) < ?)",
+                (PISO_CONTRATANTES,))
     ts = con.execute("SELECT coletado_em FROM corresp_coleta WHERE chave='correspondentes'").fetchone()
-    if ts and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
+    silver_integro = con.execute(
+        "SELECT COUNT(DISTINCT cnpj8) FROM corresp_pontos").fetchone()[0] >= PISO_CONTRATANTES
+    # a recência só vale com silver íntegro: posição parcial se recoleta todo
+    # dia até a fonte servir o arquivo completo de novo
+    if ts and silver_integro and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
         return [{"key": "correspondentes", "ok": True,
                  "pulado": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"}]
     try:

@@ -113,12 +113,12 @@ def _empregados(con, company_id, flags, nome):
                       "nao_lideranca": nao, "regioes": json.loads(regioes),
                       "var_aa_pct": var, "fre_ano": ano_zip, "versao": versao})
         if var is not None and abs(var) > LIMIAR_VAR_EMPREGADOS_PCT:
-            flags.append({"instituicao": nome, "indicador": "empregados",
+            flags.append({"instituicao": nome, "indicador": "empregados", "regra": "variacao_aa",
                           "valor": var, "referencia": data_ref,
                           "detalhe": f"variação de {var}% entre {rows[i-1][1]} e {data_ref} — "
                                      "verificar mudança de escopo ou perímetro no FRE"})
         if total == 0 and i > 0 and rows[i - 1][5] > 0:
-            flags.append({"instituicao": nome, "indicador": "empregados",
+            flags.append({"instituicao": nome, "indicador": "empregados", "regra": "total_zerado",
                           "valor": -100.0, "referencia": data_ref,
                           "detalhe": f"total zerado em {data_ref} após série positiva — possível falha de declaração"})
     return {
@@ -142,7 +142,7 @@ def _flag_troca_auditor(historico, flags, nome):
     if ano_fim and ano_fim >= ano_corte:
         sucessores = [h for h in historico if not h["fim"] and h["inicio"] > ultimo["inicio"]]
         novo = sucessores[0]["nome"] if sucessores else "sucessor ainda não identificado no FCA"
-        flags.append({"instituicao": nome, "indicador": "auditoria",
+        flags.append({"instituicao": nome, "indicador": "auditoria", "regra": "troca_auditor",
                       "valor": None, "referencia": ultimo["fim"],
                       "detalhe": f"troca de auditor: {ultimo['nome']} (até {ultimo['fim']}) → {novo} — "
                                  "o rodízio obrigatório também produz trocas; ver FCA da companhia"})
@@ -188,7 +188,7 @@ def _rede(con, cnpj8, flags, nome):
         var_12m = atual["agencias"] - idx[mes_12m]["agencias"]
         var_12m_pct = _pct(atual["agencias"], idx[mes_12m]["agencias"])
         if var_12m_pct is not None and var_12m_pct < -LIMIAR_QUEDA_REDE_12M_PCT:
-            flags.append({"instituicao": nome, "indicador": "rede",
+            flags.append({"instituicao": nome, "indicador": "rede", "regra": "queda_12m",
                           "valor": var_12m_pct, "referencia": atual["mes"],
                           "detalhe": f"queda de {abs(var_12m_pct)}% nas agências em 12 meses "
                                      f"({idx[mes_12m]['agencias']} → {atual['agencias']}) — verificar reorganização societária"})
