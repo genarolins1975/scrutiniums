@@ -219,7 +219,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/alerts",
     titulo: "Alertas",
     descricao:
-      "A central de alertas do crédito brasileiro: sinais das quatro famílias de monitoramento, com regras de persistência e feed RSS público.",
+      "A central de alertas do crédito brasileiro: sinais das cinco famílias de monitoramento, com regras de persistência e feed RSS público.",
     gold: "alertas_central.json",
   },
   {

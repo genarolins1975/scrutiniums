@@ -233,8 +233,14 @@ def _operacional(d):
     out = []
     for f in d.get("flags", []):
         valor = _num(f.get("valor"))
+        # regra e referência entram no id: a mesma instituição pode disparar
+        # regras distintas sobre o mesmo indicador (variação -100% E total
+        # zerado, no mesmo FRE) e a mesma regra em anos distintos — cada
+        # combinação é um fato próprio. Sem isso os ids colidiam (3 colisões
+        # em 08/08/2026) e o estado local do leitor vazava entre fatos.
         out.append({
-            "id": f"operacional:{f.get('indicador')}:{f.get('instituicao')}",
+            "id": (f"operacional:{f.get('indicador')}:{f.get('regra') or 'flag'}:"
+                   f"{f.get('instituicao')}:{f.get('referencia') or 's-ref'}"),
             "familia": "operacional",
             "nivel": None,  # flag determinística sem gradação na fonte
             "titulo": f"{f.get('instituicao')} — {f.get('indicador')}",
@@ -331,7 +337,7 @@ def rss(payload, base_url="https://scrutiniums.com/observatorio/alerts"):
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\"><channel>"
         "<title>Observatório Brasileiro de Crédito — Central de alertas</title>"
         f"<link>{base_url}</link>"
-        "<description>Alertas das quatro famílias monitoradas (macro, carteira, Open Finance e "
+        "<description>Alertas das cinco famílias monitoradas (macro, carteira, Open Finance, operacional e "
         "sinais antecedentes). Universos e periodicidades diferentes: cada item declara o seu. "
         "Para receber por e-mail, assine este feed em qualquer serviço RSS-para-e-mail.</description>"
         + "".join(itens) + "</channel></rss>")

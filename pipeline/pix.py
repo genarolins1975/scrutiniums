@@ -28,6 +28,27 @@ def _rows(con, sql, params=()):
     return con.execute(sql, params).fetchall()
 
 
+def _gold_publicado():
+    """Última publicação íntegra do pix.json (o checkout traz o gold do main).
+
+    Existe para o cenário de pane dupla vivido em 07-08/08/2026: o cache do
+    Actions se perdeu, o seed não tem as tabelas do Pix, e a fonte trimestral
+    do MPV (e o MED) saiu do ar no BCB — o silver reconstruído ficou sem esses
+    históricos e o build inteiro estourava, publicando stub de erro. Blocos de
+    fonte em pane carregam a última publicação: dado observado da mesma fonte,
+    posição declarada nos próprios rótulos, substituído por inteiro na primeira
+    coleta que funcionar.
+    """
+    import json
+    from pathlib import Path
+    p = Path(__file__).resolve().parent.parent / "public" / "obs" / "data" / "gold" / "pix.json"
+    try:
+        g = json.loads(p.read_text())
+        return g if isinstance(g, dict) and g.get("disponivel") is not False else {}
+    except Exception:
+        return {}
+
+
 def _ipca_indice(con):
     """Índice acumulado do IPCA por AAAAMM (base última observação = 1)."""
     obs = common.get_series(con, "ipca")  # var. % mensal
@@ -154,15 +175,30 @@ def build(con, cfg):
     for tri, inst, q, v in _rows(con, "SELECT tri, instrumento, qtd_mil, valor_mi FROM mp_trimestral ORDER BY tri"):
         tris.setdefault(str(tri), {})[inst] = {"q": q * 1e3 if q is not None else None,
                                                "v": v * 1e6 if v is not None else None}
+    tri_carregado = False
+    if not tris:
+        # fonte trimestral em pane E silver sem histórico: carrega a última
+        # publicação íntegra (mesmas unidades — o gold já guarda q/v finais)
+        tris = (_gold_publicado().get("tri") or {}).get("dados") or {}
+        tri_carregado = bool(tris)
     tri_keys = sorted(tris)
-    # último trimestre com Pix e cartões simultaneamente (evita trimestre parcial)
-    tri0 = next((t for t in reversed(tri_keys)
-                 if (tris[t].get("Pix", {}).get("q") or 0) > 0 and (tris[t].get("CartaoCredito", {}).get("q") or 0) > 0), tri_keys[-1])
-    comp_q = sum(x["q"] or 0 for x in tris[tri0].values())
-    part_pix_q = round((tris[tri0]["Pix"]["q"] or 0) / comp_q * 100, 1) if comp_q else None
+    if tri_keys:
+        # último trimestre com Pix e cartões simultaneamente (evita trimestre parcial)
+        tri0 = next((t for t in reversed(tri_keys)
+                     if (tris[t].get("Pix", {}).get("q") or 0) > 0 and (tris[t].get("CartaoCredito", {}).get("q") or 0) > 0), tri_keys[-1])
+        comp_q = sum(x["q"] or 0 for x in tris[tri0].values())
+        part_pix_q = round((tris[tri0]["Pix"]["q"] or 0) / comp_q * 100, 1) if comp_q else None
+    else:
+        # nem fonte nem publicação anterior: o capítulo declara a ausência
+        tri0, part_pix_q = None, None
 
     # ---------- composições (base transacional, cobertura declarada) ----------
     tx_meses = [r[0] for r in _rows(con, "SELECT DISTINCT anomes FROM pix_tx ORDER BY anomes")]
+    if not tx_meses:
+        # sem a base transacional não há composição honesta possível: stub com
+        # motivo (em vez do IndexError que derrubou o painel em 08/08/2026)
+        common.write_gold("pix.json", {"disponivel": False, "motivo": "base transacional (SPI) indisponível"})
+        return {"ok": False, "error": "sem pix_tx"}
     t0 = tx_meses[-2] if len(tx_meses) > 1 else tx_meses[-1]  # penúltimo = mês fechado mais estável
     txq0, txv0 = _rows(con, "SELECT SUM(qtd), SUM(valor) FROM pix_tx WHERE anomes=?", (t0,))[0]
     mpq_t0 = (mp["Pix"].get(t0, (None, None))[0] or 0) * 1e3
@@ -315,6 +351,12 @@ def build(con, cfg):
                     "pct_devolucao": d.get("PercentualdeDevolucao"),
                     "usuarios_marcados": d.get("QtdeUsuarioscommarcacoesdefraude"),
                     "chaves_marcadas": d.get("QtdeChavesPixcommarcacoesdefraude")})
+    med_carregado = False
+    if not med:
+        # EstatisticasFraudesPix devolvendo zero linhas (pane observada em
+        # 08/08/2026): o capítulo do MED carrega a última publicação íntegra
+        med = _gold_publicado().get("med") or []
+        med_carregado = bool(med)
 
     # ---------- SPI ----------
     spi_d = [{"p": d, "q": q, "v": v} for d, q, v in _rows(con, "SELECT data, quantidade, total FROM spi_diario ORDER BY data")]
@@ -331,11 +373,13 @@ def build(con, cfg):
     yoy_v = (v0 / v12 - 1) * 100 if v12 else None
     nat0 = bloco_atual(nat_serie, NATS)
     p2b = next((x for x in nat0 if x["k"] == "P2B"), None)
+    rot_tri = f"{tri0[:4]}-T{(int(tri0[5:7]) + 2) // 3}" if tri0 else None
     sintese = (f"Em {m0[:4]}-{m0[4:6]}, o Pix registrou {qtd0/1e9:.2f} bilhões de transações "
                f"(+{yoy_q:.1f}% em 12 meses) movimentando R$ {val0/1e12:.2f} trilhões (+{yoy_v:.1f}%), "
-               f"com valor médio de R$ {tick0:.0f} por transação. "
-               f"No trimestre {tri0[:4]}-T{(int(tri0[5:7]) + 2) // 3}, o Pix respondeu por {part_pix_q}% da quantidade de transações "
-               f"entre os instrumentos comparados. ")
+               f"com valor médio de R$ {tick0:.0f} por transação. ")
+    if rot_tri and part_pix_q is not None:
+        sintese += (f"No trimestre {rot_tri}, o Pix respondeu por {part_pix_q}% da quantidade de transações "
+                    f"entre os instrumentos comparados. ")
     if p2b:
         sintese += f"Pagamentos de pessoas a empresas (P2B) já são {p2b['part_q']:.0f}% da quantidade na base transacional."
 
@@ -364,7 +408,7 @@ def build(con, cfg):
             "ticket": {"v": round(tick0, 2), "yoy": round((tick0 / (v12 * 1e6 / (q12 * 1e3)) - 1) * 100, 1) if q12 and v12 else None},
             "usuarios": {"v": dict_ult[3] if dict_ult else None, "pf": dict_ult[1] if dict_ult else None,
                          "pj": dict_ult[2] if dict_ult else None, "data": dict_ult[0] if dict_ult else None},
-            "part_tri": {"v": part_pix_q, "tri": f"{tri0[:4]}-T{(int(tri0[5:7]) + 2) // 3}"},
+            "part_tri": {"v": part_pix_q, "tri": rot_tri},
         },
         "series": series_mensais,
         "tri": {"periodos": tri_keys, "dados": tris, "tri0": tri0, "nomes": INSTRUMENTOS},
@@ -396,7 +440,11 @@ def build(con, cfg):
             "Usuários DICT e chaves são ESTOQUES de fim de período (nunca somados no tempo); chave ≠ usuário; não usamos o termo 'usuário ativo' por não haver definição oficial.",
             "EPAE mede fluxo financeiro recebido por setor — não é receita, consumo, faturamento nem valor adicionado.",
             "Contestação via MED não é fraude confirmada; os campos exibidos usam exatamente os conceitos oficiais.",
-        ],
+        ] + ([
+            "A fonte trimestral do MPV está fora do ar no BCB; o capítulo de comparação entre instrumentos mantém a última posição publicada até a fonte voltar.",
+        ] if tri_carregado else []) + ([
+            "A estatística do MED está fora do ar no BCB; o capítulo de devoluções mantém a última posição publicada até a fonte voltar.",
+        ] if med_carregado else []),
     })
     common.write_gold("pix_mun.json", {"mes": f"{g0[:4]}-{g0[4:6]}" if g0 else None,
                                        "nota": "valores do mês, perspectiva do PAGADOR (PF+PJ); pes_pag = pessoas distintas pagadoras",

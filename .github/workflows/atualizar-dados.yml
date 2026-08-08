@@ -89,6 +89,40 @@ jobs:
             data/bronze
           key: pipeline-estado-${{ github.run_id }}
 
+      # A lição de 08/08: build quebrado publica stub de erro e o workflow
+      # termina VERDE — painel fora do ar sem nenhum vigia acusar. O sentinela
+      # compara o build novo com a última publicação; em regressão (íntegro →
+      # stub, ou arquivo não gerado), mantém a publicação anterior no ar e o
+      # passo seguinte abre issue. Degradação já publicada não re-acusa.
+      - name: Sentinela de regressão do gold
+        id: sanidade
+        run: python3 scripts/sanidade_gold.py
+
+      - name: Alertar regressão de gold
+        if: steps.sanidade.outputs.regressoes != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REGS: ${{ steps.sanidade.outputs.regressoes }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Gold regrediu para stub de erro — painel mantido com a última publicação"
+          CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}
+
+          Builds que regrediram (o site segue servindo a última versão íntegra):
+          ${REGS}
+
+          O log do passo *Executar pipeline* mostra o erro de cada builder e as
+          falhas por coletor. Enquanto esta issue estiver aberta, novas
+          ocorrências viram comentários aqui."
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" \
+              --body "Nova ocorrência: ${REGS} — ${RUN_URL}"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
       - name: Publicar gold no site
         run: |
           rsync -a --delete data/gold/ public/obs/data/gold/

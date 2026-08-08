@@ -82,6 +82,16 @@ def _absorve(con, tipo, texto, col_cnpj):
         chave = (c, mun, tp)
         agreg[chave] = agreg.get(chave, 0) + 1
         nomes[c] = ((l.get("NomeIf") or "").strip(), (l.get("Segmento") or "").strip(), (l.get("UF") or "").strip())
+    # Piso de completude ANTES de trocar a posição: o cadastro de
+    # correspondentes chegou truncado pela fonte em 07/08/2026 e substituiu a
+    # posição íntegra. Aqui a régua é relativa — menos da metade das unidades
+    # da posição anterior não é encolhimento de rede, é arquivo truncado.
+    novas_unidades = sum(agreg.values())
+    ant = con.execute("SELECT SUM(qtd) FROM dep_hist WHERE tipo=? AND posicao="
+                      "(SELECT MAX(posicao) FROM dep_hist WHERE tipo=?)", (tipo, tipo)).fetchone()[0]
+    if ant and novas_unidades < ant / 2:
+        raise RuntimeError(f"coleta parcial de {tipo}: {novas_unidades} unidades contra "
+                           f"{ant} na posição anterior — arquivo truncado pela fonte")
     con.execute("DELETE FROM dep_unidades WHERE tipo=?", (tipo,))
     for (c, mun, tp), qtd in agreg.items():
         nome, seg, uf = nomes[c]

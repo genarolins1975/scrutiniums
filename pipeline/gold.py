@@ -580,7 +580,7 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("pgfn.json", {"disponivel": False, "error": str(e)})
 
-    # ---- Central de alertas: consolida as quatro famílias num só arquivo ----
+    # ---- Central de alertas: consolida as cinco famílias num só arquivo ----
     # Precisa vir DEPOIS de leading e panorama: lê os gold já escritos (alerts,
     # panorama, openfinance, leading) e normaliza. Rodando antes, leria a
     # execução anterior — ou nada, num checkout limpo. O feed alerts.xml mantém

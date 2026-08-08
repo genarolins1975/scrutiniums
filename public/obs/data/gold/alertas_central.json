@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-08T10:10:57+00:00",
+ "gerado_em": "2026-08-08T12:02:15+00:00",
  "familias": [
   {
    "id": "macro",
@@ -494,7 +494,7 @@
    "ordem": 1
   },
   {
-   "id": "operacional:rede:Brb Banco De Brasilia S.A.",
+   "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-03",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Brb Banco De Brasilia S.A. — rede",
@@ -511,7 +511,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Alfa Holdings S.A.",
+   "id": "operacional:empregados:variacao_aa:Alfa Holdings S.A.:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Alfa Holdings S.A. — empregados",
@@ -528,7 +528,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Alfa Holdings S.A.",
+   "id": "operacional:empregados:total_zerado:Alfa Holdings S.A.:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Alfa Holdings S.A. — empregados",
@@ -545,7 +545,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Investimentos Bemge S.A.",
+   "id": "operacional:empregados:variacao_aa:Investimentos Bemge S.A.:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Investimentos Bemge S.A. — empregados",
@@ -562,7 +562,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Investimentos Bemge S.A.",
+   "id": "operacional:empregados:total_zerado:Investimentos Bemge S.A.:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Investimentos Bemge S.A. — empregados",
@@ -579,7 +579,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "id": "operacional:empregados:variacao_aa:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv — empregados",
@@ -596,7 +596,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:empregados:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "id": "operacional:empregados:total_zerado:Mercantil Financeira S.A. - Soc. Credito, Financ e Inv:2024-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv — empregados",
@@ -613,7 +613,7 @@
    "ordem": 100.0
   },
   {
-   "id": "operacional:rede:Inter & Co, Inc. (Banco Inter)",
+   "id": "operacional:rede:queda_12m:Inter & Co, Inc. (Banco Inter):2026-03",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Inter & Co, Inc. (Banco Inter) — rede",
@@ -630,7 +630,7 @@
    "ordem": 93.8
   },
   {
-   "id": "operacional:empregados:Banco Btg Pactual S.A.",
+   "id": "operacional:empregados:variacao_aa:Banco Btg Pactual S.A.:2026-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Banco Btg Pactual S.A. — empregados",
@@ -647,7 +647,7 @@
    "ordem": 55.6
   },
   {
-   "id": "operacional:rede:Banco Santander (Brasil) S.A.",
+   "id": "operacional:rede:queda_12m:Banco Santander (Brasil) S.A.:2026-03",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Banco Santander (Brasil) S.A. — rede",
@@ -664,7 +664,7 @@
    "ordem": 49.6
   },
   {
-   "id": "operacional:empregados:Banco Estado De Sergipe S.A. - Banese",
+   "id": "operacional:empregados:variacao_aa:Banco Estado De Sergipe S.A. - Banese:2026-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Banco Estado De Sergipe S.A. - Banese — empregados",
@@ -681,7 +681,7 @@
    "ordem": 49.1
   },
   {
-   "id": "operacional:rede:Itau Unibanco Holding S.A.",
+   "id": "operacional:rede:queda_12m:Itau Unibanco Holding S.A.:2026-03",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Itau Unibanco Holding S.A. — rede",
@@ -698,7 +698,7 @@
    "ordem": 26.6
   },
   {
-   "id": "operacional:auditoria:Brbi Br Partners S.A.",
+   "id": "operacional:auditoria:troca_auditor:Brbi Br Partners S.A.:2025-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Brbi Br Partners S.A. — auditoria",
@@ -715,7 +715,7 @@
    "ordem": 0.0
   },
   {
-   "id": "operacional:auditoria:Banco Rci Brasil S.A.",
+   "id": "operacional:auditoria:troca_auditor:Banco Rci Brasil S.A.:2025-12-31",
    "familia": "operacional",
    "nivel": null,
    "titulo": "Banco Rci Brasil S.A. — auditoria",

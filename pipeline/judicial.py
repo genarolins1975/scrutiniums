@@ -142,7 +142,7 @@ def build(con, cfg):
 
     # ---------- camada nominal (TST) ----------
     escala, data_escala = _escala_por_codigo(con)
-    tst_linhas, competencia = [], None
+    tst_linhas, competencia, tst_carregado = [], None, False
     comp = _rows(con, "SELECT MAX(competencia) FROM jud_tst_ranking")
     if comp and comp[0][0]:
         competencia = comp[0][0]
@@ -163,6 +163,23 @@ def build(con, cfg):
                 "por_100bi_ativo": round(proc / (ativo / 1e11), 1) if ativo else None,
                 "por_100bi_carteira": round(proc / (carteira / 1e11), 1) if carteira else None,
             })
+
+    if not tst_linhas:
+        # pane dupla de 07-08/08/2026: o cache com o histórico do TST se perdeu
+        # e o scraper do ranking quebrou no mesmo intervalo. A camada nominal
+        # carrega a última publicação íntegra — a competência publicada é a que
+        # o próprio bloco declara — e volta ao vivo na primeira coleta que
+        # funcionar.
+        import json as _j
+        from pathlib import Path as _P
+        try:
+            _ant = _j.loads((_P(__file__).resolve().parent.parent / "public" / "obs" /
+                             "data" / "gold" / "judicial.json").read_text())
+            _cn = _ant.get("camada_nominal") or {}
+            if _cn.get("linhas"):
+                tst_linhas, competencia, tst_carregado = _cn["linhas"], _cn.get("competencia"), True
+        except Exception:
+            pass
 
     catalogo = [
         {"id": "casos_unicos", "nome": "Casos únicos", "definicao": "número de processos distintos pelo número único do CNJ",

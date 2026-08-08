@@ -1309,10 +1309,17 @@ function renderPix() {
   const tris = X.tri.periodos.filter(t => t >= "2019");
   const instSel = px.insts;
   const stack = pxStackedArea(tris.map(t => t.slice(0, 7)), Object.keys(X.tri.nomes).filter(i => instSel.includes(i)).map(i => ({ label: X.tri.nomes[i], color: PX_COLORS[i], vals: tris.map(t => ((X.tri.dados[t] || {})[i] || {})[metr === "q" ? "q" : "v"] || 0) })), { aria: "participação por instrumento (trimestral)" });
-  const t0d = X.tri.dados[X.tri.tri0];
+  // ausência declarada: sem série trimestral (fonte do BCB em pane e sem
+  // publicação anterior para carregar), o capítulo diz isso em vez de quebrar
+  const t0d = X.tri.dados[X.tri.tri0] || {};
   const foto = Object.keys(X.tri.nomes).filter(i => t0d[i] && (t0d[i].q || 0) > 0).map(i => ({ i, q: t0d[i].q, v: t0d[i].v, t: t0d[i].v / t0d[i].q })).sort((a, b) => b[metr === "q" ? "q" : "v"] - a[metr === "q" ? "q" : "v"]);
   const fotoMax = Math.max(...foto.map(x => x[metr === "q" ? "q" : "v"]));
-  const versus = sechead("Como o Pix se compara aos outros instrumentos?", `comparação completa é TRIMESTRAL (cartões e outros não têm série mensal); nada foi interpolado`) + `
+  const versus = !tris.length
+    ? sechead("Como o Pix se compara aos outros instrumentos?", "comparação completa é TRIMESTRAL") + `
+    <div class="card"><p class="src">A série trimestral do MPV (a única que traz cartões e os demais instrumentos)
+    está indisponível na fonte do BCB e não há publicação anterior para manter no ar. O capítulo volta
+    automaticamente quando a fonte voltar.</p></div>`
+    : sechead("Como o Pix se compara aos outros instrumentos?", `comparação completa é TRIMESTRAL (cartões e outros não têm série mensal); nada foi interpolado`) + `
     <div class="instpick">${Object.keys(X.tri.nomes).map(i => `<button class="${instSel.includes(i) ? "on" : ""}" onclick="pxToggleInst('${i}')">${X.tri.nomes[i]}</button>`).join("")}</div>
     <div class="ov-2col-eq">
       <div class="card"><h4>Participação na ${metr === "q" ? "quantidade" : "soma de valor"} — trimestral</h4>${stack}</div>
@@ -2391,7 +2398,7 @@ const GUIA = {
     nao: "Relações estimadas no passado podem não valer em rupturas estruturais. Nenhum cenário aqui tem probabilidade atribuída." },
   alerts: { q: "O que mudou e merece atenção agora?",
     importa: "Monitorar continuamente evita descobrir deterioração só quando ela já está consolidada.",
-    ler: "Os alertas vêm em quatro famílias, cada uma com o seu universo e a sua periodicidade. Leia dentro da família: a ordem de uma seção não vale como prioridade sobre outra.",
+    ler: "Os alertas vêm em cinco famílias, cada uma com o seu universo e a sua periodicidade. Leia dentro da família: a ordem de uma seção não vale como prioridade sobre outra.",
     nao: "Alerta não é diagnóstico nem previsão, e a contagem de famílias diferentes não se soma. Ausência de alerta é ausência de regra disparada, não ausência de risco." },
   pgfn: { q: "Quanto o país deve ao fisco federal, e onde essa dívida está?",
     importa: "Dívida ativa é passivo que a empresa e a família já não conseguiram pagar ao Estado — costuma aparecer no mesmo terreno em que o crédito privado se deteriora.",
@@ -5180,7 +5187,7 @@ const PEN_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CAL
 function penSelo(s) { return seloChip(PEN_SELO_DIC, s); }
 
 /* ---------- ALERTAS ----------
-   Central unificada: as quatro famílias de alerta do Observatório num só lugar.
+   Central unificada: as cinco famílias de alerta do Observatório num só lugar.
    O que a página NÃO faz é tão importante quanto o que ela faz — não soma
    famílias, não cria escala comum de gravidade e não ordena uma família contra
    a outra. Universos e periodicidades são diferentes; a consolidação é de
@@ -8474,7 +8481,7 @@ function updateAlertBadge() {
   const el = document.getElementById("alertCount");
   const a = state.data.alertas_central;
   if (!el || !a || !a.alertas) { return; }
-  const n = alertasAbertos(a.alertas).length;  // as quatro famílias, não só a macro
+  const n = alertasAbertos(a.alertas).length;  // todas as famílias, não só a macro
   el.textContent = n;
   el.hidden = n === 0;
 }
