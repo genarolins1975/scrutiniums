@@ -39,7 +39,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -61,6 +61,7 @@ function currentView() {
     if (p.startsWith("/institutions/") && p.length > 14) return "inst";
     if (p.startsWith("/products/") && p.length > 10) return "product";
     if (p.startsWith("/sectors/") && p.length > 9) return "sector";
+    if (p.startsWith("/presenca/") && p.length > 10) return "presmun";
     const hit = Object.entries(ROUTES).find(([v, r]) => r === p);
     if (hit) return hit[0];
   }
@@ -80,6 +81,7 @@ function buildQuery(view) {
     if (view === "inst" && f.instCod) qs.set("cod", f.instCod);
     if (view === "sector" && f.sectorCod) qs.set("cod", f.sectorCod);
     if (view === "product" && f.productSlug) qs.set("slug", f.productSlug);
+    if (view === "presmun" && f.presCod) qs.set("cod", f.presCod);
   }
   if (view === "leading" && state.lead && state.lead.tab !== "geral") qs.set("ltab", state.lead.tab);
   if (view === "trends" && state.tr && state.tr.fam !== "todas") qs.set("tfam", state.tr.fam);
@@ -129,6 +131,7 @@ function syncHash() {
     if (v === "inst" && state.filters.instCod) path = "/institutions/" + state.filters.instCod;
     if (v === "product" && state.filters.productSlug) path = "/products/" + state.filters.productSlug;
     if (v === "sector" && state.filters.sectorCod) path = "/sectors/" + state.filters.sectorCod;
+    if (v === "presmun" && state.filters.presCod) path = "/presenca/" + state.filters.presCod;
     history.replaceState(null, "", BASE + path + buildQuery(v));
   } else {
     history.replaceState(null, "", "#" + v + buildQuery(v));
@@ -144,6 +147,7 @@ function parseHash() {
     if (qs.get("cod") && currentView() === "inst") state.filters.instCod = qs.get("cod");
     if (qs.get("cod") && currentView() === "sector") state.filters.sectorCod = qs.get("cod");
     if (qs.get("slug") && currentView() === "product") state.filters.productSlug = qs.get("slug");
+    if (qs.get("cod") && currentView() === "presmun") state.filters.presCod = qs.get("cod");
   }
   // estado do comparador via URL (compartilhável)
   if (qs.get("insts")) state.cmp.insts = qs.get("insts").split(".").filter(Boolean).slice(0, 10);
@@ -183,6 +187,7 @@ function parseHash() {
     if (p.startsWith("/institutions/") && p.length > 14) state.filters.instCod = p.slice(14).replace(/\/$/, "");
     if (p.startsWith("/products/") && p.length > 10) state.filters.productSlug = p.slice(10).replace(/\/$/, "");
     if (p.startsWith("/sectors/") && p.length > 9) state.filters.sectorCod = p.slice(9).replace(/\/$/, "");
+    if (p.startsWith("/presenca/") && p.length > 10) state.filters.presCod = p.slice(10).replace(/\/$/, "");
   }
   return currentView();
 }
@@ -204,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.53.2"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.54.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -237,6 +242,7 @@ const VIEW_DATA = {
   fraudes: ["fraudes"],
   juros: ["juros"],
   operacional: ["operacional", "presenca_mun", "penetracao_malha"],
+  presmun: ["presenca_mun"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -8022,7 +8028,7 @@ function renderOperacional() {
         <div class="tt-row"><span class="tt-lbl">postos eletrônicos</span><span class="tt-val">${fmt.n0(m.pae)}</span></div>
         <div class="tt-row"><span class="tt-lbl">correspondentes</span><span class="tt-val">${fmt.n0(m.corresp)}</span></div>
         <div class="tt-row"><span class="tt-lbl">instituições com dependência</span><span class="tt-val">${fmt.n0(m.ifs_dep)}</span></div>`);
-      return `<path d="${d}" fill="${PR_COR[m.classe]}" class="penmun" data-tip="${tip}" aria-label="${attr(`${m.nome} ${m.uf}: ${m.classe}`)}"></path>`;
+      return `<path d="${d}" fill="${PR_COR[m.classe]}" class="penmun" style="cursor:pointer" data-tip="${tip}" onclick="presNav('${m.cod}')" aria-label="${attr(`${m.nome} ${m.uf}: ${m.classe} — abrir página do município`)}"></path>`;
     }).join("");
     const tot = PR.totais;
     const pct = v => fmt.n(100 * v / tot.municipios, 1) + "%";
@@ -8039,6 +8045,7 @@ function renderOperacional() {
                 : `<p class="src">malha municipal ainda carregando…</p>`}
       <p class="src">Mapa categórico: a cor é o ponto de MAIOR profundidade existente no município, não a quantidade.
       Um município com agência e mil correspondentes tem a mesma cor de um com uma agência só.
+      Clique em um município para abrir a página dele, com as contagens completas.
       ${malhaPR && PR.totais.municipios > Object.keys(malhaPR.paths).length
         ? `A malha desenha ${fmt.n0(Object.keys(malhaPR.paths).length)} polígonos e as contagens usam ${fmt.n0(PR.totais.municipios)} municípios: os instalados depois do Censo 2022 entram na tabela e ainda não no desenho.` : ""}</p>
       <h4 style="margin-top:12px">Por unidade da federação</h4>
@@ -8210,9 +8217,93 @@ function renderOperacional() {
   }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional };
+/* Página por município: a resposta à pergunta local — "que atendimento
+   bancário existe em [município]?" — com o mesmo gold do mapa nacional.
+   Cada uma das 5.571 páginas é indexável por rota própria (/presenca/<cod>),
+   e o conteúdo obedece as mesmas regras do painel: contagens observadas dos
+   cadastros do BC, classe pela profundidade do ponto, ausência declarada em
+   texto (nunca zero silencioso), limitações e fontes sempre juntas. */
+window.presNav = cod => { state.filters.presCod = cod; showView("presmun"); };
+function renderPresencaMun() {
+  const el = document.getElementById("view-presmun");
+  const PR = state.data.presenca_mun;
+  const cod = state.filters.presCod;
+  if (!PR) { el.innerHTML = loadingCard("presença bancária municipal"); return; }
+  const m = (PR.municipios || []).find(x => x.cod === cod);
+  if (!m) {
+    el.innerHTML = `<div class="card" style="margin-top:20px"><p>Código de município desconhecido.
+    A lista completa está no mapa de presença bancária dos
+    <a href="javascript:void(0)" onclick="nav('operacional')">Indicadores operacionais</a>.</p></div>`;
+    return;
+  }
+  const PRM_COR = { agencia: "#1d4e89", posto: "#0e7c7b", correspondente: "#b45309", nenhum: "#b91c1c" };
+  const classe = (PR.classes || []).find(c => c.id === m.classe) || { rotulo: m.classe, def: "" };
+  const pl = (n, um, muitos) => `<b>${fmt.n0(n)}</b> ${n === 1 ? um : muitos}`;
+  // a frase-síntese segue a classe: o que NÃO existe é dito com todas as letras
+  const frase = m.classe === "agencia"
+    ? `${m.nome} (${m.uf}) tem ${pl(m.agencia, "agência bancária", "agências bancárias")}, ${pl(m.posto, "posto de atendimento", "postos de atendimento")}, ${pl(m.pae, "posto eletrônico", "postos eletrônicos")} e ${pl(m.corresp, "ponto de correspondente", "pontos de correspondente")}, segundo os cadastros do Banco Central.`
+    : m.classe === "posto"
+      ? `${m.nome} (${m.uf}) não tem agência bancária: o atendimento presencial é feito por ${pl(m.posto, "posto de atendimento", "postos de atendimento")}, ${pl(m.pae, "posto eletrônico", "postos eletrônicos")} e ${pl(m.corresp, "ponto de correspondente", "pontos de correspondente")}, segundo os cadastros do Banco Central.`
+      : m.classe === "correspondente"
+        ? `${m.nome} (${m.uf}) não tem agência nem posto bancário: o atendimento presencial existe apenas pelos ${pl(m.corresp, "ponto de correspondente", "pontos de correspondente")} cadastrados no Banco Central.`
+        : `${m.nome} (${m.uf}) não tem nenhum ponto físico de atendimento bancário cadastrado no Banco Central — nem agência, nem posto, nem correspondente.`;
+  const kpi = (rot, v, nota) => `<div class="card kpi"><h4>${rot}</h4><div class="big">${fmt.n0(v)}</div>
+    <div class="src">${badge("observado")} ${nota}</div></div>`;
+  const uf = (PR.por_uf || []).find(u => u.uf === m.uf);
+  const tot = PR.totais;
+  const pct = (v, d) => d ? fmt.n(100 * v / d, 1) + "%" : "–";
+  const ctxLinha = (rot, t) => `<tr><td>${rot}</td><td class="num">${fmt.n0(t.municipios)}</td>
+    <td class="num">${fmt.n0(t.agencia)} (${pct(t.agencia, t.municipios)})</td>
+    <td class="num">${fmt.n0(t.posto)} (${pct(t.posto, t.municipios)})</td>
+    <td class="num">${fmt.n0(t.correspondente)} (${pct(t.correspondente, t.municipios)})</td>
+    <td class="num">${fmt.n0(t.nenhum)}</td></tr>`;
+  // vizinhança editorial: janela alfabética da mesma UF — navegação real entre as páginas municipais
+  const daUf = PR.municipios.filter(x => x.uf === m.uf).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+  const pos = daUf.findIndex(x => x.cod === m.cod);
+  const ini = Math.max(0, Math.min(pos - 6, daUf.length - 13));
+  const vizinhos = daUf.slice(ini, ini + 13).filter(x => x.cod !== m.cod);
+  el.innerHTML = pageHead({
+    title: `Presença bancária em ${m.nome} (${m.uf})`,
+    desc: "Agências, postos, postos eletrônicos e correspondentes cadastrados no Banco Central para este município.",
+    fontes: "BCB/Unicad · BCB/Correspondentes · IBGE",
+  }) + `
+  <div class="card"><p style="margin:0">${frase}</p>
+    <div class="chips" style="margin-top:10px"><span class="chip" title="${attr(classe.def)}">
+      <span style="display:inline-block;width:10px;height:10px;background:${PRM_COR[m.classe]};border-radius:2px;margin-right:5px"></span>
+      Classe no mapa nacional: <b>${classe.rotulo}</b></span></div>
+    <p class="src" style="margin-top:8px">A classe é o ponto de <b>maior profundidade</b> de atendimento existente no
+    município — não mede quantidade nem qualidade do serviço. Definições e limitações no fim da página.</p></div>
+  <div class="pan-kpi">
+    ${kpi("Agências bancárias", m.agencia, `posição ${PR.posicao.dependencias}`)}
+    ${kpi("Postos de atendimento", m.posto, "PAB, PAC, PAA e afins")}
+    ${kpi("Postos eletrônicos (PAE)", m.pae, "terminais de autoatendimento cadastrados")}
+    ${kpi("Pontos de correspondente", m.corresp, `posição ${PR.posicao.correspondentes}`)}
+    ${kpi("IFs com dependência própria", m.ifs_dep, "agência, posto ou PAE no município")}
+    ${kpi("IFs com correspondente", m.ifs_corresp, "contratantes com ponto ativo aqui")}
+  </div>
+  ${sechead("O município no contexto", `comparação com ${m.uf} e com o Brasil`)}
+  <div class="card"><div class="tblwrap"><table class="data compact">
+    <thead><tr><th></th><th class="num">Municípios</th><th class="num">Com agência</th><th class="num">Só posto ou terminal</th><th class="num">Só correspondente</th><th class="num">Sem nenhum</th></tr></thead>
+    <tbody>${uf ? ctxLinha(m.uf, uf) : ""}${ctxLinha("Brasil", tot)}</tbody></table></div>
+    <p class="src" style="margin-top:6px">Contagens de municípios por classe. O mapa nacional completo está nos
+    <a href="javascript:void(0)" onclick="nav('operacional')">Indicadores operacionais</a>.</p></div>
+  ${vizinhos.length ? `${sechead(`Outros municípios de ${m.uf}`, "ordem alfabética")}
+  <div class="card"><div class="chips">${vizinhos.map(v => `<a class="chip" href="${BASE}/presenca/${v.cod}"
+    onclick="event.preventDefault();presNav('${v.cod}')">${v.nome}</a>`).join(" ")}</div></div>` : ""}
+  <div class="card"><div class="note warn">${PR.aviso}</div>
+    <dl class="descomoler" style="margin-top:10px">${(PR.classes || []).map(c => `<dt>${c.rotulo}</dt><dd>${c.def}</dd>`).join("")}</dl>
+    <details class="decomp" style="margin-top:8px"><summary>o que estes números não dizem</summary>
+      <ul style="font-size:13px;margin:6px 0 0 18px">${(PR.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
+    </details>
+    <p class="src" style="margin-top:8px">${badge("observado")} ${(PR.fontes || []).map(f =>
+      `<a href="${attr(f.url)}" target="_blank" rel="noopener">${f.nome}</a>`).join(" · ")} ·
+    posição dependências ${PR.posicao.dependencias} · correspondentes ${PR.posicao.correspondentes}.
+    Ausência de ponto é informação do cadastro, nunca vira zero silencioso.</p></div>`;
+}
+
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional, presmun: renderPresencaMun };
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -8302,7 +8393,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function showViewSilent(v) {
   try { navPrepara(); navSincroniza(); } catch (e) {}
   pingView(v);
-  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products")));
+  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
   if (pend) {
@@ -8393,6 +8484,7 @@ window.showView = v => {
     if (v === "inst" && state.filters.instCod) path = "/institutions/" + state.filters.instCod;
     if (v === "product" && state.filters.productSlug) path = "/products/" + state.filters.productSlug;
     if (v === "sector" && state.filters.sectorCod) path = "/sectors/" + state.filters.sectorCod;
+    if (v === "presmun" && state.filters.presCod) path = "/presenca/" + state.filters.presCod;
     history.pushState(null, "", BASE + path + buildQuery(v));
   } else {
     history.pushState(null, "", "#" + v + buildQuery(v));
