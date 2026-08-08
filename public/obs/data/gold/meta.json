@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
  },
- "gerado_em": "2026-08-07T11:11:51+00:00",
+ "gerado_em": "2026-08-08T10:10:58+00:00",
  "vintages": {
   "sgs": "2026-06",
   "ifdata": "2026-03",
@@ -72,35 +72,35 @@
    "falhas": [
     {
      "key": "djen_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-23&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-24&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     }
    ]
   },
@@ -109,35 +109,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-08&dataDisponibilizacaoFim=2026-08-07: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-09&dataDisponibilizacaoFim=2026-08-08: HTTP Error 403: Forbidden"
     }
    ]
   },
@@ -184,7 +184,7 @@
    "falhas": [
     {
      "key": "scr_data:2024",
-     "erro": "IncompleteRead(8388608 bytes read, 167623289 more expected)"
+     "erro": "File is not a zip file"
     },
     {
      "key": "scr_data:2025",
@@ -192,7 +192,7 @@
     },
     {
      "key": "scr_data:2026",
-     "erro": "IncompleteRead(8388608 bytes read, 82281464 more expected)"
+     "erro": "File is not a zip file"
     }
    ]
   },
@@ -232,11 +232,11 @@
    ]
   },
   "censo2022": {
-   "ok": 8,
+   "ok": 1,
    "falhas": []
   },
   "estban": {
-   "ok": 14,
+   "ok": 1,
    "falhas": []
   },
   "mercado_imobiliario": {
@@ -248,19 +248,19 @@
    "falhas": []
   },
   "reclamacoes_consig": {
-   "ok": 12,
+   "ok": 1,
    "falhas": []
   },
   "operacional": {
-   "ok": 48,
+   "ok": 2,
    "falhas": []
   },
   "releases": {
-   "ok": 32,
+   "ok": 1,
    "falhas": []
   },
   "releases_ext": {
-   "ok": 5,
+   "ok": 2,
    "falhas": [
     {
      "key": "releases_ext:caixa",
@@ -273,13 +273,8 @@
    "falhas": []
   },
   "dependencias": {
-   "ok": 2,
-   "falhas": [
-    {
-     "key": "dependencias:pae",
-     "erro": "cadastro de pae veio vazio"
-    }
-   ]
+   "ok": 3,
+   "falhas": []
   },
   "correspondentes": {
    "ok": 1,

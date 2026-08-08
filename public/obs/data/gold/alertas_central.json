@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-07T11:11:51+00:00",
+ "gerado_em": "2026-08-08T10:10:57+00:00",
  "familias": [
   {
    "id": "macro",
@@ -88,7 +88,7 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "40 execuções anteriores",
+   "evidencia_persistencia": "41 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
