@@ -103,3 +103,20 @@ completude** nos coletores de correspondentes e dependências — arquivo
 truncado é falha de coleta, nunca posição nova, e silver parcial se recoleta
 todo dia até a fonte sarar. O id dos alertas operacionais ganhou regra e
 referência (as flags da família, ativadas nesta janela, colidiam ids).
+
+## Recaída dos correspondentes (09-10/08) — o remendo que faltava
+
+O piso de completude impediu dados truncados NOVOS, mas a posição parcial de
+07/08 já estava no cache do CI — e o BCB seguiu truncando o arquivo para os
+runners do GitHub (58 e 70 contratantes em dias distintos; da sessão local o
+mesmo arquivo desce íntegro com 279). Os builders republicaram o dado
+degradado por dois ciclos, e o sentinela não acusa porque não é stub: é
+número errado com cara de número.
+
+Correções permanentes: **seed versionado da última posição íntegra**
+(`pipeline/seed/corresp-pontos-seed.csv.gz`, com posição declarada no próprio
+dado) que o coletor restaura sozinho ao detectar silver parcial; **retry** do
+download (a truncagem é não determinística); e a recoleta diária continua até
+a fonte servir o arquivo completo. Lição registrada: regressão degradada-mas-
+não-stub só é pega por teste de conteúdo no CI — por isso os testes de dados
+leem o gold PUBLICADO.
