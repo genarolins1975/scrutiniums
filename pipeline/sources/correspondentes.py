@@ -121,33 +121,76 @@ DIAS_ENTRE_COLETAS = 7
 PISO_CONTRATANTES = 100
 
 
+def _restaura_seed(con):
+    """A posição parcial de 07/08/2026 entrou no silver ANTES do piso existir e
+    ficou congelada no cache do CI: os builders republicavam 70 contratantes
+    (e um município fantasma "sem nenhum ponto") todo dia, enquanto a fonte
+    seguia truncando para os runners. O seed é a última posição íntegra
+    coletada e preservada em bronze (05/08/2026, 279 contratantes) — dado
+    observado com posição declarada, substituído por inteiro na primeira
+    coleta completa que a fonte aceitar."""
+    import csv
+    import gzip
+    from pathlib import Path
+    seed = Path(__file__).resolve().parent.parent / "seed" / "corresp-pontos-seed.csv.gz"
+    if not seed.exists():
+        return False
+    with gzip.open(seed, "rt", encoding="utf-8") as f:
+        linhas = list(csv.DictReader(f))
+    if len({l["cnpj8"] for l in linhas}) < PISO_CONTRATANTES:
+        return False  # seed inválido nunca substitui nada
+    con.execute("DELETE FROM corresp_pontos")
+    for l in linhas:
+        con.execute("INSERT OR REPLACE INTO corresp_pontos VALUES(?,?,?,?,?,?,?)",
+                    (l["cnpj8"], l["nome_if"], l["municipio_ibge"], l["uf"],
+                     int(l["qtd"]), int(l["correspondentes"]), l["posicao"]))
+    con.commit()
+    return True
+
+
 def collect(con, cfg=None):
     _ensure(con)
-    # autocura: posição parcial que tenha entrado no histórico antes do piso
+    # autocura 1: posição parcial que tenha entrado no histórico antes do piso
     # existir (07/08/2026) sai daqui — não é observação, é arquivo truncado
     con.execute("DELETE FROM corresp_hist WHERE posicao IN (SELECT posicao FROM "
                 "corresp_hist GROUP BY posicao HAVING COUNT(DISTINCT cnpj8) < ?)",
                 (PISO_CONTRATANTES,))
+    # autocura 2: silver parcial volta para a última posição íntegra do seed,
+    # para que os builders nunca mais republiquem o dado truncado
+    restaurado = False
+    if con.execute("SELECT COUNT(DISTINCT cnpj8) FROM corresp_pontos").fetchone()[0] < PISO_CONTRATANTES:
+        restaurado = _restaura_seed(con)
     ts = con.execute("SELECT coletado_em FROM corresp_coleta WHERE chave='correspondentes'").fetchone()
     silver_integro = con.execute(
         "SELECT COUNT(DISTINCT cnpj8) FROM corresp_pontos").fetchone()[0] >= PISO_CONTRATANTES
-    # a recência só vale com silver íntegro: posição parcial se recoleta todo
-    # dia até a fonte servir o arquivo completo de novo
-    if ts and silver_integro and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
+    # a recência só vale com silver íntegro E sem restauração pendente de
+    # coleta nova: depois de restaurar do seed, tenta-se a fonte todo dia
+    if ts and silver_integro and not restaurado and common.coletado_recentemente(ts[0], DIAS_ENTRE_COLETAS):
         return [{"key": "correspondentes", "ok": True,
                  "pulado": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"}]
-    try:
-        body, meta = common.http_get(URL, timeout=600, accept=None)
-    except Exception as e:
-        return [{"key": "correspondentes", "ok": False, "error": str(e)[:200]}]
-    _, sha = common.save_bronze("correspondentes", "unicad_correspondentes", body, meta)
-    anterior = con.execute("SELECT sha FROM corresp_coleta WHERE chave='correspondentes'").fetchone()
-    if anterior and anterior[0] == sha:
-        return [{"key": "correspondentes", "ok": True, "inalterado": True}]
-    try:
-        r = _absorve(con, body.decode("utf-8-sig", errors="replace"))
-    except Exception as e:
-        return [{"key": "correspondentes", "ok": False, "error": str(e)[:200]}]
+    # a fonte trunca de forma não determinística (58 e 70 contratantes em dias
+    # distintos): vale tentar o download mais de uma vez antes de desistir
+    r = None
+    erro = None
+    for tentativa in range(3):
+        try:
+            body, meta = common.http_get(URL, timeout=600, accept=None)
+        except Exception as e:
+            erro = str(e)[:200]
+            continue
+        _, sha = common.save_bronze("correspondentes", "unicad_correspondentes", body, meta)
+        anterior = con.execute("SELECT sha FROM corresp_coleta WHERE chave='correspondentes'").fetchone()
+        if anterior and anterior[0] == sha and silver_integro:
+            return [{"key": "correspondentes", "ok": True, "inalterado": True,
+                     **({"seed_restaurado": True} if restaurado else {})}]
+        try:
+            r = _absorve(con, body.decode("utf-8-sig", errors="replace"))
+            break
+        except Exception as e:
+            erro = str(e)[:200]
+    if r is None:
+        return [{"key": "correspondentes", "ok": False, "error": erro,
+                 **({"seed_restaurado": True} if restaurado else {})}]
     con.execute("INSERT OR REPLACE INTO corresp_coleta VALUES(?,?,?,?)",
                 ("correspondentes", common.now_utc(), sha, r["posicao"]))
     common.record_lineage(con, "operacional.json", "unicad_correspondentes.csv", sha,
