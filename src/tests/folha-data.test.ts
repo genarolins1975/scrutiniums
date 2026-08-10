@@ -113,3 +113,42 @@ describe("integração: coletor registrado e seção na SPA", () => {
     expect(appJs).toMatch(/nunca são somados nem\s*\n?\s*comparados diretamente/i);
   });
 });
+
+describe("rodada 2: o lado do balanço (Fase 2 — publica só aprovado)", () => {
+  const bal = JSON.parse(readFileSync(join(raiz, "pipeline/curated/folha_balanco.json"), "utf-8"));
+
+  it("toda observação tem evidência completa e status do vocabulário", () => {
+    for (const o of bal.observacoes) {
+      expect(["em_revisao", "aprovado", "descartado"], o.id).toContain(o.status);
+      expect(o.trecho, o.id).toBeTruthy();
+      expect(o.pagina_pdf, o.id).toBeGreaterThan(0);
+      expect(typeof o.exclusivo_folha, o.id).toBe("boolean");
+      const doc = bal.documentos[o.documento];
+      expect(doc, o.id).toBeTruthy();
+      expect(doc.url, o.id).toMatch(/^https:\/\/www\.rad\.cvm\.gov\.br\//);
+      expect(doc.identidade, o.id).toBeTruthy();
+      // valor nulo só com ausência declarada na métrica
+      if (o.valor == null) expect(o.metrica, o.id).toMatch(/AUSÊNCIA DECLARADA/);
+      else expect(o.unidade, o.id).toMatch(/^R\$ (mil|milhões)$/);
+    }
+  });
+
+  it("o gold reconcilia com a curadoria: aprovado publica, em revisão vira contagem", () => {
+    const aprovadas = bal.observacoes.filter((o: any) => o.status === "aprovado");
+    const emRevisao = bal.observacoes.filter((o: any) => o.status === "em_revisao");
+    expect(F.balanco.observacoes.length).toBe(aprovadas.length);
+    expect(F.balanco.em_revisao).toBe(emRevisao.length);
+    for (const o of F.balanco.observacoes) {
+      expect(o.trecho, o.id).toBeTruthy();
+      expect(o.documento.url, o.id).toMatch(/^https:\/\//);
+      expect(o.revisor, `${o.id}: aprovado exige revisor registrado`).toBeTruthy();
+    }
+    const cautelas = (F.balanco.cautelas || []).join(" ");
+    expect(cautelas).toMatch(/NUNCA são somados nem ranqueados/);
+  });
+
+  it("a SPA declara a pendência de revisão e nunca inventa tabela vazia", () => {
+    expect(appJs).toContain("O lado do balanço — intangível de folha nas DFP");
+    expect(appJs).toMatch(/aguardando revisão\s*\n?\s*editorial/);
+  });
+});
