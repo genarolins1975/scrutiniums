@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-08T10:10:54+00:00",
+ "gerado_em": "2026-08-10T10:46:21+00:00",
  "aviso": "Plataforma acadêmica e analítica. Nada nesta área constitui recomendação de compra ou venda de valores mobiliários, rating ou aconselhamento de investimento.",
  "piloto": false,
  "universo": "bancos e holdings bancárias listados na B3 (18 companhias validadas em 2026-07; BDRs excluídos — demonstrações fora do padrão CVM DFP)",
@@ -65,6 +65,14 @@
      "lucro": 11875000000.0,
      "lucro_ctrl": 11636000000.0,
      "pl": 220017000000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "consolidado",
+     "lucro": 12324000000.0,
+     "lucro_ctrl": 11979000000.0,
+     "pl": 228026000000.0
     }
    ],
    "proventos_por_ano": {
@@ -421,6 +429,14 @@
      "lucro": 5230545000.0,
      "lucro_ctrl": 5230545000.0,
      "pl": 180290406000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "consolidado",
+     "lucro": 7245808000.0,
+     "lucro_ctrl": 7245808000.0,
+     "pl": 182736591000.0
     }
    ],
    "proventos_por_ano": {
@@ -855,6 +871,14 @@
      "lucro": 230210000.0,
      "lucro_ctrl": 230210000.0,
      "pl": 7147593000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "individual",
+     "lucro": 257324000.0,
+     "lucro_ctrl": 257324000.0,
+     "pl": 7258915000.0
     }
    ],
    "proventos_por_ano": {
@@ -1813,6 +1837,14 @@
      "lucro": 278021000.0,
      "lucro_ctrl": 278021000.0,
      "pl": 3024370000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "consolidado",
+     "lucro": 291457000.0,
+     "lucro_ctrl": 291457000.0,
+     "pl": 3151260000.0
     }
    ],
    "proventos_por_ano": {
@@ -2283,6 +2315,14 @@
      "lucro": 37714000.0,
      "lucro_ctrl": 37714000.0,
      "pl": 793435000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "consolidado",
+     "lucro": 35087000.0,
+     "lucro_ctrl": 35087000.0,
+     "pl": 809776000.0
     }
    ],
    "proventos_por_ano": {
@@ -2535,6 +2575,14 @@
      "lucro": 3703000.0,
      "lucro_ctrl": 3703000.0,
      "pl": 145067000.0
+    },
+    {
+     "period_end": "2026-06-30",
+     "kind": "tri",
+     "stmt": "individual",
+     "lucro": 3620000.0,
+     "lucro_ctrl": 3620000.0,
+     "pl": 149499000.0
     }
    ],
    "proventos_por_ano": {
@@ -91251,9 +91299,9 @@
    "stmt": "consolidado",
    "pl_ratio": 10.380461783162048,
    "lpa": 4.067972442490184,
-   "pvp": 2.1163654363403737,
-   "vpa": 19.95280765274902,
-   "pl_base": "2026-03-31",
+   "pvp": 2.0420319358638928,
+   "vpa": 20.679124421411746,
+   "pl_base": "2026-06-30",
    "roe_cia": 20.55962966358053,
    "dist_exercicio": 52181074718.65261,
    "payout": 116.32760710402525,
@@ -91307,9 +91355,9 @@
    "stmt": "consolidado",
    "pl_ratio": 7.663553510476815,
    "lpa": 2.2587432809512666,
-   "pvp": 1.0169577642677226,
-   "vpa": 17.021355859812285,
-   "pl_base": "2026-03-31",
+   "pvp": 1.0033443614184527,
+   "vpa": 17.252302066589007,
+   "pl_base": "2026-06-30",
    "roe_cia": 13.754094017955424,
    "dist_exercicio": 14519290715.441004,
    "payout": 60.68761386982441,
@@ -91391,9 +91439,9 @@
    "stmt": "individual",
    "pl_ratio": 6.119704027874252,
    "lpa": 3.8449571895674524,
-   "pvp": 0.8579032740014716,
-   "vpa": 27.42733442460279,
-   "pl_base": "2026-03-31",
+   "pvp": 0.8447465545374205,
+   "vpa": 27.85450840090721,
+   "pl_base": "2026-06-30",
    "roe_cia": 15.243838663288784,
    "dist_exercicio": 339058143.424,
    "payout": 33.83813806626747,
@@ -91587,9 +91635,9 @@
    "stmt": "consolidado",
    "pl_ratio": 11.547217256436907,
    "lpa": 5.178736891493485,
-   "pvp": 2.446450611135542,
-   "vpa": 24.443575409945957,
-   "pl_base": "2026-03-31",
+   "pvp": 2.3479407712470564,
+   "vpa": 25.46912627963718,
+   "pl_base": "2026-06-30",
    "roe_cia": 30.314648640695353,
    "dist_exercicio": 214861721.624632,
    "payout": 33.53242903321254,
@@ -91666,9 +91714,9 @@
    "stmt": "consolidado",
    "pl_ratio": 7.796428644051338,
    "lpa": 0.5558100421581693,
-   "pvp": 1.7202973803777246,
-   "vpa": 2.5189443306493122,
-   "pl_base": "2026-03-31",
+   "pvp": 1.6855823733970876,
+   "vpa": 2.570822643689625,
+   "pl_base": "2026-06-30",
    "roe_cia": 22.051051459548784,
    "dist_exercicio": 195292009.44000003,
    "payout": 111.54890213796531,
@@ -91722,9 +91770,9 @@
    "stmt": "individual",
    "pl_ratio": 8.26169295883032,
    "lpa": 2.1545220923485036,
-   "pvp": 0.5920613233885033,
-   "vpa": 30.064453286910386,
-   "pl_base": "2026-03-31",
+   "pvp": 0.5745092609315112,
+   "vpa": 30.982964436707288,
+   "pl_base": "2026-06-30",
    "roe_cia": 7.365736148505031,
    "dist_exercicio": 2449876.923408,
    "payout": 23.565572560677182,

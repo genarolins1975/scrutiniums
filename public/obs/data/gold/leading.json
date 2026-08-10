@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-08-08T10:10:53+00:00",
+ "gerado_em": "2026-08-10T10:46:14+00:00",
  "versao_metodologica": "v1.0 (MVP Fase 1)",
  "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes.",
  "sintese": {
-  "texto": "1 de 4 famílias de sinais estão em deterioração e 1 em melhora. As maiores pressões vêm de estresse empresarial e judicial e garantias e patrimônio. A inadimplência observada também já subiu no período — sinais e materialização caminham juntos.",
+  "texto": "2 de 4 famílias de sinais estão em deterioração e 0 em melhora. As maiores pressões vêm de crédito não bancário (fidcs) e estresse empresarial e judicial. A inadimplência observada também já subiu no período — sinais e materialização caminham juntos.",
   "confianca": "moderada",
-  "n_deteriorando": 1,
-  "n_melhorando": 1,
+  "n_deteriorando": 2,
+  "n_melhorando": 0,
   "inad_reagiu": true,
   "cobertura": "4/6 subíndices (Buscas integrado via exportação manual — página Tendências de Busca)"
  },
@@ -777,58 +777,58 @@
   },
   "nao_bancario": {
    "nome": "Crédito Não Bancário (FIDCs)",
-   "z_atual": -1.7,
-   "delta_3m": -3.32,
-   "tendencia": "caindo",
+   "z_atual": 3.33,
+   "delta_3m": 3.33,
+   "tendencia": "subindo",
    "cobertura": "1/1 componentes",
    "confianca": "moderada",
    "contribuicoes": {
-    "fidc_inad_pct": -1.7
+    "fidc_inad_pct": 3.33
    },
    "serie": [
     {
      "p": "202501",
-     "z": -0.44,
+     "z": -0.46,
      "n_comp": 1
     },
     {
      "p": "202502",
-     "z": -0.19,
+     "z": -0.31,
      "n_comp": 1
     },
     {
      "p": "202503",
-     "z": 0.43,
+     "z": 0.09,
      "n_comp": 1
     },
     {
      "p": "202504",
-     "z": 0.15,
+     "z": -0.09,
      "n_comp": 1
     },
     {
      "p": "202505",
-     "z": 0.01,
+     "z": -0.18,
      "n_comp": 1
     },
     {
      "p": "202506",
-     "z": -0.03,
+     "z": -0.2,
      "n_comp": 1
     },
     {
      "p": "202507",
-     "z": -0.97,
+     "z": -0.8,
      "n_comp": 1
     },
     {
      "p": "202508",
-     "z": -0.64,
+     "z": -0.59,
      "n_comp": 1
     },
     {
      "p": "202509",
-     "z": 0.09,
+     "z": -0.13,
      "n_comp": 1
     },
     {
@@ -838,46 +838,51 @@
     },
     {
      "p": "202511",
-     "z": -0.61,
+     "z": -0.58,
      "n_comp": 1
     },
     {
      "p": "202512",
-     "z": 2.01,
+     "z": 1.09,
      "n_comp": 1
     },
     {
      "p": "202601",
-     "z": 1.4,
+     "z": 0.7,
      "n_comp": 1
     },
     {
      "p": "202602",
-     "z": 0.9,
+     "z": 0.39,
      "n_comp": 1
     },
     {
      "p": "202603",
-     "z": 1.62,
+     "z": 0.84,
      "n_comp": 1
     },
     {
      "p": "202604",
-     "z": 0.28,
+     "z": -0.0,
      "n_comp": 1
     },
     {
      "p": "202605",
-     "z": -1.79,
+     "z": -1.32,
      "n_comp": 1
     },
     {
      "p": "202606",
-     "z": -1.7,
+     "z": -1.27,
+     "n_comp": 1
+    },
+    {
+     "p": "202607",
+     "z": 3.33,
      "n_comp": 1
     }
    ],
-   "ultima_ref": "202606"
+   "ultima_ref": "202607"
   }
  },
  "catalogo": [
@@ -2849,6 +2854,10 @@
    {
     "p": "202606",
     "v": 2.202
+   },
+   {
+    "p": "202607",
+    "v": 4.562
    }
   ]
  },

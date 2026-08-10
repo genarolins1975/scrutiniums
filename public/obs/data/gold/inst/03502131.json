@@ -9,13 +9,13 @@
   "sede": "Porto Velho/RO",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 390,
+  "n_pares": 391,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-08T10:10:46+00:00",
+  "atualizado_em": "2026-08-10T10:46:07+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -66,7 +66,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 390,
+  "quantidade": 391,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -248,7 +248,7 @@
    "d_tri": -4.26,
    "vs_pares": "acima",
    "mediana_grupo": 20.46,
-   "percentil": 52.5
+   "percentil": 52.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -265,8 +265,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 1.94,
-   "percentil": 68.6
+   "mediana_grupo": 1.93,
+   "percentil": 68.7
   }
  ],
  "carteira": {
@@ -428,6 +428,7 @@
     -11.78,
     2.93,
     0.66,
+    -0.5,
     -0.05,
     14.13,
     -45.18,
@@ -472,6 +473,7 @@
     0.99,
     25.34,
     5.13,
+    -66.06,
     8.46,
     -1.77,
     3.24,
@@ -662,7 +664,6 @@
     7.05,
     3.38,
     3.29,
-    -20.36,
     0.08,
     4.73,
     4.72,
@@ -738,7 +739,7 @@
     -0.37
    ],
    "meu": 3.6,
-   "mediana": 1.94
+   "mediana": 1.93
   },
   "basileia": {
    "valores": [
@@ -1035,7 +1036,6 @@
     19.94,
     25.43,
     16.05,
-    35.57,
     19.32,
     24.88,
     19.04,
@@ -1191,6 +1191,7 @@
     4.42,
     5.51,
     7.42,
+    1.06,
     10.03,
     3.56,
     4.07,
@@ -1235,6 +1236,7 @@
     6.69,
     8.77,
     2.4,
+    14.1,
     15.22,
     1.28,
     1.97,
@@ -1425,7 +1427,6 @@
     7.32,
     4.33,
     7.11,
-    1.41,
     5.48,
     5.49,
     6.96,

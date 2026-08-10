@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-08T12:02:15+00:00",
+ "gerado_em": "2026-08-10T10:46:25+00:00",
  "familias": [
   {
    "id": "macro",
@@ -12,7 +12,7 @@
    "persistencia": "número de execuções anteriores em que a mesma regra disparou",
    "limitacao": "Séries agregadas: um alerta macro descreve o sistema, nunca uma instituição.",
    "view": "pulse",
-   "ativos": 1,
+   "ativos": 2,
    "arquivo": "alerts.json",
    "disponivel": true
   },
@@ -42,7 +42,7 @@
    "persistencia": "semanas consecutivas fora do limiar",
    "limitacao": "Métrica de disponibilidade técnica do ecossistema; não mede risco de crédito.",
    "view": "openfinance",
-   "ativos": 3,
+   "ativos": 2,
    "arquivo": "openfinance.json",
    "disponivel": true
   },
@@ -79,6 +79,23 @@
  ],
  "alertas": [
   {
+   "id": "macro:stale_data",
+   "familia": "macro",
+   "nivel": "informativo",
+   "titulo": "6 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (101 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (101 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (101 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 6,
+   "limiar": 100,
+   "referencia": null,
+   "fonte": "múltiplas",
+   "evidencia_persistencia": null,
+   "recorrente": false,
+   "link": {
+    "view": "method"
+   },
+   "ordem": 0.94
+  },
+  {
    "id": "macro:comprometimento_high",
    "familia": "macro",
    "nivel": "atencao",
@@ -88,7 +105,7 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "41 execuções anteriores",
+   "evidencia_persistencia": "42 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -458,23 +475,6 @@
     "view": "openfinance"
    },
    "ordem": 9
-  },
-  {
-   "id": "openfinance:taxa de sucesso — dados abertos",
-   "familia": "openfinance",
-   "nivel": "atencao",
-   "titulo": "taxa de sucesso — dados abertos",
-   "detalhe": "96.92 contra limiar 97 há 1 semanas (dado de 2026-07-31).",
-   "valor": 96.92,
-   "limiar": 97,
-   "referencia": "2026-07-31",
-   "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
-   "recorrente": false,
-   "link": {
-    "view": "openfinance"
-   },
-   "ordem": 1
   },
   {
    "id": "openfinance:taxa de sucesso — iniciacao pagamento",

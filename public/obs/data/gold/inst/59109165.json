@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 63,
+  "n_pares": 64,
   "conglomerado_prudencial": "C0080202",
   "capital": "fechado",
   "modelo": "financeira de montadora (financiamento de veículos)",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-08T10:10:50+00:00",
+  "atualizado_em": "2026-08-10T10:46:11+00:00",
   "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela.",
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -29,7 +29,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 12.8% (abaixo da mediana do grupo S3: 16.8%).",
+    "texto": "Basileia de 12.8% (abaixo da mediana do grupo S3: 16.9%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -53,7 +53,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 63,
+  "quantidade": 64,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -118,8 +118,8 @@
   ],
   "quartis_basileia": {
    "q1": 13.5,
-   "mediana": 16.8,
-   "q3": 23.3
+   "mediana": 16.9,
+   "q3": 23.8
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -214,7 +214,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 12.8% (abaixo da mediana do grupo S3: 16.8%).",
+   "texto": "Basileia de 12.8% (abaixo da mediana do grupo S3: 16.9%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -235,8 +235,8 @@
    "unit": "%",
    "d_tri": -0.13,
    "vs_pares": "abaixo",
-   "mediana_grupo": 16.82,
-   "percentil": 7.1
+   "mediana_grupo": 16.9,
+   "percentil": 7.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -245,7 +245,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 9.53,
-   "percentil": 62.9
+   "percentil": 63.5
   },
   {
    "indicador": "ROE do período",
@@ -254,7 +254,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 2.45,
-   "percentil": 3.2
+   "percentil": 4.8
   }
  ],
  "carteira": {
@@ -425,6 +425,7 @@
     3.06,
     5.22,
     0.0,
+    -20.36,
     2.8,
     4.78,
     4.75,
@@ -489,6 +490,7 @@
     16.34,
     34.64,
     25.39,
+    35.57,
     19.65,
     16.02,
     23.79,
@@ -516,7 +518,7 @@
     18.57
    ],
    "meu": 12.82,
-   "mediana": 16.82
+   "mediana": 16.9
   },
   "alav": {
    "valores": [
@@ -557,6 +559,7 @@
     16.62,
     4.53,
     1.97,
+    1.41,
     5.82,
     14.8,
     10.22,
