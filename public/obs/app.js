@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.54.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.55.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -241,7 +241,7 @@ const VIEW_DATA = {
   bets: ["bets", "epae"],
   fraudes: ["fraudes"],
   juros: ["juros"],
-  operacional: ["operacional", "presenca_mun", "penetracao_malha"],
+  operacional: ["operacional", "presenca_mun", "penetracao_malha", "folha_bancos"],
   presmun: ["presenca_mun"],
 };
 async function fetchGold(f) {
@@ -8104,6 +8104,64 @@ function renderOperacional() {
     nível ${CO.fonte.nivel}. Instituição sem correspondente contratado não aparece na tabela: ausência de contrato é
     informação, não zero de rede.</p></div>`;
 
+  /* Quem banca a folha: a cessão da folha de servidores é o leilão em que o
+     banco PAGA ao ente pelo direito de ser o banco dos salários — a porta do
+     consignado. Três camadas com procedência distinta, nunca somadas: os
+     grandes leilões (curados, fonte por nível), o INSS por lote (ordem de
+     preferência) e o fluxo vivo do PNCP (vencedor por CNPJ, contagem — os
+     valores têm semântica mista e não se somam). */
+  const FB = state.data.folha_bancos;
+  const tFolha = !FB || !FB.disponivel ? "" : (() => {
+    const nivelChip = f => `<a href="${attr(f.url)}" target="_blank" rel="noopener" title="${attr(f.nome)}">nível ${f.nivel}</a>`;
+    const tLei = `<div class="card"><h4>Grandes leilões de cessão da folha ${badge("observado")}</h4>
+      <div class="tblwrap"><table>
+        <thead><tr><th>Ente</th><th>Resultado</th><th>Vencedor</th><th class="num">Valor ao ente</th><th>Vigência</th><th>Fonte</th></tr></thead>
+        <tbody>${FB.leiloes.map(l => `<tr>
+          <td>${l.ente}<span class="src"> · ${l.uf}</span></td>
+          <td>${l.data_resultado || "–"}</td>
+          <td><b>${l.vencedor}</b></td>
+          <td class="num" title="${attr(l.valor_nota || "")}">${l.valor != null ? fmt.money(l.valor) : "não homologado em valor único ⓘ"}</td>
+          <td>${l.vigencia || "–"}</td>
+          <td class="src">${(l.fontes || []).map(nivelChip).join(" · ")}</td></tr>`).join("")}
+        </tbody></table></div>
+      <p class="src">Cada leilão tem escopo, prazo e desenho próprios: os valores <b>nunca são somados nem
+      comparados diretamente</b> entre linhas. A nota de cada valor (ⓘ) traz o contexto — em Fortaleza, a mesma
+      folha caiu de R$ 290 mi (2019) para R$ 160 mi (2024) entre ciclos.</p></div>`;
+    const inss = FB.inss;
+    const tInss = `<div class="card"><h4>Folha de benefícios do INSS — pregão ${inss.pregao} ${badge("observado")}</h4>
+      <p style="margin:6px 0">${inss.total_lotes} lotes regionais em ordem de preferência para pagar os benefícios
+      concedidos em ${inss.vigencia}: ${inss.vencedores.map(v => `<b>${v.instituicao}</b> (${v.lotes} ${v.lotes === 1 ? "lote" : "lotes"} — ${v.detalhe})`).join(" e ")}.</p>
+      <p class="src">${inss.leitura}</p>
+      <p class="src">${inss.pendencia}</p></div>`;
+    const P = FB.pncp || {};
+    const tPncp = !P.disponivel ? `<div class="card"><h4>Fluxo do PNCP</h4>
+      <p class="src">${P.motivo || "coleta ainda não disponível"} — a camada volta sozinha na próxima execução do pipeline.</p></div>`
+      : `<div class="card"><h4>O fluxo corrente no PNCP ${badge("observado")}</h4>
+      <p style="margin:6px 0"><b>${fmt.n0(P.total_contratos_if)}</b> contratos de folha com instituição financeira
+      registrados desde a obrigatoriedade da Lei 14.133${P.backfill_completo ? "" : " (backfill em andamento — cobertura ainda parcial, declarada aqui até completar)"} e
+      <b>${fmt.n0(P.total_editais)}</b> editais captados.</p>
+      <div class="ov-2col-eq">
+        <div><h4 style="margin:4px 0">Quem mais vence <span class="src">(contagem de contratos, nunca soma de valores)</span></h4>
+        <div class="tblwrap"><table class="data compact">
+          <thead><tr><th>Instituição</th><th class="num">Contratos</th><th class="num">UFs</th><th class="num">Como receita do ente</th></tr></thead>
+          <tbody>${(P.ranking || []).slice(0, 10).map(r => `<tr><td>${r.banco}</td>
+            <td class="num"><b>${fmt.n0(r.contratos)}</b></td><td class="num">${fmt.n0(r.ufs)}</td>
+            <td class="num">${fmt.n0(r.como_receita)}</td></tr>`).join("")}</tbody></table></div></div>
+        <div><h4 style="margin:4px 0">Contratos recentes</h4>
+        <div class="tblwrap"><table class="data compact">
+          <thead><tr><th>Ente</th><th>Banco</th><th>Assinatura</th><th class="num">Valor</th></tr></thead>
+          <tbody>${(P.recentes || []).slice(0, 8).map(c => `<tr>
+            <td>${c.url ? `<a href="${attr(c.url)}" target="_blank" rel="noopener">${c.municipio || c.ente}</a>` : (c.municipio || c.ente)}<span class="src"> · ${c.uf || "–"}</span></td>
+            <td>${c.banco}</td><td>${c.assinatura || "–"}</td>
+            <td class="num" title="${c.receita ? "cessão onerosa: o banco paga ao ente (receita)" : "valor do contrato como registrado pelo ente"}">${c.valor != null ? fmt.money(c.valor) : "–"}${c.receita ? " ↩" : ""}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">↩ = registrado como receita do ente (cessão onerosa). Valores com semântica mista — nunca somados.</p></div>
+      </div>
+      <p class="src" style="margin-top:8px">${P.criterio_if}</p>
+      <p class="src">${badge("observado")} <a href="${attr(P.fonte.url)}" target="_blank" rel="noopener">${P.fonte.nome}</a> · nível ${P.fonte.nivel}.</p></div>`;
+    return `${sechead("Quem banca a folha dos servidores", "cessão da folha · INSS por lote · contratos no PNCP")}
+      ${tLei}${tInss}${tPncp}`;
+  })();
+
   /* Quadro de pessoal divulgado pela própria instituição (Fase 2). Existe para
      quem não tem registro de companhia aberta e por isso não entrega o item
      10.1 do FRE. Fica em tabela separada porque conceito, escopo e data-base
@@ -8221,7 +8279,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tEmp + tCli + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tAud + tFlags + cob + fontes;
 }
 
 /* Página por município: a resposta à pergunta local — "que atendimento

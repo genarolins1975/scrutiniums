@@ -1,0 +1,101 @@
+{
+  "_comentario": [
+    "Grandes leilões de folha de pagamento — camada curada do folha_bancos.json.",
+    "Cada entrada exige: vencedor, valor com unidade, data do resultado, fonte com URL e nível.",
+    "Níveis: A = documento/página oficial do ente; B = imprensa com fatos congruentes entre veículos.",
+    "Valores NUNCA são somados entre entradas: cada leilão tem escopo, prazo e desenho próprios.",
+    "O leilão do INSS é de ORDEM DE PREFERÊNCIA para pagar novos benefícios (a porta de entrada do",
+    "consignado do beneficiário novo) — objeto distinto da cessão de folha de servidores; nunca comparar valores."
+  ],
+  "leiloes": [
+    {
+      "id": "inss_2024",
+      "ente": "INSS — folha de benefícios (novos benefícios)",
+      "esfera": "Federal",
+      "uf": "BR",
+      "data_resultado": "2024-10-22",
+      "vigencia": "2025-2029",
+      "desenho": "Pregão presencial nº 90.005/2024 (UASG 512006): ordem de preferência em 26 lotes regionais para pagar os benefícios concedidos no período — quem paga o benefício larga na frente no consignado do beneficiário novo.",
+      "vencedor": "Crefisa (25 lotes) e Banco Mercantil (lote 3, MT/MS)",
+      "valor": null,
+      "valor_nota": "Expectativa divulgada de ~R$ 15 bilhões ao INSS em 4 anos (projeção, não valor homologado); os lances por lote estão no Termo de Adjudicação e Homologação (SEI nº 18539061), ainda não extraído — ausência declarada, não zero.",
+      "fontes": [
+        {"nome": "INSS — página oficial do Pregão 90.005/2024 (com Termo de Adjudicação e Homologação)", "url": "https://www.gov.br/inss/pt-br/acesso-a-informacao/licitacoes-e-contratos/licitacoes-administracao-central-em-brasilia-df/pregao-eletronico/2024/pregao-eletronico-no-90-005-2024-pagamento-da-folha-de-beneficios-do-inss", "nivel": "A"},
+        {"nome": "Folha PE — Crefisa vence 25 dos 26 lotes", "url": "https://www.folhape.com.br/economia/crefisa-vence-25-dos-26-lotes-do-leilao-da-folha-do-inss/368559/", "nivel": "B"}
+      ]
+    },
+    {
+      "id": "mg_2026",
+      "ente": "Estado de Minas Gerais — folha dos servidores",
+      "esfera": "Estadual",
+      "uf": "MG",
+      "data_resultado": "2026-06-19",
+      "vigencia": "até 2031",
+      "desenho": "Leilão na Cidade Administrativa (BH) da gestão da folha dos servidores estaduais, pagamentos a fornecedores e recadastramento de inativos.",
+      "vencedor": "Itaú Unibanco",
+      "valor": 2188000000,
+      "valor_nota": "Lance vencedor de R$ 2,188 bilhões ao caixa do Estado — o maior valor já registrado nesta série curada.",
+      "fontes": [
+        {"nome": "Rádio Itatiaia — Governo de Minas leiloa folha e arremata R$ 2,1 bi", "url": "https://www.itatiaia.com.br/politica/governo-de-minas-leiloa-folha-de-pagamento-dos-servidores-e-arremata-r-21-bilhoes/", "nivel": "B"},
+        {"nome": "O Tempo — leilão garante R$ 2,18 bi; contrato até 2031", "url": "https://www.otempo.com.br/politica/2026/6/19/governo-de-minas-leiloa-folha-de-pagamento-e-garante-r-2-18-bilhoes-ao-caixa-do-estado", "nivel": "B"}
+      ]
+    },
+    {
+      "id": "fortaleza_2024",
+      "ente": "Prefeitura de Fortaleza — folha dos servidores",
+      "esfera": "Municipal",
+      "uf": "CE",
+      "data_resultado": "2024-07-09",
+      "vigencia": "5 anos desde nov/2024",
+      "desenho": "Leilão da folha de ~57 mil servidores municipais (~R$ 500 milhões/mês).",
+      "vencedor": "Banco Santander",
+      "valor": 160000000,
+      "valor_nota": "R$ 160 milhões ao Tesouro municipal — abaixo dos R$ 290 milhões do ciclo anterior (2019): o preço da mesma folha caiu 45% entre ciclos.",
+      "fontes": [
+        {"nome": "A Notícia do Ceará — Santander assume a folha de Fortaleza", "url": "https://anoticiadoceara.com.br/santander-e-o-novo-responsavel-pela-folha-de-pagamento-dos-servidores-municipais-de-fortaleza/", "nivel": "B"}
+      ]
+    },
+    {
+      "id": "fortaleza_2019",
+      "ente": "Prefeitura de Fortaleza — folha dos servidores (ciclo anterior)",
+      "esfera": "Municipal",
+      "uf": "CE",
+      "data_resultado": "2019",
+      "vigencia": "5 anos",
+      "desenho": "Ciclo anterior da mesma folha — registrado para dar régua de comparação ao leilão de 2024.",
+      "vencedor": "Banco Bradesco",
+      "valor": 290000000,
+      "valor_nota": "R$ 290 milhões, conforme reportado na cobertura do leilão seguinte.",
+      "fontes": [
+        {"nome": "A Notícia do Ceará — cobertura do leilão de 2024, citando o ciclo de 2019", "url": "https://anoticiadoceara.com.br/santander-e-o-novo-responsavel-pela-folha-de-pagamento-dos-servidores-municipais-de-fortaleza/", "nivel": "B"}
+      ]
+    },
+    {
+      "id": "vitoria_2021",
+      "ente": "Prefeitura de Vitória — folha dos servidores",
+      "esfera": "Municipal",
+      "uf": "ES",
+      "data_resultado": "2021-06-30",
+      "vigencia": "5 anos",
+      "desenho": "Disputa lance a lance entre Bradesco, Itaú e Santander pela folha de ~16 mil servidores ativos, inativos e pensionistas; estimativa inicial da prefeitura era R$ 25 milhões.",
+      "vencedor": "Banco Bradesco",
+      "valor": 39100000,
+      "valor_nota": "R$ 39,1 milhões — 56% acima da estimativa inicial do ente.",
+      "fontes": [
+        {"nome": "A Gazeta — folha de Vitória negociada por R$ 39 milhões", "url": "https://www.agazeta.com.br/colunas/beatriz-seixas/folha-de-pagamento-da-prefeitura-de-vitoria-e-negociada-por-r-39-milhoes-0721", "nivel": "B"}
+      ]
+    }
+  ],
+  "inss_lotes": {
+    "pregao": "90.005/2024",
+    "sessao": "2024-10-22",
+    "vigencia": "2025-2029",
+    "total_lotes": 26,
+    "vencedores": [
+      {"instituicao": "Crefisa", "lotes": 25, "detalhe": "todos os lotes exceto o 3"},
+      {"instituicao": "Banco Mercantil", "lotes": 1, "detalhe": "lote 3 — municípios de MT e MS"}
+    ],
+    "leitura": "Vencer o lote dá a preferência para PAGAR os novos benefícios da região — e, com isso, a relação bancária com o beneficiário novo, que é a porta do consignado INSS. Não é compra de carteira de consignado.",
+    "pendencia": "Lances por lote no Termo de Adjudicação e Homologação (SEI nº 18539061) — extração futura pelo processo da Fase 2."
+  }
+}

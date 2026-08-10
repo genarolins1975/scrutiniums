@@ -97,7 +97,7 @@ describe("presenca_mun.json: o mapa não diz mais do que pode", () => {
 
   it("a aba carrega o gold e desenha o mapa como categórico", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    expect(app).toContain('operacional: ["operacional", "presenca_mun", "penetracao_malha"]');
+    expect(app).toContain('operacional: ["operacional", "presenca_mun", "penetracao_malha", "folha_bancos"]');
     expect(app).toContain("Presença bancária física por município");
     expect(app).toContain("Mapa categórico");
     expect(app).toContain("o que este mapa não diz");
