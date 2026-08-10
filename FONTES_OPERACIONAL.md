@@ -263,3 +263,24 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
 - **Rodada 2 (proposta):** cruzar com o intangível "direitos de gestão de
   folhas de pagamento" das DFP/ITR (CVM) — o que os bancos pagam pela folha
   pelo lado do balanço.
+
+## 9. CVM/ENET — intangível de folha nas DFP (Fase 2, rodada 2 do painel de folha)
+
+- **Fonte:** notas explicativas das DFP 31/12/2025, baixadas pelo canal oficial
+  ENET (`rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx`, links do CSV-mestre
+  `dfp_cia_aberta_{ano}.zip` de dados.cvm.gov.br). O plano de contas
+  ESTRUTURADO (BPA) só traz o agregado do intangível — verificado: zero contas
+  com "folha" — então a abertura vem só das notas (PDF), pelo processo da
+  Fase 2 (extração com documento, página, trecho; publica só `aprovado`).
+- **Curadoria:** `pipeline/curated/folha_balanco.json`. O que cada banco
+  divulga é DIFERENTE, e cada observação declara `exclusivo_folha`:
+  - **BB** isola "Direitos de gestão de folhas de pagamento" (nota 16);
+  - **Bradesco** publica a categoria mais ampla "Aquisição de direitos
+    financeiros" (nota 15, IFRS) — inclui folha, não exclusivamente;
+  - **Itaú** mistura folha em "Outros Ativos Intangíveis" (nota 14), mas
+    divulga a despesa de amortização específica de folha em texto;
+  - **Santander** não isola (relacionamento com clientes adquiridos +
+    prêmios de folha em recebíveis) — ausência declarada.
+- **Regra editorial:** conceitos e unidades não comparáveis entre bancos
+  (R$ mil × R$ milhões; isolado × categoria ampla) — nunca somar, nunca
+  ranquear; comparabilidade C, cada série vale contra ela mesma.

@@ -8158,8 +8158,29 @@ function renderOperacional() {
       </div>
       <p class="src" style="margin-top:8px">${P.criterio_if}</p>
       <p class="src">${badge("observado")} <a href="${attr(P.fonte.url)}" target="_blank" rel="noopener">${P.fonte.nome}</a> · nível ${P.fonte.nivel}.</p></div>`;
-    return `${sechead("Quem banca a folha dos servidores", "cessão da folha · INSS por lote · contratos no PNCP")}
-      ${tLei}${tInss}${tPncp}`;
+    /* Rodada 2 — o lado do balanço (Fase 2): só observações APROVADAS são
+       exibidas, com evidência (documento, página, trecho). Em revisão vira
+       contagem, nunca número. Conceitos não comparáveis entre bancos. */
+    const B = FB.balanco;
+    const tBal = !B ? "" : (B.observacoes || []).length === 0
+      ? `<div class="card"><h4>O lado do balanço — intangível de folha nas DFP</h4>
+        <p class="src">${fmt.n0(B.em_revisao)} extração(ões) das notas explicativas das DFP aguardando revisão
+        editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>`
+      : `<div class="card"><h4>O lado do balanço — intangível de folha nas DFP ${badge("observado")}</h4>
+        <p style="margin:6px 0">${B.leitura}</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Banco</th><th>Métrica</th><th class="num">Valor</th><th>Ref.</th><th>Evidência</th></tr></thead>
+          <tbody>${B.observacoes.map(o => `<tr>
+            <td>${o.banco}${o.exclusivo_folha ? "" : ` <span class="seal aprox" title="a categoria contábil é mais ampla que folha — declarado na métrica">não exclusivo</span>`}</td>
+            <td><span title="${attr(o.trecho)}">${o.metrica}</span></td>
+            <td class="num"><b>${o.valor != null ? fmt.n0(o.valor) : "–"}</b> <span class="src">${o.unidade || ""}</span></td>
+            <td>${o.data_ref || "–"}</td>
+            <td class="src"><a href="${attr(o.documento.url)}" target="_blank" rel="noopener" title="${attr(o.documento.titulo)}">${o.pagina}</a></td></tr>`).join("")}
+          </tbody></table></div>
+        ${(B.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+        <p class="src">${badge("observado")} ${B.fonte.nome} · nível ${B.fonte.nivel}${B.em_revisao ? ` · ${fmt.n0(B.em_revisao)} extração(ões) ainda em revisão` : ""}.</p></div>`;
+    return `${sechead("Quem banca a folha dos servidores", "cessão da folha · INSS por lote · contratos no PNCP · balanço")}
+      ${tLei}${tInss}${tPncp}${tBal}`;
   })();
 
   /* Quadro de pessoal divulgado pela própria instituição (Fase 2). Existe para
