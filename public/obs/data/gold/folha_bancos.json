@@ -1,0 +1,1303 @@
+{
+ "disponivel": true,
+ "gerado_em": "2026-08-10T17:15:43+00:00",
+ "titulo": "Quem banca a folha dos servidores",
+ "leiloes": [
+  {
+   "id": "mg_2026",
+   "ente": "Estado de Minas Gerais — folha dos servidores",
+   "esfera": "Estadual",
+   "uf": "MG",
+   "data_resultado": "2026-06-19",
+   "vigencia": "até 2031",
+   "desenho": "Leilão na Cidade Administrativa (BH) da gestão da folha dos servidores estaduais, pagamentos a fornecedores e recadastramento de inativos.",
+   "vencedor": "Itaú Unibanco",
+   "valor": 2188000000,
+   "valor_nota": "Lance vencedor de R$ 2,188 bilhões ao caixa do Estado — o maior valor já registrado nesta série curada.",
+   "fontes": [
+    {
+     "nome": "Rádio Itatiaia — Governo de Minas leiloa folha e arremata R$ 2,1 bi",
+     "url": "https://www.itatiaia.com.br/politica/governo-de-minas-leiloa-folha-de-pagamento-dos-servidores-e-arremata-r-21-bilhoes/",
+     "nivel": "B"
+    },
+    {
+     "nome": "O Tempo — leilão garante R$ 2,18 bi; contrato até 2031",
+     "url": "https://www.otempo.com.br/politica/2026/6/19/governo-de-minas-leiloa-folha-de-pagamento-e-garante-r-2-18-bilhoes-ao-caixa-do-estado",
+     "nivel": "B"
+    }
+   ]
+  },
+  {
+   "id": "inss_2024",
+   "ente": "INSS — folha de benefícios (novos benefícios)",
+   "esfera": "Federal",
+   "uf": "BR",
+   "data_resultado": "2024-10-22",
+   "vigencia": "2025-2029",
+   "desenho": "Pregão presencial nº 90.005/2024 (UASG 512006): ordem de preferência em 26 lotes regionais para pagar os benefícios concedidos no período — quem paga o benefício larga na frente no consignado do beneficiário novo.",
+   "vencedor": "Crefisa (25 lotes) e Banco Mercantil (lote 3, MT/MS)",
+   "valor": null,
+   "valor_nota": "Expectativa divulgada de ~R$ 15 bilhões ao INSS em 4 anos (projeção, não valor homologado); os lances por lote estão no Termo de Adjudicação e Homologação (SEI nº 18539061), ainda não extraído — ausência declarada, não zero.",
+   "fontes": [
+    {
+     "nome": "INSS — página oficial do Pregão 90.005/2024 (com Termo de Adjudicação e Homologação)",
+     "url": "https://www.gov.br/inss/pt-br/acesso-a-informacao/licitacoes-e-contratos/licitacoes-administracao-central-em-brasilia-df/pregao-eletronico/2024/pregao-eletronico-no-90-005-2024-pagamento-da-folha-de-beneficios-do-inss",
+     "nivel": "A"
+    },
+    {
+     "nome": "Folha PE — Crefisa vence 25 dos 26 lotes",
+     "url": "https://www.folhape.com.br/economia/crefisa-vence-25-dos-26-lotes-do-leilao-da-folha-do-inss/368559/",
+     "nivel": "B"
+    }
+   ]
+  },
+  {
+   "id": "fortaleza_2024",
+   "ente": "Prefeitura de Fortaleza — folha dos servidores",
+   "esfera": "Municipal",
+   "uf": "CE",
+   "data_resultado": "2024-07-09",
+   "vigencia": "5 anos desde nov/2024",
+   "desenho": "Leilão da folha de ~57 mil servidores municipais (~R$ 500 milhões/mês).",
+   "vencedor": "Banco Santander",
+   "valor": 160000000,
+   "valor_nota": "R$ 160 milhões ao Tesouro municipal — abaixo dos R$ 290 milhões do ciclo anterior (2019): o preço da mesma folha caiu 45% entre ciclos.",
+   "fontes": [
+    {
+     "nome": "A Notícia do Ceará — Santander assume a folha de Fortaleza",
+     "url": "https://anoticiadoceara.com.br/santander-e-o-novo-responsavel-pela-folha-de-pagamento-dos-servidores-municipais-de-fortaleza/",
+     "nivel": "B"
+    }
+   ]
+  },
+  {
+   "id": "vitoria_2021",
+   "ente": "Prefeitura de Vitória — folha dos servidores",
+   "esfera": "Municipal",
+   "uf": "ES",
+   "data_resultado": "2021-06-30",
+   "vigencia": "5 anos",
+   "desenho": "Disputa lance a lance entre Bradesco, Itaú e Santander pela folha de ~16 mil servidores ativos, inativos e pensionistas; estimativa inicial da prefeitura era R$ 25 milhões.",
+   "vencedor": "Banco Bradesco",
+   "valor": 39100000,
+   "valor_nota": "R$ 39,1 milhões — 56% acima da estimativa inicial do ente.",
+   "fontes": [
+    {
+     "nome": "A Gazeta — folha de Vitória negociada por R$ 39 milhões",
+     "url": "https://www.agazeta.com.br/colunas/beatriz-seixas/folha-de-pagamento-da-prefeitura-de-vitoria-e-negociada-por-r-39-milhoes-0721",
+     "nivel": "B"
+    }
+   ]
+  },
+  {
+   "id": "fortaleza_2019",
+   "ente": "Prefeitura de Fortaleza — folha dos servidores (ciclo anterior)",
+   "esfera": "Municipal",
+   "uf": "CE",
+   "data_resultado": "2019",
+   "vigencia": "5 anos",
+   "desenho": "Ciclo anterior da mesma folha — registrado para dar régua de comparação ao leilão de 2024.",
+   "vencedor": "Banco Bradesco",
+   "valor": 290000000,
+   "valor_nota": "R$ 290 milhões, conforme reportado na cobertura do leilão seguinte.",
+   "fontes": [
+    {
+     "nome": "A Notícia do Ceará — cobertura do leilão de 2024, citando o ciclo de 2019",
+     "url": "https://anoticiadoceara.com.br/santander-e-o-novo-responsavel-pela-folha-de-pagamento-dos-servidores-municipais-de-fortaleza/",
+     "nivel": "B"
+    }
+   ]
+  }
+ ],
+ "inss": {
+  "pregao": "90.005/2024",
+  "sessao": "2024-10-22",
+  "vigencia": "2025-2029",
+  "total_lotes": 26,
+  "vencedores": [
+   {
+    "instituicao": "Crefisa",
+    "lotes": 25,
+    "detalhe": "todos os lotes exceto o 3"
+   },
+   {
+    "instituicao": "Banco Mercantil",
+    "lotes": 1,
+    "detalhe": "lote 3 — municípios de MT e MS"
+   }
+  ],
+  "leitura": "Vencer o lote dá a preferência para PAGAR os novos benefícios da região — e, com isso, a relação bancária com o beneficiário novo, que é a porta do consignado INSS. Não é compra de carteira de consignado.",
+  "pendencia": "Lances por lote no Termo de Adjudicação e Homologação (SEI nº 18539061) — extração futura pelo processo da Fase 2."
+ },
+ "pncp": {
+  "disponivel": true,
+  "total_contratos_if": 325,
+  "total_editais": 707,
+  "backfill_completo": true,
+  "ranking": [
+   {
+    "cnpj8": "00360305",
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "contratos": 126,
+    "ufs": 21,
+    "como_receita": 18
+   },
+   {
+    "cnpj8": "60746948",
+    "banco": "BANCO BRADESCO S/A",
+    "contratos": 68,
+    "ufs": 14,
+    "como_receita": 22
+   },
+   {
+    "cnpj8": "90400888",
+    "banco": "BANCO SANTANDER (BRASIL) S.A.",
+    "contratos": 29,
+    "ufs": 10,
+    "como_receita": 12
+   },
+   {
+    "cnpj8": "60701190",
+    "banco": "ITAU UNIBANCO S.A.",
+    "contratos": 16,
+    "ufs": 5,
+    "como_receita": 2
+   },
+   {
+    "cnpj8": "00000000",
+    "banco": "BANCO DO BRASIL SA",
+    "contratos": 16,
+    "ufs": 8,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "92702067",
+    "banco": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
+    "contratos": 5,
+    "ufs": 1,
+    "como_receita": 2
+   },
+   {
+    "cnpj8": "25404542",
+    "banco": "COOPERATIVA DE CREDITO CREDIVAG LTDA. - SICOOB CREDIVAG",
+    "contratos": 4,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "22724710",
+    "banco": "COOP. DE CRÉD LTDA- SICOOB CREDIVERTENTES",
+    "contratos": 3,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "01604998",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "78907607",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CENTRO SUL - SICREDI CENTRO SUL PR/SC/RJ",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "87733770",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "87900601",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMEN",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "81099491",
+    "banco": "COOPERATIVA DE CREDITO  POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD   SICREDI VALE DO PIQUIRI ABCDP",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "89990501",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DE IBIRAIARAS - SICREDI IBIRAIARAS RS/MG",
+    "contratos": 2,
+    "ufs": 2,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "00000208",
+    "banco": "Brb - Banco De Brasilia S/a",
+    "contratos": 2,
+    "ufs": 2,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "02173447",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO CENTRO NORDESTE",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "03065046",
+    "banco": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO NOROESTE DO ESTADO DE SÃO PAULO - SICREDI NOROEST",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "02448310",
+    "banco": "COOP. DE CREDITO E INVEST. COM INTERACAO SOLIDARIA PROGRESSO - CRESOL PROGRESSO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "87781530",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO INTEGRACAO DE ESTADOS DO RS, SC E MG SICREDI INTEGRACAO DE ESTADOS RS/SC/MG",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "05241619",
+    "banco": "COOPERATIVA DE CREDITO SICOOB PRIMAVERA",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "54190525",
+    "banco": "SICOOB CRESSEM",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "05231945",
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA UNIAO DOS VALES - CRESOL UNIAO DOS VALES",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "89468565",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DA REGIAO DA PRODUCAO - SICREDI REGIAO DA PRODUCAO RS/SC/MG",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "08624548",
+    "banco": "COOPERATIVA DE CREDITO E INVESTIMENTO COM INTERACAO SOLIDARIA DE MINAS GERAIS - CRESOL MINAS GERAIS",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "71238232",
+    "banco": "COOPERATIVA DE CREDITO DO CENTRO SUL MINEIRO LTDA. SICOOB CENTRO SUL MINEIRO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "00416968",
+    "banco": "Banco Inter S.a.",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "62232889",
+    "banco": "Banco Daycoval S.a.",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "78825270",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DE ASSOCIADOS - SICOOB MAXICREDITO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "05269976",
+    "banco": "COOPERATIVA DE CREDITO E ECONOMIA COM INTERACAO SOLIDARIA DE FORMOSA DO SUL - CRESOL FORMOSA",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "92874270",
+    "banco": "BANCO DIGIMAIS S.A.",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "05276770",
+    "banco": "COOPERATIVA DE CREDITO E INVESTIMENTO COM INTERACAO SOLIDARIA FRONTEIRAS PR/SC/SP/ES - CRESOL FRONTE",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "03320525",
+    "banco": "COOPERATIVA DE CREDITO ARACOOP LTDA - SICOOB ARACOOP",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "02843443",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DO NORTE E NORDESTE DE SANTA CATARINA - SICREDI NORTE SC",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "10736214",
+    "banco": "Cooperativa De Credito, Poupanca E Investimento Do Planalto Central - Sicredi Planalto Central",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "27098060",
+    "banco": "Banco Digio S.A.",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "25536764",
+    "banco": "COOPERATIVA DE CREDITO CREDPLUS LTDA. - SICOO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "73398646",
+    "banco": "SOCIEDADE COOPERATIVA DE CRÉDITO COOPERE LTDA.- SICOOB COOPERE",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "22749014",
+    "banco": "Cooperativa De Credito Da Regiao Central De Minas Ltda. - Sicoob Uniao Central",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "22656789",
+    "banco": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA.-SICOOB CREDISUDESTE",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "03459850",
+    "banco": "COOPERATIVA DE CREDITO SICOOB METROPOLITANO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "03965737",
+    "banco": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA VANGUARDA - CRESOL VANGUARDA",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "37076205",
+    "banco": "SICOOB JUDICIARIO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "11478534",
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "79086997",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO PARANAPANEMA SERRANA PR/SP/RJ -",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "87780268",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO UNIAO DE ESTADOS RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI UNIESTADOS",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "10664513",
+    "banco": "BANCO AGIBANK S.A",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "14046512",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMINISSAO DA MARG",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "31895683",
+    "banco": "Banco Industrial do Brasil S.A",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "38588174",
+    "banco": "COOPERATIVA DE CREDITO CREDICOPE LTDA. - SICOOB CREDICOPE",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "17361536",
+    "banco": "COOPERATIVA DE CREDITO DA REGIAO E COLAR METROPOLITANO DO VALE DO ACO LTDA - SICOOB COSMIPA",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "08742188",
+    "banco": "SICOOB INTEGRAÇÃO COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO UNIÃO E NEGÓCIOS - SICOOB INTEGRAÇÃO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "00971300",
+    "banco": "COOPERATIVA DE CREDITO RURAL COM INTERAÇÃO SOLIDARIA PIONEIR",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "87784088",
+    "banco": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO SUL MINAS DO RS E MG - SICREDI SUL MINAS RS/MG",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "79342069",
+    "banco": "SICREDI UNIÃO PRSP",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "25798596",
+    "banco": "COOPERATIVA DE CREDITO CREDIVAR LTDA. - SICOOB CRE",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "90608712",
+    "banco": "COOPERATIVA DE CREDITO SICREDI SERRANA RS/ES",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
+   },
+   {
+    "cnpj8": "91586982",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
+   }
+  ],
+  "recentes": [
+   {
+    "controle": "46668596000101-2-000029/2026",
+    "ente": "MUNICIPIO DE CRUZEIRO",
+    "esfera": "Municipal",
+    "municipio": "Cruzeiro",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-08-06",
+    "vig_fim": "2031-08-06",
+    "valor": 3511628.6,
+    "receita": false,
+    "banco": "ITAU UNIBANCO S/A",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/46668596000101/2026/29"
+   },
+   {
+    "controle": "08109126000100-2-000482/2026",
+    "ente": "MUNICIPIO DE CURRAIS NOVOS",
+    "esfera": "Municipal",
+    "municipio": "Currais Novos",
+    "uf": "RN",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-05",
+    "vig_fim": "2031-08-04",
+    "valor": 0.6,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/08109126000100/2026/482"
+   },
+   {
+    "controle": "07615750000117-2-000067/2026",
+    "ente": "MUNICIPIO DE JAGUARUANA",
+    "esfera": "Municipal",
+    "municipio": "Jaguaruana",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-30",
+    "vig_fim": "2027-07-30",
+    "valor": 1200100.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07615750000117/2026/67"
+   },
+   {
+    "controle": "18675975000185-2-000239/2026",
+    "ente": "MUNICIPIO DE CAMBUI",
+    "esfera": "Municipal",
+    "municipio": "Cambuí",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-30",
+    "vig_fim": "2031-07-30",
+    "valor": 2160000.0,
+    "receita": true,
+    "banco": "ITAU UNIBANCO S.A.",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/18675975000185/2026/239"
+   },
+   {
+    "controle": "06769798000117-2-000342/2026",
+    "ente": "MUNICIPIO DE BARRA DO CORDA",
+    "esfera": "Municipal",
+    "municipio": "Barra do Corda",
+    "uf": "MA",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-07-27",
+    "vig_fim": "2031-07-27",
+    "valor": 6200000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/06769798000117/2026/342"
+   },
+   {
+    "controle": "18125146000129-2-000268/2026",
+    "ente": "MUNICIPIO DE BURITIS",
+    "esfera": "Municipal",
+    "municipio": "Buritis",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-07-24",
+    "vig_fim": "2031-07-24",
+    "valor": 1400000.0,
+    "receita": true,
+    "banco": "Caixa Economica Federal",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/18125146000129/2026/268"
+   },
+   {
+    "controle": "08349045000188-2-000001/2026",
+    "ente": "MUNICIPIO DE LUCRECIA",
+    "esfera": "Municipal",
+    "municipio": "Lucrécia",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-21",
+    "vig_fim": "2031-07-16",
+    "valor": 30100.0,
+    "receita": true,
+    "banco": "BANCO BRADESCO SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/08349045000188/2026/1"
+   },
+   {
+    "controle": "83102830000157-2-001215/2026",
+    "ente": "MUNICIPIO DE BARRA VELHA",
+    "esfera": "Municipal",
+    "municipio": "Barra Velha",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-07-13",
+    "vig_fim": "2031-07-13",
+    "valor": 2000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL-CEF",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83102830000157/2026/1215"
+   },
+   {
+    "controle": "17912015000129-2-000034/2026",
+    "ente": "MUNICIPIO DE ALBERTINA",
+    "esfera": "Municipal",
+    "municipio": "Albertina",
+    "uf": "MG",
+    "modalidade": "Pregão - Presencial",
+    "assinatura": "2026-07-08",
+    "vig_fim": "2031-07-09",
+    "valor": 50000.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
+    "cnpj8": "01604998",
+    "url": "https://pncp.gov.br/contratos/17912015000129/2026/34"
+   },
+   {
+    "controle": "79373767000116-2-000633/2026",
+    "ente": "MUNICIPIO DE APIUNA",
+    "esfera": "Municipal",
+    "municipio": "Apiúna",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-07-08",
+    "vig_fim": "2031-07-08",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "BANCO DO BRASIL SA",
+    "cnpj8": "00000000",
+    "url": "https://pncp.gov.br/contratos/79373767000116/2026/633"
+   },
+   {
+    "controle": "18715409000150-2-000128/2026",
+    "ente": "MUNICIPIO DE SANTA LUZIA",
+    "esfera": "Municipal",
+    "municipio": "Santa Luzia",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-07",
+    "vig_fim": "2027-07-06",
+    "valor": 7826529.0,
+    "receita": false,
+    "banco": "ITAU UNIBANCO S.A.",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/18715409000150/2026/128"
+   },
+   {
+    "controle": "07248660000135-2-000170/2026",
+    "ente": "DEFENSORIA PUBLICA DO ESTADO DO TOCANTINS",
+    "esfera": "Estadual",
+    "municipio": "Palmas",
+    "uf": "TO",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-03",
+    "vig_fim": "2031-09-07",
+    "valor": 2412548.11,
+    "receita": true,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07248660000135/2026/170"
+   },
+   {
+    "controle": "18017392000167-2-000152/2026",
+    "ente": "MUNICIPIO DE JANAUBA",
+    "esfera": "Municipal",
+    "municipio": "Janaúba",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-02",
+    "vig_fim": "2031-07-02",
+    "valor": 4000000.0,
+    "receita": false,
+    "banco": "BANCO SANTANDER BRASIL S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/18017392000167/2026/152"
+   },
+   {
+    "controle": "78121878000172-2-000087/2026",
+    "ente": "MUNICIPIO DE CAFELANDIA",
+    "esfera": "Municipal",
+    "municipio": "Cafelândia",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-01",
+    "vig_fim": "2031-06-30",
+    "valor": 550535.0,
+    "receita": false,
+    "banco": "COOP. DE CREDITO E INVEST. COM INTERACAO SOLIDARIA PROGRESSO - CRESOL PROGRESSO",
+    "cnpj8": "02448310",
+    "url": "https://pncp.gov.br/contratos/78121878000172/2026/87"
+   },
+   {
+    "controle": "01612501000191-2-000037/2026",
+    "ente": "MUNICIPIO DE SERRANOPOLIS DE MINAS",
+    "esfera": "Municipal",
+    "municipio": "Serranópolis de Minas",
+    "uf": "MG",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-07-01",
+    "vig_fim": "2031-07-01",
+    "valor": 1.0,
+    "receita": true,
+    "banco": "COOPERATIVA DE CREDITO CREDIVAG LTDA. -",
+    "cnpj8": "25404542",
+    "url": "https://pncp.gov.br/contratos/01612501000191/2026/37"
+   },
+   {
+    "controle": "03442597000112-2-000119/2026",
+    "ente": "MUNICIPIO DE MARACAJU",
+    "esfera": "Municipal",
+    "municipio": "Maracaju",
+    "uf": "MS",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-06-27",
+    "vig_fim": "2031-06-01",
+    "valor": 2800000.0,
+    "receita": false,
+    "banco": "CEF - CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/03442597000112/2026/119"
+   },
+   {
+    "controle": "03073673000160-2-000051/2026",
+    "ente": "MUNICIPIO DE BONITO",
+    "esfera": "Municipal",
+    "municipio": "Bonito",
+    "uf": "MS",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-06-26",
+    "vig_fim": "2031-06-25",
+    "valor": 1600000.0,
+    "receita": true,
+    "banco": "Caixa Economica Federal",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/03073673000160/2026/51"
+   },
+   {
+    "controle": "45511847000179-2-000094/2026",
+    "ente": "MUNICIPIO DE ARACATUBA",
+    "esfera": "Municipal",
+    "municipio": "Araçatuba",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-06-26",
+    "vig_fim": "2031-06-25",
+    "valor": 12300000.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/45511847000179/2026/94"
+   },
+   {
+    "controle": "82909409000190-2-000361/2026",
+    "ente": "MUNICIPIO DE IMBITUBA",
+    "esfera": "Municipal",
+    "municipio": "Imbituba",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-06-19",
+    "vig_fim": "2031-06-19",
+    "valor": 3500000.0,
+    "receita": false,
+    "banco": "BANCO SANTANDER (BRASIL) S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/82909409000190/2026/361"
+   },
+   {
+    "controle": "07620701000172-2-000012/2026",
+    "ente": "MUNICIPIO DE BREJO SANTO",
+    "esfera": "Municipal",
+    "municipio": "Brejo Santo",
+    "uf": "CE",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-06-17",
+    "vig_fim": "2031-06-17",
+    "valor": 1743989.14,
+    "receita": true,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/07620701000172/2026/12"
+   },
+   {
+    "controle": "81648859000103-2-000038/2026",
+    "ente": "MUNICIPIO DE BITURUNA",
+    "esfera": "Municipal",
+    "municipio": "Bituruna",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-06-16",
+    "vig_fim": "2027-06-16",
+    "valor": 250000.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CENTRO SUL - SICREDI CENTRO SUL PR/SC/RJ",
+    "cnpj8": "78907607",
+    "url": "https://pncp.gov.br/contratos/81648859000103/2026/38"
+   },
+   {
+    "controle": "08160467000100-2-000029/2026",
+    "ente": "MUNICIPIO DE SAO BENTO DO TRAIRI",
+    "esfera": "Municipal",
+    "municipio": "São Bento do Trairí",
+    "uf": "RN",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-06-11",
+    "vig_fim": "2031-06-11",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/08160467000100/2026/29"
+   },
+   {
+    "controle": "18307470000168-2-000031/2026",
+    "ente": "MUNICIPIO DE SAO GERALDO DA PIEDADE",
+    "esfera": "Municipal",
+    "municipio": "São Geraldo da Piedade",
+    "uf": "MG",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-06-11",
+    "vig_fim": "2031-06-11",
+    "valor": 0.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO INTEGRACAO DE ESTADOS DO RS, SC E MG SICREDI INTEGRACAO DE ESTADOS RS/SC/MG",
+    "cnpj8": "87781530",
+    "url": "https://pncp.gov.br/contratos/18307470000168/2026/31"
+   },
+   {
+    "controle": "82575812000120-2-000664/2026",
+    "ente": "MUNICIPIO DE PORTO BELO",
+    "esfera": "Municipal",
+    "municipio": "Porto Belo",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-06-11",
+    "vig_fim": "2031-06-11",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/82575812000120/2026/664"
+   },
+   {
+    "controle": "48568372000145-2-000002/2026",
+    "ente": "CAMARA MUNICIPAL DE SAO CAETANO DO SUL",
+    "esfera": "Municipal",
+    "municipio": "São Caetano do Sul",
+    "uf": "SP",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-06-10",
+    "vig_fim": "2031-06-09",
+    "valor": 0.0,
+    "receita": true,
+    "banco": "BANCO DO BRASIL S.A.",
+    "cnpj8": "00000000",
+    "url": "https://pncp.gov.br/contratos/48568372000145/2026/2"
+   },
+   {
+    "controle": "15023963000188-2-000010/2026",
+    "ente": "MUNICIPIO DE NOVA BRASILANDIA",
+    "esfera": "Municipal",
+    "municipio": "Nova Brasilândia",
+    "uf": "MT",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-06-03",
+    "vig_fim": "2031-06-03",
+    "valor": 157500.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO SICOOB PRIMAVERA",
+    "cnpj8": "05241619",
+    "url": "https://pncp.gov.br/contratos/15023963000188/2026/10"
+   },
+   {
+    "controle": "83102277000152-2-000454/2026",
+    "ente": "MUNICIPIO DE ITAJAI",
+    "esfera": "Municipal",
+    "municipio": "Itajaí",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-06-03",
+    "vig_fim": "2031-06-08",
+    "valor": 28600200.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/83102277000152/2026/454"
+   },
+   {
+    "controle": "27142058000711-2-000002/2026",
+    "ente": "MUNICIPIO DE VITORIA",
+    "esfera": "Municipal",
+    "municipio": "Vitória",
+    "uf": "ES",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-27",
+    "vig_fim": "2031-07-07",
+    "valor": 31073000.0,
+    "receita": false,
+    "banco": "BANCO SANTANDER (BRASIL) S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/27142058000711/2026/2"
+   },
+   {
+    "controle": "18296681000142-2-000173/2026",
+    "ente": "MUNICIPIO DE POMPEU",
+    "esfera": "Municipal",
+    "municipio": "Pompéu",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-05-27",
+    "vig_fim": "2031-05-27",
+    "valor": 1000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL.",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/18296681000142/2026/173"
+   },
+   {
+    "controle": "22934889000117-2-000046/2026",
+    "ente": "MUNICIPIO DE NOVA LIMA",
+    "esfera": "Municipal",
+    "municipio": "Nova Lima",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-26",
+    "vig_fim": "2031-05-26",
+    "valor": 8830000.0,
+    "receita": false,
+    "banco": "Banco Santander (Brasil) S.A.",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/22934889000117/2026/46"
+   },
+   {
+    "controle": "14217327000124-2-000141/2026",
+    "ente": "MUNICIPIO DE PAULO AFONSO",
+    "esfera": "Municipal",
+    "municipio": "Paulo Afonso",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-25",
+    "vig_fim": "2031-05-25",
+    "valor": 6450500.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/14217327000124/2026/141"
+   },
+   {
+    "controle": "08142655000106-2-000026/2026",
+    "ente": "MUNICIPIO DE BOA SAUDE",
+    "esfera": "Municipal",
+    "municipio": "Januário Cicco",
+    "uf": "RN",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-20",
+    "vig_fim": "2031-05-20",
+    "valor": 57012.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/08142655000106/2026/26"
+   },
+   {
+    "controle": "03343118000100-2-000039/2026",
+    "ente": "MUNICIPIO DE PARANAIBA",
+    "esfera": "Municipal",
+    "municipio": "Paranaíba",
+    "uf": "MS",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-05-19",
+    "vig_fim": "2031-05-19",
+    "valor": 3300000.0,
+    "receita": true,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/03343118000100/2026/39"
+   },
+   {
+    "controle": "04391603000112-2-000006/2026",
+    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE ESPIGAO DO OESTE",
+    "esfera": "Municipal",
+    "municipio": "Espigão D'Oeste",
+    "uf": "RO",
+    "modalidade": "Inexigibilidade",
+    "assinatura": "2026-05-18",
+    "vig_fim": "2027-05-18",
+    "valor": 12500.0,
+    "receita": false,
+    "banco": "BANCO DO BRASIL S.A.",
+    "cnpj8": "00000000",
+    "url": "https://pncp.gov.br/contratos/04391603000112/2026/6"
+   },
+   {
+    "controle": "00533003000190-2-000002/2026",
+    "ente": "SANEAMENTO BASICO DO MUNICIPIO DE MAUA SAMA",
+    "esfera": "Municipal",
+    "municipio": "Mauá",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-15",
+    "vig_fim": "2031-05-14",
+    "valor": 19900.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/00533003000190/2026/2"
+   },
+   {
+    "controle": "35445485000101-2-000019/2026",
+    "ente": "MUNICIPIO DE SANTA CRUZ DA BAIXA VERDE",
+    "esfera": "Municipal",
+    "municipio": "Santa Cruz da Baixa Verde",
+    "uf": "PE",
+    "modalidade": "Inexigibilidade",
+    "assinatura": "2026-05-14",
+    "vig_fim": "2027-05-14",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/35445485000101/2026/19"
+   },
+   {
+    "controle": "07620701000172-2-000008/2026",
+    "ente": "MUNICIPIO DE BREJO SANTO",
+    "esfera": "Municipal",
+    "municipio": "Brejo Santo",
+    "uf": "CE",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-05-11",
+    "vig_fim": "2031-05-11",
+    "valor": 1754122.36,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/07620701000172/2026/8"
+   },
+   {
+    "controle": "46643474000152-2-000039/2026",
+    "ente": "MUNICIPIO DE PARAIBUNA",
+    "esfera": "Municipal",
+    "municipio": "Paraibuna",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-05-11",
+    "vig_fim": "2031-05-13",
+    "valor": 480000.0,
+    "receita": false,
+    "banco": "SICOOB CRESSEM",
+    "cnpj8": "54190525",
+    "url": "https://pncp.gov.br/contratos/46643474000152/2026/39"
+   },
+   {
+    "controle": "32512501000143-2-000047/2026",
+    "ente": "MUNICIPIO DE VOLTA REDONDA",
+    "esfera": "Municipal",
+    "municipio": "Volta Redonda",
+    "uf": "RJ",
+    "modalidade": "Pregão - Presencial",
+    "assinatura": "2026-05-07",
+    "vig_fim": "2031-09-17",
+    "valor": 39210000.0,
+    "receita": false,
+    "banco": "ITAU UNIBANCO S.A.",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/32512501000143/2026/47"
+   },
+   {
+    "controle": "22681423000157-2-000066/2026",
+    "ente": "MUNICIPIO DE FRANCISCO SA",
+    "esfera": "Municipal",
+    "municipio": "Francisco Sá",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-05-06",
+    "vig_fim": "2031-05-06",
+    "valor": 1000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/22681423000157/2026/66"
+   }
+  ],
+  "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
+    "municipio": "Águas de Chapecó",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/82804212000196/2026/264"
+   },
+   {
+    "ente": "MUNICIPIO DE EUSEBIO",
+    "municipio": "Eusébio",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/23563067000130/2026/83"
+   },
+   {
+    "ente": "MUNICIPIO DE DOIS IRMAOS DO TOCANTINS",
+    "municipio": "Dois Irmãos do Tocantins",
+    "uf": "TO",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/02070563000181/2026/14"
+   },
+   {
+    "ente": "MUNICIPIO DE IBIUNA",
+    "municipio": "Ibiúna",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/46634531000137/2026/231"
+   },
+   {
+    "ente": "MUNICIPIO DE COTIA",
+    "municipio": "Cotia",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-07",
+    "url": "https://pncp.gov.br/compras/46523049000120/2026/145"
+   },
+   {
+    "ente": "DEPARTAMENTO AUTONOMO DEAGUA E ESGOTO",
+    "municipio": "Rio Claro",
+    "uf": "SP",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-07",
+    "url": "https://pncp.gov.br/compras/56401177000154/2026/115"
+   },
+   {
+    "ente": "MUNICIPIO DE UBA",
+    "municipio": "Ubá",
+    "uf": "MG",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-07",
+    "url": "https://pncp.gov.br/compras/18128207000101/2026/233"
+   },
+   {
+    "ente": "MUNICIPIO DE CANINDE",
+    "municipio": "Canindé",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-06",
+    "url": "https://pncp.gov.br/compras/07963259000187/2026/107"
+   },
+   {
+    "ente": "MUNICIPIO DE ELISIO MEDRADO",
+    "municipio": "Elísio Medrado",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-05",
+    "url": "https://pncp.gov.br/compras/13693379000104/2026/24"
+   },
+   {
+    "ente": "MUNICIPIO DE PIO XII",
+    "municipio": "Pio XII",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-05",
+    "url": "https://pncp.gov.br/compras/06447833000181/2026/24"
+   },
+   {
+    "ente": "MUNICIPIO DE JOSE DE FREITAS",
+    "municipio": "José de Freitas",
+    "uf": "PI",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-05",
+    "url": "https://pncp.gov.br/compras/06554786000175/2026/19"
+   },
+   {
+    "ente": "MUNICIPIO DE CALCADO",
+    "municipio": "Calçado",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-04",
+    "url": "https://pncp.gov.br/compras/11034741000100/2026/13"
+   }
+  ],
+  "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
+  "fonte": {
+   "nome": "PNCP — Portal Nacional de Contratações Públicas (Lei 14.133/2021)",
+   "url": "https://pncp.gov.br",
+   "nivel": "A"
+  }
+ },
+ "sintese": [
+  "A cessão da folha é o leilão em que o banco PAGA ao ente público pelo direito de ser o banco dos servidores — e, com isso, a porta do consignado e dos demais produtos.",
+  "No INSS, o desenho é outro: ordem de preferência para pagar os novos benefícios (2025-2029), vencida pela Crefisa em 25 dos 26 lotes."
+ ],
+ "cautelas": [
+  "Valores de leilões distintos NUNCA são somados nem comparados diretamente: cada folha tem tamanho, prazo e desenho contratual próprios.",
+  "No fluxo do PNCP, o valor do contrato tem semântica mista — cessão onerosa é receita do ente (o banco paga), contrato de tarifa é despesa, e muitos registros trazem valor simbólico. Por isso o ranking é por CONTAGEM de contratos, não por soma de valores.",
+  "Cobertura do PNCP começa com a obrigatoriedade da Lei 14.133 (2023-24): leilões anteriores existem apenas na camada curada.",
+  "Vencer a folha do INSS não é comprar carteira de consignado — é a preferência para pagar o benefício novo, que abre a relação bancária.",
+  "A classificação de fornecedor como instituição financeira é heurística sobre a razão social, declarada no bloco do PNCP."
+ ],
+ "catalogo": [
+  {
+   "id": "leiloes_curados",
+   "nome": "Grandes leilões de folha",
+   "conceito": "eventos curados com vencedor, valor e fonte nominal por nível de evidência",
+   "unidade": "R$ por leilão (nunca somados)",
+   "periodicidade": "por evento",
+   "fonte": "curadoria com fontes A/B declaradas por entrada",
+   "inicio": "2019",
+   "limitacoes": "cobertura editorial, não censo",
+   "versao": "v1"
+  },
+  {
+   "id": "pncp_contratos_if",
+   "nome": "Contratos de folha com IF no PNCP",
+   "conceito": "contratos cujo objeto é folha de pagamento e cujo fornecedor é instituição financeira (heurística declarada)",
+   "unidade": "contratos",
+   "periodicidade": "diária (incremental)",
+   "fonte": "PNCP api/search + api/pncp/v1",
+   "inicio": "2023",
+   "limitacoes": "valor com semântica mista; cobertura desde a Lei 14.133",
+   "versao": "v1"
+  },
+  {
+   "id": "inss_lotes",
+   "nome": "Folha de benefícios do INSS por lote",
+   "conceito": "ordem de preferência do pregão 90.005/2024 para pagar novos benefícios",
+   "unidade": "lotes",
+   "periodicidade": "por certame",
+   "fonte": "INSS (página oficial do pregão)",
+   "inicio": "2024",
+   "limitacoes": "lances por lote pendentes de extração do termo de homologação",
+   "versao": "v1"
+  }
+ ]
+}

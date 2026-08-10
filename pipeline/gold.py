@@ -117,6 +117,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("operacional.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Compra de folha de servidores pelos bancos (curado + PNCP) ----
+    from pipeline import folha_bancos as folha_mod
+    try:
+        folha_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("folha_bancos.json", {"disponivel": False, "error": str(e)})
+
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
     exposures = build_exposures(con, cfg)
     common.write_gold("exposures.json", exposures)

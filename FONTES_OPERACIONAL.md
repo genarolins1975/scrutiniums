@@ -233,3 +233,33 @@ comparável.
 5.571 municípios da lista do IBGE — Boa Esperança do Norte (MT), instalado
 depois do Censo 2022, entra nas tabelas e ainda não no desenho. A diferença
 aparece na legenda do mapa em vez de ser resolvida em silêncio.
+
+## 8. PNCP — contratações de folha de pagamento com instituições financeiras
+
+- **Fonte:** Portal Nacional de Contratações Públicas (Lei 14.133/2021),
+  https://pncp.gov.br — API pública, sem cadastro. A busca (`api/search`) é o
+  índice; o detalhe do contrato (`api/pncp/v1/orgaos/{cnpj}/contratos/{ano}/{seq}`)
+  traz fornecedor (razão social + CNPJ), valor, vigência e o flag `receita`.
+- **Coletor:** `pipeline/sources/pncp_folha.py` → silver `pncp_folha_contratos`,
+  `pncp_folha_editais`. Incremental por `numero_controle_pncp`; backfill
+  RETOMÁVEL (o PNCP derruba conexões sob carga contínua — medido em 08/2026 —
+  então cada execução avança o que a fonte aceitar e marca o backfill completo
+  só depois de uma passada inteira sem falha).
+- **Classificação de IF:** heurística declarada sobre a razão social do
+  fornecedor (denominações do sistema financeiro + marcas: "ITAU UNIBANCO S/A"
+  não contém "BANCO"). Agrupamento por CNPJ-raiz — a mesma instituição chega
+  em várias grafias.
+- **Semântica do valor — a limitação central:** na cessão onerosa o banco PAGA
+  ao ente (contrato nasce como `receita`); em contratos de tarifa o ente paga;
+  muitos registros trazem valor simbólico (R$ 0,01). Por isso o gold rankeia
+  por CONTAGEM de contratos e nunca soma valores.
+- **Cobertura:** desde a obrigatoriedade do PNCP (2023-24). Leilões anteriores
+  (ex.: Fortaleza 2019) vivem na camada curada `pipeline/curated/folha_leiloes.json`,
+  com fonte e nível (A = oficial; B = imprensa congruente) por entrada.
+- **INSS (pregão 90.005/2024):** ordem de preferência em 26 lotes para pagar
+  os novos benefícios 2025-2029 (Crefisa 25, Banco Mercantil o lote 3 — MT/MS).
+  Os lances por lote estão no Termo de Adjudicação e Homologação (SEI nº
+  18539061) e aguardam extração pelo processo da Fase 2 — ausência declarada.
+- **Rodada 2 (proposta):** cruzar com o intangível "direitos de gestão de
+  folhas de pagamento" das DFP/ITR (CVM) — o que os bancos pagam pela folha
+  pelo lado do balanço.
