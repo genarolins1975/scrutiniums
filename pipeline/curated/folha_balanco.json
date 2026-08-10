@@ -50,8 +50,8 @@
       "pagina_pdf": 131,
       "pagina_doc": "PÁGINA 129 de 377",
       "trecho": "16 – Intangível … Direitos de gestão de folhas de pagamento … Saldos em 31/12/2025 5.270.922 (Consolidado)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "bb_folha_adicoes_2025",
@@ -66,8 +66,8 @@
       "pagina_pdf": 131,
       "pagina_doc": "PÁGINA 129 de 377",
       "trecho": "Movimentações … Adições 1.723.742 (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "bb_folha_amortizacao_2025",
@@ -82,8 +82,8 @@
       "pagina_pdf": 131,
       "pagina_doc": "PÁGINA 129 de 377",
       "trecho": "Amortização (1.908.473) (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "bradesco_direitos_saldo_2025",
@@ -98,8 +98,8 @@
       "pagina_pdf": 211,
       "pagina_doc": "PÁGINA 209 de 324",
       "trecho": "15) ATIVOS INTANGÍVEIS E ÁGIO … Aquisição de direitos financeiros … Saldos em 31 de dezembro de 2025 … 5.659.298; nota (1): taxa de amortização: aquisição de direitos bancários … dentro dos prazos do contrato",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "bradesco_direitos_adicoes_2025",
@@ -114,8 +114,8 @@
       "pagina_pdf": 211,
       "pagina_doc": "PÁGINA 209 de 324",
       "trecho": "Adições/(Baixas) … 1.999.869 (coluna Aquisição de direitos financeiros)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "itau_folha_amortizacao_2025",
@@ -130,8 +130,8 @@
       "pagina_pdf": 199,
       "pagina_doc": "PÁGINA 197 de 286",
       "trecho": "A Despesa de Amortização do direito de aquisição de folhas de pagamentos e associações, no montante de R$ (1.297) (R$ (1.313) em 31/12/2024), é divulgada na rubrica Despesas Gerais e Administrativas (Nota 23).",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "itau_outros_intangiveis_2025",
@@ -146,8 +146,8 @@
       "pagina_pdf": 198,
       "pagina_doc": "PÁGINA 196 de 286",
       "trecho": "Valor Contábil Saldo em 31/12/2025 … Outros Ativos Intangíveis(1) 2.882 … 1) Inclui valores pagos para direito de aquisição de folhas de pagamentos, proventos, aposentadorias, pensões e similares.",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     },
     {
       "id": "santander_nao_isola_2025",
@@ -162,8 +162,8 @@
       "pagina_pdf": 171,
       "pagina_doc": "PÁGINA 169 de 250",
       "trecho": "Outros recebíveis (1) 2.857.449 … (1) Corresponde, majoritariamente, a pagamento de prêmios da carteira de folha de pagamento. [recebível, NÃO intangível — nunca comparado aos saldos dos demais]",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
     }
   ]
 }

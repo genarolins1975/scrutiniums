@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-10T17:51:39+00:00",
+ "gerado_em": "2026-08-10T18:13:23+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -1255,8 +1255,145 @@
   }
  },
  "balanco": {
-  "observacoes": [],
-  "em_revisao": 8,
+  "observacoes": [
+   {
+    "id": "bb_folha_saldo_2025",
+    "banco": "Banco do Brasil",
+    "cnpj8": "00000000",
+    "metrica": "Direitos de gestão de folhas de pagamento — saldo (consolidado)",
+    "valor": 5270922,
+    "unidade": "R$ mil",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": true,
+    "documento": {
+     "titulo": "BCO BRASIL S.A. — DFP 31/12/2025, versão 1",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154715&numVersao=1&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 129 de 377",
+    "trecho": "16 – Intangível … Direitos de gestão de folhas de pagamento … Saldos em 31/12/2025 5.270.922 (Consolidado)",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "bb_folha_adicoes_2025",
+    "banco": "Banco do Brasil",
+    "cnpj8": "00000000",
+    "metrica": "Direitos de gestão de folhas de pagamento — adições no exercício 2025 (consolidado)",
+    "valor": 1723742,
+    "unidade": "R$ mil",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": true,
+    "documento": {
+     "titulo": "BCO BRASIL S.A. — DFP 31/12/2025, versão 1",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154715&numVersao=1&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 129 de 377",
+    "trecho": "Movimentações … Adições 1.723.742 (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "bb_folha_amortizacao_2025",
+    "banco": "Banco do Brasil",
+    "cnpj8": "00000000",
+    "metrica": "Direitos de gestão de folhas de pagamento — amortização no exercício 2025 (consolidado)",
+    "valor": 1908473,
+    "unidade": "R$ mil",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": true,
+    "documento": {
+     "titulo": "BCO BRASIL S.A. — DFP 31/12/2025, versão 1",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154715&numVersao=1&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 129 de 377",
+    "trecho": "Amortização (1.908.473) (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "bradesco_direitos_saldo_2025",
+    "banco": "Bradesco",
+    "cnpj8": "60746948",
+    "metrica": "Aquisição de direitos financeiros — saldo (IFRS consolidado); categoria inclui folha, não exclusivamente",
+    "valor": 5659298,
+    "unidade": "R$ mil",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": false,
+    "documento": {
+     "titulo": "BCO BRADESCO S.A. — DFP 31/12/2025, versão 2",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=155703&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 209 de 324",
+    "trecho": "15) ATIVOS INTANGÍVEIS E ÁGIO … Aquisição de direitos financeiros … Saldos em 31 de dezembro de 2025 … 5.659.298; nota (1): taxa de amortização: aquisição de direitos bancários … dentro dos prazos do contrato",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "bradesco_direitos_adicoes_2025",
+    "banco": "Bradesco",
+    "cnpj8": "60746948",
+    "metrica": "Aquisição de direitos financeiros — adições em 2025 (IFRS consolidado); categoria inclui folha, não exclusivamente",
+    "valor": 1999869,
+    "unidade": "R$ mil",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": false,
+    "documento": {
+     "titulo": "BCO BRADESCO S.A. — DFP 31/12/2025, versão 2",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=155703&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 209 de 324",
+    "trecho": "Adições/(Baixas) … 1.999.869 (coluna Aquisição de direitos financeiros)",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "itau_folha_amortizacao_2025",
+    "banco": "Itaú Unibanco",
+    "cnpj8": "60872504",
+    "metrica": "Despesa de amortização do direito de aquisição de folhas de pagamentos e associações — exercício 2025",
+    "valor": 1297,
+    "unidade": "R$ milhões",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": true,
+    "documento": {
+     "titulo": "ITAU UNIBANCO HOLDING S.A. — DFP 31/12/2025, versão 2",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154741&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 197 de 286",
+    "trecho": "A Despesa de Amortização do direito de aquisição de folhas de pagamentos e associações, no montante de R$ (1.297) (R$ (1.313) em 31/12/2024), é divulgada na rubrica Despesas Gerais e Administrativas (Nota 23).",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "itau_outros_intangiveis_2025",
+    "banco": "Itaú Unibanco",
+    "cnpj8": "60872504",
+    "metrica": "Outros Ativos Intangíveis — valor contábil; a nota declara que INCLUI direitos de folhas de pagamento, proventos, aposentadorias, pensões e similares",
+    "valor": 2882,
+    "unidade": "R$ milhões",
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": false,
+    "documento": {
+     "titulo": "ITAU UNIBANCO HOLDING S.A. — DFP 31/12/2025, versão 2",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154741&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 196 de 286",
+    "trecho": "Valor Contábil Saldo em 31/12/2025 … Outros Ativos Intangíveis(1) 2.882 … 1) Inclui valores pagos para direito de aquisição de folhas de pagamentos, proventos, aposentadorias, pensões e similares.",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "santander_nao_isola_2025",
+    "banco": "Santander Brasil",
+    "cnpj8": "90400888",
+    "metrica": "AUSÊNCIA DECLARADA — a DFP 2025 não isola intangível de folha; a folha adquirida vive em 'relacionamento com clientes adquiridos' e há prêmios de folha em recebíveis",
+    "valor": null,
+    "unidade": null,
+    "data_ref": "2025-12-31",
+    "exclusivo_folha": false,
+    "documento": {
+     "titulo": "BCO SANTANDER (BRASIL) S.A. — DFP 31/12/2025, versão 2",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154968&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1"
+    },
+    "pagina": "PÁGINA 169 de 250",
+    "trecho": "Outros recebíveis (1) 2.857.449 … (1) Corresponde, majoritariamente, a pagamento de prêmios da carteira de folha de pagamento. [recebível, NÃO intangível — nunca comparado aos saldos dos demais]",
+    "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   }
+  ],
+  "em_revisao": 0,
   "leitura": "O que o banco paga pela folha vira ativo intangível e se amortiza no prazo do contrato — é o mesmo negócio dos leilões, visto pelo balanço. Só o Banco do Brasil isola a folha em conta própria; nos demais o conceito é mais amplo ou não é isolado, e cada observação declara isso em `exclusivo_folha`.",
   "cautelas": [
    "Conceitos e unidades diferem por banco (R$ mil × R$ milhões; folha isolada × categoria ampla): valores NUNCA são somados nem ranqueados entre bancos.",
