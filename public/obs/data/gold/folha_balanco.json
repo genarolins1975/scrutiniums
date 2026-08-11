@@ -1,0 +1,169 @@
+{
+ "_comentario": [
+  "Rodada 2 do painel de folha: o lado do BALANÇO dos mesmos contratos — o intangível de",
+  "aquisição/gestão de folhas nas DFP 31/12/2025, extraído das notas explicativas via canal",
+  "oficial CVM/ENET, com identidade verificada no documento e evidência (página, trecho).",
+  "Processo da Fase 2: nada é publicado com status em_revisao; a aprovação do revisor",
+  "muda o status para aprovado e o builder passa a publicar.",
+  "REGRA CENTRAL: os conceitos NÃO são comparáveis entre bancos — só o BB isola a folha;",
+  "no Bradesco a categoria é mais ampla (direitos financeiros/bancários); no Itaú a folha",
+  "está dentro de Outros Ativos Intangíveis; o Santander não isola. Nunca somar, nunca",
+  "ranquear. Unidades declaradas por observação (BB/Bradesco em R$ mil; Itaú em R$ milhões)."
+ ],
+ "documentos": {
+  "bb_dfp_2025": {
+   "titulo": "BCO BRASIL S.A. — DFP 31/12/2025, versão 1",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154715&numVersao=1&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+   "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+   "identidade": "Banco do Brasil S.A. nomeado no corpo; rodapé 'DFP - 31/12/2025 - BCO BRASIL S.A. Versão: 1'"
+  },
+  "bradesco_dfp_2025": {
+   "titulo": "BCO BRADESCO S.A. — DFP 31/12/2025, versão 2",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=155703&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+   "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+   "identidade": "rodapé 'DFP - 31/12/2025 - BCO BRADESCO S.A. Versão: 2'"
+  },
+  "itau_dfp_2025": {
+   "titulo": "ITAU UNIBANCO HOLDING S.A. — DFP 31/12/2025, versão 2",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154741&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+   "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+   "identidade": "rodapé 'DFP - 31/12/2025 - ITAU UNIBANCO HOLDING S.A. Versão: 2'"
+  },
+  "santander_dfp_2025": {
+   "titulo": "BCO SANTANDER (BRASIL) S.A. — DFP 31/12/2025, versão 2",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154968&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+   "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+   "identidade": "rodapé 'DFP - 31/12/2025 - BCO SANTANDER (BRASIL); S.A. Versão: 2'"
+  }
+ },
+ "observacoes": [
+  {
+   "id": "bb_folha_saldo_2025",
+   "banco": "Banco do Brasil",
+   "cnpj8": "00000000",
+   "metrica": "Direitos de gestão de folhas de pagamento — saldo (consolidado)",
+   "valor": 5270922,
+   "unidade": "R$ mil",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": true,
+   "documento": "bb_dfp_2025",
+   "pagina_pdf": 131,
+   "pagina_doc": "PÁGINA 129 de 377",
+   "trecho": "16 – Intangível … Direitos de gestão de folhas de pagamento … Saldos em 31/12/2025 5.270.922 (Consolidado)",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "bb_folha_adicoes_2025",
+   "banco": "Banco do Brasil",
+   "cnpj8": "00000000",
+   "metrica": "Direitos de gestão de folhas de pagamento — adições no exercício 2025 (consolidado)",
+   "valor": 1723742,
+   "unidade": "R$ mil",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": true,
+   "documento": "bb_dfp_2025",
+   "pagina_pdf": 131,
+   "pagina_doc": "PÁGINA 129 de 377",
+   "trecho": "Movimentações … Adições 1.723.742 (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "bb_folha_amortizacao_2025",
+   "banco": "Banco do Brasil",
+   "cnpj8": "00000000",
+   "metrica": "Direitos de gestão de folhas de pagamento — amortização no exercício 2025 (consolidado)",
+   "valor": 1908473,
+   "unidade": "R$ mil",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": true,
+   "documento": "bb_dfp_2025",
+   "pagina_pdf": 131,
+   "pagina_doc": "PÁGINA 129 de 377",
+   "trecho": "Amortização (1.908.473) (coluna Direitos de gestão de folhas de pagamento, Consolidado)",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "bradesco_direitos_saldo_2025",
+   "banco": "Bradesco",
+   "cnpj8": "60746948",
+   "metrica": "Aquisição de direitos financeiros — saldo (IFRS consolidado); categoria inclui folha, não exclusivamente",
+   "valor": 5659298,
+   "unidade": "R$ mil",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": false,
+   "documento": "bradesco_dfp_2025",
+   "pagina_pdf": 211,
+   "pagina_doc": "PÁGINA 209 de 324",
+   "trecho": "15) ATIVOS INTANGÍVEIS E ÁGIO … Aquisição de direitos financeiros … Saldos em 31 de dezembro de 2025 … 5.659.298; nota (1): taxa de amortização: aquisição de direitos bancários … dentro dos prazos do contrato",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "bradesco_direitos_adicoes_2025",
+   "banco": "Bradesco",
+   "cnpj8": "60746948",
+   "metrica": "Aquisição de direitos financeiros — adições em 2025 (IFRS consolidado); categoria inclui folha, não exclusivamente",
+   "valor": 1999869,
+   "unidade": "R$ mil",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": false,
+   "documento": "bradesco_dfp_2025",
+   "pagina_pdf": 211,
+   "pagina_doc": "PÁGINA 209 de 324",
+   "trecho": "Adições/(Baixas) … 1.999.869 (coluna Aquisição de direitos financeiros)",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "itau_folha_amortizacao_2025",
+   "banco": "Itaú Unibanco",
+   "cnpj8": "60872504",
+   "metrica": "Despesa de amortização do direito de aquisição de folhas de pagamentos e associações — exercício 2025",
+   "valor": 1297,
+   "unidade": "R$ milhões",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": true,
+   "documento": "itau_dfp_2025",
+   "pagina_pdf": 199,
+   "pagina_doc": "PÁGINA 197 de 286",
+   "trecho": "A Despesa de Amortização do direito de aquisição de folhas de pagamentos e associações, no montante de R$ (1.297) (R$ (1.313) em 31/12/2024), é divulgada na rubrica Despesas Gerais e Administrativas (Nota 23).",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "itau_outros_intangiveis_2025",
+   "banco": "Itaú Unibanco",
+   "cnpj8": "60872504",
+   "metrica": "Outros Ativos Intangíveis — valor contábil; a nota declara que INCLUI direitos de folhas de pagamento, proventos, aposentadorias, pensões e similares",
+   "valor": 2882,
+   "unidade": "R$ milhões",
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": false,
+   "documento": "itau_dfp_2025",
+   "pagina_pdf": 198,
+   "pagina_doc": "PÁGINA 196 de 286",
+   "trecho": "Valor Contábil Saldo em 31/12/2025 … Outros Ativos Intangíveis(1) 2.882 … 1) Inclui valores pagos para direito de aquisição de folhas de pagamentos, proventos, aposentadorias, pensões e similares.",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  },
+  {
+   "id": "santander_nao_isola_2025",
+   "banco": "Santander Brasil",
+   "cnpj8": "90400888",
+   "metrica": "AUSÊNCIA DECLARADA — a DFP 2025 não isola intangível de folha; a folha adquirida vive em 'relacionamento com clientes adquiridos' e há prêmios de folha em recebíveis",
+   "valor": null,
+   "unidade": null,
+   "data_ref": "2025-12-31",
+   "exclusivo_folha": false,
+   "documento": "santander_dfp_2025",
+   "pagina_pdf": 171,
+   "pagina_doc": "PÁGINA 169 de 250",
+   "trecho": "Outros recebíveis (1) 2.857.449 … (1) Corresponde, majoritariamente, a pagamento de prêmios da carteira de folha de pagamento. [recebível, NÃO intangível — nunca comparado aos saldos dos demais]",
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+  }
+ ]
+}

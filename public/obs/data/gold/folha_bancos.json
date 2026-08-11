@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-10T18:13:23+00:00",
+ "gerado_em": "2026-08-11T10:43:58+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,72 +131,44 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 325,
-  "total_editais": 707,
-  "backfill_completo": true,
+  "total_contratos_if": 89,
+  "total_editais": 527,
+  "backfill_completo": false,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 126,
-    "ufs": 21,
-    "como_receita": 18
+    "contratos": 27,
+    "ufs": 12,
+    "como_receita": 5
    },
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S/A",
-    "contratos": 68,
-    "ufs": 14,
-    "como_receita": 22
+    "contratos": 20,
+    "ufs": 10,
+    "como_receita": 3
    },
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 29,
-    "ufs": 10,
-    "como_receita": 12
+    "contratos": 13,
+    "ufs": 5,
+    "como_receita": 3
+   },
+   {
+    "cnpj8": "00000000",
+    "banco": "BANCO DO BRASIL S.A.",
+    "contratos": 7,
+    "ufs": 6,
+    "como_receita": 1
    },
    {
     "cnpj8": "60701190",
     "banco": "ITAU UNIBANCO S.A.",
-    "contratos": 16,
-    "ufs": 5,
-    "como_receita": 2
-   },
-   {
-    "cnpj8": "00000000",
-    "banco": "BANCO DO BRASIL SA",
-    "contratos": 16,
-    "ufs": 8,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "92702067",
-    "banco": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
-    "contratos": 5,
-    "ufs": 1,
-    "como_receita": 2
-   },
-   {
-    "cnpj8": "25404542",
-    "banco": "COOPERATIVA DE CREDITO CREDIVAG LTDA. - SICOOB CREDIVAG",
     "contratos": 4,
-    "ufs": 1,
+    "ufs": 3,
     "como_receita": 1
-   },
-   {
-    "cnpj8": "22724710",
-    "banco": "COOP. DE CRÉD LTDA- SICOOB CREDIVERTENTES",
-    "contratos": 3,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "01604998",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 0
    },
    {
     "cnpj8": "78907607",
@@ -206,53 +178,18 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "87733770",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "87900601",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMEN",
+    "cnpj8": "92702067",
+    "banco": "BANCO DO ESTADO DO RIO GRANDE DO SUL SA",
     "contratos": 2,
     "ufs": 1,
     "como_receita": 0
    },
    {
-    "cnpj8": "81099491",
-    "banco": "COOPERATIVA DE CREDITO  POUPANCA E INVESTIMENTO VALE DO PIQUIRI ABCD   SICREDI VALE DO PIQUIRI ABCDP",
-    "contratos": 2,
+    "cnpj8": "01604998",
+    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO SUL DE MINAS LTDA. - SICOOB CREDIVASS",
+    "contratos": 1,
     "ufs": 1,
     "como_receita": 0
-   },
-   {
-    "cnpj8": "89990501",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DE IBIRAIARAS - SICREDI IBIRAIARAS RS/MG",
-    "contratos": 2,
-    "ufs": 2,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "00000208",
-    "banco": "Brb - Banco De Brasilia S/a",
-    "contratos": 2,
-    "ufs": 2,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "02173447",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DO CENTRO NORDESTE",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "03065046",
-    "banco": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO NOROESTE DO ESTADO DE SÃO PAULO - SICREDI NOROEST",
-    "contratos": 2,
-    "ufs": 1,
-    "como_receita": 1
    },
    {
     "cnpj8": "02448310",
@@ -260,6 +197,13 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
+   },
+   {
+    "cnpj8": "25404542",
+    "banco": "COOPERATIVA DE CREDITO CREDIVAG LTDA. -",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
    },
    {
     "cnpj8": "87781530",
@@ -281,6 +225,13 @@
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
+   },
+   {
+    "cnpj8": "87733770",
+    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CO",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 1
    },
    {
     "cnpj8": "05231945",
@@ -325,214 +276,11 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "78825270",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DE ASSOCIADOS - SICOOB MAXICREDITO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "05269976",
-    "banco": "COOPERATIVA DE CREDITO E ECONOMIA COM INTERACAO SOLIDARIA DE FORMOSA DO SUL - CRESOL FORMOSA",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "92874270",
-    "banco": "BANCO DIGIMAIS S.A.",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
     "cnpj8": "05276770",
     "banco": "COOPERATIVA DE CREDITO E INVESTIMENTO COM INTERACAO SOLIDARIA FRONTEIRAS PR/SC/SP/ES - CRESOL FRONTE",
     "contratos": 1,
     "ufs": 1,
     "como_receita": 0
-   },
-   {
-    "cnpj8": "03320525",
-    "banco": "COOPERATIVA DE CREDITO ARACOOP LTDA - SICOOB ARACOOP",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "02843443",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DO NORTE E NORDESTE DE SANTA CATARINA - SICREDI NORTE SC",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "10736214",
-    "banco": "Cooperativa De Credito, Poupanca E Investimento Do Planalto Central - Sicredi Planalto Central",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "27098060",
-    "banco": "Banco Digio S.A.",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "25536764",
-    "banco": "COOPERATIVA DE CREDITO CREDPLUS LTDA. - SICOO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "73398646",
-    "banco": "SOCIEDADE COOPERATIVA DE CRÉDITO COOPERE LTDA.- SICOOB COOPERE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "22749014",
-    "banco": "Cooperativa De Credito Da Regiao Central De Minas Ltda. - Sicoob Uniao Central",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "22656789",
-    "banco": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA.-SICOOB CREDISUDESTE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "03459850",
-    "banco": "COOPERATIVA DE CREDITO SICOOB METROPOLITANO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "03965737",
-    "banco": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA VANGUARDA - CRESOL VANGUARDA",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "37076205",
-    "banco": "SICOOB JUDICIARIO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "11478534",
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
-   },
-   {
-    "cnpj8": "79086997",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO PARANAPANEMA SERRANA PR/SP/RJ -",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "87780268",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO UNIAO DE ESTADOS RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI UNIESTADOS",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "10664513",
-    "banco": "BANCO AGIBANK S.A",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "14046512",
-    "banco": "COOPERATIVA DE CREDITO DE LIVRE ADMINISSAO DA MARG",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "31895683",
-    "banco": "Banco Industrial do Brasil S.A",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "38588174",
-    "banco": "COOPERATIVA DE CREDITO CREDICOPE LTDA. - SICOOB CREDICOPE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "17361536",
-    "banco": "COOPERATIVA DE CREDITO DA REGIAO E COLAR METROPOLITANO DO VALE DO ACO LTDA - SICOOB COSMIPA",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "08742188",
-    "banco": "SICOOB INTEGRAÇÃO COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO UNIÃO E NEGÓCIOS - SICOOB INTEGRAÇÃO",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "00971300",
-    "banco": "COOPERATIVA DE CREDITO RURAL COM INTERAÇÃO SOLIDARIA PIONEIR",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "87784088",
-    "banco": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO SUL MINAS DO RS E MG - SICREDI SUL MINAS RS/MG",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "79342069",
-    "banco": "SICREDI UNIÃO PRSP",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "25798596",
-    "banco": "COOPERATIVA DE CREDITO CREDIVAR LTDA. - SICOOB CRE",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "90608712",
-    "banco": "COOPERATIVA DE CREDITO SICREDI SERRANA RS/ES",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
-    "cnpj8": "91586982",
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 1
    }
   ],
   "recentes": [
@@ -560,7 +308,7 @@
     "modalidade": "Dispensa",
     "assinatura": "2026-08-05",
     "vig_fim": "2031-08-04",
-    "valor": 0.6,
+    "valor": 2000000.0,
     "receita": false,
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
@@ -1145,6 +893,24 @@
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/82804212000196/2026/266"
+   },
+   {
+    "ente": "MUNICIPIO DE IBIUNA",
+    "municipio": "Ibiúna",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
+    "url": "https://pncp.gov.br/compras/46634531000137/2026/233"
+   },
+   {
+    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
+    "municipio": "Águas de Chapecó",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-10",
     "url": "https://pncp.gov.br/compras/82804212000196/2026/264"
    },
    {
@@ -1227,24 +993,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-05",
     "url": "https://pncp.gov.br/compras/06447833000181/2026/24"
-   },
-   {
-    "ente": "MUNICIPIO DE JOSE DE FREITAS",
-    "municipio": "José de Freitas",
-    "uf": "PI",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-05",
-    "url": "https://pncp.gov.br/compras/06554786000175/2026/19"
-   },
-   {
-    "ente": "MUNICIPIO DE CALCADO",
-    "municipio": "Calçado",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-04",
-    "url": "https://pncp.gov.br/compras/11034741000100/2026/13"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
