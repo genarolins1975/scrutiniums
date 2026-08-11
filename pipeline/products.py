@@ -214,7 +214,16 @@ def build(con, cfg):
     npl_num = piv["qual:inadimplencia_brl"].get(latest, {})
     npl_den = piv["qual:carteira_total_geral_brl"].get(latest, {})
     basileia = piv["indice_basileia"].get(latest, {})
-    cart_total_inst = piv["carteira_credito"].get(latest, {})
+    # "% da carteira da IF" usa o MESMO universo do numerador: total PF + total
+    # PJ dos próprios relatórios de modalidade (123/128). O denominador antigo
+    # era a "Carteira de Crédito" do Resumo — OUTRO conceito (cartão à vista
+    # entra na modalidade e não entra igual na classificada), e IFs de cartão
+    # estouravam 100% (Nubank 155%, Mercado Pago 140% em 2026-T1). Numerador e
+    # denominador de universos diferentes é pedir má leitura.
+    tot_pf = piv[SEG_TOTALS["pf"]].get(latest, {})
+    tot_pj = piv[SEG_TOTALS["pj"]].get(latest, {})
+    cart_total_inst = {cod: (tot_pf.get(cod) or 0) + (tot_pj.get(cod) or 0)
+                       for cod in set(tot_pf) | set(tot_pj)}
 
     products = []
     for slug, (key, nome, seg, natureza, definicao, nota) in TAXONOMY.items():
@@ -328,6 +337,13 @@ def build(con, cfg):
         "npl_nota": ("A matriz traz DOIS conceitos distintos, sempre rotulados: (1) atraso ≥15d NO PRODUTO "
                      "(vencido ≥15d ÷ carteira da modalidade, IF.data rel. 123/128 — específico do produto); "
                      "(2) inadimplência >90d TOTAL da instituição (Res. 4.966 — não específica do produto)."),
+        # marcador de versão do denominador: os testes só cobram pct ≤ 100%
+        # em gold gerado com o denominador do mesmo universo
+        "pct_carteira_conceito": "modalidades_123_128",
+        "pct_carteira_nota": ("\"% da carteira da IF\" = carteira no produto ÷ (total PF + total PJ da mesma IF "
+                              "nos relatórios de modalidade 123/128) — numerador e denominador do MESMO universo. "
+                              "A \"Carteira de Crédito\" do Resumo do IF.data é outro conceito (o cartão à vista "
+                              "não entra da mesma forma) e não é usada aqui."),
     }
     # products.json = RESUMO (leve, para Visão geral e índice); prod/{slug}.json = completo (matriz + taxas)
     resumo = []
