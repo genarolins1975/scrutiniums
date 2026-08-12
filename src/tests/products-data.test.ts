@@ -53,3 +53,35 @@ describe("% da carteira da IF: numerador e denominador do mesmo universo", () =>
     expect(appJs).toMatch(/mesmo universo; a Carteira de Crédito do Resumo é outro conceito/);
   });
 });
+
+describe("dispersão atraso × taxa × carteira por IF", () => {
+  it("o builder casa taxa com carteira por cnpj8 ou nome único, nunca por chute", () => {
+    expect(productsPy).toContain("def _taxa_por_cod");
+    expect(productsPy).toMatch(/ambíguo: fica sem taxa/);
+    expect(productsPy).toContain('"taxa_casamento"');
+  });
+
+  it("gold com taxa por IF traz valores plausíveis e casamento declarado", () => {
+    if (!existsSync(dirProd)) return;
+    for (const arq of readdirSync(dirProd)) {
+      const g = JSON.parse(readFileSync(join(dirProd, arq), "utf-8"));
+      for (const r of g.produto?.matriz ?? []) {
+        if (r.taxa_aa != null) {
+          expect(r.taxa_aa, `${arq}:${r.nome}`).toBeGreaterThan(0);
+          expect(r.taxa_aa, `${arq}:${r.nome}`).toBeLessThan(1200); // rotativo chega a ~450% a.a.; 1200 pega só aberração
+          expect(["cnpj8", "nome"], `${arq}:${r.nome}`).toContain(r.taxa_casamento);
+        }
+      }
+    }
+  });
+
+  it("a SPA declara os dois relógios (estoque de atraso × preço das operações novas)", () => {
+    expect(appJsPagina()).toContain("Dois relógios diferentes, de propósito");
+    expect(appJsPagina()).toMatch(/não é a taxa da carteira/);
+    expect(appJsPagina()).toMatch(/ausência declarada/);
+  });
+});
+
+function appJsPagina() {
+  return readFileSync(join(raiz, "public/obs/app.js"), "utf-8");
+}
