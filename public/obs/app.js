@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.71.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.72.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -5215,7 +5215,10 @@ function renderDesenrola() {
   const insts = D.instituicoes;
   const sel = comparar.length ? insts.filter(i => comparar.includes(i.cod)) : insts.slice(0, 5);
   const maxOp = insts[0].operacoes;
-  const credores = `<section id="des-credores">${sechead("Credores que reportam ao SCR", `${D.concentracao.n_conglomerados} conglomerados financeiros`)}
+  const rotConsolidado = i => i.consolidado
+    ? `${i.nome} <span class="src" title="${attr(i.consolidado.nota + " Componentes: " + i.consolidado.componentes.map(c2 => `${c2.nome} (${fmt.n0(c2.operacoes)} op.)`).join(" + "))}" style="cursor:help">· consolidado ⓘ</span>`
+    : i.nome;
+  const credores = `<section id="des-credores">${sechead("Credores que reportam ao SCR", `${D.concentracao.n_conglomerados} grupos credores${D.concentracao.nota_consolidacao ? " · escopos financeiro e prudencial consolidados por grupo" : ""}`)}
   <div class="judalerta"><b>Isto não é um ranking de melhores e piores.</b> Conglomerados têm carteiras,
   públicos e composições de produto diferentes: quem tinha muitos clientes de baixa renda com dívida pequena
   aparece com muitas operações e ticket baixo, e isso descreve a carteira, não a qualidade da atuação. Além
@@ -5223,7 +5226,8 @@ function renderDesenrola() {
   não estão em nenhuma linha desta tabela: o leilão da Faixa 1 teve 654 credores, e aqui aparecem ${D.concentracao.n_conglomerados}.</div>
   <div class="pan2col">
     <div class="card"><h4>Participação nas operações</h4>
-      ${insts.slice(0, 12).map(i => panBar(i.nome, i.operacoes, maxOp, () => fmt.n0(i.operacoes), `${fmt.n(i.part_op, 1)}% · ticket R$ ${fmt.n0(i.ticket_medio)}`)).join("")}
+      ${insts.slice(0, 12).map(i => panBar(rotConsolidado(i), i.operacoes, maxOp, () => fmt.n0(i.operacoes), `${fmt.n(i.part_op, 1)}% · ticket R$ ${fmt.n0(i.ticket_medio)}`)).join("")}
+      ${D.concentracao.nota_consolidacao ? `<div class="src" style="margin-top:6px">∑ ${D.concentracao.nota_consolidacao}</div>` : ""}
     </div>
     <div class="card"><h4>Concentração</h4>
       <div class="big">${fmt.n(D.concentracao.top5_operacoes, 1)}%</div>
