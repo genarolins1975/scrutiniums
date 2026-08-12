@@ -493,3 +493,27 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
 - **Primeira safra real (08/2026):** comprometimento de renda das famílias
   no máximo de toda a série (28,48%); inadimplência do consignado privado
   no máximo histórico (8,63%); taxa média PF maior desde 2017.
+
+## 18. Remuneração da administração — FRE item 8 (dataset estruturado da CVM)
+
+- **Fonte:** CSVs `fre_cia_aberta_remuneracao_total_orgao` e
+  `remuneracao_maxima_minima_media` dentro de `fre_cia_aberta_{ano}.zip`
+  (dados.cvm.gov.br) — NADA de PDF. Coletor
+  `pipeline/sources/remuneracao.py`, filtrado aos bancos do cadastro CVM
+  (setor 'Bancos', registro ativo; coleta é adiada se o cadastro estiver
+  vazio no silver — nunca coletar sem filtro). Reapresentações: vence a
+  maior versão por (cnpj, exercício, órgão).
+- **Semântica:** o FRE do ano N traz o exercício N PREVISTO (proposta
+  aprovada em assembleia) e os anteriores REALIZADOS (remuneração
+  reconhecida no resultado) — nunca misturados no painel. Nº de membros é
+  média anual ponderada (45,5 é normal) e viaja junto de toda média.
+- **Bloco `remuneracao` no operacional.json + seção 'Quanto ganha a
+  administração' na aba Operacional:** Diretoria Estatutária (total,
+  membros, média/membro, maior individual quando divulgada), Conselho de
+  Administração e a proposta do ano corrente. 21 bancos listados na
+  primeira coleta (Itaú R$ 812,9 mi realizado 2025, média R$ 17,9
+  mi/membro, maior individual R$ 87,0 mi; BB estatal R$ 64,0 mi, média
+  R$ 2,0 mi).
+- **Cautelas:** escopo da diretoria estatutária varia por governança;
+  média ≠ mediana; só companhias abertas (ausência estrutural dos não
+  listados); estatais sob regras próprias (SEST).
