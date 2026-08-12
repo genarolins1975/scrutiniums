@@ -538,3 +538,28 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   (quem deve a quem) não é pública, e isso é dito. Interfinanceiro alto em
   CENTRAL cooperativa é desenho do sistema (as singulares depositam na
   central), não fragilidade — a tabela nunca é ranking de risco.
+
+## 20. Camada didática de conceitos
+
+- **O que é:** todo conceito importante do painel (26 na primeira safra: ROE,
+  Basileia, CET1, RWA, ACP, alavancagem, LCR, NSFR, inadimplência 90d,
+  atraso 15-90, ativos problemáticos, perda esperada/4.966, carteira,
+  spread, custo do crédito, custo de captação, eficiência, HHI,
+  percentis/quartis, o score do painel, segmentação S1-S5, guidance,
+  Pilar 3, regimes de resolução, consignado, rotativo) vira um termo
+  CLICÁVEL (sublinhado pontilhado) que abre a explicação em seis camadas:
+  resumo de uma linha, INTUIÇÃO com analogia concreta, cálculo (e como o
+  painel usa), um pouco de HISTÓRIA (sempre ancorada em ano), a REGULAÇÃO
+  sem juridiquês e as ARMADILHAS de leitura — com infográfico SVG quando o
+  desenho explica melhor (Basileia, LCR, aging do atraso, colchões ACP,
+  eficiência, spread).
+- **Onde:** dicionário `CONCEITOS` + motor `termo()`/`abrirConceito()` na
+  SPA; termos aplicados nos cabeçalhos e cards mais visíveis (lista e ficha
+  de instituições, Pilar 3, guidance, regimes, atraso por produto); lista
+  completa em Metodologia ('Conceitos, do zero').
+- **Contrato testado (conceitos.test.ts):** as seis camadas obrigatórias e
+  substanciais em todo verbete; história com ano concreto (nunca
+  'antigamente'); referências cruzadas apontando para verbetes existentes;
+  infográficos referenciados existentes; ≥12 aplicações de termo() nas
+  superfícies. O glossário técnico (/glossario, verbetes formais) segue
+  como camada complementar.

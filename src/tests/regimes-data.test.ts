@@ -32,7 +32,7 @@ describe("estático: coletor com memória e salvaguardas", () => {
   });
 
   it("a SPA renderiza a seção com a cautela anti-alarmista", () => {
-    expect(appJs).toContain("Sob regime de resolução do BCB");
+    expect(appJs).toContain('Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB');
     expect(appJs).toContain("regimesSecao()");
   });
 });
