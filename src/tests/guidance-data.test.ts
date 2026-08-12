@@ -66,6 +66,27 @@ describe("curadoria: ciclos com evidência oficial", () => {
     }
   });
 
+  it("acompanhamentos trimestrais têm evidência, vocabulário e revisões apontando métricas reais", () => {
+    for (const c of cur.ciclos) {
+      for (const a of c.acompanhamentos || []) {
+        expect(["em_revisao", "aprovado", "descartado"], `${c.id}:${a.periodo}`).toContain(a.status);
+        expect(["revisao", "acompanhamento"], `${c.id}:${a.periodo}`).toContain(a.tipo);
+        expect(a.trecho, `${c.id}:${a.periodo}`).toBeTruthy();
+        const doc = cur.documentos[a.documento];
+        expect(doc, `${c.id}:${a.periodo}`).toBeTruthy();
+        expect(doc.url, `${c.id}:${a.periodo}`).toMatch(/^https:\/\/www\.rad\.cvm\.gov\.br\//);
+        if (a.status === "aprovado") expect(a.revisor, `${c.id}:${a.periodo}`).toBeTruthy();
+        if (a.tipo === "revisao") {
+          const nomes = c.metricas.map((m: any) => m.nome);
+          for (const mu of a.mudancas) {
+            expect(nomes, `${c.id}: revisão de métrica inexistente`).toContain(mu.metrica);
+            expect(mu.min_novo, mu.metrica).toBeLessThan(mu.max_novo);
+          }
+        }
+      }
+    }
+  });
+
   it("nenhum agregado de cumprimento entre bancos, em lugar nenhum", () => {
     const texto = JSON.stringify(cur) + readFileSync(join(raiz, "pipeline/guidance_bancos.py"), "utf-8");
     expect(texto).not.toMatch(/cumprimento_medio|score_cumprimento|ranking_cumprimento/);
@@ -86,6 +107,14 @@ describe("gold guidance.json publicado (gate de aprovação)", () => {
     const cautelas = (G.cautelas || []).join(" ");
     expect(cautelas).toMatch(/NUNCA é comparado, somado ou ranqueado entre bancos/);
     expect(cautelas).toMatch(/não juízo de mérito/);
+    // acompanhamentos têm o próprio gate: pendentes viram contagem, publicados exigem aprovação
+    const pendentes = cur.ciclos.flatMap((c: any) => (c.acompanhamentos || []).filter((a: any) => a.status === "em_revisao"));
+    expect(G.acompanhamentos_em_revisao).toBe(pendentes.length);
+    for (const c of G.ciclos) {
+      for (const a of c.acompanhamentos || []) {
+        expect(a.revisor, `${c.id}:${a.periodo}: publicado exige revisor`).toBeTruthy();
+      }
+    }
   });
 
   it("o builder roda no gold diário", () => {

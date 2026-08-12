@@ -49,6 +49,18 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1472879&numSequencia=997585",
       "fonte": "CVM/IPE (Press-release)",
       "identidade": "capa 'Informe de Resultados 4º trimestre de 2025 (BRGAAP)'"
+    },
+    "itau_ag_2t26": {
+      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 2T26 (IPE 04/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552006&numSequencia=1076712&numVersao=1",
+      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+      "identidade": "referência 30/06/2026 no IPE; corpo com 'Demonstração de Resultado do 2º trimestre de 2026' e página 'Projeção 2026' com colunas Original × Atual"
+    },
+    "bradesco_rel_2t26": {
+      "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 2T26 (IPE 05/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552745&numSequencia=1077451&numVersao=1",
+      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+      "identidade": "capa 'Relatório de Análise Econômica e Financeira 2T26'"
     }
   },
   "ciclos": [
@@ -246,7 +258,8 @@
         }
       ],
       "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+      "acompanhamento_pendente": "O BB ainda não havia divulgado o 2T26 até 12/08/2026 (nenhum protocolo de resultado no IPE desde 22/07) — o acompanhamento das Projeções entra na próxima rodada, após a divulgação."
     },
     {
       "id": "bradesco_2025",
@@ -360,7 +373,46 @@
         }
       ],
       "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+      "acompanhamentos": [
+        {
+          "periodo": "2T26",
+          "tipo": "acompanhamento",
+          "resumo": "Guidance 2026 integralmente MANTIDO; o próprio Bradesco publica o realizado 1S26×1S25 ao lado dos intervalos anuais: carteira expandida 11,6%, margem financeira líquida R$ 21,3 bi no semestre, serviços 3,9%, despesas operacionais 5,5%, seguros 14,1%. Ritmo semestral NÃO é resultado anual — nenhuma aferição antes do fechamento do ciclo.",
+          "realizado_parcial": [
+            {
+              "metrica": "Carteira de Crédito Expandida",
+              "valor": 11.6,
+              "unidade": "% 1S26/1S25"
+            },
+            {
+              "metrica": "Margem Financeira Líquida",
+              "valor": 21.3,
+              "unidade": "R$ bi no 1S26"
+            },
+            {
+              "metrica": "Receitas de Prestação de Serviços",
+              "valor": 3.9,
+              "unidade": "% 1S26/1S25"
+            },
+            {
+              "metrica": "Despesas Operacionais",
+              "valor": 5.5,
+              "unidade": "% 1S26/1S25"
+            },
+            {
+              "metrica": "Resultado de Seguros, Previdência e Capitalização",
+              "valor": 14.1,
+              "unidade": "% 1S26/1S25"
+            }
+          ],
+          "documento": "bradesco_rel_2t26",
+          "pagina": "p. 24 do documento (PDF 24), 'Guidance, Indicadores & Perspectivas Econômicas'",
+          "trecho": "Guidance Anual | Realizado 1S26 x 1S25: Carteira de Crédito Expandida 8,5% a 10,5% Mantido 11,6%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi Mantido R$ 21,3; Receitas de Prestação de Serviços 3% a 5% Mantido 3,9%; Despesas Operacionais 6% a 8% Mantido 5,5%; Resultado das Operações de Seguros 6% a 8% Mantido 14,1%",
+          "status": "em_revisao",
+          "revisor": null
+        }
+      ]
     },
     {
       "id": "itau_2025",
@@ -522,7 +574,26 @@
         }
       ],
       "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+      "acompanhamentos": [
+        {
+          "periodo": "2T26",
+          "tipo": "revisao",
+          "resumo": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'.",
+          "mudancas": [
+            {
+              "metrica": "Receita de serviços e resultado de seguros",
+              "min_novo": 2.0,
+              "max_novo": 5.0
+            }
+          ],
+          "documento": "itau_ag_2t26",
+          "pagina": "p. 9 do documento (PDF 7), 'Projeção 2026' — colunas Original × Atual",
+          "trecho": "Projeção 2026 … Receita de prestação de serviços e resultado de seguros³ | Original: Crescimento entre 5,0% e 9,0% | Atual: Crescimento entre 2,0% e 5,0% … [demais métricas] Atual: Mantido",
+          "status": "em_revisao",
+          "revisor": null
+        }
+      ]
     },
     {
       "id": "santander_sem_guidance",

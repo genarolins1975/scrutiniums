@@ -1,9 +1,11 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T11:00:56+00:00",
+ "gerado_em": "2026-08-12T11:09:53+00:00",
  "titulo": "Guidance × entregue",
  "ciclos": [
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "bb_2025",
    "banco": "Banco do Brasil",
    "cnpj8": "00000000",
@@ -110,6 +112,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": "O BB ainda não havia divulgado o 2T26 até 12/08/2026 (nenhum protocolo de resultado no IPE desde 22/07) — o acompanhamento das Projeções entra na próxima rodada, após a divulgação.",
    "id": "bb_2026",
    "banco": "Banco do Brasil",
    "cnpj8": "00000000",
@@ -210,6 +214,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "bradesco_2025",
    "banco": "Bradesco",
    "cnpj8": "60746948",
@@ -274,6 +280,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "bradesco_2026",
    "banco": "Bradesco",
    "cnpj8": "60746948",
@@ -334,6 +342,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "itau_2025",
    "banco": "Itaú Unibanco",
    "cnpj8": "60872504",
@@ -422,6 +432,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "itau_2026",
    "banco": "Itaú Unibanco",
    "cnpj8": "60872504",
@@ -506,6 +518,8 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
+   "acompanhamentos": [],
+   "acompanhamento_pendente": null,
    "id": "santander_sem_guidance",
    "banco": "Santander Brasil",
    "cnpj8": "90400888",
@@ -526,6 +540,7 @@
   }
  ],
  "em_revisao": 0,
+ "acompanhamentos_em_revisao": 2,
  "leitura": "O que cada grande banco listado prometeu ao mercado para o ano — e o que entregou, pela régua declarada pelo próprio banco. Ciclos fechados mostram intervalo × realizado; o ciclo vigente mostra as promessas em curso, acompanhadas a cada divulgação.",
  "cautelas": [
   "Cada banco SÓ contra o próprio guidance: conceitos gerenciais e bases ajustadas diferem por banco — cumprimento NUNCA é comparado, somado ou ranqueado entre bancos.",

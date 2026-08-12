@@ -26,10 +26,23 @@ CURADO = Path(__file__).resolve().parent / "curated" / "guidance.json"
 def build(con=None, cfg=None):
     cur = json.loads(CURADO.read_text())
     docs = cur.get("documentos", {})
-    aprovados, em_revisao = [], 0
+    aprovados, em_revisao, acomp_em_revisao = [], 0, 0
     for c in cur.get("ciclos", []):
         if c.get("status") == "aprovado":
+            # acompanhamentos trimestrais (revisões/manutenções do guidance em
+            # curso) têm o próprio gate: só os aprovados são publicados
+            acomps = []
+            for a in c.get("acompanhamentos", []) or []:
+                if a.get("status") == "aprovado":
+                    da = docs.get(a.get("documento"), {})
+                    acomps.append({k: a.get(k) for k in ("periodo", "tipo", "resumo", "mudancas",
+                                                         "realizado_parcial", "pagina", "trecho", "revisor")}
+                                  | {"documento": {"titulo": da.get("titulo"), "url": da.get("url")}})
+                elif a.get("status") == "em_revisao":
+                    acomp_em_revisao += 1
             aprovados.append({
+                "acompanhamentos": acomps,
+                "acompanhamento_pendente": c.get("acompanhamento_pendente"),
                 "id": c["id"], "banco": c["banco"], "cnpj8": c.get("cnpj8"),
                 "ano": c["ano"], "tipo": c["tipo"], "aferido_por": c["aferido_por"],
                 "conceito": c["conceito"], "pagina": c.get("pagina"), "trecho": c.get("trecho"),
@@ -48,6 +61,7 @@ def build(con=None, cfg=None):
         "titulo": "Guidance × entregue",
         "ciclos": aprovados,
         "em_revisao": em_revisao,
+        "acompanhamentos_em_revisao": acomp_em_revisao,
         "leitura": ("O que cada grande banco listado prometeu ao mercado para o ano — e o que entregou, "
                     "pela régua declarada pelo próprio banco. Ciclos fechados mostram intervalo × realizado; "
                     "o ciclo vigente mostra as promessas em curso, acompanhadas a cada divulgação."),

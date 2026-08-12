@@ -34,6 +34,12 @@
       "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154968&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
       "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
       "identidade": "rodapé 'DFP - 31/12/2025 - BCO SANTANDER (BRASIL); S.A. Versão: 2'"
+    },
+    "itau_dc_2t26": {
+      "titulo": "Itaú Unibanco — Demonstrações Contábeis Completas 30/06/2026 (IPE 04/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552007&numSequencia=1076713&numVersao=1",
+      "fonte": "CVM/IPE (Demonstrações Financeiras Intermediárias)",
+      "identidade": "capa 'Demonstrações Contábeis Completas Individuais e Consolidadas 30 de junho de 2026'"
     }
   },
   "observacoes": [
@@ -164,6 +170,22 @@
       "trecho": "Outros recebíveis (1) 2.857.449 … (1) Corresponde, majoritariamente, a pagamento de prêmios da carteira de folha de pagamento. [recebível, NÃO intangível — nunca comparado aos saldos dos demais]",
       "status": "aprovado",
       "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+    },
+    {
+      "id": "itau_folha_amortizacao_1s26",
+      "banco": "Itaú Unibanco",
+      "cnpj8": "60872504",
+      "metrica": "Despesa de amortização do direito de aquisição de folhas de pagamentos e associações — 1º semestre de 2026",
+      "valor": 659,
+      "unidade": "R$ milhões",
+      "data_ref": "2026-06-30",
+      "exclusivo_folha": true,
+      "documento": "itau_dc_2t26",
+      "pagina_pdf": 70,
+      "pagina_doc": "Nota 15 - Ágio e Ativos Intangíveis (PDF 70)",
+      "trecho": "A Despesa de Amortização do direito de aquisição de folhas de pagamentos e associações, no montante de R$ (659) (R$ (1.297) de 01/01 a 31/12/2025), é divulgada na rubrica Despesas Gerais e Administrativas",
+      "status": "em_revisao",
+      "revisor": null
     }
   ]
 }

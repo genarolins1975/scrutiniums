@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.59.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.60.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3651,13 +3651,18 @@ function guidanceSecao() {
       <tbody>${(c.metricas || []).map(m => `<tr>
         <td>${m.nome}${m.formula ? ` <span title="${attr(m.formula)}">ⓘ</span>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
         <td>${faixa(m)}</td><td>${sitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
+    ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
+      <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
+      ${a.realizado_parcial ? `<br><span class="src">${a.realizado_parcial.map(r => `${r.metrica}: ${fmt.n(r.valor, 1)} (${r.unidade})`).join(" · ")}</span>` : ""}
+      <br><span class="src">Evidência: ${a.pagina} — <a href="${attr(a.documento.url)}" target="_blank" rel="noopener">${(a.documento.titulo || "documento").slice(0, 52)}</a></span></div>`).join("")}
+    ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
     <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
       `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`).join("");
   return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
     <p style="margin:6px 0">${G.leitura}</p>
     ${cards}
     ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
-    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}.</p></div>`;
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}${G.acompanhamentos_em_revisao ? ` · ${fmt.n0(G.acompanhamentos_em_revisao)} acompanhamento(s) trimestral(is) aguardando revisão editorial` : ""}.</p></div>`;
 }
 
 /* ---------- helpers visuais do formato v0.14 ---------- */
