@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -5.9% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3065).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -296,7 +291,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3065,
+   "hhi_setorial": 2639,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -335,7 +330,8 @@
      "capital_de_giro",
      38.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 79.2
   },
   "total_pf": 3302176.32,
   "total_pj": 908958.14

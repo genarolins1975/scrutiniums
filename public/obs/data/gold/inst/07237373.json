@@ -275,7 +275,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2028,
+   "hhi_setorial": 1797,
    "top_cnae": [
     [
      "servicos_industriais_de_utilidade_publica",
@@ -334,7 +334,8 @@
      "rural_e_agroindustrial",
      4.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 86.3
   },
   "total_pf": 4154973256.5,
   "total_pj": 15559286352.17

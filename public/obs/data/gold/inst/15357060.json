@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 9323).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 9323, piso sobre os 99.8% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -331,7 +331,8 @@
      "cheque_especial_e_conta_garantida",
      23.2
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 99.8
   },
   "total_pf": 522620.02,
   "total_pj": 55746199.42

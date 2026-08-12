@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4380).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4016, piso sobre os 81.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -296,7 +296,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4380,
+   "hhi_setorial": 4016,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -335,7 +335,8 @@
      "capital_de_giro",
      25.7
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 81.0
   },
   "total_pf": 178329.89,
   "total_pj": 324395.67

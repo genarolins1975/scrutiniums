@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4191).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4194, piso sobre os –% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -296,7 +296,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4191,
+   "hhi_setorial": 4194,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",

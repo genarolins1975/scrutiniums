@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2921,
+   "hhi_setorial": 2600,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -319,7 +319,8 @@
      "outros_creditos",
      0.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 82.1
   },
   "total_pf": null,
   "total_pj": 3345238544.65

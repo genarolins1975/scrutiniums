@@ -579,3 +579,25 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   (quase sempre ausente — quando presente, é a primeira coisa da ficha).
 - `fmt.money` ganhou o degrau de milhões: valores < R$ 1 bi eram exibidos
   como "R$ 0,x bi" (média por membro virava "R$ 0,0 bi") — agora "R$ x,y mi".
+
+## 22. HHI setorial — tratamento do resíduo "outros" (piso + cobertura)
+
+- O balde "outros" da abertura por CNAE do IF.data é um AGREGADO residual —
+  a soma de muitos setores não individualizados pela fonte, não um setor.
+  Elevá-lo ao quadrado fabricava concentração: cooperativas e IPs com a
+  carteira PJ inteira em "outros" saíam com HHI ~10.000 ("monopólio"), e o
+  artefato disparava alerta de concentração e penalizava o score (dimensão
+  concentração setorial). 249 alertas publicados eram artefato.
+- Tratamento: "outros" permanece no denominador e no top_cnae (a composição
+  mostrada é a real), mas NUNCA entra na soma de quadrados. O HHI publicado
+  é um PISO sobre os setores identificados (o residual é tratado como
+  pulverizado — verdadeiro por Cauchy: Σs² só cresce ao individualizar),
+  com `hhi_cobertura_pct` declarada ao lado. Piso publicado só com
+  cobertura ≥ 25% (abaixo disso é vácuo); o SCORE só usa a dimensão com
+  cobertura ≥ 70% (pisos de coberturas díspares não são comparáveis em
+  percentil) — ausência cai na máquina normal de dimensões indisponíveis.
+- O alerta "concentração setorial elevada" só dispara quando o PISO já
+  excede 3.000 — nunca mais um falso positivo por resíduo. Correção
+  cirúrgica no gold publicado refez 755 perfis (piso = quadrados dos
+  identificados visíveis no top-5; o ciclo diário completa a cauda exata);
+  scores se recalculam no ciclo seguinte.

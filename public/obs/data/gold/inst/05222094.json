@@ -286,7 +286,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2426,
+   "hhi_setorial": 1792,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -345,7 +345,8 @@
      "cheque_especial_e_conta_garantida",
      10.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 75.2
   },
   "total_pf": 255216077.61,
   "total_pj": 40629494.69

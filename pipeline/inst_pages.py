@@ -176,7 +176,7 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
             sintese.append({"frase": f"{p['nome_comercial']} é um conglomerado prudencial {PEER_GROUP_LABELS.get(sr, sr)} com ativos de R$ {m_now.get('ativo_total', 0)/1e9:.1f} bi e carteira de R$ {m_now.get('carteira_credito', 0)/1e9:.1f} bi ({PERIODOS_LBL.get(anomes)}).",
                             "base": f"IF.data {anomes}; observado regulatório", "status": "observado regulatório"})
         if perfil and perfil.get("top_cnae"):
-            sintese.append({"frase": "Carteira PJ concentrada em: " + ", ".join(f"{k.replace('_', ' ')} ({v}%)" for k, v in perfil["top_cnae"][:3]) + (f"; HHI setorial {perfil.get('hhi_setorial')}" if perfil.get("hhi_setorial") else "") + ".",
+            sintese.append({"frase": "Carteira PJ concentrada em: " + ", ".join(f"{k.replace('_', ' ')} ({v}%)" for k, v in perfil["top_cnae"][:3]) + (f"; HHI setorial (piso) {perfil.get('hhi_setorial')}" if perfil.get("hhi_setorial") else "") + ".",
                             "base": "IF.data carteiras por CNAE (observado); shares calculadas", "status": "calculado"})
         if perfil and perfil.get("pme_share_pct") is not None:
             sintese.append({"frase": f"Micro e pequenas empresas representam {perfil['pme_share_pct']}% da carteira PJ classificada por porte.",

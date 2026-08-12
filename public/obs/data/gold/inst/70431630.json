@@ -42,13 +42,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3214).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Carteira de crédito: -4.1% no trimestre.",
@@ -288,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3214,
+   "hhi_setorial": 2810,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -347,7 +341,8 @@
      "cheque_especial_e_conta_garantida",
      12.6
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 80.1
   },
   "total_pf": 1467052250.28,
   "total_pj": 604854945.66

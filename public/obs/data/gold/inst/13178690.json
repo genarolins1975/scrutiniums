@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -1.1% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5044).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -292,7 +287,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5044,
+   "hhi_setorial": 702,
    "top_cnae": [
     [
      "outros",
@@ -339,7 +334,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      0.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 34.1
   },
   "total_pf": 4239997.65,
   "total_pj": 19232814.65

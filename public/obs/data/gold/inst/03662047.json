@@ -42,13 +42,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 8330).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Patrimônio líquido: +4.4% no trimestre.",
@@ -292,7 +286,6 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 8330,
    "top_cnae": [
     [
      "outros",

@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.67.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.68.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -519,10 +519,10 @@ const CONCEITOS = {
     nome: "HHI — índice de concentração",
     resumo: "Um número que resume se um mercado (ou uma carteira) está espalhado ou concentrado.",
     intuicao: "Some o QUADRADO da participação de cada player: elevar ao quadrado faz os grandes pesarem desproporcionalmente. Quatro bancos com 25% cada dão HHI 2.500; um com 97% dá ~9.400. O quadrado é o truque: captura que um gigante concentra mais risco que muitos médios somados.",
-    calculo: "HHI = Σ (participação de cada componente em %)². Vai de ~0 (atomizado) a 10.000 (monopólio). Réguas usuais: abaixo de 1.500 desconcentrado; 1.500-2.500 moderado; acima de 2.500 concentrado. O painel usa HHI para concentração SETORIAL da carteira PJ de cada banco.",
+    calculo: "HHI = Σ (participação de cada componente em %)². Vai de ~0 (atomizado) a 10.000 (monopólio). Réguas usuais: abaixo de 1.500 desconcentrado; 1.500-2.500 moderado; acima de 2.500 concentrado. O painel usa HHI para concentração SETORIAL da carteira PJ de cada banco — e o balde residual 'outros' da fonte NUNCA entra ao quadrado: ele é a soma de muitos setores não individualizados, não um setor. Por isso o número publicado é um PISO, calculado só sobre os setores identificados, com a cobertura declarada ao lado.",
     historia: "Criado pelos economistas Hirschman (1945) e Herfindahl (1950), virou a régua oficial de defesa da concorrência nos EUA nos anos 1980 e depois no mundo — o Cade e o BCB o usam em atos de concentração bancária.",
     regulacao: "Em fusões bancárias, BCB e Cade analisam o HHI dos mercados relevantes; no uso do painel (carteira de um banco), a leitura é de DIVERSIFICAÇÃO: carteira concentrada num setor amarra o banco ao destino daquele setor.",
-    armadilhas: "O HHI depende de como se recorta o mercado (o quê? onde?). E concentração setorial da carteira pode ser especialização deliberada e lucrativa — o número pede contexto, não pânico.",
+    armadilhas: "O HHI depende de como se recorta o mercado (o quê? onde?). Tratar um balde residual ('outros', 'demais') como se fosse UM setor fabrica concentração onde há justamente o contrário — uma carteira 100% em 'outros' NÃO é monossetorial, é não classificada. E concentração setorial real pode ser especialização deliberada e lucrativa — o número pede contexto, não pânico.",
     veja: ["carteira-de-credito", "score-relativo"],
   },
   "percentil-quartis": {
@@ -3989,7 +3989,7 @@ function renderInstitutions() {
         ${v ? `<h5>Vulnerabilidade a choques ${badge("cenario")}</h5><div class="src">Cenário ${v.cenario}: Basileia ${fmt.n(v.basileia_atual_pct, 2)}% → ${fmt.n(v.basileia_pos_choque_pct[0], 2)}–${fmt.n(v.basileia_pos_choque_pct[1], 2)}% (impacto ${fmt.pp(v.impacto_basileia_pp[0])} a ${fmt.pp(v.impacto_basileia_pp[1])} p.p.). ${v.metodo}</div>` : ""}
         ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
           ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
-          ${i.carteira_perfil.hhi_setorial != null ? `<b>HHI setorial:</b> ${i.carteira_perfil.hhi_setorial} (10000 = monossetorial)` : ""}
+          ${i.carteira_perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${i.carteira_perfil.hhi_setorial}${i.carteira_perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${i.carteira_perfil.hhi_cobertura_pct}% setorialmente identificados — "outros" é agregado, nunca entra ao quadrado</span>` : ""}` : ""}
           ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
           ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
           ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
@@ -4397,7 +4397,7 @@ function renderInstPageData(el, pg) {
         ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
         ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
         ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
-        ${pg.carteira.perfil.hhi_setorial != null ? `<b>HHI setorial:</b> ${pg.carteira.perfil.hhi_setorial}` : ""}</div>` : ""}
+        ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
     </div>
     <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}</div>
   </div>

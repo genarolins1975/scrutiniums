@@ -282,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2322,
+   "hhi_setorial": 1977,
    "top_cnae": [
     [
      "construcao",
@@ -341,7 +341,8 @@
      "cheque_especial_e_conta_garantida",
      1.7
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 81.4
   },
   "total_pf": 106731665.53,
   "total_pj": 648959616.98

@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "Basileia de 12.9% (abaixo da mediana do grupo S4: 20.5%).",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3018).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -288,7 +283,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3018,
+   "hhi_setorial": 1804,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -321,7 +316,8 @@
      "outros_creditos",
      4.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 65.1
   },
   "total_pf": null,
   "total_pj": 32543999.19

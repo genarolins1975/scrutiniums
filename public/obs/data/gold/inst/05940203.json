@@ -273,7 +273,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2757,
+   "hhi_setorial": 2032,
    "top_cnae": [
     [
      "administracao_publica_defesa_e_seguridade_social",
@@ -312,7 +312,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      31.8
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 73.1
   },
   "total_pf": 7644.58,
   "total_pj": 313918938.45

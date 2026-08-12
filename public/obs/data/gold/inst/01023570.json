@@ -274,7 +274,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2990,
+   "hhi_setorial": 2940,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -325,7 +325,8 @@
      "capital_de_giro",
      1.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 93.2
   },
   "total_pf": 25046858526.25,
   "total_pj": 8966702392.8

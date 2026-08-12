@@ -274,7 +274,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2952,
+   "hhi_setorial": 944,
    "top_cnae": [
     [
      "outros",
@@ -333,7 +333,8 @@
      "cheque_especial_e_conta_garantida",
      2.8
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 55.3
   },
   "total_pf": 263049024.02,
   "total_pj": 270545677.85

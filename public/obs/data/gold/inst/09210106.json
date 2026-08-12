@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3580).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3475, piso sobre os 89.9% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -296,7 +296,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3580,
+   "hhi_setorial": 3475,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -339,7 +339,8 @@
      "outros_creditos",
      1.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 89.9
   },
   "total_pf": 2654969.75,
   "total_pj": 1991063.99

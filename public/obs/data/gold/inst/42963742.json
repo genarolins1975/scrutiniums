@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3854).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3447, piso sobre os 80.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -288,7 +288,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3854,
+   "hhi_setorial": 3447,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -339,7 +339,8 @@
      "operacoes_com_recebiveis",
      6.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 80.0
   },
   "total_pf": 3010542.72,
   "total_pj": 2157995.52

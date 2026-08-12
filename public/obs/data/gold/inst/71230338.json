@@ -268,7 +268,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2013,
+   "hhi_setorial": 1722,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -323,7 +323,8 @@
      "cheque_especial_e_conta_garantida",
      3.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 83.6
   },
   "total_pf": 13613573.49,
   "total_pj": 81524537.66

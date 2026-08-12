@@ -292,7 +292,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2193,
+   "hhi_setorial": 1220,
    "top_cnae": [
     [
      "outros",
@@ -351,7 +351,8 @@
      "investimento",
      3.5
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 68.9
   },
   "total_pf": 668065225.06,
   "total_pj": 635101271.98

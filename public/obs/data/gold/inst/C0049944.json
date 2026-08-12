@@ -280,7 +280,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1984,
+   "hhi_setorial": 1109,
    "top_cnae": [
     [
      "outros",
@@ -339,7 +339,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      14.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 70.6
   },
   "total_pf": 78082893226.22,
   "total_pj": 97169941276.65

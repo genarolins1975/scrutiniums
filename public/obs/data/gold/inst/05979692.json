@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2559,
+   "hhi_setorial": 1613,
    "top_cnae": [
     [
      "construcao",
@@ -337,7 +337,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      6.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 69.2
   },
   "total_pf": 219599720.32,
   "total_pj": 436629955.7

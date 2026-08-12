@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "Carteira cresceu 44.9% em 4 trimestres — acima de 30%, checar apetite de risco.",
     "base": "BCB IF.data (Olinda)"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3022).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -296,7 +291,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3022,
+   "hhi_setorial": 2664,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -355,7 +350,8 @@
      "outros_creditos",
      13.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 81.2
   },
   "total_pf": 1523306759.65,
   "total_pj": 757560719.46

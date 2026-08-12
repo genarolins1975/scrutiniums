@@ -293,7 +293,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2306,
+   "hhi_setorial": 1489,
    "top_cnae": [
     [
      "outros",
@@ -352,7 +352,8 @@
      "comercio_exterior",
      9.6
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 71.7
   },
   "total_pf": 24847067345.81,
   "total_pj": 30482185944.22

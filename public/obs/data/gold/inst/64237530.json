@@ -281,7 +281,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2216,
+   "hhi_setorial": 1918,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -340,7 +340,8 @@
      "rural_e_agroindustrial",
      3.2
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 83.9
   },
   "total_pf": 196595917.37,
   "total_pj": 345178549.78

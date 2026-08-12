@@ -37,13 +37,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5043).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Índice de Basileia: -2.48p.p. no trimestre.",
@@ -263,7 +257,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5043,
+   "hhi_setorial": 2052,
    "top_cnae": [
     [
      "outros",
@@ -294,7 +288,8 @@
      "capital_de_giro",
      100.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 45.3
   },
   "total_pf": 500683498.89,
   "total_pj": 3595167.99

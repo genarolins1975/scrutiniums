@@ -45,7 +45,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5938).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5942, piso sobre os –% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -284,7 +284,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5938,
+   "hhi_setorial": 5942,
    "top_cnae": [
     [
      "agricultura_pecuaria_producao_florestal_pesca_e_",

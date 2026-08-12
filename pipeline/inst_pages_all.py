@@ -271,7 +271,10 @@ def build_all(con, cfg, inst_gold, of_gold):
                          "texto": f"ROE do período de {r['roe']:.1f}%" + (" — resultado negativo no acumulado." if r["roe"] < 0 else "."),
                          "base": "calculado sobre IF.data"})
         if perfil and perfil.get("hhi_setorial") and perfil["hhi_setorial"] > 3000:
-            dest.append({"tipo": "warn", "texto": f"Concentração setorial elevada na carteira PJ (HHI {perfil['hhi_setorial']}).",
+            # HHI é PISO: o residual "outros" não entra ao quadrado — o alerta só
+            # dispara quando os setores IDENTIFICADOS já concentram por si sós
+            dest.append({"tipo": "warn", "texto": (f"Concentração setorial elevada na carteira PJ (HHI ≥ {perfil['hhi_setorial']}, "
+                                                   f"piso sobre os {perfil.get('hhi_cobertura_pct', '–')}% setorialmente identificados)."),
                          "base": "IF.data carteiras por CNAE"})
         if recl and recl[0]["indice"] is not None:
             meds = [x for _, _, n2, x, *_ in recl_rows if x is not None]

@@ -37,13 +37,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4877).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Ativos totais: -15.7% no trimestre.",
@@ -276,7 +270,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4877,
+   "hhi_setorial": 459,
    "top_cnae": [
     [
      "outros",
@@ -326,7 +320,8 @@
      "investimento",
      1.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 33.5
   },
   "total_pf": 88919427.67,
   "total_pj": 3334829.25

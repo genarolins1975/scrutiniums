@@ -277,7 +277,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1974,
+   "hhi_setorial": 1269,
    "top_cnae": [
     [
      "administracao_publica_defesa_e_seguridade_social",
@@ -332,7 +332,8 @@
      "rural_e_agroindustrial",
      2.7
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 74.1
   },
   "total_pf": 234087352.16,
   "total_pj": 499027934.09

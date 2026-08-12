@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "Basileia de 16.9% (abaixo da mediana do grupo S5: 30.0%).",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3870).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -288,7 +283,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3870,
+   "hhi_setorial": 2118,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -347,7 +342,8 @@
      "cheque_especial_e_conta_garantida",
      6.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 58.1
   },
   "total_pf": 196891735.15,
   "total_pj": 172885451.49

@@ -41,11 +41,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -3.6% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3130).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -291,7 +286,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3130,
+   "hhi_setorial": 2647,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -350,7 +345,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      10.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 78.1
   },
   "total_pf": 615863784.82,
   "total_pj": 269062760.74

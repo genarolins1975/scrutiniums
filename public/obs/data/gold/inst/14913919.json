@@ -45,7 +45,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5079).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3434, piso sobre os 59.4% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -292,7 +292,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5079,
+   "hhi_setorial": 3434,
    "top_cnae": [
     [
      "construcao",
@@ -351,7 +351,8 @@
      "operacoes_com_recebiveis",
      1.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 59.4
   },
   "total_pf": 5660788.29,
   "total_pj": 130577885.13

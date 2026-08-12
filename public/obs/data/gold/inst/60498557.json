@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3303).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3286, piso sobre os 96.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -293,7 +293,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3303,
+   "hhi_setorial": 3286,
    "top_cnae": [
     [
      "industrias_extrativas",
@@ -334,7 +334,8 @@
      "operacoes_com_recebiveis",
      1.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 96.0
   },
   "total_pf": null,
   "total_pj": 3661096590.87
