@@ -563,3 +563,19 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   infográficos referenciados existentes; ≥12 aplicações de termo() nas
   superfícies. O glossário técnico (/glossario, verbetes formais) segue
   como camada complementar.
+
+## 21. Ficha da IF completa — guidance, TI, remuneração e folha por instituição
+
+- A junção da ficha (página da IF) com os dados de companhia listada é pela
+  RAIZ do CNPJ da holding (cadastro CVM), emitida como `cnpj8` em cada linha
+  de `operacional.instituicoes` — separada do `cnpj8_rede` (banco operacional
+  no ESTBAN), que difere nos conglomerados (ex.: Itaú holding 60872504 ×
+  banco 60701190). Nunca junção por nome.
+- Seções por IF (só aparecem quando a IF tem o dado; ausência não vira zero):
+  guidance × realizado (ciclos + acompanhamentos, mesmo bloco de render da
+  aba Instituições — `guidCicloBloco` compartilhado para as duas superfícies
+  nunca divergirem), custos de TI, remuneração da administração (FRE item 8),
+  folhas de pagamento no balanço, e aviso de regime de resolução vigente
+  (quase sempre ausente — quando presente, é a primeira coisa da ficha).
+- `fmt.money` ganhou o degrau de milhões: valores < R$ 1 bi eram exibidos
+  como "R$ 0,x bi" (média por membro virava "R$ 0,0 bi") — agora "R$ x,y mi".

@@ -377,12 +377,15 @@ def build(con, cfg=None):
     # Companhias com registro na CVM: o piloto de mercado (recorte da B3) mais
     # os demais bancos que a própria CVM classifica no setor "Bancos". Ambos
     # têm FRE e FCA, então recebem exatamente o mesmo tratamento.
+    # cnpj8 = raiz do CNPJ da COMPANHIA LISTADA (cadastro CVM) — é a chave que
+    # liga a ficha da IF a guidance, remuneração, TI e folha; difere do
+    # cnpj8_rede (banco operacional no ESTBAN) nos conglomerados
     registradas = [
-        {"id": c["company_id"], "nome": c["legal_name"],
+        {"id": c["company_id"], "nome": c["legal_name"], "cnpj8": (c.get("cnpj") or "")[:8] or None,
          "cnpj8_rede": REDE_CNPJ8.get(c["company_id"]), "cod_ifdata": COD_IFDATA.get(c["company_id"])}
         for c in COMPANIES
     ] + [
-        {"id": b["id"], "nome": b["nome"],
+        {"id": b["id"], "nome": b["nome"], "cnpj8": (b.get("cnpj") or "")[:8] or None,
          "cnpj8_rede": b["cnpj8_rede"], "cod_ifdata": b["cod_ifdata"]}
         for b in BANCOS_CVM
     ]
@@ -405,6 +408,7 @@ def build(con, cfg=None):
             "nome": nome,
             "listada": True,
             "cod_ifdata": c["cod_ifdata"],
+            "cnpj8": c["cnpj8"],
             "cnpj8_rede": c["cnpj8_rede"],
             "correspondentes": (corr["por_cnpj8"].get(c["cnpj8_rede"]) if (corr and c["cnpj8_rede"]) else None),
             "empregados": _empregados(con, cid, flags, nome),
@@ -421,6 +425,7 @@ def build(con, cfg=None):
             "nome": extra["nome"],
             "listada": False,
             "cod_ifdata": COD_IFDATA.get(extra["id"]),
+            "cnpj8": extra["cnpj8"],
             "cnpj8_rede": extra["cnpj8"],
             "correspondentes": (corr["por_cnpj8"].get(extra["cnpj8"]) if corr else None),
             "empregados": None,
