@@ -821,5 +821,9 @@
     "base_url": "https://www3.bcb.gov.br/rdrweb/rest/ext/ranking",
     "tipo": "Bancos e financeiras",
     "ultimos_trimestres": 4
+  },
+  "pilar3": {
+    "fetch_por_execucao": 40,
+    "nota": "KM1 federado via DASFN/BCB; cap alto o bastante para varrer as ~75 instituições registradas por execução"
   }
 }

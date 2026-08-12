@@ -138,6 +138,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("guidance.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Pilar 3 (KM1): liquidez e capital regulatórios ----
+    from pipeline import pilar3_gold as p3_mod
+    try:
+        p3_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("pilar3.json", {"disponivel": False, "error": str(e)})
+
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
     exposures = build_exposures(con, cfg)
     common.write_gold("exposures.json", exposures)
