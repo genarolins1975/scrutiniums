@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.64.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.65.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3571,6 +3571,10 @@ function renderInstitutions() {
   const groups = ["todos", ...Object.keys(inst.grupos).sort()];
   let list = [...inst.instituicoes];
   if (f.instGroup !== "todos") list = list.filter(i => i.grupo_pares === f.instGroup);
+  /* tipo pela classificação TCB do próprio BCB: B3C/B3S = cooperativas;
+     B1/B2/B4 = bancos; N* = não bancárias. Nunca por heurística de nome. */
+  const tipoDe = (i) => /^B3/.test(i.tcb || "") ? "coop" : /^B/.test(i.tcb || "") ? "banco" : "naobanco";
+  if ((f.instTipo || "todos") !== "todos") list = list.filter(i => tipoDe(i) === f.instTipo);
   const nplMap = {};
   if (state.data.npl && state.data.npl.ok) state.data.npl.instituicoes.forEach(x => { nplMap[x.cod_inst] = x; });
   const sorters = {
@@ -3638,12 +3642,15 @@ function renderInstitutions() {
   </div>
   <div class="controls">
     <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
+    <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
     <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
     <button class="btn ghost small" onclick="exportInstitutions()">exportar JSON</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / carteira</th><th>Basileia</th><th>Inadimplência ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>ROE per.</th><th>Score risco</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${guidanceSecao()}
   ${regimesSecao()}
+  ${coopSecao(inst)}
+  ${interconexaoSecao(inst)}
   ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
 }
 
@@ -3709,6 +3716,56 @@ function regimesSecao() {
       <div class="src" style="margin-top:6px">${enc.map(e => `${e.nome} — ${e.tipo}, decretado ${e.inicio}; fora da lista após ${e.saiu_da_lista_apos}`).join("<br>")}</div></details>` : ""}
     ${(R.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
     <p class="src">${badge("observado")} <a href="${attr(R.fonte.url)}" target="_blank" rel="noopener">${R.fonte.nome}</a> · nível ${R.fonte.nivel}.</p></div>`;
+}
+
+/* Cooperativas no corte: visibilidade do segmento que mais cresce, pela
+   classificação TCB do próprio BCB (B3C centrais, B3S singulares) — nunca
+   heurística de nome. Somar ativos aqui é legítimo: mesma métrica contábil
+   do mesmo relatório; o denominador é o CORTE (top-N), não o sistema. */
+function coopSecao(inst) {
+  const insts = inst.instituicoes || [];
+  const coops = insts.filter(i => /^B3/.test(i.tcb || ""));
+  if (!coops.length) return "";
+  const atCoop = coops.reduce((s, i) => s + i.ativo_total_brl, 0);
+  const atTodos = insts.reduce((s, i) => s + i.ativo_total_brl, 0);
+  const centrais = coops.filter(i => i.tcb === "B3C").length;
+  return `<div class="card" style="margin-top:12px"><h4>Cooperativas de crédito no corte ${badge("observado", "classificação TCB do IF.data: B3C = centrais/confederações, B3S = singulares; os bancos cooperativos (Sicredi, Sicoob) são B1 e entram como bancos")}</h4>
+    <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">
+      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:20px">${coops.length} cooperativas</div></div>
+      <div><div class="src">centrais/confederações</div><div class="big" style="font-size:20px">${centrais}</div></div>
+      <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:20px">${fmt.money(atCoop)}</div></div>
+      <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:20px">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
+    </div>
+    <p class="src">Os bancos cooperativos (Banco Sicredi, Banco Sicoob) são TCB B1 e aparecem no filtro "bancos" — o braço bancário dos sistemas, não as cooperativas em si. O share é do CORTE dos ${insts.length} maiores, não do sistema inteiro. Use o filtro "cooperativas" acima para isolar o segmento na tabela.</p></div>`;
+}
+
+/* Interconexão via funding: quanto das captações de cada IF vem de DEPÓSITOS
+   INTERFINANCEIROS — dinheiro de outras instituições. É um PROXY do lado
+   passivo: a matriz bilateral (quem deve a quem) NÃO é pública, e isso é
+   dito. Calculado dos blocos de captação já publicados por IF. */
+function interconexaoSecao(inst) {
+  const linhas = (inst.instituicoes || [])
+    .filter(i => i.captacao && i.captacao.mix_depositos_pct &&
+                 i.captacao.mix_depositos_pct.interfinanceiro != null && i.captacao.dep_captacoes_pct != null)
+    .map(i => {
+      const cap = i.captacao;
+      const interfDasCaptacoes = cap.mix_depositos_pct.interfinanceiro * cap.dep_captacoes_pct / 100;
+      return { nome: i.nome, cod: i.cod_inst, pct: interfDasCaptacoes,
+               vol: cap.captacoes_brl * interfDasCaptacoes / 100, mixDep: cap.mix_depositos_pct.interfinanceiro };
+    })
+    .filter(x => x.pct >= 1)
+    .sort((a, b) => b.pct - a.pct);
+  if (!linhas.length) return "";
+  return `<div class="card" style="margin-top:12px"><h4>Interconexão — funding interfinanceiro ${badge("calculado", "depósitos interfinanceiros ÷ captações totais, dos blocos de captação por IF (IF.data UI)")}</h4>
+    <p style="margin:6px 0">Quanto das captações de cada instituição vem de depósitos de OUTRAS instituições — a dependência de funding bancário de atacado, um canal clássico de contágio. Proxy do lado passivo: a matriz bilateral (quem deve a quem) não é pública.</p>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Instituição</th><th class="num" title="depósitos interfinanceiros ÷ captações totais">Interfinanceiro / captações</th><th class="num">Volume estimado</th><th class="num">% dos depósitos</th></tr></thead>
+      <tbody>${linhas.slice(0, 15).map(x => `<tr>
+        <td><b>${x.nome}</b> <button class="btn ghost small" onclick="openInstPage('${x.cod}')">ficha →</button></td>
+        <td class="num"><b>${fmt.n(x.pct, 1)}%</b></td>
+        <td class="num">${fmt.money(x.vol)}</td>
+        <td class="num src">${fmt.n(x.mixDep, 1)}%</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Corte de exibição: dependência ≥ 1% das captações. Nas centrais cooperativas o interfinanceiro alto é DESENHO do sistema (as singulares depositam na central), não fragilidade — mais um motivo para nunca ler esta tabela como ranking de risco.</p></div>`;
 }
 
 /* ---------- helpers visuais do formato v0.14 ---------- */
