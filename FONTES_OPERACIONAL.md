@@ -375,3 +375,27 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   inspeção, nunca para atribuir variação à norma.
 - **Timelines temáticas continuam nas abas:** bets (2018–2026) e fraudes
   (2020–2026) são mais detalhadas e a aba Regulação aponta para elas.
+
+## 13. Guidance × entregue (Fase 2 — aba Instituições)
+
+- **Fonte:** documentos de resultados protocolados pelos próprios bancos na
+  CVM (IPE/ENET) — Análise Gerencial (Itaú), Análise do Desempenho (BB),
+  Relatório de Análise Econômica e Financeira (Bradesco), Informe de
+  Resultados (Santander). Curadoria em `pipeline/curated/guidance.json`;
+  builder `pipeline/guidance_bancos.py` → gold `guidance.json` publica só
+  ciclos `aprovado`, com evidência (documento, página, trecho).
+- **Ciclos da rodada 1:** BB 2025 (fechado, aferido pela companhia — Agro
+  abaixo do intervalo, desvio declarado pelo próprio BB) e 2026; Bradesco
+  2025 (fechado, aferido pela companhia — carteira expandida e seguros acima)
+  e 2026; Itaú 2025 (fechado, pareamento do OBSERVATÓRIO sobre a DRE
+  gerencial da própria companhia, fórmula declarada por métrica) e 2026
+  (base ajustada NOVA, declarada; mantido no 1T26); Santander — AUSÊNCIA
+  DECLARADA (não publica guidance quantitativo).
+- **Regras editoriais (testadas):** cada banco SÓ contra o próprio guidance —
+  nunca comparar, somar ou ranquear cumprimento entre bancos; `situacao`
+  (dentro/acima/abaixo) é posição aritmética no intervalo, não juízo de
+  mérito (recomputada em teste); aferição do Observatório exige fórmula por
+  métrica; guidance não é promessa jurídica; mudança de base entre ciclos é
+  declarada e quebra a comparabilidade entre eles.
+- **Cadência:** ciclos vigentes são acompanhados a cada divulgação
+  trimestral (ITR/releases via IPE) e fechados na divulgação anual seguinte.

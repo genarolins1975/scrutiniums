@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.58.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.59.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -219,7 +219,7 @@ const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index", "npl"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional"],
+  institutions: ["institutions", "inst_index", "npl", "guidance"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional"],
   method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index", "operacional"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
@@ -3619,7 +3619,45 @@ function renderInstitutions() {
     <button class="btn ghost small" onclick="exportInstitutions()">exportar JSON</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / carteira</th><th>Basileia</th><th>Inadimplência ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>ROE per.</th><th>Score risco</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${guidanceSecao()}
   ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
+}
+
+/* Promessas × entrega (Fase 2 — publica só aprovado): guidance dos grandes
+   listados, cada banco SÓ contra o próprio guidance. 'dentro/acima/abaixo'
+   é posição aritmética no intervalo declarado, não juízo de mérito — nunca
+   ranking nem média de cumprimento entre bancos. */
+function guidanceSecao() {
+  const G = state.data.guidance;
+  if (!G || !G.disponivel) return "";
+  if (!(G.ciclos || []).length) {
+    return G.em_revisao ? `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados</h4>
+      <p class="src">${fmt.n0(G.em_revisao)} ciclo(s) de guidance extraídos dos documentos oficiais (CVM/IPE) aguardando revisão
+      editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>` : "";
+  }
+  const sitChip = (m) => m.situacao === "dentro" ? `<span class="chip" style="background:var(--ok-bg,#e8f2ea)">dentro</span>`
+    : m.situacao === "em_curso" ? `<span class="chip">em curso</span>`
+    : `<span class="chip" style="background:var(--warn-bg,#f6ead8)">${m.situacao}</span>`;
+  const faixa = (m) => {
+    if (m.realizado == null) return `${fmt.n(m.min, 1)} a ${fmt.n(m.max, 1)} ${m.unidade}`;
+    return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
+  };
+  const cards = G.ciclos.map(c => `
+    <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
+      <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
+    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
+      <tbody>${(c.metricas || []).map(m => `<tr>
+        <td>${m.nome}${m.formula ? ` <span title="${attr(m.formula)}">ⓘ</span>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
+        <td>${faixa(m)}</td><td>${sitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
+    <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
+      `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`).join("");
+  return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
+    <p style="margin:6px 0">${G.leitura}</p>
+    ${cards}
+    ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}.</p></div>`;
 }
 
 /* ---------- helpers visuais do formato v0.14 ---------- */

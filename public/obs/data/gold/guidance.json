@@ -1,0 +1,19 @@
+{
+ "disponivel": true,
+ "gerado_em": "2026-08-12T10:47:50+00:00",
+ "titulo": "Guidance × entregue",
+ "ciclos": [],
+ "em_revisao": 7,
+ "leitura": "O que cada grande banco listado prometeu ao mercado para o ano — e o que entregou, pela régua declarada pelo próprio banco. Ciclos fechados mostram intervalo × realizado; o ciclo vigente mostra as promessas em curso, acompanhadas a cada divulgação.",
+ "cautelas": [
+  "Cada banco SÓ contra o próprio guidance: conceitos gerenciais e bases ajustadas diferem por banco — cumprimento NUNCA é comparado, somado ou ranqueado entre bancos.",
+  "'Dentro/acima/abaixo' é posição aritmética no intervalo declarado, não juízo de mérito: para despesa, acima é pior; para receita, melhor — o painel não converte isso em nota.",
+  "Guidance não é promessa jurídica: são projeções sujeitas a riscos e revisões, como os próprios documentos declaram.",
+  "Quando o banco muda a base de cálculo entre ciclos (ex.: DRE ajustada do Itaú para 2026), os ciclos não são comparáveis entre si — a mudança é declarada no conceito."
+ ],
+ "fonte": {
+  "nome": "CVM/IPE — documentos de resultados protocolados pelos próprios bancos (ENET)",
+  "nivel": "A",
+  "nota": "evidência por ciclo: documento oficial, página e trecho; extração aprovada por revisor"
+ }
+}
