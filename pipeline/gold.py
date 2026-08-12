@@ -138,6 +138,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("guidance.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Recordes automáticos nas séries macro ----
+    from pipeline import recordes as rec_mod
+    try:
+        rec_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("recordes.json", {"disponivel": False, "error": str(e)})
+
     # ---- Regimes de resolução (vigentes + memória) ----
     from pipeline import regimes_gold as reg_res_mod
     try:
