@@ -274,7 +274,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2539,
+   "hhi_setorial": 2382,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -333,7 +333,8 @@
      "capital_de_giro",
      2.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 87.9
   },
   "total_pf": 854598577.32,
   "total_pj": 1879493366.36

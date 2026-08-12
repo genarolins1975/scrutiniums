@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2279,
+   "hhi_setorial": 1753,
    "top_cnae": [
     [
      "construcao",
@@ -321,7 +321,8 @@
      "comercio_exterior",
      4.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 78.6
   },
   "total_pf": 92406699.07,
   "total_pj": 1188716071.26

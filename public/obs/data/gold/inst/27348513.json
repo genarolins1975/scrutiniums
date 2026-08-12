@@ -42,13 +42,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3632).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Ativos totais: -5.3% no trimestre.",
@@ -296,7 +290,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3632,
+   "hhi_setorial": 1988,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -331,7 +325,8 @@
      "capital_de_giro",
      37.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 59.5
   },
   "total_pf": 1495803.77,
   "total_pj": 597243.03

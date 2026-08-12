@@ -45,11 +45,6 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4944).",
-    "base": "IF.data carteiras por CNAE"
-   },
-   {
-    "tipo": "warn",
     "texto": "Índice de reclamações 125.2 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
     "base": "BCB rdrweb"
    }
@@ -302,7 +297,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4944,
+   "hhi_setorial": 677,
    "top_cnae": [
     [
      "outros",
@@ -353,7 +348,8 @@
      "investimento",
      0.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 34.7
   },
   "total_pf": 2073535195.43,
   "total_pj": 86281427.0

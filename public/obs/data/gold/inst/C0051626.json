@@ -276,7 +276,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1682,
+   "hhi_setorial": 1336,
    "top_cnae": [
     [
      "administracao_publica_defesa_e_seguridade_social",
@@ -335,7 +335,8 @@
      "outros_creditos",
      6.5
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 84.8
   },
   "total_pf": 1153791558977.79,
   "total_pj": 261859430354.92

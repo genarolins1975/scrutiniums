@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2456,
+   "hhi_setorial": 1958,
    "top_cnae": [
     [
      "construcao",
@@ -333,7 +333,8 @@
      "operacoes_com_recebiveis",
      2.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 78.6
   },
   "total_pf": 146056380.42,
   "total_pj": 5488275271.97

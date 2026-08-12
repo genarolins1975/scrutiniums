@@ -261,6 +261,16 @@ def _inst_snapshot(con, anomes):
 
 CART_NAO_SETOR = {"total_exterior_pessoa_juridica", "atividade_nao_informada_ou_nao_se_aplica",
                   "total_nao_individualizado_pessoa_juridica"}
+# "outros" na abertura por CNAE do IF.data é um AGREGADO residual — a soma de
+# muitos setores que a fonte não individualiza, não um setor. Elevá-lo ao
+# quadrado fabricava concentração (cooperativas 100% em "outros" saíam com
+# HHI 10.000, "monopólio"). Ele permanece no denominador e no top_cnae, mas
+# NUNCA entra na soma de quadrados: o HHI publicado é um PISO (o residual é
+# tratado como pulverizado), e a cobertura setorial identificada viaja junto.
+CART_RESIDUAL = {"outros"}
+# piso de cobertura identificada para o HHI entrar no SCORE: abaixo disso os
+# pisos de bancos diferentes não são comparáveis entre si em percentil
+HHI_COBERTURA_SCORE_MIN = 70.0
 
 
 def carteira_profile(m):
@@ -277,7 +287,12 @@ def carteira_profile(m):
     tot_cnae = sum(cnae.values())
     if tot_cnae > 0 and len(cnae) >= 2:
         shares = {k: v / tot_cnae for k, v in cnae.items()}
-        out["hhi_setorial"] = round(sum(s * s for s in shares.values()) * 10000)
+        setoriais = {k: s for k, s in shares.items() if k not in CART_RESIDUAL}
+        cobertura = round(sum(setoriais.values()) * 100, 1)
+        if setoriais and cobertura >= 25:
+            # abaixo de 25% identificado o piso é vácuo (nada se afirma) — omitido
+            out["hhi_setorial"] = round(sum(s * s for s in setoriais.values()) * 10000)
+            out["hhi_cobertura_pct"] = cobertura
         out["top_cnae"] = sorted(((k, round(s * 100, 1)) for k, s in shares.items()),
                                  key=lambda x: -x[1])[:5]
     porte_class = {k: v for k, v in porte.items() if k in ("micro", "pequena", "media", "grande")}
@@ -304,7 +319,8 @@ def _ratios(d):
     if m.get("indice_basileia"):
         r["basileia_pct"] = m["indice_basileia"] * 100
     prof = carteira_profile(m)
-    if prof and "hhi_setorial" in prof:
+    if (prof and "hhi_setorial" in prof
+            and prof.get("hhi_cobertura_pct", 0) >= HHI_COBERTURA_SCORE_MIN):
         r["hhi_setorial"] = prof["hhi_setorial"]
     return r
 

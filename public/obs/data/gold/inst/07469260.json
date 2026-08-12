@@ -281,7 +281,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2529,
+   "hhi_setorial": 1657,
    "top_cnae": [
     [
      "construcao",
@@ -340,7 +340,8 @@
      "investimento",
      1.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 70.5
   },
   "total_pf": 4170922.34,
   "total_pj": 280653249.95

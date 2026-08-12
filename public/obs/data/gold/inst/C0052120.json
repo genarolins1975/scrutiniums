@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -0.3% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4338).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -281,7 +276,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4338,
+   "hhi_setorial": 352,
    "top_cnae": [
     [
      "outros",
@@ -340,7 +335,8 @@
      "habitacional",
      2.2
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 36.9
   },
   "total_pf": 21174105743.34,
   "total_pj": 8076302503.28

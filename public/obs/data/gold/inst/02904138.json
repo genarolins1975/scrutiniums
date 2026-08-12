@@ -282,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2343,
+   "hhi_setorial": 2302,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -341,7 +341,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      8.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 93.5
   },
   "total_pf": 84918444.86,
   "total_pj": 17157545.46

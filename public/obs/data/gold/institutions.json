@@ -6,7 +6,7 @@
  "instituicoes": [
   {
    "carteira_perfil": {
-    "hhi_setorial": 2219,
+    "hhi_setorial": 1727,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -65,7 +65,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       9.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -201,7 +202,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1727,
+    "hhi_setorial": 1495,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -260,7 +261,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       11.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 86.9
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -396,7 +398,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1682,
+    "hhi_setorial": 1336,
     "top_cnae": [
      [
       "administracao_publica_defesa_e_seguridade_social",
@@ -455,7 +457,8 @@
       "outros_creditos",
       6.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 84.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -591,7 +594,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1988,
+    "hhi_setorial": 1408,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -650,7 +653,8 @@
       "outros_creditos",
       11.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 76.2
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -786,7 +790,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2116,
+    "hhi_setorial": 1546,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -845,7 +849,8 @@
       "investimento",
       13.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 76.9
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -981,7 +986,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2770,
+    "hhi_setorial": 2696,
     "top_cnae": [
      [
       "servicos_industriais_de_utilidade_publica",
@@ -1020,7 +1025,8 @@
       "rural_e_agroindustrial",
       3.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 92.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -1156,7 +1162,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1984,
+    "hhi_setorial": 1109,
     "top_cnae": [
      [
       "outros",
@@ -1215,7 +1221,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       14.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 70.6
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -1351,7 +1358,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 4338,
+    "hhi_setorial": 352,
     "top_cnae": [
      [
       "outros",
@@ -1410,7 +1417,8 @@
       "habitacional",
       2.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 36.9
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -1546,7 +1554,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2225,
+    "hhi_setorial": 1707,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -1605,7 +1613,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       12.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -1741,7 +1750,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3399,
+    "hhi_setorial": 964,
     "top_cnae": [
      [
       "outros",
@@ -1796,7 +1805,8 @@
       "operacoes_com_recebiveis",
       0.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 50.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -1932,7 +1942,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2343,
+    "hhi_setorial": 2114,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -1991,7 +2001,8 @@
       "capital_de_giro",
       1.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 85.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -2121,7 +2132,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2465,
+    "hhi_setorial": 1385,
     "top_cnae": [
      [
       "outros",
@@ -2180,7 +2191,8 @@
       "comercio_exterior",
       5.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 67.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -2310,7 +2322,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3037,
+    "hhi_setorial": 2741,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -2357,7 +2369,8 @@
       "capital_de_giro",
       3.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 82.9
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -2588,7 +2601,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2746,
+    "hhi_setorial": 2372,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -2647,7 +2660,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       9.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 80.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -2783,7 +2797,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3214,
+    "hhi_setorial": 614,
     "top_cnae": [
      [
       "outros",
@@ -2842,7 +2856,8 @@
       "operacoes_com_recebiveis",
       8.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 49.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -2978,7 +2993,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2662,
+    "hhi_setorial": 2507,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -3037,7 +3052,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       13.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 87.9
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -3173,7 +3189,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3117,
+    "hhi_setorial": 2385,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -3214,7 +3230,8 @@
       "cheque_especial_e_conta_garantida",
       3.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 73.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -3554,7 +3571,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2571,
+    "hhi_setorial": 1457,
     "top_cnae": [
      [
       "outros",
@@ -3613,7 +3630,8 @@
       "outros_creditos",
       10.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 66.6
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -3749,7 +3767,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2306,
+    "hhi_setorial": 1489,
     "top_cnae": [
      [
       "outros",
@@ -3808,7 +3826,8 @@
       "comercio_exterior",
       9.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 71.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -3944,7 +3963,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 5519,
+    "hhi_setorial": 5165,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -3990,7 +4009,8 @@
       "investimento",
       0.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 81.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -4126,7 +4146,6 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 9828,
     "top_cnae": [
      [
       "outros",
@@ -4299,7 +4318,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2028,
+    "hhi_setorial": 1797,
     "top_cnae": [
      [
       "servicos_industriais_de_utilidade_publica",
@@ -4358,7 +4377,8 @@
       "rural_e_agroindustrial",
       4.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 86.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -4589,7 +4609,6 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 9967,
     "top_cnae": [
      [
       "outros",
@@ -4770,7 +4789,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2219,
+    "hhi_setorial": 1929,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -4825,7 +4844,8 @@
       "rural_e_agroindustrial",
       12.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 83.5
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -4961,7 +4981,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1974,
+    "hhi_setorial": 1796,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -5020,7 +5040,8 @@
       "comercio_exterior",
       1.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 89.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -5156,7 +5177,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2491,
+    "hhi_setorial": 1999,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -5211,7 +5232,8 @@
       "capital_de_giro",
       0.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 77.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -5343,7 +5365,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2990,
+    "hhi_setorial": 2940,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -5394,7 +5416,8 @@
       "capital_de_giro",
       1.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 93.2
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -5530,7 +5553,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3555,
+    "hhi_setorial": 3408,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -5589,7 +5612,8 @@
       "cheque_especial_e_conta_garantida",
       0.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 88.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -5877,7 +5901,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3887,
+    "hhi_setorial": 402,
     "top_cnae": [
      [
       "outros",
@@ -5936,7 +5960,8 @@
       "rural_e_agroindustrial",
       5.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 41.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -6156,7 +6181,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2872,
+    "hhi_setorial": 2799,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -6193,7 +6218,8 @@
       "cheque_especial_e_conta_garantida",
       0.3
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 91.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -6329,7 +6355,6 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 7043,
     "top_cnae": [
      [
       "outros",
@@ -6631,7 +6656,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2837,
+    "hhi_setorial": 1321,
     "top_cnae": [
      [
       "outros",
@@ -6690,7 +6715,8 @@
       "cheque_especial_e_conta_garantida",
       3.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 61.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -6826,7 +6852,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2099,
+    "hhi_setorial": 1633,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -6885,7 +6911,8 @@
       "rural_e_agroindustrial",
       5.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 79.6
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -7021,7 +7048,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2605,
+    "hhi_setorial": 1449,
     "top_cnae": [
      [
       "outros",
@@ -7080,7 +7107,8 @@
       "investimento",
       10.8
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 66.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -7216,7 +7244,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2422,
+    "hhi_setorial": 2020,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -7275,7 +7303,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       5.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 80.4
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -7411,7 +7440,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2372,
+    "hhi_setorial": 2283,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -7462,7 +7491,8 @@
       "investimento",
       1.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 91.2
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -7950,7 +7980,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2128,
+    "hhi_setorial": 1936,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -8001,7 +8031,8 @@
       "capital_de_giro",
       4.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 86.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -8137,7 +8168,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 5087,
+    "hhi_setorial": 4665,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -8188,7 +8219,8 @@
       "outros_creditos",
       0.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 79.4
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -8324,7 +8356,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2762,
+    "hhi_setorial": 2650,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -8383,7 +8415,8 @@
       "rural_e_agroindustrial",
       5.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 91.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -8776,7 +8809,6 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 6188,
     "top_cnae": [
      [
       "outros",
@@ -8971,7 +9003,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 6610,
+    "hhi_setorial": 6612,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -9341,7 +9373,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 4401,
+    "hhi_setorial": 4150,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -9378,7 +9410,8 @@
       "cheque_especial_e_conta_garantida",
       0.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 84.2
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -9514,7 +9547,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 4064,
+    "hhi_setorial": 4011,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -9569,7 +9602,8 @@
       "capital_de_giro",
       0.8
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 93.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -9705,7 +9739,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3613,
+    "hhi_setorial": 3521,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -9760,7 +9794,8 @@
       "investimento",
       3.3
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 91.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -9896,7 +9931,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2467,
+    "hhi_setorial": 2377,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -9943,7 +9978,8 @@
       "rural_e_agroindustrial",
       4.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 91.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -10073,7 +10109,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2350,
+    "hhi_setorial": 1296,
     "top_cnae": [
      [
       "outros",
@@ -10114,7 +10150,8 @@
       "operacoes_com_recebiveis",
       14.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 67.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -10250,7 +10287,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2752,
+    "hhi_setorial": 2038,
     "top_cnae": [
      [
       "construcao",
@@ -10309,7 +10346,8 @@
       "comercio_exterior",
       8.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 73.5
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -10445,7 +10483,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3932,
+    "hhi_setorial": 2495,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -10480,7 +10518,8 @@
       "capital_de_giro",
       100.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 62.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -10616,7 +10655,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2565,
+    "hhi_setorial": 2386,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -10675,7 +10714,8 @@
       "investimento",
       10.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 87.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -10805,7 +10845,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 7137,
+    "hhi_setorial": 7142,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -11088,7 +11128,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2889,
+    "hhi_setorial": 2459,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -11147,7 +11187,8 @@
       "cheque_especial_e_conta_garantida",
       13.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 79.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -11283,7 +11324,6 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 8359,
     "top_cnae": [
      [
       "outros",
@@ -11578,7 +11618,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 4207,
+    "hhi_setorial": 2922,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -11621,7 +11661,8 @@
       "capital_de_giro",
       3.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 64.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -11757,7 +11798,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 6084,
+    "hhi_setorial": 5600,
     "top_cnae": [
      [
       "administracao_publica_defesa_e_seguridade_social",
@@ -11800,7 +11841,8 @@
       "outros_creditos",
       10.8
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -11936,7 +11978,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2557,
+    "hhi_setorial": 1995,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -11995,7 +12037,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       6.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 76.4
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -12131,7 +12174,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3303,
+    "hhi_setorial": 3286,
     "top_cnae": [
      [
       "industrias_extrativas",
@@ -12172,7 +12215,8 @@
       "operacoes_com_recebiveis",
       1.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 96.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -12304,7 +12348,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 4794,
+    "hhi_setorial": 4750,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -12359,7 +12403,8 @@
       "outros_creditos",
       0.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 94.5
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -12604,7 +12649,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3892,
+    "hhi_setorial": 3085,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -12645,7 +12690,8 @@
       "operacoes_com_recebiveis",
       0.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 71.6
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -12781,7 +12827,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2921,
+    "hhi_setorial": 2600,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -12822,7 +12868,8 @@
       "outros_creditos",
       0.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 82.1
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -12958,7 +13005,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 5512,
+    "hhi_setorial": 5474,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -13009,7 +13056,8 @@
       "outros_creditos",
       0.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 93.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -13145,7 +13193,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2560,
+    "hhi_setorial": 2187,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -13204,7 +13252,8 @@
       "rural_e_agroindustrial",
       7.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 80.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -13340,7 +13389,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1830,
+    "hhi_setorial": 1309,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -13391,7 +13440,8 @@
       "rural_e_agroindustrial",
       7.3
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.4
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -13661,7 +13711,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2785,
+    "hhi_setorial": 1715,
     "top_cnae": [
      [
       "outros",
@@ -13704,7 +13754,8 @@
       "capital_de_giro",
       100.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 67.3
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -13968,7 +14019,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2012,
+    "hhi_setorial": 1414,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -14027,7 +14078,8 @@
       "operacoes_com_recebiveis",
       3.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 76.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -14163,7 +14215,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2886,
+    "hhi_setorial": 2279,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -14222,7 +14274,8 @@
       "investimento",
       11.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 76.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -14358,7 +14411,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 1970,
+    "hhi_setorial": 1722,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -14417,7 +14470,8 @@
       "cheque_especial_e_conta_garantida",
       4.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 85.6
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -14707,7 +14761,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2839,
+    "hhi_setorial": 2248,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -14766,7 +14820,8 @@
       "investimento",
       3.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 75.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -14902,7 +14957,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2800,
+    "hhi_setorial": 2290,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -14961,7 +15016,8 @@
       "investimento",
       7.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 77.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -15097,7 +15153,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2989,
+    "hhi_setorial": 915,
     "top_cnae": [
      [
       "outros",
@@ -15156,7 +15212,8 @@
       "investimento",
       16.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 54.5
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -15292,7 +15349,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2926,
+    "hhi_setorial": 1471,
     "top_cnae": [
      [
       "outros",
@@ -15351,7 +15408,8 @@
       "outros_creditos",
       7.0
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 62.0
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -15481,7 +15539,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2329,
+    "hhi_setorial": 1730,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -15540,7 +15598,8 @@
       "cheque_especial_e_conta_garantida",
       8.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 75.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -15676,7 +15735,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2128,
+    "hhi_setorial": 1824,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -15735,7 +15794,8 @@
       "cheque_especial_e_conta_garantida",
       9.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 82.5
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -15871,7 +15931,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3763,
+    "hhi_setorial": 2759,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -15922,7 +15982,8 @@
       "capital_de_giro",
       0.9
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 68.4
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -16155,7 +16216,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2291,
+    "hhi_setorial": 1991,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -16214,7 +16275,8 @@
       "rural_e_agroindustrial",
       7.1
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 82.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -16346,7 +16408,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2204,
+    "hhi_setorial": 1721,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -16405,7 +16467,8 @@
       "cheque_especial_e_conta_garantida",
       4.2
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.2
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -16541,7 +16604,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 3889,
+    "hhi_setorial": 2343,
     "top_cnae": [
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -16584,7 +16647,8 @@
       "capital_de_giro",
       14.4
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 60.7
    },
    "captacao": {
     "tipo": "DADO CALCULADO",
@@ -16945,7 +17009,7 @@
   },
   {
    "carteira_perfil": {
-    "hhi_setorial": 2878,
+    "hhi_setorial": 817,
     "top_cnae": [
      [
       "outros",
@@ -17004,7 +17068,8 @@
       "outros_creditos",
       6.8
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 54.8
    },
    "captacao": {
     "tipo": "DADO CALCULADO",

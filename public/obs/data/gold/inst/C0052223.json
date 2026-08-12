@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "Carteira cresceu 627.1% em 4 trimestres — acima de 30%, checar apetite de risco.",
     "base": "BCB IF.data (Olinda)"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4549).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -296,7 +291,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4549,
+   "hhi_setorial": 916,
    "top_cnae": [
     [
      "outros",
@@ -331,7 +326,8 @@
      "operacoes_com_recebiveis",
      100.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 39.7
   },
   "total_pf": 1154136.95,
   "total_pj": 2979821.86

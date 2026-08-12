@@ -42,13 +42,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4108).",
-    "base": "IF.data carteiras por CNAE"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Índice de Basileia: +2.83p.p. no trimestre.",
@@ -284,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4108,
+   "hhi_setorial": 1251,
    "top_cnae": [
     [
      "outros",
@@ -335,7 +329,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      0.6
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 46.5
   },
   "total_pf": 4698710.83,
   "total_pj": 9603601.52

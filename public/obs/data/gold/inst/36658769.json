@@ -282,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2332,
+   "hhi_setorial": 2114,
    "top_cnae": [
     [
      "construcao",
@@ -325,7 +325,8 @@
      "capital_de_giro",
      13.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 85.3
   },
   "total_pf": 4326122.85,
   "total_pj": 847057528.39

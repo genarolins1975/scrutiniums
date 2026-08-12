@@ -297,7 +297,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2889,
+   "hhi_setorial": 2459,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -356,7 +356,8 @@
      "cheque_especial_e_conta_garantida",
      13.9
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 79.3
   },
   "total_pf": 361036043.94,
   "total_pj": 5691969359.35

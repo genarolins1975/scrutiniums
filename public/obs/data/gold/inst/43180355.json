@@ -45,11 +45,6 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 7172).",
-    "base": "IF.data carteiras por CNAE"
-   },
-   {
-    "tipo": "warn",
     "texto": "Índice de reclamações 75.0 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
     "base": "BCB rdrweb"
    }
@@ -298,7 +293,6 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 7172,
    "top_cnae": [
     [
      "outros",

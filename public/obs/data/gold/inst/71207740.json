@@ -45,7 +45,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 4741).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4742, piso sobre os 99.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -292,7 +292,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4741,
+   "hhi_setorial": 4742,
    "top_cnae": [
     [
      "agricultura_pecuaria_producao_florestal_pesca_e_",
@@ -343,7 +343,8 @@
      "cheque_especial_e_conta_garantida",
      0.2
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 99.0
   },
   "total_pf": 123989600.04,
   "total_pj": 22102682.76

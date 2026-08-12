@@ -282,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2107,
+   "hhi_setorial": 1958,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -341,7 +341,8 @@
      "rural_e_agroindustrial",
      4.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 88.9
   },
   "total_pf": 246760369.38,
   "total_pj": 309083255.02

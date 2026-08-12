@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2525,
+   "hhi_setorial": 1273,
    "top_cnae": [
     [
      "outros",
@@ -337,7 +337,8 @@
      "rural_e_agroindustrial",
      2.4
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 64.8
   },
   "total_pf": 132470521.14,
   "total_pj": 161085727.97

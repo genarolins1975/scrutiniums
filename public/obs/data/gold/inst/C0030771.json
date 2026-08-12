@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 6084).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5600, piso sobre os 78.1% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -289,7 +289,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 6084,
+   "hhi_setorial": 5600,
    "top_cnae": [
     [
      "administracao_publica_defesa_e_seguridade_social",
@@ -332,7 +332,8 @@
      "outros_creditos",
      10.8
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 78.1
   },
   "total_pf": 517232361.11,
   "total_pj": 1607169313.26

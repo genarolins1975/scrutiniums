@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -1.2% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5742).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -288,7 +283,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5742,
+   "hhi_setorial": 386,
    "top_cnae": [
     [
      "outros",
@@ -335,7 +330,8 @@
      "operacoes_com_recebiveis",
      2.5
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 26.8
   },
   "total_pf": 40179647.11,
   "total_pj": 126433.14

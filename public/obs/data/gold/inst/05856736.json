@@ -286,7 +286,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2727,
+   "hhi_setorial": 1234,
    "top_cnae": [
     [
      "outros",
@@ -345,7 +345,8 @@
      "operacoes_com_recebiveis",
      1.5
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 61.4
   },
   "total_pf": 12885530.63,
   "total_pj": 120442092.78

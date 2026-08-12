@@ -40,7 +40,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 5047).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5046, piso sobre os –% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -278,7 +278,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5047,
+   "hhi_setorial": 5046,
    "top_cnae": [
     [
      "industrias_de_transformacao",

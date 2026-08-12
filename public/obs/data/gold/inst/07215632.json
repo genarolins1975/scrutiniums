@@ -282,7 +282,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2456,
+   "hhi_setorial": 2075,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -341,7 +341,8 @@
      "operacoes_com_recebiveis",
      6.3
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 80.7
   },
   "total_pf": 191172288.66,
   "total_pj": 188679347.1

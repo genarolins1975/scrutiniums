@@ -286,7 +286,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2557,
+   "hhi_setorial": 1995,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -345,7 +345,8 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      6.6
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 76.4
   },
   "total_pf": 5427920513.05,
   "total_pj": 4121987789.18

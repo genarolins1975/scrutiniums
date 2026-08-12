@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -1.1% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3854).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -292,7 +287,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3854,
+   "hhi_setorial": 2783,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -339,7 +334,8 @@
      "outros_creditos",
      0.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 67.2
   },
   "total_pf": 17300414.2,
   "total_pj": 6765890.41

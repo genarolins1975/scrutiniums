@@ -297,7 +297,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2785,
+   "hhi_setorial": 1715,
    "top_cnae": [
     [
      "outros",
@@ -340,7 +340,8 @@
      "capital_de_giro",
      100.0
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 67.3
   },
   "total_pf": 11636016720.45,
   "total_pj": 834894992.47

@@ -42,11 +42,6 @@
     "tipo": "warn",
     "texto": "Basileia de 14.9% (abaixo da mediana do grupo S5: 30.0%).",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI 3111).",
-    "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
@@ -284,7 +279,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3111,
+   "hhi_setorial": 1009,
    "top_cnae": [
     [
      "outros",
@@ -343,7 +338,8 @@
      "investimento",
      9.8
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 54.2
   },
   "total_pf": 493022786.04,
   "total_pj": 535724125.43

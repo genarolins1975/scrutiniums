@@ -274,7 +274,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2763,
+   "hhi_setorial": 1848,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -333,7 +333,8 @@
      "operacoes_com_recebiveis",
      3.2
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 70.1
   },
   "total_pf": 208781045.31,
   "total_pj": 68132396.59

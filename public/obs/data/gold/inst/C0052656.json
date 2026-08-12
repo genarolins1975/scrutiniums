@@ -261,7 +261,7 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2746,
+   "hhi_setorial": 2724,
    "top_cnae": [
     [
      "construcao",
@@ -312,7 +312,8 @@
      "outros_creditos",
      3.1
     ]
-   ]
+   ],
+   "hhi_cobertura_pct": 95.2
   },
   "total_pf": 2605489.08,
   "total_pj": 4102547.28

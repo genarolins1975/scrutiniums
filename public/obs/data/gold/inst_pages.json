@@ -342,7 +342,7 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 2219,
+    "hhi_setorial": 1727,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -401,7 +401,8 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       9.7
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 78.0
    },
    "score_ref": {
     "score": 65.7,
@@ -579,7 +580,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), outros (22.0%); HHI setorial 2219.",
+     "frase": "Carteira PJ concentrada em: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), outros (22.0%); HHI setorial (piso) 1727.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -969,7 +970,7 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 2306,
+    "hhi_setorial": 1489,
     "top_cnae": [
      [
       "outros",
@@ -1028,7 +1029,8 @@
       "comercio_exterior",
       9.6
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 71.7
    },
    "score_ref": {
     "score": 51.9,
@@ -1199,7 +1201,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: outros (28.3%), industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%); HHI setorial 2306.",
+     "frase": "Carteira PJ concentrada em: outros (28.3%), industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%); HHI setorial (piso) 1489.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -1568,7 +1570,7 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 2491,
+    "hhi_setorial": 1999,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -1623,7 +1625,8 @@
       "capital_de_giro",
       0.5
      ]
-    ]
+    ],
+    "hhi_cobertura_pct": 77.8
    },
    "score_ref": {
     "score": 70.7,
@@ -1790,7 +1793,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), outros (22.2%); HHI setorial 2491.",
+     "frase": "Carteira PJ concentrada em: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), outros (22.2%); HHI setorial (piso) 1999.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
