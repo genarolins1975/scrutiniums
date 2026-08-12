@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.65.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.66.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -268,6 +268,381 @@ function marcosRegulatorios(painel) {
   return (R.marcos || [])
     .filter(m => m.serie_x && (m.paineis || []).includes(painel))
     .map(m => ({ x: m.serie_x, label: m.ato.replace(/\s*\(.*?\)/, "").replace(/^(Resolução|Resoluções)/, "Res.").slice(0, 24) }));
+}
+
+/* ================= CONCEITOS DIDÁTICOS =================
+   Todo conceito importante do painel vira um termo CLICÁVEL que abre uma
+   explicação em camadas: a intuição primeiro, o cálculo depois, um pouco de
+   história, a regulação sem juridiquês e as armadilhas de leitura — com
+   infográfico quando um desenho explica melhor que um parágrafo.
+   termo(slug, rotulo) é o ponto de entrada; abrirConceito(slug) o modal. */
+
+/* infográficos: SVGs mínimos, tematizados pelas mesmas variáveis dos gráficos */
+const IG = {
+  basileia: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="capital como colchão sobre os ativos ponderados pelo risco">
+    <rect x="20" y="90" width="190" height="40" fill="var(--c-line1,#1d4e89)" opacity=".25" rx="4"/>
+    <text x="115" y="114" text-anchor="middle" font-size="11" fill="var(--ink,#333)">ativos ponderados pelo risco (RWA)</text>
+    <rect x="20" y="58" width="190" height="26" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
+    <text x="115" y="75" text-anchor="middle" font-size="11" fill="#fff">capital próprio (PR)</text>
+    <path d="M225 71 h30" stroke="var(--ink,#333)" stroke-dasharray="3,3"/>
+    <text x="262" y="66" font-size="11" fill="var(--ink,#333)">Basileia =</text>
+    <text x="262" y="80" font-size="11" fill="var(--ink,#333)">capital ÷ RWA</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">quanto do risco é bancado com dinheiro próprio?</text>
+    <text x="20" y="40" font-size="10.5" fill="var(--ink-soft,#666)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
+  lcr: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="caixa de alta qualidade contra trinta dias de saídas em estresse">
+    <rect x="20" y="45" width="120" height="80" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="6"/>
+    <text x="80" y="80" text-anchor="middle" font-size="11" fill="#fff">ativos líquidos</text>
+    <text x="80" y="95" text-anchor="middle" font-size="11" fill="#fff">de alta qualidade</text>
+    <rect x="200" y="70" width="120" height="55" fill="var(--c-line3,#b45309)" opacity=".55" rx="6"/>
+    <text x="260" y="94" text-anchor="middle" font-size="11" fill="var(--ink,#333)">saídas líquidas em</text>
+    <text x="260" y="108" text-anchor="middle" font-size="11" fill="var(--ink,#333)">30 dias de estresse</text>
+    <path d="M148 85 h44" stroke="var(--ink,#333)" marker-end="url(#seta)"/>
+    <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--ink,#333)">≥</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">o caixa aguenta um mês de pânico?</text>
+    <text x="20" y="139" font-size="10.5" fill="var(--ink-soft,#666)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
+  aging: () => `<svg viewBox="0 0 340 130" class="cdlg-ig" role="img" aria-label="linha do tempo do atraso de uma parcela">
+    <line x1="25" y1="70" x2="320" y2="70" stroke="var(--c-grid,#ccc)" stroke-width="2"/>
+    ${[[25, "dia 0", "vencimento"], [115, "15 dias", "vira ATRASO"], [230, "90 dias", "vira INADIMPLÊNCIA"]].map(([x, t, s]) => `
+      <circle cx="${x}" cy="70" r="5" fill="var(--c-line1,#1d4e89)"/>
+      <text x="${x}" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">${t}</text>
+      <text x="${x}" y="92" text-anchor="middle" font-size="10" fill="var(--ink-soft,#666)">${s}</text>`).join("")}
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">os dois relógios do não-pagamento</text>
+    <text x="20" y="118" font-size="10.5" fill="var(--ink-soft,#666)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
+  acp: () => `<svg viewBox="0 0 340 160" class="cdlg-ig" role="img" aria-label="pilha de colchões de capital sobre o mínimo">
+    ${[[118, 26, "var(--c-line1,#1d4e89)", "mínimo de capital (8%)"], [88, 26, "var(--c-line2,#0e7c7b)", "colchão de conservação"],
+       [66, 18, "#6b46a3", "colchão contracíclico"], [44, 18, "#b45309", "colchão sistêmico (só os grandes)"]].map(([y, h, c, t]) => `
+      <rect x="30" y="${y}" width="130" height="${h}" fill="${c}" opacity=".8" rx="3"/>
+      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="10.5" fill="var(--ink,#333)">${t}</text>`).join("")}
+    <path d="M30 150 h130" stroke="var(--ink,#333)"/>
+    <text x="95" y="158" text-anchor="middle" font-size="9.5" fill="var(--ink-soft,#666)">quanto mais alto, mais protegido</text>
+    <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--ink,#333)">capital mínimo + colchões (ACP)</text></svg>`,
+  eficiencia: () => `<svg viewBox="0 0 340 140" class="cdlg-ig" role="img" aria-label="despesas comparadas às receitas">
+    <rect x="30" y="40" width="200" height="30" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="4"/>
+    <text x="130" y="59" text-anchor="middle" font-size="11" fill="#fff">receitas (intermediação + serviços)</text>
+    <rect x="30" y="85" width="110" height="30" fill="var(--c-line3,#b45309)" opacity=".7" rx="4"/>
+    <text x="85" y="104" text-anchor="middle" font-size="11" fill="#fff">despesas</text>
+    <text x="250" y="104" font-size="11" fill="var(--ink,#333)">eficiência = 55%</text>
+    <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
+    <text x="30" y="132" font-size="10.5" fill="var(--ink-soft,#666)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
+  spread: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="do custo de captar à taxa cobrada">
+    <rect x="30" y="95" width="280" height="24" fill="var(--c-line1,#1d4e89)" opacity=".35" rx="4"/>
+    <text x="170" y="111" text-anchor="middle" font-size="11" fill="var(--ink,#333)">custo de captar o dinheiro</text>
+    <rect x="30" y="62" width="280" height="28" fill="var(--c-line3,#b45309)" opacity=".55" rx="4"/>
+    <text x="170" y="80" text-anchor="middle" font-size="11" fill="var(--ink,#333)">SPREAD: inadimplência esperada + impostos + custos + margem</text>
+    <path d="M30 50 h280" stroke="var(--ink,#333)" stroke-dasharray="4,3"/>
+    <text x="170" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">taxa cobrada do cliente</text>
+    <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--ink,#333)">a taxa é o custo do dinheiro + o spread</text>
+    <text x="30" y="140" font-size="10.5" fill="var(--ink-soft,#666)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
+};
+
+const CONCEITOS = {
+  "roe": {
+    nome: "ROE — retorno sobre o patrimônio",
+    resumo: "Quanto o banco lucra por ano para cada real que os donos deixaram dentro dele.",
+    intuicao: "Pense numa padaria que os sócios montaram com R$ 100 mil do próprio bolso. Se ela lucra R$ 15 mil no ano, o ROE é 15%: é a 'taxa de juros' que o negócio paga aos donos. Para bancos a conta é igual — lucro líquido dividido pelo patrimônio líquido. É o número que responde 'valeu mais a pena ser dono do banco ou ter deixado o dinheiro aplicado?'.",
+    calculo: "ROE = lucro líquido ÷ patrimônio líquido. No painel, o ROE vem do IF.data e é o ACUMULADO do período reportado (não anualizado) — por isso um ROE de 1º trimestre parece 'baixo' comparado a um anual: são réguas diferentes, e a ficha diz qual está em uso.",
+    historia: "A obsessão dos bancos brasileiros com ROE alto vem dos anos de inflação alta, quando o ganho vinha do float (dinheiro parado se desvalorizando na mão do cliente). Com o Plano Real (1994), o float sumiu e o lucro passou a vir de crédito e serviço — e o ROE virou A régua de comparação entre bancos, com os grandes brasileiros historicamente entre os mais rentáveis do mundo.",
+    regulacao: "O ROE em si não é regulado — nenhuma norma manda lucrar. Mas ele conversa com a regulação de capital: quanto mais capital o regulador exige (denominador maior), mais difícil sustentar o mesmo ROE. É o cabo de guerra permanente entre segurança (mais capital) e rentabilidade (menos).",
+    armadilhas: "ROE alto pode significar eficiência — ou pouco capital e muito risco. Dois bancos com o mesmo lucro têm ROEs muito diferentes se um opera mais alavancado. Por isso o painel mostra ROE JUNTO de Basileia e alavancagem, nunca sozinho. E cuidado com períodos: acumulado de trimestre não se compara com ano fechado.",
+    veja: ["indice-de-basileia", "alavancagem", "indice-de-eficiencia"],
+  },
+  "indice-de-basileia": {
+    nome: "Índice de Basileia",
+    resumo: "O colchão de capital próprio do banco, medido contra o risco que ele carrega.",
+    intuicao: "Um banco empresta dinheiro que, na maior parte, não é dele — é dos depositantes. O Índice de Basileia pergunta: se uma fatia dos empréstimos der errado, quanto de perda o banco aguenta com dinheiro PRÓPRIO antes de encostar no dinheiro dos clientes? É o airbag do sistema. 15% significa: para cada R$ 100 de exposição ponderada pelo risco, há R$ 15 de capital próprio na frente.",
+    infografico: "basileia",
+    calculo: "Basileia = Patrimônio de Referência ÷ RWA (ativos ponderados pelo risco). O RWA pesa cada ativo pelo risco: título do Tesouro pondera perto de zero; crédito sem garantia pondera cheio. O mínimo é 8%, mas com os colchões adicionais (ACP) a exigência real dos grandes passa de 11,5% — e o mercado espera folga acima disso.",
+    historia: "Em 1974, a quebra do banco alemão Herstatt pegou o mundo sem regra comum e criou o Comitê de Basileia (na cidade suíça). O primeiro acordo (Basileia I, 1988) fixou os 8% — um número negociado, não uma lei da física. Basileia II (2004) sofisticou a medição de risco; a crise de 2008 mostrou que capital de má qualidade não segura crise, e Basileia III (2010) endureceu a definição de capital e criou os colchões. O Brasil adota o arcabouço integralmente — e costuma ser mais conservador que o mínimo internacional.",
+    regulacao: "No Brasil: mínimo de 8% de Basileia total, com pelo menos 4,5% em Capital Principal (o capital 'de verdade': ações e lucros retidos), mais os colchões ACP por cima (conservação 2,5%, contracíclico e sistêmico para os grandes). Quem fura os colchões não quebra — mas fica proibido de distribuir dividendos e bônus até recompor. Quem fura o mínimo entra no radar duro do BCB. Os marcos estão na aba Regulação.",
+    armadilhas: "Basileia alta não é atestado de saúde completo: mede solvência, não liquidez (um banco pode ter capital de sobra e quebrar por corrida — por isso existem LCR e NSFR). E comparar Basileia entre bancos de portes muito diferentes ignora que a exigência TAMBÉM difere (colchão sistêmico só para os grandes).",
+    veja: ["capital-principal", "rwa", "acp", "lcr", "alavancagem"],
+  },
+  "capital-principal": {
+    nome: "Capital Principal (CET1) e os níveis de capital",
+    resumo: "A parte mais dura do capital do banco: ações e lucros retidos — o que absorve perda sem drama.",
+    intuicao: "Nem todo 'capital' é igual. O Capital Principal é o dinheiro que os acionistas colocaram e os lucros que ficaram no banco — se houver perda, ele a absorve automaticamente, sem tribunal e sem pânico. Acima dele vêm camadas mais 'moles' (dívidas que viram capital em crise). É a diferença entre ter poupança própria e contar com um empréstimo do primo em emergência.",
+    calculo: "Três camadas: Capital Principal (CET1: ações + lucros retidos, mínimo 4,5% do RWA), Nível 1 (CET1 + instrumentos perpétuos que absorvem perda, mínimo 6%) e Patrimônio de Referência total (tudo + dívidas subordinadas, mínimo 8%). O painel mostra as três na ficha de cada IF (Pilar 3).",
+    historia: "Antes de 2008, bancos contavam como 'capital' instrumentos que, na hora H, não absorveram perda nenhuma — e os contribuintes pagaram os resgates. Basileia III nasceu dessa lição: a régua passou a ser o CET1, e os instrumentos híbridos só contam se tiverem cláusula de virar ação (ou pó) quando o banco afunda.",
+    regulacao: "No Brasil, as definições vêm das resoluções de capital do CMN/BCB (hoje Res. CMN 4.955 e BCB 199). O detalhe que importa: dividendos e bônus são bloqueados progressivamente quando o CET1 invade os colchões — a regulação prefere segurar o dinheiro dentro do banco a deixar a base de capital sangrar.",
+    armadilhas: "Olhar só a Basileia total esconde a qualidade: dois bancos com 15% podem ter 13% × 9% de CET1 — o primeiro é muito mais sólido. A margem sobre o requerido com colchões (mostrada no painel) é a folga que realmente importa.",
+    veja: ["indice-de-basileia", "acp", "rwa"],
+  },
+  "rwa": {
+    nome: "RWA — ativos ponderados pelo risco",
+    resumo: "O tamanho do risco do banco: cada ativo conta proporcionalmente ao perigo que oferece.",
+    intuicao: "Somar tudo que o banco tem trata um título do Tesouro e um empréstimo sem garantia como iguais — e não são. O RWA corrige isso: multiplica cada ativo por um peso de risco. R$ 100 em Tesouro ≈ R$ 0 de RWA; R$ 100 em cartão rotativo ≈ R$ 100 ou mais. É o denominador da Basileia: o capital é medido contra o risco, não contra o tamanho.",
+    calculo: "RWA = Σ (exposição × fator de ponderação). Os fatores vêm de tabela regulatória (abordagem padronizada) ou de modelos internos aprovados pelo BCB nos maiores bancos. Inclui risco de crédito, de mercado e operacional.",
+    historia: "A ponderação por risco é a grande ideia de Basileia I (1988). Basileia II deixou os grandes usarem modelos próprios — e 2008 mostrou o risco disso: modelos otimistas geravam RWA magro e capital insuficiente. Basileia III trouxe pisos (output floors) para limitar o quanto o modelo interno pode 'emagrecer' o risco.",
+    regulacao: "No Brasil o RWA segue a Res. BCB 229 e correlatas. A razão de alavancagem existe como trava de segurança justamente porque o RWA depende de modelo: ela mede capital contra exposição TOTAL, sem ponderação — se o modelo estiver errado, a alavancagem denuncia.",
+    armadilhas: "RWA baixo pode significar carteira conservadora — ou modelo agressivo. Comparar RWA÷ativos entre bancos dá uma pista do apetite de risco, mas a mistura de abordagens (padronizada × modelo interno) contamina a comparação.",
+    veja: ["indice-de-basileia", "alavancagem", "capital-principal"],
+  },
+  "acp": {
+    nome: "ACP — os colchões de capital",
+    resumo: "Camadas extras de capital ACIMA do mínimo, para gastar na crise sem quebrar a regra.",
+    intuicao: "Se o mínimo fosse a única regra, todo banco operaria colado nele — e a primeira turbulência jogaria todos abaixo da linha ao mesmo tempo, com o sistema inteiro cortando crédito junto. Os colchões resolvem isso: são capital que o banco DEVE ter em tempos bons e PODE consumir em tempos ruins, pagando o preço de não distribuir dividendos enquanto estiver dentro deles.",
+    infografico: "acp",
+    calculo: "Três adicionais sobre o Capital Principal: conservação (2,5% do RWA, todos), contracíclico (0 a 2,5%, ligado pelo BCB quando o crédito esquenta) e sistêmico (1 a 2%, só para os bancos cuja queda arrastaria o sistema). O painel mostra o ACP requerido e a MARGEM que cada banco tem sobre ele.",
+    historia: "É a resposta direta de Basileia III à pró-ciclicidade exposta em 2008: os bancos tinham capital 'suficiente' no papel, mas nenhum espaço para absorver perda sem violar mínimos — então todos encolheram o crédito simultaneamente e aprofundaram a recessão. O colchão contracíclico institucionaliza o 'guardar na fartura para gastar na seca'.",
+    regulacao: "Res. BCB 199 e decisões periódicas do Comef (Comitê de Estabilidade Financeira do BCB) para o contracíclico brasileiro. Furar colchão não é ilegal — é caro: trava dividendos, recompras e bônus em escala progressiva.",
+    armadilhas: "A margem sobre o requerido é o número operacional: um banco com Basileia de 12% e exigência total de 11,5% tem folga de 0,5 p.p. — bem mais apertado do que os '12%' sugerem sozinhos.",
+    veja: ["indice-de-basileia", "capital-principal"],
+  },
+  "alavancagem": {
+    nome: "Razão de Alavancagem",
+    resumo: "Capital contra exposição TOTAL, sem ponderação — a trava de segurança dos modelos.",
+    intuicao: "A Basileia confia nos pesos de risco; a alavancagem desconfia deles. Ela pergunta o mais bruto possível: capital de Nível 1 dividido por TUDO a que o banco está exposto, sem nenhum desconto por 'ser seguro'. Se os modelos de risco estiverem errados (já estiveram), essa régua simples ainda segura.",
+    calculo: "RA = Nível 1 ÷ exposição total (ativos + derivativos + compromissos fora do balanço). Mínimo brasileiro: 3%. Um RA de 6,8% quer dizer que o banco pode operar com exposição ~15× o capital.",
+    historia: "Bancos europeus chegaram a 2008 com Basileia confortável e alavancagem real de 40-50× — os pesos de risco escondiam a montanha. Basileia III trouxe a razão de alavancagem como 'backstop': deliberadamente burra, para ser difícil de driblar.",
+    regulacao: "No Brasil, Res. BCB 200 e correlatas; divulgação trimestral no Pilar 3 (é de lá que o painel lê).",
+    armadilhas: "Alavancagem alta ≠ imprudência automática: bancos concentrados em ativos de baixo risco (tesourarias) vivem bem com RA menor. Ela funciona como PAR da Basileia — as duas juntas contam a história.",
+    veja: ["indice-de-basileia", "rwa", "pilar-3"],
+  },
+  "lcr": {
+    nome: "LCR — liquidez de curto prazo",
+    resumo: "O caixa de alta qualidade dá para aguentar 30 dias de estresse de saques?",
+    intuicao: "Solvência e liquidez quebram bancos por portas diferentes. Um banco pode ter capital de sobra e morrer em uma semana se todo mundo sacar ao mesmo tempo — foi assim com bancos saudáveis-no-papel em 2008. O LCR simula exatamente isso: um mês de pânico calibrado (depósitos fugindo, linhas secando) e pergunta se os ativos que viram dinheiro RÁPIDO e SEM DESÁGIO cobrem a sangria.",
+    infografico: "lcr",
+    calculo: "LCR = ativos líquidos de alta qualidade (HQLA: caixa, reservas no BC, títulos públicos) ÷ saídas líquidas estimadas em 30 dias de estresse padronizado. Mínimo: 100%. Os grandes brasileiros rodam entre 150% e 220% — aguentariam de um mês e meio a dois meses do cenário.",
+    historia: "Northern Rock (2007) teve a primeira corrida bancária clássica do Reino Unido em 140 anos — era solvente pela régua da época e evaporou por liquidez. Basileia III criou as duas métricas de liquidez que faltavam: LCR (curto prazo) e NSFR (estrutural). Antes de 2008, NENHUMA regra internacional media liquidez.",
+    regulacao: "No Brasil desde 2015 (Res. CMN 4.401), obrigatório para os maiores (S1/S2) — por isso instituição sem LCR publicado no painel não está 'descumprindo': pode simplesmente não ser obrigada a divulgar. Publicação trimestral no Pilar 3.",
+    armadilhas: "O cenário de estresse é PADRONIZADO — uma crise real pode ser pior (ou diferente). E LCR altíssimo também tem custo: caixa parado rende pouco; o equilíbrio é a arte.",
+    veja: ["nsfr", "indice-de-basileia", "pilar-3"],
+  },
+  "nsfr": {
+    nome: "NSFR — liquidez estrutural",
+    resumo: "O funding do banco tem o prazo do que ele financia — ou está tudo apoiado em dinheiro que pode sumir?",
+    intuicao: "Financiar um crédito imobiliário de 30 anos com depósito que sai amanhã é andar de bicicleta na corda bamba: funciona até o vento mudar. O NSFR mede esse descasamento estrutural: quanto do balanço de longo prazo está sustentado por funding ESTÁVEL (capital, depósitos de varejo pegajosos, dívida longa).",
+    calculo: "NSFR = funding estável disponível ÷ funding estável requerido pelos ativos, num horizonte de 1 ano. Cada fonte de dinheiro ganha um fator de estabilidade (capital = 100%; depósito de varejo ≈ 90-95%; dinheiro de atacado overnight ≈ 0%) e cada ativo, uma exigência. Mínimo: 100%.",
+    historia: "É o irmão de 1 ano do LCR, do mesmo pacote pós-2008. O caso-símbolo é o Lehman: rolava centenas de bilhões TODA NOITE no mercado de repo — quando o mercado desconfiou, o funding sumiu em dias. O NSFR existe para punir esse modelo antes da crise, não depois.",
+    regulacao: "No Brasil desde 2018 (Res. CMN 4.616), para os maiores (S1/S2), com divulgação trimestral no Pilar 3 — que é de onde o painel lê.",
+    armadilhas: "NSFR compara mal entre modelos de negócio muito diferentes (banco de varejo × tesouraria). E os fatores de estabilidade são convenções regulatórias — 'depósito estável' é uma aposta estatística, como os saques via Pix em minutos vieram lembrar.",
+    veja: ["lcr", "custo-de-captacao", "pilar-3"],
+  },
+  "inadimplencia-90": {
+    nome: "Inadimplência (>90 dias)",
+    resumo: "A fatia da carteira com parcelas atrasadas há mais de 90 dias — a régua clássica do calote.",
+    intuicao: "Nem todo atraso é calote: gente esquece boleto, escorrega um mês e paga. A convenção mundial diz que 90 dias é o ponto em que o atraso deixa de ser acidente e vira problema — estatisticamente, a maior parte do que passa dessa linha não volta. Inadimplência de 3,2% = de cada R$ 100 emprestados, R$ 3,20 estão nessa zona.",
+    infografico: "aging",
+    calculo: "Carteira com atraso superior a 90 dias ÷ carteira ativa total. O painel usa o IF.data (relatório por instrumentos financeiros, estrutura vigente desde 2025) por instituição, e as séries do SGS para o agregado do sistema.",
+    historia: "Os '90 dias' são convenção do Comitê de Basileia adotada mundo afora — permitem comparar Brasil com qualquer país. No Brasil, a régua conviveu por 25 anos com a classificação por níveis de risco (AA a H) da Res. 2.682/1999; desde 2025, a Res. 4.966 mudou o regime para PERDA ESPERADA, mas os 90 dias seguem como o marco de inadimplência.",
+    regulacao: "A régua aciona consequências práticas: crédito >90 dias exige mais provisão, para de acumular receita 'no papel' e pesa no capital. A partir da Res. 4.966, o banco provisiona ANTES do atraso, pela perda esperada — o 90 dias virou o gatilho do 'estágio 3' (problema materializado).",
+    armadilhas: "Inadimplência é RAZÃO: cresce quando o calote sobe, mas também quando a carteira encolhe (denominador) — banco que para de emprestar 'piora' no índice. Baixas para prejuízo (write-offs) LIMPAM o índice sem ninguém ter pago. E carteira crescendo rápido dilui atraso — o quadrante crescimento × inadimplência do painel existe para pegar isso.",
+    veja: ["atraso-15-90", "ativos-problematicos", "provisao-perda-esperada", "carteira-de-credito"],
+  },
+  "atraso-15-90": {
+    nome: "Atraso de 15 a 90 dias",
+    resumo: "O sinal antecedente: parcelas que acabaram de escorregar — parte volta, parte vira inadimplência.",
+    intuicao: "Se a inadimplência >90d é a febre confirmada, o atraso de 15-90 dias é o termômetro subindo. Ele reage MESES antes: quando o orçamento das famílias aperta, primeiro os atrasos curtos incham; depois uma fração deles atravessa os 90 dias. Por isso o painel trata os dois como relógios diferentes, de propósito.",
+    calculo: "Parcelas vencidas entre 15 e 90 dias ÷ carteira da modalidade. O painel usa esse recorte por PRODUTO (matriz atraso × taxa × carteira): é onde o sinal aparece primeiro e onde os produtos se diferenciam.",
+    historia: "A régua de 15 dias vem das estatísticas de crédito do BCB, publicadas nesse recorte desde os anos 2000. A dupla 15-90/90+ virou o padrão de leitura de ciclo: analistas chamam o 15-90 de 'inadimplência jovem' — o estoque de problema em formação.",
+    regulacao: "Entre 15 e 90 dias o crédito já exige provisão crescente (e, na perda esperada da 4.966, tende ao 'estágio 2': risco aumentou significativamente). O banco já está pagando pelo risco antes de o calote se confirmar.",
+    armadilhas: "É volátil: um feriado bancário ou um 5º dia útil atípico mexem no número. Tendência importa mais que nível — e comparar atraso ≥15d de um produto com inadimplência ≥90d de outro é somar relógios diferentes (o painel nunca faz).",
+    veja: ["inadimplencia-90", "provisao-perda-esperada"],
+  },
+  "ativos-problematicos": {
+    nome: "Ativos problemáticos",
+    resumo: "Conceito mais largo que inadimplência: inclui o crédito reestruturado e o risco já deteriorado.",
+    intuicao: "Um banco pode 'resolver' a inadimplência renegociando: a dívida atrasada vira contrato novo em dia — e some do índice de 90 dias sem que o risco tenha sumido. Os ativos problemáticos fecham essa porta: contam o que está atrasado E o que foi reestruturado por dificuldade E o que o próprio banco já classifica como deteriorado (estágio 3).",
+    calculo: "Definição da Res. 4.966: exposições em estágio 3 (perda incorrida ou muito provável) + reestruturações por dificuldade financeira. Sempre ≥ inadimplência 90d. A distância entre os dois números é informativa: muita reestruturação aparece aqui.",
+    historia: "O conceito ganhou força internacional na crise do euro (2010-2014), quando 'NPL' virou assunto de política pública e os reguladores perceberam que renegociação escondia problema (evergreening: rolar para não reconhecer). O Brasil incorporou a categoria no arcabouço da 4.966.",
+    regulacao: "Divulgação obrigatória no IF.data desde a estrutura 2025. Estágio 3 exige provisão pela perda esperada de toda a vida do contrato.",
+    armadilhas: "Reestruturar NÃO é errado — muitas renegociações salvam empresas e famílias viáveis. O número alto pede investigação, não condenação: a pergunta é se as reestruturações performam ou apenas adiam.",
+    veja: ["inadimplencia-90", "provisao-perda-esperada"],
+  },
+  "provisao-perda-esperada": {
+    nome: "Provisão e perda esperada (Res. 4.966)",
+    resumo: "O dinheiro que o banco separa HOJE para calotes prováveis de amanhã — desde 2025, antes mesmo do atraso.",
+    intuicao: "Emprestar é aceitar que uma fração não volta. A provisão é reconhecer esse custo no dia em que se empresta, não no dia em que o cliente some. É a diferença entre um restaurante que já conta com 3% de desperdício no preço e um que 'se surpreende' todo mês.",
+    calculo: "Sob perda esperada: estágio 1 (crédito normal) provisiona a perda esperada de 12 meses; estágio 2 (risco aumentou muito) e estágio 3 (problema materializado) provisionam a perda esperada da VIDA INTEIRA do contrato. O 'custo do crédito' da DRE é o fluxo dessas provisões, líquido de recuperações.",
+    historia: "Por 25 anos o Brasil usou a Res. 2.682/1999 (níveis AA-H, provisão por tabela conforme o atraso) — um sistema reativo: a perda só aparecia quando o atraso já existia. A crise de 2008 expôs o defeito no mundo todo ('too little, too late'), o IFRS 9 (2018) trouxe a perda esperada, e a Res. 4.966 (editada em 2021, vigente em 2025) alinhou o Brasil — a maior mudança contábil bancária em uma geração, e a fronteira que atravessa várias séries deste painel (declarada onde importa).",
+    regulacao: "Res. CMN 4.966/2021: modelos de perda esperada com backtesting, estágios, e a régua de 90 dias como gatilho do estágio 3. O marco está na aba Regulação.",
+    armadilhas: "Perda esperada depende de MODELO — dois bancos com a mesma carteira podem provisionar diferente. O índice de cobertura (provisão ÷ carteira >90d) do painel não é razão regulatória: a provisão cobre também o crédito em dia.",
+    veja: ["inadimplencia-90", "ativos-problematicos", "custo-do-credito"],
+  },
+  "carteira-de-credito": {
+    nome: "Carteira de crédito",
+    resumo: "O estoque de tudo que o banco emprestou e ainda não recebeu de volta.",
+    intuicao: "É a 'fotografia' do dinheiro na rua: cada financiamento, cartão, consignado e capital de giro vivo naquele momento. Diferente das CONCESSÕES (o fluxo de crédito novo do mês), a carteira é o acumulado — pode crescer mesmo com concessões caindo, se os contratos antigos forem longos.",
+    calculo: "Soma dos saldos devedores ativos. Atenção às variantes que o painel sempre nomeia: carteira classificada (régua antiga), carteira por instrumentos (régua 4.966, desde 2025), carteira ampliada (inclui garantias e títulos privados — a régua dos guidances).",
+    historia: "A relação crédito/PIB brasileira saiu de ~25% nos anos 2000 para a faixa de 50-55% — expansão puxada por consignado (2003), imobiliário (2009-2014) e crédito digital (2019+). Cada onda deixou uma marca na composição que a ficha de cada banco mostra.",
+    regulacao: "Todo o edifício prudencial gira em torno dela: é a base do RWA, da provisão e dos limites de exposição por cliente.",
+    armadilhas: "Carteiras NOMINAIS crescem com a inflação — crescimento real é outra série (o painel deflaciona onde declara). E comparar carteira 'ampliada' de um banco com 'classificada' de outro é erro clássico — os conceitos vêm nomeados nas fichas justamente por isso.",
+    veja: ["inadimplencia-90", "rwa", "spread"],
+  },
+  "spread": {
+    nome: "Spread bancário",
+    resumo: "A distância entre o que o banco paga para captar e o que cobra para emprestar.",
+    intuicao: "O banco compra dinheiro (paga juros ao poupador) e vende dinheiro (cobra juros do tomador). O spread é a margem bruta dessa revenda — mas não é lucro: dele saem a inadimplência esperada, impostos, custo operacional e, por último, a margem. No Brasil, o maior pedaço historicamente é a inadimplência.",
+    infografico: "spread",
+    calculo: "Spread = taxa média de empréstimo − custo médio de captação, em pontos percentuais. O painel acompanha o spread médio do sistema (séries do BCB) e permite cruzar com o custo de captação por banco.",
+    historia: "O spread brasileiro é tema de política econômica há décadas — entre os mais altos do mundo mesmo depois do Real (1994). A agenda de baixar spread produziu boa parte da regulação recente: cadastro positivo, portabilidade, duplicata eletrônica, Pix, Open Finance e o teto do rotativo — vários desses marcos estão na aba Regulação.",
+    regulacao: "O spread em si é livre (fora nichos como o rotativo pós-Lei 14.690 e o consignado INSS com teto do CNPS). A estratégia regulatória tem sido atacar os INSUMOS: informação (menos assimetria), competição (mais entrantes) e recuperação de garantias (menos perda dado o calote).",
+    armadilhas: "Spread médio mistura produtos radicalmente diferentes: cheque especial e imobiliário no mesmo caldeirão. Movimentos de MIX (mais consignado, menos rotativo) mexem no spread médio sem nenhum preço ter mudado.",
+    veja: ["custo-de-captacao", "inadimplencia-90", "rotativo-do-cartao"],
+  },
+  "custo-do-credito": {
+    nome: "Custo do crédito",
+    resumo: "Quanto a inadimplência custou ao banco no período: provisões novas menos recuperações.",
+    intuicao: "É a conta do risco chegando: o que o banco teve de separar para perdas prováveis (perda esperada), mais descontos concedidos em renegociação, menos o que conseguiu recuperar de créditos já baixados. Se a margem financeira é o motor, o custo do crédito é o atrito.",
+    calculo: "Despesa de perda esperada + descontos concedidos − recuperações. É a definição usada nos guidances (BB e Itaú publicam nesses termos) e no painel. Compare-o com a margem financeira: a razão entre os dois diz quanto do ganho de intermediação o risco consome.",
+    historia: "O conceito substituiu o antigo 'PDD' (provisão para devedores duvidosos) na linguagem gerencial conforme o IFRS 9 (2018) e a Res. 4.966 (vigente em 2025) mudaram a mecânica de provisionar — de reativa para preditiva.",
+    regulacao: "Segue a contabilidade da Res. 4.966 (ver perda esperada). Nos guidances, cada banco define o perímetro exato — por isso o painel nunca compara custo do crédito ENTRE bancos sem nomear o conceito de cada um.",
+    armadilhas: "Custo do crédito baixo demais num ciclo de piora pode significar provisão atrasada, não carteira boa. E recuperações grandes (vendas de carteira podre) derrubam o número num trimestre sem melhorar o risco novo.",
+    veja: ["provisao-perda-esperada", "spread", "guidance"],
+  },
+  "custo-de-captacao": {
+    nome: "Custo de captação",
+    resumo: "Os juros que o banco paga pelo dinheiro que usa para emprestar.",
+    intuicao: "Antes de vender dinheiro, o banco compra: de correntistas (barato, às vezes de graça), poupadores, investidores de CDB, outros bancos e o mercado. O custo médio dessa 'matéria-prima' define metade do negócio — um banco que capta a 8% e outro a 12% partem de mundos diferentes na mesma corrida.",
+    calculo: "No painel: |despesa de juros de captações| anualizada (declarando os meses da DRE — mar/set=3, jun/dez=6) ÷ média das captações totais nas pontas. É estimativa com fórmula declarada em cada ficha; o MIX de depósitos (à vista, poupança, prazo, interfinanceiro) acompanha, porque a composição explica o custo.",
+    historia: "A vantagem estrutural dos grandes varejistas sempre foi o depósito à vista — dinheiro a custo ~zero que paga a rede de agências. A era digital comprimiu isso a partir de 2019: fintechs pagando 100% do CDI ensinaram o depositante a cobrar pelo dinheiro, e o funding barato ficou mais raro e mais disputado.",
+    regulacao: "Depósitos têm regras próprias (compulsórios, direcionamentos de poupança) que mexem no custo EFETIVO além da taxa paga.",
+    armadilhas: "É uma estimativa sobre estoques de ponta — não o saldo médio diário que o banco enxerga internamente. E custo baixo via interfinanceiro pode ser dependência de atacado disfarçada: o mix importa tanto quanto o número.",
+    veja: ["nsfr", "spread", "indice-de-eficiencia"],
+  },
+  "indice-de-eficiencia": {
+    nome: "Índice de eficiência",
+    resumo: "De cada real de receita, quantos centavos a operação consome em pessoal e despesas.",
+    intuicao: "Dois bancos podem gerar a mesma receita com estruturas muito diferentes — um com 2 mil agências e 80 mil pessoas, outro com um aplicativo. O índice de eficiência mede isso: despesas operacionais ÷ receitas. É contraintuitivo de propósito: QUANTO MENOR, MELHOR (menos despesa por real de receita).",
+    infografico: "eficiencia",
+    calculo: "No painel: (despesas de pessoal + administrativas) ÷ (resultado de intermediação + rendas de serviços), do MESMO período da DRE — a razão dispensa anualização. Não inclui tributárias nem outras operacionais; o conceito acompanha o número.",
+    historia: "A régua clássica de mercado dizia 'abaixo de 50% é excelente'. A onda digital dos anos 2010 reabriu a disputa: bancos sem rede física operam com índices muito baixos, e a resposta dos incumbentes — fechar agências, digitalizar — aparece nas séries de rede física deste painel.",
+    regulacao: "Não é métrica regulatória — é gerencial. Cada banco publica a sua versão com perímetros próprios; a do painel usa uma fórmula única e declarada para todas as IFs, comparável entre elas.",
+    armadilhas: "Bancos de atacado parecem 'eficientíssimos' (pouca gente, receita alta por cabeça) sem serem comparáveis a varejistas. E cortar despesa demais pode corroer a receita de amanhã — eficiência é razão, não virtude absoluta.",
+    veja: ["roe", "custo-de-captacao"],
+  },
+  "hhi": {
+    nome: "HHI — índice de concentração",
+    resumo: "Um número que resume se um mercado (ou uma carteira) está espalhado ou concentrado.",
+    intuicao: "Some o QUADRADO da participação de cada player: elevar ao quadrado faz os grandes pesarem desproporcionalmente. Quatro bancos com 25% cada dão HHI 2.500; um com 97% dá ~9.400. O quadrado é o truque: captura que um gigante concentra mais risco que muitos médios somados.",
+    calculo: "HHI = Σ (participação de cada componente em %)². Vai de ~0 (atomizado) a 10.000 (monopólio). Réguas usuais: abaixo de 1.500 desconcentrado; 1.500-2.500 moderado; acima de 2.500 concentrado. O painel usa HHI para concentração SETORIAL da carteira PJ de cada banco.",
+    historia: "Criado pelos economistas Hirschman (1945) e Herfindahl (1950), virou a régua oficial de defesa da concorrência nos EUA nos anos 1980 e depois no mundo — o Cade e o BCB o usam em atos de concentração bancária.",
+    regulacao: "Em fusões bancárias, BCB e Cade analisam o HHI dos mercados relevantes; no uso do painel (carteira de um banco), a leitura é de DIVERSIFICAÇÃO: carteira concentrada num setor amarra o banco ao destino daquele setor.",
+    armadilhas: "O HHI depende de como se recorta o mercado (o quê? onde?). E concentração setorial da carteira pode ser especialização deliberada e lucrativa — o número pede contexto, não pânico.",
+    veja: ["carteira-de-credito", "score-relativo"],
+  },
+  "percentil-quartis": {
+    nome: "Percentil e quartis — como ler 'comparado aos pares'",
+    resumo: "A posição de um banco na fila dos semelhantes: p80 = está acima de 80% deles.",
+    intuicao: "Dizer que um ROE de 12% é 'bom' depende da vizinhança: entre bancos de varejo pode ser mediano; entre montadoras financeiras, alto. O percentil resolve: ordena os pares e diz onde o banco está na fila. Os quartis (q1, mediana, q3) marcam os cortes de 25%, 50% e 75% da fila — a régua inteira, não só a posição.",
+    calculo: "O painel calcula percentis DENTRO do grupo de pares (mesmo segmento prudencial S1-S5). Grupo com menos de 5 membros cai para o conjunto completo — sinalizado, nunca silencioso.",
+    historia: "É a estatística de ordem clássica — a mesma das curvas de crescimento infantil da OMS (2006). A graça é ser imune a aberrações: um banco com ROE de 80% não distorce o percentil dos outros (distorceria a média).",
+    regulacao: "Não há — é método do painel, documentado na Metodologia.",
+    armadilhas: "Percentil é posição RELATIVA: p90 num grupo inteiro ruim ainda é ruim. E percentil de grupo pequeno é grosseiro: com 6 bancos, cada posição salta ~17 pontos.",
+    veja: ["score-relativo", "segmentacao-prudencial"],
+  },
+  "score-relativo": {
+    nome: "O score de risco do painel",
+    resumo: "Um resumo de 0 a 100 da posição do banco FRENTE AOS PARES — não uma nota de quebra.",
+    intuicao: "O score responde uma pergunta modesta e útil: 'comparado aos semelhantes, este banco está mais frágil ou mais sólido nas dimensões que dá para medir com dado público?'. É a média dos percentis de risco em até 6 dimensões (capital, rentabilidade, alavancagem, concentrações, dependência de captações). 50 = típico do grupo; 80 = mais frágil que a maioria; 20 = mais sólido.",
+    calculo: "Cada dimensão vira um percentil dentro do grupo de pares; o score é a média das dimensões DISPONÍVEIS (sem dado = dimensão omitida, nunca imputada — e o número de dimensões usadas é exibido). Histórico trimestral desde 2015.",
+    historia: "A inspiração são os sistemas de vigilância dos supervisores (como o CAMELS americano, dos anos 1980), adaptados ao que é público: sem dados confidenciais de liquidez diária ou qualidade de gestão, o painel mede menos dimensões — e diz exatamente quais.",
+    regulacao: "Não é rating nem recomendação — o disclaimer acompanha cada uso. Ratings privados usam informação não pública e julgamento; isto aqui é aritmética declarada sobre dado aberto.",
+    armadilhas: "Score relativo NUNCA é probabilidade de quebra: um grupo inteiro pode estar saudável (ou doente) e os percentis não veem. Use-o como triagem — as dimensões abertas em cada ficha são o conteúdo real.",
+    veja: ["percentil-quartis", "indice-de-basileia", "roe"],
+  },
+  "segmentacao-prudencial": {
+    nome: "Conglomerado prudencial e segmentos S1-S5",
+    resumo: "A régua do BCB para 'quem é do tamanho de quem' — e por que o painel compara dentro dela.",
+    intuicao: "Comparar o Itaú com uma financeira regional é comparar um transatlântico com uma lancha. O BCB resolve isso duas vezes: consolida cada grupo financeiro num CONGLOMERADO PRUDENCIAL (o barco inteiro, não cada cabine) e o classifica em segmentos: S1 (gigantes, ≥10% do PIB ou ativos internacionais), S2, S3, S4 e S5 (mínimos). O painel herda as duas réguas.",
+    calculo: "A segmentação vem da Res. CMN 4.553/2017 (o marco está na aba Regulação). Exigências regulatórias CRESCEM com o segmento: só S1 divulga tudo de Basileia III; S5 tem regime simplificado — proporcionalidade.",
+    historia: "Antes de 2017 a régua era quase única para todos — caro para os pequenos, frouxo para os sistêmicos. A proporcionalidade alinhou o Brasil à prática internacional pós-crise: quem pode derrubar o sistema paga mais compliance.",
+    regulacao: "A consequência prática para leitura de dados: instituição sem LCR/NSFR publicado provavelmente NÃO é obrigada (S3-S5), e o score do painel compara cada banco DENTRO do seu segmento — comparar percentis entre segmentos mistura réguas.",
+    armadilhas: "O conglomerado prudencial pode diferir do grupo societário e do 'banco' da marca: a ficha de cada IF declara qual consolidação está em uso — e códigos de conglomerado mudam no tempo (o painel casa por CNPJ).",
+    veja: ["percentil-quartis", "score-relativo", "pilar-3"],
+  },
+  "guidance": {
+    nome: "Guidance — as promessas ao mercado",
+    resumo: "Os intervalos que o banco projeta publicamente para o próprio ano — e contra os quais pode ser cobrado.",
+    intuicao: "Guidance é o banco dizendo, por escrito e com números, 'esperamos crescer a carteira entre X% e Y%'. Não é promessa jurídica — é projeção condicionada. O valor jornalístico está no CONFRONTO: comparar o prometido com o entregue, ano após ano, pela régua que o próprio banco escolheu.",
+    calculo: "O painel registra cada ciclo (intervalos por métrica), o realizado quando o ciclo fecha e a posição aritmética (dentro/acima/abaixo). Cada banco SÓ contra o próprio guidance: os conceitos são gerenciais e diferem entre bancos — nunca ranking de cumprimento.",
+    historia: "A prática veio do mercado americano. No Brasil consolidou-se nos anos 2000 com a ida dos grandes à bolsa; o BB a pratica como 'Projeções Corporativas' com acompanhamento trimestral desde cedo. Revisões no meio do ano — como a que o painel registrou em 2026 — são eventos informativos por si.",
+    regulacao: "Projeções divulgadas viram documento regulado (Resolução CVM 44/80): precisam de premissas, atualização quando mudam e registro formal — por isso o painel só usa os documentos protocolados na CVM, nunca declarações soltas.",
+    armadilhas: "'Dentro do intervalo' não é mérito automático (para despesa, acima é pior; para receita, melhor) — o painel não converte posição em nota. E bases mudam entre ciclos (DREs ajustadas): ciclo contra ciclo pode não ser comparável, e isso vem declarado.",
+    veja: ["custo-do-credito", "carteira-de-credito"],
+  },
+  "pilar-3": {
+    nome: "Pilar 3 — a transparência obrigatória",
+    resumo: "O relatório padronizado em que cada banco abre seus números de capital, liquidez e risco.",
+    intuicao: "O acordo de Basileia tem três pilares: 1) exigências mínimas, 2) supervisão, e 3) DISCIPLINA DE MERCADO — a ideia de que investidores e depositantes bem informados punem imprudência antes do regulador. O Pilar 3 é a matéria-prima do terceiro: tabelas padronizadas (a KM1 é o resumo executivo) publicadas trimestralmente por cada banco.",
+    calculo: "O painel lê a tabela KM1 — capital (ICP, Nível 1, Basileia), colchões, alavancagem, LCR e NSFR — do arranjo de dados abertos do BCB (DASFN), em que cada instituição serve os próprios números em formato padronizado.",
+    historia: "O Pilar 3 nasceu em Basileia II (2004) e foi padronizado com força após 2008, quando ficou claro que relatórios livres viravam marketing. As tabelas fixas (mesmo layout para todos) são a resposta: comparabilidade acima de narrativa.",
+    regulacao: "No Brasil, Res. BCB 54/2020 define tabelas, prazos e escopo (integral para S1, decrescente até S4). A publicação em dados abertos via DASFN é o degrau mais recente — e é o que permite a este painel ler máquina-a-máquina.",
+    armadilhas: "Cobertura segue a obrigação: banco fora do arranjo ou sem LCR publicado pode simplesmente não ser obrigado. E divulgação trimestral é retrato — a liquidez de ontem não garante a de amanhã.",
+    veja: ["indice-de-basileia", "lcr", "nsfr", "alavancagem"],
+  },
+  "regime-de-resolucao": {
+    nome: "Regimes de resolução (intervenção, RAET, liquidação)",
+    resumo: "As três formas de o BCB assumir o volante de uma instituição em crise.",
+    intuicao: "Banco não 'fale' como padaria: a quebra desordenada contamina o sistema. Por isso existe um corredor especial: INTERVENÇÃO (o BCB afasta a administração e congela para avaliar), RAET (administração especial temporária — o banco segue operando sob gestão nomeada) e LIQUIDAÇÃO EXTRAJUDICIAL (o fim: vender ativos, pagar credores na ordem legal, fechar).",
+    calculo: "O painel acompanha a lista oficial vigente do BCB (atualização diária) e acumula memória própria: quem sai da lista permanece no histórico.",
+    historia: "O arcabouço é dos anos 1970 (Lei 6.024/1974 e, para o RAET, o Decreto-Lei 2.321/1987) e foi testado em escala no pós-Real, quando a inflação que escondia ineficiência sumiu — o Proer (1995) reestruturou grandes bancos privados e o Proes, os estaduais. As liquidações de hoje são majoritariamente instituições pequenas e de pagamento.",
+    regulacao: "A decretação é ato do BCB publicado oficialmente, com nomeação de interventor/liquidante. Um projeto de nova Lei de Resolução Bancária (alinhando o Brasil ao padrão pós-2008 de 'bail-in') tramita há anos — quando sair, será um marco para a aba Regulação.",
+    armadilhas: "Regime em instituição pequena NÃO é sinal sistêmico — e a maioria dos casos recentes é exatamente isso. O valor da série está na exceção e na tendência, não no susto de cada linha.",
+    veja: ["indice-de-basileia", "lcr", "segmentacao-prudencial"],
+  },
+  "consignado": {
+    nome: "Crédito consignado",
+    resumo: "Empréstimo descontado direto do salário ou benefício — o risco cai, o juro também (deveria).",
+    intuicao: "Se a parcela sai na folha antes de o dinheiro chegar à conta, o banco quase não tem risco de calote — por isso consegue cobrar muito menos que num empréstimo comum. É o produto que transformou aposentado em cliente disputado: o INSS é a maior folha do país.",
+    calculo: "O painel acompanha saldo, concessões, taxas e inadimplência por vínculo (INSS, público, privado) e o custo total do crédito INSS (ICC), além do desenho institucional: quem PAGA a folha (leilões) não é quem empresta contra ela.",
+    historia: "Nasceu da Lei 10.820/2003 — um dos maiores sucessos de desenho de crédito do Brasil: taxas caíram à metade do crédito pessoal comum. Em 2025, o 'Crédito do Trabalhador' (MP 1.292 → Lei 15.179) reformou o consignado privado via eSocial, com portabilidade — o marcador está nas séries do painel.",
+    regulacao: "Margem consignável limita quanto do salário pode ser comprometido (as mudanças de margem estão marcadas nos gráficos); o consignado INSS tem teto de juros fixado pelo CNPS; a Lei 14.181/2021 (superendividamento) cerca o conjunto.",
+    armadilhas: "Risco baixo para o BANCO não é risco baixo para a PESSOA: margem comprometida por anos reduz a renda disponível — o painel cruza consignado com comprometimento de renda por isso. E a inadimplência 'impossível' existe: morte, fim de vínculo, fraude.",
+    veja: ["spread", "inadimplencia-90"],
+  },
+  "rotativo-do-cartao": {
+    nome: "Rotativo do cartão",
+    resumo: "O crédito que nasce quando a fatura não é paga inteira — o juro mais alto do mercado.",
+    intuicao: "Pagar o mínimo da fatura é contratar, sem assinar nada, o crédito mais caro do país. O rotativo existe para ser ponte de DIAS; virou armadilha quando famílias o usaram por meses. Um dos jeitos de enxergar: é o único crédito que o cliente toma sem decidir tomar.",
+    calculo: "O painel acompanha as taxas do rotativo nas séries de juros por modalidade e o atraso do cartão na matriz de produtos (lembrando: atraso ≥15d de cartão NÃO é inadimplência ≥90d — os dois relógios).",
+    historia: "As taxas passaram de 400% a.a. em vários momentos. Duas intervenções marcaram época: a Res. 4.549/2017 (rotativo só até a fatura seguinte, depois obrigatoriamente parcelado) e a Lei 14.690/2023, que limitou juros e encargos a 100% do principal para quem entra no rotativo — o marcador de jan/2024 está nas séries.",
+    regulacao: "Teto de 100% do principal (Lei 14.690/2023) + rotativo máximo de ~30 dias (Res. 4.549). O debate sobre o fim do parcelado sem juros — o subsídio cruzado que sustenta o modelo brasileiro do cartão — segue aberto.",
+    armadilhas: "Taxa média do rotativo mistura perfis muito diferentes de emissor. E o teto de 100% vale por CONTRATO que entra no rotativo — não zera a taxa, limita o acúmulo.",
+    veja: ["spread", "atraso-15-90"],
+  },
+};
+
+/* motor do modal */
+function termo(slug, rotulo) {
+  const c = CONCEITOS[slug];
+  if (!c) return rotulo || slug;
+  return `<a class="termo" href="javascript:void(0)" onclick="abrirConceito('${slug}')" title="clique para entender: ${attr(c.resumo)}">${rotulo || c.nome}</a>`;
+}
+window.abrirConceito = (slug) => {
+  const c = CONCEITOS[slug];
+  if (!c) return;
+  let dlg = document.getElementById("conceitoDlg");
+  if (!dlg) {
+    dlg = document.createElement("dialog");
+    dlg.id = "conceitoDlg";
+    dlg.addEventListener("click", (e) => { if (e.target === dlg) dlg.close(); });
+    document.body.appendChild(dlg);
+  }
+  const sec = (icone, titulo, texto) => texto ? `<h5>${icone} ${titulo}</h5><p>${texto}</p>` : "";
+  dlg.innerHTML = `
+    <div class="cdlg">
+      <div class="cdlg-head"><h3>${c.nome}</h3>
+        <button class="btn ghost small" onclick="document.getElementById('conceitoDlg').close()" aria-label="fechar">✕ fechar</button></div>
+      <p class="cdlg-resumo">${c.resumo}</p>
+      ${c.infografico && IG[c.infografico] ? IG[c.infografico]() : ""}
+      ${sec("💡", "A intuição", c.intuicao)}
+      ${sec("🧮", "Como se calcula (e como o painel usa)", c.calculo)}
+      ${sec("📜", "Um pouco de história", c.historia)}
+      ${sec("⚖️", "A regulação, sem juridiquês", c.regulacao)}
+      ${sec("⚠️", "Armadilhas de leitura", c.armadilhas)}
+      ${(c.veja || []).length ? `<h5>🔗 Veja também</h5><div class="chips">${c.veja.map(v => CONCEITOS[v] ? `<span class="chip clickable" onclick="abrirConceito('${v}')">${CONCEITOS[v].nome.split("—")[0].trim()}</span>` : "").join("")}</div>` : ""}
+      <p class="src" style="margin-top:10px">Explicação editorial do Observatório — as definições formais e fórmulas exatas estão na <a href="javascript:void(0)" onclick="document.getElementById('conceitoDlg').close();nav('method')">Metodologia</a>.</p>
+    </div>`;
+  dlg.showModal();
+  try { const body = JSON.stringify({ secao: "obs:conceito:" + slug }); navigator.sendBeacon && navigator.sendBeacon("/api/telemetria", new Blob([body], { type: "application/json" })); } catch (e) { /* nunca interfere */ }
+};
+function conceitosLista() {
+  const slugs = Object.keys(CONCEITOS);
+  return `<div class="card" style="margin-top:12px"><h4>Conceitos, do zero — ${slugs.length} explicações didáticas</h4>
+    <p class="src">Cada conceito importante do painel é clicável onde aparece (sublinhado pontilhado) e abre a explicação completa: intuição, cálculo, história, regulação sem juridiquês e armadilhas de leitura.</p>
+    <div class="chips" style="margin-top:8px">${slugs.map(s => `<span class="chip clickable" onclick="abrirConceito('${s}')">${CONCEITOS[s].nome.split("—")[0].trim()}</span>`).join("")}</div></div>`;
 }
 
 /* ---------- componentes transversais de transparência ---------- */
@@ -3646,7 +4021,7 @@ function renderInstitutions() {
     <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
     <button class="btn ghost small" onclick="exportInstitutions()">exportar JSON</button>
   </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / carteira</th><th>Basileia</th><th>Inadimplência ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>ROE per.</th><th>Score risco</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${guidanceSecao()}
   ${regimesSecao()}
   ${coopSecao(inst)}
@@ -3689,7 +4064,7 @@ function guidanceSecao() {
     ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
     <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
       `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`).join("");
-  return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
+  return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — ${termo("guidance","guidance")} dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
     <p style="margin:6px 0">${G.leitura}</p>
     ${cards}
     ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
@@ -3707,7 +4082,7 @@ function regimesSecao() {
     <td>${v.tipo}</td><td>${v.inicio}</td>
     <td class="src">${v.responsavel || "–"}</td></tr>`).join("");
   const enc = R.encerrados_ou_saidos || [];
-  return `<div class="card" style="margin-top:12px"><h4>Sob regime de resolução do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
+  return `<div class="card" style="margin-top:12px"><h4>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
     <p style="margin:6px 0">${R.leitura}</p>
     <div class="tblwrap"><table class="data compact">
       <thead><tr><th>Instituição</th><th>Regime</th><th>Decretado em</th><th>Responsável nomeado</th></tr></thead>
@@ -3888,7 +4263,7 @@ function renderInstPageData(el, pg) {
       ${cab.aviso_pares ? `<div class="note warn" style="margin-top:8px"><b>Comparabilidade:</b> ${cab.aviso_pares}</div>` : ""}
     </div>
     <div class="card" style="flex:1;min-width:230px">
-      <h4>Score de risco ${badge("calculado")}</h4>
+      <h4>${termo("score-relativo","Score de risco")} ${badge("calculado")}</h4>
       ${sc.score != null ? `<div class="big">${sc.score}<span style="font-size:13px">/100</span></div>
         <div class="delta neutral">${sc.faixa}${sc.score_delta != null ? ` · ${fmt.pp(sc.score_delta)} no trim.` : ""} · relativo aos pares</div>
         <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
@@ -3922,12 +4297,12 @@ function renderInstPageData(el, pg) {
     return `<div id="s-risco" class="card" style="margin-top:12px">
       <h4>Risco e Inadimplência ${badge("observado", n.metodo)} <span class="src">data-base ${n.data_base} · ${n.nivel_consolidacao}</span></h4>
       <div class="kpirow">
-        <div class="card kpi"><h4>Inadimplência (>90d) ${inadChip("if90")}</h4><div class="big" style="font-size:21px">${fmt.n(q.inad_pct, 2)}%</div>
+        <div class="card kpi"><h4>${termo("inadimplencia-90","Inadimplência (>90d)")} ${inadChip("if90")}</h4><div class="big" style="font-size:21px">${fmt.n(q.inad_pct, 2)}%</div>
           <div class="delta ${(q.d_tri_pp||0) > 0 ? "up" : "down good"}">${q.d_tri_pp != null ? fmt.pp(q.d_tri_pp) + " p.p. no tri" : ""} · ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) + " p.p. em 4T" : "4T: histórico insuficiente"}</div>
           <div class="src">tendência: <b>${q.tendencia}</b> (regra analítica ±0,20/0,50 p.p. — não regulatória)</div></div>
         <div class="card kpi"><h4>Posição nos pares (${q.grupo})</h4><div class="big" style="font-size:21px">p${q.percentil_pares}</div>
           <div class="src">mediana ${fmt.n(q.mediana_pares, 2)}%${grp.quartis ? ` · q1 ${grp.quartis.q1}% · q3 ${grp.quartis.q3}%` : ""} · n=${grp.n || "–"}</div></div>
-        <div class="card kpi"><h4>Ativos problemáticos</h4><div class="big" style="font-size:21px">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
+        <div class="card kpi"><h4>${termo("ativos-problematicos","Ativos problemáticos")}</h4><div class="big" style="font-size:21px">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
         <div class="card kpi"><h4>Cobertura contábil aprox.</h4><div class="big" style="font-size:21px">${q.cobertura_pct != null ? fmt.n(q.cobertura_pct, 0) + "%" : "n/d"}</div>
           <div class="src">${q.d_cobertura_pp != null ? `Δ ${fmt.pp(q.d_cobertura_pp)} p.p. no tri · ` : ""}perda esperada de crédito ÷ carteira >90d — a provisão cobre também operações em dia; não é razão regulatória</div></div>
       </div>
@@ -3957,7 +4332,7 @@ function renderInstPageData(el, pg) {
       <td style="text-align:right" class="${i.percentil_no_produto != null && i.atraso15_pct != null && i.mediana_produto_pct != null ? (i.atraso15_pct > i.mediana_produto_pct ? "up" : "down good") : "neutral"}">${i.percentil_no_produto != null ? "p" + Math.round(i.percentil_no_produto) : "–"} <span class="src">(n=${i.n_universo})</span></td>
       <td>${i.serie && i.serie.length > 2 ? sparkline(i.serie.map(x => x.pct), 110, 24) : `<span class="src">${(i.serie || []).map(x => x.pct + "%").join(" · ") || "–"}</span>`}</td></tr>`;
     return `<div id="s-atraso-prod" class="card" style="margin-top:12px">
-      <h4>Atraso ≥15 dias por produto ${badge("observado", ap.nota)} <span class="src">data-base ${ap.data_base}</span></h4>
+      <h4>${termo("atraso-15-90","Atraso ≥15 dias")} por produto ${badge("observado", ap.nota)} <span class="src">data-base ${ap.data_base}</span></h4>
       <div class="tblwrap"><table class="data compact"><thead><tr><th>Produto</th><th style="text-align:right">Carteira</th><th style="text-align:right" title="vencido ≥15d ÷ carteira da modalidade — específico do produto">Atraso ≥15d</th><th style="text-align:right">Mediana do produto</th><th style="text-align:right" title="percentil alto = mais atraso que os pares do produto">Percentil</th><th>Série (5 trim.)</th></tr></thead>
       <tbody>${ap.itens.map(row).join("")}</tbody></table></div>
       <div class="src">${ap.nota}<br>Fonte: ${ap.fonte}. Clique no produto para abrir a matriz completa.</div>
@@ -3987,16 +4362,16 @@ function renderInstPageData(el, pg) {
       if (u == null) return "";
       const serie = (p3.series[met] || []).map(x => x.v);
       const min = M[met] && M[met].minimo;
-      return `<tr><td>${(M[met] || {}).nome || met}</td>
+      return `<tr><td>${termo(({lcr_pct:"lcr",nsfr_pct:"nsfr",icp_pct:"capital-principal",nivel1_pct:"capital-principal",basileia_pct:"indice-de-basileia",acp_total_pct:"acp",margem_capital_principal_pct:"acp",alavancagem_pct:"alavancagem"})[met], (M[met] || {}).nome || met)}</td>
         <td class="num"><b>${fmt.n(u, 2)}%</b></td>
         <td class="num src">${min != null ? `mínimo ${fmt.n(min, 1)}%` : "–"}</td>
         <td>${serie.length > 2 ? sparkline(serie, 110, 24) : ""} <span class="src">${serie.length} trim.</span></td></tr>`;
     };
     const ordem = ["lcr_pct", "nsfr_pct", "icp_pct", "nivel1_pct", "basileia_pct", "acp_total_pct", "margem_capital_principal_pct", "alavancagem_pct"];
-    return `<div class="card" style="margin-top:12px"><h4>Liquidez e capital — Pilar 3 (KM1) ${badge("observado", "métricas-chave prudenciais no padrão da Res. BCB 54/2020, servidas pela própria instituição no arranjo DASFN do BCB")}</h4>
+    return `<div class="card" style="margin-top:12px"><h4>Liquidez e capital — ${termo("pilar-3","Pilar 3")} (KM1) ${badge("observado", "métricas-chave prudenciais no padrão da Res. BCB 54/2020, servidas pela própria instituição no arranjo DASFN do BCB")}</h4>
       <div class="tblwrap"><table class="data compact"><thead><tr><th>Métrica</th><th class="num">Último (${p3.periodo_ultimo})</th><th class="num">Mínimo regulatório</th><th>Série</th></tr></thead>
       <tbody>${ordem.map(linha).join("")}</tbody></table></div>
-      <p class="src">Registrante no DASFN: ${p3.nome}. LCR mede 30 dias de estresse de liquidez; NSFR a liquidez estrutural — mínimos de 100%. A margem excedente é o capital acima do requerido com colchões (ACP).</p>
+      <p class="src">Registrante no DASFN: ${p3.nome}. ${termo("lcr","LCR")} mede 30 dias de estresse de liquidez; ${termo("nsfr","NSFR")} a liquidez estrutural — mínimos de 100%. A margem excedente é o capital acima do requerido com colchões (ACP).</p>
     </div>`;
   })()}
   <div class="grid g2" style="margin-top:12px">
@@ -4012,7 +4387,7 @@ function renderInstPageData(el, pg) {
     <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}</div>
   </div>
   ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
-    <div class="card"><h4>Custo de captação ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
+    <div class="card"><h4>${termo("custo-de-captacao","Custo de captação")} ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
       ${sc.captacao ? `<div class="big" style="font-size:22px">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:13px">a.a. (estimado)</span></div>
         <div class="src">Fórmula: ${sc.captacao.formula}.</div>
         <div class="src">Captações totais ${fmt.money(sc.captacao.captacoes_brl)}${sc.captacao.dep_captacoes_pct != null ? ` · depósitos = ${sc.captacao.dep_captacoes_pct}% das captações` : ""}</div>
@@ -4025,7 +4400,7 @@ function renderInstPageData(el, pg) {
       ${sc.modelo_negocio ? `
         ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
           <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
-        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>Índice de eficiência:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% <span title="${attr(sc.modelo_negocio.eficiencia_conceito)}">ⓘ</span>
+        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% <span title="${attr(sc.modelo_negocio.eficiencia_conceito)}">ⓘ</span>
           <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
         <div class="src" style="margin-top:6px">
           ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
@@ -5818,6 +6193,7 @@ function renderMethod() {
     </tbody></table></div>
     <div class="src" style="margin-top:8px">Os três medem fenômenos correlatos com réguas diferentes (parcela vencida × operação inteira × atraso curto). Nenhum é “o certo”: cada página declara o seu ao lado do número (chip “ⓘ”). Variante adicional: inadimplência &gt;90d por instituição (IF.data, Res. 4.966), usada nas fichas de IF.</div></div>`;
   el.innerHTML = `
+  ${conceitosLista()}
   ${pageHead({ title: "Metodologia, fontes e documentação viva",
     desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
     fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}

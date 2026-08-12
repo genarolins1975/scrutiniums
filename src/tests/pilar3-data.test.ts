@@ -32,7 +32,7 @@ describe("estático: coletor federado com salvaguardas", () => {
   });
 
   it("a SPA renderiza o card na página da IF com join por CNPJ do líder", () => {
-    expect(appJs).toContain("Liquidez e capital — Pilar 3 (KM1)");
+    expect(appJs).toContain('Liquidez e capital — ${termo("pilar-3","Pilar 3")} (KM1)');
     expect(appJs).toMatch(/x\.cnpj8 === cnpj8pg/);
   });
 });

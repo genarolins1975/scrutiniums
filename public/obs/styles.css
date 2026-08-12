@@ -1395,3 +1395,20 @@ a.src[onclick], a.seeall { display: inline-flex; align-items: center; min-height
     padding-bottom: var(--sp-1); }
   table.t-stack tbody td:first-child::before { content: none; }
 }
+
+/* ---------- conceitos didáticos ---------- */
+.termo { border-bottom: 1px dotted var(--accent, #966b48); cursor: help; text-decoration: none; color: inherit; }
+.termo:hover, .termo:focus-visible { background: var(--warn-bg, rgba(150, 107, 72, .12)); }
+#conceitoDlg { border: 1px solid var(--border, #c9c2b4); border-radius: 12px; max-width: 680px;
+  width: min(94vw, 680px); max-height: min(88vh, 760px); padding: 0; background: var(--bg, #fdfbf5);
+  color: var(--ink, #222); overflow-y: auto; }
+#conceitoDlg::backdrop { background: rgba(10, 10, 10, .5); }
+.cdlg { padding: 18px 22px 20px; }
+.cdlg-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px;
+  position: sticky; top: 0; background: inherit; padding-top: 2px; }
+.cdlg h3 { margin: 0 0 4px; font-size: 20px; }
+.cdlg h5 { margin: 15px 0 4px; font-size: 13.5px; letter-spacing: .01em; }
+.cdlg p { margin: 4px 0; font-size: 13.5px; line-height: 1.6; }
+.cdlg-resumo { font-size: 14.5px; font-weight: 600; }
+.cdlg-ig { width: 100%; max-width: 430px; display: block; margin: 12px auto 4px;
+  border: 1px solid var(--border, #ddd); border-radius: 8px; padding: 8px; background: var(--card, #fff); }
