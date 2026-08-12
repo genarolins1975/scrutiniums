@@ -260,6 +260,55 @@ def _fase2():
     return por_inst, contadores, cur.get("metricas", {})
 
 
+def _bloco_custos_ti():
+    """Fase 2 — despesa de TI nas notas das DFP: publica só `aprovado`.
+
+    Cada observação carrega documento oficial (CVM/ENET), página e trecho;
+    o que está em revisão vira apenas contagem. Conceitos NÃO comparáveis
+    entre bancos nem regimes (BRGAAP × IFRS; com/sem telecom; 'tecnologia
+    e sistemas'): nunca somar, nunca ranquear. A camada Febraban (orçamento
+    capex+opex do sistema) é agregado à parte — nunca comparada às DFP."""
+    import pathlib
+    caminho = pathlib.Path(__file__).resolve().parent / "curated" / "custos_ti.json"
+    try:
+        cur = json.loads(caminho.read_text())
+    except Exception:
+        return None
+    docs = cur.get("documentos", {})
+    aprovadas, em_revisao = [], 0
+    for o in cur.get("observacoes", []):
+        if o.get("status") == "aprovado":
+            d = docs.get(o.get("documento"), {})
+            aprovadas.append({
+                "id": o["id"], "banco": o["banco"], "cnpj8": o.get("cnpj8"),
+                "regime": o.get("regime"), "metrica": o["metrica"],
+                "valor": o.get("valor"), "unidade": o.get("unidade"),
+                "data_ref": o.get("data_ref"), "comparativos": o.get("comparativos"),
+                "exclusivo_ti": bool(o.get("exclusivo_ti")),
+                "conceito_nota": o.get("conceito_nota"),
+                "documento": {"titulo": d.get("titulo"), "url": d.get("url")},
+                "pagina": o.get("pagina_doc") or f"p.{o.get('pagina_pdf')}",
+                "trecho": o.get("trecho"), "revisor": o.get("revisor"),
+            })
+        elif o.get("status") == "em_revisao":
+            em_revisao += 1
+    return {
+        "observacoes": aprovadas,
+        "em_revisao": em_revisao,
+        "agregado_sistema": cur.get("agregado_sistema"),
+        "leitura": ("O que cada banco gasta com processamento de dados/tecnologia, direto das notas "
+                    "explicativas das DFP — é DESPESA contábil (opex): o investimento capitalizado no "
+                    "intangível fica fora, e por isso estes números não se comparam ao orçamento de "
+                    "tecnologia da Febraban (capex+opex), publicado como camada agregada à parte."),
+        "cautelas": [
+            "Conceitos e regimes diferem por banco (BRGAAP × IFRS; 'processamento de dados' × 'com telecomunicações' × 'tecnologia e sistemas'; R$ mil × R$ milhões): valores NUNCA são somados nem ranqueados entre bancos.",
+            "Comparabilidade C: cada série vale dentro da divulgação do próprio banco, contra a própria série dele.",
+        ],
+        "fonte": {"nome": "CVM/ENET — DFP 31/12/2025, notas explicativas (despesas administrativas)",
+                  "nivel": "A"},
+    }
+
+
 def build(con, cfg=None):
     flags = []
     instituicoes = []
@@ -391,6 +440,7 @@ def build(con, cfg=None):
                     "revisada e evidência obrigatória (documento, página e trecho). Comparabilidade C: "
                     "o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking.",
         },
+        "custos_ti": _bloco_custos_ti(),
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,

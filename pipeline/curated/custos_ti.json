@@ -1,0 +1,170 @@
+{
+  "_comentario": [
+    "Custos de TI dos bancos — rodada 1 do detalhamento de custos operacionais.",
+    "Fonte primária: notas explicativas das DFP 31/12/2025 (canal oficial CVM/ENET),",
+    "os MESMOS quatro documentos da curadoria do intangível de folha, com identidade",
+    "verificada no arquivo. Processo da Fase 2: nada é publicado com status em_revisao;",
+    "a aprovação do revisor muda o status para aprovado e o builder passa a publicar.",
+    "REGRA CENTRAL: os conceitos NÃO são comparáveis entre bancos nem entre regimes —",
+    "BRGAAP × IFRS; 'Processamento de dados' seco × 'com Telecomunicações' (Itaú) ×",
+    "'Tecnologia e sistemas' (Santander IFRS). Nunca somar, nunca ranquear.",
+    "E é DESPESA contábil (OPEX): o capex de TI capitalizado no intangível fica fora —",
+    "por isso estes números não se comparam ao 'orçamento de tecnologia' da Febraban",
+    "(capex+opex), que entra apenas como camada agregada do sistema, à parte."
+  ],
+  "documentos": {
+    "bb_dfp_2025": {
+      "titulo": "BCO BRASIL S.A. — DFP 31/12/2025, versão 1",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154715&numVersao=1&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+      "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+      "identidade": "rodapé 'DFP - Demonstrações Financeiras Padronizadas - 31/12/2025 - BCO BRASIL S.A. Versão : 1'"
+    },
+    "bradesco_dfp_2025": {
+      "titulo": "BCO BRADESCO S.A. — DFP 31/12/2025, versão 2",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=155703&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+      "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+      "identidade": "rodapé 'DFP - Demonstrações Financeiras Padronizadas - 31/12/2025 - BCO BRADESCO S.A. Versão : 2'"
+    },
+    "itau_dfp_2025": {
+      "titulo": "ITAU UNIBANCO HOLDING S.A. — DFP 31/12/2025, versão 2",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154741&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+      "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+      "identidade": "rodapé 'DFP - Demonstrações Financeiras Padronizadas - 31/12/2025 - ITAU UNIBANCO HOLDING S.A. Versão : 2'"
+    },
+    "santander_dfp_2025": {
+      "titulo": "BCO SANTANDER (BRASIL) S.A. — DFP 31/12/2025, versão 2",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&numSequencia=154968&numVersao=2&numProtocolo=&descTipo=DFP&CodigoInstituicao=1",
+      "fonte": "CVM/ENET (Demonstrações Financeiras Padronizadas)",
+      "identidade": "rodapé 'DFP - Demonstrações Financeiras Padronizadas - 31/12/2025 - BCO SANTANDER (BRASIL); S.A. Versão : 2'"
+    }
+  },
+  "observacoes": [
+    {
+      "id": "bb_ti_brgaap_2025",
+      "banco": "Banco do Brasil",
+      "cnpj8": "00000000",
+      "regime": "BRGAAP (Consolidado)",
+      "metrica": "Processamento de dados — Outras despesas administrativas, Nota 25.b, Consolidado, Exercício/2025",
+      "valor": 1702184,
+      "unidade": "R$ mil",
+      "data_ref": "2025-12-31",
+      "comparativos": null,
+      "exclusivo_ti": true,
+      "conceito_nota": "linha 'Processamento de dados' isolada; telecomunicações ficam na linha 'Comunicações', separada",
+      "documento": "bb_dfp_2025",
+      "pagina_pdf": 157,
+      "pagina_doc": "PÁGINA: 155 de 377",
+      "trecho": "25 – Despesas Administrativas … b) Outras despesas administrativas … Processamento de dados (1.171.295) (2.261.084) (892.711) (1.702.184) — colunas Banco Múltiplo (2º Semestre/2025, Exercício/2025) e Consolidado (2º Semestre/2025, Exercício/2025)",
+      "status": "em_revisao",
+      "revisor": null
+    },
+    {
+      "id": "bb_ti_ifrs_2025",
+      "banco": "Banco do Brasil",
+      "cnpj8": "00000000",
+      "regime": "IFRS (Consolidado)",
+      "metrica": "Processamento de dados — Outras despesas administrativas, Nota 12 das demonstrações em IFRS, Exercício/2025",
+      "valor": 1682533,
+      "unidade": "R$ mil",
+      "data_ref": "2025-12-31",
+      "comparativos": { "2024": 1174657 },
+      "exclusivo_ti": true,
+      "conceito_nota": "mesma rubrica no regime IFRS; a nota traz o comparativo 2024 (variação de +43% dentro do MESMO conceito — registrada como está, sem interpretação)",
+      "documento": "bb_dfp_2025",
+      "pagina_pdf": 247,
+      "pagina_doc": "PÁGINA: 245 de 377",
+      "trecho": "12– Outras despesas administrativas … Exercício/2025 Exercício/2024 … Processamento de dados (1.682.533) (1.174.657)",
+      "status": "em_revisao",
+      "revisor": null
+    },
+    {
+      "id": "bradesco_ti_2025",
+      "banco": "Bradesco",
+      "cnpj8": "60746948",
+      "regime": "IFRS (Consolidado)",
+      "metrica": "Processamento de dados — Outras despesas administrativas, Nota 34 (Demonstrações Financeiras Consolidadas em IFRS), Exercício 2025",
+      "valor": 2952896,
+      "unidade": "R$ mil",
+      "data_ref": "2025-12-31",
+      "comparativos": { "2024": 2485590, "2023": 2245256 },
+      "exclusivo_ti": true,
+      "conceito_nota": "linha 'Processamento de dados' isolada; 'Comunicação' é linha separada na mesma nota",
+      "documento": "bradesco_dfp_2025",
+      "pagina_pdf": 232,
+      "pagina_doc": "PÁGINA: 230 de 324",
+      "trecho": "34) OUTRAS DESPESAS ADMINISTRATIVAS … R$ mil … 2025 2024 2023 … Processamento de dados (2.952.896) (2.485.590) (2.245.256)",
+      "status": "em_revisao",
+      "revisor": null
+    },
+    {
+      "id": "itau_ti_2025",
+      "banco": "Itaú Unibanco",
+      "cnpj8": "60872504",
+      "regime": "IFRS (Consolidado)",
+      "metrica": "Processamento de Dados e Telecomunicações — Despesas Gerais e Administrativas, Nota 23, exercício 2025",
+      "valor": 5886,
+      "unidade": "R$ milhões",
+      "data_ref": "2025-12-31",
+      "comparativos": { "2024": 5190, "2023": 5027 },
+      "exclusivo_ti": false,
+      "conceito_nota": "a rubrica INCLUI telecomunicações — mais ampla que 'processamento de dados' dos demais; não comparável",
+      "documento": "itau_dfp_2025",
+      "pagina_pdf": 211,
+      "pagina_doc": "PÁGINA: 209 de 286",
+      "trecho": "Nota 23 - Despesas Gerais e Administrativas … Processamento de Dados e Telecomunicações (5.886) (5.190) (5.027) — colunas 01/01 a 31/12/2025, 2024 e 2023",
+      "status": "em_revisao",
+      "revisor": null
+    },
+    {
+      "id": "santander_ti_brgaap_2025",
+      "banco": "Santander Brasil",
+      "cnpj8": "90400888",
+      "regime": "BRGAAP (Consolidado)",
+      "metrica": "Processamento de Dados — Outras Despesas Administrativas, Nota 25, Consolidado, 01/01 a 31/12/2025",
+      "valor": 3564734,
+      "unidade": "R$ mil",
+      "data_ref": "2025-12-31",
+      "comparativos": null,
+      "exclusivo_ti": true,
+      "conceito_nota": "no Banco individual a mesma linha é 4.006.245 — MAIOR que o consolidado, efeito de eliminações intragrupo (a Santander Tecnologia fatura ao banco); registrado o consolidado",
+      "documento": "santander_dfp_2025",
+      "pagina_pdf": 98,
+      "pagina_doc": "PÁGINA: 96 de 250",
+      "trecho": "25. Outras Despesas Administrativas … Banco Consolidado … 01/07 a 31/12/2025 01/01 a 31/12/2025 (×2) … Processamento de Dados 2.110.711 4.006.245 1.915.387 3.564.734",
+      "status": "em_revisao",
+      "revisor": null
+    },
+    {
+      "id": "santander_ti_ifrs_2025",
+      "banco": "Santander Brasil",
+      "cnpj8": "90400888",
+      "regime": "IFRS (Consolidado)",
+      "metrica": "Tecnologia e sistemas — Outras Despesas Administrativas, Nota 40.a, exercício 2025",
+      "valor": 3015127,
+      "unidade": "R$ mil",
+      "data_ref": "2025-12-31",
+      "comparativos": { "2024": 2409697, "2023": 2383988 },
+      "exclusivo_ti": false,
+      "conceito_nota": "'Tecnologia e sistemas' é categoria própria do Santander IFRS, mais ampla que 'processamento de dados'; a nota ainda registra Despesas de Processamento de Dados de R$ 279.512 dentro de 'Outras despesas administrativas (1)' — conceitos distintos, nunca somados",
+      "documento": "santander_dfp_2025",
+      "pagina_pdf": 205,
+      "pagina_doc": "PÁGINA: 203 de 250",
+      "trecho": "40. Outras Despesas Administrativas … a) Composição … Em milhares de Reais 2025 2024 2023 … Tecnologia e sistemas 3.015.127 2.409.697 2.383.988",
+      "status": "em_revisao",
+      "revisor": null
+    }
+  ],
+  "agregado_sistema": {
+    "nome": "Orçamento de tecnologia do sistema bancário (Pesquisa Febraban de Tecnologia Bancária 2025, Deloitte)",
+    "orcamento_2025_brl": 47800000000,
+    "orcamento_2024_brl": 42300000000,
+    "variacao_pct": 13,
+    "amostra": "20 bancos, 85% dos ativos da indústria; 30 executivos entrevistados (coleta dez/2024–mar/2025)",
+    "conceito": "ORÇAMENTO total de tecnologia (capex + opex, previsto) — conceito diferente e MAIS AMPLO que as linhas de despesa contábil das DFP; as duas camadas nunca se comparam nem se somam",
+    "fonte": {
+      "nome": "Febraban — notícia oficial da Pesquisa 2025",
+      "url": "https://portal.febraban.org.br/noticia/4278/pt-br/",
+      "nivel": "A"
+    }
+  }
+}

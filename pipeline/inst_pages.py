@@ -195,6 +195,9 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
         if ig.get("modelo_negocio") and ig["modelo_negocio"].get("receita_servicos_pct") is not None:
             sintese.append({"frase": f"Receitas de serviços respondem por {ig['modelo_negocio']['receita_servicos_pct']}% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
                             "base": "IF.data UI (DRE); cálculo do Observatório", "status": "calculado"})
+        if ig.get("modelo_negocio") and ig["modelo_negocio"].get("eficiencia_pct") is not None:
+            sintese.append({"frase": f"Índice de eficiência de {ig['modelo_negocio']['eficiencia_pct']}% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
+                            "base": "IF.data UI (DRE); cálculo do Observatório", "status": "calculado"})
         if recl:
             sintese.append({"frase": f"No Ranking de Reclamações do BCB ({recl[0]['periodo']}), índice {recl[0]['indice'] if recl[0]['indice'] is not None else 'n/d'} (posição {recl[0]['posicao']} do arquivo) — indicador operacional/reputacional, não de solvência.",
                             "base": "BCB rdrweb (observado regulatório)", "status": "observado regulatório"})

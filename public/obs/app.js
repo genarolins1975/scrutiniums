@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.56.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.57.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3582,6 +3582,7 @@ function renderInstitutions() {
           <br>${i.captacao.limitacoes}</div>` : ""}
         ${i.modelo_negocio ? `<h5>Modelo de negócio ${badge("calculado")}</h5><div class="src">
           ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% <span title="${i.modelo_negocio.receita_servicos_conceito}">ⓘ</span> · ` : ""}
+          ${i.modelo_negocio.eficiencia_pct != null ? `<b>eficiência:</b> ${i.modelo_negocio.eficiencia_pct}% <span title="${i.modelo_negocio.eficiencia_conceito}">ⓘ</span> · ` : ""}
           ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
           ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
         </div>` : ""}
@@ -3837,6 +3838,8 @@ function renderInstPageData(el, pg) {
       ${sc.modelo_negocio ? `
         ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
           <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
+        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>Índice de eficiência:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% <span title="${attr(sc.modelo_negocio.eficiencia_conceito)}">ⓘ</span>
+          <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
         <div class="src" style="margin-top:6px">
           ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
           ${sc.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${sc.modelo_negocio.captacoes_ativo_pct}%` : ""}</div>
@@ -8301,6 +8304,41 @@ function renderOperacional() {
     nada é publicado sem aprovação humana e evidência (documento, página e trecho). ${f2.nota || ""}</p></div>`;
   }
 
+  /* Custos de TI (Fase 2): despesa contábil das notas das DFP — publica só
+     APROVADO com evidência; em revisão vira contagem. Conceitos e regimes não
+     comparáveis entre bancos (BRGAAP × IFRS; com/sem telecom): nunca somar,
+     nunca ranquear. A camada Febraban (orçamento capex+opex do sistema) é
+     agregado à parte e nunca se compara às linhas das DFP. */
+  const TI = D.custos_ti;
+  let tTi = "";
+  if (TI) {
+    const ag = TI.agregado_sistema;
+    const cardAg = !ag ? "" : `<div class="card"><h4>${ag.nome} ${badge("observado")}</h4>
+      <div class="big" style="font-size:21px">${fmt.money(ag.orcamento_2025_brl)} <span style="font-size:13px">previstos para 2025</span></div>
+      <div class="delta neutral">${fmt.money(ag.orcamento_2024_brl)} em 2024 · +${ag.variacao_pct}%</div>
+      <p class="src">${ag.amostra}. <b>${ag.conceito}</b></p>
+      <p class="src"><a href="${attr(ag.fonte.url)}" target="_blank" rel="noopener">${ag.fonte.nome}</a> · nível ${ag.fonte.nivel}.</p></div>`;
+    const cardObs = (TI.observacoes || []).length === 0
+      ? `<div class="card"><h4>Despesa de TI banco a banco — notas das DFP</h4>
+        <p class="src">${fmt.n0(TI.em_revisao)} extração(ões) das notas explicativas das DFP aguardando revisão
+        editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>`
+      : `<div class="card"><h4>Despesa de TI banco a banco — notas das DFP ${badge("observado")}</h4>
+        <p style="margin:6px 0">${TI.leitura}</p>
+        <div class="tblwrap"><table>
+          <thead><tr><th>Banco</th><th>Métrica (regime)</th><th class="num">2025</th><th class="num">Comparativos</th><th>Evidência</th></tr></thead>
+          <tbody>${TI.observacoes.map(o => `<tr>
+            <td>${o.banco}${o.exclusivo_ti ? "" : ` <span class="seal aprox" title="${attr(o.conceito_nota || "a rubrica é mais ampla que TI — declarado na métrica")}">não exclusivo</span>`}</td>
+            <td><span title="${attr(o.trecho)}">${o.metrica}</span> <span class="src">· ${o.regime}</span></td>
+            <td class="num"><b>${o.valor != null ? fmt.n0(o.valor) : "–"}</b> <span class="src">${o.unidade || ""}</span></td>
+            <td class="num src">${o.comparativos ? Object.entries(o.comparativos).map(([a, v]) => `${a}: ${fmt.n0(v)}`).join(" · ") : "–"}</td>
+            <td class="src"><a href="${attr(o.documento.url)}" target="_blank" rel="noopener" title="${attr(o.documento.titulo)}">${o.pagina}</a></td></tr>`).join("")}
+          </tbody></table></div>
+        ${(TI.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+        <p class="src">${badge("observado")} ${TI.fonte.nome} · nível ${TI.fonte.nivel}${TI.em_revisao ? ` · ${fmt.n0(TI.em_revisao)} extração(ões) ainda em revisão` : ""}.</p></div>`;
+    tTi = `${sechead("Quanto custa a TI dos bancos", "despesa contábil nas DFP · orçamento do sistema (Febraban)")}
+      ${cardAg}${cardObs}`;
+  }
+
   const tFlags = `${sechead("Verificações automáticas", "publicadas junto do dado — nunca correção silenciosa")}
   <div class="card">${(D.flags || []).length === 0 ? `<p class="src">Nenhuma verificação pendente nesta execução.</p>` : `<div class="tblwrap"><table>
     <thead><tr><th>Instituição</th><th>Indicador</th><th>O que verificar</th></tr></thead>
@@ -8334,7 +8372,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tTi + tAud + tFlags + cob + fontes;
 }
 
 /* Página por município: a resposta à pergunta local — "que atendimento
