@@ -475,3 +475,21 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   listagem não substitui os atos oficiais.
 - **Fronteira declarada:** casos anteriores à primeira coleta (as grandes
   resoluções de 1995-2015) entram por curadoria própria em rodada futura.
+
+## 17. Recordes automáticos + kit de imprensa
+
+- **Builder:** `pipeline/recordes.py` → gold `recordes.json`, recalculado do
+  zero a cada execução (séries do SGS são revisáveis — nada é memorizado).
+  Para a observação mais recente de cada série elegível: máximo/mínimo de
+  toda a série histórica ou 'maior/menor desde <mês>' com janela mínima de
+  24 meses.
+- **Réguas editoriais (testadas):** só séries de razão (%, p.p., meses) —
+  séries nominais em R$ e índices de nível (IVG-R, IBC-Br) crescem com o
+  tempo e fariam recorde trivial todo mês, então ficam fora; recorde é
+  posição aritmética na própria série, nunca juízo de mérito.
+- **Superfícies:** bloco 'Recordes nas séries' na Visão geral (ligado por
+  padrão, personalizável) e seção 'Para a imprensa' na aba Sobre (como
+  citar, pauta pronta, RSS, pedido editorial de preservar as cautelas).
+- **Primeira safra real (08/2026):** comprometimento de renda das famílias
+  no máximo de toda a série (28,48%); inadimplência do consignado privado
+  no máximo histórico (8,63%); taxa média PF maior desde 2017.

@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.62.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.63.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1034,6 +1034,10 @@ function renderSobre() {
     <p>Genaro é membro do Conselho de Administração do Fundo Garantidor de Créditos, onde coordena o Comitê de Auditoria, e diretor de Monitoramento da Associação Open Finance Brasil, responsável pelo acompanhamento técnico do ecossistema. É professor de Gestão de Risco de Crédito no Mestrado Profissional em Economia e Finanças da FGV.</p>
     <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
     <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
+    <h3 style="margin-top:28px">Para a imprensa</h3>
+    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="javascript:void(0)" onclick="nav('method')">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
+    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="javascript:void(0)" onclick="nav('overview')">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="javascript:void(0)" onclick="nav('alerts')">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
+    <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
     <p style="margin-top:20px"><a href="HREF_LINKEDIN" target="_blank" rel="noopener">LinkedIn</a></p>
   </div>`;
 }
@@ -2694,11 +2698,13 @@ const OV_BLOCOS = [
   ["proj", "Projeções, relações e sinais", false],
   ["insight", "Leitura analítica", false],
   ["saude", "Saúde dos dados", false],
+  ["recordes", "Recordes nas séries", true],
   ["explore", "Acesso rápido", true],
 ];
 // arquivos gold que cada bloco opcional exige além do núcleo: só são baixados
 // quando o usuário habilita o bloco (o padrão simples não paga esse custo)
 const OV_BLOCO_DATA = {
+  recordes: ["recordes"],
   inad: ["npl", "regimes"],
   prodset: ["products", "sectors", "openfinance"],
   proj: ["scenario", "npl"],
@@ -3065,6 +3071,22 @@ function renderOverview() {
     </div>
     <div class="src" style="margin-top:8px">Todo número tem fonte, período e limitações declaradas — <a href="javascript:void(0)" onclick="nav('method')">metodologia completa</a>. Alertas com regra publicada ficam na aba Alertas (com RSS).</div>
   </div>` : "";
+  /* Recordes automáticos: pauta pronta com régua declarada — posição
+     aritmética na própria série, nunca juízo de mérito. */
+  const REC = state.data.recordes;
+  const secRecordes = !REC || !REC.disponivel || !(REC.recordes || []).length ? "" : `
+  <div class="sechead"><h3>Recordes nas séries</h3><span class="src">detecção automática · janela mínima ${REC.janela_minima_meses} meses · ${badge("calculado", REC.metodo)}</span></div>
+  <div class="card">
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Série</th><th>Recorde</th><th class="num">Valor</th><th>Referência</th></tr></thead>
+      <tbody>${REC.recordes.slice(0, 10).map(r => `<tr>
+        <td>${r.nome}</td>
+        <td>${r.tipo.includes("historico") ? `<b>${r.rotulo}</b>` : r.rotulo} <span class="src">(${r.anos} anos)</span></td>
+        <td class="num"><b>${fmt.n(r.valor, 2)}</b> <span class="src">${r.unidade}</span></td>
+        <td>${String(r.ref).slice(0, 7)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${(REC.cautelas || [])[0] || ""}</p>
+  </div>`;
+
   const cfgBlocos = ovBlocosCfg();
   const HTML_BLOCOS = {
     diagnostico: `<div class="ov-hero">${diagcard}${heroStrip}</div>${segNote}`,
@@ -3075,6 +3097,7 @@ function renderOverview() {
   <div class="ov-2col">${scatterPanel}<div style="display:flex;flex-direction:column;gap:22px">${projPanel}${alertsPanel}</div></div>`,
     insight: `<div style="margin-top:22px">${insightPanel}</div>`,
     saude,
+    recordes: secRecordes,
     explore,
   };
   const painelPersonalizar = ovPersonalizando ? `
