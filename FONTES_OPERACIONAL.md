@@ -284,3 +284,36 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
 - **Regra editorial:** conceitos e unidades não comparáveis entre bancos
   (R$ mil × R$ milhões; isolado × categoria ampla) — nunca somar, nunca
   ranquear; comparabilidade C, cada série vale contra ela mesma.
+
+## 10. IF.data UI — funding e DRE por conglomerado (custo de captação e modelo de negócio)
+
+- **Fonte:** arquivos JSON da interface do IF.data
+  (`www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030`,
+  `dados{AAAAMM}_1.json`), a mesma infraestrutura já usada pelo coletor de
+  carteiras. Traz o passivo (depósitos à vista/poupança/prazo/interfinanceiro/
+  outros, captações totais) e a DRE (despesa de juros de captações, resultado
+  de intermediação, rendas de serviços/tarifas/pagamentos) por entidade.
+- **Coletor:** `pipeline/sources/ifdata_funding.py` → `institution_metrics`
+  (`fund:*`, `dre:*`), com o mesmo mapa de tradução de conglomerado prudencial
+  do `ifdata_ui`.
+- **Duas semânticas medidas empiricamente (Itaú 2025-12 × 2026-03) que viajam
+  com o dado:**
+  1. **A DRE acumula POR SEMESTRE** — mar/set = 3 meses, jun/dez = 6. Qualquer
+     anualização declara os meses do período; nunca um ×4 cego.
+  2. **Layouts contábeis:** lids da Res. 4.966 (14xxxx) de 2025 em diante;
+     layout antigo (78xxx) antes. O coletor faz fallback e a fronteira fica
+     documentada no módulo.
+- **Custo de captação (DADO CALCULADO, `institutions.json → captacao`):**
+  |despesa de juros de captações| anualizada pelos meses da DRE ÷ média das
+  captações totais nas pontas atual e anterior (ou ponta única, sinalizado).
+  É estimativa: estoque de pontas (não saldo médio diário), funding de varejo
+  e mercado misturados. Custo fora de 0–100% a.a. é DESCARTADO (unidade ou
+  tradução suspeita) — nunca publicado. Fórmula declarada por instituição.
+- **Modelo de negócio (`institutions.json → modelo_negocio`):** peso dos
+  serviços na receita operacional (serviços ÷ intermediação + serviços;
+  omitido quando a intermediação é negativa), crédito/ativo e captações/ativo;
+  o perfil de carteira (modalidades PF/PJ, PME, HHI) segue em
+  `carteira_perfil`. Métrica ausente ⇒ campo omitido, nunca imputado.
+- **Escala:** `config.ifdata.top_n_by_assets = 100` — o corte scorado vai às
+  top 100 por ativo. A coleta já cobria o universo inteiro; grupos de pares
+  com <5 membros seguem caindo para o conjunto completo, com sinalização.

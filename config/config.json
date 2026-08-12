@@ -464,7 +464,7 @@
     ],
     "tipo_instituicao": 2,
     "relatorio_resumo": "Resumo",
-    "top_n_by_assets": 30,
+    "top_n_by_assets": 100,
     "ui_base": "https://www3.bcb.gov.br/ifdata/rest/arquivos?nomeArquivo=ifdata_2025_2030"
   },
   "forecast": {

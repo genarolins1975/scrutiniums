@@ -398,6 +398,73 @@ def _vulnerability(d, elasticidades, severe_shocks):
     }
 
 
+def _bloco_captacao(m, m_prev, anomes):
+    """Custo de captação estimado (DADO CALCULADO) a partir do IF.data UI.
+
+    A DRE do IF.data acumula POR SEMESTRE (mar/set = 3 meses; jun/dez = 6):
+    a anualização declara os meses do período — nunca um ×4 cego. Denominador
+    = média das captações totais na ponta atual e anterior (quando a anterior
+    existe; senão a ponta atual, sinalizado em `media_pontas`). Custo fora de
+    0–100% a.a. é descartado (unidade/tradução suspeita), nunca publicado."""
+    juros = m.get("dre:despesa_juros_captacoes")
+    capt = m.get("fund:captacoes")
+    if juros is None or not capt or capt <= 0:
+        return None
+    mes = int(str(anomes)[-2:])
+    meses = 3 if mes in (3, 9) else 6
+    capt_ant = (m_prev or {}).get("fund:captacoes")
+    media = bool(capt_ant and capt_ant > 0)
+    denom = (capt + capt_ant) / 2 if media else capt
+    custo_aa = abs(juros) * (12 / meses) / denom * 100
+    if not (0 < custo_aa < 100):
+        return None
+    mix = None
+    dep_total = m.get("fund:dep_total")
+    if dep_total and dep_total > 0:
+        rotulos = {"fund:dep_vista": "vista", "fund:dep_poupanca": "poupanca",
+                   "fund:dep_prazo": "prazo", "fund:dep_interf": "interfinanceiro",
+                   "fund:dep_outros": "outros"}
+        mix = {rot: round(m[k] / dep_total * 100, 1)
+               for k, rot in rotulos.items() if m.get(k) is not None}
+    return {
+        "tipo": "DADO CALCULADO",
+        "custo_aa_pct": round(custo_aa, 2),
+        "meses_dre": meses,
+        "media_pontas": media,
+        "captacoes_brl": capt,
+        "dep_total_brl": dep_total,
+        "dep_captacoes_pct": round(dep_total / capt * 100, 1) if dep_total and dep_total > 0 else None,
+        "mix_depositos_pct": mix,
+        "formula": (f"|despesa de juros de captações acumulada em {meses} meses (DRE IF.data)| × 12/{meses} "
+                    f"÷ {'média das captações totais nas pontas atual e anterior' if media else 'captações totais na ponta atual (única disponível)'}"),
+        "limitacoes": ("Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura "
+                       "funding de varejo e mercado; a DRE do IF.data acumula por semestre."),
+    }
+
+
+def _bloco_modelo_negocio(m):
+    """Como a instituição ganha dinheiro (DADO CALCULADO): peso dos serviços na
+    receita operacional e balanço-síntese (crédito/ativo, captações/ativo).
+    O perfil de carteira (produto dominante PF/PJ, PME, HHI) já viaja em
+    carteira_perfil. Métrica ausente => campo omitido, nunca imputado."""
+    out = {}
+    interm = m.get("dre:resultado_intermediacao")
+    partes = [m.get(k) for k in ("dre:serv_pagamentos", "dre:tarifas", "dre:outras_rendas_servicos")]
+    if any(v is not None for v in partes):
+        serv = sum(v for v in partes if v is not None)
+        if interm is not None and interm > 0 and serv >= 0:
+            out["receita_servicos_pct"] = round(serv / (interm + serv) * 100, 1)
+            out["receita_servicos_conceito"] = (
+                "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação "
+                "financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de "
+                "receitas de serviço, omitida quando a intermediação é negativa")
+    if m.get("ativo_total"):
+        at = m["ativo_total"]
+        out["credito_ativo_pct"] = round(m["carteira_credito"] / at * 100, 1)
+        out["captacoes_ativo_pct"] = round(m["captacoes"] / at * 100, 1)
+    return out or None
+
+
 def build_institution_scores(con, cfg, elasticidades=None, severe_shocks=None):
     """Score 0-100 (maior = mais risco relativo AOS PARES do mesmo segmento prudencial),
     com dimensão de capital (Basileia real), decomposição, quartis, histórico e
@@ -431,6 +498,8 @@ def build_institution_scores(con, cfg, elasticidades=None, severe_shocks=None):
         vul = _vulnerability(d, elasticidades, severe_shocks) if elasticidades and severe_shocks else None
         out.append({
             "carteira_perfil": carteira_profile(d["m"]),
+            "captacao": _bloco_captacao(d["m"], prev["d"]["m"] if prev else None, anomes),
+            "modelo_negocio": _bloco_modelo_negocio(d["m"]),
             "basileia_pct": round(d["m"]["indice_basileia"] * 100, 2) if d["m"].get("indice_basileia") else None,
             "capital_principal_pct": round(d["m"]["indice_capital_principal"] * 100, 2) if d["m"].get("indice_capital_principal") else None,
             "rwa_brl": d["m"].get("rwa"),
@@ -464,7 +533,9 @@ def build_institution_scores(con, cfg, elasticidades=None, severe_shocks=None):
         "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do "
                       "período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem "
                       "capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). "
-                      "Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira.",
+                      "Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. "
+                      "Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, "
+                      "não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
         "aviso": cfg["platform"]["disclaimer"],
     }
 
