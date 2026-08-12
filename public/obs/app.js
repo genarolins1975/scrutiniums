@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.70.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.71.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1735,8 +1735,12 @@ function renderPix() {
   const chv = X.chaves || {};
   const quem = sechead("Quem usa o Pix?", "estoques de fim de período — nunca somados no tempo · chave ≠ usuário") + `
     <div class="ov-2col-eq">
-    <div class="card"><h4>Usuários cadastrados no DICT</h4>
-      ${lineChart({ series: [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }, { pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }], h: 220, unit: "usuários (estoque)", fonte: "DICT", aria: "usuários cadastrados no DICT" })}
+    <div class="card"><h4>Usuários cadastrados no DICT
+      <span class="seg" style="margin-left:8px">${[["ambas", "PF × PJ"], ["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button class="${(px.usnat || "ambas") === v2 ? "on" : ""}" onclick="pxSet('usnat','${v2}')">${l}</button>`).join("")}</span></h4>
+      ${lineChart({ series: (px.usnat === "total" ? [{ pts: us.map(o => ({ x: o.p, y: o.total })), label: "Total", color: "var(--pix)" }]
+        : px.usnat === "pf" ? [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }]
+        : px.usnat === "pj" ? [{ pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }]
+        : [{ pts: us.map(o => ({ x: o.p, y: o.pf })), label: "PF", color: "var(--pix)" }, { pts: us.map(o => ({ x: o.p, y: o.pj })), label: "PJ", color: "#6b46a3" }]), h: 220, unit: "usuários (estoque)", fonte: "DICT", aria: "usuários cadastrados no DICT" })}
       ${leitura([["PJ", `${fmt.n((us[us.length - 1].pj) / 1e6, 1)} mi de empresas cadastradas`], ["Conceito", "cadastro no DICT = ter chave registrada; não mede atividade"]])}</div>
     <div class="card"><h4>Chaves Pix — estoque em ${chv.data || "–"}</h4>
       ${(chv.por_tipo || []).map(t2 => panBar(t2.k, t2.q, chv.por_tipo[0].q, v2 => fmt.n(v2 / 1e6, 1) + " mi")).join("")}
@@ -1749,10 +1753,41 @@ function renderPix() {
   /* ---------- 5. natureza ---------- */
   const NATL = { P2P: "Pessoa → Pessoa (transferência pessoal)", P2B: "Pessoa → Empresa (pagamento comercial)", B2P: "Empresa → Pessoa (salários, repasses)", B2B: "Empresa → Empresa (transferência empresarial)", P2G: "Pessoa → Governo", G2P: "Governo → Pessoa (benefícios)", B2G: "Empresa → Governo", G2B: "Governo → Empresa", G2G: "Governo → Governo" };
   const natMax = Math.max(...X.natureza.atual.map(x => x.q));
+  // filtro pelo PAGADOR: PF = P2*, PJ = B2* (governo e n.d. só em Todos)
+  const natpag = px.natpag || "todos";
+  const natRows = X.natureza.atual.filter(x => natpag === "todos" || (natpag === "pf" ? x.k.startsWith("P2") : x.k.startsWith("B2")));
+  /* heat map pagador × recebedor a partir das classes da própria fonte:
+     P2B lê-se "linha Pessoa, coluna Empresa" — nada é estimado, só re-arranjado */
+  const hmnat = px.hmnat || "q";
+  const HML = { P: "Pessoa", B: "Empresa", G: "Governo" };
+  const hmVal = (x) => hmnat === "v" ? x.v : hmnat === "t" ? x.t : x.q;
+  const hmCells = {};
+  let hmTot = 0;
+  for (const x of X.natureza.atual) {
+    if (x.k.length === 3 && HML[x.k[0]] && HML[x.k[2]]) { hmCells[x.k] = x; hmTot += hmVal(x) || 0; }
+  }
+  const hmScale = panScale(Object.values(hmCells).map(hmVal), "seq");
+  const hmFmt = v2 => v2 == null ? "–" : hmnat === "q" ? fmt.n(v2 / 1e9, 2) + " bi" : hmnat === "v" ? fmt.money(v2) : "R$ " + fmt.n(v2, 0);
+  const hmGrid = `<div class="tblwrap"><table class="data compact" style="text-align:center"><thead>
+      <tr><th style="text-align:left">pagador ↓ · recebedor →</th>${["P", "B", "G"].map(r => `<th>${HML[r]}</th>`).join("")}</tr></thead>
+    <tbody>${["P", "B", "G"].map(pg => `<tr><td style="text-align:left"><b>${HML[pg]}</b></td>${["P", "B", "G"].map(rc => {
+      const cel = hmCells[`${pg}2${rc}`];
+      const v2 = cel ? hmVal(cel) : null;
+      const tip = cel ? encodeURIComponent(`<div class="tt-date">${HML[pg]} → ${HML[rc]}</div>
+        <div class="tt-row"><span class="tt-lbl">transações</span><span class="tt-val">${fmt.n(cel.q / 1e9, 2)} bi (${fmt.n(cel.part_q, 1)}%)</span></div>
+        <div class="tt-row"><span class="tt-lbl">valor</span><span class="tt-val">${fmt.money(cel.v)}</span></div>
+        <div class="tt-row"><span class="tt-lbl">tíquete</span><span class="tt-val">R$ ${fmt.n(cel.t, 0)}</span></div>`) : "";
+      return `<td style="background:${hmScale(v2)}" ${tip ? `data-tip="${tip}"` : ""}>${hmFmt(v2)}${cel && hmnat !== "t" && hmTot ? `<div class="src">${fmt.n(hmVal(cel) / hmTot * 100, 1)}%</div>` : ""}</td>`;
+    }).join("")}</tr>`).join("")}</tbody></table></div>`;
   const natureza = sechead("Para que o Pix é usado?", `natureza dos fluxos · base transacional ${X.mes_tx} (cobertura ${X.cobertura_tx_pct}%)`) + `
+    <div class="card" style="margin-bottom:10px"><h4>Mapa de calor — quem paga × quem recebe
+      <span class="seg" style="margin-left:8px">${[["q", "Quantidade"], ["v", "Valor"], ["t", "Tíquete médio"]].map(([v2, l]) => `<button class="${hmnat === v2 ? "on" : ""}" onclick="pxSet('hmnat','${v2}')">${l}</button>`).join("")}</span></h4>
+      ${hmGrid}
+      <div class="src" style="margin-top:6px">Classes da própria fonte (P2P, P2B, …) re-arranjadas em matriz — nada estimado. Passe o mouse para quantidade, valor e tíquete de cada fluxo; % sobre o total do mês. Tíquete não soma — por isso não exibe participação.</div></div>
     <div class="ov-2col-eq">
-    <div class="card"><h4>Quantidade e tíquete por natureza</h4>
-      ${X.natureza.atual.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
+    <div class="card"><h4>Quantidade e tíquete por natureza
+      <span class="seg" style="margin-left:8px">${[["todos", "Total"], ["pf", "Pagador PF"], ["pj", "Pagador PJ"]].map(([v2, l]) => `<button class="${natpag === v2 ? "on" : ""}" onclick="pxSet('natpag','${v2}')">${l}</button>`).join("")}</span></h4>
+      ${natRows.map(x => panBar(NATL[x.k] || x.k, x.q, natMax, v2 => fmt.n(v2 / 1e9, 2) + " bi", `${fmt.n(x.part_q, 1)}% · tíquete R$ ${fmt.n(x.t, 0)}`)).join("")}
       ${leitura([["Leitura", "P2P domina a quantidade com tíquete baixo; B2B tem poucas transações com tíquete alto — o Pix combina papéis de transferência pessoal, maquininha e tesouraria"], ["Governo", "fluxos G2P/P2G identificados pela fonte"]])}</div>
     <div class="card"><h4>Uso comercial: participação do P2B na quantidade</h4>
       ${lineChart({ series: [{ pts: X.natureza.serie_p2b.map(o => ({ x: o.p, y: o.v })), label: "P2B", color: "var(--pix)" }, { pts: X.natureza.serie_p2p.map(o => ({ x: o.p, y: o.v })), label: "P2P", color: "#64748b" }], h: 200, unit: "% da quantidade", aria: "participação de P2B e P2P" })}
@@ -1763,9 +1798,24 @@ function renderPix() {
 
   /* ---------- 8. geografia (exibida após os setores: 'para onde vai') ---------- */
   const G = X.geografia;
-  const gmet = px.gmet, persp = px.gpersp;
+  const persp = px.gpersp;
+  /* crescimento 12m só existe na perspectiva do pagador — com Recebedor ativo
+     a métrica cai para Valor total em vez de renderizar um mapa vazio */
+  const gmet = (persp === "rec" && px.gmet === "yoy_v") ? "v_abs" : px.gmet;
+  const gnat = (persp === "pag" && gmet === "v_abs") ? (px.gnat || "total") : "total";
   const GMETS = { q_hab: ["Transações por habitante", v2 => fmt.n(v2, 1)], v_hab: ["R$ por habitante", v2 => "R$ " + fmt.n0(v2)], t_pag: ["Valor médio (R$)", v2 => "R$ " + fmt.n(v2, 0)], v_abs: ["Valor total", v2 => fmt.money(v2)], yoy_v: ["Crescimento 12m (%)", v2 => fmt.pp(v2) + "%"] };
-  const gval = u => { if (gmet === "v_abs") return persp === "rec" ? u.v_rec : u.v_pag; if (gmet === "q_hab") return persp === "rec" ? null : u.q_hab; if (gmet === "v_hab") return persp === "rec" ? null : u.v_hab; if (gmet === "t_pag") return u.t_pag; return u.yoy_v; };
+  /* métricas do RECEBEDOR derivadas dos próprios números publicados:
+     habitantes = transações pagas ÷ transações/habitante (mesma base do
+     pipeline); tíquete do recebedor = valor recebido ÷ transações recebidas */
+  const gval = u => {
+    const hab = u.q_hab > 0 ? u.q_pag / u.q_hab : null;
+    if (gmet === "v_abs") return persp === "rec" ? u.v_rec
+      : gnat === "pf" ? u.v_pag_pf : gnat === "pj" ? u.v_pag_pj : u.v_pag;
+    if (gmet === "q_hab") return persp === "rec" ? (hab ? u.q_rec / hab : null) : u.q_hab;
+    if (gmet === "v_hab") return persp === "rec" ? (hab ? u.v_rec / hab : null) : u.v_hab;
+    if (gmet === "t_pag") return persp === "rec" ? (u.q_rec > 0 ? u.v_rec / u.q_rec : null) : u.t_pag;
+    return persp === "rec" ? null : u.yoy_v;
+  };
   const gvals = G.ufs.map(gval);
   const gscale = panScale(gvals, gmet === "yoy_v" ? "div0" : "seq");
   const gpaths = G.ufs.map(u => {
@@ -1785,12 +1835,15 @@ function renderPix() {
   const munRows = M2 && M2.municipios ? M2.municipios.filter(m2 => !munq || _norm(m2.mun).includes(_norm(munq)) || (m2.uf || "").toLowerCase() === munq).slice(0, 25) : [];
   const geog = sechead("Onde o Pix acontece?", `${G.mes} · padrão NORMALIZADO por habitante (valores absolutos favorecem estados populosos)`) + `
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 10px">
-      <span class="seg">${Object.entries(GMETS).map(([k2, [l]]) => `<button class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
+      <span class="seg">${Object.entries(GMETS).map(([k2, [l]]) => k2 === "yoy_v" && persp === "rec"
+        ? `<button disabled title="o crescimento 12m só existe na perspectiva do pagador" style="opacity:.4;cursor:not-allowed">${l.split(" (")[0]}</button>`
+        : `<button class="${gmet === k2 ? "on" : ""}" onclick="pxSet('gmet','${k2}')">${l.split(" (")[0]}</button>`).join("")}</span>
       <span class="seg">${[["pag", "Pagador"], ["rec", "Recebedor"]].map(([v2, l]) => `<button class="${persp === v2 ? "on" : ""}" onclick="pxSet('gpersp','${v2}')">${l}</button>`).join("")}</span>
+      ${persp === "pag" && gmet === "v_abs" ? `<span class="seg">${[["total", "Total"], ["pf", "PF"], ["pj", "PJ"]].map(([v2, l]) => `<button class="${gnat === v2 ? "on" : ""}" onclick="pxSet('gnat','${v2}')">${l}</button>`).join("")}</span>` : ""}
     </div>
     <div class="ov-2col-eq">
       <div class="card"><svg class="panmap" viewBox="${G.geo.viewBox}" role="group" aria-label="mapa do Pix por UF"><g transform="${G.geo.transform}">${gpaths}</g></svg>
-      <div class="src" style="margin-top:6px">${G.nota_perspectiva} Métricas por habitante existem só na perspectiva do pagador (denominador populacional).</div></div>
+      <div class="src" style="margin-top:6px">${G.nota_perspectiva} Na perspectiva do recebedor, as métricas por habitante e o valor médio são derivados dos mesmos números publicados (habitantes = transações pagas ÷ transações por habitante); o crescimento 12m existe só para o pagador. O recorte PF/PJ da fonte existe para o valor PAGO.</div></div>
       <div class="card"><h4>Municípios — os maiores por valor pago</h4>
       ${M2 === undefined ? `<button class="btn" onclick="pxLoadMun()">carregar ranking municipal (5,5 mil municípios)</button>` :
         M2 === null ? `<p class="src"><span class="spin"></span> carregando…</p>` :
@@ -1852,7 +1905,37 @@ function renderPix() {
         ${pagadores.map(([pag, v]) => panBar(pag.length > 42 ? pag.slice(0, 40) + "…" : pag, v, maxPag, v2 => "R$ " + fmt.n(v2, 1) + " bi")).join("")}
         ${selTE.setor.startsWith("Artes") ? `<div class="note warn" style="margin-top:8px">${EM.nota_bets}</div>` : ""}
         <div class="src" style="margin-top:6px"><b>Universo próprio, nunca somado ao cartão de natureza acima:</b> ${EM.universo} ${EM.revisao}.</div></div>
-    </div>`;
+    </div>
+    ${(function(){
+      /* Mapa de calor setor-pagador × setor-recebedor: a matriz inteira de uma
+         vez. Os valores variam 4 ordens de grandeza (PF→Comércio ~R$ 110 bi ×
+         fluxos de R$ 0,03 bi) — a COR usa escala logarítmica, declarada; o
+         número da célula é o valor real. */
+      const pagadores2 = Object.keys(EM.matriz);
+      const colSet = new Set();
+      pagadores2.forEach(pg => Object.keys(EM.matriz[pg] || {}).forEach(rc => colSet.add(rc)));
+      const somaLinha = pg => Object.values(EM.matriz[pg] || {}).reduce((s2, v2) => s2 + (v2 || 0), 0);
+      const somaCol = rc => pagadores2.reduce((s2, pg) => s2 + ((EM.matriz[pg] || {})[rc] || 0), 0);
+      const linhas2 = pagadores2.slice().sort((a2, b2) => somaLinha(b2) - somaLinha(a2));
+      const cols2 = [...colSet].sort((a2, b2) => somaCol(b2) - somaCol(a2));
+      const todosV = [];
+      linhas2.forEach(pg => cols2.forEach(rc => { const v2 = (EM.matriz[pg] || {})[rc]; if (v2 > 0) todosV.push(Math.log10(v2)); }));
+      const logScale = panScale(todosV, "seq");
+      const abrev = s2 => s2.length > 15 ? s2.slice(0, 14) + "…" : s2;
+      const cel2 = (pg, rc) => {
+        const v2 = (EM.matriz[pg] || {})[rc];
+        if (v2 == null) return `<td style="background:var(--surface-2)" title="sem fluxo publicado">·</td>`;
+        const tip = encodeURIComponent(`<div class="tt-date">${pg} → ${rc}</div>
+          <div class="tt-row"><span class="tt-lbl">valor no mês</span><span class="tt-val">R$ ${fmt.n(v2, v2 < 1 ? 2 : 1)} bi</span></div>`);
+        return `<td style="background:${logScale(v2 > 0 ? Math.log10(v2) : null)};font-size:10px;padding:2px 3px;text-align:right" data-tip="${tip}">${v2 >= 10 ? fmt.n(v2, 0) : v2 >= 1 ? fmt.n(v2, 1) : fmt.n(v2, 2)}</td>`;
+      };
+      return `<div class="card" style="margin-top:10px"><h4>Mapa de calor — setor pagador × setor recebedor ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">${fmt.my(EM.mes)} · R$ bilhões por célula · linha = quem PAGA, coluna = quem RECEBE · ordenado pelos totais · a cor é em escala logarítmica (os fluxos variam 4 ordens de grandeza); o número é o valor real · passe o mouse para o par completo</div>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact" style="font-size:10px"><thead>
+          <tr><th style="text-align:left;position:sticky;left:0;background:var(--surface)">pagador ↓ · recebedor →</th>${cols2.map(rc => `<th title="${attr(rc)}" style="writing-mode:vertical-rl;transform:rotate(180deg);max-height:120px;font-size:9px;padding:4px 1px">${abrev(rc)}</th>`).join("")}</tr></thead>
+          <tbody>${linhas2.map(pg => `<tr><td style="text-align:left;position:sticky;left:0;background:var(--surface);font-size:10px" title="${attr(pg)}"><b>${abrev(pg)}</b> <span class="src">R$ ${fmt.n(somaLinha(pg), 0)} bi</span></td>${cols2.map(rc => cel2(pg, rc)).join("")}</tr>`).join("")}</tbody></table></div>
+        <div class="src" style="margin-top:6px">A diagonal (setor pagando a si mesmo) é comércio intrassetorial real, não erro. "·" = fluxo não publicado pela fonte. ${EM.universo}</div></div>`;
+    })()}`;
   }
 
   /* ---------- 6. funcionalidades (exibida após natureza: 'como se paga') ---------- */
