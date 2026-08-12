@@ -421,11 +421,16 @@ def _bloco_captacao(m, m_prev, anomes):
     if not (0.05 <= custo_aa < 100):
         return None
     mix = None
+    rotulos = {"fund:dep_vista": "vista", "fund:dep_poupanca": "poupanca",
+               "fund:dep_prazo": "prazo", "fund:dep_interf": "interfinanceiro",
+               "fund:dep_outros": "outros"}
+    # o lid do total de depósitos NÃO existe nos dados da UI (é linha de grupo
+    # sem valor): o total é a SOMA das cinco famílias — fórmula declarada
     dep_total = m.get("fund:dep_total")
+    if not dep_total:
+        partes_dep = [m.get(k) for k in rotulos if m.get(k) is not None]
+        dep_total = sum(partes_dep) if partes_dep else None
     if dep_total and dep_total > 0:
-        rotulos = {"fund:dep_vista": "vista", "fund:dep_poupanca": "poupanca",
-                   "fund:dep_prazo": "prazo", "fund:dep_interf": "interfinanceiro",
-                   "fund:dep_outros": "outros"}
         mix = {rot: round(m[k] / dep_total * 100, 1)
                for k, rot in rotulos.items() if m.get(k) is not None}
     return {

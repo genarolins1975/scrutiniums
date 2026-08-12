@@ -517,3 +517,24 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
 - **Cautelas:** escopo da diretoria estatutária varia por governança;
   média ≠ mediana; só companhias abertas (ausência estrutural dos não
   listados); estatais sob regras próprias (SEST).
+
+## 19. Cooperativas no corte + interconexão interfinanceira
+
+- **Cooperativas:** o corte das top-100 já continha 23 instituições
+  cooperativas (2 bancos cooperativos B1 — Sicredi e Sicoob — e 21
+  centrais/singulares B3C/B3S); o que faltava era VISIBILIDADE. A aba
+  Instituições ganhou filtro por tipo (bancos × cooperativas × não
+  bancárias) pela classificação TCB do próprio BCB — nunca heurística de
+  nome — e um card-síntese do segmento (contagem, centrais, ativo somado e
+  share DO CORTE, com o denominador declarado).
+- **Correção de fonte (dep_total):** o lid 140221 (total de depósitos) NÃO
+  existe nos dados da UI do IF.data — é linha de grupo sem valor; por isso o
+  mix de depósitos saiu nulo na primeira geração. O total agora é a SOMA
+  declarada das cinco famílias (vista, poupança, prazo, interfinanceiro,
+  outros) — verificado: 2.175 entidades têm os componentes em dados_1.
+- **Interconexão:** seção 'funding interfinanceiro' na aba Instituições —
+  depósitos interfinanceiros ÷ captações totais por IF, calculado dos
+  blocos de captação publicados. É PROXY do lado passivo: a matriz bilateral
+  (quem deve a quem) não é pública, e isso é dito. Interfinanceiro alto em
+  CENTRAL cooperativa é desenho do sistema (as singulares depositam na
+  central), não fragilidade — a tabela nunca é ranking de risco.
