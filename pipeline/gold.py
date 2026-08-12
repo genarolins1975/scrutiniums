@@ -124,6 +124,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("folha_bancos.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Timeline regulatória transversal (curado) ----
+    from pipeline import regulacao as reg_mod
+    try:
+        reg_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("regulacao.json", {"disponivel": False, "error": str(e)})
+
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
     exposures = build_exposures(con, cfg)
     common.write_gold("exposures.json", exposures)

@@ -356,3 +356,22 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   compara às linhas das DFP.
 - **Próximo degrau:** ITRs 2T26 (agosto) inauguram a série intra-anual das
   mesmas rubricas pelos mesmos documentos oficiais.
+
+## 12. Timeline regulatória transversal (aba Regulação)
+
+- **Camada 100% curada:** `pipeline/curated/timeline_regulatoria.json` → gold
+  `regulacao.json` (builder `pipeline/regulacao.py`). Cada marco tem norma,
+  órgão, data, URL OFICIAL (Planalto / BCB-CMN — nenhum link inferido) e os
+  painéis do Observatório que afeta.
+- **Régua editorial, não censo:** entram os marcos que explicam quebras
+  visíveis nas NOSSAS séries (Res. 4.966 e a fronteira contábil 2025; Lei
+  14.690 e o teto do rotativo; MP 1.292/Lei 15.179 e o consignado CLT; Pix,
+  MED e endurecimentos antifraude; Lei 14.133/PNCP; Open Finance; bets).
+- **Marcadores nas séries:** `serie_x` (AAAA-MM) é o mês da VIGÊNCIA (quando
+  difere da publicação) em que o marco vira linha vertical nos gráficos de
+  pix (MED), consignado (junto às mudanças de margem já marcadas) e
+  desenrola, via `marcosRegulatorios(painel)` na SPA. O aviso acompanha:
+  coincidência no tempo não é efeito — o marcador existe para permitir
+  inspeção, nunca para atribuir variação à norma.
+- **Timelines temáticas continuam nas abas:** bets (2018–2026) e fraudes
+  (2020–2026) são mais detalhadas e a aba Regulação aponta para elas.
