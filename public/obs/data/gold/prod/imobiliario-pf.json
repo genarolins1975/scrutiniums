@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:37+00:00",
+ "gerado_em": "2026-08-12T21:38:35+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -23,7 +23,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "habitacao",
   "data_base": "202603",
-  "mercado_total_brl": 1356414580327.3,
+  "mercado_total_brl": 1356414580327.2993,
   "n_instituicoes": 123,
   "share_segmento_pct": 28.41,
   "crescimento_4t_pct": 12.38,
@@ -37,7 +37,7 @@
    },
    {
     "anomes": "202506",
-    "total_brl": 1240993516255.24,
+    "total_brl": 1240993516255.2397,
     "n_inst": 120
    },
    {
@@ -52,7 +52,7 @@
    },
    {
     "anomes": "202603",
-    "total_brl": 1356414580327.3,
+    "total_brl": 1356414580327.2993,
     "n_inst": 123
    }
   ],
@@ -2072,6 +2072,262 @@
     "taxa_casamento": null
    }
   ],
+  "por_segmento": {
+   "S1": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 1168515548719.07,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 1200883856930.39,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 1232637918710.88,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 1276986094298.81,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 1311501925849.64,
+      "n_inst": 6
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.26,
+      "n": 6
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.23,
+      "n": 6
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.23,
+      "n": 6
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.53,
+      "n": 6
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.55,
+      "n": 6
+     }
+    ]
+   },
+   "S2": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 9733801508.3,
+      "n_inst": 4
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 9951245485.17,
+      "n_inst": 4
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 10284437111.58,
+      "n_inst": 4
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 10605469993.42,
+      "n_inst": 4
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 10713779649.08,
+      "n_inst": 4
+     }
+    ],
+    "atraso_serie": []
+   },
+   "S3": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 25688637744.52,
+      "n_inst": 12
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 27000651128.93,
+      "n_inst": 12
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 28368833937.17,
+      "n_inst": 11
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 29450867310.05,
+      "n_inst": 12
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 30741500100.19,
+      "n_inst": 12
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.12,
+      "n": 12
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.1,
+      "n": 12
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.1,
+      "n": 11
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.1,
+      "n": 12
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.11,
+      "n": 12
+     }
+    ]
+   },
+   "S4": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 1662989847.95,
+      "n_inst": 51
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 1724402184.65,
+      "n_inst": 52
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 1779434479.23,
+      "n_inst": 53
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 1846266793.32,
+      "n_inst": 55
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 1925080719.25,
+      "n_inst": 56
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.19,
+      "n": 51
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.19,
+      "n": 52
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.19,
+      "n": 53
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.2,
+      "n": 55
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.24,
+      "n": 56
+     }
+    ]
+   },
+   "S5": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 1378019048.55,
+      "n_inst": 44
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 1433360526.1,
+      "n_inst": 46
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 1482545889.67,
+      "n_inst": 48
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 1516122142.56,
+      "n_inst": 46
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 1532294009.14,
+      "n_inst": 45
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.58,
+      "n": 44
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.85,
+      "n": 46
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.22,
+      "n": 48
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.55,
+      "n": 46
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 2.03,
+      "n": 45
+     }
+    ]
+   }
+  },
   "taxas": {
    "disponivel": false,
    "razao": "modalidades de crédito direcionado (SFH/SFI) não constam do conjunto txjuros integrado."
