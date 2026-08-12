@@ -37,7 +37,7 @@ function setFilter(k, v) { state.filters[k] = v; saveLS("obc_filters", state.fil
 const ROUTES = { overview: "/overview", pulse: "/credit",
   sectors: "/sectors", rj: "/recoveries", institutions: "/institutions", inst: "/institutions/",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
-  research: "/research", method: "/methodology",
+  research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
   trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.57.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.58.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -227,13 +227,13 @@ const VIEW_DATA = {
   leading: ["leading", "antecedentes", "regimes"],
   trends: ["trends"],
   panorama: ["panorama"],
-  pix: ["pix"],
+  pix: ["pix", "regulacao"],
   judicial: ["judicial"],
   pgfn: ["pgfn"],
-  desenrola: ["desenrola", "pulse"],
+  desenrola: ["desenrola", "pulse", "regulacao"],
   penetracao: ["penetracao", "penetracao_mun", "penetracao_malha"],
   moradia: ["moradia", "moradia_mun", "penetracao_malha"],
-  consignado: ["consignado", "consignado_mun", "penetracao_malha"],
+  consignado: ["consignado", "consignado_mun", "penetracao_malha", "regulacao"],
   openfinance: ["openfinance"],
   scenarios: ["scenario"],
   alerts: ["sectors", "scenario", "quality"],
@@ -243,6 +243,7 @@ const VIEW_DATA = {
   juros: ["juros"],
   operacional: ["operacional", "presenca_mun", "penetracao_malha", "folha_bancos"],
   presmun: ["presenca_mun"],
+  regulacao: ["regulacao"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -254,6 +255,19 @@ async function loadAll() {
 async function ensureData(v) {
   const need = (VIEW_DATA[v] || []).filter(f => state.data[f] === undefined);
   if (need.length) await Promise.all(need.map(fetchGold));
+}
+
+/* Marcos regulatórios transversais (gold regulacao.json) como marcadores
+   verticais nos gráficos de um painel. O lineChart ignora marcos fora do
+   alcance da série (guarda allX) — passar sempre é seguro. Coincidência no
+   tempo não é efeito: o marcador existe para permitir a inspeção, nunca
+   para atribuir variação à norma. */
+function marcosRegulatorios(painel) {
+  const R = state.data.regulacao;
+  if (!R || !R.disponivel) return [];
+  return (R.marcos || [])
+    .filter(m => m.serie_x && (m.paineis || []).includes(painel))
+    .map(m => ({ x: m.serie_x, label: m.ato.replace(/\s*\(.*?\)/, "").replace(/^(Resolução|Resoluções)/, "Res.").slice(0, 24) }));
 }
 
 /* ---------- componentes transversais de transparência ---------- */
@@ -1478,7 +1492,7 @@ function renderPix() {
   const medS = sechead("Segurança: o Mecanismo Especial de Devolução (MED)", "conceitos oficiais — contestação ≠ fraude confirmada") + `
     <div class="ov-2col-eq">
     <div class="card"><h4>Contestações aceitas a cada 100 mil transações</h4>
-      ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.aceitas_100mil })), label: "aceitas/100 mil", color: "#b91c1c" }], h: 200, unit: "por 100 mil transações", fonte: "BCB MED", aria: "incidência de contestações aceitas" })}
+      ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.aceitas_100mil })), label: "aceitas/100 mil", color: "#b91c1c" }], h: 200, unit: "por 100 mil transações", fonte: "BCB MED", aria: "incidência de contestações aceitas", annotations: marcosRegulatorios("pix") })}
       ${lineChart({ series: [{ pts: md.map(o => ({ x: o.p, y: o.pct_devolucao })), label: "% devolvido", color: "var(--pix)" }], h: 160, unit: "% do valor contestado devolvido", aria: "taxa de devolução do MED" })}</div>
     <div class="card"><h4>Último mês (${md0.p || "–"})</h4>
       <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr))">
@@ -4423,7 +4437,8 @@ function renderDesenrola() {
     w: 720, h: 260, lo0: true,
     series: [{ nome: metrica === "operacoes" ? "operações renegociadas" : "volume após desconto",
                pts: serieFiltrada.map(m => ({ x: m.mes, y: somaSerie(m, metrica) || null })) }],
-    annotations: [{ x: "2023-10", label: "abre a Faixa 1" }, { x: "2024-05", label: "encerramento" }],
+    annotations: [{ x: "2023-10", label: "abre a Faixa 1" }, { x: "2024-05", label: "encerramento" }]
+      .concat(marcosRegulatorios("desenrola").map(m => ({ ...m, color: "#6b46a3" }))),
     unidade: metrica === "operacoes" ? "operações" : "R$",
     aria: "operações do Desenrola informadas ao SCR por mês",
     fonte: D.fonte, periodo: D.totais_scr.periodo, atualizado: (D.gerado_em || "").slice(0, 10),
@@ -7505,7 +7520,8 @@ function cgExposicao(D) {
         { name: "Setor privado", pts: G.series.saldo.map(p => ({ x: p.d, y: p.privado / 1000 })) },
       ], unit: " bi", dec: 0, h: 240,
       annotations: D.linha_do_tempo.filter(e => e.d >= G.series.saldo[0].d && e.tipo === "margem")
-        .map(e => ({ x: e.d.slice(0, 7), label: e.t.slice(0, 22) })),
+        .map(e => ({ x: e.d.slice(0, 7), label: e.t.slice(0, 22) }))
+        .concat(marcosRegulatorios("consignado").map(m => ({ ...m, color: "#6b46a3" }))),
       aria: "saldo de consignado por vínculo do tomador, em bilhões de reais",
       fonte: "BCB, Sistema Gerenciador de Séries Temporais",
     })}
@@ -8459,9 +8475,48 @@ function renderPresencaMun() {
     Ausência de ponto é informação do cadastro, nunca vira zero silencioso.</p></div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional, presmun: renderPresencaMun };
+const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, regulacao: renderRegulacao, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional, presmun: renderPresencaMun };
+/* ---------- REGULAÇÃO: timeline transversal do mercado de crédito ---------- */
+const REG_LABELS = {
+  institutions: "Instituições", pix: "Pix & Pagamentos", openfinance: "Open Finance",
+  consignado: "Consignado", desenrola: "Desenrola", products: "Produtos de Crédito",
+  juros: "Taxas de Juros", bets: "Bets", fraudes: "Fraudes", operacional: "Operacional",
+};
+let regFiltro = "todos";
+window.regFiltroSet = p => { regFiltro = p; renderRegulacao(); };
+function renderRegulacao() {
+  const el = document.getElementById("view-regulacao");
+  const R = state.data.regulacao;
+  if (!R || !R.disponivel) { el.innerHTML = "<p class='src'>Timeline regulatória ainda não disponível — o gold regulacao.json não foi carregado.</p>"; return; }
+  const marcos = (R.marcos || []).filter(m => regFiltro === "todos" || (m.paineis || []).includes(regFiltro));
+  const chips = ["todos", ...(R.paineis || [])];
+  const lista = marcos.map(m => `
+    <li><span class="tld">${fmt.d(m.data)}</span> <span class="src">${m.orgao}</span><br>
+      <b><a href="${attr(m.url)}" target="_blank" rel="noopener">${m.ato}</a></b><br>
+      <span class="src">${m.resumo}</span><br>
+      ${(m.paineis || []).map(p => `<button class="btn ghost small" onclick="nav('${p}')">${REG_LABELS[p] || p} →</button>`).join(" ")}
+      ${m.serie_x ? `<span class="src" style="margin-left:6px">· marcador nas séries em ${fmt.my(m.serie_x)}</span>` : ""}
+    </li>`).join("");
+  el.innerHTML = `
+  ${pageHead({ title: "Regulação do mercado de crédito",
+    desc: "A linha do tempo transversal: os marcos regulatórios que explicam quebras visíveis nas séries do Observatório, cada um com o texto oficial e os painéis que afeta.",
+    fontes: "Planalto · BCB/CMN (textos oficiais)" })}
+  <div class="note warn"><b>Coincidência no tempo não é efeito.</b> ${R.leitura}</div>
+  <div class="controls"><span class="seg">${chips.map(p => `<button class="${regFiltro === p ? "active" : ""}" onclick="regFiltroSet('${p}')">${p === "todos" ? `todos (${(R.marcos || []).length})` : REG_LABELS[p] || p}</button>`).join("")}</span></div>
+  <div class="card">
+    <h3>Linha do tempo (${marcos.length} marco${marcos.length === 1 ? "" : "s"})</h3>
+    <ul class="bets-tl">${lista || "<li><span class='src'>nenhum marco para este painel — a régua é editorial, não um censo.</span></li>"}</ul>
+  </div>
+  <div class="card"><h4>Linhas do tempo temáticas</h4>
+    <p class="src">Dois temas têm timelines próprias, mais detalhadas, dentro das suas abas:</p>
+    ${(R.timelines_tematicas || []).map(t => `<p><button class="btn ghost small" onclick="nav('${t.painel}')">${t.nome} →</button></p>`).join("")}
+    <p class="src">E a aba Consignado marca as mudanças de margem consignável diretamente nos gráficos de saldo.</p>
+  </div>
+  <div class="card"><p class="src">${badge("observado")} ${R.fonte.nome} · nível ${R.fonte.nivel} — ${R.fonte.nota}. Atualizado ${(R.gerado_em || "").slice(0, 10)}.</p></div>`;
+}
+
 function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", regulacao: "Regulação do Crédito", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

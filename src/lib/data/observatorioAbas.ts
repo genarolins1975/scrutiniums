@@ -223,6 +223,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "alertas_central.json",
   },
   {
+    view: "regulacao",
+    caminho: "/regulacao",
+    titulo: "Regulação do Crédito",
+    descricao:
+      "A linha do tempo regulatória transversal do mercado de crédito: os marcos (leis e resoluções CMN/BCB) que explicam quebras visíveis nas séries, cada um com o texto oficial e os painéis que afeta.",
+    gold: "regulacao.json",
+  },
+  {
     view: "research",
     caminho: "/research",
     titulo: "Pesquisa",
