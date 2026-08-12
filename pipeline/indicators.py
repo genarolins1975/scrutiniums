@@ -416,7 +416,9 @@ def _bloco_captacao(m, m_prev, anomes):
     media = bool(capt_ant and capt_ant > 0)
     denom = (capt + capt_ant) / 2 if media else capt
     custo_aa = abs(juros) * (12 / meses) / denom * 100
-    if not (0 < custo_aa < 100):
+    # piso de 0,05: guard no valor BRUTO — a lição do Banco Clássico (custo
+    # 0,004% passou no `> 0` e virou 0,00 publicado após o arredondamento)
+    if not (0.05 <= custo_aa < 100):
         return None
     mix = None
     dep_total = m.get("fund:dep_total")
@@ -463,7 +465,7 @@ def _bloco_modelo_negocio(m):
         # a razão é consistente sem anualização
         rec_op = interm + max(serv or 0, 0)
         ef = (abs(pes) + abs(adm)) / rec_op * 100
-        if 0 < ef < 300:  # fora disso = unidade/tradução suspeita; omitido, nunca publicado
+        if 0.5 <= ef < 300:  # fora disso = unidade/tradução suspeita (piso evita o 0,0 arredondado); omitido, nunca publicado
             out["eficiencia_pct"] = round(ef, 1)
             out["eficiencia_conceito"] = (
                 "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação "
