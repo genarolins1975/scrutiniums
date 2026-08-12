@@ -456,3 +456,22 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   nunca silenciosas. Validação: BB LCR 167,7%/NSFR 113,9%; Itaú 195,1/122,0;
   Santander 189,1/115,2; BTG 160,9/102,2 (2026-1), coerentes com os PDFs de
   Pilar 3 (KM1 do Itaú conferida no documento do IPE).
+
+## 16. Regimes de resolução do BCB — vigentes + memória acumulada
+
+- **Fonte:** Olinda `regimes_especiais` (dados abertos do BCB, atualização
+  diária): a lista VIGENTE de instituições sob intervenção, RAET ou
+  liquidação extrajudicial, com tipo, data de decretação e responsável
+  nomeado. Coletor `pipeline/sources/regimes.py`; gold `regimes.json`;
+  seção na aba Instituições.
+- **Memória institucional:** a fonte só publica o estado atual — o silver
+  guarda `regimes_vigentes` (espelho) e `regimes_hist` (append-only por
+  cnpj+início): um regime que sai da lista permanece na história com o
+  último visto. É assim que o 'risco realizado' acumula daqui para frente.
+- **Salvaguardas:** lista vazia é tratada como FALHA de fonte (espelho
+  anterior preservado — sempre há liquidações em curso); regime em
+  instituição pequena não é sinal sistêmico (cautela publicada); a
+  decretação tem rito legal próprio (Lei 6.024/74, DL 2.321/85) e a
+  listagem não substitui os atos oficiais.
+- **Fronteira declarada:** casos anteriores à primeira coleta (as grandes
+  resoluções de 1995-2015) entram por curadoria própria em rodada futura.

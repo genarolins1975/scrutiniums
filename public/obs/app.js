@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.61.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.62.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -219,7 +219,7 @@ const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index", "npl", "guidance"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3"],
+  institutions: ["institutions", "inst_index", "npl", "guidance", "regimes"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3"],
   method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index", "operacional"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
@@ -3620,6 +3620,7 @@ function renderInstitutions() {
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / carteira</th><th>Basileia</th><th>Inadimplência ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>ROE per.</th><th>Score risco</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${guidanceSecao()}
+  ${regimesSecao()}
   ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
 }
 
@@ -3663,6 +3664,28 @@ function guidanceSecao() {
     ${cards}
     ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
     <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}${G.acompanhamentos_em_revisao ? ` · ${fmt.n0(G.acompanhamentos_em_revisao)} acompanhamento(s) trimestral(is) aguardando revisão editorial` : ""}.</p></div>`;
+}
+
+/* O risco realizado, ao vivo: instituições sob regime de resolução do BCB
+   (lista oficial vigente, diária) + memória acumulada pelo Observatório.
+   Regime em instituição pequena NÃO é sinal sistêmico — dito na cautela. */
+function regimesSecao() {
+  const R = state.data.regimes;
+  if (!R || !R.disponivel) return "";
+  const linhas = (R.vigentes || []).map(v => `<tr>
+    <td><b>${v.nome}</b><div class="src">CNPJ ${v.cnpj8} · ${v.municipio || "–"}/${v.uf || "–"}</div></td>
+    <td>${v.tipo}</td><td>${v.inicio}</td>
+    <td class="src">${v.responsavel || "–"}</td></tr>`).join("");
+  const enc = R.encerrados_ou_saidos || [];
+  return `<div class="card" style="margin-top:12px"><h4>Sob regime de resolução do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
+    <p style="margin:6px 0">${R.leitura}</p>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Instituição</th><th>Regime</th><th>Decretado em</th><th>Responsável nomeado</th></tr></thead>
+      <tbody>${linhas}</tbody></table></div>
+    ${enc.length ? `<details class="decomp"><summary>saíram da lista vigente desde o início do acompanhamento (${enc.length})</summary>
+      <div class="src" style="margin-top:6px">${enc.map(e => `${e.nome} — ${e.tipo}, decretado ${e.inicio}; fora da lista após ${e.saiu_da_lista_apos}`).join("<br>")}</div></details>` : ""}
+    ${(R.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(R.fonte.url)}" target="_blank" rel="noopener">${R.fonte.nome}</a> · nível ${R.fonte.nivel}.</p></div>`;
 }
 
 /* ---------- helpers visuais do formato v0.14 ---------- */

@@ -138,6 +138,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("guidance.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Regimes de resolução (vigentes + memória) ----
+    from pipeline import regimes_gold as reg_res_mod
+    try:
+        reg_res_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("regimes.json", {"disponivel": False, "error": str(e)})
+
     # ---- Pilar 3 (KM1): liquidez e capital regulatórios ----
     from pipeline import pilar3_gold as p3_mod
     try:
