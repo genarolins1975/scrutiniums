@@ -627,3 +627,19 @@ inferior parcial" desde a origem), pme_share_pct (denominador "classificada
 por porte" declarado na própria frase), mix de depósitos/funding (composição
 exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 (exclui "Indisponível"; "Sem rendimento" é categoria real, não resíduo).
+
+## 24. Recorte por segmento prudencial nos gráficos de produto
+
+- Botões Todos/S1–S5 na página de cada produto recortam os três gráficos
+  (carteira, atraso ≥15d, taxas), a matriz, o scatter e o histograma. A
+  classificação vem do `sr` do cadastro BCB (Res. 4.553) — nunca heurística;
+  nas taxas, o segmento da IF resolve por cnpj8 → conglomerado → cadastro.
+- Salvaguardas de n mínimo, declaradas: ponto de volume só com ≥3
+  reportantes, ponto de atraso só com ≥5 pares carteira+vencido, taxa do
+  segmento só com ≥5 IFs na janela — "S2 com duas IFs" viraria a série
+  daquelas duas com cara de mercado. Ponto omitido, nunca aproximado; com
+  recorte ativo e agregado indisponível, a SPA declara a omissão e NUNCA
+  cai para a série do universo (bug pego em teste sintético de render).
+- Séries por segmento vivem em prod/{slug}.json (por_segmento no produto e
+  por item de taxa; sr em cada linha de ranking); o resumo products.json
+  não as carrega. Materializam no ciclo diário seguinte ao merge.

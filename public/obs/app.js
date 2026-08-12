@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.69.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.70.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -9529,6 +9529,11 @@ function renderProducts() {
 }
 
 const PMX_STATE = { sort: "carteira_brl", dir: -1, all: false, q: "", sel: {} };
+/* Recorte por segmento prudencial nos gráficos/tabelas do produto. "todos"
+   = universo IF.data; S1–S5 usam as séries pré-agregadas do gold (pontos
+   com poucos reportantes são omitidos pelo pipeline, com n declarado). */
+let PMX_SEG = "todos";
+window.setProdSeg = s => { PMX_SEG = s; renderProductPage(); };
 window.pmxSort = k => { if (PMX_STATE.sort === k) PMX_STATE.dir *= -1; else { PMX_STATE.sort = k; PMX_STATE.dir = -1; } renderProductPage(); };
 window.pmxAll = () => { PMX_STATE.all = !PMX_STATE.all; renderProductPage(); };
 window.pmxQ = v => { PMX_STATE.q = v.toLowerCase(); comFocoPreservado(renderProductPage); };
@@ -9580,9 +9585,14 @@ function renderProductPage() {
 function renderProductPageData(el, P) {
   const p = P.produto;
   const c = p.concentracao;
-  const serie = p.serie.map(x => ({ x: anomesISO(x.anomes), y: x.total_brl / 1e9 }));
+  const segsDisp = p.por_segmento ? ["S1", "S2", "S3", "S4", "S5"].filter(s => p.por_segmento[s]) : [];
+  if (PMX_SEG !== "todos" && !segsDisp.includes(PMX_SEG)) PMX_SEG = "todos";
+  const segD = PMX_SEG !== "todos" ? p.por_segmento[PMX_SEG] : null;
+  const matrizSeg = PMX_SEG === "todos" ? p.matriz : p.matriz.filter(r => r.sr === PMX_SEG);
+  const serie = (segD ? segD.serie : p.serie).map(x => ({ x: anomesISO(x.anomes), y: x.total_brl / 1e9 }));
+  const atrSerie = segD ? (segD.atraso_serie || []) : (p.atraso15 && p.atraso15.serie) || [];
   const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:21px">${val}</div><div class="src">${sub || ""}</div></div>`;
-  let rows = p.matriz.filter(r => !PMX_STATE.q || _norm(r.nome).includes(_norm(PMX_STATE.q)));
+  let rows = matrizSeg.filter(r => !PMX_STATE.q || _norm(r.nome).includes(_norm(PMX_STATE.q)));
   rows = rows.slice().sort((a, b) => {
     const va = a[PMX_STATE.sort], vb = b[PMX_STATE.sort];
     if (va == null) return 1; if (vb == null) return -1;
@@ -9609,6 +9619,9 @@ function renderProductPageData(el, P) {
     <span class="chip" title="nomenclatura da fonte">IF.data: ${p.modalidade_original.replace(/_/g, " ")}</span>
     <span class="chip">${p.n_instituicoes} instituições</span>
   </div>
+  ${segsDisp.length ? `<div class="controls" style="margin:6px 0"><span class="src">Recorte por ${termo("segmentacao-prudencial","segmento prudencial")}:</span>
+    <span class="seg">${["todos"].concat(segsDisp).map(s => `<button class="${PMX_SEG === s ? "active" : ""}" onclick="setProdSeg('${s}')">${s === "todos" ? "Todos" : s}</button>`).join("")}</span>
+    ${PMX_SEG !== "todos" ? `<span class="src">gráficos, matriz e taxas recortados para ${PMX_SEG} · pontos com poucos reportantes são omitidos pelo método (n em cada ponto)</span>` : ""}</div>` : ""}
   <p class="viewdesc">${p.definicao}${p.nota_taxonomia ? " " + p.nota_taxonomia : ""}</p>
   ${p.sintese ? `<div class="diag" style="margin-top:2px"><div class="diag-frase" style="font-size:19px">${p.sintese}</div><div class="diag-meta">${badge("calculado", p.sintese_regras)} regras: ${p.sintese_regras}</div></div>` : ""}
   <div class="kpirow">
@@ -9621,11 +9634,11 @@ function renderProductPageData(el, P) {
   </div>
   <h3>Evolução do mercado e do atraso</h3>
   <div class="grid g2">
-  <div class="card"><h4>Carteira total ${badge("observado")}</h4>${lineChart({ series: [{ pts: serie, color: "#1d4e89", label: "carteira total (R$ bi)" }], h: 180, unit: "R$ bi", fonte: "BCB IF.data", status: "observado", dec: 0 })}
-  ${chartFooter({ fonte: P.fonte, periodo: p.serie.map(x => fmtTri(x.anomes)).join(" – "), atualizado: P.gerado_em.slice(0, 10), unidade: "R$ bi", nota: "soma das carteiras reportadas; nº de reportantes varia por trimestre (série não pareada — o crescimento dos cartões usa amostra pareada)." })}</div>
-  ${p.atraso15 && p.atraso15.serie && p.atraso15.serie.length >= 2 ? `<div class="card"><h4>Atraso ≥15d no produto ${badge("observado", p.atraso15.nota)}</h4>
-  ${lineChart({ series: [{ pts: p.atraso15.serie.map(x => ({ x: anomesISO(x.anomes), y: x.agg_pct })), color: "#b45309", label: "atraso ≥15d agregado" }], h: 180, unit: "%", fonte: "BCB IF.data rel. 123/128", status: "observado", dec: 2 })}
-  ${chartFooter({ fonte: p.atraso15.fonte, periodo: p.atraso15.serie.map(x => fmtTri(x.anomes)).join(" – "), atualizado: P.gerado_em.slice(0, 10), unidade: "% da carteira da modalidade", nota: p.atraso15.nota })}</div>` : ""}
+  <div class="card"><h4>Carteira ${PMX_SEG === "todos" ? "total" : `— segmento ${PMX_SEG}`} ${badge("observado")}</h4>${lineChart({ series: [{ pts: serie, color: "#1d4e89", label: PMX_SEG === "todos" ? "carteira total (R$ bi)" : `carteira ${PMX_SEG} (R$ bi)` }], h: 180, unit: "R$ bi", fonte: "BCB IF.data", status: "observado", dec: 0 })}
+  ${chartFooter({ fonte: P.fonte, periodo: (segD ? segD.serie : p.serie).map(x => fmtTri(x.anomes)).join(" – "), atualizado: P.gerado_em.slice(0, 10), unidade: "R$ bi", nota: (PMX_SEG !== "todos" ? `recorte ${PMX_SEG}: ${(segD.serie.slice(-1)[0] || {}).n_inst || "–"} reportantes no último trimestre. ` : "") + "soma das carteiras reportadas; nº de reportantes varia por trimestre (série não pareada — o crescimento dos cartões usa amostra pareada)." })}</div>
+  ${p.atraso15 && atrSerie.length >= 2 ? `<div class="card"><h4>Atraso ≥15d no produto${PMX_SEG === "todos" ? "" : ` — segmento ${PMX_SEG}`} ${badge("observado", p.atraso15.nota)}</h4>
+  ${lineChart({ series: [{ pts: atrSerie.map(x => ({ x: anomesISO(x.anomes), y: x.agg_pct })), color: "#b45309", label: PMX_SEG === "todos" ? "atraso ≥15d agregado" : `atraso ≥15d — ${PMX_SEG} (n=${(atrSerie.slice(-1)[0] || {}).n || "–"})` }], h: 180, unit: "%", fonte: "BCB IF.data rel. 123/128", status: "observado", dec: 2 })}
+  ${chartFooter({ fonte: p.atraso15.fonte, periodo: atrSerie.map(x => fmtTri(x.anomes)).join(" – "), atualizado: P.gerado_em.slice(0, 10), unidade: "% da carteira da modalidade", nota: p.atraso15.nota })}</div>` : ""}
   </div>
   ${(function(){
     /* Risco × preço × tamanho, por IF: x = atraso ≥15d NO PRODUTO (estoque),
@@ -9634,11 +9647,11 @@ function renderProductPageData(el, P) {
        propósito e são declarados: estoque de atraso × fluxo de preço novo —
        leitura exploratória, nunca "curva de risco-preço". Só entra IF com
        casamento carteira↔taxa inequívoco (cnpj8 ou nome único). */
-    const pts = p.matriz.filter(r => r.taxa_aa != null && r.atraso15_pct != null && r.carteira_brl > 0);
+    const pts = matrizSeg.filter(r => r.taxa_aa != null && r.atraso15_pct != null && r.carteira_brl > 0);
     if (pts.length < 3) return "";
     const pares = pts.map(r => ({ x: r.atraso15_pct, y: r.taxa_aa, size: r.carteira_brl, label: r.nome.slice(0, 22), grp: r.taxa_casamento === "nome" ? "casado por nome" : undefined }));
     const med = a => { const s = [...a].sort((m, n) => m - n); return s[Math.floor(s.length / 2)]; };
-    const semTaxa = p.matriz.filter(r => r.atraso15_pct != null && r.carteira_brl > 0).length - pts.length;
+    const semTaxa = matrizSeg.filter(r => r.atraso15_pct != null && r.carteira_brl > 0).length - pts.length;
     return `<h3>Atraso × taxa × carteira, por instituição <span class="src">(${pts.length} IFs com os três dados)</span></h3>
     <div class="card">${scatterPlot(pares, "atraso ≥15d no produto (%)", "taxa média a.a. das novas operações (%)", 680, 320,
       { sizeLabel: "carteira no produto", labels: pts.length <= 25,
@@ -9651,7 +9664,7 @@ function renderProductPageData(el, P) {
     <p class="src">Casamento carteira↔taxa por CNPJ-raiz (IFs individuais) ou nome normalizado único (conglomerados) —
     ${semTaxa > 0 ? `${semTaxa} instituição(ões) com carteira e atraso, mas sem taxa casada, ficam fora do gráfico (ausência declarada).` : "todas as IFs com atraso têm taxa casada."}</p></div>`;
   })()}
-  <h3>Matriz produto × instituição <span class="src">(${p.matriz.length} instituições)</span></h3>
+  <h3>Matriz produto × instituição <span class="src">(${matrizSeg.length} instituições${PMX_SEG !== "todos" ? ` do ${PMX_SEG}` : ""})</span></h3>
   <div class="controls">
     <input type="search" id="pmxq-input" placeholder="filtrar instituição…" value="${PMX_STATE.q}" oninput="pmxQ(this.value)" aria-label="filtrar instituição">
     <button class="btn small" id="pmxCmpBtn" onclick="pmxCompare()">comparar selecionadas (${Object.keys(PMX_STATE.sel).length})</button>
@@ -9666,7 +9679,7 @@ function renderProductPageData(el, P) {
   ${(function(){
     const a = p.atraso15;
     if (!a || a.agg_pct == null) return "";
-    const comAtraso = p.matriz.filter(r => r.atraso15_pct != null);
+    const comAtraso = matrizSeg.filter(r => r.atraso15_pct != null);
     const vals = comAtraso.map(r => r.atraso15_pct);
     const RELEV = 100e6; // corte de relevância declarado: carteira ≥ R$ 100 mi no produto
     const top = comAtraso.filter(r => r.carteira_brl >= RELEV).sort((x, y) => y.atraso15_pct - x.atraso15_pct).slice(0, 10);
@@ -9709,20 +9722,33 @@ function taxasSection(p) {
   }
   const idx = Math.min(TX_STATE.idx, t.itens.length - 1);
   const it = t.itens[idx];
-  const rows = it.ranking.map(r => `<tr>
+  // recorte por segmento prudencial: estatísticas e série pré-agregadas no
+  // gold; ranking filtrado pelo sr de cada IF da janela
+  const tSeg = PMX_SEG !== "todos" && it.por_segmento ? it.por_segmento[PMX_SEG] : null;
+  const cortou = PMX_SEG !== "todos";
+  const rankRows = cortou ? it.ranking.filter(r => r.sr === PMX_SEG) : it.ranking;
+  const rows = rankRows.map(r => `<tr>
     <td>${r.posicao ?? "–"}</td>
-    <td>${r.cod_congl ? `<span class="clickable" onclick="openInstPage('${r.cod_congl}')"><b>${r.nome}</b></span>` : `<b>${r.nome}</b>`}<div class="src">cnpj8 ${r.cnpj8}${r.cod_congl ? ` · conglomerado ${r.cod_congl}` : ""}</div></td>
+    <td>${r.cod_congl ? `<span class="clickable" onclick="openInstPage('${r.cod_congl}')"><b>${r.nome}</b></span>` : `<b>${r.nome}</b>`}<div class="src">cnpj8 ${r.cnpj8}${r.cod_congl ? ` · conglomerado ${r.cod_congl}` : ""}${r.sr ? ` · ${r.sr}` : ""}</div></td>
     <td style="text-align:right"><b>${fmt.n(r.taxa_aa, 2)}%</b></td>
     <td style="text-align:right">${r.taxa_am != null ? fmt.n(r.taxa_am, 2) + "%" : "–"}</td></tr>`).join("");
-  const serieChart = (it.serie && it.serie.length >= 4) ? lineChart({
-    series: [{ pts: it.serie.map(x => ({ x: x.inicio, y: x.mediana_aa })), color: "#1d4e89", label: "mediana do universo" }],
-    band: { pts: it.serie.map(x => ({ x: x.inicio, lo: x.p25_aa, hi: x.p75_aa })) },
+  // com recorte ativo e sem agregado do segmento, NUNCA cair para o universo
+  const serieAtiva = cortou ? (tSeg ? tSeg.serie : null) : it.serie;
+  const serieChart = (serieAtiva && serieAtiva.length >= 4) ? lineChart({
+    series: [{ pts: serieAtiva.map(x => ({ x: x.inicio, y: x.mediana_aa })), color: "#1d4e89", label: cortou ? `mediana — ${PMX_SEG}` : "mediana do universo" }],
+    band: { pts: serieAtiva.map(x => ({ x: x.inicio, lo: x.p25_aa, hi: x.p75_aa })) },
     h: 170, unit: "% a.a.", fonte: "BCB txjuros", status: "observado", dec: 1,
-  }) + `<div class="src">banda = quartis (p25–p75) entre instituições da janela · ${it.serie.length} janelas desde ${fmt.d(it.serie[0].inicio)}</div>` : "";
+  }) + `<div class="src">banda = quartis (p25–p75) entre instituições da janela${cortou ? ` do ${PMX_SEG}` : ""} · ${serieAtiva.length} janelas desde ${fmt.d(serieAtiva[0].inicio)}</div>`
+    : (cortou && !tSeg ? `<p class="src">Sem recorte de taxa para ${PMX_SEG} nesta modalidade: menos de 5 instituições do segmento na janela — omitido, nunca aproximado.</p>` : "");
+  const stats = tSeg
+    ? `${rankRows.length} instituições do ${PMX_SEG} na janela · mediana <b>${fmt.n(tSeg.mediana_aa, 1)}% a.a.</b> · quartis ${fmt.n(tSeg.p25_aa, 1)}–${fmt.n(tSeg.p75_aa, 1)}% (n=${tSeg.n})`
+    : cortou
+      ? `recorte ${PMX_SEG}: estatística de taxa indisponível nesta modalidade (menos de 5 IFs do segmento na janela — omitido, nunca aproximado); a tabela abaixo lista as ${rankRows.length} IF(s) do segmento individualmente`
+      : `${it.n_inst} instituições · mediana <b>${fmt.n(it.mediana_aa, 1)}% a.a.</b> · quartis ${fmt.n(it.p25_aa, 1)}–${fmt.n(it.p75_aa, 1)}% · amplitude ${fmt.n(it.min_aa, 1)}–${fmt.n(it.max_aa, 1)}%`;
   return `<h3>Taxas de juros por instituição ${badge("observado")}</h3>
   <div class="controls"><span class="seg">${t.itens.map((x, i) => `<button class="${i === idx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${x.modalidade.replace(/ - Prefixado$/, "").replace(/ - Pós-fixado.*$/, " (pós)").slice(0, 42)}</button>`).join("")}</span></div>
   <div class="card">
-    <div class="src" style="margin-bottom:8px">janela ${fmt.d(it.inicio)}–${fmt.d(it.fim)} · ${it.n_inst} instituições · mediana <b>${fmt.n(it.mediana_aa, 1)}% a.a.</b> · quartis ${fmt.n(it.p25_aa, 1)}–${fmt.n(it.p75_aa, 1)}% · amplitude ${fmt.n(it.min_aa, 1)}–${fmt.n(it.max_aa, 1)}%
+    <div class="src" style="margin-bottom:8px">janela ${fmt.d(it.inicio)}–${fmt.d(it.fim)} · ${stats}
     ${it.moeda_estrangeira ? ` · <span class="seal aprox">TAXA REFERENCIADA EM MOEDA ESTRANGEIRA — não comparável a taxas em reais</span>` : ""}</div>
     ${serieChart}
     <div class="tblwrap"><table class="data compact"><thead><tr><th title="posição no ranking BCB (menor taxa primeiro)">#</th><th>Instituição (individual, cnpj8)</th><th style="text-align:right">Taxa a.a.</th><th style="text-align:right">Taxa a.m.</th></tr></thead><tbody>${rows}</tbody></table></div>

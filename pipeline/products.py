@@ -17,6 +17,41 @@ from pipeline import common
 
 MIN_COVERAGE = 50  # produto só entra com pelo menos 50 instituições reportando
 
+# Recorte por segmento prudencial (Res. 4.553) nos gráficos de produto.
+# Ponto ou estatística com poucos reportantes é OMITIDO — um "S2" com duas
+# IFs viraria a série daquelas duas IFs com cara de mercado; o n viaja em
+# cada ponto publicado.
+SEGMENTOS_FILTRO = ("S1", "S2", "S3", "S4", "S5")
+MIN_SEG_VOL = 3      # reportantes mínimos para o ponto de volume do segmento
+MIN_SEG_ATRASO = 5   # pares carteira+vencido mínimos para o ponto de atraso
+MIN_SEG_TAXA = 5     # IFs mínimas na janela para a taxa do segmento
+
+
+def _por_segmento(by_anomes, venc_by_anomes, anomes_list, names):
+    """Séries de volume e atraso do produto recortadas por segmento prudencial.
+    A classificação vem da coluna sr do cadastro (BCB) — nunca heurística."""
+    out = {}
+    for s in SEGMENTOS_FILTRO:
+        cods = {c for c, d in names.items() if d.get("sr") == s}
+        if not cods:
+            continue
+        serie, atraso = [], []
+        for a in anomes_list:
+            cm = by_anomes.get(a) or {}
+            vm = venc_by_anomes.get(a) or {}
+            vals = {c: cm[c] for c in cm if c in cods and cm[c] > 0}
+            if len(vals) >= MIN_SEG_VOL:
+                serie.append({"anomes": a, "total_brl": round(sum(vals.values()), 2),
+                              "n_inst": len(vals)})
+            pares = [(vals[c], vm[c]) for c in vals if c in vm]
+            if len(pares) >= MIN_SEG_ATRASO:
+                atraso.append({"anomes": a,
+                               "agg_pct": round(sum(v for _, v in pares) / sum(t for t, _ in pares) * 100, 2),
+                               "n": len(pares)})
+        if serie:
+            out[s] = {"serie": serie, "atraso_serie": atraso}
+    return out or None
+
 # slug -> (metric_key, nome, seg, natureza, definicao, nota)
 TAXONOMY = {
     "cartao-de-credito-pf": ("cart_pf_mod:cartao_de_credito", "Cartão de crédito", "pf", "livre",
@@ -168,9 +203,14 @@ def _taxa_por_cod(slug, taxas_db, names, cods):
     return out
 
 
-def _taxas_for(slug, taxas_db, congl_of):
+def _taxas_for(slug, taxas_db, congl_of, names=None):
     if slug in TAXAS_INDISPONIVEL:
         return {"disponivel": False, "razao": TAXAS_INDISPONIVEL[slug]}
+    # segmento da IF da taxa: cnpj8 → conglomerado (ou o próprio cnpj8 quando
+    # independente) → sr do cadastro — nunca por nome
+    def _sr_de(c8):
+        d = (names or {}).get(congl_of.get(c8) or c8)
+        return d.get("sr") if d else None
     itens = []
     for seg, mod in TAXAS_MAP.get(slug, []):
         janelas = taxas_db.get((seg, mod))
@@ -199,6 +239,31 @@ def _taxas_for(slug, taxas_db, congl_of):
             serie.append({"inicio": ini, "mediana_aa": round(_quantile(vs, 0.5), 2),
                           "p25_aa": round(_quantile(vs, 0.25), 2), "p75_aa": round(_quantile(vs, 0.75), 2),
                           "n": len(vs)})
+        # recorte por segmento prudencial: estatística atual e série da mediana
+        # por janela — janela do segmento com menos de MIN_SEG_TAXA IFs é omitida
+        por_seg_taxa = {}
+        for s_filtro in SEGMENTOS_FILTRO:
+            aas_s = [r["taxa_aa"] for r in rows if r["taxa_aa"] is not None and _sr_de(r["cnpj8"]) == s_filtro]
+            if len(aas_s) < MIN_SEG_TAXA:
+                continue
+            serie_s, last_s = [], None
+            for idx_j, ini in enumerate(ordered):
+                vs = [r2["taxa_aa"] for r2 in janelas[ini]["rows"]
+                      if r2["taxa_aa"] is not None and _sr_de(r2["cnpj8"]) == s_filtro]
+                if len(vs) < MIN_SEG_TAXA:
+                    continue
+                d_j = _dt.date.fromisoformat(ini)
+                if last_s is not None and (d_j - last_s).days < 6 and idx_j != len(ordered) - 1:
+                    continue
+                last_s = d_j
+                serie_s.append({"inicio": ini, "mediana_aa": round(_quantile(vs, 0.5), 2),
+                                "p25_aa": round(_quantile(vs, 0.25), 2), "p75_aa": round(_quantile(vs, 0.75), 2),
+                                "n": len(vs)})
+            por_seg_taxa[s_filtro] = {
+                "n": len(aas_s), "mediana_aa": round(_quantile(aas_s, 0.5), 2),
+                "p25_aa": round(_quantile(aas_s, 0.25), 2), "p75_aa": round(_quantile(aas_s, 0.75), 2),
+                "serie": serie_s,
+            }
         itens.append({
             "segmento": seg, "modalidade": mod, "inicio": latest, "fim": t["fim"],
             "n_inst": len(rows),
@@ -207,7 +272,8 @@ def _taxas_for(slug, taxas_db, congl_of):
             "min_aa": round(min(aas), 2), "max_aa": round(max(aas), 2),
             "moeda_estrangeira": "moeda estrangeira" in mod.lower(),
             "serie": serie,
-            "ranking": [{**r, "cod_congl": congl_of.get(r["cnpj8"])} for r in rows],
+            "por_segmento": por_seg_taxa or None,
+            "ranking": [{**r, "cod_congl": congl_of.get(r["cnpj8"]), "sr": _sr_de(r["cnpj8"])} for r in rows],
         })
     if not itens:
         return {"disponivel": False, "razao": "sem janela recente coletada para as modalidades mapeadas."}
@@ -384,7 +450,8 @@ def build(con, cfg):
             "sintese": sintese,
             "sintese_regras": "crescimento = Δ da soma em amostra pareada 4T; participação = produto ÷ total do segmento (mesmo universo/data); concentração sobre reportantes do produto.",
             "matriz": rows,
-            "taxas": _taxas_for(slug, taxas_db, congl_of),
+            "por_segmento": _por_segmento(by_anomes, venc_by_anomes, anomes_list, names),
+            "taxas": _taxas_for(slug, taxas_db, congl_of, names),
             "indisponiveis": INDISPONIVEIS,
         })
 
@@ -410,7 +477,7 @@ def build(con, cfg):
     resumo = []
     for p in products:
         lider = p["matriz"][0] if p["matriz"] else None
-        r = {k: v for k, v in p.items() if k not in ("matriz", "taxas", "indisponiveis")}
+        r = {k: v for k, v in p.items() if k not in ("matriz", "taxas", "indisponiveis", "por_segmento")}
         r["lider"] = {"cod": lider["cod"], "nome": lider["nome"], "share_pct": lider["share_pct"]} if lider else None
         r["taxas_disponiveis"] = bool(p.get("taxas", {}).get("disponivel"))
         resumo.append(r)
