@@ -310,8 +310,10 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   |despesa de juros de captações| anualizada pelos meses da DRE ÷ média das
   captações totais nas pontas atual e anterior (ou ponta única, sinalizado).
   É estimativa: estoque de pontas (não saldo médio diário), funding de varejo
-  e mercado misturados. Custo fora de 0–100% a.a. é DESCARTADO (unidade ou
-  tradução suspeita) — nunca publicado. Fórmula declarada por instituição.
+  e mercado misturados. Custo fora de 0,05–100% a.a. é DESCARTADO (unidade ou
+  tradução suspeita; o piso, no valor bruto, evita que um 0,004% vire 0,00
+  publicado após o arredondamento — memória do Banco Clássico, 12/08/2026) —
+  nunca publicado. Fórmula declarada por instituição.
 - **Modelo de negócio (`institutions.json → modelo_negocio`):** peso dos
   serviços na receita operacional (serviços ÷ intermediação + serviços;
   omitido quando a intermediação é negativa), crédito/ativo e captações/ativo;
@@ -320,7 +322,7 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
 - **Índice de eficiência (`modelo_negocio.eficiencia_pct`):** (|pessoal| +
   |administrativas|) ÷ (intermediação + serviços) do MESMO período semestral
   da DRE — a razão é consistente sem anualização. Quanto menor, mais
-  eficiente. Fora de 0–300% é omitido (unidade/tradução suspeita). Não
+  eficiente. Fora de 0,5–300% é omitido (unidade/tradução suspeita; piso no valor bruto). Não
   inclui tributárias nem outras operacionais — declarado no conceito.
 - **Escala:** `config.ifdata.top_n_by_assets = 100` — o corte scorado vai às
   top 100 por ativo. A coleta já cobria o universo inteiro; grupos de pares

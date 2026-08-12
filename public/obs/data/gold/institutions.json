@@ -6520,18 +6520,7 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": {
-    "tipo": "DADO CALCULADO",
-    "custo_aa_pct": 0.0,
-    "meses_dre": 3,
-    "media_pontas": true,
-    "captacoes_brl": 1694918.6,
-    "dep_total_brl": null,
-    "dep_captacoes_pct": null,
-    "mix_depositos_pct": null,
-    "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
-    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
-   },
+   "captacao": null,
    "modelo_negocio": {
     "receita_servicos_pct": 22.1,
     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",

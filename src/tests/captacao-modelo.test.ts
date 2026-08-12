@@ -43,7 +43,8 @@ describe("estático: coletor, config e semântica declarada", () => {
 
   it("a anualização declara os meses e o custo absurdo é descartado, nunca publicado", () => {
     expect(indicadoresPy).toMatch(/meses = 3 if mes in \(3, 9\) else 6/);
-    expect(indicadoresPy).toMatch(/if not \(0 < custo_aa < 100\)/);
+    // piso no valor BRUTO, antes do arredondamento — a lição do Banco Clássico
+    expect(indicadoresPy).toMatch(/if not \(0\.05 <= custo_aa < 100\)/);
     // serviços só entram com intermediação positiva — omitido, nunca imputado
     expect(indicadoresPy).toMatch(/interm is not None and interm > 0/);
   });
@@ -53,7 +54,7 @@ describe("estático: coletor, config e semântica declarada", () => {
     expect(fundingPy).toContain("141858");
     expect(fundingPy).toContain("141859");
     // eficiência absurda (unidade/tradução) é omitida, nunca publicada
-    expect(indicadoresPy).toMatch(/if 0 < ef < 300/);
+    expect(indicadoresPy).toMatch(/if 0\.5 <= ef < 300/);
     // numerador e denominador do MESMO período semestral: sem anualização
     expect(indicadoresPy).toMatch(/MESMO período semestral/);
   });
@@ -83,7 +84,7 @@ describe("gated: valores no gold publicado (mordem após o pipeline diário)", (
       const c = i.captacao;
       if (!c) continue; // ausência declarada: coletor ainda sem o período, nunca zero
       expect(c.tipo, i.nome).toBe("DADO CALCULADO");
-      expect(c.custo_aa_pct, i.nome).toBeGreaterThan(0);
+      expect(c.custo_aa_pct, i.nome).toBeGreaterThanOrEqual(0.05);
       expect(c.custo_aa_pct, i.nome).toBeLessThan(100);
       expect([3, 6], i.nome).toContain(c.meses_dre);
       expect(c.formula, i.nome).toMatch(/12\/[36]/);
