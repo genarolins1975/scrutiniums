@@ -131,6 +131,13 @@ def build_all(con, cfg, fetch_status):
     except Exception as e:
         common.write_gold("regulacao.json", {"disponivel": False, "error": str(e)})
 
+    # ---- Guidance × entregue (Fase 2 — publica só aprovado) ----
+    from pipeline import guidance_bancos as guid_mod
+    try:
+        guid_mod.build(con, cfg)
+    except Exception as e:
+        common.write_gold("guidance.json", {"disponivel": False, "error": str(e)})
+
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
     exposures = build_exposures(con, cfg)
     common.write_gold("exposures.json", exposures)
