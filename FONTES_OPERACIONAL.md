@@ -409,3 +409,24 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   publicou o realizado 1S26; BB ainda não havia divulgado (pendência
   declarada); Santander segue sem guidance. A rodada também inaugurou a
   série intra-anual de TI (§11) e a amortização de folha 1S26 do Itaú (§9).
+
+## 14. Backfill histórico do IF.data (2015-2024)
+
+- **Fonte:** Olinda IF.data, relatório Resumo, TipoInstituicao=2 — os mesmos
+  endpoints do coletor diário, estendidos a 40 trimestres (2015-03 a 2024-12,
+  `config.ifdata.anomes_history`). Validado empiricamente: ~1.300-1.570
+  instituições por período, maior ativo coerente (BB R$ 1,37 tri em 2015).
+- **Plano contábil antigo:** até 2024 a carteira é a "Carteira de Crédito
+  Classificada" (Res. 2.682) e o passivo tem outro nome — mapeados em
+  `COL_MAP_HISTORICO`. A fronteira 2024/2025 (Res. 4.966) atravessa a série,
+  é declarada no método do gold e está marcada na aba Regulação.
+- **Salvaguardas:** backfill CAPADO (`backfill_por_execucao`, 10/run ≈ 3 min)
+  e idempotente — se o cache do CI expirar, reconverge em 4 execuções diárias;
+  falha consome o cap (nunca trava num período quebrado). Cadastro histórico
+  com INSERT OR IGNORE: instituições extintas entram com o nome da época e o
+  registro ATUAL nunca é sobrescrito por dado antigo.
+- **Leituras que a série longa habilita:** score através de ciclos completos
+  (2015-16, pandemia, aperto 2021-23), "maior/menor desde X", validação das
+  elasticidades. Segmentação prudencial ATUAL aplicada retroativamente
+  (declarado); Basileia/carteiras detalhadas/DRE históricas ficam para a
+  próxima rodada (arquivos da UI por bundle antigo).

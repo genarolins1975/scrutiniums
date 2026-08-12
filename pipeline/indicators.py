@@ -544,8 +544,11 @@ def build_institution_scores(con, cfg, elasticidades=None, severe_shocks=None):
                    f"o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital "
                    f"(Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração "
                    f"em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório "
-                   f"Informações de Capital, indisponível na Olinda). Histórico de score em {len(periods)} trimestres. "
-                   f"Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto)."),
+                   f"Informações de Capital, indisponível na Olinda). Histórico de score em {len(periods)} trimestres "
+                   f"(backfill do Resumo desde 2015 via Olinda; períodos até 2024 usam a Carteira de Crédito "
+                   f"Classificada do plano contábil antigo — a fronteira 2024/2025 da Res. 4.966 atravessa a série e "
+                   f"está marcada na aba Regulação; a segmentação prudencial ATUAL é aplicada retroativamente aos "
+                   f"períodos antigos). Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto)."),
         "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do "
                       "período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem "
                       "capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). "
