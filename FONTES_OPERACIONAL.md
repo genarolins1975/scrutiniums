@@ -601,3 +601,29 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   cirúrgica no gold publicado refez 755 perfis (piso = quadrados dos
   identificados visíveis no top-5; o ciclo diário completa a cauda exata);
   scores se recalculam no ciclo seguinte.
+
+## 23. Varredura anti-artefato de resíduo (sequela da lição do HHI)
+
+Auditoria sistemática das três formas do artefato "balde residual tratado
+como categoria real": (1) índices quadráticos, (2) re-escala sobre "só o
+identificado" sem cobertura declarada, (3) superlativos que coroam o resíduo.
+
+Corrigidos nesta rodada:
+- Frase-síntese dos pilotos "Carteira PJ concentrada em: outros (…)" —
+  contrassenso; virou "Setores identificados na carteira PJ: …", com a
+  fatia não individualizada declarada à parte.
+- Superlativo do Panorama ("a deterioração é maior em …") passou a excluir
+  o grupo "Outros" do SCR — aponta sempre produto identificável; a
+  deterioração do residual segue visível nos ALERTAS, agora com nota de
+  agregado ("a taxa é real, mas não aponta um produto único").
+- SPA: "outros" na lista de setores PJ é exibido como
+  "outros (não classificados)", nunca como se fosse um setor.
+
+Verificados e LIMPOS (sem linha residual no universo ou tratamento já
+declarado): HHI do Desenrola (73 conglomerados reais do SCR), HHI municipal
+de moradia (bancos reais do ESTBAN), HHI por produto do IF.data (universo
+reportante declarado), hhi_parcial do Open Finance (declarado "limite
+inferior parcial" desde a origem), pme_share_pct (denominador "classificada
+por porte" declarado na própria frase), mix de depósitos/funding (composição
+exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
+(exclui "Indisponível"; "Sem rendimento" é categoria real, não resíduo).

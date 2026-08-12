@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.68.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.69.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3990,7 +3990,7 @@ function renderInstitutions() {
         ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
           ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
           ${i.carteira_perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${i.carteira_perfil.hhi_setorial}${i.carteira_perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${i.carteira_perfil.hhi_cobertura_pct}% setorialmente identificados — "outros" é agregado, nunca entra ao quadrado</span>` : ""}` : ""}
-          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}` : ""}
           ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
           ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
         </div>` : ""}
@@ -4036,6 +4036,10 @@ function renderInstitutions() {
    listados, cada banco SÓ contra o próprio guidance. 'dentro/acima/abaixo'
    é posição aritmética no intervalo declarado, não juízo de mérito — nunca
    ranking nem média de cumprimento entre bancos. */
+/* Rótulo de setor CNAE: o balde "outros" da fonte é um agregado residual —
+   nunca aparece como se fosse um setor. */
+const setorLabel = (k) => k === "outros" ? "outros (não classificados)" : k.replace(/_/g, " ");
+
 /* Bloco de um ciclo de guidance — compartilhado entre a seção da aba
    Instituições e a ficha individual da IF, para as duas superfícies nunca
    divergirem em régua ou evidência. */
@@ -4395,7 +4399,7 @@ function renderInstPageData(el, pg) {
       ${pg.carteira.perfil ? `<div class="src" style="margin-top:8px">
         ${pg.carteira.perfil.top_mod_pf ? `<b>Modalidades PF:</b> ${pg.carteira.perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
         ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}<br>` : ""}
         ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
         ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
     </div>
