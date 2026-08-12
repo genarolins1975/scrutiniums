@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-11T10:44:00+00:00",
+  "atualizado_em": "2026-08-12T10:38:22+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -47,6 +47,10 @@
    {
     "texto": "Índice de Basileia: +0.55p.p. no trimestre.",
     "base": "BCB IF.data (Informações de Capital)"
+   },
+   {
+    "texto": "Score relativo subiu 4.4 pontos no grupo de pares.",
+    "base": "Observatório (calculado)"
    }
   ],
   "limitacoes_informacionais": [
@@ -431,6 +435,8 @@
     -3.36,
     -9.23,
     0.92,
+    -3.81,
+    -13.02,
     8.95,
     8.56,
     -25.82,
@@ -438,23 +444,21 @@
     13.16,
     -2.44,
     0.54,
+    -9.71,
+    2.21,
     11.26,
     -8.6,
     12.97,
     -0.79,
     0.84,
     -25.96,
-    -3.81,
     14.64,
-    17.5,
     -20.17,
-    -16.46,
-    -13.02,
     0.83,
     2.48,
-    -1.32,
-    -9.71,
-    2.21
+    17.5,
+    -16.46,
+    -1.32
    ],
    "meu": 2.86,
    "mediana": 1.31
@@ -552,17 +556,17 @@
     301.1,
     24.04,
     103.99,
+    292.92,
     100.99,
+    247.09,
+    3954.56,
     45.43,
     12.32,
     43.52,
     21.43,
     202.56,
     458.76,
-    292.92,
-    42.82,
-    247.09,
-    3954.56
+    42.82
    ],
    "meu": 18.59,
    "mediana": 29.21
@@ -684,6 +688,8 @@
     1.07,
     3.73,
     1.01,
+    1.52,
+    2.2,
     3.74,
     2.52,
     3.79,
@@ -691,78 +697,76 @@
     5.13,
     1.57,
     1.01,
+    1.01,
+    1.02,
     3.42,
     7.43,
     2.68,
     7.49,
     1.0,
     1.03,
-    1.52,
     5.42,
-    14.47,
     6.57,
-    11.98,
-    2.2,
     1.01,
     2.77,
-    1.0,
-    1.01,
-    1.02
+    14.47,
+    11.98,
+    1.0
    ],
    "meu": 10.27,
    "mediana": 3.49
   }
  },
  "score_ref": {
-  "score": 21.6,
-  "score_delta": 2.5,
+  "score": 28.8,
+  "score_delta": 4.4,
   "faixa": "risco baixo",
   "dimensoes": {
    "capital_basileia": {
     "valor": 18.59,
-    "percentil_pares": 88.5,
-    "risco": 11.5,
-    "mediana_pares": 15.01,
-    "q1_pares": 13.76,
-    "q3_pares": 16.63
+    "percentil_pares": 65.9,
+    "risco": 34.1,
+    "mediana_pares": 16.18,
+    "q1_pares": 14.22,
+    "q3_pares": 20.1
    },
    "rentabilidade": {
     "valor": 2.86,
-    "percentil_pares": 37.9,
-    "risco": 62.1,
-    "mediana_pares": 3.26,
-    "q1_pares": 1.98,
-    "q3_pares": 5.71
+    "percentil_pares": 47.5,
+    "risco": 52.5,
+    "mediana_pares": 3.0,
+    "q1_pares": 1.32,
+    "q3_pares": 4.48
    },
    "alavancagem": {
     "valor": 10.27,
-    "percentil_pares": 24.1,
-    "risco": 24.1,
-    "mediana_pares": 13.28,
-    "q1_pares": 10.42,
-    "q3_pares": 20.1
+    "percentil_pares": 47.5,
+    "risco": 47.5,
+    "mediana_pares": 10.73,
+    "q1_pares": 6.93,
+    "q3_pares": 16.17
    },
    "concentracao_credito": {
     "valor": 0.0,
     "percentil_pares": 0.0,
     "risco": 0.0,
-    "mediana_pares": 33.98,
-    "q1_pares": 17.92,
-    "q3_pares": 47.1
+    "mediana_pares": 45.09,
+    "q1_pares": 15.7,
+    "q3_pares": 61.0
    },
    "dependencia_captacoes": {
     "valor": 9.1,
-    "percentil_pares": 10.3,
-    "risco": 10.3,
-    "mediana_pares": 76.21,
-    "q1_pares": 56.24,
-    "q3_pares": 78.54
+    "percentil_pares": 10.1,
+    "risco": 10.1,
+    "mediana_pares": 73.21,
+    "q1_pares": 52.23,
+    "q3_pares": 82.04
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 38.5
+    "score": 39.3
    },
    {
     "anomes": "202506",
@@ -770,15 +774,15 @@
    },
    {
     "anomes": "202509",
-    "score": 33.6
+    "score": 35.2
    },
    {
     "anomes": "202512",
-    "score": 19.1
+    "score": 24.4
    },
    {
     "anomes": "202603",
-    "score": 21.6
+    "score": 28.8
    }
   ],
   "vulnerabilidade": {

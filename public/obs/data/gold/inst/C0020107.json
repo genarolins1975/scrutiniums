@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-11T10:44:05+00:00",
+  "atualizado_em": "2026-08-12T10:38:27+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -476,8 +476,8 @@
     8.88,
     2.81,
     0.08,
-    0.95,
-    -0.61
+    -0.61,
+    0.95
    ],
    "meu": 4.75,
    "mediana": 2.45
@@ -610,87 +610,87 @@
     22.67,
     5.66,
     16.73,
-    5.23,
-    1.07
+    1.07,
+    5.23
    ],
    "meu": 10.22,
    "mediana": 9.53
   }
  },
  "score_ref": {
-  "score": 34.8,
-  "score_delta": -8.6,
+  "score": 38.5,
+  "score_delta": -3.7,
   "faixa": "risco baixo",
   "dimensoes": {
    "capital_basileia": {
     "valor": 23.79,
-    "percentil_pares": 100.0,
-    "risco": 0.0,
-    "mediana_pares": 13.76,
-    "q1_pares": 12.99,
-    "q3_pares": 15.28
+    "percentil_pares": 78.8,
+    "risco": 21.2,
+    "mediana_pares": 16.34,
+    "q1_pares": 13.53,
+    "q3_pares": 22.82
    },
    "rentabilidade": {
     "valor": 4.75,
-    "percentil_pares": 50.0,
-    "risco": 50.0,
-    "mediana_pares": 4.75,
-    "q1_pares": 3.31,
-    "q3_pares": 6.72
+    "percentil_pares": 77.8,
+    "risco": 22.2,
+    "mediana_pares": 3.0,
+    "q1_pares": 1.24,
+    "q3_pares": 4.5
    },
    "alavancagem": {
     "valor": 10.22,
-    "percentil_pares": 37.5,
-    "risco": 37.5,
-    "mediana_pares": 11.11,
-    "q1_pares": 9.35,
-    "q3_pares": 13.29
+    "percentil_pares": 51.9,
+    "risco": 51.9,
+    "mediana_pares": 10.12,
+    "q1_pares": 5.96,
+    "q3_pares": 14.74
    },
    "concentracao_credito": {
     "valor": 2.23,
-    "percentil_pares": 0.0,
-    "risco": 0.0,
-    "mediana_pares": 61.42,
-    "q1_pares": 31.26,
-    "q3_pares": 62.22
+    "percentil_pares": 13.0,
+    "risco": 13.0,
+    "mediana_pares": 48.72,
+    "q1_pares": 18.61,
+    "q3_pares": 64.31
    },
    "dependencia_captacoes": {
     "valor": 76.86,
-    "percentil_pares": 50.0,
-    "risco": 50.0,
-    "mediana_pares": 76.86,
-    "q1_pares": 72.02,
-    "q3_pares": 77.08
+    "percentil_pares": 63.0,
+    "risco": 63.0,
+    "mediana_pares": 74.1,
+    "q1_pares": 36.86,
+    "q3_pares": 81.8
    },
    "concentracao_setorial": {
     "valor": 3117,
-    "percentil_pares": 71.4,
-    "risco": 71.4,
-    "mediana_pares": 2531.0,
-    "q1_pares": 2284.25,
-    "q3_pares": 3141.25
+    "percentil_pares": 59.5,
+    "risco": 59.5,
+    "mediana_pares": 2889.0,
+    "q1_pares": 2479.0,
+    "q3_pares": 3825.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 37.5
+    "score": 40.2
    },
    {
     "anomes": "202506",
-    "score": 28.9
+    "score": 30.7
    },
    {
     "anomes": "202509",
-    "score": 33.3
+    "score": 35.7
    },
    {
     "anomes": "202512",
-    "score": 43.4
+    "score": 42.2
    },
    {
     "anomes": "202603",
-    "score": 34.8
+    "score": 38.5
    }
   ],
   "vulnerabilidade": {

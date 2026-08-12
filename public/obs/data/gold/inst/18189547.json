@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-11T10:44:02+00:00",
+  "atualizado_em": "2026-08-12T10:38:25+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -137,7 +137,12 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
+ "score_meta": {
+  "cobertura_dados_pct": 100,
+  "confianca": "moderada",
+  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+ },
  "kpis": [
   {
    "label": "Ativos totais",
@@ -486,6 +491,8 @@
     -3.36,
     -9.23,
     0.92,
+    -3.81,
+    -13.02,
     8.95,
     8.56,
     -25.82,
@@ -493,23 +500,21 @@
     13.16,
     -2.44,
     0.54,
+    -9.71,
+    2.21,
     11.26,
     -8.6,
     12.97,
     -0.79,
     0.84,
     -25.96,
-    -3.81,
     14.64,
-    17.5,
     -20.17,
-    -16.46,
-    -13.02,
     0.83,
     2.48,
-    -1.32,
-    -9.71,
-    2.21
+    17.5,
+    -16.46,
+    -1.32
    ],
    "meu": 13.44,
    "mediana": 1.31
@@ -607,17 +612,17 @@
     301.1,
     24.04,
     103.99,
+    292.92,
     100.99,
+    247.09,
+    3954.56,
     45.43,
     12.32,
     43.52,
     21.43,
     202.56,
     458.76,
-    292.92,
-    42.82,
-    247.09,
-    3954.56
+    42.82
    ],
    "meu": 31.14,
    "mediana": 29.21
@@ -739,6 +744,8 @@
     1.07,
     3.73,
     1.01,
+    1.52,
+    2.2,
     3.74,
     2.52,
     3.79,
@@ -746,30 +753,121 @@
     5.13,
     1.57,
     1.01,
+    1.01,
+    1.02,
     3.42,
     7.43,
     2.68,
     7.49,
     1.0,
     1.03,
-    1.52,
     5.42,
-    14.47,
     6.57,
-    11.98,
-    2.2,
     1.01,
     2.77,
-    1.0,
-    1.01,
-    1.02
+    14.47,
+    11.98,
+    1.0
    ],
    "meu": 9.37,
    "mediana": 3.49
   }
  },
  "score_ref": {
-  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+  "score": 21.8,
+  "score_delta": 0.3,
+  "faixa": "risco baixo",
+  "dimensoes": {
+   "capital_basileia": {
+    "valor": 31.14,
+    "percentil_pares": 95.6,
+    "risco": 4.4,
+    "mediana_pares": 16.18,
+    "q1_pares": 14.22,
+    "q3_pares": 20.1
+   },
+   "rentabilidade": {
+    "valor": 13.44,
+    "percentil_pares": 98.0,
+    "risco": 2.0,
+    "mediana_pares": 3.0,
+    "q1_pares": 1.32,
+    "q3_pares": 4.48
+   },
+   "alavancagem": {
+    "valor": 9.37,
+    "percentil_pares": 36.4,
+    "risco": 36.4,
+    "mediana_pares": 10.73,
+    "q1_pares": 6.93,
+    "q3_pares": 16.17
+   },
+   "concentracao_credito": {
+    "valor": 0.0,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 45.09,
+    "q1_pares": 15.7,
+    "q3_pares": 61.0
+   },
+   "dependencia_captacoes": {
+    "valor": 8.2,
+    "percentil_pares": 9.1,
+    "risco": 9.1,
+    "mediana_pares": 73.21,
+    "q1_pares": 52.23,
+    "q3_pares": 82.04
+   },
+   "concentracao_setorial": {
+    "valor": 3932,
+    "percentil_pares": 78.9,
+    "risco": 78.9,
+    "mediana_pares": 2800.0,
+    "q1_pares": 2329.0,
+    "q3_pares": 3887.0
+   }
+  },
+  "historico_score": [
+   {
+    "anomes": "202503",
+    "score": 17.0
+   },
+   {
+    "anomes": "202506",
+    "score": 27.0
+   },
+   {
+    "anomes": "202509",
+    "score": 27.8
+   },
+   {
+    "anomes": "202512",
+    "score": 21.5
+   },
+   {
+    "anomes": "202603",
+    "score": 21.8
+   }
+  ],
+  "vulnerabilidade": {
+   "tipo": "CENÁRIO",
+   "cenario": "severamente adverso",
+   "delta_inad_pp": [
+    0.16,
+    1.28
+   ],
+   "impacto_basileia_pp": [
+    -0.0,
+    -0.0
+   ],
+   "basileia_atual_pct": 31.14,
+   "basileia_pos_choque_pct": [
+    31.14,
+    31.14
+   ],
+   "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
+  },
+  "dimensoes_disponiveis": "6/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

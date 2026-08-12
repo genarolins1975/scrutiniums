@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-11T10:44:02+00:00",
+  "atualizado_em": "2026-08-12T10:38:25+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -334,8 +334,8 @@
     8.88,
     2.81,
     0.08,
-    0.95,
-    -0.61
+    -0.61,
+    0.95
    ],
    "meu": 3.06,
    "mediana": 2.45
@@ -404,8 +404,8 @@
     22.67,
     5.66,
     16.73,
-    5.23,
-    1.07
+    1.07,
+    5.23
    ],
    "meu": 1.03,
    "mediana": 9.53

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-11T10:43:58+00:00",
+ "gerado_em": "2026-08-12T10:38:21+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -41339,6 +41339,32 @@
    }
   },
   "nota": "Clientes vêm dos releases de resultados (descoberta via CVM/IPE), com extração revisada e evidência obrigatória (documento, página e trecho). Comparabilidade C: o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking."
+ },
+ "custos_ti": {
+  "observacoes": [],
+  "em_revisao": 6,
+  "agregado_sistema": {
+   "nome": "Orçamento de tecnologia do sistema bancário (Pesquisa Febraban de Tecnologia Bancária 2025, Deloitte)",
+   "orcamento_2025_brl": 47800000000,
+   "orcamento_2024_brl": 42300000000,
+   "variacao_pct": 13,
+   "amostra": "20 bancos, 85% dos ativos da indústria; 30 executivos entrevistados (coleta dez/2024–mar/2025)",
+   "conceito": "ORÇAMENTO total de tecnologia (capex + opex, previsto) — conceito diferente e MAIS AMPLO que as linhas de despesa contábil das DFP; as duas camadas nunca se comparam nem se somam",
+   "fonte": {
+    "nome": "Febraban — notícia oficial da Pesquisa 2025",
+    "url": "https://portal.febraban.org.br/noticia/4278/pt-br/",
+    "nivel": "A"
+   }
+  },
+  "leitura": "O que cada banco gasta com processamento de dados/tecnologia, direto das notas explicativas das DFP — é DESPESA contábil (opex): o investimento capitalizado no intangível fica fora, e por isso estes números não se comparam ao orçamento de tecnologia da Febraban (capex+opex), publicado como camada agregada à parte.",
+  "cautelas": [
+   "Conceitos e regimes diferem por banco (BRGAAP × IFRS; 'processamento de dados' × 'com telecomunicações' × 'tecnologia e sistemas'; R$ mil × R$ milhões): valores NUNCA são somados nem ranqueados entre bancos.",
+   "Comparabilidade C: cada série vale dentro da divulgação do próprio banco, contra a própria série dele."
+  ],
+  "fonte": {
+   "nome": "CVM/ENET — DFP 31/12/2025, notas explicativas (despesas administrativas)",
+   "nivel": "A"
+  }
  },
  "sintese": [
   {

@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:35+00:00"
+    "last_collected_at": "2026-08-12T10:15:20+00:00"
    },
    "obs": [
     {
@@ -64,7 +64,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -82,7 +82,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:35+00:00"
+    "last_collected_at": "2026-08-12T10:15:20+00:00"
    },
    "obs": [
     {
@@ -131,7 +131,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -149,7 +149,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:37+00:00"
+    "last_collected_at": "2026-08-12T10:15:22+00:00"
    },
    "obs": [
     {
@@ -198,7 +198,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -216,7 +216,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:45+00:00"
+    "last_collected_at": "2026-08-12T10:15:27+00:00"
    },
    "obs": [
     {
@@ -289,7 +289,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 4,
+    "dias_sem_atualizar": 5,
     "ultima_ref": "2026-08-07",
     "n_obs": 15,
     "n_revisoes": 0
@@ -307,7 +307,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:48+00:00"
+    "last_collected_at": "2026-08-12T10:15:30+00:00"
    },
    "obs": [
     {
@@ -356,7 +356,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -374,7 +374,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:44+00:00"
+    "last_collected_at": "2026-08-12T10:15:26+00:00"
    },
    "obs": [
     {
@@ -423,7 +423,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -441,7 +441,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:46+00:00"
+    "last_collected_at": "2026-08-12T10:15:29+00:00"
    },
    "obs": [
     {
@@ -514,7 +514,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 4,
+    "dias_sem_atualizar": 5,
     "ultima_ref": "2026-08-07",
     "n_obs": 15,
     "n_revisoes": 0
@@ -532,7 +532,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-11T10:17:50+00:00"
+    "last_collected_at": "2026-08-12T10:15:31+00:00"
    },
    "obs": [
     {
@@ -581,7 +581,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 46,
+    "dias_sem_atualizar": 47,
     "ultima_ref": "2026-06-26",
     "n_obs": 9,
     "n_revisoes": 0
@@ -1945,42 +1945,47 @@
    {
     "organisation": "NUBANK",
     "share_chamadas_pct": 25.3,
-    "share_carteira_pct": 1.14
+    "share_carteira_pct": 1.03
    },
    {
     "organisation": "MERCADO PAGO",
     "share_chamadas_pct": 10.4,
-    "share_carteira_pct": 0.31
+    "share_carteira_pct": 0.28
    },
    {
     "organisation": "SANTANDER BRASIL",
     "share_chamadas_pct": 9.4,
-    "share_carteira_pct": 8.22
+    "share_carteira_pct": 7.42
+   },
+   {
+    "organisation": "PICPAY",
+    "share_chamadas_pct": 9.0,
+    "share_carteira_pct": 0.35
    },
    {
     "organisation": "BRADESCO",
     "share_chamadas_pct": 7.3,
-    "share_carteira_pct": 13.68
+    "share_carteira_pct": 12.35
    },
    {
     "organisation": "CAIXA ECONOMICA FEDERAL",
     "share_chamadas_pct": 6.5,
-    "share_carteira_pct": 20.28
+    "share_carteira_pct": 18.3
    },
    {
     "organisation": "BANCO BTG PACTUAL",
     "share_chamadas_pct": 3.0,
-    "share_carteira_pct": 2.88
+    "share_carteira_pct": 2.6
    },
    {
     "organisation": "BANCO INTER",
     "share_chamadas_pct": 2.7,
-    "share_carteira_pct": 0.68
+    "share_carteira_pct": 0.61
    },
    {
     "organisation": "SICREDI",
     "share_chamadas_pct": 1.2,
-    "share_carteira_pct": 0.74
+    "share_carteira_pct": 0.67
    },
    {
     "organisation": "PAGSEGURO",
@@ -1990,16 +1995,21 @@
    {
     "organisation": "SICOOB",
     "share_chamadas_pct": 0.9,
-    "share_carteira_pct": 0.65
+    "share_carteira_pct": 0.59
+   },
+   {
+    "organisation": "CLOUDWALK",
+    "share_chamadas_pct": 0.4,
+    "share_carteira_pct": 0.0
    },
    {
     "organisation": "BANRISUL",
     "share_chamadas_pct": 0.4,
-    "share_carteira_pct": 0.92
+    "share_carteira_pct": 0.83
    }
   ],
   "spearman_rho": 0.38,
-  "n": 11,
+  "n": 13,
   "leitura": "Associação de POSTOS entre participação nas chamadas transacionais do Open Finance e participação na carteira de crédito (universo top-30 IF.data ∩ top-20 OF). Associação exploratória — NÃO implica causalidade; amostra pequena e truncada."
  },
  "qualidade_dados": {

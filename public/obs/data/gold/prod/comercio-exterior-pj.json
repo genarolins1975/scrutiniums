@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-11T10:44:14+00:00",
+ "gerado_em": "2026-08-12T10:38:37+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -12,6 +12,8 @@
  "data_base": "202603",
  "consolidacao_nota": "Valores por conglomerado prudencial (códigos C…) e instituições individuais; a soma do mercado usa o universo IF.data.",
  "npl_nota": "A matriz traz DOIS conceitos distintos, sempre rotulados: (1) atraso ≥15d NO PRODUTO (vencido ≥15d ÷ carteira da modalidade, IF.data rel. 123/128 — específico do produto); (2) inadimplência >90d TOTAL da instituição (Res. 4.966 — não específica do produto).",
+ "pct_carteira_conceito": "modalidades_123_128",
+ "pct_carteira_nota": "\"% da carteira da IF\" = carteira no produto ÷ (total PF + total PJ da mesma IF nos relatórios de modalidade 123/128) — numerador e denominador do MESMO universo. A \"Carteira de Crédito\" do Resumo do IF.data é outro conceito (o cartão à vista não entra da mesma forma) e não é usada aqui.",
  "produto": {
   "slug": "comercio-exterior-pj",
   "nome": "Comércio exterior",
@@ -113,7 +115,9 @@
     "d1t_pct": -3.7,
     "pct_carteira_inst": 5.9,
     "npl_inst_pct": 5.39,
-    "basileia_pct": 14.23
+    "basileia_pct": 14.23,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0010069",
@@ -127,7 +131,9 @@
     "d1t_pct": -6.6,
     "pct_carteira_inst": 3.2,
     "npl_inst_pct": 2.25,
-    "basileia_pct": 14.77
+    "basileia_pct": 14.77,
+    "taxa_aa": 5.78,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0010045",
@@ -139,9 +145,11 @@
     "share_pct": 11.32,
     "d4t_pct": -12.2,
     "d1t_pct": 2.8,
-    "pct_carteira_inst": 3.2,
+    "pct_carteira_inst": 3.4,
     "npl_inst_pct": 3.89,
-    "basileia_pct": 14.9
+    "basileia_pct": 14.9,
+    "taxa_aa": 5.97,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0030403",
@@ -153,9 +161,11 @@
     "share_pct": 7.23,
     "d4t_pct": -13.3,
     "d1t_pct": -7.7,
-    "pct_carteira_inst": 62.2,
+    "pct_carteira_inst": 59.6,
     "npl_inst_pct": 1.74,
-    "basileia_pct": 13.42
+    "basileia_pct": 13.42,
+    "taxa_aa": 5.18,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0030379",
@@ -167,9 +177,11 @@
     "share_pct": 6.12,
     "d4t_pct": 3.1,
     "d1t_pct": 3.8,
-    "pct_carteira_inst": 2.9,
+    "pct_carteira_inst": 2.8,
     "npl_inst_pct": 4.04,
-    "basileia_pct": 15.15
+    "basileia_pct": 15.15,
+    "taxa_aa": 5.69,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0051626",
@@ -181,9 +193,11 @@
     "share_pct": 4.52,
     "d4t_pct": 43.0,
     "d1t_pct": 0.6,
-    "pct_carteira_inst": 0.9,
+    "pct_carteira_inst": 0.8,
     "npl_inst_pct": 3.68,
-    "basileia_pct": 15.13
+    "basileia_pct": 15.13,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0049944",
@@ -195,9 +209,11 @@
     "share_pct": 3.16,
     "d4t_pct": 13.7,
     "d1t_pct": -5.1,
-    "pct_carteira_inst": 4.3,
+    "pct_carteira_inst": 4.6,
     "npl_inst_pct": 5.74,
-    "basileia_pct": 15.91
+    "basileia_pct": 15.91,
+    "taxa_aa": 5.23,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "75647891",
@@ -209,9 +225,11 @@
     "share_pct": 3.11,
     "d4t_pct": 13.5,
     "d1t_pct": -5.9,
-    "pct_carteira_inst": 82.9,
+    "pct_carteira_inst": 82.7,
     "npl_inst_pct": 0.03,
-    "basileia_pct": 26.02
+    "basileia_pct": 26.02,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "01023570",
@@ -223,9 +241,11 @@
     "share_pct": 2.94,
     "d4t_pct": -10.0,
     "d1t_pct": 0.6,
-    "pct_carteira_inst": 19.5,
+    "pct_carteira_inst": 22.1,
     "npl_inst_pct": 3.04,
-    "basileia_pct": 13.48
+    "basileia_pct": 13.48,
+    "taxa_aa": 2.49,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0010083",
@@ -237,9 +257,11 @@
     "share_pct": 2.48,
     "d4t_pct": -8.0,
     "d1t_pct": -2.7,
-    "pct_carteira_inst": 4.6,
+    "pct_carteira_inst": 5.5,
     "npl_inst_pct": 1.74,
-    "basileia_pct": 17.35
+    "basileia_pct": 17.35,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0032119",
@@ -251,9 +273,11 @@
     "share_pct": 2.24,
     "d4t_pct": -14.5,
     "d1t_pct": -6.4,
-    "pct_carteira_inst": 48.5,
+    "pct_carteira_inst": 48.1,
     "npl_inst_pct": 0.14,
-    "basileia_pct": 13.53
+    "basileia_pct": 13.53,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "01522368",
@@ -265,9 +289,11 @@
     "share_pct": 1.3,
     "d4t_pct": -23.5,
     "d1t_pct": 9.3,
-    "pct_carteira_inst": 51.3,
+    "pct_carteira_inst": 51.1,
     "npl_inst_pct": 0.2,
-    "basileia_pct": 15.96
+    "basileia_pct": 15.96,
+    "taxa_aa": 8.56,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "60498557",
@@ -279,9 +305,11 @@
     "share_pct": 1.2,
     "d4t_pct": 124.4,
     "d1t_pct": 87.4,
-    "pct_carteira_inst": 84.2,
+    "pct_carteira_inst": 83.5,
     "npl_inst_pct": null,
-    "basileia_pct": 25.86
+    "basileia_pct": 25.86,
+    "taxa_aa": 4.94,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0041856",
@@ -293,9 +321,11 @@
     "share_pct": 1.19,
     "d4t_pct": -18.3,
     "d1t_pct": -8.1,
-    "pct_carteira_inst": 14.5,
+    "pct_carteira_inst": 13.9,
     "npl_inst_pct": 0.94,
-    "basileia_pct": 15.83
+    "basileia_pct": 15.83,
+    "taxa_aa": 5.19,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "53518684",
@@ -307,9 +337,11 @@
     "share_pct": 1.17,
     "d4t_pct": -4.5,
     "d1t_pct": 2.3,
-    "pct_carteira_inst": 60.9,
+    "pct_carteira_inst": 89.1,
     "npl_inst_pct": null,
-    "basileia_pct": 22.82
+    "basileia_pct": 22.82,
+    "taxa_aa": 6.23,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0051987",
@@ -321,9 +353,11 @@
     "share_pct": 0.98,
     "d4t_pct": 38.8,
     "d1t_pct": 1.6,
-    "pct_carteira_inst": 4.2,
+    "pct_carteira_inst": 4.5,
     "npl_inst_pct": 2.42,
-    "basileia_pct": 13.55
+    "basileia_pct": 13.55,
+    "taxa_aa": 8.85,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0030173",
@@ -335,9 +369,11 @@
     "share_pct": 0.97,
     "d4t_pct": 20.4,
     "d1t_pct": -3.9,
-    "pct_carteira_inst": 4.1,
+    "pct_carteira_inst": 3.9,
     "npl_inst_pct": 4.78,
-    "basileia_pct": 17.47
+    "basileia_pct": 17.47,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0052230",
@@ -349,9 +385,11 @@
     "share_pct": 0.85,
     "d4t_pct": 62.8,
     "d1t_pct": 12.5,
-    "pct_carteira_inst": 100.1,
+    "pct_carteira_inst": 100.0,
     "npl_inst_pct": null,
-    "basileia_pct": 29.55
+    "basileia_pct": 29.55,
+    "taxa_aa": 4.69,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "03609817",
@@ -363,9 +401,11 @@
     "share_pct": 0.82,
     "d4t_pct": 14.8,
     "d1t_pct": -14.1,
-    "pct_carteira_inst": 73.3,
+    "pct_carteira_inst": 71.3,
     "npl_inst_pct": 1.1,
-    "basileia_pct": 163.19
+    "basileia_pct": 163.19,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "01181521",
@@ -379,7 +419,9 @@
     "d1t_pct": 1.7,
     "pct_carteira_inst": 4.3,
     "npl_inst_pct": 0.01,
-    "basileia_pct": 19.4
+    "basileia_pct": 19.4,
+    "taxa_aa": 7.08,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "61088183",
@@ -391,9 +433,11 @@
     "share_pct": 0.72,
     "d4t_pct": 6.5,
     "d1t_pct": -3.2,
-    "pct_carteira_inst": 53.3,
+    "pct_carteira_inst": 53.1,
     "npl_inst_pct": null,
-    "basileia_pct": 20.04
+    "basileia_pct": 20.04,
+    "taxa_aa": 4.9,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0051011",
@@ -407,7 +451,9 @@
     "d1t_pct": -7.8,
     "pct_carteira_inst": 2.2,
     "npl_inst_pct": 8.21,
-    "basileia_pct": 15.01
+    "basileia_pct": 15.01,
+    "taxa_aa": 7.68,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0052120",
@@ -419,9 +465,11 @@
     "share_pct": 0.43,
     "d4t_pct": 257.7,
     "d1t_pct": 26.8,
-    "pct_carteira_inst": 3.3,
+    "pct_carteira_inst": 3.7,
     "npl_inst_pct": 0.55,
-    "basileia_pct": 11.93
+    "basileia_pct": 11.93,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0020107",
@@ -433,9 +481,11 @@
     "share_pct": 0.42,
     "d4t_pct": 103.7,
     "d1t_pct": 59.0,
-    "pct_carteira_inst": 39.5,
+    "pct_carteira_inst": 39.3,
     "npl_inst_pct": null,
-    "basileia_pct": 23.79
+    "basileia_pct": 23.79,
+    "taxa_aa": 5.16,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0052072",
@@ -447,9 +497,11 @@
     "share_pct": 0.41,
     "d4t_pct": 0.8,
     "d1t_pct": -2.7,
-    "pct_carteira_inst": 1.1,
+    "pct_carteira_inst": 1.2,
     "npl_inst_pct": 2.95,
-    "basileia_pct": 12.95
+    "basileia_pct": 12.95,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "45283173",
@@ -461,9 +513,11 @@
     "share_pct": 0.37,
     "d4t_pct": null,
     "d1t_pct": 68.4,
-    "pct_carteira_inst": 101.9,
+    "pct_carteira_inst": 100.0,
     "npl_inst_pct": null,
-    "basileia_pct": 84.59
+    "basileia_pct": 84.59,
+    "taxa_aa": 5.49,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "55230916",
@@ -475,9 +529,11 @@
     "share_pct": 0.34,
     "d4t_pct": -42.9,
     "d1t_pct": 20.7,
-    "pct_carteira_inst": 77.5,
+    "pct_carteira_inst": 77.3,
     "npl_inst_pct": null,
-    "basileia_pct": 37.39
+    "basileia_pct": 37.39,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0051750",
@@ -491,7 +547,9 @@
     "d1t_pct": 11.0,
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 0.39,
-    "basileia_pct": 17.97
+    "basileia_pct": 17.97,
+    "taxa_aa": 8.37,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "C0050988",
@@ -503,9 +561,11 @@
     "share_pct": 0.28,
     "d4t_pct": 28.9,
     "d1t_pct": -2.2,
-    "pct_carteira_inst": 12.8,
+    "pct_carteira_inst": 13.4,
     "npl_inst_pct": 2.64,
-    "basileia_pct": 17.48
+    "basileia_pct": 17.48,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0031873",
@@ -517,9 +577,11 @@
     "share_pct": 0.26,
     "d4t_pct": -28.5,
     "d1t_pct": -13.7,
-    "pct_carteira_inst": 9.1,
+    "pct_carteira_inst": 11.1,
     "npl_inst_pct": 6.56,
-    "basileia_pct": 17.29
+    "basileia_pct": 17.29,
+    "taxa_aa": 8.7,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "58616418",
@@ -531,9 +593,11 @@
     "share_pct": 0.24,
     "d4t_pct": -6.6,
     "d1t_pct": -25.8,
-    "pct_carteira_inst": 12.0,
+    "pct_carteira_inst": 11.2,
     "npl_inst_pct": 1.72,
-    "basileia_pct": 11.49
+    "basileia_pct": 11.49,
+    "taxa_aa": 9.91,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "62331228",
@@ -545,9 +609,11 @@
     "share_pct": 0.24,
     "d4t_pct": -11.0,
     "d1t_pct": -9.5,
-    "pct_carteira_inst": 16.9,
+    "pct_carteira_inst": 16.1,
     "npl_inst_pct": null,
-    "basileia_pct": 19.04
+    "basileia_pct": 19.04,
+    "taxa_aa": 5.21,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0030290",
@@ -559,9 +625,11 @@
     "share_pct": 0.23,
     "d4t_pct": 44.2,
     "d1t_pct": 5.6,
-    "pct_carteira_inst": 2.6,
+    "pct_carteira_inst": 2.5,
     "npl_inst_pct": 3.6,
-    "basileia_pct": 12.1
+    "basileia_pct": 12.1,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0052003",
@@ -573,9 +641,11 @@
     "share_pct": 0.21,
     "d4t_pct": -34.9,
     "d1t_pct": -11.7,
-    "pct_carteira_inst": 3.2,
+    "pct_carteira_inst": 4.1,
     "npl_inst_pct": 0.75,
-    "basileia_pct": 17.3
+    "basileia_pct": 17.3,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "60518222",
@@ -587,9 +657,11 @@
     "share_pct": 0.2,
     "d4t_pct": -61.9,
     "d1t_pct": 22.6,
-    "pct_carteira_inst": 30.2,
+    "pct_carteira_inst": 21.4,
     "npl_inst_pct": 37.19,
-    "basileia_pct": 26.8
+    "basileia_pct": 26.8,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0050304",
@@ -601,9 +673,11 @@
     "share_pct": 0.16,
     "d4t_pct": -54.3,
     "d1t_pct": -17.2,
-    "pct_carteira_inst": 2.8,
+    "pct_carteira_inst": 2.9,
     "npl_inst_pct": 3.38,
-    "basileia_pct": 13.22
+    "basileia_pct": 13.22,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "07237373",
@@ -615,9 +689,11 @@
     "share_pct": 0.13,
     "d4t_pct": -26.0,
     "d1t_pct": 0.0,
-    "pct_carteira_inst": 1.8,
+    "pct_carteira_inst": 1.7,
     "npl_inst_pct": 6.32,
-    "basileia_pct": 15.36
+    "basileia_pct": 15.36,
+    "taxa_aa": 7.34,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "07656500",
@@ -629,9 +705,11 @@
     "share_pct": 0.12,
     "d4t_pct": 41.8,
     "d1t_pct": 4.9,
-    "pct_carteira_inst": 59.2,
+    "pct_carteira_inst": 58.1,
     "npl_inst_pct": null,
-    "basileia_pct": 42.2
+    "basileia_pct": 42.2,
+    "taxa_aa": 4.66,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "C0051815",
@@ -643,9 +721,11 @@
     "share_pct": 0.12,
     "d4t_pct": 1.7,
     "d1t_pct": -15.3,
-    "pct_carteira_inst": 36.2,
+    "pct_carteira_inst": 71.1,
     "npl_inst_pct": 12.7,
-    "basileia_pct": 21.44
+    "basileia_pct": 21.44,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "26529420",
@@ -657,9 +737,11 @@
     "share_pct": 0.11,
     "d4t_pct": null,
     "d1t_pct": -3.2,
-    "pct_carteira_inst": 3.5,
+    "pct_carteira_inst": 4.1,
     "npl_inst_pct": 4.34,
-    "basileia_pct": 18.37
+    "basileia_pct": 18.37,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "78632767",
@@ -671,9 +753,11 @@
     "share_pct": 0.11,
     "d4t_pct": 53.1,
     "d1t_pct": 12.4,
-    "pct_carteira_inst": 19.4,
+    "pct_carteira_inst": 32.3,
     "npl_inst_pct": 1.94,
-    "basileia_pct": 17.87
+    "basileia_pct": 17.87,
+    "taxa_aa": 7.32,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "04902979",
@@ -685,9 +769,11 @@
     "share_pct": 0.1,
     "d4t_pct": 145.0,
     "d1t_pct": -5.2,
-    "pct_carteira_inst": 0.7,
+    "pct_carteira_inst": 0.6,
     "npl_inst_pct": 5.54,
-    "basileia_pct": 13.01
+    "basileia_pct": 13.01,
+    "taxa_aa": 6.7,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "71027866",
@@ -699,9 +785,11 @@
     "share_pct": 0.07,
     "d4t_pct": -21.7,
     "d1t_pct": 67.0,
-    "pct_carteira_inst": 7.7,
+    "pct_carteira_inst": 9.9,
     "npl_inst_pct": 7.56,
-    "basileia_pct": 13.12
+    "basileia_pct": 13.12,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "59118133",
@@ -713,9 +801,11 @@
     "share_pct": 0.06,
     "d4t_pct": -13.6,
     "d1t_pct": -1.6,
-    "pct_carteira_inst": 5.8,
+    "pct_carteira_inst": 5.5,
     "npl_inst_pct": 10.16,
-    "basileia_pct": 16.2
+    "basileia_pct": 16.2,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0030159",
@@ -729,7 +819,9 @@
     "d1t_pct": -9.9,
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 2.41,
-    "basileia_pct": 14.04
+    "basileia_pct": 14.04,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "17453575",
@@ -741,9 +833,11 @@
     "share_pct": 0.06,
     "d4t_pct": -50.1,
     "d1t_pct": -3.8,
-    "pct_carteira_inst": 154.1,
+    "pct_carteira_inst": 100.0,
     "npl_inst_pct": 50.98,
-    "basileia_pct": 89.84
+    "basileia_pct": 89.84,
+    "taxa_aa": 5.14,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "61533584",
@@ -755,9 +849,11 @@
     "share_pct": 0.05,
     "d4t_pct": 39.2,
     "d1t_pct": 24.4,
-    "pct_carteira_inst": 77.5,
+    "pct_carteira_inst": 76.0,
     "npl_inst_pct": null,
-    "basileia_pct": 26.48
+    "basileia_pct": 26.48,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "32995755",
@@ -769,9 +865,11 @@
     "share_pct": 0.05,
     "d4t_pct": null,
     "d1t_pct": 32.8,
-    "pct_carteira_inst": 2.4,
+    "pct_carteira_inst": 2.3,
     "npl_inst_pct": 6.78,
-    "basileia_pct": 18.66
+    "basileia_pct": 18.66,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0051884",
@@ -785,7 +883,9 @@
     "d1t_pct": -7.7,
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.89,
-    "basileia_pct": 13.98
+    "basileia_pct": 13.98,
+    "taxa_aa": 7.54,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "24654881",
@@ -797,9 +897,11 @@
     "share_pct": 0.04,
     "d4t_pct": null,
     "d1t_pct": 1.8,
-    "pct_carteira_inst": 1.7,
+    "pct_carteira_inst": 1.9,
     "npl_inst_pct": 6.06,
-    "basileia_pct": 16.65
+    "basileia_pct": 16.65,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "81099491",
@@ -813,7 +915,9 @@
     "d1t_pct": null,
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 4.95,
-    "basileia_pct": 15.35
+    "basileia_pct": 15.35,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "04913711",
@@ -827,7 +931,9 @@
     "d1t_pct": -3.8,
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 3.17,
-    "basileia_pct": 16.82
+    "basileia_pct": 16.82,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "92894922",
@@ -839,9 +945,11 @@
     "share_pct": 0.03,
     "d4t_pct": -62.3,
     "d1t_pct": -65.2,
-    "pct_carteira_inst": 0.5,
+    "pct_carteira_inst": 0.4,
     "npl_inst_pct": 1.97,
-    "basileia_pct": 16.02
+    "basileia_pct": 16.02,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0051468",
@@ -853,9 +961,11 @@
     "share_pct": 0.03,
     "d4t_pct": -8.5,
     "d1t_pct": -8.2,
-    "pct_carteira_inst": 19.8,
+    "pct_carteira_inst": 16.2,
     "npl_inst_pct": 1.38,
-    "basileia_pct": 13.4
+    "basileia_pct": 13.4,
+    "taxa_aa": 8.9,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "91586982",
@@ -869,7 +979,9 @@
     "d1t_pct": -3.3,
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 4.08,
-    "basileia_pct": 18.25
+    "basileia_pct": 18.25,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "02318507",
@@ -881,9 +993,11 @@
     "share_pct": 0.02,
     "d4t_pct": 43.5,
     "d1t_pct": 151.4,
-    "pct_carteira_inst": 35.0,
+    "pct_carteira_inst": 34.7,
     "npl_inst_pct": null,
-    "basileia_pct": 62.94
+    "basileia_pct": 62.94,
+    "taxa_aa": 5.14,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "61820817",
@@ -895,9 +1009,11 @@
     "share_pct": 0.02,
     "d4t_pct": -28.6,
     "d1t_pct": -10.4,
-    "pct_carteira_inst": 5.4,
+    "pct_carteira_inst": 5.3,
     "npl_inst_pct": 10.92,
-    "basileia_pct": 10.59
+    "basileia_pct": 10.59,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "79342069",
@@ -909,9 +1025,11 @@
     "share_pct": 0.02,
     "d4t_pct": null,
     "d1t_pct": 63.0,
-    "pct_carteira_inst": 0.6,
+    "pct_carteira_inst": 0.7,
     "npl_inst_pct": 4.09,
-    "basileia_pct": 15.31
+    "basileia_pct": 15.31,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "23903068",
@@ -923,9 +1041,11 @@
     "share_pct": 0.02,
     "d4t_pct": null,
     "d1t_pct": 7.9,
-    "pct_carteira_inst": 4.2,
+    "pct_carteira_inst": 4.0,
     "npl_inst_pct": 0.83,
-    "basileia_pct": 17.44
+    "basileia_pct": 17.44,
+    "taxa_aa": 5.14,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "33603457",
@@ -937,9 +1057,11 @@
     "share_pct": 0.01,
     "d4t_pct": 12.7,
     "d1t_pct": 5.5,
-    "pct_carteira_inst": 1.5,
+    "pct_carteira_inst": 1.3,
     "npl_inst_pct": 3.27,
-    "basileia_pct": 15.97
+    "basileia_pct": 15.97,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0051671",
@@ -951,9 +1073,11 @@
     "share_pct": 0.01,
     "d4t_pct": -35.9,
     "d1t_pct": -10.6,
-    "pct_carteira_inst": 115.0,
+    "pct_carteira_inst": 95.6,
     "npl_inst_pct": 6.68,
-    "basileia_pct": 12.87
+    "basileia_pct": 12.87,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "33042151",
@@ -965,9 +1089,11 @@
     "share_pct": 0.01,
     "d4t_pct": -35.2,
     "d1t_pct": -20.6,
-    "pct_carteira_inst": 93.2,
+    "pct_carteira_inst": 91.5,
     "npl_inst_pct": null,
-    "basileia_pct": 44.62
+    "basileia_pct": 44.62,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "44189447",
@@ -979,9 +1105,11 @@
     "share_pct": 0.01,
     "d4t_pct": 2231.0,
     "d1t_pct": 2322.1,
-    "pct_carteira_inst": 47.8,
+    "pct_carteira_inst": 46.9,
     "npl_inst_pct": null,
-    "basileia_pct": 167.9
+    "basileia_pct": 167.9,
+    "taxa_aa": 11.5,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "17351180",
@@ -993,9 +1121,11 @@
     "share_pct": 0.01,
     "d4t_pct": 22.6,
     "d1t_pct": -3.6,
-    "pct_carteira_inst": 1.3,
+    "pct_carteira_inst": 1.4,
     "npl_inst_pct": 19.77,
-    "basileia_pct": 14.31
+    "basileia_pct": 14.31,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "C0051482",
@@ -1007,9 +1137,11 @@
     "share_pct": 0.01,
     "d4t_pct": -39.8,
     "d1t_pct": -28.2,
-    "pct_carteira_inst": 13.1,
+    "pct_carteira_inst": 11.0,
     "npl_inst_pct": 16.79,
-    "basileia_pct": 23.73
+    "basileia_pct": 23.73,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "90608712",
@@ -1023,7 +1155,9 @@
     "d1t_pct": -2.9,
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.61,
-    "basileia_pct": 17.17
+    "basileia_pct": 17.17,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "33021064",
@@ -1037,7 +1171,9 @@
     "d1t_pct": -30.1,
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 14.14,
-    "basileia_pct": 15.97
+    "basileia_pct": 15.97,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "81466286",
@@ -1049,9 +1185,11 @@
     "share_pct": 0.01,
     "d4t_pct": null,
     "d1t_pct": 75.2,
-    "pct_carteira_inst": 0.2,
+    "pct_carteira_inst": 0.3,
     "npl_inst_pct": 4.14,
-    "basileia_pct": 16.89
+    "basileia_pct": 16.89,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "26408161",
@@ -1063,9 +1201,11 @@
     "share_pct": 0.01,
     "d4t_pct": null,
     "d1t_pct": -2.4,
-    "pct_carteira_inst": 0.2,
+    "pct_carteira_inst": 0.3,
     "npl_inst_pct": 8.23,
-    "basileia_pct": 19.52
+    "basileia_pct": 19.52,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "35571249",
@@ -1079,7 +1219,9 @@
     "d1t_pct": -2.7,
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 2.5,
-    "basileia_pct": 28.86
+    "basileia_pct": 28.86,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "74828799",
@@ -1093,7 +1235,9 @@
     "d1t_pct": -58.0,
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.14,
-    "basileia_pct": 12.12
+    "basileia_pct": 12.12,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "88894548",
@@ -1107,7 +1251,9 @@
     "d1t_pct": -2.8,
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 2.77,
-    "basileia_pct": 16.15
+    "basileia_pct": 16.15,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "82065285",
@@ -1121,7 +1267,9 @@
     "d1t_pct": -2.7,
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.64,
-    "basileia_pct": 15.92
+    "basileia_pct": 15.92,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "84974278",
@@ -1135,7 +1283,9 @@
     "d1t_pct": -3.0,
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.42,
-    "basileia_pct": 17.71
+    "basileia_pct": 17.71,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "37442605",
@@ -1149,7 +1299,9 @@
     "d1t_pct": -2.6,
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 10.19,
-    "basileia_pct": 22.43
+    "basileia_pct": 22.43,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "10348181",
@@ -1163,7 +1315,9 @@
     "d1t_pct": 160.8,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.3,
-    "basileia_pct": 19.75
+    "basileia_pct": 19.75,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "26555235",
@@ -1175,9 +1329,11 @@
     "share_pct": 0.0,
     "d4t_pct": null,
     "d1t_pct": -21.0,
-    "pct_carteira_inst": 0.1,
+    "pct_carteira_inst": 0.2,
     "npl_inst_pct": 5.0,
-    "basileia_pct": 25.98
+    "basileia_pct": 25.98,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "87067757",
@@ -1191,7 +1347,9 @@
     "d1t_pct": -2.4,
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 1.21,
-    "basileia_pct": 41.76
+    "basileia_pct": 41.76,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "79457883",
@@ -1205,7 +1363,9 @@
     "d1t_pct": -2.1,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.5,
-    "basileia_pct": 21.53
+    "basileia_pct": 21.53,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "90497256",
@@ -1219,7 +1379,9 @@
     "d1t_pct": -3.3,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 3.47,
-    "basileia_pct": 20.03
+    "basileia_pct": 20.03,
+    "taxa_aa": 7.54,
+    "taxa_casamento": "nome"
    },
    {
     "cod": "26549311",
@@ -1233,7 +1395,9 @@
     "d1t_pct": null,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 8.45,
-    "basileia_pct": 18.41
+    "basileia_pct": 18.41,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "87795639",
@@ -1247,7 +1411,9 @@
     "d1t_pct": -62.0,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.06,
-    "basileia_pct": 18.48
+    "basileia_pct": 18.48,
+    "taxa_aa": null,
+    "taxa_casamento": null
    },
    {
     "cod": "03566655",
@@ -1261,7 +1427,9 @@
     "d1t_pct": -2.5,
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 8.67,
-    "basileia_pct": 20.5
+    "basileia_pct": 20.5,
+    "taxa_aa": null,
+    "taxa_casamento": null
    }
   ],
   "taxas": {
@@ -1272,13 +1440,13 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
-     "inicio": "2026-07-22",
-     "fim": "2026-07-28",
-     "n_inst": 33,
-     "mediana_aa": 6.48,
-     "p25_aa": 5.17,
-     "p75_aa": 7.86,
-     "min_aa": 2.29,
+     "inicio": "2026-07-23",
+     "fim": "2026-07-29",
+     "n_inst": 36,
+     "mediana_aa": 6.7,
+     "p25_aa": 5.21,
+     "p75_aa": 8.37,
+     "min_aa": 2.49,
      "max_aa": 15.4,
      "moeda_estrangeira": true,
      "serie": [
@@ -2256,85 +2424,85 @@
        "n": 30
       },
       {
-       "inicio": "2026-07-22",
-       "mediana_aa": 6.48,
-       "p25_aa": 5.17,
-       "p75_aa": 7.86,
-       "n": 33
+       "inicio": "2026-07-23",
+       "mediana_aa": 6.7,
+       "p25_aa": 5.21,
+       "p75_aa": 8.37,
+       "n": 36
       }
      ],
      "ranking": [
       {
-       "cnpj8": "60498557",
-       "nome": "BCO MUFG BRASIL S.A.",
-       "taxa_am": 0.19,
-       "taxa_aa": 2.29,
-       "posicao": 1,
-       "cod_congl": "C0081713"
-      },
-      {
        "cnpj8": "01023570",
        "nome": "BCO RABOBANK INTL BRASIL S.A.",
-       "taxa_am": 0.2,
-       "taxa_aa": 2.36,
-       "posicao": 2,
+       "taxa_am": 0.21,
+       "taxa_aa": 2.49,
+       "posicao": 1,
        "cod_congl": "C0081555"
-      },
-      {
-       "cnpj8": "30306294",
-       "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 0.35,
-       "taxa_aa": 4.34,
-       "posicao": 3,
-       "cod_congl": "C0080336"
       },
       {
        "cnpj8": "07656500",
        "nome": "BCO KDB BRASIL S.A.",
        "taxa_am": 0.38,
        "taxa_aa": 4.66,
-       "posicao": 4,
+       "posicao": 2,
        "cod_congl": "C0081603"
+      },
+      {
+       "cnpj8": "29030467",
+       "nome": "SCOTIABANK BRASIL",
+       "taxa_am": 0.38,
+       "taxa_aa": 4.69,
+       "posicao": 3,
+       "cod_congl": "C0081452"
       },
       {
        "cnpj8": "61088183",
        "nome": "BCO MIZUHO S.A.",
        "taxa_am": 0.4,
        "taxa_aa": 4.9,
-       "posicao": 5,
+       "posicao": 4,
        "cod_congl": "C0080697"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 0.41,
-       "taxa_aa": 5.06,
-       "posicao": 6,
-       "cod_congl": "C0080312"
+       "cnpj8": "60498557",
+       "nome": "BCO MUFG BRASIL S.A.",
+       "taxa_am": 0.4,
+       "taxa_aa": 4.94,
+       "posicao": 5,
+       "cod_congl": "C0081713"
       },
       {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 0.41,
-       "taxa_aa": 5.08,
-       "posicao": 7,
-       "cod_congl": "C0080329"
-      },
-      {
-       "cnpj8": "33479023",
-       "nome": "BCO CITIBANK S.A.",
        "taxa_am": 0.42,
-       "taxa_aa": 5.15,
-       "posicao": 8,
-       "cod_congl": "C0080192"
+       "taxa_aa": 5.14,
+       "posicao": 6,
+       "cod_congl": "C0080329"
       },
       {
        "cnpj8": "33172537",
        "nome": "BCO J.P. MORGAN S.A.",
        "taxa_am": 0.42,
-       "taxa_aa": 5.17,
-       "posicao": 9,
+       "taxa_aa": 5.16,
+       "posicao": 7,
        "cod_congl": "C0080116"
+      },
+      {
+       "cnpj8": "33479023",
+       "nome": "BCO CITIBANK S.A.",
+       "taxa_am": 0.42,
+       "taxa_aa": 5.18,
+       "posicao": 8,
+       "cod_congl": "C0080192"
+      },
+      {
+       "cnpj8": "28195667",
+       "nome": "BCO ABC BRASIL S.A.",
+       "taxa_am": 0.42,
+       "taxa_aa": 5.19,
+       "posicao": 9,
+       "cod_congl": "C0080312"
       },
       {
        "cnpj8": "62331228",
@@ -2345,59 +2513,67 @@
        "cod_congl": "C0080532"
       },
       {
+       "cnpj8": "30306294",
+       "nome": "BANCO BTG PACTUAL S.A.",
+       "taxa_am": 0.43,
+       "taxa_aa": 5.23,
+       "posicao": 11,
+       "cod_congl": "C0080336"
+      },
+      {
        "cnpj8": "45283173",
        "nome": "BBVA BRASIL BI S.A.",
        "taxa_am": 0.45,
        "taxa_aa": 5.49,
-       "posicao": 11,
+       "posicao": 12,
        "cod_congl": "C0081366"
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
        "taxa_am": 0.46,
-       "taxa_aa": 5.68,
-       "posicao": 12,
-       "cod_congl": "C0080185"
-      },
-      {
-       "cnpj8": "53518684",
-       "nome": "BCO HSBC S.A.",
-       "taxa_am": 0.47,
-       "taxa_aa": 5.73,
+       "taxa_aa": 5.69,
        "posicao": 13,
-       "cod_congl": "C0084741"
+       "cod_congl": "C0080185"
       },
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
        "taxa_am": 0.47,
-       "taxa_aa": 5.83,
+       "taxa_aa": 5.78,
        "posicao": 14,
        "cod_congl": "C0080099"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 0.5,
-       "taxa_aa": 6.12,
+       "taxa_am": 0.49,
+       "taxa_aa": 5.97,
        "posicao": 15,
        "cod_congl": "C0080075"
       },
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 0.5,
-       "taxa_aa": 6.13,
+       "taxa_am": 0.49,
+       "taxa_aa": 6.07,
        "posicao": 16,
        "cod_congl": "C0080154"
       },
       {
+       "cnpj8": "53518684",
+       "nome": "BCO HSBC S.A.",
+       "taxa_am": 0.5,
+       "taxa_aa": 6.23,
+       "posicao": 17,
+       "cod_congl": "C0084741"
+      },
+      {
        "cnpj8": "07450604",
        "nome": "BOC BRASIL",
-       "taxa_am": 0.53,
-       "taxa_aa": 6.48,
-       "posicao": 17,
+       "taxa_am": 0.52,
+       "taxa_aa": 6.47,
+       "posicao": 18,
        "cod_congl": "C0080295"
       },
       {
@@ -2405,39 +2581,47 @@
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 0.54,
        "taxa_aa": 6.7,
-       "posicao": 18,
+       "posicao": 19,
        "cod_congl": "C0081249"
       },
       {
        "cnpj8": "01181521",
        "nome": "BCO COOPERATIVO SICREDI S.A.",
        "taxa_am": 0.57,
-       "taxa_aa": 7.09,
-       "posicao": 19,
-       "cod_congl": "C0080745"
-      },
-      {
-       "cnpj8": "00360305",
-       "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 0.59,
-       "taxa_aa": 7.25,
+       "taxa_aa": 7.08,
        "posicao": 20,
-       "cod_congl": "C0080738"
+       "cod_congl": "C0080745"
       },
       {
        "cnpj8": "78632767",
        "nome": "OURIBANK S.A.",
-       "taxa_am": 0.6,
-       "taxa_aa": 7.42,
+       "taxa_am": 0.59,
+       "taxa_aa": 7.32,
        "posicao": 21,
        "cod_congl": "C0081012"
+      },
+      {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 0.59,
+       "taxa_aa": 7.34,
+       "posicao": 22,
+       "cod_congl": "C0081593"
+      },
+      {
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
+       "taxa_am": 0.6,
+       "taxa_aa": 7.38,
+       "posicao": 23,
+       "cod_congl": "C0080738"
       },
       {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
        "taxa_am": 0.6,
        "taxa_aa": 7.47,
-       "posicao": 22,
+       "posicao": 24,
        "cod_congl": "C0080477"
       },
       {
@@ -2445,71 +2629,71 @@
        "nome": "BANCO INTER",
        "taxa_am": 0.61,
        "taxa_aa": 7.54,
-       "posicao": 23,
+       "posicao": 25,
        "cod_congl": "C0080996"
       },
       {
        "cnpj8": "59588111",
        "nome": "BCO VOTORANTIM S.A.",
-       "taxa_am": 0.61,
-       "taxa_aa": 7.56,
-       "posicao": 24,
+       "taxa_am": 0.62,
+       "taxa_aa": 7.68,
+       "posicao": 26,
        "cod_congl": "C0080484"
-      },
-      {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 0.63,
-       "taxa_aa": 7.86,
-       "posicao": 25,
-       "cod_congl": "C0081593"
       },
       {
        "cnpj8": "02038232",
        "nome": "BANCO SICOOB S.A.",
-       "taxa_am": 0.65,
-       "taxa_aa": 8.08,
-       "posicao": 26,
+       "taxa_am": 0.67,
+       "taxa_aa": 8.37,
+       "posicao": 27,
        "cod_congl": "C0080879"
       },
       {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 0.68,
-       "taxa_aa": 8.42,
-       "posicao": 27,
-       "cod_congl": "C0080659"
+       "cnpj8": "01522368",
+       "nome": "BCO BNP PARIBAS BRASIL S A",
+       "taxa_am": 0.69,
+       "taxa_aa": 8.56,
+       "posicao": 28,
+       "cod_congl": "C0080673"
+      },
+      {
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 0.7,
+       "taxa_aa": 8.7,
+       "posicao": 29,
+       "cod_congl": "C0080271"
       },
       {
        "cnpj8": "33264668",
        "nome": "BCO XP S.A.",
        "taxa_am": 0.7,
        "taxa_aa": 8.75,
-       "posicao": 28,
+       "posicao": 30,
        "cod_congl": "C0082475"
       },
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 0.73,
-       "taxa_aa": 9.12,
-       "posicao": 29,
+       "taxa_am": 0.71,
+       "taxa_aa": 8.85,
+       "posicao": 31,
        "cod_congl": "C0081744"
       },
       {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
-       "taxa_am": 0.73,
-       "taxa_aa": 9.12,
-       "posicao": 30,
-       "cod_congl": "C0080271"
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 0.71,
+       "taxa_aa": 8.9,
+       "posicao": 32,
+       "cod_congl": "C0080659"
       },
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 0.74,
-       "taxa_aa": 9.3,
-       "posicao": 31,
+       "taxa_am": 0.73,
+       "taxa_aa": 9.18,
+       "posicao": 33,
        "cod_congl": "C0084844"
       },
       {
@@ -2517,15 +2701,23 @@
        "nome": "BCO FIBRA S.A.",
        "taxa_am": 0.79,
        "taxa_aa": 9.91,
-       "posicao": 32,
+       "posicao": 34,
        "cod_congl": "C0081483"
+      },
+      {
+       "cnpj8": "44189447",
+       "nome": "BCO LA PROVINCIA B AIRES BCE",
+       "taxa_am": 0.91,
+       "taxa_aa": 11.5,
+       "posicao": 35,
+       "cod_congl": "C0081263"
       },
       {
        "cnpj8": "11703662",
        "nome": "BANCO TRAVELEX S.A.",
        "taxa_am": 1.2,
        "taxa_aa": 15.4,
-       "posicao": 33,
+       "posicao": 36,
        "cod_congl": "C0080783"
       }
      ]

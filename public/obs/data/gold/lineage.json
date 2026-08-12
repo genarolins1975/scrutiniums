@@ -1,6 +1,909 @@
 {
  "linhagem_recente": [
   {
+   "gold_object": "institutions.json",
+   "bronze_file": "ifdata_funding/dados202503_1.json",
+   "sha256": "8d57dd77ea0de359c9e5245c68ef79b7f2ee506232b145eee2a84a04f45515e2",
+   "transform": "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics",
+   "created_at": "2026-08-12T10:38:18+00:00"
+  },
+  {
+   "gold_object": "institutions.json",
+   "bronze_file": "ifdata_funding/dados202506_1.json",
+   "sha256": "8644c5feedfeacb4c1267507f763d35ac05a282657e284a5316c44fae0359ff0",
+   "transform": "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics",
+   "created_at": "2026-08-12T10:38:11+00:00"
+  },
+  {
+   "gold_object": "institutions.json",
+   "bronze_file": "ifdata_funding/dados202509_1.json",
+   "sha256": "282524d7ccb81e3407f69e522e7cb7a37c3225244fb857b692fac353ecc11779",
+   "transform": "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics",
+   "created_at": "2026-08-12T10:38:05+00:00"
+  },
+  {
+   "gold_object": "institutions.json",
+   "bronze_file": "ifdata_funding/dados202512_1.json",
+   "sha256": "01859bd7ff8cdb394c5ca9f2c4af63fe9c9019cc82417a8bcc832959c9026040",
+   "transform": "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics",
+   "created_at": "2026-08-12T10:38:00+00:00"
+  },
+  {
+   "gold_object": "institutions.json",
+   "bronze_file": "ifdata_funding/dados202603_1.json",
+   "sha256": "7357ff4ebd4e078da3b1ebb95d1f92ddaca223265ce6fe9cd3dc3fe419b94287",
+   "transform": "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics",
+   "created_at": "2026-08-12T10:37:55+00:00"
+  },
+  {
+   "gold_object": "folha_bancos.json",
+   "bronze_file": "pncp_folha/contratos_novos.json",
+   "sha256": "7fb7d7cdd2d87e2c44a823a3235bd45c54987a6094514d010b03c83354a09133",
+   "transform": "detalhe de contratos PNCP -> pncp_folha_contratos",
+   "created_at": "2026-08-12T10:35:53+00:00"
+  },
+  {
+   "gold_object": "operacional.json",
+   "bronze_file": "fre_cia_aberta_2026.zip",
+   "sha256": "2bb05d8f376e28410c824ba7e5395e0e53e48f865a5ea1af7d8ad5b6b42ef541",
+   "transform": "FRE empregado_posicao_local -> oper_empregados (maior versão por companhia)",
+   "created_at": "2026-08-12T10:32:21+00:00"
+  },
+  {
+   "gold_object": "operacional.json",
+   "bronze_file": "fca_cia_aberta_2026.zip",
+   "sha256": "278f013b50c3e08f5ff6c93edf7da25d7e26107235fe6ebd1f1d0e39bc215f26",
+   "transform": "FCA auditor -> oper_auditores; FCA geral -> oper_cadastro_cvm (setor de atividade)",
+   "created_at": "2026-08-12T10:32:18+00:00"
+  },
+  {
+   "gold_object": "moradia.json",
+   "bronze_file": "bronze/mercado_imobiliario/series",
+   "sha256": "9441c0c20d8acdf13ac8d686987789873c09cbc8b9d659a4cad5c41fa279e1de",
+   "transform": "BCB Informações do Mercado Imobiliário -> crédito habitacional por UF (residencial/PF, segmentos SFH, FGTS, livre, home equity e comercial)",
+   "created_at": "2026-08-12T10:31:46+00:00"
+  },
+  {
+   "gold_object": "pix.json",
+   "bronze_file": "pix/pix_tx_202605.csv",
+   "sha256": "cb056d3beedb69bbd979de7f8ef5bca39f5343e0d2b183479fe80a52da578c7e",
+   "transform": "base transacional Pix (SPI) -> silver pix_tx; cobertura ~91% da qtd do universo doc 1201 (declarada)",
+   "created_at": "2026-08-12T10:21:23+00:00"
+  },
+  {
+   "gold_object": "market_fin:tri:2026",
+   "bronze_file": "data/bronze/cvm/20260812/itr_2026_extrato.76fa6075fc75.json",
+   "sha256": "76fa6075fc750c10b8c62af242c393f640a773c24b619f638514742a1697ef84",
+   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
+   "created_at": "2026-08-12T10:19:42+00:00"
+  },
+  {
+   "gold_object": "market_fin:anual:2025",
+   "bronze_file": "data/bronze/cvm/20260812/dfp_2025_extrato.9f78a34b0e36.json",
+   "sha256": "9f78a34b0e36ddddef5dee2b3e013e8254cf7ac55ea87e6c25aa313ac1690bfd",
+   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
+   "created_at": "2026-08-12T10:19:37+00:00"
+  },
+  {
+   "gold_object": "market_fin:anual:2024",
+   "bronze_file": "data/bronze/cvm/20260812/dfp_2024_extrato.12b9b60ac6d3.json",
+   "sha256": "12b9b60ac6d36728b7dfeba7ee8bfc8927721d2d60e4dd9beffa6c8485c41dd8",
+   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
+   "created_at": "2026-08-12T10:19:32+00:00"
+  },
+  {
+   "gold_object": "market_dividends:bmi",
+   "bronze_file": "data/bronze/b3_proventos/20260812/bmi.c362116956df.json",
+   "sha256": "c362116956df7b9bcb65db2e725c701500bfea769a9622b3828265d815a4b23b",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:27+00:00"
+  },
+  {
+   "gold_object": "market_dividends:alfa",
+   "bronze_file": "data/bronze/b3_proventos/20260812/alfa.2891100f2142.json",
+   "sha256": "2891100f2142eef1921868b0b87b3c2ab37e41e82fd1b88648ad7524d23e617c",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:26+00:00"
+  },
+  {
+   "gold_object": "market_dividends:banese",
+   "bronze_file": "data/bronze/b3_proventos/20260812/banese.a477ce2e59a6.json",
+   "sha256": "a477ce2e59a665c96599b0124d5e338f9c5fdedadb1be4e95614961b84d7d148",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:25+00:00"
+  },
+  {
+   "gold_object": "market_dividends:brpartners",
+   "bronze_file": "data/bronze/b3_proventos/20260812/brpartners.77e600aec9e0.json",
+   "sha256": "77e600aec9e062725edb2a1e7a8eca7a477a3ccb77657c27f57c8dba5dd5ec07",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:25+00:00"
+  },
+  {
+   "gold_object": "market_dividends:brb",
+   "bronze_file": "data/bronze/b3_proventos/20260812/brb.a8f9a1232bef.json",
+   "sha256": "a8f9a1232bef37280331dc15a8082a4c76ed7521f8900b888a0a3a08ce95fb2f",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:24+00:00"
+  },
+  {
+   "gold_object": "market_dividends:banestes",
+   "bronze_file": "data/bronze/b3_proventos/20260812/banestes.4a69d1899214.json",
+   "sha256": "4a69d18992145a13b652d8e4b7481f3ee16d14177b275423863bee6aec342821",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:23+00:00"
+  },
+  {
+   "gold_object": "market_dividends:mercantil",
+   "bronze_file": "data/bronze/b3_proventos/20260812/mercantil.758c4fa84ec8.json",
+   "sha256": "758c4fa84ec87a8f6bd8b008cb8da3faf53395e23b12d0600e956073055ccb3d",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:23+00:00"
+  },
+  {
+   "gold_object": "market_dividends:nordeste",
+   "bronze_file": "data/bronze/b3_proventos/20260812/nordeste.2e139bf0c3f6.json",
+   "sha256": "2e139bf0c3f67033b7d5a4289f41a53135892f9fa5be10a8917a9dfdb7b926bf",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:21+00:00"
+  },
+  {
+   "gold_object": "market_dividends:amazonia",
+   "bronze_file": "data/bronze/b3_proventos/20260812/amazonia.e8392e18394f.json",
+   "sha256": "e8392e18394f35ea8122b9542284492907198d91e4fbbba10dd7706b53a4d298",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:20+00:00"
+  },
+  {
+   "gold_object": "market_dividends:bmg",
+   "bronze_file": "data/bronze/b3_proventos/20260812/bmg.105cd0e763df.json",
+   "sha256": "105cd0e763dfc91d80b13c953938723a7a313d4c65149f0bd25f1fb94805fcbc",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:19+00:00"
+  },
+  {
+   "gold_object": "market_dividends:pine",
+   "bronze_file": "data/bronze/b3_proventos/20260812/pine.d64dfa31b992.json",
+   "sha256": "d64dfa31b992ff8b7d398540998a38603fd1e9bcfd93e7660ad68cca54427ccb",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:19+00:00"
+  },
+  {
+   "gold_object": "market_dividends:banrisul",
+   "bronze_file": "data/bronze/b3_proventos/20260812/banrisul.eff24de5c2f9.json",
+   "sha256": "eff24de5c2f95b5fbe750f0fecd020131c50ed5e10213cb5aa809b3fa751d698",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:18+00:00"
+  },
+  {
+   "gold_object": "market_dividends:abc",
+   "bronze_file": "data/bronze/b3_proventos/20260812/abc.2d8b4020b6ea.json",
+   "sha256": "2d8b4020b6eae5970b01a1bd8d13b57555fff5fd14139e8e3e2fa795fabc40b1",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:17+00:00"
+  },
+  {
+   "gold_object": "market_dividends:santander",
+   "bronze_file": "data/bronze/b3_proventos/20260812/santander.52667e7ee77d.json",
+   "sha256": "52667e7ee77d60c0ee851d7163e47bc5d787416a857359cd731ef00a15379dfe",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:16+00:00"
+  },
+  {
+   "gold_object": "market_dividends:btg",
+   "bronze_file": "data/bronze/b3_proventos/20260812/btg.9b71964ca6dc.json",
+   "sha256": "9b71964ca6dcaa984fd3d67152a16956f31860d125e33ad513d67c6fe1e5e782",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:16+00:00"
+  },
+  {
+   "gold_object": "market_dividends:bradesco",
+   "bronze_file": "data/bronze/b3_proventos/20260812/bradesco.2b234ce3722a.json",
+   "sha256": "2b234ce3722a9c5cd8f2039f52d4afb33177d9bfb2fd66f3c66975624b8d1f3a",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:14+00:00"
+  },
+  {
+   "gold_object": "market_dividends:bb",
+   "bronze_file": "data/bronze/b3_proventos/20260812/bb.001df8aaad6e.json",
+   "sha256": "001df8aaad6ed00064e99ddb57d0da77ea95310f8c0f61e652c889fc54607557",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:09+00:00"
+  },
+  {
+   "gold_object": "market_dividends:itau",
+   "bronze_file": "data/bronze/b3_proventos/20260812/itau.aed862bfa3a6.json",
+   "sha256": "aed862bfa3a6b09357f7b062fc30f207263b4b41e4f34e458ebc6ae0337c8a0a",
+   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
+   "created_at": "2026-08-12T10:19:07+00:00"
+  },
+  {
+   "gold_object": "market_prices:2026",
+   "bronze_file": "data/bronze/b3_cotahist/20260812/extrato_2026.47b14bbe8168.json",
+   "sha256": "47b14bbe8168ed069c0a0e3dfd87c90483e074ce50336985395f74dfa54938d3",
+   "transform": "B3 COTAHIST anual — fechamento e volume, mercado à vista, lote padrão; preços NÃO ajustados",
+   "created_at": "2026-08-12T10:19:03+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Vendor - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Vendor_-_Prefixado.710d7efff899.json",
+   "sha256": "710d7efff89952abb15577c9f5a3eb8920272c677783c37721819a9807c5c3e7",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:29+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Adiantamento sobre contratos de câmbio (",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Adiantamento_sobre_contratos_de_câmbio_(.e20791e3901e.json",
+   "sha256": "e20791e3901e83d7b95504430a872751707f414c32d488f694027e0818d1810b",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:25+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Antecipação de faturas de cartão de créd",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Antecipação_de_faturas_de_cartão_de_créd.cb5267a619c0.json",
+   "sha256": "cb5267a619c0a9ed17077b89c476c4b62b102329aa772e469695d50e1ba963b1",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:20+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Desconto de cheques - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Desconto_de_cheques_-_Prefixado.b5a725a32d04.json",
+   "sha256": "b5a725a32d0433a66d30029cdc2794f0ac4e665447db8ec9b5a26c4dde550034",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:16+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Desconto de duplicatas - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Desconto_de_duplicatas_-_Prefixado.18256af63dac.json",
+   "sha256": "18256af63dac7569c5235014cf46befa05831f20dbafafed27479a1f43a5b882",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:13+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Cheque especial - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Cheque_especial_-_Prefixado.e47af445976a.json",
+   "sha256": "e47af445976ab75164ab7f16d1df0549148329e5ad1e3d256027d2b8cc9706a3",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:08+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Conta garantida - Pós-fixado referenciad",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Conta_garantida_-_Pós-fixado_referenciad.abbf960d5e22.json",
+   "sha256": "abbf960d5e2270ec95e4cb090d9f5096a5efea87a00d010dba30339a85897836",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:17:03+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Conta garantida - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Conta_garantida_-_Prefixado.39cd91b34555.json",
+   "sha256": "39cd91b345552cd6377a6539175b66b8e1c973e6c6e88790ece7c9d5f446059e",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:58+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Capital_de_giro_com_prazo_superior_a_365.ebb34fd51203.json",
+   "sha256": "ebb34fd51203043525f19fc4821b0ffa6827be243b935414e21f983ceb8a65c5",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:53+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Capital_de_giro_com_prazo_até_365_dias_-.8504948d9f2f.json",
+   "sha256": "8504948d9f2f234ec1ae197182a0a9796242deaa88716bbe9b86402196ee70c4",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:49+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Capital_de_giro_com_prazo_superior_a_365.190dad0adb01.json",
+   "sha256": "190dad0adb0120824198d09601a4ce1db762c689c75db245bc4a6efff2d3d413",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:44+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Capital_de_giro_com_prazo_até_365_dias_-.ee2c9fd7f348.json",
+   "sha256": "ee2c9fd7f348be82acc7b30046d102f4540eea5d3f1624fdd3c093f78b845b0c",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:40+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Cheque especial - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Cheque_especial_-_Prefixado.dc5e6c7434f2.json",
+   "sha256": "dc5e6c7434f233bbb29a5f594aaef2e76a4ebe06bd886a2e28e30bec6b4fe572",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:35+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Aquisição de veículos - Prefixado",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Aquisição_de_veículos_-_Prefixado.56c4ce402c40.json",
+   "sha256": "56c4ce402c4022aaa1ee75daf37246e97950dad1414cd847948ac6ac1d0c27fd",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:30+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Crédito pessoal não consignado - Prefixa",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Crédito_pessoal_não_consignado_-_Prefixa.157e3dd3a208.json",
+   "sha256": "157e3dd3a208e833e81e302351677d2a71b621abfa7b5b2f230275b6d71ecddb",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:25+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Crédito pessoal consignado público - Pre",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Crédito_pessoal_consignado_público_-_Pre.6524a51b925b.json",
+   "sha256": "6524a51b925b5a14c0f6a9b485195cf220ebf3dfced88a9b4bcb1320a23ce556",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:21+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Crédito pessoal consignado privado - Pre",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Crédito_pessoal_consignado_privado_-_Pre.a36d85f67f92.json",
+   "sha256": "a36d85f67f92bf4da960b6569601b0662d31b1fb6a5f0af70f11f37845676d19",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:15+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Crédito pessoal consignado INSS - Prefix",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Crédito_pessoal_consignado_INSS_-_Prefix.de4a0c18837b.json",
+   "sha256": "de4a0c18837b3d15b7977d7af55f9a5333a3883a6c1147619cd2e16f02c85ede",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:10+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Cartão de crédito - parcelado - Prefixad",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Cartão_de_crédito_-_parcelado_-_Prefixad.0d654a51b91b.json",
+   "sha256": "0d654a51b91b647a2d09d27137e59268054ce052b6cac3616e3cf348bc3376ef",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:06+00:00"
+  },
+  {
+   "gold_object": "taxas:PE:Cartão de crédito - rotativo total - Pre",
+   "bronze_file": "data/bronze/txjuros/20260812/PE_Cartão_de_crédito_-_rotativo_total_-_Pre.db7484b8f165.json",
+   "sha256": "db7484b8f1653ab363e00bbc757fc466fb0df1d731ea7af82146d5e7fc150e94",
+   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
+   "created_at": "2026-08-12T10:16:01+00:00"
+  },
+  {
+   "gold_object": "reclamacoes:2025T3",
+   "bronze_file": "data/bronze/reclamacoes/20260812/ranking_2025T3.4f7f9305da19.json",
+   "sha256": "4f7f9305da19e78c8c6ef50ca5b6ac6b5b0d431bb128ceac78777424f50a5c65",
+   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
+   "created_at": "2026-08-12T10:15:55+00:00"
+  },
+  {
+   "gold_object": "reclamacoes:2025T4",
+   "bronze_file": "data/bronze/reclamacoes/20260812/ranking_2025T4.ffc20dac2c76.json",
+   "sha256": "ffc20dac2c76fe2d46def2aedd505b5c18e72024e4eec887c7776bb76a1b09b6",
+   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
+   "created_at": "2026-08-12T10:15:53+00:00"
+  },
+  {
+   "gold_object": "reclamacoes:2026T1",
+   "bronze_file": "data/bronze/reclamacoes/20260812/ranking_2026T1.f81d408167b5.json",
+   "sha256": "f81d408167b5b9af42cbc9e5955466787637952afde15ed1cfc7752465a7fb79",
+   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
+   "created_at": "2026-08-12T10:15:52+00:00"
+  },
+  {
+   "gold_object": "reclamacoes:2026T2",
+   "bronze_file": "data/bronze/reclamacoes/20260812/ranking_2026T2.cc5d759cf081.json",
+   "sha256": "cc5d759cf08123bb87bd87c4ef1c30a256a2c761ee5b702366ec9f4437bbdf6c",
+   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
+   "created_at": "2026-08-12T10:15:50+00:00"
+  },
+  {
+   "gold_object": "of_participants",
+   "bronze_file": "data/bronze/openfinance/20260812/directory_participants.7b82cf32e24c.json",
+   "sha256": "7b82cf32e24cd9a86e780896b71a902398d8d1fa741f7ebd131f72ace160fbec",
+   "transform": "diretório oficial: papéis e famílias de API por organização",
+   "created_at": "2026-08-12T10:15:48+00:00"
+  },
+  {
+   "gold_object": "of_ranking:payment-initiation",
+   "bronze_file": "data/bronze/openfinance/20260812/ranking_org_iniciacao_pagamento.e7ca75ae1c15.json",
+   "sha256": "e7ca75ae1c15ea64c0f81c75c9ca807e25a8598d3699652e3af7792adecbaed2",
+   "transform": "POST axis=organisation",
+   "created_at": "2026-08-12T10:15:37+00:00"
+  },
+  {
+   "gold_object": "of_ranking:open-data",
+   "bronze_file": "data/bronze/openfinance/20260812/ranking_org_dados_abertos.4a0272bcebd7.json",
+   "sha256": "4a0272bcebd7abf07aa412c0391d958be1e7159a4e1888f7753f50c3c49084a3",
+   "transform": "POST axis=organisation",
+   "created_at": "2026-08-12T10:15:35+00:00"
+  },
+  {
+   "gold_object": "of_ranking:transactional-data",
+   "bronze_file": "data/bronze/openfinance/20260812/ranking_org_dados_transacionais.c070ed3eeb14.json",
+   "sha256": "c070ed3eeb1400fe869f7cbf525bec9716e075136b37bcf10d0384a904923807",
+   "transform": "POST axis=organisation",
+   "created_at": "2026-08-12T10:15:34+00:00"
+  },
+  {
+   "gold_object": "series:of_consentimentos_transmitidos",
+   "bronze_file": "data/bronze/openfinance/20260812/consents_server.990953f52ad4.json",
+   "sha256": "990953f52ad45634bb5bd4fe6fd52c3e4a32ad8b592ff448f38d73e76f6deda8",
+   "transform": "POST /api/consents; série semanal",
+   "created_at": "2026-08-12T10:15:20+00:00"
+  },
+  {
+   "gold_object": "series:of_consentimentos_recebidos",
+   "bronze_file": "data/bronze/openfinance/20260812/consents_client.c7a52eb47302.json",
+   "sha256": "c7a52eb4730293957767d846b5194f50e63719676a6afc9c71ef9b5256485e0d",
+   "transform": "POST /api/consents; série semanal",
+   "created_at": "2026-08-12T10:15:20+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjgo",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjgo.50436ad16f89.json",
+   "sha256": "50436ad16f89eec9dc7a22eb386f8590b72a8026d20bb7503b3d6b455339378e",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:10:35+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjgo",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjgo.34a509b85b0e.json",
+   "sha256": "34a509b85b0ec9288697c354926c29799ae7bc5f48c340133001554ac1714e9b",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:10:32+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjba",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjba.3c068f47b950.json",
+   "sha256": "3c068f47b9505e9503ef98bafe96de740ffb080a4d0edc8398671d1360d3bb94",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:10:14+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjba",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjba.791486b1a659.json",
+   "sha256": "791486b1a659e65d4214767bb20db73d98ba9859bd51880a13fb167d7eaa3911",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:10:07+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjsc",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjsc.d339e284cd57.json",
+   "sha256": "d339e284cd5746f15add8666c5c5462c722a37993af881a610730f9cd7e0884f",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:10:04+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjsc",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjsc.e023ba6808ed.json",
+   "sha256": "e023ba6808ed098d25495f0f20d6361c1bf4a726ef764a81103a4cb3ab880444",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:09:52+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjpr",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjpr.e821636ca3dc.json",
+   "sha256": "e821636ca3dc774b0594ff780505bef1c3f420bcdba87afea32ea1b2457dc25e",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:09:48+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjpr",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjpr.ce7d99719a0d.json",
+   "sha256": "ce7d99719a0db9bdc766afc3e3392f7479de71cb711bf9c2ae132cbfba8d8c1e",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:09:12+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjrs",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjrs.78e08abe98b1.json",
+   "sha256": "78e08abe98b16e75414832e5eb13c1545185617a7b85c07c741c35d8c7bdce07",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:08:56+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjrs",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjrs.420e1a251e02.json",
+   "sha256": "420e1a251e026d0a58ccf1459b44fa9644fbac3e20ba0cfd487cda510f03bc5b",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:08:24+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjmg",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjmg.6136cd716379.json",
+   "sha256": "6136cd716379b9435f006e1ac03796bb22fb08cf77cf85f7883076dfe263079f",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:07:55+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjmg",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjmg.925e57acfc1d.json",
+   "sha256": "925e57acfc1dd59cd48793e14f075b2a5121f6a3424941a8cc45ac2f797a4a09",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:05:25+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjrj",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjrj.019cb27e2934.json",
+   "sha256": "019cb27e293400b251a047437ba8a7e6c8d2c183525d09eb23bc57a072015394",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:05:13+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjrj",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjrj.dee3647fbd96.json",
+   "sha256": "dee3647fbd96244b0981490f8a6e59113e25a3723bd3030095a2128879efaeb1",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:04:17+00:00"
+  },
+  {
+   "gold_object": "series:falencia_tjsp",
+   "bronze_file": "data/bronze/datajud/20260812/falencia_tjsp.641819cfde52.json",
+   "sha256": "641819cfde523bad52d21ba77ef3a4069442840b32839ac4cde59530a737d7bb",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:03:35+00:00"
+  },
+  {
+   "gold_object": "series:recuperacao_judicial_tjsp",
+   "bronze_file": "data/bronze/datajud/20260812/recuperacao_judicial_tjsp.dffe83c6d1bf.json",
+   "sha256": "dffe83c6d1bfc3d35dd6d2227dbe43cee5e9f28b8700e1c0d5f0fa0bb69f481f",
+   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
+   "created_at": "2026-08-12T10:02:07+00:00"
+  },
+  {
+   "gold_object": "institutions_carteiras:202503",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/carteiras_202503.5042054b32ba.json",
+   "sha256": "5042054b32ba57ceb0d477ae56809d3c92c50517d892bd5959ce29fa67c04d6b",
+   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
+   "created_at": "2026-08-12T10:01:35+00:00"
+  },
+  {
+   "gold_object": "institutions_carteiras:202506",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/carteiras_202506.a8537bff8e7a.json",
+   "sha256": "a8537bff8e7af0c698a4e76095e13c132496aac8e9343b9f2ea95158dda81ef6",
+   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
+   "created_at": "2026-08-12T10:01:19+00:00"
+  },
+  {
+   "gold_object": "institutions_carteiras:202509",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/carteiras_202509.4a0a08d472d2.json",
+   "sha256": "4a0a08d472d29b42e5474c51a7fc22d6f62ec01411a6360858cdd794fdcafb90",
+   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
+   "created_at": "2026-08-12T10:01:03+00:00"
+  },
+  {
+   "gold_object": "institutions_carteiras:202512",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/carteiras_202512.e9fb9597f177.json",
+   "sha256": "e9fb9597f177df1150c8cc73af8e8f064f23f72420ede2e6933b7d48e7e2321a",
+   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
+   "created_at": "2026-08-12T10:00:47+00:00"
+  },
+  {
+   "gold_object": "institutions_carteiras:202603",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/carteiras_202603.b5ab946cacf9.json",
+   "sha256": "b5ab946cacf9d9fbb12e855607ca62e21734dd916083a9b23a73e7e0d4118d51",
+   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
+   "created_at": "2026-08-12T10:00:32+00:00"
+  },
+  {
+   "gold_object": "institutions_capital:202503",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/capital_202503.476a6a88d438.json",
+   "sha256": "476a6a88d43860492313a4cdc1f0eb6ae8a4505b6dca2c40d7e55e2ecd7d2779",
+   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
+   "created_at": "2026-08-12T10:00:17+00:00"
+  },
+  {
+   "gold_object": "institutions_capital:202506",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/capital_202506.f73523664463.json",
+   "sha256": "f735236644633abd807618784bf210e76ecbb08dcaa0e4011c1a7649665821c8",
+   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
+   "created_at": "2026-08-12T10:00:16+00:00"
+  },
+  {
+   "gold_object": "institutions_capital:202509",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/capital_202509.2f7098ce96f0.json",
+   "sha256": "2f7098ce96f013eba65933c8ab2286cd8c9b0f3946798e6e55411443d78f568f",
+   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
+   "created_at": "2026-08-12T10:00:15+00:00"
+  },
+  {
+   "gold_object": "institutions_capital:202512",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/capital_202512.bcf3e48faa92.json",
+   "sha256": "bcf3e48faa92bcc388c74f35bc744407f3dd84ee8b662b129fb4e81bc0099db5",
+   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
+   "created_at": "2026-08-12T10:00:13+00:00"
+  },
+  {
+   "gold_object": "institutions_capital:202603",
+   "bronze_file": "data/bronze/ifdata_ui/20260812/capital_202603.3318e2ca3f21.json",
+   "sha256": "3318e2ca3f217cfefbb05c7cae3519c8629e6f4217b343d1b86c406b493cfde9",
+   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
+   "created_at": "2026-08-12T10:00:11+00:00"
+  },
+  {
+   "gold_object": "series:cambio",
+   "bronze_file": "data/bronze/ipeadata/20260812/BM12_ERC12.10e0db3464cc.json",
+   "sha256": "10e0db3464cccf874866e6ed099cf235b4536b7093cb3b11be6f0487994f2c24",
+   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
+   "created_at": "2026-08-12T09:59:02+00:00"
+  },
+  {
+   "gold_object": "series:papelao",
+   "bronze_file": "data/bronze/ipeadata/20260812/ABPO12_PAPEL12.327c1e80331d.json",
+   "sha256": "327c1e80331db5df1566a603fd66f464f9d3148d763aefdd68014af7a0a48ddb",
+   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
+   "created_at": "2026-08-12T09:58:16+00:00"
+  },
+  {
+   "gold_object": "series:pim_setorial",
+   "bronze_file": "data/bronze/ibge/20260812/pim_setorial.f12052a377ae.json",
+   "sha256": "f12052a377aec5e78d13437c5372f74238b7d8f8dc7058126d2e68f0a038f823",
+   "transform": "parse Sidra t8888 v12606 c544; um key por atividade CNAE",
+   "created_at": "2026-08-12T09:57:29+00:00"
+  },
+  {
+   "gold_object": "series:consig_total_taxa",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20747.2433ce5c6f6e.json",
+   "sha256": "2433ce5c6f6e9b85cfe8a212106fa2a96baa8743cee8a069a25c2e6a744962ff",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:27+00:00"
+  },
+  {
+   "gold_object": "series:desemprego",
+   "bronze_file": "data/bronze/ibge/20260812/pnad_desemprego.1f1e942bd29c.json",
+   "sha256": "1f1e942bd29cbd2cd3a8c4670982543a7e874fad54c7f614a1a82815ae39d80e",
+   "transform": "parse API v3 agregados; período AAAAMM->ISO (mês final do trimestre móvel)",
+   "created_at": "2026-08-12T09:57:27+00:00"
+  },
+  {
+   "gold_object": "series:consig_total_inad",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21119.e6ae3bef8a3b.json",
+   "sha256": "e6ae3bef8a3bbaa1cace930b8e44d6573162720d73663df384051eab96462b68",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:25+00:00"
+  },
+  {
+   "gold_object": "series:consig_total_saldo",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20579.5d6b15474079.json",
+   "sha256": "5d6b15474079c58b3c14ad74706a781587cd1a7a90daefa954500eb4075ab9e2",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:24+00:00"
+  },
+  {
+   "gold_object": "series:consig_pub_inad",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21117.76e2d9d6fdad.json",
+   "sha256": "76e2d9d6fdad042b0c39f1041dc751d6bc7cd4cb889e2d3db1ecbe402a162380",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:23+00:00"
+  },
+  {
+   "gold_object": "series:consig_pub_saldo",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20577.89ad47f6368d.json",
+   "sha256": "89ad47f6368db5a68a5d09b7078cb62e815460a18da58fb7df93fab4ba78c5d3",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:22+00:00"
+  },
+  {
+   "gold_object": "series:consig_priv_saldo",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20576.5ae9b47f6506.json",
+   "sha256": "5ae9b47f65069de531f2e5b939b4ece5b36bcee57b08188c2673d486c1b1aad0",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:20+00:00"
+  },
+  {
+   "gold_object": "series:consig_priv_inad",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21116.420291af77d6.json",
+   "sha256": "420291af77d62ac781d1a0e57a6d03c8a7b5454f115e47448cbc13c8769fdc08",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:20+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_icc",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_27677.61ee296a1469.json",
+   "sha256": "61ee296a1469ac501c9c1eef8cbc4dc388bc0ede4a51b7b9cdf76f9de8ac0de7",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:18+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_inad",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21118.9b4a732bc99a.json",
+   "sha256": "9b4a732bc99a3cd37f6c42a5051c0001680616def5c2e49eed5093bc83174563",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:17+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_prazo_cart",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20960.1ba119a5c277.json",
+   "sha256": "1ba119a5c277f30cd78d04f109fe7bbc78f18e6a06df12a066ef4561adcd369b",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:15+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_atraso",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21039.79c0d22b4022.json",
+   "sha256": "79c0d22b402270002eca8bf6d6882e0fad6df2c6cd07781163afee6c37b24b95",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:15+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_prazo_conc",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20883.44d6a866e868.json",
+   "sha256": "44d6a866e86879b7a10ee00ec0fbdb8670b872c5b691827af2cbef95229913d0",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:13+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_taxa",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20746.85cc3b09966f.json",
+   "sha256": "85cc3b09966f39ba337500ac58855cd7dc45d2de3f7911a733e1aeeb9f639fb1",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:12+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_conc",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20670.9902680f7189.json",
+   "sha256": "9902680f7189fe712eac50feba852c9d39ab022be42a8b972b09780a10148263",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:11+00:00"
+  },
+  {
+   "gold_object": "series:consig_inss_saldo",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20578.e65b7c16fc51.json",
+   "sha256": "e65b7c16fc517c8ca6e28f4b41a876b0c7a9558bda3d7954400b16fb0d51b40c",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:10+00:00"
+  },
+  {
+   "gold_object": "series:ivgr",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21340.6b4ad2a115ec.json",
+   "sha256": "6b4ad2a115ec75807ff4562e331408df2ebc76a6893e3090a9cd6f0b3d615d15",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:09+00:00"
+  },
+  {
+   "gold_object": "series:ibc_br",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_24363.8e8dde14c714.json",
+   "sha256": "8e8dde14c714ee961851e3baae3a19941476e9de9d27786fc3f83930f0ffc5a6",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:08+00:00"
+  },
+  {
+   "gold_object": "series:ipca",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_433.f49770531674.json",
+   "sha256": "f4977053167449637a6eb4fbca8372834415f01404ac75ee22a7b5baa4df7a73",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:07+00:00"
+  },
+  {
+   "gold_object": "series:selic_meta",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_432.beed3414367a.json",
+   "sha256": "beed3414367a1365830f248ea0cd0b6a4c3652ce140087fd75b31afcf9bdd558",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:57:06+00:00"
+  },
+  {
+   "gold_object": "series:endividamento",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_29037.e92cbc95d486.json",
+   "sha256": "e92cbc95d48660905d41b3d88e2fe073aaeb9e01d4e59138d6e257d9720fde5d",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:27+00:00"
+  },
+  {
+   "gold_object": "series:comprometimento",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_29034.63830656b30f.json",
+   "sha256": "63830656b30ff61f94b40ab2ae1c7fa8c5c71f7a8662ffeebf4ef88ea0dcaf2b",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:27+00:00"
+  },
+  {
+   "gold_object": "series:credito_pib",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20622.2b59bdd52aa8.json",
+   "sha256": "2b59bdd52aa8b350d71e6f12cb8375a9468689eb66b950cccb9637a598be94e2",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:26+00:00"
+  },
+  {
+   "gold_object": "series:inad_pf",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21084.2a7d96c29414.json",
+   "sha256": "2a7d96c29414b37a8e7c983adde5348d29307717994d7590d537c72b69bf7be3",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:25+00:00"
+  },
+  {
+   "gold_object": "series:inad_pj",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21083.188dda2f5b9b.json",
+   "sha256": "188dda2f5b9bf86aadcc894996263894dbd91a4f147f1f22c8bc5dfeabec7e99",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:24+00:00"
+  },
+  {
+   "gold_object": "series:spread_pf",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20785.ac866ed8db93.json",
+   "sha256": "ac866ed8db93e26be8bfd21f87ce6b75a736ccca5cdea0d19f594bb0b90b31f2",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:22+00:00"
+  },
+  {
+   "gold_object": "series:inad_total",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_21082.d18d637168bf.json",
+   "sha256": "d18d637168bff4d1a292ec478719f7926de65dded51fee4dacedcf5db28c2448",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:22+00:00"
+  },
+  {
+   "gold_object": "series:spread_pj",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20784.b7ff1f5ce451.json",
+   "sha256": "b7ff1f5ce451faaace27ca096deeb8e754f99902a9429a6eb04c95be4450a086",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:20+00:00"
+  },
+  {
+   "gold_object": "series:spread_total",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20783.e563b57545f2.json",
+   "sha256": "e563b57545f2b0b5b994cdfe0daf28ad24809ed04f34bde652857baac3bbfbbb",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:19+00:00"
+  },
+  {
+   "gold_object": "series:taxa_pf",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20716.9839d77eea7b.json",
+   "sha256": "9839d77eea7b3207016adab9071512e500864c2f86c2e1d98e155e1681666259",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:18+00:00"
+  },
+  {
+   "gold_object": "series:taxa_pj",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20715.1da3c0835d34.json",
+   "sha256": "1da3c0835d34a0fe8b16c6130931f3c2bf55752ac9151c7e84ef2e7541fa7861",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:17+00:00"
+  },
+  {
+   "gold_object": "series:concessoes_pf",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20633.49935bee9ad8.json",
+   "sha256": "49935bee9ad8b10705e5aae54320cdad7a600665f118241eee666a19490dc8a6",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:16+00:00"
+  },
+  {
+   "gold_object": "series:taxa_total",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20714.5da5dfffaff8.json",
+   "sha256": "5da5dfffaff8e22b7653d19a46a9402a605a78ef4a7c959fe81b4b3174448a42",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:16+00:00"
+  },
+  {
+   "gold_object": "series:concessoes_pj",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20632.47d9c8db9b5f.json",
+   "sha256": "47d9c8db9b5fe960f1f40f76abed5e1661d27919f59bd0d3538b8b24d48a82df",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:14+00:00"
+  },
+  {
+   "gold_object": "series:concessoes_total",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20631.f670d90abc01.json",
+   "sha256": "f670d90abc019607de0e7fff4f41f104229bb1734f3f9a2f919d8e613204fb5f",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:13+00:00"
+  },
+  {
+   "gold_object": "series:saldo_pj",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20540.afc7043f5a29.json",
+   "sha256": "afc7043f5a298ab25d4b4998a7b74e8bd91c9fe7632ebc5345a0fa6728998408",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:12+00:00"
+  },
+  {
+   "gold_object": "series:saldo_pf",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20541.34ef7df48fa4.json",
+   "sha256": "34ef7df48fa43168242fb42cb1b5ef70778e659dd0fc507b2f20d71b0145727d",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:12+00:00"
+  },
+  {
+   "gold_object": "series:saldo_total",
+   "bronze_file": "data/bronze/bcb_sgs/20260812/sgs_20539.734a872c4b82.json",
+   "sha256": "734a872c4b828350c0ec32e29dabc5eb2621b8d426430758b46fecd05bbaba93",
+   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
+   "created_at": "2026-08-12T09:56:10+00:00"
+  },
+  {
    "gold_object": "folha_bancos.json",
    "bronze_file": "pncp_folha/contratos_novos.json",
    "sha256": "dbd8518435194fd5e5419d9d0084af255f0a58618387214cb836ebe7ad3aedd2",
@@ -496,909 +1399,6 @@
    "sha256": "dee3647fbd96244b0981490f8a6e59113e25a3723bd3030095a2128879efaeb1",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
    "created_at": "2026-08-11T10:05:42+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjsp",
-   "bronze_file": "data/bronze/datajud/20260811/falencia_tjsp.641819cfde52.json",
-   "sha256": "641819cfde523bad52d21ba77ef3a4069442840b32839ac4cde59530a737d7bb",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-11T10:04:53+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjsp",
-   "bronze_file": "data/bronze/datajud/20260811/recuperacao_judicial_tjsp.dffe83c6d1bf.json",
-   "sha256": "dffe83c6d1bfc3d35dd6d2227dbe43cee5e9f28b8700e1c0d5f0fa0bb69f481f",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-11T10:02:36+00:00"
-  },
-  {
-   "gold_object": "institutions_carteiras:202503",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/carteiras_202503.5042054b32ba.json",
-   "sha256": "5042054b32ba57ceb0d477ae56809d3c92c50517d892bd5959ce29fa67c04d6b",
-   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-08-11T10:01:43+00:00"
-  },
-  {
-   "gold_object": "institutions_carteiras:202506",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/carteiras_202506.a8537bff8e7a.json",
-   "sha256": "a8537bff8e7af0c698a4e76095e13c132496aac8e9343b9f2ea95158dda81ef6",
-   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-08-11T10:01:27+00:00"
-  },
-  {
-   "gold_object": "institutions_carteiras:202509",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/carteiras_202509.4a0a08d472d2.json",
-   "sha256": "4a0a08d472d29b42e5474c51a7fc22d6f62ec01411a6360858cdd794fdcafb90",
-   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-08-11T10:01:00+00:00"
-  },
-  {
-   "gold_object": "institutions_carteiras:202512",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/carteiras_202512.e9fb9597f177.json",
-   "sha256": "e9fb9597f177df1150c8cc73af8e8f064f23f72420ede2e6933b7d48e7e2321a",
-   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-08-11T10:00:41+00:00"
-  },
-  {
-   "gold_object": "institutions_carteiras:202603",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/carteiras_202603.b5ab946cacf9.json",
-   "sha256": "b5ab946cacf9d9fbb12e855607ca62e21734dd916083a9b23a73e7e0d4118d51",
-   "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-08-11T10:00:23+00:00"
-  },
-  {
-   "gold_object": "institutions_capital:202503",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/capital_202503.476a6a88d438.json",
-   "sha256": "476a6a88d43860492313a4cdc1f0eb6ae8a4505b6dca2c40d7e55e2ecd7d2779",
-   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-08-11T10:00:07+00:00"
-  },
-  {
-   "gold_object": "institutions_capital:202506",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/capital_202506.f73523664463.json",
-   "sha256": "f735236644633abd807618784bf210e76ecbb08dcaa0e4011c1a7649665821c8",
-   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-08-11T10:00:05+00:00"
-  },
-  {
-   "gold_object": "institutions_capital:202509",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/capital_202509.2f7098ce96f0.json",
-   "sha256": "2f7098ce96f013eba65933c8ab2286cd8c9b0f3946798e6e55411443d78f568f",
-   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-08-11T10:00:03+00:00"
-  },
-  {
-   "gold_object": "institutions_capital:202512",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/capital_202512.bcf3e48faa92.json",
-   "sha256": "bcf3e48faa92bcc388c74f35bc744407f3dd84ee8b662b129fb4e81bc0099db5",
-   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-08-11T10:00:01+00:00"
-  },
-  {
-   "gold_object": "institutions_capital:202603",
-   "bronze_file": "data/bronze/ifdata_ui/20260811/capital_202603.3318e2ca3f21.json",
-   "sha256": "3318e2ca3f217cfefbb05c7cae3519c8629e6f4217b343d1b86c406b493cfde9",
-   "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-08-11T09:59:59+00:00"
-  },
-  {
-   "gold_object": "series:cambio",
-   "bronze_file": "data/bronze/ipeadata/20260811/BM12_ERC12.10e0db3464cc.json",
-   "sha256": "10e0db3464cccf874866e6ed099cf235b4536b7093cb3b11be6f0487994f2c24",
-   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
-   "created_at": "2026-08-11T09:58:48+00:00"
-  },
-  {
-   "gold_object": "series:papelao",
-   "bronze_file": "data/bronze/ipeadata/20260811/ABPO12_PAPEL12.327c1e80331d.json",
-   "sha256": "327c1e80331db5df1566a603fd66f464f9d3148d763aefdd68014af7a0a48ddb",
-   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
-   "created_at": "2026-08-11T09:58:47+00:00"
-  },
-  {
-   "gold_object": "series:pim_setorial",
-   "bronze_file": "data/bronze/ibge/20260811/pim_setorial.f12052a377ae.json",
-   "sha256": "f12052a377aec5e78d13437c5372f74238b7d8f8dc7058126d2e68f0a038f823",
-   "transform": "parse Sidra t8888 v12606 c544; um key por atividade CNAE",
-   "created_at": "2026-08-11T09:58:00+00:00"
-  },
-  {
-   "gold_object": "series:desemprego",
-   "bronze_file": "data/bronze/ibge/20260811/pnad_desemprego.1f1e942bd29c.json",
-   "sha256": "1f1e942bd29cbd2cd3a8c4670982543a7e874fad54c7f614a1a82815ae39d80e",
-   "transform": "parse API v3 agregados; período AAAAMM->ISO (mês final do trimestre móvel)",
-   "created_at": "2026-08-11T09:57:58+00:00"
-  },
-  {
-   "gold_object": "series:consig_total_taxa",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20747.2433ce5c6f6e.json",
-   "sha256": "2433ce5c6f6e9b85cfe8a212106fa2a96baa8743cee8a069a25c2e6a744962ff",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:57+00:00"
-  },
-  {
-   "gold_object": "series:consig_total_inad",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21119.e6ae3bef8a3b.json",
-   "sha256": "e6ae3bef8a3bbaa1cace930b8e44d6573162720d73663df384051eab96462b68",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:55+00:00"
-  },
-  {
-   "gold_object": "series:consig_total_saldo",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20579.5d6b15474079.json",
-   "sha256": "5d6b15474079c58b3c14ad74706a781587cd1a7a90daefa954500eb4075ab9e2",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:53+00:00"
-  },
-  {
-   "gold_object": "series:consig_pub_inad",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21117.76e2d9d6fdad.json",
-   "sha256": "76e2d9d6fdad042b0c39f1041dc751d6bc7cd4cb889e2d3db1ecbe402a162380",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:52+00:00"
-  },
-  {
-   "gold_object": "series:consig_pub_saldo",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20577.89ad47f6368d.json",
-   "sha256": "89ad47f6368db5a68a5d09b7078cb62e815460a18da58fb7df93fab4ba78c5d3",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:50+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_icc",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_27677.61ee296a1469.json",
-   "sha256": "61ee296a1469ac501c9c1eef8cbc4dc388bc0ede4a51b7b9cdf76f9de8ac0de7",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:17+00:00"
-  },
-  {
-   "gold_object": "series:consig_priv_saldo",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20576.5ae9b47f6506.json",
-   "sha256": "5ae9b47f65069de531f2e5b939b4ece5b36bcee57b08188c2673d486c1b1aad0",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:17+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_inad",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21118.9b4a732bc99a.json",
-   "sha256": "9b4a732bc99a3cd37f6c42a5051c0001680616def5c2e49eed5093bc83174563",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:16+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_atraso",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21039.79c0d22b4022.json",
-   "sha256": "79c0d22b402270002eca8bf6d6882e0fad6df2c6cd07781163afee6c37b24b95",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:15+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_prazo_cart",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20960.1ba119a5c277.json",
-   "sha256": "1ba119a5c277f30cd78d04f109fe7bbc78f18e6a06df12a066ef4561adcd369b",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:14+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_prazo_conc",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20883.44d6a866e868.json",
-   "sha256": "44d6a866e86879b7a10ee00ec0fbdb8670b872c5b691827af2cbef95229913d0",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:13+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_taxa",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20746.85cc3b09966f.json",
-   "sha256": "85cc3b09966f39ba337500ac58855cd7dc45d2de3f7911a733e1aeeb9f639fb1",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:12+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_conc",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20670.9902680f7189.json",
-   "sha256": "9902680f7189fe712eac50feba852c9d39ab022be42a8b972b09780a10148263",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:11+00:00"
-  },
-  {
-   "gold_object": "series:consig_inss_saldo",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20578.e65b7c16fc51.json",
-   "sha256": "e65b7c16fc517c8ca6e28f4b41a876b0c7a9558bda3d7954400b16fb0d51b40c",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:09+00:00"
-  },
-  {
-   "gold_object": "series:ivgr",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21340.6b4ad2a115ec.json",
-   "sha256": "6b4ad2a115ec75807ff4562e331408df2ebc76a6893e3090a9cd6f0b3d615d15",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:08+00:00"
-  },
-  {
-   "gold_object": "series:ibc_br",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_24363.8e8dde14c714.json",
-   "sha256": "8e8dde14c714ee961851e3baae3a19941476e9de9d27786fc3f83930f0ffc5a6",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:07+00:00"
-  },
-  {
-   "gold_object": "series:selic_meta",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_432.beed3414367a.json",
-   "sha256": "beed3414367a1365830f248ea0cd0b6a4c3652ce140087fd75b31afcf9bdd558",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:05+00:00"
-  },
-  {
-   "gold_object": "series:ipca",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_433.5048fa7a0666.json",
-   "sha256": "5048fa7a06664927c560e1fb954f9a2ce4f7274dfcff950bc19710f9555c11e0",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:57:05+00:00"
-  },
-  {
-   "gold_object": "series:comprometimento",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_29034.63830656b30f.json",
-   "sha256": "63830656b30ff61f94b40ab2ae1c7fa8c5c71f7a8662ffeebf4ef88ea0dcaf2b",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:24+00:00"
-  },
-  {
-   "gold_object": "series:endividamento",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_29037.e92cbc95d486.json",
-   "sha256": "e92cbc95d48660905d41b3d88e2fe073aaeb9e01d4e59138d6e257d9720fde5d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:22+00:00"
-  },
-  {
-   "gold_object": "series:credito_pib",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20622.2b59bdd52aa8.json",
-   "sha256": "2b59bdd52aa8b350d71e6f12cb8375a9468689eb66b950cccb9637a598be94e2",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:21+00:00"
-  },
-  {
-   "gold_object": "series:inad_pf",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21084.2a7d96c29414.json",
-   "sha256": "2a7d96c29414b37a8e7c983adde5348d29307717994d7590d537c72b69bf7be3",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:20+00:00"
-  },
-  {
-   "gold_object": "series:inad_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21083.188dda2f5b9b.json",
-   "sha256": "188dda2f5b9bf86aadcc894996263894dbd91a4f147f1f22c8bc5dfeabec7e99",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:18+00:00"
-  },
-  {
-   "gold_object": "series:inad_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_21082.d18d637168bf.json",
-   "sha256": "d18d637168bff4d1a292ec478719f7926de65dded51fee4dacedcf5db28c2448",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:16+00:00"
-  },
-  {
-   "gold_object": "series:spread_pf",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20785.ac866ed8db93.json",
-   "sha256": "ac866ed8db93e26be8bfd21f87ce6b75a736ccca5cdea0d19f594bb0b90b31f2",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:14+00:00"
-  },
-  {
-   "gold_object": "series:spread_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20784.b7ff1f5ce451.json",
-   "sha256": "b7ff1f5ce451faaace27ca096deeb8e754f99902a9429a6eb04c95be4450a086",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:13+00:00"
-  },
-  {
-   "gold_object": "series:spread_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20783.e563b57545f2.json",
-   "sha256": "e563b57545f2b0b5b994cdfe0daf28ad24809ed04f34bde652857baac3bbfbbb",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:11+00:00"
-  },
-  {
-   "gold_object": "series:taxa_pf",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20716.9839d77eea7b.json",
-   "sha256": "9839d77eea7b3207016adab9071512e500864c2f86c2e1d98e155e1681666259",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:09+00:00"
-  },
-  {
-   "gold_object": "series:taxa_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20715.1da3c0835d34.json",
-   "sha256": "1da3c0835d34a0fe8b16c6130931f3c2bf55752ac9151c7e84ef2e7541fa7861",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:07+00:00"
-  },
-  {
-   "gold_object": "series:taxa_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20714.5da5dfffaff8.json",
-   "sha256": "5da5dfffaff8e22b7653d19a46a9402a605a78ef4a7c959fe81b4b3174448a42",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:06+00:00"
-  },
-  {
-   "gold_object": "series:concessoes_pf",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20633.49935bee9ad8.json",
-   "sha256": "49935bee9ad8b10705e5aae54320cdad7a600665f118241eee666a19490dc8a6",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:05+00:00"
-  },
-  {
-   "gold_object": "series:concessoes_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20632.47d9c8db9b5f.json",
-   "sha256": "47d9c8db9b5fe960f1f40f76abed5e1661d27919f59bd0d3538b8b24d48a82df",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:04+00:00"
-  },
-  {
-   "gold_object": "series:concessoes_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20631.f670d90abc01.json",
-   "sha256": "f670d90abc019607de0e7fff4f41f104229bb1734f3f9a2f919d8e613204fb5f",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:02+00:00"
-  },
-  {
-   "gold_object": "series:saldo_pf",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20541.34ef7df48fa4.json",
-   "sha256": "34ef7df48fa43168242fb42cb1b5ef70778e659dd0fc507b2f20d71b0145727d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:56:01+00:00"
-  },
-  {
-   "gold_object": "series:saldo_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20540.afc7043f5a29.json",
-   "sha256": "afc7043f5a298ab25d4b4998a7b74e8bd91c9fe7632ebc5345a0fa6728998408",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:55:58+00:00"
-  },
-  {
-   "gold_object": "series:saldo_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260811/sgs_20539.734a872c4b82.json",
-   "sha256": "734a872c4b828350c0ec32e29dabc5eb2621b8d426430758b46fecd05bbaba93",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-08-11T09:55:57+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "mz:0310f05a-c6b5-b949-3ee4-b1463b04f54b",
-   "sha256": "360d4c3f04e5b58b9fcac4543e4c68826716c39c1a612d5cbd3f5a555a06937d",
-   "transform": "release fora da CVM (RI Caixa (plataforma MZ)) -> rel_docs/rel_paginas",
-   "created_at": "2026-08-10T10:45:47+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "release_020958IPE300620260143652935-08",
-   "sha256": "fe9dc8b08e8dcd8114a0f76e36274a3232dabbd2ed987a937d71a35947ea9433",
-   "transform": "release RI (via CVM/IPE) -> rel_docs/rel_paginas (páginas candidatas por termo)",
-   "created_at": "2026-08-10T10:45:45+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "release_000906IPE300620260167690334-94",
-   "sha256": "f8c47c9146afc1a8e69646ef8af46d7e64da6b24c7cf811ffefd0a21bcf14e31",
-   "transform": "release RI (via CVM/IPE) -> rel_docs/rel_paginas (páginas candidatas por termo)",
-   "created_at": "2026-08-10T10:45:41+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "release_000906IPE300620260101840289-40",
-   "sha256": "38de35e3815f8ead3237e128288d2b178b4f4605d5f1734745ebdfbf1eb9a267",
-   "transform": "release RI (via CVM/IPE) -> rel_docs/rel_paginas (páginas candidatas por termo)",
-   "created_at": "2026-08-10T10:45:25+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "release_001325IPE050820260197650073-58",
-   "sha256": "544be4af24c2103ef23b0f393dafb56b00b8f19d54b32bc1b98275a880ca5aa5",
-   "transform": "release RI (via CVM/IPE) -> rel_docs/rel_paginas (páginas candidatas por termo)",
-   "created_at": "2026-08-10T10:45:21+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "release_019348IPE300620260101316860-30",
-   "sha256": "bd2fccc8e19c5720dae11de47f453f8dd73cc7dee5591c0f4b15b08442ebea43",
-   "transform": "release RI (via CVM/IPE) -> rel_docs/rel_paginas (páginas candidatas por termo)",
-   "created_at": "2026-08-10T10:45:18+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "fre_cia_aberta_2026.zip",
-   "sha256": "2bb05d8f376e28410c824ba7e5395e0e53e48f865a5ea1af7d8ad5b6b42ef541",
-   "transform": "FRE empregado_posicao_local -> oper_empregados (maior versão por companhia)",
-   "created_at": "2026-08-10T10:45:01+00:00"
-  },
-  {
-   "gold_object": "operacional.json",
-   "bronze_file": "fca_cia_aberta_2026.zip",
-   "sha256": "278f013b50c3e08f5ff6c93edf7da25d7e26107235fe6ebd1f1d0e39bc215f26",
-   "transform": "FCA auditor -> oper_auditores; FCA geral -> oper_cadastro_cvm (setor de atividade)",
-   "created_at": "2026-08-10T10:44:59+00:00"
-  },
-  {
-   "gold_object": "moradia.json",
-   "bronze_file": "bronze/mercado_imobiliario/series",
-   "sha256": "01ea17d0f9d6a212602f3314753905fcd92f897d0dd78df6d4cd941765e5b12e",
-   "transform": "BCB Informações do Mercado Imobiliário -> crédito habitacional por UF (residencial/PF, segmentos SFH, FGTS, livre, home equity e comercial)",
-   "created_at": "2026-08-10T10:44:30+00:00"
-  },
-  {
-   "gold_object": "pix.json",
-   "bronze_file": "pix/pix_tx_202605.csv",
-   "sha256": "5a35883fc16f9257ac7d3242febde25d0fea1675239e12391ad84f5d63283021",
-   "transform": "base transacional Pix (SPI) -> silver pix_tx; cobertura ~91% da qtd do universo doc 1201 (declarada)",
-   "created_at": "2026-08-10T10:34:50+00:00"
-  },
-  {
-   "gold_object": "fidc_agg:202607",
-   "bronze_file": "data/bronze/cvm_fidc/20260810/agg_202607.96eaefd0e0ee.json",
-   "sha256": "96eaefd0e0ee2387cba3e50b3159bfbbfebd85abdcc25f6349c8862b412f38ef",
-   "transform": "CVM informe mensal FIDC tab_I — carteira e créditos vencidos (inadimplentes/adimplentes), agregado do sistema",
-   "created_at": "2026-08-10T10:34:05+00:00"
-  },
-  {
-   "gold_object": "market_fin:tri:2026",
-   "bronze_file": "data/bronze/cvm/20260810/itr_2026_extrato.76fa6075fc75.json",
-   "sha256": "76fa6075fc750c10b8c62af242c393f640a773c24b619f638514742a1697ef84",
-   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-08-10T10:34:04+00:00"
-  },
-  {
-   "gold_object": "market_fin:anual:2025",
-   "bronze_file": "data/bronze/cvm/20260810/dfp_2025_extrato.9f78a34b0e36.json",
-   "sha256": "9f78a34b0e36ddddef5dee2b3e013e8254cf7ac55ea87e6c25aa313ac1690bfd",
-   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-08-10T10:34:00+00:00"
-  },
-  {
-   "gold_object": "market_fin:anual:2024",
-   "bronze_file": "data/bronze/cvm/20260810/dfp_2024_extrato.12b9b60ac6d3.json",
-   "sha256": "12b9b60ac6d36728b7dfeba7ee8bfc8927721d2d60e4dd9beffa6c8485c41dd8",
-   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-08-10T10:33:56+00:00"
-  },
-  {
-   "gold_object": "market_dividends:alfa",
-   "bronze_file": "data/bronze/b3_proventos/20260810/alfa.2891100f2142.json",
-   "sha256": "2891100f2142eef1921868b0b87b3c2ab37e41e82fd1b88648ad7524d23e617c",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:52+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bmi",
-   "bronze_file": "data/bronze/b3_proventos/20260810/bmi.c362116956df.json",
-   "sha256": "c362116956df7b9bcb65db2e725c701500bfea769a9622b3828265d815a4b23b",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:52+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banese",
-   "bronze_file": "data/bronze/b3_proventos/20260810/banese.a477ce2e59a6.json",
-   "sha256": "a477ce2e59a665c96599b0124d5e338f9c5fdedadb1be4e95614961b84d7d148",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:51+00:00"
-  },
-  {
-   "gold_object": "market_dividends:brpartners",
-   "bronze_file": "data/bronze/b3_proventos/20260810/brpartners.77e600aec9e0.json",
-   "sha256": "77e600aec9e062725edb2a1e7a8eca7a477a3ccb77657c27f57c8dba5dd5ec07",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:51+00:00"
-  },
-  {
-   "gold_object": "market_dividends:brb",
-   "bronze_file": "data/bronze/b3_proventos/20260810/brb.a8f9a1232bef.json",
-   "sha256": "a8f9a1232bef37280331dc15a8082a4c76ed7521f8900b888a0a3a08ce95fb2f",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:50+00:00"
-  },
-  {
-   "gold_object": "market_dividends:mercantil",
-   "bronze_file": "data/bronze/b3_proventos/20260810/mercantil.758c4fa84ec8.json",
-   "sha256": "758c4fa84ec87a8f6bd8b008cb8da3faf53395e23b12d0600e956073055ccb3d",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:49+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banestes",
-   "bronze_file": "data/bronze/b3_proventos/20260810/banestes.4a69d1899214.json",
-   "sha256": "4a69d18992145a13b652d8e4b7481f3ee16d14177b275423863bee6aec342821",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:48+00:00"
-  },
-  {
-   "gold_object": "market_dividends:nordeste",
-   "bronze_file": "data/bronze/b3_proventos/20260810/nordeste.2e139bf0c3f6.json",
-   "sha256": "2e139bf0c3f67033b7d5a4289f41a53135892f9fa5be10a8917a9dfdb7b926bf",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:47+00:00"
-  },
-  {
-   "gold_object": "market_dividends:pine",
-   "bronze_file": "data/bronze/b3_proventos/20260810/pine.d64dfa31b992.json",
-   "sha256": "d64dfa31b992ff8b7d398540998a38603fd1e9bcfd93e7660ad68cca54427ccb",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:46+00:00"
-  },
-  {
-   "gold_object": "market_dividends:amazonia",
-   "bronze_file": "data/bronze/b3_proventos/20260810/amazonia.e8392e18394f.json",
-   "sha256": "e8392e18394f35ea8122b9542284492907198d91e4fbbba10dd7706b53a4d298",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:46+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bmg",
-   "bronze_file": "data/bronze/b3_proventos/20260810/bmg.105cd0e763df.json",
-   "sha256": "105cd0e763dfc91d80b13c953938723a7a313d4c65149f0bd25f1fb94805fcbc",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:45+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banrisul",
-   "bronze_file": "data/bronze/b3_proventos/20260810/banrisul.eff24de5c2f9.json",
-   "sha256": "eff24de5c2f95b5fbe750f0fecd020131c50ed5e10213cb5aa809b3fa751d698",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:44+00:00"
-  },
-  {
-   "gold_object": "market_dividends:abc",
-   "bronze_file": "data/bronze/b3_proventos/20260810/abc.2d8b4020b6ea.json",
-   "sha256": "2d8b4020b6eae5970b01a1bd8d13b57555fff5fd14139e8e3e2fa795fabc40b1",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:43+00:00"
-  },
-  {
-   "gold_object": "market_dividends:santander",
-   "bronze_file": "data/bronze/b3_proventos/20260810/santander.52667e7ee77d.json",
-   "sha256": "52667e7ee77d60c0ee851d7163e47bc5d787416a857359cd731ef00a15379dfe",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:42+00:00"
-  },
-  {
-   "gold_object": "market_dividends:btg",
-   "bronze_file": "data/bronze/b3_proventos/20260810/btg.9b71964ca6dc.json",
-   "sha256": "9b71964ca6dcaa984fd3d67152a16956f31860d125e33ad513d67c6fe1e5e782",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:42+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bradesco",
-   "bronze_file": "data/bronze/b3_proventos/20260810/bradesco.2b234ce3722a.json",
-   "sha256": "2b234ce3722a9c5cd8f2039f52d4afb33177d9bfb2fd66f3c66975624b8d1f3a",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:40+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bb",
-   "bronze_file": "data/bronze/b3_proventos/20260810/bb.001df8aaad6e.json",
-   "sha256": "001df8aaad6ed00064e99ddb57d0da77ea95310f8c0f61e652c889fc54607557",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:37+00:00"
-  },
-  {
-   "gold_object": "market_dividends:itau",
-   "bronze_file": "data/bronze/b3_proventos/20260810/itau.aed862bfa3a6.json",
-   "sha256": "aed862bfa3a6b09357f7b062fc30f207263b4b41e4f34e458ebc6ae0337c8a0a",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-08-10T10:33:36+00:00"
-  },
-  {
-   "gold_object": "market_prices:2026",
-   "bronze_file": "data/bronze/b3_cotahist/20260810/extrato_2026.5ac432196e06.json",
-   "sha256": "5ac432196e06a9211cb5f9736d4105e9096add0113d2d9ce48517d15de8ab14f",
-   "transform": "B3 COTAHIST anual — fechamento e volume, mercado à vista, lote padrão; preços NÃO ajustados",
-   "created_at": "2026-08-10T10:33:32+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Vendor - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Vendor_-_Prefixado.b6a7fb2644cf.json",
-   "sha256": "b6a7fb2644cf1ed1e2f3afa0ae819f86370179e430b4d47107f7dfd63bddafe3",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:31+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Adiantamento sobre contratos de câmbio (",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Adiantamento_sobre_contratos_de_câmbio_(.bda0abf2ed99.json",
-   "sha256": "bda0abf2ed9964339ec49960ae478ea79e75ab43f0fdc2092cf6435830c559b3",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:28+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Antecipação de faturas de cartão de créd",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Antecipação_de_faturas_de_cartão_de_créd.e9d34180e114.json",
-   "sha256": "e9d34180e1141ebe06232199ff761831ce0c266de2a0748361c337177d834faf",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:23+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Desconto de cheques - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Desconto_de_cheques_-_Prefixado.7227629c59ee.json",
-   "sha256": "7227629c59eef70046662966c955536193472d1b6ce3db474f5bb5dd6fb2aeaa",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:20+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Desconto de duplicatas - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Desconto_de_duplicatas_-_Prefixado.93e6310982f0.json",
-   "sha256": "93e6310982f0b6ff01a54c322e9713dcdc557452a43d946aeb1167955388f29c",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:16+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Cheque especial - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Cheque_especial_-_Prefixado.e1e234b2ee40.json",
-   "sha256": "e1e234b2ee40de957913549c49312e5252ffa4c41000633856661fd5921dada9",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:12+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Conta garantida - Pós-fixado referenciad",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Conta_garantida_-_Pós-fixado_referenciad.f80d9a3970a0.json",
-   "sha256": "f80d9a3970a0817a53da645ba259d951f0152f1c45913cd324ddeb1657ea3e54",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:08+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Conta garantida - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Conta_garantida_-_Prefixado.e45a965c6efa.json",
-   "sha256": "e45a965c6efa2ddc34f8a819ef254b720a61d8ca2a27ad8c77ece6913f708113",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:04+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Capital_de_giro_com_prazo_superior_a_365.fa731b3ab1c9.json",
-   "sha256": "fa731b3ab1c96d70ef47395e96e34843cc57c1abec800a0fd5b055f27baa71d7",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:32:00+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Capital_de_giro_com_prazo_até_365_dias_-.d8c7bdd427c9.json",
-   "sha256": "d8c7bdd427c90834f6a6f1efacbc194fa4fe490ede26e9f84c4826db9ac57f49",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:56+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Capital_de_giro_com_prazo_superior_a_365.dedde3985649.json",
-   "sha256": "dedde3985649ef8091e7ca04075b596490005f66f1f5da5047e1cd7790564e12",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:52+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Capital_de_giro_com_prazo_até_365_dias_-.a17e1094dfdc.json",
-   "sha256": "a17e1094dfdcf7f2ba056c9107b5e84c1f4ce4d64ff264fb420ba90e26475941",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:47+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Cheque especial - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Cheque_especial_-_Prefixado.253e0a87ee42.json",
-   "sha256": "253e0a87ee4285f13ad5bf3483876fe127cce66b4c89cee80e85f9d455a9d68c",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:44+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Aquisição de veículos - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Aquisição_de_veículos_-_Prefixado.4083d922eae6.json",
-   "sha256": "4083d922eae694704b3b7ed54d0eda43cfe95e1a138269def37cb0c49c529dfe",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:39+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Crédito pessoal não consignado - Prefixa",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Crédito_pessoal_não_consignado_-_Prefixa.54e470fc65d3.json",
-   "sha256": "54e470fc65d3e2370bbb5d4cba1cd58c51e8491ca6ce72eb3f93baa1779412d9",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:35+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Crédito pessoal consignado público - Pre",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Crédito_pessoal_consignado_público_-_Pre.46219697bbcf.json",
-   "sha256": "46219697bbcfa1c471db00db639e86c055e9cdbcc789fe89743d73ec516a3370",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:30+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Crédito pessoal consignado privado - Pre",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Crédito_pessoal_consignado_privado_-_Pre.7194babacc45.json",
-   "sha256": "7194babacc4597e73ef41fd4bf322375341c261335a8bb82bb64a8da2b2b5a9e",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:25+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Crédito pessoal consignado INSS - Prefix",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Crédito_pessoal_consignado_INSS_-_Prefix.b7243454e12a.json",
-   "sha256": "b7243454e12a83a6bb64ea42af021832563216a3b101adfa5a39c8daf9b11623",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:21+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Cartão de crédito - parcelado - Prefixad",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Cartão_de_crédito_-_parcelado_-_Prefixad.0bf0a5ea1332.json",
-   "sha256": "0bf0a5ea1332f98cff5ade30e786af50f645525176b4b5e1479a9b5cc5a767d5",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:17+00:00"
-  },
-  {
-   "gold_object": "taxas:PE:Cartão de crédito - rotativo total - Pre",
-   "bronze_file": "data/bronze/txjuros/20260810/PE_Cartão_de_crédito_-_rotativo_total_-_Pre.67ca07b474bb.json",
-   "sha256": "67ca07b474bbf2fec23664b8ba52de0d2f02fefa8754de70ef358e4abf28f95b",
-   "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-08-10T10:31:12+00:00"
-  },
-  {
-   "gold_object": "reclamacoes:2025T3",
-   "bronze_file": "data/bronze/reclamacoes/20260810/ranking_2025T3.4f7f9305da19.json",
-   "sha256": "4f7f9305da19e78c8c6ef50ca5b6ac6b5b0d431bb128ceac78777424f50a5c65",
-   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-08-10T10:31:06+00:00"
-  },
-  {
-   "gold_object": "reclamacoes:2025T4",
-   "bronze_file": "data/bronze/reclamacoes/20260810/ranking_2025T4.ffc20dac2c76.json",
-   "sha256": "ffc20dac2c76fe2d46def2aedd505b5c18e72024e4eec887c7776bb76a1b09b6",
-   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-08-10T10:31:04+00:00"
-  },
-  {
-   "gold_object": "reclamacoes:2026T1",
-   "bronze_file": "data/bronze/reclamacoes/20260810/ranking_2026T1.f81d408167b5.json",
-   "sha256": "f81d408167b5b9af42cbc9e5955466787637952afde15ed1cfc7752465a7fb79",
-   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-08-10T10:31:02+00:00"
-  },
-  {
-   "gold_object": "reclamacoes:2026T2",
-   "bronze_file": "data/bronze/reclamacoes/20260810/ranking_2026T2.cc5d759cf081.json",
-   "sha256": "cc5d759cf08123bb87bd87c4ef1c30a256a2c761ee5b702366ec9f4437bbdf6c",
-   "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-08-10T10:31:01+00:00"
-  },
-  {
-   "gold_object": "of_participants",
-   "bronze_file": "data/bronze/openfinance/20260810/directory_participants.164f7f8d25d9.json",
-   "sha256": "164f7f8d25d996753722ce85db30e782815ce9f4f1f60c0dc7ffc3c7fd8772f6",
-   "transform": "diretório oficial: papéis e famílias de API por organização",
-   "created_at": "2026-08-10T10:30:59+00:00"
-  },
-  {
-   "gold_object": "of_ranking:payment-initiation",
-   "bronze_file": "data/bronze/openfinance/20260810/ranking_org_iniciacao_pagamento.e7ca75ae1c15.json",
-   "sha256": "e7ca75ae1c15ea64c0f81c75c9ca807e25a8598d3699652e3af7792adecbaed2",
-   "transform": "POST axis=organisation",
-   "created_at": "2026-08-10T10:30:48+00:00"
-  },
-  {
-   "gold_object": "of_ranking:open-data",
-   "bronze_file": "data/bronze/openfinance/20260810/ranking_org_dados_abertos.4a0272bcebd7.json",
-   "sha256": "4a0272bcebd7abf07aa412c0391d958be1e7159a4e1888f7753f50c3c49084a3",
-   "transform": "POST axis=organisation",
-   "created_at": "2026-08-10T10:30:46+00:00"
-  },
-  {
-   "gold_object": "of_ranking:transactional-data",
-   "bronze_file": "data/bronze/openfinance/20260810/ranking_org_dados_transacionais.c070ed3eeb14.json",
-   "sha256": "c070ed3eeb1400fe869f7cbf525bec9716e075136b37bcf10d0384a904923807",
-   "transform": "POST axis=organisation",
-   "created_at": "2026-08-10T10:30:45+00:00"
-  },
-  {
-   "gold_object": "series:of_consentimentos_recebidos",
-   "bronze_file": "data/bronze/openfinance/20260810/consents_client.c7a52eb47302.json",
-   "sha256": "c7a52eb4730293957767d846b5194f50e63719676a6afc9c71ef9b5256485e0d",
-   "transform": "POST /api/consents; série semanal",
-   "created_at": "2026-08-10T10:30:33+00:00"
-  },
-  {
-   "gold_object": "series:of_consentimentos_transmitidos",
-   "bronze_file": "data/bronze/openfinance/20260810/consents_server.990953f52ad4.json",
-   "sha256": "990953f52ad45634bb5bd4fe6fd52c3e4a32ad8b592ff448f38d73e76f6deda8",
-   "transform": "POST /api/consents; série semanal",
-   "created_at": "2026-08-10T10:30:32+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjgo",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjgo.50436ad16f89.json",
-   "sha256": "50436ad16f89eec9dc7a22eb386f8590b72a8026d20bb7503b3d6b455339378e",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:52+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjgo",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjgo.34a509b85b0e.json",
-   "sha256": "34a509b85b0ec9288697c354926c29799ae7bc5f48c340133001554ac1714e9b",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:46+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjba",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjba.3c068f47b950.json",
-   "sha256": "3c068f47b9505e9503ef98bafe96de740ffb080a4d0edc8398671d1360d3bb94",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:34+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjba",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjba.791486b1a659.json",
-   "sha256": "791486b1a659e65d4214767bb20db73d98ba9859bd51880a13fb167d7eaa3911",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:31+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjsc",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjsc.d339e284cd57.json",
-   "sha256": "d339e284cd5746f15add8666c5c5462c722a37993af881a610730f9cd7e0884f",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:25+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjsc",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjsc.e023ba6808ed.json",
-   "sha256": "e023ba6808ed098d25495f0f20d6361c1bf4a726ef764a81103a4cb3ab880444",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:08+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjpr",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjpr.e821636ca3dc.json",
-   "sha256": "e821636ca3dc774b0594ff780505bef1c3f420bcdba87afea32ea1b2457dc25e",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:25:00+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjpr",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjpr.ce7d99719a0d.json",
-   "sha256": "ce7d99719a0db9bdc766afc3e3392f7479de71cb711bf9c2ae132cbfba8d8c1e",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:24:17+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjrs",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjrs.78e08abe98b1.json",
-   "sha256": "78e08abe98b16e75414832e5eb13c1545185617a7b85c07c741c35d8c7bdce07",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:24:03+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjrs",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjrs.420e1a251e02.json",
-   "sha256": "420e1a251e026d0a58ccf1459b44fa9644fbac3e20ba0cfd487cda510f03bc5b",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:23:35+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjmg",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjmg.6136cd716379.json",
-   "sha256": "6136cd716379b9435f006e1ac03796bb22fb08cf77cf85f7883076dfe263079f",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:23:23+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjmg",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjmg.925e57acfc1d.json",
-   "sha256": "925e57acfc1dd59cd48793e14f075b2a5121f6a3424941a8cc45ac2f797a4a09",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:22:27+00:00"
-  },
-  {
-   "gold_object": "series:falencia_tjrj",
-   "bronze_file": "data/bronze/datajud/20260810/falencia_tjrj.019cb27e2934.json",
-   "sha256": "019cb27e293400b251a047437ba8a7e6c8d2c183525d09eb23bc57a072015394",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:22:16+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjrj",
-   "bronze_file": "data/bronze/datajud/20260810/recuperacao_judicial_tjrj.dee3647fbd96.json",
-   "sha256": "dee3647fbd96244b0981490f8a6e59113e25a3723bd3030095a2128879efaeb1",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-08-10T10:21:02+00:00"
   }
  ],
  "n_revisoes_total": 1819,
