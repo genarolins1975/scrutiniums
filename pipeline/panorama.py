@@ -234,7 +234,9 @@ def build(con, cfg):
                                 "indicador": "inadimplência (arrastada)", "atual": h[-1][1], "anterior": h[-4][1],
                                 "delta_pp": d3m, "delta_12m_pp": d12m, "periodo": f"{h[-4][0]} → {h[-1][0]}",
                                 "saldo_grupo": round(saldo_atual),
-                                "nota": NOTA_PRODUTO if tipo.startswith("produto") and "Cartão" in k else None,
+                                "nota": (NOTA_PRODUTO if tipo.startswith("produto") and "Cartão" in k
+                                         else "'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único." if k == "Outros"
+                                         else None),
                                 "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
                                 "link": {"view": "panorama"}})
     melhoras = sorted([m for m in mapa if m["d_inad_12m"] is not None], key=lambda m: m["d_inad_12m"])[:3]
@@ -247,7 +249,10 @@ def build(con, cfg):
     reg_top = sorted(por_regiao.items(), key=lambda x: -x[1])[:2]
     pior_renda = max((x for x in perfis["renda_pf"] if x["d_inad_12m"] is not None and x["grupo"] not in ("Indisponível",)),
                      key=lambda x: x["d_inad_12m"], default=None)
-    pior_prod = max((x for x in perfis["produto_pf"] if x["d_inad_12m"] is not None and x["saldo"] > 50e9),
+    # "Outros" é agregado residual do SCR — o superlativo da síntese aponta um
+    # produto identificável; a deterioração do residual segue visível nos alertas
+    pior_prod = max((x for x in perfis["produto_pf"] if x["d_inad_12m"] is not None and x["saldo"] > 50e9
+                     and x["grupo"] != "Outros"),
                     key=lambda x: x["d_inad_12m"], default=None)
     pior_ufs = sorted([m for m in mapa if m["d_inad_12m"] is not None], key=lambda m: -m["d_inad_12m"])[:3]
     cresc12_br = _cresc(brtot(d0, "saldo"), brtot(d12, "saldo"))

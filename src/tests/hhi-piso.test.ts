@@ -77,6 +77,25 @@ describe("gated: invariantes do piso no gold publicado", () => {
     }
   });
 
+  it("varredura: nenhuma superfície coroa o resíduo como campeão", () => {
+    // frases de síntese nunca dizem "concentrada em: outros"
+    const ip = JSON.parse(readFileSync(join(raiz, "public/obs/data/gold/inst_pages.json"), "utf-8"));
+    for (const pag of ip.paginas || []) {
+      for (const fr of pag.sintese || []) {
+        expect(fr.frase, pag.cod_inst).not.toMatch(/concentrada em: outros/);
+      }
+    }
+    // panorama: o superlativo da síntese exclui o residual; alertas sobre
+    // "Outros" carregam a nota de agregado
+    const panPy = readFileSync(join(raiz, "pipeline/panorama.py"), "utf-8");
+    expect(panPy).toMatch(/x\["grupo"\] != "Outros"/);
+    expect(panPy).toMatch(/agregado residual do SCR/);
+    const pan = JSON.parse(readFileSync(join(raiz, "public/obs/data/gold/panorama.json"), "utf-8"));
+    expect(pan.sintese || "").not.toMatch(/ e em Outros\./);
+    // a SPA nunca exibe "outros" como se fosse um setor
+    expect(appJs).toMatch(/outros \(não classificados\)/);
+  });
+
   it("os alertas de concentração remanescentes citam o piso e a cobertura", () => {
     for (const f of arquivos) {
       const d = JSON.parse(readFileSync(join(dir, f), "utf-8"));

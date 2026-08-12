@@ -580,7 +580,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), outros (22.0%); HHI setorial (piso) 1727.",
+     "frase": "Setores identificados na carteira PJ: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), transporte armazenagem e correio (9.2%) — 22.0% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1727.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -1201,7 +1201,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: outros (28.3%), industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%); HHI setorial (piso) 1489.",
+     "frase": "Setores identificados na carteira PJ: industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%), transporte armazenagem e correio (5.9%) — 28.3% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1489.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -1793,7 +1793,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Carteira PJ concentrada em: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), outros (22.2%); HHI setorial (piso) 1999.",
+     "frase": "Setores identificados na carteira PJ: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), industrias de transformacao (7.2%) — 22.2% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1999.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
