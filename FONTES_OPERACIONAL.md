@@ -401,3 +401,11 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   declarada e quebra a comparabilidade entre eles.
 - **Cadência:** ciclos vigentes são acompanhados a cada divulgação
   trimestral (ITR/releases via IPE) e fechados na divulgação anual seguinte.
+  Cada acompanhamento é uma extração própria com o próprio gate de aprovação
+  (`acompanhamentos[]` no ciclo): revisões de intervalo apontam a métrica
+  revisada; realizado parcial de semestre NUNCA vira aferição — a aferição só
+  existe no fechamento do ciclo. Rodada 2T26 (12/08/2026): Itaú REVISOU
+  serviços/seguros (5-9% → 2-5%, demais mantidos); Bradesco manteve tudo e
+  publicou o realizado 1S26; BB ainda não havia divulgado (pendência
+  declarada); Santander segue sem guidance. A rodada também inaugurou a
+  série intra-anual de TI (§11) e a amortização de folha 1S26 do Itaú (§9).

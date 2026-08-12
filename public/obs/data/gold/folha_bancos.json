@@ -1316,7 +1316,7 @@
     "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
    }
   ],
-  "em_revisao": 0,
+  "em_revisao": 1,
   "leitura": "O que o banco paga pela folha vira ativo intangível e se amortiza no prazo do contrato — é o mesmo negócio dos leilões, visto pelo balanço. Só o Banco do Brasil isola a folha em conta própria; nos demais o conceito é mais amplo ou não é isolado, e cada observação declara isso em `exclusivo_folha`.",
   "cautelas": [
    "Conceitos e unidades diferem por banco (R$ mil × R$ milhões; folha isolada × categoria ampla): valores NUNCA são somados nem ranqueados entre bancos.",
