@@ -33,6 +33,7 @@
    "nome": "Itau Unibanco Holding S.A.",
    "listada": true,
    "cod_ifdata": "C0010069",
+   "cnpj8": "60872504",
    "cnpj8_rede": "60701190",
    "correspondentes": {
     "nome": "ITAÚ UNIBANCO S.A.",
@@ -353,6 +354,7 @@
    "nome": "Banco Brasil S.A.",
    "listada": true,
    "cod_ifdata": "C0049906",
+   "cnpj8": "00000000",
    "cnpj8_rede": "00000000",
    "correspondentes": {
     "nome": "BANCO DO BRASIL S.A.",
@@ -700,6 +702,7 @@
    "nome": "Banco Bradesco S.A.",
    "listada": true,
    "cod_ifdata": "C0010045",
+   "cnpj8": "60746948",
    "cnpj8_rede": "60746948",
    "correspondentes": {
     "nome": "BANCO BRADESCO S.A.",
@@ -1089,6 +1092,7 @@
    "nome": "Banco Santander (Brasil) S.A.",
    "listada": true,
    "cod_ifdata": "C0030379",
+   "cnpj8": "90400888",
    "cnpj8_rede": "90400888",
    "correspondentes": {
     "nome": "BANCO SANTANDER (BRASIL) S.A.",
@@ -1515,6 +1519,7 @@
    "nome": "Banco Btg Pactual S.A.",
    "listada": true,
    "cod_ifdata": "C0049944",
+   "cnpj8": "30306294",
    "cnpj8_rede": "30306294",
    "correspondentes": {
     "nome": "BANCO BTG PACTUAL S.A.",
@@ -1835,6 +1840,7 @@
    "nome": "Banco Abc Brasil S.A.",
    "listada": true,
    "cod_ifdata": "C0041856",
+   "cnpj8": "28195667",
    "cnpj8_rede": "28195667",
    "correspondentes": {
     "nome": "BANCO ABC BRASIL S.A.",
@@ -2198,6 +2204,7 @@
    "nome": "Banco Estado Do Rio Grande Do Sul S.A.",
    "listada": true,
    "cod_ifdata": "C0030173",
+   "cnpj8": "92702067",
    "cnpj8_rede": "92702067",
    "correspondentes": {
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.",
@@ -2528,6 +2535,7 @@
    "nome": "Banco Bmg S.A.",
    "listada": true,
    "cod_ifdata": "C0030290",
+   "cnpj8": "61186680",
    "cnpj8_rede": "61186680",
    "correspondentes": {
     "nome": "BANCO BMG S.A.",
@@ -2912,6 +2920,7 @@
    "nome": "Banco Pine S.A.",
    "listada": true,
    "cod_ifdata": "C0050304",
+   "cnpj8": "62144175",
    "cnpj8_rede": "62144175",
    "correspondentes": {
     "nome": "BANCO PINE S.A.",
@@ -3232,6 +3241,7 @@
    "nome": "Banco Amazonia S.A.",
    "listada": true,
    "cod_ifdata": "04902979",
+   "cnpj8": "04902979",
    "cnpj8_rede": "04902979",
    "correspondentes": null,
    "empregados": {
@@ -3552,6 +3562,7 @@
    "nome": "Banco Nordeste Do Brasil S.A.",
    "listada": true,
    "cod_ifdata": "07237373",
+   "cnpj8": "07237373",
    "cnpj8_rede": "07237373",
    "correspondentes": null,
    "empregados": {
@@ -3872,6 +3883,7 @@
    "nome": "Banestes S.A. - Banco Est Espirito Santo",
    "listada": true,
    "cod_ifdata": "C0030159",
+   "cnpj8": "28127603",
    "cnpj8_rede": "28127603",
    "correspondentes": {
     "nome": "BANESTES S.A. BANCO DO ESTADO DO ESPIRITO SANTO",
@@ -4240,6 +4252,7 @@
    "nome": "Banco Mercantil Do Brasil S.A.",
    "listada": true,
    "cod_ifdata": "C0020152",
+   "cnpj8": "17184037",
    "cnpj8_rede": "17184037",
    "correspondentes": {
     "nome": "BANCO MERCANTIL DO BRASIL S.A.",
@@ -4560,6 +4573,7 @@
    "nome": "Brb Banco De Brasilia S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "00000208",
    "cnpj8_rede": "00000208",
    "correspondentes": {
     "nome": "BRB - BANCO DE BRASILIA S.A.",
@@ -4873,6 +4887,7 @@
    "nome": "Banco Estado De Sergipe S.A. - Banese",
    "listada": true,
    "cod_ifdata": "13009717",
+   "cnpj8": "13009717",
    "cnpj8_rede": "13009717",
    "correspondentes": {
     "nome": "BANCO DO ESTADO DE SERGIPE S.A.",
@@ -5198,6 +5213,7 @@
    "nome": "Brbi Br Partners S.A.",
    "listada": true,
    "cod_ifdata": "13220493",
+   "cnpj8": "10739356",
    "cnpj8_rede": "10739356",
    "correspondentes": null,
    "empregados": {
@@ -5312,6 +5328,7 @@
    "nome": "Alfa Holdings S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "17167396",
    "cnpj8_rede": "03323840",
    "correspondentes": null,
    "empregados": {
@@ -5632,6 +5649,7 @@
    "nome": "Banco Mercantil De Investimentos S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "34169557",
    "cnpj8_rede": "34169557",
    "correspondentes": null,
    "empregados": {
@@ -5743,6 +5761,7 @@
    "nome": "Banco Do Estado Do Para S.A.",
    "listada": true,
    "cod_ifdata": "04913711",
+   "cnpj8": "04913711",
    "cnpj8_rede": "04913711",
    "correspondentes": null,
    "empregados": {
@@ -6068,6 +6087,7 @@
    "nome": "Banco Daycoval S.A.",
    "listada": true,
    "cod_ifdata": "C0051987",
+   "cnpj8": "62232889",
    "cnpj8_rede": "62232889",
    "correspondentes": {
     "nome": "BANCO DAYCOVAL S.A.",
@@ -6393,6 +6413,7 @@
    "nome": "Parana Banco S.A.",
    "listada": true,
    "cod_ifdata": "C0030881",
+   "cnpj8": "14388334",
    "cnpj8_rede": "14388334",
    "correspondentes": {
     "nome": "PARANÁ BANCO S.A.",
@@ -6723,6 +6744,7 @@
    "nome": "Banco Rci Brasil S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "62307848",
    "cnpj8_rede": null,
    "correspondentes": null,
    "empregados": null,
@@ -6762,6 +6784,7 @@
    "nome": "Investimentos Bemge S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "01548981",
    "cnpj8_rede": null,
    "correspondentes": null,
    "empregados": {
@@ -6876,6 +6899,7 @@
    "nome": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "33040601",
    "cnpj8_rede": null,
    "correspondentes": null,
    "empregados": {
@@ -6963,6 +6987,7 @@
    "nome": "Banco Pan S.A.",
    "listada": true,
    "cod_ifdata": null,
+   "cnpj8": "59285411",
    "cnpj8_rede": "59285411",
    "correspondentes": {
     "nome": "BANCO PAN S.A.",
@@ -7266,6 +7291,7 @@
    "nome": "Inter & Co, Inc. (Banco Inter)",
    "listada": true,
    "cod_ifdata": "C0051884",
+   "cnpj8": "42737954",
    "cnpj8_rede": "00416968",
    "correspondentes": null,
    "empregados": {
@@ -7645,6 +7671,7 @@
    "nome": "Caixa Econômica Federal",
    "listada": false,
    "cod_ifdata": "C0051626",
+   "cnpj8": "00360305",
    "cnpj8_rede": "00360305",
    "correspondentes": {
     "nome": "CAIXA ECONOMICA FEDERAL",
@@ -7940,6 +7967,7 @@
    "nome": "Banco Safra S.A.",
    "listada": false,
    "cod_ifdata": "C0010083",
+   "cnpj8": "58160789",
    "cnpj8_rede": "58160789",
    "correspondentes": {
     "nome": "BANCO SAFRA S.A.",
@@ -8192,6 +8220,7 @@
    "nome": "Nu Holdings Ltd. (Nubank)",
    "listada": false,
    "cod_ifdata": null,
+   "cnpj8": "18236120",
    "cnpj8_rede": "18236120",
    "correspondentes": null,
    "empregados": null,

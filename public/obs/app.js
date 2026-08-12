@@ -198,7 +198,10 @@ const fmt = {
   n0: v => v == null ? "–" : Math.round(v).toLocaleString("pt-BR"),
   bi: v => v == null ? "–" : (v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " bi",
   triFromMi: v => v == null ? "–" : (v / 1e6).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " tri",
-  money: v => v == null ? "–" : v >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri" : "R$ " + fmt.n(v / 1e9, 1) + " bi",
+  money: v => v == null ? "–" : v >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri"
+    : v >= 1e9 ? "R$ " + fmt.n(v / 1e9, 1) + " bi"
+    : v >= 1e6 ? "R$ " + fmt.n(v / 1e6, 1) + " mi"
+    : "R$ " + fmt.n0(v),
   d: iso => iso ? `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}` : "–",
   my: iso => iso ? `${iso.slice(5, 7)}/${iso.slice(0, 4)}` : "–",
   pp: v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2),
@@ -209,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.66.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.67.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -219,7 +222,7 @@ const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index", "npl", "guidance", "regimes"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3"],
+  institutions: ["institutions", "inst_index", "npl", "guidance", "regimes"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3", "guidance", "regimes", "folha_bancos"],
   method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index", "operacional"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
@@ -4033,6 +4036,37 @@ function renderInstitutions() {
    listados, cada banco SÓ contra o próprio guidance. 'dentro/acima/abaixo'
    é posição aritmética no intervalo declarado, não juízo de mérito — nunca
    ranking nem média de cumprimento entre bancos. */
+/* Bloco de um ciclo de guidance — compartilhado entre a seção da aba
+   Instituições e a ficha individual da IF, para as duas superfícies nunca
+   divergirem em régua ou evidência. */
+function guidSitChip(m) {
+  return m.situacao === "dentro" ? `<span class="chip" style="background:var(--ok-bg,#e8f2ea)">dentro</span>`
+    : m.situacao === "em_curso" ? `<span class="chip">em curso</span>`
+    : `<span class="chip" style="background:var(--warn-bg,#f6ead8)">${m.situacao}</span>`;
+}
+function guidFaixa(m) {
+  if (m.realizado == null) return `${fmt.n(m.min, 1)} a ${fmt.n(m.max, 1)} ${m.unidade}`;
+  return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
+}
+function guidCicloBloco(c) {
+  return `
+    <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
+      <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
+    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
+      <tbody>${(c.metricas || []).map(m => `<tr>
+        <td>${m.nome}${m.formula ? ` <span title="${attr(m.formula)}">ⓘ</span>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
+        <td>${guidFaixa(m)}</td><td>${guidSitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
+    ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
+      <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
+      ${a.realizado_parcial ? `<br><span class="src">${a.realizado_parcial.map(r => `${r.metrica}: ${fmt.n(r.valor, 1)} (${r.unidade})`).join(" · ")}</span>` : ""}
+      <br><span class="src">Evidência: ${a.pagina} — <a href="${attr(a.documento.url)}" target="_blank" rel="noopener">${(a.documento.titulo || "documento").slice(0, 52)}</a></span></div>`).join("")}
+    ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
+    <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
+      `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`;
+}
+
 function guidanceSecao() {
   const G = state.data.guidance;
   if (!G || !G.disponivel) return "";
@@ -4041,29 +4075,7 @@ function guidanceSecao() {
       <p class="src">${fmt.n0(G.em_revisao)} ciclo(s) de guidance extraídos dos documentos oficiais (CVM/IPE) aguardando revisão
       editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>` : "";
   }
-  const sitChip = (m) => m.situacao === "dentro" ? `<span class="chip" style="background:var(--ok-bg,#e8f2ea)">dentro</span>`
-    : m.situacao === "em_curso" ? `<span class="chip">em curso</span>`
-    : `<span class="chip" style="background:var(--warn-bg,#f6ead8)">${m.situacao}</span>`;
-  const faixa = (m) => {
-    if (m.realizado == null) return `${fmt.n(m.min, 1)} a ${fmt.n(m.max, 1)} ${m.unidade}`;
-    return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
-  };
-  const cards = G.ciclos.map(c => `
-    <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
-      <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
-    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
-      <tbody>${(c.metricas || []).map(m => `<tr>
-        <td>${m.nome}${m.formula ? ` <span title="${attr(m.formula)}">ⓘ</span>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
-        <td>${faixa(m)}</td><td>${sitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
-    ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
-      <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
-      ${a.realizado_parcial ? `<br><span class="src">${a.realizado_parcial.map(r => `${r.metrica}: ${fmt.n(r.valor, 1)} (${r.unidade})`).join(" · ")}</span>` : ""}
-      <br><span class="src">Evidência: ${a.pagina} — <a href="${attr(a.documento.url)}" target="_blank" rel="noopener">${(a.documento.titulo || "documento").slice(0, 52)}</a></span></div>`).join("")}
-    ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
-    <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
-      `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`).join("");
+  const cards = G.ciclos.map(guidCicloBloco).join("");
   return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — ${termo("guidance","guidance")} dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
     <p style="margin:6px 0">${G.leitura}</p>
     ${cards}
@@ -4236,11 +4248,14 @@ function renderInstPageData(el, pg) {
   const gpc = pg.grupo_pares_composicao;
   const smeta = pg.score_meta;
   const operSec = operBlocoInst(cab);
+  const listadaSec = instListadaSecao(pg, cab);
   const temCaptacao = !!(sc.captacao || sc.modelo_negocio);
   const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"]]
     .concat(temCaptacao ? [["#s-captacao","Captação/Modelo"]] : [])
     .concat([["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]])
     .concat(operSec ? [["#s-oper","Operacional"]] : [])
+    .concat(listadaSec.includes('id="s-guidance"') ? [["#s-guidance","Guidance"]] : [])
+    .concat(listadaSec.includes('id="s-rem"') ? [["#s-rem","Remuneração"]] : [])
     .concat([["#s-limites","Limitações"]]);
   const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
     ${subnavItens.map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}
@@ -4431,6 +4446,7 @@ function renderInstPageData(el, pg) {
   </div>
   <div id="instSimilares"></div>
   ${operSec}
+  ${listadaSec}
   <div id="s-limites" class="card" style="margin-top:12px"><h4>Não disponível nas fontes públicas integradas (ausência ≠ zero)</h4>
     ${pg.indisponiveis.map(i => `<p class="src"><b>${i.indicador}:</b> ${i.motivo}</p>`).join("")}</div>`;
   fillInstSimilares(state.filters.instCod);
@@ -8493,6 +8509,98 @@ function operBlocoInst(cab) {
     ${state.filters.instCod && state.filters.instCod.startsWith("C") ? "conglomerado prudencial" : "nível de consolidação"});
     empregados são o declarado pela companhia listada no FRE.
     <a href="javascript:void(0)" onclick="nav('operacional')">ver o painel completo →</a></p></div>`;
+}
+
+/* Bloco "companhia listada" da ficha da IF: guidance × realizado, custos de
+   TI, remuneração da administração e folha — tudo junto pela RAIZ do CNPJ da
+   holding listada (cadastro CVM, via perfil operacional), nunca por nome.
+   Cada sub-bloco só aparece quando a IF tem o dado; ausência não vira zero. */
+function instListadaSecao(pg, cab) {
+  const r = operResolve(pg.cod_inst, cab && cab.cnpj);
+  const c8 = (r && r.piloto && r.piloto.cnpj8) || null;
+  const partes = [instRegimeAviso(pg, r), instGuidanceIF(c8), instTiIF(c8), instRemuneracaoIF(c8), instFolhaIF(c8)]
+    .filter(Boolean);
+  return partes.join("");
+}
+
+function instRegimeAviso(pg, r) {
+  /* quase sempre vazio — mas quando a IF da página está na lista vigente de
+     regimes do BCB, isso é a PRIMEIRA coisa que a ficha deve dizer */
+  const R = state.data.regimes;
+  if (!R || !R.disponivel) return "";
+  const cands = new Set([pg.cod_inst,
+    (r && r.piloto && r.piloto.cnpj8) || "", (r && r.piloto && r.piloto.cnpj8_rede) || ""]);
+  const hit = (R.vigentes || []).find(v => cands.has(v.cnpj8));
+  if (!hit) return "";
+  return `<div class="note warn" style="margin-top:12px"><b>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB:</b>
+    ${hit.tipo}, decretado em ${hit.inicio}${hit.responsavel ? ` · responsável nomeado: ${hit.responsavel}` : ""}.
+    <span class="src">Lista oficial vigente (BCB/Olinda), atualização diária — detalhes na aba Pulso do crédito.</span></div>`;
+}
+
+function instGuidanceIF(c8) {
+  const G = state.data.guidance;
+  if (!c8 || !G || !G.disponivel) return "";
+  const ciclos = (G.ciclos || []).filter(c => c.cnpj8 === c8);
+  if (!ciclos.length) return "";
+  const ordenados = ciclos.slice().sort((a, b) => b.ano - a.ano);
+  return `<div id="s-guidance" class="card" style="margin-top:12px"><h4>${termo("guidance","Guidance")} × entregue — promessas da própria companhia ${badge("observado", G.fonte.nota)}</h4>
+    ${ordenados.map(guidCicloBloco).join("")}
+    <p class="src">${(G.cautelas || [])[0] || ""}</p>
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel} · <a href="javascript:void(0)" onclick="nav('institutions')">todos os bancos com guidance →</a></p></div>`;
+}
+
+function instTiIF(c8) {
+  const O = state.data.operacional;
+  const TI = O && O.custos_ti;
+  if (!c8 || !TI) return "";
+  const obs = (TI.observacoes || []).filter(o => o.cnpj8 === c8)
+    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
+  if (!obs.length) return "";
+  return `<div id="s-ti" class="card" style="margin-top:12px"><h4>Quanto custa a TI ${badge("observado", TI.fonte && TI.fonte.nota)}</h4>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Rubrica (conceito do próprio banco)</th><th class="num">Valor</th><th>Referência</th></tr></thead>
+      <tbody>${obs.map(o => `<tr>
+        <td>${o.metrica}${o.conceito_nota ? ` <span title="${attr(o.conceito_nota)}">ⓘ</span>` : ""}<div class="src">${o.regime || ""}</div></td>
+        <td class="num"><b>${fmt.n0(o.valor)}</b> ${o.unidade}${o.comparativos ? `<div class="src">${Object.entries(o.comparativos).map(([a, v]) => `${a}: ${fmt.n0(v)}`).join(" · ")}</div>` : ""}</td>
+        <td class="src">${fmt.d(o.data_ref)}<br><a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 40)}</a> · ${o.pagina}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Conceitos contábeis DIFEREM entre bancos (a nota de cada rubrica declara o alcance) — nunca compare os valores entre instituições. Extração aprovada por revisor.</p></div>`;
+}
+
+function instRemuneracaoIF(c8) {
+  const O = state.data.operacional;
+  const RM = O && O.remuneracao;
+  if (!c8 || !RM) return "";
+  const emp = (RM.empresas || []).find(e => e.cnpj8 === c8);
+  if (!emp) return "";
+  const linha = (orgao, d) => {
+    if (!d || !d.realizado) return "";
+    const rz = d.realizado, pv = d.previsto;
+    return `<tr><td>${orgao}</td>
+      <td class="num"><b>${fmt.money(rz.total_brl)}</b><div class="src">exercício ${rz.exercicio}</div></td>
+      <td class="num">${rz.membros != null ? fmt.n(rz.membros, 1) : "–"}</td>
+      <td class="num">${rz.media_por_membro_brl != null ? fmt.money(rz.media_por_membro_brl) : "–"}</td>
+      <td class="num">${rz.maior != null ? fmt.money(rz.maior) : "–"}<div class="src">(8.3)</div></td>
+      <td class="num">${pv ? `${fmt.money(pv.total_brl)}<div class="src">${pv.exercicio}</div>` : "–"}</td></tr>`;
+  };
+  return `<div id="s-rem" class="card" style="margin-top:12px"><h4>Quanto ganha a administração ${badge("observado", RM.fonte && RM.fonte.nota)}</h4>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Órgão</th><th class="num">Total realizado</th><th class="num">Membros (média)</th><th class="num">Média/membro</th><th class="num">Maior individual</th><th class="num">Previsto</th></tr></thead>
+      <tbody>${linha("Diretoria Estatutária", emp.orgaos["Diretoria Estatutária"])}${linha("Conselho de Administração", emp.orgaos["Conselho de Administração"])}</tbody></table></div>
+    ${(RM.cautelas || []).slice(0, 2).map(x => `<p class="src">${x}</p>`).join("")}
+    <p class="src">CVM/FRE ${emp.fre_ano} — dados estruturados declarados pela própria companhia · <a href="javascript:void(0)" onclick="nav('operacional')">ver todos os bancos →</a></p></div>`;
+}
+
+function instFolhaIF(c8) {
+  const FB = state.data.folha_bancos;
+  const bal = FB && FB.balanco;
+  if (!c8 || !bal) return "";
+  const obs = (bal.observacoes || []).filter(o => o.cnpj8 === c8)
+    .sort((a, b) => (b.data_ref || "").localeCompare(a.data_ref || ""));
+  if (!obs.length) return "";
+  return `<div id="s-folha" class="card" style="margin-top:12px"><h4>Folhas de pagamento no balanço ${badge("observado", bal.fonte && bal.fonte.nota)}</h4>
+    ${obs.map(o => `<p style="margin:6px 0">${o.metrica}: <b>${fmt.n0(o.valor)} ${o.unidade}</b>
+      <span class="src">· ref. ${fmt.d(o.data_ref)} · <a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 44)}</a> · ${o.pagina}</span></p>`).join("")}
+    <p class="src">O que o banco pagou (e amortiza) pelo direito de operar folhas — competição por captação estável. Extração aprovada por revisor · <a href="javascript:void(0)" onclick="nav('operacional')">contexto completo →</a></p></div>`;
 }
 
 function cmpRedeFase0(insts, datas) {
