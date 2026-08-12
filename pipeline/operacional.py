@@ -309,6 +309,66 @@ def _bloco_custos_ti():
     }
 
 
+def _bloco_remuneracao(con):
+    """Item 8 do FRE (dataset estruturado da CVM) — quanto ganha a administração.
+
+    Por companhia: o exercício REALIZADO mais recente e a proposta do ano
+    corrente (previsto), para Diretoria Estatutária e Conselho de
+    Administração, com máx/média individual quando divulgadas. Conceito
+    padronizado pela CVM — comparável entre companhias —, mas o ESCOPO da
+    diretoria estatutária (quantos executivos são estatutários) é decisão de
+    governança de cada banco: o nº de membros viaja junto, sempre."""
+    try:
+        tot = con.execute("""SELECT cnpj8, nome, exercicio, orgao, fre_ano, total, membros, composicao
+                             FROM rem_total_orgao WHERE orgao IN ('Diretoria Estatutária', 'Conselho de Administração')
+                             AND total IS NOT NULL AND membros > 0""").fetchall()
+        mmm = {(r[0], r[2], r[3]): {"maior": r[4], "media_individual": r[5]}
+               for r in con.execute("""SELECT cnpj8, nome, exercicio, orgao, maior, media
+                                       FROM rem_max_min_media""").fetchall()}
+    except Exception:
+        return None
+    if not tot:
+        return None
+    import json as _json
+    por = {}
+    for c8, nome, ex, orgao, fre_ano, total, membros, comp in tot:
+        d = por.setdefault(c8, {"cnpj8": c8, "nome": nome, "fre_ano": fre_ano, "orgaos": {}})
+        alvo = d["orgaos"].setdefault(orgao, {"realizado": None, "previsto": None})
+        item = {
+            "exercicio": ex[:4], "total_brl": total, "membros": membros,
+            "media_por_membro_brl": round(total / membros),
+            "composicao": _json.loads(comp or "{}"),
+            **(mmm.get((c8, ex, orgao)) or {}),
+        }
+        eh_previsto = int(ex[:4]) >= int(fre_ano)
+        chave = "previsto" if eh_previsto else "realizado"
+        atual = alvo[chave]
+        if atual is None or item["exercicio"] > atual["exercicio"]:
+            alvo[chave] = item
+    empresas = sorted((d for d in por.values()
+                       if (d["orgaos"].get("Diretoria Estatutária") or {}).get("realizado")),
+                      key=lambda d: -d["orgaos"]["Diretoria Estatutária"]["realizado"]["total_brl"])
+    if not empresas:
+        return None
+    return {
+        "empresas": empresas,
+        "leitura": ("Quanto cada banco listado paga à administração, direto do item 8 do Formulário de "
+                    "Referência (dataset estruturado da CVM): total do órgão, nº de membros (média anual "
+                    "ponderada — 45,5 é normal), média por membro e, quando divulgada, a maior remuneração "
+                    "individual. O exercício realizado é remuneração reconhecida no resultado; o previsto "
+                    "é a proposta aprovada em assembleia — nunca misturados."),
+        "cautelas": [
+            "O conceito é padronizado pela CVM (comparável), mas o ESCOPO da diretoria estatutária varia por governança: um banco com 90 estatutários e outro com 10 têm médias incomparáveis sem olhar o nº de membros — que viaja junto, sempre.",
+            "Média aritmética não é mediana: a distribuição individual é concentrada no topo — quando a companhia divulga a maior remuneração, ela aparece ao lado.",
+            "Só companhias abertas têm FRE: bancos não listados (Caixa, cooperativas) ficam fora — ausência estrutural, não zero.",
+            "Estatais seguem regras próprias de remuneração (SEST) — a comparação com bancos privados carrega essa diferença institucional.",
+            "A maior/menor/média individual (quadro 8.3) usa base PRÓPRIA da CVM — em regra exclui encargos e verbas de desligamento — e por isso NÃO reconcilia com total ÷ membros do quadro 8.2: são dois conceitos, publicados lado a lado sem soma.",
+        ],
+        "fonte": {"nome": "CVM — FRE item 8, CSVs estruturados (fre_cia_aberta_remuneracao_*)",
+                  "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/", "nivel": "A"},
+    }
+
+
 def build(con, cfg=None):
     flags = []
     instituicoes = []
@@ -441,6 +501,7 @@ def build(con, cfg=None):
                     "o conceito varia por companhia — nunca comparar entre bancos nem usar em ranking.",
         },
         "custos_ti": _bloco_custos_ti(),
+        "remuneracao": _bloco_remuneracao(con),
         "sintese": sintese,
         "flags": flags,
         "cobertura": {"instituicoes": len(instituicoes), "com_empregados": com_empregados,

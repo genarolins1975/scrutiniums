@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.63.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.64.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -8471,6 +8471,35 @@ function renderOperacional() {
       ${cardAg}${cardObs}`;
   }
 
+  /* Remuneração da administração (FRE item 8, dataset estruturado da CVM):
+     conceito padronizado, mas o ESCOPO da diretoria varia por governança —
+     o nº de membros viaja junto, sempre. Realizado ≠ previsto, nunca
+     misturados. */
+  const REM = D.remuneracao;
+  let tRem = "";
+  if (REM && (REM.empresas || []).length) {
+    const linha = (e) => {
+      const de = (e.orgaos["Diretoria Estatutária"] || {});
+      const ca = (e.orgaos["Conselho de Administração"] || {}).realizado;
+      const r = de.realizado, p = de.previsto;
+      if (!r) return "";
+      return `<tr>
+        <td><b>${e.nome}</b></td>
+        <td class="num">${fmt.money(r.total_brl)}<div class="src">${fmt.n(r.membros, 1)} membros (média anual)</div></td>
+        <td class="num"><b>${fmt.money(r.media_por_membro_brl)}</b></td>
+        <td class="num">${r.maior != null ? fmt.money(r.maior) : "<span class='src'>não divulgada</span>"}</td>
+        <td class="num src">${ca ? `${fmt.money(ca.total_brl)} (${fmt.n(ca.membros, 1)}m)` : "–"}</td>
+        <td class="num src">${p ? `${fmt.money(p.total_brl)} <span title="proposta aprovada em assembleia para ${p.exercicio} — não é pagamento realizado">(proposta ${p.exercicio})</span>` : "–"}</td></tr>`;
+    };
+    tRem = `${sechead("Quanto ganha a administração", "FRE item 8 · exercício realizado × proposta · conceito CVM padronizado")}
+    <div class="card"><p style="margin:6px 0">${REM.leitura}</p>
+      <div class="tblwrap"><table class="data compact">
+        <thead><tr><th>Companhia</th><th class="num">Diretoria estatutária (realizado ${(REM.empresas[0].orgaos["Diretoria Estatutária"].realizado || {}).exercicio || ""})</th><th class="num" title="total ÷ nº médio de membros — média aritmética, não mediana">Média/membro</th><th class="num" title="quadro 8.3 do FRE — base própria da CVM (em regra exclui encargos e desligamentos); não reconcilia com total ÷ membros">Maior individual (8.3)</th><th class="num">Conselho de Adm.</th><th class="num">Proposta ano corrente</th></tr></thead>
+        <tbody>${REM.empresas.map(linha).join("")}</tbody></table></div>
+      ${(REM.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+      <p class="src">${badge("observado")} <a href="${attr(REM.fonte.url)}" target="_blank" rel="noopener">${REM.fonte.nome}</a> · nível ${REM.fonte.nivel}.</p></div>`;
+  }
+
   const tFlags = `${sechead("Verificações automáticas", "publicadas junto do dado — nunca correção silenciosa")}
   <div class="card">${(D.flags || []).length === 0 ? `<p class="src">Nenhuma verificação pendente nesta execução.</p>` : `<div class="tblwrap"><table>
     <thead><tr><th>Instituição</th><th>Indicador</th><th>O que verificar</th></tr></thead>
@@ -8504,7 +8533,7 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tTi + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tTi + tRem + tAud + tFlags + cob + fontes;
 }
 
 /* Página por município: a resposta à pergunta local — "que atendimento
