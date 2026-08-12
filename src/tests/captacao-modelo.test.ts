@@ -48,10 +48,21 @@ describe("estático: coletor, config e semântica declarada", () => {
     expect(indicadoresPy).toMatch(/interm is not None and interm > 0/);
   });
 
+  it("o coletor traz pessoal/admin e o índice de eficiência tem guarda de sanidade", () => {
+    // rodada 1 de custos operacionais: as duas linhas de despesa da DRE
+    expect(fundingPy).toContain("141858");
+    expect(fundingPy).toContain("141859");
+    // eficiência absurda (unidade/tradução) é omitida, nunca publicada
+    expect(indicadoresPy).toMatch(/if 0 < ef < 300/);
+    // numerador e denominador do MESMO período semestral: sem anualização
+    expect(indicadoresPy).toMatch(/MESMO período semestral/);
+  });
+
   it("a SPA renderiza as seções com fórmula e ausência declarada", () => {
     expect(appJs).toContain("Custo de captação");
     expect(appJs).toContain("Modelo de negócio");
     expect(appJs).toContain("Mix de depósitos");
+    expect(appJs).toContain("Índice de eficiência");
     expect(appJs).toMatch(/ausência declarada, nunca zero/);
   });
 });
@@ -99,6 +110,12 @@ describe("gated: valores no gold publicado (mordem após o pipeline diário)", (
       if (m.credito_ativo_pct != null) {
         expect(m.credito_ativo_pct, i.nome).toBeGreaterThanOrEqual(0);
         expect(m.credito_ativo_pct, i.nome).toBeLessThanOrEqual(110);
+      }
+      if (m.eficiencia_pct != null) {
+        expect(m.eficiencia_pct, i.nome).toBeGreaterThan(0);
+        expect(m.eficiencia_pct, i.nome).toBeLessThan(300);
+        expect(m.eficiencia_conceito, i.nome).toBeTruthy();
+        expect(m.despesas_pessoal_brl, i.nome).not.toBeUndefined();
       }
     }
   });

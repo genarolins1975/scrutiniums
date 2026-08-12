@@ -450,14 +450,28 @@ def _bloco_modelo_negocio(m):
     out = {}
     interm = m.get("dre:resultado_intermediacao")
     partes = [m.get(k) for k in ("dre:serv_pagamentos", "dre:tarifas", "dre:outras_rendas_servicos")]
-    if any(v is not None for v in partes):
-        serv = sum(v for v in partes if v is not None)
-        if interm is not None and interm > 0 and serv >= 0:
-            out["receita_servicos_pct"] = round(serv / (interm + serv) * 100, 1)
-            out["receita_servicos_conceito"] = (
-                "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação "
-                "financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de "
-                "receitas de serviço, omitida quando a intermediação é negativa")
+    serv = sum(v for v in partes if v is not None) if any(v is not None for v in partes) else None
+    if serv is not None and interm is not None and interm > 0 and serv >= 0:
+        out["receita_servicos_pct"] = round(serv / (interm + serv) * 100, 1)
+        out["receita_servicos_conceito"] = (
+            "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação "
+            "financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de "
+            "receitas de serviço, omitida quando a intermediação é negativa")
+    pes, adm = m.get("dre:despesas_pessoal"), m.get("dre:despesas_admin")
+    if pes is not None and adm is not None and interm is not None and interm > 0:
+        # numerador e denominador acumulam pelo MESMO período semestral da DRE:
+        # a razão é consistente sem anualização
+        rec_op = interm + max(serv or 0, 0)
+        ef = (abs(pes) + abs(adm)) / rec_op * 100
+        if 0 < ef < 300:  # fora disso = unidade/tradução suspeita; omitido, nunca publicado
+            out["eficiencia_pct"] = round(ef, 1)
+            out["eficiencia_conceito"] = (
+                "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação "
+                "financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais "
+                "eficiente; omitido quando a intermediação é negativa. Não inclui despesas "
+                "tributárias nem outras operacionais.")
+            out["despesas_pessoal_brl"] = pes
+            out["despesas_admin_brl"] = adm
     if m.get("ativo_total"):
         at = m["ativo_total"]
         out["credito_ativo_pct"] = round(m["carteira_credito"] / at * 100, 1)

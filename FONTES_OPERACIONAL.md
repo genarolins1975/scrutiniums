@@ -295,7 +295,10 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   de intermediação, rendas de serviços/tarifas/pagamentos) por entidade.
 - **Coletor:** `pipeline/sources/ifdata_funding.py` → `institution_metrics`
   (`fund:*`, `dre:*`), com o mesmo mapa de tradução de conglomerado prudencial
-  do `ifdata_ui`.
+  do `ifdata_ui`. Inclui despesas de pessoal (lid 141858) e administrativas
+  (141859) — rodada 1 de custos operacionais. O marcador de recência do
+  coletor é a métrica MAIS NOVA da tabela: lids novos forçam a releitura
+  idempotente dos períodos já coletados.
 - **Duas semânticas medidas empiricamente (Itaú 2025-12 × 2026-03) que viajam
   com o dado:**
   1. **A DRE acumula POR SEMESTRE** — mar/set = 3 meses, jun/dez = 6. Qualquer
@@ -314,6 +317,42 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   omitido quando a intermediação é negativa), crédito/ativo e captações/ativo;
   o perfil de carteira (modalidades PF/PJ, PME, HHI) segue em
   `carteira_perfil`. Métrica ausente ⇒ campo omitido, nunca imputado.
+- **Índice de eficiência (`modelo_negocio.eficiencia_pct`):** (|pessoal| +
+  |administrativas|) ÷ (intermediação + serviços) do MESMO período semestral
+  da DRE — a razão é consistente sem anualização. Quanto menor, mais
+  eficiente. Fora de 0–300% é omitido (unidade/tradução suspeita). Não
+  inclui tributárias nem outras operacionais — declarado no conceito.
 - **Escala:** `config.ifdata.top_n_by_assets = 100` — o corte scorado vai às
   top 100 por ativo. A coleta já cobria o universo inteiro; grupos de pares
   com <5 membros seguem caindo para o conjunto completo, com sinalização.
+
+## 11. Custos de TI dos bancos — DFP (Fase 2) + agregado Febraban
+
+- **Fonte primária:** notas explicativas das DFP 31/12/2025 (canal oficial
+  CVM/ENET) — os MESMOS quatro documentos da curadoria do intangível de folha,
+  com identidade verificada no arquivo. Curadoria em
+  `pipeline/curated/custos_ti.json`; bloco `custos_ti` do gold
+  `operacional.json` publica só `aprovado` (Fase 2), com documento, página e
+  trecho por observação.
+- **O que cada banco divulga é DIFERENTE** — e cada observação declara regime
+  e escopo (`exclusivo_ti`):
+  - **BB**: "Processamento de dados" isolado, em BRGAAP consolidado (nota
+    25.b) e em IFRS (nota 12, com comparativo 2024);
+  - **Bradesco**: "Processamento de dados" isolado, IFRS consolidado (nota
+    34, série 2023-2025);
+  - **Itaú**: "Processamento de Dados e Telecomunicações" (nota 23) — INCLUI
+    telecom, não comparável; R$ milhões;
+  - **Santander**: BRGAAP "Processamento de Dados" (nota 25; o Banco
+    individual supera o consolidado por eliminações intragrupo — a Santander
+    Tecnologia fatura ao banco) e IFRS "Tecnologia e sistemas" (nota 40,
+    categoria mais ampla).
+- **Regra editorial:** conceitos e regimes NÃO comparáveis entre bancos
+  (BRGAAP × IFRS; com/sem telecom; R$ mil × R$ milhões) — nunca somar, nunca
+  ranquear; comparabilidade C, cada série contra ela mesma.
+- **É DESPESA (opex):** o capex de TI capitalizado no intangível fica fora.
+  Por isso a camada agregada — Pesquisa Febraban de Tecnologia Bancária 2025
+  (Deloitte; 20 bancos, 85% dos ativos): orçamento de R$ 47,8 bi previsto para
+  2025 (R$ 42,3 bi em 2024), conceito capex+opex — entra à parte e NUNCA se
+  compara às linhas das DFP.
+- **Próximo degrau:** ITRs 2T26 (agosto) inauguram a série intra-anual das
+  mesmas rubricas pelos mesmos documentos oficiais.

@@ -20,7 +20,8 @@ mapa prudencial do ifdata_ui):
   fund:dep_vista, fund:dep_poupanca, fund:dep_prazo, fund:dep_interf,
   fund:dep_outros, fund:dep_total, fund:captacoes,
   dre:despesa_juros_captacoes, dre:resultado_intermediacao,
-  dre:serv_pagamentos, dre:tarifas, dre:outras_rendas_servicos
+  dre:serv_pagamentos, dre:tarifas, dre:outras_rendas_servicos,
+  dre:despesas_pessoal, dre:despesas_admin
 """
 import json
 
@@ -42,6 +43,8 @@ LIDS = [
     ("dre:serv_pagamentos", 141852, None),   # rubrica nova da Res. 4.966
     ("dre:tarifas", 141856, 78217),
     ("dre:outras_rendas_servicos", 141857, 78216),
+    ("dre:despesas_pessoal", 141858, 78218),
+    ("dre:despesas_admin", 141859, 78219),
 ]
 
 
@@ -51,7 +54,10 @@ def collect(con, cfg):
     results = []
     for anomes in c["anomes_candidates"]:
         chave = f"funding:{anomes}"
-        ja = con.execute("SELECT 1 FROM institution_metrics WHERE anomes=? AND metric='fund:captacoes' LIMIT 1",
+        # marcador de recência = a métrica MAIS NOVA da tabela: quando os lids
+        # crescem, os períodos já coletados voltam a ser lidos uma vez
+        # (INSERT OR REPLACE torna a releitura idempotente)
+        ja = con.execute("SELECT 1 FROM institution_metrics WHERE anomes=? AND metric='dre:despesas_pessoal' LIMIT 1",
                          (anomes,)).fetchone()
         if ja:
             results.append({"key": chave, "ok": True, "pulado": "período já coletado"})
