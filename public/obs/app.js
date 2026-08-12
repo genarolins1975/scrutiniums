@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.55.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.56.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3575,6 +3575,16 @@ function renderInstitutions() {
           ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
           ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
         </div>` : ""}
+        ${i.captacao ? `<h5>Custo de captação ${badge("calculado", i.captacao.formula)}</h5><div class="src">
+          <b>${fmt.n(i.captacao.custo_aa_pct, 2)}% a.a.</b> (estimado; DRE de ${i.captacao.meses_dre} meses anualizada${i.captacao.media_pontas ? ", média das pontas" : ", ponta única"})
+          ${i.captacao.dep_captacoes_pct != null ? ` · depósitos = ${i.captacao.dep_captacoes_pct}% das captações` : ""}
+          ${i.captacao.mix_depositos_pct ? `<br><b>Mix de depósitos:</b> ${Object.entries(i.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `${n} ${s}%`).join(" · ")}` : ""}
+          <br>${i.captacao.limitacoes}</div>` : ""}
+        ${i.modelo_negocio ? `<h5>Modelo de negócio ${badge("calculado")}</h5><div class="src">
+          ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% <span title="${i.modelo_negocio.receita_servicos_conceito}">ⓘ</span> · ` : ""}
+          ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
+          ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
+        </div>` : ""}
         <div class="src">Peso igual entre dimensões disponíveis; dimensão sem dado é omitida, nunca imputada.</div>
       </details></td>
     </tr>`;
@@ -3690,7 +3700,10 @@ function renderInstPageData(el, pg) {
   const gpc = pg.grupo_pares_composicao;
   const smeta = pg.score_meta;
   const operSec = operBlocoInst(cab);
-  const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"],["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]]
+  const temCaptacao = !!(sc.captacao || sc.modelo_negocio);
+  const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"]]
+    .concat(temCaptacao ? [["#s-captacao","Captação/Modelo"]] : [])
+    .concat([["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]])
     .concat(operSec ? [["#s-oper","Operacional"]] : [])
     .concat([["#s-limites","Limitações"]]);
   const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
@@ -3810,6 +3823,27 @@ function renderInstPageData(el, pg) {
     </div>
     <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}</div>
   </div>
+  ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
+    <div class="card"><h4>Custo de captação ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
+      ${sc.captacao ? `<div class="big" style="font-size:22px">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:13px">a.a. (estimado)</span></div>
+        <div class="src">Fórmula: ${sc.captacao.formula}.</div>
+        <div class="src">Captações totais ${fmt.money(sc.captacao.captacoes_brl)}${sc.captacao.dep_captacoes_pct != null ? ` · depósitos = ${sc.captacao.dep_captacoes_pct}% das captações` : ""}</div>
+        ${sc.captacao.mix_depositos_pct ? `<div style="margin-top:8px"><b>Mix de depósitos</b>
+          ${Object.entries(sc.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `<div class="contrib"><span class="lbl">${n}</span><span class="bar pos" style="width:${Math.min(s, 100) * 1.6}px"></span><span class="num">${s}%</span></div>`).join("")}</div>` : ""}
+        <div class="src" style="margin-top:6px">${sc.captacao.limitacoes}</div>`
+      : "<p class='src'>funding/DRE desta instituição ainda não coletados na data-base atual — ausência declarada, nunca zero.</p>"}
+    </div>
+    <div class="card"><h4>Modelo de negócio ${badge("calculado")}</h4>
+      ${sc.modelo_negocio ? `
+        ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
+          <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
+        <div class="src" style="margin-top:6px">
+          ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
+          ${sc.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${sc.modelo_negocio.captacoes_ativo_pct}%` : ""}</div>
+        <div class="src">O perfil da carteira (modalidades PF/PJ dominantes, PME, setores) está na seção Carteira acima — juntos, eles descrevem como a instituição capta, empresta e cobra por serviços.</div>`
+      : "<p class='src'>DRE desta instituição ainda não coletada na data-base atual.</p>"}
+    </div>
+  </div>` : ""}
   <div class="grid g2" style="margin-top:12px">
     <div id="s-pares" class="card"><h4>Comparação com o grupo de pares ${badge("calculado")}</h4>
       <div class="controls"><span class="seg">${cmpKeys.map(k => `<button class="${state.filters.cmpMet === k ? "active" : ""}" onclick="setCmpMet('${k}')">${cmpLbl[k] || k}</button>`).join("")}</span></div>
