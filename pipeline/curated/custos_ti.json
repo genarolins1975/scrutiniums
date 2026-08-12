@@ -200,8 +200,8 @@
       "pagina_pdf": 98,
       "pagina_doc": "Nota 25 - Despesas Operacionais (PDF 98; também na DRE, PDF 18)",
       "trecho": "Nota 25 … Processamento de Dados e Telecomunicações (3.190) (2.847) — colunas 01/01 a 30/06/2026 e 01/01 a 30/06/2025",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
     },
     {
       "id": "bradesco_ti_1s26_brgaap",
@@ -221,8 +221,8 @@
       "pagina_pdf": 76,
       "pagina_doc": "Nota 31 — Outras Despesas Administrativas (PDF 76)",
       "trecho": "31) OUTRAS DESPESAS ADMINISTRATIVAS … R$ mil … Acumulado em 30 de junho 2026 2025 … Processamento de dados 1.847.550 1.281.410",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
     },
     {
       "id": "santander_ti_1s26_brgaap",
@@ -242,8 +242,8 @@
       "pagina_pdf": 94,
       "pagina_doc": "Nota 25 — Outras Despesas Administrativas ('30 de junho de 2026 | 94')",
       "trecho": "25. Outras Despesas Administrativas … Banco 01/01 a 30/06/2026 01/01 a 30/06/2025 | Consolidado 01/01 a 30/06/2026 01/01 a 30/06/2025 … Processamento de Dados 2.167.661 1.895.534 2.105.398 1.649.347",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
     }
   ],
   "agregado_sistema": {
