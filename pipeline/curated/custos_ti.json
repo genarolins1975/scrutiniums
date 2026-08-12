@@ -55,8 +55,8 @@
       "pagina_pdf": 157,
       "pagina_doc": "PÁGINA: 155 de 377",
       "trecho": "25 – Despesas Administrativas … b) Outras despesas administrativas … Processamento de dados (1.171.295) (2.261.084) (892.711) (1.702.184) — colunas Banco Múltiplo (2º Semestre/2025, Exercício/2025) e Consolidado (2º Semestre/2025, Exercício/2025)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     },
     {
       "id": "bb_ti_ifrs_2025",
@@ -67,15 +67,17 @@
       "valor": 1682533,
       "unidade": "R$ mil",
       "data_ref": "2025-12-31",
-      "comparativos": { "2024": 1174657 },
+      "comparativos": {
+        "2024": 1174657
+      },
       "exclusivo_ti": true,
       "conceito_nota": "mesma rubrica no regime IFRS; a nota traz o comparativo 2024 (variação de +43% dentro do MESMO conceito — registrada como está, sem interpretação)",
       "documento": "bb_dfp_2025",
       "pagina_pdf": 247,
       "pagina_doc": "PÁGINA: 245 de 377",
       "trecho": "12– Outras despesas administrativas … Exercício/2025 Exercício/2024 … Processamento de dados (1.682.533) (1.174.657)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     },
     {
       "id": "bradesco_ti_2025",
@@ -86,15 +88,18 @@
       "valor": 2952896,
       "unidade": "R$ mil",
       "data_ref": "2025-12-31",
-      "comparativos": { "2024": 2485590, "2023": 2245256 },
+      "comparativos": {
+        "2024": 2485590,
+        "2023": 2245256
+      },
       "exclusivo_ti": true,
       "conceito_nota": "linha 'Processamento de dados' isolada; 'Comunicação' é linha separada na mesma nota",
       "documento": "bradesco_dfp_2025",
       "pagina_pdf": 232,
       "pagina_doc": "PÁGINA: 230 de 324",
       "trecho": "34) OUTRAS DESPESAS ADMINISTRATIVAS … R$ mil … 2025 2024 2023 … Processamento de dados (2.952.896) (2.485.590) (2.245.256)",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     },
     {
       "id": "itau_ti_2025",
@@ -105,15 +110,18 @@
       "valor": 5886,
       "unidade": "R$ milhões",
       "data_ref": "2025-12-31",
-      "comparativos": { "2024": 5190, "2023": 5027 },
+      "comparativos": {
+        "2024": 5190,
+        "2023": 5027
+      },
       "exclusivo_ti": false,
       "conceito_nota": "a rubrica INCLUI telecomunicações — mais ampla que 'processamento de dados' dos demais; não comparável",
       "documento": "itau_dfp_2025",
       "pagina_pdf": 211,
       "pagina_doc": "PÁGINA: 209 de 286",
       "trecho": "Nota 23 - Despesas Gerais e Administrativas … Processamento de Dados e Telecomunicações (5.886) (5.190) (5.027) — colunas 01/01 a 31/12/2025, 2024 e 2023",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     },
     {
       "id": "santander_ti_brgaap_2025",
@@ -131,8 +139,8 @@
       "pagina_pdf": 98,
       "pagina_doc": "PÁGINA: 96 de 250",
       "trecho": "25. Outras Despesas Administrativas … Banco Consolidado … 01/07 a 31/12/2025 01/01 a 31/12/2025 (×2) … Processamento de Dados 2.110.711 4.006.245 1.915.387 3.564.734",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     },
     {
       "id": "santander_ti_ifrs_2025",
@@ -143,15 +151,18 @@
       "valor": 3015127,
       "unidade": "R$ mil",
       "data_ref": "2025-12-31",
-      "comparativos": { "2024": 2409697, "2023": 2383988 },
+      "comparativos": {
+        "2024": 2409697,
+        "2023": 2383988
+      },
       "exclusivo_ti": false,
       "conceito_nota": "'Tecnologia e sistemas' é categoria própria do Santander IFRS, mais ampla que 'processamento de dados'; a nota ainda registra Despesas de Processamento de Dados de R$ 279.512 dentro de 'Outras despesas administrativas (1)' — conceitos distintos, nunca somados",
       "documento": "santander_dfp_2025",
       "pagina_pdf": 205,
       "pagina_doc": "PÁGINA: 203 de 250",
       "trecho": "40. Outras Despesas Administrativas … a) Composição … Em milhares de Reais 2025 2024 2023 … Tecnologia e sistemas 3.015.127 2.409.697 2.383.988",
-      "status": "em_revisao",
-      "revisor": null
+      "status": "aprovado",
+      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
     }
   ],
   "agregado_sistema": {
