@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:37+00:00",
+ "gerado_em": "2026-08-12T21:38:35+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -23,7 +23,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "investimento",
   "data_base": "202603",
-  "mercado_total_brl": 318225389390.36,
+  "mercado_total_brl": 318225389390.35986,
   "n_instituicoes": 624,
   "share_segmento_pct": 9.91,
   "crescimento_4t_pct": 1.6,
@@ -42,17 +42,17 @@
    },
    {
     "anomes": "202509",
-    "total_brl": 315240940770.49,
+    "total_brl": 315240940770.49005,
     "n_inst": 640
    },
    {
     "anomes": "202512",
-    "total_brl": 320968718711.81,
+    "total_brl": 320968718711.8101,
     "n_inst": 627
    },
    {
     "anomes": "202603",
-    "total_brl": 318225389390.36,
+    "total_brl": 318225389390.35986,
     "n_inst": 624
    }
   ],
@@ -10088,6 +10088,288 @@
     "taxa_casamento": null
    }
   ],
+  "por_segmento": {
+   "S1": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 161871505151.37,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 162546186202.5,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 163074607302.3,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 168181863406.15,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 168544566582.74,
+      "n_inst": 6
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.65,
+      "n": 6
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.65,
+      "n": 6
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.66,
+      "n": 6
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.19,
+      "n": 6
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.81,
+      "n": 6
+     }
+    ]
+   },
+   "S2": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 11352227507.84,
+      "n_inst": 7
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 11441111674.97,
+      "n_inst": 7
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 11471370143.44,
+      "n_inst": 7
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 11586115592.26,
+      "n_inst": 7
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 11469708426.59,
+      "n_inst": 6
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.07,
+      "n": 7
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.17,
+      "n": 7
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.34,
+      "n": 7
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.4,
+      "n": 7
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.5,
+      "n": 6
+     }
+    ]
+   },
+   "S3": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 73966246458.24,
+      "n_inst": 29
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 74801026855.1,
+      "n_inst": 31
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 76477563072.86,
+      "n_inst": 32
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 76749753591.83,
+      "n_inst": 31
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 75295659698.98,
+      "n_inst": 31
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.16,
+      "n": 29
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.43,
+      "n": 31
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.61,
+      "n": 32
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.81,
+      "n": 31
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 2.25,
+      "n": 31
+     }
+    ]
+   },
+   "S4": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 44056884521.79,
+      "n_inst": 166
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 45244785848.8,
+      "n_inst": 166
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 45891987362.7,
+      "n_inst": 169
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 46299943663.79,
+      "n_inst": 166
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 45378282320.63,
+      "n_inst": 168
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.73,
+      "n": 166
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.82,
+      "n": 166
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.96,
+      "n": 169
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.12,
+      "n": 166
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.45,
+      "n": 168
+     }
+    ]
+   },
+   "S5": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 18494338678.42,
+      "n_inst": 425
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 18522654297.11,
+      "n_inst": 422
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 18325412889.19,
+      "n_inst": 426
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 18151042457.78,
+      "n_inst": 417
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 17537172361.42,
+      "n_inst": 413
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.82,
+      "n": 425
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.03,
+      "n": 422
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.06,
+      "n": 426
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.13,
+      "n": 417
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.46,
+      "n": 413
+     }
+    ]
+   }
+  },
   "taxas": {
    "disponivel": false,
    "razao": "sem modalidade txjuros correspondente validada (repasses/BNDES fora do conjunto)."

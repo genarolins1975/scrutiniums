@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:37+00:00",
+ "gerado_em": "2026-08-12T21:38:35+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -42,12 +42,12 @@
    },
    {
     "anomes": "202509",
-    "total_brl": 661097911765.86,
+    "total_brl": 661097911765.8599,
     "n_inst": 434
    },
    {
     "anomes": "202512",
-    "total_brl": 683234151786.13,
+    "total_brl": 683234151786.1304,
     "n_inst": 430
    },
    {
@@ -6936,6 +6936,288 @@
     "taxa_casamento": null
    }
   ],
+  "por_segmento": {
+   "S1": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 457965910250.48,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 450885922476.96,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 449623484789.37,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 458516264308.31,
+      "n_inst": 6
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 468880469852.5,
+      "n_inst": 6
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 3.04,
+      "n": 6
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 4.28,
+      "n": 6
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 5.94,
+      "n": 6
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 6.22,
+      "n": 6
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 5.89,
+      "n": 6
+     }
+    ]
+   },
+   "S2": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 47821034076.19,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 49632934624.4,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 50377322021.03,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 54556875515.47,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 56827199121.2,
+      "n_inst": 5
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.54,
+      "n": 5
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.84,
+      "n": 5
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.52,
+      "n": 5
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.45,
+      "n": 5
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.47,
+      "n": 5
+     }
+    ]
+   },
+   "S3": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 58835237283.1,
+      "n_inst": 17
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 57671939903.65,
+      "n_inst": 17
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 58509349142.03,
+      "n_inst": 17
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 60046863386.56,
+      "n_inst": 17
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 62036184228.51,
+      "n_inst": 17
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.6,
+      "n": 17
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 3.61,
+      "n": 17
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 4.42,
+      "n": 17
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 3.86,
+      "n": 17
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 3.9,
+      "n": 17
+     }
+    ]
+   },
+   "S4": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 48873350084.56,
+      "n_inst": 109
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 46487984036.48,
+      "n_inst": 110
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 51209444431.22,
+      "n_inst": 111
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 54769743930.75,
+      "n_inst": 108
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 55658966683.51,
+      "n_inst": 107
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.9,
+      "n": 109
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 1.39,
+      "n": 110
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 1.37,
+      "n": 111
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.32,
+      "n": 108
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.27,
+      "n": 107
+     }
+    ]
+   },
+   "S5": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 48414826940.82,
+      "n_inst": 297
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 47191288869.6,
+      "n_inst": 293
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 51378311382.21,
+      "n_inst": 295
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 55344404645.04,
+      "n_inst": 294
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 57191088861.47,
+      "n_inst": 292
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 1.41,
+      "n": 297
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 2.38,
+      "n": 293
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 2.08,
+      "n": 295
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 1.86,
+      "n": 294
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 1.75,
+      "n": 292
+     }
+    ]
+   }
+  },
   "taxas": {
    "disponivel": false,
    "razao": "taxas de crédito rural (direcionado) não constam do conjunto txjuros integrado."

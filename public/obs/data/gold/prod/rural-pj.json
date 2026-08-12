@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:37+00:00",
+ "gerado_em": "2026-08-12T21:38:35+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -23,7 +23,7 @@
   "nota_taxonomia": "",
   "modalidade_original": "rural_e_agroindustrial",
   "data_base": "202603",
-  "mercado_total_brl": 87429355507.06,
+  "mercado_total_brl": 87429355507.06001,
   "n_instituicoes": 302,
   "share_segmento_pct": 2.72,
   "crescimento_4t_pct": 24.4,
@@ -32,12 +32,12 @@
   "serie": [
    {
     "anomes": "202503",
-    "total_brl": 70364712958.03,
+    "total_brl": 70364712958.03001,
     "n_inst": 282
    },
    {
     "anomes": "202506",
-    "total_brl": 77392613374.14,
+    "total_brl": 77392613374.13998,
     "n_inst": 281
    },
    {
@@ -52,7 +52,7 @@
    },
    {
     "anomes": "202603",
-    "total_brl": 87429355507.06,
+    "total_brl": 87429355507.06001,
     "n_inst": 302
    }
   ],
@@ -4936,6 +4936,288 @@
     "taxa_casamento": null
    }
   ],
+  "por_segmento": {
+   "S1": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 36400514931.49,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 42090647246.07,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 39151095482.15,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 42110276594.04,
+      "n_inst": 5
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 46609817086.6,
+      "n_inst": 5
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.21,
+      "n": 5
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.33,
+      "n": 5
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.56,
+      "n": 5
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.34,
+      "n": 5
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.33,
+      "n": 5
+     }
+    ]
+   },
+   "S2": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 14645796871.17,
+      "n_inst": 8
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 15535276923.2,
+      "n_inst": 8
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 15992309195.92,
+      "n_inst": 8
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 16782275118.82,
+      "n_inst": 8
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 17105240250.51,
+      "n_inst": 8
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.07,
+      "n": 8
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.07,
+      "n": 8
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.07,
+      "n": 8
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.05,
+      "n": 8
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.0,
+      "n": 8
+     }
+    ]
+   },
+   "S3": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 13638252897.2,
+      "n_inst": 21
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 13854221996.06,
+      "n_inst": 21
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 14122778689.67,
+      "n_inst": 21
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 15365311216.84,
+      "n_inst": 21
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 15368184378.25,
+      "n_inst": 22
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.35,
+      "n": 21
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.49,
+      "n": 21
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.56,
+      "n": 21
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.41,
+      "n": 21
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.56,
+      "n": 22
+     }
+    ]
+   },
+   "S4": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 1413508330.73,
+      "n_inst": 78
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 1541376292.54,
+      "n_inst": 77
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 1801806469.85,
+      "n_inst": 79
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 2257431719.47,
+      "n_inst": 85
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 2264814120.12,
+      "n_inst": 84
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.22,
+      "n": 78
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.32,
+      "n": 77
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.47,
+      "n": 79
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.54,
+      "n": 85
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.22,
+      "n": 84
+     }
+    ]
+   },
+   "S5": {
+    "serie": [
+     {
+      "anomes": "202503",
+      "total_brl": 4266639927.44,
+      "n_inst": 170
+     },
+     {
+      "anomes": "202506",
+      "total_brl": 4371090916.27,
+      "n_inst": 170
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 5195544213.36,
+      "n_inst": 179
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 5514555709.77,
+      "n_inst": 184
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 6081299671.58,
+      "n_inst": 183
+     }
+    ],
+    "atraso_serie": [
+     {
+      "anomes": "202503",
+      "agg_pct": 0.53,
+      "n": 170
+     },
+     {
+      "anomes": "202506",
+      "agg_pct": 0.93,
+      "n": 170
+     },
+     {
+      "anomes": "202509",
+      "agg_pct": 0.8,
+      "n": 179
+     },
+     {
+      "anomes": "202512",
+      "agg_pct": 0.76,
+      "n": 184
+     },
+     {
+      "anomes": "202603",
+      "agg_pct": 0.88,
+      "n": 183
+     }
+    ]
+   }
+  },
   "taxas": {
    "disponivel": false,
    "razao": "taxas de crédito rural (direcionado) não constam do conjunto txjuros integrado."
