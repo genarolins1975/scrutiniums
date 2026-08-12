@@ -8810,6 +8810,30 @@ function renderProductPageData(el, P) {
   ${lineChart({ series: [{ pts: p.atraso15.serie.map(x => ({ x: anomesISO(x.anomes), y: x.agg_pct })), color: "#b45309", label: "atraso ≥15d agregado" }], h: 180, unit: "%", fonte: "BCB IF.data rel. 123/128", status: "observado", dec: 2 })}
   ${chartFooter({ fonte: p.atraso15.fonte, periodo: p.atraso15.serie.map(x => fmtTri(x.anomes)).join(" – "), atualizado: P.gerado_em.slice(0, 10), unidade: "% da carteira da modalidade", nota: p.atraso15.nota })}</div>` : ""}
   </div>
+  ${(function(){
+    /* Risco × preço × tamanho, por IF: x = atraso ≥15d NO PRODUTO (estoque),
+       y = taxa média a.a. das NOVAS operações (txjuros, janela mais recente),
+       bolha = carteira no produto. Dois conceitos de tempo convivem de
+       propósito e são declarados: estoque de atraso × fluxo de preço novo —
+       leitura exploratória, nunca "curva de risco-preço". Só entra IF com
+       casamento carteira↔taxa inequívoco (cnpj8 ou nome único). */
+    const pts = p.matriz.filter(r => r.taxa_aa != null && r.atraso15_pct != null && r.carteira_brl > 0);
+    if (pts.length < 3) return "";
+    const pares = pts.map(r => ({ x: r.atraso15_pct, y: r.taxa_aa, size: r.carteira_brl, label: r.nome.slice(0, 22), grp: r.taxa_casamento === "nome" ? "casado por nome" : undefined }));
+    const med = a => { const s = [...a].sort((m, n) => m - n); return s[Math.floor(s.length / 2)]; };
+    const semTaxa = p.matriz.filter(r => r.atraso15_pct != null && r.carteira_brl > 0).length - pts.length;
+    return `<h3>Atraso × taxa × carteira, por instituição <span class="src">(${pts.length} IFs com os três dados)</span></h3>
+    <div class="card">${scatterPlot(pares, "atraso ≥15d no produto (%)", "taxa média a.a. das novas operações (%)", 680, 320,
+      { sizeLabel: "carteira no produto", labels: pts.length <= 25,
+        refX: med(pares.map(q => q.x)), refXLabel: "mediana do atraso",
+        refY: med(pares.map(q => q.y)), refYLabel: "mediana da taxa" })}
+    <div class="note warn" style="margin-top:8px"><b>Dois relógios diferentes, de propósito:</b> o eixo x é o ESTOQUE em
+    atraso ≥15d da carteira do produto (IF.data, trimestral); o eixo y é o preço das operações NOVAS da janela mais
+    recente do txjuros (semanal) — não é a taxa da carteira. A bolha é a carteira no produto. Leitura exploratória:
+    posição acima-e-à-direita sugere preço acompanhando risco; fora da diagonal convida investigação, não conclusão.</div>
+    <p class="src">Casamento carteira↔taxa por CNPJ-raiz (IFs individuais) ou nome normalizado único (conglomerados) —
+    ${semTaxa > 0 ? `${semTaxa} instituição(ões) com carteira e atraso, mas sem taxa casada, ficam fora do gráfico (ausência declarada).` : "todas as IFs com atraso têm taxa casada."}</p></div>`;
+  })()}
   <h3>Matriz produto × instituição <span class="src">(${p.matriz.length} instituições)</span></h3>
   <div class="controls">
     <input type="search" id="pmxq-input" placeholder="filtrar instituição…" value="${PMX_STATE.q}" oninput="pmxQ(this.value)" aria-label="filtrar instituição">
