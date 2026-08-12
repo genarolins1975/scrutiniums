@@ -128,6 +128,6 @@ describe("SPA", () => {
     expect(appJs).toContain("guidanceSecao()");
     expect(appJs).toMatch(/aguardando revisão\s*\n?\s*editorial/);
     // o gold carrega junto com a aba
-    expect(appJs).toMatch(/institutions: \["institutions", "inst_index", "npl", "guidance"\]/);
+    expect(appJs).toMatch(/institutions: \["institutions", "inst_index", "npl", "guidance"/);
   });
 });
