@@ -58,7 +58,7 @@ describe("dicionário de conceitos", () => {
   });
 
   it("infográficos referenciados existem no catálogo IG", () => {
-    const igs = [...appJs.matchAll(/^  (\w+): \(\) => `<svg/gm)].map((m) => m[1]);
+    const igs = Array.from(appJs.matchAll(/^  (\w+): \(\) => `<svg/gm), (m) => m[1]);
     expect(igs.length).toBeGreaterThanOrEqual(5);
     for (const [slug, c] of Object.entries(C) as [string, any][]) {
       if (c.infografico) expect(igs, `${slug} → infográfico ${c.infografico}`).toContain(c.infografico);
