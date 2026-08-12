@@ -643,3 +643,24 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Séries por segmento vivem em prod/{slug}.json (por_segmento no produto e
   por item de taxa; sr em cada linha de ranking); o resumo products.json
   não as carrega. Materializam no ciclo diário seguinte ao merge.
+
+## 25. Painel Pix: perspectiva do recebedor, recortes PF/PJ e mapas de calor
+
+- CONSERTO da perspectiva "Recebedor" no mapa por UF: as métricas por
+  habitante e o valor médio do recebedor são DERIVADOS dos próprios números
+  publicados (habitantes = transações pagas ÷ transações/habitante; tíquete
+  do recebedor = valor recebido ÷ transações recebidas) — antes o clique
+  zerava o mapa. Crescimento 12m existe só para o pagador: o botão fica
+  desabilitado com o motivo, e a métrica cai para Valor total.
+- Recortes Total/PF/PJ onde a fonte permite: valor pago no mapa por UF
+  (v_pag_pf/v_pag_pj), série de usuários do DICT, e filtro por natureza do
+  PAGADOR (P2*/B2*) na tabela de fluxos. Onde a fonte não abre (municípios,
+  chaves por tipo), não há botão — ausência não é aproximada.
+- Mapa de calor natureza: as classes P2P/P2B/… da própria fonte re-arranjadas
+  em matriz pagador × recebedor (Pessoa/Empresa/Governo), com quantidade,
+  valor e tíquete — nada estimado.
+- Mapa de calor setorial (tabela especial EPAE): a matriz completa
+  setor-pagador × setor-recebedor (23×21) de uma vez; a COR usa escala
+  logarítmica declarada (fluxos variam 4 ordens de grandeza), o número é o
+  valor real; diagonal = comércio intrassetorial real; célula ausente = fluxo
+  não publicado. Universo SPI próprio, nunca somado à EPAE aberta.
