@@ -29,6 +29,26 @@ URL_AVALIACAO = ("https://www.gov.br/planejamento/pt-br/assuntos/avaliacao-de-po
 
 FAIXAS_PF = ("faixa1", "faixa2")
 
+# Escopo prudencial → escopo financeiro do MESMO grupo (pares curados por
+# código, verificados empiricamente contra a base publicada em 12/08/2026 —
+# nunca junção por nome). O canônico é sempre o conglomerado FINANCEIRO.
+CONSOLIDA_PRUDENCIAL = {
+    "80738": "51626",     # Caixa Econômica Federal
+    "80099": "10069",     # Itaú
+    "80185": "30379",     # Santander
+    "84693": "52058",     # Nubank (Nu Pagamentos)
+    "80484": "51011",     # Votorantim
+    "80075": "10045",     # Bradesco
+    "84844": "52072",     # C6 Bank
+    "80336": "49944",     # BTG Pactual
+    "80154": "30173",     # Banrisul
+    "80996": "51884",     # Inter
+    "80329": "49906",     # Banco do Brasil
+    "80178": "30290",     # BMG
+    "80879": "51750",     # Banco Sicoob
+    "81593": "7237373",   # Banco do Nordeste
+}
+
 AVISO_COBERTURA = (
     "Esta base cobre somente operações informadas ao SCR como renegociações do Desenrola que "
     "resultaram em nova operação de crédito. A própria fonte declara excluir: dívidas quitadas com "
@@ -355,6 +375,46 @@ def build(con, cfg=None):
             "ticket_medio": round(r["v"] / r["n"]) if r["n"] else None,
             "ufs": r["ufs"], "periodo": f"{r['ini']} a {r['fim']}", "por_faixa": por_faixa,
         })
+    # ---- consolidação financeiro + prudencial: o MESMO grupo aparecia em duas
+    # linhas quando reportou ao SCR sob os dois escopos de consolidação (ex.:
+    # Caixa 51626 + 80738). Pares CURADOS por código, verificados empiricamente
+    # contra a base publicada em 12/08/2026 — nunca por nome. A linha
+    # consolidada mantém o código do escopo FINANCEIRO e declara os
+    # componentes; partes, tíquete, HHI e top-5 são recalculados DEPOIS.
+    por_cod = {i["cod"]: i for i in instituicoes}
+    for cod_p, cod_f in CONSOLIDA_PRUDENCIAL.items():
+        a, b = por_cod.get(cod_f), por_cod.get(cod_p)
+        if not a or not b:
+            continue
+        comp = [{"cod": x["cod"], "nome": x["nome"], "operacoes": x["operacoes"],
+                 "volume": x["volume"]} for x in (a, b)]
+        a["operacoes"] += b["operacoes"]
+        a["volume"] = round(a["volume"] + b["volume"], 2)
+        a["ticket_medio"] = round(a["volume"] / a["operacoes"]) if a["operacoes"] else None
+        for t2 in set(a["por_faixa"]) | set(b["por_faixa"]):
+            fa, fb = a["por_faixa"].get(t2), b["por_faixa"].get(t2)
+            if fa and fb:
+                a["por_faixa"][t2] = {"operacoes": fa["operacoes"] + fb["operacoes"],
+                                      "volume": round(fa["volume"] + fb["volume"], 2)}
+            elif fb:
+                a["por_faixa"][t2] = fb
+        ini_a, fim_a = a["periodo"].split(" a ")
+        ini_b, fim_b = b["periodo"].split(" a ")
+        a["periodo"] = f"{min(ini_a, ini_b)} a {max(fim_a, fim_b)}"
+        a["ufs"] = _rows(con, """SELECT COUNT(DISTINCT uf) n FROM desenrola_op
+                                 WHERE cod_congl IN (?,?) AND tipo IN ('faixa1','faixa2')""",
+                         (cod_f, cod_p))[0]["n"]
+        a["consolidado"] = {
+            "nota": ("Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de "
+                     "consolidação — conglomerado financeiro e conglomerado prudencial — que aqui "
+                     "são somados por serem a mesma organização."),
+            "componentes": comp,
+        }
+        del por_cod[cod_p]
+    instituicoes = sorted(por_cod.values(), key=lambda x: -x["operacoes"])
+    for i in instituicoes:
+        i["part_op"] = round(100 * i["operacoes"] / tot_op, 3) if tot_op else None
+        i["part_vol"] = round(100 * i["volume"] / tot_vol, 3) if tot_vol else None
     hhi = round(sum((i["part_op"] or 0) ** 2 for i in instituicoes), 1)
     top5 = round(sum(i["part_op"] or 0 for i in instituicoes[:5]), 1)
 
@@ -460,7 +520,11 @@ def build(con, cfg=None):
         "serie": serie,
         "mapa": mapa,
         "instituicoes": instituicoes,
-        "concentracao": {"hhi_operacoes": hhi, "top5_operacoes": top5, "n_conglomerados": len(instituicoes)},
+        "concentracao": {"hhi_operacoes": hhi, "top5_operacoes": top5, "n_conglomerados": len(instituicoes),
+                         "nota_consolidacao": ("Grupos que reportam ao SCR sob dois escopos de consolidação "
+                                               "(financeiro e prudencial) aparecem em UMA linha consolidada, "
+                                               "com os componentes declarados — HHI e top-5 calculados após a "
+                                               "consolidação.")},
         "avaliacao": AVALIACAO,
         "matriz_viabilidade": _matriz(),
         "catalogo": catalogo,

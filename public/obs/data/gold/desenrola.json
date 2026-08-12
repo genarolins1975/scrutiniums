@@ -1142,289 +1142,451 @@
  ],
  "instituicoes": [
   {
-   "cod": "52058",
-   "nome": "NUBANK",
-   "operacoes": 547423,
-   "volume": 474619890.56,
-   "part_op": 20.384,
-   "part_vol": 10.507,
-   "ticket_medio": 867,
-   "ufs": 27,
-   "periodo": "2023-10 a 2024-12",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 547423,
-     "volume": 474619890.56
-    }
-   }
-  },
-  {
    "cod": "51626",
    "nome": "CAIXA ECONÔMICA FEDERAL",
-   "operacoes": 401125,
-   "volume": 466219987.15,
-   "part_op": 14.936,
-   "part_vol": 10.321,
-   "ticket_medio": 1162,
+   "operacoes": 593205,
+   "volume": 665985988.48,
+   "part_op": 22.088,
+   "part_vol": 14.743,
+   "ticket_medio": 1123,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 356065,
-     "volume": 382033507.75
+     "operacoes": 547853,
+     "volume": 581148344.72
     },
     "faixa2": {
-     "operacoes": 45060,
-     "volume": 84186479.4
+     "operacoes": 45352,
+     "volume": 84837643.76
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "51626",
+      "nome": "CAIXA ECONÔMICA FEDERAL",
+      "operacoes": 401125,
+      "volume": 466219987.15
+     },
+     {
+      "cod": "80738",
+      "nome": "CAIXA ECONÔMICA FEDERAL - PRUDENCIAL",
+      "operacoes": 192080,
+      "volume": 199766001.33
+     }
+    ]
    }
   },
   {
-   "cod": "49944",
-   "nome": "BTG PACTUAL",
-   "operacoes": 332136,
-   "volume": 440332619.83,
-   "part_op": 12.367,
-   "part_vol": 9.748,
-   "ticket_medio": 1326,
+   "cod": "52058",
+   "nome": "NUBANK",
+   "operacoes": 551451,
+   "volume": 475367037.97,
+   "part_op": 20.534,
+   "part_vol": 10.523,
+   "ticket_medio": 862,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-10 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 329240,
-     "volume": 425481637.4
-    },
-    "faixa2": {
-     "operacoes": 2896,
-     "volume": 14850982.43
+     "operacoes": 551451,
+     "volume": 475367037.97
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "52058",
+      "nome": "NUBANK",
+      "operacoes": 547423,
+      "volume": 474619890.56
+     },
+     {
+      "cod": "84693",
+      "nome": "NU PAGAMENTOS - PRUDENCIAL",
+      "operacoes": 4028,
+      "volume": 747147.41
+     }
+    ]
    }
   },
   {
    "cod": "10069",
    "nome": "ITAU",
-   "operacoes": 302976,
-   "volume": 579567584.19,
-   "part_op": 11.282,
-   "part_vol": 12.83,
-   "ticket_medio": 1913,
+   "operacoes": 346287,
+   "volume": 682165531.3,
+   "part_op": 12.894,
+   "part_vol": 15.101,
+   "ticket_medio": 1970,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 122418,
-     "volume": 127886619.19
+     "operacoes": 123254,
+     "volume": 128004504.22
     },
     "faixa2": {
-     "operacoes": 180558,
-     "volume": 451680965.0
+     "operacoes": 223033,
+     "volume": 554161027.08
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "10069",
+      "nome": "ITAU",
+      "operacoes": 302976,
+      "volume": 579567584.19
+     },
+     {
+      "cod": "80099",
+      "nome": "ITAU - PRUDENCIAL",
+      "operacoes": 43311,
+      "volume": 102597947.11
+     }
+    ]
+   }
+  },
+  {
+   "cod": "49944",
+   "nome": "BTG PACTUAL",
+   "operacoes": 332705,
+   "volume": 440458740.57,
+   "part_op": 12.389,
+   "part_vol": 9.75,
+   "ticket_medio": 1324,
+   "ufs": 27,
+   "periodo": "2023-09 a 2026-06",
+   "por_faixa": {
+    "faixa1": {
+     "operacoes": 329793,
+     "volume": 425560762.96
+    },
+    "faixa2": {
+     "operacoes": 2912,
+     "volume": 14897977.61
+    }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "49944",
+      "nome": "BTG PACTUAL",
+      "operacoes": 332136,
+      "volume": 440332619.83
+     },
+     {
+      "cod": "80336",
+      "nome": "BTG PACTUAL - PRUDENCIAL",
+      "operacoes": 569,
+      "volume": 126120.74
+     }
+    ]
    }
   },
   {
    "cod": "30379",
    "nome": "SANTANDER",
-   "operacoes": 276150,
-   "volume": 943907039.73,
-   "part_op": 10.283,
-   "part_vol": 20.895,
-   "ticket_medio": 3418,
+   "operacoes": 282677,
+   "volume": 951035875.81,
+   "part_op": 10.526,
+   "part_vol": 21.053,
+   "ticket_medio": 3364,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 94170,
-     "volume": 80815419.1
+     "operacoes": 100617,
+     "volume": 87395510.84
     },
     "faixa2": {
-     "operacoes": 181980,
-     "volume": 863091620.63
+     "operacoes": 182060,
+     "volume": 863640364.97
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "30379",
+      "nome": "SANTANDER",
+      "operacoes": 276150,
+      "volume": 943907039.73
+     },
+     {
+      "cod": "80185",
+      "nome": "SANTANDER - PRUDENCIAL",
+      "operacoes": 6527,
+      "volume": 7128836.08
+     }
+    ]
    }
   },
   {
    "cod": "51884",
    "nome": "INTER",
-   "operacoes": 212868,
-   "volume": 245012778.25,
-   "part_op": 7.926,
-   "part_vol": 5.424,
-   "ticket_medio": 1151,
+   "operacoes": 213126,
+   "volume": 245051061.38,
+   "part_op": 7.936,
+   "part_vol": 5.425,
+   "ticket_medio": 1150,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 207426,
-     "volume": 219672443.18
+     "operacoes": 207684,
+     "volume": 219710726.31
     },
     "faixa2": {
      "operacoes": 5442,
      "volume": 25340335.07
     }
-   }
-  },
-  {
-   "cod": "80738",
-   "nome": "CAIXA ECONÔMICA FEDERAL - PRUDENCIAL",
-   "operacoes": 192080,
-   "volume": 199766001.33,
-   "part_op": 7.152,
-   "part_vol": 4.422,
-   "ticket_medio": 1040,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 191788,
-     "volume": 199114836.97
-    },
-    "faixa2": {
-     "operacoes": 292,
-     "volume": 651164.36
-    }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "51884",
+      "nome": "INTER",
+      "operacoes": 212868,
+      "volume": 245012778.25
+     },
+     {
+      "cod": "80996",
+      "nome": "INTER - PRUDENCIAL",
+      "operacoes": 258,
+      "volume": 38283.13
+     }
+    ]
    }
   },
   {
    "cod": "49906",
    "nome": "BB",
-   "operacoes": 114880,
-   "volume": 366927140.9,
-   "part_op": 4.278,
-   "part_vol": 8.123,
-   "ticket_medio": 3194,
+   "operacoes": 115131,
+   "volume": 367093461.13,
+   "part_op": 4.287,
+   "part_vol": 8.126,
+   "ticket_medio": 3188,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 81227,
-     "volume": 90616042.18
+     "operacoes": 81441,
+     "volume": 90638838.21
     },
     "faixa2": {
-     "operacoes": 33653,
-     "volume": 276311098.72
+     "operacoes": 33690,
+     "volume": 276454622.92
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "49906",
+      "nome": "BB",
+      "operacoes": 114880,
+      "volume": 366927140.9
+     },
+     {
+      "cod": "80329",
+      "nome": "BB - PRUDENCIAL",
+      "operacoes": 251,
+      "volume": 166320.23
+     }
+    ]
    }
   },
   {
    "cod": "10045",
    "nome": "BRADESCO",
-   "operacoes": 109858,
-   "volume": 383079909.9,
-   "part_op": 4.091,
-   "part_vol": 8.48,
-   "ticket_medio": 3487,
+   "operacoes": 110761,
+   "volume": 386862666.68,
+   "part_op": 4.124,
+   "part_vol": 8.564,
+   "ticket_medio": 3493,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 74574,
-     "volume": 74449913.7
+     "operacoes": 74965,
+     "volume": 74554741.22
     },
     "faixa2": {
-     "operacoes": 35284,
-     "volume": 308629996.2
+     "operacoes": 35796,
+     "volume": 312307925.46
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "10045",
+      "nome": "BRADESCO",
+      "operacoes": 109858,
+      "volume": 383079909.9
+     },
+     {
+      "cod": "80075",
+      "nome": "BRADESCO - PRUDENCIAL",
+      "operacoes": 903,
+      "volume": 3782756.78
+     }
+    ]
    }
   },
   {
    "cod": "30290",
    "nome": "BMG",
-   "operacoes": 57941,
-   "volume": 67501409.65,
-   "part_op": 2.157,
+   "operacoes": 57984,
+   "volume": 67509972.44,
+   "part_op": 2.159,
    "part_vol": 1.494,
-   "ticket_medio": 1165,
+   "ticket_medio": 1164,
    "ufs": 27,
-   "periodo": "2023-10 a 2024-12",
+   "periodo": "2023-10 a 2026-04",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 57941,
-     "volume": 67501409.65
+     "operacoes": 57984,
+     "volume": 67509972.44
     }
-   }
-  },
-  {
-   "cod": "80099",
-   "nome": "ITAU - PRUDENCIAL",
-   "operacoes": 43311,
-   "volume": 102597947.11,
-   "part_op": 1.613,
-   "part_vol": 2.271,
-   "ticket_medio": 2369,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 836,
-     "volume": 117885.03
-    },
-    "faixa2": {
-     "operacoes": 42475,
-     "volume": 102480062.08
-    }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "30290",
+      "nome": "BMG",
+      "operacoes": 57941,
+      "volume": 67501409.65
+     },
+     {
+      "cod": "80178",
+      "nome": "BMG - PRUDENCIAL",
+      "operacoes": 43,
+      "volume": 8562.79
+     }
+    ]
    }
   },
   {
    "cod": "52072",
    "nome": "C6 BANK",
-   "operacoes": 29573,
-   "volume": 50505653.88,
-   "part_op": 1.101,
-   "part_vol": 1.118,
-   "ticket_medio": 1708,
+   "operacoes": 30185,
+   "volume": 53819971.74,
+   "part_op": 1.124,
+   "part_vol": 1.191,
+   "ticket_medio": 1783,
    "ufs": 27,
-   "periodo": "2023-10 a 2024-12",
+   "periodo": "2023-10 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 17636,
-     "volume": 18710973.02
+     "operacoes": 17843,
+     "volume": 19259621.53
     },
     "faixa2": {
-     "operacoes": 11937,
-     "volume": 31794680.86
+     "operacoes": 12342,
+     "volume": 34560350.21
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "52072",
+      "nome": "C6 BANK",
+      "operacoes": 29573,
+      "volume": 50505653.88
+     },
+     {
+      "cod": "84844",
+      "nome": "BANCO C6 - PRUDENCIAL",
+      "operacoes": 612,
+      "volume": 3314317.86
+     }
+    ]
    }
   },
   {
    "cod": "51011",
    "nome": "VOTORANTIM",
-   "operacoes": 27120,
-   "volume": 132253763.76,
-   "part_op": 1.01,
-   "part_vol": 2.928,
-   "ticket_medio": 4877,
+   "operacoes": 28073,
+   "volume": 134843623.58,
+   "part_op": 1.045,
+   "part_vol": 2.985,
+   "ticket_medio": 4803,
    "ufs": 27,
-   "periodo": "2023-09 a 2024-12",
+   "periodo": "2023-09 a 2026-06",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 3881,
-     "volume": 4706165.9
+     "operacoes": 3884,
+     "volume": 4706669.89
     },
     "faixa2": {
-     "operacoes": 23239,
-     "volume": 127547597.86
+     "operacoes": 24189,
+     "volume": 130136953.69
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "51011",
+      "nome": "VOTORANTIM",
+      "operacoes": 27120,
+      "volume": 132253763.76
+     },
+     {
+      "cod": "80484",
+      "nome": "VOTORANTIM - PRUDENCIAL",
+      "operacoes": 953,
+      "volume": 2589859.82
+     }
+    ]
    }
   },
   {
    "cod": "30173",
    "nome": "BANRISUL",
-   "operacoes": 8153,
-   "volume": 24025061.8,
-   "part_op": 0.304,
-   "part_vol": 0.532,
-   "ticket_medio": 2947,
+   "operacoes": 8660,
+   "volume": 24644215.98,
+   "part_op": 0.322,
+   "part_vol": 0.546,
+   "ticket_medio": 2846,
    "ufs": 26,
-   "periodo": "2023-11 a 2024-12",
+   "periodo": "2023-11 a 2026-03",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 3454,
-     "volume": 4298297.4
+     "operacoes": 3941,
+     "volume": 4912495.41
     },
     "faixa2": {
-     "operacoes": 4699,
-     "volume": 19726764.4
+     "operacoes": 4719,
+     "volume": 19731720.57
     }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "30173",
+      "nome": "BANRISUL",
+      "operacoes": 8153,
+      "volume": 24025061.8
+     },
+     {
+      "cod": "80154",
+      "nome": "BANRISUL - PRUDENCIAL",
+      "operacoes": 507,
+      "volume": 619154.18
+     }
+    ]
    }
   },
   {
@@ -1441,27 +1603,6 @@
     "faixa2": {
      "operacoes": 7183,
      "volume": 8566653.65
-    }
-   }
-  },
-  {
-   "cod": "80185",
-   "nome": "SANTANDER - PRUDENCIAL",
-   "operacoes": 6527,
-   "volume": 7128836.08,
-   "part_op": 0.243,
-   "part_vol": 0.158,
-   "ticket_medio": 1092,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 6447,
-     "volume": 6580091.74
-    },
-    "faixa2": {
-     "operacoes": 80,
-     "volume": 548744.34
     }
    }
   },
@@ -1483,180 +1624,37 @@
    }
   },
   {
-   "cod": "84693",
-   "nome": "NU PAGAMENTOS - PRUDENCIAL",
-   "operacoes": 4028,
-   "volume": 747147.41,
-   "part_op": 0.15,
-   "part_vol": 0.017,
-   "ticket_medio": 185,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 4028,
-     "volume": 747147.41
-    }
-   }
-  },
-  {
    "cod": "51750",
    "nome": "BANCO SICOOB",
-   "operacoes": 2419,
-   "volume": 3029995.2,
-   "part_op": 0.09,
+   "operacoes": 2455,
+   "volume": 3036875.42,
+   "part_op": 0.091,
    "part_vol": 0.067,
-   "ticket_medio": 1253,
+   "ticket_medio": 1237,
    "ufs": 26,
-   "periodo": "2023-10 a 2024-12",
+   "periodo": "2023-10 a 2026-05",
    "por_faixa": {
     "faixa1": {
-     "operacoes": 2419,
-     "volume": 3029995.2
+     "operacoes": 2455,
+     "volume": 3036875.42
     }
-   }
-  },
-  {
-   "cod": "80484",
-   "nome": "VOTORANTIM - PRUDENCIAL",
-   "operacoes": 953,
-   "volume": 2589859.82,
-   "part_op": 0.035,
-   "part_vol": 0.057,
-   "ticket_medio": 2718,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 3,
-     "volume": 503.99
-    },
-    "faixa2": {
-     "operacoes": 950,
-     "volume": 2589355.83
-    }
-   }
-  },
-  {
-   "cod": "80075",
-   "nome": "BRADESCO - PRUDENCIAL",
-   "operacoes": 903,
-   "volume": 3782756.78,
-   "part_op": 0.034,
-   "part_vol": 0.084,
-   "ticket_medio": 4189,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 391,
-     "volume": 104827.52
-    },
-    "faixa2": {
-     "operacoes": 512,
-     "volume": 3677929.26
-    }
-   }
-  },
-  {
-   "cod": "84844",
-   "nome": "BANCO C6 - PRUDENCIAL",
-   "operacoes": 612,
-   "volume": 3314317.86,
-   "part_op": 0.023,
-   "part_vol": 0.073,
-   "ticket_medio": 5416,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 207,
-     "volume": 548648.51
-    },
-    "faixa2": {
-     "operacoes": 405,
-     "volume": 2765669.35
-    }
-   }
-  },
-  {
-   "cod": "80336",
-   "nome": "BTG PACTUAL - PRUDENCIAL",
-   "operacoes": 569,
-   "volume": 126120.74,
-   "part_op": 0.021,
-   "part_vol": 0.003,
-   "ticket_medio": 222,
-   "ufs": 26,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 553,
-     "volume": 79125.56
-    },
-    "faixa2": {
-     "operacoes": 16,
-     "volume": 46995.18
-    }
-   }
-  },
-  {
-   "cod": "80154",
-   "nome": "BANRISUL - PRUDENCIAL",
-   "operacoes": 507,
-   "volume": 619154.18,
-   "part_op": 0.019,
-   "part_vol": 0.014,
-   "ticket_medio": 1221,
-   "ufs": 21,
-   "periodo": "2025-01 a 2026-03",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 487,
-     "volume": 614198.01
-    },
-    "faixa2": {
-     "operacoes": 20,
-     "volume": 4956.17
-    }
-   }
-  },
-  {
-   "cod": "80996",
-   "nome": "INTER - PRUDENCIAL",
-   "operacoes": 258,
-   "volume": 38283.13,
-   "part_op": 0.01,
-   "part_vol": 0.001,
-   "ticket_medio": 148,
-   "ufs": 26,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 258,
-     "volume": 38283.13
-    }
-   }
-  },
-  {
-   "cod": "80329",
-   "nome": "BB - PRUDENCIAL",
-   "operacoes": 251,
-   "volume": 166320.23,
-   "part_op": 0.009,
-   "part_vol": 0.004,
-   "ticket_medio": 663,
-   "ufs": 27,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 214,
-     "volume": 22796.03
-    },
-    "faixa2": {
-     "operacoes": 37,
-     "volume": 143524.2
-    }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "51750",
+      "nome": "BANCO SICOOB",
+      "operacoes": 2419,
+      "volume": 3029995.2
+     },
+     {
+      "cod": "80879",
+      "nome": "BANCO SICOOB - PRUDENCIAL",
+      "operacoes": 36,
+      "volume": 6880.22
+     }
+    ]
    }
   },
   {
@@ -1711,6 +1709,40 @@
    }
   },
   {
+   "cod": "7237373",
+   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+   "operacoes": 126,
+   "volume": 1879262.54,
+   "part_op": 0.005,
+   "part_vol": 0.042,
+   "ticket_medio": 14915,
+   "ufs": 7,
+   "periodo": "2023-12 a 2026-06",
+   "por_faixa": {
+    "faixa2": {
+     "operacoes": 126,
+     "volume": 1879262.54
+    }
+   },
+   "consolidado": {
+    "nota": "Linha consolidada: a fonte (SCR) reporta este grupo sob DOIS escopos de consolidação — conglomerado financeiro e conglomerado prudencial — que aqui são somados por serem a mesma organização.",
+    "componentes": [
+     {
+      "cod": "7237373",
+      "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+      "operacoes": 3,
+      "volume": 15363.76
+     },
+     {
+      "cod": "81593",
+      "nome": "BCO DO NORDESTE DO BRASIL S.A. - PRUDENCIAL",
+      "operacoes": 123,
+      "volume": 1863898.78
+     }
+    ]
+   }
+  },
+  {
    "cod": "4913711",
    "nome": "BCO DO EST. DO PA S.A.",
    "operacoes": 125,
@@ -1728,23 +1760,6 @@
     "faixa2": {
      "operacoes": 54,
      "volume": 721271.35
-    }
-   }
-  },
-  {
-   "cod": "81593",
-   "nome": "BCO DO NORDESTE DO BRASIL S.A. - PRUDENCIAL",
-   "operacoes": 123,
-   "volume": 1863898.78,
-   "part_op": 0.005,
-   "part_vol": 0.041,
-   "ticket_medio": 15154,
-   "ufs": 7,
-   "periodo": "2025-01 a 2026-06",
-   "por_faixa": {
-    "faixa2": {
-     "operacoes": 123,
-     "volume": 1863898.78
     }
    }
   },
@@ -1813,40 +1828,6 @@
     "faixa1": {
      "operacoes": 48,
      "volume": 63110.15
-    }
-   }
-  },
-  {
-   "cod": "80178",
-   "nome": "BMG - PRUDENCIAL",
-   "operacoes": 43,
-   "volume": 8562.79,
-   "part_op": 0.002,
-   "part_vol": 0.0,
-   "ticket_medio": 199,
-   "ufs": 16,
-   "periodo": "2025-01 a 2026-04",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 43,
-     "volume": 8562.79
-    }
-   }
-  },
-  {
-   "cod": "80879",
-   "nome": "BANCO SICOOB - PRUDENCIAL",
-   "operacoes": 36,
-   "volume": 6880.22,
-   "part_op": 0.001,
-   "part_vol": 0.0,
-   "ticket_medio": 191,
-   "ufs": 14,
-   "periodo": "2025-01 a 2026-05",
-   "por_faixa": {
-    "faixa1": {
-     "operacoes": 36,
-     "volume": 6880.22
     }
    }
   },
@@ -2293,23 +2274,6 @@
    }
   },
   {
-   "cod": "7237373",
-   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-   "operacoes": 3,
-   "volume": 15363.76,
-   "part_op": 0.0,
-   "part_vol": 0.0,
-   "ticket_medio": 5121,
-   "ufs": 2,
-   "periodo": "2023-12 a 2024-12",
-   "por_faixa": {
-    "faixa2": {
-     "operacoes": 3,
-     "volume": 15363.76
-    }
-   }
-  },
-  {
    "cod": "69346856",
    "nome": "CECM DOS PROFISSIONAIS DA SAUDE DA REG ALTA MOGIANA",
    "operacoes": 3,
@@ -2464,9 +2428,10 @@
   }
  ],
  "concentracao": {
-  "hhi_operacoes": 1183.3,
-  "top5_operacoes": 69.3,
-  "n_conglomerados": 73
+  "hhi_operacoes": 1445.7,
+  "top5_operacoes": 78.4,
+  "n_conglomerados": 59,
+  "nota_consolidacao": "Grupos que reportam ao SCR sob dois escopos de consolidação (financeiro e prudencial) aparecem em UMA linha consolidada, com os componentes declarados — HHI e top-5 calculados após a consolidação."
  },
  "avaliacao": {
   "titulo": "Relatório de Avaliação — Desenrola Brasil",

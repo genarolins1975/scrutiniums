@@ -264,3 +264,36 @@ describe("credores: comparação sem ranking simplista", () => {
     expect(app).toMatch(/s\.size < 5/);
   });
 });
+
+describe("consolidação financeiro + prudencial (mesmo grupo, uma linha)", () => {
+  const coletorPy = readFileSync(join(process.cwd(), "pipeline/desenrola.py"), "utf-8");
+
+  it("os pares são curados por código e somados ANTES do HHI/top-5", () => {
+    expect(coletorPy).toMatch(/CONSOLIDA_PRUDENCIAL = \{/);
+    expect(coletorPy).toMatch(/nunca junção por nome/);
+    // a consolidação precede o cálculo de concentração no fonte
+    const iCons = coletorPy.indexOf("CONSOLIDA_PRUDENCIAL.items()");
+    const iHhi = coletorPy.indexOf("hhi = round");
+    expect(iCons).toBeGreaterThan(-1);
+    expect(iCons).toBeLessThan(iHhi);
+  });
+
+  it("nenhuma linha residual '- PRUDENCIAL' e componentes declarados", () => {
+    for (const i of D.instituicoes) {
+      expect(i.nome, i.cod).not.toMatch(/PRUDENCIAL/i);
+      if (i.consolidado) {
+        expect(i.consolidado.componentes.length).toBe(2);
+        const soma = i.consolidado.componentes.reduce((s: number, c: any) => s + c.operacoes, 0);
+        expect(i.operacoes, i.nome).toBe(soma);
+      }
+    }
+    expect(D.instituicoes.filter((i: any) => i.consolidado).length).toBeGreaterThanOrEqual(10);
+  });
+
+  it("HHI e top-5 conferem com as partes consolidadas, e a nota acompanha", () => {
+    const hhi = D.instituicoes.reduce((s: number, i: any) => s + Math.pow(i.part_op || 0, 2), 0);
+    expect(Math.abs(hhi - D.concentracao.hhi_operacoes)).toBeLessThan(1);
+    expect(D.concentracao.nota_consolidacao).toMatch(/consolidada/);
+    expect(app).toMatch(/consolidado ⓘ/);
+  });
+});

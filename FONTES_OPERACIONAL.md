@@ -664,3 +664,18 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   logarítmica declarada (fluxos variam 4 ordens de grandeza), o número é o
   valor real; diagonal = comércio intrassetorial real; célula ausente = fluxo
   não publicado. Universo SPI próprio, nunca somado à EPAE aberta.
+
+## 26. Desenrola: consolidação financeiro + prudencial por grupo
+
+- A fonte (SCR) reporta o MESMO grupo sob dois escopos de consolidação —
+  conglomerado financeiro e conglomerado prudencial (ex.: Caixa 51626 +
+  80738; Itaú 10069 + 80099) — e o painel os exibia como credores
+  distintos, distorcendo o ranking: a Caixa, líder real em operações
+  (22,1% consolidada), aparecia atrás do Nubank.
+- Consolidação por mapa CURADO de códigos (14 pares, verificados
+  empiricamente contra a base publicada em 12/08/2026 — nunca por nome),
+  canônico = escopo financeiro. Operações, volume, faixas e período são
+  somados; UFs distintas recontadas na base; tíquete, partes, HHI e top-5
+  recalculados APÓS a consolidação (HHI 1.183 → 1.446; top-5 69,3% →
+  78,4%). Cada linha consolidada declara os componentes, e a SPA exibe o
+  rótulo "consolidado ⓘ" com a explicação e os componentes no tooltip.
