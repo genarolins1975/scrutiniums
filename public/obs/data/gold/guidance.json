@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T11:09:53+00:00",
+ "gerado_em": "2026-08-12T12:21:15+00:00",
  "titulo": "Guidance × entregue",
  "ciclos": [
   {
@@ -280,7 +280,48 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
-   "acompanhamentos": [],
+   "acompanhamentos": [
+    {
+     "periodo": "2T26",
+     "tipo": "acompanhamento",
+     "resumo": "Guidance 2026 integralmente MANTIDO; o próprio Bradesco publica o realizado 1S26×1S25 ao lado dos intervalos anuais: carteira expandida 11,6%, margem financeira líquida R$ 21,3 bi no semestre, serviços 3,9%, despesas operacionais 5,5%, seguros 14,1%. Ritmo semestral NÃO é resultado anual — nenhuma aferição antes do fechamento do ciclo.",
+     "mudancas": null,
+     "realizado_parcial": [
+      {
+       "metrica": "Carteira de Crédito Expandida",
+       "valor": 11.6,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Margem Financeira Líquida",
+       "valor": 21.3,
+       "unidade": "R$ bi no 1S26"
+      },
+      {
+       "metrica": "Receitas de Prestação de Serviços",
+       "valor": 3.9,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Despesas Operacionais",
+       "valor": 5.5,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Resultado de Seguros, Previdência e Capitalização",
+       "valor": 14.1,
+       "unidade": "% 1S26/1S25"
+      }
+     ],
+     "pagina": "p. 24 do documento (PDF 24), 'Guidance, Indicadores & Perspectivas Econômicas'",
+     "trecho": "Guidance Anual | Realizado 1S26 x 1S25: Carteira de Crédito Expandida 8,5% a 10,5% Mantido 11,6%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi Mantido R$ 21,3; Receitas de Prestação de Serviços 3% a 5% Mantido 3,9%; Despesas Operacionais 6% a 8% Mantido 5,5%; Resultado das Operações de Seguros 6% a 8% Mantido 14,1%",
+     "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)",
+     "documento": {
+      "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 2T26 (IPE 05/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552745&numSequencia=1077451&numVersao=1"
+     }
+    }
+   ],
    "acompanhamento_pendente": null,
    "id": "bradesco_2026",
    "banco": "Bradesco",
@@ -432,7 +473,28 @@
    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
   },
   {
-   "acompanhamentos": [],
+   "acompanhamentos": [
+    {
+     "periodo": "2T26",
+     "tipo": "revisao",
+     "resumo": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'.",
+     "mudancas": [
+      {
+       "metrica": "Receita de serviços e resultado de seguros",
+       "min_novo": 2.0,
+       "max_novo": 5.0
+      }
+     ],
+     "realizado_parcial": null,
+     "pagina": "p. 9 do documento (PDF 7), 'Projeção 2026' — colunas Original × Atual",
+     "trecho": "Projeção 2026 … Receita de prestação de serviços e resultado de seguros³ | Original: Crescimento entre 5,0% e 9,0% | Atual: Crescimento entre 2,0% e 5,0% … [demais métricas] Atual: Mantido",
+     "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)",
+     "documento": {
+      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 2T26 (IPE 04/08/2026)",
+      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552006&numSequencia=1076712&numVersao=1"
+     }
+    }
+   ],
    "acompanhamento_pendente": null,
    "id": "itau_2026",
    "banco": "Itaú Unibanco",
@@ -540,7 +602,7 @@
   }
  ],
  "em_revisao": 0,
- "acompanhamentos_em_revisao": 2,
+ "acompanhamentos_em_revisao": 0,
  "leitura": "O que cada grande banco listado prometeu ao mercado para o ano — e o que entregou, pela régua declarada pelo próprio banco. Ciclos fechados mostram intervalo × realizado; o ciclo vigente mostra as promessas em curso, acompanhadas a cada divulgação.",
  "cautelas": [
   "Cada banco SÓ contra o próprio guidance: conceitos gerenciais e bases ajustadas diferem por banco — cumprimento NUNCA é comparado, somado ou ranqueado entre bancos.",

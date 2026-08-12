@@ -41472,9 +41472,75 @@
     "pagina": "PÁGINA: 203 de 250",
     "trecho": "40. Outras Despesas Administrativas … a) Composição … Em milhares de Reais 2025 2024 2023 … Tecnologia e sistemas 3.015.127 2.409.697 2.383.988",
     "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral das 6 observações)"
+   },
+   {
+    "id": "itau_ti_1s26",
+    "banco": "Itaú Unibanco",
+    "cnpj8": "60872504",
+    "regime": "IFRS (Consolidado)",
+    "metrica": "Processamento de Dados e Telecomunicações — Despesas Gerais e Administrativas (Nota 25), 1º semestre de 2026",
+    "valor": 3190,
+    "unidade": "R$ milhões",
+    "data_ref": "2026-06-30",
+    "comparativos": {
+     "1S25": 2847
+    },
+    "exclusivo_ti": false,
+    "conceito_nota": "mesma rubrica da série anual (inclui telecomunicações); primeiro ponto intra-anual — 1S26 +12,0% sobre 1S25",
+    "documento": {
+     "titulo": "Itaú Unibanco — Demonstrações Contábeis Completas 30/06/2026 (IPE 04/08/2026)",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552007&numSequencia=1076713&numVersao=1"
+    },
+    "pagina": "Nota 25 - Despesas Operacionais (PDF 98; também na DRE, PDF 18)",
+    "trecho": "Nota 25 … Processamento de Dados e Telecomunicações (3.190) (2.847) — colunas 01/01 a 30/06/2026 e 01/01 a 30/06/2025",
+    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
+   },
+   {
+    "id": "bradesco_ti_1s26_brgaap",
+    "banco": "Bradesco",
+    "cnpj8": "60746948",
+    "regime": "BRGAAP (Consolidado)",
+    "metrica": "Processamento de dados — Outras Despesas Administrativas (Nota 31), acumulado em 30/06/2026",
+    "valor": 1847550,
+    "unidade": "R$ mil",
+    "data_ref": "2026-06-30",
+    "comparativos": {
+     "1S25": 1281410
+    },
+    "exclusivo_ti": true,
+    "conceito_nota": "REGIME DIFERENTE da observação anual (que é IFRS, nota 34): série BRGAAP intra-anual própria — 1S26 +44,2% sobre 1S25; nunca comparar com a série IFRS",
+    "documento": {
+     "titulo": "Bradesco — Demonstrações Financeiras Intermediárias 1S26 (IPE 05/08/2026)",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552741&numSequencia=1077447&numVersao=1"
+    },
+    "pagina": "Nota 31 — Outras Despesas Administrativas (PDF 76)",
+    "trecho": "31) OUTRAS DESPESAS ADMINISTRATIVAS … R$ mil … Acumulado em 30 de junho 2026 2025 … Processamento de dados 1.847.550 1.281.410",
+    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
+   },
+   {
+    "id": "santander_ti_1s26_brgaap",
+    "banco": "Santander Brasil",
+    "cnpj8": "90400888",
+    "regime": "BRGAAP (Consolidado)",
+    "metrica": "Processamento de Dados — Outras Despesas Administrativas (Nota 25), Consolidado, 01/01 a 30/06/2026",
+    "valor": 2105398,
+    "unidade": "R$ mil",
+    "data_ref": "2026-06-30",
+    "comparativos": {
+     "1S25": 1649347
+    },
+    "exclusivo_ti": true,
+    "conceito_nota": "mesma nota da série anual BRGAAP; 1S26 +27,7% sobre 1S25; Banco individual (2.167.661) segue maior que o consolidado por eliminações intragrupo",
+    "documento": {
+     "titulo": "Santander Brasil — Demonstrações Financeiras BRGAAP 30/06/2026 (IPE 29/07/2026)",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1549013&numSequencia=1073719&numVersao=1"
+    },
+    "pagina": "Nota 25 — Outras Despesas Administrativas ('30 de junho de 2026 | 94')",
+    "trecho": "25. Outras Despesas Administrativas … Banco 01/01 a 30/06/2026 01/01 a 30/06/2025 | Consolidado 01/01 a 30/06/2026 01/01 a 30/06/2025 … Processamento de Dados 2.167.661 1.895.534 2.105.398 1.649.347",
+    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
    }
   ],
-  "em_revisao": 3,
+  "em_revisao": 0,
   "agregado_sistema": {
    "nome": "Orçamento de tecnologia do sistema bancário (Pesquisa Febraban de Tecnologia Bancária 2025, Deloitte)",
    "orcamento_2025_brl": 47800000000,

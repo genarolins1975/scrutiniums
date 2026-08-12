@@ -1314,9 +1314,26 @@
     "pagina": "PÁGINA 169 de 250",
     "trecho": "Outros recebíveis (1) 2.857.449 … (1) Corresponde, majoritariamente, a pagamento de prêmios da carteira de folha de pagamento. [recebível, NÃO intangível — nunca comparado aos saldos dos demais]",
     "revisor": "proprietário (revisão em sessão Claude Code, 10/08/2026 — aprovação integral das 8 observações)"
+   },
+   {
+    "id": "itau_folha_amortizacao_1s26",
+    "banco": "Itaú Unibanco",
+    "cnpj8": "60872504",
+    "metrica": "Despesa de amortização do direito de aquisição de folhas de pagamentos e associações — 1º semestre de 2026",
+    "valor": 659,
+    "unidade": "R$ milhões",
+    "data_ref": "2026-06-30",
+    "exclusivo_folha": true,
+    "documento": {
+     "titulo": "Itaú Unibanco — Demonstrações Contábeis Completas 30/06/2026 (IPE 04/08/2026)",
+     "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552007&numSequencia=1076713&numVersao=1"
+    },
+    "pagina": "Nota 15 - Ágio e Ativos Intangíveis (PDF 70)",
+    "trecho": "A Despesa de Amortização do direito de aquisição de folhas de pagamentos e associações, no montante de R$ (659) (R$ (1.297) de 01/01 a 31/12/2025), é divulgada na rubrica Despesas Gerais e Administrativas",
+    "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
    }
   ],
-  "em_revisao": 1,
+  "em_revisao": 0,
   "leitura": "O que o banco paga pela folha vira ativo intangível e se amortiza no prazo do contrato — é o mesmo negócio dos leilões, visto pelo balanço. Só o Banco do Brasil isola a folha em conta própria; nos demais o conceito é mais amplo ou não é isolado, e cada observação declara isso em `exclusivo_folha`.",
   "cautelas": [
    "Conceitos e unidades diferem por banco (R$ mil × R$ milhões; folha isolada × categoria ampla): valores NUNCA são somados nem ranqueados entre bancos.",

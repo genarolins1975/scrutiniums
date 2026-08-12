@@ -409,8 +409,8 @@
           "documento": "bradesco_rel_2t26",
           "pagina": "p. 24 do documento (PDF 24), 'Guidance, Indicadores & Perspectivas Econômicas'",
           "trecho": "Guidance Anual | Realizado 1S26 x 1S25: Carteira de Crédito Expandida 8,5% a 10,5% Mantido 11,6%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi Mantido R$ 21,3; Receitas de Prestação de Serviços 3% a 5% Mantido 3,9%; Despesas Operacionais 6% a 8% Mantido 5,5%; Resultado das Operações de Seguros 6% a 8% Mantido 14,1%",
-          "status": "em_revisao",
-          "revisor": null
+          "status": "aprovado",
+          "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
         }
       ]
     },
@@ -590,8 +590,8 @@
           "documento": "itau_ag_2t26",
           "pagina": "p. 9 do documento (PDF 7), 'Projeção 2026' — colunas Original × Atual",
           "trecho": "Projeção 2026 … Receita de prestação de serviços e resultado de seguros³ | Original: Crescimento entre 5,0% e 9,0% | Atual: Crescimento entre 2,0% e 5,0% … [demais métricas] Atual: Mantido",
-          "status": "em_revisao",
-          "revisor": null
+          "status": "aprovado",
+          "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
         }
       ]
     },
