@@ -430,3 +430,29 @@ aparece na legenda do mapa em vez de ser resolvida em silêncio.
   elasticidades. Segmentação prudencial ATUAL aplicada retroativamente
   (declarado); Basileia/carteiras detalhadas/DRE históricas ficam para a
   próxima rodada (arquivos da UI por bundle antigo).
+
+## 15. Pilar 3 (KM1) via DASFN — liquidez e capital regulatórios
+
+- **Fonte:** arranjo de dados abertos do SFN (DASFN): o BCB mantém o REGISTRO
+  central (Olinda, api `pilar3`) e cada instituição serve os próprios JSONs
+  KM1 no padrão da Res. BCB 54/2020. Medido em 08/2026: 75 instituições com
+  KM1; grandes atualizados ao trimestre corrente; cada payload traz 5
+  trimestres (colunas t..t_4).
+- **Coletor:** `pipeline/sources/pilar3.py` → silver `pilar3_km1`. Só
+  métricas-RAZÃO (ICP, Nível 1, Basileia, ACP, margem, alavancagem, LCR,
+  NSFR): linhas monetárias têm unidade ambígua entre bancos (R$ mil ×
+  milhões) e ficam fora — omitido, nunca adivinhado. Escalas heterogêneas
+  (BB em %, Itaú/Santander em fração) normalizadas por régua de
+  plausibilidade POR MÉTRICA; fora de régua é descartado. Sistêmicos
+  primeiro (PRIORIDADE), retry para resets, cap por execução, falha consome
+  o cap.
+- **Gold `pilar3.json` + card na página da IF:** join pelo CNPJ do líder do
+  conglomerado (códigos de conglomerado mudam entre períodos; o CNPJ-raiz
+  não). Mínimos regulatórios anotados por métrica (LCR/NSFR 100%; Basileia
+  8%; alavancagem 3%).
+- **Cautelas centrais:** requerimento de LCR/NSFR alcança S1/S2 — ausência
+  não é descumprimento; cobertura é a do arranjo (Bradesco NÃO registra —
+  verificado, zero registros; Caixa parou em 2022) — ausências declaradas,
+  nunca silenciosas. Validação: BB LCR 167,7%/NSFR 113,9%; Itaú 195,1/122,0;
+  Santander 189,1/115,2; BTG 160,9/102,2 (2026-1), coerentes com os PDFs de
+  Pilar 3 (KM1 do Itaú conferida no documento do IPE).

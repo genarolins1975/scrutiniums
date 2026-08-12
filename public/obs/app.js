@@ -209,7 +209,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.60.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.61.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -219,7 +219,7 @@ const VIEW_DATA = {
   pulse: ["regimes"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
-  institutions: ["institutions", "inst_index", "npl", "guidance"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional"],
+  institutions: ["institutions", "inst_index", "npl", "guidance"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3"],
   method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index", "operacional"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
@@ -3869,6 +3869,33 @@ function renderInstPageData(el, pg) {
       <tbody>${pg.capital_tabela.map(capRow).join("")}</tbody></table></div>
       <div class="src">grupo = ${cab.grupo_pares} (${cab.n_pares} instituições com dados)</div></div>
   </div>
+  ${(function(){
+    /* Liquidez e capital regulatórios (Pilar 3/KM1): join pelo CNPJ do líder
+       do conglomerado — códigos de conglomerado mudam entre períodos, o
+       CNPJ-raiz não. Fórmula regulatória única: mínimos anotados por métrica. */
+    const P3G = state.data.pilar3;
+    if (!P3G || !P3G.disponivel) return "";
+    const cnpj8pg = String(cab.cnpj || "").replace(/\D/g, "").slice(0, 8);
+    const p3 = (P3G.instituicoes || []).find(x => x.cod_inst === pg.cod_inst || (cnpj8pg && x.cnpj8 === cnpj8pg));
+    if (!p3) return "";
+    const M = P3G.metricas || {};
+    const linha = (met) => {
+      const u = p3.ultimo[met];
+      if (u == null) return "";
+      const serie = (p3.series[met] || []).map(x => x.v);
+      const min = M[met] && M[met].minimo;
+      return `<tr><td>${(M[met] || {}).nome || met}</td>
+        <td class="num"><b>${fmt.n(u, 2)}%</b></td>
+        <td class="num src">${min != null ? `mínimo ${fmt.n(min, 1)}%` : "–"}</td>
+        <td>${serie.length > 2 ? sparkline(serie, 110, 24) : ""} <span class="src">${serie.length} trim.</span></td></tr>`;
+    };
+    const ordem = ["lcr_pct", "nsfr_pct", "icp_pct", "nivel1_pct", "basileia_pct", "acp_total_pct", "margem_capital_principal_pct", "alavancagem_pct"];
+    return `<div class="card" style="margin-top:12px"><h4>Liquidez e capital — Pilar 3 (KM1) ${badge("observado", "métricas-chave prudenciais no padrão da Res. BCB 54/2020, servidas pela própria instituição no arranjo DASFN do BCB")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Métrica</th><th class="num">Último (${p3.periodo_ultimo})</th><th class="num">Mínimo regulatório</th><th>Série</th></tr></thead>
+      <tbody>${ordem.map(linha).join("")}</tbody></table></div>
+      <p class="src">Registrante no DASFN: ${p3.nome}. LCR mede 30 dias de estresse de liquidez; NSFR a liquidez estrutural — mínimos de 100%. A margem excedente é o capital acima do requerido com colchões (ACP).</p>
+    </div>`;
+  })()}
   <div class="grid g2" style="margin-top:12px">
     <div id="s-carteira" class="card"><h4>Composição da carteira ${pg.carteira.donut_cliente ? badge("observado") : ""}</h4>
       ${pg.carteira.donut_cliente ? donut(pg.carteira.donut_cliente) : "<p class='src'>detalhamento de carteira não reportado por esta instituição no IF.data.</p>"}
