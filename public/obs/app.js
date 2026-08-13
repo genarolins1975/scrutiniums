@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.75.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.76.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -238,7 +238,7 @@ const VIEW_DATA = {
   moradia: ["moradia", "moradia_mun", "penetracao_malha"],
   consignado: ["consignado", "consignado_mun", "penetracao_malha", "regulacao"],
   openfinance: ["openfinance"],
-  scenarios: ["scenario"],
+  scenarios: ["scenario", "institutions"],
   alerts: ["sectors", "scenario", "quality"],
   products: ["products"], product: ["products"],
   bets: ["bets", "epae"],
@@ -4765,6 +4765,94 @@ function transmissionChain() {
   if (!steps.length) return "<p class='src'>nenhum choque aplicado — cenário igual à base.</p>";
   return `<div class="chain">${steps.map(t => `<div class="chainstep">→ ${t}</div>`).join("")}<div class="chainstep"><b>→ atrasos → inadimplência projetada</b> (rampa linear de 12 meses)</div></div>`;
 }
+/* ---- Cenário → Basileia pós-choque ----
+   Fecha a promessa "impacto em instituições" com a conta mais honesta que os
+   dados públicos permitem: o estoque ADICIONAL de inadimplência no horizonte
+   (Δinad do cenário × carteira), provisionado a uma LGD declarada, deduzido do
+   PR com RWA constante (teste estático, sem reação de balanço nem efeito
+   fiscal). Isso é um PISO do impacto — a perda acumulada do período é maior,
+   porque baixas recicladas não entram — e a página diz isso em cima da tabela.
+   A métrica que diferencia as IFs é o Δinad crítico: quantos p.p. de
+   inadimplência a mais esgotariam o colchão até PR de 10,5% (mínimo de 8% +
+   conservação de 2,5%; adicionais sistêmicos de S1 fora, declarado). */
+const SCN_LGD = 0.5;       // premissa central declarada; resultado escala linearmente em 40–60%
+const SCN_PR_REF = 10.5;   // PR mínimo 8% + adicional de conservação 2,5%
+function scnDeltaInad() {
+  // Δinad no horizonte de 12 meses (rampa completa), central e intervalo
+  const el2 = state.data.scenario.elasticidades;
+  let d = 0, dLo = 0, dHi = 0;
+  for (const [k, v] of Object.entries(state.scen)) {
+    const e = el2[k]; if (!e || !v) continue;
+    d += e.value * v; dLo += e.range[0] * v; dHi += e.range[1] * v;
+  }
+  return { d, dLo: Math.min(dLo, dHi), dHi: Math.max(dLo, dHi) };
+}
+function scnBasLinhas() {
+  const I = state.data.institutions;
+  if (!I || !I.instituicoes) return null;
+  const { d, dLo, dHi } = scnDeltaInad();
+  const elegiveis = I.instituicoes.filter(x => x.rwa_brl && x.basileia_pct != null && x.carteira_brl != null);
+  const linhas = elegiveis.map(x => {
+    const alav = x.carteira_brl / x.rwa_brl;          // quanto de carteira cada unidade de RWA carrega
+    const ded = alav * d * SCN_LGD;                   // dedução no índice, em p.p.
+    const bas_pos = x.basileia_pct - ded;
+    const faixa = [x.basileia_pct - alav * dHi * SCN_LGD, x.basileia_pct - alav * dLo * SCN_LGD].sort((a, b) => a - b);
+    const critico = alav > 0 ? (x.basileia_pct - SCN_PR_REF) / (alav * SCN_LGD) : null;
+    return { cod: x.cod_inst, nome: x.nome, sr: x.tcb, bas: x.basileia_pct, bas_pos, ded, faixa,
+             cp: x.capital_principal_pct, cp_pos: x.capital_principal_pct != null ? x.capital_principal_pct - ded : null,
+             critico };
+  }).sort((a, b) => a.bas_pos - b.bas_pos);
+  return { linhas, excluidas: I.instituicoes.length - elegiveis.length, d, dLo, dHi };
+}
+window.scnBasCSV = () => {
+  const B = scnBasLinhas(); if (!B) return;
+  const head = "cod;nome;basileia_pct;basileia_pos_choque_pct;deducao_pp;faixa_lo;faixa_hi;capital_principal_pct;capital_principal_pos_pct;delta_inad_critico_pp";
+  const rows = B.linhas.map(l => [l.cod, `"${l.nome}"`, l.bas, l.bas_pos.toFixed(2), l.ded.toFixed(3),
+    l.faixa[0].toFixed(2), l.faixa[1].toFixed(2), l.cp ?? "", l.cp_pos != null ? l.cp_pos.toFixed(2) : "",
+    l.critico != null ? l.critico.toFixed(2) : ""].join(";"));
+  dlFile("cenario_basileia_pos_choque.csv",
+    "﻿# premissas: LGD 50% sobre o estoque adicional de inadimplencia; RWA constante; sem efeito fiscal; PR de referencia 10,5%\n"
+    + `# choque aplicado: delta_inad ${B.d.toFixed(3)} p.p. [${B.dLo.toFixed(3)} a ${B.dHi.toFixed(3)}]\n`
+    + head + "\n" + rows.join("\n"), "text/csv;charset=utf-8");
+};
+function scnBasileiaSec() {
+  const B = scnBasLinhas();
+  if (!B) return `<div class="card" style="margin-top:14px"><h4>Basileia pós-choque</h4><p class="src">carregando os dados das instituições…</p></div>`;
+  const { linhas, excluidas, d } = B;
+  const abaixoHoje = linhas.filter(l => l.bas < SCN_PR_REF).length;
+  const abaixoPos = linhas.filter(l => l.bas_pos < SCN_PR_REF).length;
+  const semChoque = Math.abs(d) < 1e-9;
+  const mostra = linhas.slice(0, 15);
+  return `
+  <h3 style="margin-top:22px">Basileia pós-choque nas 100 maiores IFs</h3>
+  <div class="judalerta" style="max-width:82ch"><b>Leia como piso, não como teste de estresse completo.</b> A conta deduz do
+  capital apenas a provisão do <i>estoque adicional</i> de inadimplência do cenário (Δinad ${fmt.pp(d)} p.p. × carteira × LGD de
+  ${SCN_LGD * 100}%), com RWA constante e sem efeito fiscal. A perda acumulada de 12 meses é maior — baixas para prejuízo
+  recicladas não entram. O resultado escala linearmente com a LGD: entre 40% e 60%, multiplique a dedução por 0,8–1,2.</div>
+  <div class="card" style="margin-top:12px">
+    <h4 style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+      <span>${semChoque ? "Sem choque aplicado — mova os controles acima" : "As 15 menores Basileias após o choque"} ${badge("cenario")}</span>
+      <button class="btn ghost small" onclick="scnBasCSV()">baixar CSV (${linhas.length})</button></h4>
+    <p class="src">Referência de ${SCN_PR_REF}%: PR mínimo de 8% + adicional de conservação de 2,5% — os adicionais sistêmicos
+    de S1 não entram (variam por instituição). Hoje: <b>${abaixoHoje}</b> das ${linhas.length} abaixo da referência; no cenário:
+    <b>${abaixoPos}</b>. O <b>Δinad crítico</b> é slider-independente: quantos p.p. de inadimplência adicional, nesta mesma régua,
+    levariam a instituição à referência — colchões finos com carteira grande sobre RWA esgotam primeiro.</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Instituição</th><th class="num">Basileia atual</th>
+      <th class="num">Pós-choque</th><th class="num">Δ (p.p.)</th><th class="num">Faixa</th><th class="num">Δinad crítico</th></tr></thead><tbody>
+      ${mostra.map(l => `<tr${l.bas_pos < SCN_PR_REF ? ' class="selrow"' : ""}>
+        <td><a href="javascript:void(0)" onclick="openInstPage('${l.cod}')">${l.nome.length > 34 ? l.nome.slice(0, 33) + "…" : l.nome}</a> <span class="src">${l.sr || ""}</span></td>
+        <td class="num">${fmt.n(l.bas, 2)}%</td>
+        <td class="num"><b>${fmt.n(l.bas_pos, 2)}%</b>${l.bas_pos < SCN_PR_REF ? ' <span class="pconf baixa">abaixo da referência</span>' : ""}</td>
+        <td class="num">${fmt.pp(l.bas_pos - l.bas)}</td>
+        <td class="num src">${fmt.n(l.faixa[0], 2)}–${fmt.n(l.faixa[1], 2)}%</td>
+        <td class="num">${l.critico != null ? "+" + fmt.n(l.critico, 1) + " p.p." : "–"}</td></tr>`).join("")}
+    </tbody></table></div>
+    <p class="src">${excluidas} instituições do top-100 ficam fora por não reportarem RWA/carteira no IF.data (instituições de
+    pagamento) — ausência ≠ zero. Fonte do capital: BCB IF.data, mesma data-base da aba Instituições.
+    ${d < 0 ? "Choque favorável: a conta NÃO modela reversão de provisões — a melhora exibida é o mesmo piso, com sinal trocado, e deve ser lida com a mesma cautela." : ""}</p>
+  </div>`;
+}
+
 function renderScenarios() {
   const el = document.getElementById("view-scenarios");
   const { scenario, pulse } = state.data;
@@ -4823,7 +4911,8 @@ function renderScenarios() {
   <div class="note"><b>Elasticidades — origem: ${scenario.elasticidades_origem || "ilustrativa"}.</b>
   ${Object.entries(scenario.elasticidades).map(([k, e]) => `<br><b>${k}</b>: ${e.value} [${e.range[0]} – ${e.range[1]}] p.p. · ${e.lag_desc} · <i>${e.fonte || "ilustrativo"}</i>${e.erro_padrao != null ? ` (EP ${e.erro_padrao})` : ""}`).join("")}
   <br><span class="src">${scenario.elasticidades_detalhe || scenario.nota}</span></div>
-  <div class="note">Impacto em provisões, instituições e setores específicos: preparado arquiteturalmente, depende dos cortes setoriais (Fases 2b/3).</div>`;
+  ${scnBasileiaSec()}
+  <div class="note">Impacto por setor específico: depende dos cortes setoriais (Fases 2b/3) — o impacto por instituição está na seção acima.</div>`;
 }
 
 
