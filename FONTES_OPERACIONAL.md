@@ -772,3 +772,23 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   carteira 0 com RWA existe — Cielo — e produz dedução 0 e crítico nulo).
   CSV com premissas no cabeçalho. Versão 0.76.0; travas em
   `src/tests/cenario-basileia.test.ts`.
+
+## 31. Transformações de série no Pulso (P1 do Top 10 — "distância do FRED")
+
+- **Quatro réguas nos gráficos dos blocos** (nível · variação a/a · base-100
+  · R$ constantes), calculadas no navegador sobre as séries observadas do
+  gold. Deflator IPCA construído da própria série do gold (SGS 433, produto
+  acumulado da variação mensal, rebase no último mês disponível).
+- Regras de honestidade: transformação inaplicável NUNCA é aproximada (R$
+  constantes recusa séries em %; mês sem IPCA fica fora); série que JÁ é
+  taxa ganha a/a em **pontos percentuais**, não variação relativa
+  ("inadimplência subiu 24%" é a leitura errada); projeções, bandas e
+  marcadores de regime são de nível e somem nas demais réguas — declarado
+  na tela.
+- **Comparar séries**: sobreposição de 2–3 séries do Pulso APENAS em
+  base-100 (trajetórias) ou variação a/a (ritmos) — unidades distintas
+  jamais dividem um eixo em nível, e o texto do card explica a regra. CSV
+  da sobreposição ativa.
+- Versão 0.77.0; travas em `src/tests/pulso-transformacoes.test.ts`
+  (cobertura do IPCA sobre as janelas de R$, deflator ≈1 no último mês e
+  >1,5 em 2012, base-100 exata no primeiro ponto).
