@@ -5,7 +5,7 @@
 "use strict";
 
 /* ---------- estado, filtros persistentes e roteamento ---------- */
-const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", instGroup: "todos", sortInst: "ativo" };
+const DEFAULT_FILTERS = { seg: "total", range: 60, growth: "nominal", transf: "nivel", instGroup: "todos", sortInst: "ativo" };
 const CMP_DEFAULT_METS = ["ativo_total", "patrimonio_liquido", "carteira_credito", "carteira_pf", "carteira_pj",
   "captacoes", "lucro_liquido", "roe_periodo", "npl_pct", "ativos_problematicos_pct", "provisao_credito",
   "cobertura_pct", "indice_basileia", "indice_capital_principal", "cart_ativo_pct"];
@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.76.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.77.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3673,6 +3673,127 @@ const PULSE_SECTIONS = [
   { title: "3 · Qualidade", cards: [
     { key: "inad", title: "Inadimplência >90d", fmt: v => fmt.n(v) + "%" }] },
 ];
+/* ---- Transformações de série (P1 da auditoria: a distância para um FRED) ----
+   O leitor escolhe a régua do gráfico: nível, variação a/a, base-100 na janela
+   visível ou R$ constantes (deflator IPCA construído da própria série do gold,
+   produto acumulado da variação mensal, rebase no último mês disponível).
+   Regras: transformação inaplicável NUNCA é aproximada — a série cai fora ou o
+   botão explica; projeções e bandas são de NÍVEL e somem nas demais réguas. */
+function ipcaIndice() {
+  // ref (AAAA-MM) → índice acumulado; e o deflator = idx(último)/idx(ref)
+  if (state._ipcaIdx) return state._ipcaIdx;
+  const s = state.data.pulse && state.data.pulse.series.ipca;
+  if (!s) return null;
+  const idx = {}; let acc = 1;
+  for (const o of s.obs) { acc *= 1 + o.v / 100; idx[o.ref.slice(0, 7)] = acc; }
+  state._ipcaIdx = { idx, ultimo: s.obs[s.obs.length - 1].ref.slice(0, 7), accUltimo: acc };
+  return state._ipcaIdx;
+}
+const PULSE_TRANSF = [
+  ["nivel", "nível"], ["yoy", "variação a/a"], ["b100", "base-100"], ["real", "R$ constantes"],
+];
+function pulseTransform(s, transf, range) {
+  const janela = s.obs.slice(-range);
+  if (transf === "yoy") {
+    // série que JÁ é taxa (%): a/a como variação relativa confunde ("inadimplência
+    // subiu 24%") — a régua honesta é a diferença em pontos percentuais
+    if (/%/.test(s.meta.unit || "")) {
+      const porMes = {};
+      for (const o of s.obs) porMes[o.ref.slice(0, 7)] = o.v;
+      const pts = janela.map(o => {
+        const [a, m] = o.ref.slice(0, 7).split("-");
+        const ant = porMes[`${Number(a) - 1}-${m}`];
+        return { x: o.ref, y: ant != null ? o.v - ant : null };
+      }).filter(p => p.y != null);
+      if (!pts.length) return null;
+      return { pts, unit: "p.p. a/a", rotulo: "diferença em pontos percentuais sobre o mesmo mês do ano anterior", status: "calculado" };
+    }
+    if (!s.yoy || !s.yoy.length) return null;
+    return { pts: s.yoy.slice(-range).map(o => ({ x: o.ref, y: o.v })), unit: "% a/a",
+             rotulo: "variação sobre o mesmo mês do ano anterior", status: "calculado" };
+  }
+  if (transf === "b100") {
+    const base = janela.find(o => o.v != null);
+    if (!base || !base.v) return null;
+    return { pts: janela.map(o => ({ x: o.ref, y: o.v != null ? o.v / base.v * 100 : null })),
+             unit: "índice", rotulo: `início da janela (${fmt.my(base.ref)}) = 100`, status: "calculado" };
+  }
+  if (transf === "real") {
+    if (!/^R\$/.test(s.meta.unit || "")) return null; // deflacionar % não tem sentido — nunca aproximado
+    const D = ipcaIndice();
+    if (!D) return null;
+    const pts = janela
+      .filter(o => D.idx[o.ref.slice(0, 7)] != null) // mês sem IPCA fica fora, nunca aproximado
+      .map(o => ({ x: o.ref, y: o.v * (D.accUltimo / D.idx[o.ref.slice(0, 7)]) }));
+    if (!pts.length) return null;
+    return { pts, unit: s.meta.unit + " constantes", rotulo: `deflator IPCA (SGS 433), preços de ${fmt.my(D.ultimo + "-01")}`, status: "calculado" };
+  }
+  return { pts: janela.map(o => ({ x: o.ref, y: o.v })), unit: s.meta.unit, rotulo: null, status: "observado" };
+}
+/* Sobreposição: unidades distintas jamais dividem um eixo em nível — o
+   comparador só existe em base-100 e variação a/a, e o texto diz por quê. */
+const PULSE_CMP_CORES = ["#1d4e89", "#b45309", "#0e7c7b"];
+window.pulseCmpSet = (k, v) => {
+  state.pulseCmp = { ...(state.pulseCmp || {}), [k]: v || null };
+  renderPulse();
+};
+window.pulseCmpCSV = () => {
+  const pc = state.pulseCmp || {};
+  const chaves = [pc.a, pc.b, pc.c].filter(Boolean);
+  if (!chaves.length) return;
+  const linhas = {};
+  const cols = [];
+  for (const k of chaves) {
+    const s = state.data.pulse.series[k]; if (!s) continue;
+    const t = pulseTransform(s, pc.transf || "b100", state.filters.range); if (!t) continue;
+    cols.push(k);
+    for (const p of t.pts) { (linhas[p.x] = linhas[p.x] || {})[k] = p.y; }
+  }
+  const refs = Object.keys(linhas).sort();
+  dlFile(`pulso_comparador_${(pc.transf || "b100")}.csv`,
+    "﻿ref;" + cols.join(";") + "\n" + refs.map(r =>
+      [r, ...cols.map(c => linhas[r][c] != null ? linhas[r][c].toFixed(3) : "")].join(";")).join("\n"),
+    "text/csv;charset=utf-8");
+};
+function pulseComparadorSec() {
+  const P = state.data.pulse;
+  const pc = state.pulseCmp || (state.pulseCmp = { a: "saldo_total", b: "inad_total", c: null, transf: "b100" });
+  const transf = pc.transf === "yoy" ? "yoy" : "b100";
+  const opcoes = sel => Object.entries(P.series)
+    .map(([k, s]) => `<option value="${k}" ${sel === k ? "selected" : ""}>${s.meta.name.length > 48 ? s.meta.name.slice(0, 47) + "…" : s.meta.name}</option>`).join("");
+  const chaves = [pc.a, pc.b, pc.c].filter(Boolean);
+  const series = [];
+  const omitidas = [];
+  chaves.forEach((k, i) => {
+    const s = P.series[k]; if (!s) return;
+    const t = pulseTransform(s, transf, state.filters.range);
+    if (!t) { omitidas.push(s.meta.name); return; }
+    series.push({ pts: t.pts, color: PULSE_CMP_CORES[i % 3], label: s.meta.name.slice(0, 34), w: 2 });
+  });
+  const grafico = series.length >= 2 ? lineChart({
+    series, h: 230, unit: transf === "yoy" ? "% a/a" : "índice",
+    fonte: "BCB/SGS (transformação calculada no navegador)", status: "calculado",
+  }) : `<p class="src">escolha pelo menos duas séries com a transformação aplicável.</p>`;
+  return `
+  <h3>Comparar séries</h3>
+  <div class="card">
+    <div class="controls">
+      <label>série A <select onchange="pulseCmpSet('a', this.value)">${opcoes(pc.a)}</select></label>
+      <label>série B <select onchange="pulseCmpSet('b', this.value)">${opcoes(pc.b)}</select></label>
+      <label>série C <select onchange="pulseCmpSet('c', this.value)"><option value="">—</option>${opcoes(pc.c)}</select></label>
+      <span class="seg">${[["b100", "base-100"], ["yoy", "variação a/a"]].map(([v, l]) =>
+        `<button class="${transf === v ? "active" : ""}" onclick="pulseCmpSet('transf','${v}')">${l}</button>`).join("")}</span>
+      <button class="btn ghost small" onclick="pulseCmpCSV()">baixar CSV</button>
+    </div>
+    <div class="legend">${series.map(sr => `<span><span class="sw" style="background:${sr.color}"></span>${sr.label}</span>`).join("")}</div>
+    ${grafico}
+    <p class="src">Unidades distintas nunca dividem um eixo em nível — por isso a sobreposição só existe em
+    <b>base-100</b> (cada série rebaseada no início da janela: compara trajetórias, não tamanhos) ou
+    <b>variação a/a</b> (compara ritmos). ${badge("calculado", "transformações no navegador sobre as séries observadas do gold")}
+    ${omitidas.length ? `Fora do gráfico por transformação inaplicável: ${omitidas.join("; ")}.` : ""}</p>
+  </div>`;
+}
+
 function renderPulse() {
   const el = document.getElementById("view-pulse");
   const { pulse } = state.data;
@@ -3687,24 +3808,33 @@ function renderPulse() {
     const yoySeries = f.growth === "real" && s.yoy_real ? s.yoy_real : s.yoy;
     const yoy = yoySeries && yoySeries.length ? yoySeries[yoySeries.length - 1].v : null;
     const fc = pulse.previsoes[`${c.key}_${f.seg}`];
-    const series = [{ pts: s.obs.slice(-f.range).map(o => ({ x: o.ref, y: o.v })), color: "#1d4e89", label: c.title.toLowerCase() }];
+    // régua escolhida pelo leitor; inaplicável cai para nível com aviso, nunca aproxima
+    const trPedida = f.transf !== "nivel" ? pulseTransform(s, f.transf, f.range) : null;
+    const tr = trPedida || pulseTransform(s, "nivel", f.range);
+    const emNivel = f.transf === "nivel" || !trPedida;
+    const avisoTransf = f.transf !== "nivel" && !trPedida
+      ? `<div class="src">transformação "${(PULSE_TRANSF.find(t => t[0] === f.transf) || [])[1]}" não se aplica a esta série (${s.meta.unit}) — exibindo o nível.</div>` : "";
+    const series = [{ pts: tr.pts, color: "#1d4e89", label: c.title.toLowerCase() }];
     let band = null;
-    if (fc && fc.ok) {
+    if (emNivel && fc && fc.ok) {
       series.push({ pts: [{ x: last.ref, y: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, y: p.p50 }))], color: "#1d4e89", dash: "5,4", label: "previsão p50" });
       band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
     }
     const growthLabel = f.growth === "real" && s.yoy_real ? "a/a real (defl. IPCA)" : "a/a nominal";
     const rgs = state.data.regimes && state.data.regimes.series ? state.data.regimes.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
     const annotations = [];
-    if (rgs && rgs.quebra_estrutural && rgs.quebra_estrutural.significativa) annotations.push({ x: rgs.quebra_estrutural.data_quebra, label: "quebra de regime", color: "#b45309" });
-    if (rgs && rgs.cusum && rgs.cusum.ultimo_disparo) annotations.push({ x: rgs.cusum.ultimo_disparo.data, label: "CUSUM " + rgs.cusum.ultimo_disparo.direcao, color: "#6b46a3" });
+    // marcadores de regime são datados sobre o NÍVEL — nas demais réguas saem
+    if (emNivel && rgs && rgs.quebra_estrutural && rgs.quebra_estrutural.significativa) annotations.push({ x: rgs.quebra_estrutural.data_quebra, label: "quebra de regime", color: "#b45309" });
+    if (emNivel && rgs && rgs.cusum && rgs.cusum.ultimo_disparo) annotations.push({ x: rgs.cusum.ultimo_disparo.data, label: "CUSUM " + rgs.cusum.ultimo_disparo.direcao, color: "#6b46a3" });
     return `<div class="card">
       <h4>${c.title}${c.key === "inad" ? " " + inadChip("sgs") : ""} — ${segLabel} ${badge("observado")}${fc && fc.ok ? " " + badge("previsao") : ""} ${favStar("pulse", `${c.key}_${f.seg}`, `${c.title} ${segLabel}`)}</h4>
       <div class="big">${c.fmt(last.v)}</div>
       <div class="delta ${yoy > 0 ? "up" : "down"} ${c.key === "saldo" || c.key === "concessoes" ? (yoy > 0 ? "good" : "bad") : ""}">${yoy != null ? (yoy > 0 ? "▲" : "▼") + " " + fmt.n(Math.abs(yoy), 1) + "% " + growthLabel : ""} · ref. ${fmt.my(last.ref)}</div>
-      ${lineChart({ series, band, h: 160, forecastStart: fc && fc.ok ? last.ref : null, annotations, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" + (fc && fc.ok ? " + previsão" : "") })}
+      ${avisoTransf}
+      ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
+      ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
       ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
-      ${fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}%</div>` : ""}
+      ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}%</div>` : ""}
       ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
       ${srcLine(s.meta, s.qualidade)}
       <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">exportar CSV</button>
@@ -3738,12 +3868,15 @@ function renderPulse() {
     ${segTabs()}
     <span class="seg">${[[24, "2 anos"], [60, "5 anos"], [200, "máx."]].map(([n, l]) => `<button class="${f.range === n ? "active" : ""}" onclick="setFilter('range',${n})">${l}</button>`).join("")}</span>
     <span class="seg">${[["nominal", "nominal"], ["real", "real (IPCA)"]].map(([k, l]) => `<button class="${f.growth === k ? "active" : ""}" onclick="setFilter('growth','${k}')">${l}</button>`).join("")}</span>
+    <span class="seg" title="régua dos gráficos: transformações calculadas no navegador sobre as séries observadas; projeções e marcadores de regime só aparecem em nível">${PULSE_TRANSF.map(([k, l]) => `<button class="${f.transf === k ? "active" : ""}" onclick="setFilter('transf','${k}')">${l}</button>`).join("")}</span>
     <button class="btn ghost small" onclick="window.print()">🖨 apresentação / PDF</button>
   </div>
+  ${f.transf !== "nivel" ? `<p class="src">Régua ativa: <b>${(PULSE_TRANSF.find(t => t[0] === f.transf) || [])[1]}</b> — transformação calculada no navegador sobre a série observada; onde não se aplica, o gráfico volta ao nível e avisa. Projeções, bandas e marcadores de regime são de nível e ficam fora desta régua.</p>` : ""}
   ${sections}
   ${compHtml}
   <h3>Contexto macro</h3>
   <div class="grid g3">${extras}</div>
+  ${pulseComparadorSec()}
   <div class="note">Renegociação, provisões, cobertura e baixas para prejuízo dependem de séries SGS adicionais — mapeadas no <a href="#method" onclick="nav('method')">catálogo</a> como pendências da Fase 1.</div>`;
 }
 function extraCard(k) {
