@@ -147,10 +147,16 @@ describe("pix.json: matriz setor-pagador × setor-recebedor (tabela especial EPA
 
   it("o painel monta os capítulos no arco narrativo declarado", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
-    // funcionalidades junto de natureza; setores antes da geografia; MED e infra ao fim
-    expect(app).toContain(
-      "el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + func + epae + epaeMatriz + geog + medS + infra + metodo;",
-    );
+    // funcionalidades junto de natureza; setores antes da geografia; MED e infra
+    // ao fim — o arco agora vive em seções ancoradas (kit dos dossiês), na MESMA ordem
+    const ordem = ["px-evol", "px-versus", "px-quem", "px-natureza", "px-func", "px-epae", "px-geo", "px-med", "px-infra"];
+    let pos = -1;
+    for (const id of ordem) {
+      const k = app.indexOf(`secWrap("${id}"`);
+      expect(k, `seção ${id} ausente`).toBeGreaterThan(-1);
+      expect(k, `seção ${id} fora de ordem`).toBeGreaterThan(pos);
+      pos = k;
+    }
     expect(app).toMatch(/Arco narrativo dos capítulos/);
     // a antiga lacuna declarada virou encaminhamento para a matriz
     expect(app).not.toMatch(/o "para quem paga" de cada setor é, portanto, indisponível/);

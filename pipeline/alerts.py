@@ -77,6 +77,9 @@ def evaluate(con, cfg, today=None):
                                f"(referência {s[-1][0]}, fonte {meta['source']}, série {meta['series_code']})."),
                 "serie": rule["series"], "valor": round(val, 3), "limiar": rule["threshold"],
                 "fonte": meta["source"], "ref": s[-1][0],
+                # os 24 meses da própria série NO alerta: um Δ sem a curva ao
+                # lado induz leitura sem contexto (achado da auditoria de 12/08)
+                "serie_recente": [{"p": p2, "v": round(v2, 3)} for p2, v2 in s[-24:]],
             })
     order = {"critico": 0, "relevante": 1, "atencao": 2, "informativo": 3}
     alerts.sort(key=lambda a: order.get(a["nivel"], 9))

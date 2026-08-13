@@ -138,6 +138,7 @@ def _macro(d):
             "recorrente": bool(a.get("recorrente")),
             "link": {"view": "pulse"} if a.get("serie") and a.get("serie") != "*" else {"view": "method"},
             "ordem": round(exc, 6),
+            "serie_recente": a.get("serie_recente"),
         })
     return out
 
