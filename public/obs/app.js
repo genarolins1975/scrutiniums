@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.77.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.78.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3834,7 +3834,7 @@ function renderPulse() {
       ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
       ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
-      ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}%</div>` : ""}
+      ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="javascript:void(0)" onclick="nav('scenarios')">backtest completo →</a></div>` : ""}
       ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
       ${srcLine(s.meta, s.qualidade)}
       <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">exportar CSV</button>
@@ -4986,6 +4986,68 @@ function scnBasileiaSec() {
   </div>`;
 }
 
+/* ---- Backtest publicado (P1 da auditoria: credibilidade dos modelos) ----
+   A régua é dupla e nenhuma metade se esconde: (i) erro do ensemble vs. o
+   ingênuo por horizonte — inclusive quando o ganho é NEGATIVO; (ii) cobertura
+   da banda 10–90 medida FORA da própria calibração (split temporal), com a
+   leitura dita em texto quando a banda entrega menos do que promete. */
+window.scnBtFam = f2 => { state.scnBt = { ...(state.scnBt || {}), fam: f2 }; renderScenarios(); };
+function scnBacktestSec() {
+  const P = state.data.pulse;
+  if (!P || !P.previsoes) return "";
+  const fam = (state.scnBt || {}).fam || "inad";
+  const key = `${fam}_${state.filters.seg}`;
+  const fc = P.previsoes[key] || P.previsoes[`${fam}_total`];
+  if (!fc || !fc.ok || !fc.diagnostico) return "";
+  const FAMS = [["inad", "inadimplência"], ["concessoes", "concessões"], ["saldo", "saldo"], ["spread", "spread"], ["taxa", "taxa"]];
+  const hs = Object.keys(fc.diagnostico).sort((a, b) => Number(a) - Number(b));
+  const linhas = hs.map(h => {
+    const dg = fc.diagnostico[h];
+    const cb = dg.cobertura_banda;
+    const ganho = dg.ganho_vs_naive_pct;
+    return `<tr><td>${h} ${h === "1" ? "mês" : "meses"}</td>
+      <td class="num">${fmt.n(dg.mae_ensemble_backtest, 3)}</td>
+      <td class="num">${fmt.n(dg.mae_naive_backtest, 3)}</td>
+      <td class="num" style="color:${ganho != null && ganho < 0 ? "var(--c-neg)" : "var(--positive)"}"><b>${ganho != null ? fmt.pp(ganho) + "%" : "–"}</b></td>
+      <td class="num">${dg.n_backtests}</td>
+      <td class="num">${cb ? `<b>${fmt.n(cb.cobertura_oos_pct, 0)}%</b> <span class="src">de ${fmt.n(cb.nominal_pct, 0)}% · n=${cb.n_teste}</span>` : "–"}</td></tr>`;
+  }).join("");
+  const piorCb = hs.map(h => fc.diagnostico[h].cobertura_banda).filter(Boolean).sort((a, b) => a.cobertura_oos_pct - b.cobertura_oos_pct)[0];
+  const tr = (fc.diagnostico["12"] || {}).trajetoria;
+  const grafTraj = tr && tr.length > 3 ? lineChart({
+    series: [
+      { pts: tr.map(o => ({ x: o.ref, y: o.realizado })), color: "#1d4e89", label: "realizado", w: 2 },
+      { pts: tr.map(o => ({ x: o.ref, y: o.previsto })), color: "#b45309", dash: "5,4", label: "previsto 12m antes" },
+    ], h: 190, unit: ((P.series[key] || P.series[`${fam}_total`] || {}).meta || {}).unit || "",
+    fonte: "backtest walk-forward (pesos finais aplicados por origem — pseudo-backtest declarado)",
+    status: "calculado",
+  }) : "";
+  return `
+  <h3 style="margin-top:22px">Validação dos modelos: o backtest publicado</h3>
+  <div class="card">
+    <div class="controls">
+      <label>família <select onchange="scnBtFam(this.value)">${FAMS.map(([k, l]) => `<option value="${k}" ${fam === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
+      <span class="src">série ${key in P.previsoes ? key : fam + "_total"} · walk-forward de janela expansiva ${badge("calculado", fc.metodo)}</span>
+    </div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Horizonte</th><th class="num">MAE ensemble</th>
+      <th class="num">MAE ingênuo</th><th class="num">Ganho vs. ingênuo</th><th class="num">n</th><th class="num">Cobertura da banda (fora da calibração)</th></tr></thead>
+      <tbody>${linhas}</tbody></table></div>
+    <p class="src"><b>Como ler.</b> Ganho negativo significa que o ensemble perdeu do "repete o último valor" naquele horizonte —
+    publicado assim mesmo, porque é o que o backtest mostra. A cobertura é medida com a primeira metade dos erros calibrando a
+    banda e a segunda testando: ${piorCb ? `no pior horizonte desta série ela entrega <b>${fmt.n(piorCb.cobertura_oos_pct, 0)}%</b> do nominal de 80% — ${piorCb.leitura}` : "amostra insuficiente para o teste de cobertura"}.</p>
+    ${grafTraj ? `<h4 style="margin-top:14px">Previsto 12 meses antes × realizado</h4>
+    <div class="legend"><span><span class="sw" style="background:#1d4e89"></span>realizado</span><span><span class="sw" style="background:#b45309"></span>previsto 12m antes (tracejado)</span></div>
+    ${grafTraj}
+    <p class="src">Cada ponto tracejado é o que o modelo teria dito 12 meses antes daquela referência, com o histórico disponível
+    até lá (pesos finais do ensemble aplicados por origem — pseudo-backtest, declarado). A distância entre as curvas é o erro
+    que a tabela resume.</p>` : ""}
+    <p class="src"><b>E o cenário?</b> O resultado condicional (sliders acima) não tem backtest possível — não há histórico de
+    choques idênticos. O que se valida é a projeção-base (esta tabela) e as elasticidades (intervalos ±2 EP sem correção HAC,
+    o que tende a SUBESTIMAR a incerteza; o sinal contraintuitivo do câmbio segue sinalizado). Os sinais antecedentes têm
+    validação própria — Granger, ganho fora-da-amostra e estabilidade — na aba <a href="javascript:void(0)" onclick="nav('leading')">Pulso → Protocolo</a>.</p>
+  </div>`;
+}
+
 function renderScenarios() {
   const el = document.getElementById("view-scenarios");
   const { scenario, pulse } = state.data;
@@ -5045,6 +5107,7 @@ function renderScenarios() {
   ${Object.entries(scenario.elasticidades).map(([k, e]) => `<br><b>${k}</b>: ${e.value} [${e.range[0]} – ${e.range[1]}] p.p. · ${e.lag_desc} · <i>${e.fonte || "ilustrativo"}</i>${e.erro_padrao != null ? ` (EP ${e.erro_padrao})` : ""}`).join("")}
   <br><span class="src">${scenario.elasticidades_detalhe || scenario.nota}</span></div>
   ${scnBasileiaSec()}
+  ${scnBacktestSec()}
   <div class="note">Impacto por setor específico: depende dos cortes setoriais (Fases 2b/3) — o impacto por instituição está na seção acima.</div>`;
 }
 

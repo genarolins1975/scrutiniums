@@ -87,8 +87,13 @@ def _quantile(sorted_vals, q):
 
 
 def backtest(y, horizons, n_points=24, min_history=48):
-    """Walk-forward: retorna {h: {model: {mae, rmse, residuals[]}}}."""
-    out = {h: {m: {"errs": []} for m in MODELS} for h in horizons}
+    """Walk-forward: retorna {h: {model: {mae, rmse, residuals[], preds[]}}}.
+
+    preds = [(idx_do_realizado, previsto, realizado)] em ordem cronológica —
+    é o que permite reconstruir o ensemble por origem e publicar o
+    previsto × realizado (backtest publicado, P1 da auditoria de 12/08).
+    """
+    out = {h: {m: {"errs": [], "preds": []} for m in MODELS} for h in horizons}
     max_h = max(horizons)
     first_cut = max(min_history, len(y) - n_points - max_h)
     for t in range(first_cut, len(y) - 1):
@@ -101,6 +106,7 @@ def backtest(y, horizons, n_points=24, min_history=48):
                 try:
                     pred = fn(hist, h)
                     out[h][name]["errs"].append(pred - actual)
+                    out[h][name]["preds"].append((t + h - 1, pred, actual))
                 except Exception:
                     pass
     result = {}
@@ -112,8 +118,55 @@ def backtest(y, horizons, n_points=24, min_history=48):
                 continue
             mae = sum(abs(e) for e in errs) / len(errs)
             rmse = math.sqrt(sum(e * e for e in errs) / len(errs))
-            result[h][name] = {"mae": mae, "rmse": rmse, "residuals": errs, "n": len(errs)}
+            result[h][name] = {"mae": mae, "rmse": rmse, "residuals": errs,
+                               "preds": out[h][name]["preds"], "n": len(errs)}
     return result
+
+
+def _ensemble_por_origem(eligible, weights):
+    """Previsões do ensemble por origem do walk-forward, cronológicas.
+
+    Aproximação declarada: os pesos são os finais (derivados do backtest
+    inteiro), aplicados retroativamente a cada origem — um pseudo-backtest do
+    ensemble, suficiente para publicar erro e cobertura, e dito assim.
+    Só entram origens em que TODOS os modelos elegíveis produziram previsão.
+    """
+    por_modelo = {}
+    for name, s in eligible.items():
+        por_modelo[name] = {idx: (p, a) for idx, p, a in s.get("preds", [])}
+    if not por_modelo:
+        return []
+    idx_comuns = set.intersection(*[set(m.keys()) for m in por_modelo.values()])
+    saida = []
+    for idx in sorted(idx_comuns):
+        pred = sum(por_modelo[n][idx][0] * w for n, w in weights.items())
+        actual = next(iter(por_modelo.values()))[idx][1]
+        saida.append((idx, pred, actual))
+    return saida
+
+
+def _cobertura_split(origens):
+    """Cobertura da banda 10–90 medida FORA da calibração: a primeira metade
+    (cronológica) dos erros calibra os quantis; a segunda mede quantos
+    realizados caem na banda. Amostras pequenas — n publicado junto."""
+    if len(origens) < 10:
+        return None
+    erros = [p - a for _, p, a in origens]
+    meio = len(erros) // 2
+    calib = sorted(erros[:meio])
+    q10, q90 = _quantile(calib, 0.10), _quantile(calib, 0.90)
+    teste = erros[meio:]
+    dentro = sum(1 for e in teste if q10 <= e <= q90)
+    pct = round(100 * dentro / len(teste), 1)
+    if pct >= 65:
+        leitura = "compatível com o nominal de 80%, dada a amostra pequena"
+    elif pct >= 40:
+        leitura = "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+    else:
+        leitura = ("os erros mudaram de regime entre as duas metades do backtest — a banda publicada "
+                   "(calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%")
+    return {"cobertura_oos_pct": pct, "nominal_pct": 80.0,
+            "n_calibracao": meio, "n_teste": len(teste), "leitura": leitura}
 
 
 def forecast_series(dates, values, horizons, n_points=24, min_history=48):
@@ -161,13 +214,24 @@ def forecast_series(dates, values, horizons, n_points=24, min_history=48):
             "p50": round(p50, 4), "p10": round(p10, 4), "p90": round(p90, 4),
         })
         ens_mae = sum(eligible[n]["mae"] * w for n, w in weights.items())
+        origens = _ensemble_por_origem(eligible, weights)
         diagnostics[str(h)] = {
             "pesos": {n: round(w, 3) for n, w in weights.items()},
             "mae_ensemble_backtest": round(ens_mae, 4),
             "mae_naive_backtest": round(naive_mae, 4) if naive_mae else None,
             "ganho_vs_naive_pct": round((1 - ens_mae / naive_mae) * 100, 1) if naive_mae else None,
             "n_backtests": max((s["n"] for s in eligible.values()), default=0),
+            # backtest PUBLICADO: cobertura da banda validada fora da própria
+            # calibração (split temporal) — a banda promete 80%; o que entrega
+            # fica registrado, inclusive quando entrega menos
+            "cobertura_banda": _cobertura_split(origens),
         }
+        # trajetória previsto × realizado no horizonte de 12 meses: o gráfico
+        # que mostra como o modelo TERIA previsto — inclusive quando errou
+        if h == 12 and origens:
+            diagnostics[str(h)]["trajetoria"] = [
+                {"ref": dates[idx], "previsto": round(p, 4), "realizado": round(a, 4)}
+                for idx, p, a in origens[-24:] if idx < len(dates)]
     return {
         "ok": True, "tipo": "PREVISÃO", "pontos": points, "diagnostico": diagnostics,
         "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); "
