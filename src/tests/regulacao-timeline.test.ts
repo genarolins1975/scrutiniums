@@ -74,7 +74,7 @@ describe("SPA e camada indexável", () => {
   it("a aba existe, com filtro por painel e o aviso anticausal", () => {
     expect(indexHtml).toContain('data-view="regulacao"');
     expect(indexHtml).toContain('id="view-regulacao"');
-    expect(appJs).toContain("regulacao: renderRegulacao");
+    expect(appJs).toContain('regulacao: "renderRegulacao"');
     expect(appJs).toMatch(/Coincidência no tempo não é efeito/);
   });
 

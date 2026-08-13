@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.82.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.83.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3186,6 +3186,27 @@ const secWrap = (id, html) => html ? `<section id="${id}">${html}</section>` : "
    title nativo com o ⓘ — para explicação curta de UM conceito no lugar;
    data-tip (tooltip rico) SOMENTE dentro de gráficos, onde há valores
    estruturados por ponto. Nada de title longo em elemento sem affordance. */
+/* Escala sequencial por percentis — compartilhada pelos mapas municipais
+   (penetração, moradia via cgEscala, consignado): vive no core porque três
+   chunks diferentes a usam. */
+/** Escala por percentis: com distribuição tão assimétrica, escala linear deixaria
+    tudo branco menos São Paulo. Winsorização é só visual — o dado exportado é o bruto. */
+function penEscala(vals, tipo, corBase) {
+  /* Escala sequencial por percentis (winsorização p5–p95, só visual — o dado exportado
+     é o bruto). Era duplicada em cgEscala com rampa ligeiramente diferente por acidente;
+     agora a cor é parâmetro e a rampa é uma. */
+  const v = vals.filter(x => x != null).sort((a, b) => a - b);
+  if (!v.length) return () => "var(--surface-2)";
+  const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
+  const lo = q(0.05), hi = q(0.95);
+  const base = corBase || "var(--accent)";  /* bronze: a cor dos mapas de penetração e moradia */
+  return x => {
+    if (x == null) return "var(--surface-2)";
+    const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
+    return `color-mix(in srgb, ${base} ${Math.round(6 + 82 * t)}%, var(--surface))`;
+  };
+}
+
 const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
 /* ponte entre painéis irmãos (P2 da auditoria: "o produto tem as pontas;
    faltam as pontes"): link contextual que navega e, se houver âncora, desce
@@ -5352,6 +5373,7 @@ function renderPgfn() {
 function round2(x) { return Math.round(x * 100) / 100; }
 
 
+/* @chunk:municipal:ini */
 /* ---------- DESENROLA BRASIL ----------
    A base do BCB tem sete colunas. Um painel honesto do Desenrola precisa dizer, o
    tempo todo, o que elas permitem e o que não permitem concluir — e por isso esta
@@ -5894,23 +5916,6 @@ window.penRankCSV = () => {
     "text/csv;charset=utf-8");
 };
 
-/** Escala por percentis: com distribuição tão assimétrica, escala linear deixaria
-    tudo branco menos São Paulo. Winsorização é só visual — o dado exportado é o bruto. */
-function penEscala(vals, tipo, corBase) {
-  /* Escala sequencial por percentis (winsorização p5–p95, só visual — o dado exportado
-     é o bruto). Era duplicada em cgEscala com rampa ligeiramente diferente por acidente;
-     agora a cor é parâmetro e a rampa é uma. */
-  const v = vals.filter(x => x != null).sort((a, b) => a - b);
-  if (!v.length) return () => "var(--surface-2)";
-  const q = p => v[Math.min(v.length - 1, Math.max(0, Math.round(p * (v.length - 1))))];
-  const lo = q(0.05), hi = q(0.95);
-  const base = corBase || "var(--accent)";  /* bronze: a cor dos mapas de penetração e moradia */
-  return x => {
-    if (x == null) return "var(--surface-2)";
-    const t = Math.max(0, Math.min(1, (x - lo) / Math.max(hi - lo, 1e-9)));
-    return `color-mix(in srgb, ${base} ${Math.round(6 + 82 * t)}%, var(--surface))`;
-  };
-}
 
 function renderPenetracao() {
   const el = document.getElementById("view-penetracao");
@@ -6325,6 +6330,7 @@ const PEN_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CAL
   estimado: ["est", "ESTIMADO"], contextual: ["ctx", "CONTEXTUAL"] };
 function penSelo(s) { return seloChip(PEN_SELO_DIC, s); }
 
+/* @chunk:municipal:fim */
 /* ---------- ALERTAS ----------
    Central unificada: as cinco famílias de alerta do Observatório num só lugar.
    O que a página NÃO faz é tão importante quanto o que ela faz — não soma
@@ -6805,7 +6811,7 @@ function renderMethod() {
 function buildReport() {
   const views = ["overview", "pulse", "scenarios"];
   document.querySelectorAll("section.view").forEach(s => s.classList.remove("active"));
-  views.forEach(v => { document.getElementById("view-" + v).classList.add("active"); RENDER[v](); });
+  views.forEach(v => { document.getElementById("view-" + v).classList.add("active"); renderView(v); });
   const hdr = document.createElement("div");
   hdr.className = "printonly";
   hdr.id = "reportHeader";
@@ -6859,6 +6865,7 @@ window.exportSeries = exportSeries; window.exportInstitutions = exportInstitutio
 window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
+/* @chunk:emergentes:ini */
 /* ================= BETS E RISCO FINANCEIRO ================= */
 /* Painel investigativo: relação entre apostas de quota fixa e crédito das
    famílias. Princípio: não parte da conclusão de que "bets causam
@@ -7740,6 +7747,7 @@ function renderJuros() {
   el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec;
 }
 
+/* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
   ["analise", "Nova análise ou indicador"],
@@ -7794,6 +7802,7 @@ function renderSugestoes() {
   </div>`;
 }
 
+/* @chunk:municipal:ini */
 /* ---------- MORADIA E CRÉDITO HABITACIONAL ----------
    Combina três bases que medem coisas diferentes e nunca são somadas: a condição de
    ocupação do Censo 2022 (municipal), o verbete 169 do ESTBAN (municipal, contábil) e as
@@ -9011,6 +9020,7 @@ window.cgTira = cod => {
 };
 window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderConsignado(); };
 
+/* @chunk:municipal:fim */
 /* ---------- Indicadores operacionais (Fase 0: só fonte estruturada) ---------- */
 /* Resolve a instituição operacional a partir da identidade da página de IF:
    código IF.data (conglomerado C… ou individual = CNPJ-raiz) ou CNPJ do
@@ -9733,7 +9743,30 @@ function renderPresencaMun() {
     Ausência de ponto é informação do cadastro, nunca vira zero silencioso.</p></div>`;
 }
 
-const RENDER = { overview: renderOverview, pulse: renderPulse, sectors: renderSectors, rj: renderRJ, institutions: renderInstitutions, inst: renderInstPage, sector: renderSectorPage, openfinance: renderOpenFinance, scenarios: renderScenarios, alerts: renderAlerts, research: renderResearch, method: renderMethod, products: renderProducts, product: renderProductPage, compare: renderCompare, market: renderMarket, leading: renderLeading, trends: renderTrends, panorama: renderPanorama, regulacao: renderRegulacao, bets: renderBets, fraudes: renderFraudes, juros: renderJuros, sugestoes: renderSugestoes, pix: renderPix, sobre: renderSobre, judicial: renderJudicial, pgfn: renderPgfn, desenrola: renderDesenrola, penetracao: renderPenetracao, moradia: renderMoradia, consignado: renderConsignado, operacional: renderOperacional, presmun: renderPresencaMun };
+/* Despacho por NOME (split por rota, P2): o mapa aponta strings e o
+   renderView resolve window[nome] na hora — painéis dos chunks só
+   existem depois que ensureChunk os injeta. Com o app inteiro num
+   arquivo (dev), a checagem de presença torna tudo transparente. */
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun" };
+function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
+const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
+  consignado: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes" };
+const chunksCarregados = {};
+function ensureChunk(v) {
+  const c = CHUNK_OF_VIEW[v];
+  if (!c || chunksCarregados[c] || typeof window[RENDER[v]] === "function") return Promise.resolve();
+  return new Promise(res => {
+    const s = document.createElement("script");
+    s.src = `/obs/app-${c}.min.js?v=${APP_VERSION}`;
+    s.onload = () => { chunksCarregados[c] = true; res(); };
+    s.onerror = () => {
+      const sec = document.getElementById("view-" + v);
+      if (sec) sec.innerHTML = "<div class='card'><h4>Falha ao carregar este painel</h4><p class='src'>Verifique a conexão e recarregue a página.</p></div>";
+      res();
+    };
+    document.head.appendChild(s);
+  });
+}
 /* ---------- REGULAÇÃO: timeline transversal do mercado de crédito ---------- */
 const REG_LABELS = {
   institutions: "Instituições", pix: "Pix & Pagamentos", openfinance: "Open Finance",
@@ -9773,7 +9806,7 @@ function renderRegulacao() {
   <div class="card"><p class="src">${badge("observado")} ${R.fonte.nome} · nível ${R.fonte.nivel} — ${R.fonte.nota}. Atualizado ${(R.gerado_em || "").slice(0, 10)}.</p></div>`;
 }
 
-function rerenderCurrent() { const v = currentView(); if (RENDER[v]) RENDER[v](); }
+function rerenderCurrent() { const v = currentView(); renderView(v); }
 const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", regulacao: "Regulação do Crédito", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
@@ -9870,8 +9903,8 @@ function showViewSilent(v) {
   if (pend) {
     const sec = document.getElementById("view-" + v);
     if (sec && !sec.innerHTML) sec.innerHTML = loadingCard("dados desta página");
-    ensureData(v).then(() => { if (currentView() === v && RENDER[v]) RENDER[v](); });
-  } else if (RENDER[v]) RENDER[v]();
+    Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) renderView(v); });
+  } else ensureChunk(v).then(() => { if (currentView() === v) renderView(v); });
   const plat = state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito";
   document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + plat;
   closeSidebar();
