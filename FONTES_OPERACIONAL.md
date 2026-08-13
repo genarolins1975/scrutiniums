@@ -816,3 +816,25 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Gold publicado atualizado por patch com guarda de identidade (MAE novo ==
   MAE publicado nas 15 séries antes de mesclar os campos novos). Versão
   0.78.0; travas em `src/tests/backtest-publicado.test.ts`.
+
+## 33. Linhagem automatizada (P1 do Top 10 — promessa de linhagem cumprida)
+
+- `pipeline/lineage_map.py`: análise estática do PRÓPRIO repositório a cada
+  execução — nunca mantido à mão. Para cada objeto gold: produtor (quem
+  chama `write_gold`), fontes (hosts literais do módulo + coletores de
+  bronze que ele lê + armazém de séries/estruturado + curadoria),
+  dependências gold→gold (`ler_gold_opcional`) e consumo (VIEW_DATA,
+  OV_BLOCO_DATA, CORE_FILES, fetches diretos e famílias por item da SPA;
+  feeds RSS e kit de imprensa declarados).
+- Padrões dinâmicos resolvidos por REGRA, não por mapa manual: templates
+  f-string casados contra o inventário publicado (`{nome}_mun.json` →
+  penetracao_mun/moradia_mun/consignado_mun; `cmp/{cod}.json` → família
+  `cmp/*`), e a republicação integral de `pipeline/curated/` herdada
+  arquivo a arquivo. Dependências invertidas viram consumo ("insumo de X"),
+  inclusive curadoria lida por outros módulos.
+- Resultado: 63 objetos mapeados, ZERO publicados sem produtor — e o teste
+  trava isso (`linhagem-mapa.test.ts`: cobertura total do inventário, nada
+  órfão, vínculos conhecidos conferidos). `lineage.json` ganha o `mapa` ao
+  lado da linhagem recente bronze→gold (SHA-256), e a Metodologia mostra a
+  tabela completa com o método declarado.
+- Versão 0.79.0.

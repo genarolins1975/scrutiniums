@@ -573,7 +573,12 @@ def build_all(con, cfg, fetch_status):
     n_rev = cur.fetchone()[0]
     cur = con.execute("SELECT key, ref_date, old_value, new_value, detected_at FROM revisions ORDER BY detected_at DESC LIMIT 50")
     revs = [dict(zip(["key", "ref_date", "old_value", "new_value", "detected_at"], r)) for r in cur.fetchall()]
-    common.write_gold("lineage.json", {"linhagem_recente": lineage_rows, "n_revisoes_total": n_rev, "revisoes_recentes": revs})
+    from pipeline import lineage_map as lm
+    common.write_gold("lineage.json", {"linhagem_recente": lineage_rows, "n_revisoes_total": n_rev,
+                                       "revisoes_recentes": revs,
+                                       # mapa completo gerado do código a cada execução (P1 da auditoria):
+                                       # produtor, fontes, dependências e consumo de CADA objeto gold
+                                       "mapa": lm.build()})
 
     # ---- Meta ----
     # ---- Camada de pesquisa: catálogo de métricas + produtos ----
