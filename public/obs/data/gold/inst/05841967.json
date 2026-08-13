@@ -17,7 +17,7 @@
   "data_base": "2026-T1",
   "atualizado_em": "2026-08-12T10:38:24+00:00",
   "aviso_pares": null,
-  "cnpj": "não disponível nas fontes integradas",
+  "cnpj": "raiz 05.841.967",
   "participante_open_finance": null
  },
  "resumo_executivo": {
@@ -1638,7 +1638,7 @@
   }
  },
  "score_ref": {
-  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

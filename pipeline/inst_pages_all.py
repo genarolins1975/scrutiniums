@@ -18,6 +18,45 @@ from pipeline import common
 from pipeline.indicators import PEER_GROUP_LABELS, carteira_profile
 from pipeline.products import TAXONOMY as PROD_TAXONOMY, venc_key as prod_venc_key
 
+
+def _fmt_cnpj14(c):
+    return f"{c[:2]}.{c[2:5]}.{c[5:8]}/{c[8:12]}-{c[12:14]}"
+
+
+def _cnpj_map_conglomerados():
+    """cod IF.data (C…) → CNPJ completo da companhia listada, pelo mapa CURADO
+    do bloco operacional (cadastro CVM) — nunca por nome. Achado da auditoria
+    de 12/08: o cabeçalho dizia 'não disponível' até para o Itaú."""
+    from pipeline.sources.b3_market import COMPANIES
+    from pipeline.sources.operacional import BANCOS_CVM
+    from pipeline.operacional import COD_IFDATA, REDE_EXTRA
+    cnpj_por_id = {c["company_id"]: c.get("cnpj") for c in COMPANIES}
+    cnpj_por_id |= {b["id"]: b.get("cnpj") for b in BANCOS_CVM}
+    cnpj_por_id |= {e["id"]: e.get("cnpj") or e.get("cnpj8") for e in REDE_EXTRA}
+    out = {}
+    for ident, cod in COD_IFDATA.items():
+        c = cnpj_por_id.get(ident) or ""
+        if not cod or len(c) < 8:
+            continue
+        # 14 dígitos = CNPJ completo do cadastro CVM; 8 = só a raiz é conhecida
+        # (nunca completar dígitos que a fonte não deu)
+        out[cod] = (_fmt_cnpj14(c) + " (companhia listada/holding)") if len(c) == 14 \
+            else f"raiz {c[:2]}.{c[2:5]}.{c[5:8]}"
+    return out
+
+
+_CNPJ_CONGL = None
+
+
+def _cnpj_cabecalho(cod):
+    global _CNPJ_CONGL
+    if _CNPJ_CONGL is None:
+        _CNPJ_CONGL = _cnpj_map_conglomerados()
+    if re.fullmatch(r"\d{8}", cod or ""):
+        # instituição individual: o próprio código IF.data É a raiz do CNPJ
+        return f"raiz {cod[:2]}.{cod[2:5]}.{cod[5:8]}"
+    return _CNPJ_CONGL.get(cod, "não disponível nas fontes integradas")
+
 PERIODOS_LBL = {"202603": "2026-T1", "202512": "2025-T4", "202509": "2025-T3",
                 "202506": "2025-T2", "202503": "2025-T1"}
 GENERIC_TOKENS = {"BANCO", "BCO", "BRASIL", "BRASILEIRO", "NACIONAL", "S.A", "S.A.", "SA",
@@ -66,10 +105,15 @@ def _mediana(vals):
 def build_all(con, cfg, inst_gold, of_gold):
     pilotos = {p["cod_inst"]: p for p in cfg.get("inst_pages", {}).get("pilotos", [])}
     cur = con.execute("SELECT DISTINCT anomes FROM institution_metrics WHERE metric='ativo_total' ORDER BY anomes DESC")
-    periods = [r[0] for r in cur.fetchall()][:5]
+    # periods (5 tri) governa as seções da metodologia vigente; periods_hist
+    # carrega TODO o backfill (2015+) para a evolução de longo prazo — o corte
+    # em 5 escondia os 40 trimestres coletados (achado da auditoria de 12/08)
+    periods_hist = [r[0] for r in cur.fetchall()][:44]
+    periods = periods_hist[:5]
     if not periods:
         return {"ok": False}
     anomes = periods[0]
+    periods_hist_set = set(periods_hist)
 
     # carrega tudo em memória (1 query)
     hist = {}   # cod -> metric -> [(anomes, v)]
@@ -238,13 +282,21 @@ def build_all(con, cfg, inst_gold, of_gold):
                 {"label": "Pessoa Física", "v": pf_total or 0},
                 {"label": "Pessoa Jurídica", "v": pj_total or 0}] if x["v"] > 0]
 
-        # evolução base-100
-        evolucao = {}
+        # evolução base-100 — série LONGA (todo o backfill disponível, 2015+).
+        # Ativos e PL são conceito-estáveis na janela; a carteira cruza a
+        # fronteira da Res. 4.966 (2025-T1: régua antiga "classificada" →
+        # régua nova) — declarada na nota, nunca escondida.
+        evolucao, ev_longa = {}, False
         for met, label in (("ativo_total", "Ativos"), ("carteira_credito", "Carteira"),
                            ("patrimonio_liquido", "PL")):
-            s = [(a, v) for a, v in hist.get(cod, {}).get(met, []) if a in periods]
+            s = [(a, v) for a, v in hist.get(cod, {}).get(met, []) if a in periods_hist_set]
             if len(s) >= 3 and s[0][1]:
                 evolucao[label] = [{"p": PERIODOS_LBL.get(a, a), "v": round(v / s[0][1] * 100, 1)} for a, v in s]
+                if len(s) > 8:
+                    ev_longa = True
+        evolucao_nota = (("Base 100 no primeiro trimestre disponível da instituição (backfill desde 2015 quando reportado). "
+                          "A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — "
+                          "leia a inflexão nessa data como mudança de régua, não de negócio.") if ev_longa else None)
 
         # reclamações / OF / RJ (matching conservador por tokens distintivos)
         recl = [{"periodo": f"{a}-T{t}", "indice": i2, "reclamacoes": nr, "clientes": cl,
@@ -330,7 +382,10 @@ def build_all(con, cfg, inst_gold, of_gold):
             score_meta = {"cobertura_dados_pct": cobertura_pct,
                           "confianca": "moderada" if cobertura_pct >= 80 else "baixa",
                           "confianca_motivo": f"{n_dims_score}/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-                          "versao_metodologica": "score v3 (v0.5.0 da plataforma)"}
+                          "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+                          # vintage explícito: um número composto sem data induz
+                          # leitura de "agora" — achado da auditoria de 12/08
+                          "calculado_em": common.now_utc()[:10]}
 
         page = {
             "cod_inst": cod, "caso": piloto.get("caso"),
@@ -346,7 +401,7 @@ def build_all(con, cfg, inst_gold, of_gold):
                 "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
                 "data_base": PERIODOS_LBL.get(anomes, anomes), "atualizado_em": common.now_utc(),
                 "aviso_pares": piloto.get("aviso_pares"),
-                "cnpj": "não disponível nas fontes integradas",
+                "cnpj": _cnpj_cabecalho(cod),
                 "participante_open_finance": bool(of_entry) or None,
             },
             "resumo_executivo": resumo_exec, "grupo_pares_composicao": grupo_comp,
@@ -355,13 +410,14 @@ def build_all(con, cfg, inst_gold, of_gold):
             "carteira": {"donut_cliente": donut_cliente, "perfil": perfil,
                          "total_pf": pf_total, "total_pj": pj_total},
             "evolucao_base100": evolucao,
+            "evolucao_nota": evolucao_nota,
             "comparacao_grupo": {met: {"valores": [round(x, 2) for x in gs.get(met, {}).get("vals", [])][:400],
                                        "meu": round(r[met], 2) if r.get(met) is not None else None,
                                        "mediana": round(gs[met]["mediana"], 2) if gs.get(met, {}).get("mediana") is not None else None}
                                  for met in ("roe", "basileia", "alav") if r.get(met) is not None},
             "score_ref": ({k: ig.get(k) for k in ("score", "score_delta", "faixa", "dimensoes",
                                                   "historico_score", "vulnerabilidade", "dimensoes_disponiveis")}
-                          if ig else {"indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."}),
+                          if ig else {"indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."}),
             "atraso_produtos": ({
                 "data_base": PERIODOS_LBL.get(anomes, anomes),
                 "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",

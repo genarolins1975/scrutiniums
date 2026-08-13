@@ -1,6 +1,6 @@
 {
  "ok": true,
- "tipo": "DADO CALCULADO (componentes mistos)",
+ "tipo": "DADO CALCULADO (100% observado)",
  "setores": [
   {
    "serie_obs": [
@@ -393,7 +393,7 @@
    ],
    "codigo": "129339",
    "nome": "3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores",
-   "score": 70.2,
+   "score": 74.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -23.18,
@@ -402,35 +402,35 @@
    "yoy_producao_pct": -11.86,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 14.5,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 22.2,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 1.61,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -826,7 +826,7 @@
    ],
    "codigo": "129335",
    "nome": "3.26 Fabricação de equipamentos de informática, produtos eletrônicos e ópticos",
-   "score": 64.8,
+   "score": 65.9,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -23.41,
@@ -835,35 +835,35 @@
    "yoy_producao_pct": -14.07,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 9.1,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 13.9,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 1.01,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -1259,7 +1259,7 @@
    ],
    "codigo": "129342",
    "nome": "3.33 Manutenção, reparação e instalação de máquinas e equipamentos",
-   "score": 63.7,
+   "score": 64.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -9.14,
@@ -1268,35 +1268,35 @@
    "yoy_producao_pct": -4.25,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 8.0,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 12.3,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.89,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -1692,7 +1692,7 @@
    ],
    "codigo": "56689",
    "nome": "3.20 Fabricação de produtos químicos",
-   "score": 61.4,
+   "score": 60.8,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -5.57,
@@ -1701,35 +1701,35 @@
    "yoy_producao_pct": -3.76,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 5.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 8.8,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.64,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -2125,7 +2125,7 @@
    ],
    "codigo": "129321",
    "nome": "3.14 Confecção de artigos do vestuário e acessórios",
-   "score": 59.9,
+   "score": 58.5,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -8.75,
@@ -2134,35 +2134,35 @@
    "yoy_producao_pct": -7.42,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 4.2,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 6.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.47,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -2558,7 +2558,7 @@
    ],
    "codigo": "129320",
    "nome": "3.13 Fabricação de produtos têxteis",
-   "score": 58.5,
+   "score": 56.3,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -8.3,
@@ -2567,35 +2567,35 @@
    "yoy_producao_pct": -4.4,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 2.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 4.3,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.31,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -2991,7 +2991,7 @@
    ],
    "codigo": "129326",
    "nome": "3.19 Fabricação de coque, de produtos derivados do petróleo e de biocombustíveis",
-   "score": 58.0,
+   "score": 55.6,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.72,
@@ -3000,35 +3000,35 @@
    "yoy_producao_pct": 0.47,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 2.3,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 3.6,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.26,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -3424,7 +3424,7 @@
    ],
    "codigo": "129317",
    "nome": "3.10 Fabricação de produtos alimentícios",
-   "score": 57.8,
+   "score": 55.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -6.13,
@@ -3433,35 +3433,35 @@
    "yoy_producao_pct": -0.43,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 2.1,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 3.2,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.23,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -3857,7 +3857,7 @@
    ],
    "codigo": "129337",
    "nome": "3.28 Fabricação de máquinas e equipamentos",
-   "score": 57.8,
+   "score": 55.2,
    "faixa": "elevado",
    "tendencia": "piorando",
    "tendencia_valor_pp": -1.05,
@@ -3866,35 +3866,35 @@
    "yoy_producao_pct": -1.64,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": 2.1,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": 3.2,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": 0.23,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -4290,8 +4290,8 @@
    ],
    "codigo": "129330",
    "nome": "3.21 Fabricação de produtos farmoquímicos e farmacêuticos",
-   "score": 55.3,
-   "faixa": "elevado",
+   "score": 51.4,
+   "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.91,
    "velocidade": "momento melhorando",
@@ -4299,35 +4299,35 @@
    "yoy_producao_pct": 1.44,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -0.4,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -0.6,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.04,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -4723,7 +4723,7 @@
    ],
    "codigo": "129331",
    "nome": "3.22 Fabricação de produtos de borracha e de material plástico",
-   "score": 54.9,
+   "score": 50.7,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.47,
@@ -4732,35 +4732,35 @@
    "yoy_producao_pct": 0.52,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -0.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -1.2,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.09,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -5156,7 +5156,7 @@
    ],
    "codigo": "129322",
    "nome": "3.15 Preparação de couros e fabricação de artefatos de couro, artigos para viagem e calçados",
-   "score": 54.4,
+   "score": 50.1,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 2.15,
@@ -5165,35 +5165,35 @@
    "yoy_producao_pct": 1.99,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -1.3,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -1.9,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.14,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -5589,7 +5589,7 @@
    ],
    "codigo": "129316",
    "nome": "3 Indústrias de transformação",
-   "score": 53.9,
+   "score": 49.2,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.25,
@@ -5598,35 +5598,35 @@
    "yoy_producao_pct": 1.05,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -1.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -2.8,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.2,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -6022,7 +6022,7 @@
    ],
    "codigo": "129324",
    "nome": "3.17 Fabricação de celulose, papel e produtos de papel",
-   "score": 53.6,
+   "score": 48.8,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.62,
@@ -6031,35 +6031,35 @@
    "yoy_producao_pct": 1.84,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -2.1,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -3.2,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.23,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -6455,7 +6455,7 @@
    ],
    "codigo": "129334",
    "nome": "3.25 Fabricação de produtos de metal, exceto máquinas e equipamentos",
-   "score": 52.9,
+   "score": 47.7,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -3.33,
@@ -6464,35 +6464,35 @@
    "yoy_producao_pct": -0.68,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -2.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -4.3,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.31,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -6888,7 +6888,7 @@
    ],
    "codigo": "129340",
    "nome": "3.31 Fabricação de móveis",
-   "score": 52.9,
+   "score": 47.7,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -9.97,
@@ -6897,35 +6897,35 @@
    "yoy_producao_pct": 0.01,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -2.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -4.3,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.31,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -7321,7 +7321,7 @@
    ],
    "codigo": "129314",
    "nome": "1 Indústria geral",
-   "score": 52.6,
+   "score": 47.3,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.7,
@@ -7330,35 +7330,35 @@
    "yoy_producao_pct": 1.71,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -3.1,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -4.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.34,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -7754,7 +7754,7 @@
    ],
    "codigo": "129333",
    "nome": "3.24 Metalurgia",
-   "score": 52.0,
+   "score": 46.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 4.54,
@@ -7763,35 +7763,35 @@
    "yoy_producao_pct": 4.4,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -3.7,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -5.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.41,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -8187,7 +8187,7 @@
    ],
    "codigo": "129323",
    "nome": "3.16 Fabricação de produtos de madeira",
-   "score": 51.5,
+   "score": 45.5,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 7.79,
@@ -8196,35 +8196,35 @@
    "yoy_producao_pct": 2.54,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -4.2,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -6.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.47,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -8620,7 +8620,7 @@
    ],
    "codigo": "129318",
    "nome": "3.11 Fabricação de bebidas",
-   "score": 51.2,
+   "score": 45.1,
    "faixa": "atenção",
    "tendencia": "estável",
    "tendencia_valor_pp": 0.45,
@@ -8629,35 +8629,35 @@
    "yoy_producao_pct": 3.0,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -4.5,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -6.9,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.5,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -9053,7 +9053,7 @@
    ],
    "codigo": "129341",
    "nome": "3.32 Fabricação de produtos diversos",
-   "score": 50.7,
+   "score": 44.4,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -9.26,
@@ -9062,35 +9062,35 @@
    "yoy_producao_pct": 4.63,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -5.0,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -7.6,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.55,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -9486,7 +9486,7 @@
    ],
    "codigo": "129319",
    "nome": "3.12 Fabricação de produtos do fumo",
-   "score": 50.6,
+   "score": 44.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 16.3,
@@ -9495,35 +9495,35 @@
    "yoy_producao_pct": 11.87,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -5.0,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -7.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.56,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -9919,7 +9919,7 @@
    ],
    "codigo": "129332",
    "nome": "3.23 Fabricação de produtos de minerais não metálicos",
-   "score": 48.8,
+   "score": 41.5,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 0.92,
@@ -9928,35 +9928,35 @@
    "yoy_producao_pct": 3.69,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -6.8,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -10.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.76,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -10352,7 +10352,7 @@
    ],
    "codigo": "129338",
    "nome": "3.29 Fabricação de veículos automotores, reboques e carrocerias",
-   "score": 48.2,
+   "score": 40.5,
    "faixa": "atenção",
    "tendencia": "piorando",
    "tendencia_valor_pp": -2.31,
@@ -10361,35 +10361,35 @@
    "yoy_producao_pct": 16.45,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -7.5,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -11.5,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.83,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -10785,7 +10785,7 @@
    ],
    "codigo": "129315",
    "nome": "2 Indústrias extrativas",
-   "score": 47.5,
+   "score": 46.3,
    "faixa": "atenção",
    "tendencia": "estável",
    "tendencia_valor_pp": 0.13,
@@ -10794,35 +10794,35 @@
    "yoy_producao_pct": 5.17,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -3.7,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 0.8,
-    "capacidade_financeira": -0.9
+    "atividade": -5.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": -0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.41,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.2,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": -0.3,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -11218,7 +11218,7 @@
    ],
    "codigo": "129336",
    "nome": "3.27 Fabricação de máquinas, aparelhos e materiais elétricos",
-   "score": 47.0,
+   "score": 38.6,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 6.38,
@@ -11227,35 +11227,35 @@
    "yoy_producao_pct": 7.58,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -8.7,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -13.4,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.97,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
@@ -11651,7 +11651,7 @@
    ],
    "codigo": "129325",
    "nome": "3.18 Impressão e reprodução de gravações",
-   "score": 46.8,
+   "score": 38.3,
    "faixa": "atenção",
    "tendencia": "melhorando",
    "tendencia_valor_pp": 16.27,
@@ -11660,41 +11660,41 @@
    "yoy_producao_pct": 20.5,
    "ref": "2026-06-01",
    "contribuicoes": {
-    "atividade": -8.9,
-    "condicoes_credito": 1.3,
-    "estresse_empresarial": 3.2,
-    "capacidade_financeira": 1.2
+    "atividade": -13.7,
+    "condicoes_credito": 2.0,
+    "estresse_empresarial": 0.0,
+    "capacidade_financeira": 0.0
    },
    "componentes": {
     "atividade": {
      "z": -0.99,
-     "peso": 0.45,
+     "peso": 0.69,
      "fonte": "IBGE PIM-PF",
      "status": "observado"
     },
     "condicoes_credito": {
      "z": 0.32,
-     "peso": 0.2,
+     "peso": 0.31,
      "fonte": "BCB/SGS (inad. e spread PJ)",
      "status": "observado",
      "nota": "média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
     },
     "estresse_empresarial": {
      "z": 0.8,
-     "peso": 0.2,
-     "fonte": "DEMONSTRATIVO (RJ)",
+     "peso": 0.0,
+     "fonte": "em construção (RJ) — fora do score",
      "status": "demonstrativo"
     },
     "capacidade_financeira": {
      "z": 0.4,
-     "peso": 0.15,
-     "fonte": "DEMONSTRATIVO (emprego)",
+     "peso": 0.0,
+     "fonte": "em construção (emprego) — fora do score",
      "status": "demonstrativo"
     }
    }
   }
  ],
- "metodo": "Score = 50 + 20×Σ(peso×z): atividade 0,45 (queda da produção física a/a vs. histórico, IBGE), condições de crédito 0,20 (inadimplência e spread PJ vs. histórico, BCB), estresse empresarial 0,20 e capacidade financeira 0,15 (DEMONSTRATIVOS). Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência.",
- "limitacoes": "Cobertura restrita à indústria (PIM). Condições de crédito ainda sem corte setorial (usa agregado PJ). Componentes de RJ e emprego são DEMONSTRATIVOS — ver selo por componente. Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
- "aviso_demo": "Componentes estresse_empresarial e capacidade_financeira são demonstrativos; atividade e condições de crédito são observados."
+ "metodo": "Score = 50 + 20×Σ(peso×z), calculado APENAS sobre componentes observados: atividade 0,69 (queda da produção física a/a vs. histórico, IBGE) e condições de crédito 0,31 (inadimplência e spread PJ vs. histórico, BCB) — pesos renormalizados dos antigos 0,45/0,20. Estresse empresarial e capacidade financeira aparecem como 'em construção', com peso ZERO: nunca entram no número. Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência.",
+ "limitacoes": "Cobertura restrita à indústria (PIM). Condições de crédito ainda sem corte setorial (usa agregado PJ). Componentes de RJ e emprego estão em construção e FORA do score. Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
+ "aviso_demo": "Estresse empresarial e capacidade financeira são demonstrativos, com peso zero — exibidos como 'em construção', nunca somados ao score."
 }

@@ -184,13 +184,18 @@ def build_sector_stress(con, cfg, rj_demo):
         code = key.replace("pim_", "")
         demo_comp = rj_demo["componentes_setoriais"].get(
             "B" if "extrativa" in short.lower() else "C", {"rj_z": 0.5, "emprego_z": 0.0})
+        # O SCORE publicado usa APENAS componentes observados. Os antigos pesos
+        # 0,45/0,20 são renormalizados (0,45/0,65 e 0,20/0,65): um número
+        # comparativo com 35% de peso demonstrativo induzia precisão que o dado
+        # não tinha — mesmo princípio que aposentou a "maturidade estrutural".
+        # Os demonstrativos seguem VISÍVEIS, com peso zero, como "em construção".
         comps = {
-            "atividade": {"z": round(atividade_z, 2), "peso": 0.45, "fonte": "IBGE PIM-PF", "status": "observado"},
-            "condicoes_credito": {"z": round(cred_z, 2), "peso": 0.20, "fonte": "BCB/SGS (inad. e spread PJ)", "status": "observado", "nota": cred_detail},
-            "estresse_empresarial": {"z": demo_comp["rj_z"], "peso": 0.20, "fonte": "DEMONSTRATIVO (RJ)", "status": "demonstrativo"},
-            "capacidade_financeira": {"z": round(-demo_comp["emprego_z"], 2), "peso": 0.15, "fonte": "DEMONSTRATIVO (emprego)", "status": "demonstrativo"},
+            "atividade": {"z": round(atividade_z, 2), "peso": 0.69, "fonte": "IBGE PIM-PF", "status": "observado"},
+            "condicoes_credito": {"z": round(cred_z, 2), "peso": 0.31, "fonte": "BCB/SGS (inad. e spread PJ)", "status": "observado", "nota": cred_detail},
+            "estresse_empresarial": {"z": demo_comp["rj_z"], "peso": 0.0, "fonte": "em construção (RJ) — fora do score", "status": "demonstrativo"},
+            "capacidade_financeira": {"z": round(-demo_comp["emprego_z"], 2), "peso": 0.0, "fonte": "em construção (emprego) — fora do score", "status": "demonstrativo"},
         }
-        score_z = sum(c["z"] * c["peso"] for c in comps.values())
+        score_z = sum(c["z"] * c["peso"] for c in comps.values() if c["status"] == "observado")
         score = max(0, min(100, 50 + 20 * score_z))
         sectors.append({
             "serie_obs": [{"ref": d, "v": v} for d, v in s[-48:]],
@@ -207,15 +212,17 @@ def build_sector_stress(con, cfg, rj_demo):
         })
     sectors.sort(key=lambda x: -x["score"])
     return {
-        "ok": bool(sectors), "tipo": "DADO CALCULADO (componentes mistos)", "setores": sectors,
-        "metodo": "Score = 50 + 20×Σ(peso×z): atividade 0,45 (queda da produção física a/a vs. histórico, IBGE), "
-                  "condições de crédito 0,20 (inadimplência e spread PJ vs. histórico, BCB), "
-                  "estresse empresarial 0,20 e capacidade financeira 0,15 (DEMONSTRATIVOS). "
+        "ok": bool(sectors), "tipo": "DADO CALCULADO (100% observado)", "setores": sectors,
+        "metodo": "Score = 50 + 20×Σ(peso×z), calculado APENAS sobre componentes observados: "
+                  "atividade 0,69 (queda da produção física a/a vs. histórico, IBGE) e "
+                  "condições de crédito 0,31 (inadimplência e spread PJ vs. histórico, BCB) — "
+                  "pesos renormalizados dos antigos 0,45/0,20. Estresse empresarial e capacidade "
+                  "financeira aparecem como 'em construção', com peso ZERO: nunca entram no número. "
                   "Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência.",
         "limitacoes": "Cobertura restrita à indústria (PIM). Condições de crédito ainda sem corte setorial "
-                      "(usa agregado PJ). Componentes de RJ e emprego são DEMONSTRATIVOS — ver selo por componente. "
+                      "(usa agregado PJ). Componentes de RJ e emprego estão em construção e FORA do score. "
                       "Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
-        "aviso_demo": "Componentes estresse_empresarial e capacidade_financeira são demonstrativos; atividade e condições de crédito são observados.",
+        "aviso_demo": "Estresse empresarial e capacidade financeira são demonstrativos, com peso zero — exibidos como 'em construção', nunca somados ao score.",
     }
 
 
