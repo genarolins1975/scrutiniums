@@ -953,3 +953,39 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   visível + atribuição), embed de vista inteira (`juros`, via chunk sob
   demanda) e permalink com scroll+destaque — zero erros de JS.
 - Versão 0.84.0; travas em `src/tests/embed-permalink.test.ts`.
+
+## 39. Modelo de migração 15→90: inadimplência >90d ESTIMADA por produto × IF
+
+- **A lacuna**: o IF.data público não cruza o NPL >90d com modalidade. Por
+  produto×IF existe o atraso ≥15d (rel. 123/128); o >90d só existe total
+  por IF (Res. 4.966) e por produto no agregado do sistema (SCR).
+- **O modelo** (`pipeline/models/migracao_npl.py`, chamado por
+  `products.py` com os agregados de `scr_uf_produto`):
+  `est(i,p) = φ_i × β × m_p × atraso15(i,p)`.
+  · `m_p` — perfil relativo de migração do produto (inad arrastada ÷ banda
+    15-90 no SCR, normalizado p/ média ponderada 1; mapa explícito
+    produto→SCR; sem par = neutro 1,0 sinalizado);
+  · `β` — MQO PELA ORIGEM entre as 957 IFs da data-base (>90d total = β ×
+    atraso composto): β=1,058 (EP 0,018), R² não centrado 0,794. Sem
+    intercepto de propósito: um intercepto de nível dominava os produtos de
+    atraso baixo (87% das estimativas iam ao teto — o teto virava a
+    estimativa);
+  · `φ_i` — >90d observado ÷ ajustado, winsorizado [0,25; 4] (33/957): faz
+    a média ponderada das estimativas da IF RECONCILIAR com o >90d total
+    observado dela (trava de teste; desvios só onde winsor/teto mordem,
+    ambos contados e marcados por linha).
+- **Achado conceitual documentado**: o "vencido ≥15d" dos rel. 123/128
+  comporta-se como banda curta (consignado BB 0,45% ≈ banda 15-90 SCR
+  0,42%) — o >90d NÃO é subconjunto dele, e a estimativa pode excedê-lo
+  (migração acumulada, não fração do atraso corrente).
+- **No painel**: coluna "Inad. >90d NO PRODUTO (estimada)" na matriz de
+  cada produto (ordenável; decomposição completa no ⓘ da linha: atraso ×
+  perfil × β × fator da IF, com cobertura do modelo e ⚠ abaixo de 25%);
+  cartão de metodologia no fim da página com fórmula, coeficientes,
+  hipóteses, conceito do atraso e "o que este número NÃO é"; CSV com o selo
+  ESTIMADO em coluna própria. Sanidade: BB consignado 1,15% (sistema INSS
+  ~1,9%), Nubank cartão 12,0%, Caixa consignado 3,98%.
+- Gold antecipado por seed local (perfis do SCR reconstruídos do
+  juros.json publicado — mesmos agregados da tabela); o ciclo diário
+  recalcula da fonte. Versão 0.85.0; travas em
+  `src/tests/migracao-npl.test.ts`.

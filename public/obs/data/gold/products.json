@@ -1250,5 +1250,35 @@
    },
    "taxas_disponiveis": false
   }
- ]
+ ],
+ "npl_produto_estimado": {
+  "disponivel": true,
+  "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
+  "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
+  "beta": 1.058,
+  "r2_nao_centrado": 0.794,
+  "ep_beta": 0.0175,
+  "n_ifs": 957,
+  "m_produtos": {
+   "capital-de-giro-pj": 1.09,
+   "cartao-de-credito-pf": 0.71,
+   "comercio-exterior-pj": 0.31,
+   "consignado-pf": 1.47,
+   "credito-pessoal-pf": 0.95,
+   "recebiveis-pj": 0.58,
+   "veiculos-pf": 1.14
+  },
+  "phi_winsorizados": 33,
+  "phi_limites": [
+   0.25,
+   4.0
+  ],
+  "estimativas": 6027,
+  "estimativas_baixa_cobertura": 23,
+  "estimativas_teto_sanidade": 47,
+  "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
+  "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
+  "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
+  "nao_e": "Não é observação: o IF.data público não divulga >90d por modalidade — este número é uma ESTIMATIVA calibrada em dois observados (o >90d total da IF e o atraso >=15d do produto). Não capta mix de clientes intra-produto, garantias, renegociações nem baixas para prejuízo."
+ }
 }
