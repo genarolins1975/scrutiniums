@@ -202,7 +202,7 @@ describe("bets: integração com a plataforma", () => {
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain('bets: "/bets-financial-risk"');
     expect(app).toContain('bets: ["bets", "epae"]'); // pulse é CORE_FILES; epae entra junto com a aba
-    expect(app).toContain("bets: renderBets");
+    expect(app).toContain('bets: "renderBets"');
     expect(app).toContain("function renderBets()");
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
     expect(html).toContain('data-view="bets"');

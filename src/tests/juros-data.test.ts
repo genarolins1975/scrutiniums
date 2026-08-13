@@ -107,7 +107,7 @@ describe("juros: integração com a plataforma", () => {
     expect(sectionLabel("obs:juros")).toMatch(/Juros/);
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain('juros: "/interest-rates"');
-    expect(app).toContain("juros: renderJuros");
+    expect(app).toContain('juros: "renderJuros"');
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
     expect(html).toContain('data-view="juros"');
     expect(html).toContain('id="view-juros"');

@@ -87,7 +87,7 @@ describe("sugestões: máquina completa (tabela → estatísticas do painel)", (
     const { join } = await import("node:path");
     const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
     expect(app).toContain('sugestoes: "/suggestions"');
-    expect(app).toContain("sugestoes: renderSugestoes");
+    expect(app).toContain('sugestoes: "renderSugestoes"');
     expect(app).toContain('fetch("/api/sugestoes"');
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
     expect(html).toContain('data-view="sugestoes"');

@@ -909,3 +909,26 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   (Catálogo · Dicionário · Model cards · Score cards · Versões · Linhagem ·
   Referências).
 - Versão 0.82.0; travas em `src/tests/kit-padronizado.test.ts`.
+
+## 37. Split do bundle por rota (P2 — infra)
+
+- `app.js` segue como fonte canônica ÚNICA no git (testes e patches leem
+  dele) e continua funcional servido inteiro: o despacho do roteador virou
+  por NOME (`window[RENDER[v]]`) e o carregador (`ensureChunk`) checa a
+  presença da função antes de buscar — com o arquivo completo, nada é
+  baixado.
+- O build (`scripts/minify-obs.mjs`, mesmo comando do CI) extrai as regiões
+  marcadas `/* @chunk:NOME:ini|fim */` e minifica separado:
+  **core 555 KB** (era 744 KB inteiro, −25% no carregamento inicial) +
+  `app-municipal.min.js` 133 KB (Desenrola, Penetração, Moradia,
+  Consignado) + `app-emergentes.min.js` 57 KB (Bets, Fraudes, Juros),
+  carregados na primeira visita à rota, com fallback de erro visível.
+- `penEscala` (escala dos mapas municipais) subiu para o core — três
+  painéis a compartilham. Falha de rede no chunk mostra cartão de erro em
+  vez de loading eterno.
+- Verificação em navegador real (Chromium local): 15 vistas navegadas e 3
+  deep-links diretos em rotas de chunk — conteúdo renderizado, chunks
+  baixados sob demanda, zero erros de JS.
+- Versão 0.83.0; travas em `src/tests/split-bundle.test.ts` (marcadores
+  pareados, renderizadores na região certa, core sem os painéis dos chunks
+  e ≤ 620 KB, penEscala fora dos chunks).
