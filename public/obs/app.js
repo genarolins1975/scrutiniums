@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.81.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.82.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -2288,12 +2288,17 @@ function renderPanorama() {
     <div class="src" >${Object.entries(P.conceitos).map(([kk, v]) => `<b>${kk}</b>: ${v}`).join("<br>")}
     <br><b>indisponível no SCR público</b>: sexo, faixa etária, município, nº de clientes, baixas, concessões (fluxo) — não estimamos nem simulamos essas dimensões. Auditoria completa: docs/AUDITORIA_SCR.md.</div></div>`;
 
+  // âncoras do kit (P2): página densa navega por seção, como os dossiês
   el.innerHTML = head + sintese + kpis +
-    sechead("Mapa do crédito", `colorido por ${M.l.toLowerCase()} · ${M.desc}`) +
-    `<div class="pan-2col"><div>${mapa}</div>${painel}</div>` +
-    ponte("Os mesmos lugares no nível municipal — Penetração & Gap", "penetracao", null,
-      "muda o universo: lá o saldo é o contabilizado nas dependências de cada município (ESTBAN), não a carteira dos residentes por UF (SCR)") +
-    comparacao + perfil + alertas + exp + metodo;
+    subnavFixa([["#pan-mapa", "Mapa"], ["#pan-comp", "Comparação"], ["#pan-perfis", "Perfis"],
+      ["#pan-alertas", "Alertas"], ["#pan-exp", "Explorador"], ["#pan-met", "Metodologia"]]) +
+    secWrap("pan-mapa",
+      sechead("Mapa do crédito", `colorido por ${M.l.toLowerCase()} · ${M.desc}`) +
+      `<div class="pan-2col"><div>${mapa}</div>${painel}</div>` +
+      ponte("Os mesmos lugares no nível municipal — Penetração & Gap", "penetracao", null,
+        "muda o universo: lá o saldo é o contabilizado nas dependências de cada município (ESTBAN), não a carteira dos residentes por UF (SCR)")) +
+    secWrap("pan-comp", comparacao) + secWrap("pan-perfis", perfil) +
+    secWrap("pan-alertas", alertas) + secWrap("pan-exp", exp) + secWrap("pan-met", metodo);
 }
 
 function panMatriz(P) {
@@ -2383,7 +2388,7 @@ function panExplorer(P) {
       <label class="src">agrupar por: <select onchange="panExpSet('grupo', this.value)">${dims.map(dd => `<option ${dd === grupo ? "selected" : ""}>${dd}</option>`).join("")}</select></label>
       <label class="src">métrica: <select onchange="panExpSet('met', this.value)">${Object.entries(METS_EXP).map(([kk, mm]) => `<option value="${kk}" ${kk === mkey ? "selected" : ""}>${mm[0]}</option>`).join("")}</select></label>
       ${dims.map(filtroSel).join(" ")}
-      <button class="btn ghost small" onclick="panExpCSV()">exportar CSV</button></div>
+      <button class="btn ghost small" onclick="panExpCSV()">baixar CSV</button></div>
       ${linhas.length ? linhas.slice(0, 30).map(x => panBar(x.g, x.v, mx, METS_EXP[mkey][2], mkey.startsWith("cresc") || mkey === "inad" || mkey === "ap" || mkey === "atraso15_90" ? `saldo ${fmt.money(x.saldo)}` : "", mkey.startsWith("cresc"))).join("") : `<p class="src"><b>Este cruzamento não está disponível na fonte pública selecionada.</b></p>`}
       ${linhas.length > 30 ? `<p class="src">mostrando 30 de ${linhas.length} grupos — exporte o CSV para a lista completa.</p>` : ""}
       ${leitura([["Sem dupla contagem", "cada fato é agregado das linhas-base de um único mês; fatos nunca são somados entre si"], ["†", "nº de operações é PISO: células suprimidas pela fonte ficam de fora; taxas suprimidas quando a carteira do grupo < R$ 50 mi"], ["Datas", `nível em ${d0}; crescimento vs ${d3} (3m) e ${d12} (12m)`]])}`;
@@ -3148,7 +3153,7 @@ function pageHead(o) {
       ${o.controls || ""}
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
       ${o.actions || ""}
-      <button class="btn ghost small" onclick="exportarPagina()" title="planilha com as tabelas desta página e a procedência dos dados">exportar planilha</button>
+      <button class="btn ghost small" onclick="exportarPagina()" title="planilha com as tabelas desta página e a procedência dos dados">baixar XLSX (tabelas da página)</button>
       <button class="btn ghost small" onclick="pvSave()">salvar visão</button>
       ${(loadLS("obc_views_url", []).length ? `<select onchange="pvLoad(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views_url", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
@@ -3177,6 +3182,11 @@ function subnavFixa(itens) {
     ${itens.map(([a, l]) => `<a class="btn ghost small" href="javascript:void(0)" onclick="var n=document.querySelector('${a}'); n && n.scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
 }
 const secWrap = (id, html) => html ? `<section id="${id}">${html}</section>` : "";
+/* Regra ÚNICA de tooltips (P2: havia dois padrões sem critério): `dica()` —
+   title nativo com o ⓘ — para explicação curta de UM conceito no lugar;
+   data-tip (tooltip rico) SOMENTE dentro de gráficos, onde há valores
+   estruturados por ponto. Nada de title longo em elemento sem affordance. */
+const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
 /* ponte entre painéis irmãos (P2 da auditoria: "o produto tem as pontas;
    faltam as pontes"): link contextual que navega e, se houver âncora, desce
    até a seção — o texto diz o que muda de universo, nunca só "ver mais" */
@@ -3287,7 +3297,7 @@ function renderOverview() {
       ${segTabs()}
       <button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
       <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
-      <button class="btn ghost small" onclick="dlFile('overview_'+(state.data.meta&&state.data.meta.gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">exportar dados</button>
+      <button class="btn ghost small" onclick="dlFile('overview_'+(state.data.meta&&state.data.meta.gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">baixar JSON</button>
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
       <button class="btn ghost small" onclick="ovSaveView()">salvar visão</button>
       ${(loadLS("obc_views", []).length ? `<select onchange="ovLoadView(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
@@ -3882,7 +3892,7 @@ function renderPulse() {
       ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="javascript:void(0)" onclick="nav('scenarios')">backtest completo →</a></div>` : ""}
       ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
       ${srcLine(s.meta, s.qualidade)}
-      <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">exportar CSV</button>
+      <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar CSV</button>
     </div>`;
   };
 
@@ -3932,7 +3942,7 @@ function extraCard(k) {
     <div class="big" style="font-size:20px">${fmt.n(last.v, 2)} <span style="font-size:12px;color:var(--text-3)">${s.meta.unit}</span></div>
     ${lineChart({ series: [{ pts: s.obs.slice(-state.filters.range).map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: s.meta.name }], h: 110, unit: s.meta.unit, fonte: s.meta.source + " " + s.meta.series_code, status: "observado" })}
     ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `até ${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
-    <button class="btn ghost small" onclick="exportSeries('${k}')">exportar CSV</button></div>`;
+    <button class="btn ghost small" onclick="exportSeries('${k}')">baixar CSV</button></div>`;
 }
 
 /* ---------- INDICADORES ANTECEDENTES ---------- */
@@ -4133,7 +4143,7 @@ function rjRealSection() {
       <details class="decomp"><summary>por tribunal (${tribs.length})</summary>
         ${tribs.map(([t, p]) => `<div style="margin-top:6px"><b>${t}</b> — último mês: ${fmt.n0(p.obs[p.obs.length - 1].v)}${sparkline(p.obs.slice(-36).map(o => o.v), 180, 26)}</div>`).join("")}
       </details>
-      <button class="btn ghost small" onclick="exportRJ('${slug}')">exportar CSV</button>
+      <button class="btn ghost small" onclick="exportRJ('${slug}')">baixar CSV</button>
     </div>`;
   };
   let casos = "";
@@ -4321,8 +4331,8 @@ function renderInstitutions() {
           ${i.captacao.mix_depositos_pct ? `<br><b>Mix de depósitos:</b> ${Object.entries(i.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `${n} ${s}%`).join(" · ")}` : ""}
           <br>${i.captacao.limitacoes}</div>` : ""}
         ${i.modelo_negocio ? `<h5>Modelo de negócio ${badge("calculado")}</h5><div class="src">
-          ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% <span title="${i.modelo_negocio.receita_servicos_conceito}">ⓘ</span> · ` : ""}
-          ${i.modelo_negocio.eficiencia_pct != null ? `<b>eficiência:</b> ${i.modelo_negocio.eficiencia_pct}% <span title="${i.modelo_negocio.eficiencia_conceito}">ⓘ</span> · ` : ""}
+          ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% ${dica(i.modelo_negocio.receita_servicos_conceito)} · ` : ""}
+          ${i.modelo_negocio.eficiencia_pct != null ? `<b>eficiência:</b> ${i.modelo_negocio.eficiencia_pct}% ${dica(i.modelo_negocio.eficiencia_conceito)} · ` : ""}
           ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
           ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
         </div>` : ""}
@@ -4343,7 +4353,7 @@ function renderInstitutions() {
     <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
     <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
     <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
-    <button class="btn ghost small" onclick="exportInstitutions()">exportar JSON</button>
+    <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${guidanceSecao()}
@@ -4381,7 +4391,7 @@ function guidCicloBloco(c) {
     <div class="tblwrap"><table class="data compact">
       <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
       <tbody>${(c.metricas || []).map(m => `<tr>
-        <td>${m.nome}${m.formula ? ` <span title="${attr(m.formula)}">ⓘ</span>` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
+        <td>${m.nome}${m.formula ? ` ${dica(m.formula)}` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
         <td>${guidFaixa(m)}</td><td>${guidSitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
     ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
       <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
@@ -4609,7 +4619,7 @@ function renderInstPageData(el, pg) {
         <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
         ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
         ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
-        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} <span title="${attr(smeta.confianca_motivo)}">ⓘ</span> · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
+        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} ${dica(smeta.confianca_motivo)} · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
       : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
       <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
     </div>
@@ -4740,7 +4750,7 @@ function renderInstPageData(el, pg) {
       ${sc.modelo_negocio ? `
         ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
           <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
-        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% <span title="${attr(sc.modelo_negocio.eficiencia_conceito)}">ⓘ</span>
+        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% ${dica(sc.modelo_negocio.eficiencia_conceito)}
           <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
         <div class="src" style="margin-top:6px">
           ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
@@ -5159,7 +5169,7 @@ function renderScenarios() {
     ${Object.entries(scenario.presets).map(([name, p]) => `<button class="btn ghost small" onclick='applyPreset(${JSON.stringify(p)})'>${name.replace(/_/g, " ")}</button>`).join("")}
     <button class="btn small" onclick="saveScen()">salvar cenário</button>
     ${state.scenSaved ? `<span class="src">salvo: ${JSON.stringify(state.scenSaved)}</span>` : ""}
-    <button class="btn ghost small" onclick="exportScenario()">exportar (JSON)</button>
+    <button class="btn ghost small" onclick="exportScenario()">baixar JSON</button>
     <button class="btn ghost small" onclick="buildReport()">📄 relatório (PDF)</button>
   </div>
   <div class="sliders">${sliders}</div>
@@ -6652,7 +6662,7 @@ function answerHtml(h, idx) {
   ${r.resposta.map(p => `<p><span class="seal ${TAG_CLS[p.t]}">${TAG_TXT[p.t]}</span> ${p.x}</p>`).join("")}
   <details class="decomp"><summary>cálculo e método</summary><div class="src">${r.calculo}</div></details>
   <div class="src"><b>Fontes:</b> ${r.fontes.join(" · ")}</div>
-  <button class="btn ghost small" onclick="exportAnswer(${idx})">exportar resposta (JSON)</button></div>`;
+  <button class="btn ghost small" onclick="exportAnswer(${idx})">baixar JSON (resposta)</button></div>`;
 }
 window.exportAnswer = idx => {
   const h = loadLS("obc_research", [])[idx];
@@ -6728,6 +6738,8 @@ function renderMethod() {
   ${pageHead({ title: "Metodologia, fontes e documentação viva",
     desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
     fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}
+  ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-models", "Model cards"],
+    ["#met-scores", "Score cards"], ["#met-versoes", "Versões"], ["#met-linhagem", "Linhagem"], ["#met-refs", "Referências"]])}
   <div class="grid g2">
     <div class="card"><h4>Classificação epistemológica</h4>
       <p>${badge("observado")} publicado pela fonte oficial, sem transformação além de formato.</p>
@@ -6743,19 +6755,19 @@ function renderMethod() {
       <p class="src">Sem look-ahead nos backtests · ausência de dado ≠ zero · revisões registradas (${lineage ? lineage.n_revisoes_total : 0}) · estimativas sempre com intervalo · scores sempre decompostos · comparações apenas intra-grupo de pares · demo sempre selado · diagnóstico textual determinístico e auditável.</p>
       <h4>IBCC — método</h4><p class="src">${ibcc ? ibcc.metodo : ""}</p><p class="src"><b>Limitações:</b> ${ibcc ? ibcc.limitacoes : ""}</p></div>
   </div>
-  <h3>1 · Catálogo de dados (${quality ? Object.keys(quality).length : 0} séries)</h3>
+  <h3 id="met-catalogo">1 · Catálogo de dados (${quality ? Object.keys(quality).length : 0} séries)</h3>
   <div class="tblwrap"><table class="data"><thead><tr><th>Série</th><th>Fonte / código</th><th>Acesso</th><th>Última ref.</th><th>Defasagem</th><th>Obs.</th><th>Revisões</th><th>Qualidade</th></tr></thead><tbody>${catRows}</tbody></table></div>
-  <h3>2 · Dicionário de indicadores</h3>${dictRows}
-  <h3>3 · Model cards</h3>${cardRows}
-  <h3>3b · Score cards</h3>${method && method.score_cards ? method.score_cards.map(c => `
+  <h3 id="met-dicionario">2 · Dicionário de indicadores</h3>${dictRows}
+  <h3 id="met-models">3 · Model cards</h3>${cardRows}
+  <h3 id="met-scores">3b · Score cards</h3>${method && method.score_cards ? method.score_cards.map(c => `
     <details class="decomp card" style="margin-bottom:6px"><summary><b>${c.nome}</b> · v${c.versao}</summary>
       <div class="src" style="margin-top:6px"><b>Componentes:</b> ${c.componentes.join("; ")}<br>
       <b>Pesos:</b> ${c.pesos} · <b>Normalização:</b> ${c.normalizacao}<br>
       <b>Tratamento de ausência:</b> ${c.tratamento_ausencia}<br>
       <b>Cobertura:</b> ${c.cobertura} · <b>Sensibilidade:</b> ${c.sensibilidade}<br>
       <b>Validação:</b> ${c.validacao}</div></details>`).join("") : ""}
-  <h3>4 · Histórico de versões</h3>${verRows}
-  <h3>Linhagem recente (bronze → gold)</h3>
+  <h3 id="met-versoes">4 · Histórico de versões</h3>${verRows}
+  <h3 id="met-linhagem">Linhagem recente (bronze → gold)</h3>
   <div class="tblwrap"><table class="data"><thead><tr><th>Objeto</th><th>Arquivo bronze</th><th>SHA-256</th><th>Transformação</th><th>Quando</th></tr></thead><tbody>${lrows}</tbody></table></div>
   ${(() => {
     /* Mapa completo gerado do código a cada execução (P1 da auditoria): a
@@ -6770,7 +6782,7 @@ function renderMethod() {
     <p class="src"><b>${MP.resumo.publicados_no_gold}</b> objetos publicados na execução · <b>${semProd}</b> sem produtor mapeado${semProd ? " — <b>investigar</b>" : " (cobertura total)"} · famílias com * agrupam páginas geradas por item (uma por instituição, UF ou produto).</p>
     <div class="tblwrap"><table class="data compact"><thead><tr><th>Objeto gold</th><th>Produzido por</th><th>Fontes</th><th>Depende de</th><th>Consumido em</th></tr></thead><tbody>
       ${MP.objetos.map(o => `<tr>
-        <td><b>${o.gold}</b>${o.notas.length ? ` <span class="src" title="${attr(o.notas.join(" · "))}">ⓘ</span>` : ""}</td>
+        <td><b>${o.gold}</b>${o.notas.length ? ` ${dica(o.notas.join(" · "))}` : ""}</td>
         <td class="src">${o.produtores.join("<br>") || "—"}</td>
         <td class="src">${o.fontes.join("<br>") || "—"}</td>
         <td class="src">${o.depende_de.join("<br>") || "—"}</td>
@@ -6778,7 +6790,7 @@ function renderMethod() {
     </tbody></table></div>
   </div>`;
   })()}
-  <h3>Referências de design e acessibilidade (não são fontes dos indicadores)</h3>
+  <h3 id="met-refs">Referências de design e acessibilidade (não são fontes dos indicadores)</h3>
   <div class="card"><div class="src" style="line-height:2">
     <a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener noreferrer">Apple Human Interface Guidelines</a> ·
     <a href="https://ig.ft.com/visual-vocabulary/" target="_blank" rel="noopener noreferrer">Financial Times — Visual Vocabulary</a> ·
@@ -6806,15 +6818,7 @@ function buildReport() {
   document.querySelector("main").prepend(hdr);
   setTimeout(() => { window.print(); showView("scenarios"); }, 150);
 }
-function download(name, content, mime) {
-  const a = document.createElement("a");
-  const url = URL.createObjectURL(new Blob([content], { type: mime }));
-  a.href = url;
-  a.download = name;
-  a.click();
-  // sem o revoke, cada exportação deixava um object URL vivo até fechar a aba
-  setTimeout(() => URL.revokeObjectURL(url), 4000);
-}
+function download(name, content, mime) { dlFile(name, content, mime); } // alias legado do helper único
 function exportSeries(key) {
   const s = state.data.pulse.series[key];
   if (!s) return;
@@ -6947,8 +6951,8 @@ function renderBets() {
     </div>
     <div class="ph-actions">
       <button class="btn ghost small" onclick="document.getElementById('bets-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
-      <button class="btn ghost small" onclick="betsCSV()">baixar dados (CSV)</button>
-      <button class="btn ghost small" onclick="betsJSON()">baixar dados (JSON)</button>
+      <button class="btn ghost small" onclick="betsCSV()">baixar CSV</button>
+      <button class="btn ghost small" onclick="betsJSON()">baixar JSON</button>
     </div>
   </div>
   <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
@@ -7109,7 +7113,7 @@ function renderBets() {
           <option value="z" ${betsExp.norm === "z" ? "selected" : ""}>z-score</option>
         </select></label>
       <label class="src"><input type="checkbox" ${betsExp.eventos ? "checked" : ""} onchange="betsExpSet('eventos', this.checked)"> marcos regulatórios</label>
-      <button class="btn ghost small" onclick="betsExplorerCSV()">baixar base (CSV)</button>
+      <button class="btn ghost small" onclick="betsExplorerCSV()">baixar CSV (base completa)</button>
     </div>
     ${expChart}${expFoot}
     <div class="chips" style="margin-top:8px">
@@ -7223,7 +7227,7 @@ function renderBets() {
         </tbody></table></div>
         <ul style="font-size:13px;margin:8px 0 0 18px">${(E.limitacoes || []).map(l => `<li>${l}</li>`).join("")}</ul>
       </details>
-      <div class="src" style="margin-top:8px">Último mês publicado: <b>${fmt.my(ult.ref)}</b> · pessoas → seção R$ ${fmt.n(ult.pf_para_secao, 1)} bi em ${fmt.n(ult.tx_pf_para_secao, 0)} milhões de transações · <button class="btn ghost small" onclick="epaeCSV()">baixar série (CSV)</button></div>
+      <div class="src" style="margin-top:8px">Último mês publicado: <b>${fmt.my(ult.ref)}</b> · pessoas → seção R$ ${fmt.n(ult.pf_para_secao, 1)} bi em ${fmt.n(ult.tx_pf_para_secao, 0)} milhões de transações · <button class="btn ghost small" onclick="epaeCSV()">baixar CSV (série)</button></div>
     </div>`;
   })();
 
@@ -7341,8 +7345,8 @@ function renderFraudes() {
     </div>
     <div class="ph-actions">
       <button class="btn ghost small" onclick="document.getElementById('frd-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
-      <button class="btn ghost small" onclick="frdCSV()">baixar dados (CSV)</button>
-      <button class="btn ghost small" onclick="frdJSON()">baixar dados (JSON)</button>
+      <button class="btn ghost small" onclick="frdCSV()">baixar CSV</button>
+      <button class="btn ghost small" onclick="frdJSON()">baixar JSON</button>
     </div>
   </div>
   <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
@@ -7489,7 +7493,7 @@ function renderFraudes() {
           <option value="z" ${frdExp.norm === "z" ? "selected" : ""}>z-score</option>
         </select></label>
       <label class="src"><input type="checkbox" ${frdExp.eventos ? "checked" : ""} onchange="frdExpSet('eventos', this.checked)"> marcos de fraude e segurança</label>
-      <button class="btn ghost small" onclick="frdExplorerCSV()">baixar base (CSV)</button>
+      <button class="btn ghost small" onclick="frdExplorerCSV()">baixar CSV (base completa)</button>
     </div>
     ${expChart}${expFoot}
     <div class="chips" style="margin-top:8px">
@@ -7622,7 +7626,7 @@ function renderJuros() {
       <div class="ph-meta">Fonte: BCB txjuros (operações contratadas, janelas de ~5 dias úteis) · Selic meta vigente: <b>${fmt.n(J.selic_meta, 2)}% a.a.</b> · atualizado ${fmt.d((J.gerado_em || "").slice(0, 10))} · <span title="${attr(J.conceitos.taxa)}">o que é esta taxa ⓘ</span></div>
     </div>
     <div class="ph-actions">
-      <button class="btn ghost small" onclick="jurosCSV()">baixar rankings (CSV)</button>
+      <button class="btn ghost small" onclick="jurosCSV()">baixar CSV (rankings)</button>
     </div>
   </div>
   <div class="note"><b>Como ler:</b> ${J.conceitos.taxa} A mediana entre IFs dá o mesmo peso a cada instituição (${J.conceitos.mediana_vs_media_bc.split(";")[0].replace("a mediana ENTRE IFs dá o mesmo peso a cada instituição", "difere da média do SGS, ponderada pelo valor")}).</div>`;
@@ -9993,10 +9997,17 @@ const SR_COLORS = { S1: "#1d4e89", S2: "#0e7c7b", S3: "#b45309", S4: "#6b46a3", 
 const CMP_PALETTE = ["#1d4e89", "#0e7c7b", "#b45309", "#6b46a3", "#b91c1c", "#2f7d4f", "#64748b", "#c2540a", "#d9a514", "#17879c"];
 function fmtTri(anomes) { const a = String(anomes); return `${a.slice(0, 4)}-T${Math.ceil(parseInt(a.slice(4), 10) / 3)}`; }
 function anomesISO(anomes) { const a = String(anomes); return `${a.slice(0, 4)}-${a.slice(4)}`; }
-function dlFile(filename, text, mime) {
+function dlFile(filename, conteudo, mime) {
+  // helper ÚNICO de download (P2: havia três, com semânticas diferentes).
+  // Aceita texto ou Blob; o revoke é adiado — revogar na hora quebrava o
+  // download em alguns browsers.
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(new Blob([text], { type: mime || "text/csv;charset=utf-8" }));
-  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+  const url = URL.createObjectURL(conteudo instanceof Blob ? conteudo
+    : new Blob([conteudo], { type: mime || "text/csv;charset=utf-8" }));
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
 }
 function csvEsc(v) { v = v == null ? "" : String(v); return /[";\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
 
@@ -10056,11 +10067,7 @@ function xlsxBlob(rows, sheetName) { // rows: array de arrays (number → célul
     { name: "xl/worksheets/sheet1.xml", text: sheet },
   ]);
 }
-function dlXlsx(filename, rows, sheetName) {
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(xlsxBlob(rows, sheetName));
-  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
-}
+function dlXlsx(filename, rows, sheetName) { dlFile(filename, xlsxBlob(rows, sheetName)); }
 
 /* ---------- Produtos de Crédito ---------- */
 window.openProduct = slug => { state.filters.productSlug = slug; saveLS("obc_filters", state.filters); showView("product"); };
@@ -10232,8 +10239,8 @@ function renderProductPageData(el, P) {
   <div class="controls">
     <input type="search" id="pmxq-input" placeholder="filtrar instituição…" value="${PMX_STATE.q}" oninput="pmxQ(this.value)" aria-label="filtrar instituição">
     <button class="btn small" id="pmxCmpBtn" onclick="pmxCompare()">comparar selecionadas (${Object.keys(PMX_STATE.sel).length})</button>
-    <button class="btn ghost small" onclick="exportProductCSV('${p.slug}')">CSV</button>
-    <button class="btn ghost small" onclick="exportProductXLSX('${p.slug}')">XLSX</button>
+    <button class="btn ghost small" onclick="exportProductCSV('${p.slug}')">baixar CSV</button>
+    <button class="btn ghost small" onclick="exportProductXLSX('${p.slug}')">baixar XLSX</button>
     <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada'))">copiar URL</button>
     ${!PMX_STATE.all && rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar todas (${rows.length})</button>` : rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar top-60</button>` : ""}
   </div>
@@ -10660,7 +10667,7 @@ function renderCompare() {
     <label>normalização <select onchange="cmpSet('norm', this.value)" aria-label="normalização">${NORMS.map(([k, l]) => `<option value="${k}" ${cmp.norm === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
     <label>grupo de referência <select onchange="cmpSet('grupo', this.value)" aria-label="grupo comparável" title="${attr(C.grupos_nota || "")}">${grupoOpts.map(([k, l]) => `<option value="${k}" ${gdef.key === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
     <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — a comparação é reproduzível por link'))">compartilhar</button>
-    <details style="position:relative"><summary class="btn ghost small" style="list-style:none;cursor:pointer">exportar ▾</summary>
+    <details style="position:relative"><summary class="btn ghost small" style="list-style:none;cursor:pointer">baixar ▾</summary>
       <div style="position:absolute;right:0;top:110%;background:var(--surface);border:1px solid var(--border);padding:8px;display:flex;flex-direction:column;gap:6px;z-index:9">
         <button class="btn ghost small" onclick="exportCmp('csv')">CSV (valores + fontes + fórmulas)</button>
         <button class="btn ghost small" onclick="exportCmp('xlsx')">XLSX</button>
