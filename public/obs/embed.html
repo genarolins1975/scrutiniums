@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Observatório Brasileiro de Crédito — gráfico incorporado</title>
+<link rel="stylesheet" href="/obs/styles.css?v=0.84.0">
+<script>
+/* Página de embed (P2 da auditoria): mesma SPA, sem cromo, recortada na
+   seção citada. O parâmetro é ?g=view.secao (a seção é opcional — sem ela,
+   a vista inteira). Ex.: /obs/embed.html?g=pix.px-med */
+(function () {
+  var g = new URLSearchParams(location.search).get("g") || "overview";
+  var p = g.split(".");
+  window.__EMBED__ = { view: p[0], sec: p.slice(1).join(".") || null };
+})();
+</script>
+</head>
+<body class="embed">
+<main id="main">
+  <section class="view" id="view-overview"></section>
+  <section class="view" id="view-pulse"></section><section class="view" id="view-leading"></section>
+  <section class="view" id="view-sectors"></section><section class="view" id="view-sector"></section>
+  <section class="view" id="view-rj"></section><section class="view" id="view-institutions"></section>
+  <section class="view" id="view-inst"></section><section class="view" id="view-openfinance"></section>
+  <section class="view" id="view-scenarios"></section><section class="view" id="view-alerts"></section>
+  <section class="view" id="view-research"></section><section class="view" id="view-method"></section>
+  <section class="view" id="view-products"></section><section class="view" id="view-product"></section>
+  <section class="view" id="view-compare"></section><section class="view" id="view-market"></section>
+  <section class="view" id="view-trends"></section><section class="view" id="view-panorama"></section>
+  <section class="view" id="view-regulacao"></section><section class="view" id="view-bets"></section>
+  <section class="view" id="view-fraudes"></section><section class="view" id="view-juros"></section>
+  <section class="view" id="view-sugestoes"></section><section class="view" id="view-pix"></section>
+  <section class="view" id="view-sobre"></section><section class="view" id="view-judicial"></section>
+  <section class="view" id="view-pgfn"></section><section class="view" id="view-desenrola"></section>
+  <section class="view" id="view-penetracao"></section><section class="view" id="view-moradia"></section>
+  <section class="view" id="view-consignado"></section><section class="view" id="view-operacional"></section>
+  <section class="view" id="view-presmun"></section>
+</main>
+<div id="tooltip" class="tooltip" role="tooltip"></div>
+<!-- elementos que o init referencia; ficam ocultos pelo modo embed -->
+<span id="brandName" hidden></span><span id="updatedAt" hidden></span><span id="footDisclaimer" hidden></span>
+<script src="/obs/app.min.js?v=0.84.0"></script>
+</body>
+</html>

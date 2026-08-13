@@ -1412,3 +1412,18 @@ a.src[onclick], a.seeall { display: inline-flex; align-items: center; min-height
 .cdlg-resumo { font-size: 14.5px; font-weight: 600; }
 .cdlg-ig { width: 100%; max-width: 430px; display: block; margin: 12px auto 4px;
   border: 1px solid var(--border, #ddd); border-radius: 8px; padding: 8px; background: var(--card, #fff); }
+
+/* ---------- citação por gráfico: permalink e embed (P2 da auditoria) ---------- */
+.chartfoot a { color: inherit; text-decoration: underline dotted; }
+.sec-alvo { outline: 2px solid var(--accent, #b45309); outline-offset: 6px; border-radius: 8px;
+  transition: outline-color 1.2s ease; }
+body.embed { padding: 10px 14px 46px; background: var(--bg, #fff); }
+body.embed header, body.embed nav.tabs, body.embed .sidebar, body.embed .subnav,
+body.embed #reportHeader, body.embed .pagehead .ph-actions { display: none !important; }
+body.embed main { max-width: none; margin: 0; padding: 0; }
+body.embed section.view { display: none; }
+body.embed section.view.active { display: block; }
+#embAttr { position: fixed; left: 0; right: 0; bottom: 0; padding: 7px 14px; font-size: 12px;
+  background: var(--card, #fff); border-top: 1px solid var(--border, #ddd); color: var(--text-2, #556);
+  z-index: 50; }
+#embAttr a { color: var(--accent, #b45309); }

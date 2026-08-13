@@ -932,3 +932,24 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Versão 0.83.0; travas em `src/tests/split-bundle.test.ts` (marcadores
   pareados, renderizadores na região certa, core sem os painéis dos chunks
   e ≤ 620 KB, penEscala fora dos chunks).
+
+## 38. Embeds e permalinks por gráfico (P2 — último item do backlog da auditoria)
+
+- **Citação no rodapé metodológico obrigatório**: todo gráfico com
+  `chartFooter` ganhou "copiar link" (URL da página com o parâmetro `sec`
+  da seção ancorada mais próxima, preservando os filtros atuais) e "embed"
+  (iframe pronto apontando para `/obs/embed.html?g=view.secao`). Clipboard
+  indisponível cai num prompt de cópia manual.
+- **Permalink**: `?sec=` é lido no parse da URL e consumido após o render —
+  scroll até a seção com destaque visual temporário. Funciona nos dois
+  modos de rota (path da produção e hash local).
+- **Página de embed** (`/obs/embed.html`, noindex): a MESMA SPA sem cromo —
+  o boot honra `window.__EMBED__`, o recorte esconde tudo que não é
+  ancestral/descendente da seção citada e uma barra fixa de atribuição
+  ("Observatório Brasileiro de Crédito · ver no site →") acompanha sempre.
+  Sem seção, incorpora a vista inteira. Null-guards nos elementos de cromo
+  (themeToggle, tabs, sidebar, observer do main) — a página não quebra.
+- Verificação em navegador real: embed recortado (`pix.px-med` — só a seção
+  visível + atribuição), embed de vista inteira (`juros`, via chunk sob
+  demanda) e permalink com scroll+destaque — zero erros de JS.
+- Versão 0.84.0; travas em `src/tests/embed-permalink.test.ts`.
