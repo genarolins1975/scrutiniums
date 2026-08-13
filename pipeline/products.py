@@ -473,6 +473,23 @@ def build(con, cfg):
                               "A \"Carteira de Crédito\" do Resumo do IF.data é outro conceito (o cartão à vista "
                               "não entra da mesma forma) e não é usada aqui."),
     }
+    # ---- estimativa do NPL >90d por produto × IF (modelo de migração 15→90) ----
+    # o IF.data não cruza >90d com modalidade; o modelo calibra as duas margens
+    # observadas (>90d total da IF + perfil de migração do produto no SCR) e
+    # publica beta/R²/phi — ver pipeline/models/migracao_npl.py
+    from pipeline.models import migracao_npl
+    try:
+        scr_ultima = con.execute("SELECT MAX(data) FROM scr_uf_produto").fetchone()[0]
+        scr_pares = {}
+        for cli, prod, saldo, inad, v1590 in con.execute(
+                "SELECT cliente, produto, SUM(saldo), SUM(inad), SUM(v1590) FROM scr_uf_produto "
+                "WHERE data=? GROUP BY cliente, produto", (scr_ultima,)):
+            if saldo:
+                scr_pares[(cli, prod)] = (inad / saldo * 100, v1590 / saldo * 100, saldo)
+    except Exception:
+        scr_pares = {}
+    comum["npl_produto_estimado"] = migracao_npl.estimar(products, scr_pares)
+
     # products.json = RESUMO (leve, para Visão geral e índice); prod/{slug}.json = completo (matriz + taxas)
     resumo = []
     for p in products:

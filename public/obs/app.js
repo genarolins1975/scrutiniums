@@ -213,7 +213,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.84.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.85.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -10232,8 +10232,8 @@ window.exportProductCSV = slug => {
     `# produto: ${p.nome} (${p.seg.toUpperCase()}) · modalidade original: ${p.modalidade_original}`,
     `# fonte: ${full.fonte} · data-base: ${fmtTri(p.data_base)} · extraído em: ${new Date().toISOString().slice(0, 10)}`,
     `# nota: ${full.npl_nota}`,
-    "cod;instituicao;nivel;grupo;carteira_brl;share_pct;d4t_pct;d1t_pct;pct_carteira_inst;atraso15_produto_pct;npl90_inst_pct;basileia_pct"];
-  const rows = p.matriz.map(r => [r.cod, csvEsc(r.nome), r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct ?? "", r.d1t_pct ?? "", r.pct_carteira_inst ?? "", r.atraso15_pct ?? "", r.npl_inst_pct ?? "", r.basileia_pct ?? ""].join(";"));
+    "cod;instituicao;nivel;grupo;carteira_brl;share_pct;d4t_pct;d1t_pct;pct_carteira_inst;atraso15_produto_pct;npl90_produto_ESTIMADO_pct;selo_estimativa;npl90_inst_pct;basileia_pct"];
+  const rows = p.matriz.map(r => [r.cod, csvEsc(r.nome), r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct ?? "", r.d1t_pct ?? "", r.pct_carteira_inst ?? "", r.atraso15_pct ?? "", r.npl_prod_est ? r.npl_prod_est.pct : "", r.npl_prod_est ? "ESTIMADO" : "", r.npl_inst_pct ?? "", r.basileia_pct ?? ""].join(";"));
   dlFile(`produto_${slug}_${p.data_base}.csv`, head.concat(rows).join("\n"));
 };
 
@@ -10258,6 +10258,7 @@ function renderProductPageData(el, P) {
   const serie = (segD ? segD.serie : p.serie).map(x => ({ x: anomesISO(x.anomes), y: x.total_brl / 1e9 }));
   const atrSerie = segD ? (segD.atraso_serie || []) : (p.atraso15 && p.atraso15.serie) || [];
   const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:21px">${val}</div><div class="src">${sub || ""}</div></div>`;
+  p.matriz.forEach(r => { r.npl_est_pct = r.npl_prod_est ? r.npl_prod_est.pct : null; }); // chave plana p/ ordenar
   let rows = matrizSeg.filter(r => !PMX_STATE.q || _norm(r.nome).includes(_norm(PMX_STATE.q)));
   rows = rows.slice().sort((a, b) => {
     const va = a[PMX_STATE.sort], vb = b[PMX_STATE.sort];
@@ -10275,6 +10276,7 @@ function renderProductPageData(el, P) {
     <td style="text-align:right">${r.d1t_pct != null ? fmt.pp(r.d1t_pct) + "%" : "–"}</td>
     <td style="text-align:right">${r.pct_carteira_inst != null ? fmt.n(r.pct_carteira_inst, 1) + "%" : "–"}</td>
     <td style="text-align:right"><b>${r.atraso15_pct != null ? fmt.n(r.atraso15_pct, 2) + "%" : "–"}</b></td>
+    <td style="text-align:right">${r.npl_prod_est ? `<b>${fmt.n(r.npl_prod_est.pct, 2)}%</b> <span class="src" style="cursor:help" title="${attr(`ESTIMADO — decomposição: atraso ≥15d ${fmt.n(r.atraso15_pct, 2)}% × perfil do produto ${r.npl_prod_est.m_produto != null ? fmt.n(r.npl_prod_est.m_produto, 2) : "1,00 (neutro — produto sem par no SCR)"} × β ${fmt.n((P.npl_produto_estimado || {}).beta, 2)} × fator da IF ${fmt.n(r.npl_prod_est.phi_if, 2)}. Cobertura do modelo nesta IF: ${r.npl_prod_est.cobertura_if_pct != null ? fmt.n(r.npl_prod_est.cobertura_if_pct, 0) + "% da carteira" : "n.d."}${r.npl_prod_est.baixa_cobertura ? " — BAIXA: leia com cautela extra" : ""}. Método completo no fim da página.`)}">ⓘ${r.npl_prod_est.baixa_cobertura ? "⚠" : ""}</span>` : "–"}</td>
     <td style="text-align:right">${r.npl_inst_pct != null ? fmt.n(r.npl_inst_pct, 2) + "%" : "–"}</td>
     <td style="text-align:right">${r.basileia_pct != null ? fmt.n(r.basileia_pct, 1) + "%" : "–"}</td></tr>`;
   el.innerHTML = `
@@ -10339,7 +10341,7 @@ function renderProductPageData(el, P) {
     <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada'))">copiar URL</button>
     ${!PMX_STATE.all && rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar todas (${rows.length})</button>` : rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar top-60</button>` : ""}
   </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th></th>${th("nome", "Instituição")}${th("carteira_brl", "Carteira no produto")}${th("share_pct", "Participação")}${th("d4t_pct", "Δ 4 trim.")}${th("d1t_pct", "Δ 1 trim.")}${th("pct_carteira_inst", "% da carteira da IF", "carteira no produto ÷ total PF+PJ da MESMA IF nos relatórios de modalidade (123/128) — numerador e denominador do mesmo universo; a Carteira de Crédito do Resumo é outro conceito e não é usada aqui")}${th("atraso15_pct", "Atraso ≥15d NO PRODUTO", "vencido ≥15 dias ÷ carteira da modalidade (IF.data rel. 123/128) — conceito de atraso, específico do produto; não é NPL >90d")}${th("npl_inst_pct", "Inad. >90d TOTAL da IF", "Inadimplência >90d total da instituição (Res. 4.966) — NÃO específica do produto")}${th("basileia_pct", "Basileia")}</tr></thead>
+  <div class="tblwrap"><table class="data"><thead><tr><th></th>${th("nome", "Instituição")}${th("carteira_brl", "Carteira no produto")}${th("share_pct", "Participação")}${th("d4t_pct", "Δ 4 trim.")}${th("d1t_pct", "Δ 1 trim.")}${th("pct_carteira_inst", "% da carteira da IF", "carteira no produto ÷ total PF+PJ da MESMA IF nos relatórios de modalidade (123/128) — numerador e denominador do mesmo universo; a Carteira de Crédito do Resumo é outro conceito e não é usada aqui")}${th("atraso15_pct", "Atraso ≥15d NO PRODUTO", "vencido ≥15 dias ÷ carteira da modalidade (IF.data rel. 123/128) — conceito de atraso, específico do produto; não é NPL >90d")}${th("npl_est_pct", "Inad. >90d NO PRODUTO (estimada)", "ESTIMATIVA do modelo de migração 15→90 — o IF.data não divulga >90d por modalidade. Calculada do atraso ≥15d do produto, do perfil de migração do produto no sistema (SCR) e do >90d total observado da IF. Método completo no fim da página")}${th("npl_inst_pct", "Inad. >90d TOTAL da IF", "Inadimplência >90d total da instituição (Res. 4.966) — NÃO específica do produto")}${th("basileia_pct", "Basileia")}</tr></thead>
   <tbody>${shown.map(trow).join("")}</tbody></table></div>
   <div class="note warn"><b>Leitura correta:</b> ${P.npl_nota} Basileia é da instituição inteira.</div>
   ${(function(){
@@ -10372,6 +10374,27 @@ function renderProductPageData(el, P) {
   ${taxasSection(p)}
   <h3>Indisponíveis nesta página (e por quê)</h3>
   <div class="card">${p.indisponiveis.map(i => `<div class="contrib"><span class="lbl" style="width:auto"><b>${i.metrica}</b> — <span class="src" style="display:inline">${i.razao}</span> <span class="seal aprox">INDISPONÍVEL</span></span></div>`).join("")}</div>
+  ${(() => {
+    /* metodologia da estimativa >90d por produto (pedido de 13/08): a conta
+       inteira na tela — modelo, coeficientes, perfis, hipóteses e o que NÃO é */
+    const E = P.npl_produto_estimado;
+    if (!E || !E.disponivel) return E && E.motivo ? `<div class="card" style="margin-top:14px"><h4>Inadimplência >90d estimada por produto ${badge("estimado")}</h4><p class="src">Indisponível nesta execução: ${E.motivo}.</p></div>` : "";
+    const mAtual = E.m_produtos[p.slug];
+    return `<h3 style="margin-top:18px">Como a coluna "Inad. >90d NO PRODUTO (estimada)" é calculada ${badge("estimado")}</h3>
+  <div class="card">
+    <p><b>Por que estimar:</b> o IF.data público não divulga a inadimplência >90d por modalidade — por produto e instituição só existe o atraso ≥15d. O modelo de migração 15→90 combina as duas margens que SÃO observadas: o >90d total de cada instituição (Res. 4.966) e o perfil de migração de cada produto no agregado do sistema (SCR.data).</p>
+    <p style="margin-top:8px"><b>A fórmula:</b> <code>estimativa(IF, produto) = φ_IF × β × m_produto × atraso15(IF, produto)</code></p>
+    <ul class="src" style="line-height:1.9;margin-top:6px">
+      <li><b>m_produto</b> — perfil relativo de migração do produto no sistema: inadimplência arrastada ÷ banda 15–90 do produto no SCR, normalizado para média ponderada 1. ${mAtual != null ? `Neste produto: <b>${fmt.n(mAtual, 2)}</b>.` : "Este produto não tem par no SCR: perfil neutro 1,00, sinalizado por linha."} O SCR entra só como perfil ENTRE produtos, nunca como nível (conceitos distintos, declarado).</li>
+      <li><b>β</b> — regressão MQO <i>pela origem</i> entre as ${fmt.n0(E.n_ifs)} IFs da data-base: >90d total = β × atraso composto. <b>β = ${fmt.n(E.beta, 3)}</b> (EP ${fmt.n(E.ep_beta, 4)}), R² não centrado <b>${fmt.n(E.r2_nao_centrado, 3)}</b>. ${E.sem_intercepto}</li>
+      <li><b>φ_IF</b> — fator da instituição: >90d observado ÷ ajustado da regressão, winsorizado em [${E.phi_limites[0]}; ${E.phi_limites[1]}] (${E.phi_winsorizados} de ${fmt.n0(E.n_ifs)} IFs no limite). ${E.reconciliacao}.</li>
+    </ul>
+    <p class="src" style="margin-top:8px"><b>Conceito do atraso:</b> ${E.conceito_atraso}</p>
+    <p class="src"><b>Hipóteses declaradas:</b> ${E.hipoteses}</p>
+    <div class="desnota" style="margin-top:8px"><b>O que este número NÃO é.</b> ${E.nao_e}</div>
+    <p class="src" style="margin-top:6px">${fmt.n0(E.estimativas)} estimativas publicadas nesta data-base · ${E.estimativas_baixa_cobertura} linhas com cobertura do modelo abaixo de 25% da carteira da IF (marcadas com ⚠) · decomposição completa no ⓘ de cada linha.</p>
+  </div>`;
+  })()}
   ${chartFooter({ fonte: P.fonte, periodo: fmtTri(p.data_base), atualizado: P.gerado_em.slice(0, 10), unidade: "R$", nota: P.consolidacao_nota })}`;
 }
 
