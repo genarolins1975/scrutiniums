@@ -4,6 +4,7 @@ Todos explicáveis: cada saída inclui componentes, contribuições e limitaçõ
 """
 import json
 import math
+import re
 from datetime import date
 
 from pipeline import common
@@ -164,9 +165,35 @@ def build_sector_stress(con, cfg, rj_demo):
         cred_z = sum(zs) / len(zs)
         cred_detail = f"média dos z-scores de inadimplência PJ e spread PJ (comum a todos os setores no MVP)"
 
-    cur = con.execute("SELECT key, name FROM series_meta WHERE key LIKE 'pim_%'")
+    # três pesquisas de atividade do IBGE, mesma régua (volume, 2022=100, sem
+    # ajuste sazonal): PIM = indústria; PMS = serviços; PMC = varejo ampliado.
+    # Regras de seleção declaradas (nunca por nome solto):
+    # - "Total" das pesquisas fica fora: total não é setor;
+    # - PMS entra pelos 5 grandes grupos (nomes "1. ", "2. ", ...) — subdivisões
+    #   ficam no armazém, mas listá-las duplicaria a família no painel;
+    # - PMC exclui os RECORTES que duplicam categorias-mãe (hiper/super dentro
+    #   de "hiper, super, alimentos"; móveis e eletros separados dentro do par).
+    PMS_TOTAL = {"107071"}
+    PMC_SUBRECORTES = {"103154", "31555", "31556"}
+    PESQUISAS = [
+        ("pim_%", "industria", "IBGE PIM-PF (produção física)", "PIM-PF (2022=100) — "),
+        ("pms_%", "servicos", "IBGE PMS (volume de serviços)", "PMS volume de serviços (2022=100) — "),
+        ("pmc_%", "comercio", "IBGE PMC (volume de vendas, varejo ampliado)", "PMC volume de vendas ampliado (2022=100) — "),
+    ]
+    candidatos = []
+    for like, pesquisa, fonte_atividade, prefixo_nome in PESQUISAS:
+        cur = con.execute("SELECT key, name FROM series_meta WHERE key LIKE ?", (like,))
+        for key, name in cur.fetchall():
+            code = key.split("_", 1)[1]
+            if pesquisa == "servicos":
+                nome_curto = name.replace(prefixo_nome, "")
+                if code in PMS_TOTAL or not re.match(r"^\d\. ", nome_curto):
+                    continue
+            if pesquisa == "comercio" and code in PMC_SUBRECORTES:
+                continue
+            candidatos.append((key, name, pesquisa, fonte_atividade, prefixo_nome))
     sectors = []
-    for key, name in cur.fetchall():
+    for key, name, pesquisa, fonte_atividade, prefixo_nome in candidatos:
         s = common.get_series(con, key)
         if len(s) < 30:
             continue
@@ -180,8 +207,10 @@ def build_sector_stress(con, cfg, rj_demo):
         trend_3m = yoy[-1][1] - yoy[-4][1]                      # tendência: Δ do yoy em 3m
         trend_prev = yoy[-4][1] - yoy[-7][1]
         velocity = trend_3m - trend_prev                        # velocidade: aceleração da tendência
-        short = name.replace("PIM-PF (2022=100) — ", "")
-        code = key.replace("pim_", "")
+        short = name.replace(prefixo_nome, "")
+        # códigos: PIM mantém o CNAE puro (URLs de ficha já publicadas);
+        # PMS/PMC usam o key completo — únicos por construção
+        code = key.replace("pim_", "") if pesquisa == "industria" else key
         demo_comp = rj_demo["componentes_setoriais"].get(
             "B" if "extrativa" in short.lower() else "C", {"rj_z": 0.5, "emprego_z": 0.0})
         # O SCORE publicado usa APENAS componentes observados. Os antigos pesos
@@ -190,7 +219,7 @@ def build_sector_stress(con, cfg, rj_demo):
         # não tinha — mesmo princípio que aposentou a "maturidade estrutural".
         # Os demonstrativos seguem VISÍVEIS, com peso zero, como "em construção".
         comps = {
-            "atividade": {"z": round(atividade_z, 2), "peso": 0.69, "fonte": "IBGE PIM-PF", "status": "observado"},
+            "atividade": {"z": round(atividade_z, 2), "peso": 0.69, "fonte": fonte_atividade, "status": "observado"},
             "condicoes_credito": {"z": round(cred_z, 2), "peso": 0.31, "fonte": "BCB/SGS (inad. e spread PJ)", "status": "observado", "nota": cred_detail},
             "estresse_empresarial": {"z": demo_comp["rj_z"], "peso": 0.0, "fonte": "em construção (RJ) — fora do score", "status": "demonstrativo"},
             "capacidade_financeira": {"z": round(-demo_comp["emprego_z"], 2), "peso": 0.0, "fonte": "em construção (emprego) — fora do score", "status": "demonstrativo"},
@@ -200,7 +229,7 @@ def build_sector_stress(con, cfg, rj_demo):
         sectors.append({
             "serie_obs": [{"ref": d, "v": v} for d, v in s[-48:]],
             "serie_yoy": [{"ref": d, "v": round(v, 2)} for d, v in yoy[-48:]],
-            "codigo": code, "nome": short, "score": round(score, 1),
+            "codigo": code, "nome": short, "pesquisa": pesquisa, "score": round(score, 1),
             "faixa": ("baixo" if score < 35 else "atenção" if score < 55 else "elevado" if score < 75 else "crítico"),
             "tendencia": ("piorando" if trend_3m < -0.5 else "melhorando" if trend_3m > 0.5 else "estável"),
             "tendencia_valor_pp": round(trend_3m, 2),
@@ -214,14 +243,20 @@ def build_sector_stress(con, cfg, rj_demo):
     return {
         "ok": bool(sectors), "tipo": "DADO CALCULADO (100% observado)", "setores": sectors,
         "metodo": "Score = 50 + 20×Σ(peso×z), calculado APENAS sobre componentes observados: "
-                  "atividade 0,69 (queda da produção física a/a vs. histórico, IBGE) e "
-                  "condições de crédito 0,31 (inadimplência e spread PJ vs. histórico, BCB) — "
-                  "pesos renormalizados dos antigos 0,45/0,20. Estresse empresarial e capacidade "
+                  "atividade 0,69 (queda do volume a/a vs. histórico — PIM para indústria, PMS para "
+                  "serviços, PMC para o varejo ampliado; mesma régua: índice de volume 2022=100 sem "
+                  "ajuste sazonal) e condições de crédito 0,31 (inadimplência e spread PJ vs. histórico, "
+                  "BCB) — pesos renormalizados dos antigos 0,45/0,20. Estresse empresarial e capacidade "
                   "financeira aparecem como 'em construção', com peso ZERO: nunca entram no número. "
-                  "Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência.",
-        "limitacoes": "Cobertura restrita à indústria (PIM). Condições de crédito ainda sem corte setorial "
-                      "(usa agregado PJ). Componentes de RJ e emprego estão em construção e FORA do score. "
-                      "Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
+                  "Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência. "
+                  "Seleção declarada: totais das pesquisas ficam fora; PMS entra pelos 5 grandes grupos; "
+                  "PMC exclui recortes que duplicam categorias-mãe.",
+        "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível "
+                      "nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). "
+                      "Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da "
+                      "própria história), não nos níveis absolutos entre pesquisas. Componentes de RJ e "
+                      "emprego estão em construção e FORA do score. Normalização por nº de empresas/estoque "
+                      "de crédito setorial entra com Caged/SCR (Fases 1/4).",
         "aviso_demo": "Estresse empresarial e capacidade financeira são demonstrativos, com peso zero — exibidos como 'em construção', nunca somados ao score.",
     }
 

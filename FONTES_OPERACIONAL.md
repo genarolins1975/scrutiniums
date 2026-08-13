@@ -838,3 +838,28 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   lado da linhagem recente bronze→gold (SHA-256), e a Metodologia mostra a
   tabela completa com o método declarado.
 - Versão 0.79.0.
+
+## 34. PMS e PMC no risco setorial (último P1 do Top 10)
+
+- **"País de serviços sem serviços" resolvido**: o painel setorial cobria só
+  a indústria (PIM). Entram a Pesquisa Mensal de Serviços (Sidra t8688,
+  v7167, índice de VOLUME 2022=100, c11046=56726) e a Pesquisa Mensal de
+  Comércio ampliado (t8883, v7169, volume, c11046=56736) — mesma régua do
+  PIM já coletado (volume, 2022=100, sem ajuste sazonal). Coletor genérico
+  `_sidra_atividades` em `pipeline/sources/ibge.py`; 29 séries PMS + 14 PMC
+  no armazém.
+- **Seleção declarada, nunca por nome solto**: totais das pesquisas ficam
+  fora (total não é setor); PMS entra pelos 5 grandes grupos (nomes
+  numerados) — subdivisões ficam no armazém; PMC exclui os 3 recortes que
+  duplicam categorias-mãe (hiper/super; móveis; eletros). Resultado: 43
+  setores (27 indústria + 5 serviços + 11 comércio).
+- **Score inalterado na forma** (100% observado, 0,69 atividade + 0,31
+  condições de crédito), com a fonte de atividade da própria pesquisa;
+  códigos PIM preservam o CNAE puro (URLs de ficha já publicadas), PMS/PMC
+  usam o key prefixado (`pms_106869`), únicos por construção.
+- **SPA**: tabela agrupada por pesquisa (universos distintos nunca numa
+  lista única — o z compara cada setor com a própria história); ficha do
+  setor rotula a medida pela pesquisa (volume nunca vira "produção");
+  método e limitações reescritos.
+- Gold publicado antecipado por coleta+rebuild local (PIM recoletado junto).
+  Versão 0.80.0; travas em `src/tests/setorial-pms-pmc.test.ts`.

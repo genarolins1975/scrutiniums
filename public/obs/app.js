@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.79.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.80.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -3940,7 +3940,13 @@ function renderSectors() {
   const el = document.getElementById("view-sectors");
   const { sectors, pulse } = state.data;
   if (!sectors || !sectors.ok) { el.innerHTML = "<p>sem dados setoriais</p>"; return; }
-  const rows = sectors.setores.map(s => `
+  /* três pesquisas do IBGE na mesma régua (volume 2022=100): a tabela agrupa
+     por pesquisa porque os universos são distintos — o z-score compara cada
+     setor com a própria história, nunca uma pesquisa com a outra */
+  const PESQ = [["industria", "Indústria — produção física (PIM-PF)"],
+                ["servicos", "Serviços — volume (PMS)"],
+                ["comercio", "Comércio varejista ampliado — volume de vendas (PMC)"]];
+  const linhaSetor = s => `
     <tr>
       <td>${s.nome} ${favStar("sectors", s.codigo, s.nome)}<br><button class="btn ghost small" onclick="openSectorPage('${s.codigo}')">ficha do setor →</button></td>
       <td><span class="scorebar"><i style="left:${s.score * 0.9}px"></i></span> <b>${s.score}</b><div class="src">${s.faixa}</div></td>
@@ -3954,14 +3960,20 @@ function renderSectors() {
         ${Object.entries(s.componentes).map(([k, c]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")} ${c.status === "demonstrativo" ? badge("demo") : badge("observado")}</span><span class="num">z=${fmt.n(c.z, 2)} · peso ${c.peso} · ${c.fonte}</span></div>`).join("")}
         <div class="src" style="margin-top:6px">Drill-down: <a href="#institutions" onclick="nav('institutions')">instituições expostas</a> (corte por setor na Fase 3) · <a href="#rj" onclick="nav('rj')">recuperações do setor</a></div>
       </details></td>
-    </tr>`).join("");
+    </tr>`;
+  const blocos = PESQ.map(([p, titulo]) => {
+    const lista = sectors.setores.filter(s => (s.pesquisa || "industria") === p);
+    if (!lista.length) return "";
+    return `<h3>${titulo} <span class="src">${lista.length} atividades</span></h3>
+  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade</th><th>Nível</th><th>Tendência</th><th>Velocidade</th><th>Volume a/a</th><th>Ficha</th></tr></thead><tbody>${lista.map(linhaSetor).join("")}</tbody></table></div>`;
+  }).join("");
   const papel = pulse && pulse.series.papelao;
   el.innerHTML = `
   ${pageHead({ title: "Risco setorial",
-    desc: "Score de estresse por atividade a partir da produção física (IBGE/PIM) — não é inadimplência setorial (indisponível nas fontes públicas). Cada setor abre uma ficha completa.",
-    fontes: "IBGE/PIM-PF, BCB IF.data (exposições)" })}
+    desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) — não é inadimplência setorial (indisponível nas fontes públicas). Cada setor abre uma ficha completa.",
+    fontes: "IBGE PIM-PF · PMS · PMC, BCB IF.data (exposições)" })}
   <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}<br>Método: ${sectors.metodo}<br>Limitações: ${sectors.limitacoes}</div>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Atividade (CNAE/PIM)</th><th>Nível</th><th>Tendência</th><th>Velocidade</th><th>Produção a/a</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  ${blocos}
   ${renderExposuresSection()}
   ${papel ? `<h3>Indicador antecedente em triagem</h3>
   <div class="grid g2"><div class="card"><h4>${papel.meta.name} ${badge("observado")} <span class="seal aprox">ANTECEDENTE EM TRIAGEM</span></h4>
@@ -4003,6 +4015,13 @@ function renderSectorPage() {
   const mapExpo = { "129316": "industrias_de_transformacao", "129315": "industrias_extrativas" };
   const expoKey = mapExpo[s.codigo];
   const expo = ex && ex.ok && expoKey ? ex.setores[expoKey] : null;
+  // rótulos por pesquisa: as três medem volume na mesma base (2022=100), mas
+  // cada uma tem nome próprio — nunca chamar volume de serviços de "produção"
+  const PPESQ = {
+    industria: { medida: "Produção física", fonte: "IBGE PIM-PF", cod_fonte: "IBGE PIM-PF (8888/12606)" },
+    servicos: { medida: "Volume de serviços", fonte: "IBGE PMS", cod_fonte: "IBGE PMS (8688/7167, volume)" },
+    comercio: { medida: "Volume de vendas (varejo ampliado)", fonte: "IBGE PMC", cod_fonte: "IBGE PMC (8883/7169, volume)" },
+  }[s.pesquisa || "industria"];
   el.innerHTML = `
   <div class="controls"><button class="btn ghost small" onclick="nav('sectors')">← setores</button>
   <span class="src">Risco setorial › <b>${s.nome}</b> · ref. ${fmt.my(s.ref)}</span></div>
@@ -4019,18 +4038,18 @@ function renderSectorPage() {
       <p class="src"><b>Previsão setorial:</b> informação não disponível — modelos por setor entram após Caged/RJ setoriais reais.</p></div>
   </div>
   <div class="grid g2" style="margin-top:12px">
-    <div class="card"><h4>Produção física (nível) ${badge("observado")}</h4>
-      ${lineChart({ series: [{ pts: s.serie_obs.map(o => ({ x: o.ref, y: o.v })), color: "#1d4e89", label: "produção física" }], h: 160, unit: "índice 2022=100", fonte: "IBGE PIM-PF", status: "observado" })}
-      ${chartFooter({ fonte: "IBGE PIM-PF (8888/12606)", periodo: `${fmt.my(s.serie_obs[0].ref)}–${fmt.my(s.ref)}`, atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "índice 2022=100", nota: "sem ajuste sazonal" })}</div>
+    <div class="card"><h4>${PPESQ.medida} (nível) ${badge("observado")}</h4>
+      ${lineChart({ series: [{ pts: s.serie_obs.map(o => ({ x: o.ref, y: o.v })), color: "#1d4e89", label: PPESQ.medida.toLowerCase() }], h: 160, unit: "índice 2022=100", fonte: PPESQ.fonte, status: "observado" })}
+      ${chartFooter({ fonte: PPESQ.cod_fonte, periodo: `${fmt.my(s.serie_obs[0].ref)}–${fmt.my(s.ref)}`, atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "índice 2022=100", nota: "sem ajuste sazonal" })}</div>
     <div class="card"><h4>Crescimento interanual ${badge("calculado")}</h4>
-      ${lineChart({ series: [{ pts: s.serie_yoy.map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: "crescimento a/a" }], h: 160, hlines: [{ y: 0, color: "#aaa" }], unit: "%", fonte: "IBGE PIM-PF (calculado)", status: "calculado" })}
-      ${chartFooter({ fonte: "IBGE PIM-PF (calculado)", periodo: "var. % vs. mesmo mês do ano anterior", atualizado: "", unidade: "%", nota: "yoy mitiga sazonalidade" })}</div>
+      ${lineChart({ series: [{ pts: s.serie_yoy.map(o => ({ x: o.ref, y: o.v })), color: "#0e7c7b", label: "crescimento a/a" }], h: 160, hlines: [{ y: 0, color: "#aaa" }], unit: "%", fonte: `${PPESQ.fonte} (calculado)`, status: "calculado" })}
+      ${chartFooter({ fonte: `${PPESQ.fonte} (calculado)`, periodo: "var. % vs. mesmo mês do ano anterior", atualizado: "", unidade: "%", nota: "yoy mitiga sazonalidade" })}</div>
   </div>
   <div class="grid g2" style="margin-top:12px">
     <div class="card"><h4>Exposição das instituições ao setor ${expo ? badge("observado") : ""}</h4>
       ${expo ? `<div class="src">Carteira do sistema no grupo CNAE correspondente: <b>${fmt.money(expo.total_brl)}</b> (IF.data ${ex.anomes})</div>
         <div class="src" style="margin-top:4px"><b>Maiores credores:</b><br>${expo.top_volume.map(i => `<span class="clickable" onclick="openInstPage('${i.cod_inst}')">${i.nome.slice(0, 26)}</span> — ${fmt.money(i.volume_brl)}`).join("<br>")}</div>`
-      : `<p class="src">Este recorte do PIM não tem correspondente direto nos 9 grupos CNAE das carteiras (apenas transformação e extrativas têm) — exposição não exibida para evitar atribuição indevida.</p>`}</div>
+      : `<p class="src">Este recorte da ${PPESQ.fonte.replace("IBGE ", "")} não tem correspondente direto nos 9 grupos CNAE das carteiras (apenas transformação e extrativas têm) — exposição não exibida para evitar atribuição indevida.</p>`}</div>
     <div class="card"><h4>Recuperações judiciais do setor</h4>
       <p class="src">Informação não disponível nas fontes públicas integradas: o DataJud não traz CNAE dos processos. Normalização por nº de empresas/estoque de crédito entra com Receita/SCR (fase futura). O componente setorial de RJ do score permanece demonstrativo e sinalizado.</p></div>
   </div>`;

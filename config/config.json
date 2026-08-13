@@ -431,6 +431,22 @@
       "freq": "mensal",
       "methodology": "PIM-PF/IBGE, sem ajuste sazonal",
       "key": "pim_setorial"
+    },
+    "pms_setorial": {
+      "url": "https://apisidra.ibge.gov.br/values/t/8688/n1/all/v/7167/p/last%2072/c11046/56726/c12355/all?formato=json",
+      "name": "PMS Número-índice de volume de serviços (2022=100) por atividades",
+      "unit": "índice (2022=100)",
+      "freq": "mensal",
+      "methodology": "PMS/IBGE, índice de volume sem ajuste sazonal (receita deflacionada por preços próprios da pesquisa)",
+      "key": "pms_setorial"
+    },
+    "pmc_setorial": {
+      "url": "https://apisidra.ibge.gov.br/values/t/8883/n1/all/v/7169/p/last%2072/c11046/56736/c85/all?formato=json",
+      "name": "PMC Número-índice de volume de vendas no varejo ampliado (2022=100) por atividades",
+      "unit": "índice (2022=100)",
+      "freq": "mensal",
+      "methodology": "PMC/IBGE, índice de volume sem ajuste sazonal, comércio varejista ampliado",
+      "key": "pmc_setorial"
     }
   },
   "ipeadata": [
