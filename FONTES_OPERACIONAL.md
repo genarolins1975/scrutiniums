@@ -751,3 +751,24 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   nunca listas de nomes: quando o ranking muda na fonte, o preset muda
   junto.
 - Versão 0.75.0; travas em `src/tests/novidades-presets.test.ts`.
+
+## 30. Cenário → Basileia pós-choque (P1 nº 1 do Top 10)
+
+- A aba Cenários fecha a promessa "impacto em instituições": o Δinad do
+  cenário (elasticidades × choques dos sliders, rampa completa de 12 m)
+  vira dedução no índice de Basileia das 100 maiores IFs — provisão do
+  estoque ADICIONAL de inadimplência (carteira × Δinad × LGD 50%), com RWA
+  constante e sem efeito fiscal.
+- **Declarado como piso, antes da tabela**: a perda acumulada de 12 meses é
+  maior (baixas recicladas não entram); o resultado escala linearmente com
+  a LGD (40–60% ⇒ ×0,8–1,2). Choque favorável leva o aviso simétrico: não
+  se modela reversão de provisões.
+- **Δinad crítico** (slider-independente): colchão até a referência de PR
+  10,5% (mínimo 8% + conservação 2,5%; adicionais sistêmicos de S1 fora,
+  declarado) ÷ (carteira/RWA × LGD) — quantos p.p. de inadimplência
+  adicional esgotariam o colchão. É a métrica que diferencia as IFs mesmo
+  quando o choque dos presets é pequeno.
+- 92 das 100 IFs entram (8 IPs sem RWA/carteira ficam fora e são contadas;
+  carteira 0 com RWA existe — Cielo — e produz dedução 0 e crítico nulo).
+  CSV com premissas no cabeçalho. Versão 0.76.0; travas em
+  `src/tests/cenario-basileia.test.ts`.
