@@ -719,3 +719,35 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   sparklines materializam no ciclo diário seguinte.
 - Invariante de arco narrativo do Pix atualizado no teste: a ordem dos
   capítulos agora é verificada pela sequência das seções ancoradas.
+
+## 29. P1 rodada 2 — BB aprovado, "O que mudou", Penetração e presets
+
+- **Guidance BB 2T26 publicado**: o acompanhamento (tipo revisão) recebeu
+  aprovação do proprietário em sessão de 13/08 e saiu de `em_revisao` para
+  `aprovado` no curado; o gold foi reconstruído pelo próprio builder
+  (`guidance_bancos.build()` escreve `data/gold/` e o publicado é cópia) —
+  1 acompanhamento publicado, 0 em revisão. Documento-fonte da API de RI do
+  BB (host mziq permitido na allowlist com `identidade` verificada dentro
+  do arquivo).
+- **Overview "O que mudou"** (`overview.novidades`): consolidado por regra
+  determinística na execução diária — alertas em primeiro disparo (o flag
+  `recorrente` do histórico), entradas em regimes de resolução nos últimos
+  45 dias, recordes com referência recente e revisões de guidance do
+  trimestre corrente/anterior (rótulos civis calculados, nunca fixos).
+  Máximo de 8 itens, famílias distintas jamais ranqueadas entre si — a nota
+  do bloco declara a régua. Dependências via `ler_gold_opcional`: gold
+  ausente não derruba o overview, só encolhe o bloco.
+- **Penetração**: a página abre no mapa (aviso → filtros → mapa → perfil),
+  com agregados e cobertura depois — a pergunta que traz o leitor é
+  "onde?". O ranking ativo ganhou exportação CSV (todos os campos dos dois
+  métodos + coluna `metodos_divergem`) e a marcação "métodos divergem"
+  quando modelo estatístico e benchmark de pares discordam sobre o SINAL do
+  gap — o pior caso para citação fica sinalizado na linha, nunca escondido
+  numa média.
+- **Comparador com presets dinâmicos**: "maiores cooperativas" (TCB B3* do
+  top-100, por ativo), "maiores S2" e "maiores S3" (segmento do índice de
+  instituições, só conglomerados prudenciais — nível único, porque misturar
+  níveis é bloqueado). Sempre calculados dos gold no momento do clique,
+  nunca listas de nomes: quando o ranking muda na fonte, o preset muda
+  junto.
+- Versão 0.75.0; travas em `src/tests/novidades-presets.test.ts`.

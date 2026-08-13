@@ -498,6 +498,7 @@ def build_all(con, cfg, fetch_status):
         "gerado_em": common.now_utc(),
         "diagnostico": diagnosis,
         "mudancas": changes,
+        "novidades": ov.build_novidades(),
         "ibcc_posicao": ov.build_ibcc_position(ibcc),
         "projecoes_resumo": {
             "inad_total": forecasts.get("inad_total"),

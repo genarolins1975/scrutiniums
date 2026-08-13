@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.74.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.75.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -224,7 +224,7 @@ const VIEW_DATA = {
   rj: ["rj"],
   institutions: ["institutions", "inst_index", "npl", "guidance", "regimes"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3", "guidance", "regimes", "folha_bancos"],
   method: ["method", "lineage", "quality"],
-  compare: ["compare", "inst_index", "operacional"],
+  compare: ["compare", "inst_index", "operacional", "institutions"],
   research: ["institutions", "inst_index", "antecedentes", "regimes"],
   market: ["market"],
   leading: ["leading", "antecedentes", "regimes"],
@@ -3169,6 +3169,7 @@ window.ovLoadView = i => {
    padrão simples. As seções extras existem, mas o usuário escolhe. */
 const OV_BLOCOS = [
   ["diagnostico", "Diagnóstico e números centrais", true],
+  ["novidades", "O que mudou", true],
   ["condicoes", "Condições de crédito (IBCC e mudanças)", true],
   ["inad", "Inadimplência nas instituições", false],
   ["prodset", "Produtos, setores e ecossistema", false],
@@ -3548,6 +3549,24 @@ function renderOverview() {
     </div>
     <div class="src" style="margin-top:8px">Todo número tem fonte, período e limitações declaradas — <a href="javascript:void(0)" onclick="nav('method')">metodologia completa</a>. Alertas com regra publicada ficam na aba Alertas (com RSS).</div>
   </div>` : "";
+  /* "O que mudou": o diff editorial da execução diária, consolidado no
+     pipeline (overview.novidades) por regra determinística — famílias
+     distintas, a ordem nunca é gravidade. Graceful: gold antigo sem o campo
+     simplesmente não mostra o bloco. */
+  const NOV = overview.novidades;
+  const NOV_ROTULO = { alerta_novo: "alerta novo", regime: "regime", recorde: "recorde", guidance: "guidance" };
+  const secNovidades = !NOV || !(NOV.itens || []).length ? "" : `
+  <div class="sechead"><h3>O que mudou</h3><span class="src">consolidado na execução de ${(overview.gerado_em || "").slice(0, 10)} · ${badge("calculado", "regra determinística — régua declarada no rodapé do bloco")}</span></div>
+  <div class="card">
+    <ul class="novidades" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+      ${NOV.itens.map(n => `<li style="display:flex;gap:10px;align-items:baseline">
+        <span class="chip" style="flex:0 0 auto">${NOV_ROTULO[n.tipo] || n.tipo}</span>
+        <span><a href="javascript:void(0)" onclick="nav('${(n.link || {}).view || "overview"}')">${n.titulo}</a>
+          <span class="src"> — ${n.detalhe || ""}</span></span></li>`).join("")}
+    </ul>
+    <p class="src" style="margin-top:10px">${NOV.nota}</p>
+  </div>`;
+
   /* Recordes automáticos: pauta pronta com régua declarada — posição
      aritmética na própria série, nunca juízo de mérito. */
   const REC = state.data.recordes;
@@ -3567,6 +3586,7 @@ function renderOverview() {
   const cfgBlocos = ovBlocosCfg();
   const HTML_BLOCOS = {
     diagnostico: `<div class="ov-hero">${diagcard}${heroStrip}</div>${segNote}`,
+    novidades: secNovidades,
     condicoes: secCondicoes,
     inad: secNpl,
     prodset: secProdSet,
@@ -5487,6 +5507,26 @@ window.penBusca = (v, confirmado) => {
   if (achou) penSel(achou.cod);
 };
 
+/* Os dois métodos de gap discordando sobre o SINAL é o pior caso para citação:
+   o município aparece "subatendido" por uma régua e "acima do esperado" pela
+   outra. A marcação vale mais que qualquer média entre os dois. */
+function penDiverge(m) {
+  return m.gap_rel_modelo != null && m.gap_rel_pares != null
+    && (m.gap_rel_modelo > 0) !== (m.gap_rel_pares > 0);
+}
+window.penRankCSV = () => {
+  const P = costuraMunicipios(state.data.penetracao, state.data.penetracao_mun);
+  const k = (state.pen || {}).tabela || "oportunidade_escala";
+  const cols = ["cod", "nome", "uf", "regiao", "confianca", "adultos", "renda_anual", "credito",
+    "cred_adulto", "penetracao", "meses_renda", "gap_abs_modelo", "gap_rel_modelo",
+    "gap_abs_pares", "gap_rel_pares", "residuo_padronizado", "escore_oportunidade"];
+  const rows = P.rankings[k].map(m => cols.map(c => m[c] ?? "").join(";")
+    + ";" + (penDiverge(m) ? "sim" : "nao"));
+  dlFile(`penetracao_ranking_${k}.csv`,
+    "﻿" + cols.join(";") + ";metodos_divergem\n" + rows.join("\n"),
+    "text/csv;charset=utf-8");
+};
+
 /** Escala por percentis: com distribuição tão assimétrica, escala linear deixaria
     tudo branco menos São Paulo. Winsorização é só visual — o dado exportado é o bruto. */
 function penEscala(vals, tipo, corBase) {
@@ -5758,18 +5798,21 @@ function renderPenetracao() {
   <div class="controls">${RANK_DEF.map(([k, l]) =>
     `<button class="btn ${rankAtivo === k ? "" : "ghost"} small" onclick="penFiltra('tabela','${k}')">${l}</button>`).join("")}</div>
   <div class="card">
-    <h4>${def[1]}</h4><p class="src">${def[2]}. Universo: ${fmt.n0(P.cobertura.elegiveis_ranking)} municípios que passam nos cortes mínimos e não têm confiabilidade baixa.</p>
+    <h4 style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><span>${def[1]}</span>
+      <button class="btn ghost small" onclick="penRankCSV()">baixar CSV</button></h4>
+    <p class="src">${def[2]}. Universo: ${fmt.n0(P.cobertura.elegiveis_ranking)} municípios que passam nos cortes mínimos e não têm confiabilidade baixa.</p>
     <div class="tblwrap"><table class="data penrankt"><thead><tr><th>#</th><th>Município</th><th>${def[4] || "Valor"}</th>
       <th>Crédito</th><th>Por adulto</th><th>Sobre renda</th><th>Adultos</th></tr></thead><tbody>
     ${P.rankings[rankAtivo].map((m, i) => `<tr onclick="penSel('${m.cod}')" style="cursor:pointer" class="${F.sel === m.cod ? "selrow" : ""}">
       <td class="src">${i + 1}</td>
-      <td><b>${m.nome}</b> <span class="src">${m.uf}</span> <span class="pconf ${m.confianca}">${m.confianca}</span></td>
+      <td><b>${m.nome}</b> <span class="src">${m.uf}</span> <span class="pconf ${m.confianca}">${m.confianca}</span>${penDiverge(m) ? ` <span class="pconf media" title="O modelo estatístico e o benchmark de pares discordam sobre o SINAL do gap deste município — um o vê abaixo do esperado, o outro acima. Leia o perfil antes de citar.">métodos divergem</span>` : ""}</td>
       <td style="text-align:right"><b>${def[3](m)}</b></td>
       <td style="text-align:right">${m.credito != null ? fmt.money(m.credito) : "–"}</td>
       <td style="text-align:right">${m.cred_adulto != null ? "R$ " + fmt.n0(m.cred_adulto) : "–"}</td>
       <td style="text-align:right">${m.penetracao != null ? fmt.n(m.penetracao, 1) + "%" : "–"}</td>
       <td style="text-align:right">${fmt.n0(m.adultos)}</td></tr>`).join("")}
     </tbody></table></div>
+    ${(() => { const nd = P.rankings[rankAtivo].filter(penDiverge).length; return nd ? `<p class="src"><b>${nd}</b> ${nd === 1 ? "município desta lista tem" : "municípios desta lista têm"} os dois métodos de gap com sinais opostos — a estimativa é frágil aí, e a marcação "métodos divergem" pede leitura do perfil antes de qualquer citação.</p> ` : ""; })()}
     <details class="charttable"><summary>os mesmos rankings sem os cortes mínimos de porte</summary>
       <p class="src">Sem corte, municípios pequenos ocupam o topo por terem denominador reduzido — é por isso que
       o painel usa cortes por padrão, e mostra as duas versões.</p>
@@ -5902,7 +5945,10 @@ function renderPenetracao() {
   A razão entre os dois diz quanto crédito existe por ali em relação ao tamanho econômico do lugar. O gap compara
   esse número ao de municípios parecidos.</p></div>
 `
-  + cards + filtros + mapa + avisoPen + cobertura + perfil + dispersao + rankings + achados + metodo_sec;
+  /* Ordem narrativa (P1 da auditoria): a página abre no mapa — a pergunta que
+     trouxe o leitor é "onde?" — com o perfil logo abaixo (é para lá que o clique
+     leva); os agregados e a cobertura vêm depois, como contexto, não como porta. */
+  + avisoPen + filtros + mapa + perfil + cards + cobertura + dispersao + rankings + achados + metodo_sec;
 }
 
 const PEN_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
@@ -10003,6 +10049,31 @@ window.cmpAddSimilares = async () => {
   cmpSave(); renderCompare();
 };
 window.cmpQuick = () => { state.cmp.insts = ["C0010069", "C0049906", "C0051626", "C0010045", "C0030379"].slice(0, 10); cmpSave(); renderCompare(); };
+/* Presets dinâmicos: sempre calculados dos gold no momento do clique (top-5 por
+   ativo dentro do recorte), nunca listas de nomes fixas — quando o ranking muda
+   na fonte, o preset muda junto. Cada preset fica num único nível de
+   consolidação, porque misturar conglomerado com individual é bloqueado. */
+window.cmpPreset = tipo => {
+  let cods = [];
+  if (tipo === "coops") {
+    // cooperativas do top-100 (TCB B3S/B3C no IF.data) — nível individual
+    const I = state.data.institutions;
+    if (!I || !I.instituicoes) { alert("Os dados das instituições ainda estão carregando — tente de novo em instantes."); return; }
+    cods = I.instituicoes.filter(x => String(x.tcb || "").startsWith("B3"))
+      .sort((a, b) => (b.ativo_total_brl || 0) - (a.ativo_total_brl || 0))
+      .slice(0, 5).map(x => x.cod_inst);
+  } else if (tipo === "s2" || tipo === "s3") {
+    // maiores do segmento por ativo — só conglomerados prudenciais (nível único)
+    const ix = state.data.inst_index;
+    if (!ix) { alert("O índice de instituições ainda está carregando — tente de novo em instantes."); return; }
+    const seg = tipo.toUpperCase();
+    cods = ix.instituicoes.filter(i => i.sr === seg && i.cod.startsWith("C"))
+      .sort((a, b) => (b.ativo_brl || 0) - (a.ativo_brl || 0))
+      .slice(0, 5).map(i => i.cod);
+  }
+  if (cods.length < 2) { alert("Preset indisponível nesta execução (menos de 2 instituições no recorte)."); return; }
+  state.cmp.insts = cods; cmpSave(); renderCompare();
+};
 window.cmpSet = (k, v) => { state.cmp[k] = v; cmpSave(); renderCompare(); };
 window.cmpToggleMet = (mid, on) => {
   const m = state.cmp.mets;
@@ -10139,6 +10210,9 @@ function renderCompare() {
       <div class="controls" style="margin:8px 0">
         <input type="search" id="cmpQ" placeholder="ex.: Itaú, Nubank, Sicoob…" oninput="cmpSearch(this.value)" style="min-width:280px" aria-label="pesquisar instituição">
         <button class="btn ghost small" onclick="cmpQuick()">5 grandes bancos</button>
+        <button class="btn ghost small" onclick="cmpPreset('coops')" title="as 5 maiores cooperativas do top-100 por ativo (TCB B3 no IF.data) — calculado a cada clique, não é lista fixa">maiores cooperativas</button>
+        <button class="btn ghost small" onclick="cmpPreset('s2')" title="os 5 maiores conglomerados prudenciais do segmento S2 por ativo — calculado a cada clique">maiores S2</button>
+        <button class="btn ghost small" onclick="cmpPreset('s3')" title="os 5 maiores conglomerados prudenciais do segmento S3 por ativo — calculado a cada clique">maiores S3</button>
         ${cmp.insts.length ? `<button class="btn ghost small" onclick="cmpAddSimilares()" title="regras explícitas: mesmo nível, porte 1/3–3×, especialização ±15 p.p., mix PF ±20 p.p.">+ semelhantes à primeira</button>` : ""}
       </div>
       <div id="cmpResults"></div>
@@ -10155,7 +10229,7 @@ function renderCompare() {
     el.innerHTML = `${pageHead({ title: "Comparador de Instituições", fontes: "BCB IF.data" })}
     <p class="viewdesc">Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais (5 períodos), com normalizações, série histórica, dispersão e exportação. Nível de consolidação sempre explícito; comparações incompatíveis são bloqueadas.</p>
     ${selHtml}
-    <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · ou monte a partir da <a href="javascript:void(0)" onclick="nav('products')">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
+    <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · <a href="javascript:void(0)" onclick="cmpPreset('coops')">maiores cooperativas</a> · <a href="javascript:void(0)" onclick="cmpPreset('s2')">maiores S2</a> · <a href="javascript:void(0)" onclick="cmpPreset('s3')">maiores S3</a> · ou monte a partir da <a href="javascript:void(0)" onclick="nav('products')">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
     return;
   }
 
