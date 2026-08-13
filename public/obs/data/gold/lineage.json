@@ -1753,5 +1753,1023 @@
    "new_value": 111.0,
    "detected_at": "2026-08-07T10:16:28+00:00"
   }
- ]
+ ],
+ "mapa": {
+  "gerado_de": "análise estática do repositório a cada execução (pipeline/lineage_map.py) — nunca mantido à mão",
+  "metodo": "produtor = quem chama write_gold com o nome; fontes = hosts literais do módulo e dos coletores de bronze que ele lê, mais armazém de séries e curadoria; dependências = ler_gold_opcional; consumo = VIEW_DATA/OV_BLOCO_DATA/CORE_FILES/fetchGold da SPA. Nomes dinâmicos viram famílias (*).",
+  "resumo": {
+   "objetos_mapeados": 63,
+   "publicados_no_gold": 54,
+   "publicados_sem_produtor_mapeado": []
+  },
+  "objetos": [
+   {
+    "gold": "alertas.xml",
+    "produtores": [
+     "pipeline/central_alertas.py"
+    ],
+    "fontes": [
+     "scrutiniums.com"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "feed RSS (leitores externos)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "alertas_central.json",
+    "produtores": [
+     "pipeline/central_alertas.py"
+    ],
+    "fontes": [
+     "scrutiniums.com"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "alerts.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "alerts.xml",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "feed RSS (leitores externos)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "antecedentes.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "leading",
+     "research"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "bets.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:bets.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "bets"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "cmp/*",
+    "produtores": [
+     "pipeline/compare.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga por item"
+    ],
+    "notas": [
+     "família gerada pelo template cmp/{cod}.json"
+    ]
+   },
+   {
+    "gold": "compare.json",
+    "produtores": [
+     "pipeline/compare.py",
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "compare"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "consignado.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "consignado"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "consignado_mun.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "consignado"
+    ],
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
+   },
+   {
+    "gold": "custos_ti.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:custos_ti.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "publicação de auditoria (cópia da curadoria)"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "desenrola.json",
+    "produtores": [
+     "pipeline/desenrola.py",
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)",
+     "dadosabertos.bcb.gov.br",
+     "www.gov.br"
+    ],
+    "depende_de": [
+     "panorama.json"
+    ],
+    "consumido_em": [
+     "desenrola"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "epae.json",
+    "produtores": [
+     "pipeline/epae.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)",
+     "comsefaz.org.br",
+     "concla.ibge.gov.br"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "bets"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "explorer.json",
+    "produtores": [
+     "pipeline/panorama.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga direta"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "exposures.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "sector",
+     "sectors"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "fase2_observacoes.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:fase2_observacoes.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "publicação de auditoria (cópia da curadoria)"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "folha_balanco.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:folha_balanco.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "pipeline (insumo de folha_bancos.json)"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "folha_bancos.json",
+    "produtores": [
+     "pipeline/folha_bancos.py",
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)",
+     "curadoria:folha_balanco.json",
+     "curadoria:folha_leiloes.json",
+     "pncp.gov.br"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst",
+     "operacional"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "folha_leiloes.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:folha_leiloes.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "pipeline (insumo de folha_bancos.json)"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "fraudes.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:fraudes.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "fraudes"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "guidance.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/guidance_bancos.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "curadoria:guidance.json",
+     "curadoria:guidance.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst",
+     "institutions"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "ibcc.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "inst/*",
+    "produtores": [
+     "pipeline/inst_pages_all.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga por item"
+    ],
+    "notas": [
+     "família gerada pelo template inst/{cod}.json"
+    ]
+   },
+   {
+    "gold": "inst_index.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/inst_pages_all.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "compare",
+     "inst",
+     "institutions",
+     "research"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "inst_pages.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "institutions.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "compare",
+     "inst",
+     "institutions",
+     "research",
+     "scenarios"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "judicial.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/judicial.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "judicial"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "juros.json",
+    "produtores": [
+     "pipeline/juros.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "juros"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "leading.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/leading.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "leading"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "lineage.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "method"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "market.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/market.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "market"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "meta.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "method.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "method"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "moradia.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "moradia"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "moradia_mun.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "moradia"
+    ],
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
+   },
+   {
+    "gold": "npl.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst",
+     "institutions",
+     "overview"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "openfinance.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "openfinance",
+     "overview"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "operacional.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "compare",
+     "inst",
+     "operacional"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "overview.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "pano/*",
+    "produtores": [
+     "pipeline/panorama.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga por item"
+    ],
+    "notas": [
+     "família gerada pelo template pano/{uf}.json"
+    ]
+   },
+   {
+    "gold": "panorama.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/panorama.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "panorama",
+     "pipeline (insumo de desenrola.json)",
+     "pipeline (insumo de pgfn.json)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "penetracao.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/penetracao.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "penetracao"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "penetracao_malha.json",
+    "produtores": [
+     "pipeline/penetracao.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "consignado",
+     "moradia",
+     "operacional",
+     "penetracao"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "penetracao_mun.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "penetracao"
+    ],
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
+   },
+   {
+    "gold": "pgfn.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/pgfn.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [
+     "panorama.json"
+    ],
+    "consumido_em": [
+     "pgfn"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "pilar3.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/pilar3_gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)",
+     "dadosabertos.bcb.gov.br"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "pix.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/pix.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "pix"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "pix_mun.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/pix.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga direta"
+    ],
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
+   },
+   {
+    "gold": "presenca_mun.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/presenca.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)",
+     "servicodados.ibge.gov.br",
+     "www.bcb.gov.br"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "operacional",
+     "presmun"
+    ],
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
+   },
+   {
+    "gold": "prod/*",
+    "produtores": [
+     "pipeline/products.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga por item"
+    ],
+    "notas": [
+     "família gerada pelo template prod/{p['slug']}.json"
+    ]
+   },
+   {
+    "gold": "products.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/products.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "overview",
+     "product",
+     "products"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "pulse.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "desenrola",
+     "núcleo (todas as páginas)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "quality.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "alerts",
+     "method",
+     "overview"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "recordes.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/recordes.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "overview"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "regimes.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/regimes_gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "armazém estruturado (silver/SQLite das coletas)",
+     "dadosabertos.bcb.gov.br"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "inst",
+     "institutions",
+     "leading",
+     "overview",
+     "pulse",
+     "research"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "regulacao.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/regulacao.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
+     "curadoria:timeline_regulatoria.json"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "consignado",
+     "desenrola",
+     "pix",
+     "regulacao"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "report.html",
+    "produtores": [
+     "pipeline/report.py"
+    ],
+    "fontes": [
+     "composição de golds da mesma execução (injetados pelo orquestrador)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "kit de imprensa (página estática)"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "rj.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "rj"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "scenario.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "alerts",
+     "overview",
+     "scenarios"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "screener.json",
+    "produtores": [
+     "pipeline/market.py"
+    ],
+    "fontes": [
+     "armazém estruturado (silver/SQLite das coletas)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "carga direta"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "sectors.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "alerts",
+     "overview",
+     "sector",
+     "sectors"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "timeline_regulatoria.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "curadoria:timeline_regulatoria.json (republicado integralmente)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "pipeline (insumo de regulacao.json)"
+    ],
+    "notas": [
+     "cópia verbatim de pipeline/curated/ — a curadoria é a fonte de verdade"
+    ]
+   },
+   {
+    "gold": "trends.json",
+    "produtores": [
+     "pipeline/gold.py",
+     "pipeline/trends.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "trends"
+    ],
+    "notas": []
+   }
+  ]
+ }
 }

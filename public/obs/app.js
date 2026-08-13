@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.78.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.79.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -6682,6 +6682,27 @@ function renderMethod() {
   <h3>4 · Histórico de versões</h3>${verRows}
   <h3>Linhagem recente (bronze → gold)</h3>
   <div class="tblwrap"><table class="data"><thead><tr><th>Objeto</th><th>Arquivo bronze</th><th>SHA-256</th><th>Transformação</th><th>Quando</th></tr></thead><tbody>${lrows}</tbody></table></div>
+  ${(() => {
+    /* Mapa completo gerado do código a cada execução (P1 da auditoria): a
+       promessa de "linhagem" só vale cobrindo TUDO — produtor, fontes e
+       consumo de cada objeto publicado, sem manutenção manual. */
+    const MP = lineage && lineage.mapa;
+    if (!MP) return "";
+    const semProd = (MP.resumo.publicados_sem_produtor_mapeado || []).length;
+    return `<h3>Linhagem completa (${MP.resumo.objetos_mapeados} objetos, gerada do código)</h3>
+  <div class="card">
+    <p class="src">${MP.gerado_de}. <b>Método:</b> ${MP.metodo}</p>
+    <p class="src"><b>${MP.resumo.publicados_no_gold}</b> objetos publicados na execução · <b>${semProd}</b> sem produtor mapeado${semProd ? " — <b>investigar</b>" : " (cobertura total)"} · famílias com * agrupam páginas geradas por item (uma por instituição, UF ou produto).</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Objeto gold</th><th>Produzido por</th><th>Fontes</th><th>Depende de</th><th>Consumido em</th></tr></thead><tbody>
+      ${MP.objetos.map(o => `<tr>
+        <td><b>${o.gold}</b>${o.notas.length ? ` <span class="src" title="${attr(o.notas.join(" · "))}">ⓘ</span>` : ""}</td>
+        <td class="src">${o.produtores.join("<br>") || "—"}</td>
+        <td class="src">${o.fontes.join("<br>") || "—"}</td>
+        <td class="src">${o.depende_de.join("<br>") || "—"}</td>
+        <td class="src">${o.consumido_em.join("<br>") || "—"}</td></tr>`).join("")}
+    </tbody></table></div>
+  </div>`;
+  })()}
   <h3>Referências de design e acessibilidade (não são fontes dos indicadores)</h3>
   <div class="card"><div class="src" style="line-height:2">
     <a href="https://developer.apple.com/design/human-interface-guidelines/" target="_blank" rel="noopener noreferrer">Apple Human Interface Guidelines</a> ·
