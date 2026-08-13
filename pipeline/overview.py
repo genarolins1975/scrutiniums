@@ -369,3 +369,55 @@ def build_model_cards(forecasts, ibcc, inst, sectors):
         "versao": "0.3.0", "atualizado_em": None,
     })
     return cards
+
+
+def build_novidades():
+    """'O que mudou' — o diff editorial da execução, consolidado dos gold já
+    escritos nesta rodada (ler_gold_opcional: dependência nunca obrigatória).
+    Regras determinísticas, régua declarada em cada item; nada é ranqueado
+    entre famílias. Achado P1 da auditoria de 12/08: um produto de consulta
+    vira produto de hábito quando diz o que mudou hoje."""
+    from datetime import date, timedelta
+    out = []
+    corte45 = (date.today() - timedelta(days=45)).isoformat()
+
+    ac = common.ler_gold_opcional("alertas_central.json") or {}
+    novos = [a for a in ac.get("alertas", []) if not a.get("recorrente")]
+    for a in novos[:3]:
+        out.append({"tipo": "alerta_novo", "titulo": a.get("titulo"),
+                    "detalhe": f"família {a.get('familia')} — primeiro disparo desta regra",
+                    "link": {"view": "alerts"}})
+
+    reg = common.ler_gold_opcional("regimes.json") or {}
+    for v in (reg.get("vigentes") or []):
+        if (v.get("inicio_iso") or "") >= corte45:
+            out.append({"tipo": "regime", "titulo": f"{v.get('nome')} sob {v.get('tipo')} desde {v.get('inicio')}",
+                        "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
+                        "link": {"view": "pulse"}})
+
+    rec = common.ler_gold_opcional("recordes.json") or {}
+    for r in (rec.get("recordes") or []):
+        if (str(r.get("ref") or ""))[:10] >= corte45:
+            out.append({"tipo": "recorde", "titulo": f"{r.get('nome')}: {r.get('rotulo')} ({r.get('valor')} {r.get('unidade')})",
+                        "detalhe": f"referência {str(r.get('ref'))[:7]} — recorde na janela de 45 dias",
+                        "link": {"view": "overview"}})
+
+    gu = common.ler_gold_opcional("guidance.json") or {}
+    # revisão de guidance é notícia enquanto o trimestre dela é o corrente ou o
+    # anterior (rótulos civis calculados, nunca fixos)
+    hoje = date.today()
+    tri = (hoje.month - 1) // 3 + 1
+    rot_atual = f"{tri}T{hoje.year % 100}"
+    tri_ant = tri - 1 or 4
+    ano_ant = hoje.year if tri > 1 else hoje.year - 1
+    rot_ant = f"{tri_ant}T{ano_ant % 100}"
+    for c in gu.get("ciclos", []):
+        for a2 in c.get("acompanhamentos", []) or []:
+            if a2.get("tipo") == "revisao" and a2.get("periodo") in (rot_atual, rot_ant):
+                out.append({"tipo": "guidance", "titulo": f"{c.get('banco')}: guidance revisado no {a2.get('periodo')}",
+                            "detalhe": (a2.get("resumo") or "")[:180],
+                            "link": {"view": "institutions"}})
+    return {"itens": out[:8],
+            "nota": ("Consolidado por regra determinística na execução diária: alertas em primeiro disparo, "
+                     "entradas recentes em regimes (45 dias), recordes com referência recente e revisões de "
+                     "guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade.")}
