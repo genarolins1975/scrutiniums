@@ -74,7 +74,13 @@ describe("curadoria: ciclos com evidência oficial", () => {
         expect(a.trecho, `${c.id}:${a.periodo}`).toBeTruthy();
         const doc = cur.documentos[a.documento];
         expect(doc, `${c.id}:${a.periodo}`).toBeTruthy();
-        expect(doc.url, `${c.id}:${a.periodo}`).toMatch(/^https:\/\/www\.rad\.cvm\.gov\.br\//);
+        // hosts oficiais permitidos: RAD/CVM (protocolo) ou o filemanager do RI
+        // oficial da companhia (divulgação própria — precedente Caixa/Nubank).
+        // Fora do RAD, a identidade verificada dentro do arquivo é OBRIGATÓRIA.
+        expect(doc.url, `${c.id}:${a.periodo}`).toMatch(/^https:\/\/(www\.rad\.cvm\.gov\.br\/|api\.mziq\.com\/mzfilemanager\/v2\/d\/)/);
+        if (!/^https:\/\/www\.rad\.cvm\.gov\.br\//.test(doc.url)) {
+          expect(doc.identidade, `${c.id}:${a.periodo}: fonte fora do RAD exige identidade verificada`).toBeTruthy();
+        }
         if (a.status === "aprovado") expect(a.revisor, `${c.id}:${a.periodo}`).toBeTruthy();
         if (a.tipo === "revisao") {
           const nomes = c.metricas.map((m: any) => m.nome);
