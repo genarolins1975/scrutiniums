@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T13:43:48+00:00",
+ "gerado_em": "2026-08-13T08:03:46+00:00",
  "titulo": "Guidance × entregue",
  "ciclos": [
   {
@@ -113,7 +113,7 @@
   },
   {
    "acompanhamentos": [],
-   "acompanhamento_pendente": "Data confirmada pelo próprio BB (Comunicado ao Mercado de 28/07/2026, protocolo IPE 1548646): o resultado do 2T26 sai em 12/08/2026 após o fechamento do mercado, com live em 13/08 às 9h. O acompanhamento das Projeções Corporativas entra assim que a Análise do Desempenho 2T26 for protocolada no IPE.",
+   "acompanhamento_pendente": null,
    "id": "bb_2026",
    "banco": "Banco do Brasil",
    "cnpj8": "00000000",
@@ -602,7 +602,7 @@
   }
  ],
  "em_revisao": 0,
- "acompanhamentos_em_revisao": 0,
+ "acompanhamentos_em_revisao": 1,
  "leitura": "O que cada grande banco listado prometeu ao mercado para o ano — e o que entregou, pela régua declarada pelo próprio banco. Ciclos fechados mostram intervalo × realizado; o ciclo vigente mostra as promessas em curso, acompanhadas a cada divulgação.",
  "cautelas": [
   "Cada banco SÓ contra o próprio guidance: conceitos gerenciais e bases ajustadas diferem por banco — cumprimento NUNCA é comparado, somado ou ranqueado entre bancos.",

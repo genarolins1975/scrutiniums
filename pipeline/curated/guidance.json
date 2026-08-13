@@ -1,615 +1,710 @@
 {
-  "_comentario": [
-    "Guidance × entregue — item 3 dos próximos passos. Ciclos anuais de projeções dos",
-    "grandes bancos listados, extraídos dos documentos oficiais protocolados na CVM",
-    "(IPE/ENET), com evidência (documento, página, trecho). Processo da Fase 2: nada",
-    "publica com status em_revisao; a aprovação do revisor muda para aprovado.",
-    "REGRAS CENTRAIS: (1) cada banco só contra o PRÓPRIO guidance — conceitos",
-    "gerenciais e bases ajustadas diferem por banco; nunca comparar cumprimento entre",
-    "bancos, nunca médias ou ranking de cumprimento. (2) 'dentro/acima/abaixo' é",
-    "posição ARITMÉTICA no intervalo declarado, não juízo de mérito — para despesa,",
-    "acima é pior; para receita, melhor; o painel não converte isso em nota. (3)",
-    "aferido_por declara quem pareou intervalo e realizado: 'companhia' quando o",
-    "próprio banco publica a reconciliação; 'observatorio' quando o pareamento usa",
-    "linhas da mesma DRE gerencial do banco (fórmula declarada por métrica)."
-  ],
-  "documentos": {
-    "itau_4t24": {
-      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 4T24 (IPE 05/02/2025)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1330871&numSequencia=855597&numVersao=1",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "capa 'Itaú Unibanco Holding S.A. Análise Gerencial da Operação 4º Trimestre de 2024'"
-    },
-    "itau_4t25": {
-      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 4T25 (IPE 04/02/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1473188&numSequencia=997894",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "capa 'Análise Gerencial da Operação 4º trimestre de 2025'"
-    },
-    "itau_1t26": {
-      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 1T26 (IPE 05/05/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516138&numSequencia=104084",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "capa 'Análise Gerencial da Operação 1º trimestre de 2026'"
-    },
-    "bb_4t25": {
-      "titulo": "Banco do Brasil — Análise do Desempenho 4T25 (IPE 24/02/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481390&numSequencia=100609",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "cabeçalho 'Análise do Desempenho 4T25 | Sumário do Resultado — Banco do Brasil S.A. | Relações com Investidores'"
-    },
-    "bradesco_4t25": {
-      "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 4T25 (IPE 05/02/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1473833&numSequencia=998539",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "cabeçalho 'Bradesco | Relatório de Análise Econômica e Financeira ... 4T25'"
-    },
-    "santander_4t25": {
-      "titulo": "Santander Brasil — Release de Resultados 4T25 (IPE 04/02/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1472879&numSequencia=997585",
-      "fonte": "CVM/IPE (Press-release)",
-      "identidade": "capa 'Informe de Resultados 4º trimestre de 2025 (BRGAAP)'"
-    },
-    "itau_ag_2t26": {
-      "titulo": "Itaú Unibanco — Análise Gerencial da Operação 2T26 (IPE 04/08/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552006&numSequencia=1076712&numVersao=1",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "referência 30/06/2026 no IPE; corpo com 'Demonstração de Resultado do 2º trimestre de 2026' e página 'Projeção 2026' com colunas Original × Atual"
-    },
-    "bradesco_rel_2t26": {
-      "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 2T26 (IPE 05/08/2026)",
-      "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552745&numSequencia=1077451&numVersao=1",
-      "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
-      "identidade": "capa 'Relatório de Análise Econômica e Financeira 2T26'"
-    }
+ "_comentario": [
+  "Guidance × entregue — item 3 dos próximos passos. Ciclos anuais de projeções dos",
+  "grandes bancos listados, extraídos dos documentos oficiais protocolados na CVM",
+  "(IPE/ENET), com evidência (documento, página, trecho). Processo da Fase 2: nada",
+  "publica com status em_revisao; a aprovação do revisor muda para aprovado.",
+  "REGRAS CENTRAIS: (1) cada banco só contra o PRÓPRIO guidance — conceitos",
+  "gerenciais e bases ajustadas diferem por banco; nunca comparar cumprimento entre",
+  "bancos, nunca médias ou ranking de cumprimento. (2) 'dentro/acima/abaixo' é",
+  "posição ARITMÉTICA no intervalo declarado, não juízo de mérito — para despesa,",
+  "acima é pior; para receita, melhor; o painel não converte isso em nota. (3)",
+  "aferido_por declara quem pareou intervalo e realizado: 'companhia' quando o",
+  "próprio banco publica a reconciliação; 'observatorio' quando o pareamento usa",
+  "linhas da mesma DRE gerencial do banco (fórmula declarada por métrica)."
+ ],
+ "documentos": {
+  "itau_4t24": {
+   "titulo": "Itaú Unibanco — Análise Gerencial da Operação 4T24 (IPE 05/02/2025)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1330871&numSequencia=855597&numVersao=1",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "capa 'Itaú Unibanco Holding S.A. Análise Gerencial da Operação 4º Trimestre de 2024'"
   },
-  "ciclos": [
+  "itau_4t25": {
+   "titulo": "Itaú Unibanco — Análise Gerencial da Operação 4T25 (IPE 04/02/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1473188&numSequencia=997894",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "capa 'Análise Gerencial da Operação 4º trimestre de 2025'"
+  },
+  "itau_1t26": {
+   "titulo": "Itaú Unibanco — Análise Gerencial da Operação 1T26 (IPE 05/05/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1516138&numSequencia=104084",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "capa 'Análise Gerencial da Operação 1º trimestre de 2026'"
+  },
+  "bb_4t25": {
+   "titulo": "Banco do Brasil — Análise do Desempenho 4T25 (IPE 24/02/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1481390&numSequencia=100609",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "cabeçalho 'Análise do Desempenho 4T25 | Sumário do Resultado — Banco do Brasil S.A. | Relações com Investidores'"
+  },
+  "bradesco_4t25": {
+   "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 4T25 (IPE 05/02/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1473833&numSequencia=998539",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "cabeçalho 'Bradesco | Relatório de Análise Econômica e Financeira ... 4T25'"
+  },
+  "santander_4t25": {
+   "titulo": "Santander Brasil — Release de Resultados 4T25 (IPE 04/02/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1472879&numSequencia=997585",
+   "fonte": "CVM/IPE (Press-release)",
+   "identidade": "capa 'Informe de Resultados 4º trimestre de 2025 (BRGAAP)'"
+  },
+  "itau_ag_2t26": {
+   "titulo": "Itaú Unibanco — Análise Gerencial da Operação 2T26 (IPE 04/08/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552006&numSequencia=1076712&numVersao=1",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "referência 30/06/2026 no IPE; corpo com 'Demonstração de Resultado do 2º trimestre de 2026' e página 'Projeção 2026' com colunas Original × Atual"
+  },
+  "bradesco_rel_2t26": {
+   "titulo": "Bradesco — Relatório de Análise Econômica e Financeira 2T26 (IPE 05/08/2026)",
+   "url": "https://www.rad.cvm.gov.br/ENET/frmDownloadDocumento.aspx?Tela=ext&descTipo=IPE&CodigoInstituicao=1&numProtocolo=1552745&numSequencia=1077451&numVersao=1",
+   "fonte": "CVM/IPE (Relatório de Análise Gerencial)",
+   "identidade": "capa 'Relatório de Análise Econômica e Financeira 2T26'"
+  },
+  "bb_ad_2t26": {
+   "titulo": "Banco do Brasil — Análise do Desempenho 2T26 (RI, 12/08/2026)",
+   "url": "https://api.mziq.com/mzfilemanager/v2/d/5760dff3-15e1-4962-9e81-322a0b3d0bbd/baf82bc7-3aa3-a91d-72c4-fdbde495644c?origin=2",
+   "fonte": "RI do Banco do Brasil (apicatalog.mziq.com, central de resultados) — link coletado da API oficial do site de RI; identidade verificada dentro do arquivo ('Análise do Desempenho 2T26', 309 páginas)",
+   "identidade": "capa e cabeçalhos 'Análise do Desempenho 2T26'; Figura 1 'Projeções Corporativas 2026' com coluna 'Observado 1S26'"
+  }
+ },
+ "ciclos": [
+  {
+   "id": "bb_2025",
+   "banco": "Banco do Brasil",
+   "cnpj8": "00000000",
+   "ano": 2025,
+   "tipo": "guidance_x_realizado",
+   "aferido_por": "companhia",
+   "conceito": "Projeções Corporativas do BB — conceitos gerenciais próprios: carteira doméstica + TVM privados e garantias, sem crédito a governo; Custo do Crédito conforme Res. CMN 4.966 (perda esperada + descontos concedidos − recuperações); Lucro Líquido Ajustado.",
+   "documento_guidance": "bb_4t25",
+   "documento_realizado": "bb_4t25",
+   "pagina": "p. 13 do documento (PDF 15), Figura 1 — Projeções Corporativas 2025",
+   "trecho": "Guidance 2025 — Intervalo entre | Realizado 2025: Carteira de Crédito 3% e 6% | 3,1% … Agronegócios 3% e 6% | 2,1% … Lucro Líquido Ajustado R$ 18 e 21 bi | R$ 20,7 bi. 'no exercício de 2025, o indicador Carteira de Crédito Agro apresentou variação em relação ao projetado para o ano, em função do menor desembolso no segundo semestre de 2025.'",
+   "metricas": [
     {
-      "id": "bb_2025",
-      "banco": "Banco do Brasil",
-      "cnpj8": "00000000",
-      "ano": 2025,
-      "tipo": "guidance_x_realizado",
-      "aferido_por": "companhia",
-      "conceito": "Projeções Corporativas do BB — conceitos gerenciais próprios: carteira doméstica + TVM privados e garantias, sem crédito a governo; Custo do Crédito conforme Res. CMN 4.966 (perda esperada + descontos concedidos − recuperações); Lucro Líquido Ajustado.",
-      "documento_guidance": "bb_4t25",
-      "documento_realizado": "bb_4t25",
-      "pagina": "p. 13 do documento (PDF 15), Figura 1 — Projeções Corporativas 2025",
-      "trecho": "Guidance 2025 — Intervalo entre | Realizado 2025: Carteira de Crédito 3% e 6% | 3,1% … Agronegócios 3% e 6% | 2,1% … Lucro Líquido Ajustado R$ 18 e 21 bi | R$ 20,7 bi. 'no exercício de 2025, o indicador Carteira de Crédito Agro apresentou variação em relação ao projetado para o ano, em função do menor desembolso no segundo semestre de 2025.'",
-      "metricas": [
-        {
-          "nome": "Carteira de Crédito",
-          "unidade": "% a/a",
-          "min": 3.0,
-          "max": 6.0,
-          "realizado": 3.1,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Carteira Pessoas Físicas",
-          "unidade": "% a/a",
-          "min": 7.0,
-          "max": 10.0,
-          "realizado": 7.6,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Carteira Empresas",
-          "unidade": "% a/a",
-          "min": 0.0,
-          "max": 3.0,
-          "realizado": 0.2,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Carteira Agronegócios",
-          "unidade": "% a/a",
-          "min": 3.0,
-          "max": 6.0,
-          "realizado": 2.1,
-          "situacao": "abaixo",
-          "nota": "o próprio BB declara o desvio: menor desembolso no 2º semestre de 2025"
-        },
-        {
-          "nome": "Carteira Sustentável",
-          "unidade": "% a/a",
-          "min": 7.0,
-          "max": 10.0,
-          "realizado": 7.3,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Margem Financeira Bruta",
-          "unidade": "R$ bi",
-          "min": 102.0,
-          "max": 105.0,
-          "realizado": 103.1,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Custo do Crédito",
-          "unidade": "R$ bi",
-          "min": 59.0,
-          "max": 62.0,
-          "realizado": 61.9,
-          "situacao": "dentro",
-          "nota": "no limite superior do intervalo"
-        },
-        {
-          "nome": "Receitas de Prestação de Serviços",
-          "unidade": "R$ bi",
-          "min": 34.5,
-          "max": 36.5,
-          "realizado": 34.8,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Despesas Administrativas",
-          "unidade": "R$ bi",
-          "min": 38.5,
-          "max": 40.0,
-          "realizado": 38.9,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Lucro Líquido Ajustado",
-          "unidade": "R$ bi",
-          "min": 18.0,
-          "max": 21.0,
-          "realizado": 20.7,
-          "situacao": "dentro"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+     "nome": "Carteira de Crédito",
+     "unidade": "% a/a",
+     "min": 3.0,
+     "max": 6.0,
+     "realizado": 3.1,
+     "situacao": "dentro"
     },
     {
-      "id": "bb_2026",
-      "banco": "Banco do Brasil",
-      "cnpj8": "00000000",
-      "ano": 2026,
-      "tipo": "guidance_vigente",
-      "aferido_por": "companhia",
-      "conceito": "Mesmos conceitos gerenciais do ciclo 2025; acompanhamento trimestral pelo próprio BB.",
-      "documento_guidance": "bb_4t25",
-      "documento_realizado": null,
-      "pagina": "p. 14 do documento (PDF 16), Figura 2 — Projeções Corporativas 2026",
-      "trecho": "Guidance 2026 — Intervalo entre: Carteira de Crédito 0,5% e 4,5%; Pessoas Físicas 6% e 10%; Empresas -3% e 1%; Agronegócios -2% e 2%; Carteira Sustentável 2% e 6%; Margem Financeira Bruta 4% e 8%; Custo do Crédito R$ 53 e 58 bi; Receitas de Prestação de Serviços 2% e 6%; Despesas Administrativas 5% e 9%; Lucro Líquido Ajustado R$ 22 e 26 bi",
-      "metricas": [
-        {
-          "nome": "Carteira de Crédito",
-          "unidade": "% a/a",
-          "min": 0.5,
-          "max": 4.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Carteira Pessoas Físicas",
-          "unidade": "% a/a",
-          "min": 6.0,
-          "max": 10.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Carteira Empresas",
-          "unidade": "% a/a",
-          "min": -3.0,
-          "max": 1.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Carteira Agronegócios",
-          "unidade": "% a/a",
-          "min": -2.0,
-          "max": 2.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Carteira Sustentável",
-          "unidade": "% a/a",
-          "min": 2.0,
-          "max": 6.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Margem Financeira Bruta",
-          "unidade": "% a/a",
-          "min": 4.0,
-          "max": 8.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Custo do Crédito",
-          "unidade": "R$ bi",
-          "min": 53.0,
-          "max": 58.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Receitas de Prestação de Serviços",
-          "unidade": "% a/a",
-          "min": 2.0,
-          "max": 6.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Despesas Administrativas",
-          "unidade": "% a/a",
-          "min": 5.0,
-          "max": 9.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Lucro Líquido Ajustado",
-          "unidade": "R$ bi",
-          "min": 22.0,
-          "max": 26.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
-      "acompanhamento_pendente": "Data confirmada pelo próprio BB (Comunicado ao Mercado de 28/07/2026, protocolo IPE 1548646): o resultado do 2T26 sai em 12/08/2026 após o fechamento do mercado, com live em 13/08 às 9h. O acompanhamento das Projeções Corporativas entra assim que a Análise do Desempenho 2T26 for protocolada no IPE."
+     "nome": "Carteira Pessoas Físicas",
+     "unidade": "% a/a",
+     "min": 7.0,
+     "max": 10.0,
+     "realizado": 7.6,
+     "situacao": "dentro"
     },
     {
-      "id": "bradesco_2025",
-      "banco": "Bradesco",
-      "cnpj8": "60746948",
-      "ano": 2025,
-      "tipo": "guidance_x_realizado",
-      "aferido_por": "companhia",
-      "conceito": "Guidance do Bradesco — conceitos gerenciais próprios: Carteira de Crédito Expandida; Margem Financeira Líquida = margem total − despesa de PDD expandida; Despesas Operacionais = pessoal + administrativas + outras.",
-      "documento_guidance": "bradesco_4t25",
-      "documento_realizado": "bradesco_4t25",
-      "pagina": "p. 28 do documento (PDF 28), seção 'guidance, indicadores & perspectivas econômicas'",
-      "trecho": "'A tabela a seguir demonstra o resultado alcançado em 2025 e nossas estimativas para o ano de 2026.' — 2025: Carteira de Crédito Expandida 4% a 8% | Realizado 12M25 x 12M24 11,0%; Margem Financeira Líquida R$ 37 bi a R$ 41 bi | R$ 40 bi; Receitas de Prestação de Serviços 5% a 9% | 8,9%; Despesas Operacionais 5% a 9% | 8,5%; Resultado das Operações de Seguros 9% a 13% | 16,1%",
-      "metricas": [
-        {
-          "nome": "Carteira de Crédito Expandida",
-          "unidade": "% a/a",
-          "min": 4.0,
-          "max": 8.0,
-          "realizado": 11.0,
-          "situacao": "acima"
-        },
-        {
-          "nome": "Margem Financeira Líquida",
-          "unidade": "R$ bi",
-          "min": 37.0,
-          "max": 41.0,
-          "realizado": 40.0,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Receitas de Prestação de Serviços",
-          "unidade": "% a/a",
-          "min": 5.0,
-          "max": 9.0,
-          "realizado": 8.9,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Despesas Operacionais",
-          "unidade": "% a/a",
-          "min": 5.0,
-          "max": 9.0,
-          "realizado": 8.5,
-          "situacao": "dentro"
-        },
-        {
-          "nome": "Resultado de Seguros, Previdência e Capitalização",
-          "unidade": "% a/a",
-          "min": 9.0,
-          "max": 13.0,
-          "realizado": 16.1,
-          "situacao": "acima"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+     "nome": "Carteira Empresas",
+     "unidade": "% a/a",
+     "min": 0.0,
+     "max": 3.0,
+     "realizado": 0.2,
+     "situacao": "dentro"
     },
     {
-      "id": "bradesco_2026",
-      "banco": "Bradesco",
-      "cnpj8": "60746948",
-      "ano": 2026,
-      "tipo": "guidance_vigente",
-      "aferido_por": "companhia",
-      "conceito": "Mesmos conceitos gerenciais do ciclo 2025.",
-      "documento_guidance": "bradesco_4t25",
-      "documento_realizado": null,
-      "pagina": "p. 28 do documento (PDF 28), coluna 2026",
-      "trecho": "2026 — Indicador Anual: Carteira de Crédito Expandida 8,5% a 10,5%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi; Receitas de Prestação de Serviços 3% a 5%; Despesas Operacionais 6% a 8%; Resultado das Operações de Seguros 6% a 8%",
-      "metricas": [
-        {
-          "nome": "Carteira de Crédito Expandida",
-          "unidade": "% a/a",
-          "min": 8.5,
-          "max": 10.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Margem Financeira Líquida",
-          "unidade": "R$ bi",
-          "min": 42.0,
-          "max": 48.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Receitas de Prestação de Serviços",
-          "unidade": "% a/a",
-          "min": 3.0,
-          "max": 5.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Despesas Operacionais",
-          "unidade": "% a/a",
-          "min": 6.0,
-          "max": 8.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Resultado de Seguros, Previdência e Capitalização",
-          "unidade": "% a/a",
-          "min": 6.0,
-          "max": 8.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
-      "acompanhamentos": [
-        {
-          "periodo": "2T26",
-          "tipo": "acompanhamento",
-          "resumo": "Guidance 2026 integralmente MANTIDO; o próprio Bradesco publica o realizado 1S26×1S25 ao lado dos intervalos anuais: carteira expandida 11,6%, margem financeira líquida R$ 21,3 bi no semestre, serviços 3,9%, despesas operacionais 5,5%, seguros 14,1%. Ritmo semestral NÃO é resultado anual — nenhuma aferição antes do fechamento do ciclo.",
-          "realizado_parcial": [
-            {
-              "metrica": "Carteira de Crédito Expandida",
-              "valor": 11.6,
-              "unidade": "% 1S26/1S25"
-            },
-            {
-              "metrica": "Margem Financeira Líquida",
-              "valor": 21.3,
-              "unidade": "R$ bi no 1S26"
-            },
-            {
-              "metrica": "Receitas de Prestação de Serviços",
-              "valor": 3.9,
-              "unidade": "% 1S26/1S25"
-            },
-            {
-              "metrica": "Despesas Operacionais",
-              "valor": 5.5,
-              "unidade": "% 1S26/1S25"
-            },
-            {
-              "metrica": "Resultado de Seguros, Previdência e Capitalização",
-              "valor": 14.1,
-              "unidade": "% 1S26/1S25"
-            }
-          ],
-          "documento": "bradesco_rel_2t26",
-          "pagina": "p. 24 do documento (PDF 24), 'Guidance, Indicadores & Perspectivas Econômicas'",
-          "trecho": "Guidance Anual | Realizado 1S26 x 1S25: Carteira de Crédito Expandida 8,5% a 10,5% Mantido 11,6%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi Mantido R$ 21,3; Receitas de Prestação de Serviços 3% a 5% Mantido 3,9%; Despesas Operacionais 6% a 8% Mantido 5,5%; Resultado das Operações de Seguros 6% a 8% Mantido 14,1%",
-          "status": "aprovado",
-          "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
-        }
-      ]
+     "nome": "Carteira Agronegócios",
+     "unidade": "% a/a",
+     "min": 3.0,
+     "max": 6.0,
+     "realizado": 2.1,
+     "situacao": "abaixo",
+     "nota": "o próprio BB declara o desvio: menor desembolso no 2º semestre de 2025"
     },
     {
-      "id": "itau_2025",
-      "banco": "Itaú Unibanco",
-      "cnpj8": "60872504",
-      "ano": 2025,
-      "tipo": "guidance_x_realizado",
-      "aferido_por": "observatorio",
-      "conceito": "Projeções 2025 do Itaú (consolidado, critério Res. 4.966), divulgadas na Análise Gerencial 4T24. O Itaú não publica a reconciliação anual na Análise Gerencial: o realizado vem das linhas da MESMA DRE gerencial do 4T25 ('2025' × '2024', base original pré-reclassificações de 2026), com fórmula declarada por métrica — pareamento do Observatório sobre números da própria companhia.",
-      "documento_guidance": "itau_4t24",
-      "documento_realizado": "itau_4t25",
-      "pagina": "guidance: p. 09 do documento 4T24 (PDF 7), 'Projeções 2025'; realizado: p. 7 do documento 4T25 (PDF 5), DRE e carteira, e p. 28 (PDF 26), coluna '2025 Original'",
-      "trecho": "Projeções 2025 — Consolidado (critério Res. 4.966): Carteira de crédito total crescimento entre 4,5% e 8,5%; Margem financeira com clientes 7,5% e 11,5%; Margem financeira com o mercado R$ 1,0 bi e R$ 3,0 bi; Custo do crédito R$ 34,5 bi e R$ 38,5 bi; Receita de serviços e resultado de seguros 4,0% e 7,0%; Despesas não decorrentes de juros 5,5% e 8,5%; Alíquota efetiva de IR/CS 27,0% e 29,0%. Realizado (DRE 4T25): margem clientes 121.128 vs 108.024 (+12,1%); margem mercado 3.280; custo do crédito 36.611; DNDJ 66.762 vs 62.108 (+7,5%); carteira total com garantias e títulos privados 1.490,8 vs 1.406,4 (+6,0%).",
-      "metricas": [
-        {
-          "nome": "Carteira de crédito total",
-          "unidade": "% a/a",
-          "min": 4.5,
-          "max": 8.5,
-          "realizado": 6.0,
-          "situacao": "dentro",
-          "formula": "total com garantias financeiras prestadas e títulos privados, 4T25 ÷ 4T24 (1.490,8 ÷ 1.406,4)"
-        },
-        {
-          "nome": "Margem financeira com clientes",
-          "unidade": "% a/a",
-          "min": 7.5,
-          "max": 11.5,
-          "realizado": 12.1,
-          "situacao": "acima",
-          "formula": "DRE gerencial 12M25 ÷ 12M24 (121.128 ÷ 108.024)"
-        },
-        {
-          "nome": "Margem financeira com o mercado",
-          "unidade": "R$ bi",
-          "min": 1.0,
-          "max": 3.0,
-          "realizado": 3.3,
-          "situacao": "acima",
-          "formula": "DRE gerencial 12M25 (R$ 3.280 mi)"
-        },
-        {
-          "nome": "Custo do crédito",
-          "unidade": "R$ bi",
-          "min": 34.5,
-          "max": 38.5,
-          "realizado": 36.6,
-          "situacao": "dentro",
-          "formula": "DRE gerencial 12M25 (R$ 36.611 mi)"
-        },
-        {
-          "nome": "Receita de serviços e resultado de seguros",
-          "unidade": "% a/a",
-          "min": 4.0,
-          "max": 7.0,
-          "realizado": 6.3,
-          "situacao": "dentro",
-          "formula": "(serviços 46.891 + seguros 13.093 − sinistros 1.658 − comercialização 22) ÷ (45.110 + 11.401 − 1.615 − 30) − 1"
-        },
-        {
-          "nome": "Despesas não decorrentes de juros",
-          "unidade": "% a/a",
-          "min": 5.5,
-          "max": 8.5,
-          "realizado": 7.5,
-          "situacao": "dentro",
-          "formula": "DRE gerencial 12M25 ÷ 12M24 (66.762 ÷ 62.108)"
-        },
-        {
-          "nome": "Alíquota efetiva de IR/CS",
-          "unidade": "%",
-          "min": 27.0,
-          "max": 29.0,
-          "realizado": 29.7,
-          "situacao": "acima",
-          "formula": "IR/CS 20.396 ÷ resultado antes da tributação e part. minoritárias 68.569 — cálculo do Observatório; a aferição da companhia pode diferir (base de cálculo própria)",
-          "nota": "marginal e sensível à fórmula — tratar com cautela extra na revisão"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+     "nome": "Carteira Sustentável",
+     "unidade": "% a/a",
+     "min": 7.0,
+     "max": 10.0,
+     "realizado": 7.3,
+     "situacao": "dentro"
     },
     {
-      "id": "itau_2026",
-      "banco": "Itaú Unibanco",
-      "cnpj8": "60872504",
-      "ano": 2026,
-      "tipo": "guidance_vigente",
-      "aferido_por": "companhia",
-      "conceito": "Guidance 2026 sobre a DRE ajustada ('Base para Guidance': reclassificações de bandeira/antecipação/descontos + consolidação da Avenue) — base DIFERENTE da usada no ciclo 2025, declarada pelo próprio Itaú. No 1T26: 'Mantivemos inalteradas nossas projeções para 2026'.",
-      "documento_guidance": "itau_4t25",
-      "documento_realizado": null,
-      "pagina": "p. 29 do documento 4T25 (PDF 27), 'Projeção 2026'; manutenção: p. 9 do documento 1T26 (PDF 7)",
-      "trecho": "Guidance 2026: Carteira de crédito total crescimento entre 5,5% e 9,5%; Carteira de crédito - Brasil 6,5% e 10,5%; Margem financeira com clientes 5,0% e 9,0%; Margem financeira com o mercado entre R$ 2,5 bi e R$ 5,5 bi; Custo do crédito entre R$ 38,5 bi e R$ 43,5 bi; Receita de prestação de serviços e resultado de seguros 5,0% e 9,0%; Despesas não decorrentes de juros 1,5% e 5,5%; Alíquota efetiva de IR/CS entre 29,5% e 32,5%",
-      "metricas": [
-        {
-          "nome": "Carteira de crédito total",
-          "unidade": "% a/a",
-          "min": 5.5,
-          "max": 9.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Carteira de crédito — Brasil",
-          "unidade": "% a/a",
-          "min": 6.5,
-          "max": 10.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Margem financeira com clientes",
-          "unidade": "% a/a",
-          "min": 5.0,
-          "max": 9.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Margem financeira com o mercado",
-          "unidade": "R$ bi",
-          "min": 2.5,
-          "max": 5.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Custo do crédito",
-          "unidade": "R$ bi",
-          "min": 38.5,
-          "max": 43.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Receita de serviços e resultado de seguros",
-          "unidade": "% a/a",
-          "min": 5.0,
-          "max": 9.0,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Despesas não decorrentes de juros",
-          "unidade": "% a/a",
-          "min": 1.5,
-          "max": 5.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        },
-        {
-          "nome": "Alíquota efetiva de IR/CS",
-          "unidade": "%",
-          "min": 29.5,
-          "max": 32.5,
-          "realizado": null,
-          "situacao": "em_curso"
-        }
-      ],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
-      "acompanhamentos": [
-        {
-          "periodo": "2T26",
-          "tipo": "revisao",
-          "resumo": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'.",
-          "mudancas": [
-            {
-              "metrica": "Receita de serviços e resultado de seguros",
-              "min_novo": 2.0,
-              "max_novo": 5.0
-            }
-          ],
-          "documento": "itau_ag_2t26",
-          "pagina": "p. 9 do documento (PDF 7), 'Projeção 2026' — colunas Original × Atual",
-          "trecho": "Projeção 2026 … Receita de prestação de serviços e resultado de seguros³ | Original: Crescimento entre 5,0% e 9,0% | Atual: Crescimento entre 2,0% e 5,0% … [demais métricas] Atual: Mantido",
-          "status": "aprovado",
-          "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
-        }
-      ]
+     "nome": "Margem Financeira Bruta",
+     "unidade": "R$ bi",
+     "min": 102.0,
+     "max": 105.0,
+     "realizado": 103.1,
+     "situacao": "dentro"
     },
     {
-      "id": "santander_sem_guidance",
-      "banco": "Santander Brasil",
-      "cnpj8": "90400888",
-      "ano": 2025,
-      "tipo": "ausencia_declarada",
-      "aferido_por": "observatorio",
-      "conceito": "AUSÊNCIA DECLARADA — o Santander Brasil não publica guidance quantitativo anual nos seus informes de resultados; o Informe 4T25 (25 páginas) não contém seção de projeções. Ausência não é demérito nem nota: apenas não há promessa numérica a acompanhar.",
-      "documento_guidance": "santander_4t25",
-      "documento_realizado": null,
-      "pagina": "documento completo (25 páginas) — nenhuma seção de projeções/guidance",
-      "trecho": "Verificação por varredura textual do Informe de Resultados 4T25 (BRGAAP): nenhuma ocorrência de 'projeções', 'guidance', 'perspectivas para 2026' ou 'expectativas para 2026'.",
-      "metricas": [],
-      "status": "aprovado",
-      "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+     "nome": "Custo do Crédito",
+     "unidade": "R$ bi",
+     "min": 59.0,
+     "max": 62.0,
+     "realizado": 61.9,
+     "situacao": "dentro",
+     "nota": "no limite superior do intervalo"
+    },
+    {
+     "nome": "Receitas de Prestação de Serviços",
+     "unidade": "R$ bi",
+     "min": 34.5,
+     "max": 36.5,
+     "realizado": 34.8,
+     "situacao": "dentro"
+    },
+    {
+     "nome": "Despesas Administrativas",
+     "unidade": "R$ bi",
+     "min": 38.5,
+     "max": 40.0,
+     "realizado": 38.9,
+     "situacao": "dentro"
+    },
+    {
+     "nome": "Lucro Líquido Ajustado",
+     "unidade": "R$ bi",
+     "min": 18.0,
+     "max": 21.0,
+     "realizado": 20.7,
+     "situacao": "dentro"
     }
-  ]
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+  },
+  {
+   "id": "bb_2026",
+   "banco": "Banco do Brasil",
+   "cnpj8": "00000000",
+   "ano": 2026,
+   "tipo": "guidance_vigente",
+   "aferido_por": "companhia",
+   "conceito": "Mesmos conceitos gerenciais do ciclo 2025; acompanhamento trimestral pelo próprio BB.",
+   "documento_guidance": "bb_4t25",
+   "documento_realizado": null,
+   "pagina": "p. 14 do documento (PDF 16), Figura 2 — Projeções Corporativas 2026",
+   "trecho": "Guidance 2026 — Intervalo entre: Carteira de Crédito 0,5% e 4,5%; Pessoas Físicas 6% e 10%; Empresas -3% e 1%; Agronegócios -2% e 2%; Carteira Sustentável 2% e 6%; Margem Financeira Bruta 4% e 8%; Custo do Crédito R$ 53 e 58 bi; Receitas de Prestação de Serviços 2% e 6%; Despesas Administrativas 5% e 9%; Lucro Líquido Ajustado R$ 22 e 26 bi",
+   "metricas": [
+    {
+     "nome": "Carteira de Crédito",
+     "unidade": "% a/a",
+     "min": 0.5,
+     "max": 4.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Carteira Pessoas Físicas",
+     "unidade": "% a/a",
+     "min": 6.0,
+     "max": 10.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Carteira Empresas",
+     "unidade": "% a/a",
+     "min": -3.0,
+     "max": 1.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Carteira Agronegócios",
+     "unidade": "% a/a",
+     "min": -2.0,
+     "max": 2.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Carteira Sustentável",
+     "unidade": "% a/a",
+     "min": 2.0,
+     "max": 6.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Margem Financeira Bruta",
+     "unidade": "% a/a",
+     "min": 4.0,
+     "max": 8.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Custo do Crédito",
+     "unidade": "R$ bi",
+     "min": 53.0,
+     "max": 58.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Receitas de Prestação de Serviços",
+     "unidade": "% a/a",
+     "min": 2.0,
+     "max": 6.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Despesas Administrativas",
+     "unidade": "% a/a",
+     "min": 5.0,
+     "max": 9.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Lucro Líquido Ajustado",
+     "unidade": "R$ bi",
+     "min": 22.0,
+     "max": 26.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    }
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+   "acompanhamento_pendente": null,
+   "acompanhamentos": [
+    {
+     "periodo": "2T26",
+     "tipo": "revisao",
+     "status": "em_revisao",
+     "resumo": "REVISÃO na divulgação do 2T26 (12/08/2026): Margem Financeira Bruta sobe de 4%–8% para 7%–11%; Custo do Crédito sobe de R$ 53–58 bi para R$ 65–70 bi; Lucro Líquido Ajustado CAI de R$ 22–26 bi para R$ 18–22 bi; as demais sete métricas seguem com os intervalos originais. A Análise do 1T26 (13/05) ainda trazia os intervalos originais — a revisão é deste trimestre. Observado 1S26: Pessoas Físicas (4,4%) e Empresas (-6,4%) abaixo dos intervalos; Agronegócios (4,1%), Carteira Sustentável (8,8%) e Margem Financeira Bruta (12,1%) acima; Carteira total (0,6%) e Serviços (4,9%) dentro; Despesas Administrativas (4,8%) abaixo do piso; Custo do Crédito (R$ 37,3 bi) e Lucro (R$ 7,3 bi) são acumulados semestrais contra intervalos anuais — em curso.",
+     "mudancas": [
+      {
+       "metrica": "Margem Financeira Bruta",
+       "min_novo": 7.0,
+       "max_novo": 11.0,
+       "min_anterior": 4.0,
+       "max_anterior": 8.0,
+       "unidade": "% a/a"
+      },
+      {
+       "metrica": "Custo do Crédito",
+       "min_novo": 65.0,
+       "max_novo": 70.0,
+       "min_anterior": 53.0,
+       "max_anterior": 58.0,
+       "unidade": "R$ bi"
+      },
+      {
+       "metrica": "Lucro Líquido Ajustado",
+       "min_novo": 18.0,
+       "max_novo": 22.0,
+       "min_anterior": 22.0,
+       "max_anterior": 26.0,
+       "unidade": "R$ bi"
+      }
+     ],
+     "realizado_parcial": [
+      {
+       "metrica": "Carteira de Crédito",
+       "valor": 0.6,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Carteira Pessoas Físicas",
+       "valor": 4.4,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Carteira Empresas",
+       "valor": -6.4,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Carteira Agronegócios",
+       "valor": 4.1,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Carteira Sustentável",
+       "valor": 8.8,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Margem Financeira Bruta",
+       "valor": 12.1,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Custo do Crédito",
+       "valor": 37.3,
+       "unidade": "R$ bi acum. 1S26"
+      },
+      {
+       "metrica": "Receitas de Prestação de Serviços",
+       "valor": 4.9,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Despesas Administrativas",
+       "valor": 4.8,
+       "unidade": "% a/a 1S26"
+      },
+      {
+       "metrica": "Lucro Líquido Ajustado",
+       "valor": 7.3,
+       "unidade": "R$ bi acum. 1S26"
+      }
+     ],
+     "documento": "bb_ad_2t26",
+     "pagina": "p. 12 do documento (PDF 14), Figura 1 — Projeções Corporativas 2026 (colunas Intervalo × Observado 1S26)",
+     "trecho": "Figura 1. Projeções Corporativas 2026 — Intervalos: Carteira 0,5% e 4,5%; Pessoas Físicas 6% e 10%; Empresas -3% e 1%; Agronegócios -2% e 2%; Carteira Sustentável 2% e 6%; Margem Financeira Bruta entre 7% e 11%; Custo do Crédito 65 e 70 R$ bilhões; Receitas de Prestação de Serviços 2% e 6%; Despesas Administrativas 5% e 9%; Lucro Líquido Ajustado 18 e 22 R$ bilhões. Observado 1S26: 0,6% · 4,4% · -6,4% · 4,1% · 8,8% · 12,1% · R$ 37,3 bi · 4,9% · 4,8% · R$ 7,3 bi"
+    }
+   ]
+  },
+  {
+   "id": "bradesco_2025",
+   "banco": "Bradesco",
+   "cnpj8": "60746948",
+   "ano": 2025,
+   "tipo": "guidance_x_realizado",
+   "aferido_por": "companhia",
+   "conceito": "Guidance do Bradesco — conceitos gerenciais próprios: Carteira de Crédito Expandida; Margem Financeira Líquida = margem total − despesa de PDD expandida; Despesas Operacionais = pessoal + administrativas + outras.",
+   "documento_guidance": "bradesco_4t25",
+   "documento_realizado": "bradesco_4t25",
+   "pagina": "p. 28 do documento (PDF 28), seção 'guidance, indicadores & perspectivas econômicas'",
+   "trecho": "'A tabela a seguir demonstra o resultado alcançado em 2025 e nossas estimativas para o ano de 2026.' — 2025: Carteira de Crédito Expandida 4% a 8% | Realizado 12M25 x 12M24 11,0%; Margem Financeira Líquida R$ 37 bi a R$ 41 bi | R$ 40 bi; Receitas de Prestação de Serviços 5% a 9% | 8,9%; Despesas Operacionais 5% a 9% | 8,5%; Resultado das Operações de Seguros 9% a 13% | 16,1%",
+   "metricas": [
+    {
+     "nome": "Carteira de Crédito Expandida",
+     "unidade": "% a/a",
+     "min": 4.0,
+     "max": 8.0,
+     "realizado": 11.0,
+     "situacao": "acima"
+    },
+    {
+     "nome": "Margem Financeira Líquida",
+     "unidade": "R$ bi",
+     "min": 37.0,
+     "max": 41.0,
+     "realizado": 40.0,
+     "situacao": "dentro"
+    },
+    {
+     "nome": "Receitas de Prestação de Serviços",
+     "unidade": "% a/a",
+     "min": 5.0,
+     "max": 9.0,
+     "realizado": 8.9,
+     "situacao": "dentro"
+    },
+    {
+     "nome": "Despesas Operacionais",
+     "unidade": "% a/a",
+     "min": 5.0,
+     "max": 9.0,
+     "realizado": 8.5,
+     "situacao": "dentro"
+    },
+    {
+     "nome": "Resultado de Seguros, Previdência e Capitalização",
+     "unidade": "% a/a",
+     "min": 9.0,
+     "max": 13.0,
+     "realizado": 16.1,
+     "situacao": "acima"
+    }
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+  },
+  {
+   "id": "bradesco_2026",
+   "banco": "Bradesco",
+   "cnpj8": "60746948",
+   "ano": 2026,
+   "tipo": "guidance_vigente",
+   "aferido_por": "companhia",
+   "conceito": "Mesmos conceitos gerenciais do ciclo 2025.",
+   "documento_guidance": "bradesco_4t25",
+   "documento_realizado": null,
+   "pagina": "p. 28 do documento (PDF 28), coluna 2026",
+   "trecho": "2026 — Indicador Anual: Carteira de Crédito Expandida 8,5% a 10,5%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi; Receitas de Prestação de Serviços 3% a 5%; Despesas Operacionais 6% a 8%; Resultado das Operações de Seguros 6% a 8%",
+   "metricas": [
+    {
+     "nome": "Carteira de Crédito Expandida",
+     "unidade": "% a/a",
+     "min": 8.5,
+     "max": 10.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Margem Financeira Líquida",
+     "unidade": "R$ bi",
+     "min": 42.0,
+     "max": 48.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Receitas de Prestação de Serviços",
+     "unidade": "% a/a",
+     "min": 3.0,
+     "max": 5.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Despesas Operacionais",
+     "unidade": "% a/a",
+     "min": 6.0,
+     "max": 8.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Resultado de Seguros, Previdência e Capitalização",
+     "unidade": "% a/a",
+     "min": 6.0,
+     "max": 8.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    }
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+   "acompanhamentos": [
+    {
+     "periodo": "2T26",
+     "tipo": "acompanhamento",
+     "resumo": "Guidance 2026 integralmente MANTIDO; o próprio Bradesco publica o realizado 1S26×1S25 ao lado dos intervalos anuais: carteira expandida 11,6%, margem financeira líquida R$ 21,3 bi no semestre, serviços 3,9%, despesas operacionais 5,5%, seguros 14,1%. Ritmo semestral NÃO é resultado anual — nenhuma aferição antes do fechamento do ciclo.",
+     "realizado_parcial": [
+      {
+       "metrica": "Carteira de Crédito Expandida",
+       "valor": 11.6,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Margem Financeira Líquida",
+       "valor": 21.3,
+       "unidade": "R$ bi no 1S26"
+      },
+      {
+       "metrica": "Receitas de Prestação de Serviços",
+       "valor": 3.9,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Despesas Operacionais",
+       "valor": 5.5,
+       "unidade": "% 1S26/1S25"
+      },
+      {
+       "metrica": "Resultado de Seguros, Previdência e Capitalização",
+       "valor": 14.1,
+       "unidade": "% 1S26/1S25"
+      }
+     ],
+     "documento": "bradesco_rel_2t26",
+     "pagina": "p. 24 do documento (PDF 24), 'Guidance, Indicadores & Perspectivas Econômicas'",
+     "trecho": "Guidance Anual | Realizado 1S26 x 1S25: Carteira de Crédito Expandida 8,5% a 10,5% Mantido 11,6%; Margem Financeira Líquida R$ 42 bi a R$ 48 bi Mantido R$ 21,3; Receitas de Prestação de Serviços 3% a 5% Mantido 3,9%; Despesas Operacionais 6% a 8% Mantido 5,5%; Resultado das Operações de Seguros 6% a 8% Mantido 14,1%",
+     "status": "aprovado",
+     "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
+    }
+   ]
+  },
+  {
+   "id": "itau_2025",
+   "banco": "Itaú Unibanco",
+   "cnpj8": "60872504",
+   "ano": 2025,
+   "tipo": "guidance_x_realizado",
+   "aferido_por": "observatorio",
+   "conceito": "Projeções 2025 do Itaú (consolidado, critério Res. 4.966), divulgadas na Análise Gerencial 4T24. O Itaú não publica a reconciliação anual na Análise Gerencial: o realizado vem das linhas da MESMA DRE gerencial do 4T25 ('2025' × '2024', base original pré-reclassificações de 2026), com fórmula declarada por métrica — pareamento do Observatório sobre números da própria companhia.",
+   "documento_guidance": "itau_4t24",
+   "documento_realizado": "itau_4t25",
+   "pagina": "guidance: p. 09 do documento 4T24 (PDF 7), 'Projeções 2025'; realizado: p. 7 do documento 4T25 (PDF 5), DRE e carteira, e p. 28 (PDF 26), coluna '2025 Original'",
+   "trecho": "Projeções 2025 — Consolidado (critério Res. 4.966): Carteira de crédito total crescimento entre 4,5% e 8,5%; Margem financeira com clientes 7,5% e 11,5%; Margem financeira com o mercado R$ 1,0 bi e R$ 3,0 bi; Custo do crédito R$ 34,5 bi e R$ 38,5 bi; Receita de serviços e resultado de seguros 4,0% e 7,0%; Despesas não decorrentes de juros 5,5% e 8,5%; Alíquota efetiva de IR/CS 27,0% e 29,0%. Realizado (DRE 4T25): margem clientes 121.128 vs 108.024 (+12,1%); margem mercado 3.280; custo do crédito 36.611; DNDJ 66.762 vs 62.108 (+7,5%); carteira total com garantias e títulos privados 1.490,8 vs 1.406,4 (+6,0%).",
+   "metricas": [
+    {
+     "nome": "Carteira de crédito total",
+     "unidade": "% a/a",
+     "min": 4.5,
+     "max": 8.5,
+     "realizado": 6.0,
+     "situacao": "dentro",
+     "formula": "total com garantias financeiras prestadas e títulos privados, 4T25 ÷ 4T24 (1.490,8 ÷ 1.406,4)"
+    },
+    {
+     "nome": "Margem financeira com clientes",
+     "unidade": "% a/a",
+     "min": 7.5,
+     "max": 11.5,
+     "realizado": 12.1,
+     "situacao": "acima",
+     "formula": "DRE gerencial 12M25 ÷ 12M24 (121.128 ÷ 108.024)"
+    },
+    {
+     "nome": "Margem financeira com o mercado",
+     "unidade": "R$ bi",
+     "min": 1.0,
+     "max": 3.0,
+     "realizado": 3.3,
+     "situacao": "acima",
+     "formula": "DRE gerencial 12M25 (R$ 3.280 mi)"
+    },
+    {
+     "nome": "Custo do crédito",
+     "unidade": "R$ bi",
+     "min": 34.5,
+     "max": 38.5,
+     "realizado": 36.6,
+     "situacao": "dentro",
+     "formula": "DRE gerencial 12M25 (R$ 36.611 mi)"
+    },
+    {
+     "nome": "Receita de serviços e resultado de seguros",
+     "unidade": "% a/a",
+     "min": 4.0,
+     "max": 7.0,
+     "realizado": 6.3,
+     "situacao": "dentro",
+     "formula": "(serviços 46.891 + seguros 13.093 − sinistros 1.658 − comercialização 22) ÷ (45.110 + 11.401 − 1.615 − 30) − 1"
+    },
+    {
+     "nome": "Despesas não decorrentes de juros",
+     "unidade": "% a/a",
+     "min": 5.5,
+     "max": 8.5,
+     "realizado": 7.5,
+     "situacao": "dentro",
+     "formula": "DRE gerencial 12M25 ÷ 12M24 (66.762 ÷ 62.108)"
+    },
+    {
+     "nome": "Alíquota efetiva de IR/CS",
+     "unidade": "%",
+     "min": 27.0,
+     "max": 29.0,
+     "realizado": 29.7,
+     "situacao": "acima",
+     "formula": "IR/CS 20.396 ÷ resultado antes da tributação e part. minoritárias 68.569 — cálculo do Observatório; a aferição da companhia pode diferir (base de cálculo própria)",
+     "nota": "marginal e sensível à fórmula — tratar com cautela extra na revisão"
+    }
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+  },
+  {
+   "id": "itau_2026",
+   "banco": "Itaú Unibanco",
+   "cnpj8": "60872504",
+   "ano": 2026,
+   "tipo": "guidance_vigente",
+   "aferido_por": "companhia",
+   "conceito": "Guidance 2026 sobre a DRE ajustada ('Base para Guidance': reclassificações de bandeira/antecipação/descontos + consolidação da Avenue) — base DIFERENTE da usada no ciclo 2025, declarada pelo próprio Itaú. No 1T26: 'Mantivemos inalteradas nossas projeções para 2026'.",
+   "documento_guidance": "itau_4t25",
+   "documento_realizado": null,
+   "pagina": "p. 29 do documento 4T25 (PDF 27), 'Projeção 2026'; manutenção: p. 9 do documento 1T26 (PDF 7)",
+   "trecho": "Guidance 2026: Carteira de crédito total crescimento entre 5,5% e 9,5%; Carteira de crédito - Brasil 6,5% e 10,5%; Margem financeira com clientes 5,0% e 9,0%; Margem financeira com o mercado entre R$ 2,5 bi e R$ 5,5 bi; Custo do crédito entre R$ 38,5 bi e R$ 43,5 bi; Receita de prestação de serviços e resultado de seguros 5,0% e 9,0%; Despesas não decorrentes de juros 1,5% e 5,5%; Alíquota efetiva de IR/CS entre 29,5% e 32,5%",
+   "metricas": [
+    {
+     "nome": "Carteira de crédito total",
+     "unidade": "% a/a",
+     "min": 5.5,
+     "max": 9.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Carteira de crédito — Brasil",
+     "unidade": "% a/a",
+     "min": 6.5,
+     "max": 10.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Margem financeira com clientes",
+     "unidade": "% a/a",
+     "min": 5.0,
+     "max": 9.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Margem financeira com o mercado",
+     "unidade": "R$ bi",
+     "min": 2.5,
+     "max": 5.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Custo do crédito",
+     "unidade": "R$ bi",
+     "min": 38.5,
+     "max": 43.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Receita de serviços e resultado de seguros",
+     "unidade": "% a/a",
+     "min": 5.0,
+     "max": 9.0,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Despesas não decorrentes de juros",
+     "unidade": "% a/a",
+     "min": 1.5,
+     "max": 5.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    },
+    {
+     "nome": "Alíquota efetiva de IR/CS",
+     "unidade": "%",
+     "min": 29.5,
+     "max": 32.5,
+     "realizado": null,
+     "situacao": "em_curso"
+    }
+   ],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)",
+   "acompanhamentos": [
+    {
+     "periodo": "2T26",
+     "tipo": "revisao",
+     "resumo": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'.",
+     "mudancas": [
+      {
+       "metrica": "Receita de serviços e resultado de seguros",
+       "min_novo": 2.0,
+       "max_novo": 5.0
+      }
+     ],
+     "documento": "itau_ag_2t26",
+     "pagina": "p. 9 do documento (PDF 7), 'Projeção 2026' — colunas Original × Atual",
+     "trecho": "Projeção 2026 … Receita de prestação de serviços e resultado de seguros³ | Original: Crescimento entre 5,0% e 9,0% | Atual: Crescimento entre 2,0% e 5,0% … [demais métricas] Atual: Mantido",
+     "status": "aprovado",
+     "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação da rodada 2T26)"
+    }
+   ]
+  },
+  {
+   "id": "santander_sem_guidance",
+   "banco": "Santander Brasil",
+   "cnpj8": "90400888",
+   "ano": 2025,
+   "tipo": "ausencia_declarada",
+   "aferido_por": "observatorio",
+   "conceito": "AUSÊNCIA DECLARADA — o Santander Brasil não publica guidance quantitativo anual nos seus informes de resultados; o Informe 4T25 (25 páginas) não contém seção de projeções. Ausência não é demérito nem nota: apenas não há promessa numérica a acompanhar.",
+   "documento_guidance": "santander_4t25",
+   "documento_realizado": null,
+   "pagina": "documento completo (25 páginas) — nenhuma seção de projeções/guidance",
+   "trecho": "Verificação por varredura textual do Informe de Resultados 4T25 (BRGAAP): nenhuma ocorrência de 'projeções', 'guidance', 'perspectivas para 2026' ou 'expectativas para 2026'.",
+   "metricas": [],
+   "status": "aprovado",
+   "revisor": "proprietário (revisão em sessão Claude Code, 12/08/2026 — aprovação integral dos 7 ciclos)"
+  }
+ ]
 }
