@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.73.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.74.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1999,7 +1999,9 @@ function renderPix() {
      A mudança: funcionalidades subiu para junto de natureza (ambos são "como
      se paga"), e a geografia desceu para junto dos setores (ambos são "para
      onde vai"). MED e infraestrutura fecham, antes da metodologia. */
-  el.innerHTML = head + sintese + kpis + evol + versus + quem + natureza + func + epae + epaeMatriz + geog + medS + infra + metodo;
+  el.innerHTML = head + sintese + kpis
+    + subnavFixa([["#px-evol", "Evolução"], ["#px-versus", "Comparados"], ["#px-quem", "Quem usa"], ["#px-natureza", "Natureza"], ["#px-func", "Funcionalidades"], ["#px-epae", "Setores"], ["#px-geo", "Geografia"], ["#px-med", "Segurança (MED)"], ["#px-infra", "SPI"]])
+    + secWrap("px-evol", evol) + secWrap("px-versus", versus) + secWrap("px-quem", quem) + secWrap("px-natureza", natureza) + secWrap("px-func", func) + secWrap("px-epae", epae + epaeMatriz) + secWrap("px-geo", geog) + secWrap("px-med", medS) + secWrap("px-infra", infra) + metodo;
 }
 window.pxCSV = () => {
   const X = state.data.pix; if (!X || !X.disponivel) return;
@@ -3131,6 +3133,20 @@ window.pvSave = () => {
 window.pvLoad = i => { const vx = loadLS("obc_views_url", [])[parseInt(i, 10)]; if (vx) location.href = vx.url; };
 function sechead(title, right) {
   return `<div class="sechead"><h3>${title}</h3>${right ? `<span class="seesub">${right}</span>` : ""}</div>`;
+}
+
+/* ---------- kit dos dossiês (P1 da auditoria de 12/08) ----------
+   Três componentes de FORMA para páginas longas fortes em conteúdo:
+   subnav fixa (mesmo padrão da ficha de IF), seção ancorada e placar de
+   abertura — os números-tese da página em cinco segundos, cada um
+   linkando à sua seção. */
+function subnavFixa(itens) {
+  return `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap">
+    ${itens.map(([a, l]) => `<a class="btn ghost small" href="javascript:void(0)" onclick="var n=document.querySelector('${a}'); n && n.scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
+}
+const secWrap = (id, html) => html ? `<section id="${id}">${html}</section>` : "";
+function placar(itens) {
+  return `<div class="kpirow">${itens.filter(i => i && i.v != null).map(i => `<div class="card kpi${i.href ? " clickable" : ""}"${i.href ? ` onclick="var n=document.querySelector('${i.href}'); n && n.scrollIntoView({behavior:'smooth'})"` : ""}><h4>${i.l}</h4><div class="big" style="font-size:22px">${i.v}</div><div class="src">${i.sub || ""}</div></div>`).join("")}</div>`;
 }
 
 window.ovSaveView = () => {
@@ -5928,10 +5944,12 @@ function alertaCard(a) {
     a.fonte ? `fonte ${a.fonte}` : null,
     a.evidencia_persistencia ? `persistência: ${a.evidencia_persistencia}` : null,
   ].filter(Boolean).join(" · ");
+  const spark = (a.serie_recente && a.serie_recente.length > 3)
+    ? `<span style="float:right;margin-left:8px" title="últimos ${a.serie_recente.length} meses da série do alerta">${sparkline(a.serie_recente.map(p => p.v), 130, 28)}</span>` : "";
   return `<div class="alert ${nivel}" style="${apagado ? "opacity:.5" : ""}">
     <div class="alcab">
       <div>
-        <span class="lvl">${a.nivel ? NIVEL_LABEL[a.nivel] || a.nivel : "sem nível declarado"}</span>
+        ${spark}<span class="lvl">${a.nivel ? NIVEL_LABEL[a.nivel] || a.nivel : "sem nível declarado"}</span>
         <b>${a.titulo}</b>
         ${a.recorrente ? ` <span class="qbadge q-mid" title="${attr(a.evidencia_persistencia || "")}">recorrente</span>` : ""}
       </div>
@@ -6831,7 +6849,9 @@ function renderBets() {
     <p class="src" style="margin-top:8px">Rastreabilidade completa (instituição, URL, período, população, limitações e confiabilidade de cada fonte): <b>FONTES_BETS.md</b>, <b>METODOLOGIA_BETS.md</b> e <b>DICIONARIO_DADOS_BETS.md</b> no repositório. Processo de atualização: ${B.atualizacao?.processo}. Próxima atualização esperada: ${B.atualizacao?.proxima_esperada}.</p>
   </div>`;
 
-  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + quem + "<hr class='sep'>" + vuln + "<hr class='sep'>" + explorer + "<hr class='sep'>" + auto + ilegal + epaeCard + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
+  el.innerHTML = head + kpis
+    + subnavFixa([["#bt-chain", "Canais de risco"], ["#bt-dim", "Mercado regulado"], ["#bt-quem", "Quem aposta"], ["#bt-vuln", "Vulnerabilidade"], ["#bt-exp", "Bets × crédito"], ["#bt-auto", "Autoexclusão"], ["#bt-ileg", "Mercado ilegal"], ["#bt-est", "Evidências"], ["#bt-tl", "Linha do tempo"], ["#bt-met", "Metodologia"]])
+    + secWrap("bt-chain", chain) + "<hr class='sep'>" + secWrap("bt-dim", dim) + "<hr class='sep'>" + secWrap("bt-quem", quem) + "<hr class='sep'>" + secWrap("bt-vuln", vuln) + "<hr class='sep'>" + secWrap("bt-exp", explorer) + "<hr class='sep'>" + secWrap("bt-auto", auto) + secWrap("bt-ileg", ilegal + epaeCard) + "<hr class='sep'>" + secWrap("bt-est", estudos) + "<hr class='sep'>" + secWrap("bt-tl", tl) + secWrap("bt-met", met);
 }
 
 /* ================= FRAUDES FINANCEIRAS E RISCO DE CRÉDITO ================= */
@@ -7112,7 +7132,9 @@ function renderFraudes() {
     <div class="src" style="margin-top:8px">${F.links_apoio?.nota} · <a href="${F.links_apoio?.med?.url}" target="_blank" rel="noopener">${F.links_apoio?.med?.rotulo}</a> · <a href="${F.links_apoio?.celular_seguro?.url}" target="_blank" rel="noopener">${F.links_apoio?.celular_seguro?.rotulo}</a> · <a href="${F.links_apoio?.consumidor?.url}" target="_blank" rel="noopener">${F.links_apoio?.consumidor?.rotulo}</a></div>
   </div>`;
 
-  el.innerHTML = head + kpis + "<hr class='sep'>" + chain + "<hr class='sep'>" + dim + "<hr class='sep'>" + tipos + "<hr class='sep'>" + quem + sub + "<hr class='sep'>" + explorer + "<hr class='sep'>" + mit + "<hr class='sep'>" + estudos + "<hr class='sep'>" + tl + met;
+  el.innerHTML = head + kpis
+    + subnavFixa([["#fr-chain", "Como chega ao crédito"], ["#fr-dim", "Dimensão"], ["#fr-tipos", "Tipos de golpe"], ["#fr-quem", "Quem sofre"], ["#fr-exp", "Explorador"], ["#fr-mit", "Mitigação"], ["#fr-est", "Evidências"], ["#fr-tl", "Linha do tempo"], ["#fr-met", "Metodologia"]])
+    + secWrap("fr-chain", chain) + "<hr class='sep'>" + secWrap("fr-dim", dim) + "<hr class='sep'>" + secWrap("fr-tipos", tipos) + "<hr class='sep'>" + secWrap("fr-quem", quem + sub) + "<hr class='sep'>" + secWrap("fr-exp", explorer) + "<hr class='sep'>" + secWrap("fr-mit", mit) + "<hr class='sep'>" + secWrap("fr-est", estudos) + "<hr class='sep'>" + secWrap("fr-tl", tl) + secWrap("fr-met", met);
 }
 
 /* ================= TAXAS DE JUROS POR MODALIDADE × IF ================= */
@@ -8121,7 +8143,12 @@ function renderConsignado() {
     title: "Consignado, Previdência e Envelhecimento",
     desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante — separando o que é observado do que é estimado.",
     fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
-  }) + indice + geral + mapa + avisoFonte + idade + prev
+  }) + ((D.sgs && D.sgs.atual && D.sgs.atual.inss && D.sgs.atual.privado) ? placar([
+    { v: fmt.n(D.sgs.atual.inss.inad, 2) + "%", l: "Inadimplência — consignado INSS", sub: `SGS · ${D.sgs.data_base}`, href: "#cg-geral" },
+    { v: fmt.n(D.sgs.atual.privado.inad, 2) + "%", l: "Inadimplência — consignado privado", sub: `${fmt.n(D.sgs.atual.privado.inad / D.sgs.atual.inss.inad, 1)}× a do INSS, no mesmo conceito SGS`, href: "#cg-geral" },
+    D.reclamacoes && D.reclamacoes.total ? { v: fmt.n0(D.reclamacoes.total), l: "Reclamações de beneficiários INSS", sub: `${D.reclamacoes.de} a ${D.reclamacoes.ate}`, href: "#cg-idade" } : null,
+    D.sgs.atual.total && D.sgs.atual.total.saldo ? { v: fmt.money(D.sgs.atual.total.saldo * 1e6), l: "Carteira total do consignado", sub: "INSS + privado + público", href: "#cg-geral" } : null,
+  ]) : "") + indice + geral + mapa + avisoFonte + idade + prev
     + cgExposicao(D) + cgCircularidade(D) + cgSaturacao(D, base)
     + cgRisco(D, base) + cgInstituicoes(D)
     + cgPerfil(D, sel, comparar) + cgMetodo(D);
@@ -9165,7 +9192,9 @@ function renderOperacional() {
     desc: D.subtitulo,
     vintage: atual.mes ? fmt.my(atual.mes) : null,
     fontes: "CVM/FRE · CVM/FCA · BCB/ESTBAN",
-  }) + aviso + kpis + tRede + tPontos + tCorr + tPresenca + tFolha + tEmp + tCli + tTi + tRem + tAud + tFlags + cob + fontes;
+  }) + aviso + kpis
+    + subnavFixa([["#op-rede", "Rede"], ["#op-pontos", "Pontos BC"], ["#op-corr", "Correspondentes"], ["#op-pres", "Presença"], ["#op-folha", "Folha"], ["#op-gente", "Gente"], ["#op-cli", "Clientes"], ["#op-ti", "TI"], ["#op-rem", "Remuneração"], ["#op-aud", "Auditoria"]])
+    + secWrap("op-rede", tRede) + secWrap("op-pontos", tPontos) + secWrap("op-corr", tCorr) + secWrap("op-pres", tPresenca) + secWrap("op-folha", tFolha) + secWrap("op-gente", tEmp) + secWrap("op-cli", tCli) + secWrap("op-ti", tTi) + secWrap("op-rem", tRem) + secWrap("op-aud", tAud) + tFlags + cob + fontes;
 }
 
 /* Página por município: a resposta à pergunta local — "que atendimento

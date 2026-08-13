@@ -702,3 +702,20 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 5. **Placeholders fora de produção**: promessa "fase 2" do mapa municipal
    do Pix removida; menu "Relatórios" renomeado para "Perguntas rápidas"
    (o conteúdo é o assistente de consultas determinísticas).
+
+## 28. Kit visual dos dossiês (P1 nº 3 da auditoria)
+
+- Três componentes de FORMA reutilizáveis: `subnavFixa` (padrão da ficha de
+  IF), `secWrap` (seção ancorada) e `placar` (números-tese da página em
+  cinco segundos, cada um linkando à sua seção; valores sempre do gold,
+  nunca fixos no código).
+- Aplicados: Pix (9 seções ancoradas + subnav), Indicadores operacionais
+  (10), Bets (10), Fraudes (9), Consignado (placar de abertura: inad INSS ×
+  privado com o múltiplo calculado, reclamações, carteira total). Moradia e
+  Consignado já tinham índice próprio de capítulos.
+- Alertas com contexto: cada alerta macro carrega `serie_recente` (24 meses
+  da própria série, embutidos pelo pipeline) e a Central exibe o sparkline
+  no cartão — um Δ sem a curva ao lado induz leitura sem contexto. Os
+  sparklines materializam no ciclo diário seguinte.
+- Invariante de arco narrativo do Pix atualizado no teste: a ordem dos
+  capítulos agora é verificada pela sequência das seções ancoradas.
