@@ -139,6 +139,31 @@ def build(con):
             ({"cnpj8": c, "nome": nv[1], "vezes": nv[0], "de": len(recentes)} for c, nv in contagem.items()),
             key=lambda x: -x["vezes"])[:5]
 
+        # bump: posição das 10 mais baratas da janela atual ao longo das últimas
+        # 12 janelas mensais (P2 da auditoria de 12/08 — persistência vira imagem).
+        # Janela sem a IF fica None: ausência nunca vira posição interpolada.
+        meses_bump = sorted(por_mes.items())[-12:]
+        bump = None
+        if len(meses_bump) >= 4:
+            itens_bump = []
+            for r in ranking[:10]:
+                cnpj8 = r["cnpj8"]
+                ranks, vals = [], []
+                for _, j in meses_bump:
+                    jan = por_janela[j]
+                    if cnpj8 in jan:
+                        ordenado = sorted(jan.items(), key=lambda kv: kv[1][2])
+                        ranks.append(next(i for i, (c2, _) in enumerate(ordenado, 1) if c2 == cnpj8))
+                        vals.append(round(jan[cnpj8][2], 2))
+                    else:
+                        ranks.append(None)
+                        vals.append(None)
+                itens_bump.append({"cnpj8": cnpj8, "label": r["nome"], "ranks": ranks, "vals": vals})
+            bump = {"periodos": [m for m, _ in meses_bump], "itens": itens_bump,
+                    "nota": ("Posição no ranking da última janela de cada mês (taxa % a.a. entre parênteses). "
+                            "Posições calculadas sobre TODAS as IFs da janela — a lista mostra as 10 mais "
+                            "baratas hoje; mês sem divulgação da IF fica em branco, nunca interpolado.")}
+
         chave_scr = ("PF", "Cheque especial") if mod.startswith("Cheque especial") and seg == "PESSOA FÍSICA" else \
                     ("PJ", "Cheque especial") if mod.startswith("Cheque especial") else MOD_PRODUTO_SCR.get(mod)
         cart = carteira.get(chave_scr) if chave_scr else None
@@ -151,7 +176,7 @@ def build(con):
                                             (seg, mod, ultima)).fetchone() or [None])[0]},
             "stats": st, "spread_selic": round(st["mediana"] - selic, 2) if selic is not None else None,
             "delta_3m": (round(serie[-1]["mediana"] - serie[-4]["mediana"], 2) if len(serie) >= 4 else None),
-            "ranking": ranking, "serie_mensal": serie, "persistentes": persistentes,
+            "ranking": ranking, "serie_mensal": serie, "persistentes": persistentes, "bump": bump,
             "carteira_scr": ({"produto": chave_scr[1], "cliente": chave_scr[0], **cart, "data_base": scr_ultima}
                              if cart else None),
         })

@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.80.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.81.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1246,6 +1246,29 @@ function renderTrends() {
   const aviso = `<div class="note" style="margin-top:12px"><b>Leia antes de interpretar:</b> ${T.disclaimer}
     ${M.diagnostico ? "" : ""} <br><span class="src">${T.licenca} · Configuração: ${M.config} · Último mês completo: jun/2026; <b>jul/2026 é mês parcial</b> e fica fora de todas as comparações. Arquivo auditável (SHA-256 ${M.sha256_arquivo.slice(0, 12)}…), com hash por CSV de origem na aba de dados originais.</span></div>`;
 
+  /* ---------- 0. as 3 anomalias do mês (P2 da auditoria: o painel se
+     auto-resume — tudo tinha o mesmo peso e o leitor precisava achar a
+     anomalia; agora ela abre a página, com a régua publicada ao lado) ---------- */
+  const anom = [...painel].filter(p => p.z != null)
+    .sort((a, b) => Math.abs(b.z) - Math.abs(a.z)).slice(0, 3);
+  const anomCard = p => {
+    const S = T.series[p.termo];
+    const pts = S ? S.obs.slice(-36).map(o => ({ x: o.p, y: o.v })) : [];
+    return `<div class="card">
+      <h4 style="display:flex;justify-content:space-between;gap:8px"><span><b>${p.termo}</b> <span class="src">· ${p.familia}</span></span>
+        <span class="${p.z > 0 ? "up" : "down"}" style="font-variant-numeric:tabular-nums"><b>z=${fmt.pp(p.z)}</b></span></h4>
+      <div class="src">percentil ${fmt.n(p.percentil, 0)} da própria história · 12m ${fmt.pp(p.var12m).replace(",00", "")}% · ${p.direcao}</div>
+      ${pts.length ? lineChart({ series: [{ pts, label: p.termo, color: TR_FAM_COLORS[p.familia] }], h: 90, unit: "índice 0–100 (escala própria)", aria: `anomalia: ${p.termo}` }) : ""}
+    </div>`;
+  };
+  const anomalias = sechead("As 3 anomalias do mês", "maior distância da média histórica de cada termo · jun/2026") +
+    `<div class="grid g3">${anom.map(anomCard).join("")}</div>
+    <p class="src" style="margin-top:6px"><b>Régua declarada:</b> anomalia = |z-score| do índice de jun/2026 contra a média e o desvio da história do PRÓPRIO termo (2011–2026, mês parcial excluído). Níveis entre termos nunca são comparáveis — a anomalia é sempre relativa à história de cada um. As seções completas seguem abaixo, colapsadas.</p>`;
+  // seções pesadas ficam sob <details>: o painel tinha 22 gráficos e 25 tabelas
+  // com o mesmo peso visual — a página agora se auto-resume e o detalhe é opt-in
+  const dobra = (titulo, sub, html) => `<details class="trsec" style="margin-top:16px">
+    <summary style="cursor:pointer;padding:10px 0"><b>${titulo}</b> <span class="src">· ${sub}</span></summary>${html}</details>`;
+
   /* ---------- 1. hero: temperatura por família ---------- */
   const famCard = f => {
     const chip = f.temperatura === "AQUECIDA" ? "hot" : (f.temperatura.includes("parcial") ? "warm" : "cool");
@@ -1387,7 +1410,14 @@ function renderTrends() {
     <div class="src" style="margin-top:8px">${M.notas_painel || ""}</div>
     <div class="src" style="margin-top:6px">${M.registro_lotes || ""}</div></div>`;
 
-  el.innerHTML = head + aviso + hero + destaques + heat + grid + rank + quad + saz + lags + cat;
+  el.innerHTML = head + aviso + anomalias + hero + destaques
+    + dobra("Mapa de calor — 36 meses", "z-score por termo, mês a mês", heat)
+    + dobra("Termo a termo — 2011 a hoje", "21 séries completas com filtro por família", grid)
+    + dobra("Variação em 12 meses", "todos os termos, barras divergentes", rank)
+    + dobra("Nível × aceleração", "quem está alto E ganhando tração", quad)
+    + dobra("Sazonalidade", "em que mês cada busca esquenta", saz)
+    + lags
+    + dobra("Catálogo, qualidade e limitações", "termos usados, excluídos e a licença", cat);
 }
 window.trCSV = () => {
   const T = state.data.trends; if (!T || !T.disponivel) return;
@@ -2261,6 +2291,8 @@ function renderPanorama() {
   el.innerHTML = head + sintese + kpis +
     sechead("Mapa do crédito", `colorido por ${M.l.toLowerCase()} · ${M.desc}`) +
     `<div class="pan-2col"><div>${mapa}</div>${painel}</div>` +
+    ponte("Os mesmos lugares no nível municipal — Penetração & Gap", "penetracao", null,
+      "muda o universo: lá o saldo é o contabilizado nas dependências de cada município (ESTBAN), não a carteira dos residentes por UF (SCR)") +
     comparacao + perfil + alertas + exp + metodo;
 }
 
@@ -3145,6 +3177,19 @@ function subnavFixa(itens) {
     ${itens.map(([a, l]) => `<a class="btn ghost small" href="javascript:void(0)" onclick="var n=document.querySelector('${a}'); n && n.scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
 }
 const secWrap = (id, html) => html ? `<section id="${id}">${html}</section>` : "";
+/* ponte entre painéis irmãos (P2 da auditoria: "o produto tem as pontas;
+   faltam as pontes"): link contextual que navega e, se houver âncora, desce
+   até a seção — o texto diz o que muda de universo, nunca só "ver mais" */
+window.ponteIr = (view, anchor) => {
+  nav(view);
+  if (anchor) setTimeout(() => {
+    const n = document.getElementById(anchor);
+    if (n) n.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, 350);
+};
+const ponte = (texto, view, anchor, nota) => `<div class="note" style="display:flex;gap:10px;align-items:baseline;flex-wrap:wrap">
+  <a href="javascript:void(0)" onclick="ponteIr('${view}'${anchor ? `,'${anchor}'` : ""})"><b>${texto} →</b></a>
+  ${nota ? `<span class="src">${nota}</span>` : ""}</div>`;
 function placar(itens) {
   return `<div class="kpirow">${itens.filter(i => i && i.v != null).map(i => `<div class="card kpi${i.href ? " clickable" : ""}"${i.href ? ` onclick="var n=document.querySelector('${i.href}'); n && n.scrollIntoView({behavior:'smooth'})"` : ""}><h4>${i.l}</h4><div class="big" style="font-size:22px">${i.v}</div><div class="src">${i.sub || ""}</div></div>`).join("")}</div>`;
 }
@@ -3983,6 +4028,7 @@ function renderSectors() {
 }
 
 function renderExposuresSection() {
+  // section ancorada: destino das pontes vindas de PGFN e RJ
   const ex = state.data.exposures;
   if (!ex || !ex.ok) return "";
   const nice = s => s.replace(/_/g, " ").replace(/\b\w/, c => c.toUpperCase()).slice(0, 46);
@@ -3994,13 +4040,15 @@ function renderExposuresSection() {
       <td>${s.top_exposicao_relativa.slice(0, 3).map(i => `<span class="clickable" onclick="nav('institutions')">${i.nome.slice(0, 18)}</span> (${i.share_da_propria_carteira_pj_pct}% da própria carteira PJ)`).join("<br>")}</td>
     </tr>`).join("");
   return `
+  <section id="sec-exposicoes">
   <h3>Exposição do sistema bancário por setor (CNAE) ${badge("observado")}</h3>
   <p class="viewdesc">Carteira PJ real por atividade econômica, agregada das instituições que reportam o detalhamento (IF.data ${ex.anomes}). Participação PME no sistema: <b>${ex.pme_share_sistema_pct}%</b> (micro+pequena / carteira PJ classificada por porte).</p>
   <div class="tblwrap"><table class="data"><thead><tr><th>Setor (CNAE, 9 grupos)</th><th>Carteira do sistema</th><th>Maiores credores (volume)</th><th>Maior exposição relativa</th></tr></thead><tbody>${rows}</tbody></table></div>
   <div class="note"><b>Método:</b> ${ex.metodo}<br><b>Limitações:</b> ${ex.limitacoes}</div>
   <h3>Crédito a micro e pequenas empresas — participação na carteira PJ ${badge("observado")}</h3>
   <div class="grid g2"><div class="card">${ex.ranking_pme.slice(0, 10).map(x => `<div class="contrib"><span class="lbl" style="width:210px">${x.nome.slice(0, 30)}</span><span class="bar pos" style="width:${x.pme_share_pct}px"></span><span class="num">${x.pme_share_pct}% <span class="src">(PJ ${fmt.money(x.carteira_pj_brl)})</span></span></div>`).join("")}
-  <div class="src">apenas carteiras PJ ≥ R$ 1 bi · fonte IF.data ${ex.anomes}</div></div></div>`;
+  <div class="src">apenas carteiras PJ ≥ R$ 1 bi · fonte IF.data ${ex.anomes}</div></div></div>
+  </section>`;
 }
 
 
@@ -4195,6 +4243,8 @@ function renderRJ() {
     desc: "Ajuizamentos reais (CNJ/DataJud), fichas nominais (DJEN/Comunica PJe) e funil processual por movimentos TPU. Componentes sem fonte pública permanecem selados como demonstrativos.",
     fontes: "CNJ/DataJud, CNJ/DJEN, BrasilAPI" })}
   ${temReal ? rjRealSection() : ""}
+  ${ponte("Quais bancos estão mais expostos aos setores em RJ — Exposições setoriais", "sectors", "sec-exposicoes",
+    "cruzamento manual e com cautela: RJs por setor não implicam perda nos credores — a exposição mostra onde o risco moraria SE se materializasse")}
   <h3>Painel demonstrativo (fichas e exposição) ${badge("demo")}</h3>
   <div class="grid g3">
     <div class="card"><h4>Pedidos mensais (série demo) ${badge("demo")}</h4>
@@ -5283,7 +5333,10 @@ function renderPgfn() {
     desc: "Crédito tributário federal inscrito em dívida ativa — onde está, de que tamanho, há quanto tempo e quanto já foi ao Judiciário.",
     vintage: D.data_base,
     fontes: "PGFN dados abertos (dadosabertos.pgfn.gov.br) · população IBGE SIDRA 6579",
-  }) + armadilha + `<p class="lead">${D.sintese}</p>` + kpis + mapa + safras + perfil + metodo;
+  }) + armadilha + `<p class="lead">${D.sintese}</p>` + kpis + mapa + safras + perfil
+  + ponte("O outro lado do balcão: exposição do sistema bancário por setor", "sectors", "sec-exposicoes",
+      "universos distintos, jamais somados: aqui é dívida TRIBUTÁRIA com a União; lá, crédito BANCÁRIO por CNAE — a comparação de perfis setoriais é qualitativa")
+  + metodo;
 }
 
 function round2(x) { return Math.round(x * 100) / 100; }
@@ -6252,7 +6305,10 @@ function renderPenetracao() {
   /* Ordem narrativa (P1 da auditoria): a página abre no mapa — a pergunta que
      trouxe o leitor é "onde?" — com o perfil logo abaixo (é para lá que o clique
      leva); os agregados e a cobertura vêm depois, como contexto, não como porta. */
-  + avisoPen + filtros + mapa + perfil + cards + cobertura + dispersao + rankings + achados + metodo_sec;
+  + avisoPen + filtros + mapa
+  + ponte("A visão por UF, produto e perfil de renda — Panorama do Crédito", "panorama", null,
+      "muda o universo: lá é a carteira dos residentes por UF (SCR.data), aqui o saldo contabilizado nas dependências (ESTBAN)")
+  + perfil + cards + cobertura + dispersao + rankings + achados + metodo_sec;
 }
 
 const PEN_SELO_DIC = { observado: ["obs", "OBSERVADO"], calculado: ["calc", "CALCULADO"],
@@ -7340,7 +7396,9 @@ function renderFraudes() {
       <div class="tr-big">${medOficial ? fmt.n(medOficial.v, 1) : "–"}%<span style="font-size:14px"> recuperados (2025)</span></div>
       <div class="src">do valor contestado pelas vítimas · <a href="${medOficial ? medOficial.url : "#"}" target="_blank" rel="noopener">BCB, MED 2.0 (oficial)</a></div>
       ${medImprensa ? `<div class="src" style="margin-top:6px">Acumulado jan/2022 a abr/2026: R$ ${fmt.n(medImprensa.v, 1)} bi contestados, R$ 2,2 bi devolvidos (8,9%) ${betsStatus("imprensa")}</div>` : ""}
-      <div class="note warn" style="margin-top:8px"><b>Quebra metodológica:</b> ${med.nota}</div></div>
+      <div class="note warn" style="margin-top:8px"><b>Quebra metodológica:</b> ${med.nota}</div>
+      ${ponte("A série completa do MED, mês a mês, no painel do Pix", "pix", "px-med",
+        "mesma fonte (BCB), universo do SPI — contestação ≠ fraude confirmada, lá como aqui")}</div>
     <div class="card"><h4>Perdas reportadas pelos bancos ${nv("D")}</h4>
       ${feb.obs.map(o => betsBar(o.ref, o.v, 11, "R$ bi")).join("")}
       <div class="src" style="margin-top:6px">${feb.conceito}</div>
@@ -7517,6 +7575,19 @@ function renderFraudes() {
 const jurosSel = { mod: null, cnpj: null };
 window.jurosSetMod = id => { jurosSel.mod = id; renderJuros(); };
 window.jurosSetIf = c => { jurosSel.cnpj = c || null; renderJuros(); };
+window.jurosModCSV = () => {
+  // exportação da modalidade ativa (P2 da auditoria: o CSV global existia, o
+  // recorte que o pesquisador cita não)
+  const J = state.data.juros;
+  const M = J && J.modalidades.find(m => m.id === jurosSel.mod);
+  if (!M) return;
+  const rows = [["posicao", "instituicao", "cnpj8", "taxa_aa_pct", "taxa_am_pct", "vs_mediana_pp"]];
+  M.ranking.forEach(r => rows.push([r.posicao, r.nome, r.cnpj8, r.taxa_aa, r.taxa_am, r.vs_mediana]));
+  const csv = rows.map(r => r.map(c => `"${String(c == null ? "" : c).replace(/"/g, '""')}"`).join(";")).join("\n");
+  const slug = M.id.replace(/[^a-z0-9]+/gi, "_").toLowerCase();
+  dlFile(`taxas_${slug}_${M.janela.inicio}.csv`,
+    `﻿# ${M.segmento} · ${M.modalidade} · janela iniciada em ${M.janela.inicio} · mediana ${M.stats.mediana}% a.a.\n` + csv, "text/csv");
+};
 window.jurosCSV = () => {
   const J = state.data.juros;
   if (!J) return;
@@ -7623,7 +7694,13 @@ function renderJuros() {
         <div class="src" style="margin-top:6px">${J.conceitos.carteira} Data-base ${cart.data_base}.</div></div>` : ""}
     </div>
   </div>
-  <div class="card" style="margin-top:14px"><h4>Ranking completo da janela — ${M.stats.n} instituições</h4>
+  ${M.bump && M.bump.itens && M.bump.itens.length >= 2 ? `
+  <div class="card" style="margin-top:14px"><h4>Quem segura a posição — as 10 mais baratas nas últimas ${M.bump.periodos.length} janelas mensais ${badge("observado")}</h4>
+    ${bumpChart(M.bump.itens.map((it, i) => ({ ...it, color: i })), M.bump.periodos)}
+    <p class="src">${M.bump.nota}</p>
+  </div>` : ""}
+  <div class="card" style="margin-top:14px"><h4 style="display:flex;justify-content:space-between;gap:10px;align-items:baseline"><span>Ranking completo da janela — ${M.stats.n} instituições</span>
+    <button class="btn ghost small" onclick="jurosModCSV()">baixar CSV</button></h4>
     <div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th style="text-align:right">#</th><th>Instituição</th><th style="text-align:right">Taxa a.a.</th><th style="text-align:right">a.m.</th><th style="text-align:right">vs mediana</th><th>escala</th></tr></thead>
     <tbody>${M.ranking.map(rankRow).join("")}</tbody></table></div>
     <div class="src" style="margin-top:6px">Taxas médias das operações contratadas: uma IF pode ser barata para um perfil de cliente e cara para outro; a divulgação do BC não abre o mix. Comparações finas exigem simulação individual.</div>

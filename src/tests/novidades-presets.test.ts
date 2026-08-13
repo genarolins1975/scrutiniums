@@ -39,8 +39,17 @@ describe("overview.novidades: o diff editorial da execução", () => {
 });
 
 describe("penetração: ordem narrativa, CSV e divergência de métodos", () => {
-  it("a página abre no mapa: aviso+filtros+mapa+perfil antes dos agregados", () => {
-    expect(app).toContain("+ avisoPen + filtros + mapa + perfil + cards + cobertura + dispersao + rankings + achados + metodo_sec;");
+  it("a página abre no mapa: aviso+filtros+mapa antes dos agregados (ponte e perfil no meio)", () => {
+    // ordem narrativa por posição das partes — tolerante a inserções (a ponte
+    // para o Panorama entrou entre o mapa e o perfil na rodada P2)
+    const asm = app.slice(app.indexOf("function renderPenetracao"));
+    const seq = ["+ avisoPen + filtros + mapa", "+ perfil + cards + cobertura + dispersao + rankings + achados + metodo_sec;"];
+    let pos = -1;
+    for (const parte of seq) {
+      const k = asm.indexOf(parte);
+      expect(k, parte).toBeGreaterThan(pos);
+      pos = k;
+    }
   });
 
   it("o CSV do ranking exporta os dois métodos de gap e a coluna de divergência", () => {
