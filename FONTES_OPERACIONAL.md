@@ -792,3 +792,27 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Versão 0.77.0; travas em `src/tests/pulso-transformacoes.test.ts`
   (cobertura do IPCA sobre as janelas de R$, deflator ≈1 no último mês e
   >1,5 em 2012, base-100 exata no primeiro ponto).
+
+## 32. Backtest publicado (P1 do Top 10 — credibilidade dos modelos)
+
+- `forecast.py` passa a registrar as previsões POR ORIGEM do walk-forward
+  e a reconstruir o ensemble origem a origem (pesos finais aplicados
+  retroativamente — pseudo-backtest, declarado como tal onde aparece).
+- **Cobertura da banda fora da calibração**: split temporal — a primeira
+  metade dos erros calibra os quantis 10–90, a segunda mede a cobertura.
+  Publicada com n e uma leitura em texto; abaixo de 40% a leitura obriga o
+  aviso de mudança de regime dos erros ("banda publicada é piso de
+  incerteza, não garantia"). Resultado real da primeira publicação:
+  inadimplência h=12 com cobertura 0% (o modelo sobre-previa em 2024 e o
+  padrão de erro virou), taxa PJ com 84,6% — os dois publicados igualmente.
+- **Trajetória previsto × realizado (h=12)**: as últimas 24 origens, com o
+  realizado conferido contra a própria série do gold (trava de teste).
+- **Seção "Validação dos modelos"** na aba Cenários: tabela por horizonte
+  (MAE ensemble × ingênuo, ganho — negativo em cor de alerta, n,
+  cobertura), gráfico previsto × realizado e o parágrafo que separa o que
+  se valida (projeção-base, elasticidades ±2 EP sem HAC) do que não tem
+  backtest possível (o resultado condicional dos sliders). Cards do Pulso
+  linkam "backtest completo →".
+- Gold publicado atualizado por patch com guarda de identidade (MAE novo ==
+  MAE publicado nas 15 séries antes de mesclar os campos novos). Versão
+  0.78.0; travas em `src/tests/backtest-publicado.test.ts`.
