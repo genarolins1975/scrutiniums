@@ -887,3 +887,25 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   `<details>`; a temperatura por família e as defasagens contra a
   inadimplência seguem abertas.
 - Versão 0.81.0; travas em `src/tests/p2-rodada1.test.ts`.
+
+## 36. Kit padronizado: exportação, tooltips e âncoras (P2)
+
+- **Download com helper ÚNICO**: `dlFile` aceita texto ou Blob e adia o
+  revoke do object URL (revogar na hora quebrava o download em alguns
+  browsers — a versão antiga de `dlFile` tinha exatamente esse bug);
+  `download` e `dlXlsx` viraram aliases/delegações.
+- **Rótulos de exportação padronizados**: verbo "baixar" + formato +
+  qualificador entre parênteses ("baixar CSV (base completa)"); os dez
+  rótulos divergentes ("exportar CSV", "exportar planilha", "baixar dados
+  (CSV)", "exportar ▾"...) foram convergidos; teste proíbe "exportar
+  FORMATO" em botão.
+- **Regra de tooltips documentada e com helper**: `dica(texto)` — title
+  nativo com ⓘ e cursor de ajuda — para explicação curta de UM conceito;
+  `data-tip` (tooltip rico) reservado a gráficos, onde há valores
+  estruturados por ponto. Seis ocorrências ad-hoc convertidas.
+- **Âncoras nas densas que faltavam**: Panorama ganhou subnav fixa + seções
+  ancoradas (Mapa · Comparação · Perfis · Alertas · Explorador ·
+  Metodologia) e a Metodologia ganhou subnav sobre cabeçalhos ancorados
+  (Catálogo · Dicionário · Model cards · Score cards · Versões · Linhagem ·
+  Referências).
+- Versão 0.82.0; travas em `src/tests/kit-padronizado.test.ts`.
