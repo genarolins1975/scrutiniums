@@ -1020,7 +1020,7 @@
   }
  },
  "score_ref": {
-  "indisponivel": "Score calculado apenas para o corte dos 30 maiores nesta versão."
+  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
  },
  "atraso_produtos": null,
  "openfinance": null,

@@ -212,7 +212,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.72.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.73.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -1850,7 +1850,7 @@ function renderPix() {
         `<input id="pxmunq" placeholder="filtrar por nome ou sigla da UF" value="${px.munq || ""}" oninput="pxMunFiltro()" style="width:100%;margin:4px 0 8px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text)">
         <div class="tblwrap" style="max-height:340px"><table class="data compact"><thead><tr><th>Município</th><th>UF</th><th style="text-align:right">Valor pago</th><th style="text-align:right">Transações</th><th style="text-align:right">Pessoas pagadoras</th></tr></thead>
         <tbody>${munRows.map(m2 => `<tr><td>${m2.mun}</td><td>${m2.uf || "–"}</td><td style="text-align:right">${fmt.money(m2.v_pag)}</td><td style="text-align:right">${fmt.n0(m2.q_pag)}</td><td style="text-align:right">${fmt.n0(m2.pes_pag)}</td></tr>`).join("")}</tbody></table></div>
-        <div class="src">mapa municipal coroplético: fase 2 (malha de 5.570 polígonos); rankings e busca já cobrem o nível municipal.</div>`}</div>
+        <div class="src">cobertura municipal por ranking e busca, na perspectiva do PAGADOR (município do pagador).</div>`}</div>
     </div>`;
 
   /* ---------- 7. setores — EPAE aberta e matriz da tabela especial ---------- */
@@ -4107,7 +4107,7 @@ function renderInstitutions() {
     <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
     <button class="btn ghost small" onclick="exportInstitutions()">exportar JSON</button>
   </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   ${guidanceSecao()}
   ${regimesSecao()}
   ${coopSecao(inst)}
@@ -4371,7 +4371,7 @@ function renderInstPageData(el, pg) {
         <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
         ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
         ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
-        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} <span title="${attr(smeta.confianca_motivo)}">ⓘ</span> · ${smeta.versao_metodologica}</div>` : ""}`
+        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} <span title="${attr(smeta.confianca_motivo)}">ⓘ</span> · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
       : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
       <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
     </div>
@@ -4486,7 +4486,7 @@ function renderInstPageData(el, pg) {
         ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
         ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
     </div>
-    <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}</div>
+    <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}${pg.evolucao_nota ? `<div class="src" style="margin-top:6px">${pg.evolucao_nota}</div>` : ""}</div>
   </div>
   ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
     <div class="card"><h4>${termo("custo-de-captacao","Custo de captação")} ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>

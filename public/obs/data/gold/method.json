@@ -43,7 +43,7 @@
   {
    "nome": "Score de estresse setorial",
    "definicao": "Posição do setor no espectro de estresse (0 = mínimo, 100 = máximo).",
-   "formula": "50 + 20 × Σ(peso × z) — atividade 0,45; condições de crédito 0,20; estresse empresarial 0,20; capacidade financeira 0,15",
+   "formula": "50 + 20 × Σ(peso × z) — só componentes observados: atividade 0,69; condições de crédito 0,31 (RJ e emprego em construção, peso zero)",
    "numerador": "—",
    "denominador": "—",
    "interpretacao": ">55 = atenção; >75 = crítico. Ler junto com tendência e velocidade.",
@@ -464,10 +464,10 @@
   {
    "nome": "Estresse setorial",
    "componentes": [
-    "atividade 0,45",
-    "condições de crédito 0,20",
-    "estresse empresarial 0,20 (DEMO)",
-    "capacidade financeira 0,15 (DEMO)"
+    "atividade 0,69 (observado)",
+    "condições de crédito 0,31 (observado)",
+    "estresse empresarial (em construção — fora do score)",
+    "capacidade financeira (em construção — fora do score)"
    ],
    "pesos": "fixos documentados",
    "normalizacao": "z-scores; score = 50 + 20×Σ(peso×z), truncado [0,100]",

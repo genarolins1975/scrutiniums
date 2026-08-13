@@ -679,3 +679,26 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   recalculados APÓS a consolidação (HHI 1.183 → 1.446; top-5 69,3% →
   78,4%). Cada linha consolidada declara os componentes, e a SPA exibe o
   rótulo "consolidado ⓘ" com a explicação e os componentes no tooltip.
+
+## 27. P0 da auditoria de 12/08 — cinco correções
+
+1. **Score setorial 100% observado**: os componentes demonstrativos
+   (RJ 0,20 + emprego 0,15 = 35% do peso) saíram do número — pesos
+   renormalizados para atividade 0,69 + condições de crédito 0,31; os
+   demonstrativos seguem visíveis como "em construção", com peso ZERO.
+   Invariante transversal novo em teste: nenhum número composto publicado
+   contém componente não-observado com peso. Gold recalculado dos z
+   publicados (27 setores).
+2. **Histórico longo nas fichas**: o corte `[:5]` no builder escondia o
+   backfill de 40 trimestres — `periods_hist` alimenta a evolução base-100
+   com a fronteira da Res. 4.966 (2025-T1) declarada na nota ("mudança de
+   régua, não de negócio"). Materializa no ciclo diário seguinte.
+3. **CNPJ no cabeçalho**: instituições individuais = o código IF.data É a
+   raiz; conglomerados = mapa curado (cadastro CVM/operacional), nunca por
+   nome, nunca completando dígitos que a fonte não deu. 1.360 fichas
+   corrigidas cirurgicamente.
+4. **Vintage do score**: "calculado em DD/MM" no cartão do score e no
+   cabeçalho da coluna — número composto nunca mais sem data.
+5. **Placeholders fora de produção**: promessa "fase 2" do mapa municipal
+   do Pix removida; menu "Relatórios" renomeado para "Perguntas rápidas"
+   (o conteúdo é o assistente de consultas determinísticas).
