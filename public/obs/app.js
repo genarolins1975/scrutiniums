@@ -143,6 +143,7 @@ function parseHash() {
   if (qs.get("range")) state.filters.range = parseInt(qs.get("range"), 10);
   if (qs.get("growth")) state.filters.growth = qs.get("growth");
   if (qs.get("grupo")) state.filters.instGroup = qs.get("grupo");
+  if (qs.get("sec")) state._secAlvo = qs.get("sec"); // permalink de seção (P2)
   if (!PATH_MODE) { // deep-link local: #inst?cod=… / #sector?cod=… / #product?slug=…
     if (qs.get("cod") && currentView() === "inst") state.filters.instCod = qs.get("cod");
     if (qs.get("cod") && currentView() === "sector") state.filters.sectorCod = qs.get("cod");
@@ -212,7 +213,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.83.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.84.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -704,7 +705,64 @@ function srcLine(meta, q) {
 }
 function chartFooter(opts) {
   // rodapé obrigatório: fonte · período · atualização · unidade · nota metodológica
-  return `<div class="chartfoot">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""}</div>`;
+  // + citação (P2: OWID/FRED têm permalink/embed por gráfico; aqui o
+  // compartilhável era só a página). O alvo é a seção ancorada mais próxima.
+  return `<div class="chartfoot">Fonte: ${opts.fonte || "–"} · Período: ${opts.periodo || "–"} · Atualizado: ${opts.atualizado || "–"} · Unidade: ${opts.unidade || "–"}${opts.nota ? ` · <span title="${attr(opts.nota)}">nota metodológica ⓘ</span>` : ""} · <a href="javascript:void(0)" onclick="grafLink(this,0)" title="copia a URL desta seção, com os filtros atuais">copiar link</a> · <a href="javascript:void(0)" onclick="grafLink(this,1)" title="copia um iframe para citar este gráfico em outra página">embed</a></div>`;
+}
+window.grafLink = (el, embed) => {
+  const sec = el.closest("section[id]");
+  const v = currentView();
+  let texto;
+  if (embed) {
+    const alvo = v + (sec ? "." + sec.id : "");
+    texto = `<iframe src="${location.origin}/obs/embed.html?g=${alvo}" width="720" height="520" loading="lazy" style="border:1px solid #ccc;border-radius:8px" title="Observatório Brasileiro de Crédito"></iframe>`;
+  } else {
+    const u = new URL(location.href);
+    if (sec) u.searchParams.set("sec", sec.id); else u.searchParams.delete("sec");
+    texto = u.toString();
+  }
+  navigator.clipboard.writeText(texto).then(() => {
+    const orig = el.textContent;
+    el.textContent = "copiado ✓";
+    setTimeout(() => { el.textContent = orig; }, 1600);
+  }).catch(() => { prompt("Copie manualmente:", texto); });
+};
+/* pós-render: rola até a seção do permalink (com destaque breve) e, em modo
+   embed, recorta a vista para mostrar só a seção citada + atribuição */
+function posRender(v) {
+  const alvo = state._secAlvo;
+  if (alvo) {
+    state._secAlvo = null;
+    requestAnimationFrame(() => {
+      const n = document.getElementById(alvo);
+      if (n) { n.scrollIntoView({ block: "start" }); n.classList.add("sec-alvo"); setTimeout(() => n.classList.remove("sec-alvo"), 2400); }
+    });
+  }
+  if (window.__EMBED__) embRecorta(v);
+}
+function embRecorta(v) {
+  const cont = document.getElementById("view-" + v);
+  if (!cont) return;
+  const sec = window.__EMBED__.sec ? document.getElementById(window.__EMBED__.sec) : null;
+  if (sec) {
+    // esconde tudo que não é ancestral nem descendente da seção citada
+    let n = sec;
+    const manter = new Set();
+    while (n && n !== cont) { manter.add(n); n = n.parentElement; }
+    cont.querySelectorAll(":scope > *").forEach(x => { if (!manter.has(x)) x.style.display = "none"; });
+    if (manter.size) {
+      const topo = [...cont.children].find(x => manter.has(x));
+      if (topo) topo.querySelectorAll(":scope > *").forEach(x => { if (x !== sec && !manter.has(x) && !sec.contains(x)) x.style.display = "none"; });
+    }
+  }
+  if (!document.getElementById("embAttr")) {
+    const bar = document.createElement("div");
+    bar.id = "embAttr";
+    const u = new URL(location.origin + (PATH_MODE ? (ROUTES[v] || "/") : "/obs/index.html#" + v));
+    if (window.__EMBED__.sec) u.searchParams.set("sec", window.__EMBED__.sec);
+    bar.innerHTML = `<b>Observatório Brasileiro de Crédito</b> · fonte e período no rodapé do gráfico · <a href="${u.toString()}" target="_blank" rel="noopener">ver no site →</a>`;
+    document.body.appendChild(bar);
+  }
 }
 function favStar(type, key, label) {
   const isFav = state.favorites.some(f => f.type === type && f.key === key);
@@ -9903,8 +9961,8 @@ function showViewSilent(v) {
   if (pend) {
     const sec = document.getElementById("view-" + v);
     if (sec && !sec.innerHTML) sec.innerHTML = loadingCard("dados desta página");
-    Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) renderView(v); });
-  } else ensureChunk(v).then(() => { if (currentView() === v) renderView(v); });
+    Promise.all([ensureData(v), ensureChunk(v)]).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
+  } else ensureChunk(v).then(() => { if (currentView() === v) { renderView(v); posRender(v); } });
   const plat = state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito";
   document.title = (VIEW_TITLES[v] ? VIEW_TITLES[v] + " · " : "") + plat;
   closeSidebar();
@@ -9945,7 +10003,8 @@ function applyTheme(t) {
     })
     .catch(() => {});
 })();
-document.getElementById("themeToggle").addEventListener("click", () => {
+const _themeBtn = document.getElementById("themeToggle"); // ausente na página de embed
+if (_themeBtn) _themeBtn.addEventListener("click", () => {
   const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   saveLS("obc_theme", next);
   applyTheme(next);
@@ -9965,14 +10024,15 @@ const sidebarEl = document.getElementById("sidebar"), scrimEl = document.getElem
     saveLS("obc_sb_collapsed", on);
   });
 })();
-function closeSidebar() { sidebarEl.classList.remove("open"); scrimEl.hidden = true; menuBtnEl.setAttribute("aria-expanded", "false"); }
-menuBtnEl.addEventListener("click", () => {
+function closeSidebar() { if (!sidebarEl) return; sidebarEl.classList.remove("open"); scrimEl.hidden = true; menuBtnEl.setAttribute("aria-expanded", "false"); }
+// os três elementos não existem na página de embed — null-guard obrigatório
+if (menuBtnEl) menuBtnEl.addEventListener("click", () => {
   const open = !sidebarEl.classList.contains("open");
   sidebarEl.classList.toggle("open", open);
   scrimEl.hidden = !open;
   menuBtnEl.setAttribute("aria-expanded", String(open));
 });
-scrimEl.addEventListener("click", closeSidebar);
+if (scrimEl) scrimEl.addEventListener("click", closeSidebar);
 document.addEventListener("keydown", e => { if (e.key === "Escape") closeSidebar(); });
 function updateAlertBadge() {
   const el = document.getElementById("alertCount");
@@ -9995,7 +10055,8 @@ window.showView = v => {
   }
   showViewSilent(v);
 };
-document.getElementById("tabs").addEventListener("click", e => { if (e.target.dataset.view) showView(e.target.dataset.view); });
+const _tabsEl = document.getElementById("tabs"); // ausente na página de embed
+if (_tabsEl) _tabsEl.addEventListener("click", e => { if (e.target.dataset.view) showView(e.target.dataset.view); });
 
 /* ---------- acessibilidade: teclado para clicáveis não nativos (padrão tabindex+keydown da SPA) ---------- */
 const A11Y_NATIVE = ["BUTTON", "A", "INPUT", "SELECT", "TEXTAREA", "SUMMARY", "OPTION", "LABEL"];
@@ -10020,9 +10081,10 @@ document.addEventListener("keydown", e => {
   if (typeof el.click === "function") el.click(); // SVG não tem click(): dispara o evento
   else el.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true }));
 });
-new MutationObserver(muts => {
+const _mainEl = document.getElementById("main");
+if (_mainEl) new MutationObserver(muts => {
   muts.forEach(m => m.addedNodes.forEach(n => { if (n.nodeType === 1) a11yEnhance(n); }));
-}).observe(document.getElementById("main"), { childList: true, subtree: true });
+}).observe(_mainEl, { childList: true, subtree: true });
 
 
 /* ================= CAMADA DE PESQUISA: PRODUTOS, MATRIZ E COMPARADOR ================= */
@@ -10952,6 +11014,11 @@ function renderCompare() {
     document.getElementById("footDisclaimer").textContent = m.plataforma.disclaimer;
   }
   updateAlertBadge();
-  const v = parseHash();
+  let v = parseHash();
+  if (window.__EMBED__) {
+    document.body.classList.add("embed");
+    v = RENDER[window.__EMBED__.view] ? window.__EMBED__.view : "overview";
+    state._secAlvo = null; // no embed o recorte substitui o scroll
+  }
   showView(RENDER[v] ? v : "overview");
 })();
