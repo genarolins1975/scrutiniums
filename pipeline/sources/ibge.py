@@ -60,9 +60,53 @@ def _pim(con, cfg):
             "sector_names": sector_names}
 
 
+def _sidra_atividades(con, cfg, cfg_key, prefix, rotulo, dim_cod="D5C", dim_nome="D5N"):
+    """PMS/PMC (Sidra, 2 classificações): uma série por atividade, key {prefix}_{code}.
+
+    O 'país de serviços sem serviços' era o P1 pendente da auditoria de 12/08:
+    PIM cobre só a indústria; PMS (volume de serviços) e PMC (volume de vendas
+    no varejo ampliado) trazem a receita real dos setores tomadores de crédito.
+    Índice de VOLUME sem ajuste sazonal — a mesma régua do PIM já coletado.
+    """
+    c = cfg["ibge"][cfg_key]
+    body, meta = common.http_get(c["url"])
+    data = json.loads(body)
+    bronze_file, sha = common.save_bronze("ibge", cfg_key, body, meta)
+    by_sector, sector_names = {}, {}
+    for row in data[1:]:  # linha 0 = cabeçalho
+        v = row.get("V")
+        if v in (None, "...", "-", ""):
+            continue
+        period = row["D3C"]  # AAAAMM
+        sec_code, sec_name = row[dim_cod], row[dim_nome]
+        ref = f"{period[:4]}-{period[4:6]}-01"
+        by_sector.setdefault(sec_code, []).append((ref, float(v)))
+        sector_names[sec_code] = sec_name
+    n = 0
+    for sec_code, rows in by_sector.items():
+        key = f"{prefix}_{sec_code}"
+        common.upsert_meta(con, "IBGE", f"{c['url'].split('/t/')[1].split('/')[0]}/{sec_code}", key,
+                           f"{rotulo} — {sector_names[sec_code]}", c["unit"], c["freq"],
+                           c["methodology"], c["url"], "setorial", "atividade")
+        common.insert_obs(con, key, sorted(rows), sha)
+        n += len(rows)
+    common.record_lineage(con, f"series:{cfg_key}", bronze_file, sha,
+                          f"parse Sidra ({cfg_key}); um key por atividade, índice de volume 2022=100")
+    return {"key": cfg_key, "ok": True, "obs": n, "setores": len(by_sector),
+            "sector_names": sector_names}
+
+
+def _pms(con, cfg):
+    return _sidra_atividades(con, cfg, "pms_setorial", "pms", "PMS volume de serviços (2022=100)")
+
+
+def _pmc(con, cfg):
+    return _sidra_atividades(con, cfg, "pmc_setorial", "pmc", "PMC volume de vendas ampliado (2022=100)")
+
+
 def collect(con, cfg):
     results = []
-    for fn in (_pnad, _pim):
+    for fn in (_pnad, _pim, _pms, _pmc):
         try:
             results.append(fn(con, cfg))
         except Exception as e:
