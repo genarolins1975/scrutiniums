@@ -863,3 +863,27 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   método e limitações reescritos.
 - Gold publicado antecipado por coleta+rebuild local (PIM recoletado junto).
   Versão 0.80.0; travas em `src/tests/setorial-pms-pmc.test.ts`.
+
+## 35. P2 rodada 1 — pontes, bump de posições nos Juros e Tendências enxuta
+
+- **Pontes entre painéis irmãos** ("o produto tem as pontas; faltam as
+  pontes"): helper `ponte()` navega e desce até a âncora, e o texto SEMPRE
+  declara a mudança de universo — Panorama↔Penetração (SCR por UF ≠ ESTBAN
+  por município, nos dois sentidos), RJ→Exposições e PGFN→Exposições
+  (destino ancorado `#sec-exposicoes`, com as cautelas de não-causalidade e
+  de universos jamais somados), Fraudes→MED do Pix (`#px-med`, contestação
+  ≠ fraude confirmada). Cenários↔Basileia já vivia na própria aba (§30).
+- **Juros**: `bump` por modalidade no gold — posição das 10 mais baratas da
+  janela atual nas últimas 12 janelas mensais, posições calculadas sobre
+  TODAS as IFs da janela, ausência nunca interpolada. Renderizado com o
+  `bumpChart` existente; materializa no próximo ciclo diário (o armazém
+  local perdeu o txjuros no reset do container — a SPA é graceful).
+  Exportação CSV da modalidade ativa (o global existia; o recorte citável
+  não).
+- **Tendências**: a página se auto-resume — "As 3 anomalias do mês" abrem o
+  painel (maior |z| contra a história do PRÓPRIO termo, mês parcial fora,
+  régua publicada ao lado) e as seções pesadas (mapa de calor, termo a
+  termo, variações, nível×aceleração, sazonalidade, catálogo) ficam sob
+  `<details>`; a temperatura por família e as defasagens contra a
+  inadimplência seguem abertas.
+- Versão 0.81.0; travas em `src/tests/p2-rodada1.test.ts`.
