@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3521, piso sobre os 91.0% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3533, piso sobre os 91.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -146,7 +146,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -252,7 +253,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 3613).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3533, piso sobre os 91.0% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -297,7 +298,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3521,
+   "hhi_setorial": 3533,
+   "hhi_cobertura_pct": 91.0,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -352,8 +354,7 @@
      "investimento",
      3.3
     ]
-   ],
-   "hhi_cobertura_pct": 91.0
+   ]
   },
   "total_pf": 168509835.02,
   "total_pj": 11721398789.25
@@ -426,6 +427,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -633,7 +635,7 @@
   }
  },
  "score_ref": {
-  "score": 62.7,
+  "score": 63.6,
   "score_delta": -4.9,
   "faixa": "risco elevado",
   "dimensoes": {
@@ -678,34 +680,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 3613,
-    "percentil_pares": 71.4,
-    "risco": 71.4,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 3533,
+    "percentil_pares": 76.7,
+    "risco": 76.7,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 61.7
+    "score": 63.4
    },
    {
     "anomes": "202506",
-    "score": 65.0
+    "score": 67.2
    },
    {
     "anomes": "202509",
-    "score": 64.6
+    "score": 66.1
    },
    {
     "anomes": "202512",
-    "score": 67.6
+    "score": 68.5
    },
    {
     "anomes": "202603",
-    "score": 62.7
+    "score": 63.6
    }
   ],
   "vulnerabilidade": {

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 76.461.557",
   "participante_open_finance": null
@@ -281,7 +281,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1609,
+   "hhi_setorial": 1627,
+   "hhi_cobertura_pct": 78.5,
    "top_cnae": [
     [
      "construcao",
@@ -340,8 +341,7 @@
      "rural_e_agroindustrial",
      1.2
     ]
-   ],
-   "hhi_cobertura_pct": 78.5
+   ]
   },
   "total_pf": 355923674.83,
   "total_pj": 128364777.69
@@ -414,6 +414,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

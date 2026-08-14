@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 71.154.876",
   "participante_open_finance": null
@@ -269,7 +269,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2325,
+   "hhi_setorial": 2349,
+   "hhi_cobertura_pct": 87.5,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -328,8 +329,7 @@
      "cheque_especial_e_conta_garantida",
      3.4
     ]
-   ],
-   "hhi_cobertura_pct": 87.5
+   ]
   },
   "total_pf": 160990003.52,
   "total_pj": 90953066.25
@@ -402,6 +402,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

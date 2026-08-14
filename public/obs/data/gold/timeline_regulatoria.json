@@ -1,0 +1,204 @@
+{
+ "_comentario": [
+  "Timeline regulatória TRANSVERSAL do mercado de crédito — item 2 dos próximos passos.",
+  "Cada marco tem norma, data, URL OFICIAL verificada (planalto/BCB, padrões já usados",
+  "nas curadorias de bets/fraudes) e os painéis do Observatório que ele afeta — a régua",
+  "é editorial (marcos que explicam quebras visíveis nas NOSSAS séries), não um censo",
+  "normativo. As timelines temáticas de bets e fraudes continuam nas próprias abas;",
+  "esta linha cruza os painéis e aponta para elas.",
+  "Campo `serie_x`: o mês (AAAA-MM) em que o marco vira marcador vertical nos gráficos",
+  "do(s) painel(is) — data de VIGÊNCIA quando difere da publicação, declarado no resumo."
+ ],
+ "marcos": [
+  {
+   "id": "res_4553_2017",
+   "data": "2017-01-30",
+   "ato": "Resolução CMN nº 4.553/2017",
+   "orgao": "CMN",
+   "resumo": "Cria a segmentação prudencial S1–S5 por porte e atividade internacional — é a régua que define os grupos de pares usados em toda a comparação entre instituições do Observatório.",
+   "url": "https://normativos.bcb.gov.br/Lists/Normativos/Attachments/50335/Res_4553_v2_L.pdf",
+   "paineis": [
+    "institutions"
+   ],
+   "serie_x": null,
+   "status": "confirmado"
+  },
+  {
+   "id": "res_conjunta_1_2020",
+   "data": "2020-05-04",
+   "ato": "Resolução Conjunta CMN/BCB nº 1/2020",
+   "orgao": "CMN/BCB",
+   "resumo": "Institui o Open Banking (hoje Open Finance): compartilhamento de dados e serviços entre instituições autorizadas, por consentimento do cliente — a base de tudo que a aba Open Finance mede.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20Conjunta&numero=1",
+   "paineis": [
+    "openfinance"
+   ],
+   "serie_x": null,
+   "status": "confirmado"
+  },
+  {
+   "id": "res_bcb_1_2020",
+   "data": "2020-08-12",
+   "ato": "Resolução BCB nº 1/2020",
+   "orgao": "BCB",
+   "resumo": "Institui o Pix e seu regulamento (operação desde novembro/2020). Ponto zero de toda a série de pagamentos instantâneos.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=1",
+   "paineis": [
+    "pix",
+    "fraudes"
+   ],
+   "serie_x": "2020-11",
+   "status": "confirmado"
+  },
+  {
+   "id": "lei_14133_2021",
+   "data": "2021-04-01",
+   "ato": "Lei nº 14.133/2021",
+   "orgao": "Congresso Nacional",
+   "resumo": "Nova Lei de Licitações: cria o PNCP, que torna públicos os contratos de folha de pagamento entre entes e bancos — a fonte da camada de fluxo do painel de folha de servidores.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/L14133.htm",
+   "paineis": [
+    "operacional"
+   ],
+   "serie_x": null,
+   "status": "confirmado"
+  },
+  {
+   "id": "lei_14181_2021",
+   "data": "2021-07-01",
+   "ato": "Lei nº 14.181/2021 (superendividamento)",
+   "orgao": "Congresso Nacional",
+   "resumo": "Atualiza o CDC para prevenção e tratamento do superendividamento: preserva o mínimo existencial e cria a repactuação em bloco — pano de fundo dos painéis de consignado e renegociação.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/L14181.htm",
+   "paineis": [
+    "consignado",
+    "desenrola"
+   ],
+   "serie_x": null,
+   "status": "confirmado"
+  },
+  {
+   "id": "res_bcb_103_2021",
+   "data": "2021-06-08",
+   "ato": "Resolução BCB nº 103/2021 (MED)",
+   "orgao": "BCB",
+   "resumo": "Cria o Mecanismo Especial de Devolução do Pix e o bloqueio cautelar (operação desde 16/11/2021) — a série de devoluções por fraude que o painel Pix acompanha começa aqui.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=103",
+   "paineis": [
+    "pix",
+    "fraudes"
+   ],
+   "serie_x": "2021-11",
+   "status": "confirmado"
+  },
+  {
+   "id": "res_4966_2021",
+   "data": "2021-11-25",
+   "ato": "Resolução CMN nº 4.966/2021",
+   "orgao": "CMN",
+   "resumo": "Novo regime contábil de instrumentos financeiros (perda esperada, alinhamento ao IFRS 9), vigente desde 01/01/2025 — muda o plano de contas do IF.data e cria a fronteira 2024/2025 declarada nos nossos coletores de carteiras, funding e inadimplência.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20CMN&numero=4966",
+   "paineis": [
+    "institutions",
+    "products"
+   ],
+   "serie_x": "2025-01",
+   "status": "confirmado"
+  },
+  {
+   "id": "lei_14690_2023",
+   "data": "2023-10-03",
+   "ato": "Lei nº 14.690/2023 (Desenrola + teto do rotativo)",
+   "orgao": "Congresso Nacional",
+   "resumo": "Institui o Desenrola Brasil e limita os juros do rotativo do cartão a 100% do principal para quem não paga a fatura (vigência do teto: janeiro/2024) — afeta as séries de renegociação e as taxas de cartão dos painéis de produtos e juros.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/L14690.htm",
+   "paineis": [
+    "desenrola",
+    "products",
+    "juros"
+   ],
+   "serie_x": "2024-01",
+   "status": "confirmado"
+  },
+  {
+   "id": "lei_14790_2023",
+   "data": "2023-12-29",
+   "ato": "Lei nº 14.790/2023 (bets)",
+   "orgao": "Congresso Nacional",
+   "resumo": "Regulamenta as apostas de quota fixa (mercado regulado desde 01/01/2025) — o marco que a aba de bets acompanha em detalhe, inclusive nos fluxos Pix da EPAE.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/lei/L14790.htm",
+   "paineis": [
+    "bets",
+    "pix"
+   ],
+   "serie_x": "2025-01",
+   "status": "confirmado"
+  },
+  {
+   "id": "res_bcb_403_2024",
+   "data": "2024-07-22",
+   "ato": "Resoluções BCB nº 402 e 403/2024",
+   "orgao": "BCB",
+   "resumo": "Pix acima de R$ 200 só em dispositivos cadastrados e gerenciamento de risco de fraude com o DICT (vigência novembro/2024) — endurecimento antifraude visível nas séries do MED.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=403",
+   "paineis": [
+    "pix",
+    "fraudes"
+   ],
+   "serie_x": "2024-11",
+   "status": "confirmado"
+  },
+  {
+   "id": "mp_1292_2025",
+   "data": "2025-03-12",
+   "ato": "MP nº 1.292/2025 (Crédito do Trabalhador)",
+   "orgao": "Presidência da República",
+   "resumo": "Reformula o consignado privado (CLT): contratação por plataformas digitais/eSocial, portabilidade entre instituições e garantia do FGTS — o ponto de inflexão da série de consignado privado.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/mpv/mpv1292impressao.htm",
+   "paineis": [
+    "consignado",
+    "products"
+   ],
+   "serie_x": "2025-03",
+   "status": "confirmado"
+  },
+  {
+   "id": "lei_15179_2025",
+   "data": "2025-07-24",
+   "ato": "Lei nº 15.179/2025 (conversão da MP 1.292)",
+   "orgao": "Congresso Nacional",
+   "resumo": "Converte em lei o Crédito do Trabalhador, com ajustes: consolida eSocial/CNIS na formalização e a portabilidade para condições mais vantajosas — dá caráter permanente ao desenho de março.",
+   "url": "https://www.planalto.gov.br/ccivil_03/_Ato2023-2026/2025/Lei/L15179.htm",
+   "paineis": [
+    "consignado",
+    "products"
+   ],
+   "serie_x": "2025-07",
+   "status": "confirmado"
+  },
+  {
+   "id": "res_bcb_561_2026",
+   "data": "2026-05-05",
+   "ato": "Resolução BCB nº 561/2026 (eFX e apostas internacionais)",
+   "orgao": "BCB",
+   "resumo": "Cria o código 34045 para classificar pagamentos internacionais de jogos e apostas no eFX (a partir de 01/10/2026) — vai permitir medir a fuga de apostas para sites estrangeiros.",
+   "url": "https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=561",
+   "paineis": [
+    "bets"
+   ],
+   "serie_x": "2026-10",
+   "status": "confirmado"
+  }
+ ],
+ "leitura": "A régua é editorial: entram os marcos que explicam quebras visíveis nas séries do Observatório — não é um censo normativo. Cada marco aponta os painéis afetados; quando a vigência difere da publicação, o marcador nas séries usa a vigência, declarada no resumo.",
+ "timelines_tematicas": [
+  {
+   "painel": "bets",
+   "nome": "Linha do tempo regulatória das bets (2018–2026)"
+  },
+  {
+   "painel": "fraudes",
+   "nome": "Linha do tempo — segurança contra fraudes digitais (2020–2026)"
+  }
+ ]
+}

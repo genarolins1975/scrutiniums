@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:24+00:00",
+  "atualizado_em": "2026-08-14T10:32:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 07.958.405",
   "participante_open_finance": null
@@ -282,7 +282,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2283,
+   "hhi_setorial": 2288,
+   "hhi_cobertura_pct": 84.3,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -341,8 +342,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      6.3
     ]
-   ],
-   "hhi_cobertura_pct": 84.3
+   ]
   },
   "total_pf": 124012075.53,
   "total_pj": 38554988.19
@@ -415,6 +415,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

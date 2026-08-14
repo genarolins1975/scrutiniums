@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:24+00:00",
+  "atualizado_em": "2026-08-14T10:32:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 08.561.701",
   "participante_open_finance": null
@@ -58,7 +58,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo subiu 14.5 pontos no grupo de pares.",
+    "texto": "Score relativo subiu 17.4 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -142,10 +142,11 @@
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "score_meta": {
-  "cobertura_dados_pct": 100,
+  "cobertura_dados_pct": 83,
   "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -248,11 +249,6 @@
    "tipo": "ok",
    "texto": "ROE do período de 4.0%.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 9967).",
-   "base": "IF.data carteiras por CNAE"
   }
  ],
  "capital_tabela": [
@@ -419,6 +415,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -799,9 +796,9 @@
     1.06,
     -0.35,
     -19.17,
-    10.79,
     6.57,
     11.72,
+    10.79,
     -10.12,
     -1.47,
     0.19,
@@ -1169,9 +1166,9 @@
     22.17,
     19.56,
     8.92,
-    34.24,
     11.81,
     59.2,
+    34.24,
     3342.78,
     2271.91,
     52496.08,
@@ -1562,9 +1559,9 @@
     13.28,
     32.57,
     5.8,
-    4.08,
     5.75,
     16.78,
+    4.08,
     1.14,
     1.26,
     1.01,
@@ -1582,8 +1579,8 @@
   }
  },
  "score_ref": {
-  "score": 55.5,
-  "score_delta": 14.5,
+  "score": 46.6,
+  "score_delta": 17.4,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -1625,36 +1622,28 @@
     "mediana_pares": 71.03,
     "q1_pares": 60.58,
     "q3_pares": 84.0
-   },
-   "concentracao_setorial": {
-    "valor": 9967,
-    "percentil_pares": 100.0,
-    "risco": 100.0,
-    "mediana_pares": 2886.0,
-    "q1_pares": 2785.0,
-    "q3_pares": 5087.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 37.9
+    "score": 27.0
    },
    {
     "anomes": "202506",
-    "score": 39.1
+    "score": 28.2
    },
    {
     "anomes": "202509",
-    "score": 39.7
+    "score": 28.9
    },
    {
     "anomes": "202512",
-    "score": 41.0
+    "score": 29.2
    },
    {
     "anomes": "202603",
-    "score": 55.5
+    "score": 46.6
    }
   ],
   "vulnerabilidade": {
@@ -1675,7 +1664,7 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "dimensoes_disponiveis": "5/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

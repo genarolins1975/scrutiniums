@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T10:38:35+00:00",
+ "gerado_em": "2026-08-14T10:32:45+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-05",
  "data_base_anterior": "2026-04",
@@ -3455,7 +3455,7 @@
    "delta_12m_pp": 1.86,
    "periodo": "2026-02 → 2026-05",
    "saldo_grupo": 1303264604914,
-   "nota": null,
+   "nota": "'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
    "regra": "alta em 2 datas-base consecutivas e (Δ3m ≥ 0,30 p.p. ou Δ12m ≥ 0,75 p.p.), carteira ≥ R$ 20 bi e base estável (±30% em 3 datas)",
    "link": {
     "view": "panorama"

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:21+00:00",
+ "gerado_em": "2026-08-14T10:32:31+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -41593,280 +41593,6 @@
    "nivel": "A"
   }
  },
- "sintese": [
-  {
-   "id": "agencias_sfn",
-   "rotulo": "Agências bancárias em funcionamento no país",
-   "valor": 13335,
-   "exibir": "13.335",
-   "unidade": "agências processadas · 2026-03",
-   "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os bancos; não inclui postos de atendimento nem correspondentes",
-   "data_ref": "2026-03",
-   "nivel": "A",
-   "status": "oficial",
-   "fonte": "BCB/ESTBAN",
-   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
-  },
-  {
-   "id": "municipios_com_agencia",
-   "rotulo": "Municípios com ao menos uma agência bancária",
-   "valor": 2926,
-   "exibir": "2.926 de 5.570",
-   "unidade": "municípios · 2026-03",
-   "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
-   "data_ref": "2026-03",
-   "nivel": "A",
-   "status": "oficial",
-   "fonte": "BCB/ESTBAN",
-   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
-  },
-  {
-   "id": "var_agencias_sfn_12m",
-   "rotulo": "Variação líquida de agências em 12 meses",
-   "valor": -2287,
-   "exibir": "-2.287",
-   "unidade": "agências · 2025-03 → 2026-03",
-   "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de bancos individuais é migração societária entre CNPJs do mesmo grupo",
-   "data_ref": "2026-03",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB/ESTBAN (derivação por subtração)",
-   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
-  },
-  {
-   "id": "maior_fechamento_12m",
-   "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
-   "valor": 1159,
-   "exibir": "1.159 (Banco Santander (Brasil) S.A.)",
-   "unidade": "agências · 12 meses até 2026-03",
-   "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
-   "data_ref": "2026-03",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB/ESTBAN (derivação por subtração)",
-   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
-  },
-  {
-   "id": "municipios_sem_dependencia",
-   "rotulo": "Municípios sem agência, posto ou posto eletrônico",
-   "valor": 379,
-   "exibir": "379 de 5.571",
-   "unidade": "municípios · posição 06/08/2026",
-   "conceito": "Municípios sem nenhuma dependência própria de instituição financeira no cadastro do BCB. NÃO é ausência de atendimento: praticamente todos são atendidos por correspondentes (lotéricas, mercados, farmácias), que são terceiros contratados e prestam serviço de escopo variável",
-   "data_ref": "06/08/2026",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB — cadastro de dependências (Unicad), contra a lista de municípios do IBGE",
-   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
-  },
-  {
-   "id": "municipios_so_posto",
-   "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
-   "valor": 2291,
-   "exibir": "2.291",
-   "unidade": "municípios · posição 06/08/2026",
-   "conceito": "Municípios com posto de atendimento ou posto eletrônico, mas nenhuma agência cadastrada — a presença física existe em formato reduzido",
-   "data_ref": "06/08/2026",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)",
-   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
-  },
-  {
-   "id": "municipios_sem_nenhum_ponto",
-   "rotulo": "Municípios sem dependência e sem correspondente",
-   "valor": 0,
-   "exibir": "0",
-   "unidade": "municípios · posição 06/08/2026",
-   "conceito": "Municípios sem agência, posto, posto eletrônico E sem correspondente contratado por qualquer instituição. É a lacuna de presença física de fato — e ela é praticamente inexistente, o que desloca a discussão de cobertura para o TIPO de ponto disponível",
-   "data_ref": "06/08/2026",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB — cadastros de dependências e de correspondentes, contra a lista do IBGE",
-   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
-  },
-  {
-   "id": "postos_atendimento",
-   "rotulo": "Postos de atendimento e postos eletrônicos no país",
-   "valor": 44990,
-   "exibir": "44.990",
-   "unidade": "pontos · posição 06/08/2026",
-   "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
-   "data_ref": "06/08/2026",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB — cadastro de dependências (soma de dois cadastros)",
-   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
-  },
-  {
-   "id": "municipios_so_correspondente",
-   "rotulo": "Municípios sem dependência, mas com correspondente",
-   "valor": 379,
-   "exibir": "379",
-   "unidade": "municípios · posição 06/08/2026",
-   "conceito": "Municípios em que a presença bancária existe apenas por correspondente — lotérica, mercado, farmácia — sem nenhuma dependência própria de instituição financeira. O serviço prestado varia por contrato e não equivale ao de uma agência",
-   "data_ref": "06/08/2026",
-   "nivel": "A",
-   "status": "calculado",
-   "fonte": "BCB — cadastros de dependências e de correspondentes",
-   "url": "https://www.bcb.gov.br/fis/info/correspondentes.asp"
-  }
- ],
- "flags": [
-  {
-   "instituicao": "Itau Unibanco Holding S.A.",
-   "indicador": "rede",
-   "regra": "queda_12m",
-   "valor": -26.6,
-   "referencia": "2026-03",
-   "detalhe": "queda de 26.6% nas agências em 12 meses (1933 → 1418) — verificar reorganização societária"
-  },
-  {
-   "instituicao": "Banco Santander (Brasil) S.A.",
-   "indicador": "rede",
-   "regra": "queda_12m",
-   "valor": -49.6,
-   "referencia": "2026-03",
-   "detalhe": "queda de 49.6% nas agências em 12 meses (2337 → 1178) — verificar reorganização societária"
-  },
-  {
-   "instituicao": "Banco Btg Pactual S.A.",
-   "indicador": "empregados",
-   "regra": "variacao_aa",
-   "valor": 55.6,
-   "referencia": "2026-12-31",
-   "detalhe": "variação de 55.6% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
-  },
-  {
-   "instituicao": "Brb Banco De Brasilia S.A.",
-   "indicador": "rede",
-   "regra": "queda_12m",
-   "valor": -100.0,
-   "referencia": "2026-03",
-   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária"
-  },
-  {
-   "instituicao": "Banco Estado De Sergipe S.A. - Banese",
-   "indicador": "empregados",
-   "regra": "variacao_aa",
-   "valor": 49.1,
-   "referencia": "2026-12-31",
-   "detalhe": "variação de 49.1% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
-  },
-  {
-   "instituicao": "Brbi Br Partners S.A.",
-   "indicador": "auditoria",
-   "regra": "troca_auditor",
-   "valor": null,
-   "referencia": "2025-12-31",
-   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA — o rodízio obrigatório também produz trocas; ver FCA da companhia"
-  },
-  {
-   "instituicao": "Alfa Holdings S.A.",
-   "indicador": "empregados",
-   "regra": "variacao_aa",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
-  },
-  {
-   "instituicao": "Alfa Holdings S.A.",
-   "indicador": "empregados",
-   "regra": "total_zerado",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
-  },
-  {
-   "instituicao": "Banco Rci Brasil S.A.",
-   "indicador": "auditoria",
-   "regra": "troca_auditor",
-   "valor": null,
-   "referencia": "2025-12-31",
-   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → FORVIS MAZARS AUDITORES INDEPENDENTES - SOCIEDADE SIMPLES LTDA. — o rodízio obrigatório também produz trocas; ver FCA da companhia"
-  },
-  {
-   "instituicao": "Investimentos Bemge S.A.",
-   "indicador": "empregados",
-   "regra": "variacao_aa",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
-  },
-  {
-   "instituicao": "Investimentos Bemge S.A.",
-   "indicador": "empregados",
-   "regra": "total_zerado",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
-  },
-  {
-   "instituicao": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
-   "indicador": "empregados",
-   "regra": "variacao_aa",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
-  },
-  {
-   "instituicao": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
-   "indicador": "empregados",
-   "regra": "total_zerado",
-   "valor": -100.0,
-   "referencia": "2024-12-31",
-   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
-  },
-  {
-   "instituicao": "Inter & Co, Inc. (Banco Inter)",
-   "indicador": "rede",
-   "regra": "queda_12m",
-   "valor": -93.8,
-   "referencia": "2026-03",
-   "detalhe": "queda de 93.8% nas agências em 12 meses (16 → 1) — verificar reorganização societária"
-  }
- ],
- "cobertura": {
-  "instituicoes": 29,
-  "com_empregados": 25,
-  "com_auditor": 26,
-  "com_rede": 23,
-  "bancos_cvm": 32,
-  "bancos_cvm_cobertos": 26,
-  "bancos_cvm_fora": [
-   {
-    "cnpj": "15.124.464/0001-87",
-    "nome": "BANCO BESA S.A.",
-    "ultimo_fca": 2022
-   },
-   {
-    "cnpj": "30.723.886/0001-62",
-    "nome": "BANCO MODAL S.A.",
-    "ultimo_fca": 2023
-   },
-   {
-    "cnpj": "17.157.777/0001-67",
-    "nome": "BANCO NACIONAL S.A.",
-    "ultimo_fca": 2024
-   },
-   {
-    "cnpj": "60.770.336/0001-65",
-    "nome": "BCO ALFA DE INVESTIMENTO S.A.",
-    "ultimo_fca": 2024
-   },
-   {
-    "cnpj": "91.669.747/0001-92",
-    "nome": "DM FINANCEIRA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "ultimo_fca": 2025
-   },
-   {
-    "cnpj": "17.167.412/0001-13",
-    "nome": "FINANCEIRA ALFA S.A.- CRED FINANC E INVS",
-    "ultimo_fca": 2024
-   }
-  ],
-  "criterio": "setor de atividade \"Bancos\" com registro ativo no Formulário Cadastral da CVM. Instituições sem registro de companhia aberta (Caixa, Safra) entram por fontes próprias e não contam neste denominador. Quem está fora não tem tabela de empregados no FRE — entraria como linha vazia, e ausência não vira zero."
- },
  "remuneracao": {
   "empresas": [
    {
@@ -43348,5 +43074,279 @@
    "url": "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/FRE/DADOS/",
    "nivel": "A"
   }
+ },
+ "sintese": [
+  {
+   "id": "agencias_sfn",
+   "rotulo": "Agências bancárias em funcionamento no país",
+   "valor": 13335,
+   "exibir": "13.335",
+   "unidade": "agências processadas · 2026-03",
+   "conceito": "Agências processadas na estatística bancária mensal do BCB, somadas para todos os bancos; não inclui postos de atendimento nem correspondentes",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "municipios_com_agencia",
+   "rotulo": "Municípios com ao menos uma agência bancária",
+   "valor": 2926,
+   "exibir": "2.926 de 5.570",
+   "unidade": "municípios · 2026-03",
+   "conceito": "Municípios (código do próprio ESTBAN) com pelo menos uma agência processada de qualquer banco — os demais dependem de postos, correspondentes e canais digitais",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "oficial",
+   "fonte": "BCB/ESTBAN",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "var_agencias_sfn_12m",
+   "rotulo": "Variação líquida de agências em 12 meses",
+   "valor": -2287,
+   "exibir": "-2.287",
+   "unidade": "agências · 2025-03 → 2026-03",
+   "conceito": "Diferença simples entre os totais de agências processadas; parte das quedas de bancos individuais é migração societária entre CNPJs do mesmo grupo",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "maior_fechamento_12m",
+   "rotulo": "Maior fechamento líquido de agências em 12 meses (piloto)",
+   "valor": 1159,
+   "exibir": "1.159 (Banco Santander (Brasil) S.A.)",
+   "unidade": "agências · 12 meses até 2026-03",
+   "conceito": "Entre as instituições acompanhadas; quedas abruptas podem refletir reorganização societária (agências migradas de CNPJ), sinalizada em flag no painel",
+   "data_ref": "2026-03",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB/ESTBAN (derivação por subtração)",
+   "url": "https://www.bcb.gov.br/estatisticas/estatisticabancariamunicipios"
+  },
+  {
+   "id": "municipios_sem_dependencia",
+   "rotulo": "Municípios sem agência, posto ou posto eletrônico",
+   "valor": 379,
+   "exibir": "379 de 5.571",
+   "unidade": "municípios · posição 06/08/2026",
+   "conceito": "Municípios sem nenhuma dependência própria de instituição financeira no cadastro do BCB. NÃO é ausência de atendimento: praticamente todos são atendidos por correspondentes (lotéricas, mercados, farmácias), que são terceiros contratados e prestam serviço de escopo variável",
+   "data_ref": "06/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastro de dependências (Unicad), contra a lista de municípios do IBGE",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "municipios_so_posto",
+   "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
+   "valor": 2291,
+   "exibir": "2.291",
+   "unidade": "municípios · posição 06/08/2026",
+   "conceito": "Municípios com posto de atendimento ou posto eletrônico, mas nenhuma agência cadastrada — a presença física existe em formato reduzido",
+   "data_ref": "06/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "municipios_sem_nenhum_ponto",
+   "rotulo": "Municípios sem dependência e sem correspondente",
+   "valor": 0,
+   "exibir": "0",
+   "unidade": "municípios · posição 06/08/2026",
+   "conceito": "Municípios sem agência, posto, posto eletrônico E sem correspondente contratado por qualquer instituição. É a lacuna de presença física de fato — e ela é praticamente inexistente, o que desloca a discussão de cobertura para o TIPO de ponto disponível",
+   "data_ref": "06/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastros de dependências e de correspondentes, contra a lista do IBGE",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "postos_atendimento",
+   "rotulo": "Postos de atendimento e postos eletrônicos no país",
+   "valor": 44990,
+   "exibir": "44.990",
+   "unidade": "pontos · posição 06/08/2026",
+   "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
+   "data_ref": "06/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastro de dependências (soma de dois cadastros)",
+   "url": "https://www.bcb.gov.br/fis/info/agencias.asp"
+  },
+  {
+   "id": "municipios_so_correspondente",
+   "rotulo": "Municípios sem dependência, mas com correspondente",
+   "valor": 379,
+   "exibir": "379",
+   "unidade": "municípios · posição 06/08/2026",
+   "conceito": "Municípios em que a presença bancária existe apenas por correspondente — lotérica, mercado, farmácia — sem nenhuma dependência própria de instituição financeira. O serviço prestado varia por contrato e não equivale ao de uma agência",
+   "data_ref": "06/08/2026",
+   "nivel": "A",
+   "status": "calculado",
+   "fonte": "BCB — cadastros de dependências e de correspondentes",
+   "url": "https://www.bcb.gov.br/fis/info/correspondentes.asp"
+  }
+ ],
+ "flags": [
+  {
+   "instituicao": "Itau Unibanco Holding S.A.",
+   "indicador": "rede",
+   "regra": "queda_12m",
+   "valor": -26.6,
+   "referencia": "2026-03",
+   "detalhe": "queda de 26.6% nas agências em 12 meses (1933 → 1418) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Santander (Brasil) S.A.",
+   "indicador": "rede",
+   "regra": "queda_12m",
+   "valor": -49.6,
+   "referencia": "2026-03",
+   "detalhe": "queda de 49.6% nas agências em 12 meses (2337 → 1178) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Btg Pactual S.A.",
+   "indicador": "empregados",
+   "regra": "variacao_aa",
+   "valor": 55.6,
+   "referencia": "2026-12-31",
+   "detalhe": "variação de 55.6% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Brb Banco De Brasilia S.A.",
+   "indicador": "rede",
+   "regra": "queda_12m",
+   "valor": -100.0,
+   "referencia": "2026-03",
+   "detalhe": "queda de 100.0% nas agências em 12 meses (86 → 0) — verificar reorganização societária"
+  },
+  {
+   "instituicao": "Banco Estado De Sergipe S.A. - Banese",
+   "indicador": "empregados",
+   "regra": "variacao_aa",
+   "valor": 49.1,
+   "referencia": "2026-12-31",
+   "detalhe": "variação de 49.1% entre 2025-12-31 e 2026-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Brbi Br Partners S.A.",
+   "indicador": "auditoria",
+   "regra": "troca_auditor",
+   "valor": null,
+   "referencia": "2025-12-31",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → DELOITTE TOUCHE TOHMATSU AUDITORES INDEPENDENTES LTDA — o rodízio obrigatório também produz trocas; ver FCA da companhia"
+  },
+  {
+   "instituicao": "Alfa Holdings S.A.",
+   "indicador": "empregados",
+   "regra": "variacao_aa",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Alfa Holdings S.A.",
+   "indicador": "empregados",
+   "regra": "total_zerado",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
+  },
+  {
+   "instituicao": "Banco Rci Brasil S.A.",
+   "indicador": "auditoria",
+   "regra": "troca_auditor",
+   "valor": null,
+   "referencia": "2025-12-31",
+   "detalhe": "troca de auditor: KPMG AUDITORES INDEPENDENTES LTDA (até 2025-12-31) → FORVIS MAZARS AUDITORES INDEPENDENTES - SOCIEDADE SIMPLES LTDA. — o rodízio obrigatório também produz trocas; ver FCA da companhia"
+  },
+  {
+   "instituicao": "Investimentos Bemge S.A.",
+   "indicador": "empregados",
+   "regra": "variacao_aa",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Investimentos Bemge S.A.",
+   "indicador": "empregados",
+   "regra": "total_zerado",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
+  },
+  {
+   "instituicao": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "indicador": "empregados",
+   "regra": "variacao_aa",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "variação de -100.0% entre 2023-12-31 e 2024-12-31 — verificar mudança de escopo ou perímetro no FRE"
+  },
+  {
+   "instituicao": "Mercantil Financeira S.A. - Soc. Credito, Financ e Inv",
+   "indicador": "empregados",
+   "regra": "total_zerado",
+   "valor": -100.0,
+   "referencia": "2024-12-31",
+   "detalhe": "total zerado em 2024-12-31 após série positiva — possível falha de declaração"
+  },
+  {
+   "instituicao": "Inter & Co, Inc. (Banco Inter)",
+   "indicador": "rede",
+   "regra": "queda_12m",
+   "valor": -93.8,
+   "referencia": "2026-03",
+   "detalhe": "queda de 93.8% nas agências em 12 meses (16 → 1) — verificar reorganização societária"
+  }
+ ],
+ "cobertura": {
+  "instituicoes": 29,
+  "com_empregados": 25,
+  "com_auditor": 26,
+  "com_rede": 23,
+  "bancos_cvm": 32,
+  "bancos_cvm_cobertos": 26,
+  "bancos_cvm_fora": [
+   {
+    "cnpj": "15.124.464/0001-87",
+    "nome": "BANCO BESA S.A.",
+    "ultimo_fca": 2022
+   },
+   {
+    "cnpj": "30.723.886/0001-62",
+    "nome": "BANCO MODAL S.A.",
+    "ultimo_fca": 2023
+   },
+   {
+    "cnpj": "17.157.777/0001-67",
+    "nome": "BANCO NACIONAL S.A.",
+    "ultimo_fca": 2024
+   },
+   {
+    "cnpj": "60.770.336/0001-65",
+    "nome": "BCO ALFA DE INVESTIMENTO S.A.",
+    "ultimo_fca": 2024
+   },
+   {
+    "cnpj": "91.669.747/0001-92",
+    "nome": "DM FINANCEIRA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "ultimo_fca": 2025
+   },
+   {
+    "cnpj": "17.167.412/0001-13",
+    "nome": "FINANCEIRA ALFA S.A.- CRED FINANC E INVS",
+    "ultimo_fca": 2024
+   }
+  ],
+  "criterio": "setor de atividade \"Bancos\" com registro ativo no Formulário Cadastral da CVM. Instituições sem registro de companhia aberta (Caixa, Safra) entram por fontes próprias e não contam neste denominador. Quem está fora não tem tabela de empregados no FRE — entraria como linha vazia, e ausência não vira zero."
  }
 }

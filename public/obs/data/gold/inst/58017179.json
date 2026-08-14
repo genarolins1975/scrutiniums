@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:26+00:00",
+  "atualizado_em": "2026-08-14T10:32:36+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 58.017.179",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4750, piso sobre os 94.5% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4763, piso sobre os 94.5% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -138,7 +138,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -244,7 +245,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 4794).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4763, piso sobre os 94.5% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -289,7 +290,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4750,
+   "hhi_setorial": 4763,
+   "hhi_cobertura_pct": 94.5,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -344,8 +346,7 @@
      "outros_creditos",
      0.7
     ]
-   ],
-   "hhi_cobertura_pct": 94.5
+   ]
   },
   "total_pf": 377113552.73,
   "total_pj": 14406534315.53
@@ -418,6 +419,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -625,8 +627,8 @@
   }
  },
  "score_ref": {
-  "score": 52.4,
-  "score_delta": -1.8,
+  "score": 52.5,
+  "score_delta": -1.9,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -670,34 +672,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 4794,
-    "percentil_pares": 85.7,
-    "risco": 85.7,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 4763,
+    "percentil_pares": 86.7,
+    "risco": 86.7,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 53.9
+    "score": 55.1
    },
    {
     "anomes": "202506",
-    "score": 54.1
+    "score": 54.5
    },
    {
     "anomes": "202509",
-    "score": 54.9
+    "score": 55.6
    },
    {
     "anomes": "202512",
-    "score": 54.2
+    "score": 54.4
    },
    {
     "anomes": "202603",
-    "score": 52.4
+    "score": 52.5
    }
   ],
   "vulnerabilidade": {

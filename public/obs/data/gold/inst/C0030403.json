@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -58,7 +58,7 @@
     "base": "BCB IF.data (Olinda)"
    },
    {
-    "texto": "Score relativo subiu 4.2 pontos no grupo de pares.",
+    "texto": "Score relativo subiu 4.1 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -129,7 +129,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -232,11 +233,6 @@
    "tipo": "ok",
    "texto": "ROE do período de 3.2%.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 3037).",
-   "base": "IF.data carteiras por CNAE"
   }
  ],
  "capital_tabela": [
@@ -280,7 +276,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2741,
+   "hhi_setorial": 2744,
+   "hhi_cobertura_pct": 82.9,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -327,8 +324,7 @@
      "capital_de_giro",
      3.2
     ]
-   ],
-   "hhi_cobertura_pct": 82.9
+   ]
   },
   "total_pf": 17125915.2,
   "total_pj": 30942468681.49
@@ -401,6 +397,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -453,8 +450,8 @@
   }
  },
  "score_ref": {
-  "score": 54.2,
-  "score_delta": 4.2,
+  "score": 56.2,
+  "score_delta": 4.1,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -498,34 +495,34 @@
     "q3_pares": 84.1
    },
    "concentracao_setorial": {
-    "valor": 3037,
-    "percentil_pares": 87.5,
-    "risco": 87.5,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
+    "valor": 2744,
+    "percentil_pares": 100.0,
+    "risco": 100.0,
+    "mediana_pares": 2373.0,
+    "q1_pares": 1990.5,
+    "q3_pares": 2609.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 52.1
+    "score": 54.2
    },
    {
     "anomes": "202506",
-    "score": 45.8
+    "score": 47.9
    },
    {
     "anomes": "202509",
-    "score": 33.3
+    "score": 34.7
    },
    {
     "anomes": "202512",
-    "score": 50.0
+    "score": 52.1
    },
    {
     "anomes": "202603",
-    "score": 54.2
+    "score": 56.2
    }
   ],
   "vulnerabilidade": {
@@ -717,7 +714,7 @@
  },
  "openfinance": {
   "organisation": "CITIBANK",
-  "chamadas_semana": 97361.0,
+  "chamadas_semana": 91336.0,
   "share_pct": 0.0,
   "familias_api": 26,
   "papeis": [

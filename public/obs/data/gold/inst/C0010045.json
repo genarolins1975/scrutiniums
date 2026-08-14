@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "60.746.948/0001-12 (companhia listada/holding)",
   "participante_open_finance": true
@@ -59,7 +59,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo subiu 6.7 pontos no grupo de pares.",
+    "texto": "Score relativo subiu 6.6 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -126,7 +126,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -277,7 +278,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1408,
+   "hhi_setorial": 1421,
+   "hhi_cobertura_pct": 76.2,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -336,8 +338,7 @@
      "outros_creditos",
      11.1
     ]
-   ],
-   "hhi_cobertura_pct": 76.2
+   ]
   },
   "total_pf": 457752104472.36,
   "total_pj": 387995083383.14
@@ -410,6 +411,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -460,8 +462,8 @@
   }
  },
  "score_ref": {
-  "score": 58.1,
-  "score_delta": 6.7,
+  "score": 51.4,
+  "score_delta": 6.6,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -505,34 +507,34 @@
     "q3_pares": 78.85
    },
    "concentracao_setorial": {
-    "valor": 1988,
-    "percentil_pares": 60.0,
-    "risco": 60.0,
-    "mediana_pares": 1986.0,
-    "q1_pares": 1791.25,
-    "q3_pares": 2084.0
+    "valor": 1421,
+    "percentil_pares": 20.0,
+    "risco": 20.0,
+    "mediana_pares": 1503.5,
+    "q1_pares": 1428.25,
+    "q3_pares": 1578.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 54.8
-   },
-   {
-    "anomes": "202506",
-    "score": 60.5
-   },
-   {
-    "anomes": "202509",
-    "score": 57.1
-   },
-   {
-    "anomes": "202512",
     "score": 51.4
    },
    {
+    "anomes": "202506",
+    "score": 53.8
+   },
+   {
+    "anomes": "202509",
+    "score": 50.5
+   },
+   {
+    "anomes": "202512",
+    "score": 44.8
+   },
+   {
     "anomes": "202603",
-    "score": 58.1
+    "score": 51.4
    }
   ],
   "vulnerabilidade": {
@@ -980,8 +982,8 @@
  },
  "openfinance": {
   "organisation": "BRADESCO",
-  "chamadas_semana": 3601998885.0,
-  "share_pct": 7.2,
+  "chamadas_semana": 5760349100.0,
+  "share_pct": 7.0,
   "familias_api": 15,
   "papeis": [
    "CCORR",

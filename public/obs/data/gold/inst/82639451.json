@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 82.639.451",
   "participante_open_finance": null
@@ -53,7 +53,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo caiu 7.2 pontos no grupo de pares.",
+    "texto": "Score relativo caiu 8.2 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -140,7 +140,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -286,7 +287,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1995,
+   "hhi_setorial": 2000,
+   "hhi_cobertura_pct": 76.4,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -345,8 +347,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      6.6
     ]
-   ],
-   "hhi_cobertura_pct": 76.4
+   ]
   },
   "total_pf": 5427920513.05,
   "total_pj": 4121987789.18
@@ -419,6 +420,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -626,8 +628,8 @@
   }
  },
  "score_ref": {
-  "score": 26.7,
-  "score_delta": -7.2,
+  "score": 26.4,
+  "score_delta": -8.2,
   "faixa": "risco baixo",
   "dimensoes": {
    "capital_basileia": {
@@ -671,34 +673,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 2557,
-    "percentil_pares": 28.6,
-    "risco": 28.6,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 2000,
+    "percentil_pares": 26.7,
+    "risco": 26.7,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 26.5
+    "score": 26.6
    },
    {
     "anomes": "202506",
-    "score": 27.8
+    "score": 27.5
    },
    {
     "anomes": "202509",
-    "score": 33.7
+    "score": 34.4
    },
    {
     "anomes": "202512",
-    "score": 33.9
+    "score": 34.6
    },
    {
     "anomes": "202603",
-    "score": 26.7
+    "score": 26.4
    }
   ],
   "vulnerabilidade": {

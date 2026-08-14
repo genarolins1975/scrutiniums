@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4665, piso sobre os 79.4% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4661, piso sobre os 79.4% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -150,7 +150,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -256,7 +257,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 5087).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4661, piso sobre os 79.4% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -301,7 +302,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4665,
+   "hhi_setorial": 4661,
+   "hhi_cobertura_pct": 79.4,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -352,8 +354,7 @@
      "outros_creditos",
      0.1
     ]
-   ],
-   "hhi_cobertura_pct": 79.4
+   ]
   },
   "total_pf": 14725477476.9,
   "total_pj": 9574668808.27
@@ -426,6 +427,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -806,9 +808,9 @@
     1.06,
     -0.35,
     -19.17,
-    10.79,
     6.57,
     11.72,
+    10.79,
     -10.12,
     -1.47,
     0.19,
@@ -1176,9 +1178,9 @@
     22.17,
     19.56,
     8.92,
-    34.24,
     11.81,
     59.2,
+    34.24,
     3342.78,
     2271.91,
     52496.08,
@@ -1569,9 +1571,9 @@
     13.28,
     32.57,
     5.8,
-    4.08,
     5.75,
     16.78,
+    4.08,
     1.14,
     1.26,
     1.01,
@@ -1589,9 +1591,9 @@
   }
  },
  "score_ref": {
-  "score": 59.6,
-  "score_delta": 3.9,
-  "faixa": "atenção",
+  "score": 61.9,
+  "score_delta": 3.1,
+  "faixa": "risco elevado",
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.42,
@@ -1634,34 +1636,34 @@
     "q3_pares": 84.0
    },
    "concentracao_setorial": {
-    "valor": 5087,
-    "percentil_pares": 75.0,
-    "risco": 75.0,
-    "mediana_pares": 2886.0,
-    "q1_pares": 2785.0,
-    "q3_pares": 5087.0
+    "valor": 4661,
+    "percentil_pares": 88.9,
+    "risco": 88.9,
+    "mediana_pares": 2276.5,
+    "q1_pares": 1865.25,
+    "q3_pares": 2893.75
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 55.1
+    "score": 57.7
    },
    {
     "anomes": "202506",
-    "score": 52.0
+    "score": 54.5
    },
    {
     "anomes": "202509",
-    "score": 55.4
+    "score": 58.8
    },
    {
     "anomes": "202512",
-    "score": 55.7
+    "score": 58.8
    },
    {
     "anomes": "202603",
-    "score": 59.6
+    "score": 61.9
    }
   ],
   "vulnerabilidade": {

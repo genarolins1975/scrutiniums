@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:26+00:00",
+  "atualizado_em": "2026-08-14T10:32:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 38.486.817",
   "participante_open_finance": null
@@ -132,7 +132,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -278,7 +279,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1309,
+   "hhi_setorial": 1364,
+   "hhi_cobertura_pct": 78.4,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -329,8 +331,7 @@
      "rural_e_agroindustrial",
      7.3
     ]
-   ],
-   "hhi_cobertura_pct": 78.4
+   ]
   },
   "total_pf": 307315490.72,
   "total_pj": 6947655481.42
@@ -403,6 +404,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -655,22 +657,22 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 1830,
+    "valor": 1364,
     "percentil_pares": 0.0,
     "risco": 0.0,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 36.9
+    "score": 37.4
    },
    {
     "anomes": "202506",
-    "score": 38.2
+    "score": 38.8
    },
    {
     "anomes": "202509",

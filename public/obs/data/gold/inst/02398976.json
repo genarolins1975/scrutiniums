@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:33+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 02.398.976",
   "participante_open_finance": null
@@ -133,10 +133,11 @@
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "score_meta": {
-  "cobertura_dados_pct": 100,
+  "cobertura_dados_pct": 83,
   "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -282,7 +283,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 817,
+   "hhi_setorial": 835,
+   "hhi_cobertura_pct": 54.8,
    "top_cnae": [
     [
      "outros",
@@ -341,8 +343,7 @@
      "outros_creditos",
      6.8
     ]
-   ],
-   "hhi_cobertura_pct": 54.8
+   ]
   },
   "total_pf": 1690701347.09,
   "total_pj": 4189298050.43
@@ -415,6 +416,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -795,9 +797,9 @@
     1.06,
     -0.35,
     -19.17,
-    10.79,
     6.57,
     11.72,
+    10.79,
     -10.12,
     -1.47,
     0.19,
@@ -1165,9 +1167,9 @@
     22.17,
     19.56,
     8.92,
-    34.24,
     11.81,
     59.2,
+    34.24,
     3342.78,
     2271.91,
     52496.08,
@@ -1558,9 +1560,9 @@
     13.28,
     32.57,
     5.8,
-    4.08,
     5.75,
     16.78,
+    4.08,
     1.14,
     1.26,
     1.01,
@@ -1578,7 +1580,7 @@
   }
  },
  "score_ref": {
-  "score": 29.2,
+  "score": 26.2,
   "score_delta": -3.2,
   "faixa": "risco baixo",
   "dimensoes": {
@@ -1621,24 +1623,16 @@
     "mediana_pares": 71.03,
     "q1_pares": 60.58,
     "q3_pares": 84.0
-   },
-   "concentracao_setorial": {
-    "valor": 2878,
-    "percentil_pares": 43.8,
-    "risco": 43.8,
-    "mediana_pares": 2886.0,
-    "q1_pares": 2785.0,
-    "q3_pares": 5087.0
    }
   },
   "historico_score": [
    {
     "anomes": "202512",
-    "score": 32.4
+    "score": 29.4
    },
    {
     "anomes": "202603",
-    "score": 29.2
+    "score": 26.2
    }
   ],
   "vulnerabilidade": {
@@ -1659,7 +1653,7 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "dimensoes_disponiveis": "5/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

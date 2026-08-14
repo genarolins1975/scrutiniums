@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:26+00:00",
+  "atualizado_em": "2026-08-14T10:32:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 37.880.206",
   "participante_open_finance": null
@@ -243,11 +243,6 @@
    "tipo": "ok",
    "texto": "ROE do período de 3.3%.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 3553).",
-   "base": "IF.data carteiras por CNAE"
   }
  ],
  "capital_tabela": [
@@ -287,7 +282,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 900,
+   "hhi_setorial": 902,
+   "hhi_cobertura_pct": 48.5,
    "top_cnae": [
     [
      "outros",
@@ -320,8 +316,7 @@
      "capital_de_giro",
      21.5
     ]
-   ],
-   "hhi_cobertura_pct": 48.5
+   ]
   },
   "total_pf": null,
   "total_pj": 303858877.56
@@ -394,6 +389,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

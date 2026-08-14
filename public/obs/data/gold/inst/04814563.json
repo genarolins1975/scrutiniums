@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:33+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 04.814.563",
   "participante_open_finance": null
@@ -247,11 +247,6 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 4944).",
-   "base": "IF.data carteiras por CNAE"
-  },
-  {
-   "tipo": "warn",
    "texto": "Índice de reclamações 125.2 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
    "base": "BCB rdrweb"
   }
@@ -297,7 +292,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 677,
+   "hhi_setorial": 678,
+   "hhi_cobertura_pct": 34.7,
    "top_cnae": [
     [
      "outros",
@@ -348,8 +344,7 @@
      "investimento",
      0.4
     ]
-   ],
-   "hhi_cobertura_pct": 34.7
+   ]
   },
   "total_pf": 2073535195.43,
   "total_pj": 86281427.0
@@ -422,6 +417,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -802,9 +798,9 @@
     1.06,
     -0.35,
     -19.17,
-    10.79,
     6.57,
     11.72,
+    10.79,
     -10.12,
     -1.47,
     0.19,
@@ -1172,9 +1168,9 @@
     22.17,
     19.56,
     8.92,
-    34.24,
     11.81,
     59.2,
+    34.24,
     3342.78,
     2271.91,
     52496.08,
@@ -1565,9 +1561,9 @@
     13.28,
     32.57,
     5.8,
-    4.08,
     5.75,
     16.78,
+    4.08,
     1.14,
     1.26,
     1.01,

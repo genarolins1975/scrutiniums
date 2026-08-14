@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 58.160.789",
   "participante_open_finance": null
@@ -130,7 +130,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -281,7 +282,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1707,
+   "hhi_setorial": 1740,
+   "hhi_cobertura_pct": 78.0,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -340,8 +342,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      12.7
     ]
-   ],
-   "hhi_cobertura_pct": 78.0
+   ]
   },
   "total_pf": 42241241744.81,
   "total_pj": 71704441599.59
@@ -414,6 +415,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -466,7 +468,7 @@
   }
  },
  "score_ref": {
-  "score": 43.8,
+  "score": 41.7,
   "score_delta": -4.1,
   "faixa": "atenção",
   "dimensoes": {
@@ -511,34 +513,34 @@
     "q3_pares": 84.1
    },
    "concentracao_setorial": {
-    "valor": 2225,
-    "percentil_pares": 12.5,
-    "risco": 12.5,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
+    "valor": 1740,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 2373.0,
+    "q1_pares": 1990.5,
+    "q3_pares": 2609.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 41.7
-   },
-   {
-    "anomes": "202506",
     "score": 39.6
    },
    {
+    "anomes": "202506",
+    "score": 37.5
+   },
+   {
     "anomes": "202509",
-    "score": 47.9
+    "score": 45.8
    },
    {
     "anomes": "202512",
-    "score": 47.9
+    "score": 45.8
    },
    {
     "anomes": "202603",
-    "score": 43.8
+    "score": 41.7
    }
   ],
   "vulnerabilidade": {

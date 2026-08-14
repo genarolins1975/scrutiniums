@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T10:38:21+00:00",
+ "gerado_em": "2026-08-14T10:32:31+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 238,
-  "total_editais": 790,
+  "total_contratos_if": 239,
+  "total_editais": 795,
   "backfill_completo": false,
   "ranking": [
    {
@@ -152,9 +152,9 @@
    {
     "cnpj8": "90400888",
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "contratos": 19,
+    "contratos": 20,
     "ufs": 8,
-    "como_receita": 5
+    "como_receita": 6
    },
    {
     "cnpj8": "00000000",
@@ -459,6 +459,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "56983778000112-2-000006/2026",
+    "ente": "CAMARA MUNICIPAL DE AMERICANA",
+    "esfera": "Municipal",
+    "municipio": "Americana",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-08-11",
+    "vig_fim": "2036-08-10",
+    "valor": 10000.0,
+    "receita": true,
+    "banco": "BANCO SANTANDER BRASIL SA",
+    "cnpj8": "90400888",
+    "url": "https://pncp.gov.br/contratos/56983778000112/2026/6"
+   },
    {
     "controle": "46668596000101-2-000029/2026",
     "ente": "MUNICIPIO DE CRUZEIRO",
@@ -1043,24 +1058,54 @@
     "banco": "ITAU UNIBANCO S.A.",
     "cnpj8": "60701190",
     "url": "https://pncp.gov.br/contratos/32512501000143/2026/47"
-   },
-   {
-    "controle": "22681423000157-2-000066/2026",
-    "ente": "MUNICIPIO DE FRANCISCO SA",
-    "esfera": "Municipal",
-    "municipio": "Francisco Sá",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-05-06",
-    "vig_fim": "2031-05-06",
-    "valor": 1000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/22681423000157/2026/66"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE IVAIPORA",
+    "municipio": "Ivaiporã",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-13",
+    "url": "https://pncp.gov.br/compras/75741330000137/2026/250"
+   },
+   {
+    "ente": "MUNICIPIO DE BARBOSA",
+    "municipio": "Barbosa",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-13",
+    "url": "https://pncp.gov.br/compras/46162178000130/2026/24"
+   },
+   {
+    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
+    "municipio": "Brasília",
+    "uf": "DF",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-13",
+    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
+   },
+   {
+    "ente": "MUNICIPIO DE ORIZANIA",
+    "municipio": "Orizânia",
+    "uf": "MG",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-12",
+    "url": "https://pncp.gov.br/compras/01616271000139/2026/54"
+   },
+   {
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
+    "municipio": "Aparecida",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-12",
+    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
+   },
    {
     "ente": "MUNICIPIO DE COTIA",
     "municipio": "Cotia",
@@ -1071,15 +1116,6 @@
     "url": "https://pncp.gov.br/compras/46523049000120/2026/148"
    },
    {
-    "ente": "CAIXA DE ASSISTENCIA  AO SERVIDOR PUBLICO MUNICIPAL DE SANTOS - CAPEP-SAUDE",
-    "municipio": "Santos",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/58197948000169/2026/25"
-   },
-   {
     "ente": "MUNICIPIO DE SAO PEDRO DOS FERROS",
     "municipio": "São Pedro dos Ferros",
     "uf": "MG",
@@ -1087,15 +1123,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-11",
     "url": "https://pncp.gov.br/compras/19243500000182/2026/94"
-   },
-   {
-    "ente": "MUNICIPIO DE BURITI BRAVO",
-    "municipio": "Buriti Bravo",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/06052138000110/2026/23"
    },
    {
     "ente": "MUNICIPIO DE SAO JOAQUIM DE BICAS",
@@ -1125,49 +1152,22 @@
     "url": "https://pncp.gov.br/compras/46643466000106/2026/704"
    },
    {
-    "ente": "MUNICIPIO DE IBIUNA",
-    "municipio": "Ibiúna",
+    "ente": "CAIXA DE ASSISTENCIA  AO SERVIDOR PUBLICO MUNICIPAL DE SANTOS - CAPEP-SAUDE",
+    "municipio": "Santos",
     "uf": "SP",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-10",
-    "url": "https://pncp.gov.br/compras/46634531000137/2026/231"
+    "publicacao": "2026-08-11",
+    "url": "https://pncp.gov.br/compras/58197948000169/2026/25"
    },
    {
-    "ente": "MUNICIPIO DE IBIUNA",
-    "municipio": "Ibiúna",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Suspensa",
-    "publicacao": "2026-08-10",
-    "url": "https://pncp.gov.br/compras/46634531000137/2026/233"
-   },
-   {
-    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
-    "municipio": "Águas de Chapecó",
-    "uf": "SC",
+    "ente": "MUNICIPIO DE BURITI BRAVO",
+    "municipio": "Buriti Bravo",
+    "uf": "MA",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-10",
-    "url": "https://pncp.gov.br/compras/82804212000196/2026/266"
-   },
-   {
-    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
-    "municipio": "Águas de Chapecó",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-10",
-    "url": "https://pncp.gov.br/compras/82804212000196/2026/264"
-   },
-   {
-    "ente": "MUNICIPIO DE EUSEBIO",
-    "municipio": "Eusébio",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-10",
-    "url": "https://pncp.gov.br/compras/23563067000130/2026/83"
+    "publicacao": "2026-08-11",
+    "url": "https://pncp.gov.br/compras/06052138000110/2026/23"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

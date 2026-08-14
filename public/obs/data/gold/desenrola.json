@@ -1,10 +1,10 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-03T23:30:28+00:00",
+ "gerado_em": "2026-08-14T10:32:49+00:00",
  "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
  "url_dataset": "https://dadosabertos.bcb.gov.br/dataset/desenrola-brasil",
  "licenca": "Open Data Commons Open Database License (ODbL)",
- "coletado_em": "2026-08-03T23:19:22+00:00",
+ "coletado_em": "2026-08-13T10:32:41+00:00",
  "bronze_sha": "c8bdd0b174ff63989059dbc2749fd27854cf28ac557a9900e732ded253f006da",
  "data_base": "2026-06",
  "data_base_min": "2023-09",
@@ -39,7 +39,7 @@
   "operacoes": 2685590,
   "volume": 4517389451.58,
   "ticket_medio": 1682,
-  "conglomerados": 73,
+  "conglomerados": 59,
   "periodo": "2023-09 a 2026-06"
  },
  "pequenos_negocios": {
@@ -2737,7 +2737,7 @@
    "unidade_analise": "conglomerado financeiro",
    "periodicidade": "acumulado do período",
    "fonte": "BCB — Desenrola Brasil (dados agregados do SCR)",
-   "cobertura": "73 conglomerados",
+   "cobertura": "59 conglomerados",
    "limitacoes": "Mede concentração entre os credores que reportam ao SCR. Credores não financeiros participaram do programa e não estão neste denominador.",
    "versao": "v1.0"
   },

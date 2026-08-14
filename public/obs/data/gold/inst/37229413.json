@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:25+00:00",
+  "atualizado_em": "2026-08-14T10:32:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 37.229.413",
   "participante_open_finance": true
@@ -320,6 +320,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -1140,7 +1141,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "PEFISA",
-  "chamadas_semana": 5378140.0,
+  "chamadas_semana": 4403960.0,
   "share_pct": 0.0,
   "familias_api": 10,
   "papeis": [

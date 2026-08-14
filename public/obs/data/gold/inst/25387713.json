@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:25+00:00",
+  "atualizado_em": "2026-08-14T10:32:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 25.387.713",
   "participante_open_finance": null
@@ -282,7 +282,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1899,
+   "hhi_setorial": 1900,
+   "hhi_cobertura_pct": 77.1,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -341,8 +342,7 @@
      "operacoes_com_recebiveis",
      8.2
     ]
-   ],
-   "hhi_cobertura_pct": 77.1
+   ]
   },
   "total_pf": 164858250.58,
   "total_pj": 245317407.72
@@ -415,6 +415,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

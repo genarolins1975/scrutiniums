@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:26+00:00",
+  "atualizado_em": "2026-08-14T10:32:36+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 54.037.916",
   "participante_open_finance": null
@@ -127,7 +127,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -273,7 +274,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2386,
+   "hhi_setorial": 2404,
+   "hhi_cobertura_pct": 87.3,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -332,8 +334,7 @@
      "investimento",
      10.7
     ]
-   ],
-   "hhi_cobertura_pct": 87.3
+   ]
   },
   "total_pf": 5052474082.1,
   "total_pj": 1763399305.12
@@ -406,6 +407,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -613,7 +615,7 @@
   }
  },
  "score_ref": {
-  "score": 35.9,
+  "score": 38.6,
   "score_delta": 1.4,
   "faixa": "risco baixo",
   "dimensoes": {
@@ -658,34 +660,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 2565,
-    "percentil_pares": 33.3,
-    "risco": 33.3,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 2404,
+    "percentil_pares": 50.0,
+    "risco": 50.0,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 34.0
+    "score": 36.9
    },
    {
     "anomes": "202506",
-    "score": 32.2
+    "score": 35.2
    },
    {
     "anomes": "202509",
-    "score": 33.0
+    "score": 35.8
    },
    {
     "anomes": "202512",
-    "score": 34.5
+    "score": 37.2
    },
    {
     "anomes": "202603",
-    "score": 35.9
+    "score": 38.6
    }
   ],
   "vulnerabilidade": {

@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-12T10:38:39+00:00",
+ "gerado_em": "2026-08-14T10:32:50+00:00",
  "familias": [
   {
    "id": "macro",
@@ -83,17 +83,18 @@
    "familia": "macro",
    "nivel": "informativo",
    "titulo": "6 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (103 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (103 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (103 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (105 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (105 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (105 dias). Ausência de dado novo NÃO foi interpretada como zero.",
    "valor": 6,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "2 execuções anteriores",
+   "evidencia_persistencia": "4 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.94
+   "ordem": 0.94,
+   "serie_recente": null
   },
   {
    "id": "macro:comprometimento_high",
@@ -105,12 +106,110 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "44 execuções anteriores",
+   "evidencia_persistencia": "46 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.017143
+   "ordem": 0.017143,
+   "serie_recente": [
+    {
+     "p": "2024-06-01",
+     "v": 26.38
+    },
+    {
+     "p": "2024-07-01",
+     "v": 26.53
+    },
+    {
+     "p": "2024-08-01",
+     "v": 26.73
+    },
+    {
+     "p": "2024-09-01",
+     "v": 26.49
+    },
+    {
+     "p": "2024-10-01",
+     "v": 26.39
+    },
+    {
+     "p": "2024-11-01",
+     "v": 26.39
+    },
+    {
+     "p": "2024-12-01",
+     "v": 26.8
+    },
+    {
+     "p": "2025-01-01",
+     "v": 26.71
+    },
+    {
+     "p": "2025-02-01",
+     "v": 26.85
+    },
+    {
+     "p": "2025-03-01",
+     "v": 26.96
+    },
+    {
+     "p": "2025-04-01",
+     "v": 27.12
+    },
+    {
+     "p": "2025-05-01",
+     "v": 27.19
+    },
+    {
+     "p": "2025-06-01",
+     "v": 27.17
+    },
+    {
+     "p": "2025-07-01",
+     "v": 27.32
+    },
+    {
+     "p": "2025-08-01",
+     "v": 27.55
+    },
+    {
+     "p": "2025-09-01",
+     "v": 27.77
+    },
+    {
+     "p": "2025-10-01",
+     "v": 27.92
+    },
+    {
+     "p": "2025-11-01",
+     "v": 27.92
+    },
+    {
+     "p": "2025-12-01",
+     "v": 28.12
+    },
+    {
+     "p": "2026-01-01",
+     "v": 28.26
+    },
+    {
+     "p": "2026-02-01",
+     "v": 28.3
+    },
+    {
+     "p": "2026-03-01",
+     "v": 28.21
+    },
+    {
+     "p": "2026-04-01",
+     "v": 28.36
+    },
+    {
+     "p": "2026-05-01",
+     "v": 28.48
+    }
+   ]
   },
   {
    "id": "carteira:produto_pf_deterioracao:Cartão — parcelado/financiado · PF",
@@ -185,7 +284,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Outros · PF — inadimplência (arrastada)",
-   "detalhe": "7.67% → 8.05% (2026-02 → 2026-05). Δ3m +0.38 p.p. · Δ12m +1.86 p.p. · carteira R$ 1.303.3 bi.",
+   "detalhe": "7.67% → 8.05% (2026-02 → 2026-05). Δ3m +0.38 p.p. · Δ12m +1.86 p.p. · carteira R$ 1.303.3 bi. 'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
    "valor": 8.05,
    "limiar": null,
    "referencia": "2026-05",
@@ -462,36 +561,36 @@
   {
    "id": "openfinance:taxa de sucesso — dados transacionais",
    "familia": "openfinance",
-   "nivel": "atencao",
+   "nivel": "relevante",
    "titulo": "taxa de sucesso — dados transacionais",
-   "detalhe": "95.42 contra limiar 97 há 9 semanas (dado de 2026-06-26).",
-   "valor": 95.42,
+   "detalhe": "94.24 contra limiar 97 há 14 semanas (dado de 2026-07-31).",
+   "valor": 94.24,
    "limiar": 97,
-   "referencia": "2026-06-26",
+   "referencia": "2026-07-31",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "9 semanas consecutivas fora do limiar",
+   "evidencia_persistencia": "14 semanas consecutivas fora do limiar",
    "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 9
+   "ordem": 14
   },
   {
    "id": "openfinance:taxa de sucesso — iniciacao pagamento",
    "familia": "openfinance",
-   "nivel": "atencao",
+   "nivel": "relevante",
    "titulo": "taxa de sucesso — iniciacao pagamento",
-   "detalhe": "96.57 contra limiar 97 há 1 semanas (dado de 2026-06-26).",
-   "valor": 96.57,
+   "detalhe": "94.04 contra limiar 97 há 6 semanas (dado de 2026-07-31).",
+   "valor": 94.04,
    "limiar": 97,
-   "referencia": "2026-06-26",
+   "referencia": "2026-07-31",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "1 semanas consecutivas fora do limiar",
-   "recorrente": false,
+   "evidencia_persistencia": "6 semanas consecutivas fora do limiar",
+   "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 1
+   "ordem": 6
   },
   {
    "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-03",

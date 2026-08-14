@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 71.207.740",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4742, piso sobre os 99.0% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4740, piso sobre os 99.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -247,7 +247,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 4741).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 4740, piso sobre os 99.0% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -292,7 +292,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 4742,
+   "hhi_setorial": 4740,
+   "hhi_cobertura_pct": 99.0,
    "top_cnae": [
     [
      "agricultura_pecuaria_producao_florestal_pesca_e_",
@@ -343,8 +344,7 @@
      "cheque_especial_e_conta_garantida",
      0.2
     ]
-   ],
-   "hhi_cobertura_pct": 99.0
+   ]
   },
   "total_pf": 123989600.04,
   "total_pj": 22102682.76
@@ -417,6 +417,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

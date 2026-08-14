@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -59,7 +59,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo caiu 3.9 pontos no grupo de pares.",
+    "texto": "Score relativo caiu 4.0 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -146,7 +146,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -297,7 +298,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2459,
+   "hhi_setorial": 2462,
+   "hhi_cobertura_pct": 79.3,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -356,8 +358,7 @@
      "cheque_especial_e_conta_garantida",
      13.9
     ]
-   ],
-   "hhi_cobertura_pct": 79.3
+   ]
   },
   "total_pf": 361036043.94,
   "total_pj": 5691969359.35
@@ -430,6 +431,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -637,8 +639,8 @@
   }
  },
  "score_ref": {
-  "score": 57.4,
-  "score_delta": -3.9,
+  "score": 57.9,
+  "score_delta": -4.0,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -682,34 +684,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 2889,
-    "percentil_pares": 50.0,
-    "risco": 50.0,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 2462,
+    "percentil_pares": 53.3,
+    "risco": 53.3,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 51.2
+    "score": 51.7
    },
    {
     "anomes": "202506",
-    "score": 65.2
+    "score": 66.9
    },
    {
     "anomes": "202509",
-    "score": 61.5
+    "score": 62.2
    },
    {
     "anomes": "202512",
-    "score": 61.3
+    "score": 61.9
    },
    {
     "anomes": "202603",
-    "score": 57.4
+    "score": 57.9
    }
   ],
   "vulnerabilidade": {
@@ -1049,7 +1051,7 @@
  },
  "openfinance": {
   "organisation": "BANCO SOFISA",
-  "chamadas_semana": 16933.0,
+  "chamadas_semana": 16823.0,
   "share_pct": 0.0,
   "familias_api": 33,
   "papeis": [

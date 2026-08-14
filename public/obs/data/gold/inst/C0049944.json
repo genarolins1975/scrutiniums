@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "30.306.294/0001-45 (companhia listada/holding)",
   "participante_open_finance": true
@@ -129,7 +129,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -280,7 +281,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1109,
+   "hhi_setorial": 1120,
+   "hhi_cobertura_pct": 70.6,
    "top_cnae": [
     [
      "outros",
@@ -339,8 +341,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      14.9
     ]
-   ],
-   "hhi_cobertura_pct": 70.6
+   ]
   },
   "total_pf": 78082893226.22,
   "total_pj": 97169941276.65
@@ -413,6 +414,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -463,8 +465,8 @@
   }
  },
  "score_ref": {
-  "score": 18.6,
-  "score_delta": -9.0,
+  "score": 11.9,
+  "score_delta": -9.1,
   "faixa": "risco muito baixo",
   "dimensoes": {
    "capital_basileia": {
@@ -508,34 +510,34 @@
     "q3_pares": 78.85
    },
    "concentracao_setorial": {
-    "valor": 1984,
-    "percentil_pares": 40.0,
-    "risco": 40.0,
-    "mediana_pares": 1986.0,
-    "q1_pares": 1791.25,
-    "q3_pares": 2084.0
+    "valor": 1120,
+    "percentil_pares": 0.0,
+    "risco": 0.0,
+    "mediana_pares": 1503.5,
+    "q1_pares": 1428.25,
+    "q3_pares": 1578.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 23.3
+    "score": 16.7
    },
    {
     "anomes": "202506",
-    "score": 21.9
+    "score": 15.2
    },
    {
     "anomes": "202509",
-    "score": 28.6
+    "score": 21.9
    },
    {
     "anomes": "202512",
-    "score": 27.6
+    "score": 21.0
    },
    {
     "anomes": "202603",
-    "score": 18.6
+    "score": 11.9
    }
   ],
   "vulnerabilidade": {
@@ -951,7 +953,7 @@
  },
  "openfinance": {
   "organisation": "BANCO BTG PACTUAL",
-  "chamadas_semana": 1466480561.0,
+  "chamadas_semana": 2425032869.0,
   "share_pct": 2.9,
   "familias_api": 43,
   "papeis": [

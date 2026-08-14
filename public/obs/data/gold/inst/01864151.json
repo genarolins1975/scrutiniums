@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:33+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.864.151",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3855, piso sobre os 87.9% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3859, piso sobre os 87.9% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -243,7 +243,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 4005).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3859, piso sobre os 87.9% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -288,7 +288,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3855,
+   "hhi_setorial": 3859,
+   "hhi_cobertura_pct": 87.9,
    "top_cnae": [
     [
      "industrias_de_transformacao",
@@ -339,8 +340,7 @@
      "outros_creditos",
      19.9
     ]
-   ],
-   "hhi_cobertura_pct": 87.9
+   ]
   },
   "total_pf": 34924938.26,
   "total_pj": 61889.5
@@ -413,6 +413,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

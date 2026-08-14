@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "00.000.000/0001-91 (companhia listada/holding)",
   "participante_open_finance": null
@@ -54,7 +54,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo subiu 9.6 pontos no grupo de pares.",
+    "texto": "Score relativo subiu 9.5 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -121,7 +121,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -267,7 +268,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1495,
+   "hhi_setorial": 1557,
+   "hhi_cobertura_pct": 86.9,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -326,8 +328,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      11.7
     ]
-   ],
-   "hhi_cobertura_pct": 86.9
+   ]
   },
   "total_pf": 734209608966.09,
   "total_pj": 381380170689.0
@@ -400,6 +401,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -450,9 +452,9 @@
   }
  },
  "score_ref": {
-  "score": 74.8,
-  "score_delta": 9.6,
-  "faixa": "risco elevado",
+  "score": 81.4,
+  "score_delta": 9.5,
+  "faixa": "risco muito elevado",
   "dimensoes": {
    "capital_basileia": {
     "valor": 14.23,
@@ -495,34 +497,34 @@
     "q3_pares": 78.85
    },
    "concentracao_setorial": {
-    "valor": 1727,
-    "percentil_pares": 20.0,
-    "risco": 20.0,
-    "mediana_pares": 1986.0,
-    "q1_pares": 1791.25,
-    "q3_pares": 2084.0
+    "valor": 1557,
+    "percentil_pares": 60.0,
+    "risco": 60.0,
+    "mediana_pares": 1503.5,
+    "q1_pares": 1428.25,
+    "q3_pares": 1578.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 67.6
+    "score": 74.3
    },
    {
     "anomes": "202506",
-    "score": 69.0
+    "score": 79.0
    },
    {
     "anomes": "202509",
-    "score": 71.4
+    "score": 81.4
    },
    {
     "anomes": "202512",
-    "score": 65.2
+    "score": 71.9
    },
    {
     "anomes": "202603",
-    "score": 74.8
+    "score": 81.4
    }
   ],
   "vulnerabilidade": {

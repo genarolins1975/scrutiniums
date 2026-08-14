@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-08-12T10:38:21+00:00",
+ "gerado_em": "2026-08-14T10:32:31+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-12T10:38:21+00:00",
+    "atualizado_em": "2026-08-14T10:32:31+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -342,7 +342,8 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1727,
+    "hhi_setorial": 1737,
+    "hhi_cobertura_pct": 78.0,
     "top_cnae": [
      [
       "industrias_de_transformacao",
@@ -401,8 +402,7 @@
       "financiamento_de_infraestrutura_desenvolvimento_",
       9.7
      ]
-    ],
-    "hhi_cobertura_pct": 78.0
+    ]
    },
    "score_ref": {
     "score": 65.7,
@@ -450,18 +450,18 @@
       "q3_pares": 78.85
      },
      "concentracao_setorial": {
-      "valor": 2219,
+      "valor": 1737,
       "percentil_pares": 100.0,
       "risco": 100.0,
-      "mediana_pares": 1986.0,
-      "q1_pares": 1791.25,
-      "q3_pares": 2084.0
+      "mediana_pares": 1503.5,
+      "q1_pares": 1428.25,
+      "q3_pares": 1578.0
      }
     },
     "historico_score": [
      {
       "anomes": "202503",
-      "score": 42.9
+      "score": 46.2
      },
      {
       "anomes": "202506",
@@ -505,9 +505,15 @@
      "meses_dre": 3,
      "media_pontas": true,
      "captacoes_brl": 2150956827043.47,
-     "dep_total_brl": null,
-     "dep_captacoes_pct": null,
-     "mix_depositos_pct": null,
+     "dep_total_brl": 1110285283212.25,
+     "dep_captacoes_pct": 51.6,
+     "mix_depositos_pct": {
+      "vista": 11.1,
+      "poupanca": 15.5,
+      "prazo": 72.0,
+      "interfinanceiro": 1.3,
+      "outros": 0.1
+     },
      "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
      "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
     },
@@ -524,8 +530,8 @@
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 4450074284.0,
-    "share_pct": 8.9,
+    "chamadas_semana": 7238807931.0,
+    "share_pct": 8.8,
     "familias_api": null,
     "papeis": null,
     "match_diretorio": false
@@ -580,7 +586,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), transporte armazenagem e correio (9.2%) — 22.0% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1727.",
+     "frase": "Setores identificados na carteira PJ: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), transporte armazenagem e correio (9.2%) — 22.0% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1737.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -620,7 +626,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "No Open Finance, responde por 8.9% das chamadas transacionais.",
+     "frase": "No Open Finance, responde por 8.8% das chamadas transacionais.",
      "base": "Dashboard do Cidadão + diretório oficial (observado)",
      "status": "observado"
     },
@@ -648,7 +654,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-12T10:38:21+00:00",
+    "atualizado_em": "2026-08-14T10:32:31+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -970,7 +976,8 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1489,
+    "hhi_setorial": 1507,
+    "hhi_cobertura_pct": 71.7,
     "top_cnae": [
      [
       "outros",
@@ -1029,12 +1036,11 @@
       "comercio_exterior",
       9.6
      ]
-    ],
-    "hhi_cobertura_pct": 71.7
+    ]
    },
    "score_ref": {
-    "score": 51.9,
-    "score_delta": -1.1,
+    "score": 50.1,
+    "score_delta": -0.6,
     "faixa": "atenção",
     "dimensoes": {
      "capital_basileia": {
@@ -1078,34 +1084,34 @@
       "q3_pares": 81.8
      },
      "concentracao_setorial": {
-      "valor": 2306,
-      "percentil_pares": 14.3,
-      "risco": 14.3,
-      "mediana_pares": 2889.0,
-      "q1_pares": 2479.0,
-      "q3_pares": 3825.0
+      "valor": 1507,
+      "percentil_pares": 3.3,
+      "risco": 3.3,
+      "mediana_pares": 2404.0,
+      "q1_pares": 1999.0,
+      "q3_pares": 3471.5
      }
     },
     "historico_score": [
      {
       "anomes": "202503",
-      "score": 54.2
+      "score": 61.9
      },
      {
       "anomes": "202506",
-      "score": 54.0
+      "score": 61.7
      },
      {
       "anomes": "202509",
-      "score": 47.7
+      "score": 54.0
      },
      {
       "anomes": "202512",
-      "score": 53.0
+      "score": 50.7
      },
      {
       "anomes": "202603",
-      "score": 51.9
+      "score": 50.1
      }
     ],
     "vulnerabilidade": {
@@ -1133,9 +1139,15 @@
      "meses_dre": 3,
      "media_pontas": true,
      "captacoes_brl": 78512415890.97,
-     "dep_total_brl": null,
-     "dep_captacoes_pct": null,
-     "mix_depositos_pct": null,
+     "dep_total_brl": 27320537282.73,
+     "dep_captacoes_pct": 34.8,
+     "mix_depositos_pct": {
+      "vista": 7.1,
+      "poupanca": 0.0,
+      "prazo": 90.2,
+      "interfinanceiro": 2.7,
+      "outros": 0.0
+     },
      "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
      "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
     },
@@ -1201,7 +1213,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%), transporte armazenagem e correio (5.9%) — 28.3% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1489.",
+     "frase": "Setores identificados na carteira PJ: industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%), transporte armazenagem e correio (5.9%) — 28.3% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1507.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
@@ -1264,7 +1276,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-12T10:38:21+00:00",
+    "atualizado_em": "2026-08-14T10:32:31+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -1570,7 +1582,8 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1999,
+    "hhi_setorial": 1998,
+    "hhi_cobertura_pct": 77.8,
     "top_cnae": [
      [
       "transporte_armazenagem_e_correio",
@@ -1625,12 +1638,11 @@
       "capital_de_giro",
       0.5
      ]
-    ],
-    "hhi_cobertura_pct": 77.8
+    ]
    },
    "score_ref": {
-    "score": 70.7,
-    "score_delta": 7.5,
+    "score": 70.2,
+    "score_delta": 7.9,
     "faixa": "risco elevado",
     "dimensoes": {
      "capital_basileia": {
@@ -1674,30 +1686,30 @@
       "q3_pares": 81.8
      },
      "concentracao_setorial": {
-      "valor": 2491,
-      "percentil_pares": 26.2,
-      "risco": 26.2,
-      "mediana_pares": 2889.0,
-      "q1_pares": 2479.0,
-      "q3_pares": 3825.0
+      "valor": 1998,
+      "percentil_pares": 23.3,
+      "risco": 23.3,
+      "mediana_pares": 2404.0,
+      "q1_pares": 1999.0,
+      "q3_pares": 3471.5
      }
     },
     "historico_score": [
      {
       "anomes": "202503",
-      "score": 56.8
+      "score": 58.9
      },
      {
       "anomes": "202509",
-      "score": 66.2
+      "score": 66.8
      },
      {
       "anomes": "202512",
-      "score": 63.2
+      "score": 62.3
      },
      {
       "anomes": "202603",
-      "score": 70.7
+      "score": 70.2
      }
     ],
     "vulnerabilidade": {
@@ -1725,9 +1737,15 @@
      "meses_dre": 3,
      "media_pontas": true,
      "captacoes_brl": 44499848137.34,
-     "dep_total_brl": null,
-     "dep_captacoes_pct": null,
-     "mix_depositos_pct": null,
+     "dep_total_brl": 26558653500.15,
+     "dep_captacoes_pct": 59.7,
+     "mix_depositos_pct": {
+      "vista": 0.0,
+      "poupanca": 0.0,
+      "prazo": 67.6,
+      "interfinanceiro": 32.4,
+      "outros": 0.0
+     },
      "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
      "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
     },
@@ -1793,7 +1811,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), industrias de transformacao (7.2%) — 22.2% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1999.",
+     "frase": "Setores identificados na carteira PJ: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), industrias de transformacao (7.2%) — 22.2% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1998.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },

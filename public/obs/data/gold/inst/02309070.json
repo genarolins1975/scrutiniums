@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:33+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 02.309.070",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3433, piso sobre os 83.6% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3438, piso sobre os 83.6% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -239,7 +239,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 3708).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3438, piso sobre os 83.6% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -284,7 +284,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 3433,
+   "hhi_setorial": 3438,
+   "hhi_cobertura_pct": 83.6,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -343,8 +344,7 @@
      "outros_creditos",
      13.7
     ]
-   ],
-   "hhi_cobertura_pct": 83.6
+   ]
   },
   "total_pf": 544680866.72,
   "total_pj": 237248652.12
@@ -417,6 +417,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

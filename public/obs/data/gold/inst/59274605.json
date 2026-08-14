@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:26+00:00",
+  "atualizado_em": "2026-08-14T10:32:36+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 59.274.605",
   "participante_open_finance": null
@@ -53,7 +53,7 @@
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
-    "texto": "Score relativo caiu 8.4 pontos no grupo de pares.",
+    "texto": "Score relativo caiu 9.6 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -137,10 +137,11 @@
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "score_meta": {
-  "cobertura_dados_pct": 100,
+  "cobertura_dados_pct": 83,
   "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -243,11 +244,6 @@
    "tipo": "ok",
    "texto": "ROE do período de 7.6%.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 4207).",
-   "base": "IF.data carteiras por CNAE"
   }
  ],
  "capital_tabela": [
@@ -291,7 +287,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2922,
+   "hhi_setorial": 2920,
+   "hhi_cobertura_pct": 64.1,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -334,8 +331,7 @@
      "capital_de_giro",
      3.9
     ]
-   ],
-   "hhi_cobertura_pct": 64.1
+   ]
   },
   "total_pf": 11078685774.65,
   "total_pj": 2784380112.6
@@ -408,6 +404,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -615,9 +612,9 @@
   }
  },
  "score_ref": {
-  "score": 45.5,
-  "score_delta": -8.4,
-  "faixa": "atenção",
+  "score": 38.4,
+  "score_delta": -9.6,
+  "faixa": "risco baixo",
   "dimensoes": {
    "capital_basileia": {
     "valor": 19.63,
@@ -658,36 +655,28 @@
     "mediana_pares": 74.1,
     "q1_pares": 36.86,
     "q3_pares": 81.8
-   },
-   "concentracao_setorial": {
-    "valor": 4207,
-    "percentil_pares": 81.0,
-    "risco": 81.0,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 50.4
+    "score": 49.7
    },
    {
     "anomes": "202506",
-    "score": 49.4
+    "score": 43.4
    },
    {
     "anomes": "202509",
-    "score": 50.6
+    "score": 44.5
    },
    {
     "anomes": "202512",
-    "score": 53.9
+    "score": 48.0
    },
    {
     "anomes": "202603",
-    "score": 45.5
+    "score": 38.4
    }
   ],
   "vulnerabilidade": {
@@ -708,7 +697,7 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "dimensoes_disponiveis": "5/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

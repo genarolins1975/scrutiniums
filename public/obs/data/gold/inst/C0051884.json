@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -139,10 +139,11 @@
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "score_meta": {
-  "cobertura_dados_pct": 100,
+  "cobertura_dados_pct": 83,
   "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -293,7 +294,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1457,
+   "hhi_setorial": 1458,
+   "hhi_cobertura_pct": 66.6,
    "top_cnae": [
     [
      "outros",
@@ -352,8 +354,7 @@
      "outros_creditos",
      10.2
     ]
-   ],
-   "hhi_cobertura_pct": 66.6
+   ]
   },
   "total_pf": 40229970627.57,
   "total_pj": 8233825758.13
@@ -426,6 +427,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -633,8 +635,8 @@
   }
  },
  "score_ref": {
-  "score": 52.1,
-  "score_delta": 1.5,
+  "score": 55.4,
+  "score_delta": -1.4,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -676,36 +678,28 @@
     "mediana_pares": 74.1,
     "q1_pares": 36.86,
     "q3_pares": 81.8
-   },
-   "concentracao_setorial": {
-    "valor": 2571,
-    "percentil_pares": 35.7,
-    "risco": 35.7,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 50.0
+    "score": 56.3
    },
    {
     "anomes": "202506",
-    "score": 47.1
+    "score": 52.9
    },
    {
     "anomes": "202509",
-    "score": 48.4
+    "score": 54.4
    },
    {
     "anomes": "202512",
-    "score": 50.6
+    "score": 56.8
    },
    {
     "anomes": "202603",
-    "score": 52.1
+    "score": 55.4
    }
   ],
   "vulnerabilidade": {
@@ -726,7 +720,7 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "dimensoes_disponiveis": "5/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",
@@ -1153,8 +1147,8 @@
  },
  "openfinance": {
   "organisation": "BANCO INTER",
-  "chamadas_semana": 1352331940.0,
-  "share_pct": 2.7,
+  "chamadas_semana": 2447743590.0,
+  "share_pct": 3.0,
   "familias_api": 48,
   "papeis": [
    "CONTA",

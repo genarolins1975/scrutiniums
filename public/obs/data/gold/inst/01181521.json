@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:22+00:00",
+  "atualizado_em": "2026-08-14T10:32:32+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.181.521",
   "participante_open_finance": true
@@ -120,7 +120,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -266,7 +267,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2114,
+   "hhi_setorial": 2142,
+   "hhi_cobertura_pct": 85.8,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -325,8 +327,7 @@
      "capital_de_giro",
      1.4
     ]
-   ],
-   "hhi_cobertura_pct": 85.8
+   ]
   },
   "total_pf": 38221885074.57,
   "total_pj": 10181508965.15
@@ -399,6 +400,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -451,7 +453,7 @@
   }
  },
  "score_ref": {
-  "score": 58.3,
+  "score": 59.7,
   "score_delta": -2.1,
   "faixa": "atenção",
   "dimensoes": {
@@ -496,34 +498,34 @@
     "q3_pares": 84.1
    },
    "concentracao_setorial": {
-    "valor": 2343,
-    "percentil_pares": 25.0,
-    "risco": 25.0,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
+    "valor": 2142,
+    "percentil_pares": 33.3,
+    "risco": 33.3,
+    "mediana_pares": 2373.0,
+    "q1_pares": 1990.5,
+    "q3_pares": 2609.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 60.4
+    "score": 61.8
    },
    {
     "anomes": "202506",
-    "score": 60.4
+    "score": 61.8
    },
    {
     "anomes": "202509",
-    "score": 62.5
+    "score": 63.9
    },
    {
     "anomes": "202512",
-    "score": 60.4
+    "score": 61.8
    },
    {
     "anomes": "202603",
-    "score": 58.3
+    "score": 59.7
    }
   ],
   "vulnerabilidade": {
@@ -875,7 +877,7 @@
  },
  "openfinance": {
   "organisation": "SICREDI",
-  "chamadas_semana": 615192342.0,
+  "chamadas_semana": 1016714013.0,
   "share_pct": 1.2,
   "familias_api": 51,
   "papeis": [

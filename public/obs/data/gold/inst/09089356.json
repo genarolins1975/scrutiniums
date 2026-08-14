@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:24+00:00",
+  "atualizado_em": "2026-08-14T10:32:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 09.089.356",
   "participante_open_finance": true
@@ -239,11 +239,6 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 7326).",
-   "base": "IF.data carteiras por CNAE"
-  },
-  {
-   "tipo": "warn",
    "texto": "Índice de reclamações 75.0 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
    "base": "BCB rdrweb"
   }
@@ -408,6 +403,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -1732,7 +1728,7 @@
  },
  "openfinance": {
   "organisation": "PEFISA",
-  "chamadas_semana": 5378140.0,
+  "chamadas_semana": 4403960.0,
   "share_pct": 0.0,
   "familias_api": 10,
   "papeis": [

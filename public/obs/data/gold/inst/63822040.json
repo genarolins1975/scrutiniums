@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:38+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 63.822.040",
   "participante_open_finance": null
@@ -267,6 +267,7 @@
   "total_pj": null
  },
  "evolucao_base100": {},
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

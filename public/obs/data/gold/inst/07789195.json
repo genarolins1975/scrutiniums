@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:24+00:00",
+  "atualizado_em": "2026-08-14T10:32:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 07.789.195",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 7323, piso sobre os 94.8% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 7329, piso sobre os 94.8% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -247,7 +247,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 7356).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 7329, piso sobre os 94.8% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -292,7 +292,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 7323,
+   "hhi_setorial": 7329,
+   "hhi_cobertura_pct": 94.8,
    "top_cnae": [
     [
      "transporte_armazenagem_e_correio",
@@ -347,8 +348,7 @@
      "operacoes_com_recebiveis",
      1.2
     ]
-   ],
-   "hhi_cobertura_pct": 94.8
+   ]
   },
   "total_pf": 32101134.33,
   "total_pj": 643196249.54
@@ -421,6 +421,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

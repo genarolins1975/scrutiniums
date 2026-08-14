@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:33+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 03.645.752",
   "participante_open_finance": null
@@ -286,7 +286,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 2098,
+   "hhi_setorial": 2103,
+   "hhi_cobertura_pct": 84.4,
    "top_cnae": [
     [
      "agricultura_pecuaria_producao_florestal_pesca_e_",
@@ -345,8 +346,7 @@
      "financiamento_de_infraestrutura_desenvolvimento_",
      4.4
     ]
-   ],
-   "hhi_cobertura_pct": 84.4
+   ]
   },
   "total_pf": 470333352.23,
   "total_pj": 155972596.16
@@ -419,6 +419,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

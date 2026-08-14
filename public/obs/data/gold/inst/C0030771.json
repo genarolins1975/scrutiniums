@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -45,7 +45,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5600, piso sobre os 78.1% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5604, piso sobre os 78.1% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
@@ -138,7 +138,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -244,7 +245,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI 6084).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5604, piso sobre os 78.1% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
@@ -289,7 +290,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 5600,
+   "hhi_setorial": 5604,
+   "hhi_cobertura_pct": 78.1,
    "top_cnae": [
     [
      "administracao_publica_defesa_e_seguridade_social",
@@ -332,8 +334,7 @@
      "outros_creditos",
      10.8
     ]
-   ],
-   "hhi_cobertura_pct": 78.1
+   ]
   },
   "total_pf": 517232361.11,
   "total_pj": 1607169313.26
@@ -406,6 +407,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -613,8 +615,8 @@
   }
  },
  "score_ref": {
-  "score": 40.4,
-  "score_delta": -1.3,
+  "score": 40.9,
+  "score_delta": -1.5,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -658,34 +660,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 6084,
-    "percentil_pares": 90.5,
-    "risco": 90.5,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 5604,
+    "percentil_pares": 93.3,
+    "risco": 93.3,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 34.5
+    "score": 25.9
    },
    {
     "anomes": "202506",
-    "score": 28.7
+    "score": 17.2
    },
    {
     "anomes": "202509",
-    "score": 40.1
+    "score": 30.4
    },
    {
     "anomes": "202512",
-    "score": 41.7
+    "score": 42.4
    },
    {
     "anomes": "202603",
-    "score": 40.4
+    "score": 40.9
    }
   ],
   "vulnerabilidade": {

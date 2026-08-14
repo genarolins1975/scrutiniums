@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:28+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "62.144.175/0001-20 (companhia listada/holding)",
   "participante_open_finance": null
@@ -147,10 +147,11 @@
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
  "score_meta": {
-  "cobertura_dados_pct": 100,
+  "cobertura_dados_pct": 83,
   "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -301,7 +302,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1449,
+   "hhi_setorial": 1458,
+   "hhi_cobertura_pct": 66.1,
    "top_cnae": [
     [
      "outros",
@@ -360,8 +362,7 @@
      "investimento",
      10.8
     ]
-   ],
-   "hhi_cobertura_pct": 66.1
+   ]
   },
   "total_pf": 11902180052.35,
   "total_pj": 2023862745.67
@@ -434,6 +435,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -641,8 +643,8 @@
   }
  },
  "score_ref": {
-  "score": 55.6,
-  "score_delta": 4.8,
+  "score": 59.1,
+  "score_delta": 9.5,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -684,36 +686,28 @@
     "mediana_pares": 74.1,
     "q1_pares": 36.86,
     "q3_pares": 81.8
-   },
-   "concentracao_setorial": {
-    "valor": 2605,
-    "percentil_pares": 38.1,
-    "risco": 38.1,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 50.0
+    "score": 49.3
    },
    {
     "anomes": "202506",
-    "score": 48.2
+    "score": 47.8
    },
    {
     "anomes": "202509",
-    "score": 49.9
+    "score": 49.2
    },
    {
     "anomes": "202512",
-    "score": 50.8
+    "score": 49.6
    },
    {
     "anomes": "202603",
-    "score": 55.6
+    "score": 59.1
    }
   ],
   "vulnerabilidade": {
@@ -734,7 +728,7 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "dimensoes_disponiveis": "5/6"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",

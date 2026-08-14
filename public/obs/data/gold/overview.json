@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-08-12T10:38:21+00:00",
+ "gerado_em": "2026-08-14T10:32:31+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com sinais mistos entre os indicadores monitorados.",
   "ref": "2026-05-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 77/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 74/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.16)",
@@ -28,7 +28,7 @@
     "ref": "2026-05-01"
    },
    {
-    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 70.2, piorando)",
+    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 74.2, piorando)",
     "area": "sectors",
     "status": "calculado (componentes parcialmente demonstrativos)"
    }
@@ -418,6 +418,27 @@
    }
   ]
  },
+ "novidades": {
+  "itens": [
+   {
+    "tipo": "guidance",
+    "titulo": "Banco do Brasil: guidance revisado no 2T26",
+    "detalhe": "REVISÃO na divulgação do 2T26 (12/08/2026): Margem Financeira Bruta sobe de 4%–8% para 7%–11%; Custo do Crédito sobe de R$ 53–58 bi para R$ 65–70 bi; Lucro Líquido Ajustado CAI de ",
+    "link": {
+     "view": "institutions"
+    }
+   },
+   {
+    "tipo": "guidance",
+    "titulo": "Itaú Unibanco: guidance revisado no 2T26",
+    "detalhe": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'",
+    "link": {
+     "view": "institutions"
+    }
+   }
+  ],
+  "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade."
+ },
  "ibcc_posicao": {
   "atual": 92.22,
   "ref": "2026-05-01",
@@ -480,7 +501,14 @@
      "mae_ensemble_backtest": 0.0897,
      "mae_naive_backtest": 0.0894,
      "ganho_vs_naive_pct": -0.4,
-     "n_backtests": 35
+     "n_backtests": 35,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 33.3,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 18,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "3": {
      "pesos": {
@@ -492,7 +520,14 @@
      "mae_ensemble_backtest": 0.1772,
      "mae_naive_backtest": 0.1732,
      "ganho_vs_naive_pct": -2.3,
-     "n_backtests": 34
+     "n_backtests": 34,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 5.9,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 17,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "6": {
      "pesos": {
@@ -504,7 +539,14 @@
      "mae_ensemble_backtest": 0.3258,
      "mae_naive_backtest": 0.3206,
      "ganho_vs_naive_pct": -1.6,
-     "n_backtests": 31
+     "n_backtests": 31,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 0.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 15,
+      "n_teste": 16,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "9": {
      "pesos": {
@@ -516,7 +558,14 @@
      "mae_ensemble_backtest": 0.4653,
      "mae_naive_backtest": 0.45,
      "ganho_vs_naive_pct": -3.4,
-     "n_backtests": 28
+     "n_backtests": 28,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 0.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 14,
+      "n_teste": 14,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "12": {
      "pesos": {
@@ -529,7 +578,136 @@
      "mae_ensemble_backtest": 0.5952,
      "mae_naive_backtest": 0.5848,
      "ganho_vs_naive_pct": -1.8,
-     "n_backtests": 25
+     "n_backtests": 25,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 0.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 12,
+      "n_teste": 13,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     },
+     "trajetoria": [
+      {
+       "ref": "2024-07-01",
+       "previsto": 3.6081,
+       "realizado": 3.3
+      },
+      {
+       "ref": "2024-08-01",
+       "previsto": 3.598,
+       "realizado": 3.33
+      },
+      {
+       "ref": "2024-09-01",
+       "previsto": 3.5434,
+       "realizado": 3.34
+      },
+      {
+       "ref": "2024-10-01",
+       "previsto": 3.564,
+       "realizado": 3.3
+      },
+      {
+       "ref": "2024-11-01",
+       "previsto": 3.5332,
+       "realizado": 3.27
+      },
+      {
+       "ref": "2024-12-01",
+       "previsto": 3.3137,
+       "realizado": 3.08
+      },
+      {
+       "ref": "2025-01-01",
+       "previsto": 3.3925,
+       "realizado": 3.34
+      },
+      {
+       "ref": "2025-02-01",
+       "previsto": 3.3826,
+       "realizado": 3.41
+      },
+      {
+       "ref": "2025-03-01",
+       "previsto": 3.3325,
+       "realizado": 3.44
+      },
+      {
+       "ref": "2025-04-01",
+       "previsto": 3.3627,
+       "realizado": 3.67
+      },
+      {
+       "ref": "2025-05-01",
+       "previsto": 3.4105,
+       "realizado": 3.72
+      },
+      {
+       "ref": "2025-06-01",
+       "previsto": 3.2875,
+       "realizado": 3.75
+      },
+      {
+       "ref": "2025-07-01",
+       "previsto": 3.2975,
+       "realizado": 3.96
+      },
+      {
+       "ref": "2025-08-01",
+       "previsto": 3.3217,
+       "realizado": 4.14
+      },
+      {
+       "ref": "2025-09-01",
+       "previsto": 3.3299,
+       "realizado": 4.09
+      },
+      {
+       "ref": "2025-10-01",
+       "previsto": 3.2929,
+       "realizado": 4.18
+      },
+      {
+       "ref": "2025-11-01",
+       "previsto": 3.2629,
+       "realizado": 4.23
+      },
+      {
+       "ref": "2025-12-01",
+       "previsto": 3.0925,
+       "realizado": 4.2
+      },
+      {
+       "ref": "2026-01-01",
+       "previsto": 3.3218,
+       "realizado": 4.45
+      },
+      {
+       "ref": "2026-02-01",
+       "previsto": 3.3799,
+       "realizado": 4.64
+      },
+      {
+       "ref": "2026-03-01",
+       "previsto": 3.4075,
+       "realizado": 4.53
+      },
+      {
+       "ref": "2026-04-01",
+       "previsto": 3.6165,
+       "realizado": 4.64
+      },
+      {
+       "ref": "2026-05-01",
+       "previsto": 3.6689,
+       "realizado": 4.74
+      },
+      {
+       "ref": "2026-06-01",
+       "previsto": 3.7151,
+       "realizado": 4.68
+      }
+     ]
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
@@ -591,7 +769,14 @@
      "mae_ensemble_backtest": 36664.3233,
      "mae_naive_backtest": 37952.6857,
      "ganho_vs_naive_pct": 3.4,
-     "n_backtests": 35
+     "n_backtests": 35,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 50.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 18,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
     },
     "3": {
      "pesos": {
@@ -604,7 +789,14 @@
      "mae_ensemble_backtest": 39137.056,
      "mae_naive_backtest": 40568.1765,
      "ganho_vs_naive_pct": 3.5,
-     "n_backtests": 34
+     "n_backtests": 34,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 58.8,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 17,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
     },
     "6": {
      "pesos": {
@@ -617,7 +809,14 @@
      "mae_ensemble_backtest": 46037.5549,
      "mae_naive_backtest": 48462.3871,
      "ganho_vs_naive_pct": 5.0,
-     "n_backtests": 31
+     "n_backtests": 31,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 81.2,
+      "nominal_pct": 80.0,
+      "n_calibracao": 15,
+      "n_teste": 16,
+      "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+     }
     },
     "9": {
      "pesos": {
@@ -629,7 +828,14 @@
      "mae_ensemble_backtest": 43800.9589,
      "mae_naive_backtest": 53706.5357,
      "ganho_vs_naive_pct": 18.4,
-     "n_backtests": 28
+     "n_backtests": 28,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 42.9,
+      "nominal_pct": 80.0,
+      "n_calibracao": 14,
+      "n_teste": 14,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
     },
     "12": {
      "pesos": {
@@ -642,7 +848,136 @@
      "mae_ensemble_backtest": 50954.8096,
      "mae_naive_backtest": 68321.0,
      "ganho_vs_naive_pct": 25.4,
-     "n_backtests": 25
+     "n_backtests": 25,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 15.4,
+      "nominal_pct": 80.0,
+      "n_calibracao": 12,
+      "n_teste": 13,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     },
+     "trajetoria": [
+      {
+       "ref": "2024-07-01",
+       "previsto": 514405.9851,
+       "realizado": 620348.0
+      },
+      {
+       "ref": "2024-08-01",
+       "previsto": 568572.5524,
+       "realizado": 627050.0
+      },
+      {
+       "ref": "2024-09-01",
+       "previsto": 571090.3405,
+       "realizado": 639146.0
+      },
+      {
+       "ref": "2024-10-01",
+       "previsto": 567285.1732,
+       "realizado": 649340.0
+      },
+      {
+       "ref": "2024-11-01",
+       "previsto": 577821.5463,
+       "realizado": 620293.0
+      },
+      {
+       "ref": "2024-12-01",
+       "previsto": 623835.4878,
+       "realizado": 699427.0
+      },
+      {
+       "ref": "2025-01-01",
+       "previsto": 570756.6548,
+       "realizado": 591893.0
+      },
+      {
+       "ref": "2025-02-01",
+       "previsto": 531081.6314,
+       "realizado": 590966.0
+      },
+      {
+       "ref": "2025-03-01",
+       "previsto": 583330.2447,
+       "realizado": 620474.0
+      },
+      {
+       "ref": "2025-04-01",
+       "previsto": 590758.6992,
+       "realizado": 644574.0
+      },
+      {
+       "ref": "2025-05-01",
+       "previsto": 598710.9946,
+       "realizado": 648239.0
+      },
+      {
+       "ref": "2025-06-01",
+       "previsto": 619212.9126,
+       "realizado": 641196.0
+      },
+      {
+       "ref": "2025-07-01",
+       "previsto": 649213.6673,
+       "realizado": 649848.0
+      },
+      {
+       "ref": "2025-08-01",
+       "previsto": 662183.1841,
+       "realizado": 643637.0
+      },
+      {
+       "ref": "2025-09-01",
+       "previsto": 676969.5193,
+       "realizado": 700052.0
+      },
+      {
+       "ref": "2025-10-01",
+       "previsto": 689690.7919,
+       "realizado": 691661.0
+      },
+      {
+       "ref": "2025-11-01",
+       "previsto": 662809.3829,
+       "realizado": 652031.0
+      },
+      {
+       "ref": "2025-12-01",
+       "previsto": 733548.6989,
+       "realizado": 803912.0
+      },
+      {
+       "ref": "2026-01-01",
+       "previsto": 640951.2532,
+       "realizado": 649333.0
+      },
+      {
+       "ref": "2026-02-01",
+       "previsto": 618741.8598,
+       "realizado": 610149.0
+      },
+      {
+       "ref": "2026-03-01",
+       "previsto": 639280.7269,
+       "realizado": 742224.0
+      },
+      {
+       "ref": "2026-04-01",
+       "previsto": 663996.4527,
+       "realizado": 692993.0
+      },
+      {
+       "ref": "2026-05-01",
+       "previsto": 671700.3575,
+       "realizado": 701395.0
+      },
+      {
+       "ref": "2026-06-01",
+       "previsto": 666413.3989,
+       "realizado": 747095.0
+      }
+     ]
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
@@ -702,7 +1037,14 @@
      "mae_ensemble_backtest": 0.3185,
      "mae_naive_backtest": 0.3171,
      "ganho_vs_naive_pct": -0.4,
-     "n_backtests": 35
+     "n_backtests": 35,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 22.2,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 18,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "3": {
      "pesos": {
@@ -713,7 +1055,14 @@
      "mae_ensemble_backtest": 0.6036,
      "mae_naive_backtest": 0.6106,
      "ganho_vs_naive_pct": 1.1,
-     "n_backtests": 34
+     "n_backtests": 34,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 11.8,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 17,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "6": {
      "pesos": {
@@ -724,7 +1073,14 @@
      "mae_ensemble_backtest": 1.1257,
      "mae_naive_backtest": 1.1348,
      "ganho_vs_naive_pct": 0.8,
-     "n_backtests": 31
+     "n_backtests": 31,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 0.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 15,
+      "n_teste": 16,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "9": {
      "pesos": {
@@ -735,7 +1091,14 @@
      "mae_ensemble_backtest": 1.5988,
      "mae_naive_backtest": 1.5986,
      "ganho_vs_naive_pct": -0.0,
-     "n_backtests": 28
+     "n_backtests": 28,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 7.1,
+      "nominal_pct": 80.0,
+      "n_calibracao": 14,
+      "n_teste": 14,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
     },
     "12": {
      "pesos": {
@@ -748,7 +1111,136 @@
      "mae_ensemble_backtest": 1.9805,
      "mae_naive_backtest": 1.938,
      "ganho_vs_naive_pct": -2.2,
-     "n_backtests": 25
+     "n_backtests": 25,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 0.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 12,
+      "n_teste": 13,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     },
+     "trajetoria": [
+      {
+       "ref": "2024-07-01",
+       "previsto": 21.0026,
+       "realizado": 18.53
+      },
+      {
+       "ref": "2024-08-01",
+       "previsto": 20.7311,
+       "realizado": 18.46
+      },
+      {
+       "ref": "2024-09-01",
+       "previsto": 20.5306,
+       "realizado": 18.28
+      },
+      {
+       "ref": "2024-10-01",
+       "previsto": 20.0989,
+       "realizado": 18.28
+      },
+      {
+       "ref": "2024-11-01",
+       "previsto": 20.1014,
+       "realizado": 18.43
+      },
+      {
+       "ref": "2024-12-01",
+       "previsto": 19.6262,
+       "realizado": 17.62
+      },
+      {
+       "ref": "2025-01-01",
+       "previsto": 19.422,
+       "realizado": 18.5
+      },
+      {
+       "ref": "2025-02-01",
+       "previsto": 19.3958,
+       "realizado": 19.52
+      },
+      {
+       "ref": "2025-03-01",
+       "previsto": 19.4079,
+       "realizado": 19.55
+      },
+      {
+       "ref": "2025-04-01",
+       "previsto": 19.1345,
+       "realizado": 20.2
+      },
+      {
+       "ref": "2025-05-01",
+       "previsto": 18.8789,
+       "realizado": 20.51
+      },
+      {
+       "ref": "2025-06-01",
+       "previsto": 18.6295,
+       "realizado": 20.74
+      },
+      {
+       "ref": "2025-07-01",
+       "previsto": 18.6053,
+       "realizado": 20.57
+      },
+      {
+       "ref": "2025-08-01",
+       "previsto": 18.5187,
+       "realizado": 20.77
+      },
+      {
+       "ref": "2025-09-01",
+       "previsto": 18.3303,
+       "realizado": 20.53
+      },
+      {
+       "ref": "2025-10-01",
+       "previsto": 18.3117,
+       "realizado": 20.9
+      },
+      {
+       "ref": "2025-11-01",
+       "previsto": 18.4318,
+       "realizado": 21.37
+      },
+      {
+       "ref": "2025-12-01",
+       "previsto": 17.6899,
+       "realizado": 21.01
+      },
+      {
+       "ref": "2026-01-01",
+       "previsto": 18.479,
+       "realizado": 21.59
+      },
+      {
+       "ref": "2026-02-01",
+       "previsto": 19.383,
+       "realizado": 21.98
+      },
+      {
+       "ref": "2026-03-01",
+       "previsto": 19.419,
+       "realizado": 21.71
+      },
+      {
+       "ref": "2026-04-01",
+       "previsto": 20.0453,
+       "realizado": 22.24
+      },
+      {
+       "ref": "2026-05-01",
+       "previsto": 20.3619,
+       "realizado": 21.89
+      },
+      {
+       "ref": "2026-06-01",
+       "previsto": 20.6496,
+       "realizado": 21.99
+      }
+     ]
     }
    },
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
@@ -814,7 +1306,14 @@
       "mae_ensemble_backtest": 20.5006,
       "mae_naive_backtest": 20.6,
       "ganho_vs_naive_pct": 0.5,
-      "n_backtests": 35
+      "n_backtests": 35,
+      "cobertura_banda": {
+       "cobertura_oos_pct": 77.8,
+       "nominal_pct": 80.0,
+       "n_calibracao": 17,
+       "n_teste": 18,
+       "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+      }
      },
      "3": {
       "pesos": {
@@ -828,7 +1327,14 @@
       "mae_ensemble_backtest": 25.5007,
       "mae_naive_backtest": 29.2647,
       "ganho_vs_naive_pct": 12.9,
-      "n_backtests": 34
+      "n_backtests": 34,
+      "cobertura_banda": {
+       "cobertura_oos_pct": 82.4,
+       "nominal_pct": 80.0,
+       "n_calibracao": 17,
+       "n_teste": 17,
+       "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+      }
      },
      "6": {
       "pesos": {
@@ -841,7 +1347,14 @@
       "mae_ensemble_backtest": 25.1432,
       "mae_naive_backtest": 30.4516,
       "ganho_vs_naive_pct": 17.4,
-      "n_backtests": 31
+      "n_backtests": 31,
+      "cobertura_banda": {
+       "cobertura_oos_pct": 93.8,
+       "nominal_pct": 80.0,
+       "n_calibracao": 15,
+       "n_teste": 16,
+       "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+      }
      },
      "9": {
       "pesos": {
@@ -854,7 +1367,14 @@
       "mae_ensemble_backtest": 21.8739,
       "mae_naive_backtest": 27.3571,
       "ganho_vs_naive_pct": 20.0,
-      "n_backtests": 28
+      "n_backtests": 28,
+      "cobertura_banda": {
+       "cobertura_oos_pct": 85.7,
+       "nominal_pct": 80.0,
+       "n_calibracao": 14,
+       "n_teste": 14,
+       "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+      }
      },
      "12": {
       "pesos": {
@@ -866,7 +1386,136 @@
       "mae_ensemble_backtest": 17.0066,
       "mae_naive_backtest": 17.6,
       "ganho_vs_naive_pct": 3.4,
-      "n_backtests": 25
+      "n_backtests": 25,
+      "cobertura_banda": {
+       "cobertura_oos_pct": 53.8,
+       "nominal_pct": 80.0,
+       "n_calibracao": 12,
+       "n_teste": 13,
+       "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+      },
+      "trajetoria": [
+       {
+        "ref": "2024-07-01",
+        "previsto": 127.9234,
+        "realizado": 129.0
+       },
+       {
+        "ref": "2024-08-01",
+        "previsto": 126.2285,
+        "realizado": 125.0
+       },
+       {
+        "ref": "2024-09-01",
+        "previsto": 117.6567,
+        "realizado": 116.0
+       },
+       {
+        "ref": "2024-10-01",
+        "previsto": 119.7336,
+        "realizado": 111.0
+       },
+       {
+        "ref": "2024-11-01",
+        "previsto": 97.0319,
+        "realizado": 82.0
+       },
+       {
+        "ref": "2024-12-01",
+        "previsto": 99.7213,
+        "realizado": 88.0
+       },
+       {
+        "ref": "2025-01-01",
+        "previsto": 67.2002,
+        "realizado": 89.0
+       },
+       {
+        "ref": "2025-02-01",
+        "previsto": 88.6191,
+        "realizado": 96.0
+       },
+       {
+        "ref": "2025-03-01",
+        "previsto": 97.5427,
+        "realizado": 130.0
+       },
+       {
+        "ref": "2025-04-01",
+        "previsto": 99.8588,
+        "realizado": 93.0
+       },
+       {
+        "ref": "2025-05-01",
+        "previsto": 101.1116,
+        "realizado": 96.0
+       },
+       {
+        "ref": "2025-06-01",
+        "previsto": 149.8998,
+        "realizado": 92.0
+       },
+       {
+        "ref": "2025-07-01",
+        "previsto": 130.4762,
+        "realizado": 110.0
+       },
+       {
+        "ref": "2025-08-01",
+        "previsto": 125.0671,
+        "realizado": 103.0
+       },
+       {
+        "ref": "2025-09-01",
+        "previsto": 119.223,
+        "realizado": 113.0
+       },
+       {
+        "ref": "2025-10-01",
+        "previsto": 115.268,
+        "realizado": 120.0
+       },
+       {
+        "ref": "2025-11-01",
+        "previsto": 94.1126,
+        "realizado": 153.0
+       },
+       {
+        "ref": "2025-12-01",
+        "previsto": 91.6816,
+        "realizado": 89.0
+       },
+       {
+        "ref": "2026-01-01",
+        "previsto": 91.1102,
+        "realizado": 76.0
+       },
+       {
+        "ref": "2026-02-01",
+        "previsto": 94.6352,
+        "realizado": 79.0
+       },
+       {
+        "ref": "2026-03-01",
+        "previsto": 118.9248,
+        "realizado": 107.0
+       },
+       {
+        "ref": "2026-04-01",
+        "previsto": 96.23,
+        "realizado": 98.0
+       },
+       {
+        "ref": "2026-05-01",
+        "previsto": 95.4995,
+        "realizado": 103.0
+       },
+       {
+        "ref": "2026-06-01",
+        "previsto": 93.2679,
+        "realizado": 95.0
+       }
+      ]
      }
     },
     "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
@@ -875,50 +1524,5 @@
    "cobertura": "TJSP, TJRJ, TJMG, TJRS, TJPR, TJSC, TJBA, TJGO",
    "nota": "Ajuizamentos de RJ (CNJ/DataJud) — agregado dos tribunais cobertos."
   }
- },
- "novidades": {
-  "itens": [
-   {
-    "tipo": "alerta_novo",
-    "titulo": "Cartão — parcelado/financiado · PF — inadimplência (arrastada)",
-    "detalhe": "família carteira — primeiro disparo desta regra",
-    "link": {
-     "view": "alerts"
-    }
-   },
-   {
-    "tipo": "alerta_novo",
-    "titulo": "Até 1 salário mínimo · PF — inadimplência (arrastada)",
-    "detalhe": "família carteira — primeiro disparo desta regra",
-    "link": {
-     "view": "alerts"
-    }
-   },
-   {
-    "tipo": "alerta_novo",
-    "titulo": "Crédito pessoal · PF — inadimplência (arrastada)",
-    "detalhe": "família carteira — primeiro disparo desta regra",
-    "link": {
-     "view": "alerts"
-    }
-   },
-   {
-    "tipo": "guidance",
-    "titulo": "Banco do Brasil: guidance revisado no 2T26",
-    "detalhe": "REVISÃO na divulgação do 2T26 (12/08/2026): Margem Financeira Bruta sobe de 4%–8% para 7%–11%; Custo do Crédito sobe de R$ 53–58 bi para R$ 65–70 bi; Lucro Líquido Ajustado CAI de ",
-    "link": {
-     "view": "institutions"
-    }
-   },
-   {
-    "tipo": "guidance",
-    "titulo": "Itaú Unibanco: guidance revisado no 2T26",
-    "detalhe": "REVISÃO: 'Receita de prestação de serviços e resultado de seguros' cai de crescimento entre 5,0% e 9,0% para crescimento entre 2,0% e 5,0%; as demais sete métricas seguem 'Mantido'",
-    "link": {
-     "view": "institutions"
-    }
-   }
-  ],
-  "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade."
  }
 }

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "90.400.888/0001-42 (companhia listada/holding)",
   "participante_open_finance": true
@@ -117,7 +117,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -268,7 +269,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1546,
+   "hhi_setorial": 1585,
+   "hhi_cobertura_pct": 76.9,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -327,8 +329,7 @@
      "investimento",
      13.5
     ]
-   ],
-   "hhi_cobertura_pct": 76.9
+   ]
   },
   "total_pf": 329814379727.81,
   "total_pj": 220187844260.43
@@ -401,6 +402,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -496,18 +498,18 @@
     "q3_pares": 78.85
    },
    "concentracao_setorial": {
-    "valor": 2116,
+    "valor": 1585,
     "percentil_pares": 80.0,
     "risco": 80.0,
-    "mediana_pares": 1986.0,
-    "q1_pares": 1791.25,
-    "q3_pares": 2084.0
+    "mediana_pares": 1503.5,
+    "q1_pares": 1428.25,
+    "q3_pares": 1578.0
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 65.7
+    "score": 62.4
    },
    {
     "anomes": "202506",
@@ -971,8 +973,8 @@
  },
  "openfinance": {
   "organisation": "SANTANDER BRASIL",
-  "chamadas_semana": 4685703110.0,
-  "share_pct": 9.3,
+  "chamadas_semana": 7611951621.0,
+  "share_pct": 9.2,
   "familias_api": 53,
   "papeis": [
    "CCORR",

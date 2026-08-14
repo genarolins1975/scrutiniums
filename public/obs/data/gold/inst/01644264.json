@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:23+00:00",
+  "atualizado_em": "2026-08-14T10:32:32+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.644.264",
   "participante_open_finance": null
@@ -278,7 +278,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1307,
+   "hhi_setorial": 1308,
+   "hhi_cobertura_pct": 71.8,
    "top_cnae": [
     [
      "outros",
@@ -337,8 +338,7 @@
      "operacoes_com_recebiveis",
      1.8
     ]
-   ],
-   "hhi_cobertura_pct": 71.8
+   ]
   },
   "total_pf": 289196055.18,
   "total_pj": 1430785739.05
@@ -411,6 +411,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [

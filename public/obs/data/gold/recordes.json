@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T12:31:56+00:00",
+ "gerado_em": "2026-08-14T10:32:31+00:00",
  "titulo": "Recordes nas séries",
  "recordes": [
   {
@@ -124,7 +124,7 @@
    "rotulo": "maior desde 2024-05"
   }
  ],
- "series_elegiveis": 24,
+ "series_elegiveis": 28,
  "janela_minima_meses": 24,
  "metodo": "Para a observação mais recente de cada série elegível: máximo/mínimo de toda a série histórica, ou 'maior/menor desde <mês>' quando a janela é de pelo menos 24 meses. Só séries de razão (%, p.p., meses) — séries nominais em R$ e índices de nível (IVG-R, IBC-Br) crescem com o tempo e fariam recorde trivial todo mês, então ficam fora. Recalculado do zero a cada execução.",
  "cautelas": [

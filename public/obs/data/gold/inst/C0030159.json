@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:27+00:00",
+  "atualizado_em": "2026-08-14T10:32:37+00:00",
   "aviso_pares": null,
   "cnpj": "28.127.603/0001-78 (companhia listada/holding)",
   "participante_open_finance": null
@@ -133,7 +133,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -284,7 +285,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1633,
+   "hhi_setorial": 1684,
+   "hhi_cobertura_pct": 79.6,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
@@ -343,8 +345,7 @@
      "rural_e_agroindustrial",
      5.6
     ]
-   ],
-   "hhi_cobertura_pct": 79.6
+   ]
   },
   "total_pf": 8852681788.88,
   "total_pj": 4001157627.3
@@ -417,6 +418,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -624,8 +626,8 @@
   }
  },
  "score_ref": {
-  "score": 54.1,
-  "score_delta": -0.2,
+  "score": 54.0,
+  "score_delta": 0.6,
   "faixa": "atenção",
   "dimensoes": {
    "capital_basileia": {
@@ -669,34 +671,34 @@
     "q3_pares": 81.8
    },
    "concentracao_setorial": {
-    "valor": 2099,
-    "percentil_pares": 7.1,
-    "risco": 7.1,
-    "mediana_pares": 2889.0,
-    "q1_pares": 2479.0,
-    "q3_pares": 3825.0
+    "valor": 1684,
+    "percentil_pares": 6.7,
+    "risco": 6.7,
+    "mediana_pares": 2404.0,
+    "q1_pares": 1999.0,
+    "q3_pares": 3471.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 61.4
+    "score": 60.8
    },
    {
     "anomes": "202506",
-    "score": 55.7
+    "score": 55.6
    },
    {
     "anomes": "202509",
-    "score": 53.4
+    "score": 52.7
    },
    {
     "anomes": "202512",
-    "score": 54.3
+    "score": 53.4
    },
    {
     "anomes": "202603",
-    "score": 54.1
+    "score": 54.0
    }
   ],
   "vulnerabilidade": {

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-12T10:38:24+00:00",
+  "atualizado_em": "2026-08-14T10:32:34+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 07.237.373",
   "participante_open_finance": true
@@ -129,7 +129,8 @@
   "cobertura_dados_pct": 100,
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)"
+  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
+  "calculado_em": "2026-08-14"
  },
  "kpis": [
   {
@@ -275,7 +276,8 @@
    }
   ],
   "perfil": {
-   "hhi_setorial": 1797,
+   "hhi_setorial": 1839,
+   "hhi_cobertura_pct": 86.3,
    "top_cnae": [
     [
      "servicos_industriais_de_utilidade_publica",
@@ -334,8 +336,7 @@
      "rural_e_agroindustrial",
      4.1
     ]
-   ],
-   "hhi_cobertura_pct": 86.3
+   ]
   },
   "total_pf": 4154973256.5,
   "total_pj": 15559286352.17
@@ -408,6 +409,7 @@
    }
   ]
  },
+ "evolucao_nota": null,
  "comparacao_grupo": {
   "roe": {
    "valores": [
@@ -460,7 +462,7 @@
   }
  },
  "score_ref": {
-  "score": 27.1,
+  "score": 29.9,
   "score_delta": 2.1,
   "faixa": "risco baixo",
   "dimensoes": {
@@ -505,34 +507,34 @@
     "q3_pares": 84.1
    },
    "concentracao_setorial": {
-    "valor": 2028,
-    "percentil_pares": 0.0,
-    "risco": 0.0,
-    "mediana_pares": 2662.0,
-    "q1_pares": 2343.0,
-    "q3_pares": 2770.0
+    "valor": 1839,
+    "percentil_pares": 16.7,
+    "risco": 16.7,
+    "mediana_pares": 2373.0,
+    "q1_pares": 1990.5,
+    "q3_pares": 2609.5
    }
   },
   "historico_score": [
    {
     "anomes": "202503",
-    "score": 33.3
+    "score": 36.1
    },
    {
     "anomes": "202506",
-    "score": 29.2
+    "score": 31.9
    },
    {
     "anomes": "202509",
-    "score": 27.1
+    "score": 29.9
    },
    {
     "anomes": "202512",
-    "score": 25.0
+    "score": 27.8
    },
    {
     "anomes": "202603",
-    "score": 27.1
+    "score": 29.9
    }
   ],
   "vulnerabilidade": {
@@ -916,7 +918,7 @@
  },
  "openfinance": {
   "organisation": "BANCO DO NORDESTE",
-  "chamadas_semana": 8291.0,
+  "chamadas_semana": 7848.0,
   "share_pct": 0.0,
   "familias_api": 41,
   "papeis": [
