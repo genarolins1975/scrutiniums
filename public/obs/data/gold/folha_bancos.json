@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-14T10:32:31+00:00",
+ "gerado_em": "2026-08-15T09:59:14+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 239,
-  "total_editais": 795,
+  "total_editais": 796,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1062,6 +1062,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE BONITO",
+    "municipio": "Bonito",
+    "uf": "PE",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-14",
+    "url": "https://pncp.gov.br/compras/10121515000101/2026/39"
+   },
+   {
     "ente": "MUNICIPIO DE IVAIPORA",
     "municipio": "Ivaiporã",
     "uf": "PR",
@@ -1159,15 +1168,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-11",
     "url": "https://pncp.gov.br/compras/58197948000169/2026/25"
-   },
-   {
-    "ente": "MUNICIPIO DE BURITI BRAVO",
-    "municipio": "Buriti Bravo",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/06052138000110/2026/23"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

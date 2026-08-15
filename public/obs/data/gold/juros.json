@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-14T10:32:52+00:00",
+ "gerado_em": "2026-08-15T09:59:36+00:00",
  "tipo": "DADO OBSERVADO",
  "fonte": "BCB txjuros (Olinda) — taxas médias das operações contratadas por IF, por modalidade",
  "selic_meta": 14.0,
@@ -933,19 +933,19 @@
    "segmento": "PF",
    "modalidade": "Cartão de crédito - parcelado - Prefixado",
    "janela": {
-    "inicio": "2026-07-24",
-    "fim": "2026-07-30"
+    "inicio": "2026-07-27",
+    "fim": "2026-07-31"
    },
    "stats": {
-    "n": 59,
+    "n": 57,
     "min": 1.2,
-    "p25": 103.0,
-    "mediana": 155.84,
-    "p75": 232.74,
+    "p25": 98.9,
+    "mediana": 155.47,
+    "p75": 243.29,
     "max": 747.34
    },
-   "spread_selic": 141.84,
-   "delta_3m": -7.4,
+   "spread_selic": 141.47,
+   "delta_3m": -7.77,
    "ranking": [
     {
      "cnpj8": "44431743",
@@ -953,7 +953,7 @@
      "taxa_am": 0.1,
      "taxa_aa": 1.2,
      "posicao": 1,
-     "vs_mediana": -154.64
+     "vs_mediana": -154.27
     },
     {
      "cnpj8": "05351887",
@@ -961,271 +961,271 @@
      "taxa_am": 1.16,
      "taxa_aa": 14.85,
      "posicao": 2,
-     "vs_mediana": -140.99
+     "vs_mediana": -140.62
     },
     {
      "cnpj8": "10664513",
      "nome": "BCO AGIBANK S.A.",
-     "taxa_am": 2.84,
-     "taxa_aa": 39.94,
+     "taxa_am": 2.91,
+     "taxa_aa": 41.1,
      "posicao": 3,
-     "vs_mediana": -115.9
+     "vs_mediana": -114.37
     },
     {
      "cnpj8": "62232889",
      "nome": "BCO DAYCOVAL S.A",
-     "taxa_am": 3.33,
-     "taxa_aa": 48.07,
+     "taxa_am": 3.44,
+     "taxa_aa": 50.07,
      "posicao": 4,
-     "vs_mediana": -107.77
+     "vs_mediana": -105.4
     },
     {
      "cnpj8": "17184037",
      "nome": "BCO MERCANTIL DO BRASIL S.A.",
-     "taxa_am": 3.57,
-     "taxa_aa": 52.37,
+     "taxa_am": 3.54,
+     "taxa_aa": 51.82,
      "posicao": 5,
-     "vs_mediana": -103.47
-    },
-    {
-     "cnpj8": "45246410",
-     "nome": "BANCO GENIAL",
-     "taxa_am": 4.04,
-     "taxa_aa": 60.87,
-     "posicao": 6,
-     "vs_mediana": -94.97
+     "vs_mediana": -103.65
     },
     {
      "cnpj8": "61186680",
      "nome": "BCO BMG S.A.",
-     "taxa_am": 4.42,
-     "taxa_aa": 68.07,
+     "taxa_am": 3.86,
+     "taxa_aa": 57.45,
+     "posicao": 6,
+     "vs_mediana": -98.02
+    },
+    {
+     "cnpj8": "45246410",
+     "nome": "BANCO GENIAL",
+     "taxa_am": 4.08,
+     "taxa_aa": 61.58,
      "posicao": 7,
-     "vs_mediana": -87.77
+     "vs_mediana": -93.89
     },
     {
      "cnpj8": "54403563",
      "nome": "BCO ARBI S.A.",
-     "taxa_am": 4.47,
-     "taxa_aa": 68.96,
+     "taxa_am": 4.38,
+     "taxa_aa": 67.35,
      "posicao": 8,
-     "vs_mediana": -86.88
+     "vs_mediana": -88.12
     },
     {
      "cnpj8": "05192316",
      "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-     "taxa_am": 4.5,
-     "taxa_aa": 69.55,
+     "taxa_am": 4.51,
+     "taxa_aa": 69.81,
      "posicao": 9,
-     "vs_mediana": -86.29
+     "vs_mediana": -85.66
     },
     {
      "cnpj8": "31872495",
      "nome": "BCO C6 S.A.",
      "taxa_am": 4.87,
-     "taxa_aa": 76.87,
+     "taxa_aa": 76.98,
      "posicao": 10,
-     "vs_mediana": -78.97
+     "vs_mediana": -78.49
     },
     {
      "cnpj8": "92702067",
      "nome": "BCO DO ESTADO DO RS S.A.",
-     "taxa_am": 5.17,
-     "taxa_aa": 83.14,
+     "taxa_am": 5.24,
+     "taxa_aa": 84.58,
      "posicao": 11,
-     "vs_mediana": -72.7
+     "vs_mediana": -70.89
     },
     {
      "cnpj8": "00556603",
      "nome": "BANCO BARI S.A.",
-     "taxa_am": 5.59,
-     "taxa_aa": 92.1,
+     "taxa_am": 5.6,
+     "taxa_aa": 92.25,
      "posicao": 12,
-     "vs_mediana": -63.74
-    },
-    {
-     "cnpj8": "30306294",
-     "nome": "BANCO BTG PACTUAL S.A.",
-     "taxa_am": 5.75,
-     "taxa_aa": 95.64,
-     "posicao": 13,
-     "vs_mediana": -60.2
+     "vs_mediana": -63.22
     },
     {
      "cnpj8": "06040559",
      "nome": "KREDILIG S.A. - CFI",
-     "taxa_am": 5.87,
-     "taxa_aa": 98.21,
+     "taxa_am": 5.62,
+     "taxa_aa": 92.64,
+     "posicao": 13,
+     "vs_mediana": -62.83
+    },
+    {
+     "cnpj8": "07512441",
+     "nome": "HS FINANCEIRA",
+     "taxa_am": 5.68,
+     "taxa_aa": 93.99,
      "posicao": 14,
-     "vs_mediana": -57.63
+     "vs_mediana": -61.48
+    },
+    {
+     "cnpj8": "30306294",
+     "nome": "BANCO BTG PACTUAL S.A.",
+     "taxa_am": 5.9,
+     "taxa_aa": 98.9,
+     "posicao": 15,
+     "vs_mediana": -56.57
     },
     {
      "cnpj8": "00000208",
      "nome": "BRB - BCO DE BRASILIA S.A.",
      "taxa_am": 6.01,
-     "taxa_aa": 101.45,
-     "posicao": 15,
-     "vs_mediana": -54.39
-    },
-    {
-     "cnpj8": "07512441",
-     "nome": "HS FINANCEIRA",
-     "taxa_am": 6.14,
-     "taxa_aa": 104.54,
+     "taxa_aa": 101.42,
      "posicao": 16,
-     "vs_mediana": -51.3
+     "vs_mediana": -54.05
     },
     {
      "cnpj8": "60746948",
      "nome": "BCO BRADESCO S.A.",
-     "taxa_am": 6.36,
-     "taxa_aa": 109.46,
+     "taxa_am": 6.39,
+     "taxa_aa": 110.38,
      "posicao": 17,
-     "vs_mediana": -46.38
+     "vs_mediana": -45.09
     },
     {
      "cnpj8": "07631026",
      "nome": "GOLCRED S/A - CFI",
-     "taxa_am": 6.48,
-     "taxa_aa": 112.47,
+     "taxa_am": 6.42,
+     "taxa_aa": 110.92,
      "posicao": 18,
-     "vs_mediana": -43.37
-    },
-    {
-     "cnpj8": "48703388",
-     "nome": "ASA SCFI S.A.",
-     "taxa_am": 6.9,
-     "taxa_aa": 122.77,
-     "posicao": 19,
-     "vs_mediana": -33.07
+     "vs_mediana": -44.55
     },
     {
      "cnpj8": "04862600",
      "nome": "PORTOSEG S.A. CFI",
-     "taxa_am": 6.99,
-     "taxa_aa": 124.99,
+     "taxa_am": 6.85,
+     "taxa_aa": 121.39,
+     "posicao": 19,
+     "vs_mediana": -34.08
+    },
+    {
+     "cnpj8": "68900810",
+     "nome": "BCO RENDIMENTO S.A.",
+     "taxa_am": 6.98,
+     "taxa_aa": 124.76,
      "posicao": 20,
-     "vs_mediana": -30.85
+     "vs_mediana": -30.71
     },
     {
      "cnpj8": "37229413",
      "nome": "SCFI EFÍ S.A.",
-     "taxa_am": 7.02,
-     "taxa_aa": 125.68,
+     "taxa_am": 7.01,
+     "taxa_aa": 125.41,
      "posicao": 21,
-     "vs_mediana": -30.16
+     "vs_mediana": -30.06
     },
     {
      "cnpj8": "00000000",
      "nome": "BCO DO BRASIL S.A.",
      "taxa_am": 7.02,
-     "taxa_aa": 125.73,
+     "taxa_aa": 125.83,
      "posicao": 22,
-     "vs_mediana": -30.11
+     "vs_mediana": -29.64
+    },
+    {
+     "cnpj8": "48703388",
+     "nome": "ASA SCFI S.A.",
+     "taxa_am": 7.03,
+     "taxa_aa": 125.95,
+     "posicao": 23,
+     "vs_mediana": -29.52
     },
     {
      "cnpj8": "07237373",
      "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-     "taxa_am": 7.09,
-     "taxa_aa": 127.6,
-     "posicao": 23,
-     "vs_mediana": -28.24
-    },
-    {
-     "cnpj8": "62237425",
-     "nome": "BCO STELLANTIS S.A.",
-     "taxa_am": 7.28,
-     "taxa_aa": 132.37,
+     "taxa_am": 7.08,
+     "taxa_aa": 127.28,
      "posicao": 24,
-     "vs_mediana": -23.47
+     "vs_mediana": -28.19
     },
     {
      "cnpj8": "02038232",
      "nome": "BANCO SICOOB S.A.",
-     "taxa_am": 7.31,
-     "taxa_aa": 133.08,
+     "taxa_am": 7.25,
+     "taxa_aa": 131.71,
      "posicao": 25,
-     "vs_mediana": -22.76
+     "vs_mediana": -23.76
     },
     {
      "cnpj8": "33264668",
      "nome": "BCO XP S.A.",
-     "taxa_am": 7.42,
-     "taxa_aa": 136.04,
+     "taxa_am": 7.47,
+     "taxa_aa": 137.38,
      "posicao": 26,
-     "vs_mediana": -19.8
+     "vs_mediana": -18.09
     },
     {
      "cnpj8": "04913711",
      "nome": "BCO DO EST. DO PA S.A.",
-     "taxa_am": 7.5,
-     "taxa_aa": 138.11,
+     "taxa_am": 7.56,
+     "taxa_aa": 139.65,
      "posicao": 27,
-     "vs_mediana": -17.73
-    },
-    {
-     "cnpj8": "68900810",
-     "nome": "BCO RENDIMENTO S.A.",
-     "taxa_am": 7.64,
-     "taxa_aa": 141.97,
-     "posicao": 28,
-     "vs_mediana": -13.87
+     "vs_mediana": -15.82
     },
     {
      "cnpj8": "90400888",
      "nome": "BCO SANTANDER (BRASIL) S.A.",
-     "taxa_am": 7.81,
-     "taxa_aa": 146.63,
-     "posicao": 29,
-     "vs_mediana": -9.21
+     "taxa_am": 8.09,
+     "taxa_aa": 154.41,
+     "posicao": 28,
+     "vs_mediana": -1.06
     },
     {
      "cnpj8": "04184779",
      "nome": "BANCO BRADESCARD",
-     "taxa_am": 8.14,
-     "taxa_aa": 155.84,
-     "posicao": 30,
+     "taxa_am": 8.13,
+     "taxa_aa": 155.47,
+     "posicao": 29,
      "vs_mediana": 0.0
     },
     {
      "cnpj8": "17351180",
      "nome": "BCO TRIANGULO S.A.",
-     "taxa_am": 8.17,
-     "taxa_aa": 156.68,
+     "taxa_am": 8.29,
+     "taxa_aa": 160.11,
+     "posicao": 30,
+     "vs_mediana": 4.64
+    },
+    {
+     "cnpj8": "00416968",
+     "nome": "BANCO INTER",
+     "taxa_am": 8.52,
+     "taxa_aa": 166.71,
      "posicao": 31,
-     "vs_mediana": 0.84
+     "vs_mediana": 11.24
     },
     {
      "cnpj8": "00360305",
      "nome": "CAIXA ECONOMICA FEDERAL",
      "taxa_am": 8.53,
-     "taxa_aa": 167.07,
+     "taxa_aa": 167.09,
      "posicao": 32,
-     "vs_mediana": 11.23
-    },
-    {
-     "cnpj8": "00416968",
-     "nome": "BANCO INTER",
-     "taxa_am": 8.55,
-     "taxa_aa": 167.77,
-     "posicao": 33,
-     "vs_mediana": 11.93
+     "vs_mediana": 11.62
     },
     {
      "cnpj8": "09516419",
      "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-     "taxa_am": 8.58,
-     "taxa_aa": 168.61,
-     "posicao": 34,
-     "vs_mediana": 12.77
+     "taxa_am": 8.76,
+     "taxa_aa": 173.88,
+     "posicao": 33,
+     "vs_mediana": 18.41
     },
     {
      "cnpj8": "30680829",
      "nome": "NU FINANCEIRA S.A. CFI",
-     "taxa_am": 8.91,
-     "taxa_aa": 178.39,
+     "taxa_am": 8.9,
+     "taxa_aa": 178.09,
+     "posicao": 34,
+     "vs_mediana": 22.62
+    },
+    {
+     "cnpj8": "08357240",
+     "nome": "BCO CSF S.A.",
+     "taxa_am": 9.11,
+     "taxa_aa": 184.69,
      "posicao": 35,
-     "vs_mediana": 22.55
+     "vs_mediana": 29.22
     },
     {
      "cnpj8": "02992446",
@@ -1233,7 +1233,7 @@
      "taxa_am": 9.33,
      "taxa_aa": 191.77,
      "posicao": 36,
-     "vs_mediana": 35.93
+     "vs_mediana": 36.3
     },
     {
      "cnpj8": "04902979",
@@ -1241,183 +1241,167 @@
      "taxa_am": 9.34,
      "taxa_aa": 191.88,
      "posicao": 37,
-     "vs_mediana": 36.04
-    },
-    {
-     "cnpj8": "08357240",
-     "nome": "BCO CSF S.A.",
-     "taxa_am": 9.51,
-     "taxa_aa": 197.63,
-     "posicao": 38,
-     "vs_mediana": 41.79
+     "vs_mediana": 36.41
     },
     {
      "cnpj8": "60872504",
      "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-     "taxa_am": 9.67,
-     "taxa_aa": 202.78,
-     "posicao": 39,
-     "vs_mediana": 46.94
+     "taxa_am": 9.78,
+     "taxa_aa": 206.23,
+     "posicao": 38,
+     "vs_mediana": 50.76
     },
     {
      "cnpj8": "11285104",
      "nome": "NEON FINANCEIRA - SCFI S.A.",
-     "taxa_am": 9.77,
-     "taxa_aa": 205.89,
-     "posicao": 40,
-     "vs_mediana": 50.05
+     "taxa_am": 9.79,
+     "taxa_aa": 206.58,
+     "posicao": 39,
+     "vs_mediana": 51.11
     },
     {
      "cnpj8": "91669747",
      "nome": "DM SCFI",
-     "taxa_am": 9.87,
-     "taxa_aa": 209.45,
-     "posicao": 41,
-     "vs_mediana": 53.61
+     "taxa_am": 9.94,
+     "taxa_aa": 211.85,
+     "posicao": 40,
+     "vs_mediana": 56.38
     },
     {
      "cnpj8": "28127603",
      "nome": "BCO BANESTES S.A.",
      "taxa_am": 10.05,
-     "taxa_aa": 215.56,
-     "posicao": 42,
-     "vs_mediana": 59.72
-    },
-    {
-     "cnpj8": "58160789",
-     "nome": "BCO SAFRA S.A.",
-     "taxa_am": 10.16,
-     "taxa_aa": 219.4,
-     "posicao": 43,
-     "vs_mediana": 63.56
+     "taxa_aa": 215.54,
+     "posicao": 41,
+     "vs_mediana": 60.07
     },
     {
      "cnpj8": "01858774",
      "nome": "BCO BV S.A.",
      "taxa_am": 10.24,
-     "taxa_aa": 222.18,
-     "posicao": 44,
-     "vs_mediana": 66.34
+     "taxa_aa": 222.28,
+     "posicao": 42,
+     "vs_mediana": 66.81
     },
     {
      "cnpj8": "60889128",
      "nome": "BCO SOFISA S.A.",
      "taxa_am": 10.83,
      "taxa_aa": 243.29,
-     "posicao": 45,
-     "vs_mediana": 87.45
+     "posicao": 43,
+     "vs_mediana": 87.82
     },
     {
      "cnpj8": "37122487",
      "nome": "CALCRED S.A.",
-     "taxa_am": 11.23,
-     "taxa_aa": 258.64,
-     "posicao": 46,
-     "vs_mediana": 102.8
+     "taxa_am": 11.41,
+     "taxa_aa": 265.5,
+     "posicao": 44,
+     "vs_mediana": 110.03
     },
     {
      "cnpj8": "61182408",
      "nome": "BANCO INVESTCRED UNIBANCO S.A.",
-     "taxa_am": 11.41,
-     "taxa_aa": 265.8,
-     "posicao": 47,
-     "vs_mediana": 109.96
+     "taxa_am": 11.72,
+     "taxa_aa": 277.96,
+     "posicao": 45,
+     "vs_mediana": 122.49
     },
     {
      "cnpj8": "06881898",
      "nome": "FIN. ITAU CBD CFI",
-     "taxa_am": 11.54,
-     "taxa_aa": 270.77,
-     "posicao": 48,
-     "vs_mediana": 114.93
-    },
-    {
-     "cnpj8": "04814563",
-     "nome": "BCO AFINZ S.A. - BM",
-     "taxa_am": 11.56,
-     "taxa_aa": 271.63,
-     "posicao": 49,
-     "vs_mediana": 115.79
+     "taxa_am": 11.73,
+     "taxa_aa": 278.33,
+     "posicao": 46,
+     "vs_mediana": 122.86
     },
     {
      "cnpj8": "02206577",
      "nome": "LUIZACRED S.A. SCFI",
-     "taxa_am": 11.88,
-     "taxa_aa": 284.6,
-     "posicao": 50,
-     "vs_mediana": 128.76
+     "taxa_am": 11.9,
+     "taxa_aa": 285.6,
+     "posicao": 47,
+     "vs_mediana": 130.13
     },
     {
      "cnpj8": "59285411",
      "nome": "BANCO PAN",
-     "taxa_am": 11.98,
-     "taxa_aa": 288.75,
-     "posicao": 51,
-     "vs_mediana": 132.91
+     "taxa_am": 12.01,
+     "taxa_aa": 289.84,
+     "posicao": 48,
+     "vs_mediana": 134.37
+    },
+    {
+     "cnpj8": "11760553",
+     "nome": "GAZINCRED S.A. SCFI",
+     "taxa_am": 12.05,
+     "taxa_aa": 291.66,
+     "posicao": 49,
+     "vs_mediana": 136.19
     },
     {
      "cnpj8": "27098060",
      "nome": "BANCO DIGIO",
-     "taxa_am": 12.38,
-     "taxa_aa": 305.61,
-     "posicao": 52,
-     "vs_mediana": 149.77
+     "taxa_am": 12.48,
+     "taxa_aa": 309.98,
+     "posicao": 50,
+     "vs_mediana": 154.51
     },
     {
      "cnpj8": "43180355",
      "nome": "PEFISA S.A. - C.F.I.",
-     "taxa_am": 13.99,
-     "taxa_aa": 381.32,
-     "posicao": 53,
-     "vs_mediana": 225.48
+     "taxa_am": 13.96,
+     "taxa_aa": 379.54,
+     "posicao": 51,
+     "vs_mediana": 224.07
     },
     {
      "cnpj8": "61033106",
      "nome": "BCO CREFISA S.A.",
-     "taxa_am": 14.29,
-     "taxa_aa": 396.76,
-     "posicao": 54,
-     "vs_mediana": 240.92
+     "taxa_am": 14.4,
+     "taxa_aa": 402.55,
+     "posicao": 52,
+     "vs_mediana": 247.08
     },
     {
      "cnpj8": "11970623",
      "nome": "BCO SENFF S.A.",
-     "taxa_am": 14.42,
-     "taxa_aa": 403.63,
-     "posicao": 55,
-     "vs_mediana": 247.79
+     "taxa_am": 14.43,
+     "taxa_aa": 403.81,
+     "posicao": 53,
+     "vs_mediana": 248.34
     },
     {
      "cnpj8": "09464032",
      "nome": "MIDWAY S.A. - SCFI",
-     "taxa_am": 14.6,
-     "taxa_aa": 413.36,
-     "posicao": 56,
-     "vs_mediana": 257.52
+     "taxa_am": 14.56,
+     "taxa_aa": 411.14,
+     "posicao": 54,
+     "vs_mediana": 255.67
     },
     {
      "cnpj8": "27351731",
      "nome": "REALIZE SCFI S.A.",
-     "taxa_am": 15.22,
-     "taxa_aa": 447.15,
-     "posicao": 57,
-     "vs_mediana": 291.31
+     "taxa_am": 14.82,
+     "taxa_aa": 425.12,
+     "posicao": 55,
+     "vs_mediana": 269.65
     },
     {
      "cnpj8": "37679449",
      "nome": "MERCADO CRÉDITO SCFI S.A.",
      "taxa_am": 15.55,
-     "taxa_aa": 466.31,
-     "posicao": 58,
-     "vs_mediana": 310.47
+     "taxa_aa": 466.3,
+     "posicao": 56,
+     "vs_mediana": 310.83
     },
     {
      "cnpj8": "13009717",
      "nome": "BCO DO EST. DE SE S.A.",
      "taxa_am": 19.49,
      "taxa_aa": 747.34,
-     "posicao": 59,
-     "vs_mediana": 591.5
+     "posicao": 57,
+     "vs_mediana": 591.87
     }
    ],
    "serie_mensal": [
@@ -1559,11 +1543,11 @@
     },
     {
      "ref": "2026-07-01",
-     "mediana": 155.84,
-     "p25": 103.0,
-     "p75": 232.74,
+     "mediana": 155.47,
+     "p25": 98.9,
+     "p75": 243.29,
      "min": 1.2,
-     "n": 59
+     "n": 57
     }
    ],
    "persistentes": [
@@ -1580,14 +1564,14 @@
      "de": 26
     },
     {
-     "cnpj8": "62232889",
-     "nome": "BCO DAYCOVAL S.A",
-     "vezes": 8,
+     "cnpj8": "10664513",
+     "nome": "BCO AGIBANK S.A.",
+     "vezes": 9,
      "de": 26
     },
     {
-     "cnpj8": "10664513",
-     "nome": "BCO AGIBANK S.A.",
+     "cnpj8": "62232889",
+     "nome": "BCO DAYCOVAL S.A",
      "vezes": 8,
      "de": 26
     },
@@ -1707,7 +1691,7 @@
        68.45,
        43.12,
        59.58,
-       39.94
+       41.1
       ]
      },
      {
@@ -1739,7 +1723,7 @@
        41.87,
        43.59,
        42.69,
-       48.07
+       50.07
       ]
      },
      {
@@ -1771,39 +1755,7 @@
        38.74,
        52.49,
        52.98,
-       52.37
-      ]
-     },
-     {
-      "cnpj8": "45246410",
-      "label": "BANCO GENIAL",
-      "ranks": [
-       11,
-       6,
-       6,
-       7,
-       5,
-       6,
-       7,
-       7,
-       9,
-       6,
-       9,
-       6
-      ],
-      "vals": [
-       93.76,
-       64.69,
-       62.14,
-       71.11,
-       62.64,
-       69.19,
-       83.09,
-       66.04,
-       69.37,
-       63.66,
-       83.62,
-       60.87
+       51.82
       ]
      },
      {
@@ -1821,7 +1773,7 @@
        6,
        42,
        52,
-       7
+       6
       ],
       "vals": [
        52.21,
@@ -1835,7 +1787,39 @@
        50.68,
        234.28,
        318.7,
-       68.07
+       57.45
+      ]
+     },
+     {
+      "cnpj8": "45246410",
+      "label": "BANCO GENIAL",
+      "ranks": [
+       11,
+       6,
+       6,
+       7,
+       5,
+       6,
+       7,
+       7,
+       9,
+       6,
+       9,
+       7
+      ],
+      "vals": [
+       93.76,
+       64.69,
+       62.14,
+       71.11,
+       62.64,
+       69.19,
+       83.09,
+       66.04,
+       69.37,
+       63.66,
+       83.62,
+       61.58
       ]
      },
      {
@@ -1867,7 +1851,7 @@
        66.76,
        64.04,
        68.81,
-       68.96
+       67.35
       ]
      },
      {
@@ -1899,7 +1883,7 @@
        89.49,
        76.78,
        81.08,
-       69.55
+       69.81
       ]
      },
      {
@@ -1931,7 +1915,7 @@
        95.91,
        97.27,
        98.02,
-       76.87
+       76.98
       ]
      }
     ],
@@ -1951,19 +1935,19 @@
    "segmento": "PF",
    "modalidade": "Cartão de crédito - rotativo total - Prefixado",
    "janela": {
-    "inicio": "2026-07-24",
-    "fim": "2026-07-30"
+    "inicio": "2026-07-27",
+    "fim": "2026-07-31"
    },
    "stats": {
-    "n": 62,
+    "n": 58,
     "min": 2.4,
-    "p25": 259.14,
-    "mediana": 500.41,
-    "p75": 628.77,
+    "p25": 274.25,
+    "mediana": 497.84,
+    "p75": 687.44,
     "max": 1354.35
    },
-   "spread_selic": 486.41,
-   "delta_3m": 57.6,
+   "spread_selic": 483.84,
+   "delta_3m": 55.03,
    "ranking": [
     {
      "cnpj8": "44431743",
@@ -1971,7 +1955,7 @@
      "taxa_am": 0.2,
      "taxa_aa": 2.4,
      "posicao": 1,
-     "vs_mediana": -498.01
+     "vs_mediana": -495.44
     },
     {
      "cnpj8": "05351887",
@@ -1979,23 +1963,23 @@
      "taxa_am": 0.48,
      "taxa_aa": 5.88,
      "posicao": 2,
-     "vs_mediana": -494.53
+     "vs_mediana": -491.96
     },
     {
      "cnpj8": "31895683",
      "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-     "taxa_am": 4.68,
-     "taxa_aa": 73.05,
+     "taxa_am": 4.62,
+     "taxa_aa": 71.93,
      "posicao": 3,
-     "vs_mediana": -427.36
+     "vs_mediana": -425.91
     },
     {
      "cnpj8": "62232889",
      "nome": "BCO DAYCOVAL S.A",
-     "taxa_am": 5.44,
-     "taxa_aa": 88.72,
+     "taxa_am": 5.68,
+     "taxa_aa": 94.05,
      "posicao": 4,
-     "vs_mediana": -411.69
+     "vs_mediana": -403.79
     },
     {
      "cnpj8": "45246410",
@@ -2003,7 +1987,7 @@
      "taxa_am": 8.56,
      "taxa_aa": 167.98,
      "posicao": 5,
-     "vs_mediana": -332.43
+     "vs_mediana": -329.86
     },
     {
      "cnpj8": "62237425",
@@ -2011,15 +1995,15 @@
      "taxa_am": 9.07,
      "taxa_aa": 183.5,
      "posicao": 6,
-     "vs_mediana": -316.91
+     "vs_mediana": -314.34
     },
     {
      "cnpj8": "02038232",
      "nome": "BANCO SICOOB S.A.",
-     "taxa_am": 9.42,
-     "taxa_aa": 194.7,
+     "taxa_am": 9.28,
+     "taxa_aa": 190.0,
      "posicao": 7,
-     "vs_mediana": -305.71
+     "vs_mediana": -307.84
     },
     {
      "cnpj8": "04902979",
@@ -2027,7 +2011,7 @@
      "taxa_am": 9.58,
      "taxa_aa": 199.66,
      "posicao": 8,
-     "vs_mediana": -300.75
+     "vs_mediana": -298.18
     },
     {
      "cnpj8": "68900810",
@@ -2035,431 +2019,399 @@
      "taxa_am": 10.0,
      "taxa_aa": 213.97,
      "posicao": 9,
-     "vs_mediana": -286.44
+     "vs_mediana": -283.87
+    },
+    {
+     "cnpj8": "60746948",
+     "nome": "BCO BRADESCO S.A.",
+     "taxa_am": 10.54,
+     "taxa_aa": 232.91,
+     "posicao": 10,
+     "vs_mediana": -264.93
     },
     {
      "cnpj8": "11970623",
      "nome": "BCO SENFF S.A.",
      "taxa_am": 10.64,
-     "taxa_aa": 236.38,
-     "posicao": 10,
-     "vs_mediana": -264.03
-    },
-    {
-     "cnpj8": "60746948",
-     "nome": "BCO BRADESCO S.A.",
-     "taxa_am": 10.64,
-     "taxa_aa": 236.57,
+     "taxa_aa": 236.47,
      "posicao": 11,
-     "vs_mediana": -263.84
-    },
-    {
-     "cnpj8": "30306294",
-     "nome": "BANCO BTG PACTUAL S.A.",
-     "taxa_am": 10.83,
-     "taxa_aa": 243.38,
-     "posicao": 12,
-     "vs_mediana": -257.03
+     "vs_mediana": -261.37
     },
     {
      "cnpj8": "33264668",
      "nome": "BCO XP S.A.",
      "taxa_am": 10.98,
      "taxa_aa": 248.99,
-     "posicao": 13,
-     "vs_mediana": -251.42
+     "posicao": 12,
+     "vs_mediana": -248.85
     },
     {
      "cnpj8": "06040559",
      "nome": "KREDILIG S.A. - CFI",
-     "taxa_am": 11.01,
-     "taxa_aa": 250.39,
-     "posicao": 14,
-     "vs_mediana": -250.02
-    },
-    {
-     "cnpj8": "58160789",
-     "nome": "BCO SAFRA S.A.",
-     "taxa_am": 11.14,
-     "taxa_aa": 255.0,
-     "posicao": 15,
-     "vs_mediana": -245.41
+     "taxa_am": 11.13,
+     "taxa_aa": 254.92,
+     "posicao": 13,
+     "vs_mediana": -242.92
     },
     {
      "cnpj8": "48703388",
      "nome": "ASA SCFI S.A.",
      "taxa_am": 11.15,
      "taxa_aa": 255.48,
-     "posicao": 16,
-     "vs_mediana": -244.93
+     "posicao": 14,
+     "vs_mediana": -242.36
     },
     {
      "cnpj8": "00556603",
      "nome": "BANCO BARI S.A.",
      "taxa_am": 11.52,
      "taxa_aa": 270.12,
-     "posicao": 17,
-     "vs_mediana": -230.29
+     "posicao": 15,
+     "vs_mediana": -227.72
     },
     {
      "cnpj8": "07237373",
      "nome": "BCO DO NORDESTE DO BRASIL S.A.",
      "taxa_am": 11.93,
      "taxa_aa": 286.64,
-     "posicao": 18,
-     "vs_mediana": -213.77
+     "posicao": 16,
+     "vs_mediana": -211.2
     },
     {
      "cnpj8": "10664513",
      "nome": "BCO AGIBANK S.A.",
      "taxa_am": 11.95,
      "taxa_aa": 287.45,
-     "posicao": 19,
-     "vs_mediana": -212.96
+     "posicao": 17,
+     "vs_mediana": -210.39
     },
     {
      "cnpj8": "00360305",
      "nome": "CAIXA ECONOMICA FEDERAL",
-     "taxa_am": 12.1,
-     "taxa_aa": 293.81,
-     "posicao": 20,
-     "vs_mediana": -206.6
+     "taxa_am": 12.13,
+     "taxa_aa": 294.93,
+     "posicao": 18,
+     "vs_mediana": -202.91
     },
     {
      "cnpj8": "09313766",
      "nome": "CARUANA SCFI",
      "taxa_am": 12.17,
-     "taxa_aa": 296.62,
-     "posicao": 21,
-     "vs_mediana": -203.79
+     "taxa_aa": 296.86,
+     "posicao": 19,
+     "vs_mediana": -200.98
     },
     {
      "cnpj8": "60889128",
      "nome": "BCO SOFISA S.A.",
      "taxa_am": 12.22,
      "taxa_aa": 298.77,
-     "posicao": 22,
-     "vs_mediana": -201.64
+     "posicao": 20,
+     "vs_mediana": -199.07
     },
     {
      "cnpj8": "28127603",
      "nome": "BCO BANESTES S.A.",
      "taxa_am": 12.95,
      "taxa_aa": 331.16,
-     "posicao": 23,
-     "vs_mediana": -169.25
+     "posicao": 21,
+     "vs_mediana": -166.68
     },
     {
      "cnpj8": "00000000",
      "nome": "BCO DO BRASIL S.A.",
-     "taxa_am": 13.17,
-     "taxa_aa": 341.37,
-     "posicao": 24,
-     "vs_mediana": -159.04
+     "taxa_am": 13.14,
+     "taxa_aa": 340.01,
+     "posicao": 22,
+     "vs_mediana": -157.83
     },
     {
      "cnpj8": "30680829",
      "nome": "NU FINANCEIRA S.A. CFI",
-     "taxa_am": 13.42,
-     "taxa_aa": 353.36,
-     "posicao": 25,
-     "vs_mediana": -147.05
+     "taxa_am": 13.29,
+     "taxa_aa": 347.14,
+     "posicao": 23,
+     "vs_mediana": -150.7
     },
     {
      "cnpj8": "60872504",
      "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-     "taxa_am": 14.28,
-     "taxa_aa": 396.19,
-     "posicao": 26,
-     "vs_mediana": -104.22
+     "taxa_am": 13.59,
+     "taxa_aa": 361.59,
+     "posicao": 24,
+     "vs_mediana": -136.25
     },
     {
      "cnpj8": "07631026",
      "nome": "GOLCRED S/A - CFI",
      "taxa_am": 15.14,
      "taxa_aa": 442.81,
-     "posicao": 27,
-     "vs_mediana": -57.6
+     "posicao": 25,
+     "vs_mediana": -55.03
     },
     {
      "cnpj8": "37229413",
      "nome": "SCFI EFÍ S.A.",
      "taxa_am": 15.14,
      "taxa_aa": 442.81,
-     "posicao": 28,
-     "vs_mediana": -57.6
+     "posicao": 26,
+     "vs_mediana": -55.03
+    },
+    {
+     "cnpj8": "61186680",
+     "nome": "BCO BMG S.A.",
+     "taxa_am": 15.62,
+     "taxa_aa": 470.81,
+     "posicao": 27,
+     "vs_mediana": -27.03
     },
     {
      "cnpj8": "90400888",
      "nome": "BCO SANTANDER (BRASIL) S.A.",
-     "taxa_am": 15.79,
-     "taxa_aa": 480.92,
-     "posicao": 29,
-     "vs_mediana": -19.49
+     "taxa_am": 15.71,
+     "taxa_aa": 475.75,
+     "posicao": 28,
+     "vs_mediana": -22.09
     },
     {
      "cnpj8": "31872495",
      "nome": "BCO C6 S.A.",
      "taxa_am": 16.03,
      "taxa_aa": 495.68,
-     "posicao": 30,
-     "vs_mediana": -4.73
+     "posicao": 29,
+     "vs_mediana": -2.16
     },
     {
      "cnpj8": "05503849",
      "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
      "taxa_am": 16.1,
      "taxa_aa": 500.0,
-     "posicao": 31,
-     "vs_mediana": -0.41
+     "posicao": 30,
+     "vs_mediana": 2.16
     },
     {
      "cnpj8": "04913711",
      "nome": "BCO DO EST. DO PA S.A.",
-     "taxa_am": 16.12,
-     "taxa_aa": 500.82,
-     "posicao": 32,
-     "vs_mediana": 0.41
+     "taxa_am": 16.11,
+     "taxa_aa": 500.16,
+     "posicao": 31,
+     "vs_mediana": 2.32
     },
     {
      "cnpj8": "00416968",
      "nome": "BANCO INTER",
      "taxa_am": 16.12,
-     "taxa_aa": 500.92,
-     "posicao": 33,
-     "vs_mediana": 0.51
+     "taxa_aa": 500.95,
+     "posicao": 32,
+     "vs_mediana": 3.11
     },
     {
      "cnpj8": "02992446",
      "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
      "taxa_am": 16.12,
      "taxa_aa": 501.06,
-     "posicao": 34,
-     "vs_mediana": 0.65
+     "posicao": 33,
+     "vs_mediana": 3.22
     },
     {
      "cnpj8": "17184037",
      "nome": "BCO MERCANTIL DO BRASIL S.A.",
-     "taxa_am": 16.19,
-     "taxa_aa": 505.39,
-     "posicao": 35,
-     "vs_mediana": 4.98
+     "taxa_am": 16.18,
+     "taxa_aa": 504.93,
+     "posicao": 34,
+     "vs_mediana": 7.09
     },
     {
      "cnpj8": "06881898",
      "nome": "FIN. ITAU CBD CFI",
-     "taxa_am": 16.36,
-     "taxa_aa": 516.11,
-     "posicao": 36,
-     "vs_mediana": 15.7
+     "taxa_am": 16.35,
+     "taxa_aa": 515.57,
+     "posicao": 35,
+     "vs_mediana": 17.73
     },
     {
      "cnpj8": "07512441",
      "nome": "HS FINANCEIRA",
      "taxa_am": 16.72,
      "taxa_aa": 539.65,
-     "posicao": 37,
-     "vs_mediana": 39.24
+     "posicao": 36,
+     "vs_mediana": 41.81
     },
     {
      "cnpj8": "61182408",
      "nome": "BANCO INVESTCRED UNIBANCO S.A.",
-     "taxa_am": 16.83,
-     "taxa_aa": 546.45,
-     "posicao": 38,
-     "vs_mediana": 46.04
+     "taxa_am": 16.79,
+     "taxa_aa": 544.03,
+     "posicao": 37,
+     "vs_mediana": 46.19
     },
     {
      "cnpj8": "04862600",
      "nome": "PORTOSEG S.A. CFI",
      "taxa_am": 16.83,
-     "taxa_aa": 546.64,
-     "posicao": 39,
-     "vs_mediana": 46.23
+     "taxa_aa": 546.58,
+     "posicao": 38,
+     "vs_mediana": 48.74
     },
     {
      "cnpj8": "02206577",
      "nome": "LUIZACRED S.A. SCFI",
-     "taxa_am": 16.89,
-     "taxa_aa": 550.62,
-     "posicao": 40,
-     "vs_mediana": 50.21
+     "taxa_am": 16.87,
+     "taxa_aa": 549.39,
+     "posicao": 39,
+     "vs_mediana": 51.55
     },
     {
      "cnpj8": "05676026",
      "nome": "CREDIARE CFI S.A.",
      "taxa_am": 16.93,
      "taxa_aa": 553.24,
-     "posicao": 41,
-     "vs_mediana": 52.83
-    },
-    {
-     "cnpj8": "61186680",
-     "nome": "BCO BMG S.A.",
-     "taxa_am": 17.02,
-     "taxa_aa": 559.17,
-     "posicao": 42,
-     "vs_mediana": 58.76
+     "posicao": 40,
+     "vs_mediana": 55.4
     },
     {
      "cnpj8": "92702067",
      "nome": "BCO DO ESTADO DO RS S.A.",
-     "taxa_am": 17.45,
-     "taxa_aa": 588.78,
-     "posicao": 43,
-     "vs_mediana": 88.37
+     "taxa_am": 17.52,
+     "taxa_aa": 593.64,
+     "posicao": 41,
+     "vs_mediana": 95.8
     },
     {
      "cnpj8": "01858774",
      "nome": "BCO BV S.A.",
-     "taxa_am": 17.58,
-     "taxa_aa": 598.0,
-     "posicao": 44,
-     "vs_mediana": 97.59
-    },
-    {
-     "cnpj8": "04814563",
-     "nome": "BCO AFINZ S.A. - BM",
-     "taxa_am": 17.93,
-     "taxa_aa": 623.72,
-     "posicao": 45,
-     "vs_mediana": 123.31
+     "taxa_am": 17.53,
+     "taxa_aa": 594.81,
+     "posicao": 42,
+     "vs_mediana": 96.97
     },
     {
      "cnpj8": "04184779",
      "nome": "BANCO BRADESCARD",
-     "taxa_am": 17.98,
-     "taxa_aa": 627.59,
-     "posicao": 46,
-     "vs_mediana": 127.18
-    },
-    {
-     "cnpj8": "37679449",
-     "nome": "MERCADO CRÉDITO SCFI S.A.",
-     "taxa_am": 18.01,
-     "taxa_aa": 629.16,
-     "posicao": 47,
-     "vs_mediana": 128.75
+     "taxa_am": 17.94,
+     "taxa_aa": 624.1,
+     "posicao": 43,
+     "vs_mediana": 126.26
     },
     {
      "cnpj8": "27098060",
      "nome": "BANCO DIGIO",
      "taxa_am": 19.03,
      "taxa_aa": 708.55,
-     "posicao": 48,
-     "vs_mediana": 208.14
+     "posicao": 44,
+     "vs_mediana": 210.71
     },
     {
      "cnpj8": "08357240",
      "nome": "BCO CSF S.A.",
      "taxa_am": 19.16,
-     "taxa_aa": 719.7,
-     "posicao": 49,
-     "vs_mediana": 219.29
+     "taxa_aa": 719.66,
+     "posicao": 45,
+     "vs_mediana": 221.82
     },
     {
      "cnpj8": "05192316",
      "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-     "taxa_am": 19.16,
-     "taxa_aa": 719.89,
-     "posicao": 50,
-     "vs_mediana": 219.48
-    },
-    {
-     "cnpj8": "36947229",
-     "nome": "COBUCCIO S.A. SCFI",
-     "taxa_am": 19.25,
-     "taxa_aa": 726.96,
-     "posicao": 51,
-     "vs_mediana": 226.55
+     "taxa_am": 19.27,
+     "taxa_aa": 728.77,
+     "posicao": 46,
+     "vs_mediana": 230.93
     },
     {
      "cnpj8": "13009717",
      "nome": "BCO DO EST. DE SE S.A.",
      "taxa_am": 19.49,
      "taxa_aa": 747.34,
-     "posicao": 52,
-     "vs_mediana": 246.93
+     "posicao": 47,
+     "vs_mediana": 249.5
     },
     {
      "cnpj8": "09516419",
      "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
      "taxa_am": 19.67,
      "taxa_aa": 762.34,
-     "posicao": 53,
-     "vs_mediana": 261.93
+     "posicao": 48,
+     "vs_mediana": 264.5
     },
     {
      "cnpj8": "09464032",
      "nome": "MIDWAY S.A. - SCFI",
      "taxa_am": 20.07,
      "taxa_aa": 798.31,
-     "posicao": 54,
-     "vs_mediana": 297.9
+     "posicao": 49,
+     "vs_mediana": 300.47
+    },
+    {
+     "cnpj8": "36947229",
+     "nome": "COBUCCIO S.A. SCFI",
+     "taxa_am": 20.36,
+     "taxa_aa": 824.7,
+     "posicao": 50,
+     "vs_mediana": 326.86
     },
     {
      "cnpj8": "59285411",
      "nome": "BANCO PAN",
      "taxa_am": 20.49,
-     "taxa_aa": 836.3,
-     "posicao": 55,
-     "vs_mediana": 335.89
+     "taxa_aa": 836.34,
+     "posicao": 51,
+     "vs_mediana": 338.5
     },
     {
      "cnpj8": "11285104",
      "nome": "NEON FINANCEIRA - SCFI S.A.",
      "taxa_am": 21.05,
      "taxa_aa": 890.0,
-     "posicao": 56,
-     "vs_mediana": 389.59
+     "posicao": 52,
+     "vs_mediana": 392.16
     },
     {
      "cnpj8": "27351731",
      "nome": "REALIZE SCFI S.A.",
      "taxa_am": 21.07,
      "taxa_aa": 891.78,
-     "posicao": 57,
-     "vs_mediana": 391.37
+     "posicao": 53,
+     "vs_mediana": 393.94
     },
     {
      "cnpj8": "61033106",
      "nome": "BCO CREFISA S.A.",
      "taxa_am": 21.24,
      "taxa_aa": 908.94,
-     "posicao": 58,
-     "vs_mediana": 408.53
+     "posicao": 54,
+     "vs_mediana": 411.1
     },
     {
      "cnpj8": "37122487",
      "nome": "CALCRED S.A.",
      "taxa_am": 21.28,
      "taxa_aa": 912.9,
-     "posicao": 59,
-     "vs_mediana": 412.49
+     "posicao": 55,
+     "vs_mediana": 415.06
     },
     {
      "cnpj8": "17351180",
      "nome": "BCO TRIANGULO S.A.",
      "taxa_am": 22.05,
-     "taxa_aa": 992.12,
-     "posicao": 60,
-     "vs_mediana": 491.71
+     "taxa_aa": 992.11,
+     "posicao": 56,
+     "vs_mediana": 494.27
     },
     {
      "cnpj8": "91669747",
      "nome": "DM SCFI",
-     "taxa_am": 22.58,
-     "taxa_aa": 1051.32,
-     "posicao": 61,
-     "vs_mediana": 550.91
+     "taxa_am": 22.98,
+     "taxa_aa": 1096.89,
+     "posicao": 57,
+     "vs_mediana": 599.05
     },
     {
      "cnpj8": "43180355",
      "nome": "PEFISA S.A. - C.F.I.",
      "taxa_am": 24.99,
      "taxa_aa": 1354.35,
-     "posicao": 62,
-     "vs_mediana": 853.94
+     "posicao": 58,
+     "vs_mediana": 856.51
     }
    ],
    "serie_mensal": [
@@ -2601,11 +2553,11 @@
     },
     {
      "ref": "2026-07-01",
-     "mediana": 500.41,
-     "p25": 259.14,
-     "p75": 628.77,
+     "mediana": 497.84,
+     "p25": 274.25,
+     "p75": 687.44,
      "min": 2.4,
-     "n": 62
+     "n": 58
     }
    ],
    "persistentes": [
@@ -2618,7 +2570,7 @@
     {
      "cnpj8": "44431743",
      "nome": "RP FINANCEIRA",
-     "vezes": 20,
+     "vezes": 21,
      "de": 26
     },
     {
@@ -2630,7 +2582,7 @@
     {
      "cnpj8": "62232889",
      "nome": "BCO DAYCOVAL S.A",
-     "vezes": 9,
+     "vezes": 8,
      "de": 26
     },
     {
@@ -2749,7 +2701,7 @@
        69.76,
        70.54,
        70.48,
-       73.05
+       71.93
       ]
      },
      {
@@ -2781,7 +2733,7 @@
        78.09,
        76.21,
        75.02,
-       88.72
+       94.05
       ]
      },
      {
@@ -2877,7 +2829,7 @@
        214.48,
        217.7,
        216.05,
-       194.7
+       190.0
       ]
      },
      {
@@ -2945,35 +2897,35 @@
       ]
      },
      {
-      "cnpj8": "11970623",
-      "label": "BCO SENFF S.A.",
+      "cnpj8": "60746948",
+      "label": "BCO BRADESCO S.A.",
       "ranks": [
-       43,
-       44,
-       22,
        25,
-       45,
-       44,
        25,
-       47,
-       46,
-       43,
-       46,
+       24,
+       24,
+       27,
+       24,
+       27,
+       28,
+       26,
+       23,
+       25,
        10
       ],
       "vals": [
-       642.52,
-       649.82,
-       378.09,
-       385.26,
-       631.29,
-       644.85,
-       363.49,
-       643.16,
-       582.46,
-       639.09,
-       647.36,
-       236.38
+       392.24,
+       394.5,
+       390.77,
+       375.23,
+       394.76,
+       389.5,
+       378.75,
+       389.45,
+       397.62,
+       385.06,
+       378.94,
+       232.91
       ]
      }
     ],
@@ -3919,7 +3871,7 @@
     "max": 34.55
    },
    "spread_selic": 10.38,
-   "delta_3m": 0.8,
+   "delta_3m": 0.94,
    "ranking": [
     {
      "cnpj8": "17167412",
@@ -4421,11 +4373,11 @@
     },
     {
      "ref": "2026-07-01",
-     "mediana": 24.25,
-     "p25": 22.41,
-     "p75": 24.88,
+     "mediana": 24.39,
+     "p25": 22.39,
+     "p75": 24.93,
      "min": 19.79,
-     "n": 34
+     "n": 33
     }
    ],
    "persistentes": [
@@ -4444,19 +4396,19 @@
     {
      "cnpj8": "10264663",
      "nome": "BANCOSEGURO S.A.",
-     "vezes": 12,
+     "vezes": 13,
      "de": 26
     },
     {
      "cnpj8": "62144175",
      "nome": "BCO PINE S.A.",
-     "vezes": 10,
+     "vezes": 9,
      "de": 26
     },
     {
      "cnpj8": "61820817",
      "nome": "BCO PAULISTA S.A.",
-     "vezes": 4,
+     "vezes": 5,
      "de": 26
     }
    ],
@@ -4587,7 +4539,7 @@
        3,
        4,
        3,
-       4
+       3
       ],
       "vals": [
        null,
@@ -4601,7 +4553,7 @@
        20.33,
        22.52,
        21.15,
-       21.49
+       21.26
       ]
      },
      {
@@ -4619,7 +4571,7 @@
        6,
        null,
        2,
-       3
+       null
       ],
       "vals": [
        21.35,
@@ -4633,7 +4585,7 @@
        21.42,
        null,
        20.9,
-       20.52
+       null
       ]
      },
      {
@@ -4665,7 +4617,7 @@
        21.22,
        22.45,
        22.33,
-       22.4
+       22.39
       ]
      },
      {
@@ -4683,7 +4635,7 @@
        2,
        7,
        6,
-       5
+       4
       ],
       "vals": [
        20.92,
@@ -4697,7 +4649,7 @@
        20.1,
        22.95,
        22.44,
-       21.72
+       21.41
       ]
      },
      {
@@ -4715,7 +4667,7 @@
        8,
        2,
        11,
-       6
+       5
       ],
       "vals": [
        22.81,
@@ -4729,7 +4681,7 @@
        22.09,
        22.41,
        22.91,
-       21.83
+       21.79
       ]
      },
      {
@@ -4747,7 +4699,7 @@
        7,
        32,
        9,
-       34
+       33
       ],
       "vals": [
        21.96,
@@ -4761,7 +4713,7 @@
        21.62,
        31.57,
        22.78,
-       25.9
+       25.62
       ]
      },
      {
@@ -4779,7 +4731,7 @@
        13,
        10,
        8,
-       10
+       6
       ],
       "vals": [
        22.14,
@@ -4793,7 +4745,7 @@
        23.05,
        23.41,
        22.59,
-       22.42
+       21.92
       ]
      }
     ],
@@ -4813,459 +4765,443 @@
    "segmento": "PF",
    "modalidade": "Crédito pessoal consignado privado - Prefixado",
    "janela": {
-    "inicio": "2026-07-24",
-    "fim": "2026-07-30"
+    "inicio": "2026-07-27",
+    "fim": "2026-07-31"
    },
    "stats": {
-    "n": 55,
-    "min": 21.22,
-    "p25": 34.23,
-    "mediana": 46.75,
-    "p75": 60.72,
-    "max": 92.61
+    "n": 53,
+    "min": 21.12,
+    "p25": 32.44,
+    "mediana": 48.03,
+    "p75": 63.93,
+    "max": 92.55
    },
-   "spread_selic": 32.75,
-   "delta_3m": -1.02,
+   "spread_selic": 34.03,
+   "delta_3m": 0.26,
    "ranking": [
+    {
+     "cnpj8": "74828799",
+     "nome": "NOVO BCO CONTINENTAL S.A. - BM",
+     "taxa_am": 1.61,
+     "taxa_aa": 21.12,
+     "posicao": 1,
+     "vs_mediana": -26.91
+    },
     {
      "cnpj8": "36947229",
      "nome": "COBUCCIO S.A. SCFI",
      "taxa_am": 1.62,
      "taxa_aa": 21.22,
-     "posicao": 1,
-     "vs_mediana": -25.53
+     "posicao": 2,
+     "vs_mediana": -26.81
     },
     {
-     "cnpj8": "74828799",
-     "nome": "NOVO BCO CONTINENTAL S.A. - BM",
-     "taxa_am": 1.7,
-     "taxa_aa": 22.39,
-     "posicao": 2,
-     "vs_mediana": -24.36
+     "cnpj8": "11970623",
+     "nome": "BCO SENFF S.A.",
+     "taxa_am": 1.96,
+     "taxa_aa": 26.17,
+     "posicao": 3,
+     "vs_mediana": -21.86
     },
     {
      "cnpj8": "59109165",
      "nome": "BCO VOLKSWAGEN S.A",
      "taxa_am": 2.04,
-     "taxa_aa": 27.46,
-     "posicao": 3,
-     "vs_mediana": -19.29
+     "taxa_aa": 27.48,
+     "posicao": 4,
+     "vs_mediana": -20.55
     },
     {
      "cnpj8": "46241852",
      "nome": "COMPREV CFI S.A.",
      "taxa_am": 2.06,
      "taxa_aa": 27.76,
-     "posicao": 4,
-     "vs_mediana": -18.99
-    },
-    {
-     "cnpj8": "11970623",
-     "nome": "BCO SENFF S.A.",
-     "taxa_am": 2.1,
-     "taxa_aa": 28.27,
      "posicao": 5,
-     "vs_mediana": -18.48
+     "vs_mediana": -20.27
     },
     {
      "cnpj8": "33264668",
      "nome": "BCO XP S.A.",
-     "taxa_am": 2.14,
-     "taxa_aa": 29.0,
+     "taxa_am": 2.16,
+     "taxa_aa": 29.26,
      "posicao": 6,
-     "vs_mediana": -17.75
-    },
-    {
-     "cnpj8": "00556603",
-     "nome": "BANCO BARI S.A.",
-     "taxa_am": 2.22,
-     "taxa_aa": 30.13,
-     "posicao": 7,
-     "vs_mediana": -16.62
-    },
-    {
-     "cnpj8": "37679449",
-     "nome": "MERCADO CRÉDITO SCFI S.A.",
-     "taxa_am": 2.24,
-     "taxa_aa": 30.44,
-     "posicao": 8,
-     "vs_mediana": -16.31
-    },
-    {
-     "cnpj8": "28127603",
-     "nome": "BCO BANESTES S.A.",
-     "taxa_am": 2.26,
-     "taxa_aa": 30.74,
-     "posicao": 9,
-     "vs_mediana": -16.01
-    },
-    {
-     "cnpj8": "02038232",
-     "nome": "BANCO SICOOB S.A.",
-     "taxa_am": 2.28,
-     "taxa_aa": 31.06,
-     "posicao": 10,
-     "vs_mediana": -15.69
-    },
-    {
-     "cnpj8": "04862600",
-     "nome": "PORTOSEG S.A. CFI",
-     "taxa_am": 2.31,
-     "taxa_aa": 31.47,
-     "posicao": 11,
-     "vs_mediana": -15.28
+     "vs_mediana": -18.77
     },
     {
      "cnpj8": "13009717",
      "nome": "BCO DO EST. DE SE S.A.",
-     "taxa_am": 2.32,
-     "taxa_aa": 31.61,
-     "posicao": 12,
-     "vs_mediana": -15.14
+     "taxa_am": 2.19,
+     "taxa_aa": 29.69,
+     "posicao": 7,
+     "vs_mediana": -18.34
+    },
+    {
+     "cnpj8": "00556603",
+     "nome": "BANCO BARI S.A.",
+     "taxa_am": 2.21,
+     "taxa_aa": 29.93,
+     "posicao": 8,
+     "vs_mediana": -18.1
+    },
+    {
+     "cnpj8": "02038232",
+     "nome": "BANCO SICOOB S.A.",
+     "taxa_am": 2.26,
+     "taxa_aa": 30.79,
+     "posicao": 9,
+     "vs_mediana": -17.24
+    },
+    {
+     "cnpj8": "04862600",
+     "nome": "PORTOSEG S.A. CFI",
+     "taxa_am": 2.26,
+     "taxa_aa": 30.82,
+     "posicao": 10,
+     "vs_mediana": -17.21
+    },
+    {
+     "cnpj8": "28127603",
+     "nome": "BCO BANESTES S.A.",
+     "taxa_am": 2.27,
+     "taxa_aa": 30.88,
+     "posicao": 11,
+     "vs_mediana": -17.15
     },
     {
      "cnpj8": "27098060",
      "nome": "BANCO DIGIO",
      "taxa_am": 2.32,
-     "taxa_aa": 31.66,
-     "posicao": 13,
-     "vs_mediana": -15.09
+     "taxa_aa": 31.64,
+     "posicao": 12,
+     "vs_mediana": -16.39
     },
     {
-     "cnpj8": "31895683",
-     "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-     "taxa_am": 2.44,
-     "taxa_aa": 33.5,
-     "posicao": 14,
-     "vs_mediana": -13.25
+     "cnpj8": "37679449",
+     "nome": "MERCADO CRÉDITO SCFI S.A.",
+     "taxa_am": 2.34,
+     "taxa_aa": 31.98,
+     "posicao": 13,
+     "vs_mediana": -16.05
     },
     {
      "cnpj8": "07237373",
      "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-     "taxa_am": 2.53,
-     "taxa_aa": 34.97,
+     "taxa_am": 2.37,
+     "taxa_aa": 32.44,
+     "posicao": 14,
+     "vs_mediana": -15.59
+    },
+    {
+     "cnpj8": "31895683",
+     "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+     "taxa_am": 2.42,
+     "taxa_aa": 33.27,
      "posicao": 15,
-     "vs_mediana": -11.78
+     "vs_mediana": -14.76
     },
     {
      "cnpj8": "20443996",
      "nome": "BECKER FINANCEIRA SA - CFI",
-     "taxa_am": 2.56,
-     "taxa_aa": 35.45,
+     "taxa_am": 2.63,
+     "taxa_aa": 36.54,
      "posicao": 16,
-     "vs_mediana": -11.3
+     "vs_mediana": -11.49
     },
     {
      "cnpj8": "04866275",
      "nome": "BANCO INBURSA",
-     "taxa_am": 2.69,
-     "taxa_aa": 37.46,
+     "taxa_am": 2.72,
+     "taxa_aa": 37.97,
      "posicao": 17,
-     "vs_mediana": -9.29
+     "vs_mediana": -10.06
     },
     {
      "cnpj8": "90400888",
      "nome": "BCO SANTANDER (BRASIL) S.A.",
      "taxa_am": 2.76,
-     "taxa_aa": 38.66,
+     "taxa_aa": 38.63,
      "posicao": 18,
-     "vs_mediana": -8.09
+     "vs_mediana": -9.4
     },
     {
      "cnpj8": "07512441",
      "nome": "HS FINANCEIRA",
      "taxa_am": 2.78,
-     "taxa_aa": 39.0,
+     "taxa_aa": 38.93,
      "posicao": 19,
-     "vs_mediana": -7.75
+     "vs_mediana": -9.1
     },
     {
      "cnpj8": "61186680",
      "nome": "BCO BMG S.A.",
-     "taxa_am": 2.84,
-     "taxa_aa": 39.86,
+     "taxa_am": 2.86,
+     "taxa_aa": 40.31,
      "posicao": 20,
-     "vs_mediana": -6.89
-    },
-    {
-     "cnpj8": "58160789",
-     "nome": "BCO SAFRA S.A.",
-     "taxa_am": 2.94,
-     "taxa_aa": 41.53,
-     "posicao": 21,
-     "vs_mediana": -5.22
-    },
-    {
-     "cnpj8": "09464032",
-     "nome": "MIDWAY S.A. - SCFI",
-     "taxa_am": 3.06,
-     "taxa_aa": 43.61,
-     "posicao": 22,
-     "vs_mediana": -3.14
-    },
-    {
-     "cnpj8": "00360305",
-     "nome": "CAIXA ECONOMICA FEDERAL",
-     "taxa_am": 3.1,
-     "taxa_aa": 44.24,
-     "posicao": 23,
-     "vs_mediana": -2.51
-    },
-    {
-     "cnpj8": "00416968",
-     "nome": "BANCO INTER",
-     "taxa_am": 3.11,
-     "taxa_aa": 44.44,
-     "posicao": 24,
-     "vs_mediana": -2.31
-    },
-    {
-     "cnpj8": "04913711",
-     "nome": "BCO DO EST. DO PA S.A.",
-     "taxa_am": 3.12,
-     "taxa_aa": 44.52,
-     "posicao": 25,
-     "vs_mediana": -2.23
+     "vs_mediana": -7.72
     },
     {
      "cnpj8": "00122327",
      "nome": "SANTINVEST S.A. - CFI",
-     "taxa_am": 3.21,
-     "taxa_aa": 46.08,
-     "posicao": 26,
-     "vs_mediana": -0.67
+     "taxa_am": 3.05,
+     "taxa_aa": 43.4,
+     "posicao": 21,
+     "vs_mediana": -4.63
+    },
+    {
+     "cnpj8": "00360305",
+     "nome": "CAIXA ECONOMICA FEDERAL",
+     "taxa_am": 3.08,
+     "taxa_aa": 43.88,
+     "posicao": 22,
+     "vs_mediana": -4.15
+    },
+    {
+     "cnpj8": "00416968",
+     "nome": "BANCO INTER",
+     "taxa_am": 3.09,
+     "taxa_aa": 44.0,
+     "posicao": 23,
+     "vs_mediana": -4.03
+    },
+    {
+     "cnpj8": "09464032",
+     "nome": "MIDWAY S.A. - SCFI",
+     "taxa_am": 3.1,
+     "taxa_aa": 44.17,
+     "posicao": 24,
+     "vs_mediana": -3.86
+    },
+    {
+     "cnpj8": "04913711",
+     "nome": "BCO DO EST. DO PA S.A.",
+     "taxa_am": 3.13,
+     "taxa_aa": 44.66,
+     "posicao": 25,
+     "vs_mediana": -3.37
     },
     {
      "cnpj8": "00000000",
      "nome": "BCO DO BRASIL S.A.",
-     "taxa_am": 3.22,
-     "taxa_aa": 46.21,
-     "posicao": 27,
-     "vs_mediana": -0.54
-    },
-    {
-     "cnpj8": "10264663",
-     "nome": "BANCOSEGURO S.A.",
-     "taxa_am": 3.25,
-     "taxa_aa": 46.75,
-     "posicao": 28,
-     "vs_mediana": 0.0
+     "taxa_am": 3.2,
+     "taxa_aa": 45.88,
+     "posicao": 26,
+     "vs_mediana": -2.15
     },
     {
      "cnpj8": "60746948",
      "nome": "BCO BRADESCO S.A.",
-     "taxa_am": 3.29,
-     "taxa_aa": 47.51,
-     "posicao": 29,
-     "vs_mediana": 0.76
+     "taxa_am": 3.32,
+     "taxa_aa": 48.03,
+     "posicao": 27,
+     "vs_mediana": 0.0
     },
     {
      "cnpj8": "11760553",
      "nome": "GAZINCRED S.A. SCFI",
-     "taxa_am": 3.34,
-     "taxa_aa": 48.24,
-     "posicao": 30,
-     "vs_mediana": 1.49
-    },
-    {
-     "cnpj8": "03311443",
-     "nome": "MEUTUDO SCFI",
      "taxa_am": 3.35,
-     "taxa_aa": 48.54,
-     "posicao": 31,
-     "vs_mediana": 1.79
-    },
-    {
-     "cnpj8": "27214112",
-     "nome": "AL5 S.A. SCFI",
-     "taxa_am": 3.37,
-     "taxa_aa": 48.84,
-     "posicao": 32,
-     "vs_mediana": 2.09
-    },
-    {
-     "cnpj8": "30306294",
-     "nome": "BANCO BTG PACTUAL S.A.",
-     "taxa_am": 3.42,
-     "taxa_aa": 49.71,
-     "posicao": 33,
-     "vs_mediana": 2.96
-    },
-    {
-     "cnpj8": "30680829",
-     "nome": "NU FINANCEIRA S.A. CFI",
-     "taxa_am": 3.44,
-     "taxa_aa": 50.01,
-     "posicao": 34,
-     "vs_mediana": 3.26
+     "taxa_aa": 48.44,
+     "posicao": 28,
+     "vs_mediana": 0.41
     },
     {
      "cnpj8": "60701190",
      "nome": "ITAÚ UNIBANCO S.A.",
-     "taxa_am": 3.51,
-     "taxa_aa": 51.32,
-     "posicao": 35,
-     "vs_mediana": 4.57
+     "taxa_am": 3.35,
+     "taxa_aa": 48.52,
+     "posicao": 29,
+     "vs_mediana": 0.49
+    },
+    {
+     "cnpj8": "27214112",
+     "nome": "AL5 S.A. SCFI",
+     "taxa_am": 3.36,
+     "taxa_aa": 48.6,
+     "posicao": 30,
+     "vs_mediana": 0.57
+    },
+    {
+     "cnpj8": "30306294",
+     "nome": "BANCO BTG PACTUAL S.A.",
+     "taxa_am": 3.4,
+     "taxa_aa": 49.29,
+     "posicao": 31,
+     "vs_mediana": 1.26
     },
     {
      "cnpj8": "05351887",
      "nome": "ZEMA CFI S/A",
-     "taxa_am": 3.65,
-     "taxa_aa": 53.76,
-     "posicao": 36,
-     "vs_mediana": 7.01
+     "taxa_am": 3.4,
+     "taxa_aa": 49.4,
+     "posicao": 32,
+     "vs_mediana": 1.37
     },
     {
-     "cnpj8": "62144175",
-     "nome": "BCO PINE S.A.",
-     "taxa_am": 3.78,
-     "taxa_aa": 56.1,
-     "posicao": 37,
-     "vs_mediana": 9.35
+     "cnpj8": "10264663",
+     "nome": "BANCOSEGURO S.A.",
+     "taxa_am": 3.43,
+     "taxa_aa": 49.87,
+     "posicao": 33,
+     "vs_mediana": 1.84
     },
     {
-     "cnpj8": "17184037",
-     "nome": "BCO MERCANTIL DO BRASIL S.A.",
-     "taxa_am": 3.82,
-     "taxa_aa": 56.86,
-     "posicao": 38,
-     "vs_mediana": 10.11
+     "cnpj8": "30680829",
+     "nome": "NU FINANCEIRA S.A. CFI",
+     "taxa_am": 3.43,
+     "taxa_aa": 49.89,
+     "posicao": 34,
+     "vs_mediana": 1.86
     },
     {
-     "cnpj8": "02682287",
-     "nome": "PAN FINAN",
-     "taxa_am": 3.87,
-     "taxa_aa": 57.76,
-     "posicao": 39,
-     "vs_mediana": 11.01
+     "cnpj8": "03311443",
+     "nome": "MEUTUDO SCFI",
+     "taxa_am": 3.5,
+     "taxa_aa": 51.06,
+     "posicao": 35,
+     "vs_mediana": 3.03
     },
     {
      "cnpj8": "92702067",
      "nome": "BCO DO ESTADO DO RS S.A.",
-     "taxa_am": 3.88,
-     "taxa_aa": 57.91,
-     "posicao": 40,
-     "vs_mediana": 11.16
+     "taxa_am": 3.81,
+     "taxa_aa": 56.69,
+     "posicao": 36,
+     "vs_mediana": 8.66
     },
     {
      "cnpj8": "01858774",
      "nome": "BCO BV S.A.",
-     "taxa_am": 4.0,
-     "taxa_aa": 60.14,
-     "posicao": 41,
-     "vs_mediana": 13.39
+     "taxa_am": 3.85,
+     "taxa_aa": 57.39,
+     "posicao": 37,
+     "vs_mediana": 9.36
     },
     {
-     "cnpj8": "11285104",
-     "nome": "NEON FINANCEIRA - SCFI S.A.",
-     "taxa_am": 4.06,
-     "taxa_aa": 61.29,
-     "posicao": 42,
-     "vs_mediana": 14.54
+     "cnpj8": "02682287",
+     "nome": "PAN FINAN",
+     "taxa_am": 3.85,
+     "taxa_aa": 57.4,
+     "posicao": 38,
+     "vs_mediana": 9.37
+    },
+    {
+     "cnpj8": "17184037",
+     "nome": "BCO MERCANTIL DO BRASIL S.A.",
+     "taxa_am": 3.88,
+     "taxa_aa": 57.93,
+     "posicao": 39,
+     "vs_mediana": 9.9
     },
     {
      "cnpj8": "09516419",
      "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-     "taxa_am": 4.22,
-     "taxa_aa": 64.3,
-     "posicao": 43,
-     "vs_mediana": 17.55
+     "taxa_am": 4.21,
+     "taxa_aa": 63.93,
+     "posicao": 40,
+     "vs_mediana": 15.9
     },
     {
      "cnpj8": "59285411",
      "nome": "BANCO PAN",
-     "taxa_am": 4.3,
-     "taxa_aa": 65.66,
-     "posicao": 44,
-     "vs_mediana": 18.91
+     "taxa_am": 4.29,
+     "taxa_aa": 65.47,
+     "posicao": 41,
+     "vs_mediana": 17.44
+    },
+    {
+     "cnpj8": "11285104",
+     "nome": "NEON FINANCEIRA - SCFI S.A.",
+     "taxa_am": 4.37,
+     "taxa_aa": 67.13,
+     "posicao": 42,
+     "vs_mediana": 19.1
     },
     {
      "cnpj8": "61820817",
      "nome": "BCO PAULISTA S.A.",
-     "taxa_am": 4.4,
-     "taxa_aa": 67.71,
-     "posicao": 45,
-     "vs_mediana": 20.96
+     "taxa_am": 4.41,
+     "taxa_aa": 67.89,
+     "posicao": 43,
+     "vs_mediana": 19.86
     },
     {
      "cnpj8": "10664513",
      "nome": "BCO AGIBANK S.A.",
      "taxa_am": 4.48,
-     "taxa_aa": 69.14,
-     "posicao": 46,
-     "vs_mediana": 22.39
-    },
-    {
-     "cnpj8": "54403563",
-     "nome": "BCO ARBI S.A.",
-     "taxa_am": 4.64,
-     "taxa_aa": 72.43,
-     "posicao": 47,
-     "vs_mediana": 25.68
+     "taxa_aa": 69.15,
+     "posicao": 44,
+     "vs_mediana": 21.12
     },
     {
      "cnpj8": "07652226",
      "nome": "LECCA CFI S.A.",
-     "taxa_am": 4.66,
-     "taxa_aa": 72.77,
-     "posicao": 48,
-     "vs_mediana": 26.02
+     "taxa_am": 4.69,
+     "taxa_aa": 73.26,
+     "posicao": 45,
+     "vs_mediana": 25.23
+    },
+    {
+     "cnpj8": "54403563",
+     "nome": "BCO ARBI S.A.",
+     "taxa_am": 4.7,
+     "taxa_aa": 73.47,
+     "posicao": 46,
+     "vs_mediana": 25.44
     },
     {
      "cnpj8": "61348538",
      "nome": "BCO C6 CONSIG",
      "taxa_am": 4.7,
-     "taxa_aa": 73.59,
-     "posicao": 49,
-     "vs_mediana": 26.84
-    },
-    {
-     "cnpj8": "06249129",
-     "nome": "RPW S.A. SCFI",
-     "taxa_am": 4.82,
-     "taxa_aa": 75.85,
-     "posicao": 50,
-     "vs_mediana": 29.1
+     "taxa_aa": 73.52,
+     "posicao": 47,
+     "vs_mediana": 25.49
     },
     {
      "cnpj8": "15581638",
      "nome": "FACTA S.A. CFI",
-     "taxa_am": 4.84,
-     "taxa_aa": 76.26,
-     "posicao": 51,
-     "vs_mediana": 29.51
+     "taxa_am": 4.92,
+     "taxa_aa": 78.01,
+     "posicao": 48,
+     "vs_mediana": 29.98
     },
     {
-     "cnpj8": "62232889",
-     "nome": "BCO DAYCOVAL S.A",
-     "taxa_am": 4.88,
-     "taxa_aa": 77.07,
-     "posicao": 52,
-     "vs_mediana": 30.32
-    },
-    {
-     "cnpj8": "14388334",
-     "nome": "PARANA BCO S.A.",
-     "taxa_am": 4.94,
-     "taxa_aa": 78.4,
-     "posicao": 53,
-     "vs_mediana": 31.65
+     "cnpj8": "06249129",
+     "nome": "RPW S.A. SCFI",
+     "taxa_am": 4.95,
+     "taxa_aa": 78.48,
+     "posicao": 49,
+     "vs_mediana": 30.45
     },
     {
      "cnpj8": "07799277",
      "nome": "VALOR S/A SCFI",
      "taxa_am": 4.96,
-     "taxa_aa": 78.69,
-     "posicao": 54,
-     "vs_mediana": 31.94
+     "taxa_aa": 78.84,
+     "posicao": 50,
+     "vs_mediana": 30.81
+    },
+    {
+     "cnpj8": "62232889",
+     "nome": "BCO DAYCOVAL S.A",
+     "taxa_am": 4.97,
+     "taxa_aa": 78.92,
+     "posicao": 51,
+     "vs_mediana": 30.89
+    },
+    {
+     "cnpj8": "14388334",
+     "nome": "PARANA BCO S.A.",
+     "taxa_am": 5.06,
+     "taxa_aa": 80.81,
+     "posicao": 52,
+     "vs_mediana": 32.78
     },
     {
      "cnpj8": "04379829",
      "nome": "NEGRESCO S.A. - CFI",
      "taxa_am": 5.61,
-     "taxa_aa": 92.61,
-     "posicao": 55,
-     "vs_mediana": 45.86
+     "taxa_aa": 92.55,
+     "posicao": 53,
+     "vs_mediana": 44.52
     }
    ],
    "serie_mensal": [
@@ -5439,11 +5375,11 @@
     },
     {
      "ref": "2026-07-01",
-     "mediana": 46.75,
-     "p25": 34.23,
-     "p75": 60.72,
-     "min": 21.22,
-     "n": 55
+     "mediana": 48.03,
+     "p25": 32.44,
+     "p75": 63.93,
+     "min": 21.12,
+     "n": 53
     }
    ],
    "persistentes": [
@@ -5456,7 +5392,7 @@
     {
      "cnpj8": "74828799",
      "nome": "NOVO BCO CONTINENTAL S.A. - BM",
-     "vezes": 14,
+     "vezes": 15,
      "de": 26
     },
     {
@@ -5474,7 +5410,7 @@
     {
      "cnpj8": "11970623",
      "nome": "BCO SENFF S.A.",
-     "vezes": 10,
+     "vezes": 11,
      "de": 26
     }
    ],
@@ -5495,6 +5431,38 @@
     ],
     "itens": [
      {
+      "cnpj8": "74828799",
+      "label": "NOVO BCO CONTINENTAL S.A. - BM",
+      "ranks": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       2,
+       1,
+       2,
+       37,
+       1
+      ],
+      "vals": [
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       null,
+       21.38,
+       21.33,
+       21.97,
+       60.04,
+       21.12
+      ]
+     },
+     {
       "cnpj8": "36947229",
       "label": "COBUCCIO S.A. SCFI",
       "ranks": [
@@ -5509,7 +5477,7 @@
        2,
        1,
        15,
-       1
+       2
       ],
       "vals": [
        21.45,
@@ -5527,35 +5495,35 @@
       ]
      },
      {
-      "cnpj8": "74828799",
-      "label": "NOVO BCO CONTINENTAL S.A. - BM",
+      "cnpj8": "11970623",
+      "label": "BCO SENFF S.A.",
       "ranks": [
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       2,
-       1,
-       2,
-       37,
-       2
+       6,
+       4,
+       5,
+       6,
+       4,
+       3,
+       4,
+       3,
+       9,
+       5,
+       4,
+       3
       ],
       "vals": [
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       21.38,
-       21.33,
-       21.97,
-       60.04,
-       22.39
+       30.36,
+       27.93,
+       30.38,
+       27.49,
+       27.57,
+       25.62,
+       27.28,
+       24.12,
+       33.65,
+       26.92,
+       28.88,
+       26.17
       ]
      },
      {
@@ -5573,7 +5541,7 @@
        3,
        6,
        3,
-       3
+       4
       ],
       "vals": [
        27.53,
@@ -5587,7 +5555,7 @@
        27.44,
        27.59,
        27.43,
-       27.46
+       27.48
       ]
      },
      {
@@ -5605,7 +5573,7 @@
        null,
        null,
        null,
-       4
+       5
       ],
       "vals": [
        27.71,
@@ -5620,38 +5588,6 @@
        null,
        null,
        27.76
-      ]
-     },
-     {
-      "cnpj8": "11970623",
-      "label": "BCO SENFF S.A.",
-      "ranks": [
-       6,
-       4,
-       5,
-       6,
-       4,
-       3,
-       4,
-       3,
-       9,
-       5,
-       4,
-       5
-      ],
-      "vals": [
-       30.36,
-       27.93,
-       30.38,
-       27.49,
-       27.57,
-       25.62,
-       27.28,
-       24.12,
-       33.65,
-       26.92,
-       28.88,
-       28.27
       ]
      },
      {
@@ -5683,7 +5619,39 @@
        31.88,
        36.86,
        null,
-       29.0
+       29.26
+      ]
+     },
+     {
+      "cnpj8": "13009717",
+      "label": "BCO DO EST. DE SE S.A.",
+      "ranks": [
+       15,
+       9,
+       2,
+       null,
+       2,
+       21,
+       2,
+       4,
+       4,
+       3,
+       2,
+       7
+      ],
+      "vals": [
+       40.18,
+       34.59,
+       23.36,
+       null,
+       25.37,
+       45.58,
+       22.4,
+       26.36,
+       29.84,
+       23.67,
+       27.23,
+       29.69
       ]
      },
      {
@@ -5701,7 +5669,7 @@
        18,
        18,
        null,
-       7
+       8
       ],
       "vals": [
        40.46,
@@ -5715,71 +5683,7 @@
        40.22,
        40.1,
        null,
-       30.13
-      ]
-     },
-     {
-      "cnpj8": "37679449",
-      "label": "MERCADO CRÉDITO SCFI S.A.",
-      "ranks": [
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       4,
-       1,
-       8
-      ],
-      "vals": [
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       null,
-       24.73,
-       24.92,
-       30.44
-      ]
-     },
-     {
-      "cnpj8": "28127603",
-      "label": "BCO BANESTES S.A.",
-      "ranks": [
-       11,
-       7,
-       9,
-       7,
-       8,
-       7,
-       8,
-       6,
-       5,
-       7,
-       7,
-       9
-      ],
-      "vals": [
-       35.88,
-       32.58,
-       32.67,
-       29.77,
-       32.41,
-       29.25,
-       30.67,
-       27.57,
-       31.04,
-       29.0,
-       32.24,
-       30.74
+       29.93
       ]
      },
      {
@@ -5797,7 +5701,7 @@
        12,
        11,
        10,
-       10
+       9
       ],
       "vals": [
        33.65,
@@ -5811,7 +5715,39 @@
        35.66,
        34.79,
        34.18,
-       31.06
+       30.79
+      ]
+     },
+     {
+      "cnpj8": "04862600",
+      "label": "PORTOSEG S.A. CFI",
+      "ranks": [
+       null,
+       null,
+       null,
+       null,
+       1,
+       4,
+       10,
+       8,
+       6,
+       8,
+       11,
+       10
+      ],
+      "vals": [
+       null,
+       null,
+       null,
+       null,
+       25.12,
+       26.54,
+       35.13,
+       31.44,
+       31.05,
+       29.36,
+       36.16,
+       30.82
       ]
      }
     ],
@@ -19023,17 +18959,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 125.73,
+     "taxa_aa": 125.83,
      "posicao": 22,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 341.37,
-     "posicao": 24,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 340.01,
+     "posicao": 22,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19051,10 +18987,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 46.21,
-     "posicao": 27,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 45.88,
+     "posicao": 26,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19169,17 +19105,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 109.46,
+     "taxa_aa": 110.38,
      "posicao": 17,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 236.57,
-     "posicao": 11,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 232.91,
+     "posicao": 10,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19197,10 +19133,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 47.51,
-     "posicao": 29,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 48.03,
+     "posicao": 27,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19308,17 +19244,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 48.07,
+     "taxa_aa": 50.07,
      "posicao": 4,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 88.72,
+     "taxa_aa": 94.05,
      "posicao": 4,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19336,10 +19272,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 77.07,
-     "posicao": 52,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 78.92,
+     "posicao": 51,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19440,17 +19376,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 146.63,
-     "posicao": 29,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 154.41,
+     "posicao": 28,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 480.92,
-     "posicao": 29,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 475.75,
+     "posicao": 28,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19468,10 +19404,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 38.66,
+     "taxa_aa": 38.63,
      "posicao": 18,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19586,17 +19522,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 215.56,
-     "posicao": 42,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 215.54,
+     "posicao": 41,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 331.16,
-     "posicao": 23,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 21,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19614,10 +19550,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 30.74,
-     "posicao": 9,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 30.88,
+     "posicao": 11,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19704,17 +19640,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 83.14,
+     "taxa_aa": 84.58,
      "posicao": 11,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 588.78,
-     "posicao": 43,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 593.64,
+     "posicao": 41,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19732,10 +19668,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 57.91,
-     "posicao": 40,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 56.69,
+     "posicao": 36,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19836,17 +19772,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 167.07,
+     "taxa_aa": 167.09,
      "posicao": 32,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 293.81,
-     "posicao": 20,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 294.93,
+     "posicao": 18,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -19864,10 +19800,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 44.24,
-     "posicao": 23,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 43.88,
+     "posicao": 22,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -19968,10 +19904,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 51.32,
-     "posicao": 35,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 48.52,
+     "posicao": 29,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -20067,22 +20003,209 @@
    ]
   },
   {
+   "cnpj8": "00416968",
+   "nome": "BANCO INTER",
+   "modalidades": [
+    {
+     "id": "pf:Aquisição de veículos - Prefixado",
+     "taxa_aa": 22.35,
+     "posicao": 13,
+     "n": 40,
+     "mediana": 23.84
+    },
+    {
+     "id": "pf:Cartão de crédito - parcelado - Prefixado",
+     "taxa_aa": 166.71,
+     "posicao": 31,
+     "n": 57,
+     "mediana": 155.47
+    },
+    {
+     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
+     "taxa_aa": 500.95,
+     "posicao": 32,
+     "n": 58,
+     "mediana": 497.84
+    },
+    {
+     "id": "pf:Cheque especial - Prefixado",
+     "taxa_aa": 159.23,
+     "posicao": 23,
+     "n": 29,
+     "mediana": 152.47
+    },
+    {
+     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
+     "taxa_aa": 22.24,
+     "posicao": 6,
+     "n": 36,
+     "mediana": 24.38
+    },
+    {
+     "id": "pf:Crédito pessoal consignado privado - Prefixado",
+     "taxa_aa": 44.0,
+     "posicao": 23,
+     "n": 53,
+     "mediana": 48.03
+    },
+    {
+     "id": "pf:Crédito pessoal consignado público - Prefixado",
+     "taxa_aa": 21.64,
+     "posicao": 9,
+     "n": 45,
+     "mediana": 24.31
+    },
+    {
+     "id": "pf:Crédito pessoal não consignado - Prefixado",
+     "taxa_aa": 23.84,
+     "posicao": 6,
+     "n": 79,
+     "mediana": 83.53
+    },
+    {
+     "id": "pj:Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
+     "taxa_aa": 7.54,
+     "posicao": 25,
+     "n": 37,
+     "mediana": 6.79
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
+     "taxa_aa": 57.4,
+     "posicao": 36,
+     "n": 48,
+     "mediana": 36.56
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
+     "taxa_aa": 32.41,
+     "posicao": 34,
+     "n": 54,
+     "mediana": 26.79
+    },
+    {
+     "id": "pj:Cheque especial - Prefixado",
+     "taxa_aa": 391.24,
+     "posicao": 22,
+     "n": 30,
+     "mediana": 194.05
+    },
+    {
+     "id": "pj:Desconto de duplicatas - Prefixado",
+     "taxa_aa": 15.15,
+     "posicao": 10,
+     "n": 53,
+     "mediana": 24.4
+    }
+   ]
+  },
+  {
+   "cnpj8": "13009717",
+   "nome": "BCO DO EST. DE SE S.A.",
+   "modalidades": [
+    {
+     "id": "pf:Cartão de crédito - parcelado - Prefixado",
+     "taxa_aa": 747.34,
+     "posicao": 57,
+     "n": 57,
+     "mediana": 155.47
+    },
+    {
+     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
+     "taxa_aa": 747.34,
+     "posicao": 47,
+     "n": 58,
+     "mediana": 497.84
+    },
+    {
+     "id": "pf:Cheque especial - Prefixado",
+     "taxa_aa": 158.92,
+     "posicao": 22,
+     "n": 29,
+     "mediana": 152.47
+    },
+    {
+     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
+     "taxa_aa": 23.69,
+     "posicao": 15,
+     "n": 36,
+     "mediana": 24.38
+    },
+    {
+     "id": "pf:Crédito pessoal consignado privado - Prefixado",
+     "taxa_aa": 29.69,
+     "posicao": 7,
+     "n": 53,
+     "mediana": 48.03
+    },
+    {
+     "id": "pf:Crédito pessoal consignado público - Prefixado",
+     "taxa_aa": 27.69,
+     "posicao": 34,
+     "n": 45,
+     "mediana": 24.31
+    },
+    {
+     "id": "pf:Crédito pessoal não consignado - Prefixado",
+     "taxa_aa": 49.93,
+     "posicao": 29,
+     "n": 79,
+     "mediana": 83.53
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
+     "taxa_aa": 37.39,
+     "posicao": 26,
+     "n": 48,
+     "mediana": 36.56
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
+     "taxa_aa": 38.54,
+     "posicao": 41,
+     "n": 54,
+     "mediana": 26.79
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
+     "taxa_aa": 19.82,
+     "posicao": 17,
+     "n": 31,
+     "mediana": 18.68
+    },
+    {
+     "id": "pj:Cheque especial - Prefixado",
+     "taxa_aa": 127.86,
+     "posicao": 8,
+     "n": 30,
+     "mediana": 194.05
+    },
+    {
+     "id": "pj:Conta garantida - Prefixado",
+     "taxa_aa": 51.26,
+     "posicao": 15,
+     "n": 31,
+     "mediana": 56.14
+    },
+    {
+     "id": "pj:Desconto de duplicatas - Prefixado",
+     "taxa_aa": 31.92,
+     "posicao": 39,
+     "n": 53,
+     "mediana": 24.4
+    }
+   ]
+  },
+  {
    "cnpj8": "30306294",
    "nome": "BANCO BTG PACTUAL S.A.",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 95.64,
-     "posicao": 13,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 243.38,
-     "posicao": 12,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 98.9,
+     "posicao": 15,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20093,10 +20216,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 49.71,
-     "posicao": 33,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 49.29,
+     "posicao": 31,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -20164,216 +20287,22 @@
    ]
   },
   {
-   "cnpj8": "00416968",
-   "nome": "BANCO INTER",
-   "modalidades": [
-    {
-     "id": "pf:Aquisição de veículos - Prefixado",
-     "taxa_aa": 22.35,
-     "posicao": 13,
-     "n": 40,
-     "mediana": 23.84
-    },
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 167.77,
-     "posicao": 33,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 500.92,
-     "posicao": 33,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pf:Cheque especial - Prefixado",
-     "taxa_aa": 159.23,
-     "posicao": 23,
-     "n": 29,
-     "mediana": 152.47
-    },
-    {
-     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
-     "taxa_aa": 22.24,
-     "posicao": 6,
-     "n": 36,
-     "mediana": 24.38
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 44.44,
-     "posicao": 24,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pf:Crédito pessoal consignado público - Prefixado",
-     "taxa_aa": 21.64,
-     "posicao": 9,
-     "n": 45,
-     "mediana": 24.31
-    },
-    {
-     "id": "pf:Crédito pessoal não consignado - Prefixado",
-     "taxa_aa": 23.84,
-     "posicao": 6,
-     "n": 79,
-     "mediana": 83.53
-    },
-    {
-     "id": "pj:Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
-     "taxa_aa": 7.54,
-     "posicao": 25,
-     "n": 37,
-     "mediana": 6.79
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
-     "taxa_aa": 57.4,
-     "posicao": 36,
-     "n": 48,
-     "mediana": 36.56
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
-     "taxa_aa": 32.41,
-     "posicao": 34,
-     "n": 54,
-     "mediana": 26.79
-    },
-    {
-     "id": "pj:Cheque especial - Prefixado",
-     "taxa_aa": 391.24,
-     "posicao": 22,
-     "n": 30,
-     "mediana": 194.05
-    },
-    {
-     "id": "pj:Desconto de duplicatas - Prefixado",
-     "taxa_aa": 15.15,
-     "posicao": 10,
-     "n": 53,
-     "mediana": 24.4
-    }
-   ]
-  },
-  {
-   "cnpj8": "13009717",
-   "nome": "BCO DO EST. DE SE S.A.",
-   "modalidades": [
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 747.34,
-     "posicao": 59,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 747.34,
-     "posicao": 52,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pf:Cheque especial - Prefixado",
-     "taxa_aa": 158.92,
-     "posicao": 22,
-     "n": 29,
-     "mediana": 152.47
-    },
-    {
-     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
-     "taxa_aa": 23.69,
-     "posicao": 15,
-     "n": 36,
-     "mediana": 24.38
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 31.61,
-     "posicao": 12,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pf:Crédito pessoal consignado público - Prefixado",
-     "taxa_aa": 27.69,
-     "posicao": 34,
-     "n": 45,
-     "mediana": 24.31
-    },
-    {
-     "id": "pf:Crédito pessoal não consignado - Prefixado",
-     "taxa_aa": 49.93,
-     "posicao": 29,
-     "n": 79,
-     "mediana": 83.53
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
-     "taxa_aa": 37.39,
-     "posicao": 26,
-     "n": 48,
-     "mediana": 36.56
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
-     "taxa_aa": 38.54,
-     "posicao": 41,
-     "n": 54,
-     "mediana": 26.79
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "taxa_aa": 19.82,
-     "posicao": 17,
-     "n": 31,
-     "mediana": 18.68
-    },
-    {
-     "id": "pj:Cheque especial - Prefixado",
-     "taxa_aa": 127.86,
-     "posicao": 8,
-     "n": 30,
-     "mediana": 194.05
-    },
-    {
-     "id": "pj:Conta garantida - Prefixado",
-     "taxa_aa": 51.26,
-     "posicao": 15,
-     "n": 31,
-     "mediana": 56.14
-    },
-    {
-     "id": "pj:Desconto de duplicatas - Prefixado",
-     "taxa_aa": 31.92,
-     "posicao": 39,
-     "n": 53,
-     "mediana": 24.4
-    }
-   ]
-  },
-  {
    "cnpj8": "07237373",
    "nome": "BCO DO NORDESTE DO BRASIL S.A.",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 127.6,
-     "posicao": 23,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 127.28,
+     "posicao": 24,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 286.64,
-     "posicao": 18,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 16,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20384,10 +20313,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 34.97,
-     "posicao": 15,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 32.44,
+     "posicao": 14,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -20460,17 +20389,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 76.87,
+     "taxa_aa": 76.98,
      "posicao": 10,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 495.68,
-     "posicao": 30,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 29,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20536,17 +20465,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 141.97,
-     "posicao": 28,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 124.76,
+     "posicao": 20,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 213.97,
      "posicao": 9,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20614,105 +20543,22 @@
    ]
   },
   {
-   "cnpj8": "58160789",
-   "nome": "BCO SAFRA S.A.",
-   "modalidades": [
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 219.4,
-     "posicao": 43,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 255.0,
-     "posicao": 15,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pf:Cheque especial - Prefixado",
-     "taxa_aa": 129.25,
-     "posicao": 10,
-     "n": 29,
-     "mediana": 152.47
-    },
-    {
-     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
-     "taxa_aa": 21.37,
-     "posicao": 5,
-     "n": 36,
-     "mediana": 24.38
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 41.53,
-     "posicao": 21,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
-     "taxa_aa": 238.05,
-     "posicao": 47,
-     "n": 48,
-     "mediana": 36.56
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "taxa_aa": 14.15,
-     "posicao": 2,
-     "n": 23,
-     "mediana": 22.76
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "taxa_aa": 7.83,
-     "posicao": 1,
-     "n": 31,
-     "mediana": 18.68
-    },
-    {
-     "id": "pj:Conta garantida - Prefixado",
-     "taxa_aa": 320.54,
-     "posicao": 31,
-     "n": 31,
-     "mediana": 56.14
-    },
-    {
-     "id": "pj:Desconto de cheques - Prefixado",
-     "taxa_aa": 17.04,
-     "posicao": 2,
-     "n": 13,
-     "mediana": 34.72
-    },
-    {
-     "id": "pj:Vendor - Prefixado",
-     "taxa_aa": 17.6,
-     "posicao": 4,
-     "n": 10,
-     "mediana": 19.59
-    }
-   ]
-  },
-  {
    "cnpj8": "60889128",
    "nome": "BCO SOFISA S.A.",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
      "taxa_aa": 243.29,
-     "posicao": 45,
-     "n": 59,
-     "mediana": 155.84
+     "posicao": 43,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 298.77,
-     "posicao": 22,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 20,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20785,17 +20631,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 133.08,
+     "taxa_aa": 131.71,
      "posicao": 25,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 194.7,
+     "taxa_aa": 190.0,
      "posicao": 7,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -20813,10 +20659,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 31.06,
-     "posicao": 10,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 30.79,
+     "posicao": 9,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -20946,15 +20792,15 @@
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
      "taxa_aa": 191.88,
      "posicao": 37,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 199.66,
      "posicao": 8,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21013,17 +20859,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 178.39,
-     "posicao": 35,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 178.09,
+     "posicao": 34,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 353.36,
-     "posicao": 25,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 347.14,
+     "posicao": 23,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -21034,10 +20880,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 50.01,
+     "taxa_aa": 49.89,
      "posicao": 34,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21096,17 +20942,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 288.75,
-     "posicao": 51,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 289.84,
+     "posicao": 48,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 836.3,
-     "posicao": 55,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 836.34,
+     "posicao": 51,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21124,10 +20970,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 65.66,
-     "posicao": 44,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 65.47,
+     "posicao": 41,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21296,17 +21142,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 68.07,
-     "posicao": 7,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 57.45,
+     "posicao": 6,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 559.17,
-     "posicao": 42,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 470.81,
+     "posicao": 27,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -21317,10 +21163,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 39.86,
+     "taxa_aa": 40.31,
      "posicao": 20,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21372,17 +21218,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 138.11,
+     "taxa_aa": 139.65,
      "posicao": 27,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 500.82,
-     "posicao": 32,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 500.16,
+     "posicao": 31,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21393,10 +21239,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 44.52,
+     "taxa_aa": 44.66,
      "posicao": 25,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21434,17 +21280,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 73.05,
+     "taxa_aa": 71.93,
      "posicao": 3,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 33.5,
-     "posicao": 14,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 33.27,
+     "posicao": 15,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21503,17 +21349,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 52.37,
+     "taxa_aa": 51.82,
      "posicao": 5,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 505.39,
-     "posicao": 35,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 504.93,
+     "posicao": 34,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21531,10 +21377,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 56.86,
-     "posicao": 38,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 57.93,
+     "posicao": 39,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -21572,17 +21418,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 136.04,
+     "taxa_aa": 137.38,
      "posicao": 26,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 248.99,
-     "posicao": 13,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 12,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21593,10 +21439,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 29.0,
+     "taxa_aa": 29.26,
      "posicao": 6,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -21641,10 +21487,10 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 101.45,
-     "posicao": 15,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 101.42,
+     "posicao": 16,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -21710,17 +21556,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 168.61,
-     "posicao": 34,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 173.88,
+     "posicao": 33,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 762.34,
-     "posicao": 53,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 48,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -21731,10 +21577,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 64.3,
-     "posicao": 43,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 63.93,
+     "posicao": 40,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21836,6 +21682,68 @@
    ]
   },
   {
+   "cnpj8": "58160789",
+   "nome": "BCO SAFRA S.A.",
+   "modalidades": [
+    {
+     "id": "pf:Cheque especial - Prefixado",
+     "taxa_aa": 129.25,
+     "posicao": 10,
+     "n": 29,
+     "mediana": 152.47
+    },
+    {
+     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
+     "taxa_aa": 21.37,
+     "posicao": 5,
+     "n": 36,
+     "mediana": 24.38
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
+     "taxa_aa": 238.05,
+     "posicao": 47,
+     "n": 48,
+     "mediana": 36.56
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes",
+     "taxa_aa": 14.15,
+     "posicao": 2,
+     "n": 23,
+     "mediana": 22.76
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
+     "taxa_aa": 7.83,
+     "posicao": 1,
+     "n": 31,
+     "mediana": 18.68
+    },
+    {
+     "id": "pj:Conta garantida - Prefixado",
+     "taxa_aa": 320.54,
+     "posicao": 31,
+     "n": 31,
+     "mediana": 56.14
+    },
+    {
+     "id": "pj:Desconto de cheques - Prefixado",
+     "taxa_aa": 17.04,
+     "posicao": 2,
+     "n": 13,
+     "mediana": 34.72
+    },
+    {
+     "id": "pj:Vendor - Prefixado",
+     "taxa_aa": 17.6,
+     "posicao": 4,
+     "n": 10,
+     "mediana": 19.59
+    }
+   ]
+  },
+  {
    "cnpj8": "04862600",
    "nome": "PORTOSEG S.A. CFI",
    "modalidades": [
@@ -21848,24 +21756,24 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 124.99,
-     "posicao": 20,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 121.39,
+     "posicao": 19,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 546.64,
-     "posicao": 39,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 546.58,
+     "posicao": 38,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 31.47,
-     "posicao": 11,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 30.82,
+     "posicao": 10,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -21903,17 +21811,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 305.61,
-     "posicao": 52,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 309.98,
+     "posicao": 50,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 708.55,
-     "posicao": 48,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 44,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -21924,10 +21832,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 31.66,
-     "posicao": 13,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 31.64,
+     "posicao": 12,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -21953,77 +21861,22 @@
    ]
   },
   {
-   "cnpj8": "04814563",
-   "nome": "BCO AFINZ S.A. - BM",
-   "modalidades": [
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 271.63,
-     "posicao": 49,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 623.72,
-     "posicao": 45,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pf:Crédito pessoal consignado público - Prefixado",
-     "taxa_aa": 23.14,
-     "posicao": 17,
-     "n": 45,
-     "mediana": 24.31
-    },
-    {
-     "id": "pf:Crédito pessoal não consignado - Prefixado",
-     "taxa_aa": 172.9,
-     "posicao": 50,
-     "n": 79,
-     "mediana": 83.53
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
-     "taxa_aa": 161.54,
-     "posicao": 43,
-     "n": 48,
-     "mediana": 36.56
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
-     "taxa_aa": 47.27,
-     "posicao": 44,
-     "n": 54,
-     "mediana": 26.79
-    },
-    {
-     "id": "pj:Conta garantida - Prefixado",
-     "taxa_aa": 159.6,
-     "posicao": 26,
-     "n": 31,
-     "mediana": 56.14
-    }
-   ]
-  },
-  {
    "cnpj8": "10664513",
    "nome": "BCO AGIBANK S.A.",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 39.94,
+     "taxa_aa": 41.1,
      "posicao": 3,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 287.45,
-     "posicao": 19,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 17,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -22041,10 +21894,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 69.14,
-     "posicao": 46,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 69.15,
+     "posicao": 44,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22118,22 +21971,77 @@
    ]
   },
   {
+   "cnpj8": "11760553",
+   "nome": "GAZINCRED S.A. SCFI",
+   "modalidades": [
+    {
+     "id": "pf:Cartão de crédito - parcelado - Prefixado",
+     "taxa_aa": 291.66,
+     "posicao": 49,
+     "n": 57,
+     "mediana": 155.47
+    },
+    {
+     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
+     "taxa_aa": 25.08,
+     "posicao": 31,
+     "n": 36,
+     "mediana": 24.38
+    },
+    {
+     "id": "pf:Crédito pessoal consignado privado - Prefixado",
+     "taxa_aa": 48.44,
+     "posicao": 28,
+     "n": 53,
+     "mediana": 48.03
+    },
+    {
+     "id": "pf:Crédito pessoal consignado público - Prefixado",
+     "taxa_aa": 28.78,
+     "posicao": 35,
+     "n": 45,
+     "mediana": 24.31
+    },
+    {
+     "id": "pf:Crédito pessoal não consignado - Prefixado",
+     "taxa_aa": 172.89,
+     "posicao": 49,
+     "n": 79,
+     "mediana": 83.53
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
+     "taxa_aa": 37.82,
+     "posicao": 39,
+     "n": 54,
+     "mediana": 26.79
+    },
+    {
+     "id": "pj:Desconto de duplicatas - Prefixado",
+     "taxa_aa": 34.06,
+     "posicao": 40,
+     "n": 53,
+     "mediana": 24.4
+    }
+   ]
+  },
+  {
    "cnpj8": "00556603",
    "nome": "BANCO BARI S.A.",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 92.1,
+     "taxa_aa": 92.25,
      "posicao": 12,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 270.12,
-     "posicao": 17,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 15,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -22144,10 +22052,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 30.13,
-     "posicao": 7,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 29.93,
+     "posicao": 8,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22171,24 +22079,24 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 403.63,
-     "posicao": 55,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 403.81,
+     "posicao": 53,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 236.38,
-     "posicao": 10,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 236.47,
+     "posicao": 11,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 28.27,
-     "posicao": 5,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 26.17,
+     "posicao": 3,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22219,17 +22127,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 156.68,
-     "posicao": 31,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 160.11,
+     "posicao": 30,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 992.12,
-     "posicao": 60,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 992.11,
+     "posicao": 56,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
@@ -22267,10 +22175,10 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 296.62,
-     "posicao": 21,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 296.86,
+     "posicao": 19,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -22306,102 +22214,6 @@
      "posicao": 52,
      "n": 53,
      "mediana": 24.4
-    }
-   ]
-  },
-  {
-   "cnpj8": "11760553",
-   "nome": "GAZINCRED S.A. SCFI",
-   "modalidades": [
-    {
-     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
-     "taxa_aa": 25.08,
-     "posicao": 31,
-     "n": 36,
-     "mediana": 24.38
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 48.24,
-     "posicao": 30,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pf:Crédito pessoal consignado público - Prefixado",
-     "taxa_aa": 28.78,
-     "posicao": 35,
-     "n": 45,
-     "mediana": 24.31
-    },
-    {
-     "id": "pf:Crédito pessoal não consignado - Prefixado",
-     "taxa_aa": 172.89,
-     "posicao": 49,
-     "n": 79,
-     "mediana": 83.53
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
-     "taxa_aa": 37.82,
-     "posicao": 39,
-     "n": 54,
-     "mediana": 26.79
-    },
-    {
-     "id": "pj:Desconto de duplicatas - Prefixado",
-     "taxa_aa": 34.06,
-     "posicao": 40,
-     "n": 53,
-     "mediana": 24.4
-    }
-   ]
-  },
-  {
-   "cnpj8": "37679449",
-   "nome": "MERCADO CRÉDITO SCFI S.A.",
-   "modalidades": [
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 466.31,
-     "posicao": 58,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 629.16,
-     "posicao": 47,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 30.44,
-     "posicao": 8,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pf:Crédito pessoal não consignado - Prefixado",
-     "taxa_aa": 185.35,
-     "posicao": 54,
-     "n": 79,
-     "mediana": 83.53
-    },
-    {
-     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
-     "taxa_aa": 210.76,
-     "posicao": 44,
-     "n": 48,
-     "mediana": 36.56
-    },
-    {
-     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
-     "taxa_aa": 45.71,
-     "posicao": 43,
-     "n": 54,
-     "mediana": 26.79
     }
    ]
   },
@@ -22507,17 +22319,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 69.55,
+     "taxa_aa": 69.81,
      "posicao": 9,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 719.89,
-     "posicao": 50,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 728.77,
+     "posicao": 46,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -22555,17 +22367,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 122.77,
-     "posicao": 19,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 125.95,
+     "posicao": 23,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 255.48,
-     "posicao": 16,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 14,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -22596,17 +22408,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 60.87,
-     "posicao": 6,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 61.58,
+     "posicao": 7,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 167.98,
      "posicao": 5,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22673,6 +22485,47 @@
    ]
   },
   {
+   "cnpj8": "04814563",
+   "nome": "BCO AFINZ S.A. - BM",
+   "modalidades": [
+    {
+     "id": "pf:Crédito pessoal consignado público - Prefixado",
+     "taxa_aa": 23.14,
+     "posicao": 17,
+     "n": 45,
+     "mediana": 24.31
+    },
+    {
+     "id": "pf:Crédito pessoal não consignado - Prefixado",
+     "taxa_aa": 172.9,
+     "posicao": 50,
+     "n": 79,
+     "mediana": 83.53
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
+     "taxa_aa": 161.54,
+     "posicao": 43,
+     "n": 48,
+     "mediana": 36.56
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
+     "taxa_aa": 47.27,
+     "posicao": 44,
+     "n": 54,
+     "mediana": 26.79
+    },
+    {
+     "id": "pj:Conta garantida - Prefixado",
+     "taxa_aa": 159.6,
+     "posicao": 26,
+     "n": 31,
+     "mediana": 56.14
+    }
+   ]
+  },
+  {
    "cnpj8": "33479023",
    "nome": "BCO CITIBANK S.A.",
    "modalidades": [
@@ -22726,10 +22579,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 67.71,
-     "posicao": 45,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 67.89,
+     "posicao": 43,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22801,24 +22654,24 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 104.54,
-     "posicao": 16,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 93.99,
+     "posicao": 14,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 539.65,
-     "posicao": 37,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 36,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 39.0,
+     "taxa_aa": 38.93,
      "posicao": 19,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -22837,29 +22690,70 @@
    ]
   },
   {
+   "cnpj8": "37679449",
+   "nome": "MERCADO CRÉDITO SCFI S.A.",
+   "modalidades": [
+    {
+     "id": "pf:Cartão de crédito - parcelado - Prefixado",
+     "taxa_aa": 466.3,
+     "posicao": 56,
+     "n": 57,
+     "mediana": 155.47
+    },
+    {
+     "id": "pf:Crédito pessoal consignado privado - Prefixado",
+     "taxa_aa": 31.98,
+     "posicao": 13,
+     "n": 53,
+     "mediana": 48.03
+    },
+    {
+     "id": "pf:Crédito pessoal não consignado - Prefixado",
+     "taxa_aa": 185.35,
+     "posicao": 54,
+     "n": 79,
+     "mediana": 83.53
+    },
+    {
+     "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
+     "taxa_aa": 210.76,
+     "posicao": 44,
+     "n": 48,
+     "mediana": 36.56
+    },
+    {
+     "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
+     "taxa_aa": 45.71,
+     "posicao": 43,
+     "n": 54,
+     "mediana": 26.79
+    }
+   ]
+  },
+  {
    "cnpj8": "09464032",
    "nome": "MIDWAY S.A. - SCFI",
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 413.36,
-     "posicao": 56,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 411.14,
+     "posicao": 54,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 798.31,
-     "posicao": 54,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 49,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 43.61,
-     "posicao": 22,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 44.17,
+     "posicao": 24,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22890,10 +22784,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 78.4,
-     "posicao": 53,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 80.81,
+     "posicao": 52,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -22924,17 +22818,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 381.32,
-     "posicao": 53,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 379.54,
+     "posicao": 51,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 1354.35,
-     "posicao": 62,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 58,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -22965,17 +22859,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 125.68,
+     "taxa_aa": 125.41,
      "posicao": 21,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 442.81,
-     "posicao": 28,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 26,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pj:Capital de giro com prazo até 365 dias - Prefixado",
@@ -23054,10 +22948,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 37.46,
+     "taxa_aa": 37.97,
      "posicao": 17,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -23122,10 +23016,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 46.75,
-     "posicao": 28,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 49.87,
+     "posicao": 33,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23149,17 +23043,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 68.96,
+     "taxa_aa": 67.35,
      "posicao": 8,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 72.43,
-     "posicao": 47,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 73.47,
+     "posicao": 46,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -23190,10 +23084,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 73.59,
-     "posicao": 49,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 73.52,
+     "posicao": 47,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -23246,40 +23140,6 @@
    ]
   },
   {
-   "cnpj8": "62144175",
-   "nome": "BCO PINE S.A.",
-   "modalidades": [
-    {
-     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
-     "taxa_aa": 20.37,
-     "posicao": 3,
-     "n": 36,
-     "mediana": 24.38
-    },
-    {
-     "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 56.1,
-     "posicao": 37,
-     "n": 55,
-     "mediana": 46.75
-    },
-    {
-     "id": "pj:Conta garantida - Prefixado",
-     "taxa_aa": 185.97,
-     "posicao": 27,
-     "n": 31,
-     "mediana": 56.14
-    },
-    {
-     "id": "pj:Conta garantida - Pós-fixado referenciado em juros flutuantes",
-     "taxa_aa": 26.44,
-     "posicao": 12,
-     "n": 27,
-     "mediana": 28.79
-    }
-   ]
-  },
-  {
    "cnpj8": "62073200",
    "nome": "BOFA MERRILL LYNCH BM S.A.",
    "modalidades": [
@@ -23320,9 +23180,9 @@
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 500.0,
-     "posicao": 31,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 30,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23353,17 +23213,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 726.96,
-     "posicao": 51,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 824.7,
+     "posicao": 50,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
      "taxa_aa": 21.22,
-     "posicao": 1,
-     "n": 55,
-     "mediana": 46.75
+     "posicao": 2,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23394,10 +23254,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 76.26,
-     "posicao": 51,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 78.01,
+     "posicao": 48,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -23421,17 +23281,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 112.47,
+     "taxa_aa": 110.92,
      "posicao": 18,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 442.81,
-     "posicao": 27,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 25,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23455,24 +23315,24 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 205.89,
-     "posicao": 40,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 206.58,
+     "posicao": 39,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 890.0,
-     "posicao": 56,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 52,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 61.29,
+     "taxa_aa": 67.13,
      "posicao": 42,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23496,10 +23356,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 22.39,
-     "posicao": 2,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 21.12,
+     "posicao": 1,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pj:Capital de giro com prazo superior a 365 dias - Prefixado",
@@ -23557,17 +23417,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 447.15,
-     "posicao": 57,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 425.12,
+     "posicao": 55,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 891.78,
-     "posicao": 57,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 53,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23593,22 +23453,22 @@
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
      "taxa_aa": 14.85,
      "posicao": 2,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 5.88,
      "posicao": 2,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 53.76,
-     "posicao": 36,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 49.4,
+     "posicao": 32,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -23625,17 +23485,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 155.84,
-     "posicao": 30,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 155.47,
+     "posicao": 29,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 627.59,
-     "posicao": 46,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 624.1,
+     "posicao": 43,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pj:Antecipação de faturas de cartão de crédito - Prefixado",
@@ -23661,15 +23521,15 @@
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
      "taxa_aa": 191.77,
      "posicao": 36,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 501.06,
-     "posicao": 34,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 33,
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
@@ -23733,24 +23593,24 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 222.18,
-     "posicao": 44,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 222.28,
+     "posicao": 42,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 598.0,
-     "posicao": 44,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 594.81,
+     "posicao": 42,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 60.14,
-     "posicao": 41,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 57.39,
+     "posicao": 37,
+     "n": 53,
+     "mediana": 48.03
     }
    ]
   },
@@ -23787,17 +23647,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 396.76,
-     "posicao": 54,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 402.55,
+     "posicao": 52,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 908.94,
-     "posicao": 58,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 54,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Cheque especial - Prefixado",
@@ -23841,17 +23701,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 197.63,
-     "posicao": 38,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 184.69,
+     "posicao": 35,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 719.7,
-     "posicao": 49,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 719.66,
+     "posicao": 45,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal consignado INSS - Prefixado",
@@ -23917,6 +23777,33 @@
    ]
   },
   {
+   "cnpj8": "62144175",
+   "nome": "BCO PINE S.A.",
+   "modalidades": [
+    {
+     "id": "pf:Crédito pessoal consignado INSS - Prefixado",
+     "taxa_aa": 20.37,
+     "posicao": 3,
+     "n": 36,
+     "mediana": 24.38
+    },
+    {
+     "id": "pj:Conta garantida - Prefixado",
+     "taxa_aa": 185.97,
+     "posicao": 27,
+     "n": 31,
+     "mediana": 56.14
+    },
+    {
+     "id": "pj:Conta garantida - Pós-fixado referenciado em juros flutuantes",
+     "taxa_aa": 26.44,
+     "posicao": 12,
+     "n": 27,
+     "mediana": 28.79
+    }
+   ]
+  },
+  {
    "cnpj8": "33603457",
    "nome": "BCO RODOBENS S.A.",
    "modalidades": [
@@ -23940,33 +23827,6 @@
      "posicao": 23,
      "n": 48,
      "mediana": 36.56
-    }
-   ]
-  },
-  {
-   "cnpj8": "62237425",
-   "nome": "BCO STELLANTIS S.A.",
-   "modalidades": [
-    {
-     "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 132.37,
-     "posicao": 24,
-     "n": 59,
-     "mediana": 155.84
-    },
-    {
-     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 183.5,
-     "posicao": 6,
-     "n": 62,
-     "mediana": 500.41
-    },
-    {
-     "id": "pj:Desconto de duplicatas - Prefixado",
-     "taxa_aa": 12.99,
-     "posicao": 3,
-     "n": 53,
-     "mediana": 24.4
     }
    ]
   },
@@ -24010,10 +23870,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 27.46,
-     "posicao": 3,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 27.48,
+     "posicao": 4,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pj:Desconto de duplicatas - Prefixado",
@@ -24037,10 +23897,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 35.45,
+     "taxa_aa": 36.54,
      "posicao": 16,
-     "n": 55,
-     "mediana": 46.75
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24084,17 +23944,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 258.64,
-     "posicao": 46,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 265.5,
+     "posicao": 44,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 912.9,
-     "posicao": 59,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 55,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24138,17 +23998,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 209.45,
-     "posicao": 41,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 211.85,
+     "posicao": 40,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 1051.32,
-     "posicao": 61,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 1096.89,
+     "posicao": 57,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24199,17 +24059,17 @@
     },
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 202.78,
-     "posicao": 39,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 206.23,
+     "posicao": 38,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 396.19,
-     "posicao": 26,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 361.59,
+     "posicao": 24,
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
@@ -24219,17 +24079,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 98.21,
-     "posicao": 14,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 92.64,
+     "posicao": 13,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 250.39,
-     "posicao": 14,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 254.92,
+     "posicao": 13,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24246,10 +24106,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 75.85,
-     "posicao": 50,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 78.48,
+     "posicao": 49,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24273,10 +24133,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 46.08,
-     "posicao": 26,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 43.4,
+     "posicao": 21,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -24327,10 +24187,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 78.69,
-     "posicao": 54,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 78.84,
+     "posicao": 50,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -24374,10 +24234,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 48.84,
-     "posicao": 32,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 48.6,
+     "posicao": 30,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pj:Desconto de duplicatas - Prefixado",
@@ -24394,17 +24254,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 265.8,
-     "posicao": 47,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 277.96,
+     "posicao": 45,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 546.45,
-     "posicao": 38,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 544.03,
+     "posicao": 37,
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
@@ -24609,6 +24469,26 @@
    ]
   },
   {
+   "cnpj8": "62237425",
+   "nome": "BCO STELLANTIS S.A.",
+   "modalidades": [
+    {
+     "id": "pf:Cartão de crédito - rotativo total - Prefixado",
+     "taxa_aa": 183.5,
+     "posicao": 6,
+     "n": 58,
+     "mediana": 497.84
+    },
+    {
+     "id": "pj:Desconto de duplicatas - Prefixado",
+     "taxa_aa": 12.99,
+     "posicao": 3,
+     "n": 53,
+     "mediana": 24.4
+    }
+   ]
+  },
+  {
    "cnpj8": "03215790",
    "nome": "BCO TOYOTA DO BRASIL S.A.",
    "modalidades": [
@@ -24655,9 +24535,9 @@
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
      "taxa_aa": 27.76,
-     "posicao": 4,
-     "n": 55,
-     "mediana": 46.75
+     "posicao": 5,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -24695,9 +24575,9 @@
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 553.24,
-     "posicao": 41,
-     "n": 62,
-     "mediana": 500.41
+     "posicao": 40,
+     "n": 58,
+     "mediana": 497.84
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24714,17 +24594,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 270.77,
-     "posicao": 48,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 278.33,
+     "posicao": 46,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 516.11,
-     "posicao": 36,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 515.57,
+     "posicao": 35,
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
@@ -24774,10 +24654,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 72.77,
-     "posicao": 48,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 73.26,
+     "posicao": 45,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal consignado público - Prefixado",
@@ -24794,17 +24674,17 @@
    "modalidades": [
     {
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
-     "taxa_aa": 284.6,
-     "posicao": 50,
-     "n": 59,
-     "mediana": 155.84
+     "taxa_aa": 285.6,
+     "posicao": 47,
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
-     "taxa_aa": 550.62,
-     "posicao": 40,
-     "n": 62,
-     "mediana": 500.41
+     "taxa_aa": 549.39,
+     "posicao": 39,
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
@@ -24821,10 +24701,10 @@
     },
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 48.54,
-     "posicao": 31,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 51.06,
+     "posicao": 35,
+     "n": 53,
+     "mediana": 48.03
     }
    ]
   },
@@ -24854,10 +24734,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 92.61,
-     "posicao": 55,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 92.55,
+     "posicao": 53,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24874,10 +24754,10 @@
    "modalidades": [
     {
      "id": "pf:Crédito pessoal consignado privado - Prefixado",
-     "taxa_aa": 57.76,
-     "posicao": 39,
-     "n": 55,
-     "mediana": 46.75
+     "taxa_aa": 57.4,
+     "posicao": 38,
+     "n": 53,
+     "mediana": 48.03
     },
     {
      "id": "pf:Crédito pessoal não consignado - Prefixado",
@@ -24916,15 +24796,15 @@
      "id": "pf:Cartão de crédito - parcelado - Prefixado",
      "taxa_aa": 1.2,
      "posicao": 1,
-     "n": 59,
-     "mediana": 155.84
+     "n": 57,
+     "mediana": 155.47
     },
     {
      "id": "pf:Cartão de crédito - rotativo total - Prefixado",
      "taxa_aa": 2.4,
      "posicao": 1,
-     "n": 62,
-     "mediana": 500.41
+     "n": 58,
+     "mediana": 497.84
     }
    ]
   },
