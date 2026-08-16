@@ -1,0 +1,50 @@
+{
+ "cod": "50334234",
+ "nome": "COOPERATIVA DE CRÉDITO RURAL DOS AGROPECUARISTAS DA REGIÃO DE PORTO FELIZ",
+ "sr": "S5",
+ "tcb": "B3S",
+ "porte_quartil": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202209",
+  "202212",
+  "202303",
+  "202306",
+  "202309",
+  "202312",
+  "202403",
+  "202406",
+  "202409",
+  "202412",
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202209": 207214.67
+  },
+  "patrimonio_liquido": {
+   "202209": 58735.26
+  },
+  "carteira_credito": {
+   "202209": 2244.23
+  },
+  "captacoes": {
+   "202209": 0.0
+  },
+  "lucro_liquido": {
+   "202209": -180999.49
+  },
+  "roe_periodo": {
+   "202209": -308.1615540647985
+  },
+  "cart_ativo_pct": {
+   "202209": 1.083045905967951
+  }
+ },
+ "gerado_em": "2026-08-16T10:03:25+00:00"
+}

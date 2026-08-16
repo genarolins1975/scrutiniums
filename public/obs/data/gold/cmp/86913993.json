@@ -1,0 +1,50 @@
+{
+ "cod": "86913993",
+ "nome": "SICREDI CARIRI - COOPERATIVA DE CRÉDITO DA REGIÃO DO CARIRI",
+ "sr": "S5",
+ "tcb": "B3S",
+ "porte_quartil": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202209",
+  "202212",
+  "202303",
+  "202306",
+  "202309",
+  "202312",
+  "202403",
+  "202406",
+  "202409",
+  "202412",
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202209": 233813656.78
+  },
+  "patrimonio_liquido": {
+   "202209": 33438141.36
+  },
+  "carteira_credito": {
+   "202209": 157262750.83
+  },
+  "captacoes": {
+   "202209": 161053192.76
+  },
+  "lucro_liquido": {
+   "202209": -3686259.41
+  },
+  "roe_periodo": {
+   "202209": -11.024115755457768
+  },
+  "cart_ativo_pct": {
+   "202209": 67.25986539698651
+  }
+ },
+ "gerado_em": "2026-08-16T10:03:25+00:00"
+}

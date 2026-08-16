@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-15T09:59:18+00:00",
+  "atualizado_em": "2026-08-16T10:03:20+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 22.896.431",
   "participante_open_finance": true
@@ -136,7 +136,7 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-08-15"
+  "calculado_em": "2026-08-16"
  },
  "kpis": [
   {
@@ -250,57 +250,88 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "2025-T1",
+    "p": "202209",
     "v": 100.0
    },
    {
+    "p": "202212",
+    "v": 80.3
+   },
+   {
+    "p": "202303",
+    "v": 78.4
+   },
+   {
+    "p": "202306",
+    "v": 82.6
+   },
+   {
+    "p": "2025-T1",
+    "v": 133.1
+   },
+   {
     "p": "2025-T2",
-    "v": 99.4
+    "v": 132.4
    },
    {
     "p": "2025-T3",
-    "v": 108.3
+    "v": 144.1
    },
    {
     "p": "2025-T4",
-    "v": 122.8
+    "v": 163.5
    },
    {
     "p": "2026-T1",
-    "v": 118.9
+    "v": 158.3
    }
   ],
   "PL": [
    {
-    "p": "2025-T1",
+    "p": "202209",
     "v": 100.0
    },
    {
+    "p": "202212",
+    "v": 121.2
+   },
+   {
+    "p": "202303",
+    "v": 121.1
+   },
+   {
+    "p": "202306",
+    "v": 121.0
+   },
+   {
+    "p": "2025-T1",
+    "v": 154.0
+   },
+   {
     "p": "2025-T2",
-    "v": 108.1
+    "v": 166.5
    },
    {
     "p": "2025-T3",
-    "v": 115.1
+    "v": 177.2
    },
    {
     "p": "2025-T4",
-    "v": 183.3
+    "v": 282.2
    },
    {
     "p": "2026-T1",
-    "v": 190.9
+    "v": 293.9
    }
   ]
  },
- "evolucao_nota": null,
+ "evolucao_nota": "Base 100 no primeiro trimestre disponível da instituição (backfill desde 2015 quando reportado). A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — leia a inflexão nessa data como mudança de régua, não de negócio.",
  "comparacao_grupo": {
   "roe": {
    "valores": [
     2.45,
     0.59,
     1.95,
-    1.27,
     -0.59,
     4.47,
     0.66,
@@ -315,7 +346,6 @@
     3.97,
     3.0,
     -0.0,
-    3.06,
     1.72,
     0.47,
     1.63,
@@ -327,8 +357,6 @@
     -1.39,
     2.36,
     3.68,
-    1.22,
-    1.31,
     1.31,
     1.46,
     3.06,
@@ -336,7 +364,6 @@
     0.0,
     -20.36,
     2.8,
-    4.78,
     4.75,
     9.07,
     3.72,
@@ -358,6 +385,11 @@
     15.61,
     8.88,
     2.81,
+    1.31,
+    1.22,
+    1.27,
+    3.06,
+    4.78,
     0.08,
     -0.61,
     0.95
@@ -370,7 +402,6 @@
     26.06,
     1.45,
     9.96,
-    11.99,
     9.63,
     9.53,
     9.0,
@@ -385,7 +416,6 @@
     4.56,
     17.94,
     1.86,
-    1.03,
     5.98,
     9.87,
     5.15,
@@ -397,16 +427,13 @@
     4.96,
     6.56,
     20.23,
-    8.23,
     7.24,
-    5.13,
     10.61,
     16.62,
     4.53,
     1.97,
     1.41,
     5.82,
-    14.8,
     10.22,
     13.46,
     16.42,
@@ -428,6 +455,11 @@
     19.25,
     22.67,
     5.66,
+    5.13,
+    8.23,
+    11.99,
+    1.03,
+    14.8,
     16.73,
     1.07,
     5.23
@@ -475,6 +507,10 @@
    }
   },
   "historico_score": [
+   {
+    "anomes": "202209",
+    "score": 40.8
+   },
    {
     "anomes": "202503",
     "score": 15.1

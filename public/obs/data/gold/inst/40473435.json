@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-15T09:59:19+00:00",
+  "atualizado_em": "2026-08-16T10:03:22+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 40.473.435",
   "participante_open_finance": null
@@ -210,64 +210,104 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "2025-T1",
+    "p": "202312",
     "v": 100.0
    },
    {
+    "p": "202403",
+    "v": 146.8
+   },
+   {
+    "p": "202406",
+    "v": 195.4
+   },
+   {
+    "p": "202409",
+    "v": 332.1
+   },
+   {
+    "p": "202412",
+    "v": 112.4
+   },
+   {
+    "p": "2025-T1",
+    "v": 104.9
+   },
+   {
     "p": "2025-T2",
-    "v": 95.3
+    "v": 99.9
    },
    {
     "p": "2025-T3",
-    "v": 111.1
+    "v": 116.6
    },
    {
     "p": "2025-T4",
-    "v": 101.0
+    "v": 105.9
    },
    {
     "p": "2026-T1",
-    "v": 135.0
+    "v": 141.6
    }
   ],
   "PL": [
    {
-    "p": "2025-T1",
+    "p": "202312",
     "v": 100.0
    },
    {
+    "p": "202403",
+    "v": 152.3
+   },
+   {
+    "p": "202406",
+    "v": 126.8
+   },
+   {
+    "p": "202409",
+    "v": 388.2
+   },
+   {
+    "p": "202412",
+    "v": 919.4
+   },
+   {
+    "p": "2025-T1",
+    "v": 681.8
+   },
+   {
     "p": "2025-T2",
-    "v": 83.3
+    "v": 567.7
    },
    {
     "p": "2025-T3",
-    "v": 85.3
+    "v": 581.4
    },
    {
     "p": "2025-T4",
-    "v": 91.7
+    "v": 625.0
    },
    {
     "p": "2026-T1",
-    "v": 109.2
+    "v": 744.5
    }
   ]
  },
- "evolucao_nota": null,
+ "evolucao_nota": "Base 100 no primeiro trimestre disponível da instituição (backfill desde 2015 quando reportado). A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — leia a inflexão nessa data como mudança de régua, não de negócio.",
  "comparacao_grupo": {
   "roe": {
    "valores": [
     2.07,
     5.82,
-    -0.15,
-    -48.85,
-    24.06,
     2.84,
     5.78,
     3.98,
     1.68,
     6.11,
-    2.69
+    2.69,
+    24.06,
+    -0.15,
+    -48.85
    ],
    "meu": -48.85,
    "mediana": 2.84
@@ -276,15 +316,15 @@
    "valores": [
     4.12,
     21.01,
-    1.02,
-    2.61,
-    6.59,
     10.98,
     13.58,
     13.26,
     13.88,
     10.85,
-    20.38
+    20.38,
+    6.59,
+    1.02,
+    2.61
    ],
    "meu": 2.61,
    "mediana": 10.98

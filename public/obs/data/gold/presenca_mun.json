@@ -1,9 +1,9 @@
 {
- "gerado_em": "2026-08-15T09:59:34+00:00",
+ "gerado_em": "2026-08-16T10:03:33+00:00",
  "titulo": "Presença bancária física por município",
  "aviso": "Mapa de presença FÍSICA. Canais digitais não entram, e a ausência de ponto não equivale a ausência de acesso — assim como a presença de um correspondente não equivale à de uma agência.",
  "posicao": {
-  "dependencias": "06/08/2026",
+  "dependencias": "13/08/2026",
   "correspondentes": "13/08/2026"
  },
  "fontes": [
@@ -93,7 +93,7 @@
    "nenhum": 0,
    "agencia_qtd": 177,
    "posto_qtd": 227,
-   "pae_qtd": 287,
+   "pae_qtd": 285,
    "corresp_qtd": 2397
   },
   {
@@ -117,7 +117,7 @@
    "nenhum": 0,
    "agencia_qtd": 740,
    "posto_qtd": 893,
-   "pae_qtd": 1246,
+   "pae_qtd": 1245,
    "corresp_qtd": 14380
   },
   {
@@ -273,7 +273,7 @@
    "nenhum": 0,
    "agencia_qtd": 854,
    "posto_qtd": 2138,
-   "pae_qtd": 1222,
+   "pae_qtd": 1221,
    "corresp_qtd": 17079
   },
   {
@@ -333,7 +333,7 @@
    "nenhum": 0,
    "agencia_qtd": 1308,
    "posto_qtd": 2118,
-   "pae_qtd": 2324,
+   "pae_qtd": 2321,
    "corresp_qtd": 15526
   },
   {
@@ -369,7 +369,7 @@
    "nenhum": 0,
    "agencia_qtd": 3716,
    "posto_qtd": 5824,
-   "pae_qtd": 4679,
+   "pae_qtd": 4675,
    "corresp_qtd": 47287
   },
   {
@@ -1836,7 +1836,7 @@
    "regiao": "N",
    "agencia": 91,
    "posto": 175,
-   "pae": 177,
+   "pae": 175,
    "corresp": 1338,
    "ifs_dep": 31,
    "ifs_corresp": 56,
@@ -26263,7 +26263,7 @@
    "regiao": "NE",
    "agencia": 8,
    "posto": 10,
-   "pae": 15,
+   "pae": 14,
    "corresp": 137,
    "ifs_dep": 12,
    "ifs_corresp": 22,
@@ -45620,7 +45620,7 @@
    "regiao": "SE",
    "agencia": 59,
    "posto": 121,
-   "pae": 110,
+   "pae": 109,
    "corresp": 1031,
    "ifs_dep": 24,
    "ifs_corresp": 52,
@@ -47895,7 +47895,7 @@
    "regiao": "SE",
    "agencia": 105,
    "posto": 66,
-   "pae": 81,
+   "pae": 80,
    "corresp": 669,
    "ifs_dep": 30,
    "ifs_corresp": 45,
@@ -49533,7 +49533,7 @@
    "regiao": "SE",
    "agencia": 7,
    "posto": 18,
-   "pae": 14,
+   "pae": 13,
    "corresp": 189,
    "ifs_dep": 15,
    "ifs_corresp": 33,
@@ -50170,7 +50170,7 @@
    "regiao": "SE",
    "agencia": 1324,
    "posto": 1621,
-   "pae": 1480,
+   "pae": 1479,
    "corresp": 10479,
    "ifs_dep": 405,
    "ifs_corresp": 91,
@@ -52458,7 +52458,7 @@
    "regiao": "S",
    "agencia": 204,
    "posto": 298,
-   "pae": 252,
+   "pae": 251,
    "corresp": 3007,
    "ifs_dep": 82,
    "ifs_corresp": 70,
@@ -64496,7 +64496,7 @@
    "regiao": "S",
    "agencia": 231,
    "posto": 233,
-   "pae": 377,
+   "pae": 375,
    "corresp": 1377,
    "ifs_dep": 85,
    "ifs_corresp": 73,
@@ -64990,7 +64990,7 @@
    "regiao": "S",
    "agencia": 16,
    "posto": 21,
-   "pae": 31,
+   "pae": 30,
    "corresp": 239,
    "ifs_dep": 14,
    "ifs_corresp": 42,

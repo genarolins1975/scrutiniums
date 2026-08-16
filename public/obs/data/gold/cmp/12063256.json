@@ -6,6 +6,16 @@
  "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
+  "202209",
+  "202212",
+  "202303",
+  "202306",
+  "202309",
+  "202312",
+  "202403",
+  "202406",
+  "202409",
+  "202412",
   "202503",
   "202506",
   "202509",
@@ -14,6 +24,21 @@
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
+  "ativo_total": {
+   "202412": 3882177.47
+  },
+  "patrimonio_liquido": {
+   "202412": 3807556.47
+  },
+  "carteira_credito": {
+   "202412": 0.0
+  },
+  "captacoes": {
+   "202412": 0.0
+  },
+  "lucro_liquido": {
+   "202412": -681797.9
+  },
   "indice_basileia": {
    "202603": 25.0224360713582
   },
@@ -28,7 +53,13 @@
   },
   "rwa": {
    "202603": 47548035.67
+  },
+  "roe_periodo": {
+   "202412": -17.906442238531
+  },
+  "cart_ativo_pct": {
+   "202412": 0.0
   }
  },
- "gerado_em": "2026-08-15T09:59:24+00:00"
+ "gerado_em": "2026-08-16T10:03:24+00:00"
 }

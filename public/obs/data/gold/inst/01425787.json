@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-15T09:59:16+00:00",
+  "atualizado_em": "2026-08-16T10:03:18+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.425.787",
   "participante_open_finance": null
@@ -103,7 +103,7 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-08-15"
+  "calculado_em": "2026-08-16"
  },
  "kpis": [
   {
@@ -212,64 +212,144 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "2025-T1",
+    "p": "202209",
     "v": 100.0
    },
    {
+    "p": "202212",
+    "v": 110.5
+   },
+   {
+    "p": "202303",
+    "v": 105.2
+   },
+   {
+    "p": "202306",
+    "v": 103.9
+   },
+   {
+    "p": "202309",
+    "v": 115.7
+   },
+   {
+    "p": "202312",
+    "v": 123.5
+   },
+   {
+    "p": "202403",
+    "v": 131.1
+   },
+   {
+    "p": "202406",
+    "v": 131.1
+   },
+   {
+    "p": "202409",
+    "v": 121.0
+   },
+   {
+    "p": "202412",
+    "v": 125.1
+   },
+   {
+    "p": "2025-T1",
+    "v": 122.0
+   },
+   {
     "p": "2025-T2",
-    "v": 100.4
+    "v": 122.4
    },
    {
     "p": "2025-T3",
-    "v": 109.0
+    "v": 133.0
    },
    {
     "p": "2025-T4",
-    "v": 126.8
+    "v": 154.7
    },
    {
     "p": "2026-T1",
-    "v": 132.7
+    "v": 161.9
    }
   ],
   "PL": [
    {
-    "p": "2025-T1",
+    "p": "202209",
     "v": 100.0
    },
    {
+    "p": "202212",
+    "v": 102.2
+   },
+   {
+    "p": "202303",
+    "v": 104.4
+   },
+   {
+    "p": "202306",
+    "v": 106.4
+   },
+   {
+    "p": "202309",
+    "v": 108.5
+   },
+   {
+    "p": "202312",
+    "v": 110.7
+   },
+   {
+    "p": "202403",
+    "v": 111.9
+   },
+   {
+    "p": "202406",
+    "v": 113.6
+   },
+   {
+    "p": "202409",
+    "v": 99.8
+   },
+   {
+    "p": "202412",
+    "v": 101.9
+   },
+   {
+    "p": "2025-T1",
+    "v": 83.5
+   },
+   {
     "p": "2025-T2",
-    "v": 102.6
+    "v": 85.7
    },
    {
     "p": "2025-T3",
-    "v": 105.1
+    "v": 87.7
    },
    {
     "p": "2025-T4",
-    "v": 107.6
+    "v": 89.9
    },
    {
     "p": "2026-T1",
-    "v": 109.9
+    "v": 91.8
    }
   ]
  },
- "evolucao_nota": null,
+ "evolucao_nota": "Base 100 no primeiro trimestre disponível da instituição (backfill desde 2015 quando reportado). A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — leia a inflexão nessa data como mudança de régua, não de negócio.",
  "comparacao_grupo": {
   "roe": {
    "valores": [
     2.07,
     5.82,
-    -0.15,
-    -48.85,
-    24.06,
     2.84,
     5.78,
     3.98,
     1.68,
     6.11,
-    2.69
+    2.69,
+    24.06,
+    -0.15,
+    -48.85
    ],
    "meu": 2.07,
    "mediana": 2.84
@@ -278,15 +358,15 @@
    "valores": [
     4.12,
     21.01,
-    1.02,
-    2.61,
-    6.59,
     10.98,
     13.58,
     13.26,
     13.88,
     10.85,
-    20.38
+    20.38,
+    6.59,
+    1.02,
+    2.61
    ],
    "meu": 4.12,
    "mediana": 10.98
@@ -331,6 +411,46 @@
    }
   },
   "historico_score": [
+   {
+    "anomes": "202209",
+    "score": 25.0
+   },
+   {
+    "anomes": "202212",
+    "score": 25.0
+   },
+   {
+    "anomes": "202303",
+    "score": 21.9
+   },
+   {
+    "anomes": "202306",
+    "score": 25.0
+   },
+   {
+    "anomes": "202309",
+    "score": 21.9
+   },
+   {
+    "anomes": "202312",
+    "score": 21.9
+   },
+   {
+    "anomes": "202403",
+    "score": 21.9
+   },
+   {
+    "anomes": "202406",
+    "score": 21.9
+   },
+   {
+    "anomes": "202409",
+    "score": 21.9
+   },
+   {
+    "anomes": "202412",
+    "score": 21.9
+   },
    {
     "anomes": "202503",
     "score": 25.0

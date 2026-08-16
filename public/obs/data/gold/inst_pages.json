@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-08-15T09:59:15+00:00",
+ "gerado_em": "2026-08-16T10:03:17+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-15T09:59:15+00:00",
+    "atualizado_em": "2026-08-16T10:03:17+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -29,11 +29,51 @@
      "valor": 2832306405072.48,
      "periodo": "2026-T1",
      "d_tri": 90807076250.6899,
-     "d_ano": 298685611917.52,
+     "d_ano": 610898465547.1401,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 2221407939525.34
+      },
+      {
+       "p": "202212",
+       "v": 2264702287269.83
+      },
+      {
+       "p": "202303",
+       "v": 2329841403780.64
+      },
+      {
+       "p": "202306",
+       "v": 2357281136029.54
+      },
+      {
+       "p": "202309",
+       "v": 2446125525016.95
+      },
+      {
+       "p": "202312",
+       "v": 2440500136158.25
+      },
+      {
+       "p": "202403",
+       "v": 2528221721235.91
+      },
+      {
+       "p": "202406",
+       "v": 2668446292041.96
+      },
+      {
+       "p": "202409",
+       "v": 2720401272200.44
+      },
+      {
+       "p": "202412",
+       "v": 2766166427516.94
+      },
       {
        "p": "2025-T1",
        "v": 2533620793154.96
@@ -63,11 +103,51 @@
      "valor": 208510824472.85,
      "periodo": "2026-T1",
      "d_tri": 3485762445.73,
-     "d_ano": 6379542221.61,
+     "d_ano": 43045100525.99,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 165465723946.86
+      },
+      {
+       "p": "202212",
+       "v": 169703800223.97
+      },
+      {
+       "p": "202303",
+       "v": 174173702517.96
+      },
+      {
+       "p": "202306",
+       "v": 178468846182.26
+      },
+      {
+       "p": "202309",
+       "v": 183129379964.49
+      },
+      {
+       "p": "202312",
+       "v": 189766924481.78
+      },
+      {
+       "p": "202403",
+       "v": 184579934639.74
+      },
+      {
+       "p": "202406",
+       "v": 193412225495.83
+      },
+      {
+       "p": "202409",
+       "v": 202350698408.96
+      },
+      {
+       "p": "202412",
+       "v": 211259988306.98
+      },
       {
        "p": "2025-T1",
        "v": 202131282251.24
@@ -97,11 +177,51 @@
      "valor": 1176966466520.58,
      "periodo": "2026-T1",
      "d_tri": -12814643786.53,
-     "d_ano": 74246395001.98,
+     "d_ano": 296691156036.9701,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 880275310483.61
+      },
+      {
+       "p": "202212",
+       "v": 906186015456.09
+      },
+      {
+       "p": "202303",
+       "v": 912716051951.43
+      },
+      {
+       "p": "202306",
+       "v": 897252194002.31
+      },
+      {
+       "p": "202309",
+       "v": 901295766260.22
+      },
+      {
+       "p": "202312",
+       "v": 907550410427.93
+      },
+      {
+       "p": "202403",
+       "v": 901888825458.53
+      },
+      {
+       "p": "202406",
+       "v": 945568097911.21
+      },
+      {
+       "p": "202409",
+       "v": 962421334120.77
+      },
+      {
+       "p": "202412",
+       "v": 1023068081484.77
+      },
       {
        "p": "2025-T1",
        "v": 1102720071518.6
@@ -131,11 +251,51 @@
      "valor": 12059014288.35,
      "periodo": "2026-T1",
      "d_tri": -11962373540.1402,
-     "d_ano": 1205692901.2801,
+     "d_ano": 3779437207.1,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 8279577081.25
+      },
+      {
+       "p": "202212",
+       "v": 15575155509.42
+      },
+      {
+       "p": "202303",
+       "v": 7991268244.32
+      },
+      {
+       "p": "202306",
+       "v": 16808518880.59
+      },
+      {
+       "p": "202309",
+       "v": 7965524584.64
+      },
+      {
+       "p": "202312",
+       "v": 16924245341.32
+      },
+      {
+       "p": "202403",
+       "v": 9507787662.25
+      },
+      {
+       "p": "202406",
+       "v": 19208472180.25
+      },
+      {
+       "p": "202409",
+       "v": 9655402823.72
+      },
+      {
+       "p": "202412",
+       "v": 19423311929.6801
+      },
       {
        "p": "2025-T1",
        "v": 10853321387.0699
@@ -460,6 +620,46 @@
     },
     "historico_score": [
      {
+      "anomes": "202209",
+      "score": 43.8
+     },
+     {
+      "anomes": "202212",
+      "score": 46.9
+     },
+     {
+      "anomes": "202303",
+      "score": 46.9
+     },
+     {
+      "anomes": "202306",
+      "score": 43.8
+     },
+     {
+      "anomes": "202309",
+      "score": 40.6
+     },
+     {
+      "anomes": "202312",
+      "score": 40.6
+     },
+     {
+      "anomes": "202403",
+      "score": 40.6
+     },
+     {
+      "anomes": "202406",
+      "score": 43.8
+     },
+     {
+      "anomes": "202409",
+      "score": 37.5
+     },
+     {
+      "anomes": "202412",
+      "score": 40.6
+     },
+     {
       "anomes": "202503",
       "score": 46.2
      },
@@ -578,7 +778,17 @@
     "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
-   "alertas": [],
+   "alertas": [
+    {
+     "severidade": "atencao",
+     "indicador": "Crescimento da carteira (4 trim.)",
+     "valor": 33.7,
+     "benchmark": 30,
+     "periodo": "12m",
+     "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
+     "justificativa": "Crescimento acima de 30% em 4 trimestres — checar apetite de risco."
+    }
+   ],
    "sintese": [
     {
      "frase": "Itaú Unibanco é um conglomerado prudencial S1 — grandes (≥10% do PIB ou atividade internacional) com ativos de R$ 2832.3 bi e carteira de R$ 1177.0 bi (2026-T1).",
@@ -654,7 +864,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-15T09:59:15+00:00",
+    "atualizado_em": "2026-08-16T10:03:17+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -663,11 +873,51 @@
      "valor": 96601086208.82,
      "periodo": "2026-T1",
      "d_tri": -3140322114.47,
-     "d_ano": 15429568311.6,
+     "d_ano": 28607099347.56,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 67993986861.26
+      },
+      {
+       "p": "202212",
+       "v": 70605117117.7
+      },
+      {
+       "p": "202303",
+       "v": 67706071413.05
+      },
+      {
+       "p": "202306",
+       "v": 73782779414.55
+      },
+      {
+       "p": "202309",
+       "v": 72914039677.23
+      },
+      {
+       "p": "202312",
+       "v": 78530848590.45
+      },
+      {
+       "p": "202403",
+       "v": 76313372466.13
+      },
+      {
+       "p": "202406",
+       "v": 81665728276.24
+      },
+      {
+       "p": "202409",
+       "v": 79114286997.15
+      },
+      {
+       "p": "202412",
+       "v": 92674016658.31
+      },
       {
        "p": "2025-T1",
        "v": 81171517897.22
@@ -697,11 +947,51 @@
      "valor": 7356622444.34,
      "periodo": "2026-T1",
      "d_tri": 281274220.26,
-     "d_ano": -46989354.38,
+     "d_ano": 1909378273.28,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 5447244171.06
+      },
+      {
+       "p": "202212",
+       "v": 5738458728.53
+      },
+      {
+       "p": "202303",
+       "v": 5861127132.77
+      },
+      {
+       "p": "202306",
+       "v": 5986627649.67
+      },
+      {
+       "p": "202309",
+       "v": 6204903467.19
+      },
+      {
+       "p": "202312",
+       "v": 6136379709.09
+      },
+      {
+       "p": "202403",
+       "v": 6403824965.01
+      },
+      {
+       "p": "202406",
+       "v": 6742459829.48
+      },
+      {
+       "p": "202409",
+       "v": 7089839087.67
+      },
+      {
+       "p": "202412",
+       "v": 7073421660.29
+      },
       {
        "p": "2025-T1",
        "v": 7403611798.72
@@ -731,11 +1021,51 @@
      "valor": 60109398652.51,
      "periodo": "2026-T1",
      "d_tri": -488001094.2,
-     "d_ano": 9792804927.04,
+     "d_ano": 15510720120.0,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 44598678532.51
+      },
+      {
+       "p": "202212",
+       "v": 48548551128.83
+      },
+      {
+       "p": "202303",
+       "v": 46081533746.29
+      },
+      {
+       "p": "202306",
+       "v": 45231464029.48
+      },
+      {
+       "p": "202309",
+       "v": 44737048274.38
+      },
+      {
+       "p": "202312",
+       "v": 48229465152.71
+      },
+      {
+       "p": "202403",
+       "v": 46230097427.5
+      },
+      {
+       "p": "202406",
+       "v": 47880615489.23
+      },
+      {
+       "p": "202409",
+       "v": 45807387834.18
+      },
+      {
+       "p": "202412",
+       "v": 52850761468.18
+      },
       {
        "p": "2025-T1",
        "v": 50316593725.47
@@ -765,11 +1095,51 @@
      "valor": 441285602.16,
      "periodo": "2026-T1",
      "d_tri": -487574289.93,
-     "d_ano": -10526625.59,
+     "d_ano": 184452886.2,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 256832715.96
+      },
+      {
+       "p": "202212",
+       "v": 634858294.6
+      },
+      {
+       "p": "202303",
+       "v": 231041412.62
+      },
+      {
+       "p": "202306",
+       "v": 458862511.01
+      },
+      {
+       "p": "202309",
+       "v": 320708779.6
+      },
+      {
+       "p": "202312",
+       "v": 643066176.81
+      },
+      {
+       "p": "202403",
+       "v": 367968194.33
+      },
+      {
+       "p": "202406",
+       "v": 806055685.0
+      },
+      {
+       "p": "202409",
+       "v": 450637667.56
+      },
+      {
+       "p": "202412",
+       "v": 883223255.0
+      },
       {
        "p": "2025-T1",
        "v": 451812227.75
@@ -1094,6 +1464,46 @@
     },
     "historico_score": [
      {
+      "anomes": "202209",
+      "score": 57.4
+     },
+     {
+      "anomes": "202212",
+      "score": 56.2
+     },
+     {
+      "anomes": "202303",
+      "score": 53.1
+     },
+     {
+      "anomes": "202306",
+      "score": 57.5
+     },
+     {
+      "anomes": "202309",
+      "score": 54.0
+     },
+     {
+      "anomes": "202312",
+      "score": 56.2
+     },
+     {
+      "anomes": "202403",
+      "score": 55.8
+     },
+     {
+      "anomes": "202406",
+      "score": 54.0
+     },
+     {
+      "anomes": "202409",
+      "score": 53.1
+     },
+     {
+      "anomes": "202412",
+      "score": 53.9
+     },
+     {
       "anomes": "202503",
       "score": 61.9
      },
@@ -1205,7 +1615,17 @@
     "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
-   "alertas": [],
+   "alertas": [
+    {
+     "severidade": "atencao",
+     "indicador": "Crescimento da carteira (4 trim.)",
+     "valor": 34.8,
+     "benchmark": 30,
+     "periodo": "12m",
+     "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
+     "justificativa": "Crescimento acima de 30% em 4 trimestres — checar apetite de risco."
+    }
+   ],
    "sintese": [
     {
      "frase": "Banco Daycoval é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 96.6 bi e carteira de R$ 60.1 bi (2026-T1).",
@@ -1276,7 +1696,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-15T09:59:15+00:00",
+    "atualizado_em": "2026-08-16T10:03:17+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -1285,11 +1705,51 @@
      "valor": 58293902409.67,
      "periodo": "2026-T1",
      "d_tri": -1076822099.94,
-     "d_ano": null,
+     "d_ano": 24018927594.59,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 34274974815.08
+      },
+      {
+       "p": "202212",
+       "v": 37596681159.44
+      },
+      {
+       "p": "202303",
+       "v": 38523899041.9
+      },
+      {
+       "p": "202306",
+       "v": 39774429427.98
+      },
+      {
+       "p": "202309",
+       "v": 41141264266.82
+      },
+      {
+       "p": "202312",
+       "v": 43161266059.5
+      },
+      {
+       "p": "202403",
+       "v": 44092900704.99
+      },
+      {
+       "p": "202406",
+       "v": 46150561281.72
+      },
+      {
+       "p": "202409",
+       "v": 49001417654.19
+      },
+      {
+       "p": "202412",
+       "v": 53284781163.73
+      },
       {
        "p": "2025-T1",
        "v": 55002104882.83
@@ -1315,11 +1775,51 @@
      "valor": 5248107457.67,
      "periodo": "2026-T1",
      "d_tri": -17262861.56,
-     "d_ano": null,
+     "d_ano": 2389349854.89,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 2858757602.78
+      },
+      {
+       "p": "202212",
+       "v": 3222079877.32
+      },
+      {
+       "p": "202303",
+       "v": 3195128871.01
+      },
+      {
+       "p": "202306",
+       "v": 3430398737.92
+      },
+      {
+       "p": "202309",
+       "v": 3386268900.51
+      },
+      {
+       "p": "202312",
+       "v": 3819467446.33
+      },
+      {
+       "p": "202403",
+       "v": 3907385349.33
+      },
+      {
+       "p": "202406",
+       "v": 4681647132.63
+      },
+      {
+       "p": "202409",
+       "v": 4740494169.42
+      },
+      {
+       "p": "202412",
+       "v": 5103175891.38
+      },
       {
        "p": "2025-T1",
        "v": 5351504695.55
@@ -1345,11 +1845,51 @@
      "valor": 48315779249.57,
      "periodo": "2026-T1",
      "d_tri": -806195776.7,
-     "d_ano": null,
+     "d_ano": 19412714793.14,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 28903064456.43
+      },
+      {
+       "p": "202212",
+       "v": 31862858538.82
+      },
+      {
+       "p": "202303",
+       "v": 32465439596.81
+      },
+      {
+       "p": "202306",
+       "v": 34386358241.72
+      },
+      {
+       "p": "202309",
+       "v": 35643889397.3
+      },
+      {
+       "p": "202312",
+       "v": 37425537684.3
+      },
+      {
+       "p": "202403",
+       "v": 38291712137.6
+      },
+      {
+       "p": "202406",
+       "v": 39850597336.06
+      },
+      {
+       "p": "202409",
+       "v": 42826184158.68
+      },
+      {
+       "p": "202412",
+       "v": 46667200629.29
+      },
       {
        "p": "2025-T1",
        "v": 45839900807.65
@@ -1375,11 +1915,51 @@
      "valor": -111881645.33,
      "periodo": "2026-T1",
      "d_tri": -459776580.26,
-     "d_ano": null,
+     "d_ano": -185146036.23,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
      "historico": [
+      {
+       "p": "202209",
+       "v": 73264390.9
+      },
+      {
+       "p": "202212",
+       "v": 134756770.35
+      },
+      {
+       "p": "202303",
+       "v": 46312597.73
+      },
+      {
+       "p": "202306",
+       "v": 151156220.18
+      },
+      {
+       "p": "202309",
+       "v": -45985542.07
+      },
+      {
+       "p": "202312",
+       "v": -29667192.82
+      },
+      {
+       "p": "202403",
+       "v": 42939768.64
+      },
+      {
+       "p": "202406",
+       "v": 134294413.89
+      },
+      {
+       "p": "202409",
+       "v": 22826320.15
+      },
+      {
+       "p": "202412",
+       "v": 310482768.81
+      },
       {
        "p": "2025-T1",
        "v": 399178318.77
@@ -1696,6 +2276,46 @@
     },
     "historico_score": [
      {
+      "anomes": "202209",
+      "score": 65.4
+     },
+     {
+      "anomes": "202212",
+      "score": 68.3
+     },
+     {
+      "anomes": "202303",
+      "score": 71.0
+     },
+     {
+      "anomes": "202306",
+      "score": 67.1
+     },
+     {
+      "anomes": "202309",
+      "score": 80.8
+     },
+     {
+      "anomes": "202312",
+      "score": 78.1
+     },
+     {
+      "anomes": "202403",
+      "score": 72.3
+     },
+     {
+      "anomes": "202406",
+      "score": 68.3
+     },
+     {
+      "anomes": "202409",
+      "score": 74.1
+     },
+     {
+      "anomes": "202412",
+      "score": 65.5
+     },
+     {
       "anomes": "202503",
       "score": 58.9
      },
@@ -1803,7 +2423,17 @@
     "casos": 0,
     "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"
    },
-   "alertas": [],
+   "alertas": [
+    {
+     "severidade": "atencao",
+     "indicador": "Crescimento da carteira (4 trim.)",
+     "valor": 67.2,
+     "benchmark": 30,
+     "periodo": "12m",
+     "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
+     "justificativa": "Crescimento acima de 30% em 4 trimestres — checar apetite de risco."
+    }
+   ],
    "sintese": [
     {
      "frase": "Banco Volkswagen é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 58.3 bi e carteira de R$ 48.3 bi (2026-T1).",
@@ -1861,7 +2491,7 @@
  "cobertura_top30": {
   "basileia_pct": 93,
   "carteira_detalhada_pct": 89,
-  "historico_5t_pct": 97,
+  "historico_5t_pct": 98,
   "reclamacoes_match_pct": 30,
   "openfinance_match_pct": 41
  },

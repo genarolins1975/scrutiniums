@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-15T09:59:14+00:00",
+ "gerado_em": "2026-08-16T10:03:16+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -1556,6 +1556,60 @@
    "periodo_ultimo": "2026-1"
   },
   {
+   "cnpj8": "75647891",
+   "nome": "BCO CREDIT AGRICOLE BRASIL S.A",
+   "cod_inst": "C0080491",
+   "series": {
+    "margem_capital_principal_pct": [
+     {
+      "p": "2024-4",
+      "v": 0.0
+     },
+     {
+      "p": "2025-1",
+      "v": 0.0
+     },
+     {
+      "p": "2025-2",
+      "v": 0.0
+     },
+     {
+      "p": "2025-3",
+      "v": 0.0
+     },
+     {
+      "p": "2025-4",
+      "v": 16.0
+     }
+    ],
+    "alavancagem_pct": [
+     {
+      "p": "2025-4",
+      "v": 16.0
+     }
+    ],
+    "basileia_pct": [
+     {
+      "p": "2025-4",
+      "v": 26.0
+     }
+    ],
+    "nivel1_pct": [
+     {
+      "p": "2025-4",
+      "v": 26.0
+     }
+    ]
+   },
+   "ultimo": {
+    "margem_capital_principal_pct": 16.0,
+    "alavancagem_pct": 16.0,
+    "basileia_pct": 26.0,
+    "nivel1_pct": 26.0
+   },
+   "periodo_ultimo": "2025-4"
+  },
+  {
    "cnpj8": "00000000",
    "nome": "BCO DO BRASIL S.A.",
    "cod_inst": "C0080329",
@@ -3043,6 +3097,131 @@
     "icp_pct": 36.07,
     "margem_capital_principal_pct": 29.07,
     "nivel1_pct": 36.07
+   },
+   "periodo_ultimo": "2026-1"
+  },
+  {
+   "cnpj8": "82639451",
+   "nome": "CC VALE DO ITAJAI - VIACREDI",
+   "cod_inst": "82639451",
+   "series": {
+    "alavancagem_pct": [
+     {
+      "p": "2025-1",
+      "v": 19.85
+     },
+     {
+      "p": "2025-2",
+      "v": 19.6
+     },
+     {
+      "p": "2025-3",
+      "v": 19.83
+     },
+     {
+      "p": "2025-4",
+      "v": 18.38
+     },
+     {
+      "p": "2026-1",
+      "v": 20.52
+     }
+    ],
+    "basileia_pct": [
+     {
+      "p": "2025-1",
+      "v": 29.74
+     },
+     {
+      "p": "2025-2",
+      "v": 29.75
+     },
+     {
+      "p": "2025-3",
+      "v": 32.51
+     },
+     {
+      "p": "2025-4",
+      "v": 31.03
+     },
+     {
+      "p": "2026-1",
+      "v": 34.64
+     }
+    ],
+    "icp_pct": [
+     {
+      "p": "2025-1",
+      "v": 29.74
+     },
+     {
+      "p": "2025-2",
+      "v": 29.75
+     },
+     {
+      "p": "2025-3",
+      "v": 32.51
+     },
+     {
+      "p": "2025-4",
+      "v": 31.03
+     },
+     {
+      "p": "2026-1",
+      "v": 34.64
+     }
+    ],
+    "margem_capital_principal_pct": [
+     {
+      "p": "2025-1",
+      "v": 22.74
+     },
+     {
+      "p": "2025-2",
+      "v": 22.75
+     },
+     {
+      "p": "2025-3",
+      "v": 25.51
+     },
+     {
+      "p": "2025-4",
+      "v": 24.03
+     },
+     {
+      "p": "2026-1",
+      "v": 27.64
+     }
+    ],
+    "nivel1_pct": [
+     {
+      "p": "2025-1",
+      "v": 29.74
+     },
+     {
+      "p": "2025-2",
+      "v": 29.75
+     },
+     {
+      "p": "2025-3",
+      "v": 32.51
+     },
+     {
+      "p": "2025-4",
+      "v": 31.03
+     },
+     {
+      "p": "2026-1",
+      "v": 34.64
+     }
+    ]
+   },
+   "ultimo": {
+    "alavancagem_pct": 20.52,
+    "basileia_pct": 34.64,
+    "icp_pct": 34.64,
+    "margem_capital_principal_pct": 27.64,
+    "nivel1_pct": 34.64
    },
    "periodo_ultimo": "2026-1"
   },
@@ -4766,7 +4945,7 @@
   }
  ],
  "cobertura": {
-  "com_dados": 33,
+  "com_dados": 35,
   "ausencias_notaveis": [
    "Bradesco não registra o Pilar 3 no arranjo DASFN do BCB (verificado em 08/2026) — os relatórios existem em PDF no RI; extração fica para rodada futura.",
    "Caixa registra endpoints mas parou de atualizá-los em 2022 — ausência declarada."

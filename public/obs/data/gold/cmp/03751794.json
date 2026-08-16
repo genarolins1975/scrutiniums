@@ -1,0 +1,50 @@
+{
+ "cod": "03751794",
+ "nome": "TERRA INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+ "sr": "S4",
+ "tcb": "N2",
+ "porte_quartil": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "202209",
+  "202212",
+  "202303",
+  "202306",
+  "202309",
+  "202312",
+  "202403",
+  "202406",
+  "202409",
+  "202412",
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "202412": 8558633311.49
+  },
+  "patrimonio_liquido": {
+   "202412": 76125606.7
+  },
+  "carteira_credito": {
+   "202412": 0.0
+  },
+  "captacoes": {
+   "202412": 2568633366.01
+  },
+  "lucro_liquido": {
+   "202412": 4818862.87999999
+  },
+  "roe_periodo": {
+   "202412": 6.3301470935928705
+  },
+  "cart_ativo_pct": {
+   "202412": 0.0
+  }
+ },
+ "gerado_em": "2026-08-16T10:03:25+00:00"
+}
