@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-16T10:03:16+00:00",
+ "gerado_em": "2026-08-17T10:17:32+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -430,7 +430,7 @@
       },
       "var_aa_pct": -1.6,
       "fre_ano": 2026,
-      "versao": 3
+      "versao": 5
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -447,6 +447,11 @@
      {
       "nome": "Deloitte Touche Tohmatsu Auditores Independentes",
       "inicio": "2019-01-01",
+      "fim": null
+     },
+     {
+      "nome": "KPMG AUDITORES INDEPENDENTES LTDA",
+      "inicio": "2024-01-01",
       "fim": null
      },
      {
@@ -3959,7 +3964,7 @@
       },
       "var_aa_pct": -3.5,
       "fre_ano": 2026,
-      "versao": 6
+      "versao": 9
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4328,7 +4333,7 @@
       },
       "var_aa_pct": 13.7,
       "fre_ano": 2026,
-      "versao": 2
+      "versao": 3
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4963,7 +4968,7 @@
       },
       "var_aa_pct": 49.1,
       "fre_ano": 2026,
-      "versao": 2
+      "versao": 3
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -6489,7 +6494,7 @@
       },
       "var_aa_pct": 6.5,
       "fre_ano": 2026,
-      "versao": 2
+      "versao": 3
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -41975,40 +41980,6 @@
     "nome": "BCO MERCANTIL DO BRASIL S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 11226877.83,
-       "membros": 9.0,
-       "media_por_membro_brl": 1247431,
-       "composicao": {
-        "salario": 9480000.0,
-        "beneficios": 308877.83,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 3102965.6,
-       "media_individual": 1087653.09
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 12520000.0,
-       "membros": 9.0,
-       "media_por_membro_brl": 1391111,
-       "composicao": {
-        "salario": 10000000.0,
-        "beneficios": 500000.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -42038,6 +42009,40 @@
         "bonus": 20500000.0,
         "participacao_resultados": 3750000.0,
         "baseada_acoes": 74993695.02,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 11226877.83,
+       "membros": 9.0,
+       "media_por_membro_brl": 1247431,
+       "composicao": {
+        "salario": 9480000.0,
+        "beneficios": 308877.83,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 3102965.6,
+       "media_individual": 1087653.09
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 12520000.0,
+       "membros": 9.0,
+       "media_por_membro_brl": 1391111,
+       "composicao": {
+        "salario": 10000000.0,
+        "beneficios": 500000.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
        }
@@ -42093,40 +42098,6 @@
     "nome": "BCO BRASIL S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 247575.24,
-       "membros": 8.0,
-       "media_por_membro_brl": 30947,
-       "composicao": {
-        "salario": 247575.24,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 63034.91,
-       "media_individual": 76177.0
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 1176134.4,
-       "membros": 8.0,
-       "media_por_membro_brl": 147017,
-       "composicao": {
-        "salario": 784089.6,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 392044.8
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -42158,6 +42129,40 @@
         "baseada_acoes": 15380219.22,
         "pos_emprego": 0.0,
         "cessacao_cargo": 15380219.22
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 247575.24,
+       "membros": 8.0,
+       "media_por_membro_brl": 30947,
+       "composicao": {
+        "salario": 247575.24,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 63034.91,
+       "media_individual": 76177.0
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1176134.4,
+       "membros": 8.0,
+       "media_por_membro_brl": 147017,
+       "composicao": {
+        "salario": 784089.6,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 392044.8
        }
       }
      }
@@ -42468,40 +42473,6 @@
     "nome": "PARANA BCO S.A.",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 1329555.19,
-       "membros": 5.0,
-       "media_por_membro_brl": 265911,
-       "composicao": {
-        "salario": 1052523.28,
-        "beneficios": 40214.17,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 487425.38,
-       "media_individual": 273184.36
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 1400734.92,
-       "membros": 5.0,
-       "media_por_membro_brl": 280147,
-       "composicao": {
-        "salario": 1113299.15,
-        "beneficios": 36943.46,
-        "bonus": 0.0,
-        "participacao_resultados": 0.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -42529,6 +42500,40 @@
         "salario": 6438994.18,
         "beneficios": 707255.86,
         "bonus": 4417735.46,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 1329555.19,
+       "membros": 5.0,
+       "media_por_membro_brl": 265911,
+       "composicao": {
+        "salario": 1052523.28,
+        "beneficios": 40214.17,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 487425.38,
+       "media_individual": 273184.36
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1400734.92,
+       "membros": 5.0,
+       "media_por_membro_brl": 280147,
+       "composicao": {
+        "salario": 1113299.15,
+        "beneficios": 36943.46,
+        "bonus": 0.0,
         "participacao_resultados": 0.0,
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
@@ -42990,40 +42995,6 @@
     "nome": "BCO ESTADO DE SERGIPE S.A. - BANESE",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 1052510.51,
-       "membros": 8.0,
-       "media_por_membro_brl": 131564,
-       "composicao": {
-        "salario": 799998.24,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 252512.27,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 131563.81,
-       "media_individual": 131563.81
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 1297780.05,
-       "membros": 9.0,
-       "media_por_membro_brl": 144198,
-       "composicao": {
-        "salario": 961780.05,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 336000.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -43052,6 +43023,40 @@
         "beneficios": 1642347.14,
         "bonus": 0.0,
         "participacao_resultados": 240000.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 1052510.51,
+       "membros": 8.0,
+       "media_por_membro_brl": 131564,
+       "composicao": {
+        "salario": 799998.24,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 252512.27,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 131563.81,
+       "media_individual": 131563.81
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1297780.05,
+       "membros": 9.0,
+       "media_por_membro_brl": 144198,
+       "composicao": {
+        "salario": 961780.05,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 336000.0,
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
