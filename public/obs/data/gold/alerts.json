@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-17T10:17:32+00:00",
+ "gerado_em": "2026-08-18T10:15:48+00:00",
  "alertas": [
   {
    "id": "comprometimento_high",
@@ -109,23 +109,37 @@
      "v": 28.48
     }
    ],
-   "disparos_anteriores": 49,
+   "disparos_anteriores": 50,
    "recorrente": true
   },
   {
    "id": "stale_data",
    "nivel": "informativo",
-   "titulo": "6 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "explicacao": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (108 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (108 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (108 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "titulo": "5 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "explicacao": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (109 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (109 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (109 dias). Ausência de dado novo NÃO foi interpretada como zero.",
    "serie": "*",
-   "valor": 6,
+   "valor": 5,
    "limiar": 100,
    "fonte": "múltiplas",
-   "disparos_anteriores": 7,
+   "disparos_anteriores": 8,
    "recorrente": true
   }
  ],
  "historico": [
+  {
+   "run_at": "2026-08-18T10:15:48+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.48
+  },
+  {
+   "run_at": "2026-08-18T10:15:48+00:00",
+   "alert_id": "stale_data",
+   "nivel": "informativo",
+   "titulo": "5 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "valor": 5.0
+  },
   {
    "run_at": "2026-08-17T10:17:32+00:00",
    "alert_id": "comprometimento_high",
@@ -671,20 +685,6 @@
    "nivel": "informativo",
    "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
    "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T11:21:59+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T11:12:24+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
   }
  ],
  "regras_configuradas": [

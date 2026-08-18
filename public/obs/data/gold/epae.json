@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-17T10:17:47+00:00",
+ "gerado_em": "2026-08-18T10:16:09+00:00",
  "titulo": "Pagamentos Pix por atividade econômica — seção de artes, cultura, esporte e recreação",
  "aviso": "Série do Banco Central para a SEÇÃO INTEIRA da CNAE: ela reúne academias, clubes, cinemas, parques, loterias e bets, e a EPAE não permite separá-las nem distinguir operador autorizado de operador ilegal.",
  "fonte": {
@@ -9,8 +9,8 @@
   "pagina": "https://www.bcb.gov.br/estatisticas/tabelasespeciais",
   "nivel": "A",
   "frequencia": "mensal",
-  "coletado_em": "2026-08-07T11:11:12+00:00",
-  "sha256": "5353acee51cd3ace364767dd9ee03bf3bcc4b34ae385c0c7e15bb187dfdd52bd"
+  "coletado_em": "2026-08-18T10:09:05+00:00",
+  "sha256": "c85c1469d76ef86636e1fae0789bb2a5c5e0dd383f13059ef0ded37b4fb63dc0"
  },
  "secao": {
   "codigo": "R",
@@ -92,8 +92,8 @@
  "revisao": "O BC revisa os quatro últimos meses a cada divulgação (definitivo em m-4, provisório de m-1 a m-3).",
  "cobertura": {
   "inicio": "2020-11",
-  "fim": "2026-06",
-  "meses": 68
+  "fim": "2026-07",
+  "meses": 69
  },
  "unidades": {
   "valor": "R$ bilhões",
@@ -754,8 +754,8 @@
    {
     "ref": "2026-04",
     "pf_para_secao": 28.827,
-    "secao_para_pf": 24.951,
-    "liquido": 3.876,
+    "secao_para_pf": 24.949,
+    "liquido": 3.878,
     "tx_pf_para_secao": 410.12,
     "tx_secao_para_pf": 90.39,
     "pf_para_pj_total": 342.3,
@@ -763,23 +763,33 @@
    },
    {
     "ref": "2026-05",
-    "pf_para_secao": 29.485,
-    "secao_para_pf": 25.426,
+    "pf_para_secao": 29.484,
+    "secao_para_pf": 25.425,
     "liquido": 4.059,
-    "tx_pf_para_secao": 414.98,
+    "tx_pf_para_secao": 414.99,
     "tx_secao_para_pf": 93.89,
-    "pf_para_pj_total": 361.4,
+    "pf_para_pj_total": 361.3,
     "participacao": 8.16
    },
    {
     "ref": "2026-06",
-    "pf_para_secao": 33.43,
+    "pf_para_secao": 33.429,
     "secao_para_pf": 29.557,
-    "liquido": 3.873,
+    "liquido": 3.872,
     "tx_pf_para_secao": 517.23,
     "tx_secao_para_pf": 133.34,
-    "pf_para_pj_total": 358.0,
-    "participacao": 9.34
+    "pf_para_pj_total": 357.7,
+    "participacao": 9.35
+   },
+   {
+    "ref": "2026-07",
+    "pf_para_secao": 37.875,
+    "secao_para_pf": 32.738,
+    "liquido": 5.137,
+    "tx_pf_para_secao": 622.46,
+    "tx_secao_para_pf": 147.04,
+    "pf_para_pj_total": 376.6,
+    "participacao": 10.06
    }
   ]
  },
@@ -846,13 +856,13 @@
   },
   {
    "ano": 2026,
-   "meses": 6,
+   "meses": 7,
    "completo": false,
-   "pf_para_secao": 182.3,
-   "secao_para_pf": 157.13,
-   "liquido": 25.16,
-   "pf_para_pj_total": 2030.7,
-   "participacao": 8.98
+   "pf_para_secao": 220.17,
+   "secao_para_pf": 189.87,
+   "liquido": 30.3,
+   "pf_para_pj_total": 2406.9,
+   "participacao": 9.15
   }
  ],
  "comparacao": {

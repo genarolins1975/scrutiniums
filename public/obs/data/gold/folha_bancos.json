@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-17T10:17:32+00:00",
+ "gerado_em": "2026-08-18T10:15:47+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 239,
-  "total_editais": 796,
+  "total_editais": 801,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1062,6 +1062,51 @@
   ],
   "editais_recentes": [
    {
+    "ente": "FUNDACAO UNIVERSIDADE REGIONAL DE BLUMENAU - FURB",
+    "municipio": "Blumenau",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/82662958000102/2026/186"
+   },
+   {
+    "ente": "MUNICIPIO DE ALUMINIO",
+    "municipio": "Alumínio",
+    "uf": "SP",
+    "modalidade": "Concorrência - Eletrônica",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/58987629000157/2026/219"
+   },
+   {
+    "ente": "AUTARQUIA MUNICIPAL DE MOBILIDADE, TRANSITO E CIDADANIA - TRANSITAR",
+    "municipio": "Cascavel",
+    "uf": "PR",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/35607532000176/2026/66"
+   },
+   {
+    "ente": "MUNICIPIO DE ARARAQUARA",
+    "municipio": "Araraquara",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/45276128000110/2026/2698"
+   },
+   {
+    "ente": "MUNICIPIO DE CASA BRANCA",
+    "municipio": "Casa Branca",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/45735479000142/2026/17"
+   },
+   {
     "ente": "MUNICIPIO DE BONITO",
     "municipio": "Bonito",
     "uf": "PE",
@@ -1069,6 +1114,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-14",
     "url": "https://pncp.gov.br/compras/10121515000101/2026/39"
+   },
+   {
+    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
+    "municipio": "Brasília",
+    "uf": "DF",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-13",
+    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
    },
    {
     "ente": "MUNICIPIO DE IVAIPORA",
@@ -1089,13 +1143,13 @@
     "url": "https://pncp.gov.br/compras/46162178000130/2026/24"
    },
    {
-    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
-    "municipio": "Brasília",
-    "uf": "DF",
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
+    "municipio": "Aparecida",
+    "uf": "SP",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-13",
-    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
+    "publicacao": "2026-08-12",
+    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
    },
    {
     "ente": "MUNICIPIO DE ORIZANIA",
@@ -1107,15 +1161,6 @@
     "url": "https://pncp.gov.br/compras/01616271000139/2026/54"
    },
    {
-    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
-    "municipio": "Aparecida",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-12",
-    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
-   },
-   {
     "ente": "MUNICIPIO DE COTIA",
     "municipio": "Cotia",
     "uf": "SP",
@@ -1123,51 +1168,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-11",
     "url": "https://pncp.gov.br/compras/46523049000120/2026/148"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO PEDRO DOS FERROS",
-    "municipio": "São Pedro dos Ferros",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/19243500000182/2026/94"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO JOAQUIM DE BICAS",
-    "municipio": "São Joaquim de Bicas",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/01612516000150/2026/273"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO PEDRO DOS FERROS",
-    "municipio": "São Pedro dos Ferros",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/19243500000182/2026/93"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO JOSE DOS CAMPOS",
-    "municipio": "São José dos Campos",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/46643466000106/2026/704"
-   },
-   {
-    "ente": "CAIXA DE ASSISTENCIA  AO SERVIDOR PUBLICO MUNICIPAL DE SANTOS - CAPEP-SAUDE",
-    "municipio": "Santos",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/58197948000169/2026/25"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

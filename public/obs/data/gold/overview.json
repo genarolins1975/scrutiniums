@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-08-17T10:17:32+00:00",
+ "gerado_em": "2026-08-18T10:15:48+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
-  "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com sinais mistos entre os indicadores monitorados.",
+  "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com melhora predominante nos indicadores monitorados.",
   "ref": "2026-05-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 73/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 72/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.16)",
@@ -14,18 +14,18 @@
     "status": "calculado"
    },
    {
-    "texto": "IBC-Br (atividade): 113.994 → 109.53 índice (2002=100) (-4.46 em 1m)",
+    "texto": "Comprometimento de renda: 28.36 → 28.48 % (+0.12 em 1m)",
     "area": "pulse",
     "status": "observado",
     "fonte": "BCB/SGS",
     "ref": "2026-05-01"
    },
    {
-    "texto": "Comprometimento de renda: 28.36 → 28.48 % (+0.12 em 1m)",
+    "texto": "Taxa média de juros: 33.22 → 33.44 % a.a. (+0.22 em 1m)",
     "area": "pulse",
     "status": "observado",
     "fonte": "BCB/SGS",
-    "ref": "2026-05-01"
+    "ref": "2026-06-01"
    },
    {
     "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 74.2, piorando)",
@@ -212,18 +212,18 @@
     "key": "ibc_br",
     "indicador": "IBC-Br (atividade)",
     "area": "pulse",
-    "anterior": 113.994,
-    "atual": 109.53,
-    "delta_1m": -4.464,
-    "delta_3m": 2.709,
-    "relevancia_z": 1.18,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "anterior": 109.53,
+    "atual": 109.894,
+    "delta_1m": 0.364,
+    "delta_3m": -8.106,
+    "relevancia_z": 0.1,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
     "unidade": "índice (2002=100)",
     "fonte": "BCB/SGS",
     "serie": "24363",
-    "ref_anterior": "2026-04-01",
-    "ref_atual": "2026-05-01"
+    "ref_anterior": "2026-05-01",
+    "ref_atual": "2026-06-01"
    },
    {
     "key": "papelao",
@@ -244,23 +244,6 @@
    }
   ],
   "top_deterioracoes": [
-   {
-    "key": "ibc_br",
-    "indicador": "IBC-Br (atividade)",
-    "area": "pulse",
-    "anterior": 113.994,
-    "atual": 109.53,
-    "delta_1m": -4.464,
-    "delta_3m": 2.709,
-    "relevancia_z": 1.18,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
-    "unidade": "índice (2002=100)",
-    "fonte": "BCB/SGS",
-    "serie": "24363",
-    "ref_anterior": "2026-04-01",
-    "ref_atual": "2026-05-01"
-   },
    {
     "key": "comprometimento",
     "indicador": "Comprometimento de renda",
@@ -440,15 +423,15 @@
   "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade."
  },
  "ibcc_posicao": {
-  "atual": 92.22,
+  "atual": 92.24,
   "ref": "2026-05-01",
   "percentil_historico": 3.4,
   "m1": 93.11,
-  "m3": 91.83,
+  "m3": 91.87,
   "m12": 97.39,
-  "delta_1m": -0.89,
-  "delta_3m": 0.39,
-  "delta_12m": -5.17
+  "delta_1m": -0.87,
+  "delta_3m": 0.37,
+  "delta_12m": -5.15
  },
  "projecoes_resumo": {
   "inad_total": {

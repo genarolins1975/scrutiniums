@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-17T10:17:45+00:00",
+ "gerado_em": "2026-08-18T10:16:06+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -166,7 +166,7 @@
     "pct_carteira_inst": 13.6,
     "npl_inst_pct": 3.89,
     "basileia_pct": 14.9,
-    "taxa_aa": 31.41,
+    "taxa_aa": 25.95,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.79,
@@ -191,7 +191,7 @@
     "pct_carteira_inst": 9.4,
     "npl_inst_pct": 2.25,
     "basileia_pct": 14.77,
-    "taxa_aa": 21.38,
+    "taxa_aa": 21.55,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.87,
@@ -266,7 +266,7 @@
     "pct_carteira_inst": 90.9,
     "npl_inst_pct": 0.17,
     "basileia_pct": 14.19,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
@@ -291,7 +291,7 @@
     "pct_carteira_inst": 6.5,
     "npl_inst_pct": 4.04,
     "basileia_pct": 15.15,
-    "taxa_aa": 22.64,
+    "taxa_aa": 22.75,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.26,
@@ -341,8 +341,8 @@
     "pct_carteira_inst": 16.5,
     "npl_inst_pct": 1.74,
     "basileia_pct": 17.35,
-    "taxa_aa": null,
-    "taxa_casamento": null,
+    "taxa_aa": 38.19,
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.37,
      "m_produto": 1.08,
@@ -391,7 +391,7 @@
     "pct_carteira_inst": 35.4,
     "npl_inst_pct": 6.32,
     "basileia_pct": 15.36,
-    "taxa_aa": 22.01,
+    "taxa_aa": 24.91,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 11.77,
@@ -416,7 +416,7 @@
     "pct_carteira_inst": 3.6,
     "npl_inst_pct": 5.74,
     "basileia_pct": 15.91,
-    "taxa_aa": 24.63,
+    "taxa_aa": 32.5,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.12,
@@ -466,7 +466,7 @@
     "pct_carteira_inst": 9.2,
     "npl_inst_pct": 2.42,
     "basileia_pct": 13.55,
-    "taxa_aa": 25.66,
+    "taxa_aa": 29.75,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.09,
@@ -541,7 +541,7 @@
     "pct_carteira_inst": 8.6,
     "npl_inst_pct": 4.89,
     "basileia_pct": 13.98,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 1.52,
@@ -566,7 +566,7 @@
     "pct_carteira_inst": 7.7,
     "npl_inst_pct": 5.54,
     "basileia_pct": 13.01,
-    "taxa_aa": 38.07,
+    "taxa_aa": 35.91,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 8.0,
@@ -616,7 +616,7 @@
     "pct_carteira_inst": 14.6,
     "npl_inst_pct": 0.94,
     "basileia_pct": 15.83,
-    "taxa_aa": 20.77,
+    "taxa_aa": 24.79,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 3.16,
@@ -766,7 +766,7 @@
     "pct_carteira_inst": 20.0,
     "npl_inst_pct": 2.41,
     "basileia_pct": 14.04,
-    "taxa_aa": 35.77,
+    "taxa_aa": 25.27,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.83,
@@ -866,7 +866,7 @@
     "pct_carteira_inst": 39.9,
     "npl_inst_pct": 3.77,
     "basileia_pct": 22.7,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.14,
@@ -1116,8 +1116,8 @@
     "pct_carteira_inst": 45.9,
     "npl_inst_pct": null,
     "basileia_pct": 19.04,
-    "taxa_aa": null,
-    "taxa_casamento": null
+    "taxa_aa": 14.59,
+    "taxa_casamento": "cnpj8"
    },
    {
     "cod": "03632872",
@@ -1207,7 +1207,7 @@
     "pct_carteira_inst": 19.6,
     "npl_inst_pct": 1.75,
     "basileia_pct": 22.05,
-    "taxa_aa": 23.27,
+    "taxa_aa": 23.16,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 4.56,
@@ -1357,7 +1357,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 8.21,
     "basileia_pct": 15.01,
-    "taxa_aa": 35.19,
+    "taxa_aa": 33.61,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.56,
@@ -1882,7 +1882,7 @@
     "pct_carteira_inst": 15.4,
     "npl_inst_pct": 6.56,
     "basileia_pct": 17.29,
-    "taxa_aa": 21.56,
+    "taxa_aa": 21.09,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 8.06,
@@ -2073,7 +2073,7 @@
     "pct_carteira_inst": 6.7,
     "npl_inst_pct": 0.85,
     "basileia_pct": 13.46,
-    "taxa_aa": 24.44,
+    "taxa_aa": 24.41,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
@@ -2464,7 +2464,7 @@
     "pct_carteira_inst": 3.1,
     "npl_inst_pct": 11.29,
     "basileia_pct": 11.6,
-    "taxa_aa": 29.9,
+    "taxa_aa": 29.41,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.97,
@@ -2689,7 +2689,7 @@
     "pct_carteira_inst": 36.2,
     "npl_inst_pct": 19.77,
     "basileia_pct": 14.31,
-    "taxa_aa": 23.18,
+    "taxa_aa": 23.06,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 4.84,
@@ -3314,7 +3314,7 @@
     "pct_carteira_inst": 51.9,
     "npl_inst_pct": 7.24,
     "basileia_pct": 12.07,
-    "taxa_aa": 31.06,
+    "taxa_aa": 28.85,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 7.45,
@@ -3705,7 +3705,7 @@
     "pct_carteira_inst": 19.1,
     "npl_inst_pct": 4.66,
     "basileia_pct": 14.68,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 8.01,
@@ -3855,7 +3855,7 @@
     "pct_carteira_inst": 16.9,
     "npl_inst_pct": 3.47,
     "basileia_pct": 20.03,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.09,
@@ -3905,7 +3905,7 @@
     "pct_carteira_inst": 23.0,
     "npl_inst_pct": 8.19,
     "basileia_pct": 19.34,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 13.93,
@@ -4080,7 +4080,7 @@
     "pct_carteira_inst": 2.4,
     "npl_inst_pct": 3.17,
     "basileia_pct": 16.82,
-    "taxa_aa": 34.28,
+    "taxa_aa": 36.48,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 30.54,
@@ -4155,7 +4155,7 @@
     "pct_carteira_inst": 31.7,
     "npl_inst_pct": 6.94,
     "basileia_pct": 18.4,
-    "taxa_aa": 20.39,
+    "taxa_aa": 5.46,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 11.74,
@@ -4330,8 +4330,8 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 3.31,
     "basileia_pct": 16.03,
-    "taxa_aa": 30.7,
-    "taxa_casamento": "nome",
+    "taxa_aa": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.64,
      "m_produto": 1.08,
@@ -4505,7 +4505,7 @@
     "pct_carteira_inst": 17.0,
     "npl_inst_pct": 5.19,
     "basileia_pct": 15.21,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.24,
@@ -5221,7 +5221,7 @@
     "pct_carteira_inst": 4.2,
     "npl_inst_pct": 7.57,
     "basileia_pct": 13.31,
-    "taxa_aa": 38.76,
+    "taxa_aa": 38.55,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 6.46,
@@ -5312,7 +5312,7 @@
     "pct_carteira_inst": 9.1,
     "npl_inst_pct": 5.13,
     "basileia_pct": 17.28,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.0,
@@ -5362,7 +5362,7 @@
     "pct_carteira_inst": 16.0,
     "npl_inst_pct": 4.32,
     "basileia_pct": 23.97,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.91,
@@ -5803,7 +5803,7 @@
     "pct_carteira_inst": 10.4,
     "npl_inst_pct": 5.07,
     "basileia_pct": 16.61,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.02,
@@ -6544,7 +6544,7 @@
     "pct_carteira_inst": 7.8,
     "npl_inst_pct": 7.85,
     "basileia_pct": 14.64,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.83,
@@ -6694,7 +6694,7 @@
     "pct_carteira_inst": 9.5,
     "npl_inst_pct": 4.69,
     "basileia_pct": 16.81,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.65,
@@ -7260,7 +7260,7 @@
     "pct_carteira_inst": 10.4,
     "npl_inst_pct": 9.28,
     "basileia_pct": 15.04,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.03,
@@ -7310,7 +7310,7 @@
     "pct_carteira_inst": 15.0,
     "npl_inst_pct": 5.43,
     "basileia_pct": 15.12,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.11,
@@ -7676,7 +7676,7 @@
     "pct_carteira_inst": 14.9,
     "npl_inst_pct": 5.86,
     "basileia_pct": 15.61,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.48,
@@ -7701,7 +7701,7 @@
     "pct_carteira_inst": 15.0,
     "npl_inst_pct": 5.13,
     "basileia_pct": 16.11,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 8.52,
@@ -7751,7 +7751,7 @@
     "pct_carteira_inst": 11.0,
     "npl_inst_pct": 7.24,
     "basileia_pct": 17.08,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.42,
@@ -8183,7 +8183,7 @@
     "pct_carteira_inst": 20.1,
     "npl_inst_pct": 8.89,
     "basileia_pct": 14.95,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 13.08,
@@ -8249,7 +8249,7 @@
     "pct_carteira_inst": 20.1,
     "npl_inst_pct": 5.98,
     "basileia_pct": 19.4,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.1,
@@ -8324,8 +8324,8 @@
     "pct_carteira_inst": 8.6,
     "npl_inst_pct": 0.96,
     "basileia_pct": 12.89,
-    "taxa_aa": null,
-    "taxa_casamento": null,
+    "taxa_aa": 21.67,
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 6.22,
      "m_produto": 1.08,
@@ -8374,7 +8374,7 @@
     "pct_carteira_inst": 9.7,
     "npl_inst_pct": 4.64,
     "basileia_pct": 11.84,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 6.29,
@@ -8399,7 +8399,7 @@
     "pct_carteira_inst": 14.2,
     "npl_inst_pct": 5.42,
     "basileia_pct": 12.72,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 11.57,
@@ -8574,7 +8574,7 @@
     "pct_carteira_inst": 15.6,
     "npl_inst_pct": 6.89,
     "basileia_pct": 14.2,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.68,
@@ -8624,7 +8624,7 @@
     "pct_carteira_inst": 41.5,
     "npl_inst_pct": 5.3,
     "basileia_pct": 20.21,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.55,
@@ -8649,7 +8649,7 @@
     "pct_carteira_inst": 6.1,
     "npl_inst_pct": 7.35,
     "basileia_pct": 16.36,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.12,
@@ -8724,7 +8724,7 @@
     "pct_carteira_inst": 22.4,
     "npl_inst_pct": 6.23,
     "basileia_pct": 15.61,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.56,
@@ -8949,7 +8949,7 @@
     "pct_carteira_inst": 11.1,
     "npl_inst_pct": 10.47,
     "basileia_pct": 13.54,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 21.31,
@@ -8999,7 +8999,7 @@
     "pct_carteira_inst": 26.7,
     "npl_inst_pct": 17.71,
     "basileia_pct": 5.31,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 21.59,
@@ -9074,7 +9074,7 @@
     "pct_carteira_inst": 17.0,
     "npl_inst_pct": 5.14,
     "basileia_pct": 17.02,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.63,
@@ -9124,7 +9124,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.04,
     "basileia_pct": 13.48,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
@@ -9465,7 +9465,7 @@
     "pct_carteira_inst": 10.4,
     "npl_inst_pct": 6.15,
     "basileia_pct": 19.94,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 11.42,
@@ -9515,7 +9515,7 @@
     "pct_carteira_inst": 10.5,
     "npl_inst_pct": 5.13,
     "basileia_pct": 15.47,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.44,
@@ -9540,7 +9540,7 @@
     "pct_carteira_inst": 10.6,
     "npl_inst_pct": 7.33,
     "basileia_pct": 17.09,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.88,
@@ -9565,7 +9565,7 @@
     "pct_carteira_inst": 10.2,
     "npl_inst_pct": 9.25,
     "basileia_pct": 12.47,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.94,
@@ -9740,7 +9740,7 @@
     "pct_carteira_inst": 7.8,
     "npl_inst_pct": 2.89,
     "basileia_pct": 14.86,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.06,
@@ -9915,7 +9915,7 @@
     "pct_carteira_inst": 8.2,
     "npl_inst_pct": 4.68,
     "basileia_pct": 15.77,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 13.42,
@@ -9965,7 +9965,7 @@
     "pct_carteira_inst": 13.5,
     "npl_inst_pct": 8.36,
     "basileia_pct": 13.63,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.11,
@@ -10165,7 +10165,7 @@
     "pct_carteira_inst": 14.9,
     "npl_inst_pct": 4.16,
     "basileia_pct": 14.85,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 3.64,
@@ -10897,7 +10897,7 @@
     "pct_carteira_inst": 21.5,
     "npl_inst_pct": 6.44,
     "basileia_pct": 30.09,
-    "taxa_aa": 36.08,
+    "taxa_aa": 36.41,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 6.44,
@@ -10922,7 +10922,7 @@
     "pct_carteira_inst": 5.0,
     "npl_inst_pct": 5.1,
     "basileia_pct": 16.59,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 14.62,
@@ -11097,7 +11097,7 @@
     "pct_carteira_inst": 2.8,
     "npl_inst_pct": 38.91,
     "basileia_pct": 12.42,
-    "taxa_aa": 98.69,
+    "taxa_aa": 98.04,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 8.71,
@@ -11297,7 +11297,7 @@
     "pct_carteira_inst": 10.6,
     "npl_inst_pct": 4.96,
     "basileia_pct": 15.79,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.62,
@@ -11522,7 +11522,7 @@
     "pct_carteira_inst": 12.9,
     "npl_inst_pct": 4.01,
     "basileia_pct": 15.75,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.88,
@@ -11713,7 +11713,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 6.45,
     "basileia_pct": 19.52,
-    "taxa_aa": 33.5,
+    "taxa_aa": 38.14,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 1.09,
@@ -11788,7 +11788,7 @@
     "pct_carteira_inst": 68.6,
     "npl_inst_pct": 19.17,
     "basileia_pct": 24.06,
-    "taxa_aa": 62.2,
+    "taxa_aa": 66.86,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 15.84,
@@ -11963,7 +11963,7 @@
     "pct_carteira_inst": 7.1,
     "npl_inst_pct": 5.64,
     "basileia_pct": 22.58,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 17.18,
@@ -12038,7 +12038,7 @@
     "pct_carteira_inst": 9.2,
     "npl_inst_pct": 3.98,
     "basileia_pct": 18.76,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 6.97,
@@ -12063,7 +12063,7 @@
     "pct_carteira_inst": 17.0,
     "npl_inst_pct": 5.69,
     "basileia_pct": 12.98,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.83,
@@ -12163,7 +12163,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 3.27,
     "basileia_pct": 15.97,
-    "taxa_aa": 35.6,
+    "taxa_aa": 35.53,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.02,
@@ -12263,7 +12263,7 @@
     "pct_carteira_inst": 100.0,
     "npl_inst_pct": null,
     "basileia_pct": 21.2,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome"
    },
    {
@@ -12279,7 +12279,7 @@
     "pct_carteira_inst": 7.3,
     "npl_inst_pct": 6.93,
     "basileia_pct": 14.65,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.62,
@@ -12329,7 +12329,7 @@
     "pct_carteira_inst": 11.8,
     "npl_inst_pct": 2.96,
     "basileia_pct": 14.37,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 3.23,
@@ -12379,7 +12379,7 @@
     "pct_carteira_inst": 7.5,
     "npl_inst_pct": 4.85,
     "basileia_pct": 23.19,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 6.12,
@@ -12404,7 +12404,7 @@
     "pct_carteira_inst": 10.3,
     "npl_inst_pct": 9.39,
     "basileia_pct": 19.13,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 12.03,
@@ -12529,7 +12529,7 @@
     "pct_carteira_inst": 8.0,
     "npl_inst_pct": 7.21,
     "basileia_pct": 15.22,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.34,
@@ -12629,7 +12629,7 @@
     "pct_carteira_inst": 6.0,
     "npl_inst_pct": null,
     "basileia_pct": 42.2,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome"
    },
    {
@@ -12736,7 +12736,7 @@
     "pct_carteira_inst": 13.6,
     "npl_inst_pct": 12.64,
     "basileia_pct": 13.38,
-    "taxa_aa": 47.78,
+    "taxa_aa": 45.58,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 38.94,
@@ -12911,7 +12911,7 @@
     "pct_carteira_inst": 13.4,
     "npl_inst_pct": 2.5,
     "basileia_pct": 16.04,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 3.69,
@@ -13011,7 +13011,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 0.49,
     "basileia_pct": 12.63,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
@@ -13111,7 +13111,7 @@
     "pct_carteira_inst": 11.9,
     "npl_inst_pct": 4.84,
     "basileia_pct": 16.4,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 5.7,
@@ -13186,7 +13186,7 @@
     "pct_carteira_inst": 9.7,
     "npl_inst_pct": 6.17,
     "basileia_pct": 14.31,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.88,
@@ -13361,7 +13361,7 @@
     "pct_carteira_inst": 6.6,
     "npl_inst_pct": 3.24,
     "basileia_pct": 15.56,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.96,
@@ -13386,8 +13386,8 @@
     "pct_carteira_inst": 52.1,
     "npl_inst_pct": 0.07,
     "basileia_pct": 17.3,
-    "taxa_aa": null,
-    "taxa_casamento": null,
+    "taxa_aa": 46.29,
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 1.08,
@@ -13686,7 +13686,7 @@
     "pct_carteira_inst": 13.4,
     "npl_inst_pct": 4.37,
     "basileia_pct": 12.37,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.78,
@@ -13736,7 +13736,7 @@
     "pct_carteira_inst": 9.4,
     "npl_inst_pct": 5.25,
     "basileia_pct": 15.33,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 7.07,
@@ -13761,7 +13761,7 @@
     "pct_carteira_inst": 100.0,
     "npl_inst_pct": null,
     "basileia_pct": 14.59,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome"
    },
    {
@@ -13927,7 +13927,7 @@
     "pct_carteira_inst": 9.8,
     "npl_inst_pct": 5.35,
     "basileia_pct": 13.45,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.97,
@@ -13952,7 +13952,7 @@
     "pct_carteira_inst": 10.7,
     "npl_inst_pct": null,
     "basileia_pct": 62.94,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome"
    },
    {
@@ -14109,7 +14109,7 @@
     "pct_carteira_inst": 56.5,
     "npl_inst_pct": 11.23,
     "basileia_pct": 43.04,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 8.47,
@@ -14134,7 +14134,7 @@
     "pct_carteira_inst": 7.5,
     "npl_inst_pct": 4.94,
     "basileia_pct": 21.68,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 6.91,
@@ -14209,7 +14209,7 @@
     "pct_carteira_inst": 10.4,
     "npl_inst_pct": 1.55,
     "basileia_pct": 20.59,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.52,
@@ -14359,7 +14359,7 @@
     "pct_carteira_inst": 8.2,
     "npl_inst_pct": 13.82,
     "basileia_pct": 14.05,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 19.4,
@@ -14409,7 +14409,7 @@
     "pct_carteira_inst": 26.1,
     "npl_inst_pct": null,
     "basileia_pct": 43.38,
-    "taxa_aa": 30.7,
+    "taxa_aa": 31.65,
     "taxa_casamento": "nome"
    },
    {
@@ -14575,7 +14575,7 @@
     "pct_carteira_inst": 4.4,
     "npl_inst_pct": 4.45,
     "basileia_pct": 18.53,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.34,
@@ -14800,7 +14800,7 @@
     "pct_carteira_inst": 4.1,
     "npl_inst_pct": 4.98,
     "basileia_pct": 15.19,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.78,
@@ -14975,7 +14975,7 @@
     "pct_carteira_inst": 9.2,
     "npl_inst_pct": 3.39,
     "basileia_pct": 18.3,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 10.59,
@@ -15041,7 +15041,7 @@
     "pct_carteira_inst": 10.0,
     "npl_inst_pct": 6.15,
     "basileia_pct": 14.8,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 13.24,
@@ -15182,7 +15182,7 @@
     "pct_carteira_inst": 8.3,
     "npl_inst_pct": 2.5,
     "basileia_pct": 17.27,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 2.24,
@@ -15464,7 +15464,7 @@
     "pct_carteira_inst": 6.0,
     "npl_inst_pct": 11.1,
     "basileia_pct": 17.07,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 27.76,
@@ -16619,7 +16619,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 27.85,
     "basileia_pct": 13.48,
-    "taxa_aa": 89.72,
+    "taxa_aa": 91.04,
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 18.89,
@@ -18520,7 +18520,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 2.22,
     "basileia_pct": 18.26,
-    "taxa_aa": 27.45,
+    "taxa_aa": 27.38,
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.0,
@@ -18611,7 +18611,7 @@
     "pct_carteira_inst": 66.8,
     "npl_inst_pct": null,
     "basileia_pct": 52496.08,
-    "taxa_aa": 23.27,
+    "taxa_aa": 23.13,
     "taxa_casamento": "cnpj8"
    }
   ],
@@ -18905,14 +18905,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo até 365 dias - Prefixado",
-     "inicio": "2026-07-27",
-     "fim": "2026-07-31",
-     "n_inst": 46,
+     "inicio": "2026-07-28",
+     "fim": "2026-08-03",
+     "n_inst": 49,
      "mediana_aa": 34.38,
-     "p25_aa": 29.27,
-     "p75_aa": 46.45,
+     "p25_aa": 27.48,
+     "p75_aa": 56.96,
      "min_aa": 0.13,
-     "max_aa": 305.32,
+     "max_aa": 304.96,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -19600,14 +19600,21 @@
        "p25_aa": 29.27,
        "p75_aa": 46.45,
        "n": 46
+      },
+      {
+       "inicio": "2026-07-28",
+       "mediana_aa": 34.38,
+       "p25_aa": 27.48,
+       "p75_aa": 56.96,
+       "n": 49
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 34.71,
-       "p25_aa": 33.13,
-       "p75_aa": 36.81,
+       "mediana_aa": 33.99,
+       "p25_aa": 27.48,
+       "p75_aa": 37.44,
        "serie": [
         {
          "inicio": "2024-09-20",
@@ -20294,14 +20301,21 @@
          "p25_aa": 33.13,
          "p75_aa": 36.81,
          "n": 6
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 33.99,
+         "p25_aa": 27.48,
+         "p75_aa": 37.44,
+         "n": 6
         }
        ]
       },
       "S3": {
        "n": 14,
-       "mediana_aa": 37.84,
-       "p25_aa": 30.33,
-       "p75_aa": 71.42,
+       "mediana_aa": 33.67,
+       "p25_aa": 29.27,
+       "p75_aa": 56.96,
        "serie": [
         {
          "inicio": "2024-09-19",
@@ -20988,14 +21002,21 @@
          "p25_aa": 30.33,
          "p75_aa": 71.42,
          "n": 14
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 33.67,
+         "p25_aa": 29.27,
+         "p75_aa": 56.96,
+         "n": 14
         }
        ]
       },
       "S4": {
-       "n": 19,
-       "mediana_aa": 34.19,
+       "n": 21,
+       "mediana_aa": 34.38,
        "p25_aa": 26.08,
-       "p75_aa": 46.06,
+       "p75_aa": 46.29,
        "serie": [
         {
          "inicio": "2024-09-19",
@@ -21682,6 +21703,105 @@
          "p25_aa": 26.08,
          "p75_aa": 46.06,
          "n": 19
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 34.38,
+         "p25_aa": 26.08,
+         "p75_aa": 46.29,
+         "n": 21
+        }
+       ]
+      },
+      "S5": {
+       "n": 5,
+       "mediana_aa": 65.25,
+       "p25_aa": 29.27,
+       "p75_aa": 95.03,
+       "serie": [
+        {
+         "inicio": "2025-05-06",
+         "mediana_aa": 66.99,
+         "p25_aa": 44.96,
+         "p75_aa": 108.46,
+         "n": 5
+        },
+        {
+         "inicio": "2025-05-23",
+         "mediana_aa": 57.18,
+         "p25_aa": 47.57,
+         "p75_aa": 61.63,
+         "n": 5
+        },
+        {
+         "inicio": "2025-11-07",
+         "mediana_aa": 67.6,
+         "p25_aa": 57.68,
+         "p75_aa": 80.39,
+         "n": 5
+        },
+        {
+         "inicio": "2025-11-21",
+         "mediana_aa": 66.29,
+         "p25_aa": 57.75,
+         "p75_aa": 220.82,
+         "n": 5
+        },
+        {
+         "inicio": "2026-03-12",
+         "mediana_aa": 81.14,
+         "p25_aa": 30.32,
+         "p75_aa": 168.15,
+         "n": 5
+        },
+        {
+         "inicio": "2026-04-24",
+         "mediana_aa": 31.15,
+         "p25_aa": 28.83,
+         "p75_aa": 52.91,
+         "n": 5
+        },
+        {
+         "inicio": "2026-06-18",
+         "mediana_aa": 65.44,
+         "p25_aa": 55.64,
+         "p75_aa": 129.82,
+         "n": 5
+        },
+        {
+         "inicio": "2026-06-24",
+         "mediana_aa": 65.16,
+         "p25_aa": 30.33,
+         "p75_aa": 113.06,
+         "n": 5
+        },
+        {
+         "inicio": "2026-06-30",
+         "mediana_aa": 31.68,
+         "p25_aa": 29.26,
+         "p75_aa": 129.81,
+         "n": 6
+        },
+        {
+         "inicio": "2026-07-06",
+         "mediana_aa": 31.68,
+         "p25_aa": 29.25,
+         "p75_aa": 129.81,
+         "n": 6
+        },
+        {
+         "inicio": "2026-07-20",
+         "mediana_aa": 47.71,
+         "p25_aa": 29.23,
+         "p75_aa": 107.94,
+         "n": 5
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 65.25,
+         "p25_aa": 29.27,
+         "p75_aa": 95.03,
+         "n": 5
         }
        ]
       }
@@ -21724,56 +21844,92 @@
        "sr": "S3"
       },
       {
+       "cnpj8": "17359351",
+       "nome": "STARA FINANCEIRA S.A. - CFI",
+       "taxa_am": 1.67,
+       "taxa_aa": 22.04,
+       "posicao": 5,
+       "cod_congl": "C0083711",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "10264663",
        "nome": "BANCOSEGURO S.A.",
        "taxa_am": 1.68,
-       "taxa_aa": 22.14,
-       "posicao": 5,
+       "taxa_aa": 22.13,
+       "posicao": 6,
        "cod_congl": "C0084813",
        "sr": "S4"
       },
       {
        "cnpj8": "37880206",
        "nome": "CORA SCFI",
-       "taxa_am": 1.8,
-       "taxa_aa": 23.92,
-       "posicao": 6,
+       "taxa_am": 1.79,
+       "taxa_aa": 23.71,
+       "posicao": 7,
        "cod_congl": "C0085317",
        "sr": "S5"
-      },
-      {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 1.83,
-       "taxa_aa": 24.33,
-       "posicao": 7,
-       "cod_congl": "C0081593",
-       "sr": "S2"
       },
       {
        "cnpj8": "04866275",
        "nome": "BANCO INBURSA",
        "taxa_am": 1.84,
-       "taxa_aa": 24.44,
+       "taxa_aa": 24.41,
        "posicao": 8,
        "cod_congl": "C0081335",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+       "taxa_am": 1.88,
+       "taxa_aa": 24.97,
+       "posicao": 9,
+       "cod_congl": "C0081593",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "28127603",
+       "nome": "BCO BANESTES S.A.",
+       "taxa_am": 1.9,
+       "taxa_aa": 25.27,
+       "posicao": 10,
+       "cod_congl": "C0080147",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "60701190",
+       "nome": "ITAÚ UNIBANCO S.A.",
+       "taxa_am": 1.95,
+       "taxa_aa": 26.06,
+       "posicao": 11,
+       "cod_congl": "C0080099",
+       "sr": "S1"
       },
       {
        "cnpj8": "62448932",
        "nome": "MULTIPLIKE FINANCEIRA S.A. SCFI",
        "taxa_am": 1.95,
        "taxa_aa": 26.08,
-       "posicao": 9,
+       "posicao": 12,
        "cod_congl": "C0088651",
        "sr": "S4"
       },
       {
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
+       "taxa_am": 2.04,
+       "taxa_aa": 27.48,
+       "posicao": 13,
+       "cod_congl": "C0080738",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "71027866",
        "nome": "BCO BS2 S.A.",
-       "taxa_am": 2.13,
-       "taxa_aa": 28.84,
-       "posicao": 10,
+       "taxa_am": 2.11,
+       "taxa_aa": 28.45,
+       "posicao": 14,
        "cod_congl": "C0080422",
        "sr": "S3"
       },
@@ -21782,7 +21938,7 @@
        "nome": "LEBES FINANCEIRA S.A. - CFI",
        "taxa_am": 2.16,
        "taxa_aa": 29.27,
-       "posicao": 11,
+       "posicao": 15,
        "cod_congl": "C0083656",
        "sr": "S5"
       },
@@ -21791,7 +21947,7 @@
        "nome": "BCO ABC BRASIL S.A.",
        "taxa_am": 2.16,
        "taxa_aa": 29.27,
-       "posicao": 12,
+       "posicao": 16,
        "cod_congl": "C0080312",
        "sr": "S3"
       },
@@ -21800,7 +21956,7 @@
        "nome": "BCO DAYCOVAL S.A",
        "taxa_am": 2.23,
        "taxa_aa": 30.33,
-       "posicao": 13,
+       "posicao": 17,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
@@ -21809,25 +21965,16 @@
        "nome": "BCO VOLVO BRASIL S.A.",
        "taxa_am": 2.24,
        "taxa_aa": 30.49,
-       "posicao": 14,
+       "posicao": 18,
        "cod_congl": "C0080769",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "60701190",
-       "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 2.24,
-       "taxa_aa": 30.51,
-       "posicao": 15,
-       "cod_congl": "C0080099",
-       "sr": "S1"
       },
       {
        "cnpj8": "00795423",
        "nome": "BANCO SEMEAR",
        "taxa_am": 2.32,
        "taxa_aa": 31.65,
-       "posicao": 16,
+       "posicao": 19,
        "cod_congl": "C0081380",
        "sr": "S4"
       },
@@ -21836,7 +21983,7 @@
        "nome": "BANCO TOPÁZIO S.A.",
        "taxa_am": 2.32,
        "taxa_aa": 31.66,
-       "posicao": 17,
+       "posicao": 20,
        "cod_congl": "C0081517",
        "sr": "S4"
       },
@@ -21845,87 +21992,60 @@
        "nome": "PEFISA S.A. - C.F.I.",
        "taxa_am": 2.37,
        "taxa_aa": 32.46,
-       "posicao": 18,
+       "posicao": 21,
        "cod_congl": "C0080305",
        "sr": "S4"
       },
       {
-       "cnpj8": "00360305",
-       "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 2.41,
-       "taxa_aa": 33.13,
-       "posicao": 19,
-       "cod_congl": "C0080738",
-       "sr": "S1"
+       "cnpj8": "04862600",
+       "nome": "PORTOSEG S.A. CFI",
+       "taxa_am": 2.45,
+       "taxa_aa": 33.67,
+       "posicao": 22,
+       "cod_congl": "C0080642",
+       "sr": "S3"
       },
       {
-       "cnpj8": "03634220",
-       "nome": "BCO HONDA S.A.",
-       "taxa_am": 2.44,
-       "taxa_aa": 33.5,
-       "posicao": 20,
-       "cod_congl": "C0080611",
-       "sr": "S4"
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 2.47,
+       "taxa_aa": 33.99,
+       "posicao": 23,
+       "cod_congl": "C0080329",
+       "sr": "S1"
       },
       {
        "cnpj8": "60850229",
        "nome": "OMNI BANCO S.A.",
        "taxa_am": 2.48,
        "taxa_aa": 34.19,
-       "posicao": 21,
+       "posicao": 24,
        "cod_congl": "C0080460",
        "sr": "S4"
-      },
-      {
-       "cnpj8": "04862600",
-       "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 2.49,
-       "taxa_aa": 34.34,
-       "posicao": 22,
-       "cod_congl": "C0080642",
-       "sr": "S3"
       },
       {
        "cnpj8": "35551187",
        "nome": "PLANTAE CFI",
        "taxa_am": 2.49,
        "taxa_aa": 34.38,
-       "posicao": 23,
+       "posicao": 25,
        "cod_congl": "C0085630",
        "sr": "S4"
       },
       {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 2.51,
-       "taxa_aa": 34.71,
-       "posicao": 24,
-       "cod_congl": "C0080329",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 2.52,
-       "taxa_aa": 34.77,
-       "posicao": 25,
+       "taxa_am": 2.54,
+       "taxa_aa": 35.04,
+       "posicao": 26,
        "cod_congl": "C0080075",
        "sr": "S1"
-      },
-      {
-       "cnpj8": "31880826",
-       "nome": "BCO GUANABARA S.A.",
-       "taxa_am": 2.55,
-       "taxa_aa": 35.33,
-       "posicao": 26,
-       "cod_congl": "C0081672",
-       "sr": "S4"
       },
       {
        "cnpj8": "33603457",
        "nome": "BCO RODOBENS S.A.",
        "taxa_am": 2.57,
-       "taxa_aa": 35.6,
+       "taxa_aa": 35.53,
        "posicao": 27,
        "cod_congl": "C0080855",
        "sr": "S4"
@@ -21933,20 +22053,20 @@
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 2.65,
-       "taxa_aa": 36.81,
+       "taxa_am": 2.69,
+       "taxa_aa": 37.44,
        "posicao": 28,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
       {
-       "cnpj8": "04913711",
-       "nome": "BCO DO EST. DO PA S.A.",
-       "taxa_am": 2.71,
-       "taxa_aa": 37.84,
+       "cnpj8": "03634220",
+       "nome": "BCO HONDA S.A.",
+       "taxa_am": 2.73,
+       "taxa_aa": 38.14,
        "posicao": 29,
-       "cod_congl": "C0081586",
-       "sr": "S3"
+       "cod_congl": "C0080611",
+       "sr": "S4"
       },
       {
        "cnpj8": "13009717",
@@ -21958,11 +22078,20 @@
        "sr": "S4"
       },
       {
+       "cnpj8": "04913711",
+       "nome": "BCO DO EST. DO PA S.A.",
+       "taxa_am": 2.98,
+       "taxa_aa": 42.24,
+       "posicao": 31,
+       "cod_congl": "C0081586",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 2.92,
-       "taxa_aa": 41.2,
-       "posicao": 31,
+       "taxa_am": 2.98,
+       "taxa_aa": 42.24,
+       "posicao": 32,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
@@ -21971,133 +22100,151 @@
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 3.08,
        "taxa_aa": 43.91,
-       "posicao": 32,
+       "posicao": 33,
        "cod_congl": "C0081249",
        "sr": "S3"
       },
       {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 3.16,
-       "taxa_aa": 45.31,
-       "posicao": 33,
-       "cod_congl": "C0080154",
-       "sr": "S2"
+       "cnpj8": "30306294",
+       "nome": "BANCO BTG PACTUAL S.A.",
+       "taxa_am": 3.2,
+       "taxa_aa": 45.96,
+       "posicao": 34,
+       "cod_congl": "C0080336",
+       "sr": "S1"
       },
       {
        "cnpj8": "06249129",
        "nome": "RPW S.A. SCFI",
        "taxa_am": 3.21,
        "taxa_aa": 46.06,
-       "posicao": 34,
+       "posicao": 35,
        "cod_congl": "C0083209",
        "sr": "S4"
       },
       {
-       "cnpj8": "30306294",
-       "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 3.23,
-       "taxa_aa": 46.45,
-       "posicao": 35,
-       "cod_congl": "C0080336",
-       "sr": "S1"
+       "cnpj8": "41498340",
+       "nome": "TENTOS S.A. CFI",
+       "taxa_am": 3.22,
+       "taxa_aa": 46.29,
+       "posicao": 36,
+       "cod_congl": "C0085788",
+       "sr": "S4"
       },
       {
        "cnpj8": "00000208",
        "nome": "BRB - BCO DE BRASILIA S.A.",
        "taxa_am": 3.83,
        "taxa_aa": 56.96,
-       "posicao": 36,
+       "posicao": 37,
        "cod_congl": "C0080288",
        "sr": "S3"
       },
       {
+       "cnpj8": "37229413",
+       "nome": "SCFI EFÍ S.A.",
+       "taxa_am": 4.27,
+       "taxa_aa": 65.25,
+       "posicao": 38,
+       "cod_congl": "C0084978",
+       "sr": "S5"
+      },
+      {
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 4.34,
+       "taxa_aa": 66.41,
+       "posicao": 39,
+       "cod_congl": "C0080154",
+       "sr": "S2"
+      },
+      {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 4.59,
-       "taxa_aa": 71.42,
-       "posicao": 37,
+       "taxa_am": 4.56,
+       "taxa_aa": 70.71,
+       "posicao": 40,
        "cod_congl": "C0084844",
        "sr": "S3"
       },
       {
        "cnpj8": "05192316",
        "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 5.26,
-       "taxa_aa": 84.92,
-       "posicao": 38,
+       "taxa_am": 5.38,
+       "taxa_aa": 87.44,
+       "posicao": 41,
        "cod_congl": "C0080831",
        "sr": "S4"
       },
       {
-       "cnpj8": "28127603",
-       "nome": "BCO BANESTES S.A.",
-       "taxa_am": 5.32,
-       "taxa_aa": 86.23,
-       "posicao": 39,
-       "cod_congl": "C0080147",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 5.69,
-       "taxa_aa": 94.34,
-       "posicao": 40,
+       "taxa_am": 5.67,
+       "taxa_aa": 93.85,
+       "posicao": 42,
        "cod_congl": "C0084693",
        "sr": "S3"
       },
       {
        "cnpj8": "48703388",
        "nome": "ASA SCFI S.A.",
-       "taxa_am": 5.97,
-       "taxa_aa": 100.49,
-       "posicao": 41,
+       "taxa_am": 5.72,
+       "taxa_aa": 95.03,
+       "posicao": 43,
        "cod_congl": "C0086608",
        "sr": "S5"
       },
       {
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 7.1,
+       "taxa_aa": 127.71,
+       "posicao": 44,
+       "cod_congl": "C0080659",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "04814563",
        "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 7.94,
-       "taxa_aa": 150.1,
-       "posicao": 42,
+       "taxa_am": 7.92,
+       "taxa_aa": 149.68,
+       "posicao": 45,
        "cod_congl": "C0083539",
        "sr": "S4"
       },
       {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 8.19,
-       "taxa_aa": 157.21,
-       "posicao": 43,
-       "cod_congl": "C0080659",
+       "cnpj8": "36947229",
+       "nome": "COBUCCIO S.A. SCFI",
+       "taxa_am": 8.24,
+       "taxa_aa": 158.52,
+       "posicao": 46,
+       "cod_congl": "C0085173",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "37679449",
+       "nome": "MERCADO CRÉDITO SCFI S.A.",
+       "taxa_am": 10.42,
+       "taxa_aa": 228.4,
+       "posicao": 47,
+       "cod_congl": "C0084820",
        "sr": "S4"
       },
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 9.48,
-       "taxa_aa": 196.53,
-       "posicao": 44,
+       "taxa_am": 10.44,
+       "taxa_aa": 229.28,
+       "posicao": 48,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
       {
-       "cnpj8": "37679449",
-       "nome": "MERCADO CRÉDITO SCFI S.A.",
-       "taxa_am": 10.36,
-       "taxa_aa": 226.32,
-       "posicao": 45,
-       "cod_congl": "C0084820",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "05503849",
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
-       "taxa_am": 12.37,
-       "taxa_aa": 305.32,
-       "posicao": 46,
+       "taxa_am": 12.36,
+       "taxa_aa": 304.96,
+       "posicao": 49,
        "cod_congl": "C0083474",
        "sr": "S5"
       }
@@ -22106,14 +22253,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo superior a 365 dias - Prefixado",
-     "inicio": "2026-07-27",
-     "fim": "2026-07-31",
-     "n_inst": 54,
-     "mediana_aa": 26.7,
-     "p25_aa": 20.45,
-     "p75_aa": 38.54,
+     "inicio": "2026-07-28",
+     "fim": "2026-08-03",
+     "n_inst": 57,
+     "mediana_aa": 29.3,
+     "p25_aa": 22.5,
+     "p75_aa": 41.27,
      "min_aa": 0.1,
-     "max_aa": 122.02,
+     "max_aa": 156.12,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -22752,14 +22899,21 @@
        "p25_aa": 20.45,
        "p75_aa": 38.54,
        "n": 54
+      },
+      {
+       "inicio": "2026-07-28",
+       "mediana_aa": 29.3,
+       "p25_aa": 22.5,
+       "p75_aa": 41.27,
+       "n": 57
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 6,
-       "mediana_aa": 25.23,
-       "p25_aa": 25.08,
-       "p75_aa": 30.24,
+       "mediana_aa": 25.57,
+       "p25_aa": 25.29,
+       "p75_aa": 31.36,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -23397,14 +23551,21 @@
          "p25_aa": 25.08,
          "p75_aa": 30.24,
          "n": 6
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 25.57,
+         "p25_aa": 25.29,
+         "p75_aa": 31.36,
+         "n": 6
         }
        ]
       },
       "S2": {
-       "n": 5,
-       "mediana_aa": 19.69,
+       "n": 6,
+       "mediana_aa": 24.86,
        "p25_aa": 18.67,
-       "p75_aa": 35.19,
+       "p75_aa": 38.19,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -24014,14 +24175,21 @@
          "p25_aa": 18.67,
          "p75_aa": 35.19,
          "n": 5
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 24.86,
+         "p25_aa": 18.67,
+         "p75_aa": 38.19,
+         "n": 6
         }
        ]
       },
       "S3": {
        "n": 17,
-       "mediana_aa": 25.46,
-       "p25_aa": 20.17,
-       "p75_aa": 35.77,
+       "mediana_aa": 29.75,
+       "p25_aa": 21.6,
+       "p75_aa": 35.91,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -24659,14 +24827,21 @@
          "p25_aa": 20.17,
          "p75_aa": 35.77,
          "n": 17
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 29.75,
+         "p25_aa": 21.6,
+         "p75_aa": 35.91,
+         "n": 17
         }
        ]
       },
       "S4": {
-       "n": 23,
+       "n": 25,
        "mediana_aa": 26.88,
-       "p25_aa": 23.18,
-       "p75_aa": 38.54,
+       "p25_aa": 21.31,
+       "p75_aa": 44.31,
        "serie": [
         {
          "inicio": "2024-11-06",
@@ -25304,6 +25479,13 @@
          "p25_aa": 23.18,
          "p75_aa": 38.54,
          "n": 23
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 26.88,
+         "p25_aa": 21.31,
+         "p75_aa": 44.31,
+         "n": 25
         }
        ]
       }
@@ -25321,8 +25503,8 @@
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
-       "taxa_am": 1.02,
-       "taxa_aa": 13.0,
+       "taxa_am": 1.08,
+       "taxa_aa": 13.82,
        "posicao": 2,
        "cod_congl": "C0080271",
        "sr": "S3"
@@ -25382,29 +25564,11 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 1.48,
-       "taxa_aa": 19.25,
-       "posicao": 9,
-       "cod_congl": "C0080312",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "07237373",
-       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 1.51,
-       "taxa_aa": 19.69,
-       "posicao": 10,
-       "cod_congl": "C0081593",
-       "sr": "S2"
-      },
-      {
        "cnpj8": "74828799",
        "nome": "NOVO BCO CONTINENTAL S.A. - BM",
        "taxa_am": 1.52,
        "taxa_aa": 19.9,
-       "posicao": 11,
+       "posicao": 9,
        "cod_congl": "C0081768",
        "sr": "S4"
       },
@@ -25413,7 +25577,7 @@
        "nome": "BCO GM S.A.",
        "taxa_am": 1.54,
        "taxa_aa": 20.11,
-       "posicao": 12,
+       "posicao": 10,
        "cod_congl": "C0080848",
        "sr": "S3"
       },
@@ -25422,24 +25586,42 @@
        "nome": "BCO FIBRA S.A.",
        "taxa_am": 1.54,
        "taxa_aa": 20.17,
-       "posicao": 13,
+       "posicao": 11,
        "cod_congl": "C0081483",
        "sr": "S3"
       },
       {
        "cnpj8": "62448932",
        "nome": "MULTIPLIKE FINANCEIRA S.A. SCFI",
-       "taxa_am": 1.56,
-       "taxa_aa": 20.45,
-       "posicao": 14,
+       "taxa_am": 1.54,
+       "taxa_aa": 20.18,
+       "posicao": 12,
        "cod_congl": "C0088651",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "17359351",
+       "nome": "STARA FINANCEIRA S.A. - CFI",
+       "taxa_am": 1.62,
+       "taxa_aa": 21.31,
+       "posicao": 13,
+       "cod_congl": "C0083711",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "17184037",
+       "nome": "BCO MERCANTIL DO BRASIL S.A.",
+       "taxa_am": 1.64,
+       "taxa_aa": 21.6,
+       "posicao": 14,
+       "cod_congl": "C0080123",
+       "sr": "S3"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 1.71,
-       "taxa_aa": 22.55,
+       "taxa_aa": 22.5,
        "posicao": 15,
        "cod_congl": "C0080738",
        "sr": "S1"
@@ -25447,8 +25629,8 @@
       {
        "cnpj8": "17351180",
        "nome": "BCO TRIANGULO S.A.",
-       "taxa_am": 1.75,
-       "taxa_aa": 23.18,
+       "taxa_am": 1.74,
+       "taxa_aa": 23.06,
        "posicao": 16,
        "cod_congl": "C0081438",
        "sr": "S4"
@@ -25456,8 +25638,8 @@
       {
        "cnpj8": "38486817",
        "nome": "BCO DES. DE MG S.A.",
-       "taxa_am": 1.76,
-       "taxa_aa": 23.27,
+       "taxa_am": 1.75,
+       "taxa_aa": 23.16,
        "posicao": 17,
        "cod_congl": "C0081328",
        "sr": "S3"
@@ -25481,22 +25663,22 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "62232889",
-       "nome": "BCO DAYCOVAL S.A",
+       "cnpj8": "07237373",
+       "nome": "BCO DO NORDESTE DO BRASIL S.A.",
        "taxa_am": 1.87,
-       "taxa_aa": 24.83,
+       "taxa_aa": 24.86,
        "posicao": 20,
-       "cod_congl": "C0081744",
-       "sr": "S3"
+       "cod_congl": "C0081593",
+       "sr": "S2"
       },
       {
-       "cnpj8": "90400888",
-       "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 1.88,
-       "taxa_aa": 25.08,
+       "cnpj8": "04862600",
+       "nome": "PORTOSEG S.A. CFI",
+       "taxa_am": 1.89,
+       "taxa_aa": 25.14,
        "posicao": 21,
-       "cod_congl": "C0080185",
-       "sr": "S1"
+       "cod_congl": "C0080642",
+       "sr": "S3"
       },
       {
        "cnpj8": "78632767",
@@ -25508,22 +25690,22 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "60701190",
-       "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 1.89,
-       "taxa_aa": 25.23,
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 1.9,
+       "taxa_aa": 25.29,
        "posicao": 23,
-       "cod_congl": "C0080099",
+       "cod_congl": "C0080185",
        "sr": "S1"
       },
       {
-       "cnpj8": "04862600",
-       "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 1.91,
-       "taxa_aa": 25.46,
+       "cnpj8": "60701190",
+       "nome": "ITAÚ UNIBANCO S.A.",
+       "taxa_am": 1.92,
+       "taxa_aa": 25.57,
        "posicao": 24,
-       "cod_congl": "C0080642",
-       "sr": "S3"
+       "cod_congl": "C0080099",
+       "sr": "S1"
       },
       {
        "cnpj8": "11970623",
@@ -25544,64 +25726,64 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.99,
-       "taxa_aa": 26.7,
-       "posicao": 27,
-       "cod_congl": "C0080329",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
        "taxa_am": 2.0,
        "taxa_aa": 26.88,
-       "posicao": 28,
+       "posicao": 27,
        "cod_congl": "C0080477",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "09313766",
+       "nome": "CARUANA SCFI",
+       "taxa_am": 2.14,
+       "taxa_aa": 28.85,
+       "posicao": 28,
+       "cod_congl": "C0083591",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 2.17,
+       "taxa_aa": 29.3,
+       "posicao": 29,
+       "cod_congl": "C0080329",
+       "sr": "S1"
       },
       {
        "cnpj8": "00795423",
        "nome": "BANCO SEMEAR",
        "taxa_am": 2.18,
        "taxa_aa": 29.54,
-       "posicao": 29,
+       "posicao": 30,
        "cod_congl": "C0081380",
        "sr": "S4"
       },
       {
-       "cnpj8": "30306294",
-       "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 2.23,
-       "taxa_aa": 30.24,
-       "posicao": 30,
-       "cod_congl": "C0080336",
-       "sr": "S1"
+       "cnpj8": "62232889",
+       "nome": "BCO DAYCOVAL S.A",
+       "taxa_am": 2.19,
+       "taxa_aa": 29.75,
+       "posicao": 31,
+       "cod_congl": "C0081744",
+       "sr": "S3"
       },
       {
        "cnpj8": "04913711",
        "nome": "BCO DO EST. DO PA S.A.",
        "taxa_am": 2.26,
        "taxa_aa": 30.71,
-       "posicao": 31,
+       "posicao": 32,
        "cod_congl": "C0081586",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "09313766",
-       "nome": "CARUANA SCFI",
-       "taxa_am": 2.28,
-       "taxa_aa": 31.06,
-       "posicao": 32,
-       "cod_congl": "C0083591",
-       "sr": "S4"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
        "taxa_am": 2.3,
-       "taxa_aa": 31.41,
+       "taxa_aa": 31.36,
        "posicao": 33,
        "cod_congl": "C0080075",
        "sr": "S1"
@@ -25609,26 +25791,26 @@
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 2.37,
-       "taxa_aa": 32.41,
+       "taxa_am": 2.36,
+       "taxa_aa": 32.26,
        "posicao": 34,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
-       "cnpj8": "31872495",
-       "nome": "BCO C6 S.A.",
-       "taxa_am": 2.47,
-       "taxa_aa": 33.95,
+       "cnpj8": "28127603",
+       "nome": "BCO BANESTES S.A.",
+       "taxa_am": 2.36,
+       "taxa_aa": 32.3,
        "posicao": 35,
-       "cod_congl": "C0084844",
+       "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
        "cnpj8": "59588111",
        "nome": "BCO VOTORANTIM S.A.",
-       "taxa_am": 2.54,
-       "taxa_aa": 35.19,
+       "taxa_am": 2.44,
+       "taxa_aa": 33.61,
        "posicao": 36,
        "cod_congl": "C0080484",
        "sr": "S2"
@@ -25643,12 +25825,21 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "28127603",
-       "nome": "BCO BANESTES S.A.",
-       "taxa_am": 2.58,
-       "taxa_aa": 35.77,
+       "cnpj8": "04902979",
+       "nome": "BCO DA AMAZONIA S.A.",
+       "taxa_am": 2.59,
+       "taxa_aa": 35.91,
        "posicao": 38,
-       "cod_congl": "C0080147",
+       "cod_congl": "C0081249",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 2.64,
+       "taxa_aa": 36.76,
+       "posicao": 39,
+       "cod_congl": "C0084844",
        "sr": "S3"
       },
       {
@@ -25656,156 +25847,174 @@
        "nome": "GAZINCRED S.A. SCFI",
        "taxa_am": 2.71,
        "taxa_aa": 37.82,
-       "posicao": 39,
+       "posicao": 40,
        "cod_congl": "C0080824",
        "sr": "S4"
       },
       {
-       "cnpj8": "04902979",
-       "nome": "BCO DA AMAZONIA S.A.",
-       "taxa_am": 2.73,
-       "taxa_aa": 38.07,
-       "posicao": 40,
-       "cod_congl": "C0081249",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "13009717",
        "nome": "BCO DO EST. DE SE S.A.",
-       "taxa_am": 2.75,
-       "taxa_aa": 38.54,
+       "taxa_am": 2.73,
+       "taxa_aa": 38.11,
        "posicao": 41,
        "cod_congl": "C0081634",
        "sr": "S4"
       },
       {
+       "cnpj8": "58160789",
+       "nome": "BCO SAFRA S.A.",
+       "taxa_am": 2.73,
+       "taxa_aa": 38.19,
+       "posicao": 42,
+       "cod_congl": "C0080109",
+       "sr": "S2"
+      },
+      {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 2.76,
-       "taxa_aa": 38.63,
-       "posicao": 42,
+       "taxa_am": 2.92,
+       "taxa_aa": 41.27,
+       "posicao": 43,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
-       "taxa_am": 3.19,
-       "taxa_aa": 45.71,
-       "posicao": 43,
+       "taxa_am": 3.1,
+       "taxa_aa": 44.31,
+       "posicao": 44,
        "cod_congl": "C0084820",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "06249129",
+       "nome": "RPW S.A. SCFI",
+       "taxa_am": 3.15,
+       "taxa_aa": 45.09,
+       "posicao": 45,
+       "cod_congl": "C0083209",
        "sr": "S4"
       },
       {
        "cnpj8": "04814563",
        "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 3.28,
-       "taxa_aa": 47.27,
-       "posicao": 44,
+       "taxa_am": 3.23,
+       "taxa_aa": 46.4,
+       "posicao": 46,
        "cod_congl": "C0083539",
        "sr": "S4"
       },
       {
+       "cnpj8": "30306294",
+       "nome": "BANCO BTG PACTUAL S.A.",
+       "taxa_am": 3.25,
+       "taxa_aa": 46.86,
+       "posicao": 47,
+       "cod_congl": "C0080336",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "92228410",
        "nome": "OMNI SA CFI",
-       "taxa_am": 3.31,
-       "taxa_aa": 47.75,
-       "posicao": 45,
+       "taxa_am": 3.29,
+       "taxa_aa": 47.51,
+       "posicao": 48,
        "cod_congl": "C0080460",
        "sr": "S4"
       },
       {
        "cnpj8": "37880206",
        "nome": "CORA SCFI",
-       "taxa_am": 3.33,
-       "taxa_aa": 48.23,
-       "posicao": 46,
+       "taxa_am": 3.38,
+       "taxa_aa": 49.1,
+       "posicao": 49,
        "cod_congl": "C0085317",
        "sr": "S5"
       },
       {
-       "cnpj8": "06249129",
-       "nome": "RPW S.A. SCFI",
-       "taxa_am": 3.41,
-       "taxa_aa": 49.5,
-       "posicao": 47,
-       "cod_congl": "C0083209",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "00000208",
        "nome": "BRB - BCO DE BRASILIA S.A.",
-       "taxa_am": 3.44,
-       "taxa_aa": 50.14,
-       "posicao": 48,
+       "taxa_am": 3.43,
+       "taxa_aa": 49.9,
+       "posicao": 50,
        "cod_congl": "C0080288",
        "sr": "S3"
       },
       {
        "cnpj8": "37229413",
        "nome": "SCFI EFÍ S.A.",
-       "taxa_am": 3.78,
-       "taxa_aa": 56.01,
-       "posicao": 49,
+       "taxa_am": 3.67,
+       "taxa_aa": 54.1,
+       "posicao": 51,
        "cod_congl": "C0084978",
        "sr": "S5"
       },
       {
        "cnpj8": "80271455",
        "nome": "BCO RNX S.A.",
-       "taxa_am": 4.11,
-       "taxa_aa": 62.2,
-       "posicao": 50,
+       "taxa_am": 4.36,
+       "taxa_aa": 66.86,
+       "posicao": 52,
        "cod_congl": "C0081775",
        "sr": "S4"
       },
       {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 4.62,
-       "taxa_aa": 71.92,
-       "posicao": 51,
+       "taxa_am": 4.65,
+       "taxa_aa": 72.45,
+       "posicao": 53,
        "cod_congl": "C0084693",
        "sr": "S3"
       },
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 5.46,
-       "taxa_aa": 89.16,
-       "posicao": 52,
+       "taxa_am": 5.35,
+       "taxa_aa": 86.9,
+       "posicao": 54,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
       {
        "cnpj8": "05192316",
        "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 5.7,
-       "taxa_aa": 94.53,
-       "posicao": 53,
+       "taxa_am": 5.71,
+       "taxa_aa": 94.64,
+       "posicao": 55,
        "cod_congl": "C0080831",
        "sr": "S4"
       },
       {
        "cnpj8": "05503849",
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
-       "taxa_am": 6.87,
-       "taxa_aa": 122.02,
-       "posicao": 54,
+       "taxa_am": 5.99,
+       "taxa_aa": 100.97,
+       "posicao": 56,
        "cod_congl": "C0083474",
        "sr": "S5"
+      },
+      {
+       "cnpj8": "36947229",
+       "nome": "COBUCCIO S.A. SCFI",
+       "taxa_am": 8.15,
+       "taxa_aa": 156.12,
+       "posicao": 57,
+       "cod_congl": "C0085173",
+       "sr": "S4"
       }
      ]
     },
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo até 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "inicio": "2026-07-27",
-     "fim": "2026-07-31",
-     "n_inst": 16,
-     "mediana_aa": 20.53,
-     "p25_aa": 19.03,
-     "p75_aa": 25.81,
+     "inicio": "2026-07-28",
+     "fim": "2026-08-03",
+     "n_inst": 15,
+     "mediana_aa": 20.21,
+     "p25_aa": 19.04,
+     "p75_aa": 22.63,
      "min_aa": 5.46,
      "max_aa": 41.94,
      "moeda_estrangeira": false,
@@ -27118,14 +27327,21 @@
        "p25_aa": 19.03,
        "p75_aa": 25.81,
        "n": 16
+      },
+      {
+       "inicio": "2026-07-28",
+       "mediana_aa": 20.21,
+       "p25_aa": 19.04,
+       "p75_aa": 22.63,
+       "n": 15
       }
      ],
      "por_segmento": {
       "S1": {
-       "n": 5,
-       "mediana_aa": 20.21,
-       "p25_aa": 19.03,
-       "p75_aa": 20.3,
+       "n": 6,
+       "mediana_aa": 20.16,
+       "p25_aa": 19.04,
+       "p75_aa": 20.53,
        "serie": [
         {
          "inicio": "2023-01-04",
@@ -28157,1300 +28373,11 @@
          "n": 5
         },
         {
-         "inicio": "2026-07-27",
-         "mediana_aa": 20.21,
-         "p25_aa": 19.03,
-         "p75_aa": 20.3,
-         "n": 5
-        }
-       ]
-      },
-      "S3": {
-       "n": 5,
-       "mediana_aa": 22.49,
-       "p25_aa": 20.53,
-       "p75_aa": 25.81,
-       "serie": [
-        {
-         "inicio": "2023-01-02",
-         "mediana_aa": 17.3,
-         "p25_aa": 15.91,
-         "p75_aa": 22.57,
-         "n": 8
-        },
-        {
-         "inicio": "2023-01-09",
-         "mediana_aa": 18.88,
-         "p25_aa": 15.23,
-         "p75_aa": 23.03,
-         "n": 8
-        },
-        {
-         "inicio": "2023-01-16",
-         "mediana_aa": 20.79,
-         "p25_aa": 18.25,
-         "p75_aa": 25.65,
-         "n": 9
-        },
-        {
-         "inicio": "2023-01-23",
-         "mediana_aa": 23.2,
-         "p25_aa": 19.15,
-         "p75_aa": 23.81,
-         "n": 8
-        },
-        {
-         "inicio": "2023-01-30",
-         "mediana_aa": 20.9,
-         "p25_aa": 17.25,
-         "p75_aa": 21.36,
-         "n": 7
-        },
-        {
-         "inicio": "2023-02-06",
-         "mediana_aa": 21.15,
-         "p25_aa": 20.05,
-         "p75_aa": 23.55,
-         "n": 9
-        },
-        {
-         "inicio": "2023-02-13",
-         "mediana_aa": 18.78,
-         "p25_aa": 18.23,
-         "p75_aa": 19.05,
-         "n": 8
-        },
-        {
-         "inicio": "2023-02-22",
-         "mediana_aa": 20.34,
-         "p25_aa": 16.44,
-         "p75_aa": 26.42,
-         "n": 11
-        },
-        {
-         "inicio": "2023-02-28",
-         "mediana_aa": 18.57,
-         "p25_aa": 16.99,
-         "p75_aa": 20.34,
-         "n": 7
-        },
-        {
-         "inicio": "2023-03-06",
-         "mediana_aa": 18.23,
-         "p25_aa": 17.68,
-         "p75_aa": 19.38,
-         "n": 7
-        },
-        {
-         "inicio": "2023-03-13",
-         "mediana_aa": 18.29,
-         "p25_aa": 18.17,
-         "p75_aa": 21.92,
-         "n": 7
-        },
-        {
-         "inicio": "2023-03-20",
-         "mediana_aa": 20.49,
-         "p25_aa": 20.06,
-         "p75_aa": 23.83,
+         "inicio": "2026-07-28",
+         "mediana_aa": 20.16,
+         "p25_aa": 19.04,
+         "p75_aa": 20.53,
          "n": 6
-        },
-        {
-         "inicio": "2023-03-27",
-         "mediana_aa": 22.72,
-         "p25_aa": 19.22,
-         "p75_aa": 23.95,
-         "n": 9
-        },
-        {
-         "inicio": "2023-04-03",
-         "mediana_aa": 20.47,
-         "p25_aa": 18.9,
-         "p75_aa": 24.37,
-         "n": 7
-        },
-        {
-         "inicio": "2023-04-10",
-         "mediana_aa": 18.77,
-         "p25_aa": 18.54,
-         "p75_aa": 18.9,
-         "n": 5
-        },
-        {
-         "inicio": "2023-04-24",
-         "mediana_aa": 24.59,
-         "p25_aa": 20.19,
-         "p75_aa": 26.03,
-         "n": 5
-        },
-        {
-         "inicio": "2023-05-02",
-         "mediana_aa": 20.84,
-         "p25_aa": 18.82,
-         "p75_aa": 26.17,
-         "n": 6
-        },
-        {
-         "inicio": "2023-05-08",
-         "mediana_aa": 18.57,
-         "p25_aa": 17.88,
-         "p75_aa": 22.59,
-         "n": 7
-        },
-        {
-         "inicio": "2023-05-15",
-         "mediana_aa": 21.54,
-         "p25_aa": 19.15,
-         "p75_aa": 21.63,
-         "n": 5
-        },
-        {
-         "inicio": "2023-05-22",
-         "mediana_aa": 24.88,
-         "p25_aa": 21.91,
-         "p75_aa": 28.19,
-         "n": 5
-        },
-        {
-         "inicio": "2023-05-29",
-         "mediana_aa": 24.11,
-         "p25_aa": 21.77,
-         "p75_aa": 24.85,
-         "n": 7
-        },
-        {
-         "inicio": "2023-06-05",
-         "mediana_aa": 23.18,
-         "p25_aa": 21.67,
-         "p75_aa": 24.14,
-         "n": 6
-        },
-        {
-         "inicio": "2023-06-12",
-         "mediana_aa": 24.11,
-         "p25_aa": 21.67,
-         "p75_aa": 26.55,
-         "n": 5
-        },
-        {
-         "inicio": "2023-06-19",
-         "mediana_aa": 20.95,
-         "p25_aa": 18.34,
-         "p75_aa": 25.47,
-         "n": 6
-        },
-        {
-         "inicio": "2023-06-26",
-         "mediana_aa": 22.57,
-         "p25_aa": 20.79,
-         "p75_aa": 24.55,
-         "n": 5
-        },
-        {
-         "inicio": "2023-07-05",
-         "mediana_aa": 19.08,
-         "p25_aa": 19.0,
-         "p75_aa": 23.44,
-         "n": 5
-        },
-        {
-         "inicio": "2023-07-11",
-         "mediana_aa": 24.43,
-         "p25_aa": 19.08,
-         "p75_aa": 24.55,
-         "n": 7
-        },
-        {
-         "inicio": "2023-07-17",
-         "mediana_aa": 17.86,
-         "p25_aa": 16.82,
-         "p75_aa": 24.23,
-         "n": 6
-        },
-        {
-         "inicio": "2023-07-24",
-         "mediana_aa": 22.24,
-         "p25_aa": 16.77,
-         "p75_aa": 23.12,
-         "n": 8
-        },
-        {
-         "inicio": "2023-07-31",
-         "mediana_aa": 19.48,
-         "p25_aa": 15.03,
-         "p75_aa": 19.75,
-         "n": 7
-        },
-        {
-         "inicio": "2023-08-11",
-         "mediana_aa": 18.91,
-         "p25_aa": 14.9,
-         "p75_aa": 20.24,
-         "n": 5
-        },
-        {
-         "inicio": "2023-08-17",
-         "mediana_aa": 19.18,
-         "p25_aa": 15.28,
-         "p75_aa": 20.24,
-         "n": 5
-        },
-        {
-         "inicio": "2023-08-25",
-         "mediana_aa": 20.44,
-         "p25_aa": 20.16,
-         "p75_aa": 27.28,
-         "n": 5
-        },
-        {
-         "inicio": "2023-08-31",
-         "mediana_aa": 21.48,
-         "p25_aa": 16.19,
-         "p75_aa": 21.75,
-         "n": 7
-        },
-        {
-         "inicio": "2023-09-06",
-         "mediana_aa": 20.29,
-         "p25_aa": 18.45,
-         "p75_aa": 21.88,
-         "n": 6
-        },
-        {
-         "inicio": "2023-09-12",
-         "mediana_aa": 21.08,
-         "p25_aa": 20.21,
-         "p75_aa": 24.95,
-         "n": 6
-        },
-        {
-         "inicio": "2023-09-18",
-         "mediana_aa": 19.35,
-         "p25_aa": 16.62,
-         "p75_aa": 22.89,
-         "n": 7
-        },
-        {
-         "inicio": "2023-09-25",
-         "mediana_aa": 20.23,
-         "p25_aa": 17.12,
-         "p75_aa": 23.39,
-         "n": 11
-        },
-        {
-         "inicio": "2023-10-02",
-         "mediana_aa": 18.17,
-         "p25_aa": 14.95,
-         "p75_aa": 31.15,
-         "n": 6
-        },
-        {
-         "inicio": "2023-10-09",
-         "mediana_aa": 18.86,
-         "p25_aa": 16.27,
-         "p75_aa": 20.44,
-         "n": 8
-        },
-        {
-         "inicio": "2023-10-16",
-         "mediana_aa": 19.55,
-         "p25_aa": 15.85,
-         "p75_aa": 20.28,
-         "n": 5
-        },
-        {
-         "inicio": "2023-10-23",
-         "mediana_aa": 16.86,
-         "p25_aa": 16.69,
-         "p75_aa": 21.25,
-         "n": 8
-        },
-        {
-         "inicio": "2023-10-31",
-         "mediana_aa": 20.56,
-         "p25_aa": 17.2,
-         "p75_aa": 21.16,
-         "n": 5
-        },
-        {
-         "inicio": "2023-11-06",
-         "mediana_aa": 21.41,
-         "p25_aa": 14.94,
-         "p75_aa": 22.7,
-         "n": 7
-        },
-        {
-         "inicio": "2023-11-13",
-         "mediana_aa": 18.29,
-         "p25_aa": 18.13,
-         "p75_aa": 23.55,
-         "n": 7
-        },
-        {
-         "inicio": "2023-11-20",
-         "mediana_aa": 15.38,
-         "p25_aa": 14.98,
-         "p75_aa": 16.48,
-         "n": 7
-        },
-        {
-         "inicio": "2023-11-27",
-         "mediana_aa": 16.62,
-         "p25_aa": 14.36,
-         "p75_aa": 23.38,
-         "n": 8
-        },
-        {
-         "inicio": "2023-12-04",
-         "mediana_aa": 21.09,
-         "p25_aa": 20.73,
-         "p75_aa": 23.13,
-         "n": 7
-        },
-        {
-         "inicio": "2023-12-11",
-         "mediana_aa": 19.25,
-         "p25_aa": 15.29,
-         "p75_aa": 21.61,
-         "n": 9
-        },
-        {
-         "inicio": "2023-12-18",
-         "mediana_aa": 17.28,
-         "p25_aa": 17.24,
-         "p75_aa": 19.12,
-         "n": 7
-        },
-        {
-         "inicio": "2023-12-26",
-         "mediana_aa": 14.77,
-         "p25_aa": 13.65,
-         "p75_aa": 19.33,
-         "n": 6
-        },
-        {
-         "inicio": "2024-01-02",
-         "mediana_aa": 17.49,
-         "p25_aa": 16.98,
-         "p75_aa": 19.44,
-         "n": 5
-        },
-        {
-         "inicio": "2024-01-08",
-         "mediana_aa": 21.89,
-         "p25_aa": 20.4,
-         "p75_aa": 23.92,
-         "n": 5
-        },
-        {
-         "inicio": "2024-01-15",
-         "mediana_aa": 19.45,
-         "p25_aa": 18.38,
-         "p75_aa": 24.39,
-         "n": 6
-        },
-        {
-         "inicio": "2024-01-22",
-         "mediana_aa": 17.3,
-         "p25_aa": 15.19,
-         "p75_aa": 21.01,
-         "n": 8
-        },
-        {
-         "inicio": "2024-01-29",
-         "mediana_aa": 17.38,
-         "p25_aa": 16.64,
-         "p75_aa": 20.14,
-         "n": 8
-        },
-        {
-         "inicio": "2024-02-05",
-         "mediana_aa": 20.55,
-         "p25_aa": 19.76,
-         "p75_aa": 22.73,
-         "n": 7
-        },
-        {
-         "inicio": "2024-02-14",
-         "mediana_aa": 19.88,
-         "p25_aa": 14.6,
-         "p75_aa": 21.51,
-         "n": 5
-        },
-        {
-         "inicio": "2024-02-20",
-         "mediana_aa": 15.46,
-         "p25_aa": 13.43,
-         "p75_aa": 20.86,
-         "n": 6
-        },
-        {
-         "inicio": "2024-02-26",
-         "mediana_aa": 15.48,
-         "p25_aa": 13.43,
-         "p75_aa": 21.74,
-         "n": 6
-        },
-        {
-         "inicio": "2024-03-04",
-         "mediana_aa": 22.81,
-         "p25_aa": 17.75,
-         "p75_aa": 23.42,
-         "n": 8
-        },
-        {
-         "inicio": "2024-03-11",
-         "mediana_aa": 21.39,
-         "p25_aa": 16.95,
-         "p75_aa": 21.81,
-         "n": 7
-        },
-        {
-         "inicio": "2024-03-18",
-         "mediana_aa": 16.69,
-         "p25_aa": 15.22,
-         "p75_aa": 20.89,
-         "n": 6
-        },
-        {
-         "inicio": "2024-03-25",
-         "mediana_aa": 15.86,
-         "p25_aa": 13.3,
-         "p75_aa": 22.55,
-         "n": 11
-        },
-        {
-         "inicio": "2024-04-01",
-         "mediana_aa": 17.39,
-         "p25_aa": 15.84,
-         "p75_aa": 23.79,
-         "n": 6
-        },
-        {
-         "inicio": "2024-04-08",
-         "mediana_aa": 16.44,
-         "p25_aa": 16.07,
-         "p75_aa": 24.97,
-         "n": 5
-        },
-        {
-         "inicio": "2024-04-15",
-         "mediana_aa": 16.98,
-         "p25_aa": 14.36,
-         "p75_aa": 17.68,
-         "n": 8
-        },
-        {
-         "inicio": "2024-04-22",
-         "mediana_aa": 19.26,
-         "p25_aa": 19.08,
-         "p75_aa": 21.42,
-         "n": 7
-        },
-        {
-         "inicio": "2024-04-29",
-         "mediana_aa": 14.52,
-         "p25_aa": 13.05,
-         "p75_aa": 21.3,
-         "n": 6
-        },
-        {
-         "inicio": "2024-05-06",
-         "mediana_aa": 17.28,
-         "p25_aa": 13.05,
-         "p75_aa": 17.48,
-         "n": 5
-        },
-        {
-         "inicio": "2024-05-13",
-         "mediana_aa": 19.37,
-         "p25_aa": 15.38,
-         "p75_aa": 20.94,
-         "n": 7
-        },
-        {
-         "inicio": "2024-05-20",
-         "mediana_aa": 17.69,
-         "p25_aa": 16.88,
-         "p75_aa": 17.94,
-         "n": 7
-        },
-        {
-         "inicio": "2024-05-27",
-         "mediana_aa": 17.01,
-         "p25_aa": 16.75,
-         "p75_aa": 22.15,
-         "n": 6
-        },
-        {
-         "inicio": "2024-06-03",
-         "mediana_aa": 16.9,
-         "p25_aa": 15.53,
-         "p75_aa": 23.22,
-         "n": 6
-        },
-        {
-         "inicio": "2024-06-10",
-         "mediana_aa": 19.25,
-         "p25_aa": 16.45,
-         "p75_aa": 23.76,
-         "n": 6
-        },
-        {
-         "inicio": "2024-06-17",
-         "mediana_aa": 19.94,
-         "p25_aa": 19.62,
-         "p75_aa": 19.98,
-         "n": 7
-        },
-        {
-         "inicio": "2024-06-24",
-         "mediana_aa": 18.44,
-         "p25_aa": 17.48,
-         "p75_aa": 19.32,
-         "n": 9
-        },
-        {
-         "inicio": "2024-07-01",
-         "mediana_aa": 19.35,
-         "p25_aa": 17.84,
-         "p75_aa": 24.07,
-         "n": 5
-        },
-        {
-         "inicio": "2024-07-08",
-         "mediana_aa": 19.98,
-         "p25_aa": 18.31,
-         "p75_aa": 20.78,
-         "n": 7
-        },
-        {
-         "inicio": "2024-07-17",
-         "mediana_aa": 19.19,
-         "p25_aa": 16.96,
-         "p75_aa": 21.9,
-         "n": 7
-        },
-        {
-         "inicio": "2024-07-23",
-         "mediana_aa": 17.9,
-         "p25_aa": 15.85,
-         "p75_aa": 22.18,
-         "n": 9
-        },
-        {
-         "inicio": "2024-07-29",
-         "mediana_aa": 20.57,
-         "p25_aa": 19.12,
-         "p75_aa": 22.02,
-         "n": 7
-        },
-        {
-         "inicio": "2024-08-07",
-         "mediana_aa": 22.51,
-         "p25_aa": 16.95,
-         "p75_aa": 23.08,
-         "n": 6
-        },
-        {
-         "inicio": "2024-08-14",
-         "mediana_aa": 16.22,
-         "p25_aa": 10.55,
-         "p75_aa": 21.54,
-         "n": 6
-        },
-        {
-         "inicio": "2024-08-20",
-         "mediana_aa": 17.5,
-         "p25_aa": 15.98,
-         "p75_aa": 20.99,
-         "n": 7
-        },
-        {
-         "inicio": "2024-08-26",
-         "mediana_aa": 16.39,
-         "p25_aa": 15.23,
-         "p75_aa": 22.84,
-         "n": 6
-        },
-        {
-         "inicio": "2024-09-02",
-         "mediana_aa": 17.31,
-         "p25_aa": 17.01,
-         "p75_aa": 17.58,
-         "n": 7
-        },
-        {
-         "inicio": "2024-09-09",
-         "mediana_aa": 20.46,
-         "p25_aa": 19.76,
-         "p75_aa": 22.57,
-         "n": 7
-        },
-        {
-         "inicio": "2024-09-16",
-         "mediana_aa": 16.03,
-         "p25_aa": 15.51,
-         "p75_aa": 20.94,
-         "n": 7
-        },
-        {
-         "inicio": "2024-09-23",
-         "mediana_aa": 14.98,
-         "p25_aa": 12.63,
-         "p75_aa": 17.04,
-         "n": 6
-        },
-        {
-         "inicio": "2024-09-30",
-         "mediana_aa": 16.2,
-         "p25_aa": 12.67,
-         "p75_aa": 19.48,
-         "n": 10
-        },
-        {
-         "inicio": "2024-10-07",
-         "mediana_aa": 18.82,
-         "p25_aa": 17.46,
-         "p75_aa": 21.52,
-         "n": 7
-        },
-        {
-         "inicio": "2024-10-14",
-         "mediana_aa": 21.46,
-         "p25_aa": 18.12,
-         "p75_aa": 22.7,
-         "n": 8
-        },
-        {
-         "inicio": "2024-10-21",
-         "mediana_aa": 22.42,
-         "p25_aa": 17.59,
-         "p75_aa": 25.32,
-         "n": 10
-        },
-        {
-         "inicio": "2024-10-28",
-         "mediana_aa": 18.2,
-         "p25_aa": 17.44,
-         "p75_aa": 19.2,
-         "n": 6
-        },
-        {
-         "inicio": "2024-11-04",
-         "mediana_aa": 19.15,
-         "p25_aa": 17.12,
-         "p75_aa": 23.55,
-         "n": 9
-        },
-        {
-         "inicio": "2024-11-11",
-         "mediana_aa": 19.76,
-         "p25_aa": 18.27,
-         "p75_aa": 22.17,
-         "n": 7
-        },
-        {
-         "inicio": "2024-11-18",
-         "mediana_aa": 21.94,
-         "p25_aa": 13.39,
-         "p75_aa": 23.28,
-         "n": 8
-        },
-        {
-         "inicio": "2024-11-25",
-         "mediana_aa": 22.3,
-         "p25_aa": 17.77,
-         "p75_aa": 25.38,
-         "n": 8
-        },
-        {
-         "inicio": "2024-12-02",
-         "mediana_aa": 25.77,
-         "p25_aa": 18.6,
-         "p75_aa": 26.87,
-         "n": 8
-        },
-        {
-         "inicio": "2024-12-09",
-         "mediana_aa": 20.17,
-         "p25_aa": 18.55,
-         "p75_aa": 22.51,
-         "n": 6
-        },
-        {
-         "inicio": "2024-12-16",
-         "mediana_aa": 19.08,
-         "p25_aa": 17.2,
-         "p75_aa": 20.3,
-         "n": 8
-        },
-        {
-         "inicio": "2024-12-23",
-         "mediana_aa": 21.82,
-         "p25_aa": 20.4,
-         "p75_aa": 22.29,
-         "n": 9
-        },
-        {
-         "inicio": "2024-12-30",
-         "mediana_aa": 21.12,
-         "p25_aa": 20.18,
-         "p75_aa": 22.62,
-         "n": 6
-        },
-        {
-         "inicio": "2025-01-06",
-         "mediana_aa": 20.5,
-         "p25_aa": 20.0,
-         "p75_aa": 26.21,
-         "n": 6
-        },
-        {
-         "inicio": "2025-01-15",
-         "mediana_aa": 22.88,
-         "p25_aa": 21.22,
-         "p75_aa": 23.9,
-         "n": 5
-        },
-        {
-         "inicio": "2025-01-21",
-         "mediana_aa": 20.67,
-         "p25_aa": 18.62,
-         "p75_aa": 22.33,
-         "n": 5
-        },
-        {
-         "inicio": "2025-01-27",
-         "mediana_aa": 19.86,
-         "p25_aa": 18.62,
-         "p75_aa": 25.31,
-         "n": 6
-        },
-        {
-         "inicio": "2025-02-03",
-         "mediana_aa": 20.49,
-         "p25_aa": 16.48,
-         "p75_aa": 22.4,
-         "n": 8
-        },
-        {
-         "inicio": "2025-02-10",
-         "mediana_aa": 26.48,
-         "p25_aa": 20.76,
-         "p75_aa": 26.99,
-         "n": 5
-        },
-        {
-         "inicio": "2025-02-17",
-         "mediana_aa": 25.85,
-         "p25_aa": 23.2,
-         "p75_aa": 26.21,
-         "n": 8
-        },
-        {
-         "inicio": "2025-02-24",
-         "mediana_aa": 22.26,
-         "p25_aa": 20.36,
-         "p75_aa": 22.45,
-         "n": 7
-        },
-        {
-         "inicio": "2025-03-05",
-         "mediana_aa": 21.66,
-         "p25_aa": 21.05,
-         "p75_aa": 22.47,
-         "n": 5
-        },
-        {
-         "inicio": "2025-03-11",
-         "mediana_aa": 21.96,
-         "p25_aa": 18.96,
-         "p75_aa": 22.78,
-         "n": 9
-        },
-        {
-         "inicio": "2025-03-17",
-         "mediana_aa": 18.98,
-         "p25_aa": 18.8,
-         "p75_aa": 21.51,
-         "n": 6
-        },
-        {
-         "inicio": "2025-03-24",
-         "mediana_aa": 20.7,
-         "p25_aa": 18.15,
-         "p75_aa": 23.89,
-         "n": 9
-        },
-        {
-         "inicio": "2025-03-31",
-         "mediana_aa": 27.02,
-         "p25_aa": 22.44,
-         "p75_aa": 28.65,
-         "n": 8
-        },
-        {
-         "inicio": "2025-04-08",
-         "mediana_aa": 19.83,
-         "p25_aa": 17.48,
-         "p75_aa": 27.09,
-         "n": 5
-        },
-        {
-         "inicio": "2025-04-14",
-         "mediana_aa": 23.27,
-         "p25_aa": 19.92,
-         "p75_aa": 27.17,
-         "n": 8
-        },
-        {
-         "inicio": "2025-04-24",
-         "mediana_aa": 21.49,
-         "p25_aa": 20.22,
-         "p75_aa": 23.69,
-         "n": 5
-        },
-        {
-         "inicio": "2025-04-30",
-         "mediana_aa": 24.84,
-         "p25_aa": 23.69,
-         "p75_aa": 25.82,
-         "n": 8
-        },
-        {
-         "inicio": "2025-05-06",
-         "mediana_aa": 26.19,
-         "p25_aa": 22.16,
-         "p75_aa": 26.49,
-         "n": 5
-        },
-        {
-         "inicio": "2025-05-13",
-         "mediana_aa": 16.91,
-         "p25_aa": 15.82,
-         "p75_aa": 27.39,
-         "n": 6
-        },
-        {
-         "inicio": "2025-05-19",
-         "mediana_aa": 22.12,
-         "p25_aa": 18.3,
-         "p75_aa": 23.69,
-         "n": 9
-        },
-        {
-         "inicio": "2025-05-26",
-         "mediana_aa": 25.5,
-         "p25_aa": 21.8,
-         "p75_aa": 30.29,
-         "n": 6
-        },
-        {
-         "inicio": "2025-06-06",
-         "mediana_aa": 26.51,
-         "p25_aa": 24.65,
-         "p75_aa": 29.07,
-         "n": 8
-        },
-        {
-         "inicio": "2025-06-12",
-         "mediana_aa": 23.33,
-         "p25_aa": 15.07,
-         "p75_aa": 33.13,
-         "n": 9
-        },
-        {
-         "inicio": "2025-06-18",
-         "mediana_aa": 25.42,
-         "p25_aa": 23.33,
-         "p75_aa": 33.02,
-         "n": 9
-        },
-        {
-         "inicio": "2025-06-24",
-         "mediana_aa": 22.04,
-         "p25_aa": 19.69,
-         "p75_aa": 26.8,
-         "n": 9
-        },
-        {
-         "inicio": "2025-06-30",
-         "mediana_aa": 15.17,
-         "p25_aa": 14.69,
-         "p75_aa": 26.17,
-         "n": 6
-        },
-        {
-         "inicio": "2025-07-08",
-         "mediana_aa": 22.15,
-         "p25_aa": 20.37,
-         "p75_aa": 23.15,
-         "n": 6
-        },
-        {
-         "inicio": "2025-07-14",
-         "mediana_aa": 23.15,
-         "p25_aa": 21.87,
-         "p75_aa": 27.05,
-         "n": 7
-        },
-        {
-         "inicio": "2025-07-21",
-         "mediana_aa": 20.63,
-         "p25_aa": 19.98,
-         "p75_aa": 24.93,
-         "n": 8
-        },
-        {
-         "inicio": "2025-07-28",
-         "mediana_aa": 20.23,
-         "p25_aa": 19.16,
-         "p75_aa": 22.94,
-         "n": 9
-        },
-        {
-         "inicio": "2025-08-06",
-         "mediana_aa": 21.99,
-         "p25_aa": 18.28,
-         "p75_aa": 24.03,
-         "n": 8
-        },
-        {
-         "inicio": "2025-08-12",
-         "mediana_aa": 20.53,
-         "p25_aa": 17.13,
-         "p75_aa": 26.11,
-         "n": 6
-        },
-        {
-         "inicio": "2025-08-18",
-         "mediana_aa": 27.87,
-         "p25_aa": 26.6,
-         "p75_aa": 28.2,
-         "n": 5
-        },
-        {
-         "inicio": "2025-08-27",
-         "mediana_aa": 24.68,
-         "p25_aa": 17.89,
-         "p75_aa": 30.23,
-         "n": 5
-        },
-        {
-         "inicio": "2025-09-02",
-         "mediana_aa": 22.85,
-         "p25_aa": 21.03,
-         "p75_aa": 31.36,
-         "n": 9
-        },
-        {
-         "inicio": "2025-09-09",
-         "mediana_aa": 21.81,
-         "p25_aa": 15.21,
-         "p75_aa": 24.03,
-         "n": 5
-        },
-        {
-         "inicio": "2025-09-15",
-         "mediana_aa": 24.03,
-         "p25_aa": 23.26,
-         "p75_aa": 33.21,
-         "n": 7
-        },
-        {
-         "inicio": "2025-09-22",
-         "mediana_aa": 23.47,
-         "p25_aa": 23.11,
-         "p75_aa": 26.44,
-         "n": 5
-        },
-        {
-         "inicio": "2025-09-29",
-         "mediana_aa": 23.83,
-         "p25_aa": 19.84,
-         "p75_aa": 25.79,
-         "n": 9
-        },
-        {
-         "inicio": "2025-10-06",
-         "mediana_aa": 22.67,
-         "p25_aa": 21.84,
-         "p75_aa": 23.64,
-         "n": 5
-        },
-        {
-         "inicio": "2025-10-13",
-         "mediana_aa": 23.06,
-         "p25_aa": 17.23,
-         "p75_aa": 23.51,
-         "n": 8
-        },
-        {
-         "inicio": "2025-10-20",
-         "mediana_aa": 21.63,
-         "p25_aa": 20.13,
-         "p75_aa": 31.46,
-         "n": 6
-        },
-        {
-         "inicio": "2025-10-27",
-         "mediana_aa": 20.46,
-         "p25_aa": 20.27,
-         "p75_aa": 23.37,
-         "n": 5
-        },
-        {
-         "inicio": "2025-11-03",
-         "mediana_aa": 22.77,
-         "p25_aa": 20.79,
-         "p75_aa": 24.03,
-         "n": 6
-        },
-        {
-         "inicio": "2025-11-10",
-         "mediana_aa": 22.55,
-         "p25_aa": 14.9,
-         "p75_aa": 27.99,
-         "n": 6
-        },
-        {
-         "inicio": "2025-11-17",
-         "mediana_aa": 21.16,
-         "p25_aa": 15.19,
-         "p75_aa": 24.35,
-         "n": 8
-        },
-        {
-         "inicio": "2025-11-24",
-         "mediana_aa": 23.78,
-         "p25_aa": 22.77,
-         "p75_aa": 27.53,
-         "n": 8
-        },
-        {
-         "inicio": "2025-12-01",
-         "mediana_aa": 22.3,
-         "p25_aa": 21.95,
-         "p75_aa": 22.73,
-         "n": 7
-        },
-        {
-         "inicio": "2025-12-08",
-         "mediana_aa": 27.12,
-         "p25_aa": 21.97,
-         "p75_aa": 29.69,
-         "n": 5
-        },
-        {
-         "inicio": "2025-12-15",
-         "mediana_aa": 20.75,
-         "p25_aa": 19.38,
-         "p75_aa": 23.71,
-         "n": 13
-        },
-        {
-         "inicio": "2025-12-22",
-         "mediana_aa": 22.04,
-         "p25_aa": 19.61,
-         "p75_aa": 22.04,
-         "n": 8
-        },
-        {
-         "inicio": "2026-01-08",
-         "mediana_aa": 21.59,
-         "p25_aa": 18.67,
-         "p75_aa": 28.92,
-         "n": 5
-        },
-        {
-         "inicio": "2026-01-14",
-         "mediana_aa": 27.0,
-         "p25_aa": 21.59,
-         "p75_aa": 29.45,
-         "n": 6
-        },
-        {
-         "inicio": "2026-01-21",
-         "mediana_aa": 26.75,
-         "p25_aa": 21.74,
-         "p75_aa": 28.21,
-         "n": 6
-        },
-        {
-         "inicio": "2026-01-27",
-         "mediana_aa": 19.67,
-         "p25_aa": 17.9,
-         "p75_aa": 26.81,
-         "n": 6
-        },
-        {
-         "inicio": "2026-02-02",
-         "mediana_aa": 22.11,
-         "p25_aa": 21.7,
-         "p75_aa": 22.79,
-         "n": 7
-        },
-        {
-         "inicio": "2026-02-09",
-         "mediana_aa": 21.32,
-         "p25_aa": 19.69,
-         "p75_aa": 26.68,
-         "n": 5
-        },
-        {
-         "inicio": "2026-02-18",
-         "mediana_aa": 19.78,
-         "p25_aa": 17.2,
-         "p75_aa": 21.66,
-         "n": 6
-        },
-        {
-         "inicio": "2026-02-24",
-         "mediana_aa": 21.15,
-         "p25_aa": 15.92,
-         "p75_aa": 28.31,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-02",
-         "mediana_aa": 19.67,
-         "p25_aa": 15.03,
-         "p75_aa": 28.31,
-         "n": 6
-        },
-        {
-         "inicio": "2026-03-10",
-         "mediana_aa": 21.85,
-         "p25_aa": 20.18,
-         "p75_aa": 22.3,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-16",
-         "mediana_aa": 23.43,
-         "p25_aa": 22.3,
-         "p75_aa": 27.93,
-         "n": 5
-        },
-        {
-         "inicio": "2026-03-23",
-         "mediana_aa": 28.6,
-         "p25_aa": 28.12,
-         "p75_aa": 29.11,
-         "n": 7
-        },
-        {
-         "inicio": "2026-03-31",
-         "mediana_aa": 16.84,
-         "p25_aa": 14.63,
-         "p75_aa": 24.66,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-14",
-         "mediana_aa": 22.81,
-         "p25_aa": 20.4,
-         "p75_aa": 27.62,
-         "n": 6
-        },
-        {
-         "inicio": "2026-04-20",
-         "mediana_aa": 25.14,
-         "p25_aa": 23.73,
-         "p75_aa": 28.91,
-         "n": 5
-        },
-        {
-         "inicio": "2026-04-27",
-         "mediana_aa": 25.32,
-         "p25_aa": 21.9,
-         "p75_aa": 29.85,
-         "n": 5
-        },
-        {
-         "inicio": "2026-05-04",
-         "mediana_aa": 23.19,
-         "p25_aa": 22.22,
-         "p75_aa": 27.87,
-         "n": 5
-        },
-        {
-         "inicio": "2026-05-20",
-         "mediana_aa": 20.75,
-         "p25_aa": 14.33,
-         "p75_aa": 30.42,
-         "n": 6
-        },
-        {
-         "inicio": "2026-05-26",
-         "mediana_aa": 25.46,
-         "p25_aa": 19.49,
-         "p75_aa": 27.12,
-         "n": 7
-        },
-        {
-         "inicio": "2026-06-01",
-         "mediana_aa": 23.65,
-         "p25_aa": 20.93,
-         "p75_aa": 25.03,
-         "n": 6
-        },
-        {
-         "inicio": "2026-06-08",
-         "mediana_aa": 24.8,
-         "p25_aa": 14.6,
-         "p75_aa": 25.66,
-         "n": 5
-        },
-        {
-         "inicio": "2026-06-15",
-         "mediana_aa": 23.57,
-         "p25_aa": 21.82,
-         "p75_aa": 24.83,
-         "n": 8
-        },
-        {
-         "inicio": "2026-06-22",
-         "mediana_aa": 23.28,
-         "p25_aa": 21.98,
-         "p75_aa": 24.59,
-         "n": 6
-        },
-        {
-         "inicio": "2026-06-29",
-         "mediana_aa": 20.77,
-         "p25_aa": 20.15,
-         "p75_aa": 21.98,
-         "n": 6
-        },
-        {
-         "inicio": "2026-07-06",
-         "mediana_aa": 25.3,
-         "p25_aa": 21.88,
-         "p75_aa": 26.7,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-13",
-         "mediana_aa": 24.35,
-         "p25_aa": 22.86,
-         "p75_aa": 25.24,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-20",
-         "mediana_aa": 24.48,
-         "p25_aa": 20.41,
-         "p75_aa": 28.06,
-         "n": 5
-        },
-        {
-         "inicio": "2026-07-27",
-         "mediana_aa": 22.49,
-         "p25_aa": 20.53,
-         "p75_aa": 25.81,
-         "n": 5
         }
        ]
       },
@@ -30397,6 +29324,13 @@
          "p25_aa": 13.73,
          "p75_aa": 29.07,
          "n": 6
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 14.9,
+         "p25_aa": 13.73,
+         "p75_aa": 29.07,
+         "n": 6
         }
        ]
       }
@@ -30442,7 +29376,7 @@
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
        "taxa_am": 1.46,
-       "taxa_aa": 19.03,
+       "taxa_aa": 19.04,
        "posicao": 5,
        "cod_congl": "C0080336",
        "sr": "S1"
@@ -30457,31 +29391,31 @@
        "sr": "S3"
       },
       {
-       "cnpj8": "90400888",
-       "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 1.55,
-       "taxa_aa": 20.21,
-       "posicao": 7,
-       "cod_congl": "C0080185",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 1.55,
-       "taxa_aa": 20.3,
-       "posicao": 8,
+       "taxa_am": 1.54,
+       "taxa_aa": 20.16,
+       "posicao": 7,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
-       "cnpj8": "28195667",
-       "nome": "BCO ABC BRASIL S.A.",
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 1.55,
+       "taxa_aa": 20.21,
+       "posicao": 8,
+       "cod_congl": "C0080185",
+       "sr": "S1"
+      },
+      {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
        "taxa_am": 1.57,
        "taxa_aa": 20.53,
        "posicao": 9,
-       "cod_congl": "C0080312",
-       "sr": "S3"
+       "cod_congl": "C0080075",
+       "sr": "S1"
       },
       {
        "cnpj8": "00416968",
@@ -30493,22 +29427,22 @@
        "sr": "S3"
       },
       {
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 1.71,
+       "taxa_aa": 22.63,
+       "posicao": 11,
+       "cod_congl": "C0080271",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "45246410",
        "nome": "BANCO GENIAL",
        "taxa_am": 1.72,
        "taxa_aa": 22.75,
-       "posicao": 11,
+       "posicao": 12,
        "cod_congl": "C0080941",
        "sr": "S4"
-      },
-      {
-       "cnpj8": "62232889",
-       "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 1.93,
-       "taxa_aa": 25.81,
-       "posicao": 12,
-       "cod_congl": "C0081744",
-       "sr": "S3"
       },
       {
        "cnpj8": "55230916",
@@ -30520,20 +29454,11 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
-       "taxa_am": 2.35,
-       "taxa_aa": 32.18,
-       "posicao": 14,
-       "cod_congl": "C0080271",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "00795423",
        "nome": "BANCO SEMEAR",
-       "taxa_am": 2.52,
-       "taxa_aa": 34.74,
-       "posicao": 15,
+       "taxa_am": 2.51,
+       "taxa_aa": 34.62,
+       "posicao": 14,
        "cod_congl": "C0081380",
        "sr": "S4"
       },
@@ -30542,7 +29467,7 @@
        "nome": "BCO DO BRASIL S.A.",
        "taxa_am": 2.96,
        "taxa_aa": 41.94,
-       "posicao": 16,
+       "posicao": 15,
        "cod_congl": "C0080329",
        "sr": "S1"
       }
@@ -30551,13 +29476,13 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Capital de giro com prazo superior a 365 dias - Pós-fixado referenciado em juros flutuantes",
-     "inicio": "2026-07-27",
-     "fim": "2026-07-31",
-     "n_inst": 24,
-     "mediana_aa": 21.01,
-     "p25_aa": 17.84,
+     "inicio": "2026-07-28",
+     "fim": "2026-08-03",
+     "n_inst": 26,
+     "mediana_aa": 20.31,
+     "p25_aa": 17.52,
      "p75_aa": 23.57,
-     "min_aa": 14.7,
+     "min_aa": 14.59,
      "max_aa": 29.14,
      "moeda_estrangeira": false,
      "serie": [
@@ -31778,6 +30703,13 @@
        "p25_aa": 17.84,
        "p75_aa": 23.57,
        "n": 24
+      },
+      {
+       "inicio": "2026-07-28",
+       "mediana_aa": 20.31,
+       "p25_aa": 17.52,
+       "p75_aa": 23.57,
+       "n": 26
       }
      ],
      "por_segmento": {
@@ -31785,7 +30717,7 @@
        "n": 6,
        "mediana_aa": 17.52,
        "p25_aa": 17.28,
-       "p75_aa": 18.96,
+       "p75_aa": 18.87,
        "serie": [
         {
          "inicio": "2023-04-05",
@@ -32990,13 +31922,20 @@
          "p25_aa": 17.28,
          "p75_aa": 18.96,
          "n": 6
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 17.52,
+         "p25_aa": 17.28,
+         "p75_aa": 18.87,
+         "n": 6
         }
        ]
       },
       "S3": {
-       "n": 8,
-       "mediana_aa": 22.9,
-       "p25_aa": 21.01,
+       "n": 9,
+       "mediana_aa": 21.7,
+       "p25_aa": 20.31,
        "p75_aa": 23.57,
        "serie": [
         {
@@ -34216,6 +33155,13 @@
          "p25_aa": 21.01,
          "p75_aa": 23.57,
          "n": 8
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 21.7,
+         "p25_aa": 20.31,
+         "p75_aa": 23.57,
+         "n": 9
         }
        ]
       },
@@ -35281,17 +34227,33 @@
          "p25_aa": 16.83,
          "p75_aa": 25.09,
          "n": 8
+        },
+        {
+         "inicio": "2026-07-28",
+         "mediana_aa": 24.28,
+         "p25_aa": 16.83,
+         "p75_aa": 25.09,
+         "n": 8
         }
        ]
       }
      },
      "ranking": [
       {
+       "cnpj8": "62331228",
+       "nome": "DEUTSCHE BANK S.A.BCO ALEMAO",
+       "taxa_am": 1.14,
+       "taxa_aa": 14.59,
+       "posicao": 1,
+       "cod_congl": "C0080532",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "07679404",
        "nome": "BANCO TOPÁZIO S.A.",
        "taxa_am": 1.15,
        "taxa_aa": 14.7,
-       "posicao": 1,
+       "posicao": 2,
        "cod_congl": "C0081517",
        "sr": "S4"
       },
@@ -35300,7 +34262,7 @@
        "nome": "BCO SANTANDER (BRASIL) S.A.",
        "taxa_am": 1.21,
        "taxa_aa": 15.47,
-       "posicao": 2,
+       "posicao": 3,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
@@ -35309,7 +34271,7 @@
        "nome": "BCO LUSO BRASILEIRO S.A.",
        "taxa_am": 1.25,
        "taxa_aa": 16.09,
-       "posicao": 3,
+       "posicao": 4,
        "cod_congl": "C0081706",
        "sr": "S4"
       },
@@ -35318,7 +34280,7 @@
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
        "taxa_am": 1.3,
        "taxa_aa": 16.83,
-       "posicao": 4,
+       "posicao": 5,
        "cod_congl": "C0080477",
        "sr": "S4"
       },
@@ -35327,16 +34289,16 @@
        "nome": "BCO BRADESCO S.A.",
        "taxa_am": 1.34,
        "taxa_aa": 17.28,
-       "posicao": 5,
+       "posicao": 6,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
        "cnpj8": "60701190",
        "nome": "ITAÚ UNIBANCO S.A.",
-       "taxa_am": 1.36,
+       "taxa_am": 1.35,
        "taxa_aa": 17.52,
-       "posicao": 6,
+       "posicao": 7,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
@@ -35345,70 +34307,79 @@
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 1.38,
        "taxa_aa": 17.84,
-       "posicao": 7,
+       "posicao": 8,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 1.44,
-       "taxa_aa": 18.68,
-       "posicao": 8,
+       "taxa_am": 1.45,
+       "taxa_aa": 18.84,
+       "posicao": 9,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 1.46,
-       "taxa_aa": 18.96,
-       "posicao": 9,
+       "taxa_am": 1.45,
+       "taxa_aa": 18.87,
+       "posicao": 10,
        "cod_congl": "C0080336",
        "sr": "S1"
+      },
+      {
+       "cnpj8": "33264668",
+       "nome": "BCO XP S.A.",
+       "taxa_am": 1.47,
+       "taxa_aa": 19.14,
+       "posicao": 11,
+       "cod_congl": "C0082475",
+       "sr": "S2"
       },
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
        "taxa_am": 1.55,
        "taxa_aa": 20.28,
-       "posicao": 10,
-       "cod_congl": "C0080996",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 1.56,
-       "taxa_aa": 20.34,
-       "posicao": 11,
-       "cod_congl": "C0080329",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "71027866",
-       "nome": "BCO BS2 S.A.",
-       "taxa_am": 1.58,
-       "taxa_aa": 20.66,
        "posicao": 12,
-       "cod_congl": "C0080422",
+       "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
        "cnpj8": "28195667",
        "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 1.6,
-       "taxa_aa": 21.01,
+       "taxa_am": 1.55,
+       "taxa_aa": 20.31,
        "posicao": 13,
        "cod_congl": "C0080312",
        "sr": "S3"
+      },
+      {
+       "cnpj8": "71027866",
+       "nome": "BCO BS2 S.A.",
+       "taxa_am": 1.61,
+       "taxa_aa": 21.06,
+       "posicao": 14,
+       "cod_congl": "C0080422",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 1.61,
+       "taxa_aa": 21.17,
+       "posicao": 15,
+       "cod_congl": "C0080329",
+       "sr": "S1"
       },
       {
        "cnpj8": "04902979",
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 1.65,
        "taxa_aa": 21.7,
-       "posicao": 14,
+       "posicao": 16,
        "cod_congl": "C0081249",
        "sr": "S3"
       },
@@ -35417,7 +34388,7 @@
        "nome": "BANCO SICOOB S.A.",
        "taxa_am": 1.68,
        "taxa_aa": 22.13,
-       "posicao": 15,
+       "posicao": 17,
        "cod_congl": "C0080879",
        "sr": "S2"
       },
@@ -35426,7 +34397,7 @@
        "nome": "BCO BANESTES S.A.",
        "taxa_am": 1.73,
        "taxa_aa": 22.9,
-       "posicao": 16,
+       "posicao": 18,
        "cod_congl": "C0080147",
        "sr": "S3"
       },
@@ -35435,7 +34406,7 @@
        "nome": "OURIBANK S.A.",
        "taxa_am": 1.75,
        "taxa_aa": 23.12,
-       "posicao": 17,
+       "posicao": 19,
        "cod_congl": "C0081012",
        "sr": "S4"
       },
@@ -35444,7 +34415,7 @@
        "nome": "BCO SOFISA S.A.",
        "taxa_am": 1.78,
        "taxa_aa": 23.57,
-       "posicao": 18,
+       "posicao": 20,
        "cod_congl": "C0080271",
        "sr": "S3"
       },
@@ -35453,7 +34424,7 @@
        "nome": "BANCO ORIGINAL",
        "taxa_am": 1.83,
        "taxa_aa": 24.27,
-       "posicao": 19,
+       "posicao": 21,
        "cod_congl": "C0080903",
        "sr": "S3"
       },
@@ -35462,7 +34433,7 @@
        "nome": "BCO TRICURY S.A.",
        "taxa_am": 1.83,
        "taxa_aa": 24.28,
-       "posicao": 20,
+       "posicao": 22,
        "cod_congl": "C0081696",
        "sr": "S4"
       },
@@ -35471,7 +34442,7 @@
        "nome": "BCO RENDIMENTO S.A.",
        "taxa_am": 1.88,
        "taxa_aa": 25.09,
-       "posicao": 21,
+       "posicao": 23,
        "cod_congl": "C0080659",
        "sr": "S4"
       },
@@ -35480,7 +34451,7 @@
        "nome": "BCO DAYCOVAL S.A",
        "taxa_am": 1.91,
        "taxa_aa": 25.52,
-       "posicao": 22,
+       "posicao": 24,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
@@ -35489,7 +34460,7 @@
        "nome": "LECCA CFI S.A.",
        "taxa_am": 1.96,
        "taxa_aa": 26.17,
-       "posicao": 23,
+       "posicao": 25,
        "cod_congl": "C0080680",
        "sr": "S4"
       },
@@ -35498,7 +34469,7 @@
        "nome": "QISTA S.A. CFI",
        "taxa_am": 2.15,
        "taxa_aa": 29.14,
-       "posicao": 24,
+       "posicao": 26,
        "cod_congl": "C0085506",
        "sr": "S4"
       }

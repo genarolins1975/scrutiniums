@@ -393,7 +393,7 @@
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.02
+       "corr": 0.017
       },
       {
        "lag": 1,
@@ -401,27 +401,27 @@
       },
       {
        "lag": 2,
-       "corr": 0.106
+       "corr": 0.107
       },
       {
        "lag": 3,
-       "corr": 0.089
+       "corr": 0.088
       },
       {
        "lag": 4,
-       "corr": 0.087
+       "corr": 0.089
       },
       {
        "lag": 5,
-       "corr": 0.097
+       "corr": 0.093
       },
       {
        "lag": 6,
-       "corr": 0.058
+       "corr": 0.056
       },
       {
        "lag": 7,
-       "corr": 0.076
+       "corr": 0.078
       },
       {
        "lag": 8,
@@ -429,26 +429,26 @@
       },
       {
        "lag": 9,
-       "corr": 0.069
+       "corr": 0.071
       },
       {
        "lag": 10,
-       "corr": 0.051
+       "corr": 0.053
       },
       {
        "lag": 11,
-       "corr": 0.082
+       "corr": 0.078
       },
       {
        "lag": 12,
-       "corr": 0.025
+       "corr": 0.028
       }
      ],
-     "granger_F": 1.36,
+     "granger_F": 1.37,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 2.5,
-     "estabilidade_metade1": -0.269,
-     "estabilidade_metade2": 0.364,
+     "ganho_oos_pct": 2.9,
+     "estabilidade_metade1": -0.267,
+     "estabilidade_metade2": 0.366,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -458,7 +458,7 @@
      },
      "criterios_atendidos": "1/4",
      "status": "reprovado",
-     "n_obs": 158
+     "n_obs": 159
     },
     {
      "candidato": "concessoes_total",
@@ -1010,11 +1010,11 @@
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.026
+       "corr": 0.024
       },
       {
        "lag": 1,
-       "corr": 0.166
+       "corr": 0.167
       },
       {
        "lag": 2,
@@ -1022,15 +1022,15 @@
       },
       {
        "lag": 3,
-       "corr": 0.142
+       "corr": 0.14
       },
       {
        "lag": 4,
-       "corr": 0.163
+       "corr": 0.166
       },
       {
        "lag": 5,
-       "corr": 0.172
+       "corr": 0.166
       },
       {
        "lag": 6,
@@ -1038,7 +1038,7 @@
       },
       {
        "lag": 7,
-       "corr": 0.147
+       "corr": 0.148
       },
       {
        "lag": 8,
@@ -1046,26 +1046,26 @@
       },
       {
        "lag": 9,
-       "corr": 0.15
+       "corr": 0.152
       },
       {
        "lag": 10,
-       "corr": 0.142
+       "corr": 0.144
       },
       {
        "lag": 11,
-       "corr": 0.151
+       "corr": 0.149
       },
       {
        "lag": 12,
-       "corr": 0.101
+       "corr": 0.104
       }
      ],
-     "granger_F": 2.04,
+     "granger_F": 2.08,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 5.0,
-     "estabilidade_metade1": -0.014,
-     "estabilidade_metade2": 0.227,
+     "ganho_oos_pct": 5.3,
+     "estabilidade_metade1": 0.01,
+     "estabilidade_metade2": 0.225,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1075,7 +1075,7 @@
      },
      "criterios_atendidos": "1/4",
      "status": "reprovado",
-     "n_obs": 158
+     "n_obs": 159
     },
     {
      "candidato": "papelao",
@@ -1779,7 +1779,7 @@
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.002
+       "corr": -0.004
       },
       {
        "lag": 1,
@@ -1787,11 +1787,11 @@
       },
       {
        "lag": 2,
-       "corr": 0.027
+       "corr": 0.03
       },
       {
        "lag": 3,
-       "corr": 0.011
+       "corr": 0.012
       },
       {
        "lag": 4,
@@ -1799,42 +1799,42 @@
       },
       {
        "lag": 5,
-       "corr": -0.0
+       "corr": -0.001
       },
       {
        "lag": 6,
-       "corr": -0.011
+       "corr": -0.014
       },
       {
        "lag": 7,
-       "corr": -0.006
+       "corr": -0.004
       },
       {
        "lag": 8,
-       "corr": -0.02
+       "corr": -0.021
       },
       {
        "lag": 9,
-       "corr": -0.035
+       "corr": -0.033
       },
       {
        "lag": 10,
-       "corr": -0.047
+       "corr": -0.046
       },
       {
        "lag": 11,
-       "corr": 0.001
+       "corr": -0.002
       },
       {
        "lag": 12,
-       "corr": -0.047
+       "corr": -0.043
       }
      ],
      "granger_F": 0.38,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -0.3,
-     "estabilidade_metade1": -0.28,
-     "estabilidade_metade2": 0.329,
+     "ganho_oos_pct": -0.1,
+     "estabilidade_metade1": -0.281,
+     "estabilidade_metade2": 0.331,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1844,7 +1844,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 158
+     "n_obs": 159
     }
    ],
    "n_testes_executados": 8,
@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-08-17T10:17:32+00:00"
+ "gerado_em": "2026-08-18T10:15:47+00:00"
 }

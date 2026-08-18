@@ -210,12 +210,12 @@
     ],
     "impacto_basileia_pp": [
      -0.52,
-     -0.06
+     -0.07
     ],
     "basileia_atual_pct": 14.77,
     "basileia_pos_choque_pct": [
      14.25,
-     14.71
+     14.7
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -492,7 +492,7 @@
     ],
     "impacto_basileia_pp": [
      -0.59,
-     -0.07
+     -0.08
     ],
     "basileia_atual_pct": 14.23,
     "basileia_pos_choque_pct": [
@@ -750,7 +750,7 @@
     ],
     "impacto_basileia_pp": [
      -0.91,
-     -0.11
+     -0.12
     ],
     "basileia_atual_pct": 15.13,
     "basileia_pos_choque_pct": [
@@ -2948,7 +2948,7 @@
     ],
     "impacto_basileia_pp": [
      -0.82,
-     -0.1
+     -0.11
     ],
     "basileia_atual_pct": 19.4,
     "basileia_pos_choque_pct": [
@@ -3480,7 +3480,7 @@
     ],
     "impacto_basileia_pp": [
      -0.35,
-     -0.04
+     -0.05
     ],
     "basileia_atual_pct": 13.42,
     "basileia_pos_choque_pct": [
@@ -3948,7 +3948,7 @@
     "basileia_atual_pct": 17.47,
     "basileia_pos_choque_pct": [
      16.9,
-     17.4
+     17.39
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -4496,7 +4496,7 @@
     "basileia_atual_pct": 15.01,
     "basileia_pos_choque_pct": [
      14.46,
-     14.95
+     14.94
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -5412,7 +5412,7 @@
     "basileia_atual_pct": 13.98,
     "basileia_pos_choque_pct": [
      13.29,
-     13.9
+     13.89
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -5955,7 +5955,7 @@
     "basileia_atual_pct": 12.26,
     "basileia_pos_choque_pct": [
      11.97,
-     12.23
+     12.22
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -8471,12 +8471,12 @@
     ],
     "impacto_basileia_pp": [
      -0.83,
-     -0.1
+     -0.11
     ],
     "basileia_atual_pct": 14.68,
     "basileia_pos_choque_pct": [
      13.85,
-     14.58
+     14.57
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -8745,7 +8745,7 @@
     ],
     "impacto_basileia_pp": [
      -0.51,
-     -0.06
+     -0.07
     ],
     "basileia_atual_pct": 12.1,
     "basileia_pos_choque_pct": [
@@ -9313,7 +9313,7 @@
     ],
     "impacto_basileia_pp": [
      -0.75,
-     -0.09
+     -0.1
     ],
     "basileia_atual_pct": 16.9,
     "basileia_pos_choque_pct": [
@@ -10811,7 +10811,7 @@
     "basileia_atual_pct": 17.3,
     "basileia_pos_choque_pct": [
      16.6,
-     17.22
+     17.21
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -12100,7 +12100,7 @@
     ],
     "impacto_basileia_pp": [
      -0.67,
-     -0.08
+     -0.09
     ],
     "basileia_atual_pct": 15.41,
     "basileia_pos_choque_pct": [
@@ -12808,7 +12808,7 @@
     "basileia_atual_pct": 11.6,
     "basileia_pos_choque_pct": [
      11.03,
-     11.53
+     11.52
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -14110,7 +14110,7 @@
     ],
     "impacto_basileia_pp": [
      -0.44,
-     -0.05
+     -0.06
     ],
     "basileia_atual_pct": 13.53,
     "basileia_pos_choque_pct": [
@@ -14379,7 +14379,7 @@
     "basileia_atual_pct": 11.49,
     "basileia_pos_choque_pct": [
      11.17,
-     11.45
+     11.44
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -17596,7 +17596,7 @@
     ],
     "impacto_basileia_pp": [
      -0.67,
-     -0.08
+     -0.09
     ],
     "basileia_atual_pct": 25.86,
     "basileia_pos_choque_pct": [
@@ -17874,7 +17874,7 @@
     ],
     "impacto_basileia_pp": [
      -0.52,
-     -0.06
+     -0.07
     ],
     "basileia_atual_pct": 24.42,
     "basileia_pos_choque_pct": [
@@ -18773,7 +18773,7 @@
     ],
     "impacto_basileia_pp": [
      -0.67,
-     -0.08
+     -0.09
     ],
     "basileia_atual_pct": 12.93,
     "basileia_pos_choque_pct": [
@@ -19334,7 +19334,7 @@
     "basileia_atual_pct": 22.05,
     "basileia_pos_choque_pct": [
      21.48,
-     21.98
+     21.97
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -19704,7 +19704,7 @@
     "basileia_atual_pct": 13.46,
     "basileia_pos_choque_pct": [
      12.72,
-     13.37
+     13.36
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
@@ -23711,7 +23711,7 @@
     "basileia_atual_pct": 58.12,
     "basileia_pos_choque_pct": [
      56.99,
-     57.98
+     57.97
     ],
     "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
    },
