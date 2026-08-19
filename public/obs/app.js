@@ -213,22 +213,22 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.85.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.86.0"; // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
 // página (VIEW_DATA) ou por bloco habilitado da Visão geral (OV_BLOCO_DATA).
 const CORE_FILES = ["meta", "pulse", "ibcc", "overview", "alerts", "alertas_central"];
 const VIEW_DATA = {
-  pulse: ["regimes"],
+  pulse: ["regimes_series"],
   sectors: ["exposures", "sectors"], sector: ["exposures", "sectors"],
   rj: ["rj"],
   institutions: ["institutions", "inst_index", "npl", "guidance", "regimes"], inst: ["inst_pages", "institutions", "inst_index", "npl", "operacional", "pilar3", "guidance", "regimes", "folha_bancos"],
   method: ["method", "lineage", "quality"],
   compare: ["compare", "inst_index", "operacional", "institutions"],
-  research: ["institutions", "inst_index", "antecedentes", "regimes"],
+  research: ["institutions", "inst_index", "antecedentes", "regimes_series"],
   market: ["market"],
-  leading: ["leading", "antecedentes", "regimes"],
+  leading: ["leading", "antecedentes", "regimes_series"],
   trends: ["trends"],
   panorama: ["panorama"],
   pix: ["pix", "regulacao"],
@@ -829,7 +829,10 @@ function lineChart(opts) {
   }
   const step = Math.max(1, Math.floor(allX.length / 6));
   for (let i = 0; i < allX.length; i += step) {
-    out += `<text x="${X(allX[i])}" y="${H - 8}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
+    const tx = X(allX[i]);
+    // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
+    const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
+    out += `<text x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="10" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -3317,7 +3320,7 @@ const OV_BLOCOS = [
 // quando o usuário habilita o bloco (o padrão simples não paga esse custo)
 const OV_BLOCO_DATA = {
   recordes: ["recordes"],
-  inad: ["npl", "regimes"],
+  inad: ["npl", "regimes_series"],
   prodset: ["products", "sectors", "openfinance"],
   proj: ["scenario", "npl"],
   insight: ["npl"],
@@ -3782,7 +3785,7 @@ function inadFanChart(seg) {
     band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fInad.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
   }
   const annotations = (function () {
-    const rg = state.data.regimes;
+    const rg = state.data.regimes_series;
     if (!rg || !rg.series) return [];
     const rs = rg.series.find(x => x.serie === `inad_${seg}`);
     if (!rs) return [];
@@ -3955,7 +3958,7 @@ function renderPulse() {
       band = { pts: [{ x: last.ref, lo: last.v, hi: last.v }, ...fc.pontos.map(p => ({ x: p.ref_date, lo: p.p10, hi: p.p90 }))] };
     }
     const growthLabel = f.growth === "real" && s.yoy_real ? "a/a real (defl. IPCA)" : "a/a nominal";
-    const rgs = state.data.regimes && state.data.regimes.series ? state.data.regimes.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
+    const rgs = state.data.regimes_series && state.data.regimes_series.series ? state.data.regimes_series.series.find(x => x.serie === `${c.key}_${f.seg}`) : null;
     const annotations = [];
     // marcadores de regime são datados sobre o NÍVEL — nas demais réguas saem
     if (emNivel && rgs && rgs.quebra_estrutural && rgs.quebra_estrutural.significativa) annotations.push({ x: rgs.quebra_estrutural.data_quebra, label: "quebra de regime", color: "#b45309" });
@@ -4029,7 +4032,7 @@ function extraCard(k) {
    hoje uma aba desta mesma página: o radar levanta candidatos, o protocolo decide
    quais sobrevivem aos quatro critérios. Retorna HTML para o host renderizar. */
 function blocoProtocolo() {
-  const { antecedentes, regimes } = state.data;
+  const { antecedentes, regimes_series: regimes } = state.data;
   if (!antecedentes || !antecedentes.targets) return `<p class="src">carregando o protocolo de antecedentes…</p>`;
   const seg = state.filters.seg;
   const tgtKey = `inad_${seg}`;
@@ -4927,7 +4930,11 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   if (!pairs || pairs.length < 3) return "";
   opts = opts || {};
   const xs = pairs.map(p => p.x), ys = pairs.map(p => p.y);
-  const lx = Math.min(...xs), hx = Math.max(...xs), ly = Math.min(...ys), hy = Math.max(...ys);
+  // 6% de folga no domínio: sem ela, as bolhas dos extremos cortam na moldura
+  const dlx = Math.min(...xs), dhx = Math.max(...xs), dly = Math.min(...ys), dhy = Math.max(...ys);
+  const pad = (lo, hi) => { const d = Math.max(hi - lo, 1e-9) * 0.06; return [lo - d, hi + d]; };
+  const [lx, hx] = pad(dlx, dhx);
+  const [ly, hy] = pad(dly, dhy);
   const X = v => 40 + (v - lx) / Math.max(hx - lx, 1e-9) * (w - 58);
   const Y = v => h - 26 - (v - ly) / Math.max(hy - ly, 1e-9) * (h - 42);
   const sizes = pairs.map(p => p.size).filter(v => v != null && v > 0);
@@ -4935,6 +4942,16 @@ function scatterPlot(pairs, xl, yl, w = 340, h = 200, opts) {
   const R = p => (p.size != null && smax) ? 5 + 13 * Math.sqrt(p.size / smax) : 4.5;
   let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="dispersão ${attr(xl)} × ${attr(yl)}">`;
   out += `<line x1="40" y1="${h - 26}" x2="${w - 10}" y2="${h - 26}" style="stroke:var(--border-2)"/><line x1="40" y1="10" x2="40" y2="${h - 26}" style="stroke:var(--border-2)"/>`;
+  // escala numérica: sem os ticks o leitor não tem como julgar as posições —
+  // ancorada nos extremos REAIS dos dados (nunca no domínio com folga, que
+  // mostraria valores inexistentes como taxa negativa)
+  const tickFmt = (lo, hi) => v => fmt.n(v, hi - lo >= 20 ? 0 : hi - lo >= 2 ? 1 : 2);
+  const fx = tickFmt(dlx, dhx), fy = tickFmt(dly, dhy);
+  [0, 0.5, 1].forEach(t => {
+    const vx = dlx + (dhx - dlx) * t, vy = dly + (dhy - dly) * t;
+    out += `<text x="${X(vx)}" y="${h - 16}" font-size="8.5" style="fill:var(--c-axis-text)" text-anchor="${t === 0 ? "start" : t === 1 ? "end" : "middle"}">${fx(vx)}</text>`;
+    out += `<text x="36" y="${Y(vy) + 3}" font-size="8.5" style="fill:var(--c-axis-text)" text-anchor="end">${fy(vy)}</text>`;
+  });
   if (opts.refX != null) {
     out += `<line x1="${X(opts.refX)}" x2="${X(opts.refX)}" y1="10" y2="${h - 26}" style="stroke:var(--c-gray)" stroke-dasharray="4,3"/>`;
     out += `<text x="${X(opts.refX) + 4}" y="20" font-size="8.5" style="fill:var(--c-axis-text)">${opts.refXLabel || "mediana"}</text>`;
@@ -6552,7 +6569,7 @@ const INTENTS = [
     id: "inad_por_que", kw: ["por que", "inadimplencia"], alt: [["subiu", "aumentou", "piorou", "explica"]],
     label: "Por que a inadimplência aumentou?",
     run() {
-      const { pulse, overview, antecedentes, regimes } = state.data;
+      const { pulse, overview, antecedentes, regimes_series: regimes } = state.data;
       const s = pulse.series.inad_total, last = s.obs[s.obs.length - 1], prev = s.obs[s.obs.length - 2];
       const det = overview.mudancas.top_deterioracoes;
       const prom = (antecedentes.targets.inad_total.candidatos || []).filter(c => c.status === "promovido");
@@ -10216,24 +10233,35 @@ window.exportProductXLSX = slug => {
   const full = state.prodCache && state.prodCache[slug];
   const p = full && full.produto;
   if (!p) return;
+  // uma coluna de taxa POR MODALIDADE do txjuros — nunca uma "taxa do produto" única
+  const xlsxMods = (p.taxas && p.taxas.disponivel) ? p.taxas.itens.map(m => m.modalidade) : [];
   const rows = [["Observatório Brasileiro de Crédito — matriz produto × instituição"],
     [`produto: ${p.nome} (${p.seg.toUpperCase()}) · data-base: ${fmtTri(p.data_base)}`],
     [`fonte: ${full.fonte}`], [full.npl_nota],
+    ...(xlsxMods.length ? [["taxas: % a.a. das operações NOVAS por modalidade (txjuros, janela mais recente) — casamento por CNPJ-raiz ou nome único; vazio = sem casamento inequívoco"]] : []),
     [`extraído em: ${new Date().toISOString().slice(0, 10)}`], [],
-    ["cod", "instituição", "nível", "grupo", "carteira R$", "participação %", "Δ4T %", "Δ1T %", "% carteira da IF", "atraso ≥15d do produto %", "inad. >90d TOTAL da IF %", "Basileia %"]];
-  p.matriz.forEach(r => rows.push([r.cod, r.nome, r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct, r.d1t_pct, r.pct_carteira_inst, r.atraso15_pct, r.npl_inst_pct, r.basileia_pct]));
+    ["cod", "instituição", "nível", "grupo", "carteira R$", "participação %", "Δ4T %", "Δ1T %", "% carteira da IF", "atraso ≥15d do produto %", "inad. >90d NO PRODUTO estimada %", "selo estimativa", "inad. >90d TOTAL da IF %", "Basileia %"]
+      .concat(xlsxMods.map(m => `taxa a.a. novas op. — ${m}`))];
+  p.matriz.forEach(r => rows.push([r.cod, r.nome, r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct, r.d1t_pct, r.pct_carteira_inst, r.atraso15_pct, r.npl_prod_est ? r.npl_prod_est.pct : "", r.npl_prod_est ? "ESTIMADO" : "", r.npl_inst_pct, r.basileia_pct]
+    .concat(xlsxMods.map(m => r.taxas_novas && r.taxas_novas[m] != null ? r.taxas_novas[m] : ""))));
   dlXlsx(`produto_${slug}_${p.data_base}.xlsx`, rows, p.nome.slice(0, 30));
 };
 window.exportProductCSV = slug => {
   const full = state.prodCache && state.prodCache[slug];
   const p = full && full.produto;
   if (!p) return;
+  // uma coluna de taxa POR MODALIDADE do txjuros — nunca uma "taxa do produto" única
+  const csvMods = (p.taxas && p.taxas.disponivel) ? p.taxas.itens.map(m => m.modalidade) : [];
   const head = ["# Observatório Brasileiro de Crédito — matriz produto × instituição",
     `# produto: ${p.nome} (${p.seg.toUpperCase()}) · modalidade original: ${p.modalidade_original}`,
     `# fonte: ${full.fonte} · data-base: ${fmtTri(p.data_base)} · extraído em: ${new Date().toISOString().slice(0, 10)}`,
     `# nota: ${full.npl_nota}`,
-    "cod;instituicao;nivel;grupo;carteira_brl;share_pct;d4t_pct;d1t_pct;pct_carteira_inst;atraso15_produto_pct;npl90_produto_ESTIMADO_pct;selo_estimativa;npl90_inst_pct;basileia_pct"];
-  const rows = p.matriz.map(r => [r.cod, csvEsc(r.nome), r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct ?? "", r.d1t_pct ?? "", r.pct_carteira_inst ?? "", r.atraso15_pct ?? "", r.npl_prod_est ? r.npl_prod_est.pct : "", r.npl_prod_est ? "ESTIMADO" : "", r.npl_inst_pct ?? "", r.basileia_pct ?? ""].join(";"));
+    ...(csvMods.length ? ["# taxas: % a.a. das operações NOVAS por modalidade (txjuros, janela mais recente); casamento por CNPJ-raiz ou nome normalizado único — vazio = sem casamento inequívoco (ausência declarada)"] : []),
+    "cod;instituicao;nivel;grupo;carteira_brl;share_pct;d4t_pct;d1t_pct;pct_carteira_inst;atraso15_produto_pct;npl90_produto_ESTIMADO_pct;selo_estimativa;npl90_inst_pct;basileia_pct"
+      + csvMods.map(m => `;taxa_aa_novas_op__${m.replace(/;/g, ",")}`).join("") + (csvMods.length ? ";taxa_casamento" : "")];
+  const rows = p.matriz.map(r => [r.cod, csvEsc(r.nome), r.nivel, r.sr || "", r.carteira_brl, r.share_pct, r.d4t_pct ?? "", r.d1t_pct ?? "", r.pct_carteira_inst ?? "", r.atraso15_pct ?? "", r.npl_prod_est ? r.npl_prod_est.pct : "", r.npl_prod_est ? "ESTIMADO" : "", r.npl_inst_pct ?? "", r.basileia_pct ?? ""]
+    .concat(csvMods.map(m => r.taxas_novas && r.taxas_novas[m] != null ? r.taxas_novas[m] : ""))
+    .concat(csvMods.length ? [r.taxas_novas ? (r.taxa_casamento || "") : ""] : []).join(";"));
   dlFile(`produto_${slug}_${p.data_base}.csv`, head.concat(rows).join("\n"));
 };
 
@@ -10259,6 +10287,16 @@ function renderProductPageData(el, P) {
   const atrSerie = segD ? (segD.atraso_serie || []) : (p.atraso15 && p.atraso15.serie) || [];
   const kpi = (lbl, val, sub, seal) => `<div class="card kpi"><h4>${lbl} ${seal || ""}</h4><div class="big" style="font-size:21px">${val}</div><div class="src">${sub || ""}</div></div>`;
   p.matriz.forEach(r => { r.npl_est_pct = r.npl_prod_est ? r.npl_prod_est.pct : null; }); // chave plana p/ ordenar
+  // Modalidade de taxa SELECIONADA (o MESMO seletor da seção de taxas): matriz e
+  // dispersão nunca misturam modalidades — rotativo (~450% a.a.) e parcelado
+  // (~180%) do cartão não têm média com significado. r.taxas_novas vem do gold
+  // como {modalidade: taxa}, uma entrada por modalidade casada.
+  const modCurta = m => m.replace(/ - Prefixado$/, "").replace(/ - Pós-fixado.*$/, " (pós)");
+  const tx = p.taxas && p.taxas.disponivel ? p.taxas : null;
+  const txIdx = tx ? Math.min(TX_STATE.idx, tx.itens.length - 1) : 0;
+  const txMod = tx ? tx.itens[txIdx].modalidade : null;
+  const txModCurta = txMod ? modCurta(txMod) : null;
+  p.matriz.forEach(r => { r.taxa_sel = txMod && r.taxas_novas ? (r.taxas_novas[txMod] ?? null) : null; }); // chave plana p/ ordenar
   let rows = matrizSeg.filter(r => !PMX_STATE.q || _norm(r.nome).includes(_norm(PMX_STATE.q)));
   rows = rows.slice().sort((a, b) => {
     const va = a[PMX_STATE.sort], vb = b[PMX_STATE.sort];
@@ -10278,6 +10316,7 @@ function renderProductPageData(el, P) {
     <td style="text-align:right"><b>${r.atraso15_pct != null ? fmt.n(r.atraso15_pct, 2) + "%" : "–"}</b></td>
     <td style="text-align:right">${r.npl_prod_est ? `<b>${fmt.n(r.npl_prod_est.pct, 2)}%</b> <span class="src" style="cursor:help" title="${attr(`ESTIMADO — decomposição: atraso ≥15d ${fmt.n(r.atraso15_pct, 2)}% × perfil do produto ${r.npl_prod_est.m_produto != null ? fmt.n(r.npl_prod_est.m_produto, 2) : "1,00 (neutro — produto sem par no SCR)"} × β ${fmt.n((P.npl_produto_estimado || {}).beta, 2)} × fator da IF ${fmt.n(r.npl_prod_est.phi_if, 2)}. Cobertura do modelo nesta IF: ${r.npl_prod_est.cobertura_if_pct != null ? fmt.n(r.npl_prod_est.cobertura_if_pct, 0) + "% da carteira" : "n.d."}${r.npl_prod_est.baixa_cobertura ? " — BAIXA: leia com cautela extra" : ""}. Método completo no fim da página.`)}">ⓘ${r.npl_prod_est.baixa_cobertura ? "⚠" : ""}</span>` : "–"}</td>
     <td style="text-align:right">${r.npl_inst_pct != null ? fmt.n(r.npl_inst_pct, 2) + "%" : "–"}</td>
+    ${txMod ? `<td style="text-align:right">${r.taxa_sel != null ? `<b>${fmt.n(r.taxa_sel, 2)}%</b>${r.taxa_casamento === "nome" ? " " + dica("taxa casada pelo NOME normalizado (conglomerado da matriz × IF individual do txjuros) — casamento único na base, mas confira na ficha da instituição") : ""}` : "–"}</td>` : ""}
     <td style="text-align:right">${r.basileia_pct != null ? fmt.n(r.basileia_pct, 1) + "%" : "–"}</td></tr>`;
   el.innerHTML = `
   <div class="src" style="margin-bottom:6px"><button class="btn ghost small" onclick="nav('products')">← produtos</button> Produtos de Crédito › ${p.nome} · data-base ${fmtTri(p.data_base)} ${badge("observado")}</div>
@@ -10310,27 +10349,37 @@ function renderProductPageData(el, P) {
   </div>
   ${(function(){
     /* Risco × preço × tamanho, por IF: x = atraso ≥15d NO PRODUTO (estoque),
-       y = taxa média a.a. das NOVAS operações (txjuros, janela mais recente),
-       bolha = carteira no produto. Dois conceitos de tempo convivem de
-       propósito e são declarados: estoque de atraso × fluxo de preço novo —
-       leitura exploratória, nunca "curva de risco-preço". Só entra IF com
-       casamento carteira↔taxa inequívoco (cnpj8 ou nome único). */
-    const pts = matrizSeg.filter(r => r.taxa_aa != null && r.atraso15_pct != null && r.carteira_brl > 0);
+       y = taxa a.a. das NOVAS operações NA MODALIDADE SELECIONADA (txjuros,
+       janela mais recente), bolha = carteira no produto, cor = segmento
+       prudencial. Dois conceitos de tempo convivem de propósito e são
+       declarados: estoque de atraso × fluxo de preço novo — leitura
+       exploratória, nunca "curva de risco-preço". Só entra IF com casamento
+       carteira↔taxa inequívoco (cnpj8 ou nome único) NA modalidade. */
+    if (!txMod) return "";
+    const pts = matrizSeg.filter(r => r.taxa_sel != null && r.atraso15_pct != null && r.carteira_brl > 0);
     if (pts.length < 3) return "";
-    const pares = pts.map(r => ({ x: r.atraso15_pct, y: r.taxa_aa, size: r.carteira_brl, label: r.nome.slice(0, 22), grp: r.taxa_casamento === "nome" ? "casado por nome" : undefined }));
+    const pares = pts.map(r => ({ x: r.atraso15_pct, y: r.taxa_sel, size: r.carteira_brl, label: r.nome.slice(0, 22),
+      color: SR_COLORS[r.sr] || "#64748b",
+      grp: (r.sr || "s/ segmento") + (r.taxa_casamento === "nome" ? " · taxa casada por nome" : "") }));
     const med = a => { const s = [...a].sort((m, n) => m - n); return s[Math.floor(s.length / 2)]; };
     const semTaxa = matrizSeg.filter(r => r.atraso15_pct != null && r.carteira_brl > 0).length - pts.length;
-    return `<h3>Atraso × taxa × carteira, por instituição <span class="src">(${pts.length} IFs com os três dados)</span></h3>
-    <div class="card">${scatterPlot(pares, "atraso ≥15d no produto (%)", "taxa média a.a. das novas operações (%)", 680, 320,
+    const segsNo = [...new Set(pts.map(r => r.sr).filter(Boolean))].sort();
+    return `<h3>Atraso × taxa × carteira, por instituição <span class="src">(${pts.length} IFs com os três dados na modalidade)</span></h3>
+    <div class="card">
+    ${tx.itens.length > 1 ? `<div class="controls" style="margin-bottom:4px"><span class="src">Modalidade da taxa (eixo y):</span>
+      <span class="seg">${tx.itens.map((x, i) => `<button class="${i === txIdx ? "active" : ""}" onclick="txSetIdx(${i})" title="${attr(x.modalidade)}">${modCurta(x.modalidade).slice(0, 42)}</button>`).join("")}</span></div>` : ""}
+    ${scatterPlot(pares, "atraso ≥15d no produto (%)", `taxa a.a. novas operações — ${txModCurta} (%)`, 680, 320,
       { sizeLabel: "carteira no produto", labels: pts.length <= 25,
         refX: med(pares.map(q => q.x)), refXLabel: "mediana do atraso",
         refY: med(pares.map(q => q.y)), refYLabel: "mediana da taxa" })}
+    ${segsNo.length > 1 ? `<div class="legend" style="margin-top:4px">${segsNo.map(s => `<span><span class="sw" style="background:${ccol(SR_COLORS[s])}"></span>${s}</span>`).join("")}<span class="src">cor = ${termo("segmentacao-prudencial","segmento prudencial")}</span></div>` : ""}
     <div class="note warn" style="margin-top:8px"><b>Dois relógios diferentes, de propósito:</b> o eixo x é o ESTOQUE em
-    atraso ≥15d da carteira do produto (IF.data, trimestral); o eixo y é o preço das operações NOVAS da janela mais
-    recente do txjuros (semanal) — não é a taxa da carteira. A bolha é a carteira no produto. Leitura exploratória:
+    atraso ≥15d da carteira do produto (IF.data, trimestral); o eixo y é o preço das operações NOVAS de <b>${txModCurta}</b>
+    na janela mais recente do txjuros (semanal) — não é a taxa da carteira, e cada modalidade tem a própria régua
+    (por isso o seletor: modalidades nunca se misturam numa média). A bolha é a carteira no produto. Leitura exploratória:
     posição acima-e-à-direita sugere preço acompanhando risco; fora da diagonal convida investigação, não conclusão.</div>
     <p class="src">Casamento carteira↔taxa por CNPJ-raiz (IFs individuais) ou nome normalizado único (conglomerados) —
-    ${semTaxa > 0 ? `${semTaxa} instituição(ões) com carteira e atraso, mas sem taxa casada, ficam fora do gráfico (ausência declarada).` : "todas as IFs com atraso têm taxa casada."}</p></div>`;
+    ${semTaxa > 0 ? `${semTaxa} instituição(ões) com carteira e atraso, mas sem taxa casada nesta modalidade, ficam fora do gráfico (ausência declarada).` : "todas as IFs com atraso têm taxa casada nesta modalidade."}</p></div>`;
   })()}
   <h3>Matriz produto × instituição <span class="src">(${matrizSeg.length} instituições${PMX_SEG !== "todos" ? ` do ${PMX_SEG}` : ""})</span></h3>
   <div class="controls">
@@ -10341,7 +10390,7 @@ function renderProductPageData(el, P) {
     <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada'))">copiar URL</button>
     ${!PMX_STATE.all && rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar todas (${rows.length})</button>` : rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar top-60</button>` : ""}
   </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th></th>${th("nome", "Instituição")}${th("carteira_brl", "Carteira no produto")}${th("share_pct", "Participação")}${th("d4t_pct", "Δ 4 trim.")}${th("d1t_pct", "Δ 1 trim.")}${th("pct_carteira_inst", "% da carteira da IF", "carteira no produto ÷ total PF+PJ da MESMA IF nos relatórios de modalidade (123/128) — numerador e denominador do mesmo universo; a Carteira de Crédito do Resumo é outro conceito e não é usada aqui")}${th("atraso15_pct", "Atraso ≥15d NO PRODUTO", "vencido ≥15 dias ÷ carteira da modalidade (IF.data rel. 123/128) — conceito de atraso, específico do produto; não é NPL >90d")}${th("npl_est_pct", "Inad. >90d NO PRODUTO (estimada)", "ESTIMATIVA do modelo de migração 15→90 — o IF.data não divulga >90d por modalidade. Calculada do atraso ≥15d do produto, do perfil de migração do produto no sistema (SCR) e do >90d total observado da IF. Método completo no fim da página")}${th("npl_inst_pct", "Inad. >90d TOTAL da IF", "Inadimplência >90d total da instituição (Res. 4.966) — NÃO específica do produto")}${th("basileia_pct", "Basileia")}</tr></thead>
+  <div class="tblwrap"><table class="data"><thead><tr><th></th>${th("nome", "Instituição")}${th("carteira_brl", "Carteira no produto")}${th("share_pct", "Participação")}${th("d4t_pct", "Δ 4 trim.")}${th("d1t_pct", "Δ 1 trim.")}${th("pct_carteira_inst", "% da carteira da IF", "carteira no produto ÷ total PF+PJ da MESMA IF nos relatórios de modalidade (123/128) — numerador e denominador do mesmo universo; a Carteira de Crédito do Resumo é outro conceito e não é usada aqui")}${th("atraso15_pct", "Atraso ≥15d NO PRODUTO", "vencido ≥15 dias ÷ carteira da modalidade (IF.data rel. 123/128) — conceito de atraso, específico do produto; não é NPL >90d")}${th("npl_est_pct", "Inad. >90d NO PRODUTO (estimada)", "ESTIMATIVA do modelo de migração 15→90 — o IF.data não divulga >90d por modalidade. Calculada do atraso ≥15d do produto, do perfil de migração do produto no sistema (SCR) e do >90d total observado da IF. Método completo no fim da página")}${th("npl_inst_pct", "Inad. >90d TOTAL da IF", "Inadimplência >90d total da instituição (Res. 4.966) — NÃO específica do produto")}${txMod ? th("taxa_sel", `Taxa a.a. — ${txModCurta}`, `taxa média a.a. das operações NOVAS de ${txMod} na janela mais recente do txjuros (semanal) — muda com o seletor de modalidade da seção de taxas; não é a taxa da carteira. Casamento por CNPJ-raiz ou nome normalizado único; sem casamento inequívoco a célula fica vazia (ausência declarada)`) : ""}${th("basileia_pct", "Basileia")}</tr></thead>
   <tbody>${shown.map(trow).join("")}</tbody></table></div>
   <div class="note warn"><b>Leitura correta:</b> ${P.npl_nota} Basileia é da instituição inteira.</div>
   ${(function(){

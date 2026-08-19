@@ -158,39 +158,53 @@ def _norm_nome(s):
     return s
 
 
-def _taxa_por_cod(slug, taxas_db, names, cods):
-    """Taxa média (a.a.) das NOVAS operações por instituição da matriz.
-
-    Fonte: txjuros (janela móvel mais recente), por IF INDIVIDUAL (cnpj8).
-    Junção com a matriz (cod da carteira IF.data): cnpj8 direto para
-    instituições individuais; nome normalizado para conglomerados — fronteira
-    declarada no gold, e cod sem correspondência inequívoca fica sem taxa
-    (ausência, nunca chute). Várias modalidades casadas → mediana das taxas
-    da própria IF entre elas."""
-    import statistics
-    por_cnpj8, nomes_tx = {}, {}
+def _mod_rows_latest(slug, taxas_db):
+    """{(seg, modalidade): [{cnpj8, nome, taxa_aa}, ...]} da última janela de
+    cada modalidade mapeada — insumo único da junção por IF (o build usa o
+    silver; o seed local reconstrói a MESMA estrutura do juros.json publicado)."""
+    out = {}
     for seg, mod in TAXAS_MAP.get(slug, []):
         janelas = taxas_db.get((seg, mod))
         if not janelas:
             continue
         t = janelas[max(janelas)]
-        for r in t["rows"]:
+        out[(seg, mod)] = [{"cnpj8": r["cnpj8"], "nome": r["nome"], "taxa_aa": r["taxa_aa"]}
+                           for r in t["rows"]]
+    return out
+
+
+def _taxa_por_cod(slug, mod_rows, names, cods):
+    """Taxa média (a.a.) das NOVAS operações por instituição da matriz,
+    POR MODALIDADE txjuros.
+
+    Junção com a matriz (cod da carteira IF.data): cnpj8 direto para
+    instituições individuais; nome normalizado para conglomerados — fronteira
+    declarada no gold, e cod sem correspondência inequívoca fica sem taxa
+    (ausência, nunca chute).
+
+    Cada modalidade casada é uma ENTRADA PRÓPRIA — nunca mediana entre
+    modalidades: rotativo (~450% a.a.) e parcelado (~180%) do cartão têm
+    ordens de grandeza distintas, e a mediana entre elas não é taxa de coisa
+    nenhuma (bug corrigido em 19/08; a coluna e a dispersão do painel agora
+    seguem a modalidade selecionada)."""
+    por_cnpj8, nomes_tx = {}, {}
+    for (seg, mod), rows in mod_rows.items():
+        for r in rows:
             if r["taxa_aa"] is not None and r["cnpj8"]:
-                por_cnpj8.setdefault(r["cnpj8"], []).append(r["taxa_aa"])
+                por_cnpj8.setdefault(r["cnpj8"], {})[mod] = round(r["taxa_aa"], 2)
                 nomes_tx[r["cnpj8"]] = r["nome"]
     if not por_cnpj8:
         return {}
-    taxa_cnpj8 = {c: round(statistics.median(v), 2) for c, v in por_cnpj8.items()}
     idx_nome = {}
-    for c in taxa_cnpj8:
+    for c in por_cnpj8:
         n = _norm_nome(nomes_tx.get(c))
         if len(n) >= 4:
             idx_nome.setdefault(n, []).append(c)
     out = {}
     for cod in cods:
         c8 = cod if (cod.isdigit() and len(cod) == 8) else None
-        if c8 and c8 in taxa_cnpj8:
-            out[cod] = {"taxa_aa": taxa_cnpj8[c8], "casamento": "cnpj8"}
+        if c8 and c8 in por_cnpj8:
+            out[cod] = {"taxas": por_cnpj8[c8], "casamento": "cnpj8"}
             continue
         alvo = _norm_nome((names.get(cod) or {}).get("nome"))
         if len(alvo) < 4:
@@ -198,7 +212,7 @@ def _taxa_por_cod(slug, taxas_db, names, cods):
         candidatos = {c for n, cs in idx_nome.items() if (alvo in n or n in alvo) for c in cs}
         if len(candidatos) == 1:
             c8 = candidatos.pop()
-            out[cod] = {"taxa_aa": taxa_cnpj8[c8], "casamento": "nome"}
+            out[cod] = {"taxas": por_cnpj8[c8], "casamento": "nome"}
         # >1 candidato = ambíguo: fica sem taxa — ausência declarada
     return out
 
@@ -386,7 +400,7 @@ def build(con, cfg):
                 "nota": "shares sobre o universo IF.data do produto (todas as instituições reportantes)."}
 
         # matriz: TODAS as instituições reportantes
-        taxa_map = _taxa_por_cod(slug, taxas_db, names, list(cur_map))
+        taxa_map = _taxa_por_cod(slug, _mod_rows_latest(slug, taxas_db), names, list(cur_map))
         rows = []
         for cod, v in sorted(cur_map.items(), key=lambda x: -x[1]):
             prev4 = by_anomes.get(prev_ano, {}).get(cod) if prev_ano else None
@@ -405,9 +419,11 @@ def build(con, cfg):
                 "pct_carteira_inst": round(v / cart_total_inst[cod] * 100, 1) if cart_total_inst.get(cod) else None,
                 "npl_inst_pct": round(npl, 2) if npl is not None else None,
                 "basileia_pct": round(basileia[cod] * 100, 2) if cod in basileia else None,  # fração → %
-                # taxa das NOVAS operações (txjuros, janela mais recente) — o
-                # casamento com a carteira é declarado; ausente = sem match
-                "taxa_aa": (taxa_map.get(cod) or {}).get("taxa_aa"),
+                # taxas das NOVAS operações POR MODALIDADE txjuros (janela mais
+                # recente) — o casamento com a carteira é declarado; ausente =
+                # sem match. Nunca uma taxa única "do produto": modalidades não
+                # se misturam (rotativo × parcelado)
+                "taxas_novas": (taxa_map.get(cod) or {}).get("taxas"),
                 "taxa_casamento": (taxa_map.get(cod) or {}).get("casamento"),
             })
 

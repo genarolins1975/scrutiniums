@@ -37,7 +37,7 @@ def collect(con, cfg=None):
         # lista vazia é implausível (sempre há liquidações em curso): trata como
         # falha de fonte e preserva o espelho anterior — ausência nunca vira zero
         return [{"key": "regimes", "ok": False, "error": "fonte retornou lista vazia — espelho anterior preservado"}]
-    common.save_bronze("regimes", "regimes_vigentes", body, {"url": URL})
+    bronze_file, sha = common.save_bronze("regimes", "regimes_vigentes", body, {"url": URL})
     agora = common.now_utc()
     con.execute("DELETE FROM regimes_vigentes")
     for v in vals:
@@ -52,6 +52,8 @@ def collect(con, cfg=None):
                     (cnpj, ini, str(v.get("CnpjRaiz") or cnpj[:8]), v.get("NomeInstituicao"),
                      v.get("Tipo"), agora, agora))
     con.commit()
-    common.record_lineage(con, "regimes.json", "regimes/regimes_vigentes", "-",
+    # sha REAL do bronze — "-" quebrava o contrato da linhagem publicada
+    # (linhagem_recente promete SHA-256 de 64 hex por entrada)
+    common.record_lineage(con, "regimes.json", bronze_file, sha,
                           "BCB Olinda regimes_especiais (lista vigente diária) -> vigentes + histórico append-only")
     return [{"key": "regimes", "ok": True, "vigentes": len(vals)}]

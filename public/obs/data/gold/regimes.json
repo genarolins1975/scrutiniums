@@ -1,158 +1,228 @@
 {
- "series": [
+ "disponivel": true,
+ "gerado_em": "2026-08-12T12:25:13+00:00",
+ "titulo": "Sob regime de resolução do BCB",
+ "vigentes": [
   {
-   "serie": "inad_total",
-   "label": "Inadimplência total (Δ mensal)",
-   "transformacao": "diff",
-   "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.013,
-   "cusum": {
-    "ultimo_disparo": {
-     "data": "2025-08-01",
-     "direcao": "alta",
-     "estatistica": 5.14
-    },
-    "cusum_atual": 0.82,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2021-04-01",
-    "supF": 11.1,
-    "critico_5pct_aprox": 8.85,
-    "significativa": true,
-    "media_antes": -0.013,
-    "media_depois": 0.04,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "00329598000167",
+   "cnpj8": "00329598",
+   "nome": "SEFER INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "26/06/2026",
+   "inicio_iso": "2026-06-26",
+   "responsavel": "EDISON BENEDITO ALEXANDRE",
+   "municipio": "São Paulo",
+   "uf": "SP"
   },
   {
-   "serie": "inad_pf",
-   "label": "Inadimplência PF (Δ mensal)",
-   "transformacao": "diff",
-   "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.049,
-   "cusum": {
-    "ultimo_disparo": {
-     "data": "2025-08-01",
-     "direcao": "alta",
-     "estatistica": 6.42
-    },
-    "cusum_atual": 0.54,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2021-07-01",
-    "supF": 16.0,
-    "critico_5pct_aprox": 8.85,
-    "significativa": true,
-    "media_antes": -0.022,
-    "media_depois": 0.044,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "71677850000177",
+   "cnpj8": "71677850",
+   "nome": "FRENTE SOCIEDADE CORRETORA DE CÂMBIO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "30/04/2026",
+   "inicio_iso": "2026-04-30",
+   "responsavel": "MARINA RAMOS",
+   "municipio": "São Paulo",
+   "uf": "SP"
   },
   {
-   "serie": "inad_pj",
-   "label": "Inadimplência PJ (Δ mensal)",
-   "transformacao": "diff",
-   "estado_hipotese": "aceleração",
-   "drift_6m_vs_12m_previos": 0.046,
-   "cusum": {
-    "ultimo_disparo": {
-     "data": "2020-11-01",
-     "direcao": "baixa",
-     "estatistica": -5.35
-    },
-    "cusum_atual": 0.73,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2021-04-01",
-    "supF": 4.2,
-    "critico_5pct_aprox": 8.85,
-    "significativa": false,
-    "media_antes": -0.009,
-    "media_depois": 0.031,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "05491616000126",
+   "cnpj8": "05491616",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E SERVIÇOS FINANCEIROS",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "16/04/2026",
+   "inicio_iso": "2026-04-16",
+   "responsavel": "J&J CONSULTORIA EM GESTAO E CONTROLES LTDA",
+   "municipio": "Mineiros",
+   "uf": "GO"
   },
   {
-   "serie": "concessoes_total",
-   "label": "Concessões (var. interanual)",
-   "transformacao": "yoy",
-   "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": 1.293,
-   "cusum": {
-    "ultimo_disparo": {
-     "data": "2022-01-01",
-     "direcao": "alta",
-     "estatistica": 6.16
-    },
-    "cusum_atual": 0.55,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2017-10-01",
-    "supF": 57.3,
-    "critico_5pct_aprox": 8.85,
-    "significativa": true,
-    "media_antes": 0.951,
-    "media_depois": 12.622,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "33171211000146",
+   "cnpj8": "33171211",
+   "nome": "ACQIO ADQUIRENCIA INSTITUICAO DE PAGAMENTO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "27/03/2026",
+   "inicio_iso": "2026-03-27",
+   "responsavel": "CASSIO HAIG VARTANIAN",
+   "municipio": "São Paulo",
+   "uf": "SP"
   },
   {
-   "serie": "saldo_total",
-   "label": "Saldo de crédito (var. interanual)",
-   "transformacao": "yoy",
-   "estado_hipotese": "aceleração",
-   "drift_6m_vs_12m_previos": -1.153,
-   "cusum": {
-    "ultimo_disparo": {
-     "data": "2023-10-01",
-     "direcao": "baixa",
-     "estatistica": -5.2
-    },
-    "cusum_atual": 0.0,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2020-06-01",
-    "supF": 59.8,
-    "critico_5pct_aprox": 8.85,
-    "significativa": true,
-    "media_antes": 6.517,
-    "media_depois": 12.613,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "17887874000105",
+   "cnpj8": "17887874",
+   "nome": "ENTREPAY INSTITUICAO DE PAGAMENTO S.A",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "27/03/2026",
+   "inicio_iso": "2026-03-27",
+   "responsavel": "CASSIO HAIG VARTANIAN",
+   "municipio": "São Paulo",
+   "uf": "SP"
   },
   {
-   "serie": "spread_total",
-   "label": "Spread médio (Δ mensal)",
-   "transformacao": "diff",
-   "estado_hipotese": "estabilização/melhora",
-   "drift_6m_vs_12m_previos": -0.119,
-   "cusum": {
-    "ultimo_disparo": null,
-    "cusum_atual": 0.0,
-    "limiar": 5.0
-   },
-   "quebra_estrutural": {
-    "data_quebra": "2021-10-01",
-    "supF": 3.5,
-    "critico_5pct_aprox": 8.85,
-    "significativa": false,
-    "media_antes": -0.034,
-    "media_depois": 0.135,
-    "direcao": "deterioração"
-   },
-   "aviso": "Mudança de regime é hipótese estatística sujeita a revisão de dados — não é fato."
+   "cnpj": "39416705000120",
+   "cnpj8": "39416705",
+   "nome": "OCTA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "27/03/2026",
+   "inicio_iso": "2026-03-27",
+   "responsavel": "CASSIO HAIG VARTANIAN",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "33884941000194",
+   "cnpj8": "33884941",
+   "nome": "BANCO MASTER MÚLTIPLO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "17/03/2026",
+   "inicio_iso": "2026-03-17",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "48430050000135",
+   "cnpj8": "48430050",
+   "nome": "DANK SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "11/03/2026",
+   "inicio_iso": "2026-03-11",
+   "responsavel": "FACCIO ADMINISTRACOES LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "61024352000171",
+   "cnpj8": "61024352",
+   "nome": "BANCO PLENO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/02/2026",
+   "inicio_iso": "2026-02-18",
+   "responsavel": "JOSE EDUARDO VICTORIA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "02927433000112",
+   "cnpj8": "02927433",
+   "nome": "PLENO DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/02/2026",
+   "inicio_iso": "2026-02-18",
+   "responsavel": "JOSE EDUARDO VICTORIA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "23862762000100",
+   "cnpj8": "23862762",
+   "nome": "WILL FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "21/01/2026",
+   "inicio_iso": "2026-01-21",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "92856905000186",
+   "cnpj8": "92856905",
+   "nome": "ADVANCED CORRETORA DE CÂMBIO LTDA",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "15/01/2026",
+   "inicio_iso": "2026-01-15",
+   "responsavel": "FABIANO FABRI BAYARRI",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "34829992000186",
+   "cnpj8": "34829992",
+   "nome": "CBSF DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "15/01/2026",
+   "inicio_iso": "2026-01-15",
+   "responsavel": "APS SERVICOS ESPECIALIZADOS DE APOIO ADMINISTRATIVO LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "58497702000102",
+   "cnpj8": "58497702",
+   "nome": "BANCO LETSBANK S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/11/2025",
+   "inicio_iso": "2025-11-18",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "09526594000143",
+   "cnpj8": "09526594",
+   "nome": "BANCO MASTER DE INVESTIMENTO S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/11/2025",
+   "inicio_iso": "2025-11-18",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "33923798000100",
+   "cnpj8": "33923798",
+   "nome": "BANCO MASTER S/A",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/11/2025",
+   "inicio_iso": "2025-11-18",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "33886862000112",
+   "cnpj8": "33886862",
+   "nome": "MASTER S/A CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "18/11/2025",
+   "inicio_iso": "2025-11-18",
+   "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+   "municipio": "São Paulo",
+   "uf": "SP"
+  },
+  {
+   "cnpj": "01800019000185",
+   "cnpj8": "01800019",
+   "nome": "PORTOCRED S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTO",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "15/02/2023",
+   "inicio_iso": "2023-02-15",
+   "responsavel": "CORNELIO FARIAS PIMENTEL",
+   "municipio": "Porto Alegre",
+   "uf": "RS"
+  },
+  {
+   "cnpj": "33124959000198",
+   "cnpj8": "33124959",
+   "nome": "BANCO RURAL S.A.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "02/08/2013",
+   "inicio_iso": "2013-08-02",
+   "responsavel": "OSMAR BRASIL DE ALMEIDA",
+   "municipio": "Belo Horizonte",
+   "uf": "MG"
   }
  ],
- "metodo": "CUSUM (k=0,5σ, h=5σ) sobre resíduos AR(1) padronizados + sup-F de quebra na média (trimming 15%, crítico aproximado de Andrews 8,85 a 5%). Séries estacionarizadas antes dos testes.",
- "limitacoes": "Detecção univariada; uma única quebra por busca (Bai-Perron múltiplo na Fase 2b); valores críticos aproximados; sensível a revisões das séries."
+ "encerrados_ou_saidos": [],
+ "leitura": "As instituições que o Banco Central colocou sob regime de resolução — intervenção, RAET ou liquidação extrajudicial — na lista oficial vigente, atualizada diariamente. É o risco realizado do sistema: o desfecho que os indicadores prudenciais tentam antecipar. Um regime que sai da lista permanece no histórico acumulado pelo Observatório.",
+ "cautelas": [
+  "A lista vigente é dominada por instituições pequenas e de pagamento — regime de resolução em instituição pequena NÃO é sinal sistêmico.",
+  "A fonte publica só o estado ATUAL: o histórico acumula daqui para frente, a partir da primeira coleta do Observatório; casos anteriores (as grandes resoluções de 1995-2015) entram por curadoria própria em rodada futura — fronteira declarada.",
+  "Decretação de regime tem rito legal próprio (Lei 6.024/74, DL 2.321/85) — a listagem não substitui os atos oficiais publicados pelo BCB."
+ ],
+ "fonte": {
+  "nome": "BCB — Dados Abertos, serviço regimes_especiais (lista vigente, atualização diária)",
+  "url": "https://dadosabertos.bcb.gov.br/dataset/instituicoes-submetidas-a-regimes-de-resolucao",
+  "nivel": "A"
+ }
 }

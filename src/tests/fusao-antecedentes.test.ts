@@ -46,7 +46,9 @@ describe("fusão das páginas de antecedentes", () => {
   });
 
   it("os dados das duas origens são carregados pela página fundida", () => {
-    expect(app).toMatch(/leading: \["leading", "antecedentes", "regimes"\]/);
+    // regimes_series = detecção ESTATÍSTICA (CUSUM/quebras), separada em 19/08
+    // do regimes.json de RESOLUÇÃO do BCB, que a colisão de nomes clobberava
+    expect(app).toMatch(/leading: \["leading", "antecedentes", "regimes_series"\]/);
   });
 
   it("nenhum texto ainda manda o leitor para uma aba que não existe", () => {

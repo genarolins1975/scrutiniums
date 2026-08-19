@@ -54,12 +54,19 @@ describe("gated: invariantes do piso no gold publicado", () => {
       comHhi++;
       // Cauchy: Σ s_i² ≤ (Σ s_i)² — o piso nunca excede o quadrado da cobertura
       if (outros != null) {
+        // 'outros' publicado com 1 casa: erro de ±0,05 no resíduo desloca o
+        // teto em até 2·(100−outros)·0,05 ≈ 10 pontos (caso real de 19/08:
+        // piso 2056 × teto republicado 2052)
         const teto = Math.pow(100 - outros, 2);
-        expect(hhi, `${f}: piso ${hhi} > teto ${teto} (outros ${outros}%)`).toBeLessThanOrEqual(teto + 1);
+        expect(hhi, `${f}: piso ${hhi} > teto ${teto} (outros ${outros}%)`).toBeLessThanOrEqual(teto + 10);
       }
-      // o piso cobre ao menos os quadrados dos setores identificados visíveis
+      // o piso cobre ao menos os quadrados dos setores identificados visíveis.
+      // Tolerância: o gold calcula das participações BRUTAS e publica com 1
+      // casa; refazendo dos publicados, o erro de arredondamento por termo é
+      // até 2·v·0,05, somando ≤ 0,1·Σv ≤ 10 pontos de HHI (caso real de 19/08:
+      // piso 1593 × mínimo republicado 1595)
       const minimo = tc.filter(([k]) => k !== "outros").reduce((s, [, v]) => s + v * v, 0);
-      expect(hhi, `${f}: piso ${hhi} < mínimo visível ${Math.round(minimo)}`).toBeGreaterThanOrEqual(Math.round(minimo) - 1);
+      expect(hhi, `${f}: piso ${hhi} < mínimo visível ${Math.round(minimo)}`).toBeGreaterThanOrEqual(Math.round(minimo) - 10);
       // cobertura viaja junto quando o resíduo é visível
       if (outros != null) expect(p.hhi_cobertura_pct, `${f}: piso sem cobertura`).not.toBeNull();
     }
