@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:05+00:00"
+    "last_collected_at": "2026-08-19T09:52:16+00:00"
    },
    "obs": [
     {
@@ -84,7 +84,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -102,7 +102,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:05+00:00"
+    "last_collected_at": "2026-08-19T09:52:17+00:00"
    },
    "obs": [
     {
@@ -171,7 +171,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -189,7 +189,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:07+00:00"
+    "last_collected_at": "2026-08-19T09:52:19+00:00"
    },
    "obs": [
     {
@@ -258,7 +258,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -276,7 +276,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:13+00:00"
+    "last_collected_at": "2026-08-19T09:52:26+00:00"
    },
    "obs": [
     {
@@ -353,7 +353,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 4,
+    "dias_sem_atualizar": 5,
     "ultima_ref": "2026-08-14",
     "n_obs": 16,
     "n_revisoes": 0
@@ -371,7 +371,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:15+00:00"
+    "last_collected_at": "2026-08-19T09:52:28+00:00"
    },
    "obs": [
     {
@@ -440,7 +440,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -458,7 +458,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:12+00:00"
+    "last_collected_at": "2026-08-19T09:52:24+00:00"
    },
    "obs": [
     {
@@ -527,7 +527,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -545,7 +545,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:14+00:00"
+    "last_collected_at": "2026-08-19T09:52:27+00:00"
    },
    "obs": [
     {
@@ -622,7 +622,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 4,
+    "dias_sem_atualizar": 5,
     "ultima_ref": "2026-08-14",
     "n_obs": 16,
     "n_revisoes": 0
@@ -640,7 +640,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-08-18T09:52:17+00:00"
+    "last_collected_at": "2026-08-19T09:52:30+00:00"
    },
    "obs": [
     {
@@ -709,7 +709,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 18,
+    "dias_sem_atualizar": 19,
     "ultima_ref": "2026-07-31",
     "n_obs": 14,
     "n_revisoes": 0
@@ -908,7 +908,7 @@
    "organisation": "CLOUDWALK",
    "chamadas_semana": 411643344.0,
    "share_pct": 0.5,
-   "familias_api": 26,
+   "familias_api": 27,
    "papeis": [
     "CONTA",
     "DADOS",
@@ -1099,7 +1099,7 @@
    "organisation": "CLOUDWALK",
    "chamadas_semana": 4795162.0,
    "share_pct": 0.0,
-   "familias_api": 26,
+   "familias_api": 27,
    "papeis": [
     "CONTA",
     "DADOS",

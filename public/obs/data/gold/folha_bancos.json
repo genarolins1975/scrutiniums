@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-18T10:15:47+00:00",
+ "gerado_em": "2026-08-19T10:23:25+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -1062,15 +1062,6 @@
   ],
   "editais_recentes": [
    {
-    "ente": "FUNDACAO UNIVERSIDADE REGIONAL DE BLUMENAU - FURB",
-    "municipio": "Blumenau",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-17",
-    "url": "https://pncp.gov.br/compras/82662958000102/2026/186"
-   },
-   {
     "ente": "MUNICIPIO DE ALUMINIO",
     "municipio": "Alumínio",
     "uf": "SP",
@@ -1089,15 +1080,6 @@
     "url": "https://pncp.gov.br/compras/35607532000176/2026/66"
    },
    {
-    "ente": "MUNICIPIO DE ARARAQUARA",
-    "municipio": "Araraquara",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-17",
-    "url": "https://pncp.gov.br/compras/45276128000110/2026/2698"
-   },
-   {
     "ente": "MUNICIPIO DE CASA BRANCA",
     "municipio": "Casa Branca",
     "uf": "SP",
@@ -1107,6 +1089,24 @@
     "url": "https://pncp.gov.br/compras/45735479000142/2026/17"
    },
    {
+    "ente": "MUNICIPIO DE ARARAQUARA",
+    "municipio": "Araraquara",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/45276128000110/2026/2698"
+   },
+   {
+    "ente": "FUNDACAO UNIVERSIDADE REGIONAL DE BLUMENAU - FURB",
+    "municipio": "Blumenau",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-17",
+    "url": "https://pncp.gov.br/compras/82662958000102/2026/186"
+   },
+   {
     "ente": "MUNICIPIO DE BONITO",
     "municipio": "Bonito",
     "uf": "PE",
@@ -1114,15 +1114,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-14",
     "url": "https://pncp.gov.br/compras/10121515000101/2026/39"
-   },
-   {
-    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
-    "municipio": "Brasília",
-    "uf": "DF",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-13",
-    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
    },
    {
     "ente": "MUNICIPIO DE IVAIPORA",
@@ -1143,13 +1134,13 @@
     "url": "https://pncp.gov.br/compras/46162178000130/2026/24"
    },
    {
-    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
-    "municipio": "Aparecida",
-    "uf": "SP",
+    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
+    "municipio": "Brasília",
+    "uf": "DF",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-12",
-    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
+    "publicacao": "2026-08-13",
+    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
    },
    {
     "ente": "MUNICIPIO DE ORIZANIA",
@@ -1159,6 +1150,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-12",
     "url": "https://pncp.gov.br/compras/01616271000139/2026/54"
+   },
+   {
+    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
+    "municipio": "Aparecida",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-12",
+    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
    },
    {
     "ente": "MUNICIPIO DE COTIA",

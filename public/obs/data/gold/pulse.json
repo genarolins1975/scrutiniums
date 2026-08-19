@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-18T10:15:43+00:00",
+ "gerado_em": "2026-08-19T10:23:22+00:00",
  "series": {
   "saldo_total": {
    "tipo": "DADO OBSERVADO",
@@ -14,18 +14,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20539/dados",
     "segment": "total",
     "category": "estoque",
-    "last_collected_at": "2026-08-18T09:26:56+00:00"
+    "last_collected_at": "2026-08-19T09:27:57+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -2043,18 +2043,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20541/dados",
     "segment": "pf",
     "category": "estoque",
-    "last_collected_at": "2026-08-18T09:26:57+00:00"
+    "last_collected_at": "2026-08-19T09:28:00+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -4072,18 +4072,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20540/dados",
     "segment": "pj",
     "category": "estoque",
-    "last_collected_at": "2026-08-18T09:26:56+00:00"
+    "last_collected_at": "2026-08-19T09:27:59+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -6101,18 +6101,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20631/dados",
     "segment": "total",
     "category": "concessoes",
-    "last_collected_at": "2026-08-18T09:26:58+00:00"
+    "last_collected_at": "2026-08-19T09:28:02+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -8130,18 +8130,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20633/dados",
     "segment": "pf",
     "category": "concessoes",
-    "last_collected_at": "2026-08-18T09:27:00+00:00"
+    "last_collected_at": "2026-08-19T09:28:04+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -10159,18 +10159,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20632/dados",
     "segment": "pj",
     "category": "concessoes",
-    "last_collected_at": "2026-08-18T09:26:59+00:00"
+    "last_collected_at": "2026-08-19T09:28:02+00:00"
    },
    "qualidade": {
-    "score": 76.6,
+    "score": 75.9,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 91.4,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 3
@@ -12188,18 +12188,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20714/dados",
     "segment": "total",
     "category": "taxa",
-    "last_collected_at": "2026-08-18T09:27:00+00:00"
+    "last_collected_at": "2026-08-19T09:28:05+00:00"
    },
    "qualidade": {
-    "score": 77.5,
+    "score": 76.8,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 1
@@ -13566,18 +13566,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20716/dados",
     "segment": "pf",
     "category": "taxa",
-    "last_collected_at": "2026-08-18T09:27:02+00:00"
+    "last_collected_at": "2026-08-19T09:28:08+00:00"
    },
    "qualidade": {
-    "score": 77.0,
+    "score": 76.3,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 2
@@ -14944,18 +14944,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20715/dados",
     "segment": "pj",
     "category": "taxa",
-    "last_collected_at": "2026-08-18T09:27:01+00:00"
+    "last_collected_at": "2026-08-19T09:28:07+00:00"
    },
    "qualidade": {
-    "score": 77.5,
+    "score": 76.8,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 1
@@ -16322,18 +16322,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20783/dados",
     "segment": "total",
     "category": "spread",
-    "last_collected_at": "2026-08-18T09:27:03+00:00"
+    "last_collected_at": "2026-08-19T09:28:10+00:00"
    },
    "qualidade": {
-    "score": 77.5,
+    "score": 76.8,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 1
@@ -17700,18 +17700,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20785/dados",
     "segment": "pf",
     "category": "spread",
-    "last_collected_at": "2026-08-18T09:27:04+00:00"
+    "last_collected_at": "2026-08-19T09:28:12+00:00"
    },
    "qualidade": {
-    "score": 77.0,
+    "score": 76.3,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 2
@@ -19078,18 +19078,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20784/dados",
     "segment": "pj",
     "category": "spread",
-    "last_collected_at": "2026-08-18T09:27:03+00:00"
+    "last_collected_at": "2026-08-19T09:28:11+00:00"
    },
    "qualidade": {
-    "score": 77.5,
+    "score": 76.8,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 97.1,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 1
@@ -20456,18 +20456,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21082/dados",
     "segment": "total",
     "category": "inadimplencia",
-    "last_collected_at": "2026-08-18T09:27:05+00:00"
+    "last_collected_at": "2026-08-19T09:28:14+00:00"
    },
    "qualidade": {
-    "score": 77.0,
+    "score": 76.3,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 2
@@ -21834,18 +21834,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21084/dados",
     "segment": "pf",
     "category": "inadimplencia",
-    "last_collected_at": "2026-08-18T09:27:07+00:00"
+    "last_collected_at": "2026-08-19T09:28:17+00:00"
    },
    "qualidade": {
-    "score": 77.9,
+    "score": 77.2,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 0
@@ -23212,18 +23212,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.21083/dados",
     "segment": "pj",
     "category": "inadimplencia",
-    "last_collected_at": "2026-08-18T09:27:06+00:00"
+    "last_collected_at": "2026-08-19T09:28:16+00:00"
    },
    "qualidade": {
-    "score": 77.0,
+    "score": 76.3,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 94.3,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 2
@@ -24590,18 +24590,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20622/dados",
     "segment": "total",
     "category": "credito_pib",
-    "last_collected_at": "2026-08-18T09:27:08+00:00"
+    "last_collected_at": "2026-08-19T09:28:19+00:00"
    },
    "qualidade": {
-    "score": 65.4,
+    "score": 64.7,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 16.7,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 29
@@ -25968,7 +25968,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29037/dados",
     "segment": "pf",
     "category": "capacidade_pagamento",
-    "last_collected_at": "2026-08-18T09:27:09+00:00"
+    "last_collected_at": "2026-08-19T09:28:21+00:00"
    },
    "qualidade": {
     "score": 68.9,
@@ -25979,7 +25979,7 @@
      "estabilidade": 94.2,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 109,
+    "dias_sem_atualizar": 110,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 2
@@ -27338,7 +27338,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.29034/dados",
     "segment": "pf",
     "category": "capacidade_pagamento",
-    "last_collected_at": "2026-08-18T09:27:10+00:00"
+    "last_collected_at": "2026-08-19T09:28:22+00:00"
    },
    "qualidade": {
     "score": 68.9,
@@ -27349,7 +27349,7 @@
      "estabilidade": 94.2,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 109,
+    "dias_sem_atualizar": 110,
     "ultima_ref": "2026-05-01",
     "n_obs": 173,
     "n_revisoes": 2
@@ -28708,7 +28708,7 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.432/dados",
     "segment": "macro",
     "category": "juros",
-    "last_collected_at": "2026-08-18T09:27:51+00:00"
+    "last_collected_at": "2026-08-19T09:29:06+00:00"
    },
    "qualidade": {
     "score": 100.0,
@@ -28719,7 +28719,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": -29,
+    "dias_sem_atualizar": -28,
     "ultima_ref": "2026-09-16",
     "n_obs": 2816,
     "n_revisoes": 0
@@ -30342,18 +30342,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.433/dados",
     "segment": "macro",
     "category": "inflacao",
-    "last_collected_at": "2026-08-18T09:27:52+00:00"
+    "last_collected_at": "2026-08-19T09:29:07+00:00"
    },
    "qualidade": {
-    "score": 98.0,
+    "score": 97.3,
     "componentes": {
      "completude": 100.0,
-     "atualidade": 93.3,
+     "atualidade": 91.1,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 48,
+    "dias_sem_atualizar": 49,
     "ultima_ref": "2026-07-01",
     "n_obs": 175,
     "n_revisoes": 0
@@ -31728,18 +31728,18 @@
     "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.24363/dados",
     "segment": "macro",
     "category": "atividade",
-    "last_collected_at": "2026-08-18T09:27:53+00:00"
+    "last_collected_at": "2026-08-19T09:29:08+00:00"
    },
    "qualidade": {
-    "score": 62.9,
+    "score": 62.2,
     "componentes": {
      "completude": 99.4,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 0.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 174,
     "n_revisoes": 173
@@ -33106,18 +33106,18 @@
     "url": "https://servicodados.ibge.gov.br/api/v3/agregados/6381/periodos/-120/variaveis/4099?localidades=N1[all]",
     "segment": "macro",
     "category": "emprego",
-    "last_collected_at": "2026-08-18T09:28:07+00:00"
+    "last_collected_at": "2026-08-19T09:29:30+00:00"
    },
    "qualidade": {
-    "score": 77.9,
+    "score": 77.2,
     "componentes": {
      "completude": 99.2,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 121,
     "n_revisoes": 0
@@ -34060,18 +34060,18 @@
     "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='ABPO12_PAPEL12')",
     "segment": "macro",
     "category": "antecedente",
-    "last_collected_at": "2026-08-18T09:28:58+00:00"
+    "last_collected_at": "2026-08-19T09:29:38+00:00"
    },
    "qualidade": {
-    "score": 78.0,
+    "score": 77.3,
     "componentes": {
      "completude": 99.8,
-     "atualidade": 26.7,
+     "atualidade": 24.4,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 78,
+    "dias_sem_atualizar": 79,
     "ultima_ref": "2026-06-01",
     "n_obs": 558,
     "n_revisoes": 0
@@ -35694,18 +35694,18 @@
     "url": "http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='BM12_ERC12')",
     "segment": "macro",
     "category": "antecedente",
-    "last_collected_at": "2026-08-18T09:29:00+00:00"
+    "last_collected_at": "2026-08-19T09:29:39+00:00"
    },
    "qualidade": {
-    "score": 98.0,
+    "score": 97.3,
     "componentes": {
      "completude": 100.0,
-     "atualidade": 93.3,
+     "atualidade": 91.1,
      "historico": 100.0,
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 48,
+    "dias_sem_atualizar": 49,
     "ultima_ref": "2026-07-01",
     "n_obs": 883,
     "n_revisoes": 0
