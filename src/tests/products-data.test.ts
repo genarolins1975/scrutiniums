@@ -61,18 +61,65 @@ describe("dispersão atraso × taxa × carteira por IF", () => {
     expect(productsPy).toContain('"taxa_casamento"');
   });
 
-  it("gold com taxa por IF traz valores plausíveis e casamento declarado", () => {
+  // A trava nasceu do bug de 19/08: a "taxa do produto" era a MEDIANA entre
+  // modalidades da mesma IF — rotativo (~450% a.a.) e parcelado (~180%) do
+  // cartão viravam um número sem significado. Cada modalidade é uma entrada
+  // própria em taxas_novas; taxa única escalar nunca volta.
+  it("o builder publica taxa POR MODALIDADE (taxas_novas), nunca mediana entre modalidades", () => {
+    expect(productsPy).toContain('"taxas_novas"');
+    expect(productsPy).toMatch(/nunca mediana entre\s+modalidades/);
+    expect(productsPy).not.toContain('"taxa_aa": round(');
+  });
+
+  it("gold com taxa por IF traz valores plausíveis por modalidade e casamento declarado", () => {
     if (!existsSync(dirProd)) return;
+    let verificadas = 0;
     for (const arq of readdirSync(dirProd)) {
       const g = JSON.parse(readFileSync(join(dirProd, arq), "utf-8"));
       for (const r of g.produto?.matriz ?? []) {
-        if (r.taxa_aa != null) {
-          expect(r.taxa_aa, `${arq}:${r.nome}`).toBeGreaterThan(0);
-          expect(r.taxa_aa, `${arq}:${r.nome}`).toBeLessThan(1200); // rotativo chega a ~450% a.a.; 1200 pega só aberração
+        expect(r.taxa_aa, `${arq}:${r.nome} — escalar misturando modalidades não pode voltar`).toBeUndefined();
+        if (r.taxas_novas != null) {
+          for (const [mod, taxa] of Object.entries(r.taxas_novas) as [string, number][]) {
+            // valores verbatim do ranking txjuros: a fonte publica 0% (promocional)
+            // e rotativos acima de 1.300% a.a. — a trava pega só aberração de parse
+            expect(taxa, `${arq}:${r.nome}:${mod}`).toBeGreaterThanOrEqual(0);
+            expect(taxa, `${arq}:${r.nome}:${mod}`).toBeLessThan(3000);
+            verificadas++;
+          }
           expect(["cnpj8", "nome"], `${arq}:${r.nome}`).toContain(r.taxa_casamento);
         }
       }
     }
+    expect(verificadas).toBeGreaterThan(100); // cartão+consignado+giro etc. têm centenas de casamentos
+  });
+
+  it("no cartão, rotativo e parcelado seguem separados e em ordens de grandeza distintas", () => {
+    const arq = join(dirProd, "cartao-de-credito-pf.json");
+    if (!existsSync(arq)) return;
+    const g = JSON.parse(readFileSync(arq, "utf-8"));
+    const rot: number[] = [], par: number[] = [];
+    for (const r of g.produto?.matriz ?? []) {
+      const t = r.taxas_novas || {};
+      for (const [mod, v] of Object.entries(t) as [string, number][]) {
+        if (/rotativo/i.test(mod)) rot.push(v);
+        if (/parcelado/i.test(mod)) par.push(v);
+      }
+    }
+    if (!rot.length || !par.length) return; // gold pré-correção regenera no ciclo diário
+    const med = (a: number[]) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)];
+    expect(med(rot)).toBeGreaterThan(med(par) * 1.5); // misturados, isto seria impossível de afirmar
+  });
+
+  it("a SPA usa a modalidade selecionada (taxa_sel) na dispersão e na matriz — nunca uma taxa única", () => {
+    expect(appJsPagina()).toContain("r.taxa_sel = txMod && r.taxas_novas");
+    expect(appJsPagina()).toMatch(/th\("taxa_sel", `Taxa a\.a\. — \$\{txModCurta\}`/);
+    expect(appJsPagina()).toMatch(/y: r\.taxa_sel/);
+    expect(appJsPagina()).toMatch(/modalidades nunca se misturam numa média/);
+  });
+
+  it("a dispersão tem escala numérica e folga de domínio (bolhas não cortam)", () => {
+    expect(appJsPagina()).toMatch(/escala numérica: sem os ticks/);
+    expect(appJsPagina()).toMatch(/6% de folga no domínio/);
   });
 
   it("a SPA declara os dois relógios (estoque de atraso × preço das operações novas)", () => {

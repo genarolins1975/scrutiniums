@@ -989,3 +989,47 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   juros.json publicado — mesmos agregados da tabela); o ciclo diário
   recalcula da fonte. Versão 0.85.0; travas em
   `src/tests/migracao-npl.test.ts`.
+
+## 40. Painel de produtos consertado (taxa POR MODALIDADE) + incidente dos 6 ciclos cegos
+
+- **Bug central (gráficos do produto)**: a "taxa do produto" por IF era a
+  MEDIANA entre modalidades da própria IF — rotativo (~490% a.a.) e
+  parcelado (~160%) do cartão viravam um número sem significado, usado na
+  dispersão atraso×taxa. Correção em `products.py`: `_taxa_por_cod` agora
+  publica `taxas_novas` = {modalidade: taxa} (uma ENTRADA por modalidade,
+  nunca média entre elas) + `taxa_casamento` (cnpj8/nome). O campo escalar
+  `taxa_aa` da matriz foi aposentado e tem trava contra retorno.
+- **SPA (v0.86.0)**: dispersão e a NOVA coluna "Taxa a.a. — {modalidade}"
+  da matriz seguem o MESMO seletor de modalidade da seção de taxas
+  (`TX_STATE.idx`, duplicado acima da dispersão); cor = segmento
+  prudencial com legenda; `scatterPlot` ganhou escala numérica (ticks nos
+  extremos REAIS dos dados) e 6% de folga de domínio (bolhas não cortam);
+  último rótulo do eixo x do `lineChart` ancora para dentro ("03/2026"
+  não corta mais); CSV/XLSX com uma coluna de taxa POR modalidade.
+  Valores verbatim da fonte: txjuros publica 0% (promocional) e rotativos
+  >1.300% a.a. — travas de plausibilidade em [0; 3000).
+- **Incidente descoberto no caminho**: push de bot (GITHUB_TOKEN do ciclo
+  diário) NÃO dispara o CI — 6 ciclos (13→19/08) quebraram 8 testes gated
+  sem sinal vermelho. Causas e correções:
+  · `regimes.json` era escrito por DOIS produtores (detecção estatística
+    CUSUM em `gold.py` e resolução do BCB em `regimes_gold.py`) — o
+    estatístico clobberava o painel de resolução. Separado:
+    `regimes_series.json` (estatístico; pulse/research/leading/inad) ×
+    `regimes.json` (resolução; institutions/inst). Gold restaurado.
+  · A cópia verbatim de `pipeline/curated/*.json` para o gold clobberava
+    o `guidance.json` CONSTRUÍDO com gate de aprovação — expunha a
+    curadoria crua (risco de vazar em_revisao). Denylist
+    `CURADO_COM_BUILDER` + gold reconstruído (7 ciclos aprovados).
+  · `lineage.json` era escrito ANTES dos writers municipais: em ambiente
+    limpo o mapa não resolvia `{nome}_mun.json` (famílias sem produtor).
+    Movido para o FIM do build; mapa republicado completo (64 objetos).
+  · Coletor de regimes registrava linhagem com sha "-": agora usa o
+    SHA-256 real do bronze; entradas legadas "-" filtradas do publicado.
+  · Travas de HHI refeitas com tolerância fundamentada no arredondamento
+    de 1 casa dos publicados (±10 pontos); gate do histórico morde no
+    comprimento só quando o backfill converge (25/40 trimestres em 19/08).
+  · **Guarda nova**: `ci.yml` ganhou `schedule` diário (11:45 UTC) — roda
+    a suíte sobre o main ~1h após a publicação dos dados.
+- Suíte: 824 testes / 65 arquivos verdes; travas novas em
+  `products-data.test.ts` (per-modalidade nunca mediana; escalar não
+  volta; rotativo ≫ parcelado no cartão; ticks e folga na dispersão).

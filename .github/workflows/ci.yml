@@ -10,6 +10,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # O ciclo diário de dados commita em main com GITHUB_TOKEN, e push de bot
+    # NÃO dispara workflows — 6 ciclos (13-19/08) quebraram 8 testes gated sem
+    # nenhum sinal vermelho. Esta execução agendada roda a suíte sobre o main
+    # ~1h depois da publicação dos dados (~10:40 UTC) e fecha a lacuna.
+    - cron: "45 11 * * *"
 
 permissions:
   contents: read

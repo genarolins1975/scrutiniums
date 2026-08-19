@@ -451,7 +451,11 @@ def build_all(con, cfg, fetch_status):
         ("saldo_total", "yoy", "Saldo de crédito (var. interanual)", False),
         ("spread_total", "diff", "Spread médio (Δ mensal)", True),
     ])
-    common.write_gold("regimes.json", regimes)
+    # regimes ESTATÍSTICOS de séries (CUSUM/quebras) — arquivo próprio: o nome
+    # regimes.json pertence aos regimes de RESOLUÇÃO do BCB (regimes_gold), e a
+    # colisão de nomes fez 6 ciclos diários (13-19/08) clobberarem o painel de
+    # resolução com este payload sem que o CI visse (push de bot não dispara CI)
+    common.write_gold("regimes_series.json", regimes)
 
     scenario["elasticidades"] = elast["elasticidades"]
     scenario["elasticidades_origem"] = elast["origem"]
@@ -567,18 +571,6 @@ def build_all(con, cfg, fetch_status):
             quality[k] = {**q, "nome": meta["name"], "fonte": meta["source"]}
     common.write_gold("quality.json", quality)
 
-    cur = con.execute("SELECT gold_object, bronze_file, sha256, transform, created_at FROM lineage ORDER BY created_at DESC LIMIT 200")
-    lineage_rows = [dict(zip(["gold_object", "bronze_file", "sha256", "transform", "created_at"], r)) for r in cur.fetchall()]
-    cur = con.execute("SELECT COUNT(*) FROM revisions")
-    n_rev = cur.fetchone()[0]
-    cur = con.execute("SELECT key, ref_date, old_value, new_value, detected_at FROM revisions ORDER BY detected_at DESC LIMIT 50")
-    revs = [dict(zip(["key", "ref_date", "old_value", "new_value", "detected_at"], r)) for r in cur.fetchall()]
-    from pipeline import lineage_map as lm
-    common.write_gold("lineage.json", {"linhagem_recente": lineage_rows, "n_revisoes_total": n_rev,
-                                       "revisoes_recentes": revs,
-                                       # mapa completo gerado do código a cada execução (P1 da auditoria):
-                                       # produtor, fontes, dependências e consumo de CADA objeto gold
-                                       "mapa": lm.build()})
 
     # ---- Meta ----
     # ---- Camada de pesquisa: catálogo de métricas + produtos ----
@@ -755,9 +747,14 @@ def build_all(con, cfg, fetch_status):
     # arquivo curado é a fonte de verdade e é copiado ao gold para sobreviver
     # ao rsync --delete do CI. Nunca gerar série sintética a partir deles.
     curated_dir = os.path.join(os.path.dirname(__file__), "curated")
+    # guidance.json NUNCA entra na cópia verbatim: o gold homônimo é CONSTRUÍDO
+    # por guidance_bancos com gate de aprovação (publica só status aprovado), e
+    # a cópia crua o clobberava expondo a curadoria inteira — inclusive o que
+    # ainda estiver em_revisao (vazamento do gate, detectado em 19/08)
+    CURADO_COM_BUILDER = {"guidance.json"}
     if os.path.isdir(curated_dir):
         for fname in sorted(os.listdir(curated_dir)):
-            if fname.endswith(".json"):
+            if fname.endswith(".json") and fname not in CURADO_COM_BUILDER:
                 with open(os.path.join(curated_dir, fname), encoding="utf-8") as f:
                     common.write_gold(fname, json.load(f))
 
@@ -774,3 +771,24 @@ def build_all(con, cfg, fetch_status):
     # ---- Taxas de juros por modalidade × IF (txjuros) ----
     from pipeline import juros as juros_mod
     juros_mod.build(con)
+
+    # ---- Linhagem: SEMPRE por último ----
+    # O mapa resolve templates dinâmicos ({nome}_mun.json) contra o inventário
+    # REAL do gold: escrito antes dos writers municipais, num ambiente limpo
+    # (CI diário) o inventário ainda não existia e as famílias ficavam sem
+    # produtor no mapa publicado (6 ciclos de 13-19/08). Último = vê tudo.
+    # sha256 != '-': entradas legadas do coletor de regimes (corrigido em 19/08)
+    # quebravam o contrato publicado de SHA-256 por linha — ficam no DB, não no gold
+    cur = con.execute("SELECT gold_object, bronze_file, sha256, transform, created_at FROM lineage "
+                      "WHERE sha256 != '-' ORDER BY created_at DESC LIMIT 200")
+    lineage_rows = [dict(zip(["gold_object", "bronze_file", "sha256", "transform", "created_at"], r)) for r in cur.fetchall()]
+    cur = con.execute("SELECT COUNT(*) FROM revisions")
+    n_rev = cur.fetchone()[0]
+    cur = con.execute("SELECT key, ref_date, old_value, new_value, detected_at FROM revisions ORDER BY detected_at DESC LIMIT 50")
+    revs = [dict(zip(["key", "ref_date", "old_value", "new_value", "detected_at"], r)) for r in cur.fetchall()]
+    from pipeline import lineage_map as lm
+    common.write_gold("lineage.json", {"linhagem_recente": lineage_rows, "n_revisoes_total": n_rev,
+                                       "revisoes_recentes": revs,
+                                       # mapa completo gerado do código a cada execução (P1 da auditoria):
+                                       # produtor, fontes, dependências e consumo de CADA objeto gold
+                                       "mapa": lm.build()})

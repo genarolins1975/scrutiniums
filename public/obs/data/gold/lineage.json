@@ -1,13 +1,6 @@
 {
  "linhagem_recente": [
   {
-   "gold_object": "regimes.json",
-   "bronze_file": "regimes/regimes_vigentes",
-   "sha256": "-",
-   "transform": "BCB Olinda regimes_especiais (lista vigente diária) -> vigentes + histórico append-only",
-   "created_at": "2026-08-19T10:23:19+00:00"
-  },
-  {
    "gold_object": "operacional.json",
    "bronze_file": "fre_cia_aberta_2026.zip",
    "sha256": "02cd3160f40cbf51afe53dba4ee5ef84aee7fa04db74c904fbb0d18e6be6fcb5",
@@ -883,13 +876,6 @@
    "created_at": "2026-08-19T09:27:57+00:00"
   },
   {
-   "gold_object": "regimes.json",
-   "bronze_file": "regimes/regimes_vigentes",
-   "sha256": "-",
-   "transform": "BCB Olinda regimes_especiais (lista vigente diária) -> vigentes + histórico append-only",
-   "created_at": "2026-08-18T10:15:41+00:00"
-  },
-  {
    "gold_object": "epae.json",
    "bronze_file": "epae_tabela_especial.xlsx",
    "sha256": "c85c1469d76ef86636e1fae0789bb2a5c5e0dd383f13059ef0ded37b4fb63dc0",
@@ -1758,8 +1744,8 @@
   "gerado_de": "análise estática do repositório a cada execução (pipeline/lineage_map.py) — nunca mantido à mão",
   "metodo": "produtor = quem chama write_gold com o nome; fontes = hosts literais do módulo e dos coletores de bronze que ele lê, mais armazém de séries e curadoria; dependências = ler_gold_opcional; consumo = VIEW_DATA/OV_BLOCO_DATA/CORE_FILES/fetchGold da SPA. Nomes dinâmicos viram famílias (*).",
   "resumo": {
-   "objetos_mapeados": 63,
-   "publicados_no_gold": 25,
+   "objetos_mapeados": 64,
+   "publicados_no_gold": 62,
    "publicados_sem_produtor_mapeado": []
   },
   "objetos": [
@@ -1898,13 +1884,19 @@
    },
    {
     "gold": "consignado_mun.json",
-    "produtores": [],
-    "fontes": [],
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
     "depende_de": [],
     "consumido_em": [
      "consignado"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "custos_ti.json",
@@ -2291,13 +2283,19 @@
    },
    {
     "gold": "moradia_mun.json",
-    "produtores": [],
-    "fontes": [],
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
     "depende_de": [],
     "consumido_em": [
      "moradia"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "npl.json",
@@ -2429,13 +2427,19 @@
    },
    {
     "gold": "penetracao_mun.json",
-    "produtores": [],
-    "fontes": [],
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
     "depende_de": [],
     "consumido_em": [
      "penetracao"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "pgfn.json",
@@ -2490,6 +2494,7 @@
    {
     "gold": "pix_mun.json",
     "produtores": [
+     "pipeline/gold.py",
      "pipeline/pix.py"
     ],
     "fontes": [
@@ -2499,14 +2504,18 @@
     "consumido_em": [
      "carga direta"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "presenca_mun.json",
     "produtores": [
+     "pipeline/gold.py",
      "pipeline/presenca.py"
     ],
     "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)",
      "armazém estruturado (silver/SQLite das coletas)",
      "servicodados.ibge.gov.br",
      "www.bcb.gov.br"
@@ -2516,7 +2525,9 @@
      "operacional",
      "presmun"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "prod/*",
@@ -2612,7 +2623,20 @@
     "depende_de": [],
     "consumido_em": [
      "inst",
-     "institutions",
+     "institutions"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "regimes_series.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
      "leading",
      "overview",
      "pulse",
