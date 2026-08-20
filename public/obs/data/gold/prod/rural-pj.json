@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-19T10:23:44+00:00",
+ "gerado_em": "2026-08-20T11:01:47+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -166,6 +166,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 2.25,
     "basileia_pct": 14.77,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.01,
@@ -175,8 +176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "33657248",
@@ -191,6 +191,7 @@
     "pct_carteira_inst": 3.5,
     "npl_inst_pct": 0.09,
     "basileia_pct": 24.09,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -200,8 +201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0049906",
@@ -216,6 +216,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 5.39,
     "basileia_pct": 14.23,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.33,
@@ -225,8 +226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0030379",
@@ -241,6 +241,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 4.04,
     "basileia_pct": 15.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.43,
@@ -250,8 +251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "92816560",
@@ -266,6 +266,7 @@
     "pct_carteira_inst": 25.0,
     "npl_inst_pct": 1.99,
     "basileia_pct": 19.65,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.09,
@@ -275,8 +276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0051626",
@@ -291,6 +291,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.68,
     "basileia_pct": 15.13,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.81,
@@ -300,8 +301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0010045",
@@ -316,6 +316,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.89,
     "basileia_pct": 14.9,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.65,
@@ -325,8 +326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0041856",
@@ -341,6 +341,7 @@
     "pct_carteira_inst": 10.6,
     "npl_inst_pct": 0.94,
     "basileia_pct": 15.83,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.29,
@@ -350,8 +351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04902979",
@@ -366,6 +366,7 @@
     "pct_carteira_inst": 4.5,
     "npl_inst_pct": 5.54,
     "basileia_pct": 13.01,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.49,
@@ -375,8 +376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0010083",
@@ -391,6 +391,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 1.74,
     "basileia_pct": 17.35,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.05,
@@ -400,8 +401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0051011",
@@ -416,6 +416,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 8.21,
     "basileia_pct": 15.01,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -425,8 +426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71328769",
@@ -441,6 +441,7 @@
     "pct_carteira_inst": 19.1,
     "npl_inst_pct": 6.0,
     "basileia_pct": 18.76,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -450,8 +451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02992446",
@@ -466,6 +466,7 @@
     "pct_carteira_inst": 2.6,
     "npl_inst_pct": 8.89,
     "basileia_pct": 15.41,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 4.41,
@@ -475,8 +476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01181521",
@@ -491,6 +491,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 0.01,
     "basileia_pct": 19.4,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -500,8 +501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07237373",
@@ -516,6 +516,7 @@
     "pct_carteira_inst": 3.2,
     "npl_inst_pct": 6.32,
     "basileia_pct": 15.36,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.02,
@@ -525,8 +526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78834975",
@@ -541,6 +541,7 @@
     "pct_carteira_inst": 16.7,
     "npl_inst_pct": 2.63,
     "basileia_pct": 15.16,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.15,
@@ -550,8 +551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "54037916",
@@ -566,6 +566,7 @@
     "pct_carteira_inst": 8.0,
     "npl_inst_pct": 6.3,
     "basileia_pct": 28.92,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.61,
@@ -575,8 +576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "38486817",
@@ -591,6 +591,7 @@
     "pct_carteira_inst": 6.9,
     "npl_inst_pct": 1.75,
     "basileia_pct": 22.05,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.1,
@@ -600,8 +601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "42898825",
@@ -616,6 +616,7 @@
     "pct_carteira_inst": 12.1,
     "npl_inst_pct": 2.86,
     "basileia_pct": 23.63,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -625,8 +626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03632872",
@@ -641,6 +641,7 @@
     "pct_carteira_inst": 9.5,
     "npl_inst_pct": 9.47,
     "basileia_pct": 19.67,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -650,8 +651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0030403",
@@ -666,6 +666,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 1.74,
     "basileia_pct": 13.42,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -675,8 +676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0051750",
@@ -691,6 +691,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 0.39,
     "basileia_pct": 17.97,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -700,8 +701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0051884",
@@ -716,6 +716,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 4.89,
     "basileia_pct": 13.98,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -725,8 +726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01023570",
@@ -741,6 +741,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 3.04,
     "basileia_pct": 13.48,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -750,8 +751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78825270",
@@ -766,6 +766,7 @@
     "pct_carteira_inst": 4.5,
     "npl_inst_pct": 4.93,
     "basileia_pct": 15.79,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.33,
@@ -775,8 +776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04388688",
@@ -791,6 +791,7 @@
     "pct_carteira_inst": 25.0,
     "npl_inst_pct": 0.78,
     "basileia_pct": 20.71,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -800,8 +801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81607046",
@@ -816,6 +816,7 @@
     "pct_carteira_inst": 7.2,
     "npl_inst_pct": 3.22,
     "basileia_pct": 14.76,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.05,
@@ -825,8 +826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0051987",
@@ -841,6 +841,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 2.42,
     "basileia_pct": 13.55,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -850,8 +851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "37395399",
@@ -866,6 +866,7 @@
     "pct_carteira_inst": 5.6,
     "npl_inst_pct": 9.63,
     "basileia_pct": null,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 13.23,
@@ -875,8 +876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "32430233",
@@ -891,6 +891,7 @@
     "pct_carteira_inst": 3.8,
     "npl_inst_pct": 2.35,
     "basileia_pct": 24.07,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -900,8 +901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03320525",
@@ -916,6 +916,7 @@
     "pct_carteira_inst": 6.7,
     "npl_inst_pct": 4.52,
     "basileia_pct": 13.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.74,
@@ -925,8 +926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03459850",
@@ -941,6 +941,7 @@
     "pct_carteira_inst": 7.5,
     "npl_inst_pct": 5.0,
     "basileia_pct": 18.87,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.48,
@@ -950,8 +951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0030173",
@@ -966,6 +966,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 4.78,
     "basileia_pct": 17.47,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.22,
@@ -975,8 +976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "58616418",
@@ -991,6 +991,7 @@
     "pct_carteira_inst": 4.1,
     "npl_inst_pct": 1.72,
     "basileia_pct": 11.49,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1000,8 +1001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0030159",
@@ -1016,6 +1016,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 2.41,
     "basileia_pct": 14.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.1,
@@ -1025,8 +1026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05888589",
@@ -1041,6 +1041,7 @@
     "pct_carteira_inst": 12.8,
     "npl_inst_pct": 3.48,
     "basileia_pct": 19.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1050,8 +1051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "79342069",
@@ -1066,6 +1066,7 @@
     "pct_carteira_inst": 2.6,
     "npl_inst_pct": 4.09,
     "basileia_pct": 15.31,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1075,8 +1076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "44469161",
@@ -1091,6 +1091,7 @@
     "pct_carteira_inst": 19.3,
     "npl_inst_pct": 2.61,
     "basileia_pct": 24.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1100,8 +1101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0084349",
@@ -1116,6 +1116,7 @@
     "pct_carteira_inst": 17.1,
     "npl_inst_pct": 5.32,
     "basileia_pct": 15.88,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1125,8 +1126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0032119",
@@ -1141,6 +1141,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 0.14,
     "basileia_pct": 13.53,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1150,8 +1151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0030290",
@@ -1166,6 +1166,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 3.6,
     "basileia_pct": 12.1,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1175,8 +1176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00815319",
@@ -1191,6 +1191,7 @@
     "pct_carteira_inst": 2.8,
     "npl_inst_pct": 3.05,
     "basileia_pct": 21.65,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1200,8 +1201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05040481",
@@ -1216,6 +1216,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 8.95,
     "basileia_pct": 13.16,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.96,
@@ -1225,8 +1226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01644264",
@@ -1241,6 +1241,7 @@
     "pct_carteira_inst": 6.9,
     "npl_inst_pct": 4.1,
     "basileia_pct": 24.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1250,8 +1251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25798596",
@@ -1266,6 +1266,7 @@
     "pct_carteira_inst": 7.2,
     "npl_inst_pct": 3.08,
     "basileia_pct": 21.3,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 4.62,
@@ -1275,8 +1276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "84974278",
@@ -1291,6 +1291,7 @@
     "pct_carteira_inst": 4.3,
     "npl_inst_pct": 3.42,
     "basileia_pct": 17.71,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.9,
@@ -1300,8 +1301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "85291086",
@@ -1316,6 +1316,7 @@
     "pct_carteira_inst": 7.4,
     "npl_inst_pct": 2.84,
     "basileia_pct": 21.9,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1325,8 +1326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02885855",
@@ -1341,6 +1341,7 @@
     "pct_carteira_inst": 3.1,
     "npl_inst_pct": 7.39,
     "basileia_pct": 29.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.09,
@@ -1350,8 +1351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81014060",
@@ -1366,6 +1366,7 @@
     "pct_carteira_inst": 6.2,
     "npl_inst_pct": 3.8,
     "basileia_pct": 17.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1375,8 +1376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02335109",
@@ -1391,6 +1391,7 @@
     "pct_carteira_inst": 9.8,
     "npl_inst_pct": 6.59,
     "basileia_pct": 23.35,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.13,
@@ -1400,8 +1401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "31804966",
@@ -1416,6 +1416,7 @@
     "pct_carteira_inst": 4.0,
     "npl_inst_pct": 4.15,
     "basileia_pct": 20.26,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 23.54,
@@ -1425,8 +1426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05582619",
@@ -1441,6 +1441,7 @@
     "pct_carteira_inst": 5.9,
     "npl_inst_pct": 2.9,
     "basileia_pct": 16.33,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1450,8 +1451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87900411",
@@ -1466,6 +1466,7 @@
     "pct_carteira_inst": 5.2,
     "npl_inst_pct": 3.26,
     "basileia_pct": 25.43,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1475,8 +1476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81016131",
@@ -1491,6 +1491,7 @@
     "pct_carteira_inst": 6.3,
     "npl_inst_pct": 3.63,
     "basileia_pct": 16.13,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1500,8 +1501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02466552",
@@ -1516,6 +1516,7 @@
     "pct_carteira_inst": 4.1,
     "npl_inst_pct": 2.18,
     "basileia_pct": 14.09,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1525,8 +1526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01604998",
@@ -1541,6 +1541,7 @@
     "pct_carteira_inst": 6.7,
     "npl_inst_pct": 3.67,
     "basileia_pct": 22.59,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1550,8 +1551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07122321",
@@ -1566,6 +1566,7 @@
     "pct_carteira_inst": 8.1,
     "npl_inst_pct": 3.61,
     "basileia_pct": 16.63,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1575,8 +1576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78840071",
@@ -1591,6 +1591,7 @@
     "pct_carteira_inst": 3.0,
     "npl_inst_pct": 4.63,
     "basileia_pct": 16.8,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1600,8 +1601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04529074",
@@ -1616,6 +1616,7 @@
     "pct_carteira_inst": 6.7,
     "npl_inst_pct": 6.84,
     "basileia_pct": 15.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1625,8 +1626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0031976",
@@ -1641,6 +1641,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 15.5,
     "basileia_pct": null,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1650,8 +1651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05276770",
@@ -1666,6 +1666,7 @@
     "pct_carteira_inst": 2.6,
     "npl_inst_pct": 5.07,
     "basileia_pct": 16.61,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1675,8 +1676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05392810",
@@ -1691,6 +1691,7 @@
     "pct_carteira_inst": 4.3,
     "npl_inst_pct": 4.02,
     "basileia_pct": 18.32,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 3.78,
@@ -1700,8 +1701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81723108",
@@ -1716,6 +1716,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 2.53,
     "basileia_pct": 59.14,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1725,8 +1726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "86564051",
@@ -1741,6 +1741,7 @@
     "pct_carteira_inst": 6.7,
     "npl_inst_pct": 9.55,
     "basileia_pct": 13.99,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1750,8 +1751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00971300",
@@ -1766,6 +1766,7 @@
     "pct_carteira_inst": 1.8,
     "npl_inst_pct": 5.13,
     "basileia_pct": 17.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1775,8 +1776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71297899",
@@ -1791,6 +1791,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 16.05,
     "basileia_pct": 15.67,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 3.28,
@@ -1800,8 +1801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03645752",
@@ -1816,6 +1816,7 @@
     "pct_carteira_inst": 7.2,
     "npl_inst_pct": 2.13,
     "basileia_pct": 27.84,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1825,8 +1826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00966246",
@@ -1841,6 +1841,7 @@
     "pct_carteira_inst": 5.3,
     "npl_inst_pct": 3.94,
     "basileia_pct": 20.65,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 5.14,
@@ -1850,8 +1851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03326437",
@@ -1866,6 +1866,7 @@
     "pct_carteira_inst": 4.6,
     "npl_inst_pct": 6.42,
     "basileia_pct": 9.16,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.41,
@@ -1875,8 +1876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "88038260",
@@ -1891,6 +1891,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 4.85,
     "basileia_pct": 19.32,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1900,8 +1901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81466286",
@@ -1916,6 +1916,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 4.14,
     "basileia_pct": 16.89,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1925,8 +1926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "17359351",
@@ -1941,6 +1941,7 @@
     "pct_carteira_inst": 2.9,
     "npl_inst_pct": 0.96,
     "basileia_pct": 12.89,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1950,8 +1951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "77984870",
@@ -1966,6 +1966,7 @@
     "pct_carteira_inst": 2.2,
     "npl_inst_pct": 7.0,
     "basileia_pct": 14.6,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -1975,8 +1976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02663426",
@@ -1991,6 +1991,7 @@
     "pct_carteira_inst": 2.2,
     "npl_inst_pct": 4.69,
     "basileia_pct": 16.81,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2000,8 +2001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "82065285",
@@ -2016,6 +2016,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 3.64,
     "basileia_pct": 15.92,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2025,8 +2026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "17343510",
@@ -2041,6 +2041,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 4.66,
     "basileia_pct": 14.68,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2050,8 +2051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "32467086",
@@ -2066,6 +2066,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 4.75,
     "basileia_pct": 29.86,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2075,8 +2076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07268499",
@@ -2091,6 +2091,7 @@
     "pct_carteira_inst": 3.0,
     "npl_inst_pct": 7.24,
     "basileia_pct": 17.08,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2100,8 +2101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04350225",
@@ -2116,6 +2116,7 @@
     "pct_carteira_inst": 2.0,
     "npl_inst_pct": 5.19,
     "basileia_pct": 15.21,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2125,8 +2126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26178533",
@@ -2141,6 +2141,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 3.09,
     "basileia_pct": 13.34,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.31,
@@ -2150,8 +2151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78825023",
@@ -2166,6 +2166,7 @@
     "pct_carteira_inst": 2.8,
     "npl_inst_pct": 3.91,
     "basileia_pct": 16.43,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2175,8 +2176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "82527557",
@@ -2191,6 +2191,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 5.11,
     "basileia_pct": 17.03,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2200,8 +2201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78414067",
@@ -2216,6 +2216,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 4.36,
     "basileia_pct": 20.29,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.69,
@@ -2225,8 +2226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "42873828",
@@ -2241,6 +2241,7 @@
     "pct_carteira_inst": 3.8,
     "npl_inst_pct": 5.02,
     "basileia_pct": 45.6,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2250,8 +2251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "90608712",
@@ -2266,6 +2266,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 3.61,
     "basileia_pct": 17.17,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2275,8 +2276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0031873",
@@ -2291,6 +2291,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 6.56,
     "basileia_pct": 17.29,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 16.83,
@@ -2300,8 +2301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "92894922",
@@ -2316,6 +2316,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 1.97,
     "basileia_pct": 16.02,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2325,8 +2326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01522368",
@@ -2341,6 +2341,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 0.2,
     "basileia_pct": 15.96,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2350,8 +2351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07512780",
@@ -2366,6 +2366,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 4.32,
     "basileia_pct": 23.97,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2375,8 +2376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71419600",
@@ -2391,6 +2391,7 @@
     "pct_carteira_inst": 4.8,
     "npl_inst_pct": 2.67,
     "basileia_pct": 20.62,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2400,8 +2401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81292278",
@@ -2416,6 +2416,7 @@
     "pct_carteira_inst": 5.6,
     "npl_inst_pct": 3.01,
     "basileia_pct": 25.39,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2425,8 +2426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02090126",
@@ -2441,6 +2441,7 @@
     "pct_carteira_inst": 3.4,
     "npl_inst_pct": 3.09,
     "basileia_pct": 13.44,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2450,8 +2451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "90497256",
@@ -2466,6 +2466,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 3.47,
     "basileia_pct": 20.03,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2475,8 +2476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03358914",
@@ -2491,6 +2491,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 5.82,
     "basileia_pct": 17.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 56.79,
@@ -2500,8 +2501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87733077",
@@ -2516,6 +2516,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 2.97,
     "basileia_pct": 23.26,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2525,8 +2526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "06126780",
@@ -2541,6 +2541,7 @@
     "pct_carteira_inst": 3.0,
     "npl_inst_pct": 9.25,
     "basileia_pct": 12.47,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2550,8 +2551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "31880826",
@@ -2566,6 +2566,7 @@
     "pct_carteira_inst": 2.2,
     "npl_inst_pct": 6.94,
     "basileia_pct": 18.4,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2575,8 +2576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87780268",
@@ -2591,6 +2591,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 5.75,
     "basileia_pct": 17.53,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2600,8 +2601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "89126130",
@@ -2616,6 +2616,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 0.92,
     "basileia_pct": 41.9,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2625,8 +2626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87733770",
@@ -2641,6 +2641,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 3.59,
     "basileia_pct": 16.38,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2650,8 +2651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "91586982",
@@ -2666,6 +2666,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 4.08,
     "basileia_pct": 18.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2675,8 +2676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "95594941",
@@ -2691,6 +2691,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 4.86,
     "basileia_pct": 20.65,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2700,8 +2701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25387713",
@@ -2716,6 +2716,7 @@
     "pct_carteira_inst": 5.6,
     "npl_inst_pct": 2.53,
     "basileia_pct": 23.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2725,8 +2726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "06174009",
@@ -2741,6 +2741,7 @@
     "pct_carteira_inst": 5.4,
     "npl_inst_pct": 5.89,
     "basileia_pct": 22.06,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 2.46,
@@ -2750,8 +2751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "49389307",
@@ -2766,6 +2766,7 @@
     "pct_carteira_inst": 3.2,
     "npl_inst_pct": 4.97,
     "basileia_pct": 20.4,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2775,8 +2776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78907607",
@@ -2791,6 +2791,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 4.06,
     "basileia_pct": 17.69,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2800,8 +2801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "08560508",
@@ -2816,6 +2816,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 5.43,
     "basileia_pct": 15.12,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2825,8 +2826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02232383",
@@ -2841,6 +2841,7 @@
     "pct_carteira_inst": 2.4,
     "npl_inst_pct": 2.69,
     "basileia_pct": 24.54,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2850,8 +2851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78858107",
@@ -2866,6 +2866,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 2.74,
     "basileia_pct": 25.38,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2875,8 +2876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "08624548",
@@ -2891,6 +2891,7 @@
     "pct_carteira_inst": 2.0,
     "npl_inst_pct": 4.68,
     "basileia_pct": 15.77,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2900,8 +2901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87795639",
@@ -2916,6 +2916,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 4.06,
     "basileia_pct": 18.48,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2925,8 +2926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05277312",
@@ -2941,6 +2941,7 @@
     "pct_carteira_inst": 2.4,
     "npl_inst_pct": 7.33,
     "basileia_pct": 17.09,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2950,8 +2951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07026923",
@@ -2966,6 +2966,7 @@
     "pct_carteira_inst": 2.3,
     "npl_inst_pct": 4.34,
     "basileia_pct": 17.14,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -2975,8 +2976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05863726",
@@ -2991,6 +2991,7 @@
     "pct_carteira_inst": 1.8,
     "npl_inst_pct": 2.89,
     "basileia_pct": 14.86,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3000,8 +3001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "19449602",
@@ -3016,6 +3016,7 @@
     "pct_carteira_inst": 3.2,
     "npl_inst_pct": 3.18,
     "basileia_pct": 23.56,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3025,8 +3026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01389651",
@@ -3041,6 +3041,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 1.47,
     "basileia_pct": 14.31,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3050,8 +3051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "90729369",
@@ -3066,6 +3066,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 5.89,
     "basileia_pct": 23.26,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3075,8 +3076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71207740",
@@ -3091,6 +3091,7 @@
     "pct_carteira_inst": 12.7,
     "npl_inst_pct": 0.0,
     "basileia_pct": 37.03,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3100,8 +3101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07599206",
@@ -3116,6 +3116,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 9.06,
     "basileia_pct": 26.85,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3125,8 +3126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81367880",
@@ -3141,6 +3141,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 2.96,
     "basileia_pct": 26.78,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3150,8 +3151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03965737",
@@ -3166,6 +3166,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 4.64,
     "basileia_pct": 11.84,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3175,8 +3176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02015588",
@@ -3191,6 +3191,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 8.39,
     "basileia_pct": 20.02,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3200,8 +3201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "37442605",
@@ -3216,6 +3216,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 10.19,
     "basileia_pct": 22.43,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3225,8 +3226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03732359",
@@ -3241,6 +3241,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 4.14,
     "basileia_pct": 17.56,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 13.33,
@@ -3250,8 +3251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02282709",
@@ -3266,6 +3266,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 5.35,
     "basileia_pct": 17.38,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 6.82,
@@ -3275,8 +3276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81011686",
@@ -3291,6 +3291,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 4.83,
     "basileia_pct": 18.01,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3300,8 +3301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26529420",
@@ -3316,6 +3316,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.34,
     "basileia_pct": 18.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3325,8 +3326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78483310",
@@ -3341,6 +3341,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 1.75,
     "basileia_pct": 14.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3350,8 +3351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00694389",
@@ -3366,6 +3366,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 3.54,
     "basileia_pct": 23.91,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 8.53,
@@ -3375,8 +3376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "15163587",
@@ -3391,6 +3391,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 7.86,
     "basileia_pct": 72.98,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3400,8 +3401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "80959612",
@@ -3416,6 +3416,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 3.64,
     "basileia_pct": 20.08,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3425,8 +3426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78865995",
@@ -3441,6 +3441,7 @@
     "pct_carteira_inst": 2.4,
     "npl_inst_pct": 2.89,
     "basileia_pct": 13.85,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3450,8 +3451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04490531",
@@ -3466,6 +3466,7 @@
     "pct_carteira_inst": 2.6,
     "npl_inst_pct": 4.85,
     "basileia_pct": 23.19,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3475,8 +3476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26563270",
@@ -3491,6 +3491,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 7.96,
     "basileia_pct": 13.23,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3500,8 +3501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00968602",
@@ -3516,6 +3516,7 @@
     "pct_carteira_inst": 3.0,
     "npl_inst_pct": 5.05,
     "basileia_pct": 25.81,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3525,8 +3526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04663561",
@@ -3541,6 +3541,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 5.64,
     "basileia_pct": 22.58,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.04,
@@ -3550,8 +3551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25395435",
@@ -3566,6 +3566,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 7.81,
     "basileia_pct": 21.0,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 26.39,
@@ -3575,8 +3576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "32474884",
@@ -3591,6 +3591,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 8.31,
     "basileia_pct": 19.69,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3600,8 +3601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05220243",
@@ -3616,6 +3616,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 5.42,
     "basileia_pct": 12.72,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3625,8 +3626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "91159764",
@@ -3641,6 +3641,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 3.78,
     "basileia_pct": 22.45,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3650,8 +3651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02910987",
@@ -3666,6 +3666,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 8.19,
     "basileia_pct": 19.34,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3675,8 +3676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "64237530",
@@ -3691,6 +3691,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 6.34,
     "basileia_pct": 31.7,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3700,8 +3701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25420696",
@@ -3716,6 +3716,7 @@
     "pct_carteira_inst": 4.4,
     "npl_inst_pct": 7.14,
     "basileia_pct": 23.4,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3725,8 +3726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "67960229",
@@ -3741,6 +3741,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 6.81,
     "basileia_pct": 25.98,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3750,8 +3751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "92555150",
@@ -3766,6 +3766,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 4.0,
     "basileia_pct": 16.06,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3775,8 +3776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "86829827",
@@ -3791,6 +3791,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 3.09,
     "basileia_pct": 18.31,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 1.2,
@@ -3800,8 +3801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05231945",
@@ -3816,6 +3816,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 7.35,
     "basileia_pct": 16.36,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3825,8 +3826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81706616",
@@ -3841,6 +3841,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 4.19,
     "basileia_pct": 14.47,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3850,8 +3851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "54401286",
@@ -3866,6 +3866,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 6.18,
     "basileia_pct": 21.57,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3875,8 +3876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "10262276",
@@ -3891,6 +3891,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 3.86,
     "basileia_pct": 15.93,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3900,8 +3901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "88894548",
@@ -3916,6 +3916,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 2.77,
     "basileia_pct": 16.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3925,8 +3926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04876393",
@@ -3941,6 +3941,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 4.17,
     "basileia_pct": 16.76,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3950,8 +3951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05158093",
@@ -3966,6 +3966,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 2.45,
     "basileia_pct": 22.22,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -3975,8 +3976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "67096909",
@@ -3991,6 +3991,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 2.7,
     "basileia_pct": 28.0,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4000,8 +4001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01692448",
@@ -4016,6 +4016,7 @@
     "pct_carteira_inst": 2.8,
     "npl_inst_pct": 1.0,
     "basileia_pct": 19.96,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4025,8 +4026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "23949522",
@@ -4041,6 +4041,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 2.45,
     "basileia_pct": 26.38,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4050,8 +4051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07946451",
@@ -4066,6 +4066,7 @@
     "pct_carteira_inst": 1.4,
     "npl_inst_pct": 8.89,
     "basileia_pct": 14.95,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4075,8 +4076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "24048910",
@@ -4091,6 +4091,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 9.62,
     "basileia_pct": 17.47,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4100,8 +4101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07502031",
@@ -4116,6 +4116,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 6.24,
     "basileia_pct": 28.45,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4125,8 +4126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87853206",
@@ -4141,6 +4141,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.83,
     "basileia_pct": 19.94,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4150,8 +4151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26549311",
@@ -4166,6 +4166,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 8.45,
     "basileia_pct": 18.41,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4175,8 +4176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71392047",
@@ -4191,6 +4191,7 @@
     "pct_carteira_inst": 3.0,
     "npl_inst_pct": 3.0,
     "basileia_pct": 23.67,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4200,8 +4201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07925729",
@@ -4216,6 +4216,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 10.47,
     "basileia_pct": 13.54,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4225,8 +4226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02446089",
@@ -4241,6 +4241,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 9.28,
     "basileia_pct": 15.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4250,8 +4251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07206072",
@@ -4266,6 +4266,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.19,
     "basileia_pct": 17.0,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4275,8 +4276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "88471024",
@@ -4291,6 +4291,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 3.33,
     "basileia_pct": 19.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4300,8 +4301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87510475",
@@ -4316,6 +4316,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 6.53,
     "basileia_pct": 16.5,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4325,8 +4326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04913711",
@@ -4341,6 +4341,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 3.17,
     "basileia_pct": 16.82,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4350,8 +4351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "09033698",
@@ -4366,6 +4366,7 @@
     "pct_carteira_inst": 1.9,
     "npl_inst_pct": 7.34,
     "basileia_pct": 24.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4375,8 +4376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "35571249",
@@ -4391,6 +4391,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.5,
     "basileia_pct": 28.86,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4400,8 +4401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81054686",
@@ -4416,6 +4416,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 4.21,
     "basileia_pct": 21.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4425,8 +4426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "76059997",
@@ -4441,6 +4441,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.95,
     "basileia_pct": 16.46,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4450,8 +4451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26408161",
@@ -4466,6 +4466,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 8.23,
     "basileia_pct": 19.52,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4475,8 +4476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87779625",
@@ -4491,6 +4491,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 3.92,
     "basileia_pct": 23.29,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4500,8 +4501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87784088",
@@ -4516,6 +4516,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 2.59,
     "basileia_pct": 14.13,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4525,8 +4526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0050988",
@@ -4541,6 +4541,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 2.64,
     "basileia_pct": 17.48,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4550,8 +4551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71238232",
@@ -4566,6 +4566,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 1.97,
     "basileia_pct": 29.99,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4575,8 +4576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05222094",
@@ -4591,6 +4591,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 5.24,
     "basileia_pct": 11.45,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4600,8 +4601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01608685",
@@ -4616,6 +4616,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 4.8,
     "basileia_pct": 21.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4625,8 +4626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "88099247",
@@ -4641,6 +4641,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 3.43,
     "basileia_pct": 24.88,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4650,8 +4651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "00068987",
@@ -4666,6 +4666,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 6.5,
     "basileia_pct": 14.85,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4675,8 +4676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "79457883",
@@ -4691,6 +4691,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 5.5,
     "basileia_pct": 21.53,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4700,8 +4701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "64276058",
@@ -4716,6 +4716,7 @@
     "pct_carteira_inst": 2.9,
     "npl_inst_pct": 2.94,
     "basileia_pct": 41.02,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4725,8 +4726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "69346856",
@@ -4741,6 +4741,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 4.31,
     "basileia_pct": 12.97,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4750,8 +4751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "79052122",
@@ -4766,6 +4766,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.25,
     "basileia_pct": 14.69,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4775,8 +4776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71243034",
@@ -4791,6 +4791,7 @@
     "pct_carteira_inst": 1.7,
     "npl_inst_pct": 3.35,
     "basileia_pct": 41.63,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4800,8 +4801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "66262643",
@@ -4816,6 +4816,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 3.18,
     "basileia_pct": 21.3,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4825,8 +4826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01667766",
@@ -4841,6 +4841,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 1.9,
     "basileia_pct": 26.68,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4850,8 +4851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05241619",
@@ -4866,6 +4866,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.81,
     "basileia_pct": 12.58,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4875,8 +4876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "32995755",
@@ -4891,6 +4891,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 6.78,
     "basileia_pct": 18.66,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4900,8 +4901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "80959638",
@@ -4916,6 +4916,7 @@
     "pct_carteira_inst": 1.3,
     "npl_inst_pct": 2.33,
     "basileia_pct": 23.3,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4925,8 +4926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01152097",
@@ -4941,6 +4941,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 4.17,
     "basileia_pct": 25.43,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 4.67,
@@ -4950,8 +4951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "95213211",
@@ -4966,6 +4966,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.11,
     "basileia_pct": 16.71,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -4975,8 +4976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "22760839",
@@ -4991,6 +4991,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 1.79,
     "basileia_pct": 25.51,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5000,8 +5001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "22749014",
@@ -5016,6 +5016,7 @@
     "pct_carteira_inst": 2.0,
     "npl_inst_pct": 3.49,
     "basileia_pct": 35.67,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5025,8 +5026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05241145",
@@ -5041,6 +5041,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 2.5,
     "basileia_pct": 16.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5050,8 +5051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "14046512",
@@ -5066,6 +5066,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 3.22,
     "basileia_pct": 24.24,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5075,8 +5076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04261151",
@@ -5091,6 +5091,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 5.14,
     "basileia_pct": 17.02,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5100,8 +5101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02448310",
@@ -5116,6 +5116,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 5.86,
     "basileia_pct": 15.61,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5125,8 +5126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "24654881",
@@ -5141,6 +5141,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 6.06,
     "basileia_pct": 16.65,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5150,8 +5151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81099491",
@@ -5166,6 +5166,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 4.95,
     "basileia_pct": 15.35,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5175,8 +5176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81192106",
@@ -5191,6 +5191,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 5.91,
     "basileia_pct": 17.0,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5200,8 +5201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87781530",
@@ -5216,6 +5216,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.92,
     "basileia_pct": 17.57,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5225,8 +5226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03412878",
@@ -5241,6 +5241,7 @@
     "pct_carteira_inst": 1.2,
     "npl_inst_pct": 2.97,
     "basileia_pct": 32.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5250,8 +5251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "59869560",
@@ -5266,6 +5266,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 7.58,
     "basileia_pct": 21.82,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5275,8 +5276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "53623781",
@@ -5291,6 +5291,7 @@
     "pct_carteira_inst": 3.3,
     "npl_inst_pct": 9.38,
     "basileia_pct": 27.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5300,8 +5301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "22656789",
@@ -5316,6 +5316,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 2.51,
     "basileia_pct": 15.99,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5325,8 +5326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "88530142",
@@ -5341,6 +5341,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.75,
     "basileia_pct": 25.44,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5350,8 +5351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "08742188",
@@ -5366,6 +5366,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 5.56,
     "basileia_pct": 13.07,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5375,8 +5376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "37255049",
@@ -5391,6 +5391,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 3.78,
     "basileia_pct": 30.98,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5400,8 +5401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02844024",
@@ -5416,6 +5416,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 4.16,
     "basileia_pct": 14.85,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5425,8 +5426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04237413",
@@ -5441,6 +5441,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 3.65,
     "basileia_pct": 22.5,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5450,8 +5451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05203605",
@@ -5466,6 +5466,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 6.22,
     "basileia_pct": 17.34,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5475,8 +5476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02876918",
@@ -5491,6 +5491,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 3.41,
     "basileia_pct": 18.22,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5500,8 +5501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "33615055",
@@ -5516,6 +5516,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 2.7,
     "basileia_pct": 28.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5525,8 +5526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "95424891",
@@ -5541,6 +5541,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.14,
     "basileia_pct": 26.88,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5550,8 +5551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02843443",
@@ -5566,6 +5566,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.32,
     "basileia_pct": 23.31,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5575,8 +5576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41805003",
@@ -5591,6 +5591,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 5.63,
     "basileia_pct": 18.92,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5600,8 +5601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "18966739",
@@ -5616,6 +5616,7 @@
     "pct_carteira_inst": 1.1,
     "npl_inst_pct": 2.91,
     "basileia_pct": 17.9,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5625,8 +5626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02447120",
@@ -5641,6 +5641,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 5.29,
     "basileia_pct": 29.3,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5650,8 +5651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25404542",
@@ -5666,6 +5666,7 @@
     "pct_carteira_inst": 2.1,
     "npl_inst_pct": 2.93,
     "basileia_pct": 39.28,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5675,8 +5676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05410056",
@@ -5691,6 +5691,7 @@
     "pct_carteira_inst": 1.5,
     "npl_inst_pct": 4.37,
     "basileia_pct": 12.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5700,8 +5701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "73647935",
@@ -5716,6 +5716,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 5.79,
     "basileia_pct": 21.99,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5725,8 +5726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "65229254",
@@ -5741,6 +5741,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.58,
     "basileia_pct": 21.23,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5750,8 +5751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "26555235",
@@ -5766,6 +5766,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.0,
     "basileia_pct": 25.98,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5775,8 +5776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "10209619",
@@ -5791,6 +5791,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 6.53,
     "basileia_pct": 22.9,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5800,8 +5801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02382755",
@@ -5816,6 +5816,7 @@
     "pct_carteira_inst": 1.6,
     "npl_inst_pct": 9.96,
     "basileia_pct": 20.88,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5825,8 +5826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "24795049",
@@ -5841,6 +5841,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 13.3,
     "basileia_pct": 38.53,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5850,8 +5851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "73398646",
@@ -5866,6 +5866,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 6.71,
     "basileia_pct": 26.57,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5875,8 +5876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41669227",
@@ -5891,6 +5891,7 @@
     "pct_carteira_inst": 1.0,
     "npl_inst_pct": 2.81,
     "basileia_pct": 31.8,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5900,8 +5901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "C0052072",
@@ -5916,6 +5916,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 2.95,
     "basileia_pct": 12.95,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5925,8 +5926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "09403026",
@@ -5941,6 +5941,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 5.16,
     "basileia_pct": 22.85,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5950,8 +5951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41697103",
@@ -5966,6 +5966,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 2.48,
     "basileia_pct": 31.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -5975,8 +5976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "11907520",
@@ -5991,6 +5991,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.03,
     "basileia_pct": 33.58,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6000,8 +6001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "21866694",
@@ -6016,6 +6016,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.27,
     "basileia_pct": 25.35,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6025,8 +6026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "89049738",
@@ -6041,6 +6041,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.04,
     "basileia_pct": 31.04,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6050,8 +6051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "06031727",
@@ -6066,6 +6066,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 5.13,
     "basileia_pct": 16.11,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6075,8 +6076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87067757",
@@ -6091,6 +6091,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 1.21,
     "basileia_pct": 41.76,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6100,8 +6101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03222753",
@@ -6116,6 +6116,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 9.44,
     "basileia_pct": 41.06,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6125,8 +6126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "79063574",
@@ -6141,6 +6141,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.66,
     "basileia_pct": 17.81,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6150,8 +6151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "76461557",
@@ -6166,6 +6166,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.0,
     "basileia_pct": 37.71,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6175,8 +6176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "73113243",
@@ -6191,6 +6191,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.9,
     "basileia_pct": 17.54,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6200,8 +6201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07215632",
@@ -6216,6 +6216,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 17.71,
     "basileia_pct": 5.31,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6225,8 +6226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41753500",
@@ -6241,6 +6241,7 @@
     "pct_carteira_inst": 0.7,
     "npl_inst_pct": 1.89,
     "basileia_pct": 37.27,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6250,8 +6251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "97489280",
@@ -6266,6 +6266,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 5.49,
     "basileia_pct": 27.49,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6275,8 +6276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01187961",
@@ -6291,6 +6291,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 4.26,
     "basileia_pct": 16.96,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6300,8 +6301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07465539",
@@ -6316,6 +6316,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 5.98,
     "basileia_pct": 19.4,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6325,8 +6326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03033469",
@@ -6341,6 +6341,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 4.66,
     "basileia_pct": 12.92,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6350,8 +6351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "11969853",
@@ -6366,6 +6366,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 6.89,
     "basileia_pct": 14.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6375,8 +6376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "81115149",
@@ -6391,6 +6391,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.3,
     "basileia_pct": 17.5,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6400,8 +6401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "06332931",
@@ -6416,6 +6416,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 7.53,
     "basileia_pct": 17.15,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6425,8 +6426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "66788142",
@@ -6441,6 +6441,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 11.92,
     "basileia_pct": 8.75,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6450,8 +6451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01073966",
@@ -6466,6 +6466,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 11.75,
     "basileia_pct": null,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 17.25,
@@ -6475,8 +6476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02931668",
@@ -6491,6 +6491,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 7.17,
     "basileia_pct": 14.55,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6500,8 +6501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "08044854",
@@ -6516,6 +6516,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 9.35,
     "basileia_pct": 21.42,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6525,8 +6526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02766672",
@@ -6541,6 +6541,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.96,
     "basileia_pct": 15.79,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6550,8 +6551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "79086997",
@@ -6566,6 +6566,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 6.52,
     "basileia_pct": 14.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6575,8 +6576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02935307",
@@ -6591,6 +6591,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 12.15,
     "basileia_pct": 43.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6600,8 +6601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "92796564",
@@ -6616,6 +6616,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.72,
     "basileia_pct": 19.59,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6625,8 +6626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25387655",
@@ -6641,6 +6641,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.89,
     "basileia_pct": 29.91,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6650,8 +6651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "05269976",
@@ -6666,6 +6666,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 4.94,
     "basileia_pct": 21.68,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6675,8 +6676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "89468565",
@@ -6691,6 +6691,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 5.42,
     "basileia_pct": 15.77,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 13.17,
@@ -6700,8 +6701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04013172",
@@ -6716,6 +6716,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 8.25,
     "basileia_pct": 12.59,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6725,8 +6726,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "08071414",
@@ -6741,6 +6741,7 @@
     "pct_carteira_inst": 0.8,
     "npl_inst_pct": 5.35,
     "basileia_pct": 18.03,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6750,8 +6751,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02448839",
@@ -6766,6 +6766,7 @@
     "pct_carteira_inst": 0.9,
     "npl_inst_pct": 2.96,
     "basileia_pct": 19.75,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6775,8 +6776,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "24799033",
@@ -6791,6 +6791,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.09,
     "basileia_pct": 28.18,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6800,8 +6801,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "10348181",
@@ -6816,6 +6816,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 4.3,
     "basileia_pct": 19.75,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6825,8 +6826,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "78862083",
@@ -6841,6 +6841,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.33,
     "basileia_pct": 15.34,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6850,8 +6851,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "89990501",
@@ -6866,6 +6866,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 3.52,
     "basileia_pct": 23.88,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6875,8 +6876,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71154256",
@@ -6891,6 +6891,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 6.15,
     "basileia_pct": 17.33,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6900,8 +6901,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04406371",
@@ -6916,6 +6916,7 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 13.23,
     "basileia_pct": 17.22,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6925,8 +6926,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01205736",
@@ -6941,6 +6941,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 3.98,
     "basileia_pct": 19.29,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6950,8 +6951,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07509426",
@@ -6966,6 +6966,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 5.35,
     "basileia_pct": 13.45,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -6975,8 +6976,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "28145829",
@@ -6991,6 +6991,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 6.04,
     "basileia_pct": 51.57,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 26.58,
@@ -7000,8 +7001,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03015152",
@@ -7016,6 +7016,7 @@
     "pct_carteira_inst": 0.4,
     "npl_inst_pct": 5.25,
     "basileia_pct": 15.33,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7025,8 +7026,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "22724710",
@@ -7041,6 +7041,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.14,
     "basileia_pct": 26.77,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7050,8 +7051,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07097064",
@@ -7066,6 +7066,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 8.45,
     "basileia_pct": 15.25,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7075,8 +7076,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41180092",
@@ -7091,6 +7091,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 2.85,
     "basileia_pct": 27.1,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7100,8 +7101,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25683475",
@@ -7116,6 +7116,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 6.09,
     "basileia_pct": 22.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7125,8 +7126,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "17361536",
@@ -7141,6 +7141,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 9.5,
     "basileia_pct": 31.27,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7150,8 +7151,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "82133182",
@@ -7166,6 +7166,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.9,
     "basileia_pct": 16.08,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7175,8 +7176,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "04565791",
@@ -7191,6 +7191,7 @@
     "pct_carteira_inst": 0.2,
     "npl_inst_pct": 4.98,
     "basileia_pct": 15.19,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7200,8 +7201,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01060307",
@@ -7216,6 +7216,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 3.11,
     "basileia_pct": 15.74,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7225,8 +7226,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03566655",
@@ -7241,6 +7241,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 8.67,
     "basileia_pct": 20.5,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7250,8 +7251,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "09330158",
@@ -7266,6 +7266,7 @@
     "pct_carteira_inst": 0.5,
     "npl_inst_pct": 6.15,
     "basileia_pct": 14.8,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7275,8 +7276,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03065046",
@@ -7291,6 +7291,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 4.35,
     "basileia_pct": 20.11,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7300,8 +7301,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "71146450",
@@ -7316,6 +7316,7 @@
     "pct_carteira_inst": 0.3,
     "npl_inst_pct": 2.62,
     "basileia_pct": 24.71,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7325,8 +7326,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "02904125",
@@ -7341,6 +7341,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 3.24,
     "basileia_pct": 15.56,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 7.57,
@@ -7350,8 +7351,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03793242",
@@ -7366,6 +7366,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 4.73,
     "basileia_pct": 16.68,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7375,8 +7376,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07318874",
@@ -7391,6 +7391,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.94,
     "basileia_pct": 19.66,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7400,8 +7401,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "06139650",
@@ -7416,6 +7416,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 5.13,
     "basileia_pct": 15.47,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7425,8 +7426,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25536764",
@@ -7441,6 +7441,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 5.77,
     "basileia_pct": null,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7450,8 +7451,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "07412987",
@@ -7466,6 +7466,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 6.23,
     "basileia_pct": 15.61,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7475,8 +7476,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "53935029",
@@ -7491,6 +7491,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 2.51,
     "basileia_pct": 57.11,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7500,8 +7501,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "41931445",
@@ -7516,6 +7516,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 8.3,
     "basileia_pct": 14.78,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7525,8 +7526,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "46642294",
@@ -7541,6 +7541,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 5.37,
     "basileia_pct": 59.26,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7550,8 +7551,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "37631058",
@@ -7566,6 +7566,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 8.54,
     "basileia_pct": 41.2,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7575,8 +7576,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01155801",
@@ -7591,6 +7591,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 9.39,
     "basileia_pct": 19.13,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7600,8 +7601,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "87780284",
@@ -7616,6 +7616,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 5.7,
     "basileia_pct": 24.45,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7625,8 +7626,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "01609345",
@@ -7641,6 +7641,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 1.81,
     "basileia_pct": 18.76,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7650,8 +7651,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "25743311",
@@ -7666,6 +7666,7 @@
     "pct_carteira_inst": 0.1,
     "npl_inst_pct": 12.31,
     "basileia_pct": 34.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7675,8 +7676,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    },
    {
     "cod": "03485130",
@@ -7691,6 +7691,7 @@
     "pct_carteira_inst": 0.0,
     "npl_inst_pct": 2.96,
     "basileia_pct": 14.37,
+    "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
@@ -7700,8 +7701,7 @@
      "baixa_cobertura": false,
      "perfil_neutro": true,
      "teto_sanidade": false
-    },
-    "taxas_novas": null
+    }
    }
   ],
   "por_segmento": {

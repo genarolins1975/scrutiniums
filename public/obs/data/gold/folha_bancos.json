@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-19T10:23:25+00:00",
+ "gerado_em": "2026-08-20T11:01:35+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 239,
-  "total_editais": 801,
+  "total_editais": 806,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1062,6 +1062,51 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE SANTA MARIANA",
+    "municipio": "Santa Mariana",
+    "uf": "PR",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-19",
+    "url": "https://pncp.gov.br/compras/75392019000120/2026/52"
+   },
+   {
+    "ente": "MUNICIPIO DE ARAGUATINS",
+    "municipio": "Araguatins",
+    "uf": "TO",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-19",
+    "url": "https://pncp.gov.br/compras/01237403000111/2026/18"
+   },
+   {
+    "ente": "MUNICIPIO DE SANTA MARIANA",
+    "municipio": "Santa Mariana",
+    "uf": "PR",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-19",
+    "url": "https://pncp.gov.br/compras/75392019000120/2026/50"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO TOME",
+    "municipio": "São Tomé",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-19",
+    "url": "https://pncp.gov.br/compras/75381178000129/2026/69"
+   },
+   {
+    "ente": "MUNICIPIO DE PONTES GESTAL",
+    "municipio": "Pontes Gestal",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-19",
+    "url": "https://pncp.gov.br/compras/45162328000142/2026/47"
+   },
+   {
     "ente": "MUNICIPIO DE ALUMINIO",
     "municipio": "Alumínio",
     "uf": "SP",
@@ -1123,51 +1168,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-13",
     "url": "https://pncp.gov.br/compras/75741330000137/2026/250"
-   },
-   {
-    "ente": "MUNICIPIO DE BARBOSA",
-    "municipio": "Barbosa",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-13",
-    "url": "https://pncp.gov.br/compras/46162178000130/2026/24"
-   },
-   {
-    "ente": "AGENCIA DE PROMOCAO DE EXPORTACOES DO BRASIL - APEX-BRASIL",
-    "municipio": "Brasília",
-    "uf": "DF",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-13",
-    "url": "https://pncp.gov.br/compras/05507500000138/2026/13"
-   },
-   {
-    "ente": "MUNICIPIO DE ORIZANIA",
-    "municipio": "Orizânia",
-    "uf": "MG",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-12",
-    "url": "https://pncp.gov.br/compras/01616271000139/2026/54"
-   },
-   {
-    "ente": "SERVICO AUTONOMO DE AGUA E ESGOTOS E RESIDUOS SOLIDOS DE APARECIDA",
-    "municipio": "Aparecida",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-12",
-    "url": "https://pncp.gov.br/compras/43672880000155/2026/93"
-   },
-   {
-    "ente": "MUNICIPIO DE COTIA",
-    "municipio": "Cotia",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-11",
-    "url": "https://pncp.gov.br/compras/46523049000120/2026/148"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

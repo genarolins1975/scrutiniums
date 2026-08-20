@@ -1,8 +1,30 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-12T12:25:13+00:00",
+ "gerado_em": "2026-08-20T11:01:35+00:00",
  "titulo": "Sob regime de resolução do BCB",
  "vigentes": [
+  {
+   "cnpj": "87945218000105",
+   "cnpj8": "87945218",
+   "nome": "SIMPALA LANÇADORA E ADMINISTRADORA DE CONSÓRCIOS LTDA.",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "14/08/2026",
+   "inicio_iso": "2026-08-14",
+   "responsavel": "GSCH SERVICOS DE APOIO ADMINISTRATIVO LTDA",
+   "municipio": "Porto Alegre",
+   "uf": "RS"
+  },
+  {
+   "cnpj": "34991938000132",
+   "cnpj8": "34991938",
+   "nome": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+   "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+   "inicio": "14/08/2026",
+   "inicio_iso": "2026-08-14",
+   "responsavel": "GSCH SERVICOS DE APOIO ADMINISTRATIVO LTDA",
+   "municipio": "Porto Alegre",
+   "uf": "RS"
+  },
   {
    "cnpj": "00329598000167",
    "cnpj8": "00329598",

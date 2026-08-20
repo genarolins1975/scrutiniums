@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-19T10:23:26+00:00",
+ "gerado_em": "2026-08-20T11:01:36+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
@@ -403,6 +403,22 @@
  },
  "novidades": {
   "itens": [
+   {
+    "tipo": "regime",
+    "titulo": "SIMPALA LANÇADORA E ADMINISTRADORA DE CONSÓRCIOS LTDA. sob LIQUIDAÇÃO EXTRAJUDICIAL desde 14/08/2026",
+    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
+    "link": {
+     "view": "pulse"
+    }
+   },
+   {
+    "tipo": "regime",
+    "titulo": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO sob LIQUIDAÇÃO EXTRAJUDICIAL desde 14/08/2026",
+    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
+    "link": {
+     "view": "pulse"
+    }
+   },
    {
     "tipo": "guidance",
     "titulo": "Banco do Brasil: guidance revisado no 2T26",

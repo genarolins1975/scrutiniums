@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-19T10:23:46+00:00",
+ "gerado_em": "2026-08-20T11:01:48+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "5 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (110 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (110 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (110 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 5,
+   "titulo": "4 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (111 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (111 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (111 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 4,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "9 execuções anteriores",
+   "evidencia_persistencia": "10 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.95,
+   "ordem": 0.96,
    "serie_recente": null
   },
   {
@@ -106,7 +106,7 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "51 execuções anteriores",
+   "evidencia_persistencia": "52 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
