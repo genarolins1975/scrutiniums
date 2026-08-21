@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-20T11:01:35+00:00",
+ "gerado_em": "2026-08-21T10:19:17+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 239,
-  "total_editais": 806,
+  "total_editais": 809,
   "backfill_completo": false,
   "ranking": [
    {
@@ -1062,6 +1062,33 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE BREJO",
+    "municipio": "Brejo",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-20",
+    "url": "https://pncp.gov.br/compras/06116743000108/2026/39"
+   },
+   {
+    "ente": "MUNICIPIO DE DRACENA",
+    "municipio": "Dracena",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-20",
+    "url": "https://pncp.gov.br/compras/44880060000111/2026/166"
+   },
+   {
+    "ente": "MUNICIPIO DE OSORIO",
+    "municipio": "Osório",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-20",
+    "url": "https://pncp.gov.br/compras/88814181000130/2026/414"
+   },
+   {
     "ente": "MUNICIPIO DE SANTA MARIANA",
     "municipio": "Santa Mariana",
     "uf": "PR",
@@ -1141,33 +1168,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-17",
     "url": "https://pncp.gov.br/compras/45276128000110/2026/2698"
-   },
-   {
-    "ente": "FUNDACAO UNIVERSIDADE REGIONAL DE BLUMENAU - FURB",
-    "municipio": "Blumenau",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-17",
-    "url": "https://pncp.gov.br/compras/82662958000102/2026/186"
-   },
-   {
-    "ente": "MUNICIPIO DE BONITO",
-    "municipio": "Bonito",
-    "uf": "PE",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-14",
-    "url": "https://pncp.gov.br/compras/10121515000101/2026/39"
-   },
-   {
-    "ente": "MUNICIPIO DE IVAIPORA",
-    "municipio": "Ivaiporã",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-13",
-    "url": "https://pncp.gov.br/compras/75741330000137/2026/250"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

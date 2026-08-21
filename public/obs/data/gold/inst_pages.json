@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-08-20T11:01:36+00:00",
+ "gerado_em": "2026-08-21T10:19:17+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-20T11:01:36+00:00",
+    "atualizado_em": "2026-08-21T10:19:17+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -930,8 +930,8 @@
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 7238807931.0,
-    "share_pct": 8.8,
+    "chamadas_semana": 6623090015.0,
+    "share_pct": 8.7,
     "familias_api": null,
     "papeis": null,
     "match_diretorio": false
@@ -1036,7 +1036,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "No Open Finance, responde por 8.8% das chamadas transacionais.",
+     "frase": "No Open Finance, responde por 8.7% das chamadas transacionais.",
      "base": "Dashboard do Cidadão + diretório oficial (observado)",
      "status": "observado"
     },
@@ -1064,7 +1064,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-20T11:01:36+00:00",
+    "atualizado_em": "2026-08-21T10:19:17+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2096,7 +2096,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-20T11:01:36+00:00",
+    "atualizado_em": "2026-08-21T10:19:17+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [

@@ -15,10 +15,10 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-20T11:01:40+00:00",
+  "atualizado_em": "2026-08-21T10:19:24+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 24.313.102",
-  "participante_open_finance": true
+  "participante_open_finance": null
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -1596,18 +1596,7 @@
    }
   ]
  },
- "openfinance": {
-  "organisation": "99PAY INSTITUICAO DE PAGAMENTO S.A.",
-  "chamadas_semana": 3762289.0,
-  "share_pct": 0.0,
-  "familias_api": 17,
-  "papeis": [
-   "CONTA",
-   "DADOS",
-   "PAGTO"
-  ],
-  "match_diretorio": true
- },
+ "openfinance": null,
  "reclamacoes": [
   {
    "periodo": "2026-T2",
