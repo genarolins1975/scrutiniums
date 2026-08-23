@@ -4639,7 +4639,7 @@
   {
    "cod": "07945233",
    "nome": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICRO",
-   "sr": "S4",
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 4729430.92,
    "carteira": 133350.82,
@@ -8656,7 +8656,7 @@
   },
   {
    "cod": "54190525",
-   "nome": "SICOOB CRESSEM - COOPERATIVA DE ECNONOMI",
+   "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA",
    "sr": "S5",
    "nivel": "indiv",
    "ativo": 298509031.8,
@@ -17295,7 +17295,7 @@
   {
    "cod": "17079937",
    "nome": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO ",
-   "sr": "S4",
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 125884676.6,
    "carteira": 0.0,

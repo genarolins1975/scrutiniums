@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-22T10:16:10+00:00",
+ "gerado_em": "2026-08-23T10:09:39+00:00",
  "paginas": 1422,
  "anomes": "202603",
  "instituicoes": [
@@ -5533,8 +5533,8 @@
   },
   {
    "cod": "54190525",
-   "nome": "Sicoob Cressem - Cooperativa De Ecnonomia E Crédito Mutuo Dos Servidores Municipais Da Região Metropolitana Do Vale Do Paraiba E Litoral Norte",
-   "razao": "SICOOB CRESSEM - COOPERATIVA DE ECNONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
+   "nome": "Sicoob Cressem - Cooperativa De Economia E Crédito Mutuo Dos Servidores Municipais Da Região Metropolitana Do Vale Do Paraiba E Litoral Norte",
+   "razao": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
    "sr": "S5",
    "ativo_brl": 298509031.8,
    "piloto": false
@@ -6631,7 +6631,7 @@
    "cod": "17079937",
    "nome": "Pinbank Brasil Instituição De Pagamento S.A.",
    "razao": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
-   "sr": "S4",
+   "sr": "S5",
    "ativo_brl": 125884676.6,
    "piloto": false
   },
@@ -10159,7 +10159,7 @@
    "cod": "07945233",
    "nome": "Pólocred   Sociedade De Crédito Ao Microempreendedor E À Empresa De Pequeno Porte Ltda.",
    "razao": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-   "sr": "S4",
+   "sr": "S5",
    "ativo_brl": 4729430.92,
    "piloto": false
   },

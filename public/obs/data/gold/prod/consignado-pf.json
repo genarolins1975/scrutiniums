@@ -1,8 +1,18 @@
 {
- "gerado_em": "2026-08-22T10:16:20+00:00",
+ "gerado_em": "2026-08-23T10:09:47+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
+  "201709",
+  "201712",
+  "201803",
+  "201806",
+  "201809",
+  "201812",
+  "201903",
+  "201906",
+  "201909",
+  "201912",
   "202003",
   "202006",
   "202009",
@@ -2232,7 +2242,7 @@
    },
    {
     "cod": "54190525",
-    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECNONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
+    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
     "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 135180152.88,

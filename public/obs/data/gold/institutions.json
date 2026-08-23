@@ -101,6 +101,46 @@
    "rwa_brl": 1310657899476.35,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 30.0
+    },
+    {
+     "anomes": "201712",
+     "score": 42.9
+    },
+    {
+     "anomes": "201803",
+     "score": 46.5
+    },
+    {
+     "anomes": "201806",
+     "score": 50.0
+    },
+    {
+     "anomes": "201809",
+     "score": 53.5
+    },
+    {
+     "anomes": "201812",
+     "score": 42.9
+    },
+    {
+     "anomes": "201903",
+     "score": 50.0
+    },
+    {
+     "anomes": "201906",
+     "score": 46.4
+    },
+    {
+     "anomes": "201909",
+     "score": 60.7
+    },
+    {
+     "anomes": "201912",
+     "score": 57.1
+    },
+    {
      "anomes": "202003",
      "score": 59.4
     },
@@ -382,6 +422,46 @@
    "capital_principal_pct": 11.59,
    "rwa_brl": 1093993823936.22,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 75.0
+    },
+    {
+     "anomes": "201712",
+     "score": 78.5
+    },
+    {
+     "anomes": "201803",
+     "score": 82.1
+    },
+    {
+     "anomes": "201806",
+     "score": 82.1
+    },
+    {
+     "anomes": "201809",
+     "score": 82.1
+    },
+    {
+     "anomes": "201812",
+     "score": 78.5
+    },
+    {
+     "anomes": "201903",
+     "score": 82.1
+    },
+    {
+     "anomes": "201906",
+     "score": 78.5
+    },
+    {
+     "anomes": "201909",
+     "score": 75.0
+    },
+    {
+     "anomes": "201912",
+     "score": 75.0
+    },
     {
      "anomes": "202003",
      "score": 68.8
@@ -923,6 +1003,46 @@
    "rwa_brl": 985898064498.13,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 50.0
+    },
+    {
+     "anomes": "201712",
+     "score": 53.6
+    },
+    {
+     "anomes": "201803",
+     "score": 50.0
+    },
+    {
+     "anomes": "201806",
+     "score": 46.5
+    },
+    {
+     "anomes": "201809",
+     "score": 42.9
+    },
+    {
+     "anomes": "201812",
+     "score": 50.0
+    },
+    {
+     "anomes": "201903",
+     "score": 50.0
+    },
+    {
+     "anomes": "201906",
+     "score": 53.6
+    },
+    {
+     "anomes": "201909",
+     "score": 50.0
+    },
+    {
+     "anomes": "201912",
+     "score": 57.1
+    },
+    {
      "anomes": "202003",
      "score": 53.1
     },
@@ -1205,6 +1325,46 @@
    "rwa_brl": 627072212736.13,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 60.0
+    },
+    {
+     "anomes": "201712",
+     "score": 57.1
+    },
+    {
+     "anomes": "201803",
+     "score": 53.6
+    },
+    {
+     "anomes": "201806",
+     "score": 53.6
+    },
+    {
+     "anomes": "201809",
+     "score": 50.0
+    },
+    {
+     "anomes": "201812",
+     "score": 46.4
+    },
+    {
+     "anomes": "201903",
+     "score": 53.6
+    },
+    {
+     "anomes": "201906",
+     "score": 57.2
+    },
+    {
+     "anomes": "201909",
+     "score": 50.0
+    },
+    {
+     "anomes": "201912",
+     "score": 53.6
+    },
+    {
      "anomes": "202003",
      "score": 40.6
     },
@@ -1466,6 +1626,46 @@
    "capital_principal_pct": 22.31,
    "rwa_brl": 748440282901.35,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 37.5
+    },
+    {
+     "anomes": "201712",
+     "score": 40.6
+    },
+    {
+     "anomes": "201803",
+     "score": 50.0
+    },
+    {
+     "anomes": "201806",
+     "score": 50.0
+    },
+    {
+     "anomes": "201809",
+     "score": 50.0
+    },
+    {
+     "anomes": "201812",
+     "score": 44.5
+    },
+    {
+     "anomes": "201903",
+     "score": 22.2
+    },
+    {
+     "anomes": "201906",
+     "score": 22.2
+    },
+    {
+     "anomes": "201909",
+     "score": 36.1
+    },
+    {
+     "anomes": "201912",
+     "score": 38.9
+    },
     {
      "anomes": "202003",
      "score": 19.4
@@ -1749,6 +1949,46 @@
    "rwa_brl": 427027220913.9,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 10.0
+    },
+    {
+     "anomes": "201712",
+     "score": 39.3
+    },
+    {
+     "anomes": "201803",
+     "score": 39.3
+    },
+    {
+     "anomes": "201806",
+     "score": 42.9
+    },
+    {
+     "anomes": "201809",
+     "score": 42.9
+    },
+    {
+     "anomes": "201812",
+     "score": 39.3
+    },
+    {
+     "anomes": "201903",
+     "score": 42.9
+    },
+    {
+     "anomes": "201906",
+     "score": 42.9
+    },
+    {
+     "anomes": "201909",
+     "score": 42.9
+    },
+    {
+     "anomes": "201912",
+     "score": 35.7
+    },
+    {
      "anomes": "202003",
      "score": 50.0
     },
@@ -2031,6 +2271,10 @@
    "rwa_brl": 61511355005.68,
    "historico_score": [
     {
+     "anomes": "201912",
+     "score": 36.1
+    },
+    {
      "anomes": "202003",
      "score": 30.6
     },
@@ -2304,6 +2548,46 @@
    "capital_principal_pct": 10.38,
    "rwa_brl": 124268285764.79,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 50.0
+    },
+    {
+     "anomes": "201712",
+     "score": 53.1
+    },
+    {
+     "anomes": "201803",
+     "score": 52.8
+    },
+    {
+     "anomes": "201806",
+     "score": 55.6
+    },
+    {
+     "anomes": "201809",
+     "score": 58.4
+    },
+    {
+     "anomes": "201812",
+     "score": 58.4
+    },
+    {
+     "anomes": "201903",
+     "score": 61.1
+    },
+    {
+     "anomes": "201906",
+     "score": 61.1
+    },
+    {
+     "anomes": "201909",
+     "score": 61.1
+    },
+    {
+     "anomes": "201912",
+     "score": 58.4
+    },
     {
      "anomes": "202003",
      "score": 63.9
@@ -2839,6 +3123,46 @@
    "rwa_brl": 33932181289.54,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 75.0
+    },
+    {
+     "anomes": "201712",
+     "score": 84.4
+    },
+    {
+     "anomes": "201803",
+     "score": 80.5
+    },
+    {
+     "anomes": "201806",
+     "score": 83.3
+    },
+    {
+     "anomes": "201809",
+     "score": 83.3
+    },
+    {
+     "anomes": "201812",
+     "score": 77.8
+    },
+    {
+     "anomes": "201903",
+     "score": 83.3
+    },
+    {
+     "anomes": "201906",
+     "score": 86.1
+    },
+    {
+     "anomes": "201909",
+     "score": 83.3
+    },
+    {
+     "anomes": "201912",
+     "score": 77.8
+    },
+    {
      "anomes": "202003",
      "score": 83.3
     },
@@ -3115,6 +3439,46 @@
    "rwa_brl": 30293872296.35,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 56.2
+    },
+    {
+     "anomes": "201712",
+     "score": 56.2
+    },
+    {
+     "anomes": "201803",
+     "score": 50.0
+    },
+    {
+     "anomes": "201806",
+     "score": 50.0
+    },
+    {
+     "anomes": "201809",
+     "score": 55.6
+    },
+    {
+     "anomes": "201812",
+     "score": 61.1
+    },
+    {
+     "anomes": "201903",
+     "score": 69.5
+    },
+    {
+     "anomes": "201906",
+     "score": 69.5
+    },
+    {
+     "anomes": "201909",
+     "score": 66.7
+    },
+    {
+     "anomes": "201912",
+     "score": 75.0
+    },
+    {
      "anomes": "202003",
      "score": 66.7
     },
@@ -3371,6 +3735,46 @@
    "rwa_brl": 48514252187.28,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 43.8
+    },
+    {
+     "anomes": "201712",
+     "score": 25.0
+    },
+    {
+     "anomes": "201803",
+     "score": 38.9
+    },
+    {
+     "anomes": "201806",
+     "score": 25.0
+    },
+    {
+     "anomes": "201809",
+     "score": 25.0
+    },
+    {
+     "anomes": "201812",
+     "score": 22.2
+    },
+    {
+     "anomes": "201903",
+     "score": 27.8
+    },
+    {
+     "anomes": "201906",
+     "score": 25.0
+    },
+    {
+     "anomes": "201909",
+     "score": 22.2
+    },
+    {
+     "anomes": "201912",
+     "score": 22.2
+    },
+    {
      "anomes": "202003",
      "score": 36.1
     },
@@ -3584,6 +3988,42 @@
    "capital_principal_pct": null,
    "rwa_brl": null,
    "historico_score": [
+    {
+     "anomes": "201712",
+     "score": 25.0
+    },
+    {
+     "anomes": "201803",
+     "score": 25.0
+    },
+    {
+     "anomes": "201806",
+     "score": 21.4
+    },
+    {
+     "anomes": "201809",
+     "score": 25.0
+    },
+    {
+     "anomes": "201812",
+     "score": 25.0
+    },
+    {
+     "anomes": "201903",
+     "score": 25.0
+    },
+    {
+     "anomes": "201906",
+     "score": 25.0
+    },
+    {
+     "anomes": "201909",
+     "score": 25.0
+    },
+    {
+     "anomes": "201912",
+     "score": 25.0
+    },
     {
      "anomes": "202003",
      "score": 21.9
@@ -3833,6 +4273,46 @@
    "capital_principal_pct": 14.08,
    "rwa_brl": 60821784591.49,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 46.9
+    },
+    {
+     "anomes": "201712",
+     "score": 46.9
+    },
+    {
+     "anomes": "201803",
+     "score": 50.0
+    },
+    {
+     "anomes": "201806",
+     "score": 50.0
+    },
+    {
+     "anomes": "201809",
+     "score": 52.8
+    },
+    {
+     "anomes": "201812",
+     "score": 52.8
+    },
+    {
+     "anomes": "201903",
+     "score": 58.3
+    },
+    {
+     "anomes": "201906",
+     "score": 52.8
+    },
+    {
+     "anomes": "201909",
+     "score": 58.3
+    },
+    {
+     "anomes": "201912",
+     "score": 52.8
+    },
     {
      "anomes": "202003",
      "score": 52.8
@@ -4382,6 +4862,46 @@
    "rwa_brl": 83553895265.36,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 56.2
+    },
+    {
+     "anomes": "201712",
+     "score": 59.4
+    },
+    {
+     "anomes": "201803",
+     "score": 55.5
+    },
+    {
+     "anomes": "201806",
+     "score": 61.1
+    },
+    {
+     "anomes": "201809",
+     "score": 58.3
+    },
+    {
+     "anomes": "201812",
+     "score": 55.5
+    },
+    {
+     "anomes": "201903",
+     "score": 58.3
+    },
+    {
+     "anomes": "201906",
+     "score": 58.3
+    },
+    {
+     "anomes": "201909",
+     "score": 58.3
+    },
+    {
+     "anomes": "201912",
+     "score": 55.5
+    },
+    {
      "anomes": "202003",
      "score": 63.9
     },
@@ -4640,6 +5160,46 @@
    "rwa_brl": 12134188869.09,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 41.8
+    },
+    {
+     "anomes": "201712",
+     "score": 45.2
+    },
+    {
+     "anomes": "201803",
+     "score": 50.5
+    },
+    {
+     "anomes": "201806",
+     "score": 40.6
+    },
+    {
+     "anomes": "201809",
+     "score": 55.2
+    },
+    {
+     "anomes": "201812",
+     "score": 50.9
+    },
+    {
+     "anomes": "201903",
+     "score": 50.0
+    },
+    {
+     "anomes": "201906",
+     "score": 50.0
+    },
+    {
+     "anomes": "201909",
+     "score": 42.1
+    },
+    {
+     "anomes": "201912",
+     "score": 39.0
+    },
+    {
      "anomes": "202003",
      "score": 47.4
     },
@@ -4860,6 +5420,42 @@
    "rwa_brl": 6923018264.39,
    "historico_score": [
     {
+     "anomes": "201712",
+     "score": 15.7
+    },
+    {
+     "anomes": "201803",
+     "score": 15.4
+    },
+    {
+     "anomes": "201806",
+     "score": 13.9
+    },
+    {
+     "anomes": "201809",
+     "score": 14.6
+    },
+    {
+     "anomes": "201812",
+     "score": 14.9
+    },
+    {
+     "anomes": "201903",
+     "score": 18.2
+    },
+    {
+     "anomes": "201906",
+     "score": 20.7
+    },
+    {
+     "anomes": "201909",
+     "score": 25.2
+    },
+    {
+     "anomes": "201912",
+     "score": 30.8
+    },
+    {
      "anomes": "202003",
      "score": 27.3
     },
@@ -5048,6 +5644,42 @@
    "capital_principal_pct": null,
    "rwa_brl": null,
    "historico_score": [
+    {
+     "anomes": "201712",
+     "score": 46.6
+    },
+    {
+     "anomes": "201803",
+     "score": 39.6
+    },
+    {
+     "anomes": "201806",
+     "score": 60.4
+    },
+    {
+     "anomes": "201809",
+     "score": 65.1
+    },
+    {
+     "anomes": "201812",
+     "score": 62.7
+    },
+    {
+     "anomes": "201903",
+     "score": 66.2
+    },
+    {
+     "anomes": "201906",
+     "score": 67.7
+    },
+    {
+     "anomes": "201909",
+     "score": 69.8
+    },
+    {
+     "anomes": "201912",
+     "score": 70.6
+    },
     {
      "anomes": "202003",
      "score": 72.4
@@ -5297,6 +5929,46 @@
    "capital_principal_pct": 11.56,
    "rwa_brl": 36760952988.22,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 69.2
+    },
+    {
+     "anomes": "201712",
+     "score": 65.9
+    },
+    {
+     "anomes": "201803",
+     "score": 66.5
+    },
+    {
+     "anomes": "201806",
+     "score": 55.7
+    },
+    {
+     "anomes": "201809",
+     "score": 50.5
+    },
+    {
+     "anomes": "201812",
+     "score": 53.3
+    },
+    {
+     "anomes": "201903",
+     "score": 57.0
+    },
+    {
+     "anomes": "201906",
+     "score": 57.3
+    },
+    {
+     "anomes": "201909",
+     "score": 50.9
+    },
+    {
+     "anomes": "201912",
+     "score": 51.8
+    },
     {
      "anomes": "202003",
      "score": 55.7
@@ -5572,6 +6244,46 @@
    "rwa_brl": 60981349393.3,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 46.6
+    },
+    {
+     "anomes": "201712",
+     "score": 54.8
+    },
+    {
+     "anomes": "201803",
+     "score": 49.0
+    },
+    {
+     "anomes": "201806",
+     "score": 51.0
+    },
+    {
+     "anomes": "201809",
+     "score": 49.1
+    },
+    {
+     "anomes": "201812",
+     "score": 52.9
+    },
+    {
+     "anomes": "201903",
+     "score": 48.6
+    },
+    {
+     "anomes": "201906",
+     "score": 50.5
+    },
+    {
+     "anomes": "201909",
+     "score": 50.9
+    },
+    {
+     "anomes": "201912",
+     "score": 54.8
+    },
+    {
      "anomes": "202003",
      "score": 48.2
     },
@@ -5841,6 +6553,18 @@
    "rwa_brl": 39315000973.73,
    "historico_score": [
     {
+     "anomes": "201906",
+     "score": 38.5
+    },
+    {
+     "anomes": "201909",
+     "score": 65.9
+    },
+    {
+     "anomes": "201912",
+     "score": 65.9
+    },
+    {
      "anomes": "202003",
      "score": 33.3
     },
@@ -6098,6 +6822,38 @@
    "capital_principal_pct": 11.75,
    "rwa_brl": 17349686165.46,
    "historico_score": [
+    {
+     "anomes": "201712",
+     "score": 38.4
+    },
+    {
+     "anomes": "201803",
+     "score": 30.8
+    },
+    {
+     "anomes": "201806",
+     "score": 24.0
+    },
+    {
+     "anomes": "201809",
+     "score": 17.3
+    },
+    {
+     "anomes": "201812",
+     "score": 16.4
+    },
+    {
+     "anomes": "201903",
+     "score": 20.0
+    },
+    {
+     "anomes": "201906",
+     "score": 20.8
+    },
+    {
+     "anomes": "201909",
+     "score": 14.8
+    },
     {
      "anomes": "202003",
      "score": 26.2
@@ -6373,6 +7129,46 @@
    "rwa_brl": 95220374219.59,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 25.0
+    },
+    {
+     "anomes": "201712",
+     "score": 25.0
+    },
+    {
+     "anomes": "201803",
+     "score": 47.2
+    },
+    {
+     "anomes": "201806",
+     "score": 44.5
+    },
+    {
+     "anomes": "201809",
+     "score": 25.0
+    },
+    {
+     "anomes": "201812",
+     "score": 25.0
+    },
+    {
+     "anomes": "201903",
+     "score": 25.0
+    },
+    {
+     "anomes": "201906",
+     "score": 22.2
+    },
+    {
+     "anomes": "201909",
+     "score": 22.2
+    },
+    {
+     "anomes": "201912",
+     "score": 22.2
+    },
+    {
      "anomes": "202003",
      "score": 19.4
     },
@@ -6580,6 +7376,42 @@
    "capital_principal_pct": null,
    "rwa_brl": null,
    "historico_score": [
+    {
+     "anomes": "201712",
+     "score": 25.0
+    },
+    {
+     "anomes": "201803",
+     "score": 25.0
+    },
+    {
+     "anomes": "201806",
+     "score": 25.0
+    },
+    {
+     "anomes": "201809",
+     "score": 28.6
+    },
+    {
+     "anomes": "201812",
+     "score": 25.0
+    },
+    {
+     "anomes": "201903",
+     "score": 21.4
+    },
+    {
+     "anomes": "201906",
+     "score": 21.4
+    },
+    {
+     "anomes": "201909",
+     "score": 21.4
+    },
+    {
+     "anomes": "201912",
+     "score": 17.9
+    },
     {
      "anomes": "202003",
      "score": 21.9
@@ -6813,6 +7645,26 @@
    "capital_principal_pct": 14.19,
    "rwa_brl": 7278824381.2,
    "historico_score": [
+    {
+     "anomes": "201812",
+     "score": 3.8
+    },
+    {
+     "anomes": "201903",
+     "score": 14.0
+    },
+    {
+     "anomes": "201906",
+     "score": 22.9
+    },
+    {
+     "anomes": "201909",
+     "score": 15.9
+    },
+    {
+     "anomes": "201912",
+     "score": 12.5
+    },
     {
      "anomes": "202003",
      "score": 11.9
@@ -7083,6 +7935,46 @@
    "capital_principal_pct": 11.39,
    "rwa_brl": 47910897023.66,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 52.9
+    },
+    {
+     "anomes": "201712",
+     "score": 53.4
+    },
+    {
+     "anomes": "201803",
+     "score": 49.0
+    },
+    {
+     "anomes": "201806",
+     "score": 47.2
+    },
+    {
+     "anomes": "201809",
+     "score": 47.6
+    },
+    {
+     "anomes": "201812",
+     "score": 52.8
+    },
+    {
+     "anomes": "201903",
+     "score": 47.7
+    },
+    {
+     "anomes": "201906",
+     "score": 45.5
+    },
+    {
+     "anomes": "201909",
+     "score": 48.2
+    },
+    {
+     "anomes": "201912",
+     "score": 51.3
+    },
     {
      "anomes": "202003",
      "score": 50.0
@@ -7366,6 +8258,46 @@
    "rwa_brl": 48208734656.5,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 48.5
+    },
+    {
+     "anomes": "201712",
+     "score": 43.2
+    },
+    {
+     "anomes": "201803",
+     "score": 54.7
+    },
+    {
+     "anomes": "201806",
+     "score": 51.4
+    },
+    {
+     "anomes": "201809",
+     "score": 46.7
+    },
+    {
+     "anomes": "201812",
+     "score": 36.4
+    },
+    {
+     "anomes": "201903",
+     "score": 50.5
+    },
+    {
+     "anomes": "201906",
+     "score": 45.0
+    },
+    {
+     "anomes": "201909",
+     "score": 52.2
+    },
+    {
+     "anomes": "201912",
+     "score": 33.3
+    },
+    {
      "anomes": "202003",
      "score": 39.9
     },
@@ -7644,6 +8576,46 @@
    "rwa_brl": 42161443224.63,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 43.3
+    },
+    {
+     "anomes": "201712",
+     "score": 40.9
+    },
+    {
+     "anomes": "201803",
+     "score": 38.7
+    },
+    {
+     "anomes": "201806",
+     "score": 43.4
+    },
+    {
+     "anomes": "201809",
+     "score": 42.5
+    },
+    {
+     "anomes": "201812",
+     "score": 46.7
+    },
+    {
+     "anomes": "201903",
+     "score": 44.9
+    },
+    {
+     "anomes": "201906",
+     "score": 45.5
+    },
+    {
+     "anomes": "201909",
+     "score": 47.4
+    },
+    {
+     "anomes": "201912",
+     "score": 47.8
+    },
+    {
      "anomes": "202003",
      "score": 63.6
     },
@@ -7913,6 +8885,46 @@
    "capital_principal_pct": 10.2,
    "rwa_brl": 44278418385.93,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 60.5
+    },
+    {
+     "anomes": "201712",
+     "score": 65.8
+    },
+    {
+     "anomes": "201803",
+     "score": 80.2
+    },
+    {
+     "anomes": "201806",
+     "score": 78.8
+    },
+    {
+     "anomes": "201809",
+     "score": 66.0
+    },
+    {
+     "anomes": "201812",
+     "score": 59.0
+    },
+    {
+     "anomes": "201903",
+     "score": 53.7
+    },
+    {
+     "anomes": "201906",
+     "score": 56.8
+    },
+    {
+     "anomes": "201909",
+     "score": 61.8
+    },
+    {
+     "anomes": "201912",
+     "score": 65.8
+    },
     {
      "anomes": "202003",
      "score": 61.4
@@ -8636,6 +9648,46 @@
    "rwa_brl": 25452401911.47,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 51.4
+    },
+    {
+     "anomes": "201712",
+     "score": 52.9
+    },
+    {
+     "anomes": "201803",
+     "score": 47.2
+    },
+    {
+     "anomes": "201806",
+     "score": 51.4
+    },
+    {
+     "anomes": "201809",
+     "score": 47.6
+    },
+    {
+     "anomes": "201812",
+     "score": 50.9
+    },
+    {
+     "anomes": "201903",
+     "score": 43.5
+    },
+    {
+     "anomes": "201906",
+     "score": 47.7
+    },
+    {
+     "anomes": "201909",
+     "score": 51.8
+    },
+    {
+     "anomes": "201912",
+     "score": 46.9
+    },
+    {
      "anomes": "202003",
      "score": 45.6
     },
@@ -9003,6 +10055,46 @@
    "capital_principal_pct": 24.96,
    "rwa_brl": 7081077951.28,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 39.9
+    },
+    {
+     "anomes": "201712",
+     "score": 38.5
+    },
+    {
+     "anomes": "201803",
+     "score": 48.6
+    },
+    {
+     "anomes": "201806",
+     "score": 41.5
+    },
+    {
+     "anomes": "201809",
+     "score": 39.6
+    },
+    {
+     "anomes": "201812",
+     "score": 33.5
+    },
+    {
+     "anomes": "201903",
+     "score": 30.6
+    },
+    {
+     "anomes": "201906",
+     "score": 35.5
+    },
+    {
+     "anomes": "201909",
+     "score": 28.5
+    },
+    {
+     "anomes": "201912",
+     "score": 28.5
+    },
     {
      "anomes": "202003",
      "score": 43.9
@@ -9395,6 +10487,46 @@
    "rwa_brl": 56022704578.56,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 25.5
+    },
+    {
+     "anomes": "201712",
+     "score": 19.7
+    },
+    {
+     "anomes": "201803",
+     "score": 22.2
+    },
+    {
+     "anomes": "201806",
+     "score": 22.6
+    },
+    {
+     "anomes": "201809",
+     "score": 13.2
+    },
+    {
+     "anomes": "201812",
+     "score": 18.9
+    },
+    {
+     "anomes": "201903",
+     "score": 23.6
+    },
+    {
+     "anomes": "201906",
+     "score": 25.0
+    },
+    {
+     "anomes": "201909",
+     "score": 26.3
+    },
+    {
+     "anomes": "201912",
+     "score": 22.4
+    },
+    {
      "anomes": "202003",
      "score": 24.1
     },
@@ -9669,6 +10801,46 @@
    "rwa_brl": 18169277801.62,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 72.6
+    },
+    {
+     "anomes": "201712",
+     "score": 71.2
+    },
+    {
+     "anomes": "201803",
+     "score": 67.0
+    },
+    {
+     "anomes": "201806",
+     "score": 67.4
+    },
+    {
+     "anomes": "201809",
+     "score": 69.3
+    },
+    {
+     "anomes": "201812",
+     "score": 69.3
+    },
+    {
+     "anomes": "201903",
+     "score": 57.0
+    },
+    {
+     "anomes": "201906",
+     "score": 56.3
+    },
+    {
+     "anomes": "201909",
+     "score": 57.9
+    },
+    {
+     "anomes": "201912",
+     "score": 57.0
+    },
+    {
      "anomes": "202003",
      "score": 48.7
     },
@@ -9942,6 +11114,46 @@
    "capital_principal_pct": 14.04,
    "rwa_brl": 12613347042.23,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 63.0
+    },
+    {
+     "anomes": "201712",
+     "score": 64.9
+    },
+    {
+     "anomes": "201803",
+     "score": 67.0
+    },
+    {
+     "anomes": "201806",
+     "score": 61.3
+    },
+    {
+     "anomes": "201809",
+     "score": 59.0
+    },
+    {
+     "anomes": "201812",
+     "score": 63.2
+    },
+    {
+     "anomes": "201903",
+     "score": 59.2
+    },
+    {
+     "anomes": "201906",
+     "score": 60.0
+    },
+    {
+     "anomes": "201909",
+     "score": 59.6
+    },
+    {
+     "anomes": "201912",
+     "score": 64.5
+    },
     {
      "anomes": "202003",
      "score": 57.5
@@ -10224,6 +11436,46 @@
    "capital_principal_pct": 8.91,
    "rwa_brl": 13992965253.72,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 69.7
+    },
+    {
+     "anomes": "201712",
+     "score": 69.2
+    },
+    {
+     "anomes": "201803",
+     "score": 60.4
+    },
+    {
+     "anomes": "201806",
+     "score": 64.6
+    },
+    {
+     "anomes": "201809",
+     "score": 66.0
+    },
+    {
+     "anomes": "201812",
+     "score": 68.4
+    },
+    {
+     "anomes": "201903",
+     "score": 72.2
+    },
+    {
+     "anomes": "201906",
+     "score": 69.5
+    },
+    {
+     "anomes": "201909",
+     "score": 69.7
+    },
+    {
+     "anomes": "201912",
+     "score": 68.4
+    },
     {
      "anomes": "202003",
      "score": 69.3
@@ -10697,6 +11949,46 @@
    "rwa_brl": 13770972109.09,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 78.9
+    },
+    {
+     "anomes": "201712",
+     "score": 67.8
+    },
+    {
+     "anomes": "201803",
+     "score": 59.0
+    },
+    {
+     "anomes": "201806",
+     "score": 61.3
+    },
+    {
+     "anomes": "201809",
+     "score": 69.3
+    },
+    {
+     "anomes": "201812",
+     "score": 71.2
+    },
+    {
+     "anomes": "201903",
+     "score": 66.2
+    },
+    {
+     "anomes": "201906",
+     "score": 63.6
+    },
+    {
+     "anomes": "201909",
+     "score": 64.9
+    },
+    {
+     "anomes": "201912",
+     "score": 65.3
+    },
+    {
      "anomes": "202003",
      "score": 67.1
     },
@@ -10925,6 +12217,46 @@
    "rwa_brl": 4651678540.45,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 38.5
+    },
+    {
+     "anomes": "201712",
+     "score": 37.5
+    },
+    {
+     "anomes": "201803",
+     "score": 32.1
+    },
+    {
+     "anomes": "201806",
+     "score": 32.5
+    },
+    {
+     "anomes": "201809",
+     "score": 32.1
+    },
+    {
+     "anomes": "201812",
+     "score": 34.4
+    },
+    {
+     "anomes": "201903",
+     "score": 34.7
+    },
+    {
+     "anomes": "201906",
+     "score": 38.6
+    },
+    {
+     "anomes": "201909",
+     "score": 36.9
+    },
+    {
+     "anomes": "201912",
+     "score": 42.1
+    },
+    {
      "anomes": "202003",
      "score": 33.3
     },
@@ -11144,6 +12476,46 @@
    "capital_principal_pct": 30.67,
    "rwa_brl": 4659508013.66,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 38.5
+    },
+    {
+     "anomes": "201712",
+     "score": 12.0
+    },
+    {
+     "anomes": "201803",
+     "score": 31.1
+    },
+    {
+     "anomes": "201806",
+     "score": 27.9
+    },
+    {
+     "anomes": "201809",
+     "score": 37.2
+    },
+    {
+     "anomes": "201812",
+     "score": 30.7
+    },
+    {
+     "anomes": "201903",
+     "score": 35.7
+    },
+    {
+     "anomes": "201906",
+     "score": 37.3
+    },
+    {
+     "anomes": "201909",
+     "score": 35.1
+    },
+    {
+     "anomes": "201912",
+     "score": 19.8
+    },
     {
      "anomes": "202003",
      "score": 31.1
@@ -11494,6 +12866,46 @@
    "capital_principal_pct": 19.65,
    "rwa_brl": 22679536253.27,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 69.2
+    },
+    {
+     "anomes": "201712",
+     "score": 70.7
+    },
+    {
+     "anomes": "201803",
+     "score": 71.7
+    },
+    {
+     "anomes": "201806",
+     "score": 69.8
+    },
+    {
+     "anomes": "201809",
+     "score": 61.3
+    },
+    {
+     "anomes": "201812",
+     "score": 61.8
+    },
+    {
+     "anomes": "201903",
+     "score": 57.4
+    },
+    {
+     "anomes": "201906",
+     "score": 61.4
+    },
+    {
+     "anomes": "201909",
+     "score": 61.0
+    },
+    {
+     "anomes": "201912",
+     "score": 61.9
+    },
     {
      "anomes": "202003",
      "score": 59.7
@@ -11991,6 +13403,46 @@
    "rwa_brl": 19895070388.94,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 50.5
+    },
+    {
+     "anomes": "201712",
+     "score": 56.8
+    },
+    {
+     "anomes": "201803",
+     "score": 57.5
+    },
+    {
+     "anomes": "201806",
+     "score": 56.6
+    },
+    {
+     "anomes": "201809",
+     "score": 54.7
+    },
+    {
+     "anomes": "201812",
+     "score": 72.2
+    },
+    {
+     "anomes": "201903",
+     "score": 82.8
+    },
+    {
+     "anomes": "201906",
+     "score": 70.9
+    },
+    {
+     "anomes": "201909",
+     "score": 73.7
+    },
+    {
+     "anomes": "201912",
+     "score": 63.6
+    },
+    {
      "anomes": "202003",
      "score": 66.7
     },
@@ -12219,6 +13671,46 @@
    "rwa_brl": 5107344028.04,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 54.8
+    },
+    {
+     "anomes": "201712",
+     "score": 54.3
+    },
+    {
+     "anomes": "201803",
+     "score": 50.5
+    },
+    {
+     "anomes": "201806",
+     "score": 39.1
+    },
+    {
+     "anomes": "201809",
+     "score": 52.4
+    },
+    {
+     "anomes": "201812",
+     "score": 52.9
+    },
+    {
+     "anomes": "201903",
+     "score": 50.0
+    },
+    {
+     "anomes": "201906",
+     "score": 35.0
+    },
+    {
+     "anomes": "201909",
+     "score": 53.5
+    },
+    {
+     "anomes": "201912",
+     "score": 53.5
+    },
+    {
      "anomes": "202003",
      "score": 49.5
     },
@@ -12421,6 +13913,46 @@
    "capital_principal_pct": 13.12,
    "rwa_brl": 3799416461.87,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 39.0
+    },
+    {
+     "anomes": "201712",
+     "score": 43.8
+    },
+    {
+     "anomes": "201803",
+     "score": 40.6
+    },
+    {
+     "anomes": "201806",
+     "score": 40.5
+    },
+    {
+     "anomes": "201809",
+     "score": 38.7
+    },
+    {
+     "anomes": "201812",
+     "score": 43.4
+    },
+    {
+     "anomes": "201903",
+     "score": 50.0
+    },
+    {
+     "anomes": "201906",
+     "score": 48.2
+    },
+    {
+     "anomes": "201909",
+     "score": 49.6
+    },
+    {
+     "anomes": "201912",
+     "score": 51.3
+    },
     {
      "anomes": "202003",
      "score": 47.8
@@ -12694,6 +14226,46 @@
    "rwa_brl": 20507799116.83,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 48.1
+    },
+    {
+     "anomes": "201712",
+     "score": 48.6
+    },
+    {
+     "anomes": "201803",
+     "score": 48.6
+    },
+    {
+     "anomes": "201806",
+     "score": 46.7
+    },
+    {
+     "anomes": "201809",
+     "score": 45.8
+    },
+    {
+     "anomes": "201812",
+     "score": 42.0
+    },
+    {
+     "anomes": "201903",
+     "score": 42.1
+    },
+    {
+     "anomes": "201906",
+     "score": 40.9
+    },
+    {
+     "anomes": "201909",
+     "score": 44.7
+    },
+    {
+     "anomes": "201912",
+     "score": 46.1
+    },
+    {
      "anomes": "202003",
      "score": 40.8
     },
@@ -12934,6 +14506,46 @@
    "rwa_brl": 7136831016.48,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 23.0
+    },
+    {
+     "anomes": "201712",
+     "score": 24.5
+    },
+    {
+     "anomes": "201803",
+     "score": 29.2
+    },
+    {
+     "anomes": "201806",
+     "score": 34.4
+    },
+    {
+     "anomes": "201809",
+     "score": 35.4
+    },
+    {
+     "anomes": "201812",
+     "score": 21.7
+    },
+    {
+     "anomes": "201903",
+     "score": 33.8
+    },
+    {
+     "anomes": "201906",
+     "score": 32.3
+    },
+    {
+     "anomes": "201909",
+     "score": 30.3
+    },
+    {
+     "anomes": "201912",
+     "score": 28.1
+    },
+    {
      "anomes": "202003",
      "score": 18.0
     },
@@ -13164,6 +14776,46 @@
    "capital_principal_pct": 15.13,
    "rwa_brl": 16190764653.9,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 37.5
+    },
+    {
+     "anomes": "201712",
+     "score": 35.6
+    },
+    {
+     "anomes": "201803",
+     "score": 27.8
+    },
+    {
+     "anomes": "201806",
+     "score": 27.8
+    },
+    {
+     "anomes": "201809",
+     "score": 33.0
+    },
+    {
+     "anomes": "201812",
+     "score": 32.5
+    },
+    {
+     "anomes": "201903",
+     "score": 29.2
+    },
+    {
+     "anomes": "201906",
+     "score": 27.3
+    },
+    {
+     "anomes": "201909",
+     "score": 29.9
+    },
+    {
+     "anomes": "201912",
+     "score": 30.7
+    },
     {
      "anomes": "202003",
      "score": 32.0
@@ -13723,6 +15375,46 @@
    "rwa_brl": 17676134705.66,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 56.2
+    },
+    {
+     "anomes": "201712",
+     "score": 66.3
+    },
+    {
+     "anomes": "201803",
+     "score": 63.7
+    },
+    {
+     "anomes": "201806",
+     "score": 64.6
+    },
+    {
+     "anomes": "201809",
+     "score": 54.3
+    },
+    {
+     "anomes": "201812",
+     "score": 60.9
+    },
+    {
+     "anomes": "201903",
+     "score": 56.0
+    },
+    {
+     "anomes": "201906",
+     "score": 57.7
+    },
+    {
+     "anomes": "201909",
+     "score": 61.0
+    },
+    {
+     "anomes": "201912",
+     "score": 61.4
+    },
+    {
      "anomes": "202003",
      "score": 62.7
     },
@@ -14001,6 +15693,46 @@
    "rwa_brl": 15553825498.89,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 67.8
+    },
+    {
+     "anomes": "201712",
+     "score": 66.8
+    },
+    {
+     "anomes": "201803",
+     "score": 53.8
+    },
+    {
+     "anomes": "201806",
+     "score": 65.6
+    },
+    {
+     "anomes": "201809",
+     "score": 74.0
+    },
+    {
+     "anomes": "201812",
+     "score": 78.3
+    },
+    {
+     "anomes": "201903",
+     "score": 75.0
+    },
+    {
+     "anomes": "201906",
+     "score": 72.7
+    },
+    {
+     "anomes": "201909",
+     "score": 48.7
+    },
+    {
+     "anomes": "201912",
+     "score": 64.5
+    },
+    {
      "anomes": "202003",
      "score": 64.0
     },
@@ -14265,6 +15997,46 @@
    "rwa_brl": 9490094412.02,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 67.3
+    },
+    {
+     "anomes": "201712",
+     "score": 62.0
+    },
+    {
+     "anomes": "201803",
+     "score": 59.4
+    },
+    {
+     "anomes": "201806",
+     "score": 60.9
+    },
+    {
+     "anomes": "201809",
+     "score": 62.3
+    },
+    {
+     "anomes": "201812",
+     "score": 55.7
+    },
+    {
+     "anomes": "201903",
+     "score": 54.6
+    },
+    {
+     "anomes": "201906",
+     "score": 56.8
+    },
+    {
+     "anomes": "201909",
+     "score": 54.4
+    },
+    {
+     "anomes": "201912",
+     "score": 41.7
+    },
+    {
      "anomes": "202003",
      "score": 40.4
     },
@@ -14528,6 +16300,46 @@
    "capital_principal_pct": 19.04,
    "rwa_brl": 8952157440.91,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 42.3
+    },
+    {
+     "anomes": "201712",
+     "score": 42.8
+    },
+    {
+     "anomes": "201803",
+     "score": 46.2
+    },
+    {
+     "anomes": "201806",
+     "score": 50.5
+    },
+    {
+     "anomes": "201809",
+     "score": 38.2
+    },
+    {
+     "anomes": "201812",
+     "score": 40.1
+    },
+    {
+     "anomes": "201903",
+     "score": 34.2
+    },
+    {
+     "anomes": "201906",
+     "score": 38.2
+    },
+    {
+     "anomes": "201909",
+     "score": 42.1
+    },
+    {
+     "anomes": "201912",
+     "score": 39.9
+    },
     {
      "anomes": "202003",
      "score": 42.5
@@ -14802,6 +16614,46 @@
    "capital_principal_pct": 15.13,
    "rwa_brl": 12038039916.86,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 49.5
+    },
+    {
+     "anomes": "201712",
+     "score": 46.6
+    },
+    {
+     "anomes": "201803",
+     "score": 49.1
+    },
+    {
+     "anomes": "201806",
+     "score": 48.1
+    },
+    {
+     "anomes": "201809",
+     "score": 47.7
+    },
+    {
+     "anomes": "201812",
+     "score": 43.4
+    },
+    {
+     "anomes": "201903",
+     "score": 44.9
+    },
+    {
+     "anomes": "201906",
+     "score": 44.1
+    },
+    {
+     "anomes": "201909",
+     "score": 45.2
+    },
+    {
+     "anomes": "201912",
+     "score": 50.0
+    },
     {
      "anomes": "202003",
      "score": 53.1
@@ -15285,6 +17137,46 @@
    "rwa_brl": 10874030000.22,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 30.8
+    },
+    {
+     "anomes": "201712",
+     "score": 32.7
+    },
+    {
+     "anomes": "201803",
+     "score": 33.5
+    },
+    {
+     "anomes": "201806",
+     "score": 38.2
+    },
+    {
+     "anomes": "201809",
+     "score": 37.7
+    },
+    {
+     "anomes": "201812",
+     "score": 39.1
+    },
+    {
+     "anomes": "201903",
+     "score": 35.2
+    },
+    {
+     "anomes": "201906",
+     "score": 33.6
+    },
+    {
+     "anomes": "201909",
+     "score": 37.3
+    },
+    {
+     "anomes": "201912",
+     "score": 44.3
+    },
+    {
      "anomes": "202003",
      "score": 37.7
     },
@@ -15733,6 +17625,46 @@
    "rwa_brl": 2689483770.13,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 62.0
+    },
+    {
+     "anomes": "201712",
+     "score": 61.5
+    },
+    {
+     "anomes": "201803",
+     "score": 58.0
+    },
+    {
+     "anomes": "201806",
+     "score": 57.1
+    },
+    {
+     "anomes": "201809",
+     "score": 53.3
+    },
+    {
+     "anomes": "201812",
+     "score": 57.1
+    },
+    {
+     "anomes": "201903",
+     "score": 60.6
+    },
+    {
+     "anomes": "201906",
+     "score": 63.2
+    },
+    {
+     "anomes": "201909",
+     "score": 54.0
+    },
+    {
+     "anomes": "201912",
+     "score": 64.5
+    },
+    {
      "anomes": "202003",
      "score": 63.2
     },
@@ -16006,6 +17938,46 @@
    "capital_principal_pct": 13.28,
    "rwa_brl": 7578059181.04,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 48.6
+    },
+    {
+     "anomes": "201712",
+     "score": 52.4
+    },
+    {
+     "anomes": "201803",
+     "score": 51.0
+    },
+    {
+     "anomes": "201806",
+     "score": 56.6
+    },
+    {
+     "anomes": "201809",
+     "score": 54.7
+    },
+    {
+     "anomes": "201812",
+     "score": 53.3
+    },
+    {
+     "anomes": "201903",
+     "score": 53.7
+    },
+    {
+     "anomes": "201906",
+     "score": 56.8
+    },
+    {
+     "anomes": "201909",
+     "score": 59.2
+    },
+    {
+     "anomes": "201912",
+     "score": 60.5
+    },
     {
      "anomes": "202003",
      "score": 55.3
@@ -16433,6 +18405,46 @@
    "rwa_brl": 3303442240.39,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 37.5
+    },
+    {
+     "anomes": "201712",
+     "score": 41.1
+    },
+    {
+     "anomes": "201803",
+     "score": 40.4
+    },
+    {
+     "anomes": "201806",
+     "score": 39.4
+    },
+    {
+     "anomes": "201809",
+     "score": 49.0
+    },
+    {
+     "anomes": "201812",
+     "score": 53.8
+    },
+    {
+     "anomes": "201903",
+     "score": 58.0
+    },
+    {
+     "anomes": "201906",
+     "score": 60.4
+    },
+    {
+     "anomes": "201909",
+     "score": 61.4
+    },
+    {
+     "anomes": "201912",
+     "score": 63.6
+    },
+    {
      "anomes": "202003",
      "score": 58.3
     },
@@ -16686,6 +18698,46 @@
    "capital_principal_pct": 19.63,
    "rwa_brl": 12161624586.93,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 37.5
+    },
+    {
+     "anomes": "201712",
+     "score": 39.9
+    },
+    {
+     "anomes": "201803",
+     "score": 38.6
+    },
+    {
+     "anomes": "201806",
+     "score": 39.6
+    },
+    {
+     "anomes": "201809",
+     "score": 41.0
+    },
+    {
+     "anomes": "201812",
+     "score": 42.5
+    },
+    {
+     "anomes": "201903",
+     "score": 38.4
+    },
+    {
+     "anomes": "201906",
+     "score": 40.5
+    },
+    {
+     "anomes": "201909",
+     "score": 39.5
+    },
+    {
+     "anomes": "201912",
+     "score": 42.1
+    },
     {
      "anomes": "202003",
      "score": 38.1
@@ -16944,6 +18996,46 @@
    "capital_principal_pct": 36.82,
    "rwa_brl": 4868426203.26,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 45.7
+    },
+    {
+     "anomes": "201712",
+     "score": 59.6
+    },
+    {
+     "anomes": "201803",
+     "score": 41.0
+    },
+    {
+     "anomes": "201806",
+     "score": 42.9
+    },
+    {
+     "anomes": "201809",
+     "score": 46.2
+    },
+    {
+     "anomes": "201812",
+     "score": 49.5
+    },
+    {
+     "anomes": "201903",
+     "score": 29.2
+    },
+    {
+     "anomes": "201906",
+     "score": 32.7
+    },
+    {
+     "anomes": "201909",
+     "score": 53.5
+    },
+    {
+     "anomes": "201912",
+     "score": 34.6
+    },
     {
      "anomes": "202003",
      "score": 56.1
@@ -17227,6 +19319,46 @@
    "rwa_brl": 9331942453.29,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 32.7
+    },
+    {
+     "anomes": "201712",
+     "score": 34.1
+    },
+    {
+     "anomes": "201803",
+     "score": 32.5
+    },
+    {
+     "anomes": "201806",
+     "score": 32.1
+    },
+    {
+     "anomes": "201809",
+     "score": 34.9
+    },
+    {
+     "anomes": "201812",
+     "score": 36.8
+    },
+    {
+     "anomes": "201903",
+     "score": 33.8
+    },
+    {
+     "anomes": "201906",
+     "score": 32.3
+    },
+    {
+     "anomes": "201909",
+     "score": 36.9
+    },
+    {
+     "anomes": "201912",
+     "score": 38.6
+    },
+    {
      "anomes": "202003",
      "score": 36.0
     },
@@ -17490,6 +19622,46 @@
    "capital_principal_pct": 25.86,
    "rwa_brl": 3115408452.08,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 48.1
+    },
+    {
+     "anomes": "201712",
+     "score": 48.5
+    },
+    {
+     "anomes": "201803",
+     "score": 54.7
+    },
+    {
+     "anomes": "201806",
+     "score": 51.4
+    },
+    {
+     "anomes": "201809",
+     "score": 45.7
+    },
+    {
+     "anomes": "201812",
+     "score": 52.4
+    },
+    {
+     "anomes": "201903",
+     "score": 50.4
+    },
+    {
+     "anomes": "201906",
+     "score": 52.7
+    },
+    {
+     "anomes": "201909",
+     "score": 52.6
+    },
+    {
+     "anomes": "201912",
+     "score": 56.6
+    },
     {
      "anomes": "202003",
      "score": 51.8
@@ -17764,6 +19936,46 @@
    "capital_principal_pct": 24.42,
    "rwa_brl": 15727819886.0,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 57.2
+    },
+    {
+     "anomes": "201712",
+     "score": 44.7
+    },
+    {
+     "anomes": "201803",
+     "score": 50.5
+    },
+    {
+     "anomes": "201806",
+     "score": 46.2
+    },
+    {
+     "anomes": "201809",
+     "score": 47.2
+    },
+    {
+     "anomes": "201812",
+     "score": 44.4
+    },
+    {
+     "anomes": "201903",
+     "score": 49.1
+    },
+    {
+     "anomes": "201906",
+     "score": 50.0
+    },
+    {
+     "anomes": "201909",
+     "score": 57.5
+    },
+    {
+     "anomes": "201912",
+     "score": 54.8
+    },
     {
      "anomes": "202003",
      "score": 54.8
@@ -18390,6 +20602,14 @@
    "rwa_brl": 5999018398.55,
    "historico_score": [
     {
+     "anomes": "201909",
+     "score": 28.1
+    },
+    {
+     "anomes": "201912",
+     "score": 34.6
+    },
+    {
      "anomes": "202003",
      "score": 50.4
     },
@@ -18663,6 +20883,18 @@
    "capital_principal_pct": 12.93,
    "rwa_brl": 12247691978.65,
    "historico_score": [
+    {
+     "anomes": "201906",
+     "score": 67.7
+    },
+    {
+     "anomes": "201909",
+     "score": 67.1
+    },
+    {
+     "anomes": "201912",
+     "score": 71.0
+    },
     {
      "anomes": "202003",
      "score": 63.1
@@ -18946,6 +21178,42 @@
    "rwa_brl": 9312753982.43,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 45.2
+    },
+    {
+     "anomes": "201803",
+     "score": 44.8
+    },
+    {
+     "anomes": "201806",
+     "score": 45.8
+    },
+    {
+     "anomes": "201809",
+     "score": 50.0
+    },
+    {
+     "anomes": "201812",
+     "score": 44.8
+    },
+    {
+     "anomes": "201903",
+     "score": 47.7
+    },
+    {
+     "anomes": "201906",
+     "score": 49.1
+    },
+    {
+     "anomes": "201909",
+     "score": 58.8
+    },
+    {
+     "anomes": "201912",
+     "score": 51.8
+    },
+    {
      "anomes": "202003",
      "score": 55.7
     },
@@ -19220,6 +21488,46 @@
    "rwa_brl": 8731898128.64,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 57.2
+    },
+    {
+     "anomes": "201712",
+     "score": 61.5
+    },
+    {
+     "anomes": "201803",
+     "score": 51.4
+    },
+    {
+     "anomes": "201806",
+     "score": 51.9
+    },
+    {
+     "anomes": "201809",
+     "score": 55.6
+    },
+    {
+     "anomes": "201812",
+     "score": 50.9
+    },
+    {
+     "anomes": "201903",
+     "score": 54.2
+    },
+    {
+     "anomes": "201906",
+     "score": 54.1
+    },
+    {
+     "anomes": "201909",
+     "score": 50.0
+    },
+    {
+     "anomes": "201912",
+     "score": 48.7
+    },
+    {
      "anomes": "202003",
      "score": 47.4
     },
@@ -19447,6 +21755,46 @@
    "capital_principal_pct": 15.68,
    "rwa_brl": 2688466479.37,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 46.7
+    },
+    {
+     "anomes": "201712",
+     "score": 49.1
+    },
+    {
+     "anomes": "201803",
+     "score": 49.0
+    },
+    {
+     "anomes": "201806",
+     "score": 46.1
+    },
+    {
+     "anomes": "201809",
+     "score": 55.8
+    },
+    {
+     "anomes": "201812",
+     "score": 51.9
+    },
+    {
+     "anomes": "201903",
+     "score": 55.0
+    },
+    {
+     "anomes": "201906",
+     "score": 50.0
+    },
+    {
+     "anomes": "201909",
+     "score": 53.4
+    },
+    {
+     "anomes": "201912",
+     "score": 51.1
+    },
     {
      "anomes": "202006",
      "score": 50.0
@@ -19803,6 +22151,46 @@
    "capital_principal_pct": 36.07,
    "rwa_brl": 1270574921.9,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 46.1
+    },
+    {
+     "anomes": "201712",
+     "score": 46.1
+    },
+    {
+     "anomes": "201803",
+     "score": 43.9
+    },
+    {
+     "anomes": "201806",
+     "score": 45.3
+    },
+    {
+     "anomes": "201809",
+     "score": 45.3
+    },
+    {
+     "anomes": "201812",
+     "score": 46.2
+    },
+    {
+     "anomes": "201903",
+     "score": 44.0
+    },
+    {
+     "anomes": "201906",
+     "score": 45.9
+    },
+    {
+     "anomes": "201909",
+     "score": 45.2
+    },
+    {
+     "anomes": "201912",
+     "score": 48.7
+    },
     {
      "anomes": "202003",
      "score": 41.6
@@ -20556,6 +22944,46 @@
    "rwa_brl": 8797489479.2,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 43.8
+    },
+    {
+     "anomes": "201712",
+     "score": 36.1
+    },
+    {
+     "anomes": "201803",
+     "score": 61.8
+    },
+    {
+     "anomes": "201806",
+     "score": 47.2
+    },
+    {
+     "anomes": "201809",
+     "score": 40.6
+    },
+    {
+     "anomes": "201812",
+     "score": 40.1
+    },
+    {
+     "anomes": "201903",
+     "score": 53.2
+    },
+    {
+     "anomes": "201906",
+     "score": 52.8
+    },
+    {
+     "anomes": "201909",
+     "score": 50.0
+    },
+    {
+     "anomes": "201912",
+     "score": 50.0
+    },
+    {
      "anomes": "202003",
      "score": 47.4
     },
@@ -20809,6 +23237,46 @@
    "capital_principal_pct": 13.13,
    "rwa_brl": 5657472468.07,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 38.3
+    },
+    {
+     "anomes": "201712",
+     "score": 39.3
+    },
+    {
+     "anomes": "201803",
+     "score": 43.3
+    },
+    {
+     "anomes": "201806",
+     "score": 46.1
+    },
+    {
+     "anomes": "201809",
+     "score": 46.1
+    },
+    {
+     "anomes": "201812",
+     "score": 41.4
+    },
+    {
+     "anomes": "201903",
+     "score": 37.0
+    },
+    {
+     "anomes": "201906",
+     "score": 44.8
+    },
+    {
+     "anomes": "201909",
+     "score": 40.9
+    },
+    {
+     "anomes": "201912",
+     "score": 42.1
+    },
     {
      "anomes": "202003",
      "score": 57.2
@@ -21564,6 +24032,46 @@
    "rwa_brl": 6195794037.68,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 59.2
+    },
+    {
+     "anomes": "201712",
+     "score": 58.9
+    },
+    {
+     "anomes": "201803",
+     "score": 59.6
+    },
+    {
+     "anomes": "201806",
+     "score": 64.4
+    },
+    {
+     "anomes": "201809",
+     "score": 62.5
+    },
+    {
+     "anomes": "201812",
+     "score": 63.5
+    },
+    {
+     "anomes": "201903",
+     "score": 66.0
+    },
+    {
+     "anomes": "201906",
+     "score": 62.5
+    },
+    {
+     "anomes": "201909",
+     "score": 64.8
+    },
+    {
+     "anomes": "201912",
+     "score": 63.6
+    },
+    {
      "anomes": "202003",
      "score": 65.5
     },
@@ -21831,6 +24339,46 @@
    "capital_principal_pct": 9.49,
    "rwa_brl": 10632411260.18,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 60.5
+    },
+    {
+     "anomes": "201712",
+     "score": 60.1
+    },
+    {
+     "anomes": "201803",
+     "score": 67.9
+    },
+    {
+     "anomes": "201806",
+     "score": 64.2
+    },
+    {
+     "anomes": "201809",
+     "score": 60.9
+    },
+    {
+     "anomes": "201812",
+     "score": 57.5
+    },
+    {
+     "anomes": "201903",
+     "score": 61.6
+    },
+    {
+     "anomes": "201906",
+     "score": 57.3
+    },
+    {
+     "anomes": "201909",
+     "score": 60.1
+    },
+    {
+     "anomes": "201912",
+     "score": 61.4
+    },
     {
      "anomes": "202003",
      "score": 58.8
@@ -22105,6 +24653,10 @@
    "capital_principal_pct": 18.37,
    "rwa_brl": 7573704749.08,
    "historico_score": [
+    {
+     "anomes": "201912",
+     "score": 50.0
+    },
     {
      "anomes": "202003",
      "score": 46.5
@@ -22589,6 +25141,46 @@
    "capital_principal_pct": 12.63,
    "rwa_brl": 9460655384.05,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 60.1
+    },
+    {
+     "anomes": "201712",
+     "score": 62.5
+    },
+    {
+     "anomes": "201803",
+     "score": 61.3
+    },
+    {
+     "anomes": "201806",
+     "score": 58.5
+    },
+    {
+     "anomes": "201809",
+     "score": 61.3
+    },
+    {
+     "anomes": "201812",
+     "score": 69.3
+    },
+    {
+     "anomes": "201903",
+     "score": 59.3
+    },
+    {
+     "anomes": "201906",
+     "score": 60.9
+    },
+    {
+     "anomes": "201909",
+     "score": 63.6
+    },
+    {
+     "anomes": "201912",
+     "score": 61.0
+    },
     {
      "anomes": "202003",
      "score": 62.7
@@ -23233,6 +25825,10 @@
    "rwa_brl": 6140253722.15,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 42.5
+    },
+    {
      "anomes": "202312",
      "score": 50.0
     },
@@ -23435,6 +26031,46 @@
    "rwa_brl": 11731310083.61,
    "historico_score": [
     {
+     "anomes": "201709",
+     "score": 54.2
+    },
+    {
+     "anomes": "201712",
+     "score": 54.5
+    },
+    {
+     "anomes": "201803",
+     "score": 53.9
+    },
+    {
+     "anomes": "201806",
+     "score": 55.8
+    },
+    {
+     "anomes": "201809",
+     "score": 52.9
+    },
+    {
+     "anomes": "201812",
+     "score": 54.8
+    },
+    {
+     "anomes": "201903",
+     "score": 52.0
+    },
+    {
+     "anomes": "201906",
+     "score": 53.1
+    },
+    {
+     "anomes": "201909",
+     "score": 52.3
+    },
+    {
+     "anomes": "201912",
+     "score": 46.6
+    },
+    {
      "anomes": "202003",
      "score": 61.9
     },
@@ -23596,6 +26232,46 @@
    "capital_principal_pct": 58.12,
    "rwa_brl": 2660300348.95,
    "historico_score": [
+    {
+     "anomes": "201709",
+     "score": 30.3
+    },
+    {
+     "anomes": "201712",
+     "score": 31.7
+    },
+    {
+     "anomes": "201803",
+     "score": 30.2
+    },
+    {
+     "anomes": "201806",
+     "score": 32.0
+    },
+    {
+     "anomes": "201809",
+     "score": 33.0
+    },
+    {
+     "anomes": "201812",
+     "score": 34.4
+    },
+    {
+     "anomes": "201903",
+     "score": 31.0
+    },
+    {
+     "anomes": "201906",
+     "score": 32.7
+    },
+    {
+     "anomes": "201909",
+     "score": 36.4
+    },
+    {
+     "anomes": "201912",
+     "score": 38.6
+    },
     {
      "anomes": "202003",
      "score": 32.9
@@ -24272,7 +26948,7 @@
    "label": "S5 — porte reduzido / metodologia simplificada"
   }
  },
- "metodo": "Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do próprio grupo (IF.data 202603); grupos com <5 membros no corte dos 100 maiores usam o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital (Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório Informações de Capital, indisponível na Olinda). Histórico de score em 25 trimestres (backfill do Resumo desde 2015 via Olinda; períodos até 2024 usam a Carteira de Crédito Classificada do plano contábil antigo — a fronteira 2024/2025 da Res. 4.966 atravessa a série e está marcada na aba Regulação; a segmentação prudencial ATUAL é aplicada retroativamente aos períodos antigos). Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto).",
+ "metodo": "Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do próprio grupo (IF.data 202603); grupos com <5 membros no corte dos 100 maiores usam o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital (Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório Informações de Capital, indisponível na Olinda). Histórico de score em 35 trimestres (backfill do Resumo desde 2015 via Olinda; períodos até 2024 usam a Carteira de Crédito Classificada do plano contábil antigo — a fronteira 2024/2025 da Res. 4.966 atravessa a série e está marcada na aba Regulação; a segmentação prudencial ATUAL é aplicada retroativamente aos períodos antigos). Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto).",
  "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
  "aviso": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
 }

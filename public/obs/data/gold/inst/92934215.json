@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-22T10:16:09+00:00",
+  "atualizado_em": "2026-08-23T10:09:38+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 92.934.215",
   "participante_open_finance": null
@@ -321,13 +321,13 @@
    "valores": [
     1.17,
     2.94,
-    -75.84,
     1.95,
     5.51,
     1.96,
     3.22,
     3.75,
     2.99,
+    -75.84,
     -0.29,
     4.14
    ],
@@ -338,13 +338,13 @@
    "valores": [
     42.37,
     4.56,
-    47.15,
     5.17,
     16.09,
     14.49,
     16.55,
     11.82,
     33.0,
+    47.15,
     28.61,
     1.97
    ],

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-22T10:16:10+00:00",
+  "atualizado_em": "2026-08-23T10:09:39+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 34.878.543",
   "participante_open_finance": null
@@ -326,10 +326,10 @@
   "roe": {
    "valores": [
     2.86,
-    0.57,
     2.1,
-    20.06,
+    0.57,
     1.28,
+    20.06,
     11.92,
     -17.32,
     7.73,
@@ -472,8 +472,8 @@
    "valores": [
     18.59,
     71.12,
-    74.25,
     8.51,
+    74.25,
     31.23,
     15.49,
     22.81,
@@ -579,10 +579,10 @@
   "alav": {
    "valores": [
     10.27,
-    4.56,
     12.26,
-    12.35,
+    4.56,
     6.09,
+    12.35,
     4.23,
     30.8,
     5.94,

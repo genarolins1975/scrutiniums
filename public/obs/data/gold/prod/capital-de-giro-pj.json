@@ -1,8 +1,18 @@
 {
- "gerado_em": "2026-08-22T10:16:20+00:00",
+ "gerado_em": "2026-08-23T10:09:47+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
+  "201709",
+  "201712",
+  "201803",
+  "201806",
+  "201809",
+  "201812",
+  "201903",
+  "201906",
+  "201909",
+  "201912",
   "202003",
   "202006",
   "202009",
@@ -15453,7 +15463,7 @@
    },
    {
     "cod": "54190525",
-    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECNONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
+    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE",
     "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 12011199.36,
@@ -19227,7 +19237,7 @@
    {
     "cod": "17079937",
     "nome": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "sr": "S4",
+    "sr": "S5",
     "nivel": "individual",
     "carteira_brl": 42241.4,
     "atraso15_pct": 0.0,
@@ -19771,55 +19781,55 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 118978946605.9,
-      "n_inst": 211
-     },
-     {
-      "anomes": "202506",
-      "total_brl": 126424235707.2,
-      "n_inst": 212
-     },
-     {
-      "anomes": "202509",
-      "total_brl": 131368471366.68,
-      "n_inst": 214
-     },
-     {
-      "anomes": "202512",
-      "total_brl": 136014747248.57,
+      "total_brl": 118978931302.99,
       "n_inst": 210
      },
      {
-      "anomes": "202603",
-      "total_brl": 142219038789.8,
+      "anomes": "202506",
+      "total_brl": 126423861504.11,
+      "n_inst": 211
+     },
+     {
+      "anomes": "202509",
+      "total_brl": 131368430384.28,
+      "n_inst": 213
+     },
+     {
+      "anomes": "202512",
+      "total_brl": 136014705641.45,
       "n_inst": 209
+     },
+     {
+      "anomes": "202603",
+      "total_brl": 142218996548.4,
+      "n_inst": 208
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
       "agg_pct": 0.75,
-      "n": 211
+      "n": 210
      },
      {
       "anomes": "202506",
       "agg_pct": 0.86,
-      "n": 212
+      "n": 211
      },
      {
       "anomes": "202509",
       "agg_pct": 0.89,
-      "n": 214
+      "n": 213
      },
      {
       "anomes": "202512",
       "agg_pct": 0.94,
-      "n": 210
+      "n": 209
      },
      {
       "anomes": "202603",
       "agg_pct": 1.08,
-      "n": 209
+      "n": 208
      }
     ]
    },
@@ -19827,55 +19837,55 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 71060807600.46,
-      "n_inst": 487
+      "total_brl": 71060822903.37,
+      "n_inst": 488
      },
      {
       "anomes": "202506",
-      "total_brl": 73262193152.52,
-      "n_inst": 486
+      "total_brl": 73262567355.61,
+      "n_inst": 487
      },
      {
       "anomes": "202509",
-      "total_brl": 74472924233.42,
-      "n_inst": 489
-     },
-     {
-      "anomes": "202512",
-      "total_brl": 77839175094.36,
+      "total_brl": 74472965215.82,
       "n_inst": 490
      },
      {
+      "anomes": "202512",
+      "total_brl": 77839216701.48,
+      "n_inst": 491
+     },
+     {
       "anomes": "202603",
-      "total_brl": 79339504385.76,
-      "n_inst": 483
+      "total_brl": 79339546627.16,
+      "n_inst": 484
      }
     ],
     "atraso_serie": [
      {
       "anomes": "202503",
       "agg_pct": 1.91,
-      "n": 487
+      "n": 488
      },
      {
       "anomes": "202506",
       "agg_pct": 2.22,
-      "n": 486
+      "n": 487
      },
      {
       "anomes": "202509",
       "agg_pct": 2.07,
-      "n": 489
+      "n": 490
      },
      {
       "anomes": "202512",
       "agg_pct": 2.01,
-      "n": 490
+      "n": 491
      },
      {
       "anomes": "202603",
       "agg_pct": 2.14,
-      "n": 483
+      "n": 484
      }
     ]
    }
