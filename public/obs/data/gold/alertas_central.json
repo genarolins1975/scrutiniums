@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-23T10:09:49+00:00",
+ "gerado_em": "2026-08-24T10:15:37+00:00",
  "familias": [
   {
    "id": "macro",
@@ -27,7 +27,7 @@
    "persistencia": "a própria regra exige alta em 2 datas-base consecutivas",
    "limitacao": "Inadimplência arrastada por submodalidade: o ciclo do cartão migra saldos entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade não é comparável às séries SGS por modalidade.",
    "view": "panorama",
-   "ativos": 20,
+   "ativos": 2,
    "arquivo": "panorama.json",
    "disponivel": true
   },
@@ -83,12 +83,12 @@
    "familia": "macro",
    "nivel": "informativo",
    "titulo": "4 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (114 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (114 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (114 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Comprometimento de renda das famílias com o serviço da dívida do SFN (115 dias); Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (115 dias); Endividamento das famílias com o SFN em relação à renda acumulada 12m (115 dias). Ausência de dado novo NÃO foi interpretada como zero.",
    "valor": 4,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "13 execuções anteriores",
+   "evidencia_persistencia": "14 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
@@ -106,7 +106,7 @@
    "limiar": 28.0,
    "referencia": "2026-05",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "55 execuções anteriores",
+   "evidencia_persistencia": "56 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -212,116 +212,31 @@
    ]
   },
   {
-   "id": "carteira:produto_pf_deterioracao:Cartão — parcelado/financiado · PF",
+   "id": "carteira:produto_pj_deterioracao:Cheque especial · PJ",
    "familia": "carteira",
    "nivel": null,
-   "titulo": "Cartão — parcelado/financiado · PF — inadimplência (arrastada)",
-   "detalhe": "39.19% → 41.25% (2026-02 → 2026-05). Δ3m +2.06 p.p. · Δ12m +7.37 p.p. · carteira R$ 179.5 bi. Inadimplência arrastada por submodalidade do SCR.data: o ciclo do cartão migra saldos entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade não é comparável às séries SGS por modalidade.",
-   "valor": 41.25,
+   "titulo": "Cheque especial · PJ — inadimplência (arrastada)",
+   "detalhe": "17.92% → 18.71% (2026-03 → 2026-06). Δ3m +0.79 p.p. · Δ12m +2.98 p.p. · carteira R$ 20.5 bi.",
+   "valor": 18.71,
    "limiar": null,
-   "referencia": "2026-05",
+   "referencia": "2026-06",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
    "link": {
     "view": "panorama"
    },
-   "ordem": 7.37
-  },
-  {
-   "id": "carteira:renda_deterioracao:Até 1 salário mínimo · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Até 1 salário mínimo · PF — inadimplência (arrastada)",
-   "detalhe": "7.56% → 9.58% (2026-02 → 2026-05). Δ3m +2.02 p.p. · Δ12m +3.23 p.p. · carteira R$ 323.6 bi.",
-   "valor": 9.58,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 3.23
-  },
-  {
-   "id": "carteira:produto_pf_deterioracao:Crédito pessoal · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Crédito pessoal · PF — inadimplência (arrastada)",
-   "detalhe": "10.48% → 11.19% (2026-02 → 2026-05). Δ3m +0.71 p.p. · Δ12m +2.66 p.p. · carteira R$ 383.0 bi.",
-   "valor": 11.19,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 2.66
-  },
-  {
-   "id": "carteira:renda_deterioracao:Mais de 1 a 2 salários mínimos · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Mais de 1 a 2 salários mínimos · PF — inadimplência (arrastada)",
-   "detalhe": "7.03% → 8.17% (2026-02 → 2026-05). Δ3m +1.14 p.p. · Δ12m +2.23 p.p. · carteira R$ 617.8 bi.",
-   "valor": 8.17,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 2.23
-  },
-  {
-   "id": "carteira:ocupacao_deterioracao:Outros · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Outros · PF — inadimplência (arrastada)",
-   "detalhe": "7.67% → 8.05% (2026-02 → 2026-05). Δ3m +0.38 p.p. · Δ12m +1.86 p.p. · carteira R$ 1.303.3 bi. 'Outros' é o agregado residual do SCR (soma do que não cabe nas demais categorias) — a taxa é real, mas não aponta um produto único.",
-   "valor": 8.05,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 1.86
-  },
-  {
-   "id": "carteira:produto_pj_deterioracao:Veículos · PJ",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Veículos · PJ — inadimplência (arrastada)",
-   "detalhe": "3.63% → 4.14% (2026-02 → 2026-05). Δ3m +0.51 p.p. · Δ12m +1.35 p.p. · carteira R$ 187.1 bi.",
-   "valor": 4.14,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 1.35
+   "ordem": 2.98
   },
   {
    "id": "carteira:produto_pf_deterioracao:Veículos · PF",
    "familia": "carteira",
    "nivel": null,
    "titulo": "Veículos · PF — inadimplência (arrastada)",
-   "detalhe": "6.08% → 6.52% (2026-02 → 2026-05). Δ3m +0.44 p.p. · Δ12m +1.22 p.p. · carteira R$ 426.8 bi.",
-   "valor": 6.52,
+   "detalhe": "6.17% → 6.62% (2026-03 → 2026-06). Δ3m +0.45 p.p. · Δ12m +1.22 p.p. · carteira R$ 418.3 bi.",
+   "valor": 6.62,
    "limiar": null,
-   "referencia": "2026-05",
+   "referencia": "2026-06",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
@@ -329,234 +244,6 @@
     "view": "panorama"
    },
    "ordem": 1.22
-  },
-  {
-   "id": "carteira:renda_deterioracao:Mais de 10 a 20 salários mínimos · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Mais de 10 a 20 salários mínimos · PF — inadimplência (arrastada)",
-   "detalhe": "3.43% → 3.93% (2026-02 → 2026-05). Δ3m +0.50 p.p. · Δ12m +1.17 p.p. · carteira R$ 604.3 bi.",
-   "valor": 3.93,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 1.17
-  },
-  {
-   "id": "carteira:ocupacao_deterioracao:MEI · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "MEI · PF — inadimplência (arrastada)",
-   "detalhe": "6.62% → 6.88% (2026-02 → 2026-05). Δ3m +0.26 p.p. · Δ12m +1.01 p.p. · carteira R$ 81.4 bi.",
-   "valor": 6.88,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 1.01
-  },
-  {
-   "id": "carteira:ocupacao_deterioracao:Servidor ou empregado público · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Servidor ou empregado público · PF — inadimplência (arrastada)",
-   "detalhe": "4.07% → 4.25% (2026-02 → 2026-05). Δ3m +0.18 p.p. · Δ12m +0.99 p.p. · carteira R$ 697.9 bi.",
-   "valor": 4.25,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 0.99
-  },
-  {
-   "id": "carteira:ocupacao_deterioracao:Aposentado/pensionista · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Aposentado/pensionista · PF — inadimplência (arrastada)",
-   "detalhe": "4.43% → 4.58% (2026-02 → 2026-05). Δ3m +0.15 p.p. · Δ12m +0.92 p.p. · carteira R$ 311.2 bi.",
-   "valor": 4.58,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 0.92
-  },
-  {
-   "id": "carteira:produto_pj_deterioracao:Recebíveis descontados · PJ",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Recebíveis descontados · PJ — inadimplência (arrastada)",
-   "detalhe": "4.32% → 4.55% (2026-02 → 2026-05). Δ3m +0.23 p.p. · Δ12m +0.84 p.p. · carteira R$ 35.4 bi.",
-   "valor": 4.55,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 0.84
-  },
-  {
-   "id": "carteira:ocupacao_deterioracao:Empregado de empresa privada · PF",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Empregado de empresa privada · PF — inadimplência (arrastada)",
-   "detalhe": "4.50% → 4.67% (2026-02 → 2026-05). Δ3m +0.17 p.p. · Δ12m +0.76 p.p. · carteira R$ 1.040.2 bi.",
-   "valor": 4.67,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 0.76
-  },
-  {
-   "id": "carteira:uf_deterioracao:Roraima (RR)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Roraima (RR) — inadimplência (arrastada)",
-   "detalhe": "6.02% → 6.59% (2026-02 → 2026-05). Δ3m +0.57 p.p..",
-   "valor": 6.59,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "RR"
-   },
-   "ordem": 0.57
-  },
-  {
-   "id": "carteira:uf_deterioracao:Pará (PA)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Pará (PA) — inadimplência (arrastada)",
-   "detalhe": "5.90% → 6.45% (2026-02 → 2026-05). Δ3m +0.55 p.p..",
-   "valor": 6.45,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "PA"
-   },
-   "ordem": 0.55
-  },
-  {
-   "id": "carteira:uf_deterioracao:Maranhão (MA)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Maranhão (MA) — inadimplência (arrastada)",
-   "detalhe": "8.44% → 8.96% (2026-02 → 2026-05). Δ3m +0.52 p.p..",
-   "valor": 8.96,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "MA"
-   },
-   "ordem": 0.52
-  },
-  {
-   "id": "carteira:uf_deterioracao:Piauí (PI)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Piauí (PI) — inadimplência (arrastada)",
-   "detalhe": "4.71% → 5.21% (2026-02 → 2026-05). Δ3m +0.50 p.p..",
-   "valor": 5.21,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "PI"
-   },
-   "ordem": 0.5
-  },
-  {
-   "id": "carteira:uf_deterioracao:Rondônia (RO)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Rondônia (RO) — inadimplência (arrastada)",
-   "detalhe": "6.32% → 6.73% (2026-02 → 2026-05). Δ3m +0.41 p.p..",
-   "valor": 6.73,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "RO"
-   },
-   "ordem": 0.41
-  },
-  {
-   "id": "carteira:uf_deterioracao:Amazonas (AM)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Amazonas (AM) — inadimplência (arrastada)",
-   "detalhe": "5.78% → 6.17% (2026-02 → 2026-05). Δ3m +0.39 p.p..",
-   "valor": 6.17,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "AM"
-   },
-   "ordem": 0.39
-  },
-  {
-   "id": "carteira:uf_deterioracao:Alagoas (AL)",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Alagoas (AL) — inadimplência (arrastada)",
-   "detalhe": "5.64% → 6.00% (2026-02 → 2026-05). Δ3m +0.36 p.p..",
-   "valor": 6.0,
-   "limiar": null,
-   "referencia": "2026-05",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama",
-    "uf": "AL"
-   },
-   "ordem": 0.36
   },
   {
    "id": "openfinance:taxa de sucesso — dados transacionais",
@@ -831,7 +518,7 @@
    "ordem": 0.0
   }
  ],
- "total": 38,
+ "total": 20,
  "niveis": [
   "informativo",
   "atencao",

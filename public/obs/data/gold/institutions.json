@@ -101,6 +101,46 @@
    "rwa_brl": 1310657899476.35,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 40.0
+    },
+    {
+     "anomes": "201506",
+     "score": 45.0
+    },
+    {
+     "anomes": "201509",
+     "score": 35.0
+    },
+    {
+     "anomes": "201512",
+     "score": 30.0
+    },
+    {
+     "anomes": "201603",
+     "score": 35.0
+    },
+    {
+     "anomes": "201606",
+     "score": 50.0
+    },
+    {
+     "anomes": "201609",
+     "score": 30.0
+    },
+    {
+     "anomes": "201612",
+     "score": 35.0
+    },
+    {
+     "anomes": "201703",
+     "score": 40.0
+    },
+    {
+     "anomes": "201706",
+     "score": 30.0
+    },
+    {
      "anomes": "201709",
      "score": 30.0
     },
@@ -422,6 +462,46 @@
    "capital_principal_pct": 11.59,
    "rwa_brl": 1093993823936.22,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 60.0
+    },
+    {
+     "anomes": "201506",
+     "score": 65.0
+    },
+    {
+     "anomes": "201509",
+     "score": 80.0
+    },
+    {
+     "anomes": "201512",
+     "score": 80.0
+    },
+    {
+     "anomes": "201603",
+     "score": 75.0
+    },
+    {
+     "anomes": "201606",
+     "score": 80.0
+    },
+    {
+     "anomes": "201609",
+     "score": 80.0
+    },
+    {
+     "anomes": "201612",
+     "score": 85.0
+    },
+    {
+     "anomes": "201703",
+     "score": 80.0
+    },
+    {
+     "anomes": "201706",
+     "score": 75.0
+    },
     {
      "anomes": "201709",
      "score": 75.0
@@ -1003,6 +1083,46 @@
    "rwa_brl": 985898064498.13,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 40.0
+    },
+    {
+     "anomes": "201506",
+     "score": 55.0
+    },
+    {
+     "anomes": "201509",
+     "score": 45.0
+    },
+    {
+     "anomes": "201512",
+     "score": 45.0
+    },
+    {
+     "anomes": "201603",
+     "score": 35.0
+    },
+    {
+     "anomes": "201606",
+     "score": 30.0
+    },
+    {
+     "anomes": "201609",
+     "score": 50.0
+    },
+    {
+     "anomes": "201612",
+     "score": 40.0
+    },
+    {
+     "anomes": "201703",
+     "score": 45.0
+    },
+    {
+     "anomes": "201706",
+     "score": 35.0
+    },
+    {
      "anomes": "201709",
      "score": 50.0
     },
@@ -1325,6 +1445,46 @@
    "rwa_brl": 627072212736.13,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 55.0
+    },
+    {
+     "anomes": "201506",
+     "score": 45.0
+    },
+    {
+     "anomes": "201509",
+     "score": 45.0
+    },
+    {
+     "anomes": "201512",
+     "score": 50.0
+    },
+    {
+     "anomes": "201603",
+     "score": 50.0
+    },
+    {
+     "anomes": "201606",
+     "score": 55.0
+    },
+    {
+     "anomes": "201609",
+     "score": 45.0
+    },
+    {
+     "anomes": "201612",
+     "score": 50.0
+    },
+    {
+     "anomes": "201703",
+     "score": 55.0
+    },
+    {
+     "anomes": "201706",
+     "score": 60.0
+    },
+    {
      "anomes": "201709",
      "score": 60.0
     },
@@ -1626,6 +1786,46 @@
    "capital_principal_pct": 22.31,
    "rwa_brl": 748440282901.35,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 47.5
+    },
+    {
+     "anomes": "201506",
+     "score": 50.0
+    },
+    {
+     "anomes": "201509",
+     "score": 44.5
+    },
+    {
+     "anomes": "201512",
+     "score": 46.9
+    },
+    {
+     "anomes": "201603",
+     "score": 43.8
+    },
+    {
+     "anomes": "201606",
+     "score": 68.8
+    },
+    {
+     "anomes": "201609",
+     "score": 40.6
+    },
+    {
+     "anomes": "201612",
+     "score": 37.5
+    },
+    {
+     "anomes": "201703",
+     "score": 56.2
+    },
+    {
+     "anomes": "201706",
+     "score": 62.5
+    },
     {
      "anomes": "201709",
      "score": 37.5
@@ -1948,6 +2148,46 @@
    "capital_principal_pct": 11.36,
    "rwa_brl": 427027220913.9,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 10.0
+    },
+    {
+     "anomes": "201506",
+     "score": 5.0
+    },
+    {
+     "anomes": "201509",
+     "score": 20.0
+    },
+    {
+     "anomes": "201512",
+     "score": 15.0
+    },
+    {
+     "anomes": "201603",
+     "score": 10.0
+    },
+    {
+     "anomes": "201606",
+     "score": 0.0
+    },
+    {
+     "anomes": "201609",
+     "score": 5.0
+    },
+    {
+     "anomes": "201612",
+     "score": 0.0
+    },
+    {
+     "anomes": "201703",
+     "score": 5.0
+    },
+    {
+     "anomes": "201706",
+     "score": 25.0
+    },
     {
      "anomes": "201709",
      "score": 10.0
@@ -2549,6 +2789,46 @@
    "rwa_brl": 124268285764.79,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 50.0
+    },
+    {
+     "anomes": "201506",
+     "score": 50.0
+    },
+    {
+     "anomes": "201509",
+     "score": 50.0
+    },
+    {
+     "anomes": "201512",
+     "score": 40.6
+    },
+    {
+     "anomes": "201603",
+     "score": 40.6
+    },
+    {
+     "anomes": "201606",
+     "score": 37.5
+    },
+    {
+     "anomes": "201609",
+     "score": 43.8
+    },
+    {
+     "anomes": "201612",
+     "score": 50.0
+    },
+    {
+     "anomes": "201703",
+     "score": 46.9
+    },
+    {
+     "anomes": "201706",
+     "score": 46.9
+    },
+    {
      "anomes": "201709",
      "score": 50.0
     },
@@ -3123,6 +3403,46 @@
    "rwa_brl": 33932181289.54,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 70.0
+    },
+    {
+     "anomes": "201506",
+     "score": 77.5
+    },
+    {
+     "anomes": "201509",
+     "score": 75.0
+    },
+    {
+     "anomes": "201512",
+     "score": 81.2
+    },
+    {
+     "anomes": "201603",
+     "score": 84.4
+    },
+    {
+     "anomes": "201606",
+     "score": 71.9
+    },
+    {
+     "anomes": "201609",
+     "score": 71.9
+    },
+    {
+     "anomes": "201612",
+     "score": 81.2
+    },
+    {
+     "anomes": "201703",
+     "score": 81.2
+    },
+    {
+     "anomes": "201706",
+     "score": 81.2
+    },
+    {
      "anomes": "201709",
      "score": 75.0
     },
@@ -3439,6 +3759,46 @@
    "rwa_brl": 30293872296.35,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 72.5
+    },
+    {
+     "anomes": "201506",
+     "score": 67.5
+    },
+    {
+     "anomes": "201509",
+     "score": 66.7
+    },
+    {
+     "anomes": "201512",
+     "score": 62.5
+    },
+    {
+     "anomes": "201603",
+     "score": 59.4
+    },
+    {
+     "anomes": "201606",
+     "score": 62.5
+    },
+    {
+     "anomes": "201609",
+     "score": 59.4
+    },
+    {
+     "anomes": "201612",
+     "score": 62.5
+    },
+    {
+     "anomes": "201703",
+     "score": 53.1
+    },
+    {
+     "anomes": "201706",
+     "score": 56.2
+    },
+    {
      "anomes": "201709",
      "score": 56.2
     },
@@ -3734,6 +4094,46 @@
    "capital_principal_pct": 13.42,
    "rwa_brl": 48514252187.28,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 30.0
+    },
+    {
+     "anomes": "201506",
+     "score": 30.0
+    },
+    {
+     "anomes": "201509",
+     "score": 22.2
+    },
+    {
+     "anomes": "201512",
+     "score": 15.6
+    },
+    {
+     "anomes": "201603",
+     "score": 28.1
+    },
+    {
+     "anomes": "201606",
+     "score": 18.8
+    },
+    {
+     "anomes": "201609",
+     "score": 18.8
+    },
+    {
+     "anomes": "201612",
+     "score": 15.6
+    },
+    {
+     "anomes": "201703",
+     "score": 12.5
+    },
+    {
+     "anomes": "201706",
+     "score": 18.8
+    },
     {
      "anomes": "201709",
      "score": 43.8
@@ -4273,6 +4673,46 @@
    "capital_principal_pct": 14.08,
    "rwa_brl": 60821784591.49,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 55.0
+    },
+    {
+     "anomes": "201506",
+     "score": 55.0
+    },
+    {
+     "anomes": "201509",
+     "score": 47.2
+    },
+    {
+     "anomes": "201512",
+     "score": 53.1
+    },
+    {
+     "anomes": "201603",
+     "score": 46.9
+    },
+    {
+     "anomes": "201606",
+     "score": 53.1
+    },
+    {
+     "anomes": "201609",
+     "score": 56.2
+    },
+    {
+     "anomes": "201612",
+     "score": 59.4
+    },
+    {
+     "anomes": "201703",
+     "score": 53.1
+    },
+    {
+     "anomes": "201706",
+     "score": 53.1
+    },
     {
      "anomes": "201709",
      "score": 46.9
@@ -4862,6 +5302,46 @@
    "rwa_brl": 83553895265.36,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 65.0
+    },
+    {
+     "anomes": "201506",
+     "score": 62.5
+    },
+    {
+     "anomes": "201509",
+     "score": 50.0
+    },
+    {
+     "anomes": "201512",
+     "score": 59.4
+    },
+    {
+     "anomes": "201603",
+     "score": 56.2
+    },
+    {
+     "anomes": "201606",
+     "score": 56.2
+    },
+    {
+     "anomes": "201609",
+     "score": 56.2
+    },
+    {
+     "anomes": "201612",
+     "score": 65.6
+    },
+    {
+     "anomes": "201703",
+     "score": 50.0
+    },
+    {
+     "anomes": "201706",
+     "score": 59.4
+    },
+    {
      "anomes": "201709",
      "score": 56.2
     },
@@ -5159,6 +5639,46 @@
    "capital_principal_pct": 23.79,
    "rwa_brl": 12134188869.09,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 36.8
+    },
+    {
+     "anomes": "201506",
+     "score": 38.3
+    },
+    {
+     "anomes": "201509",
+     "score": 43.4
+    },
+    {
+     "anomes": "201512",
+     "score": 38.3
+    },
+    {
+     "anomes": "201603",
+     "score": 34.5
+    },
+    {
+     "anomes": "201606",
+     "score": 37.0
+    },
+    {
+     "anomes": "201609",
+     "score": 43.1
+    },
+    {
+     "anomes": "201612",
+     "score": 41.0
+    },
+    {
+     "anomes": "201703",
+     "score": 39.7
+    },
+    {
+     "anomes": "201706",
+     "score": 37.7
+    },
     {
      "anomes": "201709",
      "score": 41.8
@@ -5930,6 +6450,46 @@
    "rwa_brl": 36760952988.22,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 52.5
+    },
+    {
+     "anomes": "201506",
+     "score": 57.6
+    },
+    {
+     "anomes": "201509",
+     "score": 63.2
+    },
+    {
+     "anomes": "201512",
+     "score": 72.5
+    },
+    {
+     "anomes": "201603",
+     "score": 65.0
+    },
+    {
+     "anomes": "201606",
+     "score": 72.0
+    },
+    {
+     "anomes": "201609",
+     "score": 68.2
+    },
+    {
+     "anomes": "201612",
+     "score": 73.5
+    },
+    {
+     "anomes": "201703",
+     "score": 70.1
+    },
+    {
+     "anomes": "201706",
+     "score": 67.6
+    },
+    {
      "anomes": "201709",
      "score": 69.2
     },
@@ -6243,6 +6803,34 @@
    "capital_principal_pct": 9.77,
    "rwa_brl": 60981349393.3,
    "historico_score": [
+    {
+     "anomes": "201512",
+     "score": 48.0
+    },
+    {
+     "anomes": "201603",
+     "score": 48.0
+    },
+    {
+     "anomes": "201606",
+     "score": 50.5
+    },
+    {
+     "anomes": "201609",
+     "score": 50.0
+    },
+    {
+     "anomes": "201612",
+     "score": 49.0
+    },
+    {
+     "anomes": "201703",
+     "score": 48.5
+    },
+    {
+     "anomes": "201706",
+     "score": 47.5
+    },
     {
      "anomes": "201709",
      "score": 46.6
@@ -7129,6 +7717,46 @@
    "rwa_brl": 95220374219.59,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 42.5
+    },
+    {
+     "anomes": "201506",
+     "score": 42.5
+    },
+    {
+     "anomes": "201509",
+     "score": 41.7
+    },
+    {
+     "anomes": "201512",
+     "score": 31.2
+    },
+    {
+     "anomes": "201603",
+     "score": 28.1
+    },
+    {
+     "anomes": "201606",
+     "score": 18.8
+    },
+    {
+     "anomes": "201609",
+     "score": 40.6
+    },
+    {
+     "anomes": "201612",
+     "score": 18.8
+    },
+    {
+     "anomes": "201703",
+     "score": 40.6
+    },
+    {
+     "anomes": "201706",
+     "score": 12.5
+    },
+    {
      "anomes": "201709",
      "score": 25.0
     },
@@ -7936,6 +8564,46 @@
    "rwa_brl": 47910897023.66,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 46.4
+    },
+    {
+     "anomes": "201506",
+     "score": 48.5
+    },
+    {
+     "anomes": "201509",
+     "score": 52.6
+    },
+    {
+     "anomes": "201512",
+     "score": 50.0
+    },
+    {
+     "anomes": "201603",
+     "score": 44.5
+    },
+    {
+     "anomes": "201606",
+     "score": 44.5
+    },
+    {
+     "anomes": "201609",
+     "score": 48.5
+    },
+    {
+     "anomes": "201612",
+     "score": 50.5
+    },
+    {
+     "anomes": "201703",
+     "score": 50.5
+    },
+    {
+     "anomes": "201706",
+     "score": 50.0
+    },
+    {
      "anomes": "201709",
      "score": 52.9
     },
@@ -8258,6 +8926,46 @@
    "rwa_brl": 48208734656.5,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 26.5
+    },
+    {
+     "anomes": "201506",
+     "score": 30.6
+    },
+    {
+     "anomes": "201509",
+     "score": 30.6
+    },
+    {
+     "anomes": "201512",
+     "score": 31.6
+    },
+    {
+     "anomes": "201603",
+     "score": 43.5
+    },
+    {
+     "anomes": "201606",
+     "score": 34.0
+    },
+    {
+     "anomes": "201609",
+     "score": 50.5
+    },
+    {
+     "anomes": "201612",
+     "score": 40.5
+    },
+    {
+     "anomes": "201703",
+     "score": 48.5
+    },
+    {
+     "anomes": "201706",
+     "score": 43.1
+    },
+    {
      "anomes": "201709",
      "score": 48.5
     },
@@ -8576,6 +9284,46 @@
    "rwa_brl": 42161443224.63,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 56.1
+    },
+    {
+     "anomes": "201506",
+     "score": 59.2
+    },
+    {
+     "anomes": "201509",
+     "score": 48.0
+    },
+    {
+     "anomes": "201512",
+     "score": 52.1
+    },
+    {
+     "anomes": "201603",
+     "score": 70.5
+    },
+    {
+     "anomes": "201606",
+     "score": 65.0
+    },
+    {
+     "anomes": "201609",
+     "score": 58.8
+    },
+    {
+     "anomes": "201612",
+     "score": 54.0
+    },
+    {
+     "anomes": "201703",
+     "score": 43.1
+    },
+    {
+     "anomes": "201706",
+     "score": 41.2
+    },
+    {
      "anomes": "201709",
      "score": 43.3
     },
@@ -8885,6 +9633,46 @@
    "capital_principal_pct": 10.2,
    "rwa_brl": 44278418385.93,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 70.4
+    },
+    {
+     "anomes": "201506",
+     "score": 68.4
+    },
+    {
+     "anomes": "201509",
+     "score": 76.0
+    },
+    {
+     "anomes": "201512",
+     "score": 76.0
+    },
+    {
+     "anomes": "201603",
+     "score": 62.5
+    },
+    {
+     "anomes": "201606",
+     "score": 63.5
+    },
+    {
+     "anomes": "201609",
+     "score": 57.8
+    },
+    {
+     "anomes": "201612",
+     "score": 61.5
+    },
+    {
+     "anomes": "201703",
+     "score": 51.5
+    },
+    {
+     "anomes": "201706",
+     "score": 55.9
+    },
     {
      "anomes": "201709",
      "score": 60.5
@@ -9648,6 +10436,46 @@
    "rwa_brl": 25452401911.47,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 40.8
+    },
+    {
+     "anomes": "201506",
+     "score": 43.4
+    },
+    {
+     "anomes": "201509",
+     "score": 45.4
+    },
+    {
+     "anomes": "201512",
+     "score": 44.9
+    },
+    {
+     "anomes": "201603",
+     "score": 45.0
+    },
+    {
+     "anomes": "201606",
+     "score": 45.0
+    },
+    {
+     "anomes": "201609",
+     "score": 46.1
+    },
+    {
+     "anomes": "201612",
+     "score": 50.5
+    },
+    {
+     "anomes": "201703",
+     "score": 45.1
+    },
+    {
+     "anomes": "201706",
+     "score": 50.5
+    },
+    {
      "anomes": "201709",
      "score": 51.4
     },
@@ -10055,6 +10883,46 @@
    "capital_principal_pct": 24.96,
    "rwa_brl": 7081077951.28,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 36.2
+    },
+    {
+     "anomes": "201506",
+     "score": 29.6
+    },
+    {
+     "anomes": "201509",
+     "score": 50.0
+    },
+    {
+     "anomes": "201512",
+     "score": 34.7
+    },
+    {
+     "anomes": "201603",
+     "score": 30.0
+    },
+    {
+     "anomes": "201606",
+     "score": 27.0
+    },
+    {
+     "anomes": "201609",
+     "score": 30.9
+    },
+    {
+     "anomes": "201612",
+     "score": 31.5
+    },
+    {
+     "anomes": "201703",
+     "score": 35.8
+    },
+    {
+     "anomes": "201706",
+     "score": 40.7
+    },
     {
      "anomes": "201709",
      "score": 39.9
@@ -10487,6 +11355,46 @@
    "rwa_brl": 56022704578.56,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 22.4
+    },
+    {
+     "anomes": "201506",
+     "score": 22.4
+    },
+    {
+     "anomes": "201509",
+     "score": 22.9
+    },
+    {
+     "anomes": "201512",
+     "score": 21.9
+    },
+    {
+     "anomes": "201603",
+     "score": 21.5
+    },
+    {
+     "anomes": "201606",
+     "score": 22.5
+    },
+    {
+     "anomes": "201609",
+     "score": 21.1
+    },
+    {
+     "anomes": "201612",
+     "score": 20.0
+    },
+    {
+     "anomes": "201703",
+     "score": 20.1
+    },
+    {
+     "anomes": "201706",
+     "score": 20.6
+    },
+    {
      "anomes": "201709",
      "score": 25.5
     },
@@ -10801,6 +11709,46 @@
    "rwa_brl": 18169277801.62,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 74.0
+    },
+    {
+     "anomes": "201506",
+     "score": 60.7
+    },
+    {
+     "anomes": "201509",
+     "score": 73.5
+    },
+    {
+     "anomes": "201512",
+     "score": 75.0
+    },
+    {
+     "anomes": "201603",
+     "score": 69.5
+    },
+    {
+     "anomes": "201606",
+     "score": 71.5
+    },
+    {
+     "anomes": "201609",
+     "score": 72.5
+    },
+    {
+     "anomes": "201612",
+     "score": 73.0
+    },
+    {
+     "anomes": "201703",
+     "score": 70.1
+    },
+    {
+     "anomes": "201706",
+     "score": 71.6
+    },
+    {
      "anomes": "201709",
      "score": 72.6
     },
@@ -11114,6 +12062,46 @@
    "capital_principal_pct": 14.04,
    "rwa_brl": 12613347042.23,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 58.2
+    },
+    {
+     "anomes": "201506",
+     "score": 56.6
+    },
+    {
+     "anomes": "201509",
+     "score": 63.3
+    },
+    {
+     "anomes": "201512",
+     "score": 67.4
+    },
+    {
+     "anomes": "201603",
+     "score": 58.5
+    },
+    {
+     "anomes": "201606",
+     "score": 58.5
+    },
+    {
+     "anomes": "201609",
+     "score": 65.2
+    },
+    {
+     "anomes": "201612",
+     "score": 66.5
+    },
+    {
+     "anomes": "201703",
+     "score": 61.3
+    },
+    {
+     "anomes": "201706",
+     "score": 61.3
+    },
     {
      "anomes": "201709",
      "score": 63.0
@@ -11436,6 +12424,46 @@
    "capital_principal_pct": 8.91,
    "rwa_brl": 13992965253.72,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 59.2
+    },
+    {
+     "anomes": "201506",
+     "score": 61.7
+    },
+    {
+     "anomes": "201509",
+     "score": 66.3
+    },
+    {
+     "anomes": "201512",
+     "score": 63.8
+    },
+    {
+     "anomes": "201603",
+     "score": 56.5
+    },
+    {
+     "anomes": "201606",
+     "score": 62.0
+    },
+    {
+     "anomes": "201609",
+     "score": 60.8
+    },
+    {
+     "anomes": "201612",
+     "score": 61.5
+    },
+    {
+     "anomes": "201703",
+     "score": 55.4
+    },
+    {
+     "anomes": "201706",
+     "score": 63.7
+    },
     {
      "anomes": "201709",
      "score": 69.7
@@ -11949,6 +12977,14 @@
    "rwa_brl": 13770972109.09,
    "historico_score": [
     {
+     "anomes": "201703",
+     "score": 60.8
+    },
+    {
+     "anomes": "201706",
+     "score": 65.7
+    },
+    {
      "anomes": "201709",
      "score": 78.9
     },
@@ -12217,6 +13253,46 @@
    "rwa_brl": 4651678540.45,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 36.2
+    },
+    {
+     "anomes": "201506",
+     "score": 36.8
+    },
+    {
+     "anomes": "201509",
+     "score": 34.2
+    },
+    {
+     "anomes": "201512",
+     "score": 36.8
+    },
+    {
+     "anomes": "201603",
+     "score": 26.5
+    },
+    {
+     "anomes": "201606",
+     "score": 31.0
+    },
+    {
+     "anomes": "201609",
+     "score": 33.8
+    },
+    {
+     "anomes": "201612",
+     "score": 35.5
+    },
+    {
+     "anomes": "201703",
+     "score": 26.5
+    },
+    {
+     "anomes": "201706",
+     "score": 28.9
+    },
+    {
      "anomes": "201709",
      "score": 38.5
     },
@@ -12476,6 +13552,46 @@
    "capital_principal_pct": 30.67,
    "rwa_brl": 4659508013.66,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 27.1
+    },
+    {
+     "anomes": "201506",
+     "score": 22.4
+    },
+    {
+     "anomes": "201509",
+     "score": 38.8
+    },
+    {
+     "anomes": "201512",
+     "score": 22.9
+    },
+    {
+     "anomes": "201603",
+     "score": 21.5
+    },
+    {
+     "anomes": "201606",
+     "score": 20.5
+    },
+    {
+     "anomes": "201609",
+     "score": 23.0
+    },
+    {
+     "anomes": "201612",
+     "score": 19.0
+    },
+    {
+     "anomes": "201703",
+     "score": 27.4
+    },
+    {
+     "anomes": "201706",
+     "score": 30.4
+    },
     {
      "anomes": "201709",
      "score": 38.5
@@ -12866,6 +13982,46 @@
    "capital_principal_pct": 19.65,
    "rwa_brl": 22679536253.27,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 63.2
+    },
+    {
+     "anomes": "201506",
+     "score": 64.8
+    },
+    {
+     "anomes": "201509",
+     "score": 66.3
+    },
+    {
+     "anomes": "201512",
+     "score": 60.7
+    },
+    {
+     "anomes": "201603",
+     "score": 60.5
+    },
+    {
+     "anomes": "201606",
+     "score": 65.5
+    },
+    {
+     "anomes": "201609",
+     "score": 73.5
+    },
+    {
+     "anomes": "201612",
+     "score": 70.5
+    },
+    {
+     "anomes": "201703",
+     "score": 64.7
+    },
+    {
+     "anomes": "201706",
+     "score": 66.2
+    },
     {
      "anomes": "201709",
      "score": 69.2
@@ -13403,6 +14559,46 @@
    "rwa_brl": 19895070388.94,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 58.7
+    },
+    {
+     "anomes": "201506",
+     "score": 54.6
+    },
+    {
+     "anomes": "201509",
+     "score": 48.5
+    },
+    {
+     "anomes": "201512",
+     "score": 60.7
+    },
+    {
+     "anomes": "201603",
+     "score": 58.5
+    },
+    {
+     "anomes": "201606",
+     "score": 51.5
+    },
+    {
+     "anomes": "201609",
+     "score": 60.8
+    },
+    {
+     "anomes": "201612",
+     "score": 65.5
+    },
+    {
+     "anomes": "201703",
+     "score": 60.8
+    },
+    {
+     "anomes": "201706",
+     "score": 56.4
+    },
+    {
      "anomes": "201709",
      "score": 50.5
     },
@@ -13671,6 +14867,46 @@
    "rwa_brl": 5107344028.04,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 71.4
+    },
+    {
+     "anomes": "201506",
+     "score": 65.8
+    },
+    {
+     "anomes": "201509",
+     "score": 72.5
+    },
+    {
+     "anomes": "201512",
+     "score": 73.0
+    },
+    {
+     "anomes": "201603",
+     "score": 69.5
+    },
+    {
+     "anomes": "201606",
+     "score": 60.5
+    },
+    {
+     "anomes": "201609",
+     "score": 72.5
+    },
+    {
+     "anomes": "201612",
+     "score": 73.5
+    },
+    {
+     "anomes": "201703",
+     "score": 61.8
+    },
+    {
+     "anomes": "201706",
+     "score": 41.2
+    },
+    {
      "anomes": "201709",
      "score": 54.8
     },
@@ -13913,6 +15149,46 @@
    "capital_principal_pct": 13.12,
    "rwa_brl": 3799416461.87,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 40.8
+    },
+    {
+     "anomes": "201506",
+     "score": 44.4
+    },
+    {
+     "anomes": "201509",
+     "score": 42.4
+    },
+    {
+     "anomes": "201512",
+     "score": 45.9
+    },
+    {
+     "anomes": "201603",
+     "score": 40.0
+    },
+    {
+     "anomes": "201606",
+     "score": 39.0
+    },
+    {
+     "anomes": "201609",
+     "score": 36.8
+    },
+    {
+     "anomes": "201612",
+     "score": 40.0
+    },
+    {
+     "anomes": "201703",
+     "score": 29.9
+    },
+    {
+     "anomes": "201706",
+     "score": 35.8
+    },
     {
      "anomes": "201709",
      "score": 39.0
@@ -14226,6 +15502,46 @@
    "rwa_brl": 20507799116.83,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 42.9
+    },
+    {
+     "anomes": "201506",
+     "score": 43.4
+    },
+    {
+     "anomes": "201509",
+     "score": 47.5
+    },
+    {
+     "anomes": "201512",
+     "score": 45.9
+    },
+    {
+     "anomes": "201603",
+     "score": 43.5
+    },
+    {
+     "anomes": "201606",
+     "score": 44.0
+    },
+    {
+     "anomes": "201609",
+     "score": 44.1
+    },
+    {
+     "anomes": "201612",
+     "score": 45.5
+    },
+    {
+     "anomes": "201703",
+     "score": 45.6
+    },
+    {
+     "anomes": "201706",
+     "score": 45.6
+    },
+    {
      "anomes": "201709",
      "score": 48.1
     },
@@ -14506,6 +15822,46 @@
    "rwa_brl": 7136831016.48,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 23.4
+    },
+    {
+     "anomes": "201506",
+     "score": 19.4
+    },
+    {
+     "anomes": "201509",
+     "score": 20.4
+    },
+    {
+     "anomes": "201512",
+     "score": 15.3
+    },
+    {
+     "anomes": "201603",
+     "score": 32.0
+    },
+    {
+     "anomes": "201606",
+     "score": 18.5
+    },
+    {
+     "anomes": "201609",
+     "score": 28.4
+    },
+    {
+     "anomes": "201612",
+     "score": 15.0
+    },
+    {
+     "anomes": "201703",
+     "score": 17.6
+    },
+    {
+     "anomes": "201706",
+     "score": 17.2
+    },
+    {
      "anomes": "201709",
      "score": 23.0
     },
@@ -14776,6 +16132,46 @@
    "capital_principal_pct": 15.13,
    "rwa_brl": 16190764653.9,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 29.1
+    },
+    {
+     "anomes": "201506",
+     "score": 28.1
+    },
+    {
+     "anomes": "201509",
+     "score": 27.6
+    },
+    {
+     "anomes": "201512",
+     "score": 28.1
+    },
+    {
+     "anomes": "201603",
+     "score": 29.5
+    },
+    {
+     "anomes": "201606",
+     "score": 27.5
+    },
+    {
+     "anomes": "201609",
+     "score": 29.9
+    },
+    {
+     "anomes": "201612",
+     "score": 27.0
+    },
+    {
+     "anomes": "201703",
+     "score": 28.9
+    },
+    {
+     "anomes": "201706",
+     "score": 33.8
+    },
     {
      "anomes": "201709",
      "score": 37.5
@@ -15375,6 +16771,46 @@
    "rwa_brl": 17676134705.66,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 80.6
+    },
+    {
+     "anomes": "201506",
+     "score": 76.5
+    },
+    {
+     "anomes": "201509",
+     "score": 58.7
+    },
+    {
+     "anomes": "201512",
+     "score": 70.9
+    },
+    {
+     "anomes": "201603",
+     "score": 73.5
+    },
+    {
+     "anomes": "201606",
+     "score": 74.0
+    },
+    {
+     "anomes": "201609",
+     "score": 65.2
+    },
+    {
+     "anomes": "201612",
+     "score": 61.0
+    },
+    {
+     "anomes": "201703",
+     "score": 65.7
+    },
+    {
+     "anomes": "201706",
+     "score": 62.2
+    },
+    {
      "anomes": "201709",
      "score": 56.2
     },
@@ -15693,6 +17129,46 @@
    "rwa_brl": 15553825498.89,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 80.6
+    },
+    {
+     "anomes": "201506",
+     "score": 80.6
+    },
+    {
+     "anomes": "201509",
+     "score": 67.8
+    },
+    {
+     "anomes": "201512",
+     "score": 74.5
+    },
+    {
+     "anomes": "201603",
+     "score": 76.0
+    },
+    {
+     "anomes": "201606",
+     "score": 68.0
+    },
+    {
+     "anomes": "201609",
+     "score": 77.9
+    },
+    {
+     "anomes": "201612",
+     "score": 69.0
+    },
+    {
+     "anomes": "201703",
+     "score": 75.0
+    },
+    {
+     "anomes": "201706",
+     "score": 68.6
+    },
+    {
      "anomes": "201709",
      "score": 67.8
     },
@@ -15996,6 +17472,46 @@
    "capital_principal_pct": 9.65,
    "rwa_brl": 9490094412.02,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 64.8
+    },
+    {
+     "anomes": "201506",
+     "score": 62.8
+    },
+    {
+     "anomes": "201509",
+     "score": 65.8
+    },
+    {
+     "anomes": "201512",
+     "score": 37.2
+    },
+    {
+     "anomes": "201603",
+     "score": 53.0
+    },
+    {
+     "anomes": "201606",
+     "score": 56.5
+    },
+    {
+     "anomes": "201609",
+     "score": 62.3
+    },
+    {
+     "anomes": "201612",
+     "score": 63.0
+    },
+    {
+     "anomes": "201703",
+     "score": 61.8
+    },
+    {
+     "anomes": "201706",
+     "score": 59.8
+    },
     {
      "anomes": "201709",
      "score": 67.3
@@ -16615,6 +18131,46 @@
    "rwa_brl": 12038039916.86,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 56.1
+    },
+    {
+     "anomes": "201506",
+     "score": 56.6
+    },
+    {
+     "anomes": "201509",
+     "score": 52.5
+    },
+    {
+     "anomes": "201512",
+     "score": 50.5
+    },
+    {
+     "anomes": "201603",
+     "score": 53.0
+    },
+    {
+     "anomes": "201606",
+     "score": 53.0
+    },
+    {
+     "anomes": "201609",
+     "score": 52.5
+    },
+    {
+     "anomes": "201612",
+     "score": 50.5
+    },
+    {
+     "anomes": "201703",
+     "score": 53.4
+    },
+    {
+     "anomes": "201706",
+     "score": 50.5
+    },
+    {
      "anomes": "201709",
      "score": 49.5
     },
@@ -17137,6 +18693,46 @@
    "rwa_brl": 10874030000.22,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 42.9
+    },
+    {
+     "anomes": "201506",
+     "score": 36.8
+    },
+    {
+     "anomes": "201509",
+     "score": 28.1
+    },
+    {
+     "anomes": "201512",
+     "score": 32.1
+    },
+    {
+     "anomes": "201603",
+     "score": 28.0
+    },
+    {
+     "anomes": "201606",
+     "score": 28.0
+    },
+    {
+     "anomes": "201609",
+     "score": 30.9
+    },
+    {
+     "anomes": "201612",
+     "score": 29.5
+    },
+    {
+     "anomes": "201703",
+     "score": 30.8
+    },
+    {
+     "anomes": "201706",
+     "score": 28.4
+    },
+    {
      "anomes": "201709",
      "score": 30.8
     },
@@ -17625,6 +19221,46 @@
    "rwa_brl": 2689483770.13,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 55.6
+    },
+    {
+     "anomes": "201506",
+     "score": 54.6
+    },
+    {
+     "anomes": "201509",
+     "score": 57.1
+    },
+    {
+     "anomes": "201512",
+     "score": 54.1
+    },
+    {
+     "anomes": "201603",
+     "score": 54.0
+    },
+    {
+     "anomes": "201606",
+     "score": 52.0
+    },
+    {
+     "anomes": "201609",
+     "score": 54.0
+    },
+    {
+     "anomes": "201612",
+     "score": 57.0
+    },
+    {
+     "anomes": "201703",
+     "score": 53.4
+    },
+    {
+     "anomes": "201706",
+     "score": 57.9
+    },
+    {
      "anomes": "201709",
      "score": 62.0
     },
@@ -17938,6 +19574,46 @@
    "capital_principal_pct": 13.28,
    "rwa_brl": 7578059181.04,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 40.8
+    },
+    {
+     "anomes": "201506",
+     "score": 44.9
+    },
+    {
+     "anomes": "201509",
+     "score": 40.3
+    },
+    {
+     "anomes": "201512",
+     "score": 42.8
+    },
+    {
+     "anomes": "201603",
+     "score": 49.5
+    },
+    {
+     "anomes": "201606",
+     "score": 53.0
+    },
+    {
+     "anomes": "201609",
+     "score": 56.9
+    },
+    {
+     "anomes": "201612",
+     "score": 45.0
+    },
+    {
+     "anomes": "201703",
+     "score": 53.9
+    },
+    {
+     "anomes": "201706",
+     "score": 51.9
+    },
     {
      "anomes": "201709",
      "score": 48.6
@@ -18405,6 +20081,38 @@
    "rwa_brl": 3303442240.39,
    "historico_score": [
     {
+     "anomes": "201509",
+     "score": 51.8
+    },
+    {
+     "anomes": "201512",
+     "score": 55.4
+    },
+    {
+     "anomes": "201603",
+     "score": 50.0
+    },
+    {
+     "anomes": "201606",
+     "score": 42.0
+    },
+    {
+     "anomes": "201609",
+     "score": 43.1
+    },
+    {
+     "anomes": "201612",
+     "score": 55.9
+    },
+    {
+     "anomes": "201703",
+     "score": 47.5
+    },
+    {
+     "anomes": "201706",
+     "score": 53.3
+    },
+    {
      "anomes": "201709",
      "score": 37.5
     },
@@ -18698,6 +20406,46 @@
    "capital_principal_pct": 19.63,
    "rwa_brl": 12161624586.93,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 49.5
+    },
+    {
+     "anomes": "201506",
+     "score": 48.5
+    },
+    {
+     "anomes": "201509",
+     "score": 53.1
+    },
+    {
+     "anomes": "201512",
+     "score": 46.4
+    },
+    {
+     "anomes": "201603",
+     "score": 46.5
+    },
+    {
+     "anomes": "201606",
+     "score": 47.0
+    },
+    {
+     "anomes": "201609",
+     "score": 42.2
+    },
+    {
+     "anomes": "201612",
+     "score": 43.0
+    },
+    {
+     "anomes": "201703",
+     "score": 39.2
+    },
+    {
+     "anomes": "201706",
+     "score": 41.7
+    },
     {
      "anomes": "201709",
      "score": 37.5
@@ -18996,6 +20744,46 @@
    "capital_principal_pct": 36.82,
    "rwa_brl": 4868426203.26,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 59.7
+    },
+    {
+     "anomes": "201506",
+     "score": 57.6
+    },
+    {
+     "anomes": "201509",
+     "score": 36.7
+    },
+    {
+     "anomes": "201512",
+     "score": 44.4
+    },
+    {
+     "anomes": "201603",
+     "score": 49.5
+    },
+    {
+     "anomes": "201606",
+     "score": 49.0
+    },
+    {
+     "anomes": "201609",
+     "score": 48.5
+    },
+    {
+     "anomes": "201612",
+     "score": 54.0
+    },
+    {
+     "anomes": "201703",
+     "score": 60.8
+    },
+    {
+     "anomes": "201706",
+     "score": 53.4
+    },
     {
      "anomes": "201709",
      "score": 45.7
@@ -19319,6 +21107,46 @@
    "rwa_brl": 9331942453.29,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 35.7
+    },
+    {
+     "anomes": "201506",
+     "score": 34.1
+    },
+    {
+     "anomes": "201509",
+     "score": 39.8
+    },
+    {
+     "anomes": "201512",
+     "score": 37.2
+    },
+    {
+     "anomes": "201603",
+     "score": 34.5
+    },
+    {
+     "anomes": "201606",
+     "score": 34.0
+    },
+    {
+     "anomes": "201609",
+     "score": 34.8
+    },
+    {
+     "anomes": "201612",
+     "score": 32.0
+    },
+    {
+     "anomes": "201703",
+     "score": 30.9
+    },
+    {
+     "anomes": "201706",
+     "score": 31.4
+    },
+    {
      "anomes": "201709",
      "score": 32.7
     },
@@ -19622,6 +21450,46 @@
    "capital_principal_pct": 25.86,
    "rwa_brl": 3115408452.08,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 42.9
+    },
+    {
+     "anomes": "201506",
+     "score": 48.0
+    },
+    {
+     "anomes": "201509",
+     "score": 34.2
+    },
+    {
+     "anomes": "201512",
+     "score": 43.9
+    },
+    {
+     "anomes": "201603",
+     "score": 42.0
+    },
+    {
+     "anomes": "201606",
+     "score": 43.0
+    },
+    {
+     "anomes": "201609",
+     "score": 49.0
+    },
+    {
+     "anomes": "201612",
+     "score": 48.5
+    },
+    {
+     "anomes": "201703",
+     "score": 45.1
+    },
+    {
+     "anomes": "201706",
+     "score": 45.1
+    },
     {
      "anomes": "201709",
      "score": 48.1
@@ -19936,6 +21804,46 @@
    "capital_principal_pct": 24.42,
    "rwa_brl": 15727819886.0,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 65.3
+    },
+    {
+     "anomes": "201506",
+     "score": 70.4
+    },
+    {
+     "anomes": "201509",
+     "score": 76.0
+    },
+    {
+     "anomes": "201512",
+     "score": 75.0
+    },
+    {
+     "anomes": "201603",
+     "score": 71.0
+    },
+    {
+     "anomes": "201606",
+     "score": 67.5
+    },
+    {
+     "anomes": "201609",
+     "score": 56.9
+    },
+    {
+     "anomes": "201612",
+     "score": 53.0
+    },
+    {
+     "anomes": "201703",
+     "score": 71.0
+    },
+    {
+     "anomes": "201706",
+     "score": 66.7
+    },
     {
      "anomes": "201709",
      "score": 57.2
@@ -20602,6 +22510,10 @@
    "rwa_brl": 5999018398.55,
    "historico_score": [
     {
+     "anomes": "201609",
+     "score": 16.7
+    },
+    {
      "anomes": "201909",
      "score": 28.1
     },
@@ -20883,6 +22795,26 @@
    "capital_principal_pct": 12.93,
    "rwa_brl": 12247691978.65,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 88.2
+    },
+    {
+     "anomes": "201506",
+     "score": 75.5
+    },
+    {
+     "anomes": "201509",
+     "score": 72.0
+    },
+    {
+     "anomes": "201512",
+     "score": 74.0
+    },
+    {
+     "anomes": "201603",
+     "score": 73.5
+    },
     {
      "anomes": "201906",
      "score": 67.7
@@ -21177,6 +23109,30 @@
    "capital_principal_pct": 14.19,
    "rwa_brl": 9312753982.43,
    "historico_score": [
+    {
+     "anomes": "201603",
+     "score": 42.0
+    },
+    {
+     "anomes": "201606",
+     "score": 47.5
+    },
+    {
+     "anomes": "201609",
+     "score": 42.6
+    },
+    {
+     "anomes": "201612",
+     "score": 43.0
+    },
+    {
+     "anomes": "201703",
+     "score": 41.2
+    },
+    {
+     "anomes": "201706",
+     "score": 43.1
+    },
     {
      "anomes": "201709",
      "score": 45.2
@@ -21488,6 +23444,46 @@
    "rwa_brl": 8731898128.64,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 51.0
+    },
+    {
+     "anomes": "201506",
+     "score": 56.1
+    },
+    {
+     "anomes": "201509",
+     "score": 54.1
+    },
+    {
+     "anomes": "201512",
+     "score": 59.7
+    },
+    {
+     "anomes": "201603",
+     "score": 56.5
+    },
+    {
+     "anomes": "201606",
+     "score": 59.0
+    },
+    {
+     "anomes": "201609",
+     "score": 56.4
+    },
+    {
+     "anomes": "201612",
+     "score": 56.5
+    },
+    {
+     "anomes": "201703",
+     "score": 56.9
+    },
+    {
+     "anomes": "201706",
+     "score": 60.8
+    },
+    {
      "anomes": "201709",
      "score": 57.2
     },
@@ -21755,6 +23751,22 @@
    "capital_principal_pct": 15.68,
    "rwa_brl": 2688466479.37,
    "historico_score": [
+    {
+     "anomes": "201609",
+     "score": 45.7
+    },
+    {
+     "anomes": "201612",
+     "score": 53.3
+    },
+    {
+     "anomes": "201703",
+     "score": 45.0
+    },
+    {
+     "anomes": "201706",
+     "score": 40.0
+    },
     {
      "anomes": "201709",
      "score": 46.7
@@ -22151,6 +24163,26 @@
    "capital_principal_pct": 36.07,
    "rwa_brl": 1270574921.9,
    "historico_score": [
+    {
+     "anomes": "201606",
+     "score": 70.5
+    },
+    {
+     "anomes": "201609",
+     "score": 67.2
+    },
+    {
+     "anomes": "201612",
+     "score": 72.0
+    },
+    {
+     "anomes": "201703",
+     "score": 67.2
+    },
+    {
+     "anomes": "201706",
+     "score": 71.1
+    },
     {
      "anomes": "201709",
      "score": 46.1
@@ -22672,6 +24704,26 @@
    "rwa_brl": 10580380850.3,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 33.3
+    },
+    {
+     "anomes": "201506",
+     "score": 36.1
+    },
+    {
+     "anomes": "201509",
+     "score": 47.2
+    },
+    {
+     "anomes": "201512",
+     "score": 29.4
+    },
+    {
+     "anomes": "201603",
+     "score": 40.2
+    },
+    {
      "anomes": "202003",
      "score": 38.1
     },
@@ -22943,6 +24995,46 @@
    "capital_principal_pct": 18.76,
    "rwa_brl": 8797489479.2,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 60.2
+    },
+    {
+     "anomes": "201506",
+     "score": 61.8
+    },
+    {
+     "anomes": "201509",
+     "score": 46.4
+    },
+    {
+     "anomes": "201512",
+     "score": 47.5
+    },
+    {
+     "anomes": "201603",
+     "score": 47.0
+    },
+    {
+     "anomes": "201606",
+     "score": 54.0
+    },
+    {
+     "anomes": "201609",
+     "score": 55.9
+    },
+    {
+     "anomes": "201612",
+     "score": 40.0
+    },
+    {
+     "anomes": "201703",
+     "score": 58.4
+    },
+    {
+     "anomes": "201706",
+     "score": 60.8
+    },
     {
      "anomes": "201709",
      "score": 43.8
@@ -23237,6 +25329,46 @@
    "capital_principal_pct": 13.13,
    "rwa_brl": 5657472468.07,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 42.6
+    },
+    {
+     "anomes": "201506",
+     "score": 41.7
+    },
+    {
+     "anomes": "201509",
+     "score": 48.2
+    },
+    {
+     "anomes": "201512",
+     "score": 46.4
+    },
+    {
+     "anomes": "201603",
+     "score": 43.8
+    },
+    {
+     "anomes": "201606",
+     "score": 44.6
+    },
+    {
+     "anomes": "201609",
+     "score": 48.3
+    },
+    {
+     "anomes": "201612",
+     "score": 50.0
+    },
+    {
+     "anomes": "201703",
+     "score": 51.7
+    },
+    {
+     "anomes": "201706",
+     "score": 49.2
+    },
     {
      "anomes": "201709",
      "score": 38.3
@@ -24032,6 +26164,46 @@
    "rwa_brl": 6195794037.68,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 65.8
+    },
+    {
+     "anomes": "201506",
+     "score": 57.4
+    },
+    {
+     "anomes": "201509",
+     "score": 58.3
+    },
+    {
+     "anomes": "201512",
+     "score": 72.3
+    },
+    {
+     "anomes": "201603",
+     "score": 57.1
+    },
+    {
+     "anomes": "201606",
+     "score": 60.7
+    },
+    {
+     "anomes": "201609",
+     "score": 57.8
+    },
+    {
+     "anomes": "201612",
+     "score": 58.4
+    },
+    {
+     "anomes": "201703",
+     "score": 63.4
+    },
+    {
+     "anomes": "201706",
+     "score": 60.0
+    },
+    {
      "anomes": "201709",
      "score": 59.2
     },
@@ -24339,6 +26511,46 @@
    "capital_principal_pct": 9.49,
    "rwa_brl": 10632411260.18,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 72.5
+    },
+    {
+     "anomes": "201506",
+     "score": 71.5
+    },
+    {
+     "anomes": "201509",
+     "score": 56.1
+    },
+    {
+     "anomes": "201512",
+     "score": 57.1
+    },
+    {
+     "anomes": "201603",
+     "score": 62.5
+    },
+    {
+     "anomes": "201606",
+     "score": 55.5
+    },
+    {
+     "anomes": "201609",
+     "score": 53.5
+    },
+    {
+     "anomes": "201612",
+     "score": 60.0
+    },
+    {
+     "anomes": "201703",
+     "score": 59.8
+    },
+    {
+     "anomes": "201706",
+     "score": 61.8
+    },
     {
      "anomes": "201709",
      "score": 60.5
@@ -24653,6 +26865,10 @@
    "capital_principal_pct": 18.37,
    "rwa_brl": 7573704749.08,
    "historico_score": [
+    {
+     "anomes": "201703",
+     "score": 35.9
+    },
     {
      "anomes": "201912",
      "score": 50.0
@@ -25141,6 +27357,46 @@
    "capital_principal_pct": 12.63,
    "rwa_brl": 9460655384.05,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 62.8
+    },
+    {
+     "anomes": "201506",
+     "score": 66.3
+    },
+    {
+     "anomes": "201509",
+     "score": 59.2
+    },
+    {
+     "anomes": "201512",
+     "score": 64.8
+    },
+    {
+     "anomes": "201603",
+     "score": 78.5
+    },
+    {
+     "anomes": "201606",
+     "score": 72.0
+    },
+    {
+     "anomes": "201609",
+     "score": 63.7
+    },
+    {
+     "anomes": "201612",
+     "score": 60.0
+    },
+    {
+     "anomes": "201703",
+     "score": 61.8
+    },
+    {
+     "anomes": "201706",
+     "score": 57.4
+    },
     {
      "anomes": "201709",
      "score": 60.1
@@ -25825,6 +28081,14 @@
    "rwa_brl": 6140253722.15,
    "historico_score": [
     {
+     "anomes": "201703",
+     "score": 45.0
+    },
+    {
+     "anomes": "201706",
+     "score": 45.8
+    },
+    {
      "anomes": "201709",
      "score": 42.5
     },
@@ -26031,6 +28295,46 @@
    "rwa_brl": 11731310083.61,
    "historico_score": [
     {
+     "anomes": "201503",
+     "score": 51.9
+    },
+    {
+     "anomes": "201506",
+     "score": 49.1
+    },
+    {
+     "anomes": "201509",
+     "score": 48.1
+    },
+    {
+     "anomes": "201512",
+     "score": 49.1
+    },
+    {
+     "anomes": "201603",
+     "score": 60.7
+    },
+    {
+     "anomes": "201606",
+     "score": 66.1
+    },
+    {
+     "anomes": "201609",
+     "score": 56.0
+    },
+    {
+     "anomes": "201612",
+     "score": 60.9
+    },
+    {
+     "anomes": "201703",
+     "score": 62.5
+    },
+    {
+     "anomes": "201706",
+     "score": 63.3
+    },
+    {
      "anomes": "201709",
      "score": 54.2
     },
@@ -26232,6 +28536,46 @@
    "capital_principal_pct": 58.12,
    "rwa_brl": 2660300348.95,
    "historico_score": [
+    {
+     "anomes": "201503",
+     "score": 27.6
+    },
+    {
+     "anomes": "201506",
+     "score": 28.6
+    },
+    {
+     "anomes": "201509",
+     "score": 33.6
+    },
+    {
+     "anomes": "201512",
+     "score": 33.1
+    },
+    {
+     "anomes": "201603",
+     "score": 26.5
+    },
+    {
+     "anomes": "201606",
+     "score": 28.0
+    },
+    {
+     "anomes": "201609",
+     "score": 29.4
+    },
+    {
+     "anomes": "201612",
+     "score": 31.0
+    },
+    {
+     "anomes": "201703",
+     "score": 27.4
+    },
+    {
+     "anomes": "201706",
+     "score": 27.9
+    },
     {
      "anomes": "201709",
      "score": 30.3
@@ -26948,7 +29292,7 @@
    "label": "S5 — porte reduzido / metodologia simplificada"
   }
  },
- "metodo": "Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do próprio grupo (IF.data 202603); grupos com <5 membros no corte dos 100 maiores usam o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital (Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório Informações de Capital, indisponível na Olinda). Histórico de score em 35 trimestres (backfill do Resumo desde 2015 via Olinda; períodos até 2024 usam a Carteira de Crédito Classificada do plano contábil antigo — a fronteira 2024/2025 da Res. 4.966 atravessa a série e está marcada na aba Regulação; a segmentação prudencial ATUAL é aplicada retroativamente aos períodos antigos). Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto).",
+ "metodo": "Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do próprio grupo (IF.data 202603); grupos com <5 membros no corte dos 100 maiores usam o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital (Índice de Basileia, invertido), rentabilidade (ROE, invertido), alavancagem, concentração em crédito e dependência de captações. Basileia/RWA da interface IF.data (relatório Informações de Capital, indisponível na Olinda). Histórico de score em 45 trimestres (backfill do Resumo desde 2015 via Olinda; períodos até 2024 usam a Carteira de Crédito Classificada do plano contábil antigo — a fronteira 2024/2025 da Res. 4.966 atravessa a série e está marcada na aba Regulação; a segmentação prudencial ATUAL é aplicada retroativamente aos períodos antigos). Vulnerabilidade a choques = CENÁRIO severo via elasticidades (intervalo, nunca ponto).",
  "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
  "aviso": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
 }
