@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-24T10:15:33+00:00",
+ "gerado_em": "2026-08-25T10:42:05+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -237,8 +237,8 @@
     "npl_inst_pct": 3.89,
     "basileia_pct": 14.9,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 357.81,
-     "Cartão de crédito - parcelado - Prefixado": 126.38
+     "Cartão de crédito - rotativo total - Prefixado": 369.63,
+     "Cartão de crédito - parcelado - Prefixado": 124.01
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -290,8 +290,8 @@
     "npl_inst_pct": 4.04,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 472.47,
-     "Cartão de crédito - parcelado - Prefixado": 205.92
+     "Cartão de crédito - rotativo total - Prefixado": 477.19,
+     "Cartão de crédito - parcelado - Prefixado": 221.45
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -343,8 +343,8 @@
     "npl_inst_pct": 20.81,
     "basileia_pct": 15.13,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 728.72,
-     "Cartão de crédito - parcelado - Prefixado": 213.08
+     "Cartão de crédito - rotativo total - Prefixado": 705.67,
+     "Cartão de crédito - parcelado - Prefixado": 231.65
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -396,8 +396,8 @@
     "npl_inst_pct": 11.29,
     "basileia_pct": 11.6,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 542.45,
-     "Cartão de crédito - parcelado - Prefixado": 104.51
+     "Cartão de crédito - rotativo total - Prefixado": 542.63,
+     "Cartão de crédito - parcelado - Prefixado": 114.68
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -424,8 +424,8 @@
     "npl_inst_pct": 4.89,
     "basileia_pct": 13.98,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 501.39,
-     "Cartão de crédito - parcelado - Prefixado": 201.39
+     "Cartão de crédito - rotativo total - Prefixado": 500.43,
+     "Cartão de crédito - parcelado - Prefixado": 205.45
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -502,8 +502,8 @@
     "npl_inst_pct": 0.39,
     "basileia_pct": 17.97,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 221.25,
-     "Cartão de crédito - parcelado - Prefixado": 121.13
+     "Cartão de crédito - rotativo total - Prefixado": 218.34,
+     "Cartão de crédito - parcelado - Prefixado": 123.32
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -580,8 +580,8 @@
     "npl_inst_pct": 5.74,
     "basileia_pct": 15.91,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 246.11,
-     "Cartão de crédito - parcelado - Prefixado": 103.23
+     "Cartão de crédito - rotativo total - Prefixado": 243.26,
+     "Cartão de crédito - parcelado - Prefixado": 103.91
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -634,7 +634,7 @@
     "basileia_pct": 18.65,
     "taxas_novas": {
      "Cartão de crédito - rotativo total - Prefixado": 891.78,
-     "Cartão de crédito - parcelado - Prefixado": 465.03
+     "Cartão de crédito - parcelado - Prefixado": 450.98
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -661,8 +661,8 @@
     "npl_inst_pct": 23.67,
     "basileia_pct": 13.93,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 889.34,
-     "Cartão de crédito - parcelado - Prefixado": 220.66
+     "Cartão de crédito - rotativo total - Prefixado": 889.38,
+     "Cartão de crédito - parcelado - Prefixado": 224.7
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -689,8 +689,8 @@
     "npl_inst_pct": 26.75,
     "basileia_pct": 18.56,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 798.37,
-     "Cartão de crédito - parcelado - Prefixado": 431.34
+     "Cartão de crédito - rotativo total - Prefixado": 798.39,
+     "Cartão de crédito - parcelado - Prefixado": 445.42
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -742,8 +742,8 @@
     "npl_inst_pct": 27.41,
     "basileia_pct": 12.45,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 1353.97,
-     "Cartão de crédito - parcelado - Prefixado": 386.68
+     "Cartão de crédito - rotativo total - Prefixado": 1354.26,
+     "Cartão de crédito - parcelado - Prefixado": 389.78
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -795,8 +795,8 @@
     "npl_inst_pct": 2.42,
     "basileia_pct": 13.55,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 76.95,
-     "Cartão de crédito - parcelado - Prefixado": 43.77
+     "Cartão de crédito - rotativo total - Prefixado": 53.65,
+     "Cartão de crédito - parcelado - Prefixado": 42.58
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -864,8 +864,8 @@
     "npl_inst_pct": 3.7,
     "basileia_pct": 14.68,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 146.76,
-     "Cartão de crédito - parcelado - Prefixado": 70.71
+     "Cartão de crédito - rotativo total - Prefixado": 47.18,
+     "Cartão de crédito - parcelado - Prefixado": 70.64
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -892,8 +892,8 @@
     "npl_inst_pct": 38.91,
     "basileia_pct": 12.42,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 888.38,
-     "Cartão de crédito - parcelado - Prefixado": 204.08
+     "Cartão de crédito - rotativo total - Prefixado": 929.8,
+     "Cartão de crédito - parcelado - Prefixado": 190.92
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -920,7 +920,7 @@
     "npl_inst_pct": 0.03,
     "basileia_pct": null,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 687.81
+     "Cartão de crédito - rotativo total - Prefixado": 792.23
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1000,8 +1000,8 @@
     "npl_inst_pct": 1.74,
     "basileia_pct": 17.35,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 245.51,
-     "Cartão de crédito - parcelado - Prefixado": 173.43
+     "Cartão de crédito - rotativo total - Prefixado": 241.26,
+     "Cartão de crédito - parcelado - Prefixado": 181.86
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1053,8 +1053,8 @@
     "npl_inst_pct": 19.77,
     "basileia_pct": 14.31,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 991.57,
-     "Cartão de crédito - parcelado - Prefixado": 170.29
+     "Cartão de crédito - rotativo total - Prefixado": 991.69,
+     "Cartão de crédito - parcelado - Prefixado": 140.46
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1082,7 +1082,7 @@
     "basileia_pct": 14.04,
     "taxas_novas": {
      "Cartão de crédito - rotativo total - Prefixado": 331.16,
-     "Cartão de crédito - parcelado - Prefixado": 214.26
+     "Cartão de crédito - parcelado - Prefixado": 210.74
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1109,8 +1109,8 @@
     "npl_inst_pct": 0.17,
     "basileia_pct": 14.19,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 501.39,
-     "Cartão de crédito - parcelado - Prefixado": 201.39
+     "Cartão de crédito - rotativo total - Prefixado": 500.43,
+     "Cartão de crédito - parcelado - Prefixado": 205.45
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1162,8 +1162,8 @@
     "npl_inst_pct": 4.83,
     "basileia_pct": 15.4,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 636.68,
-     "Cartão de crédito - parcelado - Prefixado": 404.68
+     "Cartão de crédito - rotativo total - Prefixado": 635.63,
+     "Cartão de crédito - parcelado - Prefixado": 404.46
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1715,8 +1715,8 @@
     "npl_inst_pct": 3.17,
     "basileia_pct": 16.82,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 560.24,
-     "Cartão de crédito - parcelado - Prefixado": 162.96
+     "Cartão de crédito - rotativo total - Prefixado": 560.28,
+     "Cartão de crédito - parcelado - Prefixado": 165.77
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1768,8 +1768,8 @@
     "npl_inst_pct": 6.56,
     "basileia_pct": 17.29,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 285.38,
-     "Cartão de crédito - parcelado - Prefixado": 263.55
+     "Cartão de crédito - rotativo total - Prefixado": 287.56,
+     "Cartão de crédito - parcelado - Prefixado": 255.17
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1796,8 +1796,8 @@
     "npl_inst_pct": 24.66,
     "basileia_pct": null,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 262.81,
-     "Cartão de crédito - parcelado - Prefixado": 92.98
+     "Cartão de crédito - rotativo total - Prefixado": 335.89,
+     "Cartão de crédito - parcelado - Prefixado": 98.75
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1874,8 +1874,8 @@
     "npl_inst_pct": 22.17,
     "basileia_pct": 15.06,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 537.96,
-     "Cartão de crédito - parcelado - Prefixado": 101.36
+     "Cartão de crédito - rotativo total - Prefixado": 529.16,
+     "Cartão de crédito - parcelado - Prefixado": 115.76
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -2101,8 +2101,10 @@
     "pct_carteira_inst": 9.6,
     "npl_inst_pct": 6.52,
     "basileia_pct": 14.25,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Cartão de crédito - rotativo total - Prefixado": 41.69
+    },
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 18.48,
      "m_produto": 0.72,
@@ -2426,8 +2428,10 @@
     "pct_carteira_inst": 1.8,
     "npl_inst_pct": 1.36,
     "basileia_pct": 17.21,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Cartão de crédito - rotativo total - Prefixado": 41.69
+    },
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 0.29,
      "m_produto": 0.72,
@@ -2827,8 +2831,8 @@
     "npl_inst_pct": 3.47,
     "basileia_pct": 20.03,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 501.39,
-     "Cartão de crédito - parcelado - Prefixado": 201.39
+     "Cartão de crédito - rotativo total - Prefixado": 500.43,
+     "Cartão de crédito - parcelado - Prefixado": 205.45
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3396,8 +3400,8 @@
     "npl_inst_pct": 27.85,
     "basileia_pct": 13.48,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 551.74,
-     "Cartão de crédito - parcelado - Prefixado": 82.93
+     "Cartão de crédito - rotativo total - Prefixado": 596.4,
+     "Cartão de crédito - parcelado - Prefixado": 94.17
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -3624,8 +3628,8 @@
     "npl_inst_pct": 37.1,
     "basileia_pct": 49.81,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 930.01,
-     "Cartão de crédito - parcelado - Prefixado": 347.44
+     "Cartão de crédito - rotativo total - Prefixado": 927.29,
+     "Cartão de crédito - parcelado - Prefixado": 314.61
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3803,7 +3807,7 @@
     "basileia_pct": 15.36,
     "taxas_novas": {
      "Cartão de crédito - rotativo total - Prefixado": 297.86,
-     "Cartão de crédito - parcelado - Prefixado": 137.66
+     "Cartão de crédito - parcelado - Prefixado": 133.14
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -3830,8 +3834,8 @@
     "npl_inst_pct": 7.59,
     "basileia_pct": 8.87,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 181.17,
-     "Cartão de crédito - parcelado - Prefixado": 79.23
+     "Cartão de crédito - rotativo total - Prefixado": 185.96,
+     "Cartão de crédito - parcelado - Prefixado": 79.28
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4124,8 +4128,8 @@
     "npl_inst_pct": 44.84,
     "basileia_pct": null,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 442.81,
-     "Cartão de crédito - parcelado - Prefixado": 114.45
+     "Cartão de crédito - rotativo total - Prefixado": 442.85,
+     "Cartão de crédito - parcelado - Prefixado": 112.87
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4202,8 +4206,8 @@
     "npl_inst_pct": 1.38,
     "basileia_pct": 13.4,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 194.75,
-     "Cartão de crédito - parcelado - Prefixado": 112.71
+     "Cartão de crédito - rotativo total - Prefixado": 203.34,
+     "Cartão de crédito - parcelado - Prefixado": 115.94
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4330,7 +4334,7 @@
     "npl_inst_pct": 8.89,
     "basileia_pct": 15.41,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 508.79
+     "Cartão de crédito - rotativo total - Prefixado": 508.64
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4407,7 +4411,7 @@
     "npl_inst_pct": 9.94,
     "basileia_pct": 23.28,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 4.1,
+     "Cartão de crédito - rotativo total - Prefixado": 8.15,
      "Cartão de crédito - parcelado - Prefixado": 14.73
     },
     "taxa_casamento": "cnpj8",
@@ -4576,8 +4580,7 @@
     "npl_inst_pct": 4.14,
     "basileia_pct": 12.12,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 532.78,
-     "Cartão de crédito - parcelado - Prefixado": 199.7
+     "Cartão de crédito - rotativo total - Prefixado": 532.78
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4807,7 +4810,7 @@
     "npl_inst_pct": 5.52,
     "basileia_pct": 9.56,
     "taxas_novas": {
-     "Cartão de crédito - parcelado - Prefixado": 67.77
+     "Cartão de crédito - parcelado - Prefixado": 67.52
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4884,7 +4887,7 @@
     "npl_inst_pct": 30.17,
     "basileia_pct": 22.97,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 558.75
+     "Cartão de crédito - rotativo total - Prefixado": 525.14
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -4936,8 +4939,8 @@
     "npl_inst_pct": 3.77,
     "basileia_pct": 22.7,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 343.32,
-     "Cartão de crédito - parcelado - Prefixado": 156.79
+     "Cartão de crédito - rotativo total - Prefixado": 348.34,
+     "Cartão de crédito - parcelado - Prefixado": 158.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5180,7 +5183,7 @@
     "npl_inst_pct": 2.29,
     "basileia_pct": 20.78,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 199.82,
+     "Cartão de crédito - rotativo total - Prefixado": 237.26,
      "Cartão de crédito - parcelado - Prefixado": 92.38
     },
     "taxa_casamento": "nome",
@@ -5208,7 +5211,7 @@
     "npl_inst_pct": 0.03,
     "basileia_pct": 21.67,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 289.11,
+     "Cartão de crédito - rotativo total - Prefixado": 275.14,
      "Cartão de crédito - parcelado - Prefixado": 130.77
     },
     "taxa_casamento": "cnpj8",
@@ -5336,7 +5339,8 @@
     "npl_inst_pct": 7.24,
     "basileia_pct": 12.07,
     "taxas_novas": {
-     "Cartão de crédito - rotativo total - Prefixado": 297.51
+     "Cartão de crédito - rotativo total - Prefixado": 293.24,
+     "Cartão de crédito - parcelado - Prefixado": 152.03
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -5389,7 +5393,7 @@
     "basileia_pct": 15.42,
     "taxas_novas": {
      "Cartão de crédito - rotativo total - Prefixado": 183.5,
-     "Cartão de crédito - parcelado - Prefixado": 164.74
+     "Cartão de crédito - parcelado - Prefixado": 149.07
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6102,14 +6106,14 @@
     {
      "segmento": "PESSOA FÍSICA",
      "modalidade": "Cartão de crédito - rotativo total - Prefixado",
-     "inicio": "2026-08-03",
-     "fim": "2026-08-07",
-     "n_inst": 64,
-     "mediana_aa": 501.39,
-     "p25_aa": 287.97,
+     "inicio": "2026-08-04",
+     "fim": "2026-08-10",
+     "n_inst": 65,
+     "mediana_aa": 500.4,
+     "p25_aa": 275.14,
      "p75_aa": 629.16,
      "min_aa": 2.4,
-     "max_aa": 1353.97,
+     "max_aa": 1354.26,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -6657,14 +6661,21 @@
        "p25_aa": 287.97,
        "p75_aa": 629.16,
        "n": 64
+      },
+      {
+       "inicio": "2026-08-04",
+       "mediana_aa": 500.4,
+       "p25_aa": 275.14,
+       "p75_aa": 629.16,
+       "n": 65
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 12,
-       "mediana_aa": 500.75,
-       "p25_aa": 357.81,
-       "p75_aa": 543.46,
+       "mediana_aa": 500.4,
+       "p25_aa": 369.63,
+       "p75_aa": 536.62,
        "serie": [
         {
          "inicio": "2025-02-14",
@@ -7211,14 +7222,21 @@
          "p25_aa": 357.81,
          "p75_aa": 543.46,
          "n": 12
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 500.4,
+         "p25_aa": 369.63,
+         "p75_aa": 536.62,
+         "n": 12
         }
        ]
       },
       "S2": {
        "n": 6,
-       "mediana_aa": 245.51,
-       "p25_aa": 245.4,
-       "p75_aa": 527.55,
+       "mediana_aa": 241.26,
+       "p25_aa": 231.42,
+       "p75_aa": 566.62,
        "serie": [
         {
          "inicio": "2025-02-17",
@@ -7737,14 +7755,21 @@
          "p25_aa": 245.4,
          "p75_aa": 527.55,
          "n": 6
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 241.26,
+         "p25_aa": 231.42,
+         "p75_aa": 566.62,
+         "n": 6
         }
        ]
       },
       "S3": {
        "n": 15,
-       "mediana_aa": 501.39,
-       "p25_aa": 287.97,
-       "p75_aa": 542.45,
+       "mediana_aa": 500.43,
+       "p25_aa": 287.56,
+       "p75_aa": 542.63,
        "serie": [
         {
          "inicio": "2025-02-14",
@@ -8291,14 +8316,21 @@
          "p25_aa": 287.97,
          "p75_aa": 542.45,
          "n": 15
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 500.43,
+         "p25_aa": 287.56,
+         "p75_aa": 542.63,
+         "n": 15
         }
        ]
       },
       "S4": {
-       "n": 26,
-       "mediana_aa": 558.75,
-       "p25_aa": 199.82,
-       "p75_aa": 889.34,
+       "n": 27,
+       "mediana_aa": 596.4,
+       "p25_aa": 203.34,
+       "p75_aa": 891.78,
        "serie": [
         {
          "inicio": "2025-02-14",
@@ -8845,14 +8877,21 @@
          "p25_aa": 199.82,
          "p75_aa": 889.34,
          "n": 26
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 596.4,
+         "p25_aa": 203.34,
+         "p75_aa": 891.78,
+         "n": 27
         }
        ]
       },
       "S5": {
        "n": 5,
-       "mediana_aa": 441.93,
-       "p25_aa": 289.11,
-       "p75_aa": 442.81,
+       "mediana_aa": 441.33,
+       "p25_aa": 335.89,
+       "p75_aa": 442.85,
        "serie": [
         {
          "inicio": "2026-07-22",
@@ -8874,6 +8913,13 @@
          "p25_aa": 289.11,
          "p75_aa": 442.81,
          "n": 5
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 441.33,
+         "p25_aa": 335.89,
+         "p75_aa": 442.85,
+         "n": 5
         }
        ]
       }
@@ -8891,46 +8937,55 @@
       {
        "cnpj8": "05351887",
        "nome": "ZEMA CFI S/A",
-       "taxa_am": 0.34,
-       "taxa_aa": 4.1,
+       "taxa_am": 0.66,
+       "taxa_aa": 8.15,
        "posicao": 2,
        "cod_congl": "C0083584",
        "sr": "S4"
       },
       {
-       "cnpj8": "31895683",
-       "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-       "taxa_am": 4.58,
-       "taxa_aa": 71.1,
+       "cnpj8": "14388334",
+       "nome": "PARANA BCO S.A.",
+       "taxa_am": 2.95,
+       "taxa_aa": 41.69,
        "posicao": 3,
-       "cod_congl": "C0080477",
+       "cod_congl": "C0080233",
        "sr": "S4"
-      },
-      {
-       "cnpj8": "62232889",
-       "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 4.87,
-       "taxa_aa": 76.95,
-       "posicao": 4,
-       "cod_congl": "C0081744",
-       "sr": "S3"
       },
       {
        "cnpj8": "10664513",
        "nome": "BCO AGIBANK S.A.",
-       "taxa_am": 7.82,
-       "taxa_aa": 146.76,
-       "posicao": 5,
+       "taxa_am": 3.27,
+       "taxa_aa": 47.18,
+       "posicao": 4,
        "cod_congl": "C0083694",
        "sr": "S3"
       },
       {
-       "cnpj8": "45246410",
-       "nome": "BANCO GENIAL",
-       "taxa_am": 9.0,
-       "taxa_aa": 181.17,
+       "cnpj8": "62232889",
+       "nome": "BCO DAYCOVAL S.A",
+       "taxa_am": 3.64,
+       "taxa_aa": 53.65,
+       "posicao": 5,
+       "cod_congl": "C0081744",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "61186680",
+       "nome": "BCO BMG S.A.",
+       "taxa_am": 3.72,
+       "taxa_aa": 55.0,
        "posicao": 6,
-       "cod_congl": "C0080941",
+       "cod_congl": "C0080178",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "31895683",
+       "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
+       "taxa_am": 4.84,
+       "taxa_aa": 76.23,
+       "posicao": 7,
+       "cod_congl": "C0080477",
        "sr": "S4"
       },
       {
@@ -8938,17 +8993,17 @@
        "nome": "BCO STELLANTIS S.A.",
        "taxa_am": 9.07,
        "taxa_aa": 183.5,
-       "posicao": 7,
+       "posicao": 8,
        "cod_congl": "C0087298",
        "sr": "S4"
       },
       {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 9.43,
-       "taxa_aa": 194.75,
-       "posicao": 8,
-       "cod_congl": "C0080659",
+       "cnpj8": "45246410",
+       "nome": "BANCO GENIAL",
+       "taxa_am": 9.15,
+       "taxa_aa": 185.96,
+       "posicao": 9,
+       "cod_congl": "C0080941",
        "sr": "S4"
       },
       {
@@ -8956,90 +9011,81 @@
        "nome": "BCO DA AMAZONIA S.A.",
        "taxa_am": 9.58,
        "taxa_aa": 199.66,
-       "posicao": 9,
+       "posicao": 10,
        "cod_congl": "C0081249",
        "sr": "S3"
       },
       {
-       "cnpj8": "00556603",
-       "nome": "BANCO BARI S.A.",
-       "taxa_am": 9.58,
-       "taxa_aa": 199.82,
-       "posicao": 10,
-       "cod_congl": "C0080893",
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 9.69,
+       "taxa_aa": 203.34,
+       "posicao": 11,
+       "cod_congl": "C0080659",
        "sr": "S4"
       },
       {
        "cnpj8": "02038232",
        "nome": "BANCO SICOOB S.A.",
-       "taxa_am": 10.21,
-       "taxa_aa": 221.25,
-       "posicao": 11,
+       "taxa_am": 10.13,
+       "taxa_aa": 218.34,
+       "posicao": 12,
        "cod_congl": "C0080879",
        "sr": "S2"
       },
       {
        "cnpj8": "33264668",
        "nome": "BCO XP S.A.",
-       "taxa_am": 10.88,
-       "taxa_aa": 245.4,
-       "posicao": 12,
+       "taxa_am": 10.5,
+       "taxa_aa": 231.42,
+       "posicao": 13,
        "cod_congl": "C0082475",
        "sr": "S2"
       },
       {
+       "cnpj8": "00556603",
+       "nome": "BANCO BARI S.A.",
+       "taxa_am": 10.66,
+       "taxa_aa": 237.26,
+       "posicao": 14,
+       "cod_congl": "C0080893",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "58160789",
        "nome": "BCO SAFRA S.A.",
-       "taxa_am": 10.88,
-       "taxa_aa": 245.51,
-       "posicao": 13,
+       "taxa_am": 10.77,
+       "taxa_aa": 241.26,
+       "posicao": 15,
        "cod_congl": "C0080109",
        "sr": "S2"
       },
       {
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 10.9,
-       "taxa_aa": 246.11,
-       "posicao": 14,
+       "taxa_am": 10.82,
+       "taxa_aa": 243.26,
+       "posicao": 16,
        "cod_congl": "C0080336",
        "sr": "S1"
       },
       {
-       "cnpj8": "06040559",
-       "nome": "KREDILIG S.A. - CFI",
-       "taxa_am": 11.34,
-       "taxa_aa": 262.81,
-       "posicao": 15,
-       "cod_congl": "C0083498",
+       "cnpj8": "48703388",
+       "nome": "ASA SCFI S.A.",
+       "taxa_am": 11.65,
+       "taxa_aa": 275.14,
+       "posicao": 17,
+       "cod_congl": "C0086608",
        "sr": "S5"
       },
       {
        "cnpj8": "60889128",
        "nome": "BCO SOFISA S.A.",
-       "taxa_am": 11.9,
-       "taxa_aa": 285.38,
-       "posicao": 16,
+       "taxa_am": 11.95,
+       "taxa_aa": 287.56,
+       "posicao": 18,
        "cod_congl": "C0080271",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "61186680",
-       "nome": "BCO BMG S.A.",
-       "taxa_am": 11.96,
-       "taxa_aa": 287.97,
-       "posicao": 17,
-       "cod_congl": "C0080178",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "48703388",
-       "nome": "ASA SCFI S.A.",
-       "taxa_am": 11.99,
-       "taxa_aa": 289.11,
-       "posicao": 18,
-       "cod_congl": "C0086608",
-       "sr": "S5"
       },
       {
        "cnpj8": "11760553",
@@ -9051,22 +9097,22 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "00360305",
-       "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 12.18,
-       "taxa_aa": 297.06,
-       "posicao": 20,
-       "cod_congl": "C0080738",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "09313766",
        "nome": "CARUANA SCFI",
-       "taxa_am": 12.19,
-       "taxa_aa": 297.51,
-       "posicao": 21,
+       "taxa_am": 12.09,
+       "taxa_aa": 293.24,
+       "posicao": 20,
        "cod_congl": "C0083591",
        "sr": "S4"
+      },
+      {
+       "cnpj8": "00360305",
+       "nome": "CAIXA ECONOMICA FEDERAL",
+       "taxa_am": 12.16,
+       "taxa_aa": 296.5,
+       "posicao": 21,
+       "cod_congl": "C0080738",
+       "sr": "S1"
       },
       {
        "cnpj8": "07237373",
@@ -9080,8 +9126,8 @@
       {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 12.33,
-       "taxa_aa": 303.57,
+       "taxa_am": 12.64,
+       "taxa_aa": 317.28,
        "posicao": 23,
        "cod_congl": "C0084693",
        "sr": "S3"
@@ -9096,38 +9142,47 @@
        "sr": "S3"
       },
       {
+       "cnpj8": "06040559",
+       "nome": "KREDILIG S.A. - CFI",
+       "taxa_am": 13.05,
+       "taxa_aa": 335.89,
+       "posicao": 25,
+       "cod_congl": "C0083498",
+       "sr": "S5"
+      },
+      {
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 13.21,
-       "taxa_aa": 343.32,
-       "posicao": 25,
+       "taxa_am": 13.32,
+       "taxa_aa": 348.34,
+       "posicao": 26,
        "cod_congl": "C0080329",
        "sr": "S1"
       },
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 13.52,
-       "taxa_aa": 357.81,
-       "posicao": 26,
+       "taxa_am": 13.76,
+       "taxa_aa": 369.63,
+       "posicao": 27,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
        "cnpj8": "60872504",
        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-       "taxa_am": 14.31,
-       "taxa_aa": 397.91,
-       "posicao": 27,
+       "taxa_am": 14.34,
+       "taxa_aa": 399.28,
+       "posicao": 28,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
        "cnpj8": "37229413",
        "nome": "SCFI EFÍ S.A.",
-       "taxa_am": 15.12,
-       "taxa_aa": 441.93,
-       "posicao": 28,
+       "taxa_am": 15.11,
+       "taxa_aa": 441.33,
+       "posicao": 29,
        "cod_congl": "C0084978",
        "sr": "S5"
       },
@@ -9135,17 +9190,17 @@
        "cnpj8": "07631026",
        "nome": "GOLCRED S/A - CFI",
        "taxa_am": 15.14,
-       "taxa_aa": 442.81,
-       "posicao": 29,
+       "taxa_aa": 442.85,
+       "posicao": 30,
        "cod_congl": "C0080965",
        "sr": "S5"
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 15.65,
-       "taxa_aa": 472.47,
-       "posicao": 30,
+       "taxa_am": 15.73,
+       "taxa_aa": 477.19,
+       "posicao": 31,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
@@ -9154,61 +9209,79 @@
        "nome": "CLOUDWALK FINANCEIRA S.A. CFI",
        "taxa_am": 16.1,
        "taxa_aa": 500.0,
-       "posicao": 31,
+       "posicao": 32,
        "cod_congl": "C0083474",
        "sr": "S5"
       },
       {
        "cnpj8": "06881898",
        "nome": "FIN. ITAU CBD CFI",
-       "taxa_am": 16.12,
-       "taxa_aa": 500.75,
-       "posicao": 32,
+       "taxa_am": 16.11,
+       "taxa_aa": 500.4,
+       "posicao": 33,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 16.13,
-       "taxa_aa": 501.39,
-       "posicao": 33,
+       "taxa_am": 16.11,
+       "taxa_aa": 500.43,
+       "posicao": 34,
        "cod_congl": "C0080996",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "31872495",
+       "nome": "BCO C6 S.A.",
+       "taxa_am": 16.11,
+       "taxa_aa": 500.45,
+       "posicao": 35,
+       "cod_congl": "C0084844",
        "sr": "S3"
       },
       {
        "cnpj8": "02992446",
        "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
        "taxa_am": 16.24,
-       "taxa_aa": 508.79,
-       "posicao": 34,
+       "taxa_aa": 508.64,
+       "posicao": 36,
        "cod_congl": "C0081407",
        "sr": "S3"
       },
       {
-       "cnpj8": "31872495",
-       "nome": "BCO C6 S.A.",
-       "taxa_am": 16.49,
-       "taxa_aa": 524.38,
-       "posicao": 35,
-       "cod_congl": "C0084844",
-       "sr": "S3"
+       "cnpj8": "59285411",
+       "nome": "BANCO PAN",
+       "taxa_am": 16.46,
+       "taxa_aa": 522.46,
+       "posicao": 37,
+       "cod_congl": "C0080336",
+       "sr": "S1"
       },
       {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 16.54,
-       "taxa_aa": 527.55,
-       "posicao": 36,
-       "cod_congl": "C0080154",
-       "sr": "S2"
+       "cnpj8": "05676026",
+       "nome": "CREDIARE CFI S.A.",
+       "taxa_am": 16.5,
+       "taxa_aa": 525.14,
+       "posicao": 38,
+       "cod_congl": "C0085427",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "07512441",
+       "nome": "HS FINANCEIRA",
+       "taxa_am": 16.56,
+       "taxa_aa": 529.16,
+       "posicao": 39,
+       "cod_congl": "C0083522",
+       "sr": "S4"
       },
       {
        "cnpj8": "74828799",
        "nome": "NOVO BCO CONTINENTAL S.A. - BM",
        "taxa_am": 16.62,
        "taxa_aa": 532.78,
-       "posicao": 37,
+       "posicao": 40,
        "cod_congl": "C0081768",
        "sr": "S4"
       },
@@ -9216,145 +9289,118 @@
        "cnpj8": "61182408",
        "nome": "BANCO INVESTCRED UNIBANCO S.A.",
        "taxa_am": 16.68,
-       "taxa_aa": 536.89,
-       "posicao": 38,
+       "taxa_aa": 536.62,
+       "posicao": 41,
        "cod_congl": "C0080099",
        "sr": "S1"
-      },
-      {
-       "cnpj8": "07512441",
-       "nome": "HS FINANCEIRA",
-       "taxa_am": 16.7,
-       "taxa_aa": 537.96,
-       "posicao": 39,
-       "cod_congl": "C0083522",
-       "sr": "S4"
       },
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
        "taxa_am": 16.77,
-       "taxa_aa": 542.45,
-       "posicao": 40,
+       "taxa_aa": 542.63,
+       "posicao": 42,
        "cod_congl": "C0080642",
        "sr": "S3"
       },
       {
        "cnpj8": "02206577",
        "nome": "LUIZACRED S.A. SCFI",
-       "taxa_am": 16.78,
-       "taxa_aa": 543.46,
-       "posicao": 41,
+       "taxa_am": 16.8,
+       "taxa_aa": 544.5,
+       "posicao": 43,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
-       "cnpj8": "05192316",
-       "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 16.91,
-       "taxa_aa": 551.74,
-       "posicao": 42,
-       "cod_congl": "C0080831",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 16.99,
-       "taxa_aa": 557.25,
-       "posicao": 43,
+       "taxa_am": 17.01,
+       "taxa_aa": 558.69,
+       "posicao": 44,
        "cod_congl": "C0080123",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "05676026",
-       "nome": "CREDIARE CFI S.A.",
-       "taxa_am": 17.01,
-       "taxa_aa": 558.75,
-       "posicao": 44,
-       "cod_congl": "C0085427",
-       "sr": "S4"
       },
       {
        "cnpj8": "04913711",
        "nome": "BCO DO EST. DO PA S.A.",
        "taxa_am": 17.03,
-       "taxa_aa": 560.24,
+       "taxa_aa": 560.28,
        "posicao": 45,
        "cod_congl": "C0081586",
        "sr": "S3"
       },
       {
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 17.13,
+       "taxa_aa": 566.62,
+       "posicao": 46,
+       "cod_congl": "C0080154",
+       "sr": "S2"
+      },
+      {
        "cnpj8": "01858774",
        "nome": "BCO BV S.A.",
-       "taxa_am": 17.39,
-       "taxa_aa": 584.92,
-       "posicao": 46,
+       "taxa_am": 17.4,
+       "taxa_aa": 585.38,
+       "posicao": 47,
        "cod_congl": "C0080484",
        "sr": "S2"
       },
       {
-       "cnpj8": "59285411",
-       "nome": "BANCO PAN",
-       "taxa_am": 17.57,
-       "taxa_aa": 597.85,
-       "posicao": 47,
-       "cod_congl": "C0080336",
-       "sr": "S1"
+       "cnpj8": "05192316",
+       "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
+       "taxa_am": 17.55,
+       "taxa_aa": 596.4,
+       "posicao": 48,
+       "cod_congl": "C0080831",
+       "sr": "S4"
       },
       {
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
        "taxa_am": 18.01,
        "taxa_aa": 629.16,
-       "posicao": 48,
+       "posicao": 49,
        "cod_congl": "C0084820",
        "sr": "S4"
       },
       {
        "cnpj8": "11970623",
        "nome": "BCO SENFF S.A.",
-       "taxa_am": 18.11,
-       "taxa_aa": 636.68,
-       "posicao": 49,
+       "taxa_am": 18.09,
+       "taxa_aa": 635.63,
+       "posicao": 50,
        "cod_congl": "C0083670",
        "sr": "S4"
       },
       {
        "cnpj8": "04184779",
        "nome": "BANCO BRADESCARD",
-       "taxa_am": 18.15,
-       "taxa_aa": 640.06,
-       "posicao": 50,
-       "cod_congl": "C0080075",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "36947229",
-       "nome": "COBUCCIO S.A. SCFI",
-       "taxa_am": 18.77,
-       "taxa_aa": 687.81,
+       "taxa_am": 18.21,
+       "taxa_aa": 644.58,
        "posicao": 51,
-       "cod_congl": "C0085173",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "27098060",
-       "nome": "BANCO DIGIO",
-       "taxa_am": 19.03,
-       "taxa_aa": 709.24,
-       "posicao": 52,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
        "cnpj8": "08357240",
        "nome": "BCO CSF S.A.",
-       "taxa_am": 19.27,
-       "taxa_aa": 728.72,
-       "posicao": 53,
+       "taxa_am": 18.99,
+       "taxa_aa": 705.67,
+       "posicao": 52,
        "cod_congl": "C0081610",
        "sr": "S3"
+      },
+      {
+       "cnpj8": "27098060",
+       "nome": "BANCO DIGIO",
+       "taxa_am": 19.03,
+       "taxa_aa": 709.21,
+       "posicao": 53,
+       "cod_congl": "C0080075",
+       "sr": "S1"
       },
       {
        "cnpj8": "13009717",
@@ -9368,35 +9414,35 @@
       {
        "cnpj8": "09516419",
        "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 19.61,
-       "taxa_aa": 757.22,
+       "taxa_am": 19.6,
+       "taxa_aa": 756.62,
        "posicao": 55,
        "cod_congl": "C0088022",
        "sr": "S3"
       },
       {
-       "cnpj8": "09464032",
-       "nome": "MIDWAY S.A. - SCFI",
-       "taxa_am": 20.08,
-       "taxa_aa": 798.37,
+       "cnpj8": "36947229",
+       "nome": "COBUCCIO S.A. SCFI",
+       "taxa_am": 20.01,
+       "taxa_aa": 792.23,
        "posicao": 56,
-       "cod_congl": "C0083553",
+       "cod_congl": "C0085173",
        "sr": "S4"
       },
       {
-       "cnpj8": "04814563",
-       "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 21.03,
-       "taxa_aa": 888.38,
+       "cnpj8": "09464032",
+       "nome": "MIDWAY S.A. - SCFI",
+       "taxa_am": 20.08,
+       "taxa_aa": 798.39,
        "posicao": 57,
-       "cod_congl": "C0083539",
+       "cod_congl": "C0083553",
        "sr": "S4"
       },
       {
        "cnpj8": "11285104",
        "nome": "NEON FINANCEIRA - SCFI S.A.",
-       "taxa_am": 21.04,
-       "taxa_aa": 889.34,
+       "taxa_am": 21.05,
+       "taxa_aa": 889.38,
        "posicao": 58,
        "cod_congl": "C0085702",
        "sr": "S4"
@@ -9411,38 +9457,47 @@
        "sr": "S4"
       },
       {
+       "cnpj8": "61033106",
+       "nome": "BCO CREFISA S.A.",
+       "taxa_am": 21.42,
+       "taxa_aa": 927.29,
+       "posicao": 60,
+       "cod_congl": "C0083632",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "37122487",
        "nome": "CALCRED S.A.",
-       "taxa_am": 21.38,
-       "taxa_aa": 922.66,
-       "posicao": 60,
+       "taxa_am": 21.43,
+       "taxa_aa": 928.19,
+       "posicao": 61,
        "cod_congl": "C0088170",
        "sr": "S4"
       },
       {
-       "cnpj8": "61033106",
-       "nome": "BCO CREFISA S.A.",
+       "cnpj8": "04814563",
+       "nome": "BCO AFINZ S.A. - BM",
        "taxa_am": 21.45,
-       "taxa_aa": 930.01,
-       "posicao": 61,
-       "cod_congl": "C0083632",
+       "taxa_aa": 929.8,
+       "posicao": 62,
+       "cod_congl": "C0083539",
        "sr": "S4"
       },
       {
        "cnpj8": "17351180",
        "nome": "BCO TRIANGULO S.A.",
        "taxa_am": 22.04,
-       "taxa_aa": 991.57,
-       "posicao": 62,
+       "taxa_aa": 991.69,
+       "posicao": 63,
        "cod_congl": "C0081438",
        "sr": "S4"
       },
       {
        "cnpj8": "91669747",
        "nome": "DM SCFI",
-       "taxa_am": 22.63,
-       "taxa_aa": 1056.61,
-       "posicao": 63,
+       "taxa_am": 23.22,
+       "taxa_aa": 1125.07,
+       "posicao": 64,
        "cod_congl": "C0083467",
        "sr": "S4"
       },
@@ -9450,8 +9505,8 @@
        "cnpj8": "43180355",
        "nome": "PEFISA S.A. - C.F.I.",
        "taxa_am": 24.99,
-       "taxa_aa": 1353.97,
-       "posicao": 64,
+       "taxa_aa": 1354.26,
+       "posicao": 65,
        "cod_congl": "C0080305",
        "sr": "S4"
       }
@@ -9460,12 +9515,12 @@
     {
      "segmento": "PESSOA FÍSICA",
      "modalidade": "Cartão de crédito - parcelado - Prefixado",
-     "inicio": "2026-08-03",
-     "fim": "2026-08-07",
+     "inicio": "2026-08-04",
+     "fim": "2026-08-10",
      "n_inst": 59,
-     "mediana_aa": 164.74,
-     "p25_aa": 103.23,
-     "p75_aa": 228.93,
+     "mediana_aa": 158.75,
+     "p25_aa": 103.91,
+     "p75_aa": 239.37,
      "min_aa": 1.2,
      "max_aa": 747.34,
      "moeda_estrangeira": false,
@@ -10015,14 +10070,21 @@
        "p25_aa": 103.23,
        "p75_aa": 228.93,
        "n": 59
+      },
+      {
+       "inicio": "2026-08-04",
+       "mediana_aa": 158.75,
+       "p25_aa": 103.91,
+       "p75_aa": 239.37,
+       "n": 59
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 12,
-       "mediana_aa": 194.78,
-       "p25_aa": 155.68,
-       "p75_aa": 254.91,
+       "mediana_aa": 198.1,
+       "p25_aa": 158.75,
+       "p75_aa": 267.55,
        "serie": [
         {
          "inicio": "2025-02-17",
@@ -10562,14 +10624,21 @@
          "p25_aa": 155.68,
          "p75_aa": 254.91,
          "n": 12
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 198.1,
+         "p25_aa": 158.75,
+         "p75_aa": 267.55,
+         "n": 12
         }
        ]
       },
       "S2": {
        "n": 6,
-       "mediana_aa": 135.71,
-       "p25_aa": 121.13,
-       "p75_aa": 173.43,
+       "mediana_aa": 133.14,
+       "p25_aa": 123.32,
+       "p75_aa": 181.86,
        "serie": [
         {
          "inicio": "2025-02-17",
@@ -11095,14 +11164,21 @@
          "p25_aa": 121.13,
          "p75_aa": 173.43,
          "n": 6
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 133.14,
+         "p25_aa": 123.32,
+         "p75_aa": 181.86,
+         "n": 6
         }
        ]
       },
       "S3": {
        "n": 14,
-       "mediana_aa": 162.96,
-       "p25_aa": 98.08,
-       "p75_aa": 201.39,
+       "mediana_aa": 141.64,
+       "p25_aa": 100.31,
+       "p75_aa": 210.74,
        "serie": [
         {
          "inicio": "2025-02-14",
@@ -11649,14 +11725,21 @@
          "p25_aa": 98.08,
          "p75_aa": 201.39,
          "n": 14
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 141.64,
+         "p25_aa": 100.31,
+         "p75_aa": 210.74,
+         "n": 14
         }
        ]
       },
       "S4": {
        "n": 23,
-       "mediana_aa": 204.08,
-       "p25_aa": 101.36,
-       "p75_aa": 347.44,
+       "mediana_aa": 190.92,
+       "p25_aa": 115.76,
+       "p75_aa": 354.82,
        "serie": [
         {
          "inicio": "2025-02-14",
@@ -12203,6 +12286,13 @@
          "p25_aa": 101.36,
          "p75_aa": 347.44,
          "n": 23
+        },
+        {
+         "inicio": "2026-08-04",
+         "mediana_aa": 190.92,
+         "p25_aa": 115.76,
+         "p75_aa": 354.82,
+         "n": 23
         }
        ]
       }
@@ -12229,8 +12319,8 @@
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 3.07,
-       "taxa_aa": 43.77,
+       "taxa_am": 3.0,
+       "taxa_aa": 42.58,
        "posicao": 3,
        "cod_congl": "C0081744",
        "sr": "S3"
@@ -12238,8 +12328,8 @@
       {
        "cnpj8": "17184037",
        "nome": "BCO MERCANTIL DO BRASIL S.A.",
-       "taxa_am": 3.69,
-       "taxa_aa": 54.47,
+       "taxa_am": 3.71,
+       "taxa_aa": 54.75,
        "posicao": 4,
        "cod_congl": "C0080123",
        "sr": "S3"
@@ -12247,8 +12337,8 @@
       {
        "cnpj8": "54403563",
        "nome": "BCO ARBI S.A.",
-       "taxa_am": 4.41,
-       "taxa_aa": 67.77,
+       "taxa_am": 4.39,
+       "taxa_aa": 67.52,
        "posicao": 5,
        "cod_congl": "C0081201",
        "sr": "S4"
@@ -12256,8 +12346,8 @@
       {
        "cnpj8": "10664513",
        "nome": "BCO AGIBANK S.A.",
-       "taxa_am": 4.56,
-       "taxa_aa": 70.71,
+       "taxa_am": 4.55,
+       "taxa_aa": 70.64,
        "posicao": 6,
        "cod_congl": "C0083694",
        "sr": "S3"
@@ -12265,8 +12355,8 @@
       {
        "cnpj8": "59285411",
        "nome": "BANCO PAN",
-       "taxa_am": 4.88,
-       "taxa_aa": 77.08,
+       "taxa_am": 4.76,
+       "taxa_aa": 74.8,
        "posicao": 7,
        "cod_congl": "C0080336",
        "sr": "S1"
@@ -12274,19 +12364,10 @@
       {
        "cnpj8": "45246410",
        "nome": "BANCO GENIAL",
-       "taxa_am": 4.98,
-       "taxa_aa": 79.23,
+       "taxa_am": 4.99,
+       "taxa_aa": 79.28,
        "posicao": 8,
        "cod_congl": "C0080941",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "05192316",
-       "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
-       "taxa_am": 5.16,
-       "taxa_aa": 82.93,
-       "posicao": 9,
-       "cod_congl": "C0080831",
        "sr": "S4"
       },
       {
@@ -12294,15 +12375,24 @@
        "nome": "BANCO BARI S.A.",
        "taxa_am": 5.6,
        "taxa_aa": 92.38,
-       "posicao": 10,
+       "posicao": 9,
        "cod_congl": "C0080893",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "05192316",
+       "nome": "VIA CERTA FINANCIADORA S.A. - CFI",
+       "taxa_am": 5.69,
+       "taxa_aa": 94.17,
+       "posicao": 10,
+       "cod_congl": "C0080831",
        "sr": "S4"
       },
       {
        "cnpj8": "06040559",
        "nome": "KREDILIG S.A. - CFI",
-       "taxa_am": 5.63,
-       "taxa_aa": 92.98,
+       "taxa_am": 5.89,
+       "taxa_aa": 98.75,
        "posicao": 11,
        "cod_congl": "C0083498",
        "sr": "S5"
@@ -12310,8 +12400,8 @@
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 5.86,
-       "taxa_aa": 98.08,
+       "taxa_am": 5.96,
+       "taxa_aa": 100.31,
        "posicao": 12,
        "cod_congl": "C0084844",
        "sr": "S3"
@@ -12319,71 +12409,71 @@
       {
        "cnpj8": "00000208",
        "nome": "BRB - BCO DE BRASILIA S.A.",
-       "taxa_am": 5.95,
-       "taxa_aa": 100.12,
+       "taxa_am": 5.98,
+       "taxa_aa": 100.86,
        "posicao": 13,
        "cod_congl": "C0080288",
        "sr": "S3"
       },
       {
-       "cnpj8": "07512441",
-       "nome": "HS FINANCEIRA",
-       "taxa_am": 6.01,
-       "taxa_aa": 101.36,
+       "cnpj8": "92702067",
+       "nome": "BCO DO ESTADO DO RS S.A.",
+       "taxa_am": 6.09,
+       "taxa_aa": 103.27,
        "posicao": 14,
-       "cod_congl": "C0083522",
-       "sr": "S4"
+       "cod_congl": "C0080154",
+       "sr": "S2"
       },
       {
        "cnpj8": "30306294",
        "nome": "BANCO BTG PACTUAL S.A.",
-       "taxa_am": 6.09,
-       "taxa_aa": 103.23,
+       "taxa_am": 6.12,
+       "taxa_aa": 103.91,
        "posicao": 15,
        "cod_congl": "C0080336",
        "sr": "S1"
       },
       {
-       "cnpj8": "04862600",
-       "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 6.14,
-       "taxa_aa": 104.51,
-       "posicao": 16,
-       "cod_congl": "C0080642",
-       "sr": "S3"
-      },
-      {
-       "cnpj8": "92702067",
-       "nome": "BCO DO ESTADO DO RS S.A.",
-       "taxa_am": 6.32,
-       "taxa_aa": 108.64,
-       "posicao": 17,
-       "cod_congl": "C0080154",
-       "sr": "S2"
-      },
-      {
-       "cnpj8": "68900810",
-       "nome": "BCO RENDIMENTO S.A.",
-       "taxa_am": 6.49,
-       "taxa_aa": 112.71,
-       "posicao": 18,
-       "cod_congl": "C0080659",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "07631026",
        "nome": "GOLCRED S/A - CFI",
-       "taxa_am": 6.56,
-       "taxa_aa": 114.45,
-       "posicao": 19,
+       "taxa_am": 6.5,
+       "taxa_aa": 112.87,
+       "posicao": 16,
        "cod_congl": "C0080965",
        "sr": "S5"
       },
       {
+       "cnpj8": "04862600",
+       "nome": "PORTOSEG S.A. CFI",
+       "taxa_am": 6.57,
+       "taxa_aa": 114.68,
+       "posicao": 17,
+       "cod_congl": "C0080642",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "07512441",
+       "nome": "HS FINANCEIRA",
+       "taxa_am": 6.62,
+       "taxa_aa": 115.76,
+       "posicao": 18,
+       "cod_congl": "C0083522",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "68900810",
+       "nome": "BCO RENDIMENTO S.A.",
+       "taxa_am": 6.63,
+       "taxa_aa": 115.94,
+       "posicao": 19,
+       "cod_congl": "C0080659",
+       "sr": "S4"
+      },
+      {
        "cnpj8": "37229413",
        "nome": "SCFI EFÍ S.A.",
-       "taxa_am": 6.81,
-       "taxa_aa": 120.46,
+       "taxa_am": 6.9,
+       "taxa_aa": 122.75,
        "posicao": 20,
        "cod_congl": "C0084978",
        "sr": "S5"
@@ -12391,8 +12481,8 @@
       {
        "cnpj8": "02038232",
        "nome": "BANCO SICOOB S.A.",
-       "taxa_am": 6.84,
-       "taxa_aa": 121.13,
+       "taxa_am": 6.92,
+       "taxa_aa": 123.32,
        "posicao": 21,
        "cod_congl": "C0080879",
        "sr": "S2"
@@ -12400,8 +12490,8 @@
       {
        "cnpj8": "60746948",
        "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 7.05,
-       "taxa_aa": 126.38,
+       "taxa_am": 6.95,
+       "taxa_aa": 124.01,
        "posicao": 22,
        "cod_congl": "C0080075",
        "sr": "S1"
@@ -12416,238 +12506,238 @@
        "sr": "S5"
       },
       {
-       "cnpj8": "33264668",
-       "nome": "BCO XP S.A.",
-       "taxa_am": 7.41,
-       "taxa_aa": 135.71,
-       "posicao": 24,
-       "cod_congl": "C0082475",
-       "sr": "S2"
-      },
-      {
        "cnpj8": "07237373",
        "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-       "taxa_am": 7.48,
-       "taxa_aa": 137.66,
-       "posicao": 25,
+       "taxa_am": 7.31,
+       "taxa_aa": 133.14,
+       "posicao": 24,
        "cod_congl": "C0081593",
        "sr": "S2"
       },
       {
-       "cnpj8": "04184779",
-       "nome": "BANCO BRADESCARD",
-       "taxa_am": 8.14,
-       "taxa_aa": 155.68,
+       "cnpj8": "33264668",
+       "nome": "BCO XP S.A.",
+       "taxa_am": 7.55,
+       "taxa_aa": 139.59,
+       "posicao": 25,
+       "cod_congl": "C0082475",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "17351180",
+       "nome": "BCO TRIANGULO S.A.",
+       "taxa_am": 7.59,
+       "taxa_aa": 140.46,
        "posicao": 26,
-       "cod_congl": "C0080075",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 8.18,
-       "taxa_aa": 156.79,
-       "posicao": 27,
-       "cod_congl": "C0080329",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "04913711",
-       "nome": "BCO DO EST. DO PA S.A.",
-       "taxa_am": 8.39,
-       "taxa_aa": 162.96,
-       "posicao": 28,
-       "cod_congl": "C0081586",
-       "sr": "S3"
+       "cod_congl": "C0081438",
+       "sr": "S4"
       },
       {
        "cnpj8": "61186680",
        "nome": "BCO BMG S.A.",
-       "taxa_am": 8.43,
-       "taxa_aa": 164.24,
-       "posicao": 29,
+       "taxa_am": 7.63,
+       "taxa_aa": 141.64,
+       "posicao": 27,
        "cod_congl": "C0080178",
        "sr": "S3"
       },
       {
        "cnpj8": "62237425",
        "nome": "BCO STELLANTIS S.A.",
-       "taxa_am": 8.45,
-       "taxa_aa": 164.74,
-       "posicao": 30,
+       "taxa_am": 7.9,
+       "taxa_aa": 149.07,
+       "posicao": 28,
        "cod_congl": "C0087298",
        "sr": "S4"
       },
       {
+       "cnpj8": "09313766",
+       "nome": "CARUANA SCFI",
+       "taxa_am": 8.01,
+       "taxa_aa": 152.03,
+       "posicao": 29,
+       "cod_congl": "C0083591",
+       "sr": "S4"
+      },
+      {
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 8.24,
+       "taxa_aa": 158.75,
+       "posicao": 30,
+       "cod_congl": "C0080329",
+       "sr": "S1"
+      },
+      {
+       "cnpj8": "04184779",
+       "nome": "BANCO BRADESCARD",
+       "taxa_am": 8.35,
+       "taxa_aa": 161.79,
+       "posicao": 31,
+       "cod_congl": "C0080075",
+       "sr": "S1"
+      },
+      {
+       "cnpj8": "04913711",
+       "nome": "BCO DO EST. DO PA S.A.",
+       "taxa_am": 8.49,
+       "taxa_aa": 165.77,
+       "posicao": 32,
+       "cod_congl": "C0081586",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
-       "taxa_am": 8.56,
-       "taxa_aa": 168.06,
-       "posicao": 31,
+       "taxa_am": 8.63,
+       "taxa_aa": 169.96,
+       "posicao": 33,
        "cod_congl": "C0080738",
        "sr": "S1"
       },
       {
-       "cnpj8": "17351180",
-       "nome": "BCO TRIANGULO S.A.",
-       "taxa_am": 8.64,
-       "taxa_aa": 170.29,
-       "posicao": 32,
-       "cod_congl": "C0081438",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "58160789",
-       "nome": "BCO SAFRA S.A.",
-       "taxa_am": 8.74,
-       "taxa_aa": 173.43,
-       "posicao": 33,
-       "cod_congl": "C0080109",
-       "sr": "S2"
-      },
-      {
        "cnpj8": "30680829",
        "nome": "NU FINANCEIRA S.A. CFI",
-       "taxa_am": 8.99,
-       "taxa_aa": 180.92,
+       "taxa_am": 9.01,
+       "taxa_aa": 181.61,
        "posicao": 34,
        "cod_congl": "C0084693",
        "sr": "S3"
       },
       {
-       "cnpj8": "09516419",
-       "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-       "taxa_am": 9.13,
-       "taxa_aa": 185.23,
+       "cnpj8": "58160789",
+       "nome": "BCO SAFRA S.A.",
+       "taxa_am": 9.02,
+       "taxa_aa": 181.86,
        "posicao": 35,
-       "cod_congl": "C0088022",
-       "sr": "S3"
+       "cod_congl": "C0080109",
+       "sr": "S2"
+      },
+      {
+       "cnpj8": "04814563",
+       "nome": "BCO AFINZ S.A. - BM",
+       "taxa_am": 9.31,
+       "taxa_aa": 190.92,
+       "posicao": 36,
+       "cod_congl": "C0083539",
+       "sr": "S4"
       },
       {
        "cnpj8": "60872504",
        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-       "taxa_am": 9.43,
-       "taxa_aa": 194.78,
-       "posicao": 36,
+       "taxa_am": 9.53,
+       "taxa_aa": 198.1,
+       "posicao": 37,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
-       "cnpj8": "74828799",
-       "nome": "NOVO BCO CONTINENTAL S.A. - BM",
-       "taxa_am": 9.58,
-       "taxa_aa": 199.7,
-       "posicao": 37,
-       "cod_congl": "C0081768",
-       "sr": "S4"
-      },
-      {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 9.63,
-       "taxa_aa": 201.39,
+       "taxa_am": 9.75,
+       "taxa_aa": 205.45,
        "posicao": 38,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
-       "cnpj8": "04814563",
-       "nome": "BCO AFINZ S.A. - BM",
-       "taxa_am": 9.71,
-       "taxa_aa": 204.08,
-       "posicao": 39,
-       "cod_congl": "C0083539",
-       "sr": "S4"
-      },
-      {
-       "cnpj8": "90400888",
-       "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 9.77,
-       "taxa_aa": 205.92,
-       "posicao": 40,
-       "cod_congl": "C0080185",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "08357240",
-       "nome": "BCO CSF S.A.",
-       "taxa_am": 9.98,
-       "taxa_aa": 213.08,
-       "posicao": 41,
-       "cod_congl": "C0081610",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "28127603",
        "nome": "BCO BANESTES S.A.",
-       "taxa_am": 10.01,
-       "taxa_aa": 214.26,
-       "posicao": 42,
+       "taxa_am": 9.91,
+       "taxa_aa": 210.74,
+       "posicao": 39,
        "cod_congl": "C0080147",
        "sr": "S3"
       },
       {
        "cnpj8": "01858774",
        "nome": "BCO BV S.A.",
-       "taxa_am": 10.01,
-       "taxa_aa": 214.35,
-       "posicao": 43,
+       "taxa_am": 9.97,
+       "taxa_aa": 212.79,
+       "posicao": 40,
        "cod_congl": "C0080484",
        "sr": "S2"
       },
       {
+       "cnpj8": "90400888",
+       "nome": "BCO SANTANDER (BRASIL) S.A.",
+       "taxa_am": 10.22,
+       "taxa_aa": 221.45,
+       "posicao": 41,
+       "cod_congl": "C0080185",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "11285104",
        "nome": "NEON FINANCEIRA - SCFI S.A.",
-       "taxa_am": 10.2,
-       "taxa_aa": 220.66,
-       "posicao": 44,
+       "taxa_am": 10.31,
+       "taxa_aa": 224.7,
+       "posicao": 42,
        "cod_congl": "C0085702",
        "sr": "S4"
       },
       {
+       "cnpj8": "08357240",
+       "nome": "BCO CSF S.A.",
+       "taxa_am": 10.51,
+       "taxa_aa": 231.65,
+       "posicao": 43,
+       "cod_congl": "C0081610",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "09516419",
+       "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
+       "taxa_am": 10.67,
+       "taxa_aa": 237.7,
+       "posicao": 44,
+       "cod_congl": "C0088022",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "91669747",
        "nome": "DM SCFI",
-       "taxa_am": 10.43,
-       "taxa_aa": 228.93,
+       "taxa_am": 10.72,
+       "taxa_aa": 239.37,
        "posicao": 45,
        "cod_congl": "C0083467",
        "sr": "S4"
       },
       {
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 11.14,
+       "taxa_aa": 255.17,
+       "posicao": 46,
+       "cod_congl": "C0080271",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "06881898",
+       "nome": "FIN. ITAU CBD CFI",
+       "taxa_am": 11.46,
+       "taxa_aa": 267.55,
+       "posicao": 47,
+       "cod_congl": "C0080099",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "61182408",
        "nome": "BANCO INVESTCRED UNIBANCO S.A.",
-       "taxa_am": 11.13,
-       "taxa_aa": 254.91,
-       "posicao": 46,
+       "taxa_am": 11.46,
+       "taxa_aa": 267.83,
+       "posicao": 48,
        "cod_congl": "C0080099",
        "sr": "S1"
       },
       {
        "cnpj8": "02206577",
        "nome": "LUIZACRED S.A. SCFI",
-       "taxa_am": 11.2,
-       "taxa_aa": 257.5,
-       "posicao": 47,
-       "cod_congl": "C0080099",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "06881898",
-       "nome": "FIN. ITAU CBD CFI",
-       "taxa_am": 11.28,
-       "taxa_aa": 260.66,
-       "posicao": 48,
-       "cod_congl": "C0080099",
-       "sr": "S1"
-      },
-      {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
-       "taxa_am": 11.36,
-       "taxa_aa": 263.55,
+       "taxa_am": 11.51,
+       "taxa_aa": 269.57,
        "posicao": 49,
-       "cod_congl": "C0080271",
-       "sr": "S3"
+       "cod_congl": "C0080099",
+       "sr": "S1"
       },
       {
        "cnpj8": "11760553",
@@ -12659,37 +12749,37 @@
        "sr": "S4"
       },
       {
-       "cnpj8": "37122487",
-       "nome": "CALCRED S.A.",
-       "taxa_am": 12.77,
-       "taxa_aa": 322.98,
+       "cnpj8": "61033106",
+       "nome": "BCO CREFISA S.A.",
+       "taxa_am": 12.58,
+       "taxa_aa": 314.61,
        "posicao": 51,
-       "cod_congl": "C0088170",
+       "cod_congl": "C0083632",
        "sr": "S4"
       },
       {
        "cnpj8": "27098060",
        "nome": "BANCO DIGIO",
-       "taxa_am": 13.27,
-       "taxa_aa": 345.89,
+       "taxa_am": 13.19,
+       "taxa_aa": 342.49,
        "posicao": 52,
        "cod_congl": "C0080075",
        "sr": "S1"
       },
       {
-       "cnpj8": "61033106",
-       "nome": "BCO CREFISA S.A.",
-       "taxa_am": 13.3,
-       "taxa_aa": 347.44,
+       "cnpj8": "37122487",
+       "nome": "CALCRED S.A.",
+       "taxa_am": 13.45,
+       "taxa_aa": 354.82,
        "posicao": 53,
-       "cod_congl": "C0083632",
+       "cod_congl": "C0088170",
        "sr": "S4"
       },
       {
        "cnpj8": "43180355",
        "nome": "PEFISA S.A. - C.F.I.",
-       "taxa_am": 14.1,
-       "taxa_aa": 386.68,
+       "taxa_am": 14.16,
+       "taxa_aa": 389.78,
        "posicao": 54,
        "cod_congl": "C0080305",
        "sr": "S4"
@@ -12698,7 +12788,7 @@
        "cnpj8": "11970623",
        "nome": "BCO SENFF S.A.",
        "taxa_am": 14.44,
-       "taxa_aa": 404.68,
+       "taxa_aa": 404.46,
        "posicao": 55,
        "cod_congl": "C0083670",
        "sr": "S4"
@@ -12706,8 +12796,8 @@
       {
        "cnpj8": "09464032",
        "nome": "MIDWAY S.A. - SCFI",
-       "taxa_am": 14.93,
-       "taxa_aa": 431.34,
+       "taxa_am": 15.18,
+       "taxa_aa": 445.42,
        "posicao": 56,
        "cod_congl": "C0083553",
        "sr": "S4"
@@ -12715,8 +12805,8 @@
       {
        "cnpj8": "27351731",
        "nome": "REALIZE SCFI S.A.",
-       "taxa_am": 15.52,
-       "taxa_aa": 465.03,
+       "taxa_am": 15.28,
+       "taxa_aa": 450.98,
        "posicao": 57,
        "cod_congl": "C0084703",
        "sr": "S4"
@@ -12725,7 +12815,7 @@
        "cnpj8": "37679449",
        "nome": "MERCADO CRÉDITO SCFI S.A.",
        "taxa_am": 15.54,
-       "taxa_aa": 465.86,
+       "taxa_aa": 465.87,
        "posicao": 58,
        "cod_congl": "C0084820",
        "sr": "S4"
