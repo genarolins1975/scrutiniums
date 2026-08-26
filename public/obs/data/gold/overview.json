@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-08-25T10:41:44+00:00",
+ "gerado_em": "2026-08-26T10:08:22+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com melhora predominante nos indicadores monitorados.",
   "ref": "2026-05-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 68/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 67/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.16)",

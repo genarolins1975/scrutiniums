@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-25T10:41:44+00:00",
+ "gerado_em": "2026-08-26T10:08:21+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 330,
-  "total_editais": 1102,
+  "total_contratos_if": 331,
+  "total_editais": 1105,
   "backfill_completo": true,
   "ranking": [
    {
@@ -253,6 +253,13 @@
     "contratos": 2,
     "ufs": 1,
     "como_receita": 1
+   },
+   {
+    "cnpj8": "17343510",
+    "banco": "COOP. DE CRED. E INVESTIMENTO COM INTERAÇÃO SOLIDARIA RAIZ - CRESOL RAIZ",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "25606237",
@@ -587,6 +594,21 @@
     "banco": "BANCO SANTANDER BRASIL SA",
     "cnpj8": "90400888",
     "url": "https://pncp.gov.br/contratos/56983778000112/2026/6"
+   },
+   {
+    "controle": "87990800000185-2-000092/2026",
+    "ente": "MUNICIPIO DE CACHOEIRINHA",
+    "esfera": "Municipal",
+    "municipio": "Cachoeirinha",
+    "uf": "RS",
+    "modalidade": "Credenciamento",
+    "assinatura": "2026-08-10",
+    "vig_fim": "2027-08-10",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "COOP. DE CRED. E INVESTIMENTO COM INTERAÇÃO SOLIDARIA RAIZ - CRESOL RAIZ",
+    "cnpj8": "17343510",
+    "url": "https://pncp.gov.br/contratos/87990800000185/2026/92"
    },
    {
     "controle": "46668596000101-2-000029/2026",
@@ -1127,24 +1149,36 @@
     "banco": "BANCO DO BRASIL S.A.",
     "cnpj8": "00000000",
     "url": "https://pncp.gov.br/contratos/04391603000112/2026/6"
-   },
-   {
-    "controle": "00533003000190-2-000002/2026",
-    "ente": "SANEAMENTO BASICO DO MUNICIPIO DE MAUA SAMA",
-    "esfera": "Municipal",
-    "municipio": "Mauá",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-05-15",
-    "vig_fim": "2031-05-14",
-    "valor": 19900.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO SA",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/00533003000190/2026/2"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE CAMBUI",
+    "municipio": "Cambuí",
+    "uf": "MG",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-25",
+    "url": "https://pncp.gov.br/compras/18675975000185/2026/125"
+   },
+   {
+    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
+    "municipio": "Lages",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-25",
+    "url": "https://pncp.gov.br/compras/83509547000144/2026/89"
+   },
+   {
+    "ente": "MUNICIPIO DE PORANGA",
+    "municipio": "Poranga",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-24",
+    "url": "https://pncp.gov.br/compras/07438187000159/2026/65"
+   },
    {
     "ente": "CHAPECO CAMARA DE VEREADORES",
     "municipio": "Chapecó",
@@ -1225,33 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-19",
     "url": "https://pncp.gov.br/compras/75392019000120/2026/50"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO TOME",
-    "municipio": "São Tomé",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-19",
-    "url": "https://pncp.gov.br/compras/75381178000129/2026/69"
-   },
-   {
-    "ente": "MUNICIPIO DE PONTES GESTAL",
-    "municipio": "Pontes Gestal",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-19",
-    "url": "https://pncp.gov.br/compras/45162328000142/2026/47"
-   },
-   {
-    "ente": "MUNICIPIO DE ALUMINIO",
-    "municipio": "Alumínio",
-    "uf": "SP",
-    "modalidade": "Concorrência - Eletrônica",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-17",
-    "url": "https://pncp.gov.br/compras/58987629000157/2026/219"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
