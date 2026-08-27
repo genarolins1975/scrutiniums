@@ -15,7 +15,7 @@
   "modelo": "financeira de montadora (financiamento de veículos)",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-26T10:08:25+00:00",
+  "atualizado_em": "2026-08-27T20:15:29+00:00",
   "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela.",
   "cnpj": "raiz 59.109.165",
   "participante_open_finance": null
@@ -133,7 +133,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-08-26"
+  "calculado_em": "2026-08-27"
  },
  "kpis": [
   {

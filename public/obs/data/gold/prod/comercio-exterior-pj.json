@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-26T10:08:35+00:00",
+ "gerado_em": "2026-08-27T20:15:45+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -212,7 +212,7 @@
     "npl_inst_pct": 2.25,
     "basileia_pct": 14.77,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.49
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.18
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -239,7 +239,7 @@
     "npl_inst_pct": 3.89,
     "basileia_pct": 14.9,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.87
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.55
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -266,7 +266,7 @@
     "npl_inst_pct": 1.74,
     "basileia_pct": 13.42,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.96
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.08
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -293,7 +293,7 @@
     "npl_inst_pct": 4.04,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.32
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.02
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -369,10 +369,8 @@
     "pct_carteira_inst": 82.7,
     "npl_inst_pct": 0.03,
     "basileia_pct": 26.02,
-    "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.02
-    },
-    "taxa_casamento": "cnpj8",
+    "taxas_novas": null,
+    "taxa_casamento": null,
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.35,
@@ -397,7 +395,7 @@
     "npl_inst_pct": 3.04,
     "basileia_pct": 13.48,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.54
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.52
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -473,8 +471,10 @@
     "pct_carteira_inst": 51.1,
     "npl_inst_pct": 0.2,
     "basileia_pct": 15.96,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.55
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.35,
@@ -499,7 +499,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 25.86,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 3.37
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 2.34
     },
     "taxa_casamento": "cnpj8"
    },
@@ -517,7 +517,7 @@
     "npl_inst_pct": 0.94,
     "basileia_pct": 15.83,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.46
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.68
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -544,7 +544,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 22.82,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.4
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.88
     },
     "taxa_casamento": "cnpj8"
    },
@@ -562,7 +562,7 @@
     "npl_inst_pct": 2.42,
     "basileia_pct": 13.55,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 9.69
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 9.67
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -655,7 +655,7 @@
     "npl_inst_pct": 0.01,
     "basileia_pct": 19.4,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.64
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.35
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -682,7 +682,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 20.04,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.41
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.8
     },
     "taxa_casamento": "nome"
    },
@@ -827,7 +827,7 @@
     "npl_inst_pct": 0.39,
     "basileia_pct": 17.97,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.19
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.93
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -879,7 +879,7 @@
     "npl_inst_pct": 6.56,
     "basileia_pct": 17.29,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.08
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.82
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -905,8 +905,10 @@
     "pct_carteira_inst": 11.2,
     "npl_inst_pct": 1.72,
     "basileia_pct": 11.49,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 11.0
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 4.32,
      "m_produto": 0.35,
@@ -1076,7 +1078,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 42.2,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.41
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.8
     },
     "taxa_casamento": "nome"
    },
@@ -1093,8 +1095,10 @@
     "pct_carteira_inst": 71.1,
     "npl_inst_pct": 12.7,
     "basileia_pct": 21.44,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.8
+    },
+    "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 9.62,
      "m_produto": 0.35,
@@ -1144,7 +1148,7 @@
     "npl_inst_pct": 1.94,
     "basileia_pct": 17.87,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.43
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.47
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1170,8 +1174,10 @@
     "pct_carteira_inst": 0.6,
     "npl_inst_pct": 5.54,
     "basileia_pct": 13.01,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 7.85
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 1.27,
      "m_produto": 0.35,
@@ -1195,8 +1201,10 @@
     "pct_carteira_inst": 9.9,
     "npl_inst_pct": 7.56,
     "basileia_pct": 13.12,
-    "taxas_novas": null,
-    "taxa_casamento": null,
+    "taxas_novas": {
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 6.55
+    },
+    "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 1.06,
      "m_produto": 0.35,
@@ -1271,7 +1279,7 @@
     "npl_inst_pct": 50.98,
     "basileia_pct": 89.84,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.41
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1339,7 +1347,7 @@
     "npl_inst_pct": 4.89,
     "basileia_pct": 13.98,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.28
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -1518,7 +1526,7 @@
     "npl_inst_pct": null,
     "basileia_pct": 62.94,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.41
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.8
     },
     "taxa_casamento": "nome"
    },
@@ -1586,7 +1594,7 @@
     "npl_inst_pct": 0.83,
     "basileia_pct": 17.44,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 5.41
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 4.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2095,7 +2103,7 @@
     "npl_inst_pct": 3.47,
     "basileia_pct": 20.03,
     "taxas_novas": {
-     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.28
+     "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira": 8.8
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2418,14 +2426,14 @@
     {
      "segmento": "PESSOA JURÍDICA",
      "modalidade": "Adiantamento sobre contratos de câmbio (ACC) - Pós-fixado referenciado em moeda estrangeira",
-     "inicio": "2026-08-05",
-     "fim": "2026-08-11",
-     "n_inst": 28,
-     "mediana_aa": 6.54,
-     "p25_aa": 5.46,
-     "p75_aa": 7.69,
-     "min_aa": 3.37,
-     "max_aa": 15.4,
+     "inicio": "2026-08-07",
+     "fim": "2026-08-13",
+     "n_inst": 34,
+     "mediana_aa": 6.8,
+     "p25_aa": 5.55,
+     "p75_aa": 7.85,
+     "min_aa": 0.0,
+     "max_aa": 16.0,
      "moeda_estrangeira": true,
      "serie": [
       {
@@ -3416,19 +3424,19 @@
        "n": 27
       },
       {
-       "inicio": "2026-08-05",
-       "mediana_aa": 6.54,
-       "p25_aa": 5.46,
-       "p75_aa": 7.69,
-       "n": 28
+       "inicio": "2026-08-07",
+       "mediana_aa": 6.8,
+       "p25_aa": 5.55,
+       "p75_aa": 7.85,
+       "n": 34
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 5,
-       "mediana_aa": 6.32,
-       "p25_aa": 5.87,
-       "p75_aa": 6.49,
+       "mediana_aa": 6.02,
+       "p25_aa": 5.55,
+       "p75_aa": 6.18,
        "serie": [
         {
          "inicio": "2023-11-29",
@@ -4418,19 +4426,19 @@
          "n": 6
         },
         {
-         "inicio": "2026-08-05",
-         "mediana_aa": 6.32,
-         "p25_aa": 5.87,
-         "p75_aa": 6.49,
+         "inicio": "2026-08-07",
+         "mediana_aa": 6.02,
+         "p25_aa": 5.55,
+         "p75_aa": 6.18,
          "n": 5
         }
        ]
       },
       "S2": {
-       "n": 6,
-       "mediana_aa": 7.19,
-       "p25_aa": 5.73,
-       "p75_aa": 7.64,
+       "n": 7,
+       "mediana_aa": 6.93,
+       "p25_aa": 5.8,
+       "p75_aa": 7.35,
        "serie": [
         {
          "inicio": "2023-11-30",
@@ -5413,19 +5421,19 @@
          "n": 5
         },
         {
-         "inicio": "2026-08-05",
-         "mediana_aa": 7.19,
-         "p25_aa": 5.73,
-         "p75_aa": 7.64,
-         "n": 6
+         "inicio": "2026-08-07",
+         "mediana_aa": 6.93,
+         "p25_aa": 5.8,
+         "p75_aa": 7.35,
+         "n": 7
         }
        ]
       },
       "S3": {
-       "n": 12,
-       "mediana_aa": 6.41,
-       "p25_aa": 5.44,
-       "p75_aa": 8.08,
+       "n": 16,
+       "mediana_aa": 6.95,
+       "p25_aa": 5.68,
+       "p75_aa": 8.55,
        "serie": [
         {
          "inicio": "2023-11-29",
@@ -6415,18 +6423,18 @@
          "n": 11
         },
         {
-         "inicio": "2026-08-05",
-         "mediana_aa": 6.41,
-         "p25_aa": 5.44,
-         "p75_aa": 8.08,
-         "n": 12
+         "inicio": "2026-08-07",
+         "mediana_aa": 6.95,
+         "p25_aa": 5.68,
+         "p75_aa": 8.55,
+         "n": 16
         }
        ]
       },
       "S4": {
-       "n": 5,
-       "mediana_aa": 7.95,
-       "p25_aa": 7.43,
+       "n": 6,
+       "mediana_aa": 7.47,
+       "p25_aa": 6.8,
        "p75_aa": 10.9,
        "serie": [
         {
@@ -7389,49 +7397,58 @@
          "n": 5
         },
         {
-         "inicio": "2026-08-05",
-         "mediana_aa": 7.95,
-         "p25_aa": 7.43,
+         "inicio": "2026-08-07",
+         "mediana_aa": 7.47,
+         "p25_aa": 6.8,
          "p75_aa": 10.9,
-         "n": 5
+         "n": 6
         }
        ]
       }
      },
      "ranking": [
       {
+       "cnpj8": "33264668",
+       "nome": "BCO XP S.A.",
+       "taxa_am": 0.0,
+       "taxa_aa": 0.0,
+       "posicao": 1,
+       "cod_congl": "C0082475",
+       "sr": "S2"
+      },
+      {
        "cnpj8": "60498557",
        "nome": "BCO MUFG BRASIL S.A.",
-       "taxa_am": 0.28,
-       "taxa_aa": 3.37,
-       "posicao": 1,
+       "taxa_am": 0.19,
+       "taxa_aa": 2.34,
+       "posicao": 2,
        "cod_congl": "C0081713",
        "sr": "S3"
       },
       {
-       "cnpj8": "75647891",
-       "nome": "BCO CRÉDIT AGRICOLE BR S.A.",
-       "taxa_am": 0.33,
-       "taxa_aa": 4.02,
-       "posicao": 2,
-       "cod_congl": "C0080491",
-       "sr": "S3"
+       "cnpj8": "00000000",
+       "nome": "BCO DO BRASIL S.A.",
+       "taxa_am": 0.39,
+       "taxa_aa": 4.8,
+       "posicao": 3,
+       "cod_congl": "C0080329",
+       "sr": "S1"
       },
       {
        "cnpj8": "45283173",
        "nome": "BBVA BRASIL BI S.A.",
        "taxa_am": 0.4,
        "taxa_aa": 4.9,
-       "posicao": 3,
+       "posicao": 4,
        "cod_congl": "C0081366",
        "sr": "S4"
       },
       {
        "cnpj8": "33479023",
        "nome": "BCO CITIBANK S.A.",
-       "taxa_am": 0.4,
-       "taxa_aa": 4.96,
-       "posicao": 4,
+       "taxa_am": 0.41,
+       "taxa_aa": 5.08,
+       "posicao": 5,
        "cod_congl": "C0080192",
        "sr": "S2"
       },
@@ -7440,18 +7457,9 @@
        "nome": "BCO DA CHINA BRASIL S.A.",
        "taxa_am": 0.42,
        "taxa_aa": 5.15,
-       "posicao": 5,
+       "posicao": 6,
        "cod_congl": "C0080295",
        "sr": "S3"
-      },
-      {
-       "cnpj8": "00000000",
-       "nome": "BCO DO BRASIL S.A.",
-       "taxa_am": 0.44,
-       "taxa_aa": 5.41,
-       "posicao": 6,
-       "cod_congl": "C0080329",
-       "sr": "S1"
       },
       {
        "cnpj8": "62331228",
@@ -7463,11 +7471,29 @@
        "sr": "S3"
       },
       {
+       "cnpj8": "01023570",
+       "nome": "BCO RABOBANK INTL BRASIL S.A.",
+       "taxa_am": 0.45,
+       "taxa_aa": 5.52,
+       "posicao": 8,
+       "cod_congl": "C0081555",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 0.45,
+       "taxa_aa": 5.55,
+       "posicao": 9,
+       "cod_congl": "C0080075",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "28195667",
        "nome": "BCO ABC BRASIL S.A.",
-       "taxa_am": 0.44,
-       "taxa_aa": 5.46,
-       "posicao": 8,
+       "taxa_am": 0.46,
+       "taxa_aa": 5.68,
+       "posicao": 10,
        "cod_congl": "C0080312",
        "sr": "S3"
       },
@@ -7475,89 +7501,107 @@
        "cnpj8": "92702067",
        "nome": "BCO DO ESTADO DO RS S.A.",
        "taxa_am": 0.47,
-       "taxa_aa": 5.73,
-       "posicao": 9,
+       "taxa_aa": 5.8,
+       "posicao": 11,
        "cod_congl": "C0080154",
        "sr": "S2"
       },
       {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
+       "cnpj8": "53518684",
+       "nome": "BCO HSBC S.A.",
        "taxa_am": 0.48,
-       "taxa_aa": 5.87,
-       "posicao": 10,
-       "cod_congl": "C0080075",
-       "sr": "S1"
+       "taxa_aa": 5.88,
+       "posicao": 12,
+       "cod_congl": "C0084741",
+       "sr": "S3"
       },
       {
        "cnpj8": "90400888",
        "nome": "BCO SANTANDER (BRASIL) S.A.",
-       "taxa_am": 0.51,
-       "taxa_aa": 6.32,
-       "posicao": 11,
+       "taxa_am": 0.49,
+       "taxa_aa": 6.02,
+       "posicao": 13,
        "cod_congl": "C0080185",
        "sr": "S1"
       },
       {
-       "cnpj8": "53518684",
-       "nome": "BCO HSBC S.A.",
-       "taxa_am": 0.52,
-       "taxa_aa": 6.4,
-       "posicao": 12,
-       "cod_congl": "C0084741",
-       "sr": "S3"
+       "cnpj8": "60701190",
+       "nome": "ITAÚ UNIBANCO S.A.",
+       "taxa_am": 0.5,
+       "taxa_aa": 6.18,
+       "posicao": 14,
+       "cod_congl": "C0080099",
+       "sr": "S1"
       },
       {
        "cnpj8": "07450604",
        "nome": "BOC BRASIL",
        "taxa_am": 0.52,
        "taxa_aa": 6.41,
-       "posicao": 13,
+       "posicao": 15,
        "cod_congl": "C0080295",
        "sr": "S3"
       },
       {
-       "cnpj8": "60701190",
-       "nome": "ITAÚ UNIBANCO S.A.",
+       "cnpj8": "71027866",
+       "nome": "BCO BS2 S.A.",
        "taxa_am": 0.53,
-       "taxa_aa": 6.49,
-       "posicao": 14,
-       "cod_congl": "C0080099",
-       "sr": "S1"
+       "taxa_aa": 6.55,
+       "posicao": 16,
+       "cod_congl": "C0080422",
+       "sr": "S3"
       },
       {
-       "cnpj8": "01023570",
-       "nome": "BCO RABOBANK INTL BRASIL S.A.",
-       "taxa_am": 0.53,
-       "taxa_aa": 6.54,
-       "posicao": 15,
-       "cod_congl": "C0081555",
-       "sr": "S3"
+       "cnpj8": "33466988",
+       "nome": "BCO CAIXA GERAL BRASIL S.A.",
+       "taxa_am": 0.55,
+       "taxa_aa": 6.8,
+       "posicao": 17,
+       "cod_congl": "C0080927",
+       "sr": "S4"
       },
       {
        "cnpj8": "02038232",
        "nome": "BANCO SICOOB S.A.",
-       "taxa_am": 0.58,
-       "taxa_aa": 7.19,
-       "posicao": 16,
+       "taxa_am": 0.56,
+       "taxa_aa": 6.93,
+       "posicao": 18,
        "cod_congl": "C0080879",
        "sr": "S2"
+      },
+      {
+       "cnpj8": "61186680",
+       "nome": "BCO BMG S.A.",
+       "taxa_am": 0.56,
+       "taxa_aa": 6.95,
+       "posicao": 19,
+       "cod_congl": "C0080178",
+       "sr": "S3"
       },
       {
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 0.59,
-       "taxa_aa": 7.35,
-       "posicao": 17,
+       "taxa_aa": 7.27,
+       "posicao": 20,
        "cod_congl": "C0080738",
        "sr": "S1"
+      },
+      {
+       "cnpj8": "01181521",
+       "nome": "BCO COOPERATIVO SICREDI S.A.",
+       "taxa_am": 0.59,
+       "taxa_aa": 7.35,
+       "posicao": 21,
+       "cod_congl": "C0080745",
+       "sr": "S2"
       },
       {
        "cnpj8": "07237373",
        "nome": "BCO DO NORDESTE DO BRASIL S.A.",
        "taxa_am": 0.59,
        "taxa_aa": 7.37,
-       "posicao": 18,
+       "posicao": 22,
        "cod_congl": "C0081593",
        "sr": "S2"
       },
@@ -7565,62 +7609,71 @@
        "cnpj8": "78632767",
        "nome": "OURIBANK S.A.",
        "taxa_am": 0.6,
-       "taxa_aa": 7.43,
-       "posicao": 19,
+       "taxa_aa": 7.47,
+       "posicao": 23,
        "cod_congl": "C0081012",
        "sr": "S4"
-      },
-      {
-       "cnpj8": "01181521",
-       "nome": "BCO COOPERATIVO SICREDI S.A.",
-       "taxa_am": 0.62,
-       "taxa_aa": 7.64,
-       "posicao": 20,
-       "cod_congl": "C0080745",
-       "sr": "S2"
       },
       {
        "cnpj8": "59588111",
        "nome": "BCO VOTORANTIM S.A.",
        "taxa_am": 0.62,
        "taxa_aa": 7.69,
-       "posicao": 21,
+       "posicao": 24,
        "cod_congl": "C0080484",
        "sr": "S2"
       },
       {
+       "cnpj8": "60889128",
+       "nome": "BCO SOFISA S.A.",
+       "taxa_am": 0.63,
+       "taxa_aa": 7.82,
+       "posicao": 25,
+       "cod_congl": "C0080271",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "04902979",
+       "nome": "BCO DA AMAZONIA S.A.",
+       "taxa_am": 0.63,
+       "taxa_aa": 7.85,
+       "posicao": 26,
+       "cod_congl": "C0081249",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "31895683",
        "nome": "BCO INDUSTRIAL DO BRASIL S.A.",
-       "taxa_am": 0.64,
-       "taxa_aa": 7.95,
-       "posicao": 22,
+       "taxa_am": 0.68,
+       "taxa_aa": 8.46,
+       "posicao": 27,
        "cod_congl": "C0080477",
        "sr": "S4"
       },
       {
-       "cnpj8": "60889128",
-       "nome": "BCO SOFISA S.A.",
-       "taxa_am": 0.65,
-       "taxa_aa": 8.08,
-       "posicao": 23,
-       "cod_congl": "C0080271",
+       "cnpj8": "01522368",
+       "nome": "BCO BNP PARIBAS BRASIL S A",
+       "taxa_am": 0.69,
+       "taxa_aa": 8.55,
+       "posicao": 28,
+       "cod_congl": "C0080673",
        "sr": "S3"
       },
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 0.67,
-       "taxa_aa": 8.28,
-       "posicao": 24,
+       "taxa_am": 0.71,
+       "taxa_aa": 8.8,
+       "posicao": 29,
        "cod_congl": "C0080996",
        "sr": "S3"
       },
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 0.76,
-       "taxa_aa": 9.56,
-       "posicao": 25,
+       "taxa_am": 0.77,
+       "taxa_aa": 9.67,
+       "posicao": 30,
        "cod_congl": "C0084844",
        "sr": "S3"
       },
@@ -7628,8 +7681,8 @@
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
        "taxa_am": 0.77,
-       "taxa_aa": 9.69,
-       "posicao": 26,
+       "taxa_aa": 9.67,
+       "posicao": 31,
        "cod_congl": "C0081744",
        "sr": "S3"
       },
@@ -7638,16 +7691,25 @@
        "nome": "BCO RENDIMENTO S.A.",
        "taxa_am": 0.87,
        "taxa_aa": 10.9,
-       "posicao": 27,
+       "posicao": 32,
        "cod_congl": "C0080659",
        "sr": "S4"
       },
       {
+       "cnpj8": "58616418",
+       "nome": "BCO FIBRA S.A.",
+       "taxa_am": 0.87,
+       "taxa_aa": 11.0,
+       "posicao": 33,
+       "cod_congl": "C0081483",
+       "sr": "S3"
+      },
+      {
        "cnpj8": "11703662",
        "nome": "BANCO TRAVELEX S.A.",
-       "taxa_am": 1.2,
-       "taxa_aa": 15.4,
-       "posicao": 28,
+       "taxa_am": 1.24,
+       "taxa_aa": 16.0,
+       "posicao": 34,
        "cod_congl": "C0080783",
        "sr": "S4"
       }

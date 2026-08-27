@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-26T10:08:21+00:00",
+ "gerado_em": "2026-08-27T20:15:22+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,23 +131,23 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 331,
-  "total_editais": 1105,
+  "total_contratos_if": 333,
+  "total_editais": 1107,
   "backfill_completo": true,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 126,
+    "contratos": 127,
     "ufs": 21,
     "como_receita": 18
    },
    {
     "cnpj8": "60746948",
-    "banco": "BANCO BRADESCO S/A",
-    "contratos": 71,
+    "banco": "BANCO BRADESCO S.A.",
+    "contratos": 72,
     "ufs": 14,
-    "como_receita": 22
+    "como_receita": 23
    },
    {
     "cnpj8": "90400888",
@@ -550,6 +550,36 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "22646525000131-2-000108/2026",
+    "ente": "MUNICIPIO DE MONTE SIAO",
+    "esfera": "Municipal",
+    "municipio": "Monte Sião",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-08-27",
+    "vig_fim": "2031-08-27",
+    "valor": 0.6,
+    "receita": true,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/22646525000131/2026/108"
+   },
+   {
+    "controle": "35607532000176-2-000025/2026",
+    "ente": "AUTARQUIA MUNICIPAL DE MOBILIDADE, TRANSITO E CIDADANIA - TRANSITAR",
+    "esfera": "Municipal",
+    "municipio": "Cascavel",
+    "uf": "PR",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-24",
+    "vig_fim": "2031-08-24",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/35607532000176/2026/25"
+   },
    {
     "controle": "78200482000110-2-000100/2026",
     "ente": "MUNICIPIO DE SARANDI",
@@ -1119,39 +1149,27 @@
     "banco": "BANCO BRADESCO S/A",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/08142655000106/2026/26"
-   },
-   {
-    "controle": "03343118000100-2-000039/2026",
-    "ente": "MUNICIPIO DE PARANAIBA",
-    "esfera": "Municipal",
-    "municipio": "Paranaíba",
-    "uf": "MS",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-05-19",
-    "vig_fim": "2031-05-19",
-    "valor": 3300000.0,
-    "receita": true,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/03343118000100/2026/39"
-   },
-   {
-    "controle": "04391603000112-2-000006/2026",
-    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE ESPIGAO DO OESTE",
-    "esfera": "Municipal",
-    "municipio": "Espigão D'Oeste",
-    "uf": "RO",
-    "modalidade": "Inexigibilidade",
-    "assinatura": "2026-05-18",
-    "vig_fim": "2027-05-18",
-    "valor": 12500.0,
-    "receita": false,
-    "banco": "BANCO DO BRASIL S.A.",
-    "cnpj8": "00000000",
-    "url": "https://pncp.gov.br/contratos/04391603000112/2026/6"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE PEROBAL",
+    "municipio": "Perobal",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-26",
+    "url": "https://pncp.gov.br/compras/01612444000140/2026/95"
+   },
+   {
+    "ente": "MUNICIPIO DE BOCAINA DE MINAS",
+    "municipio": "Bocaina de Minas",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-26",
+    "url": "https://pncp.gov.br/compras/18194076000160/2026/68"
+   },
    {
     "ente": "MUNICIPIO DE CAMBUI",
     "municipio": "Cambuí",
@@ -1241,24 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-19",
     "url": "https://pncp.gov.br/compras/75392019000120/2026/52"
-   },
-   {
-    "ente": "MUNICIPIO DE ARAGUATINS",
-    "municipio": "Araguatins",
-    "uf": "TO",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-19",
-    "url": "https://pncp.gov.br/compras/01237403000111/2026/18"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTA MARIANA",
-    "municipio": "Santa Mariana",
-    "uf": "PR",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-19",
-    "url": "https://pncp.gov.br/compras/75392019000120/2026/50"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

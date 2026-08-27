@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-26T10:08:21+00:00",
+ "gerado_em": "2026-08-27T20:15:22+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -2920,6 +2920,10 @@
      {
       "p": "2026-1",
       "v": 2.5
+     },
+     {
+      "p": "2026-2",
+      "v": 2.5
      }
     ],
     "alavancagem_pct": [
@@ -2942,6 +2946,10 @@
      {
       "p": "2026-1",
       "v": 9.03
+     },
+     {
+      "p": "2026-2",
+      "v": 9.62
      }
     ],
     "basileia_pct": [
@@ -2964,6 +2972,10 @@
      {
       "p": "2026-1",
       "v": 20.04
+     },
+     {
+      "p": "2026-2",
+      "v": 21.26
      }
     ],
     "icp_pct": [
@@ -2986,6 +2998,10 @@
      {
       "p": "2026-1",
       "v": 20.04
+     },
+     {
+      "p": "2026-2",
+      "v": 21.26
      }
     ],
     "margem_capital_principal_pct": [
@@ -3008,6 +3024,10 @@
      {
       "p": "2026-1",
       "v": 9.54
+     },
+     {
+      "p": "2026-2",
+      "v": 10.76
      }
     ],
     "nivel1_pct": [
@@ -3030,18 +3050,22 @@
      {
       "p": "2026-1",
       "v": 20.04
+     },
+     {
+      "p": "2026-2",
+      "v": 21.26
      }
     ]
    },
    "ultimo": {
     "acp_total_pct": 2.5,
-    "alavancagem_pct": 9.03,
-    "basileia_pct": 20.04,
-    "icp_pct": 20.04,
-    "margem_capital_principal_pct": 9.54,
-    "nivel1_pct": 20.04
+    "alavancagem_pct": 9.62,
+    "basileia_pct": 21.26,
+    "icp_pct": 21.26,
+    "margem_capital_principal_pct": 10.76,
+    "nivel1_pct": 21.26
    },
-   "periodo_ultimo": "2026-1"
+   "periodo_ultimo": "2026-2"
   },
   {
    "cnpj8": "05463212",
@@ -3068,6 +3092,10 @@
      {
       "p": "2026-1",
       "v": 3.55
+     },
+     {
+      "p": "2026-2",
+      "v": 3.66
      }
     ],
     "basileia_pct": [
@@ -3090,6 +3118,10 @@
      {
       "p": "2026-1",
       "v": 36.07
+     },
+     {
+      "p": "2026-2",
+      "v": 36.62
      }
     ],
     "icp_pct": [
@@ -3112,6 +3144,10 @@
      {
       "p": "2026-1",
       "v": 36.07
+     },
+     {
+      "p": "2026-2",
+      "v": 36.62
      }
     ],
     "margem_capital_principal_pct": [
@@ -3134,6 +3170,10 @@
      {
       "p": "2026-1",
       "v": 29.07
+     },
+     {
+      "p": "2026-2",
+      "v": 29.62
      }
     ],
     "nivel1_pct": [
@@ -3156,17 +3196,21 @@
      {
       "p": "2026-1",
       "v": 36.07
+     },
+     {
+      "p": "2026-2",
+      "v": 36.62
      }
     ]
    },
    "ultimo": {
-    "alavancagem_pct": 3.55,
-    "basileia_pct": 36.07,
-    "icp_pct": 36.07,
-    "margem_capital_principal_pct": 29.07,
-    "nivel1_pct": 36.07
+    "alavancagem_pct": 3.66,
+    "basileia_pct": 36.62,
+    "icp_pct": 36.62,
+    "margem_capital_principal_pct": 29.62,
+    "nivel1_pct": 36.62
    },
-   "periodo_ultimo": "2026-1"
+   "periodo_ultimo": "2026-2"
   },
   {
    "cnpj8": "82639451",
@@ -3956,6 +4000,10 @@
      {
       "p": "2026-1",
       "v": 2.5
+     },
+     {
+      "p": "2026-2",
+      "v": 2.5
      }
     ],
     "basileia_pct": [
@@ -3978,6 +4026,10 @@
      {
       "p": "2026-1",
       "v": 12.26
+     },
+     {
+      "p": "2026-2",
+      "v": 13.85
      }
     ],
     "icp_pct": [
@@ -4000,6 +4052,10 @@
      {
       "p": "2026-1",
       "v": 10.83
+     },
+     {
+      "p": "2026-2",
+      "v": 12.52
      }
     ],
     "margem_capital_principal_pct": [
@@ -4022,6 +4078,10 @@
      {
       "p": "2026-1",
       "v": 3.83
+     },
+     {
+      "p": "2026-2",
+      "v": 5.52
      }
     ],
     "nivel1_pct": [
@@ -4044,17 +4104,21 @@
      {
       "p": "2026-1",
       "v": 11.48
+     },
+     {
+      "p": "2026-2",
+      "v": 13.14
      }
     ]
    },
    "ultimo": {
     "acp_total_pct": 2.5,
-    "basileia_pct": 12.26,
-    "icp_pct": 10.83,
-    "margem_capital_principal_pct": 3.83,
-    "nivel1_pct": 11.48
+    "basileia_pct": 13.85,
+    "icp_pct": 12.52,
+    "margem_capital_principal_pct": 5.52,
+    "nivel1_pct": 13.14
    },
-   "periodo_ultimo": "2026-1"
+   "periodo_ultimo": "2026-2"
   },
   {
    "cnpj8": "30680829",

@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-26T10:08:24+00:00",
+  "atualizado_em": "2026-08-27T20:15:26+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 05.463.212",
   "participante_open_finance": null
@@ -128,7 +128,7 @@
   "confianca": "moderada",
   "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-08-26"
+  "calculado_em": "2026-08-27"
  },
  "kpis": [
   {
