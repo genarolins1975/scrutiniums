@@ -1,39 +1,39 @@
 {
- "gerado_em": "2026-08-27T20:15:23+00:00",
+ "gerado_em": "2026-08-28T21:21:55+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
-  "frase": "As condições de crédito permanecem restritivas (IBCC 92.2, percentil histórico 3), em fase de recuperação, com melhora predominante nos indicadores monitorados.",
-  "ref": "2026-05-01",
+  "frase": "As condições de crédito permanecem restritivas (IBCC 95.0, percentil histórico 18), em fase de contração, com sinais mistos entre os indicadores monitorados.",
+  "ref": "2026-06-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 67/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 70/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
-    "texto": "componente mais negativo do IBCC: Qualidade da carteira (-3.16)",
+    "texto": "componente mais negativo do IBCC: Capacidade de pagamento (-3.09)",
     "area": "overview",
     "status": "calculado"
    },
    {
-    "texto": "Comprometimento de renda: 28.36 → 28.48 % (+0.12 em 1m)",
+    "texto": "Inadimplência PF: 5.42 → 5.81 % (+0.39 em 1m)",
     "area": "pulse",
     "status": "observado",
     "fonte": "BCB/SGS",
-    "ref": "2026-05-01"
+    "ref": "2026-07-01"
    },
    {
-    "texto": "Taxa média de juros: 33.22 → 33.44 % a.a. (+0.22 em 1m)",
+    "texto": "Inadimplência total (>90d): 4.58 → 4.88 % (+0.30 em 1m)",
     "area": "pulse",
     "status": "observado",
     "fonte": "BCB/SGS",
-    "ref": "2026-06-01"
+    "ref": "2026-07-01"
    },
    {
-    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 74.2, piorando)",
+    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 76.6, piorando)",
     "area": "sectors",
     "status": "calculado (componentes parcialmente demonstrativos)"
    }
   ],
-  "percentil_ibcc": 3.4,
+  "percentil_ibcc": 18.5,
   "metodo": "Frase montada por regras determinísticas a partir do IBCC (nível/fase/percentil), da tabela de mudanças (Δ1m normalizado pelo desvio histórico) e do ranking setorial. Não é texto gerado livremente."
  },
  "mudancas": {
@@ -42,154 +42,154 @@
     "key": "inad_total",
     "indicador": "Inadimplência total (>90d)",
     "area": "pulse",
-    "anterior": 4.74,
-    "atual": 4.68,
-    "delta_1m": -0.06,
-    "delta_3m": 0.15,
-    "relevancia_z": 0.58,
-    "classificacao": "melhora",
-    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 4.58,
+    "atual": 4.88,
+    "delta_1m": 0.3,
+    "delta_3m": 0.24,
+    "relevancia_z": 2.81,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "21082",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "inad_pf",
     "indicador": "Inadimplência PF",
     "area": "pulse",
-    "anterior": 5.62,
-    "atual": 5.57,
-    "delta_1m": -0.05,
-    "delta_3m": 0.17,
-    "relevancia_z": 0.46,
-    "classificacao": "melhora",
-    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 5.42,
+    "atual": 5.81,
+    "delta_1m": 0.39,
+    "delta_3m": 0.3,
+    "relevancia_z": 3.47,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "21084",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "inad_pj",
     "indicador": "Inadimplência PJ",
     "area": "pulse",
-    "anterior": 3.25,
-    "atual": 3.19,
-    "delta_1m": -0.06,
-    "delta_3m": 0.13,
-    "relevancia_z": 0.49,
-    "classificacao": "melhora",
-    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 3.18,
+    "atual": 3.31,
+    "delta_1m": 0.13,
+    "delta_3m": 0.16,
+    "relevancia_z": 1.06,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "21083",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "concessoes_total",
     "indicador": "Concessões (nível)",
     "area": "pulse",
-    "anterior": 701395.0,
-    "atual": 747095.0,
-    "delta_1m": 45700.0,
-    "delta_3m": 4871.0,
-    "relevancia_z": 1.07,
-    "classificacao": "melhora",
-    "interpretacao": "melhora moderada (acima do padrão histórico de variações mensais)",
+    "anterior": 748669.0,
+    "atual": 736820.0,
+    "delta_1m": -11849.0,
+    "delta_3m": 43861.0,
+    "relevancia_z": 0.28,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
     "unidade": "R$ milhões",
     "fonte": "BCB/SGS",
     "serie": "20631",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "saldo_total",
     "indicador": "Saldo de crédito",
     "area": "pulse",
-    "anterior": 7303618.0,
-    "atual": 7355800.0,
-    "delta_1m": 52182.0,
-    "delta_3m": 115249.0,
-    "relevancia_z": 1.66,
+    "anterior": 7353293.0,
+    "atual": 7372243.0,
+    "delta_1m": 18950.0,
+    "delta_3m": 112477.0,
+    "relevancia_z": 0.6,
     "classificacao": "melhora",
-    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
     "unidade": "R$ milhões",
     "fonte": "BCB/SGS",
     "serie": "20539",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "taxa_total",
     "indicador": "Taxa média de juros",
     "area": "pulse",
-    "anterior": 33.22,
-    "atual": 33.44,
-    "delta_1m": 0.22,
-    "delta_3m": 0.45,
-    "relevancia_z": 0.35,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 33.33,
+    "atual": 32.08,
+    "delta_1m": -1.25,
+    "delta_3m": -1.28,
+    "relevancia_z": 1.97,
+    "classificacao": "melhora",
+    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "% a.a.",
     "fonte": "BCB/SGS",
     "serie": "20714",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "spread_total",
     "indicador": "Spread médio",
     "area": "pulse",
-    "anterior": 21.89,
-    "atual": 21.99,
-    "delta_1m": 0.1,
-    "delta_3m": 0.28,
-    "relevancia_z": 0.18,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 21.86,
+    "atual": 20.88,
+    "delta_1m": -0.98,
+    "delta_3m": -1.19,
+    "relevancia_z": 1.73,
+    "classificacao": "melhora",
+    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "p.p.",
     "fonte": "BCB/SGS",
     "serie": "20783",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "comprometimento",
     "indicador": "Comprometimento de renda",
     "area": "pulse",
-    "anterior": 28.36,
-    "atual": 28.48,
-    "delta_1m": 0.12,
-    "delta_3m": 0.18,
-    "relevancia_z": 0.36,
+    "anterior": 28.49,
+    "atual": 28.85,
+    "delta_1m": 0.36,
+    "delta_3m": 0.61,
+    "relevancia_z": 1.07,
     "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "29034",
-    "ref_anterior": "2026-04-01",
-    "ref_atual": "2026-05-01"
+    "ref_anterior": "2026-05-01",
+    "ref_atual": "2026-06-01"
    },
    {
     "key": "endividamento",
     "indicador": "Endividamento das famílias",
     "area": "pulse",
-    "anterior": 49.87,
-    "atual": 49.83,
-    "delta_1m": -0.04,
-    "delta_3m": 0.0,
-    "relevancia_z": 0.14,
+    "anterior": 49.83,
+    "atual": 49.75,
+    "delta_1m": -0.08,
+    "delta_3m": -0.1,
+    "relevancia_z": 0.28,
     "classificacao": "melhora",
     "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "29037",
-    "ref_anterior": "2026-04-01",
-    "ref_atual": "2026-05-01"
+    "ref_anterior": "2026-05-01",
+    "ref_atual": "2026-06-01"
    },
    {
     "key": "desemprego",
@@ -245,123 +245,53 @@
   ],
   "top_deterioracoes": [
    {
-    "key": "comprometimento",
-    "indicador": "Comprometimento de renda",
+    "key": "inad_pf",
+    "indicador": "Inadimplência PF",
     "area": "pulse",
-    "anterior": 28.36,
-    "atual": 28.48,
-    "delta_1m": 0.12,
-    "delta_3m": 0.18,
-    "relevancia_z": 0.36,
+    "anterior": 5.42,
+    "atual": 5.81,
+    "delta_1m": 0.39,
+    "delta_3m": 0.3,
+    "relevancia_z": 3.47,
     "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "interpretacao": "deterioração acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
-    "serie": "29034",
-    "ref_anterior": "2026-04-01",
-    "ref_atual": "2026-05-01"
-   },
-   {
-    "key": "taxa_total",
-    "indicador": "Taxa média de juros",
-    "area": "pulse",
-    "anterior": 33.22,
-    "atual": 33.44,
-    "delta_1m": 0.22,
-    "delta_3m": 0.45,
-    "relevancia_z": 0.35,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
-    "unidade": "% a.a.",
-    "fonte": "BCB/SGS",
-    "serie": "20714",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
-   },
-   {
-    "key": "papelao",
-    "indicador": "Papelão ondulado (antecedente)",
-    "area": "sectors",
-    "anterior": 359799.0,
-    "atual": 356538.0,
-    "delta_1m": -3261.0,
-    "delta_3m": -5961.0,
-    "relevancia_z": 0.2,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
-    "unidade": "toneladas",
-    "fonte": "Ipeadata",
-    "serie": "ABPO12_PAPEL12",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
-   },
-   {
-    "key": "spread_total",
-    "indicador": "Spread médio",
-    "area": "pulse",
-    "anterior": 21.89,
-    "atual": 21.99,
-    "delta_1m": 0.1,
-    "delta_3m": 0.28,
-    "relevancia_z": 0.18,
-    "classificacao": "deterioração",
-    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
-    "unidade": "p.p.",
-    "fonte": "BCB/SGS",
-    "serie": "20783",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
-   }
-  ],
-  "top_melhoras": [
-   {
-    "key": "saldo_total",
-    "indicador": "Saldo de crédito",
-    "area": "pulse",
-    "anterior": 7303618.0,
-    "atual": 7355800.0,
-    "delta_1m": 52182.0,
-    "delta_3m": 115249.0,
-    "relevancia_z": 1.66,
-    "classificacao": "melhora",
-    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
-    "unidade": "R$ milhões",
-    "fonte": "BCB/SGS",
-    "serie": "20539",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
-   },
-   {
-    "key": "concessoes_total",
-    "indicador": "Concessões (nível)",
-    "area": "pulse",
-    "anterior": 701395.0,
-    "atual": 747095.0,
-    "delta_1m": 45700.0,
-    "delta_3m": 4871.0,
-    "relevancia_z": 1.07,
-    "classificacao": "melhora",
-    "interpretacao": "melhora moderada (acima do padrão histórico de variações mensais)",
-    "unidade": "R$ milhões",
-    "fonte": "BCB/SGS",
-    "serie": "20631",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "serie": "21084",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
     "key": "inad_total",
     "indicador": "Inadimplência total (>90d)",
     "area": "pulse",
-    "anterior": 4.74,
-    "atual": 4.68,
-    "delta_1m": -0.06,
-    "delta_3m": 0.15,
-    "relevancia_z": 0.58,
-    "classificacao": "melhora",
-    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 4.58,
+    "atual": 4.88,
+    "delta_1m": 0.3,
+    "delta_3m": 0.24,
+    "relevancia_z": 2.81,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração acentuada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "21082",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   },
+   {
+    "key": "comprometimento",
+    "indicador": "Comprometimento de renda",
+    "area": "pulse",
+    "anterior": 28.49,
+    "atual": 28.85,
+    "delta_1m": 0.36,
+    "delta_3m": 0.61,
+    "relevancia_z": 1.07,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "BCB/SGS",
+    "serie": "29034",
     "ref_anterior": "2026-05-01",
     "ref_atual": "2026-06-01"
    },
@@ -369,33 +299,120 @@
     "key": "inad_pj",
     "indicador": "Inadimplência PJ",
     "area": "pulse",
-    "anterior": 3.25,
-    "atual": 3.19,
-    "delta_1m": -0.06,
-    "delta_3m": 0.13,
-    "relevancia_z": 0.49,
-    "classificacao": "melhora",
-    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "anterior": 3.18,
+    "atual": 3.31,
+    "delta_1m": 0.13,
+    "delta_3m": 0.16,
+    "relevancia_z": 1.06,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração moderada (acima do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
     "serie": "21083",
-    "ref_anterior": "2026-05-01",
-    "ref_atual": "2026-06-01"
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
    },
    {
-    "key": "inad_pf",
-    "indicador": "Inadimplência PF",
+    "key": "concessoes_total",
+    "indicador": "Concessões (nível)",
     "area": "pulse",
-    "anterior": 5.62,
-    "atual": 5.57,
-    "delta_1m": -0.05,
-    "delta_3m": 0.17,
-    "relevancia_z": 0.46,
+    "anterior": 748669.0,
+    "atual": 736820.0,
+    "delta_1m": -11849.0,
+    "delta_3m": 43861.0,
+    "relevancia_z": 0.28,
+    "classificacao": "deterioração",
+    "interpretacao": "deterioração leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "R$ milhões",
+    "fonte": "BCB/SGS",
+    "serie": "20631",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   }
+  ],
+  "top_melhoras": [
+   {
+    "key": "taxa_total",
+    "indicador": "Taxa média de juros",
+    "area": "pulse",
+    "anterior": 33.33,
+    "atual": 32.08,
+    "delta_1m": -1.25,
+    "delta_3m": -1.28,
+    "relevancia_z": 1.97,
+    "classificacao": "melhora",
+    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
+    "unidade": "% a.a.",
+    "fonte": "BCB/SGS",
+    "serie": "20714",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   },
+   {
+    "key": "spread_total",
+    "indicador": "Spread médio",
+    "area": "pulse",
+    "anterior": 21.86,
+    "atual": 20.88,
+    "delta_1m": -0.98,
+    "delta_3m": -1.19,
+    "relevancia_z": 1.73,
+    "classificacao": "melhora",
+    "interpretacao": "melhora acentuada (acima do padrão histórico de variações mensais)",
+    "unidade": "p.p.",
+    "fonte": "BCB/SGS",
+    "serie": "20783",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   },
+   {
+    "key": "saldo_total",
+    "indicador": "Saldo de crédito",
+    "area": "pulse",
+    "anterior": 7353293.0,
+    "atual": 7372243.0,
+    "delta_1m": 18950.0,
+    "delta_3m": 112477.0,
+    "relevancia_z": 0.6,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "R$ milhões",
+    "fonte": "BCB/SGS",
+    "serie": "20539",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   },
+   {
+    "key": "desemprego",
+    "indicador": "Taxa de desocupação",
+    "area": "pulse",
+    "anterior": 5.4,
+    "atual": 5.3,
+    "delta_1m": -0.1,
+    "delta_3m": -0.5,
+    "relevancia_z": 0.33,
+    "classificacao": "melhora",
+    "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
+    "unidade": "%",
+    "fonte": "IBGE",
+    "serie": "6381/4099",
+    "ref_anterior": "2026-06-01",
+    "ref_atual": "2026-07-01"
+   },
+   {
+    "key": "endividamento",
+    "indicador": "Endividamento das famílias",
+    "area": "pulse",
+    "anterior": 49.83,
+    "atual": 49.75,
+    "delta_1m": -0.08,
+    "delta_3m": -0.1,
+    "relevancia_z": 0.28,
     "classificacao": "melhora",
     "interpretacao": "melhora leve (dentro do padrão histórico de variações mensais)",
     "unidade": "%",
     "fonte": "BCB/SGS",
-    "serie": "21084",
+    "serie": "29037",
     "ref_anterior": "2026-05-01",
     "ref_atual": "2026-06-01"
    }
@@ -439,15 +456,15 @@
   "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade."
  },
  "ibcc_posicao": {
-  "atual": 92.21,
-  "ref": "2026-05-01",
-  "percentil_historico": 3.4,
-  "m1": 93.09,
-  "m3": 91.85,
-  "m12": 97.37,
-  "delta_1m": -0.88,
-  "delta_3m": 0.36,
-  "delta_12m": -5.16
+  "atual": 94.96,
+  "ref": "2026-06-01",
+  "percentil_historico": 18.5,
+  "m1": 92.36,
+  "m3": 96.07,
+  "m12": 95.74,
+  "delta_1m": 2.6,
+  "delta_3m": -1.11,
+  "delta_12m": -0.78
  },
  "projecoes_resumo": {
   "inad_total": {
@@ -456,38 +473,38 @@
    "pontos": [
     {
      "h": 1,
-     "ref_date": "2026-07-01",
-     "p50": 4.7106,
-     "p10": 4.568,
-     "p90": 4.8899
+     "ref_date": "2026-08-01",
+     "p50": 4.9205,
+     "p10": 4.7482,
+     "p90": 5.0999
     },
     {
      "h": 3,
-     "ref_date": "2026-09-01",
-     "p50": 4.8085,
-     "p10": 4.5639,
-     "p90": 5.1048
+     "ref_date": "2026-10-01",
+     "p50": 4.9897,
+     "p10": 4.7434,
+     "p90": 5.2843
     },
     {
      "h": 6,
-     "ref_date": "2026-12-01",
-     "p50": 4.915,
-     "p10": 4.5754,
-     "p90": 5.4631
+     "ref_date": "2027-01-01",
+     "p50": 5.1134,
+     "p10": 4.7904,
+     "p90": 5.6451
     },
     {
      "h": 9,
-     "ref_date": "2027-03-01",
-     "p50": 5.0803,
-     "p10": 4.4365,
-     "p90": 5.6026
+     "ref_date": "2027-04-01",
+     "p50": 5.4555,
+     "p10": 4.8043,
+     "p90": 5.9448
     },
     {
      "h": 12,
-     "ref_date": "2027-06-01",
-     "p50": 5.1532,
-     "p10": 4.4149,
-     "p90": 5.8162
+     "ref_date": "2027-07-01",
+     "p50": 5.538,
+     "p10": 4.618,
+     "p90": 6.0007
     }
    ],
    "diagnostico": {
@@ -495,11 +512,11 @@
      "pesos": {
       "ultimo_valor": 0.335,
       "drift": 0.335,
-      "ar1_diferencas": 0.331
+      "ar1_diferencas": 0.33
      },
-     "mae_ensemble_backtest": 0.0897,
-     "mae_naive_backtest": 0.0894,
-     "ganho_vs_naive_pct": -0.4,
+     "mae_ensemble_backtest": 0.0951,
+     "mae_naive_backtest": 0.0946,
+     "ganho_vs_naive_pct": -0.5,
      "n_backtests": 35,
      "cobertura_banda": {
       "cobertura_oos_pct": 33.3,
@@ -511,549 +528,14 @@
     },
     "3": {
      "pesos": {
-      "ultimo_valor": 0.256,
-      "drift": 0.259,
-      "ar1_diferencas": 0.262,
-      "holt": 0.223
+      "ultimo_valor": 0.253,
+      "drift": 0.257,
+      "ar1_diferencas": 0.259,
+      "holt": 0.231
      },
-     "mae_ensemble_backtest": 0.1772,
-     "mae_naive_backtest": 0.1732,
-     "ganho_vs_naive_pct": -2.3,
-     "n_backtests": 34,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 5.9,
-      "nominal_pct": 80.0,
-      "n_calibracao": 17,
-      "n_teste": 17,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     }
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.254,
-      "drift": 0.255,
-      "ar1_diferencas": 0.256,
-      "holt": 0.235
-     },
-     "mae_ensemble_backtest": 0.3258,
-     "mae_naive_backtest": 0.3206,
-     "ganho_vs_naive_pct": -1.6,
-     "n_backtests": 31,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 0.0,
-      "nominal_pct": 80.0,
-      "n_calibracao": 15,
-      "n_teste": 16,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     }
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.259,
-      "drift": 0.258,
-      "media_movel_6m": 0.226,
-      "ar1_diferencas": 0.258
-     },
-     "mae_ensemble_backtest": 0.4653,
-     "mae_naive_backtest": 0.45,
-     "ganho_vs_naive_pct": -3.4,
-     "n_backtests": 28,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 0.0,
-      "nominal_pct": 80.0,
-      "n_calibracao": 14,
-      "n_teste": 14,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     }
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.204,
-      "sazonal_ingenuo": 0.204,
-      "drift": 0.2,
-      "media_movel_6m": 0.192,
-      "ar1_diferencas": 0.201
-     },
-     "mae_ensemble_backtest": 0.5952,
-     "mae_naive_backtest": 0.5848,
-     "ganho_vs_naive_pct": -1.8,
-     "n_backtests": 25,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 0.0,
-      "nominal_pct": 80.0,
-      "n_calibracao": 12,
-      "n_teste": 13,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     },
-     "trajetoria": [
-      {
-       "ref": "2024-07-01",
-       "previsto": 3.6081,
-       "realizado": 3.3
-      },
-      {
-       "ref": "2024-08-01",
-       "previsto": 3.598,
-       "realizado": 3.33
-      },
-      {
-       "ref": "2024-09-01",
-       "previsto": 3.5434,
-       "realizado": 3.34
-      },
-      {
-       "ref": "2024-10-01",
-       "previsto": 3.564,
-       "realizado": 3.3
-      },
-      {
-       "ref": "2024-11-01",
-       "previsto": 3.5332,
-       "realizado": 3.27
-      },
-      {
-       "ref": "2024-12-01",
-       "previsto": 3.3137,
-       "realizado": 3.08
-      },
-      {
-       "ref": "2025-01-01",
-       "previsto": 3.3925,
-       "realizado": 3.34
-      },
-      {
-       "ref": "2025-02-01",
-       "previsto": 3.3826,
-       "realizado": 3.41
-      },
-      {
-       "ref": "2025-03-01",
-       "previsto": 3.3325,
-       "realizado": 3.44
-      },
-      {
-       "ref": "2025-04-01",
-       "previsto": 3.3627,
-       "realizado": 3.67
-      },
-      {
-       "ref": "2025-05-01",
-       "previsto": 3.4105,
-       "realizado": 3.72
-      },
-      {
-       "ref": "2025-06-01",
-       "previsto": 3.2875,
-       "realizado": 3.75
-      },
-      {
-       "ref": "2025-07-01",
-       "previsto": 3.2975,
-       "realizado": 3.96
-      },
-      {
-       "ref": "2025-08-01",
-       "previsto": 3.3217,
-       "realizado": 4.14
-      },
-      {
-       "ref": "2025-09-01",
-       "previsto": 3.3299,
-       "realizado": 4.09
-      },
-      {
-       "ref": "2025-10-01",
-       "previsto": 3.2929,
-       "realizado": 4.18
-      },
-      {
-       "ref": "2025-11-01",
-       "previsto": 3.2629,
-       "realizado": 4.23
-      },
-      {
-       "ref": "2025-12-01",
-       "previsto": 3.0925,
-       "realizado": 4.2
-      },
-      {
-       "ref": "2026-01-01",
-       "previsto": 3.3218,
-       "realizado": 4.45
-      },
-      {
-       "ref": "2026-02-01",
-       "previsto": 3.3799,
-       "realizado": 4.64
-      },
-      {
-       "ref": "2026-03-01",
-       "previsto": 3.4075,
-       "realizado": 4.53
-      },
-      {
-       "ref": "2026-04-01",
-       "previsto": 3.6165,
-       "realizado": 4.64
-      },
-      {
-       "ref": "2026-05-01",
-       "previsto": 3.6689,
-       "realizado": 4.74
-      },
-      {
-       "ref": "2026-06-01",
-       "previsto": 3.7151,
-       "realizado": 4.68
-      }
-     ]
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-06-01",
-    "v": 4.68
-   }
-  },
-  "concessoes_total": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-07-01",
-     "p50": 738145.6438,
-     "p10": 677808.9454,
-     "p90": 789114.3438
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-09-01",
-     "p50": 756050.7565,
-     "p10": 683266.6299,
-     "p90": 796852.1854
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-12-01",
-     "p50": 766724.0871,
-     "p10": 692956.8581,
-     "p90": 832889.0219
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-03-01",
-     "p50": 790077.4125,
-     "p10": 743390.4495,
-     "p90": 866149.7213
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-06-01",
-     "p50": 820135.4955,
-     "p10": 763354.6039,
-     "p90": 873471.9796
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.193,
-      "drift": 0.194,
-      "media_movel_6m": 0.198,
-      "ar1_diferencas": 0.196,
-      "holt": 0.219
-     },
-     "mae_ensemble_backtest": 36664.3233,
-     "mae_naive_backtest": 37952.6857,
-     "ganho_vs_naive_pct": 3.4,
-     "n_backtests": 35,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 50.0,
-      "nominal_pct": 80.0,
-      "n_calibracao": 17,
-      "n_teste": 18,
-      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
-     }
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.193,
-      "drift": 0.201,
-      "media_movel_6m": 0.186,
-      "ar1_diferencas": 0.214,
-      "holt": 0.206
-     },
-     "mae_ensemble_backtest": 39137.056,
-     "mae_naive_backtest": 40568.1765,
-     "ganho_vs_naive_pct": 3.5,
-     "n_backtests": 34,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 58.8,
-      "nominal_pct": 80.0,
-      "n_calibracao": 17,
-      "n_teste": 17,
-      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
-     }
-    },
-    "6": {
-     "pesos": {
-      "ultimo_valor": 0.19,
-      "drift": 0.202,
-      "media_movel_6m": 0.181,
-      "ar1_diferencas": 0.227,
-      "holt": 0.2
-     },
-     "mae_ensemble_backtest": 46037.5549,
-     "mae_naive_backtest": 48462.3871,
-     "ganho_vs_naive_pct": 5.0,
-     "n_backtests": 31,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 81.2,
-      "nominal_pct": 80.0,
-      "n_calibracao": 15,
-      "n_teste": 16,
-      "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
-     }
-    },
-    "9": {
-     "pesos": {
-      "ultimo_valor": 0.204,
-      "drift": 0.271,
-      "ar1_diferencas": 0.281,
-      "holt": 0.244
-     },
-     "mae_ensemble_backtest": 43800.9589,
-     "mae_naive_backtest": 53706.5357,
-     "ganho_vs_naive_pct": 18.4,
-     "n_backtests": 28,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 42.9,
-      "nominal_pct": 80.0,
-      "n_calibracao": 14,
-      "n_teste": 14,
-      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
-     }
-    },
-    "12": {
-     "pesos": {
-      "ultimo_valor": 0.149,
-      "sazonal_ingenuo": 0.149,
-      "drift": 0.252,
-      "ar1_diferencas": 0.243,
-      "holt": 0.206
-     },
-     "mae_ensemble_backtest": 50954.8096,
-     "mae_naive_backtest": 68321.0,
-     "ganho_vs_naive_pct": 25.4,
-     "n_backtests": 25,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 15.4,
-      "nominal_pct": 80.0,
-      "n_calibracao": 12,
-      "n_teste": 13,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     },
-     "trajetoria": [
-      {
-       "ref": "2024-07-01",
-       "previsto": 514405.9851,
-       "realizado": 620348.0
-      },
-      {
-       "ref": "2024-08-01",
-       "previsto": 568572.5524,
-       "realizado": 627050.0
-      },
-      {
-       "ref": "2024-09-01",
-       "previsto": 571090.3405,
-       "realizado": 639146.0
-      },
-      {
-       "ref": "2024-10-01",
-       "previsto": 567285.1732,
-       "realizado": 649340.0
-      },
-      {
-       "ref": "2024-11-01",
-       "previsto": 577821.5463,
-       "realizado": 620293.0
-      },
-      {
-       "ref": "2024-12-01",
-       "previsto": 623835.4878,
-       "realizado": 699427.0
-      },
-      {
-       "ref": "2025-01-01",
-       "previsto": 570756.6548,
-       "realizado": 591893.0
-      },
-      {
-       "ref": "2025-02-01",
-       "previsto": 531081.6314,
-       "realizado": 590966.0
-      },
-      {
-       "ref": "2025-03-01",
-       "previsto": 583330.2447,
-       "realizado": 620474.0
-      },
-      {
-       "ref": "2025-04-01",
-       "previsto": 590758.6992,
-       "realizado": 644574.0
-      },
-      {
-       "ref": "2025-05-01",
-       "previsto": 598710.9946,
-       "realizado": 648239.0
-      },
-      {
-       "ref": "2025-06-01",
-       "previsto": 619212.9126,
-       "realizado": 641196.0
-      },
-      {
-       "ref": "2025-07-01",
-       "previsto": 649213.6673,
-       "realizado": 649848.0
-      },
-      {
-       "ref": "2025-08-01",
-       "previsto": 662183.1841,
-       "realizado": 643637.0
-      },
-      {
-       "ref": "2025-09-01",
-       "previsto": 676969.5193,
-       "realizado": 700052.0
-      },
-      {
-       "ref": "2025-10-01",
-       "previsto": 689690.7919,
-       "realizado": 691661.0
-      },
-      {
-       "ref": "2025-11-01",
-       "previsto": 662809.3829,
-       "realizado": 652031.0
-      },
-      {
-       "ref": "2025-12-01",
-       "previsto": 733548.6989,
-       "realizado": 803912.0
-      },
-      {
-       "ref": "2026-01-01",
-       "previsto": 640951.2532,
-       "realizado": 649333.0
-      },
-      {
-       "ref": "2026-02-01",
-       "previsto": 618741.8598,
-       "realizado": 610149.0
-      },
-      {
-       "ref": "2026-03-01",
-       "previsto": 639280.7269,
-       "realizado": 742224.0
-      },
-      {
-       "ref": "2026-04-01",
-       "previsto": 663996.4527,
-       "realizado": 692993.0
-      },
-      {
-       "ref": "2026-05-01",
-       "previsto": 671700.3575,
-       "realizado": 701395.0
-      },
-      {
-       "ref": "2026-06-01",
-       "previsto": 666413.3989,
-       "realizado": 747095.0
-      }
-     ]
-    }
-   },
-   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
-   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
-   "ultima_obs": {
-    "ref": "2026-06-01",
-    "v": 747095.0
-   }
-  },
-  "spread_total": {
-   "ok": true,
-   "tipo": "PREVISÃO",
-   "pontos": [
-    {
-     "h": 1,
-     "ref_date": "2026-07-01",
-     "p50": 21.9942,
-     "p10": 21.5997,
-     "p90": 22.5797
-    },
-    {
-     "h": 3,
-     "ref_date": "2026-09-01",
-     "p50": 21.9753,
-     "p10": 21.2254,
-     "p90": 23.1192
-    },
-    {
-     "h": 6,
-     "ref_date": "2026-12-01",
-     "p50": 22.4817,
-     "p10": 20.8555,
-     "p90": 24.0081
-    },
-    {
-     "h": 9,
-     "ref_date": "2027-03-01",
-     "p50": 23.1167,
-     "p10": 20.2584,
-     "p90": 24.4545
-    },
-    {
-     "h": 12,
-     "ref_date": "2027-06-01",
-     "p50": 23.4557,
-     "p10": 19.7255,
-     "p90": 25.0217
-    }
-   ],
-   "diagnostico": {
-    "1": {
-     "pesos": {
-      "ultimo_valor": 0.335,
-      "drift": 0.333,
-      "ar1_diferencas": 0.332
-     },
-     "mae_ensemble_backtest": 0.3185,
-     "mae_naive_backtest": 0.3171,
-     "ganho_vs_naive_pct": -0.4,
-     "n_backtests": 35,
-     "cobertura_banda": {
-      "cobertura_oos_pct": 22.2,
-      "nominal_pct": 80.0,
-      "n_calibracao": 17,
-      "n_teste": 18,
-      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
-     }
-    },
-    "3": {
-     "pesos": {
-      "ultimo_valor": 0.33,
-      "drift": 0.329,
-      "ar1_diferencas": 0.341
-     },
-     "mae_ensemble_backtest": 0.6036,
-     "mae_naive_backtest": 0.6106,
-     "ganho_vs_naive_pct": 1.1,
+     "mae_ensemble_backtest": 0.1771,
+     "mae_naive_backtest": 0.1753,
+     "ganho_vs_naive_pct": -1.0,
      "n_backtests": 34,
      "cobertura_banda": {
       "cobertura_oos_pct": 11.8,
@@ -1065,13 +547,14 @@
     },
     "6": {
      "pesos": {
-      "ultimo_valor": 0.331,
-      "drift": 0.331,
-      "ar1_diferencas": 0.338
+      "ultimo_valor": 0.25,
+      "drift": 0.251,
+      "ar1_diferencas": 0.253,
+      "holt": 0.246
      },
-     "mae_ensemble_backtest": 1.1257,
-     "mae_naive_backtest": 1.1348,
-     "ganho_vs_naive_pct": 0.8,
+     "mae_ensemble_backtest": 0.3203,
+     "mae_naive_backtest": 0.3206,
+     "ganho_vs_naive_pct": 0.1,
      "n_backtests": 31,
      "cobertura_banda": {
       "cobertura_oos_pct": 0.0,
@@ -1083,13 +566,14 @@
     },
     "9": {
      "pesos": {
-      "ultimo_valor": 0.333,
-      "drift": 0.332,
-      "ar1_diferencas": 0.335
+      "ultimo_valor": 0.257,
+      "drift": 0.257,
+      "ar1_diferencas": 0.257,
+      "holt": 0.228
      },
-     "mae_ensemble_backtest": 1.5988,
-     "mae_naive_backtest": 1.5986,
-     "ganho_vs_naive_pct": -0.0,
+     "mae_ensemble_backtest": 0.4749,
+     "mae_naive_backtest": 0.4611,
+     "ganho_vs_naive_pct": -3.0,
      "n_backtests": 28,
      "cobertura_banda": {
       "cobertura_oos_pct": 7.1,
@@ -1103,12 +587,12 @@
      "pesos": {
       "ultimo_valor": 0.204,
       "sazonal_ingenuo": 0.204,
-      "drift": 0.203,
-      "media_movel_6m": 0.184,
-      "ar1_diferencas": 0.204
+      "drift": 0.201,
+      "media_movel_6m": 0.188,
+      "ar1_diferencas": 0.202
      },
-     "mae_ensemble_backtest": 1.9805,
-     "mae_naive_backtest": 1.938,
+     "mae_ensemble_backtest": 0.6178,
+     "mae_naive_backtest": 0.6044,
      "ganho_vs_naive_pct": -2.2,
      "n_backtests": 25,
      "cobertura_banda": {
@@ -1120,124 +604,124 @@
      },
      "trajetoria": [
       {
-       "ref": "2024-07-01",
-       "previsto": 21.0026,
-       "realizado": 18.53
-      },
-      {
        "ref": "2024-08-01",
-       "previsto": 20.7311,
-       "realizado": 18.46
+       "previsto": 3.5981,
+       "realizado": 3.33
       },
       {
        "ref": "2024-09-01",
-       "previsto": 20.5306,
-       "realizado": 18.28
+       "previsto": 3.5431,
+       "realizado": 3.34
       },
       {
        "ref": "2024-10-01",
-       "previsto": 20.0989,
-       "realizado": 18.28
+       "previsto": 3.5638,
+       "realizado": 3.3
       },
       {
        "ref": "2024-11-01",
-       "previsto": 20.1014,
-       "realizado": 18.43
+       "previsto": 3.533,
+       "realizado": 3.27
       },
       {
        "ref": "2024-12-01",
-       "previsto": 19.6262,
-       "realizado": 17.62
+       "previsto": 3.3126,
+       "realizado": 3.08
       },
       {
        "ref": "2025-01-01",
-       "previsto": 19.422,
-       "realizado": 18.5
+       "previsto": 3.392,
+       "realizado": 3.34
       },
       {
        "ref": "2025-02-01",
-       "previsto": 19.3958,
-       "realizado": 19.52
+       "previsto": 3.3823,
+       "realizado": 3.41
       },
       {
        "ref": "2025-03-01",
-       "previsto": 19.4079,
-       "realizado": 19.55
+       "previsto": 3.3321,
+       "realizado": 3.44
       },
       {
        "ref": "2025-04-01",
-       "previsto": 19.1345,
-       "realizado": 20.2
+       "previsto": 3.3626,
+       "realizado": 3.67
       },
       {
        "ref": "2025-05-01",
-       "previsto": 18.8789,
-       "realizado": 20.51
+       "previsto": 3.4108,
+       "realizado": 3.72
       },
       {
        "ref": "2025-06-01",
-       "previsto": 18.6295,
-       "realizado": 20.74
+       "previsto": 3.2871,
+       "realizado": 3.75
       },
       {
        "ref": "2025-07-01",
-       "previsto": 18.6053,
-       "realizado": 20.57
+       "previsto": 3.2972,
+       "realizado": 3.96
       },
       {
        "ref": "2025-08-01",
-       "previsto": 18.5187,
-       "realizado": 20.77
+       "previsto": 3.3215,
+       "realizado": 4.14
       },
       {
        "ref": "2025-09-01",
-       "previsto": 18.3303,
-       "realizado": 20.53
+       "previsto": 3.3298,
+       "realizado": 4.09
       },
       {
        "ref": "2025-10-01",
-       "previsto": 18.3117,
-       "realizado": 20.9
+       "previsto": 3.2926,
+       "realizado": 4.18
       },
       {
        "ref": "2025-11-01",
-       "previsto": 18.4318,
-       "realizado": 21.37
+       "previsto": 3.2627,
+       "realizado": 4.24
       },
       {
        "ref": "2025-12-01",
-       "previsto": 17.6899,
-       "realizado": 21.01
+       "previsto": 3.0916,
+       "realizado": 4.2
       },
       {
        "ref": "2026-01-01",
-       "previsto": 18.479,
-       "realizado": 21.59
+       "previsto": 3.3221,
+       "realizado": 4.44
       },
       {
        "ref": "2026-02-01",
-       "previsto": 19.383,
-       "realizado": 21.98
+       "previsto": 3.3803,
+       "realizado": 4.64
       },
       {
        "ref": "2026-03-01",
-       "previsto": 19.419,
-       "realizado": 21.71
+       "previsto": 3.408,
+       "realizado": 4.52
       },
       {
        "ref": "2026-04-01",
-       "previsto": 20.0453,
-       "realizado": 22.24
+       "previsto": 3.6178,
+       "realizado": 4.64
       },
       {
        "ref": "2026-05-01",
-       "previsto": 20.3619,
-       "realizado": 21.89
+       "previsto": 3.6701,
+       "realizado": 4.74
       },
       {
        "ref": "2026-06-01",
-       "previsto": 20.6496,
-       "realizado": 21.99
+       "previsto": 3.7159,
+       "realizado": 4.58
+      },
+      {
+       "ref": "2026-07-01",
+       "previsto": 3.9165,
+       "realizado": 4.88
       }
      ]
     }
@@ -1245,8 +729,541 @@
    "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
    "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
    "ultima_obs": {
-    "ref": "2026-06-01",
-    "v": 21.99
+    "ref": "2026-07-01",
+    "v": 4.88
+   }
+  },
+  "concessoes_total": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-08-01",
+     "p50": 743360.6995,
+     "p10": 682028.653,
+     "p90": 793356.2621
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-10-01",
+     "p50": 759533.1455,
+     "p10": 686360.6271,
+     "p90": 799749.3826
+    },
+    {
+     "h": 6,
+     "ref_date": "2027-01-01",
+     "p50": 767887.5448,
+     "p10": 695914.3811,
+     "p90": 834354.8448
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-04-01",
+     "p50": 790136.6326,
+     "p10": 744245.5947,
+     "p90": 867004.8665
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-07-01",
+     "p50": 820904.8343,
+     "p10": 763237.4939,
+     "p90": 873098.2532
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.194,
+      "drift": 0.196,
+      "media_movel_6m": 0.197,
+      "ar1_diferencas": 0.197,
+      "holt": 0.217
+     },
+     "mae_ensemble_backtest": 37408.3788,
+     "mae_naive_backtest": 38513.2,
+     "ganho_vs_naive_pct": 2.9,
+     "n_backtests": 35,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 55.6,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 18,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.19,
+      "drift": 0.198,
+      "media_movel_6m": 0.189,
+      "ar1_diferencas": 0.214,
+      "holt": 0.21
+     },
+     "mae_ensemble_backtest": 39222.4072,
+     "mae_naive_backtest": 41309.2059,
+     "ganho_vs_naive_pct": 5.1,
+     "n_backtests": 34,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 70.6,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 17,
+      "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+     }
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.184,
+      "drift": 0.195,
+      "media_movel_6m": 0.184,
+      "ar1_diferencas": 0.23,
+      "holt": 0.208
+     },
+     "mae_ensemble_backtest": 44887.4353,
+     "mae_naive_backtest": 48915.4194,
+     "ganho_vs_naive_pct": 8.2,
+     "n_backtests": 31,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 81.2,
+      "nominal_pct": 80.0,
+      "n_calibracao": 15,
+      "n_teste": 16,
+      "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
+     }
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.201,
+      "drift": 0.268,
+      "ar1_diferencas": 0.279,
+      "holt": 0.252
+     },
+     "mae_ensemble_backtest": 43222.9484,
+     "mae_naive_backtest": 53849.7143,
+     "ganho_vs_naive_pct": 19.7,
+     "n_backtests": 28,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 50.0,
+      "nominal_pct": 80.0,
+      "n_calibracao": 14,
+      "n_teste": 14,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.148,
+      "sazonal_ingenuo": 0.148,
+      "drift": 0.249,
+      "ar1_diferencas": 0.241,
+      "holt": 0.214
+     },
+     "mae_ensemble_backtest": 51140.2334,
+     "mae_naive_backtest": 69199.24,
+     "ganho_vs_naive_pct": 26.1,
+     "n_backtests": 25,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 30.8,
+      "nominal_pct": 80.0,
+      "n_calibracao": 12,
+      "n_teste": 13,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     },
+     "trajetoria": [
+      {
+       "ref": "2024-08-01",
+       "previsto": 568484.8426,
+       "realizado": 627050.0
+      },
+      {
+       "ref": "2024-09-01",
+       "previsto": 571245.8978,
+       "realizado": 639146.0
+      },
+      {
+       "ref": "2024-10-01",
+       "previsto": 567548.4848,
+       "realizado": 649340.0
+      },
+      {
+       "ref": "2024-11-01",
+       "previsto": 578111.7614,
+       "realizado": 620293.0
+      },
+      {
+       "ref": "2024-12-01",
+       "previsto": 624213.0298,
+       "realizado": 699427.0
+      },
+      {
+       "ref": "2025-01-01",
+       "previsto": 571256.2817,
+       "realizado": 591893.0
+      },
+      {
+       "ref": "2025-02-01",
+       "previsto": 531349.6418,
+       "realizado": 590966.0
+      },
+      {
+       "ref": "2025-03-01",
+       "previsto": 583373.6455,
+       "realizado": 620474.0
+      },
+      {
+       "ref": "2025-04-01",
+       "previsto": 590894.9731,
+       "realizado": 644574.0
+      },
+      {
+       "ref": "2025-05-01",
+       "previsto": 598917.9154,
+       "realizado": 648239.0
+      },
+      {
+       "ref": "2025-06-01",
+       "previsto": 619490.7493,
+       "realizado": 641196.0
+      },
+      {
+       "ref": "2025-07-01",
+       "previsto": 649619.5222,
+       "realizado": 649848.0
+      },
+      {
+       "ref": "2025-08-01",
+       "previsto": 662752.486,
+       "realizado": 643637.0
+      },
+      {
+       "ref": "2025-09-01",
+       "previsto": 677645.8663,
+       "realizado": 700052.0
+      },
+      {
+       "ref": "2025-10-01",
+       "previsto": 690444.2802,
+       "realizado": 691661.0
+      },
+      {
+       "ref": "2025-11-01",
+       "previsto": 663562.233,
+       "realizado": 652949.0
+      },
+      {
+       "ref": "2025-12-01",
+       "previsto": 734236.322,
+       "realizado": 804310.0
+      },
+      {
+       "ref": "2026-01-01",
+       "previsto": 641706.2001,
+       "realizado": 649474.0
+      },
+      {
+       "ref": "2026-02-01",
+       "previsto": 619095.5088,
+       "realizado": 610505.0
+      },
+      {
+       "ref": "2026-03-01",
+       "previsto": 639348.3804,
+       "realizado": 742227.0
+      },
+      {
+       "ref": "2026-04-01",
+       "previsto": 664026.2,
+       "realizado": 692959.0
+      },
+      {
+       "ref": "2026-05-01",
+       "previsto": 671808.6302,
+       "realizado": 701433.0
+      },
+      {
+       "ref": "2026-06-01",
+       "previsto": 666568.0436,
+       "realizado": 748669.0
+      },
+      {
+       "ref": "2026-07-01",
+       "previsto": 673807.8417,
+       "realizado": 736820.0
+      }
+     ]
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-07-01",
+    "v": 736820.0
+   }
+  },
+  "spread_total": {
+   "ok": true,
+   "tipo": "PREVISÃO",
+   "pontos": [
+    {
+     "h": 1,
+     "ref_date": "2026-08-01",
+     "p50": 20.8561,
+     "p10": 20.4794,
+     "p90": 21.4039
+    },
+    {
+     "h": 3,
+     "ref_date": "2026-10-01",
+     "p50": 20.8324,
+     "p10": 20.0522,
+     "p90": 21.9546
+    },
+    {
+     "h": 6,
+     "ref_date": "2027-01-01",
+     "p50": 21.3287,
+     "p10": 19.7869,
+     "p90": 22.83
+    },
+    {
+     "h": 9,
+     "ref_date": "2027-04-01",
+     "p50": 21.9203,
+     "p10": 19.1283,
+     "p90": 23.2631
+    },
+    {
+     "h": 12,
+     "ref_date": "2027-07-01",
+     "p50": 22.3241,
+     "p10": 18.8938,
+     "p90": 23.8701
+    }
+   ],
+   "diagnostico": {
+    "1": {
+     "pesos": {
+      "ultimo_valor": 0.335,
+      "drift": 0.334,
+      "ar1_diferencas": 0.331
+     },
+     "mae_ensemble_backtest": 0.3077,
+     "mae_naive_backtest": 0.3066,
+     "ganho_vs_naive_pct": -0.4,
+     "n_backtests": 35,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 33.3,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 18,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
+    },
+    "3": {
+     "pesos": {
+      "ultimo_valor": 0.33,
+      "drift": 0.33,
+      "ar1_diferencas": 0.34
+     },
+     "mae_ensemble_backtest": 0.6009,
+     "mae_naive_backtest": 0.6065,
+     "ganho_vs_naive_pct": 0.9,
+     "n_backtests": 34,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 11.8,
+      "nominal_pct": 80.0,
+      "n_calibracao": 17,
+      "n_teste": 17,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
+    },
+    "6": {
+     "pesos": {
+      "ultimo_valor": 0.331,
+      "drift": 0.332,
+      "ar1_diferencas": 0.337
+     },
+     "mae_ensemble_backtest": 1.0595,
+     "mae_naive_backtest": 1.0674,
+     "ganho_vs_naive_pct": 0.7,
+     "n_backtests": 31,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 18.8,
+      "nominal_pct": 80.0,
+      "n_calibracao": 15,
+      "n_teste": 16,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     }
+    },
+    "9": {
+     "pesos": {
+      "ultimo_valor": 0.333,
+      "drift": 0.332,
+      "ar1_diferencas": 0.334
+     },
+     "mae_ensemble_backtest": 1.4908,
+     "mae_naive_backtest": 1.4907,
+     "ganho_vs_naive_pct": -0.0,
+     "n_backtests": 28,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 57.1,
+      "nominal_pct": 80.0,
+      "n_calibracao": 14,
+      "n_teste": 14,
+      "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+     }
+    },
+    "12": {
+     "pesos": {
+      "ultimo_valor": 0.205,
+      "sazonal_ingenuo": 0.205,
+      "drift": 0.205,
+      "media_movel_6m": 0.18,
+      "ar1_diferencas": 0.206
+     },
+     "mae_ensemble_backtest": 1.8387,
+     "mae_naive_backtest": 1.7968,
+     "ganho_vs_naive_pct": -2.3,
+     "n_backtests": 25,
+     "cobertura_banda": {
+      "cobertura_oos_pct": 23.1,
+      "nominal_pct": 80.0,
+      "n_calibracao": 12,
+      "n_teste": 13,
+      "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+     },
+     "trajetoria": [
+      {
+       "ref": "2024-08-01",
+       "previsto": 20.7302,
+       "realizado": 18.46
+      },
+      {
+       "ref": "2024-09-01",
+       "previsto": 20.5286,
+       "realizado": 18.28
+      },
+      {
+       "ref": "2024-10-01",
+       "previsto": 20.0957,
+       "realizado": 18.28
+      },
+      {
+       "ref": "2024-11-01",
+       "previsto": 20.0996,
+       "realizado": 18.43
+      },
+      {
+       "ref": "2024-12-01",
+       "previsto": 19.6233,
+       "realizado": 17.62
+      },
+      {
+       "ref": "2025-01-01",
+       "previsto": 19.4195,
+       "realizado": 18.5
+      },
+      {
+       "ref": "2025-02-01",
+       "previsto": 19.3943,
+       "realizado": 19.52
+      },
+      {
+       "ref": "2025-03-01",
+       "previsto": 19.4074,
+       "realizado": 19.55
+      },
+      {
+       "ref": "2025-04-01",
+       "previsto": 19.1332,
+       "realizado": 20.2
+      },
+      {
+       "ref": "2025-05-01",
+       "previsto": 18.8772,
+       "realizado": 20.51
+      },
+      {
+       "ref": "2025-06-01",
+       "previsto": 18.6273,
+       "realizado": 20.74
+      },
+      {
+       "ref": "2025-07-01",
+       "previsto": 18.6036,
+       "realizado": 20.57
+      },
+      {
+       "ref": "2025-08-01",
+       "previsto": 18.5173,
+       "realizado": 20.77
+      },
+      {
+       "ref": "2025-09-01",
+       "previsto": 18.3288,
+       "realizado": 20.53
+      },
+      {
+       "ref": "2025-10-01",
+       "previsto": 18.3108,
+       "realizado": 20.9
+      },
+      {
+       "ref": "2025-11-01",
+       "previsto": 18.4319,
+       "realizado": 21.23
+      },
+      {
+       "ref": "2025-12-01",
+       "previsto": 17.6868,
+       "realizado": 20.87
+      },
+      {
+       "ref": "2026-01-01",
+       "previsto": 18.4802,
+       "realizado": 21.42
+      },
+      {
+       "ref": "2026-02-01",
+       "previsto": 19.3882,
+       "realizado": 21.81
+      },
+      {
+       "ref": "2026-03-01",
+       "previsto": 19.4232,
+       "realizado": 21.54
+      },
+      {
+       "ref": "2026-04-01",
+       "previsto": 20.0512,
+       "realizado": 22.07
+      },
+      {
+       "ref": "2026-05-01",
+       "previsto": 20.3676,
+       "realizado": 21.77
+      },
+      {
+       "ref": "2026-06-01",
+       "previsto": 20.6541,
+       "realizado": 21.86
+      },
+      {
+       "ref": "2026-07-01",
+       "previsto": 20.5595,
+       "realizado": 20.88
+      }
+     ]
+    }
+   },
+   "metodo": "Ensemble ponderado por 1/MAE em backtest walk-forward (janela expansiva); quantis preditivos (p10/p50/p90) por deslocamento dos quantis empíricos dos resíduos fora da amostra por horizonte (calibração tipo conformal).",
+   "limitacoes": "Modelos univariados simples; não incorporam covariáveis nem quebras estruturais. Bandas refletem erro histórico recente, não risco de eventos inéditos.",
+   "ultima_obs": {
+    "ref": "2026-07-01",
+    "v": 20.88
    }
   },
   "rj": {
@@ -1259,55 +1276,55 @@
      {
       "h": 1,
       "ref_date": "2026-07-01",
-      "p50": 65.8718,
-      "p10": 31.7528,
-      "p90": 98.8231
+      "p50": 95.9548,
+      "p10": 57.5475,
+      "p90": 126.9669
      },
      {
       "h": 3,
       "ref_date": "2026-09-01",
-      "p50": 64.8712,
-      "p10": 22.9251,
-      "p90": 104.4201
+      "p50": 99.0729,
+      "p10": 54.8653,
+      "p90": 136.2108
      },
      {
       "h": 6,
       "ref_date": "2026-12-01",
-      "p50": 55.9746,
-      "p10": 19.885,
-      "p90": 94.186
+      "p50": 85.8453,
+      "p10": 53.0453,
+      "p90": 124.6092
      },
      {
       "h": 9,
       "ref_date": "2027-03-01",
-      "p50": 56.5611,
-      "p10": 27.3187,
-      "p90": 108.035
+      "p50": 90.8583,
+      "p10": 65.0729,
+      "p90": 133.8033
      },
      {
       "h": 12,
       "ref_date": "2027-06-01",
-      "p50": 52.8609,
-      "p10": 28.3997,
-      "p90": 84.9904
+      "p50": 90.7583,
+      "p10": 70.8834,
+      "p90": 123.816
      }
     ],
     "diagnostico": {
      "1": {
       "pesos": {
        "ultimo_valor": 0.166,
-       "sazonal_ingenuo": 0.152,
+       "sazonal_ingenuo": 0.159,
        "drift": 0.164,
-       "media_movel_6m": 0.172,
-       "ar1_diferencas": 0.177,
-       "holt": 0.169
+       "media_movel_6m": 0.174,
+       "ar1_diferencas": 0.173,
+       "holt": 0.163
       },
-      "mae_ensemble_backtest": 20.9554,
-      "mae_naive_backtest": 21.0857,
-      "ganho_vs_naive_pct": 0.6,
+      "mae_ensemble_backtest": 20.5612,
+      "mae_naive_backtest": 20.6571,
+      "ganho_vs_naive_pct": 0.5,
       "n_backtests": 35,
       "cobertura_banda": {
-       "cobertura_oos_pct": 72.2,
+       "cobertura_oos_pct": 83.3,
        "nominal_pct": 80.0,
        "n_calibracao": 17,
        "n_teste": 18,
@@ -1316,16 +1333,16 @@
      },
      "3": {
       "pesos": {
-       "ultimo_valor": 0.152,
-       "sazonal_ingenuo": 0.221,
-       "drift": 0.147,
-       "media_movel_6m": 0.175,
-       "ar1_diferencas": 0.16,
-       "holt": 0.146
+       "ultimo_valor": 0.146,
+       "sazonal_ingenuo": 0.236,
+       "drift": 0.142,
+       "media_movel_6m": 0.183,
+       "ar1_diferencas": 0.153,
+       "holt": 0.14
       },
-      "mae_ensemble_backtest": 25.6524,
-      "mae_naive_backtest": 28.2059,
-      "ganho_vs_naive_pct": 9.1,
+      "mae_ensemble_backtest": 25.4369,
+      "mae_naive_backtest": 29.0588,
+      "ganho_vs_naive_pct": 12.5,
       "n_backtests": 34,
       "cobertura_banda": {
        "cobertura_oos_pct": 82.4,
@@ -1337,15 +1354,15 @@
      },
      "6": {
       "pesos": {
-       "ultimo_valor": 0.172,
-       "sazonal_ingenuo": 0.293,
-       "drift": 0.164,
-       "media_movel_6m": 0.199,
-       "ar1_diferencas": 0.173
+       "ultimo_valor": 0.166,
+       "sazonal_ingenuo": 0.304,
+       "drift": 0.157,
+       "media_movel_6m": 0.207,
+       "ar1_diferencas": 0.167
       },
-      "mae_ensemble_backtest": 25.7591,
-      "mae_naive_backtest": 29.9355,
-      "ganho_vs_naive_pct": 14.0,
+      "mae_ensemble_backtest": 25.0636,
+      "mae_naive_backtest": 30.2258,
+      "ganho_vs_naive_pct": 17.1,
       "n_backtests": 31,
       "cobertura_banda": {
        "cobertura_oos_pct": 93.8,
@@ -1357,18 +1374,18 @@
      },
      "9": {
       "pesos": {
-       "ultimo_valor": 0.163,
-       "sazonal_ingenuo": 0.261,
-       "drift": 0.151,
-       "media_movel_6m": 0.258,
-       "ar1_diferencas": 0.167
+       "ultimo_valor": 0.161,
+       "sazonal_ingenuo": 0.257,
+       "drift": 0.147,
+       "media_movel_6m": 0.274,
+       "ar1_diferencas": 0.162
       },
-      "mae_ensemble_backtest": 24.388,
-      "mae_naive_backtest": 29.8929,
-      "ganho_vs_naive_pct": 18.4,
+      "mae_ensemble_backtest": 21.8622,
+      "mae_naive_backtest": 27.2143,
+      "ganho_vs_naive_pct": 19.7,
       "n_backtests": 28,
       "cobertura_banda": {
-       "cobertura_oos_pct": 71.4,
+       "cobertura_oos_pct": 85.7,
        "nominal_pct": 80.0,
        "n_calibracao": 14,
        "n_teste": 14,
@@ -1377,143 +1394,142 @@
      },
      "12": {
       "pesos": {
-       "ultimo_valor": 0.202,
-       "sazonal_ingenuo": 0.202,
-       "drift": 0.18,
-       "media_movel_6m": 0.203,
-       "ar1_diferencas": 0.212
+       "ultimo_valor": 0.242,
+       "sazonal_ingenuo": 0.242,
+       "media_movel_6m": 0.274,
+       "ar1_diferencas": 0.243
       },
-      "mae_ensemble_backtest": 20.0398,
-      "mae_naive_backtest": 19.8,
-      "ganho_vs_naive_pct": -1.2,
+      "mae_ensemble_backtest": 17.2899,
+      "mae_naive_backtest": 17.88,
+      "ganho_vs_naive_pct": 3.3,
       "n_backtests": 25,
       "cobertura_banda": {
-       "cobertura_oos_pct": 38.5,
+       "cobertura_oos_pct": 46.2,
        "nominal_pct": 80.0,
        "n_calibracao": 12,
        "n_teste": 13,
-       "leitura": "os erros mudaram de regime entre as duas metades do backtest — a banda publicada (calibrada com todos os resíduos) deve ser lida como piso de incerteza, não como garantia de 80%"
+       "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
       },
       "trajetoria": [
        {
         "ref": "2024-07-01",
-        "previsto": 121.117,
-        "realizado": 112.0
+        "previsto": 127.9286,
+        "realizado": 128.0
        },
        {
         "ref": "2024-08-01",
-        "previsto": 116.0039,
-        "realizado": 121.0
+        "previsto": 126.2731,
+        "realizado": 125.0
        },
        {
         "ref": "2024-09-01",
-        "previsto": 108.4002,
-        "realizado": 109.0
+        "previsto": 117.7011,
+        "realizado": 116.0
        },
        {
         "ref": "2024-10-01",
-        "previsto": 106.5833,
-        "realizado": 98.0
+        "previsto": 119.7812,
+        "realizado": 111.0
        },
        {
         "ref": "2024-11-01",
-        "previsto": 84.0081,
-        "realizado": 73.0
+        "previsto": 97.0857,
+        "realizado": 82.0
        },
        {
         "ref": "2024-12-01",
-        "previsto": 91.3801,
-        "realizado": 77.0
+        "previsto": 99.7708,
+        "realizado": 87.0
        },
        {
         "ref": "2025-01-01",
-        "previsto": 56.6661,
-        "realizado": 74.0
+        "previsto": 67.2532,
+        "realizado": 89.0
        },
        {
         "ref": "2025-02-01",
-        "previsto": 84.8036,
-        "realizado": 82.0
-       },
-       {
-        "ref": "2025-03-01",
-        "previsto": 89.4934,
-        "realizado": 113.0
-       },
-       {
-        "ref": "2025-04-01",
-        "previsto": 92.6289,
-        "realizado": 77.0
-       },
-       {
-        "ref": "2025-05-01",
-        "previsto": 93.676,
-        "realizado": 82.0
-       },
-       {
-        "ref": "2025-06-01",
-        "previsto": 147.2651,
-        "realizado": 69.0
-       },
-       {
-        "ref": "2025-07-01",
-        "previsto": 116.1783,
-        "realizado": 99.0
-       },
-       {
-        "ref": "2025-08-01",
-        "previsto": 120.1821,
-        "realizado": 82.0
-       },
-       {
-        "ref": "2025-09-01",
-        "previsto": 112.0549,
-        "realizado": 95.0
-       },
-       {
-        "ref": "2025-10-01",
-        "previsto": 102.4872,
+        "previsto": 88.6726,
         "realizado": 96.0
        },
        {
+        "ref": "2025-03-01",
+        "previsto": 97.5761,
+        "realizado": 130.0
+       },
+       {
+        "ref": "2025-04-01",
+        "previsto": 99.8864,
+        "realizado": 93.0
+       },
+       {
+        "ref": "2025-05-01",
+        "previsto": 101.1395,
+        "realizado": 96.0
+       },
+       {
+        "ref": "2025-06-01",
+        "previsto": 149.9107,
+        "realizado": 92.0
+       },
+       {
+        "ref": "2025-07-01",
+        "previsto": 129.7626,
+        "realizado": 110.0
+       },
+       {
+        "ref": "2025-08-01",
+        "previsto": 124.9556,
+        "realizado": 102.0
+       },
+       {
+        "ref": "2025-09-01",
+        "previsto": 119.211,
+        "realizado": 111.0
+       },
+       {
+        "ref": "2025-10-01",
+        "previsto": 115.261,
+        "realizado": 119.0
+       },
+       {
         "ref": "2025-11-01",
-        "previsto": 81.199,
-        "realizado": 132.0
+        "previsto": 94.1167,
+        "realizado": 153.0
        },
        {
         "ref": "2025-12-01",
-        "previsto": 79.474,
-        "realizado": 64.0
+        "previsto": 90.9612,
+        "realizado": 89.0
        },
        {
         "ref": "2026-01-01",
-        "previsto": 76.1888,
-        "realizado": 59.0
+        "previsto": 91.0138,
+        "realizado": 77.0
        },
        {
         "ref": "2026-02-01",
-        "previsto": 80.9068,
-        "realizado": 58.0
+        "previsto": 94.6244,
+        "realizado": 79.0
        },
        {
         "ref": "2026-03-01",
-        "previsto": 105.9335,
-        "realizado": 86.0
+        "previsto": 118.8997,
+        "realizado": 106.0
        },
        {
         "ref": "2026-04-01",
-        "previsto": 79.6288,
-        "realizado": 71.0
+        "previsto": 96.2051,
+        "realizado": 98.0
        },
        {
         "ref": "2026-05-01",
-        "previsto": 80.9284,
-        "realizado": 66.0
+        "previsto": 95.487,
+        "realizado": 107.0
        },
        {
         "ref": "2026-06-01",
-        "previsto": 70.9461,
-        "realizado": 66.0
+        "previsto": 93.3015,
+        "realizado": 96.0
        }
       ]
      }

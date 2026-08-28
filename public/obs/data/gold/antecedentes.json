@@ -9,66 +9,66 @@
      "transformacao": "diff",
      "racional": "Spread embute expectativa de perda dos bancos; sobe antes da inadimplência realizada.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": 0.512,
+     "correlacao_melhor_defasagem": 0.515,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.48
+       "corr": 0.435
       },
       {
        "lag": 1,
-       "corr": 0.15
+       "corr": 0.151
       },
       {
        "lag": 2,
-       "corr": 0.181
+       "corr": 0.158
       },
       {
        "lag": 3,
-       "corr": 0.448
+       "corr": 0.45
       },
       {
        "lag": 4,
-       "corr": 0.038
+       "corr": 0.026
       },
       {
        "lag": 5,
-       "corr": -0.107
+       "corr": -0.1
       },
       {
        "lag": 6,
-       "corr": 0.512
+       "corr": 0.515
       },
       {
        "lag": 7,
-       "corr": 0.188
+       "corr": 0.169
       },
       {
        "lag": 8,
-       "corr": -0.043
+       "corr": -0.036
       },
       {
        "lag": 9,
-       "corr": 0.227
+       "corr": 0.233
       },
       {
        "lag": 10,
-       "corr": -0.027
+       "corr": -0.034
       },
       {
        "lag": 11,
-       "corr": -0.093
+       "corr": -0.086
       },
       {
        "lag": 12,
-       "corr": 0.37
+       "corr": 0.353
       }
      ],
-     "granger_F": 11.94,
+     "granger_F": 11.79,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": 15.9,
-     "estabilidade_metade1": 0.595,
-     "estabilidade_metade2": 0.429,
+     "ganho_oos_pct": 15.5,
+     "estabilidade_metade1": 0.603,
+     "estabilidade_metade2": 0.44,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -78,225 +78,149 @@
      },
      "criterios_atendidos": "4/4",
      "status": "promovido",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "selic_meta",
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
      "melhor_defasagem_meses": 8,
-     "correlacao_melhor_defasagem": 0.376,
+     "correlacao_melhor_defasagem": 0.35,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.203
+       "corr": 0.181
       },
       {
        "lag": 1,
-       "corr": 0.303
+       "corr": 0.281
       },
       {
        "lag": 2,
-       "corr": 0.348
+       "corr": 0.312
       },
       {
        "lag": 3,
-       "corr": 0.309
+       "corr": 0.28
       },
       {
        "lag": 4,
-       "corr": 0.311
+       "corr": 0.283
       },
       {
        "lag": 5,
-       "corr": 0.316
+       "corr": 0.295
       },
       {
        "lag": 6,
-       "corr": 0.298
+       "corr": 0.278
       },
       {
        "lag": 7,
-       "corr": 0.3
+       "corr": 0.281
       },
       {
        "lag": 8,
-       "corr": 0.376
+       "corr": 0.35
       },
       {
        "lag": 9,
-       "corr": 0.313
+       "corr": 0.293
       },
       {
        "lag": 10,
-       "corr": 0.324
+       "corr": 0.301
       },
       {
        "lag": 11,
-       "corr": 0.308
+       "corr": 0.283
       },
       {
        "lag": 12,
-       "corr": 0.245
+       "corr": 0.234
       }
      ],
-     "granger_F": 2.79,
-     "granger_significativo_5pct": true,
-     "ganho_oos_pct": 2.4,
-     "estabilidade_metade1": 0.453,
-     "estabilidade_metade2": 0.349,
+     "granger_F": 2.54,
+     "granger_significativo_5pct": false,
+     "ganho_oos_pct": 3.9,
+     "estabilidade_metade1": 0.457,
+     "estabilidade_metade2": 0.297,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
-      "granger_5pct": true,
+      "granger_5pct": false,
       "ganho_oos": true,
       "estabilidade": true
      },
-     "criterios_atendidos": "4/4",
-     "status": "promovido",
-     "n_obs": 86
+     "criterios_atendidos": "3/4",
+     "status": "em triagem",
+     "n_obs": 87
     },
     {
      "candidato": "desemprego",
      "transformacao": "diff",
      "racional": "Desemprego reduz renda das famílias; efeito defasado sobre atrasos e inadimplência.",
-     "melhor_defasagem_meses": 4,
-     "correlacao_melhor_defasagem": -0.29,
+     "melhor_defasagem_meses": 9,
+     "correlacao_melhor_defasagem": -0.285,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.053
+       "corr": 0.05
       },
       {
        "lag": 1,
-       "corr": 0.006
+       "corr": -0.0
       },
       {
        "lag": 2,
-       "corr": 0.0
+       "corr": -0.003
       },
       {
        "lag": 3,
-       "corr": -0.245
+       "corr": -0.26
       },
       {
        "lag": 4,
-       "corr": -0.29
+       "corr": -0.265
       },
       {
        "lag": 5,
-       "corr": -0.284
+       "corr": -0.248
       },
       {
        "lag": 6,
-       "corr": -0.123
+       "corr": -0.092
       },
       {
        "lag": 7,
-       "corr": -0.129
+       "corr": -0.124
       },
       {
        "lag": 8,
-       "corr": -0.161
-      },
-      {
-       "lag": 9,
-       "corr": -0.284
-      },
-      {
-       "lag": 10,
        "corr": -0.16
       },
       {
-       "lag": 11,
-       "corr": -0.087
-      },
-      {
-       "lag": 12,
-       "corr": 0.088
-      }
-     ],
-     "granger_F": 7.67,
-     "granger_significativo_5pct": true,
-     "ganho_oos_pct": -5.5,
-     "estabilidade_metade1": -0.338,
-     "estabilidade_metade2": -0.044,
-     "estavel": false,
-     "criterios": {
-      "lideranca_temporal": true,
-      "granger_5pct": true,
-      "ganho_oos": false,
-      "estabilidade": false
-     },
-     "criterios_atendidos": "2/4",
-     "status": "em triagem",
-     "n_obs": 117
-    },
-    {
-     "candidato": "comprometimento",
-     "transformacao": "diff",
-     "racional": "Comprometimento de renda alto precede incapacidade de pagamento das famílias.",
-     "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.26,
-     "ccf": [
-      {
-       "lag": 0,
-       "corr": 0.071
-      },
-      {
-       "lag": 1,
-       "corr": 0.26
-      },
-      {
-       "lag": 2,
-       "corr": 0.186
-      },
-      {
-       "lag": 3,
-       "corr": 0.112
-      },
-      {
-       "lag": 4,
-       "corr": 0.182
-      },
-      {
-       "lag": 5,
-       "corr": 0.161
-      },
-      {
-       "lag": 6,
-       "corr": 0.153
-      },
-      {
-       "lag": 7,
-       "corr": 0.228
-      },
-      {
-       "lag": 8,
-       "corr": 0.133
-      },
-      {
        "lag": 9,
-       "corr": 0.13
+       "corr": -0.285
       },
       {
        "lag": 10,
-       "corr": 0.211
+       "corr": -0.153
       },
       {
        "lag": 11,
-       "corr": 0.162
+       "corr": -0.077
       },
       {
        "lag": 12,
-       "corr": 0.065
+       "corr": 0.08
       }
      ],
-     "granger_F": 6.05,
+     "granger_F": 8.72,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": 6.5,
-     "estabilidade_metade1": -0.008,
-     "estabilidade_metade2": 0.38,
+     "ganho_oos_pct": 6.2,
+     "estabilidade_metade1": -0.098,
+     "estabilidade_metade2": -0.316,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": true,
@@ -306,50 +230,126 @@
      },
      "criterios_atendidos": "3/4",
      "status": "em triagem",
-     "n_obs": 169
+     "n_obs": 118
+    },
+    {
+     "candidato": "comprometimento",
+     "transformacao": "diff",
+     "racional": "Comprometimento de renda alto precede incapacidade de pagamento das famílias.",
+     "melhor_defasagem_meses": 1,
+     "correlacao_melhor_defasagem": 0.256,
+     "ccf": [
+      {
+       "lag": 0,
+       "corr": 0.059
+      },
+      {
+       "lag": 1,
+       "corr": 0.256
+      },
+      {
+       "lag": 2,
+       "corr": 0.181
+      },
+      {
+       "lag": 3,
+       "corr": 0.111
+      },
+      {
+       "lag": 4,
+       "corr": 0.18
+      },
+      {
+       "lag": 5,
+       "corr": 0.155
+      },
+      {
+       "lag": 6,
+       "corr": 0.146
+      },
+      {
+       "lag": 7,
+       "corr": 0.228
+      },
+      {
+       "lag": 8,
+       "corr": 0.128
+      },
+      {
+       "lag": 9,
+       "corr": 0.123
+      },
+      {
+       "lag": 10,
+       "corr": 0.202
+      },
+      {
+       "lag": 11,
+       "corr": 0.157
+      },
+      {
+       "lag": 12,
+       "corr": 0.065
+      }
+     ],
+     "granger_F": 6.05,
+     "granger_significativo_5pct": true,
+     "ganho_oos_pct": 6.0,
+     "estabilidade_metade1": -0.008,
+     "estabilidade_metade2": 0.373,
+     "estavel": false,
+     "criterios": {
+      "lideranca_temporal": true,
+      "granger_5pct": true,
+      "ganho_oos": true,
+      "estabilidade": false
+     },
+     "criterios_atendidos": "3/4",
+     "status": "em triagem",
+     "n_obs": 170
     },
     {
      "candidato": "papelao",
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": -0.14,
+     "correlacao_melhor_defasagem": -0.139,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.141
+       "corr": -0.143
       },
       {
        "lag": 1,
-       "corr": -0.096
+       "corr": -0.092
       },
       {
        "lag": 2,
-       "corr": -0.099
+       "corr": -0.101
       },
       {
        "lag": 3,
-       "corr": -0.12
+       "corr": -0.121
       },
       {
        "lag": 4,
-       "corr": -0.127
+       "corr": -0.123
       },
       {
        "lag": 5,
-       "corr": -0.112
+       "corr": -0.113
       },
       {
        "lag": 6,
-       "corr": -0.14
+       "corr": -0.139
       },
       {
        "lag": 7,
-       "corr": -0.114
+       "corr": -0.109
       },
       {
        "lag": 8,
-       "corr": -0.091
+       "corr": -0.09
       },
       {
        "lag": 9,
@@ -357,22 +357,22 @@
       },
       {
        "lag": 10,
-       "corr": -0.065
+       "corr": -0.062
       },
       {
        "lag": 11,
-       "corr": 0.005
+       "corr": -0.002
       },
       {
        "lag": 12,
-       "corr": -0.068
+       "corr": -0.065
       }
      ],
-     "granger_F": 0.25,
+     "granger_F": 0.26,
      "granger_significativo_5pct": false,
      "ganho_oos_pct": -0.2,
      "estabilidade_metade1": -0.215,
-     "estabilidade_metade2": -0.107,
+     "estabilidade_metade2": -0.104,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -389,47 +389,47 @@
      "transformacao": "yoy",
      "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
      "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.134,
+     "correlacao_melhor_defasagem": 0.133,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.017
+       "corr": 0.014
       },
       {
        "lag": 1,
-       "corr": 0.134
+       "corr": 0.133
       },
       {
        "lag": 2,
-       "corr": 0.107
+       "corr": 0.106
       },
       {
        "lag": 3,
-       "corr": 0.088
+       "corr": 0.083
       },
       {
        "lag": 4,
-       "corr": 0.089
-      },
-      {
-       "lag": 5,
-       "corr": 0.093
-      },
-      {
-       "lag": 6,
-       "corr": 0.056
-      },
-      {
-       "lag": 7,
-       "corr": 0.078
-      },
-      {
-       "lag": 8,
        "corr": 0.09
       },
       {
+       "lag": 5,
+       "corr": 0.092
+      },
+      {
+       "lag": 6,
+       "corr": 0.052
+      },
+      {
+       "lag": 7,
+       "corr": 0.077
+      },
+      {
+       "lag": 8,
+       "corr": 0.088
+      },
+      {
        "lag": 9,
-       "corr": 0.071
+       "corr": 0.068
       },
       {
        "lag": 10,
@@ -437,18 +437,18 @@
       },
       {
        "lag": 11,
-       "corr": 0.078
+       "corr": 0.076
       },
       {
        "lag": 12,
-       "corr": 0.028
+       "corr": 0.027
       }
      ],
-     "granger_F": 1.37,
+     "granger_F": 1.4,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 2.9,
+     "ganho_oos_pct": 2.7,
      "estabilidade_metade1": -0.267,
-     "estabilidade_metade2": 0.366,
+     "estabilidade_metade2": 0.363,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -465,15 +465,15 @@
      "transformacao": "yoy",
      "racional": "Aperto de concessões antecipa restrição de refinanciamento e realização de atrasos.",
      "melhor_defasagem_meses": 7,
-     "correlacao_melhor_defasagem": 0.119,
+     "correlacao_melhor_defasagem": 0.127,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.03
+       "corr": 0.031
       },
       {
        "lag": 1,
-       "corr": 0.072
+       "corr": 0.083
       },
       {
        "lag": 2,
@@ -481,50 +481,50 @@
       },
       {
        "lag": 3,
-       "corr": 0.026
+       "corr": 0.017
       },
       {
        "lag": 4,
-       "corr": 0.076
+       "corr": 0.094
       },
       {
        "lag": 5,
-       "corr": 0.071
+       "corr": 0.06
       },
       {
        "lag": 6,
-       "corr": 0.072
+       "corr": 0.068
       },
       {
        "lag": 7,
-       "corr": 0.119
+       "corr": 0.127
       },
       {
        "lag": 8,
-       "corr": 0.115
+       "corr": 0.107
       },
       {
        "lag": 9,
-       "corr": 0.103
+       "corr": 0.097
       },
       {
        "lag": 10,
-       "corr": 0.099
+       "corr": 0.1
       },
       {
        "lag": 11,
-       "corr": 0.114
+       "corr": 0.103
       },
       {
        "lag": 12,
-       "corr": 0.087
+       "corr": 0.079
       }
      ],
-     "granger_F": 0.88,
+     "granger_F": 1.28,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 2.5,
-     "estabilidade_metade1": -0.113,
-     "estabilidade_metade2": 0.21,
+     "ganho_oos_pct": 2.4,
+     "estabilidade_metade1": -0.106,
+     "estabilidade_metade2": 0.214,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -534,73 +534,73 @@
      },
      "criterios_atendidos": "1/4",
      "status": "reprovado",
-     "n_obs": 159
+     "n_obs": 160
     },
     {
      "candidato": "cambio",
      "transformacao": "yoy",
      "racional": "Depreciação encarece insumos e dívidas indexadas; pressiona margens de empresas.",
      "melhor_defasagem_meses": 12,
-     "correlacao_melhor_defasagem": 0.114,
+     "correlacao_melhor_defasagem": 0.101,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.088
+       "corr": -0.096
       },
       {
        "lag": 1,
-       "corr": -0.068
+       "corr": -0.075
       },
       {
        "lag": 2,
-       "corr": -0.048
+       "corr": -0.06
       },
       {
        "lag": 3,
-       "corr": -0.007
+       "corr": -0.023
       },
       {
        "lag": 4,
-       "corr": -0.006
+       "corr": -0.018
       },
       {
        "lag": 5,
-       "corr": -0.006
+       "corr": -0.018
       },
       {
        "lag": 6,
-       "corr": 0.027
+       "corr": 0.012
       },
       {
        "lag": 7,
-       "corr": 0.058
+       "corr": 0.041
       },
       {
        "lag": 8,
-       "corr": 0.061
+       "corr": 0.046
       },
       {
        "lag": 9,
-       "corr": 0.088
+       "corr": 0.075
       },
       {
        "lag": 10,
-       "corr": 0.094
+       "corr": 0.081
       },
       {
        "lag": 11,
-       "corr": 0.105
+       "corr": 0.093
       },
       {
        "lag": 12,
-       "corr": 0.114
+       "corr": 0.101
       }
      ],
-     "granger_F": 0.57,
+     "granger_F": 0.44,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -1.0,
-     "estabilidade_metade1": 0.148,
-     "estabilidade_metade2": 0.121,
+     "ganho_oos_pct": -0.5,
+     "estabilidade_metade1": 0.147,
+     "estabilidade_metade2": 0.103,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -610,7 +610,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     }
    ],
    "n_testes_executados": 8,
@@ -626,66 +626,66 @@
      "transformacao": "diff",
      "racional": "Spread embute expectativa de perda dos bancos; sobe antes da inadimplência realizada.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": 0.465,
+     "correlacao_melhor_defasagem": 0.467,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.412
+       "corr": 0.353
       },
       {
        "lag": 1,
-       "corr": 0.14
+       "corr": 0.139
       },
       {
        "lag": 2,
-       "corr": 0.141
+       "corr": 0.113
       },
       {
        "lag": 3,
-       "corr": 0.377
+       "corr": 0.38
       },
       {
        "lag": 4,
-       "corr": 0.053
+       "corr": 0.036
       },
       {
        "lag": 5,
-       "corr": -0.082
+       "corr": -0.074
       },
       {
        "lag": 6,
-       "corr": 0.465
+       "corr": 0.467
       },
       {
        "lag": 7,
-       "corr": 0.112
+       "corr": 0.089
       },
       {
        "lag": 8,
-       "corr": -0.02
+       "corr": -0.012
       },
       {
        "lag": 9,
-       "corr": 0.137
+       "corr": 0.146
       },
       {
        "lag": 10,
-       "corr": -0.015
+       "corr": -0.027
       },
       {
        "lag": 11,
-       "corr": -0.077
+       "corr": -0.064
       },
       {
        "lag": 12,
-       "corr": 0.303
+       "corr": 0.279
       }
      ],
-     "granger_F": 5.43,
+     "granger_F": 5.64,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": 14.1,
-     "estabilidade_metade1": 0.576,
-     "estabilidade_metade2": 0.367,
+     "ganho_oos_pct": 13.5,
+     "estabilidade_metade1": 0.585,
+     "estabilidade_metade2": 0.386,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -695,149 +695,149 @@
      },
      "criterios_atendidos": "4/4",
      "status": "promovido",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "selic_meta",
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
-     "melhor_defasagem_meses": 2,
-     "correlacao_melhor_defasagem": 0.39,
+     "melhor_defasagem_meses": 8,
+     "correlacao_melhor_defasagem": 0.354,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.245
+       "corr": 0.214
       },
       {
        "lag": 1,
-       "corr": 0.331
+       "corr": 0.3
       },
       {
        "lag": 2,
-       "corr": 0.39
-      },
-      {
-       "lag": 3,
-       "corr": 0.354
-      },
-      {
-       "lag": 4,
-       "corr": 0.315
-      },
-      {
-       "lag": 5,
-       "corr": 0.365
-      },
-      {
-       "lag": 6,
-       "corr": 0.336
-      },
-      {
-       "lag": 7,
-       "corr": 0.312
-      },
-      {
-       "lag": 8,
-       "corr": 0.389
-      },
-      {
-       "lag": 9,
        "corr": 0.34
       },
       {
+       "lag": 3,
+       "corr": 0.313
+      },
+      {
+       "lag": 4,
+       "corr": 0.278
+      },
+      {
+       "lag": 5,
+       "corr": 0.333
+      },
+      {
+       "lag": 6,
+       "corr": 0.305
+      },
+      {
+       "lag": 7,
+       "corr": 0.283
+      },
+      {
+       "lag": 8,
+       "corr": 0.354
+      },
+      {
+       "lag": 9,
+       "corr": 0.309
+      },
+      {
        "lag": 10,
-       "corr": 0.292
+       "corr": 0.264
       },
       {
        "lag": 11,
-       "corr": 0.276
+       "corr": 0.244
       },
       {
        "lag": 12,
-       "corr": 0.193
+       "corr": 0.179
       }
      ],
-     "granger_F": 2.62,
-     "granger_significativo_5pct": true,
-     "ganho_oos_pct": 1.5,
-     "estabilidade_metade1": 0.439,
-     "estabilidade_metade2": 0.428,
+     "granger_F": 2.18,
+     "granger_significativo_5pct": false,
+     "ganho_oos_pct": 5.5,
+     "estabilidade_metade1": 0.454,
+     "estabilidade_metade2": 0.302,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
-      "granger_5pct": true,
-      "ganho_oos": false,
+      "granger_5pct": false,
+      "ganho_oos": true,
       "estabilidade": true
      },
      "criterios_atendidos": "3/4",
      "status": "em triagem",
-     "n_obs": 86
+     "n_obs": 87
     },
     {
      "candidato": "desemprego",
      "transformacao": "diff",
      "racional": "Desemprego reduz renda das famílias; efeito defasado sobre atrasos e inadimplência.",
      "melhor_defasagem_meses": 3,
-     "correlacao_melhor_defasagem": -0.325,
+     "correlacao_melhor_defasagem": -0.338,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.019
+       "corr": 0.017
       },
       {
        "lag": 1,
-       "corr": -0.093
+       "corr": -0.095
       },
       {
        "lag": 2,
-       "corr": -0.12
+       "corr": -0.117
       },
       {
        "lag": 3,
-       "corr": -0.325
+       "corr": -0.338
       },
       {
        "lag": 4,
-       "corr": -0.285
+       "corr": -0.251
       },
       {
        "lag": 5,
-       "corr": -0.263
+       "corr": -0.217
       },
       {
        "lag": 6,
-       "corr": -0.113
+       "corr": -0.072
       },
       {
        "lag": 7,
-       "corr": -0.172
+       "corr": -0.16
       },
       {
        "lag": 8,
-       "corr": -0.199
+       "corr": -0.194
       },
       {
        "lag": 9,
-       "corr": -0.284
+       "corr": -0.281
       },
       {
        "lag": 10,
-       "corr": -0.134
+       "corr": -0.123
       },
       {
        "lag": 11,
-       "corr": -0.04
+       "corr": -0.027
       },
       {
        "lag": 12,
-       "corr": 0.114
+       "corr": 0.104
       }
      ],
-     "granger_F": 6.54,
+     "granger_F": 7.7,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": -3.5,
-     "estabilidade_metade1": -0.418,
-     "estabilidade_metade2": -0.059,
+     "ganho_oos_pct": -3.3,
+     "estabilidade_metade1": -0.42,
+     "estabilidade_metade2": -0.112,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": true,
@@ -847,42 +847,42 @@
      },
      "criterios_atendidos": "2/4",
      "status": "em triagem",
-     "n_obs": 117
+     "n_obs": 118
     },
     {
      "candidato": "comprometimento",
      "transformacao": "diff",
      "racional": "Comprometimento de renda alto precede incapacidade de pagamento das famílias.",
      "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.308,
+     "correlacao_melhor_defasagem": 0.303,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.158
+       "corr": 0.143
       },
       {
        "lag": 1,
-       "corr": 0.308
+       "corr": 0.303
       },
       {
        "lag": 2,
-       "corr": 0.18
+       "corr": 0.174
       },
       {
        "lag": 3,
-       "corr": 0.146
+       "corr": 0.145
       },
       {
        "lag": 4,
-       "corr": 0.186
+       "corr": 0.184
       },
       {
        "lag": 5,
-       "corr": 0.138
+       "corr": 0.132
       },
       {
        "lag": 6,
-       "corr": 0.152
+       "corr": 0.143
       },
       {
        "lag": 7,
@@ -890,30 +890,30 @@
       },
       {
        "lag": 8,
-       "corr": 0.169
+       "corr": 0.163
       },
       {
        "lag": 9,
-       "corr": 0.184
+       "corr": 0.176
       },
       {
        "lag": 10,
-       "corr": 0.258
+       "corr": 0.247
       },
       {
        "lag": 11,
-       "corr": 0.188
+       "corr": 0.181
       },
       {
        "lag": 12,
        "corr": 0.099
       }
      ],
-     "granger_F": 7.58,
+     "granger_F": 7.59,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": 6.1,
+     "ganho_oos_pct": 5.6,
      "estabilidade_metade1": 0.045,
-     "estabilidade_metade2": 0.411,
+     "estabilidade_metade2": 0.399,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": true,
@@ -923,73 +923,73 @@
      },
      "criterios_atendidos": "3/4",
      "status": "em triagem",
-     "n_obs": 169
+     "n_obs": 170
     },
     {
      "candidato": "concessoes_total",
      "transformacao": "yoy",
      "racional": "Aperto de concessões antecipa restrição de refinanciamento e realização de atrasos.",
      "melhor_defasagem_meses": 4,
-     "correlacao_melhor_defasagem": 0.209,
+     "correlacao_melhor_defasagem": 0.225,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.127
+       "corr": 0.123
       },
       {
        "lag": 1,
-       "corr": 0.197
+       "corr": 0.205
       },
       {
        "lag": 2,
-       "corr": 0.164
+       "corr": 0.157
       },
       {
        "lag": 3,
-       "corr": 0.158
+       "corr": 0.14
       },
       {
        "lag": 4,
-       "corr": 0.209
+       "corr": 0.225
       },
       {
        "lag": 5,
-       "corr": 0.173
+       "corr": 0.154
       },
       {
        "lag": 6,
-       "corr": 0.176
+       "corr": 0.165
       },
       {
        "lag": 7,
-       "corr": 0.197
+       "corr": 0.203
       },
       {
        "lag": 8,
-       "corr": 0.198
+       "corr": 0.183
       },
       {
        "lag": 9,
-       "corr": 0.151
+       "corr": 0.138
       },
       {
        "lag": 10,
-       "corr": 0.149
+       "corr": 0.148
       },
       {
        "lag": 11,
-       "corr": 0.142
+       "corr": 0.126
       },
       {
        "lag": 12,
-       "corr": 0.113
+       "corr": 0.101
       }
      ],
-     "granger_F": 1.83,
+     "granger_F": 2.3,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 3.1,
+     "ganho_oos_pct": 3.5,
      "estabilidade_metade1": -0.068,
-     "estabilidade_metade2": 0.295,
+     "estabilidade_metade2": 0.308,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": true,
@@ -999,30 +999,30 @@
      },
      "criterios_atendidos": "2/4",
      "status": "em triagem",
-     "n_obs": 159
+     "n_obs": 160
     },
     {
      "candidato": "ibc_br",
      "transformacao": "yoy",
      "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
      "melhor_defasagem_meses": 8,
-     "correlacao_melhor_defasagem": 0.184,
+     "correlacao_melhor_defasagem": 0.182,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.024
+       "corr": 0.02
       },
       {
        "lag": 1,
-       "corr": 0.167
+       "corr": 0.165
       },
       {
        "lag": 2,
-       "corr": 0.164
+       "corr": 0.161
       },
       {
        "lag": 3,
-       "corr": 0.14
+       "corr": 0.132
       },
       {
        "lag": 4,
@@ -1030,42 +1030,42 @@
       },
       {
        "lag": 5,
-       "corr": 0.166
+       "corr": 0.164
       },
       {
        "lag": 6,
-       "corr": 0.121
+       "corr": 0.114
       },
       {
        "lag": 7,
-       "corr": 0.148
+       "corr": 0.146
       },
       {
        "lag": 8,
-       "corr": 0.184
+       "corr": 0.182
       },
       {
        "lag": 9,
-       "corr": 0.152
+       "corr": 0.147
       },
       {
        "lag": 10,
-       "corr": 0.144
+       "corr": 0.143
       },
       {
        "lag": 11,
-       "corr": 0.149
+       "corr": 0.145
       },
       {
        "lag": 12,
-       "corr": 0.104
+       "corr": 0.101
       }
      ],
-     "granger_F": 2.08,
+     "granger_F": 2.09,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 5.3,
+     "ganho_oos_pct": 5.0,
      "estabilidade_metade1": 0.01,
-     "estabilidade_metade2": 0.225,
+     "estabilidade_metade2": 0.224,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1082,43 +1082,43 @@
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": -0.112,
+     "correlacao_melhor_defasagem": -0.108,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.14
+       "corr": -0.142
       },
       {
        "lag": 1,
-       "corr": -0.067
+       "corr": -0.063
       },
       {
        "lag": 2,
-       "corr": -0.09
+       "corr": -0.094
       },
       {
        "lag": 3,
-       "corr": -0.104
+       "corr": -0.106
       },
       {
        "lag": 4,
-       "corr": -0.049
+       "corr": -0.046
       },
       {
        "lag": 5,
-       "corr": -0.097
+       "corr": -0.096
       },
       {
        "lag": 6,
-       "corr": -0.112
+       "corr": -0.108
       },
       {
        "lag": 7,
-       "corr": -0.065
+       "corr": -0.059
       },
       {
        "lag": 8,
-       "corr": -0.068
+       "corr": -0.066
       },
       {
        "lag": 9,
@@ -1126,22 +1126,22 @@
       },
       {
        "lag": 10,
-       "corr": 0.006
+       "corr": 0.01
       },
       {
        "lag": 11,
-       "corr": 0.071
+       "corr": 0.059
       },
       {
        "lag": 12,
-       "corr": -0.008
+       "corr": -0.004
       }
      ],
-     "granger_F": 0.21,
+     "granger_F": 0.24,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -0.3,
+     "ganho_oos_pct": -0.2,
      "estabilidade_metade1": -0.157,
-     "estabilidade_metade2": -0.112,
+     "estabilidade_metade2": -0.105,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1158,66 +1158,66 @@
      "transformacao": "yoy",
      "racional": "Depreciação encarece insumos e dívidas indexadas; pressiona margens de empresas.",
      "melhor_defasagem_meses": 2,
-     "correlacao_melhor_defasagem": -0.062,
+     "correlacao_melhor_defasagem": -0.074,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.066
+       "corr": -0.076
       },
       {
        "lag": 1,
-       "corr": -0.056
+       "corr": -0.064
       },
       {
        "lag": 2,
-       "corr": -0.062
+       "corr": -0.074
       },
       {
        "lag": 3,
-       "corr": -0.051
+       "corr": -0.067
       },
       {
        "lag": 4,
-       "corr": -0.055
+       "corr": -0.066
       },
       {
        "lag": 5,
-       "corr": -0.059
+       "corr": -0.07
       },
       {
        "lag": 6,
-       "corr": -0.036
+       "corr": -0.051
       },
       {
        "lag": 7,
-       "corr": -0.012
+       "corr": -0.029
       },
       {
        "lag": 8,
-       "corr": -0.013
+       "corr": -0.029
       },
       {
        "lag": 9,
-       "corr": -0.006
+       "corr": -0.017
       },
       {
        "lag": 10,
-       "corr": 0.006
+       "corr": -0.006
       },
       {
        "lag": 11,
-       "corr": 0.032
+       "corr": 0.02
       },
       {
        "lag": 12,
-       "corr": 0.039
+       "corr": 0.027
       }
      ],
-     "granger_F": 0.12,
+     "granger_F": 0.17,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 0.1,
-     "estabilidade_metade1": 0.22,
-     "estabilidade_metade2": -0.27,
+     "ganho_oos_pct": 0.2,
+     "estabilidade_metade1": 0.221,
+     "estabilidade_metade2": -0.276,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1227,7 +1227,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     }
    ],
    "n_testes_executados": 8,
@@ -1243,66 +1243,66 @@
      "transformacao": "diff",
      "racional": "Spread embute expectativa de perda dos bancos; sobe antes da inadimplência realizada.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": 0.455,
+     "correlacao_melhor_defasagem": 0.459,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.416
+       "corr": 0.402
       },
       {
        "lag": 1,
-       "corr": 0.136
+       "corr": 0.139
       },
       {
        "lag": 2,
-       "corr": 0.177
+       "corr": 0.171
       },
       {
        "lag": 3,
-       "corr": 0.41
+       "corr": 0.411
       },
       {
        "lag": 4,
-       "corr": 0.015
+       "corr": 0.012
       },
       {
        "lag": 5,
-       "corr": -0.109
+       "corr": -0.106
       },
       {
        "lag": 6,
-       "corr": 0.455
+       "corr": 0.459
       },
       {
        "lag": 7,
-       "corr": 0.227
+       "corr": 0.223
       },
       {
        "lag": 8,
-       "corr": -0.057
+       "corr": -0.054
       },
       {
        "lag": 9,
-       "corr": 0.27
+       "corr": 0.273
       },
       {
        "lag": 10,
-       "corr": -0.028
+       "corr": -0.029
       },
       {
        "lag": 11,
-       "corr": -0.088
+       "corr": -0.087
       },
       {
        "lag": 12,
-       "corr": 0.366
+       "corr": 0.361
       }
      ],
-     "granger_F": 12.9,
+     "granger_F": 12.86,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": 8.1,
-     "estabilidade_metade1": 0.496,
-     "estabilidade_metade2": 0.406,
+     "ganho_oos_pct": 8.3,
+     "estabilidade_metade1": 0.502,
+     "estabilidade_metade2": 0.407,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -1312,73 +1312,73 @@
      },
      "criterios_atendidos": "4/4",
      "status": "promovido",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "selic_meta",
      "transformacao": "mdiff",
      "racional": "Juros elevam serviço da dívida com defasagem de repactuação e novas concessões.",
      "melhor_defasagem_meses": 10,
-     "correlacao_melhor_defasagem": 0.293,
+     "correlacao_melhor_defasagem": 0.291,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.091
+       "corr": 0.085
       },
       {
        "lag": 1,
-       "corr": 0.186
+       "corr": 0.181
       },
       {
        "lag": 2,
-       "corr": 0.21
+       "corr": 0.2
       },
       {
        "lag": 3,
-       "corr": 0.168
+       "corr": 0.16
       },
       {
        "lag": 4,
-       "corr": 0.228
+       "corr": 0.221
       },
       {
        "lag": 5,
-       "corr": 0.171
+       "corr": 0.168
       },
       {
        "lag": 6,
-       "corr": 0.167
+       "corr": 0.165
       },
       {
        "lag": 7,
-       "corr": 0.208
+       "corr": 0.206
       },
       {
        "lag": 8,
-       "corr": 0.263
+       "corr": 0.26
       },
       {
        "lag": 9,
-       "corr": 0.214
+       "corr": 0.211
       },
       {
        "lag": 10,
-       "corr": 0.293
+       "corr": 0.291
       },
       {
        "lag": 11,
-       "corr": 0.293
+       "corr": 0.288
       },
       {
        "lag": 12,
-       "corr": 0.274
+       "corr": 0.275
       }
      ],
-     "granger_F": 1.46,
+     "granger_F": 1.43,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -1.4,
+     "ganho_oos_pct": -2.3,
      "estabilidade_metade1": 0.363,
-     "estabilidade_metade2": 0.245,
+     "estabilidade_metade2": 0.261,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -1388,94 +1388,94 @@
      },
      "criterios_atendidos": "2/4",
      "status": "em triagem",
-     "n_obs": 86
+     "n_obs": 87
     },
     {
      "candidato": "desemprego",
      "transformacao": "diff",
      "racional": "Desemprego reduz renda das famílias; efeito defasado sobre atrasos e inadimplência.",
-     "melhor_defasagem_meses": 5,
-     "correlacao_melhor_defasagem": -0.251,
+     "melhor_defasagem_meses": 9,
+     "correlacao_melhor_defasagem": -0.244,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.085
+       "corr": 0.082
       },
       {
        "lag": 1,
-       "corr": 0.126
+       "corr": 0.121
       },
       {
        "lag": 2,
-       "corr": 0.132
+       "corr": 0.129
       },
       {
        "lag": 3,
-       "corr": -0.108
+       "corr": -0.114
       },
       {
        "lag": 4,
-       "corr": -0.241
+       "corr": -0.231
       },
       {
        "lag": 5,
-       "corr": -0.251
+       "corr": -0.238
       },
       {
        "lag": 6,
-       "corr": -0.104
+       "corr": -0.094
       },
       {
        "lag": 7,
-       "corr": -0.057
+       "corr": -0.058
       },
       {
        "lag": 8,
-       "corr": -0.096
+       "corr": -0.098
       },
       {
        "lag": 9,
-       "corr": -0.243
+       "corr": -0.244
       },
       {
        "lag": 10,
-       "corr": -0.176
+       "corr": -0.174
       },
       {
        "lag": 11,
-       "corr": -0.14
+       "corr": -0.138
       },
       {
        "lag": 12,
-       "corr": 0.036
+       "corr": 0.031
       }
      ],
-     "granger_F": 5.58,
+     "granger_F": 5.78,
      "granger_significativo_5pct": true,
-     "ganho_oos_pct": -6.5,
-     "estabilidade_metade1": -0.277,
-     "estabilidade_metade2": -0.046,
+     "ganho_oos_pct": 8.2,
+     "estabilidade_metade1": -0.006,
+     "estabilidade_metade2": -0.391,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": true,
       "granger_5pct": true,
-      "ganho_oos": false,
+      "ganho_oos": true,
       "estabilidade": false
      },
-     "criterios_atendidos": "2/4",
+     "criterios_atendidos": "3/4",
      "status": "em triagem",
-     "n_obs": 117
+     "n_obs": 118
     },
     {
      "candidato": "comprometimento",
      "transformacao": "diff",
      "racional": "Comprometimento de renda alto precede incapacidade de pagamento das famílias.",
      "melhor_defasagem_meses": 7,
-     "correlacao_melhor_defasagem": 0.202,
+     "correlacao_melhor_defasagem": 0.203,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.044
+       "corr": -0.048
       },
       {
        "lag": 1,
@@ -1483,7 +1483,7 @@
       },
       {
        "lag": 2,
-       "corr": 0.142
+       "corr": 0.141
       },
       {
        "lag": 3,
@@ -1495,42 +1495,42 @@
       },
       {
        "lag": 5,
-       "corr": 0.155
+       "corr": 0.153
       },
       {
        "lag": 6,
-       "corr": 0.124
+       "corr": 0.121
       },
       {
        "lag": 7,
-       "corr": 0.202
+       "corr": 0.203
       },
       {
        "lag": 8,
-       "corr": 0.067
+       "corr": 0.066
       },
       {
        "lag": 9,
-       "corr": 0.036
+       "corr": 0.034
       },
       {
        "lag": 10,
-       "corr": 0.126
+       "corr": 0.123
       },
       {
        "lag": 11,
-       "corr": 0.114
+       "corr": 0.113
       },
       {
        "lag": 12,
-       "corr": 0.032
+       "corr": 0.034
       }
      ],
      "granger_F": 2.07,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 3.7,
-     "estabilidade_metade1": 0.275,
-     "estabilidade_metade2": 0.177,
+     "ganho_oos_pct": 3.2,
+     "estabilidade_metade1": 0.285,
+     "estabilidade_metade2": 0.175,
      "estavel": true,
      "criterios": {
       "lideranca_temporal": true,
@@ -1540,7 +1540,7 @@
      },
      "criterios_atendidos": "3/4",
      "status": "em triagem",
-     "n_obs": 169
+     "n_obs": 170
     },
     {
      "candidato": "papelao",
@@ -1551,7 +1551,7 @@
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.11
+       "corr": -0.111
       },
       {
        "lag": 1,
@@ -1563,7 +1563,7 @@
       },
       {
        "lag": 3,
-       "corr": -0.121
+       "corr": -0.122
       },
       {
        "lag": 4,
@@ -1571,11 +1571,11 @@
       },
       {
        "lag": 5,
-       "corr": -0.106
+       "corr": -0.105
       },
       {
        "lag": 6,
-       "corr": -0.129
+       "corr": -0.13
       },
       {
        "lag": 7,
@@ -1583,7 +1583,7 @@
       },
       {
        "lag": 8,
-       "corr": -0.097
+       "corr": -0.098
       },
       {
        "lag": 9,
@@ -1595,11 +1595,11 @@
       },
       {
        "lag": 11,
-       "corr": -0.067
+       "corr": -0.068
       },
       {
        "lag": 12,
-       "corr": -0.114
+       "corr": -0.113
       }
      ],
      "granger_F": 0.62,
@@ -1623,66 +1623,66 @@
      "transformacao": "yoy",
      "racional": "Depreciação encarece insumos e dívidas indexadas; pressiona margens de empresas.",
      "melhor_defasagem_meses": 12,
-     "correlacao_melhor_defasagem": 0.142,
+     "correlacao_melhor_defasagem": 0.138,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.082
+       "corr": -0.087
       },
       {
        "lag": 1,
-       "corr": -0.06
+       "corr": -0.065
       },
       {
        "lag": 2,
-       "corr": -0.026
+       "corr": -0.032
       },
       {
        "lag": 3,
-       "corr": 0.033
+       "corr": 0.025
       },
       {
        "lag": 4,
-       "corr": 0.035
+       "corr": 0.029
       },
       {
        "lag": 5,
-       "corr": 0.034
+       "corr": 0.027
       },
       {
        "lag": 6,
-       "corr": 0.062
+       "corr": 0.054
       },
       {
        "lag": 7,
-       "corr": 0.092
+       "corr": 0.084
       },
       {
        "lag": 8,
-       "corr": 0.099
+       "corr": 0.093
       },
       {
        "lag": 9,
-       "corr": 0.136
-      },
-      {
-       "lag": 10,
-       "corr": 0.134
-      },
-      {
-       "lag": 11,
        "corr": 0.131
       },
       {
+       "lag": 10,
+       "corr": 0.129
+      },
+      {
+       "lag": 11,
+       "corr": 0.127
+      },
+      {
        "lag": 12,
-       "corr": 0.142
+       "corr": 0.138
       }
      ],
-     "granger_F": 1.45,
+     "granger_F": 1.38,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 1.2,
-     "estabilidade_metade1": 0.23,
-     "estabilidade_metade2": 0.036,
+     "ganho_oos_pct": -0.2,
+     "estabilidade_metade1": 0.229,
+     "estabilidade_metade2": 0.032,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1692,73 +1692,73 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "concessoes_total",
      "transformacao": "yoy",
      "racional": "Aperto de concessões antecipa restrição de refinanciamento e realização de atrasos.",
      "melhor_defasagem_meses": 3,
-     "correlacao_melhor_defasagem": -0.126,
+     "correlacao_melhor_defasagem": -0.127,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.085
+       "corr": -0.082
       },
       {
        "lag": 1,
-       "corr": -0.086
-      },
-      {
-       "lag": 2,
-       "corr": -0.089
-      },
-      {
-       "lag": 3,
-       "corr": -0.126
-      },
-      {
-       "lag": 4,
        "corr": -0.081
       },
       {
+       "lag": 2,
+       "corr": -0.088
+      },
+      {
+       "lag": 3,
+       "corr": -0.127
+      },
+      {
+       "lag": 4,
+       "corr": -0.074
+      },
+      {
        "lag": 5,
-       "corr": -0.051
+       "corr": -0.053
       },
       {
        "lag": 6,
-       "corr": -0.041
+       "corr": -0.04
       },
       {
        "lag": 7,
-       "corr": 0.015
+       "corr": 0.019
       },
       {
        "lag": 8,
-       "corr": 0.01
+       "corr": 0.008
       },
       {
        "lag": 9,
-       "corr": 0.033
+       "corr": 0.031
       },
       {
        "lag": 10,
-       "corr": 0.04
+       "corr": 0.041
       },
       {
        "lag": 11,
-       "corr": 0.075
+       "corr": 0.072
       },
       {
        "lag": 12,
-       "corr": 0.054
+       "corr": 0.053
       }
      ],
-     "granger_F": 0.75,
+     "granger_F": 0.79,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 3.5,
-     "estabilidade_metade1": -0.236,
-     "estabilidade_metade2": -0.084,
+     "ganho_oos_pct": 2.6,
+     "estabilidade_metade1": -0.238,
+     "estabilidade_metade2": -0.094,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1768,14 +1768,14 @@
      },
      "criterios_atendidos": "1/4",
      "status": "reprovado",
-     "n_obs": 159
+     "n_obs": 160
     },
     {
      "candidato": "ibc_br",
      "transformacao": "yoy",
      "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
      "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.063,
+     "correlacao_melhor_defasagem": 0.062,
      "ccf": [
       {
        "lag": 0,
@@ -1783,7 +1783,7 @@
       },
       {
        "lag": 1,
-       "corr": 0.063
+       "corr": 0.062
       },
       {
        "lag": 2,
@@ -1791,7 +1791,7 @@
       },
       {
        "lag": 3,
-       "corr": 0.012
+       "corr": 0.011
       },
       {
        "lag": 4,
@@ -1807,7 +1807,7 @@
       },
       {
        "lag": 7,
-       "corr": -0.004
+       "corr": -0.003
       },
       {
        "lag": 8,
@@ -1823,14 +1823,14 @@
       },
       {
        "lag": 11,
-       "corr": -0.002
+       "corr": -0.003
       },
       {
        "lag": 12,
-       "corr": -0.043
+       "corr": -0.044
       }
      ],
-     "granger_F": 0.38,
+     "granger_F": 0.39,
      "granger_significativo_5pct": false,
      "ganho_oos_pct": -0.1,
      "estabilidade_metade1": -0.281,
@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-08-27T20:15:23+00:00"
+ "gerado_em": "2026-08-28T21:21:55+00:00"
 }

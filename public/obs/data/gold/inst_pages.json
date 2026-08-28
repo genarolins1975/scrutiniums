@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-08-27T20:15:23+00:00",
+ "gerado_em": "2026-08-28T21:21:55+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-27T20:15:23+00:00",
+    "atualizado_em": "2026-08-28T21:21:55+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1284,8 +1284,8 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.16,
-      1.28
+      0.18,
+      1.29
      ],
      "impacto_basileia_pp": [
       -0.52,
@@ -1330,7 +1330,7 @@
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 6623090015.0,
+    "chamadas_semana": 5986104776.0,
     "share_pct": 8.7,
     "familias_api": null,
     "papeis": null,
@@ -1464,7 +1464,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-27T20:15:23+00:00",
+    "atualizado_em": "2026-08-28T21:21:55+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2668,17 +2668,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.16,
-      1.28
+      0.18,
+      1.29
      ],
      "impacto_basileia_pp": [
       -0.57,
-      -0.07
+      -0.08
      ],
      "basileia_atual_pct": 13.55,
      "basileia_pos_choque_pct": [
-      12.98,
-      13.47
+      12.97,
+      13.46
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -2788,7 +2788,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.98% e 13.47% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.97% e 13.46% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -2836,7 +2836,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-08-27T20:15:23+00:00",
+    "atualizado_em": "2026-08-28T21:21:55+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -4076,17 +4076,17 @@
      "tipo": "CENÁRIO",
      "cenario": "severamente adverso",
      "delta_inad_pp": [
-      0.16,
-      1.28
+      0.18,
+      1.29
      ],
      "impacto_basileia_pp": [
-      -0.66,
-      -0.08
+      -0.67,
+      -0.09
      ],
      "basileia_atual_pct": 12.82,
      "basileia_pos_choque_pct": [
       12.15,
-      12.73
+      12.72
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
@@ -4196,7 +4196,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.15% e 12.73% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.15% e 12.72% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
