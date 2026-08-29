@@ -78,7 +78,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pf",
@@ -96,7 +96,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pj",
@@ -114,7 +114,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_total",
@@ -132,7 +132,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pf",
@@ -150,7 +150,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pj",
@@ -168,7 +168,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_total",
@@ -186,7 +186,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pf",
@@ -204,7 +204,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pj",
@@ -222,7 +222,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_total",
@@ -240,7 +240,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pf",
@@ -258,7 +258,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pj",
@@ -276,7 +276,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_total",
@@ -294,7 +294,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pf",
@@ -312,7 +312,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pj",
@@ -330,7 +330,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "IBCC",
@@ -345,7 +345,7 @@
    "incerteza": "Sensível à janela histórica; pesos fixos",
    "limitacoes": "Pesos iguais entre componentes (versão explicável); PCA/fatores dinâmicos previstos na Fase 2. Sujeito a revisões das séries de origem.",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Score de instituições",
@@ -361,7 +361,7 @@
    "incerteza": "Sem Basileia/liquidez; ROE não anualizado",
    "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Estresse setorial",
@@ -376,7 +376,7 @@
    "incerteza": "2 de 4 componentes demonstrativos",
    "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da própria história), não nos níveis absolutos entre pesquisas. Componentes de RJ e emprego estão em construção e FORA do score. Normalização por nº de empresas/estoque de crédito setorial entra com Caged/SCR (Fases 1/4).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Protocolo de indicadores antecedentes",
@@ -391,7 +391,7 @@
    "incerteza": "F aproximado por qui-quadrado; sem correção de múltiplos testes formal; sem vintages em tempo real ainda",
    "limitacoes": "Ganho medido em h=1; integração ao ensemble de previsão na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Detector de regimes",
@@ -406,7 +406,7 @@
    "incerteza": "Univariado; uma quebra por busca; sensível a revisões",
    "limitacoes": "Bai-Perron múltiplo e Markov-switching na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   },
   {
    "nome": "Elasticidades de cenário (empíricas)",
@@ -421,7 +421,7 @@
    "incerteza": "Sem HAC (incerteza subestimada com dados sobrepostos); associação, não causalidade",
    "limitacoes": "Identificação causal e heterogeneidade por segmento na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-08-28T21:21:55+00:00"
+   "atualizado_em": "2026-08-29T15:20:31+00:00"
   }
  ],
  "score_cards": [
@@ -661,12 +661,26 @@
    "falhas": []
   },
   "ipeadata": {
-   "ok": 2,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "papelao",
+     "erro": "Falha ao coletar http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='ABPO12_PAPEL12'): <urlopen error [Errno -3] Temporary failure in name resolution>"
+    },
+    {
+     "key": "cambio",
+     "erro": "Falha ao coletar http://www.ipeadata.gov.br/api/odata4/ValoresSerie(SERCODIGO='BM12_ERC12'): <urlopen error [Errno -3] Temporary failure in name resolution>"
+    }
+   ]
   },
   "ifdata": {
-   "ok": 5,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "ifdata",
+     "erro": "nenhum AnoMes disponível (Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata/IfDataValores(AnoMes=@AnoMes,TipoInstituicao=@TipoInstituicao,Relatorio=@Relatorio)?%40AnoMes=202503&%40TipoInstituicao=2&%40Relatorio=%27T%27&%24format=json&%24filter=NomeRelatorio%20eq%20%27Resumo%27: HTTP Error 500: Internal Server Error)"
+    }
+   ]
   },
   "ifdata_ui": {
    "ok": 5,
@@ -685,35 +699,35 @@
    "falhas": [
     {
      "key": "djen_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "djen_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-14&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-15&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     }
    ]
   },
@@ -722,35 +736,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-29&dataDisponibilizacaoFim=2026-08-28: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-06-30&dataDisponibilizacaoFim=2026-08-29: HTTP Error 403: Forbidden"
     }
    ]
   },
@@ -759,8 +773,13 @@
    "falhas": []
   },
   "reclamacoes": {
-   "ok": 4,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "reclamacoes",
+     "erro": "catálogo: Falha ao coletar https://www3.bcb.gov.br/rdrweb/rest/ext/ranking?ano=2026: HTTP Error 503: Service Temporarily Unavailable"
+    }
+   ]
   },
   "txjuros": {
    "ok": 20,
@@ -792,11 +811,15 @@
    "falhas": [
     {
      "key": "scr_data:2024",
-     "erro": "File is not a zip file"
+     "erro": "IncompleteRead(16777216 bytes read, 159269840 more expected)"
     },
     {
      "key": "scr_data:2025",
-     "erro": "File is not a zip file"
+     "erro": "IncompleteRead(8388608 bytes read, 171656211 more expected)"
+    },
+    {
+     "key": "scr_data:2026",
+     "erro": "IncompleteRead(41943040 bytes read, 48828983 more expected)"
     }
    ]
   },
@@ -805,11 +828,15 @@
    "falhas": []
   },
   "pix_bcb": {
-   "ok": 10,
+   "ok": 9,
    "falhas": [
     {
      "key": "_mp_trimestral",
      "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/MPV_DadosAbertos/versao/v1/odata/MeiosdePagamentosTrimestralDA(trimestre=@trimestre)?@trimestre='20151'&$format=text/csv: HTTP Error 500: Inte"
+    },
+    {
+     "key": "_pix_tx",
+     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/Pix_DadosAbertos/versao/v1/odata/EstatisticasTransacoesPix(Database=@Database)?@Database='202605'&$format=text/csv: HTTP Error 504: Gateway Ti"
     }
    ]
   },
@@ -827,8 +854,13 @@
    "falhas": []
   },
   "desenrola": {
-   "ok": 1,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "desenrola",
+     "erro": "colunas ausentes no CSV: ['COD_CONGLOMERADO_FINANCEIRO', 'DATA_BASE', 'NOME_CONGLOMERADO_FINANCEIRO', 'NUMERO_OPERACOES', 'TIPO_DESENROLA', 'UNIDADE_FEDERACAO', 'VOLUME_OPERACOES'] (esquema da fonte mudou)"
+    }
+   ]
   },
   "censo2022": {
    "ok": 1,
@@ -847,8 +879,13 @@
    "falhas": []
   },
   "reclamacoes_consig": {
-   "ok": 1,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "reclamacoes_consig",
+     "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/publicacoes.json?indicadorTipoPublicacao=2: HTTP Error 504: Gateway Timeout"
+    }
+   ]
   },
   "operacional": {
    "ok": 2,
@@ -879,11 +916,11 @@
    "falhas": []
   },
   "pilar3": {
-   "ok": 16,
+   "ok": 12,
    "falhas": [
     {
      "key": "pilar3:60498557",
-     "erro": "HTTP Error 400: Bad Request"
+     "erro": "HTTP Error 500: Internal Server Error"
     },
     {
      "key": "pilar3:17184037",
@@ -950,10 +987,6 @@
      "erro": "HTTP Error 403: Forbidden"
     },
     {
-     "key": "pilar3:16501555",
-     "erro": "could not convert string to float: 'NA'"
-    },
-    {
      "key": "pilar3:25683434",
      "erro": "HTTP Error 520: <none>"
     },
@@ -963,7 +996,7 @@
     },
     {
      "key": "pilar3:33172537",
-     "erro": "Remote end closed connection without response"
+     "erro": "Expecting value: line 1 column 103 (char 102)"
     },
     {
      "key": "pilar3:33264668",
@@ -996,20 +1029,50 @@
     {
      "key": "pilar3:62073200",
      "erro": "HTTP Error 404: Not Found"
+    },
+    {
+     "key": "pilar3:62232889",
+     "erro": "HTTP Error 404: Not Found"
+    },
+    {
+     "key": "pilar3:62331228",
+     "erro": "HTTP Error 404: Not Found"
+    },
+    {
+     "key": "pilar3:63917579",
+     "erro": "HTTP Error 520: <none>"
+    },
+    {
+     "key": "pilar3:71328769",
+     "erro": "HTTP Error 520: <none>"
+    },
+    {
+     "key": "pilar3:80160260",
+     "erro": "HTTP Error 520: <none>"
     }
    ]
   },
   "regimes": {
-   "ok": 1,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "regimes",
+     "erro": "HTTP Error 404: Not Found"
+    }
+   ]
   },
   "remuneracao": {
    "ok": 1,
    "falhas": []
   },
   "correspondentes": {
-   "ok": 1,
-   "falhas": []
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "correspondentes",
+     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/Informes_Correspondentes/versao/v1/odata/Correspondentes?$format=text/csv: HTTP Error 404: Not Found"
+    }
+   ]
   }
  }
 }

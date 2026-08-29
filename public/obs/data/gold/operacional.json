@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-28T21:21:54+00:00",
+ "gerado_em": "2026-08-29T15:20:30+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -339,11 +339,11 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 1252,
-    "posto": 2157,
+    "agencia": 1242,
+    "posto": 2170,
     "pae": 522,
-    "total": 3931,
-    "municipios": 846,
+    "total": 3934,
+    "municipios": 847,
     "nome": "ITAÚ UNIBANCO S.A."
    },
    "clientes": null,
@@ -670,10 +670,10 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 3931,
-    "posto": 1396,
+    "agencia": 3929,
+    "posto": 1401,
     "pae": 5020,
-    "total": 10347,
+    "total": 10350,
     "municipios": 3099,
     "nome": "BANCO DO BRASIL S.A."
    },
@@ -1018,11 +1018,11 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 1964,
-    "posto": 2376,
+    "agencia": 1963,
+    "posto": 2354,
     "pae": 9036,
-    "total": 13376,
-    "municipios": 4119,
+    "total": 13353,
+    "municipios": 4117,
     "nome": "BANCO BRADESCO S.A."
    },
    "clientes": [
@@ -1403,8 +1403,8 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 1179,
-    "posto": 2503,
+    "agencia": 1177,
+    "posto": 2505,
     "pae": 580,
     "total": 4262,
     "municipios": 667,
@@ -7892,10 +7892,10 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 2987,
-    "posto": 870,
+    "agencia": 2986,
+    "posto": 872,
     "pae": 3535,
-    "total": 7392,
+    "total": 7393,
     "municipios": 1748,
     "nome": "CAIXA ECONOMICA FEDERAL"
    },
@@ -8189,9 +8189,9 @@
    },
    "pontos": {
     "agencia": 132,
-    "posto": 110,
+    "posto": 111,
     "pae": 0,
-    "total": 242,
+    "total": 243,
     "municipios": 60,
     "nome": "BANCO SAFRA S.A."
    },
@@ -30153,14 +30153,14 @@
    "nivel": "A"
   },
   "totais": {
-   "agencia": 13869,
-   "posto": 22795,
+   "agencia": 13854,
+   "posto": 22798,
    "pae": 22218
   },
-  "instituicoes_com_ponto": 1181,
+  "instituicoes_com_ponto": 1183,
   "municipios": {
    "com_agencia": 2901,
-   "com_posto_ou_pae": 5165,
+   "com_posto_ou_pae": 5166,
    "com_qualquer_ponto": 5191,
    "so_posto_sem_agencia": 2290,
    "sem_dependencia": 380,
@@ -30170,21 +30170,93 @@
    "denominador": "lista de municípios do IBGE carregada pelo pipeline; inclui Fernando de Noronha e Boa Esperança do Norte (MT), instalado depois do Censo 2022 e por isso ausente da malha usada nos painéis municipais"
   },
   "por_cnpj8": {
-   "00360305": {
-    "agencia": 2987,
-    "posto": 870,
-    "pae": 3535,
-    "total": 7392,
-    "municipios": 1748,
-    "nome": "CAIXA ECONOMICA FEDERAL"
+   "60394079": {
+    "agencia": 1,
+    "posto": 4,
+    "pae": 34,
+    "total": 39,
+    "municipios": 10,
+    "nome": "BANCO ITAUBANK S.A."
    },
-   "00000000": {
-    "agencia": 3931,
-    "posto": 1396,
-    "pae": 5020,
-    "total": 10347,
-    "municipios": 3099,
-    "nome": "BANCO DO BRASIL S.A."
+   "62280490": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 2,
+    "total": 3,
+    "municipios": 1,
+    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+   },
+   "64276058": {
+    "agencia": 0,
+    "posto": 7,
+    "pae": 4,
+    "total": 11,
+    "municipios": 7,
+    "nome": "COOPERATIVA DE CRÉDITO CREDINORTE LTDA. - SICOOB CREDINORTE"
+   },
+   "64237530": {
+    "agencia": 0,
+    "posto": 10,
+    "pae": 17,
+    "total": 27,
+    "municipios": 12,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIUNA LTDA - SICOOB CREDIUNA"
+   },
+   "01060307": {
+    "agencia": 0,
+    "posto": 41,
+    "pae": 29,
+    "total": 70,
+    "municipios": 41,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA UNIÃO DOS VALES DO PIRANGA E MATIPÓ LTDA. - SICOOB UNIÃO DOS VALES"
+   },
+   "00068987": {
+    "agencia": 0,
+    "posto": 13,
+    "pae": 8,
+    "total": 21,
+    "municipios": 8,
+    "nome": "COOPERATIVA DE CRÉDITO ARACREDI LTDA. - SICOOB ARACREDI"
+   },
+   "01604998": {
+    "agencia": 0,
+    "posto": 44,
+    "pae": 37,
+    "total": 81,
+    "municipios": 42,
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO SUL DE MINAS LTDA - SICOOB CREDIVASS"
+   },
+   "64480833": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 5,
+    "total": 6,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIMAC LTDA - SICOOB CREDIMAC"
+   },
+   "07469260": {
+    "agencia": 0,
+    "posto": 0,
+    "pae": 1,
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIFIEMG LTDA. - SICOOB CREDIFIEMG"
+   },
+   "21661202": {
+    "agencia": 0,
+    "posto": 14,
+    "pae": 17,
+    "total": 31,
+    "municipios": 14,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICAMPO LTDA.- SICOOB CREDICAMPO"
+   },
+   "21670187": {
+    "agencia": 0,
+    "posto": 7,
+    "pae": 13,
+    "total": 20,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIBOM LTDA. - SICOOB CREDIBOM"
    },
    "04913711": {
     "agencia": 164,
@@ -30194,6 +30266,142 @@
     "municipios": 144,
     "nome": "BANCO DO ESTADO DO PARÁ S.A."
    },
+   "19449602": {
+    "agencia": 0,
+    "posto": 11,
+    "pae": 17,
+    "total": 28,
+    "municipios": 11,
+    "nome": "COOPERATIVA DE CRÉDITO CREDCOOPER LTDA - SICOOB CREDCOOPER"
+   },
+   "71154876": {
+    "agencia": 0,
+    "posto": 12,
+    "pae": 10,
+    "total": 22,
+    "municipios": 8,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIPINHO LTDA - SICOOB CREDIPINHO"
+   },
+   "71146450": {
+    "agencia": 0,
+    "posto": 2,
+    "pae": 10,
+    "total": 12,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CAMPOS GERAIS E CAMPO DO MEIO LTDA - SICOOB CREDCAM"
+   },
+   "71154256": {
+    "agencia": 0,
+    "posto": 3,
+    "pae": 4,
+    "total": 7,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO SACRAMENTO LTDA - SICOOB SACRAMENTO"
+   },
+   "71237184": {
+    "agencia": 0,
+    "posto": 7,
+    "pae": 7,
+    "total": 14,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIBELO LTDA. - SICOOB CREDIBELO"
+   },
+   "71238232": {
+    "agencia": 0,
+    "posto": 14,
+    "pae": 5,
+    "total": 19,
+    "municipios": 13,
+    "nome": "COOPERATIVA DE CRÉDITO DO CENTRO SUL MINEIRO LTDA. - SICOOB CENTRO SUL MINEIRO"
+   },
+   "71243034": {
+    "agencia": 0,
+    "posto": 26,
+    "pae": 14,
+    "total": 40,
+    "municipios": 20,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIJEQUITINHONHA LTDA. - SICOOB CREDIJEQUITINHONHA"
+   },
+   "92894922": {
+    "agencia": 1,
+    "posto": 2,
+    "pae": 1,
+    "total": 4,
+    "municipios": 3,
+    "nome": "BANCO ORIGINAL S.A."
+   },
+   "71506513": {
+    "agencia": 0,
+    "posto": 0,
+    "pae": 4,
+    "total": 4,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB ITAPAGIPE LTDA - SICOOB ITAPAGIPE"
+   },
+   "71392047": {
+    "agencia": 0,
+    "posto": 2,
+    "pae": 3,
+    "total": 5,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CRÉDITO MONTECREDI LTDA. - SICOOB MONTECREDI"
+   },
+   "71419600": {
+    "agencia": 0,
+    "posto": 8,
+    "pae": 7,
+    "total": 15,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE FRUTAL LTDA.   SICOOB FRUTAL"
+   },
+   "71441406": {
+    "agencia": 0,
+    "posto": 11,
+    "pae": 8,
+    "total": 19,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE PEDRO LEOPOLDO LTDA - SICOOB CREDIPEL"
+   },
+   "18966739": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 6,
+    "total": 10,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO COPERSUL LTDA - SICOOB COPERSUL"
+   },
+   "48703388": {
+    "agencia": 2,
+    "posto": 0,
+    "pae": 1,
+    "total": 3,
+    "municipios": 2,
+    "nome": "ASA SOCIEDADE DE CRÉDITO FINANCIAMENTO E INVESTIMENTO S.A."
+   },
+   "25606237": {
+    "agencia": 0,
+    "posto": 28,
+    "pae": 30,
+    "total": 58,
+    "municipios": 25,
+    "nome": "COOPERATIVA DE POUPANÇA E CRÉDITO DO VALE DO RIO DOCE LTDA - SICOOB CREDIRIODOCE"
+   },
+   "25743311": {
+    "agencia": 0,
+    "posto": 2,
+    "pae": 3,
+    "total": 5,
+    "municipios": 3,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CARMO DO RIO CLARO LTDA - SICOOB CREDICARMO"
+   },
+   "25798596": {
+    "agencia": 0,
+    "posto": 32,
+    "pae": 25,
+    "total": 57,
+    "municipios": 28,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVAR LTDA. - SICOOB CREDIVAR"
+   },
    "92702067": {
     "agencia": 505,
     "posto": 129,
@@ -30201,6 +30409,510 @@
     "total": 993,
     "municipios": 463,
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A."
+   },
+   "26014175": {
+    "agencia": 0,
+    "posto": 9,
+    "pae": 14,
+    "total": 23,
+    "municipios": 10,
+    "nome": "COOPERATIVA DE CRÉDITO GUARANICREDI LTDA. - SICOOB GUARANICREDI"
+   },
+   "26178111": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 9,
+    "total": 15,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO UNIÃO CENTRO OESTE LTDA. - SICOOB UNIÃO CENTRO OESTE"
+   },
+   "01152097": {
+    "agencia": 0,
+    "posto": 19,
+    "pae": 14,
+    "total": 33,
+    "municipios": 20,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIMATA LTDA. - SICOOB CREDIMATA"
+   },
+   "00803287": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 9,
+    "total": 13,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVAZ LTDA. - SICOOB CREDIVAZ"
+   },
+   "13009717": {
+    "agencia": 64,
+    "posto": 8,
+    "pae": 47,
+    "total": 119,
+    "municipios": 52,
+    "nome": "BANCO DO ESTADO DE SERGIPE S.A."
+   },
+   "25395435": {
+    "agencia": 0,
+    "posto": 16,
+    "pae": 27,
+    "total": 43,
+    "municipios": 12,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICAF LTDA - SICOOB CREDICAF"
+   },
+   "25420696": {
+    "agencia": 0,
+    "posto": 10,
+    "pae": 11,
+    "total": 21,
+    "municipios": 8,
+    "nome": "COOPERATIVA DE CRÉDITO CREDINACIONAL LTDA. - SICOOB CREDINACIONAL"
+   },
+   "00804046": {
+    "agencia": 0,
+    "posto": 0,
+    "pae": 1,
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICAPI LTDA - SICOOB CREDICAPI"
+   },
+   "25528753": {
+    "agencia": 0,
+    "posto": 15,
+    "pae": 11,
+    "total": 26,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVERDE LTDA. - SICOOB CREDIVERDE"
+   },
+   "25536764": {
+    "agencia": 0,
+    "posto": 18,
+    "pae": 8,
+    "total": 26,
+    "municipios": 19,
+    "nome": "COOPERATIVA DE CRÉDITO CREDPLUS LTDA. - SICOOB CREDPLUS"
+   },
+   "00000000": {
+    "agencia": 3929,
+    "posto": 1401,
+    "pae": 5020,
+    "total": 10350,
+    "municipios": 3099,
+    "nome": "BANCO DO BRASIL S.A."
+   },
+   "00000208": {
+    "agencia": 63,
+    "posto": 203,
+    "pae": 146,
+    "total": 412,
+    "municipios": 47,
+    "nome": "BRB - BANCO DE BRASILIA S.A."
+   },
+   "05582619": {
+    "agencia": 0,
+    "posto": 54,
+    "pae": 1,
+    "total": 55,
+    "municipios": 30,
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB OURO VERDE"
+   },
+   "38588174": {
+    "agencia": 0,
+    "posto": 19,
+    "pae": 17,
+    "total": 36,
+    "municipios": 17,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICOPE LTDA. - SICOOB CREDICOPE"
+   },
+   "42873828": {
+    "agencia": 0,
+    "posto": 27,
+    "pae": 78,
+    "total": 105,
+    "municipios": 25,
+    "nome": "COOPERATIVA DE CRÉDITO AGROCREDI LTDA. - SICOOB AGROCREDI"
+   },
+   "42887133": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 7,
+    "total": 13,
+    "municipios": 7,
+    "nome": "COOPERATIVA DE CRÉDITO CREDISUCESSO LTDA.- SICOOB CREDISUCESSO"
+   },
+   "42880617": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 3,
+    "total": 4,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CRÉDITO DE TIROS E MATUTINA LTDA.- SICOOB CREDITIROS"
+   },
+   "25387713": {
+    "agencia": 0,
+    "posto": 7,
+    "pae": 13,
+    "total": 20,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE  PARÁ DE MINAS LTDA - SICOOB CREDIRURAL"
+   },
+   "80959638": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 5,
+    "total": 9,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO MEIO OESTE CATARINENSE - SICOOB CREDIMOC SC"
+   },
+   "01374196": {
+    "agencia": 0,
+    "posto": 0,
+    "pae": 2,
+    "total": 2,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO DE SÃO FRANCISCO DE SALES LTDA. - SICOOB CREDISALES"
+   },
+   "42898825": {
+    "agencia": 0,
+    "posto": 54,
+    "pae": 14,
+    "total": 68,
+    "municipios": 27,
+    "nome": "SICOOB CREDICOM - COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS MEDICOS E PROFISSIONAIS DA AREA DE SAUDE DO BRASIL LTDA."
+   },
+   "07679404": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 1605,
+    "total": 1606,
+    "municipios": 396,
+    "nome": "BANCO TOPÁZIO S.A."
+   },
+   "03645752": {
+    "agencia": 0,
+    "posto": 2,
+    "pae": 11,
+    "total": 13,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDISG LTDA. - SICOOB CREDISG"
+   },
+   "24795049": {
+    "agencia": 0,
+    "posto": 34,
+    "pae": 55,
+    "total": 89,
+    "municipios": 28,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO SUDOESTE GOIANO"
+   },
+   "25353939": {
+    "agencia": 0,
+    "posto": 5,
+    "pae": 10,
+    "total": 15,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIALP LTDA - SICOOB CREDIALP"
+   },
+   "25387655": {
+    "agencia": 0,
+    "posto": 29,
+    "pae": 11,
+    "total": 40,
+    "municipios": 26,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVALE LTDA - SICOOB CREDIVALE"
+   },
+   "28127603": {
+    "agencia": 85,
+    "posto": 63,
+    "pae": 266,
+    "total": 414,
+    "municipios": 81,
+    "nome": "BANESTES S.A. BANCO DO ESTADO DO ESPIRITO SANTO"
+   },
+   "54401286": {
+    "agencia": 0,
+    "posto": 26,
+    "pae": 1,
+    "total": 27,
+    "municipios": 21,
+    "nome": "COOPERATIVA DE CRÉDITO COCRE"
+   },
+   "06324872": {
+    "agencia": 0,
+    "posto": 3,
+    "pae": 4,
+    "total": 7,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDINOSSO LTDA - SICOOB CREDINOSSO"
+   },
+   "66398496": {
+    "agencia": 0,
+    "posto": 10,
+    "pae": 21,
+    "total": 31,
+    "municipios": 7,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIARA LTDA - SICOOB CREDIARA"
+   },
+   "66262643": {
+    "agencia": 0,
+    "posto": 2,
+    "pae": 6,
+    "total": 8,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIPEU LTDA.  - SICOOB CREDIPEU"
+   },
+   "17184037": {
+    "agencia": 2,
+    "posto": 298,
+    "pae": 52,
+    "total": 352,
+    "municipios": 269,
+    "nome": "BANCO MERCANTIL DO BRASIL S.A."
+   },
+   "66259110": {
+    "agencia": 0,
+    "posto": 3,
+    "pae": 7,
+    "total": 10,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIBAM LTDA. - SICOOB CREDIBAM"
+   },
+   "00429890": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 3,
+    "total": 7,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CREDITO CREDIAGRO LTDA. - SICOOB CREDIAGRO"
+   },
+   "13776742": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 30,
+    "total": 31,
+    "municipios": 10,
+    "nome": "RENDIMENTOPAY INSTITUIÇÃO DE PAGAMENTO S.A."
+   },
+   "03412878": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 10,
+    "total": 16,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIRAMA LTDA - SICOOB CREDIRAMA"
+   },
+   "03428338": {
+    "agencia": 0,
+    "posto": 11,
+    "pae": 1,
+    "total": 12,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CRÉDITO - SICOOB CREDUNI"
+   },
+   "03222753": {
+    "agencia": 0,
+    "posto": 18,
+    "pae": 1,
+    "total": 19,
+    "municipios": 10,
+    "nome": "CREDISIS CREDIARI - COOPERATIVA DE CRÉDITO LTDA."
+   },
+   "22724710": {
+    "agencia": 0,
+    "posto": 22,
+    "pae": 28,
+    "total": 50,
+    "municipios": 26,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIVERTENTES LTDA. - SICOOB CREDIVERTENTES"
+   },
+   "22749014": {
+    "agencia": 0,
+    "posto": 11,
+    "pae": 6,
+    "total": 17,
+    "municipios": 11,
+    "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO CENTRAL DE MINAS LTDA. - SICOOB UNIÃO CENTRAL"
+   },
+   "22753982": {
+    "agencia": 0,
+    "posto": 15,
+    "pae": 8,
+    "total": 23,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO CREDISETE LTDA. - SICOOB CREDISETE"
+   },
+   "22760839": {
+    "agencia": 0,
+    "posto": 11,
+    "pae": 23,
+    "total": 34,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO NOSSOCRÉDITO LTDA - SICOOB NOSSOCRÉDITO"
+   },
+   "65239402": {
+    "agencia": 0,
+    "posto": 5,
+    "pae": 5,
+    "total": 10,
+    "municipios": 3,
+    "nome": "COOPERATIVA DE CRÉDITO UNIÃO DO CENTRO OESTE DE MINAS LTDA. - SICOOB CENTRO UNIÃO"
+   },
+   "65229254": {
+    "agencia": 0,
+    "posto": 21,
+    "pae": 18,
+    "total": 39,
+    "municipios": 20,
+    "nome": "COOPERATIVA DE CRÉDITO COOPACREDI LTDA. - SICOOB COOPACREDI"
+   },
+   "41707258": {
+    "agencia": 0,
+    "posto": 8,
+    "pae": 11,
+    "total": 19,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE SANTO ANTÔNIO DO MONTE LTDA.   SICOOB CREDIMONTE"
+   },
+   "41697103": {
+    "agencia": 0,
+    "posto": 21,
+    "pae": 38,
+    "total": 59,
+    "municipios": 13,
+    "nome": "COOPERATIVA DE CRÉDITO CREDILIVRE LTDA. - SICOOB CREDILIVRE"
+   },
+   "41753500": {
+    "agencia": 0,
+    "posto": 8,
+    "pae": 14,
+    "total": 22,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO CARLOS CHAGAS LTDA. - SICOOB CARLOS CHAGAS"
+   },
+   "41805003": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 1,
+    "total": 7,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO ALTO SÃO FRANCISCO LTDA."
+   },
+   "78840071": {
+    "agencia": 0,
+    "posto": 32,
+    "pae": 1,
+    "total": 33,
+    "municipios": 24,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO ALTO URUGUAI CATARINENSE - SICOOB CREDIAUC"
+   },
+   "23949522": {
+    "agencia": 0,
+    "posto": 5,
+    "pae": 4,
+    "total": 9,
+    "municipios": 3,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICARPA LTDA. - SICOOB CREDICARPA"
+   },
+   "24048910": {
+    "agencia": 0,
+    "posto": 19,
+    "pae": 18,
+    "total": 37,
+    "municipios": 17,
+    "nome": "COOPERATIVA DE CRÉDITO CREDINTER LTDA. - SICOOB CREDINTER"
+   },
+   "41931445": {
+    "agencia": 0,
+    "posto": 8,
+    "pae": 11,
+    "total": 19,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIFOR LTDA - SICOOB CREDIFOR"
+   },
+   "41931221": {
+    "agencia": 0,
+    "posto": 3,
+    "pae": 3,
+    "total": 6,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICOOP LTDA - SICOOB CREDICOOP"
+   },
+   "86564051": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 16,
+    "total": 22,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO NOROESTE DE MINAS LTDA. - SICOOB NOROESTE DE MINAS"
+   },
+   "00360305": {
+    "agencia": 2986,
+    "posto": 872,
+    "pae": 3535,
+    "total": 7393,
+    "municipios": 1748,
+    "nome": "CAIXA ECONOMICA FEDERAL"
+   },
+   "01609345": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 3,
+    "total": 4,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO CREDICAMPINA LTDA. - SICOOB CREDICAMPINA"
+   },
+   "90400888": {
+    "agencia": 1177,
+    "posto": 2505,
+    "pae": 580,
+    "total": 4262,
+    "municipios": 667,
+    "nome": "BANCO SANTANDER (BRASIL) S.A."
+   },
+   "00869687": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 3,
+    "total": 4,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE BOA ESPERANÇA LTDA. - SICOOB BELCREDI"
+   },
+   "60701190": {
+    "agencia": 1242,
+    "posto": 2170,
+    "pae": 522,
+    "total": 3934,
+    "municipios": 847,
+    "nome": "ITAÚ UNIBANCO S.A."
+   },
+   "60746948": {
+    "agencia": 1963,
+    "posto": 2354,
+    "pae": 9036,
+    "total": 13353,
+    "municipios": 4117,
+    "nome": "BANCO BRADESCO S.A."
+   },
+   "21866694": {
+    "agencia": 0,
+    "posto": 33,
+    "pae": 28,
+    "total": 61,
+    "municipios": 28,
+    "nome": "COOPERATIVA DE CRÉDITO CREDINOR LTDA - SICOOB CREDINOR"
+   },
+   "22656789": {
+    "agencia": 0,
+    "posto": 26,
+    "pae": 31,
+    "total": 57,
+    "municipios": 22,
+    "nome": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA. - SICOOB CREDISUDESTE"
+   },
+   "68512748": {
+    "agencia": 0,
+    "posto": 13,
+    "pae": 9,
+    "total": 22,
+    "municipios": 7,
+    "nome": "COOPERATIVA DE CRÉDITO CREDIESMERALDAS LTDA. - SICOOB CREDIESMERALDAS"
    },
    "28195667": {
     "agencia": 12,
@@ -30210,14 +30922,6 @@
     "municipios": 12,
     "nome": "BANCO ABC BRASIL S.A."
    },
-   "60701190": {
-    "agencia": 1252,
-    "posto": 2157,
-    "pae": 522,
-    "total": 3931,
-    "municipios": 846,
-    "nome": "ITAÚ UNIBANCO S.A."
-   },
    "48176336": {
     "agencia": 1,
     "posto": 0,
@@ -30225,14 +30929,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "PAGOL SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
-   "60746948": {
-    "agencia": 1964,
-    "posto": 2376,
-    "pae": 9036,
-    "total": 13376,
-    "municipios": 4119,
-    "nome": "BANCO BRADESCO S.A."
    },
    "04902979": {
     "agencia": 114,
@@ -30244,19 +30940,11 @@
    },
    "58160789": {
     "agencia": 132,
-    "posto": 110,
+    "posto": 111,
     "pae": 0,
-    "total": 242,
+    "total": 243,
     "municipios": 60,
     "nome": "BANCO SAFRA S.A."
-   },
-   "90400888": {
-    "agencia": 1179,
-    "posto": 2503,
-    "pae": 580,
-    "total": 4262,
-    "municipios": 667,
-    "nome": "BANCO SANTANDER (BRASIL) S.A."
    },
    "51556307": {
     "agencia": 1,
@@ -30458,14 +31146,6 @@
     "municipios": 1,
     "nome": "NEXOOS SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A."
    },
-   "00000208": {
-    "agencia": 63,
-    "posto": 203,
-    "pae": 146,
-    "total": 412,
-    "municipios": 47,
-    "nome": "BRB - BANCO DE BRASILIA S.A."
-   },
    "30306294": {
     "agencia": 28,
     "posto": 0,
@@ -30505,14 +31185,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "OMNI S.A. ARRENDAMENTO MERCANTIL"
-   },
-   "28127603": {
-    "agencia": 85,
-    "posto": 63,
-    "pae": 266,
-    "total": 414,
-    "municipios": 81,
-    "nome": "BANESTES S.A. BANCO DO ESTADO DO ESPIRITO SANTO"
    },
    "60770336": {
     "agencia": 8,
@@ -30568,7 +31240,7 @@
     "pae": 0,
     "total": 20,
     "municipios": 18,
-    "nome": "FINANCEIRA ALFA S.A. - SOCIEDADE DE CRÉDITO, FINA NCIAMENTO E INVESTIMENTO"
+    "nome": "FINANCEIRA ALFA S.A. - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO"
    },
    "29650082": {
     "agencia": 17,
@@ -31434,14 +32106,6 @@
     "municipios": 2,
     "nome": "BANCO SENFF S.A."
    },
-   "13009717": {
-    "agencia": 64,
-    "posto": 8,
-    "pae": 47,
-    "total": 119,
-    "municipios": 52,
-    "nome": "BANCO DO ESTADO DE SERGIPE S.A."
-   },
    "13673855": {
     "agencia": 1,
     "posto": 0,
@@ -31529,14 +32193,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "MERCADO BITCOIN CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A."
-   },
-   "17184037": {
-    "agencia": 2,
-    "posto": 298,
-    "pae": 52,
-    "total": 352,
-    "municipios": 269,
-    "nome": "BANCO MERCANTIL DO BRASIL S.A."
    },
    "17312083": {
     "agencia": 2,
@@ -32202,14 +32858,6 @@
     "municipios": 1,
     "nome": "BANCO GM S.A."
    },
-   "60394079": {
-    "agencia": 1,
-    "posto": 4,
-    "pae": 34,
-    "total": 39,
-    "municipios": 10,
-    "nome": "BANCO ITAUBANK S.A."
-   },
    "60498557": {
     "agencia": 1,
     "posto": 0,
@@ -32346,13 +32994,13 @@
     "municipios": 1,
     "nome": "FIRST SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "44323831": {
+   "65815966": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "ATUAL SOCIEDADE CORRETORA DE CÂMBIO LTDA"
+    "nome": "TMB SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "28650236": {
     "agencia": 1,
@@ -32412,10 +33060,10 @@
    },
    "20155248": {
     "agencia": 3,
-    "posto": 6,
+    "posto": 7,
     "pae": 0,
-    "total": 9,
-    "municipios": 9,
+    "total": 10,
+    "municipios": 10,
     "nome": "UNIDA DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
    "34139916": {
@@ -32545,6 +33193,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "CONTA SIMPLES SOCIEDADE DE CRÉDITO DIRETO S.A."
+   },
+   "54733010": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "CREDI-SHOP - SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "33042953": {
     "agencia": 1,
@@ -32850,6 +33506,14 @@
     "municipios": 1,
     "nome": "MOVA SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A."
    },
+   "44323831": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "ATUAL SOCIEDADE CORRETORA DE CÂMBIO LTDA"
+   },
    "56030613": {
     "agencia": 1,
     "posto": 0,
@@ -32962,14 +33626,6 @@
     "municipios": 1,
     "nome": "AZUMI DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
-   "62280490": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 2,
-    "total": 3,
-    "municipios": 1,
-    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
-   },
    "62285390": {
     "agencia": 1,
     "posto": 0,
@@ -33017,6 +33673,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "CORA SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A."
+   },
+   "15761217": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "CORRETORA DE CÂMBIO AÇORIANA LIMITADA."
    },
    "03317692": {
     "agencia": 1,
@@ -33105,14 +33769,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "WNT CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A."
-   },
-   "15761217": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "CORRETORA DE CÂMBIO AÇORIANA LIMITADA."
    },
    "34978626": {
     "agencia": 1,
@@ -33234,14 +33890,6 @@
     "municipios": 1,
     "nome": "EASY MONEY SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "46130566": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "BEZZ SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
    "36586946": {
     "agencia": 1,
     "posto": 0,
@@ -33272,7 +33920,7 @@
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "NIKOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+    "nome": "MERCADO PAGO INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
    "62318407": {
     "agencia": 1,
@@ -33297,6 +33945,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "BANCO XP S.A."
+   },
+   "46130566": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "BEZZ SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "06881898": {
     "agencia": 1,
@@ -33330,13 +33986,13 @@
     "municipios": 1,
     "nome": "FIDÚCIA SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LIMITADA."
    },
-   "62331228": {
+   "61194353": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "DEUTSCHE BANK S.A. - BANCO ALEMAO"
+    "nome": "ITAU CORRETORA DE VALORES S.A."
    },
    "42047025": {
     "agencia": 1,
@@ -33433,14 +34089,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "BANCO VOLKSWAGEN S.A."
-   },
-   "48703388": {
-    "agencia": 2,
-    "posto": 0,
-    "pae": 1,
-    "total": 3,
-    "municipios": 2,
-    "nome": "ASA SOCIEDADE DE CRÉDITO FINANCIAMENTO E INVESTIMENTO S.A."
    },
    "03502961": {
     "agencia": 1,
@@ -33826,14 +34474,6 @@
     "municipios": 1,
     "nome": "CREDFC SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "92894922": {
-    "agencia": 1,
-    "posto": 2,
-    "pae": 1,
-    "total": 4,
-    "municipios": 3,
-    "nome": "BANCO ORIGINAL S.A."
-   },
    "62421979": {
     "agencia": 1,
     "posto": 0,
@@ -33970,14 +34610,6 @@
     "municipios": 6,
     "nome": "BANCO BRADESCO FINANCIAMENTOS S.A."
    },
-   "50585090": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "BANCO BMG CONSIGNADO S.A."
-   },
    "36266751": {
     "agencia": 1,
     "posto": 6,
@@ -34049,14 +34681,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A."
-   },
-   "61194353": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "ITAU CORRETORA DE VALORES S.A."
    },
    "17772370": {
     "agencia": 1,
@@ -34202,14 +34826,6 @@
     "municipios": 1,
     "nome": "BANCO RIBEIRAO PRETO S.A."
    },
-   "07679404": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 1605,
-    "total": 1606,
-    "municipios": 396,
-    "nome": "BANCO TOPÁZIO S.A."
-   },
    "45056494": {
     "agencia": 1,
     "posto": 1,
@@ -34298,13 +34914,13 @@
     "municipios": 1,
     "nome": "GLOBAL INVESTMENT SERVICES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
-   "62418140": {
+   "62331228": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "INTRAG DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA."
+    "nome": "DEUTSCHE BANK S.A. - BANCO ALEMAO"
    },
    "34088029": {
     "agencia": 1,
@@ -34346,6 +34962,14 @@
     "municipios": 1,
     "nome": "NATURA &CO PAY SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
+   "32402502": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "QI SOCIEDADE DE CRÉDITO DIRETO S.A."
+   },
    "97447304": {
     "agencia": 1,
     "posto": 0,
@@ -34378,13 +35002,13 @@
     "municipios": 1,
     "nome": "GO SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "32402502": {
+   "62418140": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "QI SOCIEDADE DE CRÉDITO DIRETO S.A."
+    "nome": "INTRAG DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA."
    },
    "10371492": {
     "agencia": 1,
@@ -34568,7 +35192,7 @@
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "SUMUP SOCIEDADE DE CRÉDITO DIRETO S.A."
+    "nome": "SUMUP SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A."
    },
    "35911258": {
     "agencia": 1,
@@ -34633,6 +35257,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "ACCREDITO - SOCIEDADE DE CRÉDITO DIRETO S.A."
+   },
+   "51118718": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "NVIO BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "24361690": {
     "agencia": 1,
@@ -34801,14 +35433,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS"
-   },
-   "51118718": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "NVIO BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "60814191": {
     "agencia": 1,
@@ -35001,6 +35625,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "CSILATINA ARRENDAMENTO MERCANTIL S.A."
+   },
+   "50585090": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "BANCO BMG CONSIGNADO S.A."
    },
    "45745537": {
     "agencia": 1,
@@ -35234,14 +35866,6 @@
     "municipios": 1,
     "nome": "DAYCOVAL LEASING SOCIEDADE DE ARRENDAMENTO MERCANTIL S.A."
    },
-   "54733010": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "CREDI-SHOP - SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
    "61820817": {
     "agencia": 1,
     "posto": 0,
@@ -35297,78 +35921,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "FATURACRED SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
-   "00971300": {
-    "agencia": 0,
-    "posto": 67,
-    "pae": 0,
-    "total": 67,
-    "municipios": 61,
-    "nome": "COOPERATIVA DE CREDITO E INVESTIMENTO COM INTERACAO SOLIDARIA PIONEIRA - CRESOL PIONEIRA"
-   },
-   "07122321": {
-    "agencia": 0,
-    "posto": 44,
-    "pae": 0,
-    "total": 44,
-    "municipios": 35,
-    "nome": "COOPERATIVA DE CRÉDITO INTEGRADO - SICOOB INTEGRADO"
-   },
-   "07026923": {
-    "agencia": 0,
-    "posto": 38,
-    "pae": 0,
-    "total": 38,
-    "municipios": 32,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB ARENITO PARANÁ / SÃO PAULO"
-   },
-   "01736516": {
-    "agencia": 0,
-    "posto": 21,
-    "pae": 0,
-    "total": 21,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL E OESTE MINEIRO LTDA. - SICOOB DIVICRED"
-   },
-   "09424988": {
-    "agencia": 0,
-    "posto": 10,
-    "pae": 0,
-    "total": 10,
-    "municipios": 10,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO OESTE MARANHENSE - SICOOB OESTE MARANHENSE"
-   },
-   "09576849": {
-    "agencia": 0,
-    "posto": 5,
-    "pae": 0,
-    "total": 5,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CERES E RIALMA LTDA"
-   },
-   "24830879": {
-    "agencia": 0,
-    "posto": 4,
-    "pae": 0,
-    "total": 4,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE DO ARAGUAIA LTDA."
-   },
-   "03461243": {
-    "agencia": 0,
-    "posto": 23,
-    "pae": 0,
-    "total": 23,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO DO NORTE CATARINENSE - ACREDICOOP"
-   },
-   "10311218": {
-    "agencia": 0,
-    "posto": 20,
-    "pae": 0,
-    "total": 20,
-    "municipios": 8,
-    "nome": "COOPERATIVA DE CRÉDITO EVOLUA"
    },
    "64293582": {
     "agencia": 0,
@@ -35426,6 +35978,14 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION"
    },
+   "62562012": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA  NESTLÉ - NESCRED"
+   },
    "42445122": {
     "agencia": 0,
     "posto": 1,
@@ -35466,14 +36026,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DO GRUPO BASF"
    },
-   "62562012": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA  NESTLÉ - NESCRED"
-   },
    "33735192": {
     "agencia": 0,
     "posto": 2,
@@ -35482,45 +36034,13 @@
     "municipios": 2,
     "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO JOHN F. KENNEDY LTDA"
    },
-   "64276058": {
-    "agencia": 0,
-    "posto": 7,
-    "pae": 4,
-    "total": 11,
-    "municipios": 7,
-    "nome": "COOPERATIVA DE CRÉDITO CREDINORTE LTDA. - SICOOB CREDINORTE"
-   },
-   "64237530": {
-    "agencia": 0,
-    "posto": 10,
-    "pae": 17,
-    "total": 27,
-    "municipios": 12,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIUNA LTDA - SICOOB CREDIUNA"
-   },
    "26960328": {
     "agencia": 0,
-    "posto": 18,
+    "posto": 17,
     "pae": 0,
-    "total": 18,
-    "municipios": 16,
+    "total": 17,
+    "municipios": 15,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO TOCANTINS LTDA"
-   },
-   "01060307": {
-    "agencia": 0,
-    "posto": 41,
-    "pae": 29,
-    "total": 70,
-    "municipios": 41,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA UNIÃO DOS VALES DO PIRANGA E MATIPÓ LTDA. - SICOOB UNIÃO DOS VALES"
-   },
-   "00068987": {
-    "agencia": 0,
-    "posto": 13,
-    "pae": 8,
-    "total": 21,
-    "municipios": 8,
-    "nome": "COOPERATIVA DE CRÉDITO ARACREDI LTDA. - SICOOB ARACREDI"
    },
    "01062439": {
     "agencia": 0,
@@ -35529,22 +36049,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA COMIGO"
-   },
-   "01604998": {
-    "agencia": 0,
-    "posto": 44,
-    "pae": 37,
-    "total": 81,
-    "municipios": 42,
-    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO SUL DE MINAS LTDA - SICOOB CREDIVASS"
-   },
-   "64480833": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 5,
-    "total": 6,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIMAC LTDA - SICOOB CREDIMAC"
    },
    "00075847": {
     "agencia": 0,
@@ -35617,22 +36121,6 @@
     "total": 4,
     "municipios": 4,
     "nome": "COOPERATIVA DE CREDITO DO MERCADO IMOBILIÁRIO - SICOOB IMOB.VC"
-   },
-   "21661202": {
-    "agencia": 0,
-    "posto": 14,
-    "pae": 17,
-    "total": 31,
-    "municipios": 14,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICAMPO LTDA.- SICOOB CREDICAMPO"
-   },
-   "21670187": {
-    "agencia": 0,
-    "posto": 7,
-    "pae": 13,
-    "total": 20,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIBOM LTDA. - SICOOB CREDIBOM"
    },
    "00694389": {
     "agencia": 0,
@@ -35882,14 +36370,6 @@
     "municipios": 20,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CONFIANÇA - SICREDI CONFIANÇA"
    },
-   "19449602": {
-    "agencia": 0,
-    "posto": 11,
-    "pae": 17,
-    "total": 28,
-    "municipios": 11,
-    "nome": "COOPERATIVA DE CRÉDITO CREDCOOPER LTDA - SICOOB CREDCOOPER"
-   },
    "19402130": {
     "agencia": 0,
     "posto": 4,
@@ -35924,10 +36404,10 @@
    },
    "88894548": {
     "agencia": 0,
-    "posto": 75,
+    "posto": 76,
     "pae": 0,
-    "total": 75,
-    "municipios": 55,
+    "total": 76,
+    "municipios": 56,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO - SICREDI UNIAO RS/ES"
    },
    "19875244": {
@@ -36098,14 +36578,6 @@
     "municipios": 8,
     "nome": "COOPERATIVA DE CREDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL JACINTO MACHADO"
    },
-   "71154876": {
-    "agencia": 0,
-    "posto": 12,
-    "pae": 10,
-    "total": 22,
-    "municipios": 8,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIPINHO LTDA - SICOOB CREDIPINHO"
-   },
    "71163315": {
     "agencia": 0,
     "posto": 6,
@@ -36113,22 +36585,6 @@
     "total": 6,
     "municipios": 4,
     "nome": "COOPERATIVA DE CRÉDITO UNICRED AMPLA LTDA - UNICRED AMPLA"
-   },
-   "71146450": {
-    "agencia": 0,
-    "posto": 2,
-    "pae": 10,
-    "total": 12,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CAMPOS GERAIS E CAMPO DO MEIO LTDA - SICOOB CREDCAM"
-   },
-   "71154256": {
-    "agencia": 0,
-    "posto": 3,
-    "pae": 4,
-    "total": 7,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO SACRAMENTO LTDA - SICOOB SACRAMENTO"
    },
    "81706616": {
     "agencia": 0,
@@ -36145,14 +36601,6 @@
     "total": 32,
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SUL RIOGRANDENSE - SICREDI ORIGENS RS"
-   },
-   "82639451": {
-    "agencia": 0,
-    "posto": 119,
-    "pae": 0,
-    "total": 119,
-    "municipios": 28,
-    "nome": "COOPERATIVA DE CREDITO VALE DO ITAJAI - VIACREDI"
    },
    "07412987": {
     "agencia": 0,
@@ -36218,14 +36666,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ARCOS LTDA. - SICOOB ARCOMCREDI"
    },
-   "71237184": {
-    "agencia": 0,
-    "posto": 7,
-    "pae": 7,
-    "total": 14,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIBELO LTDA. - SICOOB CREDIBELO"
-   },
    "04261151": {
     "agencia": 0,
     "posto": 30,
@@ -36241,22 +36681,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES FEDERAIS NA PARAÍBA - SICOOB COOPERCRET"
-   },
-   "71238232": {
-    "agencia": 0,
-    "posto": 14,
-    "pae": 5,
-    "total": 19,
-    "municipios": 13,
-    "nome": "COOPERATIVA DE CRÉDITO DO CENTRO SUL MINEIRO LTDA. - SICOOB CENTRO SUL MINEIRO"
-   },
-   "71243034": {
-    "agencia": 0,
-    "posto": 26,
-    "pae": 14,
-    "total": 40,
-    "municipios": 20,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIJEQUITINHONHA LTDA. - SICOOB CREDIJEQUITINHONHA"
    },
    "82133182": {
     "agencia": 0,
@@ -36322,14 +36746,6 @@
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DA SAÚDE E LIVRE ADMISSÃO DO SUL DE MINAS LTDA"
    },
-   "71392047": {
-    "agencia": 0,
-    "posto": 2,
-    "pae": 3,
-    "total": 5,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CRÉDITO MONTECREDI LTDA. - SICOOB MONTECREDI"
-   },
    "02766672": {
     "agencia": 0,
     "posto": 15,
@@ -36345,22 +36761,6 @@
     "total": 61,
     "municipios": 44,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO CENTRO NORTE BRASILEIRO"
-   },
-   "71419600": {
-    "agencia": 0,
-    "posto": 8,
-    "pae": 7,
-    "total": 15,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE FRUTAL LTDA.   SICOOB FRUTAL"
-   },
-   "71441406": {
-    "agencia": 0,
-    "posto": 11,
-    "pae": 8,
-    "total": 19,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE PEDRO LEOPOLDO LTDA - SICOOB CREDIPEL"
    },
    "71432926": {
     "agencia": 0,
@@ -36402,13 +36802,13 @@
     "municipios": 20,
     "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DOS CREAS E DEMAIS ÁREAS TECNOLÓGICAS - CREDCREA"
    },
-   "18966739": {
+   "25683434": {
     "agencia": 0,
-    "posto": 4,
-    "pae": 6,
-    "total": 10,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO COPERSUL LTDA - SICOOB COPERSUL"
+    "posto": 1,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO DE MINAS GERAIS LTDA. - SICOOB CENTRAL CREDIMINAS"
    },
    "25683475": {
     "agencia": 0,
@@ -36466,14 +36866,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CREDITO SICOOB COOPEC LTDA."
    },
-   "25606237": {
-    "agencia": 0,
-    "posto": 28,
-    "pae": 30,
-    "total": 58,
-    "municipios": 25,
-    "nome": "COOPERATIVA DE POUPANÇA E CRÉDITO DO VALE DO RIO DOCE LTDA - SICOOB CREDIRIODOCE"
-   },
    "00815319": {
     "agencia": 0,
     "posto": 43,
@@ -36506,14 +36898,6 @@
     "municipios": 24,
     "nome": "COOPERATIVA DE CRÉDITO SICOOB SERTÃO LTDA"
    },
-   "25743311": {
-    "agencia": 0,
-    "posto": 2,
-    "pae": 3,
-    "total": 5,
-    "municipios": 3,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CARMO DO RIO CLARO LTDA - SICOOB CREDICARMO"
-   },
    "02480577": {
     "agencia": 0,
     "posto": 3,
@@ -36521,14 +36905,6 @@
     "total": 3,
     "municipios": 3,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO E DOS ADVOGADOS LTDA. - SICOOB CREDIJUR"
-   },
-   "25798596": {
-    "agencia": 0,
-    "posto": 32,
-    "pae": 25,
-    "total": 57,
-    "municipios": 28,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIVAR LTDA. - SICOOB CREDIVAR"
    },
    "04894460": {
     "agencia": 0,
@@ -36610,14 +36986,6 @@
     "municipios": 7,
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO NOS ESTADOS DE ALAGOAS, SERGIPE E BAHIA - SICOOB LESTE"
    },
-   "26014175": {
-    "agencia": 0,
-    "posto": 9,
-    "pae": 14,
-    "total": 23,
-    "municipios": 10,
-    "nome": "COOPERATIVA DE CRÉDITO GUARANICREDI LTDA. - SICOOB GUARANICREDI"
-   },
    "33021064": {
     "agencia": 0,
     "posto": 33,
@@ -36625,14 +36993,6 @@
     "total": 33,
     "municipios": 29,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO ARAGUAIA E XINGU - SICREDI ARAXINGU"
-   },
-   "26178111": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 9,
-    "total": 15,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO UNIÃO CENTRO OESTE LTDA. - SICOOB UNIÃO CENTRO OESTE"
    },
    "70241658": {
     "agencia": 0,
@@ -36714,13 +37074,13 @@
     "municipios": 7,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTEGRAÇÃO BAHIA - SICREDI INTEGRAÇÃO BAHIA - BA"
    },
-   "05269976": {
+   "82639451": {
     "agencia": 0,
-    "posto": 13,
+    "posto": 119,
     "pae": 0,
-    "total": 13,
-    "municipios": 12,
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL MAIS"
+    "total": 119,
+    "municipios": 28,
+    "nome": "COOPERATIVA DE CREDITO VALE DO ITAJAI - VIACREDI"
    },
    "03102185": {
     "agencia": 0,
@@ -36737,14 +37097,6 @@
     "total": 8,
     "municipios": 8,
     "nome": "COOPERATIVA DE CRÉDITO SICREDI ALTO SERTÃO PARAIBANO - SICREDI ALTO SERTÃO PARAIBANO"
-   },
-   "01152097": {
-    "agencia": 0,
-    "posto": 19,
-    "pae": 14,
-    "total": 33,
-    "municipios": 20,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIMATA LTDA. - SICOOB CREDIMATA"
    },
    "82527557": {
     "agencia": 0,
@@ -36818,14 +37170,6 @@
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE ARARAQUARA E REGIÃO - SICREDI MORADA DO SOL SP"
    },
-   "00803287": {
-    "agencia": 0,
-    "posto": 4,
-    "pae": 9,
-    "total": 13,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIVAZ LTDA. - SICOOB CREDIVAZ"
-   },
    "04525997": {
     "agencia": 0,
     "posto": 1,
@@ -36834,14 +37178,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS PROFESSORES, FUNCIONÁRIOS E ALUNOS DA UNIVERSIDADE DE CAXIAS DO SUL - SICREDI EDUCAÇÃO RS"
    },
-   "25395435": {
-    "agencia": 0,
-    "posto": 17,
-    "pae": 27,
-    "total": 44,
-    "municipios": 13,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICAF LTDA - SICOOB CREDICAF"
-   },
    "25404542": {
     "agencia": 0,
     "posto": 10,
@@ -36849,14 +37185,6 @@
     "total": 10,
     "municipios": 8,
     "nome": "COOPERATIVA DE CRÉDITO CREDIVAG LTDA - SICOOB CREDIVAG"
-   },
-   "25420696": {
-    "agencia": 0,
-    "posto": 10,
-    "pae": 11,
-    "total": 21,
-    "municipios": 8,
-    "nome": "COOPERATIVA DE CRÉDITO CREDINACIONAL LTDA. - SICOOB CREDINACIONAL"
    },
    "02031139": {
     "agencia": 0,
@@ -36905,22 +37233,6 @@
     "total": 30,
     "municipios": 27,
     "nome": "COOPERATIVA DE CRÉDITO SICOOB ALIANÇA"
-   },
-   "25528753": {
-    "agencia": 0,
-    "posto": 15,
-    "pae": 11,
-    "total": 26,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIVERDE LTDA. - SICOOB CREDIVERDE"
-   },
-   "25536764": {
-    "agencia": 0,
-    "posto": 18,
-    "pae": 8,
-    "total": 26,
-    "municipios": 19,
-    "nome": "COOPERATIVA DE CRÉDITO CREDPLUS LTDA. - SICOOB CREDPLUS"
    },
    "87853206": {
     "agencia": 0,
@@ -37090,14 +37402,6 @@
     "municipios": 22,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SEMENTES DO SUL - SICREDI SEMENTES DO SUL"
    },
-   "05582619": {
-    "agencia": 0,
-    "posto": 54,
-    "pae": 1,
-    "total": 55,
-    "municipios": 30,
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB OURO VERDE"
-   },
    "03674133": {
     "agencia": 0,
     "posto": 1,
@@ -37162,14 +37466,6 @@
     "municipios": 2,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS DESPACHANTES DE TRÂNSITO DE SANTA CATARINA E RIO GRANDE DO SUL - SICOOB CREDITRAN"
    },
-   "38588174": {
-    "agencia": 0,
-    "posto": 19,
-    "pae": 17,
-    "total": 36,
-    "municipios": 17,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICOPE LTDA. - SICOOB CREDICOPE"
-   },
    "01760242": {
     "agencia": 0,
     "posto": 32,
@@ -37201,38 +37497,6 @@
     "total": 17,
     "municipios": 16,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA DE NOVA MUTUM E REGIÃO - CRESOL MATO GROSSO"
-   },
-   "42873828": {
-    "agencia": 0,
-    "posto": 27,
-    "pae": 78,
-    "total": 105,
-    "municipios": 25,
-    "nome": "COOPERATIVA DE CRÉDITO AGROCREDI LTDA. - SICOOB AGROCREDI"
-   },
-   "42887133": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 7,
-    "total": 13,
-    "municipios": 7,
-    "nome": "COOPERATIVA DE CRÉDITO CREDISUCESSO LTDA.- SICOOB CREDISUCESSO"
-   },
-   "42880617": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 3,
-    "total": 4,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CRÉDITO DE TIROS E MATUTINA LTDA.- SICOOB CREDITIROS"
-   },
-   "25387713": {
-    "agencia": 0,
-    "posto": 7,
-    "pae": 13,
-    "total": 20,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE  PARÁ DE MINAS LTDA - SICOOB CREDIRURAL"
    },
    "02448839": {
     "agencia": 0,
@@ -37273,14 +37537,6 @@
     "total": 2,
     "municipios": 2,
     "nome": "CREDISIS CAPITALCREDI - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO ACRE LTDA"
-   },
-   "80959638": {
-    "agencia": 0,
-    "posto": 4,
-    "pae": 5,
-    "total": 9,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO MEIO OESTE CATARINENSE - SICOOB CREDIMOC SC"
    },
    "02924977": {
     "agencia": 0,
@@ -37338,14 +37594,6 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO DO NORTE CATARINENSE E SUL PARANAENSE - SICOOB CREDINORTE"
    },
-   "42898825": {
-    "agencia": 0,
-    "posto": 54,
-    "pae": 14,
-    "total": 68,
-    "municipios": 27,
-    "nome": "SICOOB CREDICOM - COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS MEDICOS E PROFISSIONAIS DA AREA DE SAUDE DO BRASIL LTDA."
-   },
    "03269540": {
     "agencia": 0,
     "posto": 1,
@@ -37354,13 +37602,13 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES MILITARES, DA POLÍCIA CIVIL, DA SECRETARIA DE EDUCAÇÃO DO ESTADO DE MINAS GERAIS E DE LIVRE ADMISSÃO LTDA - SICOOB COOPEMG"
    },
-   "04490531": {
+   "05269976": {
     "agencia": 0,
-    "posto": 15,
+    "posto": 13,
     "pae": 0,
-    "total": 15,
-    "municipios": 14,
-    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA DE GOIÁS - CRESOL GOIÁS"
+    "total": 13,
+    "municipios": 12,
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL MAIS"
    },
    "80959612": {
     "agencia": 0,
@@ -37522,14 +37770,6 @@
     "municipios": 22,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO ESSÊNCIA RS/ES - SICREDI ESSÊNCIA"
    },
-   "03645752": {
-    "agencia": 0,
-    "posto": 2,
-    "pae": 11,
-    "total": 13,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDISG LTDA. - SICOOB CREDISG"
-   },
    "24654881": {
     "agencia": 0,
     "posto": 60,
@@ -37569,14 +37809,6 @@
     "total": 50,
     "municipios": 41,
     "nome": "SISPRIME DO BRASIL - COOPERATIVA DE CRÉDITO"
-   },
-   "24795049": {
-    "agencia": 0,
-    "posto": 34,
-    "pae": 55,
-    "total": 89,
-    "municipios": 28,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO SUDOESTE GOIANO"
    },
    "24799033": {
     "agencia": 0,
@@ -37650,6 +37882,78 @@
     "municipios": 2,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE  LAGOA DA PRATA E REGIÃO LTDA.   SICOOB LAGOACRED GERAIS"
    },
+   "00971300": {
+    "agencia": 0,
+    "posto": 67,
+    "pae": 0,
+    "total": 67,
+    "municipios": 61,
+    "nome": "COOPERATIVA DE CREDITO E INVESTIMENTO COM INTERACAO SOLIDARIA PIONEIRA - CRESOL PIONEIRA"
+   },
+   "07122321": {
+    "agencia": 0,
+    "posto": 44,
+    "pae": 0,
+    "total": 44,
+    "municipios": 35,
+    "nome": "COOPERATIVA DE CRÉDITO INTEGRADO - SICOOB INTEGRADO"
+   },
+   "07026923": {
+    "agencia": 0,
+    "posto": 38,
+    "pae": 0,
+    "total": 38,
+    "municipios": 32,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB ARENITO PARANÁ / SÃO PAULO"
+   },
+   "01736516": {
+    "agencia": 0,
+    "posto": 21,
+    "pae": 0,
+    "total": 21,
+    "municipios": 9,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL E OESTE MINEIRO LTDA. - SICOOB DIVICRED"
+   },
+   "09424988": {
+    "agencia": 0,
+    "posto": 10,
+    "pae": 0,
+    "total": 10,
+    "municipios": 10,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO OESTE MARANHENSE - SICOOB OESTE MARANHENSE"
+   },
+   "09576849": {
+    "agencia": 0,
+    "posto": 5,
+    "pae": 0,
+    "total": 5,
+    "municipios": 5,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CERES E RIALMA LTDA"
+   },
+   "24830879": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 0,
+    "total": 4,
+    "municipios": 4,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE DO ARAGUAIA LTDA."
+   },
+   "03461243": {
+    "agencia": 0,
+    "posto": 23,
+    "pae": 0,
+    "total": 23,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO DO NORTE CATARINENSE - ACREDICOOP"
+   },
+   "10311218": {
+    "agencia": 0,
+    "posto": 20,
+    "pae": 0,
+    "total": 20,
+    "municipios": 8,
+    "nome": "COOPERATIVA DE CRÉDITO EVOLUA"
+   },
    "03065046": {
     "agencia": 0,
     "posto": 21,
@@ -37698,14 +38002,6 @@
     "municipios": 26,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CENTRO SUL - CRESOL CENTRO SUL"
    },
-   "25353939": {
-    "agencia": 0,
-    "posto": 5,
-    "pae": 10,
-    "total": 15,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIALP LTDA - SICOOB CREDIALP"
-   },
    "25363615": {
     "agencia": 0,
     "posto": 4,
@@ -37713,14 +38009,6 @@
     "total": 4,
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB COOPJUS LTDA."
-   },
-   "25387655": {
-    "agencia": 0,
-    "posto": 29,
-    "pae": 11,
-    "total": 40,
-    "municipios": 26,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIVALE LTDA - SICOOB CREDIVALE"
    },
    "01559914": {
     "agencia": 0,
@@ -37732,10 +38020,10 @@
    },
    "08055016": {
     "agencia": 0,
-    "posto": 16,
+    "posto": 17,
     "pae": 0,
-    "total": 16,
-    "municipios": 14,
+    "total": 17,
+    "municipios": 15,
     "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL INTERAÇÃO"
    },
    "07194313": {
@@ -37898,6 +38186,14 @@
     "municipios": 3,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DE LIVRE ADMISSÃO DA REGIÃO ADMINISTRATIVA DE SOROCABA - SICOOB COOPERASO"
    },
+   "04490531": {
+    "agencia": 0,
+    "posto": 15,
+    "pae": 0,
+    "total": 15,
+    "municipios": 14,
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA DE GOIÁS - CRESOL GOIÁS"
+   },
    "04013172": {
     "agencia": 0,
     "posto": 20,
@@ -37945,14 +38241,6 @@
     "total": 60,
     "municipios": 21,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS"
-   },
-   "54401286": {
-    "agencia": 0,
-    "posto": 26,
-    "pae": 1,
-    "total": 27,
-    "municipios": 21,
-    "nome": "COOPERATIVA DE CRÉDITO COCRE"
    },
    "03603683": {
     "agencia": 0,
@@ -38018,14 +38306,6 @@
     "municipios": 37,
     "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL NOROESTE"
    },
-   "06324872": {
-    "agencia": 0,
-    "posto": 3,
-    "pae": 4,
-    "total": 7,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDINOSSO LTDA - SICOOB CREDINOSSO"
-   },
    "23623636": {
     "agencia": 0,
     "posto": 27,
@@ -38082,14 +38362,6 @@
     "municipios": 6,
     "nome": "COOPERATIVA DE CRÉDITO NO PIAUÍ - SICOOB PIAUÍ"
    },
-   "66398496": {
-    "agencia": 0,
-    "posto": 10,
-    "pae": 21,
-    "total": 31,
-    "municipios": 7,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIARA LTDA - SICOOB CREDIARA"
-   },
    "66402207": {
     "agencia": 0,
     "posto": 30,
@@ -38138,14 +38410,6 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CENTRO SERRA - SICREDI CENTRO SERRA RS"
    },
-   "66262643": {
-    "agencia": 0,
-    "posto": 2,
-    "pae": 6,
-    "total": 8,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIPEU LTDA.  - SICOOB CREDIPEU"
-   },
    "05231945": {
     "agencia": 0,
     "posto": 48,
@@ -38153,14 +38417,6 @@
     "total": 48,
     "municipios": 46,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA UNIÃO DOS VALES - CRESOL UNIÃO DOS VALES"
-   },
-   "66259110": {
-    "agencia": 0,
-    "posto": 3,
-    "pae": 7,
-    "total": 10,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIBAM LTDA. - SICOOB CREDIBAM"
    },
    "37076205": {
     "agencia": 0,
@@ -38202,14 +38458,6 @@
     "municipios": 15,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO BURITIS - SICOOB BURITIS"
    },
-   "00429890": {
-    "agencia": 0,
-    "posto": 4,
-    "pae": 3,
-    "total": 7,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CREDITO CREDIAGRO LTDA. - SICOOB CREDIAGRO"
-   },
    "05241619": {
     "agencia": 0,
     "posto": 64,
@@ -38233,14 +38481,6 @@
     "total": 47,
     "municipios": 28,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO DO SUDOESTE  DA AMAZÔNIA LTDA - SICOOB CREDISUL"
-   },
-   "13776742": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 30,
-    "total": 31,
-    "municipios": 10,
-    "nome": "RENDIMENTOPAY INSTITUIÇÃO DE PAGAMENTO S.A."
    },
    "90729369": {
     "agencia": 0,
@@ -38281,14 +38521,6 @@
     "total": 4,
     "municipios": 4,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO PLANALTO SERRANO - SICOOB CREDISERRA SC"
-   },
-   "03412878": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 10,
-    "total": 16,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIRAMA LTDA - SICOOB CREDIRAMA"
    },
    "02876918": {
     "agencia": 0,
@@ -38434,14 +38666,6 @@
     "municipios": 7,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO SUL CATARINENSE - ACENTRA"
    },
-   "03428338": {
-    "agencia": 0,
-    "posto": 11,
-    "pae": 1,
-    "total": 12,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CRÉDITO - SICOOB CREDUNI"
-   },
    "79342069": {
     "agencia": 0,
     "posto": 114,
@@ -38562,14 +38786,6 @@
     "municipios": 13,
     "nome": "COOPERATIVA DE CRÉDITO CREDSAOPAULO - SICOOB CREDSAOPAULO"
    },
-   "03222753": {
-    "agencia": 0,
-    "posto": 18,
-    "pae": 1,
-    "total": 19,
-    "municipios": 10,
-    "nome": "CREDISIS CREDIARI - COOPERATIVA DE CRÉDITO LTDA."
-   },
    "02904125": {
     "agencia": 0,
     "posto": 16,
@@ -38626,14 +38842,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS ESCRIVÃES, NOTÁRIOS E REGISTRADORES NO ESTADO DO PARANÁ - SICREDI CREDENOREG PR"
    },
-   "22724710": {
-    "agencia": 0,
-    "posto": 22,
-    "pae": 28,
-    "total": 50,
-    "municipios": 26,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIVERTENTES LTDA. - SICOOB CREDIVERTENTES"
-   },
    "47074323": {
     "agencia": 0,
     "posto": 6,
@@ -38642,30 +38850,6 @@
     "municipios": 5,
     "nome": "SICOOB CREDICONSUMO - COOPERATIVA DE CRÉDITO"
    },
-   "22749014": {
-    "agencia": 0,
-    "posto": 11,
-    "pae": 6,
-    "total": 17,
-    "municipios": 11,
-    "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO CENTRAL DE MINAS LTDA. - SICOOB UNIÃO CENTRAL"
-   },
-   "22753982": {
-    "agencia": 0,
-    "posto": 15,
-    "pae": 8,
-    "total": 23,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO CREDISETE LTDA. - SICOOB CREDISETE"
-   },
-   "22760839": {
-    "agencia": 0,
-    "posto": 11,
-    "pae": 23,
-    "total": 34,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO NOSSOCRÉDITO LTDA - SICOOB NOSSOCRÉDITO"
-   },
    "33579731": {
     "agencia": 0,
     "posto": 12,
@@ -38673,22 +38857,6 @@
     "total": 12,
     "municipios": 11,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO CENTRO-SUL GOIANO LTDA"
-   },
-   "65239402": {
-    "agencia": 0,
-    "posto": 5,
-    "pae": 5,
-    "total": 10,
-    "municipios": 3,
-    "nome": "COOPERATIVA DE CRÉDITO UNIÃO DO CENTRO OESTE DE MINAS LTDA. - SICOOB CENTRO UNIÃO"
-   },
-   "65229254": {
-    "agencia": 0,
-    "posto": 21,
-    "pae": 18,
-    "total": 39,
-    "municipios": 20,
-    "nome": "COOPERATIVA DE CRÉDITO COOPACREDI LTDA. - SICOOB COOPACREDI"
    },
    "05597773": {
     "agencia": 0,
@@ -38762,22 +38930,6 @@
     "municipios": 3,
     "nome": "COOPERATIVA DE CRÉDITO DE PRODUTORES RURAIS E DE LIVRE ADMISSÃO DO TRIÂNGULO LTDA    SICOOB CREDITRIL"
    },
-   "41707258": {
-    "agencia": 0,
-    "posto": 8,
-    "pae": 11,
-    "total": 19,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE SANTO ANTÔNIO DO MONTE LTDA.   SICOOB CREDIMONTE"
-   },
-   "41697103": {
-    "agencia": 0,
-    "posto": 21,
-    "pae": 38,
-    "total": 59,
-    "municipios": 13,
-    "nome": "COOPERATIVA DE CRÉDITO CREDILIVRE LTDA. - SICOOB CREDILIVRE"
-   },
    "07206072": {
     "agencia": 0,
     "posto": 34,
@@ -38785,14 +38937,6 @@
     "total": 34,
     "municipios": 29,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NOVOS HORIZONTES - SICREDI NOVOS HORIZONTES PR/SP/RJ"
-   },
-   "41753500": {
-    "agencia": 0,
-    "posto": 8,
-    "pae": 14,
-    "total": 22,
-    "municipios": 9,
-    "nome": "COOPERATIVA DE CRÉDITO CARLOS CHAGAS LTDA. - SICOOB CARLOS CHAGAS"
    },
    "03015152": {
     "agencia": 0,
@@ -38802,14 +38946,6 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE SÃO VALENTIM - CRESOL SÃO VALENTIM"
    },
-   "41805003": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 1,
-    "total": 7,
-    "municipios": 5,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO ALTO SÃO FRANCISCO LTDA."
-   },
    "41255225": {
     "agencia": 0,
     "posto": 8,
@@ -38818,14 +38954,6 @@
     "municipios": 7,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CENTRO PERNAMBUCANA - SICREDI CENTRO PERNAMBUCANA PE"
    },
-   "78840071": {
-    "agencia": 0,
-    "posto": 32,
-    "pae": 1,
-    "total": 33,
-    "municipios": 24,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO ALTO URUGUAI CATARINENSE - SICOOB CREDIAUC"
-   },
    "78834975": {
     "agencia": 0,
     "posto": 43,
@@ -38833,14 +38961,6 @@
     "total": 43,
     "municipios": 30,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO VALE DO CANOINHAS - SICOOB CREDICANOINHAS/SC"
-   },
-   "23949522": {
-    "agencia": 0,
-    "posto": 5,
-    "pae": 4,
-    "total": 9,
-    "municipios": 3,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICARPA LTDA. - SICOOB CREDICARPA"
    },
    "09403026": {
     "agencia": 0,
@@ -38898,30 +39018,6 @@
     "municipios": 24,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA ZONA DA MATA LTDA   SICOOB COOPEMATA"
    },
-   "24048910": {
-    "agencia": 0,
-    "posto": 19,
-    "pae": 18,
-    "total": 37,
-    "municipios": 17,
-    "nome": "COOPERATIVA DE CRÉDITO CREDINTER LTDA. - SICOOB CREDINTER"
-   },
-   "41931445": {
-    "agencia": 0,
-    "posto": 8,
-    "pae": 11,
-    "total": 19,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIFOR LTDA - SICOOB CREDIFOR"
-   },
-   "41931221": {
-    "agencia": 0,
-    "posto": 3,
-    "pae": 3,
-    "total": 6,
-    "municipios": 4,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICOOP LTDA - SICOOB CREDICOOP"
-   },
    "62109566": {
     "agencia": 0,
     "posto": 15,
@@ -38969,14 +39065,6 @@
     "total": 4,
     "municipios": 2,
     "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO DO VALE DO RIO GRANDE LTDA. - SICOOB CREDILEITE"
-   },
-   "86564051": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 16,
-    "total": 22,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO NOROESTE DE MINAS LTDA. - SICOOB NOROESTE DE MINAS"
    },
    "74064502": {
     "agencia": 0,
@@ -39066,14 +39154,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO BRMIL LTDA. - SICOOB BRMIL"
    },
-   "01609345": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 3,
-    "total": 4,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICAMPINA LTDA. - SICOOB CREDICAMPINA"
-   },
    "10736214": {
     "agencia": 0,
     "posto": 36,
@@ -39124,9 +39204,9 @@
    },
    "95213211": {
     "agencia": 0,
-    "posto": 27,
+    "posto": 28,
     "pae": 0,
-    "total": 27,
+    "total": 28,
     "municipios": 25,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CAMINHO DAS ÁGUAS RS - SICREDI CAMINHO DAS ÁGUAS RS"
    },
@@ -39140,9 +39220,9 @@
    },
    "04406371": {
     "agencia": 0,
-    "posto": 13,
+    "posto": 12,
     "pae": 0,
-    "total": 13,
+    "total": 12,
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO ESTADO DE GOIÁS"
    },
@@ -39185,14 +39265,6 @@
     "total": 56,
     "municipios": 48,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA RAIZ - CRESOL RAIZ"
-   },
-   "00869687": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 3,
-    "total": 4,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE BOA ESPERANÇA LTDA. - SICOOB BELCREDI"
    },
    "73750424": {
     "agencia": 0,
@@ -39304,7 +39376,7 @@
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "CREDJUST - COOPERATIVA DE CRÉDITO MÚTUO DOS INTEGRANTES DA JUSTIÇA DO TRABALHO DA 13- REGIÃO LTDA."
+    "nome": "CREDJUST - COOPERATIVA DE CRÉDITO MÚTUO DOS INTEGRANTES DA JUSTIÇA DO TRABALHO DA 13ª REGIÃO LTDA."
    },
    "01235921": {
     "agencia": 0,
@@ -39402,14 +39474,6 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE DO PARANAPANEMA"
    },
-   "21866694": {
-    "agencia": 0,
-    "posto": 33,
-    "pae": 28,
-    "total": 61,
-    "municipios": 28,
-    "nome": "COOPERATIVA DE CRÉDITO CREDINOR LTDA - SICOOB CREDINOR"
-   },
    "77984870": {
     "agencia": 0,
     "posto": 29,
@@ -39433,14 +39497,6 @@
     "total": 34,
     "municipios": 25,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO MÉDIO PIRACICABA, CIRCUITO DO OURO, GRANDE BH E RIO GRANDE DO NORTE LTDA. -  SICOOB CREDIMEPI"
-   },
-   "22656789": {
-    "agencia": 0,
-    "posto": 26,
-    "pae": 31,
-    "total": 57,
-    "municipios": 22,
-    "nome": "COOPERATIVA DE CREDITO CREDISUDESTE LTDA. - SICOOB CREDISUDESTE"
    },
    "08795285": {
     "agencia": 0,
@@ -39497,14 +39553,6 @@
     "total": 26,
     "municipios": 21,
     "nome": "CREDISIS JICRED - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO JICRED"
-   },
-   "68512748": {
-    "agencia": 0,
-    "posto": 13,
-    "pae": 9,
-    "total": 22,
-    "municipios": 7,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIESMERALDAS LTDA. - SICOOB CREDIESMERALDAS"
    },
    "03750034": {
     "agencia": 0,
@@ -39585,38 +39633,6 @@
     "total": 103,
     "municipios": 64,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VANGUARDA - SICREDI VANGUARDA PR/SP/RJ"
-   },
-   "07469260": {
-    "agencia": 0,
-    "posto": 0,
-    "pae": 1,
-    "total": 1,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDIFIEMG LTDA. - SICOOB CREDIFIEMG"
-   },
-   "71506513": {
-    "agencia": 0,
-    "posto": 0,
-    "pae": 4,
-    "total": 4,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB ITAPAGIPE LTDA - SICOOB ITAPAGIPE"
-   },
-   "00804046": {
-    "agencia": 0,
-    "posto": 0,
-    "pae": 1,
-    "total": 1,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO CREDICAPI LTDA - SICOOB CREDICAPI"
-   },
-   "01374196": {
-    "agencia": 0,
-    "posto": 0,
-    "pae": 2,
-    "total": 2,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO DE SÃO FRANCISCO DE SALES LTDA. - SICOOB CREDISALES"
    }
   },
   "escopo": "Cadastro do BC na posição indicada, não série mensal. As agências aqui são as CADASTRADAS; as do ESTBAN são as PROCESSADAS no mês (entregaram balancete). Os dois números diferem em conceito e data-base e nunca são somados nem reconciliados.",
@@ -43175,8 +43191,8 @@
   {
    "id": "postos_atendimento",
    "rotulo": "Postos de atendimento e postos eletrônicos no país",
-   "valor": 45013,
-   "exibir": "45.013",
+   "valor": 45016,
+   "exibir": "45.016",
    "unidade": "pontos · posição 20/08/2026",
    "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
    "data_ref": "20/08/2026",
