@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-08-29T15:20:55+00:00",
+ "gerado_em": "2026-08-30T14:58:43+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,36 +82,36 @@
    "id": "macro:stale_data:convolacao_falencia_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 120 dias",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 121 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 120,
+   "valor": 121,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "1 execuções anteriores",
+   "evidencia_persistencia": "2 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.2,
+   "ordem": 0.21,
    "serie_recente": null
   },
   {
    "id": "macro:stale_data:extincao_rj_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 120 dias",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 121 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 120,
+   "valor": 121,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "1 execuções anteriores",
+   "evidencia_persistencia": "2 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.2,
+   "ordem": 0.21,
    "serie_recente": null
   },
   {
@@ -124,7 +124,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "61 execuções anteriores",
+   "evidencia_persistencia": "62 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"

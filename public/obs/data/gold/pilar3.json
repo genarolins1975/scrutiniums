@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-29T15:20:30+00:00",
+ "gerado_em": "2026-08-30T14:58:18+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -3365,6 +3365,10 @@
      {
       "p": "2026-1",
       "v": 20.52
+     },
+     {
+      "p": "2026-2",
+      "v": 19.58
      }
     ],
     "basileia_pct": [
@@ -3387,6 +3391,10 @@
      {
       "p": "2026-1",
       "v": 34.64
+     },
+     {
+      "p": "2026-2",
+      "v": 33.81
      }
     ],
     "icp_pct": [
@@ -3409,6 +3417,10 @@
      {
       "p": "2026-1",
       "v": 34.64
+     },
+     {
+      "p": "2026-2",
+      "v": 33.81
      }
     ],
     "margem_capital_principal_pct": [
@@ -3431,6 +3443,10 @@
      {
       "p": "2026-1",
       "v": 27.64
+     },
+     {
+      "p": "2026-2",
+      "v": 26.81
      }
     ],
     "nivel1_pct": [
@@ -3453,17 +3469,21 @@
      {
       "p": "2026-1",
       "v": 34.64
+     },
+     {
+      "p": "2026-2",
+      "v": 33.81
      }
     ]
    },
    "ultimo": {
-    "alavancagem_pct": 20.52,
-    "basileia_pct": 34.64,
-    "icp_pct": 34.64,
-    "margem_capital_principal_pct": 27.64,
-    "nivel1_pct": 34.64
+    "alavancagem_pct": 19.58,
+    "basileia_pct": 33.81,
+    "icp_pct": 33.81,
+    "margem_capital_principal_pct": 26.81,
+    "nivel1_pct": 33.81
    },
-   "periodo_ultimo": "2026-1"
+   "periodo_ultimo": "2026-2"
   },
   {
    "cnpj8": "00309024",
