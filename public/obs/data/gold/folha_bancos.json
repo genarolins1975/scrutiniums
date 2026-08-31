@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-30T14:58:18+00:00",
+ "gerado_em": "2026-08-31T17:31:28+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 333,
-  "total_editais": 1107,
+  "total_editais": 1108,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1153,6 +1153,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE COTIA",
+    "municipio": "Cotia",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-31",
+    "url": "https://pncp.gov.br/compras/46523049000120/2026/165"
+   },
+   {
     "ente": "MUNICIPIO DE PEROBAL",
     "municipio": "Perobal",
     "uf": "PR",
@@ -1225,6 +1234,15 @@
     "url": "https://pncp.gov.br/compras/44567014000167/2026/49"
    },
    {
+    "ente": "MUNICIPIO DE OSORIO",
+    "municipio": "Osório",
+    "uf": "RS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-20",
+    "url": "https://pncp.gov.br/compras/88814181000130/2026/414"
+   },
+   {
     "ente": "MUNICIPIO DE BREJO",
     "municipio": "Brejo",
     "uf": "MA",
@@ -1241,24 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-20",
     "url": "https://pncp.gov.br/compras/44880060000111/2026/166"
-   },
-   {
-    "ente": "MUNICIPIO DE OSORIO",
-    "municipio": "Osório",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-20",
-    "url": "https://pncp.gov.br/compras/88814181000130/2026/414"
-   },
-   {
-    "ente": "MUNICIPIO DE SANTA MARIANA",
-    "municipio": "Santa Mariana",
-    "uf": "PR",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-19",
-    "url": "https://pncp.gov.br/compras/75392019000120/2026/52"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

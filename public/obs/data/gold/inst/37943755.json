@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-08-30T14:58:27+00:00",
+  "atualizado_em": "2026-08-31T17:31:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 37.943.755",
   "participante_open_finance": true
@@ -661,7 +661,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
-  "chamadas_semana": 5915.0,
+  "chamadas_semana": 6487.0,
   "share_pct": 0.0,
   "familias_api": 11,
   "papeis": [

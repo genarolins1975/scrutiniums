@@ -1,14 +1,14 @@
 {
  "cambio": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 883,
   "n_revisoes": 0,
@@ -24,7 +24,7 @@
    "estabilidade": 74.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 9,
@@ -32,15 +32,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pf": {
-  "score": 85.7,
+  "score": 85.0,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 71.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 10,
@@ -48,15 +48,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pj": {
-  "score": 85.3,
+  "score": 84.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -64,15 +64,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_total": {
-  "score": 85.3,
+  "score": 84.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -80,15 +80,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_atraso": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -96,15 +96,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_conc": {
-  "score": 89.6,
+  "score": 88.9,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -112,15 +112,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_icc": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 163,
   "n_revisoes": 0,
@@ -128,15 +128,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_inad": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -144,15 +144,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_prazo_cart": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -160,15 +160,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_prazo_conc": {
-  "score": 89.6,
+  "score": 88.9,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -176,15 +176,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_saldo": {
-  "score": 89.6,
+  "score": 88.9,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -192,15 +192,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_taxa": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -208,15 +208,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_priv_inad": {
-  "score": 89.6,
+  "score": 88.9,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -224,15 +224,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_priv_saldo": {
-  "score": 88.7,
+  "score": 88.0,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 3,
@@ -240,15 +240,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_pub_inad": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -256,15 +256,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_pub_saldo": {
-  "score": 88.3,
+  "score": 87.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 88.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 4,
@@ -272,15 +272,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_inad": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -288,15 +288,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_saldo": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -304,15 +304,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_taxa": {
-  "score": 89.6,
+  "score": 88.9,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -328,7 +328,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 121,
+  "dias_sem_atualizar": 122,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -336,15 +336,15 @@
   "fonte": "CNJ/DataJud"
  },
  "credito_pib": {
-  "score": 75.9,
+  "score": 75.2,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 5.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 33,
@@ -352,15 +352,15 @@
   "fonte": "BCB/SGS"
  },
  "desemprego": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 122,
   "n_revisoes": 0,
@@ -376,7 +376,7 @@
    "estabilidade": 77.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 8,
@@ -392,7 +392,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 121,
+  "dias_sem_atualizar": 122,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -408,7 +408,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 553,
@@ -424,7 +424,7 @@
    "estabilidade": 88.9,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 2,
@@ -440,7 +440,7 @@
    "estabilidade": 61.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 7,
@@ -456,7 +456,7 @@
    "estabilidade": 77.8,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 4,
@@ -472,7 +472,7 @@
    "estabilidade": 83.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 3,
@@ -488,7 +488,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 105,
@@ -504,7 +504,7 @@
    "estabilidade": 50.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 9,
@@ -520,7 +520,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 146,
@@ -536,7 +536,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 287,
@@ -552,7 +552,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 173,
@@ -560,15 +560,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pf": {
-  "score": 89.2,
+  "score": 88.5,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 2,
@@ -576,15 +576,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pj": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -592,15 +592,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_total": {
-  "score": 87.4,
+  "score": 86.8,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 82.9,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 6,
@@ -608,15 +608,15 @@
   "fonte": "BCB/SGS"
  },
  "ipca": {
-  "score": 90.0,
+  "score": 89.3,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -632,7 +632,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 365,
@@ -640,17 +640,17 @@
   "fonte": "BCB/SGS"
  },
  "of_chamadas_dados_abertos": {
-  "score": 82.8,
+  "score": 83.0,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 14.2,
+   "historico": 15.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 9,
-  "ultima_ref": "2026-08-21",
-  "n_obs": 17,
+  "dias_sem_atualizar": 3,
+  "ultima_ref": "2026-08-28",
+  "n_obs": 18,
   "n_revisoes": 0,
   "nome": "Chamadas de API — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -664,7 +664,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -680,7 +680,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -696,7 +696,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -712,7 +712,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -720,17 +720,17 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "of_sucesso_dados_abertos": {
-  "score": 82.8,
+  "score": 83.0,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 14.2,
+   "historico": 15.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 9,
-  "ultima_ref": "2026-08-21",
-  "n_obs": 17,
+  "dias_sem_atualizar": 3,
+  "ultima_ref": "2026-08-28",
+  "n_obs": 18,
   "n_revisoes": 0,
   "nome": "Taxa de sucesso das chamadas (códigos 2xx/3xx) — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -744,7 +744,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -760,7 +760,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 30,
+  "dias_sem_atualizar": 31,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -776,7 +776,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 558,
   "n_revisoes": 0,
@@ -792,7 +792,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -808,7 +808,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -824,7 +824,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -840,7 +840,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -856,7 +856,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -872,7 +872,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -888,7 +888,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -904,7 +904,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -920,7 +920,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -936,7 +936,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -952,7 +952,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -968,7 +968,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -984,7 +984,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1000,7 +1000,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1016,7 +1016,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1032,7 +1032,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1048,7 +1048,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1064,7 +1064,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1080,7 +1080,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1096,7 +1096,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1112,7 +1112,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1128,7 +1128,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1144,7 +1144,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1160,7 +1160,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1176,7 +1176,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1192,7 +1192,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1208,7 +1208,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 73,
   "n_revisoes": 0,
@@ -1224,7 +1224,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1240,7 +1240,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1256,7 +1256,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1272,7 +1272,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1288,7 +1288,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1304,7 +1304,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1320,7 +1320,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1336,7 +1336,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1352,7 +1352,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1368,7 +1368,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1384,7 +1384,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1400,7 +1400,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1416,7 +1416,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1432,7 +1432,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1448,7 +1448,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1464,7 +1464,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1480,7 +1480,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1496,7 +1496,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1512,7 +1512,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1528,7 +1528,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1544,7 +1544,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1560,7 +1560,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1576,7 +1576,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1592,7 +1592,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1608,7 +1608,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1624,7 +1624,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1640,7 +1640,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1656,7 +1656,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1672,7 +1672,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1688,7 +1688,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1704,7 +1704,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1720,7 +1720,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1736,7 +1736,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1752,7 +1752,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1768,7 +1768,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1784,7 +1784,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1800,7 +1800,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1816,7 +1816,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1832,7 +1832,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1848,7 +1848,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1864,7 +1864,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1880,7 +1880,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1896,7 +1896,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1912,7 +1912,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 627,
@@ -1928,7 +1928,7 @@
    "estabilidade": 94.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 1,
@@ -1944,7 +1944,7 @@
    "estabilidade": 50.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 9,
@@ -1960,7 +1960,7 @@
    "estabilidade": 94.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 1,
@@ -1976,7 +1976,7 @@
    "estabilidade": 66.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 6,
@@ -1992,7 +1992,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 70,
@@ -2008,7 +2008,7 @@
    "estabilidade": 61.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 7,
@@ -2024,7 +2024,7 @@
    "estabilidade": 88.9,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 2,
@@ -2040,7 +2040,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 90,
+  "dias_sem_atualizar": 91,
   "ultima_ref": "2026-06-01",
   "n_obs": 90,
   "n_revisoes": 369,
@@ -2048,15 +2048,15 @@
   "fonte": "CNJ/DataJud"
  },
  "saldo_pf": {
-  "score": 85.3,
+  "score": 84.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2064,15 +2064,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_pj": {
-  "score": 85.3,
+  "score": 84.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2080,15 +2080,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_total": {
-  "score": 85.3,
+  "score": 84.6,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2104,7 +2104,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": -17,
+  "dias_sem_atualizar": -16,
   "ultima_ref": "2026-09-16",
   "n_obs": 2816,
   "n_revisoes": 0,
@@ -2112,15 +2112,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pf": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -2128,15 +2128,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pj": {
-  "score": 86.2,
+  "score": 85.5,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2144,15 +2144,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_total": {
-  "score": 86.2,
+  "score": 85.5,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2160,15 +2160,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pf": {
-  "score": 87.9,
+  "score": 87.2,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -2176,15 +2176,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pj": {
-  "score": 86.2,
+  "score": 85.5,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2192,15 +2192,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_total": {
-  "score": 86.2,
+  "score": 85.5,
   "componentes": {
    "completude": 100.0,
-   "atualidade": 66.7,
+   "atualidade": 64.4,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 60,
+  "dias_sem_atualizar": 61,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
