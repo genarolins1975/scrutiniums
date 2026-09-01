@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-08-31T17:31:28+00:00",
+ "gerado_em": "2026-09-01T14:41:01+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 333,
-  "total_editais": 1108,
+  "total_contratos_if": 334,
+  "total_editais": 1111,
   "backfill_completo": true,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 127,
+    "contratos": 128,
     "ufs": 21,
     "como_receita": 18
    },
@@ -564,6 +564,21 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/22646525000131/2026/108"
+   },
+   {
+    "controle": "76105535000199-2-000497/2026",
+    "ente": "MUNICIPIO DE ARAUCARIA",
+    "esfera": "Municipal",
+    "municipio": "Araucária",
+    "uf": "PR",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-26",
+    "vig_fim": "2031-08-26",
+    "valor": 15000000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/76105535000199/2026/497"
    },
    {
     "controle": "35607532000176-2-000025/2026",
@@ -1134,24 +1149,27 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/14217327000124/2026/141"
-   },
-   {
-    "controle": "08142655000106-2-000026/2026",
-    "ente": "MUNICIPIO DE BOA SAUDE",
-    "esfera": "Municipal",
-    "municipio": "Januário Cicco",
-    "uf": "RN",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-05-20",
-    "vig_fim": "2031-05-20",
-    "valor": 57012.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/08142655000106/2026/26"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE VARZEA PAULISTA",
+    "municipio": "Várzea Paulista",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-01",
+    "url": "https://pncp.gov.br/compras/45780087000103/2026/110"
+   },
+   {
+    "ente": "MUNICIPIO DE BOTUVERA",
+    "municipio": "Botuverá",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-31",
+    "url": "https://pncp.gov.br/compras/83102350000196/2026/74"
+   },
    {
     "ente": "MUNICIPIO DE COTIA",
     "municipio": "Cotia",
@@ -1160,6 +1178,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-31",
     "url": "https://pncp.gov.br/compras/46523049000120/2026/165"
+   },
+   {
+    "ente": "MUNICIPIO DE VARZEDO",
+    "municipio": "Varzedo",
+    "uf": "BA",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-08-31",
+    "url": "https://pncp.gov.br/compras/13460266000169/2026/70"
    },
    {
     "ente": "MUNICIPIO DE PEROBAL",
@@ -1232,33 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-21",
     "url": "https://pncp.gov.br/compras/44567014000167/2026/49"
-   },
-   {
-    "ente": "MUNICIPIO DE OSORIO",
-    "municipio": "Osório",
-    "uf": "RS",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-20",
-    "url": "https://pncp.gov.br/compras/88814181000130/2026/414"
-   },
-   {
-    "ente": "MUNICIPIO DE BREJO",
-    "municipio": "Brejo",
-    "uf": "MA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-20",
-    "url": "https://pncp.gov.br/compras/06116743000108/2026/39"
-   },
-   {
-    "ente": "MUNICIPIO DE DRACENA",
-    "municipio": "Dracena",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-20",
-    "url": "https://pncp.gov.br/compras/44880060000111/2026/166"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
