@@ -9,13 +9,13 @@
   "sede": "Matão/SP",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 808,
+  "n_pares": 806,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-01T14:41:05+00:00",
+  "atualizado_em": "2026-09-02T13:50:06+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 53.505.681",
   "participante_open_finance": null
@@ -66,7 +66,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 808,
+  "quantidade": 806,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -257,7 +257,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 4.34,
-   "percentil": 25.2
+   "percentil": 25.1
   },
   {
    "indicador": "ROE do período",
@@ -265,8 +265,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 2.01,
-   "percentil": 33.8
+   "mediana_grupo": 2.02,
+   "percentil": 33.7
   }
  ],
  "carteira": {
@@ -1134,7 +1134,6 @@
     5.15,
     4.82,
     -5.53,
-    -0.5,
     7.44,
     0.74,
     7.71,
@@ -1230,10 +1229,11 @@
     2.16,
     0.32,
     -1.08,
-    8.45
+    8.45,
+    1.27
    ],
    "meu": 0.67,
-   "mediana": 2.01
+   "mediana": 2.02
   },
   "basileia": {
    "valores": [
@@ -1946,7 +1946,6 @@
     4.76,
     1.49,
     9.9,
-    1.06,
     11.57,
     8.65,
     7.25,
@@ -2042,7 +2041,8 @@
     1.05,
     1.07,
     1.19,
-    4.0
+    4.0,
+    1.15
    ],
    "meu": 1.19,
    "mediana": 4.34

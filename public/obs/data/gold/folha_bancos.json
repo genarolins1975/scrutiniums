@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-01T14:41:01+00:00",
+ "gerado_em": "2026-09-02T13:50:01+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 334,
-  "total_editais": 1111,
+  "total_editais": 1114,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1153,6 +1153,33 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE PASSOS MAIA",
+    "municipio": "Passos Maia",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-01",
+    "url": "https://pncp.gov.br/compras/95993085000162/2026/50"
+   },
+   {
+    "ente": "MUNICIPIO DE CAMACHO",
+    "municipio": "Camacho",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-01",
+    "url": "https://pncp.gov.br/compras/18308726000151/2026/76"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO VICENTE",
+    "municipio": "São Vicente",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-01",
+    "url": "https://pncp.gov.br/compras/46177523000109/2026/249"
+   },
+   {
     "ente": "MUNICIPIO DE VARZEA PAULISTA",
     "municipio": "Várzea Paulista",
     "uf": "SP",
@@ -1232,33 +1259,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-24",
     "url": "https://pncp.gov.br/compras/07438187000159/2026/65"
-   },
-   {
-    "ente": "CHAPECO CAMARA DE VEREADORES",
-    "municipio": "Chapecó",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-21",
-    "url": "https://pncp.gov.br/compras/83831719000100/2026/20"
-   },
-   {
-    "ente": "MUNICIPIO DE BENTO GONCALVES",
-    "municipio": "Bento Gonçalves",
-    "uf": "RS",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-21",
-    "url": "https://pncp.gov.br/compras/87849923000109/2026/549"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO PEDRO DO TURVO",
-    "municipio": "São Pedro do Turvo",
-    "uf": "SP",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-21",
-    "url": "https://pncp.gov.br/compras/44567014000167/2026/49"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

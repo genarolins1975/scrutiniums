@@ -1,7 +1,7 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-01T14:41:10+00:00",
- "coletado_em": "2026-09-01T14:33:21+00:00",
+ "gerado_em": "2026-09-02T13:50:13+00:00",
+ "coletado_em": "2026-09-02T13:42:29+00:00",
  "aviso_permanente": "O volume de processos não constitui, isoladamente, evidência de irregularidade ou de pior qualidade institucional. Os resultados são influenciados pela escala, perfil de clientes, presença geográfica, modelo de negócio, organização societária, acesso à Justiça, práticas locais de litigância e cobertura das bases.",
  "limitacao_central": "Nenhuma fonte pública nacional atribui processos judiciais a uma instituição financeira identificada. O DataJud público não publica as partes — verificamos campo a campo: o documento traz classe, assuntos, movimentos, órgão julgador e número do processo, e nenhum identificador de parte. Por isso esta página tem duas camadas que nunca se cruzam.",
  "camada_nacional": {

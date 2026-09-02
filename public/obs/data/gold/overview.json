@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-09-01T14:41:02+00:00",
+ "gerado_em": "2026-09-02T13:50:01+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 95.0, percentil histórico 18), em fase de contração, com sinais mistos entre os indicadores monitorados.",
   "ref": "2026-06-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 71/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 73/100; componentes setoriais de RJ/emprego ainda demonstrativos; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Capacidade de pagamento (-3.09)",
@@ -28,7 +28,7 @@
     "ref": "2026-07-01"
    },
    {
-    "texto": "maior estresse setorial: 3.30 Fabricação de outros equipamentos de transporte, exceto veículos automotores (score 76.6, piorando)",
+    "texto": "maior estresse setorial: 3.20 Fabricação de produtos químicos (score 71.0, piorando)",
     "area": "sectors",
     "status": "calculado (componentes parcialmente demonstrativos)"
    }

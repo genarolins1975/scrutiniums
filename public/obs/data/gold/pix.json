@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-01T14:41:13+00:00",
+ "gerado_em": "2026-09-02T13:50:18+00:00",
  "mes": "2026-07",
  "cobertura_tx_pct": 90.8,
  "mes_tx": "2026-07",
@@ -7494,8 +7494,8 @@
      "v": 9507158340000.0
     },
     "TransIntrabancaria": {
-     "q": 283311770.0,
-     "v": 3563449570000.0
+     "q": 283315350.0,
+     "v": 3563470960000.0
     }
    },
    "2022-06-30": {
@@ -7548,14 +7548,14 @@
      "v": 10449574670000.0
     },
     "TransIntrabancaria": {
-     "q": 273550380.0,
-     "v": 3929145800000.0
+     "q": 273562680.0,
+     "v": 3929159300000.0
     }
    },
    "2022-09-30": {
     "Boleto": {
-     "q": 1544000820.0,
-     "v": 2249646210000.0
+     "q": 1544000830.0,
+     "v": 2249646230000.0
     },
     "CartaoCredito": {
      "q": 4149986370.0,
@@ -7602,14 +7602,14 @@
      "v": 10437763160000.0
     },
     "TransIntrabancaria": {
-     "q": 277856000.0,
-     "v": 4161519380000.0
+     "q": 277870520.0,
+     "v": 4161528920000.0
     }
    },
    "2022-12-31": {
     "Boleto": {
-     "q": 1527526890.0,
-     "v": 2252295060000.0
+     "q": 1527526920.0,
+     "v": 2252295080000.0
     },
     "CartaoCredito": {
      "q": 4333267590.0,
@@ -7656,8 +7656,8 @@
      "v": 10382121630000.0
     },
     "TransIntrabancaria": {
-     "q": 291850360.0,
-     "v": 4217084170000.0
+     "q": 291857210.0,
+     "v": 4217084889999.9995
     }
    },
    "2023-03-31": {
@@ -9463,9 +9463,9 @@
    },
    {
     "p": "2026-08",
-    "v": 46.698,
-    "q": 3323531556.0,
-    "vl": 357078029532.33
+    "v": 46.642,
+    "q": 3436103462.0,
+    "vl": 374278231402.98
    }
   ],
   "serie_p2p": [
@@ -9885,9 +9885,9 @@
    },
    {
     "p": "2026-08",
-    "v": 39.483,
-    "q": 2810024378.0,
-    "vl": 738178081169.65
+    "v": 39.465,
+    "q": 2907395455.0,
+    "vl": 772556086959.21
    }
   ],
   "idade_pagador": [
@@ -10510,9 +10510,9 @@
    },
    {
     "p": "2026-08",
-    "v": 0.104,
-    "q": 7396884.0,
-    "vl": 1372014173.54
+    "v": 0.103,
+    "q": 7569607.0,
+    "vl": 1386490303.42
    }
   ],
   "serie_inic": [
@@ -10933,8 +10933,8 @@
    {
     "p": "2026-08",
     "v": 0.038,
-    "q": 2723787.0,
-    "vl": 1062697191.87
+    "q": 2828108.0,
+    "vl": 1112072005.44
    }
   ],
   "serie_qrdn": [
@@ -11354,9 +11354,9 @@
    },
    {
     "p": "2026-08",
-    "v": 43.983,
-    "q": 3130335446.0,
-    "vl": 273080762135.66
+    "v": 43.906,
+    "q": 3234519292.0,
+    "vl": 285163702136.61
    }
   ],
   "serie_apes": [
@@ -11777,8 +11777,8 @@
    {
     "p": "2026-08",
     "v": 0.0,
-    "q": 8742.0,
-    "vl": 395890.04
+    "q": 9009.0,
+    "vl": 409564.59
    }
   ],
   "serie_apdn": [
@@ -12199,8 +12199,8 @@
    {
     "p": "2026-08",
     "v": 0.027,
-    "q": 1940332.0,
-    "vl": 83541915.03
+    "q": 2004879.0,
+    "vl": 86248589.02
    }
   ]
  },
@@ -12657,8 +12657,8 @@
    {
     "p": "2026-08",
     "v": 0.014,
-    "q": 995282.0,
-    "vl": 300760130.40000004
+    "q": 1032845.0,
+    "vl": 312157861.07
    }
   ],
   "serie_troco": [
@@ -13079,391 +13079,391 @@
    {
     "p": "2026-08",
     "v": 0.0,
-    "q": 1211.0,
-    "vl": 317061.86
+    "q": 1268.0,
+    "vl": 340400.51
    }
   ]
  },
  "geografia": {
-  "mes": "2026-07",
+  "mes": "2026-08",
   "ufs": [
    {
     "uf": "AC",
     "nome": "Acre",
-    "v_pag": 7213016087,
-    "q_pag": 31887786,
-    "v_rec": 6773700392,
-    "q_rec": 22948953,
-    "v_pag_pf": 4494146318,
-    "v_pag_pj": 2718869769,
-    "t_pag": 226.2,
-    "q_hab": 36.1,
-    "v_hab": 8156,
-    "yoy_v": 28.7
+    "v_pag": 7215995404,
+    "q_pag": 32626630,
+    "v_rec": 6743008562,
+    "q_rec": 23404033,
+    "v_pag_pf": 4532097129,
+    "v_pag_pj": 2683898275,
+    "t_pag": 221.17,
+    "q_hab": 36.9,
+    "v_hab": 8159,
+    "yoy_v": 29.0
    },
    {
     "uf": "AL",
     "nome": "Alagoas",
-    "v_pag": 23197104808,
-    "q_pag": 98850352,
-    "v_rec": 21920033585,
-    "q_rec": 77707071,
-    "v_pag_pf": 14370264497,
-    "v_pag_pj": 8826840310,
-    "t_pag": 234.67,
-    "q_hab": 30.7,
-    "v_hab": 7202,
-    "yoy_v": 22.3
+    "v_pag": 23077277411,
+    "q_pag": 101326089,
+    "v_rec": 21721766585,
+    "q_rec": 79720943,
+    "v_pag_pf": 14446478023,
+    "v_pag_pj": 8630799388,
+    "t_pag": 227.75,
+    "q_hab": 31.5,
+    "v_hab": 7165,
+    "yoy_v": 17.1
    },
    {
     "uf": "AP",
     "nome": "Amapá",
-    "v_pag": 6937726736,
-    "q_pag": 37790755,
-    "v_rec": 6630622260,
-    "q_rec": 27817950,
-    "v_pag_pf": 4487659396,
-    "v_pag_pj": 2450067340,
-    "t_pag": 183.58,
-    "q_hab": 46.9,
-    "v_hab": 8602,
-    "yoy_v": 23.3
+    "v_pag": 6929456335,
+    "q_pag": 38575984,
+    "v_rec": 6657962968,
+    "q_rec": 28438656,
+    "v_pag_pf": 4458627553,
+    "v_pag_pj": 2470828782,
+    "t_pag": 179.63,
+    "q_hab": 47.8,
+    "v_hab": 8592,
+    "yoy_v": 26.8
    },
    {
     "uf": "AM",
     "nome": "Amazonas",
-    "v_pag": 42893701544,
-    "q_pag": 182983419,
-    "v_rec": 42371303194,
-    "q_rec": 141900512,
-    "v_pag_pf": 19865740157,
-    "v_pag_pj": 23027961387,
-    "t_pag": 234.41,
-    "q_hab": 42.3,
-    "v_hab": 9925,
-    "yoy_v": 30.8
+    "v_pag": 43094385248,
+    "q_pag": 187060205,
+    "v_rec": 42454909669,
+    "q_rec": 146495988,
+    "v_pag_pf": 19890937464,
+    "v_pag_pj": 23203447783,
+    "t_pag": 230.38,
+    "q_hab": 43.3,
+    "v_hab": 9972,
+    "yoy_v": 32.1
    },
    {
     "uf": "BA",
     "nome": "Bahia",
-    "v_pag": 116554987432,
-    "q_pag": 473138429,
-    "v_rec": 114739740164,
-    "q_rec": 358829503,
-    "v_pag_pf": 68823529209,
-    "v_pag_pj": 47731458223,
-    "t_pag": 246.34,
-    "q_hab": 31.8,
-    "v_hab": 7838,
-    "yoy_v": 15.8
+    "v_pag": 115080825170,
+    "q_pag": 488802829,
+    "v_rec": 112767874634,
+    "q_rec": 368448875,
+    "v_pag_pf": 69240304086,
+    "v_pag_pj": 45840521084,
+    "t_pag": 235.43,
+    "q_hab": 32.9,
+    "v_hab": 7739,
+    "yoy_v": 12.6
    },
    {
     "uf": "CE",
     "nome": "Ceará",
-    "v_pag": 79628076321,
-    "q_pag": 301360983,
-    "v_rec": 76380522010,
-    "q_rec": 252084452,
-    "v_pag_pf": 41505149308,
-    "v_pag_pj": 38122927013,
-    "t_pag": 264.23,
-    "q_hab": 32.5,
-    "v_hab": 8591,
-    "yoy_v": 24.7
+    "v_pag": 78095635511,
+    "q_pag": 307681755,
+    "v_rec": 74817798443,
+    "q_rec": 255898840,
+    "v_pag_pf": 41148791438,
+    "v_pag_pj": 36946844074,
+    "t_pag": 253.82,
+    "q_hab": 33.2,
+    "v_hab": 8426,
+    "yoy_v": 23.0
    },
    {
     "uf": "DF",
     "nome": "Distrito Federal",
-    "v_pag": 71266462075,
-    "q_pag": 151422992,
-    "v_rec": 100205607524,
-    "q_rec": 247139154,
-    "v_pag_pf": 24382889682,
-    "v_pag_pj": 46883572393,
-    "t_pag": 470.64,
-    "q_hab": 50.5,
-    "v_hab": 23780,
-    "yoy_v": 28.8
+    "v_pag": 67543994458,
+    "q_pag": 134244036,
+    "v_rec": 99618774142,
+    "q_rec": 184144508,
+    "v_pag_pf": 23827623030,
+    "v_pag_pj": 43716371427,
+    "t_pag": 503.14,
+    "q_hab": 44.8,
+    "v_hab": 22538,
+    "yoy_v": 38.8
    },
    {
     "uf": "ES",
     "nome": "Espírito Santo",
-    "v_pag": 61052700932,
-    "q_pag": 131053192,
-    "v_rec": 59741858491,
-    "q_rec": 98638042,
-    "v_pag_pf": 23856998158,
-    "v_pag_pj": 37195702774,
-    "t_pag": 465.86,
-    "q_hab": 31.8,
-    "v_hab": 14794,
-    "yoy_v": 18.3
+    "v_pag": 57042896617,
+    "q_pag": 132220310,
+    "v_rec": 55128852237,
+    "q_rec": 98862033,
+    "v_pag_pf": 23265732625,
+    "v_pag_pj": 33777163992,
+    "t_pag": 431.42,
+    "q_hab": 32.0,
+    "v_hab": 13822,
+    "yoy_v": 7.9
    },
    {
     "uf": "GO",
     "nome": "Goiás",
-    "v_pag": 101194112351,
-    "q_pag": 259055632,
-    "v_rec": 101326735037,
-    "q_rec": 245664557,
-    "v_pag_pf": 50089291372,
-    "v_pag_pj": 51104820979,
-    "t_pag": 390.63,
-    "q_hab": 34.9,
-    "v_hab": 13631,
-    "yoy_v": 17.1
+    "v_pag": 98600000287,
+    "q_pag": 249241570,
+    "v_rec": 98845378018,
+    "q_rec": 197989494,
+    "v_pag_pf": 50100746767,
+    "v_pag_pj": 48499253520,
+    "t_pag": 395.6,
+    "q_hab": 33.6,
+    "v_hab": 13282,
+    "yoy_v": 14.0
    },
    {
     "uf": "MA",
     "nome": "Maranhão",
-    "v_pag": 51043783483,
-    "q_pag": 248014837,
-    "v_rec": 47681737477,
-    "q_rec": 200028438,
-    "v_pag_pf": 31757132335,
-    "v_pag_pj": 19286651148,
-    "t_pag": 205.81,
-    "q_hab": 35.3,
-    "v_hab": 7273,
-    "yoy_v": 10.4
+    "v_pag": 51114384149,
+    "q_pag": 250059155,
+    "v_rec": 47669576924,
+    "q_rec": 189775407,
+    "v_pag_pf": 31343561093,
+    "v_pag_pj": 19770823056,
+    "t_pag": 204.41,
+    "q_hab": 35.6,
+    "v_hab": 7283,
+    "yoy_v": 6.2
    },
    {
     "uf": "MT",
     "nome": "Mato Grosso",
-    "v_pag": 70515163139,
-    "q_pag": 120180254,
-    "v_rec": 67644350540,
-    "q_rec": 88871319,
-    "v_pag_pf": 29793383723,
-    "v_pag_pj": 40721779416,
-    "t_pag": 586.75,
-    "q_hab": 30.9,
-    "v_hab": 18110,
-    "yoy_v": 16.4
+    "v_pag": 71576875840,
+    "q_pag": 121233337,
+    "v_rec": 67885914458,
+    "q_rec": 89452975,
+    "v_pag_pf": 29984564181,
+    "v_pag_pj": 41592311659,
+    "t_pag": 590.41,
+    "q_hab": 31.1,
+    "v_hab": 18383,
+    "yoy_v": 15.2
    },
    {
     "uf": "MS",
     "nome": "Mato Grosso Do Sul",
-    "v_pag": 37631271743,
-    "q_pag": 98513231,
-    "v_rec": 35870422790,
-    "q_rec": 72190811,
-    "v_pag_pf": 18200709855,
-    "v_pag_pj": 19430561888,
-    "t_pag": 381.99,
-    "q_hab": 33.7,
-    "v_hab": 12867,
-    "yoy_v": 16.0
+    "v_pag": 37264701766,
+    "q_pag": 99501106,
+    "v_rec": 35690266666,
+    "q_rec": 71434692,
+    "v_pag_pf": 18492404070,
+    "v_pag_pj": 18772297696,
+    "t_pag": 374.52,
+    "q_hab": 34.0,
+    "v_hab": 12742,
+    "yoy_v": 5.4
    },
    {
     "uf": "MG",
     "nome": "Minas Gerais",
-    "v_pag": 255596805159,
-    "q_pag": 595066541,
-    "v_rec": 249154588340,
-    "q_rec": 464461299,
-    "v_pag_pf": 113620899086,
-    "v_pag_pj": 141975906073,
-    "t_pag": 429.53,
-    "q_hab": 27.8,
-    "v_hab": 11947,
-    "yoy_v": 17.3
+    "v_pag": 253614173462,
+    "q_pag": 599491800,
+    "v_rec": 248894096821,
+    "q_rec": 470457039,
+    "v_pag_pf": 113372978709,
+    "v_pag_pj": 140241194753,
+    "t_pag": 423.05,
+    "q_hab": 28.0,
+    "v_hab": 11855,
+    "yoy_v": 19.1
    },
    {
     "uf": "PR",
     "nome": "Paraná",
-    "v_pag": 217460354601,
-    "q_pag": 378161699,
-    "v_rec": 216602045098,
-    "q_rec": 414764566,
-    "v_pag_pf": 64934312124,
-    "v_pag_pj": 152526042477,
-    "t_pag": 575.05,
-    "q_hab": 31.8,
-    "v_hab": 18289,
-    "yoy_v": 22.2
+    "v_pag": 212033071029,
+    "q_pag": 382345870,
+    "v_rec": 211416698151,
+    "q_rec": 407284739,
+    "v_pag_pf": 65178370181,
+    "v_pag_pj": 146854700849,
+    "t_pag": 554.56,
+    "q_hab": 32.2,
+    "v_hab": 17832,
+    "yoy_v": 20.1
    },
    {
     "uf": "PB",
     "nome": "Paraíba",
-    "v_pag": 38494541668,
-    "q_pag": 194408038,
-    "v_rec": 38215408659,
-    "q_rec": 391449128,
-    "v_pag_pf": 18686691420,
-    "v_pag_pj": 19807850248,
-    "t_pag": 198.01,
-    "q_hab": 46.7,
-    "v_hab": 9244,
-    "yoy_v": 50.6
+    "v_pag": 36369162692,
+    "q_pag": 182047610,
+    "v_rec": 35796118225,
+    "q_rec": 329725796,
+    "v_pag_pf": 18574500356,
+    "v_pag_pj": 17794662336,
+    "t_pag": 199.78,
+    "q_hab": 43.7,
+    "v_hab": 8733,
+    "yoy_v": 25.2
    },
    {
     "uf": "PA",
     "nome": "Pará",
-    "v_pag": 67906349753,
-    "q_pag": 319760648,
-    "v_rec": 65147085444,
-    "q_rec": 246560002,
-    "v_pag_pf": 42253965172,
-    "v_pag_pj": 25652384581,
-    "t_pag": 212.37,
-    "q_hab": 36.7,
-    "v_hab": 7795,
-    "yoy_v": 18.6
+    "v_pag": 66048932228,
+    "q_pag": 325578726,
+    "v_rec": 63583730120,
+    "q_rec": 250206853,
+    "v_pag_pf": 41407269309,
+    "v_pag_pj": 24641662919,
+    "t_pag": 202.87,
+    "q_hab": 37.4,
+    "v_hab": 7582,
+    "yoy_v": 18.1
    },
    {
     "uf": "PE",
     "nome": "Pernambuco",
-    "v_pag": 78721513885,
-    "q_pag": 313558291,
-    "v_rec": 76034793189,
-    "q_rec": 278616015,
-    "v_pag_pf": 43258511327,
-    "v_pag_pj": 35463002559,
-    "t_pag": 251.06,
-    "q_hab": 32.8,
-    "v_hab": 8233,
-    "yoy_v": 21.1
+    "v_pag": 78093374797,
+    "q_pag": 322278162,
+    "v_rec": 74691845646,
+    "q_rec": 284477866,
+    "v_pag_pf": 43446320631,
+    "v_pag_pj": 34647054166,
+    "t_pag": 242.32,
+    "q_hab": 33.7,
+    "v_hab": 8167,
+    "yoy_v": 19.5
    },
    {
     "uf": "PI",
     "nome": "Piauí",
-    "v_pag": 26588144910,
-    "q_pag": 117815488,
-    "v_rec": 25521559139,
-    "q_rec": 129857399,
-    "v_pag_pf": 13793691620,
-    "v_pag_pj": 12794453290,
-    "t_pag": 225.68,
-    "q_hab": 34.8,
-    "v_hab": 7856,
-    "yoy_v": 23.4
+    "v_pag": 25180943204,
+    "q_pag": 119522847,
+    "v_rec": 24273673843,
+    "q_rec": 132011774,
+    "v_pag_pf": 13705598845,
+    "v_pag_pj": 11475344359,
+    "t_pag": 210.68,
+    "q_hab": 35.3,
+    "v_hab": 7440,
+    "yoy_v": 18.8
    },
    {
     "uf": "RJ",
     "nome": "Rio De Janeiro",
-    "v_pag": 267794191722,
-    "q_pag": 615611968,
-    "v_rec": 260204421378,
-    "q_rec": 502592294,
-    "v_pag_pf": 94106636663,
-    "v_pag_pj": 173687555060,
-    "t_pag": 435.0,
-    "q_hab": 35.7,
-    "v_hab": 15548,
-    "yoy_v": 18.2
+    "v_pag": 264842239935,
+    "q_pag": 626885107,
+    "v_rec": 258756119308,
+    "q_rec": 515079080,
+    "v_pag_pf": 93034677642,
+    "v_pag_pj": 171807562294,
+    "t_pag": 422.47,
+    "q_hab": 36.4,
+    "v_hab": 15377,
+    "yoy_v": 22.8
    },
    {
     "uf": "RN",
     "nome": "Rio Grande Do Norte",
-    "v_pag": 26121042533,
-    "q_pag": 113023787,
-    "v_rec": 25300858981,
-    "q_rec": 91352368,
-    "v_pag_pf": 15505412373,
-    "v_pag_pj": 10615630159,
-    "t_pag": 231.11,
-    "q_hab": 32.7,
-    "v_hab": 7560,
-    "yoy_v": 2.9
+    "v_pag": 25789165485,
+    "q_pag": 116377730,
+    "v_rec": 24836855942,
+    "q_rec": 93075197,
+    "v_pag_pf": 15480241888,
+    "v_pag_pj": 10308923597,
+    "t_pag": 221.6,
+    "q_hab": 33.7,
+    "v_hab": 7464,
+    "yoy_v": -8.4
    },
    {
     "uf": "RS",
     "nome": "Rio Grande Do Sul",
-    "v_pag": 141378938112,
-    "q_pag": 299369572,
-    "v_rec": 137142422367,
-    "q_rec": 231960099,
-    "v_pag_pf": 52901326163,
-    "v_pag_pj": 88477611948,
-    "t_pag": 472.26,
-    "q_hab": 26.7,
-    "v_hab": 12586,
-    "yoy_v": 18.3
+    "v_pag": 140367478787,
+    "q_pag": 300984051,
+    "v_rec": 136250648535,
+    "q_rec": 234224545,
+    "v_pag_pf": 52243321087,
+    "v_pag_pj": 88124157700,
+    "t_pag": 466.36,
+    "q_hab": 26.8,
+    "v_hab": 12496,
+    "yoy_v": 20.3
    },
    {
     "uf": "RO",
     "nome": "Rondônia",
-    "v_pag": 18776652420,
-    "q_pag": 57389201,
-    "v_rec": 18693712287,
-    "q_rec": 42309056,
-    "v_pag_pf": 11429318375,
-    "v_pag_pj": 7347334045,
-    "t_pag": 327.18,
-    "q_hab": 32.8,
-    "v_hab": 10718,
-    "yoy_v": 12.1
+    "v_pag": 19089843901,
+    "q_pag": 57757926,
+    "v_rec": 18823010066,
+    "q_rec": 42580106,
+    "v_pag_pf": 11259950090,
+    "v_pag_pj": 7829893810,
+    "t_pag": 330.51,
+    "q_hab": 33.0,
+    "v_hab": 10896,
+    "yoy_v": 17.9
    },
    {
     "uf": "RR",
     "nome": "Roraima",
-    "v_pag": 6824461456,
-    "q_pag": 36911153,
-    "v_rec": 6587371931,
-    "q_rec": 25455723,
-    "v_pag_pf": 4772226076,
-    "v_pag_pj": 2052235380,
-    "t_pag": 184.89,
-    "q_hab": 50.0,
-    "v_hab": 9238,
-    "yoy_v": 24.6
+    "v_pag": 7042228906,
+    "q_pag": 37893102,
+    "v_rec": 6884636302,
+    "q_rec": 26082470,
+    "v_pag_pf": 4852513740,
+    "v_pag_pj": 2189715166,
+    "t_pag": 185.84,
+    "q_hab": 51.3,
+    "v_hab": 9532,
+    "yoy_v": 26.1
    },
    {
     "uf": "SC",
     "nome": "Santa Catarina",
-    "v_pag": 142135729604,
-    "q_pag": 208266901,
-    "v_rec": 132800049581,
-    "q_rec": 202141572,
-    "v_pag_pf": 41695018545,
-    "v_pag_pj": 100440711060,
-    "t_pag": 682.47,
-    "q_hab": 25.4,
-    "v_hab": 17361,
-    "yoy_v": 26.7
+    "v_pag": 144451876246,
+    "q_pag": 216273927,
+    "v_rec": 133390469396,
+    "q_rec": 235683023,
+    "v_pag_pf": 41269744961,
+    "v_pag_pj": 103182131285,
+    "t_pag": 667.91,
+    "q_hab": 26.4,
+    "v_hab": 17644,
+    "yoy_v": 29.0
    },
    {
     "uf": "SE",
     "nome": "Sergipe",
-    "v_pag": 17747996536,
-    "q_pag": 73987366,
-    "v_rec": 17373370545,
-    "q_rec": 57786807,
-    "v_pag_pf": 11485894347,
-    "v_pag_pj": 6262102190,
-    "t_pag": 239.88,
-    "q_hab": 32.2,
-    "v_hab": 7718,
-    "yoy_v": 14.5
+    "v_pag": 17983841814,
+    "q_pag": 76107013,
+    "v_rec": 17460278761,
+    "q_rec": 59331304,
+    "v_pag_pf": 11492478580,
+    "v_pag_pj": 6491363235,
+    "t_pag": 236.3,
+    "q_hab": 33.1,
+    "v_hab": 7821,
+    "yoy_v": 17.3
    },
    {
     "uf": "SP",
     "nome": "São Paulo",
-    "v_pag": 1222755720715,
-    "q_pag": 1720898230,
-    "v_rec": 1247680667089,
-    "q_rec": 2280734614,
-    "v_pag_pf": 284305793985,
-    "v_pag_pj": 938449926730,
-    "t_pag": 710.53,
-    "q_hab": 37.3,
-    "v_hab": 26534,
-    "yoy_v": 36.5
+    "v_pag": 1201029099603,
+    "q_pag": 1800350180,
+    "v_rec": 1224541870830,
+    "q_rec": 2507998270,
+    "v_pag_pf": 285208561104,
+    "v_pag_pj": 915820538499,
+    "t_pag": 667.11,
+    "q_hab": 39.1,
+    "v_hab": 26063,
+    "yoy_v": 33.7
    },
    {
     "uf": "TO",
     "nome": "Tocantins",
-    "v_pag": 19077604951,
-    "q_pag": 54990107,
-    "v_rec": 18477452219,
-    "q_rec": 41330964,
-    "v_pag_pf": 10214010701,
-    "v_pag_pj": 8863594250,
-    "t_pag": 346.93,
-    "q_hab": 34.7,
-    "v_hab": 12022,
-    "yoy_v": 17.7
+    "v_pag": 18240593418,
+    "q_pag": 55440268,
+    "v_rec": 17624564109,
+    "q_rec": 41492196,
+    "v_pag_pf": 9996362241,
+    "v_pag_pj": 8244231177,
+    "t_pag": 329.01,
+    "q_hab": 34.9,
+    "v_hab": 11495,
+    "yoy_v": 16.0
    }
   ],
   "geo": {
@@ -13502,346 +13502,347 @@
   "nota_perspectiva": "município/UF do PAGADOR e do RECEBEDOR são perspectivas distintas — o mapa permite alternar."
  },
  "epae": {
-  "mes": "2026-07",
-  "mes_yoy": "2025-07",
+  "mes": "2026-08",
+  "mes_yoy": "2025-08",
   "setores": [
    {
     "setor": "PESSOA FÍSICA",
-    "q": 3549438009.0,
-    "v": 1145748127563.1501,
-    "t": 322.8,
-    "part": 35.55,
+    "q": 3595885377.0,
+    "v": 1140078741685.82,
+    "t": 317.05,
+    "part": 35.91,
     "compra_pct": 0.0,
-    "mei_pct": 13.6,
-    "yoy": 12.0
-   },
-   {
-    "setor": "G - COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS",
-    "q": 984451577.0,
-    "v": 531631476168.8798,
-    "t": 540.03,
-    "part": 16.49,
-    "compra_pct": 0.0,
-    "mei_pct": 2.1,
-    "yoy": 21.5
-   },
-   {
-    "setor": "K - ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS",
-    "q": 166650882.0,
-    "v": 495175967180.99005,
-    "t": 2971.34,
-    "part": 15.36,
-    "compra_pct": 0.0,
-    "mei_pct": 0.0,
-    "yoy": 75.9
-   },
-   {
-    "setor": "C - INDÚSTRIAS DE TRANSFORMAÇÃO",
-    "q": 69848563.0,
-    "v": 228011099277.81998,
-    "t": 3264.36,
-    "part": 7.07,
-    "compra_pct": 0.0,
-    "mei_pct": 1.3,
-    "yoy": 19.0
-   },
-   {
-    "setor": "M - ATIVIDADES PROFISSIONAIS, CIENTÍFICAS E TÉCNICAS",
-    "q": 701380624.0,
-    "v": 152790917407.10004,
-    "t": 217.84,
-    "part": 4.74,
-    "compra_pct": 0.0,
-    "mei_pct": 1.3,
-    "yoy": 72.2
-   },
-   {
-    "setor": "N - ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES",
-    "q": 276979547.0,
-    "v": 152500670767.59,
-    "t": 550.58,
-    "part": 4.73,
-    "compra_pct": 0.0,
-    "mei_pct": 1.9,
-    "yoy": 28.5
-   },
-   {
-    "setor": "H - TRANSPORTE, ARMAZENAGEM E CORREIO",
-    "q": 36502646.0,
-    "v": 80477691760.12999,
-    "t": 2204.71,
-    "part": 2.5,
-    "compra_pct": 0.0,
-    "mei_pct": 5.5,
-    "yoy": 17.5
-   },
-   {
-    "setor": "J - INFORMAÇÃO E COMUNICAÇÃO",
-    "q": 394901781.0,
-    "v": 72498288560.67998,
-    "t": 183.59,
-    "part": 2.25,
-    "compra_pct": 0.0,
-    "mei_pct": 0.9,
-    "yoy": 16.3
-   },
-   {
-    "setor": "B - INDÚSTRIAS EXTRATIVAS",
-    "q": 326455.0,
-    "v": 56256712401.67,
-    "t": 172326.09,
-    "part": 1.75,
-    "compra_pct": 0.0,
-    "mei_pct": 0.0,
-    "yoy": 52.9
-   },
-   {
-    "setor": "F - CONSTRUÇÃO",
-    "q": 10284207.0,
-    "v": 52055911543.65999,
-    "t": 5061.73,
-    "part": 1.61,
-    "compra_pct": 0.0,
-    "mei_pct": 5.2,
-    "yoy": 25.6
-   },
-   {
-    "setor": "R - ARTES, CULTURA, ESPORTE E RECREAÇÃO",
-    "q": 625088986.0,
-    "v": 49963544009.28999,
-    "t": 79.93,
-    "part": 1.55,
-    "compra_pct": 0.0,
-    "mei_pct": 0.6,
-    "yoy": 2.9
-   },
-   {
-    "setor": "Q - SAÚDE HUMANA E SERVIÇOS SOCIAIS",
-    "q": 18693350.0,
-    "v": 33168535502.02,
-    "t": 1774.35,
-    "part": 1.03,
-    "compra_pct": 0.0,
-    "mei_pct": 0.3,
-    "yoy": 32.3
-   },
-   {
-    "setor": "O - ADMINISTRAÇÃO PÚBLICA, DEFESA E SEGURIDADE SOCIAL",
-    "q": 26648463.0,
-    "v": 32801543368.96,
-    "t": 1230.9,
-    "part": 1.02,
-    "compra_pct": 0.0,
-    "mei_pct": 0.0,
-    "yoy": 42.4
-   },
-   {
-    "setor": "I - ALOJAMENTO E ALIMENTAÇÃO",
-    "q": 191870946.0,
-    "v": 30397738200.77,
-    "t": 158.43,
-    "part": 0.94,
-    "compra_pct": 0.0,
-    "mei_pct": 12.5,
-    "yoy": 31.4
-   },
-   {
-    "setor": "D - ELETRICIDADE E GÁS",
-    "q": 33061466.0,
-    "v": 26619919765.78,
-    "t": 805.16,
-    "part": 0.83,
-    "compra_pct": 0.0,
-    "mei_pct": 0.0,
-    "yoy": 8.3
-   },
-   {
-    "setor": "S -´OUTRAS ATIVIDADES DE SERVIÇOS",
-    "q": 112281818.0,
-    "v": 21809917701.77,
-    "t": 194.24,
-    "part": 0.68,
-    "compra_pct": 0.0,
-    "mei_pct": 15.8,
-    "yoy": 34.6
-   },
-   {
-    "setor": "L - ATIVIDADES IMOBILIÁRIAS",
-    "q": 3741117.0,
-    "v": 18405384193.03,
-    "t": 4919.76,
-    "part": 0.57,
-    "compra_pct": 0.0,
-    "mei_pct": 0.0,
-    "yoy": 31.0
-   },
-   {
-    "setor": "A - AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQUICULTURA",
-    "q": 1283265.0,
-    "v": 16998422701.179998,
-    "t": 13246.23,
-    "part": 0.53,
-    "compra_pct": 0.0,
-    "mei_pct": 0.8,
-    "yoy": 23.7
-   },
-   {
-    "setor": "P - EDUCAÇÃO",
-    "q": 16925998.0,
-    "v": 15748489703.030003,
-    "t": 930.43,
-    "part": 0.49,
-    "compra_pct": 0.0,
-    "mei_pct": 7.6,
-    "yoy": 7.8
-   },
-   {
-    "setor": "E - ÁGUA, ESGOTO, ATIVIDADES DE GESTÃO DE RESÍDUOS E DESCONTAMINAÇÃO",
-    "q": 17568175.0,
-    "v": 10084462184.91,
-    "t": 574.02,
-    "part": 0.31,
-    "compra_pct": 0.0,
-    "mei_pct": 1.2,
+    "mei_pct": 11.4,
     "yoy": 11.4
    },
    {
+    "setor": "G - COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS",
+    "q": 1137369952.0,
+    "v": 525325123908.9298,
+    "t": 461.88,
+    "part": 16.55,
+    "compra_pct": 0.0,
+    "mei_pct": 2.1,
+    "yoy": 22.5
+   },
+   {
+    "setor": "K - ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS",
+    "q": 123928118.0,
+    "v": 489558885442.74976,
+    "t": 3950.35,
+    "part": 15.42,
+    "compra_pct": 0.0,
+    "mei_pct": 0.0,
+    "yoy": 66.3
+   },
+   {
+    "setor": "C - INDÚSTRIAS DE TRANSFORMAÇÃO",
+    "q": 70308463.0,
+    "v": 223516859882.34003,
+    "t": 3179.09,
+    "part": 7.04,
+    "compra_pct": 0.0,
+    "mei_pct": 1.3,
+    "yoy": 18.2
+   },
+   {
+    "setor": "N - ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES",
+    "q": 293214475.0,
+    "v": 151767887877.90005,
+    "t": 517.6,
+    "part": 4.78,
+    "compra_pct": 0.0,
+    "mei_pct": 1.9,
+    "yoy": 31.4
+   },
+   {
+    "setor": "M - ATIVIDADES PROFISSIONAIS, CIENTÍFICAS E TÉCNICAS",
+    "q": 695450685.0,
+    "v": 139088660834.61005,
+    "t": 200.0,
+    "part": 4.38,
+    "compra_pct": 0.0,
+    "mei_pct": 1.4,
+    "yoy": 53.9
+   },
+   {
+    "setor": "H - TRANSPORTE, ARMAZENAGEM E CORREIO",
+    "q": 36855217.0,
+    "v": 76702147028.94,
+    "t": 2081.17,
+    "part": 2.42,
+    "compra_pct": 0.0,
+    "mei_pct": 5.7,
+    "yoy": 24.6
+   },
+   {
+    "setor": "J - INFORMAÇÃO E COMUNICAÇÃO",
+    "q": 361959214.0,
+    "v": 67606831455.23,
+    "t": 186.78,
+    "part": 2.13,
+    "compra_pct": 0.0,
+    "mei_pct": 0.9,
+    "yoy": 13.7
+   },
+   {
+    "setor": "B - INDÚSTRIAS EXTRATIVAS",
+    "q": 321161.0,
+    "v": 58490148295.53,
+    "t": 182120.96,
+    "part": 1.84,
+    "compra_pct": 0.0,
+    "mei_pct": 0.0,
+    "yoy": 64.8
+   },
+   {
+    "setor": "F - CONSTRUÇÃO",
+    "q": 10544573.0,
+    "v": 51396763143.84001,
+    "t": 4874.24,
+    "part": 1.62,
+    "compra_pct": 0.0,
+    "mei_pct": 5.1,
+    "yoy": 27.3
+   },
+   {
+    "setor": "R - ARTES, CULTURA, ESPORTE E RECREAÇÃO",
+    "q": 559205837.0,
+    "v": 43873124985.31,
+    "t": 78.46,
+    "part": 1.38,
+    "compra_pct": 0.0,
+    "mei_pct": 0.7,
+    "yoy": -11.2
+   },
+   {
+    "setor": "Q - SAÚDE HUMANA E SERVIÇOS SOCIAIS",
+    "q": 18459320.0,
+    "v": 31109858749.230007,
+    "t": 1685.32,
+    "part": 0.98,
+    "compra_pct": 0.0,
+    "mei_pct": 0.3,
+    "yoy": 28.3
+   },
+   {
+    "setor": "I - ALOJAMENTO E ALIMENTAÇÃO",
+    "q": 200766721.0,
+    "v": 30479982069.61,
+    "t": 151.82,
+    "part": 0.96,
+    "compra_pct": 0.0,
+    "mei_pct": 12.4,
+    "yoy": 32.7
+   },
+   {
+    "setor": "O - ADMINISTRAÇÃO PÚBLICA, DEFESA E SEGURIDADE SOCIAL",
+    "q": 26098451.0,
+    "v": 30307356674.059998,
+    "t": 1161.27,
+    "part": 0.95,
+    "compra_pct": 0.0,
+    "mei_pct": 0.0,
+    "yoy": 37.2
+   },
+   {
+    "setor": "S -´OUTRAS ATIVIDADES DE SERVIÇOS",
+    "q": 146657001.0,
+    "v": 27839852034.959995,
+    "t": 189.83,
+    "part": 0.88,
+    "compra_pct": 0.0,
+    "mei_pct": 12.2,
+    "yoy": 73.3
+   },
+   {
+    "setor": "D - ELETRICIDADE E GÁS",
+    "q": 33406897.0,
+    "v": 25135671429.56,
+    "t": 752.41,
+    "part": 0.79,
+    "compra_pct": 0.0,
+    "mei_pct": 0.0,
+    "yoy": 6.0
+   },
+   {
+    "setor": "L - ATIVIDADES IMOBILIÁRIAS",
+    "q": 3693981.0,
+    "v": 18545887192.11,
+    "t": 5020.57,
+    "part": 0.58,
+    "compra_pct": 0.0,
+    "mei_pct": 0.0,
+    "yoy": 22.6
+   },
+   {
+    "setor": "A - AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQUICULTURA",
+    "q": 1313798.0,
+    "v": 16659974453.800003,
+    "t": 12680.77,
+    "part": 0.52,
+    "compra_pct": 0.0,
+    "mei_pct": 0.8,
+    "yoy": 21.9
+   },
+   {
+    "setor": "P - EDUCAÇÃO",
+    "q": 33409481.0,
+    "v": 16316642869.710001,
+    "t": 488.38,
+    "part": 0.51,
+    "compra_pct": 0.0,
+    "mei_pct": 7.2,
+    "yoy": 20.5
+   },
+   {
+    "setor": "E - ÁGUA, ESGOTO, ATIVIDADES DE GESTÃO DE RESÍDUOS E DESCONTAMINAÇÃO",
+    "q": 17693198.0,
+    "v": 10547681609.79,
+    "t": 596.14,
+    "part": 0.33,
+    "compra_pct": 0.0,
+    "mei_pct": 1.2,
+    "yoy": -1.6
+   },
+   {
     "setor": "T - SERVIÇOS DOMÉSTICOS",
-    "q": 419943.0,
-    "v": 122839137.9,
-    "t": 292.51,
+    "q": 414870.0,
+    "v": 121626855.64,
+    "t": 293.17,
     "part": 0.0,
     "compra_pct": 0.0,
-    "mei_pct": 86.7,
-    "yoy": 61.8
+    "mei_pct": 86.4,
+    "yoy": 61.7
    },
    {
     "setor": "U - ORGANISMOS INTERNACIONAIS E OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS",
-    "q": 26724.0,
-    "v": 24911348.59,
-    "t": 932.17,
+    "q": 24656.0,
+    "v": 13380289.870000001,
+    "t": 542.68,
     "part": 0.0,
     "compra_pct": 0.0,
     "mei_pct": 0.0,
-    "yoy": 48.4
+    "yoy": -30.3
    }
   ],
   "matriz_naturezarel": {
    "A - AGRICULTURA, PECUÁRIA, PRODUÇÃO FLORESTAL, PESCA E AQUICULTURA": {
-    "B2B": 14457831154,
-    "G2B": 351578934,
-    "P2B": 2189012613
+    "B2B": 14297153489,
+    "G2B": 87548067,
+    "P2B": 2275272897
    },
    "B - INDÚSTRIAS EXTRATIVAS": {
-    "B2B": 51334173596,
-    "G2B": 4520051268,
-    "P2B": 402487537
+    "B2B": 57578483942,
+    "G2B": 516704813,
+    "P2B": 394959540
    },
    "C - INDÚSTRIAS DE TRANSFORMAÇÃO": {
-    "B2B": 210690371471,
-    "G2B": 1911121393,
-    "P2B": 15409606414
+    "B2B": 206616538399,
+    "G2B": 1346739409,
+    "P2B": 15553582074
    },
    "D - ELETRICIDADE E GÁS": {
-    "B2B": 20664294236,
-    "G2B": 60634725,
-    "P2B": 5894990805
+    "B2B": 19096786935,
+    "G2B": 18246964,
+    "P2B": 6020637531
    },
    "E - ÁGUA, ESGOTO, ATIVIDADES DE GESTÃO DE RESÍDUOS E DESCONTAMINAÇÃO": {
-    "B2B": 7746757325,
-    "G2B": 100115779,
-    "P2B": 2237589081
+    "B2B": 8228153516,
+    "G2B": 64695697,
+    "P2B": 2254832397
    },
    "F - CONSTRUÇÃO": {
-    "B2B": 41895094586,
-    "G2B": 445734671,
-    "P2B": 9715082286
+    "B2B": 41511960683,
+    "G2B": 480304487,
+    "P2B": 9404497973
    },
    "G - COMÉRCIO; REPARAÇÃO DE VEÍCULOS AUTOMOTORES E MOTOCICLETAS": {
-    "B2B": 413544700868,
-    "G2B": 3175154596,
-    "P2B": 114911620705
+    "B2B": 402126576887,
+    "G2B": 1818010573,
+    "P2B": 121380536449
    },
    "H - TRANSPORTE, ARMAZENAGEM E CORREIO": {
-    "B2B": 72863901457,
-    "G2B": 724012292,
-    "P2B": 6889778012
+    "B2B": 69525469926,
+    "G2B": 326284608,
+    "P2B": 6850392495
    },
    "I - ALOJAMENTO E ALIMENTAÇÃO": {
-    "B2B": 19763922484,
-    "G2B": 49987012,
-    "P2B": 10583828704
+    "B2B": 19736973461,
+    "G2B": 39355028,
+    "P2B": 10703653581
    },
    "J - INFORMAÇÃO E COMUNICAÇÃO": {
-    "B2B": 50388263317,
-    "G2B": 330466778,
-    "P2B": 21779558465
+    "B2B": 47599132679,
+    "G2B": 310450213,
+    "P2B": 19697248564
    },
    "K - ATIVIDADES FINANCEIRAS, DE SEGUROS E SERVIÇOS RELACIONADOS": {
-    "B2B": 445547412243,
-    "G2B": 2368354129,
-    "P2B": 47260200809
+    "B2B": 441590422752,
+    "G2B": 2068110571,
+    "P2B": 45900352120
    },
    "L - ATIVIDADES IMOBILIÁRIAS": {
-    "B2B": 13300442478,
-    "G2B": 59648637,
-    "P2B": 5045293078
+    "B2B": 13636220653,
+    "G2B": 31198088,
+    "P2B": 4878468452
    },
    "M - ATIVIDADES PROFISSIONAIS, CIENTÍFICAS E TÉCNICAS": {
-    "B2B": 119480346253,
-    "G2B": 511891343,
-    "P2B": 32798679811
+    "B2B": 106163929155,
+    "G2B": 436823717,
+    "P2B": 32487907962
    },
    "N - ATIVIDADES ADMINISTRATIVAS E SERVIÇOS COMPLEMENTARES": {
-    "B2B": 113442197314,
-    "G2B": 599361177,
-    "P2B": 38459112277
+    "B2B": 111899878807,
+    "G2B": 455540659,
+    "P2B": 39412468412
    },
    "O - ADMINISTRAÇÃO PÚBLICA, DEFESA E SEGURIDADE SOCIAL": {
-    "B2G": 20868849359,
-    "G2G": 5509408827,
-    "P2G": 6423285183
+    "B2G": 18341637350,
+    "G2G": 5931149174,
+    "P2G": 6034570150
    },
    "P - EDUCAÇÃO": {
-    "B2B": 10560242760,
-    "G2B": 109392594,
-    "P2B": 5078854349
+    "B2B": 10638301572,
+    "G2B": 94246349,
+    "P2B": 5584094949
    },
    "PESSOA FÍSICA": {
-    "B2B": 375654961,
-    "B2P": 364131399588,
-    "G2B": 29105,
-    "G2P": 5650336510,
-    "P2B": 635979,
-    "P2P": 775590071421
+    "B2B": 68430163,
+    "B2P": 364782520938,
+    "G2B": 78702,
+    "G2P": 2670446721,
+    "N/D": 325,
+    "P2B": 1177877,
+    "P2P": 772556086959
    },
    "Q - SAÚDE HUMANA E SERVIÇOS SOCIAIS": {
-    "B2B": 24558094196,
-    "G2B": 743555643,
-    "P2B": 7866885663
+    "B2B": 22760617894,
+    "G2B": 792718806,
+    "P2B": 7556522049
    },
    "R - ARTES, CULTURA, ESPORTE E RECREAÇÃO": {
-    "B2B": 11905006084,
-    "G2B": 119512506,
-    "P2B": 37939025420
+    "B2B": 10497363948,
+    "G2B": 88984950,
+    "P2B": 33286776087
    },
    "S -´OUTRAS ATIVIDADES DE SERVIÇOS": {
-    "B2B": 11602454673,
-    "G2B": 504140716,
-    "P2B": 9703322312
+    "B2B": 11793921841,
+    "G2B": 5491462864,
+    "P2B": 10554467330
    },
    "T - SERVIÇOS DOMÉSTICOS": {
-    "B2B": 49900454,
-    "G2B": 594062,
-    "P2B": 72344622
+    "B2B": 49082447,
+    "G2B": 670698,
+    "P2B": 71873711
    },
    "U - ORGANISMOS INTERNACIONAIS E OUTRAS INSTITUIÇÕES EXTRATERRITORIAIS": {
-    "B2B": 8412316,
-    "G2B": 7047926,
-    "P2B": 9451106
+    "B2B": 4862088,
+    "G2B": 9250,
+    "P2B": 8508952
    }
   },
-  "concentracao_top5_pct": 79.2,
+  "concentracao_top5_pct": 79.7,
   "serie": [
    {
     "p": "2025-01",
@@ -13921,7 +13922,11 @@
    },
    {
     "p": "2026-08",
-    "v": 3174475382644.5596
+    "v": 3174483088769.54
+   },
+   {
+    "p": "2026-09",
+    "v": 158030249995.09
    }
   ]
  },
@@ -14703,8 +14708,8 @@
    "dev_integral_v": 8494563.65,
    "dev_parcial_v": 3582905.43,
    "pct_devolucao": 6.78,
-   "usuarios_marcados": 32359.0,
-   "chaves_marcadas": 35555.0
+   "usuarios_marcados": 32358.0,
+   "chaves_marcadas": 35554.0
   },
   {
    "p": "2022-05",
@@ -14729,8 +14734,8 @@
    "dev_integral_v": 15034322.97,
    "dev_parcial_v": 4462077.23,
    "pct_devolucao": 8.72,
-   "usuarios_marcados": 38130.0,
-   "chaves_marcadas": 42344.0
+   "usuarios_marcados": 38129.0,
+   "chaves_marcadas": 42343.0
   },
   {
    "p": "2022-07",
@@ -14786,7 +14791,7 @@
   },
   {
    "p": "2022-11",
-   "contestados_q": 215664.0,
+   "contestados_q": 215663.0,
    "aceitas_q": 155175.0,
    "aceitas_100mil": 7.376,
    "valor_contestado": 243995119.62,
@@ -14794,8 +14799,8 @@
    "dev_integral_v": 13685909.73,
    "dev_parcial_v": 6575795.57,
    "pct_devolucao": 8.3,
-   "usuarios_marcados": 43416.0,
-   "chaves_marcadas": 46987.0
+   "usuarios_marcados": 43415.0,
+   "chaves_marcadas": 46986.0
   },
   {
    "p": "2022-12",
@@ -14812,7 +14817,7 @@
   },
   {
    "p": "2023-01",
-   "contestados_q": 208927.0,
+   "contestados_q": 208926.0,
    "aceitas_q": 140714.0,
    "aceitas_100mil": 6.446,
    "valor_contestado": 254667303.59,
@@ -15046,7 +15051,7 @@
   },
   {
    "p": "2024-07",
-   "contestados_q": 1176265.0,
+   "contestados_q": 1176264.0,
    "aceitas_q": 530754.0,
    "aceitas_100mil": 11.088,
    "valor_contestado": 570193298.96,
@@ -15124,16 +15129,16 @@
   },
   {
    "p": "2025-01",
-   "contestados_q": 1343371.0,
-   "aceitas_q": 369829.0,
+   "contestados_q": 1343370.0,
+   "aceitas_q": 369828.0,
    "aceitas_100mil": 7.308,
-   "valor_contestado": 543390960.57,
+   "valor_contestado": 543390959.36,
    "dev_integral_q": 80327.0,
    "dev_integral_v": 28834067.69,
    "dev_parcial_v": 37215403.91,
    "pct_devolucao": 12.16,
-   "usuarios_marcados": 102422.0,
-   "chaves_marcadas": 113783.0
+   "usuarios_marcados": 102420.0,
+   "chaves_marcadas": 113781.0
   },
   {
    "p": "2025-02",
@@ -15145,8 +15150,8 @@
    "dev_integral_v": 20715832.37,
    "dev_parcial_v": 12267767.4,
    "pct_devolucao": 4.98,
-   "usuarios_marcados": 93762.0,
-   "chaves_marcadas": 102219.0
+   "usuarios_marcados": 93761.0,
+   "chaves_marcadas": 102218.0
   },
   {
    "p": "2025-03",
@@ -15158,8 +15163,8 @@
    "dev_integral_v": 18537850.49,
    "dev_parcial_v": 10213257.41,
    "pct_devolucao": 5.1,
-   "usuarios_marcados": 99938.0,
-   "chaves_marcadas": 108639.0
+   "usuarios_marcados": 99937.0,
+   "chaves_marcadas": 108638.0
   },
   {
    "p": "2025-04",
@@ -15171,8 +15176,8 @@
    "dev_integral_v": 46416988.07,
    "dev_parcial_v": 21070310.64,
    "pct_devolucao": 11.18,
-   "usuarios_marcados": 101931.0,
-   "chaves_marcadas": 110433.0
+   "usuarios_marcados": 101929.0,
+   "chaves_marcadas": 110431.0
   },
   {
    "p": "2025-05",
@@ -15184,8 +15189,8 @@
    "dev_integral_v": 38849444.74,
    "dev_parcial_v": 15702065.46,
    "pct_devolucao": 11.23,
-   "usuarios_marcados": 98898.0,
-   "chaves_marcadas": 107026.0
+   "usuarios_marcados": 98897.0,
+   "chaves_marcadas": 107025.0
   },
   {
    "p": "2025-06",
@@ -15197,8 +15202,8 @@
    "dev_integral_v": 34476615.69,
    "dev_parcial_v": 18910916.07,
    "pct_devolucao": 7.95,
-   "usuarios_marcados": 92702.0,
-   "chaves_marcadas": 100623.0
+   "usuarios_marcados": 92700.0,
+   "chaves_marcadas": 100622.0
   },
   {
    "p": "2025-07",
@@ -15224,7 +15229,7 @@
    "dev_parcial_v": 26469176.43,
    "pct_devolucao": 12.1,
    "usuarios_marcados": 99161.0,
-   "chaves_marcadas": 108585.0
+   "chaves_marcadas": 108584.0
   },
   {
    "p": "2025-09",
@@ -15241,7 +15246,7 @@
   },
   {
    "p": "2025-10",
-   "contestados_q": 3455840.0,
+   "contestados_q": 3455839.0,
    "aceitas_q": 367850.0,
    "aceitas_100mil": 5.7,
    "valor_contestado": 769478988.19,
@@ -15249,8 +15254,8 @@
    "dev_integral_v": 45096733.71,
    "dev_parcial_v": 25520378.39,
    "pct_devolucao": 9.18,
-   "usuarios_marcados": 130605.0,
-   "chaves_marcadas": 138452.0
+   "usuarios_marcados": 130604.0,
+   "chaves_marcadas": 138450.0
   },
   {
    "p": "2025-11",
@@ -15262,38 +15267,38 @@
    "dev_integral_v": 39060118.89,
    "dev_parcial_v": 19768633.52,
    "pct_devolucao": 6.84,
-   "usuarios_marcados": 108695.0,
-   "chaves_marcadas": 114782.0
+   "usuarios_marcados": 108694.0,
+   "chaves_marcadas": 114781.0
   },
   {
    "p": "2025-12",
-   "contestados_q": 3771687.0,
-   "aceitas_q": 322543.0,
+   "contestados_q": 3771686.0,
+   "aceitas_q": 322542.0,
    "aceitas_100mil": 4.544,
-   "valor_contestado": 573892028.27,
+   "valor_contestado": 573891528.27,
    "dev_integral_q": 52802.0,
    "dev_integral_v": 36936591.08,
-   "dev_parcial_v": 18143859.74,
+   "dev_parcial_v": 18143484.06,
    "pct_devolucao": 9.6,
-   "usuarios_marcados": 105198.0,
-   "chaves_marcadas": 110856.0
+   "usuarios_marcados": 105196.0,
+   "chaves_marcadas": 110854.0
   },
   {
    "p": "2026-01",
-   "contestados_q": 3181222.0,
-   "aceitas_q": 279047.0,
+   "contestados_q": 3181220.0,
+   "aceitas_q": 279046.0,
    "aceitas_100mil": 4.385,
-   "valor_contestado": 723050362.55,
+   "valor_contestado": 723028862.55,
    "dev_integral_q": 43622.0,
    "dev_integral_v": 66090325.44,
-   "dev_parcial_v": 45284655.81,
+   "dev_parcial_v": 45284406.04,
    "pct_devolucao": 15.4,
-   "usuarios_marcados": 92513.0,
-   "chaves_marcadas": 98589.0
+   "usuarios_marcados": 92510.0,
+   "chaves_marcadas": 98588.0
   },
   {
    "p": "2026-02",
-   "contestados_q": 2813747.0,
+   "contestados_q": 2813745.0,
    "aceitas_q": 281594.0,
    "aceitas_100mil": 4.704,
    "valor_contestado": 655822072.41,
@@ -15301,34 +15306,34 @@
    "dev_integral_v": 58317096.87,
    "dev_parcial_v": 28965368.39,
    "pct_devolucao": 13.31,
-   "usuarios_marcados": 86943.0,
-   "chaves_marcadas": 92259.0
+   "usuarios_marcados": 86940.0,
+   "chaves_marcadas": 92257.0
   },
   {
    "p": "2026-03",
-   "contestados_q": 2925143.0,
-   "aceitas_q": 308806.0,
+   "contestados_q": 2925141.0,
+   "aceitas_q": 308804.0,
    "aceitas_100mil": 4.58,
-   "valor_contestado": 705393149.96,
+   "valor_contestado": 705390729.96,
    "dev_integral_q": 43930.0,
    "dev_integral_v": 65660754.21,
-   "dev_parcial_v": 27370906.56,
+   "dev_parcial_v": 27370901.82,
    "pct_devolucao": 13.19,
-   "usuarios_marcados": 95038.0,
-   "chaves_marcadas": 101321.0
+   "usuarios_marcados": 95037.0,
+   "chaves_marcadas": 101320.0
   },
   {
    "p": "2026-04",
-   "contestados_q": 2960271.0,
-   "aceitas_q": 283035.0,
+   "contestados_q": 2960267.0,
+   "aceitas_q": 283032.0,
    "aceitas_100mil": 4.236,
-   "valor_contestado": 598298936.15,
-   "dev_integral_q": 39233.0,
-   "dev_integral_v": 74639454.45,
-   "dev_parcial_v": 22446148.31,
+   "valor_contestado": 598296361.01,
+   "dev_integral_q": 39232.0,
+   "dev_integral_v": 74637679.31,
+   "dev_parcial_v": 22446049.84,
    "pct_devolucao": 16.23,
-   "usuarios_marcados": 87937.0,
-   "chaves_marcadas": 94220.0
+   "usuarios_marcados": 87932.0,
+   "chaves_marcadas": 94215.0
   },
   {
    "p": "2026-05",
@@ -15346,11 +15351,6 @@
  ],
  "spi": {
   "diario_ult90": [
-   {
-    "p": "2026-06-03",
-    "q": 257804709.0,
-    "v": 139226530.44
-   },
    {
     "p": "2026-06-04",
     "q": 209870897.0,
@@ -15793,8 +15793,13 @@
    },
    {
     "p": "2026-08-31",
-    "q": 249768006.0,
-    "v": 184887814.78
+    "q": 249798618.0,
+    "v": 184895520.91
+   },
+   {
+    "p": "2026-09-01",
+    "q": 266654203.0,
+    "v": 158030250.0
    }
   ],
   "pico": {
@@ -15805,243 +15810,243 @@
   "intradia": [
    {
     "h": "00:00",
-    "q": 2626950.0,
-    "v": 408734078.49
+    "q": 2604029.0,
+    "v": 412699867.38
    },
    {
     "h": "00:30",
-    "q": 2235811.0,
-    "v": 227352631.35
+    "q": 2217654.0,
+    "v": 228084327.6
    },
    {
     "h": "01:00",
-    "q": 1838643.0,
-    "v": 284137232.22
+    "q": 1823121.0,
+    "v": 289510025.68
    },
    {
     "h": "01:30",
-    "q": 1452273.0,
-    "v": 180173848.44
+    "q": 1437125.0,
+    "v": 184727662.17
    },
    {
     "h": "02:00",
-    "q": 1169224.0,
-    "v": 141835347.63
+    "q": 1156347.0,
+    "v": 143497153.83
    },
    {
     "h": "02:30",
-    "q": 957683.0,
-    "v": 111392482.61
+    "q": 947313.0,
+    "v": 111610191.88
    },
    {
     "h": "03:00",
-    "q": 842034.0,
-    "v": 501642577.46
+    "q": 834715.0,
+    "v": 504270762.16
    },
    {
     "h": "03:30",
-    "q": 715452.0,
-    "v": 268644825.07
+    "q": 710612.0,
+    "v": 272064359.89
    },
    {
     "h": "04:00",
-    "q": 723353.0,
-    "v": 499839293.09
+    "q": 724396.0,
+    "v": 522545900.7
    },
    {
     "h": "04:30",
-    "q": 671257.0,
-    "v": 107497689.36
+    "q": 675274.0,
+    "v": 110968781.84
    },
    {
     "h": "05:00",
-    "q": 837848.0,
-    "v": 152192779.95
+    "q": 850150.0,
+    "v": 165604060.87
    },
    {
     "h": "05:30",
-    "q": 1175415.0,
-    "v": 261839166.04
+    "q": 1196933.0,
+    "v": 273908817.33
    },
    {
     "h": "06:00",
-    "q": 1855547.0,
-    "v": 640224575.73
+    "q": 1902835.0,
+    "v": 679563367.75
    },
    {
     "h": "06:30",
-    "q": 2523303.0,
-    "v": 824851752.49
+    "q": 2591734.0,
+    "v": 859508663.69
    },
    {
     "h": "07:00",
-    "q": 3315237.0,
-    "v": 1620425894.06
+    "q": 3402286.0,
+    "v": 1700125282.04
    },
    {
     "h": "07:30",
-    "q": 3903390.0,
-    "v": 1409147152.56
+    "q": 3996126.0,
+    "v": 1470824265.33
    },
    {
     "h": "08:00",
-    "q": 4531369.0,
-    "v": 2052490112.2
+    "q": 4624174.0,
+    "v": 2141553589.02
    },
    {
     "h": "08:30",
-    "q": 5192919.0,
-    "v": 2297542125.49
+    "q": 5275607.0,
+    "v": 2392879027.88
    },
    {
     "h": "09:00",
-    "q": 5799731.0,
-    "v": 3329702978.77
+    "q": 5884457.0,
+    "v": 3467547805.14
    },
    {
     "h": "09:30",
-    "q": 6263949.0,
-    "v": 3915250046.19
+    "q": 6343706.0,
+    "v": 4106520488.34
    },
    {
     "h": "10:00",
-    "q": 6603228.0,
-    "v": 4104846725.08
+    "q": 6676070.0,
+    "v": 4247744521.3
    },
    {
     "h": "10:30",
-    "q": 6889366.0,
-    "v": 3845850806.04
+    "q": 6947045.0,
+    "v": 4005707368.8
    },
    {
     "h": "11:00",
-    "q": 7214968.0,
-    "v": 4255153308.01
+    "q": 7276196.0,
+    "v": 4615771788.76
    },
    {
     "h": "11:30",
-    "q": 7551371.0,
-    "v": 4237627551.17
+    "q": 7620592.0,
+    "v": 4418804891.96
    },
    {
     "h": "12:00",
-    "q": 7779862.0,
-    "v": 3999612407.81
+    "q": 7865293.0,
+    "v": 4151774118.02
    },
    {
     "h": "12:30",
-    "q": 7720492.0,
-    "v": 3250249123.76
+    "q": 7812560.0,
+    "v": 3385910663.82
    },
    {
     "h": "13:00",
-    "q": 7324407.0,
-    "v": 3142569554.63
+    "q": 7411648.0,
+    "v": 3267741283.11
    },
    {
     "h": "13:30",
-    "q": 6970211.0,
-    "v": 3512956215.49
+    "q": 7052160.0,
+    "v": 3660565032.82
    },
    {
     "h": "14:00",
-    "q": 6794722.0,
-    "v": 3907452979.47
+    "q": 6875526.0,
+    "v": 4068286231.48
    },
    {
     "h": "14:30",
-    "q": 6771547.0,
-    "v": 4411904282.23
+    "q": 6855693.0,
+    "v": 4601036716.76
    },
    {
     "h": "15:00",
-    "q": 6882124.0,
-    "v": 4753463130.95
+    "q": 6972849.0,
+    "v": 4963482348.75
    },
    {
     "h": "15:30",
-    "q": 7018746.0,
-    "v": 5488732423.79
+    "q": 7111926.0,
+    "v": 5719643442.72
    },
    {
     "h": "16:00",
-    "q": 7159570.0,
-    "v": 5120456807.09
+    "q": 7263972.0,
+    "v": 5347986723.95
    },
    {
     "h": "16:30",
-    "q": 7349051.0,
-    "v": 5114677348.35
+    "q": 7462996.0,
+    "v": 5341577580.54
    },
    {
     "h": "17:00",
-    "q": 7671521.0,
-    "v": 5320800083.57
+    "q": 7797051.0,
+    "v": 5554065718.61
    },
    {
     "h": "17:30",
-    "q": 7893780.0,
-    "v": 3966200059.86
+    "q": 8025463.0,
+    "v": 4214774513.24
    },
    {
     "h": "18:00",
-    "q": 8118536.0,
-    "v": 2832314937.91
+    "q": 8244072.0,
+    "v": 2970812843.0
    },
    {
     "h": "18:30",
-    "q": 8145586.0,
-    "v": 3347429451.93
+    "q": 8254532.0,
+    "v": 3470627446.59
    },
    {
     "h": "19:00",
-    "q": 7852267.0,
-    "v": 2268228116.84
+    "q": 7944009.0,
+    "v": 2331769079.84
    },
    {
     "h": "19:30",
-    "q": 7468904.0,
-    "v": 2416901146.5
+    "q": 7543497.0,
+    "v": 2503676881.86
    },
    {
     "h": "20:00",
-    "q": 6992028.0,
-    "v": 1185830662.51
+    "q": 7056059.0,
+    "v": 1212574723.18
    },
    {
     "h": "20:30",
-    "q": 6619512.0,
-    "v": 1001267720.56
+    "q": 6680854.0,
+    "v": 1027191628.1
    },
    {
     "h": "21:00",
-    "q": 6186480.0,
-    "v": 876853438.04
+    "q": 6233612.0,
+    "v": 894748049.56
    },
    {
     "h": "21:30",
-    "q": 5604368.0,
-    "v": 758021173.91
+    "q": 5643960.0,
+    "v": 772407893.83
    },
    {
     "h": "22:00",
-    "q": 4954157.0,
-    "v": 634683853.62
+    "q": 4989877.0,
+    "v": 645736134.24
    },
    {
     "h": "22:30",
-    "q": 4304696.0,
-    "v": 561272228.32
+    "q": 4332258.0,
+    "v": 571161601.81
    },
    {
     "h": "23:00",
-    "q": 3599649.0,
-    "v": 427948322.3
+    "q": 3626833.0,
+    "v": 435956760.92
    },
    {
     "h": "23:30",
-    "q": 2892455.0,
-    "v": 341776618.94
+    "q": 2912592.0,
+    "v": 346748422.61
    }
   ],
   "disponibilidade": [
