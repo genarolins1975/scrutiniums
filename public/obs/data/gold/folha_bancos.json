@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-02T13:50:01+00:00",
+ "gerado_em": "2026-09-03T13:55:33+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 334,
-  "total_editais": 1114,
+  "total_contratos_if": 336,
+  "total_editais": 1118,
   "backfill_completo": true,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 128,
+    "contratos": 129,
     "ufs": 21,
     "como_receita": 18
    },
@@ -253,6 +253,13 @@
     "contratos": 2,
     "ufs": 1,
     "como_receita": 1
+   },
+   {
+    "cnpj8": "07512780",
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "contratos": 1,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "17343510",
@@ -551,6 +558,21 @@
   ],
   "recentes": [
    {
+    "controle": "83102350000196-2-001165/2026",
+    "ente": "MUNICIPIO DE BOTUVERA",
+    "esfera": "Municipal",
+    "municipio": "Botuverá",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-02",
+    "vig_fim": "2031-09-02",
+    "valor": 200000.0,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "cnpj8": "07512780",
+    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1165"
+   },
+   {
     "controle": "22646525000131-2-000108/2026",
     "ente": "MUNICIPIO DE MONTE SIAO",
     "esfera": "Municipal",
@@ -579,6 +601,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/76105535000199/2026/497"
+   },
+   {
+    "controle": "08088254000115-2-000066/2026",
+    "ente": "MUNICIPIO DE CARNAUBA DOS DANTAS",
+    "esfera": "Municipal",
+    "municipio": "Carnaúba dos Dantas",
+    "uf": "RN",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-08-26",
+    "vig_fim": "2031-08-26",
+    "valor": 220000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/08088254000115/2026/66"
    },
    {
     "controle": "35607532000176-2-000025/2026",
@@ -1119,39 +1156,45 @@
     "banco": "CAIXA ECONOMICA FEDERAL.",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/18296681000142/2026/173"
-   },
-   {
-    "controle": "22934889000117-2-000046/2026",
-    "ente": "MUNICIPIO DE NOVA LIMA",
-    "esfera": "Municipal",
-    "municipio": "Nova Lima",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-05-26",
-    "vig_fim": "2031-05-26",
-    "valor": 8830000.0,
-    "receita": false,
-    "banco": "Banco Santander (Brasil) S.A.",
-    "cnpj8": "90400888",
-    "url": "https://pncp.gov.br/contratos/22934889000117/2026/46"
-   },
-   {
-    "controle": "14217327000124-2-000141/2026",
-    "ente": "MUNICIPIO DE PAULO AFONSO",
-    "esfera": "Municipal",
-    "municipio": "Paulo Afonso",
-    "uf": "BA",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-05-25",
-    "vig_fim": "2031-05-25",
-    "valor": 6450500.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S.A.",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/14217327000124/2026/141"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "UBERLANDIA CAMARA MUNICIPAL",
+    "municipio": "Uberlândia",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/20720165000145/2026/40"
+   },
+   {
+    "ente": "MUNICIPIO DE CONCEICAO DAS ALAGOAS",
+    "municipio": "Conceição das Alagoas",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/18428854000139/2026/80"
+   },
+   {
+    "ente": "MUNICIPIO DE COREAU",
+    "municipio": "Coreaú",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/07598618000144/2026/96"
+   },
+   {
+    "ente": "MUNICIPIO DE FRUTA DE LEITE",
+    "municipio": "Fruta de Leite",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-02",
+    "url": "https://pncp.gov.br/compras/01612483000148/2026/37"
+   },
    {
     "ente": "MUNICIPIO DE PASSOS MAIA",
     "municipio": "Passos Maia",
@@ -1223,42 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-08-26",
     "url": "https://pncp.gov.br/compras/01612444000140/2026/95"
-   },
-   {
-    "ente": "MUNICIPIO DE BOCAINA DE MINAS",
-    "municipio": "Bocaina de Minas",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-26",
-    "url": "https://pncp.gov.br/compras/18194076000160/2026/68"
-   },
-   {
-    "ente": "MUNICIPIO DE CAMBUI",
-    "municipio": "Cambuí",
-    "uf": "MG",
-    "modalidade": "Inexigibilidade",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-25",
-    "url": "https://pncp.gov.br/compras/18675975000185/2026/125"
-   },
-   {
-    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
-    "municipio": "Lages",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-25",
-    "url": "https://pncp.gov.br/compras/83509547000144/2026/89"
-   },
-   {
-    "ente": "MUNICIPIO DE PORANGA",
-    "municipio": "Poranga",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-24",
-    "url": "https://pncp.gov.br/compras/07438187000159/2026/65"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 63,
+  "n_pares": 64,
   "conglomerado_prudencial": "C0080673",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-02T13:50:09+00:00",
+  "atualizado_em": "2026-09-03T13:55:41+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.522.368",
   "participante_open_finance": null
@@ -40,7 +40,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 16.0% (abaixo da mediana do grupo S3: 16.8%).",
+    "texto": "Basileia de 16.0% (abaixo da mediana do grupo S3: 16.9%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -68,7 +68,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 63,
+  "quantidade": 64,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -133,8 +133,8 @@
   ],
   "quartis_basileia": {
    "q1": 13.5,
-   "mediana": 16.8,
-   "q3": 23.3
+   "mediana": 16.9,
+   "q3": 23.8
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -143,7 +143,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-02"
+  "calculado_em": "2026-09-03"
  },
  "kpis": [
   {
@@ -234,7 +234,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 16.0% (abaixo da mediana do grupo S3: 16.8%).",
+   "texto": "Basileia de 16.0% (abaixo da mediana do grupo S3: 16.9%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -260,8 +260,8 @@
    "unit": "%",
    "d_tri": -3.89,
    "vs_pares": "abaixo",
-   "mediana_grupo": 16.82,
-   "percentil": 42.9
+   "mediana_grupo": 16.9,
+   "percentil": 42.1
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -270,7 +270,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 9.53,
-   "percentil": 67.7
+   "percentil": 68.3
   },
   {
    "indicador": "ROE do período",
@@ -279,7 +279,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 2.45,
-   "percentil": 32.3
+   "percentil": 33.3
   }
  ],
  "carteira": {
@@ -555,6 +555,7 @@
     6.72,
     8.88,
     -0.31,
+    -20.36,
     3.97,
     15.61,
     2.81,
@@ -622,6 +623,7 @@
     17.3,
     19.04,
     12.95,
+    35.57,
     15.1,
     29.55,
     26.02,
@@ -631,7 +633,7 @@
     18.57
    ],
    "meu": 15.96,
-   "mediana": 16.82
+   "mediana": 16.9
   },
   "alav": {
    "valores": [
@@ -687,6 +689,7 @@
     5.47,
     22.67,
     3.14,
+    1.41,
     4.56,
     19.25,
     5.66,

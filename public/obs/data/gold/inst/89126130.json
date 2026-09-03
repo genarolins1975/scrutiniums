@@ -9,13 +9,13 @@
   "sede": "Encantado/RS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 392,
+  "n_pares": 389,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-02T13:50:07+00:00",
+  "atualizado_em": "2026-09-03T13:55:40+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 89.126.130",
   "participante_open_finance": null
@@ -62,7 +62,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 392,
+  "quantidade": 389,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -244,7 +244,7 @@
    "d_tri": 0.13,
    "vs_pares": "acima",
    "mediana_grupo": 20.46,
-   "percentil": 80.3
+   "percentil": 80.2
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -253,7 +253,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 5.61,
-   "percentil": 41.4
+   "percentil": 41.2
   },
   {
    "indicador": "ROE do período",
@@ -261,8 +261,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 1.93,
-   "percentil": 77.0
+   "mediana_grupo": 1.94,
+   "percentil": 76.8
   }
  ],
  "carteira": {
@@ -956,7 +956,6 @@
     -22.09,
     2.93,
     0.66,
-    -0.5,
     -0.05,
     -45.18,
     -0.67,
@@ -1180,7 +1179,6 @@
     9.26,
     3.99,
     20.9,
-    -20.36,
     0.61,
     1.77,
     2.27,
@@ -1218,7 +1216,6 @@
     1.84,
     1.49,
     0.99,
-    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -1276,7 +1273,7 @@
     -0.37
    ],
    "meu": 4.43,
-   "mediana": 1.93
+   "mediana": 1.94
   },
   "basileia": {
    "valores": [
@@ -1570,7 +1567,6 @@
     30.93,
     10.06,
     17.87,
-    35.57,
     22.97,
     21.49,
     27.67,
@@ -1721,7 +1717,6 @@
     7.24,
     5.51,
     7.42,
-    1.06,
     10.03,
     4.07,
     2.98,
@@ -1945,7 +1940,6 @@
     20.08,
     14.65,
     7.84,
-    1.41,
     7.29,
     4.02,
     5.61,
@@ -1983,7 +1977,6 @@
     5.44,
     4.56,
     6.69,
-    14.1,
     5.6,
     2.18,
     1.63,

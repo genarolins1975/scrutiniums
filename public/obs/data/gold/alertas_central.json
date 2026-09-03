@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-02T13:50:25+00:00",
+ "gerado_em": "2026-09-03T13:55:58+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,36 +82,36 @@
    "id": "macro:stale_data:convolacao_falencia_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 124 dias",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 124,
+   "valor": 125,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "5 execuções anteriores",
+   "evidencia_persistencia": "6 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.24,
+   "ordem": 0.25,
    "serie_recente": null
   },
   {
    "id": "macro:stale_data:extincao_rj_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 124 dias",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 124,
+   "valor": 125,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "5 execuções anteriores",
+   "evidencia_persistencia": "6 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.24,
+   "ordem": 0.25,
    "serie_recente": null
   },
   {
@@ -124,7 +124,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "65 execuções anteriores",
+   "evidencia_persistencia": "66 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -230,38 +230,38 @@
    ]
   },
   {
-   "id": "carteira:produto_pj_deterioracao:Cheque especial · PJ",
-   "familia": "carteira",
-   "nivel": null,
-   "titulo": "Cheque especial · PJ — inadimplência (arrastada)",
-   "detalhe": "17.92% → 18.71% (2026-03 → 2026-06). Δ3m +0.79 p.p. · Δ12m +2.98 p.p. · carteira R$ 20.5 bi.",
-   "valor": 18.71,
-   "limiar": null,
-   "referencia": "2026-06",
-   "fonte": "BCB/SCR.data",
-   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
-   "recorrente": null,
-   "link": {
-    "view": "panorama"
-   },
-   "ordem": 2.98
-  },
-  {
    "id": "carteira:produto_pf_deterioracao:Veículos · PF",
    "familia": "carteira",
    "nivel": null,
    "titulo": "Veículos · PF — inadimplência (arrastada)",
-   "detalhe": "6.17% → 6.62% (2026-03 → 2026-06). Δ3m +0.45 p.p. · Δ12m +1.22 p.p. · carteira R$ 418.3 bi.",
-   "valor": 6.62,
+   "detalhe": "6.30% → 6.69% (2026-04 → 2026-07). Δ3m +0.39 p.p. · Δ12m +1.14 p.p. · carteira R$ 422.0 bi.",
+   "valor": 6.69,
    "limiar": null,
-   "referencia": "2026-06",
+   "referencia": "2026-07",
    "fonte": "BCB/SCR.data",
    "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
    "recorrente": null,
    "link": {
     "view": "panorama"
    },
-   "ordem": 1.22
+   "ordem": 1.14
+  },
+  {
+   "id": "carteira:produto_pf_deterioracao:Consignado · PF",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Consignado · PF — inadimplência (arrastada)",
+   "detalhe": "3.23% → 3.65% (2026-04 → 2026-07). Δ3m +0.42 p.p. · Δ12m +0.97 p.p. · carteira R$ 779.0 bi.",
+   "valor": 3.65,
+   "limiar": null,
+   "referencia": "2026-07",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama"
+   },
+   "ordem": 0.97
   },
   {
    "id": "openfinance:taxa de sucesso — dados transacionais",

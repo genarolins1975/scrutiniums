@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 63,
+  "n_pares": 64,
   "conglomerado_prudencial": "C0084844",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-02T13:50:08+00:00",
+  "atualizado_em": "2026-09-03T13:55:40+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -35,7 +35,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 12.9% (abaixo da mediana do grupo S3: 16.8%).",
+    "texto": "Basileia de 12.9% (abaixo da mediana do grupo S3: 16.9%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -67,7 +67,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 63,
+  "quantidade": 64,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -132,8 +132,8 @@
   ],
   "quartis_basileia": {
    "q1": 13.5,
-   "mediana": 16.8,
-   "q3": 23.3
+   "mediana": 16.9,
+   "q3": 23.8
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -142,7 +142,7 @@
   "confianca": "moderada",
   "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-02"
+  "calculado_em": "2026-09-03"
  },
  "kpis": [
   {
@@ -233,7 +233,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 12.9% (abaixo da mediana do grupo S3: 16.8%).",
+   "texto": "Basileia de 12.9% (abaixo da mediana do grupo S3: 16.9%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -254,8 +254,8 @@
    "unit": "%",
    "d_tri": -0.17,
    "vs_pares": "abaixo",
-   "mediana_grupo": 16.82,
-   "percentil": 10.7
+   "mediana_grupo": 16.9,
+   "percentil": 10.5
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -765,6 +765,7 @@
     6.72,
     8.88,
     -0.31,
+    -20.36,
     3.97,
     15.61,
     2.81,
@@ -832,6 +833,7 @@
     17.3,
     19.04,
     12.95,
+    35.57,
     15.1,
     29.55,
     26.02,
@@ -841,7 +843,7 @@
     18.57
    ],
    "meu": 12.95,
-   "mediana": 16.82
+   "mediana": 16.9
   },
   "alav": {
    "valores": [
@@ -897,6 +899,7 @@
     5.47,
     22.67,
     3.14,
+    1.41,
     4.56,
     19.25,
     5.66,

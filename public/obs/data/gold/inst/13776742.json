@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 392,
+  "n_pares": 389,
   "conglomerado_prudencial": "C0080659",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-02T13:50:08+00:00",
+  "atualizado_em": "2026-09-03T13:55:40+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 13.776.742",
   "participante_open_finance": null
@@ -62,7 +62,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 392,
+  "quantidade": 389,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -224,7 +224,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 5.61,
-   "percentil": 81.3
+   "percentil": 81.4
   },
   {
    "indicador": "ROE do período",
@@ -232,8 +232,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 1.93,
-   "percentil": 85.7
+   "mediana_grupo": 1.94,
+   "percentil": 85.6
   }
  ],
  "carteira": {
@@ -542,7 +542,6 @@
     -22.09,
     2.93,
     0.66,
-    -0.5,
     -0.05,
     -45.18,
     -0.67,
@@ -766,7 +765,6 @@
     9.26,
     3.99,
     20.9,
-    -20.36,
     0.61,
     1.77,
     2.27,
@@ -804,7 +802,6 @@
     1.84,
     1.49,
     0.99,
-    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -862,7 +859,7 @@
     -0.37
    ],
    "meu": 6.13,
-   "mediana": 1.93
+   "mediana": 1.94
   },
   "alav": {
    "valores": [
@@ -940,7 +937,6 @@
     7.24,
     5.51,
     7.42,
-    1.06,
     10.03,
     4.07,
     2.98,
@@ -1164,7 +1160,6 @@
     20.08,
     14.65,
     7.84,
-    1.41,
     7.29,
     4.02,
     5.61,
@@ -1202,7 +1197,6 @@
     5.44,
     4.56,
     6.69,
-    14.1,
     5.6,
     2.18,
     1.63,

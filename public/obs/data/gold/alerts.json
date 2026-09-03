@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-02T13:50:01+00:00",
+ "gerado_em": "2026-09-03T13:55:33+00:00",
  "alertas": [
   {
    "id": "comprometimento_high",
@@ -109,35 +109,56 @@
      "v": 28.85
     }
    ],
-   "disparos_anteriores": 65,
+   "disparos_anteriores": 66,
    "recorrente": true
   },
   {
    "id": "stale_data:convolacao_falencia_agregado",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 124 dias",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
    "explicacao": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
    "serie": "convolacao_falencia_agregado",
-   "valor": 124,
+   "valor": 125,
    "limiar": 100,
    "fonte": "CNJ/DataJud",
-   "disparos_anteriores": 5,
+   "disparos_anteriores": 6,
    "recorrente": true
   },
   {
    "id": "stale_data:extincao_rj_agregado",
    "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 124 dias",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
    "explicacao": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
    "serie": "extincao_rj_agregado",
-   "valor": 124,
+   "valor": 125,
    "limiar": 100,
    "fonte": "CNJ/DataJud",
-   "disparos_anteriores": 5,
+   "disparos_anteriores": 6,
    "recorrente": true
   }
  ],
  "historico": [
+  {
+   "run_at": "2026-09-03T13:55:33+00:00",
+   "alert_id": "comprometimento_high",
+   "nivel": "atencao",
+   "titulo": "Comprometimento de renda acima de 28%",
+   "valor": 28.85
+  },
+  {
+   "run_at": "2026-09-03T13:55:33+00:00",
+   "alert_id": "stale_data:convolacao_falencia_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
+   "valor": 125.0
+  },
+  {
+   "run_at": "2026-09-03T13:55:33+00:00",
+   "alert_id": "stale_data:extincao_rj_agregado",
+   "nivel": "informativo",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 125 dias",
+   "valor": 125.0
+  },
   {
    "run_at": "2026-09-02T13:50:01+00:00",
    "alert_id": "comprometimento_high",
@@ -672,27 +693,6 @@
   },
   {
    "run_at": "2026-07-28T15:09:47+00:00",
-   "alert_id": "stale_data:comprometimento",
-   "nivel": "informativo",
-   "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T15:09:47+00:00",
-   "alert_id": "stale_data:endividamento",
-   "nivel": "informativo",
-   "titulo": "Série 'Endividamento das famílias com o SFN em relação à renda acumulada 12m' sem atualização há 118 dias",
-   "valor": 118.0
-  },
-  {
-   "run_at": "2026-07-28T14:36:57+00:00",
-   "alert_id": "comprometimento_high",
-   "nivel": "atencao",
-   "titulo": "Comprometimento de renda acima de 28%",
-   "valor": 28.19
-  },
-  {
-   "run_at": "2026-07-28T14:36:57+00:00",
    "alert_id": "stale_data:comprometimento",
    "nivel": "informativo",
    "titulo": "Série 'Comprometimento de renda das famílias com o serviço da dívida do SFN' sem atualização há 118 dias",

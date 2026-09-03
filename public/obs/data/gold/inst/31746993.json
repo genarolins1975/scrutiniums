@@ -9,13 +9,13 @@
   "sede": "Cachoeiro de Itapemirim/ES",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 806,
+  "n_pares": 808,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-02T13:50:06+00:00",
+  "atualizado_em": "2026-09-03T13:55:38+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 31.746.993",
   "participante_open_finance": null
@@ -59,7 +59,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 806,
+  "quantidade": 808,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -250,7 +250,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 4.34,
-   "percentil": 12.2
+   "percentil": 12.1
   },
   {
    "indicador": "ROE do período",
@@ -258,8 +258,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 2.02,
-   "percentil": 25.2
+   "mediana_grupo": 2.01,
+   "percentil": 25.4
   }
  ],
  "carteira": {
@@ -1127,6 +1127,7 @@
     5.15,
     4.82,
     -5.53,
+    -0.5,
     7.44,
     0.74,
     7.71,
@@ -1222,11 +1223,10 @@
     2.16,
     0.32,
     -1.08,
-    8.45,
-    1.27
+    8.45
    ],
    "meu": -0.17,
-   "mediana": 2.02
+   "mediana": 2.01
   },
   "basileia": {
    "valores": [
@@ -1939,6 +1939,7 @@
     4.76,
     1.49,
     9.9,
+    1.06,
     11.57,
     8.65,
     7.25,
@@ -2034,8 +2035,7 @@
     1.05,
     1.07,
     1.19,
-    4.0,
-    1.15
+    4.0
    ],
    "meu": 1.05,
    "mediana": 4.34
