@@ -313,66 +313,66 @@
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": -0.139,
+     "correlacao_melhor_defasagem": -0.134,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.143
+       "corr": -0.144
       },
       {
        "lag": 1,
-       "corr": -0.092
+       "corr": -0.082
       },
       {
        "lag": 2,
-       "corr": -0.101
+       "corr": -0.104
       },
       {
        "lag": 3,
-       "corr": -0.121
+       "corr": -0.11
       },
       {
        "lag": 4,
-       "corr": -0.123
+       "corr": -0.114
       },
       {
        "lag": 5,
-       "corr": -0.113
+       "corr": -0.115
       },
       {
        "lag": 6,
-       "corr": -0.139
+       "corr": -0.134
       },
       {
        "lag": 7,
-       "corr": -0.109
+       "corr": -0.112
       },
       {
        "lag": 8,
-       "corr": -0.09
+       "corr": -0.096
       },
       {
        "lag": 9,
-       "corr": -0.075
+       "corr": -0.079
       },
       {
        "lag": 10,
-       "corr": -0.062
+       "corr": -0.056
       },
       {
        "lag": 11,
-       "corr": -0.002
+       "corr": -0.011
       },
       {
        "lag": 12,
-       "corr": -0.065
+       "corr": -0.04
       }
      ],
-     "granger_F": 0.26,
+     "granger_F": 0.17,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -0.2,
-     "estabilidade_metade1": -0.215,
-     "estabilidade_metade2": -0.104,
+     "ganho_oos_pct": 0.1,
+     "estabilidade_metade1": -0.218,
+     "estabilidade_metade2": -0.096,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -382,7 +382,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "ibc_br",
@@ -1082,66 +1082,66 @@
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
      "melhor_defasagem_meses": 6,
-     "correlacao_melhor_defasagem": -0.108,
+     "correlacao_melhor_defasagem": -0.103,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.142
+       "corr": -0.143
       },
       {
        "lag": 1,
-       "corr": -0.063
+       "corr": -0.05
       },
       {
        "lag": 2,
-       "corr": -0.094
+       "corr": -0.098
       },
       {
        "lag": 3,
-       "corr": -0.106
+       "corr": -0.091
       },
       {
        "lag": 4,
-       "corr": -0.046
+       "corr": -0.035
       },
       {
        "lag": 5,
-       "corr": -0.096
+       "corr": -0.099
       },
       {
        "lag": 6,
-       "corr": -0.108
+       "corr": -0.103
       },
       {
        "lag": 7,
-       "corr": -0.059
+       "corr": -0.064
       },
       {
        "lag": 8,
-       "corr": -0.066
+       "corr": -0.074
       },
       {
        "lag": 9,
-       "corr": -0.054
+       "corr": -0.059
       },
       {
        "lag": 10,
-       "corr": 0.01
+       "corr": 0.015
       },
       {
        "lag": 11,
-       "corr": 0.059
+       "corr": 0.046
       },
       {
        "lag": 12,
-       "corr": -0.004
+       "corr": 0.025
       }
      ],
-     "granger_F": 0.24,
+     "granger_F": 0.23,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -0.2,
-     "estabilidade_metade1": -0.157,
-     "estabilidade_metade2": -0.105,
+     "ganho_oos_pct": -0.0,
+     "estabilidade_metade1": -0.161,
+     "estabilidade_metade2": -0.097,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1151,7 +1151,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "cambio",
@@ -1547,66 +1547,66 @@
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
      "melhor_defasagem_meses": 4,
-     "correlacao_melhor_defasagem": -0.171,
+     "correlacao_melhor_defasagem": -0.168,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.111
+       "corr": -0.112
       },
       {
        "lag": 1,
-       "corr": -0.099
+       "corr": -0.095
       },
       {
        "lag": 2,
-       "corr": -0.08
+       "corr": -0.082
       },
       {
        "lag": 3,
-       "corr": -0.122
-      },
-      {
-       "lag": 4,
-       "corr": -0.171
-      },
-      {
-       "lag": 5,
-       "corr": -0.105
-      },
-      {
-       "lag": 6,
-       "corr": -0.13
-      },
-      {
-       "lag": 7,
-       "corr": -0.136
-      },
-      {
-       "lag": 8,
-       "corr": -0.098
-      },
-      {
-       "lag": 9,
-       "corr": -0.096
-      },
-      {
-       "lag": 10,
        "corr": -0.118
       },
       {
+       "lag": 4,
+       "corr": -0.168
+      },
+      {
+       "lag": 5,
+       "corr": -0.106
+      },
+      {
+       "lag": 6,
+       "corr": -0.129
+      },
+      {
+       "lag": 7,
+       "corr": -0.138
+      },
+      {
+       "lag": 8,
+       "corr": -0.1
+      },
+      {
+       "lag": 9,
+       "corr": -0.097
+      },
+      {
+       "lag": 10,
+       "corr": -0.116
+      },
+      {
        "lag": 11,
-       "corr": -0.068
+       "corr": -0.071
       },
       {
        "lag": 12,
-       "corr": -0.113
+       "corr": -0.104
       }
      ],
-     "granger_F": 0.62,
+     "granger_F": 0.56,
      "granger_significativo_5pct": false,
      "ganho_oos_pct": -1.6,
-     "estabilidade_metade1": -0.313,
-     "estabilidade_metade2": -0.067,
+     "estabilidade_metade1": -0.316,
+     "estabilidade_metade2": -0.06,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1616,7 +1616,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 170
+     "n_obs": 171
     },
     {
      "candidato": "cambio",
@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-09-03T13:55:33+00:00"
+ "gerado_em": "2026-09-04T15:08:05+00:00"
 }

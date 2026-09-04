@@ -9,13 +9,13 @@
   "sede": "São Miguel do Oeste/SC",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 808,
+  "n_pares": 807,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:39+00:00",
+  "atualizado_em": "2026-09-04T15:08:11+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 81.607.046",
   "participante_open_finance": null
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 808,
+  "quantidade": 807,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -261,8 +261,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.34,
-   "percentil": 90.5
+   "mediana_grupo": 4.27,
+   "percentil": 90.6
   },
   {
    "indicador": "ROE do período",
@@ -2105,7 +2105,7 @@
     4.0
    ],
    "meu": 9.47,
-   "mediana": 4.34
+   "mediana": 4.27
   }
  },
  "score_ref": {

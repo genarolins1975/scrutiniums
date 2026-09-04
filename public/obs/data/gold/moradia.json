@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-03T13:55:56+00:00",
+ "gerado_em": "2026-09-04T15:08:28+00:00",
  "modelos": {
   "penetracao": {
    "selo": "estimado",
@@ -14,26 +14,26 @@
   },
   "saldo": {
    "ok": true,
-   "n": 1479,
-   "r2": 0.8054,
-   "r2_aj": 0.8045,
-   "sigma": 0.6616,
-   "duan": 1.2101,
+   "n": 1478,
+   "r2": 0.8043,
+   "r2_aj": 0.8033,
+   "sigma": 0.6645,
+   "duan": 1.2123,
    "especificacao": "ln(saldo 169) = β₀ + β₁·ln(domicílios) + β₂·ln(renda domiciliar per capita) + β₃·urbanização + efeitos fixos de região",
    "coeficientes": {
-    "intercepto": -3.8288,
-    "ln_domicilios": 0.9874,
-    "ln_renda_pc": 1.5316,
-    "urbanizacao": 1.602,
-    "regiao_Nordeste": 0.9415,
-    "regiao_Centro-Oeste": 0.7646,
-    "regiao_Sudeste": 0.543,
-    "regiao_Sul": 0.7081
+    "intercepto": -3.791,
+    "ln_domicilios": 0.9875,
+    "ln_renda_pc": 1.5276,
+    "urbanizacao": 1.6186,
+    "regiao_Nordeste": 0.9516,
+    "regiao_Centro-Oeste": 0.7731,
+    "regiao_Sudeste": 0.548,
+    "regiao_Sul": 0.7102
    },
    "referencia": "mediana condicional, exp(valor ajustado)",
-   "lacuna_total": 120621380187.0,
-   "municipios_abaixo": 677,
-   "faixa": "Com σ ≈ 0.66 em logaritmo, a faixa de um desvio vai de cerca de 52% a 1.9 vezes o valor central. A lacuna de um município isolado é indicativa; a soma de muitos é mais informativa que qualquer linha do ranking.",
+   "lacuna_total": 124405637622.0,
+   "municipios_abaixo": 682,
+   "faixa": "Com σ ≈ 0.66 em logaritmo, a faixa de um desvio vai de cerca de 51% a 1.9 vezes o valor central. A lacuna de um município isolado é indicativa; a soma de muitos é mais informativa que qualquer linha do ranking.",
    "selo": "estimado",
    "aviso": "Referência contrafactual sobre um saldo contabilizado na dependência bancária. Não mede crédito tomado por moradores do município, e a lacuna não é demanda comprovada nem restrição de oferta demonstrada."
   }
@@ -483,7 +483,7 @@
     "n": "São Gotardo",
     "uf": "MG",
     "v": 41.66,
-    "sel": "media"
+    "sel": "alta"
    },
    {
     "c": "5218805",
@@ -572,178 +572,178 @@
   ],
   "maior_saldo": [
    {
-    "c": "3550308",
-    "n": "São Paulo",
-    "uf": "SP",
-    "v": 375681249336.0,
-    "sel": "baixa"
-   },
-   {
     "c": "5300108",
     "n": "Brasília",
     "uf": "DF",
-    "v": 194541174922.0,
+    "v": 1579387597770.0,
+    "sel": "baixa"
+   },
+   {
+    "c": "3550308",
+    "n": "São Paulo",
+    "uf": "SP",
+    "v": 385251614760.0,
     "sel": "baixa"
    },
    {
     "c": "3534401",
     "n": "Osasco",
     "uf": "SP",
-    "v": 136868598763.0,
+    "v": 140471892968.0,
     "sel": "baixa"
    },
    {
     "c": "3304557",
     "n": "Rio de Janeiro",
     "uf": "RJ",
-    "v": 41820071022.0,
+    "v": 42022967735.0,
     "sel": "media"
    },
    {
     "c": "3106200",
     "n": "Belo Horizonte",
     "uf": "MG",
-    "v": 37710180403.0,
+    "v": 38106338245.0,
     "sel": "media"
    },
    {
     "c": "4314902",
     "n": "Porto Alegre",
     "uf": "RS",
-    "v": 28140065713.0,
+    "v": 29056488872.0,
     "sel": "media"
    },
    {
     "c": "5208707",
     "n": "Goiânia",
     "uf": "GO",
-    "v": 26261597869.0,
+    "v": 27155096772.0,
     "sel": "media"
    },
    {
     "c": "4106902",
     "n": "Curitiba",
     "uf": "PR",
-    "v": 25440391838.0,
+    "v": 26392661693.0,
     "sel": "media"
    },
    {
     "c": "2611606",
     "n": "Recife",
     "uf": "PE",
-    "v": 19850485498.0,
+    "v": 20805734336.0,
     "sel": "media"
    },
    {
     "c": "2304400",
     "n": "Fortaleza",
     "uf": "CE",
-    "v": 16115893988.0,
+    "v": 17140906334.0,
     "sel": "media"
    },
    {
     "c": "2927408",
     "n": "Salvador",
     "uf": "BA",
-    "v": 16045210365.0,
+    "v": 17063393939.0,
     "sel": "media"
    },
    {
     "c": "2507507",
     "n": "João Pessoa",
     "uf": "PB",
-    "v": 12965998607.0,
+    "v": 13494981906.0,
     "sel": "media"
    },
    {
     "c": "3170206",
     "n": "Uberlândia",
     "uf": "MG",
-    "v": 12120147574.0,
+    "v": 12353967064.0,
     "sel": "media"
    },
    {
     "c": "3543402",
     "n": "Ribeirão Preto",
     "uf": "SP",
-    "v": 10543304257.0,
-    "sel": "media"
-   },
-   {
-    "c": "5002704",
-    "n": "Campo Grande",
-    "uf": "MS",
-    "v": 9726810667.0,
+    "v": 11122004435.0,
     "sel": "media"
    },
    {
     "c": "3509502",
     "n": "Campinas",
     "uf": "SP",
-    "v": 9548090950.0,
+    "v": 10268757462.0,
+    "sel": "media"
+   },
+   {
+    "c": "5002704",
+    "n": "Campo Grande",
+    "uf": "MS",
+    "v": 10042155200.0,
     "sel": "media"
    },
    {
     "c": "3549805",
     "n": "São José do Rio Preto",
     "uf": "SP",
-    "v": 9240259831.0,
+    "v": 9548656626.0,
     "sel": "media"
    },
    {
     "c": "2408102",
     "n": "Natal",
     "uf": "RN",
-    "v": 9120802834.0,
+    "v": 9291776454.0,
     "sel": "media"
    },
    {
     "c": "2800308",
     "n": "Aracaju",
     "uf": "SE",
-    "v": 8876584356.0,
+    "v": 9265048619.0,
     "sel": "media"
    },
    {
     "c": "3552205",
     "n": "Sorocaba",
     "uf": "SP",
-    "v": 8695417889.0,
-    "sel": "media"
-   },
-   {
-    "c": "2111300",
-    "n": "São Luís",
-    "uf": "MA",
-    "v": 8499399965.0,
-    "sel": "media"
-   },
-   {
-    "c": "5103403",
-    "n": "Cuiabá",
-    "uf": "MT",
-    "v": 8378353122.0,
+    "v": 9018560129.0,
     "sel": "media"
    },
    {
     "c": "1501402",
     "n": "Belém",
     "uf": "PA",
-    "v": 8261651824.0,
+    "v": 8829547237.0,
+    "sel": "media"
+   },
+   {
+    "c": "2111300",
+    "n": "São Luís",
+    "uf": "MA",
+    "v": 8651302629.0,
+    "sel": "media"
+   },
+   {
+    "c": "5103403",
+    "n": "Cuiabá",
+    "uf": "MT",
+    "v": 8468157419.0,
     "sel": "media"
    },
    {
     "c": "1302603",
     "n": "Manaus",
     "uf": "AM",
-    "v": 7841944819.0,
+    "v": 8110392632.0,
     "sel": "alta"
    },
    {
     "c": "4115200",
     "n": "Maringá",
     "uf": "PR",
-    "v": 7474846817.0,
+    "v": 7791511055.0,
     "sel": "media"
    }
   ],
@@ -752,175 +752,175 @@
     "c": "3205309",
     "n": "Vitória",
     "uf": "ES",
-    "v": 50782.0,
+    "v": 53231.0,
     "sel": "media"
    },
    {
     "c": "4314902",
     "n": "Porto Alegre",
     "uf": "RS",
-    "v": 50446.0,
+    "v": 52088.0,
     "sel": "media"
    },
    {
     "c": "3549805",
     "n": "São José do Rio Preto",
     "uf": "SP",
-    "v": 49783.0,
-    "sel": "media"
-   },
-   {
-    "c": "2304285",
-    "n": "Eusébio",
-    "uf": "CE",
-    "v": 48677.0,
-    "sel": "media"
-   },
-   {
-    "c": "5208707",
-    "n": "Goiânia",
-    "uf": "GO",
-    "v": 47782.0,
-    "sel": "media"
-   },
-   {
-    "c": "4115200",
-    "n": "Maringá",
-    "uf": "PR",
-    "v": 47767.0,
+    "v": 51445.0,
     "sel": "media"
    },
    {
     "c": "2403608",
     "n": "Extremoz",
     "uf": "RN",
-    "v": 47562.0,
+    "v": 51409.0,
     "sel": "media"
    },
    {
-    "c": "3170206",
-    "n": "Uberlândia",
-    "uf": "MG",
-    "v": 45221.0,
+    "c": "4115200",
+    "n": "Maringá",
+    "uf": "PR",
+    "v": 49790.0,
+    "sel": "media"
+   },
+   {
+    "c": "5208707",
+    "n": "Goiânia",
+    "uf": "GO",
+    "v": 49408.0,
+    "sel": "media"
+   },
+   {
+    "c": "2304285",
+    "n": "Eusébio",
+    "uf": "CE",
+    "v": 49307.0,
     "sel": "media"
    },
    {
     "c": "4112108",
     "n": "Jandaia do Sul",
     "uf": "PR",
-    "v": 45126.0,
+    "v": 46133.0,
+    "sel": "media"
+   },
+   {
+    "c": "3170206",
+    "n": "Uberlândia",
+    "uf": "MG",
+    "v": 46094.0,
     "sel": "media"
    },
    {
     "c": "2507507",
     "n": "João Pessoa",
     "uf": "PB",
-    "v": 43771.0,
-    "sel": "media"
-   },
-   {
-    "c": "3106200",
-    "n": "Belo Horizonte",
-    "uf": "MG",
-    "v": 42407.0,
+    "v": 45557.0,
     "sel": "media"
    },
    {
     "c": "4311403",
     "n": "Lajeado",
     "uf": "RS",
-    "v": 42169.0,
+    "v": 44006.0,
     "sel": "media"
    },
    {
     "c": "4102000",
     "n": "Assis Chateaubriand",
     "uf": "PR",
-    "v": 42048.0,
+    "v": 43842.0,
+    "sel": "media"
+   },
+   {
+    "c": "3106200",
+    "n": "Belo Horizonte",
+    "uf": "MG",
+    "v": 42853.0,
     "sel": "media"
    },
    {
     "c": "2800308",
     "n": "Aracaju",
     "uf": "SE",
-    "v": 40617.0,
-    "sel": "media"
-   },
-   {
-    "c": "3523909",
-    "n": "Itu",
-    "uf": "SP",
-    "v": 39857.0,
+    "v": 42395.0,
     "sel": "media"
    },
    {
     "c": "3543402",
     "n": "Ribeirão Preto",
     "uf": "SP",
-    "v": 39625.0,
+    "v": 41799.0,
     "sel": "media"
    },
    {
     "c": "3529005",
     "n": "Marília",
     "uf": "SP",
-    "v": 39220.0,
+    "v": 40903.0,
+    "sel": "media"
+   },
+   {
+    "c": "3523909",
+    "n": "Itu",
+    "uf": "SP",
+    "v": 40401.0,
     "sel": "media"
    },
    {
     "c": "3506003",
     "n": "Bauru",
     "uf": "SP",
-    "v": 38684.0,
+    "v": 40305.0,
     "sel": "media"
    },
    {
     "c": "4119905",
     "n": "Ponta Grossa",
     "uf": "PR",
-    "v": 38560.0,
+    "v": 39929.0,
     "sel": "media"
    },
    {
     "c": "5210000",
     "n": "Inhumas",
     "uf": "GO",
-    "v": 37330.0,
+    "v": 38807.0,
     "sel": "media"
    },
    {
     "c": "4106902",
     "n": "Curitiba",
     "uf": "PR",
-    "v": 37099.0,
-    "sel": "media"
-   },
-   {
-    "c": "3554003",
-    "n": "Tatuí",
-    "uf": "SP",
-    "v": 37024.0,
-    "sel": "media"
-   },
-   {
-    "c": "4216305",
-    "n": "São João Batista",
-    "uf": "SC",
-    "v": 36933.0,
+    "v": 38488.0,
     "sel": "media"
    },
    {
     "c": "2611606",
     "n": "Recife",
     "uf": "PE",
-    "v": 36254.0,
+    "v": 37999.0,
     "sel": "media"
    },
    {
-    "c": "5103403",
-    "n": "Cuiabá",
-    "uf": "MT",
-    "v": 36072.0,
+    "c": "3554003",
+    "n": "Tatuí",
+    "uf": "SP",
+    "v": 37943.0,
+    "sel": "media"
+   },
+   {
+    "c": "4216305",
+    "n": "São João Batista",
+    "uf": "SC",
+    "v": 37917.0,
+    "sel": "media"
+   },
+   {
+    "c": "4105508",
+    "n": "Cianorte",
+    "uf": "PR",
+    "v": 37547.0,
     "sel": "media"
    }
   ],
@@ -1106,175 +1106,175 @@
     "c": "3304557",
     "n": "Rio de Janeiro",
     "uf": "RJ",
-    "v": 18884151798.0,
+    "v": 20573678279.0,
     "sel": "media"
    },
    {
     "c": "3303302",
     "n": "Niterói",
     "uf": "RJ",
-    "v": 5282495604.0,
+    "v": 5410339773.0,
     "sel": "media"
    },
    {
     "c": "2927408",
     "n": "Salvador",
     "uf": "BA",
-    "v": 4973531275.0,
+    "v": 4750417719.0,
     "sel": "media"
    },
    {
     "c": "4205407",
     "n": "Florianópolis",
     "uf": "SC",
-    "v": 4664597517.0,
-    "sel": "media"
-   },
-   {
-    "c": "4106902",
-    "n": "Curitiba",
-    "uf": "PR",
-    "v": 3286256678.0,
+    "v": 4680650832.0,
     "sel": "media"
    },
    {
     "c": "3547809",
     "n": "Santo André",
     "uf": "SP",
-    "v": 3203794043.0,
+    "v": 3272388500.0,
     "sel": "alta"
    },
    {
-    "c": "3509502",
-    "n": "Campinas",
-    "uf": "SP",
-    "v": 2390187290.0,
+    "c": "4106902",
+    "n": "Curitiba",
+    "uf": "PR",
+    "v": 3111604940.0,
     "sel": "media"
    },
    {
     "c": "4202008",
     "n": "Balneário Camboriú",
     "uf": "SC",
-    "v": 2235161763.0,
+    "v": 2295358366.0,
     "sel": "alta"
+   },
+   {
+    "c": "3548500",
+    "n": "Santos",
+    "uf": "SP",
+    "v": 2253470392.0,
+    "sel": "media"
    },
    {
     "c": "3144805",
     "n": "Nova Lima",
     "uf": "MG",
-    "v": 2036781289.0,
+    "v": 2100782326.0,
     "sel": "alta"
    },
    {
     "c": "3547304",
     "n": "Santana de Parnaíba",
     "uf": "SP",
-    "v": 2006336311.0,
+    "v": 2055833549.0,
     "sel": "alta"
    },
    {
     "c": "3548807",
     "n": "São Caetano do Sul",
     "uf": "SP",
-    "v": 1998633970.0,
+    "v": 2045352473.0,
     "sel": "media"
    },
    {
-    "c": "3548500",
-    "n": "Santos",
+    "c": "3509502",
+    "n": "Campinas",
     "uf": "SP",
-    "v": 1935249626.0,
+    "v": 2034445679.0,
     "sel": "media"
    },
    {
     "c": "2607901",
     "n": "Jaboatão dos Guararapes",
     "uf": "PE",
-    "v": 1663766184.0,
+    "v": 1756414564.0,
     "sel": "alta"
    },
    {
     "c": "3548708",
     "n": "São Bernardo do Campo",
     "uf": "SP",
-    "v": 1600664187.0,
+    "v": 1712653910.0,
     "sel": "alta"
    },
    {
     "c": "3205200",
     "n": "Vila Velha",
     "uf": "ES",
-    "v": 1552968436.0,
+    "v": 1510181293.0,
     "sel": "alta"
-   },
-   {
-    "c": "2304400",
-    "n": "Fortaleza",
-    "uf": "CE",
-    "v": 1133786486.0,
-    "sel": "media"
    },
    {
     "c": "2403251",
     "n": "Parnamirim",
     "uf": "RN",
-    "v": 1119654580.0,
+    "v": 1158761381.0,
     "sel": "alta"
    },
    {
     "c": "3513009",
     "n": "Cotia",
     "uf": "SP",
-    "v": 1058043223.0,
+    "v": 1102907602.0,
     "sel": "alta"
    },
    {
     "c": "3552809",
     "n": "Taboão da Serra",
     "uf": "SP",
-    "v": 1019780731.0,
+    "v": 1064304845.0,
     "sel": "alta"
    },
    {
     "c": "3505708",
     "n": "Barueri",
     "uf": "SP",
-    "v": 979091072.0,
+    "v": 1007488651.0,
     "sel": "alta"
    },
    {
     "c": "2609600",
     "n": "Olinda",
     "uf": "PE",
-    "v": 929677459.0,
+    "v": 981703950.0,
     "sel": "alta"
    },
    {
     "c": "3303906",
     "n": "Petrópolis",
     "uf": "RJ",
-    "v": 885216893.0,
+    "v": 922714257.0,
     "sel": "alta"
    },
    {
     "c": "3556206",
     "n": "Valinhos",
     "uf": "SP",
-    "v": 825925955.0,
+    "v": 866308365.0,
     "sel": "media"
    },
    {
     "c": "2610707",
     "n": "Paulista",
     "uf": "PE",
-    "v": 817995863.0,
+    "v": 856703514.0,
     "sel": "alta"
    },
    {
     "c": "3304904",
     "n": "São Gonçalo",
     "uf": "RJ",
-    "v": 789385125.0,
+    "v": 832770032.0,
+    "sel": "alta"
+   },
+   {
+    "c": "2111201",
+    "n": "São José de Ribamar",
+    "uf": "MA",
+    "v": 809184711.0,
     "sel": "alta"
    }
   ],
@@ -1283,147 +1283,140 @@
     "c": "2313500",
     "n": "Trairi",
     "uf": "CE",
-    "v": 9987.1,
+    "v": 9987.3,
     "sel": "alta"
    },
    {
     "c": "4301404",
     "n": "Arvorezinha",
     "uf": "RS",
-    "v": 9984.4,
+    "v": 9984.9,
     "sel": "alta"
-   },
-   {
-    "c": "4313060",
-    "n": "Nova Hartz",
-    "uf": "RS",
-    "v": 9977.1,
-    "sel": "media"
    },
    {
     "c": "3200805",
     "n": "Baixo Guandu",
     "uf": "ES",
-    "v": 9971.5,
-    "sel": "alta"
-   },
-   {
-    "c": "3304904",
-    "n": "São Gonçalo",
-    "uf": "RJ",
-    "v": 9960.1,
-    "sel": "alta"
-   },
-   {
-    "c": "3305109",
-    "n": "São João de Meriti",
-    "uf": "RJ",
-    "v": 9959.9,
-    "sel": "alta"
-   },
-   {
-    "c": "4100400",
-    "n": "Almirante Tamandaré",
-    "uf": "PR",
-    "v": 9959.4,
-    "sel": "media"
-   },
-   {
-    "c": "2412005",
-    "n": "São Gonçalo do Amarante",
-    "uf": "RN",
-    "v": 9954.6,
-    "sel": "alta"
-   },
-   {
-    "c": "2610707",
-    "n": "Paulista",
-    "uf": "PE",
-    "v": 9954.5,
-    "sel": "alta"
-   },
-   {
-    "c": "2910602",
-    "n": "Esplanada",
-    "uf": "BA",
-    "v": 9953.3,
+    "v": 9971.9,
     "sel": "alta"
    },
    {
     "c": "3515103",
     "n": "Embu-Guaçu",
     "uf": "SP",
-    "v": 9953.1,
+    "v": 9967.3,
+    "sel": "alta"
+   },
+   {
+    "c": "3305109",
+    "n": "São João de Meriti",
+    "uf": "RJ",
+    "v": 9965.9,
+    "sel": "alta"
+   },
+   {
+    "c": "4100400",
+    "n": "Almirante Tamandaré",
+    "uf": "PR",
+    "v": 9962.8,
+    "sel": "media"
+   },
+   {
+    "c": "3304904",
+    "n": "São Gonçalo",
+    "uf": "RJ",
+    "v": 9962.7,
+    "sel": "alta"
+   },
+   {
+    "c": "2412005",
+    "n": "São Gonçalo do Amarante",
+    "uf": "RN",
+    "v": 9956.5,
+    "sel": "alta"
+   },
+   {
+    "c": "2610707",
+    "n": "Paulista",
+    "uf": "PE",
+    "v": 9956.3,
     "sel": "alta"
    },
    {
     "c": "3541703",
     "n": "Quatá",
     "uf": "SP",
-    "v": 9947.9,
+    "v": 9950.1,
     "sel": "alta"
    },
    {
     "c": "3302858",
     "n": "Mesquita",
     "uf": "RJ",
-    "v": 9941.9,
+    "v": 9948.1,
+    "sel": "alta"
+   },
+   {
+    "c": "4313060",
+    "n": "Nova Hartz",
+    "uf": "RS",
+    "v": 9946.4,
+    "sel": "media"
+   },
+   {
+    "c": "2906709",
+    "n": "Cândido Sales",
+    "uf": "BA",
+    "v": 9946.1,
     "sel": "alta"
    },
    {
     "c": "2615409",
     "n": "Toritama",
     "uf": "PE",
-    "v": 9941.1,
-    "sel": "alta"
-   },
-   {
-    "c": "2906709",
-    "n": "Cândido Sales",
-    "uf": "BA",
-    "v": 9940.8,
+    "v": 9941.7,
     "sel": "alta"
    },
    {
     "c": "3110905",
     "n": "Campanha",
     "uf": "MG",
-    "v": 9938.5,
+    "v": 9939.7,
     "sel": "alta"
    },
    {
     "c": "3516309",
     "n": "Francisco Morato",
     "uf": "SP",
-    "v": 9935.4,
-    "sel": "alta"
-   },
-   {
-    "c": "3519303",
-    "n": "Ibaté",
-    "uf": "SP",
-    "v": 9932.0,
+    "v": 9939.2,
     "sel": "alta"
    },
    {
     "c": "3303500",
     "n": "Nova Iguaçu",
     "uf": "RJ",
-    "v": 9930.4,
-    "sel": "alta"
-   },
-   {
-    "c": "2601904",
-    "n": "Bezerros",
-    "uf": "PE",
-    "v": 9927.8,
+    "v": 9935.0,
     "sel": "alta"
    },
    {
     "c": "3300209",
     "n": "Araruama",
     "uf": "RJ",
-    "v": 9926.4,
+    "v": 9933.3,
+    "sel": "alta"
+   },
+   {
+    "c": "3519303",
+    "n": "Ibaté",
+    "uf": "SP",
+    "v": 9932.3,
+    "sel": "alta"
+   },
+   {
+    "c": "2601904",
+    "n": "Bezerros",
+    "uf": "PE",
+    "v": 9930.5,
     "sel": "alta"
    },
    {
@@ -1434,24 +1427,31 @@
     "sel": "media"
    },
    {
-    "c": "3157005",
-    "n": "Salinas",
-    "uf": "MG",
-    "v": 9917.3,
-    "sel": "alta"
-   },
-   {
     "c": "4310801",
     "n": "Ivoti",
     "uf": "RS",
-    "v": 9916.7,
+    "v": 9922.9,
     "sel": "media"
    },
    {
-    "c": "3205101",
-    "n": "Viana",
-    "uf": "ES",
-    "v": 9915.6,
+    "c": "3157005",
+    "n": "Salinas",
+    "uf": "MG",
+    "v": 9922.0,
+    "sel": "alta"
+   },
+   {
+    "c": "4120606",
+    "n": "Prudentópolis",
+    "uf": "PR",
+    "v": 9918.8,
+    "sel": "alta"
+   },
+   {
+    "c": "3302205",
+    "n": "Itaperuna",
+    "uf": "RJ",
+    "v": 9918.1,
     "sel": "alta"
    }
   ]
@@ -1554,7 +1554,7 @@
    "t": "Saldo de financiamentos imobiliários contabilizado no município",
    "selo": "observado",
    "d": "Verbete 169 do ESTBAN, somado sobre todas as dependências bancárias localizadas no município.",
-   "f": "BCB, Estatística Bancária Mensal por Município, data-base 2026-03.",
+   "f": "BCB, Estatística Bancária Mensal por Município, data-base 2026-06.",
    "l": "Não é crédito habitacional: soma imóveis residenciais, não residenciais, carteiras de LIG e financiamentos de infraestrutura, sem separar pessoa física de jurídica. E é o município da agência que escritura, não o do tomador."
   },
   {
@@ -1623,8 +1623,8 @@
  ],
  "limitacoes": [
   "O verbete 169 do ESTBAN não é crédito habitacional residencial de pessoa física: soma quatro rubricas COSIF, incluindo imóveis não residenciais e financiamentos de infraestrutura.",
-  "33,77% do saldo imobiliário nacional está contabilizado em um ou dois municípios, por 29 das 34 instituições com saldo no verbete. O mapa municipal mostra escrituração, não moradia.",
-  "3071 municípios não têm nenhuma dependência bancária reportando saldo imobiliário. Ausência de saldo não é ausência de crédito: é ausência de agência que o contabilize.",
+  "26,23% do saldo imobiliário nacional está contabilizado em um ou dois municípios, por 28 das 35 instituições com saldo no verbete. O mapa municipal mostra escrituração, não moradia.",
+  "3072 municípios não têm nenhuma dependência bancária reportando saldo imobiliário. Ausência de saldo não é ausência de crédito: é ausência de agência que o contabilize.",
   "As Informações do Mercado Imobiliário do BCB não têm detalhamento municipal. Nenhuma série dessa publicação é apresentada aqui em nível de município.",
   "O Censo 2022 é de julho de 2022; os dados de crédito são das data-bases correntes. A comparação entre os dois é estrutural, não temporal.",
   "O Censo não coletou valor de aluguel nem de prestação. Nenhum comprometimento de renda observado é publicado nesta página.",
@@ -1655,7 +1655,7 @@
  ],
  "datas": {
   "censo": 2022,
-  "estban": "2026-03",
+  "estban": "2026-06",
   "mi_credito": "2026-06-30",
   "mi_imoveis": "2026-05-31",
   "scr": "2026-07",
@@ -1671,7 +1671,10 @@
    "2025-12",
    "2026-01",
    "2026-02",
-   "2026-03"
+   "2026-03",
+   "2026-04",
+   "2026-05",
+   "2026-06"
   ],
   "excluida": {
    "data_base": "2025-03",
@@ -7731,8 +7734,8 @@
    "pgp": 3.78,
    "alp": 13.91,
    "renda_pc": 1068.16,
-   "estban169": 1531715830.0,
-   "poupanca": 1964379113.0,
+   "estban169": 1544359925.0,
+   "poupanca": 2053700858.0,
    "mi_carteira_pf": 1627866360.0,
    "scr_imob_pf": 1614347212.0,
    "scr_operacoes": 9023,
@@ -7743,7 +7746,7 @@
    "inad_sfh": 0.66,
    "valor_compra": 250000.0,
    "area_privativa": 59.0,
-   "razao_estban_mi": 0.94,
+   "razao_estban_mi": 0.95,
    "razao_mi_scr": 1.01
   },
   {
@@ -7756,8 +7759,8 @@
    "pgp": 8.07,
    "alp": 20.09,
    "renda_pc": 1035.41,
-   "estban169": 10886548258.0,
-   "poupanca": 9266480639.0,
+   "estban169": 11425607758.0,
+   "poupanca": 9549926882.0,
    "mi_carteira_pf": 11971435926.0,
    "scr_imob_pf": 12088940145.0,
    "scr_operacoes": 116138,
@@ -7768,7 +7771,7 @@
    "inad_sfh": 1.13,
    "valor_compra": 210000.0,
    "area_privativa": 69.95,
-   "razao_estban_mi": 0.91,
+   "razao_estban_mi": 0.95,
    "razao_mi_scr": 0.99
   },
   {
@@ -7781,8 +7784,8 @@
    "pgp": 4.68,
    "alp": 18.48,
    "renda_pc": 979.46,
-   "estban169": 8144088077.0,
-   "poupanca": 6735002607.0,
+   "estban169": 8413427175.0,
+   "poupanca": 6963652538.0,
    "mi_carteira_pf": 10968499716.0,
    "scr_imob_pf": 11110465158.0,
    "scr_operacoes": 68915,
@@ -7793,7 +7796,7 @@
    "inad_sfh": 1.9,
    "valor_compra": 238000.0,
    "area_privativa": 44.56,
-   "razao_estban_mi": 0.74,
+   "razao_estban_mi": 0.77,
    "razao_mi_scr": 0.99
   },
   {
@@ -7806,8 +7809,8 @@
    "pgp": 5.89,
    "alp": 15.19,
    "renda_pc": 1142.29,
-   "estban169": 1723800060.0,
-   "poupanca": 1580653679.0,
+   "estban169": 1755022075.0,
+   "poupanca": 1669569924.0,
    "mi_carteira_pf": 1354034845.0,
    "scr_imob_pf": 1353620915.0,
    "scr_operacoes": 7509,
@@ -7818,7 +7821,7 @@
    "inad_sfh": 1.05,
    "valor_compra": 490691.0,
    "area_privativa": 109.4,
-   "razao_estban_mi": 1.27,
+   "razao_estban_mi": 1.3,
    "razao_mi_scr": 1.0
   },
   {
@@ -7831,8 +7834,8 @@
    "pgp": 4.99,
    "alp": 15.87,
    "renda_pc": 1079.58,
-   "estban169": 39981124126.0,
-   "poupanca": 53110510088.0,
+   "estban169": 41668715409.0,
+   "poupanca": 54764939818.0,
    "mi_carteira_pf": 45375296891.0,
    "scr_imob_pf": 45067487941.0,
    "scr_operacoes": 349847,
@@ -7843,7 +7846,7 @@
    "inad_sfh": 1.37,
    "valor_compra": 236384.0,
    "area_privativa": 63.07,
-   "razao_estban_mi": 0.88,
+   "razao_estban_mi": 0.92,
    "razao_mi_scr": 1.01
   },
   {
@@ -7856,8 +7859,8 @@
    "pgp": 5.31,
    "alp": 21.93,
    "renda_pc": 1056.24,
-   "estban169": 28322355854.0,
-   "poupanca": 23445411469.0,
+   "estban169": 29804862525.0,
+   "poupanca": 24452724840.0,
    "mi_carteira_pf": 33978205543.0,
    "scr_imob_pf": 34293877058.0,
    "scr_operacoes": 251809,
@@ -7868,7 +7871,7 @@
    "inad_sfh": 1.0,
    "valor_compra": 219150.0,
    "area_privativa": 71.04,
-   "razao_estban_mi": 0.83,
+   "razao_estban_mi": 0.88,
    "razao_mi_scr": 0.99
   },
   {
@@ -7881,8 +7884,8 @@
    "pgp": 9.53,
    "alp": 33.25,
    "renda_pc": 2999.18,
-   "estban169": 194541174922.0,
-   "poupanca": 207364015042.0,
+   "estban169": 1579387597770.0,
+   "poupanca": 1042531250342.0,
    "mi_carteira_pf": 36480892182.0,
    "scr_imob_pf": 29398032492.0,
    "scr_operacoes": 203103,
@@ -7893,7 +7896,7 @@
    "inad_sfh": 0.73,
    "valor_compra": 355000.0,
    "area_privativa": 69.17,
-   "razao_estban_mi": 5.33,
+   "razao_estban_mi": 43.29,
    "razao_mi_scr": 1.24
   },
   {
@@ -7906,8 +7909,8 @@
    "pgp": 5.05,
    "alp": 23.5,
    "renda_pc": 1651.38,
-   "estban169": 15412709871.0,
-   "poupanca": 19157971758.0,
+   "estban169": 16022282303.0,
+   "poupanca": 19365730382.0,
    "mi_carteira_pf": 17425799790.0,
    "scr_imob_pf": 17416174448.0,
    "scr_operacoes": 108475,
@@ -7918,7 +7921,7 @@
    "inad_sfh": 0.5,
    "valor_compra": 349219.0,
    "area_privativa": 58.68,
-   "razao_estban_mi": 0.88,
+   "razao_estban_mi": 0.92,
    "razao_mi_scr": 1.0
   },
   {
@@ -7931,8 +7934,8 @@
    "pgp": 14.36,
    "alp": 27.67,
    "renda_pc": 1696.52,
-   "estban169": 56830428272.0,
-   "poupanca": 25629296195.0,
+   "estban169": 58905819830.0,
+   "poupanca": 26345583474.0,
    "mi_carteira_pf": 76138198323.0,
    "scr_imob_pf": 75249929453.0,
    "scr_operacoes": 533106,
@@ -7943,7 +7946,7 @@
    "inad_sfh": 1.57,
    "valor_compra": 240000.0,
    "area_privativa": 69.98,
-   "razao_estban_mi": 0.75,
+   "razao_estban_mi": 0.77,
    "razao_mi_scr": 1.01
   },
   {
@@ -7956,8 +7959,8 @@
    "pgp": 5.41,
    "alp": 11.96,
    "renda_pc": 900.46,
-   "estban169": 12837633715.0,
-   "poupanca": 15371176007.0,
+   "estban169": 13135182009.0,
+   "poupanca": 16243138617.0,
    "mi_carteira_pf": 16448336521.0,
    "scr_imob_pf": 16521120572.0,
    "scr_operacoes": 144081,
@@ -7968,7 +7971,7 @@
    "inad_sfh": 1.54,
    "valor_compra": 218000.0,
    "area_privativa": 63.0,
-   "razao_estban_mi": 0.78,
+   "razao_estban_mi": 0.8,
    "razao_mi_scr": 1.0
   },
   {
@@ -7981,8 +7984,8 @@
    "pgp": 8.49,
    "alp": 22.47,
    "renda_pc": 1611.77,
-   "estban169": 118363660259.0,
-   "poupanca": 104671061954.0,
+   "estban169": 120983847648.0,
+   "poupanca": 105876157087.0,
    "mi_carteira_pf": 129819977214.0,
    "scr_imob_pf": 129537209100.0,
    "scr_operacoes": 972735,
@@ -7993,7 +7996,7 @@
    "inad_sfh": 0.74,
    "valor_compra": 270000.0,
    "area_privativa": 64.18,
-   "razao_estban_mi": 0.91,
+   "razao_estban_mi": 0.93,
    "razao_mi_scr": 1.0
   },
   {
@@ -8006,8 +8009,8 @@
    "pgp": 13.37,
    "alp": 24.52,
    "renda_pc": 1710.48,
-   "estban169": 16884911055.0,
-   "poupanca": 6628722160.0,
+   "estban169": 17389339617.0,
+   "poupanca": 6765596701.0,
    "mi_carteira_pf": 22196450550.0,
    "scr_imob_pf": 21875701578.0,
    "scr_operacoes": 161592,
@@ -8018,7 +8021,7 @@
    "inad_sfh": 1.57,
    "valor_compra": 225000.0,
    "area_privativa": 59.78,
-   "razao_estban_mi": 0.76,
+   "razao_estban_mi": 0.78,
    "razao_mi_scr": 1.01
   },
   {
@@ -8031,8 +8034,8 @@
    "pgp": 9.77,
    "alp": 27.78,
    "renda_pc": 1825.48,
-   "estban169": 21012700819.0,
-   "poupanca": 7978537192.0,
+   "estban169": 21589040487.0,
+   "poupanca": 8106231166.0,
    "mi_carteira_pf": 29605027883.0,
    "scr_imob_pf": 29572294647.0,
    "scr_operacoes": 184205,
@@ -8043,7 +8046,7 @@
    "inad_sfh": 1.58,
    "valor_compra": 260000.0,
    "area_privativa": 62.3,
-   "razao_estban_mi": 0.71,
+   "razao_estban_mi": 0.73,
    "razao_mi_scr": 1.0
   },
   {
@@ -8056,8 +8059,8 @@
    "pgp": 5.38,
    "alp": 15.36,
    "renda_pc": 993.75,
-   "estban169": 15261538245.0,
-   "poupanca": 15680228489.0,
+   "estban169": 16047444020.0,
+   "poupanca": 16064842967.0,
    "mi_carteira_pf": 15580664235.0,
    "scr_imob_pf": 15646708641.0,
    "scr_operacoes": 116756,
@@ -8068,7 +8071,7 @@
    "inad_sfh": 0.97,
    "valor_compra": 210000.0,
    "area_privativa": 67.42,
-   "razao_estban_mi": 0.98,
+   "razao_estban_mi": 1.03,
    "razao_mi_scr": 1.0
   },
   {
@@ -8081,8 +8084,8 @@
    "pgp": 8.46,
    "alp": 20.25,
    "renda_pc": 1098.88,
-   "estban169": 21238010609.0,
-   "poupanca": 13157797607.0,
+   "estban169": 22059475619.0,
+   "poupanca": 13561280081.0,
    "mi_carteira_pf": 23987125976.0,
    "scr_imob_pf": 24136078083.0,
    "scr_operacoes": 216155,
@@ -8093,7 +8096,7 @@
    "inad_sfh": 0.61,
    "valor_compra": 190000.0,
    "area_privativa": 51.18,
-   "razao_estban_mi": 0.89,
+   "razao_estban_mi": 0.92,
    "razao_mi_scr": 0.99
   },
   {
@@ -8106,8 +8109,8 @@
    "pgp": 5.04,
    "alp": 21.32,
    "renda_pc": 1141.74,
-   "estban169": 35330792934.0,
-   "poupanca": 29854339578.0,
+   "estban169": 36877745107.0,
+   "poupanca": 30884508404.0,
    "mi_carteira_pf": 35268963069.0,
    "scr_imob_pf": 35520626061.0,
    "scr_operacoes": 286852,
@@ -8118,7 +8121,7 @@
    "inad_sfh": 0.75,
    "valor_compra": 210000.0,
    "area_privativa": 55.61,
-   "razao_estban_mi": 1.0,
+   "razao_estban_mi": 1.05,
    "razao_mi_scr": 0.99
   },
   {
@@ -8131,8 +8134,8 @@
    "pgp": 6.26,
    "alp": 10.97,
    "renda_pc": 1009.94,
-   "estban169": 9040682127.0,
-   "poupanca": 11121482544.0,
+   "estban169": 9276706052.0,
+   "poupanca": 11732718030.0,
    "mi_carteira_pf": 10000447688.0,
    "scr_imob_pf": 10064679105.0,
    "scr_operacoes": 93969,
@@ -8143,7 +8146,7 @@
    "inad_sfh": 1.22,
    "valor_compra": 163000.0,
    "area_privativa": 59.04,
-   "razao_estban_mi": 0.9,
+   "razao_estban_mi": 0.93,
    "razao_mi_scr": 0.99
   },
   {
@@ -8156,8 +8159,8 @@
    "pgp": 12.6,
    "alp": 22.69,
    "renda_pc": 1965.31,
-   "estban169": 88808347156.0,
-   "poupanca": 48826224326.0,
+   "estban169": 92012844899.0,
+   "poupanca": 49603098415.0,
    "mi_carteira_pf": 109976791151.0,
    "scr_imob_pf": 109418903379.0,
    "scr_operacoes": 774581,
@@ -8168,7 +8171,7 @@
    "inad_sfh": 0.51,
    "valor_compra": 285000.0,
    "area_privativa": 60.03,
-   "razao_estban_mi": 0.81,
+   "razao_estban_mi": 0.84,
    "razao_mi_scr": 1.01
   },
   {
@@ -8181,8 +8184,8 @@
    "pgp": 5.55,
    "alp": 23.55,
    "renda_pc": 1847.44,
-   "estban169": 67511618842.0,
-   "poupanca": 111181715123.0,
+   "estban169": 68654264102.0,
+   "poupanca": 112973418279.0,
    "mi_carteira_pf": 87869242523.0,
    "scr_imob_pf": 87561781863.0,
    "scr_operacoes": 515543,
@@ -8193,7 +8196,7 @@
    "inad_sfh": 1.21,
    "valor_compra": 300000.0,
    "area_privativa": 53.57,
-   "razao_estban_mi": 0.77,
+   "razao_estban_mi": 0.78,
    "razao_mi_scr": 1.0
   },
   {
@@ -8206,8 +8209,8 @@
    "pgp": 8.83,
    "alp": 21.7,
    "renda_pc": 1247.15,
-   "estban169": 17339497779.0,
-   "poupanca": 9841940891.0,
+   "estban169": 17873843797.0,
+   "poupanca": 10040072928.0,
    "mi_carteira_pf": 17499943486.0,
    "scr_imob_pf": 17648754480.0,
    "scr_operacoes": 171543,
@@ -8218,7 +8221,7 @@
    "inad_sfh": 0.81,
    "valor_compra": 175000.0,
    "area_privativa": 62.76,
-   "razao_estban_mi": 0.99,
+   "razao_estban_mi": 1.02,
    "razao_mi_scr": 0.99
   },
   {
@@ -8231,8 +8234,8 @@
    "pgp": 7.27,
    "alp": 20.09,
    "renda_pc": 1374.26,
-   "estban169": 6287671888.0,
-   "poupanca": 4109788080.0,
+   "estban169": 6477006730.0,
+   "poupanca": 4174695087.0,
    "mi_carteira_pf": 7196400436.0,
    "scr_imob_pf": 7209139107.0,
    "scr_operacoes": 50777,
@@ -8243,7 +8246,7 @@
    "inad_sfh": 0.71,
    "valor_compra": 234000.0,
    "area_privativa": 69.79,
-   "razao_estban_mi": 0.87,
+   "razao_estban_mi": 0.9,
    "razao_mi_scr": 1.0
   },
   {
@@ -8256,8 +8259,8 @@
    "pgp": 5.62,
    "alp": 24.92,
    "renda_pc": 1143.94,
-   "estban169": 1707169891.0,
-   "poupanca": 1179063266.0,
+   "estban169": 1728320220.0,
+   "poupanca": 1278710848.0,
    "mi_carteira_pf": 1962641519.0,
    "scr_imob_pf": 1963522476.0,
    "scr_operacoes": 12965,
@@ -8268,7 +8271,7 @@
    "inad_sfh": 0.88,
    "valor_compra": 272466.0,
    "area_privativa": 54.56,
-   "razao_estban_mi": 0.87,
+   "razao_estban_mi": 0.88,
    "razao_mi_scr": 1.0
   },
   {
@@ -8281,8 +8284,8 @@
    "pgp": 10.8,
    "alp": 17.93,
    "renda_pc": 2042.57,
-   "estban169": 81249988829.0,
-   "poupanca": 89314564377.0,
+   "estban169": 83596877370.0,
+   "poupanca": 91520009192.0,
    "mi_carteira_pf": 91797890973.0,
    "scr_imob_pf": 91464766794.0,
    "scr_operacoes": 648262,
@@ -8293,7 +8296,7 @@
    "inad_sfh": 0.92,
    "valor_compra": 260000.0,
    "area_privativa": 54.46,
-   "razao_estban_mi": 0.89,
+   "razao_estban_mi": 0.91,
    "razao_mi_scr": 1.0
   },
   {
@@ -8306,8 +8309,8 @@
    "pgp": 10.58,
    "alp": 26.32,
    "renda_pc": 2221.02,
-   "estban169": 54205539501.0,
-   "poupanca": 33914930333.0,
+   "estban169": 56205157187.0,
+   "poupanca": 34422351912.0,
    "mi_carteira_pf": 69248664140.0,
    "scr_imob_pf": 69063252765.0,
    "scr_operacoes": 435972,
@@ -8318,7 +8321,7 @@
    "inad_sfh": 0.54,
    "valor_compra": 350000.0,
    "area_privativa": 62.45,
-   "razao_estban_mi": 0.78,
+   "razao_estban_mi": 0.81,
    "razao_mi_scr": 1.0
   },
   {
@@ -8331,8 +8334,8 @@
    "pgp": 7.72,
    "alp": 20.95,
    "renda_pc": 1181.91,
-   "estban169": 12231852961.0,
-   "poupanca": 9848747099.0,
+   "estban169": 12735531323.0,
+   "poupanca": 10240693784.0,
    "mi_carteira_pf": 12290167780.0,
    "scr_imob_pf": 11756345895.0,
    "scr_operacoes": 108153,
@@ -8343,7 +8346,7 @@
    "inad_sfh": 1.2,
    "valor_compra": 195000.0,
    "area_privativa": 64.33,
-   "razao_estban_mi": 1.0,
+   "razao_estban_mi": 1.04,
    "razao_mi_scr": 1.05
   },
   {
@@ -8356,8 +8359,8 @@
    "pgp": 11.43,
    "alp": 26.0,
    "renda_pc": 2092.42,
-   "estban169": 722695584332.0,
-   "poupanca": 307009465214.0,
+   "estban169": 742907254242.0,
+   "poupanca": 311901037598.0,
    "mi_carteira_pf": 501249068580.0,
    "scr_imob_pf": 497699724634.0,
    "scr_operacoes": 2895744,
@@ -8368,7 +8371,7 @@
    "inad_sfh": 0.83,
    "valor_compra": 300000.0,
    "area_privativa": 48.7,
-   "razao_estban_mi": 1.44,
+   "razao_estban_mi": 1.48,
    "razao_mi_scr": 1.01
   },
   {
@@ -8381,8 +8384,8 @@
    "pgp": 8.12,
    "alp": 21.03,
    "renda_pc": 1392.66,
-   "estban169": 5260006789.0,
-   "poupanca": 3983612558.0,
+   "estban169": 5473913063.0,
+   "poupanca": 4176388220.0,
    "mi_carteira_pf": 6437261027.0,
    "scr_imob_pf": 6383591420.0,
    "scr_operacoes": 42938,
@@ -8393,7 +8396,7 @@
    "inad_sfh": 1.03,
    "valor_compra": 270000.0,
    "area_privativa": 69.86,
-   "razao_estban_mi": 0.82,
+   "razao_estban_mi": 0.85,
    "razao_mi_scr": 1.01
   }
  ],
@@ -8402,18 +8405,18 @@
    "i": 0,
    "nome": "CAIXA ECONOMICA FEDERAL",
    "cnpj8": "00360305",
-   "saldo": 1046243432637.0,
-   "part_nacional": 62.85,
+   "saldo": 2167509819727.0,
+   "part_nacional": 70.06,
    "municipios": 1618,
-   "ql_mediano": 1.54,
-   "ql_p90": 1.59
+   "ql_mediano": 1.38,
+   "ql_p90": 1.42
   },
   {
    "i": 1,
    "nome": "ITAÚ UNIBANCO S.A.",
    "cnpj8": "60701190",
-   "saldo": 319621769912.0,
-   "part_nacional": 19.2,
+   "saldo": 331809815182.0,
+   "part_nacional": 10.72,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
@@ -8421,109 +8424,109 @@
    "i": 2,
    "nome": "BCO BRADESCO S.A.",
    "cnpj8": "60746948",
-   "saldo": 132614318806.0,
-   "part_nacional": 7.97,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "saldo": 272109212718.0,
+   "part_nacional": 8.79,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 3,
    "nome": "BCO SANTANDER (BRASIL) S.A.",
    "cnpj8": "90400888",
-   "saldo": 70822765805.0,
-   "part_nacional": 4.25,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "saldo": 144819072386.0,
+   "part_nacional": 4.68,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 4,
    "nome": "BCO DO BRASIL S.A.",
    "cnpj8": "00000000",
-   "saldo": 49918850718.0,
-   "part_nacional": 3.0,
-   "municipios": 2272,
-   "ql_mediano": 2.3,
-   "ql_p90": 33.35
+   "saldo": 99092335955.0,
+   "part_nacional": 3.2,
+   "municipios": 2271,
+   "ql_mediano": 2.07,
+   "ql_p90": 31.22
   },
   {
    "i": 5,
    "nome": "BANCO INTER",
    "cnpj8": "00416968",
-   "saldo": 10114998970.0,
-   "part_nacional": 0.61,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "saldo": 21315978648.0,
+   "part_nacional": 0.69,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 6,
-   "nome": "BANCO BTG PACTUAL S.A.",
-   "cnpj8": "30306294",
-   "saldo": 7503511502.0,
-   "part_nacional": 0.45,
+   "nome": "BCO DO ESTADO DO RS S.A.",
+   "cnpj8": "92702067",
+   "saldo": 12942272068.0,
+   "part_nacional": 0.42,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 7,
-   "nome": "BCO DO ESTADO DO RS S.A.",
-   "cnpj8": "92702067",
-   "saldo": 6389221356.0,
-   "part_nacional": 0.38,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
+   "cnpj8": "07237373",
+   "saldo": 8212738775.0,
+   "part_nacional": 0.27,
+   "municipios": 9,
+   "ql_na": "contabiliza em 9 município(s)"
   },
   {
    "i": 8,
-   "nome": "BCO COOPERATIVO SICREDI S.A.",
+   "nome": "BANCO COOPERATIVO SICREDI",
    "cnpj8": "01181521",
-   "saldo": 6251038734.0,
-   "part_nacional": 0.38,
+   "saldo": 6709708816.0,
+   "part_nacional": 0.22,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 9,
-   "nome": "BCO DO NORDESTE DO BRASIL S.A.",
-   "cnpj8": "07237373",
-   "saldo": 4008906684.0,
-   "part_nacional": 0.24,
-   "municipios": 8,
-   "ql_na": "contabiliza em 8 município(s)"
+   "nome": "BANCO BTG PACTUAL S.A.",
+   "cnpj8": "30306294",
+   "saldo": 6499287142.0,
+   "part_nacional": 0.21,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 10,
    "nome": "BCO BANESTES S.A.",
    "cnpj8": "28127603",
-   "saldo": 2707381362.0,
-   "part_nacional": 0.16,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "saldo": 5421104916.0,
+   "part_nacional": 0.18,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 11,
    "nome": "BCO ABC BRASIL S.A.",
    "cnpj8": "28195667",
-   "saldo": 1586480238.0,
+   "saldo": 3233571314.0,
    "part_nacional": 0.1,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 12,
    "nome": "BCO DO EST. DO PA S.A.",
    "cnpj8": "04913711",
-   "saldo": 1473538611.0,
-   "part_nacional": 0.09,
-   "municipios": 105,
-   "ql_mediano": 582.61,
-   "ql_p90": 1129.69
+   "saldo": 3013222682.0,
+   "part_nacional": 0.1,
+   "municipios": 106,
+   "ql_mediano": 527.17,
+   "ql_p90": 1026.79
   },
   {
    "i": 13,
    "nome": "BANCO SICOOB S.A.",
    "cnpj8": "02038232",
-   "saldo": 1380537914.0,
-   "part_nacional": 0.08,
+   "saldo": 2786061110.0,
+   "part_nacional": 0.09,
    "municipios": 1,
    "ql_na": "contabiliza em 1 município(s)"
   },
@@ -8531,179 +8534,188 @@
    "i": 14,
    "nome": "BCO SAFRA S.A.",
    "cnpj8": "58160789",
-   "saldo": 1218348311.0,
-   "part_nacional": 0.07,
-   "municipios": 2,
-   "ql_na": "contabiliza em 2 município(s)"
+   "saldo": 2334367583.0,
+   "part_nacional": 0.08,
+   "municipios": 3,
+   "ql_na": "contabiliza em 3 município(s)"
   },
   {
    "i": 15,
    "nome": "BCO DO EST. DE SE S.A.",
    "cnpj8": "13009717",
-   "saldo": 801213014.0,
-   "part_nacional": 0.05,
-   "municipios": 43,
-   "ql_mediano": 235.26,
-   "ql_p90": 2077.65
+   "saldo": 1737780101.0,
+   "part_nacional": 0.06,
+   "municipios": 44,
+   "ql_mediano": 176.56,
+   "ql_p90": 1780.4
   },
   {
    "i": 16,
    "nome": "BANCO ORIGINAL",
    "cnpj8": "92894922",
-   "saldo": 563711903.0,
-   "part_nacional": 0.03,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "saldo": 1104780016.0,
+   "part_nacional": 0.04,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 17,
    "nome": "BCO RIBEIRAO PRETO S.A.",
    "cnpj8": "00517645",
-   "saldo": 292386916.0,
-   "part_nacional": 0.02,
+   "saldo": 873641744.0,
+   "part_nacional": 0.03,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 18,
-   "nome": "BCO PINE S.A.",
-   "cnpj8": "62144175",
-   "saldo": 218587472.0,
-   "part_nacional": 0.01,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "nome": "BCO SOFISA S.A.",
+   "cnpj8": "60889128",
+   "saldo": 520611393.0,
+   "part_nacional": 0.02,
+   "municipios": 4,
+   "ql_na": "contabiliza em 4 município(s)"
   },
   {
    "i": 19,
-   "nome": "BCO XP S.A.",
-   "cnpj8": "33264668",
-   "saldo": 171129967.0,
+   "nome": "BCO PINE S.A.",
+   "cnpj8": "62144175",
+   "saldo": 403085642.0,
    "part_nacional": 0.01,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 20,
-   "nome": "BCO DAYCOVAL S.A",
-   "cnpj8": "62232889",
-   "saldo": 140958444.0,
+   "nome": "BCO C6 S.A.",
+   "cnpj8": "31872495",
+   "saldo": 371551004.0,
    "part_nacional": 0.01,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 21,
-   "nome": "BCO C6 S.A.",
-   "cnpj8": "31872495",
-   "saldo": 115819871.0,
+   "nome": "BCO XP S.A.",
+   "cnpj8": "33264668",
+   "saldo": 221635924.0,
    "part_nacional": 0.01,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 22,
-   "nome": "BCO BOCOM BBM S.A.",
-   "cnpj8": "15114366",
-   "saldo": 108020540.0,
+   "nome": "BANCO BARI S.A.",
+   "cnpj8": "00556603",
+   "saldo": 203179658.0,
    "part_nacional": 0.01,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 23,
-   "nome": "BCO PAULISTA S.A.",
-   "cnpj8": "61820817",
-   "saldo": 87145622.0,
+   "nome": "BCO BOCOM BBM S.A.",
+   "cnpj8": "15114366",
+   "saldo": 187790532.0,
    "part_nacional": 0.01,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 24,
-   "nome": "BANCO BARI S.A.",
-   "cnpj8": "00556603",
-   "saldo": 87098831.0,
-   "part_nacional": 0.01,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "nome": "BCO DAYCOVAL S.A",
+   "cnpj8": "62232889",
+   "saldo": 154650692.0,
+   "part_nacional": 0.0,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 25,
-   "nome": "BCO GUANABARA S.A.",
-   "cnpj8": "31880826",
-   "saldo": 57513177.0,
+   "nome": "BCO MERCANTIL DO BRASIL S.A.",
+   "cnpj8": "17184037",
+   "saldo": 79317860.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 26,
-   "nome": "BCO MERCANTIL DO BRASIL S.A.",
-   "cnpj8": "17184037",
-   "saldo": 40234706.0,
+   "nome": "BCO BMG S.A.",
+   "cnpj8": "61186680",
+   "saldo": 60167264.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 27,
-   "nome": "BCO BMG S.A.",
-   "cnpj8": "61186680",
-   "saldo": 31212650.0,
+   "nome": "BANCO PAN",
+   "cnpj8": "59285411",
+   "saldo": 56982398.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 28,
-   "nome": "BANCO PAN",
-   "cnpj8": "59285411",
-   "saldo": 29611376.0,
+   "nome": "BCO PAULISTA S.A.",
+   "cnpj8": "61820817",
+   "saldo": 56384234.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 29,
    "nome": "OURIBANK S.A.",
    "cnpj8": "78632767",
-   "saldo": 21929182.0,
+   "saldo": 47315922.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 30,
    "nome": "BANCO SEMEAR",
    "cnpj8": "00795423",
-   "saldo": 15658014.0,
+   "saldo": 34394144.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 31,
-   "nome": "BCO LUSO BRASILEIRO S.A.",
-   "cnpj8": "59118133",
-   "saldo": 3130601.0,
+   "nome": "BCO FIBRA S.A.",
+   "cnpj8": "58616418",
+   "saldo": 21015130.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 32,
-   "nome": "BOC BRASIL",
-   "cnpj8": "07450604",
-   "saldo": 660714.0,
+   "nome": "BCO LUSO BRASILEIRO S.A.",
+   "cnpj8": "59118133",
+   "saldo": 6164540.0,
    "part_nacional": 0.0,
-   "municipios": 1,
-   "ql_na": "contabiliza em 1 município(s)"
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
   },
   {
    "i": 33,
-   "nome": "BCO SOFISA S.A.",
-   "cnpj8": "60889128",
-   "saldo": 28441.0,
+   "nome": "BOC BRASIL",
+   "cnpj8": "07450604",
+   "saldo": 1320338.0,
+   "part_nacional": 0.0,
+   "municipios": 2,
+   "ql_na": "contabiliza em 2 município(s)"
+  },
+  {
+   "i": 34,
+   "nome": "BCO BS2 S.A.",
+   "cnpj8": "71027866",
+   "saldo": 1150704.0,
    "part_nacional": 0.0,
    "municipios": 2,
    "ql_na": "contabiliza em 2 município(s)"
@@ -8711,10 +8723,10 @@
  ],
  "concentracao_contabil": {
   "selo": "calculado",
-  "instituicoes_total": 34,
-  "instituicoes_ate_2_municipios": 29,
-  "saldo_dessas": 562195211337.0,
-  "part_dessas": 33.77,
+  "instituicoes_total": 35,
+  "instituicoes_ate_2_municipios": 28,
+  "saldo_dessas": 811530612046.0,
+  "part_dessas": 26.23,
   "leitura": "Um terço do saldo imobiliário do país está contabilizado em um ou dois municípios por instituições que operam em todo o território. O mapa do verbete 169 mostra onde o saldo é escriturado, não onde moram as pessoas que tomaram o crédito."
  },
  "nomes_instituicoes": [
@@ -8724,10 +8736,10 @@
   "BCO SANTANDER (BRASIL) S.A.",
   "BCO DO BRASIL S.A.",
   "BANCO INTER",
-  "BANCO BTG PACTUAL S.A.",
   "BCO DO ESTADO DO RS S.A.",
-  "BCO COOPERATIVO SICREDI S.A.",
   "BCO DO NORDESTE DO BRASIL S.A.",
+  "BANCO COOPERATIVO SICREDI",
+  "BANCO BTG PACTUAL S.A.",
   "BCO BANESTES S.A.",
   "BCO ABC BRASIL S.A.",
   "BCO DO EST. DO PA S.A.",
@@ -8736,22 +8748,23 @@
   "BCO DO EST. DE SE S.A.",
   "BANCO ORIGINAL",
   "BCO RIBEIRAO PRETO S.A.",
+  "BCO SOFISA S.A.",
   "BCO PINE S.A.",
-  "BCO XP S.A.",
-  "BCO DAYCOVAL S.A",
   "BCO C6 S.A.",
-  "BCO BOCOM BBM S.A.",
-  "BCO PAULISTA S.A.",
+  "BCO XP S.A.",
   "BANCO BARI S.A.",
-  "BCO GUANABARA S.A.",
+  "BCO BOCOM BBM S.A.",
+  "BCO DAYCOVAL S.A",
   "BCO MERCANTIL DO BRASIL S.A.",
   "BCO BMG S.A.",
   "BANCO PAN",
+  "BCO PAULISTA S.A.",
   "OURIBANK S.A.",
   "BANCO SEMEAR",
+  "BCO FIBRA S.A.",
   "BCO LUSO BRASILEIRO S.A.",
   "BOC BRASIL",
-  "BCO SOFISA S.A."
+  "BCO BS2 S.A."
  ],
  "simulador": {
   "selo": "cenario",
@@ -8775,16 +8788,16 @@
   ]
  },
  "totais": {
-  "estban169": 1664641153001.0,
-  "municipios_com_saldo": 2499,
-  "municipios_sem_dependencia": 3071,
-  "instituicoes_no_169": 34,
-  "mediana_saldo_por_domicilio": 5304.0,
+  "estban169": 3093951488262.0,
+  "municipios_com_saldo": 2498,
+  "municipios_sem_dependencia": 3072,
+  "instituicoes_no_169": 35,
+  "mediana_saldo_por_domicilio": 5456.0,
   "selos": {
    "alta": 1017,
-   "media": 1467,
-   "baixa": 15,
-   "sem_dependencia": 3071
+   "media": 1463,
+   "baixa": 18,
+   "sem_dependencia": 3072
   }
  },
  "municipios_arquivo": "moradia_mun.json"

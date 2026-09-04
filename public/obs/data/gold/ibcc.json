@@ -48,7 +48,7 @@
     "capacidade": 0.94,
     "atividade": -1.71,
     "oferta": -2.78,
-    "antecedentes": -1.56
+    "antecedentes": -1.57
    }
   },
   {
@@ -192,7 +192,7 @@
     "capacidade": 1.57,
     "atividade": -0.19,
     "oferta": 0.66,
-    "antecedentes": 1.04
+    "antecedentes": 1.05
    }
   },
   {
@@ -257,14 +257,14 @@
   },
   {
    "ref": "2018-04-01",
-   "valor": 104.39,
+   "valor": 104.4,
    "contribuicoes": {
     "preco": -0.25,
     "qualidade": -0.39,
     "capacidade": 1.66,
     "atividade": -0.07,
     "oferta": 2.82,
-    "antecedentes": 0.62
+    "antecedentes": 0.63
    }
   },
   {
@@ -413,7 +413,7 @@
   },
   {
    "ref": "2019-05-01",
-   "valor": 106.41,
+   "valor": 106.42,
    "contribuicoes": {
     "preco": 0.05,
     "qualidade": 0.44,
@@ -425,7 +425,7 @@
   },
   {
    "ref": "2019-06-01",
-   "valor": 97.86,
+   "valor": 97.85,
    "contribuicoes": {
     "preco": -0.01,
     "qualidade": 0.76,
@@ -533,7 +533,7 @@
   },
   {
    "ref": "2020-03-01",
-   "valor": 105.4,
+   "valor": 105.41,
    "contribuicoes": {
     "preco": 0.75,
     "qualidade": 0.34,
@@ -600,7 +600,7 @@
     "capacidade": 2.36,
     "atividade": -2.36,
     "oferta": -0.09,
-    "antecedentes": 0.5
+    "antecedentes": 0.51
    }
   },
   {
@@ -617,14 +617,14 @@
   },
   {
    "ref": "2020-10-01",
-   "valor": 104.89,
+   "valor": 104.9,
    "contribuicoes": {
     "preco": 2.71,
     "qualidade": 2.43,
     "capacidade": 1.91,
     "atividade": -1.81,
     "oferta": -0.89,
-    "antecedentes": 0.54
+    "antecedentes": 0.55
    }
   },
   {
@@ -636,12 +636,12 @@
     "capacidade": 1.45,
     "atividade": -1.42,
     "oferta": 0.32,
-    "antecedentes": 0.01
+    "antecedentes": 0.02
    }
   },
   {
    "ref": "2020-12-01",
-   "valor": 105.7,
+   "valor": 105.71,
    "contribuicoes": {
     "preco": 2.81,
     "qualidade": 3.08,
@@ -689,7 +689,7 @@
   },
   {
    "ref": "2021-04-01",
-   "valor": 111.9,
+   "valor": 111.91,
    "contribuicoes": {
     "preco": 2.2,
     "qualidade": 2.88,
@@ -701,14 +701,14 @@
   },
   {
    "ref": "2021-05-01",
-   "valor": 114.14,
+   "valor": 114.15,
    "contribuicoes": {
     "preco": 2.46,
     "qualidade": 2.47,
     "capacidade": 0.35,
     "atividade": 1.62,
     "oferta": 4.52,
-    "antecedentes": 2.72
+    "antecedentes": 2.73
    }
   },
   {
@@ -720,7 +720,7 @@
     "capacidade": 0.16,
     "atividade": 0.59,
     "oferta": 3.33,
-    "antecedentes": 1.17
+    "antecedentes": 1.18
    }
   },
   {
@@ -917,7 +917,7 @@
   },
   {
    "ref": "2022-11-01",
-   "valor": 97.41,
+   "valor": 97.42,
    "contribuicoes": {
     "preco": -1.36,
     "qualidade": 1.0,
@@ -1073,7 +1073,7 @@
   },
   {
    "ref": "2023-12-01",
-   "valor": 98.84,
+   "valor": 98.85,
    "contribuicoes": {
     "preco": -0.77,
     "qualidade": 0.13,
@@ -1116,7 +1116,7 @@
     "capacidade": -1.67,
     "atividade": 0.3,
     "oferta": -0.09,
-    "antecedentes": -0.4
+    "antecedentes": -0.39
    }
   },
   {
@@ -1128,7 +1128,7 @@
     "capacidade": -1.64,
     "atividade": 1.69,
     "oferta": 3.32,
-    "antecedentes": 1.12
+    "antecedentes": 1.13
    }
   },
   {
@@ -1193,7 +1193,7 @@
   },
   {
    "ref": "2024-10-01",
-   "valor": 103.1,
+   "valor": 103.11,
    "contribuicoes": {
     "preco": -0.37,
     "qualidade": 0.18,
@@ -1308,7 +1308,7 @@
     "capacidade": -2.31,
     "atividade": 1.45,
     "oferta": -0.5,
-    "antecedentes": 0.93
+    "antecedentes": 0.94
    }
   },
   {
@@ -1416,7 +1416,7 @@
     "capacidade": -2.92,
     "atividade": 1.33,
     "oferta": 0.05,
-    "antecedentes": 0.23
+    "antecedentes": 0.24
    }
   },
   {
@@ -1558,7 +1558,7 @@
       "capacidade": 0.94,
       "atividade": -1.71,
       "oferta": -1.61,
-      "antecedentes": -1.56
+      "antecedentes": -1.57
      }
     },
     {
@@ -1587,7 +1587,7 @@
     },
     {
      "ref": "2017-01-01",
-     "valor": 97.9,
+     "valor": 97.91,
      "contribuicoes": {
       "preco": -3.56,
       "qualidade": 0.0,
@@ -1702,12 +1702,12 @@
       "capacidade": 1.57,
       "atividade": -0.19,
       "oferta": 1.17,
-      "antecedentes": 1.04
+      "antecedentes": 1.05
      }
     },
     {
      "ref": "2017-11-01",
-     "valor": 102.59,
+     "valor": 102.6,
      "contribuicoes": {
       "preco": -0.67,
       "qualidade": 0.52,
@@ -1731,7 +1731,7 @@
     },
     {
      "ref": "2018-01-01",
-     "valor": 103.23,
+     "valor": 103.24,
      "contribuicoes": {
       "preco": -0.19,
       "qualidade": 0.65,
@@ -1767,14 +1767,14 @@
     },
     {
      "ref": "2018-04-01",
-     "valor": 104.7,
+     "valor": 104.71,
      "contribuicoes": {
       "preco": -0.53,
       "qualidade": 0.9,
       "capacidade": 1.66,
       "atividade": -0.07,
       "oferta": 2.11,
-      "antecedentes": 0.62
+      "antecedentes": 0.63
      }
     },
     {
@@ -1803,7 +1803,7 @@
     },
     {
      "ref": "2018-07-01",
-     "valor": 103.6,
+     "valor": 103.61,
      "contribuicoes": {
       "preco": 0.66,
       "qualidade": 1.19,
@@ -2067,7 +2067,7 @@
     },
     {
      "ref": "2020-05-01",
-     "valor": 93.07,
+     "valor": 93.06,
      "contribuicoes": {
       "preco": 1.7,
       "qualidade": 0.0,
@@ -2110,12 +2110,12 @@
       "capacidade": 2.36,
       "atividade": -2.36,
       "oferta": -0.89,
-      "antecedentes": 0.5
+      "antecedentes": 0.51
      }
     },
     {
      "ref": "2020-09-01",
-     "valor": 106.75,
+     "valor": 106.76,
      "contribuicoes": {
       "preco": 2.88,
       "qualidade": 2.11,
@@ -2134,7 +2134,7 @@
       "capacidade": 1.91,
       "atividade": -1.81,
       "oferta": -0.97,
-      "antecedentes": 0.54
+      "antecedentes": 0.55
      }
     },
     {
@@ -2146,7 +2146,7 @@
       "capacidade": 1.45,
       "atividade": -1.42,
       "oferta": 0.21,
-      "antecedentes": 0.01
+      "antecedentes": 0.02
      }
     },
     {
@@ -2187,7 +2187,7 @@
     },
     {
      "ref": "2021-03-01",
-     "valor": 107.97,
+     "valor": 107.98,
      "contribuicoes": {
       "preco": 2.49,
       "qualidade": 2.78,
@@ -2218,7 +2218,7 @@
       "capacidade": 0.35,
       "atividade": 1.62,
       "oferta": 6.28,
-      "antecedentes": 2.72
+      "antecedentes": 2.73
      }
     },
     {
@@ -2230,7 +2230,7 @@
       "capacidade": 0.16,
       "atividade": 0.59,
       "oferta": 3.83,
-      "antecedentes": 1.17
+      "antecedentes": 1.18
      }
     },
     {
@@ -2595,7 +2595,7 @@
     },
     {
      "ref": "2024-01-01",
-     "valor": 102.0,
+     "valor": 102.01,
      "contribuicoes": {
       "preco": 0.12,
       "qualidade": 0.7,
@@ -2626,7 +2626,7 @@
       "capacidade": -1.67,
       "atividade": 0.3,
       "oferta": -0.47,
-      "antecedentes": -0.4
+      "antecedentes": -0.39
      }
     },
     {
@@ -2638,7 +2638,7 @@
       "capacidade": -1.64,
       "atividade": 1.69,
       "oferta": 2.76,
-      "antecedentes": 1.12
+      "antecedentes": 1.13
      }
     },
     {
@@ -2818,7 +2818,7 @@
       "capacidade": -2.31,
       "atividade": 1.45,
       "oferta": -0.92,
-      "antecedentes": 0.93
+      "antecedentes": 0.94
      }
     },
     {
@@ -2926,7 +2926,7 @@
       "capacidade": -2.92,
       "atividade": 1.33,
       "oferta": -0.07,
-      "antecedentes": 0.23
+      "antecedentes": 0.24
      }
     },
     {
@@ -3151,7 +3151,7 @@
       "qualidade": -4.18,
       "atividade": -1.18,
       "oferta": -0.56,
-      "antecedentes": 0.31
+      "antecedentes": 0.32
      }
     },
     {
@@ -3167,7 +3167,7 @@
     },
     {
      "ref": "2017-08-01",
-     "valor": 94.8,
+     "valor": 94.81,
      "contribuicoes": {
       "preco": -2.2,
       "qualidade": -3.65,
@@ -3195,7 +3195,7 @@
       "qualidade": -3.32,
       "atividade": -0.23,
       "oferta": 0.03,
-      "antecedentes": 1.25
+      "antecedentes": 1.26
      }
     },
     {
@@ -3222,7 +3222,7 @@
     },
     {
      "ref": "2018-01-01",
-     "valor": 96.44,
+     "valor": 96.45,
      "contribuicoes": {
       "preco": -1.47,
       "qualidade": -2.35,
@@ -3250,7 +3250,7 @@
       "qualidade": -1.72,
       "atividade": -1.24,
       "oferta": 0.07,
-      "antecedentes": -0.39
+      "antecedentes": -0.38
      }
     },
     {
@@ -3305,7 +3305,7 @@
       "qualidade": -0.45,
       "atividade": -0.23,
       "oferta": 2.23,
-      "antecedentes": -0.25
+      "antecedentes": -0.24
      }
     },
     {
@@ -3332,7 +3332,7 @@
     },
     {
      "ref": "2018-11-01",
-     "valor": 99.96,
+     "valor": 99.97,
      "contribuicoes": {
       "preco": 0.55,
       "qualidade": -0.62,
@@ -3404,7 +3404,7 @@
       "qualidade": -0.68,
       "atividade": 0.52,
       "oferta": 1.43,
-      "antecedentes": 4.17
+      "antecedentes": 4.18
      }
     },
     {
@@ -3475,7 +3475,7 @@
     },
     {
      "ref": "2019-12-01",
-     "valor": 104.64,
+     "valor": 104.65,
      "contribuicoes": {
       "preco": 1.88,
       "qualidade": 0.72,
@@ -3514,7 +3514,7 @@
       "qualidade": 0.68,
       "atividade": -1.37,
       "oferta": 8.1,
-      "antecedentes": 1.04
+      "antecedentes": 1.05
      }
     },
     {
@@ -3580,7 +3580,7 @@
       "qualidade": 2.82,
       "atividade": -1.94,
       "oferta": 1.28,
-      "antecedentes": 1.87
+      "antecedentes": 1.88
      }
     },
     {
@@ -3591,7 +3591,7 @@
       "qualidade": 3.05,
       "atividade": -2.17,
       "oferta": -0.94,
-      "antecedentes": 0.65
+      "antecedentes": 0.66
      }
     },
     {
@@ -3629,7 +3629,7 @@
     },
     {
      "ref": "2021-02-01",
-     "valor": 104.89,
+     "valor": 104.9,
      "contribuicoes": {
       "preco": 2.81,
       "qualidade": 3.42,
@@ -3673,7 +3673,7 @@
     },
     {
      "ref": "2021-06-01",
-     "valor": 111.14,
+     "valor": 111.15,
      "contribuicoes": {
       "preco": 3.34,
       "qualidade": 2.95,
@@ -3684,13 +3684,13 @@
     },
     {
      "ref": "2021-07-01",
-     "valor": 105.11,
+     "valor": 105.12,
      "contribuicoes": {
       "preco": 2.51,
       "qualidade": 2.82,
       "atividade": -0.14,
       "oferta": 0.28,
-      "antecedentes": -0.35
+      "antecedentes": -0.34
      }
     },
     {
@@ -3844,7 +3844,7 @@
       "qualidade": 2.58,
       "atividade": 1.42,
       "oferta": 1.36,
-      "antecedentes": 0.13
+      "antecedentes": 0.14
      }
     },
     {
@@ -3904,7 +3904,7 @@
     },
     {
      "ref": "2023-03-01",
-     "valor": 99.41,
+     "valor": 99.42,
      "contribuicoes": {
       "preco": -1.33,
       "qualidade": 0.75,
@@ -3992,7 +3992,7 @@
     },
     {
      "ref": "2023-11-01",
-     "valor": 98.85,
+     "valor": 98.86,
      "contribuicoes": {
       "preco": -0.64,
       "qualidade": -1.88,
@@ -4009,7 +4009,7 @@
       "qualidade": -0.55,
       "atividade": 1.21,
       "oferta": 0.13,
-      "antecedentes": 0.05
+      "antecedentes": 0.06
      }
     },
     {
@@ -4036,7 +4036,7 @@
     },
     {
      "ref": "2024-03-01",
-     "valor": 99.15,
+     "valor": 99.16,
      "contribuicoes": {
       "preco": -0.02,
       "qualidade": -0.95,
@@ -4047,7 +4047,7 @@
     },
     {
      "ref": "2024-04-01",
-     "valor": 106.26,
+     "valor": 106.27,
      "contribuicoes": {
       "preco": 0.07,
       "qualidade": -1.12,
@@ -4135,7 +4135,7 @@
     },
     {
      "ref": "2024-12-01",
-     "valor": 104.7,
+     "valor": 104.71,
      "contribuicoes": {
       "preco": 0.98,
       "qualidade": 0.72,
@@ -4174,7 +4174,7 @@
       "qualidade": -0.22,
       "atividade": 1.95,
       "oferta": 0.06,
-      "antecedentes": -0.4
+      "antecedentes": -0.39
      }
     },
     {
@@ -4207,12 +4207,12 @@
       "qualidade": -0.82,
       "atividade": 1.67,
       "oferta": -0.43,
-      "antecedentes": -0.78
+      "antecedentes": -0.77
      }
     },
     {
      "ref": "2025-07-01",
-     "valor": 99.88,
+     "valor": 99.89,
      "contribuicoes": {
       "preco": -1.65,
       "qualidade": -1.22,
@@ -4234,7 +4234,7 @@
     },
     {
      "ref": "2025-09-01",
-     "valor": 100.52,
+     "valor": 100.53,
      "contribuicoes": {
       "preco": -0.86,
       "qualidade": -1.15,

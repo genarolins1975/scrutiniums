@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-03T13:55:33+00:00",
+ "gerado_em": "2026-09-04T15:08:04+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 336,
-  "total_editais": 1118,
+  "total_editais": 1122,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1187,6 +1187,42 @@
     "url": "https://pncp.gov.br/compras/07598618000144/2026/96"
    },
    {
+    "ente": "MUNICIPIO DE CARMO DO RIO CLARO",
+    "municipio": "Carmo do Rio Claro",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/18243287000146/2026/130"
+   },
+   {
+    "ente": "CAMARA MUNICIPAL DE JUNDIAI",
+    "municipio": "Jundiaí",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/51864114000110/2026/108"
+   },
+   {
+    "ente": "MUNICIPIO DE CATALAO",
+    "municipio": "Catalão",
+    "uf": "GO",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/01505643000150/2026/118"
+   },
+   {
+    "ente": "MUNICIPIO DE ESPERANCA",
+    "municipio": "Esperança",
+    "uf": "PB",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/08993909000108/2026/141"
+   },
+   {
     "ente": "MUNICIPIO DE FRUTA DE LEITE",
     "municipio": "Fruta de Leite",
     "uf": "MG",
@@ -1230,42 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-01",
     "url": "https://pncp.gov.br/compras/45780087000103/2026/110"
-   },
-   {
-    "ente": "MUNICIPIO DE BOTUVERA",
-    "municipio": "Botuverá",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-31",
-    "url": "https://pncp.gov.br/compras/83102350000196/2026/74"
-   },
-   {
-    "ente": "MUNICIPIO DE COTIA",
-    "municipio": "Cotia",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-31",
-    "url": "https://pncp.gov.br/compras/46523049000120/2026/165"
-   },
-   {
-    "ente": "MUNICIPIO DE VARZEDO",
-    "municipio": "Varzedo",
-    "uf": "BA",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-31",
-    "url": "https://pncp.gov.br/compras/13460266000169/2026/70"
-   },
-   {
-    "ente": "MUNICIPIO DE PEROBAL",
-    "municipio": "Perobal",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-08-26",
-    "url": "https://pncp.gov.br/compras/01612444000140/2026/95"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

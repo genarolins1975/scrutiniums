@@ -15,7 +15,7 @@
   "modelo": "banco universal",
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:40+00:00",
+  "atualizado_em": "2026-09-04T15:08:11+00:00",
   "aviso_pares": null,
   "cnpj": "60.872.504/0001-23 (companhia listada/holding)",
   "participante_open_finance": true
@@ -123,7 +123,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-03"
+  "calculado_em": "2026-09-04"
  },
  "kpis": [
   {
@@ -1606,7 +1606,7 @@
  },
  "openfinance": {
   "organisation": "ITAÚ UNIBANCO",
-  "chamadas_semana": 5986104776.0,
+  "chamadas_semana": 5371594886.0,
   "share_pct": 8.7,
   "familias_api": null,
   "papeis": null,

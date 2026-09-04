@@ -9,13 +9,13 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 389,
+  "n_pares": 390,
   "conglomerado_prudencial": "C0088187",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:41+00:00",
+  "atualizado_em": "2026-09-04T15:08:13+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 53.899.051",
   "participante_open_finance": null
@@ -58,7 +58,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 389,
+  "quantidade": 390,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -243,7 +243,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 5.61,
+   "mediana_grupo": 5.64,
    "percentil": 5.9
   },
   {
@@ -253,7 +253,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 1.94,
-   "percentil": 14.2
+   "percentil": 14.4
   }
  ],
  "carteira": {
@@ -654,6 +654,7 @@
     1.84,
     1.49,
     0.99,
+    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -1415,6 +1416,7 @@
     5.44,
     4.56,
     6.69,
+    14.1,
     5.6,
     2.18,
     1.63,
@@ -1472,7 +1474,7 @@
     1.14
    ],
    "meu": 1.13,
-   "mediana": 5.61
+   "mediana": 5.64
   }
  },
  "score_ref": {

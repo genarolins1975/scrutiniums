@@ -1,7 +1,7 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-03T13:55:45+00:00",
- "coletado_em": "2026-09-03T13:44:23+00:00",
+ "gerado_em": "2026-09-04T15:08:17+00:00",
+ "coletado_em": "2026-09-04T14:41:26+00:00",
  "aviso_permanente": "O volume de processos não constitui, isoladamente, evidência de irregularidade ou de pior qualidade institucional. Os resultados são influenciados pela escala, perfil de clientes, presença geográfica, modelo de negócio, organização societária, acesso à Justiça, práticas locais de litigância e cobertura das bases.",
  "limitacao_central": "Nenhuma fonte pública nacional atribui processos judiciais a uma instituição financeira identificada. O DataJud público não publica as partes — verificamos campo a campo: o documento traz classe, assuntos, movimentos, órgão julgador e número do processo, e nenhum identificador de parte. Por isso esta página tem duas camadas que nunca se cruzam.",
  "camada_nacional": {
@@ -40,12 +40,12 @@
     "tribunal": "TJSP",
     "ramo": "civel",
     "uf": "SP",
-    "casos_unicos": 6449538,
-    "registros": 6729171,
+    "casos_unicos": 6355818,
+    "registros": 6629905,
     "registros_indice": 10000,
     "por_categoria": {
      "garantias_cobranca": 1528834,
-     "revisionais": 2549644,
+     "revisionais": 2455924,
      "indenizatorias": 2371060
     }
    },
@@ -108,13 +108,13 @@
     "tribunal": "TJRJ",
     "ramo": "civel",
     "uf": "RJ",
-    "casos_unicos": 3140257,
-    "registros": 3588278,
+    "casos_unicos": 3138074,
+    "registros": 3585382,
     "registros_indice": 10000,
     "por_categoria": {
      "indenizatorias": 2097895,
      "garantias_cobranca": 310431,
-     "revisionais": 731931
+     "revisionais": 729748
     }
    },
    {
@@ -186,12 +186,12 @@
     "tribunal": "TJGO",
     "ramo": "civel",
     "uf": "GO",
-    "casos_unicos": 753202,
-    "registros": 883922,
+    "casos_unicos": 752998,
+    "registros": 883675,
     "registros_indice": 10000,
     "por_categoria": {
      "indenizatorias": 176480,
-     "garantias_cobranca": 220056,
+     "garantias_cobranca": 219852,
      "revisionais": 356666
     }
    },
@@ -227,16 +227,16 @@
     "registros": 12954198,
     "casos_unicos": 10756250,
     "razao_reg_caso": 1.204,
-    "part": 41.0
+    "part": 41.15
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "rotulo": "Revisionais de contrato bancário",
-    "registros": 12230336,
-    "casos_unicos": 10460943,
-    "razao_reg_caso": 1.169,
-    "part": 39.88
+    "registros": 12128174,
+    "casos_unicos": 10365040,
+    "razao_reg_caso": 1.17,
+    "part": 39.66
    },
    {
     "ramo": "trabalhista",
@@ -251,10 +251,10 @@
     "ramo": "civel",
     "categoria": "garantias_cobranca",
     "rotulo": "Garantias e cobrança (tipicamente promovidas pela IF)",
-    "registros": 5336512,
-    "casos_unicos": 5015081,
+    "registros": 5336265,
+    "casos_unicos": 5014877,
     "razao_reg_caso": 1.064,
-    "part": 19.12
+    "part": 19.19
    },
    {
     "ramo": "trabalhista",
@@ -381,20 +381,20 @@
     "casos_unicos": 1664120
    },
    {
-    "ramo": "civel",
-    "categoria": "revisionais",
-    "codigo": 11806,
-    "nome": "Empréstimo consignado",
-    "registros": 1988849,
-    "casos_unicos": 1628846
-   },
-   {
     "ramo": "trabalhista",
     "categoria": "jornada",
     "codigo": 13769,
     "nome": "Horas Extras",
     "registros": 2189505,
     "casos_unicos": 1623757
+   },
+   {
+    "ramo": "civel",
+    "categoria": "revisionais",
+    "codigo": 11806,
+    "nome": "Empréstimo consignado",
+    "registros": 1893455,
+    "casos_unicos": 1538903
    },
    {
     "ramo": "trabalhista",
@@ -497,8 +497,8 @@
     "categoria": "revisionais",
     "codigo": 6007,
     "nome": "Repetição de indébito",
-    "registros": 606309,
-    "casos_unicos": 443884
+    "registros": 603413,
+    "casos_unicos": 441701
    },
    {
     "ramo": "civel",
@@ -529,8 +529,8 @@
     "categoria": "revisionais",
     "codigo": 7773,
     "nome": "Financiamento de Produto",
-    "registros": 203199,
-    "casos_unicos": 170699
+    "registros": 199327,
+    "casos_unicos": 166922
    },
    {
     "ramo": "civel",
@@ -553,8 +553,8 @@
     "categoria": "garantias_cobranca",
     "codigo": 9584,
     "nome": "Arrendamento Mercantil",
-    "registros": 94714,
-    "casos_unicos": 85783
+    "registros": 94467,
+    "casos_unicos": 85579
    }
   ],
   "cats_civel": [
@@ -568,7 +568,7 @@
    "fgts",
    "adicionais"
   ],
-  "total_civel_casos": 26232274,
+  "total_civel_casos": 26136167,
   "total_trabalhista_casos": 27532115,
   "nota_temporal": "Contagens sobre o acervo acumulado do índice, sem recorte temporal: o campo de ajuizamento mistura datas ISO-8601 com carimbos de 14 dígitos migrados de sistemas legados, que o índice interpreta como epoch-millis e joga para os anos 2609–2612. Séries anuais exigiriam reinterpretar as datas documento a documento — lacuna declarada.",
   "nota_polo": "O DataJud não informa polo ativo nem passivo. As categorias de garantias e cobrança (alienação fiduciária, arrendamento, cheque) são tipicamente promovidas PELA instituição e por isso ficam separadas das revisionais e indenizatórias, que são tipicamente contra ela."

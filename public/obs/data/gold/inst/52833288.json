@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:41+00:00",
+  "atualizado_em": "2026-09-04T15:08:13+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 52.833.288",
   "participante_open_finance": true
@@ -662,7 +662,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "NUBANK",
-  "chamadas_semana": 17577269843.0,
+  "chamadas_semana": 15779107311.0,
   "share_pct": 25.6,
   "familias_api": null,
   "papeis": null,

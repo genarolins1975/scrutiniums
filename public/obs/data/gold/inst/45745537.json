@@ -9,13 +9,13 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 808,
+  "n_pares": 807,
   "conglomerado_prudencial": "C0086172",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:40+00:00",
+  "atualizado_em": "2026-09-04T15:08:12+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 45.745.537",
   "participante_open_finance": null
@@ -61,7 +61,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 808,
+  "quantidade": 807,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -222,8 +222,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.34,
-   "percentil": 62.2
+   "mediana_grupo": 4.27,
+   "percentil": 62.3
   },
   {
    "indicador": "ROE do período",
@@ -232,7 +232,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 2.01,
-   "percentil": 0.7
+   "percentil": 0.6
   }
  ],
  "carteira": {
@@ -1253,7 +1253,7 @@
     4.0
    ],
    "meu": 6.18,
-   "mediana": 4.34
+   "mediana": 4.27
   }
  },
  "score_ref": {

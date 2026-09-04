@@ -9,13 +9,13 @@
   "sede": "Osasco/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 389,
+  "n_pares": 390,
   "conglomerado_prudencial": "C0084820",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:41+00:00",
+  "atualizado_em": "2026-09-04T15:08:13+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -65,7 +65,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 389,
+  "quantidade": 390,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -140,7 +140,7 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-03"
+  "calculado_em": "2026-09-04"
  },
  "kpis": [
   {
@@ -220,8 +220,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 5.61,
-   "percentil": 63.7
+   "mediana_grupo": 5.64,
+   "percentil": 63.5
   },
   {
    "indicador": "ROE do período",
@@ -230,7 +230,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 1.94,
-   "percentil": 51.5
+   "percentil": 51.7
   }
  ],
  "carteira": {
@@ -578,6 +578,7 @@
     1.84,
     1.49,
     0.99,
+    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -973,6 +974,7 @@
     5.44,
     4.56,
     6.69,
+    14.1,
     5.6,
     2.18,
     1.63,
@@ -1030,7 +1032,7 @@
     1.14
    ],
    "meu": 7.7,
-   "mediana": 5.61
+   "mediana": 5.64
   }
  },
  "score_ref": {
@@ -1087,7 +1089,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "MERCADO PAGO",
-  "chamadas_semana": 7008083477.0,
+  "chamadas_semana": 6283655295.0,
   "share_pct": 10.2,
   "familias_api": 34,
   "papeis": [

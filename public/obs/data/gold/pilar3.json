@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-03T13:55:33+00:00",
+ "gerado_em": "2026-09-04T15:08:04+00:00",
  "titulo": "Liquidez e capital — Pilar 3 (KM1)",
  "metricas": {
   "icp_pct": {
@@ -1166,6 +1166,200 @@
     "icp_pct": 11.0,
     "margem_capital_principal_pct": 4.0,
     "nivel1_pct": 12.0
+   },
+   "periodo_ultimo": "2026-2"
+  },
+  {
+   "cnpj8": "60746948",
+   "nome": "BCO BRADESCO S.A.",
+   "cod_inst": "C0080075",
+   "series": {
+    "acp_total_pct": [
+     {
+      "p": "2025-2",
+      "v": 4.0
+     },
+     {
+      "p": "2025-3",
+      "v": 4.0
+     },
+     {
+      "p": "2025-4",
+      "v": 4.0
+     },
+     {
+      "p": "2026-1",
+      "v": 4.0
+     },
+     {
+      "p": "2026-2",
+      "v": 4.0
+     }
+    ],
+    "alavancagem_pct": [
+     {
+      "p": "2025-2",
+      "v": 7.0
+     },
+     {
+      "p": "2025-3",
+      "v": 7.0
+     },
+     {
+      "p": "2025-4",
+      "v": 7.0
+     },
+     {
+      "p": "2026-1",
+      "v": 6.0
+     },
+     {
+      "p": "2026-2",
+      "v": 7.0
+     }
+    ],
+    "basileia_pct": [
+     {
+      "p": "2025-2",
+      "v": 16.0
+     },
+     {
+      "p": "2025-3",
+      "v": 16.0
+     },
+     {
+      "p": "2025-4",
+      "v": 16.0
+     },
+     {
+      "p": "2026-1",
+      "v": 15.0
+     },
+     {
+      "p": "2026-2",
+      "v": 16.0
+     }
+    ],
+    "icp_pct": [
+     {
+      "p": "2025-2",
+      "v": 11.0
+     },
+     {
+      "p": "2025-3",
+      "v": 11.0
+     },
+     {
+      "p": "2025-4",
+      "v": 11.0
+     },
+     {
+      "p": "2026-1",
+      "v": 10.0
+     },
+     {
+      "p": "2026-2",
+      "v": 11.0
+     }
+    ],
+    "lcr_pct": [
+     {
+      "p": "2025-2",
+      "v": 148.0
+     },
+     {
+      "p": "2025-3",
+      "v": 153.0
+     },
+     {
+      "p": "2025-4",
+      "v": 158.0
+     },
+     {
+      "p": "2026-1",
+      "v": 162.0
+     },
+     {
+      "p": "2026-2",
+      "v": 149.0
+     }
+    ],
+    "margem_capital_principal_pct": [
+     {
+      "p": "2025-2",
+      "v": 3.0
+     },
+     {
+      "p": "2025-3",
+      "v": 3.0
+     },
+     {
+      "p": "2025-4",
+      "v": 3.0
+     },
+     {
+      "p": "2026-1",
+      "v": 2.0
+     },
+     {
+      "p": "2026-2",
+      "v": 3.0
+     }
+    ],
+    "nivel1_pct": [
+     {
+      "p": "2025-2",
+      "v": 13.0
+     },
+     {
+      "p": "2025-3",
+      "v": 13.0
+     },
+     {
+      "p": "2025-4",
+      "v": 13.0
+     },
+     {
+      "p": "2026-1",
+      "v": 12.0
+     },
+     {
+      "p": "2026-2",
+      "v": 13.0
+     }
+    ],
+    "nsfr_pct": [
+     {
+      "p": "2025-2",
+      "v": 122.0
+     },
+     {
+      "p": "2025-3",
+      "v": 121.0
+     },
+     {
+      "p": "2025-4",
+      "v": 123.0
+     },
+     {
+      "p": "2026-1",
+      "v": 122.0
+     },
+     {
+      "p": "2026-2",
+      "v": 121.0
+     }
+    ]
+   },
+   "ultimo": {
+    "acp_total_pct": 4.0,
+    "alavancagem_pct": 7.0,
+    "basileia_pct": 16.0,
+    "icp_pct": 11.0,
+    "lcr_pct": 149.0,
+    "margem_capital_principal_pct": 3.0,
+    "nivel1_pct": 13.0,
+    "nsfr_pct": 121.0
    },
    "periodo_ultimo": "2026-2"
   },
@@ -5681,7 +5875,7 @@
   }
  ],
  "cobertura": {
-  "com_dados": 36,
+  "com_dados": 37,
   "ausencias_notaveis": [
    "Bradesco não registra o Pilar 3 no arranjo DASFN do BCB (verificado em 08/2026) — os relatórios existem em PDF no RI; extração fica para rodada futura.",
    "Caixa registra endpoints mas parou de atualizá-los em 2022 — ausência declarada."

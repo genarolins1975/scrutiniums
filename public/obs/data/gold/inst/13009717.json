@@ -9,13 +9,13 @@
   "sede": "Aracaju/SE",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 389,
+  "n_pares": 390,
   "conglomerado_prudencial": "C0081634",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:37+00:00",
+  "atualizado_em": "2026-09-04T15:08:09+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 13.009.717",
   "participante_open_finance": null
@@ -67,7 +67,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 389,
+  "quantidade": 390,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -142,7 +142,7 @@
   "confianca": "moderada",
   "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-03"
+  "calculado_em": "2026-09-04"
  },
  "kpis": [
   {
@@ -263,8 +263,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 5.61,
-   "percentil": 89.4
+   "mediana_grupo": 5.64,
+   "percentil": 89.2
   },
   {
    "indicador": "ROE do período",
@@ -273,7 +273,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 1.94,
-   "percentil": 64.2
+   "percentil": 64.3
   }
  ],
  "carteira": {
@@ -1227,6 +1227,7 @@
     1.84,
     1.49,
     0.99,
+    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -1988,6 +1989,7 @@
     5.44,
     4.56,
     6.69,
+    14.1,
     5.6,
     2.18,
     1.63,
@@ -2045,7 +2047,7 @@
     1.14
    ],
    "meu": 13.48,
-   "mediana": 5.61
+   "mediana": 5.64
   }
  },
  "score_ref": {

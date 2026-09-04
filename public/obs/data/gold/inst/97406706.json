@@ -9,13 +9,13 @@
   "sede": "Barueri/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 389,
+  "n_pares": 390,
   "conglomerado_prudencial": "C0082987",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-03T13:55:40+00:00",
+  "atualizado_em": "2026-09-04T15:08:11+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 97.406.706",
   "participante_open_finance": null
@@ -66,7 +66,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 389,
+  "quantidade": 390,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -256,8 +256,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 5.61,
-   "percentil": 16.0
+   "mediana_grupo": 5.64,
+   "percentil": 15.9
   },
   {
    "indicador": "ROE do período",
@@ -266,7 +266,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 1.94,
-   "percentil": 55.4
+   "percentil": 55.5
   }
  ],
  "carteira": {
@@ -1186,6 +1186,7 @@
     1.84,
     1.49,
     0.99,
+    -66.06,
     0.37,
     -20.31,
     2.64,
@@ -1947,6 +1948,7 @@
     5.44,
     4.56,
     6.69,
+    14.1,
     5.6,
     2.18,
     1.63,
@@ -2004,7 +2006,7 @@
     1.14
    ],
    "meu": 1.42,
-   "mediana": 5.61
+   "mediana": 5.64
   }
  },
  "score_ref": {
