@@ -40,6 +40,7 @@ export const VIEW_SECTIONS = [
   "obs:estados",
   "obs:estado",
   "obs:sfn",
+  "obs:conduta",
   "obs:sugestoes",
   // Plataforma (páginas Next)
   "app:conta",
@@ -81,6 +82,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:estados": "Observatório · Estados",
   "obs:estado": "Observatório · Página de UF",
   "obs:sfn": "Observatório · Entrantes e saídas do SFN",
+  "obs:conduta": "Observatório · Conduta e enforcement",
   "obs:sugestoes": "Observatório · Sugestões",
   "app:conta": "Plataforma · Conta",
 };

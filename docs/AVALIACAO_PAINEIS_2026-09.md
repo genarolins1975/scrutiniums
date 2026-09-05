@@ -450,3 +450,22 @@ cooperativas singulares são 51% dos reportantes.
 nasce agora. Saída do IF.data não é quebra. As séries SGS de quantidade de sedes por
 segmento param em 2022 e ficaram de fora.
 
+## 17. Painel nº 6: conduta e enforcement (05/09/2026, noite)
+
+**O que foi construído.** Dois coletores (quadros de PAS do BCB pela API Olinda;
+processos sancionadores da CVM), o builder `pipeline/conduta.py` e a aba
+`/observatorio/conduct-enforcement` no grupo Riscos e temas, em cinco seções (BCB, CVM,
+recentes em ordem cronológica, reclamações, método). A regra editorial do §6, "nunca
+ranking", virou trava de teste: a página não ordena instituições por multa, processo ou
+reclamação, e as listas nominais são cronológicas.
+
+**Evidência** (BCB/Gepad e CVM, consultas de 05/09/2026). BCB, 12 meses: 1.295 processos
+decididos, 94% com multa, mediana de R$ 25 mil, R$ 75,8 milhões no total, 6
+inabilitações, 389 inabilitados vigentes; 89% das multas do acervo pagas. Tempo mediano
+entre citação e decisão: 2,8 meses, p90 de 29 meses. CVM: 68 processos abertos em 12
+meses, 251 em curso com idade mediana de 23 meses.
+
+**Inferência.** O enforcement do BCB é de alto volume e baixo valor unitário: a multa
+padrão por atraso de remessa domina a distribuição (mediana e p90 iguais). O rito da CVM
+é lento: quase um em quatro processos em curso passa de três anos.
+

@@ -28,6 +28,7 @@ state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
 state.jud = { ramo: "civel", ordem: "bruto" };
 state.sfn = { lista: "entradas", uf: "todas" };
+state.cd = { lista: "bcb" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -43,7 +44,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -222,7 +223,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.92.0";
+const APP_VERSION = "0.93.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -269,6 +270,7 @@ const VIEW_DATA = {
   bndes: ["bndes"],
   estados: ["ufs"], estado: ["ufs"],
   sfn: ["sfn"],
+  conduta: ["conduta"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2872,7 +2874,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3085,6 +3087,10 @@ const GUIA = {
     importa: "Um terço da carteira do SFN tem taxa regulada ou funding público; nas empresas, os repasses do BNDES são a maior fatia. Saber para que porte, setor e UF o banco desembolsa, e por quais agentes, é saber para onde vai o crédito subsidiado.",
     ler: "Três réguas: o saldo direcionado do SGS (estoque no SFN), os desembolsos do Sistema BNDES (fluxo liberado, por mês, desde 1995) e as operações não automáticas (fluxo contratado, contrato a contrato). Leia a janela de 12 meses fechada no último mês publicado e a variação sobre os 12 anteriores; o BNDES publica com meses de atraso e a data-base está no cabeçalho.",
     nao: "As três réguas não se somam. Os valores são nominais: comparar 1995 com hoje sem deflacionar mede inflação. As operações não automáticas são uma fração do desembolso e o recorte municipal é só delas. Aprovação sobre consulta não é taxa de conversão de uma mesma safra." },
+  conduta: { q: "Como o supervisor pune, e o que isso diz do sistema?",
+    importa: "Processos sancionadores são o risco de conduta realizado: o que o Banco Central e a CVM decidiram, em quanto tempo, com que penalidade e se a multa foi paga. Lidos como fluxo do sistema, mostram onde a supervisão tem batido e quanto tempo o rito leva.",
+    ler: "Três réguas: decisões do BCB por apenado (com multa, recurso e situação da cobrança), processos da CVM por fase e área, e o índice de reclamações do ranking trimestral. Comece pela janela de 12 meses e pelo ano a ano; as listas nominais são cronológicas.",
+    nao: "Volume de processos não é irregularidade e decisão não é conduta. Por regra editorial, este painel não ordena instituições por multa, processo ou reclamação. Multa aplicada não é multa paga. A base da CVM traz a fase, não o resultado." },
   sfn: { q: "Quem entrou e quem saiu do sistema financeiro?",
     importa: "A concorrência no crédito começa pela licença: cada SCD, instituição de pagamento ou cooperativa nova é um ofertante a mais, e cada saída (fusão, cancelamento ou liquidação) muda o mapa. O cadastro do BCB diz quem está autorizado hoje; o IF.data diz quem reportou trimestre a trimestre desde 2015.",
     ler: "Três réguas: o cadastro (posição do dia, por grupo e UF), os reportantes do IF.data (trimestral, com entradas, saídas e conversões nominais) e os regimes de resolução. O trimestre mais recente do IF.data ainda recebe retardatários: as saídas nele são provisórias e ficam marcadas.",
@@ -3429,7 +3435,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -8644,6 +8650,125 @@ window.sfnCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — entradas e saídas de reportantes do IF.data (últimos oito trimestres)\n# fonte: BCB/IF.data (presença no relatório resumo) · saída no último trimestre é provisória\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_sfn_entradas_saidas_${S.ifdata.ultimo}.csv`, head + cols.join(";") + "\n" + linhas.map(l => cols.map(c => csvEsc(l[c])).join(";")).join("\n"), "text/csv");
 };
+
+/* ---------- Conduta e enforcement ---------- */
+/* Três réguas declaradas: PAS do BCB (decisões por apenado), PAS da CVM (processos por
+   fase) e reclamações (índice mediano). Regra editorial: nenhuma lista ordenada por
+   instituição; nominal só em ordem cronológica. */
+function cdSet(k, v) { state.cd[k] = v; renderConduta(); }
+function renderConduta() {
+  const el = document.getElementById("view-conduta");
+  const D = state.data.conduta;
+  if (!D) { el.innerHTML = loadingCard("conduta e enforcement"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Conduta e enforcement", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.cd;
+  const B = D.bcb || {}, C = D.cvm || {}, R = D.reclamacoes || {};
+  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const brl = v => v == null ? "–" : fmt.money(v);
+  const mi = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 1) + " mi";
+  const rotulosFim = window.innerWidth > 640;
+  const j = B.janela_12m || {}, ja = B.janela_12m_anterior || {};
+  const head = pageHead({
+    title: "Conduta e enforcement", vintage: B.ultima_decisao ? B.ultima_decisao.slice(0, 7) : null,
+    seals: `${badge("observado", "quadros oficiais de decisões e processos")} ${badge("calculado", "janelas de 12 meses, medianas e tempos de rito calculados")}`,
+    desc: "O que o Banco Central e a CVM decidiram nos processos sancionadores, em quanto tempo, com que penalidade e se a multa foi paga, lido como fluxo do sistema, sem ranking por instituição.",
+    fontes: "BCB/Gepad (PAS: penalidades, inabilitados, proibidos) · CVM (processos sancionadores) · BCB (ranking de reclamações)",
+    actions: `<button class="btn ghost small" onclick="cdCSV()">baixar CSV (decisões do BCB, ano a ano)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${D.sintese}</p><div class="src">Síntese determinística · BCB até ${B.ultima_decisao || "–"} · CVM até ${C.ultima_movimentacao || "–"} · sem ranking por instituição, por regra editorial</div>`;
+  const placarHtml = placar([
+    { l: "Processos decididos pelo BCB (12 m)", v: n0(j.processos), sub: j.decisoes != null ? `${n0(j.decisoes)} decisões por apenado · ${n0(ja.processos)} nos 12 m anteriores` : "", href: "#cd-bcb" },
+    { l: "Multas aplicadas (12 m)", v: mi(j.multas_valor), sub: j.multas_n != null ? `${n0(j.multas_n)} multas · mediana ${brl(j.multa_mediana)}` : "", href: "#cd-bcb" },
+    { l: "Inabilitados vigentes", v: n0((B.inabilitados || {}).vigentes), sub: B.inabilitados ? `${n0(B.inabilitados.encerram_12m)} encerram em 12 m · ${n0(B.proibidos_vigentes)} proibidos de atuar` : "", href: "#cd-bcb" },
+    { l: "Processos abertos pela CVM (12 m)", v: n0((C.abertos_12m || {}).processos), sub: C.acervo ? `${n0(C.acervo.em_curso)} em curso · idade mediana ${fmt.n((C.idade_em_curso_meses || {}).mediana || 0, 0)} meses` : "", href: "#cd-cvm" },
+    { l: "Índice mediano de reclamações", v: R.disponivel ? fmt.n(R.ultimo.mediana, 1) : "–", sub: R.disponivel ? `${R.ultimo.periodo} · ${n0(R.ultimo.n_instituicoes)} instituições` : "ranking ainda não coletado", href: "#cd-reclamacoes" },
+  ]);
+
+  /* ---------- BCB ---------- */
+  let bcb = "";
+  if (B.disponivel) {
+    const an = (B.anual || []).filter(a => !a.incompleto);
+    const seriesB = [{ pts: an.map(a => ({ x: a.ano + "-12", y: a.multas_valor / 1e6 })), color: "#b45309", label: "multas (R$ mi)" }];
+    const seriesN = [{ pts: an.map(a => ({ x: a.ano + "-12", y: a.decisoes })), color: "#1d4e89", label: "decisões" }, { pts: an.map(a => ({ x: a.ano + "-12", y: a.inabilitacoes })), color: "#b91c1c", label: "inabilitações" }];
+    const pMax = B.penas_12m.length ? B.penas_12m[0].n : 1;
+    bcb = secWrap("cd-bcb", `${sechead("O que o Banco Central decidiu", `PAS de 1ª e 2ª instância · ${B.primeira_decisao.slice(0, 4)} a ${B.ultima_decisao} · ${n0(B.acervo.decisoes)} decisões em ${n0(B.acervo.processos)} processos`)}
+    <div class="grid g2">
+      <div class="card"><h4>Ano a ano ${badge("observado")}</h4>
+        <div class="legend">${seriesN.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesN, h: 200, endLabels: rotulosFim, unit: "decisões", dec: 0, fonte: "BCB/Gepad", status: "observado", aria: "decisões e inabilitações por ano" })}
+        <div class="legend" style="margin-top:8px">${seriesB.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesB, h: 160, endLabels: false, unit: "R$ mi", dec: 0, fonte: "BCB/Gepad", status: "observado", aria: "multas aplicadas por ano" })}
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Processos</th><th style="text-align:right">Decisões</th><th style="text-align:right">Multas</th><th style="text-align:right">Valor</th><th style="text-align:right">Inabilit.</th><th style="text-align:right">Sem pena</th><th style="text-align:right">Recurso</th><th style="text-align:right">PJ / PF</th></tr></thead>
+        <tbody>${B.anual.slice(-8).map(a => `<tr><td>${a.ano}${a.incompleto ? ' <span class="src">(parcial)</span>' : ""}</td><td style="text-align:right">${n0(a.processos)}</td><td style="text-align:right">${n0(a.decisoes)}</td><td style="text-align:right">${n0(a.multas_n)}</td><td style="text-align:right">${mi(a.multas_valor)}</td><td style="text-align:right">${n0(a.inabilitacoes)}</td><td style="text-align:right">${pct(a.sem_penalidade_share, 0)}</td><td style="text-align:right">${pct(a.recurso_share, 0)}</td><td style="text-align:right">${n0(a.pj)} / ${n0(a.pf)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${B.nota}</p></div>
+      <div class="card"><h4>Últimos 12 meses: penalidade, cobrança e tempo ${badge("calculado")}</h4>
+        ${B.penas_12m.map(x => `<div class="contrib"><span class="lbl" style="width:190px">${x.pena.toLowerCase()}</span><span class="bar pos" style="width:${Math.min(150, x.n / pMax * 150)}px"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}
+        <p class="src">Multa mediana ${brl(j.multa_mediana)} · p90 ${brl(j.multa_p90)} · ${n0(j.pj)} decisões contra pessoas jurídicas e ${n0(j.pf)} contra pessoas físicas · ${pct(j.decisoes ? j.recursos / j.decisoes * 100 : null, 0)} com recurso.</p>
+        <h5>Cobrança das multas, acervo inteiro</h5>
+        ${(B.cobranca_multas || []).slice(0, 6).map(x => `<div class="contrib"><span class="lbl" style="width:230px">${x.situacao.toLowerCase()}</span><span class="bar" style="width:${Math.min(150, (x.share || 0) * 1.5)}px;background:#6b46a3"></span><span class="num">${pct(x.share)}</span></div>`).join("")}
+        <p class="src">Tempo entre citação e decisão de 1ª instância nas decisões dos últimos 36 meses: mediana ${fmt.n(B.tempo_citacao_decisao_meses.mediana || 0, 0)} meses, p90 ${fmt.n(B.tempo_citacao_decisao_meses.p90 || 0, 0)} (${n0(B.tempo_citacao_decisao_meses.n)} decisões; só as já decididas). Inabilitados vigentes por prazo: ${(B.inabilitados.por_prazo || []).map(p => `${fmt.n(p.prazo_anos, 0)} anos: ${n0(p.n)}`).join(" · ")}.</p></div>
+    </div>`);
+  }
+
+  /* ---------- CVM ---------- */
+  let cvm = "";
+  if (C.disponivel) {
+    const an = C.anual || [];
+    const fMax = C.fases.length ? C.fases[0].n : 1;
+    cvm = secWrap("cd-cvm", `${sechead("O que a CVM instaura e onde os processos estão", `processos sancionadores · abertura de ${an.length ? an[0].ano : "–"} a ${C.ultima_abertura} · ${n0(C.acervo.processos)} processos, ${n0(C.acervo.acusados)} acusados`)}
+    <div class="grid g2">
+      <div class="card"><h4>Ano a ano, por abertura ${badge("observado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Processos</th><th style="text-align:right">Acusados</th><th style="text-align:right">Finalizados</th></tr></thead>
+        <tbody>${an.slice(-10).map(a => `<tr><td>${a.ano}${a.incompleto ? ' <span class="src">(parcial)</span>' : ""}</td><td style="text-align:right">${n0(a.processos)}</td><td style="text-align:right">${n0(a.acusados)}</td><td style="text-align:right">${pct(a.finalizados_share, 0)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${C.acusados_por_processo} acusados por processo em média. Finalizados levaram ${fmt.n(C.duracao_finalizados_meses.mediana || 0, 0)} meses em mediana (p90 ${fmt.n(C.duracao_finalizados_meses.p90 || 0, 0)}) entre a abertura e a última movimentação; os ${n0(C.acervo.em_curso)} em curso têm idade mediana de ${fmt.n(C.idade_em_curso_meses.mediana || 0, 0)} meses, ${n0(C.idade_em_curso_meses.acima_36)} acima de 36.</p></div>
+      <div class="card"><h4>Fase atual e área instrutora ${badge("observado")}</h4>
+        ${C.fases.map(x => `<div class="contrib"><span class="lbl" style="width:190px">${x.fase}</span><span class="bar pos" style="width:${Math.min(150, x.n / fMax * 150)}px"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}
+        <h5 style="margin-top:10px">Área que instruiu</h5>
+        ${C.areas.slice(0, 8).map(x => `<div class="contrib"><span class="lbl" style="width:100px">${x.area}</span><span class="bar" style="width:${Math.min(150, (x.share || 0) * 1.5)}px;background:#0e7c7b"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}
+        <p class="src">${C.nota}</p></div>
+    </div>`);
+  }
+
+  /* ---------- nominal, cronológico ---------- */
+  const L = F.lista === "cvm" ? (C.recentes || []) : (B.recentes || []);
+  const lista = secWrap("cd-lista", `${sechead("As decisões e os processos mais recentes", "ordem cronológica, nunca por valor ou por nome")}
+  <div class="controls"><span class="seg">${[["bcb", "decisões do BCB"], ["cvm", "processos da CVM"]].map(([v, l]) => `<button class="${F.lista === v ? "active" : ""}" onclick="cdSet('lista','${v}')">${l}</button>`).join("")}</span></div>
+  <div class="card">${F.lista === "cvm" ? `<div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th>Abertura</th><th>Objeto</th><th>Área</th><th>Fase</th><th style="text-align:right">Acusados</th><th>Última mov.</th></tr></thead>
+    <tbody>${L.map(x => `<tr><td>${x.abertura}</td><td class="src">${x.objeto}${x.objeto.length >= 220 ? "…" : ""}</td><td>${x.area || "–"}</td><td>${x.fase}</td><td style="text-align:right">${n0(x.acusados)}</td><td>${x.ultima_mov || "–"}</td></tr>`).join("")}</tbody></table></div>`
+    : `<div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th>Decisão</th><th>Apenado</th><th>Pessoa</th><th>Penalidade</th><th style="text-align:right">Multa</th><th>Recurso</th><th>Situação</th></tr></thead>
+    <tbody>${L.map(x => `<tr><td>${x.decisao}</td><td><b>${x.nome}</b></td><td>${x.pessoa || "–"}</td><td>${(x.pena || "–").toLowerCase()}</td><td style="text-align:right">${brl(x.multa)}</td><td>${x.recurso || "–"}</td><td class="src">${(x.situacao || "").toLowerCase()}</td></tr>`).join("")}</tbody></table></div>`}
+    <p class="src">Dados públicos do próprio supervisor, reproduzidos como publicados. A ordem é a da data; nenhuma coluna é ordenável por nome ou valor nesta página.</p></div>`);
+
+  /* ---------- reclamações ---------- */
+  const rec = secWrap("cd-reclamacoes", `${sechead("Reclamações: o índice do ranking trimestral", R.disponivel ? `${R.serie[0].periodo} a ${R.ultimo.periodo}` : "")}
+  <div class="card">${R.disponivel ? `<div class="contrib"><span class="lbl" style="width:190px">índice mediano por trimestre</span>${sparkline(R.serie.map(p => p.mediana || 0), 220, 26)}<span class="num src">${R.serie[0].periodo} ${fmt.n(R.serie[0].mediana, 1)} → ${R.ultimo.periodo} ${fmt.n(R.ultimo.mediana, 1)}</span></div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Trimestre</th><th style="text-align:right">Mediana</th><th style="text-align:right">p90</th><th style="text-align:right">Instituições</th></tr></thead>
+    <tbody>${R.serie.slice(-8).reverse().map(p => `<tr><td>${p.periodo}</td><td style="text-align:right">${fmt.n(p.mediana, 1)}</td><td style="text-align:right">${p.p90 != null ? fmt.n(p.p90, 1) : "–"}</td><td style="text-align:right">${n0(p.n_instituicoes)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${R.nota}</p>` : `<p class="src">o ranking de reclamações ainda não foi coletado nesta execução; a série abre sozinha na próxima carga.</p>`}
+    ${ponte("O índice de cada instituição, na ficha de IF — Instituições", "institutions", null, "lá o índice aparece por instituição, ao lado de capital e inadimplência, nunca como ranking")}</div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("cd-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} ${Object.values(D.fontes || {}).map(f => `<a href="${attr(f.catalogo)}" target="_blank" rel="noopener">${f.nome}</a> (${f.licenca}; nível ${f.nivel})`).join(" · ")}.</p></div>`);
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#cd-bcb", "BCB"], ["#cd-cvm", "CVM"], ["#cd-lista", "Recentes"], ["#cd-reclamacoes", "Reclamações"], ["#cd-metodo", "Método"]])
+    + bcb + cvm + lista + rec + metodo;
+}
+window.cdCSV = () => {
+  const D = state.data.conduta;
+  if (!D || !D.bcb || !D.bcb.disponivel) return;
+  const cols = ["ano", "processos", "decisoes", "multas_n", "multas_valor", "inabilitacoes", "sem_penalidade", "recursos", "pj", "pf", "incompleto"];
+  const head = `# Observatório Brasileiro de Crédito — decisões de processos administrativos sancionadores do BCB, por ano da decisão de 1ª instância\n# fonte: BCB/Gepad (API Olinda) · penalidade final = 2ª instância quando existe · multa aplicada, não paga\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_conduta_bcb_pas_${D.bcb.ultima_decisao}.csv`, head + cols.join(";") + "\n" + D.bcb.anual.map(a => cols.map(c => csvEsc(a[c])).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10867,10 +10992,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -10927,7 +11052,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN", conduta: "Conduta e enforcement" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

@@ -75,7 +75,7 @@ def frescor():
 COLETORES_ESSENCIAIS = ["bcb_sgs", "scr_data", "ifdata", "txjuros", "datajud", "djen",
                         "pix_bcb", "estban", "b3_market", "desenrola", "operacional", "sicor"]
 PRAZO_VINTAGE_DIAS = {"sgs": 75, "scr": 75, "ifdata": 135, "txjuros": 45, "datajud": 75,
-                      "b3": 15, "trends": 120, "sicor": 75, "cvm_ofertas": 45, "securit": 90, "bndes": 200, "focus": 14, "sfn_cadastro": 7}
+                      "b3": 15, "trends": 120, "sicor": 75, "cvm_ofertas": 45, "securit": 90, "bndes": 200, "focus": 14, "sfn_cadastro": 7, "bcb_pas": 60, "cvm_pas": 45}
 
 
 def _fim_do_mes(vintage):
