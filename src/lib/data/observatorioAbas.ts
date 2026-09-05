@@ -159,6 +159,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "rural.json",
   },
   {
+    view: "bndes",
+    caminho: "/directed-credit-bndes",
+    titulo: "Crédito direcionado e BNDES",
+    descricao:
+      "Quanto do crédito do SFN tem taxa regulada ou funding público, e o que o Sistema BNDES desembolsa por porte, setor, UF, produto e agente, com as operações não automáticas contrato a contrato.",
+    gold: "bndes.json",
+  },
+  {
     view: "pix",
     caminho: "/pix",
     titulo: "Pix e Pagamentos",

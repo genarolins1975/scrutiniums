@@ -1191,3 +1191,62 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   aberto (só o líder entra no HHI); CDA de fundos (quem detém CDB e LF de quais bancos)
   segue no backlog como painel de funding.
 
+## 44. Crédito direcionado e BNDES (05/09/2026)
+
+- **Pergunta:** quanto do crédito do SFN tem taxa regulada ou funding público; o que o
+  Sistema BNDES desembolsa, para quem, para quê, onde e por quais agentes; o que o
+  banco contrata operação a operação. Painel nº 2 da avaliação de 05/09 (§6), P2 no
+  backlog.
+- **Fontes (três réguas, nunca somadas entre si):**
+  1. BCB/SGS, estatísticas de crédito com recursos direcionados: 19 séries (`dir_*` em
+     `config/config.json`): saldo, concessões, taxa, inadimplência e prazo, total, PJ,
+     PF e "com recursos do BNDES" (códigos 20593 a 20616, 20685 a 20708, 20756 a
+     20768, 20896, 20906, 21132 a 21155). Coletadas pelo `bcb_sgs` existente.
+  2. BNDES dados abertos (dadosabertos.bndes.gov.br, ODbL), coletor
+     `pipeline/sources/bndes.py`: estatísticas mensais desde 1995 em R$ milhões
+     (desembolsos por porte, porte PF e PJ, UF, setor BNDES, setor CNAE, subsetor CNAE
+     agrupado, forma de apoio e produto; MPME por UF; aprovações por porte e UF;
+     consultas por porte; FINAME mensal), desembolsos anuais por agente credenciado e
+     quantidade anual de operações por porte, fontes de recursos e instituições
+     credenciadas. Silver em formato longo (`bndes_mensal`, `bndes_anual`).
+  3. BNDES, operações não automáticas (diretas e indiretas não automáticas), contrato a
+     contrato desde 2002 (23.815 linhas, 20 MB): `bndes_op`. As indiretas automáticas
+     (arquivo de 1,2 GB) ficam fora da Fase 0.
+  Os recursos são localizados pelo nome no catálogo CKAN a cada execução; hash por
+  arquivo evita regravar.
+- **Builder:** `pipeline/bndes.py` → `bndes.json` (160 KB): `saldo` (série de
+  participação do direcionado, BNDES no crédito PJ, taxa e inadimplência PJ por origem),
+  `desembolsos` (série mensal com soma de 12 meses, anual, porte, funil consultas →
+  aprovações → desembolsos, setor e subsetor, produto com cobertura declarada, UF e
+  região por habitante, FINAME, agentes com HHI, quantidade de operações), `operacoes`
+  (12 meses: top clientes, recortes por produto, natureza, subsetor, custo, garantia e
+  porte, custo financeiro ano a ano, municípios), `funding` (passivo do BNDES por fonte).
+  Aba `/observatorio/directed-credit-bndes`, chunk `emergentes`, grupo Produtos e preços.
+- **Achados na primeira carga (05/09/2026):**
+  - As estatísticas mensais do BNDES terminam em 2026-03 (publicadas com cerca de cinco
+    meses de defasagem); o FINAME vai a 2026-06 e as operações não automáticas a
+    2026-07. A aba mostra cada data-base e nunca alinha uma régua pela outra.
+  - As tabelas por forma de apoio e produto somam 47% do desembolso da janela: as
+    indiretas automáticas (Finame, BNDES Automático, cartão) não estão nelas. A aba
+    declara a cobertura em vez de escalar.
+  - Por UF e por porte fecham com o total ao centavo; MPME por UF fecha com micro +
+    pequena + média da tabela por porte.
+  - Nas operações não automáticas, "SEM MUNICÍPIO" tem código 9999999 e "IE" marca
+    operações multi-UF ou de exportação; 66% do valor contratado em 12 meses não tem
+    município único, e por isso não há mapa municipal neste painel.
+  - Linhas idênticas no CSV de operações são subcréditos distintos do mesmo contrato;
+    a chave da silver é a posição no arquivo, não os campos.
+  - A API do SGS devolveu HTTP 502 durante toda a tarde de 05/09; as 19 séries
+    `dir_*` estão registradas e o bloco `saldo` abre sozinho na primeira execução que
+    as coletar. O gold publicado nesta data traz `saldo.disponivel = false` e a aba
+    mostra a seção como "ainda não coletada".
+- **Vintage e vigília:** `bndes` (último mês das estatísticas de desembolso) em
+  `meta.vintages`, prazo de 200 dias pela defasagem de publicação do banco.
+- **Travas:** `src/tests/bndes-data.test.ts` (janela fechada no último mês publicado,
+  anual = soma do mensal, portes e UFs fecham com o total, cobertura por produto
+  declarada e menor que 100%, operações sem "SEM MUNICÍPIO" no ranking, aba registrada
+  em todos os mapas; o bloco de saldo é testado quando existe).
+- **Pendências:** operações indiretas automáticas (1,2 GB) por agregação prévia fora do
+  pipeline diário; desembolsos mensais detalhados (750 MB) idem; deflator para leitura
+  de longo prazo (a série nominal desde 1995 mede inflação).
+

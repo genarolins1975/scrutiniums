@@ -27,6 +27,7 @@ state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
 state.jud = { ramo: "civel", ordem: "bruto" };
+state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
 state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
@@ -41,7 +42,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -215,7 +216,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.88.0";
+const APP_VERSION = "0.89.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -259,6 +260,7 @@ const VIEW_DATA = {
   regulacao: ["regulacao"],
   rural: ["rural", "rural_mun", "penetracao_malha"],
   ampliado: ["ampliado"],
+  bndes: ["bndes"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2862,7 +2864,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3071,6 +3073,10 @@ const GUIA = {
     importa: "O crédito bancário é só uma parte da dívida de empresas e famílias: debêntures, notas comerciais, CRI, CRA, cotas de FIDC e dívida externa completam o quadro. Quem lê só o SFN subestima a alavancagem das empresas em um terço e não vê a desintermediação em curso.",
     ler: "Três réguas separadas: o saldo ampliado do BCB (estoque devido, em % do PIB), as ofertas registradas na CVM (fluxo por família de ativo, em 12 meses fechados) e o lastro de CRI e CRA (estoque por certificado, com o que está vencido). Leia participação e variação de 12 meses; o mês corrente das ofertas e o último mês dos informes são parciais e ficam marcados.",
     nao: "Saldo, emissão e lastro não se somam nem se dividem entre si. O valor das ofertas é o registrado, não o colocado. Vencido e em atraso no lastro não são perda: subordinação e garantias absorvem parte, e as estruturas não se comparam." },
+  bndes: { q: "Quanto do crédito é dirigido por política pública, e o que o BNDES desembolsa, para quem e onde?",
+    importa: "Um terço da carteira do SFN tem taxa regulada ou funding público; nas empresas, os repasses do BNDES são a maior fatia. Saber para que porte, setor e UF o banco desembolsa, e por quais agentes, é saber para onde vai o crédito subsidiado.",
+    ler: "Três réguas: o saldo direcionado do SGS (estoque no SFN), os desembolsos do Sistema BNDES (fluxo liberado, por mês, desde 1995) e as operações não automáticas (fluxo contratado, contrato a contrato). Leia a janela de 12 meses fechada no último mês publicado e a variação sobre os 12 anteriores; o BNDES publica com meses de atraso e a data-base está no cabeçalho.",
+    nao: "As três réguas não se somam. Os valores são nominais: comparar 1995 com hoje sem deflacionar mede inflação. As operações não automáticas são uma fração do desembolso e o recorte municipal é só delas. Aprovação sobre consulta não é taxa de conversão de uma mesma safra." },
   presmun: { q: "Que presença bancária física existe neste município?",
     importa: "Agência, posto e correspondente são três formas de presença com serviços diferentes; a página diz com todas as letras o que não existe no município.",
     ler: "A classe do município resume o ponto mais completo disponível; os números vêm do cadastro do BCB na posição declarada.",
@@ -3403,7 +3409,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -8136,6 +8142,221 @@ window.ampCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — crédito ampliado ao setor não financeiro, por credor\n# fonte: BCB/SGS (série 28203 e família), R$ milhões, saldo de fim de mês\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_credito_ampliado_${A.saldo.mes}.csv`, head + ["segmento", "mes", "total", "pib_pct", ...comps].join(";") + "\n" + linhas.map(l => l.map(csvEsc).join(";")).join("\n"), "text/csv");
 };
+
+/* ---------- Crédito direcionado e BNDES ---------- */
+/* Três réguas declaradas: saldo direcionado (SGS, estoque no SFN), desembolsos do
+   Sistema BNDES (fluxo liberado) e operações não automáticas (fluxo contratado).
+   Nenhuma seção soma uma régua com a outra. */
+function bnSet(k, v) { state.bn[k] = v; renderBndes(); }
+function renderBndes() {
+  const el = document.getElementById("view-bndes");
+  const B = state.data.bndes;
+  if (!B) { el.innerHTML = loadingCard("crédito direcionado e BNDES"); return; }
+  if (!B.disponivel) {
+    el.innerHTML = pageHead({ title: "Crédito direcionado e BNDES", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${B.motivo || B.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.bn;
+  const S = B.saldo || {}, D = B.desembolsos || {}, O = B.operacoes || {}, FU = B.funding || {};
+  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+  const biM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e3, v >= 1e5 ? 0 : 1) + " bi";   // R$ milhões
+  const triM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 2) + " tri";
+  const biR = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";                 // R$
+  const rotulosFim = window.innerWidth > 640;
+  const kS = S.disponivel ? S.kpis : null, kD = D.disponivel ? D.kpis : null, kO = O.disponivel ? O.kpis : null;
+
+  const head = pageHead({
+    title: "Crédito direcionado e BNDES", vintage: D.mes || S.mes,
+    seals: `${badge("observado", "SGS: saldos oficiais; BNDES: estatísticas do próprio banco e registro contrato a contrato")} ${badge("calculado", "participações, variações de 12 meses, funil, HHI e médias ponderadas calculados")}`,
+    desc: "Quanto do crédito tem taxa regulada ou funding público, e o que o Sistema BNDES desembolsa por porte, setor, UF, produto e agente, com as operações não automáticas contrato a contrato.",
+    fontes: "BCB/SGS (crédito com recursos direcionados) · BNDES dados abertos (desembolsos, aprovações, consultas, operações não automáticas, fontes de recursos; ODbL) · IBGE Censo 2022",
+    actions: `<button class="btn ghost small" onclick="bnCSV()">baixar CSV (desembolsos mensais por porte)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${B.sintese}</p>
+  <div class="src">Síntese determinística · saldo ${S.mes || "não coletado nesta execução"} · desembolsos ${D.disponivel ? D.janela.ini + " a " + D.janela.fim : "–"} · operações ${O.disponivel ? O.janela.ini + " a " + O.janela.fim : "–"}</div>`;
+
+  const placarHtml = placar([
+    { l: "Saldo direcionado no SFN", v: kS ? triM(kS.saldo_direcionado) : "–", sub: kS ? `${pct(kS.share_direcionado)} da carteira · ${fmt.pp(kS.var_12m_pct)}% em 12 m` : "série do SGS ainda não coletada", href: "#bn-saldo" },
+    { l: "BNDES no crédito PJ", v: kS ? pct(kS.pj.bndes_share_total_pj) : "–", sub: kS ? `${pct(kS.pj.bndes_share_direcionado)} do direcionado PJ` : "", href: "#bn-saldo" },
+    { l: "Desembolsos do BNDES (12 m)", v: kD ? biM(kD.desembolsos_12m) : "–", sub: kD ? `${fmt.pp(kD.var_12m_pct)}% · até ${D.mes}` : "", href: "#bn-desemb" },
+    { l: "Parte para MPME", v: kD ? pct(kD.mpme_share) : "–", sub: kD ? `infraestrutura ${pct(kD.infraestrutura_share)} · agro ${pct(kD.agropecuaria_share)}` : "", href: "#bn-quem" },
+    { l: "Via agentes financeiros", v: kD ? pct(kD.via_agentes_share) : "–", sub: kD ? `${fmt.n0(kD.n_agentes)} agentes em ${kD.ano_agentes} · HHI ${fmt.n0(kD.hhi_agentes)}` : "", href: "#bn-agentes" },
+  ]);
+
+  /* ---------- saldo direcionado ---------- */
+  let saldo = "";
+  if (S.disponivel) {
+    const ser = S.serie || [];
+    const seriesA = [{ pts: ser.map(p => ({ x: p.mes, y: p.share_direcionado })).filter(q => q.y != null), color: "#1d4e89", label: "total" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.share_pj_direcionado })).filter(q => q.y != null), color: "#b45309", label: "empresas" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.share_pf_direcionado })).filter(q => q.y != null), color: "#2f7d4f", label: "famílias" }];
+    const seriesB = [{ pts: ser.map(p => ({ x: p.mes, y: p.bndes_share_pj_total })).filter(q => q.y != null), color: "#6b46a3", label: "BNDES no crédito PJ" }];
+    const seriesT = [{ pts: ser.map(p => ({ x: p.mes, y: p.taxa_bndes_pj })).filter(q => q.y != null), color: "#6b46a3", label: "BNDES (PJ)" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.taxa_dir_pj })).filter(q => q.y != null), color: "#b45309", label: "direcionado PJ" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.taxa_pj })).filter(q => q.y != null), color: "#1d4e89", label: "PJ total" }];
+    const seriesI = [{ pts: ser.map(p => ({ x: p.mes, y: p.inad_bndes_pj })).filter(q => q.y != null), color: "#6b46a3", label: "BNDES (PJ)" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.inad_dir_pj })).filter(q => q.y != null), color: "#b45309", label: "direcionado PJ" },
+      { pts: ser.map(p => ({ x: p.mes, y: p.inad_pj })).filter(q => q.y != null), color: "#1d4e89", label: "PJ total" }];
+    const leg = sx => `<div class="legend">${sx.map(x => `<span><span class="sw" style="background:${x.color}"></span>${x.label}</span>`).join("")}</div>`;
+    saldo = secWrap("bn-saldo", `${sechead("Quanto do crédito é dirigido por política pública", `saldo de fim de mês · ${S.mes}`)}
+    <div class="grid g2">
+      <div class="card"><h4>Parte direcionada da carteira do SFN ${badge("calculado")}</h4>${leg(seriesA)}
+        ${lineChart({ series: seriesA, h: 220, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "BCB/SGS", status: "calculado", aria: "participação do crédito direcionado na carteira" })}
+        <p class="src">Direcionado = taxa regulada ou funding público: BNDES, rural, imobiliário (SFH e FGTS) e microcrédito. Nas famílias é sobretudo imobiliário; nas empresas, BNDES e rural.</p></div>
+      <div class="card"><h4>Repasses do BNDES no crédito a empresas ${badge("calculado")}</h4>${leg(seriesB)}
+        ${lineChart({ series: seriesB, h: 220, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "BCB/SGS", status: "calculado", aria: "participação do BNDES no crédito PJ" })}
+        <p class="src">Saldo PJ com recursos do BNDES: ${biM(kS.pj.bndes)} em ${S.mes} (${fmt.pp(kS.pj.bndes_var_12m_pct)}% em 12 m), ${pct(kS.pj.bndes_share_direcionado)} do direcionado PJ e ${pct(kS.pj.bndes_share_total_pj)} de todo o crédito PJ. Concessões com recursos do BNDES em 12 meses: ${biM(kS.pj.concessoes_12m_bndes)}.</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h4>Taxa média de juros, empresas ${badge("observado")}</h4>${leg(seriesT)}
+        ${lineChart({ series: seriesT, h: 200, endLabels: rotulosFim, unit: "% a.a.", dec: 1, fonte: "BCB/SGS", status: "observado", aria: "taxa média de juros PJ: BNDES, direcionado e total" })}
+        <p class="src">Em ${S.mes}: BNDES ${pct(kS.pj.taxa_bndes, 1)} a.a. · direcionado PJ ${pct(kS.pj.taxa_direcionado, 1)} · PJ total ${pct(kS.pj.taxa_total_pj, 1)}. Prazo médio das concessões com recursos do BNDES: ${kS.pj.prazo_bndes != null ? fmt.n0(kS.pj.prazo_bndes) + " meses" : "–"} (direcionado PJ: ${kS.pj.prazo_direcionado != null ? fmt.n0(kS.pj.prazo_direcionado) : "–"}).</p></div>
+      <div class="card"><h4>Inadimplência acima de 90 dias, empresas ${badge("observado")}</h4>${leg(seriesI)}
+        ${lineChart({ series: seriesI, h: 200, endLabels: rotulosFim, unit: "%", dec: 2, fonte: "BCB/SGS", status: "observado", aria: "inadimplência PJ: BNDES, direcionado e total" })}
+        <p class="src">Em ${S.mes}: BNDES ${pct(kS.pj.inad_bndes, 2)} · direcionado PJ ${pct(kS.pj.inad_direcionado, 2)} · PJ total ${pct(kS.pj.inad_total_pj, 2)}. Famílias: ${pct(kS.pf.share_no_pf)} do crédito PF é direcionado, com inadimplência de ${pct(kS.pf.inad_direcionado, 2)}.</p>
+        ${chartFooter({ fonte: "BCB — Estatísticas de crédito com recursos direcionados (SGS 20593 e família)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (B.gerado_em || "").slice(0, 10), unidade: "R$ milhões; % a.a.; % da carteira", nota: S.nota })}</div>
+    </div>`);
+  } else {
+    saldo = secWrap("bn-saldo", `${sechead("Quanto do crédito é dirigido por política pública", "BCB/SGS")}<div class="card"><p class="src">As séries de crédito com recursos direcionados do SGS ainda não foram coletadas nesta execução; a seção abre sozinha na próxima carga.</p></div>`);
+  }
+
+  /* ---------- desembolsos ---------- */
+  let desemb = "", quem = "", onde = "", agentes = "";
+  if (D.disponivel) {
+    const ser = D.serie_mensal || [];
+    const cores = { micro: "#2f7d4f", pequena: "#0e7c7b", media: "#1d4e89", grande: "#6b46a3" };
+    const seriesP = F.serie === "porte"
+      ? Object.entries(cores).map(([k, c]) => ({ pts: ser.filter(p => p.total_12m != null).map((p, i, arr) => ({ x: p.mes, y: arr.slice(Math.max(0, i - 11), i + 1).reduce((a, q) => a + (q[k] || 0), 0) / 1e3 })).filter((q, i) => i >= 11), color: c, label: ["micro", "pequena", "média", "grande"][["micro", "pequena", "media", "grande"].indexOf(k)] }))
+      : [{ pts: ser.filter(p => p.consultas_12m != null).map(p => ({ x: p.mes, y: p.consultas_12m / 1e3 })), color: "#8d5a2b", label: "consultas" },
+         { pts: ser.filter(p => p.aprovacoes_12m != null).map(p => ({ x: p.mes, y: p.aprovacoes_12m / 1e3 })), color: "#b45309", label: "aprovações" },
+         { pts: ser.filter(p => p.total_12m != null).map(p => ({ x: p.mes, y: p.total_12m / 1e3 })), color: "#1d4e89", label: "desembolsos" }];
+    const anual = (D.anual || []).slice(-12);
+    desemb = secWrap("bn-desemb", `${sechead("O que o Sistema BNDES desembolsa", `${D.janela.ini} a ${D.janela.fim} · ${biM(kD.desembolsos_12m)} · último mês publicado ${D.mes}`)}
+    <div class="controls"><span class="seg">${[["porte", "por porte (soma 12 m)"], ["funil", "consultas, aprovações e desembolsos"]].map(([v, l]) => `<button class="${F.serie === v ? "active" : ""}" onclick="bnSet('serie','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="grid g2">
+      <div class="card"><h4>${F.serie === "porte" ? "Soma móvel de 12 meses, por porte" : "Funil em soma móvel de 12 meses"} ${badge("calculado")}</h4>
+        <div class="legend">${seriesP.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesP, h: 250, endLabels: rotulosFim, unit: "R$ bi", dec: 0, fonte: "BNDES", status: "calculado", aria: "desembolsos do Sistema BNDES, soma de 12 meses" })}
+        ${chartFooter({ fonte: "BNDES — Estatísticas de desembolsos, aprovações e consultas (dados abertos, ODbL)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (B.gerado_em || "").slice(0, 10), unidade: "R$ bilhões, nominal, soma de 12 meses", nota: "sem deflação: a inclinação de longo prazo carrega a inflação; leia participações e variações de 12 meses" })}
+      </div>
+      <div class="card"><h4>Ano a ano ${badge("observado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Desembolsos</th><th style="text-align:right">MPME</th><th style="text-align:right">Aprovações</th><th style="text-align:right">Consultas</th></tr></thead>
+        <tbody>${anual.map(a => `<tr><td>${a.ano}${a.incompleto ? ` <span class="src">(${a.meses} meses)</span>` : ""}</td><td style="text-align:right"><b>${biM(a.total)}</b></td><td style="text-align:right">${pct(a.mpme_share)}</td><td style="text-align:right">${biM(a.aprovacoes)}</td><td style="text-align:right">${biM(a.consultas)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${D.nota}</p></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h4>Funil de 12 meses, por porte ${badge("calculado", "razões entre fluxos de 12 meses de etapas com prazos distintos")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Porte</th><th style="text-align:right">Consultas</th><th style="text-align:right">Aprovações</th><th style="text-align:right">Desembolsos</th><th style="text-align:right">Aprovado ÷ consultado</th><th style="text-align:right">Desembolsado ÷ aprovado</th></tr></thead>
+      <tbody>${(D.funil || []).map(f => `<tr${f.porte === "Total" ? ' style="font-weight:600"' : ""}><td>${f.porte}</td><td style="text-align:right">${biM(f.consultas)}</td><td style="text-align:right">${biM(f.aprovacoes)}</td><td style="text-align:right">${biM(f.desembolsos)}</td><td style="text-align:right">${pct(f.aprov_sobre_consulta)}</td><td style="text-align:right">${pct(f.desemb_sobre_aprov)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="src">Uma consulta de hoje vira desembolso em anos: as razões comparam fluxos, não uma mesma safra. Operações em ${D.qtd_operacoes_anual && D.qtd_operacoes_anual.length ? D.qtd_operacoes_anual[D.qtd_operacoes_anual.length - 2].ano + ": " + fmt.n0(D.qtd_operacoes_anual[D.qtd_operacoes_anual.length - 2].total) + " (micro " + fmt.n0(D.qtd_operacoes_anual[D.qtd_operacoes_anual.length - 2].micro) + ", grande " + fmt.n0(D.qtd_operacoes_anual[D.qtd_operacoes_anual.length - 2].grande) + ")" : "–"}.</p></div>`);
+
+    /* quem: porte, setor, produto */
+    const pMax = D.por_porte.length ? Math.max(...D.por_porte.map(p => p.valor)) : 1;
+    const sMax = D.subsetores.length ? D.subsetores[0].valor : 1;
+    const prMax = D.produtos.length ? D.produtos[0].valor : 1;
+    const setAn = (D.setor_anual || []).slice(-10);
+    quem = secWrap("bn-quem", `${sechead("Para quem e para quê", `${D.janela.ini} a ${D.janela.fim}`)}
+    <div class="grid g2">
+      <div class="card"><h4>Por porte ${badge("observado")}</h4>
+        ${D.por_porte.map(p => `<div class="atrasorow"><span class="aname">${p.nome}</span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, p.valor / pMax * 100)}%;background:${p.cor}"></span></span><span class="anum">${biM(p.valor)} <span class="src">${pct(p.share, 1)} · ${fmt.pp(p.var_12m_pct)}%</span></span></div>`).join("")}
+        <p class="src">Pessoas físicas (produtores rurais e caminhoneiros, via Finame e Pronaf): ${pct(kD.pf_share)} do desembolso, contadas como "micro" na tabela por porte.</p>
+        <h4 style="margin-top:12px">Por setor, ano a ano (% do desembolso) ${badge("calculado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Agro</th><th style="text-align:right">Indústria</th><th style="text-align:right">Infraestrutura</th><th style="text-align:right">Com. e serviços</th></tr></thead>
+        <tbody>${setAn.map(a => `<tr><td>${a.ano}</td><td style="text-align:right">${pct(a.agropecuaria)}</td><td style="text-align:right">${pct(a.industria)}</td><td style="text-align:right">${pct(a.infraestrutura)}</td><td style="text-align:right">${pct(a.comercio_e_servicos)}</td></tr>`).join("")}</tbody></table></div></div>
+      <div class="card"><h4>Subsetores (CNAE agrupado), 12 meses ${badge("observado")}</h4>
+        ${D.subsetores.slice(0, 14).map(x => `<div class="atrasorow"><span class="aname">${x.nome}</span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, x.valor / sMax * 100)}%"></span></span><span class="anum">${biM(x.valor)} <span class="src">${pct(x.share, 1)}${x.var_12m_pct != null ? " · " + fmt.pp(x.var_12m_pct) + "%" : ""}</span></span></div>`).join("")}
+        <p class="src">${fmt.n0(D.n_subsetores)} subsetores com desembolso na janela; os 14 maiores acima. Variação sobre os 12 meses anteriores.</p></div>
+    </div>
+    <div class="card" style="margin-top:14px"><h4>Por produto e forma de apoio ${badge("observado", "cobre " + pct(D.cobertura_produtos.pct) + " do desembolso: as indiretas automáticas não estão nesta tabela")}</h4>
+      <div class="grid g2">
+        <div>${D.produtos.map(p => `<div class="contrib"><span class="lbl" style="width:190px">${p.nome}</span><span class="bar ${p.forma === "direta" ? "pos" : ""}" style="width:${Math.min(150, p.valor / prMax * 150)}px${p.forma === "direta" ? "" : ";background:#b45309"}"></span><span class="num">${pct(p.share, 1)}</span></div>`).join("")}</div>
+        <div><p class="src">Finame (bens de capital, via agentes), mensal até ${D.finame.mes}: ${D.finame.serie.length ? D.finame.categorias.map(c => `${c.toLowerCase()} ${biM(D.finame.serie.slice(-12).reduce((a, p) => a + (p[c] || 0), 0))}` ).join(" · ") : "–"} nos últimos 12 meses publicados.</p>
+          <div class="contrib"><span class="lbl" style="width:150px">Finame, total mensal</span>${sparkline(D.finame.serie.slice(-60).map(p => p.total || 0), 220, 26)}<span class="num src">${D.finame.serie.length ? `${D.finame.serie[Math.max(0, D.finame.serie.length - 60)].mes} → ${D.finame.mes}` : ""}</span></div>
+          <p class="src">Barras azuis: apoio direto; laranja: indireto via agente. As tabelas por produto do BNDES cobrem ${pct(D.cobertura_produtos.pct)} do desembolso da janela (${biM(D.cobertura_produtos.valor)}); o restante são operações indiretas automáticas (Finame, BNDES Automático, cartão), que o banco não abre por produto nesta base.</p></div>
+      </div></div>`);
+
+    /* onde */
+    const ufMax = D.ufs.length ? D.ufs[0].valor : 1;
+    const metU = F.uf === "hab" ? "valor_hab" : F.uf === "mpme" ? "mpme_share" : "valor";
+    const ufsOrd = D.ufs.slice().sort((a, b) => (b[metU] || 0) - (a[metU] || 0));
+    onde = secWrap("bn-onde", `${sechead("Onde o BNDES desembolsa", `${D.janela.ini} a ${D.janela.fim} · 27 UFs`)}
+    <div class="controls"><span class="seg">${[["valor", "valor"], ["hab", "por habitante"], ["mpme", "parte MPME"]].map(([v, l]) => `<button class="${F.uf === v ? "active" : ""}" onclick="bnSet('uf','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="grid g2">
+      <div class="card"><h4>Por UF, ${F.uf === "hab" ? "por habitante" : F.uf === "mpme" ? "parte para MPME" : "valor"} ${badge("calculado")}</h4>
+        <div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">12 m</th><th style="text-align:right">%</th><th style="text-align:right">12 m ant.</th><th style="text-align:right">Por hab.</th><th style="text-align:right">MPME</th></tr></thead>
+        <tbody>${ufsOrd.map(u => `<tr><td><b>${u.uf}</b> <span class="src">${u.regiao}</span></td><td style="text-align:right">${biM(u.valor)}</td><td style="text-align:right">${pct(u.share, 1)}</td><td style="text-align:right">${u.var_12m_pct != null ? fmt.pp(u.var_12m_pct) + "%" : "–"}</td><td style="text-align:right">${u.valor_hab != null ? "R$ " + fmt.n0(u.valor_hab) : "–"}</td><td style="text-align:right">${pct(u.mpme_share)}</td></tr>`).join("")}</tbody></table></div></div>
+      <div class="card"><h4>Por região ${badge("calculado")}</h4>
+        ${D.regioes.map(r => `<div class="atrasorow"><span class="aname">${r.regiao}</span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, r.valor / D.regioes[0].valor * 100)}%"></span></span><span class="anum">${biM(r.valor)} <span class="src">${pct(r.share, 1)} · R$ ${fmt.n0(r.valor_hab)}/hab</span></span></div>`).join("")}
+        <p class="src">Por habitante usa a população do Censo 2022. O Sul recebe mais por habitante que o Sudeste: máquinas agrícolas e cooperativas de crédito como agentes pesam.</p>
+        ${ponte("A contratação de crédito rural por município — Crédito rural", "rural", "ru-onde", "muda de fonte e de régua: lá é a MDCR do BCB, cédula a cédula; parte do que o BNDES desembolsa via agentes reaparece lá como fonte 'BNDES'")}</div>
+    </div>`);
+
+    /* agentes */
+    const A = D.agentes || {};
+    const aMax = A.top && A.top.length ? A.top[0].valor : 1;
+    agentes = secWrap("bn-agentes", `${sechead("Por quais agentes", `desembolsos indiretos em ${A.ano} · ${fmt.n0(A.n)} agentes`)}
+    <div class="grid g2">
+      <div class="card"><h4>Agentes financeiros, ${A.ano} ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">${pct(kD.via_agentes_share)} do desembolso via agentes · top-5 ${pct(A.top5_share)} · públicos ${pct(A.publicos_share)} · ${termo("hhi", "HHI")} ${fmt.n0(A.hhi)} · direto sem agente ${biM(A.direto_sem_agente)}</div>
+        ${(A.top || []).map(a => `<div class="atrasorow"><span class="aname">${a.nome} <span class="src">${a.tipo === "Agente Público" ? "público" : "privado"}</span></span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, a.valor / aMax * 100)}%${a.tipo === "Agente Público" ? ";background:#b45309" : ""}"></span></span><span class="anum">${biM(a.valor)} <span class="src">${pct(a.share, 1)}</span></span></div>`).join("")}
+        <p class="src">Participação sobre o desembolso via agentes (o direto, sem agente, fica fora do denominador). Ano fechado mais recente; ${A.ano_mais_recente_publicado > A.ano ? `${A.ano_mais_recente_publicado} ainda parcial.` : ""}</p></div>
+      <div class="card"><h4>De onde vem o dinheiro do BNDES ${badge("observado")}</h4>
+        ${FU.disponivel ? `<div class="src" style="margin-bottom:6px">passivo em ${FU.ultimo}: ${biM(FU.anos[FU.anos.length - 1].passivo_total)} · ${fmt.n0(FU.instituicoes_credenciadas)} instituições credenciadas</div>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Fonte</th>${FU.anos.map(a => `<th style="text-align:right">${a.data.slice(0, 4)}</th>`).join("")}</tr></thead>
+        <tbody>${FU.anos[FU.anos.length - 1].itens.map(it => `<tr><td>${it.nome}</td>${FU.anos.map(a => { const x = a.itens.find(z => z.id === it.id); return `<td style="text-align:right">${x ? pct(x.share, 1) : "–"}</td>`; }).join("")}</tr>`).join("")}</tbody></table></div>
+        <p class="src">${FU.nota}</p>` : `<p class="src">fontes de recursos não coletadas nesta execução.</p>`}</div>
+    </div>`);
+  }
+
+  /* ---------- operações não automáticas ---------- */
+  let ops = "";
+  if (O.disponivel) {
+    const grupoSel = { produto: O.por_produto, natureza: O.por_natureza, setor: O.por_setor_bndes, custo: O.por_custo, garantia: O.por_garantia, porte: O.por_porte }[F.ops] || O.por_produto;
+    const gMax = grupoSel.length ? grupoSel[0].valor : 1;
+    const custos = ["TJLP", "TLP", "SELIC", "TAXA FIXA", "US$ / CESTA", "IPCA", "TAXA REFERENCIAL (TR)"];
+    const cAn = (O.custo_anual || []).slice(-10);
+    ops = secWrap("bn-ops", `${sechead("Contrato a contrato: as operações não automáticas", `${O.janela.ini} a ${O.janela.fim} · ${fmt.n0(kO.n_12m)} contratos · ${biR(kO.contratado_12m)} contratados`)}
+    <div class="grid g2">
+      <div class="card"><h4>Quem mais contratou ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">${fmt.n0(kO.clientes_12m)} clientes · ${termo("hhi", "HHI")} ${fmt.n0(kO.hhi_clientes)} · juros médio ponderado ${pct(kO.juros_medio, 1)} a.a. sobre o custo financeiro · amortização ${fmt.n0(kO.amortizacao_media_meses)} meses, carência ${fmt.n0(kO.carencia_media_meses)}</div>
+        <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>#</th><th>Cliente</th><th>UF</th><th>Subsetor</th><th style="text-align:right">Contratado</th><th style="text-align:right">%</th></tr></thead>
+        <tbody>${(O.top_clientes || []).map((c, i) => `<tr><td>${i + 1}</td><td><b>${c.cliente}</b>${/PRIVADA/.test(c.natureza || "") ? "" : ` <span class="src">${(c.natureza || "").toLowerCase().replace("administração pública direta - ", "")}</span>`}</td><td>${c.uf || "–"}</td><td class="src">${c.setor || ""}</td><td style="text-align:right">${biR(c.valor)}</td><td style="text-align:right">${pct(c.share, 1)}</td></tr>`).join("")}</tbody></table></div></div>
+      <div class="card"><h4>Recorte ${badge("observado")}</h4>
+        <div class="controls" style="margin:0 0 8px"><span class="seg">${[["produto", "produto"], ["natureza", "natureza"], ["setor", "subsetor"], ["custo", "custo financeiro"], ["garantia", "garantia"], ["porte", "porte"]].map(([v, l]) => `<button class="${F.ops === v ? "active" : ""}" onclick="bnSet('ops','${v}')">${l}</button>`).join("")}</span></div>
+        ${grupoSel.map(x => `<div class="atrasorow"><span class="aname">${x.nome.toLowerCase()} <span class="src">${fmt.n0(x.n)}</span></span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, x.valor / gMax * 100)}%"></span></span><span class="anum">${biR(x.valor)} <span class="src">${pct(x.share, 1)}</span></span></div>`).join("")}
+        <p class="src">${O.nota}</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h4>Custo financeiro das contratações reembolsáveis, ano a ano (% do valor) ${badge("calculado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th>${custos.map(c => `<th style="text-align:right">${c}</th>`).join("")}<th style="text-align:right">Total</th></tr></thead>
+        <tbody>${cAn.map(a => `<tr><td>${a.ano}</td>${custos.map(c => `<td style="text-align:right">${a[c] ? pct(a[c]) : "–"}</td>`).join("")}<td style="text-align:right">${biR(a.total)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">A TJLP deixou de indexar contratos novos em 2018; a TLP (NTN-B mais juro real fixo) e a taxa fixa assumiram. Os juros da tabela ao lado são o que o cliente paga acima desse indexador.</p></div>
+      <div class="card"><h4>Municípios com mais contratação (12 m) ${badge("observado", "só operações não automáticas com município único")}</h4>
+        <div class="tblwrap" style="max-height:360px"><table class="data compact"><thead><tr><th>Município</th><th>UF</th><th style="text-align:right">Contratos</th><th style="text-align:right">Valor</th></tr></thead>
+        <tbody>${(O.top_municipios || []).map(m => `<tr><td><a href="/observatorio/presenca/${m.cod}" onclick="nav('presmun',{presCod:'${m.cod}'});return false">${m.nome}</a></td><td>${m.uf}</td><td style="text-align:right">${fmt.n0(m.n)}</td><td style="text-align:right">${biR(m.valor)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${pct(kO.sem_municipio_share)} do valor contratado não tem município único (operações multi-UF, exportação, estados). Contratado ≠ desembolsado: em 12 meses foram liberados ${biR(kO.desembolsado_12m)} desses contratos.</p></div>
+    </div>`);
+  }
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("bn-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${B.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(B.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Cautelas</h5>${(B.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} ${Object.values(B.fontes || {}).map(f => `<a href="${attr(f.catalogo)}" target="_blank" rel="noopener">${f.nome}</a> (${f.licenca}; nível ${f.nivel})`).join(" · ")}.</p></div>`);
+
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#bn-saldo", "Saldo"], ["#bn-desemb", "Desembolsos"], ["#bn-quem", "Para quem"], ["#bn-onde", "Onde"], ["#bn-agentes", "Agentes"], ["#bn-ops", "Contratos"], ["#bn-metodo", "Método"]])
+    + saldo + desemb + quem + onde + agentes + ops + metodo;
+}
+window.bnCSV = () => {
+  const B = state.data.bndes;
+  if (!B || !B.desembolsos || !B.desembolsos.disponivel) return;
+  const cols = ["mes", "total", "micro", "pequena", "media", "grande", "total_12m", "mpme_12m_share", "aprovacoes_12m", "consultas_12m"];
+  const head = `# Observatório Brasileiro de Crédito — desembolsos mensais do Sistema BNDES por porte (R$ milhões, nominal)\n# fonte: BNDES dados abertos (ODbL) · soma móvel de 12 meses calculada pelo Observatório\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_bndes_desembolsos_${B.desembolsos.mes}.csv`, head + cols.join(";") + "\n" + B.desembolsos.serie_mensal.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10359,10 +10580,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -10419,7 +10640,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
