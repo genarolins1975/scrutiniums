@@ -390,3 +390,23 @@ Detalhe operacional e achados: FONTES_OPERACIONAL §44.
 diário as coleta e a seção abre sozinha. Não há mapa municipal: dois terços do valor das
 operações não automáticas não têm município único, e as automáticas ficam fora da base.
 
+## 14. Páginas por UF (05/09/2026, noite)
+
+Painel nº 8 do §6, construído enquanto o BCB estava fora do ar (HTTP 502 em SGS, Olinda
+e dados abertos durante toda a tarde e a noite de 05/09), o que bloqueou o nº 4
+(condições de crédito pela ótica do ofertante e Focus), que depende inteiramente do BCB.
+
+**O que foi construído.** Sem coleta nova: o builder `pipeline/ufs.py` reúne o recorte
+estadual de nove painéis em `ufs.json`, com posição entre as 27 UFs em cada régua e uma
+síntese determinística por estado. Índice em `/observatorio/states` (aba "Estados" no
+grupo Território) e uma página por UF em `/observatorio/states/{SIGLA}`, com título e
+description gerados do gold, sitemap com as 27 rotas e ponte do Panorama para a página.
+
+**Evidência** (golds publicados em 05/09/2026). São Paulo: R$ 2.273 bilhões de carteira
+em 2026-07, 30,0% do Brasil, R$ 49.326 por habitante (4º), inadimplência de 3,76% (25º),
+penetração de 306% da renda anual (2º), 416 de 645 municípios com agência.
+
+**Próximo passo.** O painel nº 4 volta à fila assim que o BCB responder: a pesquisa
+trimestral de condições de crédito e o Focus (Olinda) entram como cenários com
+expectativas em vez de choques arbitrários.
+

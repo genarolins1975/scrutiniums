@@ -40,6 +40,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     municipios = [];
   }
 
+  // Páginas por UF: 27 rotas a partir do gold que as alimenta.
+  let ufs: { uf: string }[] = [];
+  try {
+    ufs = JSON.parse(readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "ufs.json"), "utf-8")).ufs;
+  } catch {
+    ufs = [];
+  }
+
   return [
     rota("", 1.0, "weekly"),
     rota("/observatorio", 1.0, "daily"),
@@ -50,6 +58,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     rota("/resumo", 0.9, "daily"),
     ...INDICADORES.map((i) => rota(`/dados/${i.slug}`, 0.8, "daily")),
     ...instituicoes.map((i) => rota(`/observatorio/institutions/${i.cod}`, 0.6, "weekly")),
+    ...ufs.map((u) => rota(`/observatorio/states/${u.uf}`, 0.8, "daily")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
     rota("/glossario", 0.8, "monthly"),
     rota("/cadastro", 0.6, "yearly"),

@@ -39,6 +39,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "panorama.json",
   },
   {
+    view: "estados",
+    caminho: "/states",
+    titulo: "Estados",
+    descricao:
+      "As 27 unidades da federação lado a lado: carteira e inadimplência do SCR, penetração do crédito, presença bancária, Pix, moradia, consignado, crédito rural, BNDES e dívida ativa, com uma página por UF.",
+    gold: "ufs.json",
+  },
+  {
     view: "penetracao",
     caminho: "/credit-penetration",
     titulo: "Penetração e Gap",
@@ -290,6 +298,7 @@ export const PREFIXOS_DINAMICOS = [
   { prefixo: "/products/", view: "product", rotulo: "Produtos de Crédito" },
   { prefixo: "/sectors/", view: "sector", rotulo: "Risco setorial" },
   { prefixo: "/presenca/", view: "presmun", rotulo: "Presença bancária municipal" },
+  { prefixo: "/states/", view: "estado", rotulo: "Estados" },
 ] as const;
 
 /** Rota aposentada que continua respondendo (espelha ROTAS_APOSENTADAS da SPA). */

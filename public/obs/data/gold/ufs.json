@@ -1,0 +1,6287 @@
+{
+ "disponivel": true,
+ "gerado_em": "2026-09-05T21:39:44+00:00",
+ "datas": {
+  "scr": "2026-07",
+  "penetracao": "2026-06",
+  "presenca": {
+   "dependencias": "27/08/2026",
+   "correspondentes": "27/08/2026"
+  },
+  "pix": "2026-07",
+  "moradia": "2026-07",
+  "consignado": "2026-05",
+  "rural": {
+   "ini": "2025-08",
+   "fim": "2026-07"
+  },
+  "bndes": {
+   "ini": "2025-04",
+   "fim": "2026-03"
+  },
+  "pgfn": "2026-06"
+ },
+ "brasil": {
+  "saldo": 7573943761640,
+  "inad": 4.74,
+  "cresc12": 9.33,
+  "penetracao": 320.78,
+  "cred_adulto": 82541.15
+ },
+ "ufs": [
+  {
+   "uf": "AC",
+   "nome": "Acre",
+   "prep": "no Acre",
+   "regiao": "Norte",
+   "cod": "12",
+   "pop": 884372,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 19893198780,
+    "part_br": 0.26,
+    "per_capita": 22494,
+    "n_op": 2990861,
+    "cresc12": 9.41,
+    "cresc3": -0.61,
+    "inad": 6.46,
+    "d_inad_12m": 1.69,
+    "atraso15_90": 1.41,
+    "ap": 9.54,
+    "saldo_medio_op": 5781,
+    "prod_dominante": "Consignado",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.82
+   },
+   "produtos": [
+    {
+     "produto": "Consignado",
+     "saldo": 13029665963.0,
+     "inad": 319173501.0,
+     "pf": 13029665963.0,
+     "pj": 0.0,
+     "share": 22.43,
+     "inad_pct": 2.45,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 10136993193.0,
+     "inad": 624569483.0,
+     "pf": 9572772793.0,
+     "pj": 564220400.0,
+     "share": 17.45,
+     "inad_pct": 6.16,
+     "pf_share": 94.43
+    },
+    {
+     "produto": "Outros",
+     "saldo": 8027461588.0,
+     "inad": 491744905.0,
+     "pf": 1862352612.0,
+     "pj": 6165108976.0,
+     "share": 13.82,
+     "inad_pct": 6.13,
+     "pf_share": 23.2
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 5744283951.0,
+     "inad": 286391088.0,
+     "pf": 4897806359.0,
+     "pj": 846477592.0,
+     "share": 9.89,
+     "inad_pct": 4.99,
+     "pf_share": 85.26
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 4741733840.0,
+     "inad": 622417501.0,
+     "pf": 35162140.0,
+     "pj": 4706571700.0,
+     "share": 8.16,
+     "inad_pct": 13.13,
+     "pf_share": 0.74
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 4672448287.0,
+     "inad": 36988165.0,
+     "pf": 4629912127.0,
+     "pj": 42536160.0,
+     "share": 8.04,
+     "inad_pct": 0.79,
+     "pf_share": 99.09
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 3995905583.0,
+     "inad": 508341067.0,
+     "pf": 3995905583.0,
+     "pj": 0.0,
+     "share": 6.88,
+     "inad_pct": 12.72,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 3981847454.0,
+     "inad": 1281889.0,
+     "pf": 3694627319.0,
+     "pj": 287220135.0,
+     "share": 6.85,
+     "inad_pct": 0.03,
+     "pf_share": 92.79
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 1548729378.0,
+     "inad": 597983247.0,
+     "pf": 1464167187.0,
+     "pj": 84562191.0,
+     "share": 2.67,
+     "inad_pct": 38.61,
+     "pf_share": 94.54
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 1314463196.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 1314463196.0,
+     "share": 2.26,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 22,
+    "credito": 9536325989.0,
+    "renda_anual": 10556777113.560001,
+    "adultos": 561292.0,
+    "penetracao": 90.33,
+    "cred_adulto": 16989.96,
+    "municipios_abaixo": 1,
+    "gap_abs": 12738967.81,
+    "sem_estban": 7
+   },
+   "presenca": {
+    "municipios": 22,
+    "com_agencia": 15,
+    "so_posto": 5,
+    "so_correspondente": 2,
+    "nenhum": 0,
+    "agencias": 46,
+    "postos": 49,
+    "pae": 79,
+    "correspondentes": 633,
+    "agencias_100mil": 5.2
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 7215946679,
+    "q_pag": 32626413,
+    "t_pag": 221.17,
+    "q_hab": 36.9,
+    "v_hab": 8159,
+    "yoy_v": 29.0,
+    "pf_share": 62.81
+   },
+   "moradia": {
+    "dom_total": 260836,
+    "pgp": 3.78,
+    "alp": 13.91,
+    "scr_imob_pf": 1614347212.0,
+    "scr_inad_pct": 0.73,
+    "taxa_sfh": 13.87,
+    "ltv_sfh": 67.87,
+    "valor_compra": 250000.0,
+    "renda_pc": 1068.16
+   },
+   "consignado": {
+    "p60": 9.45,
+    "elegiveis": 73074,
+    "cons_total": 4474324348.0,
+    "cons_obs": 769177401.0,
+    "part_apos": 17.19,
+    "inad_apos": 2.0,
+    "cons_por_elegivel": 10526.0,
+    "ben_medio": 1447.06,
+    "prural": 67.05
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 1032726664.74,
+    "qtd": 11043,
+    "share": 0.3,
+    "valor_hab": 1244.22,
+    "agricola_share": 16.81,
+    "pronaf_share": 56.75,
+    "ticket": 93518.67
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 405.4158974,
+    "share": 0.22,
+    "mpme_share": 29.89,
+    "var_12m_pct": 114.9,
+    "valor_hab": 488.44
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 92430,
+    "valor": 5165006282.82,
+    "part_br": 0.147,
+    "valor_medio": 55880,
+    "insc_pf_por_mil_hab": 15.06,
+    "pj_valor": 4175011455.6
+   },
+   "posicoes": {
+    "scr.saldo": 25,
+    "scr.per_capita": 16,
+    "scr.inad": 6,
+    "scr.cresc12": 15,
+    "penetracao.penetracao": 13,
+    "penetracao.cred_adulto": 15,
+    "presenca.agencias_100mil": 16,
+    "pix.q_hab": 8,
+    "moradia.pgp": 27,
+    "consignado.cons_por_elegivel": 4,
+    "rural.valor_hab": 12,
+    "bndes.valor_hab": 14,
+    "pgfn.insc_pf_por_mil_hab": 21
+   },
+   "sintese": "O crédito no Acre somava R$ 20 bilhões em 2026-07, 0,3% do Brasil, R$ 22.494 por habitante (16º entre as 27 UFs), com inadimplência de 6,46% (6º) e crescimento de +9,4% em 12 meses. Penetração de 90% da renda anual (13º), com 1 de 22 municípios abaixo do esperado pelo modelo. 15 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "AL",
+   "nome": "Alagoas",
+   "prep": "em Alagoas",
+   "regiao": "Nordeste",
+   "cod": "27",
+   "pop": 3220848,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 59919861792,
+    "part_br": 0.79,
+    "per_capita": 18604,
+    "n_op": 12301387,
+    "cresc12": 8.97,
+    "cresc3": 0.59,
+    "inad": 5.72,
+    "d_inad_12m": 0.68,
+    "atraso15_90": 1.12,
+    "ap": 8.96,
+    "saldo_medio_op": 4090,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.55
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 34691339902.0,
+     "inad": 503762539.0,
+     "pf": 34086939310.0,
+     "pj": 604400592.0,
+     "share": 19.88,
+     "inad_pct": 1.45,
+     "pf_share": 98.26
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 32689300735.0,
+     "inad": 818321576.0,
+     "pf": 32689300735.0,
+     "pj": 0.0,
+     "share": 18.74,
+     "inad_pct": 2.5,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 20760081682.0,
+     "inad": 84278348.0,
+     "pf": 19837955137.0,
+     "pj": 922126545.0,
+     "share": 11.9,
+     "inad_pct": 0.41,
+     "pf_share": 95.56
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 20054341149.0,
+     "inad": 859113773.0,
+     "pf": 60039862.0,
+     "pj": 19994301287.0,
+     "share": 11.49,
+     "inad_pct": 4.28,
+     "pf_share": 0.3
+    },
+    {
+     "produto": "Outros",
+     "saldo": 18898356143.0,
+     "inad": 927518604.0,
+     "pf": 3745533653.0,
+     "pj": 15152822490.0,
+     "share": 10.83,
+     "inad_pct": 4.91,
+     "pf_share": 19.82
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 16046030312.0,
+     "inad": 1327870931.0,
+     "pf": 12865113431.0,
+     "pj": 3180916881.0,
+     "share": 9.2,
+     "inad_pct": 8.28,
+     "pf_share": 80.18
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 8525044403.0,
+     "inad": 1246908391.0,
+     "pf": 8525044403.0,
+     "pj": 0.0,
+     "share": 4.89,
+     "inad_pct": 14.63,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 6670394461.0,
+     "inad": 3046298389.0,
+     "pf": 6438677989.0,
+     "pj": 231716472.0,
+     "share": 3.82,
+     "inad_pct": 45.67,
+     "pf_share": 96.53
+    },
+    {
+     "produto": "Rural",
+     "saldo": 6406442332.0,
+     "inad": 413635100.0,
+     "pf": 5268595232.0,
+     "pj": 1137847100.0,
+     "share": 3.67,
+     "inad_pct": 6.46,
+     "pf_share": 82.24
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 3769536252.0,
+     "inad": 0.0,
+     "pf": 19602645.0,
+     "pj": 3749933607.0,
+     "share": 2.16,
+     "inad_pct": 0.0,
+     "pf_share": 0.52
+    }
+   ],
+   "penetracao": {
+    "municipios": 102,
+    "credito": 26109006756.0,
+    "renda_anual": 38694320176.44,
+    "adultos": 2260594.0,
+    "penetracao": 67.48,
+    "cred_adulto": 11549.62,
+    "municipios_abaixo": 8,
+    "gap_abs": 8419254029.000001,
+    "sem_estban": 65
+   },
+   "presenca": {
+    "municipios": 102,
+    "com_agencia": 37,
+    "so_posto": 58,
+    "so_correspondente": 7,
+    "nenhum": 0,
+    "agencias": 138,
+    "postos": 154,
+    "pae": 266,
+    "correspondentes": 3085,
+    "agencias_100mil": 4.3
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 23077122566,
+    "q_pag": 101325738,
+    "t_pag": 227.75,
+    "q_hab": 31.5,
+    "v_hab": 7165,
+    "yoy_v": 17.1,
+    "pf_share": 62.6
+   },
+   "moradia": {
+    "dom_total": 1041114,
+    "pgp": 8.07,
+    "alp": 20.09,
+    "scr_imob_pf": 12088940145.0,
+    "scr_inad_pct": 1.39,
+    "taxa_sfh": 13.9,
+    "ltv_sfh": 64.79,
+    "valor_compra": 210000.0,
+    "renda_pc": 1035.41
+   },
+   "consignado": {
+    "p60": 13.08,
+    "elegiveis": 439603,
+    "cons_total": 11249181699.0,
+    "cons_obs": 2172332555.0,
+    "part_apos": 19.31,
+    "inad_apos": 2.05,
+    "cons_por_elegivel": 4942.0,
+    "ben_medio": 1493.05,
+    "prural": 45.51
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 1495846401.44,
+    "qtd": 63865,
+    "share": 0.43,
+    "valor_hab": 478.26,
+    "agricola_share": 37.25,
+    "pronaf_share": 58.92,
+    "ticket": 23422.01
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 503.28103699999997,
+    "share": 0.28,
+    "mpme_share": 29.95,
+    "var_12m_pct": 56.4,
+    "valor_hab": 160.91
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 366603,
+    "valor": 29431844744.03,
+    "part_br": 0.838,
+    "valor_medio": 80283,
+    "insc_pf_por_mil_hab": 18.31,
+    "pj_valor": 27525182529.21
+   },
+   "posicoes": {
+    "scr.saldo": 22,
+    "scr.per_capita": 22,
+    "scr.inad": 11,
+    "scr.cresc12": 17,
+    "penetracao.penetracao": 23,
+    "penetracao.cred_adulto": 24,
+    "presenca.agencias_100mil": 21,
+    "pix.q_hab": 23,
+    "moradia.pgp": 13,
+    "consignado.cons_por_elegivel": 14,
+    "rural.valor_hab": 19,
+    "bndes.valor_hab": 26,
+    "pgfn.insc_pf_por_mil_hab": 13
+   },
+   "sintese": "O crédito em Alagoas somava R$ 60 bilhões em 2026-07, 0,8% do Brasil, R$ 18.604 por habitante (22º entre as 27 UFs), com inadimplência de 5,72% (11º) e crescimento de +9,0% em 12 meses. Penetração de 67% da renda anual (23º), com 8 de 102 municípios abaixo do esperado pelo modelo. 37 municípios têm agência, 7 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "AM",
+   "nome": "Amazonas",
+   "prep": "no Amazonas",
+   "regiao": "Norte",
+   "cod": "13",
+   "pop": 4321616,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 79940028523,
+    "part_br": 1.06,
+    "per_capita": 18498,
+    "n_op": 13646633,
+    "cresc12": 10.91,
+    "cresc3": 1.5,
+    "inad": 5.78,
+    "d_inad_12m": 1.0,
+    "atraso15_90": 1.06,
+    "ap": 8.64,
+    "saldo_medio_op": 4876,
+    "prod_dominante": "Outros",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.49
+   },
+   "produtos": [
+    {
+     "produto": "Outros",
+     "saldo": 51977863910.0,
+     "inad": 1607187866.0,
+     "pf": 4033395611.0,
+     "pj": 47944468299.0,
+     "share": 22.52,
+     "inad_pct": 3.09,
+     "pf_share": 7.76
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 37391887713.0,
+     "inad": 1404236372.0,
+     "pf": 37391887713.0,
+     "pj": 0.0,
+     "share": 16.2,
+     "inad_pct": 3.76,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 32805691907.0,
+     "inad": 732698312.0,
+     "pf": 31314077858.0,
+     "pj": 1491614049.0,
+     "share": 14.22,
+     "inad_pct": 2.23,
+     "pf_share": 95.45
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 28706973444.0,
+     "inad": 1664552038.0,
+     "pf": 19660834466.0,
+     "pj": 9046138978.0,
+     "share": 12.44,
+     "inad_pct": 5.8,
+     "pf_share": 68.49
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 27163678593.0,
+     "inad": 2229055720.0,
+     "pf": 46916297.0,
+     "pj": 27116762296.0,
+     "share": 11.77,
+     "inad_pct": 8.21,
+     "pf_share": 0.17
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 17378011320.0,
+     "inad": 23557996.0,
+     "pf": 15824372103.0,
+     "pj": 1553639217.0,
+     "share": 7.53,
+     "inad_pct": 0.14,
+     "pf_share": 91.06
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 13851058817.0,
+     "inad": 1742512140.0,
+     "pf": 13851058817.0,
+     "pj": 0.0,
+     "share": 6.0,
+     "inad_pct": 12.58,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 7153651975.0,
+     "inad": 2750996472.0,
+     "pf": 6717099536.0,
+     "pj": 436552439.0,
+     "share": 3.1,
+     "inad_pct": 38.46,
+     "pf_share": 93.9
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 5776193915.0,
+     "inad": 35761186.0,
+     "pf": 214028445.0,
+     "pj": 5562165470.0,
+     "share": 2.5,
+     "inad_pct": 0.62,
+     "pf_share": 3.71
+    },
+    {
+     "produto": "Rural",
+     "saldo": 2617429675.0,
+     "inad": 118178226.0,
+     "pf": 2437454977.0,
+     "pj": 179974698.0,
+     "share": 1.13,
+     "inad_pct": 4.52,
+     "pf_share": 93.12
+    }
+   ],
+   "penetracao": {
+    "municipios": 62,
+    "credito": 32879661196.0,
+    "renda_anual": 46175331480.60001,
+    "adultos": 2643779.0,
+    "penetracao": 71.21,
+    "cred_adulto": 12436.61,
+    "municipios_abaixo": 34,
+    "gap_abs": 6343805777.039999,
+    "sem_estban": 21
+   },
+   "presenca": {
+    "municipios": 62,
+    "com_agencia": 41,
+    "so_posto": 21,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 177,
+    "postos": 227,
+    "pae": 285,
+    "correspondentes": 2419,
+    "agencias_100mil": 4.1
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 43094250812,
+    "q_pag": 187057031,
+    "t_pag": 230.38,
+    "q_hab": 43.3,
+    "v_hab": 9972,
+    "yoy_v": 32.1,
+    "pf_share": 46.16
+   },
+   "moradia": {
+    "dom_total": 1079482,
+    "pgp": 4.68,
+    "alp": 18.48,
+    "scr_imob_pf": 11110465158.0,
+    "scr_inad_pct": 2.09,
+    "taxa_sfh": 13.86,
+    "ltv_sfh": 71.51,
+    "valor_compra": 238000.0,
+    "renda_pc": 979.46
+   },
+   "consignado": {
+    "p60": 9.06,
+    "elegiveis": 276338,
+    "cons_total": 12966396968.0,
+    "cons_obs": 1936782177.0,
+    "part_apos": 14.94,
+    "inad_apos": 2.53,
+    "cons_por_elegivel": 7009.0,
+    "ben_medio": 1511.19,
+    "prural": 48.54
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 312475790.74,
+    "qtd": 6701,
+    "share": 0.09,
+    "valor_hab": 79.28,
+    "agricola_share": 22.65,
+    "pronaf_share": 37.71,
+    "ticket": 46631.22
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1718.0089703200003,
+    "share": 0.95,
+    "mpme_share": 25.83,
+    "var_12m_pct": 157.2,
+    "valor_hab": 435.86
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 367774,
+    "valor": 52806448341.15,
+    "part_br": 1.503,
+    "valor_medio": 143584,
+    "insc_pf_por_mil_hab": 14.34,
+    "pj_valor": 50482059675.29
+   },
+   "posicoes": {
+    "scr.saldo": 17,
+    "scr.per_capita": 24,
+    "scr.inad": 10,
+    "scr.cresc12": 8,
+    "penetracao.penetracao": 19,
+    "penetracao.cred_adulto": 21,
+    "presenca.agencias_100mil": 24,
+    "pix.q_hab": 5,
+    "moradia.pgp": 26,
+    "consignado.cons_por_elegivel": 7,
+    "rural.valor_hab": 26,
+    "bndes.valor_hab": 15,
+    "pgfn.insc_pf_por_mil_hab": 25
+   },
+   "sintese": "O crédito no Amazonas somava R$ 80 bilhões em 2026-07, 1,1% do Brasil, R$ 18.498 por habitante (24º entre as 27 UFs), com inadimplência de 5,78% (10º) e crescimento de +10,9% em 12 meses. Penetração de 71% da renda anual (19º), com 34 de 62 municípios abaixo do esperado pelo modelo. 41 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "AP",
+   "nome": "Amapá",
+   "prep": "no Amapá",
+   "regiao": "Norte",
+   "cod": "16",
+   "pop": 806517,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 19451954316,
+    "part_br": 0.26,
+    "per_capita": 24118,
+    "n_op": 2747171,
+    "cresc12": 9.32,
+    "cresc3": -1.32,
+    "inad": 5.63,
+    "d_inad_12m": 0.73,
+    "atraso15_90": 0.99,
+    "ap": 9.24,
+    "saldo_medio_op": 5624,
+    "prod_dominante": "Consignado",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.02
+   },
+   "produtos": [
+    {
+     "produto": "Consignado",
+     "saldo": 19612498995.0,
+     "inad": 733728341.0,
+     "pf": 19612498995.0,
+     "pj": 0.0,
+     "share": 34.43,
+     "inad_pct": 3.74,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Outros",
+     "saldo": 10097380065.0,
+     "inad": 324011416.0,
+     "pf": 968827137.0,
+     "pj": 9128552928.0,
+     "share": 17.73,
+     "inad_pct": 3.21,
+     "pf_share": 9.59
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 6127549039.0,
+     "inad": 333683131.0,
+     "pf": 4987863914.0,
+     "pj": 1139685125.0,
+     "share": 10.76,
+     "inad_pct": 5.45,
+     "pf_share": 81.4
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 4889978367.0,
+     "inad": 574160313.0,
+     "pf": 1732203.0,
+     "pj": 4888246164.0,
+     "share": 8.59,
+     "inad_pct": 11.74,
+     "pf_share": 0.04
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 3980343998.0,
+     "inad": 37599249.0,
+     "pf": 3823816249.0,
+     "pj": 156527749.0,
+     "share": 6.99,
+     "inad_pct": 0.94,
+     "pf_share": 96.07
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 3835597809.0,
+     "inad": 16529001.0,
+     "pf": 3526711224.0,
+     "pj": 308886585.0,
+     "share": 6.73,
+     "inad_pct": 0.43,
+     "pf_share": 91.95
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 3311912584.0,
+     "inad": 470013756.0,
+     "pf": 3311912584.0,
+     "pj": 0.0,
+     "share": 5.81,
+     "inad_pct": 14.19,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 2189761209.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 2189761209.0,
+     "share": 3.84,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 1694583366.0,
+     "inad": 668039598.0,
+     "pf": 1591178713.0,
+     "pj": 103404653.0,
+     "share": 2.98,
+     "inad_pct": 39.42,
+     "pf_share": 93.9
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 430090746.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 430090746.0,
+     "share": 0.76,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 16,
+    "credito": 9476198643.0,
+    "renda_anual": 9994296318.72,
+    "adultos": 495186.0,
+    "penetracao": 94.82,
+    "cred_adulto": 19136.64,
+    "municipios_abaixo": 0,
+    "gap_abs": 0.0,
+    "sem_estban": 9
+   },
+   "presenca": {
+    "municipios": 16,
+    "com_agencia": 7,
+    "so_posto": 7,
+    "so_correspondente": 2,
+    "nenhum": 0,
+    "agencias": 37,
+    "postos": 31,
+    "pae": 57,
+    "correspondentes": 515,
+    "agencias_100mil": 4.6
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 6929435410,
+    "q_pag": 38574156,
+    "t_pag": 179.64,
+    "q_hab": 47.8,
+    "v_hab": 8592,
+    "yoy_v": 26.8,
+    "pf_share": 64.34
+   },
+   "moradia": {
+    "dom_total": 200901,
+    "pgp": 5.89,
+    "alp": 15.19,
+    "scr_imob_pf": 1353620915.0,
+    "scr_inad_pct": 0.87,
+    "taxa_sfh": 13.75,
+    "ltv_sfh": 69.58,
+    "valor_compra": 490691.0,
+    "renda_pc": 1142.29
+   },
+   "consignado": {
+    "p60": 8.44,
+    "elegiveis": 41068,
+    "cons_total": 6874713686.0,
+    "cons_obs": 724029169.0,
+    "part_apos": 10.53,
+    "inad_apos": 3.36,
+    "cons_por_elegivel": 17630.0,
+    "ben_medio": 1374.92,
+    "prural": 54.37
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 102182241.03,
+    "qtd": 4313,
+    "share": 0.03,
+    "valor_hab": 139.26,
+    "agricola_share": 68.49,
+    "pronaf_share": 74.61,
+    "ticket": 23691.69
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 435.28585169999997,
+    "share": 0.24,
+    "mpme_share": 22.24,
+    "var_12m_pct": 116.9,
+    "valor_hab": 593.23
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 85682,
+    "valor": 7359802093.46,
+    "part_br": 0.21,
+    "valor_medio": 85897,
+    "insc_pf_por_mil_hab": 26.08,
+    "pj_valor": 6267527677.13
+   },
+   "posicoes": {
+    "scr.saldo": 26,
+    "scr.per_capita": 14,
+    "scr.inad": 12,
+    "scr.cresc12": 16,
+    "penetracao.penetracao": 12,
+    "penetracao.cred_adulto": 14,
+    "presenca.agencias_100mil": 19,
+    "pix.q_hab": 2,
+    "moradia.pgp": 17,
+    "consignado.cons_por_elegivel": 2,
+    "rural.valor_hab": 25,
+    "bndes.valor_hab": 12,
+    "pgfn.insc_pf_por_mil_hab": 2
+   },
+   "sintese": "O crédito no Amapá somava R$ 19 bilhões em 2026-07, 0,3% do Brasil, R$ 24.118 por habitante (14º entre as 27 UFs), com inadimplência de 5,63% (12º) e crescimento de +9,3% em 12 meses. Penetração de 95% da renda anual (12º), com 0 de 16 municípios abaixo do esperado pelo modelo. 7 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "BA",
+   "nome": "Bahia",
+   "prep": "na Bahia",
+   "regiao": "Nordeste",
+   "cod": "29",
+   "pop": 14870907,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 295943945051,
+    "part_br": 3.91,
+    "per_capita": 19901,
+    "n_op": 54779886,
+    "cresc12": 10.18,
+    "cresc3": 0.4,
+    "inad": 5.5,
+    "d_inad_12m": 0.89,
+    "atraso15_90": 1.17,
+    "ap": 8.8,
+    "saldo_medio_op": 4892,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.35
+   },
+   "produtos": [
+    {
+     "produto": "Outros",
+     "saldo": 132186527579.0,
+     "inad": 4876385246.0,
+     "pf": 20783545499.0,
+     "pj": 111402982080.0,
+     "share": 15.38,
+     "inad_pct": 3.69,
+     "pf_share": 15.72
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 131695104349.0,
+     "inad": 2548249473.0,
+     "pf": 128054771311.0,
+     "pj": 3640333038.0,
+     "share": 15.33,
+     "inad_pct": 1.93,
+     "pf_share": 97.24
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 128441609013.0,
+     "inad": 3723298016.0,
+     "pf": 128441609013.0,
+     "pj": 0.0,
+     "share": 14.95,
+     "inad_pct": 2.9,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 99712609313.0,
+     "inad": 4248027124.0,
+     "pf": 65324159646.0,
+     "pj": 34388449667.0,
+     "share": 11.6,
+     "inad_pct": 4.26,
+     "pf_share": 65.51
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 91242187947.0,
+     "inad": 362191345.0,
+     "pf": 86188714321.0,
+     "pj": 5053473626.0,
+     "share": 10.62,
+     "inad_pct": 0.4,
+     "pf_share": 94.46
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 78372547527.0,
+     "inad": 5446044398.0,
+     "pf": 346337470.0,
+     "pj": 78026210057.0,
+     "share": 9.12,
+     "inad_pct": 6.95,
+     "pf_share": 0.44
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 60913848205.0,
+     "inad": 3652908727.0,
+     "pf": 41234278648.0,
+     "pj": 19679569557.0,
+     "share": 7.09,
+     "inad_pct": 6.0,
+     "pf_share": 67.69
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 43757240727.0,
+     "inad": 6073743769.0,
+     "pf": 43757005621.0,
+     "pj": 235106.0,
+     "share": 5.09,
+     "inad_pct": 13.88,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 30527297914.0,
+     "inad": 189110840.0,
+     "pf": 7515090729.0,
+     "pj": 23012207185.0,
+     "share": 3.55,
+     "inad_pct": 0.62,
+     "pf_share": 24.62
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 30159854543.0,
+     "inad": 12794124058.0,
+     "pf": 28895389673.0,
+     "pj": 1264464870.0,
+     "share": 3.51,
+     "inad_pct": 42.42,
+     "pf_share": 95.81
+    }
+   ],
+   "penetracao": {
+    "municipios": 417,
+    "credito": 117312663014.0,
+    "renda_anual": 182586695490.7201,
+    "adultos": 10640953.0,
+    "penetracao": 64.25,
+    "cred_adulto": 11024.64,
+    "municipios_abaixo": 93,
+    "gap_abs": 58177333389.359985,
+    "sem_estban": 213
+   },
+   "presenca": {
+    "municipios": 417,
+    "com_agencia": 204,
+    "so_posto": 208,
+    "so_correspondente": 5,
+    "nenhum": 0,
+    "agencias": 738,
+    "postos": 892,
+    "pae": 1244,
+    "correspondentes": 14423,
+    "agencias_100mil": 5.0
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 115079528402,
+    "q_pag": 488792248,
+    "t_pag": 235.44,
+    "q_hab": 32.9,
+    "v_hab": 7739,
+    "yoy_v": 12.6,
+    "pf_share": 60.17
+   },
+   "moradia": {
+    "dom_total": 5088395,
+    "pgp": 4.99,
+    "alp": 15.87,
+    "scr_imob_pf": 45067487941.0,
+    "scr_inad_pct": 1.98,
+    "taxa_sfh": 13.9,
+    "ltv_sfh": 66.98,
+    "valor_compra": 236384.0,
+    "renda_pc": 1079.58
+   },
+   "consignado": {
+    "p60": 15.27,
+    "elegiveis": 2287975,
+    "cons_total": 44468847170.0,
+    "cons_obs": 7371539387.0,
+    "part_apos": 16.58,
+    "inad_apos": 2.8,
+    "cons_por_elegivel": 3222.0,
+    "ben_medio": 1555.15,
+    "prural": 56.55
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 15108131568.63,
+    "qtd": 354469,
+    "share": 4.39,
+    "valor_hab": 1068.34,
+    "agricola_share": 67.36,
+    "pronaf_share": 29.03,
+    "ticket": 42621.87
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 5276.564210289999,
+    "share": 2.92,
+    "mpme_share": 30.16,
+    "var_12m_pct": -4.7,
+    "valor_hab": 373.12
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 1611146,
+    "valor": 124542208065.99,
+    "part_br": 3.545,
+    "valor_medio": 77300,
+    "insc_pf_por_mil_hab": 14.58,
+    "pj_valor": 113157365679.17
+   },
+   "posicoes": {
+    "scr.saldo": 8,
+    "scr.per_capita": 19,
+    "scr.inad": 15,
+    "scr.cresc12": 11,
+    "penetracao.penetracao": 24,
+    "penetracao.cred_adulto": 26,
+    "presenca.agencias_100mil": 17,
+    "pix.q_hab": 20,
+    "moradia.pgp": 25,
+    "consignado.cons_por_elegivel": 24,
+    "rural.valor_hab": 14,
+    "bndes.valor_hab": 18,
+    "pgfn.insc_pf_por_mil_hab": 23
+   },
+   "sintese": "O crédito na Bahia somava R$ 296 bilhões em 2026-07, 3,9% do Brasil, R$ 19.901 por habitante (19º entre as 27 UFs), com inadimplência de 5,50% (15º) e crescimento de +10,2% em 12 meses. Penetração de 64% da renda anual (24º), com 93 de 417 municípios abaixo do esperado pelo modelo. 204 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "CE",
+   "nome": "Ceará",
+   "prep": "no Ceará",
+   "regiao": "Nordeste",
+   "cod": "23",
+   "pop": 9268836,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 175502328743,
+    "part_br": 2.32,
+    "per_capita": 18935,
+    "n_op": 32568538,
+    "cresc12": 14.57,
+    "cresc3": 2.67,
+    "inad": 5.01,
+    "d_inad_12m": 0.35,
+    "atraso15_90": 1.04,
+    "ap": 8.5,
+    "saldo_medio_op": 5024,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.04
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 98274514487.0,
+     "inad": 1536955722.0,
+     "pf": 95596795685.0,
+     "pj": 2677718802.0,
+     "share": 19.67,
+     "inad_pct": 1.56,
+     "pf_share": 97.28
+    },
+    {
+     "produto": "Outros",
+     "saldo": 94031647509.0,
+     "inad": 3553646633.0,
+     "pf": 13889048735.0,
+     "pj": 80142598774.0,
+     "share": 18.82,
+     "inad_pct": 3.78,
+     "pf_share": 14.77
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 84268219777.0,
+     "inad": 2069013390.0,
+     "pf": 84268219777.0,
+     "pj": 0.0,
+     "share": 16.87,
+     "inad_pct": 2.46,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 54036274931.0,
+     "inad": 15024541.0,
+     "pf": 50843682503.0,
+     "pj": 3192592428.0,
+     "share": 10.82,
+     "inad_pct": 0.03,
+     "pf_share": 94.09
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 50477373831.0,
+     "inad": 3067852306.0,
+     "pf": 49806605.0,
+     "pj": 50427567226.0,
+     "share": 10.1,
+     "inad_pct": 6.08,
+     "pf_share": 0.1
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 46416200195.0,
+     "inad": 2555617835.0,
+     "pf": 36325684177.0,
+     "pj": 10090516018.0,
+     "share": 9.29,
+     "inad_pct": 5.51,
+     "pf_share": 78.26
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 26155941796.0,
+     "inad": 3514079753.0,
+     "pf": 26155941796.0,
+     "pj": 0.0,
+     "share": 5.24,
+     "inad_pct": 13.44,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 17254008788.0,
+     "inad": 7160045929.0,
+     "pf": 16555961751.0,
+     "pj": 698047037.0,
+     "share": 3.45,
+     "inad_pct": 41.5,
+     "pf_share": 95.95
+    },
+    {
+     "produto": "Rural",
+     "saldo": 8809856752.0,
+     "inad": 604326522.0,
+     "pf": 6714605503.0,
+     "pj": 2095251249.0,
+     "share": 1.76,
+     "inad_pct": 6.86,
+     "pf_share": 76.22
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 8356754753.0,
+     "inad": 6245.0,
+     "pf": 0.0,
+     "pj": 8356754753.0,
+     "share": 1.67,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 184,
+    "credito": 78280831234.0,
+    "renda_anual": 111087377783.52002,
+    "adultos": 6600427.0,
+    "penetracao": 70.47,
+    "cred_adulto": 11859.96,
+    "municipios_abaixo": 41,
+    "gap_abs": 32985362246.459995,
+    "sem_estban": 97
+   },
+   "presenca": {
+    "municipios": 184,
+    "com_agencia": 87,
+    "so_posto": 97,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 383,
+    "postos": 430,
+    "pae": 548,
+    "correspondentes": 8602,
+    "agencias_100mil": 4.1
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 78097085264,
+    "q_pag": 307683590,
+    "t_pag": 253.82,
+    "q_hab": 33.2,
+    "v_hab": 8426,
+    "yoy_v": 23.0,
+    "pf_share": 52.69
+   },
+   "moradia": {
+    "dom_total": 3020256,
+    "pgp": 5.31,
+    "alp": 21.93,
+    "scr_imob_pf": 34293877058.0,
+    "scr_inad_pct": 1.5,
+    "taxa_sfh": 13.88,
+    "ltv_sfh": 68.11,
+    "valor_compra": 219150.0,
+    "renda_pc": 1056.24
+   },
+   "consignado": {
+    "p60": 14.67,
+    "elegiveis": 1358580,
+    "cons_total": 29110204113.0,
+    "cons_obs": 3702004605.0,
+    "part_apos": 12.72,
+    "inad_apos": 1.91,
+    "cons_por_elegivel": 2725.0,
+    "ben_medio": 1458.35,
+    "prural": 60.19
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 3194426125.94,
+    "qtd": 195662,
+    "share": 0.93,
+    "valor_hab": 363.21,
+    "agricola_share": 28.2,
+    "pronaf_share": 61.01,
+    "ticket": 16326.25
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 2552.30408072,
+    "share": 1.41,
+    "mpme_share": 30.52,
+    "var_12m_pct": 70.2,
+    "valor_hab": 290.2
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 996644,
+    "valor": 66025065389.41,
+    "part_br": 1.88,
+    "valor_medio": 66247,
+    "insc_pf_por_mil_hab": 11.52,
+    "pj_valor": 62835667990.84
+   },
+   "posicoes": {
+    "scr.saldo": 10,
+    "scr.per_capita": 21,
+    "scr.inad": 18,
+    "scr.cresc12": 2,
+    "penetracao.penetracao": 20,
+    "penetracao.cred_adulto": 23,
+    "presenca.agencias_100mil": 25,
+    "pix.q_hab": 17,
+    "moradia.pgp": 22,
+    "consignado.cons_por_elegivel": 25,
+    "rural.valor_hab": 22,
+    "bndes.valor_hab": 20,
+    "pgfn.insc_pf_por_mil_hab": 27
+   },
+   "sintese": "O crédito no Ceará somava R$ 176 bilhões em 2026-07, 2,3% do Brasil, R$ 18.935 por habitante (21º entre as 27 UFs), com inadimplência de 5,01% (18º) e crescimento de +14,6% em 12 meses. Penetração de 70% da renda anual (20º), com 41 de 184 municípios abaixo do esperado pelo modelo. 87 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "DF",
+   "nome": "Distrito Federal",
+   "prep": "no Distrito Federal",
+   "regiao": "Centro-Oeste",
+   "cod": "53",
+   "pop": 2996899,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 158790725856,
+    "part_br": 2.1,
+    "per_capita": 52985,
+    "n_op": 15260557,
+    "cresc12": -0.44,
+    "cresc3": -10.65,
+    "inad": 3.54,
+    "d_inad_12m": 0.26,
+    "atraso15_90": 0.7,
+    "ap": 6.12,
+    "saldo_medio_op": 7112,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.69
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 104469386619.0,
+     "inad": 1435549578.0,
+     "pf": 97652527774.0,
+     "pj": 6816858845.0,
+     "share": 21.06,
+     "inad_pct": 1.37,
+     "pf_share": 93.47
+    },
+    {
+     "produto": "Outros",
+     "saldo": 89449781759.0,
+     "inad": 2210043286.0,
+     "pf": 10746864900.0,
+     "pj": 78702916859.0,
+     "share": 18.03,
+     "inad_pct": 2.47,
+     "pf_share": 12.01
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 66788887100.0,
+     "inad": 1609799414.0,
+     "pf": 66788887100.0,
+     "pj": 0.0,
+     "share": 13.47,
+     "inad_pct": 2.41,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 61507264565.0,
+     "inad": 2243683105.0,
+     "pf": 87634679.0,
+     "pj": 61419629886.0,
+     "share": 12.4,
+     "inad_pct": 3.65,
+     "pf_share": 0.14
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 40815518086.0,
+     "inad": 15834776.0,
+     "pf": 38780473202.0,
+     "pj": 2035044884.0,
+     "share": 8.23,
+     "inad_pct": 0.04,
+     "pf_share": 95.01
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 38633245634.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 38633245634.0,
+     "share": 7.79,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 35161684241.0,
+     "inad": 1568012620.0,
+     "pf": 27324200186.0,
+     "pj": 7837484055.0,
+     "share": 7.09,
+     "inad_pct": 4.46,
+     "pf_share": 77.71
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 23178912261.0,
+     "inad": 2224415966.0,
+     "pf": 23178912261.0,
+     "pj": 0.0,
+     "share": 4.67,
+     "inad_pct": 9.6,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 15456894026.0,
+     "inad": 650229323.0,
+     "pf": 14459707232.0,
+     "pj": 997186794.0,
+     "share": 3.12,
+     "inad_pct": 4.21,
+     "pf_share": 93.55
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 10614780580.0,
+     "inad": 4210971736.0,
+     "pf": 10053333852.0,
+     "pj": 561446728.0,
+     "share": 2.14,
+     "inad_pct": 39.67,
+     "pf_share": 94.71
+    }
+   ],
+   "penetracao": {
+    "municipios": 1,
+    "credito": 6791389543305.0,
+    "renda_anual": 100452675428.4,
+    "adultos": 2160806.0,
+    "penetracao": 6760.79,
+    "cred_adulto": 3142989.03,
+    "municipios_abaixo": 0,
+    "gap_abs": 0.0,
+    "sem_estban": 0
+   },
+   "presenca": {
+    "municipios": 1,
+    "com_agencia": 1,
+    "so_posto": 0,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 233,
+    "postos": 400,
+    "pae": 462,
+    "correspondentes": 2703,
+    "agencias_100mil": 7.8
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 67543417929,
+    "q_pag": 134244713,
+    "t_pag": 503.14,
+    "q_hab": 44.8,
+    "v_hab": 22538,
+    "yoy_v": 38.8,
+    "pf_share": 35.28
+   },
+   "moradia": {
+    "dom_total": 988175,
+    "pgp": 9.53,
+    "alp": 33.25,
+    "scr_imob_pf": 29398032492.0,
+    "scr_inad_pct": 1.48,
+    "taxa_sfh": 13.66,
+    "ltv_sfh": 62.93,
+    "valor_compra": 355000.0,
+    "renda_pc": 2999.18
+   },
+   "consignado": {
+    "p60": 12.96,
+    "elegiveis": 283883,
+    "cons_total": 24951718785.0,
+    "cons_obs": 5857573630.0,
+    "part_apos": 23.48,
+    "inad_apos": 1.86,
+    "cons_por_elegivel": 20634.0,
+    "ben_medio": 2163.79,
+    "prural": 5.97
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 494740891.27,
+    "qtd": 427,
+    "share": 0.14,
+    "valor_hab": 175.6,
+    "agricola_share": 91.01,
+    "pronaf_share": 1.25,
+    "ticket": 1158643.77
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 419.3084034799999,
+    "share": 0.23,
+    "mpme_share": 56.38,
+    "var_12m_pct": 13.6,
+    "valor_hab": 148.83
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 821850,
+    "valor": 74474245860.17,
+    "part_br": 2.12,
+    "valor_medio": 90618,
+    "insc_pf_por_mil_hab": 33.32,
+    "pj_valor": 60665988005.34
+   },
+   "posicoes": {
+    "scr.saldo": 13,
+    "scr.per_capita": 2,
+    "scr.inad": 27,
+    "scr.cresc12": 27,
+    "penetracao.penetracao": 1,
+    "penetracao.cred_adulto": 1,
+    "presenca.agencias_100mil": 3,
+    "pix.q_hab": 3,
+    "moradia.pgp": 8,
+    "consignado.cons_por_elegivel": 1,
+    "rural.valor_hab": 24,
+    "bndes.valor_hab": 27,
+    "pgfn.insc_pf_por_mil_hab": 1
+   },
+   "sintese": "O crédito no Distrito Federal somava R$ 159 bilhões em 2026-07, 2,1% do Brasil, R$ 52.985 por habitante (2º entre as 27 UFs), com inadimplência de 3,54% (27º) e crescimento de -0,4% em 12 meses. Penetração de 6761% da renda anual (1º), com 0 de 1 municípios abaixo do esperado pelo modelo. 1 município tem agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "ES",
+   "nome": "Espírito Santo",
+   "prep": "no Espírito Santo",
+   "regiao": "Sudeste",
+   "cod": "32",
+   "pop": 4126854,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 132031861103,
+    "part_br": 1.74,
+    "per_capita": 31993,
+    "n_op": 17121544,
+    "cresc12": 12.01,
+    "cresc3": 1.62,
+    "inad": 4.02,
+    "d_inad_12m": -0.19,
+    "atraso15_90": 0.9,
+    "ap": 8.07,
+    "saldo_medio_op": 7046,
+    "prod_dominante": "Capital de giro",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 0.99
+   },
+   "produtos": [
+    {
+     "produto": "Capital de giro",
+     "saldo": 59347085292.0,
+     "inad": 2814290369.0,
+     "pf": 337438818.0,
+     "pj": 59009646474.0,
+     "share": 15.62,
+     "inad_pct": 4.74,
+     "pf_share": 0.57
+    },
+    {
+     "produto": "Rural",
+     "saldo": 52506472131.0,
+     "inad": 1120339668.0,
+     "pf": 48199615475.0,
+     "pj": 4306856656.0,
+     "share": 13.82,
+     "inad_pct": 2.13,
+     "pf_share": 91.8
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 51487578955.0,
+     "inad": 491538400.0,
+     "pf": 50039610038.0,
+     "pj": 1447968917.0,
+     "share": 13.56,
+     "inad_pct": 0.95,
+     "pf_share": 97.19
+    },
+    {
+     "produto": "Outros",
+     "saldo": 49755746598.0,
+     "inad": 2098065274.0,
+     "pf": 8360068026.0,
+     "pj": 41395678572.0,
+     "share": 13.1,
+     "inad_pct": 4.22,
+     "pf_share": 16.8
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 37969658691.0,
+     "inad": 1024319730.0,
+     "pf": 37969658691.0,
+     "pj": 0.0,
+     "share": 10.0,
+     "inad_pct": 2.7,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 35895111512.0,
+     "inad": 1433477285.0,
+     "pf": 21237214200.0,
+     "pj": 14657897312.0,
+     "share": 9.45,
+     "inad_pct": 3.99,
+     "pf_share": 59.16
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 32491835502.0,
+     "inad": 8171802.0,
+     "pf": 29922466689.0,
+     "pj": 2569368813.0,
+     "share": 8.55,
+     "inad_pct": 0.03,
+     "pf_share": 92.09
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 22505885271.0,
+     "inad": 744826794.0,
+     "pf": 0.0,
+     "pj": 22505885271.0,
+     "share": 5.93,
+     "inad_pct": 3.31,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 17838404623.0,
+     "inad": 1794111621.0,
+     "pf": 17838144623.0,
+     "pj": 260000.0,
+     "share": 4.7,
+     "inad_pct": 10.06,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 8518706163.0,
+     "inad": 3154329050.0,
+     "pf": 8108165802.0,
+     "pj": 410540361.0,
+     "share": 2.24,
+     "inad_pct": 37.03,
+     "pf_share": 95.18
+    }
+   ],
+   "penetracao": {
+    "municipios": 78,
+    "credito": 47031776533.0,
+    "renda_anual": 75420381315.0,
+    "adultos": 2939486.0,
+    "penetracao": 62.36,
+    "cred_adulto": 16000.0,
+    "municipios_abaixo": 25,
+    "gap_abs": 16473042519.400002,
+    "sem_estban": 10
+   },
+   "presenca": {
+    "municipios": 78,
+    "com_agencia": 68,
+    "so_posto": 10,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 298,
+    "postos": 489,
+    "pae": 736,
+    "correspondentes": 4789,
+    "agencias_100mil": 7.2
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 57044185261,
+    "q_pag": 132231536,
+    "t_pag": 431.4,
+    "q_hab": 32.0,
+    "v_hab": 13823,
+    "yoy_v": 7.9,
+    "pf_share": 40.79
+   },
+   "moradia": {
+    "dom_total": 1428804,
+    "pgp": 5.05,
+    "alp": 23.5,
+    "scr_imob_pf": 17416174448.0,
+    "scr_inad_pct": 0.82,
+    "taxa_sfh": 13.81,
+    "ltv_sfh": 64.72,
+    "valor_compra": 349219.0,
+    "renda_pc": 1651.38
+   },
+   "consignado": {
+    "p60": 16.47,
+    "elegiveis": 645947,
+    "cons_total": 13123661269.0,
+    "cons_obs": 2992528045.0,
+    "part_apos": 22.8,
+    "inad_apos": 1.92,
+    "cons_por_elegivel": 4633.0,
+    "ben_medio": 1777.18,
+    "prural": 30.32
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 9335994974.14,
+    "qtd": 47856,
+    "share": 2.71,
+    "valor_hab": 2435.24,
+    "agricola_share": 89.5,
+    "pronaf_share": 35.17,
+    "ticket": 195085.15
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 4219.9888962,
+    "share": 2.33,
+    "mpme_share": 62.2,
+    "var_12m_pct": 46.8,
+    "valor_hab": 1100.76
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 644952,
+    "valor": 66881893311.17,
+    "part_br": 1.904,
+    "valor_medio": 103701,
+    "insc_pf_por_mil_hab": 17.36,
+    "pj_valor": 64240155705.31
+   },
+   "posicoes": {
+    "scr.saldo": 15,
+    "scr.per_capita": 12,
+    "scr.inad": 24,
+    "scr.cresc12": 4,
+    "penetracao.penetracao": 26,
+    "penetracao.cred_adulto": 17,
+    "presenca.agencias_100mil": 6,
+    "pix.q_hab": 22,
+    "moradia.pgp": 23,
+    "consignado.cons_por_elegivel": 16,
+    "rural.valor_hab": 9,
+    "bndes.valor_hab": 6,
+    "pgfn.insc_pf_por_mil_hab": 15
+   },
+   "sintese": "O crédito no Espírito Santo somava R$ 132 bilhões em 2026-07, 1,7% do Brasil, R$ 31.993 por habitante (12º entre as 27 UFs), com inadimplência de 4,02% (24º) e crescimento de +12,0% em 12 meses. Penetração de 62% da renda anual (26º), com 25 de 78 municípios abaixo do esperado pelo modelo. 68 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "GO",
+   "nome": "Goiás",
+   "prep": "em Goiás",
+   "regiao": "Centro-Oeste",
+   "cod": "52",
+   "pop": 7423629,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 342635579190,
+    "part_br": 4.52,
+    "per_capita": 46155,
+    "n_op": 31218293,
+    "cresc12": 7.65,
+    "cresc3": -0.15,
+    "inad": 7.09,
+    "d_inad_12m": 1.89,
+    "atraso15_90": 1.42,
+    "ap": 11.74,
+    "saldo_medio_op": 10521,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.81
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 246445730935.0,
+     "inad": 21459755594.0,
+     "pf": 224745441394.0,
+     "pj": 21700289541.0,
+     "share": 24.54,
+     "inad_pct": 8.71,
+     "pf_share": 91.19
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 226532956993.0,
+     "inad": 4135157752.0,
+     "pf": 213406629190.0,
+     "pj": 13126327803.0,
+     "share": 22.56,
+     "inad_pct": 1.83,
+     "pf_share": 94.21
+    },
+    {
+     "produto": "Outros",
+     "saldo": 97172420094.0,
+     "inad": 7387719472.0,
+     "pf": 27297801571.0,
+     "pj": 69874618523.0,
+     "share": 9.68,
+     "inad_pct": 7.6,
+     "pf_share": 28.09
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 82485376290.0,
+     "inad": 5532759636.0,
+     "pf": 1779105750.0,
+     "pj": 80706270540.0,
+     "share": 8.22,
+     "inad_pct": 6.71,
+     "pf_share": 2.16
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 78121617265.0,
+     "inad": 2669292429.0,
+     "pf": 78121617265.0,
+     "pj": 0.0,
+     "share": 7.78,
+     "inad_pct": 3.42,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 77143846418.0,
+     "inad": 4901406519.0,
+     "pf": 54403384080.0,
+     "pj": 22740462338.0,
+     "share": 7.68,
+     "inad_pct": 6.35,
+     "pf_share": 70.52
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 59812678302.0,
+     "inad": 12376144.0,
+     "pf": 54955367519.0,
+     "pj": 4857310783.0,
+     "share": 5.96,
+     "inad_pct": 0.02,
+     "pf_share": 91.88
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 49000007341.0,
+     "inad": 6115331125.0,
+     "pf": 49000007341.0,
+     "pj": 0.0,
+     "share": 4.88,
+     "inad_pct": 12.48,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 35306185362.0,
+     "inad": 708629480.0,
+     "pf": 14397546453.0,
+     "pj": 20908638909.0,
+     "share": 3.52,
+     "inad_pct": 2.01,
+     "pf_share": 40.78
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 19298071318.0,
+     "inad": 8342186244.0,
+     "pf": 18067888475.0,
+     "pj": 1230182843.0,
+     "share": 1.92,
+     "inad_pct": 43.23,
+     "pf_share": 93.63
+    }
+   ],
+   "penetracao": {
+    "municipios": 246,
+    "credito": 170054067587.0,
+    "renda_anual": 143015202431.40005,
+    "adultos": 5324174.0,
+    "penetracao": 118.91,
+    "cred_adulto": 31939.99,
+    "municipios_abaixo": 51,
+    "gap_abs": 125696618584.24995,
+    "sem_estban": 124
+   },
+   "presenca": {
+    "municipios": 246,
+    "com_agencia": 121,
+    "so_posto": 106,
+    "so_correspondente": 19,
+    "nenhum": 0,
+    "agencias": 481,
+    "postos": 732,
+    "pae": 717,
+    "correspondentes": 7977,
+    "agencias_100mil": 6.5
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 98600437085,
+    "q_pag": 249255316,
+    "t_pag": 395.58,
+    "q_hab": 33.6,
+    "v_hab": 13282,
+    "yoy_v": 14.0,
+    "pf_share": 50.81
+   },
+   "moradia": {
+    "dom_total": 2573364,
+    "pgp": 14.36,
+    "alp": 27.67,
+    "scr_imob_pf": 75249929453.0,
+    "scr_inad_pct": 1.93,
+    "taxa_sfh": 13.78,
+    "ltv_sfh": 68.63,
+    "valor_compra": 240000.0,
+    "renda_pc": 1696.52
+   },
+   "consignado": {
+    "p60": 13.67,
+    "elegiveis": 837903,
+    "cons_total": 27499615189.0,
+    "cons_obs": 5317542583.0,
+    "part_apos": 19.34,
+    "inad_apos": 2.83,
+    "cons_por_elegivel": 6346.0,
+    "ben_medio": 1618.18,
+    "prural": 34.41
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 25025720245.97,
+    "qtd": 47581,
+    "share": 7.27,
+    "valor_hab": 3546.48,
+    "agricola_share": 55.3,
+    "pronaf_share": 5.61,
+    "ticket": 525960.37
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 5211.6105993599995,
+    "share": 2.88,
+    "mpme_share": 38.34,
+    "var_12m_pct": 76.3,
+    "valor_hab": 738.56
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 1237719,
+    "valor": 95035365167.61,
+    "part_br": 2.705,
+    "valor_medio": 76783,
+    "insc_pf_por_mil_hab": 18.33,
+    "pj_valor": 85971300872.43
+   },
+   "posicoes": {
+    "scr.saldo": 7,
+    "scr.per_capita": 8,
+    "scr.inad": 4,
+    "scr.cresc12": 20,
+    "penetracao.penetracao": 7,
+    "penetracao.cred_adulto": 6,
+    "presenca.agencias_100mil": 8,
+    "pix.q_hab": 16,
+    "moradia.pgp": 1,
+    "consignado.cons_por_elegivel": 8,
+    "rural.valor_hab": 7,
+    "bndes.valor_hab": 9,
+    "pgfn.insc_pf_por_mil_hab": 12
+   },
+   "sintese": "O crédito em Goiás somava R$ 343 bilhões em 2026-07, 4,5% do Brasil, R$ 46.155 por habitante (8º entre as 27 UFs), com inadimplência de 7,09% (4º) e crescimento de +7,7% em 12 meses. Penetração de 119% da renda anual (7º), com 51 de 246 municípios abaixo do esperado pelo modelo. 121 municípios têm agência, 19 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "MA",
+   "nome": "Maranhão",
+   "prep": "no Maranhão",
+   "regiao": "Nordeste",
+   "cod": "21",
+   "pop": 7018211,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 113963129555,
+    "part_br": 1.5,
+    "per_capita": 16238,
+    "n_op": 22021225,
+    "cresc12": 7.34,
+    "cresc3": -0.98,
+    "inad": 9.11,
+    "d_inad_12m": 3.01,
+    "atraso15_90": 1.94,
+    "ap": 13.27,
+    "saldo_medio_op": 4813,
+    "prod_dominante": "Consignado",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.81
+   },
+   "produtos": [
+    {
+     "produto": "Consignado",
+     "saldo": 71664566893.0,
+     "inad": 1953489426.0,
+     "pf": 71664566893.0,
+     "pj": 0.0,
+     "share": 21.38,
+     "inad_pct": 2.73,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 49767758528.0,
+     "inad": 9213324677.0,
+     "pf": 48325806365.0,
+     "pj": 1441952163.0,
+     "share": 14.85,
+     "inad_pct": 18.51,
+     "pf_share": 97.1
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 47437731903.0,
+     "inad": 1072029368.0,
+     "pf": 47032651317.0,
+     "pj": 405080586.0,
+     "share": 14.15,
+     "inad_pct": 2.26,
+     "pf_share": 99.15
+    },
+    {
+     "produto": "Outros",
+     "saldo": 39239981138.0,
+     "inad": 2509614145.0,
+     "pf": 10949154476.0,
+     "pj": 28290826662.0,
+     "share": 11.71,
+     "inad_pct": 6.4,
+     "pf_share": 27.9
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 33116812424.0,
+     "inad": 2040169960.0,
+     "pf": 24287168335.0,
+     "pj": 8829644089.0,
+     "share": 9.88,
+     "inad_pct": 6.16,
+     "pf_share": 73.34
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 26997848542.0,
+     "inad": 2606343954.0,
+     "pf": 155233447.0,
+     "pj": 26842615095.0,
+     "share": 8.05,
+     "inad_pct": 9.65,
+     "pf_share": 0.57
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 24631089045.0,
+     "inad": 30045892.0,
+     "pf": 22946192928.0,
+     "pj": 1684896117.0,
+     "share": 7.35,
+     "inad_pct": 0.12,
+     "pf_share": 93.16
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 22238607292.0,
+     "inad": 3041056769.0,
+     "pf": 22238607292.0,
+     "pj": 0.0,
+     "share": 6.63,
+     "inad_pct": 13.67,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 9985648257.0,
+     "inad": 3574252712.0,
+     "pf": 9499890233.0,
+     "pj": 485758024.0,
+     "share": 2.98,
+     "inad_pct": 35.79,
+     "pf_share": 95.14
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 4297198794.0,
+     "inad": 133558159.0,
+     "pf": 1753288712.0,
+     "pj": 2543910082.0,
+     "share": 1.28,
+     "inad_pct": 3.11,
+     "pf_share": 40.8
+    }
+   ],
+   "penetracao": {
+    "municipios": 217,
+    "credito": 50670434223.0,
+    "renda_anual": 72973627359.12,
+    "adultos": 4756185.0,
+    "penetracao": 69.44,
+    "cred_adulto": 10653.59,
+    "municipios_abaixo": 19,
+    "gap_abs": 11065984547.09,
+    "sem_estban": 137
+   },
+   "presenca": {
+    "municipios": 217,
+    "com_agencia": 80,
+    "so_posto": 125,
+    "so_correspondente": 12,
+    "nenhum": 0,
+    "agencias": 263,
+    "postos": 289,
+    "pae": 501,
+    "correspondentes": 5767,
+    "agencias_100mil": 3.7
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 51113435917,
+    "q_pag": 250051176,
+    "t_pag": 204.41,
+    "q_hab": 35.6,
+    "v_hab": 7283,
+    "yoy_v": 6.2,
+    "pf_share": 61.32
+   },
+   "moradia": {
+    "dom_total": 2091126,
+    "pgp": 5.41,
+    "alp": 11.96,
+    "scr_imob_pf": 16521120572.0,
+    "scr_inad_pct": 2.19,
+    "taxa_sfh": 13.87,
+    "ltv_sfh": 69.09,
+    "valor_compra": 218000.0,
+    "renda_pc": 900.46
+   },
+   "consignado": {
+    "p60": 12.13,
+    "elegiveis": 1075843,
+    "cons_total": 24617943348.0,
+    "cons_obs": 2511020699.0,
+    "part_apos": 10.2,
+    "inad_apos": 2.14,
+    "cons_por_elegivel": 2334.0,
+    "ben_medio": 1325.94,
+    "prural": 79.8
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 6339009448.76,
+    "qtd": 158276,
+    "share": 1.84,
+    "valor_hab": 935.41,
+    "agricola_share": 47.94,
+    "pronaf_share": 29.88,
+    "ticket": 40050.35
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1724.2166802,
+    "share": 0.95,
+    "mpme_share": 44.19,
+    "var_12m_pct": 28.5,
+    "valor_hab": 254.43
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 554773,
+    "valor": 43327026396.34,
+    "part_br": 1.233,
+    "valor_medio": 78099,
+    "insc_pf_por_mil_hab": 16.06,
+    "pj_valor": 38855063671.18
+   },
+   "posicoes": {
+    "scr.saldo": 16,
+    "scr.per_capita": 27,
+    "scr.inad": 1,
+    "scr.cresc12": 21,
+    "penetracao.penetracao": 21,
+    "penetracao.cred_adulto": 27,
+    "presenca.agencias_100mil": 26,
+    "pix.q_hab": 10,
+    "moradia.pgp": 20,
+    "consignado.cons_por_elegivel": 27,
+    "rural.valor_hab": 16,
+    "bndes.valor_hab": 22,
+    "pgfn.insc_pf_por_mil_hab": 19
+   },
+   "sintese": "O crédito no Maranhão somava R$ 114 bilhões em 2026-07, 1,5% do Brasil, R$ 16.238 por habitante (27º entre as 27 UFs), com inadimplência de 9,11% (1º) e crescimento de +7,3% em 12 meses. Penetração de 69% da renda anual (21º), com 19 de 217 municípios abaixo do esperado pelo modelo. 80 municípios têm agência, 12 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "MG",
+   "nome": "Minas Gerais",
+   "prep": "em Minas Gerais",
+   "regiao": "Sudeste",
+   "cod": "31",
+   "pop": 21393441,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 670588994801,
+    "part_br": 8.85,
+    "per_capita": 31346,
+    "n_op": 89014313,
+    "cresc12": 8.5,
+    "cresc3": 1.07,
+    "inad": 4.64,
+    "d_inad_12m": 0.75,
+    "atraso15_90": 1.05,
+    "ap": 7.89,
+    "saldo_medio_op": 7369,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.55
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 385327678393.0,
+     "inad": 4043685501.0,
+     "pf": 370688160570.0,
+     "pj": 14639517823.0,
+     "share": 19.74,
+     "inad_pct": 1.05,
+     "pf_share": 96.2
+    },
+    {
+     "produto": "Rural",
+     "saldo": 287593270314.0,
+     "inad": 13636526691.0,
+     "pf": 248133935161.0,
+     "pj": 39459335153.0,
+     "share": 14.73,
+     "inad_pct": 4.74,
+     "pf_share": 86.28
+    },
+    {
+     "produto": "Outros",
+     "saldo": 223045767486.0,
+     "inad": 10663984221.0,
+     "pf": 39999691838.0,
+     "pj": 183046075648.0,
+     "share": 11.43,
+     "inad_pct": 4.78,
+     "pf_share": 17.93
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 218771840191.0,
+     "inad": 11244200609.0,
+     "pf": 2770726829.0,
+     "pj": 216001113362.0,
+     "share": 11.21,
+     "inad_pct": 5.14,
+     "pf_share": 1.27
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 193977345509.0,
+     "inad": 5904124787.0,
+     "pf": 193977258189.0,
+     "pj": 87320.0,
+     "share": 9.94,
+     "inad_pct": 3.04,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 167185261011.0,
+     "inad": 101898494.0,
+     "pf": 154571516753.0,
+     "pj": 12613744258.0,
+     "share": 8.56,
+     "inad_pct": 0.06,
+     "pf_share": 92.46
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 158235965425.0,
+     "inad": 7482725304.0,
+     "pf": 97155386882.0,
+     "pj": 61080578543.0,
+     "share": 8.11,
+     "inad_pct": 4.73,
+     "pf_share": 61.4
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 112701545132.0,
+     "inad": 11007707591.0,
+     "pf": 112701545132.0,
+     "pj": 0.0,
+     "share": 5.77,
+     "inad_pct": 9.77,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 94461782447.0,
+     "inad": 975700102.0,
+     "pf": 6765330207.0,
+     "pj": 87696452240.0,
+     "share": 4.84,
+     "inad_pct": 1.03,
+     "pf_share": 7.16
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 45611251294.0,
+     "inad": 16766376485.0,
+     "pf": 43468766152.0,
+     "pj": 2142485142.0,
+     "share": 2.34,
+     "inad_pct": 36.76,
+     "pf_share": 95.3
+    }
+   ],
+   "penetracao": {
+    "municipios": 853,
+    "credito": 376132445781.0,
+    "renda_anual": 395276270995.3193,
+    "adultos": 16022589.0,
+    "penetracao": 95.16,
+    "cred_adulto": 23475.14,
+    "municipios_abaixo": 146,
+    "gap_abs": 32847739725.109974,
+    "sem_estban": 452
+   },
+   "presenca": {
+    "municipios": 853,
+    "com_agencia": 402,
+    "so_posto": 416,
+    "so_correspondente": 35,
+    "nenhum": 0,
+    "agencias": 1328,
+    "postos": 2773,
+    "pae": 3099,
+    "correspondentes": 22397,
+    "agencias_100mil": 6.2
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 253558204111,
+    "q_pag": 599493209,
+    "t_pag": 422.95,
+    "q_hab": 28.0,
+    "v_hab": 11852,
+    "yoy_v": 19.0,
+    "pf_share": 44.71
+   },
+   "moradia": {
+    "dom_total": 7534791,
+    "pgp": 8.49,
+    "alp": 22.47,
+    "scr_imob_pf": 129537209100.0,
+    "scr_inad_pct": 1.05,
+    "taxa_sfh": 13.93,
+    "ltv_sfh": 65.33,
+    "valor_compra": 270000.0,
+    "renda_pc": 1611.77
+   },
+   "consignado": {
+    "p60": 17.82,
+    "elegiveis": 3821977,
+    "cons_total": 66874500704.0,
+    "cons_obs": 14088130943.0,
+    "part_apos": 21.07,
+    "inad_apos": 1.93,
+    "cons_por_elegivel": 3686.0,
+    "ben_medio": 1737.45,
+    "prural": 27.79
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 45879656631.73,
+    "qtd": 274184,
+    "share": 13.32,
+    "valor_hab": 2233.67,
+    "agricola_share": 65.9,
+    "pronaf_share": 16.58,
+    "ticket": 167331.63
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 14427.802156620002,
+    "share": 7.98,
+    "mpme_share": 52.55,
+    "var_12m_pct": 28.3,
+    "valor_hab": 702.43
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 3234179,
+    "valor": 215240628846.45,
+    "part_br": 6.127,
+    "valor_medio": 66552,
+    "insc_pf_por_mil_hab": 14.75,
+    "pj_valor": 201797975143.21
+   },
+   "posicoes": {
+    "scr.saldo": 2,
+    "scr.per_capita": 13,
+    "scr.inad": 21,
+    "scr.cresc12": 18,
+    "penetracao.penetracao": 11,
+    "penetracao.cred_adulto": 12,
+    "presenca.agencias_100mil": 11,
+    "pix.q_hab": 25,
+    "moradia.pgp": 10,
+    "consignado.cons_por_elegivel": 22,
+    "rural.valor_hab": 10,
+    "bndes.valor_hab": 10,
+    "pgfn.insc_pf_por_mil_hab": 22
+   },
+   "sintese": "O crédito em Minas Gerais somava R$ 671 bilhões em 2026-07, 8,8% do Brasil, R$ 31.346 por habitante (13º entre as 27 UFs), com inadimplência de 4,64% (21º) e crescimento de +8,5% em 12 meses. Penetração de 95% da renda anual (11º), com 146 de 853 municípios abaixo do esperado pelo modelo. 402 municípios têm agência, 35 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "MS",
+   "nome": "Mato Grosso do Sul",
+   "prep": "em Mato Grosso do Sul",
+   "regiao": "Centro-Oeste",
+   "cod": "50",
+   "pop": 2924631,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 142410350379,
+    "part_br": 1.88,
+    "per_capita": 48693,
+    "n_op": 13787904,
+    "cresc12": 6.38,
+    "cresc3": -0.35,
+    "inad": 7.37,
+    "d_inad_12m": 2.14,
+    "atraso15_90": 1.42,
+    "ap": 12.16,
+    "saldo_medio_op": 9269,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.91
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 113126321060.0,
+     "inad": 9060971225.0,
+     "pf": 100939751092.0,
+     "pj": 12186569968.0,
+     "share": 26.99,
+     "inad_pct": 8.01,
+     "pf_share": 89.23
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 64167878263.0,
+     "inad": 1275854061.0,
+     "pf": 62889955382.0,
+     "pj": 1277922881.0,
+     "share": 15.31,
+     "inad_pct": 1.99,
+     "pf_share": 98.01
+    },
+    {
+     "produto": "Outros",
+     "saldo": 49517796641.0,
+     "inad": 4028889645.0,
+     "pf": 14943667006.0,
+     "pj": 34574129635.0,
+     "share": 11.81,
+     "inad_pct": 8.14,
+     "pf_share": 30.18
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 44006152335.0,
+     "inad": 1445425299.0,
+     "pf": 44006152335.0,
+     "pj": 0.0,
+     "share": 10.5,
+     "inad_pct": 3.28,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 32655863960.0,
+     "inad": 2163892375.0,
+     "pf": 23644538369.0,
+     "pj": 9011325591.0,
+     "share": 7.79,
+     "inad_pct": 6.63,
+     "pf_share": 72.41
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 29837173870.0,
+     "inad": 2238036658.0,
+     "pf": 2741647424.0,
+     "pj": 27095526446.0,
+     "share": 7.12,
+     "inad_pct": 7.5,
+     "pf_share": 9.19
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 25574519931.0,
+     "inad": 516893625.0,
+     "pf": 6148383430.0,
+     "pj": 19426136501.0,
+     "share": 6.1,
+     "inad_pct": 2.02,
+     "pf_share": 24.04
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 22314072069.0,
+     "inad": 15938891.0,
+     "pf": 20175490421.0,
+     "pj": 2138581648.0,
+     "share": 5.32,
+     "inad_pct": 0.07,
+     "pf_share": 90.42
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 19340222742.0,
+     "inad": 2163760332.0,
+     "pf": 19340222742.0,
+     "pj": 0.0,
+     "share": 4.61,
+     "inad_pct": 11.19,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 7800216511.0,
+     "inad": 3008261088.0,
+     "pf": 7273719315.0,
+     "pj": 526497196.0,
+     "share": 1.86,
+     "inad_pct": 38.57,
+     "pf_share": 93.25
+    }
+   ],
+   "penetracao": {
+    "municipios": 79,
+    "credito": 64391576946.0,
+    "renda_anual": 56160943499.520004,
+    "adultos": 2030325.0,
+    "penetracao": 114.66,
+    "cred_adulto": 31714.91,
+    "municipios_abaixo": 27,
+    "gap_abs": 36300627463.07999,
+    "sem_estban": 25
+   },
+   "presenca": {
+    "municipios": 79,
+    "com_agencia": 54,
+    "so_posto": 25,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 191,
+    "postos": 399,
+    "pae": 302,
+    "correspondentes": 4157,
+    "agencias_100mil": 6.5
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 37263918401,
+    "q_pag": 99504122,
+    "t_pag": 374.5,
+    "q_hab": 34.0,
+    "v_hab": 12741,
+    "yoy_v": 5.4,
+    "pf_share": 49.63
+   },
+   "moradia": {
+    "dom_total": 979575,
+    "pgp": 13.37,
+    "alp": 24.52,
+    "scr_imob_pf": 21875701578.0,
+    "scr_inad_pct": 1.97,
+    "taxa_sfh": 13.95,
+    "ltv_sfh": 67.83,
+    "valor_compra": 225000.0,
+    "renda_pc": 1710.48
+   },
+   "consignado": {
+    "p60": 14.19,
+    "elegiveis": 350752,
+    "cons_total": 15181236012.0,
+    "cons_obs": 3035115445.0,
+    "part_apos": 19.99,
+    "inad_apos": 2.28,
+    "cons_por_elegivel": 8653.0,
+    "ben_medio": 1593.85,
+    "prural": 27.82
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 14704063737.49,
+    "qtd": 29510,
+    "share": 4.27,
+    "valor_hab": 5333.33,
+    "agricola_share": 62.59,
+    "pronaf_share": 4.29,
+    "ticket": 498273.93
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 7821.65691467,
+    "share": 4.33,
+    "mpme_share": 38.17,
+    "var_12m_pct": 203.3,
+    "valor_hab": 2837.0
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 548008,
+    "valor": 36832160846.21,
+    "part_br": 1.049,
+    "valor_medio": 67211,
+    "insc_pf_por_mil_hab": 25.05,
+    "pj_valor": 32175242551.03
+   },
+   "posicoes": {
+    "scr.saldo": 14,
+    "scr.per_capita": 5,
+    "scr.inad": 3,
+    "scr.cresc12": 22,
+    "penetracao.penetracao": 9,
+    "penetracao.cred_adulto": 7,
+    "presenca.agencias_100mil": 9,
+    "pix.q_hab": 13,
+    "moradia.pgp": 2,
+    "consignado.cons_por_elegivel": 5,
+    "rural.valor_hab": 2,
+    "bndes.valor_hab": 1,
+    "pgfn.insc_pf_por_mil_hab": 4
+   },
+   "sintese": "O crédito em Mato Grosso do Sul somava R$ 142 bilhões em 2026-07, 1,9% do Brasil, R$ 48.693 por habitante (5º entre as 27 UFs), com inadimplência de 7,37% (3º) e crescimento de +6,4% em 12 meses. Penetração de 115% da renda anual (9º), com 27 de 79 municípios abaixo do esperado pelo modelo. 54 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "MT",
+   "nome": "Mato Grosso",
+   "prep": "em Mato Grosso",
+   "regiao": "Centro-Oeste",
+   "cod": "51",
+   "pop": 3893659,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 263386323304,
+    "part_br": 3.48,
+    "per_capita": 67645,
+    "n_op": 16416567,
+    "cresc12": 5.17,
+    "cresc3": -0.54,
+    "inad": 5.98,
+    "d_inad_12m": 1.25,
+    "atraso15_90": 1.21,
+    "ap": 10.28,
+    "saldo_medio_op": 15085,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.41
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 254713528101.0,
+     "inad": 15156505830.0,
+     "pf": 218421542649.0,
+     "pj": 36291985452.0,
+     "share": 32.71,
+     "inad_pct": 5.95,
+     "pf_share": 85.75
+    },
+    {
+     "produto": "Outros",
+     "saldo": 102121637206.0,
+     "inad": 6594278569.0,
+     "pf": 29911949698.0,
+     "pj": 72209687508.0,
+     "share": 13.12,
+     "inad_pct": 6.46,
+     "pf_share": 29.29
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 88322954097.0,
+     "inad": 1245994299.0,
+     "pf": 35921918274.0,
+     "pj": 52401035823.0,
+     "share": 11.34,
+     "inad_pct": 1.41,
+     "pf_share": 40.67
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 86574210216.0,
+     "inad": 1535575893.0,
+     "pf": 83773370283.0,
+     "pj": 2800839933.0,
+     "share": 11.12,
+     "inad_pct": 1.77,
+     "pf_share": 96.76
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 58836773752.0,
+     "inad": 3940922629.0,
+     "pf": 40028289537.0,
+     "pj": 18808484215.0,
+     "share": 7.56,
+     "inad_pct": 6.7,
+     "pf_share": 68.03
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 56305805032.0,
+     "inad": 4040586506.0,
+     "pf": 3306711997.0,
+     "pj": 52999093035.0,
+     "share": 7.23,
+     "inad_pct": 7.18,
+     "pf_share": 5.87
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 42379227930.0,
+     "inad": 1314237573.0,
+     "pf": 42379227930.0,
+     "pj": 0.0,
+     "share": 5.44,
+     "inad_pct": 3.1,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 33019242361.0,
+     "inad": 3518653809.0,
+     "pf": 33019242361.0,
+     "pj": 0.0,
+     "share": 4.24,
+     "inad_pct": 10.66,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 32748733337.0,
+     "inad": 50636994.0,
+     "pf": 28705749136.0,
+     "pj": 4042984201.0,
+     "share": 4.21,
+     "inad_pct": 0.15,
+     "pf_share": 87.65
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 10105999219.0,
+     "inad": 4092031933.0,
+     "pf": 9210269644.0,
+     "pj": 895729575.0,
+     "share": 1.3,
+     "inad_pct": 40.49,
+     "pf_share": 91.14
+    }
+   ],
+   "penetracao": {
+    "municipios": 141,
+    "credito": 111101784627.0,
+    "renda_anual": 79622628014.40001,
+    "adultos": 2666289.0,
+    "penetracao": 139.54,
+    "cred_adulto": 41669.07,
+    "municipios_abaixo": 27,
+    "gap_abs": 30123236757.380005,
+    "sem_estban": 64
+   },
+   "presenca": {
+    "municipios": 142,
+    "com_agencia": 77,
+    "so_posto": 63,
+    "so_correspondente": 2,
+    "nenhum": 0,
+    "agencias": 239,
+    "postos": 635,
+    "pae": 356,
+    "correspondentes": 4923,
+    "agencias_100mil": 6.1
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 71577134609,
+    "q_pag": 121233655,
+    "t_pag": 590.41,
+    "q_hab": 31.1,
+    "v_hab": 18383,
+    "yoy_v": 15.3,
+    "pf_share": 41.89
+   },
+   "moradia": {
+    "dom_total": 1278112,
+    "pgp": 9.77,
+    "alp": 27.78,
+    "scr_imob_pf": 29572294647.0,
+    "scr_inad_pct": 1.87,
+    "taxa_sfh": 13.96,
+    "ltv_sfh": 66.64,
+    "valor_compra": 260000.0,
+    "renda_pc": 1825.48
+   },
+   "consignado": {
+    "p60": 11.77,
+    "elegiveis": 408341,
+    "cons_total": 14619842881.0,
+    "cons_obs": 2441724588.0,
+    "part_apos": 16.7,
+    "inad_apos": 2.88,
+    "cons_por_elegivel": 5980.0,
+    "ben_medio": 1567.25,
+    "prural": 41.5
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 38845276795.22,
+    "qtd": 36627,
+    "share": 11.28,
+    "valor_hab": 10617.38,
+    "agricola_share": 69.74,
+    "pronaf_share": 4.18,
+    "ticket": 1060563.98
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 10359.689834439998,
+    "share": 5.73,
+    "mpme_share": 58.75,
+    "var_12m_pct": 46.7,
+    "valor_hab": 2831.56
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 861622,
+    "valor": 59629739351.47,
+    "part_br": 1.698,
+    "valor_medio": 69206,
+    "insc_pf_por_mil_hab": 25.39,
+    "pj_valor": 52123909820.87
+   },
+   "posicoes": {
+    "scr.saldo": 9,
+    "scr.per_capita": 1,
+    "scr.inad": 9,
+    "scr.cresc12": 24,
+    "penetracao.penetracao": 4,
+    "penetracao.cred_adulto": 3,
+    "presenca.agencias_100mil": 13,
+    "pix.q_hab": 24,
+    "moradia.pgp": 7,
+    "consignado.cons_por_elegivel": 9,
+    "rural.valor_hab": 1,
+    "bndes.valor_hab": 2,
+    "pgfn.insc_pf_por_mil_hab": 3
+   },
+   "sintese": "O crédito em Mato Grosso somava R$ 263 bilhões em 2026-07, 3,5% do Brasil, R$ 67.645 por habitante (1º entre as 27 UFs), com inadimplência de 5,98% (9º) e crescimento de +5,2% em 12 meses. Penetração de 140% da renda anual (4º), com 27 de 141 municípios abaixo do esperado pelo modelo. 77 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "PA",
+   "nome": "Pará",
+   "prep": "no Pará",
+   "regiao": "Norte",
+   "cod": "15",
+   "pop": 8711196,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 168067572491,
+    "part_br": 2.22,
+    "per_capita": 19293,
+    "n_op": 28693281,
+    "cresc12": 11.52,
+    "cresc3": 1.04,
+    "inad": 6.33,
+    "d_inad_12m": 1.33,
+    "atraso15_90": 1.37,
+    "ap": 9.73,
+    "saldo_medio_op": 5214,
+    "prod_dominante": "Consignado",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.77
+   },
+   "produtos": [
+    {
+     "produto": "Consignado",
+     "saldo": 98178278061.0,
+     "inad": 2733740977.0,
+     "pf": 98178278061.0,
+     "pj": 0.0,
+     "share": 20.24,
+     "inad_pct": 2.78,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Outros",
+     "saldo": 66062901280.0,
+     "inad": 3739410329.0,
+     "pf": 12692765279.0,
+     "pj": 53370136001.0,
+     "share": 13.62,
+     "inad_pct": 5.66,
+     "pf_share": 19.21
+    },
+    {
+     "produto": "Rural",
+     "saldo": 55745277529.0,
+     "inad": 4043957083.0,
+     "pf": 52130319200.0,
+     "pj": 3614958329.0,
+     "share": 11.49,
+     "inad_pct": 7.25,
+     "pf_share": 93.52
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 51328690466.0,
+     "inad": 3504984611.0,
+     "pf": 38091421268.0,
+     "pj": 13237269198.0,
+     "share": 10.58,
+     "inad_pct": 6.83,
+     "pf_share": 74.21
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 51238593778.0,
+     "inad": 3450530669.0,
+     "pf": 222803714.0,
+     "pj": 51015790064.0,
+     "share": 10.56,
+     "inad_pct": 6.73,
+     "pf_share": 0.43
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 45406967753.0,
+     "inad": 682120062.0,
+     "pf": 44216361612.0,
+     "pj": 1190606141.0,
+     "share": 9.36,
+     "inad_pct": 1.5,
+     "pf_share": 97.38
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 34679832266.0,
+     "inad": 18182847.0,
+     "pf": 31892575293.0,
+     "pj": 2787256973.0,
+     "share": 7.15,
+     "inad_pct": 0.05,
+     "pf_share": 91.96
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 33031651756.0,
+     "inad": 4014979841.0,
+     "pf": 33031614379.0,
+     "pj": 37377.0,
+     "share": 6.81,
+     "inad_pct": 12.15,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 16610575151.0,
+     "inad": 208016659.0,
+     "pf": 733680363.0,
+     "pj": 15876894788.0,
+     "share": 3.42,
+     "inad_pct": 1.25,
+     "pf_share": 4.42
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 14252666865.0,
+     "inad": 5291775454.0,
+     "pf": 13489987244.0,
+     "pj": 762679621.0,
+     "share": 2.94,
+     "inad_pct": 37.13,
+     "pf_share": 94.65
+    }
+   ],
+   "penetracao": {
+    "municipios": 144,
+    "credito": 78662593238.0,
+    "renda_anual": 96436802923.07996,
+    "adultos": 5689350.0,
+    "penetracao": 81.57,
+    "cred_adulto": 13826.29,
+    "municipios_abaixo": 76,
+    "gap_abs": 12754410532.420008,
+    "sem_estban": 0
+   },
+   "presenca": {
+    "municipios": 144,
+    "com_agencia": 144,
+    "so_posto": 0,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 470,
+    "postos": 415,
+    "pae": 657,
+    "correspondentes": 5104,
+    "agencias_100mil": 5.4
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 66047277934,
+    "q_pag": 325568091,
+    "t_pag": 202.87,
+    "q_hab": 37.4,
+    "v_hab": 7582,
+    "yoy_v": 18.1,
+    "pf_share": 62.69
+   },
+   "moradia": {
+    "dom_total": 2444126,
+    "pgp": 5.38,
+    "alp": 15.36,
+    "scr_imob_pf": 15646708641.0,
+    "scr_inad_pct": 1.28,
+    "taxa_sfh": 13.57,
+    "ltv_sfh": 68.77,
+    "valor_compra": 210000.0,
+    "renda_pc": 993.75
+   },
+   "consignado": {
+    "p60": 10.79,
+    "elegiveis": 802062,
+    "cons_total": 33712541002.0,
+    "cons_obs": 4477759184.0,
+    "part_apos": 13.28,
+    "inad_apos": 2.01,
+    "cons_por_elegivel": 5583.0,
+    "ben_medio": 1419.37,
+    "prural": 63.02
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 8377022918.16,
+    "qtd": 51728,
+    "share": 2.43,
+    "valor_hab": 1031.64,
+    "agricola_share": 40.87,
+    "pronaf_share": 28.84,
+    "ticket": 161943.68
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 3216.48731549,
+    "share": 1.78,
+    "mpme_share": 44.38,
+    "var_12m_pct": -45.2,
+    "valor_hab": 396.11
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 729326,
+    "valor": 69890079687.82,
+    "part_br": 1.99,
+    "valor_medio": 95828,
+    "insc_pf_por_mil_hab": 13.72,
+    "pj_valor": 63358254073.85
+   },
+   "posicoes": {
+    "scr.saldo": 12,
+    "scr.per_capita": 20,
+    "scr.inad": 8,
+    "scr.cresc12": 6,
+    "penetracao.penetracao": 17,
+    "penetracao.cred_adulto": 20,
+    "presenca.agencias_100mil": 15,
+    "pix.q_hab": 7,
+    "moradia.pgp": 21,
+    "consignado.cons_por_elegivel": 10,
+    "rural.valor_hab": 15,
+    "bndes.valor_hab": 16,
+    "pgfn.insc_pf_por_mil_hab": 26
+   },
+   "sintese": "O crédito no Pará somava R$ 168 bilhões em 2026-07, 2,2% do Brasil, R$ 19.293 por habitante (20º entre as 27 UFs), com inadimplência de 6,33% (8º) e crescimento de +11,5% em 12 meses. Penetração de 82% da renda anual (17º), com 76 de 144 municípios abaixo do esperado pelo modelo. 144 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "PB",
+   "nome": "Paraíba",
+   "prep": "na Paraíba",
+   "regiao": "Nordeste",
+   "cod": "25",
+   "pop": 4164468,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 77176431593,
+    "part_br": 1.02,
+    "per_capita": 18532,
+    "n_op": 14637295,
+    "cresc12": 11.65,
+    "cresc3": 0.1,
+    "inad": 5.51,
+    "d_inad_12m": 0.77,
+    "atraso15_90": 0.97,
+    "ap": 9.21,
+    "saldo_medio_op": 4932,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 0.96
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 70620543967.0,
+     "inad": 1062410227.0,
+     "pf": 67910374334.0,
+     "pj": 2710169633.0,
+     "share": 31.61,
+     "inad_pct": 1.5,
+     "pf_share": 96.16
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 41793607019.0,
+     "inad": 1022539309.0,
+     "pf": 41793607019.0,
+     "pj": 0.0,
+     "share": 18.71,
+     "inad_pct": 2.45,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 27528638431.0,
+     "inad": 29058145.0,
+     "pf": 26157640579.0,
+     "pj": 1370997852.0,
+     "share": 12.32,
+     "inad_pct": 0.11,
+     "pf_share": 95.02
+    },
+    {
+     "produto": "Outros",
+     "saldo": 19475371344.0,
+     "inad": 2176781819.0,
+     "pf": 5463446217.0,
+     "pj": 14011925127.0,
+     "share": 8.72,
+     "inad_pct": 11.18,
+     "pf_share": 28.05
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 18194776456.0,
+     "inad": 973037177.0,
+     "pf": 15712944579.0,
+     "pj": 2481831877.0,
+     "share": 8.14,
+     "inad_pct": 5.35,
+     "pf_share": 86.36
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 17734942500.0,
+     "inad": 1371083382.0,
+     "pf": 16552502.0,
+     "pj": 17718389998.0,
+     "share": 7.94,
+     "inad_pct": 7.73,
+     "pf_share": 0.09
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 10618046569.0,
+     "inad": 1409076497.0,
+     "pf": 10618046569.0,
+     "pj": 0.0,
+     "share": 4.75,
+     "inad_pct": 13.27,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 8133757271.0,
+     "inad": 3427159463.0,
+     "pf": 7831427401.0,
+     "pj": 302329870.0,
+     "share": 3.64,
+     "inad_pct": 42.14,
+     "pf_share": 96.28
+    },
+    {
+     "produto": "Rural",
+     "saldo": 3997723359.0,
+     "inad": 287714721.0,
+     "pf": 3513328189.0,
+     "pj": 484395170.0,
+     "share": 1.79,
+     "inad_pct": 7.2,
+     "pf_share": 87.88
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 1646564857.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 1646564857.0,
+     "share": 0.74,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 223,
+    "credito": 35371640800.0,
+    "renda_anual": 52151983144.44,
+    "adultos": 2970020.0,
+    "penetracao": 67.82,
+    "cred_adulto": 11909.56,
+    "municipios_abaixo": 16,
+    "gap_abs": 11654892237.189999,
+    "sem_estban": 178
+   },
+   "presenca": {
+    "municipios": 223,
+    "com_agencia": 45,
+    "so_posto": 110,
+    "so_correspondente": 68,
+    "nenhum": 0,
+    "agencias": 186,
+    "postos": 248,
+    "pae": 376,
+    "correspondentes": 4681,
+    "agencias_100mil": 4.5
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 36369166891,
+    "q_pag": 182048038,
+    "t_pag": 199.78,
+    "q_hab": 43.7,
+    "v_hab": 8733,
+    "yoy_v": 25.2,
+    "pf_share": 51.07
+   },
+   "moradia": {
+    "dom_total": 1372095,
+    "pgp": 8.46,
+    "alp": 20.25,
+    "scr_imob_pf": 24136078083.0,
+    "scr_inad_pct": 1.09,
+    "taxa_sfh": 13.79,
+    "ltv_sfh": 66.7,
+    "valor_compra": 190000.0,
+    "renda_pc": 1098.88
+   },
+   "consignado": {
+    "p60": 15.48,
+    "elegiveis": 655207,
+    "cons_total": 14425451080.0,
+    "cons_obs": 2385840248.0,
+    "part_apos": 16.54,
+    "inad_apos": 2.26,
+    "cons_por_elegivel": 3641.0,
+    "ben_medio": 1478.79,
+    "prural": 55.19
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 1674404620.63,
+    "qtd": 118572,
+    "share": 0.49,
+    "valor_hab": 421.27,
+    "agricola_share": 30.36,
+    "pronaf_share": 65.37,
+    "ticket": 14121.42
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1044.37476295,
+    "share": 0.58,
+    "mpme_share": 28.19,
+    "var_12m_pct": 87.9,
+    "valor_hab": 262.76
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 449709,
+    "valor": 22770009667.01,
+    "part_br": 0.648,
+    "valor_medio": 50633,
+    "insc_pf_por_mil_hab": 15.51,
+    "pj_valor": 21033870761.68
+   },
+   "posicoes": {
+    "scr.saldo": 18,
+    "scr.per_capita": 23,
+    "scr.inad": 13,
+    "scr.cresc12": 5,
+    "penetracao.penetracao": 22,
+    "penetracao.cred_adulto": 22,
+    "presenca.agencias_100mil": 20,
+    "pix.q_hab": 4,
+    "moradia.pgp": 11,
+    "consignado.cons_por_elegivel": 23,
+    "rural.valor_hab": 20,
+    "bndes.valor_hab": 21,
+    "pgfn.insc_pf_por_mil_hab": 20
+   },
+   "sintese": "O crédito na Paraíba somava R$ 77 bilhões em 2026-07, 1,0% do Brasil, R$ 18.532 por habitante (23º entre as 27 UFs), com inadimplência de 5,51% (13º) e crescimento de +11,7% em 12 meses. Penetração de 68% da renda anual (22º), com 16 de 223 municípios abaixo do esperado pelo modelo. 45 municípios têm agência, 68 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "PE",
+   "nome": "Pernambuco",
+   "prep": "em Pernambuco",
+   "regiao": "Nordeste",
+   "cod": "26",
+   "pop": 9562007,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 173163454663,
+    "part_br": 2.29,
+    "per_capita": 18110,
+    "n_op": 34501280,
+    "cresc12": 11.16,
+    "cresc3": 1.36,
+    "inad": 5.34,
+    "d_inad_12m": 0.3,
+    "atraso15_90": 1.04,
+    "ap": 8.63,
+    "saldo_medio_op": 4673,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.14
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 102563010097.0,
+     "inad": 1294596074.0,
+     "pf": 99459111434.0,
+     "pj": 3103898663.0,
+     "share": 20.52,
+     "inad_pct": 1.26,
+     "pf_share": 96.97
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 84173285731.0,
+     "inad": 2376935679.0,
+     "pf": 84173285731.0,
+     "pj": 0.0,
+     "share": 16.84,
+     "inad_pct": 2.82,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 62580602694.0,
+     "inad": 61587351.0,
+     "pf": 59310726002.0,
+     "pj": 3269876692.0,
+     "share": 12.52,
+     "inad_pct": 0.1,
+     "pf_share": 94.77
+    },
+    {
+     "produto": "Outros",
+     "saldo": 59775109736.0,
+     "inad": 2631539646.0,
+     "pf": 11176146897.0,
+     "pj": 48598962839.0,
+     "share": 11.96,
+     "inad_pct": 4.4,
+     "pf_share": 18.7
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 49461693285.0,
+     "inad": 2854851122.0,
+     "pf": 59967167.0,
+     "pj": 49401726118.0,
+     "share": 9.9,
+     "inad_pct": 5.77,
+     "pf_share": 0.12
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 46955938502.0,
+     "inad": 2925897538.0,
+     "pf": 36925709316.0,
+     "pj": 10030229186.0,
+     "share": 9.4,
+     "inad_pct": 6.23,
+     "pf_share": 78.64
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 25399357056.0,
+     "inad": 3551051451.0,
+     "pf": 25399357056.0,
+     "pj": 0.0,
+     "share": 5.08,
+     "inad_pct": 13.98,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 22949715557.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 22949715557.0,
+     "share": 4.59,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 19924801825.0,
+     "inad": 8773104487.0,
+     "pf": 19233016736.0,
+     "pj": 691785089.0,
+     "share": 3.99,
+     "inad_pct": 44.03,
+     "pf_share": 96.53
+    },
+    {
+     "produto": "Rural",
+     "saldo": 11832250992.0,
+     "inad": 759133958.0,
+     "pf": 10480262659.0,
+     "pj": 1351988333.0,
+     "share": 2.37,
+     "inad_pct": 6.42,
+     "pf_share": 88.57
+    }
+   ],
+   "penetracao": {
+    "municipios": 185,
+    "credito": 76191490677.0,
+    "renda_anual": 123454933943.40001,
+    "adultos": 6754382.0,
+    "penetracao": 61.72,
+    "cred_adulto": 11280.31,
+    "municipios_abaixo": 49,
+    "gap_abs": 58828881627.200005,
+    "sem_estban": 93
+   },
+   "presenca": {
+    "municipios": 185,
+    "com_agencia": 92,
+    "so_posto": 91,
+    "so_correspondente": 2,
+    "nenhum": 0,
+    "agencias": 414,
+    "postos": 489,
+    "pae": 643,
+    "correspondentes": 7210,
+    "agencias_100mil": 4.3
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 78095071321,
+    "q_pag": 322278351,
+    "t_pag": 242.32,
+    "q_hab": 33.7,
+    "v_hab": 8167,
+    "yoy_v": 19.5,
+    "pf_share": 55.63
+   },
+   "moradia": {
+    "dom_total": 3184558,
+    "pgp": 5.04,
+    "alp": 21.32,
+    "scr_imob_pf": 35520626061.0,
+    "scr_inad_pct": 0.94,
+    "taxa_sfh": 13.9,
+    "ltv_sfh": 66.41,
+    "valor_compra": 210000.0,
+    "renda_pc": 1141.74
+   },
+   "consignado": {
+    "p60": 14.71,
+    "elegiveis": 1270675,
+    "cons_total": 28918961279.0,
+    "cons_obs": 5718566416.0,
+    "part_apos": 19.77,
+    "inad_apos": 2.14,
+    "cons_por_elegivel": 4500.0,
+    "ben_medio": 1568.09,
+    "prural": 46.84
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 3650391918.46,
+    "qtd": 164113,
+    "share": 1.06,
+    "valor_hab": 402.96,
+    "agricola_share": 36.31,
+    "pronaf_share": 52.08,
+    "ticket": 22243.16
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1820.50476398,
+    "share": 1.01,
+    "mpme_share": 43.12,
+    "var_12m_pct": 91.8,
+    "valor_hab": 200.96
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 1115989,
+    "valor": 80149141911.57,
+    "part_br": 2.282,
+    "valor_medio": 71819,
+    "insc_pf_por_mil_hab": 19.95,
+    "pj_valor": 75892287433.95
+   },
+   "posicoes": {
+    "scr.saldo": 11,
+    "scr.per_capita": 26,
+    "scr.inad": 16,
+    "scr.cresc12": 7,
+    "penetracao.penetracao": 27,
+    "penetracao.cred_adulto": 25,
+    "presenca.agencias_100mil": 22,
+    "pix.q_hab": 14,
+    "moradia.pgp": 24,
+    "consignado.cons_por_elegivel": 17,
+    "rural.valor_hab": 21,
+    "bndes.valor_hab": 23,
+    "pgfn.insc_pf_por_mil_hab": 8
+   },
+   "sintese": "O crédito em Pernambuco somava R$ 173 bilhões em 2026-07, 2,3% do Brasil, R$ 18.110 por habitante (26º entre as 27 UFs), com inadimplência de 5,34% (16º) e crescimento de +11,2% em 12 meses. Penetração de 62% da renda anual (27º), com 49 de 185 municípios abaixo do esperado pelo modelo. 92 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "PI",
+   "nome": "Piauí",
+   "prep": "no Piauí",
+   "regiao": "Nordeste",
+   "cod": "22",
+   "pop": 3384547,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 69098546175,
+    "part_br": 0.91,
+    "per_capita": 20416,
+    "n_op": 11333354,
+    "cresc12": 10.86,
+    "cresc3": 0.54,
+    "inad": 4.88,
+    "d_inad_12m": 0.8,
+    "atraso15_90": 1.03,
+    "ap": 7.63,
+    "saldo_medio_op": 5599,
+    "prod_dominante": "Outros",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.61
+   },
+   "produtos": [
+    {
+     "produto": "Outros",
+     "saldo": 56703494385.0,
+     "inad": 1073100291.0,
+     "pf": 5449133377.0,
+     "pj": 51254361008.0,
+     "share": 28.33,
+     "inad_pct": 1.89,
+     "pf_share": 9.61
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 35901464277.0,
+     "inad": 922124336.0,
+     "pf": 35901464277.0,
+     "pj": 0.0,
+     "share": 17.94,
+     "inad_pct": 2.57,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 29343522303.0,
+     "inad": 688626590.0,
+     "pf": 28496991555.0,
+     "pj": 846530748.0,
+     "share": 14.66,
+     "inad_pct": 2.35,
+     "pf_share": 97.12
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 16400908269.0,
+     "inad": 1117898834.0,
+     "pf": 20230125.0,
+     "pj": 16380678144.0,
+     "share": 8.19,
+     "inad_pct": 6.82,
+     "pf_share": 0.12
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 14594467130.0,
+     "inad": 1031975167.0,
+     "pf": 10937248984.0,
+     "pj": 3657218146.0,
+     "share": 7.29,
+     "inad_pct": 7.07,
+     "pf_share": 74.94
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 14190315465.0,
+     "inad": 18825251.0,
+     "pf": 13323548923.0,
+     "pj": 866766542.0,
+     "share": 7.09,
+     "inad_pct": 0.13,
+     "pf_share": 93.89
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 9861843765.0,
+     "inad": 1357235479.0,
+     "pf": 9861843765.0,
+     "pj": 0.0,
+     "share": 4.93,
+     "inad_pct": 13.76,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 8014740214.0,
+     "inad": 788376752.0,
+     "pf": 6915171619.0,
+     "pj": 1099568595.0,
+     "share": 4.0,
+     "inad_pct": 9.84,
+     "pf_share": 86.28
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 5356387942.0,
+     "inad": 2050263126.0,
+     "pf": 5127815004.0,
+     "pj": 228572938.0,
+     "share": 2.68,
+     "inad_pct": 38.28,
+     "pf_share": 95.73
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 4710054207.0,
+     "inad": 11997583.0,
+     "pf": 657813598.0,
+     "pj": 4052240609.0,
+     "share": 2.35,
+     "inad_pct": 0.25,
+     "pf_share": 13.97
+    }
+   ],
+   "penetracao": {
+    "municipios": 224,
+    "credito": 35280248066.0,
+    "renda_anual": 39499511248.08002,
+    "adultos": 2433296.0,
+    "penetracao": 89.32,
+    "cred_adulto": 14498.95,
+    "municipios_abaixo": 4,
+    "gap_abs": 62618254.53999999,
+    "sem_estban": 184
+   },
+   "presenca": {
+    "municipios": 224,
+    "com_agencia": 40,
+    "so_posto": 88,
+    "so_correspondente": 96,
+    "nenhum": 0,
+    "agencias": 144,
+    "postos": 134,
+    "pae": 252,
+    "correspondentes": 4302,
+    "agencias_100mil": 4.3
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 25180252277,
+    "q_pag": 119522867,
+    "t_pag": 210.67,
+    "q_hab": 35.3,
+    "v_hab": 7440,
+    "yoy_v": 18.8,
+    "pf_share": 54.43
+   },
+   "moradia": {
+    "dom_total": 1071335,
+    "pgp": 6.26,
+    "alp": 10.97,
+    "scr_imob_pf": 10064679105.0,
+    "scr_inad_pct": 2.18,
+    "taxa_sfh": 13.91,
+    "ltv_sfh": 68.5,
+    "valor_compra": 163000.0,
+    "renda_pc": 1009.94
+   },
+   "consignado": {
+    "p60": 15.1,
+    "elegiveis": 620307,
+    "cons_total": 12469480980.0,
+    "cons_obs": 1677751550.0,
+    "part_apos": 13.45,
+    "inad_apos": 2.15,
+    "cons_por_elegivel": 2705.0,
+    "ben_medio": 1420.81,
+    "prural": 70.48
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 4087150535.37,
+    "qtd": 188196,
+    "share": 1.19,
+    "valor_hab": 1249.44,
+    "agricola_share": 63.25,
+    "pronaf_share": 35.13,
+    "ticket": 21717.52
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1133.57151532,
+    "share": 0.63,
+    "mpme_share": 33.77,
+    "var_12m_pct": 59.0,
+    "valor_hab": 346.53
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 368857,
+    "valor": 17740526864.54,
+    "part_br": 0.505,
+    "valor_medio": 48096,
+    "insc_pf_por_mil_hab": 18.5,
+    "pj_valor": 16153317893.34
+   },
+   "posicoes": {
+    "scr.saldo": 20,
+    "scr.per_capita": 18,
+    "scr.inad": 19,
+    "scr.cresc12": 9,
+    "penetracao.penetracao": 15,
+    "penetracao.cred_adulto": 18,
+    "presenca.agencias_100mil": 23,
+    "pix.q_hab": 11,
+    "moradia.pgp": 16,
+    "consignado.cons_por_elegivel": 26,
+    "rural.valor_hab": 11,
+    "bndes.valor_hab": 19,
+    "pgfn.insc_pf_por_mil_hab": 11
+   },
+   "sintese": "O crédito no Piauí somava R$ 69 bilhões em 2026-07, 0,9% do Brasil, R$ 20.416 por habitante (18º entre as 27 UFs), com inadimplência de 4,88% (19º) e crescimento de +10,9% em 12 meses. Penetração de 89% da renda anual (15º), com 4 de 224 municípios abaixo do esperado pelo modelo. 40 municípios têm agência, 96 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "PR",
+   "nome": "Paraná",
+   "prep": "no Paraná",
+   "regiao": "Sul",
+   "cod": "41",
+   "pop": 11890517,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 565502109363,
+    "part_br": 7.47,
+    "per_capita": 47559,
+    "n_op": 57381087,
+    "cresc12": 9.63,
+    "cresc3": 0.66,
+    "inad": 4.48,
+    "d_inad_12m": 0.84,
+    "atraso15_90": 1.02,
+    "ap": 7.71,
+    "saldo_medio_op": 9503,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.64
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 328681783263.0,
+     "inad": 2690330533.0,
+     "pf": 310583709271.0,
+     "pj": 18098073992.0,
+     "share": 20.0,
+     "inad_pct": 0.82,
+     "pf_share": 94.49
+    },
+    {
+     "produto": "Rural",
+     "saldo": 322464794254.0,
+     "inad": 11078572263.0,
+     "pf": 224770322508.0,
+     "pj": 97694471746.0,
+     "share": 19.63,
+     "inad_pct": 3.44,
+     "pf_share": 69.7
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 199319816939.0,
+     "inad": 10690320619.0,
+     "pf": 4899803736.0,
+     "pj": 194420013203.0,
+     "share": 12.13,
+     "inad_pct": 5.36,
+     "pf_share": 2.46
+    },
+    {
+     "produto": "Outros",
+     "saldo": 185777661005.0,
+     "inad": 11192847520.0,
+     "pf": 43807919742.0,
+     "pj": 141969741263.0,
+     "share": 11.31,
+     "inad_pct": 6.02,
+     "pf_share": 23.58
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 150884635664.0,
+     "inad": 7710049399.0,
+     "pf": 93310441891.0,
+     "pj": 57574193773.0,
+     "share": 9.18,
+     "inad_pct": 5.11,
+     "pf_share": 61.84
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 129516169556.0,
+     "inad": 3644710777.0,
+     "pf": 129516169556.0,
+     "pj": 0.0,
+     "share": 7.88,
+     "inad_pct": 2.81,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 107357427420.0,
+     "inad": 117652151.0,
+     "pf": 96286362009.0,
+     "pj": 11071065411.0,
+     "share": 6.53,
+     "inad_pct": 0.11,
+     "pf_share": 89.69
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 79936158919.0,
+     "inad": 7152770447.0,
+     "pf": 79936158919.0,
+     "pj": 0.0,
+     "share": 4.86,
+     "inad_pct": 8.95,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 58532266784.0,
+     "inad": 770450954.0,
+     "pf": 3385796429.0,
+     "pj": 55146470355.0,
+     "share": 3.56,
+     "inad_pct": 1.32,
+     "pf_share": 5.78
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 28750073376.0,
+     "inad": 11137332448.0,
+     "pf": 26715370152.0,
+     "pj": 2034703224.0,
+     "share": 1.75,
+     "inad_pct": 38.74,
+     "pf_share": 92.92
+    }
+   ],
+   "penetracao": {
+    "municipios": 399,
+    "credito": 241272987544.0,
+    "renda_anual": 268611079069.80008,
+    "adultos": 8792769.0,
+    "penetracao": 89.82,
+    "cred_adulto": 27439.93,
+    "municipios_abaixo": 76,
+    "gap_abs": 54922775512.040016,
+    "sem_estban": 179
+   },
+   "presenca": {
+    "municipios": 399,
+    "com_agencia": 220,
+    "so_posto": 174,
+    "so_correspondente": 5,
+    "nenhum": 0,
+    "agencias": 854,
+    "postos": 2141,
+    "pae": 1218,
+    "correspondentes": 17128,
+    "agencias_100mil": 7.2
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 212360628005,
+    "q_pag": 382349711,
+    "t_pag": 555.41,
+    "q_hab": 32.2,
+    "v_hab": 17860,
+    "yoy_v": 20.3,
+    "pf_share": 30.69
+   },
+   "moradia": {
+    "dom_total": 4209482,
+    "pgp": 12.6,
+    "alp": 22.69,
+    "scr_imob_pf": 109418903379.0,
+    "scr_inad_pct": 0.62,
+    "taxa_sfh": 13.91,
+    "ltv_sfh": 65.88,
+    "valor_compra": 285000.0,
+    "renda_pc": 1965.31
+   },
+   "consignado": {
+    "p60": 16.54,
+    "elegiveis": 2025652,
+    "cons_total": 44974301868.0,
+    "cons_obs": 8085113285.0,
+    "part_apos": 17.98,
+    "inad_apos": 1.65,
+    "cons_por_elegivel": 3991.0,
+    "ben_medio": 1782.59,
+    "prural": 26.71
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 48756654286.25,
+    "qtd": 162284,
+    "share": 14.16,
+    "valor_hab": 4260.31,
+    "agricola_share": 69.37,
+    "pronaf_share": 18.11,
+    "ticket": 300440.3
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 17808.60739422,
+    "share": 9.85,
+    "mpme_share": 51.68,
+    "var_12m_pct": 29.8,
+    "valor_hab": 1556.1
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 2316867,
+    "valor": 164237490965.38,
+    "part_br": 4.675,
+    "valor_medio": 70888,
+    "insc_pf_por_mil_hab": 16.79,
+    "pj_valor": 153693644097.33
+   },
+   "posicoes": {
+    "scr.saldo": 4,
+    "scr.per_capita": 6,
+    "scr.inad": 22,
+    "scr.cresc12": 13,
+    "penetracao.penetracao": 14,
+    "penetracao.cred_adulto": 10,
+    "presenca.agencias_100mil": 7,
+    "pix.q_hab": 21,
+    "moradia.pgp": 3,
+    "consignado.cons_por_elegivel": 21,
+    "rural.valor_hab": 4,
+    "bndes.valor_hab": 5,
+    "pgfn.insc_pf_por_mil_hab": 16
+   },
+   "sintese": "O crédito no Paraná somava R$ 566 bilhões em 2026-07, 7,5% do Brasil, R$ 47.559 por habitante (6º entre as 27 UFs), com inadimplência de 4,48% (22º) e crescimento de +9,6% em 12 meses. Penetração de 90% da renda anual (14º), com 76 de 399 municípios abaixo do esperado pelo modelo. 220 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "prep": "no Rio de Janeiro",
+   "regiao": "Sudeste",
+   "cod": "33",
+   "pop": 17223547,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 570498663343,
+    "part_br": 7.53,
+    "per_capita": 33123,
+    "n_op": 78897696,
+    "cresc12": 2.34,
+    "cresc3": -0.97,
+    "inad": 4.28,
+    "d_inad_12m": 0.54,
+    "atraso15_90": 0.8,
+    "ap": 8.47,
+    "saldo_medio_op": 6214,
+    "prod_dominante": "Outros",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.19
+   },
+   "produtos": [
+    {
+     "produto": "Outros",
+     "saldo": 496850765875.0,
+     "inad": 9192927869.0,
+     "pf": 28851287602.0,
+     "pj": 467999478273.0,
+     "share": 29.16,
+     "inad_pct": 1.85,
+     "pf_share": 5.81
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 276359596790.0,
+     "inad": 5418615411.0,
+     "pf": 251642770867.0,
+     "pj": 24716825923.0,
+     "share": 16.22,
+     "inad_pct": 1.96,
+     "pf_share": 91.06
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 217595443626.0,
+     "inad": 8159613477.0,
+     "pf": 217595443626.0,
+     "pj": 0.0,
+     "share": 12.77,
+     "inad_pct": 3.75,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 146893341308.0,
+     "inad": 96972914.0,
+     "pf": 73168855.0,
+     "pj": 146820172453.0,
+     "share": 8.62,
+     "inad_pct": 0.07,
+     "pf_share": 0.05
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 145826931085.0,
+     "inad": 248394254.0,
+     "pf": 137139010273.0,
+     "pj": 8687920812.0,
+     "share": 8.56,
+     "inad_pct": 0.17,
+     "pf_share": 94.04
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 125742163198.0,
+     "inad": 8146897968.0,
+     "pf": 217950657.0,
+     "pj": 125524212541.0,
+     "share": 7.38,
+     "inad_pct": 6.48,
+     "pf_share": 0.17
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 91359806866.0,
+     "inad": 7411773080.0,
+     "pf": 68510830742.0,
+     "pj": 22848976124.0,
+     "share": 5.36,
+     "inad_pct": 8.11,
+     "pf_share": 74.99
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 75388516291.0,
+     "inad": 9104156945.0,
+     "pf": 75388516291.0,
+     "pj": 0.0,
+     "share": 4.42,
+     "inad_pct": 12.08,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 47662508966.0,
+     "inad": 18402748262.0,
+     "pf": 45401346206.0,
+     "pj": 2261162760.0,
+     "share": 2.8,
+     "inad_pct": 38.61,
+     "pf_share": 95.26
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 45556011828.0,
+     "inad": 6457.0,
+     "pf": 0.0,
+     "pj": 45556011828.0,
+     "share": 2.67,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 92,
+    "credito": 384831826840.0,
+    "renda_anual": 354200936617.68,
+    "adultos": 12598558.0,
+    "penetracao": 108.65,
+    "cred_adulto": 30545.7,
+    "municipios_abaixo": 75,
+    "gap_abs": 63552012846.289986,
+    "sem_estban": 1
+   },
+   "presenca": {
+    "municipios": 92,
+    "com_agencia": 91,
+    "so_posto": 1,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 1030,
+    "postos": 1297,
+    "pae": 1427,
+    "correspondentes": 10017,
+    "agencias_100mil": 6.0
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 264790174715,
+    "q_pag": 626795890,
+    "t_pag": 422.45,
+    "q_hab": 36.4,
+    "v_hab": 15374,
+    "yoy_v": 22.8,
+    "pf_share": 35.13
+   },
+   "moradia": {
+    "dom_total": 6151479,
+    "pgp": 5.55,
+    "alp": 23.55,
+    "scr_imob_pf": 87561781863.0,
+    "scr_inad_pct": 1.91,
+    "taxa_sfh": 13.92,
+    "ltv_sfh": 63.95,
+    "valor_compra": 300000.0,
+    "renda_pc": 1847.44
+   },
+   "consignado": {
+    "p60": 18.85,
+    "elegiveis": 2626442,
+    "cons_total": 74682340770.0,
+    "cons_obs": 21068364302.0,
+    "part_apos": 28.21,
+    "inad_apos": 2.83,
+    "cons_por_elegivel": 8022.0,
+    "ben_medio": 2031.86,
+    "prural": 2.57
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 1053106218.41,
+    "qtd": 5534,
+    "share": 0.31,
+    "valor_hab": 65.59,
+    "agricola_share": 50.12,
+    "pronaf_share": 28.52,
+    "ticket": 190297.47
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 6347.01787074,
+    "share": 3.51,
+    "mpme_share": 20.0,
+    "var_12m_pct": -6.7,
+    "valor_hab": 395.33
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 2999023,
+    "valor": 492629293766.78,
+    "part_br": 14.024,
+    "valor_medio": 164263,
+    "insc_pf_por_mil_hab": 22.03,
+    "pj_valor": 476041820172.81
+   },
+   "posicoes": {
+    "scr.saldo": 3,
+    "scr.per_capita": 11,
+    "scr.inad": 23,
+    "scr.cresc12": 25,
+    "penetracao.penetracao": 10,
+    "penetracao.cred_adulto": 8,
+    "presenca.agencias_100mil": 14,
+    "pix.q_hab": 9,
+    "moradia.pgp": 19,
+    "consignado.cons_por_elegivel": 6,
+    "rural.valor_hab": 27,
+    "bndes.valor_hab": 17,
+    "pgfn.insc_pf_por_mil_hab": 5
+   },
+   "sintese": "O crédito no Rio de Janeiro somava R$ 570 bilhões em 2026-07, 7,5% do Brasil, R$ 33.123 por habitante (11º entre as 27 UFs), com inadimplência de 4,28% (23º) e crescimento de +2,3% em 12 meses. Penetração de 109% da renda anual (10º), com 75 de 92 municípios abaixo do esperado pelo modelo. 91 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "RN",
+   "nome": "Rio Grande do Norte",
+   "prep": "no Rio Grande do Norte",
+   "regiao": "Nordeste",
+   "cod": "24",
+   "pop": 3455236,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 72411629099,
+    "part_br": 0.96,
+    "per_capita": 20957,
+    "n_op": 13793915,
+    "cresc12": 10.53,
+    "cresc3": 0.99,
+    "inad": 5.24,
+    "d_inad_12m": 0.2,
+    "atraso15_90": 1.03,
+    "ap": 8.73,
+    "saldo_medio_op": 4918,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.11
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 50061478547.0,
+     "inad": 790939724.0,
+     "pf": 49568551555.0,
+     "pj": 492926992.0,
+     "share": 23.88,
+     "inad_pct": 1.58,
+     "pf_share": 99.02
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 39898283333.0,
+     "inad": 1005419943.0,
+     "pf": 39898283333.0,
+     "pj": 0.0,
+     "share": 19.03,
+     "inad_pct": 2.52,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Outros",
+     "saldo": 26306025363.0,
+     "inad": 1316022351.0,
+     "pf": 5452732648.0,
+     "pj": 20853292715.0,
+     "share": 12.55,
+     "inad_pct": 5.0,
+     "pf_share": 20.73
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 23833998102.0,
+     "inad": 14160117.0,
+     "pf": 22418869072.0,
+     "pj": 1415129030.0,
+     "share": 11.37,
+     "inad_pct": 0.06,
+     "pf_share": 94.06
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 17840490861.0,
+     "inad": 963277199.0,
+     "pf": 14689652545.0,
+     "pj": 3150838316.0,
+     "share": 8.51,
+     "inad_pct": 5.4,
+     "pf_share": 82.34
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 17686765862.0,
+     "inad": 1178193486.0,
+     "pf": 8829998.0,
+     "pj": 17677935864.0,
+     "share": 8.44,
+     "inad_pct": 6.66,
+     "pf_share": 0.05
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 11212711843.0,
+     "inad": 1510400987.0,
+     "pf": 11212711843.0,
+     "pj": 0.0,
+     "share": 5.35,
+     "inad_pct": 13.47,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 7878339348.0,
+     "inad": 3420611274.0,
+     "pf": 7554866734.0,
+     "pj": 323472614.0,
+     "share": 3.76,
+     "inad_pct": 43.42,
+     "pf_share": 95.89
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 7721328378.0,
+     "inad": 113511.0,
+     "pf": 0.0,
+     "pj": 7721328378.0,
+     "share": 3.68,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 2450921156.0,
+     "inad": 38819601.0,
+     "pf": 0.0,
+     "pj": 2450921156.0,
+     "share": 1.17,
+     "inad_pct": 1.58,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 167,
+    "credito": 35366290710.0,
+    "renda_anual": 49253771089.199974,
+    "adultos": 2501771.0,
+    "penetracao": 71.8,
+    "cred_adulto": 14136.5,
+    "municipios_abaixo": 8,
+    "gap_abs": 16756670726.829998,
+    "sem_estban": 129
+   },
+   "presenca": {
+    "municipios": 167,
+    "com_agencia": 39,
+    "so_posto": 82,
+    "so_correspondente": 46,
+    "nenhum": 0,
+    "agencias": 164,
+    "postos": 152,
+    "pae": 273,
+    "correspondentes": 4315,
+    "agencias_100mil": 4.7
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 25789256508,
+    "q_pag": 116376355,
+    "t_pag": 221.6,
+    "q_hab": 33.7,
+    "v_hab": 7464,
+    "yoy_v": -8.4,
+    "pf_share": 60.03
+   },
+   "moradia": {
+    "dom_total": 1142070,
+    "pgp": 8.83,
+    "alp": 21.7,
+    "scr_imob_pf": 17648754480.0,
+    "scr_inad_pct": 1.17,
+    "taxa_sfh": 13.84,
+    "ltv_sfh": 67.99,
+    "valor_compra": 175000.0,
+    "renda_pc": 1247.15
+   },
+   "consignado": {
+    "p60": 15.08,
+    "elegiveis": 518422,
+    "cons_total": 13620653840.0,
+    "cons_obs": 2718705632.0,
+    "part_apos": 19.96,
+    "inad_apos": 2.14,
+    "cons_por_elegivel": 5244.0,
+    "ben_medio": 1486.76,
+    "prural": 51.64
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 999934515.15,
+    "qtd": 79482,
+    "share": 0.29,
+    "valor_hab": 302.76,
+    "agricola_share": 29.66,
+    "pronaf_share": 72.38,
+    "ticket": 12580.64
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 2271.83269194,
+    "share": 1.26,
+    "mpme_share": 39.17,
+    "var_12m_pct": 109.8,
+    "valor_hab": 687.87
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 469114,
+    "valor": 23556232359.38,
+    "part_br": 0.671,
+    "valor_medio": 50214,
+    "insc_pf_por_mil_hab": 16.49,
+    "pj_valor": 22115742710.26
+   },
+   "posicoes": {
+    "scr.saldo": 19,
+    "scr.per_capita": 17,
+    "scr.inad": 17,
+    "scr.cresc12": 10,
+    "penetracao.penetracao": 18,
+    "penetracao.cred_adulto": 19,
+    "presenca.agencias_100mil": 18,
+    "pix.q_hab": 15,
+    "moradia.pgp": 9,
+    "consignado.cons_por_elegivel": 13,
+    "rural.valor_hab": 23,
+    "bndes.valor_hab": 11,
+    "pgfn.insc_pf_por_mil_hab": 18
+   },
+   "sintese": "O crédito no Rio Grande do Norte somava R$ 72 bilhões em 2026-07, 1,0% do Brasil, R$ 20.957 por habitante (17º entre as 27 UFs), com inadimplência de 5,24% (17º) e crescimento de +10,5% em 12 meses. Penetração de 72% da renda anual (18º), com 8 de 167 municípios abaixo do esperado pelo modelo. 39 municípios têm agência, 46 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "RO",
+   "nome": "Rondônia",
+   "prep": "em Rondônia",
+   "regiao": "Norte",
+   "cod": "11",
+   "pop": 1751950,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 64264906136,
+    "part_br": 0.85,
+    "per_capita": 36682,
+    "n_op": 6963093,
+    "cresc12": 5.87,
+    "cresc3": -0.97,
+    "inad": 6.82,
+    "d_inad_12m": 1.98,
+    "atraso15_90": 1.52,
+    "ap": 10.64,
+    "saldo_medio_op": 8728,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.72
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 63612666398.0,
+     "inad": 3906220277.0,
+     "pf": 62504490384.0,
+     "pj": 1108176014.0,
+     "share": 33.5,
+     "inad_pct": 6.14,
+     "pf_share": 98.26
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 21567130060.0,
+     "inad": 606526624.0,
+     "pf": 21567130060.0,
+     "pj": 0.0,
+     "share": 11.36,
+     "inad_pct": 2.81,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 20533921497.0,
+     "inad": 161261835.0,
+     "pf": 20383069767.0,
+     "pj": 150851730.0,
+     "share": 10.82,
+     "inad_pct": 0.79,
+     "pf_share": 99.27
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 16343427376.0,
+     "inad": 1755142160.0,
+     "pf": 16343427376.0,
+     "pj": 0.0,
+     "share": 8.61,
+     "inad_pct": 10.74,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 16109264094.0,
+     "inad": 862411831.0,
+     "pf": 11980358987.0,
+     "pj": 4128905107.0,
+     "share": 8.48,
+     "inad_pct": 5.35,
+     "pf_share": 74.37
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 15410623103.0,
+     "inad": 1063161168.0,
+     "pf": 628407360.0,
+     "pj": 14782215743.0,
+     "share": 8.12,
+     "inad_pct": 6.9,
+     "pf_share": 4.08
+    },
+    {
+     "produto": "Outros",
+     "saldo": 13982955981.0,
+     "inad": 1515359379.0,
+     "pf": 4771435291.0,
+     "pj": 9211520690.0,
+     "share": 7.36,
+     "inad_pct": 10.84,
+     "pf_share": 34.12
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 11049266895.0,
+     "inad": 15315997.0,
+     "pf": 9924202642.0,
+     "pj": 1125064253.0,
+     "share": 5.82,
+     "inad_pct": 0.14,
+     "pf_share": 89.82
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 3579052947.0,
+     "inad": 1279808314.0,
+     "pf": 3359404801.0,
+     "pj": 219648146.0,
+     "share": 1.89,
+     "inad_pct": 35.76,
+     "pf_share": 93.86
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 2501278815.0,
+     "inad": 54422311.0,
+     "pf": 465122460.0,
+     "pj": 2036156355.0,
+     "share": 1.32,
+     "inad_pct": 2.18,
+     "pf_share": 18.6
+    }
+   ],
+   "penetracao": {
+    "municipios": 52,
+    "credito": 31909377927.0,
+    "renda_anual": 25942005246.96001,
+    "adultos": 1159007.0,
+    "penetracao": 123.0,
+    "cred_adulto": 27531.65,
+    "municipios_abaixo": 1,
+    "gap_abs": 20998535.88,
+    "sem_estban": 23
+   },
+   "presenca": {
+    "municipios": 52,
+    "com_agencia": 29,
+    "so_posto": 23,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 109,
+    "postos": 293,
+    "pae": 157,
+    "correspondentes": 1763,
+    "agencias_100mil": 6.2
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 19089603373,
+    "q_pag": 57757403,
+    "t_pag": 330.51,
+    "q_hab": 33.0,
+    "v_hab": 10896,
+    "yoy_v": 17.9,
+    "pf_share": 58.98
+   },
+   "moradia": {
+    "dom_total": 555565,
+    "pgp": 7.27,
+    "alp": 20.09,
+    "scr_imob_pf": 7209139107.0,
+    "scr_inad_pct": 0.66,
+    "taxa_sfh": 13.82,
+    "ltv_sfh": 66.69,
+    "valor_compra": 234000.0,
+    "renda_pc": 1374.26
+   },
+   "consignado": {
+    "p60": 12.4,
+    "elegiveis": 220124,
+    "cons_total": 7434648312.0,
+    "cons_obs": 1218527372.0,
+    "part_apos": 16.39,
+    "inad_apos": 2.32,
+    "cons_por_elegivel": 5536.0,
+    "ben_medio": 1476.54,
+    "prural": 61.44
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 6420787489.15,
+    "qtd": 34449,
+    "share": 1.86,
+    "valor_hab": 4060.72,
+    "agricola_share": 22.9,
+    "pronaf_share": 34.1,
+    "ticket": 186385.31
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 860.68714738,
+    "share": 0.48,
+    "mpme_share": 87.2,
+    "var_12m_pct": 22.9,
+    "valor_hab": 544.33
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 263078,
+    "valor": 15245566115.09,
+    "part_br": 0.434,
+    "valor_medio": 57951,
+    "insc_pf_por_mil_hab": 16.71,
+    "pj_valor": 13512467957.53
+   },
+   "posicoes": {
+    "scr.saldo": 21,
+    "scr.per_capita": 10,
+    "scr.inad": 5,
+    "scr.cresc12": 23,
+    "penetracao.penetracao": 6,
+    "penetracao.cred_adulto": 9,
+    "presenca.agencias_100mil": 12,
+    "pix.q_hab": 19,
+    "moradia.pgp": 15,
+    "consignado.cons_por_elegivel": 11,
+    "rural.valor_hab": 5,
+    "bndes.valor_hab": 13,
+    "pgfn.insc_pf_por_mil_hab": 17
+   },
+   "sintese": "O crédito em Rondônia somava R$ 64 bilhões em 2026-07, 0,8% do Brasil, R$ 36.682 por habitante (10º entre as 27 UFs), com inadimplência de 6,82% (5º) e crescimento de +5,9% em 12 meses. Penetração de 123% da renda anual (6º), com 1 de 52 municípios abaixo do esperado pelo modelo. 29 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "RR",
+   "nome": "Roraima",
+   "prep": "em Roraima",
+   "regiao": "Norte",
+   "cod": "14",
+   "pop": 738772,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 16681437431,
+    "part_br": 0.22,
+    "per_capita": 22580,
+    "n_op": 3415926,
+    "cresc12": 17.31,
+    "cresc3": 0.33,
+    "inad": 6.46,
+    "d_inad_12m": 1.13,
+    "atraso15_90": 1.2,
+    "ap": 9.47,
+    "saldo_medio_op": 4311,
+    "prod_dominante": "Consignado",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.76
+   },
+   "produtos": [
+    {
+     "produto": "Consignado",
+     "saldo": 12686418308.0,
+     "inad": 496402474.0,
+     "pf": 12686418308.0,
+     "pj": 0.0,
+     "share": 26.69,
+     "inad_pct": 3.91,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Rural",
+     "saldo": 5443547384.0,
+     "inad": 225801300.0,
+     "pf": 5279356260.0,
+     "pj": 164191124.0,
+     "share": 11.45,
+     "inad_pct": 4.15,
+     "pf_share": 96.98
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 5394215576.0,
+     "inad": 74238959.0,
+     "pf": 5377402735.0,
+     "pj": 16812841.0,
+     "share": 11.35,
+     "inad_pct": 1.38,
+     "pf_share": 99.69
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 5129039985.0,
+     "inad": 304025758.0,
+     "pf": 4057130640.0,
+     "pj": 1071909345.0,
+     "share": 10.79,
+     "inad_pct": 5.93,
+     "pf_share": 79.1
+    },
+    {
+     "produto": "Outros",
+     "saldo": 4668854633.0,
+     "inad": 315721711.0,
+     "pf": 1032772030.0,
+     "pj": 3636082603.0,
+     "share": 9.82,
+     "inad_pct": 6.76,
+     "pf_share": 22.12
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 3795833928.0,
+     "inad": 572447045.0,
+     "pf": 3795833928.0,
+     "pj": 0.0,
+     "share": 7.99,
+     "inad_pct": 15.08,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 3539639867.0,
+     "inad": 223669833.0,
+     "pf": 7770926.0,
+     "pj": 3531868941.0,
+     "share": 7.45,
+     "inad_pct": 6.32,
+     "pf_share": 0.22
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 3244712114.0,
+     "inad": 1944845.0,
+     "pf": 3035505697.0,
+     "pj": 209206417.0,
+     "share": 6.83,
+     "inad_pct": 0.06,
+     "pf_share": 93.55
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 1581828658.0,
+     "inad": 41368714.0,
+     "pf": 0.0,
+     "pj": 1581828658.0,
+     "share": 3.33,
+     "inad_pct": 2.62,
+     "pf_share": 0.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 1438326947.0,
+     "inad": 544722896.0,
+     "pf": 1377496422.0,
+     "pj": 60830525.0,
+     "share": 3.03,
+     "inad_pct": 37.87,
+     "pf_share": 95.77
+    }
+   ],
+   "penetracao": {
+    "municipios": 15,
+    "credito": 10066730097.0,
+    "renda_anual": 8532719744.039998,
+    "adultos": 416637.0,
+    "penetracao": 117.98,
+    "cred_adulto": 24161.87,
+    "municipios_abaixo": 0,
+    "gap_abs": 0.0,
+    "sem_estban": 10
+   },
+   "presenca": {
+    "municipios": 15,
+    "com_agencia": 5,
+    "so_posto": 10,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 25,
+    "postos": 37,
+    "pae": 71,
+    "correspondentes": 508,
+    "agencias_100mil": 3.4
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 7042171875,
+    "q_pag": 37892106,
+    "t_pag": 185.85,
+    "q_hab": 51.3,
+    "v_hab": 9532,
+    "yoy_v": 26.1,
+    "pf_share": 68.91
+   },
+   "moradia": {
+    "dom_total": 177403,
+    "pgp": 5.62,
+    "alp": 24.92,
+    "scr_imob_pf": 1963522476.0,
+    "scr_inad_pct": 1.18,
+    "taxa_sfh": 13.93,
+    "ltv_sfh": 71.42,
+    "valor_compra": 272466.0,
+    "renda_pc": 1143.94
+   },
+   "consignado": {
+    "p60": 7.93,
+    "elegiveis": 36647,
+    "cons_total": 4449055781.0,
+    "cons_obs": 397360857.0,
+    "part_apos": 8.93,
+    "inad_apos": 2.98,
+    "cons_por_elegivel": 10843.0,
+    "ben_medio": 1391.09,
+    "prural": 59.92
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 697965494.4,
+    "qtd": 3056,
+    "share": 0.2,
+    "valor_hab": 1096.21,
+    "agricola_share": 47.2,
+    "pronaf_share": 23.2,
+    "ticket": 228391.85
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 123.44926985,
+    "share": 0.07,
+    "mpme_share": 81.3,
+    "var_12m_pct": -8.0,
+    "valor_hab": 193.89
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 66365,
+    "valor": 3887393282.19,
+    "part_br": 0.111,
+    "valor_medio": 58576,
+    "insc_pf_por_mil_hab": 20.5,
+    "pj_valor": 3208232510.17
+   },
+   "posicoes": {
+    "scr.saldo": 27,
+    "scr.per_capita": 15,
+    "scr.inad": 7,
+    "scr.cresc12": 1,
+    "penetracao.penetracao": 8,
+    "penetracao.cred_adulto": 11,
+    "presenca.agencias_100mil": 27,
+    "pix.q_hab": 1,
+    "moradia.pgp": 18,
+    "consignado.cons_por_elegivel": 3,
+    "rural.valor_hab": 13,
+    "bndes.valor_hab": 24,
+    "pgfn.insc_pf_por_mil_hab": 7
+   },
+   "sintese": "O crédito em Roraima somava R$ 17 bilhões em 2026-07, 0,2% do Brasil, R$ 22.580 por habitante (15º entre as 27 UFs), com inadimplência de 6,46% (7º) e crescimento de +17,3% em 12 meses. Penetração de 118% da renda anual (8º), com 0 de 15 municípios abaixo do esperado pelo modelo. 5 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "RS",
+   "nome": "Rio Grande do Sul",
+   "prep": "no Rio Grande do Sul",
+   "regiao": "Sul",
+   "cod": "43",
+   "pop": 11233263,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 533124912274,
+    "part_br": 7.04,
+    "per_capita": 47459,
+    "n_op": 57422842,
+    "cresc12": 8.14,
+    "cresc3": 0.29,
+    "inad": 4.87,
+    "d_inad_12m": 1.58,
+    "atraso15_90": 1.22,
+    "ap": 8.2,
+    "saldo_medio_op": 9000,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.72
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 336614604489.0,
+     "inad": 13858582762.0,
+     "pf": 285101877184.0,
+     "pj": 51512727305.0,
+     "share": 21.61,
+     "inad_pct": 4.12,
+     "pf_share": 84.7
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 272293642119.0,
+     "inad": 3181899267.0,
+     "pf": 262523627587.0,
+     "pj": 9770014532.0,
+     "share": 17.48,
+     "inad_pct": 1.17,
+     "pf_share": 96.41
+    },
+    {
+     "produto": "Outros",
+     "saldo": 220244045292.0,
+     "inad": 11207533198.0,
+     "pf": 57233128216.0,
+     "pj": 163010917076.0,
+     "share": 14.14,
+     "inad_pct": 5.09,
+     "pf_share": 25.99
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 193748424593.0,
+     "inad": 8472861165.0,
+     "pf": 8549114584.0,
+     "pj": 185199310009.0,
+     "share": 12.44,
+     "inad_pct": 4.37,
+     "pf_share": 4.41
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 134184051585.0,
+     "inad": 5059905713.0,
+     "pf": 134184051585.0,
+     "pj": 0.0,
+     "share": 8.61,
+     "inad_pct": 3.77,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 109881309166.0,
+     "inad": 5785438009.0,
+     "pf": 72604745423.0,
+     "pj": 37276563743.0,
+     "share": 7.05,
+     "inad_pct": 5.27,
+     "pf_share": 66.08
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 83560398687.0,
+     "inad": 35614294.0,
+     "pf": 76400944180.0,
+     "pj": 7159454507.0,
+     "share": 5.36,
+     "inad_pct": 0.04,
+     "pf_share": 91.43
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 75016734683.0,
+     "inad": 7093049878.0,
+     "pf": 75015619945.0,
+     "pj": 1114738.0,
+     "share": 4.82,
+     "inad_pct": 9.46,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 65684519738.0,
+     "inad": 617209643.0,
+     "pf": 420911947.0,
+     "pj": 65263607791.0,
+     "share": 4.22,
+     "inad_pct": 0.94,
+     "pf_share": 0.64
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 25722861281.0,
+     "inad": 9498501265.0,
+     "pf": 24394642557.0,
+     "pj": 1328218724.0,
+     "share": 1.65,
+     "inad_pct": 36.93,
+     "pf_share": 94.84
+    }
+   ],
+   "penetracao": {
+    "municipios": 497,
+    "credito": 339136076789.0,
+    "renda_anual": 265049814595.5601,
+    "adultos": 8577721.0,
+    "penetracao": 127.95,
+    "cred_adulto": 39536.85,
+    "municipios_abaixo": 181,
+    "gap_abs": 26484661922.33002,
+    "sem_estban": 149
+   },
+   "presenca": {
+    "municipios": 497,
+    "com_agencia": 348,
+    "so_posto": 148,
+    "so_correspondente": 1,
+    "nenhum": 0,
+    "agencias": 1306,
+    "postos": 2122,
+    "pae": 2318,
+    "correspondentes": 15555,
+    "agencias_100mil": 11.6
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 140372970235,
+    "q_pag": 300981169,
+    "t_pag": 466.38,
+    "q_hab": 26.8,
+    "v_hab": 12496,
+    "yoy_v": 20.3,
+    "pf_share": 37.22
+   },
+   "moradia": {
+    "dom_total": 4257006,
+    "pgp": 10.8,
+    "alp": 17.93,
+    "scr_imob_pf": 91464766794.0,
+    "scr_inad_pct": 1.51,
+    "taxa_sfh": 13.85,
+    "ltv_sfh": 64.5,
+    "valor_compra": 260000.0,
+    "renda_pc": 2042.57
+   },
+   "consignado": {
+    "p60": 20.15,
+    "elegiveis": 2546463,
+    "cons_total": 46004977983.0,
+    "cons_obs": 10903366696.0,
+    "part_apos": 23.7,
+    "inad_apos": 2.98,
+    "cons_por_elegivel": 4282.0,
+    "ben_medio": 1857.9,
+    "prural": 23.44
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 41628951948.4,
+    "qtd": 250374,
+    "share": 12.09,
+    "valor_hab": 3825.15,
+    "agricola_share": 71.31,
+    "pronaf_share": 36.6,
+    "ticket": 166267.07
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 26236.43011949999,
+    "share": 14.51,
+    "mpme_share": 60.63,
+    "var_12m_pct": -6.9,
+    "valor_hab": 2410.78
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 2344761,
+    "valor": 171335398524.39,
+    "part_br": 4.877,
+    "valor_medio": 73072,
+    "insc_pf_por_mil_hab": 19.3,
+    "pj_valor": 162669770629.49
+   },
+   "posicoes": {
+    "scr.saldo": 5,
+    "scr.per_capita": 7,
+    "scr.inad": 20,
+    "scr.cresc12": 19,
+    "penetracao.penetracao": 5,
+    "penetracao.cred_adulto": 4,
+    "presenca.agencias_100mil": 1,
+    "pix.q_hab": 26,
+    "moradia.pgp": 5,
+    "consignado.cons_por_elegivel": 19,
+    "rural.valor_hab": 6,
+    "bndes.valor_hab": 3,
+    "pgfn.insc_pf_por_mil_hab": 10
+   },
+   "sintese": "O crédito no Rio Grande do Sul somava R$ 533 bilhões em 2026-07, 7,0% do Brasil, R$ 47.459 por habitante (7º entre as 27 UFs), com inadimplência de 4,87% (20º) e crescimento de +8,1% em 12 meses. Penetração de 128% da renda anual (5º), com 181 de 497 municípios abaixo do esperado pelo modelo. 348 municípios têm agência, 1 depende só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "SC",
+   "nome": "Santa Catarina",
+   "prep": "em Santa Catarina",
+   "regiao": "Sul",
+   "cod": "42",
+   "pop": 8187029,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 415398547020,
+    "part_br": 5.48,
+    "per_capita": 50739,
+    "n_op": 38542318,
+    "cresc12": 9.97,
+    "cresc3": 1.38,
+    "inad": 3.71,
+    "d_inad_12m": 0.53,
+    "atraso15_90": 0.82,
+    "ap": 6.32,
+    "saldo_medio_op": 10320,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.66
+   },
+   "produtos": [
+    {
+     "produto": "Outros",
+     "saldo": 212511799027.0,
+     "inad": 6931545958.0,
+     "pf": 28603265263.0,
+     "pj": 183908533764.0,
+     "share": 17.67,
+     "inad_pct": 3.26,
+     "pf_share": 13.46
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 208886208524.0,
+     "inad": 1380657106.0,
+     "pf": 196635863818.0,
+     "pj": 12250344706.0,
+     "share": 17.37,
+     "inad_pct": 0.66,
+     "pf_share": 94.14
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 166410407103.0,
+     "inad": 7694578076.0,
+     "pf": 2225325725.0,
+     "pj": 164185081378.0,
+     "share": 13.83,
+     "inad_pct": 4.62,
+     "pf_share": 1.34
+    },
+    {
+     "produto": "Rural",
+     "saldo": 141431562223.0,
+     "inad": 2822717734.0,
+     "pf": 109878462425.0,
+     "pj": 31553099798.0,
+     "share": 11.76,
+     "inad_pct": 2.0,
+     "pf_share": 77.69
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 139095231088.0,
+     "inad": 6722652370.0,
+     "pf": 87740710718.0,
+     "pj": 51354520370.0,
+     "share": 11.56,
+     "inad_pct": 4.83,
+     "pf_share": 63.08
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 80428404012.0,
+     "inad": 2542990056.0,
+     "pf": 80428404012.0,
+     "pj": 0.0,
+     "share": 6.69,
+     "inad_pct": 3.16,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 74172772321.0,
+     "inad": 70561528.0,
+     "pf": 65026341767.0,
+     "pj": 9146430554.0,
+     "share": 6.17,
+     "inad_pct": 0.1,
+     "pf_share": 87.67
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 69462388818.0,
+     "inad": 5701152521.0,
+     "pf": 69462388818.0,
+     "pj": 0.0,
+     "share": 5.77,
+     "inad_pct": 8.21,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 53574373938.0,
+     "inad": 154689654.0,
+     "pf": 230775307.0,
+     "pj": 53343598631.0,
+     "share": 4.45,
+     "inad_pct": 0.29,
+     "pf_share": 0.43
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 17696155009.0,
+     "inad": 6459255984.0,
+     "pf": 16381401982.0,
+     "pj": 1314753027.0,
+     "share": 1.47,
+     "inad_pct": 36.5,
+     "pf_share": 92.57
+    }
+   ],
+   "penetracao": {
+    "municipios": 295,
+    "credito": 128095453106.0,
+    "renda_anual": 201752600100.59988,
+    "adultos": 5901853.0,
+    "penetracao": 63.49,
+    "cred_adulto": 21704.28,
+    "municipios_abaixo": 81,
+    "gap_abs": 66738704406.68002,
+    "sem_estban": 130
+   },
+   "presenca": {
+    "municipios": 295,
+    "com_agencia": 165,
+    "so_posto": 130,
+    "so_correspondente": 0,
+    "nenhum": 0,
+    "agencias": 618,
+    "postos": 1898,
+    "pae": 997,
+    "correspondentes": 12314,
+    "agencias_100mil": 7.5
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 144510515168,
+    "q_pag": 216283820,
+    "t_pag": 668.15,
+    "q_hab": 26.4,
+    "v_hab": 17651,
+    "yoy_v": 29.1,
+    "pf_share": 28.56
+   },
+   "moradia": {
+    "dom_total": 2808490,
+    "pgp": 10.58,
+    "alp": 26.32,
+    "scr_imob_pf": 69063252765.0,
+    "scr_inad_pct": 0.67,
+    "taxa_sfh": 13.92,
+    "ltv_sfh": 64.96,
+    "valor_compra": 350000.0,
+    "renda_pc": 2221.02
+   },
+   "consignado": {
+    "p60": 15.56,
+    "elegiveis": 1488783,
+    "cons_total": 28141000247.0,
+    "cons_obs": 6295840260.0,
+    "part_apos": 22.37,
+    "inad_apos": 1.76,
+    "cons_por_elegivel": 4229.0,
+    "ben_medio": 1873.54,
+    "prural": 19.34
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 24358366725.56,
+    "qtd": 134742,
+    "share": 7.07,
+    "valor_hab": 3200.68,
+    "agricola_share": 41.76,
+    "pronaf_share": 40.42,
+    "ticket": 180777.83
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 14956.920644119997,
+    "share": 8.27,
+    "mpme_share": 54.54,
+    "var_12m_pct": 34.3,
+    "valor_hab": 1965.34
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 1932797,
+    "valor": 130377772232.25,
+    "part_br": 3.712,
+    "valor_medio": 67455,
+    "insc_pf_por_mil_hab": 14.41,
+    "pj_valor": 124826498023.64
+   },
+   "posicoes": {
+    "scr.saldo": 6,
+    "scr.per_capita": 3,
+    "scr.inad": 26,
+    "scr.cresc12": 12,
+    "penetracao.penetracao": 25,
+    "penetracao.cred_adulto": 13,
+    "presenca.agencias_100mil": 5,
+    "pix.q_hab": 27,
+    "moradia.pgp": 6,
+    "consignado.cons_por_elegivel": 20,
+    "rural.valor_hab": 8,
+    "bndes.valor_hab": 4,
+    "pgfn.insc_pf_por_mil_hab": 24
+   },
+   "sintese": "O crédito em Santa Catarina somava R$ 415 bilhões em 2026-07, 5,5% do Brasil, R$ 50.739 por habitante (3º entre as 27 UFs), com inadimplência de 3,71% (26º) e crescimento de +10,0% em 12 meses. Penetração de 63% da renda anual (25º), com 81 de 295 municípios abaixo do esperado pelo modelo. 165 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "SE",
+   "nome": "Sergipe",
+   "prep": "em Sergipe",
+   "regiao": "Nordeste",
+   "cod": "28",
+   "pop": 2299425,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 42436269253,
+    "part_br": 0.56,
+    "per_capita": 18455,
+    "n_op": 8680543,
+    "cresc12": -0.14,
+    "cresc3": -9.13,
+    "inad": 5.51,
+    "d_inad_12m": 0.14,
+    "atraso15_90": 1.11,
+    "ap": 8.86,
+    "saldo_medio_op": 4415,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 1 a 2 salários mínimos",
+    "z_inad": 1.21
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 36083205336.0,
+     "inad": 599838321.0,
+     "pf": 34330063866.0,
+     "pj": 1753141470.0,
+     "share": 27.41,
+     "inad_pct": 1.66,
+     "pf_share": 95.14
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 20046130261.0,
+     "inad": 599295593.0,
+     "pf": 20046130261.0,
+     "pj": 0.0,
+     "share": 15.23,
+     "inad_pct": 2.99,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 19372341032.0,
+     "inad": 396717212.0,
+     "pf": 18223745257.0,
+     "pj": 1148595775.0,
+     "share": 14.72,
+     "inad_pct": 2.05,
+     "pf_share": 94.07
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 10849031357.0,
+     "inad": 670154367.0,
+     "pf": 7750144441.0,
+     "pj": 3098886916.0,
+     "share": 8.24,
+     "inad_pct": 6.18,
+     "pf_share": 71.44
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 10028783340.0,
+     "inad": 678545967.0,
+     "pf": 9950892.0,
+     "pj": 10018832448.0,
+     "share": 7.62,
+     "inad_pct": 6.77,
+     "pf_share": 0.1
+    },
+    {
+     "produto": "Outros",
+     "saldo": 8815071572.0,
+     "inad": 643741353.0,
+     "pf": 2741415689.0,
+     "pj": 6073655883.0,
+     "share": 6.7,
+     "inad_pct": 7.3,
+     "pf_share": 31.1
+    },
+    {
+     "produto": "Rural",
+     "saldo": 8266863055.0,
+     "inad": 288734568.0,
+     "pf": 8090775665.0,
+     "pj": 176087390.0,
+     "share": 6.28,
+     "inad_pct": 3.49,
+     "pf_share": 97.87
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 7055992746.0,
+     "inad": 959742952.0,
+     "pf": 7055992746.0,
+     "pj": 0.0,
+     "share": 5.36,
+     "inad_pct": 13.6,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 4719816487.0,
+     "inad": 2149978368.0,
+     "pf": 4521117479.0,
+     "pj": 198699008.0,
+     "share": 3.59,
+     "inad_pct": 45.55,
+     "pf_share": 95.79
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 2614282086.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 2614282086.0,
+     "share": 1.99,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 75,
+    "credito": 27043914404.0,
+    "renda_anual": 31219085582.039993,
+    "adultos": 1635551.0,
+    "penetracao": 86.63,
+    "cred_adulto": 16535.05,
+    "municipios_abaixo": 19,
+    "gap_abs": 8097677299.46,
+    "sem_estban": 29
+   },
+   "presenca": {
+    "municipios": 75,
+    "com_agencia": 46,
+    "so_posto": 23,
+    "so_correspondente": 6,
+    "nenhum": 0,
+    "agencias": 174,
+    "postos": 94,
+    "pae": 308,
+    "correspondentes": 2294,
+    "agencias_100mil": 7.6
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 17985665778,
+    "q_pag": 76108288,
+    "t_pag": 236.32,
+    "q_hab": 33.1,
+    "v_hab": 7822,
+    "yoy_v": 17.3,
+    "pf_share": 63.9
+   },
+   "moradia": {
+    "dom_total": 782969,
+    "pgp": 7.72,
+    "alp": 20.95,
+    "scr_imob_pf": 11756345895.0,
+    "scr_inad_pct": 1.63,
+    "taxa_sfh": 13.54,
+    "ltv_sfh": 67.2,
+    "valor_compra": 195000.0,
+    "renda_pc": 1181.91
+   },
+   "consignado": {
+    "p60": 13.33,
+    "elegiveis": 325774,
+    "cons_total": 7502570971.0,
+    "cons_obs": 1556623764.0,
+    "part_apos": 20.75,
+    "inad_apos": 2.39,
+    "cons_por_elegivel": 4778.0,
+    "ben_medio": 1553.71,
+    "prural": 48.82
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 1805204927.18,
+    "qtd": 53162,
+    "share": 0.52,
+    "valor_hab": 816.83,
+    "agricola_share": 54.35,
+    "pronaf_share": 58.17,
+    "ticket": 33956.68
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 363.44800250000003,
+    "share": 0.2,
+    "mpme_share": 47.15,
+    "var_12m_pct": 117.1,
+    "valor_hab": 164.46
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 265158,
+    "valor": 18244528135.71,
+    "part_br": 0.519,
+    "valor_medio": 68806,
+    "insc_pf_por_mil_hab": 21.47,
+    "pj_valor": 17125105592.13
+   },
+   "posicoes": {
+    "scr.saldo": 24,
+    "scr.per_capita": 25,
+    "scr.inad": 14,
+    "scr.cresc12": 26,
+    "penetracao.penetracao": 16,
+    "penetracao.cred_adulto": 16,
+    "presenca.agencias_100mil": 4,
+    "pix.q_hab": 18,
+    "moradia.pgp": 14,
+    "consignado.cons_por_elegivel": 15,
+    "rural.valor_hab": 17,
+    "bndes.valor_hab": 25,
+    "pgfn.insc_pf_por_mil_hab": 6
+   },
+   "sintese": "O crédito em Sergipe somava R$ 42 bilhões em 2026-07, 0,6% do Brasil, R$ 18.455 por habitante (25º entre as 27 UFs), com inadimplência de 5,51% (14º) e crescimento de -0,1% em 12 meses. Penetração de 87% da renda anual (16º), com 19 de 75 municípios abaixo do esperado pelo modelo. 46 municípios têm agência, 6 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "SP",
+   "nome": "São Paulo",
+   "prep": "em São Paulo",
+   "regiao": "Sudeste",
+   "cod": "35",
+   "pop": 46081801,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 2273019350831,
+    "part_br": 30.01,
+    "per_capita": 49326,
+    "n_op": 252756387,
+    "cresc12": 12.51,
+    "cresc3": 0.95,
+    "inad": 3.76,
+    "d_inad_12m": 0.39,
+    "atraso15_90": 0.79,
+    "ap": 7.57,
+    "saldo_medio_op": 8675,
+    "prod_dominante": "Imobiliário",
+    "renda_dominante": "Mais de 5 a 10 salários mínimos",
+    "z_inad": 1.61
+   },
+   "produtos": [
+    {
+     "produto": "Imobiliário",
+     "saldo": 1532926220075.0,
+     "inad": 17962304047.0,
+     "pf": 1415455279526.0,
+     "pj": 117470940549.0,
+     "share": 23.42,
+     "inad_pct": 1.17,
+     "pf_share": 92.34
+    },
+    {
+     "produto": "Outros",
+     "saldo": 1278373173458.0,
+     "inad": 31622432775.0,
+     "pf": 124889860089.0,
+     "pj": 1153483313369.0,
+     "share": 19.53,
+     "inad_pct": 2.47,
+     "pf_share": 9.77
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 899489999510.0,
+     "inad": 35212552487.0,
+     "pf": 3634155761.0,
+     "pj": 895855843749.0,
+     "share": 13.74,
+     "inad_pct": 3.91,
+     "pf_share": 0.4
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 516781100783.0,
+     "inad": 423162646.0,
+     "pf": 476811961366.0,
+     "pj": 39969139417.0,
+     "share": 7.9,
+     "inad_pct": 0.08,
+     "pf_share": 92.27
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 508772645216.0,
+     "inad": 18533862054.0,
+     "pf": 508772645216.0,
+     "pj": 0.0,
+     "share": 7.77,
+     "inad_pct": 3.64,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 507190164687.0,
+     "inad": 23417730698.0,
+     "pf": 343517712678.0,
+     "pj": 163672452009.0,
+     "share": 7.75,
+     "inad_pct": 4.62,
+     "pf_share": 67.73
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 331982944986.0,
+     "inad": 873150768.0,
+     "pf": 7463075127.0,
+     "pj": 324519869859.0,
+     "share": 5.07,
+     "inad_pct": 0.26,
+     "pf_share": 2.25
+    },
+    {
+     "produto": "Rural",
+     "saldo": 306630459336.0,
+     "inad": 9994562580.0,
+     "pf": 208212023448.0,
+     "pj": 98418435888.0,
+     "share": 4.69,
+     "inad_pct": 3.26,
+     "pf_share": 67.9
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 305977179291.0,
+     "inad": 28254207681.0,
+     "pf": 305971392259.0,
+     "pj": 5787032.0,
+     "share": 4.68,
+     "inad_pct": 9.23,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Cartão — parcelado/financiado",
+     "saldo": 155161664812.0,
+     "inad": 59654325153.0,
+     "pf": 147503198661.0,
+     "pj": 7658466151.0,
+     "share": 2.37,
+     "inad_pct": 38.45,
+     "pf_share": 95.06
+    }
+   ],
+   "penetracao": {
+    "municipios": 645,
+    "credito": 3396224650619.0,
+    "renda_anual": 1108244474228.3992,
+    "adultos": 34728666.0,
+    "penetracao": 306.45,
+    "cred_adulto": 97793.12,
+    "municipios_abaixo": 202,
+    "gap_abs": 172427352075.04013,
+    "sem_estban": 227
+   },
+   "presenca": {
+    "municipios": 645,
+    "com_agencia": 416,
+    "so_posto": 196,
+    "so_correspondente": 33,
+    "nenhum": 0,
+    "agencias": 3708,
+    "postos": 5843,
+    "pae": 4668,
+    "correspondentes": 47397,
+    "agencias_100mil": 8.0
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 1200747079566,
+    "q_pag": 1800434206,
+    "t_pag": 666.92,
+    "q_hab": 39.1,
+    "v_hab": 26057,
+    "yoy_v": 33.7,
+    "pf_share": 23.75
+   },
+   "moradia": {
+    "dom_total": 16226123,
+    "pgp": 11.43,
+    "alp": 26.0,
+    "scr_imob_pf": 497699724634.0,
+    "scr_inad_pct": 1.24,
+    "taxa_sfh": 13.96,
+    "ltv_sfh": 65.25,
+    "valor_compra": 300000.0,
+    "renda_pc": 2092.42
+   },
+   "consignado": {
+    "p60": 17.23,
+    "elegiveis": 7426415,
+    "cons_total": 176978026367.0,
+    "cons_obs": 39671772517.0,
+    "part_apos": 22.42,
+    "inad_apos": 1.83,
+    "cons_por_elegivel": 5342.0,
+    "ben_medio": 2155.33,
+    "prural": 6.11
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 31602165177.08,
+    "qtd": 44752,
+    "share": 9.18,
+    "valor_hab": 711.58,
+    "agricola_share": 81.34,
+    "pronaf_share": 4.17,
+    "ticket": 706162.07
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 48215.26774431999,
+    "share": 26.67,
+    "mpme_share": 17.07,
+    "var_12m_pct": 74.4,
+    "valor_hab": 1085.65
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 10008087,
+    "valor": 1412289257885.65,
+    "part_br": 40.204,
+    "valor_medio": 141115,
+    "insc_pf_por_mil_hab": 17.9,
+    "pj_valor": 1361300182163.22
+   },
+   "posicoes": {
+    "scr.saldo": 1,
+    "scr.per_capita": 4,
+    "scr.inad": 25,
+    "scr.cresc12": 3,
+    "penetracao.penetracao": 2,
+    "penetracao.cred_adulto": 2,
+    "presenca.agencias_100mil": 2,
+    "pix.q_hab": 6,
+    "moradia.pgp": 4,
+    "consignado.cons_por_elegivel": 12,
+    "rural.valor_hab": 18,
+    "bndes.valor_hab": 7,
+    "pgfn.insc_pf_por_mil_hab": 14
+   },
+   "sintese": "O crédito em São Paulo somava R$ 2.273 bilhões em 2026-07, 30,0% do Brasil, R$ 49.326 por habitante (4º entre as 27 UFs), com inadimplência de 3,76% (25º) e crescimento de +12,5% em 12 meses. Penetração de 306% da renda anual (2º), com 202 de 645 municípios abaixo do esperado pelo modelo. 416 municípios têm agência, 33 dependem só de correspondente e nenhum fica sem ponto físico."
+  },
+  {
+   "uf": "TO",
+   "nome": "Tocantins",
+   "prep": "no Tocantins",
+   "regiao": "Norte",
+   "cod": "17",
+   "pop": 1586859,
+   "scr": {
+    "data_base": "2026-07",
+    "saldo": 58641650575,
+    "part_br": 0.77,
+    "per_capita": 36955,
+    "n_op": 5828755,
+    "cresc12": 9.57,
+    "cresc3": -3.11,
+    "inad": 8.45,
+    "d_inad_12m": 2.45,
+    "atraso15_90": 2.05,
+    "ap": 13.01,
+    "saldo_medio_op": 8847,
+    "prod_dominante": "Rural",
+    "renda_dominante": "Acima de 20 salários mínimos",
+    "z_inad": 1.51
+   },
+   "produtos": [
+    {
+     "produto": "Rural",
+     "saldo": 52120591164.0,
+     "inad": 5558162937.0,
+     "pf": 49377159318.0,
+     "pj": 2743431846.0,
+     "share": 30.18,
+     "inad_pct": 10.66,
+     "pf_share": 94.74
+    },
+    {
+     "produto": "Outros",
+     "saldo": 23143318047.0,
+     "inad": 1557229226.0,
+     "pf": 4824795816.0,
+     "pj": 18318522231.0,
+     "share": 13.4,
+     "inad_pct": 6.73,
+     "pf_share": 20.85
+    },
+    {
+     "produto": "Consignado",
+     "saldo": 18895160494.0,
+     "inad": 641120399.0,
+     "pf": 18895160494.0,
+     "pj": 0.0,
+     "share": 10.94,
+     "inad_pct": 3.39,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Imobiliário",
+     "saldo": 18706929336.0,
+     "inad": 242725513.0,
+     "pf": 18140262026.0,
+     "pj": 566667310.0,
+     "share": 10.83,
+     "inad_pct": 1.3,
+     "pf_share": 96.97
+    },
+    {
+     "produto": "Veículos",
+     "saldo": 15032147080.0,
+     "inad": 933117022.0,
+     "pf": 10062499687.0,
+     "pj": 4969647393.0,
+     "share": 8.7,
+     "inad_pct": 6.21,
+     "pf_share": 66.94
+    },
+    {
+     "produto": "Capital de giro",
+     "saldo": 13088613075.0,
+     "inad": 1128016918.0,
+     "pf": 348223450.0,
+     "pj": 12740389625.0,
+     "share": 7.58,
+     "inad_pct": 8.62,
+     "pf_share": 2.66
+    },
+    {
+     "produto": "Cartão — à vista",
+     "saldo": 9289007842.0,
+     "inad": 2668176.0,
+     "pf": 8482765809.0,
+     "pj": 806242033.0,
+     "share": 5.38,
+     "inad_pct": 0.03,
+     "pf_share": 91.32
+    },
+    {
+     "produto": "Crédito pessoal",
+     "saldo": 9072059563.0,
+     "inad": 1297021327.0,
+     "pf": 9072059563.0,
+     "pj": 0.0,
+     "share": 5.25,
+     "inad_pct": 14.3,
+     "pf_share": 100.0
+    },
+    {
+     "produto": "Comércio exterior",
+     "saldo": 4067438054.0,
+     "inad": 169342529.0,
+     "pf": 1381055557.0,
+     "pj": 2686382497.0,
+     "share": 2.36,
+     "inad_pct": 4.16,
+     "pf_share": 33.95
+    },
+    {
+     "produto": "Infraestrutura",
+     "saldo": 3854254528.0,
+     "inad": 0.0,
+     "pf": 0.0,
+     "pj": 3854254528.0,
+     "share": 2.23,
+     "inad_pct": 0.0,
+     "pf_share": 0.0
+    }
+   ],
+   "penetracao": {
+    "municipios": 139,
+    "credito": 36093827211.0,
+    "renda_anual": 25165197378.600002,
+    "adultos": 1084532.0,
+    "penetracao": 143.43,
+    "cred_adulto": 33280.56,
+    "municipios_abaixo": 1,
+    "gap_abs": 4147643.05,
+    "sem_estban": 112
+   },
+   "presenca": {
+    "municipios": 139,
+    "com_agencia": 27,
+    "so_posto": 73,
+    "so_correspondente": 39,
+    "nenhum": 0,
+    "agencias": 100,
+    "postos": 135,
+    "pae": 192,
+    "correspondentes": 1887,
+    "agencias_100mil": 6.3
+   },
+   "pix": {
+    "mes": "2026-07",
+    "v_pag": 18239203527,
+    "q_pag": 55440827,
+    "t_pag": 328.99,
+    "q_hab": 34.9,
+    "v_hab": 11494,
+    "yoy_v": 16.0,
+    "pf_share": 54.81
+   },
+   "moradia": {
+    "dom_total": 513737,
+    "pgp": 8.12,
+    "alp": 21.03,
+    "scr_imob_pf": 6383591420.0,
+    "scr_inad_pct": 1.33,
+    "taxa_sfh": 13.96,
+    "ltv_sfh": 69.7,
+    "valor_compra": 270000.0,
+    "renda_pc": 1392.66
+   },
+   "consignado": {
+    "p60": 12.5,
+    "elegiveis": 194820,
+    "cons_total": 6752730807.0,
+    "cons_obs": 846018526.0,
+    "part_apos": 12.53,
+    "inad_apos": 2.97,
+    "cons_por_elegivel": 4343.0,
+    "ben_medio": 1434.94,
+    "prural": 63.95
+   },
+   "rural": {
+    "janela": {
+     "ini": "2025-08",
+     "fim": "2026-07"
+    },
+    "valor": 7428807169.45,
+    "qtd": 17500,
+    "share": 2.16,
+    "valor_hab": 4914.99,
+    "agricola_share": 44.97,
+    "pronaf_share": 7.73,
+    "ticket": 424503.27
+   },
+   "bndes": {
+    "janela": {
+     "ini": "2025-04",
+     "fim": "2026-03"
+    },
+    "valor": 1288.636747,
+    "share": 0.71,
+    "mpme_share": 40.56,
+    "var_12m_pct": 23.5,
+    "valor_hab": 852.58
+   },
+   "pgfn": {
+    "data_base": "2026-06",
+    "inscricoes": 238445,
+    "valor": 13472732212.2,
+    "part_br": 0.384,
+    "valor_medio": 56502,
+    "insc_pf_por_mil_hab": 19.41,
+    "pj_valor": 11815568795.21
+   },
+   "posicoes": {
+    "scr.saldo": 23,
+    "scr.per_capita": 9,
+    "scr.inad": 2,
+    "scr.cresc12": 14,
+    "penetracao.penetracao": 3,
+    "penetracao.cred_adulto": 5,
+    "presenca.agencias_100mil": 10,
+    "pix.q_hab": 12,
+    "moradia.pgp": 12,
+    "consignado.cons_por_elegivel": 18,
+    "rural.valor_hab": 3,
+    "bndes.valor_hab": 8,
+    "pgfn.insc_pf_por_mil_hab": 9
+   },
+   "sintese": "O crédito no Tocantins somava R$ 59 bilhões em 2026-07, 0,8% do Brasil, R$ 36.955 por habitante (9º entre as 27 UFs), com inadimplência de 8,45% (2º) e crescimento de +9,6% em 12 meses. Penetração de 143% da renda anual (3º), com 1 de 139 municípios abaixo do esperado pelo modelo. 27 municípios têm agência, 39 dependem só de correspondente e nenhum fica sem ponto físico."
+  }
+ ],
+ "fontes": [
+  "BCB/SCR.data (Panorama)",
+  "BCB/ESTBAN e IBGE Censo 2022 (Penetração)",
+  "BCB/Unicad e Correspondentes (Presença)",
+  "BCB/Pix",
+  "BCB e IBGE (Moradia)",
+  "INSS e SCR (Consignado)",
+  "BCB/MDCR (Crédito rural)",
+  "BNDES dados abertos",
+  "PGFN (Dívida ativa)"
+ ],
+ "cautelas": [
+  "Cada bloco tem a própria data-base e a própria régua; posições em ranking são calculadas entre as 27 UFs dentro de um mesmo bloco e nunca cruzam blocos.",
+  "Nada aqui é coletado de novo: a página reúne o recorte estadual dos painéis temáticos. Um bloco ausente significa que o painel de origem não publicou o recorte, não que o dado seja zero.",
+  "Per capita e por habitante usam a população do Censo 2022; penetração usa a renda anual estimada por município."
+ ],
+ "metodo": "Agregação em Python (stdlib) sobre os golds publicados; municipal somado por UF onde o painel de origem não traz o recorte estadual; posições por ordenação simples; sem estimativa."
+}

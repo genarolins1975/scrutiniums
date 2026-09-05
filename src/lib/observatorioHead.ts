@@ -88,6 +88,22 @@ function descricaoPresenca(m: MunPresenca): string {
     `nem agência, nem posto, nem correspondente.`;
 }
 
+type UfGold = { uf: string; nome: string; prep: string; regiao: string; sintese: string; scr: { data_base: string; saldo: number; inad: number } | null };
+let ufCache: Map<string, UfGold> | null = null;
+function unidadeFederacao(sigla: string): UfGold | null {
+  if (!ufCache) {
+    try {
+      const g = JSON.parse(
+        readFileSync(join(process.cwd(), "public", "obs", "data", "gold", "ufs.json"), "utf-8"),
+      ) as { ufs: UfGold[] };
+      ufCache = new Map((g.ufs || []).map((u) => [u.uf, u]));
+    } catch {
+      ufCache = new Map();
+    }
+  }
+  return ufCache.get(sigla.toUpperCase()) ?? null;
+}
+
 let geradoEmCache: string | null | undefined;
 function geradoEm(): string | null {
   if (geradoEmCache === undefined) {
@@ -172,6 +188,19 @@ export function resolverMeta(caminho: string): MetaObservatorio {
         descricao: descricaoPresenca(m),
         canonico: `${BASE}/observatorio${d.prefixo}${slug}`,
         gold: "presenca_mun.json",
+        indexavel: true,
+        status: 200,
+      };
+    }
+    if (d.view === "estado") {
+      // só as 27 siglas do gold viram página; qualquer outra coisa é 404/noindex
+      const u = unidadeFederacao(slug);
+      if (!u || slug !== u.uf) break;
+      return {
+        titulo: `Crédito ${u.prep} (${u.uf}) — carteira, inadimplência, penetração e presença bancária · ${NOME_PLATAFORMA}`,
+        descricao: u.sintese || `O crédito ${u.prep}: carteira e inadimplência do SCR, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES e dívida ativa, com dados oficiais.`,
+        canonico: `${BASE}/observatorio${d.prefixo}${slug}`,
+        gold: "ufs.json",
         indexavel: true,
         status: 200,
       };
