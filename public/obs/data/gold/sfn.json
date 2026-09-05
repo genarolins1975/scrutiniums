@@ -1,0 +1,3449 @@
+{
+ "disponivel": true,
+ "gerado_em": "2026-09-05T22:46:01+00:00",
+ "fontes": {
+  "cadastro": {
+   "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
+   "url": "https://olinda.bcb.gov.br/olinda/servico/Instituicoes_em_funcionamento/versao/v1/odata/",
+   "catalogo": "https://dadosabertos.bcb.gov.br/dataset/relacao-de-instituicoes-em-funcionamento-no-pais",
+   "licenca": "dados abertos do BCB",
+   "nivel": "A — cadastro oficial, posição do dia"
+  },
+  "ifdata": {
+   "nome": "BCB — IF.data (cadastro e resumo trimestral)",
+   "url": "https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata/",
+   "catalogo": "https://dadosabertos.bcb.gov.br/dataset/ifdata---dados-selecionados-de-instituies-financeiras",
+   "licenca": "dados abertos do BCB",
+   "nivel": "A — relatório regulatório trimestral"
+  },
+  "regimes": {
+   "nome": "BCB — Regimes de resolução (API Olinda)",
+   "url": "https://olinda.bcb.gov.br/olinda/servico/regimes_especiais/versao/v1/odata/",
+   "catalogo": "https://dadosabertos.bcb.gov.br/dataset/regimes-especiais",
+   "licenca": "dados abertos do BCB",
+   "nivel": "A — lista oficial vigente, diária"
+  }
+ },
+ "sintese": "Em 2026-09-05, 1743 sedes estavam autorizadas e em funcionamento: 166 bancos, 752 cooperativas de crédito, 194 instituições de pagamento e 148 fintechs de crédito (SCD e SEP). No IF.data, 1430 instituições e conglomerados reportaram em 202512; nos quatro trimestres fechados houve 92 entradas e 77 saídas. 23 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
+ "cadastro": {
+  "disponivel": true,
+  "data": "2026-09-05",
+  "total": 1743,
+  "grupos": [
+   {
+    "grupo": "Bancos",
+    "cor": "#1d4e89",
+    "n": 166,
+    "segmentos": [
+     {
+      "segmento": "Banco Múltiplo",
+      "n": 128
+     },
+     {
+      "segmento": "Banco Comercial",
+      "n": 14
+     },
+     {
+      "segmento": "Banco de Investimento",
+      "n": 12
+     },
+     {
+      "segmento": "Banco Comercial Estrangeiro - Filial no país",
+      "n": 4
+     },
+     {
+      "segmento": "Banco de Câmbio",
+      "n": 4
+     },
+     {
+      "segmento": "Banco Múltiplo Cooperativo",
+      "n": 2
+     },
+     {
+      "segmento": "Banco do Brasil - Banco Múltiplo",
+      "n": 1
+     },
+     {
+      "segmento": "Caixa Econômica Federal",
+      "n": 1
+     }
+    ],
+    "share": 9.52
+   },
+   {
+    "grupo": "Cooperativas de crédito",
+    "cor": "#2f7d4f",
+    "n": 752,
+    "segmentos": [
+     {
+      "segmento": "Cooperativa de crédito (singular)",
+      "n": 720
+     },
+     {
+      "segmento": "Cooperativa de crédito (central)",
+      "n": 25
+     },
+     {
+      "segmento": "Cooperativa de crédito (sem classe)",
+      "n": 5
+     },
+     {
+      "segmento": "Cooperativa de crédito (confederação)",
+      "n": 2
+     }
+    ],
+    "share": 43.14
+   },
+   {
+    "grupo": "Instituições de pagamento",
+    "cor": "#b45309",
+    "n": 194,
+    "segmentos": [
+     {
+      "segmento": "Instituição de Pagamento",
+      "n": 194
+     }
+    ],
+    "share": 11.13
+   },
+   {
+    "grupo": "Fintechs de crédito",
+    "cor": "#6b46a3",
+    "n": 148,
+    "segmentos": [
+     {
+      "segmento": "Sociedade de Crédito Direto",
+      "n": 136
+     },
+     {
+      "segmento": "Sociedade de Empréstimo entre Pessoas",
+      "n": 12
+     }
+    ],
+    "share": 8.49
+   },
+   {
+    "grupo": "Financeiras e crédito especializado",
+    "cor": "#0e7c7b",
+    "n": 125,
+    "segmentos": [
+     {
+      "segmento": "Sociedade de Crédito, Financiamento e Investimento",
+      "n": 80
+     },
+     {
+      "segmento": "Sociedade de Crédito ao Microempreendedor",
+      "n": 22
+     },
+     {
+      "segmento": "Sociedade de Arrendamento Mercantil",
+      "n": 17
+     },
+     {
+      "segmento": "Companhia Hipotecária",
+      "n": 5
+     },
+     {
+      "segmento": "Associação de Poupança e Empréstimo",
+      "n": 1
+     }
+    ],
+    "share": 7.17
+   },
+   {
+    "grupo": "Mercado de capitais e câmbio",
+    "cor": "#8d5a2b",
+    "n": 208,
+    "segmentos": [
+     {
+      "segmento": "Sociedade Distribuidora de TVM",
+      "n": 100
+     },
+     {
+      "segmento": "Sociedade Corretora de TVM",
+      "n": 58
+     },
+     {
+      "segmento": "Sociedade Corretora de Câmbio",
+      "n": 50
+     }
+    ],
+    "share": 11.93
+   },
+   {
+    "grupo": "Fomento e desenvolvimento",
+    "cor": "#4b5563",
+    "n": 20,
+    "segmentos": [
+     {
+      "segmento": "Agência de Fomento",
+      "n": 16
+     },
+     {
+      "segmento": "Banco de Desenvolvimento",
+      "n": 3
+     },
+     {
+      "segmento": "BNDES",
+      "n": 1
+     }
+    ],
+    "share": 1.15
+   },
+   {
+    "grupo": "Consórcios",
+    "cor": "#9a3412",
+    "n": 130,
+    "segmentos": [
+     {
+      "segmento": "Administradora de consórcio",
+      "n": 130
+     }
+    ],
+    "share": 7.46
+   }
+  ],
+  "ufs": [
+   {
+    "uf": "SP",
+    "regiao": "Sudeste",
+    "n": 741,
+    "bancos": 116,
+    "cooperativas": 152,
+    "ips": 134,
+    "fintechs": 79
+   },
+   {
+    "uf": "MG",
+    "regiao": "Sudeste",
+    "n": 220,
+    "bancos": 8,
+    "cooperativas": 161,
+    "ips": 11,
+    "fintechs": 12
+   },
+   {
+    "uf": "RS",
+    "regiao": "Sul",
+    "n": 159,
+    "bancos": 7,
+    "cooperativas": 82,
+    "ips": 10,
+    "fintechs": 12
+   },
+   {
+    "uf": "PR",
+    "regiao": "Sul",
+    "n": 135,
+    "bancos": 11,
+    "cooperativas": 73,
+    "ips": 10,
+    "fintechs": 9
+   },
+   {
+    "uf": "SC",
+    "regiao": "Sul",
+    "n": 131,
+    "bancos": 0,
+    "cooperativas": 88,
+    "ips": 12,
+    "fintechs": 9
+   },
+   {
+    "uf": "RJ",
+    "regiao": "Sudeste",
+    "n": 93,
+    "bancos": 13,
+    "cooperativas": 32,
+    "ips": 6,
+    "fintechs": 4
+   },
+   {
+    "uf": "GO",
+    "regiao": "Centro-Oeste",
+    "n": 40,
+    "bancos": 0,
+    "cooperativas": 32,
+    "ips": 1,
+    "fintechs": 4
+   },
+   {
+    "uf": "DF",
+    "regiao": "Centro-Oeste",
+    "n": 29,
+    "bancos": 4,
+    "cooperativas": 11,
+    "ips": 0,
+    "fintechs": 3
+   },
+   {
+    "uf": "ES",
+    "regiao": "Sudeste",
+    "n": 28,
+    "bancos": 1,
+    "cooperativas": 20,
+    "ips": 0,
+    "fintechs": 1
+   },
+   {
+    "uf": "BA",
+    "regiao": "Nordeste",
+    "n": 25,
+    "bancos": 2,
+    "cooperativas": 16,
+    "ips": 0,
+    "fintechs": 3
+   },
+   {
+    "uf": "MT",
+    "regiao": "Centro-Oeste",
+    "n": 22,
+    "bancos": 0,
+    "cooperativas": 18,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "RO",
+    "regiao": "Norte",
+    "n": 16,
+    "bancos": 0,
+    "cooperativas": 15,
+    "ips": 1,
+    "fintechs": 0
+   },
+   {
+    "uf": "PB",
+    "regiao": "Nordeste",
+    "n": 14,
+    "bancos": 0,
+    "cooperativas": 12,
+    "ips": 1,
+    "fintechs": 0
+   },
+   {
+    "uf": "CE",
+    "regiao": "Nordeste",
+    "n": 14,
+    "bancos": 1,
+    "cooperativas": 3,
+    "ips": 2,
+    "fintechs": 4
+   },
+   {
+    "uf": "PE",
+    "regiao": "Nordeste",
+    "n": 13,
+    "bancos": 0,
+    "cooperativas": 6,
+    "ips": 1,
+    "fintechs": 2
+   },
+   {
+    "uf": "MS",
+    "regiao": "Centro-Oeste",
+    "n": 13,
+    "bancos": 0,
+    "cooperativas": 8,
+    "ips": 2,
+    "fintechs": 2
+   },
+   {
+    "uf": "PA",
+    "regiao": "Norte",
+    "n": 12,
+    "bancos": 2,
+    "cooperativas": 6,
+    "ips": 0,
+    "fintechs": 1
+   },
+   {
+    "uf": "RN",
+    "regiao": "Nordeste",
+    "n": 6,
+    "bancos": 0,
+    "cooperativas": 2,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "AL",
+    "regiao": "Nordeste",
+    "n": 6,
+    "bancos": 0,
+    "cooperativas": 4,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "SE",
+    "regiao": "Nordeste",
+    "n": 5,
+    "bancos": 1,
+    "cooperativas": 1,
+    "ips": 1,
+    "fintechs": 1
+   },
+   {
+    "uf": "PI",
+    "regiao": "Nordeste",
+    "n": 5,
+    "bancos": 0,
+    "cooperativas": 1,
+    "ips": 1,
+    "fintechs": 1
+   },
+   {
+    "uf": "MA",
+    "regiao": "Nordeste",
+    "n": 5,
+    "bancos": 0,
+    "cooperativas": 5,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "AM",
+    "regiao": "Norte",
+    "n": 5,
+    "bancos": 0,
+    "cooperativas": 1,
+    "ips": 1,
+    "fintechs": 1
+   },
+   {
+    "uf": "TO",
+    "regiao": "Norte",
+    "n": 2,
+    "bancos": 0,
+    "cooperativas": 1,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "AC",
+    "regiao": "Norte",
+    "n": 2,
+    "bancos": 0,
+    "cooperativas": 2,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "RR",
+    "regiao": "Norte",
+    "n": 1,
+    "bancos": 0,
+    "cooperativas": 0,
+    "ips": 0,
+    "fintechs": 0
+   },
+   {
+    "uf": "AP",
+    "regiao": "Norte",
+    "n": 1,
+    "bancos": 0,
+    "cooperativas": 0,
+    "ips": 0,
+    "fintechs": 0
+   }
+  ],
+  "regioes": [
+   {
+    "regiao": "Sudeste",
+    "n": 1082,
+    "cooperativas": 365,
+    "bancos": 138,
+    "share": 62.08
+   },
+   {
+    "regiao": "Sul",
+    "n": 425,
+    "cooperativas": 243,
+    "bancos": 18,
+    "share": 24.38
+   },
+   {
+    "regiao": "Centro-Oeste",
+    "n": 104,
+    "cooperativas": 69,
+    "bancos": 4,
+    "share": 5.97
+   },
+   {
+    "regiao": "Nordeste",
+    "n": 93,
+    "cooperativas": 50,
+    "bancos": 4,
+    "share": 5.34
+   },
+   {
+    "regiao": "Norte",
+    "n": 39,
+    "cooperativas": 25,
+    "bancos": 2,
+    "share": 2.24
+   }
+  ],
+  "cooperativas": {
+   "n": 752,
+   "por_sistema": [
+    {
+     "sistema": "Sicoob",
+     "n": 328,
+     "share": 43.62
+    },
+    {
+     "sistema": "Independente ou outra central",
+     "n": 212,
+     "share": 28.19
+    },
+    {
+     "sistema": "Sicredi",
+     "n": 104,
+     "share": 13.83
+    },
+    {
+     "sistema": "Cresol",
+     "n": 59,
+     "share": 7.85
+    },
+    {
+     "sistema": "Unicred",
+     "n": 25,
+     "share": 3.32
+    },
+    {
+     "sistema": "CrediSIS",
+     "n": 14,
+     "share": 1.86
+    },
+    {
+     "sistema": "Uniprime",
+     "n": 9,
+     "share": 1.2
+    },
+    {
+     "sistema": "Ailos",
+     "n": 1,
+     "share": 0.13
+    }
+   ],
+   "por_associacao": [
+    {
+     "criterio": "Livre Admissão",
+     "n": 407,
+     "share": 54.12
+    },
+    {
+     "criterio": "Empregados ou Servidores",
+     "n": 226,
+     "share": 30.05
+    },
+    {
+     "criterio": "Atividade Profissional",
+     "n": 37,
+     "share": 4.92
+    },
+    {
+     "criterio": "não informado",
+     "n": 32,
+     "share": 4.26
+    },
+    {
+     "criterio": "Produtor Rural",
+     "n": 19,
+     "share": 2.53
+    },
+    {
+     "criterio": "Critérios de Associação Mistos Outros",
+     "n": 11,
+     "share": 1.46
+    },
+    {
+     "criterio": "Critérios de Associação Mistos Empresários",
+     "n": 9,
+     "share": 1.2
+    },
+    {
+     "criterio": "Empresários",
+     "n": 8,
+     "share": 1.06
+    },
+    {
+     "criterio": "Natureza Associativa ou Cadeia de Negócios",
+     "n": 3,
+     "share": 0.4
+    }
+   ],
+   "por_categoria": [
+    {
+     "categoria": "Clássica",
+     "n": 506,
+     "share": 67.29
+    },
+    {
+     "categoria": "Capital e Empréstimo",
+     "n": 144,
+     "share": 19.15
+    },
+    {
+     "categoria": "Plena",
+     "n": 70,
+     "share": 9.31
+    },
+    {
+     "categoria": "Não Informada",
+     "n": 27,
+     "share": 3.59
+    },
+    {
+     "categoria": "não informada",
+     "n": 5,
+     "share": 0.66
+    }
+   ]
+  },
+  "bancos": {
+   "n": 166,
+   "com_carteira_comercial": 113,
+   "sem_carteira_comercial": 38
+  },
+  "historico_proprio": {
+   "desde": "2026-09-05",
+   "entradas": [],
+   "saidas": [],
+   "conversoes": [],
+   "contagem": [
+    {
+     "data": "2026-09-05",
+     "Bancos": 166,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 752,
+     "Financeiras e crédito especializado": 125,
+     "Fintechs de crédito": 148,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 194,
+     "Mercado de capitais e câmbio": 208
+    }
+   ]
+  },
+  "nota": "Posição do dia no cadastro do BCB: bancos, cooperativas, sociedades (SCD, SEP, SCFI, IPs, corretoras, DTVM, agências de fomento, hipotecárias, SAM) e administradoras de consórcio. Sem data de início: a série de entradas e saídas é construída pelo Observatório a partir da primeira coleta."
+ },
+ "ifdata": {
+  "disponivel": true,
+  "trimestres": 45,
+  "primeiro": "201503",
+  "ultimo": "202603",
+  "ultimo_fechado": "202512",
+  "kpis": {
+   "reportantes": 1430,
+   "entradas_4t": 92,
+   "saidas_4t": 77,
+   "provisorio_entradas": 29,
+   "provisorio_saidas": 37
+  },
+  "serie": [
+   {
+    "anomes": "201503",
+    "n": 1551,
+    "entradas": null,
+    "saidas": null,
+    "por_tcb": {
+     "B3S": 1091,
+     "N2": 170,
+     "N1": 109,
+     "B1": 105,
+     "B3C": 37,
+     "B2": 35,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201506",
+    "n": 1527,
+    "entradas": 3,
+    "saidas": 27,
+    "por_tcb": {
+     "B3S": 1070,
+     "N2": 170,
+     "N1": 106,
+     "B1": 105,
+     "B3C": 37,
+     "B2": 35,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201509",
+    "n": 1510,
+    "entradas": 1,
+    "saidas": 18,
+    "por_tcb": {
+     "B3S": 1064,
+     "N2": 160,
+     "N1": 106,
+     "B1": 105,
+     "B3C": 37,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201512",
+    "n": 1500,
+    "entradas": 11,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 1057,
+     "N2": 159,
+     "N1": 106,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201603",
+    "n": 1489,
+    "entradas": 2,
+    "saidas": 13,
+    "por_tcb": {
+     "B3S": 1050,
+     "N2": 156,
+     "N1": 105,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201606",
+    "n": 1478,
+    "entradas": 3,
+    "saidas": 14,
+    "por_tcb": {
+     "B3S": 1043,
+     "N2": 152,
+     "N1": 104,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201609",
+    "n": 1466,
+    "entradas": 5,
+    "saidas": 17,
+    "por_tcb": {
+     "B3S": 1034,
+     "N2": 150,
+     "N1": 103,
+     "B1": 105,
+     "B3C": 37,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201612",
+    "n": 1445,
+    "entradas": 3,
+    "saidas": 24,
+    "por_tcb": {
+     "B3S": 1014,
+     "N2": 149,
+     "N1": 103,
+     "B1": 105,
+     "B3C": 37,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201703",
+    "n": 1432,
+    "entradas": 4,
+    "saidas": 17,
+    "por_tcb": {
+     "B3S": 1000,
+     "N2": 151,
+     "N1": 102,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201706",
+    "n": 1411,
+    "entradas": 5,
+    "saidas": 26,
+    "por_tcb": {
+     "B3S": 984,
+     "N2": 148,
+     "N1": 101,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201709",
+    "n": 1395,
+    "entradas": 7,
+    "saidas": 23,
+    "por_tcb": {
+     "B3S": 971,
+     "N2": 144,
+     "N1": 102,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201712",
+    "n": 1399,
+    "entradas": 25,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 967,
+     "N2": 144,
+     "N1": 103,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 34,
+     "N4": 6,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201803",
+    "n": 1396,
+    "entradas": 4,
+    "saidas": 7,
+    "por_tcb": {
+     "B3S": 964,
+     "N2": 143,
+     "N1": 103,
+     "B1": 104,
+     "B3C": 37,
+     "B2": 35,
+     "N4": 6,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201806",
+    "n": 1382,
+    "entradas": 1,
+    "saidas": 15,
+    "por_tcb": {
+     "B3S": 952,
+     "N2": 143,
+     "N1": 102,
+     "B1": 102,
+     "B3C": 37,
+     "B2": 35,
+     "N4": 7,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201809",
+    "n": 1363,
+    "entradas": 2,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 933,
+     "N2": 143,
+     "N1": 101,
+     "B1": 102,
+     "B3C": 37,
+     "B2": 35,
+     "N4": 8,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201812",
+    "n": 1352,
+    "entradas": 4,
+    "saidas": 15,
+    "por_tcb": {
+     "B3S": 921,
+     "N2": 141,
+     "N1": 102,
+     "B1": 102,
+     "B3C": 37,
+     "B2": 35,
+     "N4": 10,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201903",
+    "n": 1339,
+    "entradas": 7,
+    "saidas": 20,
+    "por_tcb": {
+     "B3S": 908,
+     "N2": 137,
+     "N1": 104,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 35,
+     "N4": 11,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201906",
+    "n": 1327,
+    "entradas": 6,
+    "saidas": 18,
+    "por_tcb": {
+     "B3S": 893,
+     "N2": 135,
+     "N1": 106,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 36,
+     "N4": 13,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201909",
+    "n": 1319,
+    "entradas": 9,
+    "saidas": 17,
+    "por_tcb": {
+     "B3S": 883,
+     "N2": 130,
+     "N1": 107,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 36,
+     "N4": 18,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "201912",
+    "n": 1304,
+    "entradas": 6,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 872,
+     "N2": 127,
+     "N1": 108,
+     "B1": 103,
+     "B3C": 36,
+     "B2": 35,
+     "N4": 18,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202003",
+    "n": 1300,
+    "entradas": 9,
+    "saidas": 13,
+    "por_tcb": {
+     "B3S": 862,
+     "N2": 128,
+     "N1": 109,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 35,
+     "N4": 20,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202006",
+    "n": 1300,
+    "entradas": 6,
+    "saidas": 6,
+    "por_tcb": {
+     "B3S": 857,
+     "N2": 127,
+     "N1": 113,
+     "B1": 104,
+     "B3C": 36,
+     "B2": 35,
+     "N4": 22,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202009",
+    "n": 1307,
+    "entradas": 18,
+    "saidas": 11,
+    "por_tcb": {
+     "B3S": 851,
+     "N2": 129,
+     "N1": 123,
+     "B1": 102,
+     "B3C": 36,
+     "B2": 36,
+     "N4": 24,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202012",
+    "n": 1305,
+    "entradas": 18,
+    "saidas": 20,
+    "por_tcb": {
+     "B3S": 841,
+     "N2": 128,
+     "N1": 131,
+     "B1": 102,
+     "B3C": 36,
+     "B2": 35,
+     "N4": 26,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202103",
+    "n": 1302,
+    "entradas": 18,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 834,
+     "N2": 126,
+     "N1": 134,
+     "B1": 102,
+     "B3C": 36,
+     "N4": 28,
+     "B2": 36,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202106",
+    "n": 1305,
+    "entradas": 19,
+    "saidas": 16,
+    "por_tcb": {
+     "B3S": 828,
+     "N2": 127,
+     "N1": 141,
+     "B1": 100,
+     "B3C": 36,
+     "N4": 31,
+     "B2": 36,
+     "?": 2,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202109",
+    "n": 1303,
+    "entradas": 17,
+    "saidas": 19,
+    "por_tcb": {
+     "B3S": 821,
+     "N2": 126,
+     "N1": 145,
+     "B1": 102,
+     "B3C": 35,
+     "N4": 33,
+     "B2": 36,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202112",
+    "n": 1319,
+    "entradas": 30,
+    "saidas": 14,
+    "por_tcb": {
+     "B3S": 817,
+     "N2": 131,
+     "N1": 158,
+     "B1": 101,
+     "B3C": 35,
+     "N4": 37,
+     "B2": 35,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202203",
+    "n": 1329,
+    "entradas": 17,
+    "saidas": 7,
+    "por_tcb": {
+     "B3S": 815,
+     "N1": 163,
+     "N2": 129,
+     "N4": 44,
+     "B1": 103,
+     "B3C": 35,
+     "B2": 35,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202206",
+    "n": 1328,
+    "entradas": 12,
+    "saidas": 13,
+    "por_tcb": {
+     "B3S": 812,
+     "N1": 165,
+     "N2": 128,
+     "N4": 47,
+     "B1": 102,
+     "B3C": 35,
+     "B2": 34,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202209",
+    "n": 1331,
+    "entradas": 19,
+    "saidas": 16,
+    "por_tcb": {
+     "B3S": 803,
+     "N1": 170,
+     "N2": 129,
+     "N4": 55,
+     "B1": 101,
+     "B3C": 35,
+     "B2": 33,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202212",
+    "n": 1353,
+    "entradas": 43,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 796,
+     "N1": 184,
+     "N2": 128,
+     "N4": 72,
+     "B1": 102,
+     "B2": 33,
+     "B3C": 33,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202303",
+    "n": 1361,
+    "entradas": 23,
+    "saidas": 15,
+    "por_tcb": {
+     "B3S": 788,
+     "N1": 190,
+     "N2": 129,
+     "N4": 83,
+     "B1": 101,
+     "B2": 33,
+     "B3C": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202306",
+    "n": 1367,
+    "entradas": 16,
+    "saidas": 10,
+    "por_tcb": {
+     "B3S": 784,
+     "N1": 195,
+     "N2": 130,
+     "N4": 87,
+     "B1": 101,
+     "B2": 33,
+     "B3C": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202309",
+    "n": 1379,
+    "entradas": 23,
+    "saidas": 11,
+    "por_tcb": {
+     "B3S": 777,
+     "N1": 202,
+     "N2": 134,
+     "N4": 96,
+     "B1": 100,
+     "B2": 33,
+     "B3C": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202312",
+    "n": 1382,
+    "entradas": 20,
+    "saidas": 17,
+    "por_tcb": {
+     "B3S": 768,
+     "N1": 212,
+     "N2": 131,
+     "N4": 103,
+     "B1": 98,
+     "B2": 33,
+     "B3C": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202403",
+    "n": 1395,
+    "entradas": 17,
+    "saidas": 4,
+    "por_tcb": {
+     "B3S": 767,
+     "N1": 214,
+     "N2": 131,
+     "N4": 114,
+     "B1": 99,
+     "B2": 33,
+     "B3C": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202406",
+    "n": 1396,
+    "entradas": 20,
+    "saidas": 19,
+    "por_tcb": {
+     "B3S": 760,
+     "N1": 218,
+     "N2": 128,
+     "N4": 125,
+     "B1": 96,
+     "B2": 33,
+     "B3C": 31,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202409",
+    "n": 1412,
+    "entradas": 25,
+    "saidas": 9,
+    "por_tcb": {
+     "B3S": 757,
+     "N1": 223,
+     "N2": 130,
+     "N4": 139,
+     "B1": 96,
+     "B3C": 30,
+     "B2": 32,
+     "?": 1,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202412",
+    "n": 1415,
+    "entradas": 24,
+    "saidas": 21,
+    "por_tcb": {
+     "B3S": 753,
+     "N1": 224,
+     "N2": 134,
+     "N4": 144,
+     "B1": 97,
+     "B3C": 27,
+     "B2": 32,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202503",
+    "n": 1416,
+    "entradas": 19,
+    "saidas": 18,
+    "por_tcb": {
+     "B3S": 752,
+     "N1": 222,
+     "N2": 129,
+     "N4": 152,
+     "B1": 96,
+     "B3C": 29,
+     "B2": 32,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202506",
+    "n": 1418,
+    "entradas": 12,
+    "saidas": 10,
+    "por_tcb": {
+     "B3S": 748,
+     "N1": 224,
+     "N2": 129,
+     "N4": 157,
+     "B1": 96,
+     "B3C": 29,
+     "B2": 31,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202509",
+    "n": 1424,
+    "entradas": 13,
+    "saidas": 7,
+    "por_tcb": {
+     "B3S": 747,
+     "N1": 227,
+     "N2": 128,
+     "N4": 161,
+     "B1": 95,
+     "B3C": 29,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202512",
+    "n": 1430,
+    "entradas": 48,
+    "saidas": 42,
+    "por_tcb": {
+     "B3S": 734,
+     "N1": 232,
+     "N2": 125,
+     "N4": 181,
+     "B1": 92,
+     "B3C": 29,
+     "B2": 33,
+     "B4": 4
+    },
+    "provisorio": false
+   },
+   {
+    "anomes": "202603",
+    "n": 1422,
+    "entradas": 29,
+    "saidas": 37,
+    "por_tcb": {
+     "B3S": 719,
+     "N1": 236,
+     "N2": 125,
+     "N4": 182,
+     "B1": 93,
+     "B3C": 29,
+     "B2": 34,
+     "B4": 4
+    },
+    "provisorio": true
+   }
+  ],
+  "por_tcb": [
+   {
+    "tcb": "B3S",
+    "nome": "Cooperativa singular",
+    "n": 734,
+    "share": 51.33
+   },
+   {
+    "tcb": "N1",
+    "nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "n": 232,
+    "share": 16.22
+   },
+   {
+    "tcb": "N4",
+    "nome": "Instituição de pagamento",
+    "n": 181,
+    "share": 12.66
+   },
+   {
+    "tcb": "N2",
+    "nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "n": 125,
+    "share": 8.74
+   },
+   {
+    "tcb": "B1",
+    "nome": "Banco comercial ou múltiplo com carteira comercial",
+    "n": 92,
+    "share": 6.43
+   },
+   {
+    "tcb": "B2",
+    "nome": "Banco múltiplo sem carteira comercial ou de investimento",
+    "n": 33,
+    "share": 2.31
+   },
+   {
+    "tcb": "B3C",
+    "nome": "Cooperativa central ou confederação",
+    "n": 29,
+    "share": 2.03
+   },
+   {
+    "tcb": "B4",
+    "nome": "Banco de desenvolvimento",
+    "n": 4,
+    "share": 0.28
+   }
+  ],
+  "var_4t_por_tcb": {
+   "B3S": -18,
+   "N1": 10,
+   "N2": -4,
+   "N4": 29,
+   "B1": -4,
+   "B3C": 0,
+   "B2": 1,
+   "B4": 0
+  },
+  "entradas": [
+   {
+    "cod": "04088208",
+    "nome": "SEM PARAR INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 10613337759.11,
+    "provisorio": false
+   },
+   {
+    "cod": "C0083704",
+    "nome": "FACTA S.A. CFI - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 9441227086.46,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052302",
+    "nome": "ABN AMRO",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 3366665458.89,
+    "provisorio": false
+   },
+   {
+    "cod": "04836002",
+    "nome": "LEASEPLAN ARRENDAMENTO MERCANTIL S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 1765310183.47,
+    "provisorio": false
+   },
+   {
+    "cod": "45879000",
+    "nome": "SEM PARAR SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 1134068593.55,
+    "provisorio": false
+   },
+   {
+    "cod": "C0051767",
+    "nome": "WESTERN UNION",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 256456265.6,
+    "provisorio": false
+   },
+   {
+    "cod": "52046299",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO ATACADÃO",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 184487937.71,
+    "provisorio": false
+   },
+   {
+    "cod": "26225776",
+    "nome": "CENTROCRED S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTOS",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 106220801.36,
+    "provisorio": false
+   },
+   {
+    "cod": "60935819",
+    "nome": "BANCO SANY BRASIL S.A.",
+    "tcb": "B2",
+    "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 100896762.8,
+    "provisorio": false
+   },
+   {
+    "cod": "C0086275",
+    "nome": "SHPP BRASIL IP - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 61108032.86,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052089",
+    "nome": "CODEPE",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 57177485.36,
+    "provisorio": false
+   },
+   {
+    "cod": "62448932",
+    "nome": "MULTIPLIKE FINANCEIRA S.A. SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SC",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 43795817.88,
+    "provisorio": false
+   },
+   {
+    "cod": "21332862",
+    "nome": "CARTOS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 41996454.88,
+    "provisorio": false
+   },
+   {
+    "cod": "33444505",
+    "nome": "MR S.A INSTITUICAO DE PAGAMENTO",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 28243030.84,
+    "provisorio": false
+   },
+   {
+    "cod": "16683062",
+    "nome": "MERCANTIL DO BRASIL CORRETORA S.A. - CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "MG",
+    "sr": "S3",
+    "anomes": "202603",
+    "ativo": 20198367.66,
+    "provisorio": false
+   },
+   {
+    "cod": "60717928",
+    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 19061217.59,
+    "provisorio": false
+   },
+   {
+    "cod": "49686505",
+    "nome": "WASU - WALLET SUPPORT INSTITUIÇÃO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 17856086.27,
+    "provisorio": false
+   },
+   {
+    "cod": "17826860",
+    "nome": "BMS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "CE",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 9689703.26,
+    "provisorio": false
+   },
+   {
+    "cod": "60236532",
+    "nome": "BM4 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RJ",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 5997803.13,
+    "provisorio": false
+   },
+   {
+    "cod": "57824223",
+    "nome": "WX INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 5258117.66,
+    "provisorio": false
+   },
+   {
+    "cod": "52076716",
+    "nome": "AWX BRASIL  INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 4740448.37,
+    "provisorio": false
+   },
+   {
+    "cod": "00548980",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO SUGGAR LTDA.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 3694000.3,
+    "provisorio": false
+   },
+   {
+    "cod": "57707777",
+    "nome": "GURU CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 3606336.2,
+    "provisorio": false
+   },
+   {
+    "cod": "42926025",
+    "nome": "FRIDAY INSTITUIÇÃO DE PAGAMENTOS LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "RJ",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 3223486.81,
+    "provisorio": false
+   },
+   {
+    "cod": "77162881",
+    "nome": "DEBONI DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "PR",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 2279564.92,
+    "provisorio": false
+   },
+   {
+    "cod": "73279093",
+    "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SC",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 1916279.57,
+    "provisorio": false
+   },
+   {
+    "cod": "59394633",
+    "nome": "SRM DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 1819276.36,
+    "provisorio": false
+   },
+   {
+    "cod": "43010260",
+    "nome": "OMIE INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 1440767.25,
+    "provisorio": false
+   },
+   {
+    "cod": "59855096",
+    "nome": "EURO17 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 845382.2,
+    "provisorio": false
+   },
+   {
+    "cod": "C0084820",
+    "nome": "MERCADO PAGO IP - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 18648812448.73,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052395",
+    "nome": "QI",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 5364124338.6,
+    "provisorio": false
+   },
+   {
+    "cod": "C0085520",
+    "nome": "OXY CH - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 398935575.87,
+    "provisorio": false
+   },
+   {
+    "cod": "07314204",
+    "nome": "VOX INSTITUICAO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 235763267.33,
+    "provisorio": false
+   },
+   {
+    "cod": "47381104",
+    "nome": "CONTAAZUL INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 232009269.22,
+    "provisorio": false
+   },
+   {
+    "cod": "61021673",
+    "nome": "MAGALUPAY - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 222683640.27,
+    "provisorio": false
+   },
+   {
+    "cod": "39696395",
+    "nome": "CACTVS INSTITUICAO DE PAGAMENTO S.A",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 169443730.56,
+    "provisorio": false
+   },
+   {
+    "cod": "01648418",
+    "nome": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 89141763.98,
+    "provisorio": false
+   },
+   {
+    "cod": "59379565",
+    "nome": "99PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 77441555.62,
+    "provisorio": false
+   },
+   {
+    "cod": "35542555",
+    "nome": "UNLIMIT BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 57159985.52,
+    "provisorio": false
+   },
+   {
+    "cod": "05607266",
+    "nome": "FINNET S/A - TECNOLOGIA E INSTITUICAO DE PAGAMENTO",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 55724746.9,
+    "provisorio": false
+   },
+   {
+    "cod": "54811417",
+    "nome": "WOOVI INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 41287289.3,
+    "provisorio": false
+   },
+   {
+    "cod": "53822116",
+    "nome": "MW INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 37644234.96,
+    "provisorio": false
+   },
+   {
+    "cod": "44663846",
+    "nome": "FEATBANK INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 33867780.14,
+    "provisorio": false
+   },
+   {
+    "cod": "37663090",
+    "nome": "LINA INSTITUICAO DE PAGAMENTO S.A",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 29021267.61,
+    "provisorio": false
+   },
+   {
+    "cod": "50871921",
+    "nome": "MT INSTITUICAO DE PAGAMENTO SA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 19921407.39,
+    "provisorio": false
+   },
+   {
+    "cod": "C0085874",
+    "nome": "MÉRITO DTVM - PRUDENCIAL",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 13905088.29,
+    "provisorio": false
+   },
+   {
+    "cod": "37374538",
+    "nome": "SWILE INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 13727245.27,
+    "provisorio": false
+   },
+   {
+    "cod": "32982245",
+    "nome": "PAYFACE INSTITUICAO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 12801715.75,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052656",
+    "nome": "BARU",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 10182990.57,
+    "provisorio": false
+   },
+   {
+    "cod": "37168145",
+    "nome": "APROMS NET INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MS",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 8847486.77,
+    "provisorio": false
+   },
+   {
+    "cod": "45548763",
+    "nome": "INSTITUIÇÃO DE PAGAMENTOS MAPS LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 6971904.98,
+    "provisorio": false
+   },
+   {
+    "cod": "52833288",
+    "nome": "LB BANK INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 6952283.88,
+    "provisorio": false
+   },
+   {
+    "cod": "54024532",
+    "nome": "APPMAX INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "RS",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 6454353.19,
+    "provisorio": false
+   },
+   {
+    "cod": "53908413",
+    "nome": "KIWIFY INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SC",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 6240321.51,
+    "provisorio": false
+   },
+   {
+    "cod": "08323197",
+    "nome": "IUPI INSTITUICAO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 5382671.1,
+    "provisorio": false
+   },
+   {
+    "cod": "57654096",
+    "nome": "APUSDIGITAL INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 5109891.69,
+    "provisorio": false
+   },
+   {
+    "cod": "49889190",
+    "nome": "PALMA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 4448493.07,
+    "provisorio": false
+   },
+   {
+    "cod": "46297307",
+    "nome": "MUEVY INSTITUICAO DE PAGAMENTO SA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 3876915.66,
+    "provisorio": false
+   },
+   {
+    "cod": "46004634",
+    "nome": "TBANKS INSTITUICAO DE PAGAMENTO SA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 3823241.79,
+    "provisorio": false
+   },
+   {
+    "cod": "C0084985",
+    "nome": "BULLLA IP - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 3741581.72,
+    "provisorio": false
+   },
+   {
+    "cod": "62469998",
+    "nome": "TINO SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 3726501.98,
+    "provisorio": false
+   },
+   {
+    "cod": "57905133",
+    "nome": "PERSONAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SC",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 3612434.64,
+    "provisorio": false
+   },
+   {
+    "cod": "58367961",
+    "nome": "BIT SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 3506851.21,
+    "provisorio": false
+   },
+   {
+    "cod": "48552108",
+    "nome": "LIQUIDO INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 3212482.5,
+    "provisorio": false
+   },
+   {
+    "cod": "56047774",
+    "nome": "NAGRO SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 3075890.11,
+    "provisorio": false
+   },
+   {
+    "cod": "62451088",
+    "nome": "CONLIFE SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 2759594.36,
+    "provisorio": false
+   },
+   {
+    "cod": "58526733",
+    "nome": "DIVI SOCIEDADE DE CREDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 2077401.78,
+    "provisorio": false
+   },
+   {
+    "cod": "55251092",
+    "nome": "PAGBRASIL INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "RS",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 2070144.24,
+    "provisorio": false
+   },
+   {
+    "cod": "62198637",
+    "nome": "FIRST SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RJ",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1797552.76,
+    "provisorio": false
+   },
+   {
+    "cod": "51982600",
+    "nome": "DELEND INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 1628420.98,
+    "provisorio": false
+   },
+   {
+    "cod": "63822040",
+    "nome": "GUARDIAN SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1588599.27,
+    "provisorio": false
+   },
+   {
+    "cod": "37943755",
+    "nome": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 1531040.81,
+    "provisorio": false
+   },
+   {
+    "cod": "51982465",
+    "nome": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 1333484.81,
+    "provisorio": false
+   },
+   {
+    "cod": "45341994",
+    "nome": "CREDIMÓVEL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "GO",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1122561.87,
+    "provisorio": false
+   },
+   {
+    "cod": "55841657",
+    "nome": "ÓPERA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SC",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1067430.52,
+    "provisorio": false
+   },
+   {
+    "cod": "58674454",
+    "nome": "PB SOCIEDADE DE CREDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 991669.35,
+    "provisorio": false
+   },
+   {
+    "cod": "32820711",
+    "nome": "EFEX INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 559140.45,
+    "provisorio": false
+   },
+   {
+    "cod": "59109165",
+    "nome": "BANCO VOLKSWAGEN S.A.",
+    "tcb": "B2",
+    "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
+    "uf": "SP",
+    "sr": "S3",
+    "anomes": "202509",
+    "ativo": 57305530354.34,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052285",
+    "nome": "NEON",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202509",
+    "ativo": 6436733617.18,
+    "provisorio": false
+   },
+   {
+    "cod": "52067630",
+    "nome": "BANCO VOLKSWAGEN TRUCK & BUS S.A.",
+    "tcb": "B2",
+    "tcb_nome": "Banco múltiplo sem carteira comercial ou de investimento",
+    "uf": "SP",
+    "sr": "S3",
+    "anomes": "202509",
+    "ativo": 4116346978.42,
+    "provisorio": false
+   }
+  ],
+  "saidas": [
+   {
+    "cod": "03130170",
+    "nome": "BRASIL CARD INSTITUIÇÃO DE PAGAMENTOS LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 2166804427.63,
+    "provisorio": true
+   },
+   {
+    "cod": "00517645",
+    "nome": "BANCO RIBEIRAO PRETO S.A.",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 2018732072.9,
+    "provisorio": true
+   },
+   {
+    "cod": "17887874",
+    "nome": "ENTREPAY INSTITUICAO DE PAGAMENTO S.A",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 1510087868.25,
+    "provisorio": true
+   },
+   {
+    "cod": "C0084514",
+    "nome": "TERRA INVESTIMENTOS DTVM - PRUDENCIAL",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 792391272.14,
+    "provisorio": true
+   },
+   {
+    "cod": "11271860",
+    "nome": "LEBES FINANCEIRA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 696028166.83,
+    "provisorio": true
+   },
+   {
+    "cod": "61384004",
+    "nome": "AVENUE SECURITIES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 313111791.51,
+    "provisorio": true
+   },
+   {
+    "cod": "78157146",
+    "nome": "CREDIALIANÇA COOPERATIVA DE CRÉDITO RURAL",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "PR",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 241302525.52,
+    "provisorio": true
+   },
+   {
+    "cod": "53236808",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DE LIVRE ADMISSÃO DE ARARAQUARA E REGIÃO - SICOOB",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 216313704.67,
+    "provisorio": true
+   },
+   {
+    "cod": "00204963",
+    "nome": "COOPERATIVA DE CREDITO RURAL SEARA - CREDISEARA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SC",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 190201328.38,
+    "provisorio": true
+   },
+   {
+    "cod": "34829992",
+    "nome": "REAG TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 117793866.02,
+    "provisorio": true
+   },
+   {
+    "cod": "33171211",
+    "nome": "ACQIO ADQUIRENCIA INSTITUICAO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 114229798.99,
+    "provisorio": true
+   },
+   {
+    "cod": "05956581",
+    "nome": "ATRIA S.A.- CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "PR",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 94507417.94,
+    "provisorio": true
+   },
+   {
+    "cod": "03139644",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DO ESTADO DE SÃO PAULO - CREDIPAULISTA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 73624202.39,
+    "provisorio": true
+   },
+   {
+    "cod": "36266751",
+    "nome": "FINVEST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 56025597.59,
+    "provisorio": true
+   },
+   {
+    "cod": "71677850",
+    "nome": "FRENTE CORRETORA DE CÂMBIO S.A.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 54849403.79,
+    "provisorio": true
+   },
+   {
+    "cod": "53841911",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO UNINDÚSTRIA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SC",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 54380549.12,
+    "provisorio": true
+   },
+   {
+    "cod": "48751854",
+    "nome": "MONEE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202603",
+    "ativo": 44882917.16,
+    "provisorio": true
+   },
+   {
+    "cod": "44663846",
+    "nome": "FEATBANK INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 33867780.14,
+    "provisorio": true
+   },
+   {
+    "cod": "39416705",
+    "nome": "CREDIHOME SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 29577132.27,
+    "provisorio": true
+   },
+   {
+    "cod": "48430050",
+    "nome": "DANK SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SC",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 27517139.03,
+    "provisorio": true
+   },
+   {
+    "cod": "92825397",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS ELETRICITÁRIOS E DOS TRABALHADORES DAS EMPRESAS DO SETOR DE ENERGIA - COOPCRECE",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 18066531.06,
+    "provisorio": true
+   },
+   {
+    "cod": "27302181",
+    "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES DA UNIVERSIDADE FEDERAL DO ESPIRITO SANTO",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "ES",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 17296573.3,
+    "provisorio": true
+   },
+   {
+    "cod": "03844699",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS TRABALHADORES PORTUARIOS DA GRANDE VITORIA - CREDESTIVA.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "ES",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 15608569.45,
+    "provisorio": true
+   },
+   {
+    "cod": "20833992",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO CENTRO UNIVERSITÁRIO NEWTON PAIVA LTDA. - CREDIPAIVA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 15249665.11,
+    "provisorio": true
+   },
+   {
+    "cod": "05491616",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E SERVIÇOS FINANCEIROS",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "GO",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 14251831.91,
+    "provisorio": true
+   },
+   {
+    "cod": "35810871",
+    "nome": "Z1 INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 13883320.51,
+    "provisorio": true
+   },
+   {
+    "cod": "33735192",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO JOHN F. KENNEDY LTDA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "RJ",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 12323835.02,
+    "provisorio": true
+   },
+   {
+    "cod": "49555647",
+    "nome": "QUADRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 9494567.11,
+    "provisorio": true
+   },
+   {
+    "cod": "17411307",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS PLASCAR",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 5068173.61,
+    "provisorio": true
+   },
+   {
+    "cod": "58859402",
+    "nome": "FATURACRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "ES",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 4213126.0,
+    "provisorio": true
+   },
+   {
+    "cod": "04995006",
+    "nome": "COOPESTADO - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS NA REGIÃO METROPOLITANA DO ESTADO DO RIO DE JANEIRO LIMITADA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "RJ",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 3508374.23,
+    "provisorio": true
+   },
+   {
+    "cod": "09128022",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA NAKATA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 3187506.0,
+    "provisorio": true
+   },
+   {
+    "cod": "62198637",
+    "nome": "FIRST SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RJ",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 1797552.76,
+    "provisorio": true
+   },
+   {
+    "cod": "03685335",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA UNIFI - CREDIUNIFI",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 1319736.53,
+    "provisorio": true
+   },
+   {
+    "cod": "11356599",
+    "nome": "COOPERATIVA DE CRÉDITO DOS FUNCIONÁRIOS DA PERPART, DO IPA E DA ADAGRO - COOPEMATER",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "PE",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 1048430.47,
+    "provisorio": true
+   },
+   {
+    "cod": "42064545",
+    "nome": "QUANTO NETWORK INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202603",
+    "ativo": 983528.4,
+    "provisorio": true
+   },
+   {
+    "cod": "41146382",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ASSEMBLÉIA LEGISLATIVA DO ESTADO DA PARAÍBA LTDA. -  COOPERLEGIS",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "PB",
+    "sr": "S5",
+    "anomes": "202603",
+    "ativo": 674755.54,
+    "provisorio": true
+   },
+   {
+    "cod": "C0031976",
+    "nome": "BRB",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "DF",
+    "sr": "S3",
+    "anomes": "202512",
+    "ativo": 81653987621.78,
+    "provisorio": false
+   },
+   {
+    "cod": "C0083704",
+    "nome": "FACTA S.A. CFI - PRUDENCIAL",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 9911201159.62,
+    "provisorio": false
+   },
+   {
+    "cod": "04088208",
+    "nome": "SEM PARAR INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 9581774133.0,
+    "provisorio": false
+   },
+   {
+    "cod": "04740876",
+    "nome": "ALELO INSTITUICAO DE PAGAMENTO SA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 7795259576.2,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052302",
+    "nome": "ABN AMRO",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 2661491535.73,
+    "provisorio": false
+   },
+   {
+    "cod": "26408187",
+    "nome": "COOPERATIVA DE CRÉDITO POUPANÇA E INVESTIMENTO PANTANAL DO MATO GROSSO DO SUL - SICREDI PANTANAL MS",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MS",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 2246493527.27,
+    "provisorio": false
+   },
+   {
+    "cod": "25387671",
+    "nome": "COOPERATIVA DE CREDITO DO ALTO PARANAIBA E REGIÃO LTDA. - SICOOB CREDIPATOS",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1953957036.8,
+    "provisorio": false
+   },
+   {
+    "cod": "04836002",
+    "nome": "LEASEPLAN ARRENDAMENTO MERCANTIL S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 1800348616.51,
+    "provisorio": false
+   },
+   {
+    "cod": "02641032",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO UNICRED PONTO CAPITAL - UNICRED PONTO CAPITAL.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 983072587.67,
+    "provisorio": false
+   },
+   {
+    "cod": "08718431",
+    "nome": "WIRECARD BRAZIL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 788725277.38,
+    "provisorio": false
+   },
+   {
+    "cod": "45879000",
+    "nome": "SEM PARAR SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 604190023.79,
+    "provisorio": false
+   },
+   {
+    "cod": "57647653",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA REGIÃO DAS FLORES, DAS ÁGUAS E DOS VENTOS SP - SICREDI FORÇA DOS VENTOS SP",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 567344641.98,
+    "provisorio": false
+   },
+   {
+    "cod": "32778350",
+    "nome": "AME DIGITAL BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 553558488.64,
+    "provisorio": false
+   },
+   {
+    "cod": "05211129",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA CENTRO NORTE - CRESOL CENTRO NORTE",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 364996777.05,
+    "provisorio": false
+   },
+   {
+    "cod": "C0051767",
+    "nome": "WESTERN UNION",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 258944886.73,
+    "provisorio": false
+   },
+   {
+    "cod": "52046299",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO ATACADÃO",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 180440192.53,
+    "provisorio": false
+   },
+   {
+    "cod": "26225776",
+    "nome": "CENTROCRED S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTOS",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 107772396.23,
+    "provisorio": false
+   },
+   {
+    "cod": "21332862",
+    "nome": "CARTOS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 106418369.91,
+    "provisorio": false
+   },
+   {
+    "cod": "74220948",
+    "nome": "SICOOB UNISP - COOPERATIVA DE CRÉDITO",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 100060497.17,
+    "provisorio": false
+   },
+   {
+    "cod": "92856905",
+    "nome": "ADVANCED CORRETORA DE CÂMBIO LTDA",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 74472766.75,
+    "provisorio": false
+   },
+   {
+    "cod": "32997490",
+    "nome": "CREDITAS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 67125288.09,
+    "provisorio": false
+   },
+   {
+    "cod": "C0052089",
+    "nome": "CODEPE",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 54994124.32,
+    "provisorio": false
+   },
+   {
+    "cod": "26615279",
+    "nome": "TYCOON TECHNOLOGY INSTITUICAO DE PAGAMENTO S.A",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "PR",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 32370640.51,
+    "provisorio": false
+   },
+   {
+    "cod": "33444505",
+    "nome": "MR S.A INSTITUICAO DE PAGAMENTO",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 25702489.67,
+    "provisorio": false
+   },
+   {
+    "cod": "50626276",
+    "nome": "KONECT SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 13235788.94,
+    "provisorio": false
+   },
+   {
+    "cod": "17826860",
+    "nome": "BMS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "CE",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 10066515.17,
+    "provisorio": false
+   },
+   {
+    "cod": "42723848",
+    "nome": "BARU SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "RS",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 8313999.99,
+    "provisorio": false
+   },
+   {
+    "cod": "44019481",
+    "nome": "PEAK SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 7893119.03,
+    "provisorio": false
+   },
+   {
+    "cod": "05969937",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES MUNICIPAIS DE BEBEDOURO - COOCRESB.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 5778295.92,
+    "provisorio": false
+   },
+   {
+    "cod": "67031757",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PRODAM/SP - CREDIPRODAM",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 4486345.45,
+    "provisorio": false
+   },
+   {
+    "cod": "08482873",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DO AGRESTE ALAGOANO - COOPERAGRE",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "AL",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 4013755.26,
+    "provisorio": false
+   },
+   {
+    "cod": "41592532",
+    "nome": "MÉRITO DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 3752990.02,
+    "provisorio": false
+   },
+   {
+    "cod": "00548980",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO SUGGAR LTDA.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "MG",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 3631318.89,
+    "provisorio": false
+   },
+   {
+    "cod": "42926025",
+    "nome": "FRIDAY INSTITUIÇÃO DE PAGAMENTOS LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "RJ",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 3197242.54,
+    "provisorio": false
+   },
+   {
+    "cod": "40867163",
+    "nome": "N26 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 3112652.61,
+    "provisorio": false
+   },
+   {
+    "cod": "73279093",
+    "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "SC",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 2422498.17,
+    "provisorio": false
+   },
+   {
+    "cod": "75174953",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO VOTORANTIM LIMITADA.",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "PR",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1516653.83,
+    "provisorio": false
+   },
+   {
+    "cod": "43010260",
+    "nome": "OMIE INSTITUICAO DE PAGAMENTO LTDA.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "SP",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 1445806.18,
+    "provisorio": false
+   },
+   {
+    "cod": "04223451",
+    "nome": "CREDILON SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR DA REGIÃO DE LONDRINA LTDA.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "PR",
+    "sr": "S5",
+    "anomes": "202512",
+    "ativo": 1442202.28,
+    "provisorio": false
+   },
+   {
+    "cod": "77162881",
+    "nome": "DEBONI DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "tcb": "N2",
+    "tcb_nome": "Não bancário de mercado de capitais (corretoras, DTVM)",
+    "uf": "PR",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 1246314.54,
+    "provisorio": false
+   },
+   {
+    "cod": "34831910",
+    "nome": "BULLLA SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "tcb": "N1",
+    "tcb_nome": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202512",
+    "ativo": 1215525.43,
+    "provisorio": false
+   },
+   {
+    "cod": "62223733",
+    "nome": "COOPERATIVA DE CRÉDITO DE SERVIDORES DO PODER JUDICIÁRIO DO ESTADO DA BAHIA LTDA. - COOPEJUS BAHIA",
+    "tcb": "B3S",
+    "tcb_nome": "Cooperativa singular",
+    "uf": "BA",
+    "sr": null,
+    "anomes": "202512",
+    "ativo": 32000.0,
+    "provisorio": false
+   },
+   {
+    "cod": "C0050201",
+    "nome": "MASTER",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "RJ",
+    "sr": "S3",
+    "anomes": "202509",
+    "ativo": 86125053517.09,
+    "provisorio": false
+   }
+  ],
+  "conversoes": [],
+  "tcb": {
+   "B1": "Banco comercial ou múltiplo com carteira comercial",
+   "B2": "Banco múltiplo sem carteira comercial ou de investimento",
+   "B3S": "Cooperativa singular",
+   "B3C": "Cooperativa central ou confederação",
+   "B4": "Banco de desenvolvimento",
+   "N1": "Não bancário de crédito (SCFI, SCD, SAM, SCM...)",
+   "N2": "Não bancário de mercado de capitais (corretoras, DTVM)",
+   "N3": "Não bancário, outros",
+   "N4": "Instituição de pagamento"
+  },
+  "nota": "Quem entrega o resumo do IF.data em cada trimestre, por tipo de consolidado. Entrada = primeiro trimestre reportado no acervo; saída = deixou de reportar. O trimestre mais recente ainda recebe retardatários: as saídas nele são provisórias. Cobre o universo que reporta ao IF.data, não o cadastro inteiro."
+ },
+ "regimes": {
+  "disponivel": true,
+  "vigentes": 23,
+  "por_tipo": [
+   {
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "n": 23
+   }
+  ],
+  "decretados_12m": 21,
+  "recentes": [
+   {
+    "cnpj": "02671743000119",
+    "cnpj8": "02671743",
+    "nome": "BANVOX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "03/09/2026",
+    "inicio_iso": "2026-09-03",
+    "responsavel": "MARILENA SIMOES VALENTIM",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "67030395000146",
+    "cnpj8": "67030395",
+    "nome": "TRUSTEE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "03/09/2026",
+    "inicio_iso": "2026-09-03",
+    "responsavel": "MARILENA SIMOES VALENTIM",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "87945218000105",
+    "cnpj8": "87945218",
+    "nome": "SIMPALA LANÇADORA E ADMINISTRADORA DE CONSÓRCIOS LTDA.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "14/08/2026",
+    "inicio_iso": "2026-08-14",
+    "responsavel": "GSCH SERVICOS DE APOIO ADMINISTRATIVO LTDA",
+    "municipio": "Porto Alegre",
+    "uf": "RS"
+   },
+   {
+    "cnpj": "34991938000132",
+    "cnpj8": "34991938",
+    "nome": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "14/08/2026",
+    "inicio_iso": "2026-08-14",
+    "responsavel": "GSCH SERVICOS DE APOIO ADMINISTRATIVO LTDA",
+    "municipio": "Porto Alegre",
+    "uf": "RS"
+   },
+   {
+    "cnpj": "00329598000167",
+    "cnpj8": "00329598",
+    "nome": "SEFER INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "26/06/2026",
+    "inicio_iso": "2026-06-26",
+    "responsavel": "EDISON BENEDITO ALEXANDRE",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "71677850000177",
+    "cnpj8": "71677850",
+    "nome": "FRENTE SOCIEDADE CORRETORA DE CÂMBIO S.A.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "30/04/2026",
+    "inicio_iso": "2026-04-30",
+    "responsavel": "MARINA RAMOS",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "05491616000126",
+    "cnpj8": "05491616",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E SERVIÇOS FINANCEIROS",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "16/04/2026",
+    "inicio_iso": "2026-04-16",
+    "responsavel": "J&J CONSULTORIA EM GESTAO E CONTROLES LTDA",
+    "municipio": "Mineiros",
+    "uf": "GO"
+   },
+   {
+    "cnpj": "33171211000146",
+    "cnpj8": "33171211",
+    "nome": "ACQIO ADQUIRENCIA INSTITUICAO DE PAGAMENTO S.A.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "27/03/2026",
+    "inicio_iso": "2026-03-27",
+    "responsavel": "CASSIO HAIG VARTANIAN",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "17887874000105",
+    "cnpj8": "17887874",
+    "nome": "ENTREPAY INSTITUICAO DE PAGAMENTO S.A",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "27/03/2026",
+    "inicio_iso": "2026-03-27",
+    "responsavel": "CASSIO HAIG VARTANIAN",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "39416705000120",
+    "cnpj8": "39416705",
+    "nome": "OCTA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "27/03/2026",
+    "inicio_iso": "2026-03-27",
+    "responsavel": "CASSIO HAIG VARTANIAN",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "33884941000194",
+    "cnpj8": "33884941",
+    "nome": "BANCO MASTER MÚLTIPLO S.A.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "17/03/2026",
+    "inicio_iso": "2026-03-17",
+    "responsavel": "EFB REGIMES ESPECIAIS DE EMPRESAS LTDA",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   },
+   {
+    "cnpj": "48430050000135",
+    "cnpj8": "48430050",
+    "nome": "DANK SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "tipo": "LIQUIDAÇÃO EXTRAJUDICIAL",
+    "inicio": "11/03/2026",
+    "inicio_iso": "2026-03-11",
+    "responsavel": "FACCIO ADMINISTRACOES LTDA",
+    "municipio": "São Paulo",
+    "uf": "SP"
+   }
+  ],
+  "gerado_em": "2026-09-05T12:51:51+00:00"
+ },
+ "catalogo": [
+  {
+   "id": "sedes",
+   "nome": "Sedes em funcionamento",
+   "definicao": "instituições autorizadas pelo BCB com sede em funcionamento na data da coleta, por grupo e segmento",
+   "unidade": "instituições",
+   "fonte": "BCB/Unicad",
+   "limitacoes": "posição do dia; sem data de início; conglomerados não consolidados"
+  },
+  {
+   "id": "entradas_saidas_cadastro",
+   "nome": "Entradas e saídas no cadastro",
+   "definicao": "CNPJ que aparece (ou some) entre duas coletas do cadastro",
+   "unidade": "instituições",
+   "fonte": "calculado",
+   "limitacoes": "série nasce na primeira coleta do Observatório; uma relação fora do ar não vira saída (a coleta é descartada)"
+  },
+  {
+   "id": "reportantes",
+   "nome": "Reportantes do IF.data",
+   "definicao": "instituições e conglomerados com resumo publicado no trimestre, por tipo de consolidado",
+   "unidade": "instituições",
+   "fonte": "BCB/IF.data",
+   "limitacoes": "universo do IF.data (tipo de instituição 2); último trimestre recebe retardatários"
+  },
+  {
+   "id": "entradas_saidas_ifdata",
+   "nome": "Entradas e saídas no IF.data",
+   "definicao": "primeiro trimestre reportado (entrada) e trimestre seguinte ao último reportado (saída)",
+   "unidade": "instituições",
+   "fonte": "calculado",
+   "limitacoes": "saída pode ser fusão, incorporação, mudança de código ou cancelamento; o painel não distingue sem o ato do BCB"
+  }
+ ],
+ "cautelas": [
+  "Cadastro (posição do dia), reportantes do IF.data (trimestral) e regimes (lista vigente) são três réguas; não se somam.",
+  "Saída do IF.data não é falência: fusões, incorporações e trocas de código de conglomerado também tiram uma instituição da lista. A leitura nominal está na tabela para cada caso.",
+  "O trimestre mais recente do IF.data recebe retardatários por semanas; as saídas nele são provisórias e ficam marcadas.",
+  "O cadastro do Unicad não publica data de início: a história das entradas e saídas com nomes começa na primeira coleta do Observatório e cresce daí em diante.",
+  "Instituição de pagamento e fintech de crédito são segmentos regulatórios: uma mesma empresa pode ter mais de uma licença, cada uma com um CNPJ."
+ ],
+ "metodo": "Cadastro pelas quatro relações da API Olinda, espelhado a cada coleta com histórico próprio por CNPJ; IF.data pela presença de cada código no relatório resumo trimestral já coletado pelo pipeline; regimes pelo gold já publicado. Agregação em Python (stdlib), sem estimativa."
+}

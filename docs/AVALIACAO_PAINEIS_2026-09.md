@@ -431,3 +431,22 @@ e R$ 5,30 contra PTAX de R$ 5,15.
 em PDF; a própria avaliação (§6) exclui qualquer fonte que dependa de PDF sem o gate da
 Fase 2. A ótica do ofertante entra quando o BCB publicar a série estruturada.
 
+## 16. Painel nº 5: entrantes e saídas do SFN (05/09/2026, noite)
+
+**O que foi construído.** Coletor do cadastro de instituições em funcionamento (Unicad,
+quatro relações), com histórico próprio de entradas, saídas e conversões a partir da
+primeira coleta; builder que lê a presença trimestral no IF.data já coletado desde 2015
+para entradas, saídas e conversões nominais; aba
+`/observatorio/sfn-entries-exits` no grupo Instituições, em cinco seções (cadastro,
+IF.data, nome a nome, regimes, método).
+
+**Evidência** (BCB/Unicad, posição de 05/09/2026). 1.743 sedes autorizadas: 166 bancos,
+752 cooperativas de crédito, 194 instituições de pagamento, 148 fintechs de crédito (136
+SCD e 12 SEP), 130 administradoras de consórcio. IF.data (45 trimestres desde 2015-03):
+1.430 reportantes em 2025-12, 92 entradas e 77 saídas nos quatro trimestres fechados;
+cooperativas singulares são 51% dos reportantes.
+
+**O que ficou declarado.** O cadastro não tem data de início; a história com nomes
+nasce agora. Saída do IF.data não é quebra. As séries SGS de quantidade de sedes por
+segmento param em 2022 e ficaram de fora.
+

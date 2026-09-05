@@ -27,6 +27,7 @@ state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
 state.jud = { ramo: "civel", ordem: "bruto" };
+state.sfn = { lista: "entradas", uf: "todas" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -42,7 +43,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -221,7 +222,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.91.0";
+const APP_VERSION = "0.92.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -267,6 +268,7 @@ const VIEW_DATA = {
   ampliado: ["ampliado"],
   bndes: ["bndes"],
   estados: ["ufs"], estado: ["ufs"],
+  sfn: ["sfn"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2870,7 +2872,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3083,6 +3085,10 @@ const GUIA = {
     importa: "Um terço da carteira do SFN tem taxa regulada ou funding público; nas empresas, os repasses do BNDES são a maior fatia. Saber para que porte, setor e UF o banco desembolsa, e por quais agentes, é saber para onde vai o crédito subsidiado.",
     ler: "Três réguas: o saldo direcionado do SGS (estoque no SFN), os desembolsos do Sistema BNDES (fluxo liberado, por mês, desde 1995) e as operações não automáticas (fluxo contratado, contrato a contrato). Leia a janela de 12 meses fechada no último mês publicado e a variação sobre os 12 anteriores; o BNDES publica com meses de atraso e a data-base está no cabeçalho.",
     nao: "As três réguas não se somam. Os valores são nominais: comparar 1995 com hoje sem deflacionar mede inflação. As operações não automáticas são uma fração do desembolso e o recorte municipal é só delas. Aprovação sobre consulta não é taxa de conversão de uma mesma safra." },
+  sfn: { q: "Quem entrou e quem saiu do sistema financeiro?",
+    importa: "A concorrência no crédito começa pela licença: cada SCD, instituição de pagamento ou cooperativa nova é um ofertante a mais, e cada saída (fusão, cancelamento ou liquidação) muda o mapa. O cadastro do BCB diz quem está autorizado hoje; o IF.data diz quem reportou trimestre a trimestre desde 2015.",
+    ler: "Três réguas: o cadastro (posição do dia, por grupo e UF), os reportantes do IF.data (trimestral, com entradas, saídas e conversões nominais) e os regimes de resolução. O trimestre mais recente do IF.data ainda recebe retardatários: as saídas nele são provisórias e ficam marcadas.",
+    nao: "Saída do IF.data não é quebra: fusão, incorporação e troca de código também tiram um nome da lista; a tabela nominal existe para ler caso a caso. O cadastro não tem data de início: a série de entradas com nomes nasce na primeira coleta do Observatório." },
   estados: { q: "Como está o crédito no meu estado?",
     importa: "O Brasil do crédito é desigual: São Paulo concentra 30% da carteira e o Norte tem metade da penetração do Sul. A página de cada UF reúne o que os painéis temáticos dizem sobre ela, com a posição entre as 27 em cada régua.",
     ler: "Comece pela síntese e pelo placar; cada bloco tem a própria data-base e a própria fonte, e a posição (1º a 27º) é calculada só dentro daquele bloco. Clique numa UF do índice ou use o seletor para trocar de estado.",
@@ -3423,7 +3429,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -8508,6 +8514,136 @@ function renderEstados() {
     + `<div class="card" style="margin-top:14px"><h4>Outros estados</h4><p>${ufs.filter(x => x.regiao === u.regiao && x.uf !== u.uf).map(x => `<a href="/observatorio/states/${x.uf}" onclick="ufNav('${x.uf}');return false">${x.nome}</a>`).join(" · ")} <span class="src">(${u.regiao})</span> · <a href="/observatorio/states" onclick="nav('estados');return false">todas as UFs →</a></p>
     <p class="src">${(U.cautelas || []).join(" ")}</p></div>`;
 }
+
+/* ---------- Entrantes e saídas do SFN ---------- */
+/* Três réguas declaradas: cadastro do Unicad (posição do dia), reportantes do IF.data
+   (trimestral) e regimes de resolução (lista vigente). Nenhuma seção soma uma com a outra. */
+function sfnSet(k, v) { state.sfn[k] = v; renderSfn(); }
+function renderSfn() {
+  const el = document.getElementById("view-sfn");
+  const S = state.data.sfn;
+  if (!S) { el.innerHTML = loadingCard("entrantes e saídas do SFN"); return; }
+  if (!S.disponivel) {
+    el.innerHTML = pageHead({ title: "Entrantes e saídas do SFN", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${S.motivo || S.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.sfn;
+  const C = S.cadastro || {}, I = S.ifdata || {}, R = S.regimes || {};
+  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const brl = v => v == null ? "–" : fmt.money(v);
+  const tri = am => am ? `${am.slice(4, 6) === "03" ? "1T" : am.slice(4, 6) === "06" ? "2T" : am.slice(4, 6) === "09" ? "3T" : "4T"} ${am.slice(0, 4)}` : "–";
+  const grp = nome => (C.grupos || []).find(g => g.grupo === nome) || { n: null };
+  const head = pageHead({
+    title: "Entrantes e saídas do SFN", vintage: I.ultimo ? `${I.ultimo.slice(0, 4)}-${I.ultimo.slice(4, 6)}` : null,
+    seals: `${badge("observado", "cadastro do BCB, presença no IF.data e lista de regimes")} ${badge("calculado", "entradas, saídas e conversões derivadas da presença trimestre a trimestre")}`,
+    desc: "Quem está autorizado a funcionar hoje, quem entrou e quem saiu trimestre a trimestre, as conversões de tipo e os regimes de resolução decretados pelo Banco Central.",
+    fontes: "BCB/Unicad (instituições em funcionamento) · BCB/IF.data (cadastro e resumo trimestral) · BCB/Regimes de resolução",
+    actions: `<button class="btn ghost small" onclick="sfnCSV()">baixar CSV (entradas e saídas do IF.data)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${S.sintese}</p><div class="src">Síntese determinística · cadastro ${C.data || "–"} · IF.data até ${tri(I.ultimo)} (último fechado ${tri(I.ultimo_fechado)}) · regimes ${(R.gerado_em || "").slice(0, 10)}</div>`;
+  const kI = I.kpis || {};
+  const placarHtml = placar([
+    { l: "Sedes autorizadas hoje", v: n0(C.total), sub: C.total ? `${n0(grp("Bancos").n)} bancos · ${n0(grp("Cooperativas de crédito").n)} cooperativas` : "cadastro ainda não coletado", href: "#sfn-cadastro" },
+    { l: "Instituições de pagamento e fintechs", v: C.total ? `${n0(grp("Instituições de pagamento").n)} · ${n0(grp("Fintechs de crédito").n)}` : "–", sub: "IPs · SCD e SEP", href: "#sfn-cadastro" },
+    { l: "Reportantes do IF.data", v: n0(kI.reportantes), sub: I.ultimo_fechado ? `em ${tri(I.ultimo_fechado)}` : "", href: "#sfn-ifdata" },
+    { l: "Entradas e saídas (4 trimestres)", v: kI.entradas_4t != null ? `+${n0(kI.entradas_4t)} · −${n0(kI.saidas_4t)}` : "–", sub: "primeiro e último trimestre reportados", href: "#sfn-lista" },
+    { l: "Sob regime de resolução", v: n0(R.vigentes), sub: R.disponivel ? `${n0(R.decretados_12m)} decretados em 12 meses` : "", href: "#sfn-regimes" },
+  ]);
+
+  /* ---------- cadastro ---------- */
+  let cad = "";
+  if (C.disponivel) {
+    const gMax = C.grupos.length ? Math.max(...C.grupos.map(g => g.n)) : 1;
+    const ufsOrd = F.uf === "todas" ? C.ufs : C.ufs.filter(u => u.uf === F.uf);
+    const coop = C.cooperativas || {};
+    cad = secWrap("sfn-cadastro", `${sechead("Quem está autorizado a funcionar hoje", `cadastro do BCB · posição de ${C.data} · ${n0(C.total)} sedes`)}
+    <div class="grid g2">
+      <div class="card"><h4>Por grupo e segmento ${badge("observado")}</h4>
+        ${C.grupos.map(g => `<details class="decomp"><summary><span class="sw" style="background:${g.cor};display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px"></span><b>${g.grupo}</b> · ${n0(g.n)} <span class="src">(${pct(g.share)})</span> <span class="abarwrap" style="display:inline-block;width:120px;vertical-align:middle"><span class="abar" style="width:${Math.max(2, g.n / gMax * 100)}%;background:${g.cor}"></span></span></summary>
+          <div class="tblwrap"><table class="data compact"><tbody>${g.segmentos.map(x => `<tr><td>${x.segmento}</td><td style="text-align:right">${n0(x.n)}</td></tr>`).join("")}</tbody></table></div></details>`).join("")}
+        <p class="src">${C.nota} Bancos: ${n0(C.bancos.com_carteira_comercial)} com carteira comercial e ${n0(C.bancos.sem_carteira_comercial)} sem.</p></div>
+      <div class="card"><h4>Cooperativas de crédito: ${n0(coop.n)} sedes ${badge("calculado", "sistema atribuído pela central de filiação ou pelo nome")}</h4>
+        ${(coop.por_sistema || []).map(x => `<div class="contrib"><span class="lbl" style="width:190px">${x.sistema}</span><span class="bar pos" style="width:${Math.min(150, (x.share || 0) * 1.5)}px"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}
+        <div class="grid g2" style="margin-top:10px">
+          <div><h5>Critério de associação</h5>${(coop.por_associacao || []).slice(0, 6).map(x => `<div class="contrib"><span class="lbl" style="width:150px">${x.criterio}</span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}</div>
+          <div><h5>Categoria (singulares)</h5>${(coop.por_categoria || []).map(x => `<div class="contrib"><span class="lbl" style="width:150px">${x.categoria}</span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)}</span></span></div>`).join("")}</div>
+        </div></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h4>Por UF ${badge("observado")}</h4>
+        <div class="controls" style="margin:0 0 8px"><select onchange="sfnSet('uf', this.value)" aria-label="recorte por UF"><option value="todas" ${F.uf === "todas" ? "selected" : ""}>todas as UFs</option>${C.ufs.map(u => `<option value="${u.uf}" ${F.uf === u.uf ? "selected" : ""}>${u.uf}</option>`).join("")}</select></div>
+        <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Sedes</th><th style="text-align:right">Bancos</th><th style="text-align:right">Cooperativas</th><th style="text-align:right">IPs</th><th style="text-align:right">Fintechs</th></tr></thead>
+        <tbody>${ufsOrd.map(u => `<tr><td><b>${u.uf}</b> <span class="src">${u.regiao || ""}</span></td><td style="text-align:right">${n0(u.n)}</td><td style="text-align:right">${n0(u.bancos)}</td><td style="text-align:right">${n0(u.cooperativas)}</td><td style="text-align:right">${n0(u.ips)}</td><td style="text-align:right">${n0(u.fintechs)}</td></tr>`).join("")}</tbody></table></div>
+        ${(C.regioes || []).map(r => `<div class="contrib"><span class="lbl" style="width:120px">${r.regiao}</span><span class="bar pos" style="width:${Math.min(150, (r.share || 0) * 1.5)}px"></span><span class="num">${n0(r.n)} <span class="src">${pct(r.share)} · ${n0(r.cooperativas)} coop.</span></span></div>`).join("")}</div>
+      <div class="card"><h4>Entradas e saídas no cadastro, observadas pelo Observatório ${badge("calculado")}</h4>
+        <p class="src">O cadastro não publica data de início. Desde ${C.historico_proprio.desde}, o pipeline compara a relação do dia com a anterior: CNPJ novo é entrada, CNPJ que some é saída, segmento que muda é conversão.</p>
+        ${C.historico_proprio.entradas.length + C.historico_proprio.saidas.length + C.historico_proprio.conversoes.length === 0 ? `<p class="src">Nenhuma mudança observada ainda: a série começou em ${C.historico_proprio.desde}.</p>` : `
+        ${C.historico_proprio.entradas.length ? `<h5>Entradas</h5><div class="tblwrap" style="max-height:220px"><table class="data compact"><tbody>${C.historico_proprio.entradas.map(x => `<tr><td>${x.data}</td><td><b>${x.nome}</b></td><td class="src">${x.segmento}</td><td>${x.uf || ""}</td></tr>`).join("")}</tbody></table></div>` : ""}
+        ${C.historico_proprio.saidas.length ? `<h5>Saídas</h5><div class="tblwrap" style="max-height:220px"><table class="data compact"><tbody>${C.historico_proprio.saidas.map(x => `<tr><td>${x.data}</td><td><b>${x.nome}</b></td><td class="src">${x.segmento}</td><td>${x.uf || ""}</td></tr>`).join("")}</tbody></table></div>` : ""}
+        ${C.historico_proprio.conversoes.length ? `<h5>Conversões</h5><div class="tblwrap" style="max-height:220px"><table class="data compact"><tbody>${C.historico_proprio.conversoes.map(x => `<tr><td>${x.data}</td><td><b>${x.nome}</b></td><td class="src">${x.de} → ${x.para}</td></tr>`).join("")}</tbody></table></div>` : ""}`}
+        ${C.historico_proprio.contagem.length > 1 ? `<div class="contrib"><span class="lbl" style="width:150px">sedes por coleta</span>${sparkline(C.historico_proprio.contagem.map(c => Object.entries(c).filter(([k]) => k !== "data").reduce((a, [, v]) => a + v, 0)), 200, 26)}</div>` : ""}</div>
+    </div>`);
+  }
+
+  /* ---------- IF.data ---------- */
+  let ifd = "", lista = "";
+  if (I.disponivel) {
+    const ser = I.serie || [];
+    const tcbs = Object.keys(I.tcb);
+    const cores = { B1: "#1d4e89", B2: "#6b46a3", B3S: "#2f7d4f", B3C: "#0e7c7b", B4: "#4b5563", N1: "#b45309", N2: "#8d5a2b", N3: "#6b7280", N4: "#9a3412" };
+    const seriesT = tcbs.filter(t => ser.some(p => p.por_tcb[t])).map(t => ({ pts: ser.map(p => ({ x: `${p.anomes.slice(0, 4)}-${p.anomes.slice(4, 6)}`, y: p.por_tcb[t] || 0 })), color: cores[t] || "#999", label: t }));
+    const rotulosFim = window.innerWidth > 640;
+    ifd = secWrap("sfn-ifdata", `${sechead("Quem reporta ao IF.data, trimestre a trimestre", `${tri(I.primeiro)} a ${tri(I.ultimo)} · ${I.trimestres} trimestres`)}
+    <div class="grid g2">
+      <div class="card"><h4>Reportantes por tipo de consolidado ${badge("observado")}</h4>
+        <div class="legend">${seriesT.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesT, h: 240, endLabels: rotulosFim, unit: "instituições", dec: 0, fonte: "BCB/IF.data", status: "observado", aria: "reportantes do IF.data por tipo" })}
+        ${chartFooter({ fonte: "BCB — IF.data, presença no relatório resumo (tipo de instituição 2)", periodo: `${tri(I.primeiro)}–${tri(I.ultimo)}`, atualizado: (S.gerado_em || "").slice(0, 10), unidade: "instituições e conglomerados", nota: "último trimestre ainda recebe retardatários" })}
+        <p class="src">${tcbs.map(t => `<b>${t}</b> ${I.tcb[t]}`).join(" · ")}.</p></div>
+      <div class="card"><h4>Entradas e saídas por trimestre ${badge("calculado")}</h4>
+        <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>Trimestre</th><th style="text-align:right">Reportantes</th><th style="text-align:right">Entradas</th><th style="text-align:right">Saídas</th><th style="text-align:right">Líquido</th></tr></thead>
+        <tbody>${ser.slice().reverse().slice(0, 24).map(p => `<tr><td>${tri(p.anomes)}${p.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td style="text-align:right">${n0(p.n)}</td><td style="text-align:right" class="up good">${p.entradas != null ? "+" + n0(p.entradas) : "–"}</td><td style="text-align:right" class="down">${p.saidas != null ? "−" + n0(p.saidas) : "–"}</td><td style="text-align:right">${p.entradas != null ? fmt.pp(p.entradas - p.saidas) : "–"}</td></tr>`).join("")}</tbody></table></div>
+        <div style="margin-top:8px">${(I.por_tcb || []).map(x => `<div class="contrib"><span class="lbl" style="width:60px"><b>${x.tcb}</b></span><span class="bar pos" style="width:${Math.min(150, (x.share || 0) * 1.5)}px;background:${cores[x.tcb] || "#999"}"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)} · ${(I.var_4t_por_tcb || {})[x.tcb] != null ? fmt.pp(I.var_4t_por_tcb[x.tcb]) + " em 4 trimestres" : ""}</span></span></div>`).join("")}</div>
+        <p class="src">${I.nota}</p></div>
+    </div>`);
+    const L = F.lista === "saidas" ? I.saidas : F.lista === "conversoes" ? I.conversoes : I.entradas;
+    lista = secWrap("sfn-lista", `${sechead("Nome a nome", `últimos oito trimestres · ${n0(I.entradas.length)} entradas · ${n0(I.saidas.length)} saídas · ${n0(I.conversoes.length)} conversões`)}
+    <div class="controls"><span class="seg">${[["entradas", "entradas"], ["saidas", "saídas"], ["conversoes", "conversões de tipo"]].map(([v, l]) => `<button class="${F.lista === v ? "active" : ""}" onclick="sfnSet('lista','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="card">${F.lista === "conversoes" ? `<div class="tblwrap" style="max-height:480px"><table class="data compact"><thead><tr><th>Trimestre</th><th>Instituição</th><th>De</th><th>Para</th></tr></thead>
+      <tbody>${L.length ? L.map(x => `<tr><td>${tri(x.anomes)}</td><td><b>${x.nome}</b></td><td>${x.de} <span class="src">${I.tcb[x.de] || ""}</span></td><td>${x.para} <span class="src">${I.tcb[x.para] || ""}</span></td></tr>`).join("") : `<tr><td colspan="4" class="src">nenhuma conversão observável pelo nome nos últimos oito trimestres.</td></tr>`}</tbody></table></div>
+      <p class="src">Conversão observável = mesmo nome sai com um tipo e entra com outro (uma SCD que vira banco, por exemplo). Trocas de razão social escapam a este critério.</p>`
+      : `<div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th>Trimestre</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Segmento</th><th style="text-align:right">Ativo total</th></tr></thead>
+      <tbody>${L.map(x => `<tr><td>${tri(x.anomes)}${x.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td><b>${x.cod && x.cod.startsWith("C") || /^\d{8}$/.test(x.cod || "") ? `<a href="/observatorio/institutions/${x.cod}" onclick="nav('inst',{instCod:'${x.cod}'});return false">${x.nome || x.cod}</a>` : (x.nome || x.cod)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${x.sr || "–"}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="src">${F.lista === "saidas" ? "Saída não é quebra: fusão, incorporação, troca de código de conglomerado e cancelamento voluntário também tiram um nome da lista. O ativo é o do último trimestre reportado." : "Entrada = primeiro trimestre com resumo no acervo; instituições antigas que só passaram a reportar contam como entrada. O ativo é o do trimestre de entrada."}</p>`}</div>`);
+  }
+
+  /* ---------- regimes ---------- */
+  const reg = secWrap("sfn-regimes", `${sechead("Saídas forçadas: regimes de resolução", R.disponivel ? `${n0(R.vigentes)} vigentes · ${n0(R.decretados_12m)} decretados em 12 meses` : "")}
+  <div class="card">${R.disponivel ? `${(R.por_tipo || []).map(x => `<div class="contrib"><span class="lbl" style="width:220px">${x.tipo}</span><span class="bar" style="width:${Math.min(150, x.n / (R.vigentes || 1) * 150)}px;background:#b91c1c"></span><span class="num">${n0(x.n)}</span></div>`).join("")}
+    <div class="tblwrap" style="max-height:320px"><table class="data compact"><thead><tr><th>Decretado</th><th>Instituição</th><th>Regime</th><th>UF</th></tr></thead>
+    <tbody>${(R.recentes || []).map(v => `<tr><td>${v.inicio}</td><td><b>${v.nome}</b></td><td>${v.tipo}</td><td>${v.uf || "–"}</td></tr>`).join("")}</tbody></table></div>` : `<p class="src">lista de regimes não coletada nesta execução.</p>`}
+    ${ponte("A lista vigente completa, com responsável nomeado e histórico acumulado — Instituições", "institutions", "sec-regimes", "mesma fonte; lá está a leitura por instituição")}</div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("sfn-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${S.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(S.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Cautelas</h5>${(S.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} ${Object.values(S.fontes || {}).map(f => `<a href="${attr(f.catalogo)}" target="_blank" rel="noopener">${f.nome}</a> (${f.licenca}; nível ${f.nivel})`).join(" · ")}.</p></div>`);
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#sfn-cadastro", "Cadastro"], ["#sfn-ifdata", "IF.data"], ["#sfn-lista", "Nome a nome"], ["#sfn-regimes", "Regimes"], ["#sfn-metodo", "Método"]])
+    + cad + ifd + lista + reg + metodo;
+}
+window.sfnCSV = () => {
+  const S = state.data.sfn;
+  if (!S || !S.ifdata || !S.ifdata.disponivel) return;
+  const cols = ["tipo", "anomes", "cod", "nome", "tcb", "uf", "sr", "ativo", "provisorio"];
+  const linhas = [...S.ifdata.entradas.map(x => ({ tipo: "entrada", ...x })), ...S.ifdata.saidas.map(x => ({ tipo: "saida", ...x }))];
+  const head = `# Observatório Brasileiro de Crédito — entradas e saídas de reportantes do IF.data (últimos oito trimestres)\n# fonte: BCB/IF.data (presença no relatório resumo) · saída no último trimestre é provisória\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_sfn_entradas_saidas_${S.ifdata.ultimo}.csv`, head + cols.join(";") + "\n" + linhas.map(l => cols.map(c => csvEsc(l[c])).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10731,10 +10867,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -10791,7 +10927,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
