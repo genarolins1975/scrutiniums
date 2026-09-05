@@ -42,6 +42,9 @@ SEXO = {"1": "feminino", "2": "masculino"}
 FINALIDADES = [("custeio", "vl_c", "qtd_c"), ("investimento", "vl_i", "qtd_i"),
                ("comercializacao", "vl_com", "qtd_com"), ("industrializacao", "vl_ind", "qtd_ind")]
 MESES_PARCIAIS = 2   # corrente e anterior
+UF_IBGE = {"11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP", "17": "TO", "21": "MA", "22": "PI",
+           "23": "CE", "24": "RN", "25": "PB", "26": "PE", "27": "AL", "28": "SE", "29": "BA", "31": "MG", "32": "ES",
+           "33": "RJ", "35": "SP", "41": "PR", "42": "SC", "43": "RS", "50": "MS", "51": "MT", "52": "GO", "53": "DF"}
 REGIOES = {"AC": "Norte", "AM": "Norte", "AP": "Norte", "PA": "Norte", "RO": "Norte", "RR": "Norte", "TO": "Norte",
            "AL": "Nordeste", "BA": "Nordeste", "CE": "Nordeste", "MA": "Nordeste", "PB": "Nordeste", "PE": "Nordeste",
            "PI": "Nordeste", "RN": "Nordeste", "SE": "Nordeste",
@@ -124,9 +127,14 @@ def _hhi(vals):
 
 def build(con, cfg=None):
     # ---- meses e janelas ----
-    meses_db = [r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_uf ORDER BY mes")]
+    # Universo: FonteRecursos (nacional, com finalidade, atividade e programa) e o
+    # municipal fecham com o recurso Faixa ao centavo em todos os meses medidos;
+    # RegiaoUF fica 2% a 8% abaixo em todos os meses (05/09/2026) e entra só na
+    # nota de cobertura. Série nacional = sicor_fonte; recorte por UF = municipal
+    # agregado pelo prefixo do código IBGE.
+    meses_db = [r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_fonte ORDER BY mes")]
     if not meses_db:
-        return {"disponivel": False, "motivo": "silver sicor_uf vazio — coleta ainda não rodou"}
+        return {"disponivel": False, "motivo": "silver sicor_fonte vazio — coleta ainda não rodou"}
     parciais = [m for m in _meses() if m in meses_db]
     fechados = [m for m in meses_db if m not in parciais]
     mes_recente = meses_db[-1]
@@ -142,7 +150,7 @@ def build(con, cfg=None):
     mensal = _rows(con, """SELECT mes, atividade,
         SUM(vl_c) vl_c, SUM(qtd_c) qtd_c, SUM(vl_i) vl_i, SUM(qtd_i) qtd_i,
         SUM(vl_com) vl_com, SUM(qtd_com) qtd_com, SUM(vl_ind) vl_ind, SUM(qtd_ind) qtd_ind
-        FROM sicor_uf GROUP BY mes, atividade ORDER BY mes""")
+        FROM sicor_fonte GROUP BY mes, atividade ORDER BY mes""")
     por_mes = {}
     for r in mensal:
         p = por_mes.setdefault(r["mes"], {"mes": r["mes"], "custeio": 0.0, "investimento": 0.0, "comercializacao": 0.0,
@@ -193,7 +201,7 @@ def build(con, cfg=None):
         r = _rows(con, f"""SELECT SUM(vl_c+vl_i+vl_com+vl_ind) valor, SUM(qtd_c+qtd_i+qtd_com+qtd_ind) qtd,
             SUM(vl_c) custeio, SUM(vl_i) investimento, SUM(vl_com) comercializacao, SUM(vl_ind) industrializacao,
             SUM(CASE WHEN atividade='1' THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) agricola
-            FROM sicor_uf WHERE mes IN ({q})""", ms)[0]
+            FROM sicor_fonte WHERE mes IN ({q})""", ms)[0]
         return r
     T = tot_janela(janela)
     T_ant = tot_janela(jan_ant) if len(jan_ant) == 12 else None
@@ -208,7 +216,7 @@ def build(con, cfg=None):
     prog = _rows(con, f"""SELECT programa, SUM(vl_c+vl_i+vl_com+vl_ind) valor, SUM(qtd_c+qtd_i+qtd_com+qtd_ind) qtd,
         SUM(CASE WHEN atividade='1' THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) agricola,
         SUM(vl_c) custeio, SUM(vl_i) investimento
-        FROM sicor_uf WHERE mes IN ({in12}) GROUP BY programa ORDER BY valor DESC""", janela)
+        FROM sicor_fonte WHERE mes IN ({in12}) GROUP BY programa ORDER BY valor DESC""", janela)
     programas = [{"cd": r["programa"], "nome": nome_prog(r["programa"]), "valor": _r(r["valor"]), "qtd": r["qtd"],
                   "share": _share(r["valor"], valor12), "ticket": _r(r["valor"] / r["qtd"]) if r["qtd"] else None,
                   "agricola_share": _share(r["agricola"], r["valor"]),
@@ -217,7 +225,7 @@ def build(con, cfg=None):
     cd_pronamp = next((p["cd"] for p in programas if "PRONAMP" in p["nome"].upper()), None)
     pronaf12 = next((p["valor"] for p in programas if p["cd"] == cd_pronaf), 0.0) or 0.0
     # série por safra dos grandes programas
-    prog_safra = _rows(con, """SELECT mes, programa, SUM(vl_c+vl_i+vl_com+vl_ind) valor FROM sicor_uf GROUP BY mes, programa""")
+    prog_safra = _rows(con, """SELECT mes, programa, SUM(vl_c+vl_i+vl_com+vl_ind) valor FROM sicor_fonte GROUP BY mes, programa""")
     ps = {}
     for r in prog_safra:
         grupo = "PRONAF" if r["programa"] == cd_pronaf else "PRONAMP" if r["programa"] == cd_pronamp else \
@@ -370,11 +378,21 @@ def build(con, cfg=None):
             pop_uf[m["uf"]] = pop_uf.get(m["uf"], 0) + m["pop_total"]
 
     # ---- UFs (12m) ----
-    ufs_rows = _rows(con, f"""SELECT uf, SUM(vl_c+vl_i+vl_com+vl_ind) valor, SUM(qtd_c+qtd_i+qtd_com+qtd_ind) qtd,
-        SUM(vl_c) custeio, SUM(vl_i) investimento, SUM(vl_com) comercializacao, SUM(vl_ind) industrializacao,
-        SUM(CASE WHEN atividade='1' THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) agricola,
-        SUM(CASE WHEN programa=? THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) pronaf
-        FROM sicor_uf WHERE mes IN ({in12}) GROUP BY uf ORDER BY valor DESC""", [cd_pronaf or ""] + janela)
+    meses_mun = [r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_mun")]
+    jan_mun = [m for m in janela if m in meses_mun]
+    ufs_rows = []
+    if len(jan_mun) == 12:
+        qm12 = ",".join("?" * len(jan_mun))
+        ufs_rows = _rows(con, f"""SELECT SUBSTR(cod_ibge, 1, 2) cod_uf, SUM(vl_c+vl_i+vl_com+vl_ind) valor, SUM(qtd_c+qtd_i+qtd_com+qtd_ind) qtd,
+            SUM(vl_c) custeio, SUM(vl_i) investimento, SUM(vl_com) comercializacao, SUM(vl_ind) industrializacao,
+            SUM(CASE WHEN atividade='1' THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) agricola,
+            SUM(CASE WHEN programa=? THEN vl_c+vl_i+vl_com+vl_ind ELSE 0 END) pronaf
+            FROM sicor_mun WHERE mes IN ({qm12}) GROUP BY cod_uf ORDER BY valor DESC""", [cd_pronaf or ""] + jan_mun)
+        for r in ufs_rows:
+            r["uf"] = UF_IBGE.get(r["cod_uf"])
+    # cobertura do recurso RegiaoUF (usado pelo BCB para o recorte estadual): fica abaixo do universo
+    uf_tot = _rows(con, f"SELECT SUM(vl_c+vl_i+vl_com+vl_ind) v FROM sicor_uf WHERE mes IN ({in12})", janela)[0]["v"]
+    cobertura_regiao_uf = _share(uf_tot, valor12) if uf_tot else None
     ufs = [{"uf": r["uf"], "regiao": REGIOES.get(r["uf"]), "valor": _r(r["valor"]), "qtd": r["qtd"], "share": _share(r["valor"], valor12),
             "custeio": _r(r["custeio"]), "investimento": _r(r["investimento"]), "comercializacao": _r(r["comercializacao"]),
             "industrializacao": _r(r["industrializacao"]), "agricola_share": _share(r["agricola"], r["valor"]),
@@ -413,8 +431,6 @@ def build(con, cfg=None):
                              "declarada, não custo de produção.")}
 
     # ---- municípios (12m) ----
-    meses_mun = [r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_mun")]
-    jan_mun = [m for m in janela if m in meses_mun]
     municipios = []
     mun_meta = {"disponivel": False}
     if jan_mun:
@@ -429,6 +445,8 @@ def build(con, cfg=None):
         for cod in sorted(todos):
             r = com.get(cod)
             nm, uf = nomes_mun.get(cod, (None, None))
+            if not uf:  # código fora da lista do IBGE (ex.: área especial): a UF vem do prefixo, o nome fica nulo
+                uf = UF_IBGE.get(cod[:2])
             p = pop.get(cod)
             if r:
                 municipios.append({"cod": cod, "nome": nm, "uf": uf, "regiao": REGIOES.get(uf), "pop": p,
@@ -447,7 +465,7 @@ def build(con, cfg=None):
                     "n_municipios": len(municipios), "com_contratacao": len(com_val),
                     "sem_contratacao": len([m for m in municipios if not m["valor"]]),
                     "sem_nome": len([m for m in municipios if m["nome"] is None]),
-                    "reconciliacao_uf_pct": _share(tot_mun, valor12),
+                    "reconciliacao_universo_pct": _share(tot_mun, valor12),
                     "top50_share": _share(sum(m["valor"] for m in sorted(com_val, key=lambda x: -x["valor"])[:50]), tot_mun or 1)}
     rankings = {}
     if municipios:
@@ -482,6 +500,8 @@ def build(con, cfg=None):
         "disponivel": True,
         "gerado_em": common.now_utc(),
         "fonte": FONTE,
+        "universo": {"serie_nacional": "FonteRecursos (fecha com Faixa ao centavo)", "estadual_e_municipal": "CusteioInvestimentoComercialIndustrialSemFiltros (idem)",
+                     "cobertura_regiao_uf_pct": cobertura_regiao_uf},
         "mes_recente": mes_recente, "mes_fechado": mes_fechado,
         "meses_parciais": parciais,
         "janela": {"ini": ini, "fim": fim},
@@ -537,6 +557,9 @@ def build(con, cfg=None):
         ],
         "cautelas": [
             "Contratação é fluxo: um mês forte de custeio (plantio) não significa carteira maior; o saldo rural do sistema está no IF.data e no SGS, em outra régua.",
+            (f"O recurso RegiaoUF da MDCR cobre {cobertura_regiao_uf}% do universo na janela (fica abaixo em todos os meses medidos); por isso o recorte estadual "
+             "desta aba é o municipal agregado pelo código IBGE, que fecha com o universo ao centavo." if cobertura_regiao_uf else
+             "O recorte estadual desta aba é o municipal agregado pelo código IBGE, que fecha com o universo (recurso Faixa) ao centavo."),
             f"Os meses {', '.join(parciais)} são parciais (cédulas entram no Sicor com atraso). Ficam fora da janela de 12 meses e de todo ranking.",
             "Programa, fonte e finalidade são os declarados na cédula; reclassificações posteriores não voltam à MDCR.",
             "O recorte por instituição é do CNPJ contratante; cooperativas singulares e bancos do mesmo grupo não são consolidados.",

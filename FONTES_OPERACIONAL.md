@@ -1106,14 +1106,24 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   parciais fora de toda razão; programa/fonte/finalidade são os declarados na
   cédula; IF é o CNPJ contratante, sem consolidação; por habitante e por
   hectare são intensidades, não acesso.
-- **Estado em 05/09/2026:** a API respondeu em segundos pela manhã e passou a
-  devolver HTTP 504 (Azure Application Gateway) na maior parte da tarde, mesmo
-  em repouso. A primeira carga ficou incompleta; o gold publicado é um marcador
-  `disponivel: false` com o motivo, substituído pelo pipeline diário quando a
-  janela de 12 meses fechados convergir (cap de 200 requisições leves e 40
-  pesadas por execução, meses recentes primeiro). A verificação do código de
-  sexo pelo subprograma PRONAF Mulher ficou pendente pela mesma indisponibilidade
-  e deve ser feita na primeira carga completa.
+- **Universo, medido na carga de 05/09/2026:** os recursos FonteRecursos
+  (nacional), SegmentoIF e o municipal fecham com o recurso Faixa ao centavo
+  em todos os meses; RegiaoUF fica 2% a 8% ABAIXO em todos os meses (o BCB não
+  documenta a diferença; provavelmente cédulas sem UF atribuída). Por isso a
+  série nacional vem de FonteRecursos, o recorte estadual é o municipal
+  agregado pelo prefixo do código IBGE, e RegiaoUF entra só como nota de
+  cobertura publicada no gold (`universo.cobertura_regiao_uf_pct`). Produto
+  cobre custeio e investimento (72% a 84% do valor), como a fonte define.
+- **Estado da primeira carga (05/09/2026, noite):** a API alternou respostas
+  em segundos com horas de HTTP 504 (Azure Application Gateway), inclusive em
+  repouso. A janela publicada (2025-08 a 2026-07) ficou completa nos cinco
+  recursos: R$ 344,4 bi em 2.538.458 contratos, 5.487 municípios com
+  contratação, reconciliação municipal × nacional de 100,0%. A cauda histórica
+  (FonteRecursos e Faixa desde 2013, gênero desde 2013) converge nas execuções
+  diárias, meses recentes primeiro; enquanto isso a variação sobre os 12 meses
+  anteriores fica nula e a série mensal começa em 2025-07. A verificação do
+  código de sexo pelo subprograma PRONAF Mulher (cdSubPrograma 57) recebeu 504
+  em três tentativas e segue pendente.
 - **Travas:** `src/tests/rural-data.test.ts` (janela sem meses parciais,
   composições que fecham, reconciliação municipal × estadual dentro de 3%,
   ausência como nulo, piso do ranking por habitante, registro completo na SPA).

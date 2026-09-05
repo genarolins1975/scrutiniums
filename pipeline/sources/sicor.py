@@ -26,9 +26,10 @@ FonteRecursos e RegiaoUFGenero e trava em anos cheios de RegiaoUF (medido em
 - `sicor_fonte`   ← FonteRecursos (nacional), todos os meses;
 - `sicor_faixa`   ← Faixa (nacional, 13 faixas de valor), todos os meses;
 - `sicor_genero`  ← RegiaoUFGenero, todos os meses, agregado a (mês, UF, sexo, atividade);
-- `sicor_if`      ← SegmentoIF, últimos 13 meses, agregado a (mês, IF, programa, atividade);
-- `sicor_mun`     ← municipal, últimos 12 meses, grão da fonte (município × programa × fonte × atividade);
-- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 12 meses.
+- `sicor_if`      ← SegmentoIF, últimos 15 meses, agregado a (mês, IF, programa, atividade);
+- `sicor_mun`     ← municipal, últimos 14 meses, grão da fonte (município × programa × fonte × atividade);
+- `sicor_produto` ← Custeio/InvestRegiaoUFProduto, últimos 14 meses
+  (14 e 15 porque a janela publicada, de 12 meses fechados, termina dois meses antes do corrente).
 Nomes de programa e subprograma vêm de ProgramaSubprogramaRegiaoUF (um mês), em
 `sicor_nomes`. Cap por execução nos recursos pesados: a primeira carga converge
 em poucas execuções diárias; falha consome o cap, nunca trava num mês quebrado.
@@ -41,9 +42,9 @@ from pipeline import common
 
 BASE = "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata"
 PRIMEIRO_ANO = 2013
-MESES_IF = 13
-MESES_MUN = 12
-MESES_PRODUTO = 12
+MESES_IF = 15         # a janela publicada (12 meses fechados) termina 2 meses antes do corrente
+MESES_MUN = 14
+MESES_PRODUTO = 14
 MESES_RECOLETA = 2       # mês corrente e anterior: parciais, sempre recoletados
 CAP_PESADOS = 40         # requisições pesadas (IF, município, produto) por execução
 CAP_LEVES = 200          # requisições leves (UF, fonte, faixa, gênero) por execução

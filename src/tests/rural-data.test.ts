@@ -135,15 +135,15 @@ describe.skipIf(!comDado)("rural_mun.json: municípios", () => {
     expect(MUN.filter((m) => m.valor === 0).length).toBe(0);
   });
 
-  it("reconcilia com o estadual dentro de 2% (município sem código IBGE fica fora e é dito)", () => {
-    expect(R.municipios_meta.reconciliacao_uf_pct).toBeGreaterThan(98);
-    expect(R.municipios_meta.reconciliacao_uf_pct).toBeLessThanOrEqual(100.5);
+  it("municipal fecha com o universo nacional (FonteRecursos = Faixa) e as UFs vêm do municipal", () => {
+    expect(R.municipios_meta.reconciliacao_universo_pct).toBeGreaterThan(99.5);
+    expect(R.municipios_meta.reconciliacao_universo_pct).toBeLessThanOrEqual(100.5);
     const porUf: Record<string, number> = {};
     for (const m of MUN) if (m.valor && m.uf) porUf[m.uf] = (porUf[m.uf] || 0) + m.valor;
-    for (const u of R.ufs) {
-      const mun = porUf[u.uf] || 0;
-      expect(Math.abs(mun - u.valor) / u.valor, u.uf).toBeLessThan(0.03);
-    }
+    for (const u of R.ufs) expect(Math.abs((porUf[u.uf] || 0) - u.valor) / u.valor, u.uf).toBeLessThan(0.001);
+    // o recurso RegiaoUF fica abaixo do universo e a aba diz isso
+    expect(R.universo.cobertura_regiao_uf_pct).toBeLessThan(100);
+    expect(R.cautelas.join(" ")).toMatch(/RegiaoUF/);
   });
 
   it("valor por habitante usa a população do Censo e o ranking respeita o piso de 5 mil habitantes", () => {
