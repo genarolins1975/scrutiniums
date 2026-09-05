@@ -153,12 +153,38 @@ def build(con, cfg):
                "Falência é o estágio terminal do estresse empresarial — mais coincidente/defasada que a RJ, mas confirma a tendência.",
                "CNJ/DataJud (classe 108)", "mensal", "variação 12m (%)", "contexto", "%", fal_yoy, "+")
 
-    # ---------- 5. crédito não bancário (FIDC) ----------
-    fidc = con.execute("SELECT anomes, n_fundos, carteira, venc_inad FROM fidc_agg ORDER BY anomes").fetchall()
-    fidc_pct = [(am, vi / c * 100) for am, _n, c, vi in fidc if c]
+    # ---------- 5. crédito não bancário (FIDC, CRI, CRA e emissões) ----------
+    # Família com quatro componentes (avaliação de 05/09, E13): antes só o FIDC entrava, e o
+    # mês parcial (poucos fundos entregues) puxava o z-score. As séries vêm do mesmo
+    # módulo que alimenta a aba Crédito ampliado, já sem meses parciais e sem erro de unidade.
+    from pipeline import ampliado as amp_mod
+    fidc_ser = [p for p in amp_mod.serie_fidc(con) if not p["parcial"] and p["inad_pct"] is not None]
+    fidc_pct = [(p["mes"].replace("-", ""), p["inad_pct"]) for p in fidc_ser]
     add_signal("fidc_inad_pct", "FIDCs — créditos vencidos inadimplentes / carteira", "nao_bancario",
-               "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs). Deterioração aqui pode anteceder o sistema bancário — originadores mais arriscados sentem o ciclo primeiro. Atraso ≠ perda: subordinação e garantias absorvem parte (estruturas heterogêneas).",
+               "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs). Deterioração aqui pode anteceder o sistema bancário — originadores mais arriscados sentem o ciclo primeiro. Atraso ≠ perda: subordinação e garantias absorvem parte (estruturas heterogêneas). Meses com entrega parcial dos informes ficam fora.",
                "CVM — informes mensais FIDC (tab I)", "mensal", "% da carteira agregada", "antecedente candidato", "%", fidc_pct, "+")
+    for tipo, nome, lastro in (("cri", "CRI", "crédito imobiliário"), ("cra", "CRA", "crédito do agronegócio")):
+        ser = [p for p in amp_mod.series_securitizacao(con, tipo) if not p["parcial"] and p["vencidos_pct"] is not None]
+        add_signal(f"{tipo}_venc_pct", f"{nome} — créditos vencidos do lastro / créditos vinculados", "nao_bancario",
+                   f"Certificados de recebíveis carregam {lastro} fora dos balanços bancários; o lastro que deixa de pagar aparece no informe mensal da securitizadora antes de qualquer provisão bancária. Vencido ≠ perda: subordinação, sobrecolateral e coobrigação absorvem parte. Informe com erro de unidade e mês com entrega parcial ficam fora.",
+                   "CVM — informes mensais de securitizadoras (Res. 60)", "mensal", "% dos créditos vinculados (agregado do sistema)", "antecedente candidato", "%", ser and [(p["mes"].replace("-", ""), p["vencidos_pct"]) for p in ser], "+")
+    try:
+        emis = con.execute("SELECT mes, SUM(valor) FROM cvm_ofertas WHERE familia IN ('Debêntures','Notas comerciais e promissórias') "
+                           "AND status IN ('Encerrada/registrada','Oferta Encerrada') AND (rito IS NULL OR rito NOT LIKE 'ICVM 555%') "
+                           "AND mes >= '2012-01' GROUP BY mes ORDER BY mes").fetchall()
+    except Exception:
+        emis = []
+    emis_12m = []
+    if len(emis) >= 24:
+        vals = [v for _m, v in emis]
+        for i in range(11, len(emis)):
+            emis_12m.append((emis[i][0].replace("-", ""), sum(vals[i - 11:i + 1])))
+        # o mês corrente ainda recebe ofertas; fica fora
+        hoje = date.today()
+        emis_12m = [(m, v) for m, v in emis_12m if m < f"{hoje.year}{hoje.month:02d}"]
+    add_signal("emissoes_divida_yoy", "Emissões de dívida corporativa (debêntures e notas) — soma 12m, variação 12m", "nao_bancario",
+               "Quando o mercado de capitais fecha para as empresas, a demanda volta aos bancos e o refinanciamento encarece: queda forte das emissões antecede aperto de crédito PJ. Alta é folga de funding. Valor registrado das ofertas encerradas (CVM), não a colocação final; fundos abertos fora.",
+               "CVM — ofertas públicas de distribuição", "mensal", "variação 12m da soma móvel de 12 meses (%)", "antecedente candidato", "%", _yoy(emis_12m), "-")
 
     # ---------- subíndices (z médio dos componentes, decomposto) ----------
     SUB_DEF = {
@@ -166,12 +192,12 @@ def build(con, cfg):
         "garantias": ["ivgr_real_yoy"],
         "consumidor": ["reclamacoes_mediana"],
         "empresarial_judicial": ["rj_yoy", "falencias_yoy"],
-        "nao_bancario": ["fidc_inad_pct"],
+        "nao_bancario": ["fidc_inad_pct", "cri_venc_pct", "cra_venc_pct", "emissoes_divida_yoy"],
     }
     SUB_NOMES = {"pressao_familias": "Pressão Financeira das Famílias", "garantias": "Garantias e Patrimônio",
                  "consumidor": "Consumidor (reclamações)", "empresarial_judicial": "Estresse Empresarial e Judicial",
-                 "nao_bancario": "Crédito Não Bancário (FIDCs)"}
-    SINAL_INVERTIDO = {"ivgr_real_yoy"}  # queda do valor real das garantias = MAIS estresse
+                 "nao_bancario": "Crédito Não Bancário (FIDCs, CRI, CRA e emissões)"}
+    SINAL_INVERTIDO = {"ivgr_real_yoy", "emissoes_divida_yoy"}  # queda do valor real das garantias, ou das emissões = MAIS estresse
     subindices = {}
     for sid_grupo, comps in SUB_DEF.items():
         zs_comp = {}
@@ -184,9 +210,13 @@ def build(con, cfg):
             continue
         datas = sorted(set.union(*[set(m) for m in zs_comp.values()]))
         serie_sub = []
+        # um mês só entra no subíndice com pelo menos metade dos componentes presentes:
+        # sem isso, a série que chega primeiro (ofertas da CVM) decidia sozinha o mês
+        # corrente de uma família de quatro (avaliação de 05/09, E13)
+        piso = max(1, len(comps) // 2)
         for d in datas:
             vals = [m[d] for m in zs_comp.values() if m.get(d) is not None]
-            if vals:
+            if len(vals) >= piso:
                 serie_sub.append({"p": d, "z": round(sum(vals) / len(vals), 2), "n_comp": len(vals)})
         if len(serie_sub) < 6:
             continue
@@ -206,7 +236,7 @@ def build(con, cfg):
         }
 
     # ---------- validação exploratória de defasagens vs. inadimplência ----------
-    for sid in ("ivgr_real_yoy", "rj_yoy", "fidc_inad_pct", "comprometimento", "reclamacoes_mediana"):
+    for sid in ("ivgr_real_yoy", "rj_yoy", "fidc_inad_pct", "cri_venc_pct", "cra_venc_pct", "emissoes_divida_yoy", "comprometimento", "reclamacoes_mediana"):
         sraw = [(x["p"], x["v"]) for x in series.get(sid, [])]
         if not sraw or not inad:
             continue
@@ -291,6 +321,7 @@ def build(con, cfg):
         "licencas": [
             {"fonte": "BCB/SGS, rdrweb", "status": "dados abertos", "uso": "integrado"},
             {"fonte": "CVM FIDC", "status": "dados abertos", "uso": "integrado"},
+            {"fonte": "CVM securitizadoras (CRI e CRA) e ofertas públicas", "status": "dados abertos", "uso": "integrado (05/09/2026) — página Crédito ampliado"},
             {"fonte": "CNJ/DataJud", "status": "API pública documentada", "uso": "integrado (8 tribunais)"},
             {"fonte": "Google Trends", "status": "coleta automatizada segue sem licença; exportação manual da interface oficial é uso pessoal legítimo", "uso": "integrado via carga manual (29/07/2026) — página Tendências de Busca"},
             {"fonte": "Consumidor.gov.br", "status": "download exige autenticação", "uso": "NÃO integrado"},

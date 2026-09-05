@@ -1131,3 +1131,63 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - **Travas:** `src/tests/rural-data.test.ts` (janela sem meses parciais,
   composições que fecham, reconciliação municipal × estadual dentro de 3%,
   ausência como nulo, piso do ranking por habitante, registro completo na SPA).
+
+## 43. Crédito ampliado e mercado de capitais (05/09/2026)
+
+- **Pergunta:** quanto do crédito a empresas e famílias vem dos bancos e quanto vem do
+  mercado; quanto se capta em ofertas públicas; como paga o lastro de CRI e CRA.
+  Painel nº 3 da avaliação de 05/09 (§6), P1 no backlog; resolve E13 (subíndice não
+  bancário com um componente).
+- **Fontes (três réguas, nunca somadas entre si):**
+  1. BCB/SGS, família "crédito ampliado ao setor não financeiro" (26 séries, códigos
+     28183 a 28217 e 28846 a 28868, mensal desde 2013-01, R$ milhões e % do PIB).
+     Chaves `amp_*` em `config/config.json`, coletadas pelo `bcb_sgs` existente.
+  2. CVM, ofertas públicas de distribuição: `oferta_distribuicao.zip` (5,6 MB) com dois
+     CSV sem sobreposição: regime anterior (ICVM 400, 476 e 555, 2008 a 2022, mais os
+     ritos ordinários da Res. 160) e rito automático da Res. 160 (2023 em diante).
+     Coletor `pipeline/sources/cvm_ofertas.py`, uma linha por oferta em `cvm_ofertas`.
+  3. CVM, informes mensais de securitizadoras (Res. 60): um zip por ano e por tipo
+     (CRI e CRA), desde 2019. Coletor `pipeline/sources/cvm_securit.py`: última versão
+     por certificado e mês em `securit_cert`; segmentos do lastro em `securit_seg`;
+     situação das séries em `securit_classe`. Ano corrente e anterior rebaixados a cada
+     execução; anos fechados uma vez.
+- **Builder:** `pipeline/ampliado.py` → `ampliado.json` (300 KB). Blocos `saldo`
+  (composição por credor e segmento, desintermediação das empresas dezembro a dezembro),
+  `emissoes` (12 meses fechados por família, anual, Res. 160 por público e regime de
+  distribuição, top emissores e coordenadores com HHI), `securitizacao` (CRI e CRA:
+  série de vencidos e atraso sobre créditos vinculados, segmentos, situação das séries),
+  `fidc` (já coletado). Aba `/observatorio/broad-credit`, chunk `emergentes`.
+- **Achados na primeira carga (05/09/2026):**
+  - Registros de fundos abertos (ICVM 555) trazem valores cadastrais absurdos (R$ 100
+    trilhões numa linha); ficam fora de todo total. Sem essa exclusão o regime anterior
+    somaria R$ 221 trilhões.
+  - Na Res. 160, ofertas em andamento ("Registro Concedido") carregam o teto registrado
+    (um FIAGRO com R$ 250 bilhões em 2026-08); só ofertas encerradas entram nos totais.
+    Debêntures encerradas: R$ 231 bi em 2023, R$ 481 bi em 2024, R$ 457 bi em 2025,
+    compatíveis com o consolidado da ANBIMA.
+  - CRI: o campo de créditos vinculados só vem preenchido a partir de 2022-07; a série
+    começa ali. CRA informa desde 2019-09.
+  - Erro de unidade nos informes: em 2026-06 uma securitizadora enviou créditos mil
+    vezes maiores (R$ 87,6 bi num certificado que tinha R$ 88 mi em maio). Regra: salto
+    acima de 50 vezes entre meses consecutivos, vencido maior que o crédito, ou todo o
+    crédito marcado vencido num único mês (zero antes e depois) exclui o certificado do
+    mês, com contagem publicada.
+  - Entrega parcial: o último mês dos informes chega com 70% dos certificados (CRI
+    2026-07: 1.686 de 2.332) e o do FIDC com 15% dos fundos (2026-08: 625 de 4.188).
+    Mês com menos de 90% do mês anterior é parcial e fica fora de KPI e de z-score. O
+    mês parcial do FIDC era o que puxava o subíndice não bancário a +3,33σ (E13).
+- **Sinais Antecedentes:** a família não bancária passa de um para quatro componentes
+  (`fidc_inad_pct`, `cri_venc_pct`, `cra_venc_pct`, `emissoes_divida_yoy`, este com sinal
+  invertido: queda de emissões é aperto). Um mês só entra no subíndice com pelo menos
+  metade dos componentes presentes. `leading.json` é regenerado pela execução diária;
+  não foi republicado à mão porque a silver local não tem todas as fontes do painel.
+- **Vintages e vigília:** `cvm_ofertas` (último mês com oferta encerrada, prazo 45 dias)
+  e `securit` (último mês com informe, prazo 90 dias) em `meta.vintages`.
+- **Travas:** `src/tests/ampliado-data.test.ts` (composição do saldo fecha, janela de 12
+  meses fechados, anual = soma do mensal, razões entre 0 e 100, parciais fora dos KPIs,
+  família não bancária com quatro componentes, aba registrada em todos os mapas).
+- **Pendências:** colocação efetiva das ofertas da Res. 160 não é publicada oferta a
+  oferta (o painel usa o valor registrado e diz isso); consórcio de distribuição não é
+  aberto (só o líder entra no HHI); CDA de fundos (quem detém CDB e LF de quais bancos)
+  segue no backlog como painel de funding.
+

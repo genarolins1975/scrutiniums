@@ -27,6 +27,7 @@ state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
 state.jud = { ramo: "civel", ordem: "bruto" };
+state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
 state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
   gmet: "q_hab", gpersp: "pag", setor: null, munq: "" };
@@ -40,7 +41,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -214,7 +215,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.87.0";
+const APP_VERSION = "0.88.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -257,6 +258,7 @@ const VIEW_DATA = {
   presmun: ["presenca_mun"],
   regulacao: ["regulacao"],
   rural: ["rural", "rural_mun", "penetracao_malha"],
+  ampliado: ["ampliado"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -1215,9 +1217,10 @@ function renderLeading() {
       `<div class="ov-2col-eq">${leadSignalChart(L, "rj_yoy")}${leadSignalChart(L, "falencias_yoy")}</div>
       <div class="note">Dívida ativa da PGFN (estresse fiscal por CNAE/UF): <b>fase 2</b> — arquivos de 1,3 GB/trimestre exigem janela dedicada de processamento (viabilidade confirmada, licença ok). A inscrição em dívida ativa é sinal de pressão fiscal ou de conformidade, não declaração de insolvência. Séries completas de RJ (funil, marcos, fichas): aba <a href="/observatorio/recoveries" onclick="nav('rj');return false">Recuperações &amp; Falências</a>.</div>`;
   } else if (t === "naobancario") {
-    body = sechead("O crédito originado fora dos bancos deteriora primeiro?", "CVM — informes mensais de ~4 mil FIDCs (R$ 990 bi)") +
-      `<div class="ov-2col-eq">${leadSignalChart(L, "fidc_inad_pct")}${leadSignalChart(L, "inad_total")}</div>
-      <div class="note"><b>Atraso ≠ perda:</b> subordinação e garantias absorvem parte da inadimplência dos FIDCs, e as estruturas são heterogêneas — não somamos estruturas incompatíveis nem inferimos perda do atraso. Próximos passos (backlog): abertura por segmento de recebível, captação/resgate e proteção subordinada.</div>`;
+    body = sechead("O crédito originado fora dos bancos deteriora primeiro?", "CVM — informes mensais de FIDCs, de securitizadoras (CRI e CRA) e ofertas públicas de dívida") +
+      `<div class="ov-2col-eq">${leadSignalChart(L, "fidc_inad_pct")}${leadSignalChart(L, "cri_venc_pct")}${leadSignalChart(L, "cra_venc_pct")}${leadSignalChart(L, "emissoes_divida_yoy")}${leadSignalChart(L, "inad_total")}</div>
+      <div class="note"><b>Atraso ≠ perda:</b> subordinação e garantias absorvem parte da inadimplência de FIDCs, CRI e CRA, e as estruturas são heterogêneas — não somamos estruturas incompatíveis nem inferimos perda do atraso. Meses com entrega parcial dos informes e certificados com erro de unidade ficam fora das quatro séries.</div>
+      ${ponte("Saldo ampliado, emissões e lastro securitizado, em três réguas — Crédito ampliado e mercado de capitais", "ampliado", "amp-sec", "mesmas séries, com o estoque e a composição por trás de cada razão")}`;
   } else if (t === "consumidor") {
     body = sechead("Reclamações pressionam antes do atraso?", "BCB rdrweb — ranking trimestral") +
       `<div class="ov-2col-eq">${leadSignalChart(L, "reclamacoes_mediana", "<div class='src'>Histórico trimestral ainda curto para z-score do subíndice — série exibida sem normalização (declarado).</div>")}${leadSignalChart(L, "inad_total")}</div>
@@ -2859,7 +2862,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3064,6 +3067,10 @@ const GUIA = {
     importa: "É a maior política de crédito direcionado do país e o financiamento de uma safra que responde por parte relevante do PIB e das exportações; a Matriz do BCB mostra a contratação cédula a cédula, agregada por programa, fonte, faixa, gênero, instituição, produto e município.",
     ler: "Tudo aqui é contratação (fluxo), pela data de emissão da cédula: leia por safra (julho a junho) e pela janela de 12 meses fechada no último mês completo. Os dois meses mais recentes são parciais e ficam marcados. Custeio segue o calendário de plantio; investimento é mais estável.",
     nao: "Contratação não é saldo nem inadimplência: a carteira rural do sistema está no IF.data e no SGS, em outra régua. Valor por habitante mede intensidade, não acesso; o recorte por gênero cobre só pessoas físicas; instituições aparecem pelo CNPJ contratante, não por conglomerado." },
+  ampliado: { q: "Quanto do crédito vem dos bancos, e quanto vem do mercado?",
+    importa: "O crédito bancário é só uma parte da dívida de empresas e famílias: debêntures, notas comerciais, CRI, CRA, cotas de FIDC e dívida externa completam o quadro. Quem lê só o SFN subestima a alavancagem das empresas em um terço e não vê a desintermediação em curso.",
+    ler: "Três réguas separadas: o saldo ampliado do BCB (estoque devido, em % do PIB), as ofertas registradas na CVM (fluxo por família de ativo, em 12 meses fechados) e o lastro de CRI e CRA (estoque por certificado, com o que está vencido). Leia participação e variação de 12 meses; o mês corrente das ofertas e o último mês dos informes são parciais e ficam marcados.",
+    nao: "Saldo, emissão e lastro não se somam nem se dividem entre si. O valor das ofertas é o registrado, não o colocado. Vencido e em atraso no lastro não são perda: subordinação e garantias absorvem parte, e as estruturas não se comparam." },
   presmun: { q: "Que presença bancária física existe neste município?",
     importa: "Agência, posto e correspondente são três formas de presença com serviços diferentes; a página diz com todas as letras o que não existe no município.",
     ler: "A classe do município resume o ponto mais completo disponível; os números vêm do cadastro do BCB na posição declarada.",
@@ -3396,7 +3403,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -7931,6 +7938,204 @@ function renderJuros() {
   el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec;
 }
 
+
+/* ---------- Crédito ampliado e mercado de capitais ---------- */
+/* Três réguas declaradas: saldo (SGS, estoque), emissões (CVM, fluxo registrado) e
+   lastro securitizado (CVM, estoque por certificado). Nada aqui soma uma régua com a
+   outra; cada seção diz de qual delas fala. */
+const AMP_SEG = { ef: "Empresas e famílias", pj: "Empresas", pf: "Famílias" };
+const AMP_CURTO = { sfn: "SFN", osf: "outras soc. fin.", fg: "fundos gov.", tit: "títulos privados", sec: "securitização", ext: "dívida externa" };
+function ampSet(k, v) { state.amp[k] = v; renderAmpliado(); }
+function renderAmpliado() {
+  const el = document.getElementById("view-ampliado");
+  const A = state.data.ampliado;
+  if (!A) { el.innerHTML = loadingCard("crédito ampliado"); return; }
+  if (!A.disponivel) {
+    el.innerHTML = pageHead({ title: "Crédito ampliado e mercado de capitais", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${A.motivo || A.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.amp;
+  const S = A.saldo || {}, E = A.emissoes || {}, X = A.securitizacao || {}, FI = A.fidc || {};
+  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+  const tri = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 2) + " tri";      // SGS: R$ milhões
+  const biM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e3, 0) + " bi";       // SGS: R$ milhões
+  const biR = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";       // CVM: R$
+  const brl = v => v == null ? "–" : fmt.money(v);
+  const kEF = S.disponivel ? S.kpis.ef : null, kPJ = S.disponivel ? S.kpis.pj : null;
+  const kE = E.disponivel ? E.kpis : null;
+  const bCRI = X.disponivel ? X.blocos.cri : null, bCRA = X.disponivel ? X.blocos.cra : null;
+  const rotulosFim = window.innerWidth > 640;   // no celular os rótulos de ponta saem do cartão; a legenda basta
+
+  const head = pageHead({
+    title: "Crédito ampliado e mercado de capitais", vintage: S.mes,
+    seals: `${badge("observado", "SGS: saldos oficiais; CVM: registros administrativos oferta a oferta e informes por certificado")} ${badge("calculado", "participações, variações de 12 meses, somas móveis, HHI e razões de lastro calculados")}`,
+    desc: "Quanto empresas e famílias devem, a quem, e quanto se capta fora dos bancos: o saldo ampliado do BCB, as ofertas públicas registradas na CVM e o lastro dos certificados de recebíveis.",
+    fontes: "BCB/SGS (crédito ampliado) · CVM (ofertas públicas; informes de securitizadoras; informes de FIDC)",
+    actions: `<button class="btn ghost small" onclick="ampCSV()">baixar CSV (saldo ampliado por componente)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${A.sintese}</p>
+  <div class="src">Síntese determinística · saldo ${S.mes || "–"} · ofertas ${E.disponivel ? E.janela.ini + " a " + E.janela.fim : "–"} · lastro ${bCRI ? bCRI.mes : "–"}</div>`;
+
+  const placarHtml = placar([
+    { l: "Dívida de empresas e famílias", v: kEF ? tri(kEF.saldo) : "–", sub: kEF ? `${pct(kEF.pib_pct)} do PIB · ${fmt.pp(kEF.var_12m_pct)}% em 12 m` : "", href: "#amp-saldo" },
+    { l: "Parte que está no SFN", v: kEF ? pct(kEF.sfn_share) : "–", sub: kEF ? `empresas ${pct(kPJ.sfn_share)} · famílias ${pct(S.kpis.pf.sfn_share)}` : "", href: "#amp-desint" },
+    { l: "Ofertas encerradas (12 m)", v: kE ? biR(kE.valor_12m) : "–", sub: kE ? `${fmt.pp(kE.var_12m_pct)}% · dívida corporativa ${biR(kE.divida_corporativa_12m)}` : "", href: "#amp-emis" },
+    { l: "Lastro de CRI vencido", v: bCRI ? pct(bCRI.kpis.vencidos_pct, 2) : "–", sub: bCRI ? `${biR(bCRI.kpis.creditos)} em ${bCRI.mes}` : "", href: "#amp-sec" },
+    { l: "Lastro de CRA vencido", v: bCRA ? pct(bCRA.kpis.vencidos_pct, 2) : "–", sub: bCRA ? `${biR(bCRA.kpis.creditos)} em ${bCRA.mes}` : "", href: "#amp-sec" },
+  ]);
+
+  /* ---------- saldo: composição ---------- */
+  let saldo = "";
+  if (S.disponivel) {
+    const seg = F.seg in AMP_SEG ? F.seg : "ef";
+    const ser = S.series[seg] || [];
+    const comps = S.componentes.filter(c => ser.length && ser[ser.length - 1][c.id] != null);
+    const seriesS = comps.map(c => ({ pts: ser.map(p => ({ x: p.mes, y: F.vis === "share" ? (p[c.id] != null && p.total ? p[c.id] / p.total * 100 : null) : (p[c.id] != null ? p[c.id] / 1e6 : null) })).filter(q => q.y != null), color: c.cor, label: AMP_CURTO[c.id] || c.nome }));
+    const K = S.kpis[seg];
+    saldo = secWrap("amp-saldo", `${sechead("A quem empresas e famílias devem", `saldo de fim de mês · ${AMP_SEG[seg]} · ${S.mes}`)}
+    <div class="controls">
+      <span class="seg">${Object.entries(AMP_SEG).map(([v, l]) => `<button class="${seg === v ? "active" : ""}" onclick="ampSet('seg','${v}')">${l}</button>`).join("")}</span>
+      <span class="seg">${[["share", "participação"], ["valor", "R$ trilhões"]].map(([v, l]) => `<button class="${F.vis === v ? "active" : ""}" onclick="ampSet('vis','${v}')">${l}</button>`).join("")}</span>
+    </div>
+    <div class="grid g2">
+      <div class="card"><h4>${AMP_SEG[seg]}: ${F.vis === "share" ? "participação de cada credor" : "saldo por credor"} ${badge("observado")}</h4>
+        <div class="legend">${seriesS.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesS, h: 260, endLabels: rotulosFim, unit: F.vis === "share" ? "%" : "R$ tri", dec: F.vis === "share" ? 0 : 2, fonte: "BCB/SGS", status: "observado", aria: `composição do crédito ampliado, ${AMP_SEG[seg]}` })}
+        ${chartFooter({ fonte: "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS 28203 e família)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (A.gerado_em || "").slice(0, 10), unidade: F.vis === "share" ? "% do saldo do segmento" : "R$ trilhões, nominal", nota: "saldo de fim de mês; dívida externa convertida pelo câmbio de fim de período" })}
+      </div>
+      <div class="card"><h4>${AMP_SEG[seg]} em ${S.mes}: ${tri(K.saldo)} · ${pct(K.pib_pct)} do PIB ${badge("calculado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Credor</th><th style="text-align:right">Saldo</th><th style="text-align:right">Participação</th><th style="text-align:right">12 m</th></tr></thead>
+        <tbody>${K.componentes.map(c => `<tr><td><span class="sw" style="background:${c.cor};display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px"></span>${c.nome}</td><td style="text-align:right">${biM(c.valor)}</td><td style="text-align:right"><span class="abarwrap" style="display:inline-block;width:80px;vertical-align:middle"><span class="abar" style="width:${Math.max(1, c.share || 0)}%;background:${c.cor}"></span></span> ${pct(c.share, 1)}</td><td style="text-align:right" class="${c.var_12m_pct > 0 ? "up" : c.var_12m_pct < 0 ? "down" : ""}">${c.var_12m_pct != null ? fmt.pp(c.var_12m_pct) + "%" : "–"}</td></tr>`).join("")}
+        <tr><td><b>Total</b></td><td style="text-align:right"><b>${biM(K.saldo)}</b></td><td style="text-align:right">100%</td><td style="text-align:right">${fmt.pp(K.var_12m_pct)}%</td></tr></tbody></table></div>
+        <p class="src">Setor não financeiro inteiro (com governo geral): ${tri(S.total_setor_nao_financeiro)}, ${pct(S.total_pib_pct)} do PIB; governo geral ${tri(S.governo_geral)}. ${S.nota}</p>
+      </div>
+    </div>`);
+  }
+
+  /* ---------- desintermediação das empresas ---------- */
+  let desint = "";
+  if (S.disponivel) {
+    const D = S.desintermediacao_empresas || [];
+    const serPJ = S.series.pj || [];
+    const linhas = [["sfn", "SFN", "#1d4e89"], ["tit", "títulos privados", "#b45309"], ["sec", "securitização", "#2f7d4f"], ["ext", "dívida externa", "#8d5a2b"]];
+    const seriesD = linhas.map(([k, l, cor]) => ({ pts: serPJ.map(p => ({ x: p.mes, y: p[k] != null && p.total ? p[k] / p.total * 100 : null })).filter(q => q.y != null), color: cor, label: l }));
+    desint = secWrap("amp-desint", `${sechead("Empresas: os bancos perdem espaço para o mercado?", `participação de cada credor no crédito ampliado a empresas · ${S.mes}`)}
+    <div class="grid g2">
+      <div class="card"><div class="legend">${seriesD.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesD, h: 240, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "BCB/SGS", status: "calculado", aria: "participação dos credores no crédito a empresas" })}
+        <p class="src">Participação = saldo do credor ÷ saldo ampliado a empresas. A dívida externa oscila com o câmbio: uma queda de participação pode ser só o real mais forte.</p></div>
+      <div class="card"><h4>Dezembro a dezembro ${badge("calculado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Mês</th><th style="text-align:right">SFN</th><th style="text-align:right">Títulos privados</th><th style="text-align:right">Securitização</th><th style="text-align:right">Dívida externa</th></tr></thead>
+        <tbody>${D.slice(-9).map(d => `<tr><td>${d.mes}${d.parcial ? " <span class='src'>(último mês)</span>" : ""}</td><td style="text-align:right">${pct(d.sfn_share, 1)}</td><td style="text-align:right">${pct(d.titulos_share, 1)}</td><td style="text-align:right">${pct(d.sec_share, 1)}</td><td style="text-align:right">${pct(d.externo_share, 1)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">Famílias, ao contrário, devem ${pct(S.kpis.pf.sfn_share)} ao SFN: o mercado de capitais quase não chega ao crédito pessoal (securitização ${pct(S.kpis.pf.mercado_share, 1)}).</p>
+        ${ponte("O saldo bancário por modalidade, com juros e inadimplência — Pulso do crédito", "pulse", null, "muda de régua: lá é só o SFN (SGS de crédito); aqui o SFN é um dos seis credores")}</div>
+    </div>`);
+  }
+
+  /* ---------- emissões ---------- */
+  let emis = "";
+  if (E.disponivel) {
+    const fams = E.por_familia || [];
+    const famMax = fams.length ? fams[0].valor : 1;
+    const ser = E.serie_mensal || [];
+    const anual = (E.anual || []).filter(a => a.ano >= "2012");
+    const chaves = F.emis === "grupo"
+      ? [["divida_corporativa", "dívida corporativa (debêntures e notas)", "#b45309"], ["securitizacao", "securitização (CRI, CRA, FIDC)", "#2f7d4f"], ["Ações", "ações", "#1d4e89"], ["Cotas de FII e FIAGRO", "FII e FIAGRO", "#6b46a3"]]
+      : fams.slice(0, 6).map((f, i) => [f.familia, f.familia, ["#1d4e89", "#b45309", "#2f7d4f", "#6b46a3", "#0e7c7b", "#8d5a2b"][i]]);
+    // soma móvel de 12 meses: tira a sazonalidade e o ruído de oferta grande
+    const mov = (k) => ser.map((p, i) => ({ x: p.mes, y: i >= 11 ? ser.slice(i - 10, i + 1).concat([p]).reduce((a, q) => a + (q[k] || 0), 0) / 1e9 : null })).filter(q => q.y != null);
+    const seriesE = chaves.map(([k, l, cor]) => ({ pts: mov(k), color: cor, label: l }));
+    const R = E.res160 || {};
+    const DC = E.divida_corporativa || {};
+    emis = secWrap("amp-emis", `${sechead("Quanto se capta no mercado de capitais", `ofertas públicas encerradas · ${E.janela.ini} a ${E.janela.fim} · ${fmt.n0(kE.n_12m)} ofertas`)}
+    <div class="controls"><span class="seg">${[["familia", "por família de ativo"], ["grupo", "dívida × securitização × ações"]].map(([v, l]) => `<button class="${F.emis === v ? "active" : ""}" onclick="ampSet('emis','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="grid g2">
+      <div class="card"><h4>Soma móvel de 12 meses ${badge("calculado")}</h4>
+        <div class="legend">${seriesE.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesE, h: 250, endLabels: false, unit: "R$ bi", dec: 0, fonte: "CVM", status: "calculado", aria: "ofertas públicas, soma móvel de 12 meses" })}
+        ${chartFooter({ fonte: "CVM — ofertas públicas de distribuição (regime anterior e Res. 160)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (A.gerado_em || "").slice(0, 10), unidade: "R$ bilhões, nominal, soma de 12 meses", nota: "valor registrado da oferta encerrada (Res. 160) ou valor total (regime anterior); fundos abertos ICVM 555 fora; o mês corrente é parcial" })}
+      </div>
+      <div class="card"><h4>Últimos 12 meses, por família ${badge("observado")}</h4>
+        ${fams.filter(f => f.valor > 0).map(f => `<div class="atrasorow"><span class="aname">${f.familia} <span class="src">${fmt.n0(f.n)} ofertas</span></span>
+          <span class="abarwrap"><span class="abar" style="width:${Math.max(2, f.valor / famMax * 100)}%"></span></span>
+          <span class="anum">${biR(f.valor)} <span class="src">${pct(f.share, 1)}${f.var_12m_pct != null ? " · " + fmt.pp(f.var_12m_pct) + "%" : ""}</span></span></div>`).join("")}
+        <p class="src">Variação sobre os 12 meses anteriores (${E.janela_anterior.ini} a ${E.janela_anterior.fim}). ${E.nota}</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h4>Ano a ano ${badge("observado")}</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Total</th><th style="text-align:right">Dívida corporativa</th><th style="text-align:right">Securitização</th><th style="text-align:right">Ofertas</th></tr></thead>
+        <tbody>${anual.slice(-10).map(a => `<tr><td>${a.ano}${a.incompleto ? ` <span class="src">(${a.meses} meses)</span>` : ""}</td><td style="text-align:right"><b>${biR(a.total)}</b></td><td style="text-align:right">${biR(a.divida_corporativa)}</td><td style="text-align:right">${biR(a.securitizacao)}</td><td style="text-align:right">${fmt.n0(a.n)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">2023 é o ano da troca de regime (Res. 160): os ritos ordinários seguem no arquivo antigo e os automáticos no novo; os dois entram, sem sobreposição.</p></div>
+      <div class="card"><h4>Rito automático da Res. 160 em 12 meses: quem compra e como se distribui ${badge("observado")}</h4>
+        ${(R.publico_alvo || []).map(p => `<div class="contrib"><span class="lbl" style="width:130px">${p.publico}</span><span class="bar pos" style="width:${Math.min(110, (p.share || 0) * 1.1)}px"></span><span class="num">${pct(p.share, 1)} <span class="src">(${fmt.n0(p.n)})</span></span></div>`).join("")}
+        <div style="margin-top:8px">${(R.regime_distribuicao || []).map(p => `<div class="contrib"><span class="lbl" style="width:130px">${p.regime}</span><span class="bar" style="width:${Math.min(110, (p.share || 0) * 1.1)}px;background:#b45309"></span><span class="num">${pct(p.share, 1)}</span></div>`).join("")}</div>
+        <p class="src">Debêntures no rito automático: ${biR((R.debentures || {}).valor)} em ${fmt.n0((R.debentures || {}).n)} ofertas; ${pct((R.debentures || {}).incentivadas_share, 1)} do valor com incentivo fiscal (Lei 12.431) e ${pct((R.debentures || {}).sustentaveis_share, 1)} com rótulo sustentável. Em andamento (fora dos totais): ${fmt.n0((R.em_andamento || {}).n)} ofertas, ${biR((R.em_andamento || {}).valor_registrado)} registrados.</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><h4>Quem mais emitiu dívida corporativa (12 m) ${badge("observado")}</h4>
+        <div class="src" style="margin-bottom:6px">${fmt.n0(DC.emissores_distintos)} emissores · ${biR(DC.valor)} em ${fmt.n0(DC.n)} ofertas</div>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>Emissor</th><th style="text-align:right">Ofertas</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th></tr></thead>
+        <tbody>${(DC.top_emissores || []).map((x, i) => `<tr><td>${i + 1}</td><td><b>${x.nome}</b></td><td style="text-align:right">${fmt.n0(x.n)}</td><td style="text-align:right">${biR(x.valor)}</td><td style="text-align:right">${pct(x.share, 1)}</td></tr>`).join("")}</tbody></table></div></div>
+      <div class="card"><h4>Quem coordena ${badge("calculado", "HHI sobre a participação dos coordenadores líderes")}</h4>
+        <div class="src" style="margin-bottom:6px">${fmt.n0(DC.n_lideres)} coordenadores líderes · top-5 ${pct(DC.top5_lideres_share)} · ${termo("hhi", "HHI")} ${fmt.n0(DC.hhi_lideres)}</div>
+        ${(DC.top_lideres || []).map(x => `<div class="contrib"><span class="lbl" style="width:170px">${x.nome}</span><span class="bar pos" style="width:${Math.min(110, (x.share || 0) * 1.1)}px"></span><span class="num">${pct(x.share, 1)}</span></div>`).join("")}
+        <p class="src">Só o coordenador líder de cada oferta: o consórcio de distribuição não é aberto na base. HHI acima de 1.500 é concentração moderada; acima de 2.500, alta.</p></div>
+    </div>`);
+  }
+
+  /* ---------- securitização ---------- */
+  let sec = "";
+  if (X.disponivel) {
+    const t = F.sec === "cra" && X.blocos.cra ? "cra" : (X.blocos.cri ? "cri" : "cra");
+    const B = X.blocos[t];
+    const ser = (B.serie || []).filter(p => p.creditos);
+    const seriesX = [{ pts: ser.map(p => ({ x: p.mes, y: p.vencidos_pct })), color: "#b45309", label: "vencidos" }, { pts: ser.map(p => ({ x: p.mes, y: p.atraso_pct })), color: "#1d4e89", label: "a vencer com atraso" }];
+    const parc = ser.filter(p => p.parcial);
+    const segMax = B.segmentos.length ? B.segmentos[0].valor : 1;
+    const outro = t === "cri" ? X.blocos.cra : X.blocos.cri;
+    sec = secWrap("amp-sec", `${sechead("O lastro de CRI e CRA está pagando?", `informes mensais das securitizadoras · ${B.nome} ${B.mes} · ${fmt.n0(B.kpis.n_cert)} certificados`)}
+    <div class="controls"><span class="seg">${["cri", "cra"].filter(k => X.blocos[k]).map(k => `<button class="${t === k ? "active" : ""}" onclick="ampSet('sec','${k}')">${X.blocos[k].nome}</button>`).join("")}</span></div>
+    <div class="grid g2">
+      <div class="card"><h4>${B.nome}: créditos vinculados ${biR(B.kpis.creditos)} (${fmt.pp(B.kpis.var_12m_pct)}% em 12 m) ${badge("observado")}</h4>
+        <div class="legend">${seriesX.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesX, h: 220, endLabels: rotulosFim, unit: "%", dec: 2, fonte: "CVM", status: "calculado", annotations: parc.length ? [{ x: parc[0].mes, label: "mês parcial →", color: "#925d0b" }] : [], aria: `${B.nome}: vencidos e atraso sobre os créditos vinculados` })}
+        ${chartFooter({ fonte: "CVM — informes mensais de securitizadoras (Res. CVM 60)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (A.gerado_em || "").slice(0, 10), unidade: "% dos créditos vinculados, agregado do sistema", nota: `última versão de cada informe; ${B.excluidos_unidade_ultimo_mes} certificado(s) excluído(s) no último mês por informe inconsistente; meses parciais: ${(B.meses_parciais || []).join(", ") || "nenhum"}` })}
+        <p class="src">Há 12 meses os vencidos eram ${pct(B.kpis.vencidos_pct_12m_atras, 2)}. Redução ao valor recuperável (PDD): ${pct(B.kpis.pdd_pct, 2)} dos créditos.</p></div>
+      <div class="card"><h4>De onde vem o lastro (${B.mes}) ${badge("observado")}</h4>
+        ${B.segmentos.map(sg => `<div class="atrasorow"><span class="aname">${sg.segmento}</span><span class="abarwrap"><span class="abar" style="width:${Math.max(2, sg.valor / segMax * 100)}%;background:#2f7d4f"></span></span><span class="anum">${biR(sg.valor)} <span class="src">${pct(sg.share, 1)}</span></span></div>`).join("")}
+        <h4 style="margin-top:12px">Séries em circulação, por situação</h4>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Situação</th><th style="text-align:right">Séries</th><th style="text-align:right">%</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th></tr></thead>
+        <tbody>${B.series_situacao.map(x => `<tr><td>${x.situacao}</td><td style="text-align:right">${fmt.n0(x.n)}</td><td style="text-align:right">${pct(x.share_n, 1)}</td><td style="text-align:right">${biR(x.valor)}</td><td style="text-align:right">${pct(x.share_valor, 1)}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${X.nota}${outro ? ` ${outro.nome}: ${biR(outro.kpis.creditos)} em ${outro.mes}, ${pct(outro.kpis.vencidos_pct, 2)} vencidos.` : ""}</p></div>
+    </div>
+    ${FI.disponivel ? `<div class="card" style="margin-top:14px"><h4>FIDCs: ${fmt.n0(FI.kpis.n_fundos)} fundos, carteira ${biR(FI.kpis.carteira)}, ${pct(FI.kpis.inad_pct, 2)} vencidos inadimplentes (${FI.mes}) ${badge("observado")}</h4>
+      <div class="contrib"><span class="lbl" style="width:190px">inadimplentes ÷ carteira, mensal</span>${sparkline((FI.serie || []).filter(p => !p.parcial).map(p => p.inad_pct || 0), 220, 26)}<span class="num src">${FI.serie && FI.serie.length ? `${FI.serie[0].mes} → ${FI.mes}` : ""}</span></div>
+      <p class="src">${FI.nota}</p></div>` : ""}
+    ${ponte("Os quatro sinais do crédito não bancário, normalizados e defasados contra a inadimplência — Sinais Antecedentes", "leading", null, "lá cada série vira um z-score sobre a própria história; aqui está o nível e a composição")}`);
+  }
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("amp-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${A.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(A.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Cautelas</h5>${(A.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} ${Object.values(A.fontes || {}).map(f => `<a href="${attr(f.catalogo)}" target="_blank" rel="noopener">${f.nome}</a> (${f.licenca}; nível ${f.nivel})`).join(" · ")}.</p></div>`);
+
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#amp-saldo", "Saldo"], ["#amp-desint", "Empresas"], ["#amp-emis", "Emissões"], ["#amp-sec", "CRI e CRA"], ["#amp-metodo", "Método"]])
+    + saldo + desint + emis + sec + metodo;
+}
+window.ampCSV = () => {
+  const A = state.data.ampliado;
+  if (!A || !A.saldo || !A.saldo.disponivel) return;
+  const comps = A.saldo.componentes.map(c => c.id);
+  const linhas = [];
+  for (const seg of Object.keys(AMP_SEG)) for (const p of A.saldo.series[seg] || []) linhas.push([seg, p.mes, p.total, p.pib_pct, ...comps.map(c => p[c])]);
+  const head = `# Observatório Brasileiro de Crédito — crédito ampliado ao setor não financeiro, por credor\n# fonte: BCB/SGS (série 28203 e família), R$ milhões, saldo de fim de mês\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_credito_ampliado_${A.saldo.mes}.csv`, head + ["segmento", "mes", "total", "pib_pct", ...comps].join(";") + "\n" + linhas.map(l => l.map(csvEsc).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10154,10 +10359,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -10214,7 +10419,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

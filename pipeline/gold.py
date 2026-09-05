@@ -55,6 +55,7 @@ FONTE_ROTULO = {
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
     "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
+    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
     "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
     "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
@@ -725,6 +726,18 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("rural.json", {"disponivel": False, "error": str(e)})
     for _nome in ("penetracao", "moradia", "consignado", "rural"):
         separa_municipios(_nome)
+    # ---- Crédito ampliado e mercado de capitais (SGS + CVM ofertas + CVM securitizadoras) ----
+    try:
+        from pipeline import ampliado as amp_mod
+        r_amp = amp_mod.build(con, cfg)
+        common.write_gold("ampliado.json", r_amp)
+        if r_amp.get("disponivel"):
+            print(f"  [ampliado] saldo {r_amp['saldo'].get('mes')} · ofertas até {r_amp['emissoes'].get('ultimo_mes_com_oferta')} · "
+                  f"securitização {', '.join(b['mes'] for b in (r_amp['securitizacao'].get('blocos') or {}).values())}")
+        else:
+            print(f"  [ampliado] indisponível: {r_amp.get('motivo')}")
+    except Exception as e:
+        common.write_gold("ampliado.json", {"disponivel": False, "error": str(e)})
 
 
     from pipeline import central_alertas
@@ -753,6 +766,8 @@ def build_all(con, cfg, fetch_status):
         "trends": _vg("SELECT MAX(anomes) FROM trends_series WHERE anomes < '2026-07'"),
         "txjuros": _vg("SELECT MAX(fim) FROM taxas_inst"),
         "sicor": _vg("SELECT MAX(mes) FROM sicor_uf"),
+        "cvm_ofertas": _vg("SELECT MAX(mes) FROM cvm_ofertas WHERE status IN ('Encerrada/registrada','Oferta Encerrada')"),
+        "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
