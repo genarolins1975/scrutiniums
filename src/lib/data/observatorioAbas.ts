@@ -199,6 +199,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "openfinance.json",
   },
   {
+    view: "conduta",
+    caminho: "/conduct-enforcement",
+    titulo: "Conduta e enforcement",
+    descricao:
+      "Processos administrativos sancionadores do Banco Central e da CVM, penalidades, multas, inabilitações e recursos, mais o índice de reclamações, lidos como fluxo do sistema, sem ranking por instituição.",
+    gold: "conduta.json",
+  },
+  {
     view: "bets",
     caminho: "/bets-financial-risk",
     titulo: "Bets e risco financeiro",

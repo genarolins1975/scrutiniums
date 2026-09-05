@@ -1356,3 +1356,47 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   ato do BCB (Sisbacen, texto) fica fora da Fase 0; a série do cadastro com nomes
   cresce daqui em diante.
 
+## 48. Conduta e enforcement (05/09/2026)
+
+- **Pergunta:** como o supervisor pune, em quanto tempo, com que penalidade e se a multa
+  é paga. Painel nº 6 da avaliação de 05/09 (§6), P3 no backlog, com a regra editorial
+  já fixada lá: nunca ranking por instituição.
+- **Fontes (três réguas, nunca somadas):**
+  1. BCB/Gepad, API Olinda: `Gepad_QuadroPenalidades` (penalidades aplicadas em PAS,
+     uma linha por apenado e decisão, 1ª e 2ª instâncias, multa, recurso, situação da
+     cobrança; 16.939 linhas, decisões desde 2013-01) e `Gepad_QuadrosGeraisInternet`
+     (inabilitados e proibidos de atuar vigentes). Coletor
+     `pipeline/sources/bcb_pas.py`: acervo inteiro substituído a cada coleta, chave
+     posicional (a mesma pessoa pode ter mais de uma penalidade na mesma decisão),
+     hash evita regravar.
+  2. CVM, dados abertos `processo_sancionador.zip` (processo: objeto, abertura, área
+     instrutora, fase, subfase, local, última movimentação; acusados: nome e situação).
+     Coletor `pipeline/sources/cvm_pas.py`. A base traz a fase, não o resultado.
+  3. Ranking de reclamações do BCB, já coletado (`reclamacoes`): mediana e p90 do índice
+     entre as instituições, sem nome.
+- **Builder:** `pipeline/conduta.py` → `conduta.json` (41 KB): BCB ano a ano (processos,
+  decisões, multas e valor, inabilitações, sem penalidade, recursos, PJ e PF), janela de
+  12 meses com penalidades, situação e mediana e p90 das multas, cobrança das multas no
+  acervo, tempo entre citação e decisão (mediana e p90 nas decisões dos últimos 36
+  meses), inabilitados por prazo; CVM ano a ano, fases, áreas, duração dos finalizados,
+  idade dos em curso, acusados por processo; listas nominais só cronológicas. Aba
+  `/observatorio/conduct-enforcement` no grupo Riscos e temas, chunk `emergentes`.
+- **Achados na primeira carga (05/09/2026):** nos 12 meses até 2026-09-03 o BCB decidiu
+  1.295 processos (1.408 decisões por apenado), 94% com multa somando R$ 75,8 milhões,
+  mediana de R$ 25 mil e p90 também de R$ 25 mil (a maior parte é a multa padrão de descumprimento de prazo de
+  remessa de informação); 89% das multas do acervo estão pagas, 5,5% transferidas para
+  cobrança, 1,3% vencidas e não pagas. Tempo mediano entre citação e decisão de 1ª
+  instância: 2,8 meses, p90 de 29 meses. CVM: 68 processos abertos em 12 meses, 251 em
+  curso com idade mediana de 23 meses (94 acima de 36), finalizados em 30 meses de
+  mediana.
+- **Regra editorial aplicada:** nenhuma lista ordenada por instituição, multa ou volume;
+  as listas nominais (decisões e processos recentes) são cronológicas; a página diz que
+  volume não é irregularidade e que multa aplicada não é multa paga.
+- **Travas:** `src/tests/conduta-data.test.ts` (janela coerente, penalidades somam as
+  decisões, cobrança soma 100, ano corrente parcial, listas cronológicas, fases da CVM
+  somam os processos, cautela da regra editorial, SPA sem ordenação por nome ou valor,
+  aba registrada).
+- **Pendências:** resultado dos julgamentos da CVM (absolvição, multa, termo de
+  compromisso) só em texto, fora da Fase 0; a série de reclamações depende da silver de
+  produção (vazia neste ambiente).
+

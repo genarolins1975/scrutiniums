@@ -55,7 +55,7 @@ FONTE_ROTULO = {
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
     "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
-    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus", "sfn_cadastro": "BCB/Unicad (instituições em funcionamento)",
+    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus", "sfn_cadastro": "BCB/Unicad (instituições em funcionamento)", "bcb_pas": "BCB/PAS (Gepad)", "cvm_pas": "CVM/Processos sancionadores",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
     "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
     "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
@@ -762,6 +762,17 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("ampliado.json", {"disponivel": False, "error": str(e)})
 
 
+    # ---- Conduta e enforcement (PAS do BCB e da CVM + índice de reclamações) ----
+    try:
+        from pipeline import conduta as conduta_mod
+        r_cd = conduta_mod.build(con, cfg)
+        common.write_gold("conduta.json", r_cd)
+        if r_cd.get("disponivel"):
+            print(f"  [conduta] BCB PAS até {r_cd['bcb'].get('ultima_decisao')} · CVM PAS até {r_cd['cvm'].get('ultima_abertura')}")
+        else:
+            print(f"  [conduta] indisponível: {r_cd.get('motivo')}")
+    except Exception as e:
+        common.write_gold("conduta.json", {"disponivel": False, "error": str(e)})
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
@@ -813,6 +824,8 @@ def build_all(con, cfg, fetch_status):
         "bndes": _vg("SELECT MAX(mes) FROM bndes_mensal WHERE tabela='des_porte'"),
         "focus": _vg("SELECT MAX(data) FROM focus_anual"),
         "sfn_cadastro": _vg("SELECT MAX(coletado_em) FROM sfn_sedes"),
+        "bcb_pas": _vg("SELECT MAX(decisao1_data) FROM bcb_pas_decisao"),
+        "cvm_pas": _vg("SELECT MAX(ultima_mov) FROM cvm_pas_processo"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
