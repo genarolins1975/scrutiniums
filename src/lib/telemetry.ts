@@ -36,6 +36,7 @@ export const VIEW_SECTIONS = [
   "obs:operacional",
   "obs:rural",
   "obs:ampliado",
+  "obs:bndes",
   "obs:sugestoes",
   // Plataforma (páginas Next)
   "app:conta",
@@ -73,6 +74,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:operacional": "Observatório · Indicadores operacionais",
   "obs:rural": "Observatório · Crédito rural",
   "obs:ampliado": "Observatório · Crédito ampliado e mercado de capitais",
+  "obs:bndes": "Observatório · Crédito direcionado e BNDES",
   "obs:sugestoes": "Observatório · Sugestões",
   "app:conta": "Plataforma · Conta",
 };

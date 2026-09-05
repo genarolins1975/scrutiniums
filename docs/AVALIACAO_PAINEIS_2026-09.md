@@ -362,3 +362,31 @@ achados de qualidade da fonte e pendências: FONTES_OPERACIONAL §43.
 fora dos totais; só ofertas encerradas na Res. 160; certificados com erro de unidade ou
 informe inconsistente excluídos do mês; meses com entrega parcial marcados e fora de KPI.
 
+## 13. Painel novo: crédito direcionado e BNDES (05/09/2026, noite)
+
+Terceiro painel da lista do §6 (nº 2). Fecha a pergunta "quanto do crédito PJ é
+direcionado, para que setor e porte, e onde", com ponte para Crédito rural.
+
+**Evidência.** Desembolsos do Sistema BNDES entre 2025-04 e 2026-03: R$ 181 bilhões,
+33% acima dos 12 meses anteriores; 41% para micro, pequenas e médias, 33% para
+infraestrutura, 22% para agropecuária; 58% via agentes financeiros em 2025, com HHI de
+863 entre 60 agentes (BNDES dados abertos, consulta de 05/09/2026). Operações não
+automáticas entre 2025-07 e 2026-06: 1.484 contratos, R$ 83,8 bilhões, juros médio
+ponderado de 3,0% ao ano sobre o custo financeiro, TLP em 51% do valor. Passivo do BNDES
+em 2025-12: FAT 50%, patrimônio líquido 18%, fundos 14%, Tesouro 4%.
+
+**Inferência.** O crédito do BNDES voltou a crescer em ritmo de dois dígitos, puxado por
+grandes empresas (52% em 12 meses) e infraestrutura; o Sul recebe mais por habitante que
+o Sudeste porque máquinas agrícolas e cooperativas de crédito como agentes pesam.
+
+**O que foi construído.** Um coletor (18 tabelas do catálogo CKAN e as operações não
+automáticas), 19 séries do SGS, o builder `pipeline/bndes.py`, a aba
+`/observatorio/directed-credit-bndes` em sete seções (saldo direcionado, desembolsos e
+funil, para quem e para quê, onde, agentes e funding, contratos, método) e as travas.
+Detalhe operacional e achados: FONTES_OPERACIONAL §44.
+
+**O que ficou declarado em vez de resolvido.** O bloco de saldo direcionado depende de
+19 séries do SGS que a API do BCB não serviu em 05/09 (HTTP 502 por horas); o pipeline
+diário as coleta e a seção abre sozinha. Não há mapa municipal: dois terços do valor das
+operações não automáticas não têm município único, e as automáticas ficam fora da base.
+

@@ -55,7 +55,7 @@ FONTE_ROTULO = {
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
     "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
-    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)",
+    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
     "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
     "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
@@ -726,6 +726,18 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("rural.json", {"disponivel": False, "error": str(e)})
     for _nome in ("penetracao", "moradia", "consignado", "rural"):
         separa_municipios(_nome)
+    # ---- Crédito direcionado e BNDES (SGS direcionado + dados abertos do BNDES) ----
+    try:
+        from pipeline import bndes as bndes_mod
+        r_bn = bndes_mod.build(con, cfg)
+        common.write_gold("bndes.json", r_bn)
+        if r_bn.get("disponivel"):
+            print(f"  [bndes] desembolsos até {r_bn['desembolsos'].get('mes')} · saldo direcionado {r_bn['saldo'].get('mes')} · "
+                  f"operações até {r_bn['operacoes'].get('ultimo_mes')}")
+        else:
+            print(f"  [bndes] indisponível: {r_bn.get('motivo')}")
+    except Exception as e:
+        common.write_gold("bndes.json", {"disponivel": False, "error": str(e)})
     # ---- Crédito ampliado e mercado de capitais (SGS + CVM ofertas + CVM securitizadoras) ----
     try:
         from pipeline import ampliado as amp_mod
@@ -768,6 +780,7 @@ def build_all(con, cfg, fetch_status):
         "sicor": _vg("SELECT MAX(mes) FROM sicor_uf"),
         "cvm_ofertas": _vg("SELECT MAX(mes) FROM cvm_ofertas WHERE status IN ('Encerrada/registrada','Oferta Encerrada')"),
         "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
+        "bndes": _vg("SELECT MAX(mes) FROM bndes_mensal WHERE tabela='des_porte'"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
