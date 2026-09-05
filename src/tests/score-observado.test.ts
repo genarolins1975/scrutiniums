@@ -18,8 +18,9 @@ describe("score setorial 100% observado", () => {
   it("o pipeline soma apenas componentes observados e declara a renormalização", () => {
     expect(indPy).toMatch(/APENAS componentes observados/);
     expect(indPy).toMatch(/if c\["status"\] == "observado"/);
-    expect(indPy).toMatch(/"peso": 0\.69/);
-    expect(indPy).toMatch(/"peso": 0\.31/);
+    // pesos originais declarados e renormalizados sobre os observados (0,45/0,20/0,15 → 0,56/0,25/0,19 com o Caged; 0,69/0,31 sem ele)
+    expect(indPy).toMatch(/PESOS_SCORE = \{"atividade": 0\.45, "condicoes_credito": 0\.20, "capacidade_financeira": 0\.15\}/);
+    expect(indPy).toMatch(/peso = \{k: round\(PESOS_SCORE\[k\] \/ soma_pesos, 4\) for k in observados\}/);
   });
 
   it("no gold, todo componente demonstrativo tem peso zero e contribuição zero", () => {

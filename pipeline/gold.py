@@ -118,7 +118,19 @@ def build_all(con, cfg, fetch_status):
     common.write_gold("ibcc.json", ibcc)
 
     # ---- Módulo 2: setores ----
-    sectors = build_sector_stress(con, cfg, RJ_DEMO)
+    # ---- Emprego formal setorial (Novo Caged via SGS + Ipeadata por UF): antes do score setorial, que o consome ----
+    try:
+        from pipeline import emprego as emprego_mod
+        r_emp = emprego_mod.build(con, cfg)
+        common.write_gold("emprego.json", r_emp)
+        if r_emp.get("disponivel"):
+            print(f"  [emprego] estoque {r_emp['brasil']['estoque']:,.0f} em {r_emp['mes']} · saldo 12m {r_emp['brasil']['saldo_12m']:+,.0f} · {len(r_emp['secoes_z'])} seções com z · {len(r_emp['ufs'] or [])} UFs")
+        else:
+            print(f"  [emprego] indisponível: {r_emp.get('motivo')}")
+    except Exception as e:
+        r_emp = {"disponivel": False, "error": str(e)}
+        common.write_gold("emprego.json", r_emp)
+    sectors = build_sector_stress(con, cfg, RJ_DEMO, r_emp if r_emp.get("disponivel") else None)
     common.write_gold("sectors.json", sectors)
 
     # ---- elasticidades empíricas (antes das instituições: alimentam a vulnerabilidade) ----
@@ -826,6 +838,7 @@ def build_all(con, cfg, fetch_status):
         "sfn_cadastro": _vg("SELECT MAX(coletado_em) FROM sfn_sedes"),
         "bcb_pas": _vg("SELECT MAX(decisao1_data) FROM bcb_pas_decisao"),
         "cvm_pas": _vg("SELECT MAX(ultima_mov) FROM cvm_pas_processo"),
+        "caged": _vg("SELECT MAX(mes) FROM caged_uf"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
