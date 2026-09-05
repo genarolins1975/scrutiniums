@@ -711,7 +711,19 @@ def build_all(con, cfg, fetch_status):
         common.write_gold(f"{nome}_mun.json", {"municipios": muns})
         common.write_gold(f"{nome}.json", g)
         print(f"  [{nome}] municípios separados: {len(muns)} em {nome}_mun.json")
-    for _nome in ("penetracao", "moradia", "consignado"):
+    # ---- Crédito rural (MDCR/Sicor): depende de penetracao_mun.json para população e nomes ----
+    try:
+        from pipeline import rural as rural_mod
+        r_ru = rural_mod.build(con, cfg)
+        common.write_gold("rural.json", r_ru)
+        if r_ru.get("disponivel"):
+            print(f"  [rural] {r_ru['janela']['ini']} a {r_ru['janela']['fim']}: R$ {r_ru['kpis']['valor_12m'] / 1e9:.1f} bi, "
+                  f"{(r_ru.get('municipios_meta') or {}).get('com_contratacao')} municípios")
+        else:
+            print(f"  [rural] indisponível: {r_ru.get('motivo')}")
+    except Exception as e:
+        common.write_gold("rural.json", {"disponivel": False, "error": str(e)})
+    for _nome in ("penetracao", "moradia", "consignado", "rural"):
         separa_municipios(_nome)
 
 
@@ -740,6 +752,7 @@ def build_all(con, cfg, fetch_status):
         "datajud": _vg("SELECT MAX(ref_date) FROM series_obs WHERE key='recuperacao_judicial_agregado'"),
         "trends": _vg("SELECT MAX(anomes) FROM trends_series WHERE anomes < '2026-07'"),
         "txjuros": _vg("SELECT MAX(fim) FROM taxas_inst"),
+        "sicor": _vg("SELECT MAX(mes) FROM sicor_uf"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}

@@ -326,3 +326,9 @@ Aplicado no mesmo dia, na branch desta avaliação, com a suíte de testes esten
 | P3 `alert()` e `javascript:void` | toast não bloqueante; 30 âncoras de navegação com a rota real no `href` |
 
 **Não executado nesta rodada, e por quê:** painéis com fonte nova (crédito rural, BNDES, ofertas CVM, PTC, Focus, entrantes do SFN, conduta, emprego setorial, funding) exigem coletores e uma rodada do pipeline contra as fontes; separar séries de resumos em `npl`, `market`, `juros` e `trends` exige rodada do pipeline para materializar e validar; a modularização do `app.js` em arquivos é refatoração estrutural sem ganho para o leitor no curto prazo; a exclusão dos três meses parciais do DataJud na projeção fica registrada como mudança de pipeline (o forecast produz pontos por origem e horizonte, e a exclusão simples deslocaria as datas da projeção; o tratamento certo é na origem, no `forecast_series`).
+
+## 11. Painel novo: crédito rural (05/09/2026, tarde)
+
+Construído o painel nº 1 da lista da seção 6: coletor `pipeline/sources/sicor.py` (MDCR/Sicor, OData), builder `pipeline/rural.py` (`rural.json` e `rural_mun.json`), aba `/observatorio/rural-credit` no grupo "Produtos e preços", guia didático, ponte com o produto rural do IF.data (fluxo × estoque), vigília de pane, testes (`rural-data.test.ts`) e registro em FONTES_OPERACIONAL §42.
+
+**Estado da fonte no dia:** a API respondeu em segundos pela manhã (medições na §42) e passou a devolver HTTP 504 na maior parte da tarde, inclusive em repouso e para o recurso nacional de 200 linhas. A carga inicial ficou incompleta na sessão. O gold publicado é um marcador honesto (`disponivel: false`, com o motivo na tela); o pipeline diário coleta com cap por execução, meses recentes primeiro, e o painel abre sozinho quando a janela de 12 meses fechados estiver completa. A renderização foi validada com um gold de teste local (dados reais de 2014 a 2016 com meses deslocados), nunca publicado.

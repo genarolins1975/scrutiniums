@@ -73,9 +73,9 @@ def frescor():
 # parada antes de acusar: periodicidade da fonte + a defasagem normal de
 # publicação + folga. Um 404 isolado é o mês ainda não publicado, não pane.
 COLETORES_ESSENCIAIS = ["bcb_sgs", "scr_data", "ifdata", "txjuros", "datajud", "djen",
-                        "pix_bcb", "estban", "b3_market", "desenrola", "operacional"]
+                        "pix_bcb", "estban", "b3_market", "desenrola", "operacional", "sicor"]
 PRAZO_VINTAGE_DIAS = {"sgs": 75, "scr": 75, "ifdata": 135, "txjuros": 45, "datajud": 75,
-                      "b3": 15, "trends": 120}
+                      "b3": 15, "trends": 120, "sicor": 75}
 
 
 def _fim_do_mes(vintage):

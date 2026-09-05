@@ -27,6 +27,7 @@ state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
 state.jud = { ramo: "civel", ordem: "bruto" };
+state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
 state.px = { modo: "nivel", val: "nominal", metr: "q", insts: ["Pix", "CartaoCredito", "CartaoDebito", "TED", "Boleto"],
   gmet: "q_hab", gpersp: "pag", setor: null, munq: "" };
 
@@ -39,7 +40,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -255,6 +256,7 @@ const VIEW_DATA = {
   operacional: ["operacional", "presenca_mun", "penetracao_malha", "folha_bancos"],
   presmun: ["presenca_mun"],
   regulacao: ["regulacao"],
+  rural: ["rural", "rural_mun", "penetracao_malha"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2857,7 +2859,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3058,6 +3060,10 @@ const GUIA = {
     importa: "Choques setoriais chegam ao balanço dos bancos pela carteira PJ; o cruzamento entre atividade (IBGE) e exposição (IF.data por CNAE) mostra onde o risco moraria se se materializasse.",
     ler: "O score compara o setor com a própria história (z-score), não com outros setores; a medida de atividade é a da pesquisa do IBGE correspondente (produção, volume de serviços ou de vendas).",
     nao: "Exposição elevada não significa perda; a inadimplência setorial não existe nas fontes públicas e não é estimada aqui." },
+  rural: { q: "Quanto crédito rural se contrata, com que dinheiro, para quem e onde?",
+    importa: "É a maior política de crédito direcionado do país e o financiamento de uma safra que responde por parte relevante do PIB e das exportações; a Matriz do BCB mostra a contratação cédula a cédula, agregada por programa, fonte, faixa, gênero, instituição, produto e município.",
+    ler: "Tudo aqui é contratação (fluxo), pela data de emissão da cédula: leia por safra (julho a junho) e pela janela de 12 meses fechada no último mês completo. Os dois meses mais recentes são parciais e ficam marcados. Custeio segue o calendário de plantio; investimento é mais estável.",
+    nao: "Contratação não é saldo nem inadimplência: a carteira rural do sistema está no IF.data e no SGS, em outra régua. Valor por habitante mede intensidade, não acesso; o recorte por gênero cobre só pessoas físicas; instituições aparecem pelo CNPJ contratante, não por conglomerado." },
   presmun: { q: "Que presença bancária física existe neste município?",
     importa: "Agência, posto e correspondente são três formas de presença com serviços diferentes; a página diz com todas as letras o que não existe no município.",
     ler: "A classe do município resume o ponto mais completo disponível; os números vêm do cadastro do BCB na posição declarada.",
@@ -3390,7 +3396,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -9198,6 +9204,229 @@ window.cgTira = cod => {
 };
 window.cgLimpa = () => { state.cg = { ...(state.cg || {}), comp: [] }; renderConsignado(); };
 
+
+/* ================= CRÉDITO RURAL (MDCR/Sicor) ================= */
+const RU_METRICAS = {
+  valor_hab: { l: "Valor por habitante (12 m)", fmt: m => m.valor_hab != null ? "R$ " + fmt.n0(m.valor_hab) : "n.d." },
+  valor: { l: "Valor contratado (12 m)", fmt: m => m.valor != null ? fmt.money(m.valor) : "n.d." },
+  qtd: { l: "Contratos (12 m)", fmt: m => m.qtd ? fmt.n0(m.qtd) : "n.d." },
+  pronaf_share: { l: "Participação do PRONAF", fmt: m => m.pronaf_share != null ? fmt.n(m.pronaf_share, 0) + "%" : "n.d." },
+  agricola_share: { l: "Parte agrícola (vs. pecuária)", fmt: m => m.agricola_share != null ? fmt.n(m.agricola_share, 0) + "%" : "n.d." },
+  ticket: { l: "Valor médio por contrato", fmt: m => m.ticket != null ? "R$ " + fmt.n0(m.ticket) : "n.d." },
+};
+const RU_CORES = { custeio: "#1d4e89", investimento: "#0e7c7b", comercializacao: "#b45309", industrializacao: "#6b46a3", agricola: "#2f7d4f", pecuaria: "#8d5a2b" };
+window.ruSet = (k, v) => { state.ru[k] = v; renderRural(); };
+window.ruSel = cod => {
+  state.ru.sel = cod; renderRural();
+  setTimeout(() => { const n = document.getElementById("ru-perfil"); if (n) n.scrollIntoView({ behavior: "smooth", block: "start" }); }, 60);
+};
+function renderRural() {
+  const el = document.getElementById("view-rural");
+  const R = costuraMunicipios(state.data.rural, state.data.rural_mun);
+  if (!R) { el.innerHTML = loadingCard("crédito rural"); return; }
+  if (!R.disponivel) {
+    el.innerHTML = pageHead({ title: "Crédito rural", desc: "Painel indisponível nesta execução." }) +
+      `<div class="card"><p class="src">${R.motivo || R.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.ru;
+  const K = R.kpis;
+  const J = R.janela;
+  const malha = state.data.penetracao_malha;
+  const brl = v => v == null ? "–" : fmt.money(v);
+  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+
+  const head = pageHead({
+    title: "Crédito rural", vintage: R.mes_fechado,
+    seals: `${badge("observado", "MDCR/Sicor: contratações registradas, agregadas pelo BCB")} ${badge("calculado", "janela de 12 meses, safras, participações, valor por habitante e por hectare calculados")}`,
+    desc: "Quanto crédito rural se contrata no Brasil, com que dinheiro, por quais programas, para quem e onde — a Matriz de Dados do Crédito Rural do BCB, cédula a cédula, agregada por mês.",
+    fontes: "BCB MDCR/Sicor (dados abertos, ODbL) · IBGE Censo 2022 (população) · malha IBGE",
+    actions: `<button class="btn ghost small" onclick="ruCSV()">baixar CSV (municípios, 12 m)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${R.sintese}</p>
+  <div class="src">Síntese determinística · janela ${J.ini} a ${J.fim} (último mês fechado) · meses parciais: ${(R.meses_parciais || []).join(", ") || "nenhum"}</div>`;
+
+  const placarHtml = placar([
+    { l: "Valor contratado (12 m)", v: brl(K.valor_12m), sub: K.var_12m_pct != null ? `${fmt.pp(K.var_12m_pct)}% sobre os 12 m anteriores` : "", href: "#ru-evol" },
+    { l: "Contratos (12 m)", v: fmt.n0(K.contratos_12m), sub: `valor médio R$ ${fmt.n0(K.ticket_medio)}`, href: "#ru-faixas" },
+    { l: "Custeio no valor", v: pct(K.custeio_share), sub: `investimento ${pct(K.investimento_share)} · agrícola ${pct(K.agricola_share)}`, href: "#ru-evol" },
+    { l: "PRONAF no valor", v: pct(K.pronaf_share), sub: `fontes com taxa controlada ${pct(K.controlada_share)}`, href: "#ru-prog" },
+    { l: "Mulheres nos contratos (PF)", v: pct(K.mulheres_share_qtd), sub: `${pct(K.mulheres_share_valor)} do valor`, href: "#ru-quem" },
+  ]);
+
+  /* ---------- evolução ---------- */
+  const ser = R.serie_mensal || [];
+  const parc = ser.filter(p => p.parcial);
+  const fins = F.evol === "atividade"
+    ? [["agricola", "agrícola"], ["pecuaria", "pecuária"]]
+    : [["custeio", "custeio"], ["investimento", "investimento"], ["comercializacao", "comercialização"], ["industrializacao", "industrialização"]];
+  const medida = F.medida === "qtd" ? "qtd" : "valor";
+  const seriesEvol = medida === "qtd"
+    ? [{ pts: ser.map(p => ({ x: p.mes, y: p.qtd })), color: RU_CORES.custeio, label: "contratos/mês" }]
+    : fins.map(([k, l]) => ({ pts: ser.map(p => ({ x: p.mes, y: p[k] / 1e9 })), color: RU_CORES[k], label: l }));
+  const evol = secWrap("ru-evol", `${sechead("Como a contratação evolui mês a mês", `mensal desde ${ser.length ? fmt.my(ser[0].mes) : "–"} · ${medida === "qtd" ? "contratos" : "R$ bilhões"}`)}
+  <div class="controls">
+    <span class="seg">${[["finalidade", "por finalidade"], ["atividade", "agrícola × pecuária"]].map(([v, l]) => `<button class="${F.evol === v ? "active" : ""}" onclick="ruSet('evol','${v}')">${l}</button>`).join("")}</span>
+    <span class="seg">${[["valor", "valor"], ["qtd", "contratos"]].map(([v, l]) => `<button class="${medida === v ? "active" : ""}" onclick="ruSet('medida','${v}')">${l}</button>`).join("")}</span>
+  </div>
+  <div class="card">
+    <div class="legend">${seriesEvol.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+    ${lineChart({ series: seriesEvol, h: 260, endLabels: seriesEvol.length > 1, unit: medida === "qtd" ? "contratos" : "R$ bi", dec: medida === "qtd" ? 0 : 1,
+      annotations: parc.length ? [{ x: parc[0].mes, label: "meses parciais →", color: "#925d0b" }] : [],
+      fonte: "BCB MDCR/Sicor", status: "observado", aria: "contratação mensal de crédito rural" })}
+    <p class="src">O custeio segue o calendário do plantio (picos no segundo semestre); os meses marcados como parciais ainda recebem cédulas e sobem nas próximas publicações.</p>
+    ${chartFooter({ fonte: "BCB — Matriz de Dados do Crédito Rural (recurso RegiaoUF, agregado nacional)", periodo: ser.length ? `${fmt.my(ser[0].mes)}–${fmt.my(ser[ser.length - 1].mes)}` : "–", atualizado: (R.gerado_em || "").slice(0, 10), unidade: medida === "qtd" ? "cédulas" : "R$ bilhões, nominal", nota: "contratação pela data de emissão da cédula; sem deflação; meses parciais declarados" })}
+  </div>`);
+
+  /* ---------- safras ---------- */
+  const saf = (R.safras || []).slice(-12);
+  const safra = secWrap("ru-safra", `${sechead("Safra a safra", "ano agrícola: julho a junho")}
+  <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Safra</th><th style="text-align:right">Valor</th><th style="text-align:right">Contratos</th><th style="text-align:right">Custeio</th><th style="text-align:right">Investimento</th><th style="text-align:right">Comercialização</th><th style="text-align:right">Industrialização</th><th></th></tr></thead>
+  <tbody>${saf.map((x, i) => { const ant = saf[i - 1]; const v = ant && !ant.incompleta && !x.incompleta ? (x.valor / ant.valor - 1) * 100 : null;
+    return `<tr><td><b>${x.safra}</b>${x.incompleta ? ` <span class="src">(${x.meses} de 12 meses)</span>` : ""}</td><td style="text-align:right"><b>${brl(x.valor)}</b>${v != null ? ` <span class="src ${v >= 0 ? "down good" : "up"}">${fmt.pp(v)}%</span>` : ""}</td><td style="text-align:right">${fmt.n0(x.qtd)}</td><td style="text-align:right">${brl(x.custeio)}</td><td style="text-align:right">${brl(x.investimento)}</td><td style="text-align:right">${brl(x.comercializacao)}</td><td style="text-align:right">${brl(x.industrializacao)}</td><td>${x.incompleta ? badge("estimado", "safra incompleta: soma dos meses já publicados") : ""}</td></tr>`; }).join("")}</tbody></table></div>
+  <p class="src">Valores nominais. Safra incompleta é a soma dos meses já publicados, nunca uma projeção.</p></div>`);
+
+  /* ---------- programas ---------- */
+  const PR = R.programas || { itens: [] };
+  const prMax = PR.itens.length ? PR.itens[0].valor : 1;
+  const ps = PR.por_safra || [];
+  const grupos = ["PRONAF", "PRONAMP", "Sem programa", "Demais programas"];
+  const prog = secWrap("ru-prog", `${sechead("Por qual programa", `${PR.janela.ini} a ${PR.janela.fim}`)}
+  <div class="grid g2">
+    <div class="card"><h4>Programas, por valor contratado ${badge("observado")}</h4>
+      ${PR.itens.slice(0, 12).map(p => `<div class="atrasorow"><span class="aname">${p.nome} <span class="src">${p.qtd ? fmt.n0(p.qtd) + " contratos" : ""}</span></span>
+        <span class="abarwrap"><span class="abar" style="width:${Math.max(2, p.valor / prMax * 100)}%"></span></span>
+        <span class="anum">${brl(p.valor)} <span class="src">${pct(p.share, 1)}</span></span></div>`).join("")}
+      <p class="src">${PR.nota}</p></div>
+    <div class="card"><h4>Quatro grupos, safra a safra ${badge("calculado")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Safra</th>${grupos.map(g => `<th style="text-align:right">${g}</th>`).join("")}</tr></thead>
+      <tbody>${ps.slice(-8).map(x => `<tr><td>${x.safra}${x.incompleta ? " <span class='src'>parcial</span>" : ""}</td>${grupos.map(g => `<td style="text-align:right">${brl(x[g])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+      ${grupos.map(g => `<div class="contrib"><span class="lbl" style="width:130px">${g}</span>${sparkline(ps.map(x => x[g] || 0), 180, 24)}</div>`).join("")}
+      <p class="src">PRONAF = agricultura familiar; PRONAMP = médio produtor; "Sem programa" reúne operações fora de programas específicos.</p></div>
+  </div>`);
+
+  /* ---------- fontes ---------- */
+  const FO = R.fontes || { familias: [], itens: [] };
+  const foMax = FO.familias.length ? FO.familias[0].valor : 1;
+  const fontes = secWrap("ru-fontes", `${sechead("Com que dinheiro", `${FO.janela.ini} a ${FO.janela.fim}`)}
+  <div class="card"><h4>Famílias de fonte de recursos ${badge("calculado", "famílias atribuídas pelo nome da fonte na MDCR")}</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Família</th><th style="text-align:right">Valor</th><th style="text-align:right">Participação</th><th style="text-align:right">Taxa controlada</th><th style="text-align:right">Equalizada</th></tr></thead>
+    <tbody>${FO.familias.map(f => `<tr><td><b>${f.familia}</b></td><td style="text-align:right">${brl(f.valor)}</td><td style="text-align:right"><span class="abarwrap" style="display:inline-block;width:90px;vertical-align:middle"><span class="abar" style="width:${Math.max(2, f.valor / foMax * 100)}%"></span></span> ${pct(f.share, 1)}</td><td style="text-align:right">${pct(f.controlada_share)}</td><td style="text-align:right">${pct(f.equalizada_share)}</td></tr>`).join("")}</tbody></table></div>
+    <details class="decomp"><summary>todas as fontes (${FO.itens.length})</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>Fonte (nome na MDCR)</th><th>Família</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th></tr></thead>
+      <tbody>${FO.itens.map(f => `<tr><td>${f.nome}</td><td class="src">${f.familia}</td><td style="text-align:right">${brl(f.valor)}</td><td style="text-align:right">${pct(f.share, 1)}</td></tr>`).join("")}</tbody></table></div></details>
+    <p class="src">${FO.nota}</p></div>`);
+
+  /* ---------- faixas ---------- */
+  const FX = R.faixas || { itens: [] };
+  const faixas = secWrap("ru-faixas", `${sechead("Contratos pequenos, valor concentrado", `${FX.janela.ini} a ${FX.janela.fim} · ${K.ate_20mil_share_qtd != null ? pct(K.ate_20mil_share_qtd) + " das cédulas até R$ 20 mil" : ""} · ${K.acima_1mi_share_valor != null ? pct(K.acima_1mi_share_valor) + " do valor acima de R$ 1 milhão" : ""}`)}
+  <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Faixa de valor da cédula</th><th style="text-align:right">Cédulas</th><th style="text-align:right">% das cédulas</th><th style="text-align:right">Valor</th><th style="text-align:right">% do valor</th></tr></thead>
+  <tbody>${FX.itens.map(f => `<tr><td>${f.faixa}</td><td style="text-align:right">${fmt.n0(f.qtd)}</td><td style="text-align:right"><span class="abarwrap" style="display:inline-block;width:70px;vertical-align:middle"><span class="abar" style="width:${Math.max(1, f.share_qtd)}%"></span></span> ${pct(f.share_qtd, 1)}</td><td style="text-align:right">${brl(f.valor)}</td><td style="text-align:right"><span class="abarwrap" style="display:inline-block;width:70px;vertical-align:middle"><span class="abar" style="width:${Math.max(1, f.share_valor)}%;background:${RU_CORES.investimento}"></span></span> ${pct(f.share_valor, 1)}</td></tr>`).join("")}</tbody></table></div>
+  <p class="src">${FX.nota}. As duas barras têm a mesma escala: a distância entre elas é a concentração.</p></div>`);
+
+  /* ---------- quem ---------- */
+  const G = R.genero || {};
+  const I = R.instituicoes || {};
+  const quem = secWrap("ru-quem", `${sechead("Quem toma e quem empresta", `${J.ini} a ${J.fim}`)}
+  <div class="grid g2">
+    <div class="card"><h4>Mulheres no crédito rural ${badge("observado", G.universo)}</h4>
+      <div class="kpirow">
+        <div class="card kpi"><h4>dos contratos</h4><div class="big" style="font-size:22px">${pct(G.mulheres_share_qtd, 1)}</div></div>
+        <div class="card kpi"><h4>do valor</h4><div class="big" style="font-size:22px">${pct(G.mulheres_share_valor, 1)}</div></div>
+        <div class="card kpi"><h4>valor médio (mulheres × homens)</h4><div class="big" style="font-size:22px">R$ ${fmt.n0(G.ticket_mulheres)} <span class="src">× R$ ${fmt.n0(G.ticket_homens)}</span></div></div>
+      </div>
+      <div class="src" style="margin:8px 0">universo: ${G.universo} · cobre ${pct(G.cobertura_valor_pct)} do valor contratado</div>
+      <details class="decomp"><summary>por UF (${(G.por_uf || []).length}) e por safra</summary>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">% contratos</th><th style="text-align:right">% valor</th></tr></thead>
+        <tbody>${(G.por_uf || []).map(u => `<tr><td>${u.uf} <span class="src">${u.regiao || ""}</span></td><td style="text-align:right">${pct(u.mulheres_share_qtd, 1)}</td><td style="text-align:right">${pct(u.mulheres_share_valor, 1)}</td></tr>`).join("")}</tbody></table></div>
+        <div class="contrib"><span class="lbl" style="width:170px">% contratos, por safra</span>${sparkline((G.serie_safra || []).map(x => x.mulheres_share_qtd || 0), 200, 26)}<span class="num src">${(G.serie_safra || []).length ? `${G.serie_safra[0].safra} → ${G.serie_safra[G.serie_safra.length - 1].safra}` : ""}</span></div>
+      </details></div>
+    <div class="card"><h4>Instituições que contratam ${badge("observado", I.nota || "")}</h4>
+      ${I.disponivel ? `<div class="src" style="margin-bottom:6px">${fmt.n0(I.n_ifs)} instituições · top-5 ${pct(I.top5_share)} · cooperativas ${pct(I.cooperativas_share)} · ${termo("hhi", "HHI")} ${fmt.n0(I.hhi)} · ${I.janela.meses} meses (${I.janela.ini} a ${I.janela.fim})</div>
+      <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>#</th><th>Instituição</th><th>Segmento</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th><th style="text-align:right">PRONAF</th></tr></thead>
+      <tbody>${(I.top || []).map((x, i) => `<tr><td>${i + 1}</td><td><b>${x.nome}</b></td><td class="src">${x.segmento_nome}</td><td style="text-align:right">${brl(x.valor)}</td><td style="text-align:right">${pct(x.share, 1)}</td><td style="text-align:right">${pct(x.pronaf_share)}</td></tr>`).join("")}</tbody></table></div>
+      <div style="margin-top:8px">${(I.por_segmento || []).map(sg => `<div class="contrib"><span class="lbl" style="width:230px">${sg.nome} <span class="src">(${sg.n})</span></span><span class="bar pos" style="width:${Math.min(140, (sg.share || 0) * 1.4)}px"></span><span class="num">${pct(sg.share, 1)}</span></div>`).join("")}</div>`
+      : `<p class="src">recorte por instituição ainda não coletado nesta execução.</p>`}</div>
+  </div>`);
+
+  /* ---------- onde: mapa municipal + UF ---------- */
+  const M = RU_METRICAS[F.met] || RU_METRICAS.valor_hab;
+  const muns = (R.municipios || []).filter(m => m.valor);
+  const base = F.uf === "todas" ? muns : muns.filter(m => m.uf === F.uf);
+  const porCod = Object.fromEntries(base.map(m => [m.cod, m]));
+  const escala = penEscala(base.map(m => m[F.met]).filter(v => v != null), "pct", "#2f7d4f");
+  const paths = malha ? Object.entries(malha.paths).map(([cod, d]) => {
+    const m = porCod[cod];
+    if (!m) return `<path d="${d}" fill="var(--surface-2)" class="penmun fora"></path>`;
+    const tip = encodeURIComponent(`<div class="tt-date">${m.nome || cod} (${m.uf || "–"})</div>
+      <div class="tt-row"><span class="tt-lbl">valor 12 m</span><span class="tt-val">${brl(m.valor)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">contratos</span><span class="tt-val">${fmt.n0(m.qtd)}</span></div>
+      <div class="tt-row"><span class="tt-lbl">por habitante</span><span class="tt-val">${m.valor_hab != null ? "R$ " + fmt.n0(m.valor_hab) : "–"}</span></div>
+      <div class="tt-row"><span class="tt-lbl">PRONAF</span><span class="tt-val">${pct(m.pronaf_share)}</span></div>`);
+    return `<path d="${d}" fill="${escala(m[F.met])}" class="penmun${F.sel === cod ? " sel" : ""}" data-tip="${tip}" onclick="ruSel('${cod}')" aria-label="${attr((m.nome || cod) + " " + (m.uf || "") + ": " + M.fmt(m))}"></path>`;
+  }).join("") : "";
+  const rankKey = F.met;
+  const ranking = base.filter(m => m[rankKey] != null && (rankKey !== "valor_hab" || (m.pop && m.pop >= 5000)))
+    .sort((a, b) => F.rank === "menor" ? a[rankKey] - b[rankKey] : b[rankKey] - a[rankKey]).slice(0, 30);
+  const ufsSel = ["todas", ...(R.ufs || []).map(u => u.uf).sort()];
+  const onde = secWrap("ru-onde", `${sechead("Onde se contrata", `${(R.municipios_meta || {}).com_contratacao != null ? fmt.n0(R.municipios_meta.com_contratacao) + " municípios com contratação" : ""} · ${(R.municipios_meta || {}).sem_contratacao != null ? fmt.n0(R.municipios_meta.sem_contratacao) + " sem" : ""} · janela ${(R.municipios_meta || {}).janela ? R.municipios_meta.janela.ini + " a " + R.municipios_meta.janela.fim : "–"}`)}
+  <div class="controls">${Object.entries(RU_METRICAS).map(([k, v]) => `<button class="btn ${F.met === k ? "" : "ghost"} small" onclick="ruSet('met','${k}')">${v.l}</button>`).join("")}
+    <select onchange="ruSet('uf', this.value)" aria-label="recorte por UF">${ufsSel.map(u => `<option value="${u}" ${F.uf === u ? "selected" : ""}>${u === "todas" ? "Brasil" : u}</option>`).join("")}</select></div>
+  <div class="penlayout">
+    <div class="card">
+      ${malha ? `<svg class="penmapa" viewBox="${malha.viewBox}" role="group" aria-label="mapa municipal: ${attr(M.l)}"><g transform="${malha.transform}">${paths}</g></svg>` : `<p class="src">malha municipal ainda carregando…</p>`}
+      <p class="src">Sombreado entre o percentil 5 e o 95 do recorte (só visual). Cinza: sem contratação registrada na janela, ou fora do recorte. Valor por habitante só ordena municípios com 5 mil habitantes ou mais. Clique para abrir o perfil.</p>
+    </div>
+    <div class="card penrank"><h4>${M.l} <span class="src">${F.rank === "menor" ? "menores" : "maiores"}</span></h4>
+      <div class="controls" style="margin:0 0 8px"><span class="seg">${[["maior", "maiores"], ["menor", "menores"]].map(([v, l]) => `<button class="${F.rank === v ? "active" : ""}" onclick="ruSet('rank','${v}')">${l}</button>`).join("")}</span></div>
+      <ol class="penlista">${ranking.map(m => `<li class="${F.sel === m.cod ? "sel" : ""}"><button type="button" onclick="ruSel('${m.cod}')"><span class="n">${m.nome || m.cod}<small>${m.uf || ""}</small></span><span class="v">${M.fmt(m)}</span></button></li>`).join("")}</ol></div>
+  </div>
+  ${(function () {
+    const sel = F.sel ? (R.municipios || []).find(m => m.cod === F.sel) : null;
+    if (!sel) return "";
+    return `<div class="card penperfil" id="ru-perfil"><div class="pp-cab"><div><h4>${sel.nome || sel.cod} <span class="src">${sel.uf || ""} · ${sel.regiao || ""}</span></h4></div><button class="btn ghost small" onclick="ruSet('sel', null)">fechar</button></div>
+    <dl class="ppgrid">${[["Valor contratado (12 m)", brl(sel.valor)], ["Contratos", fmt.n0(sel.qtd)], ["Valor médio", sel.ticket != null ? "R$ " + fmt.n0(sel.ticket) : "–"],
+      ["População (Censo 2022)", sel.pop ? fmt.n0(sel.pop) : "–"], ["Valor por habitante", sel.valor_hab != null ? "R$ " + fmt.n0(sel.valor_hab) : "–"],
+      ["Custeio", brl(sel.custeio)], ["Investimento", brl(sel.investimento)], ["Comercialização", brl(sel.comercializacao)], ["Industrialização", brl(sel.industrializacao)],
+      ["Parte agrícola", pct(sel.agricola_share)], ["PRONAF", pct(sel.pronaf_share)], ["Área de custeio financiada", sel.area_c ? fmt.n0(sel.area_c) + " ha" : "–"]]
+      .map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join("")}</dl>
+    <p class="src">Município da cédula, conforme a MDCR. <a href="/observatorio/presenca/${sel.cod}" onclick="nav('presmun',{presCod:'${sel.cod}'});return false">presença bancária neste município →</a></p></div>`;
+  })()}
+  <div class="card" style="margin-top:14px"><h4>Por UF ${badge("observado")}</h4>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Valor 12 m</th><th style="text-align:right">%</th><th style="text-align:right">Contratos</th><th style="text-align:right">Por habitante</th><th style="text-align:right">Custeio</th><th style="text-align:right">Agrícola</th><th style="text-align:right">PRONAF</th></tr></thead>
+    <tbody>${(R.ufs || []).map(u => `<tr class="clickable" onclick="ruSet('uf','${u.uf}')"><td><b>${u.uf}</b> <span class="src">${u.regiao || ""}</span></td><td style="text-align:right">${brl(u.valor)}</td><td style="text-align:right">${pct(u.share, 1)}</td><td style="text-align:right">${fmt.n0(u.qtd)}</td><td style="text-align:right">${u.valor_hab != null ? "R$ " + fmt.n0(u.valor_hab) : "–"}</td><td style="text-align:right">${u.valor ? pct(u.custeio / u.valor * 100) : "–"}</td><td style="text-align:right">${pct(u.agricola_share)}</td><td style="text-align:right">${pct(u.pronaf_share)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Clique numa UF para recortar o mapa e o ranking.</p></div>
+  ${ponte("O saldo da carteira rural por instituição — Produtos de Crédito", "product", null, "muda de régua: lá é ESTOQUE (saldo no IF.data), aqui é FLUXO (contratação no Sicor); os dois nunca se somam nem se dividem")}`);
+
+  /* ---------- produtos ---------- */
+  const PD = R.produtos || {};
+  const lista = (L, comArea) => `<div class="tblwrap"><table class="data compact"><thead><tr><th>Produto</th><th style="text-align:right">Valor</th><th style="text-align:right">%</th><th style="text-align:right">Contratos</th>${comArea ? `<th style="text-align:right">Área (ha)</th><th style="text-align:right">R$/ha</th>` : ""}</tr></thead>
+    <tbody>${(L || []).map(p => `<tr><td>${p.produto}</td><td style="text-align:right">${brl(p.valor)}</td><td style="text-align:right">${pct(p.share, 1)}</td><td style="text-align:right">${fmt.n0(p.qtd)}</td>${comArea ? `<td style="text-align:right">${p.area_ha ? fmt.n0(p.area_ha) : "–"}</td><td style="text-align:right">${p.valor_ha != null ? fmt.n0(p.valor_ha) : "–"}</td>` : ""}</tr>`).join("")}</tbody></table></div>`;
+  const ufProd = F.uf !== "todas" && PD.por_uf && PD.por_uf[F.uf] ? PD.por_uf[F.uf] : null;
+  const produtos = secWrap("ru-prod", `${sechead("O que se financia", PD.disponivel ? `${PD.janela.ini} a ${PD.janela.fim}${F.uf !== "todas" ? " · " + F.uf : " · Brasil"}` : "")}
+  ${PD.disponivel ? `<div class="grid g2">
+    <div class="card"><h4>Custeio: cultura ou criação ${badge("observado")}</h4>${ufProd ? lista(ufProd.custeio, false) : lista(PD.custeio, true)}</div>
+    <div class="card"><h4>Investimento: bem ou obra ${badge("observado")}</h4>${ufProd ? lista(ufProd.investimento, false) : lista(PD.investimento, false)}</div>
+  </div><p class="src">${PD.nota}</p>` : `<div class="card"><p class="src">recorte por produto ainda não coletado nesta execução.</p></div>`}`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("ru-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${R.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(R.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Cautelas</h5>${(R.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(R.fonte.catalogo)}" target="_blank" rel="noopener">${R.fonte.nome}</a> · ${R.fonte.licenca} · nível ${R.fonte.nivel}.</p></div>`);
+
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#ru-evol", "Evolução"], ["#ru-safra", "Safras"], ["#ru-prog", "Programas"], ["#ru-fontes", "Fontes"], ["#ru-faixas", "Faixas"], ["#ru-quem", "Quem"], ["#ru-onde", "Onde"], ["#ru-prod", "Produtos"], ["#ru-metodo", "Método"]])
+    + evol + safra + prog + fontes + faixas + quem + onde + produtos + metodo;
+}
+window.ruCSV = () => {
+  const R = costuraMunicipios(state.data.rural, state.data.rural_mun);
+  if (!R || !R.municipios) return;
+  const cols = ["cod", "nome", "uf", "regiao", "pop", "valor", "qtd", "custeio", "investimento", "comercializacao", "industrializacao", "agricola_share", "pronaf_share", "valor_hab", "ticket", "area_c"];
+  const head = `# Observatório Brasileiro de Crédito — crédito rural por município, janela ${R.janela.ini} a ${R.janela.fim}\n# fonte: ${R.fonte.nome} (${R.fonte.licenca}) · população IBGE Censo 2022\n# valor nulo = sem contratação registrada na janela (não é zero)\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_credito_rural_municipios_${R.janela.fim}.csv`, head + cols.join(";") + "\n" + R.municipios.map(m => cols.map(c => csvEsc(m[c])).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:municipal:fim */
 /* ---------- Indicadores operacionais (Fase 0: só fonte estruturada) ---------- */
 /* Resolve a instituição operacional a partir da identidade da página de IF:
@@ -9925,10 +10154,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -9985,7 +10214,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -10453,6 +10682,7 @@ function renderProductPageData(el, P) {
   <div class="src" style="margin-bottom:6px"><button class="btn ghost small" onclick="nav('products')">← produtos</button> Produtos de Crédito › ${p.nome} · data-base ${fmtTri(p.data_base)} ${badge("observado")}</div>
   <h2>${p.nome}</h2>
   ${guiaPagina("product")}${fontePane("product")}
+  ${p.slug.startsWith("rural") ? ponte("A contratação de crédito rural, cédula a cédula — Crédito rural", "rural", "ru-evol", "muda de régua: aqui é ESTOQUE (saldo por IF no IF.data), lá é FLUXO (contratação registrada no Sicor); os dois nunca se somam") : ""}
   <div class="chips" style="margin:6px 0">
     <span class="chip">${p.seg.toUpperCase()}</span><span class="chip">crédito ${p.natureza}</span>
     <span class="chip" title="nomenclatura da fonte">IF.data: ${p.modalidade_original.replace(/_/g, " ")}</span>

@@ -1,0 +1,11 @@
+{
+ "disponivel": false,
+ "motivo": "Primeira carga da Matriz de Dados do Crédito Rural (MDCR/Sicor) em andamento: a API OData do BCB respondeu com HTTP 504 na maior parte de 05/09/2026 e o coletor converge com cap por execução diária. O painel abre sozinho quando a janela de 12 meses fechados estiver completa.",
+ "fonte": {
+  "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
+  "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
+  "catalogo": "https://dadosabertos.bcb.gov.br/dataset/matrizdadoscreditorural",
+  "licenca": "ODbL (Open Data Commons Open Database License)"
+ },
+ "gerado_em": "2026-09-05T14:10:00+00:00"
+}

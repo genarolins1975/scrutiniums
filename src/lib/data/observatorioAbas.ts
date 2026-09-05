@@ -143,6 +143,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "market.json",
   },
   {
+    view: "rural",
+    caminho: "/rural-credit",
+    titulo: "Crédito rural",
+    descricao:
+      "Crédito rural no Brasil pela Matriz de Dados do BCB (Sicor): contratação por safra, programa, fonte de recursos, faixa de valor, gênero, instituição, produto e município.",
+    gold: "rural.json",
+  },
+  {
     view: "pix",
     caminho: "/pix",
     titulo: "Pix e Pagamentos",
