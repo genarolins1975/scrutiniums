@@ -41,7 +41,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "penetracao",
     caminho: "/credit-penetration",
-    titulo: "Penetração e Gap de Crédito",
+    titulo: "Penetração e Gap",
     descricao:
       "Penetração do crédito por município e o gap frente ao potencial local, reconciliado com o SCR e com série histórica.",
     gold: "penetracao.json",
@@ -49,7 +49,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "moradia",
     caminho: "/housing-credit",
-    titulo: "Moradia e Crédito Habitacional",
+    titulo: "Moradia e Habitação",
     descricao:
       "Crédito habitacional no Brasil: saldo, concessões e funding, e o que os dados públicos permitem — e não permitem — concluir sobre moradia.",
     gold: "moradia.json",
@@ -57,7 +57,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "consignado",
     caminho: "/payroll-lending-aging",
-    titulo: "Consignado, Previdência e Envelhecimento",
+    titulo: "Consignado e Envelhecimento",
     descricao:
       "Crédito consignado e envelhecimento populacional: carteira, taxas e demografia municipal, com a magnitude das correlações declarada.",
     gold: "consignado.json",
@@ -97,7 +97,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "rj",
     caminho: "/recoveries",
-    titulo: "Recuperações & Falências",
+    titulo: "Recuperações e Falências",
     descricao:
       "Recuperações judiciais e falências: pedidos e deferimentos ao longo do tempo, por porte e setor.",
     gold: "rj.json",
@@ -137,15 +137,23 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "market",
     caminho: "/market",
-    titulo: "Mercado & Valor",
+    titulo: "Mercado e Valor",
     descricao:
       "Preços, proventos e valuation dos bancos listados em bolsa, com a ponte do lucro reconstruída da DRE da CVM. Nada aqui é recomendação de investimento.",
     gold: "market.json",
   },
   {
+    view: "rural",
+    caminho: "/rural-credit",
+    titulo: "Crédito rural",
+    descricao:
+      "Crédito rural no Brasil pela Matriz de Dados do BCB (Sicor): contratação por safra, programa, fonte de recursos, faixa de valor, gênero, instituição, produto e município.",
+    gold: "rural.json",
+  },
+  {
     view: "pix",
     caminho: "/pix",
-    titulo: "Pix e Meios de Pagamento",
+    titulo: "Pix e Pagamentos",
     descricao:
       "A evolução do Pix desde o lançamento, comparada a cartões, TED e boleto: natureza dos fluxos, geografia municipal e o Mecanismo Especial de Devolução.",
     gold: "pix.json",
@@ -169,7 +177,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "fraudes",
     caminho: "/financial-fraud",
-    titulo: "Fraudes financeiras e risco de crédito",
+    titulo: "Fraudes e risco de crédito",
     descricao:
       "Golpes e fraudes financeiras no Brasil: perdas reportadas, devoluções via Pix/MED e tipologias — separando dado administrativo de estimativa privada.",
     gold: "fraudes.json",
@@ -185,7 +193,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "judicial",
     caminho: "/lawsuits",
-    titulo: "Ações judiciais e instituições financeiras",
+    titulo: "Ações judiciais",
     descricao:
       "A litigiosidade bancária no CNJ/DataJud: processos cíveis e trabalhistas em temas financeiros, por tribunal e por instituição.",
     gold: "judicial.json",
@@ -217,7 +225,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "alerts",
     caminho: "/alerts",
-    titulo: "Alertas",
+    titulo: "Central de alertas",
     descricao:
       "A central de alertas do crédito brasileiro: sinais das cinco famílias de monitoramento, com regras de persistência e feed RSS público.",
     gold: "alertas_central.json",
@@ -233,14 +241,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "research",
     caminho: "/research",
-    titulo: "Pesquisa",
+    titulo: "Perguntas rápidas",
     descricao:
       "Notas de pesquisa e leituras guiadas do acervo: o que as séries permitem concluir e onde termina a evidência.",
   },
   {
     view: "method",
     caminho: "/methodology",
-    titulo: "Metodologia & Fontes",
+    titulo: "Metodologia e Fontes",
     descricao:
       "As fontes oficiais, os conceitos, as fórmulas e os limites de cada indicador — a metodologia completa e aberta do Observatório.",
     gold: "method.json",

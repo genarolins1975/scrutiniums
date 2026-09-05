@@ -272,11 +272,8 @@ export default function ObservatorioPublicoPage() {
               ))}
             </div>
             <div className="mt-12 flex flex-wrap gap-x-7 gap-y-3">
-              <Link href="/metodologia" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Metodologia
-              </Link>
-              <Link href="/fontes" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
-                Fontes
+              <Link href="/observatorio/methodology" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
+                Metodologia e fontes
               </Link>
               <Link href="/glossario" className="rotulo text-carvao underline decoration-linha underline-offset-8 hover:text-bronze">
                 Glossário

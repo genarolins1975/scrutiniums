@@ -52,8 +52,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...instituicoes.map((i) => rota(`/observatorio/institutions/${i.cod}`, 0.6, "weekly")),
     ...municipios.map((m) => rota(`/observatorio/presenca/${m.cod}`, 0.5, "weekly")),
     rota("/glossario", 0.8, "monthly"),
-    rota("/metodologia", 0.8, "monthly"),
-    rota("/fontes", 0.7, "monthly"),
     rota("/cadastro", 0.6, "yearly"),
     rota("/entrar", 0.3, "yearly"),
     rota("/privacidade", 0.2, "yearly"),

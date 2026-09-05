@@ -223,27 +223,51 @@ def _antecedentes(d):
     return out
 
 
+NIVEL_POR_REGRA = {
+    # regras com limiar declarado pelo próprio Observatório (pipeline/operacional.py):
+    # o nível vem da regra, não da fonte — que não gradua nada
+    "queda_12m": "atencao",      # rede caiu mais de 15% em 12 meses: verificar reorganização societária
+    "variacao_aa": "atencao",    # quadro variou mais de 30% em módulo: verificar perímetro do FRE
+    "troca_auditor": "informativo",  # inclui o rodízio obrigatório; não é sinal por si
+    "total_zerado": "informativo",   # FRE não entregue ou com zero: falha de declaração, não fato operacional
+}
+
+
+def _sem_fre(f):
+    """Flag que é assinatura de FRE não entregue: total zerado, ou variação de
+    -100% (o quadro 'caiu' para zero). São o mesmo fato e viram UM alerta por
+    referência — três companhias sem FRE não são três riscos operacionais."""
+    v = _num(f.get("valor"))
+    return f.get("indicador") == "empregados" and (
+        f.get("regra") == "total_zerado" or (f.get("regra") == "variacao_aa" and v is not None and v <= -99.5))
+
+
 def _operacional(d):
     """operacional.json: flags de validação viram alertas. A fonte não gradua
-    severidade — e nós não inventamos uma (mesma regra da família carteira)."""
+    severidade; aqui, diferente da carteira do SCR, a régua é do próprio
+    Observatório (limiares declarados), e o nível vem dela (E11 da avaliação
+    de 05/09). FRE não entregue é consolidado numa linha por referência."""
     FONTE_POR_INDICADOR = {
         "empregados": "CVM/FRE (item 10.1)",
         "rede": "BCB/ESTBAN",
         "auditoria": "CVM/FCA",
     }
     out = []
+    sem_fre = {}
     for f in d.get("flags", []):
+        if _sem_fre(f):
+            ref = str(f.get("referencia") or "s-ref")[:4]
+            sem_fre.setdefault(ref, set()).add(f.get("instituicao"))
+            continue
         valor = _num(f.get("valor"))
         # regra e referência entram no id: a mesma instituição pode disparar
-        # regras distintas sobre o mesmo indicador (variação -100% E total
-        # zerado, no mesmo FRE) e a mesma regra em anos distintos — cada
-        # combinação é um fato próprio. Sem isso os ids colidiam (3 colisões
-        # em 08/08/2026) e o estado local do leitor vazava entre fatos.
+        # regras distintas sobre o mesmo indicador e a mesma regra em anos
+        # distintos — cada combinação é um fato próprio (3 colisões em 08/08/2026).
         out.append({
             "id": (f"operacional:{f.get('indicador')}:{f.get('regra') or 'flag'}:"
                    f"{f.get('instituicao')}:{f.get('referencia') or 's-ref'}"),
             "familia": "operacional",
-            "nivel": None,  # flag determinística sem gradação na fonte
+            "nivel": NIVEL_POR_REGRA.get(f.get("regra")),
             "titulo": f"{f.get('instituicao')} — {f.get('indicador')}",
             "detalhe": f.get("detalhe"),
             "valor": valor,
@@ -254,6 +278,24 @@ def _operacional(d):
             "recorrente": None,
             "link": {"view": "operacional"},
             "ordem": round(abs(valor), 6) if valor is not None else 0.0,
+        })
+    for ref, insts in sorted(sem_fre.items()):
+        nomes = sorted(x for x in insts if x)
+        out.append({
+            "id": f"operacional:empregados:sem_fre:{ref}",
+            "familia": "operacional",
+            "nivel": "informativo",
+            "titulo": f"{len(nomes)} companhia(s) sem FRE {ref} — empregados",
+            "detalhe": ("quadro de empregados ausente ou zerado no FRE de " + ref + ": " + "; ".join(nomes) +
+                        ". Falha de declaração ou entrega tardia, não fato operacional; o FRE do ano corrente é recoletado a cada execução."),
+            "valor": float(len(nomes)),
+            "limiar": None,
+            "referencia": ref,
+            "fonte": FONTE_POR_INDICADOR["empregados"],
+            "evidencia_persistencia": "recalculada a cada execução sobre a série completa",
+            "recorrente": None,
+            "link": {"view": "operacional"},
+            "ordem": 0.0,
         })
     return out
 
@@ -300,7 +342,10 @@ def build():
         ),
         "sem_nivel": (
             "Onde a fonte não gradua severidade — é o caso da carteira do SCR.data — o alerta aparece "
-            "sem nível. Atribuir um aqui seria criar informação que o dado não tem."
+            "sem nível. Atribuir um aqui seria criar informação que o dado não tem. Na família "
+            "operacional a régua é do próprio Observatório (limiares declarados), e o nível vem da regra: "
+            "queda de rede ou variação de quadro acima do limiar = atenção; troca de auditor e FRE não "
+            "entregue = informativo."
         ),
         "ausencia": (
             "Ausência de alerta significa que nenhuma regra publicada foi disparada nesta data-base. "

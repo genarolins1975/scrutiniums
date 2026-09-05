@@ -88,7 +88,7 @@ export default function GlossarioPage() {
 
         <p className="mt-10 max-w-prose2 text-sm text-mineral">
           Os critérios gerais de coleta, tratamento e publicação estão descritos na página de{" "}
-          <a href="/metodologia" className="text-bronze underline underline-offset-4 hover:text-bronze-dark">
+          <a href="/observatorio/methodology" className="text-bronze underline underline-offset-4 hover:text-bronze-dark">
             metodologia
           </a>
           .

@@ -22,8 +22,7 @@ export function Footer() {
             <li><Link href="/observatorio" className="hover:text-bronze-soft">Observatório</Link></li>
             <li><Link href="/dados" className="hover:text-bronze-soft">Dados abertos</Link></li>
             <li><Link href="/resumo" className="hover:text-bronze-soft">Resumo diário</Link></li>
-            <li><Link href="/fontes" className="hover:text-bronze-soft">Fontes</Link></li>
-            <li><Link href="/metodologia" className="hover:text-bronze-soft">Metodologia</Link></li>
+            <li><Link href="/observatorio/methodology" className="hover:text-bronze-soft">Metodologia e fontes</Link></li>
             <li><Link href="/glossario" className="hover:text-bronze-soft">Glossário</Link></li>
           </ul>
         </nav>

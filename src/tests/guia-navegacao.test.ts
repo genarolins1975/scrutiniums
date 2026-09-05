@@ -42,7 +42,10 @@ describe("guia didático das páginas", () => {
     const chaves = new Set(chavesDoGuia());
     const principais = ["overview", "panorama", "pulse", "leading", "trends", "sectors", "rj",
       "institutions", "compare", "products", "juros", "market", "pix", "openfinance",
-      "judicial", "scenarios", "alerts", "method"];
+      "judicial", "scenarios", "alerts", "method",
+      // avaliação de 05/09: as abas que renderizavam sem guia e as rotas dinâmicas
+      "bets", "fraudes", "regulacao", "pgfn", "desenrola", "penetracao", "moradia",
+      "consignado", "operacional", "inst", "product", "sector", "presmun"];
     const faltando = principais.filter((v) => !chaves.has(v));
     expect(faltando).toEqual([]);
   });

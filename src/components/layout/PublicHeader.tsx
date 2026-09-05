@@ -9,8 +9,7 @@ const NAV = [
   { href: "/dados", label: "Dados" },
   { href: "/resumo", label: "Resumo diário" },
   { href: "/#plataforma", label: "Plataforma" },
-  { href: "/fontes", label: "Fontes" },
-  { href: "/metodologia", label: "Metodologia" },
+  { href: "/observatorio/methodology", label: "Metodologia e fontes" },
   { href: "/glossario", label: "Glossário" },
 ];
 

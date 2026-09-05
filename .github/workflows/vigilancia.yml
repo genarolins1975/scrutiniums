@@ -5,6 +5,10 @@ name: Vigília do Observatório
 # - **frescor** (diário, 15:00 UTC — depois da janela do pipeline das 9:00):
 #   o gold publicado no main envelheceu além de 2 dias? Cobre o caso em que as
 #   execuções "concluem" sem publicar, que o alerta de falha não enxerga.
+# - **pane** (diário, 15:20 UTC): coletor essencial com zero chaves ok, ou
+#   vintage parado além do prazo da fonte, com o gold íntegro e em dia — o
+#   buraco entre as duas outras vigílias (SCR 3/3 e DJEN 8/8 falhando em
+#   setembro de 2026 sem nenhuma issue).
 # - **fontes** (semanal, segunda): saiu documento novo nas fontes manuais
 #   documentadas (página de apresentações da SPA/MF)? É o gatilho da
 #   atualização manual do painel de bets — o Panorama do 1S2026 é esperado
@@ -17,6 +21,7 @@ on:
   schedule:
     - cron: "0 15 * * *" # frescor, diário
     - cron: "30 9 * * 1" # fontes, segunda-feira
+    - cron: "20 15 * * *" # pane, diário (fonte parada com o gold íntegro)
   workflow_dispatch:
 
 permissions:
@@ -30,7 +35,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cheque: [frescor, fontes]
+        cheque: [frescor, fontes, pane]
     steps:
       - uses: actions/checkout@v4
 
@@ -42,6 +47,7 @@ jobs:
             case "${{ github.event.schedule }}" in
               "0 15 * * *") [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
               "30 9 * * 1") [ "${{ matrix.cheque }}" = "fontes" ]  || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "20 15 * * *") [ "${{ matrix.cheque }}" = "pane" ]   || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
             esac
           fi
 
@@ -72,6 +78,7 @@ jobs:
           case "${{ matrix.cheque }}" in
             frescor) TITULO="Vigília: gold publicado está defasado" ;;
             fontes)  TITULO="Vigília: documento novo em fonte manual (SPA/MF)" ;;
+            pane)    TITULO="Vigília: fonte essencial em pane ou data-base parada" ;;
           esac
           if [ "$CODIGO" != "3" ]; then
             TITULO="Vigília quebrada: cheque ${{ matrix.cheque }} falhou (código $CODIGO)"

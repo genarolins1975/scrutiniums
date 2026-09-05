@@ -3,6 +3,7 @@
 Uso:
     python3 scripts/vigilancia.py frescor   # o gold publicado envelheceu?
     python3 scripts/vigilancia.py fontes    # saiu documento novo nas fontes manuais?
+    python3 scripts/vigilancia.py pane      # fonte essencial parada com o gold íntegro?
 
 Contrato com o workflow: saída 0 = nada a fazer (silêncio); saída 3 = o texto
 impresso em stdout é o corpo da issue a abrir. Qualquer outra saída é erro do
@@ -67,6 +68,62 @@ def frescor():
     return ACUSA
 
 
+# Coletores cuja pane fica invisível no gold (o build sai íntegro com a última
+# coleta boa) e o prazo, em dias, que a data-base de cada vintage pode ficar
+# parada antes de acusar: periodicidade da fonte + a defasagem normal de
+# publicação + folga. Um 404 isolado é o mês ainda não publicado, não pane.
+COLETORES_ESSENCIAIS = ["bcb_sgs", "scr_data", "ifdata", "txjuros", "datajud", "djen",
+                        "pix_bcb", "estban", "b3_market", "desenrola", "operacional", "sicor"]
+PRAZO_VINTAGE_DIAS = {"sgs": 75, "scr": 75, "ifdata": 135, "txjuros": 45, "datajud": 75,
+                      "b3": 15, "trends": 120, "sicor": 75}
+
+
+def _fim_do_mes(vintage):
+    """'2026-07' → último dia de julho de 2026 (a data-base é o mês inteiro)."""
+    ano, mes = int(vintage[:4]), int(vintage[5:7])
+    if mes == 12:
+        return datetime(ano + 1, 1, 1, tzinfo=timezone.utc)
+    return datetime(ano, mes + 1, 1, tzinfo=timezone.utc)
+
+
+def pane():
+    """Fonte silenciosamente parada: coletor essencial com zero chaves ok e
+    falhas que não são o 404 do mês ainda não publicado, ou vintage que não
+    avança além do prazo da fonte — tudo com o gold íntegro e o frescor em dia.
+    É o buraco entre as duas vigílias anteriores (avaliação de 05/09/2026)."""
+    meta = json.loads(_baixa(META_PUBLICADO))
+    status = meta.get("fontes_status") or {}
+    hoje = datetime.now(timezone.utc)
+    acusacoes = []
+    for k in COLETORES_ESSENCIAIS:
+        st = status.get(k)
+        if not isinstance(st, dict):
+            continue
+        falhas = st.get("falhas") or []
+        reais = [f for f in falhas if "404" not in str(f.get("erro", ""))]
+        if (st.get("ok") or 0) == 0 and reais:
+            acusacoes.append(f"- coletor `{k}`: 0 chaves ok, {len(falhas)} falha(s). "
+                             f"Primeira: `{str(reais[0].get('erro', ''))[:160]}`")
+    for k, prazo in PRAZO_VINTAGE_DIAS.items():
+        v = (meta.get("vintages") or {}).get(k)
+        if not v or len(str(v)) < 7:
+            continue
+        idade = (hoje - _fim_do_mes(str(v))).days
+        if idade > prazo:
+            acusacoes.append(f"- vintage `{k}` parado em **{v}** há {idade} dias após o fim da data-base "
+                             f"(prazo da fonte: {prazo}).")
+    if not acusacoes:
+        return 0
+    print(f"O gold publicado em **{meta.get('gerado_em', '')[:16]}** está íntegro e em dia, mas "
+          "fontes essenciais estão em pane ou com a data-base parada:\n")
+    print("\n".join(acusacoes))
+    print("\nO builder retém a última coleta boa (as abas seguem no ar com a data-base declarada), "
+          "e a faixa 'fonte em pane' avisa o leitor. Conferir o log da coleta na aba Actions: "
+          "bloqueio por User-Agent/origem (403), mudança de esquema do CSV, download cortado "
+          "(IncompleteRead) ou fonte fora do ar.")
+    return ACUSA
+
+
 def fontes():
     html = _baixa(PAGINA_SPA).decode("utf-8", errors="replace")
     hrefs = sorted({h for h in re.findall(r'href="([^"]+\.pdf)"', html, re.I)})
@@ -99,6 +156,8 @@ def main():
         return frescor()
     if modo == "fontes":
         return fontes()
+    if modo == "pane":
+        return pane()
     if modo == "semear":
         # uso local: grava o snapshot inicial com o estado corrente da página
         html = _baixa(PAGINA_SPA).decode("utf-8", errors="replace")
@@ -107,7 +166,7 @@ def main():
         SNAPSHOT_SPA.write_text("\n".join(hrefs) + "\n")
         print(f"snapshot com {len(hrefs)} hrefs gravado em {SNAPSHOT_SPA}")
         return 0
-    print("uso: vigilancia.py [frescor|fontes|semear]", file=sys.stderr)
+    print("uso: vigilancia.py [frescor|fontes|pane|semear]", file=sys.stderr)
     return 2
 
 

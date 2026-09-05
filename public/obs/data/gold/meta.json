@@ -416,13 +416,36 @@
   }
  },
  "fontes_reais": [
+  "B3",
+  "BCB/Correspondentes",
+  "BCB/DASFN Pilar 3",
+  "BCB/EPAE",
+  "BCB/ESTBAN",
+  "BCB/IF.data",
+  "BCB/Mercado Imobiliário",
+  "BCB/Pix",
+  "BCB/Reclamações",
   "BCB/SGS",
-  "BCB/IF.data (Olinda)",
+  "BCB/Unicad",
+  "BCB/regimes",
+  "BCB/txjuros",
+  "CNJ/DJEN",
+  "CNJ/DataJud",
+  "CVM/DFP e ITR",
+  "CVM/FIDC",
+  "CVM/FRE",
+  "CVM/FRE e FCA",
+  "CVM/IPE",
   "IBGE",
-  "Ipeadata"
+  "IBGE/Censo 2022",
+  "Ipeadata",
+  "MPS/INSS",
+  "Open Finance Brasil",
+  "PGFN",
+  "PNCP",
+  "RI das companhias",
+  "TST",
+  "consumidor.gov.br"
  ],
- "fontes_demo": [
-  "Open Finance Brasil (dashboard)",
-  "Recuperação judicial (tribunais)"
- ]
+ "fontes_demo": []
 }

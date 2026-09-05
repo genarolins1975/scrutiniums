@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Observatório Brasileiro de Crédito</title>
-<meta name="description" content="O crédito brasileiro explicado com rigor: carteira, inadimplência, produtos, instituições, mapa por UF e sinais antecedentes — 12 fontes oficiais, metodologia aberta.">
+<meta name="description" content="O crédito brasileiro explicado com rigor: carteira, inadimplência, juros, instituições, Pix e riscos emergentes, com dados abertos do BCB, CVM, IBGE, CNJ e PGFN e metodologia aberta.">
 <meta name="theme-color" content="#f3efe5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#14171a" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Observatório Brasileiro de Crédito">
@@ -19,7 +19,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23966b48'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23f3efe5'/%3E%3C/svg%3E">
 <link rel="preload" href="/obs/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/obs/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/obs/styles.css?v=0.86.0">
+  <link rel="stylesheet" href="/obs/styles.css?v=0.87.0">
 </head>
 <body>
 <a class="skip" href="#main">Ir para o conteúdo</a>
@@ -41,55 +41,51 @@
         oninput="navFiltra(this.value)" autocomplete="off"></div>
     <nav class="tabs" id="tabs" aria-label="Navegação principal">
       <div class="navgroup">
-        <span class="navlabel">Monitoramento</span>
+        <span class="navlabel">Diagnóstico</span>
         <button data-view="overview" class="active">Visão geral</button>
-        <button data-view="panorama">Panorama do Crédito</button>
-        <button data-view="penetracao">Penetração &amp; Gap</button>
-        <button data-view="moradia">Moradia &amp; Habitação</button>
-        <button data-view="consignado">Consignado &amp; Envelhecimento</button>
+        <button data-view="alerts">Central de alertas <span class="navbadge" id="alertCount" hidden></span></button>
         <button data-view="pulse">Pulso do crédito</button>
+        <button data-view="scenarios">Cenários</button>
         <button data-view="leading">Sinais Antecedentes</button>
         <button data-view="trends">Tendências de Busca</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Risco</span>
-        <button data-view="sectors">Risco setorial</button>
-        <button data-view="rj">Recuperações &amp; Falências</button>
-        <button data-view="institutions">Instituições</button>
-        <button data-view="operacional">Indicadores operacionais</button>
+        <span class="navlabel">Território</span>
+        <button data-view="panorama">Panorama do Crédito</button>
+        <button data-view="penetracao">Penetração e Gap</button>
+        <button data-view="moradia">Moradia e Habitação</button>
+        <button data-view="consignado">Consignado e Envelhecimento</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Mercado</span>
+        <span class="navlabel">Instituições</span>
+        <button data-view="institutions">Instituições</button>
+        <button data-view="compare">Comparador</button>
+        <button data-view="operacional">Indicadores operacionais</button>
+        <button data-view="market">Mercado e Valor</button>
+      </div>
+      <div class="navgroup">
+        <span class="navlabel">Produtos e preços</span>
         <button data-view="products">Produtos de Crédito</button>
         <button data-view="juros">Taxas de Juros por IF</button>
-        <button data-view="compare">Comparador</button>
-        <button data-view="market">Mercado &amp; Valor</button>
-      </div>
-      <div class="navgroup">
-        <span class="navlabel">Ecossistema</span>
-        <button data-view="pix">Pix &amp; Pagamentos</button>
+        <button data-view="rural">Crédito rural</button>
+        <button data-view="pix">Pix e Pagamentos</button>
         <button data-view="openfinance">Open Finance</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Análise</span>
-        <button data-view="scenarios">Cenários</button>
-        <button data-view="alerts">Alertas <span class="navbadge" id="alertCount" hidden></span></button>
-        <button data-view="regulacao">Regulação</button>
-        <button data-view="research">Perguntas rápidas</button>
-      </div>
-      <div class="navgroup">
-        <span class="navlabel">Riscos emergentes</span>
+        <span class="navlabel">Riscos e temas</span>
+        <button data-view="sectors">Risco setorial</button>
+        <button data-view="rj">Recuperações e Falências</button>
         <button data-view="judicial">Ações judiciais</button>
         <button data-view="pgfn">Dívida Ativa da União</button>
         <button data-view="desenrola">Desenrola Brasil</button>
-        <button data-view="bets">Bets &amp; risco financeiro</button>
-        <button data-view="fraudes">Fraudes &amp; risco de crédito</button>
+        <button data-view="bets">Bets e risco financeiro</button>
+        <button data-view="fraudes">Fraudes e risco de crédito</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Documentação</span>
-        <button data-view="method">Metodologia &amp; Fontes</button>
-        <button data-view="sugestoes">Sugestões</button>
-        <button data-view="sobre">Sobre</button>
+        <span class="navlabel">Referência</span>
+        <button data-view="regulacao">Regulação do Crédito</button>
+        <button data-view="method">Metodologia e Fontes</button>
+        <button data-view="sobre">Sobre o Observatório</button>
       </div>
       <p id="navVazio" class="navvazio" hidden>nenhuma página com esse nome</p>
     </nav>
@@ -152,16 +148,17 @@
       <section class="view" id="view-penetracao"></section>
       <section class="view" id="view-moradia"></section>
       <section class="view" id="view-consignado"></section>
+      <section class="view" id="view-rural"></section>
       <section class="view" id="view-method"></section>
       <section class="view" id="view-sobre"></section>
     </main>
     <footer>
       <div id="footDisclaimer"></div>
-      <div class="noprint">Fontes reais: BCB/SGS · BCB/IF.data · IBGE · Ipeadata — dados abertos com atribuição. Módulos selados como <b>DADO DEMONSTRATIVO</b> não contêm observações reais. · <a href="javascript:void(0)" onclick="nav('sobre')">Sobre</a></div>
+      <div class="noprint">Dados abertos do BCB, CVM, IBGE, CNJ, PGFN e Ipeadata, com atribuição; a lista completa de coletores e o estado de cada fonte estão em <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia e Fontes</a>. · <a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> · <a href="/observatorio/about" onclick="nav('sobre');return false">Sobre</a></div>
     </footer>
   </div>
 </div>
 <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
-<script src="/obs/app.min.js?v=0.86.0"></script>
+<script src="/obs/app.min.js?v=0.87.0"></script>
 </body>
 </html>

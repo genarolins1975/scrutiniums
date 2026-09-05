@@ -141,7 +141,7 @@ describe("metadados por rota", () => {
 
   it("o HTML servido injeta title, description, OG, canônico e JSON-LD", () => {
     const html = montarHtml(resolverMeta("/financial-fraud"));
-    expect(html).toContain("<title>Fraudes financeiras e risco de crédito · Observatório Brasileiro de Crédito</title>");
+    expect(html).toContain("<title>Fraudes e risco de crédito · Observatório Brasileiro de Crédito</title>");
     expect(html).toContain('<link rel="canonical" href="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('<meta property="og:url" content="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('"@type":"Dataset"');

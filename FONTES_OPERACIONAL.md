@@ -1033,3 +1033,97 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Suíte: 824 testes / 65 arquivos verdes; travas novas em
   `products-data.test.ts` (per-modalidade nunca mediana; escalar não
   volta; rotativo ≫ parcelado no cartão; ticks e folga na dispersão).
+
+## 41. Avaliação completa dos painéis (05/09/2026) e as correções da rodada
+
+- **Documento:** `docs/AVALIACAO_PAINEIS_2026-09.md` — técnica, layout e
+  didática das 34 rotas, medidas em navegador a 1440 px e 390 px; menu por
+  pergunta do leitor; dez painéis novos priorizados por valor sobre esforço
+  (crédito rural pelo Sicor, BNDES, crédito ampliado com ofertas CVM e
+  CRI/CRA, PTC e Focus, entrantes do SFN, conduta, Caged, páginas por UF,
+  funding, consórcios); mapa dos 54 conjuntos abertos da CVM (6 usados).
+- **Correções aplicadas (v0.87.0):** RJ sem ficção na rota pública; LinkedIn
+  pelo `<head>`; vigília `pane` (fonte parada com gold íntegro) e faixa na
+  aba; alertas operacionais com nível pela regra e FRE ausente consolidado
+  (crachá 21 → 9); "O que mudou" com vaga por família; guia em toda aba e
+  rota dinâmica; um nome por aba e menu em seis grupos; ações recolhidas e
+  método depois do número; modo capítulo nos dossiês; piso tipográfico nos
+  SVG e escala log no Mercado; `fontes_reais` derivada do status da coleta;
+  `/metodologia` e `/fontes` redirecionam para a metodologia viva; toast no
+  lugar de `alert()` e `href` real nas âncoras de navegação.
+- **Correção de leitura:** a varredura móvel da primeira versão contou
+  elementos além da viewport, mas quase todos rolam dentro de `.tblwrap`;
+  o corte real é residual (histograma do produto, `.seg` sem quebra, 8 px
+  em dois cartões) e ficou como P2.
+- **Travas:** `src/tests/avaliacao-set26.test.ts`; `central-alertas.test.ts`
+  e `guia-navegacao.test.ts` estendidos; `observatorio-publico` com o nome
+  novo de Fraudes.
+
+## 42. Crédito rural — Matriz de Dados do Crédito Rural (MDCR/Sicor)
+
+- **Fonte:** BCB, dados abertos (ODbL), API OData
+  `https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/`, catálogo em
+  dadosabertos.bcb.gov.br (`matrizdadoscreditorural`). Contratações registradas
+  no Sicor, agregadas pelo próprio BCB por mês de emissão e dimensão. Mensal
+  desde 2013. Nível A (registro administrativo obrigatório das cédulas).
+- **Medido em 05/09/2026:** `$filter` por ano e mês de emissão, `$select` e
+  `$orderby` funcionam; `$apply` (agregação no servidor) e `$count` não (403).
+  Sem paginação. Um mês: RegiaoUF 1,5 mil linhas em 2 s; SegmentoIF 3,6 mil em
+  29 s; municipal (CusteioInvestimentoComercialIndustrialSemFiltros) 35 mil
+  linhas, 11 MB, 37 s; produtos por UF 10 mil linhas em 22 s. A soma do recurso
+  Faixa (universo completo) bate com a soma do municipal no mesmo mês
+  (R$ 30,98 bi × R$ 30,97 bi em 2026-06).
+- **Coletor** `pipeline/sources/sicor.py` → silver `sicor_uf` (RegiaoUF, toda
+  a história, uma requisição por ano), `sicor_fonte`, `sicor_faixa`,
+  `sicor_genero` (toda a história), `sicor_if` (13 meses), `sicor_mun` (12
+  meses), `sicor_produto` (12 meses), `sicor_nomes` (programa e subprograma).
+  Mês corrente e anterior são PARCIAIS (cédulas entram com atraso) e são
+  recoletados a cada execução; meses mais antigos são fechados e imutáveis.
+  Cap de 40 requisições pesadas por execução: a primeira carga converge em
+  poucos dias; falha consome o cap.
+- **Builder** `pipeline/rural.py` → `rural.json` + `rural_mun.json` (array
+  municipal separado pelo mesmo mecanismo dos demais golds municipais).
+  Janela de 12 meses fechada no último mês completo; safra = julho a junho;
+  famílias de fonte por padrão explícito no nome (poupança rural, LCA,
+  exigibilidades MCR 6.2, fundos constitucionais, BNDES/Finame, recursos
+  livres, Funcafé, Tesouro); população do Censo 2022 via gold da penetração.
+  Tudo é FLUXO (contratação); o saldo rural do sistema segue no IF.data e no
+  SGS, e a aba diz isso na ponte para Produtos.
+- **Dicionário de códigos:** Atividade 1 = agrícola, 2 = pecuária; cdSexo
+  1 = feminino, 2 = masculino (inferido da distribuição de 2026-06: o código 1
+  tem 36% das cédulas e 20% do valor, compatível com a participação conhecida
+  das mulheres; a confirmação pelo subprograma PRONAF Mulher está pendente); segmentos de IF pelos códigos do
+  recurso SegmentoIF (108 banco múltiplo, 109 cooperativa de crédito, 111
+  banco cooperativo, 110 agência de fomento, 115 SCFI).
+- **Aba** `/observatorio/rural-credit` (view `rural`, chunk municipal, grupo
+  "Produtos e preços"): síntese e placar, evolução mensal por finalidade ou
+  atividade, safras, programas (PRONAF, PRONAMP, sem programa, demais),
+  fontes por família com taxa controlada e equalizada, faixas de valor
+  (concentração), gênero e instituições, mapa municipal com ranking por
+  habitante (piso de 5 mil habitantes), UFs, produtos de custeio e
+  investimento, método e cautelas. CSV municipal com procedência.
+- **Cautelas publicadas:** contratação ≠ saldo ≠ inadimplência; meses
+  parciais fora de toda razão; programa/fonte/finalidade são os declarados na
+  cédula; IF é o CNPJ contratante, sem consolidação; por habitante e por
+  hectare são intensidades, não acesso.
+- **Universo, medido na carga de 05/09/2026:** os recursos FonteRecursos
+  (nacional), SegmentoIF e o municipal fecham com o recurso Faixa ao centavo
+  em todos os meses; RegiaoUF fica 2% a 8% ABAIXO em todos os meses (o BCB não
+  documenta a diferença; provavelmente cédulas sem UF atribuída). Por isso a
+  série nacional vem de FonteRecursos, o recorte estadual é o municipal
+  agregado pelo prefixo do código IBGE, e RegiaoUF entra só como nota de
+  cobertura publicada no gold (`universo.cobertura_regiao_uf_pct`). Produto
+  cobre custeio e investimento (72% a 84% do valor), como a fonte define.
+- **Estado da primeira carga (05/09/2026, noite):** a API alternou respostas
+  em segundos com horas de HTTP 504 (Azure Application Gateway), inclusive em
+  repouso. A janela publicada (2025-08 a 2026-07) ficou completa nos cinco
+  recursos: R$ 344,4 bi em 2.538.458 contratos, 5.487 municípios com
+  contratação, reconciliação municipal × nacional de 100,0%. A cauda histórica
+  (FonteRecursos e Faixa desde 2013, gênero desde 2013) converge nas execuções
+  diárias, meses recentes primeiro; enquanto isso a variação sobre os 12 meses
+  anteriores fica nula e a série mensal começa em 2025-07. A verificação do
+  código de sexo pelo subprograma PRONAF Mulher (cdSubPrograma 57) recebeu 504
+  em três tentativas e segue pendente.
+- **Travas:** `src/tests/rural-data.test.ts` (janela sem meses parciais,
+  composições que fecham, reconciliação municipal × estadual dentro de 3%,
+  ausência como nulo, piso do ranking por habitante, registro completo na SPA).

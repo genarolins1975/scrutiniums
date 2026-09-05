@@ -90,7 +90,8 @@ describe("sugestões: máquina completa (tabela → estatísticas do painel)", (
     expect(app).toContain('sugestoes: "renderSugestoes"');
     expect(app).toContain('fetch("/api/sugestoes"');
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
-    expect(html).toContain('data-view="sugestoes"');
+    // a aba saiu do menu principal (avaliação de 05/09) e é alcançada pelo rodapé e por Sobre
+    expect(html).toContain('href="/observatorio/suggestions"');
     expect(html).toContain('id="view-sugestoes"');
   });
 });

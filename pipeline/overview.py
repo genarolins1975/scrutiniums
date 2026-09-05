@@ -393,7 +393,7 @@ def build_novidades():
         if (v.get("inicio_iso") or "") >= corte45:
             out.append({"tipo": "regime", "titulo": f"{v.get('nome')} sob {v.get('tipo')} desde {v.get('inicio')}",
                         "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
-                        "link": {"view": "pulse"}})
+                        "link": {"view": "institutions", "sec": "sec-regimes"}})
 
     rec = common.ler_gold_opcional("recordes.json") or {}
     for r in (rec.get("recordes") or []):
@@ -417,7 +417,23 @@ def build_novidades():
                 out.append({"tipo": "guidance", "titulo": f"{c.get('banco')}: guidance revisado no {a2.get('periodo')}",
                             "detalhe": (a2.get("resumo") or "")[:180],
                             "link": {"view": "institutions"}})
-    return {"itens": out[:8],
+    # vaga por família (E12 da avaliação de 05/09): quatro liquidações de DTVM
+    # ocupavam quatro das seis vagas. Cada família recebe até duas vagas na
+    # primeira rodada; o que sobrar até oito é preenchido na ordem das famílias.
+    por_tipo = {}
+    for it in out:
+        por_tipo.setdefault(it["tipo"], []).append(it)
+    ordem_tipos = ["alerta_novo", "regime", "recorde", "guidance"]
+    sel = []
+    for t in ordem_tipos:
+        sel.extend(por_tipo.get(t, [])[:2])
+    for t in ordem_tipos:
+        for it in por_tipo.get(t, [])[2:]:
+            if len(sel) >= 8:
+                break
+            sel.append(it)
+    return {"itens": sel[:8],
             "nota": ("Consolidado por regra determinística na execução diária: alertas em primeiro disparo, "
                      "entradas recentes em regimes (45 dias), recordes com referência recente e revisões de "
-                     "guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade.")}
+                     "guidance do trimestre corrente/anterior. Até duas vagas por família na primeira rodada; "
+                     "famílias distintas — a ordem não é gravidade.")}

@@ -421,11 +421,28 @@
  "novidades": {
   "itens": [
    {
+    "tipo": "alerta_novo",
+    "titulo": "Veículos · PF — inadimplência (arrastada)",
+    "detalhe": "família carteira — primeiro disparo desta regra",
+    "link": {
+     "view": "alerts"
+    }
+   },
+   {
+    "tipo": "alerta_novo",
+    "titulo": "Consignado · PF — inadimplência (arrastada)",
+    "detalhe": "família carteira — primeiro disparo desta regra",
+    "link": {
+     "view": "alerts"
+    }
+   },
+   {
     "tipo": "regime",
     "titulo": "BANVOX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA sob LIQUIDAÇÃO EXTRAJUDICIAL desde 03/09/2026",
     "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
     "link": {
-     "view": "pulse"
+     "view": "institutions",
+     "sec": "sec-regimes"
     }
    },
    {
@@ -433,23 +450,8 @@
     "titulo": "TRUSTEE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA. sob LIQUIDAÇÃO EXTRAJUDICIAL desde 03/09/2026",
     "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
     "link": {
-     "view": "pulse"
-    }
-   },
-   {
-    "tipo": "regime",
-    "titulo": "SIMPALA LANÇADORA E ADMINISTRADORA DE CONSÓRCIOS LTDA. sob LIQUIDAÇÃO EXTRAJUDICIAL desde 14/08/2026",
-    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
-    "link": {
-     "view": "pulse"
-    }
-   },
-   {
-    "tipo": "regime",
-    "titulo": "SIMPALA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO sob LIQUIDAÇÃO EXTRAJUDICIAL desde 14/08/2026",
-    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
-    "link": {
-     "view": "pulse"
+     "view": "institutions",
+     "sec": "sec-regimes"
     }
    },
    {
@@ -467,9 +469,26 @@
     "link": {
      "view": "institutions"
     }
+   },
+   {
+    "tipo": "alerta_novo",
+    "titulo": "Brb Banco De Brasilia S.A. — rede",
+    "detalhe": "família operacional — primeiro disparo desta regra",
+    "link": {
+     "view": "alerts"
+    }
+   },
+   {
+    "tipo": "regime",
+    "titulo": "SIMPALA LANÇADORA E ADMINISTRADORA DE CONSÓRCIOS LTDA. sob LIQUIDAÇÃO EXTRAJUDICIAL desde 14/08/2026",
+    "detalhe": "entrada recente na lista oficial de regimes do BCB (janela de 45 dias)",
+    "link": {
+     "view": "institutions",
+     "sec": "sec-regimes"
+    }
    }
   ],
-  "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Famílias distintas — a ordem não é gravidade."
+  "nota": "Consolidado por regra determinística na execução diária: alertas em primeiro disparo, entradas recentes em regimes (45 dias), recordes com referência recente e revisões de guidance do trimestre corrente/anterior. Até duas vagas por família na primeira rodada; famílias distintas — a ordem não é gravidade."
  },
  "ibcc_posicao": {
   "atual": 94.96,
