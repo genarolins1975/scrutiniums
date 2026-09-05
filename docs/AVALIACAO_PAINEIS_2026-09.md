@@ -410,3 +410,24 @@ penetração de 306% da renda anual (2º), 416 de 645 municípios com agência.
 trimestral de condições de crédito e o Focus (Olinda) entram como cenários com
 expectativas em vez de choques arbitrários.
 
+## 15. Painel nº 4, metade estruturada: Focus nos Cenários (05/09/2026, noite)
+
+O BCB voltou às 21h40 UTC e as 19 séries de crédito direcionado entraram no painel BNDES
+(bloco de saldo aberto: R$ 3,22 trilhões direcionados em 2026-07, 44% da carteira; BNDES
+com 18% de todo o crédito PJ). Na sequência, a metade estruturada do painel nº 4.
+
+**O que foi construído.** Coletor do Focus (API Olinda), builder `pipeline/expectativas.py`
+e o cartão "Expectativas de mercado (Focus)" na aba Cenários, com dois presets novos,
+`focus_2026` e `focus_2027`, calculados como a distância entre a mediana do consenso e
+o observado hoje, aplicados ao mesmo modelo de elasticidades. É a resposta ao item da
+avaliação "Focus alimenta os presets de Cenários com expectativas em vez de choques
+arbitrários".
+
+**Evidência** (Focus de 2026-08-28; SGS de 05/09/2026). Selic esperada 13,75% (2026) e
+12,00% (2027) contra meta de 14,00%; desocupação 5,4% e 5,9% contra 5,3%; câmbio R$ 5,20
+e R$ 5,30 contra PTAX de R$ 5,15.
+
+**O que ficou fora, e por quê.** A Pesquisa Trimestral de Condições de Crédito só existe
+em PDF; a própria avaliação (§6) exclui qualquer fonte que dependa de PDF sem o gate da
+Fase 2. A ótica do ofertante entra quando o BCB publicar a série estruturada.
+
