@@ -207,6 +207,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "conduta.json",
   },
   {
+    view: "emprego",
+    caminho: "/formal-employment",
+    titulo: "Emprego formal",
+    descricao:
+      "Estoque de vínculos formais por seção CNAE e saldo de admissões e desligamentos por UF (Novo Caged), lidos contra a própria história: o componente de capacidade financeira do Risco setorial.",
+    gold: "emprego.json",
+  },
+  {
     view: "bets",
     caminho: "/bets-financial-risk",
     titulo: "Bets e risco financeiro",

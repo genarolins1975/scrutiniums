@@ -147,10 +147,37 @@ CNAE_SECAO_MAP = {  # PIM cobre indústria; mapeamos atividades PIM para rótulo
 }
 
 
-def build_sector_stress(con, cfg, rj_demo):
-    """Estresse setorial 0-100 com 4 componentes (atividade e condições de crédito observados;
-    capacidade financeira e estresse empresarial demonstrativos), separando nível, tendência
-    e velocidade de deterioração."""
+# Seções CNAE (chaves do gold emprego.json) que respondem por cada atividade do
+# score. PIM = divisões CNAE, todas dentro de C (extrativa = B; "indústria geral"
+# = B e C); PMS = grandes grupos, que cruzam seções; PMC = comércio (G). Regra
+# declarada: a atividade herda o z médio das seções listadas, porque o Novo Caged
+# republicado pelo BCB só desce até a seção.
+SECOES_EMPREGO = {
+    "129314": ["B", "C"], "129315": ["B"], "129316": ["C"],
+    "pms_106869": ["I", "S"], "pms_106874": ["J"], "pms_31399": ["M", "N"], "pms_106876": ["H"], "pms_31426": ["E", "K", "L", "S"],
+}
+PESOS_SCORE = {"atividade": 0.45, "condicoes_credito": 0.20, "capacidade_financeira": 0.15}  # originais; renormalizados sobre os observados
+
+
+def _secoes_da_atividade(code, pesquisa):
+    if code in SECOES_EMPREGO:
+        return SECOES_EMPREGO[code]
+    if pesquisa == "industria":
+        return ["C"]
+    if pesquisa == "comercio":
+        return ["G"]
+    return ["SERV"]
+
+
+def build_sector_stress(con, cfg, rj_demo, emprego=None):
+    """Estresse setorial 0-100 com 4 componentes (atividade, condições de crédito e capacidade
+    financeira observados; estresse empresarial demonstrativo), separando nível, tendência
+    e velocidade de deterioração. `emprego` é o gold emprego.json (z por seção CNAE); sem ele,
+    capacidade financeira volta a demonstrativo com peso zero e os pesos são renormalizados
+    só sobre atividade e crédito."""
+    secoes_z = (emprego or {}).get("secoes_z") or {}
+    emprego_ok = bool(secoes_z)
+    emprego_ref = (emprego or {}).get("mes")
     # condições de crédito PJ (observadas, comuns a todos os setores no MVP — corte setorial na Fase 1)
     cred_z = 0.0
     cred_detail = "indisponível"
@@ -213,16 +240,30 @@ def build_sector_stress(con, cfg, rj_demo):
         code = key.replace("pim_", "") if pesquisa == "industria" else key
         demo_comp = rj_demo["componentes_setoriais"].get(
             "B" if "extrativa" in short.lower() else "C", {"rj_z": 0.5, "emprego_z": 0.0})
-        # O SCORE publicado usa APENAS componentes observados. Os antigos pesos
-        # 0,45/0,20 são renormalizados (0,45/0,65 e 0,20/0,65): um número
-        # comparativo com 35% de peso demonstrativo induzia precisão que o dado
-        # não tinha — mesmo princípio que aposentou a "maturidade estrutural".
-        # Os demonstrativos seguem VISÍVEIS, com peso zero, como "em construção".
+        # O SCORE publicado usa APENAS componentes observados. Os pesos originais
+        # (0,45 atividade / 0,20 crédito / 0,15 emprego / 0,20 RJ) são renormalizados
+        # sobre o que está observado: um número comparativo com peso demonstrativo
+        # induzia precisão que o dado não tinha — mesmo princípio que aposentou a
+        # "maturidade estrutural". O demonstrativo (RJ) segue VISÍVEL, com peso zero.
+        secoes = _secoes_da_atividade(code, pesquisa)
+        zs_emp = [secoes_z[k] for k in secoes if secoes_z.get(k) is not None]
+        if emprego_ok and zs_emp:
+            emprego_z = -sum(zs_emp) / len(zs_emp)  # estoque em queda fora do padrão => estresse
+            observados = ["atividade", "condicoes_credito", "capacidade_financeira"]
+        else:
+            emprego_z = None
+            observados = ["atividade", "condicoes_credito"]
+        soma_pesos = sum(PESOS_SCORE[k] for k in observados)
+        peso = {k: round(PESOS_SCORE[k] / soma_pesos, 4) for k in observados}
         comps = {
-            "atividade": {"z": round(atividade_z, 2), "peso": 0.69, "fonte": fonte_atividade, "status": "observado"},
-            "condicoes_credito": {"z": round(cred_z, 2), "peso": 0.31, "fonte": "BCB/SGS (inad. e spread PJ)", "status": "observado", "nota": cred_detail},
+            "atividade": {"z": round(atividade_z, 2), "peso": peso["atividade"], "fonte": fonte_atividade, "status": "observado"},
+            "condicoes_credito": {"z": round(cred_z, 2), "peso": peso["condicoes_credito"], "fonte": "BCB/SGS (inad. e spread PJ)", "status": "observado", "nota": cred_detail},
             "estresse_empresarial": {"z": demo_comp["rj_z"], "peso": 0.0, "fonte": "em construção (RJ) — fora do score", "status": "demonstrativo"},
-            "capacidade_financeira": {"z": round(-demo_comp["emprego_z"], 2), "peso": 0.0, "fonte": "em construção (emprego) — fora do score", "status": "demonstrativo"},
+            "capacidade_financeira": ({"z": round(emprego_z, 2), "peso": peso["capacidade_financeira"],
+                                       "fonte": f"MTE/Novo Caged via BCB/SGS (estoque de vínculos, seção {' + '.join(secoes)}, até {emprego_ref})",
+                                       "status": "observado", "nota": "z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE da atividade, invertido; divisões herdam a seção"}
+                                      if emprego_z is not None else
+                                      {"z": round(-demo_comp["emprego_z"], 2), "peso": 0.0, "fonte": "em construção (emprego) — fora do score", "status": "demonstrativo"}),
         }
         score_z = sum(c["z"] * c["peso"] for c in comps.values() if c["status"] == "observado")
         score = max(0, min(100, 50 + 20 * score_z))
@@ -240,24 +281,35 @@ def build_sector_stress(con, cfg, rj_demo):
             "componentes": comps,
         })
     sectors.sort(key=lambda x: -x["score"])
+    com_emprego = any(x["componentes"]["capacidade_financeira"]["status"] == "observado" for x in sectors)
+    pesos_txt = ("atividade 0,56, condições de crédito 0,25 e capacidade financeira 0,19 (pesos originais 0,45/0,20/0,15 "
+                 "renormalizados sobre os observados)" if com_emprego else
+                 "atividade 0,69 e condições de crédito 0,31 (pesos originais 0,45/0,20 renormalizados; emprego indisponível nesta execução)")
     return {
         "ok": bool(sectors), "tipo": "DADO CALCULADO (100% observado)", "setores": sectors,
+        "emprego_ref": emprego_ref if com_emprego else None,
         "metodo": "Score = 50 + 20×Σ(peso×z), calculado APENAS sobre componentes observados: "
-                  "atividade 0,69 (queda do volume a/a vs. histórico — PIM para indústria, PMS para "
+                  "atividade (queda do volume a/a vs. histórico — PIM para indústria, PMS para "
                   "serviços, PMC para o varejo ampliado; mesma régua: índice de volume 2022=100 sem "
-                  "ajuste sazonal) e condições de crédito 0,31 (inadimplência e spread PJ vs. histórico, "
-                  "BCB) — pesos renormalizados dos antigos 0,45/0,20. Estresse empresarial e capacidade "
-                  "financeira aparecem como 'em construção', com peso ZERO: nunca entram no número. "
-                  "Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência. "
+                  "ajuste sazonal), condições de crédito (inadimplência e spread PJ vs. histórico, BCB) "
+                  "e capacidade financeira (variação a/a do estoque de vínculos formais da seção CNAE da "
+                  "atividade vs. histórico desde 2013, Novo Caged via BCB/SGS, sinal invertido). Pesos: "
+                  + pesos_txt + ". Estresse empresarial aparece como 'em construção', com peso ZERO: nunca "
+                  "entra no número. Tendência = Δ3m do crescimento a/a; velocidade = aceleração dessa tendência. "
                   "Seleção declarada: totais das pesquisas ficam fora; PMS entra pelos 5 grandes grupos; "
-                  "PMC exclui recortes que duplicam categorias-mãe.",
+                  "PMC exclui recortes que duplicam categorias-mãe; divisões CNAE herdam o emprego da seção "
+                  "(o BCB só republica o estoque por seção).",
         "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível "
                       "nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). "
+                      "Emprego entra por seção CNAE, não por divisão: as 24 divisões da transformação recebem "
+                      "o mesmo z; grupos da PMS que cruzam seções recebem a média das seções listadas. "
                       "Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da "
-                      "própria história), não nos níveis absolutos entre pesquisas. Componentes de RJ e "
-                      "emprego estão em construção e FORA do score. Normalização por nº de empresas/estoque "
-                      "de crédito setorial entra com Caged/SCR (Fases 1/4).",
-        "aviso_demo": "Estresse empresarial e capacidade financeira são demonstrativos, com peso zero — exibidos como 'em construção', nunca somados ao score.",
+                      "própria história), não nos níveis absolutos entre pesquisas. O componente de RJ está "
+                      "em construção e FORA do score. Normalização por nº de empresas/estoque de crédito "
+                      "setorial entra com o SCR (Fase 4).",
+        "aviso_demo": ("Estresse empresarial (RJ) é demonstrativo, com peso zero — exibido como 'em construção', nunca somado ao score."
+                       if com_emprego else
+                       "Estresse empresarial e capacidade financeira são demonstrativos, com peso zero — exibidos como 'em construção', nunca somados ao score."),
     }
 
 

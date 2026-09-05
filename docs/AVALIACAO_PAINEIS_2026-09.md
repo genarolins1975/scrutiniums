@@ -469,3 +469,37 @@ meses, 251 em curso com idade mediana de 23 meses.
 padrão por atraso de remessa domina a distribuição (mediana e p90 iguais). O rito da CVM
 é lento: quase um em quatro processos em curso passa de três anos.
 
+## 18. Painel nº 7: emprego formal setorial (05/09/2026, madrugada)
+
+**O que foi construído.** Um coletor novo (admissões e desligamentos por UF, Ipeadata),
+42 séries novas do SGS (estoque do Novo Caged por seção CNAE, com e sem ajuste
+sazonal), o builder `pipeline/emprego.py`, a aba `/observatorio/formal-employment` no
+grupo Riscos e temas (Brasil, seções, UFs, score, método), o bloco de emprego nas 27
+páginas por UF e, o que motivou o painel, a troca do componente "capacidade financeira"
+do Risco setorial de demonstrativo (peso zero) para observado (peso 0,19, renormalizado
+do 0,15 original). O portal do MTE não responde deste ambiente; as duas republicações
+oficiais (BCB e Ipea) fecham entre si ao vínculo no Brasil, e a diferença é publicada.
+
+**Evidência** (BCB/SGS e Ipeadata, consultas de 05/09/2026; dados até 2026-07,
+preliminares). 48.082.866 vínculos formais; +880.717 em 12 meses (+1,87% a/a) contra
++1.537.837 nos 12 meses anteriores; +58.568 no mês (+29.068 com ajuste). Contra a
+própria história desde 2013: agropecuária z −0,84 (−0,8% a/a), transformação z −0,03
+(+0,2%), comércio z −0,33 (+1,1%), eletricidade e gás z +2,1 (+5,1%). Efeito no score
+setorial: variação média de 2,0 pontos, máxima de 5,7; 21 atividades em "elevado" e 22
+em "atenção" (antes 23 e 20).
+
+**Inferência.** O mercado de trabalho formal desacelera pela metade em um ano, mas
+segue positivo em quase todas as seções; contra a própria história, nada está em
+contração salvo a agropecuária, que perde vínculos. Uma janela de z desde 2022 diria o
+oposto (quase tudo "contração"), porque compararia o presente com o rebote
+pós-pandemia; por isso a régua é a história completa, a mesma dos demais componentes.
+
+**Recomendação.** Ler o componente de emprego como corte por seção, não por divisão: as
+24 divisões da transformação recebem o mesmo z até que os microdados do MTE sejam
+acessíveis. A massa salarial (salário de admissão) é a próxima régua útil e não tem
+republicação pública por seção.
+
+**Estado do §6 depois desta etapa.** Construídos: nº 1, 2, 3, 4 (metade Focus), 5, 6, 7
+e 8. Restam nº 9 (funding e captação) e nº 10 (consórcios, prioridade baixa); a PTC
+(outra metade do nº 4) espera dado estruturado do BCB.
+

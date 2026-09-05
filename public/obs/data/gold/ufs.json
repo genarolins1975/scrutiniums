@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-05T21:39:44+00:00",
+ "gerado_em": "2026-09-05T23:36:50+00:00",
  "datas": {
   "scr": "2026-07",
   "penetracao": "2026-06",
@@ -19,7 +19,8 @@
    "ini": "2025-04",
    "fim": "2026-03"
   },
-  "pgfn": "2026-06"
+  "pgfn": "2026-06",
+  "emprego": "2026-07"
  },
  "brasil": {
   "saldo": 7573943761640,
@@ -243,6 +244,17 @@
     "insc_pf_por_mil_hab": 15.06,
     "pj_valor": 4175011455.6
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 280.0,
+    "admissoes_mes": 5394.0,
+    "desligamentos_mes": 5114.0,
+    "saldo_12m": 4537.0,
+    "saldo_12m_anterior": 3347.0,
+    "admissoes_12m": 56969.0,
+    "desligamentos_12m": 52432.0,
+    "retencao_pct": 7.96
+   },
    "posicoes": {
     "scr.saldo": 25,
     "scr.per_capita": 16,
@@ -256,6 +268,8 @@
     "consignado.cons_por_elegivel": 4,
     "rural.valor_hab": 12,
     "bndes.valor_hab": 14,
+    "emprego.saldo_12m": 24,
+    "emprego.retencao_pct": 8,
     "pgfn.insc_pf_por_mil_hab": 21
    },
    "sintese": "O crédito no Acre somava R$ 20 bilhões em 2026-07, 0,3% do Brasil, R$ 22.494 por habitante (16º entre as 27 UFs), com inadimplência de 6,46% (6º) e crescimento de +9,4% em 12 meses. Penetração de 90% da renda anual (13º), com 1 de 22 municípios abaixo do esperado pelo modelo. 15 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -474,6 +488,17 @@
     "insc_pf_por_mil_hab": 18.31,
     "pj_valor": 27525182529.21
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 1203.0,
+    "admissoes_mes": 16466.0,
+    "desligamentos_mes": 15263.0,
+    "saldo_12m": 12648.0,
+    "saldo_12m_anterior": 13432.0,
+    "admissoes_12m": 205750.0,
+    "desligamentos_12m": 193102.0,
+    "retencao_pct": 6.15
+   },
    "posicoes": {
     "scr.saldo": 22,
     "scr.per_capita": 22,
@@ -487,6 +512,8 @@
     "consignado.cons_por_elegivel": 14,
     "rural.valor_hab": 19,
     "bndes.valor_hab": 26,
+    "emprego.saldo_12m": 19,
+    "emprego.retencao_pct": 12,
     "pgfn.insc_pf_por_mil_hab": 13
    },
    "sintese": "O crédito em Alagoas somava R$ 60 bilhões em 2026-07, 0,8% do Brasil, R$ 18.604 por habitante (22º entre as 27 UFs), com inadimplência de 5,72% (11º) e crescimento de +9,0% em 12 meses. Penetração de 67% da renda anual (23º), com 8 de 102 municípios abaixo do esperado pelo modelo. 37 municípios têm agência, 7 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -705,6 +732,17 @@
     "insc_pf_por_mil_hab": 14.34,
     "pj_valor": 50482059675.29
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 3650.0,
+    "admissoes_mes": 29496.0,
+    "desligamentos_mes": 25846.0,
+    "saldo_12m": 19963.0,
+    "saldo_12m_anterior": 26675.0,
+    "admissoes_12m": 303617.0,
+    "desligamentos_12m": 283654.0,
+    "retencao_pct": 6.58
+   },
    "posicoes": {
     "scr.saldo": 17,
     "scr.per_capita": 24,
@@ -718,6 +756,8 @@
     "consignado.cons_por_elegivel": 7,
     "rural.valor_hab": 26,
     "bndes.valor_hab": 15,
+    "emprego.saldo_12m": 14,
+    "emprego.retencao_pct": 10,
     "pgfn.insc_pf_por_mil_hab": 25
    },
    "sintese": "O crédito no Amazonas somava R$ 80 bilhões em 2026-07, 1,1% do Brasil, R$ 18.498 por habitante (24º entre as 27 UFs), com inadimplência de 5,78% (10º) e crescimento de +10,9% em 12 meses. Penetração de 71% da renda anual (19º), com 34 de 62 municípios abaixo do esperado pelo modelo. 41 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -936,6 +976,17 @@
     "insc_pf_por_mil_hab": 26.08,
     "pj_valor": 6267527677.13
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 410.0,
+    "admissoes_mes": 5248.0,
+    "desligamentos_mes": 4838.0,
+    "saldo_12m": 6009.0,
+    "saldo_12m_anterior": 6501.0,
+    "admissoes_12m": 54335.0,
+    "desligamentos_12m": 48326.0,
+    "retencao_pct": 11.06
+   },
    "posicoes": {
     "scr.saldo": 26,
     "scr.per_capita": 14,
@@ -949,6 +1000,8 @@
     "consignado.cons_por_elegivel": 2,
     "rural.valor_hab": 25,
     "bndes.valor_hab": 12,
+    "emprego.saldo_12m": 23,
+    "emprego.retencao_pct": 1,
     "pgfn.insc_pf_por_mil_hab": 2
    },
    "sintese": "O crédito no Amapá somava R$ 19 bilhões em 2026-07, 0,3% do Brasil, R$ 24.118 por habitante (14º entre as 27 UFs), com inadimplência de 5,63% (12º) e crescimento de +9,3% em 12 meses. Penetração de 95% da renda anual (12º), com 0 de 16 municípios abaixo do esperado pelo modelo. 7 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1167,6 +1220,17 @@
     "insc_pf_por_mil_hab": 14.58,
     "pj_valor": 113157365679.17
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 4664.0,
+    "admissoes_mes": 90087.0,
+    "desligamentos_mes": 85423.0,
+    "saldo_12m": 72370.0,
+    "saldo_12m_anterior": 93679.0,
+    "admissoes_12m": 1038372.0,
+    "desligamentos_12m": 966002.0,
+    "retencao_pct": 6.97
+   },
    "posicoes": {
     "scr.saldo": 8,
     "scr.per_capita": 19,
@@ -1180,6 +1244,8 @@
     "consignado.cons_por_elegivel": 24,
     "rural.valor_hab": 14,
     "bndes.valor_hab": 18,
+    "emprego.saldo_12m": 3,
+    "emprego.retencao_pct": 9,
     "pgfn.insc_pf_por_mil_hab": 23
    },
    "sintese": "O crédito na Bahia somava R$ 296 bilhões em 2026-07, 3,9% do Brasil, R$ 19.901 por habitante (19º entre as 27 UFs), com inadimplência de 5,50% (15º) e crescimento de +10,2% em 12 meses. Penetração de 64% da renda anual (24º), com 93 de 417 municípios abaixo do esperado pelo modelo. 204 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1398,6 +1464,17 @@
     "insc_pf_por_mil_hab": 11.52,
     "pj_valor": 62835667990.84
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 4181.0,
+    "admissoes_mes": 61739.0,
+    "desligamentos_mes": 57558.0,
+    "saldo_12m": 42003.0,
+    "saldo_12m_anterior": 52600.0,
+    "admissoes_12m": 674433.0,
+    "desligamentos_12m": 632430.0,
+    "retencao_pct": 6.23
+   },
    "posicoes": {
     "scr.saldo": 10,
     "scr.per_capita": 21,
@@ -1411,6 +1488,8 @@
     "consignado.cons_por_elegivel": 25,
     "rural.valor_hab": 22,
     "bndes.valor_hab": 20,
+    "emprego.saldo_12m": 7,
+    "emprego.retencao_pct": 11,
     "pgfn.insc_pf_por_mil_hab": 27
    },
    "sintese": "O crédito no Ceará somava R$ 176 bilhões em 2026-07, 2,3% do Brasil, R$ 18.935 por habitante (21º entre as 27 UFs), com inadimplência de 5,01% (18º) e crescimento de +14,6% em 12 meses. Penetração de 70% da renda anual (20º), com 41 de 184 municípios abaixo do esperado pelo modelo. 87 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1629,6 +1708,17 @@
     "insc_pf_por_mil_hab": 33.32,
     "pj_valor": 60665988005.34
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": -134.0,
+    "admissoes_mes": 40651.0,
+    "desligamentos_mes": 40785.0,
+    "saldo_12m": 46250.0,
+    "saldo_12m_anterior": 44370.0,
+    "admissoes_12m": 496298.0,
+    "desligamentos_12m": 450048.0,
+    "retencao_pct": 9.32
+   },
    "posicoes": {
     "scr.saldo": 13,
     "scr.per_capita": 2,
@@ -1642,6 +1732,8 @@
     "consignado.cons_por_elegivel": 1,
     "rural.valor_hab": 24,
     "bndes.valor_hab": 27,
+    "emprego.saldo_12m": 5,
+    "emprego.retencao_pct": 4,
     "pgfn.insc_pf_por_mil_hab": 1
    },
    "sintese": "O crédito no Distrito Federal somava R$ 159 bilhões em 2026-07, 2,1% do Brasil, R$ 52.985 por habitante (2º entre as 27 UFs), com inadimplência de 3,54% (27º) e crescimento de -0,4% em 12 meses. Penetração de 6761% da renda anual (1º), com 0 de 1 municípios abaixo do esperado pelo modelo. 1 município tem agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1860,6 +1952,17 @@
     "insc_pf_por_mil_hab": 17.36,
     "pj_valor": 64240155705.31
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": -2605.0,
+    "admissoes_mes": 50526.0,
+    "desligamentos_mes": 53131.0,
+    "saldo_12m": 16391.0,
+    "saldo_12m_anterior": 24305.0,
+    "admissoes_12m": 584370.0,
+    "desligamentos_12m": 567979.0,
+    "retencao_pct": 2.8
+   },
    "posicoes": {
     "scr.saldo": 15,
     "scr.per_capita": 12,
@@ -1873,6 +1976,8 @@
     "consignado.cons_por_elegivel": 16,
     "rural.valor_hab": 9,
     "bndes.valor_hab": 6,
+    "emprego.saldo_12m": 16,
+    "emprego.retencao_pct": 16,
     "pgfn.insc_pf_por_mil_hab": 15
    },
    "sintese": "O crédito no Espírito Santo somava R$ 132 bilhões em 2026-07, 1,7% do Brasil, R$ 31.993 por habitante (12º entre as 27 UFs), com inadimplência de 4,02% (24º) e crescimento de +12,0% em 12 meses. Penetração de 62% da renda anual (26º), com 25 de 78 municípios abaixo do esperado pelo modelo. 68 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2091,6 +2196,17 @@
     "insc_pf_por_mil_hab": 18.33,
     "pj_valor": 85971300872.43
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 3581.0,
+    "admissoes_mes": 84757.0,
+    "desligamentos_mes": 81176.0,
+    "saldo_12m": 22619.0,
+    "saldo_12m_anterior": 56935.0,
+    "admissoes_12m": 998208.0,
+    "desligamentos_12m": 975589.0,
+    "retencao_pct": 2.27
+   },
    "posicoes": {
     "scr.saldo": 7,
     "scr.per_capita": 8,
@@ -2104,6 +2220,8 @@
     "consignado.cons_por_elegivel": 8,
     "rural.valor_hab": 7,
     "bndes.valor_hab": 9,
+    "emprego.saldo_12m": 13,
+    "emprego.retencao_pct": 21,
     "pgfn.insc_pf_por_mil_hab": 12
    },
    "sintese": "O crédito em Goiás somava R$ 343 bilhões em 2026-07, 4,5% do Brasil, R$ 46.155 por habitante (8º entre as 27 UFs), com inadimplência de 7,09% (4º) e crescimento de +7,7% em 12 meses. Penetração de 119% da renda anual (7º), com 51 de 246 municípios abaixo do esperado pelo modelo. 121 municípios têm agência, 19 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2322,6 +2440,17 @@
     "insc_pf_por_mil_hab": 16.06,
     "pj_valor": 38855063671.18
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 654.0,
+    "admissoes_mes": 23791.0,
+    "desligamentos_mes": 23137.0,
+    "saldo_12m": 22861.0,
+    "saldo_12m_anterior": 21474.0,
+    "admissoes_12m": 286266.0,
+    "desligamentos_12m": 263405.0,
+    "retencao_pct": 7.99
+   },
    "posicoes": {
     "scr.saldo": 16,
     "scr.per_capita": 27,
@@ -2335,6 +2464,8 @@
     "consignado.cons_por_elegivel": 27,
     "rural.valor_hab": 16,
     "bndes.valor_hab": 22,
+    "emprego.saldo_12m": 12,
+    "emprego.retencao_pct": 7,
     "pgfn.insc_pf_por_mil_hab": 19
    },
    "sintese": "O crédito no Maranhão somava R$ 114 bilhões em 2026-07, 1,5% do Brasil, R$ 16.238 por habitante (27º entre as 27 UFs), com inadimplência de 9,11% (1º) e crescimento de +7,3% em 12 meses. Penetração de 69% da renda anual (21º), com 19 de 217 municípios abaixo do esperado pelo modelo. 80 municípios têm agência, 12 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2553,6 +2684,17 @@
     "insc_pf_por_mil_hab": 14.75,
     "pj_valor": 201797975143.21
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 5199.0,
+    "admissoes_mes": 249731.0,
+    "desligamentos_mes": 244532.0,
+    "saldo_12m": 39763.0,
+    "saldo_12m_anterior": 117772.0,
+    "admissoes_12m": 2766566.0,
+    "desligamentos_12m": 2726803.0,
+    "retencao_pct": 1.44
+   },
    "posicoes": {
     "scr.saldo": 2,
     "scr.per_capita": 13,
@@ -2566,6 +2708,8 @@
     "consignado.cons_por_elegivel": 22,
     "rural.valor_hab": 10,
     "bndes.valor_hab": 10,
+    "emprego.saldo_12m": 8,
+    "emprego.retencao_pct": 25,
     "pgfn.insc_pf_por_mil_hab": 22
    },
    "sintese": "O crédito em Minas Gerais somava R$ 671 bilhões em 2026-07, 8,8% do Brasil, R$ 31.346 por habitante (13º entre as 27 UFs), com inadimplência de 4,64% (21º) e crescimento de +8,5% em 12 meses. Penetração de 95% da renda anual (11º), com 146 de 853 municípios abaixo do esperado pelo modelo. 402 municípios têm agência, 35 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2784,6 +2928,17 @@
     "insc_pf_por_mil_hab": 25.05,
     "pj_valor": 32175242551.03
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 730.0,
+    "admissoes_mes": 34983.0,
+    "desligamentos_mes": 34253.0,
+    "saldo_12m": 11569.0,
+    "saldo_12m_anterior": 17221.0,
+    "admissoes_12m": 413953.0,
+    "desligamentos_12m": 402384.0,
+    "retencao_pct": 2.79
+   },
    "posicoes": {
     "scr.saldo": 14,
     "scr.per_capita": 5,
@@ -2797,6 +2952,8 @@
     "consignado.cons_por_elegivel": 5,
     "rural.valor_hab": 2,
     "bndes.valor_hab": 1,
+    "emprego.saldo_12m": 20,
+    "emprego.retencao_pct": 17,
     "pgfn.insc_pf_por_mil_hab": 4
    },
    "sintese": "O crédito em Mato Grosso do Sul somava R$ 142 bilhões em 2026-07, 1,9% do Brasil, R$ 48.693 por habitante (5º entre as 27 UFs), com inadimplência de 7,37% (3º) e crescimento de +6,4% em 12 meses. Penetração de 115% da renda anual (9º), com 27 de 79 municípios abaixo do esperado pelo modelo. 54 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3015,6 +3172,17 @@
     "insc_pf_por_mil_hab": 25.39,
     "pj_valor": 52123909820.87
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 5766.0,
+    "admissoes_mes": 61174.0,
+    "desligamentos_mes": 55408.0,
+    "saldo_12m": 16914.0,
+    "saldo_12m_anterior": 29678.0,
+    "admissoes_12m": 665638.0,
+    "desligamentos_12m": 648724.0,
+    "retencao_pct": 2.54
+   },
    "posicoes": {
     "scr.saldo": 9,
     "scr.per_capita": 1,
@@ -3028,6 +3196,8 @@
     "consignado.cons_por_elegivel": 9,
     "rural.valor_hab": 1,
     "bndes.valor_hab": 2,
+    "emprego.saldo_12m": 15,
+    "emprego.retencao_pct": 18,
     "pgfn.insc_pf_por_mil_hab": 3
    },
    "sintese": "O crédito em Mato Grosso somava R$ 263 bilhões em 2026-07, 3,5% do Brasil, R$ 67.645 por habitante (1º entre as 27 UFs), com inadimplência de 5,98% (9º) e crescimento de +5,2% em 12 meses. Penetração de 140% da renda anual (4º), com 27 de 141 municípios abaixo do esperado pelo modelo. 77 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3246,6 +3416,17 @@
     "insc_pf_por_mil_hab": 13.72,
     "pj_valor": 63358254073.85
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 3816.0,
+    "admissoes_mes": 44964.0,
+    "desligamentos_mes": 41148.0,
+    "saldo_12m": 23023.0,
+    "saldo_12m_anterior": 34556.0,
+    "admissoes_12m": 507995.0,
+    "desligamentos_12m": 484972.0,
+    "retencao_pct": 4.53
+   },
    "posicoes": {
     "scr.saldo": 12,
     "scr.per_capita": 20,
@@ -3259,6 +3440,8 @@
     "consignado.cons_por_elegivel": 10,
     "rural.valor_hab": 15,
     "bndes.valor_hab": 16,
+    "emprego.saldo_12m": 11,
+    "emprego.retencao_pct": 14,
     "pgfn.insc_pf_por_mil_hab": 26
    },
    "sintese": "O crédito no Pará somava R$ 168 bilhões em 2026-07, 2,2% do Brasil, R$ 19.293 por habitante (20º entre as 27 UFs), com inadimplência de 6,33% (8º) e crescimento de +11,5% em 12 meses. Penetração de 82% da renda anual (17º), com 76 de 144 municípios abaixo do esperado pelo modelo. 144 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3477,6 +3660,17 @@
     "insc_pf_por_mil_hab": 15.51,
     "pj_valor": 21033870761.68
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 2307.0,
+    "admissoes_mes": 24972.0,
+    "desligamentos_mes": 22665.0,
+    "saldo_12m": 26847.0,
+    "saldo_12m_anterior": 25218.0,
+    "admissoes_12m": 267000.0,
+    "desligamentos_12m": 240153.0,
+    "retencao_pct": 10.06
+   },
    "posicoes": {
     "scr.saldo": 18,
     "scr.per_capita": 23,
@@ -3490,6 +3684,8 @@
     "consignado.cons_por_elegivel": 23,
     "rural.valor_hab": 20,
     "bndes.valor_hab": 21,
+    "emprego.saldo_12m": 10,
+    "emprego.retencao_pct": 2,
     "pgfn.insc_pf_por_mil_hab": 20
    },
    "sintese": "O crédito na Paraíba somava R$ 77 bilhões em 2026-07, 1,0% do Brasil, R$ 18.532 por habitante (23º entre as 27 UFs), com inadimplência de 5,51% (13º) e crescimento de +11,7% em 12 meses. Penetração de 68% da renda anual (22º), com 16 de 223 municípios abaixo do esperado pelo modelo. 45 municípios têm agência, 68 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3708,6 +3904,17 @@
     "insc_pf_por_mil_hab": 19.95,
     "pj_valor": 75892287433.95
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 1883.0,
+    "admissoes_mes": 59715.0,
+    "desligamentos_mes": 57832.0,
+    "saldo_12m": 61022.0,
+    "saldo_12m_anterior": 64735.0,
+    "admissoes_12m": 702908.0,
+    "desligamentos_12m": 641886.0,
+    "retencao_pct": 8.68
+   },
    "posicoes": {
     "scr.saldo": 11,
     "scr.per_capita": 26,
@@ -3721,6 +3928,8 @@
     "consignado.cons_por_elegivel": 17,
     "rural.valor_hab": 21,
     "bndes.valor_hab": 23,
+    "emprego.saldo_12m": 4,
+    "emprego.retencao_pct": 6,
     "pgfn.insc_pf_por_mil_hab": 8
    },
    "sintese": "O crédito em Pernambuco somava R$ 173 bilhões em 2026-07, 2,3% do Brasil, R$ 18.110 por habitante (26º entre as 27 UFs), com inadimplência de 5,34% (16º) e crescimento de +11,2% em 12 meses. Penetração de 62% da renda anual (27º), com 49 de 185 municípios abaixo do esperado pelo modelo. 92 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3939,6 +4148,17 @@
     "insc_pf_por_mil_hab": 18.5,
     "pj_valor": 16153317893.34
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 1987.0,
+    "admissoes_mes": 15295.0,
+    "desligamentos_mes": 13308.0,
+    "saldo_12m": 16283.0,
+    "saldo_12m_anterior": 16541.0,
+    "admissoes_12m": 165622.0,
+    "desligamentos_12m": 149339.0,
+    "retencao_pct": 9.83
+   },
    "posicoes": {
     "scr.saldo": 20,
     "scr.per_capita": 18,
@@ -3952,6 +4172,8 @@
     "consignado.cons_por_elegivel": 26,
     "rural.valor_hab": 11,
     "bndes.valor_hab": 19,
+    "emprego.saldo_12m": 17,
+    "emprego.retencao_pct": 3,
     "pgfn.insc_pf_por_mil_hab": 11
    },
    "sintese": "O crédito no Piauí somava R$ 69 bilhões em 2026-07, 0,9% do Brasil, R$ 20.416 por habitante (18º entre as 27 UFs), com inadimplência de 4,88% (19º) e crescimento de +10,9% em 12 meses. Penetração de 89% da renda anual (15º), com 4 de 224 municípios abaixo do esperado pelo modelo. 40 municípios têm agência, 96 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4170,6 +4392,17 @@
     "insc_pf_por_mil_hab": 16.79,
     "pj_valor": 153693644097.33
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 523.0,
+    "admissoes_mes": 170748.0,
+    "desligamentos_mes": 170225.0,
+    "saldo_12m": 46031.0,
+    "saldo_12m_anterior": 105934.0,
+    "admissoes_12m": 2019554.0,
+    "desligamentos_12m": 1973523.0,
+    "retencao_pct": 2.28
+   },
    "posicoes": {
     "scr.saldo": 4,
     "scr.per_capita": 6,
@@ -4183,6 +4416,8 @@
     "consignado.cons_por_elegivel": 21,
     "rural.valor_hab": 4,
     "bndes.valor_hab": 5,
+    "emprego.saldo_12m": 6,
+    "emprego.retencao_pct": 20,
     "pgfn.insc_pf_por_mil_hab": 16
    },
    "sintese": "O crédito no Paraná somava R$ 566 bilhões em 2026-07, 7,5% do Brasil, R$ 47.559 por habitante (6º entre as 27 UFs), com inadimplência de 4,48% (22º) e crescimento de +9,6% em 12 meses. Penetração de 90% da renda anual (14º), com 76 de 399 municípios abaixo do esperado pelo modelo. 220 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4401,6 +4636,17 @@
     "insc_pf_por_mil_hab": 22.03,
     "pj_valor": 476041820172.81
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 1260.0,
+    "admissoes_mes": 147492.0,
+    "desligamentos_mes": 146232.0,
+    "saldo_12m": 97337.0,
+    "saldo_12m_anterior": 113167.0,
+    "admissoes_12m": 1735959.0,
+    "desligamentos_12m": 1638622.0,
+    "retencao_pct": 5.61
+   },
    "posicoes": {
     "scr.saldo": 3,
     "scr.per_capita": 11,
@@ -4414,6 +4660,8 @@
     "consignado.cons_por_elegivel": 6,
     "rural.valor_hab": 27,
     "bndes.valor_hab": 17,
+    "emprego.saldo_12m": 2,
+    "emprego.retencao_pct": 13,
     "pgfn.insc_pf_por_mil_hab": 5
    },
    "sintese": "O crédito no Rio de Janeiro somava R$ 570 bilhões em 2026-07, 7,5% do Brasil, R$ 33.123 por habitante (11º entre as 27 UFs), com inadimplência de 4,28% (23º) e crescimento de +2,3% em 12 meses. Penetração de 109% da renda anual (10º), com 75 de 92 municípios abaixo do esperado pelo modelo. 91 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4632,6 +4880,17 @@
     "insc_pf_por_mil_hab": 16.49,
     "pj_valor": 22115742710.26
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 999.0,
+    "admissoes_mes": 21759.0,
+    "desligamentos_mes": 20760.0,
+    "saldo_12m": 7075.0,
+    "saldo_12m_anterior": 25108.0,
+    "admissoes_12m": 243556.0,
+    "desligamentos_12m": 236481.0,
+    "retencao_pct": 2.9
+   },
    "posicoes": {
     "scr.saldo": 19,
     "scr.per_capita": 17,
@@ -4645,6 +4904,8 @@
     "consignado.cons_por_elegivel": 13,
     "rural.valor_hab": 23,
     "bndes.valor_hab": 11,
+    "emprego.saldo_12m": 22,
+    "emprego.retencao_pct": 15,
     "pgfn.insc_pf_por_mil_hab": 18
    },
    "sintese": "O crédito no Rio Grande do Norte somava R$ 72 bilhões em 2026-07, 1,0% do Brasil, R$ 20.957 por habitante (17º entre as 27 UFs), com inadimplência de 5,24% (17º) e crescimento de +10,5% em 12 meses. Penetração de 72% da renda anual (18º), com 8 de 167 municípios abaixo do esperado pelo modelo. 39 municípios têm agência, 46 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4863,6 +5124,17 @@
     "insc_pf_por_mil_hab": 16.71,
     "pj_valor": 13512467957.53
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 199.0,
+    "admissoes_mes": 14824.0,
+    "desligamentos_mes": 14625.0,
+    "saldo_12m": 3569.0,
+    "saldo_12m_anterior": 8016.0,
+    "admissoes_12m": 171345.0,
+    "desligamentos_12m": 167776.0,
+    "retencao_pct": 2.08
+   },
    "posicoes": {
     "scr.saldo": 21,
     "scr.per_capita": 10,
@@ -4876,6 +5148,8 @@
     "consignado.cons_por_elegivel": 11,
     "rural.valor_hab": 5,
     "bndes.valor_hab": 13,
+    "emprego.saldo_12m": 25,
+    "emprego.retencao_pct": 24,
     "pgfn.insc_pf_por_mil_hab": 17
    },
    "sintese": "O crédito em Rondônia somava R$ 64 bilhões em 2026-07, 0,8% do Brasil, R$ 36.682 por habitante (10º entre as 27 UFs), com inadimplência de 6,82% (5º) e crescimento de +5,9% em 12 meses. Penetração de 123% da renda anual (6º), com 1 de 52 municípios abaixo do esperado pelo modelo. 29 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5094,6 +5368,17 @@
     "insc_pf_por_mil_hab": 20.5,
     "pj_valor": 3208232510.17
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 386.0,
+    "admissoes_mes": 4877.0,
+    "desligamentos_mes": 4491.0,
+    "saldo_12m": 1282.0,
+    "saldo_12m_anterior": 4373.0,
+    "admissoes_12m": 51388.0,
+    "desligamentos_12m": 50106.0,
+    "retencao_pct": 2.49
+   },
    "posicoes": {
     "scr.saldo": 27,
     "scr.per_capita": 15,
@@ -5107,6 +5392,8 @@
     "consignado.cons_por_elegivel": 3,
     "rural.valor_hab": 13,
     "bndes.valor_hab": 24,
+    "emprego.saldo_12m": 26,
+    "emprego.retencao_pct": 19,
     "pgfn.insc_pf_por_mil_hab": 7
    },
    "sintese": "O crédito em Roraima somava R$ 17 bilhões em 2026-07, 0,2% do Brasil, R$ 22.580 por habitante (15º entre as 27 UFs), com inadimplência de 6,46% (7º) e crescimento de +17,3% em 12 meses. Penetração de 118% da renda anual (8º), com 0 de 15 municípios abaixo do esperado pelo modelo. 5 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5325,6 +5612,17 @@
     "insc_pf_por_mil_hab": 19.3,
     "pj_valor": 162669770629.49
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": -903.0,
+    "admissoes_mes": 128722.0,
+    "desligamentos_mes": 129625.0,
+    "saldo_12m": 9987.0,
+    "saldo_12m_anterior": 96062.0,
+    "admissoes_12m": 1560093.0,
+    "desligamentos_12m": 1550106.0,
+    "retencao_pct": 0.64
+   },
    "posicoes": {
     "scr.saldo": 5,
     "scr.per_capita": 7,
@@ -5338,6 +5636,8 @@
     "consignado.cons_por_elegivel": 19,
     "rural.valor_hab": 6,
     "bndes.valor_hab": 3,
+    "emprego.saldo_12m": 21,
+    "emprego.retencao_pct": 27,
     "pgfn.insc_pf_por_mil_hab": 10
    },
    "sintese": "O crédito no Rio Grande do Sul somava R$ 533 bilhões em 2026-07, 7,0% do Brasil, R$ 47.459 por habitante (7º entre as 27 UFs), com inadimplência de 4,87% (20º) e crescimento de +8,1% em 12 meses. Penetração de 128% da renda anual (5º), com 181 de 497 municípios abaixo do esperado pelo modelo. 348 municípios têm agência, 1 depende só de correspondente e nenhum fica sem ponto físico."
@@ -5556,6 +5856,17 @@
     "insc_pf_por_mil_hab": 14.41,
     "pj_valor": 124826498023.64
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": -248.0,
+    "admissoes_mes": 141225.0,
+    "desligamentos_mes": 141473.0,
+    "saldo_12m": 36066.0,
+    "saldo_12m_anterior": 79926.0,
+    "admissoes_12m": 1698816.0,
+    "desligamentos_12m": 1662750.0,
+    "retencao_pct": 2.12
+   },
    "posicoes": {
     "scr.saldo": 6,
     "scr.per_capita": 3,
@@ -5569,6 +5880,8 @@
     "consignado.cons_por_elegivel": 20,
     "rural.valor_hab": 8,
     "bndes.valor_hab": 4,
+    "emprego.saldo_12m": 9,
+    "emprego.retencao_pct": 23,
     "pgfn.insc_pf_por_mil_hab": 24
    },
    "sintese": "O crédito em Santa Catarina somava R$ 415 bilhões em 2026-07, 5,5% do Brasil, R$ 50.739 por habitante (3º entre as 27 UFs), com inadimplência de 3,71% (26º) e crescimento de +10,0% em 12 meses. Penetração de 63% da renda anual (25º), com 81 de 295 municípios abaixo do esperado pelo modelo. 165 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5787,6 +6100,17 @@
     "insc_pf_por_mil_hab": 21.47,
     "pj_valor": 17125105592.13
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 1095.0,
+    "admissoes_mes": 13362.0,
+    "desligamentos_mes": 12267.0,
+    "saldo_12m": 14696.0,
+    "saldo_12m_anterior": 14928.0,
+    "admissoes_12m": 158735.0,
+    "desligamentos_12m": 144039.0,
+    "retencao_pct": 9.26
+   },
    "posicoes": {
     "scr.saldo": 24,
     "scr.per_capita": 25,
@@ -5800,6 +6124,8 @@
     "consignado.cons_por_elegivel": 15,
     "rural.valor_hab": 17,
     "bndes.valor_hab": 25,
+    "emprego.saldo_12m": 18,
+    "emprego.retencao_pct": 5,
     "pgfn.insc_pf_por_mil_hab": 6
    },
    "sintese": "O crédito em Sergipe somava R$ 42 bilhões em 2026-07, 0,6% do Brasil, R$ 18.455 por habitante (25º entre as 27 UFs), com inadimplência de 5,51% (14º) e crescimento de -0,1% em 12 meses. Penetração de 87% da renda anual (16º), com 19 de 75 municípios abaixo do esperado pelo modelo. 46 municípios têm agência, 6 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6018,6 +6344,17 @@
     "insc_pf_por_mil_hab": 17.9,
     "pj_valor": 1361300182163.22
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": 17814.0,
+    "admissoes_mes": 708456.0,
+    "desligamentos_mes": 690642.0,
+    "saldo_12m": 191224.0,
+    "saldo_12m_anterior": 410138.0,
+    "admissoes_12m": 8413832.0,
+    "desligamentos_12m": 8222608.0,
+    "retencao_pct": 2.27
+   },
    "posicoes": {
     "scr.saldo": 1,
     "scr.per_capita": 4,
@@ -6031,6 +6368,8 @@
     "consignado.cons_por_elegivel": 12,
     "rural.valor_hab": 18,
     "bndes.valor_hab": 7,
+    "emprego.saldo_12m": 1,
+    "emprego.retencao_pct": 22,
     "pgfn.insc_pf_por_mil_hab": 14
    },
    "sintese": "O crédito em São Paulo somava R$ 2.273 bilhões em 2026-07, 30,0% do Brasil, R$ 49.326 por habitante (4º entre as 27 UFs), com inadimplência de 3,76% (25º) e crescimento de +12,5% em 12 meses. Penetração de 306% da renda anual (2º), com 202 de 645 municípios abaixo do esperado pelo modelo. 416 municípios têm agência, 33 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6249,6 +6588,17 @@
     "insc_pf_por_mil_hab": 19.41,
     "pj_valor": 11815568795.21
    },
+   "emprego": {
+    "mes": "2026-07",
+    "saldo_mes": -366.0,
+    "admissoes_mes": 11631.0,
+    "desligamentos_mes": 11997.0,
+    "saldo_12m": 921.0,
+    "saldo_12m_anterior": 9699.0,
+    "admissoes_12m": 134956.0,
+    "desligamentos_12m": 134035.0,
+    "retencao_pct": 0.68
+   },
    "posicoes": {
     "scr.saldo": 23,
     "scr.per_capita": 9,
@@ -6262,6 +6612,8 @@
     "consignado.cons_por_elegivel": 18,
     "rural.valor_hab": 3,
     "bndes.valor_hab": 8,
+    "emprego.saldo_12m": 27,
+    "emprego.retencao_pct": 26,
     "pgfn.insc_pf_por_mil_hab": 9
    },
    "sintese": "O crédito no Tocantins somava R$ 59 bilhões em 2026-07, 0,8% do Brasil, R$ 36.955 por habitante (9º entre as 27 UFs), com inadimplência de 8,45% (2º) e crescimento de +9,6% em 12 meses. Penetração de 143% da renda anual (3º), com 1 de 139 municípios abaixo do esperado pelo modelo. 27 municípios têm agência, 39 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6276,7 +6628,8 @@
   "INSS e SCR (Consignado)",
   "BCB/MDCR (Crédito rural)",
   "BNDES dados abertos",
-  "PGFN (Dívida ativa)"
+  "PGFN (Dívida ativa)",
+  "MTE/Novo Caged via Ipeadata (Emprego formal)"
  ],
  "cautelas": [
   "Cada bloco tem a própria data-base e a própria régua; posições em ranking são calculadas entre as 27 UFs dentro de um mesmo bloco e nunca cruzam blocos.",

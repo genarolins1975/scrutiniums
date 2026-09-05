@@ -1400,3 +1400,69 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   compromisso) só em texto, fora da Fase 0; a série de reclamações depende da silver de
   produção (vazia neste ambiente).
 
+## 49. Emprego formal setorial, Novo Caged (05/09/2026)
+
+- **Pergunta:** o emprego formal sustenta o crédito de qual setor. Painel nº 7 da avaliação
+  de 05/09 (§6), P3 no backlog: fecha o componente "capacidade financeira" do Risco
+  setorial, até aqui demonstrativo com peso zero.
+- **Fonte primária inacessível deste ambiente:** o portal do MTE (`pdet.mte.gov.br`) e o
+  FTP de microdados (`ftp.mtps.gov.br`) encerram a conexão TLS antes do handshake
+  (medido em 05/09/2026, com e sem o CA do proxy); `dados.gov.br` exige token (HTTP 401).
+  As republicações oficiais cobrem o que o painel precisa:
+  1. **BCB/SGS 28763 a 28804**: estoque de empregos formais do Novo Caged, total e 20
+     recortes por seção CNAE 2.0 (A, B, C, SIUP = D + E, D, E, F, G, Serviços = H a S, H,
+     I, J, K, L, M, N, O, P, Q e "Outras atividades de serviços"), sem ajuste (28763 a
+     28783) e com ajuste sazonal do BCB (28784 a 28804), mensais desde 1992 (o BCB
+     encadeia o Caged antigo; a série não mostra degrau em 2020-01). Nomes confirmados
+     pelo serviço SOAP `FachadaWSSGS.getUltimoValorXML` em 05/09/2026 (o catálogo do
+     `sgspub` estava indisponível). Entram em `config/config.json` como `emp_*` e
+     `emp_sa_*`, categoria `emprego`, pelo coletor `bcb_sgs` já existente (42 séries).
+  2. **Ipeadata, séries ADMISNC e DESLIGNC** (MTE/Novo Caged sem ajuste): admissões e
+     desligamentos por território, mensais desde 2020-01. O recurso OData não aceita
+     `$filter` e devolve todos os níveis (5.570 municípios, 63 MB por série); o coletor
+     `pipeline/sources/ipea_caged.py` baixa a série, guarda só Brasil e 27 UFs na silver
+     `caged_uf` e pula a coleta se rodou nos últimos 3 dias. As seções R, T e U não são
+     itemizadas pelo BCB e ficam dentro de Serviços (2,4% do total em 2026-07).
+- **Conferência entre as fontes:** admissões − desligamentos do Ipeadata para o Brasil
+  fecha ao vínculo com a variação do estoque do SGS em 2026-07 (+58.568 nas duas); a
+  diferença é publicada em `reconciliacao`. Brasil − soma das UFs = 803 admissões e 566
+  desligamentos sem UF identificada no mês, publicados em `ufs_nao_identificado`, nunca
+  rateados. Total − grandes grupos = −7 vínculos (`nao_classificado`).
+- **Builder:** `pipeline/emprego.py` → `emprego.json` (160 KB): Brasil (estoque, saldo do
+  mês com e sem ajuste, saldo em 12 meses, variação a/a, admissões, desligamentos,
+  rotatividade), série de 72 meses, 21 recortes por seção com z-score da variação a/a
+  contra a própria história desde 2013-01 (mínimo 24 observações; uma janela desde 2022
+  rotularia como contração qualquer crescimento abaixo do rebote pós-pandemia), 27 UFs
+  com saldo, retenção (saldo ÷ admissões em 12 meses) e posições. Roda ANTES do score
+  setorial em `gold.py`, que o consome.
+- **Score setorial (`pipeline/indicators.py`):** "capacidade financeira" passa a observado:
+  cada atividade herda o z da variação a/a do estoque de vínculos da(s) seção(ões) CNAE
+  listada(s) em `SECOES_EMPREGO` (PIM: divisões herdam C, extrativa B, indústria geral a
+  média de B e C; PMS: famílias I + S, informação J, profissionais M + N, transportes H,
+  outros serviços E + K + L + S; PMC: G), sinal invertido. Pesos originais 0,45 / 0,20 /
+  0,15 renormalizados sobre os observados: 0,5625 / 0,25 / 0,1875. Sem o gold de
+  emprego, o score volta a 0,69 / 0,31 e o componente a demonstrativo com peso zero.
+  Efeito medido em 05/09/2026 contra o gold publicado: variação média de 2,0 pontos
+  no score (máxima 5,7); faixas passam de 23 elevado / 20 atenção para 21 / 22.
+- **Aba:** `/observatorio/formal-employment` ("Emprego formal", grupo Riscos e temas,
+  chunk `emergentes`), cinco seções (Brasil, seções, UFs, score, método), CSV por seção;
+  bloco "Emprego formal" nas 27 páginas por UF (`ufs.py`, posições por saldo em 12 meses
+  e retenção). Vintage `caged` em `meta.json`; prazo de vigília 45 dias.
+- **Achados na primeira carga (dados até 2026-07, preliminar):** 48.082.866 vínculos,
+  +880.717 em 12 meses (+1,87% a/a; +1.537.837 nos 12 meses anteriores), +58.568 no
+  mês (+29.068 com ajuste sazonal); rotatividade de 53% do estoque em 12 meses. Contra a
+  própria história, a folha mais fraca está na agropecuária (z −0,84, −0,8% a/a) e a
+  mais forte em eletricidade e gás (z +2,1, +5,1% a/a); indústria de transformação em
+  +0,2% a/a (z −0,03) e comércio em +1,1% (z −0,33). São Paulo lidera o saldo em 12
+  meses (+191.224).
+- **Travas:** `src/tests/emprego-data.test.ts` (saldo = variação do estoque; reconciliação
+  Ipeadata × SGS; seções + não itemizado = total; agregados somam as partes; z com janela
+  e mínimo declarados e faixa coerente; 27 UFs, saldo = admissões − desligamentos, soma
+  das UFs + não identificado = Brasil, posições 1 a 27; score com capacidade financeira
+  observada, pesos dos observados somando 1 e RJ com peso zero; divisões herdam C;
+  bloco de emprego nas páginas por UF; aba registrada). `score-observado.test.ts` passa
+  a travar a declaração `PESOS_SCORE` e a renormalização.
+- **Pendências:** corte por divisão CNAE e por UF × seção só com os microdados do MTE
+  (fora deste ambiente); massa salarial (salário médio de admissão) existe no Novo Caged
+  e não é republicada pelo SGS nem pelo Ipeadata por seção.
+
