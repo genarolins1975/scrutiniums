@@ -126,7 +126,7 @@ describe("E9/E10 — guia em toda aba, um nome por aba", () => {
     const cabecalhos = new Set<string>();
     for (const m of Array.from(app.matchAll(/pageHead\(\{\s*title: ["`]([^"`]+)["`]/g))) cabecalhos.add(m[1]);
     for (const m of Array.from(app.matchAll(/<h2(?: [^>]*)?>([^<$]+)</g))) cabecalhos.add(m[1].trim());
-    const fora = ["inst", "sector", "product", "presmun", "bets", "fraudes"]; // título vem do dado
+    const fora = ["inst", "sector", "product", "presmun", "estado", "bets", "fraudes"]; // título vem do dado
     for (const [view, t] of Object.entries(titulos)) {
       if (fora.includes(view)) continue;
       const bate = Array.from(cabecalhos).some((c) => c === t || c.startsWith(t + " ") || c === t.replace("&", "&amp;"));
@@ -226,8 +226,8 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
   });
 
   it("a versão dos ativos subiu junto com o app", () => {
-    expect(app).toContain('const APP_VERSION = "0.89.0";');
-    expect(html).toContain("?v=0.89.0");
+    expect(app).toContain('const APP_VERSION = "0.90.0";');
+    expect(html).toContain("?v=0.90.0");
     expect(html).not.toContain("?v=0.86.0");
   });
 });

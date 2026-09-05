@@ -752,6 +752,15 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("ampliado.json", {"disponivel": False, "error": str(e)})
 
 
+    # ---- Páginas por UF: reúne o recorte estadual dos golds já escritos acima ----
+    try:
+        from pipeline import ufs as ufs_mod
+        r_uf = ufs_mod.build(con, cfg)
+        common.write_gold("ufs.json", r_uf)
+        print(f"  [ufs] {len(r_uf.get('ufs') or [])} UFs" if r_uf.get("disponivel") else f"  [ufs] indisponível: {r_uf.get('motivo')}")
+    except Exception as e:
+        common.write_gold("ufs.json", {"disponivel": False, "error": str(e)})
+
     from pipeline import central_alertas
     central = central_alertas.build()
     common.write_gold_text("alerts.xml", central_alertas.rss(central))

@@ -1758,8 +1758,8 @@
   "gerado_de": "análise estática do repositório a cada execução (pipeline/lineage_map.py) — nunca mantido à mão",
   "metodo": "produtor = quem chama write_gold com o nome; fontes = hosts literais do módulo e dos coletores de bronze que ele lê, mais armazém de séries e curadoria; dependências = ler_gold_opcional; consumo = VIEW_DATA/OV_BLOCO_DATA/CORE_FILES/fetchGold da SPA. Nomes dinâmicos viram famílias (*).",
   "resumo": {
-   "objetos_mapeados": 68,
-   "publicados_no_gold": 65,
+   "objetos_mapeados": 69,
+   "publicados_no_gold": 66,
    "publicados_sem_produtor_mapeado": []
   },
   "objetos": [
@@ -2839,6 +2839,21 @@
     "depende_de": [],
     "consumido_em": [
      "trends"
+    ],
+    "notas": []
+   },
+   {
+    "gold": "ufs.json",
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
+    "depende_de": [],
+    "consumido_em": [
+     "estado",
+     "estados"
     ],
     "notas": []
    }

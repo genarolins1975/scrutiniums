@@ -1250,3 +1250,28 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   pipeline diário; desembolsos mensais detalhados (750 MB) idem; deflator para leitura
   de longo prazo (a série nominal desde 1995 mede inflação).
 
+## 45. Páginas por UF (05/09/2026)
+
+- **Pergunta:** "como está o crédito no meu estado?" Painel nº 8 da avaliação de 05/09
+  (§6), P2 no backlog: SEO programático como o das páginas municipais, sem coleta nova.
+- **Fonte:** nenhuma nova. `pipeline/ufs.py` roda no fim do `gold.build_all` e lê os
+  golds já escritos: Panorama (SCR.data por UF), Penetração municipal (somada por UF:
+  crédito, renda anual, adultos, municípios abaixo do modelo), Presença bancária
+  (`por_uf`), Pix (`geografia.ufs`), Moradia (`estados`), Consignado (`estados`),
+  Crédito rural (`ufs`), BNDES (`desembolsos.ufs`), Dívida ativa (`mapa`) e o Explorer
+  (`fatos.uf_produto`, PF e PJ somados por produto). Gold `ufs.json` (145 KB), 27 UFs.
+- **Rotas:** índice `/observatorio/states` (aba "Estados" no grupo Território) e uma
+  página por UF em `/observatorio/states/{SIGLA}` (view dinâmica `estado`, prefixo em
+  `PREFIXOS_DINAMICOS`). O route handler resolve título e description a partir da
+  síntese do gold; sigla fora do gold, ou em minúsculas, é 404 com noindex. O sitemap
+  lista as 27 rotas. O painel de UF do Panorama aponta a página do estado.
+- **Regras:** cada bloco leva a própria data-base e a própria fonte; posições (1º a 27º)
+  são calculadas dentro de cada régua e nunca cruzam blocos; bloco ausente é painel de
+  origem sem recorte estadual, nunca zero; per capita usa a população do Censo 2022 já
+  embutida nos golds de origem.
+- **Travas:** `src/tests/estados-data.test.ts` (27 UFs, carteira do SCR fecha com o total
+  nacional, participações somam 100, posições são permutações de 1..27, municípios
+  somam 5.570 e a penetração nacional reconcilia, head e sitemap, aba registrada).
+- **Pendências:** série histórica por UF (hoje só a posição corrente e as variações
+  já publicadas pelos golds de origem); mapa de calor no índice.
+

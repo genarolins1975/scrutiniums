@@ -42,7 +42,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -65,6 +65,7 @@ function currentView() {
     if (p.startsWith("/products/") && p.length > 10) return "product";
     if (p.startsWith("/sectors/") && p.length > 9) return "sector";
     if (p.startsWith("/presenca/") && p.length > 10) return "presmun";
+    if (p.startsWith("/states/") && p.length > 8) return "estado";
     const hit = Object.entries(ROUTES).find(([v, r]) => r === p);
     if (hit) return hit[0];
   }
@@ -85,6 +86,7 @@ function buildQuery(view) {
     if (view === "sector" && f.sectorCod) qs.set("cod", f.sectorCod);
     if (view === "product" && f.productSlug) qs.set("slug", f.productSlug);
     if (view === "presmun" && f.presCod) qs.set("cod", f.presCod);
+    if (view === "estado" && f.ufSel) qs.set("uf", f.ufSel);
   }
   if (view === "leading" && state.lead && state.lead.tab !== "geral") qs.set("ltab", state.lead.tab);
   if (view === "trends" && state.tr && state.tr.fam !== "todas") qs.set("tfam", state.tr.fam);
@@ -135,6 +137,7 @@ function syncHash() {
     if (v === "product" && state.filters.productSlug) path = "/products/" + state.filters.productSlug;
     if (v === "sector" && state.filters.sectorCod) path = "/sectors/" + state.filters.sectorCod;
     if (v === "presmun" && state.filters.presCod) path = "/presenca/" + state.filters.presCod;
+    if (v === "estado" && state.filters.ufSel) path = "/states/" + state.filters.ufSel;
     history.replaceState(null, "", BASE + path + buildQuery(v));
   } else {
     history.replaceState(null, "", "#" + v + buildQuery(v));
@@ -152,6 +155,7 @@ function parseHash() {
     if (qs.get("cod") && currentView() === "sector") state.filters.sectorCod = qs.get("cod");
     if (qs.get("slug") && currentView() === "product") state.filters.productSlug = qs.get("slug");
     if (qs.get("cod") && currentView() === "presmun") state.filters.presCod = qs.get("cod");
+    if (qs.get("uf") && currentView() === "estado") state.filters.ufSel = qs.get("uf").toUpperCase();
   }
   // estado do comparador via URL (compartilhável)
   if (qs.get("insts")) state.cmp.insts = qs.get("insts").split(".").filter(Boolean).slice(0, 10);
@@ -192,6 +196,7 @@ function parseHash() {
     if (p.startsWith("/products/") && p.length > 10) state.filters.productSlug = p.slice(10).replace(/\/$/, "");
     if (p.startsWith("/sectors/") && p.length > 9) state.filters.sectorCod = p.slice(9).replace(/\/$/, "");
     if (p.startsWith("/presenca/") && p.length > 10) state.filters.presCod = p.slice(10).replace(/\/$/, "");
+    if (p.startsWith("/states/") && p.length > 8) state.filters.ufSel = p.slice(8).replace(/\/$/, "").toUpperCase();
   }
   return currentView();
 }
@@ -216,7 +221,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.89.0";
+const APP_VERSION = "0.90.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -261,6 +266,7 @@ const VIEW_DATA = {
   rural: ["rural", "rural_mun", "penetracao_malha"],
   ampliado: ["ampliado"],
   bndes: ["bndes"],
+  estados: ["ufs"], estado: ["ufs"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2261,7 +2267,7 @@ function renderPanorama() {
   if (pan.uf && byUF[pan.uf]) {
     const m = byUF[pan.uf], D = state.panoCache[pan.uf];
     const dchip = (v, inverse) => v == null ? "" : `<span class="deltachip ${v > 0 ? (inverse ? "down" : "up") : (v < 0 ? (inverse ? "up" : "down") : "")}">${fmt.pp(v)} ${String(v).includes("%") ? "" : "p.p. vs BR"}</span>`;
-    painel = `<div class="card ufpanel"><h4 style="display:flex;justify-content:space-between;align-items:baseline">${m.nome} <span class="src">${m.regiao} · ${fmt.n(m.part_br, 1)}% do crédito nacional</span></h4>
+    painel = `<div class="card ufpanel"><h4 style="display:flex;justify-content:space-between;align-items:baseline">${m.nome} <span class="src">${m.regiao} · ${fmt.n(m.part_br, 1)}% do crédito nacional · <a href="/observatorio/states/${m.uf}" onclick="ufNav('${m.uf}');return false">página do estado →</a></span></h4>
       <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(130px,1fr));margin-top:8px">
         <div><div class="src">saldo</div><div class="big" style="font-size:20px">${fmt.money(m.saldo)}</div></div>
         <div><div class="src">cresc. 12m</div><div class="big" style="font-size:20px">${fmt.pp(m.cresc12)}%</div></div>
@@ -2864,7 +2870,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3077,6 +3083,14 @@ const GUIA = {
     importa: "Um terço da carteira do SFN tem taxa regulada ou funding público; nas empresas, os repasses do BNDES são a maior fatia. Saber para que porte, setor e UF o banco desembolsa, e por quais agentes, é saber para onde vai o crédito subsidiado.",
     ler: "Três réguas: o saldo direcionado do SGS (estoque no SFN), os desembolsos do Sistema BNDES (fluxo liberado, por mês, desde 1995) e as operações não automáticas (fluxo contratado, contrato a contrato). Leia a janela de 12 meses fechada no último mês publicado e a variação sobre os 12 anteriores; o BNDES publica com meses de atraso e a data-base está no cabeçalho.",
     nao: "As três réguas não se somam. Os valores são nominais: comparar 1995 com hoje sem deflacionar mede inflação. As operações não automáticas são uma fração do desembolso e o recorte municipal é só delas. Aprovação sobre consulta não é taxa de conversão de uma mesma safra." },
+  estados: { q: "Como está o crédito no meu estado?",
+    importa: "O Brasil do crédito é desigual: São Paulo concentra 30% da carteira e o Norte tem metade da penetração do Sul. A página de cada UF reúne o que os painéis temáticos dizem sobre ela, com a posição entre as 27 em cada régua.",
+    ler: "Comece pela síntese e pelo placar; cada bloco tem a própria data-base e a própria fonte, e a posição (1º a 27º) é calculada só dentro daquele bloco. Clique numa UF do índice ou use o seletor para trocar de estado.",
+    nao: "Os blocos não se somam: carteira do SCR (estoque), desembolsos do BNDES e contratação rural (fluxos) e dívida ativa (passivo com a União) são réguas diferentes. Bloco ausente é painel de origem sem recorte estadual, não zero." },
+  estado: { q: "Como está o crédito neste estado?",
+    importa: "Uma página por UF, com carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES e dívida ativa lado a lado.",
+    ler: "Cada bloco aponta o painel temático de origem, onde o dado está inteiro. A posição entre as 27 UFs vale dentro de cada régua.",
+    nao: "Per capita mede intensidade, não acesso; ranking de inadimplência não é ranking de risco sem olhar o mix de produtos." },
   presmun: { q: "Que presença bancária física existe neste município?",
     importa: "Agência, posto e correspondente são três formas de presença com serviços diferentes; a página diz com todas as letras o que não existe no município.",
     ler: "A classe do município resume o ponto mais completo disponível; os números vêm do cadastro do BCB na posição declarada.",
@@ -8357,6 +8371,120 @@ window.bnCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — desembolsos mensais do Sistema BNDES por porte (R$ milhões, nominal)\n# fonte: BNDES dados abertos (ODbL) · soma móvel de 12 meses calculada pelo Observatório\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_bndes_desembolsos_${B.desembolsos.mes}.csv`, head + cols.join(";") + "\n" + B.desembolsos.serie_mensal.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
 };
+
+/* ---------- Estados: índice das 27 UFs e página por UF ---------- */
+/* Nada aqui é coletado de novo: ufs.json reúne o recorte estadual dos painéis
+   temáticos. Cada bloco leva a própria data-base, a própria fonte e a ponte para
+   o painel de origem; posições valem só dentro do bloco. */
+window.ufNav = uf => { state.filters.ufSel = uf; showView("estado"); };
+const UF_BLOCOS = [
+  ["scr", "Carteira e inadimplência (SCR)", "panorama"], ["penetracao", "Penetração do crédito", "penetracao"], ["presenca", "Presença bancária", "operacional"],
+  ["pix", "Pix", "pix"], ["moradia", "Moradia", "moradia"], ["consignado", "Consignado e envelhecimento", "consignado"], ["rural", "Crédito rural", "rural"],
+  ["bndes", "BNDES", "bndes"], ["pgfn", "Dívida ativa da União", "pgfn"]];
+function renderEstados() {
+  const view = currentView() === "estado" ? "estado" : "estados";
+  const el = document.getElementById("view-" + view);
+  const U = state.data.ufs;
+  if (!U) { el.innerHTML = loadingCard("estados"); return; }
+  if (!U.disponivel) {
+    el.innerHTML = pageHead({ title: "Estados", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${U.motivo || U.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const brl = v => v == null ? "–" : fmt.money(v);
+  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const pos = (u, k) => (u.posicoes || {})[k] != null ? `${u.posicoes[k]}º` : "–";
+  const ufs = U.ufs || [];
+  const seletor = sel => `<select onchange="ufNav(this.value)" aria-label="escolher estado"><option value="">escolher estado…</option>${ufs.map(u => `<option value="${u.uf}" ${sel === u.uf ? "selected" : ""}>${u.uf} · ${u.nome}</option>`).join("")}</select>`;
+
+  if (view === "estados") {
+    const B = U.brasil || {};
+    const ord = ufs.slice().sort((a, b) => ((b.scr || {}).saldo || 0) - ((a.scr || {}).saldo || 0));
+    el.innerHTML = pageHead({
+      title: "Estados", vintage: U.datas.scr,
+      seals: `${badge("observado", "recorte estadual dos painéis temáticos, cada um com sua fonte e data-base")} ${badge("calculado", "posições entre as 27 UFs e agregação do municipal por UF calculadas")}`,
+      desc: "As 27 unidades da federação lado a lado, e uma página por estado com tudo o que o Observatório sabe sobre o crédito ali.",
+      fontes: (U.fontes || []).join(" · "),
+    }) + `<div class="controls">${seletor("")}</div>
+    <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Carteira (SCR)</th><th style="text-align:right">% BR</th><th style="text-align:right">Por habitante</th><th style="text-align:right">12 m</th><th style="text-align:right">Inadimplência</th><th style="text-align:right">Penetração</th><th style="text-align:right">Agências/100 mil</th><th style="text-align:right">Pix/hab (mês)</th><th style="text-align:right">Rural/hab (12 m)</th><th style="text-align:right">BNDES/hab (12 m)</th></tr></thead>
+    <tbody>${ord.map(u => { const s = u.scr || {}, p = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, r = u.rural || {}, b = u.bndes || {};
+      return `<tr class="clickable" onclick="ufNav('${u.uf}')"><td><b><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false">${u.uf}</a></b> ${u.nome} <span class="src">${u.regiao}</span></td><td style="text-align:right">${brl(s.saldo)}</td><td style="text-align:right">${pct(s.part_br)}</td><td style="text-align:right">R$ ${n0(s.per_capita)}</td><td style="text-align:right">${s.cresc12 != null ? fmt.pp(s.cresc12) + "%" : "–"}</td><td style="text-align:right">${pct(s.inad, 2)}</td><td style="text-align:right">${pct(p.penetracao, 0)}</td><td style="text-align:right">${pr.agencias_100mil != null ? fmt.n(pr.agencias_100mil, 1) : "–"}</td><td style="text-align:right">${px.q_hab != null ? fmt.n(px.q_hab, 1) : "–"}</td><td style="text-align:right">R$ ${n0(r.valor_hab)}</td><td style="text-align:right">R$ ${n0(b.valor_hab)}</td></tr>`; }).join("")}
+    <tr style="font-weight:600"><td>Brasil</td><td style="text-align:right">${brl(B.saldo)}</td><td style="text-align:right">100%</td><td style="text-align:right">–</td><td style="text-align:right">${B.cresc12 != null ? fmt.pp(B.cresc12) + "%" : "–"}</td><td style="text-align:right">${pct(B.inad, 2)}</td><td style="text-align:right">${pct(B.penetracao, 0)}</td><td colspan="4"></td></tr></tbody></table></div>
+    <p class="src">Ordenado pela carteira do SCR em ${U.datas.scr}. Penetração = crédito ÷ renda anual estimada (${U.datas.penetracao}); Pix por habitante em ${U.datas.pix}; rural e BNDES em 12 meses (${(U.datas.rural || {}).ini} a ${(U.datas.rural || {}).fim}; ${(U.datas.bndes || {}).ini} a ${(U.datas.bndes || {}).fim}). Cada coluna é uma régua; a tabela não soma colunas.</p></div>
+    ${secWrap("est-metodo", `${sechead("Método e cautelas")}<div class="card"><p>${U.metodo}</p>${(U.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}</div>`)}`;
+    return;
+  }
+
+  /* ---------- página de uma UF ---------- */
+  const sel = (state.filters.ufSel || "").toUpperCase();
+  const u = ufs.find(x => x.uf === sel);
+  if (!u) {
+    el.innerHTML = pageHead({ title: "Estados", desc: "Sigla desconhecida." }) + `<div class="card"><p>Sigla de UF desconhecida. Escolha um estado: ${seletor("")}</p></div>`;
+    return;
+  }
+  const s = u.scr || {}, pe = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, mo = u.moradia || {}, co = u.consignado || {}, ru = u.rural || {}, bn = u.bndes || {}, pg = u.pgfn || {};
+  const B = U.brasil || {};
+  const head = pageHead({
+    title: `Crédito ${u.prep} (${u.uf})`, vintage: s.data_base,
+    seals: `${badge("observado")} ${badge("calculado", "posições entre as 27 UFs dentro de cada bloco")}`,
+    desc: `${u.nome}, ${u.regiao}: carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES e dívida ativa, cada bloco com sua fonte e data.`,
+    fontes: (U.fontes || []).join(" · "),
+    actions: seletor(u.uf),
+  });
+  const sintese = `<p class="pan-sintese">${u.sintese}</p><div class="src">Síntese determinística · posições calculadas entre as 27 UFs dentro de cada régua · <a href="/observatorio/states" onclick="nav('estados');return false">todos os estados →</a></div>`;
+  const placarHtml = placar([
+    { l: "Carteira de crédito (SCR)", v: brl(s.saldo), sub: `${pct(s.part_br)} do Brasil · ${pos(u, "scr.saldo")} · ${s.cresc12 != null ? fmt.pp(s.cresc12) + "% em 12 m" : ""}`, href: "#uf-scr" },
+    { l: "Inadimplência arrastada", v: pct(s.inad, 2), sub: `Brasil ${pct(B.inad, 2)} · ${pos(u, "scr.inad")} (1º = maior) · ${s.d_inad_12m != null ? fmt.pp(s.d_inad_12m) + " p.p. em 12 m" : ""}`, href: "#uf-scr" },
+    { l: "Crédito por habitante", v: s.per_capita != null ? "R$ " + n0(s.per_capita) : "–", sub: `${pos(u, "scr.per_capita")} entre as UFs`, href: "#uf-scr" },
+    { l: "Penetração do crédito", v: pct(pe.penetracao, 0), sub: `Brasil ${pct(B.penetracao, 0)} · ${pos(u, "penetracao.penetracao")} · ${n0(pe.municipios_abaixo)} de ${n0(pe.municipios)} municípios abaixo do modelo`, href: "#uf-penetracao" },
+    { l: "Municípios com agência", v: pr.municipios ? `${n0(pr.com_agencia)} de ${n0(pr.municipios)}` : "–", sub: `${n0(pr.so_correspondente)} só com correspondente · ${n0(pr.nenhum)} sem ponto físico`, href: "#uf-presenca" },
+  ]);
+  const bloco = (id, titulo, sub, corpo, view, secao, ponteTxt) => secWrap(id, `${sechead(titulo, sub)}<div class="card">${corpo}${ponte(ponteTxt, view, secao || null, "o painel de origem tem a série inteira, o mapa e o método")}</div>`);
+  const linha = (rot, v, extra) => `<div><dt>${rot}</dt><dd>${v}${extra ? ` <span class="src">${extra}</span>` : ""}</dd></div>`;
+  const prods = u.produtos || [];
+  const scr = bloco("uf-scr", "Carteira e inadimplência", `SCR.data · ${s.data_base}`, s.saldo == null ? `<p class="src">recorte não publicado pelo Panorama.</p>` : `
+    <dl class="ppgrid">${linha("Carteira", brl(s.saldo), `${pct(s.part_br)} do Brasil · ${pos(u, "scr.saldo")}`)}${linha("Operações", n0(s.n_op), "piso: células suprimidas ficam de fora")}${linha("Saldo médio por operação", "R$ " + n0(s.saldo_medio_op))}
+      ${linha("Crescimento 12 m", s.cresc12 != null ? fmt.pp(s.cresc12) + "%" : "–", `${pos(u, "scr.cresc12")} · Brasil ${B.cresc12 != null ? fmt.pp(B.cresc12) + "%" : "–"}`)}${linha("Crescimento 3 m", s.cresc3 != null ? fmt.pp(s.cresc3) + "%" : "–")}
+      ${linha("Inadimplência arrastada (>90 d)", pct(s.inad, 2), `${pos(u, "scr.inad")} · Brasil ${pct(B.inad, 2)}`)}${linha("Atraso 15 a 90 dias", pct(s.atraso15_90, 2))}${linha("Ativo problemático", pct(s.ap, 2))}
+      ${linha("Produto dominante", s.prod_dominante || "–")}${linha("Faixa de renda dominante", s.renda_dominante || "–")}</dl>
+    ${prods.length ? `<h4 style="margin-top:12px">Produtos, por saldo ${badge("observado")}</h4><div class="tblwrap"><table class="data compact"><thead><tr><th>Produto</th><th style="text-align:right">Saldo</th><th style="text-align:right">%</th><th style="text-align:right">PF</th><th style="text-align:right">Inadimplência</th></tr></thead>
+      <tbody>${prods.map(p => `<tr><td>${p.produto}</td><td style="text-align:right">${brl(p.saldo)}</td><td style="text-align:right">${pct(p.share)}</td><td style="text-align:right">${pct(p.pf_share, 0)}</td><td style="text-align:right">${pct(p.inad_pct, 2)}</td></tr>`).join("")}</tbody></table></div>` : ""}`,
+    "panorama", null, `O mapa do crédito por UF, com séries e matriz produto × renda — Panorama do Crédito`);
+  const pen = bloco("uf-penetracao", "Penetração do crédito", `SCR e Censo 2022 · ${U.datas.penetracao}`, pe.municipios == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Penetração (crédito ÷ renda anual)", pct(pe.penetracao, 0), `${pos(u, "penetracao.penetracao")} · Brasil ${pct(B.penetracao, 0)}`)}${linha("Crédito por adulto", "R$ " + n0(pe.cred_adulto), `${pos(u, "penetracao.cred_adulto")} · Brasil R$ ${n0(B.cred_adulto)}`)}
+      ${linha("Municípios abaixo do modelo", `${n0(pe.municipios_abaixo)} de ${n0(pe.municipios)}`, `gap somado ${brl(pe.gap_abs)}`)}${linha("Adultos", n0(pe.adultos))}${linha("Renda anual estimada", brl(pe.renda_anual))}${linha("Municípios sem dado ESTBAN", n0(pe.sem_estban))}</dl>`,
+    "penetracao", null, `O mapa municipal da penetração, com o modelo e os pares — Penetração e Gap`);
+  const pres = bloco("uf-presenca", "Presença bancária", `Unicad e correspondentes · posição ${(U.datas.presenca || {}).dependencias || "–"}`, pr.municipios == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Municípios com agência", `${n0(pr.com_agencia)} de ${n0(pr.municipios)}`)}${linha("Só posto", n0(pr.so_posto))}${linha("Só correspondente", n0(pr.so_correspondente))}${linha("Sem ponto físico", n0(pr.nenhum))}
+      ${linha("Agências", n0(pr.agencias), `${pr.agencias_100mil != null ? fmt.n(pr.agencias_100mil, 1) : "–"} por 100 mil habitantes · ${pos(u, "presenca.agencias_100mil")}`)}${linha("Postos", n0(pr.postos))}${linha("Postos eletrônicos", n0(pr.pae))}${linha("Pontos de correspondente", n0(pr.correspondentes))}</dl>`,
+    "operacional", null, `O mapa municipal e a página de cada município — Indicadores operacionais`);
+  const pixB = bloco("uf-pix", "Pix", `BCB · ${px.mes || U.datas.pix || "–"}`, px.v_pag == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Valor pago no mês", brl(px.v_pag), `${px.yoy_v != null ? fmt.pp(px.yoy_v) + "% em 12 m" : ""}`)}${linha("Transações no mês", n0(px.q_pag))}${linha("Transações por habitante", px.q_hab != null ? fmt.n(px.q_hab, 1) : "–", pos(u, "pix.q_hab"))}${linha("Valor por habitante", "R$ " + n0(px.v_hab))}${linha("Ticket médio", "R$ " + (px.t_pag != null ? fmt.n(px.t_pag, 0) : "–"))}${linha("Pagadores PF no valor", pct(px.pf_share, 0))}</dl>`,
+    "pix", null, `Séries, instrumentos e o mapa do Pix — Pix e Pagamentos`);
+  const morB = bloco("uf-moradia", "Moradia e crédito imobiliário", `Censo, SCR e Mercado Imobiliário · ${U.datas.moradia || "–"}`, mo.dom_total == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Domicílios", n0(mo.dom_total))}${linha("Domicílios pagando financiamento", pct(mo.pgp), pos(u, "moradia.pgp"))}${linha("Domicílios alugados", pct(mo.alp))}${linha("Carteira imobiliária PF (SCR)", brl(mo.scr_imob_pf), `inadimplência ${pct(mo.scr_inad_pct, 2)}`)}
+      ${linha("Taxa média SFH", pct(mo.taxa_sfh, 2) + " a.a.")}${linha("LTV médio SFH", pct(mo.ltv_sfh, 0))}${linha("Valor médio de compra", brl(mo.valor_compra))}${linha("Renda per capita", "R$ " + n0(mo.renda_pc))}</dl>`,
+    "moradia", null, `O dossiê de moradia por UF e município — Moradia e Habitação`);
+  const conB = bloco("uf-consignado", "Consignado e envelhecimento", `INSS e SCR · ${U.datas.consignado || "–"}`, co.cons_total == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("População 60+", pct(co.p60))}${linha("Elegíveis ao consignado INSS", n0(co.elegiveis))}${linha("Consignado total (SCR)", brl(co.cons_total), `aposentados ${pct(co.part_apos, 0)}`)}${linha("Consignado por elegível", "R$ " + n0(co.cons_por_elegivel), pos(u, "consignado.cons_por_elegivel"))}
+      ${linha("Inadimplência dos aposentados", pct(co.inad_apos, 2))}${linha("Benefício médio", "R$ " + n0(co.ben_medio))}${linha("Benefícios rurais", pct(co.prural, 0))}</dl>`,
+    "consignado", null, `O dossiê de consignado e envelhecimento — Consignado e Envelhecimento`);
+  const rurB = bloco("uf-rural", "Crédito rural", `MDCR/Sicor · ${(ru.janela || {}).ini || "–"} a ${(ru.janela || {}).fim || "–"}`, ru.valor == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Valor contratado (12 m)", brl(ru.valor), `${pct(ru.share)} do Brasil`)}${linha("Contratos", n0(ru.qtd), `valor médio R$ ${n0(ru.ticket)}`)}${linha("Por habitante", "R$ " + n0(ru.valor_hab), pos(u, "rural.valor_hab"))}${linha("Parte agrícola", pct(ru.agricola_share, 0))}${linha("PRONAF", pct(ru.pronaf_share, 0))}</dl>`,
+    "rural", "ru-onde", `A contratação por município, programa, fonte e produto — Crédito rural`);
+  const bnB = bloco("uf-bndes", "Desembolsos do BNDES", `BNDES · ${(bn.janela || {}).ini || "–"} a ${(bn.janela || {}).fim || "–"}`, bn.valor == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Desembolsos (12 m)", bn.valor != null ? "R$ " + fmt.n(bn.valor / 1e3, 1) + " bi" : "–", `${pct(bn.share)} do Brasil · ${bn.var_12m_pct != null ? fmt.pp(bn.var_12m_pct) + "% em 12 m" : ""}`)}${linha("Por habitante", "R$ " + n0(bn.valor_hab), pos(u, "bndes.valor_hab"))}${linha("Parte para MPME", pct(bn.mpme_share, 0))}</dl>`,
+    "bndes", "bn-onde", `Desembolsos por porte, setor, produto e agente — Crédito direcionado e BNDES`);
+  const pgB = bloco("uf-pgfn", "Dívida ativa da União", `PGFN · ${pg.data_base || U.datas.pgfn || "–"}`, pg.valor == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Valor inscrito", brl(pg.valor), `${pct(pg.part_br)} do Brasil`)}${linha("Inscrições", n0(pg.inscricoes), `valor médio R$ ${n0(pg.valor_medio)}`)}${linha("Inscrições de PF por mil habitantes", pg.insc_pf_por_mil_hab != null ? fmt.n(pg.insc_pf_por_mil_hab, 1) : "–", pos(u, "pgfn.insc_pf_por_mil_hab"))}${linha("Parte de PJ no valor", pct(pg.pj_valor != null && pg.valor ? pg.pj_valor / pg.valor * 100 : null, 0))}</dl>`,
+    "pgfn", null, `O mapa da dívida ativa por UF, safras e situação — Dívida Ativa da União`);
+  document.title = `Crédito ${u.prep} (${u.uf}) · ${state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito"}`;
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-pgfn", "Dívida ativa"]])
+    + scr + pen + pres + pixB + morB + conB + rurB + bnB + pgB
+    + `<div class="card" style="margin-top:14px"><h4>Outros estados</h4><p>${ufs.filter(x => x.regiao === u.regiao && x.uf !== u.uf).map(x => `<a href="/observatorio/states/${x.uf}" onclick="ufNav('${x.uf}');return false">${x.nome}</a>`).join(" · ")} <span class="src">(${u.regiao})</span> · <a href="/observatorio/states" onclick="nav('estados');return false">todas as UFs →</a></p>
+    <p class="src">${(U.cautelas || []).join(" ")}</p></div>`;
+}
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10580,10 +10708,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -10640,7 +10768,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -10756,7 +10884,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function showViewSilent(v) {
   try { navPrepara(); navSincroniza(); } catch (e) {}
   pingView(v);
-  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional")));
+  document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.view === v || (v === "inst" && b.dataset.view === "institutions") || (v === "sector" && b.dataset.view === "sectors") || (v === "product" && b.dataset.view === "products") || (v === "presmun" && b.dataset.view === "operacional") || (v === "estado" && b.dataset.view === "estados")));
   document.querySelectorAll("section.view").forEach(s => s.classList.toggle("active", s.id === "view-" + v));
   const pend = (VIEW_DATA[v] || []).some(f => state.data[f] === undefined);
   if (pend) {
@@ -10852,6 +10980,7 @@ window.showView = v => {
     if (v === "product" && state.filters.productSlug) path = "/products/" + state.filters.productSlug;
     if (v === "sector" && state.filters.sectorCod) path = "/sectors/" + state.filters.sectorCod;
     if (v === "presmun" && state.filters.presCod) path = "/presenca/" + state.filters.presCod;
+    if (v === "estado" && state.filters.ufSel) path = "/states/" + state.filters.ufSel;
     history.pushState(null, "", BASE + path + buildQuery(v));
   } else {
     history.pushState(null, "", "#" + v + buildQuery(v));
