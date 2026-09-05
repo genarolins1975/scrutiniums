@@ -55,7 +55,7 @@ FONTE_ROTULO = {
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
     "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
-    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos",
+    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
     "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
     "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
@@ -488,6 +488,16 @@ def build_all(con, cfg, fetch_status):
     scenario["elasticidades"] = elast["elasticidades"]
     scenario["elasticidades_origem"] = elast["origem"]
     scenario["elasticidades_detalhe"] = elast["detalhe"]
+    # ---- Expectativas de mercado (Focus): bloco e presets calculados (avaliação de 05/09, painel nº 4) ----
+    try:
+        from pipeline import expectativas as exp_mod
+        exp = exp_mod.build(con)
+        scenario["expectativas"] = exp
+        if exp.get("disponivel"):
+            scenario["presets"] = {**scenario["presets"], **exp["presets"]}
+            print(f"  [expectativas] Focus de {exp['data']}: presets {list(exp['presets'])}")
+    except Exception as e:
+        scenario["expectativas"] = {"disponivel": False, "error": str(e)}
     common.write_gold("scenario.json", scenario)
 
     # ---- Alertas (com histórico, recorrência e hipóteses de regime) ----
@@ -790,6 +800,7 @@ def build_all(con, cfg, fetch_status):
         "cvm_ofertas": _vg("SELECT MAX(mes) FROM cvm_ofertas WHERE status IN ('Encerrada/registrada','Oferta Encerrada')"),
         "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
         "bndes": _vg("SELECT MAX(mes) FROM bndes_mensal WHERE tabela='des_porte'"),
+        "focus": _vg("SELECT MAX(data) FROM focus_anual"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}

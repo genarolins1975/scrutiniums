@@ -70,6 +70,18 @@
    "desemprego_pp": 4,
    "pib_pp": -4,
    "cambio_pct10": 4
+  },
+  "focus_2026": {
+   "selic_pp": -0.25,
+   "desemprego_pp": 0.0,
+   "pib_pp": 0.5,
+   "cambio_pct10": 0.0
+  },
+  "focus_2027": {
+   "selic_pp": -2.0,
+   "desemprego_pp": 0.5,
+   "pib_pp": 0.0,
+   "cambio_pct10": 0.5
   }
  },
  "nota": "Elasticidades ilustrativas para o protótipo, inspiradas na literatura de testes de estresse (BCB REF, ordem de grandeza). NÃO são estimativas causais; recalibrar na Fase 2 com modelos próprios. Elasticidades estimadas para o agregado; aplicá-las a PF/PJ é aproximação adicional (sinalizada).",
@@ -1140,5 +1152,7124 @@
   }
  },
  "elasticidades_origem": "empírico",
- "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 73 meses (2020-07 a 2026-07); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade."
+ "elasticidades_detalhe": "MQO sobre Δ12m da inadimplência total, 73 meses (2020-07 a 2026-07); Selic defasada 6m, IBC-Br e câmbio 3m; IBC-Br yoy como proxy de PIB. Intervalos = ±2 EP clássicos (sem HAC — incerteza provavelmente subestimada). Associação condicional, NÃO causalidade.",
+ "expectativas": {
+  "disponivel": true,
+  "data": "2026-08-28",
+  "anos": [
+   "2026",
+   "2027",
+   "2028"
+  ],
+  "rotulos": {
+   "Selic": "Selic (fim do ano, % a.a.)",
+   "IPCA": "IPCA (acumulado no ano, %)",
+   "PIB Total": "PIB (crescimento real, %)",
+   "Câmbio": "Câmbio (fim do ano, R$/US$)",
+   "Taxa de desocupação": "Desocupação (média do 4º trimestre, %)"
+  },
+  "tabela": {
+   "Câmbio": {
+    "2026": {
+     "mediana": 5.2,
+     "media": 5.21,
+     "dp": 0.12,
+     "minimo": 4.8,
+     "maximo": 5.6,
+     "n": 115
+    },
+    "2027": {
+     "mediana": 5.3,
+     "media": 5.27,
+     "dp": 0.18,
+     "minimo": 4.7,
+     "maximo": 5.68,
+     "n": 115
+    },
+    "2028": {
+     "mediana": 5.3,
+     "media": 5.3,
+     "dp": 0.25,
+     "minimo": 4.45,
+     "maximo": 6.0,
+     "n": 83
+    }
+   },
+   "IPCA": {
+    "2026": {
+     "mediana": 5.0062,
+     "media": 5.0,
+     "dp": 0.22,
+     "minimo": 4.3,
+     "maximo": 5.8146,
+     "n": 145
+    },
+    "2027": {
+     "mediana": 4.28,
+     "media": 4.29,
+     "dp": 0.41,
+     "minimo": 3.17,
+     "maximo": 6.0,
+     "n": 145
+    },
+    "2028": {
+     "mediana": 3.8,
+     "media": 3.83,
+     "dp": 0.47,
+     "minimo": 3.0,
+     "maximo": 6.0,
+     "n": 118
+    }
+   },
+   "PIB Total": {
+    "2026": {
+     "mediana": 1.9233,
+     "media": 1.92,
+     "dp": 0.15,
+     "minimo": 1.333,
+     "maximo": 2.4,
+     "n": 110
+    },
+    "2027": {
+     "mediana": 1.5,
+     "media": 1.5,
+     "dp": 0.36,
+     "minimo": 0.6738,
+     "maximo": 2.5,
+     "n": 109
+    },
+    "2028": {
+     "mediana": 1.98,
+     "media": 1.87,
+     "dp": 0.37,
+     "minimo": 0.5,
+     "maximo": 2.8001,
+     "n": 81
+    }
+   },
+   "Selic": {
+    "2026": {
+     "mediana": 13.75,
+     "media": 13.67,
+     "dp": 0.25,
+     "minimo": 12.75,
+     "maximo": 14.0,
+     "n": 143
+    },
+    "2027": {
+     "mediana": 12.0,
+     "media": 12.06,
+     "dp": 0.78,
+     "minimo": 9.75,
+     "maximo": 14.0,
+     "n": 140
+    },
+    "2028": {
+     "mediana": 10.5,
+     "media": 10.56,
+     "dp": 0.97,
+     "minimo": 8.0,
+     "maximo": 14.0,
+     "n": 117
+    }
+   },
+   "Taxa de desocupação": {
+    "2026": {
+     "mediana": 5.4,
+     "media": 5.33,
+     "dp": 0.29,
+     "minimo": 4.682,
+     "maximo": 6.0,
+     "n": 70
+    },
+    "2027": {
+     "mediana": 5.9,
+     "media": 5.87,
+     "dp": 0.42,
+     "minimo": 4.7,
+     "maximo": 7.0,
+     "n": 64
+    },
+    "2028": {
+     "mediana": 6.4,
+     "media": 6.33,
+     "dp": 0.61,
+     "minimo": 5.0,
+     "maximo": 8.0,
+     "n": 54
+    }
+   }
+  },
+  "historico": {
+   "Selic": [
+    {
+     "data": "2025-08-01",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-04",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-05",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-06",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-07",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-08",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-11",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-12",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-13",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-14",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-15",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-18",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-19",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-20",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-21",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-22",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-25",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-26",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-27",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-28",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-08-29",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-01",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-02",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-03",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-04",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-05",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-08",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-09",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-10",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-11",
+     "atual": 12.375,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-12",
+     "atual": 12.375,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-15",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-16",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-17",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-18",
+     "atual": 12.375,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-19",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-22",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-23",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-24",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-25",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-26",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-29",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-09-30",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-01",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-02",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-03",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-06",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-07",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-08",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-09",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-10",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-13",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-14",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-15",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-16",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-17",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-20",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-21",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-22",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-23",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-24",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-27",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-28",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-29",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-30",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-10-31",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-03",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-04",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-05",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-06",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-07",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-10",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-11",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-12",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-13",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-14",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-17",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-18",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-19",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-21",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-24",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-25",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-26",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-27",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-11-28",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-01",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-02",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-03",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-04",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-05",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-08",
+     "atual": 12.0,
+     "proximo": 10.375
+    },
+    {
+     "data": "2025-12-09",
+     "atual": 12.0,
+     "proximo": 10.375
+    },
+    {
+     "data": "2025-12-10",
+     "atual": 12.0,
+     "proximo": 10.375
+    },
+    {
+     "data": "2025-12-11",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-12",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-15",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-16",
+     "atual": 12.0,
+     "proximo": 10.375
+    },
+    {
+     "data": "2025-12-17",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-18",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-19",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-22",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-23",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-24",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-26",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-29",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-30",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2025-12-31",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-02",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-05",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-06",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-07",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-08",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-09",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-12",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-13",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-14",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-15",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-16",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-19",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-20",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-21",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-22",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-23",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-26",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-27",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-28",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-29",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-01-30",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-02",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-03",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-04",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-05",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-06",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-09",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-10",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-11",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-12",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-13",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-18",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-19",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-20",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-23",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-24",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-25",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-26",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-02-27",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-02",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-03",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-04",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-05",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-06",
+     "atual": 12.125,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-09",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-10",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-11",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-12",
+     "atual": 12.0,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-13",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-16",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-17",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-18",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-19",
+     "atual": 12.25,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-20",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-23",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-24",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-25",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-26",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-27",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-30",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-03-31",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-01",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-02",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-06",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-07",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-08",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-09",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-10",
+     "atual": 12.5,
+     "proximo": 10.5
+    },
+    {
+     "data": "2026-04-13",
+     "atual": 12.5,
+     "proximo": 10.55
+    },
+    {
+     "data": "2026-04-14",
+     "atual": 12.5,
+     "proximo": 10.75
+    },
+    {
+     "data": "2026-04-15",
+     "atual": 12.5,
+     "proximo": 10.75
+    },
+    {
+     "data": "2026-04-16",
+     "atual": 12.75,
+     "proximo": 10.75
+    },
+    {
+     "data": "2026-04-17",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-20",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-22",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-23",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-24",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-27",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-28",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-29",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-04-30",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-05-04",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-05-05",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-05-06",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-05-07",
+     "atual": 13.0,
+     "proximo": 11.0
+    },
+    {
+     "data": "2026-05-08",
+     "atual": 13.0,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-11",
+     "atual": 13.0,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-12",
+     "atual": 13.0,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-13",
+     "atual": 13.0,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-14",
+     "atual": 13.0,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-15",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-18",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-19",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-20",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-21",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-22",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-25",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-26",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-27",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-28",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-05-29",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-06-01",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-06-02",
+     "atual": 13.25,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-06-03",
+     "atual": 13.5,
+     "proximo": 11.25
+    },
+    {
+     "data": "2026-06-05",
+     "atual": 13.5,
+     "proximo": 11.5
+    },
+    {
+     "data": "2026-06-08",
+     "atual": 13.5,
+     "proximo": 11.5
+    },
+    {
+     "data": "2026-06-09",
+     "atual": 13.5,
+     "proximo": 11.5
+    },
+    {
+     "data": "2026-06-10",
+     "atual": 13.5,
+     "proximo": 11.5
+    },
+    {
+     "data": "2026-06-11",
+     "atual": 13.5,
+     "proximo": 11.75
+    },
+    {
+     "data": "2026-06-12",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-15",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-16",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-17",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-18",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-19",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-22",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-23",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-24",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-25",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-26",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-29",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-06-30",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-01",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-02",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-03",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-06",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-07",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-08",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-09",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-10",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-13",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-14",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-15",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-16",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-17",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-20",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-21",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-22",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-23",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-24",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-27",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-28",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-29",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-30",
+     "atual": 14.0,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-07-31",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-03",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-04",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-05",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-06",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-07",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-10",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-11",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-12",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-13",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-14",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-17",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-18",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-19",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-20",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-21",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-24",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-25",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-26",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-27",
+     "atual": 13.75,
+     "proximo": 12.0
+    },
+    {
+     "data": "2026-08-28",
+     "atual": 13.75,
+     "proximo": 12.0
+    }
+   ],
+   "IPCA": [
+    {
+     "data": "2025-08-01",
+     "atual": 4.43,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-04",
+     "atual": 4.4297,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-05",
+     "atual": 4.43,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-06",
+     "atual": 4.43,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-07",
+     "atual": 4.4293,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-08",
+     "atual": 4.4147,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-11",
+     "atual": 4.4124,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-12",
+     "atual": 4.4069,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-13",
+     "atual": 4.4019,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-14",
+     "atual": 4.4,
+     "proximo": 4.0
+    },
+    {
+     "data": "2025-08-15",
+     "atual": 4.4019,
+     "proximo": 3.995
+    },
+    {
+     "data": "2025-08-18",
+     "atual": 4.4,
+     "proximo": 3.9888
+    },
+    {
+     "data": "2025-08-19",
+     "atual": 4.4,
+     "proximo": 3.9838
+    },
+    {
+     "data": "2025-08-20",
+     "atual": 4.4,
+     "proximo": 3.9838
+    },
+    {
+     "data": "2025-08-21",
+     "atual": 4.4,
+     "proximo": 3.987
+    },
+    {
+     "data": "2025-08-22",
+     "atual": 4.3274,
+     "proximo": 3.965
+    },
+    {
+     "data": "2025-08-25",
+     "atual": 4.332,
+     "proximo": 3.965
+    },
+    {
+     "data": "2025-08-26",
+     "atual": 4.3319,
+     "proximo": 3.95
+    },
+    {
+     "data": "2025-08-27",
+     "atual": 4.3218,
+     "proximo": 3.95
+    },
+    {
+     "data": "2025-08-28",
+     "atual": 4.3223,
+     "proximo": 3.95
+    },
+    {
+     "data": "2025-08-29",
+     "atual": 4.3084,
+     "proximo": 3.94
+    },
+    {
+     "data": "2025-09-01",
+     "atual": 4.3019,
+     "proximo": 3.935
+    },
+    {
+     "data": "2025-09-02",
+     "atual": 4.301,
+     "proximo": 3.93
+    },
+    {
+     "data": "2025-09-03",
+     "atual": 4.301,
+     "proximo": 3.93
+    },
+    {
+     "data": "2025-09-04",
+     "atual": 4.3,
+     "proximo": 3.93
+    },
+    {
+     "data": "2025-09-05",
+     "atual": 4.3,
+     "proximo": 3.93
+    },
+    {
+     "data": "2025-09-08",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-09",
+     "atual": 4.3,
+     "proximo": 3.915
+    },
+    {
+     "data": "2025-09-10",
+     "atual": 4.2973,
+     "proximo": 3.915
+    },
+    {
+     "data": "2025-09-11",
+     "atual": 4.3,
+     "proximo": 3.915
+    },
+    {
+     "data": "2025-09-12",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-15",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-16",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-17",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-18",
+     "atual": 4.3,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-19",
+     "atual": 4.2859,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-22",
+     "atual": 4.2859,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-23",
+     "atual": 4.2806,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-24",
+     "atual": 4.2853,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-25",
+     "atual": 4.2804,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-26",
+     "atual": 4.2806,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-29",
+     "atual": 4.2853,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-09-30",
+     "atual": 4.29,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-01",
+     "atual": 4.29,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-02",
+     "atual": 4.2806,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-03",
+     "atual": 4.2806,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-06",
+     "atual": 4.2802,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-07",
+     "atual": 4.2802,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-08",
+     "atual": 4.2801,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-09",
+     "atual": 4.2801,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-10",
+     "atual": 4.2792,
+     "proximo": 3.9
+    },
+    {
+     "data": "2025-10-13",
+     "atual": 4.2703,
+     "proximo": 3.83
+    },
+    {
+     "data": "2025-10-14",
+     "atual": 4.2703,
+     "proximo": 3.83
+    },
+    {
+     "data": "2025-10-15",
+     "atual": 4.2703,
+     "proximo": 3.83
+    },
+    {
+     "data": "2025-10-16",
+     "atual": 4.2703,
+     "proximo": 3.83
+    },
+    {
+     "data": "2025-10-17",
+     "atual": 4.2651,
+     "proximo": 3.83
+    },
+    {
+     "data": "2025-10-20",
+     "atual": 4.26,
+     "proximo": 3.8349
+    },
+    {
+     "data": "2025-10-21",
+     "atual": 4.26,
+     "proximo": 3.8349
+    },
+    {
+     "data": "2025-10-22",
+     "atual": 4.26,
+     "proximo": 3.8349
+    },
+    {
+     "data": "2025-10-23",
+     "atual": 4.2596,
+     "proximo": 3.8349
+    },
+    {
+     "data": "2025-10-24",
+     "atual": 4.2016,
+     "proximo": 3.82
+    },
+    {
+     "data": "2025-10-27",
+     "atual": 4.2,
+     "proximo": 3.81
+    },
+    {
+     "data": "2025-10-28",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-10-29",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-10-30",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-10-31",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-03",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-04",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-05",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-06",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-07",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-10",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-11",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-12",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-13",
+     "atual": 4.2,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-14",
+     "atual": 4.1978,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-17",
+     "atual": 4.1889,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-18",
+     "atual": 4.18,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-19",
+     "atual": 4.18,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-21",
+     "atual": 4.1829,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-24",
+     "atual": 4.19,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-25",
+     "atual": 4.1974,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-26",
+     "atual": 4.1937,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-27",
+     "atual": 4.1829,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-11-28",
+     "atual": 4.1728,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-01",
+     "atual": 4.1667,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-02",
+     "atual": 4.1625,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-03",
+     "atual": 4.1507,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-04",
+     "atual": 4.1507,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-05",
+     "atual": 4.1564,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-08",
+     "atual": 4.1475,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-09",
+     "atual": 4.135,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-10",
+     "atual": 4.1099,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-11",
+     "atual": 4.1074,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-12",
+     "atual": 4.1,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-15",
+     "atual": 4.0889,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-16",
+     "atual": 4.0878,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-17",
+     "atual": 4.0884,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-18",
+     "atual": 4.0878,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-19",
+     "atual": 4.0574,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-22",
+     "atual": 4.0627,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-23",
+     "atual": 4.0627,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-24",
+     "atual": 4.0627,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-26",
+     "atual": 4.0524,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-29",
+     "atual": 4.0426,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-30",
+     "atual": 4.0426,
+     "proximo": 3.8
+    },
+    {
+     "data": "2025-12-31",
+     "atual": 4.0426,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-02",
+     "atual": 4.0574,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-05",
+     "atual": 4.0732,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-06",
+     "atual": 4.0681,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-07",
+     "atual": 4.0624,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-08",
+     "atual": 4.0574,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-09",
+     "atual": 4.0475,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-12",
+     "atual": 4.0413,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-13",
+     "atual": 4.0354,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-14",
+     "atual": 4.0354,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-15",
+     "atual": 4.0207,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-16",
+     "atual": 4.021,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-19",
+     "atual": 4.0085,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-20",
+     "atual": 4.0063,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-21",
+     "atual": 4.0039,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-22",
+     "atual": 4.0012,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-23",
+     "atual": 4.0,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-26",
+     "atual": 4.0001,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-27",
+     "atual": 4.0001,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-28",
+     "atual": 4.0001,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-29",
+     "atual": 4.0,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-01-30",
+     "atual": 3.9903,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-02",
+     "atual": 3.9742,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-03",
+     "atual": 3.9742,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-04",
+     "atual": 3.9899,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-05",
+     "atual": 3.9899,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-06",
+     "atual": 3.9692,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-09",
+     "atual": 3.9595,
+     "proximo": 3.7955
+    },
+    {
+     "data": "2026-02-10",
+     "atual": 3.9691,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-11",
+     "atual": 3.9689,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-12",
+     "atual": 3.9642,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-13",
+     "atual": 3.9542,
+     "proximo": 3.7987
+    },
+    {
+     "data": "2026-02-18",
+     "atual": 3.9491,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-19",
+     "atual": 3.9489,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-20",
+     "atual": 3.9128,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-02-23",
+     "atual": 3.9077,
+     "proximo": 3.7987
+    },
+    {
+     "data": "2026-02-24",
+     "atual": 3.9076,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-25",
+     "atual": 3.8917,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-26",
+     "atual": 3.8917,
+     "proximo": 3.7974
+    },
+    {
+     "data": "2026-02-27",
+     "atual": 3.9078,
+     "proximo": 3.7863
+    },
+    {
+     "data": "2026-03-02",
+     "atual": 3.9089,
+     "proximo": 3.79
+    },
+    {
+     "data": "2026-03-03",
+     "atual": 3.9071,
+     "proximo": 3.79
+    },
+    {
+     "data": "2026-03-04",
+     "atual": 3.9089,
+     "proximo": 3.79
+    },
+    {
+     "data": "2026-03-05",
+     "atual": 3.9089,
+     "proximo": 3.79
+    },
+    {
+     "data": "2026-03-06",
+     "atual": 3.9148,
+     "proximo": 3.7957
+    },
+    {
+     "data": "2026-03-09",
+     "atual": 3.9148,
+     "proximo": 3.7939
+    },
+    {
+     "data": "2026-03-10",
+     "atual": 3.91,
+     "proximo": 3.7939
+    },
+    {
+     "data": "2026-03-11",
+     "atual": 3.91,
+     "proximo": 3.7939
+    },
+    {
+     "data": "2026-03-12",
+     "atual": 4.0714,
+     "proximo": 3.7987
+    },
+    {
+     "data": "2026-03-13",
+     "atual": 4.1037,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-16",
+     "atual": 4.1037,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-17",
+     "atual": 4.1039,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-18",
+     "atual": 4.1125,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-19",
+     "atual": 4.1144,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-20",
+     "atual": 4.1658,
+     "proximo": 3.8
+    },
+    {
+     "data": "2026-03-23",
+     "atual": 4.1783,
+     "proximo": 3.8019
+    },
+    {
+     "data": "2026-03-24",
+     "atual": 4.1872,
+     "proximo": 3.8019
+    },
+    {
+     "data": "2026-03-25",
+     "atual": 4.1977,
+     "proximo": 3.8093
+    },
+    {
+     "data": "2026-03-26",
+     "atual": 4.2119,
+     "proximo": 3.8098
+    },
+    {
+     "data": "2026-03-27",
+     "atual": 4.31,
+     "proximo": 3.84
+    },
+    {
+     "data": "2026-03-30",
+     "atual": 4.3212,
+     "proximo": 3.8464
+    },
+    {
+     "data": "2026-03-31",
+     "atual": 4.322,
+     "proximo": 3.8464
+    },
+    {
+     "data": "2026-04-01",
+     "atual": 4.33,
+     "proximo": 3.8464
+    },
+    {
+     "data": "2026-04-02",
+     "atual": 4.3571,
+     "proximo": 3.8464
+    },
+    {
+     "data": "2026-04-06",
+     "atual": 4.4,
+     "proximo": 3.8464
+    },
+    {
+     "data": "2026-04-07",
+     "atual": 4.4034,
+     "proximo": 3.85
+    },
+    {
+     "data": "2026-04-08",
+     "atual": 4.4034,
+     "proximo": 3.85
+    },
+    {
+     "data": "2026-04-09",
+     "atual": 4.4037,
+     "proximo": 3.8527
+    },
+    {
+     "data": "2026-04-10",
+     "atual": 4.7055,
+     "proximo": 3.9066
+    },
+    {
+     "data": "2026-04-13",
+     "atual": 4.7061,
+     "proximo": 3.9187
+    },
+    {
+     "data": "2026-04-14",
+     "atual": 4.7081,
+     "proximo": 3.91
+    },
+    {
+     "data": "2026-04-15",
+     "atual": 4.7114,
+     "proximo": 3.9274
+    },
+    {
+     "data": "2026-04-16",
+     "atual": 4.7256,
+     "proximo": 3.9492
+    },
+    {
+     "data": "2026-04-17",
+     "atual": 4.8,
+     "proximo": 3.9892
+    },
+    {
+     "data": "2026-04-20",
+     "atual": 4.8088,
+     "proximo": 3.9904
+    },
+    {
+     "data": "2026-04-22",
+     "atual": 4.8093,
+     "proximo": 3.9903
+    },
+    {
+     "data": "2026-04-23",
+     "atual": 4.8094,
+     "proximo": 3.9904
+    },
+    {
+     "data": "2026-04-24",
+     "atual": 4.8641,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-04-27",
+     "atual": 4.8902,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-04-28",
+     "atual": 4.891,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-04-29",
+     "atual": 4.891,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-04-30",
+     "atual": 4.8927,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-04",
+     "atual": 4.9,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-05",
+     "atual": 4.9,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-06",
+     "atual": 4.9,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-07",
+     "atual": 4.9001,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-08",
+     "atual": 4.9116,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-11",
+     "atual": 4.9017,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-12",
+     "atual": 4.9027,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-13",
+     "atual": 4.9125,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-14",
+     "atual": 4.9134,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-15",
+     "atual": 4.9193,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-18",
+     "atual": 4.9281,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-19",
+     "atual": 4.9329,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-20",
+     "atual": 4.9399,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-21",
+     "atual": 4.9399,
+     "proximo": 4.0
+    },
+    {
+     "data": "2026-05-22",
+     "atual": 5.0393,
+     "proximo": 4.01
+    },
+    {
+     "data": "2026-05-25",
+     "atual": 5.0499,
+     "proximo": 4.01
+    },
+    {
+     "data": "2026-05-26",
+     "atual": 5.0658,
+     "proximo": 4.01
+    },
+    {
+     "data": "2026-05-27",
+     "atual": 5.0733,
+     "proximo": 4.01
+    },
+    {
+     "data": "2026-05-28",
+     "atual": 5.0885,
+     "proximo": 4.0106
+    },
+    {
+     "data": "2026-05-29",
+     "atual": 5.092,
+     "proximo": 4.0197
+    },
+    {
+     "data": "2026-06-01",
+     "atual": 5.092,
+     "proximo": 4.0197
+    },
+    {
+     "data": "2026-06-02",
+     "atual": 5.0924,
+     "proximo": 4.0243
+    },
+    {
+     "data": "2026-06-03",
+     "atual": 5.0924,
+     "proximo": 4.0197
+    },
+    {
+     "data": "2026-06-05",
+     "atual": 5.1114,
+     "proximo": 4.031
+    },
+    {
+     "data": "2026-06-08",
+     "atual": 5.1428,
+     "proximo": 4.0601
+    },
+    {
+     "data": "2026-06-09",
+     "atual": 5.1442,
+     "proximo": 4.0629
+    },
+    {
+     "data": "2026-06-10",
+     "atual": 5.1442,
+     "proximo": 4.0629
+    },
+    {
+     "data": "2026-06-11",
+     "atual": 5.1447,
+     "proximo": 4.0679
+    },
+    {
+     "data": "2026-06-12",
+     "atual": 5.3,
+     "proximo": 4.1042
+    },
+    {
+     "data": "2026-06-15",
+     "atual": 5.3,
+     "proximo": 4.1043
+    },
+    {
+     "data": "2026-06-16",
+     "atual": 5.3,
+     "proximo": 4.1043
+    },
+    {
+     "data": "2026-06-17",
+     "atual": 5.3,
+     "proximo": 4.1043
+    },
+    {
+     "data": "2026-06-18",
+     "atual": 5.3,
+     "proximo": 4.1043
+    },
+    {
+     "data": "2026-06-19",
+     "atual": 5.3322,
+     "proximo": 4.1455
+    },
+    {
+     "data": "2026-06-22",
+     "atual": 5.3377,
+     "proximo": 4.15
+    },
+    {
+     "data": "2026-06-23",
+     "atual": 5.3377,
+     "proximo": 4.15
+    },
+    {
+     "data": "2026-06-24",
+     "atual": 5.3377,
+     "proximo": 4.15
+    },
+    {
+     "data": "2026-06-25",
+     "atual": 5.3419,
+     "proximo": 4.1552
+    },
+    {
+     "data": "2026-06-26",
+     "atual": 5.3268,
+     "proximo": 4.1666
+    },
+    {
+     "data": "2026-06-29",
+     "atual": 5.3311,
+     "proximo": 4.1714
+    },
+    {
+     "data": "2026-06-30",
+     "atual": 5.3311,
+     "proximo": 4.1714
+    },
+    {
+     "data": "2026-07-01",
+     "atual": 5.3212,
+     "proximo": 4.1792
+    },
+    {
+     "data": "2026-07-02",
+     "atual": 5.32,
+     "proximo": 4.1714
+    },
+    {
+     "data": "2026-07-03",
+     "atual": 5.3001,
+     "proximo": 4.1818
+    },
+    {
+     "data": "2026-07-06",
+     "atual": 5.3031,
+     "proximo": 4.1895
+    },
+    {
+     "data": "2026-07-07",
+     "atual": 5.3,
+     "proximo": 4.1919
+    },
+    {
+     "data": "2026-07-08",
+     "atual": 5.3,
+     "proximo": 4.1919
+    },
+    {
+     "data": "2026-07-09",
+     "atual": 5.3,
+     "proximo": 4.1895
+    },
+    {
+     "data": "2026-07-10",
+     "atual": 5.1625,
+     "proximo": 4.1973
+    },
+    {
+     "data": "2026-07-13",
+     "atual": 5.143,
+     "proximo": 4.1984
+    },
+    {
+     "data": "2026-07-14",
+     "atual": 5.1311,
+     "proximo": 4.1997
+    },
+    {
+     "data": "2026-07-15",
+     "atual": 5.1308,
+     "proximo": 4.1994
+    },
+    {
+     "data": "2026-07-16",
+     "atual": 5.1358,
+     "proximo": 4.1994
+    },
+    {
+     "data": "2026-07-17",
+     "atual": 5.1514,
+     "proximo": 4.2
+    },
+    {
+     "data": "2026-07-20",
+     "atual": 5.1358,
+     "proximo": 4.2
+    },
+    {
+     "data": "2026-07-21",
+     "atual": 5.1423,
+     "proximo": 4.2
+    },
+    {
+     "data": "2026-07-22",
+     "atual": 5.1363,
+     "proximo": 4.2
+    },
+    {
+     "data": "2026-07-23",
+     "atual": 5.1277,
+     "proximo": 4.2
+    },
+    {
+     "data": "2026-07-24",
+     "atual": 5.1209,
+     "proximo": 4.2154
+    },
+    {
+     "data": "2026-07-27",
+     "atual": 5.1038,
+     "proximo": 4.2212
+    },
+    {
+     "data": "2026-07-28",
+     "atual": 5.0961,
+     "proximo": 4.2212
+    },
+    {
+     "data": "2026-07-29",
+     "atual": 5.0908,
+     "proximo": 4.2154
+    },
+    {
+     "data": "2026-07-30",
+     "atual": 5.0863,
+     "proximo": 4.2107
+    },
+    {
+     "data": "2026-07-31",
+     "atual": 5.0273,
+     "proximo": 4.2194
+    },
+    {
+     "data": "2026-08-03",
+     "atual": 5.0265,
+     "proximo": 4.222
+    },
+    {
+     "data": "2026-08-04",
+     "atual": 5.0265,
+     "proximo": 4.222
+    },
+    {
+     "data": "2026-08-05",
+     "atual": 5.0273,
+     "proximo": 4.222
+    },
+    {
+     "data": "2026-08-06",
+     "atual": 5.022,
+     "proximo": 4.222
+    },
+    {
+     "data": "2026-08-07",
+     "atual": 5.0176,
+     "proximo": 4.2227
+    },
+    {
+     "data": "2026-08-10",
+     "atual": 5.0176,
+     "proximo": 4.2227
+    },
+    {
+     "data": "2026-08-11",
+     "atual": 5.0158,
+     "proximo": 4.2227
+    },
+    {
+     "data": "2026-08-12",
+     "atual": 5.0158,
+     "proximo": 4.24
+    },
+    {
+     "data": "2026-08-13",
+     "atual": 5.022,
+     "proximo": 4.24
+    },
+    {
+     "data": "2026-08-14",
+     "atual": 5.0227,
+     "proximo": 4.2402
+    },
+    {
+     "data": "2026-08-17",
+     "atual": 5.0248,
+     "proximo": 4.2403
+    },
+    {
+     "data": "2026-08-18",
+     "atual": 5.0248,
+     "proximo": 4.2403
+    },
+    {
+     "data": "2026-08-19",
+     "atual": 5.0248,
+     "proximo": 4.2403
+    },
+    {
+     "data": "2026-08-20",
+     "atual": 5.0248,
+     "proximo": 4.2403
+    },
+    {
+     "data": "2026-08-21",
+     "atual": 5.0164,
+     "proximo": 4.2549
+    },
+    {
+     "data": "2026-08-24",
+     "atual": 5.0248,
+     "proximo": 4.2502
+    },
+    {
+     "data": "2026-08-25",
+     "atual": 5.0268,
+     "proximo": 4.2799
+    },
+    {
+     "data": "2026-08-26",
+     "atual": 5.0064,
+     "proximo": 4.2799
+    },
+    {
+     "data": "2026-08-27",
+     "atual": 5.0062,
+     "proximo": 4.2799
+    },
+    {
+     "data": "2026-08-28",
+     "atual": 5.0062,
+     "proximo": 4.28
+    }
+   ],
+   "PIB Total": [
+    {
+     "data": "2025-08-01",
+     "atual": 1.8765,
+     "proximo": 1.95
+    },
+    {
+     "data": "2025-08-04",
+     "atual": 1.87,
+     "proximo": 2.0
+    },
+    {
+     "data": "2025-08-05",
+     "atual": 1.87,
+     "proximo": 2.0
+    },
+    {
+     "data": "2025-08-06",
+     "atual": 1.87,
+     "proximo": 2.0
+    },
+    {
+     "data": "2025-08-07",
+     "atual": 1.877,
+     "proximo": 1.95
+    },
+    {
+     "data": "2025-08-08",
+     "atual": 1.8735,
+     "proximo": 1.925
+    },
+    {
+     "data": "2025-08-11",
+     "atual": 1.89,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-08-12",
+     "atual": 1.877,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-13",
+     "atual": 1.877,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-14",
+     "atual": 1.8735,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-15",
+     "atual": 1.87,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-18",
+     "atual": 1.8682,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-19",
+     "atual": 1.8682,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-20",
+     "atual": 1.8682,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-21",
+     "atual": 1.8664,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-08-22",
+     "atual": 1.8572,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-25",
+     "atual": 1.8682,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-08-26",
+     "atual": 1.87,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-08-27",
+     "atual": 1.87,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-08-28",
+     "atual": 1.8682,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-08-29",
+     "atual": 1.8682,
+     "proximo": 1.89
+    },
+    {
+     "data": "2025-09-01",
+     "atual": 1.8664,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-02",
+     "atual": 1.8618,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-03",
+     "atual": 1.8664,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-04",
+     "atual": 1.8618,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-05",
+     "atual": 1.8473,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-09-08",
+     "atual": 1.8345,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-09-09",
+     "atual": 1.8386,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-09-10",
+     "atual": 1.8386,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-09-11",
+     "atual": 1.8428,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-09-12",
+     "atual": 1.8012,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-15",
+     "atual": 1.8012,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-16",
+     "atual": 1.8012,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-17",
+     "atual": 1.8012,
+     "proximo": 1.895
+    },
+    {
+     "data": "2025-09-18",
+     "atual": 1.8012,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-19",
+     "atual": 1.8006,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-22",
+     "atual": 1.8011,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-23",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-24",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-25",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-26",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-29",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-09-30",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-01",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-02",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-03",
+     "atual": 1.8,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-06",
+     "atual": 1.7956,
+     "proximo": 1.89
+    },
+    {
+     "data": "2025-10-07",
+     "atual": 1.7956,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-08",
+     "atual": 1.7985,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-09",
+     "atual": 1.7985,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-10",
+     "atual": 1.7956,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-10-13",
+     "atual": 1.8011,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-14",
+     "atual": 1.8011,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-15",
+     "atual": 1.8006,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-10-16",
+     "atual": 1.8006,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-10-17",
+     "atual": 1.8,
+     "proximo": 1.82
+    },
+    {
+     "data": "2025-10-20",
+     "atual": 1.8011,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-21",
+     "atual": 1.8011,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-22",
+     "atual": 1.8011,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-23",
+     "atual": 1.8011,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-10-24",
+     "atual": 1.779,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-10-27",
+     "atual": 1.7788,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-28",
+     "atual": 1.7788,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-29",
+     "atual": 1.7788,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-30",
+     "atual": 1.7788,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-10-31",
+     "atual": 1.7792,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-03",
+     "atual": 1.779,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-04",
+     "atual": 1.7792,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-05",
+     "atual": 1.779,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-06",
+     "atual": 1.7785,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-07",
+     "atual": 1.7785,
+     "proximo": 1.875
+    },
+    {
+     "data": "2025-11-10",
+     "atual": 1.7781,
+     "proximo": 1.89
+    },
+    {
+     "data": "2025-11-11",
+     "atual": 1.7781,
+     "proximo": 1.89
+    },
+    {
+     "data": "2025-11-12",
+     "atual": 1.7781,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-11-13",
+     "atual": 1.7763,
+     "proximo": 1.865
+    },
+    {
+     "data": "2025-11-14",
+     "atual": 1.7759,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-11-17",
+     "atual": 1.7732,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-18",
+     "atual": 1.7732,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-19",
+     "atual": 1.7732,
+     "proximo": 1.9
+    },
+    {
+     "data": "2025-11-21",
+     "atual": 1.7788,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-11-24",
+     "atual": 1.7789,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-11-25",
+     "atual": 1.7789,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-11-26",
+     "atual": 1.7788,
+     "proximo": 1.88
+    },
+    {
+     "data": "2025-11-27",
+     "atual": 1.7789,
+     "proximo": 1.855
+    },
+    {
+     "data": "2025-11-28",
+     "atual": 1.7792,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-01",
+     "atual": 1.7807,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-02",
+     "atual": 1.7807,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-03",
+     "atual": 1.7904,
+     "proximo": 1.84
+    },
+    {
+     "data": "2025-12-04",
+     "atual": 1.7812,
+     "proximo": 1.84
+    },
+    {
+     "data": "2025-12-05",
+     "atual": 1.7986,
+     "proximo": 1.84
+    },
+    {
+     "data": "2025-12-08",
+     "atual": 1.8,
+     "proximo": 1.82
+    },
+    {
+     "data": "2025-12-09",
+     "atual": 1.8,
+     "proximo": 1.825
+    },
+    {
+     "data": "2025-12-10",
+     "atual": 1.8,
+     "proximo": 1.825
+    },
+    {
+     "data": "2025-12-11",
+     "atual": 1.8,
+     "proximo": 1.835
+    },
+    {
+     "data": "2025-12-12",
+     "atual": 1.8,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-15",
+     "atual": 1.8,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-16",
+     "atual": 1.8,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-17",
+     "atual": 1.7997,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-18",
+     "atual": 1.7997,
+     "proximo": 1.83
+    },
+    {
+     "data": "2025-12-19",
+     "atual": 1.8,
+     "proximo": 1.8082
+    },
+    {
+     "data": "2025-12-22",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-23",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-24",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-26",
+     "atual": 1.7997,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-29",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-30",
+     "atual": 1.7997,
+     "proximo": 1.8
+    },
+    {
+     "data": "2025-12-31",
+     "atual": 1.7997,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-02",
+     "atual": 1.7994,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-05",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-06",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-07",
+     "atual": 1.7995,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-08",
+     "atual": 1.7995,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-09",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-12",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-13",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-14",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-15",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-16",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-19",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-20",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-21",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-22",
+     "atual": 1.8006,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-23",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-26",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-27",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-28",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-29",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-01-30",
+     "atual": 1.801,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-02",
+     "atual": 1.801,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-03",
+     "atual": 1.801,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-04",
+     "atual": 1.8005,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-05",
+     "atual": 1.8005,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-06",
+     "atual": 1.8005,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-09",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-10",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-11",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-12",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-13",
+     "atual": 1.8,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-18",
+     "atual": 1.8005,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-19",
+     "atual": 1.8009,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-20",
+     "atual": 1.8169,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-23",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-24",
+     "atual": 1.8185,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-25",
+     "atual": 1.8185,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-26",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-02-27",
+     "atual": 1.8185,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-02",
+     "atual": 1.8185,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-03",
+     "atual": 1.8185,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-04",
+     "atual": 1.8195,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-05",
+     "atual": 1.8195,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-06",
+     "atual": 1.82,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-09",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-10",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-11",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-12",
+     "atual": 1.8201,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-13",
+     "atual": 1.8306,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-16",
+     "atual": 1.8306,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-17",
+     "atual": 1.8247,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-18",
+     "atual": 1.8247,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-19",
+     "atual": 1.8306,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-20",
+     "atual": 1.8428,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-23",
+     "atual": 1.8399,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-24",
+     "atual": 1.85,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-25",
+     "atual": 1.85,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-26",
+     "atual": 1.8507,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-27",
+     "atual": 1.851,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-30",
+     "atual": 1.8516,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-03-31",
+     "atual": 1.8513,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-01",
+     "atual": 1.8513,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-02",
+     "atual": 1.851,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-06",
+     "atual": 1.8507,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-07",
+     "atual": 1.8507,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-08",
+     "atual": 1.851,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-09",
+     "atual": 1.8521,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-10",
+     "atual": 1.8507,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-13",
+     "atual": 1.8521,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-14",
+     "atual": 1.8506,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-15",
+     "atual": 1.8505,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-16",
+     "atual": 1.8502,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-17",
+     "atual": 1.8626,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-20",
+     "atual": 1.861,
+     "proximo": 1.7999
+    },
+    {
+     "data": "2026-04-22",
+     "atual": 1.861,
+     "proximo": 1.7999
+    },
+    {
+     "data": "2026-04-23",
+     "atual": 1.8566,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-24",
+     "atual": 1.8511,
+     "proximo": 1.7955
+    },
+    {
+     "data": "2026-04-27",
+     "atual": 1.8502,
+     "proximo": 1.8
+    },
+    {
+     "data": "2026-04-28",
+     "atual": 1.8502,
+     "proximo": 1.7743
+    },
+    {
+     "data": "2026-04-29",
+     "atual": 1.8502,
+     "proximo": 1.7743
+    },
+    {
+     "data": "2026-04-30",
+     "atual": 1.8503,
+     "proximo": 1.7487
+    },
+    {
+     "data": "2026-05-04",
+     "atual": 1.8502,
+     "proximo": 1.7614
+    },
+    {
+     "data": "2026-05-05",
+     "atual": 1.8502,
+     "proximo": 1.7614
+    },
+    {
+     "data": "2026-05-06",
+     "atual": 1.8503,
+     "proximo": 1.7999
+    },
+    {
+     "data": "2026-05-07",
+     "atual": 1.8504,
+     "proximo": 1.7621
+    },
+    {
+     "data": "2026-05-08",
+     "atual": 1.8505,
+     "proximo": 1.7621
+    },
+    {
+     "data": "2026-05-11",
+     "atual": 1.8525,
+     "proximo": 1.7826
+    },
+    {
+     "data": "2026-05-12",
+     "atual": 1.8531,
+     "proximo": 1.7911
+    },
+    {
+     "data": "2026-05-13",
+     "atual": 1.8531,
+     "proximo": 1.7911
+    },
+    {
+     "data": "2026-05-14",
+     "atual": 1.8518,
+     "proximo": 1.7741
+    },
+    {
+     "data": "2026-05-15",
+     "atual": 1.8531,
+     "proximo": 1.7741
+    },
+    {
+     "data": "2026-05-18",
+     "atual": 1.8532,
+     "proximo": 1.7943
+    },
+    {
+     "data": "2026-05-19",
+     "atual": 1.8532,
+     "proximo": 1.7826
+    },
+    {
+     "data": "2026-05-20",
+     "atual": 1.8533,
+     "proximo": 1.7741
+    },
+    {
+     "data": "2026-05-21",
+     "atual": 1.8657,
+     "proximo": 1.7622
+    },
+    {
+     "data": "2026-05-22",
+     "atual": 1.8884,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-05-25",
+     "atual": 1.8942,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-05-26",
+     "atual": 1.8884,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-05-27",
+     "atual": 1.88,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-05-28",
+     "atual": 1.8884,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-05-29",
+     "atual": 1.9011,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-01",
+     "atual": 1.9071,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-02",
+     "atual": 1.9081,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-03",
+     "atual": 1.9081,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-05",
+     "atual": 1.91,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-08",
+     "atual": 1.9098,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-09",
+     "atual": 1.909,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-10",
+     "atual": 1.909,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-11",
+     "atual": 1.909,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-12",
+     "atual": 1.96,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-15",
+     "atual": 1.9827,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-06-16",
+     "atual": 1.9829,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-06-17",
+     "atual": 1.9829,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-06-18",
+     "atual": 1.9829,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-06-19",
+     "atual": 1.984,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-22",
+     "atual": 1.9609,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-06-23",
+     "atual": 1.9819,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-24",
+     "atual": 1.9715,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-25",
+     "atual": 1.982,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-06-26",
+     "atual": 1.9861,
+     "proximo": 1.6841
+    },
+    {
+     "data": "2026-06-29",
+     "atual": 1.9865,
+     "proximo": 1.6841
+    },
+    {
+     "data": "2026-06-30",
+     "atual": 1.9863,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-01",
+     "atual": 1.9865,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-02",
+     "atual": 1.9865,
+     "proximo": 1.6948
+    },
+    {
+     "data": "2026-07-03",
+     "atual": 1.9859,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-06",
+     "atual": 1.9859,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-07",
+     "atual": 1.9859,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-08",
+     "atual": 1.9857,
+     "proximo": 1.6841
+    },
+    {
+     "data": "2026-07-09",
+     "atual": 1.9863,
+     "proximo": 1.6776
+    },
+    {
+     "data": "2026-07-10",
+     "atual": 1.9865,
+     "proximo": 1.6541
+    },
+    {
+     "data": "2026-07-13",
+     "atual": 1.9914,
+     "proximo": 1.6497
+    },
+    {
+     "data": "2026-07-14",
+     "atual": 1.9914,
+     "proximo": 1.6497
+    },
+    {
+     "data": "2026-07-15",
+     "atual": 1.9861,
+     "proximo": 1.6519
+    },
+    {
+     "data": "2026-07-16",
+     "atual": 1.9859,
+     "proximo": 1.6653
+    },
+    {
+     "data": "2026-07-17",
+     "atual": 1.9859,
+     "proximo": 1.6511
+    },
+    {
+     "data": "2026-07-20",
+     "atual": 1.9865,
+     "proximo": 1.6841
+    },
+    {
+     "data": "2026-07-21",
+     "atual": 1.9934,
+     "proximo": 1.6841
+    },
+    {
+     "data": "2026-07-22",
+     "atual": 1.9868,
+     "proximo": 1.7
+    },
+    {
+     "data": "2026-07-23",
+     "atual": 1.9861,
+     "proximo": 1.6895
+    },
+    {
+     "data": "2026-07-24",
+     "atual": 1.9861,
+     "proximo": 1.6
+    },
+    {
+     "data": "2026-07-27",
+     "atual": 1.9862,
+     "proximo": 1.6
+    },
+    {
+     "data": "2026-07-28",
+     "atual": 1.9865,
+     "proximo": 1.5874
+    },
+    {
+     "data": "2026-07-29",
+     "atual": 1.9862,
+     "proximo": 1.5997
+    },
+    {
+     "data": "2026-07-30",
+     "atual": 1.9862,
+     "proximo": 1.5997
+    },
+    {
+     "data": "2026-07-31",
+     "atual": 1.985,
+     "proximo": 1.5741
+    },
+    {
+     "data": "2026-08-03",
+     "atual": 1.9861,
+     "proximo": 1.5731
+    },
+    {
+     "data": "2026-08-04",
+     "atual": 1.986,
+     "proximo": 1.5566
+    },
+    {
+     "data": "2026-08-05",
+     "atual": 1.986,
+     "proximo": 1.5566
+    },
+    {
+     "data": "2026-08-06",
+     "atual": 1.9849,
+     "proximo": 1.5245
+    },
+    {
+     "data": "2026-08-07",
+     "atual": 1.9828,
+     "proximo": 1.5244
+    },
+    {
+     "data": "2026-08-10",
+     "atual": 1.9828,
+     "proximo": 1.521
+    },
+    {
+     "data": "2026-08-11",
+     "atual": 1.9707,
+     "proximo": 1.5133
+    },
+    {
+     "data": "2026-08-12",
+     "atual": 1.9707,
+     "proximo": 1.5045
+    },
+    {
+     "data": "2026-08-13",
+     "atual": 1.9707,
+     "proximo": 1.5045
+    },
+    {
+     "data": "2026-08-14",
+     "atual": 1.9821,
+     "proximo": 1.5045
+    },
+    {
+     "data": "2026-08-17",
+     "atual": 1.9833,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-18",
+     "atual": 1.9833,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-19",
+     "atual": 1.9809,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-20",
+     "atual": 1.9809,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-21",
+     "atual": 1.95,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-24",
+     "atual": 1.9335,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-25",
+     "atual": 1.9335,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-26",
+     "atual": 1.9354,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-27",
+     "atual": 1.9335,
+     "proximo": 1.5
+    },
+    {
+     "data": "2026-08-28",
+     "atual": 1.9233,
+     "proximo": 1.5
+    }
+   ],
+   "Câmbio": [
+    {
+     "data": "2025-08-01",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-04",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-05",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-06",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-07",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-08",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-11",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-12",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-13",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-14",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-15",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-18",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-19",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-20",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-21",
+     "atual": 5.7,
+     "proximo": 5.7
+    },
+    {
+     "data": "2025-08-22",
+     "atual": 5.635,
+     "proximo": 5.625
+    },
+    {
+     "data": "2025-08-25",
+     "atual": 5.64,
+     "proximo": 5.65
+    },
+    {
+     "data": "2025-08-26",
+     "atual": 5.63,
+     "proximo": 5.625
+    },
+    {
+     "data": "2025-08-27",
+     "atual": 5.63,
+     "proximo": 5.625
+    },
+    {
+     "data": "2025-08-28",
+     "atual": 5.6275,
+     "proximo": 5.625
+    },
+    {
+     "data": "2025-08-29",
+     "atual": 5.6191,
+     "proximo": 5.62
+    },
+    {
+     "data": "2025-09-01",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-02",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-03",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-04",
+     "atual": 5.6094,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-05",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-08",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-09",
+     "atual": 5.6,
+     "proximo": 5.59
+    },
+    {
+     "data": "2025-09-10",
+     "atual": 5.6,
+     "proximo": 5.59
+    },
+    {
+     "data": "2025-09-11",
+     "atual": 5.6,
+     "proximo": 5.595
+    },
+    {
+     "data": "2025-09-12",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-15",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-16",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-17",
+     "atual": 5.6,
+     "proximo": 5.6
+    },
+    {
+     "data": "2025-09-18",
+     "atual": 5.6,
+     "proximo": 5.59
+    },
+    {
+     "data": "2025-09-19",
+     "atual": 5.6,
+     "proximo": 5.595
+    },
+    {
+     "data": "2025-09-22",
+     "atual": 5.6,
+     "proximo": 5.555
+    },
+    {
+     "data": "2025-09-23",
+     "atual": 5.6,
+     "proximo": 5.56
+    },
+    {
+     "data": "2025-09-24",
+     "atual": 5.6,
+     "proximo": 5.555
+    },
+    {
+     "data": "2025-09-25",
+     "atual": 5.6,
+     "proximo": 5.555
+    },
+    {
+     "data": "2025-09-26",
+     "atual": 5.5821,
+     "proximo": 5.56
+    },
+    {
+     "data": "2025-09-29",
+     "atual": 5.5761,
+     "proximo": 5.58
+    },
+    {
+     "data": "2025-09-30",
+     "atual": 5.5761,
+     "proximo": 5.58
+    },
+    {
+     "data": "2025-10-01",
+     "atual": 5.5631,
+     "proximo": 5.56
+    },
+    {
+     "data": "2025-10-02",
+     "atual": 5.5401,
+     "proximo": 5.56
+    },
+    {
+     "data": "2025-10-03",
+     "atual": 5.53,
+     "proximo": 5.56
+    },
+    {
+     "data": "2025-10-06",
+     "atual": 5.5063,
+     "proximo": 5.525
+    },
+    {
+     "data": "2025-10-07",
+     "atual": 5.5013,
+     "proximo": 5.525
+    },
+    {
+     "data": "2025-10-08",
+     "atual": 5.5013,
+     "proximo": 5.525
+    },
+    {
+     "data": "2025-10-09",
+     "atual": 5.5013,
+     "proximo": 5.525
+    },
+    {
+     "data": "2025-10-10",
+     "atual": 5.5,
+     "proximo": 5.51
+    },
+    {
+     "data": "2025-10-13",
+     "atual": 5.5,
+     "proximo": 5.505
+    },
+    {
+     "data": "2025-10-14",
+     "atual": 5.5,
+     "proximo": 5.505
+    },
+    {
+     "data": "2025-10-15",
+     "atual": 5.5,
+     "proximo": 5.505
+    },
+    {
+     "data": "2025-10-16",
+     "atual": 5.5,
+     "proximo": 5.505
+    },
+    {
+     "data": "2025-10-17",
+     "atual": 5.5,
+     "proximo": 5.5075
+    },
+    {
+     "data": "2025-10-20",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-21",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-22",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-23",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-24",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-27",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-28",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-29",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-30",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-10-31",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-03",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-04",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-05",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-06",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-07",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-10",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-11",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-12",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-13",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-14",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-17",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-18",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-19",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-21",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-24",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-25",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-26",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-27",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-11-28",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-01",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-02",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-03",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-04",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-05",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-08",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-09",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-10",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-11",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-12",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-15",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-16",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-17",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-18",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-19",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-22",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-23",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-24",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-26",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-29",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-30",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2025-12-31",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-02",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-05",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-06",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-07",
+     "atual": 5.5,
+     "proximo": 5.5006
+    },
+    {
+     "data": "2026-01-08",
+     "atual": 5.5,
+     "proximo": 5.5006
+    },
+    {
+     "data": "2026-01-09",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-12",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-13",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-14",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-15",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-16",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-19",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-20",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-21",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-22",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-01-23",
+     "atual": 5.5,
+     "proximo": 5.5058
+    },
+    {
+     "data": "2026-01-26",
+     "atual": 5.5,
+     "proximo": 5.5058
+    },
+    {
+     "data": "2026-01-27",
+     "atual": 5.5,
+     "proximo": 5.5058
+    },
+    {
+     "data": "2026-01-28",
+     "atual": 5.5,
+     "proximo": 5.5058
+    },
+    {
+     "data": "2026-01-29",
+     "atual": 5.5,
+     "proximo": 5.5058
+    },
+    {
+     "data": "2026-01-30",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-02",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-03",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-04",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-05",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-06",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-09",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-10",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-11",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-12",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-13",
+     "atual": 5.495,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-18",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-19",
+     "atual": 5.5,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-20",
+     "atual": 5.45,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-23",
+     "atual": 5.45,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-24",
+     "atual": 5.45,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-25",
+     "atual": 5.444,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-26",
+     "atual": 5.44,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-02-27",
+     "atual": 5.4249,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-02",
+     "atual": 5.4249,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-03",
+     "atual": 5.4249,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-04",
+     "atual": 5.4249,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-05",
+     "atual": 5.4205,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-06",
+     "atual": 5.41,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-09",
+     "atual": 5.4,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-10",
+     "atual": 5.4,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-11",
+     "atual": 5.4,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-12",
+     "atual": 5.4,
+     "proximo": 5.5
+    },
+    {
+     "data": "2026-03-13",
+     "atual": 5.4,
+     "proximo": 5.4656
+    },
+    {
+     "data": "2026-03-16",
+     "atual": 5.4,
+     "proximo": 5.4656
+    },
+    {
+     "data": "2026-03-17",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-18",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-19",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-20",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-23",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-24",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-25",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-26",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-27",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-30",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-03-31",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-04-01",
+     "atual": 5.4,
+     "proximo": 5.45
+    },
+    {
+     "data": "2026-04-02",
+     "atual": 5.4,
+     "proximo": 5.445
+    },
+    {
+     "data": "2026-04-06",
+     "atual": 5.4,
+     "proximo": 5.4399
+    },
+    {
+     "data": "2026-04-07",
+     "atual": 5.4,
+     "proximo": 5.4399
+    },
+    {
+     "data": "2026-04-08",
+     "atual": 5.4,
+     "proximo": 5.4399
+    },
+    {
+     "data": "2026-04-09",
+     "atual": 5.37,
+     "proximo": 5.415
+    },
+    {
+     "data": "2026-04-10",
+     "atual": 5.37,
+     "proximo": 5.4
+    },
+    {
+     "data": "2026-04-13",
+     "atual": 5.35,
+     "proximo": 5.4
+    },
+    {
+     "data": "2026-04-14",
+     "atual": 5.35,
+     "proximo": 5.4
+    },
+    {
+     "data": "2026-04-15",
+     "atual": 5.35,
+     "proximo": 5.4
+    },
+    {
+     "data": "2026-04-16",
+     "atual": 5.35,
+     "proximo": 5.4
+    },
+    {
+     "data": "2026-04-17",
+     "atual": 5.3,
+     "proximo": 5.35
+    },
+    {
+     "data": "2026-04-20",
+     "atual": 5.2865,
+     "proximo": 5.35
+    },
+    {
+     "data": "2026-04-22",
+     "atual": 5.2865,
+     "proximo": 5.35
+    },
+    {
+     "data": "2026-04-23",
+     "atual": 5.283,
+     "proximo": 5.35
+    },
+    {
+     "data": "2026-04-24",
+     "atual": 5.25,
+     "proximo": 5.35
+    },
+    {
+     "data": "2026-04-27",
+     "atual": 5.25,
+     "proximo": 5.3248
+    },
+    {
+     "data": "2026-04-28",
+     "atual": 5.25,
+     "proximo": 5.31
+    },
+    {
+     "data": "2026-04-29",
+     "atual": 5.25,
+     "proximo": 5.31
+    },
+    {
+     "data": "2026-04-30",
+     "atual": 5.25,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-04",
+     "atual": 5.2415,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-05",
+     "atual": 5.2415,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-06",
+     "atual": 5.24,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-07",
+     "atual": 5.23,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-08",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-05-11",
+     "atual": 5.2,
+     "proximo": 5.285
+    },
+    {
+     "data": "2026-05-12",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-13",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-14",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-15",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-18",
+     "atual": 5.2,
+     "proximo": 5.2765
+    },
+    {
+     "data": "2026-05-19",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-20",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-21",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-05-22",
+     "atual": 5.17,
+     "proximo": 5.2576
+    },
+    {
+     "data": "2026-05-25",
+     "atual": 5.1686,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-05-26",
+     "atual": 5.1686,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-05-27",
+     "atual": 5.1686,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-05-28",
+     "atual": 5.1656,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-05-29",
+     "atual": 5.1613,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-06-01",
+     "atual": 5.16,
+     "proximo": 5.2437
+    },
+    {
+     "data": "2026-06-02",
+     "atual": 5.158,
+     "proximo": 5.2369
+    },
+    {
+     "data": "2026-06-03",
+     "atual": 5.15,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-06-05",
+     "atual": 5.153,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-06-08",
+     "atual": 5.156,
+     "proximo": 5.2
+    },
+    {
+     "data": "2026-06-09",
+     "atual": 5.1693,
+     "proximo": 5.21
+    },
+    {
+     "data": "2026-06-10",
+     "atual": 5.1693,
+     "proximo": 5.21
+    },
+    {
+     "data": "2026-06-11",
+     "atual": 5.1722,
+     "proximo": 5.2437
+    },
+    {
+     "data": "2026-06-12",
+     "atual": 5.2,
+     "proximo": 5.25
+    },
+    {
+     "data": "2026-06-15",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-16",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-17",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-18",
+     "atual": 5.2,
+     "proximo": 5.255
+    },
+    {
+     "data": "2026-06-19",
+     "atual": 5.2,
+     "proximo": 5.265
+    },
+    {
+     "data": "2026-06-22",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-23",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-24",
+     "atual": 5.2,
+     "proximo": 5.26
+    },
+    {
+     "data": "2026-06-25",
+     "atual": 5.2,
+     "proximo": 5.255
+    },
+    {
+     "data": "2026-06-26",
+     "atual": 5.2,
+     "proximo": 5.283
+    },
+    {
+     "data": "2026-06-29",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-06-30",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-07-01",
+     "atual": 5.2,
+     "proximo": 5.2915
+    },
+    {
+     "data": "2026-07-02",
+     "atual": 5.2,
+     "proximo": 5.283
+    },
+    {
+     "data": "2026-07-03",
+     "atual": 5.2,
+     "proximo": 5.283
+    },
+    {
+     "data": "2026-07-06",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-07-07",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-07-08",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-07-09",
+     "atual": 5.2,
+     "proximo": 5.283
+    },
+    {
+     "data": "2026-07-10",
+     "atual": 5.2,
+     "proximo": 5.2799
+    },
+    {
+     "data": "2026-07-13",
+     "atual": 5.2,
+     "proximo": 5.27
+    },
+    {
+     "data": "2026-07-14",
+     "atual": 5.2,
+     "proximo": 5.2768
+    },
+    {
+     "data": "2026-07-15",
+     "atual": 5.2,
+     "proximo": 5.2734
+    },
+    {
+     "data": "2026-07-16",
+     "atual": 5.2,
+     "proximo": 5.2768
+    },
+    {
+     "data": "2026-07-17",
+     "atual": 5.2,
+     "proximo": 5.2784
+    },
+    {
+     "data": "2026-07-20",
+     "atual": 5.2,
+     "proximo": 5.2784
+    },
+    {
+     "data": "2026-07-21",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-07-22",
+     "atual": 5.2,
+     "proximo": 5.283
+    },
+    {
+     "data": "2026-07-23",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-07-24",
+     "atual": 5.2,
+     "proximo": 5.2867
+    },
+    {
+     "data": "2026-07-27",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-07-28",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-07-29",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-07-30",
+     "atual": 5.2,
+     "proximo": 5.275
+    },
+    {
+     "data": "2026-07-31",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-03",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-04",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-05",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-06",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-07",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-10",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-11",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-12",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-13",
+     "atual": 5.2,
+     "proximo": 5.28
+    },
+    {
+     "data": "2026-08-14",
+     "atual": 5.2,
+     "proximo": 5.2867
+    },
+    {
+     "data": "2026-08-17",
+     "atual": 5.2,
+     "proximo": 5.29
+    },
+    {
+     "data": "2026-08-18",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-19",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-20",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-21",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-24",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-25",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-26",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-27",
+     "atual": 5.2,
+     "proximo": 5.3
+    },
+    {
+     "data": "2026-08-28",
+     "atual": 5.2,
+     "proximo": 5.3
+    }
+   ],
+   "Taxa de desocupação": [
+    {
+     "data": "2025-08-01",
+     "atual": 6.9,
+     "proximo": 7.1
+    },
+    {
+     "data": "2025-08-04",
+     "atual": 6.8,
+     "proximo": 7.1
+    },
+    {
+     "data": "2025-08-05",
+     "atual": 6.7,
+     "proximo": 7.1
+    },
+    {
+     "data": "2025-08-06",
+     "atual": 6.7,
+     "proximo": 7.1
+    },
+    {
+     "data": "2025-08-07",
+     "atual": 6.7,
+     "proximo": 7.1
+    },
+    {
+     "data": "2025-08-08",
+     "atual": 6.575,
+     "proximo": 7.07
+    },
+    {
+     "data": "2025-08-11",
+     "atual": 6.55,
+     "proximo": 7.04
+    },
+    {
+     "data": "2025-08-12",
+     "atual": 6.575,
+     "proximo": 7.04
+    },
+    {
+     "data": "2025-08-13",
+     "atual": 6.525,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-14",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-15",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-18",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-19",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-20",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-21",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-22",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-25",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-26",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-27",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-28",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-08-29",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-01",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-02",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-03",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-04",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-05",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-08",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-09",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-10",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-11",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-12",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-15",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-16",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-17",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-18",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-19",
+     "atual": 6.5,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-22",
+     "atual": 6.45,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-23",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-24",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-25",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-26",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-29",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-09-30",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-01",
+     "atual": 6.4,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-02",
+     "atual": 6.35,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-03",
+     "atual": 6.35,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-06",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-07",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-08",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-09",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-10",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-13",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-14",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-15",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-16",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-17",
+     "atual": 6.3,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-20",
+     "atual": 6.3,
+     "proximo": 6.9
+    },
+    {
+     "data": "2025-10-21",
+     "atual": 6.3,
+     "proximo": 6.9
+    },
+    {
+     "data": "2025-10-22",
+     "atual": 6.285,
+     "proximo": 6.85
+    },
+    {
+     "data": "2025-10-23",
+     "atual": 6.3,
+     "proximo": 6.85
+    },
+    {
+     "data": "2025-10-24",
+     "atual": 6.27,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-27",
+     "atual": 6.265,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-28",
+     "atual": 6.27,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-29",
+     "atual": 6.26,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-30",
+     "atual": 6.26,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-10-31",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-03",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-04",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-05",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-06",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-07",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-10",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-11",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-12",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-13",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-14",
+     "atual": 6.2,
+     "proximo": 6.95
+    },
+    {
+     "data": "2025-11-17",
+     "atual": 6.2,
+     "proximo": 6.95
+    },
+    {
+     "data": "2025-11-18",
+     "atual": 6.2,
+     "proximo": 6.95
+    },
+    {
+     "data": "2025-11-19",
+     "atual": 6.2,
+     "proximo": 6.95
+    },
+    {
+     "data": "2025-11-21",
+     "atual": 6.2,
+     "proximo": 6.95
+    },
+    {
+     "data": "2025-11-24",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-25",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-26",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-27",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-11-28",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-12-01",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-12-02",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-12-03",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-12-04",
+     "atual": 6.2,
+     "proximo": 7.0
+    },
+    {
+     "data": "2025-12-05",
+     "atual": 6.2,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-08",
+     "atual": 6.15,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-09",
+     "atual": 6.1369,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-10",
+     "atual": 6.1369,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-11",
+     "atual": 6.15,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-12",
+     "atual": 6.16,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-15",
+     "atual": 6.14,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-16",
+     "atual": 6.14,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-17",
+     "atual": 6.14,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-18",
+     "atual": 6.14,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-19",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-22",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-23",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-24",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-26",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-29",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-30",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2025-12-31",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2026-01-02",
+     "atual": 6.1,
+     "proximo": 6.6
+    },
+    {
+     "data": "2026-01-05",
+     "atual": 6.1,
+     "proximo": 6.8
+    },
+    {
+     "data": "2026-01-06",
+     "atual": 6.1,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-07",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-08",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-09",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-12",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-13",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-14",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-15",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-16",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-19",
+     "atual": 6.0,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-20",
+     "atual": 5.9,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-21",
+     "atual": 5.9,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-22",
+     "atual": 5.9,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-23",
+     "atual": 5.8,
+     "proximo": 6.5
+    },
+    {
+     "data": "2026-01-26",
+     "atual": 5.8,
+     "proximo": 6.45
+    },
+    {
+     "data": "2026-01-27",
+     "atual": 5.8,
+     "proximo": 6.45
+    },
+    {
+     "data": "2026-01-28",
+     "atual": 5.8,
+     "proximo": 6.45
+    },
+    {
+     "data": "2026-01-29",
+     "atual": 5.8,
+     "proximo": 6.4
+    },
+    {
+     "data": "2026-01-30",
+     "atual": 5.8,
+     "proximo": 6.4
+    },
+    {
+     "data": "2026-02-02",
+     "atual": 5.8,
+     "proximo": 6.4
+    },
+    {
+     "data": "2026-02-03",
+     "atual": 5.8,
+     "proximo": 6.4
+    },
+    {
+     "data": "2026-02-04",
+     "atual": 5.8,
+     "proximo": 6.4
+    },
+    {
+     "data": "2026-02-05",
+     "atual": 5.8,
+     "proximo": 6.3471
+    },
+    {
+     "data": "2026-02-06",
+     "atual": 5.8,
+     "proximo": 6.2941
+    },
+    {
+     "data": "2026-02-09",
+     "atual": 5.8,
+     "proximo": 6.2471
+    },
+    {
+     "data": "2026-02-10",
+     "atual": 5.8,
+     "proximo": 6.2471
+    },
+    {
+     "data": "2026-02-11",
+     "atual": 5.8,
+     "proximo": 6.2471
+    },
+    {
+     "data": "2026-02-12",
+     "atual": 5.7615,
+     "proximo": 6.2
+    },
+    {
+     "data": "2026-02-13",
+     "atual": 5.7615,
+     "proximo": 6.2
+    },
+    {
+     "data": "2026-02-18",
+     "atual": 5.7115,
+     "proximo": 6.155
+    },
+    {
+     "data": "2026-02-19",
+     "atual": 5.723,
+     "proximo": 6.155
+    },
+    {
+     "data": "2026-02-20",
+     "atual": 5.6,
+     "proximo": 6.105
+    },
+    {
+     "data": "2026-02-23",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-02-24",
+     "atual": 5.6,
+     "proximo": 6.105
+    },
+    {
+     "data": "2026-02-25",
+     "atual": 5.6,
+     "proximo": 6.105
+    },
+    {
+     "data": "2026-02-26",
+     "atual": 5.6,
+     "proximo": 6.105
+    },
+    {
+     "data": "2026-02-27",
+     "atual": 5.6,
+     "proximo": 6.105
+    },
+    {
+     "data": "2026-03-02",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-03",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-04",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-05",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-06",
+     "atual": 5.6,
+     "proximo": 6.1025
+    },
+    {
+     "data": "2026-03-09",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-03-10",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-03-11",
+     "atual": 5.6,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-03-12",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-03-13",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-03-16",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-17",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-18",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-19",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-20",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-23",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-24",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-25",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-26",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-27",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-30",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-03-31",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-04-01",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-04-02",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-04-06",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-07",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-08",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-09",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-04-10",
+     "atual": 5.6,
+     "proximo": 6.1
+    },
+    {
+     "data": "2026-04-13",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-14",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-15",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-16",
+     "atual": 5.6,
+     "proximo": 6.05
+    },
+    {
+     "data": "2026-04-17",
+     "atual": 5.59,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-20",
+     "atual": 5.59,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-22",
+     "atual": 5.59,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-23",
+     "atual": 5.575,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-24",
+     "atual": 5.56,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-27",
+     "atual": 5.56,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-28",
+     "atual": 5.56,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-29",
+     "atual": 5.56,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-04-30",
+     "atual": 5.56,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-04",
+     "atual": 5.55,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-05",
+     "atual": 5.55,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-06",
+     "atual": 5.545,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-07",
+     "atual": 5.55,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-08",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-11",
+     "atual": 5.54,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-12",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-13",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-14",
+     "atual": 5.51,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-15",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-18",
+     "atual": 5.51,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-19",
+     "atual": 5.51,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-20",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-21",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-22",
+     "atual": 5.51,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-25",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-26",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-27",
+     "atual": 5.52,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-28",
+     "atual": 5.51,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-05-29",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-01",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-02",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-03",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-05",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-08",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-09",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-10",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-11",
+     "atual": 5.5,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-12",
+     "atual": 5.46,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-15",
+     "atual": 5.42,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-16",
+     "atual": 5.42,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-17",
+     "atual": 5.42,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-18",
+     "atual": 5.41,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-19",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-22",
+     "atual": 5.46,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-23",
+     "atual": 5.41,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-24",
+     "atual": 5.41,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-25",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-26",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-29",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-06-30",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-01",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-02",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-03",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-06",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-07",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-08",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-09",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-10",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-13",
+     "atual": 5.4,
+     "proximo": 5.93
+    },
+    {
+     "data": "2026-07-14",
+     "atual": 5.4,
+     "proximo": 5.93
+    },
+    {
+     "data": "2026-07-15",
+     "atual": 5.4,
+     "proximo": 5.93
+    },
+    {
+     "data": "2026-07-16",
+     "atual": 5.4,
+     "proximo": 5.965
+    },
+    {
+     "data": "2026-07-17",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-20",
+     "atual": 5.3,
+     "proximo": 5.85
+    },
+    {
+     "data": "2026-07-21",
+     "atual": 5.3,
+     "proximo": 5.85
+    },
+    {
+     "data": "2026-07-22",
+     "atual": 5.3,
+     "proximo": 5.85
+    },
+    {
+     "data": "2026-07-23",
+     "atual": 5.3,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-07-24",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-07-27",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-28",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-07-29",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-07-30",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-07-31",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-03",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-04",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-05",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-06",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-07",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-10",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-11",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-12",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-13",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-14",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-17",
+     "atual": 5.4,
+     "proximo": 5.95
+    },
+    {
+     "data": "2026-08-18",
+     "atual": 5.4,
+     "proximo": 5.95
+    },
+    {
+     "data": "2026-08-19",
+     "atual": 5.4,
+     "proximo": 5.95
+    },
+    {
+     "data": "2026-08-20",
+     "atual": 5.4,
+     "proximo": 6.0
+    },
+    {
+     "data": "2026-08-21",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-08-24",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-08-25",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-08-26",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-08-27",
+     "atual": 5.4,
+     "proximo": 5.9
+    },
+    {
+     "data": "2026-08-28",
+     "atual": 5.4,
+     "proximo": 5.9
+    }
+   ]
+  },
+  "selic_reunioes": [
+   {
+    "reuniao": "R6/2026",
+    "mediana": 13.75,
+    "n": 143
+   },
+   {
+    "reuniao": "R7/2026",
+    "mediana": 13.75,
+    "n": 143
+   },
+   {
+    "reuniao": "R8/2026",
+    "mediana": 13.75,
+    "n": 143
+   },
+   {
+    "reuniao": "R1/2027",
+    "mediana": 13.75,
+    "n": 139
+   },
+   {
+    "reuniao": "R2/2027",
+    "mediana": 13.5,
+    "n": 138
+   },
+   {
+    "reuniao": "R3/2027",
+    "mediana": 13.25,
+    "n": 137
+   },
+   {
+    "reuniao": "R4/2027",
+    "mediana": 13.0,
+    "n": 137
+   },
+   {
+    "reuniao": "R5/2027",
+    "mediana": 12.75,
+    "n": 136
+   },
+   {
+    "reuniao": "R6/2027",
+    "mediana": 12.5,
+    "n": 136
+   },
+   {
+    "reuniao": "R7/2027",
+    "mediana": 12.25,
+    "n": 136
+   },
+   {
+    "reuniao": "R8/2027",
+    "mediana": 12.0,
+    "n": 140
+   },
+   {
+    "reuniao": "R1/2028",
+    "mediana": 12.0,
+    "n": 123
+   },
+   {
+    "reuniao": "R2/2028",
+    "mediana": 11.625,
+    "n": 122
+   },
+   {
+    "reuniao": "R3/2028",
+    "mediana": 11.5,
+    "n": 122
+   },
+   {
+    "reuniao": "R4/2028",
+    "mediana": 11.25,
+    "n": 118
+   },
+   {
+    "reuniao": "R5/2028",
+    "mediana": 11.0,
+    "n": 85
+   }
+  ],
+  "atual": {
+   "selic_meta": {
+    "v": 14.0,
+    "ref": "2026-09-16"
+   },
+   "desemprego": {
+    "v": 5.3,
+    "ref": "2026-07-01"
+   },
+   "ibc_yoy": {
+    "v": 1.48,
+    "ref": "2026-06"
+   },
+   "cambio": {
+    "v": 5.1532,
+    "ref": "2026-08-01"
+   }
+  },
+  "presets": {
+   "focus_2026": {
+    "selic_pp": -0.25,
+    "desemprego_pp": 0.0,
+    "pib_pp": 0.5,
+    "cambio_pct10": 0.0
+   },
+   "focus_2027": {
+    "selic_pp": -2.0,
+    "desemprego_pp": 0.5,
+    "pib_pp": 0.0,
+    "cambio_pct10": 0.5
+   }
+  },
+  "derivacao": {
+   "focus_2026": {
+    "ano": "2026",
+    "bruto": {
+     "selic_pp": -0.25,
+     "desemprego_pp": 0.1,
+     "pib_pp": 0.44,
+     "cambio_pct10": 0.09
+    },
+    "esperado": {
+     "selic": 13.75,
+     "desemprego": 5.4,
+     "pib": 1.9233,
+     "cambio": 5.2
+    }
+   },
+   "focus_2027": {
+    "ano": "2027",
+    "bruto": {
+     "selic_pp": -2.0,
+     "desemprego_pp": 0.6,
+     "pib_pp": 0.02,
+     "cambio_pct10": 0.28
+    },
+    "esperado": {
+     "selic": 12.0,
+     "desemprego": 5.9,
+     "pib": 1.5,
+     "cambio": 5.3
+    }
+   }
+  },
+  "fonte": {
+   "nome": "BCB — Expectativas de mercado (Focus), API Olinda",
+   "url": "https://olinda.bcb.gov.br/olinda/servico/Expectativas/versao/v1/odata/",
+   "licenca": "dados abertos do BCB",
+   "nivel": "A — pesquisa oficial semanal com instituições credenciadas"
+  },
+  "metodo": "Mediana da base 0 (todos os respondentes dos últimos 30 dias) na última divulgação. Preset = mediana para o fim do ano menos o último dado observado (Selic meta, desocupação PNAD, IBC-Br em 12 meses como proxy do PIB, PTAX de venda média mensal), arredondado ao passo de cada controle e limitado à sua faixa.",
+  "cautelas": [
+   "Expectativa não é previsão do Observatório nem do BCB: é o consenso dos respondentes do Focus na data, revisado toda semana.",
+   "O IBC-Br em 12 meses é proxy do PIB: as duas medidas divergem em nível e em calendário; o choque de PIB do preset carrega essa aproximação.",
+   "Os presets aplicam o consenso ao mesmo modelo de elasticidades da aba, com as mesmas limitações declaradas abaixo.",
+   "A Pesquisa Trimestral de Condições de Crédito (PTC) do BCB é publicada só em PDF e fica fora da Fase 0; a ótica do ofertante entra quando houver dado estruturado."
+  ]
+ }
 }

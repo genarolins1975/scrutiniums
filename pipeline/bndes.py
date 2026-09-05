@@ -337,10 +337,11 @@ def build(con, cfg=None):
     bi = lambda v: f"R$ {v / 1e3:.0f} bi" if v else "–"      # R$ milhões → bi
     biR = lambda v: f"R$ {v / 1e9:.1f} bi" if v else "–"     # R$ → bi
     frases = []
+    pc = lambda v, d=0: f"{v:.{d}f}%" if v is not None else "n.d."
     if saldo.get("disponivel"):
         k = saldo["kpis"]
-        frases.append(f"Em {k['mes']}, o crédito com recursos direcionados somava {bi(k['saldo_direcionado'])}, {k['share_direcionado']:.0f}% da carteira do SFN; "
-                      f"nas empresas, {k['pj']['share_no_pj']:.0f}% do saldo é direcionado e os repasses do BNDES respondem por {k['pj']['bndes_share_total_pj']:.0f}% de todo o crédito PJ.")
+        frases.append(f"Em {k['mes']}, o crédito com recursos direcionados somava {bi(k['saldo_direcionado'])}, {pc(k['share_direcionado'])} da carteira do SFN; "
+                      f"nas empresas, {pc(k['pj']['share_no_pj'])} do saldo é direcionado e os repasses do BNDES respondem por {pc(k['pj']['bndes_share_total_pj'])} de todo o crédito PJ.")
     if des.get("disponivel"):
         k = des["kpis"]
         frases.append(f"O Sistema BNDES desembolsou {bi(k['desembolsos_12m'])} entre {des['janela']['ini']} e {des['janela']['fim']}"

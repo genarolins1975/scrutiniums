@@ -221,7 +221,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.90.0";
+const APP_VERSION = "0.91.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -3009,7 +3009,7 @@ const GUIA = {
     nao: "Volume de processos não é evidência de irregularidade: depende de escala, perfil de cliente, presença geográfica e prática local de litigância." },
   scenarios: { q: "O que acontece com o crédito sob choques macroeconômicos?",
     importa: "Testar sensibilidade a juros, desemprego e atividade é o método padrão de supervisão para avaliar resiliência.",
-    ler: "As elasticidades são estimadas nas séries históricas e estão declaradas. Cenário é exercício condicional, não previsão.",
+    ler: "As elasticidades são estimadas nas séries históricas e estão declaradas. Cenário é exercício condicional, não previsão. Os presets 'focus' aplicam a mediana das expectativas de mercado (Focus) para o fim do ano ao mesmo modelo; o cartão de expectativas mostra a conta.",
     nao: "Relações estimadas no passado podem não valer em rupturas estruturais. Nenhum cenário aqui tem probabilidade atribuída." },
   alerts: { q: "O que mudou e merece atenção agora?",
     importa: "Monitorar continuamente evita descobrir deterioração só quando ela já está consolidada.",
@@ -3423,7 +3423,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -5202,6 +5202,28 @@ function scenarioForecast() {
     }),
   };
 }
+/* Expectativas de mercado (Focus): a mediana para o fim do ano e a conta que vira
+   preset. Consenso do mercado não é previsão; o cartão diz de onde vem cada número. */
+function scnExpectativas(E) {
+  if (!E || !E.disponivel) return `<div class="card" style="margin-top:14px"><h4>Expectativas de mercado (Focus)</h4><p class="src">${E && (E.motivo || E.error) ? (E.motivo || E.error) : "ainda não coletadas nesta execução"}.</p></div>`;
+  const f = (v, d = 2) => v == null ? "–" : fmt.n(v, d);
+  const A = E.atual || {};
+  const der = Object.entries(E.derivacao || {});
+  const hist = (E.historico || {}).Selic || [];
+  const reun = E.selic_reunioes || [];
+  return `<div class="card" style="margin-top:14px"><h4>Expectativas de mercado (Focus) ${badge("observado", "mediana da base 0 na divulgação de " + E.data)}</h4>
+    <div class="grid g2">
+      <div><div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th>${E.anos.map(a => `<th style="text-align:right">${a}</th>`).join("")}<th style="text-align:right">Respondentes</th></tr></thead>
+        <tbody>${Object.entries(E.rotulos).map(([ind, rot]) => { const t = E.tabela[ind] || {}; return `<tr><td>${rot}</td>${E.anos.map(a => `<td style="text-align:right">${t[a] ? `<b>${f(t[a].mediana)}</b> <span class="src">±${f(t[a].dp)}</span>` : "–"}</td>`).join("")}<td style="text-align:right">${t[E.anos[0]] ? fmt.n0(t[E.anos[0]].n) : "–"}</td></tr>`; }).join("")}</tbody></table></div>
+        <p class="src">Mediana e desvio-padrão entre os respondentes, divulgação de ${E.data}. Observado hoje: Selic meta ${f(A.selic_meta.v)}% (${A.selic_meta.ref}) · desocupação ${f(A.desemprego.v, 1)}% (${(A.desemprego.ref || "").slice(0, 7)}) · IBC-Br 12 m ${f(A.ibc_yoy.v, 1)}% (${A.ibc_yoy.ref}) · câmbio R$ ${f(A.cambio.v)} (${(A.cambio.ref || "").slice(0, 7)}).</p></div>
+      <div>${der.length ? `<div class="tblwrap"><table class="data compact"><thead><tr><th>Preset</th><th style="text-align:right">Δ Selic</th><th style="text-align:right">Δ Desemprego</th><th style="text-align:right">Δ PIB</th><th style="text-align:right">Câmbio ×10%</th></tr></thead>
+        <tbody>${der.map(([k, d]) => `<tr><td><b>${k.replace(/_/g, " ")}</b> <span class="src">fim de ${d.ano}</span></td><td style="text-align:right">${fmt.pp(E.presets[k].selic_pp)} <span class="src">(${fmt.pp(d.bruto.selic_pp)})</span></td><td style="text-align:right">${fmt.pp(E.presets[k].desemprego_pp)} <span class="src">(${fmt.pp(d.bruto.desemprego_pp)})</span></td><td style="text-align:right">${fmt.pp(E.presets[k].pib_pp)} <span class="src">(${fmt.pp(d.bruto.pib_pp)})</span></td><td style="text-align:right">${fmt.pp(E.presets[k].cambio_pct10)} <span class="src">(${fmt.pp(d.bruto.cambio_pct10)})</span></td></tr>`).join("")}</tbody></table></div>
+        <p class="src">Preset = mediana para o fim do ano menos o observado hoje, arredondado ao passo do controle (valor bruto entre parênteses). Os botões acima aplicam esses choques ao modelo.</p>` : `<p class="src">preset do Focus não calculado: falta série observada (Selic meta, PNAD, IBC-Br ou PTAX).</p>`}
+        ${reun.length ? `<div class="contrib"><span class="lbl" style="width:190px">Selic esperada por reunião</span>${sparkline(reun.map(r => r.mediana), 200, 26)}<span class="num src">${reun[0].reuniao} ${f(reun[0].mediana)}% → ${reun[reun.length - 1].reuniao} ${f(reun[reun.length - 1].mediana)}%</span></div>` : ""}
+        ${hist.length > 4 ? `<div class="contrib"><span class="lbl" style="width:190px">Selic ${E.anos[0]}: revisões do consenso</span>${sparkline(hist.map(h => h.atual || 0), 200, 26)}<span class="num src">${hist[0].data.slice(0, 7)} ${f(hist[0].atual)}% → ${hist[hist.length - 1].data.slice(0, 7)} ${f(hist[hist.length - 1].atual)}%</span></div>` : ""}</div>
+    </div>
+    <p class="src">${(E.cautelas || []).join(" ")} <a href="${attr(E.fonte.url)}" target="_blank" rel="noopener">${E.fonte.nome}</a> · ${E.fonte.licenca}.</p></div>`;
+}
 function transmissionChain() {
   const el = state.data.scenario.elasticidades;
   const s = state.scen;
@@ -5409,6 +5431,7 @@ function renderScenarios() {
     <button class="btn ghost small" onclick="buildReport()">📄 relatório (PDF)</button>
   </div>
   <div class="sliders">${sliders}</div>
+  ${scnExpectativas(scenario.expectativas)}
   <div class="card" style="margin-top:14px">
     <h4>Inadimplência ${segName()}: base ${badge("previsao")} vs. cenário ${badge("cenario")}</h4>
     <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>observado / base (tracejada)</span><span><span class="sw" style="background:var(--c-forecast)"></span>cenário</span><span><span class="sw" style="background:var(--c-band);height:10px"></span>banda do cenário</span></div>

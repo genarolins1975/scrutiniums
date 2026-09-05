@@ -1275,3 +1275,41 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - **Pendências:** série histórica por UF (hoje só a posição corrente e as variações
   já publicadas pelos golds de origem); mapa de calor no índice.
 
+## 46. Expectativas de mercado (Focus) nos Cenários (05/09/2026)
+
+- **Pergunta:** o que o consenso do mercado espera para juros, atividade, desemprego e
+  câmbio, e o que isso faz com a inadimplência projetada. Metade estruturada do painel
+  nº 4 da avaliação de 05/09 (§6). A outra metade, a Pesquisa Trimestral de Condições de
+  Crédito (PTC), é publicada só em PDF e fica fora da Fase 0 por regra editorial; entra
+  quando houver dado estruturado.
+- **Fonte:** BCB, Expectativas de mercado (Focus), API Olinda (`ExpectativasMercadoAnuais`
+  e `ExpectativasMercadoSelic`), base 0 (todos os respondentes dos últimos 30 dias).
+  Coletor `pipeline/sources/focus.py`: Selic, IPCA, PIB Total, Câmbio e Taxa de
+  desocupação, divulgações dos últimos 400 dias (histórico das revisões), mais a Selic por
+  reunião do Copom. Silver `focus_anual` e `focus_selic`; idempotente por hash.
+  Séries observadas para a conta dos presets, novas em `config.json`: desocupação PNAD
+  (SGS 24369) e PTAX de venda média mensal (SGS 3698); Selic meta (432) e IBC-Br (24363)
+  já existiam.
+- **Builder:** `pipeline/expectativas.py`, chamado por `gold.py` antes de gravar
+  `scenario.json`: bloco `expectativas` (tabela indicador × ano com mediana, média, dp,
+  mínimo, máximo e respondentes; histórico semanal para o ano corrente e o seguinte;
+  Selic por reunião; observado hoje) e presets `focus_{ano}` para o ano corrente e o
+  seguinte, calculados como mediana para o fim do ano menos o observado (Selic meta,
+  PNAD, IBC-Br em 12 meses como proxy do PIB, PTAX), arredondados ao passo de cada
+  controle e limitados à sua faixa. Os presets entram no dicionário da aba ao lado de
+  base, otimista, adverso e severamente adverso.
+- **Aba:** Cenários ganha o cartão "Expectativas de mercado (Focus)" abaixo dos
+  controles, com a tabela, a derivação de cada preset (bruto e arredondado), a Selic por
+  reunião e as revisões do consenso. Vintage `focus` e prazo de vigília de 14 dias.
+- **Achado da primeira carga (05/09/2026, divulgação de 2026-08-28):** Selic esperada
+  de 13,75% para o fim de 2026 e 12,00% para 2027 contra meta de 14,00%; desocupação
+  5,4% e 5,9% contra 5,3% observado; PIB 1,9% e 1,5% contra IBC-Br de 12 meses; câmbio
+  R$ 5,20 e R$ 5,30 contra PTAX de R$ 5,15. O preset `focus_2027` é, portanto, um
+  cenário de afrouxamento monetário com desemprego em alta, o oposto dos presets
+  arbitrários da aba.
+- **Travas:** `src/tests/focus-cenarios.test.ts` (última divulgação, três anos, cinco
+  indicadores, presets no passo e na faixa reconciliando com a derivação, Selic por
+  reunião ordenada, cautelas com consenso ≠ previsão e PTC em PDF, coletor registrado).
+- **Pendências:** PTC quando houver dado estruturado; Top-5 do Focus (respondentes mais
+  precisos) como segunda leitura.
+

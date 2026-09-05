@@ -907,6 +907,28 @@
       "category": "direcionado",
       "methodology": "BCB/SGS, estatísticas de crédito com recursos direcionados (taxas reguladas ou fundos públicos: BNDES, rural, imobiliário, microcrédito); séries mensais desde 2011.",
       "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.20906/dados?formato=json"
+    },
+    {
+      "code": 24369,
+      "key": "desemprego",
+      "name": "Taxa de desocupação - PNAD Contínua (trimestre móvel)",
+      "unit": "%",
+      "freq": "mensal",
+      "segment": "macro",
+      "category": "macro",
+      "methodology": "IBGE/PNAD Contínua, taxa de desocupação do trimestre móvel terminado no mês, série do SGS.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.24369/dados?formato=json"
+    },
+    {
+      "code": 3698,
+      "key": "cambio_ptax",
+      "name": "Taxa de câmbio - dólar americano (venda) - média mensal",
+      "unit": "R$/US$",
+      "freq": "mensal",
+      "segment": "macro",
+      "category": "macro",
+      "methodology": "BCB, PTAX de venda, média das cotações do mês.",
+      "url": "https://api.bcb.gov.br/dados/serie/bcdata.sgs.3698/dados?formato=json"
     }
   ],
   "sgs_start_date": "01/01/2012",

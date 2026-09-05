@@ -21,7 +21,7 @@ from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata
                               mercado_imobiliario, previdencia, reclamacoes_consig, operacional, releases,
                               releases_ext, epae, dependencias, correspondentes, pncp_folha,
                               ifdata_funding, pilar3, regimes, remuneracao, sicor,
-                              cvm_ofertas, cvm_securit, bndes)
+                              cvm_ofertas, cvm_securit, bndes, focus)
 
 
 def main():
@@ -52,7 +52,7 @@ def main():
                           ("remuneracao", remuneracao),
                           ("correspondentes", correspondentes),
                           ("sicor", sicor),
-                          ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes)]:
+                          ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes), ("focus", focus)]:
             print(f"[coleta] {name}...")
             try:
                 results = mod.collect(con, cfg)
