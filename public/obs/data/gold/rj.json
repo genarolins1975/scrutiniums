@@ -10134,7 +10134,7 @@
   "metodo": "Nº de processos da classe 129 cujo histórico registra cada movimento-marco da TPU (agregação no CNJ/DataJud). Rótulos = nome oficial do movimento nos próprios dados.",
   "limitacoes": "Contagem por documento do índice (G1/G2 podem duplicar levemente); movimentos genéricos da TPU (ex.: 'Concessão', 'Extinção') lidos no contexto da classe 129; 'Homologação de Transação' não distingue plano de RJ de outros acordos."
  },
- "series_reais_nota": "Séries de ajuizamentos REAIS (CNJ/DataJud, dados abertos), cobertura restrita aos tribunais listados e sujeita à completude do DataJud por período. Fichas nominais REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). O painel demonstrativo permanece apenas para os campos ainda sem fonte pública (lista de credores, exposição por banco, valor total declarado).",
+ "series_reais_nota": "Séries de ajuizamentos REAIS (CNJ/DataJud, dados abertos), cobertura restrita aos tribunais listados e sujeita à completude do DataJud por período. Fichas nominais REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). Lista de credores, exposição por banco e valor total declarado não têm fonte pública estruturada e não são estimados nem simulados nesta página.",
  "exposicao_total_rmi": {
   "intervalo": [
    2123,

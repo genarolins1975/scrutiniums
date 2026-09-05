@@ -49,6 +49,33 @@ def _series_payload(con, key, tail=200, with_yoy=True, ipca_acc=None):
     return payload
 
 
+FONTE_ROTULO = {
+    "bcb_sgs": "BCB/SGS", "ibge": "IBGE", "ipeadata": "Ipeadata", "ifdata": "BCB/IF.data",
+    "ifdata_ui": "BCB/IF.data", "ifdata_carteiras": "BCB/IF.data", "ifdata_funding": "BCB/IF.data",
+    "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
+    "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
+    "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
+    "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
+    "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
+    "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
+    "reclamacoes_consig": "consumidor.gov.br", "operacional": "CVM/FRE e FCA", "releases": "CVM/IPE",
+    "releases_ext": "RI das companhias", "epae": "BCB/EPAE", "dependencias": "BCB/Unicad",
+    "pncp_folha": "PNCP", "pilar3": "BCB/DASFN Pilar 3", "regimes": "BCB/regimes",
+    "remuneracao": "CVM/FRE", "correspondentes": "BCB/Correspondentes",
+}
+
+
+def fontes_reais_de(fetch_status):
+    """Fontes com ao menos uma chave coletada nesta execução, rotuladas."""
+    if not isinstance(fetch_status, dict):
+        return []
+    out = set()
+    for k, v in fetch_status.items():
+        if isinstance(v, dict) and (v.get("ok") or 0) > 0:
+            out.add(FONTE_ROTULO.get(k, k))
+    return sorted(out)
+
+
 def build_all(con, cfg, fetch_status):
     today = date.today().isoformat()
     horizons = cfg["forecast"]["horizons"]
@@ -402,9 +429,9 @@ def build_all(con, cfg, fetch_status):
         }
     rj["series_reais_nota"] = ("Séries de ajuizamentos REAIS (CNJ/DataJud, dados abertos), cobertura restrita aos "
                                "tribunais listados e sujeita à completude do DataJud por período. Fichas nominais "
-                               "REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). O painel "
-                               "demonstrativo permanece apenas para os campos ainda sem fonte pública "
-                               "(lista de credores, exposição por banco, valor total declarado).")
+                               "REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). Lista de credores, "
+                               "exposição por banco e valor total declarado não têm fonte pública estruturada "
+                               "e não são estimados nem simulados nesta página.")
     conf_to_class = {"declarada": "parcialmente observada", "lista_credores": "parcialmente observada",
                      "plano": "estimada", "estimada": "estimada"}
     casos = []
@@ -736,8 +763,10 @@ def build_all(con, cfg, fetch_status):
         "vintages": vintages,
         "inad_conceitos": inad,
         "fontes_status": fetch_status,
-        "fontes_reais": ["BCB/SGS", "BCB/IF.data (Olinda)", "IBGE", "Ipeadata"],
-        "fontes_demo": ["Open Finance Brasil (dashboard)", "Recuperação judicial (tribunais)"],
+        # derivadas do status da coleta, nunca de lista fixa (a lista antiga
+        # dizia 4 fontes com 38 coletores rodando; avaliação de 05/09)
+        "fontes_reais": fontes_reais_de(fetch_status),
+        "fontes_demo": [],
     })
 
     # ---- Módulos curados (Riscos emergentes: bets, fraudes, ...) ----

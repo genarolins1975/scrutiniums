@@ -207,7 +207,7 @@ describe("bets: integração com a plataforma", () => {
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
     expect(html).toContain('data-view="bets"');
     expect(html).toContain('id="view-bets"');
-    expect(html).toContain("Riscos emergentes");
+    expect(html).toContain("Riscos e temas");
   });
 
   it("sem dados sintéticos: aba não possui modo demo e pipeline copia o curado", () => {

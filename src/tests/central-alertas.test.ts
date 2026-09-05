@@ -21,6 +21,22 @@ const app = readFileSync(join(process.cwd(), "public/obs/app.js"), "utf-8");
 
 const FAMILIAS = ["macro", "carteira", "openfinance", "antecedentes", "operacional"];
 
+/** Regra de consolidação da família operacional (central_alertas._sem_fre):
+ *  FRE não entregue (total zerado ou variação de -100%) vira UM alerta por ano
+ *  de referência; as demais flags seguem uma a uma. */
+function operacionaisEsperados(flags: any[]): number {
+  const semFre = new Set<string>();
+  let demais = 0;
+  for (const f of flags) {
+    const v = Number(f.valor);
+    const ausente = f.indicador === "empregados" &&
+      (f.regra === "total_zerado" || (f.regra === "variacao_aa" && Number.isFinite(v) && v <= -99.5));
+    if (ausente) semFre.add(String(f.referencia ?? "s-ref").slice(0, 4));
+    else demais++;
+  }
+  return demais + semFre.size;
+}
+
 describe("alertas_central.json: estrutura das famílias", () => {
   it("as cinco famílias estão declaradas com universo, periodicidade e regra", () => {
     expect(C.familias.map((f: any) => f.id).sort()).toEqual([...FAMILIAS].sort());
@@ -60,6 +76,16 @@ describe("alertas_central.json: nada de comparabilidade inventada", () => {
     expect(carteira.length).toBeGreaterThan(0);
     for (const a of carteira) expect(a.nivel, a.titulo).toBeNull();
     expect(C.sem_nivel).toMatch(/seria inventar|criar informação/i);
+  });
+
+  it("a família operacional tem nível pela regra declarada, e o texto explica a régua", () => {
+    const oper = C.alertas.filter((a: any) => a.familia === "operacional");
+    for (const a of oper) {
+      expect(a.nivel, a.id).toBeTruthy();
+      if (/:(queda_12m|variacao_aa):/.test(a.id)) expect(a.nivel, a.id).toBe("atencao");
+      if (/:(troca_auditor|sem_fre)/.test(a.id)) expect(a.nivel, a.id).toBe("informativo");
+    }
+    expect(C.sem_nivel).toMatch(/operacional/);
   });
 
   it("todo nível presente pertence ao vocabulário declarado", () => {
@@ -112,7 +138,7 @@ describe("alertas_central.json: integridade dos registros", () => {
       load(G + "panorama.json").alertas.length +
       (load(G + "openfinance.json").alertas_of || []).length +
       (load(G + "leading.json").alertas || []).length +
-      (load(G + "operacional.json").flags || []).length;
+      operacionaisEsperados(load(G + "operacional.json").flags || []);
     expect(C.total).toBe(origem);
   });
 });

@@ -35,7 +35,7 @@ export default function DadosPage() {
         <p className="rotulo mt-6 text-mineral">
           Referência mais recente: {refMax ? fmtRefMes(refMax) : "–"} · fonte: BCB/SGS · atualização diária
           · <Link href="/resumo" className="text-bronze underline underline-offset-4 hover:text-carvao">resumo diário</Link>
-          · <Link href="/metodologia" className="text-bronze underline underline-offset-4 hover:text-carvao">metodologia</Link>
+          · <Link href="/observatorio/methodology" className="text-bronze underline underline-offset-4 hover:text-carvao">metodologia</Link>
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -75,7 +75,7 @@ export default function DadosPage() {
               Criar acesso gratuito
             </Link>
             <Link
-              href="/metodologia"
+              href="/observatorio/methodology"
               className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-bronze"
             >
               Como calculamos →

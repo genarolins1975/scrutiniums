@@ -22,7 +22,7 @@ if (!state.cmp.grupo) state.cmp.grupo = "auto";
 if (!state.cmp.ctab) state.cmp.ctab = "visao";
 if (!state.cmp.mets || !state.cmp.mets.length) state.cmp.mets = CMP_DEFAULT_METS.slice();
 state.cmpCache = {};
-state.mkt = { tab: "acoes", modo: "total", emp: "todas" };
+state.mkt = { tab: "acoes", modo: "total", emp: "todas", escala: "auto" };
 state.lead = { tab: "geral" };
 state.tr = { fam: "todas" };
 state.pan = { met: "saldo", uf: null, cmp: [], cli: "PF", lens: "saldo", exp: null };
@@ -213,7 +213,14 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.86.0"; // sincronizada com o cache-buster dos assets no index.html
+const APP_VERSION = "0.87.0";
+// Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
+// fonte única); o fallback cobre o uso local sem a plataforma.
+const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
+  || "https://www.linkedin.com/in/genaro-dueire-lins-40b88025/";
+// Primeira visita deste navegador: a carta "comece por aqui" só aparece uma vez.
+const PRIMEIRA_VISITA = !loadLS("obc_visitou", false);
+saveLS("obc_visitou", true); // sincronizada com o cache-buster dos assets no index.html
 
 // núcleo mínimo na abertura: só o que a Visão geral padrão e o chrome (título,
 // badge de alertas, rodapé) precisam; todo o resto carrega sob demanda por
@@ -791,21 +798,26 @@ function lineChart(opts) {
   opts.series.forEach(s => s.pts.forEach(p => { if (p.y != null) all.push(p.y); }));
   if (opts.band) opts.band.pts.forEach(p => { all.push(p.lo, p.hi); });
   if (!all.length) return "<p class='src'>Sem dados para o período/filtro selecionado — a série pode ainda não ter sido coletada ou não existir nesta fonte.</p>";
-  let lo = Math.min(...all), hi = Math.max(...all);
+  // escala logarítmica opcional (E5 da avaliação de 05/09): base-100 com uma
+  // série a 1.100 e sete abaixo de 300 comprimia as sete no quinto inferior.
+  // Só com todos os valores positivos; o eixo mostra os valores reais.
+  const useLog = !!opts.log && Math.min(...all) > 0;
+  const T = useLog ? Math.log10 : (v => v), Tinv = useLog ? (v => Math.pow(10, v)) : (v => v);
+  let lo = T(Math.min(...all)), hi = T(Math.max(...all));
   if (hi - lo < 1e-9) { hi += 1; lo -= 1; }
   const pad = (hi - lo) * 0.08; lo -= pad; hi += pad;
   // séries não negativas (contagens, valores) não devem ganhar eixo negativo pelo respiro
-  if (opts.lo0 !== false && lo < 0 && Math.min(...all) >= 0) lo = 0;
-  const dec = opts.dec != null ? opts.dec : (Math.abs(hi) > 200 ? 0 : Math.abs(hi) > 20 ? 1 : 2);
+  if (!useLog && opts.lo0 !== false && lo < 0 && Math.min(...all) >= 0) lo = 0;
+  const dec = opts.dec != null ? opts.dec : (Math.abs(Tinv(hi)) > 200 ? 0 : Math.abs(Tinv(hi)) > 20 ? 1 : 2);
   const ticks = 4, tickVals = [], tickLbls = [];
-  for (let i = 0; i <= ticks; i++) { const v = lo + (hi - lo) * i / ticks; tickVals.push(v); tickLbls.push(fmt.n(v, dec)); }
+  for (let i = 0; i <= ticks; i++) { const v = lo + (hi - lo) * i / ticks; tickVals.push(v); tickLbls.push(fmt.n(Tinv(v), dec)); }
   // margem esquerda dinâmica: nunca truncar rótulos do eixo Y
   const maxLbl = Math.max(...tickLbls.map(t => t.length));
   const M = { t: 14, r: opts.endLabels ? 100 : 16, b: 26, l: Math.max(40, 12 + maxLbl * 6.3) };
   const allX = [...new Set(opts.series.flatMap(s => s.pts.map(p => p.x)).concat(opts.band ? opts.band.pts.map(p => p.x) : []))].sort();
   const xi = x => allX.indexOf(x);
   const X = x => M.l + (xi(x) / Math.max(allX.length - 1, 1)) * (W - M.l - M.r);
-  const Y = y => M.t + (1 - (y - lo) / (hi - lo)) * (H - M.t - M.b);
+  const Y = y => M.t + (1 - (T(y) - lo) / (hi - lo)) * (H - M.t - M.b);
   // payload para crosshair/tooltip
   const seriesData = opts.series.map(s => {
     const m = new Map(s.pts.map(p => [p.x, p.y]));
@@ -819,7 +831,7 @@ function lineChart(opts) {
   const payload = encodeURIComponent(JSON.stringify({
     xs: allX, series: seriesData, band: bandData, dec,
     unit: opts.unit || "", fonte: opts.fonte || "", status: opts.status || "",
-    ml: M.l, mr: M.r, w: W, h: H, mt: M.t, mb: M.b, lo, hi,
+    ml: M.l, mr: M.r, w: W, h: H, mt: M.t, mb: M.b, lo, hi, log: useLog,
   }));
   let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" role="img" tabindex="0" data-ix="1" data-chart="${payload}" aria-label="${attr(opts.aria || "gráfico de série temporal")}${opts.unit ? `, em ${attr(opts.unit)}` : ""}. Use as setas para percorrer os valores.">`;
   for (let i = 0; i <= ticks; i++) {
@@ -832,7 +844,7 @@ function lineChart(opts) {
     const tx = X(allX[i]);
     // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
     const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="10" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
+    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="10" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -849,8 +861,8 @@ function lineChart(opts) {
     if (!allX.includes(an.x)) return;
     const ax = X(an.x);
     out += `<line x1="${ax}" x2="${ax}" y1="${M.t}" y2="${H - M.b}" style="stroke:${ccol(an.color || "#b45309")}" stroke-dasharray="4,3" stroke-width="1.2"/>`;
-    // alturas alternadas e âncora invertida perto da borda direita: rótulos não se sobrepõem
-    const aTy = M.t + 10 + (ai % 3) * 11;
+    // alturas alternadas (quatro faixas) e âncora invertida perto da borda direita: rótulos não se sobrepõem
+    const aTy = M.t + 10 + (ai % 4) * 12;
     const aRight = ax > W - M.r - 90;
     out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="9" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
   });
@@ -938,7 +950,7 @@ function chartShowIndex(svg, i, clientAnchor) {
   const c = chartPayload(svg); if (!c || i == null) return;
   svg._ki = i;
   const X = c.ml + (i / Math.max(c.xs.length - 1, 1)) * (c.w - c.ml - c.mr);
-  const Y = y => c.mt + (1 - (y - c.lo) / (c.hi - c.lo)) * (c.h - c.mt - c.mb);
+  const Y = y => c.mt + (1 - ((c.log ? Math.log10(y) : y) - c.lo) / (c.hi - c.lo)) * (c.h - c.mt - c.mb);
   svg.classList.add("hovering");
   const g = svg.querySelector("g.xhair");
   if (g) {
@@ -1129,7 +1141,7 @@ function renderLeading() {
   const t = state.lead.tab;
   const tabs = [["geral", "Visão Geral"], ["garantias", "Garantias"], ["empresarial", "Empresarial & Judicial"], ["naobancario", "Crédito Não Bancário"], ["consumidor", "Consumidor"], ["regional", "Regional"], ["buscas", "Buscas"], ["protocolo", "Protocolo & regimes"], ["metodo", "Metodologia & Licenças"]];
   const head = pageHead({
-    title: "Sinais Antecedentes de Estresse de Crédito <span class='chip' style='vertical-align:middle'>MVP</span>",
+    title: "Sinais Antecedentes",
     desc: "Sinais econômicos, patrimoniais, jurídicos e de crédito não bancário que podem aparecer antes da deterioração dos indicadores convencionais — com a distinção explícita entre coincidente, antecedente candidato, contexto e associação.",
     fontes: "BCB (SGS, rdrweb), CVM (FIDC), CNJ/DataJud",
   });
@@ -1199,7 +1211,7 @@ function renderLeading() {
   } else if (t === "empresarial") {
     body = sechead("O setor produtivo está sob estresse antes do crédito PJ refletir?", "CNJ/DataJud — 8 tribunais estaduais (cobertura declarada)") +
       `<div class="ov-2col-eq">${leadSignalChart(L, "rj_yoy")}${leadSignalChart(L, "falencias_yoy")}</div>
-      <div class="note">Dívida ativa da PGFN (estresse fiscal por CNAE/UF): <b>fase 2</b> — arquivos de 1,3 GB/trimestre exigem janela dedicada de processamento (viabilidade confirmada, licença ok). A inscrição em dívida ativa é sinal de pressão fiscal ou de conformidade, não declaração de insolvência. Séries completas de RJ (funil, marcos, fichas): aba <a href="javascript:void(0)" onclick="nav('rj')">Recuperações &amp; Falências</a>.</div>`;
+      <div class="note">Dívida ativa da PGFN (estresse fiscal por CNAE/UF): <b>fase 2</b> — arquivos de 1,3 GB/trimestre exigem janela dedicada de processamento (viabilidade confirmada, licença ok). A inscrição em dívida ativa é sinal de pressão fiscal ou de conformidade, não declaração de insolvência. Séries completas de RJ (funil, marcos, fichas): aba <a href="/observatorio/recoveries" onclick="nav('rj');return false">Recuperações &amp; Falências</a>.</div>`;
   } else if (t === "naobancario") {
     body = sechead("O crédito originado fora dos bancos deteriora primeiro?", "CVM — informes mensais de ~4 mil FIDCs (R$ 990 bi)") +
       `<div class="ov-2col-eq">${leadSignalChart(L, "fidc_inad_pct")}${leadSignalChart(L, "inad_total")}</div>
@@ -1298,7 +1310,7 @@ function renderTrends() {
 
   /* ---------- cabeçalho ---------- */
   const head = pageHead({
-    title: "Tendências de Busca — temperatura do mercado de crédito",
+    title: "Tendências de Busca",
     seals: `${badge("observado", "séries do Google Trends, exportação manual da interface oficial")} ${badge("calculado", "z-scores, sazonalidade e defasagens calculados pelo Observatório; variações e painel calculados na exportação")} ${selo}`,
     desc: "O que os brasileiros buscam no Google sobre dívida, crédito, emprego e financiamento — 21 termos em 5 famílias, jan/2011–jun/2026.",
     fontes: "Google Trends (exportação manual autorizada, 29/07/2026) · BCB/SGS 21082 (alvo das defasagens)",
@@ -1504,10 +1516,12 @@ function renderSobre() {
     <p>Foi Superintendente de Controle de Riscos do Itaú Unibanco e Chief Credit Officer da Open Co, fintech de crédito resultante da fusão entre Geru e Rebel. É doutor em Economia pela FGV EPGE e foi Visiting Scholar da Faculdade de Economia da Universidade de Cambridge, com pesquisa sobre crédito e dados bancários.</p>
     <p>O Observatório é um projeto pessoal. Não representa posições das instituições às quais o autor é vinculado e reflete seu compromisso com a transparência e o uso qualificado dos dados públicos do mercado de crédito brasileiro.</p>
     <h3 style="margin-top:28px">Para a imprensa</h3>
-    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="javascript:void(0)" onclick="nav('method')">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
-    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="javascript:void(0)" onclick="nav('overview')">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="javascript:void(0)" onclick="nav('alerts')">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
+    <p><b>Como citar:</b> "Observatório Brasileiro de Crédito (scrutiniums.com/observatorio), sobre dados oficiais do Banco Central/CVM" — de preferência com link. Todo número do painel carrega fonte primária, período e limitações; a página de <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia &amp; Fontes</a> documenta cada indicador.</p>
+    <p><b>Pauta pronta:</b> a Visão geral traz os <a href="/observatorio/overview" onclick="nav('overview');return false">recordes automáticos das séries</a> (com régua declarada) e a aba <a href="/observatorio/alerts" onclick="nav('alerts');return false">Alertas</a> tem feed RSS assinável. Os dados brutos de cada página são exportáveis em JSON.</p>
     <p class="src">Pedido editorial: ao citar um recorde ou alerta, preserve a cautela que o acompanha — recorde é posição aritmética na série, nunca juízo de mérito.</p>
-    <p style="margin-top:20px"><a href="HREF_LINKEDIN" target="_blank" rel="noopener">LinkedIn</a></p>
+    <h3 style="margin-top:28px">Participe</h3>
+    <p><a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões e correções</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> (consultas determinísticas sobre os dados carregados).</p>
+    <p style="margin-top:20px"><a href="${LINKEDIN_URL}" target="_blank" rel="noopener">LinkedIn</a></p>
   </div>`;
 }
 
@@ -1522,14 +1536,14 @@ function renderJudicial() {
   const J = state.data.judicial;
   if (J === undefined) { el.innerHTML = loadingCard("ações judiciais"); return; }
   if (!J || !J.disponivel) {
-    el.innerHTML = pageHead({ title: "Ações judiciais por instituição financeira" }) +
+    el.innerHTML = pageHead({ title: "Ações judiciais" }) +
       `<div class="card"><h4>INDISPONÍVEL</h4><p class="src">${(J && (J.motivo || J.error)) || ""}</p></div>`;
     return;
   }
   const N = J.camada_nacional, B = J.camada_nominal, ramo = state.jud.ramo;
 
   const head = pageHead({
-    title: "Ações judiciais e instituições financeiras",
+    title: "Ações judiciais",
     vintage: (J.coletado_em || "").slice(0, 7),
     seals: `${badge("observado", "metadados processuais do CNJ/DataJud e ranking publicado pelo TST")} ${badge("calculado", "agregações, casos únicos e normalização por escala")}`,
     desc: "Litigiosidade de temas bancários no Judiciário e os maiores litigantes nominais — em duas camadas que não se misturam.",
@@ -1733,13 +1747,13 @@ function renderPix() {
   const el = document.getElementById("view-pix");
   const X = state.data.pix;
   if (X === undefined) { el.innerHTML = loadingCard("Pix e meios de pagamento"); return; }
-  if (!X || !X.disponivel) { el.innerHTML = pageHead({ title: "Pix e Meios de Pagamento" }) + `<div class="card"><h4>INDISPONÍVEL</h4><p class="src">${(X && (X.motivo || X.error)) || ""}</p></div>`; return; }
+  if (!X || !X.disponivel) { el.innerHTML = pageHead({ title: "Pix e Pagamentos" }) + `<div class="card"><h4>INDISPONÍVEL</h4><p class="src">${(X && (X.motivo || X.error)) || ""}</p></div>`; return; }
   const px = state.px, k = X.kpis;
   const modo = px.modo, real = px.val === "real", metr = px.metr;
 
   /* ---------- 1. Pix em uma visão ---------- */
   const head = pageHead({
-    title: "Pix e Meios de Pagamento", vintage: X.mes,
+    title: "Pix e Pagamentos", vintage: X.mes,
     seals: `${badge("observado", "BCB: Pix_DadosAbertos, MPV, SPI")} ${badge("calculado", "valores reais (IPCA), base 100, participações e médias móveis calculados")}`,
     desc: "Como o Pix evoluiu, quem usa, para quê, onde — e como se compara a cartões, TED, boletos e os demais instrumentos.",
     fontes: "BCB (Pix, Meios de Pagamento, SPI, EPAE) · IBGE (população, IPCA)",
@@ -2118,7 +2132,7 @@ window.panSet = (k, v) => { state.pan[k] = v; syncHash(); renderPanorama(); };
 window.panSelUF = uf => { state.pan.uf = state.pan.uf === uf ? null : uf; panEnsureUF(state.pan.uf); syncHash(); renderPanorama(); };
 window.panAddCmp = uf => {
   if (!uf || state.pan.cmp.includes(uf)) return;
-  if (state.pan.cmp.length >= 3) { alert("Comparação limitada a 4 unidades (Brasil + 3 UFs)."); return; }
+  if (state.pan.cmp.length >= 3) { aviso("Comparação limitada a 4 unidades (Brasil + 3 UFs)."); return; }
   state.pan.cmp.push(uf); panEnsureUF(uf); syncHash(); renderPanorama();
 };
 window.panRmCmp = uf => { state.pan.cmp = state.pan.cmp.filter(x => x !== uf); syncHash(); renderPanorama(); };
@@ -2495,11 +2509,12 @@ function renderMarket() {
   const tabs = [["acoes", "Ações"], ["proventos", "Dividendos & JCP"], ["valuation", "Valuation"], ["resultados", "Resultados"], ["capital", "Capital"], ["screener", "Screener"], ["entidades", "Entidades & Metodologia"]];
 
   const head = pageHead({
-    title: `Mercado & Valor <span class='chip' style='vertical-align:middle'>${(state.data.market.empresas || []).length} listadas na B3</span>`,
+    title: `Mercado e Valor <span class='chip' style='vertical-align:middle'>${(state.data.market.empresas || []).length} listadas na B3</span>`,
     desc: "Como o mercado precifica as instituições e como preço, proventos, lucro e capital se conectam — plataforma acadêmica que ensina a interpretar, não recomenda.",
     fontes: "B3 (COTAHIST, proventos, ações em circulação), CVM (DFP/ITR)",
   });
-  const aviso = `<div class="note warn"><b>${M.aviso}</b></div>`;
+  // o disclaimer já vive no rodapé de todas as páginas; aqui vira uma linha discreta (E15)
+  const aviso = `<p class="src" style="margin:2px 0 10px">${M.aviso}</p>`;
   const filtravel = ["proventos", "resultados", "capital"].includes(mkt.tab);
   const empSel = `<label>instituição <select onchange="mktSet('emp', this.value)" aria-label="filtrar instituição">
       <option value="todas" ${mkt.emp === "todas" ? "selected" : ""}>todas (${M.empresas.length})</option>
@@ -2561,6 +2576,13 @@ function mktAcoes(M, mkt, tks, val) {
     const evs = (M.eventos[tk] || []).slice().sort((a, b) => (b.div + b.jcp) - (a.div + a.jcp)).slice(0, 2);
     evs.forEach(e => annotations.push({ x: e.ex_ref, label: `${nomeDe[tk]} ex ${e.div > e.jcp ? "DIV" : "JCP"}`, color: MKT_COLORS[tk] }));
   });
+  // escala: log por padrão quando a razão entre o maior e o menor valor das
+  // séries passa de 4× (uma série a 1.100 e sete abaixo de 300 comprimiam as
+  // sete no quinto inferior do gráfico — E5 da avaliação de 05/09)
+  const escalaCabe = mkt.modo === "total" || mkt.modo === "preco";
+  const ys = series.flatMap(sx => sx.pts.map(p => p.y)).filter(v => v != null && v > 0);
+  const razao = ys.length ? Math.max(...ys) / Math.min(...ys) : 1;
+  const usaLog = escalaCabe && (mkt.escala === "log" || (mkt.escala !== "linear" && razao > 4));
   const jan = M.janelas;
   const jrow = tk => {
     const t = jan[tk], v = val[tk];
@@ -2574,14 +2596,15 @@ function mktAcoes(M, mkt, tks, val) {
   };
   const contribuicaoProv = tks.map(tk => `${tk}: ${fmt.pp(jan[tk].total.a12 - jan[tk].preco.a12)} p.p.`).join(" · ");
   return `
-  ${sechead("Retorno comparado — os três perfis do piloto", "preço não ajustado; proventos reinvestidos no retorno total")}
+  ${sechead("Retorno comparado — as listadas na B3", "preço não ajustado; proventos reinvestidos no retorno total")}
   <div class="card">
     <h4>${mkt.modo === "total" ? "Com proventos reinvestidos, as trajetórias divergem menos do que o preço sugere" : mkt.modo === "drawdown" ? "Quanto cada ação caiu em relação ao próprio pico" : mkt.modo === "vol" ? "Oscilação de curto prazo (não mede o risco econômico do banco)" : "Preço em base 100 — sem o efeito dos proventos"} ${badge("observado")} ${badge("calculado", M.metodologia.retorno_total)}</h4>
     <div class="src" style="margin-bottom:6px">${mkt.modo === "total" ? "A base 100 coloca todas as ações no mesmo ponto inicial: 125 = valorização acumulada de 25% no período. O retorno TOTAL reinveste dividendos e JCP (bruto de IR) — é a medida correta para comparar ações que distribuem proventos em ritmos diferentes." : mkt.modo === "drawdown" ? "O drawdown mede a queda em relação ao maior valor anterior: -30% significa preço 30% abaixo do pico até aquele momento. Volatilidade mede oscilação; drawdown mede perda do pico — nenhum dos dois, sozinho, mede o risco econômico da instituição." : mkt.modo === "vol" ? "Desvio-padrão dos retornos diários em janela de 21 pregões, anualizado." : "A base 100 facilita comparar ações com preços nominais diferentes. Sem proventos, subestima o retorno de quem distribui mais."}</div>
-    <div class="controls"><span class="seg">${modos.map(([k, l]) => `<button class="${mkt.modo === k ? "active" : ""}" onclick="mktSet('modo','${k}')">${l}</button>`).join("")}</span></div>
-    <div class="src" style="margin-bottom:4px">gráfico: 8 maiores por valor de mercado (as ${tks.length} companhias estão na tabela abaixo)</div>
+    <div class="controls"><span class="seg">${modos.map(([k, l]) => `<button class="${mkt.modo === k ? "active" : ""}" onclick="mktSet('modo','${k}')">${l}</button>`).join("")}</span>
+      ${escalaCabe ? `<span class="seg" title="escala logarítmica: distâncias iguais no eixo = variações percentuais iguais; evita que um único outlier comprima as demais séries"><button class="${!usaLog ? "active" : ""}" onclick="mktSet('escala','linear')">escala linear</button><button class="${usaLog ? "active" : ""}" onclick="mktSet('escala','log')">escala log</button></span>` : ""}</div>
+    <div class="src" style="margin-bottom:4px">gráfico: 8 maiores por valor de mercado (as ${tks.length} companhias estão na tabela abaixo)${usaLog ? " · escala logarítmica: a dispersão entre a maior e a menor série passa de uma ordem de grandeza" : ""}</div>
     ${legenda}
-    ${lineChart({ series, h: 320, endLabels: true, annotations: mkt.modo === "total" ? annotations.slice(0, 4) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
+    ${lineChart({ series, h: 320, endLabels: true, log: usaLog, annotations: mkt.modo === "total" ? annotations.slice(0, 3) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
     ${chartFooter({ fonte: M.fontes.precos, periodo: `${fmt.my(M.series[tks[0]].dates[0])}–${fmt.my(M.series[tks[0]].dates.slice(-1)[0])} (diário)`, atualizado: M.gerado_em.slice(0, 10), unidade: "base 100 / %", nota: M.cesta ? M.cesta.nota : "" })}
     ${entenda("acoes", [["Pergunta respondida", "como se comparam os retornos dos três perfis, com e sem proventos?"],
       ["Eixos", "tempo × índice base 100 (ou % para drawdown/vol)"],
@@ -3011,6 +3034,34 @@ const GUIA = {
     importa: "Sem metodologia aberta, um painel é apenas uma opinião com gráficos.",
     ler: "O dicionário traz definição, fórmula, fonte, periodicidade e limitação de cada indicador; a linhagem liga cada arquivo publicado ao dado bruto que o originou.",
     nao: "Nenhuma metodologia elimina as limitações das fontes — elas estão declaradas, não resolvidas." },
+  bets: { q: "As apostas online estão chegando ao crédito das famílias?",
+    importa: "O mercado regulado de apostas movimenta dezenas de bilhões por ano e disputa a mesma renda que paga parcelas de crédito; saber o que os números oficiais permitem afirmar evita tanto o alarme quanto a negação.",
+    ler: "Comece pela síntese com nível de evidência A a E: só o A é dado administrativo. A cadeia 'aposta → renda → crédito' mostra qual elo está comprovado e qual é hipótese. Séries do Pix e da inadimplência aparecem lado a lado como associação, nunca como causa.",
+    nao: "Nenhum gráfico aqui demonstra causalidade. Estimativas privadas (mercado ilegal, perfil do apostador) têm nível de evidência declarado e não se somam ao dado oficial." },
+  fraudes: { q: "Quanto os golpes financeiros custam e onde aparecem no crédito?",
+    importa: "Fraude confirmada, tentativa bloqueada e estimativa de mercado são três números diferentes que a imprensa costuma somar; separá-los é o que torna o painel citável.",
+    ler: "A síntese distingue dado administrativo (BCB, MED do Pix) de pesquisa privada. As tipologias vêm com fonte e período; a devolução via MED mede contestação aceita, não fraude confirmada.",
+    nao: "Volume de contestações não é volume de fraude, e a série de golpes não explica a inadimplência: são universos distintos, mostrados juntos apenas como contexto." },
+  regulacao: { q: "Que mudança de regra explica a quebra que vejo numa série?",
+    importa: "Muitas descontinuidades das séries de crédito são regulatórias (novos planos contábeis, limites de margem, regras de rotativo), não econômicas; ler uma quebra sem o marco é ler errado.",
+    ler: "Filtre pelo painel afetado: cada marco traz o texto oficial e o mês em que aparece como marcador nas séries. A linha do tempo é editorial: os marcos relevantes para as séries do Observatório, não um censo normativo.",
+    nao: "Coincidência no tempo não é efeito. Um marco explica uma descontinuidade contábil; não prova o impacto econômico da norma." },
+  inst: { q: "Como está esta instituição em relação aos seus pares?",
+    importa: "Capital, inadimplência, rentabilidade, captação e operação de uma instituição só ganham sentido comparados ao grupo prudencial certo e à própria história.",
+    ler: "O score é relativo ao grupo de pares e vem datado; as seções seguem a ordem risco → carteira → capital → comparáveis. Seções só aparecem quando a fonte tem o dado desta instituição: ausência não é zero.",
+    nao: "Fotografia trimestral do IF.data: não captura risco fora do balanço nem eventos após a data-base. Score não é rating; pós-choque é exercício com premissas declaradas." },
+  product: { q: "Quem oferece este produto, a que preço e com que atraso?",
+    importa: "Cada modalidade tem dinâmica própria de risco e preço; a matriz produto × instituição mostra concentração, atraso e taxa no mesmo recorte.",
+    ler: "Atraso ≥15 dias é específico do produto na instituição; a coluna de inadimplência >90d no produto é ESTIMADA por modelo declarado. A taxa segue a modalidade selecionada, nunca uma média entre modalidades.",
+    nao: "Participação de mercado não indica qualidade; produtos com garantia real têm atraso naturalmente menor. A comparação válida é dentro do mesmo produto e segmento prudencial." },
+  sector: { q: "Este setor está sob estresse de atividade, e quanto crédito depende dele?",
+    importa: "Choques setoriais chegam ao balanço dos bancos pela carteira PJ; o cruzamento entre atividade (IBGE) e exposição (IF.data por CNAE) mostra onde o risco moraria se se materializasse.",
+    ler: "O score compara o setor com a própria história (z-score), não com outros setores; a medida de atividade é a da pesquisa do IBGE correspondente (produção, volume de serviços ou de vendas).",
+    nao: "Exposição elevada não significa perda; a inadimplência setorial não existe nas fontes públicas e não é estimada aqui." },
+  presmun: { q: "Que presença bancária física existe neste município?",
+    importa: "Agência, posto e correspondente são três formas de presença com serviços diferentes; a página diz com todas as letras o que não existe no município.",
+    ler: "A classe do município resume o ponto mais completo disponível; os números vêm do cadastro do BCB na posição declarada.",
+    nao: "Presença física não mede acesso a crédito nem uso de canais digitais; correspondente não é agência." },
 };
 function guiaPagina(view) {
   const g = GUIA[view];
@@ -3190,7 +3241,7 @@ window.exportarPagina = () => {
     ["Metodologia", "scrutiniums.com/metodologia"],
   ];
   if (!tabelas.length) {
-    alert("Esta página é textual e não tem tabelas de dados para exportar. As páginas com números — Panorama, Pix, Instituições, Taxas, entre outras — exportam normalmente.");
+    aviso("Esta página é textual e não tem tabelas de dados para exportar. As páginas com números — Panorama, Pix, Instituições, Taxas, entre outras — exportam normalmente.");
     return;
   }
   const a = document.createElement("a");
@@ -3208,18 +3259,15 @@ function pageHead(o) {
     <div class="ph-left">
       <h2>${o.title}${o.seals ? " " + o.seals : ""}</h2>
       ${o.desc ? `<p class="viewdesc">${o.desc}</p>` : ""}
-      <div class="ph-meta">${(o.vintage || pageVintage(currentView())) ? `Dados até <b>${o.vintage || pageVintage(currentView())}</b> · processado em ${upd}` : `Última atualização: ${upd}`}${o.fontes ? " · fontes: " + o.fontes : ""} · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>
+      <div class="ph-meta">${(o.vintage || pageVintage(currentView())) ? `Dados até <b>${o.vintage || pageVintage(currentView())}</b> · processado em ${upd}` : `Última atualização: ${upd}`}${o.fontes ? " · fontes: " + o.fontes : ""} · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
     </div>
-    <div class="ph-actions">
-      ${o.controls || ""}
-      <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
+    ${phActions(`<button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — filtros incluídos'))">copiar URL</button>
       ${o.actions || ""}
       <button class="btn ghost small" onclick="exportarPagina()" title="planilha com as tabelas desta página e a procedência dos dados">baixar XLSX (tabelas da página)</button>
       <button class="btn ghost small" onclick="pvSave()">salvar visão</button>
       ${(loadLS("obc_views_url", []).length ? `<select onchange="pvLoad(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views_url", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
-      <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
-    </div>
-  </div>${filterBar(currentView())}${guiaPagina(currentView())}`;
+      <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>`, o.controls)}
+  </div>${filterBar(currentView())}${guiaPagina(currentView())}${fontePane(currentView())}`;
 }
 window.pvSave = () => {
   const nome = prompt("Nome desta visão (a URL atual, com filtros, será salva):");
@@ -3239,8 +3287,50 @@ function sechead(title, right) {
    abertura — os números-tese da página em cinco segundos, cada um
    linkando à sua seção. */
 function subnavFixa(itens) {
-  return `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap">
-    ${itens.map(([a, l]) => `<a class="btn ghost small" href="javascript:void(0)" onclick="var n=document.querySelector('${a}'); n && n.scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}</div>`;
+  const cap = capModo();
+  return `<div class="controls subnav-caps" data-ids="${itens.map(([a]) => a.replace(/^#/, "")).join(",")}" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border);flex-wrap:wrap">
+    ${itens.map(([a, l]) => `<a class="btn ghost small" href="${a}" data-cap="${a.replace(/^#/, "")}" onclick="event.preventDefault();capIr('${a.replace(/^#/, "")}')">${l}</a>`).join("")}
+    <label class="src capmodo" title="uma seção por tela, com anterior e próximo; a URL guarda a seção"><input type="checkbox" ${cap ? "checked" : ""} onchange="capSet(this.checked)"> ler por capítulos</label></div>`;
+}
+/* ---------- modo capítulo (E2 da avaliação de 05/09) ----------
+   Dossiês de 10 a 15 mil px numa rolagem só. Com o modo ligado, a subnav vira
+   paginação: uma seção por tela, "anterior · próximo" ao fim, e o permalink
+   ?sec= (que já existia) guarda o capítulo. Nada muda no conteúdo nem na
+   exportação: só o que está visível de cada vez. */
+function capModo() { return !!loadLS("obc_capitulos", false); }
+window.capSet = on => { saveLS("obc_capitulos", !!on); if (!on) state._capAtivo = null; rerenderCurrent(); };
+window.capIr = id => {
+  const n = document.getElementById(id);
+  if (!capModo()) { if (n) n.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+  state._capAtivo = id;
+  aplicaCapitulos();
+  const sec = document.getElementById(id);
+  if (sec) { sec.scrollIntoView({ block: "start" }); }
+  try { const u = new URL(location.href); u.searchParams.set("sec", id); history.replaceState(null, "", u.toString()); } catch (e) {}
+};
+function aplicaCapitulos() {
+  const ativa = document.querySelector("section.view.active");
+  const nav = ativa && ativa.querySelector(".subnav-caps");
+  if (!nav) return;
+  const ids = (nav.dataset.ids || "").split(",").filter(id => document.getElementById(id));
+  if (!ids.length) return;
+  const on = capModo();
+  let cur = on ? (state._capAtivo && ids.includes(state._capAtivo) ? state._capAtivo : ids[0]) : null;
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    el.hidden = on && id !== cur;
+    const velho = el.querySelector(":scope > .capnav"); if (velho) velho.remove();
+  });
+  nav.querySelectorAll("a[data-cap]").forEach(a => a.classList.toggle("active", on && a.dataset.cap === cur));
+  if (!on) return;
+  const i = ids.indexOf(cur);
+  const rot = id => { const a = nav.querySelector(`a[data-cap="${id}"]`); return a ? a.textContent : id; };
+  const bar = document.createElement("div");
+  bar.className = "capnav";
+  bar.innerHTML = `<span class="src">capítulo ${i + 1} de ${ids.length}</span>
+    ${i > 0 ? `<button class="btn ghost small" onclick="capIr('${ids[i - 1]}')">← ${rot(ids[i - 1])}</button>` : ""}
+    ${i < ids.length - 1 ? `<button class="btn ghost small" onclick="capIr('${ids[i + 1]}')">${rot(ids[i + 1])} →</button>` : ""}`;
+  document.getElementById(cur).appendChild(bar);
 }
 const secWrap = (id, html) => html ? `<section id="${id}">${html}</section>` : "";
 /* Regra ÚNICA de tooltips (P2: havia dois padrões sem critério): `dica()` —
@@ -3268,6 +3358,54 @@ function penEscala(vals, tipo, corBase) {
   };
 }
 
+/* Aviso não bloqueante (avaliação de 05/09): o aviso() nativo travava a página
+   e não tem estilo. Um toast com role=status, que se dispensa sozinho. */
+function aviso(msg, ms) {
+  let el = document.getElementById("obsToast");
+  if (!el) {
+    el = document.createElement("div"); el.id = "obsToast"; el.className = "toast";
+    el.setAttribute("role", "status"); el.setAttribute("aria-live", "polite");
+    document.body.appendChild(el);
+  }
+  el.textContent = msg; el.classList.add("on");
+  clearTimeout(aviso._t); aviso._t = setTimeout(() => el.classList.remove("on"), ms || 3200);
+}
+/* Barra de ações recolhida (E1 da avaliação de 05/09): as mesmas 4 a 8 ações em
+   todas as abas ocupavam a dobra antes do primeiro número. Os controles da
+   página (segmento, filtros) ficam visíveis; copiar, baixar, salvar e imprimir
+   vivem no menu "ações". */
+function phActions(itens, controles) {
+  return `<div class="ph-actions">${controles || ""}
+    <details class="ph-menu"><summary class="btn ghost small" aria-label="ações da página">ações ▾</summary><div class="ph-items">${itens}</div></details></div>`;
+}
+/* Fonte em pane (2.1 da avaliação de 05/09): o gold continua íntegro com a
+   última coleta boa, mas o leitor precisa saber que a fonte da aba falhou na
+   execução mais recente. Mapa aba → coletores essenciais; a faixa só aparece
+   quando TODAS as chaves do coletor falharam e a falha não é a ausência normal
+   do mês ainda não publicado (404). */
+const VIEW_COLETORES = {
+  panorama: ["scr_data"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
+  desenrola: ["desenrola"], trends: ["trends_manual"], consignado: ["previdencia", "reclamacoes_consig"],
+  pix: ["pix_bcb"], juros: ["txjuros"], institutions: ["ifdata"], inst: ["ifdata"], products: ["ifdata"],
+  product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
+  operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
+  moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"],
+};
+function fontesEmPane(view) {
+  const st = (state.data.meta || {}).fontes_status || {};
+  return (VIEW_COLETORES[view] || []).filter(k => {
+    const f = st[k];
+    if (!f || (f.ok || 0) > 0 || !(f.falhas || []).length) return false;
+    return f.falhas.some(x => !/404/.test(String(x.erro || "")));
+  });
+}
+function fontePane(view) {
+  const ks = fontesEmPane(view);
+  if (!ks.length) return "";
+  const gerado = ((state.data.meta || {}).gerado_em || "").slice(0, 10);
+  return `<div class="note warn pane" role="status"><b>Fonte em pane:</b> a coleta de <b>${ks.join(", ")}</b> falhou na execução de ${gerado}. Os números desta aba são os da última coleta íntegra (data-base declarada em cada bloco); a recoleta é diária. <a href="/observatorio/methodology" onclick="nav('method');return false">estado das fontes</a></div>`;
+}
 const dica = txt => `<span class="src" title="${attr(txt)}" style="cursor:help">ⓘ</span>`;
 /* ponte entre painéis irmãos (P2 da auditoria: "o produto tem as pontas;
    faltam as pontes"): link contextual que navega e, se houver âncora, desce
@@ -3373,19 +3511,16 @@ function renderOverview() {
     <div class="ph-left">
       <h2>Visão geral</h2>
       <p class="viewdesc">Panorama do mercado de crédito no Brasil com dados públicos rastreáveis — monitoramento, diagnóstico e previsão.</p>
-      <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>${filterBar("overview")}${guiaPagina("overview")}
+      <div class="ph-meta">${pageVintage("overview") ? `Dados até <b>${pageVintage("overview")}</b> · processado em ` : "Última atualização: "}${meta.gerado_em ? meta.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"} · fontes: BCB (SGS, IF.data, txjuros), IBGE, CNJ, Open Finance Brasil · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>${filterBar("overview")}${guiaPagina("overview")}
     </div>
-    <div class="ph-actions">
-      ${segTabs()}
-      <button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
-      <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — filtros incluídos'))">copiar URL</button>
+    ${phActions(`<button class="btn ghost small" onclick="ovTogglePersonalizar()" aria-expanded="${ovPersonalizando}">personalizar página</button>
+      <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — filtros incluídos'))">copiar URL</button>
       <button class="btn ghost small" onclick="dlFile('overview_'+(state.data.meta&&state.data.meta.gerado_em||'').slice(0,10)+'.json', JSON.stringify({extraido_em:new Date().toISOString(), seg: state.filters.seg, overview: state.data.overview, npl_sistema: state.data.npl && state.data.npl.sistema}, null, 1), 'application/json')">baixar JSON</button>
       <button class="btn ghost small" onclick="window.print()" title="usar 'Salvar como PDF' na impressão">PDF</button>
       <button class="btn ghost small" onclick="ovSaveView()">salvar visão</button>
       ${(loadLS("obc_views", []).length ? `<select onchange="ovLoadView(this.value)" aria-label="visões salvas"><option value="">visões salvas…</option>${loadLS("obc_views", []).map((vx, i) => `<option value="${i}">${vx.nome}</option>`).join("")}</select>` : "")}
-      <button class="btn ghost small" onclick="state.filters = { ...DEFAULT_FILTERS }; saveLS('obc_filters', state.filters); syncHash(); renderOverview()">restaurar padrão</button>
-    </div>
-  </div>`;
+      <button class="btn ghost small" onclick="state.filters = { ...DEFAULT_FILTERS }; saveLS('obc_filters', state.filters); syncHash(); renderOverview()">restaurar padrão</button>`, segTabs())}
+  </div>${fontePane("overview")}`;
 
   /* ---------- classificação determinística ---------- */
   const pct = pos ? pos.percentil_historico : null;
@@ -3395,12 +3530,12 @@ function renderOverview() {
   const classifRegra = "regra declarada: percentil histórico do IBCC ≤25 = restritivas · ≥75 = expansionistas · demais = neutras";
 
   /* ---------- fatores ± (das mudanças) ---------- */
-  const fat = (r, up) => `<span class="fat"><b class="${up ? "up" : "down good"}">${up ? "▲" : "▼"}</b><span><b>${r.indicador}</b> ${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""} <a href="javascript:void(0)" onclick="nav('${r.area}')" class="src" style="display:inline">analisar →</a></span></span>`;
+  const fat = (r, up) => `<span class="fat"><b class="${up ? "up" : "down good"}">${up ? "▲" : "▼"}</b><span><b>${r.indicador}</b> ${fmt.pp(r.delta_1m)}${r.unidade === "%" || r.unidade === "p.p." ? " p.p." : ""} <a href="/observatorio${ROUTES[r.area] || "/overview"}" onclick="nav('${r.area}');return false" class="src" style="display:inline">analisar →</a></span></span>`;
   const diagcard = diag && diag.ok ? `
   <div class="diagcard">
     <div><span class="classif ${classif[0]}" title="${classifRegra}">${classif[1]}</span></div>
     <div class="frase">${diag.frase}</div>
-    <div class="src">${badge("calculado", diag.metodo)} ref. ${fmt.my(diag.ref)} · ${confBadge(diag.confianca, diag.confianca_motivo)} · diagnóstico determinístico auditável — <a href="javascript:void(0)" onclick="nav('method')">método</a></div>
+    <div class="src">${badge("calculado", diag.metodo)} ref. ${fmt.my(diag.ref)} · ${confBadge(diag.confianca, diag.confianca_motivo)} · diagnóstico determinístico auditável — <a href="/observatorio/methodology" onclick="nav('method');return false">método</a></div>
     <div class="fatores">
       ${chg.top_deterioracoes.slice(0, 2).map(r => fat(r, true)).join("")}
       ${chg.top_melhoras.slice(0, 2).map(r => fat(r, false)).join("")}
@@ -3507,7 +3642,7 @@ function renderOverview() {
       <td style="text-align:right" class="${(d.cresc_carteira_4t_pct || 0) > 15 ? "up" : "neutral"}">${d.cresc_carteira_4t_pct != null ? fmt.pp(d.cresc_carteira_4t_pct) + "%" : "–"}</td></tr>`;
     secNpl = `
     <div class="sechead"><h3>Inadimplência nas instituições financeiras ${badge("observado", npl.metodo)} ${inadChip("if90")}</h3>
-      <span class="seesub">IF.data ${npl.data_base} · ${npl.n_instituicoes} instituições · ${npl.nivel_consolidacao} · <a href="javascript:void(0)" onclick="nav('institutions')">ver painel completo →</a></span></div>
+      <span class="seesub">IF.data ${npl.data_base} · ${npl.n_instituicoes} instituições · ${npl.nivel_consolidacao} · <a href="/observatorio/institutions" onclick="nav('institutions');return false">ver painel completo →</a></span></div>
     <div class="ov-3col">
       <div class="card"><h4>Sistema — mediana e dispersão</h4>
         <div class="big">${fmt.n(npl.sistema.mediana_inad_pct, 2)}%</div>
@@ -3548,7 +3683,7 @@ function renderOverview() {
         <span class="abarwrap"><span class="abar" style="width:${Math.max(2, p.atraso15.agg_pct / maxA * 100)}%"></span></span>
         <span class="anum">${fmt.n(p.atraso15.agg_pct, 2)}% <span class="src">${d != null ? "(" + fmt.pp(d) + " pp/4T)" : ""}</span></span></div>`;
       }).join("")}
-      <div class="src" style="margin-top:8px"><a href="javascript:void(0)" onclick="nav('products')">explorar produtos de crédito →</a></div></div>`;
+      <div class="src" style="margin-top:8px"><a href="/observatorio/products" onclick="nav('products');return false">explorar produtos de crédito →</a></div></div>`;
   }
   let setoresPanel = "";
   if (sectors && sectors.ok) {
@@ -3561,7 +3696,7 @@ function renderOverview() {
         <td style="text-align:right"><b>${fmt.n(sx.score, 1)}</b></td>
         <td><span class="qbadge ${sx.faixa === "elevado" ? "q-low" : sx.faixa === "moderado" ? "q-mid" : "q-high"}">${sx.faixa}</span></td>
         <td style="text-align:right" class="${sx.tendencia === "piorando" ? "up" : sx.tendencia === "melhorando" ? "down good" : "neutral"}">${sx.tendencia} ${sx.tendencia_valor_pp != null ? "(" + fmt.pp(sx.tendencia_valor_pp) + ")" : ""}</td></tr>`).join("")}</tbody></table></div>
-      <div class="src" style="margin-top:8px"><a href="javascript:void(0)" onclick="nav('sectors')">ver todos os setores →</a></div></div>`;
+      <div class="src" style="margin-top:8px"><a href="/observatorio/sectors" onclick="nav('sectors');return false">ver todos os setores →</a></div></div>`;
   }
   let ofPanel = "";
   if (ofr && ofr.series) {
@@ -3579,7 +3714,7 @@ function renderOverview() {
       <div class="src" style="margin-top:8px;line-height:2">chamadas de API: <b>${fmt.n(chamadas / 1e9, 1)} bi/semana</b> · sucesso transacional: <b>${suc != null ? fmt.n(suc, 1) + "%" : "–"}</b> · ${ofr.participantes ? ofr.participantes.total + " organizações" : ""}<br>
       clientes únicos e conversão: <span class="seal aprox">INDISPONÍVEL</span> — a fonte não publica; volume ≠ maturidade.</div>
       ${alertaOf ? `<div class="alert ${alertaOf.severidade || "atencao"}" style="margin-top:8px;padding:7px 11px"><span class="lvl">${alertaOf.severidade || "atenção"}</span> ${alertaOf.indicador}: <b>${fmt.n(alertaOf.valor, 2)}%</b> <span class="src">(${alertaOf.regra} · ${alertaOf.persistencia_semanas} sem.)</span></div>` : ""}
-      <div class="src" style="margin-top:8px"><a href="javascript:void(0)" onclick="nav('openfinance')">abrir painel do Open Finance →</a></div></div>`;
+      <div class="src" style="margin-top:8px"><a href="/observatorio/open-finance" onclick="nav('openfinance');return false">abrir painel do Open Finance →</a></div></div>`;
   }
   const secProdSet = (atrasoPanel || setoresPanel || ofPanel) ? `
   <div class="sechead"><h3>Produtos, setores e ecossistema</h3></div>
@@ -3610,7 +3745,7 @@ function renderOverview() {
       ${projRow(`concessoes_${seg}`, "Concessões (R$ mi)", "", false)}
       ${projRow(`spread_${seg}`, "Spread médio", " p.p.", false)}
     </tbody></table></div>
-    <div class="src">Bandas por quantis de resíduos de backtest (calibração conformal) · ${overview.projecoes_resumo && overview.projecoes_resumo.rj ? "RJ: " + overview.projecoes_resumo.rj.nota + " · " : ""}<a href="javascript:void(0)" onclick="nav('scenarios')">simular cenários →</a> · <a href="javascript:void(0)" onclick="nav('method')">model cards</a></div></div>`;
+    <div class="src">Bandas por quantis de resíduos de backtest (calibração conformal) · ${overview.projecoes_resumo && overview.projecoes_resumo.rj ? "RJ: " + overview.projecoes_resumo.rj.nota + " · " : ""}<a href="/observatorio/scenarios" onclick="nav('scenarios');return false">simular cenários →</a> · <a href="/observatorio/methodology" onclick="nav('method');return false">model cards</a></div></div>`;
 
   /* ---------- scatter crescimento × inadimplência ---------- */
   let scatterPanel = "";
@@ -3631,14 +3766,14 @@ function renderOverview() {
       })()}
       <div class="legend">${[...new Set(pts.map(p => p.grp))].sort().map(gx => `<span><span class="sw" style="background:${ccol(SR_COLORS[gx] || "#64748b")};height:8px;border-radius:4px"></span>${gx}</span>`).join("")}<span class="src">área ∝ carteira · corte de relevância: carteira ≥ R$ 5 bi (declarado) · ${pts.length} instituições</span></div>
       ${chartFooter({ fonte: "BCB IF.data " + npl.data_base, periodo: fmtTri ? "" : "", atualizado: meta.gerado_em ? meta.gerado_em.slice(0, 10) : "–", unidade: "% × %", nota: npl.metodo })}
-      <div class="src"><a href="javascript:void(0)" onclick="nav('compare')">comparar instituições →</a> · <a href="javascript:void(0)" onclick="nav('institutions')">painel de instituições →</a></div></div>`;
+      <div class="src"><a href="/observatorio/compare" onclick="nav('compare');return false">comparar instituições →</a> · <a href="/observatorio/institutions" onclick="nav('institutions');return false">painel de instituições →</a></div></div>`;
   }
 
   /* ---------- alertas + insight ---------- */
   const topAlerts = alerts ? alerts.alertas.slice(0, 3) : [];
   const alertsPanel = `<div class="card"><h4>Alertas e sinais <span class="src">(${alerts ? alerts.alertas.length : 0} ativos)</span></h4>
     ${topAlerts.map(a => alertHtml(a, "alerts")).join("") || "<p class='src'>nenhum alerta ativo</p>"}
-    <div class="src" style="margin-top:6px"><a href="javascript:void(0)" onclick="nav('alerts')">ver todos os alertas →</a></div></div>`;
+    <div class="src" style="margin-top:6px"><a href="/observatorio/alerts" onclick="nav('alerts');return false">ver todos os alertas →</a></div></div>`;
 
   let insightPanel = "";
   if (diag && diag.ok && ibcc && ibcc.atual) {
@@ -3649,7 +3784,7 @@ function renderOverview() {
       <h4>Insight ${badge("calculado", "composição determinística: frase do diagnóstico + maior contribuição negativa/positiva do IBCC + contagem NPL — bases citadas")}</h4>
       <div class="itexto">${diag.frase.split(".")[0]}. O componente que mais pressiona o índice é <b>${lbl(pior[0])}</b> (${fmt.pp(pior[1])} pt); o maior suporte vem de <b>${lbl(melhor[0])}</b> (${fmt.pp(melhor[1])} pt).${npl && npl.ok ? ` Nas instituições, ${npl.sistema.subindo_no_trimestre} de ${npl.n_instituicoes} registraram alta da inadimplência no trimestre.` : ""}</div>
       <div class="src" style="margin-top:8px">Evidências: contribuições do IBCC (calculado) · IF.data ${npl && npl.ok ? npl.data_base : ""} (observado) · associação ≠ causalidade.
-      <br><a href="javascript:void(0)" onclick="nav('research')">abrir pesquisa assistida →</a> · <a href="javascript:void(0)" onclick="leadSet('tab','protocolo');nav('leading')">indicadores antecedentes →</a></div></div>`;
+      <br><a href="/observatorio/research" onclick="nav('research');return false">abrir pesquisa assistida →</a> · <a href="javascript:void(0)" onclick="leadSet('tab','protocolo');nav('leading')">indicadores antecedentes →</a></div></div>`;
   }
 
   /* ---------- saúde dos dados + explorar ---------- */
@@ -3663,7 +3798,7 @@ function renderOverview() {
       <b>${vals.length}</b> séries monitoradas · <b>${fmt.n(atualizadas / Math.max(vals.length, 1) * 100, 0)}%</b> com atualidade adequada ·
       pipelines com falha na última execução: <b>${falhas.length ? falhas.join(", ") : "nenhum"}</b> ·
       componentes demonstrativos remanescentes: <b>estresse setorial (RJ/emprego) e painel demo da aba RJ</b> ·
-      <a href="javascript:void(0)" onclick="nav('method')">catálogo completo e metodologia →</a></div></div>`;
+      <a href="/observatorio/methodology" onclick="nav('method');return false">catálogo completo e metodologia →</a></div></div>`;
   })();
   const favs = state.favorites.length ? `<span class="src" style="align-self:center">favoritos:</span>` + state.favorites.map(f =>
     `<span class="chip clickable" onclick="nav('${f.type}')">★ ${(f.label || f.key).slice(0, 24)}</span>`).join("") : "";
@@ -3673,7 +3808,7 @@ function renderOverview() {
     ${favs}</div>`;
 
   // primeiro uso: carta "comece por aqui" (dispensável; nunca volta depois)
-  const boasVindas = !loadLS("obc_boas_vindas_ok", false) ? `
+  const boasVindas = PRIMEIRA_VISITA && !loadLS("obc_boas_vindas_ok", false) ? `
   <div class="card" style="margin-bottom:18px;border-left:3px solid var(--accent)">
     <h4 style="display:flex;justify-content:space-between;gap:10px"><span>Comece por aqui</span>
       <a href="javascript:void(0)" class="src" onclick="ovDispensarBoasVindas()">dispensar</a></h4>
@@ -3684,7 +3819,7 @@ function renderOverview() {
       <span class="chip clickable" onclick="nav('compare');ovDispensarBoasVindas()" tabindex="0" role="link">Comparar instituições lado a lado →</span>
       <span class="chip clickable" onclick="nav('leading');ovDispensarBoasVindas()" tabindex="0" role="link">Há sinais de estresse à frente? →</span>
     </div>
-    <div class="src" style="margin-top:8px">Todo número tem fonte, período e limitações declaradas — <a href="javascript:void(0)" onclick="nav('method')">metodologia completa</a>. Alertas com regra publicada ficam na aba Alertas (com RSS).</div>
+    <div class="src" style="margin-top:8px">Todo número tem fonte, período e limitações declaradas — <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia completa</a>. Alertas com regra publicada ficam na aba Alertas (com RSS).</div>
   </div>` : "";
   /* "O que mudou": o diff editorial da execução diária, consolidado no
      pipeline (overview.novidades) por regra determinística — famílias
@@ -3698,7 +3833,7 @@ function renderOverview() {
     <ul class="novidades" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
       ${NOV.itens.map(n => `<li style="display:flex;gap:10px;align-items:baseline">
         <span class="chip" style="flex:0 0 auto">${NOV_ROTULO[n.tipo] || n.tipo}</span>
-        <span><a href="javascript:void(0)" onclick="nav('${(n.link || {}).view || "overview"}')">${n.titulo}</a>
+        <span><a href="/observatorio${ROUTES[(n.link || {}).view] || "/overview"}" onclick="ponteIr('${(n.link || {}).view || "overview"}'${(n.link || {}).sec ? `,'${n.link.sec}'` : ""});return false">${n.titulo}</a>
           <span class="src"> — ${n.detalhe || ""}</span></span></li>`).join("")}
     </ul>
     <p class="src" style="margin-top:10px">${NOV.nota}</p>
@@ -3971,7 +4106,7 @@ function renderPulse() {
       ${lineChart({ series, band, h: 160, forecastStart: emNivel && fc && fc.ok ? last.ref : null, annotations, unit: tr.unit, fonte: s.meta.source + " " + s.meta.series_code, status: emNivel ? "observado" + (fc && fc.ok ? " + previsão" : "") : tr.status })}
       ${tr.rotulo ? `<div class="src">${badge("calculado", "transformação no navegador sobre a série observada")} ${tr.rotulo}${emNivel ? "" : " · projeções e bandas são de nível — fora desta régua"}</div>` : ""}
       ${annotations.length ? `<div class="src">marcadores no gráfico = eventos estatísticos detectados (aba Protocolo e regimes) — hipóteses, não fatos.</div>` : ""}
-      ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="javascript:void(0)" onclick="nav('scenarios')">backtest completo →</a></div>` : ""}
+      ${emNivel && fc && fc.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${c.fmt(fc.pontos[fc.pontos.length - 1].p50)}</b> [${c.fmt(fc.pontos[fc.pontos.length - 1].p10)} – ${c.fmt(fc.pontos[fc.pontos.length - 1].p90)}] · ganho vs. ingênuo (h=12): ${fc.diagnostico["12"].ganho_vs_naive_pct ?? "–"}% · <a href="/observatorio/scenarios" onclick="nav('scenarios');return false">backtest completo →</a></div>` : ""}
       ${chartFooter({ fonte: s.meta.source + " " + s.meta.series_code, periodo: `${fmt.my(s.obs[Math.max(0, s.obs.length - f.range)].ref)}–${fmt.my(last.ref)}`, atualizado: s.meta.last_collected_at ? s.meta.last_collected_at.slice(0, 10) : "–", unidade: s.meta.unit, nota: s.meta.methodology })}
       ${srcLine(s.meta, s.qualidade)}
       <button class="btn ghost small" onclick="exportSeries('${c.key}_${f.seg}')">baixar CSV</button>
@@ -4166,6 +4301,7 @@ function renderSectorPage() {
   <div class="controls"><button class="btn ghost small" onclick="nav('sectors')">← setores</button>
   <span class="src">Risco setorial › <b>${s.nome}</b> · ref. ${fmt.my(s.ref)}</span></div>
   <h2>${s.nome}</h2>
+  ${guiaPagina("sector")}
   <div class="grid g3">
     <div class="card"><h4>Nível de risco ${badge("calculado")}</h4><div class="big">${s.score}</div>
       <div class="delta neutral">${s.faixa} · tendência: <b>${s.tendencia}</b> (${fmt.pp(s.tendencia_valor_pp)} p.p./3m) · velocidade: ${s.velocidade}</div>
@@ -4220,7 +4356,8 @@ function rjRealSection() {
       <div class="big">${fmt.n0(last.v)} <span style="font-size:13px;color:var(--text-3)">processos em ${fmt.my(last.ref)}</span></div>
       ${yoy != null ? `<div class="delta ${yoy > 0 ? "up" : "down good"}">${yoy > 0 ? "▲" : "▼"} ${fmt.n(Math.abs(yoy), 1)}% a/a</div>` : ""}
       ${lineChart({ series, band, h: 170, forecastStart: fc2 && fc2.ok ? last.ref : null, unit: "processos", fonte: agg.meta.source, status: "observado" + (fc2 && fc2.ok ? " + previsão" : ""), dec: 0 })}
-      ${fc2 && fc2.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p50)}</b> [${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p10)}–${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p90)}] processos/mês</div>` : ""}
+      ${fc2 && fc2.ok ? `<div class="src">projeção 12m ${badge("previsao")}: <b>${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p50)}</b> [${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p10)}–${fmt.n0(fc2.pontos[fc2.pontos.length - 1].p90)}] processos/mês${fc2.meses_excluidos ? ` · ajustada sem os ${fc2.meses_excluidos} meses mais recentes` : ""}</div>` : ""}
+      <div class="note" style="margin-top:6px"><b>Cobertura parcial nos meses recentes:</b> o DataJud recebe os registros dos tribunais com atraso, e os últimos meses da série tendem a subir nas cargas seguintes. Leia a queda recente como latência da fonte até que a data-base avance; a variação a/a do último mês herda esse efeito.</div>
       ${chartFooter({ fonte: agg.meta.source + " (" + agg.meta.series_code + ")", periodo: `${fmt.my(agg.obs[0].ref)}–${fmt.my(last.ref)}`, atualizado: agg.meta.last_collected_at ? agg.meta.last_collected_at.slice(0, 10) : "–", unidade: agg.meta.unit, nota: agg.meta.methodology })}
       <details class="decomp"><summary>por tribunal (${tribs.length})</summary>
         ${tribs.map(([t, p]) => `<div style="margin-top:6px"><b>${t}</b> — último mês: ${fmt.n0(p.obs[p.obs.length - 1].v)}${sparkline(p.obs.slice(-36).map(o => o.v), 180, 26)}</div>`).join("")}
@@ -4309,48 +4446,18 @@ function renderRJ() {
   const el = document.getElementById("view-rj");
   const rj = state.data.rj;
   if (!rj) { el.innerHTML = "<p>sem dados</p>"; return; }
-  const fases = {};
-  rj.casos.forEach(c => { fases[c.fase] = (fases[c.fase] || 0) + 1; });
-  const fichas = rj.casos.map(c => `
-    <details class="decomp card" style="margin-bottom:8px">
-      <summary><b>${c.razao_social}</b> · ${c.cnae_desc} · ${c.uf} · fase: ${c.fase.replace(/_/g, " ")} ${badge("demo")}</summary>
-      <div class="cols2" style="margin-top:8px">
-        <div>
-          <div class="src"><b>CNPJ raiz:</b> ${c.cnpj_raiz} · <b>tribunal:</b> ${c.tribunal} · <b>pedido:</b> ${fmt.d(c.data_pedido)}</div>
-          <div class="src"><b>dívida declarada:</b> R$ ${fmt.n0(c.divida_declarada_rmi)} mi · <b>confiança da estimativa:</b> ${c.confianca_divida}</div>
-          <div class="src"><b>credores:</b> ${fmt.n0(c.n_credores)} · <b>% financeiros:</b> ${c.credores_financeiros_pct}%</div>
-        </div>
-        <div>
-          <h5>Exposição financeira ${badge("estimado", c.exposicao_financeira.metodo)}</h5>
-          <div class="src">classificação: <b>${c.exposicao_financeira.classificacao}</b></div>
-          <div>entre <b>R$ ${fmt.n0(c.exposicao_financeira.intervalo_rmi[0])} mi</b> e <b>R$ ${fmt.n0(c.exposicao_financeira.intervalo_rmi[1])} mi</b></div>
-          <div class="src">${c.exposicao_financeira.aviso}</div>
-        </div>
-      </div>
-      <div class="src" style="margin-top:6px">Navegar: <a href="#sectors" onclick="nav('sectors')">setor ${c.cnae_secao}</a> · <a href="#institutions" onclick="nav('institutions')">instituições potencialmente expostas</a></div>
-    </details>`).join("");
   const temReal = rj.series_reais && Object.keys(rj.series_reais).length > 0;
+  /* As fichas e séries DEMONSTRATIVAS que conviviam aqui com o DataJud saíram
+     da rota pública (avaliação de 05/09): em plataforma indexada e citável,
+     ficção e dado real não dividem a mesma página. As fichas nominais reais
+     (DJEN) voltam sozinhas quando o coletor voltar a responder. */
   el.innerHTML = `
-  ${pageHead({ title: "Recuperações &amp; Falências", seals: temReal ? badge("observado") : badge("demo"),
-    desc: "Ajuizamentos reais (CNJ/DataJud), fichas nominais (DJEN/Comunica PJe) e funil processual por movimentos TPU. Componentes sem fonte pública permanecem selados como demonstrativos.",
+  ${pageHead({ title: "Recuperações e Falências", seals: temReal ? badge("observado") : "",
+    desc: "Ajuizamentos reais (CNJ/DataJud), fichas nominais (DJEN/Comunica PJe, quando a fonte responde) e funil processual por movimentos TPU.",
     fontes: "CNJ/DataJud, CNJ/DJEN, BrasilAPI" })}
-  ${temReal ? rjRealSection() : ""}
+  ${temReal ? rjRealSection() : `<div class="card"><p class="src">Séries do DataJud ainda não coletadas nesta execução.</p></div>`}
   ${ponte("Quais bancos estão mais expostos aos setores em RJ — Exposições setoriais", "sectors", "sec-exposicoes",
-    "cruzamento manual e com cautela: RJs por setor não implicam perda nos credores — a exposição mostra onde o risco moraria SE se materializasse")}
-  <h3>Painel demonstrativo (fichas e exposição) ${badge("demo")}</h3>
-  <div class="grid g3">
-    <div class="card"><h4>Pedidos mensais (série demo) ${badge("demo")}</h4>
-      ${lineChart({ series: [{ pts: rj.serie_pedidos_mensais.map(p => ({ x: p.ref + "-01", y: p.valor })), color: "#b45309", label: "pedidos/mês" }], h: 130, dec: 0, status: "demonstrativo" })}
-      ${chartFooter({ fonte: "DEMONSTRATIVO", periodo: `${rj.serie_pedidos_mensais[0].ref}–${rj.serie_pedidos_mensais[rj.serie_pedidos_mensais.length - 1].ref}`, atualizado: "—", unidade: "pedidos/mês", nota: "Valores fictícios em ordem de grandeza plausível." })}</div>
-    <div class="card"><h4>Fases processuais (casos demo)</h4>
-      ${Object.entries(fases).map(([f, n]) => contribBar(f.replace(/_/g, " "), n, 18)).join("")}</div>
-    <div class="card"><h4>Exposição financeira agregada ${badge("estimado")}</h4>
-      <div class="big" style="font-size:19px">R$ ${fmt.n0(rj.exposicao_total_rmi.intervalo[0])} – ${fmt.n0(rj.exposicao_total_rmi.intervalo[1])} mi</div>
-      <div class="src">${rj.exposicao_total_rmi.aviso}</div>
-      <div class="src">Classes de exposição: observada · parcialmente observada · estimada · potencial · não identificada.</div></div>
-  </div>
-  <h3>Fichas dos processos (demo)</h3>
-  ${fichas}`;
+    "cruzamento manual e com cautela: RJs por setor não implicam perda nos credores — a exposição mostra onde o risco moraria SE se materializasse")}`;
 }
 
 /* ---------- INSTITUIÇÕES ---------- */
@@ -4423,10 +4530,9 @@ function renderInstitutions() {
     </tr>`;
   }).join("");
   el.innerHTML = `
-  ${pageHead({ title: "Instituições financeiras",
+  ${pageHead({ title: "Instituições",
     desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. Cada linha abre a página completa da instituição.",
     fontes: "BCB IF.data (Olinda + interface)" })}
-  <div class="note warn"><b>${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</b><br>Método: ${inst.metodo}<br>Limitações: ${inst.limitacoes}</div>
   <div class="controls">
     <input id="instSearch" list="instList" type="text" placeholder="🔍 buscar qualquer instituição (${(state.data.inst_index && state.data.inst_index.instituicoes || []).length} com página)" style="min-width:300px;border:1px solid var(--border);border-radius:6px;padding:7px 12px" onchange="searchInst(this.value)">
     <datalist id="instList">${(state.data.inst_index && state.data.inst_index.instituicoes || []).slice(0, 1500).map(x => `<option value="${x.nome.replace(/"/g, "")} [${x.cod}]">`).join("")}</datalist>
@@ -4438,6 +4544,8 @@ function renderInstitutions() {
     <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
+    <div class="note" style="margin-top:6px"><b>Método:</b> ${inst.metodo}<br><b>Limitações:</b> ${inst.limitacoes}</div></details>
   ${guidanceSecao()}
   ${regimesSecao()}
   ${coopSecao(inst)}
@@ -4511,7 +4619,7 @@ function regimesSecao() {
     <td>${v.tipo}</td><td>${v.inicio}</td>
     <td class="src">${v.responsavel || "–"}</td></tr>`).join("");
   const enc = R.encerrados_ou_saidos || [];
-  return `<div class="card" style="margin-top:12px"><h4>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
+  return `<div class="card" id="sec-regimes" style="margin-top:12px"><h4>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
     <p style="margin:6px 0">${R.leitura}</p>
     <div class="tblwrap"><table class="data compact">
       <thead><tr><th>Instituição</th><th>Regime</th><th>Decretado em</th><th>Responsável nomeado</th></tr></thead>
@@ -4674,9 +4782,7 @@ function renderInstPageData(el, pg) {
     .concat(listadaSec.includes('id="s-guidance"') ? [["#s-guidance","Guidance"]] : [])
     .concat(listadaSec.includes('id="s-rem"') ? [["#s-rem","Remuneração"]] : [])
     .concat([["#s-limites","Limitações"]]);
-  const subnav = `<div class="controls" style="position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0;border-bottom:1px solid var(--border)">
-    ${subnavItens.map(([a,l])=>`<a class="btn ghost small" href="javascript:void(0)" onclick="document.querySelector('${a}').scrollIntoView({behavior:'smooth'})">${l}</a>`).join("")}
-  </div>`;
+  const subnav = subnavFixa(subnavItens);
   el.innerHTML = `
   <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
     <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
@@ -4693,6 +4799,7 @@ function renderInstPageData(el, pg) {
         <span class="chip">Conglomerado ${cab.conglomerado_prudencial || "–"}</span>
       </div>
       ${cab.aviso_pares ? `<div class="note warn" style="margin-top:8px"><b>Comparabilidade:</b> ${cab.aviso_pares}</div>` : ""}
+      ${guiaPagina("inst")}${fontePane("inst")}
     </div>
     <div class="card" style="flex:1;min-width:230px">
       <h4>${termo("score-relativo","Score de risco")} ${badge("calculado")}</h4>
@@ -5219,7 +5326,7 @@ function scnBacktestSec() {
     <p class="src"><b>E o cenário?</b> O resultado condicional (sliders acima) não tem backtest possível — não há histórico de
     choques idênticos. O que se valida é a projeção-base (esta tabela) e as elasticidades (intervalos ±2 EP sem correção HAC,
     o que tende a SUBESTIMAR a incerteza; o sinal contraintuitivo do câmbio segue sinalizado). Os sinais antecedentes têm
-    validação própria — Granger, ganho fora-da-amostra e estabilidade — na aba <a href="javascript:void(0)" onclick="nav('leading')">Pulso → Protocolo</a>.</p>
+    validação própria — Granger, ganho fora-da-amostra e estabilidade — na aba <a href="/observatorio/leading-signals" onclick="nav('leading');return false">Pulso → Protocolo</a>.</p>
   </div>`;
 }
 
@@ -5255,7 +5362,7 @@ function renderScenarios() {
   const tbl = sf ? `<div class="tblwrap"><table class="data"><thead><tr><th>Horizonte</th><th>Base p50 ${badge("previsao")}</th><th>Cenário p50 ${badge("cenario")}</th><th>Δ (p.p.)</th><th>Banda do cenário</th></tr></thead><tbody>
     ${sf.pontos.map(p => `<tr><td>${p.h}m (${fmt.my(p.ref_date)})</td><td>${fmt.n(p.p50)}%</td><td><b>${fmt.n(p.cen50)}%</b></td><td>${fmt.pp(p.cen50 - p.p50)}</td><td>${fmt.n(p.cen10)}% – ${fmt.n(p.cen90)}%</td></tr>`).join("")}</tbody></table></div>` : "";
   el.innerHTML = `
-  ${pageHead({ title: "Cenários e testes de estresse",
+  ${pageHead({ title: "Cenários",
     desc: "Simulação condicional sobre a projeção-base de inadimplência via elasticidades empíricas — resultado condicionado às hipóteses definidas, nunca previsão.",
     fontes: "BCB/SGS + elasticidades estimadas (documentadas)" })}
   <div class="controls">
@@ -5511,22 +5618,24 @@ function renderDesenrola() {
     o maior desconto. Quem tinha dívida de até R$ 5 mil e renda baixa entrou pela Faixa 1; quem tinha
     renda até R$ 20 mil e nome negativado até o fim de 2022 entrou pela Faixa 2.</p>
   </div>
-  <div class="judalerta" style="max-width:78ch">
-    <b>Antes do primeiro número: esta base não cobre o programa inteiro.</b>
-    <div style="margin-top:5px">${D.aviso_cobertura}</div>
-    <div style="margin-top:6px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
-  </div>
   <nav class="desindex" aria-label="seções desta página">
     ${[["prog", "O programa"], ["arq", "Arquitetura"], ["alcance", "Alcance"], ["valores", "Valores"],
        ["regional", "Onde"], ["credores", "Credores"], ["depois", "Depois"], ["efeitos", "Efeitos"],
        ["fiscal", "Fiscal"], ["metodo", "Metodologia"]].map(([id, l]) =>
-      `<a href="javascript:void(0)" onclick="document.getElementById('des-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
+      `<a href="#des-${id}" onclick="event.preventDefault();document.getElementById('des-${id}').scrollIntoView({behavior:'smooth',block:'start'})">${l}</a>`).join("")}
   </nav>`;
 
+  // o aviso de cobertura vem DEPOIS dos números oficiais (E1 da avaliação de
+  // 05/09): o leitor vê primeiro o que o programa fez, depois o que a base cobre
+  const avisoDes = `<div class="judalerta" style="max-width:78ch">
+    <b>Esta base não cobre o programa inteiro.</b>
+    <div style="margin-top:5px">${D.aviso_cobertura}</div>
+    <div style="margin-top:6px"><b>Por isso os dois números convivem.</b> ${D.reconciliacao.explicacao}</div>
+  </div>`;
   const kpis = `<div id="des-prog" class="desgrupo">
     <span class="rot">O que o programa fez — números oficiais</span>
     <div class="pan-kpi">${[ofi("elegiveis"), ofi("renegociaram"), ofi("regularizado"), ofi("beneficiados")].map(cardOfi).join("")}</div>
-  </div>
+  </div>${avisoDes}
   <div class="desgrupo">
     <span class="rot">O que aparece na base do Banco Central — faixas 1 e 2</span>
     <div class="pan-kpi">
@@ -5997,7 +6106,7 @@ function renderPenetracao() {
   const P = costuraMunicipios(state.data.penetracao, state.data.penetracao_mun);
   if (!P || !P.municipios) { el.innerHTML = loadingCard("penetração de crédito municipal"); return; }
   if (!P.disponivel) {
-    el.innerHTML = pageHead({ title: "Penetração e Gap de Crédito", desc: "Painel indisponível nesta execução." }) +
+    el.innerHTML = pageHead({ title: "Penetração e Gap", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${P.motivo || P.error || "sem dados"}</p></div>`;
     return;
   }
@@ -6383,7 +6492,7 @@ function renderPenetracao() {
   </div></section>`;
 
   el.innerHTML = pageHead({
-    title: "Penetração e Gap de Crédito",
+    title: "Penetração e Gap",
     desc: "Quanto crédito existe em cada município, quanto isso representa para quem mora lá e onde a diferença em relação a municípios comparáveis é maior.",
     vintage: P.data_base_credito,
     fontes: `ESTBAN ${P.data_base_credito} · Censo IBGE ${P.ano_base_censo} · malha municipal IBGE`,
@@ -6455,7 +6564,7 @@ function alertaCard(a) {
     </div>
     <div class="expl">${a.detalhe || ""}</div>
     <div class="src" style="margin-top:5px">${linha}
-      ${a.link && a.link.view ? ` · <a href="javascript:void(0)" onclick="nav('${a.link.view}')">ver em ${VIEW_TITLES[a.link.view] || a.link.view} →</a>` : ""}</div>
+      ${a.link && a.link.view ? ` · <a href="/observatorio${ROUTES[a.link.view] || "/overview"}" onclick="nav('${a.link.view}');return false">ver em ${VIEW_TITLES[a.link.view] || a.link.view} →</a>` : ""}</div>
   </div>`;
 }
 
@@ -6754,7 +6863,7 @@ function renderResearch() {
   const el = document.getElementById("view-research");
   const hist = loadLS("obc_research", []);
   el.innerHTML = `
-  ${pageHead({ title: "Pesquisa — assistente de consulta estruturada",
+  ${pageHead({ title: "Perguntas rápidas",
     desc: "Consultas determinísticas sobre os dados carregados (8 intenções). Perguntas fora do escopo são recusadas com transparência — sem geração livre.",
     fontes: "camada gold local (sem chamadas externas)" })}
   <div class="controls">
@@ -6816,7 +6925,7 @@ function renderMethod() {
     <div class="src" style="margin-top:8px">Os três medem fenômenos correlatos com réguas diferentes (parcela vencida × operação inteira × atraso curto). Nenhum é “o certo”: cada página declara o seu ao lado do número (chip “ⓘ”). Variante adicional: inadimplência &gt;90d por instituição (IF.data, Res. 4.966), usada nas fichas de IF.</div></div>`;
   el.innerHTML = `
   ${conceitosLista()}
-  ${pageHead({ title: "Metodologia, fontes e documentação viva",
+  ${pageHead({ title: "Metodologia e Fontes",
     desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
     fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}
   ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-models", "Model cards"],
@@ -6893,7 +7002,7 @@ function buildReport() {
   const m = state.data.meta;
   hdr.innerHTML = `<h1 style="font-family:var(--serif)">${m ? m.plataforma.name : ""} — Relatório</h1>
   <p>Gerado em ${new Date().toLocaleString("pt-BR")} · ${m ? m.plataforma.disclaimer : ""}</p>
-  <p>Fontes reais: ${m ? m.fontes_reais.join(", ") : ""}. Módulos demonstrativos: ${m ? m.fontes_demo.join(", ") : ""}.</p><hr>`;
+  <p>Fontes: ${m ? (m.fontes_reais || []).join(", ") : ""}.</p><hr>`;
   const old = document.getElementById("reportHeader");
   if (old) old.remove();
   document.querySelector("main").prepend(hdr);
@@ -7031,12 +7140,10 @@ function renderBets() {
       <p class="viewdesc">${B.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(B.gerado_em.slice(0, 10))}</b> · Período coberto: ${B.periodo_coberto} · Corte da pesquisa: ${fmt.d(B.corte_pesquisa)} (verificação de atualizações posteriores registrada em FONTES_BETS.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${B.aviso}</span></div>
     </div>
-    <div class="ph-actions">
-      <button class="btn ghost small" onclick="document.getElementById('bets-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
+    ${phActions(`<button class="btn ghost small" onclick="document.getElementById('bets-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
       <button class="btn ghost small" onclick="betsCSV()">baixar CSV</button>
-      <button class="btn ghost small" onclick="betsJSON()">baixar JSON</button>
-    </div>
-  </div>
+      <button class="btn ghost small" onclick="betsJSON()">baixar JSON</button>`)}
+  </div>${guiaPagina("bets")}${fontePane("bets")}
   <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
 
   /* ---------- 1 · síntese ---------- */
@@ -7425,12 +7532,10 @@ function renderFraudes() {
       <p class="viewdesc">${F.subtitulo}</p>
       <div class="ph-meta">Última atualização: <b>${fmt.d(F.gerado_em.slice(0, 10))}</b> · Período coberto: ${F.periodo_coberto} · Corte da pesquisa: ${fmt.d(F.corte_pesquisa)} (registro em FONTES_FRAUDES.md) · <span class="seal aprox" title="Todo este painel investiga associações. Nenhum gráfico aqui demonstra causalidade.">${F.aviso}</span></div>
     </div>
-    <div class="ph-actions">
-      <button class="btn ghost small" onclick="document.getElementById('frd-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
+    ${phActions(`<button class="btn ghost small" onclick="document.getElementById('frd-metodologia').scrollIntoView({behavior:'smooth'})">entenda a metodologia</button>
       <button class="btn ghost small" onclick="frdCSV()">baixar CSV</button>
-      <button class="btn ghost small" onclick="frdJSON()">baixar JSON</button>
-    </div>
-  </div>
+      <button class="btn ghost small" onclick="frdJSON()">baixar JSON</button>`)}
+  </div>${guiaPagina("fraudes")}${fontePane("fraudes")}
   <div class="chips" style="margin:6px 0 14px">${["A", "B", "C", "D", "E"].map(nvl => nv(nvl)).join(" ")}</div>`;
 
   /* ---------- 1 · síntese ---------- */
@@ -7707,11 +7812,9 @@ function renderJuros() {
       <p class="viewdesc">Quanto cada instituição cobra em cada modalidade de crédito: distribuição completa, evolução, quem é persistentemente mais barato e a carteira associada — nas 20 modalidades divulgadas pelo BC.</p>
       <div class="ph-meta">Fonte: BCB txjuros (operações contratadas, janelas de ~5 dias úteis) · Selic meta vigente: <b>${fmt.n(J.selic_meta, 2)}% a.a.</b> · atualizado ${fmt.d((J.gerado_em || "").slice(0, 10))} · <span title="${attr(J.conceitos.taxa)}">o que é esta taxa ⓘ</span></div>
     </div>
-    <div class="ph-actions">
-      <button class="btn ghost small" onclick="jurosCSV()">baixar CSV (rankings)</button>
-    </div>
-  </div>
-  <div class="note"><b>Como ler:</b> ${J.conceitos.taxa} A mediana entre IFs dá o mesmo peso a cada instituição (${J.conceitos.mediana_vs_media_bc.split(";")[0].replace("a mediana ENTRE IFs dá o mesmo peso a cada instituição", "difere da média do SGS, ponderada pelo valor")}).</div>`;
+    ${phActions(`<button class="btn ghost small" onclick="jurosCSV()">baixar CSV (rankings)</button>`)}
+  </div>${guiaPagina("juros")}${fontePane("juros")}
+  <details class="decomp" style="margin:6px 0 10px"><summary>como ler esta taxa</summary><div class="note" style="margin-top:6px">${J.conceitos.taxa} A mediana entre IFs dá o mesmo peso a cada instituição (${J.conceitos.mediana_vs_media_bc.split(";")[0].replace("a mediana ENTRE IFs dá o mesmo peso a cada instituição", "difere da média do SGS, ponderada pelo valor")}).</div></details>`;
 
   /* ---------- 1 · visão geral das modalidades ---------- */
   const linha = m => {
@@ -7929,7 +8032,7 @@ function renderMoradia() {
   const D = costuraMunicipios(state.data.moradia, state.data.moradia_mun);
   if (!D || (D.ok && !D.municipios)) { el.innerHTML = loadingCard("moradia e crédito habitacional"); return; }
   if (!D.ok) {
-    el.innerHTML = pageHead({ title: "Moradia e Crédito Habitacional", desc: "Painel indisponível nesta execução." }) +
+    el.innerHTML = pageHead({ title: "Moradia e Habitação", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${D.error || D.motivo || "sem dados"}</p></div>`;
     return;
   }
@@ -8310,7 +8413,7 @@ function renderMoradia() {
   </section>`;
 
   el.innerHTML = pageHead({
-    title: "Moradia e Crédito Habitacional",
+    title: "Moradia e Habitação",
     desc: "Como o país mora, quanto crédito imobiliário existe e onde ele não chega — com as três bases públicas mantidas separadas.",
     fontes: `IBGE Censo ${C.ano} · BCB ESTBAN ${D.datas.estban} · BCB Mercado Imobiliário ${D.datas.mi_credito} · BCB SCR ${D.datas.scr}`,
   }) + indice + abertura + achados
@@ -8472,7 +8575,7 @@ function renderConsignado() {
   const D = costuraMunicipios(state.data.consignado, state.data.consignado_mun);
   if (!D || (D.ok && !D.municipios)) { el.innerHTML = loadingCard("consignado, previdência e envelhecimento"); return; }
   if (!D.ok) {
-    el.innerHTML = pageHead({ title: "Consignado, Previdência e Envelhecimento", desc: "Painel indisponível nesta execução." }) +
+    el.innerHTML = pageHead({ title: "Consignado e Envelhecimento", desc: "Painel indisponível nesta execução." }) +
       `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
     return;
   }
@@ -8676,7 +8779,7 @@ function renderConsignado() {
   </section>`;
 
   el.innerHTML = pageHead({
-    title: "Consignado, Previdência e Envelhecimento",
+    title: "Consignado e Envelhecimento",
     desc: "Onde o envelhecimento e a dependência de benefícios tornam o consignado economicamente relevante — separando o que é observado do que é estimado.",
     fontes: `IBGE Censo 2022 · MPS Estatísticas Municipais ${D.ano} · BCB SCR ${S.data_base} · BCB taxas por instituição`,
   }) + ((D.sgs && D.sgs.atual && D.sgs.atual.inss && D.sgs.atual.privado) ? placar([
@@ -9163,7 +9266,7 @@ function operBlocoInst(cab) {
     são as PROCESSADAS no mês; a rede é do banco operacional no ESTBAN (pode diferir deste
     ${state.filters.instCod && state.filters.instCod.startsWith("C") ? "conglomerado prudencial" : "nível de consolidação"});
     empregados são o declarado pela companhia listada no FRE.
-    <a href="javascript:void(0)" onclick="nav('operacional')">ver o painel completo →</a></p></div>`;
+    <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">ver o painel completo →</a></p></div>`;
 }
 
 /* Bloco "companhia listada" da ficha da IF: guidance × realizado, custos de
@@ -9201,7 +9304,7 @@ function instGuidanceIF(c8) {
   return `<div id="s-guidance" class="card" style="margin-top:12px"><h4>${termo("guidance","Guidance")} × entregue — promessas da própria companhia ${badge("observado", G.fonte.nota)}</h4>
     ${ordenados.map(guidCicloBloco).join("")}
     <p class="src">${(G.cautelas || [])[0] || ""}</p>
-    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel} · <a href="javascript:void(0)" onclick="nav('institutions')">todos os bancos com guidance →</a></p></div>`;
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel} · <a href="/observatorio/institutions" onclick="nav('institutions');return false">todos os bancos com guidance →</a></p></div>`;
 }
 
 function instTiIF(c8) {
@@ -9242,7 +9345,7 @@ function instRemuneracaoIF(c8) {
       <thead><tr><th>Órgão</th><th class="num">Total realizado</th><th class="num">Membros (média)</th><th class="num">Média/membro</th><th class="num">Maior individual</th><th class="num">Previsto</th></tr></thead>
       <tbody>${linha("Diretoria Estatutária", emp.orgaos["Diretoria Estatutária"])}${linha("Conselho de Administração", emp.orgaos["Conselho de Administração"])}</tbody></table></div>
     ${(RM.cautelas || []).slice(0, 2).map(x => `<p class="src">${x}</p>`).join("")}
-    <p class="src">CVM/FRE ${emp.fre_ano} — dados estruturados declarados pela própria companhia · <a href="javascript:void(0)" onclick="nav('operacional')">ver todos os bancos →</a></p></div>`;
+    <p class="src">CVM/FRE ${emp.fre_ano} — dados estruturados declarados pela própria companhia · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">ver todos os bancos →</a></p></div>`;
 }
 
 function instFolhaIF(c8) {
@@ -9255,7 +9358,7 @@ function instFolhaIF(c8) {
   return `<div id="s-folha" class="card" style="margin-top:12px"><h4>Folhas de pagamento no balanço ${badge("observado", bal.fonte && bal.fonte.nota)}</h4>
     ${obs.map(o => `<p style="margin:6px 0">${o.metrica}: <b>${fmt.n0(o.valor)} ${o.unidade}</b>
       <span class="src">· ref. ${fmt.d(o.data_ref)} · <a href="${attr(o.documento.url)}" target="_blank" rel="noopener">${(o.documento.titulo || "documento").slice(0, 44)}</a> · ${o.pagina}</span></p>`).join("")}
-    <p class="src">O que o banco pagou (e amortiza) pelo direito de operar folhas — competição por captação estável. Extração aprovada por revisor · <a href="javascript:void(0)" onclick="nav('operacional')">contexto completo →</a></p></div>`;
+    <p class="src">O que o banco pagou (e amortiza) pelo direito de operar folhas — competição por captação estável. Extração aprovada por revisor · <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">contexto completo →</a></p></div>`;
 }
 
 function cmpRedeFase0(insts, datas) {
@@ -9285,7 +9388,7 @@ function cmpRedeFase0(insts, datas) {
     <p class="src">${badge("observado")} Universo diferente das métricas do IF.data acima: a rede vem do ESTBAN, do CNPJ do
     banco operacional — informativo ao lado da comparação, não uma métrica do catálogo. Queda abrupta pode ser migração
     societária entre CNPJs do grupo. A coluna de postos e PAE vem do cadastro do BC, com data-base própria: não se soma
-    às agências processadas ao lado. <a href="javascript:void(0)" onclick="nav('operacional')">painel completo →</a></p></div></div>`;
+    às agências processadas ao lado. <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">painel completo →</a></p></div></div>`;
 }
 
 function renderOperacional() {
@@ -9750,7 +9853,7 @@ function renderPresencaMun() {
   if (!m) {
     el.innerHTML = `<div class="card" style="margin-top:20px"><p>Código de município desconhecido.
     A lista completa está no mapa de presença bancária dos
-    <a href="javascript:void(0)" onclick="nav('operacional')">Indicadores operacionais</a>.</p></div>`;
+    <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">Indicadores operacionais</a>.</p></div>`;
     return;
   }
   const PRM_COR = { agencia: "#1d4e89", posto: "#0e7c7b", correspondente: "#b45309", nenhum: "#b91c1c" };
@@ -9803,7 +9906,7 @@ function renderPresencaMun() {
     <thead><tr><th></th><th class="num">Municípios</th><th class="num">Com agência</th><th class="num">Só posto ou terminal</th><th class="num">Só correspondente</th><th class="num">Sem nenhum</th></tr></thead>
     <tbody>${uf ? ctxLinha(m.uf, uf) : ""}${ctxLinha("Brasil", tot)}</tbody></table></div>
     <p class="src" style="margin-top:6px">Contagens de municípios por classe. O mapa nacional completo está nos
-    <a href="javascript:void(0)" onclick="nav('operacional')">Indicadores operacionais</a>.</p></div>
+    <a href="/observatorio/operational-indicators" onclick="nav('operacional');return false">Indicadores operacionais</a>.</p></div>
   ${vizinhos.length ? `${sechead(`Outros municípios de ${m.uf}`, "ordem alfabética")}
   <div class="card"><div class="chips">${vizinhos.map(v => `<a class="chip" href="${BASE}/presenca/${v.cod}"
     onclick="event.preventDefault();presNav('${v.cod}')">${v.nome}</a>`).join(" ")}</div></div>` : ""}
@@ -9864,7 +9967,7 @@ function renderRegulacao() {
       ${m.serie_x ? `<span class="src" style="margin-left:6px">· marcador nas séries em ${fmt.my(m.serie_x)}</span>` : ""}
     </li>`).join("");
   el.innerHTML = `
-  ${pageHead({ title: "Regulação do mercado de crédito",
+  ${pageHead({ title: "Regulação do Crédito",
     desc: "A linha do tempo transversal: os marcos regulatórios que explicam quebras visíveis nas séries do Observatório, cada um com o texto oficial e os painéis que afeta.",
     fontes: "Planalto · BCB/CMN (textos oficiais)" })}
   <div class="note warn"><b>Coincidência no tempo não é efeito.</b> ${R.leitura}</div>
@@ -9882,7 +9985,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações & Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Alertas", research: "Pesquisa", regulacao: "Regulação do Crédito", method: "Metodologia & Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado & Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes financeiras e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Meios de Pagamento", sobre: "Sobre o Observatório", judicial: "Ações judiciais e instituições financeiras", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap de Crédito", moradia: "Moradia e Crédito Habitacional", consignado: "Consignado, Previdência e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
@@ -9953,12 +10056,38 @@ function adaptaTabelasMoveis(raiz) {
   });
 }
 
+/* Piso tipográfico também dentro dos SVG (E4 da avaliação de 05/09): o texto
+   de um gráfico escala com o viewBox, e um rótulo de 10 unidades num gráfico
+   de 720 desenhado em 480 px vira 6,7 px. Quando a escala é menor que 1, o
+   svg ganha a variável que restitui o piso de 10,5 px renderizados; os
+   rótulos do eixo x, que já não cabiam, são rareados na mesma passada. */
+const FS_PISO_SVG = 10.5;
+function ajustaFonteSvg(raiz) {
+  (raiz || document).querySelectorAll("svg.chart[viewBox]").forEach(svg => {
+    const vb = (svg.getAttribute("viewBox") || "").split(/\s+/).map(Number);
+    const w = svg.getBoundingClientRect().width;
+    if (!vb[2] || !w) return;
+    const escala = w / vb[2];
+    if (escala < 1) {
+      svg.classList.add("fs-piso");
+      svg.style.setProperty("--svg-fs", (FS_PISO_SVG / escala).toFixed(2) + "px");
+    } else { svg.classList.remove("fs-piso"); svg.style.removeProperty("--svg-fs"); }
+    const xl = svg.querySelectorAll("text.xl");
+    if (xl.length > 1) {
+      const larg = Math.max(...[...xl].map(t => (t.textContent || "").length)) * FS_PISO_SVG * 0.62 + 10;
+      const k = Math.max(1, Math.ceil(xl.length * larg / Math.max(w, 1)));
+      xl.forEach((t, i) => { t.style.display = i % k === 0 ? "" : "none"; });
+    }
+  });
+}
 function agendaAcessibilidade() {
   clearTimeout(_rolagemAgendada);
   _rolagemAgendada = setTimeout(() => {
     const ativa = document.querySelector("section.view.active");
     acessibilizaRolagem(ativa);
     adaptaTabelasMoveis(ativa);
+    ajustaFonteSvg(ativa);
+    aplicaCapitulos();
   }, 120);
 }
 window.addEventListener("resize", agendaAcessibilidade);
@@ -10055,7 +10184,9 @@ function updateAlertBadge() {
   const el = document.getElementById("alertCount");
   const a = state.data.alertas_central;
   if (!el || !a || !a.alertas) { return; }
-  const n = alertasAbertos(a.alertas).length;  // todas as famílias, não só a macro
+  // todas as famílias, mas só os níveis de atenção para cima: 21 no crachá,
+  // dos quais 14 eram flags informativas, ensinava a ignorar o crachá (E11)
+  const n = alertasAbertos(a.alertas).filter(x => ["atencao", "relevante", "critico"].includes(x.nivel)).length;
   el.textContent = n;
   el.hidden = n === 0;
 }
@@ -10223,10 +10354,10 @@ window.pmxQ = v => { PMX_STATE.q = v.toLowerCase(); comFocoPreservado(renderProd
 window.pmxSel = (cod, on) => { if (on) PMX_STATE.sel[cod] = 1; else delete PMX_STATE.sel[cod]; document.getElementById("pmxCmpBtn").textContent = `comparar selecionadas (${Object.keys(PMX_STATE.sel).length})`; };
 window.pmxCompare = () => {
   const cods = Object.keys(PMX_STATE.sel);
-  if (cods.length < 2) { alert("Selecione pelo menos 2 instituições (checkbox na matriz)."); return; }
-  if (cods.length > 10) { alert("Máximo de 10 instituições no comparador."); return; }
+  if (cods.length < 2) { aviso("Selecione pelo menos 2 instituições (checkbox na matriz)."); return; }
+  if (cods.length > 10) { aviso("Máximo de 10 instituições no comparador."); return; }
   const mix = new Set(cods.map(c => c.startsWith("C") ? "congl" : "ind"));
-  if (mix.size > 1) { alert("Níveis de consolidação diferentes (conglomerado × individual) não podem ser comparados."); return; }
+  if (mix.size > 1) { aviso("Níveis de consolidação diferentes (conglomerado × individual) não podem ser comparados."); return; }
   state.cmp.insts = cods; saveLS("obc_cmp", state.cmp); showView("compare");
 };
 window.exportProductXLSX = slug => {
@@ -10321,6 +10452,7 @@ function renderProductPageData(el, P) {
   el.innerHTML = `
   <div class="src" style="margin-bottom:6px"><button class="btn ghost small" onclick="nav('products')">← produtos</button> Produtos de Crédito › ${p.nome} · data-base ${fmtTri(p.data_base)} ${badge("observado")}</div>
   <h2>${p.nome}</h2>
+  ${guiaPagina("product")}${fontePane("product")}
   <div class="chips" style="margin:6px 0">
     <span class="chip">${p.seg.toUpperCase()}</span><span class="chip">crédito ${p.natureza}</span>
     <span class="chip" title="nomenclatura da fonte">IF.data: ${p.modalidade_original.replace(/_/g, " ")}</span>
@@ -10387,7 +10519,7 @@ function renderProductPageData(el, P) {
     <button class="btn small" id="pmxCmpBtn" onclick="pmxCompare()">comparar selecionadas (${Object.keys(PMX_STATE.sel).length})</button>
     <button class="btn ghost small" onclick="exportProductCSV('${p.slug}')">baixar CSV</button>
     <button class="btn ghost small" onclick="exportProductXLSX('${p.slug}')">baixar XLSX</button>
-    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada'))">copiar URL</button>
+    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada'))">copiar URL</button>
     ${!PMX_STATE.all && rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar todas (${rows.length})</button>` : rows.length > 60 ? `<button class="btn ghost small" onclick="pmxAll()">mostrar top-60</button>` : ""}
   </div>
   <div class="tblwrap"><table class="data"><thead><tr><th></th>${th("nome", "Instituição")}${th("carteira_brl", "Carteira no produto")}${th("share_pct", "Participação")}${th("d4t_pct", "Δ 4 trim.")}${th("d1t_pct", "Δ 1 trim.")}${th("pct_carteira_inst", "% da carteira da IF", "carteira no produto ÷ total PF+PJ da MESMA IF nos relatórios de modalidade (123/128) — numerador e denominador do mesmo universo; a Carteira de Crédito do Resumo é outro conceito e não é usada aqui")}${th("atraso15_pct", "Atraso ≥15d NO PRODUTO", "vencido ≥15 dias ÷ carteira da modalidade (IF.data rel. 123/128) — conceito de atraso, específico do produto; não é NPL >90d")}${th("npl_est_pct", "Inad. >90d NO PRODUTO (estimada)", "ESTIMATIVA do modelo de migração 15→90 — o IF.data não divulga >90d por modalidade. Calculada do atraso ≥15d do produto, do perfil de migração do produto no sistema (SCR) e do >90d total observado da IF. Método completo no fim da página")}${th("npl_inst_pct", "Inad. >90d TOTAL da IF", "Inadimplência >90d total da instituição (Res. 4.966) — NÃO específica do produto")}${txMod ? th("taxa_sel", `Taxa a.a. — ${txModCurta}`, `taxa média a.a. das operações NOVAS de ${txMod} na janela mais recente do txjuros (semanal) — muda com o seletor de modalidade da seção de taxas; não é a taxa da carteira. Casamento por CNPJ-raiz ou nome normalizado único; sem casamento inequívoco a célula fica vazia (ausência declarada)`) : ""}${th("basileia_pct", "Basileia")}</tr></thead>
@@ -10545,7 +10677,7 @@ window.wlAddRule = () => {
   const tipo = document.getElementById("wlTipo").value;
   const op = document.getElementById("wlOp").value;
   const lim = parseFloat(document.getElementById("wlLim").value);
-  if (!cod || !mid || isNaN(lim)) { alert("Preencha instituição, métrica e limiar."); return; }
+  if (!cod || !mid || isNaN(lim)) { aviso("Preencha instituição, métrica e limiar."); return; }
   const rules = watchRules();
   rules.push({ cod, mid, tipo, op, lim });
   saveLS("obc_watch_rules", rules); renderCompare();
@@ -10605,7 +10737,7 @@ window.cmpSearch = v => {
 window.cmpAdd = cod => {
   const cmp = state.cmp;
   if (cmp.insts.includes(cod)) return;
-  if (cmp.insts.length >= 10) { alert("Máximo de 10 instituições."); return; }
+  if (cmp.insts.length >= 10) { aviso("Máximo de 10 instituições."); return; }
   const lvl = cod.startsWith("C") ? "congl" : "ind";
   if (cmp.insts.length && (cmp.insts[0].startsWith("C") ? "congl" : "ind") !== lvl) {
     document.getElementById("cmpWarn").innerHTML = `<div class="note warn"><b>Comparação bloqueada:</b> não é possível misturar conglomerado prudencial com instituição individual — os balanços não são comparáveis (dupla contagem/consolidação distinta). Remova as instituições de um dos níveis.</div>`;
@@ -10620,7 +10752,7 @@ window.cmpAddSimilares = async () => {
   if (!first) return;
   const d = await fetchCmp(first);
   const sim = d && d.semelhantes;
-  if (!sim || !sim.lista.length) { alert("Sem semelhantes pelas regras explícitas (mesmo nível, porte 1/3–3×, especialização ±15 p.p., mix PF ±20 p.p.)."); return; }
+  if (!sim || !sim.lista.length) { aviso("Sem semelhantes pelas regras explícitas (mesmo nível, porte 1/3–3×, especialização ±15 p.p., mix PF ±20 p.p.)."); return; }
   sim.lista.forEach(x => { if (state.cmp.insts.length < 10 && !state.cmp.insts.includes(x.cod)) state.cmp.insts.push(x.cod); });
   cmpSave(); renderCompare();
 };
@@ -10634,20 +10766,20 @@ window.cmpPreset = tipo => {
   if (tipo === "coops") {
     // cooperativas do top-100 (TCB B3S/B3C no IF.data) — nível individual
     const I = state.data.institutions;
-    if (!I || !I.instituicoes) { alert("Os dados das instituições ainda estão carregando — tente de novo em instantes."); return; }
+    if (!I || !I.instituicoes) { aviso("Os dados das instituições ainda estão carregando — tente de novo em instantes."); return; }
     cods = I.instituicoes.filter(x => String(x.tcb || "").startsWith("B3"))
       .sort((a, b) => (b.ativo_total_brl || 0) - (a.ativo_total_brl || 0))
       .slice(0, 5).map(x => x.cod_inst);
   } else if (tipo === "s2" || tipo === "s3") {
     // maiores do segmento por ativo — só conglomerados prudenciais (nível único)
     const ix = state.data.inst_index;
-    if (!ix) { alert("O índice de instituições ainda está carregando — tente de novo em instantes."); return; }
+    if (!ix) { aviso("O índice de instituições ainda está carregando — tente de novo em instantes."); return; }
     const seg = tipo.toUpperCase();
     cods = ix.instituicoes.filter(i => i.sr === seg && i.cod.startsWith("C"))
       .sort((a, b) => (b.ativo_brl || 0) - (a.ativo_brl || 0))
       .slice(0, 5).map(i => i.cod);
   }
-  if (cods.length < 2) { alert("Preset indisponível nesta execução (menos de 2 instituições no recorte)."); return; }
+  if (cods.length < 2) { aviso("Preset indisponível nesta execução (menos de 2 instituições no recorte)."); return; }
   state.cmp.insts = cods; cmpSave(); renderCompare();
 };
 window.cmpSet = (k, v) => { state.cmp[k] = v; cmpSave(); renderCompare(); };
@@ -10802,17 +10934,17 @@ function renderCompare() {
     </div>`;
 
   if (cmp.insts.length < 2) {
-    el.innerHTML = `${pageHead({ title: "Comparador de Instituições", fontes: "BCB IF.data" })}
+    el.innerHTML = `${pageHead({ title: "Comparador", fontes: "BCB IF.data" })}
     <p class="viewdesc">Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais (5 períodos), com normalizações, série histórica, dispersão e exportação. Nível de consolidação sempre explícito; comparações incompatíveis são bloqueadas.</p>
     ${selHtml}
-    <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · <a href="javascript:void(0)" onclick="cmpPreset('coops')">maiores cooperativas</a> · <a href="javascript:void(0)" onclick="cmpPreset('s2')">maiores S2</a> · <a href="javascript:void(0)" onclick="cmpPreset('s3')">maiores S3</a> · ou monte a partir da <a href="javascript:void(0)" onclick="nav('products')">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
+    <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · <a href="javascript:void(0)" onclick="cmpPreset('coops')">maiores cooperativas</a> · <a href="javascript:void(0)" onclick="cmpPreset('s2')">maiores S2</a> · <a href="javascript:void(0)" onclick="cmpPreset('s3')">maiores S3</a> · ou monte a partir da <a href="/observatorio/products" onclick="nav('products');return false">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
     return;
   }
 
   // carrega dados sob demanda e re-renderiza quando tudo chegar
   const missing = cmp.insts.filter(c => !state.cmpCache[c]);
   if (missing.length) {
-    el.innerHTML = `${pageHead({ title: "Comparador de Instituições", fontes: "BCB IF.data" })}${selHtml}<p class="src"><span class="spin" aria-hidden="true"></span> carregando ${missing.length} instituição(ões)…</p>`;
+    el.innerHTML = `${pageHead({ title: "Comparador", fontes: "BCB IF.data" })}${selHtml}<p class="src"><span class="spin" aria-hidden="true"></span> carregando ${missing.length} instituição(ões)…</p>`;
     Promise.all(missing.map(fetchCmp)).then(res => {
       state.cmp.insts = state.cmp.insts.filter(c => state.cmpCache[c]); // remove sem dados
       if (res.some(r => !r)) console.warn("instituições sem arquivo cmp removidas");
@@ -10833,7 +10965,7 @@ function renderCompare() {
     <span class="seg">${tabs.map(([k, l]) => `<button class="${cmp.ctab === k ? "active" : ""}" onclick="cmpSet('ctab','${k}')">${l}</button>`).join("")}</span>
     <label>normalização <select onchange="cmpSet('norm', this.value)" aria-label="normalização">${NORMS.map(([k, l]) => `<option value="${k}" ${cmp.norm === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
     <label>grupo de referência <select onchange="cmpSet('grupo', this.value)" aria-label="grupo comparável" title="${attr(C.grupos_nota || "")}">${grupoOpts.map(([k, l]) => `<option value="${k}" ${gdef.key === k ? "selected" : ""}>${l}</option>`).join("")}</select></label>
-    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>alert('URL copiada — a comparação é reproduzível por link'))">compartilhar</button>
+    <button class="btn ghost small" onclick="navigator.clipboard.writeText(location.href).then(()=>aviso('URL copiada — a comparação é reproduzível por link'))">compartilhar</button>
     <details style="position:relative"><summary class="btn ghost small" style="list-style:none;cursor:pointer">baixar ▾</summary>
       <div style="position:absolute;right:0;top:110%;background:var(--surface);border:1px solid var(--border);padding:8px;display:flex;flex-direction:column;gap:6px;z-index:9">
         <button class="btn ghost small" onclick="exportCmp('csv')">CSV (valores + fontes + fórmulas)</button>
@@ -11069,8 +11201,8 @@ function renderCompare() {
 
   el.innerHTML = `
   <div class="pagehead"><div class="ph-left">
-    <h2>Comparador de Instituições</h2>
-    <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="javascript:void(0)" onclick="nav('method')">metodologia e fontes</a></div>
+    <h2>Comparador</h2>
+    <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
   </div></div>
   <details ${cmp.insts.length < 2 ? "open" : ""} style="margin-bottom:10px"><summary class="src" style="cursor:pointer">alterar seleção de instituições (${cmp.insts.length})</summary>${selHtml}</details>
   ${ctx}${body}${cmpRedeFase0(cmp.insts, datas)}`;

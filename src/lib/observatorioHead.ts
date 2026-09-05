@@ -1,3 +1,4 @@
+import { LINKEDIN_URL } from "@/lib/contato";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
@@ -229,6 +230,8 @@ export function montarHtml(meta: MetaObservatorio, html = shell()): string {
   const extras = [
     meta.indexavel ? "" : `<meta name="robots" content="noindex">`,
     meta.indexavel ? jsonLd(meta) : "",
+    // contato do responsável (fonte única em src/lib/contato.ts), lido pela SPA na aba Sobre
+    `<meta name="obs:linkedin" content="${escapeHtml(LINKEDIN_URL)}">`,
   ]
     .filter(Boolean)
     .join("\n");

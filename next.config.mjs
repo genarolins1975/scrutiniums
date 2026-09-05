@@ -31,6 +31,11 @@ const nextConfig = {
       { source: "/app/atividade", destination: "/observatorio/credit", permanent: true },
       { source: "/app/risco", destination: "/observatorio/sectors", permanent: true },
       { source: "/app/regulatorio", destination: "/observatorio/alerts", permanent: true },
+      // Metodologia e fontes têm UMA versão, a viva do Observatório (gerada do
+      // gold): as páginas institucionais genéricas descreviam outra plataforma
+      // e competiam com a verdadeira na busca (2.3 da avaliação de 05/09).
+      { source: "/metodologia", destination: "/observatorio/methodology", permanent: true },
+      { source: "/fontes", destination: "/observatorio/methodology", permanent: true },
     ];
   },
 };

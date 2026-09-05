@@ -13,7 +13,7 @@ Em todo o documento: **E** = evidência (o que foi medido ou lido), **I** = infe
 O Observatório é hoje um produto de nível profissional em rigor de dados: 816 testes em 65 arquivos travam totais, reconciliações e invariantes editoriais; nenhuma rota renderiza erro de JavaScript; a linhagem cobre 100% dos objetos publicados. O problema não é mais de número. É de **forma, hierarquia e cobertura**, e concentra-se em cinco pontos:
 
 1. **A informação certa está atrás de texto demais.** Sete abas passam de 10 mil pixels de altura em desktop (Operacional 15.718 px, Bets 15.532, Desenrola 14.414, Fraudes 11.120, Consignado 10.981, Metodologia 10.424, Moradia 10.244) e três passam de 6 mil palavras (Instituições 8.334, Operacional 6.812, Metodologia 6.735). Em celular, Bets chega a 28.734 px. A caixa de método da aba Instituições ocupa 9 linhas antes da primeira linha de dado.
-2. **Oito abas cortam conteúdo em celular.** Tabelas largas fora de `.tblwrap` ultrapassam a viewport de 390 px e o `overflow-x: clip` do contêiner esconde o excedente em vez de permitir rolagem: Bets (tabela de 1.004 px), Fraudes (907 px), Pix (637 px), Metodologia (590 px), ficha de IF (536 px), Operacional (1.013 elementos além da borda), Panorama (heatgrid 560 px), Open Finance. A regra de empilhamento móvel da auditoria de 04/08 só cobre tabelas de cabeçalho simples; as compactas ficaram de fora.
+2. **Em celular, o conteúdo largo rola dentro do próprio contêiner; o corte real é residual.** Correção da primeira versão deste documento: a varredura de 390 px acusou elementos além da viewport em oito abas, mas a verificação elemento a elemento mostrou que quase todos estão dentro de `.tblwrap` ou `.heatwrap`, que rolam na horizontal e recebem foco de teclado. O que de fato ultrapassa a tela sem rolagem: o histograma do painel de produto (SVG de 462 px), um botão de segmento no Panorama e no Pix (grupos `.seg` sem quebra de linha) e dois cartões da ficha de IF com 8 px a mais. Os três casos entram no backlog como P2, não P0.
 3. **Sinais e alertas estão dominados por ruído.** Dos 21 alertas ativos, 14 são flags operacionais de FRE não entregue (variações de "−100%" em empregados de Alfa Holdings, Bemge, Mercantil Financeira) e 16 não têm nível. Em "O que mudou" da Visão geral, 4 dos 6 itens são liquidações de DTVMs e administradoras de consórcio, com link para a aba errada (Pulso). O subíndice de crédito não bancário dos Sinais Antecedentes marca +3,33σ com um único componente (FIDC) e a tabela de defasagens o declara "amostra insuficiente".
 4. **Uma aba pública ainda publica ficção.** Recuperações & Falências mistura séries reais do DataJud com fichas de "Metalúrgica Exemplo S.A. (demo)" e "Agro Fictícia S.A. (demo)", porque a coleta do DJEN devolve HTTP 403 em 8 de 8 tribunais desde a última execução. Em plataforma indexada e citável por imprensa, demonstração e dado real não deveriam dividir a mesma página.
 5. **Há lacunas de cobertura que um observatório de crédito brasileiro não pode ter.** Crédito rural (R$ 700,6 bi só na carteira PF, IF.data 2026-T1, segundo o próprio painel de produtos) não tem aba, embora a Matriz de Dados do Crédito Rural do BCB seja municipal, mensal e aberta desde 2013. BNDES e crédito direcionado não aparecem. O mercado de capitais como funding (debêntures, CRI, CRA, ofertas registradas na CVM) está reduzido a um subíndice de FIDC.
@@ -122,9 +122,9 @@ Vintages: SGS 2026-07, SCR 2026-07, txjuros 2026-08, B3 2026-09, DataJud 2026-07
 
 **R2.** Modo capítulo para páginas acima de ~8 mil px: a subnav vira paginação (uma seção por tela, `?sec=` já existe e já é permalink), com "próximo capítulo" ao fim de cada seção. Preserva URL, embed e exportação e reduz o custo de render e de leitura. Piloto sugerido: Bets e Operacional.
 
-**E3. Conteúdo cortado em celular** (item 2 da síntese). Verificado por script: elementos com `right > 390 px` dentro da view ativa, e `scrollWidth` igual à viewport porque `.content { overflow-x: clip }` esconde o excedente.
+**E3. Conteúdo largo em celular** (item 2 da síntese, corrigido). A primeira varredura contou elementos além da viewport; a segunda, elemento a elemento, mostrou que as tabelas e os mapas de calor já estão em contêineres com rolagem horizontal e foco de teclado. Restam três casos sem rolagem: o histograma do painel de produto (SVG com largura fixa), grupos de botões `.seg` que não quebram linha (Panorama e Pix) e dois cartões da ficha de IF com 8 px a mais.
 
-**R3.** Regra global: toda `<table>` renderizada fora de `.tblwrap` recebe o wrapper por `MutationObserver` (mesmo mecanismo do `a11yEnhance`), e o heatgrid do Panorama ganha `overflow-x: auto` próprio. Teste sintético a 390 px que falha se algum elemento da view ativa ultrapassar a viewport.
+**R3.** `.seg` com `flex-wrap` (aplicado em 05/09); histograma com `viewBox` em vez de largura fixa; teste sintético a 390 px que falha para elemento fora de contêiner rolável.
 
 **E4. Tipografia abaixo do piso declarado.** `styles.css` fixa piso de 10,5 px e o justifica. Os SVGs usam `font-size="8.5"` em eixos e rótulos (18 ocorrências de 8 a 9 px em `app.js`); fonte mínima medida a 1440 px: 8,5 px em Tendências, Pix e painel de produto; 9 px em 8 abas.
 
@@ -275,7 +275,7 @@ Pesquisa Trimestral de Condições de Crédito; família de séries de crédito 
 | Prio | Item | Seção | Esforço |
 |---|---|---|---|
 | P0 | Tirar fichas fictícias da rota pública de RJ; marcar cobertura parcial do DataJud nos últimos 3 meses | E14 | baixo |
-| P0 | Wrapper de rolagem em toda tabela e no heatgrid em celular; teste a 390 px | E3 | baixo |
+| P2 | Histograma com viewBox e teste a 390 px para elemento fora de contêiner rolável (`.seg` já quebra linha) | E3 | baixo |
 | P0 | Link "LinkedIn" na aba Sobre aponta para o literal `HREF_LINKEDIN` (404) | 2.2 | trivial |
 | P1 | Vigília por vintage de fonte; faixa "fonte em pane" no cabeçalho | 2.1 | médio |
 | P1 | Nível por regra nos alertas operacionais; consolidar flags de FRE ausente; crachá só com atenção ou acima | E11 | baixo |
@@ -303,3 +303,26 @@ Pesquisa Trimestral de Condições de Crédito; família de séries de crédito 
 - Se o IF.data 2T26 já foi divulgado pelo BCB em 05/09/2026: não acessado; o vintage 2026-03 fica registrado como ponto a conferir.
 - Existência de códigos SGS específicos da PTC e do crédito ampliado: as famílias existem no catálogo do BCB; os códigos devem ser confirmados no coletor.
 - Reconciliação de números entre painéis: feita na auditoria de 04/08 com resultado limpo; não refeita.
+
+---
+
+## 10. Execução das correções (05/09/2026, v0.87.0)
+
+Aplicado no mesmo dia, na branch desta avaliação, com a suíte de testes estendida (`src/tests/avaliacao-set26.test.ts`) para que nenhum item volte:
+
+| Item | O que foi feito |
+|---|---|
+| P0 fichas fictícias em RJ | `renderRJ` publica só o DataJud, o funil TPU e as fichas nominais reais (quando o DJEN responde); nota de cobertura parcial dos meses recentes ao lado da projeção |
+| P0 LinkedIn | URL injetada no `<head>` pelo route handler a partir de `src/lib/contato.ts`, lida pela SPA |
+| P1 vigília por fonte | cheque `pane` em `scripts/vigilancia.py` (coletor essencial com zero chaves ok, vintage além do prazo da fonte), agendado no workflow; faixa "fonte em pane" no cabeçalho da aba via `VIEW_COLETORES` |
+| P1 alertas | família operacional com nível pela regra declarada (queda de rede e variação de quadro = atenção; troca de auditor e FRE ausente = informativo); FRE não entregue consolidado numa linha por ano; crachá do menu conta só atenção ou acima. Central publicada: 21 → 16 alertas, crachá 21 → 9 |
+| P1 "O que mudou" | até duas vagas por família na primeira rodada; regimes apontam para a seção de regimes em Instituições |
+| P1 guia | `GUIA` para Bets, Fraudes, Regulação e as quatro rotas dinâmicas; renderizado em Juros, Bets, Fraudes, ficha de IF, produto e setor |
+| P1 nomes e menu | um nome por aba (menu, catálogo, `VIEW_TITLES`, H2, telemetria); menu em seis grupos pela pergunta do leitor; Perguntas rápidas e Sugestões no rodapé e em Sobre |
+| P1 número antes do método | barra de ações recolhida em menu "ações" em todas as abas; método de Instituições depois da tabela; disclaimer só no rodapé; aviso do Desenrola depois dos números oficiais; "Comece por aqui" só na primeira visita |
+| P2 modo capítulo | `subnavFixa` ganha "ler por capítulos" (uma seção por tela, anterior e próximo, `?sec=` como permalink); ficha de IF passa a usar o mesmo componente |
+| P2 gráficos | piso de 10,5 px renderizados dentro dos SVG (ajuste pela escala do viewBox, rótulos do eixo x rareados); Mercado com escala log automática acima de 4× de dispersão, três anotações em quatro faixas, título corrigido |
+| P2 meta e Next | `fontes_reais` derivada do status da coleta (28 fontes, sem "demonstrativos"); rodapé e descrições sem "12 fontes"; `/metodologia` e `/fontes` redirecionam para a metodologia viva e as páginas genéricas saíram |
+| P3 `alert()` e `javascript:void` | toast não bloqueante; 30 âncoras de navegação com a rota real no `href` |
+
+**Não executado nesta rodada, e por quê:** painéis com fonte nova (crédito rural, BNDES, ofertas CVM, PTC, Focus, entrantes do SFN, conduta, emprego setorial, funding) exigem coletores e uma rodada do pipeline contra as fontes; separar séries de resumos em `npl`, `market`, `juros` e `trends` exige rodada do pipeline para materializar e validar; a modularização do `app.js` em arquivos é refatoração estrutural sem ganho para o leitor no curto prazo; a exclusão dos três meses parciais do DataJud na projeção fica registrada como mudança de pipeline (o forecast produz pontos por origem e horizonte, e a exclusão simples deslocaria as datas da projeção; o tratamento certo é na origem, no `forecast_series`).

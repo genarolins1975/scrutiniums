@@ -1759,7 +1759,7 @@
   "metodo": "produtor = quem chama write_gold com o nome; fontes = hosts literais do módulo e dos coletores de bronze que ele lê, mais armazém de séries e curadoria; dependências = ler_gold_opcional; consumo = VIEW_DATA/OV_BLOCO_DATA/CORE_FILES/fetchGold da SPA. Nomes dinâmicos viram famílias (*).",
   "resumo": {
    "objetos_mapeados": 64,
-   "publicados_no_gold": 60,
+   "publicados_no_gold": 61,
    "publicados_sem_produtor_mapeado": []
   },
   "objetos": [
@@ -1898,13 +1898,19 @@
    },
    {
     "gold": "consignado_mun.json",
-    "produtores": [],
-    "fontes": [],
+    "produtores": [
+     "pipeline/gold.py"
+    ],
+    "fontes": [
+     "armazém de séries (SGS e coletores da Fase 1)"
+    ],
     "depende_de": [],
     "consumido_em": [
      "consignado"
     ],
-    "notas": []
+    "notas": [
+     "resolvido do template {nome}_mun.json"
+    ]
    },
    {
     "gold": "custos_ti.json",

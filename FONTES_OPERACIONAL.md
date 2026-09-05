@@ -1033,3 +1033,28 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - Suíte: 824 testes / 65 arquivos verdes; travas novas em
   `products-data.test.ts` (per-modalidade nunca mediana; escalar não
   volta; rotativo ≫ parcelado no cartão; ticks e folga na dispersão).
+
+## 41. Avaliação completa dos painéis (05/09/2026) e as correções da rodada
+
+- **Documento:** `docs/AVALIACAO_PAINEIS_2026-09.md` — técnica, layout e
+  didática das 34 rotas, medidas em navegador a 1440 px e 390 px; menu por
+  pergunta do leitor; dez painéis novos priorizados por valor sobre esforço
+  (crédito rural pelo Sicor, BNDES, crédito ampliado com ofertas CVM e
+  CRI/CRA, PTC e Focus, entrantes do SFN, conduta, Caged, páginas por UF,
+  funding, consórcios); mapa dos 54 conjuntos abertos da CVM (6 usados).
+- **Correções aplicadas (v0.87.0):** RJ sem ficção na rota pública; LinkedIn
+  pelo `<head>`; vigília `pane` (fonte parada com gold íntegro) e faixa na
+  aba; alertas operacionais com nível pela regra e FRE ausente consolidado
+  (crachá 21 → 9); "O que mudou" com vaga por família; guia em toda aba e
+  rota dinâmica; um nome por aba e menu em seis grupos; ações recolhidas e
+  método depois do número; modo capítulo nos dossiês; piso tipográfico nos
+  SVG e escala log no Mercado; `fontes_reais` derivada do status da coleta;
+  `/metodologia` e `/fontes` redirecionam para a metodologia viva; toast no
+  lugar de `alert()` e `href` real nas âncoras de navegação.
+- **Correção de leitura:** a varredura móvel da primeira versão contou
+  elementos além da viewport, mas quase todos rolam dentro de `.tblwrap`;
+  o corte real é residual (histograma do produto, `.seg` sem quebra, 8 px
+  em dois cartões) e ficou como P2.
+- **Travas:** `src/tests/avaliacao-set26.test.ts`; `central-alertas.test.ts`
+  e `guia-navegacao.test.ts` estendidos; `observatorio-publico` com o nome
+  novo de Fraudes.

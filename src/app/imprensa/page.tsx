@@ -128,7 +128,7 @@ export default function ImprensaPage() {
             <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-4">
               <BotaoLink href="/observatorio">Explorar o Observatório</BotaoLink>
               <Link
-                href="/metodologia"
+                href="/observatorio/methodology"
                 className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted underline decoration-linha underline-offset-8 transition-colors hover:text-bronze"
               >
                 Metodologia completa
