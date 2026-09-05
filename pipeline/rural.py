@@ -35,9 +35,9 @@ FONTE = {
     "nivel": "A — dado administrativo oficial (registro obrigatório das cédulas no Sicor)",
 }
 ATIVIDADE = {"1": "agrícola", "2": "pecuária"}
-# cdSexo na MDCR: inferido da distribuição (código 1 = 36% das cédulas e 20% do
-# valor em 2026-06, compatível com a participação conhecida das mulheres);
-# confirmação pelo subprograma PRONAF Mulher pendente — ver FONTES_OPERACIONAL §42.
+# cdSexo na MDCR: confirmado pelo subprograma 57 do PRONAF ("MULHER (MCR 10-9)"):
+# em 2026-03, 100% dos 1.674 contratos desse subprograma têm cdSexo = 1
+# (RegiaoUFGenero, consulta de 05/09/2026) — ver FONTES_OPERACIONAL §42.
 SEXO = {"1": "feminino", "2": "masculino"}
 FINALIDADES = [("custeio", "vl_c", "qtd_c"), ("investimento", "vl_i", "qtd_i"),
                ("comercializacao", "vl_com", "qtd_com"), ("industrializacao", "vl_ind", "qtd_ind")]
