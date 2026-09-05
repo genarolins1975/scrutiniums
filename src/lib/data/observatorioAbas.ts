@@ -135,6 +135,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "juros.json",
   },
   {
+    view: "sfn",
+    caminho: "/sfn-entries-exits",
+    titulo: "Entrantes e saídas do SFN",
+    descricao:
+      "Quem está autorizado a funcionar hoje, por segmento e UF, quem entrou e quem saiu trimestre a trimestre no IF.data, as conversões de tipo e os regimes de resolução decretados pelo Banco Central.",
+    gold: "sfn.json",
+  },
+  {
     view: "compare",
     caminho: "/compare",
     titulo: "Comparador",

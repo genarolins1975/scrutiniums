@@ -1313,3 +1313,46 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - **Pendências:** PTC quando houver dado estruturado; Top-5 do Focus (respondentes mais
   precisos) como segunda leitura.
 
+## 47. Entrantes e saídas do SFN (05/09/2026)
+
+- **Pergunta:** quem está autorizado a funcionar hoje, quem entrou e quem saiu, quem
+  mudou de tipo, quem foi para regime de resolução. Painel nº 5 da avaliação de 05/09
+  (§6), P3 no backlog.
+- **Fontes (três réguas, nunca somadas):**
+  1. BCB/Unicad, API Olinda `Instituicoes_em_funcionamento`: quatro relações (bancos,
+     cooperativas, sociedades, consórcios), 1.743 sedes em 05/09/2026. Só posição atual,
+     sem data de início. Coletor `pipeline/sources/sfn_cadastro.py`: espelho
+     (`sfn_sedes`), histórico próprio por CNPJ com primeiro e último visto e mudança de
+     segmento (`sfn_hist`) e contagem por coleta (`sfn_contagem`). Uma relação fora do ar
+     descarta a coleta inteira, para que a falha não vire onda de saídas.
+  2. BCB/IF.data, já coletado pelo pipeline (cadastro e resumo trimestral desde 2015-03,
+     tipo de instituição 2): presença de cada código no relatório resumo por trimestre.
+     Entrada = primeiro trimestre reportado; saída = deixou de reportar; conversão =
+     mesmo nome sai com um tipo de consolidado e entra com outro.
+  3. Regimes de resolução: gold `regimes.json` já publicado.
+- **Builder:** `pipeline/sfn.py` → `sfn.json`: cadastro por grupo (Bancos, Cooperativas,
+  Instituições de pagamento, Fintechs de crédito, Financeiras e crédito especializado,
+  Mercado de capitais e câmbio, Fomento e desenvolvimento, Consórcios), segmento, UF e
+  região; cooperativas por sistema (Sicoob, Sicredi, Cresol, Unicred, Ailos, CrediSIS,
+  Uniprime, pela central de filiação ou pelo nome), critério de associação e categoria;
+  IF.data com série trimestral de reportantes por tipo de consolidado (b1 a n4), entradas
+  e saídas por trimestre, listas nominais dos últimos oito trimestres com ativo total,
+  conversões; regimes vigentes e decretados em 12 meses. Aba
+  `/observatorio/sfn-entries-exits` no grupo Instituições, chunk `emergentes`.
+- **Achados na primeira carga (05/09/2026):** o cadastro tem 166 bancos (154 na relação de
+  bancos, mais 12 de investimento; os 3 de desenvolvimento e o BNDES ficam em fomento), 752 cooperativas, 194
+  instituições de pagamento, 148 fintechs de crédito (136 SCD e 12 SEP); São Paulo sedia
+  421 das 707 sociedades. No IF.data, 1.430 reportantes em 2025-12, com 92 entradas e 77
+  saídas nos quatro trimestres fechados; 2026-03 ainda provisório. Os SGS 24881 a 25581 (quantidade de sedes por segmento e
+  região) são anuais e param em 2022: registrados como fronteira, não usados.
+- **Regras:** o trimestre mais recente do IF.data recebe retardatários por semanas; as
+  saídas nele são provisórias e ficam marcadas; KPIs usam os quatro trimestres fechados.
+  Saída não é quebra: fusão, incorporação e troca de código também tiram um nome da
+  lista, e a leitura é nominal.
+- **Travas:** `src/tests/sfn-data.test.ts` (grupos, UFs e regiões somam o total; série
+  trimestral fecha em n = n anterior + entradas − saídas; provisório marcado; listas só
+  dos últimos oito trimestres; regimes coerentes com regimes.json; aba registrada).
+- **Pendências:** distinguir motivo da saída (fusão, incorporação, cancelamento) pelo
+  ato do BCB (Sisbacen, texto) fica fora da Fase 0; a série do cadastro com nomes
+  cresce daqui em diante.
+

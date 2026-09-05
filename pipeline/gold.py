@@ -55,7 +55,7 @@ FONTE_ROTULO = {
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
     "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
-    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus",
+    "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus", "sfn_cadastro": "BCB/Unicad (instituições em funcionamento)",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
     "pgfn": "PGFN", "desenrola": "BCB/Desenrola", "censo2022": "IBGE/Censo 2022", "estban": "BCB/ESTBAN",
     "mercado_imobiliario": "BCB/Mercado Imobiliário", "previdencia": "MPS/INSS",
@@ -762,6 +762,17 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("ampliado.json", {"disponivel": False, "error": str(e)})
 
 
+    # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
+    try:
+        from pipeline import sfn as sfn_mod
+        r_sfn = sfn_mod.build(con, cfg)
+        common.write_gold("sfn.json", r_sfn)
+        if r_sfn.get("disponivel"):
+            print(f"  [sfn] cadastro {r_sfn['cadastro'].get('data')} ({r_sfn['cadastro'].get('total')} sedes) · IF.data até {r_sfn['ifdata'].get('ultimo')}")
+        else:
+            print(f"  [sfn] indisponível: {r_sfn.get('motivo')}")
+    except Exception as e:
+        common.write_gold("sfn.json", {"disponivel": False, "error": str(e)})
     # ---- Páginas por UF: reúne o recorte estadual dos golds já escritos acima ----
     try:
         from pipeline import ufs as ufs_mod
@@ -801,6 +812,7 @@ def build_all(con, cfg, fetch_status):
         "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
         "bndes": _vg("SELECT MAX(mes) FROM bndes_mensal WHERE tabela='des_porte'"),
         "focus": _vg("SELECT MAX(data) FROM focus_anual"),
+        "sfn_cadastro": _vg("SELECT MAX(coletado_em) FROM sfn_sedes"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
