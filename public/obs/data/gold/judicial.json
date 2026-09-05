@@ -1,7 +1,7 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-04T15:08:17+00:00",
- "coletado_em": "2026-09-04T14:41:26+00:00",
+ "gerado_em": "2026-09-05T12:52:04+00:00",
+ "coletado_em": "2026-09-05T12:45:11+00:00",
  "aviso_permanente": "O volume de processos não constitui, isoladamente, evidência de irregularidade ou de pior qualidade institucional. Os resultados são influenciados pela escala, perfil de clientes, presença geográfica, modelo de negócio, organização societária, acesso à Justiça, práticas locais de litigância e cobertura das bases.",
  "limitacao_central": "Nenhuma fonte pública nacional atribui processos judiciais a uma instituição financeira identificada. O DataJud público não publica as partes — verificamos campo a campo: o documento traz classe, assuntos, movimentos, órgão julgador e número do processo, e nenhum identificador de parte. Por isso esta página tem duas camadas que nunca se cruzam.",
  "camada_nacional": {
@@ -40,13 +40,13 @@
     "tribunal": "TJSP",
     "ramo": "civel",
     "uf": "SP",
-    "casos_unicos": 6355818,
-    "registros": 6629905,
+    "casos_unicos": 6529446,
+    "registros": 6816901,
     "registros_indice": 10000,
     "por_categoria": {
-     "garantias_cobranca": 1528834,
-     "revisionais": 2455924,
-     "indenizatorias": 2371060
+     "garantias_cobranca": 1540608,
+     "revisionais": 2585284,
+     "indenizatorias": 2403554
     }
    },
    {
@@ -67,13 +67,26 @@
     "tribunal": "TJMG",
     "ramo": "civel",
     "uf": "MG",
-    "casos_unicos": 3939983,
-    "registros": 4733758,
+    "casos_unicos": 3940660,
+    "registros": 4737693,
     "registros_indice": 10000,
     "por_categoria": {
-     "indenizatorias": 1506607,
-     "garantias_cobranca": 975856,
-     "revisionais": 1457520
+     "indenizatorias": 1506113,
+     "garantias_cobranca": 976022,
+     "revisionais": 1458525
+    }
+   },
+   {
+    "tribunal": "TJRJ",
+    "ramo": "civel",
+    "uf": "RJ",
+    "casos_unicos": 3258648,
+    "registros": 3727730,
+    "registros_indice": 10000,
+    "por_categoria": {
+     "indenizatorias": 2144574,
+     "garantias_cobranca": 334373,
+     "revisionais": 779701
     }
    },
    {
@@ -105,29 +118,16 @@
     }
    },
    {
-    "tribunal": "TJRJ",
-    "ramo": "civel",
-    "uf": "RJ",
-    "casos_unicos": 3138074,
-    "registros": 3585382,
-    "registros_indice": 10000,
-    "por_categoria": {
-     "indenizatorias": 2097895,
-     "garantias_cobranca": 310431,
-     "revisionais": 729748
-    }
-   },
-   {
     "tribunal": "TJRS",
     "ramo": "civel",
     "uf": "RS",
-    "casos_unicos": 3111915,
-    "registros": 3573548,
+    "casos_unicos": 3111902,
+    "registros": 3573533,
     "registros_indice": 10000,
     "por_categoria": {
-     "indenizatorias": 981395,
-     "revisionais": 1673593,
-     "garantias_cobranca": 456927
+     "indenizatorias": 981389,
+     "revisionais": 1673588,
+     "garantias_cobranca": 456925
     }
    },
    {
@@ -147,13 +147,13 @@
     "tribunal": "TJPR",
     "ramo": "civel",
     "uf": "PR",
-    "casos_unicos": 2356659,
-    "registros": 2611447,
+    "casos_unicos": 2365578,
+    "registros": 2625759,
     "registros_indice": 10000,
     "por_categoria": {
-     "indenizatorias": 1057051,
-     "revisionais": 815905,
-     "garantias_cobranca": 483703
+     "indenizatorias": 1060851,
+     "revisionais": 819025,
+     "garantias_cobranca": 485702
     }
    },
    {
@@ -186,12 +186,12 @@
     "tribunal": "TJGO",
     "ramo": "civel",
     "uf": "GO",
-    "casos_unicos": 752998,
-    "registros": 883675,
+    "casos_unicos": 753202,
+    "registros": 883922,
     "registros_indice": 10000,
     "por_categoria": {
      "indenizatorias": 176480,
-     "garantias_cobranca": 219852,
+     "garantias_cobranca": 220056,
      "revisionais": 356666
     }
    },
@@ -224,19 +224,19 @@
     "ramo": "civel",
     "categoria": "indenizatorias",
     "rotulo": "Indenizatórias",
-    "registros": 12954198,
-    "casos_unicos": 10756250,
+    "registros": 13044430,
+    "casos_unicos": 10838723,
     "razao_reg_caso": 1.204,
-    "part": 41.15
+    "part": 40.99
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "rotulo": "Revisionais de contrato bancário",
-    "registros": 12128174,
-    "casos_unicos": 10365040,
+    "registros": 12343094,
+    "casos_unicos": 10548473,
     "razao_reg_caso": 1.17,
-    "part": 39.66
+    "part": 39.9
    },
    {
     "ramo": "trabalhista",
@@ -251,10 +251,10 @@
     "ramo": "civel",
     "categoria": "garantias_cobranca",
     "rotulo": "Garantias e cobrança (tipicamente promovidas pela IF)",
-    "registros": 5336265,
-    "casos_unicos": 5014877,
-    "razao_reg_caso": 1.064,
-    "part": 19.19
+    "registros": 5378936,
+    "casos_unicos": 5052960,
+    "razao_reg_caso": 1.065,
+    "part": 19.11
    },
    {
     "ramo": "trabalhista",
@@ -281,32 +281,32 @@
     "categoria": "indenizatorias",
     "codigo": 7779,
     "nome": "Indenização por Dano Moral",
-    "registros": 5666549,
-    "casos_unicos": 4887307
+    "registros": 5707350,
+    "casos_unicos": 4923797
    },
    {
     "ramo": "civel",
     "categoria": "indenizatorias",
     "codigo": 7780,
     "nome": "Indenização por Dano Material",
-    "registros": 5063404,
-    "casos_unicos": 3893112
+    "registros": 5096346,
+    "casos_unicos": 3924765
    },
    {
     "ramo": "civel",
     "categoria": "garantias_cobranca",
     "codigo": 9582,
     "nome": "Alienação Fiduciária",
-    "registros": 3734920,
-    "casos_unicos": 3510180
+    "registros": 3752694,
+    "casos_unicos": 3524819
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 9607,
     "nome": "Contratos Bancários",
-    "registros": 3600407,
-    "casos_unicos": 3228111
+    "registros": 3634984,
+    "casos_unicos": 3253850
    },
    {
     "ramo": "trabalhista",
@@ -353,8 +353,8 @@
     "categoria": "indenizatorias",
     "codigo": 11811,
     "nome": "Práticas Abusivas",
-    "registros": 2224245,
-    "casos_unicos": 1975831
+    "registros": 2240734,
+    "casos_unicos": 1990161
    },
    {
     "ramo": "trabalhista",
@@ -381,20 +381,20 @@
     "casos_unicos": 1664120
    },
    {
+    "ramo": "civel",
+    "categoria": "revisionais",
+    "codigo": 11806,
+    "nome": "Empréstimo consignado",
+    "registros": 1997639,
+    "casos_unicos": 1636682
+   },
+   {
     "ramo": "trabalhista",
     "categoria": "jornada",
     "codigo": 13769,
     "nome": "Horas Extras",
     "registros": 2189505,
     "casos_unicos": 1623757
-   },
-   {
-    "ramo": "civel",
-    "categoria": "revisionais",
-    "codigo": 11806,
-    "nome": "Empréstimo consignado",
-    "registros": 1893455,
-    "casos_unicos": 1538903
    },
    {
     "ramo": "trabalhista",
@@ -409,16 +409,16 @@
     "categoria": "revisionais",
     "codigo": 4960,
     "nome": "Cédula de Crédito Bancário",
-    "registros": 1520197,
-    "casos_unicos": 1431232
+    "registros": 1559949,
+    "casos_unicos": 1458430
    },
    {
     "ramo": "civel",
     "categoria": "garantias_cobranca",
     "codigo": 4970,
     "nome": "Cheque",
-    "registros": 1506878,
-    "casos_unicos": 1419118
+    "registros": 1530830,
+    "casos_unicos": 1441798
    },
    {
     "ramo": "trabalhista",
@@ -465,16 +465,16 @@
     "categoria": "revisionais",
     "codigo": 11974,
     "nome": "Cláusulas Abusivas",
-    "registros": 1174368,
-    "casos_unicos": 997437
+    "registros": 1181680,
+    "casos_unicos": 1003799
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 7770,
     "nome": "Interpretação / Revisão de Contrato",
-    "registros": 1166782,
-    "casos_unicos": 957076
+    "registros": 1169017,
+    "casos_unicos": 959013
    },
    {
     "ramo": "trabalhista",
@@ -489,72 +489,72 @@
     "categoria": "revisionais",
     "codigo": 7772,
     "nome": "Cartão de Crédito",
-    "registros": 744240,
-    "casos_unicos": 557861
+    "registros": 746826,
+    "casos_unicos": 560166
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 6007,
     "nome": "Repetição de indébito",
-    "registros": 603413,
-    "casos_unicos": 441701
+    "registros": 615781,
+    "casos_unicos": 453072
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 9585,
     "nome": "Cartão de Crédito (contratos)",
-    "registros": 386061,
-    "casos_unicos": 340686
+    "registros": 388503,
+    "casos_unicos": 342770
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 14926,
     "nome": "Revisão de Juros Remuneratórios. Capitalização/Anatocismo",
-    "registros": 315337,
-    "casos_unicos": 274887
+    "registros": 317791,
+    "casos_unicos": 277069
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 11807,
     "nome": "Tarifas",
-    "registros": 273872,
-    "casos_unicos": 227106
+    "registros": 274811,
+    "casos_unicos": 227909
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 7773,
     "nome": "Financiamento de Produto",
-    "registros": 199327,
-    "casos_unicos": 166922
+    "registros": 204468,
+    "casos_unicos": 171906
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 10585,
     "nome": "Capitalização / Anatocismo",
-    "registros": 132738,
-    "casos_unicos": 109034
+    "registros": 133127,
+    "casos_unicos": 109332
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "codigo": 10586,
     "nome": "Limitação de Juros",
-    "registros": 117977,
-    "casos_unicos": 94084
+    "registros": 118518,
+    "casos_unicos": 94475
    },
    {
     "ramo": "civel",
     "categoria": "garantias_cobranca",
     "codigo": 9584,
     "nome": "Arrendamento Mercantil",
-    "registros": 94467,
-    "casos_unicos": 85579
+    "registros": 95412,
+    "casos_unicos": 86343
    }
   ],
   "cats_civel": [
@@ -568,7 +568,7 @@
    "fgts",
    "adicionais"
   ],
-  "total_civel_casos": 26136167,
+  "total_civel_casos": 26440156,
   "total_trabalhista_casos": 27532115,
   "nota_temporal": "Contagens sobre o acervo acumulado do índice, sem recorte temporal: o campo de ajuizamento mistura datas ISO-8601 com carimbos de 14 dígitos migrados de sistemas legados, que o índice interpreta como epoch-millis e joga para os anos 2609–2612. Séries anuais exigiriam reinterpretar as datas documento a documento — lacuna declarada.",
   "nota_polo": "O DataJud não informa polo ativo nem passivo. As categorias de garantias e cobrança (alienação fiduciária, arrendamento, cheque) são tipicamente promovidas PELA instituição e por isso ficam separadas das revisionais e indenizatórias, que são tipicamente contra ela."
