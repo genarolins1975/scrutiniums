@@ -1090,9 +1090,10 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   Tudo é FLUXO (contratação); o saldo rural do sistema segue no IF.data e no
   SGS, e a aba diz isso na ponte para Produtos.
 - **Dicionário de códigos:** Atividade 1 = agrícola, 2 = pecuária; cdSexo
-  1 = feminino, 2 = masculino (inferido da distribuição de 2026-06: o código 1
-  tem 36% das cédulas e 20% do valor, compatível com a participação conhecida
-  das mulheres; a confirmação pelo subprograma PRONAF Mulher está pendente); segmentos de IF pelos códigos do
+  1 = feminino, 2 = masculino (confirmado em 05/09/2026 pelo subprograma 57 do
+  PRONAF, "MULHER (MCR 10-9)": em 2026-03, 100% dos 1.674 contratos desse
+  subprograma no recurso RegiaoUFGenero têm cdSexo = 1; no mesmo mês o código 1
+  responde por 71.114 dos 198.641 contratos com sexo informado); segmentos de IF pelos códigos do
   recurso SegmentoIF (108 banco múltiplo, 109 cooperativa de crédito, 111
   banco cooperativo, 110 agência de fomento, 115 SCFI).
 - **Aba** `/observatorio/rural-credit` (view `rural`, chunk municipal, grupo
@@ -1122,8 +1123,11 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   (FonteRecursos e Faixa desde 2013, gênero desde 2013) converge nas execuções
   diárias, meses recentes primeiro; enquanto isso a variação sobre os 12 meses
   anteriores fica nula e a série mensal começa em 2025-07. A verificação do
-  código de sexo pelo subprograma PRONAF Mulher (cdSubPrograma 57) recebeu 504
-  em três tentativas e segue pendente.
+  código de sexo pelo subprograma PRONAF Mulher (cdSubPrograma 57), que recebeu
+  504 em três tentativas em 05/09, foi concluída no mesmo dia (ver dicionário de
+  códigos acima). A API não aceita `$filter` por cdSubPrograma nem `$top`
+  (400: tipos String e Int16 incompatíveis); a checagem foi feita baixando o mês
+  inteiro do recurso e agregando localmente.
 - **Travas:** `src/tests/rural-data.test.ts` (janela sem meses parciais,
   composições que fecham, reconciliação municipal × estadual dentro de 3%,
   ausência como nulo, piso do ranking por habitante, registro completo na SPA).
