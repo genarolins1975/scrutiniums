@@ -332,3 +332,33 @@ Aplicado no mesmo dia, na branch desta avaliação, com a suíte de testes esten
 Construído o painel nº 1 da lista da seção 6: coletor `pipeline/sources/sicor.py` (MDCR/Sicor, OData), builder `pipeline/rural.py` (`rural.json` e `rural_mun.json`), aba `/observatorio/rural-credit` no grupo "Produtos e preços", guia didático, ponte com o produto rural do IF.data (fluxo × estoque), vigília de pane, testes (`rural-data.test.ts`) e registro em FONTES_OPERACIONAL §42.
 
 **Estado da fonte no dia:** a API respondeu em segundos pela manhã, passou horas devolvendo HTTP 504 à tarde e voltou à noite. A janela de 12 meses fechados (2025-08 a 2026-07) foi carregada nos cinco recursos e o gold real está publicado: R$ 344,4 bilhões em 2.538.458 contratos, custeio 53% do valor, PRONAF 21%, fontes com taxa controlada 60%, mulheres 38% das cédulas de pessoa física e 20% do valor, cooperativas 28% da originação, 5.487 municípios com contratação. A cauda histórica converge nas execuções diárias. Achado de universo registrado em FONTES_OPERACIONAL §42: o recurso RegiaoUF fica 2% a 8% abaixo do universo em todos os meses, e a aba passou a usar FonteRecursos e o municipal, que fecham com o recurso Faixa ao centavo.
+
+## 12. Painel novo: crédito ampliado e mercado de capitais (05/09/2026, noite)
+
+Segundo painel construído a partir da lista do §6 (nº 3, P1 no backlog). Resolve E13:
+o subíndice "Crédito Não Bancário" do Sinais Antecedentes passa de um para quatro
+componentes (FIDC, CRI, CRA e emissões de dívida corporativa), e o mês parcial dos
+informes de FIDC, que puxava o índice a +3,33σ, deixa de entrar.
+
+**Evidência.** Saldo ampliado de empresas e famílias em 2026-07: R$ 12,23 trilhões,
+92% do PIB, dos quais 57% no SFN e 22% em títulos privados e securitização (BCB/SGS
+28203 e família, consulta de 05/09/2026). Nas empresas o SFN responde por 33% e os
+títulos privados por 21%; em dezembro de 2023 eram 36% e 17%. Ofertas públicas
+encerradas entre 2025-09 e 2026-08: R$ 941 bilhões, R$ 423 bilhões em debêntures e
+notas comerciais (CVM, base de 05/09/2026). Lastro de CRI em 2026-06: R$ 262 bilhões,
+1,0% vencidos; CRA: R$ 189 bilhões, 0,8% vencidos (CVM, informes mensais).
+
+**Inferência.** A desintermediação das empresas é mensurável e contínua desde 2023: três
+pontos percentuais migraram do SFN para títulos privados em dois anos e meio. O crédito
+às famílias segue quase inteiro no SFN (93%).
+
+**O que foi construído.** Dois coletores (ofertas CVM; informes de securitizadoras),
+26 séries do SGS, o builder `pipeline/ampliado.py`, a aba `/observatorio/broad-credit`
+em cinco seções (saldo por credor, desintermediação das empresas, emissões, CRI e CRA,
+método), a integração no Sinais Antecedentes e as travas de teste. Detalhe operacional,
+achados de qualidade da fonte e pendências: FONTES_OPERACIONAL §43.
+
+**Correções de dado que a construção exigiu.** Registros de fundos abertos (ICVM 555)
+fora dos totais; só ofertas encerradas na Res. 160; certificados com erro de unidade ou
+informe inconsistente excluídos do mês; meses com entrega parcial marcados e fora de KPI.
+

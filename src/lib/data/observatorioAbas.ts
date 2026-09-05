@@ -143,6 +143,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "market.json",
   },
   {
+    view: "ampliado",
+    caminho: "/broad-credit",
+    titulo: "Crédito ampliado e mercado de capitais",
+    descricao:
+      "Quanto do crédito a empresas e famílias vem dos bancos e quanto vem do mercado: saldo ampliado do BCB, ofertas públicas registradas na CVM e o lastro de CRI e CRA.",
+    gold: "ampliado.json",
+  },
+  {
     view: "rural",
     caminho: "/rural-credit",
     titulo: "Crédito rural",

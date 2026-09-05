@@ -350,7 +350,7 @@ p.viewdesc { color: var(--text-2); margin: 0 0 20px; max-width: 860px; font-size
 .g2 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
 .g3 { grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); }
 .g4 { grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); }
-@media (max-width: 640px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .g2, .g3, .g4 { grid-template-columns: minmax(0, 1fr); } }  /* 1fr puro deixa o item ditar a largura mínima (gráfico com viewBox) e o cartão sai da tela */
 
 .card {
   background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md);
