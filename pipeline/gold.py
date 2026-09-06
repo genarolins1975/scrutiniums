@@ -744,9 +744,14 @@ def build_all(con, cfg, fetch_status):
         r_cg = consig_mod.build(con, cfg)
         common.write_gold("consignado.json", r_cg)
         if r_cg.get("ok"):
-            print(f"  [consignado] {r_cg['totais']['municipios']} municípios, "
-                  f"correlação observada {r_cg['circularidade']['correlacao_observada']} "
-                  f"contra mecânica {r_cg['circularidade']['correlacao_mecanica']}")
+            # Linha de log defensiva: a versão anterior lia uma chave que o builder
+            # deixou de emitir em 12/08/2026 (correlacao_observada) e o KeyError, DEPOIS
+            # do write_gold, derrubava o gold para stub — foi isso que manteve
+            # Consignado restaurado pela sentinela de 04/08 a 06/09 (achado D3)
+            circ = r_cg.get("circularidade") or {}
+            print(f"  [consignado] {(r_cg.get('totais') or {}).get('municipios')} municípios, "
+                  f"correlação de referência {circ.get('referencia')} "
+                  f"contra mecânica {circ.get('correlacao_mecanica')}")
         else:
             print(f"  [consignado] indisponível: {r_cg.get('motivo')}")
     except Exception as e:
@@ -895,13 +900,16 @@ def build_all(con, cfg, fetch_status):
         except Exception:
             return None
     def _vg_trimestre(sql):
-        # PGFN grava '2026_trimestre_02' → data-base = último mês do trimestre
-        v = _vg(sql)
-        m = re.match(r"^(\d{4})_tr", str(v or ""))
-        if not m:
-            return v
-        tri = int(str(v)[-2:])
-        return f"{m.group(1)}-{tri * 3:02d}"
+        # PGFN grava '2026_trimestre_02' → data-base = último mês do trimestre.
+        # Lê o valor bruto (o _vg corta em 7 caracteres e perdia o número do trimestre).
+        try:
+            v = con.execute(sql).fetchone()[0]
+            m = re.match(r"^(\d{4})_trimestre_(\d{2})$", str(v or ""))
+            if not m:
+                return _vg(sql)
+            return f"{m.group(1)}-{int(m.group(2)) * 3:02d}"
+        except Exception:
+            return None
 
     vintages = {
         "sgs": _vg("SELECT MAX(ref_date) FROM series_obs WHERE key='inad_total'"),
