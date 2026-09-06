@@ -453,7 +453,7 @@ svg.chart .xhair { opacity: 0; transition: opacity var(--t-fast) var(--ease); }
 svg.chart.hovering .xhair { opacity: 1; }
 svg.chart .serie { transition: opacity var(--t-fast) var(--ease); }
 svg.chart.hovering .serie.dim { opacity: 0.28; }
-.axis text { font-size: var(--fs-2xs); fill: var(--c-axis-text); }
+.axis text { font-size: 11px; fill: var(--c-axis-text); }   /* eixos a 11 px (avaliação de 06/09/2026, §3.3) */
 .axis line, .axis path { stroke: var(--border); }
 
 .legend { display: flex; gap: 14px; font-size: var(--fs-xs); color: var(--text-2); flex-wrap: wrap; margin: 6px 0; }

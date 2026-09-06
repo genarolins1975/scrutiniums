@@ -235,7 +235,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.100.0";
+const APP_VERSION = "0.101.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -347,7 +347,7 @@ const IG = {
     <text x="262" y="66" font-size="11" fill="var(--ink,#333)">Basileia =</text>
     <text x="262" y="80" font-size="11" fill="var(--ink,#333)">capital ÷ RWA</text>
     <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">quanto do risco é bancado com dinheiro próprio?</text>
-    <text x="20" y="40" font-size="10.5" fill="var(--ink-soft,#666)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
+    <text x="20" y="40" font-size="11" fill="var(--ink-soft,#666)">mínimo regulatório: 8% + colchões (ACP) por cima</text></svg>`,
   lcr: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="caixa de alta qualidade contra trinta dias de saídas em estresse">
     <rect x="20" y="45" width="120" height="80" fill="var(--c-line2,#0e7c7b)" opacity=".8" rx="6"/>
     <text x="80" y="80" text-anchor="middle" font-size="11" fill="#fff">ativos líquidos</text>
@@ -358,20 +358,20 @@ const IG = {
     <path d="M148 85 h44" stroke="var(--ink,#333)" marker-end="url(#seta)"/>
     <text x="170" y="78" text-anchor="middle" font-size="12" fill="var(--ink,#333)">≥</text>
     <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">o caixa aguenta um mês de pânico?</text>
-    <text x="20" y="139" font-size="10.5" fill="var(--ink-soft,#666)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
+    <text x="20" y="139" font-size="11" fill="var(--ink-soft,#666)">LCR 100% = aguenta exatamente; 200% = aguenta dois meses</text></svg>`,
   aging: () => `<svg viewBox="0 0 340 130" class="cdlg-ig" role="img" aria-label="linha do tempo do atraso de uma parcela">
     <line x1="25" y1="70" x2="320" y2="70" stroke="var(--c-grid,#ccc)" stroke-width="2"/>
     ${[[25, "dia 0", "vencimento"], [115, "15 dias", "vira ATRASO"], [230, "90 dias", "vira INADIMPLÊNCIA"]].map(([x, t, s]) => `
       <circle cx="${x}" cy="70" r="5" fill="var(--c-line1,#1d4e89)"/>
       <text x="${x}" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">${t}</text>
-      <text x="${x}" y="92" text-anchor="middle" font-size="10" fill="var(--ink-soft,#666)">${s}</text>`).join("")}
+      <text x="${x}" y="92" text-anchor="middle" font-size="11" fill="var(--ink-soft,#666)">${s}</text>`).join("")}
     <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">os dois relógios do não-pagamento</text>
-    <text x="20" y="118" font-size="10.5" fill="var(--ink-soft,#666)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
+    <text x="20" y="118" font-size="11" fill="var(--ink-soft,#666)">atraso ≥15d = sinal cedo e sensível · ≥90d = padrão internacional de inadimplência</text></svg>`,
   acp: () => `<svg viewBox="0 0 340 160" class="cdlg-ig" role="img" aria-label="pilha de colchões de capital sobre o mínimo">
     ${[[118, 26, "var(--c-line1,#1d4e89)", "mínimo de capital (8%)"], [88, 26, "var(--c-line2,#0e7c7b)", "colchão de conservação"],
        [66, 18, "#6b46a3", "colchão contracíclico"], [44, 18, "#b45309", "colchão sistêmico (só os grandes)"]].map(([y, h, c, t]) => `
       <rect x="30" y="${y}" width="130" height="${h}" fill="${c}" opacity=".8" rx="3"/>
-      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="10.5" fill="var(--ink,#333)">${t}</text>`).join("")}
+      <text x="172" y="${Number(y) + Number(h) / 2 + 4}" font-size="11" fill="var(--ink,#333)">${t}</text>`).join("")}
     <path d="M30 150 h130" stroke="var(--ink,#333)"/>
     <text x="95" y="158" text-anchor="middle" font-size="9.5" fill="var(--ink-soft,#666)">quanto mais alto, mais protegido</text>
     <text x="20" y="18" font-size="12" font-weight="bold" fill="var(--ink,#333)">capital mínimo + colchões (ACP)</text></svg>`,
@@ -382,7 +382,7 @@ const IG = {
     <text x="85" y="104" text-anchor="middle" font-size="11" fill="#fff">despesas</text>
     <text x="250" y="104" font-size="11" fill="var(--ink,#333)">eficiência = 55%</text>
     <text x="20" y="24" font-size="12" font-weight="bold" fill="var(--ink,#333)">de cada R$ 1 de receita, quanto vai embora em despesa?</text>
-    <text x="30" y="132" font-size="10.5" fill="var(--ink-soft,#666)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
+    <text x="30" y="132" font-size="11" fill="var(--ink-soft,#666)">QUANTO MENOR, MELHOR — 55% é sólido; acima de 100% a operação não se paga</text></svg>`,
   spread: () => `<svg viewBox="0 0 340 150" class="cdlg-ig" role="img" aria-label="do custo de captar à taxa cobrada">
     <rect x="30" y="95" width="280" height="24" fill="var(--c-line1,#1d4e89)" opacity=".35" rx="4"/>
     <text x="170" y="111" text-anchor="middle" font-size="11" fill="var(--ink,#333)">custo de captar o dinheiro</text>
@@ -391,7 +391,7 @@ const IG = {
     <path d="M30 50 h280" stroke="var(--ink,#333)" stroke-dasharray="4,3"/>
     <text x="170" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="var(--ink,#333)">taxa cobrada do cliente</text>
     <text x="20" y="20" font-size="12" font-weight="bold" fill="var(--ink,#333)">a taxa é o custo do dinheiro + o spread</text>
-    <text x="30" y="140" font-size="10.5" fill="var(--ink-soft,#666)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
+    <text x="30" y="140" font-size="11" fill="var(--ink-soft,#666)">no Brasil, a inadimplência esperada é o maior pedaço do spread</text></svg>`,
 };
 
 const CONCEITOS = {
@@ -885,14 +885,14 @@ function lineChart(opts) {
   for (let i = 0; i <= ticks; i++) {
     const y = Y(tickVals[i]);
     out += `<line x1="${M.l}" x2="${W - M.r}" y1="${y}" y2="${y}" style="stroke:var(--c-grid)"/>`;
-    out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="10" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
+    out += `<text x="${M.l - 7}" y="${y + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">${tickLbls[i]}</text>`;
   }
   const step = Math.max(1, Math.floor(allX.length / 6));
   for (let i = 0; i < allX.length; i += step) {
     const tx = X(allX[i]);
     // rótulo colado na borda ancora para dentro — senão "03/2026" vira "03/202"
     const anc = tx > W - 24 ? "end" : tx < M.l + 14 ? "start" : "middle";
-    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="10" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
+    out += `<text class="xl" x="${tx}" y="${H - 8}" text-anchor="${anc}" font-size="11" style="fill:var(--c-axis-text)">${fmt.my(allX[i])}</text>`;
   }
   if (opts.band) {
     const bp = opts.band.pts.filter(p => p.lo != null && p.hi != null);
@@ -903,7 +903,7 @@ function lineChart(opts) {
   if (opts.forecastStart != null && allX.includes(opts.forecastStart)) {
     const x = X(opts.forecastStart);
     out += `<line x1="${x}" x2="${x}" y1="${M.t}" y2="${H - M.b}" style="stroke:var(--c-axis)" stroke-dasharray="2,3"/>`;
-    out += `<text x="${x + 5}" y="${M.t + 9}" font-size="9" style="fill:var(--c-axis-text)">início da previsão</text>`;
+    out += `<text x="${x + 5}" y="${M.t + 9}" font-size="11" style="fill:var(--c-axis-text)">início da previsão</text>`;
   }
   (opts.annotations || []).forEach((an, ai) => {
     if (!allX.includes(an.x)) return;
@@ -912,10 +912,10 @@ function lineChart(opts) {
     // alturas alternadas (quatro faixas) e âncora invertida perto da borda direita: rótulos não se sobrepõem
     const aTy = M.t + 10 + (ai % 4) * 12;
     const aRight = ax > W - M.r - 90;
-    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="9" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
+    out += `<text x="${aRight ? ax - 4 : ax + 4}" y="${aTy}" text-anchor="${aRight ? "end" : "start"}" font-size="11" style="fill:${ccol(an.color || "#b45309")};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${an.label}</text>`;
   });
   (opts.hlines || []).forEach(hl => {
-    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="10" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
+    out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(hl.y)}" y2="${Y(hl.y)}" style="stroke:${ccol(hl.color)}" stroke-dasharray="3,3"/><text x="${W - M.r}" y="${Y(hl.y) - 4}" text-anchor="end" font-size="11" style="fill:${ccol(hl.color)}">${hl.label || ""}</text>`;
   });
   opts.series.forEach((s, si) => {
     const d = s.pts.filter(p => p.y != null).map((p, i) => `${i ? "L" : "M"}${X(p.x)},${Y(p.y)}`).join(" ");
@@ -939,7 +939,7 @@ function lineChart(opts) {
     }
     ends.forEach(e2 => {
       out += `<circle cx="${e2.x}" cy="${Math.min(Math.max(e2.y, M.t + 4), yMax)}" r="0" fill="none"/>`;
-      out += `<text x="${e2.x + 6}" y="${Math.min(Math.max(e2.y, M.t + 8), yMax) + 3}" font-size="10" font-weight="640" style="fill:${e2.color};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${e2.label}</text>`;
+      out += `<text x="${e2.x + 6}" y="${Math.min(Math.max(e2.y, M.t + 8), yMax) + 3}" font-size="11" font-weight="640" style="fill:${e2.color};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${e2.label}</text>`;
     });
   }
   // último valor da série principal sempre rotulado (a conclusão não depende do hover)
@@ -951,7 +951,7 @@ function lineChart(opts) {
       const anchor = lx > W - M.r - 52 ? "end" : "start";
       const tx = anchor === "end" ? lx - 6 : lx + 6;
       out += `<circle cx="${lx}" cy="${ly}" r="3" style="fill:${ccol(s0.color)}"/>`;
-      out += `<text x="${tx}" y="${ly - 6}" text-anchor="${anchor}" font-size="10.5" font-weight="640" style="fill:${ccol(s0.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${fmt.n(lastPt.y, dec)}</text>`;
+      out += `<text x="${tx}" y="${ly - 6}" text-anchor="${anchor}" font-size="11" font-weight="640" style="fill:${ccol(s0.color)};paint-order:stroke;stroke:var(--c-halo);stroke-width:3px">${fmt.n(lastPt.y, dec)}</text>`;
     }
   }
   // crosshair (posicionado via JS no hover/teclado)
@@ -1779,7 +1779,7 @@ function pxStackedArea(periods, series, opts) {
   const Y = v => M.t + (1 - v / 100) * (H - M.t - M.b);
   const totals = periods.map((_, i) => series.reduce((s, sr) => s + (sr.vals[i] || 0), 0));
   let out = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.aria || "participação empilhada"}">`;
-  [0, 25, 50, 75, 100].forEach(g => { out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(g)}" y2="${Y(g)}" style="stroke:var(--border)"/><text x="${M.l - 5}" y="${Y(g) + 3}" text-anchor="end" font-size="9" style="fill:var(--c-axis-text)">${g}</text>`; });
+  [0, 25, 50, 75, 100].forEach(g => { out += `<line x1="${M.l}" x2="${W - M.r}" y1="${Y(g)}" y2="${Y(g)}" style="stroke:var(--border)"/><text x="${M.l - 5}" y="${Y(g) + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">${g}</text>`; });
   let base = periods.map(() => 0);
   series.forEach(sr => {
     const top = base.map((b, i) => b + (totals[i] ? (sr.vals[i] || 0) / totals[i] * 100 : 0));
@@ -4513,265 +4513,8 @@ function renderRJ() {
 }
 
 /* ---------- INSTITUIÇÕES ---------- */
-function renderInstitutions() {
-  const el = document.getElementById("view-institutions");
-  const inst = state.data.institutions;
-  if (!inst || !inst.ok) { el.innerHTML = "<p>sem dados de instituições</p>"; return; }
-  const f = state.filters;
-  const groups = ["todos", ...Object.keys(inst.grupos).sort()];
-  let list = [...inst.instituicoes];
-  if (f.instGroup !== "todos") list = list.filter(i => i.grupo_pares === f.instGroup);
-  /* tipo pela classificação TCB do próprio BCB: B3C/B3S = cooperativas;
-     B1/B2/B4 = bancos; N* = não bancárias. Nunca por heurística de nome. */
-  const tipoDe = (i) => /^B3/.test(i.tcb || "") ? "coop" : /^B/.test(i.tcb || "") ? "banco" : "naobanco";
-  if ((f.instTipo || "todos") !== "todos") list = list.filter(i => tipoDe(i) === f.instTipo);
-  const nplMap = {};
-  if (state.data.npl && state.data.npl.ok) state.data.npl.instituicoes.forEach(x => { nplMap[x.cod_inst] = x; });
-  const sorters = {
-    ativo: (a, b) => b.ativo_total_brl - a.ativo_total_brl,
-    score: (a, b) => b.score - a.score,
-    nome: (a, b) => a.nome.localeCompare(b.nome),
-    inad: (a, b) => ((nplMap[b.cod_inst] || {}).inad_pct || -1) - ((nplMap[a.cod_inst] || {}).inad_pct || -1),
-    deterioracao: (a, b) => ((nplMap[b.cod_inst] || {}).d_ano_pp ?? -99) - ((nplMap[a.cod_inst] || {}).d_ano_pp ?? -99),
-  };
-  list.sort(sorters[f.sortInst] || sorters.ativo);
-  const rows = list.map(i => {
-    const v = i.vulnerabilidade;
-    const nd = Object.keys(i.dimensoes).length;
-    return `
-    <tr>
-      <td><b>${i.nome}</b> ${favStar("institutions", i.cod_inst, i.nome)}
-        <button class="btn ghost small" onclick="openInstPage('${i.cod_inst}')">página completa →</button>
-        <div class="src">${i.grupo_pares_label}${i.grupo_fallback ? " · <i>grupo pequeno: comparado ao conjunto completo</i>" : ""}</div></td>
-      <td>${fmt.money(i.ativo_total_brl)}<div class="src">carteira ${fmt.money(i.carteira_brl)}</div></td>
-      <td>${i.basileia_pct != null ? fmt.n(i.basileia_pct, 1) + "%" : "<span class='src'>não reportado</span>"}${i.capital_principal_pct != null ? `<div class="src">CP ${fmt.n(i.capital_principal_pct, 1)}%</div>` : ""}</td>
-      <td>${(function(){
-        const n = state.data.npl; const q = n && n.ok ? n.instituicoes.find(x => x.cod_inst === i.cod_inst) : null;
-        return q ? `<b>${fmt.n(q.inad_pct, 2)}%</b><div class="src">Δtri ${fmt.pp(q.d_tri_pp)} · 4T ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) : "–"} p.p.</div><div class="src ${q.tendencia.includes("piora") ? "up" : q.tendencia === "melhora" ? "down good" : ""}">${q.tendencia}</div>` : "<span class='src'>n/d</span>";
-      })()}</td>
-      <td>${fmt.n(i.dimensoes.rentabilidade ? i.dimensoes.rentabilidade.valor : null, 1)}% <span class="src">med. ${i.dimensoes.rentabilidade ? fmt.n(i.dimensoes.rentabilidade.mediana_pares, 1) : "–"}%</span></td>
-      <td><span class="scorebar"><i style="left:${i.score * 0.9}px"></i></span> <b>${i.score}</b>
-        ${i.score_delta != null ? `<span class="${i.score_delta > 0 ? "up" : "down good"}">(${fmt.pp(i.score_delta)})</span>` : ""}
-        <div class="src">${i.faixa} · ${i.dimensoes_disponiveis} dim.</div></td>
-      <td>${sparkline((i.historico_score || []).map(h => h.score))}<div class="src">${(i.historico_score || []).length} trim.</div></td>
-      <td>${v ? `${fmt.n(v.basileia_pos_choque_pct[0], 1)}–${fmt.n(v.basileia_pos_choque_pct[1], 1)}% ${badge("cenario", v.metodo)}<div class="src">Δinad ${fmt.pp(v.delta_inad_pp[0])} a ${fmt.pp(v.delta_inad_pp[1])} p.p.</div>` : "<span class='src'>sem RWA/Basileia</span>"}</td>
-      <td><details class="decomp"><summary>abrir</summary>
-        <h5>Condição atual — decomposição (${nd} dimensões)</h5>
-        ${Object.entries(i.dimensoes).map(([k, d]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")}</span><span class="bar ${d.risco > 50 ? "neg" : "pos"}" style="width:${d.risco * 0.9}px"></span><span class="num">${d.risco} · valor ${fmt.n(d.valor, 1)} · p${d.percentil_pares} · quartis [${fmt.n(d.q1_pares, 1)}–${fmt.n(d.q3_pares, 1)}]</span></div>`).join("")}
-        ${v ? `<h5>Vulnerabilidade a choques ${badge("cenario")}</h5><div class="src">Cenário ${v.cenario}: Basileia ${fmt.n(v.basileia_atual_pct, 2)}% → ${fmt.n(v.basileia_pos_choque_pct[0], 2)}–${fmt.n(v.basileia_pos_choque_pct[1], 2)}% (impacto ${fmt.pp(v.impacto_basileia_pp[0])} a ${fmt.pp(v.impacto_basileia_pp[1])} p.p.). ${v.metodo}</div>` : ""}
-        ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
-          ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
-          ${i.carteira_perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${i.carteira_perfil.hhi_setorial}${i.carteira_perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${i.carteira_perfil.hhi_cobertura_pct}% setorialmente identificados — "outros" é agregado, nunca entra ao quadrado</span>` : ""}` : ""}
-          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}` : ""}
-          ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
-          ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
-        </div>` : ""}
-        ${i.captacao ? `<h5>Custo de captação ${badge("calculado", i.captacao.formula)}</h5><div class="src">
-          <b>${fmt.n(i.captacao.custo_aa_pct, 2)}% a.a.</b> (estimado; DRE de ${i.captacao.meses_dre} meses anualizada${i.captacao.media_pontas ? ", média das pontas" : ", ponta única"})
-          ${i.captacao.dep_captacoes_pct != null ? ` · depósitos = ${i.captacao.dep_captacoes_pct}% das captações` : ""}
-          ${i.captacao.mix_depositos_pct ? `<br><b>Mix de depósitos:</b> ${Object.entries(i.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `${n} ${s}%`).join(" · ")}` : ""}
-          <br>${i.captacao.limitacoes}</div>` : ""}
-        ${i.modelo_negocio ? `<h5>Modelo de negócio ${badge("calculado")}</h5><div class="src">
-          ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% ${dica(i.modelo_negocio.receita_servicos_conceito)} · ` : ""}
-          ${i.modelo_negocio.eficiencia_pct != null ? `<b>eficiência:</b> ${i.modelo_negocio.eficiencia_pct}% ${dica(i.modelo_negocio.eficiencia_conceito)} · ` : ""}
-          ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
-          ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
-        </div>` : ""}
-        <div class="src">Peso igual entre dimensões disponíveis; dimensão sem dado é omitida, nunca imputada.</div>
-      </details></td>
-    </tr>`;
-  }).join("");
-  el.innerHTML = `
-  ${pageHead({ title: "Instituições",
-    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. Cada linha abre a página completa da instituição.",
-    fontes: "BCB IF.data (Olinda + interface)" })}
-  ${(() => {
-    const todos = inst.instituicoes || [];
-    const nAlto = todos.filter(i => /elevado/.test(i.faixa || "")).length;
-    const nPiora = todos.filter(i => i.score_delta != null && i.score_delta > 0).length;
-    const basMed = _mediana(todos.map(i => i.basileia_pct));
-    const N = state.data.npl && state.data.npl.ok ? state.data.npl : null;
-    const tri = fmtTri(inst.anomes);
-    return abertura({
-      placar: [
-        { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}` },
-        { l: "Em risco elevado ou muito elevado", v: todos.length ? fmt.n0(nAlto) : null, sub: `${fmt.n0(nPiora)} pioraram o score no trimestre` },
-        { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
-        { l: "Inadimplência mediana", v: N ? fmt.pct(N.sistema.mediana_inad_pct, 2) : null, sub: N ? `${fmt.n0(N.n_instituicoes)} instituições com carteira · ${fmt.n0(N.sistema.subindo_no_trimestre)} subindo no trimestre · ${N.data_base}` : "" },
-      ],
-      sintese: [
-        todos.length ? `Dos ${todos.length} maiores conglomerados por ativo em ${tri}, ${nAlto} estão em risco elevado ou muito elevado pelo score de pares e ${nPiora} pioraram no trimestre.` : null,
-        basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
-        "O score compara cada instituição com o próprio grupo de pares (S1 a S5); é régua relativa, não nota de solvência.",
-      ],
-      ref: `BCB IF.data ${tri} · quartis por grupo de pares · método em Metodologia`,
-    });
-  })()}
-  <div class="controls">
-    <input id="instSearch" list="instList" type="text" placeholder="🔍 buscar qualquer instituição (${(state.data.inst_index && state.data.inst_index.instituicoes || []).length} com página)" style="min-width:300px;border:1px solid var(--border);border-radius:6px;padding:7px 12px" onchange="searchInst(this.value)">
-    <datalist id="instList">${(state.data.inst_index && state.data.inst_index.instituicoes || []).slice(0, 1500).map(x => `<option value="${x.nome.replace(/"/g, "")} [${x.cod}]">`).join("")}</datalist>
-  </div>
-  <div class="controls">
-    <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
-    <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
-    <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
-    <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
-  </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
-  <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
-    <div class="note" style="margin-top:6px"><b>Método:</b> ${inst.metodo}<br><b>Limitações:</b> ${inst.limitacoes}</div></details>
-  ${guidanceSecao()}
-  ${regimesSecao()}
-  ${coopSecao(inst)}
-  ${interconexaoSecao(inst)}
-  ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
-}
-
-/* Promessas × entrega (Fase 2 — publica só aprovado): guidance dos grandes
-   listados, cada banco SÓ contra o próprio guidance. 'dentro/acima/abaixo'
-   é posição aritmética no intervalo declarado, não juízo de mérito — nunca
-   ranking nem média de cumprimento entre bancos. */
-/* Rótulo de setor CNAE: o balde "outros" da fonte é um agregado residual —
-   nunca aparece como se fosse um setor. */
-const setorLabel = (k) => k === "outros" ? "outros (não classificados)" : k.replace(/_/g, " ");
-
-/* Bloco de um ciclo de guidance — compartilhado entre a seção da aba
-   Instituições e a ficha individual da IF, para as duas superfícies nunca
-   divergirem em régua ou evidência. */
-function guidSitChip(m) {
-  return m.situacao === "dentro" ? `<span class="chip" style="background:var(--ok-bg,#e8f2ea)">dentro</span>`
-    : m.situacao === "em_curso" ? `<span class="chip">em curso</span>`
-    : `<span class="chip" style="background:var(--warn-bg,#f6ead8)">${m.situacao}</span>`;
-}
-function guidFaixa(m) {
-  if (m.realizado == null) return `${fmt.n(m.min, 1)} a ${fmt.n(m.max, 1)} ${m.unidade}`;
-  return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
-}
-function guidCicloBloco(c) {
-  return `
-    <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
-      <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
-    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
-      <tbody>${(c.metricas || []).map(m => `<tr>
-        <td>${m.nome}${m.formula ? ` ${dica(m.formula)}` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
-        <td>${guidFaixa(m)}</td><td>${guidSitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
-    ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
-      <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
-      ${a.realizado_parcial ? `<br><span class="src">${a.realizado_parcial.map(r => `${r.metrica}: ${fmt.n(r.valor, 1)} (${r.unidade})`).join(" · ")}</span>` : ""}
-      <br><span class="src">Evidência: ${a.pagina} — <a href="${attr(a.documento.url)}" target="_blank" rel="noopener">${(a.documento.titulo || "documento").slice(0, 52)}</a></span></div>`).join("")}
-    ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
-    <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
-      `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`;
-}
-
-function guidanceSecao() {
-  const G = state.data.guidance;
-  if (!G || !G.disponivel) return "";
-  if (!(G.ciclos || []).length) {
-    return G.em_revisao ? `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados</h4>
-      <p class="src">${fmt.n0(G.em_revisao)} ciclo(s) de guidance extraídos dos documentos oficiais (CVM/IPE) aguardando revisão
-      editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>` : "";
-  }
-  const cards = G.ciclos.map(guidCicloBloco).join("");
-  return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — ${termo("guidance","guidance")} dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
-    <p style="margin:6px 0">${G.leitura}</p>
-    ${cards}
-    ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
-    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}${G.acompanhamentos_em_revisao ? ` · ${fmt.n0(G.acompanhamentos_em_revisao)} acompanhamento(s) trimestral(is) aguardando revisão editorial` : ""}.</p></div>`;
-}
-
-/* O risco realizado, ao vivo: instituições sob regime de resolução do BCB
-   (lista oficial vigente, diária) + memória acumulada pelo Observatório.
-   Regime em instituição pequena NÃO é sinal sistêmico — dito na cautela. */
-function regimesSecao() {
-  const R = state.data.regimes;
-  if (!R || !R.disponivel) return "";
-  const linhas = (R.vigentes || []).map(v => `<tr>
-    <td><b>${v.nome}</b><div class="src">CNPJ ${v.cnpj8} · ${v.municipio || "–"}/${v.uf || "–"}</div></td>
-    <td>${v.tipo}</td><td>${v.inicio}</td>
-    <td class="src">${v.responsavel || "–"}</td></tr>`).join("");
-  const enc = R.encerrados_ou_saidos || [];
-  return `<div class="card" id="sec-regimes" style="margin-top:12px"><h4>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
-    <p style="margin:6px 0">${R.leitura}</p>
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Instituição</th><th>Regime</th><th>Decretado em</th><th>Responsável nomeado</th></tr></thead>
-      <tbody>${linhas}</tbody></table></div>
-    ${enc.length ? `<details class="decomp"><summary>saíram da lista vigente desde o início do acompanhamento (${enc.length})</summary>
-      <div class="src" style="margin-top:6px">${enc.map(e => `${e.nome} — ${e.tipo}, decretado ${e.inicio}; fora da lista após ${e.saiu_da_lista_apos}`).join("<br>")}</div></details>` : ""}
-    ${(R.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
-    <p class="src">${badge("observado")} <a href="${attr(R.fonte.url)}" target="_blank" rel="noopener">${R.fonte.nome}</a> · nível ${R.fonte.nivel}.</p></div>`;
-}
-
-/* Cooperativas no corte: visibilidade do segmento que mais cresce, pela
-   classificação TCB do próprio BCB (B3C centrais, B3S singulares) — nunca
-   heurística de nome. Somar ativos aqui é legítimo: mesma métrica contábil
-   do mesmo relatório; o denominador é o CORTE (top-N), não o sistema. */
-function coopSecao(inst) {
-  const insts = inst.instituicoes || [];
-  const coops = insts.filter(i => /^B3/.test(i.tcb || ""));
-  if (!coops.length) return "";
-  const atCoop = coops.reduce((s, i) => s + i.ativo_total_brl, 0);
-  const atTodos = insts.reduce((s, i) => s + i.ativo_total_brl, 0);
-  const centrais = coops.filter(i => i.tcb === "B3C").length;
-  return `<div class="card" style="margin-top:12px"><h4>Cooperativas de crédito no corte ${badge("observado", "classificação TCB do IF.data: B3C = centrais/confederações, B3S = singulares; os bancos cooperativos (Sicredi, Sicoob) são B1 e entram como bancos")}</h4>
-    <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">
-      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:20px">${coops.length} cooperativas</div></div>
-      <div><div class="src">centrais/confederações</div><div class="big" style="font-size:20px">${centrais}</div></div>
-      <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:20px">${fmt.money(atCoop)}</div></div>
-      <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:20px">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
-    </div>
-    <p class="src">Os bancos cooperativos (Banco Sicredi, Banco Sicoob) são TCB B1 e aparecem no filtro "bancos" — o braço bancário dos sistemas, não as cooperativas em si. O share é do CORTE dos ${insts.length} maiores, não do sistema inteiro. Use o filtro "cooperativas" acima para isolar o segmento na tabela.</p></div>`;
-}
-
-/* Interconexão via funding: quanto das captações de cada IF vem de DEPÓSITOS
-   INTERFINANCEIROS — dinheiro de outras instituições. É um PROXY do lado
-   passivo: a matriz bilateral (quem deve a quem) NÃO é pública, e isso é
-   dito. Calculado dos blocos de captação já publicados por IF. */
-function interconexaoSecao(inst) {
-  const linhas = (inst.instituicoes || [])
-    .filter(i => i.captacao && i.captacao.mix_depositos_pct &&
-                 i.captacao.mix_depositos_pct.interfinanceiro != null && i.captacao.dep_captacoes_pct != null)
-    .map(i => {
-      const cap = i.captacao;
-      const interfDasCaptacoes = cap.mix_depositos_pct.interfinanceiro * cap.dep_captacoes_pct / 100;
-      return { nome: i.nome, cod: i.cod_inst, pct: interfDasCaptacoes,
-               vol: cap.captacoes_brl * interfDasCaptacoes / 100, mixDep: cap.mix_depositos_pct.interfinanceiro };
-    })
-    .filter(x => x.pct >= 1)
-    .sort((a, b) => b.pct - a.pct);
-  if (!linhas.length) return "";
-  return `<div class="card" style="margin-top:12px"><h4>Interconexão — funding interfinanceiro ${badge("calculado", "depósitos interfinanceiros ÷ captações totais, dos blocos de captação por IF (IF.data UI)")}</h4>
-    <p style="margin:6px 0">Quanto das captações de cada instituição vem de depósitos de OUTRAS instituições — a dependência de funding bancário de atacado, um canal clássico de contágio. Proxy do lado passivo: a matriz bilateral (quem deve a quem) não é pública.</p>
-    <div class="tblwrap"><table class="data compact">
-      <thead><tr><th>Instituição</th><th class="num" title="depósitos interfinanceiros ÷ captações totais">Interfinanceiro / captações</th><th class="num">Volume estimado</th><th class="num">% dos depósitos</th></tr></thead>
-      <tbody>${linhas.slice(0, 15).map(x => `<tr>
-        <td><b>${x.nome}</b> <button class="btn ghost small" onclick="openInstPage('${x.cod}')">ficha →</button></td>
-        <td class="num"><b>${fmt.n(x.pct, 1)}%</b></td>
-        <td class="num">${fmt.money(x.vol)}</td>
-        <td class="num src">${fmt.n(x.mixDep, 1)}%</td></tr>`).join("")}</tbody></table></div>
-    <p class="src">Corte de exibição: dependência ≥ 1% das captações. Nas centrais cooperativas o interfinanceiro alto é DESENHO do sistema (as singulares depositam na central), não fragilidade — mais um motivo para nunca ler esta tabela como ranking de risco.</p></div>`;
-}
-
-/* ---------- helpers visuais do formato v0.14 ---------- */
-const DONUT_COLORS = ["#1d4e89", "#0e7c7b", "#b45309", "#6b46a3", "#c2540a", "#64748b"];
-function donut(items, size = 130) {
-  const tot = items.reduce((s, i) => s + i.v, 0);
-  if (!tot) return "";
-  let a0 = -Math.PI / 2, paths = "";
-  const cx = size / 2, cy = size / 2, R = size / 2 - 4, r = size / 4.2;
-  items.forEach((it, i) => {
-    const a1 = a0 + it.v / tot * 2 * Math.PI;
-    const large = a1 - a0 > Math.PI ? 1 : 0;
-    const p = (a, rr) => `${cx + rr * Math.cos(a)},${cy + rr * Math.sin(a)}`;
-    const tip = encodeURIComponent(`<div class="tt-date">${it.label}</div><div class="tt-row"><span class="tt-lbl">participação</span><span class="tt-val">${fmt.n(it.v / tot * 100, 1)}%</span></div>${it.v > 1e8 ? `<div class="tt-row"><span class="tt-lbl">valor</span><span class="tt-val">${fmt.money(it.v)}</span></div>` : ""}`);
-    paths += `<path d="M${p(a0, R)} A${R},${R} 0 ${large} 1 ${p(a1, R)} L${p(a1, r)} A${r},${r} 0 ${large} 0 ${p(a0, r)} Z" data-tip="${tip}" style="fill:${ccol(DONUT_COLORS[i % DONUT_COLORS.length])}"/>`;
-    a0 = a1;
-  });
-  const legend = items.map((it, i) => `<div class="contrib"><span class="sw" style="background:${ccol(DONUT_COLORS[i % DONUT_COLORS.length])};width:10px;height:10px;border-radius:2px"></span><span class="lbl" style="width:auto">${it.label}</span><span class="num">${fmt.n(it.v / tot * 100, 1)}%${it.v > 1e8 ? ` · ${fmt.money(it.v)}` : ""}</span></div>`).join("");
-  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><svg width="${size}" height="${size}" aria-hidden="true">${paths}</svg><div>${legend}</div></div>`;
-}
+/* Só o que o core precisa: histogram (Visão geral e Produtos) e openInstPage (navegação a partir de várias
+   abas). Lista e página da instituição vivem no chunk emergentes desde a v0.101.0. */
 function histogram(vals, mine, w = 340, h = 90) {
   if (!vals || vals.length < 5 || mine == null) return "";
   const lo = Math.min(...vals, mine), hi = Math.max(...vals, mine);
@@ -4789,292 +4532,12 @@ function histogram(vals, mine, w = 340, h = 90) {
   });
   const mp = (mine - lo) / (hi - lo) * w;
   out += `<line x1="${mp}" x2="${mp}" y1="4" y2="${h - 14}" style="stroke:var(--text)" stroke-width="2.5"/>`;
-  out += `<text x="4" y="${h - 2}" font-size="9" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="9" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg>`;
+  out += `<text x="4" y="${h - 2}" font-size="11" style="fill:var(--c-axis-text)">pior ${fmt.n(lo, 1)}</text><text x="${w - 4}" y="${h - 2}" font-size="11" style="fill:var(--c-axis-text)" text-anchor="end">${fmt.n(hi, 1)} melhor</text></svg>`;
   out += `<details class="charttable"><summary>dados em tabela</summary><div class="tblwrap" style="max-height:200px"><table class="data compact"><thead><tr><th>Faixa</th><th style="text-align:right">Instituições</th></tr></thead><tbody>` +
     bins.map((b, i) => `<tr><td>${fmt.n(lo + (hi - lo) * i / nb, 1)} – ${fmt.n(lo + (hi - lo) * (i + 1) / nb, 1)}</td><td style="text-align:right">${b}</td></tr>`).join("") +
     `</tbody></table></div></details>`;
   return out;
 }
-
-/* ---------- PÁGINA INDIVIDUAL DA INSTITUIÇÃO (pilotos) ---------- */
-function renderInstPage() {
-  const el = document.getElementById("view-inst");
-  const cod = state.filters.instCod;
-  if (!cod) { el.innerHTML = "<p>selecione uma instituição na aba Instituições.</p>"; return; }
-  state.instCache = state.instCache || {};
-  if (state.instCache[cod]) { renderInstPageData(el, state.instCache[cod]); return; }
-  el.innerHTML = loadingCard("página da instituição");
-  // A promessa em voo também entra no cache: dois renders em sequência rápida — o
-  // segundo vinha do fluxo de navegação antes de o primeiro fetch resolver — disparavam
-  // a mesma requisição duas vezes. Cachear só o dado resolvido não impede isso.
-  state.instFetch = state.instFetch || {};
-  if (!state.instFetch[cod]) {
-    state.instFetch[cod] = fetch(`${DATA_BASE}inst/${cod}.json?v=${APP_VERSION}`)
-      .then(r => { if (!r.ok) throw 0; return r.json(); });
-  }
-  state.instFetch[cod]
-    .then(p => { state.instCache[cod] = p; if (state.filters.instCod === cod) renderInstPageData(el, p); })
-    .catch(() => { delete state.instFetch[cod]; el.innerHTML = "<p>página indisponível para este código de instituição.</p>"; });
-}
-
-function renderInstPageData(el, pg) {
-  const cab = pg.cabecalho;
-  const sc = pg.score_ref || {};
-  const kpiCard = k => `<div class="card kpi">
-    <h4>${k.label}</h4>
-    <div class="big" style="font-size:21px">${k.unit === "R$" ? fmt.money(k.v) : fmt.n(k.v, 2) + k.unit}</div>
-    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down good" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : ""}
-    ${k.hist && k.hist.length > 2 ? sparkline(k.hist, 150, 30) : ""}
-    <div class="src">${k.fonte}</div></div>`;
-  const destIcon = t => t === "ok" ? "✅" : "⚠️";
-  const capRow = c => `<tr><td>${c.indicador}</td><td><b>${fmt.n(c.valor, 2)}${c.unit}</b></td>
-    <td>${c.d_tri != null ? fmt.pp(c.d_tri) + " p.p." : "–"}</td>
-    <td class="${c.vs_pares === "abaixo" && c.indicador.includes("Basileia") ? "up" : "neutral"}">${c.vs_pares || "–"} <span class="src">(med. ${c.mediana_grupo != null ? fmt.n(c.mediana_grupo, 1) : "–"})</span></td>
-    <td>${c.percentil != null ? "p" + c.percentil : "–"}</td></tr>`;
-  const evolLabels = Object.keys(pg.evolucao_base100 || {});
-  let evolChart = "";
-  if (evolLabels.length) {
-    const cores = ["#1d4e89", "#0e7c7b", "#b45309"];
-    const series = evolLabels.map((l, i) => ({ pts: pg.evolucao_base100[l].map(o => ({ x: o.p, y: o.v })), color: cores[i % 3], label: l }));
-    evolChart = `<div class="legend">${evolLabels.map((l, i) => `<span><span class="sw" style="background:${cores[i % 3]}"></span>${l}</span>`).join("")}</div>` +
-      lineChart({ series, h: 170, unit: "base 100", fonte: "BCB/IF.data", status: "observado" }) + `<div class="src">base 100 = ${pg.evolucao_base100[evolLabels[0]][0].p} · fonte: IF.data</div>`;
-  }
-  const cmpKeys = Object.keys(pg.comparacao_grupo || {});
-  state.filters.cmpMet = cmpKeys.includes(state.filters.cmpMet) ? state.filters.cmpMet : cmpKeys[0];
-  const cmp = pg.comparacao_grupo[state.filters.cmpMet] || {};
-  const cmpLbl = { roe: "ROE do período (%)", basileia: "Índice de Basileia (%)", alav: "Alavancagem (×)" };
-  const re = pg.resumo_executivo;
-  const gpc = pg.grupo_pares_composicao;
-  const smeta = pg.score_meta;
-  const operSec = operBlocoInst(cab);
-  const listadaSec = instListadaSecao(pg, cab);
-  const temCaptacao = !!(sc.captacao || sc.modelo_negocio);
-  const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"]]
-    .concat(temCaptacao ? [["#s-captacao","Captação/Modelo"]] : [])
-    .concat([["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]])
-    .concat(operSec ? [["#s-oper","Operacional"]] : [])
-    .concat(listadaSec.includes('id="s-guidance"') ? [["#s-guidance","Guidance"]] : [])
-    .concat(listadaSec.includes('id="s-rem"') ? [["#s-rem","Remuneração"]] : [])
-    .concat([["#s-limites","Limitações"]]);
-  const subnav = subnavFixa(subnavItens);
-  el.innerHTML = `
-  <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
-    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
-  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
-    <div style="flex:2;min-width:300px">
-      <h2 style="margin:4px 0">${cab.nome_comercial} <span class="seal aprox">${cab.consolidacao}</span></h2>
-      <div class="src" style="margin-bottom:8px">${cab.razao_social_fonte_bcb} · ${cab.tcb || ""} · ${cab.sede} · Código BCB ${cab.codigo_bcb} · CNPJ ${cab.cnpj}</div>
-      <div class="chips">
-        <span class="chip">Segmento ${cab.segmento}</span>
-        <span class="chip">${cab.grupo_pares} · ${cab.n_pares} pares</span>
-        <span class="chip">Capital ${cab.capital}</span>
-        ${cab.modelo ? `<span class="chip">${cab.modelo}</span>` : ""}
-        ${cab.participante_open_finance ? `<span class="chip">Open Finance: no top-20 de chamadas</span>` : ""}
-        <span class="chip">Conglomerado ${cab.conglomerado_prudencial || "–"}</span>
-      </div>
-      ${cab.aviso_pares ? `<div class="note warn" style="margin-top:8px"><b>Comparabilidade:</b> ${cab.aviso_pares}</div>` : ""}
-      ${guiaPagina("inst")}${fontePane("inst")}
-    </div>
-    <div class="card" style="flex:1;min-width:230px">
-      <h4>${termo("score-relativo","Score de risco")} ${badge("calculado")}</h4>
-      ${sc.score != null ? `<div class="big">${sc.score}<span style="font-size:13px">/100</span></div>
-        <div class="delta neutral">${sc.faixa}${sc.score_delta != null ? ` · ${fmt.pp(sc.score_delta)} no trim.` : ""} · relativo aos pares</div>
-        <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
-        ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
-        ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
-        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} ${dica(smeta.confianca_motivo)} · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
-      : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
-      <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
-    </div>
-  </div>
-  ${subnav}
-  <div id="s-resumo" class="card" style="margin-top:12px"><h4>Resumo executivo ${badge("calculado", "frases por regras determinísticas; cada uma com base declarada")}</h4>
-    ${re ? `<p style="font-size:15px"><b>${re.avaliacao_geral.texto}</b> <span class="src">[${re.avaliacao_geral.base}]</span></p>
-    <div class="cols2">
-      <div><h5 class="down good">Pontos fortes</h5>${re.pontos_fortes.length ? re.pontos_fortes.map(d => `<p style="margin:4px 0">✅ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
-      <div><h5 class="up">Pontos de atenção</h5>${re.pontos_atencao.length ? re.pontos_atencao.map(d => `<p style="margin:4px 0">⚠️ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
-    </div>
-    ${re.mudancas_recentes.length ? `<h5>Mudanças recentes</h5>${re.mudancas_recentes.map(m => `<p style="margin:3px 0" class="src">• ${m.texto} [${m.base}]</p>`).join("")}` : ""}
-    <h5>Limitações informacionais</h5><p class="src">${re.limitacoes_informacionais.join(" · ")}</p>` : ""}
-  </div>
-  <div id="s-kpis" class="kpirow">${pg.kpis.map(kpiCard).join("")}</div>
-  ${(function(){
-    const n = state.data.npl; const q = n && n.ok ? n.instituicoes.find(x => x.cod_inst === pg.cod_inst) : null;
-    if (!q) return `<div id="s-risco" class="card" style="margin-top:12px"><h4>Risco e Inadimplência</h4>
-      <p class="src">O IF.data público integrado não traz a carteira inadimplente desta instituição nesta data-base (relatório por instrumentos financeiros) — ausência não é zero.</p></div>`;
-    const grp = n.grupos[q.grupo] || {};
-    const serie = q.serie.map(s => ({ x: s.p, y: s.inad_pct }));
-    const hl = [];
-    if (q.mediana_pares != null) hl.push({ y: q.mediana_pares, color: "#0e7c7b", label: "mediana grupo (atual)" });
-    if (grp.quartis && grp.quartis.q3 != null) hl.push({ y: grp.quartis.q3, color: "#b45309", label: "q3 grupo (atual)" });
-    return `<div id="s-risco" class="card" style="margin-top:12px">
-      <h4>Risco e Inadimplência ${badge("observado", n.metodo)} <span class="src">data-base ${n.data_base} · ${n.nivel_consolidacao}</span></h4>
-      <div class="kpirow">
-        <div class="card kpi"><h4>${termo("inadimplencia-90","Inadimplência (>90d)")} ${inadChip("if90")}</h4><div class="big" style="font-size:21px">${fmt.n(q.inad_pct, 2)}%</div>
-          <div class="delta ${(q.d_tri_pp||0) > 0 ? "up" : "down good"}">${q.d_tri_pp != null ? fmt.pp(q.d_tri_pp) + " p.p. no tri" : ""} · ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) + " p.p. em 4T" : "4T: histórico insuficiente"}</div>
-          <div class="src">tendência: <b>${q.tendencia}</b> (regra analítica ±0,20/0,50 p.p. — não regulatória)</div></div>
-        <div class="card kpi"><h4>Posição nos pares (${q.grupo})</h4><div class="big" style="font-size:21px">p${q.percentil_pares}</div>
-          <div class="src">mediana ${fmt.n(q.mediana_pares, 2)}%${grp.quartis ? ` · q1 ${grp.quartis.q1}% · q3 ${grp.quartis.q3}%` : ""} · n=${grp.n || "–"}</div></div>
-        <div class="card kpi"><h4>${termo("ativos-problematicos","Ativos problemáticos")}</h4><div class="big" style="font-size:21px">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
-        <div class="card kpi"><h4>Cobertura contábil aprox.</h4><div class="big" style="font-size:21px">${q.cobertura_pct != null ? fmt.n(q.cobertura_pct, 0) + "%" : "n/d"}</div>
-          <div class="src">${q.d_cobertura_pp != null ? `Δ ${fmt.pp(q.d_cobertura_pp)} p.p. no tri · ` : ""}perda esperada de crédito ÷ carteira >90d — a provisão cobre também operações em dia; não é razão regulatória</div></div>
-      </div>
-      <div class="grid g2" style="margin-top:10px">
-        <div class="card"><h4>Série (máx. disponível: ${q.serie.length} trimestres — metodologia vigente desde 2025-T1)</h4>
-          <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>instituição</span><span><span class="sw" style="background:var(--c-line2)"></span>mediana do grupo (trimestre atual)</span><span><span class="sw" style="background:var(--c-line3)"></span>q3 do grupo (atual)</span></div>
-          ${lineChart({ series: [{ pts: serie, color: "#1d4e89" }], hlines: hl, h: 160 })}
-          <div class="src">máx/mín de 3 anos indisponível: a estrutura por instrumentos financeiros existe desde 2025-T1 (sem quebra interna na amostra).</div></div>
-        <div class="card"><h4>Comparação temporal</h4>
-          <div class="tblwrap"><table class="data compact"><thead><tr><th>Data-base</th><th>Inadimplência</th><th>Carteira</th></tr></thead>
-          <tbody>${q.serie.map(s => `<tr><td>${s.p}</td><td>${fmt.n(s.inad_pct, 2)}%</td><td>${fmt.money(s.carteira_brl)}</td></tr>`).join("")}</tbody></table></div>
-          ${q.quadrante ? `<div class="src" style="margin-top:6px"><b>Matriz crescimento × inadimplência:</b> ${q.quadrante} (crescimento 4T: ${q.cresc_carteira_4t_pct != null ? fmt.pp(q.cresc_carteira_4t_pct) + "%" : "n/d"}) — leitura analítica, não score de solvência.</div>` : ""}
-          ${q.alertas.length ? `<div style="margin-top:6px">${q.alertas.map(a => `<div class="alert ${a.severidade}" style="padding:6px 10px"><span class="lvl">${a.severidade}</span> ${a.regra}: <b>${fmt.n(a.valor, 2)}</b> <span class="src">(IF.data ${n.data_base}, grupo ${q.grupo})</span></div>`).join("")}</div>` : ""}
-        </div>
-      </div>
-      <div class="src" style="margin-top:6px"><b>Decomposição por modalidade:</b> a inadimplência >90d desta instituição não é decomposta por modalidade na fonte pública; o ATRASO ≥15 dias por produto está na seção abaixo (conceito distinto). A inadimplência isolada não mede solvência.</div>
-    </div>`;
-  })()}
-  ${(function(){
-    const ap = pg.atraso_produtos;
-    if (!ap || !ap.itens || !ap.itens.length) return "";
-    const row = i => `<tr class="clickable" onclick="openProduct('${i.slug}')">
-      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:10.5px">${i.seg}</span></td>
-      <td style="text-align:right">${fmt.money(i.carteira_brl)}</td>
-      <td style="text-align:right"><b>${i.atraso15_pct != null ? fmt.n(i.atraso15_pct, 2) + "%" : "–"}</b></td>
-      <td style="text-align:right">${i.mediana_produto_pct != null ? fmt.n(i.mediana_produto_pct, 2) + "%" : "–"}</td>
-      <td style="text-align:right" class="${i.percentil_no_produto != null && i.atraso15_pct != null && i.mediana_produto_pct != null ? (i.atraso15_pct > i.mediana_produto_pct ? "up" : "down good") : "neutral"}">${i.percentil_no_produto != null ? "p" + Math.round(i.percentil_no_produto) : "–"} <span class="src">(n=${i.n_universo})</span></td>
-      <td>${i.serie && i.serie.length > 2 ? sparkline(i.serie.map(x => x.pct), 110, 24) : `<span class="src">${(i.serie || []).map(x => x.pct + "%").join(" · ") || "–"}</span>`}</td></tr>`;
-    return `<div id="s-atraso-prod" class="card" style="margin-top:12px">
-      <h4>${termo("atraso-15-90","Atraso ≥15 dias")} por produto ${badge("observado", ap.nota)} <span class="src">data-base ${ap.data_base}</span></h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Produto</th><th style="text-align:right">Carteira</th><th style="text-align:right" title="vencido ≥15d ÷ carteira da modalidade — específico do produto">Atraso ≥15d</th><th style="text-align:right">Mediana do produto</th><th style="text-align:right" title="percentil alto = mais atraso que os pares do produto">Percentil</th><th>Série (5 trim.)</th></tr></thead>
-      <tbody>${ap.itens.map(row).join("")}</tbody></table></div>
-      <div class="src">${ap.nota}<br>Fonte: ${ap.fonte}. Clique no produto para abrir a matriz completa.</div>
-    </div>`;
-  })()}
-  <div class="grid g2" style="margin-top:12px">
-    <div class="card"><h4>Destaques ${badge("calculado", "regras determinísticas sobre dados observados")}</h4>
-      ${pg.destaques.length ? pg.destaques.map(d => `<p style="margin:6px 0">${destIcon(d.tipo)} ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>sem destaques calculáveis.</p>"}
-    </div>
-    <div id="s-capital" class="card"><h4>Capital e comparação com pares ${badge("observado")}</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Valor</th><th>Δ trim.</th><th>vs. pares</th><th>Percentil</th></tr></thead>
-      <tbody>${pg.capital_tabela.map(capRow).join("")}</tbody></table></div>
-      <div class="src">grupo = ${cab.grupo_pares} (${cab.n_pares} instituições com dados)</div></div>
-  </div>
-  ${(function(){
-    /* Liquidez e capital regulatórios (Pilar 3/KM1): join pelo CNPJ do líder
-       do conglomerado — códigos de conglomerado mudam entre períodos, o
-       CNPJ-raiz não. Fórmula regulatória única: mínimos anotados por métrica. */
-    const P3G = state.data.pilar3;
-    if (!P3G || !P3G.disponivel) return "";
-    const cnpj8pg = String(cab.cnpj || "").replace(/\D/g, "").slice(0, 8);
-    const p3 = (P3G.instituicoes || []).find(x => x.cod_inst === pg.cod_inst || (cnpj8pg && x.cnpj8 === cnpj8pg));
-    if (!p3) return "";
-    const M = P3G.metricas || {};
-    const linha = (met) => {
-      const u = p3.ultimo[met];
-      if (u == null) return "";
-      const serie = (p3.series[met] || []).map(x => x.v);
-      const min = M[met] && M[met].minimo;
-      return `<tr><td>${termo(({lcr_pct:"lcr",nsfr_pct:"nsfr",icp_pct:"capital-principal",nivel1_pct:"capital-principal",basileia_pct:"indice-de-basileia",acp_total_pct:"acp",margem_capital_principal_pct:"acp",alavancagem_pct:"alavancagem"})[met], (M[met] || {}).nome || met)}</td>
-        <td class="num"><b>${fmt.n(u, 2)}%</b></td>
-        <td class="num src">${min != null ? `mínimo ${fmt.n(min, 1)}%` : "–"}</td>
-        <td>${serie.length > 2 ? sparkline(serie, 110, 24) : ""} <span class="src">${serie.length} trim.</span></td></tr>`;
-    };
-    const ordem = ["lcr_pct", "nsfr_pct", "icp_pct", "nivel1_pct", "basileia_pct", "acp_total_pct", "margem_capital_principal_pct", "alavancagem_pct"];
-    return `<div class="card" style="margin-top:12px"><h4>Liquidez e capital — ${termo("pilar-3","Pilar 3")} (KM1) ${badge("observado", "métricas-chave prudenciais no padrão da Res. BCB 54/2020, servidas pela própria instituição no arranjo DASFN do BCB")}</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Métrica</th><th class="num">Último (${p3.periodo_ultimo})</th><th class="num">Mínimo regulatório</th><th>Série</th></tr></thead>
-      <tbody>${ordem.map(linha).join("")}</tbody></table></div>
-      <p class="src">Registrante no DASFN: ${p3.nome}. ${termo("lcr","LCR")} mede 30 dias de estresse de liquidez; ${termo("nsfr","NSFR")} a liquidez estrutural — mínimos de 100%. A margem excedente é o capital acima do requerido com colchões (ACP).</p>
-    </div>`;
-  })()}
-  <div class="grid g2" style="margin-top:12px">
-    <div id="s-carteira" class="card"><h4>Composição da carteira ${pg.carteira.donut_cliente ? badge("observado") : ""}</h4>
-      ${pg.carteira.donut_cliente ? donut(pg.carteira.donut_cliente) : "<p class='src'>detalhamento de carteira não reportado por esta instituição no IF.data.</p>"}
-      ${pg.carteira.perfil ? `<div class="src" style="margin-top:8px">
-        ${pg.carteira.perfil.top_mod_pf ? `<b>Modalidades PF:</b> ${pg.carteira.perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}<br>` : ""}
-        ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
-        ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
-    </div>
-    <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}${pg.evolucao_nota ? `<div class="src" style="margin-top:6px">${pg.evolucao_nota}</div>` : ""}</div>
-  </div>
-  ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
-    <div class="card"><h4>${termo("custo-de-captacao","Custo de captação")} ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
-      ${sc.captacao ? `<div class="big" style="font-size:22px">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:13px">a.a. (estimado)</span></div>
-        <div class="src">Fórmula: ${sc.captacao.formula}.</div>
-        <div class="src">Captações totais ${fmt.money(sc.captacao.captacoes_brl)}${sc.captacao.dep_captacoes_pct != null ? ` · depósitos = ${sc.captacao.dep_captacoes_pct}% das captações` : ""}</div>
-        ${sc.captacao.mix_depositos_pct ? `<div style="margin-top:8px"><b>Mix de depósitos</b>
-          ${Object.entries(sc.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `<div class="contrib"><span class="lbl">${n}</span><span class="bar pos" style="width:${Math.min(s, 100) * 1.6}px"></span><span class="num">${s}%</span></div>`).join("")}</div>` : ""}
-        <div class="src" style="margin-top:6px">${sc.captacao.limitacoes}</div>`
-      : "<p class='src'>funding/DRE desta instituição ainda não coletados na data-base atual — ausência declarada, nunca zero.</p>"}
-    </div>
-    <div class="card"><h4>Modelo de negócio ${badge("calculado")}</h4>
-      ${sc.modelo_negocio ? `
-        ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
-          <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
-        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% ${dica(sc.modelo_negocio.eficiencia_conceito)}
-          <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
-        <div class="src" style="margin-top:6px">
-          ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
-          ${sc.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${sc.modelo_negocio.captacoes_ativo_pct}%` : ""}</div>
-        <div class="src">O perfil da carteira (modalidades PF/PJ dominantes, PME, setores) está na seção Carteira acima — juntos, eles descrevem como a instituição capta, empresta e cobra por serviços.</div>`
-      : "<p class='src'>DRE desta instituição ainda não coletada na data-base atual.</p>"}
-    </div>
-  </div>` : ""}
-  <div class="grid g2" style="margin-top:12px">
-    <div id="s-pares" class="card"><h4>Comparação com o grupo de pares ${badge("calculado")}</h4>
-      <div class="controls"><span class="seg">${cmpKeys.map(k => `<button class="${state.filters.cmpMet === k ? "active" : ""}" onclick="setCmpMet('${k}')">${cmpLbl[k] || k}</button>`).join("")}</span></div>
-      ${histogram(cmp.valores, cmp.meu)}
-      <div class="src">sua posição (linha escura) vs. distribuição do grupo · mediana ${cmp.mediana != null ? fmt.n(cmp.mediana, 2) : "–"} · n=${(cmp.valores || []).length}</div>
-      ${gpc ? `<details class="decomp"><summary>ver composição do grupo de pares (${gpc.quantidade} instituições)</summary>
-        <div class="src" style="margin-top:6px"><b>Critério:</b> ${gpc.criterio}<br>
-        ${gpc.quartis_basileia ? `<b>Quartis de Basileia:</b> q1 ${gpc.quartis_basileia.q1}% · mediana ${gpc.quartis_basileia.mediana}% · q3 ${gpc.quartis_basileia.q3}%<br>` : ""}
-        <b>Maiores membros:</b> ${gpc.maiores_membros.map(m => `<span class="clickable" onclick="openInstPage('${m.cod}')">${m.nome}</span>`).join(" · ")}<br>
-        <b>Estabilidade:</b> ${gpc.estabilidade}</div></details>` : ""}</div>
-    <div id="s-recl" class="card"><h4>Reclamações e atendimento ${badge("observado", "indicador operacional/reputacional — não mede solvência")}</h4>
-      ${pg.reclamacoes.length ? `<div class="big" style="font-size:22px">${pg.reclamacoes[0].indice != null ? fmt.n(pg.reclamacoes[0].indice, 1) : "n/d"}</div>
-        <div class="src">índice em ${pg.reclamacoes[0].periodo} · ${fmt.n0(pg.reclamacoes[0].reclamacoes)} reclamações · ${pg.reclamacoes[0].clientes ? fmt.n0(pg.reclamacoes[0].clientes / 1e6) + " mi clientes" : ""}</div>
-        ${sparkline(pg.reclamacoes.slice().reverse().map(r => r.indice).filter(v => v != null), 150, 26)}
-        <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte} · assuntos por instituição não disponíveis no CSV público</div>`
-      : "<p class='src'>sem correspondência no Ranking de Reclamações do BCB (pode não atingir o volume mínimo do ranking).</p>"}
-      <div class="src" style="margin-top:6px"><b>Citações em RJs (DJEN, 60d):</b> ${pg.rj_citacoes.casos} casos · ${pg.rj_citacoes.nota}</div>
-      ${pg.openfinance ? `<div class="src" style="margin-top:6px"><b>Open Finance:</b> ${pg.openfinance.share_pct}% das chamadas transacionais</div>` : ""}
-    </div>
-  </div>
-  <div id="instSimilares"></div>
-  ${operSec}
-  ${listadaSec}
-  <div id="s-limites" class="card" style="margin-top:12px"><h4>Não disponível nas fontes públicas integradas (ausência ≠ zero)</h4>
-    ${pg.indisponiveis.map(i => `<p class="src"><b>${i.indicador}:</b> ${i.motivo}</p>`).join("")}</div>`;
-  fillInstSimilares(state.filters.instCod);
-}
-async function fillInstSimilares(cod) {
-  const box = document.getElementById("instSimilares");
-  if (!box || !cod) return;
-  const d = await fetchCmp(cod);
-  const sim = d && d.semelhantes;
-  if (!sim || !sim.lista.length) { box.innerHTML = ""; return; }
-  box.innerHTML = `<div class="card" style="margin-top:12px"><h4>Instituições semelhantes ${badge("calculado", sim.criterios)}</h4>
-    <div class="src" style="margin-bottom:6px">Regras explícitas (sem algoritmo opaco): ${sim.criterios}</div>
-    <div class="chips">${sim.lista.map(x => `<span class="chip clickable" onclick="openInstPage('${x.cod}')">${x.nome.slice(0, 26)} <span class="src" style="display:inline">${x.sr || ""} · ${fmt.money(x.ativo_brl)}</span></span>`).join("")}</div>
-    <div style="margin-top:10px"><button class="btn ghost small" onclick='state.cmp.insts = ${'$'}{JSON.stringify([cod].concat(sim.lista.slice(0, 9).map(x => x.cod)))}; saveLS("obc_cmp", state.cmp); showView("compare")'>comparar com semelhantes →</button></div>
-  </div>`;
-}
-window.setCmpMet = k => { state.filters.cmpMet = k; renderInstPage(); };
-window.searchInst = val => {
-  const m = val.match(/\[([A-Z0-9]+)\]\s*$/);
-  const idx = state.data.inst_index && state.data.inst_index.instituicoes || [];
-  let cod = m ? m[1] : null;
-  if (!cod) {
-    const q = val.toLowerCase();
-    const qn = _norm(q);
-    const hit = idx.find(x => _norm(x.nome).includes(qn) || _norm(x.razao).includes(qn));
-    cod = hit && hit.cod;
-  }
-  if (cod) openInstPage(cod);
-};
-
 window.openInstPage = cod => { state.filters.instCod = cod; saveLS("obc_filters", state.filters); showView("inst"); };
 
 /* ---------- OPEN FINANCE ---------- */
@@ -7176,6 +6639,560 @@ window.setFilter = setFilter;
 
 /* ---------- roteador ---------- */
 /* @chunk:emergentes:ini */
+/* ---------- INSTITUIÇÕES (lista e ficha; chunk emergentes desde a v0.101.0) ---------- */
+/* Detalhe de cada linha (decomposição, choques, carteira, captação, modelo de negócio) só é
+   montado quando o leitor abre o details: com 100 linhas, o corpo fechado somava 24,6 mil das
+   32,5 mil palavras da aba e a maior parte dos 10,6 mil nós do DOM (avaliação de 06/09/2026, §16). */
+let INST_POR_COD = {};
+function instDetalheHtml(i) {
+  const v = i.vulnerabilidade;
+  const nd = Object.keys(i.dimensoes).length;
+  return `        <h5>Condição atual — decomposição (${nd} dimensões)</h5>
+        ${Object.entries(i.dimensoes).map(([k, d]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")}</span><span class="bar ${d.risco > 50 ? "neg" : "pos"}" style="width:${d.risco * 0.9}px"></span><span class="num">${d.risco} · valor ${fmt.n(d.valor, 1)} · p${d.percentil_pares} · quartis [${fmt.n(d.q1_pares, 1)}–${fmt.n(d.q3_pares, 1)}]</span></div>`).join("")}
+        ${v ? `<h5>Vulnerabilidade a choques ${badge("cenario")}</h5><div class="src">Cenário ${v.cenario}: Basileia ${fmt.n(v.basileia_atual_pct, 2)}% → ${fmt.n(v.basileia_pos_choque_pct[0], 2)}–${fmt.n(v.basileia_pos_choque_pct[1], 2)}% (impacto ${fmt.pp(v.impacto_basileia_pp[0])} a ${fmt.pp(v.impacto_basileia_pp[1])} p.p.). ${v.metodo}</div>` : ""}
+        ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
+          ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
+          ${i.carteira_perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${i.carteira_perfil.hhi_setorial}${i.carteira_perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${i.carteira_perfil.hhi_cobertura_pct}% setorialmente identificados — "outros" é agregado, nunca entra ao quadrado</span>` : ""}` : ""}
+          ${i.carteira_perfil.top_cnae ? `<br><b>Setores PJ:</b> ${i.carteira_perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_mod_pf ? `<br><b>Modalidades PF:</b> ${i.carteira_perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
+          ${i.carteira_perfil.top_mod_pj ? `<br><b>Modalidades PJ:</b> ${i.carteira_perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 28)} ${s}%`).join(" · ")}` : ""}
+        </div>` : ""}
+        ${i.captacao ? `<h5>Custo de captação ${badge("calculado", i.captacao.formula)}</h5><div class="src">
+          <b>${fmt.n(i.captacao.custo_aa_pct, 2)}% a.a.</b> (estimado; DRE de ${i.captacao.meses_dre} meses anualizada${i.captacao.media_pontas ? ", média das pontas" : ", ponta única"})
+          ${i.captacao.dep_captacoes_pct != null ? ` · depósitos = ${i.captacao.dep_captacoes_pct}% das captações` : ""}
+          ${i.captacao.mix_depositos_pct ? `<br><b>Mix de depósitos:</b> ${Object.entries(i.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `${n} ${s}%`).join(" · ")}` : ""}
+          <br>${i.captacao.limitacoes}</div>` : ""}
+        ${i.modelo_negocio ? `<h5>Modelo de negócio ${badge("calculado")}</h5><div class="src">
+          ${i.modelo_negocio.receita_servicos_pct != null ? `<b>Serviços na receita operacional:</b> ${i.modelo_negocio.receita_servicos_pct}% ${dica(i.modelo_negocio.receita_servicos_conceito)} · ` : ""}
+          ${i.modelo_negocio.eficiencia_pct != null ? `<b>eficiência:</b> ${i.modelo_negocio.eficiencia_pct}% ${dica(i.modelo_negocio.eficiencia_conceito)} · ` : ""}
+          ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
+          ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
+        </div>` : ""}
+        <div class="src">Peso igual entre dimensões disponíveis; dimensão sem dado é omitida, nunca imputada.</div>`;
+}
+function renderInstitutions() {
+  const el = document.getElementById("view-institutions");
+  const inst = state.data.institutions;
+  if (!inst || !inst.ok) { el.innerHTML = "<p>sem dados de instituições</p>"; return; }
+  const f = state.filters;
+  const groups = ["todos", ...Object.keys(inst.grupos).sort()];
+  let list = [...inst.instituicoes];
+  if (f.instGroup !== "todos") list = list.filter(i => i.grupo_pares === f.instGroup);
+  /* tipo pela classificação TCB do próprio BCB: B3C/B3S = cooperativas;
+     B1/B2/B4 = bancos; N* = não bancárias. Nunca por heurística de nome. */
+  const tipoDe = (i) => /^B3/.test(i.tcb || "") ? "coop" : /^B/.test(i.tcb || "") ? "banco" : "naobanco";
+  if ((f.instTipo || "todos") !== "todos") list = list.filter(i => tipoDe(i) === f.instTipo);
+  const nplMap = {};
+  if (state.data.npl && state.data.npl.ok) state.data.npl.instituicoes.forEach(x => { nplMap[x.cod_inst] = x; });
+  const sorters = {
+    ativo: (a, b) => b.ativo_total_brl - a.ativo_total_brl,
+    score: (a, b) => b.score - a.score,
+    nome: (a, b) => a.nome.localeCompare(b.nome),
+    inad: (a, b) => ((nplMap[b.cod_inst] || {}).inad_pct || -1) - ((nplMap[a.cod_inst] || {}).inad_pct || -1),
+    deterioracao: (a, b) => ((nplMap[b.cod_inst] || {}).d_ano_pp ?? -99) - ((nplMap[a.cod_inst] || {}).d_ano_pp ?? -99),
+  };
+  list.sort(sorters[f.sortInst] || sorters.ativo);
+  const rows = list.map(i => {
+    const v = i.vulnerabilidade;
+    const nd = Object.keys(i.dimensoes).length;
+    return `
+    <tr>
+      <td><b>${i.nome}</b> ${favStar("institutions", i.cod_inst, i.nome)}
+        <button class="btn ghost small" onclick="openInstPage('${i.cod_inst}')">página completa →</button>
+        <div class="src">${i.grupo_pares_label}${i.grupo_fallback ? " · <i>grupo pequeno: comparado ao conjunto completo</i>" : ""}</div></td>
+      <td>${fmt.money(i.ativo_total_brl)}<div class="src">carteira ${fmt.money(i.carteira_brl)}</div></td>
+      <td>${i.basileia_pct != null ? fmt.n(i.basileia_pct, 1) + "%" : "<span class='src'>não reportado</span>"}${i.capital_principal_pct != null ? `<div class="src">CP ${fmt.n(i.capital_principal_pct, 1)}%</div>` : ""}</td>
+      <td>${(function(){
+        const n = state.data.npl; const q = n && n.ok ? n.instituicoes.find(x => x.cod_inst === i.cod_inst) : null;
+        return q ? `<b>${fmt.n(q.inad_pct, 2)}%</b><div class="src">Δtri ${fmt.pp(q.d_tri_pp)} · 4T ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) : "–"} p.p.</div><div class="src ${q.tendencia.includes("piora") ? "up" : q.tendencia === "melhora" ? "down good" : ""}">${q.tendencia}</div>` : "<span class='src'>n/d</span>";
+      })()}</td>
+      <td>${fmt.n(i.dimensoes.rentabilidade ? i.dimensoes.rentabilidade.valor : null, 1)}% <span class="src">med. ${i.dimensoes.rentabilidade ? fmt.n(i.dimensoes.rentabilidade.mediana_pares, 1) : "–"}%</span></td>
+      <td><span class="scorebar"><i style="left:${i.score * 0.9}px"></i></span> <b>${i.score}</b>
+        ${i.score_delta != null ? `<span class="${i.score_delta > 0 ? "up" : "down good"}">(${fmt.pp(i.score_delta)})</span>` : ""}
+        <div class="src">${i.faixa} · ${i.dimensoes_disponiveis} dim.</div></td>
+      <td>${sparkline((i.historico_score || []).map(h => h.score))}<div class="src">${(i.historico_score || []).length} trim.</div></td>
+      <td>${v ? `${fmt.n(v.basileia_pos_choque_pct[0], 1)}–${fmt.n(v.basileia_pos_choque_pct[1], 1)}% ${badge("cenario", v.metodo)}<div class="src">Δinad ${fmt.pp(v.delta_inad_pp[0])} a ${fmt.pp(v.delta_inad_pp[1])} p.p.</div>` : "<span class='src'>sem RWA/Basileia</span>"}</td>
+      <td><details class="decomp" data-inst="${i.cod_inst}"><summary>abrir</summary><div class="lazy src">carregando…</div></details></td>
+    </tr>`;
+  }).join("");
+  el.innerHTML = `
+  ${pageHead({ title: "Instituições",
+    desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. Cada linha abre a página completa da instituição.",
+    fontes: "BCB IF.data (Olinda + interface)" })}
+  ${(() => {
+    const todos = inst.instituicoes || [];
+    const nAlto = todos.filter(i => /elevado/.test(i.faixa || "")).length;
+    const nPiora = todos.filter(i => i.score_delta != null && i.score_delta > 0).length;
+    const basMed = _mediana(todos.map(i => i.basileia_pct));
+    const N = state.data.npl && state.data.npl.ok ? state.data.npl : null;
+    const tri = fmtTri(inst.anomes);
+    return abertura({
+      placar: [
+        { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}` },
+        { l: "Em risco elevado ou muito elevado", v: todos.length ? fmt.n0(nAlto) : null, sub: `${fmt.n0(nPiora)} pioraram o score no trimestre` },
+        { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
+        { l: "Inadimplência mediana", v: N ? fmt.pct(N.sistema.mediana_inad_pct, 2) : null, sub: N ? `${fmt.n0(N.n_instituicoes)} instituições com carteira · ${fmt.n0(N.sistema.subindo_no_trimestre)} subindo no trimestre · ${N.data_base}` : "" },
+      ],
+      sintese: [
+        todos.length ? `Dos ${todos.length} maiores conglomerados por ativo em ${tri}, ${nAlto} estão em risco elevado ou muito elevado pelo score de pares e ${nPiora} pioraram no trimestre.` : null,
+        basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
+        "O score compara cada instituição com o próprio grupo de pares (S1 a S5); é régua relativa, não nota de solvência.",
+      ],
+      ref: `BCB IF.data ${tri} · quartis por grupo de pares · método em Metodologia`,
+    });
+  })()}
+  <div class="controls">
+    <input id="instSearch" list="instList" type="text" placeholder="🔍 buscar qualquer instituição (${(state.data.inst_index && state.data.inst_index.instituicoes || []).length} com página)" style="min-width:300px;border:1px solid var(--border);border-radius:6px;padding:7px 12px" onchange="searchInst(this.value)">
+    <datalist id="instList">${(state.data.inst_index && state.data.inst_index.instituicoes || []).slice(0, 1500).map(x => `<option value="${x.nome.replace(/"/g, "")} [${x.cod}]">`).join("")}</datalist>
+  </div>
+  <div class="controls">
+    <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
+    <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
+    <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
+    <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
+  </div>
+  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
+    <div class="note" style="margin-top:6px"><b>Método:</b> ${inst.metodo}<br><b>Limitações:</b> ${inst.limitacoes}</div></details>
+  ${guidanceSecao()}
+  ${regimesSecao()}
+  ${coopSecao(inst)}
+  ${interconexaoSecao(inst)}
+  ${chartFooter({ fonte: `BCB IF.data (Olinda), conglomerados prudenciais, ${inst.anomes}`, periodo: inst.anomes + (inst.anomes_anterior ? ` (Δ vs. ${inst.anomes_anterior})` : ""), atualizado: state.data.meta ? state.data.meta.gerado_em.slice(0, 10) : "–", unidade: "R$", nota: inst.metodo })}`;
+  INST_POR_COD = Object.fromEntries(list.map(i => [i.cod_inst, i]));
+  el.querySelectorAll("details[data-inst]").forEach(d => d.addEventListener("toggle", () => {
+    if (!d.open || d.dataset.pronto) return;
+    d.dataset.pronto = "1";
+    const alvo = d.querySelector(".lazy");
+    if (alvo && INST_POR_COD[d.dataset.inst]) alvo.outerHTML = instDetalheHtml(INST_POR_COD[d.dataset.inst]);
+  }));
+}
+
+/* Promessas × entrega (Fase 2 — publica só aprovado): guidance dos grandes
+   listados, cada banco SÓ contra o próprio guidance. 'dentro/acima/abaixo'
+   é posição aritmética no intervalo declarado, não juízo de mérito — nunca
+   ranking nem média de cumprimento entre bancos. */
+/* Rótulo de setor CNAE: o balde "outros" da fonte é um agregado residual —
+   nunca aparece como se fosse um setor. */
+const setorLabel = (k) => k === "outros" ? "outros (não classificados)" : k.replace(/_/g, " ");
+
+/* Bloco de um ciclo de guidance — compartilhado entre a seção da aba
+   Instituições e a ficha individual da IF, para as duas superfícies nunca
+   divergirem em régua ou evidência. */
+function guidSitChip(m) {
+  return m.situacao === "dentro" ? `<span class="chip" style="background:var(--ok-bg,#e8f2ea)">dentro</span>`
+    : m.situacao === "em_curso" ? `<span class="chip">em curso</span>`
+    : `<span class="chip" style="background:var(--warn-bg,#f6ead8)">${m.situacao}</span>`;
+}
+function guidFaixa(m) {
+  if (m.realizado == null) return `${fmt.n(m.min, 1)} a ${fmt.n(m.max, 1)} ${m.unidade}`;
+  return `${fmt.n(m.min, 1)}–${fmt.n(m.max, 1)} → <b>${fmt.n(m.realizado, 1)}</b> ${m.unidade}`;
+}
+function guidCicloBloco(c) {
+  return `
+    <h5 style="margin:12px 0 4px">${c.banco} · ${c.ano}${c.tipo === "guidance_vigente" ? " (em curso)" : c.tipo === "ausencia_declarada" ? "" : " — fechado"}
+      <span class="src">· aferido por: ${c.aferido_por === "companhia" ? "própria companhia" : "Observatório (fórmula declarada por métrica)"}</span></h5>
+    ${c.tipo === "ausencia_declarada" ? `<p class="src">${c.conceito}</p>` : `
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Métrica (conceito do próprio banco)</th><th>Intervalo → realizado</th><th>Situação</th></tr></thead>
+      <tbody>${(c.metricas || []).map(m => `<tr>
+        <td>${m.nome}${m.formula ? ` ${dica(m.formula)}` : ""}${m.nota ? ` <span class="src">(${m.nota})</span>` : ""}</td>
+        <td>${guidFaixa(m)}</td><td>${guidSitChip(m)}</td></tr>`).join("")}</tbody></table></div>`}
+    ${(c.acompanhamentos || []).map(a => `<div class="note ${a.tipo === "revisao" ? "warn" : ""}" style="margin:6px 0">
+      <b>${a.periodo} — ${a.tipo === "revisao" ? "guidance REVISADO" : "acompanhamento"}:</b> ${a.resumo}
+      ${a.realizado_parcial ? `<br><span class="src">${a.realizado_parcial.map(r => `${r.metrica}: ${fmt.n(r.valor, 1)} (${r.unidade})`).join(" · ")}</span>` : ""}
+      <br><span class="src">Evidência: ${a.pagina} — <a href="${attr(a.documento.url)}" target="_blank" rel="noopener">${(a.documento.titulo || "documento").slice(0, 52)}</a></span></div>`).join("")}
+    ${c.acompanhamento_pendente ? `<p class="src">⏳ ${c.acompanhamento_pendente}</p>` : ""}
+    <p class="src">${c.conceito} · Evidência: ${c.pagina} — ${Object.values(c.documentos || {}).map(d =>
+      `<a href="${attr(d.url)}" target="_blank" rel="noopener">${(d.titulo || "documento").slice(0, 52)}</a>`).join(" · ")}</p>`;
+}
+
+function guidanceSecao() {
+  const G = state.data.guidance;
+  if (!G || !G.disponivel) return "";
+  if (!(G.ciclos || []).length) {
+    return G.em_revisao ? `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — guidance dos grandes listados</h4>
+      <p class="src">${fmt.n0(G.em_revisao)} ciclo(s) de guidance extraídos dos documentos oficiais (CVM/IPE) aguardando revisão
+      editorial — nada é publicado sem aprovação humana e evidência (documento, página e trecho).</p></div>` : "";
+  }
+  const cards = G.ciclos.map(guidCicloBloco).join("");
+  return `<div class="card" style="margin-top:12px"><h4>Promessas × entrega — ${termo("guidance","guidance")} dos grandes listados ${badge("observado", G.fonte.nota)}</h4>
+    <p style="margin:6px 0">${G.leitura}</p>
+    ${cards}
+    ${(G.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+    <p class="src">${G.fonte.nome} · nível ${G.fonte.nivel}${G.em_revisao ? ` · ${fmt.n0(G.em_revisao)} ciclo(s) ainda em revisão` : ""}${G.acompanhamentos_em_revisao ? ` · ${fmt.n0(G.acompanhamentos_em_revisao)} acompanhamento(s) trimestral(is) aguardando revisão editorial` : ""}.</p></div>`;
+}
+
+/* O risco realizado, ao vivo: instituições sob regime de resolução do BCB
+   (lista oficial vigente, diária) + memória acumulada pelo Observatório.
+   Regime em instituição pequena NÃO é sinal sistêmico — dito na cautela. */
+function regimesSecao() {
+  const R = state.data.regimes;
+  if (!R || !R.disponivel) return "";
+  const linhas = (R.vigentes || []).map(v => `<tr>
+    <td><b>${v.nome}</b><div class="src">CNPJ ${v.cnpj8} · ${v.municipio || "–"}/${v.uf || "–"}</div></td>
+    <td>${v.tipo}</td><td>${v.inicio}</td>
+    <td class="src">${v.responsavel || "–"}</td></tr>`).join("");
+  const enc = R.encerrados_ou_saidos || [];
+  return `<div class="card" id="sec-regimes" style="margin-top:12px"><h4>Sob ${termo("regime-de-resolucao","regime de resolução")} do BCB ${badge("observado", "lista oficial vigente do BCB (Olinda regimes_especiais), atualização diária")}</h4>
+    <p style="margin:6px 0">${R.leitura}</p>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Instituição</th><th>Regime</th><th>Decretado em</th><th>Responsável nomeado</th></tr></thead>
+      <tbody>${linhas}</tbody></table></div>
+    ${enc.length ? `<details class="decomp"><summary>saíram da lista vigente desde o início do acompanhamento (${enc.length})</summary>
+      <div class="src" style="margin-top:6px">${enc.map(e => `${e.nome} — ${e.tipo}, decretado ${e.inicio}; fora da lista após ${e.saiu_da_lista_apos}`).join("<br>")}</div></details>` : ""}
+    ${(R.cautelas || []).map(c => `<p class="src">${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(R.fonte.url)}" target="_blank" rel="noopener">${R.fonte.nome}</a> · nível ${R.fonte.nivel}.</p></div>`;
+}
+
+/* Cooperativas no corte: visibilidade do segmento que mais cresce, pela
+   classificação TCB do próprio BCB (B3C centrais, B3S singulares) — nunca
+   heurística de nome. Somar ativos aqui é legítimo: mesma métrica contábil
+   do mesmo relatório; o denominador é o CORTE (top-N), não o sistema. */
+function coopSecao(inst) {
+  const insts = inst.instituicoes || [];
+  const coops = insts.filter(i => /^B3/.test(i.tcb || ""));
+  if (!coops.length) return "";
+  const atCoop = coops.reduce((s, i) => s + i.ativo_total_brl, 0);
+  const atTodos = insts.reduce((s, i) => s + i.ativo_total_brl, 0);
+  const centrais = coops.filter(i => i.tcb === "B3C").length;
+  return `<div class="card" style="margin-top:12px"><h4>Cooperativas de crédito no corte ${badge("observado", "classificação TCB do IF.data: B3C = centrais/confederações, B3S = singulares; os bancos cooperativos (Sicredi, Sicoob) são B1 e entram como bancos")}</h4>
+    <div class="pan-kpi" style="grid-template-columns:repeat(auto-fill,minmax(170px,1fr))">
+      <div><div class="src">no corte das ${insts.length} maiores</div><div class="big" style="font-size:20px">${coops.length} cooperativas</div></div>
+      <div><div class="src">centrais/confederações</div><div class="big" style="font-size:20px">${centrais}</div></div>
+      <div><div class="src">ativo somado (corte)</div><div class="big" style="font-size:20px">${fmt.money(atCoop)}</div></div>
+      <div><div class="src">share do ativo do corte</div><div class="big" style="font-size:20px">${fmt.n(atCoop / atTodos * 100, 1)}%</div></div>
+    </div>
+    <p class="src">Os bancos cooperativos (Banco Sicredi, Banco Sicoob) são TCB B1 e aparecem no filtro "bancos" — o braço bancário dos sistemas, não as cooperativas em si. O share é do CORTE dos ${insts.length} maiores, não do sistema inteiro. Use o filtro "cooperativas" acima para isolar o segmento na tabela.</p></div>`;
+}
+
+/* Interconexão via funding: quanto das captações de cada IF vem de DEPÓSITOS
+   INTERFINANCEIROS — dinheiro de outras instituições. É um PROXY do lado
+   passivo: a matriz bilateral (quem deve a quem) NÃO é pública, e isso é
+   dito. Calculado dos blocos de captação já publicados por IF. */
+function interconexaoSecao(inst) {
+  const linhas = (inst.instituicoes || [])
+    .filter(i => i.captacao && i.captacao.mix_depositos_pct &&
+                 i.captacao.mix_depositos_pct.interfinanceiro != null && i.captacao.dep_captacoes_pct != null)
+    .map(i => {
+      const cap = i.captacao;
+      const interfDasCaptacoes = cap.mix_depositos_pct.interfinanceiro * cap.dep_captacoes_pct / 100;
+      return { nome: i.nome, cod: i.cod_inst, pct: interfDasCaptacoes,
+               vol: cap.captacoes_brl * interfDasCaptacoes / 100, mixDep: cap.mix_depositos_pct.interfinanceiro };
+    })
+    .filter(x => x.pct >= 1)
+    .sort((a, b) => b.pct - a.pct);
+  if (!linhas.length) return "";
+  return `<div class="card" style="margin-top:12px"><h4>Interconexão — funding interfinanceiro ${badge("calculado", "depósitos interfinanceiros ÷ captações totais, dos blocos de captação por IF (IF.data UI)")}</h4>
+    <p style="margin:6px 0">Quanto das captações de cada instituição vem de depósitos de OUTRAS instituições — a dependência de funding bancário de atacado, um canal clássico de contágio. Proxy do lado passivo: a matriz bilateral (quem deve a quem) não é pública.</p>
+    <div class="tblwrap"><table class="data compact">
+      <thead><tr><th>Instituição</th><th class="num" title="depósitos interfinanceiros ÷ captações totais">Interfinanceiro / captações</th><th class="num">Volume estimado</th><th class="num">% dos depósitos</th></tr></thead>
+      <tbody>${linhas.slice(0, 15).map(x => `<tr>
+        <td><b>${x.nome}</b> <button class="btn ghost small" onclick="openInstPage('${x.cod}')">ficha →</button></td>
+        <td class="num"><b>${fmt.n(x.pct, 1)}%</b></td>
+        <td class="num">${fmt.money(x.vol)}</td>
+        <td class="num src">${fmt.n(x.mixDep, 1)}%</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Corte de exibição: dependência ≥ 1% das captações. Nas centrais cooperativas o interfinanceiro alto é DESENHO do sistema (as singulares depositam na central), não fragilidade — mais um motivo para nunca ler esta tabela como ranking de risco.</p></div>`;
+}
+
+/* ---------- helpers visuais do formato v0.14 ---------- */
+const DONUT_COLORS = ["#1d4e89", "#0e7c7b", "#b45309", "#6b46a3", "#c2540a", "#64748b"];
+function donut(items, size = 130) {
+  const tot = items.reduce((s, i) => s + i.v, 0);
+  if (!tot) return "";
+  let a0 = -Math.PI / 2, paths = "";
+  const cx = size / 2, cy = size / 2, R = size / 2 - 4, r = size / 4.2;
+  items.forEach((it, i) => {
+    const a1 = a0 + it.v / tot * 2 * Math.PI;
+    const large = a1 - a0 > Math.PI ? 1 : 0;
+    const p = (a, rr) => `${cx + rr * Math.cos(a)},${cy + rr * Math.sin(a)}`;
+    const tip = encodeURIComponent(`<div class="tt-date">${it.label}</div><div class="tt-row"><span class="tt-lbl">participação</span><span class="tt-val">${fmt.n(it.v / tot * 100, 1)}%</span></div>${it.v > 1e8 ? `<div class="tt-row"><span class="tt-lbl">valor</span><span class="tt-val">${fmt.money(it.v)}</span></div>` : ""}`);
+    paths += `<path d="M${p(a0, R)} A${R},${R} 0 ${large} 1 ${p(a1, R)} L${p(a1, r)} A${r},${r} 0 ${large} 0 ${p(a0, r)} Z" data-tip="${tip}" style="fill:${ccol(DONUT_COLORS[i % DONUT_COLORS.length])}"/>`;
+    a0 = a1;
+  });
+  const legend = items.map((it, i) => `<div class="contrib"><span class="sw" style="background:${ccol(DONUT_COLORS[i % DONUT_COLORS.length])};width:10px;height:10px;border-radius:2px"></span><span class="lbl" style="width:auto">${it.label}</span><span class="num">${fmt.n(it.v / tot * 100, 1)}%${it.v > 1e8 ? ` · ${fmt.money(it.v)}` : ""}</span></div>`).join("");
+  return `<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><svg width="${size}" height="${size}" aria-hidden="true">${paths}</svg><div>${legend}</div></div>`;
+}
+
+/* ---------- PÁGINA INDIVIDUAL DA INSTITUIÇÃO (pilotos) ---------- */
+function renderInstPage() {
+  const el = document.getElementById("view-inst");
+  const cod = state.filters.instCod;
+  if (!cod) { el.innerHTML = "<p>selecione uma instituição na aba Instituições.</p>"; return; }
+  state.instCache = state.instCache || {};
+  if (state.instCache[cod]) { renderInstPageData(el, state.instCache[cod]); return; }
+  el.innerHTML = loadingCard("página da instituição");
+  // A promessa em voo também entra no cache: dois renders em sequência rápida — o
+  // segundo vinha do fluxo de navegação antes de o primeiro fetch resolver — disparavam
+  // a mesma requisição duas vezes. Cachear só o dado resolvido não impede isso.
+  state.instFetch = state.instFetch || {};
+  if (!state.instFetch[cod]) {
+    state.instFetch[cod] = fetch(`${DATA_BASE}inst/${cod}.json?v=${APP_VERSION}`)
+      .then(r => { if (!r.ok) throw 0; return r.json(); });
+  }
+  state.instFetch[cod]
+    .then(p => { state.instCache[cod] = p; if (state.filters.instCod === cod) renderInstPageData(el, p); })
+    .catch(() => { delete state.instFetch[cod]; el.innerHTML = "<p>página indisponível para este código de instituição.</p>"; });
+}
+
+function renderInstPageData(el, pg) {
+  const cab = pg.cabecalho;
+  const sc = pg.score_ref || {};
+  const kpiCard = k => `<div class="card kpi">
+    <h4>${k.label}</h4>
+    <div class="big" style="font-size:21px">${k.unit === "R$" ? fmt.money(k.v) : fmt.n(k.v, 2) + k.unit}</div>
+    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down good" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : ""}
+    ${k.hist && k.hist.length > 2 ? sparkline(k.hist, 150, 30) : ""}
+    <div class="src">${k.fonte}</div></div>`;
+  const destIcon = t => t === "ok" ? "✅" : "⚠️";
+  const capRow = c => `<tr><td>${c.indicador}</td><td><b>${fmt.n(c.valor, 2)}${c.unit}</b></td>
+    <td>${c.d_tri != null ? fmt.pp(c.d_tri) + " p.p." : "–"}</td>
+    <td class="${c.vs_pares === "abaixo" && c.indicador.includes("Basileia") ? "up" : "neutral"}">${c.vs_pares || "–"} <span class="src">(med. ${c.mediana_grupo != null ? fmt.n(c.mediana_grupo, 1) : "–"})</span></td>
+    <td>${c.percentil != null ? "p" + c.percentil : "–"}</td></tr>`;
+  const evolLabels = Object.keys(pg.evolucao_base100 || {});
+  let evolChart = "";
+  if (evolLabels.length) {
+    const cores = ["#1d4e89", "#0e7c7b", "#b45309"];
+    const series = evolLabels.map((l, i) => ({ pts: pg.evolucao_base100[l].map(o => ({ x: o.p, y: o.v })), color: cores[i % 3], label: l }));
+    evolChart = `<div class="legend">${evolLabels.map((l, i) => `<span><span class="sw" style="background:${cores[i % 3]}"></span>${l}</span>`).join("")}</div>` +
+      lineChart({ series, h: 170, unit: "base 100", fonte: "BCB/IF.data", status: "observado" }) + `<div class="src">base 100 = ${pg.evolucao_base100[evolLabels[0]][0].p} · fonte: IF.data</div>`;
+  }
+  const cmpKeys = Object.keys(pg.comparacao_grupo || {});
+  state.filters.cmpMet = cmpKeys.includes(state.filters.cmpMet) ? state.filters.cmpMet : cmpKeys[0];
+  const cmp = pg.comparacao_grupo[state.filters.cmpMet] || {};
+  const cmpLbl = { roe: "ROE do período (%)", basileia: "Índice de Basileia (%)", alav: "Alavancagem (×)" };
+  const re = pg.resumo_executivo;
+  const gpc = pg.grupo_pares_composicao;
+  const smeta = pg.score_meta;
+  const operSec = operBlocoInst(cab);
+  const listadaSec = instListadaSecao(pg, cab);
+  const temCaptacao = !!(sc.captacao || sc.modelo_negocio);
+  const subnavItens = [["#s-resumo","Visão Geral"],["#s-kpis","Indicadores"],["#s-risco","Risco e Inadimplência"],["#s-atraso-prod","Atraso por Produto"],["#s-carteira","Carteira"]]
+    .concat(temCaptacao ? [["#s-captacao","Captação/Modelo"]] : [])
+    .concat([["#s-capital","Capital"],["#s-pares","Comparáveis"],["#s-recl","Reclamações/OF/RJ"]])
+    .concat(operSec ? [["#s-oper","Operacional"]] : [])
+    .concat(listadaSec.includes('id="s-guidance"') ? [["#s-guidance","Guidance"]] : [])
+    .concat(listadaSec.includes('id="s-rem"') ? [["#s-rem","Remuneração"]] : [])
+    .concat([["#s-limites","Limitações"]]);
+  const subnav = subnavFixa(subnavItens);
+  el.innerHTML = `
+  <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
+    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
+  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+    <div style="flex:2;min-width:300px">
+      <h2 style="margin:4px 0">${cab.nome_comercial} <span class="seal aprox">${cab.consolidacao}</span></h2>
+      <div class="src" style="margin-bottom:8px">${cab.razao_social_fonte_bcb} · ${cab.tcb || ""} · ${cab.sede} · Código BCB ${cab.codigo_bcb} · CNPJ ${cab.cnpj}</div>
+      <div class="chips">
+        <span class="chip">Segmento ${cab.segmento}</span>
+        <span class="chip">${cab.grupo_pares} · ${cab.n_pares} pares</span>
+        <span class="chip">Capital ${cab.capital}</span>
+        ${cab.modelo ? `<span class="chip">${cab.modelo}</span>` : ""}
+        ${cab.participante_open_finance ? `<span class="chip">Open Finance: no top-20 de chamadas</span>` : ""}
+        <span class="chip">Conglomerado ${cab.conglomerado_prudencial || "–"}</span>
+      </div>
+      ${cab.aviso_pares ? `<div class="note warn" style="margin-top:8px"><b>Comparabilidade:</b> ${cab.aviso_pares}</div>` : ""}
+      ${guiaPagina("inst")}${fontePane("inst")}
+    </div>
+    <div class="card" style="flex:1;min-width:230px">
+      <h4>${termo("score-relativo","Score de risco")} ${badge("calculado")}</h4>
+      ${sc.score != null ? `<div class="big">${sc.score}<span style="font-size:13px">/100</span></div>
+        <div class="delta neutral">${sc.faixa}${sc.score_delta != null ? ` · ${fmt.pp(sc.score_delta)} no trim.` : ""} · relativo aos pares</div>
+        <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
+        ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
+        ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
+        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} ${dica(smeta.confianca_motivo)} · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
+      : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
+      <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
+    </div>
+  </div>
+  ${subnav}
+  <div id="s-resumo" class="card" style="margin-top:12px"><h4>Resumo executivo ${badge("calculado", "frases por regras determinísticas; cada uma com base declarada")}</h4>
+    ${re ? `<p style="font-size:15px"><b>${re.avaliacao_geral.texto}</b> <span class="src">[${re.avaliacao_geral.base}]</span></p>
+    <div class="cols2">
+      <div><h5 class="down good">Pontos fortes</h5>${re.pontos_fortes.length ? re.pontos_fortes.map(d => `<p style="margin:4px 0">✅ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
+      <div><h5 class="up">Pontos de atenção</h5>${re.pontos_atencao.length ? re.pontos_atencao.map(d => `<p style="margin:4px 0">⚠️ ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>nenhum calculável.</p>"}</div>
+    </div>
+    ${re.mudancas_recentes.length ? `<h5>Mudanças recentes</h5>${re.mudancas_recentes.map(m => `<p style="margin:3px 0" class="src">• ${m.texto} [${m.base}]</p>`).join("")}` : ""}
+    <h5>Limitações informacionais</h5><p class="src">${re.limitacoes_informacionais.join(" · ")}</p>` : ""}
+  </div>
+  <div id="s-kpis" class="kpirow">${pg.kpis.map(kpiCard).join("")}</div>
+  ${(function(){
+    const n = state.data.npl; const q = n && n.ok ? n.instituicoes.find(x => x.cod_inst === pg.cod_inst) : null;
+    if (!q) return `<div id="s-risco" class="card" style="margin-top:12px"><h4>Risco e Inadimplência</h4>
+      <p class="src">O IF.data público integrado não traz a carteira inadimplente desta instituição nesta data-base (relatório por instrumentos financeiros) — ausência não é zero.</p></div>`;
+    const grp = n.grupos[q.grupo] || {};
+    const serie = q.serie.map(s => ({ x: s.p, y: s.inad_pct }));
+    const hl = [];
+    if (q.mediana_pares != null) hl.push({ y: q.mediana_pares, color: "#0e7c7b", label: "mediana grupo (atual)" });
+    if (grp.quartis && grp.quartis.q3 != null) hl.push({ y: grp.quartis.q3, color: "#b45309", label: "q3 grupo (atual)" });
+    return `<div id="s-risco" class="card" style="margin-top:12px">
+      <h4>Risco e Inadimplência ${badge("observado", n.metodo)} <span class="src">data-base ${n.data_base} · ${n.nivel_consolidacao}</span></h4>
+      <div class="kpirow">
+        <div class="card kpi"><h4>${termo("inadimplencia-90","Inadimplência (>90d)")} ${inadChip("if90")}</h4><div class="big" style="font-size:21px">${fmt.n(q.inad_pct, 2)}%</div>
+          <div class="delta ${(q.d_tri_pp||0) > 0 ? "up" : "down good"}">${q.d_tri_pp != null ? fmt.pp(q.d_tri_pp) + " p.p. no tri" : ""} · ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) + " p.p. em 4T" : "4T: histórico insuficiente"}</div>
+          <div class="src">tendência: <b>${q.tendencia}</b> (regra analítica ±0,20/0,50 p.p. — não regulatória)</div></div>
+        <div class="card kpi"><h4>Posição nos pares (${q.grupo})</h4><div class="big" style="font-size:21px">p${q.percentil_pares}</div>
+          <div class="src">mediana ${fmt.n(q.mediana_pares, 2)}%${grp.quartis ? ` · q1 ${grp.quartis.q1}% · q3 ${grp.quartis.q3}%` : ""} · n=${grp.n || "–"}</div></div>
+        <div class="card kpi"><h4>${termo("ativos-problematicos","Ativos problemáticos")}</h4><div class="big" style="font-size:21px">${q.ativos_problematicos_pct != null ? fmt.n(q.ativos_problematicos_pct, 2) + "%" : "n/d"}</div><div class="src">conceito Res. 4.966 (inclui reestruturados/estágio 3)</div></div>
+        <div class="card kpi"><h4>Cobertura contábil aprox.</h4><div class="big" style="font-size:21px">${q.cobertura_pct != null ? fmt.n(q.cobertura_pct, 0) + "%" : "n/d"}</div>
+          <div class="src">${q.d_cobertura_pp != null ? `Δ ${fmt.pp(q.d_cobertura_pp)} p.p. no tri · ` : ""}perda esperada de crédito ÷ carteira >90d — a provisão cobre também operações em dia; não é razão regulatória</div></div>
+      </div>
+      <div class="grid g2" style="margin-top:10px">
+        <div class="card"><h4>Série (máx. disponível: ${q.serie.length} trimestres — metodologia vigente desde 2025-T1)</h4>
+          <div class="legend"><span><span class="sw" style="background:var(--c-line1)"></span>instituição</span><span><span class="sw" style="background:var(--c-line2)"></span>mediana do grupo (trimestre atual)</span><span><span class="sw" style="background:var(--c-line3)"></span>q3 do grupo (atual)</span></div>
+          ${lineChart({ series: [{ pts: serie, color: "#1d4e89" }], hlines: hl, h: 160 })}
+          <div class="src">máx/mín de 3 anos indisponível: a estrutura por instrumentos financeiros existe desde 2025-T1 (sem quebra interna na amostra).</div></div>
+        <div class="card"><h4>Comparação temporal</h4>
+          <div class="tblwrap"><table class="data compact"><thead><tr><th>Data-base</th><th>Inadimplência</th><th>Carteira</th></tr></thead>
+          <tbody>${q.serie.map(s => `<tr><td>${s.p}</td><td>${fmt.n(s.inad_pct, 2)}%</td><td>${fmt.money(s.carteira_brl)}</td></tr>`).join("")}</tbody></table></div>
+          ${q.quadrante ? `<div class="src" style="margin-top:6px"><b>Matriz crescimento × inadimplência:</b> ${q.quadrante} (crescimento 4T: ${q.cresc_carteira_4t_pct != null ? fmt.pp(q.cresc_carteira_4t_pct) + "%" : "n/d"}) — leitura analítica, não score de solvência.</div>` : ""}
+          ${q.alertas.length ? `<div style="margin-top:6px">${q.alertas.map(a => `<div class="alert ${a.severidade}" style="padding:6px 10px"><span class="lvl">${a.severidade}</span> ${a.regra}: <b>${fmt.n(a.valor, 2)}</b> <span class="src">(IF.data ${n.data_base}, grupo ${q.grupo})</span></div>`).join("")}</div>` : ""}
+        </div>
+      </div>
+      <div class="src" style="margin-top:6px"><b>Decomposição por modalidade:</b> a inadimplência >90d desta instituição não é decomposta por modalidade na fonte pública; o ATRASO ≥15 dias por produto está na seção abaixo (conceito distinto). A inadimplência isolada não mede solvência.</div>
+    </div>`;
+  })()}
+  ${(function(){
+    const ap = pg.atraso_produtos;
+    if (!ap || !ap.itens || !ap.itens.length) return "";
+    const row = i => `<tr class="clickable" onclick="openProduct('${i.slug}')">
+      <td><b>${i.produto}</b> <span class="chip" style="padding:0 7px;font-size:10.5px">${i.seg}</span></td>
+      <td style="text-align:right">${fmt.money(i.carteira_brl)}</td>
+      <td style="text-align:right"><b>${i.atraso15_pct != null ? fmt.n(i.atraso15_pct, 2) + "%" : "–"}</b></td>
+      <td style="text-align:right">${i.mediana_produto_pct != null ? fmt.n(i.mediana_produto_pct, 2) + "%" : "–"}</td>
+      <td style="text-align:right" class="${i.percentil_no_produto != null && i.atraso15_pct != null && i.mediana_produto_pct != null ? (i.atraso15_pct > i.mediana_produto_pct ? "up" : "down good") : "neutral"}">${i.percentil_no_produto != null ? "p" + Math.round(i.percentil_no_produto) : "–"} <span class="src">(n=${i.n_universo})</span></td>
+      <td>${i.serie && i.serie.length > 2 ? sparkline(i.serie.map(x => x.pct), 110, 24) : `<span class="src">${(i.serie || []).map(x => x.pct + "%").join(" · ") || "–"}</span>`}</td></tr>`;
+    return `<div id="s-atraso-prod" class="card" style="margin-top:12px">
+      <h4>${termo("atraso-15-90","Atraso ≥15 dias")} por produto ${badge("observado", ap.nota)} <span class="src">data-base ${ap.data_base}</span></h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Produto</th><th style="text-align:right">Carteira</th><th style="text-align:right" title="vencido ≥15d ÷ carteira da modalidade — específico do produto">Atraso ≥15d</th><th style="text-align:right">Mediana do produto</th><th style="text-align:right" title="percentil alto = mais atraso que os pares do produto">Percentil</th><th>Série (5 trim.)</th></tr></thead>
+      <tbody>${ap.itens.map(row).join("")}</tbody></table></div>
+      <div class="src">${ap.nota}<br>Fonte: ${ap.fonte}. Clique no produto para abrir a matriz completa.</div>
+    </div>`;
+  })()}
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card"><h4>Destaques ${badge("calculado", "regras determinísticas sobre dados observados")}</h4>
+      ${pg.destaques.length ? pg.destaques.map(d => `<p style="margin:6px 0">${destIcon(d.tipo)} ${d.texto} <span class="src">[${d.base}]</span></p>`).join("") : "<p class='src'>sem destaques calculáveis.</p>"}
+    </div>
+    <div id="s-capital" class="card"><h4>Capital e comparação com pares ${badge("observado")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Valor</th><th>Δ trim.</th><th>vs. pares</th><th>Percentil</th></tr></thead>
+      <tbody>${pg.capital_tabela.map(capRow).join("")}</tbody></table></div>
+      <div class="src">grupo = ${cab.grupo_pares} (${cab.n_pares} instituições com dados)</div></div>
+  </div>
+  ${(function(){
+    /* Liquidez e capital regulatórios (Pilar 3/KM1): join pelo CNPJ do líder
+       do conglomerado — códigos de conglomerado mudam entre períodos, o
+       CNPJ-raiz não. Fórmula regulatória única: mínimos anotados por métrica. */
+    const P3G = state.data.pilar3;
+    if (!P3G || !P3G.disponivel) return "";
+    const cnpj8pg = String(cab.cnpj || "").replace(/\D/g, "").slice(0, 8);
+    const p3 = (P3G.instituicoes || []).find(x => x.cod_inst === pg.cod_inst || (cnpj8pg && x.cnpj8 === cnpj8pg));
+    if (!p3) return "";
+    const M = P3G.metricas || {};
+    const linha = (met) => {
+      const u = p3.ultimo[met];
+      if (u == null) return "";
+      const serie = (p3.series[met] || []).map(x => x.v);
+      const min = M[met] && M[met].minimo;
+      return `<tr><td>${termo(({lcr_pct:"lcr",nsfr_pct:"nsfr",icp_pct:"capital-principal",nivel1_pct:"capital-principal",basileia_pct:"indice-de-basileia",acp_total_pct:"acp",margem_capital_principal_pct:"acp",alavancagem_pct:"alavancagem"})[met], (M[met] || {}).nome || met)}</td>
+        <td class="num"><b>${fmt.n(u, 2)}%</b></td>
+        <td class="num src">${min != null ? `mínimo ${fmt.n(min, 1)}%` : "–"}</td>
+        <td>${serie.length > 2 ? sparkline(serie, 110, 24) : ""} <span class="src">${serie.length} trim.</span></td></tr>`;
+    };
+    const ordem = ["lcr_pct", "nsfr_pct", "icp_pct", "nivel1_pct", "basileia_pct", "acp_total_pct", "margem_capital_principal_pct", "alavancagem_pct"];
+    return `<div class="card" style="margin-top:12px"><h4>Liquidez e capital — ${termo("pilar-3","Pilar 3")} (KM1) ${badge("observado", "métricas-chave prudenciais no padrão da Res. BCB 54/2020, servidas pela própria instituição no arranjo DASFN do BCB")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Métrica</th><th class="num">Último (${p3.periodo_ultimo})</th><th class="num">Mínimo regulatório</th><th>Série</th></tr></thead>
+      <tbody>${ordem.map(linha).join("")}</tbody></table></div>
+      <p class="src">Registrante no DASFN: ${p3.nome}. ${termo("lcr","LCR")} mede 30 dias de estresse de liquidez; ${termo("nsfr","NSFR")} a liquidez estrutural — mínimos de 100%. A margem excedente é o capital acima do requerido com colchões (ACP).</p>
+    </div>`;
+  })()}
+  <div class="grid g2" style="margin-top:12px">
+    <div id="s-carteira" class="card"><h4>Composição da carteira ${pg.carteira.donut_cliente ? badge("observado") : ""}</h4>
+      ${pg.carteira.donut_cliente ? donut(pg.carteira.donut_cliente) : "<p class='src'>detalhamento de carteira não reportado por esta instituição no IF.data.</p>"}
+      ${pg.carteira.perfil ? `<div class="src" style="margin-top:8px">
+        ${pg.carteira.perfil.top_mod_pf ? `<b>Modalidades PF:</b> ${pg.carteira.perfil.top_mod_pf.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_mod_pj ? `<b>Modalidades PJ:</b> ${pg.carteira.perfil.top_mod_pj.map(([n, s]) => `${n.replace(/_/g, " ").slice(0, 24)} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.top_cnae ? `<b>Setores PJ:</b> ${pg.carteira.perfil.top_cnae.map(([n, s]) => `${setorLabel(n).slice(0, 32)} ${s}%`).join(" · ")}<br>` : ""}
+        ${pg.carteira.perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${pg.carteira.perfil.pme_share_pct}% · ` : ""}
+        ${pg.carteira.perfil.hhi_setorial != null ? `<b>${termo("hhi","HHI setorial")} (piso):</b> ${pg.carteira.perfil.hhi_setorial}${pg.carteira.perfil.hhi_cobertura_pct != null ? ` <span class="src">sobre os ${pg.carteira.perfil.hhi_cobertura_pct}% setorialmente identificados</span>` : ""}` : ""}</div>` : ""}
+    </div>
+    <div class="card"><h4>Evolução (base 100) ${badge("observado")}</h4>${evolChart || "<p class='src'>histórico insuficiente.</p>"}${pg.evolucao_nota ? `<div class="src" style="margin-top:6px">${pg.evolucao_nota}</div>` : ""}</div>
+  </div>
+  ${temCaptacao ? `<div id="s-captacao" class="grid g2" style="margin-top:12px">
+    <div class="card"><h4>${termo("custo-de-captacao","Custo de captação")} ${badge("calculado", sc.captacao ? sc.captacao.formula : "")}</h4>
+      ${sc.captacao ? `<div class="big" style="font-size:22px">${fmt.n(sc.captacao.custo_aa_pct, 2)}% <span style="font-size:13px">a.a. (estimado)</span></div>
+        <div class="src">Fórmula: ${sc.captacao.formula}.</div>
+        <div class="src">Captações totais ${fmt.money(sc.captacao.captacoes_brl)}${sc.captacao.dep_captacoes_pct != null ? ` · depósitos = ${sc.captacao.dep_captacoes_pct}% das captações` : ""}</div>
+        ${sc.captacao.mix_depositos_pct ? `<div style="margin-top:8px"><b>Mix de depósitos</b>
+          ${Object.entries(sc.captacao.mix_depositos_pct).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([n, s]) => `<div class="contrib"><span class="lbl">${n}</span><span class="bar pos" style="width:${Math.min(s, 100) * 1.6}px"></span><span class="num">${s}%</span></div>`).join("")}</div>` : ""}
+        <div class="src" style="margin-top:6px">${sc.captacao.limitacoes}</div>`
+      : "<p class='src'>funding/DRE desta instituição ainda não coletados na data-base atual — ausência declarada, nunca zero.</p>"}
+    </div>
+    <div class="card"><h4>Modelo de negócio ${badge("calculado")}</h4>
+      ${sc.modelo_negocio ? `
+        ${sc.modelo_negocio.receita_servicos_pct != null ? `<div class="big" style="font-size:22px">${fmt.n(sc.modelo_negocio.receita_servicos_pct, 1)}% <span style="font-size:13px">da receita operacional vem de serviços</span></div>
+          <div class="src">${sc.modelo_negocio.receita_servicos_conceito}</div>` : "<p class='src'>peso de serviços não calculável nesta data-base (DRE ausente ou intermediação negativa — omitido, nunca imputado).</p>"}
+        ${sc.modelo_negocio.eficiencia_pct != null ? `<div style="margin-top:8px"><b>${termo("indice-de-eficiencia","Índice de eficiência")}:</b> ${fmt.n(sc.modelo_negocio.eficiencia_pct, 1)}% ${dica(sc.modelo_negocio.eficiencia_conceito)}
+          <div class="src">pessoal ${fmt.money(Math.abs(sc.modelo_negocio.despesas_pessoal_brl))} · administrativas ${fmt.money(Math.abs(sc.modelo_negocio.despesas_admin_brl))} no período — quanto menor o índice, mais eficiente</div></div>` : ""}
+        <div class="src" style="margin-top:6px">
+          ${sc.modelo_negocio.credito_ativo_pct != null ? `<b>Crédito/ativo:</b> ${sc.modelo_negocio.credito_ativo_pct}% · ` : ""}
+          ${sc.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${sc.modelo_negocio.captacoes_ativo_pct}%` : ""}</div>
+        <div class="src">O perfil da carteira (modalidades PF/PJ dominantes, PME, setores) está na seção Carteira acima — juntos, eles descrevem como a instituição capta, empresta e cobra por serviços.</div>`
+      : "<p class='src'>DRE desta instituição ainda não coletada na data-base atual.</p>"}
+    </div>
+  </div>` : ""}
+  <div class="grid g2" style="margin-top:12px">
+    <div id="s-pares" class="card"><h4>Comparação com o grupo de pares ${badge("calculado")}</h4>
+      <div class="controls"><span class="seg">${cmpKeys.map(k => `<button class="${state.filters.cmpMet === k ? "active" : ""}" onclick="setCmpMet('${k}')">${cmpLbl[k] || k}</button>`).join("")}</span></div>
+      ${histogram(cmp.valores, cmp.meu)}
+      <div class="src">sua posição (linha escura) vs. distribuição do grupo · mediana ${cmp.mediana != null ? fmt.n(cmp.mediana, 2) : "–"} · n=${(cmp.valores || []).length}</div>
+      ${gpc ? `<details class="decomp"><summary>ver composição do grupo de pares (${gpc.quantidade} instituições)</summary>
+        <div class="src" style="margin-top:6px"><b>Critério:</b> ${gpc.criterio}<br>
+        ${gpc.quartis_basileia ? `<b>Quartis de Basileia:</b> q1 ${gpc.quartis_basileia.q1}% · mediana ${gpc.quartis_basileia.mediana}% · q3 ${gpc.quartis_basileia.q3}%<br>` : ""}
+        <b>Maiores membros:</b> ${gpc.maiores_membros.map(m => `<span class="clickable" onclick="openInstPage('${m.cod}')">${m.nome}</span>`).join(" · ")}<br>
+        <b>Estabilidade:</b> ${gpc.estabilidade}</div></details>` : ""}</div>
+    <div id="s-recl" class="card"><h4>Reclamações e atendimento ${badge("observado", "indicador operacional/reputacional — não mede solvência")}</h4>
+      ${pg.reclamacoes.length ? `<div class="big" style="font-size:22px">${pg.reclamacoes[0].indice != null ? fmt.n(pg.reclamacoes[0].indice, 1) : "n/d"}</div>
+        <div class="src">índice em ${pg.reclamacoes[0].periodo} · ${fmt.n0(pg.reclamacoes[0].reclamacoes)} reclamações · ${pg.reclamacoes[0].clientes ? fmt.n0(pg.reclamacoes[0].clientes / 1e6) + " mi clientes" : ""}</div>
+        ${sparkline(pg.reclamacoes.slice().reverse().map(r => r.indice).filter(v => v != null), 150, 26)}
+        <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte} · assuntos por instituição não disponíveis no CSV público</div>`
+      : "<p class='src'>sem correspondência no Ranking de Reclamações do BCB (pode não atingir o volume mínimo do ranking).</p>"}
+      <div class="src" style="margin-top:6px"><b>Citações em RJs (DJEN, 60d):</b> ${pg.rj_citacoes.casos} casos · ${pg.rj_citacoes.nota}</div>
+      ${pg.openfinance ? `<div class="src" style="margin-top:6px"><b>Open Finance:</b> ${pg.openfinance.share_pct}% das chamadas transacionais</div>` : ""}
+    </div>
+  </div>
+  <div id="instSimilares"></div>
+  ${operSec}
+  ${listadaSec}
+  <div id="s-limites" class="card" style="margin-top:12px"><h4>Não disponível nas fontes públicas integradas (ausência ≠ zero)</h4>
+    ${pg.indisponiveis.map(i => `<p class="src"><b>${i.indicador}:</b> ${i.motivo}</p>`).join("")}</div>`;
+  fillInstSimilares(state.filters.instCod);
+}
+async function fillInstSimilares(cod) {
+  const box = document.getElementById("instSimilares");
+  if (!box || !cod) return;
+  const d = await fetchCmp(cod);
+  const sim = d && d.semelhantes;
+  if (!sim || !sim.lista.length) { box.innerHTML = ""; return; }
+  box.innerHTML = `<div class="card" style="margin-top:12px"><h4>Instituições semelhantes ${badge("calculado", sim.criterios)}</h4>
+    <div class="src" style="margin-bottom:6px">Regras explícitas (sem algoritmo opaco): ${sim.criterios}</div>
+    <div class="chips">${sim.lista.map(x => `<span class="chip clickable" onclick="openInstPage('${x.cod}')">${x.nome.slice(0, 26)} <span class="src" style="display:inline">${x.sr || ""} · ${fmt.money(x.ativo_brl)}</span></span>`).join("")}</div>
+    <div style="margin-top:10px"><button class="btn ghost small" onclick='state.cmp.insts = ${'$'}{JSON.stringify([cod].concat(sim.lista.slice(0, 9).map(x => x.cod)))}; saveLS("obc_cmp", state.cmp); showView("compare")'>comparar com semelhantes →</button></div>
+  </div>`;
+}
+window.setCmpMet = k => { state.filters.cmpMet = k; renderInstPage(); };
+window.searchInst = val => {
+  const m = val.match(/\[([A-Z0-9]+)\]\s*$/);
+  const idx = state.data.inst_index && state.data.inst_index.instituicoes || [];
+  let cod = m ? m[1] : null;
+  if (!cod) {
+    const q = val.toLowerCase();
+    const qn = _norm(q);
+    const hit = idx.find(x => _norm(x.nome).includes(qn) || _norm(x.razao).includes(qn));
+    cod = hit && hit.cod;
+  }
+  if (cod) openInstPage(cod);
+};
+
 /* ================= BETS E RISCO FINANCEIRO ================= */
 /* Painel investigativo: relação entre apostas de quota fixa e crédito das
    famílias. Princípio: não parte da conclusão de que "bets causam
@@ -8532,7 +8549,7 @@ function renderEstados() {
     el.innerHTML = pageHead({ title: "Estados", desc: "Sigla desconhecida." }) + `<div class="card"><p>Sigla de UF desconhecida. Escolha um estado: ${seletor("")}</p></div>`;
     return;
   }
-  const s = u.scr || {}, pe = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, mo = u.moradia || {}, co = u.consignado || {}, ru = u.rural || {}, bn = u.bndes || {}, pg = u.pgfn || {}, em = u.emprego || {}, cs = u.consorcios || {}, cb = u.cobranca || {};
+  const s = u.scr || {}, pe = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, mo = u.moradia || {}, co = u.consignado || {}, ru = u.rural || {}, bn = u.bndes || {}, pg = u.pgfn || {}, em = u.emprego || {}, cs = u.consorcios || {}, cb = u.cobranca || {}, pz = u.prazo || {};
   const B = U.brasil || {};
   const head = pageHead({
     title: `Crédito ${u.prep} (${u.uf})`, vintage: s.data_base,
@@ -8585,6 +8602,10 @@ function renderEstados() {
   const bnB = bloco("uf-bndes", "Desembolsos do BNDES", `BNDES · ${(bn.janela || {}).ini || "–"} a ${(bn.janela || {}).fim || "–"}`, bn.valor == null ? `<p class="src">recorte não publicado.</p>` : `
     <dl class="ppgrid">${linha("Desembolsos (12 m)", bn.valor != null ? "R$ " + fmt.n(bn.valor / 1e3, 1) + " bi" : "–", `${pct(bn.share)} do Brasil · ${bn.var_12m_pct != null ? fmt.pp(bn.var_12m_pct) + "% em 12 m" : ""}`)}${linha("Por habitante", "R$ " + n0(bn.valor_hab), pos(u, "bndes.valor_hab"))}${linha("Parte para MPME", pct(bn.mpme_share, 0))}</dl>`,
     "bndes", "bn-onde", `Desembolsos por porte, setor, produto e agente — Crédito direcionado e BNDES`);
+  const pzB = bloco("uf-prazo", "Prazo da carteira", `SCR.data · ${pz.data_base || U.datas.prazo || "–"} · prazo remanescente da carteira a vencer`, pz.curto_12m_pct == null ? `<p class="src">recorte ainda não publicado: o painel Prazo da carteira precisa rodar antes desta página.</p>` : `
+    <dl class="ppgrid">${linha("Carteira a vencer", brl(pz.a_vencer), `${pct(pz.share_a_vencer)} do Brasil`)}${linha("Vence em até 12 meses", pct(pz.curto_12m_pct), `${pos(u, "prazo.curto_12m_pct")} · PF ${pct(pz.pf_curto_12m_pct, 0)} · PJ ${pct(pz.pj_curto_12m_pct, 0)}`)}${linha("Vence depois de 5 anos", pct(pz.longo_5a_pct))}
+      ${linha("Prazo médio residual (aproximado)", pz.prazo_medio_anos != null ? fmt.n(pz.prazo_medio_anos, 1) + " anos" : "–", `${pos(u, "prazo.prazo_medio_anos")} · Brasil ${B.prazo_medio_anos != null ? fmt.n(B.prazo_medio_anos, 1) + " anos" : "–"}`)}${linha("Vencido (todo atraso)", pct(pz.vencido_pct), "carteira ativa menos a vencer")}</dl>`,
+    "prazo", "pz-ufs", `Perfil de vencimentos, série mensal e as 27 UFs — Prazo da carteira`);
   const pgB = bloco("uf-pgfn", "Dívida ativa da União", `PGFN · ${pg.data_base || U.datas.pgfn || "–"}`, pg.valor == null ? `<p class="src">recorte não publicado.</p>` : `
     <dl class="ppgrid">${linha("Valor inscrito", brl(pg.valor), `${pct(pg.part_br)} do Brasil`)}${linha("Inscrições", n0(pg.inscricoes), `valor médio R$ ${n0(pg.valor_medio)}`)}${linha("Inscrições de PF por mil habitantes", pg.insc_pf_por_mil_hab != null ? fmt.n(pg.insc_pf_por_mil_hab, 1) : "–", pos(u, "pgfn.insc_pf_por_mil_hab"))}${linha("Parte de PJ no valor", pct(pg.pj_valor != null && pg.valor ? pg.pj_valor / pg.valor * 100 : null, 0))}</dl>`,
     "pgfn", null, `O mapa da dívida ativa por UF, safras e situação — Dívida com a União`);
@@ -8601,8 +8622,8 @@ function renderEstados() {
     "cobranca", "cb-ufs", `Execuções, busca e apreensão e monitórias mês a mês, por classe e UF — Bancos cobrando na Justiça`);
   document.title = `Crédito ${u.prep} (${u.uf}) · ${state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito"}`;
   el.innerHTML = head + sintese + placarHtml
-    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-cobranca", "Cobrança"], ["#uf-pgfn", "Dívida ativa"]])
-    + scr + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + cbB + pgB
+    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-prazo", "Prazo"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-cobranca", "Cobrança"], ["#uf-pgfn", "Dívida ativa"]])
+    + scr + pzB + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + cbB + pgB
     + `<div class="card" style="margin-top:14px"><h4>Outros estados</h4><p>${ufs.filter(x => x.regiao === u.regiao && x.uf !== u.uf).map(x => `<a href="/observatorio/states/${x.uf}" onclick="ufNav('${x.uf}');return false">${x.nome}</a>`).join(" · ")} <span class="src">(${u.regiao})</span> · <a href="/observatorio/states" onclick="nav('estados');return false">todas as UFs →</a></p>
     <p class="src">${(U.cautelas || []).join(" ")}</p></div>`;
 }
@@ -9918,6 +9939,7 @@ window.fiCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — FIDCs, série mensal (CVM, informes mensais)\n# carteira em R$; percentuais: inadimplência sobre a carteira; subordinação e sênior sobre o PL de fundos com 2+ classes; lastro sobre a carteira informada na tabela II\n`;
   dlFile(`obc_fidc_serie_${D.anomes}.csv`, head + cols.join(";") + "\n" + D.serie.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
 };
+
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -10919,7 +10941,7 @@ function cgCircularidade(D) {
           r="${(4 + 9 * Math.sqrt(e.a60 / 4e6)).toFixed(1)}" fill="var(--teal)" fill-opacity=".45"
           stroke="var(--teal)"></circle>
         <text x="${(px(e.outras_censo) + 8).toFixed(1)}" y="${(py(e.cons_por_60) + 4).toFixed(1)}"
-          font-size="10" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
+          font-size="11" fill="var(--text-2)">${e.uf}</text></g>`).join("")}
       <text x="380" y="282" text-anchor="middle" font-size="11" fill="var(--text-3)">participação do rendimento que não vem do trabalho, no Censo (%)</text>
       <text x="16" y="145" font-size="11" fill="var(--text-3)" transform="rotate(-90 16 145)" text-anchor="middle">consignado por pessoa de 60+ (R$)</text>
     </svg>
@@ -12144,7 +12166,7 @@ function renderPresencaMun() {
 const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes" };
+  consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -12897,8 +12919,8 @@ function bumpChart(items, periods, w = 720, h0 = null) {
   const X = i => ML + i / (periods.length - 1) * (w - ML - MR);
   const Y = r => MT + (r - 1) / Math.max(n - 1, 1) * (h - MT - MB);
   let out = `<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="mudança de posição no ranking">`;
-  periods.forEach((p, i) => { out += `<text x="${X(i)}" y="${h - 8}" text-anchor="middle" font-size="10" style="fill:var(--c-axis-text)">${p}</text>`; });
-  for (let r = 1; r <= n; r++) out += `<text x="${ML - 8}" y="${Y(r) + 3}" text-anchor="end" font-size="10" style="fill:var(--c-axis-text)">#${r}</text>`;
+  periods.forEach((p, i) => { out += `<text x="${X(i)}" y="${h - 8}" text-anchor="middle" font-size="11" style="fill:var(--c-axis-text)">${p}</text>`; });
+  for (let r = 1; r <= n; r++) out += `<text x="${ML - 8}" y="${Y(r) + 3}" text-anchor="end" font-size="11" style="fill:var(--c-axis-text)">#${r}</text>`;
   const bumpItems = items, bumpPeriods = periods;
   items.forEach(it => {
     const pts = it.ranks.map((r, i) => r == null ? null : [X(i), Y(r)]);

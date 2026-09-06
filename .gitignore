@@ -9,6 +9,8 @@ node_modules/
 
 # Gerado no prebuild (scripts/minify-obs.mjs) a partir do app.js canônico
 /public/obs/app.min.js
+/public/obs/app-municipal.min.js
+/public/obs/app-emergentes.min.js
 *.tsbuildinfo
 __pycache__/
 

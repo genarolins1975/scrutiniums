@@ -325,8 +325,8 @@ por instituição.
 | P1 | Testes de contrato para os 7 golds sem teste | T6 | baixo |
 | P1 | Glossário por aba na primeira ocorrência de jargão | A8 | médio · feito em v0.99.0 (§14) |
 | P2 | Painéis 1 e 2 do §6.4 (prazo da carteira; FIDC por lastro) | §6.4 | baixo · feitos em v0.100.0 (§15) |
-| P2 | Bundles fora do git; chunks para Bancos na bolsa e Instituições | T7, §2.3 | médio |
-| P2 | Modo capítulo em Instituições; eixos de SVG a 11 px | §3.3 | médio |
+| P2 | Bundles fora do git; chunks para Bancos na bolsa e Instituições | T7, §2.3 | médio · feito: Bancos na bolsa em v0.99.0, Instituições e bundles fora do git em v0.101.0 (§16) |
+| P2 | Modo capítulo em Instituições; eixos de SVG a 11 px | §3.3 | médio · feito em v0.101.0 (§16): detalhe de linha sob demanda; eixos a 11 px |
 | P2 | Prestamista em Juros; radar normativo; PTC | §6.4 | baixo a médio |
 | P3 | Cadastro CNPJ por agregação prévia; crédito subnacional; Procons | §6.4 | alto |
 
@@ -651,4 +651,51 @@ Golds iniciais publicados junto com o código, como nos painéis anteriores; o p
 Testes `prazo-data.test.ts` e `fidc-data.test.ts` travam a aritmética (faixas somam a vencer, shares
 somam 100, posições 1 a 27, classes somam o PL multiclasse, subitens somam o grupo), as coberturas abaixo
 de 100%, a estabilidade da subordinação, os rótulos corrigidos e o registro nos mapas.
+
+---
+
+## 16. Instituições leve, bundles fora do git e prazo por UF (06/09/2026, noite, versão 0.101.0)
+
+Segundo bloco do P2: os itens técnicos de Instituições (§3.3 e T7), mais a extensão natural do painel de
+prazo às páginas por UF.
+
+**Instituições leve.** A lista dos 100 conglomerados montava no DOM, fechado, o detalhe de cada linha
+(decomposição do score, choque, composição da carteira, custo de captação, modelo de negócio). Medido em
+Chromium a 1440 px, servidor local, 06/09/2026:
+
+| Métrica da aba Instituições | Antes | Depois |
+|---|---|---|
+| Palavras no DOM | 32.457 | 7.970 |
+| Nós no DOM | 10.649 | 5.573 |
+| HTML renderizado | 760 KB | 402 KB |
+
+O corpo do `details` passa a ser montado no evento `toggle`, uma vez por linha, por `instDetalheHtml`;
+o observador de verbetes marca o glossário no conteúdo inserido. A recomendação do §3.3 falava em cortar
+a ficha em capítulos; a medição mostrou que o peso estava na lista, não na ficha (2.416 palavras), e a
+ficha já tem subnav fixa com modo capítulo. A região inteira de Instituições (lista, ficha, guidance,
+regimes, cooperativas, interconexão) foi para o chunk `emergentes`, que carrega na primeira visita; no
+core ficam só `histogram` (usado na Visão geral e em Produtos) e `openInstPage` (navegação a partir de
+várias abas). Core de 594 KB para 550 KB; chunk emergentes em 301 KB. O bloco entrou no início da região
+para não alterar as fatias de código que os testes de Apostas, Golpes e Juros inspecionam.
+
+**Eixos de SVG a 11 px.** Vinte textos de SVG entre 8 e 10,5 px (eixos e rótulos do `lineChart`, do
+histograma, dos gráficos de Pix, do ranking e dos diagramas explicativos) e a regra `.axis text` do CSS
+passam a 11 px. Medido em Pix: menor fonte de texto em SVG de 12,7 px.
+
+**Bundles fora do git.** `app.min.js` já era gerado no `prebuild` da Vercel e no passo "Gerar app.min.js"
+do CI; os dois chunks ainda viajavam no git a cada versão. Passam ao `.gitignore` e são gerados nos mesmos
+dois lugares; o teste de split lê os artefatos gerados no próprio CI.
+
+**Prazo por UF.** `ufs.py` lê `prazo.json` e publica, por UF, carteira a vencer, share do Brasil, curto
+prazo, longo prazo, prazo médio residual, vencido e o curto prazo de PF e PJ, com posições entre as 27 UFs
+em curto prazo e prazo médio; `datas.prazo` e a fonte entram no gold. A página do estado ganha o bloco
+"Prazo da carteira" logo após a carteira do SCR e a entrada "Prazo" na subnav; sem o recorte (gold anterior
+ao painel), o bloco declara a ausência. Verificado localmente em São Paulo: 46,9% em até 12 meses (1º entre
+as UFs), prazo médio de 3,4 anos (15º), PF 39% e PJ 57%. O `ufs.json` publicado só recebe o bloco no
+próximo ciclo do pipeline, para não publicar um `ufs.json` mais novo que os golds que ele resume.
+
+**Validação.** `instituicoes-leve.test.ts` (detalhe sob demanda, região no chunk, fontes de SVG, bundles
+no `.gitignore`), `split-bundle.test.ts` com teto do core em 580 KB e Instituições fora do core,
+`prazo-data.test.ts` com o bloco por UF; suíte completa em modo CI, `tsc`, `next lint`; Chromium: lista,
+ficha via chunk, página do estado e Pix sem erro.
 

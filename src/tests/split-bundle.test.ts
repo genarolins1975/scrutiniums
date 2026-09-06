@@ -77,7 +77,7 @@ describe("artefatos do build", () => {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
     for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
-      "renderBets", "renderFraudes", "renderJuros", "renderMarket"]) {
+      "renderBets", "renderFraudes", "renderJuros", "renderMarket", "renderInstitutions", "renderInstPage"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
@@ -86,14 +86,18 @@ describe("artefatos do build", () => {
       expect(mun.includes(`function ${fn}(`), fn).toBe(true);
     }
     // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário
-    for (const fn of ["renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener"]) {
+    // Instituições (lista e ficha) foi para o chunk emergentes na v0.101.0; histogram e openInstPage ficam no core
+    for (const fn of ["renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener", "renderInstitutions", "renderInstPageData", "instDetalheHtml"]) {
       expect(eme.includes(`function ${fn}(`), fn).toBe(true);
+    }
+    for (const fn of ["histogram"]) {
+      expect(core.includes(`function ${fn}(`), `${fn} precisa ficar no core`).toBe(true);
     }
     // e o core mantém o que os chunks usam
     expect(core).toContain("function penEscala(");
   });
 
-  it("o core encolheu de verdade (≤ 620 KB; era 744 KB inteiro)", () => {
-    expect(statSync(join(process.cwd(), "public/obs/app.min.js")).size).toBeLessThan(620_000);
+  it("o core encolheu de verdade (≤ 580 KB desde a v0.101.0; era 744 KB inteiro)", () => {
+    expect(statSync(join(process.cwd(), "public/obs/app.min.js")).size).toBeLessThan(580_000);
   });
 });
