@@ -470,3 +470,25 @@ no Unicad). A SPA os exibe em Metodologia e, em forma compacta, no bloco "Como l
 **Validação.** Parsers exercitados em unidade (Pilar 3 e Desenrola), reconstrução local do gold com o silver
 desta sessão, testes `p1-dados.test.ts`, suíte completa, `tsc`, `lint`, minificação e renderização de
 Metodologia e Mapa em Chromium.
+
+---
+
+## 12. Revisão de lugar das abas no Mapa e no menu (06/09/2026, fim de tarde)
+
+Apontamento do usuário: o Desenrola estava no passo "O que vira processo", que é lugar de cobrança judicial,
+recuperação e falência. O Desenrola é o contrário disso: renegociação extrajudicial do que atrasou. Revisão
+de todas as posições, com o critério "cada passo do ciclo é uma pergunta, e a aba entra onde responde":
+
+| Aba | Estava | Passa a | Por quê |
+|---|---|---|---|
+| Desenrola | passo 6 "O que vira processo" | passo 6 renomeado "Quando o crédito atrasa", primeiro item | o passo passa a cobrir as três saídas do atraso: renegociação (Desenrola), cobrança judicial e recuperação ou falência, mais a dívida com a União |
+| Clientes contra bancos na Justiça | passo 6 e grupo "Risco, cobrança e recuperação" | passo 7 e grupo "Pagamentos, conduta e fronteiras", ao lado de Sanções e reclamações | litígio de consumo é conduta, não inadimplência |
+| Quem entra e quem sai do SFN | passo 1 "De onde vem o dinheiro" | passo 2 "Quem empresta" | entradas e saídas de instituições descrevem quem empresta, não o funding |
+| Risco setorial | passo 4 "Para quem e onde" | passo 5 renomeado "O ciclo e o que vem" | é indicador de estresse e antecedente, não descrição de tomador |
+| Quem toma crédito e onde | grupo "Ciclo do crédito" | grupo "Território e pessoas", ao lado de Estados | é o corte territorial e por tomador do SCR; o passo 4 do Mapa já o tratava assim |
+
+Passos renomeados: 5 "O ciclo e o que vem" (estoque, concessões, inadimplência, risco por setor, sinais,
+cenários, alertas), 6 "Quando o crédito atrasa" (renegociação, cobrança judicial, recuperações e falências,
+dívida com a União), 7 "Regras, trilhos e conduta" (regulação, sanções, litígios de consumo, Pix, Open
+Finance, apostas e fraudes). Rotas, títulos e telemetria não mudam; os testes de estrutura do Mapa e do menu
+continuam a valer (sete passos cobrindo todas as abas temáticas, cada aba em um só passo e um só grupo).

@@ -227,7 +227,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.98.2";
+const APP_VERSION = "0.98.3";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2902,13 +2902,13 @@ function mktEntidades(M) {
    pergunta a partir do GUIA; trilhas por perfil; como ler os selos e as réguas; fontes e
    atualidade a partir de meta.json. Nada aqui é número novo: é o mapa das páginas. */
 const MAPA_CICLO = [
-  { n: 1, id: "funding", titulo: "De onde vem o dinheiro", pergunta: "Como os bancos se financiam e quanto do crédito vem do mercado?", views: ["funding", "ampliado", "sfn"] },
-  { n: 2, id: "sistema", titulo: "Quem empresta", pergunta: "Quais instituições, com que capital, resultado e estrutura?", views: ["institutions", "compare", "operacional", "market"] },
+  { n: 1, id: "funding", titulo: "De onde vem o dinheiro", pergunta: "Como os bancos se financiam e quanto do crédito vem do mercado de capitais?", views: ["funding", "ampliado"] },
+  { n: 2, id: "sistema", titulo: "Quem empresta", pergunta: "Quais instituições, quem entra e quem sai, com que capital, resultado, rede e valor de mercado?", views: ["sfn", "institutions", "compare", "operacional", "market"] },
   { n: 3, id: "produtos", titulo: "O que se empresta e a que preço", pergunta: "Produtos, taxas, crédito rural, direcionado e a alternativa do consórcio", views: ["products", "juros", "rural", "bndes", "consorcios"] },
-  { n: 4, id: "tomadores", titulo: "Para quem e onde", pergunta: "Território, setores, moradia, consignado e o emprego que paga a parcela", views: ["panorama", "estados", "penetracao", "moradia", "consignado", "emprego", "sectors"] },
-  { n: 5, id: "risco", titulo: "O que atrasa e o que vem", pergunta: "Estoque, concessões, inadimplência, sinais antecedentes, cenários e alertas", views: ["pulse", "leading", "scenarios", "alerts", "trends"] },
-  { n: 6, id: "cobranca", titulo: "O que vira processo", pergunta: "Cobrança judicial, recuperações e falências, litígios e dívida com o fisco", views: ["cobranca", "rj", "judicial", "pgfn", "desenrola"] },
-  { n: 7, id: "supervisao", titulo: "Quem vigia e o que muda", pergunta: "Conduta, regulação, pagamentos, Open Finance e as fronteiras do risco", views: ["conduta", "regulacao", "pix", "openfinance", "bets", "fraudes"] },
+  { n: 4, id: "tomadores", titulo: "Para quem e onde", pergunta: "Território, moradia, consignado e o emprego que paga a parcela", views: ["panorama", "estados", "penetracao", "moradia", "consignado", "emprego"] },
+  { n: 5, id: "risco", titulo: "O ciclo e o que vem", pergunta: "Estoque, concessões, inadimplência, risco por setor, sinais antecedentes, cenários e alertas", views: ["pulse", "sectors", "leading", "scenarios", "alerts", "trends"] },
+  { n: 6, id: "cobranca", titulo: "Quando o crédito atrasa", pergunta: "Renegociação, cobrança judicial, recuperações e falências e dívida com a União", views: ["desenrola", "cobranca", "rj", "pgfn"] },
+  { n: 7, id: "supervisao", titulo: "Regras, trilhos e conduta", pergunta: "Regulação, sanções e reclamações, litígios de consumo, Pix, Open Finance e as fronteiras do risco", views: ["regulacao", "conduta", "judicial", "pix", "openfinance", "bets", "fraudes"] },
 ];
 const MAPA_TRILHAS = [
   { perfil: "Cidadão ou jornalista", quem: "quer entender o quadro sem jargão e achar o número certo para citar", passos: ["overview", "pulse", "juros", "estados", "cobranca", "method"] },
@@ -2936,7 +2936,7 @@ function renderMapa() {
   });
   const ciclo = secWrap("mp-ciclo", `${sechead("O ciclo do crédito em sete passos", "cada passo liga às páginas que o respondem")}
   <div class="mapa-fluxo">${MAPA_CICLO.map(c => `<div class="mapa-no"><div class="mapa-num">${c.n}</div><h4>${c.titulo}</h4><p class="src">${c.pergunta}</p><ul>${c.views.map(v => `<li>${mapaLink(v)}</li>`).join("")}</ul></div>`).join("")}</div>
-  <p class="src">O dinheiro entra pelo funding (1), passa pelas instituições (2), vira produto com preço (3), chega a famílias, empresas e territórios (4), parte dele atrasa (5), uma parte do atraso vira processo (6), e tudo acontece sob supervisão e regras que mudam (7). As páginas de Referência explicam de onde vem cada número.</p>`);
+  <p class="src">O dinheiro entra pelo funding (1), passa pelas instituições (2), vira produto com preço (3), chega a famílias, empresas e territórios (4), o ciclo mede o que cresce, o que atrasa e o que vem (5), o atraso vira renegociação, cobrança ou recuperação (6), e tudo acontece sob regras, trilhos de pagamento e vigilância (7). As páginas de Referência explicam de onde vem cada número.</p>`);
   const porGrupo = [];
   document.querySelectorAll("#tabs .navgroup").forEach(g => {
     const rot = g.querySelector(".navlabel").textContent;
