@@ -809,6 +809,18 @@ def build_all(con, cfg, fetch_status):
             print(f"  [consorcios] indisponível: {r_cs.get('motivo')}")
     except Exception as e:
         common.write_gold("consorcios.json", {"disponivel": False, "error": str(e)})
+
+    # ---- Cobrança judicial de crédito (CNJ DataJud, agregação): antes das páginas por UF ----
+    try:
+        from pipeline import cobranca as cobranca_mod
+        r_cb = cobranca_mod.build(con, cfg)
+        common.write_gold("cobranca.json", r_cb)
+        if r_cb.get("disponivel"):
+            print(f"  [cobranca] até {r_cb['mes']} · {r_cb['brasil']['casos_12m']:,} casos bancários em 12 m · {r_cb['cobertura']['tribunais']} tribunais")
+        else:
+            print(f"  [cobranca] indisponível: {r_cb.get('motivo')}")
+    except Exception as e:
+        common.write_gold("cobranca.json", {"disponivel": False, "error": str(e)})
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
@@ -865,6 +877,7 @@ def build_all(con, cfg, fetch_status):
         "caged": _vg("SELECT MAX(mes) FROM caged_uf"),
         "cda": _vg("SELECT MAX(mes) FROM cda_coleta"),
         "consorcios": _vg("SELECT MAX(database) FROM consorcios"),
+        "cobranca": _vg("SELECT MAX(mes) FROM cobranca_mensal WHERE casos > 0"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}

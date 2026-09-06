@@ -58,6 +58,7 @@ def build(con=None, cfg=None):
     pan, pen_mun, pres, pix, mor, con_g, rur, bnd, pgf, expl, emp = (g("panorama.json"), g("penetracao_mun.json"), g("presenca_mun.json"), g("pix.json"),
                                                                     g("moradia.json"), g("consignado.json"), g("rural.json"), g("bndes.json"), g("pgfn.json"), g("explorer.json"), g("emprego.json"))
     cons = g("consorcios.json")
+    cob = g("cobranca.json")
     if not pan.get("mapa"):
         return {"disponivel": False, "motivo": "panorama.json sem recorte por UF — o Panorama do Crédito precisa existir antes das páginas por UF"}
     por_uf = {}
@@ -72,6 +73,7 @@ def build(con=None, cfg=None):
     pgf_uf = idx(pgf.get("mapa"))
     emp_uf = idx(emp.get("ufs"))
     cons_uf = idx(cons.get("ufs"))
+    cob_uf = idx(cob.get("ufs"))
     # penetração: agregado do municipal
     pen_agg = {}
     for m in pen_mun.get("municipios") or []:
@@ -99,7 +101,7 @@ def build(con=None, cfg=None):
         tot_prod = sum(x["saldo"] for x in prods)
         for x in prods:
             x["share"] = _share(x["saldo"], tot_prod); x["inad_pct"] = _share(x["inad"], x["saldo"]); x["pf_share"] = _share(x["pf"], x["saldo"])
-        pr = pres_uf.get(uf, {}); px = pix_uf.get(uf, {}); mo = mor_uf.get(uf, {}); co = con_uf.get(uf, {}); ru = rur_uf.get(uf, {}); bn = bnd_uf.get(uf, {}); pg = pgf_uf.get(uf, {}); em = emp_uf.get(uf, {}); cs = cons_uf.get(uf, {})
+        pr = pres_uf.get(uf, {}); px = pix_uf.get(uf, {}); mo = mor_uf.get(uf, {}); co = con_uf.get(uf, {}); ru = rur_uf.get(uf, {}); bn = bnd_uf.get(uf, {}); pg = pgf_uf.get(uf, {}); em = emp_uf.get(uf, {}); cs = cons_uf.get(uf, {}); cb = cob_uf.get(uf, {})
         ufs.append({
             "uf": uf, "nome": NOMES[uf], "prep": PREP[uf], "regiao": REGIOES[uf], "cod": p.get("cod"),
             "pop": pg.get("populacao") or co.get("pop") or (pe.get("pop") or None),
@@ -131,10 +133,12 @@ def build(con=None, cfg=None):
                         "desligamentos_12m": em.get("desligamentos_12m"), "retencao_pct": em.get("retencao_pct")} if em else None,
             "consorcios": {"trimestre": cons.get("trimestre"), "cotas": cs.get("cotas"), "share": cs.get("share"), "var_12m_pct": cs.get("var_12m_pct"),
                            "por_mil_hab": cs.get("por_mil_hab")} if cs else None,
+            "cobranca": {"mes": cob.get("mes"), "casos_12m": cb.get("casos_12m"), "var_12m_pct": cb.get("var_12m_pct"), "casos_12m_todos": cb.get("casos_12m_todos"),
+                         "por_mil_hab": cb.get("por_mil_hab"), "por_bi_carteira": cb.get("por_bi_carteira")} if cb else None,
         })
     # posições entre as 27 UFs (1 = maior, salvo onde "menor" é o desejável e está dito na SPA)
     for bloco, chave in (("scr", "saldo"), ("scr", "per_capita"), ("scr", "inad"), ("scr", "cresc12"), ("penetracao", "penetracao"), ("penetracao", "cred_adulto"),
-                         ("presenca", "agencias_100mil"), ("pix", "q_hab"), ("moradia", "pgp"), ("consignado", "cons_por_elegivel"), ("rural", "valor_hab"), ("bndes", "valor_hab"), ("emprego", "saldo_12m"), ("emprego", "retencao_pct"), ("consorcios", "cotas"), ("consorcios", "por_mil_hab"), ("pgfn", "insc_pf_por_mil_hab")):
+                         ("presenca", "agencias_100mil"), ("pix", "q_hab"), ("moradia", "pgp"), ("consignado", "cons_por_elegivel"), ("rural", "valor_hab"), ("bndes", "valor_hab"), ("emprego", "saldo_12m"), ("emprego", "retencao_pct"), ("consorcios", "cotas"), ("consorcios", "por_mil_hab"), ("cobranca", "por_mil_hab"), ("cobranca", "por_bi_carteira"), ("pgfn", "insc_pf_por_mil_hab")):
         _rank(ufs, chave, bloco)
     # síntese por UF (determinística, com números da própria página)
     for u in ufs:
@@ -159,10 +163,10 @@ def build(con=None, cfg=None):
     return {
         "disponivel": True, "gerado_em": common.now_utc(),
         "datas": {"scr": pan.get("data_base"), "penetracao": (g("penetracao.json").get("data_base_credito")), "presenca": (pres.get("posicao") or {}), "pix": pix.get("data_base") or pix.get("mes"),
-                  "moradia": (mor.get("datas") or {}).get("scr"), "consignado": (con_g.get("scr") or {}).get("data_base"), "rural": rur.get("janela"), "bndes": (bnd.get("desembolsos") or {}).get("janela"), "pgfn": pgf.get("data_base"), "emprego": emp.get("ufs_mes"), "consorcios": cons.get("trimestre")},
+                  "moradia": (mor.get("datas") or {}).get("scr"), "consignado": (con_g.get("scr") or {}).get("data_base"), "rural": rur.get("janela"), "bndes": (bnd.get("desembolsos") or {}).get("janela"), "pgfn": pgf.get("data_base"), "emprego": emp.get("ufs_mes"), "consorcios": cons.get("trimestre"), "cobranca": cob.get("mes")},
         "brasil": brasil, "ufs": ufs,
         "fontes": ["BCB/SCR.data (Panorama)", "BCB/ESTBAN e IBGE Censo 2022 (Penetração)", "BCB/Unicad e Correspondentes (Presença)", "BCB/Pix", "BCB e IBGE (Moradia)", "INSS e SCR (Consignado)",
-                   "BCB/MDCR (Crédito rural)", "BNDES dados abertos", "PGFN (Dívida ativa)", "MTE/Novo Caged via Ipeadata (Emprego formal)", "BCB Panorama de Consórcios"],
+                   "BCB/MDCR (Crédito rural)", "BNDES dados abertos", "PGFN (Dívida ativa)", "MTE/Novo Caged via Ipeadata (Emprego formal)", "BCB Panorama de Consórcios", "CNJ DataJud (Cobrança judicial)"],
         "cautelas": [
             "Cada bloco tem a própria data-base e a própria régua; posições em ranking são calculadas entre as 27 UFs dentro de um mesmo bloco e nunca cruzam blocos.",
             "Nada aqui é coletado de novo: a página reúne o recorte estadual dos painéis temáticos. Um bloco ausente significa que o painel de origem não publicou o recorte, não que o dado seja zero.",

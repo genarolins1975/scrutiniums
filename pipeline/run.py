@@ -22,7 +22,7 @@ from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata
                               releases_ext, epae, dependencias, correspondentes, pncp_folha,
                               ifdata_funding, pilar3, regimes, remuneracao, sicor,
                               cvm_ofertas, cvm_securit, bndes, focus, sfn_cadastro, bcb_pas, cvm_pas, ipea_caged,
-                              ifdata_passivo, cvm_cda, bcb_consorcios)
+                              ifdata_passivo, cvm_cda, bcb_consorcios, datajud_cobranca)
 
 
 def main():
@@ -53,7 +53,7 @@ def main():
                           ("remuneracao", remuneracao),
                           ("correspondentes", correspondentes),
                           ("sicor", sicor),
-                          ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes), ("focus", focus), ("sfn_cadastro", sfn_cadastro), ("bcb_pas", bcb_pas), ("cvm_pas", cvm_pas), ("ipea_caged", ipea_caged), ("ifdata_passivo", ifdata_passivo), ("cvm_cda", cvm_cda), ("bcb_consorcios", bcb_consorcios)]:
+                          ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes), ("focus", focus), ("sfn_cadastro", sfn_cadastro), ("bcb_pas", bcb_pas), ("cvm_pas", cvm_pas), ("ipea_caged", ipea_caged), ("ifdata_passivo", ifdata_passivo), ("cvm_cda", cvm_cda), ("bcb_consorcios", bcb_consorcios), ("datajud_cobranca", datajud_cobranca)]:
             print(f"[coleta] {name}...")
             try:
                 results = mod.collect(con, cfg)

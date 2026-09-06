@@ -231,6 +231,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "consorcios.json",
   },
   {
+    view: "cobranca",
+    caminho: "/debt-collection-lawsuits",
+    titulo: "Cobrança judicial de crédito",
+    descricao:
+      "Execuções de título, busca e apreensão em alienação fiduciária, monitórias e execuções hipotecárias ajuizadas mês a mês nos tribunais estaduais (DataJud), no recorte bancário e com qualquer credor, por classe e UF.",
+    gold: "cobranca.json",
+  },
+  {
     view: "bets",
     caminho: "/bets-financial-risk",
     titulo: "Bets e risco financeiro",
