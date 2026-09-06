@@ -129,7 +129,7 @@ commit da SPA. Recomendação: gerar no build da Vercel e ignorar no git; o test
 | A5 | Catálogo contradizia a aba (Visão geral prometia "cinco famílias", Estados listava blocos que não existem) | `observatorioAbas.ts` 0.97.0 | sim: 8 descrições corrigidas |
 | A6 | Guia ausente em Sobre e Sugestões | varredura | sim em Sobre; Sugestões é formulário |
 | A7 | "Fase 0", "Fase 2", "Fase 5" em texto público | 6 ocorrências em `app.js` | sim: removidas do texto visível; ficam só em comentários de código |
-| A8 | Jargão sem verbete na primeira ocorrência: z-score, SCR, IF.data, SGS, S1 a S5, DataJud, IBCC, p50, txjuros, PIM, PMS, PMC | leitura das abas | parcial: legenda de selos e réguas no Mapa; glossário por aba fica no backlog |
+| A8 | Jargão sem verbete na primeira ocorrência: z-score, SCR, IF.data, SGS, S1 a S5, DataJud, IBCC, p50, txjuros, PIM, PMS, PMC | leitura das abas | sim (v0.99.0, §14): glossário de 34 termos marcado na primeira ocorrência de cada aba; legenda de selos e réguas já estava no Mapa |
 
 ### 4.2 Recomendação de padrão por aba antiga
 
@@ -320,10 +320,10 @@ por instituição.
 | P1 | Remover campos demo do `rj.json`; textos de método gerados de `sectors.json` | D6 | baixo |
 | P1 | Um vintage populacional; verbete único para os três conceitos de carteira e as três contagens de IF | D7 | baixo |
 | P1 | Particionar golds municipais por UF | T4 | médio |
-| P1 | Padrão de abertura nas 18 abas sem placar | §3.3, §4.2 | médio |
+| P1 | Padrão de abertura nas 18 abas sem placar | §3.3, §4.2 | médio · feito em v0.99.0 (§14): 13 temáticas; 5 ficam fora por natureza |
 | P1 | Auxiliares únicos de formatação no pipeline e na SPA | T5 | médio |
 | P1 | Testes de contrato para os 7 golds sem teste | T6 | baixo |
-| P1 | Glossário por aba na primeira ocorrência de jargão | A8 | médio |
+| P1 | Glossário por aba na primeira ocorrência de jargão | A8 | médio · feito em v0.99.0 (§14) |
 | P2 | Painéis 1 e 2 do §6.4 (prazo da carteira; FIDC por lastro) | §6.4 | baixo |
 | P2 | Bundles fora do git; chunks para Bancos na bolsa e Instituições | T7, §2.3 | médio |
 | P2 | Modo capítulo em Instituições; eixos de SVG a 11 px | §3.3 | médio |
@@ -530,3 +530,61 @@ buscas, e última referência de toda série no passado. Sempre contra o gold pu
 **Selic com data futura.** A meta Selic (SGS 432) chega datada até a próxima reunião do Copom, e a série
 mostrava "dias sem atualizar" negativo no painel de qualidade. O coletor do SGS descarta observações
 posteriores a hoje e apaga as já gravadas (10 no silver desta sessão).
+
+---
+
+## 14. Bloco P1 didático (06/09/2026, noite, versão 0.99.0)
+
+Fecha os dois itens P1 que restavam no §7: padrão de abertura nas abas sem placar (§3.3 e §4.2) e
+glossário por aba (A8).
+
+**Padrão de abertura.** Um só auxiliar, `abertura({ placar, sintese, ref })`, monta o placar de quatro
+números datados e a síntese de até três frases logo depois de `pageHead`, antes de qualquer controle,
+gráfico ou método. A síntese é calculada no navegador a partir dos números do gold com regras fixas
+(variação a/a, mediana, contagem por faixa, maior e menor); item sem número é omitido, nunca estimado.
+Aplicado nas 13 abas temáticas que abriam sem placar:
+
+| Aba | Os quatro números | Fonte e data no próprio cartão |
+|---|---|---|
+| Visão geral | saldo, inadimplência acima de 90 dias, concessões do mês, IBCC com percentil | BCB/SGS e IBCC, por mês de referência |
+| Pulso do crédito | saldo, concessões, taxa média, inadimplência, todos no segmento escolhido | BCB/SGS |
+| Risco setorial | atividades monitoradas, em estresse elevado, piorando em 3 meses, volume a/a mediano | IBGE PIM-PF, PMS, PMC |
+| Recuperações e falências | pedidos de RJ no mês, RJ em 12 meses, falências no mês, tribunais cobertos | CNJ/DataJud, agregado dos tribunais listados |
+| Instituições | conglomerados avaliados, em risco elevado ou muito elevado, Basileia mediana, inadimplência mediana | BCB IF.data por trimestre |
+| Cenários | inadimplência observada, projeção-base 12 m, cenário simulado 12 m, meta Selic | BCB/SGS e elasticidades |
+| Central de alertas | disparados, em aberto, com nível declarado, famílias | regras publicadas, hora do processamento |
+| Marcos regulatórios | marcos, nos últimos 12 meses, órgãos, painéis afetados | textos oficiais |
+| Produtos de crédito | produtos validados, carteira somada, maior produto, crescimento mediano em 4 T | BCB IF.data |
+| Comparar instituições | métricas, períodos, universo, data-base (ou instituições selecionadas) | BCB IF.data |
+| Bancos na bolsa | listadas, retorno total mediano 12 m, P/VP mediano, ROE mediano | B3 e CVM, data do preço |
+| Sinais antecedentes | os quatro subíndices em desvios-padrão, com tendência, confiança e cobertura | séries do próprio gold |
+| Estados | carteira no país, crescimento 12 m, inadimplência, penetração | BCB/SCR |
+
+Na Central de alertas o cartão "Situação nesta execução" foi absorvido pelo placar e pela síntese, sem
+perda de informação. Ficam fora do padrão, por natureza: Perguntas rápidas e Sugestões (formulários),
+Sobre e Metodologia (documentação) e a ficha de setor (página de detalhe, como a ficha de instituição,
+que já tem o próprio placar). Resultado da varredura em Chromium (06/09/2026, 44 vistas a 1440 px):
+39 vistas com placar, as 5 restantes são exatamente as listadas.
+
+**Glossário por aba.** `GLOSSARIO` reúne 34 termos com verbete de uma frase: os doze do achado A8 e
+os que a leitura das abas mostrou sem explicação (Basileia, RWA, LCR, ESTBAN, Selic, Focus, IPCA, Caged,
+CNAE, TCB, Sicor, FIDC, CRI e CRA, PGFN, DJEN, Pilar 3, PAS, CET, HHI, CUSUM, Olinda, a/a). Depois de
+cada renderização, `marcaVerbetes` percorre os nós de texto da vista ativa e envolve a primeira ocorrência
+de cada termo num `dfn.verbete` com `aria-label`, foco por teclado e tooltip único fixo na viewport, que
+não é cortado por tabelas com rolagem. Não marca dentro de links, botões, selects, títulos, `svg`, código
+nem blocos `sem-verbete`. Um observador de mutações cobre as re-renderizações assíncronas, que chamam o
+render direto sem passar por `renderView`. Metodologia ganha a tabela completa e a entrada "Glossário" na
+subnav. Medido: nenhuma aba com verbete duplicado, nenhum verbete dentro de botão ou link; Metodologia
+marca 25 termos no próprio texto, Instituições 8, Risco setorial 9.
+
+**Bundle.** A abertura, o glossário e a marcação somaram 24 KB minificados ao core, que passou de 616 KB
+para 640 KB e furou o teto de 620 KB do teste de split. Em vez de afrouxar o teto, adiantou-se parte do T7
+(P2): o bloco de Bancos na bolsa (renderMarket, screener e auxiliares, 375 linhas) foi para o chunk
+`emergentes`, carregado na primeira visita à aba; só `renderMarket` é chamado do core, por nome. Resultado:
+core em 592 KB (606.198 bytes), chunk emergentes em 234 KB.
+
+**Validação.** `p1-didatico.test.ts` trava o auxiliar, as 13 abas, os dois caminhos de Comparar, a
+ausência do cartão duplicado em Alertas, a lista do A8 no glossário, as regras de marcação e o bloco em
+Metodologia. Suíte completa em modo CI, `tsc`, `next lint`, e varredura em Chromium das 44 vistas em
+1440 px e de 8 abas em 390 px sem rolagem horizontal do documento.
+
