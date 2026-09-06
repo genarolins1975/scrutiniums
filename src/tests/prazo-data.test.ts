@@ -69,6 +69,21 @@ describe.skipIf(!D.disponivel)("prazo.json: Brasil, faixas e aritmética", () =>
   });
 });
 
+const U = lerGold("ufs.json");
+describe.skipIf(!U || !U.disponivel || !D.disponivel || !(U.ufs || []).some((u: any) => u.prazo))("ufs.json: bloco de prazo nas páginas por UF", () => {
+  it("cada UF carrega a vencer, curto prazo, prazo médio e posições iguais ao painel", () => {
+    const porUF = Object.fromEntries(D.ufs.map((u: any) => [u.uf, u]));
+    for (const u of U.ufs) {
+      expect(u.prazo, u.uf).toBeTruthy();
+      expect(u.prazo.curto_12m_pct).toBe(porUF[u.uf].curto_12m_pct);
+      expect(u.prazo.prazo_medio_anos).toBe(porUF[u.uf].prazo_medio_anos);
+      expect(u.posicoes["prazo.curto_12m_pct"]).toBe(porUF[u.uf].posicoes.curto_12m_pct);
+    }
+    expect(U.datas.prazo).toBe(D.data_base);
+    expect(U.brasil.prazo_medio_anos).toBe(D.brasil.total.prazo_medio_anos);
+  });
+});
+
 describe("SPA: aba Prazo da carteira registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado, mapa e HTML", () => {
     expect(app).toContain('prazo: "/loan-maturity"');
@@ -98,5 +113,11 @@ describe("SPA: aba Prazo da carteira registrada em todos os mapas", () => {
     expect(read("pipeline/sources/scr_data.py")).toContain("pz90 REAL, pz360 REAL, pz1080 REAL, pz1800 REAL, pz5400 REAL, pzmais REAL");
     expect(read("src/lib/data/observatorioAbas.ts")).toContain('caminho: "/loan-maturity"');
     expect(read("src/lib/telemetry.ts")).toContain('"obs:prazo"');
+    // páginas por UF: builder lê prazo.json, ranqueia, e a página do estado tem o bloco e a entrada na subnav
+    const ufs = read("pipeline/ufs.py");
+    expect(ufs).toContain('prz = g("prazo.json")');
+    expect(ufs).toContain('("prazo", "curto_12m_pct"), ("prazo", "prazo_medio_anos")');
+    expect(app).toContain('bloco("uf-prazo", "Prazo da carteira"');
+    expect(app).toContain('["#uf-prazo", "Prazo"]');
   });
 });
