@@ -161,6 +161,11 @@ def _tst_ranking(con):
     req = urllib.request.Request(TST_URL, headers={"User-Agent": common.USER_AGENT})
     with urllib.request.urlopen(req, timeout=90) as r:
         raw = r.read()
+        if r.status == 202 or r.headers.get("x-amzn-waf-action"):
+            # AWS WAF responde 202 com corpo vazio e o cabeçalho x-amzn-waf-action: challenge
+            # (desafio JavaScript); sem navegador não há como passar. Medido em 06/09/2026.
+            return {"key": "tst_ranking", "ok": False,
+                    "error": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"}
     common.save_bronze("judicial", "tst_ranking_partes.html", raw,
                        {"fonte": "TST — Ranking das Partes", "url": TST_URL,
                         "nota": "top-10 do mês em casos novos no TST; robots.txt permite"})

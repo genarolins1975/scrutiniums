@@ -469,6 +469,7 @@ def build(con, cfg=None):
     return {
         "ok": True, "gerado_em": common.now_utc(), "ano": ano,
         "fator_ipca": _r(fator, 4),
+        "populacao_fonte": "IBGE Censo 2022 (pirâmide etária por município; a página trabalha por faixa etária, que só o Censo traz)",
         "brasil": {
             "selo": "observado",
             "populacao": int(nac["tot"]), "a60": int(nac["a60"]), "a65": int(nac["a65"]),

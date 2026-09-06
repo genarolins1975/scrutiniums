@@ -78,6 +78,60 @@ def fontes_reais_de(fetch_status):
     return sorted(out)
 
 
+def _carteira_conceitos(con):
+    """As quatro carteiras que convivem no site, com valor e data-base, para o verbete
+    único (auditoria de 06/09/2026, D7: SGS, SCR, crédito ampliado e ESTBAN diferiam em
+    até 68% sem explicação em lugar nenhum). Valores em R$ bilhões."""
+    out = {}
+    try:
+        v, d = con.execute("SELECT value, ref_date FROM series_obs WHERE key='saldo_total' ORDER BY ref_date DESC LIMIT 1").fetchone()
+        out["sgs"] = {"v": round(v / 1e3, 1), "ref": d[:7], "nome": "Saldo das operações de crédito (SGS 20539)",
+                      "def": "carteira do SFN no conceito das estatísticas monetárias do BCB: operações de crédito das instituições financeiras, sem TVM nem crédito externo."}
+    except Exception:
+        pass
+    try:
+        v, d = con.execute("SELECT SUM(saldo), MAX(data) FROM scr_uf WHERE data=(SELECT MAX(data) FROM scr_uf)").fetchone()
+        out["scr"] = {"v": round(v / 1e9, 1), "ref": d, "nome": "Carteira ativa (SCR.data)",
+                      "def": "soma da carteira ativa por UF do cliente nos agregados públicos do SCR, que inclui operações abaixo do piso e classificações que o SGS agrega de outro modo; fica alguns por cento acima do SGS."}
+    except Exception:
+        pass
+    try:
+        v, d = con.execute("SELECT value, ref_date FROM series_obs WHERE key='amp_ef_sfn' ORDER BY ref_date DESC LIMIT 1").fetchone()
+        out["ampliado"] = {"v": round(v / 1e3, 1), "ref": d[:7], "nome": "Empréstimos e financiamentos do SFN a empresas e famílias (crédito ampliado)",
+                           "def": "parcela bancária do crédito ampliado ao setor não financeiro (BCB), conceito do balanço de pagamentos e da dívida; exclui o que o SGS conta como crédito a governo."}
+    except Exception:
+        pass
+    try:
+        v, d = con.execute("SELECT SUM(credito), MAX(data_base) FROM estban_mun WHERE data_base=(SELECT MAX(data_base) FROM estban_mun)").fetchone()
+        if v:
+            out["estban"] = {"v": round(v / 1e9, 1), "ref": str(d)[:7], "nome": "Operações de crédito por agência (ESTBAN)",
+                             "def": "saldo contábil por agência, atribuído ao município da agência e não ao do cliente: as sedes em Brasília e São Paulo concentram carteiras nacionais, por isso o total supera em muito as demais réguas e a página municipal usa o ESTBAN só para penetração relativa."}
+    except Exception:
+        pass
+    return out
+
+
+def _if_contagens(con):
+    """Quantas instituições existem depende da régua; o verbete único evita que
+    1.422, 1.430 e 1.874 pareçam contradição (auditoria de 06/09/2026, D7)."""
+    out = {}
+    try:
+        am = con.execute("SELECT MAX(anomes) FROM institution_metrics").fetchone()[0]
+        out["ifdata_resumo"] = {"n": con.execute("SELECT COUNT(DISTINCT cod_inst) FROM institution_metrics WHERE anomes=? AND source_report='Resumo'", (am,)).fetchone()[0],
+                                "ref": am, "def": "instituições e conglomerados com o relatório Resumo no IF.data na data-base; é o universo das fichas e do screener."}
+        out["ifdata_qualquer_relatorio"] = {"n": con.execute("SELECT COUNT(DISTINCT cod_inst) FROM institution_metrics WHERE anomes=?", (am,)).fetchone()[0],
+                                            "ref": am, "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."}
+    except Exception:
+        pass
+    try:
+        r = con.execute("SELECT SUM(n), MAX(data) FROM sfn_contagem WHERE data=(SELECT MAX(data) FROM sfn_contagem)").fetchone()
+        if r and r[0]:
+            out["cadastro_sedes"] = {"n": r[0], "ref": str(r[1])[:10], "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."}
+    except Exception:
+        pass
+    return out
+
+
 def build_all(con, cfg, fetch_status):
     today = date.today().isoformat()
     horizons = cfg["forecast"]["horizons"]
@@ -219,7 +273,12 @@ def build_all(con, cfg, fetch_status):
     # ---- Recuperações & Falências: séries REAIS (CNJ/DataJud) + fichas demo seladas ----
     series_reais = {}
     try:
-        rj = dict(RJ_DEMO)
+        # Sem conteúdo demonstrativo: as fichas fictícias, a série de pedidos e a
+        # exposição estimada saíram do arquivo público (auditoria de 06/09/2026, D6).
+        # A SPA já não as lia; o arquivo carregava 172 KB de ficção à toa.
+        rj = {"demo": False, "selo": "DADO OBSERVADO",
+              "motivo": "Séries de ajuizamentos do CNJ/DataJud e fichas nominais do DJEN quando a fonte responde; "
+                        "nada é estimado nem simulado nesta página."}
         dj_cfg = cfg.get("datajud", {})
         tribs = dj_cfg.get("tribunais", [])
         series_reais = {}
@@ -453,22 +512,6 @@ def build_all(con, cfg, fetch_status):
                                    "REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). Lista de credores, "
                                    "exposição por banco e valor total declarado não têm fonte pública estruturada "
                                    "e não são estimados nem simulados nesta página.")
-        conf_to_class = {"declarada": "parcialmente observada", "lista_credores": "parcialmente observada",
-                         "plano": "estimada", "estimada": "estimada"}
-        casos = []
-        for c in RJ_DEMO["casos"]:
-            fin = c["divida_declarada_rmi"] * c["credores_financeiros_pct"] / 100
-            casos.append({**c, "exposicao_financeira": {
-                "classificacao": conf_to_class.get(c["confianca_divida"], "não identificada"),
-                "intervalo_rmi": [round(fin * 0.7), round(fin * 1.3)],
-                "metodo": "dívida declarada × % de credores financeiros, com banda de ±30% refletindo a incerteza da fonte",
-                "aviso": "Exposição aproximada — nunca tratar como valor exato.",
-            }})
-        rj["casos"] = casos
-        total_lo = sum(c["exposicao_financeira"]["intervalo_rmi"][0] for c in casos)
-        total_hi = sum(c["exposicao_financeira"]["intervalo_rmi"][1] for c in casos)
-        rj["exposicao_total_rmi"] = {"intervalo": [total_lo, total_hi],
-                                     "aviso": "Soma de estimativas DEMONSTRATIVAS; duplicidades entre credores não eliminadas."}
         common.write_gold("rj.json", rj)
     except Exception as e:
         rj = common.stub("rj.json", e)
@@ -574,7 +617,7 @@ def build_all(con, cfg, fetch_status):
             qvals.append(q["score"])
     qavg = sum(qvals) / len(qvals) if qvals else None
     try:
-        diagnosis = ov.build_diagnosis(con, ibcc, changes, sectors, qavg)
+        diagnosis = ov.build_diagnosis(con, ibcc, changes, sectors, qavg, ov.demo_componentes(sectors)[0] > 0)
     except Exception as e:
         common.falha_build("overview.json:diagnostico", e)
         diagnosis = {"disponivel": False, "error": str(e)[:300]}
@@ -610,9 +653,9 @@ def build_all(con, cfg, fetch_status):
     for card in model_cards:
         card["atualizado_em"] = common.now_utc()
     common.write_gold("method.json", {
-        "dicionario_indicadores": ov.INDICATOR_DICTIONARY,
+        "dicionario_indicadores": ov.dicionario_indicadores(sectors),
         "model_cards": model_cards,
-        "score_cards": ov.SCORE_CARDS,
+        "score_cards": ov.score_cards(sectors),
         "changelog": ov.CHANGELOG,
         "fontes_status": fetch_status,
     })
@@ -960,6 +1003,8 @@ def build_all(con, cfg, fetch_status):
         "gerado_em": common.now_utc(),
         "vintages": vintages,
         "inad_conceitos": inad,
+        "carteira_conceitos": _carteira_conceitos(con),
+        "if_contagens": _if_contagens(con),
         "fontes_status": fetch_status,
         # derivadas do status da coleta, nunca de lista fixa (a lista antiga
         # dizia 4 fontes com 38 coletores rodando; avaliação de 05/09)

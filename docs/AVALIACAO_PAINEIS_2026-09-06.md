@@ -436,3 +436,37 @@ Dois achados novos do mesmo log, corrigidos em PR próprio:
   de 27 tribunais (143,8 mil casos em 12 meses contra 821,2 mil no gold publicado). Tribunal nunca coletado
   passa a entrar todo na rodada, fora da cota; o builder declara `cobertura_n` e a sentinela trata gold
   íntegro com cobertura menor que a publicada como regressão, restaurando a publicação anterior.
+
+---
+
+## 11. Bloco P1 de dados (06/09/2026, tarde)
+
+**D5, coletores em pane.** Cada pane foi medida de novo em 06/09/2026 (15:20 a 15:35 UTC):
+
+| Fonte | Medição | O que mudou no coletor |
+|---|---|---|
+| Desenrola | o CSV atual tem exatamente as 7 colunas esperadas (588 KB, HTTP 200 com o `Accept` do pipeline); a falha "colunas ausentes" do runner de 05 e 06/09 veio de um corpo que não era o CSV | o coletor distingue página HTML (bloqueio ou manutenção) de esquema mudado, tolera caixa e espaço no cabeçalho, cai para latin-1 e grava no erro o cabeçalho recebido e os primeiros bytes |
+| DJEN (Comunica PJe) | HTTP 403 do CloudFront para quatro User-Agents e cabeçalhos de navegador, também sem parâmetros; `x-cache: Error from cloudfront`, POP de Amsterdã | é bloqueio da CDN por origem, fora do alcance do código; o erro passa a nomear a causa em vez de "Falha ao coletar" |
+| TST, ranking das partes | HTTP 202 com corpo vazio e `x-amzn-waf-action: challenge` para qualquer User-Agent | desafio JavaScript do WAF da AWS; só abre em navegador; o coletor nomeia a causa em vez de "competência não localizada" |
+| Pilar 3 (KM1 federado) | 33 falhas em 45: parse de "34.56%", "7,68", trimestre vazio, JSON duplamente codificado, além de 404, 503, 520 e SSL dos sites dos bancos | parser aceita percentual explícito e vírgula decimal, trimestre em quatro grafias e payload em string; os erros de rede continuam declarados por instituição |
+
+Inferência: das quatro panes, duas são bloqueio de infraestrutura contra a origem do runner (DJEN e TST) e não
+têm correção por código. A vigília de pane continuará a acusá-las; a issue #89 fica como registro.
+
+**D6, conteúdo demonstrativo residual.** `rj.json` deixa de carregar as 5 fichas fictícias, a série de
+pedidos e a exposição estimada (172 KB que a SPA não lia); `demo` passa a `false` com selo "DADO OBSERVADO".
+Os três textos de método que diziam "dois componentes demonstrativos" passam a ser escritos a partir de
+`sectors.json` (`demo_componentes`): hoje "1 de 4 componentes demonstrativo (estresse empresarial), com peso
+zero"; quando o último virar observado, o texto muda sozinho.
+
+**D7, população e verbetes.** Por UF, o crédito rural passa a usar a mesma população das demais páginas
+(IBGE SIDRA 6579, tabela `geo_uf`) em vez da soma municipal do Censo 2022; o Censo continua no corte
+municipal, onde é o único dado, e cada gold declara `populacao_fonte`. `meta.json` ganha dois verbetes
+gerados do silver: `carteira_conceitos` (SGS R$ 7.372,2 bi, SCR R$ 7.590,3 bi, empréstimos do SFN no
+crédito ampliado R$ 6.989,0 bi, todos em 2026-07; ESTBAN R$ 12.739,9 bi em 2026-06, saldo por agência e
+não por cliente) e `if_contagens` (1.422 com Resumo no IF.data, 2.355 com qualquer relatório, 1.743 sedes
+no Unicad). A SPA os exibe em Metodologia e, em forma compacta, no bloco "Como ler" do Mapa.
+
+**Validação.** Parsers exercitados em unidade (Pilar 3 e Desenrola), reconstrução local do gold com o silver
+desta sessão, testes `p1-dados.test.ts`, suíte completa, `tsc`, `lint`, minificação e renderização de
+Metodologia e Mapa em Chromium.

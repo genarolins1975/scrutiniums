@@ -73,6 +73,22 @@ def _norm(metric, v):
     régua plausível => None (omitido, nunca publicado)."""
     if v is None:
         return None
+    if isinstance(v, str):
+        # a federação não padroniza: "34.56%", "7,68", "1.234,5" e "12.3" convivem
+        # (runner de 05 e 06/09/2026). Percentual explícito já está em %; vírgula é decimal.
+        t = v.strip().replace(" ", "")
+        if not t:
+            return None
+        pct = t.endswith("%")
+        t = t.rstrip("%")
+        if "," in t:
+            t = t.replace(".", "").replace(",", ".")
+        try:
+            v = float(t)
+        except ValueError:
+            return None
+        if pct:
+            return v if (0 <= v <= 60 or (metric in ("lcr_pct", "nsfr_pct") and 20 <= v <= 2000)) else None
     v = float(v)
     if metric in ("lcr_pct", "nsfr_pct"):
         if v < 10:
@@ -87,6 +103,25 @@ def _tri_anterior(ano, tri, k):
     """k trimestres antes de (ano, tri)."""
     idx = ano * 4 + (tri - 1) - k
     return f"{idx // 4}-{idx % 4 + 1}"
+
+
+def _trimestre_referencia(payload):
+    """'2026-2' a partir de km1_trimestreReferencia; quando a chave falta ou vem vazia
+    (três instituições em 06/09/2026), procura qualquer chave com 'trimestre' e aceita
+    também '2T2026', '2026T2' e '2º trimestre de 2026'."""
+    candidatos = [payload.get("km1_trimestreReferencia")]
+    candidatos += [v for k, v in payload.items() if "trimestre" in str(k).lower() and isinstance(v, (str, int))]
+    for c in candidatos:
+        t = str(c or "").strip()
+        if not t:
+            continue
+        m = (re.match(r"^(\d{4})-(\d)$", t) or re.match(r"^(\d{4})[Tt](\d)$", t))
+        if m:
+            return f"{m.group(1)}-{m.group(2)}"
+        m = re.match(r"^(\d)[Tt](\d{4})$", t) or re.match(r"^(\d)[ºo°]?\s*trimestre\s*(?:de)?\s*(\d{4})$", t, re.I)
+        if m:
+            return f"{m.group(2)}-{m.group(1)}"
+    return ""
 
 
 def _grupos_por_secao(payload):
@@ -143,7 +178,11 @@ def collect(con, cfg):
         url, nome = alvo["URLDados"], alvo.get("NomeInstituicao", "")
         try:
             payload = json.loads(_fetch(url))
-            tri_ref = str(payload.get("km1_trimestreReferencia") or "")
+            if isinstance(payload, str):
+                payload = json.loads(payload)  # JSON duplamente codificado ('str' object has no attribute 'get')
+            if isinstance(payload, list):
+                payload = next((x for x in payload if isinstance(x, dict)), {})
+            tri_ref = _trimestre_referencia(payload)
             m = re.match(r"^(\d{4})-(\d)$", tri_ref)
             if not m:
                 results.append({"key": f"pilar3:{cnpj8}", "ok": False,

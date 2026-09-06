@@ -81,14 +81,28 @@ def collect(con, cfg=None):
         return [{"key": "desenrola", "ok": True, "note": "arquivo inalterado desde a última coleta",
                  "linhas": ja[0]}]
 
-    rdr = csv.DictReader(io.StringIO(body.decode("utf-8-sig")), delimiter=";")
+    inicio = body[:400].lstrip()
+    if inicio[:1] == b"<" or b"<html" in inicio.lower():
+        # o portal devolveu uma página (bloqueio, manutenção ou captcha), não o CSV:
+        # nomear a causa evita o diagnóstico errado "esquema mudou" (runner de 05 e 06/09/2026)
+        return [{"key": "desenrola", "ok": False,
+                 "error": f"resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): {inicio[:120]!r}"}]
+    try:
+        texto = body.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        texto = body.decode("latin-1")
+    rdr = csv.DictReader(io.StringIO(texto), delimiter=";")
     obrigatorias = {"DATA_BASE", "TIPO_DESENROLA", "UNIDADE_FEDERACAO", "COD_CONGLOMERADO_FINANCEIRO",
                     "NOME_CONGLOMERADO_FINANCEIRO", "NUMERO_OPERACOES", "VOLUME_OPERACOES"}
-    faltando = obrigatorias - set(rdr.fieldnames or [])
+    campos = [c.strip().upper() for c in (rdr.fieldnames or [])]
+    rdr.fieldnames = campos  # tolera espaço e caixa no cabeçalho; a ordem não importa
+    faltando = obrigatorias - set(campos)
     if faltando:
-        # o esquema mudou: falhar alto é melhor do que gravar número errado em silêncio
+        # o esquema mudou: falhar alto é melhor do que gravar número errado em silêncio,
+        # e o cabeçalho recebido vai junto para o diagnóstico ser possível sem o bronze
         return [{"key": "desenrola", "ok": False,
-                 "error": f"colunas ausentes no CSV: {sorted(faltando)} (esquema da fonte mudou)"}]
+                 "error": f"colunas ausentes no CSV: {sorted(faltando)} (esquema da fonte mudou); "
+                          f"cabeçalho recebido: {campos[:10]}; início: {inicio[:80]!r}"}]
 
     linhas, meses, fora = 0, set(), 0
     con.execute("DELETE FROM desenrola_op")  # a fonte republica a série inteira a cada mês
