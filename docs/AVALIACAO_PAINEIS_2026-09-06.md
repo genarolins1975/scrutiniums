@@ -352,3 +352,68 @@ Validação: `node --check`, minificação (núcleo 599 KB de 620 KB), 950 teste
 overflow.
 
 Próxima etapa recomendada: os sete P0 do §7 (quatro de dados, três técnicos), antes de qualquer painel novo.
+
+---
+
+## 10. Correções dos sete P0 (06/09/2026, manhã)
+
+Um PR em `main` com os sete itens P0 do §7. O que cada um encontrou e o que mudou:
+
+**D1. SCR 2026-07 não estava truncado: a queda está na fonte.**
+Evidência: o zip `scrdata_2026.zip` baixado do BCB em 06/09/2026 08:56 UTC (105,7 MB, HTTP 200) traz o CSV de
+2026-07 com 310.197 linhas e carteira de R$ 7.590,3 bi, contra 313.374 linhas e R$ 7.637,1 bi em 2026-06. O DF
+cai de R$ 179,1 bi para R$ 159,1 bi (menos 11,2%) e SE de R$ 47,8 bi para R$ 42,6 bi no próprio arquivo do
+BCB. O gold publicado (R$ 7.573,9 bi e DF R$ 158,8 bi) difere do arquivo atual em 0,2%: a fonte revisou o
+mês depois da absorção. Inferência: reclassificação ou revisão concentrada em duas UFs, não carga parcial.
+Aplicado: (a) o coletor registra por data-base o CRC do CSV dentro do zip, o número de linhas e a carteira
+(`scr_carga`) e reabsorve a data-base quando a fonte revisa o arquivo; (b) piso de 90% das linhas da
+data-base anterior, abaixo do qual nada é gravado e a falha fica declarada; (c) download em fluxo para disco
+com retry, e `IncompleteRead` passa a ser retentado em `http_get`; (d) ano fechado com as 12 datas-base
+registradas não é mais baixado (eram cerca de 200 MB por execução); (e) o Panorama publica o aviso
+`uf_variacao_saldo` quando a carteira de uma UF varia 5% ou mais entre datas-base consecutivas, com a nota de
+que pode ser revisão ou reclassificação na fonte. A reconciliação por UF com o SGS não foi feita: o SGS não
+publica saldo por UF na mesma base conceitual do SCR.data, e a conferência contra o arquivo bruto bastou.
+
+**D2. IF.data congelado por lista fixa.**
+Aplicado: `config.ifdata.anomes_candidates` passa a ser `"auto:5"` e `load_config` resolve para os cinco fins
+de trimestre mais recentes (em 06/09/2026: 202606, 202603, 202512, 202509, 202506). O Olinda respondeu HTTP 200
+para 202603 e lista vazia para 202606 em 06/09/2026 09:03 UTC; o HTTP 500 de 05/09 foi transitório.
+
+**D3. Comparar e Consignado.**
+Comparar: reproduzido localmente. `institution_metrics` tem 60 linhas do Resumo de 2020 sem `CodInst`
+(chave nula), e `c.startswith("C")` em `None` derrubava o builder. Aplicado: o builder ignora chave nula e o
+coletor não grava linha sem `CodInst`. Consignado: o log do CI de 05/09 confirma o stub e a restauração pela
+sentinela, sem traceback. Localmente, com previdência, censo, ESTBAN e o SCR recarregado, o builder conclui
+com `ok: true` (09:07 UTC). A causa mais provável no CI é o corte triplo `scr_uf_ocup_produto` vazio: o silver
+semeado trazia `scr_uf` de 2024 e 2025 sem o corte, e a idempotência por `scr_uf` impedia o preenchimento.
+Com o registro de carga, a primeira execução reabsorve as 31 datas-base e preenche o corte. Se o stub
+persistir, o traceback agora sai no log e em `meta.builders_falhos`. Sentinela: `sanidade_gold.py` grava em
+`meta.json` a chave `restaurados` com o `gerado_em` da cópia restaurada e a idade em dias; a vigília de pane
+acusa acima de 2 dias e acusa qualquer `builders_falhos`.
+
+**D4. Meta e prazos.**
+Aplicado: cinco vintages novos em `meta.json` (pix, estban, openfinance, pgfn, desenrola; fidc já existia) e
+os seis prazos em `PRAZO_VINTAGE_DIAS`. Os 20 vintages e 51 coletores só aparecem no meta publicado a partir
+da primeira execução do pipeline com este código.
+
+**T1.** `fetchGold` rejeita resposta não ok e memoriza a falha em `GOLD_FALHAS`; o screener distingue "não
+pedido" de "falhou" e mostra faixa de indisponibilidade em vez de refazer a chamada; o cache de UF do Panorama
+marca voo e falha.
+
+**T2.** `ci.yml` e `vigilancia.yml` disparam por `workflow_run` do pipeline; os crons ficam como reserva
+(17:45 e 20:00/20:20 UTC). Na vigília por `workflow_run`, frescor e pane esperam 5 minutos pelo raw do main.
+
+**T3.** `write_gold` grava em temporário e renomeia; 32 blocos `except` passam a usar `common.stub`, que
+imprime o traceback, registra a falha e grava o stub com os dois marcadores (`disponivel` e `ok`); exposures,
+Open Finance, RJ, antecedentes, regimes, alertas, visão geral, método e relatório ganharam proteção; o meta
+publica `builders_falhos`. Pulso, IBCC, setores e instituições seguem sem proteção por serem base de tudo o
+que vem depois.
+
+**Validação.** `compileall`, `node --check`, minificação (núcleo 600 KB de 620 KB), `tsc`, `next lint`,
+966 testes em 79 arquivos (16 novos em `p0-correcoes.test.ts`). Coletor do SCR exercitado localmente três
+vezes: primeira carga (7 datas-base, 26 s), segunda com reabsorção por registro ausente, terceira sem
+reabsorção.
+
+**Não verificado.** Comportamento no runner: a primeira execução reabsorve 31 datas-base do SCR (estimativa de
+3 a 4 minutos a mais); a causa do stub do Consignado no CI é inferência até a próxima execução; a vigília
+por `workflow_run` só será exercitada quando o pipeline terminar.

@@ -187,6 +187,8 @@ def _load_values(con):
     cur = con.execute("SELECT cod_inst, anomes, metric, value FROM institution_metrics")
     vals = {}
     for cod, anomes, metric, value in cur.fetchall():
+        if not cod:
+            continue  # linhas sem CodInst (Resumo 2020) derrubavam o builder inteiro: c.startswith em None
         vals.setdefault(cod, {}).setdefault(str(anomes), {})[metric] = value
     return vals
 

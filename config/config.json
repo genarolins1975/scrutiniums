@@ -1626,13 +1626,7 @@
   ],
   "ifdata": {
     "base_url": "https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata",
-    "anomes_candidates": [
-      "202603",
-      "202512",
-      "202509",
-      "202506",
-      "202503"
-    ],
+    "anomes_candidates": "auto:5",
     "tipo_instituicao": 2,
     "relatorio_resumo": "Resumo",
     "top_n_by_assets": 100,

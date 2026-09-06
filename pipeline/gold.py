@@ -4,6 +4,7 @@ Contrato: cada payload inclui tipo epistemológico (observado/estimativa/previs�
 metadados de fonte e qualidade, e referência de linhagem.
 """
 import json
+import re
 import os
 from datetime import date
 
@@ -128,8 +129,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [emprego] indisponível: {r_emp.get('motivo')}")
     except Exception as e:
-        r_emp = {"disponivel": False, "error": str(e)}
-        common.write_gold("emprego.json", r_emp)
+        r_emp = common.stub("emprego.json", e)
     sectors = build_sector_stress(con, cfg, RJ_DEMO, r_emp if r_emp.get("disponivel") else None)
     common.write_gold("sectors.json", sectors)
 
@@ -148,320 +148,330 @@ def build_all(con, cfg, fetch_status):
     try:
         common.write_gold("npl.json", npl_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("npl.json", {"ok": False, "error": str(e)})
+        common.stub("npl.json", e)
 
     # ---- Indicadores operacionais Fase 0: gente, rede e auditoria ----
     from pipeline import operacional as oper_mod
     try:
         common.write_gold("operacional.json", oper_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("operacional.json", {"disponivel": False, "error": str(e)})
+        common.stub("operacional.json", e)
 
     # ---- Compra de folha de servidores pelos bancos (curado + PNCP) ----
     from pipeline import folha_bancos as folha_mod
     try:
         folha_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("folha_bancos.json", {"disponivel": False, "error": str(e)})
+        common.stub("folha_bancos.json", e)
 
     # ---- Timeline regulatória transversal (curado) ----
     from pipeline import regulacao as reg_mod
     try:
         reg_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("regulacao.json", {"disponivel": False, "error": str(e)})
+        common.stub("regulacao.json", e)
 
     # ---- Guidance × entregue (Fase 2 — publica só aprovado) ----
     from pipeline import guidance_bancos as guid_mod
     try:
         guid_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("guidance.json", {"disponivel": False, "error": str(e)})
+        common.stub("guidance.json", e)
 
     # ---- Recordes automáticos nas séries macro ----
     from pipeline import recordes as rec_mod
     try:
         rec_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("recordes.json", {"disponivel": False, "error": str(e)})
+        common.stub("recordes.json", e)
 
     # ---- Regimes de resolução (vigentes + memória) ----
     from pipeline import regimes_gold as reg_res_mod
     try:
         reg_res_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("regimes.json", {"disponivel": False, "error": str(e)})
+        common.stub("regimes.json", e)
 
     # ---- Pilar 3 (KM1): liquidez e capital regulatórios ----
     from pipeline import pilar3_gold as p3_mod
     try:
         p3_mod.build(con, cfg)
     except Exception as e:
-        common.write_gold("pilar3.json", {"disponivel": False, "error": str(e)})
+        common.stub("pilar3.json", e)
 
     # ---- Exposição do sistema por setor e porte (carteiras reais) ----
-    exposures = build_exposures(con, cfg)
-    common.write_gold("exposures.json", exposures)
+    try:
+        exposures = build_exposures(con, cfg)
+        common.write_gold("exposures.json", exposures)
+    except Exception as e:
+        exposures = common.stub("exposures.json", e)
 
     # ---- Módulo 4: Open Finance (REAL desde a v0.12; demo apenas como fallback) ----
     from pipeline.indicators import build_openfinance_real
-    of = build_openfinance_real(con, inst)
-    if of is None:
-        of = build_openfinance(OPEN_FINANCE_DEMO)
-    common.write_gold("openfinance.json", of)
+    try:
+        of = build_openfinance_real(con, inst)
+        if of is None:
+            of = build_openfinance(OPEN_FINANCE_DEMO)
+        common.write_gold("openfinance.json", of)
+    except Exception as e:
+        of = common.stub("openfinance.json", e)
 
     # ---- Recuperações & Falências: séries REAIS (CNJ/DataJud) + fichas demo seladas ----
-    rj = dict(RJ_DEMO)
-    dj_cfg = cfg.get("datajud", {})
-    tribs = dj_cfg.get("tribunais", [])
     series_reais = {}
-    for slug in ("recuperacao_judicial", "falencia"):
-        agg = _series_payload(con, f"{slug}_agregado", tail=120)
-        por_trib = {}
-        for t in tribs:
-            p = _series_payload(con, f"{slug}_{t}", tail=120, with_yoy=False)
-            if p:
-                por_trib[t.upper()] = p
-        if agg:
-            fc_rj = None
-            s_raw = common.get_series(con, f"{slug}_agregado")
-            if len(s_raw) >= 48:
-                fc_rj = fc.forecast_series([d for d, _ in s_raw], [v for _, v in s_raw],
-                                           horizons, bt_pts, min_history=48)
-                if fc_rj.get("ok"):  # contagens não podem ser negativas: trunca em zero
-                    for p in fc_rj["pontos"]:
-                        p["p10"] = max(p["p10"], 0.0)
-                        p["p50"] = max(p["p50"], 0.0)
-                        p["p90"] = max(p["p90"], 0.0)
-                    fc_rj["limitacoes"] = (fc_rj.get("limitacoes", "") +
-                                           " Quantis truncados em zero (série de contagem).")
-            series_reais[slug] = {"agregado": agg, "por_tribunal": por_trib, "previsao": fc_rj,
-                                  "cobertura": ", ".join(t.upper() for t in tribs)}
-    rj["series_reais"] = series_reais
-    # fichas nominais reais (DJEN/Comunica PJe)
     try:
-        cur = con.execute("""SELECT numero_processo, tribunal, orgao, classe, empresas, cnpjs,
-                                    valor_mencionado, tipos_documento, ultima_publicacao,
-                                    n_publicacoes, link FROM rj_fichas
-                             ORDER BY ultima_publicacao DESC LIMIT 60""")
-        cols = ["numero_processo", "tribunal", "orgao", "classe", "empresas", "cnpjs",
-                "valor_mencionado", "tipos_documento", "ultima_publicacao", "n_publicacoes", "link"]
-        casos_reais = []
-        for row in cur.fetchall():
-            d = dict(zip(cols, row))
-            d["empresas"] = json.loads(d["empresas"])
-            d["cnpjs"] = json.loads(d["cnpjs"])
-            d["tipos_documento"] = json.loads(d["tipos_documento"])
-            casos_reais.append(d)
-        # merge credores/passivo (rj_credores) + cadastro Receita (cnpj_cache)
-        cred_map = {}
+        rj = dict(RJ_DEMO)
+        dj_cfg = cfg.get("datajud", {})
+        tribs = dj_cfg.get("tribunais", [])
+        series_reais = {}
+        for slug in ("recuperacao_judicial", "falencia"):
+            agg = _series_payload(con, f"{slug}_agregado", tail=120)
+            por_trib = {}
+            for t in tribs:
+                p = _series_payload(con, f"{slug}_{t}", tail=120, with_yoy=False)
+                if p:
+                    por_trib[t.upper()] = p
+            if agg:
+                fc_rj = None
+                s_raw = common.get_series(con, f"{slug}_agregado")
+                if len(s_raw) >= 48:
+                    fc_rj = fc.forecast_series([d for d, _ in s_raw], [v for _, v in s_raw],
+                                               horizons, bt_pts, min_history=48)
+                    if fc_rj.get("ok"):  # contagens não podem ser negativas: trunca em zero
+                        for p in fc_rj["pontos"]:
+                            p["p10"] = max(p["p10"], 0.0)
+                            p["p50"] = max(p["p50"], 0.0)
+                            p["p90"] = max(p["p90"], 0.0)
+                        fc_rj["limitacoes"] = (fc_rj.get("limitacoes", "") +
+                                               " Quantis truncados em zero (série de contagem).")
+                series_reais[slug] = {"agregado": agg, "por_tribunal": por_trib, "previsao": fc_rj,
+                                      "cobertura": ", ".join(t.upper() for t in tribs)}
+        rj["series_reais"] = series_reais
+        # fichas nominais reais (DJEN/Comunica PJe)
         try:
-            for num, bancos, passivo, cnpjs_c, pclasses in con.execute(
-                    "SELECT numero_processo, bancos, passivo_total, cnpjs, passivo_classes FROM rj_credores").fetchall():
-                cred_map[num] = {"bancos": json.loads(bancos or "[]"), "passivo": passivo,
-                                 "cnpjs": json.loads(cnpjs_c or "[]"),
-                                 "passivo_classes": json.loads(pclasses or "{}")}
-        except Exception:
-            pass
-
-        def _brl(v):
+            cur = con.execute("""SELECT numero_processo, tribunal, orgao, classe, empresas, cnpjs,
+                                        valor_mencionado, tipos_documento, ultima_publicacao,
+                                        n_publicacoes, link FROM rj_fichas
+                                 ORDER BY ultima_publicacao DESC LIMIT 60""")
+            cols = ["numero_processo", "tribunal", "orgao", "classe", "empresas", "cnpjs",
+                    "valor_mencionado", "tipos_documento", "ultima_publicacao", "n_publicacoes", "link"]
+            casos_reais = []
+            for row in cur.fetchall():
+                d = dict(zip(cols, row))
+                d["empresas"] = json.loads(d["empresas"])
+                d["cnpjs"] = json.loads(d["cnpjs"])
+                d["tipos_documento"] = json.loads(d["tipos_documento"])
+                casos_reais.append(d)
+            # merge credores/passivo (rj_credores) + cadastro Receita (cnpj_cache)
+            cred_map = {}
             try:
-                return float(v.replace(".", "").replace(",", "."))
+                for num, bancos, passivo, cnpjs_c, pclasses in con.execute(
+                        "SELECT numero_processo, bancos, passivo_total, cnpjs, passivo_classes FROM rj_credores").fetchall():
+                    cred_map[num] = {"bancos": json.loads(bancos or "[]"), "passivo": passivo,
+                                     "cnpjs": json.loads(cnpjs_c or "[]"),
+                                     "passivo_classes": json.loads(pclasses or "{}")}
             except Exception:
+                pass
+
+            def _brl(v):
+                try:
+                    return float(v.replace(".", "").replace(",", "."))
+                except Exception:
+                    return None
+
+            # cascata de passivo: (1) QGC por classe -> (2) citado no ato -> (3) estimado -> (4) não identificado
+            obs_vals = [x for x in (_brl(c["passivo"]) for c in cred_map.values()) if x and x > 1e4]
+            est_int = None
+            if len(obs_vals) >= 8:
+                sv = sorted(obs_vals)
+                q = lambda p: sv[min(int(p * (len(sv) - 1)), len(sv) - 1)]
+                est_int = [q(0.25), q(0.75)]
+            for c in cred_map.values():
+                if c["passivo_classes"]:
+                    c["nivel_passivo"] = "QGC por classe publicado"
+                elif c["passivo"]:
+                    c["nivel_passivo"] = "citado no ato"
+                elif est_int:
+                    c["nivel_passivo"] = "estimado (mediana da janela)"
+                    c["passivo_estimado_intervalo"] = est_int
+                else:
+                    c["nivel_passivo"] = "não identificado"
+            n_obs = sum(1 for c in cred_map.values() if c["passivo"])
+            n_est = sum(1 for c in cred_map.values() if c.get("passivo_estimado_intervalo"))
+            rj["passivo_janela"] = {
+                "tipo": "APROXIMAÇÃO ESTATÍSTICA",
+                "casos_total": len(cred_map), "casos_com_passivo_citado": n_obs,
+                "passivo_citado_soma_brl": round(sum(obs_vals)) if obs_vals else None,
+                "casos_estimados": n_est,
+                "intervalo_por_caso_estimado_brl": est_int,
+                "intervalo_estimado_total_brl": ([round(n_est * est_int[0]), round(n_est * est_int[1])]
+                                                 if est_int and n_est else None),
+                "metodo": "Casos com passivo citado somados diretamente; casos sem valor recebem o intervalo "
+                          "interquartil (p25–p75) dos passivos citados na mesma janela — NÍVEL ESTIMADO, nunca ponto.",
+                "limitacoes": "Valores citados podem ser um único crédito e não o passivo total; a estimativa por "
+                              "quartis assume que casos sem valor se distribuem como os com valor (viés provável: "
+                              "casos maiores publicam mais). Somar níveis distintos exige cautela — exibidos separados.",
+            }
+            cnpj_map = {}
+            try:
+                for row in con.execute("SELECT cnpj, razao, cnae, cnae_desc, porte, uf, municipio, situacao FROM cnpj_cache").fetchall():
+                    cnpj_map[row[0]] = dict(zip(["cnpj", "razao", "cnae", "cnae_desc", "porte", "uf", "municipio", "situacao"], row))
+            except Exception:
+                pass
+            import re as _re
+            import unicodedata as _ud
+
+            def _sem_acento(s):
+                return _ud.normalize("NFKD", s or "").encode("ascii", "ignore").decode().upper()
+
+            _ALIAS = {"BRADESCO": "BANCO BRADESCO", "ITAU": "ITAU UNIBANCO", "SANTANDER": "BANCO SANTANDER"}
+
+            def _canon_banco(nome):
+                n = _sem_acento(nome).strip()
+                return _ALIAS.get(n, n)
+
+            _GENERICOS = {"INDUSTRIA", "COMERCIO", "IMPORTACAO", "EXPORTACAO", "LTDA", "EIRELI",
+                          "BRASIL", "EMPRESA", "EMPREENDIMENTOS", "PARTICIPACOES", "SERVICOS",
+                          "TRANSPORTES", "ALIMENTOS", "CONSTRUTORA", "COMERCIAL", "DISTRIBUIDORA",
+                          "ATACADISTA", "VAREJISTA", "MASSA", "FALIDA", "RECUPERACAO", "JUDICIAL",
+                          "AGRICOLA", "AGROPECUARIA", "PRODUTOS", "MATERIAIS", "EQUIPAMENTOS",
+                          "SOLUCOES", "SISTEMAS", "GRUPO", "HOLDING", "COMPANHIA"}
+
+            def _toks(s):
+                # tokens distintivos: nomes genéricos de atividade/forma societária não contam
+                return set(_re.findall(r"[A-Z]{4,}", _sem_acento(s))) - _GENERICOS
+
+            def _match_cadastro(f):
+                """Associa cadastro->recuperanda só com razão social compatível (>=2 tokens)."""
+                # apenas CNPJs citados nos textos DO PRÓPRIO processo — sem busca global
+                # (a varredura por razão social em todo o cache gera falsos vínculos)
+                candidatos = [cnpj_map.get(_re.sub(r"\D", "", c))
+                              for c in f.get("cnpjs", []) + f.get("credores", {}).get("cnpjs", [])]
+                candidatos = [c for c in candidatos if c]
+                for cad in candidatos:
+                    if not cad.get("razao"):
+                        continue
+                    toks_cad = _toks(cad["razao"])
+                    for emp in f.get("empresas", []):
+                        comum = toks_cad & _toks(emp)
+                        # exige 2+ tokens distintivos, ou 1 token longo (>=7) e raro
+                        if len(comum) >= 2 or any(len(t) >= 7 for t in comum):
+                            return {**cad, "associacao": "razão social compatível"}
                 return None
-
-        # cascata de passivo: (1) QGC por classe -> (2) citado no ato -> (3) estimado -> (4) não identificado
-        obs_vals = [x for x in (_brl(c["passivo"]) for c in cred_map.values()) if x and x > 1e4]
-        est_int = None
-        if len(obs_vals) >= 8:
-            sv = sorted(obs_vals)
-            q = lambda p: sv[min(int(p * (len(sv) - 1)), len(sv) - 1)]
-            est_int = [q(0.25), q(0.75)]
-        for c in cred_map.values():
-            if c["passivo_classes"]:
-                c["nivel_passivo"] = "QGC por classe publicado"
-            elif c["passivo"]:
-                c["nivel_passivo"] = "citado no ato"
-            elif est_int:
-                c["nivel_passivo"] = "estimado (mediana da janela)"
-                c["passivo_estimado_intervalo"] = est_int
-            else:
-                c["nivel_passivo"] = "não identificado"
-        n_obs = sum(1 for c in cred_map.values() if c["passivo"])
-        n_est = sum(1 for c in cred_map.values() if c.get("passivo_estimado_intervalo"))
-        rj["passivo_janela"] = {
-            "tipo": "APROXIMAÇÃO ESTATÍSTICA",
-            "casos_total": len(cred_map), "casos_com_passivo_citado": n_obs,
-            "passivo_citado_soma_brl": round(sum(obs_vals)) if obs_vals else None,
-            "casos_estimados": n_est,
-            "intervalo_por_caso_estimado_brl": est_int,
-            "intervalo_estimado_total_brl": ([round(n_est * est_int[0]), round(n_est * est_int[1])]
-                                             if est_int and n_est else None),
-            "metodo": "Casos com passivo citado somados diretamente; casos sem valor recebem o intervalo "
-                      "interquartil (p25–p75) dos passivos citados na mesma janela — NÍVEL ESTIMADO, nunca ponto.",
-            "limitacoes": "Valores citados podem ser um único crédito e não o passivo total; a estimativa por "
-                          "quartis assume que casos sem valor se distribuem como os com valor (viés provável: "
-                          "casos maiores publicam mais). Somar níveis distintos exige cautela — exibidos separados.",
-        }
-        cnpj_map = {}
-        try:
-            for row in con.execute("SELECT cnpj, razao, cnae, cnae_desc, porte, uf, municipio, situacao FROM cnpj_cache").fetchall():
-                cnpj_map[row[0]] = dict(zip(["cnpj", "razao", "cnae", "cnae_desc", "porte", "uf", "municipio", "situacao"], row))
-        except Exception:
-            pass
-        import re as _re
-        import unicodedata as _ud
-
-        def _sem_acento(s):
-            return _ud.normalize("NFKD", s or "").encode("ascii", "ignore").decode().upper()
-
-        _ALIAS = {"BRADESCO": "BANCO BRADESCO", "ITAU": "ITAU UNIBANCO", "SANTANDER": "BANCO SANTANDER"}
-
-        def _canon_banco(nome):
-            n = _sem_acento(nome).strip()
-            return _ALIAS.get(n, n)
-
-        _GENERICOS = {"INDUSTRIA", "COMERCIO", "IMPORTACAO", "EXPORTACAO", "LTDA", "EIRELI",
-                      "BRASIL", "EMPRESA", "EMPREENDIMENTOS", "PARTICIPACOES", "SERVICOS",
-                      "TRANSPORTES", "ALIMENTOS", "CONSTRUTORA", "COMERCIAL", "DISTRIBUIDORA",
-                      "ATACADISTA", "VAREJISTA", "MASSA", "FALIDA", "RECUPERACAO", "JUDICIAL",
-                      "AGRICOLA", "AGROPECUARIA", "PRODUTOS", "MATERIAIS", "EQUIPAMENTOS",
-                      "SOLUCOES", "SISTEMAS", "GRUPO", "HOLDING", "COMPANHIA"}
-
-        def _toks(s):
-            # tokens distintivos: nomes genéricos de atividade/forma societária não contam
-            return set(_re.findall(r"[A-Z]{4,}", _sem_acento(s))) - _GENERICOS
-
-        def _match_cadastro(f):
-            """Associa cadastro->recuperanda só com razão social compatível (>=2 tokens)."""
-            # apenas CNPJs citados nos textos DO PRÓPRIO processo — sem busca global
-            # (a varredura por razão social em todo o cache gera falsos vínculos)
-            candidatos = [cnpj_map.get(_re.sub(r"\D", "", c))
-                          for c in f.get("cnpjs", []) + f.get("credores", {}).get("cnpjs", [])]
-            candidatos = [c for c in candidatos if c]
-            for cad in candidatos:
-                if not cad.get("razao"):
-                    continue
-                toks_cad = _toks(cad["razao"])
-                for emp in f.get("empresas", []):
-                    comum = toks_cad & _toks(emp)
-                    # exige 2+ tokens distintivos, ou 1 token longo (>=7) e raro
-                    if len(comum) >= 2 or any(len(t) >= 7 for t in comum):
-                        return {**cad, "associacao": "razão social compatível"}
-            return None
-        if casos_reais:
-            for f in casos_reais:
-                cr_extra = cred_map.get(f["numero_processo"])
-                if cr_extra:
-                    f["credores"] = cr_extra
-                cad = _match_cadastro(f)
-                if cad:
-                    f["cadastro_receita"] = cad
-            # exposição agregada por banco na janela (níveis observada/parcialmente observada)
-            expo = {}
-            for num, c in cred_map.items():
-                vistos_no_caso = set()
-                for b in c["bancos"]:
-                    canon = _canon_banco(b["nome"])
-                    e = expo.setdefault(canon, {"banco": canon, "casos": 0,
-                                                "com_valor": 0, "valores": []})
-                    if canon in vistos_no_caso:
+            if casos_reais:
+                for f in casos_reais:
+                    cr_extra = cred_map.get(f["numero_processo"])
+                    if cr_extra:
+                        f["credores"] = cr_extra
+                    cad = _match_cadastro(f)
+                    if cad:
+                        f["cadastro_receita"] = cad
+                # exposição agregada por banco na janela (níveis observada/parcialmente observada)
+                expo = {}
+                for num, c in cred_map.items():
+                    vistos_no_caso = set()
+                    for b in c["bancos"]:
+                        canon = _canon_banco(b["nome"])
+                        e = expo.setdefault(canon, {"banco": canon, "casos": 0,
+                                                    "com_valor": 0, "valores": []})
+                        if canon in vistos_no_caso:
+                            if b["valor"]:
+                                e["com_valor"] += 1
+                                e["valores"].append(b["valor"])
+                            continue
+                        vistos_no_caso.add(canon)
+                        e["casos"] += 1
                         if b["valor"]:
                             e["com_valor"] += 1
                             e["valores"].append(b["valor"])
-                        continue
-                    vistos_no_caso.add(canon)
-                    e["casos"] += 1
-                    if b["valor"]:
-                        e["com_valor"] += 1
-                        e["valores"].append(b["valor"])
-            rj["exposicao_citada"] = {
-                "tipo": "DADO OBSERVADO (extração automática)",
-                "janela_dias": 60,
-                "bancos": sorted(expo.values(), key=lambda x: -x["casos"])[:20],
-                "casos_com_credores": len(cred_map),
-                "metodo": "Instituições financeiras citadas em publicações com 'relação de credores' "
-                          "(DJEN) de processos de RJ/falência; 'observada' = valor adjacente ao nome no texto; "
-                          "'parcialmente observada' = citação sem valor.",
-                "limitacoes": "Presença em lista de credores NÃO mede a exposição total do banco; valores são "
-                              "os citados no ato (podem ser um único crédito); janela de 60 dias, 8 tribunais; "
-                              "nomes normalizados por regex podem fragmentar o mesmo conglomerado. "
-                              "Casos sem menção = exposição NÃO IDENTIFICADA (ausência não é zero).",
-            }
-        if casos_reais:
-            rj["casos_reais"] = {
-                "tipo": "DADO OBSERVADO (extração automática)", "fichas": casos_reais,
-                "janela_dias": cfg.get("djen", {}).get("janela_dias"),
-                "metodo": "Comunicações do DJEN (API pública Comunica PJe/CNJ) das classes de RJ/falência, "
-                          "agrupadas por processo. Empresas: destinatários com forma societária identificada "
-                          "(pessoas físicas não são exibidas). CNPJ e valores: regex sobre o texto oficial.",
-                "limitacoes": "Cobertura = processos COM publicação na janela (casos ativos), não o universo. "
-                              "Valor mencionado é o citado no ato (crédito/habilitação), NÃO o passivo total — "
-                              "conferir no processo. Extração automática sujeita a erros de regex.",
-            }
-    except Exception:
-        pass
-    # séries mensais por marco (convolações/extinções) — quando coletadas
-    marcos_series = {}
-    for mslug, mtitle in (("convolacao_falencia_agregado", "Convolações em falência/mês"),
-                          ("extincao_rj_agregado", "Extinções de RJ/mês")):
-        p = _series_payload(con, mslug, tail=90, with_yoy=True)
-        if p:
-            marcos_series[mslug] = {**p, "titulo": mtitle}
-    if marcos_series:
-        rj["marcos_series"] = marcos_series
+                rj["exposicao_citada"] = {
+                    "tipo": "DADO OBSERVADO (extração automática)",
+                    "janela_dias": 60,
+                    "bancos": sorted(expo.values(), key=lambda x: -x["casos"])[:20],
+                    "casos_com_credores": len(cred_map),
+                    "metodo": "Instituições financeiras citadas em publicações com 'relação de credores' "
+                              "(DJEN) de processos de RJ/falência; 'observada' = valor adjacente ao nome no texto; "
+                              "'parcialmente observada' = citação sem valor.",
+                    "limitacoes": "Presença em lista de credores NÃO mede a exposição total do banco; valores são "
+                                  "os citados no ato (podem ser um único crédito); janela de 60 dias, 8 tribunais; "
+                                  "nomes normalizados por regex podem fragmentar o mesmo conglomerado. "
+                                  "Casos sem menção = exposição NÃO IDENTIFICADA (ausência não é zero).",
+                }
+            if casos_reais:
+                rj["casos_reais"] = {
+                    "tipo": "DADO OBSERVADO (extração automática)", "fichas": casos_reais,
+                    "janela_dias": cfg.get("djen", {}).get("janela_dias"),
+                    "metodo": "Comunicações do DJEN (API pública Comunica PJe/CNJ) das classes de RJ/falência, "
+                              "agrupadas por processo. Empresas: destinatários com forma societária identificada "
+                              "(pessoas físicas não são exibidas). CNPJ e valores: regex sobre o texto oficial.",
+                    "limitacoes": "Cobertura = processos COM publicação na janela (casos ativos), não o universo. "
+                                  "Valor mencionado é o citado no ato (crédito/habilitação), NÃO o passivo total — "
+                                  "conferir no processo. Extração automática sujeita a erros de regex.",
+                }
+        except Exception:
+            pass
+        # séries mensais por marco (convolações/extinções) — quando coletadas
+        marcos_series = {}
+        for mslug, mtitle in (("convolacao_falencia_agregado", "Convolações em falência/mês"),
+                              ("extincao_rj_agregado", "Extinções de RJ/mês")):
+            p = _series_payload(con, mslug, tail=90, with_yoy=True)
+            if p:
+                marcos_series[mslug] = {**p, "titulo": mtitle}
+        if marcos_series:
+            rj["marcos_series"] = marcos_series
 
-    # funil processual real (marcos TPU por tribunal)
-    try:
-        cur = con.execute("""SELECT tribunal, codigo, nome, docs, total_classe FROM datajud_funil
-                             ORDER BY tribunal, codigo""")
-        funil_rows = cur.fetchall()
-    except Exception:
-        funil_rows = []
-    if funil_rows:
-        por_trib = {}
-        for trib, cod, nome, docs, total in funil_rows:
-            por_trib.setdefault(trib.upper(), {"total_classe129_docs": total, "marcos": []})
-            por_trib[trib.upper()]["marcos"].append({"codigo": cod, "nome": nome, "processos_docs": docs})
-        agg_marcos = {}
-        agg_total = 0
-        for t, d in por_trib.items():
-            agg_total += d["total_classe129_docs"]
-            for m in d["marcos"]:
-                a = agg_marcos.setdefault(m["codigo"], {"codigo": m["codigo"], "nome": m["nome"], "processos_docs": 0})
-                a["processos_docs"] += m["processos_docs"]
-        rj["funil_processual"] = {
-            "tipo": "DADO OBSERVADO", "por_tribunal": por_trib,
-            "agregado": {"total_classe129_docs": agg_total,
-                         "marcos": sorted(agg_marcos.values(), key=lambda x: -x["processos_docs"])},
-            "metodo": "Nº de processos da classe 129 cujo histórico registra cada movimento-marco da TPU "
-                      "(agregação no CNJ/DataJud). Rótulos = nome oficial do movimento nos próprios dados.",
-            "limitacoes": "Contagem por documento do índice (G1/G2 podem duplicar levemente); movimentos "
-                          "genéricos da TPU (ex.: 'Concessão', 'Extinção') lidos no contexto da classe 129; "
-                          "'Homologação de Transação' não distingue plano de RJ de outros acordos.",
-        }
-    rj["series_reais_nota"] = ("Séries de ajuizamentos REAIS (CNJ/DataJud, dados abertos), cobertura restrita aos "
-                               "tribunais listados e sujeita à completude do DataJud por período. Fichas nominais "
-                               "REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). Lista de credores, "
-                               "exposição por banco e valor total declarado não têm fonte pública estruturada "
-                               "e não são estimados nem simulados nesta página.")
-    conf_to_class = {"declarada": "parcialmente observada", "lista_credores": "parcialmente observada",
-                     "plano": "estimada", "estimada": "estimada"}
-    casos = []
-    for c in RJ_DEMO["casos"]:
-        fin = c["divida_declarada_rmi"] * c["credores_financeiros_pct"] / 100
-        casos.append({**c, "exposicao_financeira": {
-            "classificacao": conf_to_class.get(c["confianca_divida"], "não identificada"),
-            "intervalo_rmi": [round(fin * 0.7), round(fin * 1.3)],
-            "metodo": "dívida declarada × % de credores financeiros, com banda de ±30% refletindo a incerteza da fonte",
-            "aviso": "Exposição aproximada — nunca tratar como valor exato.",
-        }})
-    rj["casos"] = casos
-    total_lo = sum(c["exposicao_financeira"]["intervalo_rmi"][0] for c in casos)
-    total_hi = sum(c["exposicao_financeira"]["intervalo_rmi"][1] for c in casos)
-    rj["exposicao_total_rmi"] = {"intervalo": [total_lo, total_hi],
-                                 "aviso": "Soma de estimativas DEMONSTRATIVAS; duplicidades entre credores não eliminadas."}
-    common.write_gold("rj.json", rj)
+        # funil processual real (marcos TPU por tribunal)
+        try:
+            cur = con.execute("""SELECT tribunal, codigo, nome, docs, total_classe FROM datajud_funil
+                                 ORDER BY tribunal, codigo""")
+            funil_rows = cur.fetchall()
+        except Exception:
+            funil_rows = []
+        if funil_rows:
+            por_trib = {}
+            for trib, cod, nome, docs, total in funil_rows:
+                por_trib.setdefault(trib.upper(), {"total_classe129_docs": total, "marcos": []})
+                por_trib[trib.upper()]["marcos"].append({"codigo": cod, "nome": nome, "processos_docs": docs})
+            agg_marcos = {}
+            agg_total = 0
+            for t, d in por_trib.items():
+                agg_total += d["total_classe129_docs"]
+                for m in d["marcos"]:
+                    a = agg_marcos.setdefault(m["codigo"], {"codigo": m["codigo"], "nome": m["nome"], "processos_docs": 0})
+                    a["processos_docs"] += m["processos_docs"]
+            rj["funil_processual"] = {
+                "tipo": "DADO OBSERVADO", "por_tribunal": por_trib,
+                "agregado": {"total_classe129_docs": agg_total,
+                             "marcos": sorted(agg_marcos.values(), key=lambda x: -x["processos_docs"])},
+                "metodo": "Nº de processos da classe 129 cujo histórico registra cada movimento-marco da TPU "
+                          "(agregação no CNJ/DataJud). Rótulos = nome oficial do movimento nos próprios dados.",
+                "limitacoes": "Contagem por documento do índice (G1/G2 podem duplicar levemente); movimentos "
+                              "genéricos da TPU (ex.: 'Concessão', 'Extinção') lidos no contexto da classe 129; "
+                              "'Homologação de Transação' não distingue plano de RJ de outros acordos.",
+            }
+        rj["series_reais_nota"] = ("Séries de ajuizamentos REAIS (CNJ/DataJud, dados abertos), cobertura restrita aos "
+                                   "tribunais listados e sujeita à completude do DataJud por período. Fichas nominais "
+                                   "REAIS via DJEN/Comunica PJe (empresas em RJ com publicação recente). Lista de credores, "
+                                   "exposição por banco e valor total declarado não têm fonte pública estruturada "
+                                   "e não são estimados nem simulados nesta página.")
+        conf_to_class = {"declarada": "parcialmente observada", "lista_credores": "parcialmente observada",
+                         "plano": "estimada", "estimada": "estimada"}
+        casos = []
+        for c in RJ_DEMO["casos"]:
+            fin = c["divida_declarada_rmi"] * c["credores_financeiros_pct"] / 100
+            casos.append({**c, "exposicao_financeira": {
+                "classificacao": conf_to_class.get(c["confianca_divida"], "não identificada"),
+                "intervalo_rmi": [round(fin * 0.7), round(fin * 1.3)],
+                "metodo": "dívida declarada × % de credores financeiros, com banda de ±30% refletindo a incerteza da fonte",
+                "aviso": "Exposição aproximada — nunca tratar como valor exato.",
+            }})
+        rj["casos"] = casos
+        total_lo = sum(c["exposicao_financeira"]["intervalo_rmi"][0] for c in casos)
+        total_hi = sum(c["exposicao_financeira"]["intervalo_rmi"][1] for c in casos)
+        rj["exposicao_total_rmi"] = {"intervalo": [total_lo, total_hi],
+                                     "aviso": "Soma de estimativas DEMONSTRATIVAS; duplicidades entre credores não eliminadas."}
+        common.write_gold("rj.json", rj)
+    except Exception as e:
+        rj = common.stub("rj.json", e)
 
     # ---- Módulo 5: cenários ----
     scenario = {
@@ -477,20 +487,27 @@ def build_all(con, cfg, fetch_status):
     # ---- Fase 2: antecedentes e regimes ----
     from pipeline.models import antecedentes as ant_mod, regimes as reg_mod
     antecedentes = {"targets": {}, "gerado_em": common.now_utc()}
-    for tgt in ("inad_total", "inad_pf", "inad_pj"):
-        r = ant_mod.evaluate_candidates(getter, tgt)
-        if r:
-            antecedentes["targets"][tgt] = r
-    common.write_gold("antecedentes.json", antecedentes)
+    try:
+        for tgt in ("inad_total", "inad_pf", "inad_pj"):
+            r = ant_mod.evaluate_candidates(getter, tgt)
+            if r:
+                antecedentes["targets"][tgt] = r
+        common.write_gold("antecedentes.json", antecedentes)
+    except Exception as e:
+        common.stub("antecedentes.json", e)
 
-    regimes = reg_mod.detect(getter, [
+    regimes = {"series": []}
+    try:
+        regimes = reg_mod.detect(getter, [
         ("inad_total", "diff", "Inadimplência total (Δ mensal)", True),
         ("inad_pf", "diff", "Inadimplência PF (Δ mensal)", True),
         ("inad_pj", "diff", "Inadimplência PJ (Δ mensal)", True),
         ("concessoes_total", "yoy", "Concessões (var. interanual)", False),
         ("saldo_total", "yoy", "Saldo de crédito (var. interanual)", False),
         ("spread_total", "diff", "Spread médio (Δ mensal)", True),
-    ])
+        ])
+    except Exception as e:
+        common.falha_build("regimes_series.json", e)
     # regimes ESTATÍSTICOS de séries (CUSUM/quebras) — arquivo próprio: o nome
     # regimes.json pertence aos regimes de RESOLUÇÃO do BCB (regimes_gold), e a
     # colisão de nomes fez 6 ciclos diários (13-19/08) clobberarem o painel de
@@ -509,12 +526,17 @@ def build_all(con, cfg, fetch_status):
             scenario["presets"] = {**scenario["presets"], **exp["presets"]}
             print(f"  [expectativas] Focus de {exp['data']}: presets {list(exp['presets'])}")
     except Exception as e:
+        common.falha_build("scenario.json:expectativas", e)
         scenario["expectativas"] = {"disponivel": False, "error": str(e)}
     common.write_gold("scenario.json", scenario)
 
     # ---- Alertas (com histórico, recorrência e hipóteses de regime) ----
     from pipeline import alerts as alerts_mod
-    alert_list = alerts_mod.evaluate(con, cfg)
+    try:
+        alert_list = alerts_mod.evaluate(con, cfg)
+    except Exception as e:
+        common.falha_build("alerts.json", e)
+        alert_list = []
     def _months_ago(iso):
         return (int(today[:4]) - int(iso[:4])) * 12 + int(today[5:7]) - int(iso[5:7])
     for r in regimes["series"]:
@@ -539,7 +561,11 @@ def build_all(con, cfg, fetch_status):
 
     # ---- Visão geral analítica (diagnóstico + mudanças) ----
     from pipeline import overview as ov
-    changes = ov.build_changes(con)
+    try:
+        changes = ov.build_changes(con)
+    except Exception as e:
+        common.falha_build("overview.json:mudancas", e)
+        changes = []
     qvals = []
     cur = con.execute("SELECT key FROM series_meta")
     for (k,) in cur.fetchall():
@@ -547,7 +573,11 @@ def build_all(con, cfg, fetch_status):
         if q:
             qvals.append(q["score"])
     qavg = sum(qvals) / len(qvals) if qvals else None
-    diagnosis = ov.build_diagnosis(con, ibcc, changes, sectors, qavg)
+    try:
+        diagnosis = ov.build_diagnosis(con, ibcc, changes, sectors, qavg)
+    except Exception as e:
+        common.falha_build("overview.json:diagnostico", e)
+        diagnosis = {"disponivel": False, "error": str(e)[:300]}
     common.write_gold("overview.json", {
         "gerado_em": common.now_utc(),
         "diagnostico": diagnosis,
@@ -572,7 +602,11 @@ def build_all(con, cfg, fetch_status):
     })
 
     # ---- Metodologia viva ----
-    model_cards = ov.build_model_cards(forecasts, ibcc, inst, sectors)
+    try:
+        model_cards = ov.build_model_cards(forecasts, ibcc, inst, sectors)
+    except Exception as e:
+        common.falha_build("method.json:model_cards", e)
+        model_cards = []
     for card in model_cards:
         card["atualizado_em"] = common.now_utc()
     common.write_gold("method.json", {
@@ -590,12 +624,12 @@ def build_all(con, cfg, fetch_status):
         inst_pages_payload = ip_mod.build(con, cfg, inst, of, None)
         common.write_gold("inst_pages.json", inst_pages_payload)  # pilotos + cobertura (§22)
     except Exception as e:
-        common.write_gold("inst_pages.json", {"ok": False, "error": str(e)})
+        common.stub("inst_pages.json", e)
     try:
         res_all = ipa_mod.build_all(con, cfg, inst, of)
         print(f"  [inst_pages_all] {res_all.get('paginas')} páginas geradas")
     except Exception as e:
-        common.write_gold("inst_index.json", {"ok": False, "error": str(e)})
+        common.stub("inst_index.json", e)
 
     # ---- Fase 6: relatório automático + RSS de alertas ----
     quality_tmp = {}
@@ -605,11 +639,14 @@ def build_all(con, cfg, fetch_status):
         if q:
             quality_tmp[k] = q
     from pipeline import report as report_mod
-    report_mod.build(cfg, {
-        "overview": json.load(open(os.path.join(common.GOLD, "overview.json"), encoding="utf-8")),
-        "pulse": pulse, "sectors": sectors, "institutions": inst, "rj": rj,
-        "alerts": {"alertas": alert_list}, "scenario": scenario, "quality": quality_tmp,
-    })
+    try:
+        report_mod.build(cfg, {
+            "overview": json.load(open(os.path.join(common.GOLD, "overview.json"), encoding="utf-8")),
+            "pulse": pulse, "sectors": sectors, "institutions": inst, "rj": rj,
+            "alerts": {"alertas": alert_list}, "scenario": scenario, "quality": quality_tmp,
+        })
+    except Exception as e:
+        common.falha_build("report.html", e)
 
     # ---- Qualidade e linhagem ----
     cur = con.execute("SELECT key FROM series_meta ORDER BY key")
@@ -628,47 +665,47 @@ def build_all(con, cfg, fetch_status):
         from pipeline import compare as compare_mod
         print("compare:", compare_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("compare.json", {"ok": False, "error": str(e)})
+        common.stub("compare.json", e)
     try:
         from pipeline import leading as leading_mod
         print("leading:", leading_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("leading.json", {"ok": False, "error": str(e)})
+        common.stub("leading.json", e)
     try:
         from pipeline import judicial as judicial_mod
         print("judicial:", judicial_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("judicial.json", {"disponivel": False, "error": str(e)})
+        common.stub("judicial.json", e)
     try:
         from pipeline import pix as pix_mod
         print("pix:", pix_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("pix.json", {"disponivel": False, "error": str(e)})
+        common.stub("pix.json", e)
     try:
         from pipeline import panorama as panorama_mod
         print("panorama:", panorama_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("panorama.json", {"disponivel": False, "error": str(e)})
+        common.stub("panorama.json", e)
     try:
         from pipeline import trends as trends_mod
         print("trends:", trends_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("trends.json", {"disponivel": False, "error": str(e)})
+        common.stub("trends.json", e)
     try:
         from pipeline import market as market_mod
         print("market:", market_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("market.json", {"ok": False, "error": str(e)})
+        common.stub("market.json", e)
     try:
         from pipeline import products as products_mod
         print("products:", products_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("products.json", {"ok": False, "error": str(e)})
+        common.stub("products.json", e)
     try:
         from pipeline import pgfn as pgfn_mod
         print("pgfn:", pgfn_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("pgfn.json", {"disponivel": False, "error": str(e)})
+        common.stub("pgfn.json", e)
 
     # ---- Central de alertas: consolida as cinco famílias num só arquivo ----
     # Precisa vir DEPOIS de leading e panorama: lê os gold já escritos (alerts,
@@ -679,13 +716,13 @@ def build_all(con, cfg, fetch_status):
         from pipeline import penetracao as pen_mod
         print("penetracao:", pen_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("penetracao.json", {"disponivel": False, "error": str(e)})
+        common.stub("penetracao.json", e)
 
     try:
         from pipeline import desenrola as desenrola_mod
         print("desenrola:", desenrola_mod.build(con, cfg))
     except Exception as e:
-        common.write_gold("desenrola.json", {"disponivel": False, "error": str(e)})
+        common.stub("desenrola.json", e)
 
     # Moradia depende das mesmas tabelas que penetracao (estban_*, censo_*) mais
     # mi_serie. Fica depois dela para que a exclusão da data-base subcoletada, que
@@ -697,7 +734,7 @@ def build_all(con, cfg, fetch_status):
         print(f"  [moradia] {r_mor['totais']['municipios_com_saldo']} municípios com saldo, "
               f"{r_mor['totais']['instituicoes_no_169']} instituições no verbete 169")
     except Exception as e:
-        common.write_gold("moradia.json", {"disponivel": False, "error": str(e)})
+        common.stub("moradia.json", e)
 
     # Consignado depende de censo_idade, prev_mun, scr_uf_ocup_produto, series_obs (IPCA e
     # séries do consignado) e reclam_consig_*. Fica por último entre os módulos municipais
@@ -713,7 +750,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [consignado] indisponível: {r_cg.get('motivo')}")
     except Exception as e:
-        common.write_gold("consignado.json", {"ok": False, "error": str(e)})
+        common.stub("consignado.json", e)
 
     # Os três golds municipais carregam um array de 5.570 municípios que domina o
     # tamanho do arquivo (até 7 MB) e muda em ritmo diferente do resto: municípios na
@@ -745,7 +782,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [rural] indisponível: {r_ru.get('motivo')}")
     except Exception as e:
-        common.write_gold("rural.json", {"disponivel": False, "error": str(e)})
+        common.stub("rural.json", e)
     for _nome in ("penetracao", "moradia", "consignado", "rural"):
         separa_municipios(_nome)
     # ---- Crédito direcionado e BNDES (SGS direcionado + dados abertos do BNDES) ----
@@ -759,7 +796,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [bndes] indisponível: {r_bn.get('motivo')}")
     except Exception as e:
-        common.write_gold("bndes.json", {"disponivel": False, "error": str(e)})
+        common.stub("bndes.json", e)
     # ---- Crédito ampliado e mercado de capitais (SGS + CVM ofertas + CVM securitizadoras) ----
     try:
         from pipeline import ampliado as amp_mod
@@ -771,7 +808,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [ampliado] indisponível: {r_amp.get('motivo')}")
     except Exception as e:
-        common.write_gold("ampliado.json", {"disponivel": False, "error": str(e)})
+        common.stub("ampliado.json", e)
 
 
     # ---- Conduta e enforcement (PAS do BCB e da CVM + índice de reclamações) ----
@@ -784,7 +821,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [conduta] indisponível: {r_cd.get('motivo')}")
     except Exception as e:
-        common.write_gold("conduta.json", {"disponivel": False, "error": str(e)})
+        common.stub("conduta.json", e)
 
     # ---- Funding e captação (SGS meios de pagamento + IF.data Passivo + CVM CDA) ----
     try:
@@ -796,7 +833,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [funding] indisponível: {r_fd.get('motivo')}")
     except Exception as e:
-        common.write_gold("funding.json", {"disponivel": False, "error": str(e)})
+        common.stub("funding.json", e)
 
     # ---- Consórcios (BCB Panorama de Consórcios): antes das páginas por UF, que o consomem ----
     try:
@@ -808,7 +845,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [consorcios] indisponível: {r_cs.get('motivo')}")
     except Exception as e:
-        common.write_gold("consorcios.json", {"disponivel": False, "error": str(e)})
+        common.stub("consorcios.json", e)
 
     # ---- Cobrança judicial de crédito (CNJ DataJud, agregação): antes das páginas por UF ----
     try:
@@ -820,7 +857,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [cobranca] indisponível: {r_cb.get('motivo')}")
     except Exception as e:
-        common.write_gold("cobranca.json", {"disponivel": False, "error": str(e)})
+        common.stub("cobranca.json", e)
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
@@ -831,7 +868,7 @@ def build_all(con, cfg, fetch_status):
         else:
             print(f"  [sfn] indisponível: {r_sfn.get('motivo')}")
     except Exception as e:
-        common.write_gold("sfn.json", {"disponivel": False, "error": str(e)})
+        common.stub("sfn.json", e)
     # ---- Páginas por UF: reúne o recorte estadual dos golds já escritos acima ----
     try:
         from pipeline import ufs as ufs_mod
@@ -839,7 +876,7 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("ufs.json", r_uf)
         print(f"  [ufs] {len(r_uf.get('ufs') or [])} UFs" if r_uf.get("disponivel") else f"  [ufs] indisponível: {r_uf.get('motivo')}")
     except Exception as e:
-        common.write_gold("ufs.json", {"disponivel": False, "error": str(e)})
+        common.stub("ufs.json", e)
 
     from pipeline import central_alertas
     central = central_alertas.build()
@@ -857,6 +894,15 @@ def build_all(con, cfg, fetch_status):
             return f"{v[:4]}-{v[4:6]}" if len(v) == 6 and v.isdigit() else v[:7]
         except Exception:
             return None
+    def _vg_trimestre(sql):
+        # PGFN grava '2026_trimestre_02' → data-base = último mês do trimestre
+        v = _vg(sql)
+        m = re.match(r"^(\d{4})_tr", str(v or ""))
+        if not m:
+            return v
+        tri = int(str(v)[-2:])
+        return f"{m.group(1)}-{tri * 3:02d}"
+
     vintages = {
         "sgs": _vg("SELECT MAX(ref_date) FROM series_obs WHERE key='inad_total'"),
         "ifdata": _vg("SELECT MAX(anomes) FROM institution_metrics"),
@@ -878,6 +924,12 @@ def build_all(con, cfg, fetch_status):
         "cda": _vg("SELECT MAX(mes) FROM cda_coleta"),
         "consorcios": _vg("SELECT MAX(database) FROM consorcios"),
         "cobranca": _vg("SELECT MAX(mes) FROM cobranca_mensal WHERE casos > 0"),
+        # seis fontes que a vigília de pane não enxergava (auditoria de 06/09/2026, achado D4)
+        "pix": _vg("SELECT MAX(anomes) FROM mp_mensal"),
+        "estban": _vg("SELECT MAX(data_base) FROM estban_coleta"),
+        "openfinance": _vg("SELECT MAX(coletado_em) FROM of_ranking_hist"),
+        "pgfn": _vg_trimestre("SELECT MAX(trimestre) FROM pgfn_uf"),
+        "desenrola": _vg("SELECT MAX(data_base_max) FROM desenrola_coleta"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
@@ -905,6 +957,9 @@ def build_all(con, cfg, fetch_status):
         # dizia 4 fontes com 38 coletores rodando; avaliação de 05/09)
         "fontes_reais": fontes_reais_de(fetch_status),
         "fontes_demo": [],
+        # builders que falharam nesta execução (stub gravado; a sentinela pode
+        # ter mantido a publicação anterior): a vigília de pane lê daqui
+        "builders_falhos": [{k: v for k, v in f.items() if k != "traceback"} for f in common.FALHAS_BUILD],
     })
 
     # ---- Módulos curados (Riscos emergentes: bets, fraudes, ...) ----
