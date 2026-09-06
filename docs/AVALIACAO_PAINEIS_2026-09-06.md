@@ -327,7 +327,7 @@ por instituição.
 | P2 | Painéis 1 e 2 do §6.4 (prazo da carteira; FIDC por lastro) | §6.4 | baixo · feitos em v0.100.0 (§15) |
 | P2 | Bundles fora do git; chunks para Bancos na bolsa e Instituições | T7, §2.3 | médio · feito: Bancos na bolsa em v0.99.0, Instituições e bundles fora do git em v0.101.0 (§16) |
 | P2 | Modo capítulo em Instituições; eixos de SVG a 11 px | §3.3 | médio · feito em v0.101.0 (§16): detalhe de linha sob demanda; eixos a 11 px |
-| P2 | Prestamista em Juros; radar normativo; PTC | §6.4 | baixo a médio |
+| P2 | Prestamista em Juros; radar normativo; PTC | §6.4 | baixo a médio · prestamista feito em v0.102.0 (§17); radar e PTC sem dado estruturado aberto, sondagem registrada no §17 |
 | P3 | Cadastro CNPJ por agregação prévia; crédito subnacional; Procons | §6.4 | alto |
 
 ## 8. O que não foi verificado
@@ -698,4 +698,56 @@ próximo ciclo do pipeline, para não publicar um `ufs.json` mais novo que os go
 no `.gitignore`), `split-bundle.test.ts` com teto do core em 580 KB e Instituições fora do core,
 `prazo-data.test.ts` com o bloco por UF; suíte completa em modo CI, `tsc`, `next lint`; Chromium: lista,
 ficha via chunk, página do estado e Pix sem erro.
+
+---
+
+## 17. Prestamista em Juros; radar normativo e PTC sondados (06/09/2026, noite, versão 0.102.0)
+
+Terceiro bloco do P2: os três candidatos restantes do §6.4. Um virou camada publicada; dois ficaram
+registrados como sem dado estruturado aberto, com a sondagem documentada para não repetir o trabalho.
+
+**Prestamista na aba Juros por instituição** (gold `prestamista.json`, coletor
+`pipeline/sources/susep_ses.py`, builder `pipeline/prestamista.py`). A base completa do SES da SUSEP é um
+zip de 545 MB republicado todo mês; o servidor aceita `Range`, então o coletor lê o diretório central e só
+os três membros necessários (`Ses_seguros.csv`, `Ses_grupos_economicos.csv`, `Ses_cias.csv`), sem baixar o
+arquivo: 12 requisições e 38 MB na coleta de 06/09/2026, idempotente pelo `Last-Modified`. Ramos 0977 e
+1377 (prestamista, exceto habitacional e rural) e 1061 (prestamista habitacional), por mês, empresa e ramo,
+desde 2015. O prestamista é a parte do custo do crédito que a taxa do txjuros não vê e só aparece no CET.
+Números de 12 meses até 2026-06 (SUSEP SES, base de 31/08/2026; concessões PF do BCB/SGS 20633):
+
+| Indicador | Valor |
+|---|---|
+| Prêmios diretos em 12 meses | R$ 30,0 bi (+11,4% sobre os 12 meses anteriores) |
+| Prêmio sobre concessões PF em 12 meses | 0,66% (ordem de grandeza, não custo por contrato) |
+| Comissão de quem vende (despesa de comercialização ÷ prêmio) | 37% |
+| Sinistralidade (sinistro ocorrido ÷ prêmio ganho) | 21% |
+| Cinco maiores grupos nomeados | 48% do prêmio (Itaú, Cardif, BB Mapfre, Caixa, Bradesco) |
+| Seguradoras com prêmio no mês | 65 |
+
+Dois cuidados de dado: o sinistro direto está zerado nos ramos novos desde a mudança do plano de contas,
+por isso a sinistralidade usa sinistro ocorrido; e a SUSEP rotula "sem grupo" de dois jeitos (código 99999
+e o grupo nominal "INDEPENDENTE"), fundidos numa linha declarada com 33% do prêmio. A camada é do sistema,
+não por instituição financeira: o SES não separa o canal de venda. A seção entra no fim da aba Juros com
+placar, síntese, série mensal, grupos, as 15 maiores seguradoras e método; `prestamista` ganha verbete no
+glossário; a fonte entra no mapa de fontes, na vigília (120 dias) e na linhagem.
+
+**Radar normativo: sem API aberta nesta rodada.** Sondagem de 06/09/2026: o catálogo CKAN do BCB
+(`dadosabertos.bcb.gov.br/api/3/action/package_search`) não tem dataset de normas; o site do BCB responde
+"Requisição Inválida" (400) ou 500 do WAF a todas as variantes testadas de `api/servico/sitebcb/normativos`,
+`api/conteudo/app/normativos/exibenormativo`, `api/search/app/normativos/buscanormativos` e aos feeds
+`api/feed/sitebcb/sitefeeds/normativos*`, enquanto `api/servico/sitebcb/copom/atas` e o feed de notícias
+respondem normalmente; os 51 chunks do aplicativo do site não expõem o caminho de normas (só
+`api/pagina/`, `api/paginasite/`, `api/search/`, `api/servico/`). A timeline curada continua como está.
+Próximo caminho: capturar a chamada real da página de busca de normas num navegador com rede aberta, fora
+deste ambiente, e só então escrever o coletor.
+
+**PTC: continua em PDF.** A Pesquisa Trimestral de Condições de Crédito não aparece no catálogo CKAN nem
+tem arquivo estruturado alcançável a partir da página `estatisticas/pesquisacondicoescredito`, que é um
+aplicativo cujo conteúdo vem de um serviço interno. Fica como estava: declarada em Cenários como fora da
+Fase 0.
+
+**Validação.** `prestamista-data.test.ts` (magnitudes, ramos somam 100%, grupos ordenados, série ordenada
+com parciais só depois do mês publicado, método e cautelas, coletor por faixas e idempotente, registro na
+SPA); suíte completa em modo CI com 919 testes, `tsc`, `next lint`; Chromium a 1440 e 390 px na aba Juros
+com a seção, placar, síntese, dois gráficos, verbete marcado, sem erro e sem rolagem horizontal.
 

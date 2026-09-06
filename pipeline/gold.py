@@ -54,7 +54,7 @@ FONTE_ROTULO = {
     "bcb_sgs": "BCB/SGS", "ibge": "IBGE", "ipeadata": "Ipeadata", "ifdata": "BCB/IF.data",
     "ifdata_ui": "BCB/IF.data", "ifdata_carteiras": "BCB/IF.data", "ifdata_funding": "BCB/IF.data",
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
-    "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros",
+    "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros", "susep_ses": "SUSEP/SES",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
     "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus", "sfn_cadastro": "BCB/Unicad (instituições em funcionamento)", "bcb_pas": "BCB/PAS (Gepad)", "cvm_pas": "CVM/Processos sancionadores",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
@@ -988,6 +988,7 @@ def build_all(con, cfg, fetch_status):
         "datajud": _vg("SELECT MAX(ref_date) FROM series_obs WHERE key='recuperacao_judicial_agregado'"),
         "trends": _vg("SELECT MAX(anomes) FROM trends_series WHERE anomes < '2026-07'"),
         "txjuros": _vg("SELECT MAX(fim) FROM taxas_inst"),
+        "susep": _vg("SELECT MAX(mes) FROM susep_prestamista"),
         "sicor": _vg("SELECT MAX(mes) FROM sicor_uf"),
         "cvm_ofertas": _vg("SELECT MAX(mes) FROM cvm_ofertas WHERE status IN ('Encerrada/registrada','Oferta Encerrada')"),
         "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
@@ -1071,6 +1072,17 @@ def build_all(con, cfg, fetch_status):
     # ---- Taxas de juros por modalidade × IF (txjuros) ----
     from pipeline import juros as juros_mod
     juros_mod.build(con)
+    # ---- Seguro prestamista (SUSEP SES): camada da aba Juros, fora da taxa ----
+    try:
+        from pipeline import prestamista as prestamista_mod
+        r_pm = prestamista_mod.build(con, cfg)
+        common.write_gold("prestamista.json", r_pm)
+        if r_pm.get("disponivel"):
+            print(f"  [prestamista] {r_pm['mes']} · R$ {r_pm['kpis']['premio_12m'] / 1e9:,.1f} bi em 12 m · comissão {r_pm['kpis']['comissao_12m_pct']}%")
+        else:
+            print(f"  [prestamista] indisponível: {r_pm.get('motivo')}")
+    except Exception as e:
+        common.stub("prestamista.json", e)
 
     # ---- Linhagem: SEMPRE por último ----
     # O mapa resolve templates dinâmicos ({nome}_mun.json) contra o inventário
