@@ -33,6 +33,7 @@ import math
 
 from pipeline import common
 from pipeline.penetracao import DATA_BASE_SUBCOLETADA, _faixa, _ols, _quantil, _rows
+from pipeline.fmt import _r
 
 REGIAO = {
     "AC": "Norte", "AP": "Norte", "AM": "Norte", "PA": "Norte", "RO": "Norte",
@@ -124,10 +125,6 @@ def _br(v, casas=2):
         return "–"
     txt = f"{v:,.{casas}f}".replace(",", "\x00").replace(".", ",").replace("\x00", ".")
     return txt
-
-
-def _r(v, casas=2):
-    return None if v is None else round(v, casas)
 
 
 def _pct(a, b, casas=2):

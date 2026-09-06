@@ -24,6 +24,7 @@ cruza datas diferentes (mensal × trimestral) e é publicada como indicativa; no
 emissor vêm do cadastro do IF.data pelo CNPJ raiz, nunca do texto livre da CVM.
 """
 from pipeline import common
+from pipeline.fmt import _r, _share, _mes_menos, _mil, _dec
 
 FONTES = {
     "sgs": {"nome": "BCB — Meios de pagamento amplos e depósitos de poupança (SGS 27789 a 27816, 1835, 7836)",
@@ -76,22 +77,8 @@ SERIE_MESES = 120
 MIL = 1e3  # SGS publica em R$ mil
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if v is not None and tot else None
-
-
 def _var(v, v0):
     return _r((v / v0 - 1) * 100) if v is not None and v0 else None
-
-
-def _mes_menos(mes, n):
-    y, m = int(mes[:4]), int(mes[5:7])
-    t = y * 12 + (m - 1) - n
-    return f"{t // 12:04d}-{t % 12 + 1:02d}"
 
 
 def _hhi(vals):
@@ -101,14 +88,6 @@ def _hhi(vals):
 
 def _sgs(con, key):
     return {d[:7]: v * MIL for d, v in common.get_series(con, key)}
-
-
-def _mil(v):
-    return f"{v:,.0f}".replace(",", ".")
-
-
-def _dec(v, d=1):
-    return f"{v:.{d}f}".replace(".", ",")
 
 
 def _bi(v):

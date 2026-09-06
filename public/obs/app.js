@@ -212,6 +212,12 @@ const fmt = {
   n: (v, d = 2) => v == null ? "–" : v.toLocaleString("pt-BR", { minimumFractionDigits: d, maximumFractionDigits: d }),
   n0: v => v == null ? "–" : Math.round(v).toLocaleString("pt-BR"),
   bi: v => v == null ? "–" : (v / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + " bi",
+  /* Auxiliares únicos (avaliação de 06/09/2026, T5): sete renderizadores redefiniam pct, n0 e brl
+     e três definiam "bi" em escalas diferentes. A escala fica explícita no nome. */
+  pct: (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%",
+  brlBi: v => v == null ? "–" : Math.abs(v) >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri" : "R$ " + fmt.n(v / 1e9, 1) + " bi",   // v em R$
+  brlBiDeMilhoes: v => v == null ? "–" : "R$ " + fmt.n(v / 1000, 1) + " bi",   // v em R$ milhões
+  brlInteiro: v => v == null ? "–" : "R$ " + fmt.n0(v),   // v em R$, sem escala (tíquete, crédito médio)
   triFromMi: v => v == null ? "–" : (v / 1e6).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " tri",
   money: v => v == null ? "–" : v >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri"
     : v >= 1e9 ? "R$ " + fmt.n(v / 1e9, 1) + " bi"
@@ -227,7 +233,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.98.3";
+const APP_VERSION = "0.98.4";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -8151,11 +8157,11 @@ function renderAmpliado() {
   }
   const F = state.amp;
   const S = A.saldo || {}, E = A.emissoes || {}, X = A.securitizacao || {}, FI = A.fidc || {};
-  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+  const pct = (v, d = 0) => fmt.pct(v, d);
   const tri = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 2) + " tri";      // SGS: R$ milhões
   const biM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e3, 0) + " bi";       // SGS: R$ milhões
   const biR = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";       // CVM: R$
-  const brl = v => v == null ? "–" : fmt.money(v);
+  const brl = fmt.money;
   const kEF = S.disponivel ? S.kpis.ef : null, kPJ = S.disponivel ? S.kpis.pj : null;
   const kE = E.disponivel ? E.kpis : null;
   const bCRI = X.disponivel ? X.blocos.cri : null, bCRA = X.disponivel ? X.blocos.cra : null;
@@ -8347,7 +8353,7 @@ function renderBndes() {
   }
   const F = state.bn;
   const S = B.saldo || {}, D = B.desembolsos || {}, O = B.operacoes || {}, FU = B.funding || {};
-  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+  const pct = (v, d = 0) => fmt.pct(v, d);
   const biM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e3, v >= 1e5 ? 0 : 1) + " bi";   // R$ milhões
   const triM = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 2) + " tri";
   const biR = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";                 // R$
@@ -8564,9 +8570,9 @@ function renderEstados() {
     el.innerHTML = pageHead({ title: "Estados", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${U.motivo || U.error || "sem dados"}</p></div>`;
     return;
   }
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const brl = v => v == null ? "–" : fmt.money(v);
-  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const brl = fmt.money;
+  const n0 = fmt.n0;
   const pos = (u, k) => (u.posicoes || {})[k] != null ? `${u.posicoes[k]}º` : "–";
   const ufs = U.ufs || [];
   const seletor = sel => `<select onchange="ufNav(this.value)" aria-label="escolher estado"><option value="">escolher estado…</option>${ufs.map(u => `<option value="${u.uf}" ${sel === u.uf ? "selected" : ""}>${u.uf} · ${u.nome}</option>`).join("")}</select>`;
@@ -8685,9 +8691,9 @@ function renderSfn() {
   }
   const F = state.sfn;
   const C = S.cadastro || {}, I = S.ifdata || {}, R = S.regimes || {};
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const n0 = v => v == null ? "–" : fmt.n0(v);
-  const brl = v => v == null ? "–" : fmt.money(v);
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const brl = fmt.money;
   const tri = am => am ? `${am.slice(4, 6) === "03" ? "1T" : am.slice(4, 6) === "06" ? "2T" : am.slice(4, 6) === "09" ? "3T" : "4T"} ${am.slice(0, 4)}` : "–";
   const grp = nome => (C.grupos || []).find(g => g.grupo === nome) || { n: null };
   const head = pageHead({
@@ -8816,9 +8822,9 @@ function renderConduta() {
   }
   const F = state.cd;
   const B = D.bcb || {}, C = D.cvm || {}, R = D.reclamacoes || {};
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const n0 = v => v == null ? "–" : fmt.n0(v);
-  const brl = v => v == null ? "–" : fmt.money(v);
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const brl = fmt.money;
   const mi = v => v == null ? "–" : "R$ " + fmt.n(v / 1e6, 1) + " mi";
   const rotulosFim = window.innerWidth > 640;
   const j = B.janela_12m || {}, ja = B.janela_12m_anterior || {};
@@ -8934,9 +8940,9 @@ function renderEmprego() {
   }
   const F = state.emp;
   const B = D.brasil || {};
-  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const n0 = fmt.n0;
   const sn = v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n0(v);
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const pct = (v, d = 1) => fmt.pct(v, d);
   const zf = v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 2) + "σ";
   const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
   const rotulosFim = window.innerWidth > 640;
@@ -9044,9 +9050,9 @@ function renderFunding() {
   }
   const F = state.fd;
   const S = D.sistema, B = D.bancos, U = D.fundos;
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const n0 = v => v == null ? "–" : fmt.n0(v);
-  const bi = v => v == null ? "–" : Math.abs(v) >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri" : "R$ " + fmt.n(v / 1e9, 1) + " bi";
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const bi = fmt.brlBi;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
   const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
   const am = a => a ? `${a.slice(0, 4)}-${a.slice(4, 6)}` : "–";
@@ -9181,10 +9187,10 @@ function renderConsorcios() {
   }
   const F = state.cs;
   const P = D.panorama;
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const n0 = v => v == null ? "–" : fmt.n0(v);
-  const bi = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";
-  const brl = v => v == null ? "–" : "R$ " + fmt.n0(v);
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const bi = fmt.brlBi;
+  const brl = fmt.brlInteiro;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
   const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
   const rotulosFim = window.innerWidth > 640;
@@ -9282,8 +9288,8 @@ function renderCobranca() {
   }
   const F = state.cb;
   const B = D.brasil, C = D.cobertura;
-  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
-  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
   const pp = v => v == null ? "–" : fmt.pp(v) + "%";
   const cls = v => v == null ? "neutral" : v > 0 ? "up" : v < 0 ? "down good" : "neutral";
   const rotulosFim = window.innerWidth > 640;
@@ -10236,7 +10242,7 @@ function cgExposicao(D) {
   const G = D.sgs, S = D.scr;
   if (!G) return "";
   const a = G.atual;
-  const bi = v => v == null ? "–" : "R$ " + fmt.n(v / 1000, 1) + " bi";
+  const bi = fmt.brlBiDeMilhoes;
   return `<section id="cg-expo">${sechead("5. Exposição ao consignado", `Banco Central · ${G.data_base.slice(0, 7)}`)}
   <p class="desprosa">O consignado do INSS tem medida nacional direta e observada. O que não
   existe é carteira municipal — nem no Banco Central, nem no INSS, nem na Dataprev. O que a
@@ -10663,8 +10669,8 @@ function renderRural() {
   const K = R.kpis;
   const J = R.janela;
   const malha = state.data.penetracao_malha;
-  const brl = v => v == null ? "–" : fmt.money(v);
-  const pct = (v, d = 0) => v == null ? "–" : fmt.n(v, d) + "%";
+  const brl = fmt.money;
+  const pct = (v, d = 0) => fmt.pct(v, d);
 
   const head = pageHead({
     title: "Crédito rural", vintage: R.mes_fechado,

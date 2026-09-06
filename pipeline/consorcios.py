@@ -19,6 +19,7 @@ Regras:
 """
 from pipeline import common
 from pipeline.ufs import NOMES, REGIOES
+from pipeline.fmt import _r, _share, _mil, _dec
 
 FONTE = {"nome": "BCB — Panorama de Consórcios (dados agregados do segmento, API Olinda PANORAMA_DE_CONSORCIOS)",
          "url": "https://olinda.bcb.gov.br/olinda/servico/PANORAMA_DE_CONSORCIOS/versao/v1/odata/",
@@ -40,14 +41,6 @@ UF_IDS = {99: "SP", 100: "MG", 101: "PR", 102: "BA", 103: "RS", 104: "SC", 105: 
           113: "MS", 114: "PI", 115: "PB", 116: "DF", 117: "AL", 118: "RO", 119: "TO", 120: "RN", 121: "SE", 122: "AM", 123: "AC", 124: "AP", 125: "RR"}
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if v is not None and tot else None
-
-
 def _var(v, v0):
     return _r((v / v0 - 1) * 100) if v is not None and v0 else None
 
@@ -60,14 +53,6 @@ def _tri_menos(db, n):
     y, m = int(db[:4]), int(db[4:6])
     t = y * 12 + (m - 1) - 3 * n
     return f"{t // 12:04d}{t % 12 + 1:02d}"
-
-
-def _mil(v):
-    return f"{v:,.0f}".replace(",", ".")
-
-
-def _dec(v, d=1):
-    return f"{v:.{d}f}".replace(".", ",")
 
 
 def _carrega(con):

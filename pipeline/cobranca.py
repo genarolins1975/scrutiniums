@@ -24,6 +24,7 @@ from datetime import date
 from pipeline import common
 from pipeline.sources.datajud_cobranca import ASSUNTOS_BANCARIOS, GRUPOS, TRIBUNAIS
 from pipeline.ufs import NOMES, REGIOES
+from pipeline.fmt import _r, _share, _mes_menos, _mil, _dec
 
 FONTE = {"nome": "CNJ — DataJud, API pública (agregação por classe, assunto e mês de ajuizamento nos 27 tribunais estaduais)",
          "url": "https://api-publica.datajud.cnj.jus.br/", "catalogo": "https://datajud-wiki.cnj.jus.br/api-publica/",
@@ -32,30 +33,8 @@ MESES_PARCIAIS = 3
 SERIE_INICIO = "2019-01"
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if v is not None and tot else None
-
-
 def _var(v, v0):
     return _r((v / v0 - 1) * 100) if v is not None and v0 else None
-
-
-def _mes_menos(mes, n):
-    y, m = int(mes[:4]), int(mes[5:7])
-    t = y * 12 + (m - 1) - n
-    return f"{t // 12:04d}-{t % 12 + 1:02d}"
-
-
-def _mil(v):
-    return f"{v:,.0f}".replace(",", ".")
-
-
-def _dec(v, d=1):
-    return f"{v:.{d}f}".replace(".", ",")
 
 
 def build(con, cfg=None):

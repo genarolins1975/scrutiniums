@@ -16,6 +16,7 @@ publica com defasagem de meses e a aba mostra a data-base); janela de 12 meses f
 no último mês publicado; nada é deflacionado; concentração é medida (HHI), não adjetivada.
 """
 from pipeline import common
+from pipeline.fmt import _r, _share, _mes_menos
 
 FONTES = {
     "sgs": {"nome": "BCB — Estatísticas de crédito com recursos direcionados (SGS)",
@@ -46,25 +47,9 @@ FONTES_RECURSOS = {"patrimonio_liquido": "Patrimônio líquido", "tesouro_nacion
                    "fundos": "Fundos", "operacoes_compromissadas": "Operações compromissadas", "captacoes_externas": "Captações externas", "outros_passivos": "Outros passivos"}
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if tot else None
-
-
 def _hhi(vals):
     tot = sum(vals)
     return round(sum((v / tot * 100) ** 2 for v in vals)) if tot else None
-
-
-def _mes_menos(mes, n):
-    y, m = int(mes[:4]), int(mes[5:7])
-    m -= n
-    while m <= 0:
-        y, m = y - 1, m + 12
-    return f"{y}-{m:02d}"
 
 
 def _tab(con, tabela):

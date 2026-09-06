@@ -18,6 +18,7 @@ Regras: ausência é nulo; o trimestre mais recente do IF.data pode estar incomp
 contagens são do dia da coleta; nada é estimado.
 """
 from pipeline import common
+from pipeline.fmt import _r, _share
 
 FONTES = {
     "cadastro": {"nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)", "url": "https://olinda.bcb.gov.br/olinda/servico/Instituicoes_em_funcionamento/versao/v1/odata/",
@@ -38,14 +39,6 @@ REGIOES = {"AC": "Norte", "AP": "Norte", "AM": "Norte", "PA": "Norte", "RO": "No
            "AL": "Nordeste", "BA": "Nordeste", "CE": "Nordeste", "MA": "Nordeste", "PB": "Nordeste", "PE": "Nordeste", "PI": "Nordeste", "RN": "Nordeste", "SE": "Nordeste",
            "ES": "Sudeste", "MG": "Sudeste", "RJ": "Sudeste", "SP": "Sudeste", "PR": "Sul", "RS": "Sul", "SC": "Sul", "DF": "Centro-Oeste", "GO": "Centro-Oeste", "MT": "Centro-Oeste", "MS": "Centro-Oeste"}
 SISTEMAS = [("SICOOB", "Sicoob"), ("SICREDI", "Sicredi"), ("CRESOL", "Cresol"), ("UNICRED", "Unicred"), ("AILOS", "Ailos"), ("CREDISIS", "CrediSIS"), ("UNIPRIME", "Uniprime")]
-
-
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if tot else None
 
 
 def _sistema(filiacao, nome):

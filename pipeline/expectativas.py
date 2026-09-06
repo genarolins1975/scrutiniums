@@ -18,14 +18,11 @@ avaliação de 05/09, só é publicada em PDF e fica fora da Fase 0 por regra ed
 from datetime import date
 
 from pipeline import common
+from pipeline.fmt import _r
 
 INDICADORES = {"Selic": "Selic (fim do ano, % a.a.)", "IPCA": "IPCA (acumulado no ano, %)", "PIB Total": "PIB (crescimento real, %)",
                "Câmbio": "Câmbio (fim do ano, R$/US$)", "Taxa de desocupação": "Desocupação (média do 4º trimestre, %)"}
 CONTROLES = {"selic_pp": (-4, 8, 0.25), "desemprego_pp": (-3, 6, 0.25), "pib_pp": (-6, 4, 0.25), "cambio_pct10": (-3, 6, 0.5)}
-
-
-def _r(v, d=2):
-    return None if v is None else round(v, d)
 
 
 def _passo(v, k):

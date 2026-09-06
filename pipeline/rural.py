@@ -26,6 +26,7 @@ Regras que sustentam o painel:
 from datetime import date
 
 from pipeline import common
+from pipeline.fmt import _r, _share
 
 FONTE = {
     "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
@@ -110,14 +111,6 @@ def _janela12(mes_fim):
         if m == 0:
             a, m = a - 1, 12
     return sorted(out)
-
-
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(100.0 * v / tot, 2) if tot else None
 
 
 def _hhi(vals):

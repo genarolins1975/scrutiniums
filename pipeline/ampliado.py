@@ -28,6 +28,7 @@ from datetime import date
 
 from pipeline import common
 from pipeline.sources.cvm_ofertas import DIVIDA_CORPORATIVA, SECURITIZACAO
+from pipeline.fmt import _r, _share, _mes_menos
 
 FONTES = {
     "sgs": {"nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -54,25 +55,9 @@ SALTO_UNIDADE = 50                  # x vezes entre meses consecutivos do mesmo 
 PISO_COBERTURA_MES = 0.90           # certificados no mês ÷ mês anterior
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if tot else None
-
-
 def _hhi(vals):
     tot = sum(vals)
     return round(sum((v / tot * 100) ** 2 for v in vals)) if tot else None
-
-
-def _mes_menos(mes, n):
-    y, m = int(mes[:4]), int(mes[5:7])
-    m -= n
-    while m <= 0:
-        y, m = y - 1, m + 12
-    return f"{y}-{m:02d}"
 
 
 def _sgs(con, key):

@@ -17,6 +17,7 @@ import statistics
 from datetime import date
 
 from pipeline import common
+from pipeline.fmt import _r, _share
 
 FONTES = {
     "bcb": {"nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)", "url": "https://olinda.bcb.gov.br/olinda/servico/Gepad_QuadroPenalidades/versao/v1/odata/",
@@ -27,14 +28,6 @@ FONTES = {
                     "catalogo": "https://dadosabertos.bcb.gov.br/dataset/ranking-de-reclamacoes", "licenca": "dados abertos do BCB", "nivel": "A — divulgação oficial trimestral"},
 }
 PENAS = ["MULTA", "INABILITAÇÃO", "ADVERTÊNCIA", "PROIBIÇÃO PARA ATUAR", "PROIBIÇÃO DE ATIV/OP", "ADMOESTAÇÃO", "DEVOLVER SUBVENÇÃO", "NÃO HOUVE PENALIDADE"]
-
-
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if tot else None
 
 
 def _menos_meses(n):

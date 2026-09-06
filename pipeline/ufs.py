@@ -11,6 +11,7 @@ são calculadas aqui, entre as 27 UFs, e nunca somam réguas distintas; per capi
 população do Censo 2022 já embutida nos golds de origem.
 """
 from pipeline import common
+from pipeline.fmt import _r, _share, _mil, _dec
 
 REGIOES = {"AC": "Norte", "AP": "Norte", "AM": "Norte", "PA": "Norte", "RO": "Norte", "RR": "Norte", "TO": "Norte",
            "AL": "Nordeste", "BA": "Nordeste", "CE": "Nordeste", "MA": "Nordeste", "PB": "Nordeste", "PE": "Nordeste", "PI": "Nordeste", "RN": "Nordeste", "SE": "Nordeste",
@@ -24,24 +25,6 @@ PREP = {"AC": "no Acre", "AL": "em Alagoas", "AP": "no Amapá", "AM": "no Amazon
         "GO": "em Goiás", "MA": "no Maranhão", "MT": "em Mato Grosso", "MS": "em Mato Grosso do Sul", "MG": "em Minas Gerais", "PA": "no Pará", "PB": "na Paraíba", "PR": "no Paraná",
         "PE": "em Pernambuco", "PI": "no Piauí", "RJ": "no Rio de Janeiro", "RN": "no Rio Grande do Norte", "RS": "no Rio Grande do Sul", "RO": "em Rondônia", "RR": "em Roraima",
         "SC": "em Santa Catarina", "SP": "em São Paulo", "SE": "em Sergipe", "TO": "no Tocantins"}
-
-
-def _mil(v):
-    """Inteiro com ponto de milhar (padrão brasileiro) para a síntese."""
-    return f"{v:,.0f}".replace(",", ".")
-
-
-def _dec(v, d=1):
-    """Decimal com vírgula (padrão brasileiro) para a síntese."""
-    return f"{v:.{d}f}".replace(".", ",")
-
-
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if tot and v is not None else None
 
 
 def _rank(ufs, chave, bloco, maior=True):

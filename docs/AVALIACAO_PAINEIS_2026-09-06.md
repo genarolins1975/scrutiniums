@@ -492,3 +492,41 @@ cenários, alertas), 6 "Quando o crédito atrasa" (renegociação, cobrança jud
 dívida com a União), 7 "Regras, trilhos e conduta" (regulação, sanções, litígios de consumo, Pix, Open
 Finance, apostas e fraudes). Rotas, títulos e telemetria não mudam; os testes de estrutura do Mapa e do menu
 continuam a valer (sete passos cobrindo todas as abas temáticas, cada aba em um só passo e um só grupo).
+
+---
+
+## 13. Bloco P1 técnico (06/09/2026, noite)
+
+**T4, golds municipais: medição corrige a inferência.** A avaliação inferiu que o leitor baixava 7,5 MB. Medido em
+produção em 06/09/2026 (curl com `Accept-Encoding: br`): a Vercel serve os golds em Brotli, e na linha o
+`penetracao_mun.json` tem 1,20 MB, `consignado_mun.json` 1,44 MB, `moradia_mun.json` 0,48 MB, `rural_mun.json`
+0,41 MB e a malha `penetracao_malha.json` 0,59 MB. Enxugar o JSON (sem nulos, floats arredondados, sem
+espaços) reduz o bruto em até 35% e a linha em só 5%. Particionar por UF exigiria redesenhar as quatro páginas,
+que são rankings e mapas nacionais por construção. O que foi medido e vale a pena: a Vercel servia tudo com
+`Cache-Control: public, max-age=0, must-revalidate`, então cada navegação revalidava os golds e o próprio
+bundle. Aplicado: `headers()` em `next.config.mjs` com uma hora de frescor e revalidação em segundo plano para
+`/obs/data/gold/*` (o dado muda uma vez por dia) e imutabilidade de um ano para `app.min.js`, os dois chunks e
+`styles.css`, que levam a versão na URL. Partição por UF fica registrada como P2, condicionada a um redesenho
+das páginas municipais em "resumo nacional + detalhe sob demanda".
+
+**T5, auxiliares únicos.** `pipeline/fmt.py` passa a ser o único lugar de `_r`, `_share`, `_mes_menos`,
+`_mil` e `_dec`; 37 definições em 12 builders foram substituídas por importação (havia duas variantes de
+`_share` e duas de `_mes_menos`, equivalentes; a canônica de `_share` devolve nulo quando falta numerador em
+vez de lançar erro). Na SPA, `fmt.pct`, `fmt.brlBi` (valor em reais, com "tri" acima de um trilhão) e
+`fmt.brlBiDeMilhoes` (valor em milhões) substituem três definições de `bi` em escalas diferentes e dez de
+`pct`, sete de `n0` e seis de `brl` (cinco eram `fmt.money`; a de Consórcios formata crédito médio em reais
+sem escala e virou `fmt.brlInteiro`); os renderizadores delegam e o teste proíbe corpo inline. Validação por
+reconstrução do gold antes e depois (06/09/2026, 68 arquivos), comparando arquivo a arquivo sem os carimbos
+de tempo: 62 idênticos; os 6 restantes mudam só pelo contador de persistência dos alertas (segunda execução
+do dia) e pelo corte da Selic futura (`pulse`, `quality`, `scenario`). Nenhum número saiu diferente por
+causa dos auxiliares. Varredura em Chromium das 44 vistas em 1440 e 390 px sem erro de página, sem `NaN`
+e sem rolagem horizontal do documento.
+
+**T6, testes de contrato.** `golds-contrato.test.ts` cobre `market`, `npl`, `compare`, `trends`, `rj`,
+`exposures` e `quality`: JSON estrito sem `NaN` ou `Infinity`, chaves obrigatórias, data-base ou vintage,
+listas que apontam só para itens do próprio arquivo, unidade no catálogo de métricas, escala 0 a 100 nas
+buscas, e última referência de toda série no passado. Sempre contra o gold publicado, que é o contrato.
+
+**Selic com data futura.** A meta Selic (SGS 432) chega datada até a próxima reunião do Copom, e a série
+mostrava "dias sem atualizar" negativo no painel de qualidade. O coletor do SGS descarta observações
+posteriores a hoje e apaga as já gravadas (10 no silver desta sessão).
