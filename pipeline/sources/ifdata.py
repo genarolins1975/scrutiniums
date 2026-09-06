@@ -70,8 +70,8 @@ def collect(con, cfg):
             for row in values:
                 col = row["NomeColuna"].replace("\n", " ").strip()
                 metric = col_map.get(col)
-                if metric is None or row.get("Saldo") is None:
-                    continue
+                if metric is None or row.get("Saldo") is None or not row.get("CodInst"):
+                    continue  # linha sem CodInst não identifica instituição: fora (ausência != zero)
                 con.execute(
                     """INSERT OR REPLACE INTO institution_metrics(cod_inst, anomes, metric, value, source_report, bronze_sha)
                        VALUES(?,?,?,?,?,?)""",
@@ -149,8 +149,8 @@ def _backfill_historico(con, cfg):
             for row in values:
                 col = row["NomeColuna"].replace("\n", " ").strip()
                 metric = COL_MAP_HISTORICO.get(col)
-                if metric is None or row.get("Saldo") is None:
-                    continue
+                if metric is None or row.get("Saldo") is None or not row.get("CodInst"):
+                    continue  # linha sem CodInst não identifica instituição: fora (ausência != zero)
                 con.execute(
                     """INSERT OR REPLACE INTO institution_metrics(cod_inst, anomes, metric, value, source_report, bronze_sha)
                        VALUES(?,?,?,?,?,?)""",

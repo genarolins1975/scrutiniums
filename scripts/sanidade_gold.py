@@ -25,6 +25,7 @@ import json
 import os
 import shutil
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -41,6 +42,41 @@ def _stub(path: Path):
     if not isinstance(d, dict):
         return False
     return d.get("disponivel") is False or d.get("ok") is False
+
+
+def _declara_restaurados(regressoes):
+    """Escreve em data/gold/meta.json quais golds estão no ar por restauração e há
+    quantos dias o build deles não sai íntegro (idade do `gerado_em` da cópia
+    restaurada). Sem isto a sentinela vira mascaramento permanente: Comparar
+    e Consignado ficaram três semanas restaurados sem que nada acusasse
+    (auditoria de 06/09/2026, achado D3). A vigília de pane lê `restaurados`."""
+    meta_path = NOVO / "meta.json"
+    try:
+        meta = json.loads(meta_path.read_text())
+    except Exception:
+        return
+    agora = datetime.now(timezone.utc)
+    restaurados = {}
+    for r in regressoes:
+        nome = r.split(" ")[0]
+        try:
+            pub = json.loads((PUBLICADO / nome).read_text())
+        except Exception:
+            pub = {}
+        gerado = pub.get("gerado_em") if isinstance(pub, dict) else None
+        dias = None
+        if gerado:
+            try:
+                g = datetime.fromisoformat(str(gerado).replace("Z", "+00:00"))
+                if g.tzinfo is None:
+                    g = g.replace(tzinfo=timezone.utc)
+                dias = (agora - g).days
+            except Exception:
+                dias = None
+        restaurados[nome] = {"motivo": r[len(nome):].strip(" ()"), "gerado_em_publicado": gerado, "dias": dias}
+    meta["restaurados"] = restaurados
+    meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=1))
+    print("  restaurados declarados em meta.json:", ", ".join(f"{k} (há {v['dias']} d)" for k, v in restaurados.items()))
 
 
 def main():
@@ -63,6 +99,7 @@ def main():
         print("REGRESSÃO DE GOLD — última publicação mantida para:")
         for r in regressoes:
             print(f"  - {r}")
+        _declara_restaurados(regressoes)
     else:
         print("sanidade_gold: nenhuma regressão.")
     saida = os.environ.get("GITHUB_OUTPUT")

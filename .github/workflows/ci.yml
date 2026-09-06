@@ -10,12 +10,18 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # O ciclo diário de dados commita em main com GITHUB_TOKEN, e push de bot
+  # NÃO dispara workflows — 6 ciclos (13-19/08) quebraram 8 testes gated sem
+  # nenhum sinal vermelho. A suíte roda sobre o main assim que o pipeline
+  # termina (workflow_run), em vez de num horário fixo: o pipeline vinha
+  # começando com 3 a 11 h de atraso desde 27/08 e o cron das 11:45 UTC
+  # testava o gold do dia anterior (auditoria de 06/09/2026, achado T2).
+  workflow_run:
+    workflows: ["Atualizar dados do Observatório"]
+    types: [completed]
   schedule:
-    # O ciclo diário de dados commita em main com GITHUB_TOKEN, e push de bot
-    # NÃO dispara workflows — 6 ciclos (13-19/08) quebraram 8 testes gated sem
-    # nenhum sinal vermelho. Esta execução agendada roda a suíte sobre o main
-    # ~1h depois da publicação dos dados (~10:40 UTC) e fecha a lacuna.
-    - cron: "45 11 * * *"
+    # reserva: se o workflow_run não disparar, ainda há uma passagem diária
+    - cron: "45 17 * * *"
 
 permissions:
   contents: read

@@ -75,7 +75,11 @@ def frescor():
 COLETORES_ESSENCIAIS = ["bcb_sgs", "scr_data", "ifdata", "txjuros", "datajud", "djen",
                         "pix_bcb", "estban", "b3_market", "desenrola", "operacional", "sicor"]
 PRAZO_VINTAGE_DIAS = {"sgs": 75, "scr": 75, "ifdata": 135, "txjuros": 45, "datajud": 75,
-                      "b3": 15, "trends": 120, "sicor": 75, "cvm_ofertas": 45, "securit": 90, "bndes": 200, "focus": 14, "sfn_cadastro": 7, "bcb_pas": 60, "cvm_pas": 45, "caged": 45, "cda": 60, "consorcios": 135, "cobranca": 150}
+                      "b3": 15, "trends": 120, "sicor": 75, "cvm_ofertas": 45, "securit": 90, "bndes": 200, "focus": 14, "sfn_cadastro": 7, "bcb_pas": 60, "cvm_pas": 45, "caged": 45, "cda": 60, "consorcios": 135, "cobranca": 150,
+                      # seis fontes sem prazo até 06/09/2026 (achado D4): mensal + defasagem + folga
+                      "fidc": 75, "pix": 60, "estban": 90, "openfinance": 45, "pgfn": 135, "desenrola": 75}
+# gold mantido no ar pela sentinela (build regredido) por mais que isto acusa
+RESTAURADO_MAX_DIAS = 2
 
 
 def _fim_do_mes(vintage):
@@ -112,6 +116,16 @@ def pane():
         if idade > prazo:
             acusacoes.append(f"- vintage `{k}` parado em **{v}** há {idade} dias após o fim da data-base "
                              f"(prazo da fonte: {prazo}).")
+    # builder quebrado: stub gravado nesta execução (meta.builders_falhos) ou gold
+    # mantido pela sentinela há mais de RESTAURADO_MAX_DIAS (meta.restaurados)
+    for f in meta.get("builders_falhos") or []:
+        acusacoes.append(f"- builder `{f.get('gold')}` falhou na última execução: `{str(f.get('erro', ''))[:160]}`")
+    for nome, r in (meta.get("restaurados") or {}).items():
+        dias = r.get("dias")
+        if dias is None or dias > RESTAURADO_MAX_DIAS:
+            acusacoes.append(f"- gold `{nome}` está no ar por RESTAURAÇÃO da sentinela "
+                             f"({r.get('motivo')}), build íntegro pela última vez em {str(r.get('gerado_em_publicado', ''))[:10]} "
+                             f"({'há ' + str(dias) + ' dias' if dias is not None else 'idade desconhecida'}).")
     if not acusacoes:
         return 0
     print(f"O gold publicado em **{meta.get('gerado_em', '')[:16]}** está íntegro e em dia, mas "

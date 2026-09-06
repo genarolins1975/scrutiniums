@@ -18,10 +18,16 @@ name: Vigília do Observatório
 # o corpo da issue. Qualquer outra saída = o próprio vigia quebrou, e isso
 # também vira issue, porque vigia cego é pior que alerta falso.
 on:
+  # frescor e pane rodam quando o pipeline termina (workflow_run): o cron fixo
+  # das 15:00 avaliava o gold do dia anterior quando o pipeline atrasava
+  # (auditoria de 06/09/2026, achado T2). Os crons ficam como reserva.
+  workflow_run:
+    workflows: ["Atualizar dados do Observatório"]
+    types: [completed]
   schedule:
-    - cron: "0 15 * * *" # frescor, diário
+    - cron: "0 20 * * *" # frescor, reserva diária
     - cron: "30 9 * * 1" # fontes, segunda-feira
-    - cron: "20 15 * * *" # pane, diário (fonte parada com o gold íntegro)
+    - cron: "20 20 * * *" # pane, reserva diária (fonte parada com o gold íntegro)
   workflow_dispatch:
 
 permissions:
@@ -42,13 +48,19 @@ jobs:
       - name: Selecionar cheques do horário
         id: horario
         run: |
-          # no agendamento, cada cron roda só o seu cheque; no disparo manual, ambos
+          # no agendamento, cada cron roda só o seu cheque; no disparo manual, todos;
+          # após o pipeline (workflow_run), frescor e pane — fontes é semanal
           if [ "${{ github.event_name }}" = "schedule" ]; then
             case "${{ github.event.schedule }}" in
-              "0 15 * * *") [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "0 20 * * *") [ "${{ matrix.cheque }}" = "frescor" ] || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
               "30 9 * * 1") [ "${{ matrix.cheque }}" = "fontes" ]  || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
-              "20 15 * * *") [ "${{ matrix.cheque }}" = "pane" ]   || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
+              "20 20 * * *") [ "${{ matrix.cheque }}" = "pane" ]   || echo "pular=1" >> "$GITHUB_OUTPUT" ;;
             esac
+          elif [ "${{ github.event_name }}" = "workflow_run" ]; then
+            [ "${{ matrix.cheque }}" != "fontes" ] || echo "pular=1" >> "$GITHUB_OUTPUT"
+            # o meta.json é lido do raw.githubusercontent do main: dá tempo ao push
+            # do pipeline chegar e ao cache do raw virar (até 5 min)
+            sleep 300
           fi
 
       - name: Executar cheque

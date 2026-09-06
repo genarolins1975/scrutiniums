@@ -227,7 +227,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.98.0";
+const APP_VERSION = "0.98.1";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -281,9 +281,22 @@ const VIEW_DATA = {
   consorcios: ["consorcios"],
   cobranca: ["cobranca"],
 };
+/* Gold que falhou no carregamento fica marcado como null (e o motivo em
+   GOLD_FALHAS): quem chama distingue "ainda não pedido" (undefined) de "pediu e
+   não veio" (null) e NÃO refaz a chamada a cada render. Um 404 devolve HTML,
+   o .json() estoura e, sem o teste de r.ok, o screener entrava em refetch
+   infinito (auditoria de 06/09/2026, achado T1). */
+const GOLD_FALHAS = {};
 async function fetchGold(f) {
-  try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
-  catch (e) { state.data[f] = null; }
+  try {
+    const r = await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    state.data[f] = await r.json();
+    delete GOLD_FALHAS[f];
+  } catch (e) { state.data[f] = null; GOLD_FALHAS[f] = String(e && e.message || e); }
+}
+function goldIndisponivel(oque, f) {
+  return `<div class="card" style="margin-top:20px"><p class="src">${oque} indisponível nesta carga (${attr(GOLD_FALHAS[f] || "arquivo não veio")}). A última publicação íntegra continua nas demais abas; recarregue a página para tentar de novo.</p></div>`;
 }
 async function loadAll() {
   await Promise.all(CORE_FILES.map(fetchGold));
@@ -2163,11 +2176,14 @@ window.panAddCmp = uf => {
 };
 window.panRmCmp = uf => { state.pan.cmp = state.pan.cmp.filter(x => x !== uf); syncHash(); renderPanorama(); };
 async function panEnsureUF(uf) {
-  if (!uf || state.panoCache[uf]) return;
+  if (!uf || state.panoCache[uf] !== undefined) return;
+  state.panoCache[uf] = null; // em voo: não pede duas vezes
   try {
-    state.panoCache[uf] = await (await fetch(`${DATA_BASE}pano/${uf}.json?v=${APP_VERSION}`)).json();
-    renderPanorama();
-  } catch (e) { /* painel mostra carregando */ }
+    const r = await fetch(`${DATA_BASE}pano/${uf}.json?v=${APP_VERSION}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    state.panoCache[uf] = await r.json();
+  } catch (e) { state.panoCache[uf] = { erro: true }; }
+  renderPanorama();
 }
 window.panLoadExplorer = async () => {
   if (state.data.explorer === undefined) {
@@ -2288,7 +2304,7 @@ function renderPanorama() {
         <div><div class="src">per capita</div><div class="big" style="font-size:20px">R$ ${fmt.n0(m.per_capita)}</div></div>
       </div>
       <div class="src" style="margin-top:8px">z-score da inadimplência: ${fmt.pp(m.z_inad)} · Δ 12m: ${fmt.pp(m.d_inad_12m)} p.p. · ranking de saldo: ${rankOf(m.uf) || "–"}º</div>
-      ${D ? `
+      ${D && D.serie_inad ? `
         ${lineChart({ series: [{ pts: D.serie_inad.map(o => ({ x: o.p, y: o.inad })), label: m.uf, color: "#b91c1c" }, { pts: P.serie_br.map(o => ({ x: o.p, y: o.inad })), label: "Brasil", color: "#64748b" }], h: 150, unit: "% inadimplência arrastada", aria: `inadimplência de ${m.nome} vs Brasil` })}
         <h5 style="margin:12px 0 4px">Maiores produtos (PF)</h5>
         ${D.produtos_pf.slice(0, 5).map(p => panBar(p.grupo, p.saldo, D.produtos_pf[0].saldo, v => fmt.money(v), p.inad != null ? `inad ${fmt.n(p.inad, 1)}%` : "")).join("")}
@@ -2329,7 +2345,7 @@ function renderPanorama() {
         return `<td style="text-align:right">${v != null ? ff(v) : "n.d."}${dif}<div class="src">${pct(u, mk) != null ? "percentil " + pct(u, mk) : ""}</div></td>`;
       }).join("")}</tr>`).join("")}
     </tbody></table></div>
-    ${lineChart({ series: [{ pts: P.serie_br.map(o => ({ x: o.p, y: o.inad })), label: "Brasil", color: "#64748b" }, ...pan.cmp.map((u, i) => state.panoCache[u] ? { pts: state.panoCache[u].serie_inad.map(o => ({ x: o.p, y: o.inad })), label: u, color: ["#1d4e89", "#b45309", "#6b46a3"][i] } : null).filter(Boolean)], h: 230, unit: "% inadimplência arrastada", aria: "comparação da inadimplência entre unidades" })}
+    ${lineChart({ series: [{ pts: P.serie_br.map(o => ({ x: o.p, y: o.inad })), label: "Brasil", color: "#64748b" }, ...pan.cmp.map((u, i) => state.panoCache[u] && state.panoCache[u].serie_inad ? { pts: state.panoCache[u].serie_inad.map(o => ({ x: o.p, y: o.inad })), label: u, color: ["#1d4e89", "#b45309", "#6b46a3"][i] } : null).filter(Boolean)], h: 230, unit: "% inadimplência arrastada", aria: "comparação da inadimplência entre unidades" })}
     ${leitura([["Regras", "mesma data-base e mesmo conceito em todas as colunas; diferenças entre parênteses são vs. Brasil, em p.p."], ["Cuidado", "ranking e percentil não ponderam tamanho — RR e SP têm pesos muito diferentes; o saldo está sempre visível ao lado"]])}`;
   } else {
     cmpBody = `<p class="src">Adicione até 3 UFs para comparar diretamente com o Brasil — valores, diferenças em p.p., percentil no ranking e série histórica.</p>`;
@@ -2807,7 +2823,8 @@ window.scrSet = (k, v) => { SCR_STATE[k] = v; renderMarket(); };
 window.scrSort = k => { if (SCR_STATE.sort === k) SCR_STATE.dir *= -1; else { SCR_STATE.sort = k; SCR_STATE.dir = -1; } renderMarket(); };
 function mktScreener(M) {
   const S = state.data.screener;
-  if (!S) { fetchGold("screener").then(() => renderMarket()); return loadingCard("screener"); }
+  if (S === undefined) { fetchGold("screener").then(() => renderMarket()); return loadingCard("screener"); }
+  if (!S) return goldIndisponivel("screener", "screener");
   const st = SCR_STATE;
   const num = x => x === "" ? null : parseFloat(x);
   let rows;

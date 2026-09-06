@@ -77,9 +77,18 @@ def produto_de(modalidade, submod):
     return "Outros"
 
 
+# Guarda contra carga truncada: uma data-base só entra se trouxer pelo menos esta
+# fração das linhas da data-base anterior (o CSV mensal tem ~310 mil linhas e
+# oscila menos de 2% de um mês para outro). Arquivo cortado no download ou zip
+# corrompido fica FORA e vira falha declarada, nunca número publicado.
+PISO_LINHAS = 0.90
+
+
 def _ensure(con):
     metricas = "saldo REAL, n_op REAL, n_op_supr INTEGER, saldo_opv REAL, v1590 REAL, v90 REAL, inad REAL, ap REAL"
     con.executescript(f"""
+    CREATE TABLE IF NOT EXISTS scr_carga(data TEXT PRIMARY KEY, crc TEXT, tamanho INTEGER, linhas INTEGER,
+        saldo REAL, coletado_em TEXT);
     CREATE TABLE IF NOT EXISTS scr_uf(data TEXT, uf TEXT, cliente TEXT, {metricas},
         pz90 REAL, pz360 REAL, pz1080 REAL, pz1800 REAL, pz5400 REAL, pzmais REAL,
         PRIMARY KEY(data, uf, cliente));
@@ -116,7 +125,7 @@ class _Agg(dict):
         a[4] += v1590; a[5] += v90; a[6] += inad; a[7] += ap
 
 
-def _absorve_mes(con, fh, data_base):
+def _absorve_mes(con, fh, data_base, min_linhas=0):
     num = lambda s: float(s.replace(",", ".")) if s else 0.0
     rdr = csv.DictReader(io.TextIOWrapper(fh, encoding="utf-8-sig"), delimiter=";")
     a_uf, a_ufprod, a_ufrenda, a_ufocup, a_rendaprod, a_ocupprod = _Agg(), _Agg(), _Agg(), _Agg(), _Agg(), _Agg()
@@ -156,6 +165,9 @@ def _absorve_mes(con, fh, data_base):
         o = a_origem.setdefault((uf, cli, row["origem"]), [0.0, 0.0])
         o[0] += saldo; o[1] += inad
 
+    if n < min_linhas:
+        raise ValueError(f"{data_base}: {n} linhas, abaixo do piso de {min_linhas} "
+                         f"({PISO_LINHAS:.0%} da data-base anterior) — arquivo possivelmente truncado; nada gravado")
     d = data_base
     con.execute("DELETE FROM scr_uf WHERE data=?", (d,))
     con.executemany("INSERT INTO scr_uf VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -172,34 +184,73 @@ def _absorve_mes(con, fh, data_base):
     con.executemany("INSERT INTO scr_uf_origem VALUES(?,?,?,?,?,?)",
                     [(d, *k, *v) for k, v in a_origem.items()])
     con.commit()
-    return n
+    return n, sum(v[0] for v in a_uf.values())
+
+
+def _mes_anterior(data_base):
+    ano, mes = int(data_base[:4]), int(data_base[5:7])
+    return f"{ano - 1}-12" if mes == 1 else f"{ano}-{mes - 1:02d}"
 
 
 def collect(con, cfg):
+    """Zips anuais do SCR.data, um CSV por data-base.
+
+    Três regras (auditoria de 06/09/2026, achado D1):
+    - ano fechado com as 12 datas-base já carregadas nem é baixado (o zip de
+      2024 e o de 2025 não mudam mais; eram ~200 MB por execução à toa);
+    - o CRC32 do CSV dentro do zip identifica a REVISÃO da fonte: o BCB
+      reescreve o zip do ano corrente a cada mês e revisa meses anteriores
+      (2026-06 e 2026-07 mudaram entre 05 e 06/09/2026). Data-base com CRC
+      diferente do carregado é reabsorvida; igual, é pulada;
+    - piso de linhas contra arquivo truncado (PISO_LINHAS): abaixo dele nada é
+      gravado e a falha fica declarada em fontes_status.
+    """
     _ensure(con)
     os.makedirs(CACHE, exist_ok=True)
     results = []
     ja = {r[0] for r in con.execute("SELECT DISTINCT data FROM scr_uf")}
+    carga = {r[0]: {"crc": r[1], "linhas": r[2]} for r in con.execute("SELECT data, crc, linhas FROM scr_carga")}
+    ano_corrente = int(common.now_utc()[:4])
     for ano in ANOS:
+        meses_ano = {f"{ano}-{m:02d}" for m in range(1, 13)}
+        # ano fechado só é pulado quando as 12 datas-base foram carregadas COM o
+        # registro de carga (scr_carga): o silver semeado trazia scr_uf de 2024 e
+        # 2025 sem o corte triplo scr_uf_ocup_produto, e a idempotência por
+        # scr_uf impedia para sempre o preenchimento (Consignado em stub desde
+        # 04/08/2026). Na primeira execução com scr_carga tudo é reabsorvido.
+        if ano < ano_corrente and meses_ano <= ja and meses_ano <= set(carga):
+            results.append({"key": f"scr_data:{ano}", "ok": True, "pulado": "ano fechado com 12 datas-base carregadas"})
+            continue
         zpath = os.path.join(CACHE, f"scrdata_{ano}.zip")
         try:
             if not os.path.exists(zpath):
-                body, _meta = common.http_get(URL.format(ano=ano), timeout=1200)
-                with open(zpath, "wb") as f:
-                    f.write(body)
+                common.http_download(URL.format(ano=ano), zpath, timeout=1200)
             zf = zipfile.ZipFile(zpath)
             for name in sorted(zf.namelist()):
                 am = name.replace("scrdata_", "").replace(".csv", "")
                 data_base = f"{am[:4]}-{am[4:6]}"
-                if data_base in ja:
-                    continue  # idempotente por data-base
+                info = zf.getinfo(name)
+                crc = f"{info.CRC:08x}:{info.file_size}"
+                if data_base in ja and carga.get(data_base, {}).get("crc") == crc:
+                    continue  # mesma revisão da fonte: nada a fazer
+                # data-base carregada antes de existir o registro de revisão é
+                # reabsorvida uma vez: a fonte pode ter revisado nesse intervalo
+                # (2026-06 e 2026-07 mudaram entre 05 e 06/09/2026)
+                revisao = "reabsorvida" if data_base in ja else "nova"
+                anterior = carga.get(_mes_anterior(data_base), {}).get("linhas")
+                piso = int(anterior * PISO_LINHAS) if anterior else 0
                 with zf.open(name) as fh:
                     sha = hashlib.sha256(fh.read(1 << 22)).hexdigest()  # sha do 1º bloco (id do vintage)
                 with zf.open(name) as fh:
-                    n = _absorve_mes(con, fh, data_base)
+                    n, saldo = _absorve_mes(con, fh, data_base, min_linhas=piso)
+                con.execute("INSERT OR REPLACE INTO scr_carga VALUES(?,?,?,?,?,?)",
+                            (data_base, crc, info.file_size, n, saldo, common.now_utc()))
+                con.commit()
+                carga[data_base] = {"crc": crc, "linhas": n}
+                ja.add(data_base)
                 common.record_lineage(con, "panorama.json", f"tmp_scr/scrdata_{ano}.zip::{name}", sha,
                                       "linhas-base SCR.data v2 -> fatos scr_* (agregação por mês; -1 = supressão preservada)")
-                results.append({"key": f"scr_data:{data_base}", "ok": True, "linhas": n})
+                results.append({"key": f"scr_data:{data_base}", "ok": True, "linhas": n, "revisao": revisao})
         except Exception as e:
             results.append({"key": f"scr_data:{ano}", "ok": False, "error": str(e)[:200]})
     return results or [{"key": "scr_data", "ok": True, "note": "todas as datas-base já absorvidas"}]

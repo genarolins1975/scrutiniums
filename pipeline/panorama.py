@@ -19,6 +19,7 @@ MIN_CARTEIRA_TAXA = 50e6  # R$ — abaixo disso a taxa é suprimida (célula peq
 LIMIAR_3M_PP = 0.30       # deterioração mínima em 3 datas-base (p.p. de inadimplência)
 LIMIAR_12M_PP = 0.75      # deterioração mínima em 12 datas-base
 SALDO_MIN_ALERTA = 20e9   # R$ — carteira mínima do grupo para virar cartão de alerta
+VARIACAO_SALDO_ATIPICA = 0.05  # |Δ carteira| entre datas-base consecutivas que vira aviso de base
 OSCILACAO_BASE_MAX = 0.30  # variação máxima da carteira na janela (recomposição de base)
 
 RENDA_ORDEM = ["Sem rendimento", "Até 1 salário mínimo", "Mais de 1 a 2 salários mínimos",
@@ -94,8 +95,9 @@ def build(con, cfg):
     saldo_br = brtot(d0, "saldo")
 
     # histórico de inad por UF p/ z-score e persistência
-    hist_uf = {}
-    for d, uf, saldo, inad in _rows(con, "SELECT data, uf, SUM(saldo), SUM(inad) FROM scr_uf GROUP BY data, uf"):
+    hist_uf, hist_saldo_uf = {}, {}
+    for d, uf, saldo, inad in _rows(con, "SELECT data, uf, SUM(saldo), SUM(inad) FROM scr_uf GROUP BY data, uf ORDER BY data"):
+        hist_saldo_uf.setdefault(uf, []).append((d, saldo))
         t = _taxa(inad, saldo)
         if t is not None:
             hist_uf.setdefault(uf, []).append((d, t))
@@ -195,6 +197,25 @@ def build(con, cfg):
                             "periodo": f"{d3} → {d0}", "vs_brasil": round(m["inad"] - inad_br, 2) if m["inad"] is not None and inad_br is not None else None,
                             "regra": "alta em 2 datas-base consecutivas e Δ3m ≥ 0,30 p.p.",
                             "link": {"view": "panorama", "uf": m["uf"]}})
+    # Variação atípica de CARTEIRA por UF entre datas-base consecutivas. Não é
+    # deterioração: é aviso de que a base mudou (revisão ou reclassificação na
+    # fonte, como o DF em 2026-07: de R$ 179,1 bi para R$ 159,1 bi, menos 11%,
+    # presente no próprio CSV do BCB). Publicado para que o leitor não tome a
+    # queda de saldo como fato econômico sem conferir a fonte.
+    for m in mapa:
+        h = hist_saldo_uf.get(m["uf"], [])
+        if len(h) >= 2 and h[-2][1] and h[-1][1] >= SALDO_MIN_ALERTA:
+            var = h[-1][1] / h[-2][1] - 1
+            if abs(var) >= VARIACAO_SALDO_ATIPICA:
+                alertas.append({"tipo": "uf_variacao_saldo", "grupo": f"{m['nome']} ({m['uf']})",
+                                "indicador": "carteira ativa (variação entre datas-base)",
+                                "atual": round(h[-1][1]), "anterior": round(h[-2][1]),
+                                "delta_pct": round(var * 100, 1), "periodo": f"{h[-2][0]} → {h[-1][0]}",
+                                "nota": "Variação de carteira acima do usual entre duas datas-base do SCR.data: "
+                                        "pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), "
+                                        "não deterioração. Conferir antes de ler como fato econômico.",
+                                "regra": f"|variação da carteira| ≥ {VARIACAO_SALDO_ATIPICA*100:.0f}% entre datas-base consecutivas, carteira ≥ R$ {SALDO_MIN_ALERTA/1e9:.0f} bi",
+                                "link": {"view": "panorama", "uf": m["uf"]}})
     hist_grupo = {}
     for tabela, chave, cliente, tipo in (("scr_uf_renda", "faixa", "PF", "renda"),
                                          ("scr_uf_ocupacao", "grupo", "PF", "ocupacao"),
