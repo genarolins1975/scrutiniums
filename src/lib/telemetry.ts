@@ -43,6 +43,7 @@ export const VIEW_SECTIONS = [
   "obs:conduta",
   "obs:emprego",
   "obs:funding",
+  "obs:consorcios",
   "obs:sugestoes",
   // Plataforma (páginas Next)
   "app:conta",
@@ -87,6 +88,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:conduta": "Observatório · Conduta e enforcement",
   "obs:emprego": "Observatório · Emprego formal",
   "obs:funding": "Observatório · Funding e captação",
+  "obs:consorcios": "Observatório · Consórcios",
   "obs:sugestoes": "Observatório · Sugestões",
   "app:conta": "Plataforma · Conta",
 };

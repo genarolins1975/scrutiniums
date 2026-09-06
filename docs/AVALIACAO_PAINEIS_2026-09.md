@@ -536,3 +536,33 @@ não existe em fonte aberta; fica registrada como lacuna, não como estimativa.
 e 9. Resta o nº 10 (consórcios, prioridade baixa); a PTC (outra metade do nº 4) espera dado
 estruturado do BCB.
 
+## 20. Painel nº 10: consórcios (06/09/2026, madrugada)
+
+**O que foi construído.** Um coletor (Panorama de Consórcios do BCB, API Olinda, 125
+métricas por trimestre desde 2015-T1), o builder `pipeline/consorcios.py`, a aba
+`/observatorio/consortia` no grupo Produtos e preços (sistema, segmentos, UFs, método) e o
+bloco de consórcios nas 27 páginas por UF. Fecha a lista do §6: dos dez painéis, nove
+estão construídos e a PTC (metade do nº 4) espera dado estruturado do BCB.
+
+**Evidência** (BCB, Panorama de Consórcios, consulta de 06/09/2026; 2026-T1).
+13.002.100 cotas ativas, +12,2% em 12 meses, em 16.374 grupos de 125 administradoras;
+carteira de R$ 156,9 bilhões (+18,9%) e R$ 888,6 bilhões a coletar; imóveis 23% das
+cotas e 42% da carteira; 1.826.960 contemplações em 12 meses, 79% por lance;
+inadimplência 2,25%, índice de exclusão 48,8%; taxa de administração média dos grupos
+novos 18,9%, crédito médio R$ 106,7 mil, prazo 168 meses. 60,9 cotas por mil habitantes;
+Paraná com 98,8, São Paulo com 62,6.
+
+**Inferência.** O consórcio cresce mais rápido que o crédito bancário do mesmo bem e é
+dominado pelo lance: quatro em cinco contemplações são compradas, o que aproxima o
+produto de um financiamento com entrada antecipada. A fonte tem três rótulos de unidade
+errados (métricas 37, 68 e 77), corrigidos por conferência aritmética e publicados como
+tal; um painel que lesse a unidade ao pé da letra mostraria R$ 889 milhões a coletar
+contra R$ 157 bilhões de carteira.
+
+**Recomendação.** Ler consórcio como crédito adjacente, nunca somado ao SCR; taxa de
+administração não se compara com taxa de juros. O corte por administradora não existe
+em fonte aberta e fica registrado como lacuna.
+
+**Estado do §6 depois desta etapa.** Construídos: nº 1, 2, 3, 4 (metade Focus), 5, 6, 7,
+8, 9 e 10. Pendente apenas a PTC, que depende de dado estruturado do BCB.
+

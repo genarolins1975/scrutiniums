@@ -31,6 +31,7 @@ state.sfn = { lista: "entradas", uf: "todas" };
 state.cd = { lista: "bcb" };
 state.emp = { secao: "total", uf: "saldo_12m" };
 state.fd = { comp: "todos", ord: "captacoes", seg: "todos", tipo: "todos" };
+state.cs = { met: "cotas", uf: "cotas" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -46,7 +47,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding", consorcios: "/consortia" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -225,7 +226,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.95.0";
+const APP_VERSION = "0.96.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -275,6 +276,7 @@ const VIEW_DATA = {
   conduta: ["conduta"],
   emprego: ["emprego"],
   funding: ["funding"],
+  consorcios: ["consorcios"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2878,7 +2880,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3099,6 +3101,10 @@ const GUIA = {
     importa: "Crédito é passivo antes de ser ativo: cada real emprestado foi captado em depósito, letra, compromissada, repasse ou no mercado. A composição diz quanto custa, quanto dura e quem pode retirar; a exposição dos fundos diz quem financia cada banco pelo mercado.",
     ler: "Três réguas, nunca somadas: o que o público tem aplicado (SGS, mensal), o que cada banco carrega no balanço (IF.data, trimestral, aberto em varejo, mercado e repasses) e o que os fundos carregam de cada emissor (CDA da CVM, mensal). Comece pelo agregado e pelos grupos; depois pela instituição.",
     nao: "As três fontes não fecham entre si por construção. Dependência de mercado alta é modelo de negócio, não fragilidade por si. Ordenar por captação descreve tamanho, não conduta. A razão CDA ÷ letras financeiras cruza datas diferentes e é indicativa." },
+  consorcios: { q: "Quanto do carro e da casa se compra sem crédito, pelo consórcio?",
+    importa: "Consórcio é a alternativa ao financiamento de veículos e imóveis: poupança coletiva com contemplação por sorteio ou lance, sem juros e sem desembolso antes da contemplação. Treze milhões de cotas ativas competem com o crédito bancário no mesmo bem.",
+    ler: "Comece pelas cotas ativas e pela carteira; depois pelo segmento (imóveis, automóveis, motos, pesados) e pelo custo do produto novo (taxa de administração, valor médio e prazo dos grupos constituídos nos últimos 12 meses). O corte por UF é de cotas ativas por mil habitantes.",
+    nao: "Consórcio não é crédito: taxa de administração não é taxa de juros, e o índice de exclusão (quase metade das cotas ao longo da vida do grupo) é característica do produto, não crise. Inadimplência aqui é definição do BCB para o segmento, não a do SCR." },
   conduta: { q: "Como o supervisor pune, e o que isso diz do sistema?",
     importa: "Processos sancionadores são o risco de conduta realizado: o que o Banco Central e a CVM decidiram, em quanto tempo, com que penalidade e se a multa foi paga. Lidos como fluxo do sistema, mostram onde a supervisão tem batido e quanto tempo o rito leva.",
     ler: "Três réguas: decisões do BCB por apenado (com multa, recurso e situação da cobrança), processos da CVM por fase e área, e o índice de reclamações do ranking trimestral. Comece pela janela de 12 meses e pelo ano a ano; as listas nominais são cronológicas.",
@@ -3447,7 +3453,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"], emprego: ["bcb_sgs", "ipea_caged"], funding: ["bcb_sgs", "ifdata_passivo", "cvm_cda"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"], emprego: ["bcb_sgs", "ipea_caged"], funding: ["bcb_sgs", "ifdata_passivo", "cvm_cda"], consorcios: ["bcb_consorcios"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -8427,7 +8433,7 @@ window.ufNav = uf => { state.filters.ufSel = uf; showView("estado"); };
 const UF_BLOCOS = [
   ["scr", "Carteira e inadimplência (SCR)", "panorama"], ["penetracao", "Penetração do crédito", "penetracao"], ["presenca", "Presença bancária", "operacional"],
   ["pix", "Pix", "pix"], ["moradia", "Moradia", "moradia"], ["consignado", "Consignado e envelhecimento", "consignado"], ["rural", "Crédito rural", "rural"],
-  ["bndes", "BNDES", "bndes"], ["emprego", "Emprego formal", "emprego"], ["pgfn", "Dívida ativa da União", "pgfn"]];
+  ["bndes", "BNDES", "bndes"], ["emprego", "Emprego formal", "emprego"], ["consorcios", "Consórcios", "consorcios"], ["pgfn", "Dívida ativa da União", "pgfn"]];
 function renderEstados() {
   const view = currentView() === "estado" ? "estado" : "estados";
   const el = document.getElementById("view-" + view);
@@ -8469,12 +8475,12 @@ function renderEstados() {
     el.innerHTML = pageHead({ title: "Estados", desc: "Sigla desconhecida." }) + `<div class="card"><p>Sigla de UF desconhecida. Escolha um estado: ${seletor("")}</p></div>`;
     return;
   }
-  const s = u.scr || {}, pe = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, mo = u.moradia || {}, co = u.consignado || {}, ru = u.rural || {}, bn = u.bndes || {}, pg = u.pgfn || {}, em = u.emprego || {};
+  const s = u.scr || {}, pe = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, mo = u.moradia || {}, co = u.consignado || {}, ru = u.rural || {}, bn = u.bndes || {}, pg = u.pgfn || {}, em = u.emprego || {}, cs = u.consorcios || {};
   const B = U.brasil || {};
   const head = pageHead({
     title: `Crédito ${u.prep} (${u.uf})`, vintage: s.data_base,
     seals: `${badge("observado")} ${badge("calculado", "posições entre as 27 UFs dentro de cada bloco")}`,
-    desc: `${u.nome}, ${u.regiao}: carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES, emprego formal e dívida ativa, cada bloco com sua fonte e data.`,
+    desc: `${u.nome}, ${u.regiao}: carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES, emprego formal, consórcios e dívida ativa, cada bloco com sua fonte e data.`,
     fontes: (U.fontes || []).join(" · "),
     actions: seletor(u.uf),
   });
@@ -8530,10 +8536,13 @@ function renderEstados() {
     <dl class="ppgrid">${linha("Saldo em 12 meses", sn(em.saldo_12m), `${pos(u, "emprego.saldo_12m")} · ${sn(em.saldo_12m_anterior)} nos 12 meses anteriores`)}${linha("Admissões em 12 meses", n0(em.admissoes_12m))}${linha("Desligamentos em 12 meses", n0(em.desligamentos_12m))}
       ${linha("Retenção (saldo ÷ admissões)", pct(em.retencao_pct), pos(u, "emprego.retencao_pct"))}${linha("Saldo do mês", sn(em.saldo_mes), `${n0(em.admissoes_mes)} admissões · ${n0(em.desligamentos_mes)} desligamentos · mês preliminar`)}</dl>`,
     "emprego", "emp-ufs", `Estoque por seção CNAE, saldo por UF e o papel no Risco setorial — Emprego formal`);
+  const csB = bloco("uf-consorcios", "Consórcios", `BCB Panorama de Consórcios · ${cs.trimestre || U.datas.consorcios || "–"}`, cs.cotas == null ? `<p class="src">recorte não publicado.</p>` : `
+    <dl class="ppgrid">${linha("Cotas ativas", n0(cs.cotas), `${pct(cs.share)} do Brasil · ${pos(u, "consorcios.cotas")}`)}${linha("Por mil habitantes", cs.por_mil_hab != null ? fmt.n(cs.por_mil_hab, 1) : "–", pos(u, "consorcios.por_mil_hab"))}${linha("Variação em 12 meses", cs.var_12m_pct != null ? fmt.pp(cs.var_12m_pct) + "%" : "–")}</dl>`,
+    "consorcios", "cs-ufs", `Cotas, carteira, contemplações e custo por segmento — Consórcios`);
   document.title = `Crédito ${u.prep} (${u.uf}) · ${state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito"}`;
   el.innerHTML = head + sintese + placarHtml
-    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-pgfn", "Dívida ativa"]])
-    + scr + pen + pres + pixB + morB + conB + rurB + bnB + emB + pgB
+    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-pgfn", "Dívida ativa"]])
+    + scr + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + pgB
     + `<div class="card" style="margin-top:14px"><h4>Outros estados</h4><p>${ufs.filter(x => x.regiao === u.regiao && x.uf !== u.uf).map(x => `<a href="/observatorio/states/${x.uf}" onclick="ufNav('${x.uf}');return false">${x.nome}</a>`).join(" · ")} <span class="src">(${u.regiao})</span> · <a href="/observatorio/states" onclick="nav('estados');return false">todas as UFs →</a></p>
     <p class="src">${(U.cautelas || []).join(" ")}</p></div>`;
 }
@@ -9032,6 +9041,107 @@ window.fdCSV = () => {
   const cols = ["cod_inst", "nome", "sr", "tcb", "captacoes", "share_sfn", "var_12m_pct", "varejo_share", "mercado_share", "repasses_share", "ltd"];
   const head = `# Observatório Brasileiro de Crédito — captações por instituição e composição (% das captações), IF.data Passivo ${D.bancos.anomes}\n# fonte: BCB/IF.data (API Olinda), conglomerados prudenciais e instituições independentes · valores em R$\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_funding_instituicoes_${D.bancos.anomes}.csv`, head + cols.concat(itens.map(i => "pct_" + i)).join(";") + "\n" + D.bancos.instituicoes.map(i => cols.map(c => csvEsc(i[c])).concat(itens.map(k => csvEsc(i.composicao[k]))).join(";")).join("\n"), "text/csv");
+};
+
+/* ---------- Consórcios ---------- */
+/* Uma fonte, uma régua: o Panorama de Consórcios do BCB (trimestral). Nada aqui se soma ao
+   crédito do SCR; consórcio é crédito adjacente e o painel diz isso. */
+function csSet(k, v) { state.cs[k] = v; renderConsorcios(); }
+function renderConsorcios() {
+  const el = document.getElementById("view-consorcios");
+  const D = state.data.consorcios;
+  if (!D) { el.innerHTML = loadingCard("consórcios"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Consórcios", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.cs;
+  const P = D.panorama;
+  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const bi = v => v == null ? "–" : "R$ " + fmt.n(v / 1e9, 1) + " bi";
+  const brl = v => v == null ? "–" : "R$ " + fmt.n0(v);
+  const pp = v => v == null ? "–" : fmt.pp(v) + "%";
+  const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
+  const rotulosFim = window.innerWidth > 640;
+  const head = pageHead({
+    title: "Consórcios", vintage: D.database ? `${D.database.slice(0, 4)}-${D.database.slice(4, 6)}` : null,
+    seals: `${badge("observado", "Panorama de Consórcios do BCB, trimestral")} ${badge("calculado", "shares, variações, contemplação e cotas por habitante calculados")}`,
+    desc: "O crédito adjacente de veículos e imóveis: cotas ativas, carteira, contemplações, exclusões, custo do produto novo e o mapa por UF, lidos do Panorama de Consórcios do Banco Central.",
+    fontes: "BCB, Panorama de Consórcios (API Olinda) · IBGE Censo 2022 (população, via páginas por UF)",
+    actions: `<button class="btn ghost small" onclick="csCSV()">baixar CSV (série trimestral)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${D.sintese}</p><div class="src">Síntese determinística · ${D.trimestre} · consórcio é crédito adjacente: nada aqui se soma ao SCR</div>`;
+  const placarHtml = placar([
+    { l: "Cotas ativas", v: n0(P.cotas), sub: `${pp(P.var_12m_cotas_pct)} em 12 m · ${pp(P.var_tri_cotas_pct)} no trimestre · ${n0(P.grupos)} grupos`, href: "#cs-panorama" },
+    { l: "Carteira (contemplados a pagar)", v: bi(P.carteira), sub: `${pp(P.var_12m_carteira_pct)} em 12 m · ${bi(P.a_coletar)} a coletar`, href: "#cs-panorama" },
+    { l: "Contempladas em 12 meses", v: n0(P.contempladas_12m), sub: `${pct(P.contemplacao_12m_pct)} das cotas · ${pct(P.lance_share, 0)} por lance`, href: "#cs-segmentos" },
+    { l: "Inadimplência · exclusão", v: `${pct(P.inadimplencia_pct)} · ${pct(P.exclusao_pct, 0)}`, sub: `há 12 m ${pct(P.inadimplencia_12m_atras_pct)} · pré-inadimplência ${pct(P.pre_inadimplencia_pct)}`, href: "#cs-panorama" },
+    { l: "Taxa de administração (grupos novos)", v: pct(P.taxa_adm_pct), sub: `crédito médio ${brl(P.valor_medio)} · prazo ${n0(P.prazo_meses)} meses`, href: "#cs-segmentos" },
+  ]);
+
+  /* ---------- panorama e série ---------- */
+  const S = D.serie || [];
+  const SER = { cotas: ["cotas ativas (mil)", p => p.cotas / 1e3, "mil"], carteira: ["carteira (R$ bi)", p => p.carteira / 1e9, "R$ bi"], inadimplencia: ["inadimplência (%)", p => p.inadimplencia, "%"],
+    exclusao: ["índice de exclusão (%)", p => p.exclusao, "%"], contempladas_12m: ["contempladas em 12 m (mil)", p => p.contempladas_12m / 1e3, "mil"], comercializadas_12m: ["comercializadas em 12 m (mil)", p => p.comercializadas_12m / 1e3, "mil"],
+    taxa_adm: ["taxa de administração (%)", p => p.taxa_adm, "%"], valor_medio: ["crédito médio (R$ mil)", p => p.valor_medio / 1e3, "R$ mil"], prazo: ["prazo médio (meses)", p => p.prazo, "meses"], coletados_12m: ["recursos coletados em 12 m (R$ bi)", p => p.coletados_12m / 1e9, "R$ bi"] };
+  const met = SER[F.met] ? F.met : "cotas";
+  const [rot, fn, unit] = SER[met];
+  const seriesA = [{ pts: S.filter(p => p[met] != null).map(p => ({ x: p.ref, y: fn(p) })), color: "#1d4e89", label: rot }];
+  const seriesSeg = [{ pts: S.filter(p => p.cotas_imoveis != null).map(p => ({ x: p.ref, y: p.cotas_imoveis / 1e3 })), color: "#b45309", label: "imóveis (mil cotas)" }, { pts: S.filter(p => p.cotas_automoveis != null).map(p => ({ x: p.ref, y: p.cotas_automoveis / 1e3 })), color: "#1d4e89", label: "automóveis" }, { pts: S.filter(p => p.cotas_motos != null).map(p => ({ x: p.ref, y: p.cotas_motos / 1e3 })), color: "#2f7d4f", label: "motocicletas" }];
+  const panorama = secWrap("cs-panorama", `${sechead("O sistema de consórcios", `${S.length ? S[0].ref : "–"} a ${D.trimestre} · ${n0(P.administradoras_ativas)} administradoras com cotas ativas de ${n0(P.administradoras_autorizadas)} autorizadas`)}
+  <div class="grid g2">
+    <div class="card"><h4>Série trimestral ${badge("observado")}</h4>
+      <div class="controls"><label class="src">métrica <select onchange="csSet('met', this.value)" aria-label="escolher métrica">${Object.entries(SER).map(([k, v]) => `<option value="${k}" ${met === k ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label></div>
+      ${lineChart({ series: seriesA, h: 200, endLabels: rotulosFim, unit, dec: unit === "%" ? 1 : 0, fonte: "BCB Panorama de Consórcios", status: "observado", aria: rot + " por trimestre" })}
+      <p class="src">Recursos coletados em 12 meses ${bi(P.coletados_12m)} · recursos não procurados (RNP) ${bi(P.rnp_saldo)} com taxa de permanência média de ${pct(P.rnp_taxa_permanencia_pct)} ao mês · PL ajustado das administradoras ${bi(P.pla)}.</p></div>
+    <div class="card"><h4>Cotas ativas por segmento ${badge("observado")}</h4>
+      <div class="legend">${seriesSeg.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+      ${lineChart({ series: seriesSeg, h: 200, endLabels: rotulosFim, unit: "mil", dec: 0, fonte: "BCB Panorama de Consórcios (11, 13, 14)", status: "observado", aria: "cotas ativas por segmento, trimestral" })}
+      <p class="src">Cotas ativas incluem contempladas e não contempladas. A carteira (R$) mede só o que já foi contemplado e ainda é devido; os recursos a coletar (${bi(P.a_coletar)}) medem o compromisso total das cotas ativas.</p></div>
+  </div>`);
+
+  /* ---------- segmentos ---------- */
+  const segs = D.segmentos || [];
+  const segmentos = secWrap("cs-segmentos", `${sechead("Por segmento: quantas cotas, quanto custa, quem contempla", `${D.trimestre} · taxa, crédito médio e prazo referem-se aos grupos constituídos nos últimos 12 meses`)}
+  <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Segmento</th><th style="text-align:right">Cotas ativas</th><th style="text-align:right">%</th><th style="text-align:right">12 m</th><th style="text-align:right">Carteira</th><th style="text-align:right">%</th><th style="text-align:right">Contempladas 12 m</th><th style="text-align:right">% das cotas</th><th style="text-align:right">Por lance</th><th style="text-align:right">Exclusão</th><th style="text-align:right">Comercializadas 12 m</th><th style="text-align:right">Taxa adm.</th><th style="text-align:right">Crédito médio</th><th style="text-align:right">Prazo</th></tr></thead>
+    <tbody>${segs.map(s => `<tr><td><b>${s.nome}</b></td><td style="text-align:right">${n0(s.cotas)}</td><td style="text-align:right">${pct(s.share_cotas, 0)}</td><td style="text-align:right" class="${cls(s.var_12m_cotas_pct)}">${pp(s.var_12m_cotas_pct)}</td><td style="text-align:right">${bi(s.carteira)}</td><td style="text-align:right">${pct(s.share_carteira, 0)}</td><td style="text-align:right">${n0(s.contempladas_12m)}</td><td style="text-align:right">${pct(s.contemplacao_12m_pct)}</td><td style="text-align:right">${pct(s.lance_share, 0)}</td><td style="text-align:right">${pct(s.exclusao_pct, 0)}</td><td style="text-align:right">${n0(s.comercializadas_12m)}</td><td style="text-align:right">${pct(s.taxa_adm_pct)}</td><td style="text-align:right">${brl(s.valor_medio)}</td><td style="text-align:right">${s.prazo_meses != null ? n0(s.prazo_meses) + " m" : "–"}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Veículos pesados não têm carteira nem contemplação publicadas em separado: o BCB os agrega em "veículos automotores" com comerciais leves e motos (${bi(P.carteira_pesados_e_comerciais_leves)} além de automóveis e motos em ${D.trimestre}). "Outros" reúne bens móveis duráveis e serviços.</p>
+    <div class="grid g2" style="margin-top:8px">${ponte("O financiamento de veículos e o crédito imobiliário no SCR — Produtos de Crédito", "products", null, "lá está o crédito bancário do mesmo bem; aqui, a alternativa sem juros")}${ponte("Moradia: quem financia, quem aluga e quem paga o imóvel — Moradia e Habitação", "moradia", null, "o consórcio de imóveis é uma das portas de entrada da casa própria")}</div></div>`);
+
+  /* ---------- UFs ---------- */
+  const ufs = (D.ufs || []).slice();
+  const chaveUF = F.uf || "cotas";
+  ufs.sort((a, b) => ((b[chaveUF] == null ? -1 : b[chaveUF]) - (a[chaveUF] == null ? -1 : a[chaveUF])));
+  const posUF = (u, k) => (u.posicoes || {})[k] != null ? `${u.posicoes[k]}º` : "–";
+  const uMax = Math.max(...ufs.map(u => u[chaveUF] || 0), 1);
+  const ufsHtml = secWrap("cs-ufs", `${sechead("Onde estão as cotas", `cotas ativas por UF · ${D.trimestre} · Brasil ${D.cotas_por_mil_hab_br != null ? fmt.n(D.cotas_por_mil_hab_br, 1) : "–"} cotas por mil habitantes`)}
+  <div class="card"><div class="controls"><span class="seg">${[["cotas", "cotas ativas"], ["por_mil_hab", "por mil habitantes"], ["var_12m_pct", "variação 12 m"]].map(([v, l]) => `<button class="${chaveUF === v ? "active" : ""}" onclick="csSet('uf','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Cotas ativas</th><th style="text-align:right">% BR</th><th style="text-align:right">12 m</th><th style="text-align:right">Por mil hab.</th><th></th></tr></thead>
+    <tbody>${ufs.map(u => `<tr><td><b><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false">${u.uf}</a></b> ${u.nome} <span class="src">${u.regiao || ""}</span></td><td style="text-align:right">${n0(u.cotas)} <span class="src">${posUF(u, "cotas")}</span></td><td style="text-align:right">${pct(u.share)}</td><td style="text-align:right" class="${cls(u.var_12m_pct)}">${pp(u.var_12m_pct)}</td><td style="text-align:right">${u.por_mil_hab != null ? fmt.n(u.por_mil_hab, 1) : "–"} <span class="src">${posUF(u, "por_mil_hab")}</span></td><td><span class="abarwrap" style="display:inline-block;width:90px;vertical-align:middle"><span class="abar" style="width:${Math.max(1, (u[chaveUF] || 0) / uMax * 100)}%;background:#1d4e89"></span></span></td></tr>`).join("")}</tbody></table></div>
+    ${ponte("O consórcio na página de cada estado, ao lado do crédito — Estados", "estados", null, "cada UF tem uma página com carteira, penetração, presença, Pix, rural, BNDES, emprego, dívida ativa e consórcios")}</div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("cs-metodo", `${sechead("Método, conferências e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <h5 style="margin-top:12px">Conferências aritméticas da carga</h5>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Regra</th><th style="text-align:right">Soma</th><th style="text-align:right">Total publicado</th><th style="text-align:right">Diferença</th></tr></thead>
+    <tbody>${(D.conferencias || []).map(c => `<tr><td class="src">${c.regra}</td><td style="text-align:right">${n0(c.esquerda)}</td><td style="text-align:right">${n0(c.direita)}</td><td style="text-align:right">${pct(c.diferenca_pct, 2)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${D.limitacoes}</p>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(D.fonte.catalogo)}" target="_blank" rel="noopener">${D.fonte.nome}</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}).</p></div>`);
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#cs-panorama", "Sistema"], ["#cs-segmentos", "Segmentos"], ["#cs-ufs", "UFs"], ["#cs-metodo", "Método"]])
+    + panorama + segmentos + ufsHtml + metodo;
+}
+window.csCSV = () => {
+  const D = state.data.consorcios;
+  if (!D || !D.disponivel) return;
+  const cols = ["ref", "database", "administradoras", "grupos", "cotas", "cotas_imoveis", "cotas_automoveis", "cotas_motos", "carteira", "carteira_imoveis", "carteira_automoveis", "contempladas_12m", "comercializadas_12m", "inadimplencia", "pre_inadimplencia", "exclusao", "coletados_12m", "a_coletar", "rnp", "taxa_adm", "valor_medio", "prazo"];
+  const head = `# Observatório Brasileiro de Crédito — sistema de consórcios, série trimestral (BCB, Panorama de Consórcios)\n# unidades: cotas e grupos em unidades; carteira, recursos e RNP em R$; taxas em %; prazo em meses; valor médio em R$ · três rótulos de unidade corrigidos por conferência aritmética (métricas 37, 68 e 77)\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_consorcios_serie_${D.database}.csv`, head + cols.join(";") + "\n" + D.serie.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
 };
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
@@ -11256,10 +11366,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -11316,7 +11426,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN", conduta: "Conduta e enforcement", emprego: "Emprego formal", funding: "Funding e captação" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN", conduta: "Conduta e enforcement", emprego: "Emprego formal", funding: "Funding e captação", consorcios: "Consórcios" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

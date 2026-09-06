@@ -1532,3 +1532,53 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   bloco 6 do CDA (R$ 0,04 bilhão em 2026-07, irrelevante) e ficaram fora; pessoas físicas
   como detentoras de LF e CDB não têm fonte pública por emissor.
 
+## 51. Consórcios (06/09/2026)
+
+- **Pergunta:** quanto do carro e da casa se compra sem crédito, pelo consórcio; quantas
+  cotas, quanto de carteira, quem contempla, quem sai, quanto custa e onde. Painel nº 10 da
+  avaliação de 05/09 (§6), prioridade baixa; fecha a lista do §6.
+- **Fonte (uma régua):** BCB, Panorama de Consórcios, API Olinda `PANORAMA_DE_CONSORCIOS`
+  (function imports `CadastroDeMetricas()`, `GrupoDeMetricas()` e `Metricas(DataBase=@DataBase)`;
+  os parênteses são obrigatórios e o `$format` precisa ir codificado como `%24format`).
+  125 métricas em 19 grupos por trimestre (DataBase = fim de trimestre), 2015-T1 a
+  2026-T1 (45 trimestres, todos com as 125 métricas). Coletor
+  `pipeline/sources/bcb_consorcios.py`: histórico uma vez, dois trimestres mais novos
+  recoletados a cada 7 dias, trimestre sem dado registrado como ausência.
+  As séries anuais do SGS sobre consórcios (27452 a 27499: administradoras por tipo,
+  cotas por região, cotistas por renda) pararam em 2022 e ficaram fora: dado parado não
+  é dado.
+- **Achado de fonte, registrado:** três rótulos de unidade do Panorama estão errados e
+  foram corrigidos por conferência aritmética, publicada em `conferencias`: métrica 37
+  (contempladas de motos, "mi") é a soma de 38 e 39 em mil; métrica 68 (recursos a
+  coletar, total, "R$ milhões") é a soma de 69 a 72 em R$ bilhões; métrica 77 (RNP
+  devolvido via SVR, "R$ bilhões") é da ordem do saldo de RNP (73), em R$ milhões. A
+  carteira de veículos pesados não é publicada em separado (fica em "veículos
+  automotores" com comerciais leves e motos) e o painel declara a diferença em vez de
+  atribuí-la.
+- **Builder:** `pipeline/consorcios.py` → `consorcios.json` (38 KB): panorama do
+  trimestre (administradoras, grupos, cotas, carteira, contempladas por sorteio e lance,
+  excluídas e índice de exclusão, comercializadas, inadimplência e pré-inadimplência,
+  recursos coletados e a coletar, RNP, taxa de administração, crédito médio e prazo dos
+  grupos novos), cinco segmentos, série trimestral de 45 pontos, 27 UFs com cotas por mil
+  habitantes (população do Censo 2022 via `ufs.json`) e posições. Roda ANTES das páginas
+  por UF em `gold.py` (que carregam o bloco na mesma execução) e lê a população do
+  `ufs.json` publicado na execução anterior. Aba
+  `/observatorio/consortia` no grupo Produtos e preços, chunk `emergentes`, CSV da série;
+  bloco "Consórcios" nas 27 páginas por UF; vintage `consorcios`; vigília 135 dias.
+- **Achados na primeira carga (2026-T1):** 13.002.100 cotas ativas (+12,2% em 12 meses)
+  em 16.374 grupos de 125 administradoras; carteira de R$ 156,9 bilhões (+18,9%) e
+  R$ 888,6 bilhões a coletar; imóveis 23% das cotas e 42% da carteira, automóveis 42% e
+  32%, motos 25% e 7%; 1.826.960 contempladas em 12 meses (79% por lance; 14% das
+  cotas), 5.489.090 comercializadas; inadimplência 2,25% (2,41% há um ano), índice de
+  exclusão 48,8%; taxa média de administração dos grupos novos 18,9% (imóveis 21,2%,
+  automóveis 15,0%, pesados 12,7%), crédito médio R$ 106,7 mil, prazo 168 meses
+  (imóveis 217). Brasil com 60,9 cotas por mil habitantes; São Paulo com 22% das cotas e
+  Paraná com 98,8 por mil habitantes.
+- **Travas:** `src/tests/consorcios-data.test.ts` (conferências fecham em menos de
+  0,1%; unidades corrigidas declaradas; ordens de grandeza em unidades e R$; sorteio +
+  lance = 100; contemplação = contempladas ÷ cotas; pesados com carteira nula; série
+  trimestral contínua até o trimestre publicado; 27 UFs com share 100 e posições 1 a
+  27; bloco nas páginas por UF; aba e pipeline registrados).
+- **Pendências:** corte por administradora e por município não existe na fonte aberta;
+  o Panorama não traz valor médio de lance nem prazo de contemplação.
+
