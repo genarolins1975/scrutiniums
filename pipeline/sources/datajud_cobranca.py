@@ -138,7 +138,13 @@ def collect(con, cfg):
     results = []
     ultimo = dict(con.execute("SELECT tribunal, MAX(collected_at) FROM cobranca_tribunal GROUP BY tribunal").fetchall())
     ordem = sorted(TRIBUNAIS, key=lambda t: ultimo.get(t) or "")
-    for trib in ordem[:TRIBUNAIS_POR_EXECUCAO]:
+    # Tribunal nunca coletado entra todo na rodada, fora da cota: com a cota de 9 o
+    # primeiro run do runner publicaria 9 de 27 tribunais e o gold cairia de
+    # 821 mil para 144 mil casos em 12 meses (run de 06/09/2026). A cota vale
+    # para o refresco dos já coletados.
+    faltantes = [t for t in ordem if t not in ultimo]
+    lote = faltantes if faltantes else ordem[:TRIBUNAIS_POR_EXECUCAO]
+    for trib in lote:
         try:
             n = coleta_tribunal(con, cfg, trib)
             results.append({"key": f"cobranca:{trib}", "ok": True, "linhas": n})

@@ -135,3 +135,30 @@ describe("T3: gold atômico e builders protegidos", () => {
     }
   });
 });
+
+describe("Execução no runner de 06/09: BNDES, cobrança em lotes e cobertura na sentinela", () => {
+  it("BNDES: a tupla de operações tem 29 valores (o comentário engolia o valor contratado)", () => {
+    const out = execFileSync("python3", ["-c", [
+      "import sys, sqlite3, json; sys.path.insert(0, '.')",
+      "from pipeline.sources import bndes",
+      "cols = ['numero_do_contrato','cliente','cnpj','uf','municipio','municipio_codigo','data_da_contratacao','valor_contratado_reais','valor_desembolsado_reais','custo_financeiro','juros','prazo_carencia_meses','prazo_amortizacao_meses','modalidade_de_apoio','forma_de_apoio','produto','instrumento_financeiro','inovacao','setor_cnae','subsetor_cnae_agrupado','setor_bndes','subsetor_bndes','porte_do_cliente','natureza_do_cliente','instituicao_financeira_credenciada','cnpj_da_instituicao_financeira_credenciada','tipo_de_garantia','situacao_do_contrato']",
+      "row = ['C1','X','1','SP','SP','3550308','2026-07-15','1500000,50','1000000,00','TLP','7,5','12','60','DIRETA','R','FINEM','F','NAO','I','Q','I','Q','GRANDE','PRIVADA','----------','----------','REAL','ATIVO']",
+      "con = sqlite3.connect(':memory:'); bndes._ensure(con)",
+      "n = bndes._absorve_ops(con, ';'.join(cols) + '\\n' + ';'.join(row) + '\\n')",
+      "print(json.dumps([n, con.execute('select contratado, desembolsado from bndes_op').fetchone()]))",
+    ].join("\n")], { cwd: RAIZ, encoding: "utf8" });
+    const [n, valores] = JSON.parse(out.trim().split("\n").pop() as string);
+    expect(n).toBe(1);
+    expect(valores).toEqual([1500000.5, 1000000]);
+  });
+  it("cobrança judicial: tribunal nunca coletado entra todo na rodada, fora da cota", () => {
+    const src = read("pipeline/sources/datajud_cobranca.py");
+    expect(src).toContain("faltantes = [t for t in ordem if t not in ultimo]");
+    expect(src).toContain("lote = faltantes if faltantes else ordem[:TRIBUNAIS_POR_EXECUCAO]");
+    expect(read("pipeline/cobranca.py")).toContain('"cobertura_n": len(coletados)');
+  });
+  it("sentinela: gold íntegro com cobertura menor que a publicada é regressão", () => {
+    expect(read("scripts/sanidade_gold.py")).toContain("def _queda_cobertura(");
+    expect(read("scripts/sanidade_gold.py")).toContain("cobertura caiu:");
+  });
+});

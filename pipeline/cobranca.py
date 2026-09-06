@@ -144,6 +144,9 @@ def build(con, cfg=None):
     return {
         "disponivel": True, "tipo": "DADO OBSERVADO (contagens do DataJud) + CALCULADO (janelas, variações, por habitante e por carteira)",
         "fonte": FONTE, "mes": fim, "meses_parciais": parciais, "janela_12m": {"inicio": ini12, "fim": fim},
+        # cobertura_n: contrato lido pela sentinela (scripts/sanidade_gold.py). Build com
+        # menos tribunais que a publicação anterior é regressão, não atualização.
+        "cobertura_n": len(coletados),
         "cobertura": {"tribunais": len(coletados), "ufs": [TRIBUNAIS[t] for t in coletados], "faltam": [TRIBUNAIS[t] for t in faltam],
                       "coletado_em": max(r[7] for r in trib_rows), "populacao_coberta_pct": _share(pop_cob, sum((u.get("pop") or 0) for u in ufs_gold.values())) if ufs_gold else None},
         "brasil": brasil, "grupos": grupos, "serie": serie, "ufs": ufs,
