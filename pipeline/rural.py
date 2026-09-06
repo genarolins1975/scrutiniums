@@ -370,12 +370,26 @@ def build(con, cfg=None):
     lista_mun = pen.get("municipios") or (common.ler_gold_opcional("penetracao_mun.json") or {}).get("municipios") or []
     pop = {}
     nomes_mun = {}
-    pop_uf = {}
     for m in lista_mun:
         pop[m["cod"]] = m.get("pop_total")
         nomes_mun[m["cod"]] = (m.get("nome"), m.get("uf"))
-        if m.get("uf") and m.get("pop_total"):
-            pop_uf[m["uf"]] = pop_uf.get(m["uf"], 0) + m["pop_total"]
+    # Por UF, a população é a mesma das demais páginas (IBGE SIDRA 6579, estimativa
+    # anual, tabela geo_uf), não a soma do Censo 2022 municipal: dois vintages
+    # populacionais no mesmo site produziam per capita incomparáveis (auditoria de
+    # 06/09/2026, D7). O Censo 2022 continua no corte municipal, onde é o único dado.
+    pop_uf, pop_uf_ano = {}, None
+    try:
+        for uf_, populacao_, ano_ in con.execute("SELECT uf, populacao, pop_ano FROM geo_uf"):
+            if populacao_:
+                pop_uf[uf_] = populacao_
+                pop_uf_ano = pop_uf_ano or ano_
+    except Exception:
+        pass
+    if not pop_uf:  # sem geo_uf no silver: cai para a soma municipal, declarada como tal
+        for m in lista_mun:
+            if m.get("uf") and m.get("pop_total"):
+                pop_uf[m["uf"]] = pop_uf.get(m["uf"], 0) + m["pop_total"]
+    populacao_fonte_uf = f"IBGE SIDRA 6579 ({pop_uf_ano})" if pop_uf_ano else "IBGE Censo 2022 (soma municipal)"
 
     # ---- UFs (12m) ----
     meses_mun = [r["mes"] for r in _rows(con, "SELECT DISTINCT mes FROM sicor_mun")]
@@ -528,6 +542,7 @@ def build(con, cfg=None):
         "genero": genero,
         "instituicoes": instituicoes,
         "ufs": ufs,
+        "populacao_fonte": {"ufs": populacao_fonte_uf, "municipios": "IBGE Censo 2022 (população residente por município)"},
         "produtos": produtos,
         "municipios_meta": mun_meta,
         "rankings": rankings,

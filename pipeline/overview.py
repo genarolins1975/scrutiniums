@@ -70,6 +70,51 @@ def build_changes(con):
     return {"tabela": rows, "top_deterioracoes": det, "top_melhoras": mel}
 
 
+def demo_componentes(sectors):
+    """(n_demo, n_total, nomes) contados em sectors.json — os textos de método
+    derivam daqui, nunca de frase fixa (auditoria de 06/09/2026, D6: três textos
+    diziam 'dois componentes demonstrativos' quando já era um)."""
+    try:
+        s0 = sectors["setores"][0]
+        comp = s0.get("componentes") or {}  # dicts com status e peso; 'contribuicoes' é só o número
+    except Exception:
+        return 0, 0, []
+    demo = [k for k, v in comp.items() if isinstance(v, dict) and v.get("status") == "demonstrativo"]
+    return len(demo), len(comp), demo
+
+
+def _frase_demo(sectors):
+    n, tot, nomes = demo_componentes(sectors)
+    rot = {"estresse_empresarial": "estresse empresarial (RJ)", "capacidade_financeira": "capacidade financeira (emprego)",
+           "atividade": "atividade", "condicoes_credito": "condições de crédito"}
+    if not tot:
+        return "componentes não avaliados"
+    if n == 0:
+        return f"todos os {tot} componentes observados"
+    return f"{n} de {tot} componentes demonstrativo{'s' if n > 1 else ''} ({', '.join(rot.get(k, k) for k in nomes)}), com peso zero"
+
+
+def dicionario_indicadores(sectors=None):
+    """INDICATOR_DICTIONARY com o verbete do score setorial escrito a partir de sectors.json."""
+    import copy
+    out = copy.deepcopy(INDICATOR_DICTIONARY)
+    for e in out:
+        if e.get("nome") == "Score de estresse setorial":
+            e["limitacoes"] = f"{_frase_demo(sectors)}; sem normalização por tamanho do setor."
+    return out
+
+
+def score_cards(sectors=None):
+    """SCORE_CARDS com a cobertura do estresse setorial escrita a partir de sectors.json."""
+    import copy
+    out = copy.deepcopy(SCORE_CARDS)
+    for e in out:
+        if e.get("nome") == "Estresse setorial":
+            e["cobertura"] = f"indústria (PIM), comércio (PMC) e serviços (PMS); {_frase_demo(sectors)}"
+            e["validacao"] = ("plena" if demo_componentes(sectors)[0] == 0 else "plena só após o último componente demonstrativo virar observado")
+    return out
+
+
 def build_diagnosis(con, ibcc, changes, sectors, quality_avg, has_demo_components=True):
     """Frase analítica rule-based com evidências, confiança e limitações."""
     if not ibcc or not ibcc.get("ok"):
@@ -93,8 +138,9 @@ def build_diagnosis(con, ibcc, changes, sectors, quality_avg, has_demo_component
     # evidência 4: setor mais estressado
     if sectors and sectors.get("ok") and sectors["setores"]:
         s0 = sectors["setores"][0]
+        n_demo = demo_componentes(sectors)[0]
         evid.append({"texto": f"maior estresse setorial: {s0['nome']} (score {s0['score']}, {s0['tendencia']})",
-                     "area": "sectors", "status": "calculado (componentes parcialmente demonstrativos)"})
+                     "area": "sectors", "status": "calculado" + (f" ({_frase_demo(sectors)})" if n_demo else " (todos os componentes observados)")})
 
     n_det = len(changes["top_deterioracoes"])
     n_mel = len(changes["top_melhoras"])
@@ -106,7 +152,7 @@ def build_diagnosis(con, ibcc, changes, sectors, quality_avg, has_demo_component
 
     conf = "moderada" if quality_avg and quality_avg >= 65 else "baixa"
     conf_motivo = (f"qualidade média dos dados {quality_avg:.0f}/100; "
-                   + ("componentes setoriais de RJ/emprego ainda demonstrativos; " if has_demo_components else "")
+                   + (f"score setorial com {_frase_demo(sectors)}; " if has_demo_components else "")
                    + "IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP")
     return {
         "ok": True, "tipo": "DADO CALCULADO", "frase": frase,
@@ -333,9 +379,10 @@ def build_model_cards(forecasts, ibcc, inst, sectors):
     if sectors and sectors.get("ok"):
         cards.append({
             "nome": "Estresse setorial", "objetivo": "Ranking de estresse por atividade industrial", "variavel_alvo": "estresse setorial",
-            "algoritmo": "50 + 20×Σ(peso×z), 4 componentes", "validacao": "Componentes demo impedem validação plena (Fase 4)",
+            "algoritmo": "50 + 20×Σ(peso×z), 4 componentes",
+            "validacao": ("plena" if demo_componentes(sectors)[0] == 0 else "componente demonstrativo com peso zero impede validação plena"),
             "benchmark": "—", "desempenho": {"setores": len(sectors["setores"])},
-            "incerteza": "2 de 4 componentes demonstrativos", "limitacoes": sectors.get("limitacoes"),
+            "incerteza": _frase_demo(sectors), "limitacoes": sectors.get("limitacoes"),
             "versao": "0.2.0", "atualizado_em": None,
         })
     cards.append({

@@ -115,6 +115,12 @@ def collect(con, cfg):
             results.append({"key": f"djen_{trib}", "ok": True, "fichas_pj": n_pj,
                             "processos_vistos": len(fichas), "paginas": paginas_ok})
         except Exception as e:
-            results.append({"key": f"djen_{trib}", "ok": False, "error": str(e),
+            msg = str(e)
+            if "403" in msg:
+                # CloudFront devolve 403 para a origem do runner e para redes fora do Brasil
+                # (medido em 06/09/2026 com quatro User-Agents e cabeçalhos de navegador):
+                # é bloqueio de CDN por origem, não erro de consulta; nomear evita re-diagnóstico
+                msg = "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
+            results.append({"key": f"djen_{trib}", "ok": False, "error": msg,
                             "fichas_parciais": len(fichas)})
     return results

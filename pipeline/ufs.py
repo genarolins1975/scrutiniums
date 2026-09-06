@@ -162,6 +162,7 @@ def build(con=None, cfg=None):
               "penetracao": ((g("penetracao.json").get("totais") or {}).get("penetracao_br")), "cred_adulto": ((g("penetracao.json").get("totais") or {}).get("cred_adulto_br"))}
     return {
         "disponivel": True, "gerado_em": common.now_utc(),
+        "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
         "datas": {"scr": pan.get("data_base"), "penetracao": (g("penetracao.json").get("data_base_credito")), "presenca": (pres.get("posicao") or {}), "pix": pix.get("data_base") or pix.get("mes"),
                   "moradia": (mor.get("datas") or {}).get("scr"), "consignado": (con_g.get("scr") or {}).get("data_base"), "rural": rur.get("janela"), "bndes": (bnd.get("desembolsos") or {}).get("janela"), "pgfn": pgf.get("data_base"), "emprego": emp.get("ufs_mes"), "consorcios": cons.get("trimestre"), "cobranca": cob.get("mes")},
         "brasil": brasil, "ufs": ufs,

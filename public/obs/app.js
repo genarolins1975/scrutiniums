@@ -227,7 +227,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.98.1";
+const APP_VERSION = "0.98.2";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2959,13 +2959,30 @@ function renderMapa() {
       <p>Dado que a fonte não publicou aparece como traço, nunca como zero. Meses ainda em apuração (o último mês do Caged, os três últimos do DataJud, os meses sob sigilo do CDA) ficam fora dos indicadores e são marcados como parciais nas séries.</p></div>
     <div class="card"><h4>Instituições: descrever, não julgar</h4>
       <p>Listas por instituição existem para descrever tamanho, composição e preço (captação, carteira, taxas). Em conduta, reclamações e litígios, nenhuma página ordena instituições: volume não é irregularidade, e a API pública do Judiciário não identifica partes.</p></div>
-  </div>`);
+  </div>
+  ${verbetesCarteiraIF(meta, true)}`);
   const linhas = Object.entries(vs).filter(([k, v]) => v).sort((a, b) => (b[1] || "").localeCompare(a[1] || ""));
   const fontes = secWrap("mp-fontes", `${sechead("Fontes e atualidade", meta.gerado_em ? `pipeline processado em ${meta.gerado_em.slice(0, 16).replace("T", " ")} UTC` : "")}
   <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Família de fonte</th><th>Dados até</th><th>Onde aparece</th></tr></thead>
     <tbody>${linhas.map(([k, v]) => `<tr><td>${MAPA_FONTES[k] || k}</td><td>${v}</td><td class="src">${Object.entries(VIEW_VINTAGE).filter(([vw, f]) => f === k && noMenu.includes(vw)).map(([vw]) => mapaLink(vw)).join(" · ") || "–"}</td></tr>`).join("")}</tbody></table></div>
     <p class="src">Todas as fontes são abertas e oficiais (BCB, CVM, CNJ, IBGE, MTE, BNDES, PGFN, Ipea), com atribuição. A lista completa de coletores, o estado de cada um e a linhagem de cada arquivo estão em ${mapaLink("method")}. Correções e sugestões: ${mapaLink("sugestoes")}.</p></div>`);
   el.innerHTML = head + ciclo + perguntas + trilhas + ler + fontes;
+}
+
+/* Verbetes únicos de carteira e de contagem de instituições (meta.carteira_conceitos,
+   meta.if_contagens). Quatro carteiras e três contagens convivem no site por construção
+   das fontes; o verbete existe para que a diferença seja lida como régua, não como erro. */
+function verbetesCarteiraIF(meta, compacto) {
+  const cc = (meta || {}).carteira_conceitos || {}, ic = (meta || {}).if_contagens || {};
+  const ordemC = [["sgs", "Visão geral, Pulso, Cenários"], ["scr", "Quem toma crédito e onde, Estados"], ["ampliado", "Bancos e mercado de capitais"], ["estban", "Crédito por município (só penetração relativa)"]];
+  const linhasC = ordemC.filter(([k]) => cc[k]).map(([k, onde]) => `<tr><td><b>${cc[k].nome}</b></td><td class="src">${compacto ? "" : cc[k].def}</td><td style="text-align:right"><b>R$ ${fmt.n(cc[k].v, 1)} bi</b> <span class="src">${cc[k].ref || ""}</span></td><td class="src">${onde}</td></tr>`).join("");
+  const ordemI = [["ifdata_resumo", "Instituições, fichas, screener"], ["ifdata_qualquer_relatorio", "Comparar instituições"], ["cadastro_sedes", "Quem entra e quem sai do SFN"]];
+  const linhasI = ordemI.filter(([k]) => ic[k]).map(([k, onde]) => `<tr><td class="src">${ic[k].def}</td><td style="text-align:right"><b>${fmt.n0(ic[k].n)}</b> <span class="src">${ic[k].ref || ""}</span></td><td class="src">${onde}</td></tr>`).join("");
+  if (!linhasC && !linhasI) return "";
+  return `<div class="card" style="margin-top:12px" id="quatro-carteiras"><h4>Quatro carteiras, três contagens: por que os totais diferem entre páginas</h4>
+    ${linhasC ? `<div class="tblwrap"><table class="data compact"><thead><tr><th>Régua</th><th>${compacto ? "" : "O que mede"}</th><th style="text-align:right">Valor</th><th>Usada em</th></tr></thead><tbody>${linhasC}</tbody></table></div>` : ""}
+    ${linhasI ? `<div class="tblwrap" style="margin-top:8px"><table class="data compact"><thead><tr><th>Quantas instituições?</th><th style="text-align:right">Contagem</th><th>Usada em</th></tr></thead><tbody>${linhasI}</tbody></table></div>` : ""}
+    <p class="src" style="margin-top:6px">Nenhuma régua é "a certa". Cada página declara a sua ao lado do número; somar ou comparar totais de réguas diferentes é erro de leitura, não divergência de fonte.</p></div>`;
 }
 
 /* ---------- bloco 1 da auditoria: vintage por página, filtros ativos, conceitos de inadimplência, loading ---------- */
@@ -7117,7 +7134,7 @@ function renderMethod() {
   ${conceitosLista()}
   ${pageHead({ title: "Metodologia e fontes",
     desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
-    fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}
+    fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}\n  ${verbetesCarteiraIF(meta, false)}
   ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-models", "Model cards"],
     ["#met-scores", "Score cards"], ["#met-versoes", "Versões"], ["#met-linhagem", "Linhagem"], ["#met-refs", "Referências"]])}
   <div class="grid g2">
