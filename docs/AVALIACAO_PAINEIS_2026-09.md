@@ -593,3 +593,40 @@ usar o recorte bancário como piso (o assunto é cadastrado pelo tribunal) e a v
 como sinal, não o nível por UF. Próximas integrações do §7 por valor: cadastro CNPJ da
 Receita (denominador do Risco setorial) e SUSEP (prestamista em Juros).
 
+## 22. Fechamento da etapa (06/09/2026)
+
+**Entregue em produção** (scrutiniums.com, verificado por curl em 06/09/2026 04:50 UTC: `app.min.js?v=0.97.0`
+servido e os golds `emprego`, `funding`, `consorcios` e `cobranca` idênticos aos do repositório por SHA-256).
+Doze PRs mesclados em `main` entre 05 e 06/09/2026, todos com o CI "testes" verde:
+
+| PR | Versão | Painel | Item da avaliação |
+|---|---|---|---|
+| #73, #74 | 0.87 | Correções do §8 (P0 a P2) e crédito rural | §8, §6 nº 1 |
+| #75 | 0.88 | Crédito ampliado e mercado de capitais | §6 nº 3 (resolve E13) |
+| #76 | 0.89 | Crédito direcionado e BNDES | §6 nº 2 |
+| #77 | 0.90 | Páginas por UF | §6 nº 8 |
+| #78 | 0.91 | Focus nos Cenários | §6 nº 4 (metade estruturada) |
+| #79 | 0.92 | Entrantes e saídas do SFN | §6 nº 5 |
+| #80 | 0.93 | Conduta e enforcement | §6 nº 6 |
+| #81 | 0.94 | Emprego formal e capacidade financeira observada no score setorial | §6 nº 7 |
+| #82 | 0.95 | Funding e captação | §6 nº 9 |
+| #83 | 0.96 | Consórcios | §6 nº 10 |
+| #84 | 0.97 | Cobrança judicial de crédito | §7.3 |
+
+**Balanço.** Dos dez painéis do §6, nove estão no ar; a PTC (metade do nº 4) depende de dado estruturado do BCB.
+Das integrações do §7, a cobrança judicial entrou; seguem abertas cadastro CNPJ da Receita (esforço alto),
+SUSEP prestamista (esforço baixo), FIDC por lastro e informe diário de fundos. Do §8 restam P2 (histograma do RJ
+a 390 px) e P3 (`alert()` e `javascript:void`; modularização do `app.js`). O último componente demonstrativo com
+peso no Observatório é o de RJ no score setorial, declarado e com peso zero.
+
+**Convergência do pipeline.** Os golds novos foram publicados a partir das cargas locais desta etapa. A execução
+diária (09:00 UTC) recoleta as fontes novas com os limites declarados por rodada: Passivo do IF.data (10
+trimestres), CDA (3 meses, 4 mais novos revisitados), DataJud cobrança (9 tribunais), Panorama de Consórcios
+(trimestres novos), Caged e SGS (integral). O disparo manual do workflow não está disponível à integração do
+GitHub usada nesta sessão (HTTP 403 em `workflow_dispatch`); a primeira execução com todos os coletores novos
+é a agendada de 06/09/2026 e fica registrada como ponto a conferir.
+
+**Não verificado.** Comportamento dos coletores novos no runner do GitHub (tempo total do workflow com os
+limites por rodada; a estimativa é de 8 a 12 minutos adicionais por execução); vigília de pane das fontes
+novas só será exercitada quando uma delas falhar.
+
