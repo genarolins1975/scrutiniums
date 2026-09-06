@@ -235,7 +235,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.101.0";
+const APP_VERSION = "0.102.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -274,7 +274,7 @@ const VIEW_DATA = {
   products: ["products"], product: ["products"],
   bets: ["bets", "epae"],
   fraudes: ["fraudes"],
-  juros: ["juros"],
+  juros: ["juros", "prestamista"],
   operacional: ["operacional", "presenca_mun", "penetracao_malha", "folha_bancos"],
   presmun: ["presenca_mun"],
   regulacao: ["regulacao"],
@@ -2555,7 +2555,7 @@ const MAPA_TRILHAS = [
   { perfil: "Regulador ou supervisor", quem: "olha estrutura do sistema, conduta e efeitos de regra", passos: ["sfn", "funding", "conduta", "cobranca", "rj", "regulacao", "method"] },
 ];
 const MAPA_FONTES = { sgs: "BCB/SGS (séries de crédito, juros e moeda)", ifdata: "BCB/IF.data (balanços por instituição)", scr: "BCB/SCR.data (carteira por UF e tomador)", b3: "B3 (mercado)", fidc: "CVM (FIDC)",
-  datajud: "CNJ/DataJud (recuperações e falências)", trends: "Google Trends", txjuros: "BCB (taxas por instituição)", sicor: "BCB/MDCR (crédito rural)", cvm_ofertas: "CVM (ofertas públicas)", securit: "CVM (CRI e CRA)",
+  datajud: "CNJ/DataJud (recuperações e falências)", trends: "Google Trends", txjuros: "BCB (taxas por instituição)", susep_ses: "SUSEP/SES (seguro prestamista)", sicor: "BCB/MDCR (crédito rural)", cvm_ofertas: "CVM (ofertas públicas)", securit: "CVM (CRI e CRA)",
   bndes: "BNDES (desembolsos)", focus: "BCB/Focus (expectativas)", sfn_cadastro: "BCB/Unicad (cadastro do SFN)", bcb_pas: "BCB/Gepad (processos sancionadores)", cvm_pas: "CVM (processos sancionadores)",
   caged: "MTE/Novo Caged (emprego)", cda: "CVM/CDA (carteiras de fundos)", consorcios: "BCB (Panorama de Consórcios)", cobranca: "CNJ/DataJud (cobrança judicial)" };
 function mapaLink(v, extra) {
@@ -3217,7 +3217,7 @@ function phActions(itens, controles) {
 const VIEW_COLETORES = {
   panorama: ["scr_data"], prazo: ["scr_data"], fidc: ["fidc"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
   desenrola: ["desenrola"], trends: ["trends_manual"], consignado: ["previdencia", "reclamacoes_consig"],
-  pix: ["pix_bcb"], juros: ["txjuros"], institutions: ["ifdata"], inst: ["ifdata"], products: ["ifdata"],
+  pix: ["pix_bcb"], juros: ["txjuros", "susep_ses"], institutions: ["ifdata"], inst: ["ifdata"], products: ["ifdata"],
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
@@ -3309,6 +3309,7 @@ const GLOSSARIO = [
   { t: "Pilar 3", re: "Pilar 3", d: "Relatório de divulgação prudencial obrigatório (Res. BCB 54/2020); a tabela KM1 traz capital, Basileia, LCR e alavancagem de cada banco." },
   { t: "PAS", re: "PAS", d: "Processo administrativo sancionador: rito em que BCB ou CVM apuram infrações e aplicam penalidades." },
   { t: "CET", re: "CET", d: "Custo Efetivo Total: juros mais tarifas, seguros e encargos da operação, em percentual ao ano." },
+  { t: "prestamista", re: "[Pp]restamista", d: "Seguro vendido junto com o crédito que quita ou amortiza a dívida em morte, invalidez ou desemprego do tomador. Fica fora da taxa de juros e só aparece no CET." },
   { t: "HHI", re: "HHI", d: "Índice Herfindahl-Hirschman de concentração: soma dos quadrados das participações de mercado; acima de 2.500 é concentração alta." },
   { t: "CUSUM", re: "CUSUM", d: "Teste de soma acumulada: acusa mudança persistente no nível de uma série, sem dizer a causa." },
   { t: "Olinda", re: "Olinda", d: "Portal de dados abertos do BCB, com API padronizada (OData)." },
@@ -8065,7 +8066,42 @@ function renderJuros() {
       : `<p class="src">Escolha uma instituição para ver o retrato transversal (as ${J.perfis_if.length} IFs do seletor estão ordenadas por abrangência de modalidades).</p>`}
   </div>`;
 
-  el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec;
+  /* ---------- 4 · prestamista: o custo que fica fora da taxa (SUSEP SES) ---------- */
+  const P = state.data.prestamista;
+  let prestSec = "";
+  if (P === undefined) prestSec = loadingCard("seguro prestamista");
+  else if (!P || !P.disponivel) prestSec = `<div class="card"><h4>Seguro prestamista</h4><p class="src">${(P && (P.motivo || P.error)) || "camada indisponível nesta execução"}</p></div>`;
+  else {
+    const K = P.kpis;
+    const brl = fmt.money;
+    const pct = (v, d = 1) => fmt.pct(v, d);
+    const rotulosFim = window.innerWidth > 640;
+    const fech = (P.serie || []).filter(x => !x.parcial);
+    const gMax = Math.max(...P.grupos.map(g => g.share_pct || 0), 1);
+    prestSec = secWrap("ju-prestamista", `${sechead("O custo que fica fora da taxa: seguro prestamista", `SUSEP SES · ramos 0977, 1377 e 1061 · 12 meses até ${P.mes}`)}
+    ${placar([
+      { l: "Prêmios em 12 meses", v: brl(K.premio_12m), sub: `${K.var_12m_pct != null ? fmt.pp(K.var_12m_pct) + "% sobre os 12 m anteriores · " : ""}${fmt.n0(K.n_empresas)} seguradoras` },
+      { l: "Sobre as concessões PF", v: pct(K.premio_sobre_concessoes_pct, 2), sub: "prêmio ÷ concessões PF do SGS, 12 m · ordem de grandeza" },
+      { l: "Comissão de quem vende", v: pct(K.comissao_12m_pct, 0), sub: "despesa de comercialização ÷ prêmio direto" },
+      { l: "Sinistralidade", v: pct(K.sinistralidade_12m_pct, 0), sub: "sinistro ocorrido ÷ prêmio ganho" },
+      { l: "Cinco maiores grupos", v: pct(K.top5_grupos_share_pct, 0), sub: "do prêmio de 12 meses" },
+    ])}
+    <p class="pan-sintese">${P.sintese}</p><div class="src">Síntese determinística · SUSEP SES ${P.mes} · BCB/SGS 20633 (concessões PF)${(P.meses_parciais || []).length ? ` · meses parciais fora dos KPIs: ${P.meses_parciais.join(", ")}` : ""}</div>
+    <div class="grid g2" style="margin-top:12px">
+      <div class="card"><h4>Prêmios por mês ${badge("observado")}</h4>
+        ${lineChart({ series: [{ pts: fech.slice(-36).map(x => ({ x: x.mes + "-01", y: x.premio / 1e9 })), color: "#1d4e89", label: "prêmio direto (R$ bi)" }], h: 180, endLabels: rotulosFim, unit: "R$ bi", dec: 2, fonte: "SUSEP SES", status: "observado", aria: "prêmios de prestamista por mês" })}
+        <div class="contrib" style="margin-top:6px"><span class="lbl" style="width:190px">prêmio ÷ concessões PF, mensal</span>${sparkline(fech.slice(-36).filter(x => x.premio_sobre_concessoes_pct != null).map(x => x.premio_sobre_concessoes_pct), 220, 26)}<span class="num src">${fech.length ? `${fech[Math.max(0, fech.length - 36)].mes} → ${P.mes}` : ""}</span></div>
+        <p class="src">Por ramo em 12 meses: ${P.ramos.map(r => `${r.nome} ${pct(r.share_pct, 0)}`).join(" · ")}.</p></div>
+      <div class="card"><h4>Quem vende: grupos econômicos ${badge("observado")}</h4>
+        ${P.grupos.map(g => `<div class="contrib"><span class="lbl" style="width:200px" title="${attr(g.nome)}">${g.nome.length > 30 ? g.nome.slice(0, 29) + "…" : g.nome}</span><span class="bar pos" style="width:${Math.max(2, (g.share_pct || 0) / gMax * 130)}px"></span><span class="num">${pct(g.share_pct)} <span class="src">${brl(g.premio)} · comissão ${pct(g.comissao_pct, 0)}</span></span></div>`).join("")}
+        <details class="decomp" style="margin-top:6px"><summary>as 15 maiores seguradoras</summary><div class="tblwrap"><table class="data compact"><thead><tr><th>Seguradora</th><th>Grupo</th><th style="text-align:right">Prêmio 12 m</th><th style="text-align:right">Share</th><th style="text-align:right">Comissão</th></tr></thead>
+          <tbody>${P.empresas.map(e => `<tr><td>${e.nome}</td><td class="src">${e.grupo || "–"}</td><td style="text-align:right">${brl(e.premio)}</td><td style="text-align:right">${pct(e.share_pct)}</td><td style="text-align:right">${pct(e.comissao_pct, 0)}</td></tr>`).join("")}</tbody></table></div></details>
+        <p class="src">O SES não separa o canal de venda: a seguradora do grupo vende ao banco do grupo, a outros bancos e a varejistas. Por isso a camada é do sistema, não por instituição.</p></div>
+    </div>
+    <details class="decomp" style="margin-top:8px"><summary>método, limitações e cautelas</summary><div class="note" style="margin-top:6px">${P.metodo}<br><b>Limitações:</b> ${P.limitacoes}${(P.cautelas || []).map(c => `<br>• ${c}`).join("")}
+      <br>${badge("observado")} <a href="${attr(P.fonte.url)}" target="_blank" rel="noopener">${P.fonte.nome}</a> (${P.fonte.licenca}; nível ${P.fonte.nivel}) · base lida por HTTP Range: ${P.coleta && P.coleta.mb_lidos != null ? fmt.n(P.coleta.mb_lidos, 1) + " MB em " + fmt.n0(P.coleta.requisicoes) + " requisições" : "–"}.</div></details>`);
+  }
+  el.innerHTML = head + geral + "<hr class='sep'>" + painel + "<hr class='sep'>" + ifSec + "<hr class='sep'>" + prestSec;
 }
 
 
