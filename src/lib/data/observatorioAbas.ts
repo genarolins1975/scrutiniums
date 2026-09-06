@@ -215,6 +215,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "emprego.json",
   },
   {
+    view: "funding",
+    caminho: "/funding",
+    titulo: "Funding e captação",
+    descricao:
+      "De onde vem o dinheiro que os bancos emprestam: o que o público tem aplicado (SGS), como cada instituição se financia entre varejo, mercado e repasses (IF.data) e quem, nos fundos, carrega o papel de cada banco (CVM).",
+    gold: "funding.json",
+  },
+  {
     view: "bets",
     caminho: "/bets-financial-risk",
     titulo: "Bets e risco financeiro",

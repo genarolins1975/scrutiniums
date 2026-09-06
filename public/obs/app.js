@@ -30,6 +30,7 @@ state.jud = { ramo: "civel", ordem: "bruto" };
 state.sfn = { lista: "entradas", uf: "todas" };
 state.cd = { lista: "bcb" };
 state.emp = { secao: "total", uf: "saldo_12m" };
+state.fd = { comp: "todos", ord: "captacoes", seg: "todos", tipo: "todos" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -45,7 +46,7 @@ const ROUTES = { overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -224,7 +225,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.94.0";
+const APP_VERSION = "0.95.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -273,6 +274,7 @@ const VIEW_DATA = {
   sfn: ["sfn"],
   conduta: ["conduta"],
   emprego: ["emprego"],
+  funding: ["funding"],
 };
 async function fetchGold(f) {
   try { state.data[f] = await (await fetch(`${DATA_BASE}${f}.json?v=${APP_VERSION}`)).json(); }
@@ -2876,7 +2878,7 @@ function mktEntidades(M) {
 const VIEW_VINTAGE = { overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -3093,6 +3095,10 @@ const GUIA = {
     importa: "Vínculo formal é renda recorrente, e renda recorrente é o que paga a parcela. Por seção CNAE, o estoque de vínculos diz onde a folha cresce ou encolhe; por UF, o saldo de admissões e desligamentos diz onde a economia contrata. É o componente 'capacidade financeira' do Risco setorial, agora observado.",
     ler: "Comece pelo saldo em 12 meses e pela variação a/a do total; depois olhe o z-score de cada seção, que compara a seção com a própria história desde 2013 (abaixo de −1 é contração, acima de +1 é aquecido). O corte por UF usa outra régua: saldo e retenção (saldo ÷ admissões), porque ali não há estoque.",
     nao: "Saldo positivo não é demanda por crédito nem capacidade de pagamento. O último mês é preliminar e é revisado. O corte é por seção CNAE: as divisões da indústria herdam a seção. Não cobre estatutários, informais nem MEI, e mede postos, não massa salarial." },
+  funding: { q: "De onde vem o dinheiro que os bancos emprestam?",
+    importa: "Crédito é passivo antes de ser ativo: cada real emprestado foi captado em depósito, letra, compromissada, repasse ou no mercado. A composição diz quanto custa, quanto dura e quem pode retirar; a exposição dos fundos diz quem financia cada banco pelo mercado.",
+    ler: "Três réguas, nunca somadas: o que o público tem aplicado (SGS, mensal), o que cada banco carrega no balanço (IF.data, trimestral, aberto em varejo, mercado e repasses) e o que os fundos carregam de cada emissor (CDA da CVM, mensal). Comece pelo agregado e pelos grupos; depois pela instituição.",
+    nao: "As três fontes não fecham entre si por construção. Dependência de mercado alta é modelo de negócio, não fragilidade por si. Ordenar por captação descreve tamanho, não conduta. A razão CDA ÷ letras financeiras cruza datas diferentes e é indicativa." },
   conduta: { q: "Como o supervisor pune, e o que isso diz do sistema?",
     importa: "Processos sancionadores são o risco de conduta realizado: o que o Banco Central e a CVM decidiram, em quanto tempo, com que penalidade e se a multa foi paga. Lidos como fluxo do sistema, mostram onde a supervisão tem batido e quanto tempo o rito leva.",
     ler: "Três réguas: decisões do BCB por apenado (com multa, recurso e situação da cobrança), processos da CVM por fase e área, e o índice de reclamações do ranking trimestral. Comece pela janela de 12 meses e pelo ano a ano; as listas nominais são cronológicas.",
@@ -3441,7 +3447,7 @@ const VIEW_COLETORES = {
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
   operacional: ["operacional", "estban"], pgfn: ["pgfn"], openfinance: ["openfinance"],
   moradia: ["mercado_imobiliario", "estban"], penetracao: ["estban", "censo2022"], sectors: ["ibge"],
-  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"], emprego: ["bcb_sgs", "ipea_caged"],
+  pulse: ["bcb_sgs"], overview: ["bcb_sgs"], scenarios: ["bcb_sgs", "focus"], rural: ["sicor"], ampliado: ["bcb_sgs", "cvm_ofertas", "cvm_securit"], bndes: ["bndes", "bcb_sgs"], sfn: ["sfn_cadastro", "ifdata", "regimes"], conduta: ["bcb_pas", "cvm_pas", "reclamacoes"], emprego: ["bcb_sgs", "ipea_caged"], funding: ["bcb_sgs", "ifdata_passivo", "cvm_cda"],
 };
 function fontesEmPane(view) {
   const st = (state.data.meta || {}).fontes_status || {};
@@ -8890,6 +8896,143 @@ window.empCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — estoque de vínculos formais por seção CNAE (Novo Caged via BCB/SGS 28763 a 28804)\n# saldo = variação do estoque · a/a = saldo 12 m ÷ estoque há 12 m · z = a/a vs. média da própria seção desde ${D.janela_z.inicio} · último mês preliminar\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_emprego_secoes_${D.mes}.csv`, head + cols.join(";") + "\n" + D.setores.map(s => cols.map(c => csvEsc(s[c])).join(";")).join("\n"), "text/csv");
 };
+
+/* ---------- Funding e captação ---------- */
+/* Três réguas declaradas: SGS (público), IF.data Passivo (balanço por instituição) e
+   CDA da CVM (papel bancário em fundos). Nenhuma seção soma uma com a outra. */
+function fdSet(k, v) { state.fd[k] = v; renderFunding(); }
+function renderFunding() {
+  const el = document.getElementById("view-funding");
+  const D = state.data.funding;
+  if (!D) { el.innerHTML = loadingCard("funding e captação"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Funding e captação", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.fd;
+  const S = D.sistema, B = D.bancos, U = D.fundos;
+  const pct = (v, d = 1) => v == null ? "–" : fmt.n(v, d) + "%";
+  const n0 = v => v == null ? "–" : fmt.n0(v);
+  const bi = v => v == null ? "–" : Math.abs(v) >= 1e12 ? "R$ " + fmt.n(v / 1e12, 2) + " tri" : "R$ " + fmt.n(v / 1e9, 1) + " bi";
+  const pp = v => v == null ? "–" : fmt.pp(v) + "%";
+  const cls = v => v == null ? "neutral" : v > 0 ? "down good" : v < 0 ? "up" : "neutral";
+  const am = a => a ? `${a.slice(0, 4)}-${a.slice(4, 6)}` : "–";
+  const rotulosFim = window.innerWidth > 640;
+  const head = pageHead({
+    title: "Funding e captação", vintage: B ? am(B.anomes) : (S ? S.mes : null),
+    seals: `${badge("observado", "saldos do SGS, balanços do IF.data e posições do CDA")} ${badge("calculado", "shares, variações, LTD, razões e concentração calculados")}`,
+    desc: "De onde vem o dinheiro que os bancos emprestam: o que o público tem aplicado, como cada instituição se financia (varejo, mercado, repasses) e quem, entre os fundos, carrega o papel de cada banco.",
+    fontes: "BCB/SGS (meios de pagamento amplos) · BCB/IF.data (Passivo por instituição) · CVM (CDA, bloco 5)",
+    actions: `<button class="btn ghost small" onclick="fdCSV()">baixar CSV (instituições)</button>`,
+  });
+  const sintese = `<p class="pan-sintese">${D.sintese}</p><div class="src">Síntese determinística · SGS até ${S ? S.mes : "–"} · IF.data ${B ? am(B.anomes) : "–"} · CDA ${U ? U.mes : "–"}${U && U.mes_parcial_excluido ? ` (${U.mes_parcial_excluido} parcial, fora)` : ""}</div>`;
+  const m4 = S ? S.agregados.find(a => a.id === "m4") : null;
+  const lfTipo = U ? U.por_tipo.find(t => t.tipo.startsWith("Letra")) : null;
+  const placarHtml = placar([
+    { l: "Aplicado pelo público (M4)", v: m4 ? bi(m4.valor) : "–", sub: m4 ? `${S.mes} · ${pp(m4.var_12m_pct)} em 12 m` : "", href: "#fd-sistema" },
+    { l: "Captações dos bancos (IF.data)", v: B ? bi(B.agregado.captacoes) : "–", sub: B ? `${am(B.anomes)} · ${n0(B.n_instituicoes)} instituições · 5 maiores ${pct(B.concentracao.top5_share, 0)}` : "", href: "#fd-bancos" },
+    { l: "Varejo · mercado · repasses", v: B ? `${pct(B.indicadores.varejo_share, 0)} · ${pct(B.indicadores.mercado_share, 0)} · ${pct(B.indicadores.repasses_share, 0)}` : "–", sub: B && B.indicadores.ltd != null ? `crédito ÷ depósitos ${fmt.n(B.indicadores.ltd, 2)}` : "", href: "#fd-bancos" },
+    { l: "Papel bancário em fundos", v: U ? bi(U.total.valor) : "–", sub: U ? `${U.mes} · ${pct(U.total.share_pl)} do PL · ${lfTipo ? pct(lfTipo.share, 0) + " em LF" : ""}` : "", href: "#fd-fundos" },
+    { l: "Emissores nos fundos", v: U ? n0(U.total.n_emissores) : "–", sub: U ? `5 maiores ${pct(U.concentracao.top5_share, 0)} · HHI ${n0(U.concentracao.hhi)} · ${pct(U.total.ligado_share, 0)} em emissor ligado` : "", href: "#fd-fundos" },
+  ]);
+
+  /* ---------- sistema ---------- */
+  let sistema = "";
+  if (S) {
+    const comps = S.componentes.filter(c => c.valor != null);
+    const sel = F.comp === "todos" ? comps : comps.filter(c => c.id === F.comp);
+    const series = sel.map(c => ({ pts: S.serie.filter(p => p[c.id] != null).map(p => ({ x: p.ref, y: p[c.id] / 1e9 })), color: c.cor, label: c.nome }));
+    const cMax = Math.max(...comps.map(c => c.valor));
+    sistema = secWrap("fd-sistema", `${sechead("O que o público tem aplicado", `M4 e componentes · SGS · ${S.serie[0].ref} a ${S.mes}`)}
+    <div class="grid g2">
+      <div class="card"><h4>Composição em ${fmt.my(S.mes)} ${badge("observado")}</h4>
+        ${comps.map(c => `<div class="contrib"><span class="lbl" style="width:230px">${c.nome}</span><span class="bar" style="width:${Math.max(2, c.valor / cMax * 150)}px;background:${c.cor}"></span><span class="num">${bi(c.valor)} <span class="src">${pct(c.share_m4, 0)} do M4 · <span class="${cls(c.var_12m_pct)}">${pp(c.var_12m_pct)}</span> 12 m</span></span></div>`).join("")}
+        <p class="src">${S.agregados.map(a => `${a.nome} ${bi(a.valor)} (${pp(a.var_12m_pct)} em 12 m)`).join(" · ")}${S.poupanca_sbpe ? ` · poupança SBPE e rural ${bi(S.poupanca_sbpe.valor)} em ${fmt.my(S.poupanca_sbpe.mes)} (${pp(S.poupanca_sbpe.var_12m_pct)})` : ""}.</p>
+        <p class="src">${S.nota}</p></div>
+      <div class="card"><h4>Série, 10 anos ${badge("observado")}</h4>
+        <div class="controls"><label class="src">instrumento <select onchange="fdSet('comp', this.value)" aria-label="escolher instrumento"><option value="todos" ${F.comp === "todos" ? "selected" : ""}>todos</option>${comps.map(c => `<option value="${c.id}" ${F.comp === c.id ? "selected" : ""}>${c.nome}</option>`).join("")}</select></label></div>
+        <div class="legend">${series.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series, h: 240, endLabels: rotulosFim && series.length <= 3, unit: "R$ bi", dec: 0, fonte: "BCB/SGS 27789 a 27816", status: "observado", aria: "saldos dos instrumentos de captação em poder do público" })}</div>
+    </div>`);
+  }
+
+  /* ---------- bancos ---------- */
+  let bancos = "";
+  if (B) {
+    const comp = B.composicao.filter(c => c.valor != null);
+    const cMax = Math.max(...comp.map(c => c.valor));
+    const ordKey = F.ord || "captacoes";
+    const insts = B.instituicoes.slice().sort((a, b) => ((b[ordKey] == null ? -1e15 : b[ordKey]) - (a[ordKey] == null ? -1e15 : a[ordKey])));
+    const segs = F.seg === "todos" ? insts : insts.filter(i => i.sr === F.seg);
+    const serie = B.serie.filter(p => p.captacoes);
+    const seriesB = [{ pts: serie.map(p => ({ x: am(p.anomes), y: p.varejo_share })), color: "#1d4e89", label: "varejo (% das captações)" }, { pts: serie.map(p => ({ x: am(p.anomes), y: p.mercado_share })), color: "#6b46a3", label: "mercado (%)" }];
+    bancos = secWrap("fd-bancos", `${sechead("Como cada banco se financia", `IF.data Passivo · ${am(B.anomes)} · ${n0(B.n_instituicoes)} instituições do corte`)}
+    <div class="grid g2">
+      <div class="card"><h4>Composição das captações ${badge("observado")}</h4>
+        ${["varejo", "mercado", "repasses"].map(g => `<h5 style="margin:8px 0 2px">${B.grupos.find(x => x.id === g).nome} <span class="src">${pct(B.grupos.find(x => x.id === g).share, 0)}</span></h5>` + comp.filter(c => c.grupo === g).map(c => `<div class="contrib"><span class="lbl" style="width:230px">${c.nome}</span><span class="bar" style="width:${Math.max(2, c.valor / cMax * 150)}px;background:${c.cor}"></span><span class="num">${bi(c.valor)} <span class="src">${pct(c.share, 0)} · <span class="${cls(c.var_12m_pct)}">${pp(c.var_12m_pct)}</span> a/a</span></span></div>`).join("")).join("")}
+        <p class="src">Os três grupos somam ${pct(B.indicadores.soma_grupos_vs_captacoes_pct, 0)} das captações do relatório. Crédito ÷ depósitos do corte: ${B.indicadores.ltd != null ? fmt.n(B.indicadores.ltd, 2) : "–"}. HHI das captações ${n0(B.concentracao.hhi)}.</p></div>
+      <div class="card"><h4>Varejo e mercado ao longo do tempo ${badge("calculado")}</h4>
+        <div class="legend">${seriesB.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesB, h: 200, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "BCB/IF.data Passivo, agregado do corte", status: "calculado", aria: "participação de varejo e mercado nas captações, trimestral" })}
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>Segmento</th><th style="text-align:right">Inst.</th><th style="text-align:right">Captações</th><th style="text-align:right">% SFN</th><th style="text-align:right">Varejo</th><th style="text-align:right">Mercado</th><th style="text-align:right">Repasses</th><th style="text-align:right">Créd./dep.</th></tr></thead>
+        <tbody>${B.por_segmento.map(s => `<tr><td>${s.sr}</td><td style="text-align:right">${n0(s.n)}</td><td style="text-align:right">${bi(s.captacoes)}</td><td style="text-align:right">${pct(s.share_sfn, 0)}</td><td style="text-align:right">${pct(s.varejo_share, 0)}</td><td style="text-align:right">${pct(s.mercado_share, 0)}</td><td style="text-align:right">${pct(s.repasses_share, 0)}</td><td style="text-align:right">${s.ltd != null ? fmt.n(s.ltd, 2) : "–"}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${B.nota}</p></div>
+    </div>
+    <div class="card"><h4>Instituições, por captação ${badge("observado")}</h4>
+      <div class="controls"><span class="seg">${[["captacoes", "captações"], ["mercado_share", "% mercado"], ["varejo_share", "% varejo"], ["ltd", "crédito ÷ depósitos"], ["var_12m_pct", "variação a/a"]].map(([v, l]) => `<button class="${ordKey === v ? "active" : ""}" onclick="fdSet('ord','${v}')">${l}</button>`).join("")}</span>
+        <label class="src">segmento <select onchange="fdSet('seg', this.value)" aria-label="segmento"><option value="todos">todos</option>${["S1", "S2", "S3", "S4", "S5"].map(s => `<option value="${s}" ${F.seg === s ? "selected" : ""}>${s}</option>`).join("")}</select></label></div>
+      <div class="tblwrap" style="max-height:560px"><table class="data compact"><thead><tr><th>Instituição</th><th>Seg.</th><th style="text-align:right">Captações</th><th style="text-align:right">% SFN</th><th style="text-align:right">a/a</th><th style="text-align:right">Vista</th><th style="text-align:right">Poup.</th><th style="text-align:right">Prazo</th><th style="text-align:right">LCI+LCA</th><th style="text-align:right">LF</th><th style="text-align:right">Compr.</th><th style="text-align:right">Exterior</th><th style="text-align:right">Repasses</th><th style="text-align:right">Mercado</th><th style="text-align:right">Créd./dep.</th></tr></thead>
+      <tbody>${segs.map(i => { const c = i.composicao; return `<tr><td><a href="/observatorio/institutions/${i.cod_inst}" onclick="nav('inst',{instCod:'${i.cod_inst}'});return false"><b>${i.nome}</b></a></td><td>${i.sr || "–"}</td><td style="text-align:right">${bi(i.captacoes)}</td><td style="text-align:right">${pct(i.share_sfn)}</td><td style="text-align:right" class="${cls(i.var_12m_pct)}">${pp(i.var_12m_pct)}</td><td style="text-align:right">${pct(c.dep_vista, 0)}</td><td style="text-align:right">${pct(c.dep_poupanca, 0)}</td><td style="text-align:right">${pct(c.dep_prazo, 0)}</td><td style="text-align:right">${c.lci != null && c.lca != null ? pct(c.lci + c.lca, 0) : "–"}</td><td style="text-align:right">${pct(c.lf, 0)}</td><td style="text-align:right">${pct(c.compromissadas, 0)}</td><td style="text-align:right">${pct(c.tvm_exterior, 0)}</td><td style="text-align:right">${pct(c.emprestimos_repasses, 0)}</td><td style="text-align:right"><b>${pct(i.mercado_share, 0)}</b></td><td style="text-align:right">${i.ltd != null ? fmt.n(i.ltd, 2) : "–"}</td></tr>`; }).join("")}</tbody></table></div>
+      <p class="src">${n0(insts.length)} maiores por captação; colunas de instrumento em % das captações da própria instituição. Dependência de mercado alta é modelo de negócio (atacado, financeiras, bancos de investimento), não fragilidade por si.</p>
+      ${ponte("A ficha de cada instituição, com capital, resultado e carteira — Instituições", "institutions", null, "lá a captação total aparece ao lado do ativo, do PL e da inadimplência")}</div>`);
+  }
+
+  /* ---------- fundos ---------- */
+  let fundos = "";
+  if (U) {
+    const ems = U.emissores;
+    const eMax = ems.length ? ems[0].valor : 1;
+    const sel = F.tipo === "todos" ? ems : ems.filter(e => (F.tipo === "lf" ? e.lf : F.tipo === "cdb" ? e.cdb : e.dpge) > 0);
+    const seriesU = [{ pts: U.serie.filter(p => !p.parcial && p.valor).map(p => ({ x: p.mes, y: p.valor / 1e9 })), color: "#6b46a3", label: "total (R$ bi)" }, { pts: U.serie.filter(p => !p.parcial && p.lf != null).map(p => ({ x: p.mes, y: p.lf / 1e9 })), color: "#1d4e89", label: "letras financeiras" }, { pts: U.serie.filter(p => !p.parcial && p.cdb != null).map(p => ({ x: p.mes, y: p.cdb / 1e9 })), color: "#2f7d4f", label: "CDB/RDB" }];
+    fundos = secWrap("fd-fundos", `${sechead("Quem financia cada banco pelos fundos", `CVM/CDA bloco 5 · ${U.mes} · ${n0(U.cobertura.classes_com_papel_bancario)} classes com papel bancário de ${n0(U.cobertura.classes_com_pl)}`)}
+    <div class="grid g2">
+      <div class="card"><h4>Por tipo de papel ${badge("observado")}</h4>
+        ${U.por_tipo.map(t => `<div class="contrib"><span class="lbl" style="width:230px">${t.tipo}</span><span class="bar pos" style="width:${Math.max(2, (t.share || 0) * 1.5)}px"></span><span class="num">${bi(t.valor)} <span class="src">${pct(t.share, 0)} · ${pct(t.ligado_share, 0)} ligado · ${pct(t.venc_12m_share, 0)} vence em 12 m</span></span></div>`).join("")}
+        <p class="src">${bi(U.total.valor)} em ${U.mes}, ${pct(U.total.share_pl)} do PL das classes com PL informado; ${pct(U.total.ligado_share, 0)} em emissor ligado ao gestor; ${pct(U.total.venc_12m_share, 0)} vence em 12 meses.</p>
+        <p class="src">${U.nota}</p></div>
+      <div class="card"><h4>Série mensal ${badge("observado")}</h4>
+        <div class="legend">${seriesU.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+        ${lineChart({ series: seriesU, h: 200, endLabels: rotulosFim, unit: "R$ bi", dec: 0, fonte: "CVM/CDA bloco 5", status: "observado", aria: "papel bancário em fundos, mensal" })}
+        <p class="src">${U.serie.filter(p => p.parcial).length ? `Meses parciais ficam fora do gráfico e do mês de referência: ${U.serie.filter(p => p.parcial).map(p => `${p.mes} (${n0(p.n_classes)} classes${p.sob_sigilo ? `, ${bi(p.sob_sigilo)} sob sigilo até ${p.sigilo_ate || "–"}` : ""})`).join("; ")}. O gestor pode adiar por até 90 dias a divulgação de uma posição; nesse período a CVM publica o valor sem o emissor.` : "Nenhum mês parcial na janela."}</p></div>
+    </div>
+    <div class="card"><h4>Emissores, por valor em fundos ${badge("observado")}</h4>
+      <div class="controls"><span class="seg">${[["todos", "todos"], ["lf", "com LF"], ["cdb", "com CDB"], ["dpge", "com DPGE"]].map(([v, l]) => `<button class="${F.tipo === v ? "active" : ""}" onclick="fdSet('tipo','${v}')">${l}</button>`).join("")}</span></div>
+      <div class="tblwrap" style="max-height:560px"><table class="data compact"><thead><tr><th>Emissor (cadastro IF.data)</th><th>Seg.</th><th style="text-align:right">Em fundos</th><th style="text-align:right">%</th><th style="text-align:right">a/a</th><th style="text-align:right">LF</th><th style="text-align:right">CDB</th><th style="text-align:right">DPGE</th><th style="text-align:right">Classes</th><th style="text-align:right">Ligado</th><th style="text-align:right">Vence 12 m</th><th style="text-align:right">LF em fundos ÷ LF e dívida elegível a capital no balanço</th></tr></thead>
+      <tbody>${sel.map(e => `<tr><td>${e.cod_inst ? `<a href="/observatorio/institutions/${e.cod_inst}" onclick="nav('inst',{instCod:'${e.cod_inst}'});return false"><b>${e.nome}</b></a>` : `<b>${e.nome}</b>`}<div class="src">${e.cnpj_raiz}${e.emissor_cvm && e.emissor_cvm !== e.nome ? " · na CVM: " + e.emissor_cvm : ""}</div></td><td>${e.sr || "–"}</td><td style="text-align:right"><span class="abarwrap" style="display:inline-block;width:60px;vertical-align:middle"><span class="abar" style="width:${Math.max(1, e.valor / eMax * 100)}%;background:#6b46a3"></span></span> ${bi(e.valor)}</td><td style="text-align:right">${pct(e.share)}</td><td style="text-align:right" class="${cls(e.var_12m_pct)}">${pp(e.var_12m_pct)}</td><td style="text-align:right">${bi(e.lf)}</td><td style="text-align:right">${bi(e.cdb)}</td><td style="text-align:right">${e.dpge ? bi(e.dpge) : "–"}</td><td style="text-align:right">${n0(e.n_classes)}</td><td style="text-align:right">${pct(e.ligado_share, 0)}</td><td style="text-align:right">${pct(e.venc_12m_share, 0)}</td><td style="text-align:right">${e.lf_cda_sobre_ifdata_pct != null ? pct(e.lf_cda_sobre_ifdata_pct, 0) + ` <span class="src">(${am(U.anomes_ifdata_razao)})</span>` : "–"}</td></tr>`).join("")}</tbody></table></div>
+      <p class="src">${n0(ems.length)} maiores emissores. A última coluna cruza o mês do CDA com o trimestre do IF.data (letras financeiras mais instrumentos de dívida elegíveis a capital, onde ficam as LF subordinadas) e é indicativa: acima de 100% aponta diferença de data ou de perímetro, não fato. HHI dos emissores ${n0(U.concentracao.hhi)}; cinco maiores ${pct(U.concentracao.top5_share, 0)}.</p>
+      ${ponte("Emissões e estoque de dívida corporativa e securitização — Crédito ampliado e mercado de capitais", "ampliado", null, "lá está o lado do tomador não bancário; aqui, o funding dos próprios bancos")}</div>`);
+  }
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("fd-metodo", `${sechead("Método, catálogo e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${D.limitacoes}</p>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} ${Object.values(D.fontes || {}).map(f => `<a href="${attr(f.catalogo)}" target="_blank" rel="noopener">${f.nome}</a> (${f.licenca}; nível ${f.nivel})`).join(" · ")}.</p></div>`);
+  el.innerHTML = head + sintese + placarHtml
+    + subnavFixa([["#fd-sistema", "Sistema"], ["#fd-bancos", "Bancos"], ["#fd-fundos", "Fundos"], ["#fd-metodo", "Método"]])
+    + sistema + bancos + fundos + metodo;
+}
+window.fdCSV = () => {
+  const D = state.data.funding;
+  if (!D || !D.disponivel || !D.bancos) return;
+  const itens = ["dep_vista", "dep_poupanca", "dep_prazo", "lci", "lca", "dep_outros", "dep_interfin", "compromissadas", "lf", "tvm_exterior", "outros_titulos", "emprestimos_repasses"];
+  const cols = ["cod_inst", "nome", "sr", "tcb", "captacoes", "share_sfn", "var_12m_pct", "varejo_share", "mercado_share", "repasses_share", "ltd"];
+  const head = `# Observatório Brasileiro de Crédito — captações por instituição e composição (% das captações), IF.data Passivo ${D.bancos.anomes}\n# fonte: BCB/IF.data (API Olinda), conglomerados prudenciais e instituições independentes · valores em R$\n# exportado: ${new Date().toISOString()}\n`;
+  dlFile(`obc_funding_instituicoes_${D.bancos.anomes}.csv`, head + cols.concat(itens.map(i => "pct_" + i)).join(";") + "\n" + D.bancos.instituicoes.map(i => cols.map(c => csvEsc(i[c])).concat(itens.map(k => csvEsc(i.composicao[k]))).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -11113,10 +11256,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego" };
+const RENDER = { overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes" };
+  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -11173,7 +11316,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN", conduta: "Conduta e enforcement", emprego: "Emprego formal" };
+const VIEW_TITLES = { overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e Falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Regulação do Crédito", method: "Metodologia e Fontes", products: "Produtos de Crédito", product: "Produto", compare: "Comparador", market: "Mercado e Valor", leading: "Sinais Antecedentes", trends: "Tendências de Busca", panorama: "Panorama do Crédito", bets: "Bets e risco financeiro", fraudes: "Fraudes e risco de crédito", juros: "Taxas de Juros por IF", sugestoes: "Sugestões", pix: "Pix e Pagamentos", sobre: "Sobre o Observatório", judicial: "Ações judiciais", pgfn: "Dívida Ativa da União", desenrola: "Desenrola Brasil", penetracao: "Penetração e Gap", moradia: "Moradia e Habitação", consignado: "Consignado e Envelhecimento", operacional: "Indicadores operacionais", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Crédito ampliado e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Entrantes e saídas do SFN", conduta: "Conduta e enforcement", emprego: "Emprego formal", funding: "Funding e captação" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {
