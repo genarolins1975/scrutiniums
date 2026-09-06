@@ -233,7 +233,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.98.4";
+const APP_VERSION = "0.99.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -1302,7 +1302,12 @@ function renderLeading() {
       <tbody>${L.licencas.map(li => `<tr><td><b>${li.fonte}</b></td><td class="src">${li.status}</td><td>${li.uso.includes("NÃO") ? `<span class="up">${li.uso}</span>` : li.uso}</td></tr>`).join("")}</tbody></table></div>
       <div class="src" style="margin-top:8px">Sem scraping proibido; sem dados pessoais; ausência ≠ zero; versão metodológica ${L.versao_metodologica}. Auditoria completa: docs/AUDITORIA_SINAIS.md.</div></div>`;
   }
-  el.innerHTML = head + principio + nav2 + body;
+  const leadAbertura = abertura({
+    placar: Object.values(L.subindices).map(sx => ({ l: sx.nome, v: sx.z_atual != null ? `${sx.z_atual >= 0 ? "+" : ""}${fmt.n(sx.z_atual, 2)}σ` : null, sub: `${sx.tendencia} · confiança ${sx.confianca} · ${sx.cobertura}` })),
+    sintese: [L.sintese && L.sintese.texto, L.sintese && L.sintese.cobertura ? `Cobertura: ${L.sintese.cobertura}.` : null],
+    ref: `z-score contra a média histórica de cada série · ${(L.gerado_em || "").slice(0, 10)} · confiança ${L.sintese ? L.sintese.confianca : "–"}`,
+  });
+  el.innerHTML = head + leadAbertura + principio + nav2 + body;
 }
 
 /* ================= TENDÊNCIAS DE BUSCA (Google Trends — exportação manual autorizada) ================= */
@@ -2524,382 +2529,6 @@ window.panCSV = () => {
   dlFile("panorama_ufs.csv", "﻿" + cols.join(";") + "\n" + P.mapa.map(m => cols.map(c => m[c] ?? "").join(";")).join("\n"), "text/csv;charset=utf-8");
 };
 
-/* ================= MERCADO & VALOR (piloto: Itaú, BTG, ABC Brasil) ================= */
-const MKT_BASE_COLORS = ["#1d4e89", "#0e7c7b", "#b45309", "#6b46a3", "#b91c1c", "#2f7d4f", "#64748b", "#c2540a", "#d9a514", "#17879c"];
-let MKT_COLORS = {};
-function mktColors(tks) {
-  MKT_COLORS = {};
-  tks.forEach((tk, i) => MKT_COLORS[tk] = MKT_BASE_COLORS[i % MKT_BASE_COLORS.length]);
-}
-window.mktSet = (k, v) => { state.mkt[k] = v; syncHash(); renderMarket(); };
-
-function entenda(id, itens) {
-  return `<details class="charttable"><summary>Entenda este gráfico</summary>
-    <div class="note" style="margin:8px 0">${itens.map(([t, x]) => `<p style="margin:5px 0"><b>${t}:</b> ${x}</p>`).join("")}</div></details>`;
-}
-function leitura(itens) {
-  return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
-}
-function metricCard(id, titulo, simples, tecnica, formula, fonte, cuidado) {
-  const tip = encodeURIComponent(`<div class="tt-date">${titulo}</div><div class="tt-meta">${simples}<br><b>Fórmula:</b> ${formula}<br><b>Fonte:</b> ${fonte}<br><b>Cuidado:</b> ${cuidado}</div>`);
-  return `data-tip="${tip}"`;
-}
-
-function renderMarket() {
-  const el = document.getElementById("view-market");
-  const M = state.data.market;
-  if (!M || !M.series) { el.innerHTML = loadingCard("dados de mercado"); return; }
-  const mkt = state.mkt;
-  const tks = Object.keys(M.series).filter(t => t !== "ITUB3").sort((a, b) => ((M.valuation.find(v => v.ticker === b) || {}).mcap || 0) - ((M.valuation.find(v => v.ticker === a) || {}).mcap || 0));
-  mktColors(tks);
-  const emp = Object.fromEntries(M.empresas.map(e => [e.company_id, e]));
-  const val = Object.fromEntries(M.valuation.map(v => [v.ticker, v]));
-  const tabs = [["acoes", "Ações"], ["proventos", "Dividendos & JCP"], ["valuation", "Valuation"], ["resultados", "Resultados"], ["capital", "Capital"], ["screener", "Screener"], ["entidades", "Entidades & Metodologia"]];
-
-  const head = pageHead({
-    title: `Bancos na bolsa <span class='chip' style='vertical-align:middle'>${(state.data.market.empresas || []).length} listadas na B3</span>`,
-    desc: "Como o mercado precifica as instituições e como preço, proventos, lucro e capital se conectam — plataforma acadêmica que ensina a interpretar, não recomenda.",
-    fontes: "B3 (COTAHIST, proventos, ações em circulação), CVM (DFP/ITR)",
-  });
-  // o disclaimer já vive no rodapé de todas as páginas; aqui vira uma linha discreta (E15)
-  const aviso = `<p class="src" style="margin:2px 0 10px">${M.aviso}</p>`;
-  const filtravel = ["proventos", "resultados", "capital"].includes(mkt.tab);
-  const empSel = `<label>instituição <select onchange="mktSet('emp', this.value)" aria-label="filtrar instituição">
-      <option value="todas" ${mkt.emp === "todas" ? "selected" : ""}>todas (${M.empresas.length})</option>
-      ${M.empresas.slice().sort((a, b) => a.legal_name.localeCompare(b.legal_name)).map(e => `<option value="${e.company_id}" ${mkt.emp === e.company_id ? "selected" : ""}>${e.legal_name.replace(/ S\.A\..*/i, "")} (${e.main_ticker})</option>`).join("")}
-    </select></label>`;
-  const nav2 = `<div class="controls"><span class="seg">${tabs.map(([k, l]) => `<button class="${mkt.tab === k ? "active" : ""}" onclick="mktSet('tab','${k}')">${l}</button>`).join("")}</span>${filtravel ? empSel : ""}${filtravel && mkt.emp !== "todas" ? `<button class="btn ghost small" onclick="mktSet('emp','todas')">limpar filtro</button>` : ""}</div>`;
-
-  let body = "";
-  if (mkt.tab === "acoes") body = mktAcoes(M, mkt, tks, val);
-  else if (mkt.tab === "proventos") body = mktProventos(M, emp, val);
-  else if (mkt.tab === "valuation") body = mktValuation(M, val, emp);
-  else if (mkt.tab === "resultados") body = mktResultados(M, emp);
-  else if (mkt.tab === "capital") body = mktCapital(M, emp);
-  else if (mkt.tab === "screener") body = mktScreener(M);
-  else body = mktEntidades(M);
-
-  el.innerHTML = head + aviso + nav2 + body;
-}
-
-// nomes curtos verificados contra o cadastro do market.json (identificação humana)
-const MKT_NOME_CURTO = {
-  ITUB4: "Itaú Unibanco", BBAS3: "Banco do Brasil", BBDC4: "Bradesco", SANB11: "Santander",
-  BPAC11: "BTG Pactual", ABCB4: "ABC Brasil", BRSR6: "Banrisul", BMGB4: "BMG", PINE4: "Pine",
-  BAZA3: "Banco da Amazônia", BNBR3: "Banco do Nordeste", BEES3: "Banestes", BMEB4: "Mercantil do Brasil",
-  BSLI4: "BRB", BGIP4: "Banese", BRBI11: "BR Partners", RPAD5: "Alfa Holdings", BMIN4: "Mercantil Invest.",
-};
-function mktNomeCurto(M, tk) {
-  if (MKT_NOME_CURTO[tk]) return MKT_NOME_CURTO[tk];
-  const emp = (M.empresas || []).find(e => e.main_ticker === tk || (e.tickers || []).some(t => (t.ticker || t) === tk));
-  let nome = emp ? (emp.nome_curto || emp.legal_name || "") : "";
-  nome = nome.replace(/\b(S\.?A\.?|Holding[s]?|Participa[çc][õo]es)\b/gi, "").replace(/\s{2,}/g, " ").trim();
-  const palavras = nome.split(" ").filter(Boolean);
-  let corte = Math.min(3, palavras.length);
-  while (corte > 1 && /^(do|da|de|dos|das|e)$/i.test(palavras[corte - 1])) corte--;
-  const out2 = palavras.slice(0, corte).join(" ");
-  return out2 || tk;
-}
-
-function mktAcoes(M, mkt, tks, val) {
-  const modos = [["total", "retorno total (base 100)"], ["preco", "preço (base 100)"], ["drawdown", "drawdown"], ["vol", "volatilidade 21d"]];
-  const campo = { total: "total100", preco: "base100", drawdown: "drawdown", vol: "vol21" }[mkt.modo];
-  const tksChart = tks.slice(0, 8);
-  const nomeDe = {};
-  tks.forEach(tk => nomeDe[tk] = mktNomeCurto(M, tk));
-  const series = tksChart.map(tk => {
-    const sd = M.series[tk];
-    return { pts: sd.dates.map((d, i) => ({ x: d, y: sd[campo][i] })).filter(p => p.y != null),
-      color: MKT_COLORS[tk], label: `${nomeDe[tk]} (${tk})`, short: nomeDe[tk], w: 2 };
-  });
-  if (mkt.modo === "total" && M.cesta) {
-    series.push({ pts: M.cesta.dates.map((d, i) => ({ x: d, y: M.cesta.total100[i] })), color: "#64748b", label: "cesta igual-ponderada", short: "cesta", dash: "4,4", w: 1.4 });
-  }
-  // legenda com NOME + sigla, na cor de cada série (mesma cor em toda a página)
-  const legenda = `<div class="legend" style="margin:6px 0 2px">${tksChart.map(tk =>
-    `<span><span class="sw" style="background:${ccol(MKT_COLORS[tk])}"></span>${nomeDe[tk]} <span class="src" style="display:inline">(${tk})</span></span>`).join("")}${mkt.modo === "total" && M.cesta ? '<span><span class="sw" style="background:#64748b;opacity:.7"></span>cesta igual-ponderada</span>' : ""}</div>`;
-  // anotações: maiores proventos (ex) do ticker líder de eventos — com o NOME da companhia
-  const annotations = [];
-  tksChart.slice(0, 3).forEach(tk => {
-    const evs = (M.eventos[tk] || []).slice().sort((a, b) => (b.div + b.jcp) - (a.div + a.jcp)).slice(0, 2);
-    evs.forEach(e => annotations.push({ x: e.ex_ref, label: `${nomeDe[tk]} ex ${e.div > e.jcp ? "DIV" : "JCP"}`, color: MKT_COLORS[tk] }));
-  });
-  // escala: log por padrão quando a razão entre o maior e o menor valor das
-  // séries passa de 4× (uma série a 1.100 e sete abaixo de 300 comprimiam as
-  // sete no quinto inferior do gráfico — E5 da avaliação de 05/09)
-  const escalaCabe = mkt.modo === "total" || mkt.modo === "preco";
-  const ys = series.flatMap(sx => sx.pts.map(p => p.y)).filter(v => v != null && v > 0);
-  const razao = ys.length ? Math.max(...ys) / Math.min(...ys) : 1;
-  const usaLog = escalaCabe && (mkt.escala === "log" || (mkt.escala !== "linear" && razao > 4));
-  const jan = M.janelas;
-  const jrow = tk => {
-    const t = jan[tk], v = val[tk];
-    const cell = x => x != null ? `<td style="text-align:right" class="${x >= 0 ? "down good" : "up"}">${fmt.pp(x)}%</td>` : "<td style='text-align:right'>–</td>";
-    return `<tr><td><b style="color:${ccol(MKT_COLORS[tk])}">${nomeDe[tk]}</b> <span class="src">${tk} · R$ ${fmt.n(v.preco, 2)}</span></td>
-      ${cell(t.total.m1)}${cell(t.total.m3)}${cell(t.total.ytd)}${cell(t.total.a12)}${cell(t.total.a36)}
-      <td style="text-align:right">${fmt.pp(t.total.a12 - t.preco.a12)} p.p.</td>
-      <td style="text-align:right" class="up">${fmt.n(t.drawdown.atual, 1)}%</td>
-      <td style="text-align:right">${fmt.n(t.drawdown.maximo, 1)}% <span class="src">(${fmt.my(t.drawdown.data_maximo)})</span></td>
-      <td style="text-align:right">${t.drawdown.vol21_atual != null ? fmt.n(t.drawdown.vol21_atual, 0) + "%" : "–"}</td></tr>`;
-  };
-  const contribuicaoProv = tks.map(tk => `${tk}: ${fmt.pp(jan[tk].total.a12 - jan[tk].preco.a12)} p.p.`).join(" · ");
-  return `
-  ${sechead("Retorno comparado — as listadas na B3", "preço não ajustado; proventos reinvestidos no retorno total")}
-  <div class="card">
-    <h4>${mkt.modo === "total" ? "Com proventos reinvestidos, as trajetórias divergem menos do que o preço sugere" : mkt.modo === "drawdown" ? "Quanto cada ação caiu em relação ao próprio pico" : mkt.modo === "vol" ? "Oscilação de curto prazo (não mede o risco econômico do banco)" : "Preço em base 100 — sem o efeito dos proventos"} ${badge("observado")} ${badge("calculado", M.metodologia.retorno_total)}</h4>
-    <div class="src" style="margin-bottom:6px">${mkt.modo === "total" ? "A base 100 coloca todas as ações no mesmo ponto inicial: 125 = valorização acumulada de 25% no período. O retorno TOTAL reinveste dividendos e JCP (bruto de IR) — é a medida correta para comparar ações que distribuem proventos em ritmos diferentes." : mkt.modo === "drawdown" ? "O drawdown mede a queda em relação ao maior valor anterior: -30% significa preço 30% abaixo do pico até aquele momento. Volatilidade mede oscilação; drawdown mede perda do pico — nenhum dos dois, sozinho, mede o risco econômico da instituição." : mkt.modo === "vol" ? "Desvio-padrão dos retornos diários em janela de 21 pregões, anualizado." : "A base 100 facilita comparar ações com preços nominais diferentes. Sem proventos, subestima o retorno de quem distribui mais."}</div>
-    <div class="controls"><span class="seg">${modos.map(([k, l]) => `<button class="${mkt.modo === k ? "active" : ""}" onclick="mktSet('modo','${k}')">${l}</button>`).join("")}</span>
-      ${escalaCabe ? `<span class="seg" title="escala logarítmica: distâncias iguais no eixo = variações percentuais iguais; evita que um único outlier comprima as demais séries"><button class="${!usaLog ? "active" : ""}" onclick="mktSet('escala','linear')">escala linear</button><button class="${usaLog ? "active" : ""}" onclick="mktSet('escala','log')">escala log</button></span>` : ""}</div>
-    <div class="src" style="margin-bottom:4px">gráfico: 8 maiores por valor de mercado (as ${tks.length} companhias estão na tabela abaixo)${usaLog ? " · escala logarítmica: a dispersão entre a maior e a menor série passa de uma ordem de grandeza" : ""}</div>
-    ${legenda}
-    ${lineChart({ series, h: 320, endLabels: true, log: usaLog, annotations: mkt.modo === "total" ? annotations.slice(0, 3) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
-    ${chartFooter({ fonte: M.fontes.precos, periodo: `${fmt.my(M.series[tks[0]].dates[0])}–${fmt.my(M.series[tks[0]].dates.slice(-1)[0])} (diário)`, atualizado: M.gerado_em.slice(0, 10), unidade: "base 100 / %", nota: M.cesta ? M.cesta.nota : "" })}
-    ${entenda("acoes", [["Pergunta respondida", "como se comparam os retornos dos três perfis, com e sem proventos?"],
-      ["Eixos", "tempo × índice base 100 (ou % para drawdown/vol)"],
-      ["Cores", "cada companhia mantém a mesma cor em toda a página; a legenda acima do gráfico traz nome e sigla, e cada linha termina com o nome da companhia"],
-      ["Limitações", "retorno total bruto de IR (JCP é tributável); sem excesso vs. Ibovespa (série pública oficial descontinuada em 2019); retorno passado não indica retorno futuro"]])}
-  </div>
-  ${sechead("Janelas de retorno total e risco de trajetória")}
-  <div class="card">
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">1m</th><th style="text-align:right">3m</th><th style="text-align:right">YTD</th><th style="text-align:right">12m</th><th style="text-align:right">3a</th><th style="text-align:right" title="diferença entre retorno total e retorno de preço em 12m = contribuição dos proventos">proventos 12m</th><th style="text-align:right">DD atual</th><th style="text-align:right">DD máx.</th><th style="text-align:right">vol 21d</th></tr></thead>
-    <tbody>${tks.map(jrow).join("")}</tbody></table></div>
-    ${leitura([["Como interpretar", "retornos são TOTAIS (com proventos); a coluna 'proventos 12m' mostra quanto os proventos adicionaram ao retorno de preço"],
-      ["O que mudou", `contribuição dos proventos em 12m — ${contribuicaoProv}`],
-      ["Cuidado", "janelas curtas são dominadas por ruído; drawdown e volatilidade medem trajetória do preço, não solvência"]])}
-  </div>`;
-}
-
-function mktProventos(M, emp, val) {
-  const empresasSel = state.mkt.emp === "todas" ? M.empresas : M.empresas.filter(e => e.company_id === state.mkt.emp);
-  const anos = [...new Set(empresasSel.flatMap(e => Object.keys(e.proventos_por_ano)))].sort().slice(-6);
-  const bars = empresasSel.map(e => {
-    const tk = { itau: "ITUB4", btg: "BPAC11", abc: "ABCB4" }[e.company_id];
-    const maxv = Math.max(...anos.map(a => { const p = e.proventos_por_ano[a] || {}; return (p.DIV || 0) + (p.JCP || 0); }), 0.01);
-    return `<div class="card"><h4>${e.legal_name.split(" S.A.")[0]} — proventos por ação (${tk}) ${badge("observado")}</h4>
-      ${anos.map(a => { const p = e.proventos_por_ano[a] || {}; const d = p.DIV || 0, j = p.JCP || 0;
-        const tip = encodeURIComponent(`<div class="tt-date">${a}</div><div class="tt-row"><span class="tt-lbl">Dividendos</span><span class="tt-val">R$ ${fmt.n(d, 4)}</span></div><div class="tt-row"><span class="tt-lbl">JCP (bruto)</span><span class="tt-val">R$ ${fmt.n(j, 4)}</span></div>`);
-        return `<div class="atrasorow" data-tip="${tip}" style="cursor:default"><span class="aname">${a}</span>
-        <span class="abarwrap"><span class="abar" style="width:${(d + j) / maxv * 100}%;background:linear-gradient(90deg, var(--c-line1) ${d / (d + j || 1) * 100}%, var(--c-line2) ${d / (d + j || 1) * 100}%)"></span></span>
-        <span class="anum">R$ ${fmt.n(d + j, 2)}</span></div>`; }).join("")}
-      <div class="legend"><span><span class="sw" style="background:var(--c-line1);height:8px"></span>dividendos (isentos)</span><span><span class="sw" style="background:var(--c-line2);height:8px"></span>JCP (brutos de IR)</span></div>
-    </div>`;
-  }).join("");
-  const vrow = v => {
-    const g = v.g_sustentavel;
-    return `<tr><td><b>${v.ticker}</b></td>
-    <td style="text-align:right" ${metricCard("dy", "Dividend yield 12m", "Proventos por ação dos últimos 12 meses divididos pelo preço atual.", "Σ proventos ex 12m ÷ preço", "Σ proventos ÷ preço", "B3", "Yield alto pode vir de provento maior OU de preço caindo — nunca interpretar isoladamente.")}><b>${v.yield_12m != null ? fmt.n(v.yield_12m, 2) + "%" : "–"}</b></td>
-    <td style="text-align:right" ${metricCard("payout", "Payout", "Parcela do lucro distribuída aos acionistas no exercício.", "(dividendos + JCP com ex no exercício) ÷ lucro dos controladores", "dist ÷ lucro", "B3 + CVM", "Payout acima de 100% consome capital — sustentável só episodicamente.")}>${v.payout != null ? fmt.n(v.payout, 1) + "%" : "–"}</td>
-    <td style="text-align:right">${v.retencao != null ? fmt.n(v.retencao, 1) + "%" : "–"}</td>
-    <td style="text-align:right" ${metricCard("g", "Crescimento sustentável", "Quanto o banco consegue crescer financiado só pelo lucro retido.", "g = ROE × retenção", "g = ROE × (1 − payout)", "calculado", "Aproximação sob hipóteses fortes (ROE e payout constantes); g negativo = payout acima de 100%.")}>${g != null ? fmt.pp(g) + "%" : "–"}</td>
-    <td class="src">${v.payout != null && v.payout > 100 ? "payout > 100%: distribuição extraordinária — parte financiada por capital, não pelo lucro do exercício" : v.payout != null ? "distribuição coberta pelo lucro do exercício" : "payout indisponível"}</td></tr>`;
-  };
-  return `
-  ${sechead("Proventos por ação — dividendos e JCP separados", "aumento pode vir de mais lucro, mais payout ou distribuição extraordinária")}
-  <div class="ov-3col">${bars}</div>
-  ${sechead("Indicadores associados à capacidade histórica de distribuição", "não é previsão de dividendos")}
-  <div class="card">
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Yield 12m</th><th style="text-align:right">Payout ${M.valuation[0] ? M.valuation[0].exercicio_ref || "" : ""}</th><th style="text-align:right">Retenção</th><th style="text-align:right">g sustentável</th><th>Leitura</th></tr></thead>
-    <tbody>${(state.mkt.emp === "todas" ? M.valuation : M.valuation.filter(v => v.company_id === state.mkt.emp)).map(vrow).join("")}</tbody></table></div>
-    ${leitura([["Como interpretar", "payout = proventos do exercício ÷ lucro dos controladores; retenção financia crescimento (g = ROE × retenção)"],
-      ["Cuidado", "JCP é bruto de IR; payout calculado pela data ex dentro do exercício (aproximação declarada); capacidade histórica ≠ promessa futura"]])}
-    ${entenda("prov", [["Pergunta", "a distribuição é coberta pelo lucro e o que sobra para crescer?"],
-      ["Exemplo de leitura correta", "payout de 34% com ROE de 22% permite crescer ~14% a.a. sem capital novo"],
-      ["Exemplo de leitura INCORRETA", "'yield de 11% é sempre melhor que 2%' — o yield alto pode refletir queda de preço ou distribuição não recorrente"]])}
-  </div>`;
-}
-
-function mktValuation(M, val, emp) {
-  const pts = M.valuation.filter(v => v.roe_cia != null && v.pvp != null).map(v => ({
-    x: v.roe_cia, y: v.pvp, size: v.mcap, label: v.ticker, grp: v.ticker, color: MKT_COLORS[v.ticker] }));
-  const vrow = v => `<tr>
-    <td><b>${v.ticker}</b><div class="src">${emp[v.company_id].legal_name}</div></td>
-    <td style="text-align:right">R$ ${fmt.n(v.preco, 2)}</td>
-    <td style="text-align:right">${v.mcap ? "R$ " + fmt.n(v.mcap / 1e9, 1) + " bi" : "–"}</td>
-    <td style="text-align:right" ${metricCard("pl", "P/L", "Quanto o mercado paga por cada R$ 1 de lucro anual.", "valor de mercado ÷ lucro dos controladores (exercício " + (v.exercicio_ref || "") + ")", "mcap ÷ lucro", "B3 + CVM", "Lucro do último exercício — não incorpora expectativas; comparar com a própria história e com pares de perfil semelhante.")}><b>${v.pl_ratio ? fmt.n(v.pl_ratio, 1) + "×" : "–"}</b></td>
-    <td style="text-align:right" ${metricCard("pvp", "P/VP", "Quanto o mercado paga por cada R$ 1 de patrimônio contábil.", "valor de mercado ÷ patrimônio líquido (" + (v.pl_base || "") + ")", "mcap ÷ PL", "B3 + CVM", "P/VP baixo não significa barato: pode refletir risco percebido ou ROE fraco.")}><b>${v.pvp ? fmt.n(v.pvp, 2) + "×" : "–"}</b></td>
-    <td style="text-align:right" ${metricCard("ey", "Earnings yield", "Inverso do P/L: lucro anual em relação ao preço.", "lucro ÷ valor de mercado", "1 ÷ P/L", "calculado", "Não é retorno esperado do acionista.")}>${v.pl_ratio ? fmt.n(100 / v.pl_ratio, 1) + "%" : "–"}</td>
-    <td style="text-align:right" ${metricCard("roe", "ROE da companhia", "Lucro para cada R$ 100 de patrimônio dos acionistas.", "lucro controladores ÷ PL médio", "lucro ÷ PL médio", "CVM " + (v.stmt || ""), "ROE alto pode vir de eficiência OU de alavancagem/risco — analisar com Basileia, inadimplência e P/VP.")}>${v.roe_cia ? fmt.n(v.roe_cia, 1) + "%" : "–"}</td>
-    <td style="text-align:right">${v.yield_12m ? fmt.n(v.yield_12m, 2) + "%" : "–"}</td></tr>`;
-  const q = [];
-  M.valuation.forEach(v => {
-    if (v.roe_cia == null || v.pvp == null) return;
-    const roeMed = 18, pvpMed = 1.5; // referências didáticas do piloto (n=3 — sem mediana robusta)
-  });
-  return `
-  ${sechead("O mercado paga múltiplos maiores por bancos mais rentáveis?", `n = ${pts.length} listadas — linhas de referência nas medianas do universo; sem recomendação`)}
-  <div class="ov-2col">
-    <div class="card">
-      <h4>P/VP × ROE ${badge("calculado")}</h4>
-      <div class="src" style="margin-bottom:6px">Bancos com maior ROE tendem, em condições semelhantes, a negociar por P/VP mais altos — o mercado paga prêmio por retorno sobre o patrimônio percebido como sustentável. A posição no gráfico NÃO é recomendação.</div>
-      ${(function(){
-        if (pts.length < 3) return "<p class='src'>dados insuficientes</p>";
-        const med = arr => { const a = [...arr].sort((x, y) => x - y); return a[Math.floor(a.length / 2)]; };
-        return scatterPlot(pts, "ROE da companhia (%)", "P/VP (×)", 560, 330,
-          { sizeLabel: "valor de mercado", labels: pts.length <= 20,
-            refX: med(pts.map(p => p.x)), refXLabel: "mediana ROE", refY: med(pts.map(p => p.y)), refYLabel: "mediana P/VP" });
-      })()}
-      <div class="src" style="margin-top:6px"><b>Quadrantes:</b> direita-acima = rentabilidade reconhecida (prêmio) · direita-abaixo = possível desconto, risco percebido ou dúvida sobre sustentabilidade · esquerda-abaixo = rentabilidade fraca reconhecida · esquerda-acima = expectativa de recuperação ou fatores não capturados. Referências: P/VP 1× (paridade contábil) e ROE 15%.</div>
-      ${chartFooter({ fonte: "B3 + CVM (metodologias por empresa declaradas na aba Entidades)", periodo: `preços de ${fmt.d(M.valuation[0].data_preco)}`, atualizado: M.gerado_em.slice(0, 10), unidade: "% × múltiplo", nota: M.metodologia.roe_cia })}
-      ${entenda("pvproe", [["Pergunta", "o prêmio/desconto de valuation é coerente com a rentabilidade?"],
-        ["Eixos", "horizontal = ROE (lucro ÷ PL médio); vertical = P/VP (mercado ÷ patrimônio)"],
-        ["Leitura de exemplo", `${pts[0] ? pts[0].label + " combina ROE de " + fmt.n(pts[0].x, 1) + "% com P/VP de " + fmt.n(pts[0].y, 2) + "×" : ""} — prêmio sobre o patrimônio compatível com rentabilidade acima do custo típico de capital`],
-        ["Cuidado", "crescimento, risco, capital e sustentabilidade do lucro também explicam múltiplos; com n=3 não há linha de tendência estatisticamente honesta"]])}
-    </div>
-    <div class="card">
-      <h4>Múltiplos e fundamentos — tabela comparativa</h4>
-      <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Preço</th><th style="text-align:right">Mercado</th><th style="text-align:right">P/L</th><th style="text-align:right">P/VP</th><th style="text-align:right">E. yield</th><th style="text-align:right">ROE cia</th><th style="text-align:right">Yield 12m</th></tr></thead>
-      <tbody>${M.valuation.map(vrow).join("")}</tbody></table></div>
-      ${leitura([["Como interpretar", "passe o mouse em cada múltiplo para definição, fórmula, fonte e cuidados (cartão metodológico)"],
-        ["Não concluir isoladamente", "P/VP baixo ≠ barato; ROE alto ≠ risco baixo; yield alto ≠ renda garantida"],
-        ["Analisar conjuntamente", "Basileia, inadimplência e atraso por produto do conglomerado — nas páginas das instituições"]])}
-    </div>
-  </div>`;
-}
-
-
-function mktResultados(M, emp) {
-  const nomes = {};
-  M.empresas.forEach(e => {
-    const f = (e.fin || []).find(x => x.kind === "anual");
-    nomes[e.company_id] = e.legal_name.replace(/ S\.A\..*/i, "") + (f ? ` (${f.stmt})` : "");
-  });
-  const pontesSel = Object.entries(M.pontes || {}).filter(([cid]) => state.mkt.emp === "todas" || cid === state.mkt.emp);
-  if (state.mkt.emp !== "todas" && !pontesSel.length) {
-    const e = M.empresas.find(x => x.company_id === state.mkt.emp);
-    return sechead("Ponte do lucro 2024 → 2025") + `<div class="card"><p class="src">Ponte indisponível para ${e ? e.legal_name : "esta instituição"}: as linhas da DRE necessárias não estão identificáveis no plano contábil entregue à CVM (ou falta um dos exercícios). Ausência ≠ zero — os movimentos observáveis constam das abas Valuation e Capital.</p></div>`;
-  }
-  const blocos = pontesSel.map(([cid, p]) => {
-    const steps = [{ label: `Lucro ${"2024"}`, v: p.lucro_ini, tipo: "abs" }]
-      .concat(p.passos.filter(st => Math.abs(st.v) > 1e6 || st.label.startsWith("Outros")).map(st => ({ label: st.label, v: st.v, tipo: "delta", expl: st.expl })))
-      .concat([{ label: `Lucro ${"2025"}`, v: p.lucro_fim, tipo: "abs" }]);
-    const qual = (function () {
-      const c = p.conceitos;
-      const serv = Math.abs(c.servicos["2025"]), marg = Math.abs(c.margem["2025"]);
-      if (!serv || !marg) return "";
-      const share = serv / (serv + marg) * 100;
-      return `<div class="src" style="margin-top:6px"><b>Composição (qualidade do lucro):</b> serviços representam ${fmt.n(share, 0)}% da soma margem+serviços em 2025 — receitas de serviços e margem tendem a ser mais recorrentes que tesouraria e itens extraordinários. Volatilidade e persistência trimestral: <span class="seal aprox">INDISPONÍVEL</span> (série trimestral longa não integrada).</div>`;
-    })();
-    return `<div class="card">
-      <h4>${p.frase ? "O que explicou a variação do lucro — " + nomes[cid] : "Ponte do lucro (decomposição parcial) — " + nomes[cid]} ${badge("observado", "linhas da DRE (CVM)")} ${badge("calculado", p.nota)}</h4>
-      <div class="src" style="margin-bottom:6px">A ponte mostra quais componentes explicaram a diferença entre o lucro de 2024 e o de 2025. Barras verdes contribuíram para aumentar o resultado; vermelhas reduziram. "Outros" fecha a identidade contábil.</div>
-      ${waterfallChart(steps, 720, 280)}
-      ${p.frase ? `<div class="note" style="margin-top:8px"><b>Leitura automática:</b> ${p.frase} <span class="src">[Δ das linhas da DRE 2024→2025; resíduo ${fmt.n(p.residuo / 1e9, 2)} bi]</span></div>`
-        : `<div class="note warn" style="margin-top:8px"><b>Leitura automática suprimida:</b> a decomposição por linhas identificáveis não fecha adequadamente (resíduo de R$ ${fmt.n(p.residuo / 1e9, 1)} bi — o plano contábil desta companhia concentra parte relevante do resultado em linhas não decompostas, como tesouraria). Mostramos apenas os movimentos observáveis.</div>`}
-      ${qual}
-      ${entenda("ponte" + cid, [["Pergunta", "o lucro cresceu por margem, serviços, eficiência, menor provisão ou itens não recorrentes?"],
-        ["Como ler", "cada barra é a VARIAÇÃO 2024→2025 daquele componente; a soma das barras + resíduo = Δ lucro"],
-        ["Cuidado", "planos contábeis variam entre companhias (correspondência textual declarada); componentes ausentes não significam zero"]])}
-    </div>`;
-  }).join("");
-  return sechead("Ponte do lucro 2024 → 2025", "DRE oficial (CVM) · decomposição por conceito com identidade verificada") + `<div style="display:grid;gap:22px">${blocos}</div>`;
-}
-
-function mktCapital(M, emp) {
-  const nomes = {};
-  M.empresas.forEach(e => { nomes[e.company_id] = e.legal_name.replace(/ S\.A\..*/i, "") + (M.congl_lookup && M.congl_lookup[e.company_id] ? " — " + M.congl_lookup[e.company_id] : ""); });
-  const capitalSel = Object.entries(M.capital || {}).filter(([cid]) => state.mkt.emp === "todas" || cid === state.mkt.emp);
-  if (state.mkt.emp !== "todas" && !capitalSel.length) {
-    const e = M.empresas.find(x => x.company_id === state.mkt.emp);
-    return sechead("Geração e consumo de capital — movimentos observáveis") + `<div class="card"><p class="src">Waterfall de capital indisponível para ${e ? e.legal_name : "esta instituição"}: o conglomerado correspondente não reporta Patrimônio de Referência no IF.data integrado (ou a correspondência de entidades está pendente — ver aba Entidades).</p></div>`;
-  }
-  const blocos = capitalSel.map(([cid, c]) => {
-    const steps = [
-      { label: `PR ${fmtTri(c.de)}`, v: c.pr_inicial, tipo: "abs" },
-      { label: "Lucro do período", v: c.lucro_acumulado_periodo, tipo: "delta", expl: "lucro do conglomerado (IF.data) no intervalo" },
-      { label: "Proventos", v: -(c.proventos_periodo || 0), tipo: "delta", expl: "dividendos + JCP da companhia listada (último exercício) — aproximação de correspondência" },
-      { label: "Outros (não decompostos)", v: c.outros, tipo: "delta", expl: "OCI, emissões/recompras, ajustes prudenciais, perímetro" },
-      { label: `PR ${fmtTri(c.ate)}`, v: c.pr_final, tipo: "abs" },
-    ];
-    const rwaG = c.rwa_inicial && c.rwa_final ? (c.rwa_final / c.rwa_inicial - 1) * 100 : null;
-    return `<div class="card">
-      <h4>Movimentos observáveis do capital — ${nomes[cid]} ${badge("observado", "PR/RWA do IF.data; proventos da B3")} ${badge("calculado", c.nota)}</h4>
-      <div class="src" style="margin-bottom:6px">Um banco precisa gerar capital para absorver riscos, crescer e distribuir. Crescimento forte do RWA consome capital mesmo com lucro — por isso Basileia pode cair com lucro recorde. Sem decomposição artificial: o que a fonte não separa fica em "Outros".</div>
-      ${waterfallChart(steps, 720, 270)}
-      ${leitura([["O que mudou", `Basileia ${fmt.n(c.basileia_inicial, 1)}% → ${fmt.n(c.basileia_final, 1)}%` + (rwaG != null ? ` · RWA ${fmt.pp(rwaG)}% no período` : "")],
-        ["Por que importa", "distribuir mais do que gera (payout > 100%) reduz o colchão para crescer e absorver perdas"],
-        ["Cuidado", "PR é do CONGLOMERADO; proventos são da COMPANHIA listada — correspondência declarada na aba Entidades"]])}
-    </div>`;
-  }).join("");
-  return sechead("Geração e consumo de capital — movimentos observáveis", "IF.data (PR, RWA, Basileia) + proventos B3") + `<div style="display:grid;gap:22px">${blocos}</div>` +
-    `<div class="note">Funding decomposto (depósitos à vista/poupança/prazo/letras), LCR/NSFR e exposições fora do balanço: <span class="seal aprox">INDISPONÍVEL</span> — relatórios de passivo detalhado e Pilar 3 não integrados nesta fase (registrado no backlog). A dependência de captações totais aparece no Comparar instituições (métrica "Captações").</div>`;
-}
-
-const SCR_STATE = { modo: "listadas", froe: "", fbas: "", fnpl: "", fativo: "", sort: "ativo", dir: -1 };
-window.scrSet = (k, v) => { SCR_STATE[k] = v; renderMarket(); };
-window.scrSort = k => { if (SCR_STATE.sort === k) SCR_STATE.dir *= -1; else { SCR_STATE.sort = k; SCR_STATE.dir = -1; } renderMarket(); };
-function mktScreener(M) {
-  const S = state.data.screener;
-  if (S === undefined) { fetchGold("screener").then(() => renderMarket()); return loadingCard("screener"); }
-  if (!S) return goldIndisponivel("screener", "screener");
-  const st = SCR_STATE;
-  const num = x => x === "" ? null : parseFloat(x);
-  let rows;
-  if (st.modo === "listadas") {
-    rows = M.valuation.map(v => ({ cod: v.ticker, nome: state.data.market.empresas.find(e => e.company_id === v.company_id).legal_name, sr: "", nivel: "listada",
-      ativo: null, roe: v.roe_cia, basileia: null, npl: null, pvp: v.pvp, pl: v.pl_ratio, yield12: v.yield_12m, payout: v.payout, ret12: M.janelas[v.ticker].total.a12, dd: M.janelas[v.ticker].drawdown.atual, mcap: v.mcap }));
-  } else {
-    rows = S.linhas.map(r => ({ ...r, pvp: null, pl: null, yield12: null, payout: null, ret12: null, dd: null, mcap: null }));
-    if (num(st.froe) != null) rows = rows.filter(r => r.roe != null && r.roe >= num(st.froe));
-    if (num(st.fbas) != null) rows = rows.filter(r => r.basileia != null && r.basileia >= num(st.fbas));
-    if (num(st.fnpl) != null) rows = rows.filter(r => r.npl != null && r.npl <= num(st.fnpl));
-    if (num(st.fativo) != null) rows = rows.filter(r => r.ativo != null && r.ativo >= num(st.fativo) * 1e9);
-  }
-  rows = rows.slice().sort((a, b) => { const x = a[st.sort], y = b[st.sort]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : -1) * st.dir; });
-  const shown = rows.slice(0, 100);
-  const th = (k, l, tip2) => `<th onclick="scrSort('${k}')" style="text-align:right" title="${tip2 || "ordenar"}">${l}${st.sort === k ? (st.dir < 0 ? " ↓" : " ↑") : ""}</th>`;
-  const na = "<span class='src'>n/a</span>";
-  const linha = r => `<tr class="clickable" onclick="${r.nivel === "listada" ? `mktSet('tab','valuation')` : `openInstPage('${r.cod}')`}">
-    <td><b>${(r.nome || r.cod).slice(0, 34)}</b><div class="src">${r.nivel === "listada" ? r.cod + " · listada" : (r.sr || "") + " · " + r.nivel}</div></td>
-    <td style="text-align:right">${r.ativo != null ? fmt.money(r.ativo) : na}</td>
-    <td style="text-align:right">${r.roe != null ? fmt.n(r.roe, 1) + "%" : na}</td>
-    <td style="text-align:right">${r.basileia != null ? fmt.n(r.basileia, 1) + "%" : na}</td>
-    <td style="text-align:right">${r.npl != null ? fmt.n(r.npl, 2) + "%" : na}</td>
-    <td style="text-align:right">${r.cresc4t != null ? fmt.pp(r.cresc4t) + "%" : na}</td>
-    <td style="text-align:right">${r.pvp != null ? fmt.n(r.pvp, 2) + "×" : na}</td>
-    <td style="text-align:right">${r.yield12 != null ? fmt.n(r.yield12, 1) + "%" : na}</td>
-    <td style="text-align:right">${r.ret12 != null ? fmt.pp(r.ret12) + "%" : na}</td></tr>`;
-  return `
-  ${sechead("Screener de instituições", `ferramenta de pesquisa — não constitui recomendação de investimento`)}
-  <div class="card">
-    <div class="controls">
-      <span class="seg"><button class="${st.modo === "listadas" ? "active" : ""}" onclick="scrSet('modo','listadas')">listadas (${M.valuation.length})</button><button class="${st.modo === "reguladas" ? "active" : ""}" onclick="scrSet('modo','reguladas')">todas as reguladas (${S.n})</button></span>
-      ${st.modo === "reguladas" ? `
-      <label>ROE ≥ <input type="text" value="${st.froe}" style="width:52px" onchange="scrSet('froe', this.value)" aria-label="ROE mínimo">%</label>
-      <label>Basileia ≥ <input type="text" value="${st.fbas}" style="width:52px" onchange="scrSet('fbas', this.value)" aria-label="Basileia mínima">%</label>
-      <label>Inad. ≤ <input type="text" value="${st.fnpl}" style="width:52px" onchange="scrSet('fnpl', this.value)" aria-label="inadimplência máxima">%</label>
-      <label>Ativos ≥ <input type="text" value="${st.fativo}" style="width:60px" onchange="scrSet('fativo', this.value)" aria-label="ativos mínimos">R$ bi</label>` : ""}
-      <span class="src">${rows.length} resultado(s)${rows.length > 100 ? " · exibindo top-100" : ""} · data-base ${st.modo === "listadas" ? fmt.d(M.valuation[0].data_preco) : fmtTri(S.data_base)}</span>
-    </div>
-    <div class="tblwrap"><table class="data compact rankmini"><thead><tr><th>Instituição</th>${th("ativo", "Ativos")}${th("roe", "ROE", "listadas: ROE da companhia (CVM); reguladas: ROE do período IF.data")}${th("basileia", "Basileia")}${th("npl", "Inad. >90d")}${th("cresc4t", "Δ carteira 4T")}${th("pvp", "P/VP")}${th("yield12", "Yield 12m")}${th("ret12", "Ret. total 12m")}</tr></thead>
-    <tbody>${shown.map(linha).join("")}</tbody></table></div>
-    ${leitura([["Como interpretar", "métricas de mercado só existem para as listadas do piloto — 'n/a' nas demais (nunca zero)"],
-      ["Filtros", "aplicam-se ao modo 'todas as reguladas' sobre fundamentos IF.data; ausência de dado exclui a instituição do filtro correspondente"],
-      ["Cuidado", "um ranking não é conclusão de risco: ROE alto pode vir de alavancagem; P/VP baixo pode refletir risco percebido"]])}
-  </div>`;
-}
-
-function mktEntidades(M) {
-  const erow = e => `<tr>
-    <td><b>${e.legal_name}</b><div class="src">CNPJ ${e.cnpj} · CVM ${e.cvm_code} · ${e.listing_segment}</div></td>
-    <td>${e.tickers.map(t => `<span class="chip">${t.ticker} <span class="src" style="display:inline">${t.share_class}</span></span>`).join(" ")}</td>
-    <td>${(function(){ const cc = e.congl_cod || (state.data.market.congl_lookup || {})[e.company_id]; return cc ? `<span class="clickable" onclick="openInstPage('${cc}')" style="color:var(--accent)">${cc} →</span>` : "<span class='src'>correspondência pendente</span>"; })()}</td>
-    <td class="src">${e.natureza}</td>
-    <td class="src">${e.perfil}</td></tr>`;
-  return `
-  ${sechead("Correspondência entre companhia listada, ação e conglomerado", "preço é da AÇÃO; lucro/PL são da COMPANHIA (CVM); indicadores regulatórios são do CONGLOMERADO (IF.data)")}
-  <div class="card">
-    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia listada</th><th>Ações</th><th>Conglomerado prudencial</th><th>Natureza</th><th>Perfil no piloto</th></tr></thead>
-    <tbody>${M.empresas.map(erow).join("")}</tbody></table></div>
-  </div>
-  ${sechead("Metodologia e fontes desta área")}
-  <div class="card"><div class="src" style="line-height:2">
-    ${Object.entries(M.fontes).map(([k, v]) => `<b>${k}:</b> ${v}<br>`).join("")}
-    ${Object.entries(M.metodologia).map(([k, v]) => `<b>${k}:</b> ${v}<br>`).join("")}
-    <b>Valor de mercado por empresa:</b> ${M.valuation.map(v => `${v.ticker}: ${v.nota_mcap}`).join(" · ")}<br>
-    <b>Indisponíveis (fase seguinte ou sem fonte pública):</b> excesso vs. Ibovespa e beta (série oficial gratuita descontinuada em 2019) · ponte do lucro e qualidade do lucro (exigem parse das linhas da DRE — próxima fase) · funding decomposto, LCR/NSFR e exposições fora do balanço (relatórios não integrados) · consenso de mercado.
-  </div></div>`;
-}
-
 /* ---------- cabeçalho editorial padrão (padrão da Visão geral) ---------- */
 
 
@@ -3614,6 +3243,144 @@ function placar(itens) {
   return `<div class="kpirow">${itens.filter(i => i && i.v != null).map(i => `<div class="card kpi${i.href ? " clickable" : ""}"${i.href ? ` onclick="var n=document.querySelector('${i.href}'); n && n.scrollIntoView({behavior:'smooth'})"` : ""}><h4>${i.l}</h4><div class="big" style="font-size:22px">${i.v}</div><div class="src">${i.sub || ""}</div></div>`).join("")}</div>`;
 }
 
+/* ---------- padrão de abertura (avaliação de 06/09/2026, §3.3 e §4.2) ----------
+   Toda aba temática abre na mesma ordem: pergunta (pageHead), quatro números datados
+   (placar), síntese determinística de até três frases, e só então gráfico, método e
+   ressalvas. A síntese é montada no navegador a partir dos números do gold com regras
+   fixas; nunca é texto livre. */
+function abertura(o) {
+  const itens = (o.placar || []).filter(i => i && i.v != null);
+  const frases = (o.sintese || []).filter(Boolean);
+  if (!itens.length && !frases.length) return "";
+  return `<div class="abertura">${itens.length ? placar(itens) : ""}
+    ${frases.length ? `<p class="pan-sintese">${frases.join(" ")}</p>` : ""}
+    ${o.ref ? `<div class="src">Síntese determinística · ${o.ref}</div>` : ""}</div>`;
+}
+const _ult = s => s && s.obs && s.obs.length ? s.obs[s.obs.length - 1] : null;
+const _yoy = s => s && s.yoy && s.yoy.length ? s.yoy[s.yoy.length - 1].v : null;
+const _d12 = s => s && s.obs && s.obs.length >= 13 ? s.obs[s.obs.length - 1].v - s.obs[s.obs.length - 13].v : null;
+const _pp1 = v => v == null ? "–" : (v > 0 ? "+" : "") + fmt.n(v, 1);
+const _mediana = arr => { const a = arr.filter(v => v != null && isFinite(v)).sort((x, y) => x - y); return a.length ? a[Math.floor(a.length / 2)] : null; };
+
+/* ---------- glossário por aba (avaliação de 06/09/2026, A8) ----------
+   Um verbete por termo, marcado na PRIMEIRA ocorrência visível de cada aba (dfn.verbete
+   com tooltip acessível por foco e toque). A lista é curta de propósito: siglas de fonte,
+   réguas estatísticas e segmentações que o leitor encontra sem explicação no texto. */
+const GLOSSARIO = [
+  { t: "SCR", re: "SCR(?:\\.data)?", d: "Sistema de Informações de Crédito do Banco Central: registro operação a operação de todo crédito no SFN, publicado agregado por UF, modalidade e porte (SCR.data)." },
+  { t: "IF.data", re: "IF\\.data", d: "Base pública do BCB com balanço, capital e carteira de cada instituição, trimestral, publicada na Olinda e na interface web." },
+  { t: "SGS", re: "SGS", d: "Sistema Gerenciador de Séries Temporais do BCB: séries agregadas do sistema (saldo, concessões, taxas, inadimplência), quase todas mensais." },
+  { t: "S1 a S5", re: "S[1-5]", d: "Segmentos prudenciais do BCB (Res. CMN 4.553/2017): S1 grandes ou com atividade internacional, S2 entre 1% e 10% do PIB, S3, S4 e S5 progressivamente menores, com exigências decrescentes." },
+  { t: "DataJud", re: "DataJud", d: "Base nacional do CNJ com os metadados de todos os processos judiciais, por tribunal; os meses recentes chegam com atraso e sobem nas cargas seguintes." },
+  { t: "IBCC", re: "IBCC", d: "Índice de Condições de Crédito do Observatório: combina oferta, preço, qualidade e capacidade de pagamento numa só régua; 100 é a média histórica e o percentil diz onde o mês está na própria história." },
+  { t: "p50", re: "p50", d: "Mediana da projeção: metade dos caminhos simulados fica abaixo. p10 e p90 delimitam a banda em que 80% dos caminhos caem." },
+  { t: "z-score", re: "z-score", d: "Distância de um valor à média histórica da própria série, em desvios-padrão: +1 é um desvio acima da média; nunca compara séries diferentes." },
+  { t: "txjuros", re: "txjuros", d: "Base do BCB com as taxas médias de juros por instituição e modalidade, publicada por período de cinco dias úteis." },
+  { t: "PIM", re: "PIM(?:-PF)?", d: "Pesquisa Industrial Mensal do IBGE: volume físico da produção da indústria, base 2022 = 100." },
+  { t: "PMS", re: "PMS", d: "Pesquisa Mensal de Serviços do IBGE: volume do setor de serviços, base 2022 = 100." },
+  { t: "PMC", re: "PMC", d: "Pesquisa Mensal de Comércio do IBGE: volume de vendas do varejo, base 2022 = 100." },
+  { t: "Basileia", re: "Basileia", d: "Índice de Basileia: capital regulatório dividido pelos ativos ponderados pelo risco (RWA). Mínimo de 8% mais os adicionais de conservação e sistêmico." },
+  { t: "RWA", re: "RWA", d: "Ativos ponderados pelo risco: base do índice de Basileia; cada exposição pesa conforme o risco atribuído pela regulação." },
+  { t: "LCR", re: "LCR", d: "Índice de liquidez de curto prazo: ativos líquidos sobre saídas de caixa em 30 dias de estresse; mínimo regulatório de 100%." },
+  { t: "ESTBAN", re: "ESTBAN", d: "Estatística Bancária Mensal por município do BCB: saldos contábeis das agências, a única fonte pública de crédito no nível municipal." },
+  { t: "Selic", re: "Selic", d: "Taxa básica de juros da economia. A meta é fixada pelo Copom e vale até a reunião seguinte." },
+  { t: "Focus", re: "Focus", d: "Pesquisa Focus do BCB: mediana semanal das expectativas do mercado para Selic, inflação, PIB e câmbio." },
+  { t: "IPCA", re: "IPCA", d: "Índice Nacional de Preços ao Consumidor Amplo, do IBGE: o índice oficial de inflação, usado aqui para deflacionar séries nominais." },
+  { t: "Caged", re: "(?:Novo )?Caged", d: "Cadastro Geral de Empregados e Desempregados, do Ministério do Trabalho: admissões e desligamentos formais de cada mês." },
+  { t: "CNAE", re: "CNAE", d: "Classificação Nacional de Atividades Econômicas do IBGE, usada para agrupar empresas por setor." },
+  { t: "TCB", re: "TCB", d: "Tipo de consolidado bancário no IF.data: B1 e B2 bancos, B3 cooperativas, B4 bancos de desenvolvimento, N instituições não bancárias." },
+  { t: "Sicor", re: "Sicor", d: "Sistema de Operações do Crédito Rural e do Proagro, do BCB: cada contrato de crédito rural, com finalidade, produto e município." },
+  { t: "FIDC", re: "FIDCs?", d: "Fundo de Investimento em Direitos Creditórios: fundo que compra recebíveis; a inadimplência da carteira é informada mensalmente à CVM." },
+  { t: "CRI e CRA", re: "CRI(?:/CRA)?", d: "Certificados de Recebíveis Imobiliários e do Agronegócio: títulos lastreados em créditos, registrados na CVM." },
+  { t: "PGFN", re: "PGFN", d: "Procuradoria-Geral da Fazenda Nacional: administra a dívida ativa da União e publica a lista de devedores." },
+  { t: "DJEN", re: "DJEN", d: "Diário de Justiça Eletrônico Nacional do CNJ: publicações processuais de todos os tribunais." },
+  { t: "Pilar 3", re: "Pilar 3", d: "Relatório de divulgação prudencial obrigatório (Res. BCB 54/2020); a tabela KM1 traz capital, Basileia, LCR e alavancagem de cada banco." },
+  { t: "PAS", re: "PAS", d: "Processo administrativo sancionador: rito em que BCB ou CVM apuram infrações e aplicam penalidades." },
+  { t: "CET", re: "CET", d: "Custo Efetivo Total: juros mais tarifas, seguros e encargos da operação, em percentual ao ano." },
+  { t: "HHI", re: "HHI", d: "Índice Herfindahl-Hirschman de concentração: soma dos quadrados das participações de mercado; acima de 2.500 é concentração alta." },
+  { t: "CUSUM", re: "CUSUM", d: "Teste de soma acumulada: acusa mudança persistente no nível de uma série, sem dizer a causa." },
+  { t: "Olinda", re: "Olinda", d: "Portal de dados abertos do BCB, com API padronizada (OData)." },
+  { t: "a/a", re: "a/a", d: "Variação sobre o mesmo mês (ou trimestre) do ano anterior." },
+];
+let GLOSS_RE = null;
+function marcaVerbetes(root) {
+  if (!root) return;
+  if (!GLOSS_RE) {
+    GLOSS_RE = new RegExp("(^|[^\\w./-])(" + GLOSSARIO.map(g => g.re).join("|") + ")(?![\\w-])", "g");
+    GLOSSARIO.forEach(g => { g.rx = new RegExp("^(?:" + g.re + ")$"); });
+  }
+  const SKIP = new Set(["A", "BUTTON", "SELECT", "OPTION", "INPUT", "TEXTAREA", "SCRIPT", "STYLE", "CODE", "PRE", "DFN", "svg", "SVG", "H2", "SUMMARY", "LABEL"]);
+  const vistos = new Set();
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => {
+    for (let p = n.parentNode; p && p !== root; p = p.parentNode) {
+      if (SKIP.has(p.nodeName) || (p.classList && p.classList.contains("sem-verbete"))) return NodeFilter.FILTER_REJECT;
+    }
+    return NodeFilter.FILTER_ACCEPT;
+  } });
+  const nos = []; let n;
+  while ((n = walker.nextNode())) nos.push(n);
+  for (const no of nos) {
+    const txt = no.nodeValue;
+    if (!txt || txt.length < 3) continue;
+    GLOSS_RE.lastIndex = 0;
+    let m, ultimo = 0, frag = null;
+    while ((m = GLOSS_RE.exec(txt))) {
+      const g = GLOSSARIO.find(x => x.rx.test(m[2]));
+      if (!g || vistos.has(g.t)) continue;
+      vistos.add(g.t);
+      if (!frag) frag = document.createDocumentFragment();
+      const ini = m.index + m[1].length;
+      frag.appendChild(document.createTextNode(txt.slice(ultimo, ini)));
+      const d = document.createElement("dfn");
+      d.className = "verbete"; d.tabIndex = 0; d.textContent = m[2];
+      d.setAttribute("data-def", g.d); d.setAttribute("aria-label", `${m[2]}: ${g.d}`);
+      frag.appendChild(d);
+      ultimo = ini + m[2].length;
+    }
+    if (frag) { frag.appendChild(document.createTextNode(txt.slice(ultimo))); no.parentNode.replaceChild(frag, no); }
+    if (vistos.size === GLOSSARIO.length) break;
+  }
+}
+/* tooltip único, fixo na viewport (não é cortado por tabelas com rolagem) */
+function verbeteTip(d, mostrar) {
+  let tip = document.getElementById("verbeteTip");
+  if (!tip) { tip = document.createElement("div"); tip.id = "verbeteTip"; tip.className = "tooltip"; tip.setAttribute("role", "tooltip"); document.body.appendChild(tip); }
+  if (!mostrar) { tip.style.display = "none"; return; }
+  tip.innerHTML = `<div class="tt-date">${d.textContent}</div>${d.getAttribute("data-def")}`;
+  tip.style.display = "block";
+  const r = d.getBoundingClientRect(), w = Math.min(320, window.innerWidth - 16), tw = Math.min(w, tip.offsetWidth || w);
+  let x = r.left; if (x + tw > window.innerWidth - 8) x = Math.max(8, window.innerWidth - 8 - tw);
+  let y = r.bottom + 6; if (y + tip.offsetHeight > window.innerHeight - 8) y = Math.max(8, r.top - tip.offsetHeight - 6);
+  tip.style.left = x + "px"; tip.style.top = y + "px"; tip.style.maxWidth = w + "px";
+}
+document.addEventListener("mouseover", e => { const d = e.target.closest && e.target.closest("dfn.verbete"); if (d) verbeteTip(d, true); });
+document.addEventListener("mouseout", e => { const d = e.target.closest && e.target.closest("dfn.verbete"); if (d) verbeteTip(d, false); });
+document.addEventListener("focusin", e => { const d = e.target.closest && e.target.closest("dfn.verbete"); if (d) verbeteTip(d, true); });
+document.addEventListener("focusout", e => { const d = e.target.closest && e.target.closest("dfn.verbete"); if (d) verbeteTip(d, false); });
+/* toda re-renderização de uma vista (inclusive as assíncronas, que chamam o render
+   direto) passa pela marcação: o observador ignora as mutações que ele mesmo causa */
+(function observaVerbetes() {
+  const main = document.getElementById("main");
+  if (!main || typeof MutationObserver === "undefined") return;
+  let agendado = false;
+  const obs = new MutationObserver(() => {
+    if (agendado) return;
+    agendado = true;
+    requestAnimationFrame(() => {
+      agendado = false;
+      document.querySelectorAll("#main section.view.active").forEach(marcaVerbetes);
+      obs.takeRecords();
+    });
+  });
+  obs.observe(main, { childList: true, subtree: true });
+})();
+function glossarioHtml() {
+  return `<div class="card" id="met-glossario"><h4>Glossário: termos marcados nas abas</h4>
+    <p class="src">Cada termo abaixo aparece sublinhado na primeira ocorrência de cada aba; passar o mouse, tocar ou focar mostra o verbete.</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Termo</th><th>O que é</th></tr></thead>
+    <tbody class="sem-verbete">${GLOSSARIO.map(g => `<tr><td><b>${g.t}</b></td><td class="src">${g.d}</td></tr>`).join("")}</tbody></table></div></div>`;
+}
+
 window.ovSaveView = () => {
   const nome = prompt("Nome desta visão (filtros atuais serão salvos):");
   if (!nome) return;
@@ -4074,7 +3841,26 @@ function renderOverview() {
   const rodapeOcultas = ocultas.length && !ovPersonalizando
     ? `<div class="src" style="margin-top:18px">Seções ocultas nesta página: ${ocultas.join(" · ")} · <a href="javascript:void(0)" onclick="ovTogglePersonalizar()">personalizar</a></div>`
     : "";
-  el.innerHTML = pagehead + boasVindas + painelPersonalizar +
+  /* abertura padrão: quatro números datados e síntese antes de qualquer bloco */
+  const sSaldo = pulse.series[`saldo_${seg}`], sInad = pulse.series[`inad_${seg}`], sConc = pulse.series[`concessoes_${seg}`];
+  const uS = _ult(sSaldo), uI = _ult(sInad), uC = _ult(sConc);
+  const projSeg = (overview.projecoes_resumo || {})[`inad_${seg}`];
+  const p12 = projSeg && projSeg.ok && projSeg.pontos && projSeg.pontos.length ? projSeg.pontos[projSeg.pontos.length - 1] : null;
+  const aberturaHtml = abertura({
+    placar: [
+      { l: `Saldo de crédito · ${segName().toLowerCase()}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sSaldo) != null ? fmt.pp(_yoy(sSaldo)) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
+      { l: "Inadimplência acima de 90 dias", v: uI ? fmt.pct(uI.v, 2) : null, sub: uI ? `${_d12(sInad) != null ? fmt.pp(_d12(sInad)) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uI.ref)}` : "" },
+      { l: "Concessões no mês", v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sConc) != null ? fmt.pp(_yoy(sConc)) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
+      { l: "Condições de crédito (IBCC)", v: pos && pos.atual != null ? fmt.n(pos.atual, 1) : null, sub: pos ? `percentil histórico ${fmt.n(pos.percentil_historico, 0)} · ${classif[1].toLowerCase()} · ${fmt.my(pos.ref)}` : "" },
+    ],
+    sintese: [
+      diag && diag.frase,
+      uS && _yoy(sSaldo) != null ? `O saldo cresce ${fmt.n(_yoy(sSaldo), 1)}% em doze meses${uC && _yoy(sConc) != null ? ` e as concessões do mês ${_yoy(sConc) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sConc)), 1)}% a/a` : ""}.` : null,
+      p12 ? `A projeção-base leva a inadimplência a ${fmt.pct(p12.p50, 2)} em ${fmt.my(p12.ref_date)}, numa banda de ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)}.` : null,
+    ],
+    ref: `BCB/SGS ${uI ? fmt.my(uI.ref) : "–"} · IBCC ${pos ? fmt.my(pos.ref) : "–"} · ${classifRegra}`,
+  });
+  el.innerHTML = pagehead + boasVindas + aberturaHtml + painelPersonalizar +
     OV_BLOCOS.filter(([k]) => cfgBlocos[k]).map(([k, l]) =>
       (OV_BLOCO_DATA[k] || []).some(f => state.data[f] === undefined) ? loadingCard(l.toLowerCase()) : HTML_BLOCOS[k]
     ).join("\n") +
@@ -4326,6 +4112,26 @@ function renderPulse() {
   ${pageHead({ title: "Pulso do crédito",
     desc: "Séries oficiais do BCB organizadas em oferta → preço → qualidade → composição, com projeções e bandas. Estoque (saldo) e fluxo (concessões) claramente separados.",
     fontes: "BCB/SGS (códigos validados por série)" })}
+  ${(() => {
+    const sv = k => pulse.series[`${k}_${f.seg}`];
+    const uS = _ult(sv("saldo")), uC = _ult(sv("concessoes")), uT = _ult(sv("taxa")), uI = _ult(sv("inad"));
+    const fcI = pulse.previsoes[`inad_${f.seg}`], p12 = fcI && fcI.ok && fcI.pontos.length ? fcI.pontos[fcI.pontos.length - 1] : null;
+    const seg = segName().toLowerCase();
+    return abertura({
+      placar: [
+        { l: `Saldo · ${seg}`, v: uS ? fmt.brlBiDeMilhoes(uS.v) : null, sub: uS ? `${_yoy(sv("saldo")) != null ? fmt.pp(_yoy(sv("saldo"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uS.ref)}` : "" },
+        { l: `Concessões no mês · ${seg}`, v: uC ? fmt.brlBiDeMilhoes(uC.v) : null, sub: uC ? `${_yoy(sv("concessoes")) != null ? fmt.pp(_yoy(sv("concessoes"))) + "% a/a · " : ""}BCB/SGS ${fmt.my(uC.ref)}` : "" },
+        { l: "Taxa média de juros", v: uT ? fmt.pct(uT.v, 1) + " a.a." : null, sub: uT ? `${_d12(sv("taxa")) != null ? fmt.pp(_d12(sv("taxa"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uT.ref)}` : "" },
+        { l: "Inadimplência acima de 90 dias", v: uI ? fmt.pct(uI.v, 2) : null, sub: uI ? `${_d12(sv("inad")) != null ? fmt.pp(_d12(sv("inad"))) + " p.p. em 12 m · " : ""}BCB/SGS ${fmt.my(uI.ref)}` : "" },
+      ],
+      sintese: [
+        uS ? `Em ${fmt.my(uS.ref)}, o saldo de crédito (${seg}) soma ${fmt.brlBiDeMilhoes(uS.v)}${_yoy(sv("saldo")) != null ? `, ${fmt.n(_yoy(sv("saldo")), 1)}% acima de um ano antes` : ""}${uC && _yoy(sv("concessoes")) != null ? `; as concessões do mês ${_yoy(sv("concessoes")) >= 0 ? "sobem" : "caem"} ${fmt.n(Math.abs(_yoy(sv("concessoes"))), 1)}% a/a` : ""}.` : null,
+        uT && uI ? `A taxa média está em ${fmt.pct(uT.v, 1)} ao ano e a inadimplência acima de 90 dias em ${fmt.pct(uI.v, 2)}${_d12(sv("inad")) != null ? ` (${fmt.pp(_d12(sv("inad")))} p.p. em doze meses)` : ""}.` : null,
+        p12 ? `A projeção-base leva a inadimplência a ${fmt.pct(p12.p50, 2)} em ${fmt.my(p12.ref_date)}, banda de ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)}.` : null,
+      ],
+      ref: `BCB/SGS ${uI ? fmt.my(uI.ref) : "–"} · variações a/a nominais · projeção pelo ensemble descrito em Metodologia`,
+    });
+  })()}
   <div class="controls">
     ${segTabs()}
     <span class="seg">${[[24, "2 anos"], [60, "5 anos"], [200, "máx."]].map(([n, l]) => `<button class="${f.range === n ? "active" : ""}" onclick="setFilter('range',${n})">${l}</button>`).join("")}</span>
@@ -4434,6 +4240,28 @@ function renderSectors() {
   ${pageHead({ title: "Risco setorial",
     desc: "Score de estresse por atividade a partir do volume real de cada setor — indústria (PIM), serviços (PMS) e comércio (PMC) —, das condições de crédito PJ e do emprego formal da seção CNAE (Novo Caged). Não é inadimplência setorial (indisponível nas fontes públicas). Cada setor abre uma ficha completa.",
     fontes: "IBGE PIM-PF · PMS · PMC, BCB/SGS (crédito PJ), MTE/Novo Caged via BCB/SGS (emprego), BCB IF.data (exposições)" })}
+  ${(() => {
+    const st = sectors.setores || [];
+    const elevados = st.filter(x => /elevado/.test(x.faixa || ""));
+    const piorando = st.filter(x => x.tendencia === "piorando");
+    const pior = st.slice().sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+    const refMax = st.map(x => x.ref).filter(Boolean).sort().pop();
+    const med = _mediana(st.map(x => x.yoy_producao_pct));
+    return abertura({
+      placar: [
+        { l: "Atividades monitoradas", v: st.length ? fmt.n0(st.length) : null, sub: "IBGE PIM-PF, PMS e PMC · uma linha por atividade" },
+        { l: "Em estresse elevado", v: st.length ? fmt.n0(elevados.length) : null, sub: `${fmt.pct(st.length ? elevados.length / st.length * 100 : null, 0)} das atividades · faixa do score` },
+        { l: "Piorando em três meses", v: st.length ? fmt.n0(piorando.length) : null, sub: "tendência do score" },
+        { l: "Volume a/a mediano", v: fmt.pct(med, 1), sub: refMax ? `IBGE ${fmt.my(refMax)}` : "" },
+      ],
+      sintese: [
+        st.length ? `${elevados.length} das ${st.length} atividades acompanhadas estão em estresse elevado e ${piorando.length} pioram na janela de três meses.` : null,
+        pior ? `O maior score é de ${pior.nome} (${fmt.n(pior.score, 1)}, ${pior.tendencia}), com volume ${_pp1(pior.yoy_producao_pct)}% a/a.` : null,
+        "O score compara cada atividade com a própria história; não é inadimplência setorial, que as fontes públicas não publicam.",
+      ],
+      ref: `IBGE ${refMax ? fmt.my(refMax) : "–"} · emprego ${sectors.emprego_ref || "–"} · regras em Metodologia`,
+    });
+  })()}
   <div class="note warn"><b>Transparência:</b> ${sectors.aviso_demo}<br>Método: ${sectors.metodo}<br>Limitações: ${sectors.limitacoes}</div>
   ${blocos}
   ${renderExposuresSection()}
@@ -4645,6 +4473,28 @@ function renderRJ() {
   ${pageHead({ title: "Recuperações e falências", seals: temReal ? badge("observado") : "",
     desc: "Ajuizamentos reais (CNJ/DataJud), fichas nominais (DJEN/Comunica PJe, quando a fonte responde) e funil processual por movimentos TPU.",
     fontes: "CNJ/DataJud, CNJ/DJEN, BrasilAPI" })}
+  ${temReal ? (() => {
+    const sr = rj.series_reais;
+    const agg = k => sr[k] && sr[k].agregado ? sr[k].agregado : null;
+    const soma12 = a => a && a.obs.length >= 12 ? a.obs.slice(-12).reduce((t, o) => t + (o.v || 0), 0) : null;
+    const aR = agg("recuperacao_judicial"), aF = agg("falencia"), uR = _ult(aR), uF = _ult(aF);
+    const cob = (sr.recuperacao_judicial || {}).cobertura || "";
+    const nTrib = cob ? cob.split(",").length : 0;
+    return abertura({
+      placar: [
+        { l: "Pedidos de recuperação judicial no mês", v: uR ? fmt.n0(uR.v) : null, sub: uR ? `${_yoy(aR) != null ? _pp1(_yoy(aR)) + "% a/a · " : ""}CNJ/DataJud ${fmt.my(uR.ref)}` : "" },
+        { l: "Recuperações em doze meses", v: fmt.n0(soma12(aR)), sub: uR ? `até ${fmt.my(uR.ref)}` : "" },
+        { l: "Falências decretadas no mês", v: uF ? fmt.n0(uF.v) : null, sub: uF ? `${_yoy(aF) != null ? _pp1(_yoy(aF)) + "% a/a · " : ""}${fmt.n0(soma12(aF))} em doze meses` : "" },
+        { l: "Tribunais cobertos", v: nTrib ? fmt.n0(nTrib) : null, sub: cob },
+      ],
+      sintese: [
+        uR ? `Nos ${nTrib} tribunais cobertos, foram ${fmt.n0(uR.v)} pedidos de recuperação judicial em ${fmt.my(uR.ref)}${_yoy(aR) != null ? ` (${_pp1(_yoy(aR))}% a/a)` : ""}${uF ? ` e ${fmt.n0(uF.v)} falências decretadas` : ""}.` : null,
+        soma12(aR) != null ? `Em doze meses, ${fmt.n0(soma12(aR))} recuperações${soma12(aF) != null ? ` e ${fmt.n0(soma12(aF))} falências` : ""}.` : null,
+        "Os meses recentes sobem nas cargas seguintes do DataJud; a queda no fim da série é latência da fonte até a data-base avançar.",
+      ],
+      ref: `CNJ/DataJud ${uR ? fmt.my(uR.ref) : "–"} · agregado dos tribunais listados, não o país`,
+    });
+  })() : ""}
   ${temReal ? rjRealSection() : `<div class="card"><p class="src">Séries do DataJud ainda não coletadas nesta execução.</p></div>`}
   ${ponte("Quais bancos estão mais expostos aos setores em RJ — Exposições setoriais", "sectors", "sec-exposicoes",
     "cruzamento manual e com cautela: RJs por setor não implicam perda nos credores — a exposição mostra onde o risco moraria SE se materializasse")}`;
@@ -4723,6 +4573,28 @@ function renderInstitutions() {
   ${pageHead({ title: "Instituições",
     desc: "Conglomerados prudenciais comparados dentro do próprio grupo de pares (S1–S5), com mediana, quartis e variação trimestral. Cada linha abre a página completa da instituição.",
     fontes: "BCB IF.data (Olinda + interface)" })}
+  ${(() => {
+    const todos = inst.instituicoes || [];
+    const nAlto = todos.filter(i => /elevado/.test(i.faixa || "")).length;
+    const nPiora = todos.filter(i => i.score_delta != null && i.score_delta > 0).length;
+    const basMed = _mediana(todos.map(i => i.basileia_pct));
+    const N = state.data.npl && state.data.npl.ok ? state.data.npl : null;
+    const tri = fmtTri(inst.anomes);
+    return abertura({
+      placar: [
+        { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}` },
+        { l: "Em risco elevado ou muito elevado", v: todos.length ? fmt.n0(nAlto) : null, sub: `${fmt.n0(nPiora)} pioraram o score no trimestre` },
+        { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
+        { l: "Inadimplência mediana", v: N ? fmt.pct(N.sistema.mediana_inad_pct, 2) : null, sub: N ? `${fmt.n0(N.n_instituicoes)} instituições com carteira · ${fmt.n0(N.sistema.subindo_no_trimestre)} subindo no trimestre · ${N.data_base}` : "" },
+      ],
+      sintese: [
+        todos.length ? `Dos ${todos.length} maiores conglomerados por ativo em ${tri}, ${nAlto} estão em risco elevado ou muito elevado pelo score de pares e ${nPiora} pioraram no trimestre.` : null,
+        basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
+        "O score compara cada instituição com o próprio grupo de pares (S1 a S5); é régua relativa, não nota de solvência.",
+      ],
+      ref: `BCB IF.data ${tri} · quartis por grupo de pares · método em Metodologia`,
+    });
+  })()}
   <div class="controls">
     <input id="instSearch" list="instList" type="text" placeholder="🔍 buscar qualquer instituição (${(state.data.inst_index && state.data.inst_index.instituicoes || []).length} com página)" style="min-width:300px;border:1px solid var(--border);border-radius:6px;padding:7px 12px" onchange="searchInst(this.value)">
     <datalist id="instList">${(state.data.inst_index && state.data.inst_index.instituicoes || []).slice(0, 1500).map(x => `<option value="${x.nome.replace(/"/g, "")} [${x.cod}]">`).join("")}</datalist>
@@ -5577,6 +5449,28 @@ function renderScenarios() {
   ${pageHead({ title: "Cenários",
     desc: "Simulação condicional sobre a projeção-base de inadimplência via elasticidades empíricas — resultado condicionado às hipóteses definidas, nunca previsão.",
     fontes: "BCB/SGS + elasticidades estimadas (documentadas)" })}
+  ${(() => {
+    const p12 = sf && sf.pontos.length ? sf.pontos[sf.pontos.length - 1] : null;
+    const ex = ((scenario.expectativas || {}).atual || {}).selic_meta;
+    const NOMES = { selic_pp: "Selic", desemprego_pp: "desemprego", pib_pp: "PIB", cambio_pct10: "câmbio" };
+    const choques = Object.entries(state.scen).filter(([, v]) => v).map(([k, v]) => `${NOMES[k] || k} ${v > 0 ? "+" : ""}${v}${k === "cambio_pct10" ? "×10%" : " p.p."}`);
+    return abertura({
+      placar: [
+        { l: `Inadimplência observada · ${segName().toLowerCase()}`, v: fmt.pct(last.v, 2), sub: `BCB/SGS ${fmt.my(last.ref)}` },
+        { l: "Projeção-base em 12 meses", v: p12 ? fmt.pct(p12.p50, 2) : null, sub: p12 ? `banda ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)} · ${fmt.my(p12.ref_date)}` : "" },
+        { l: "Cenário simulado em 12 meses", v: p12 ? fmt.pct(p12.cen50, 2) : null, sub: p12 ? `${fmt.pp(p12.cen50 - p12.p50)} p.p. sobre a base · ${choques.length ? choques.join(", ") : "sem choques"}` : "" },
+        { l: "Meta Selic vigente", v: ex ? fmt.pct(ex.v, 2) + " a.a." : null, sub: ex ? `BCB/SGS 432 · ref. ${fmt.d(ex.ref)}` : "" },
+      ],
+      sintese: [
+        p12 ? (choques.length
+          ? `Com os choques definidos (${choques.join(", ")}), a inadimplência chegaria a ${fmt.pct(p12.cen50, 2)} em ${fmt.my(p12.ref_date)}, ${fmt.pp(p12.cen50 - p12.p50)} p.p. sobre a base de ${fmt.pct(p12.p50, 2)}.`
+          : `Sem choques, a inadimplência segue a projeção-base: ${fmt.pct(p12.p50, 2)} em ${fmt.my(p12.ref_date)}, banda de ${fmt.pct(p12.p10, 2)} a ${fmt.pct(p12.p90, 2)}. Mova os controles abaixo para simular.`)
+          : "A projeção-base deste segmento não está disponível nesta execução.",
+        "As elasticidades foram estimadas para o agregado e o resultado é condicional às hipóteses; é simulação, não previsão.",
+      ],
+      ref: `BCB/SGS ${fmt.my(last.ref)} · elasticidades e método em Metodologia`,
+    });
+  })()}
   <div class="controls">
     ${segTabs()}${seg !== "total" ? `<span class="src">elasticidades estimadas para o agregado aplicadas ao segmento — aproximação adicional</span>` : ""}
   </div>
@@ -6843,13 +6737,20 @@ function renderAlerts() {
     <a class="btn ghost small" href="${DATA_BASE}report.html?v=${APP_VERSION}" target="_blank" rel="noopener">📄 relatório automático diário (HTML → imprimir = PDF)</a>
     <span class="src">para receber por e-mail: assine o RSS em qualquer serviço RSS→e-mail (ex.: Blogtrottr); periodicidade segue o pipeline diário</span>
   </div>
-  <div class="card" style="margin-top:12px">
-    <h4>Situação nesta execução</h4>
-    <p style="margin:6px 0">${C.total} alertas disparados por regras publicadas, ${abertos.length} em aberto no seu navegador.
-    ${comNivel} trazem nível declarado pela fonte; ${C.total - comNivel} vêm de fontes que não graduam severidade.</p>
-    <div class="src">${C.estado_local}<br>Processado em ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") : "–"} UTC.
-    ${(C.fontes_ausentes || []).length ? `<br><b>Famílias sem dado nesta execução:</b> ${C.fontes_ausentes.map(x => `${x.familia} (${x.motivo})`).join("; ")}` : ""}</div>
-  </div>
+  ${abertura({
+    placar: [
+      { l: "Alertas disparados", v: fmt.n0(C.total), sub: `regras publicadas · ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") + " UTC" : "–"}` },
+      { l: "Em aberto neste navegador", v: fmt.n0(abertos.length), sub: "estado gerenciado localmente" },
+      { l: "Com nível declarado pela fonte", v: fmt.n0(comNivel), sub: `${fmt.n0(C.total - comNivel)} sem gradação de severidade` },
+      { l: "Famílias observadas", v: fmt.n0(C.familias.length), sub: (C.fontes_ausentes || []).length ? `${C.fontes_ausentes.length} sem dado nesta execução` : "todas com dado nesta execução" },
+    ],
+    sintese: [
+      `${C.total} alertas vêm de regras publicadas em ${C.familias.length} famílias que observam universos diferentes; ${abertos.length} seguem em aberto neste navegador.`,
+      `${comNivel} trazem nível declarado pela fonte e ${C.total - comNivel} vêm de fontes que não graduam severidade.`,
+      (C.fontes_ausentes || []).length ? `Famílias sem dado nesta execução: ${C.fontes_ausentes.map(x => `${x.familia} (${x.motivo})`).join("; ")}.` : null,
+    ],
+    ref: `${C.estado_local} · processado em ${C.gerado_em ? C.gerado_em.slice(0, 16).replace("T", " ") : "–"} UTC`,
+  })}
   ${chips}
   <div id="alListas">${listasAlertas()}</div>
   ${entenda("al-fam", [
@@ -7140,8 +7041,8 @@ function renderMethod() {
   ${conceitosLista()}
   ${pageHead({ title: "Metodologia e fontes",
     desc: "Catálogo de séries com qualidade e linhagem, model cards, limitações declaradas e histórico de revisões — a documentação acompanha os dados.",
-    fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}\n  ${verbetesCarteiraIF(meta, false)}
-  ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-models", "Model cards"],
+    fontes: "todas as integrações listadas abaixo" })}\n  ${inadVerbete}\n  ${verbetesCarteiraIF(meta, false)}\n  ${glossarioHtml()}
+  ${subnavFixa([["#met-catalogo", "Catálogo"], ["#met-dicionario", "Dicionário"], ["#met-glossario", "Glossário"], ["#met-models", "Model cards"],
     ["#met-scores", "Score cards"], ["#met-versoes", "Versões"], ["#met-linhagem", "Linhagem"], ["#met-refs", "Referências"]])}
   <div class="grid g2">
     <div class="card"><h4>Classificação epistemológica</h4>
@@ -8585,7 +8486,24 @@ function renderEstados() {
       seals: `${badge("observado", "recorte estadual dos painéis temáticos, cada um com sua fonte e data-base")} ${badge("calculado", "posições entre as 27 UFs e agregação do municipal por UF calculadas")}`,
       desc: "As 27 unidades da federação lado a lado, e uma página por estado com tudo o que o Observatório sabe sobre o crédito ali.",
       fontes: (U.fontes || []).join(" · "),
-    }) + `<div class="controls">${seletor("")}</div>
+    }) + (() => {
+      const top = k => ufs.slice().filter(u => u.scr && u.scr[k] != null).sort((a, b) => b.scr[k] - a.scr[k])[0];
+      const tS = ord[0], tPc = top("per_capita"), tI = top("inad"), tC = top("cresc12");
+      return abertura({
+        placar: [
+          { l: "Carteira de crédito no país", v: fmt.money(B.saldo), sub: `SCR ${U.datas.scr} · 27 UFs` },
+          { l: "Crescimento em doze meses", v: B.cresc12 != null ? _pp1(B.cresc12) + "%" : null, sub: `SCR ${U.datas.scr}` },
+          { l: "Inadimplência", v: fmt.pct(B.inad, 2), sub: `SCR ${U.datas.scr}` },
+          { l: "Penetração do crédito", v: fmt.pct(B.penetracao, 0), sub: `crédito ÷ renda anual estimada · ${U.datas.penetracao}` },
+        ],
+        sintese: [
+          tS && tS.scr ? `${tS.nome} concentra ${fmt.pct(tS.scr.part_br, 1)} da carteira nacional (${fmt.money(tS.scr.saldo)}).` : null,
+          tPc && tI ? `A maior carteira por habitante é ${tPc.prep} (R$ ${fmt.n0(tPc.scr.per_capita)}), a maior inadimplência ${tI.prep} (${fmt.pct(tI.scr.inad, 2)})${tC ? ` e o maior crescimento em doze meses ${tC.prep} (${_pp1(tC.scr.cresc12)}%)` : ""}.` : null,
+          "Cada coluna é uma régua com fonte e data próprias; a tabela não soma colunas.",
+        ],
+        ref: `BCB/SCR ${U.datas.scr} · penetração ${U.datas.penetracao} · posições calculadas entre as 27 UFs`,
+      });
+    })() + `<div class="controls">${seletor("")}</div>
     <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Carteira (SCR)</th><th style="text-align:right">% BR</th><th style="text-align:right">Por habitante</th><th style="text-align:right">12 m</th><th style="text-align:right">Inadimplência</th><th style="text-align:right">Penetração</th><th style="text-align:right">Agências/100 mil</th><th style="text-align:right">Pix/hab (mês)</th><th style="text-align:right">Rural/hab (12 m)</th><th style="text-align:right">BNDES/hab (12 m)</th></tr></thead>
     <tbody>${ord.map(u => { const s = u.scr || {}, p = u.penetracao || {}, pr = u.presenca || {}, px = u.pix || {}, r = u.rural || {}, b = u.bndes || {};
       return `<tr class="clickable" onclick="ufNav('${u.uf}')"><td><b><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false">${u.uf}</a></b> ${u.nome} <span class="src">${u.regiao}</span></td><td style="text-align:right">${brl(s.saldo)}</td><td style="text-align:right">${pct(s.part_br)}</td><td style="text-align:right">R$ ${n0(s.per_capita)}</td><td style="text-align:right">${s.cresc12 != null ? fmt.pp(s.cresc12) + "%" : "–"}</td><td style="text-align:right">${pct(s.inad, 2)}</td><td style="text-align:right">${pct(p.penetracao, 0)}</td><td style="text-align:right">${pr.agencias_100mil != null ? fmt.n(pr.agencias_100mil, 1) : "–"}</td><td style="text-align:right">${px.q_hab != null ? fmt.n(px.q_hab, 1) : "–"}</td><td style="text-align:right">R$ ${n0(r.valor_hab)}</td><td style="text-align:right">R$ ${n0(b.valor_hab)}</td></tr>`; }).join("")}
@@ -9367,6 +9285,405 @@ window.cbCSV = () => {
   const head = `# Observatório Brasileiro de Crédito — cobrança judicial de crédito, ajuizamentos mensais (CNJ/DataJud, agregação, casos únicos)\n# bancario = assunto bancário nas quatro classes; todos = qualquer credor; colunas por classe são do recorte bancário; parcial = mês ainda incompleto no DataJud\n# tribunais cobertos: ${D.cobertura.ufs.join(", ")} · exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_cobranca_judicial_${D.mes}.csv`, head + cols.join(";") + "\n" + D.serie.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
 };
+
+/* ================= MERCADO & VALOR (piloto: Itaú, BTG, ABC Brasil) =================
+   Bancos na bolsa vive no chunk emergentes desde a v0.99.0 (T7 da avaliação de 06/09/2026):
+   só renderMarket é chamado do core, por nome, via RENDER e ensureChunk. */
+const MKT_BASE_COLORS = ["#1d4e89", "#0e7c7b", "#b45309", "#6b46a3", "#b91c1c", "#2f7d4f", "#64748b", "#c2540a", "#d9a514", "#17879c"];
+let MKT_COLORS = {};
+function mktColors(tks) {
+  MKT_COLORS = {};
+  tks.forEach((tk, i) => MKT_COLORS[tk] = MKT_BASE_COLORS[i % MKT_BASE_COLORS.length]);
+}
+window.mktSet = (k, v) => { state.mkt[k] = v; syncHash(); renderMarket(); };
+
+function entenda(id, itens) {
+  return `<details class="charttable"><summary>Entenda este gráfico</summary>
+    <div class="note" style="margin:8px 0">${itens.map(([t, x]) => `<p style="margin:5px 0"><b>${t}:</b> ${x}</p>`).join("")}</div></details>`;
+}
+function leitura(itens) {
+  return `<div class="src" style="margin-top:8px;line-height:1.8">${itens.filter(Boolean).map(([t, x]) => `<b>${t}:</b> ${x}`).join(" · ")}</div>`;
+}
+function metricCard(id, titulo, simples, tecnica, formula, fonte, cuidado) {
+  const tip = encodeURIComponent(`<div class="tt-date">${titulo}</div><div class="tt-meta">${simples}<br><b>Fórmula:</b> ${formula}<br><b>Fonte:</b> ${fonte}<br><b>Cuidado:</b> ${cuidado}</div>`);
+  return `data-tip="${tip}"`;
+}
+
+function renderMarket() {
+  const el = document.getElementById("view-market");
+  const M = state.data.market;
+  if (!M || !M.series) { el.innerHTML = loadingCard("dados de mercado"); return; }
+  const mkt = state.mkt;
+  const tks = Object.keys(M.series).filter(t => t !== "ITUB3").sort((a, b) => ((M.valuation.find(v => v.ticker === b) || {}).mcap || 0) - ((M.valuation.find(v => v.ticker === a) || {}).mcap || 0));
+  mktColors(tks);
+  const emp = Object.fromEntries(M.empresas.map(e => [e.company_id, e]));
+  const val = Object.fromEntries(M.valuation.map(v => [v.ticker, v]));
+  const tabs = [["acoes", "Ações"], ["proventos", "Dividendos & JCP"], ["valuation", "Valuation"], ["resultados", "Resultados"], ["capital", "Capital"], ["screener", "Screener"], ["entidades", "Entidades & Metodologia"]];
+
+  const head = pageHead({
+    title: `Bancos na bolsa <span class='chip' style='vertical-align:middle'>${(state.data.market.empresas || []).length} listadas na B3</span>`,
+    desc: "Como o mercado precifica as instituições e como preço, proventos, lucro e capital se conectam — plataforma acadêmica que ensina a interpretar, não recomenda.",
+    fontes: "B3 (COTAHIST, proventos, ações em circulação), CVM (DFP/ITR)",
+  });
+  // o disclaimer já vive no rodapé de todas as páginas; aqui vira uma linha discreta (E15)
+  const aviso = `<p class="src" style="margin:2px 0 10px">${M.aviso}</p>`;
+  const filtravel = ["proventos", "resultados", "capital"].includes(mkt.tab);
+  const empSel = `<label>instituição <select onchange="mktSet('emp', this.value)" aria-label="filtrar instituição">
+      <option value="todas" ${mkt.emp === "todas" ? "selected" : ""}>todas (${M.empresas.length})</option>
+      ${M.empresas.slice().sort((a, b) => a.legal_name.localeCompare(b.legal_name)).map(e => `<option value="${e.company_id}" ${mkt.emp === e.company_id ? "selected" : ""}>${e.legal_name.replace(/ S\.A\..*/i, "")} (${e.main_ticker})</option>`).join("")}
+    </select></label>`;
+  const nav2 = `<div class="controls"><span class="seg">${tabs.map(([k, l]) => `<button class="${mkt.tab === k ? "active" : ""}" onclick="mktSet('tab','${k}')">${l}</button>`).join("")}</span>${filtravel ? empSel : ""}${filtravel && mkt.emp !== "todas" ? `<button class="btn ghost small" onclick="mktSet('emp','todas')">limpar filtro</button>` : ""}</div>`;
+
+  let body = "";
+  if (mkt.tab === "acoes") body = mktAcoes(M, mkt, tks, val);
+  else if (mkt.tab === "proventos") body = mktProventos(M, emp, val);
+  else if (mkt.tab === "valuation") body = mktValuation(M, val, emp);
+  else if (mkt.tab === "resultados") body = mktResultados(M, emp);
+  else if (mkt.tab === "capital") body = mktCapital(M, emp);
+  else if (mkt.tab === "screener") body = mktScreener(M);
+  else body = mktEntidades(M);
+
+  const mktAbertura = (() => {
+    const vals = M.valuation || [];
+    const dataPreco = vals.map(v => v.data_preco).filter(Boolean).sort().pop();
+    const r12 = _mediana(tks.map(t => ((M.janelas || {})[t] || {}).total ? M.janelas[t].total.a12 : null));
+    const pvp = _mediana(vals.map(v => v.pvp)), pl = _mediana(vals.map(v => v.pl_ratio)), roe = _mediana(vals.map(v => v.roe_cia));
+    const exerc = vals.map(v => v.exercicio_ref).filter(Boolean).sort().pop();
+    return abertura({
+      placar: [
+        { l: "Instituições listadas na B3", v: fmt.n0((M.empresas || []).length), sub: `${tks.length} tickers com série de preço` },
+        { l: "Retorno total mediano em 12 meses", v: fmt.pct(r12, 1), sub: dataPreco ? `preço mais proventos · até ${fmt.d(dataPreco)}` : "" },
+        { l: "P/VP mediano", v: pvp != null ? fmt.n(pvp, 2) + "×" : null, sub: pl != null ? `P/L mediano ${fmt.n(pl, 1)}× · patrimônio do último balanço` : "" },
+        { l: "ROE mediano", v: fmt.pct(roe, 1), sub: exerc ? `lucro do exercício ${exerc} · CVM` : "" },
+      ],
+      sintese: [
+        r12 != null ? `As ${(M.empresas || []).length} instituições listadas têm retorno total mediano de ${_pp1(r12)}% em doze meses${dataPreco ? ` (preços de ${fmt.d(dataPreco)})` : ""}.` : null,
+        pvp != null ? `O mercado paga, na mediana, ${fmt.n(pvp, 2)} vezes o patrimônio e ${fmt.n(pl, 1)} vezes o lucro${roe != null ? `, para um ROE de ${fmt.pct(roe, 1)}` : ""}.` : null,
+        "Plataforma que ensina a interpretar preço, proventos, lucro e capital; não recomenda.",
+      ],
+      ref: `B3 ${dataPreco ? fmt.d(dataPreco) : "–"} · CVM DFP/ITR · medianas entre as listadas`,
+    });
+  })();
+  el.innerHTML = head + aviso + mktAbertura + nav2 + body;
+}
+
+// nomes curtos verificados contra o cadastro do market.json (identificação humana)
+const MKT_NOME_CURTO = {
+  ITUB4: "Itaú Unibanco", BBAS3: "Banco do Brasil", BBDC4: "Bradesco", SANB11: "Santander",
+  BPAC11: "BTG Pactual", ABCB4: "ABC Brasil", BRSR6: "Banrisul", BMGB4: "BMG", PINE4: "Pine",
+  BAZA3: "Banco da Amazônia", BNBR3: "Banco do Nordeste", BEES3: "Banestes", BMEB4: "Mercantil do Brasil",
+  BSLI4: "BRB", BGIP4: "Banese", BRBI11: "BR Partners", RPAD5: "Alfa Holdings", BMIN4: "Mercantil Invest.",
+};
+function mktNomeCurto(M, tk) {
+  if (MKT_NOME_CURTO[tk]) return MKT_NOME_CURTO[tk];
+  const emp = (M.empresas || []).find(e => e.main_ticker === tk || (e.tickers || []).some(t => (t.ticker || t) === tk));
+  let nome = emp ? (emp.nome_curto || emp.legal_name || "") : "";
+  nome = nome.replace(/\b(S\.?A\.?|Holding[s]?|Participa[çc][õo]es)\b/gi, "").replace(/\s{2,}/g, " ").trim();
+  const palavras = nome.split(" ").filter(Boolean);
+  let corte = Math.min(3, palavras.length);
+  while (corte > 1 && /^(do|da|de|dos|das|e)$/i.test(palavras[corte - 1])) corte--;
+  const out2 = palavras.slice(0, corte).join(" ");
+  return out2 || tk;
+}
+
+function mktAcoes(M, mkt, tks, val) {
+  const modos = [["total", "retorno total (base 100)"], ["preco", "preço (base 100)"], ["drawdown", "drawdown"], ["vol", "volatilidade 21d"]];
+  const campo = { total: "total100", preco: "base100", drawdown: "drawdown", vol: "vol21" }[mkt.modo];
+  const tksChart = tks.slice(0, 8);
+  const nomeDe = {};
+  tks.forEach(tk => nomeDe[tk] = mktNomeCurto(M, tk));
+  const series = tksChart.map(tk => {
+    const sd = M.series[tk];
+    return { pts: sd.dates.map((d, i) => ({ x: d, y: sd[campo][i] })).filter(p => p.y != null),
+      color: MKT_COLORS[tk], label: `${nomeDe[tk]} (${tk})`, short: nomeDe[tk], w: 2 };
+  });
+  if (mkt.modo === "total" && M.cesta) {
+    series.push({ pts: M.cesta.dates.map((d, i) => ({ x: d, y: M.cesta.total100[i] })), color: "#64748b", label: "cesta igual-ponderada", short: "cesta", dash: "4,4", w: 1.4 });
+  }
+  // legenda com NOME + sigla, na cor de cada série (mesma cor em toda a página)
+  const legenda = `<div class="legend" style="margin:6px 0 2px">${tksChart.map(tk =>
+    `<span><span class="sw" style="background:${ccol(MKT_COLORS[tk])}"></span>${nomeDe[tk]} <span class="src" style="display:inline">(${tk})</span></span>`).join("")}${mkt.modo === "total" && M.cesta ? '<span><span class="sw" style="background:#64748b;opacity:.7"></span>cesta igual-ponderada</span>' : ""}</div>`;
+  // anotações: maiores proventos (ex) do ticker líder de eventos — com o NOME da companhia
+  const annotations = [];
+  tksChart.slice(0, 3).forEach(tk => {
+    const evs = (M.eventos[tk] || []).slice().sort((a, b) => (b.div + b.jcp) - (a.div + a.jcp)).slice(0, 2);
+    evs.forEach(e => annotations.push({ x: e.ex_ref, label: `${nomeDe[tk]} ex ${e.div > e.jcp ? "DIV" : "JCP"}`, color: MKT_COLORS[tk] }));
+  });
+  // escala: log por padrão quando a razão entre o maior e o menor valor das
+  // séries passa de 4× (uma série a 1.100 e sete abaixo de 300 comprimiam as
+  // sete no quinto inferior do gráfico — E5 da avaliação de 05/09)
+  const escalaCabe = mkt.modo === "total" || mkt.modo === "preco";
+  const ys = series.flatMap(sx => sx.pts.map(p => p.y)).filter(v => v != null && v > 0);
+  const razao = ys.length ? Math.max(...ys) / Math.min(...ys) : 1;
+  const usaLog = escalaCabe && (mkt.escala === "log" || (mkt.escala !== "linear" && razao > 4));
+  const jan = M.janelas;
+  const jrow = tk => {
+    const t = jan[tk], v = val[tk];
+    const cell = x => x != null ? `<td style="text-align:right" class="${x >= 0 ? "down good" : "up"}">${fmt.pp(x)}%</td>` : "<td style='text-align:right'>–</td>";
+    return `<tr><td><b style="color:${ccol(MKT_COLORS[tk])}">${nomeDe[tk]}</b> <span class="src">${tk} · R$ ${fmt.n(v.preco, 2)}</span></td>
+      ${cell(t.total.m1)}${cell(t.total.m3)}${cell(t.total.ytd)}${cell(t.total.a12)}${cell(t.total.a36)}
+      <td style="text-align:right">${fmt.pp(t.total.a12 - t.preco.a12)} p.p.</td>
+      <td style="text-align:right" class="up">${fmt.n(t.drawdown.atual, 1)}%</td>
+      <td style="text-align:right">${fmt.n(t.drawdown.maximo, 1)}% <span class="src">(${fmt.my(t.drawdown.data_maximo)})</span></td>
+      <td style="text-align:right">${t.drawdown.vol21_atual != null ? fmt.n(t.drawdown.vol21_atual, 0) + "%" : "–"}</td></tr>`;
+  };
+  const contribuicaoProv = tks.map(tk => `${tk}: ${fmt.pp(jan[tk].total.a12 - jan[tk].preco.a12)} p.p.`).join(" · ");
+  return `
+  ${sechead("Retorno comparado — as listadas na B3", "preço não ajustado; proventos reinvestidos no retorno total")}
+  <div class="card">
+    <h4>${mkt.modo === "total" ? "Com proventos reinvestidos, as trajetórias divergem menos do que o preço sugere" : mkt.modo === "drawdown" ? "Quanto cada ação caiu em relação ao próprio pico" : mkt.modo === "vol" ? "Oscilação de curto prazo (não mede o risco econômico do banco)" : "Preço em base 100 — sem o efeito dos proventos"} ${badge("observado")} ${badge("calculado", M.metodologia.retorno_total)}</h4>
+    <div class="src" style="margin-bottom:6px">${mkt.modo === "total" ? "A base 100 coloca todas as ações no mesmo ponto inicial: 125 = valorização acumulada de 25% no período. O retorno TOTAL reinveste dividendos e JCP (bruto de IR) — é a medida correta para comparar ações que distribuem proventos em ritmos diferentes." : mkt.modo === "drawdown" ? "O drawdown mede a queda em relação ao maior valor anterior: -30% significa preço 30% abaixo do pico até aquele momento. Volatilidade mede oscilação; drawdown mede perda do pico — nenhum dos dois, sozinho, mede o risco econômico da instituição." : mkt.modo === "vol" ? "Desvio-padrão dos retornos diários em janela de 21 pregões, anualizado." : "A base 100 facilita comparar ações com preços nominais diferentes. Sem proventos, subestima o retorno de quem distribui mais."}</div>
+    <div class="controls"><span class="seg">${modos.map(([k, l]) => `<button class="${mkt.modo === k ? "active" : ""}" onclick="mktSet('modo','${k}')">${l}</button>`).join("")}</span>
+      ${escalaCabe ? `<span class="seg" title="escala logarítmica: distâncias iguais no eixo = variações percentuais iguais; evita que um único outlier comprima as demais séries"><button class="${!usaLog ? "active" : ""}" onclick="mktSet('escala','linear')">escala linear</button><button class="${usaLog ? "active" : ""}" onclick="mktSet('escala','log')">escala log</button></span>` : ""}</div>
+    <div class="src" style="margin-bottom:4px">gráfico: 8 maiores por valor de mercado (as ${tks.length} companhias estão na tabela abaixo)${usaLog ? " · escala logarítmica: a dispersão entre a maior e a menor série passa de uma ordem de grandeza" : ""}</div>
+    ${legenda}
+    ${lineChart({ series, h: 320, endLabels: true, log: usaLog, annotations: mkt.modo === "total" ? annotations.slice(0, 3) : [], unit: mkt.modo === "vol" ? "% a.a." : mkt.modo === "drawdown" ? "%" : "base 100", fonte: "B3 COTAHIST + proventos", status: "observado/calculado", dec: 1 })}
+    ${chartFooter({ fonte: M.fontes.precos, periodo: `${fmt.my(M.series[tks[0]].dates[0])}–${fmt.my(M.series[tks[0]].dates.slice(-1)[0])} (diário)`, atualizado: M.gerado_em.slice(0, 10), unidade: "base 100 / %", nota: M.cesta ? M.cesta.nota : "" })}
+    ${entenda("acoes", [["Pergunta respondida", "como se comparam os retornos dos três perfis, com e sem proventos?"],
+      ["Eixos", "tempo × índice base 100 (ou % para drawdown/vol)"],
+      ["Cores", "cada companhia mantém a mesma cor em toda a página; a legenda acima do gráfico traz nome e sigla, e cada linha termina com o nome da companhia"],
+      ["Limitações", "retorno total bruto de IR (JCP é tributável); sem excesso vs. Ibovespa (série pública oficial descontinuada em 2019); retorno passado não indica retorno futuro"]])}
+  </div>
+  ${sechead("Janelas de retorno total e risco de trajetória")}
+  <div class="card">
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">1m</th><th style="text-align:right">3m</th><th style="text-align:right">YTD</th><th style="text-align:right">12m</th><th style="text-align:right">3a</th><th style="text-align:right" title="diferença entre retorno total e retorno de preço em 12m = contribuição dos proventos">proventos 12m</th><th style="text-align:right">DD atual</th><th style="text-align:right">DD máx.</th><th style="text-align:right">vol 21d</th></tr></thead>
+    <tbody>${tks.map(jrow).join("")}</tbody></table></div>
+    ${leitura([["Como interpretar", "retornos são TOTAIS (com proventos); a coluna 'proventos 12m' mostra quanto os proventos adicionaram ao retorno de preço"],
+      ["O que mudou", `contribuição dos proventos em 12m — ${contribuicaoProv}`],
+      ["Cuidado", "janelas curtas são dominadas por ruído; drawdown e volatilidade medem trajetória do preço, não solvência"]])}
+  </div>`;
+}
+
+function mktProventos(M, emp, val) {
+  const empresasSel = state.mkt.emp === "todas" ? M.empresas : M.empresas.filter(e => e.company_id === state.mkt.emp);
+  const anos = [...new Set(empresasSel.flatMap(e => Object.keys(e.proventos_por_ano)))].sort().slice(-6);
+  const bars = empresasSel.map(e => {
+    const tk = { itau: "ITUB4", btg: "BPAC11", abc: "ABCB4" }[e.company_id];
+    const maxv = Math.max(...anos.map(a => { const p = e.proventos_por_ano[a] || {}; return (p.DIV || 0) + (p.JCP || 0); }), 0.01);
+    return `<div class="card"><h4>${e.legal_name.split(" S.A.")[0]} — proventos por ação (${tk}) ${badge("observado")}</h4>
+      ${anos.map(a => { const p = e.proventos_por_ano[a] || {}; const d = p.DIV || 0, j = p.JCP || 0;
+        const tip = encodeURIComponent(`<div class="tt-date">${a}</div><div class="tt-row"><span class="tt-lbl">Dividendos</span><span class="tt-val">R$ ${fmt.n(d, 4)}</span></div><div class="tt-row"><span class="tt-lbl">JCP (bruto)</span><span class="tt-val">R$ ${fmt.n(j, 4)}</span></div>`);
+        return `<div class="atrasorow" data-tip="${tip}" style="cursor:default"><span class="aname">${a}</span>
+        <span class="abarwrap"><span class="abar" style="width:${(d + j) / maxv * 100}%;background:linear-gradient(90deg, var(--c-line1) ${d / (d + j || 1) * 100}%, var(--c-line2) ${d / (d + j || 1) * 100}%)"></span></span>
+        <span class="anum">R$ ${fmt.n(d + j, 2)}</span></div>`; }).join("")}
+      <div class="legend"><span><span class="sw" style="background:var(--c-line1);height:8px"></span>dividendos (isentos)</span><span><span class="sw" style="background:var(--c-line2);height:8px"></span>JCP (brutos de IR)</span></div>
+    </div>`;
+  }).join("");
+  const vrow = v => {
+    const g = v.g_sustentavel;
+    return `<tr><td><b>${v.ticker}</b></td>
+    <td style="text-align:right" ${metricCard("dy", "Dividend yield 12m", "Proventos por ação dos últimos 12 meses divididos pelo preço atual.", "Σ proventos ex 12m ÷ preço", "Σ proventos ÷ preço", "B3", "Yield alto pode vir de provento maior OU de preço caindo — nunca interpretar isoladamente.")}><b>${v.yield_12m != null ? fmt.n(v.yield_12m, 2) + "%" : "–"}</b></td>
+    <td style="text-align:right" ${metricCard("payout", "Payout", "Parcela do lucro distribuída aos acionistas no exercício.", "(dividendos + JCP com ex no exercício) ÷ lucro dos controladores", "dist ÷ lucro", "B3 + CVM", "Payout acima de 100% consome capital — sustentável só episodicamente.")}>${v.payout != null ? fmt.n(v.payout, 1) + "%" : "–"}</td>
+    <td style="text-align:right">${v.retencao != null ? fmt.n(v.retencao, 1) + "%" : "–"}</td>
+    <td style="text-align:right" ${metricCard("g", "Crescimento sustentável", "Quanto o banco consegue crescer financiado só pelo lucro retido.", "g = ROE × retenção", "g = ROE × (1 − payout)", "calculado", "Aproximação sob hipóteses fortes (ROE e payout constantes); g negativo = payout acima de 100%.")}>${g != null ? fmt.pp(g) + "%" : "–"}</td>
+    <td class="src">${v.payout != null && v.payout > 100 ? "payout > 100%: distribuição extraordinária — parte financiada por capital, não pelo lucro do exercício" : v.payout != null ? "distribuição coberta pelo lucro do exercício" : "payout indisponível"}</td></tr>`;
+  };
+  return `
+  ${sechead("Proventos por ação — dividendos e JCP separados", "aumento pode vir de mais lucro, mais payout ou distribuição extraordinária")}
+  <div class="ov-3col">${bars}</div>
+  ${sechead("Indicadores associados à capacidade histórica de distribuição", "não é previsão de dividendos")}
+  <div class="card">
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Yield 12m</th><th style="text-align:right">Payout ${M.valuation[0] ? M.valuation[0].exercicio_ref || "" : ""}</th><th style="text-align:right">Retenção</th><th style="text-align:right">g sustentável</th><th>Leitura</th></tr></thead>
+    <tbody>${(state.mkt.emp === "todas" ? M.valuation : M.valuation.filter(v => v.company_id === state.mkt.emp)).map(vrow).join("")}</tbody></table></div>
+    ${leitura([["Como interpretar", "payout = proventos do exercício ÷ lucro dos controladores; retenção financia crescimento (g = ROE × retenção)"],
+      ["Cuidado", "JCP é bruto de IR; payout calculado pela data ex dentro do exercício (aproximação declarada); capacidade histórica ≠ promessa futura"]])}
+    ${entenda("prov", [["Pergunta", "a distribuição é coberta pelo lucro e o que sobra para crescer?"],
+      ["Exemplo de leitura correta", "payout de 34% com ROE de 22% permite crescer ~14% a.a. sem capital novo"],
+      ["Exemplo de leitura INCORRETA", "'yield de 11% é sempre melhor que 2%' — o yield alto pode refletir queda de preço ou distribuição não recorrente"]])}
+  </div>`;
+}
+
+function mktValuation(M, val, emp) {
+  const pts = M.valuation.filter(v => v.roe_cia != null && v.pvp != null).map(v => ({
+    x: v.roe_cia, y: v.pvp, size: v.mcap, label: v.ticker, grp: v.ticker, color: MKT_COLORS[v.ticker] }));
+  const vrow = v => `<tr>
+    <td><b>${v.ticker}</b><div class="src">${emp[v.company_id].legal_name}</div></td>
+    <td style="text-align:right">R$ ${fmt.n(v.preco, 2)}</td>
+    <td style="text-align:right">${v.mcap ? "R$ " + fmt.n(v.mcap / 1e9, 1) + " bi" : "–"}</td>
+    <td style="text-align:right" ${metricCard("pl", "P/L", "Quanto o mercado paga por cada R$ 1 de lucro anual.", "valor de mercado ÷ lucro dos controladores (exercício " + (v.exercicio_ref || "") + ")", "mcap ÷ lucro", "B3 + CVM", "Lucro do último exercício — não incorpora expectativas; comparar com a própria história e com pares de perfil semelhante.")}><b>${v.pl_ratio ? fmt.n(v.pl_ratio, 1) + "×" : "–"}</b></td>
+    <td style="text-align:right" ${metricCard("pvp", "P/VP", "Quanto o mercado paga por cada R$ 1 de patrimônio contábil.", "valor de mercado ÷ patrimônio líquido (" + (v.pl_base || "") + ")", "mcap ÷ PL", "B3 + CVM", "P/VP baixo não significa barato: pode refletir risco percebido ou ROE fraco.")}><b>${v.pvp ? fmt.n(v.pvp, 2) + "×" : "–"}</b></td>
+    <td style="text-align:right" ${metricCard("ey", "Earnings yield", "Inverso do P/L: lucro anual em relação ao preço.", "lucro ÷ valor de mercado", "1 ÷ P/L", "calculado", "Não é retorno esperado do acionista.")}>${v.pl_ratio ? fmt.n(100 / v.pl_ratio, 1) + "%" : "–"}</td>
+    <td style="text-align:right" ${metricCard("roe", "ROE da companhia", "Lucro para cada R$ 100 de patrimônio dos acionistas.", "lucro controladores ÷ PL médio", "lucro ÷ PL médio", "CVM " + (v.stmt || ""), "ROE alto pode vir de eficiência OU de alavancagem/risco — analisar com Basileia, inadimplência e P/VP.")}>${v.roe_cia ? fmt.n(v.roe_cia, 1) + "%" : "–"}</td>
+    <td style="text-align:right">${v.yield_12m ? fmt.n(v.yield_12m, 2) + "%" : "–"}</td></tr>`;
+  const q = [];
+  M.valuation.forEach(v => {
+    if (v.roe_cia == null || v.pvp == null) return;
+    const roeMed = 18, pvpMed = 1.5; // referências didáticas do piloto (n=3 — sem mediana robusta)
+  });
+  return `
+  ${sechead("O mercado paga múltiplos maiores por bancos mais rentáveis?", `n = ${pts.length} listadas — linhas de referência nas medianas do universo; sem recomendação`)}
+  <div class="ov-2col">
+    <div class="card">
+      <h4>P/VP × ROE ${badge("calculado")}</h4>
+      <div class="src" style="margin-bottom:6px">Bancos com maior ROE tendem, em condições semelhantes, a negociar por P/VP mais altos — o mercado paga prêmio por retorno sobre o patrimônio percebido como sustentável. A posição no gráfico NÃO é recomendação.</div>
+      ${(function(){
+        if (pts.length < 3) return "<p class='src'>dados insuficientes</p>";
+        const med = arr => { const a = [...arr].sort((x, y) => x - y); return a[Math.floor(a.length / 2)]; };
+        return scatterPlot(pts, "ROE da companhia (%)", "P/VP (×)", 560, 330,
+          { sizeLabel: "valor de mercado", labels: pts.length <= 20,
+            refX: med(pts.map(p => p.x)), refXLabel: "mediana ROE", refY: med(pts.map(p => p.y)), refYLabel: "mediana P/VP" });
+      })()}
+      <div class="src" style="margin-top:6px"><b>Quadrantes:</b> direita-acima = rentabilidade reconhecida (prêmio) · direita-abaixo = possível desconto, risco percebido ou dúvida sobre sustentabilidade · esquerda-abaixo = rentabilidade fraca reconhecida · esquerda-acima = expectativa de recuperação ou fatores não capturados. Referências: P/VP 1× (paridade contábil) e ROE 15%.</div>
+      ${chartFooter({ fonte: "B3 + CVM (metodologias por empresa declaradas na aba Entidades)", periodo: `preços de ${fmt.d(M.valuation[0].data_preco)}`, atualizado: M.gerado_em.slice(0, 10), unidade: "% × múltiplo", nota: M.metodologia.roe_cia })}
+      ${entenda("pvproe", [["Pergunta", "o prêmio/desconto de valuation é coerente com a rentabilidade?"],
+        ["Eixos", "horizontal = ROE (lucro ÷ PL médio); vertical = P/VP (mercado ÷ patrimônio)"],
+        ["Leitura de exemplo", `${pts[0] ? pts[0].label + " combina ROE de " + fmt.n(pts[0].x, 1) + "% com P/VP de " + fmt.n(pts[0].y, 2) + "×" : ""} — prêmio sobre o patrimônio compatível com rentabilidade acima do custo típico de capital`],
+        ["Cuidado", "crescimento, risco, capital e sustentabilidade do lucro também explicam múltiplos; com n=3 não há linha de tendência estatisticamente honesta"]])}
+    </div>
+    <div class="card">
+      <h4>Múltiplos e fundamentos — tabela comparativa</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia</th><th style="text-align:right">Preço</th><th style="text-align:right">Mercado</th><th style="text-align:right">P/L</th><th style="text-align:right">P/VP</th><th style="text-align:right">E. yield</th><th style="text-align:right">ROE cia</th><th style="text-align:right">Yield 12m</th></tr></thead>
+      <tbody>${M.valuation.map(vrow).join("")}</tbody></table></div>
+      ${leitura([["Como interpretar", "passe o mouse em cada múltiplo para definição, fórmula, fonte e cuidados (cartão metodológico)"],
+        ["Não concluir isoladamente", "P/VP baixo ≠ barato; ROE alto ≠ risco baixo; yield alto ≠ renda garantida"],
+        ["Analisar conjuntamente", "Basileia, inadimplência e atraso por produto do conglomerado — nas páginas das instituições"]])}
+    </div>
+  </div>`;
+}
+
+
+function mktResultados(M, emp) {
+  const nomes = {};
+  M.empresas.forEach(e => {
+    const f = (e.fin || []).find(x => x.kind === "anual");
+    nomes[e.company_id] = e.legal_name.replace(/ S\.A\..*/i, "") + (f ? ` (${f.stmt})` : "");
+  });
+  const pontesSel = Object.entries(M.pontes || {}).filter(([cid]) => state.mkt.emp === "todas" || cid === state.mkt.emp);
+  if (state.mkt.emp !== "todas" && !pontesSel.length) {
+    const e = M.empresas.find(x => x.company_id === state.mkt.emp);
+    return sechead("Ponte do lucro 2024 → 2025") + `<div class="card"><p class="src">Ponte indisponível para ${e ? e.legal_name : "esta instituição"}: as linhas da DRE necessárias não estão identificáveis no plano contábil entregue à CVM (ou falta um dos exercícios). Ausência ≠ zero — os movimentos observáveis constam das abas Valuation e Capital.</p></div>`;
+  }
+  const blocos = pontesSel.map(([cid, p]) => {
+    const steps = [{ label: `Lucro ${"2024"}`, v: p.lucro_ini, tipo: "abs" }]
+      .concat(p.passos.filter(st => Math.abs(st.v) > 1e6 || st.label.startsWith("Outros")).map(st => ({ label: st.label, v: st.v, tipo: "delta", expl: st.expl })))
+      .concat([{ label: `Lucro ${"2025"}`, v: p.lucro_fim, tipo: "abs" }]);
+    const qual = (function () {
+      const c = p.conceitos;
+      const serv = Math.abs(c.servicos["2025"]), marg = Math.abs(c.margem["2025"]);
+      if (!serv || !marg) return "";
+      const share = serv / (serv + marg) * 100;
+      return `<div class="src" style="margin-top:6px"><b>Composição (qualidade do lucro):</b> serviços representam ${fmt.n(share, 0)}% da soma margem+serviços em 2025 — receitas de serviços e margem tendem a ser mais recorrentes que tesouraria e itens extraordinários. Volatilidade e persistência trimestral: <span class="seal aprox">INDISPONÍVEL</span> (série trimestral longa não integrada).</div>`;
+    })();
+    return `<div class="card">
+      <h4>${p.frase ? "O que explicou a variação do lucro — " + nomes[cid] : "Ponte do lucro (decomposição parcial) — " + nomes[cid]} ${badge("observado", "linhas da DRE (CVM)")} ${badge("calculado", p.nota)}</h4>
+      <div class="src" style="margin-bottom:6px">A ponte mostra quais componentes explicaram a diferença entre o lucro de 2024 e o de 2025. Barras verdes contribuíram para aumentar o resultado; vermelhas reduziram. "Outros" fecha a identidade contábil.</div>
+      ${waterfallChart(steps, 720, 280)}
+      ${p.frase ? `<div class="note" style="margin-top:8px"><b>Leitura automática:</b> ${p.frase} <span class="src">[Δ das linhas da DRE 2024→2025; resíduo ${fmt.n(p.residuo / 1e9, 2)} bi]</span></div>`
+        : `<div class="note warn" style="margin-top:8px"><b>Leitura automática suprimida:</b> a decomposição por linhas identificáveis não fecha adequadamente (resíduo de R$ ${fmt.n(p.residuo / 1e9, 1)} bi — o plano contábil desta companhia concentra parte relevante do resultado em linhas não decompostas, como tesouraria). Mostramos apenas os movimentos observáveis.</div>`}
+      ${qual}
+      ${entenda("ponte" + cid, [["Pergunta", "o lucro cresceu por margem, serviços, eficiência, menor provisão ou itens não recorrentes?"],
+        ["Como ler", "cada barra é a VARIAÇÃO 2024→2025 daquele componente; a soma das barras + resíduo = Δ lucro"],
+        ["Cuidado", "planos contábeis variam entre companhias (correspondência textual declarada); componentes ausentes não significam zero"]])}
+    </div>`;
+  }).join("");
+  return sechead("Ponte do lucro 2024 → 2025", "DRE oficial (CVM) · decomposição por conceito com identidade verificada") + `<div style="display:grid;gap:22px">${blocos}</div>`;
+}
+
+function mktCapital(M, emp) {
+  const nomes = {};
+  M.empresas.forEach(e => { nomes[e.company_id] = e.legal_name.replace(/ S\.A\..*/i, "") + (M.congl_lookup && M.congl_lookup[e.company_id] ? " — " + M.congl_lookup[e.company_id] : ""); });
+  const capitalSel = Object.entries(M.capital || {}).filter(([cid]) => state.mkt.emp === "todas" || cid === state.mkt.emp);
+  if (state.mkt.emp !== "todas" && !capitalSel.length) {
+    const e = M.empresas.find(x => x.company_id === state.mkt.emp);
+    return sechead("Geração e consumo de capital — movimentos observáveis") + `<div class="card"><p class="src">Waterfall de capital indisponível para ${e ? e.legal_name : "esta instituição"}: o conglomerado correspondente não reporta Patrimônio de Referência no IF.data integrado (ou a correspondência de entidades está pendente — ver aba Entidades).</p></div>`;
+  }
+  const blocos = capitalSel.map(([cid, c]) => {
+    const steps = [
+      { label: `PR ${fmtTri(c.de)}`, v: c.pr_inicial, tipo: "abs" },
+      { label: "Lucro do período", v: c.lucro_acumulado_periodo, tipo: "delta", expl: "lucro do conglomerado (IF.data) no intervalo" },
+      { label: "Proventos", v: -(c.proventos_periodo || 0), tipo: "delta", expl: "dividendos + JCP da companhia listada (último exercício) — aproximação de correspondência" },
+      { label: "Outros (não decompostos)", v: c.outros, tipo: "delta", expl: "OCI, emissões/recompras, ajustes prudenciais, perímetro" },
+      { label: `PR ${fmtTri(c.ate)}`, v: c.pr_final, tipo: "abs" },
+    ];
+    const rwaG = c.rwa_inicial && c.rwa_final ? (c.rwa_final / c.rwa_inicial - 1) * 100 : null;
+    return `<div class="card">
+      <h4>Movimentos observáveis do capital — ${nomes[cid]} ${badge("observado", "PR/RWA do IF.data; proventos da B3")} ${badge("calculado", c.nota)}</h4>
+      <div class="src" style="margin-bottom:6px">Um banco precisa gerar capital para absorver riscos, crescer e distribuir. Crescimento forte do RWA consome capital mesmo com lucro — por isso Basileia pode cair com lucro recorde. Sem decomposição artificial: o que a fonte não separa fica em "Outros".</div>
+      ${waterfallChart(steps, 720, 270)}
+      ${leitura([["O que mudou", `Basileia ${fmt.n(c.basileia_inicial, 1)}% → ${fmt.n(c.basileia_final, 1)}%` + (rwaG != null ? ` · RWA ${fmt.pp(rwaG)}% no período` : "")],
+        ["Por que importa", "distribuir mais do que gera (payout > 100%) reduz o colchão para crescer e absorver perdas"],
+        ["Cuidado", "PR é do CONGLOMERADO; proventos são da COMPANHIA listada — correspondência declarada na aba Entidades"]])}
+    </div>`;
+  }).join("");
+  return sechead("Geração e consumo de capital — movimentos observáveis", "IF.data (PR, RWA, Basileia) + proventos B3") + `<div style="display:grid;gap:22px">${blocos}</div>` +
+    `<div class="note">Funding decomposto (depósitos à vista/poupança/prazo/letras), LCR/NSFR e exposições fora do balanço: <span class="seal aprox">INDISPONÍVEL</span> — relatórios de passivo detalhado e Pilar 3 não integrados nesta fase (registrado no backlog). A dependência de captações totais aparece no Comparar instituições (métrica "Captações").</div>`;
+}
+
+const SCR_STATE = { modo: "listadas", froe: "", fbas: "", fnpl: "", fativo: "", sort: "ativo", dir: -1 };
+window.scrSet = (k, v) => { SCR_STATE[k] = v; renderMarket(); };
+window.scrSort = k => { if (SCR_STATE.sort === k) SCR_STATE.dir *= -1; else { SCR_STATE.sort = k; SCR_STATE.dir = -1; } renderMarket(); };
+function mktScreener(M) {
+  const S = state.data.screener;
+  if (S === undefined) { fetchGold("screener").then(() => renderMarket()); return loadingCard("screener"); }
+  if (!S) return goldIndisponivel("screener", "screener");
+  const st = SCR_STATE;
+  const num = x => x === "" ? null : parseFloat(x);
+  let rows;
+  if (st.modo === "listadas") {
+    rows = M.valuation.map(v => ({ cod: v.ticker, nome: state.data.market.empresas.find(e => e.company_id === v.company_id).legal_name, sr: "", nivel: "listada",
+      ativo: null, roe: v.roe_cia, basileia: null, npl: null, pvp: v.pvp, pl: v.pl_ratio, yield12: v.yield_12m, payout: v.payout, ret12: M.janelas[v.ticker].total.a12, dd: M.janelas[v.ticker].drawdown.atual, mcap: v.mcap }));
+  } else {
+    rows = S.linhas.map(r => ({ ...r, pvp: null, pl: null, yield12: null, payout: null, ret12: null, dd: null, mcap: null }));
+    if (num(st.froe) != null) rows = rows.filter(r => r.roe != null && r.roe >= num(st.froe));
+    if (num(st.fbas) != null) rows = rows.filter(r => r.basileia != null && r.basileia >= num(st.fbas));
+    if (num(st.fnpl) != null) rows = rows.filter(r => r.npl != null && r.npl <= num(st.fnpl));
+    if (num(st.fativo) != null) rows = rows.filter(r => r.ativo != null && r.ativo >= num(st.fativo) * 1e9);
+  }
+  rows = rows.slice().sort((a, b) => { const x = a[st.sort], y = b[st.sort]; if (x == null) return 1; if (y == null) return -1; return (x > y ? 1 : -1) * st.dir; });
+  const shown = rows.slice(0, 100);
+  const th = (k, l, tip2) => `<th onclick="scrSort('${k}')" style="text-align:right" title="${tip2 || "ordenar"}">${l}${st.sort === k ? (st.dir < 0 ? " ↓" : " ↑") : ""}</th>`;
+  const na = "<span class='src'>n/a</span>";
+  const linha = r => `<tr class="clickable" onclick="${r.nivel === "listada" ? `mktSet('tab','valuation')` : `openInstPage('${r.cod}')`}">
+    <td><b>${(r.nome || r.cod).slice(0, 34)}</b><div class="src">${r.nivel === "listada" ? r.cod + " · listada" : (r.sr || "") + " · " + r.nivel}</div></td>
+    <td style="text-align:right">${r.ativo != null ? fmt.money(r.ativo) : na}</td>
+    <td style="text-align:right">${r.roe != null ? fmt.n(r.roe, 1) + "%" : na}</td>
+    <td style="text-align:right">${r.basileia != null ? fmt.n(r.basileia, 1) + "%" : na}</td>
+    <td style="text-align:right">${r.npl != null ? fmt.n(r.npl, 2) + "%" : na}</td>
+    <td style="text-align:right">${r.cresc4t != null ? fmt.pp(r.cresc4t) + "%" : na}</td>
+    <td style="text-align:right">${r.pvp != null ? fmt.n(r.pvp, 2) + "×" : na}</td>
+    <td style="text-align:right">${r.yield12 != null ? fmt.n(r.yield12, 1) + "%" : na}</td>
+    <td style="text-align:right">${r.ret12 != null ? fmt.pp(r.ret12) + "%" : na}</td></tr>`;
+  return `
+  ${sechead("Screener de instituições", `ferramenta de pesquisa — não constitui recomendação de investimento`)}
+  <div class="card">
+    <div class="controls">
+      <span class="seg"><button class="${st.modo === "listadas" ? "active" : ""}" onclick="scrSet('modo','listadas')">listadas (${M.valuation.length})</button><button class="${st.modo === "reguladas" ? "active" : ""}" onclick="scrSet('modo','reguladas')">todas as reguladas (${S.n})</button></span>
+      ${st.modo === "reguladas" ? `
+      <label>ROE ≥ <input type="text" value="${st.froe}" style="width:52px" onchange="scrSet('froe', this.value)" aria-label="ROE mínimo">%</label>
+      <label>Basileia ≥ <input type="text" value="${st.fbas}" style="width:52px" onchange="scrSet('fbas', this.value)" aria-label="Basileia mínima">%</label>
+      <label>Inad. ≤ <input type="text" value="${st.fnpl}" style="width:52px" onchange="scrSet('fnpl', this.value)" aria-label="inadimplência máxima">%</label>
+      <label>Ativos ≥ <input type="text" value="${st.fativo}" style="width:60px" onchange="scrSet('fativo', this.value)" aria-label="ativos mínimos">R$ bi</label>` : ""}
+      <span class="src">${rows.length} resultado(s)${rows.length > 100 ? " · exibindo top-100" : ""} · data-base ${st.modo === "listadas" ? fmt.d(M.valuation[0].data_preco) : fmtTri(S.data_base)}</span>
+    </div>
+    <div class="tblwrap"><table class="data compact rankmini"><thead><tr><th>Instituição</th>${th("ativo", "Ativos")}${th("roe", "ROE", "listadas: ROE da companhia (CVM); reguladas: ROE do período IF.data")}${th("basileia", "Basileia")}${th("npl", "Inad. >90d")}${th("cresc4t", "Δ carteira 4T")}${th("pvp", "P/VP")}${th("yield12", "Yield 12m")}${th("ret12", "Ret. total 12m")}</tr></thead>
+    <tbody>${shown.map(linha).join("")}</tbody></table></div>
+    ${leitura([["Como interpretar", "métricas de mercado só existem para as listadas do piloto — 'n/a' nas demais (nunca zero)"],
+      ["Filtros", "aplicam-se ao modo 'todas as reguladas' sobre fundamentos IF.data; ausência de dado exclui a instituição do filtro correspondente"],
+      ["Cuidado", "um ranking não é conclusão de risco: ROE alto pode vir de alavancagem; P/VP baixo pode refletir risco percebido"]])}
+  </div>`;
+}
+
+function mktEntidades(M) {
+  const erow = e => `<tr>
+    <td><b>${e.legal_name}</b><div class="src">CNPJ ${e.cnpj} · CVM ${e.cvm_code} · ${e.listing_segment}</div></td>
+    <td>${e.tickers.map(t => `<span class="chip">${t.ticker} <span class="src" style="display:inline">${t.share_class}</span></span>`).join(" ")}</td>
+    <td>${(function(){ const cc = e.congl_cod || (state.data.market.congl_lookup || {})[e.company_id]; return cc ? `<span class="clickable" onclick="openInstPage('${cc}')" style="color:var(--accent)">${cc} →</span>` : "<span class='src'>correspondência pendente</span>"; })()}</td>
+    <td class="src">${e.natureza}</td>
+    <td class="src">${e.perfil}</td></tr>`;
+  return `
+  ${sechead("Correspondência entre companhia listada, ação e conglomerado", "preço é da AÇÃO; lucro/PL são da COMPANHIA (CVM); indicadores regulatórios são do CONGLOMERADO (IF.data)")}
+  <div class="card">
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Companhia listada</th><th>Ações</th><th>Conglomerado prudencial</th><th>Natureza</th><th>Perfil no piloto</th></tr></thead>
+    <tbody>${M.empresas.map(erow).join("")}</tbody></table></div>
+  </div>
+  ${sechead("Metodologia e fontes desta área")}
+  <div class="card"><div class="src" style="line-height:2">
+    ${Object.entries(M.fontes).map(([k, v]) => `<b>${k}:</b> ${v}<br>`).join("")}
+    ${Object.entries(M.metodologia).map(([k, v]) => `<b>${k}:</b> ${v}<br>`).join("")}
+    <b>Valor de mercado por empresa:</b> ${M.valuation.map(v => `${v.ticker}: ${v.nota_mcap}`).join(" · ")}<br>
+    <b>Indisponíveis (fase seguinte ou sem fonte pública):</b> excesso vs. Ibovespa e beta (série oficial gratuita descontinuada em 2019) · ponte do lucro e qualidade do lucro (exigem parse das linhas da DRE — próxima fase) · funding decomposto, LCR/NSFR e exposições fora do balanço (relatórios não integrados) · consenso de mercado.
+  </div></div>`;
+}
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -11593,7 +11910,7 @@ function renderPresencaMun() {
 const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes" };
+  consignado: "municipal", rural: "municipal", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -11635,6 +11952,26 @@ function renderRegulacao() {
   ${pageHead({ title: "Marcos regulatórios",
     desc: "A linha do tempo transversal: os marcos regulatórios que explicam quebras visíveis nas séries do Observatório, cada um com o texto oficial e os painéis que afeta.",
     fontes: "Planalto · BCB/CMN (textos oficiais)" })}
+  ${(() => {
+    const todos = (R.marcos || []).slice().sort((a, b) => (b.data || "").localeCompare(a.data || ""));
+    const hoje = new Date(); const lim = new Date(hoje.getFullYear() - 1, hoje.getMonth(), hoje.getDate()).toISOString().slice(0, 10);
+    const rec = todos.filter(m => (m.data || "") >= lim);
+    const orgaos = new Set(todos.map(m => m.orgao).filter(Boolean));
+    const u = todos[0];
+    return abertura({
+      placar: [
+        { l: "Marcos na linha do tempo", v: todos.length ? fmt.n0(todos.length) : null, sub: `régua editorial · atualizado ${(R.gerado_em || "").slice(0, 10)}` },
+        { l: "Nos últimos doze meses", v: todos.length ? fmt.n0(rec.length) : null, sub: `desde ${fmt.d(lim)}` },
+        { l: "Órgãos emissores", v: orgaos.size ? fmt.n0(orgaos.size) : null, sub: [...orgaos].join(" · ") },
+        { l: "Painéis afetados", v: (R.paineis || []).length ? fmt.n0(R.paineis.length) : null, sub: "cada marco aponta as abas que explica" },
+      ],
+      sintese: [
+        u ? `O marco mais recente é ${u.ato}, de ${u.orgao} em ${fmt.d(u.data)}, e afeta ${(u.paineis || []).map(p => REG_LABELS[p] || p).join(", ") || "painéis não indicados"}.` : null,
+        `A régua é editorial: ${todos.length} marcos escolhidos por explicarem quebras visíveis nas séries, não um censo normativo.`,
+      ],
+      ref: `${R.fonte ? R.fonte.nome : "textos oficiais"} · ${(R.gerado_em || "").slice(0, 10)}`,
+    });
+  })()}
   <div class="note warn"><b>Coincidência no tempo não é efeito.</b> ${R.leitura}</div>
   <div class="controls"><span class="seg">${chips.map(p => `<button class="${regFiltro === p ? "active" : ""}" onclick="regFiltroSet('${p}')">${p === "todos" ? `todos (${(R.marcos || []).length})` : REG_LABELS[p] || p}</button>`).join("")}</span></div>
   <div class="card">
@@ -12002,6 +12339,28 @@ function renderProducts() {
   ${pageHead({ title: "Produtos de crédito", seals: badge("observado"),
     desc: `Mercado de cada modalidade a partir da carteira por instituição (trimestral, ${fmtTri(P.data_base)}) — tamanho, crescimento pareado, concentração, atraso e taxas.`,
     fontes: "BCB IF.data rel. 123/128, BCB txjuros" })}
+  ${(() => {
+    const tri = fmtTri(P.data_base);
+    const total = list.reduce((t, p) => t + (p.mercado_total_brl || 0), 0);
+    const maior = list.slice().sort((a, b) => (b.mercado_total_brl || 0) - (a.mercado_total_brl || 0))[0];
+    const cresc = list.filter(p => p.crescimento_4t_pct != null).sort((a, b) => b.crescimento_4t_pct - a.crescimento_4t_pct);
+    const med = _mediana(list.map(p => p.crescimento_4t_pct));
+    const rot = seg === "total" ? "PF e PJ" : seg.toUpperCase();
+    return abertura({
+      placar: [
+        { l: `Produtos validados · ${rot}`, v: list.length ? fmt.n0(list.length) : null, sub: `IF.data ${tri} · universo de reportantes` },
+        { l: "Carteira somada dos produtos", v: list.length ? fmt.money(total) : null, sub: `${tri} · soma das modalidades listadas, não a carteira total` },
+        { l: "Maior produto", v: maior ? fmt.money(maior.mercado_total_brl) : null, sub: maior ? `${maior.nome} (${maior.seg.toUpperCase()}) · ${fmt.pct(maior.share_segmento_pct, 1)} da carteira ${maior.seg.toUpperCase()}` : "" },
+        { l: "Crescimento mediano em 4 trimestres", v: fmt.pct(med, 1), sub: "amostra pareada por produto" },
+      ],
+      sintese: [
+        maior ? `Os ${list.length} produtos validados (${rot}) somam ${fmt.money(total)} em ${tri}; o maior é ${maior.nome}, com ${fmt.money(maior.mercado_total_brl)} e ${fmt.pct(maior.share_segmento_pct, 1)} da carteira ${maior.seg.toUpperCase()}.` : null,
+        cresc.length >= 2 ? `Crescem mais em quatro trimestres: ${cresc[0].nome} (${_pp1(cresc[0].crescimento_4t_pct)}%) e ${cresc[1].nome} (${_pp1(cresc[1].crescimento_4t_pct)}%); o menor ritmo é de ${cresc[cresc.length - 1].nome} (${_pp1(cresc[cresc.length - 1].crescimento_4t_pct)}%).` : null,
+        "Cada produto abre uma página com instituições, concentração, atraso e taxas; ausência de dado nunca vira zero.",
+      ],
+      ref: `BCB IF.data ${tri} · crescimento em amostra pareada · regras em cada página de produto`,
+    });
+  })()}
   <div class="controls">${segTabs()}<span class="src">corte PF/PJ da própria fonte · ${P.produtos.length} produtos validados · universo IF.data</span></div>
   <div class="grid g3">${list.map(card).join("")}</div>
   <div class="note">Taxa média, inadimplência específica, clientes e ticket por produto <b>não são exibidos por instituição</b>: as fontes públicas integradas não trazem esses cruzamentos (ver página do produto → indisponíveis). Ausência nunca vira zero.</div>
@@ -12600,8 +12959,22 @@ function renderCompare() {
       ${nivel ? `<div class="src">nível de consolidação: <b>${nivel}</b> · data-base ${fmtTri(latest)} · fonte ${C.fonte}</div>` : ""}
     </div>`;
 
+  const cmpAbertura = extra => abertura({
+    placar: [
+      { l: "Métricas no catálogo", v: fmt.n0(C.metric_catalog.length), sub: "trimestrais · unidade declarada em cada uma" },
+      { l: "Períodos disponíveis", v: fmt.n0(C.anomes_list.length), sub: `${fmtTri(C.anomes_list[0])} a ${fmtTri(latest)}` },
+      { l: "Universo IF.data", v: C.universo ? fmt.n0(C.universo.n_total) : null, sub: C.universo ? `${fmt.n0(C.universo.n_conglomerados)} conglomerados prudenciais · ${fmt.n0(C.universo.n_individuais)} individuais` : "" },
+      extra || { l: "Data-base", v: fmtTri(latest), sub: "último trimestre publicado" },
+    ],
+    sintese: [
+      `Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais e ${C.anomes_list.length} períodos, de ${fmtTri(C.anomes_list[0])} a ${fmtTri(latest)}${C.universo ? `, num universo de ${fmt.n0(C.universo.n_total)} instituições do IF.data` : ""}.`,
+      "O nível de consolidação é sempre explícito e comparações entre conglomerado e instituição individual são bloqueadas.",
+    ],
+    ref: `BCB IF.data ${fmtTri(latest)} · ${C.fonte || ""}`,
+  });
   if (cmp.insts.length < 2) {
     el.innerHTML = `${pageHead({ title: "Comparar instituições", fontes: "BCB IF.data" })}
+    ${cmpAbertura()}
     <p class="viewdesc">Compare de 2 a 10 instituições em ${C.metric_catalog.length} métricas trimestrais (5 períodos), com normalizações, série histórica, dispersão e exportação. Nível de consolidação sempre explícito; comparações incompatíveis são bloqueadas.</p>
     ${selHtml}
     <div class="note">Sugestões: <a href="javascript:void(0)" onclick="cmpQuick()">5 grandes bancos</a> · <a href="javascript:void(0)" onclick="cmpPreset('coops')">maiores cooperativas</a> · <a href="javascript:void(0)" onclick="cmpPreset('s2')">maiores S2</a> · <a href="javascript:void(0)" onclick="cmpPreset('s3')">maiores S3</a> · ou monte a partir da <a href="/observatorio/products" onclick="nav('products');return false">matriz de um produto</a> (checkbox → comparar selecionadas).</div>`;
@@ -12871,6 +13244,7 @@ function renderCompare() {
     <h2>Comparar instituições</h2>
     <div class="ph-meta">data-base <b>${fmtTri(latest)}</b> · nível: <b>${nivel}</b> · <b>${cmp.insts.length}</b> instituições · grupo de referência: <b>${gdef.label}</b>${gdef.n ? ` (${gdef.n})` : ""} · referência: <b>${datas[refCod] ? datas[refCod].nome.slice(0, 24) : "–"}</b> · <a href="/observatorio/methodology" onclick="nav('method');return false">metodologia e fontes</a></div>
   </div></div>
+  ${cmpAbertura({ l: "Instituições selecionadas", v: fmt.n0(cmp.insts.length), sub: `${nivel} · referência: ${(state.cmpCache[refCod] || {}).nome || refCod}` })}
   <details ${cmp.insts.length < 2 ? "open" : ""} style="margin-bottom:10px"><summary class="src" style="cursor:pointer">alterar seleção de instituições (${cmp.insts.length})</summary>${selHtml}</details>
   ${ctx}${body}${cmpRedeFase0(cmp.insts, datas)}`;
 }

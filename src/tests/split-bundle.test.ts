@@ -77,7 +77,7 @@ describe("artefatos do build", () => {
       expect(statSync(join(process.cwd(), f)).size).toBeGreaterThan(20_000);
     }
     for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado",
-      "renderBets", "renderFraudes", "renderJuros"]) {
+      "renderBets", "renderFraudes", "renderJuros", "renderMarket"]) {
       expect(core.includes(`function ${fn}(`), `${fn} não pode estar no core`).toBe(false);
     }
     const mun = read("public/obs/app-municipal.min.js");
@@ -85,7 +85,8 @@ describe("artefatos do build", () => {
     for (const fn of ["renderDesenrola", "renderPenetracao", "renderMoradia", "renderConsignado"]) {
       expect(mun.includes(`function ${fn}(`), fn).toBe(true);
     }
-    for (const fn of ["renderBets", "renderFraudes", "renderJuros"]) {
+    // Bancos na bolsa foi para o chunk emergentes na v0.99.0 (T7): o core ganhou abertura e glossário
+    for (const fn of ["renderBets", "renderFraudes", "renderJuros", "renderMarket", "mktScreener"]) {
       expect(eme.includes(`function ${fn}(`), fn).toBe(true);
     }
     // e o core mantém o que os chunks usam
