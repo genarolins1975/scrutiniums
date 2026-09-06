@@ -19,6 +19,24 @@ const nextConfig = {
       ],
     },
   },
+  // Cache dos estáticos do Observatório. A Vercel serve public/ com
+  // max-age=0, must-revalidate: cada navegação revalidava os golds municipais
+  // (1,2 MB comprimidos) e o bundle a cada página (medido em 06/09/2026,
+  // avaliação §13). Os golds mudam uma vez por dia e são pedidos com ?v=
+  // da versão da SPA; uma hora de frescor com revalidação em segundo plano
+  // basta. Bundle e CSS levam a versão na URL: podem ser imutáveis.
+  async headers() {
+    return [
+      {
+        source: "/obs/data/gold/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600, stale-while-revalidate=86400" }],
+      },
+      {
+        source: "/obs/:arquivo(app.min.js|app-municipal.min.js|app-emergentes.min.js|styles.css)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+    ];
+  },
   // As rotas sob /observatorio são servidas pelo route handler
   // src/app/observatorio/[[...rota]]/route.ts, que entrega a SPA de
   // public/obs com <head> específico por aba (title/OG/canonical/JSON-LD).

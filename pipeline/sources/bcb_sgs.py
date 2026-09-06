@@ -31,14 +31,22 @@ def collect(con, cfg):
                 raise ValueError("payload inesperado")
             bronze_file, sha = common.save_bronze("bcb_sgs", f"sgs_{s['code']}", body, meta)
             rows = []
+            hoje = common.now_utc()[:10]
             for item in data:
                 try:
-                    rows.append((_parse_date(item["data"]), float(item["valor"])))
+                    d = _parse_date(item["data"])
+                    if d > hoje:
+                        # a meta Selic (SGS 432) vem datada até a próxima reunião do Copom:
+                        # observação com data futura vira "dias sem atualizar" negativo no
+                        # painel de qualidade (auditoria de 06/09/2026). Fica só o passado.
+                        continue
+                    rows.append((d, float(item["valor"])))
                 except (KeyError, ValueError):
                     continue  # valor não numérico (ex.: vazio) => ausência, não zero
             common.upsert_meta(con, "BCB/SGS", s["code"], s["key"], s["name"], s["unit"],
                                s["freq"], s["methodology"], s["url"], s.get("segment", ""), s.get("category", ""))
             n_new, n_rev = common.insert_obs(con, s["key"], rows, sha)
+            con.execute("DELETE FROM series_obs WHERE key=? AND ref_date > ?", (s["key"], hoje))  # limpa o futuro já gravado
             common.record_lineage(con, f"series:{s['key']}", bronze_file, sha,
                                   "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float")
             results.append({"key": s["key"], "ok": True, "obs": len(rows), "novas": n_new, "revisoes": n_rev})

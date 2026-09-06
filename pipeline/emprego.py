@@ -23,6 +23,7 @@ saldo e retenção (saldo ÷ admissões), nunca "variação do estoque".
 """
 from pipeline import common
 from pipeline.ufs import NOMES, REGIOES
+from pipeline.fmt import _r, _share, _mes_menos, _mil, _dec
 
 FONTES = {
     "sgs": {"nome": "MTE/Novo Caged — estoque de empregos formais por seção CNAE (republicado pelo BCB/SGS 28763 a 28804)",
@@ -63,22 +64,8 @@ MIN_OBS_Z = 24
 SERIE_MESES = 72
 
 
-def _r(v, d=2):
-    return None if v is None else round(v, d)
-
-
-def _share(v, tot):
-    return _r(v / tot * 100) if v is not None and tot else None
-
-
 def _sgs(con, key):
     return [(d[:7], v) for d, v in common.get_series(con, key)]
-
-
-def _mes_menos(mes, n):
-    y, m = int(mes[:4]), int(mes[5:7])
-    t = y * 12 + (m - 1) - n
-    return f"{t // 12:04d}-{t % 12 + 1:02d}"
 
 
 def _z(vals):
@@ -169,14 +156,6 @@ def _ufs(con):
         for i, u in enumerate(ordem):
             u.setdefault("posicoes", {})[chave] = i + 1
     return mes, brasil, ufs
-
-
-def _mil(v):
-    return f"{v:,.0f}".replace(",", ".")
-
-
-def _dec(v, d=1):
-    return f"{v:.{d}f}".replace(".", ",")
 
 
 def _sinal(v):
