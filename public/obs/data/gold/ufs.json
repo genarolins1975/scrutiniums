@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-06T03:31:14+00:00",
+ "gerado_em": "2026-09-06T04:45:25+00:00",
  "datas": {
   "scr": "2026-07",
   "penetracao": "2026-06",
@@ -21,7 +21,8 @@
   },
   "pgfn": "2026-06",
   "emprego": "2026-07",
-  "consorcios": "2026-T1"
+  "consorcios": "2026-T1",
+  "cobranca": "2026-06"
  },
  "brasil": {
   "saldo": 7573943761640,
@@ -263,6 +264,14 @@
     "var_12m_pct": 11.19,
     "por_mil_hab": 54.9
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 2120,
+    "var_12m_pct": 12.23,
+    "casos_12m_todos": 4289,
+    "por_mil_hab": 2.4,
+    "por_bi_carteira": 106.6
+   },
    "posicoes": {
     "scr.saldo": 25,
     "scr.per_capita": 16,
@@ -280,6 +289,8 @@
     "emprego.retencao_pct": 8,
     "consorcios.cotas": 25,
     "consorcios.por_mil_hab": 18,
+    "cobranca.por_mil_hab": 19,
+    "cobranca.por_bi_carteira": 18,
     "pgfn.insc_pf_por_mil_hab": 21
    },
    "sintese": "O crédito no Acre somava R$ 20 bilhões em 2026-07, 0,3% do Brasil, R$ 22.494 por habitante (16º entre as 27 UFs), com inadimplência de 6,46% (6º) e crescimento de +9,4% em 12 meses. Penetração de 90% da renda anual (13º), com 1 de 22 municípios abaixo do esperado pelo modelo. 15 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -516,6 +527,14 @@
     "var_12m_pct": 15.1,
     "por_mil_hab": 55.4
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 10966,
+    "var_12m_pct": 12.83,
+    "casos_12m_todos": 18817,
+    "por_mil_hab": 3.4,
+    "por_bi_carteira": 183.0
+   },
    "posicoes": {
     "scr.saldo": 22,
     "scr.per_capita": 22,
@@ -533,6 +552,8 @@
     "emprego.retencao_pct": 12,
     "consorcios.cotas": 19,
     "consorcios.por_mil_hab": 17,
+    "cobranca.por_mil_hab": 11,
+    "cobranca.por_bi_carteira": 3,
     "pgfn.insc_pf_por_mil_hab": 13
    },
    "sintese": "O crédito em Alagoas somava R$ 60 bilhões em 2026-07, 0,8% do Brasil, R$ 18.604 por habitante (22º entre as 27 UFs), com inadimplência de 5,72% (11º) e crescimento de +9,0% em 12 meses. Penetração de 67% da renda anual (23º), com 8 de 102 municípios abaixo do esperado pelo modelo. 37 municípios têm agência, 7 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -769,6 +790,14 @@
     "var_12m_pct": 11.52,
     "por_mil_hab": 30.5
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 12325,
+    "var_12m_pct": 20.95,
+    "casos_12m_todos": 23421,
+    "por_mil_hab": 2.85,
+    "por_bi_carteira": 154.2
+   },
    "posicoes": {
     "scr.saldo": 17,
     "scr.per_capita": 24,
@@ -786,6 +815,8 @@
     "emprego.retencao_pct": 10,
     "consorcios.cotas": 24,
     "consorcios.por_mil_hab": 26,
+    "cobranca.por_mil_hab": 15,
+    "cobranca.por_bi_carteira": 4,
     "pgfn.insc_pf_por_mil_hab": 25
    },
    "sintese": "O crédito no Amazonas somava R$ 80 bilhões em 2026-07, 1,1% do Brasil, R$ 18.498 por habitante (24º entre as 27 UFs), com inadimplência de 5,78% (10º) e crescimento de +10,9% em 12 meses. Penetração de 71% da renda anual (19º), com 34 de 62 municípios abaixo do esperado pelo modelo. 41 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1022,6 +1053,14 @@
     "var_12m_pct": 1.29,
     "por_mil_hab": 34.1
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 1607,
+    "var_12m_pct": 3.15,
+    "casos_12m_todos": 8466,
+    "por_mil_hab": 1.99,
+    "por_bi_carteira": 82.6
+   },
    "posicoes": {
     "scr.saldo": 26,
     "scr.per_capita": 14,
@@ -1039,6 +1078,8 @@
     "emprego.retencao_pct": 1,
     "consorcios.cotas": 26,
     "consorcios.por_mil_hab": 25,
+    "cobranca.por_mil_hab": 24,
+    "cobranca.por_bi_carteira": 25,
     "pgfn.insc_pf_por_mil_hab": 2
    },
    "sintese": "O crédito no Amapá somava R$ 19 bilhões em 2026-07, 0,3% do Brasil, R$ 24.118 por habitante (14º entre as 27 UFs), com inadimplência de 5,63% (12º) e crescimento de +9,3% em 12 meses. Penetração de 95% da renda anual (12º), com 0 de 16 municípios abaixo do esperado pelo modelo. 7 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1275,6 +1316,14 @@
     "var_12m_pct": 12.31,
     "por_mil_hab": 59.5
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 37969,
+    "var_12m_pct": 1.27,
+    "casos_12m_todos": 68337,
+    "por_mil_hab": 2.55,
+    "por_bi_carteira": 128.3
+   },
    "posicoes": {
     "scr.saldo": 8,
     "scr.per_capita": 19,
@@ -1292,6 +1341,8 @@
     "emprego.retencao_pct": 9,
     "consorcios.cotas": 4,
     "consorcios.por_mil_hab": 15,
+    "cobranca.por_mil_hab": 17,
+    "cobranca.por_bi_carteira": 8,
     "pgfn.insc_pf_por_mil_hab": 23
    },
    "sintese": "O crédito na Bahia somava R$ 296 bilhões em 2026-07, 3,9% do Brasil, R$ 19.901 por habitante (19º entre as 27 UFs), com inadimplência de 5,50% (15º) e crescimento de +10,2% em 12 meses. Penetração de 64% da renda anual (24º), com 93 de 417 municípios abaixo do esperado pelo modelo. 204 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1528,6 +1579,14 @@
     "var_12m_pct": 13.17,
     "por_mil_hab": 41.7
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 19959,
+    "var_12m_pct": 9.04,
+    "casos_12m_todos": 36090,
+    "por_mil_hab": 2.15,
+    "por_bi_carteira": 113.7
+   },
    "posicoes": {
     "scr.saldo": 10,
     "scr.per_capita": 21,
@@ -1545,6 +1604,8 @@
     "emprego.retencao_pct": 11,
     "consorcios.cotas": 13,
     "consorcios.por_mil_hab": 23,
+    "cobranca.por_mil_hab": 21,
+    "cobranca.por_bi_carteira": 14,
     "pgfn.insc_pf_por_mil_hab": 27
    },
    "sintese": "O crédito no Ceará somava R$ 176 bilhões em 2026-07, 2,3% do Brasil, R$ 18.935 por habitante (21º entre as 27 UFs), com inadimplência de 5,01% (18º) e crescimento de +14,6% em 12 meses. Penetração de 70% da renda anual (20º), com 41 de 184 municípios abaixo do esperado pelo modelo. 87 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -1781,6 +1842,14 @@
     "var_12m_pct": 14.14,
     "por_mil_hab": 64.7
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 9317,
+    "var_12m_pct": 109.56,
+    "casos_12m_todos": 20982,
+    "por_mil_hab": 3.11,
+    "por_bi_carteira": 58.7
+   },
    "posicoes": {
     "scr.saldo": 13,
     "scr.per_capita": 2,
@@ -1798,6 +1867,8 @@
     "emprego.retencao_pct": 4,
     "consorcios.cotas": 18,
     "consorcios.por_mil_hab": 11,
+    "cobranca.por_mil_hab": 13,
+    "cobranca.por_bi_carteira": 26,
     "pgfn.insc_pf_por_mil_hab": 1
    },
    "sintese": "O crédito no Distrito Federal somava R$ 159 bilhões em 2026-07, 2,1% do Brasil, R$ 52.985 por habitante (2º entre as 27 UFs), com inadimplência de 3,54% (27º) e crescimento de -0,4% em 12 meses. Penetração de 6761% da renda anual (1º), com 0 de 1 municípios abaixo do esperado pelo modelo. 1 município tem agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2034,6 +2105,14 @@
     "var_12m_pct": 18.26,
     "por_mil_hab": 70.1
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 14142,
+    "var_12m_pct": 13.99,
+    "casos_12m_todos": 29890,
+    "por_mil_hab": 3.43,
+    "por_bi_carteira": 107.1
+   },
    "posicoes": {
     "scr.saldo": 15,
     "scr.per_capita": 12,
@@ -2051,6 +2130,8 @@
     "emprego.retencao_pct": 16,
     "consorcios.cotas": 14,
     "consorcios.por_mil_hab": 7,
+    "cobranca.por_mil_hab": 10,
+    "cobranca.por_bi_carteira": 17,
     "pgfn.insc_pf_por_mil_hab": 15
    },
    "sintese": "O crédito no Espírito Santo somava R$ 132 bilhões em 2026-07, 1,7% do Brasil, R$ 31.993 por habitante (12º entre as 27 UFs), com inadimplência de 4,02% (24º) e crescimento de +12,0% em 12 meses. Penetração de 62% da renda anual (26º), com 25 de 78 municípios abaixo do esperado pelo modelo. 68 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2287,6 +2368,14 @@
     "var_12m_pct": 8.85,
     "por_mil_hab": 69.4
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 35400,
+    "var_12m_pct": 24.54,
+    "casos_12m_todos": 108613,
+    "por_mil_hab": 4.77,
+    "por_bi_carteira": 103.3
+   },
    "posicoes": {
     "scr.saldo": 7,
     "scr.per_capita": 8,
@@ -2304,6 +2393,8 @@
     "emprego.retencao_pct": 21,
     "consorcios.cotas": 7,
     "consorcios.por_mil_hab": 9,
+    "cobranca.por_mil_hab": 7,
+    "cobranca.por_bi_carteira": 22,
     "pgfn.insc_pf_por_mil_hab": 12
    },
    "sintese": "O crédito em Goiás somava R$ 343 bilhões em 2026-07, 4,5% do Brasil, R$ 46.155 por habitante (8º entre as 27 UFs), com inadimplência de 7,09% (4º) e crescimento de +7,7% em 12 meses. Penetração de 119% da renda anual (7º), com 51 de 246 municípios abaixo do esperado pelo modelo. 121 municípios têm agência, 19 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2540,6 +2631,14 @@
     "var_12m_pct": 12.41,
     "por_mil_hab": 58.0
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 13633,
+    "var_12m_pct": 25.45,
+    "casos_12m_todos": 28889,
+    "por_mil_hab": 1.94,
+    "por_bi_carteira": 119.6
+   },
    "posicoes": {
     "scr.saldo": 16,
     "scr.per_capita": 27,
@@ -2557,6 +2656,8 @@
     "emprego.retencao_pct": 7,
     "consorcios.cotas": 11,
     "consorcios.por_mil_hab": 16,
+    "cobranca.por_mil_hab": 25,
+    "cobranca.por_bi_carteira": 12,
     "pgfn.insc_pf_por_mil_hab": 19
    },
    "sintese": "O crédito no Maranhão somava R$ 114 bilhões em 2026-07, 1,5% do Brasil, R$ 16.238 por habitante (27º entre as 27 UFs), com inadimplência de 9,11% (1º) e crescimento de +7,3% em 12 meses. Penetração de 69% da renda anual (21º), com 19 de 217 municípios abaixo do esperado pelo modelo. 80 municípios têm agência, 12 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -2793,6 +2894,14 @@
     "var_12m_pct": 13.16,
     "por_mil_hab": 61.5
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 72547,
+    "var_12m_pct": -10.49,
+    "casos_12m_todos": 162084,
+    "por_mil_hab": 3.39,
+    "por_bi_carteira": 108.2
+   },
    "posicoes": {
     "scr.saldo": 2,
     "scr.per_capita": 13,
@@ -2810,6 +2919,8 @@
     "emprego.retencao_pct": 25,
     "consorcios.cotas": 2,
     "consorcios.por_mil_hab": 14,
+    "cobranca.por_mil_hab": 12,
+    "cobranca.por_bi_carteira": 16,
     "pgfn.insc_pf_por_mil_hab": 22
    },
    "sintese": "O crédito em Minas Gerais somava R$ 671 bilhões em 2026-07, 8,8% do Brasil, R$ 31.346 por habitante (13º entre as 27 UFs), com inadimplência de 4,64% (21º) e crescimento de +8,5% em 12 meses. Penetração de 95% da renda anual (11º), com 146 de 853 municípios abaixo do esperado pelo modelo. 402 municípios têm agência, 35 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3046,6 +3157,14 @@
     "var_12m_pct": 15.47,
     "por_mil_hab": 85.0
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 14860,
+    "var_12m_pct": 6.72,
+    "casos_12m_todos": 33276,
+    "por_mil_hab": 5.08,
+    "por_bi_carteira": 104.3
+   },
    "posicoes": {
     "scr.saldo": 14,
     "scr.per_capita": 5,
@@ -3063,6 +3182,8 @@
     "emprego.retencao_pct": 17,
     "consorcios.cotas": 15,
     "consorcios.por_mil_hab": 5,
+    "cobranca.por_mil_hab": 6,
+    "cobranca.por_bi_carteira": 20,
     "pgfn.insc_pf_por_mil_hab": 4
    },
    "sintese": "O crédito em Mato Grosso do Sul somava R$ 142 bilhões em 2026-07, 1,9% do Brasil, R$ 48.693 por habitante (5º entre as 27 UFs), com inadimplência de 7,37% (3º) e crescimento de +6,4% em 12 meses. Penetração de 115% da renda anual (9º), com 27 de 79 municípios abaixo do esperado pelo modelo. 54 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3299,6 +3420,14 @@
     "var_12m_pct": 13.72,
     "por_mil_hab": 116.6
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 27982,
+    "var_12m_pct": 10.02,
+    "casos_12m_todos": 56730,
+    "por_mil_hab": 7.19,
+    "por_bi_carteira": 106.2
+   },
    "posicoes": {
     "scr.saldo": 9,
     "scr.per_capita": 1,
@@ -3316,6 +3445,8 @@
     "emprego.retencao_pct": 18,
     "consorcios.cotas": 10,
     "consorcios.por_mil_hab": 1,
+    "cobranca.por_mil_hab": 3,
+    "cobranca.por_bi_carteira": 19,
     "pgfn.insc_pf_por_mil_hab": 3
    },
    "sintese": "O crédito em Mato Grosso somava R$ 263 bilhões em 2026-07, 3,5% do Brasil, R$ 67.645 por habitante (1º entre as 27 UFs), com inadimplência de 5,98% (9º) e crescimento de +5,2% em 12 meses. Penetração de 140% da renda anual (4º), com 27 de 141 municípios abaixo do esperado pelo modelo. 77 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3552,6 +3683,14 @@
     "var_12m_pct": 7.15,
     "por_mil_hab": 52.7
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 18691,
+    "var_12m_pct": 2.55,
+    "casos_12m_todos": 35612,
+    "por_mil_hab": 2.15,
+    "por_bi_carteira": 111.2
+   },
    "posicoes": {
     "scr.saldo": 12,
     "scr.per_capita": 20,
@@ -3569,6 +3708,8 @@
     "emprego.retencao_pct": 14,
     "consorcios.cotas": 9,
     "consorcios.por_mil_hab": 19,
+    "cobranca.por_mil_hab": 22,
+    "cobranca.por_bi_carteira": 15,
     "pgfn.insc_pf_por_mil_hab": 26
    },
    "sintese": "O crédito no Pará somava R$ 168 bilhões em 2026-07, 2,2% do Brasil, R$ 19.293 por habitante (20º entre as 27 UFs), com inadimplência de 6,33% (8º) e crescimento de +11,5% em 12 meses. Penetração de 82% da renda anual (17º), com 76 de 144 municípios abaixo do esperado pelo modelo. 144 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -3805,6 +3946,14 @@
     "var_12m_pct": 16.4,
     "por_mil_hab": 48.8
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 7039,
+    "var_12m_pct": 18.88,
+    "casos_12m_todos": 20163,
+    "por_mil_hab": 1.69,
+    "por_bi_carteira": 91.2
+   },
    "posicoes": {
     "scr.saldo": 18,
     "scr.per_capita": 23,
@@ -3822,6 +3971,8 @@
     "emprego.retencao_pct": 2,
     "consorcios.cotas": 17,
     "consorcios.por_mil_hab": 20,
+    "cobranca.por_mil_hab": 27,
+    "cobranca.por_bi_carteira": 23,
     "pgfn.insc_pf_por_mil_hab": 20
    },
    "sintese": "O crédito na Paraíba somava R$ 77 bilhões em 2026-07, 1,0% do Brasil, R$ 18.532 por habitante (23º entre as 27 UFs), com inadimplência de 5,51% (13º) e crescimento de +11,7% em 12 meses. Penetração de 68% da renda anual (22º), com 16 de 223 municípios abaixo do esperado pelo modelo. 45 municípios têm agência, 68 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4058,6 +4209,14 @@
     "var_12m_pct": 13.19,
     "por_mil_hab": 42.4
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 20167,
+    "var_12m_pct": -2.7,
+    "casos_12m_todos": 43590,
+    "por_mil_hab": 2.11,
+    "por_bi_carteira": 116.5
+   },
    "posicoes": {
     "scr.saldo": 11,
     "scr.per_capita": 26,
@@ -4075,6 +4234,8 @@
     "emprego.retencao_pct": 6,
     "consorcios.cotas": 12,
     "consorcios.por_mil_hab": 22,
+    "cobranca.por_mil_hab": 23,
+    "cobranca.por_bi_carteira": 13,
     "pgfn.insc_pf_por_mil_hab": 8
    },
    "sintese": "O crédito em Pernambuco somava R$ 173 bilhões em 2026-07, 2,3% do Brasil, R$ 18.110 por habitante (26º entre as 27 UFs), com inadimplência de 5,34% (16º) e crescimento de +11,2% em 12 meses. Penetração de 62% da renda anual (27º), com 49 de 185 municípios abaixo do esperado pelo modelo. 92 municípios têm agência, 2 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4311,6 +4472,14 @@
     "var_12m_pct": 16.32,
     "por_mil_hab": 68.4
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 8930,
+    "var_12m_pct": 6.09,
+    "casos_12m_todos": 16955,
+    "por_mil_hab": 2.64,
+    "por_bi_carteira": 129.2
+   },
    "posicoes": {
     "scr.saldo": 20,
     "scr.per_capita": 18,
@@ -4328,6 +4497,8 @@
     "emprego.retencao_pct": 3,
     "consorcios.cotas": 16,
     "consorcios.por_mil_hab": 10,
+    "cobranca.por_mil_hab": 16,
+    "cobranca.por_bi_carteira": 7,
     "pgfn.insc_pf_por_mil_hab": 11
    },
    "sintese": "O crédito no Piauí somava R$ 69 bilhões em 2026-07, 0,9% do Brasil, R$ 20.416 por habitante (18º entre as 27 UFs), com inadimplência de 4,88% (19º) e crescimento de +10,9% em 12 meses. Penetração de 89% da renda anual (15º), com 4 de 224 municípios abaixo do esperado pelo modelo. 40 municípios têm agência, 96 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4564,6 +4735,14 @@
     "var_12m_pct": 16.26,
     "por_mil_hab": 98.8
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 75679,
+    "var_12m_pct": 23.35,
+    "casos_12m_todos": 165378,
+    "por_mil_hab": 6.36,
+    "por_bi_carteira": 133.8
+   },
    "posicoes": {
     "scr.saldo": 4,
     "scr.per_capita": 6,
@@ -4581,6 +4760,8 @@
     "emprego.retencao_pct": 20,
     "consorcios.cotas": 3,
     "consorcios.por_mil_hab": 3,
+    "cobranca.por_mil_hab": 4,
+    "cobranca.por_bi_carteira": 6,
     "pgfn.insc_pf_por_mil_hab": 16
    },
    "sintese": "O crédito no Paraná somava R$ 566 bilhões em 2026-07, 7,5% do Brasil, R$ 47.559 por habitante (6º entre as 27 UFs), com inadimplência de 4,48% (22º) e crescimento de +9,6% em 12 meses. Penetração de 90% da renda anual (14º), com 76 de 399 municípios abaixo do esperado pelo modelo. 220 municípios têm agência, 5 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -4817,6 +4998,14 @@
     "var_12m_pct": 12.13,
     "por_mil_hab": 29.3
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 30401,
+    "var_12m_pct": -25.2,
+    "casos_12m_todos": 68265,
+    "por_mil_hab": 1.77,
+    "por_bi_carteira": 53.3
+   },
    "posicoes": {
     "scr.saldo": 3,
     "scr.per_capita": 11,
@@ -4834,6 +5023,8 @@
     "emprego.retencao_pct": 13,
     "consorcios.cotas": 8,
     "consorcios.por_mil_hab": 27,
+    "cobranca.por_mil_hab": 26,
+    "cobranca.por_bi_carteira": 27,
     "pgfn.insc_pf_por_mil_hab": 5
    },
    "sintese": "O crédito no Rio de Janeiro somava R$ 570 bilhões em 2026-07, 7,5% do Brasil, R$ 33.123 por habitante (11º entre as 27 UFs), com inadimplência de 4,28% (23º) e crescimento de +2,3% em 12 meses. Penetração de 109% da renda anual (10º), com 75 de 92 municípios abaixo do esperado pelo modelo. 91 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5070,6 +5261,14 @@
     "var_12m_pct": 11.45,
     "por_mil_hab": 43.3
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 8803,
+    "var_12m_pct": 12.2,
+    "casos_12m_todos": 20738,
+    "por_mil_hab": 2.55,
+    "por_bi_carteira": 121.6
+   },
    "posicoes": {
     "scr.saldo": 19,
     "scr.per_capita": 17,
@@ -5087,6 +5286,8 @@
     "emprego.retencao_pct": 15,
     "consorcios.cotas": 22,
     "consorcios.por_mil_hab": 21,
+    "cobranca.por_mil_hab": 18,
+    "cobranca.por_bi_carteira": 11,
     "pgfn.insc_pf_por_mil_hab": 18
    },
    "sintese": "O crédito no Rio Grande do Norte somava R$ 72 bilhões em 2026-07, 1,0% do Brasil, R$ 20.957 por habitante (17º entre as 27 UFs), com inadimplência de 5,24% (17º) e crescimento de +10,5% em 12 meses. Penetração de 72% da renda anual (18º), com 8 de 167 municípios abaixo do esperado pelo modelo. 39 municípios têm agência, 46 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5323,6 +5524,14 @@
     "var_12m_pct": 12.24,
     "por_mil_hab": 101.2
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 13071,
+    "var_12m_pct": 8.7,
+    "casos_12m_todos": 36215,
+    "por_mil_hab": 7.46,
+    "por_bi_carteira": 203.4
+   },
    "posicoes": {
     "scr.saldo": 21,
     "scr.per_capita": 10,
@@ -5340,6 +5549,8 @@
     "emprego.retencao_pct": 24,
     "consorcios.cotas": 20,
     "consorcios.por_mil_hab": 2,
+    "cobranca.por_mil_hab": 2,
+    "cobranca.por_bi_carteira": 1,
     "pgfn.insc_pf_por_mil_hab": 17
    },
    "sintese": "O crédito em Rondônia somava R$ 64 bilhões em 2026-07, 0,8% do Brasil, R$ 36.682 por habitante (10º entre as 27 UFs), com inadimplência de 6,82% (5º) e crescimento de +5,9% em 12 meses. Penetração de 123% da renda anual (6º), com 1 de 52 municípios abaixo do esperado pelo modelo. 29 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5576,6 +5787,14 @@
     "var_12m_pct": 5.96,
     "por_mil_hab": 34.7
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 2278,
+    "var_12m_pct": 31.83,
+    "casos_12m_todos": 3977,
+    "por_mil_hab": 3.08,
+    "por_bi_carteira": 136.6
+   },
    "posicoes": {
     "scr.saldo": 27,
     "scr.per_capita": 15,
@@ -5593,6 +5812,8 @@
     "emprego.retencao_pct": 19,
     "consorcios.cotas": 27,
     "consorcios.por_mil_hab": 24,
+    "cobranca.por_mil_hab": 14,
+    "cobranca.por_bi_carteira": 5,
     "pgfn.insc_pf_por_mil_hab": 7
    },
    "sintese": "O crédito em Roraima somava R$ 17 bilhões em 2026-07, 0,2% do Brasil, R$ 22.580 por habitante (15º entre as 27 UFs), com inadimplência de 6,46% (7º) e crescimento de +17,3% em 12 meses. Penetração de 118% da renda anual (8º), com 0 de 15 municípios abaixo do esperado pelo modelo. 5 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -5829,6 +6050,14 @@
     "var_12m_pct": 4.04,
     "por_mil_hab": 69.9
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 67484,
+    "var_12m_pct": 22.84,
+    "casos_12m_todos": 141686,
+    "por_mil_hab": 6.01,
+    "por_bi_carteira": 126.6
+   },
    "posicoes": {
     "scr.saldo": 5,
     "scr.per_capita": 7,
@@ -5846,6 +6075,8 @@
     "emprego.retencao_pct": 27,
     "consorcios.cotas": 5,
     "consorcios.por_mil_hab": 8,
+    "cobranca.por_mil_hab": 5,
+    "cobranca.por_bi_carteira": 10,
     "pgfn.insc_pf_por_mil_hab": 10
    },
    "sintese": "O crédito no Rio Grande do Sul somava R$ 533 bilhões em 2026-07, 7,0% do Brasil, R$ 47.459 por habitante (7º entre as 27 UFs), com inadimplência de 4,87% (20º) e crescimento de +8,1% em 12 meses. Penetração de 128% da renda anual (5º), com 181 de 497 municípios abaixo do esperado pelo modelo. 348 municípios têm agência, 1 depende só de correspondente e nenhum fica sem ponto físico."
@@ -6082,6 +6313,14 @@
     "var_12m_pct": 15.34,
     "por_mil_hab": 76.4
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 77959,
+    "var_12m_pct": 21.72,
+    "casos_12m_todos": 145933,
+    "por_mil_hab": 9.52,
+    "por_bi_carteira": 187.7
+   },
    "posicoes": {
     "scr.saldo": 6,
     "scr.per_capita": 3,
@@ -6099,6 +6338,8 @@
     "emprego.retencao_pct": 23,
     "consorcios.cotas": 6,
     "consorcios.por_mil_hab": 6,
+    "cobranca.por_mil_hab": 1,
+    "cobranca.por_bi_carteira": 2,
     "pgfn.insc_pf_por_mil_hab": 24
    },
    "sintese": "O crédito em Santa Catarina somava R$ 415 bilhões em 2026-07, 5,5% do Brasil, R$ 50.739 por habitante (3º entre as 27 UFs), com inadimplência de 3,71% (26º) e crescimento de +10,0% em 12 meses. Penetração de 63% da renda anual (25º), com 81 de 295 municípios abaixo do esperado pelo modelo. 165 municípios têm agência, 0 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6335,6 +6576,14 @@
     "var_12m_pct": 16.48,
     "por_mil_hab": 61.8
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 5410,
+    "var_12m_pct": -1.22,
+    "casos_12m_todos": 12382,
+    "por_mil_hab": 2.35,
+    "por_bi_carteira": 127.5
+   },
    "posicoes": {
     "scr.saldo": 24,
     "scr.per_capita": 25,
@@ -6352,6 +6601,8 @@
     "emprego.retencao_pct": 5,
     "consorcios.cotas": 23,
     "consorcios.por_mil_hab": 13,
+    "cobranca.por_mil_hab": 20,
+    "cobranca.por_bi_carteira": 9,
     "pgfn.insc_pf_por_mil_hab": 6
    },
    "sintese": "O crédito em Sergipe somava R$ 42 bilhões em 2026-07, 0,6% do Brasil, R$ 18.455 por habitante (25º entre as 27 UFs), com inadimplência de 5,51% (14º) e crescimento de -0,1% em 12 meses. Penetração de 87% da renda anual (16º), com 19 de 75 municípios abaixo do esperado pelo modelo. 46 municípios têm agência, 6 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6588,6 +6839,14 @@
     "var_12m_pct": 11.49,
     "por_mil_hab": 62.6
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 206433,
+    "var_12m_pct": 32.16,
+    "casos_12m_todos": 484427,
+    "por_mil_hab": 4.48,
+    "por_bi_carteira": 90.8
+   },
    "posicoes": {
     "scr.saldo": 1,
     "scr.per_capita": 4,
@@ -6605,6 +6864,8 @@
     "emprego.retencao_pct": 22,
     "consorcios.cotas": 1,
     "consorcios.por_mil_hab": 12,
+    "cobranca.por_mil_hab": 8,
+    "cobranca.por_bi_carteira": 24,
     "pgfn.insc_pf_por_mil_hab": 14
    },
    "sintese": "O crédito em São Paulo somava R$ 2.273 bilhões em 2026-07, 30,0% do Brasil, R$ 49.326 por habitante (4º entre as 27 UFs), com inadimplência de 3,76% (25º) e crescimento de +12,5% em 12 meses. Penetração de 306% da renda anual (2º), com 202 de 645 municípios abaixo do esperado pelo modelo. 416 municípios têm agência, 33 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6841,6 +7102,14 @@
     "var_12m_pct": 10.26,
     "por_mil_hab": 96.9
    },
+   "cobranca": {
+    "mes": "2026-06",
+    "casos_12m": 6062,
+    "var_12m_pct": 22.99,
+    "casos_12m_todos": 14587,
+    "por_mil_hab": 3.82,
+    "por_bi_carteira": 103.4
+   },
    "posicoes": {
     "scr.saldo": 23,
     "scr.per_capita": 9,
@@ -6858,6 +7127,8 @@
     "emprego.retencao_pct": 26,
     "consorcios.cotas": 21,
     "consorcios.por_mil_hab": 4,
+    "cobranca.por_mil_hab": 9,
+    "cobranca.por_bi_carteira": 21,
     "pgfn.insc_pf_por_mil_hab": 9
    },
    "sintese": "O crédito no Tocantins somava R$ 59 bilhões em 2026-07, 0,8% do Brasil, R$ 36.955 por habitante (9º entre as 27 UFs), com inadimplência de 8,45% (2º) e crescimento de +9,6% em 12 meses. Penetração de 143% da renda anual (3º), com 1 de 139 municípios abaixo do esperado pelo modelo. 27 municípios têm agência, 39 dependem só de correspondente e nenhum fica sem ponto físico."
@@ -6874,7 +7145,8 @@
   "BNDES dados abertos",
   "PGFN (Dívida ativa)",
   "MTE/Novo Caged via Ipeadata (Emprego formal)",
-  "BCB Panorama de Consórcios"
+  "BCB Panorama de Consórcios",
+  "CNJ DataJud (Cobrança judicial)"
  ],
  "cautelas": [
   "Cada bloco tem a própria data-base e a própria régua; posições em ranking são calculadas entre as 27 UFs dentro de um mesmo bloco e nunca cruzam blocos.",

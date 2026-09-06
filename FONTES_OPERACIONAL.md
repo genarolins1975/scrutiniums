@@ -1582,3 +1582,56 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
 - **Pendências:** corte por administradora e por município não existe na fonte aberta;
   o Panorama não traz valor médio de lance nem prazo de contemplação.
 
+## 52. Cobrança judicial de crédito (06/09/2026)
+
+- **Pergunta:** quanto crédito está sendo cobrado na Justiça, por qual via e onde. Integração
+  do §7.3 da avaliação de 05/09 (DataJud além das classes 108 e 129); primeira frente
+  depois de fechada a lista do §6.
+- **Fonte (uma régua):** CNJ/DataJud, API pública, por AGREGAÇÃO (o coletor não baixa
+  documentos: são milhões de processos por tribunal). Classes TPU: execução de título
+  extrajudicial (12154 na TPU vigente e 159 na antiga, somadas), busca e apreensão em
+  alienação fiduciária (81), ação monitória (40) e execução hipotecária do SFH (1117);
+  descobertas por agregação sobre `classe.nome` em TJSP e TJMG em 05/09/2026. Dois
+  recortes: "todos" (qualquer credor) e "bancário" (assuntos TPU 9607, 4960, 9582,
+  10481, 7773, 14757, 9585, 7772, 9603 e 11806). Coletor
+  `pipeline/sources/datajud_cobranca.py`: 27 tribunais estaduais, no máximo 9 por rodada
+  (os mais antigos primeiro), 8 requisições por tribunal, 30 a 55 segundos cada.
+- **Achado de fonte, registrado:** `dataAjuizamento` mistura dois formatos no índice.
+  Os documentos migrados do SAJ guardam 'yyyyMMddHHmmss', que o índice lê como
+  epoch-millis (anos ~2611); os demais guardam ISO-8601. A leitura como epoch-millis é
+  monotônica no tempo real, então um intervalo escrito no mesmo formato de 14 dígitos
+  conta o mês certo, e um intervalo ISO conta o mês certo dos documentos ISO; cada mês
+  é a soma dos dois espaços (`date_range` duplo, com cardinalidade do número CNJ por
+  bucket). Medido em TJSP, classe 81: 617 mil documentos no espaço de 14 dígitos e 201
+  mil no ISO, sem sobreposição possível. O `date_histogram` do servidor segue
+  inutilizável (buckets em 1941 e em 2611), como já documentado no coletor de RJ.
+- **Builder:** `pipeline/cobranca.py` → `cobranca.json` (59 KB): janela de 12 meses
+  fechada antes dos três meses parciais (regra do painel de RJ), Brasil = soma dos
+  tribunais coletados (nunca extrapolado; cobertura declarada em `cobertura`), quatro
+  grupos com casos e variação nos dois recortes, série mensal desde 2019-01 com parciais
+  marcados, 27 UFs com casos bancários por mil habitantes (Censo 2022) e por R$ bilhão
+  de carteira do SCR (via `ufs.json`), inadimplência do SCR ao lado e posições. Roda
+  antes das páginas por UF em `gold.py`, que ganham o bloco "Cobrança judicial". Aba
+  `/observatorio/debt-collection-lawsuits` no grupo Riscos e temas, chunk `emergentes`,
+  CSV da série; vintage `cobranca`; vigília 150 dias.
+- **Achados na primeira carga (12 meses até 2026-06, 27 tribunais):** 821.234 ações de
+  cobrança de crédito bancário (+14,3% contra os 12 meses anteriores), 45% das 1.809.792
+  ações das mesmas classes com qualquer credor (+11,4%). Busca e apreensão em alienação
+  fiduciária: 519.977 casos (63% do recorte bancário, +14,3%; 98% da classe tem assunto
+  bancário). Execução de título: 233.361 bancários (+8,5%) em 1.095.762 totais (21%).
+  Monitória: 67.852 bancários (+41,8%) em 184.293 (37%). Execução hipotecária do SFH:
+  44 casos, residual. Brasil: 3,85 casos bancários por mil habitantes e 108 por R$
+  bilhão de carteira. Por habitante: Santa Catarina 9,5, Rondônia 7,5, Mato Grosso 7,2,
+  Paraná 6,4; Paraíba 1,7 e Rio de Janeiro 1,8 no outro extremo. A série mensal
+  bancária passa de 61 mil em 2025-01 para 80 mil em 2026-04.
+- **Travas:** `src/tests/cobranca-data.test.ts` (janela fecha antes dos 3 parciais;
+  série contínua desde 2019-01 com parciais marcados; bancário ≤ todos em todo mês,
+  grupo e UF; Brasil = soma dos grupos e das UFs; série por grupo soma a janela;
+  classes TPU declaradas; busca e apreensão com mais de 80% de assunto bancário; só
+  tribunais coletados, cobertura + faltantes = 27; posições 1..n; bloco nas páginas por
+  UF; aba registrada; coletor por agregação, sem `search_after`).
+- **Pendências:** valor da causa e identificação do credor não existem na API pública;
+  cobertura desigual entre tribunais (Rio de Janeiro e Paraíba com intensidade baixa
+  podem refletir remessa incompleta, não menos cobrança); TRFs (execuções fiscais e
+  SFH federal) ficaram fora por decisão de perímetro.
+

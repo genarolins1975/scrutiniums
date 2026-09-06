@@ -566,3 +566,30 @@ em fonte aberta e fica registrado como lacuna.
 **Estado do §6 depois desta etapa.** Construídos: nº 1, 2, 3, 4 (metade Focus), 5, 6, 7,
 8, 9 e 10. Pendente apenas a PTC, que depende de dado estruturado do BCB.
 
+## 21. Integração §7.3: cobrança judicial de crédito (06/09/2026, madrugada)
+
+**O que foi construído.** Um coletor novo do DataJud por agregação (quatro classes de
+cobrança, dois recortes, 27 tribunais estaduais), o builder `pipeline/cobranca.py`, a aba
+`/observatorio/debt-collection-lawsuits` no grupo Riscos e temas (série, classes, UFs,
+método) e o bloco de cobrança nas 27 páginas por UF. A armadilha de datas do DataJud
+foi resolvida sem baixar documentos: intervalos mensais em dois espaços de data,
+somados.
+
+**Evidência** (CNJ/DataJud, consultas de 05 e 06/09/2026; 12 meses até 2026-06).
+821.234 ações de cobrança de crédito bancário nos 27 tribunais estaduais, +14,3% contra
+os 12 meses anteriores; 45% das 1.809.792 ações das mesmas classes com qualquer credor.
+Busca e apreensão em alienação fiduciária responde por 63% (519.977 casos); monitórias
+crescem 41,8%. Brasil com 3,85 casos por mil habitantes e 108 por R$ bilhão de carteira;
+Santa Catarina 9,5 por mil, Rio de Janeiro 1,8.
+
+**Inferência.** A cobrança judicial de crédito cresce mais que o dobro do crédito (SCR
++12% a/a em 2026-07) e está concentrada no financiamento de veículos: a busca e apreensão
+é a via de sete em cada dez ações bancárias. A dispersão por UF mistura intensidade de
+cobrança com cobertura do tribunal no DataJud, e o painel diz isso em vez de ordenar
+estados como se a régua fosse uma só.
+
+**Recomendação.** Ler o painel como fluxo de decisão de cobrar, não como inadimplência;
+usar o recorte bancário como piso (o assunto é cadastrado pelo tribunal) e a variação
+como sinal, não o nível por UF. Próximas integrações do §7 por valor: cadastro CNPJ da
+Receita (denominador do Risco setorial) e SUSEP (prestamista em Juros).
+
