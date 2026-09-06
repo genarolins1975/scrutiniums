@@ -601,10 +601,10 @@ Doze PRs mesclados em `main` entre 05 e 06/09/2026, todos com o CI "testes" verd
 
 | PR | Versão | Painel | Item da avaliação |
 |---|---|---|---|
-| #73, #74 | 0.87 a 0.88 | Correções do §8 (P0 a P2) e crédito rural | §8, §6 nº 1 |
-| #75 | 0.89 | Crédito ampliado e mercado de capitais | §6 nº 3 (resolve E13) |
-| #76 | 0.90 | Crédito direcionado e BNDES | §6 nº 2 |
-| #77 | 0.91 | Páginas por UF | §6 nº 8 |
+| #73, #74 | 0.87 | Correções do §8 (P0 a P2) e crédito rural | §8, §6 nº 1 |
+| #75 | 0.88 | Crédito ampliado e mercado de capitais | §6 nº 3 (resolve E13) |
+| #76 | 0.89 | Crédito direcionado e BNDES | §6 nº 2 |
+| #77 | 0.90 | Páginas por UF | §6 nº 8 |
 | #78 | 0.91 | Focus nos Cenários | §6 nº 4 (metade estruturada) |
 | #79 | 0.92 | Entrantes e saídas do SFN | §6 nº 5 |
 | #80 | 0.93 | Conduta e enforcement | §6 nº 6 |
