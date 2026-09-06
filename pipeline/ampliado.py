@@ -320,22 +320,36 @@ def _fidc(con):
         return {"disponivel": False}
     ult = fechados[-1]
     return {"disponivel": True, "mes": ult["mes"], "meses_parciais": [p["mes"] for p in ser if p["parcial"]],
-            "kpis": {"n_fundos": ult["n_fundos"], "carteira": ult["carteira"], "inad_pct": ult["inad_pct"]}, "serie": ser[-60:],
+            "kpis": {"n_fundos": ult["n_fundos"], "carteira": ult["carteira"], "inad_pct": ult["inad_pct"], "parcelas_inad_pct": ult["parcelas_inad_pct"]}, "serie": ser[-60:],
             "nota": ("informes mensais de FIDC (tab I), agregado do sistema; mês com menos de 90% dos fundos do mês anterior é parcial. "
-                     "A página Sinais Antecedentes usa a mesma série como componente do subíndice não bancário.")}
+                     "Inadimplência = créditos existentes inadimplentes ÷ carteira (I.2.a.3 e I.2.b.3 do informe); a medida de créditos a vencer "
+                     "com parcelas inadimplentes fica ao lado. A página Sinais Antecedentes usa a mesma série como componente do subíndice não "
+                     "bancário; FIDCs por lastro e cota abre lastro, classes e prazos.")}
 
 
 def serie_fidc(con):
-    """Série mensal dos FIDCs com meses parciais marcados (compartilhada com leading.py)."""
+    """Série mensal dos FIDCs com meses parciais marcados (compartilhada com leading.py e fidc.py).
+
+    Pelo dicionário da CVM (tab I): venc_inad soma I.2.a.2 + I.2.b.2, "créditos a vencer com parcelas
+    inadimplentes"; venc_ad soma I.2.a.1 + I.2.b.1, "a vencer e adimplentes"; cred_inad soma I.2.a.3 +
+    I.2.b.3, "créditos existentes inadimplentes". Até 06/09/2026 o campo inad_pct era venc_inad ÷ carteira
+    rotulado como "vencidos inadimplentes"; passa a ser cred_inad ÷ carteira, e a medida antiga segue
+    publicada com o nome certo em parcelas_inad_pct. Mês sem cred_inad (silver anterior ao backfill)
+    fica nulo, nunca aproximado.
+    """
     try:
-        rows = con.execute("SELECT anomes, n_fundos, carteira, venc_inad, venc_ad FROM fidc_agg ORDER BY anomes").fetchall()
+        cols = {r[1] for r in con.execute("PRAGMA table_info(fidc_agg)").fetchall()}
+        sel = "SELECT anomes, n_fundos, carteira, venc_inad, venc_ad, " + ("cred_inad" if "cred_inad" in cols else "NULL") + " FROM fidc_agg ORDER BY anomes"
+        rows = con.execute(sel).fetchall()
     except Exception:
         return []
     out, prev_n = [], None
-    for am, n, c, vi, va in rows:
+    for am, n, c, vi, va, ci in rows:
         parcial = prev_n is not None and n < prev_n * PISO_COBERTURA_MES
-        out.append({"mes": f"{am[:4]}-{am[4:6]}", "n_fundos": n, "carteira": c, "inad_pct": _r(vi / c * 100) if c else None,
-                    "atraso_pct": _r((vi + va) / c * 100) if c else None, "parcial": parcial})
+        out.append({"mes": f"{am[:4]}-{am[4:6]}", "n_fundos": n, "carteira": c,
+                    "inad_pct": _r(ci / c * 100) if c and ci is not None else None,
+                    "parcelas_inad_pct": _r(vi / c * 100) if c else None,
+                    "a_vencer_pct": _r((vi + va) / c * 100) if c else None, "parcial": parcial})
         if not parcial:
             prev_n = n
     return out

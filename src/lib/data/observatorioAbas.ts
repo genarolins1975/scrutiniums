@@ -239,6 +239,22 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "consorcios.json",
   },
   {
+    view: "prazo",
+    caminho: "/loan-maturity",
+    titulo: "Prazo da carteira",
+    descricao:
+      "Quanto da carteira de crédito vence em até 12 meses, quanto depois de 5 anos e qual o prazo médio residual, por tipo de cliente, mês a mês e por UF, das seis faixas de prazo a vencer do SCR.data do Banco Central.",
+    gold: "prazo.json",
+  },
+  {
+    view: "fidc",
+    caminho: "/fidc-receivables",
+    titulo: "FIDCs por lastro e cota",
+    descricao:
+      "O crédito dos fundos de recebíveis aberto por lastro, por classe de cota (sênior, mezanino, subordinada) e por prazo, com a subordinação do sistema, lido dos informes mensais de FIDC da CVM.",
+    gold: "fidc.json",
+  },
+  {
     view: "cobranca",
     caminho: "/debt-collection-lawsuits",
     titulo: "Bancos cobrando na Justiça",

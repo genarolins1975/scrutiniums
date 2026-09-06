@@ -160,7 +160,7 @@ def build(con, cfg):
     from pipeline import ampliado as amp_mod
     fidc_ser = [p for p in amp_mod.serie_fidc(con) if not p["parcial"] and p["inad_pct"] is not None]
     fidc_pct = [(p["mes"].replace("-", ""), p["inad_pct"]) for p in fidc_ser]
-    add_signal("fidc_inad_pct", "FIDCs — créditos vencidos inadimplentes / carteira", "nao_bancario",
+    add_signal("fidc_inad_pct", "FIDCs — créditos inadimplentes / carteira", "nao_bancario",
                "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs). Deterioração aqui pode anteceder o sistema bancário — originadores mais arriscados sentem o ciclo primeiro. Atraso ≠ perda: subordinação e garantias absorvem parte (estruturas heterogêneas). Meses com entrega parcial dos informes ficam fora.",
                "CVM — informes mensais FIDC (tab I)", "mensal", "% da carteira agregada", "antecedente candidato", "%", fidc_pct, "+")
     for tipo, nome, lastro in (("cri", "CRI", "crédito imobiliário"), ("cra", "CRA", "crédito do agronegócio")):

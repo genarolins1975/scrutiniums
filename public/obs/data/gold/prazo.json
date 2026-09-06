@@ -1,0 +1,2112 @@
+{
+ "disponivel": true,
+ "tipo": "DADO OBSERVADO (SCR.data) + CALCULADO (shares, prazo médio aproximado, variações, posições)",
+ "data_base": "2026-07",
+ "data_base_12m": "2025-07",
+ "fonte": {
+  "nome": "BCB — SCR.data (carteira ativa por UF, tipo de cliente e faixa de prazo a vencer)",
+  "url": "https://dadosabertos.bcb.gov.br/dataset/scr_data",
+  "licenca": "dados abertos do BCB",
+  "nivel": "A — registro administrativo do supervisor, mensal"
+ },
+ "gerado_em": "2026-09-06T22:25:12+00:00",
+ "faixas": [
+  {
+   "id": "ate90",
+   "nome": "até 90 dias",
+   "dias_ini": 0,
+   "dias_fim": 90,
+   "ponto_medio_dias": 45
+  },
+  {
+   "id": "de91a360",
+   "nome": "91 a 360 dias",
+   "dias_ini": 91,
+   "dias_fim": 360,
+   "ponto_medio_dias": 225
+  },
+  {
+   "id": "de361a1080",
+   "nome": "1 a 3 anos",
+   "dias_ini": 361,
+   "dias_fim": 1080,
+   "ponto_medio_dias": 720
+  },
+  {
+   "id": "de1081a1800",
+   "nome": "3 a 5 anos",
+   "dias_ini": 1081,
+   "dias_fim": 1800,
+   "ponto_medio_dias": 1440
+  },
+  {
+   "id": "de1801a5400",
+   "nome": "5 a 15 anos",
+   "dias_ini": 1801,
+   "dias_fim": 5400,
+   "ponto_medio_dias": 3600
+  },
+  {
+   "id": "mais5400",
+   "nome": "acima de 15 anos",
+   "dias_ini": 5401,
+   "dias_fim": null,
+   "ponto_medio_dias": 7200
+  }
+ ],
+ "brasil": {
+  "total": {
+   "saldo": 7590318996055.626,
+   "a_vencer": 7325114164151.84,
+   "vencido": 265204831903.78613,
+   "vencido_pct": 3.49,
+   "faixas": {
+    "ate90": 1411749776603.3477,
+    "de91a360": 1688447222470.179,
+    "de361a1080": 1905437752707.0925,
+    "de1081a1800": 869000742229.1299,
+    "de1801a5400": 1140067159269.0203,
+    "mais5400": 310411510873.07
+   },
+   "shares": {
+    "ate90": 19.27,
+    "de91a360": 23.05,
+    "de361a1080": 26.01,
+    "de1081a1800": 11.86,
+    "de1801a5400": 15.56,
+    "mais5400": 4.24
+   },
+   "curto_12m_pct": 42.32,
+   "medio_1a5_pct": 37.88,
+   "longo_5a_pct": 19.8,
+   "prazo_medio_anos": 3.52,
+   "d12": {
+    "curto_12m_pct": 0.37,
+    "longo_5a_pct": 0.07,
+    "prazo_medio_anos": 0.01,
+    "vencido_pct": 0.54,
+    "a_vencer_pct": 8.74
+   }
+  },
+  "PF": {
+   "saldo": 4680273003531.479,
+   "a_vencer": 4471518766807.591,
+   "vencido": 208754236723.8877,
+   "vencido_pct": 4.46,
+   "faixas": {
+    "ate90": 810912865883.5895,
+    "de91a360": 956161629818.7902,
+    "de361a1080": 1109636128760.0208,
+    "de1081a1800": 557805861381.1599,
+    "de1801a5400": 789950108883.6804,
+    "mais5400": 247052172080.35007
+   },
+   "shares": {
+    "ate90": 18.14,
+    "de91a360": 21.38,
+    "de361a1080": 24.82,
+    "de1081a1800": 12.47,
+    "de1801a5400": 17.67,
+    "mais5400": 5.53
+   },
+   "curto_12m_pct": 39.52,
+   "medio_1a5_pct": 37.29,
+   "longo_5a_pct": 23.19,
+   "prazo_medio_anos": 3.97,
+   "d12": {
+    "curto_12m_pct": 0.18,
+    "longo_5a_pct": 0.27,
+    "prazo_medio_anos": 0.02,
+    "vencido_pct": 0.69,
+    "a_vencer_pct": 8.76
+   }
+  },
+  "PJ": {
+   "saldo": 2910045992524.1475,
+   "a_vencer": 2853595397344.249,
+   "vencido": 56450595179.89844,
+   "vencido_pct": 1.94,
+   "faixas": {
+    "ate90": 600836910719.7584,
+    "de91a360": 732285592651.3892,
+    "de361a1080": 795801623947.0717,
+    "de1081a1800": 311194880847.96985,
+    "de1801a5400": 350117050385.33997,
+    "mais5400": 63359338792.72
+   },
+   "shares": {
+    "ate90": 21.06,
+    "de91a360": 25.66,
+    "de361a1080": 27.89,
+    "de1081a1800": 10.91,
+    "de1801a5400": 12.27,
+    "mais5400": 2.22
+   },
+   "curto_12m_pct": 46.72,
+   "medio_1a5_pct": 38.79,
+   "longo_5a_pct": 14.49,
+   "prazo_medio_anos": 2.81,
+   "d12": {
+    "curto_12m_pct": 0.69,
+    "longo_5a_pct": -0.23,
+    "prazo_medio_anos": -0.02,
+    "vencido_pct": 0.3,
+    "a_vencer_pct": 8.72
+   }
+  }
+ },
+ "serie": [
+  {
+   "ref": "2024-01",
+   "total": {
+    "a_vencer": 5830616257824.808,
+    "vencido_pct": 2.19,
+    "curto_12m_pct": 41.87,
+    "longo_5a_pct": 19.91,
+    "prazo_medio_anos": 3.55
+   },
+   "PF": {
+    "a_vencer": 3519592319493.17,
+    "vencido_pct": 2.71,
+    "curto_12m_pct": 39.72,
+    "longo_5a_pct": 23.02,
+    "prazo_medio_anos": 3.94
+   },
+   "PJ": {
+    "a_vencer": 2311023938331.638,
+    "vencido_pct": 1.38,
+    "curto_12m_pct": 45.14,
+    "longo_5a_pct": 15.18,
+    "prazo_medio_anos": 2.95
+   }
+  },
+  {
+   "ref": "2024-02",
+   "total": {
+    "a_vencer": 5847932514880.691,
+    "vencido_pct": 2.17,
+    "curto_12m_pct": 41.49,
+    "longo_5a_pct": 20.06,
+    "prazo_medio_anos": 3.57
+   },
+   "PF": {
+    "a_vencer": 3543294181152.9604,
+    "vencido_pct": 2.68,
+    "curto_12m_pct": 39.21,
+    "longo_5a_pct": 23.2,
+    "prazo_medio_anos": 3.96
+   },
+   "PJ": {
+    "a_vencer": 2304638333727.7314,
+    "vencido_pct": 1.37,
+    "curto_12m_pct": 45.0,
+    "longo_5a_pct": 15.23,
+    "prazo_medio_anos": 2.96
+   }
+  },
+  {
+   "ref": "2024-03",
+   "total": {
+    "a_vencer": 5929667571804.603,
+    "vencido_pct": 2.2,
+    "curto_12m_pct": 41.87,
+    "longo_5a_pct": 19.91,
+    "prazo_medio_anos": 3.54
+   },
+   "PF": {
+    "a_vencer": 3576499916771.8633,
+    "vencido_pct": 2.73,
+    "curto_12m_pct": 39.22,
+    "longo_5a_pct": 23.19,
+    "prazo_medio_anos": 3.96
+   },
+   "PJ": {
+    "a_vencer": 2353167655032.7397,
+    "vencido_pct": 1.39,
+    "curto_12m_pct": 45.9,
+    "longo_5a_pct": 14.91,
+    "prazo_medio_anos": 2.91
+   }
+  },
+  {
+   "ref": "2024-04",
+   "total": {
+    "a_vencer": 5950248386173.391,
+    "vencido_pct": 2.31,
+    "curto_12m_pct": 41.55,
+    "longo_5a_pct": 19.98,
+    "prazo_medio_anos": 3.55
+   },
+   "PF": {
+    "a_vencer": 3602790547059.74,
+    "vencido_pct": 2.79,
+    "curto_12m_pct": 38.93,
+    "longo_5a_pct": 23.26,
+    "prazo_medio_anos": 3.97
+   },
+   "PJ": {
+    "a_vencer": 2347457839113.651,
+    "vencido_pct": 1.56,
+    "curto_12m_pct": 45.57,
+    "longo_5a_pct": 14.95,
+    "prazo_medio_anos": 2.93
+   }
+  },
+  {
+   "ref": "2024-05",
+   "total": {
+    "a_vencer": 5986842263056.641,
+    "vencido_pct": 2.37,
+    "curto_12m_pct": 41.33,
+    "longo_5a_pct": 20.03,
+    "prazo_medio_anos": 3.56
+   },
+   "PF": {
+    "a_vencer": 3626093132238.179,
+    "vencido_pct": 2.89,
+    "curto_12m_pct": 38.72,
+    "longo_5a_pct": 23.36,
+    "prazo_medio_anos": 3.98
+   },
+   "PJ": {
+    "a_vencer": 2360749130818.46,
+    "vencido_pct": 1.56,
+    "curto_12m_pct": 45.32,
+    "longo_5a_pct": 14.91,
+    "prazo_medio_anos": 2.92
+   }
+  },
+  {
+   "ref": "2024-06",
+   "total": {
+    "a_vencer": 6094243477181.183,
+    "vencido_pct": 2.28,
+    "curto_12m_pct": 41.6,
+    "longo_5a_pct": 19.96,
+    "prazo_medio_anos": 3.55
+   },
+   "PF": {
+    "a_vencer": 3655111676814.863,
+    "vencido_pct": 2.84,
+    "curto_12m_pct": 38.65,
+    "longo_5a_pct": 23.41,
+    "prazo_medio_anos": 3.99
+   },
+   "PJ": {
+    "a_vencer": 2439131800366.321,
+    "vencido_pct": 1.43,
+    "curto_12m_pct": 46.01,
+    "longo_5a_pct": 14.8,
+    "prazo_medio_anos": 2.89
+   }
+  },
+  {
+   "ref": "2024-07",
+   "total": {
+    "a_vencer": 6128402942220.73,
+    "vencido_pct": 2.27,
+    "curto_12m_pct": 41.32,
+    "longo_5a_pct": 20.02,
+    "prazo_medio_anos": 3.56
+   },
+   "PF": {
+    "a_vencer": 3696895129844.2715,
+    "vencido_pct": 2.84,
+    "curto_12m_pct": 38.85,
+    "longo_5a_pct": 23.34,
+    "prazo_medio_anos": 3.98
+   },
+   "PJ": {
+    "a_vencer": 2431507812376.46,
+    "vencido_pct": 1.38,
+    "curto_12m_pct": 45.08,
+    "longo_5a_pct": 14.97,
+    "prazo_medio_anos": 2.92
+   }
+  },
+  {
+   "ref": "2024-08",
+   "total": {
+    "a_vencer": 6201095498607.134,
+    "vencido_pct": 2.19,
+    "curto_12m_pct": 41.64,
+    "longo_5a_pct": 19.76,
+    "prazo_medio_anos": 3.53
+   },
+   "PF": {
+    "a_vencer": 3740097669451.6787,
+    "vencido_pct": 2.85,
+    "curto_12m_pct": 39.22,
+    "longo_5a_pct": 22.94,
+    "prazo_medio_anos": 3.94
+   },
+   "PJ": {
+    "a_vencer": 2460997829155.4536,
+    "vencido_pct": 1.17,
+    "curto_12m_pct": 45.31,
+    "longo_5a_pct": 14.92,
+    "prazo_medio_anos": 2.91
+   }
+  },
+  {
+   "ref": "2024-09",
+   "total": {
+    "a_vencer": 6286659675682.651,
+    "vencido_pct": 2.16,
+    "curto_12m_pct": 41.9,
+    "longo_5a_pct": 19.6,
+    "prazo_medio_anos": 3.5
+   },
+   "PF": {
+    "a_vencer": 3784610564273.0024,
+    "vencido_pct": 2.81,
+    "curto_12m_pct": 39.25,
+    "longo_5a_pct": 22.87,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2502049111409.65,
+    "vencido_pct": 1.15,
+    "curto_12m_pct": 45.91,
+    "longo_5a_pct": 14.65,
+    "prazo_medio_anos": 2.86
+   }
+  },
+  {
+   "ref": "2024-10",
+   "total": {
+    "a_vencer": 6350785236456.452,
+    "vencido_pct": 2.17,
+    "curto_12m_pct": 41.58,
+    "longo_5a_pct": 19.62,
+    "prazo_medio_anos": 3.52
+   },
+   "PF": {
+    "a_vencer": 3832766610967.3213,
+    "vencido_pct": 2.82,
+    "curto_12m_pct": 39.21,
+    "longo_5a_pct": 22.74,
+    "prazo_medio_anos": 3.92
+   },
+   "PJ": {
+    "a_vencer": 2518018625489.1313,
+    "vencido_pct": 1.18,
+    "curto_12m_pct": 45.2,
+    "longo_5a_pct": 14.87,
+    "prazo_medio_anos": 2.91
+   }
+  },
+  {
+   "ref": "2024-11",
+   "total": {
+    "a_vencer": 6457524521844.817,
+    "vencido_pct": 2.15,
+    "curto_12m_pct": 41.87,
+    "longo_5a_pct": 19.47,
+    "prazo_medio_anos": 3.5
+   },
+   "PF": {
+    "a_vencer": 3887172232327.318,
+    "vencido_pct": 2.79,
+    "curto_12m_pct": 39.42,
+    "longo_5a_pct": 22.65,
+    "prazo_medio_anos": 3.9
+   },
+   "PJ": {
+    "a_vencer": 2570352289517.5005,
+    "vencido_pct": 1.17,
+    "curto_12m_pct": 45.56,
+    "longo_5a_pct": 14.65,
+    "prazo_medio_anos": 2.88
+   }
+  },
+  {
+   "ref": "2024-12",
+   "total": {
+    "a_vencer": 6546048070957.265,
+    "vencido_pct": 2.13,
+    "curto_12m_pct": 42.09,
+    "longo_5a_pct": 19.45,
+    "prazo_medio_anos": 3.48
+   },
+   "PF": {
+    "a_vencer": 3933963894036.152,
+    "vencido_pct": 2.73,
+    "curto_12m_pct": 39.72,
+    "longo_5a_pct": 22.53,
+    "prazo_medio_anos": 3.88
+   },
+   "PJ": {
+    "a_vencer": 2612084176921.112,
+    "vencido_pct": 1.22,
+    "curto_12m_pct": 45.66,
+    "longo_5a_pct": 14.81,
+    "prazo_medio_anos": 2.88
+   }
+  },
+  {
+   "ref": "2025-01",
+   "total": {
+    "a_vencer": 6492080765585.35,
+    "vencido_pct": 2.35,
+    "curto_12m_pct": 41.86,
+    "longo_5a_pct": 19.81,
+    "prazo_medio_anos": 3.52
+   },
+   "PF": {
+    "a_vencer": 3965737908115.8887,
+    "vencido_pct": 2.97,
+    "curto_12m_pct": 39.63,
+    "longo_5a_pct": 22.67,
+    "prazo_medio_anos": 3.9
+   },
+   "PJ": {
+    "a_vencer": 2526342857469.4624,
+    "vencido_pct": 1.37,
+    "curto_12m_pct": 45.35,
+    "longo_5a_pct": 15.33,
+    "prazo_medio_anos": 2.92
+   }
+  },
+  {
+   "ref": "2025-02",
+   "total": {
+    "a_vencer": 6553634741308.969,
+    "vencido_pct": 2.47,
+    "curto_12m_pct": 41.93,
+    "longo_5a_pct": 19.81,
+    "prazo_medio_anos": 3.53
+   },
+   "PF": {
+    "a_vencer": 3987833445949.2705,
+    "vencido_pct": 3.15,
+    "curto_12m_pct": 39.47,
+    "longo_5a_pct": 22.81,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2565801295359.698,
+    "vencido_pct": 1.4,
+    "curto_12m_pct": 45.77,
+    "longo_5a_pct": 15.16,
+    "prazo_medio_anos": 2.9
+   }
+  },
+  {
+   "ref": "2025-03",
+   "total": {
+    "a_vencer": 6611847309116.681,
+    "vencido_pct": 2.5,
+    "curto_12m_pct": 42.27,
+    "longo_5a_pct": 19.65,
+    "prazo_medio_anos": 3.51
+   },
+   "PF": {
+    "a_vencer": 4024280548872.321,
+    "vencido_pct": 3.16,
+    "curto_12m_pct": 39.5,
+    "longo_5a_pct": 22.82,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2587566760244.3594,
+    "vencido_pct": 1.45,
+    "curto_12m_pct": 46.59,
+    "longo_5a_pct": 14.72,
+    "prazo_medio_anos": 2.85
+   }
+  },
+  {
+   "ref": "2025-04",
+   "total": {
+    "a_vencer": 6632382887720.37,
+    "vencido_pct": 2.69,
+    "curto_12m_pct": 41.84,
+    "longo_5a_pct": 19.77,
+    "prazo_medio_anos": 3.53
+   },
+   "PF": {
+    "a_vencer": 4047000535612.9004,
+    "vencido_pct": 3.39,
+    "curto_12m_pct": 39.25,
+    "longo_5a_pct": 22.95,
+    "prazo_medio_anos": 3.95
+   },
+   "PJ": {
+    "a_vencer": 2585382352107.4697,
+    "vencido_pct": 1.57,
+    "curto_12m_pct": 45.9,
+    "longo_5a_pct": 14.79,
+    "prazo_medio_anos": 2.87
+   }
+  },
+  {
+   "ref": "2025-05",
+   "total": {
+    "a_vencer": 6680308733746.449,
+    "vencido_pct": 2.78,
+    "curto_12m_pct": 41.68,
+    "longo_5a_pct": 19.91,
+    "prazo_medio_anos": 3.55
+   },
+   "PF": {
+    "a_vencer": 4056937630376.0215,
+    "vencido_pct": 3.56,
+    "curto_12m_pct": 39.08,
+    "longo_5a_pct": 23.16,
+    "prazo_medio_anos": 3.98
+   },
+   "PJ": {
+    "a_vencer": 2623371103370.428,
+    "vencido_pct": 1.55,
+    "curto_12m_pct": 45.69,
+    "longo_5a_pct": 14.89,
+    "prazo_medio_anos": 2.89
+   }
+  },
+  {
+   "ref": "2025-06",
+   "total": {
+    "a_vencer": 6728180404066.822,
+    "vencido_pct": 2.82,
+    "curto_12m_pct": 41.95,
+    "longo_5a_pct": 19.77,
+    "prazo_medio_anos": 3.52
+   },
+   "PF": {
+    "a_vencer": 4088111425566.081,
+    "vencido_pct": 3.62,
+    "curto_12m_pct": 39.2,
+    "longo_5a_pct": 22.98,
+    "prazo_medio_anos": 3.95
+   },
+   "PJ": {
+    "a_vencer": 2640068978500.741,
+    "vencido_pct": 1.55,
+    "curto_12m_pct": 46.21,
+    "longo_5a_pct": 14.8,
+    "prazo_medio_anos": 2.86
+   }
+  },
+  {
+   "ref": "2025-07",
+   "total": {
+    "a_vencer": 6736143528814.854,
+    "vencido_pct": 2.95,
+    "curto_12m_pct": 41.95,
+    "longo_5a_pct": 19.73,
+    "prazo_medio_anos": 3.51
+   },
+   "PF": {
+    "a_vencer": 4111358864328.8525,
+    "vencido_pct": 3.77,
+    "curto_12m_pct": 39.34,
+    "longo_5a_pct": 22.92,
+    "prazo_medio_anos": 3.95
+   },
+   "PJ": {
+    "a_vencer": 2624784664485.9995,
+    "vencido_pct": 1.64,
+    "curto_12m_pct": 46.03,
+    "longo_5a_pct": 14.72,
+    "prazo_medio_anos": 2.83
+   }
+  },
+  {
+   "ref": "2025-08",
+   "total": {
+    "a_vencer": 6790152354475.501,
+    "vencido_pct": 3.12,
+    "curto_12m_pct": 42.14,
+    "longo_5a_pct": 19.56,
+    "prazo_medio_anos": 3.49
+   },
+   "PF": {
+    "a_vencer": 4141837166452.411,
+    "vencido_pct": 3.99,
+    "curto_12m_pct": 39.5,
+    "longo_5a_pct": 22.81,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2648315188023.0903,
+    "vencido_pct": 1.73,
+    "curto_12m_pct": 46.28,
+    "longo_5a_pct": 14.46,
+    "prazo_medio_anos": 2.79
+   }
+  },
+  {
+   "ref": "2025-09",
+   "total": {
+    "a_vencer": 6944705304091.884,
+    "vencido_pct": 3.03,
+    "curto_12m_pct": 43.0,
+    "longo_5a_pct": 19.25,
+    "prazo_medio_anos": 3.44
+   },
+   "PF": {
+    "a_vencer": 4179876044795.4214,
+    "vencido_pct": 3.95,
+    "curto_12m_pct": 39.58,
+    "longo_5a_pct": 22.81,
+    "prazo_medio_anos": 3.94
+   },
+   "PJ": {
+    "a_vencer": 2764829259296.4614,
+    "vencido_pct": 1.6,
+    "curto_12m_pct": 48.18,
+    "longo_5a_pct": 13.86,
+    "prazo_medio_anos": 2.69
+   }
+  },
+  {
+   "ref": "2025-10",
+   "total": {
+    "a_vencer": 6993704065980.23,
+    "vencido_pct": 3.15,
+    "curto_12m_pct": 42.94,
+    "longo_5a_pct": 19.25,
+    "prazo_medio_anos": 3.44
+   },
+   "PF": {
+    "a_vencer": 4234599532455.28,
+    "vencido_pct": 4.11,
+    "curto_12m_pct": 39.78,
+    "longo_5a_pct": 22.65,
+    "prazo_medio_anos": 3.92
+   },
+   "PJ": {
+    "a_vencer": 2759104533524.9507,
+    "vencido_pct": 1.65,
+    "curto_12m_pct": 47.78,
+    "longo_5a_pct": 14.03,
+    "prazo_medio_anos": 2.71
+   }
+  },
+  {
+   "ref": "2025-11",
+   "total": {
+    "a_vencer": 7066958642293.632,
+    "vencido_pct": 3.23,
+    "curto_12m_pct": 43.06,
+    "longo_5a_pct": 19.24,
+    "prazo_medio_anos": 3.44
+   },
+   "PF": {
+    "a_vencer": 4287194628748.89,
+    "vencido_pct": 4.21,
+    "curto_12m_pct": 39.9,
+    "longo_5a_pct": 22.59,
+    "prazo_medio_anos": 3.91
+   },
+   "PJ": {
+    "a_vencer": 2779764013544.741,
+    "vencido_pct": 1.67,
+    "curto_12m_pct": 47.94,
+    "longo_5a_pct": 14.07,
+    "prazo_medio_anos": 2.71
+   }
+  },
+  {
+   "ref": "2025-12",
+   "total": {
+    "a_vencer": 7211777003317.665,
+    "vencido_pct": 3.12,
+    "curto_12m_pct": 42.95,
+    "longo_5a_pct": 19.24,
+    "prazo_medio_anos": 3.44
+   },
+   "PF": {
+    "a_vencer": 4340098654922.664,
+    "vencido_pct": 4.09,
+    "curto_12m_pct": 39.97,
+    "longo_5a_pct": 22.56,
+    "prazo_medio_anos": 3.9
+   },
+   "PJ": {
+    "a_vencer": 2871678348395.0024,
+    "vencido_pct": 1.63,
+    "curto_12m_pct": 47.45,
+    "longo_5a_pct": 14.21,
+    "prazo_medio_anos": 2.73
+   }
+  },
+  {
+   "ref": "2026-01",
+   "total": {
+    "a_vencer": 7188457272393.68,
+    "vencido_pct": 3.3,
+    "curto_12m_pct": 42.54,
+    "longo_5a_pct": 19.47,
+    "prazo_medio_anos": 3.47
+   },
+   "PF": {
+    "a_vencer": 4372701920795.149,
+    "vencido_pct": 4.24,
+    "curto_12m_pct": 39.79,
+    "longo_5a_pct": 22.63,
+    "prazo_medio_anos": 3.91
+   },
+   "PJ": {
+    "a_vencer": 2815755351598.531,
+    "vencido_pct": 1.8,
+    "curto_12m_pct": 46.81,
+    "longo_5a_pct": 14.58,
+    "prazo_medio_anos": 2.78
+   }
+  },
+  {
+   "ref": "2026-02",
+   "total": {
+    "a_vencer": 7194582038029.646,
+    "vencido_pct": 3.37,
+    "curto_12m_pct": 42.27,
+    "longo_5a_pct": 19.55,
+    "prazo_medio_anos": 3.49
+   },
+   "PF": {
+    "a_vencer": 4395842613023.1475,
+    "vencido_pct": 4.29,
+    "curto_12m_pct": 39.47,
+    "longo_5a_pct": 22.76,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2798739425006.5005,
+    "vencido_pct": 1.9,
+    "curto_12m_pct": 46.66,
+    "longo_5a_pct": 14.5,
+    "prazo_medio_anos": 2.79
+   }
+  },
+  {
+   "ref": "2026-03",
+   "total": {
+    "a_vencer": 7290476881491.629,
+    "vencido_pct": 3.31,
+    "curto_12m_pct": 42.55,
+    "longo_5a_pct": 19.51,
+    "prazo_medio_anos": 3.49
+   },
+   "PF": {
+    "a_vencer": 4445226234665.38,
+    "vencido_pct": 4.24,
+    "curto_12m_pct": 39.64,
+    "longo_5a_pct": 22.76,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2845250646826.2485,
+    "vencido_pct": 1.83,
+    "curto_12m_pct": 47.09,
+    "longo_5a_pct": 14.44,
+    "prazo_medio_anos": 2.79
+   }
+  },
+  {
+   "ref": "2026-04",
+   "total": {
+    "a_vencer": 7287951788093.979,
+    "vencido_pct": 3.54,
+    "curto_12m_pct": 42.27,
+    "longo_5a_pct": 19.64,
+    "prazo_medio_anos": 3.5
+   },
+   "PF": {
+    "a_vencer": 4458746748833.869,
+    "vencido_pct": 4.46,
+    "curto_12m_pct": 39.46,
+    "longo_5a_pct": 22.88,
+    "prazo_medio_anos": 3.93
+   },
+   "PJ": {
+    "a_vencer": 2829205039260.1104,
+    "vencido_pct": 2.04,
+    "curto_12m_pct": 46.7,
+    "longo_5a_pct": 14.53,
+    "prazo_medio_anos": 2.81
+   }
+  },
+  {
+   "ref": "2026-05",
+   "total": {
+    "a_vencer": 7321342131354.744,
+    "vencido_pct": 3.59,
+    "curto_12m_pct": 42.38,
+    "longo_5a_pct": 19.74,
+    "prazo_medio_anos": 3.51
+   },
+   "PF": {
+    "a_vencer": 4476038345038.5625,
+    "vencido_pct": 4.63,
+    "curto_12m_pct": 39.45,
+    "longo_5a_pct": 23.01,
+    "prazo_medio_anos": 3.95
+   },
+   "PJ": {
+    "a_vencer": 2845303786316.181,
+    "vencido_pct": 1.93,
+    "curto_12m_pct": 47.0,
+    "longo_5a_pct": 14.58,
+    "prazo_medio_anos": 2.81
+   }
+  },
+  {
+   "ref": "2026-06",
+   "total": {
+    "a_vencer": 7372985285577.871,
+    "vencido_pct": 3.46,
+    "curto_12m_pct": 42.48,
+    "longo_5a_pct": 19.79,
+    "prazo_medio_anos": 3.51
+   },
+   "PF": {
+    "a_vencer": 4477048138151.572,
+    "vencido_pct": 4.45,
+    "curto_12m_pct": 39.28,
+    "longo_5a_pct": 23.22,
+    "prazo_medio_anos": 3.98
+   },
+   "PJ": {
+    "a_vencer": 2895937147426.3,
+    "vencido_pct": 1.89,
+    "curto_12m_pct": 47.42,
+    "longo_5a_pct": 14.49,
+    "prazo_medio_anos": 2.79
+   }
+  },
+  {
+   "ref": "2026-07",
+   "total": {
+    "a_vencer": 7325114164151.84,
+    "vencido_pct": 3.49,
+    "curto_12m_pct": 42.32,
+    "longo_5a_pct": 19.8,
+    "prazo_medio_anos": 3.52
+   },
+   "PF": {
+    "a_vencer": 4471518766807.591,
+    "vencido_pct": 4.46,
+    "curto_12m_pct": 39.52,
+    "longo_5a_pct": 23.19,
+    "prazo_medio_anos": 3.97
+   },
+   "PJ": {
+    "a_vencer": 2853595397344.249,
+    "vencido_pct": 1.94,
+    "curto_12m_pct": 46.72,
+    "longo_5a_pct": 14.49,
+    "prazo_medio_anos": 2.81
+   }
+  }
+ ],
+ "ufs": [
+  {
+   "uf": "AC",
+   "nome": "Acre",
+   "regiao": "Norte",
+   "saldo": 19934229120.559982,
+   "a_vencer": 18970798379.039997,
+   "share_a_vencer": 0.26,
+   "vencido_pct": 4.83,
+   "curto_12m_pct": 38.95,
+   "medio_1a5_pct": 43.22,
+   "longo_5a_pct": 17.83,
+   "prazo_medio_anos": 3.34,
+   "shares": {
+    "ate90": 15.91,
+    "de91a360": 23.04,
+    "de361a1080": 29.33,
+    "de1081a1800": 13.89,
+    "de1801a5400": 14.82,
+    "mais5400": 3.01
+   },
+   "pf": {
+    "a_vencer": 14283589556.099993,
+    "vencido_pct": 5.51,
+    "curto_12m_pct": 40.12,
+    "longo_5a_pct": 15.72,
+    "prazo_medio_anos": 3.06
+   },
+   "pj": {
+    "a_vencer": 4687208822.940002,
+    "vencido_pct": 2.72,
+    "curto_12m_pct": 35.38,
+    "longo_5a_pct": 24.25,
+    "prazo_medio_anos": 4.21
+   },
+   "d12_curto_12m_pp": 0.96,
+   "d12_prazo_medio_anos": -0.11,
+   "posicoes": {
+    "curto_12m_pct": 20,
+    "longo_5a_pct": 19,
+    "prazo_medio_anos": 18,
+    "vencido_pct": 6
+   }
+  },
+  {
+   "uf": "AL",
+   "nome": "Alagoas",
+   "regiao": "Nordeste",
+   "saldo": 60136381765.79998,
+   "a_vencer": 57491977671.539986,
+   "share_a_vencer": 0.78,
+   "vencido_pct": 4.4,
+   "curto_12m_pct": 41.33,
+   "medio_1a5_pct": 37.85,
+   "longo_5a_pct": 20.83,
+   "prazo_medio_anos": 3.67,
+   "shares": {
+    "ate90": 19.31,
+    "de91a360": 22.02,
+    "de361a1080": 25.78,
+    "de1081a1800": 12.06,
+    "de1801a5400": 16.06,
+    "mais5400": 4.76
+   },
+   "pf": {
+    "a_vencer": 41287371740.819984,
+    "vencido_pct": 5.26,
+    "curto_12m_pct": 42.31,
+    "longo_5a_pct": 22.37,
+    "prazo_medio_anos": 3.89
+   },
+   "pj": {
+    "a_vencer": 16204605930.720001,
+    "vencido_pct": 2.14,
+    "curto_12m_pct": 38.83,
+    "longo_5a_pct": 16.89,
+    "prazo_medio_anos": 3.11
+   },
+   "d12_curto_12m_pp": 1.86,
+   "d12_prazo_medio_anos": 0.0,
+   "posicoes": {
+    "curto_12m_pct": 9,
+    "longo_5a_pct": 8,
+    "prazo_medio_anos": 9,
+    "vencido_pct": 8
+   }
+  },
+  {
+   "uf": "AM",
+   "nome": "Amazonas",
+   "regiao": "Norte",
+   "saldo": 80165399617.29987,
+   "a_vencer": 77046590054.41995,
+   "share_a_vencer": 1.05,
+   "vencido_pct": 3.89,
+   "curto_12m_pct": 40.96,
+   "medio_1a5_pct": 40.96,
+   "longo_5a_pct": 18.08,
+   "prazo_medio_anos": 3.29,
+   "shares": {
+    "ate90": 18.1,
+    "de91a360": 22.86,
+    "de361a1080": 28.6,
+    "de1081a1800": 12.35,
+    "de1801a5400": 15.14,
+    "mais5400": 2.94
+   },
+   "pf": {
+    "a_vencer": 44005535710.519966,
+    "vencido_pct": 5.04,
+    "curto_12m_pct": 42.83,
+    "longo_5a_pct": 18.34,
+    "prazo_medio_anos": 3.39
+   },
+   "pj": {
+    "a_vencer": 33041054343.899994,
+    "vencido_pct": 2.32,
+    "curto_12m_pct": 38.47,
+    "longo_5a_pct": 17.74,
+    "prazo_medio_anos": 3.16
+   },
+   "d12_curto_12m_pp": 0.12,
+   "d12_prazo_medio_anos": 0.02,
+   "posicoes": {
+    "curto_12m_pct": 12,
+    "longo_5a_pct": 18,
+    "prazo_medio_anos": 20,
+    "vencido_pct": 16
+   }
+  },
+  {
+   "uf": "AP",
+   "nome": "Amapá",
+   "regiao": "Norte",
+   "saldo": 19496325305.37001,
+   "a_vencer": 18800549703.630005,
+   "share_a_vencer": 0.26,
+   "vencido_pct": 3.57,
+   "curto_12m_pct": 37.34,
+   "medio_1a5_pct": 43.15,
+   "longo_5a_pct": 19.51,
+   "prazo_medio_anos": 3.42,
+   "shares": {
+    "ate90": 17.43,
+    "de91a360": 19.91,
+    "de361a1080": 28.54,
+    "de1081a1800": 14.61,
+    "de1801a5400": 17.39,
+    "mais5400": 2.12
+   },
+   "pf": {
+    "a_vencer": 12669425473.16001,
+    "vencido_pct": 4.06,
+    "curto_12m_pct": 37.35,
+    "longo_5a_pct": 18.23,
+    "prazo_medio_anos": 3.32
+   },
+   "pj": {
+    "a_vencer": 6131124230.469998,
+    "vencido_pct": 2.54,
+    "curto_12m_pct": 37.32,
+    "longo_5a_pct": 22.14,
+    "prazo_medio_anos": 3.61
+   },
+   "d12_curto_12m_pp": 0.26,
+   "d12_prazo_medio_anos": -0.01,
+   "posicoes": {
+    "curto_12m_pct": 23,
+    "longo_5a_pct": 12,
+    "prazo_medio_anos": 14,
+    "vencido_pct": 18
+   }
+  },
+  {
+   "uf": "BA",
+   "nome": "Bahia",
+   "regiao": "Nordeste",
+   "saldo": 296529397554.6296,
+   "a_vencer": 283929244738.0698,
+   "share_a_vencer": 3.88,
+   "vencido_pct": 4.25,
+   "curto_12m_pct": 41.2,
+   "medio_1a5_pct": 38.3,
+   "longo_5a_pct": 20.51,
+   "prazo_medio_anos": 3.59,
+   "shares": {
+    "ate90": 19.38,
+    "de91a360": 21.82,
+    "de361a1080": 25.05,
+    "de1081a1800": 13.25,
+    "de1801a5400": 16.5,
+    "mais5400": 4.01
+   },
+   "pf": {
+    "a_vencer": 182255995610.50983,
+    "vencido_pct": 5.44,
+    "curto_12m_pct": 43.88,
+    "longo_5a_pct": 19.99,
+    "prazo_medio_anos": 3.54
+   },
+   "pj": {
+    "a_vencer": 101673249127.56,
+    "vencido_pct": 2.04,
+    "curto_12m_pct": 36.38,
+    "longo_5a_pct": 21.43,
+    "prazo_medio_anos": 3.69
+   },
+   "d12_curto_12m_pp": 0.34,
+   "d12_prazo_medio_anos": -0.09,
+   "posicoes": {
+    "curto_12m_pct": 10,
+    "longo_5a_pct": 11,
+    "prazo_medio_anos": 11,
+    "vencido_pct": 11
+   }
+  },
+  {
+   "uf": "CE",
+   "nome": "Ceará",
+   "regiao": "Nordeste",
+   "saldo": 175936288508.8796,
+   "a_vencer": 169168893390.04977,
+   "share_a_vencer": 2.31,
+   "vencido_pct": 3.85,
+   "curto_12m_pct": 39.39,
+   "medio_1a5_pct": 36.4,
+   "longo_5a_pct": 24.21,
+   "prazo_medio_anos": 4.13,
+   "shares": {
+    "ate90": 18.61,
+    "de91a360": 20.77,
+    "de361a1080": 24.8,
+    "de1081a1800": 11.6,
+    "de1801a5400": 17.7,
+    "mais5400": 6.51
+   },
+   "pf": {
+    "a_vencer": 112008863549.54982,
+    "vencido_pct": 4.52,
+    "curto_12m_pct": 42.21,
+    "longo_5a_pct": 22.97,
+    "prazo_medio_anos": 3.95
+   },
+   "pj": {
+    "a_vencer": 57160029840.49994,
+    "vencido_pct": 2.51,
+    "curto_12m_pct": 33.85,
+    "longo_5a_pct": 26.66,
+    "prazo_medio_anos": 4.48
+   },
+   "d12_curto_12m_pp": -0.56,
+   "d12_prazo_medio_anos": 0.14,
+   "posicoes": {
+    "curto_12m_pct": 17,
+    "longo_5a_pct": 6,
+    "prazo_medio_anos": 5,
+    "vencido_pct": 17
+   }
+  },
+  {
+   "uf": "DF",
+   "nome": "Distrito Federal",
+   "regiao": "Centro-Oeste",
+   "saldo": 159068225779.05,
+   "a_vencer": 155004501211.76,
+   "share_a_vencer": 2.12,
+   "vencido_pct": 2.55,
+   "curto_12m_pct": 32.25,
+   "medio_1a5_pct": 34.16,
+   "longo_5a_pct": 33.59,
+   "prazo_medio_anos": 4.85,
+   "shares": {
+    "ate90": 15.51,
+    "de91a360": 16.74,
+    "de361a1080": 22.21,
+    "de1081a1800": 11.94,
+    "de1801a5400": 28.49,
+    "mais5400": 5.11
+   },
+   "pf": {
+    "a_vencer": 87329443466.90002,
+    "vencido_pct": 3.57,
+    "curto_12m_pct": 38.8,
+    "longo_5a_pct": 24.92,
+    "prazo_medio_anos": 4.17
+   },
+   "pj": {
+    "a_vencer": 67675057744.85997,
+    "vencido_pct": 1.21,
+    "curto_12m_pct": 23.81,
+    "longo_5a_pct": 44.78,
+    "prazo_medio_anos": 5.72
+   },
+   "d12_curto_12m_pp": 1.59,
+   "d12_prazo_medio_anos": -0.31,
+   "posicoes": {
+    "curto_12m_pct": 27,
+    "longo_5a_pct": 1,
+    "prazo_medio_anos": 2,
+    "vencido_pct": 26
+   }
+  },
+  {
+   "uf": "ES",
+   "nome": "Espírito Santo",
+   "regiao": "Sudeste",
+   "saldo": 132287979838.01987,
+   "a_vencer": 128378131171.33015,
+   "share_a_vencer": 1.75,
+   "vencido_pct": 2.96,
+   "curto_12m_pct": 45.44,
+   "medio_1a5_pct": 38.1,
+   "longo_5a_pct": 16.46,
+   "prazo_medio_anos": 3.06,
+   "shares": {
+    "ate90": 20.43,
+    "de91a360": 25.01,
+    "de361a1080": 26.11,
+    "de1081a1800": 11.99,
+    "de1801a5400": 13.71,
+    "mais5400": 2.75
+   },
+   "pf": {
+    "a_vencer": 75989072744.33006,
+    "vencido_pct": 3.71,
+    "curto_12m_pct": 41.22,
+    "longo_5a_pct": 21.72,
+    "prazo_medio_anos": 3.71
+   },
+   "pj": {
+    "a_vencer": 52389058427.00008,
+    "vencido_pct": 1.85,
+    "curto_12m_pct": 51.58,
+    "longo_5a_pct": 8.83,
+    "prazo_medio_anos": 2.13
+   },
+   "d12_curto_12m_pp": 0.05,
+   "d12_prazo_medio_anos": -0.02,
+   "posicoes": {
+    "curto_12m_pct": 2,
+    "longo_5a_pct": 23,
+    "prazo_medio_anos": 25,
+    "vencido_pct": 24
+   }
+  },
+  {
+   "uf": "GO",
+   "nome": "Goiás",
+   "regiao": "Centro-Oeste",
+   "saldo": 343328902366.5703,
+   "a_vencer": 325873292222.6201,
+   "share_a_vencer": 4.45,
+   "vencido_pct": 5.08,
+   "curto_12m_pct": 39.08,
+   "medio_1a5_pct": 40.11,
+   "longo_5a_pct": 20.81,
+   "prazo_medio_anos": 3.73,
+   "shares": {
+    "ate90": 16.34,
+    "de91a360": 22.74,
+    "de361a1080": 27.41,
+    "de1081a1800": 12.7,
+    "de1801a5400": 16.01,
+    "mais5400": 4.8
+   },
+   "pf": {
+    "a_vencer": 240004952816.32,
+    "vencido_pct": 5.8,
+    "curto_12m_pct": 36.47,
+    "longo_5a_pct": 24.45,
+    "prazo_medio_anos": 4.19
+   },
+   "pj": {
+    "a_vencer": 85868339406.30008,
+    "vencido_pct": 3.02,
+    "curto_12m_pct": 46.35,
+    "longo_5a_pct": 10.64,
+    "prazo_medio_anos": 2.43
+   },
+   "d12_curto_12m_pp": -1.22,
+   "d12_prazo_medio_anos": 0.15,
+   "posicoes": {
+    "curto_12m_pct": 19,
+    "longo_5a_pct": 9,
+    "prazo_medio_anos": 8,
+    "vencido_pct": 4
+   }
+  },
+  {
+   "uf": "MA",
+   "nome": "Maranhão",
+   "regiao": "Nordeste",
+   "saldo": 114408683254.78008,
+   "a_vencer": 106820238681.28006,
+   "share_a_vencer": 1.46,
+   "vencido_pct": 6.63,
+   "curto_12m_pct": 41.16,
+   "medio_1a5_pct": 42.54,
+   "longo_5a_pct": 16.3,
+   "prazo_medio_anos": 3.25,
+   "shares": {
+    "ate90": 17.82,
+    "de91a360": 23.34,
+    "de361a1080": 28.68,
+    "de1081a1800": 13.86,
+    "de1801a5400": 12.66,
+    "mais5400": 3.64
+   },
+   "pf": {
+    "a_vencer": 83145897024.28006,
+    "vencido_pct": 7.33,
+    "curto_12m_pct": 41.26,
+    "longo_5a_pct": 18.63,
+    "prazo_medio_anos": 3.48
+   },
+   "pj": {
+    "a_vencer": 23674341657.00001,
+    "vencido_pct": 4.09,
+    "curto_12m_pct": 40.81,
+    "longo_5a_pct": 8.1,
+    "prazo_medio_anos": 2.42
+   },
+   "d12_curto_12m_pp": 1.14,
+   "d12_prazo_medio_anos": 0.05,
+   "posicoes": {
+    "curto_12m_pct": 11,
+    "longo_5a_pct": 24,
+    "prazo_medio_anos": 22,
+    "vencido_pct": 1
+   }
+  },
+  {
+   "uf": "MG",
+   "nome": "Minas Gerais",
+   "regiao": "Sudeste",
+   "saldo": 672053670440.0988,
+   "a_vencer": 648362098666.9902,
+   "share_a_vencer": 8.85,
+   "vencido_pct": 3.53,
+   "curto_12m_pct": 44.03,
+   "medio_1a5_pct": 37.77,
+   "longo_5a_pct": 18.2,
+   "prazo_medio_anos": 3.33,
+   "shares": {
+    "ate90": 20.07,
+    "de91a360": 23.96,
+    "de361a1080": 26.32,
+    "de1081a1800": 11.45,
+    "de1801a5400": 14.18,
+    "mais5400": 4.01
+   },
+   "pf": {
+    "a_vencer": 427285827482.5404,
+    "vencido_pct": 4.19,
+    "curto_12m_pct": 41.12,
+    "longo_5a_pct": 22.79,
+    "prazo_medio_anos": 3.89
+   },
+   "pj": {
+    "a_vencer": 221076271184.44983,
+    "vencido_pct": 2.21,
+    "curto_12m_pct": 49.65,
+    "longo_5a_pct": 9.32,
+    "prazo_medio_anos": 2.25
+   },
+   "d12_curto_12m_pp": -0.38,
+   "d12_prazo_medio_anos": 0.04,
+   "posicoes": {
+    "curto_12m_pct": 3,
+    "longo_5a_pct": 17,
+    "prazo_medio_anos": 19,
+    "vencido_pct": 19
+   }
+  },
+  {
+   "uf": "MS",
+   "nome": "Mato Grosso do Sul",
+   "regiao": "Centro-Oeste",
+   "saldo": 142653467016.3297,
+   "a_vencer": 135692138583.04001,
+   "share_a_vencer": 1.85,
+   "vencido_pct": 4.88,
+   "curto_12m_pct": 39.91,
+   "medio_1a5_pct": 40.83,
+   "longo_5a_pct": 19.27,
+   "prazo_medio_anos": 3.5,
+   "shares": {
+    "ate90": 16.49,
+    "de91a360": 23.42,
+    "de361a1080": 27.87,
+    "de1081a1800": 12.95,
+    "de1801a5400": 15.42,
+    "mais5400": 3.84
+   },
+   "pf": {
+    "a_vencer": 97743503041.08997,
+    "vencido_pct": 5.57,
+    "curto_12m_pct": 37.97,
+    "longo_5a_pct": 20.58,
+    "prazo_medio_anos": 3.69
+   },
+   "pj": {
+    "a_vencer": 37948635541.95003,
+    "vencido_pct": 3.05,
+    "curto_12m_pct": 44.91,
+    "longo_5a_pct": 15.87,
+    "prazo_medio_anos": 3.03
+   },
+   "d12_curto_12m_pp": -2.51,
+   "d12_prazo_medio_anos": 0.27,
+   "posicoes": {
+    "curto_12m_pct": 15,
+    "longo_5a_pct": 14,
+    "prazo_medio_anos": 12,
+    "vencido_pct": 5
+   }
+  },
+  {
+   "uf": "MT",
+   "nome": "Mato Grosso",
+   "regiao": "Centro-Oeste",
+   "saldo": 263845612174.13998,
+   "a_vencer": 252676531599.38016,
+   "share_a_vencer": 3.45,
+   "vencido_pct": 4.23,
+   "curto_12m_pct": 39.85,
+   "medio_1a5_pct": 45.17,
+   "longo_5a_pct": 14.98,
+   "prazo_medio_anos": 3.06,
+   "shares": {
+    "ate90": 14.86,
+    "de91a360": 24.99,
+    "de361a1080": 31.55,
+    "de1081a1800": 13.63,
+    "de1801a5400": 12.44,
+    "mais5400": 2.53
+   },
+   "pf": {
+    "a_vencer": 170733584243.72012,
+    "vencido_pct": 5.0,
+    "curto_12m_pct": 38.48,
+    "longo_5a_pct": 17.53,
+    "prazo_medio_anos": 3.38
+   },
+   "pj": {
+    "a_vencer": 81942947355.66005,
+    "vencido_pct": 2.6,
+    "curto_12m_pct": 42.72,
+    "longo_5a_pct": 9.65,
+    "prazo_medio_anos": 2.39
+   },
+   "d12_curto_12m_pp": -1.07,
+   "d12_prazo_medio_anos": 0.07,
+   "posicoes": {
+    "curto_12m_pct": 16,
+    "longo_5a_pct": 27,
+    "prazo_medio_anos": 26,
+    "vencido_pct": 12
+   }
+  },
+  {
+   "uf": "PA",
+   "nome": "Pará",
+   "regiao": "Norte",
+   "saldo": 168441834822.58963,
+   "a_vencer": 160663755902.66,
+   "share_a_vencer": 2.19,
+   "vencido_pct": 4.62,
+   "curto_12m_pct": 42.05,
+   "medio_1a5_pct": 42.36,
+   "longo_5a_pct": 15.59,
+   "prazo_medio_anos": 3.07,
+   "shares": {
+    "ate90": 17.6,
+    "de91a360": 24.45,
+    "de361a1080": 29.83,
+    "de1081a1800": 12.53,
+    "de1801a5400": 12.81,
+    "mais5400": 2.78
+   },
+   "pf": {
+    "a_vencer": 107227077016.35004,
+    "vencido_pct": 5.62,
+    "curto_12m_pct": 42.57,
+    "longo_5a_pct": 15.75,
+    "prazo_medio_anos": 3.07
+   },
+   "pj": {
+    "a_vencer": 53436678886.30996,
+    "vencido_pct": 2.53,
+    "curto_12m_pct": 41.0,
+    "longo_5a_pct": 15.28,
+    "prazo_medio_anos": 3.07
+   },
+   "d12_curto_12m_pp": 0.87,
+   "d12_prazo_medio_anos": -0.01,
+   "posicoes": {
+    "curto_12m_pct": 7,
+    "longo_5a_pct": 25,
+    "prazo_medio_anos": 24,
+    "vencido_pct": 7
+   }
+  },
+  {
+   "uf": "PB",
+   "nome": "Paraíba",
+   "regiao": "Nordeste",
+   "saldo": 77370575948.2701,
+   "a_vencer": 74029407570.59998,
+   "share_a_vencer": 1.01,
+   "vencido_pct": 4.32,
+   "curto_12m_pct": 37.55,
+   "medio_1a5_pct": 35.7,
+   "longo_5a_pct": 26.74,
+   "prazo_medio_anos": 4.48,
+   "shares": {
+    "ate90": 17.65,
+    "de91a360": 19.91,
+    "de361a1080": 23.75,
+    "de1081a1800": 11.95,
+    "de1801a5400": 19.06,
+    "mais5400": 7.68
+   },
+   "pf": {
+    "a_vencer": 60705658928.909966,
+    "vencido_pct": 3.85,
+    "curto_12m_pct": 36.95,
+    "longo_5a_pct": 29.53,
+    "prazo_medio_anos": 4.83
+   },
+   "pj": {
+    "a_vencer": 13323748641.690004,
+    "vencido_pct": 6.38,
+    "curto_12m_pct": 40.32,
+    "longo_5a_pct": 14.05,
+    "prazo_medio_anos": 2.9
+   },
+   "d12_curto_12m_pp": -0.62,
+   "d12_prazo_medio_anos": 0.11,
+   "posicoes": {
+    "curto_12m_pct": 21,
+    "longo_5a_pct": 3,
+    "prazo_medio_anos": 3,
+    "vencido_pct": 9
+   }
+  },
+  {
+   "uf": "PE",
+   "nome": "Pernambuco",
+   "regiao": "Nordeste",
+   "saldo": 173628450127.65,
+   "a_vencer": 166444252179.70987,
+   "share_a_vencer": 2.27,
+   "vencido_pct": 4.14,
+   "curto_12m_pct": 42.41,
+   "medio_1a5_pct": 37.07,
+   "longo_5a_pct": 20.52,
+   "prazo_medio_anos": 3.61,
+   "shares": {
+    "ate90": 20.17,
+    "de91a360": 22.24,
+    "de361a1080": 25.52,
+    "de1081a1800": 11.56,
+    "de1801a5400": 15.76,
+    "mais5400": 4.76
+   },
+   "pf": {
+    "a_vencer": 116848964805.58983,
+    "vencido_pct": 4.96,
+    "curto_12m_pct": 42.66,
+    "longo_5a_pct": 22.73,
+    "prazo_medio_anos": 3.91
+   },
+   "pj": {
+    "a_vencer": 49595287374.12006,
+    "vencido_pct": 2.15,
+    "curto_12m_pct": 41.83,
+    "longo_5a_pct": 15.3,
+    "prazo_medio_anos": 2.91
+   },
+   "d12_curto_12m_pp": 0.27,
+   "d12_prazo_medio_anos": 0.09,
+   "posicoes": {
+    "curto_12m_pct": 5,
+    "longo_5a_pct": 10,
+    "prazo_medio_anos": 10,
+    "vencido_pct": 14
+   }
+  },
+  {
+   "uf": "PI",
+   "nome": "Piauí",
+   "regiao": "Nordeste",
+   "saldo": 69302589752.06012,
+   "a_vencer": 66934804248.819984,
+   "share_a_vencer": 0.91,
+   "vencido_pct": 3.42,
+   "curto_12m_pct": 33.88,
+   "medio_1a5_pct": 36.1,
+   "longo_5a_pct": 30.02,
+   "prazo_medio_anos": 4.94,
+   "shares": {
+    "ate90": 15.2,
+    "de91a360": 18.69,
+    "de361a1080": 23.56,
+    "de1081a1800": 12.54,
+    "de1801a5400": 21.02,
+    "mais5400": 8.99
+   },
+   "pf": {
+    "a_vencer": 39068549452.34997,
+    "vencido_pct": 4.71,
+    "curto_12m_pct": 39.58,
+    "longo_5a_pct": 22.32,
+    "prazo_medio_anos": 3.91
+   },
+   "pj": {
+    "a_vencer": 27866254796.47001,
+    "vencido_pct": 1.55,
+    "curto_12m_pct": 25.89,
+    "longo_5a_pct": 40.81,
+    "prazo_medio_anos": 6.39
+   },
+   "d12_curto_12m_pp": -0.81,
+   "d12_prazo_medio_anos": 0.68,
+   "posicoes": {
+    "curto_12m_pct": 26,
+    "longo_5a_pct": 2,
+    "prazo_medio_anos": 1,
+    "vencido_pct": 20
+   }
+  },
+  {
+   "uf": "PR",
+   "nome": "Paraná",
+   "regiao": "Sul",
+   "saldo": 566399287090.497,
+   "a_vencer": 547976575029.8512,
+   "share_a_vencer": 7.48,
+   "vencido_pct": 3.25,
+   "curto_12m_pct": 41.84,
+   "medio_1a5_pct": 40.81,
+   "longo_5a_pct": 17.34,
+   "prazo_medio_anos": 3.27,
+   "shares": {
+    "ate90": 17.37,
+    "de91a360": 24.47,
+    "de361a1080": 28.81,
+    "de1081a1800": 12.0,
+    "de1801a5400": 13.8,
+    "mais5400": 3.54
+   },
+   "pf": {
+    "a_vencer": 340832736793.87085,
+    "vencido_pct": 3.87,
+    "curto_12m_pct": 38.49,
+    "longo_5a_pct": 23.59,
+    "prazo_medio_anos": 4.02
+   },
+   "pj": {
+    "a_vencer": 207143838235.98032,
+    "vencido_pct": 2.23,
+    "curto_12m_pct": 47.36,
+    "longo_5a_pct": 7.06,
+    "prazo_medio_anos": 2.04
+   },
+   "d12_curto_12m_pp": -1.08,
+   "d12_prazo_medio_anos": 0.05,
+   "posicoes": {
+    "curto_12m_pct": 8,
+    "longo_5a_pct": 21,
+    "prazo_medio_anos": 21,
+    "vencido_pct": 22
+   }
+  },
+  {
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "regiao": "Sudeste",
+   "saldo": 571913694585.7103,
+   "a_vencer": 553375102879.0503,
+   "share_a_vencer": 7.55,
+   "vencido_pct": 3.24,
+   "curto_12m_pct": 36.53,
+   "medio_1a5_pct": 37.86,
+   "longo_5a_pct": 25.6,
+   "prazo_medio_anos": 4.06,
+   "shares": {
+    "ate90": 16.95,
+    "de91a360": 19.58,
+    "de361a1080": 23.97,
+    "de1081a1800": 13.89,
+    "de1801a5400": 21.79,
+    "mais5400": 3.81
+   },
+   "pf": {
+    "a_vencer": 278260078010.77026,
+    "vencido_pct": 4.89,
+    "curto_12m_pct": 42.62,
+    "longo_5a_pct": 21.38,
+    "prazo_medio_anos": 3.67
+   },
+   "pj": {
+    "a_vencer": 275115024868.28,
+    "vencido_pct": 1.51,
+    "curto_12m_pct": 30.38,
+    "longo_5a_pct": 29.88,
+    "prazo_medio_anos": 4.46
+   },
+   "d12_curto_12m_pp": 2.19,
+   "d12_prazo_medio_anos": -0.21,
+   "posicoes": {
+    "curto_12m_pct": 25,
+    "longo_5a_pct": 4,
+    "prazo_medio_anos": 6,
+    "vencido_pct": 23
+   }
+  },
+  {
+   "uf": "RN",
+   "nome": "Rio Grande do Norte",
+   "regiao": "Nordeste",
+   "saldo": 72606195340.21983,
+   "a_vencer": 69699559508.52002,
+   "share_a_vencer": 0.95,
+   "vencido_pct": 4.0,
+   "curto_12m_pct": 37.17,
+   "medio_1a5_pct": 37.68,
+   "longo_5a_pct": 25.15,
+   "prazo_medio_anos": 4.24,
+   "shares": {
+    "ate90": 17.79,
+    "de91a360": 19.38,
+    "de361a1080": 25.02,
+    "de1081a1800": 12.66,
+    "de1801a5400": 18.8,
+    "mais5400": 6.35
+   },
+   "pf": {
+    "a_vencer": 51348964498.16,
+    "vencido_pct": 4.48,
+    "curto_12m_pct": 38.39,
+    "longo_5a_pct": 26.77,
+    "prazo_medio_anos": 4.46
+   },
+   "pj": {
+    "a_vencer": 18350595010.360012,
+    "vencido_pct": 2.64,
+    "curto_12m_pct": 33.76,
+    "longo_5a_pct": 20.61,
+    "prazo_medio_anos": 3.62
+   },
+   "d12_curto_12m_pp": 0.29,
+   "d12_prazo_medio_anos": 0.04,
+   "posicoes": {
+    "curto_12m_pct": 24,
+    "longo_5a_pct": 5,
+    "prazo_medio_anos": 4,
+    "vencido_pct": 15
+   }
+  },
+  {
+   "uf": "RO",
+   "nome": "Rondônia",
+   "regiao": "Norte",
+   "saldo": 64376481166.45982,
+   "a_vencer": 60949465867.049965,
+   "share_a_vencer": 0.83,
+   "vencido_pct": 5.32,
+   "curto_12m_pct": 42.06,
+   "medio_1a5_pct": 42.6,
+   "longo_5a_pct": 15.34,
+   "prazo_medio_anos": 3.05,
+   "shares": {
+    "ate90": 15.89,
+    "de91a360": 26.16,
+    "de361a1080": 29.04,
+    "de1081a1800": 13.56,
+    "de1801a5400": 12.88,
+    "mais5400": 2.47
+   },
+   "pf": {
+    "a_vencer": 49384056932.34995,
+    "vencido_pct": 5.64,
+    "curto_12m_pct": 40.3,
+    "longo_5a_pct": 17.15,
+    "prazo_medio_anos": 3.27
+   },
+   "pj": {
+    "a_vencer": 11565408934.700006,
+    "vencido_pct": 3.95,
+    "curto_12m_pct": 49.53,
+    "longo_5a_pct": 7.62,
+    "prazo_medio_anos": 2.07
+   },
+   "d12_curto_12m_pp": 0.13,
+   "d12_prazo_medio_anos": 0.11,
+   "posicoes": {
+    "curto_12m_pct": 6,
+    "longo_5a_pct": 26,
+    "prazo_medio_anos": 27,
+    "vencido_pct": 3
+   }
+  },
+  {
+   "uf": "RR",
+   "nome": "Roraima",
+   "regiao": "Norte",
+   "saldo": 16745982837.510014,
+   "a_vencer": 16040765850.39,
+   "share_a_vencer": 0.22,
+   "vencido_pct": 4.21,
+   "curto_12m_pct": 37.49,
+   "medio_1a5_pct": 43.5,
+   "longo_5a_pct": 19.02,
+   "prazo_medio_anos": 3.43,
+   "shares": {
+    "ate90": 15.83,
+    "de91a360": 21.66,
+    "de361a1080": 29.33,
+    "de1081a1800": 14.17,
+    "de1801a5400": 16.29,
+    "mais5400": 2.73
+   },
+   "pf": {
+    "a_vencer": 12438554882.479994,
+    "vencido_pct": 4.71,
+    "curto_12m_pct": 38.38,
+    "longo_5a_pct": 18.96,
+    "prazo_medio_anos": 3.48
+   },
+   "pj": {
+    "a_vencer": 3602210967.910002,
+    "vencido_pct": 2.45,
+    "curto_12m_pct": 34.42,
+    "longo_5a_pct": 19.22,
+    "prazo_medio_anos": 3.27
+   },
+   "d12_curto_12m_pp": 0.68,
+   "d12_prazo_medio_anos": -0.02,
+   "posicoes": {
+    "curto_12m_pct": 22,
+    "longo_5a_pct": 15,
+    "prazo_medio_anos": 13,
+    "vencido_pct": 13
+   }
+  },
+  {
+   "uf": "RS",
+   "nome": "Rio Grande do Sul",
+   "regiao": "Sul",
+   "saldo": 534501053683.038,
+   "a_vencer": 516303172502.19025,
+   "share_a_vencer": 7.05,
+   "vencido_pct": 3.4,
+   "curto_12m_pct": 40.32,
+   "medio_1a5_pct": 41.9,
+   "longo_5a_pct": 17.79,
+   "prazo_medio_anos": 3.35,
+   "shares": {
+    "ate90": 15.75,
+    "de91a360": 24.56,
+    "de361a1080": 28.68,
+    "de1081a1800": 13.22,
+    "de1801a5400": 14.35,
+    "mais5400": 3.43
+   },
+   "pf": {
+    "a_vencer": 330696273930.8901,
+    "vencido_pct": 4.09,
+    "curto_12m_pct": 36.61,
+    "longo_5a_pct": 22.62,
+    "prazo_medio_anos": 3.95
+   },
+   "pj": {
+    "a_vencer": 185606898571.3001,
+    "vencido_pct": 2.16,
+    "curto_12m_pct": 46.92,
+    "longo_5a_pct": 9.18,
+    "prazo_medio_anos": 2.28
+   },
+   "d12_curto_12m_pp": -0.21,
+   "d12_prazo_medio_anos": 0.06,
+   "posicoes": {
+    "curto_12m_pct": 14,
+    "longo_5a_pct": 20,
+    "prazo_medio_anos": 17,
+    "vencido_pct": 21
+   }
+  },
+  {
+   "uf": "SC",
+   "nome": "Santa Catarina",
+   "regiao": "Sul",
+   "saldo": 416106348090.66034,
+   "a_vencer": 405750558393.31006,
+   "share_a_vencer": 5.54,
+   "vencido_pct": 2.49,
+   "curto_12m_pct": 40.48,
+   "medio_1a5_pct": 41.25,
+   "longo_5a_pct": 18.27,
+   "prazo_medio_anos": 3.37,
+   "shares": {
+    "ate90": 16.38,
+    "de91a360": 24.1,
+    "de361a1080": 28.86,
+    "de1081a1800": 12.39,
+    "de1801a5400": 14.78,
+    "mais5400": 3.49
+   },
+   "pf": {
+    "a_vencer": 223993859965.04996,
+    "vencido_pct": 3.15,
+    "curto_12m_pct": 38.2,
+    "longo_5a_pct": 22.78,
+    "prazo_medio_anos": 3.92
+   },
+   "pj": {
+    "a_vencer": 181756698428.26007,
+    "vencido_pct": 1.66,
+    "curto_12m_pct": 43.29,
+    "longo_5a_pct": 12.71,
+    "prazo_medio_anos": 2.69
+   },
+   "d12_curto_12m_pp": -0.12,
+   "d12_prazo_medio_anos": -0.02,
+   "posicoes": {
+    "curto_12m_pct": 13,
+    "longo_5a_pct": 16,
+    "prazo_medio_anos": 16,
+    "vencido_pct": 27
+   }
+  },
+  {
+   "uf": "SE",
+   "nome": "Sergipe",
+   "regiao": "Nordeste",
+   "saldo": 42572749154.24011,
+   "a_vencer": 40745440520.42001,
+   "share_a_vencer": 0.56,
+   "vencido_pct": 4.29,
+   "curto_12m_pct": 43.29,
+   "medio_1a5_pct": 34.46,
+   "longo_5a_pct": 22.25,
+   "prazo_medio_anos": 3.87,
+   "shares": {
+    "ate90": 20.14,
+    "de91a360": 23.15,
+    "de361a1080": 23.53,
+    "de1081a1800": 10.93,
+    "de1801a5400": 16.08,
+    "mais5400": 6.18
+   },
+   "pf": {
+    "a_vencer": 31551314286.510017,
+    "vencido_pct": 4.79,
+    "curto_12m_pct": 41.61,
+    "longo_5a_pct": 26.29,
+    "prazo_medio_anos": 4.37
+   },
+   "pj": {
+    "a_vencer": 9194126233.909996,
+    "vencido_pct": 2.54,
+    "curto_12m_pct": 49.06,
+    "longo_5a_pct": 8.39,
+    "prazo_medio_anos": 2.13
+   },
+   "d12_curto_12m_pp": 1.16,
+   "d12_prazo_medio_anos": 0.04,
+   "posicoes": {
+    "curto_12m_pct": 4,
+    "longo_5a_pct": 7,
+    "prazo_medio_anos": 7,
+    "vencido_pct": 10
+   }
+  },
+  {
+   "uf": "SP",
+   "nome": "São Paulo",
+   "regiao": "Sudeste",
+   "saldo": 2277759918346.2134,
+   "a_vencer": 2212999695252.6284,
+   "share_a_vencer": 30.21,
+   "vencido_pct": 2.84,
+   "curto_12m_pct": 46.89,
+   "medio_1a5_pct": 33.78,
+   "longo_5a_pct": 19.33,
+   "prazo_medio_anos": 3.42,
+   "shares": {
+    "ate90": 23.41,
+    "de91a360": 23.48,
+    "de361a1080": 23.65,
+    "de1081a1800": 10.13,
+    "de1801a5400": 14.5,
+    "mais5400": 4.82
+   },
+   "pf": {
+    "a_vencer": 1201182654127.4797,
+    "vencido_pct": 3.91,
+    "curto_12m_pct": 38.67,
+    "longo_5a_pct": 26.45,
+    "prazo_medio_anos": 4.33
+   },
+   "pj": {
+    "a_vencer": 1011817041125.1488,
+    "vencido_pct": 1.54,
+    "curto_12m_pct": 56.65,
+    "longo_5a_pct": 10.87,
+    "prazo_medio_anos": 2.34
+   },
+   "d12_curto_12m_pp": 0.99,
+   "d12_prazo_medio_anos": -0.01,
+   "posicoes": {
+    "curto_12m_pct": 1,
+    "longo_5a_pct": 13,
+    "prazo_medio_anos": 15,
+    "vencido_pct": 25
+   }
+  },
+  {
+   "uf": "TO",
+   "nome": "Tocantins",
+   "regiao": "Norte",
+   "saldo": 58749272368.98003,
+   "a_vencer": 54986622373.48996,
+   "share_a_vencer": 0.75,
+   "vencido_pct": 6.4,
+   "curto_12m_pct": 39.19,
+   "medio_1a5_pct": 43.5,
+   "longo_5a_pct": 17.31,
+   "prazo_medio_anos": 3.25,
+   "shares": {
+    "ate90": 15.39,
+    "de91a360": 23.8,
+    "de361a1080": 29.49,
+    "de1081a1800": 14.02,
+    "de1801a5400": 14.84,
+    "mais5400": 2.47
+   },
+   "pf": {
+    "a_vencer": 39236960716.989975,
+    "vencido_pct": 7.78,
+    "curto_12m_pct": 39.95,
+    "longo_5a_pct": 17.16,
+    "prazo_medio_anos": 3.31
+   },
+   "pj": {
+    "a_vencer": 15749661656.499989,
+    "vencido_pct": 2.78,
+    "curto_12m_pct": 37.3,
+    "longo_5a_pct": 17.67,
+    "prazo_medio_anos": 3.11
+   },
+   "d12_curto_12m_pp": -1.65,
+   "d12_prazo_medio_anos": 0.17,
+   "posicoes": {
+    "curto_12m_pct": 18,
+    "longo_5a_pct": 22,
+    "prazo_medio_anos": 23,
+    "vencido_pct": 2
+   }
+  }
+ ],
+ "sintese": "Em 2026-07, R$ 7,33 trilhões da carteira de crédito do país estão a vencer e R$ 265 bilhões (3,5%) estão vencidos. 42% do que está a vencer vence em até 12 meses e 20% depois de 5 anos; o prazo médio residual aproximado é de 3,5 anos (pessoas físicas 4,0, pessoas jurídicas 2,8). Em doze meses a fatia de curto prazo subiu 0,4 p.p. A carteira mais curta é São Paulo (47% em 12 meses) e a mais longa, Piauí (4,9 anos).",
+ "metodo": "SCR.data do BCB, mensal: carteira ativa por UF e tipo de cliente com a carteira a vencer aberta em seis faixas de prazo remanescente. A vencer é a soma das faixas; vencido é a carteira ativa menos a vencer. Shares de prazo são calculados sobre a carteira a vencer. Prazo médio residual é o ponto médio de cada faixa ponderado pelo saldo, com 7.200 dias (20 anos) para a faixa aberta acima de 5.400 dias: aproximação para comparar UFs e meses, não duração contratual. Variações contra o mesmo mês do ano anterior; posições entre as 27 UFs.",
+ "limitacoes": "Sem corte por produto ou modalidade: o silver agrega as faixas de prazo só por UF e tipo de cliente. Prazo remanescente, não prazo original de contratação. A parcela vencida até 14 dias só aparece por diferença. O SCR.data reflete o domicílio do tomador, não a agência que concedeu.",
+ "cautelas": [
+  "Carteira curta não é carteira ruim: cartão, capital de giro e cheque especial são curtos por natureza; carteira longa concentra imobiliário e rural.",
+  "A faixa aberta (acima de 15 anos) é quase toda crédito imobiliário; o ponto médio de 20 anos é convenção declarada.",
+  "Vencido aqui é o total em atraso (inclusive até 14 dias); a inadimplência do Panorama usa só o atraso acima de 90 dias."
+ ],
+ "catalogo": [
+  {
+   "nome": "Carteira a vencer",
+   "definicao": "soma das seis faixas de prazo remanescente",
+   "unidade": "R$",
+   "fonte": "SCR.data (a_vencer_*)",
+   "limitacoes": "sem corte por produto"
+  },
+  {
+   "nome": "Vencido",
+   "definicao": "carteira ativa menos carteira a vencer",
+   "unidade": "R$ e % da carteira ativa",
+   "fonte": "SCR.data (carteira_ativa)",
+   "limitacoes": "inclui atraso até 14 dias"
+  },
+  {
+   "nome": "Curto prazo (12 meses)",
+   "definicao": "faixas até 90 e 91 a 360 dias ÷ a vencer",
+   "unidade": "%",
+   "fonte": "calculado",
+   "limitacoes": "prazo remanescente"
+  },
+  {
+   "nome": "Longo prazo (acima de 5 anos)",
+   "definicao": "faixas 1.801 a 5.400 e acima de 5.400 dias ÷ a vencer",
+   "unidade": "%",
+   "fonte": "calculado",
+   "limitacoes": "prazo remanescente"
+  },
+  {
+   "nome": "Prazo médio residual",
+   "definicao": "ponto médio das faixas ponderado pelo saldo a vencer",
+   "unidade": "anos",
+   "fonte": "calculado",
+   "limitacoes": "aproximação; faixa aberta a 20 anos"
+  }
+ ]
+}

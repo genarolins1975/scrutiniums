@@ -33,6 +33,8 @@ state.emp = { secao: "total", uf: "saldo_12m" };
 state.fd = { comp: "todos", ord: "captacoes", seg: "todos", tipo: "todos" };
 state.cs = { met: "cotas", uf: "cotas" };
 state.cb = { grupo: "todas", uf: "por_mil_hab" };
+state.pz = { cli: "total", serie: "curto_12m_pct", uf: "curto_12m_pct" };
+state.fi = { serie: "inad_pct", lastro: "F" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -48,7 +50,7 @@ const ROUTES = { mapa: "/map", overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding", consorcios: "/consortia", cobranca: "/debt-collection-lawsuits" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding", consorcios: "/consortia", cobranca: "/debt-collection-lawsuits", prazo: "/loan-maturity", fidc: "/fidc-receivables" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -233,7 +235,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.99.0";
+const APP_VERSION = "0.100.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -286,6 +288,8 @@ const VIEW_DATA = {
   funding: ["funding"],
   consorcios: ["consorcios"],
   cobranca: ["cobranca"],
+  prazo: ["prazo"],
+  fidc: ["fidc"],
 };
 /* Gold que falhou no carregamento fica marcado como null (e o motivo em
    GOLD_FALHAS): quem chama distingue "ainda não pedido" (undefined) de "pediu e
@@ -2537,9 +2541,9 @@ window.panCSV = () => {
    pergunta a partir do GUIA; trilhas por perfil; como ler os selos e as réguas; fontes e
    atualidade a partir de meta.json. Nada aqui é número novo: é o mapa das páginas. */
 const MAPA_CICLO = [
-  { n: 1, id: "funding", titulo: "De onde vem o dinheiro", pergunta: "Como os bancos se financiam e quanto do crédito vem do mercado de capitais?", views: ["funding", "ampliado"] },
+  { n: 1, id: "funding", titulo: "De onde vem o dinheiro", pergunta: "Como os bancos se financiam, quanto do crédito vem do mercado de capitais e o que lastreia os fundos de recebíveis?", views: ["funding", "ampliado", "fidc"] },
   { n: 2, id: "sistema", titulo: "Quem empresta", pergunta: "Quais instituições, quem entra e quem sai, com que capital, resultado, rede e valor de mercado?", views: ["sfn", "institutions", "compare", "operacional", "market"] },
-  { n: 3, id: "produtos", titulo: "O que se empresta e a que preço", pergunta: "Produtos, taxas, crédito rural, direcionado e a alternativa do consórcio", views: ["products", "juros", "rural", "bndes", "consorcios"] },
+  { n: 3, id: "produtos", titulo: "O que se empresta e a que preço", pergunta: "Produtos, prazos, taxas, crédito rural, direcionado e a alternativa do consórcio", views: ["products", "prazo", "juros", "rural", "bndes", "consorcios"] },
   { n: 4, id: "tomadores", titulo: "Para quem e onde", pergunta: "Território, moradia, consignado e o emprego que paga a parcela", views: ["panorama", "estados", "penetracao", "moradia", "consignado", "emprego"] },
   { n: 5, id: "risco", titulo: "O ciclo e o que vem", pergunta: "Estoque, concessões, inadimplência, risco por setor, sinais antecedentes, cenários e alertas", views: ["pulse", "sectors", "leading", "scenarios", "alerts", "trends"] },
   { n: 6, id: "cobranca", titulo: "Quando o crédito atrasa", pergunta: "Renegociação, cobrança judicial, recuperações e falências e dívida com a União", views: ["desenrola", "cobranca", "rj", "pgfn"] },
@@ -2624,7 +2628,7 @@ function verbetesCarteiraIF(meta, compacto) {
 const VIEW_VINTAGE = { mapa: "sgs", overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios", cobranca: "cobranca" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios", prazo: "scr", fidc: "fidc", cobranca: "cobranca" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -2857,6 +2861,14 @@ const GUIA = {
     importa: "Consórcio é a alternativa ao financiamento de veículos e imóveis: poupança coletiva com contemplação por sorteio ou lance, sem juros e sem desembolso antes da contemplação. Treze milhões de cotas ativas competem com o crédito bancário no mesmo bem.",
     ler: "Comece pelas cotas ativas e pela carteira; depois pelo segmento (imóveis, automóveis, motos, pesados) e pelo custo do produto novo (taxa de administração, valor médio e prazo dos grupos constituídos nos últimos 12 meses). O corte por UF é de cotas ativas por mil habitantes.",
     nao: "Consórcio não é crédito: taxa de administração não é taxa de juros, e o índice de exclusão (quase metade das cotas ao longo da vida do grupo) é característica do produto, não crise. Inadimplência aqui é definição do BCB para o segmento, não a do SCR." },
+  prazo: { q: "Quanto da carteira vence logo, quanto é longo, e onde o crédito é mais curto?",
+    importa: "Prazo é a segunda dimensão do crédito depois do preço: carteira curta rola todo ano e sente a Selic na hora; carteira longa (imobiliário, rural, consignado) trava condições por décadas. O SCR.data abre a carteira a vencer em seis faixas de prazo remanescente, por UF e por tipo de cliente.",
+    ler: "Comece pelos quatro números (a vencer, quanto vence em 12 meses, quanto passa de 5 anos, prazo médio residual); depois compare pessoas físicas e jurídicas, veja a série mensal e o ranking das UFs. Vencido é carteira ativa menos a vencer.",
+    nao: "Curto não é ruim: cartão e capital de giro são curtos por natureza. Prazo médio é aproximação por ponto médio de faixa, para comparar, não duração contratual. Não há corte por produto." },
+  fidc: { q: "O que lastreia os fundos de recebíveis, quem absorve a primeira perda e quando o crédito deles vence?",
+    importa: "FIDCs são o maior canal de crédito fora dos bancos: mais de um trilhão de reais em direitos creditórios cedidos por empresas, financeiras e originadores digitais. A CVM publica todo mês o lastro (o que é o crédito), as classes de cota (quem perde primeiro) e os prazos.",
+    ler: "Lastro diz de onde vem o crédito; subordinação diz quanto do PL absorve perdas antes do cotista sênior; prazos dizem quão rápido a carteira gira. Cada tabela tem cobertura própria, declarada ao lado do número.",
+    nao: "Atraso não é perda: a subordinação e as garantias absorvem parte da inadimplência. A subordinação é média do sistema entre fundos com duas ou mais classes, não a de nenhum fundo. Não se soma ao SCR: parte do lastro já passou pelos bancos." },
   cobranca: { q: "Quanto crédito está sendo cobrado na Justiça, e onde?",
     importa: "Entre a inadimplência do SCR e a recuperação judicial existe a cobrança: execução de título, busca e apreensão do bem alienado, monitória e execução hipotecária. É o crédito que virou processo, e diz quanto o credor está disposto a pagar para recuperar o que emprestou.",
     ler: "Comece pelos casos de cobrança bancária em 12 meses e pela variação; depois pela classe (a busca e apreensão é o caminho do financiamento de veículos) e pela UF, em casos por mil habitantes e por R$ bilhão de carteira. O total com qualquer credor (condomínio, locador, fornecedor) é contexto, nunca soma.",
@@ -3203,7 +3215,7 @@ function phActions(itens, controles) {
    quando TODAS as chaves do coletor falharam e a falha não é a ausência normal
    do mês ainda não publicado (404). */
 const VIEW_COLETORES = {
-  panorama: ["scr_data"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
+  panorama: ["scr_data"], prazo: ["scr_data"], fidc: ["fidc"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
   desenrola: ["desenrola"], trends: ["trends_manual"], consignado: ["previdencia", "reclamacoes_consig"],
   pix: ["pix_bcb"], juros: ["txjuros"], institutions: ["ifdata"], inst: ["ifdata"], products: ["ifdata"],
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
@@ -8210,9 +8222,9 @@ function renderAmpliado() {
         <tbody>${B.series_situacao.map(x => `<tr><td>${x.situacao}</td><td style="text-align:right">${fmt.n0(x.n)}</td><td style="text-align:right">${pct(x.share_n, 1)}</td><td style="text-align:right">${biR(x.valor)}</td><td style="text-align:right">${pct(x.share_valor, 1)}</td></tr>`).join("")}</tbody></table></div>
         <p class="src">${X.nota}${outro ? ` ${outro.nome}: ${biR(outro.kpis.creditos)} em ${outro.mes}, ${pct(outro.kpis.vencidos_pct, 2)} vencidos.` : ""}</p></div>
     </div>
-    ${FI.disponivel ? `<div class="card" style="margin-top:14px"><h4>FIDCs: ${fmt.n0(FI.kpis.n_fundos)} fundos, carteira ${biR(FI.kpis.carteira)}, ${pct(FI.kpis.inad_pct, 2)} vencidos inadimplentes (${FI.mes}) ${badge("observado")}</h4>
-      <div class="contrib"><span class="lbl" style="width:190px">inadimplentes ÷ carteira, mensal</span>${sparkline((FI.serie || []).filter(p => !p.parcial).map(p => p.inad_pct || 0), 220, 26)}<span class="num src">${FI.serie && FI.serie.length ? `${FI.serie[0].mes} → ${FI.mes}` : ""}</span></div>
-      <p class="src">${FI.nota}</p></div>` : ""}
+    ${FI.disponivel ? `<div class="card" style="margin-top:14px"><h4>FIDCs: ${fmt.n0(FI.kpis.n_fundos)} fundos, carteira ${biR(FI.kpis.carteira)}, ${pct(FI.kpis.inad_pct, 2)} de créditos inadimplentes (${FI.mes}) ${badge("observado")}</h4>
+      <div class="contrib"><span class="lbl" style="width:190px">créditos inadimplentes ÷ carteira, mensal</span>${sparkline((FI.serie || []).filter(p => !p.parcial && p.inad_pct != null).map(p => p.inad_pct), 220, 26)}<span class="num src">${FI.serie && FI.serie.length ? `${FI.serie[0].mes} → ${FI.mes}` : ""}</span></div>
+      <p class="src">${FI.nota}</p>${ponte("FIDCs por lastro e cota: o que lastreia os fundos, quem absorve a primeira perda e quando o crédito vence", "fidc", null, "lastro, classes de cota, subordinação e prazos dos informes da CVM")}</div>` : ""}
     ${ponte("Os quatro sinais do crédito não bancário, normalizados e defasados contra a inadimplência — Sinais antecedentes", "leading", null, "lá cada série vira um z-score sobre a própria história; aqui está o nível e a composição")}`);
   }
 
@@ -9684,6 +9696,228 @@ function mktEntidades(M) {
     <b>Indisponíveis (fase seguinte ou sem fonte pública):</b> excesso vs. Ibovespa e beta (série oficial gratuita descontinuada em 2019) · ponte do lucro e qualidade do lucro (exigem parse das linhas da DRE — próxima fase) · funding decomposto, LCR/NSFR e exposições fora do balanço (relatórios não integrados) · consenso de mercado.
   </div></div>`;
 }
+
+/* ---------- Prazo da carteira (SCR.data, seis faixas a vencer) ---------- */
+function pzSet(k, v) { state.pz[k] = v; renderPrazo(); }
+window.pzSet = pzSet;
+function renderPrazo() {
+  const el = document.getElementById("view-prazo");
+  const D = state.data.prazo;
+  if (!D) { el.innerHTML = loadingCard("prazo da carteira"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Prazo da carteira", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.pz;
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const brl = fmt.money;
+  const anos = v => v == null ? "–" : fmt.n(v, 1) + " anos";
+  const ppd = v => v == null ? "" : `${fmt.pp(v)} p.p. em 12 m`;
+  const B = D.brasil.total, PF = D.brasil.PF, PJ = D.brasil.PJ;
+  const rotulosFim = window.innerWidth > 640;
+  const head = pageHead({
+    title: "Prazo da carteira", vintage: D.data_base,
+    seals: `${badge("observado", "SCR.data do BCB: carteira a vencer em seis faixas de prazo remanescente, por UF e tipo de cliente")} ${badge("calculado", "shares, prazo médio residual aproximado, variações e posições calculados")}`,
+    desc: "Quanto da carteira de crédito vence em até 12 meses, quanto depois de 5 anos e qual o prazo médio residual, por tipo de cliente, mês a mês e por UF.",
+    fontes: "BCB/SCR.data (carteira ativa por UF, tipo de cliente e faixa de prazo a vencer)",
+    actions: `<button class="btn ghost small" onclick="pzCSV()">baixar CSV (série mensal)</button>`,
+  });
+  const aberturaHtml = abertura({
+    placar: [
+      { l: "Carteira a vencer", v: brl(B.a_vencer), sub: `${B.d12.a_vencer_pct != null ? fmt.pp(B.d12.a_vencer_pct) + "% a/a · " : ""}SCR.data ${D.data_base}`, href: "#pz-perfil" },
+      { l: "Vence em até 12 meses", v: pct(B.curto_12m_pct), sub: `${ppd(B.d12.curto_12m_pct)} · PF ${pct(PF.curto_12m_pct, 0)} · PJ ${pct(PJ.curto_12m_pct, 0)}`, href: "#pz-perfil" },
+      { l: "Vence depois de 5 anos", v: pct(B.longo_5a_pct), sub: `${ppd(B.d12.longo_5a_pct)} · PF ${pct(PF.longo_5a_pct, 0)} · PJ ${pct(PJ.longo_5a_pct, 0)}`, href: "#pz-perfil" },
+      { l: "Prazo médio residual (aproximado)", v: anos(B.prazo_medio_anos), sub: `PF ${anos(PF.prazo_medio_anos)} · PJ ${anos(PJ.prazo_medio_anos)} · ponto médio das faixas`, href: "#pz-metodo" },
+      { l: "Vencido (todo atraso)", v: pct(B.vencido_pct), sub: `${brl(B.vencido)} · ${ppd(B.d12.vencido_pct)}`, href: "#pz-perfil" },
+    ],
+    sintese: [D.sintese],
+    ref: `BCB/SCR.data ${D.data_base} · variações contra ${D.data_base_12m || "–"} · shares sobre a carteira a vencer`,
+  });
+
+  /* ---------- perfil por faixa ---------- */
+  const P = D.brasil[F.cli] || B;
+  const maxShare = Math.max(...D.faixas.map(f => P.shares[f.id] || 0), 1);
+  const barras = D.faixas.map(f => `<div class="contrib"><span class="lbl" style="width:150px">${f.nome}</span><span class="bar pos" style="width:${Math.max(2, (P.shares[f.id] || 0) / maxShare * 150)}px"></span><span class="num">${pct(P.shares[f.id])} <span class="src">${brl(P.faixas[f.id])}</span></span></div>`).join("");
+  const linhaCmp = (rot, k, f = v => pct(v)) => `<tr><td>${rot}</td><td style="text-align:right">${f(B[k])}</td><td style="text-align:right">${f(PF[k])}</td><td style="text-align:right">${f(PJ[k])}</td></tr>`;
+  const perfil = secWrap("pz-perfil", `${sechead("Perfil de vencimentos", `${D.data_base} · carteira a vencer por faixa de prazo remanescente`)}
+  <div class="grid g2">
+    <div class="card"><h4>Por faixa de prazo ${badge("observado")}</h4>
+      <div class="controls" style="margin:0 0 8px"><span class="seg">${[["total", "total"], ["PF", "pessoas físicas"], ["PJ", "pessoas jurídicas"]].map(([v, l]) => `<button class="${F.cli === v ? "active" : ""}" onclick="pzSet('cli','${v}')">${l}</button>`).join("")}</span></div>
+      ${barras}
+      <p class="src">A vencer ${brl(P.a_vencer)} · vencido ${brl(P.vencido)} (${pct(P.vencido_pct)} da carteira ativa de ${brl(P.saldo)}). Shares sobre a carteira a vencer.</p></div>
+    <div class="card"><h4>Pessoas físicas e jurídicas lado a lado ${badge("calculado")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th style="text-align:right">Total</th><th style="text-align:right">PF</th><th style="text-align:right">PJ</th></tr></thead><tbody>
+        ${linhaCmp("Carteira a vencer", "a_vencer", brl)}${linhaCmp("Vence em até 12 meses", "curto_12m_pct")}${linhaCmp("1 a 5 anos", "medio_1a5_pct")}${linhaCmp("Depois de 5 anos", "longo_5a_pct")}${linhaCmp("Prazo médio residual", "prazo_medio_anos", anos)}${linhaCmp("Vencido (% da carteira ativa)", "vencido_pct")}
+      </tbody></table></div>
+      <p class="src">PJ é mais curta porque capital de giro, desconto de recebíveis e cartão giram em meses; PF carrega imobiliário e consignado, que vencem em anos.</p>
+      <div class="grid g2" style="margin-top:8px">${ponte("Quem toma crédito e onde: a mesma carteira por UF, produto e renda", "panorama", null, "o SCR.data por tomador, sem o corte de prazo")}${ponte("Produtos de crédito: o tamanho de cada modalidade", "products", null, "o prazo não é publicado por produto; a modalidade explica o prazo")}</div></div>
+  </div>`);
+
+  /* ---------- série ---------- */
+  const SER = { curto_12m_pct: ["vence em até 12 meses (%)", "%"], longo_5a_pct: ["vence depois de 5 anos (%)", "%"], prazo_medio_anos: ["prazo médio residual (anos)", "anos"], vencido_pct: ["vencido (% da carteira ativa)", "%"] };
+  const met = SER[F.serie] ? F.serie : "curto_12m_pct";
+  const [rot, unit] = SER[met];
+  const seriesS = [["total", "#1d4e89", "total"], ["PF", "#b45309", "pessoas físicas"], ["PJ", "#0e7c7b", "pessoas jurídicas"]].map(([k, cor, l]) => ({ pts: D.serie.filter(p => p[k] && p[k][met] != null).map(p => ({ x: p.ref + "-01", y: p[k][met] })), color: cor, label: l }));
+  const serie = secWrap("pz-serie", `${sechead("Como o perfil muda mês a mês", `${D.serie.length ? D.serie[0].ref : "–"} a ${D.data_base}`)}
+  <div class="card"><div class="controls"><label class="src">métrica <select onchange="pzSet('serie', this.value)" aria-label="escolher métrica">${Object.entries(SER).map(([k, v]) => `<option value="${k}" ${met === k ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label></div>
+    <div class="legend">${seriesS.map(sx => `<span><span class="sw" style="background:${sx.color}"></span>${sx.label}</span>`).join("")}</div>
+    ${lineChart({ series: seriesS, h: 220, endLabels: rotulosFim, unit, dec: 1, fonte: "BCB/SCR.data", status: "calculado", aria: rot + " por mês" })}
+    <p class="src">Série desde a primeira data-base carregada do SCR.data. Prazo remanescente muda com a passagem do tempo e com a composição das concessões: uma carteira que só rolasse ficaria cada vez mais curta.</p></div>`);
+
+  /* ---------- UFs ---------- */
+  const ufs = (D.ufs || []).slice();
+  const chaveUF = ["curto_12m_pct", "longo_5a_pct", "prazo_medio_anos", "vencido_pct"].includes(F.uf) ? F.uf : "curto_12m_pct";
+  ufs.sort((a, b) => ((b[chaveUF] == null ? -1 : b[chaveUF]) - (a[chaveUF] == null ? -1 : a[chaveUF])));
+  const posUF = (u, k) => (u.posicoes || {})[k] != null ? `${u.posicoes[k]}º` : "–";
+  const ufsHtml = secWrap("pz-ufs", `${sechead("Onde o crédito é mais curto", `27 UFs · ${D.data_base} · domicílio do tomador`)}
+  <div class="card"><div class="controls"><span class="seg">${[["curto_12m_pct", "vence em 12 meses"], ["longo_5a_pct", "depois de 5 anos"], ["prazo_medio_anos", "prazo médio"], ["vencido_pct", "vencido"]].map(([v, l]) => `<button class="${chaveUF === v ? "active" : ""}" onclick="pzSet('uf','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">A vencer</th><th style="text-align:right">% BR</th><th style="text-align:right">Em 12 m</th><th style="text-align:right">Depois de 5 a</th><th style="text-align:right">Prazo médio</th><th style="text-align:right">Vencido</th><th style="text-align:right">PF · PJ (12 m)</th></tr></thead>
+    <tbody>${ufs.map(u => `<tr><td><b><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false">${u.uf}</a></b> ${u.nome} <span class="src">${u.regiao || ""}</span></td><td style="text-align:right">${brl(u.a_vencer)}</td><td style="text-align:right">${pct(u.share_a_vencer)}</td><td style="text-align:right">${pct(u.curto_12m_pct)} <span class="src">${posUF(u, "curto_12m_pct")}${u.d12_curto_12m_pp != null ? " · " + fmt.pp(u.d12_curto_12m_pp) + " p.p." : ""}</span></td><td style="text-align:right">${pct(u.longo_5a_pct)} <span class="src">${posUF(u, "longo_5a_pct")}</span></td><td style="text-align:right">${anos(u.prazo_medio_anos)} <span class="src">${posUF(u, "prazo_medio_anos")}</span></td><td style="text-align:right">${pct(u.vencido_pct)} <span class="src">${posUF(u, "vencido_pct")}</span></td><td style="text-align:right">${u.pf ? pct(u.pf.curto_12m_pct, 0) : "–"} · ${u.pj ? pct(u.pj.curto_12m_pct, 0) : "–"}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Posições entre as 27 UFs, da maior para a menor. Carteira mais curta costuma refletir mais crédito PJ e menos imobiliário; carteira mais longa, o contrário.</p>
+    ${ponte("Cada estado tem uma página com carteira, penetração, presença e produtos — Estados", "estados", null, "o prazo por UF ainda não entra na página do estado")}</div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("pz-metodo", `${sechead("Método, faixas e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Faixa</th><th style="text-align:right">Dias</th><th style="text-align:right">Ponto médio</th><th style="text-align:right">Share (total)</th></tr></thead>
+    <tbody>${D.faixas.map(f => `<tr><td><b>${f.nome}</b></td><td style="text-align:right">${n0(f.dias_ini)} a ${f.dias_fim != null ? n0(f.dias_fim) : "aberta"}</td><td style="text-align:right">${n0(f.ponto_medio_dias)} d</td><td style="text-align:right">${pct(B.shares[f.id])}</td></tr>`).join("")}</tbody></table></div>
+    <div class="tblwrap" style="margin-top:8px"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${D.limitacoes}</p>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(D.fonte.url)}" target="_blank" rel="noopener">${D.fonte.nome}</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}).</p></div>`);
+  el.innerHTML = head + aberturaHtml
+    + subnavFixa([["#pz-perfil", "Perfil"], ["#pz-serie", "Série"], ["#pz-ufs", "UFs"], ["#pz-metodo", "Método"]])
+    + perfil + serie + ufsHtml + metodo;
+}
+window.pzCSV = () => {
+  const D = state.data.prazo;
+  if (!D || !D.disponivel) return;
+  const cols = ["ref", "cliente", "a_vencer", "vencido_pct", "curto_12m_pct", "longo_5a_pct", "prazo_medio_anos"];
+  const linhas = D.serie.flatMap(p => ["total", "PF", "PJ"].filter(k => p[k]).map(k => [p.ref, k, p[k].a_vencer, p[k].vencido_pct, p[k].curto_12m_pct, p[k].longo_5a_pct, p[k].prazo_medio_anos]));
+  const head = `# Observatório Brasileiro de Crédito — prazo da carteira, série mensal (BCB/SCR.data)\n# a vencer em R$; percentuais sobre a carteira a vencer (vencido sobre a carteira ativa); prazo médio residual em anos (ponto médio das faixas)\n`;
+  dlFile(`obc_prazo_serie_${D.data_base}.csv`, head + cols.join(";") + "\n" + linhas.map(l => l.map(csvEsc).join(";")).join("\n"), "text/csv");
+};
+
+/* ---------- FIDCs por lastro e cota (informes CVM) ---------- */
+function fiSet(k, v) { state.fi[k] = v; renderFidc(); }
+window.fiSet = fiSet;
+function renderFidc() {
+  const el = document.getElementById("view-fidc");
+  const D = state.data.fidc;
+  if (!D) { el.innerHTML = loadingCard("FIDCs"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "FIDCs por lastro e cota", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.fi;
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const brl = fmt.money;
+  const ppd = v => v == null ? "" : `${fmt.pp(v)} p.p. em 12 m`;
+  const S = D.sistema, L = D.lastro, C = D.classes, PZ = D.prazo;
+  const rotulosFim = window.innerWidth > 640;
+  const head = pageHead({
+    title: "FIDCs por lastro e cota", vintage: D.mes,
+    seals: `${badge("observado", "informes mensais de FIDC da CVM, agregados entre fundos")} ${badge("calculado", "shares, subordinação e variações calculados; cada tabela com a própria cobertura")}`,
+    desc: "O crédito dos fundos de recebíveis aberto por lastro, por classe de cota e por prazo, com a subordinação do sistema.",
+    fontes: "CVM (informes mensais de FIDC: tabelas I, II, IV, VI e X.2)",
+    actions: `<button class="btn ghost small" onclick="fiCSV()">baixar CSV (série mensal)</button>`,
+  });
+  const top = L && L.grupos.length ? L.grupos[0] : null;
+  const aberturaHtml = abertura({
+    placar: [
+      { l: "Fundos com carteira", v: n0(S.n_fundos), sub: `carteira ${brl(S.carteira)} · PL ${brl(S.pl_total)} · ${D.mes}`, href: "#fi-serie" },
+      { l: "Créditos inadimplentes", v: pct(S.inad_pct, 2), sub: S.parcelas_inad_pct != null ? `a vencer com parcelas inadimplentes ${pct(S.parcelas_inad_pct, 2)}` : "sobre a carteira", href: "#fi-serie" },
+      { l: "Maior lastro", v: top ? pct(top.share_pct, 0) : null, sub: top ? `${top.nome} · ${ppd(top.d12_pp)} · ${pct(L.cobertura.share_carteira_pct, 0)} da carteira abre o lastro` : "", href: "#fi-lastro" },
+      { l: "Subordinação (fundos com 2+ classes)", v: C ? pct(C.subordinacao_pct) : null, sub: C ? `mezanino e subordinada ÷ PL · ${ppd(C.d12_subordinacao_pp)}` : "", href: "#fi-classes" },
+      { l: "Vence em até 180 dias", v: PZ ? pct(PZ.curto_180_pct, 0) : null, sub: PZ ? `entre ${n0(PZ.cobertura.n_fundos)} fundos que informam prazos` : "", href: "#fi-prazo" },
+    ],
+    sintese: [D.sintese],
+    ref: `CVM ${D.mes} · variações contra ${D.mes_12m || "–"}${(D.meses_parciais || []).length ? ` · meses parciais fora dos KPIs: ${D.meses_parciais.join(", ")}` : ""}`,
+  });
+
+  /* ---------- lastro ---------- */
+  let lastro = "";
+  if (L) {
+    const gMax = Math.max(...L.grupos.map(g => g.share_pct || 0), 1);
+    const sel = L.grupos.find(g => g.id === F.lastro) || L.grupos[0];
+    lastro = secWrap("fi-lastro", `${sechead("O que lastreia os fundos", `tabela II · ${n0(L.cobertura.n_fundos)} de ${n0(L.cobertura.n_fundos_total)} fundos informam · ${pct(L.cobertura.share_carteira_pct, 0)} da carteira`)}
+    <div class="grid g2">
+      <div class="card"><h4>Por segmento do direito creditório ${badge("observado")}</h4>
+        ${L.grupos.map(g => `<div class="contrib clickable" onclick="fiSet('lastro','${g.id}')" title="abrir subitens"><span class="lbl" style="width:190px">${g.id === sel.id ? "<b>" + g.nome + "</b>" : g.nome}</span><span class="bar pos" style="width:${Math.max(2, (g.share_pct || 0) / gMax * 150)}px"></span><span class="num">${pct(g.share_pct)} <span class="src">${brl(g.valor)}${g.d12_pp != null ? " · " + fmt.pp(g.d12_pp) + " p.p." : ""}</span></span></div>`).join("")}
+        <p class="src">Shares sobre a carteira dos fundos que preenchem a tabela (${brl(L.cobertura.carteira_tab2)}), não sobre a carteira total. Variação em pontos percentuais contra ${D.mes_12m || "–"}.</p></div>
+      <div class="card"><h4>${sel.nome}: subitens ${badge("observado")}</h4>
+        ${sel.sub && sel.sub.length ? `<div class="tblwrap"><table class="data compact"><thead><tr><th>Subitem</th><th style="text-align:right">Valor</th><th style="text-align:right">% do lastro</th></tr></thead><tbody>${sel.sub.slice().sort((a, b) => b.valor - a.valor).map(x => `<tr><td>${x.nome}</td><td style="text-align:right">${brl(x.valor)}</td><td style="text-align:right">${pct(x.share_pct)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="src">A CVM não abre este segmento em subitens.</p>`}
+        ${sel.id === "F" ? `<p class="src">"Outros financeiros" é a maior categoria do sistema e a CVM não a detalha: inclui recebíveis de fintechs, cartões e originadores que não se encaixam nos sete itens nomeados.</p>` : ""}
+        <div class="grid g2" style="margin-top:8px">${ponte("Bancos e mercado de capitais: FIDC ao lado de debêntures, CRI e CRA", "ampliado", null, "a carteira agregada dos FIDCs no crédito ampliado")}${ponte("Sinais antecedentes: a inadimplência dos FIDCs como sinal", "leading", null, "o crédito originado fora dos bancos deteriora primeiro?")}</div></div>
+    </div>`);
+  }
+
+  /* ---------- classes ---------- */
+  let classes = "";
+  if (C) {
+    const cMax = Math.max(...C.itens.map(x => x.share_pct || 0), 1);
+    classes = secWrap("fi-classes", `${sechead("Quem absorve a primeira perda", `tabela X.2 contra tabela IV · ${n0(C.cobertura.n_fundos_ok)} fundos com soma das classes igual ao PL (${pct(C.cobertura.share_pl_pct, 0)} do PL)`)}
+    <div class="grid g2">
+      <div class="card"><h4>PL por classe de cota, fundos com duas ou mais classes ${badge("calculado")}</h4>
+        <div class="big">${pct(C.subordinacao_pct)} <span style="font-size:13px;color:var(--text-3)">de subordinação (mezanino + subordinada ÷ PL)</span></div>
+        ${C.d12_subordinacao_pp != null ? `<div class="delta ${C.d12_subordinacao_pp >= 0 ? "down good" : "up"}">${fmt.pp(C.d12_subordinacao_pp)} p.p. contra ${D.mes_12m}</div>` : ""}
+        ${C.itens.map(x => `<div class="contrib"><span class="lbl" style="width:120px">${x.nome}</span><span class="bar ${x.id === "senior" ? "pos" : "neg"}" style="width:${Math.max(2, (x.share_pct || 0) / cMax * 150)}px"></span><span class="num">${pct(x.share_pct)} <span class="src">${brl(x.pl)} · ${n0(x.n_fundos)} fundos${x.d12_pp != null ? " · " + fmt.pp(x.d12_pp) + " p.p." : ""}</span></span></div>`).join("")}
+        <p class="src">PL das classes = quantidade × valor da cota. Só fundos cuja soma fecha com o PL em ±20% entram; os demais têm erro de unidade no informe e ficam fora.</p></div>
+      <div class="card"><h4>Fundos de classe única ${badge("observado")}</h4>
+        <div class="big">${C.monoclasse ? pct(C.monoclasse.share_pl_pct, 0) : "–"} <span style="font-size:13px;color:var(--text-3)">do PL válido em fundos com uma só classe</span></div>
+        <p class="src">${C.monoclasse ? `${n0(C.monoclasse.n_fundos)} fundos, PL ${brl(C.monoclasse.pl)}.` : ""} Fundo de uma classe não tem subordinação, seja qual for o rótulo da cota: em 2025-12 a CVM renomeou centenas desses fundos de "subordinada" para "sênior" sem nenhuma mudança na estrutura. Por isso a subordinação do sistema é medida só entre fundos com duas ou mais classes.</p>
+        <p class="src">Fundos exclusivos e de um só cotista (comuns entre originadores que securitizam a própria carteira) ficam aqui.</p></div>
+    </div>`);
+  }
+
+  /* ---------- prazo ---------- */
+  let prazo = "";
+  if (PZ) {
+    const pMax = Math.max(...PZ.faixas.map(f => Math.max(f.share_pct || 0, f.inad_share_pct || 0)), 1);
+    prazo = secWrap("fi-prazo", `${sechead("Quando o crédito vence e há quanto tempo está atrasado", `tabela VI · ${n0(PZ.cobertura.n_fundos)} de ${n0(PZ.cobertura.n_fundos_total)} fundos informam (${pct(PZ.cobertura.share_fundos_pct, 0)})`)}
+    <div class="grid g2">
+      <div class="card"><h4>A vencer por faixa de prazo ${badge("observado")}</h4>
+        ${PZ.faixas.map(f => `<div class="contrib"><span class="lbl" style="width:120px">${f.nome}</span><span class="bar pos" style="width:${Math.max(2, (f.share_pct || 0) / pMax * 150)}px"></span><span class="num">${pct(f.share_pct)} <span class="src">${brl(f.a_vencer)}</span></span></div>`).join("")}
+        <p class="src">${pct(PZ.curto_180_pct, 0)} vencem em até 180 dias e ${pct(PZ.longo_1080_pct, 0)} depois de 3 anos; ${brl(PZ.antecipado)} foram pagos antecipadamente no mês. Base: ${brl(PZ.a_vencer)} a vencer nos fundos que informam.</p></div>
+      <div class="card"><h4>Parcelas inadimplentes por faixa de atraso ${badge("observado")}</h4>
+        ${PZ.faixas.map(f => `<div class="contrib"><span class="lbl" style="width:120px">${f.nome}</span><span class="bar neg" style="width:${Math.max(2, (f.inad_share_pct || 0) / pMax * 150)}px"></span><span class="num">${pct(f.inad_share_pct)} <span class="src">${brl(f.inad)}</span></span></div>`).join("")}
+        <p class="src">${pct(PZ.inad_acima_90_share_pct, 0)} das parcelas inadimplentes têm mais de 90 dias; total de ${brl(PZ.inad)} (${pct(PZ.inad_sobre_a_vencer_pct, 2)} da carteira dos fundos que informam). Atraso não é perda: subordinação e garantias absorvem parte.</p></div>
+    </div>`);
+  }
+
+  /* ---------- série ---------- */
+  const SER = { inad_pct: ["créditos inadimplentes (% da carteira)", "%", 2], parcelas_inad_pct: ["a vencer com parcelas inadimplentes (%)", "%", 2], subordinacao_pct: ["subordinação, fundos com 2+ classes (%)", "%", 1], financeiro_pct: ["lastro financeiro (% do lastro)", "%", 1], comercial_pct: ["lastro comercial (% do lastro)", "%", 1], carteira: ["carteira (R$ bi)", "R$ bi", 0], n_fundos: ["fundos com carteira", "fundos", 0] };
+  const met = SER[F.serie] ? F.serie : "inad_pct";
+  const [rot, unit, dec] = SER[met];
+  const fechados = (D.serie || []).filter(p => !p.parcial && p[met] != null);
+  const seriesS = [{ pts: fechados.map(p => ({ x: p.mes + "-01", y: met === "carteira" ? p[met] / 1e9 : p[met] })), color: "#1d4e89", label: rot }];
+  const serie = secWrap("fi-serie", `${sechead("Mês a mês", `${fechados.length ? fechados[0].mes : "–"} a ${D.mes} · meses parciais fora`)}
+  <div class="card"><div class="controls"><label class="src">métrica <select onchange="fiSet('serie', this.value)" aria-label="escolher métrica">${Object.entries(SER).map(([k, v]) => `<option value="${k}" ${met === k ? "selected" : ""}>${v[0]}</option>`).join("")}</select></label></div>
+    ${lineChart({ series: seriesS, h: 200, endLabels: rotulosFim, unit, dec, fonte: "CVM informes mensais de FIDC", status: "observado", aria: rot + " por mês" })}
+    <p class="src">Mês com menos de 90% dos fundos do mês anterior é parcial (os administradores entregam o informe com atraso) e fica fora do gráfico. Subordinação e lastro só existem desde a coleta detalhada.</p></div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("fi-metodo", `${sechead("Método, coberturas e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${D.limitacoes}</p>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(D.fonte.url)}" target="_blank" rel="noopener">${D.fonte.nome}</a> · <a href="${attr(D.fonte.dicionario)}" target="_blank" rel="noopener">dicionário de dados</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}).</p></div>`);
+  el.innerHTML = head + aberturaHtml
+    + subnavFixa([["#fi-lastro", "Lastro"], ["#fi-classes", "Classes"], ["#fi-prazo", "Prazos"], ["#fi-serie", "Série"], ["#fi-metodo", "Método"]])
+    + lastro + classes + prazo + serie + metodo;
+}
+window.fiCSV = () => {
+  const D = state.data.fidc;
+  if (!D || !D.disponivel) return;
+  const cols = ["mes", "n_fundos", "carteira", "inad_pct", "parcelas_inad_pct", "subordinacao_pct", "senior_pct", "financeiro_pct", "comercial_pct", "parcial"];
+  const head = `# Observatório Brasileiro de Crédito — FIDCs, série mensal (CVM, informes mensais)\n# carteira em R$; percentuais: inadimplência sobre a carteira; subordinação e sênior sobre o PL de fundos com 2+ classes; lastro sobre a carteira informada na tabela II\n`;
+  dlFile(`obc_fidc_serie_${D.anomes}.csv`, head + cols.join(";") + "\n" + D.serie.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
+};
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -11907,10 +12141,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca" };
+const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes" };
+  consignado: "municipal", rural: "municipal", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -11987,7 +12221,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" };
+const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

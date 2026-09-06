@@ -906,6 +906,31 @@ def build_all(con, cfg, fetch_status):
             print(f"  [cobranca] indisponível: {r_cb.get('motivo')}")
     except Exception as e:
         common.stub("cobranca.json", e)
+
+    # ---- Prazo e vencimentos da carteira (SCR.data, faixas a vencer já no silver) ----
+    try:
+        from pipeline import prazo as prazo_mod
+        r_pz = prazo_mod.build(con, cfg)
+        common.write_gold("prazo.json", r_pz)
+        if r_pz.get("disponivel"):
+            B = r_pz["brasil"]["total"]
+            print(f"  [prazo] {r_pz['data_base']} · a vencer R$ {B['a_vencer'] / 1e12:,.2f} tri · {B['curto_12m_pct']:.1f}% em 12 m · prazo médio {B['prazo_medio_anos']:.1f} anos")
+        else:
+            print(f"  [prazo] indisponível: {r_pz.get('motivo')}")
+    except Exception as e:
+        common.stub("prazo.json", e)
+
+    # ---- FIDCs por lastro e classe de cota (informes CVM, detalhe no silver) ----
+    try:
+        from pipeline import fidc as fidc_mod
+        r_fi = fidc_mod.build(con, cfg)
+        common.write_gold("fidc.json", r_fi)
+        if r_fi.get("disponivel"):
+            print(f"  [fidc] {r_fi['mes']} · {r_fi['sistema']['n_fundos']:,} fundos · carteira R$ {r_fi['sistema']['carteira'] / 1e9:,.0f} bi · subordinação {(r_fi['classes'] or {}).get('subordinacao_pct')}%")
+        else:
+            print(f"  [fidc] indisponível: {r_fi.get('motivo')}")
+    except Exception as e:
+        common.stub("fidc.json", e)
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
