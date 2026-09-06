@@ -1448,3 +1448,29 @@ body.embed section.view.active { display: block; }
 svg.chart.fs-piso text { font-size: var(--svg-fs); }
 .note.pane { border-left: 3px solid var(--warning); }
 .seg { flex-wrap: wrap; }
+
+/* ---------- Mapa do Observatório ---------- */
+.mapa-fluxo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(178px, 100%), 1fr)); gap: 12px; }
+.mapa-no { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 14px 10px; min-width: 0; }
+.mapa-no h4 { margin: 4px 0 4px; font-size: var(--fs-md); }
+.mapa-no ul { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.mapa-no li a { font-size: var(--fs-sm); text-decoration: none; border-bottom: 1px dotted var(--border); }
+.mapa-num { width: 26px; height: 26px; border-radius: 50%; background: var(--teal); color: #fff; font-weight: var(--fw-semibold); display: inline-flex; align-items: center; justify-content: center; font-size: var(--fs-sm); }
+.mapa-no::after { content: "›"; position: absolute; right: -11px; top: 14px; font-size: 22px; color: var(--text-3); }
+.mapa-no:last-child::after { content: ""; }
+.mapa-perg { margin: 0; display: grid; gap: 8px; }
+.mapa-perg div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.mapa-perg dt { font-size: var(--fs-sm); color: var(--text); }
+.mapa-perg dd { margin: 0; font-size: var(--fs-xs); }
+.mapa-trilha { margin: 6px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+.mapa-trilha li { font-size: var(--fs-sm); }
+@media (max-width: 640px) { .mapa-no::after { content: ""; } }
+
+/* ---------- avaliação de 06/09: transbordos a 390 px medidos no crawl ---------- */
+.heatwrap { overflow-x: auto; max-width: 100%; }
+@media (max-width: 640px) {
+  .card > table.data, .view > table.data, details > table.data { display: block; max-width: 100%; overflow-x: auto; }
+  .ph-items, .ph-actions { flex-wrap: wrap; min-width: 0; max-width: 100%; }
+  .ph-items > * { max-width: 100%; }
+  .src, .viewdesc, .pagehead, .card p { overflow-wrap: anywhere; }
+}

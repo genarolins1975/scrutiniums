@@ -131,7 +131,7 @@ export function montarBoletim(agora: Date): Boletim | null {
     ...(linhasVintages.length > 0 ? ["DATA-BASE DAS FONTES", ...linhasVintages, ""] : []),
     "Todo o Observatório é aberto, sem cadastro:",
     `- Visão geral: ${BASE}/observatorio`,
-    `- Bets e risco financeiro: ${BASE}/observatorio/bets-financial-risk`,
+    `- Apostas e crédito das famílias: ${BASE}/observatorio/bets-financial-risk`,
     `- Fraudes financeiras: ${BASE}/observatorio/financial-fraud`,
     `- Números citáveis para a imprensa: ${BASE}/imprensa`,
     "",

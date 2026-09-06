@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
 
 /**
- * Testes de consistência do dado curado da aba "Bets e risco financeiro".
+ * Testes de consistência do dado curado da aba "Apostas e crédito das famílias".
  * Protegem as distinções conceituais que o painel promete: GGR ≠ depósito ≠
  * fluxo bruto; regulado ≠ ilegal; oficial ≠ imprensa; semestral ≠ mensal.
  */
@@ -195,7 +195,7 @@ describe("bets.json: cadeia causal e explorador honestos", () => {
 describe("bets: integração com a plataforma", () => {
   it("telemetria reconhece a seção obs:bets", () => {
     expect(isViewSection("obs:bets")).toBe(true);
-    expect(sectionLabel("obs:bets")).toMatch(/Bets/);
+    expect(sectionLabel("obs:bets")).toMatch(/Apostas/);
   });
 
   it("view registrada na SPA (rota, dados, render, navegação)", () => {
@@ -207,7 +207,7 @@ describe("bets: integração com a plataforma", () => {
     const html = readFileSync(join(process.cwd(), "public/obs/index.html"), "utf-8");
     expect(html).toContain('data-view="bets"');
     expect(html).toContain('id="view-bets"');
-    expect(html).toContain("Riscos e temas");
+    expect(html).toContain("Pagamentos, conduta e fronteiras");
   });
 
   it("sem dados sintéticos: aba não possui modo demo e pipeline copia o curado", () => {

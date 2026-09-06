@@ -24,7 +24,7 @@ describe("pontes entre painéis irmãos", () => {
   it("as cinco pontes existem, cada uma com a cautela do próprio par", () => {
     // Panorama → Penetração e a volta: SCR por UF ≠ ESTBAN por município
     expect(app).toContain('ponte("Os mesmos lugares no nível municipal — Penetração & Gap", "penetracao"');
-    expect(app).toContain('ponte("A visão por UF, produto e perfil de renda — Panorama do Crédito", "panorama"');
+    expect(app).toContain('ponte("A visão por UF, produto e perfil de renda — Quem toma crédito e onde", "panorama"');
     // RJ e PGFN → exposições setoriais (destino ancorado)
     expect(app).toContain('"sectors", "sec-exposicoes"');
     expect(app).toContain('<section id="sec-exposicoes">');

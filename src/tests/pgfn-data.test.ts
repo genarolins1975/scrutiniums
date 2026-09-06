@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Dívida Ativa da União (PGFN). O teste que mais importa aqui é negativo.
+ * Dívida com a União (PGFN). O teste que mais importa aqui é negativo.
  *
  * A fonte publica nome completo do devedor — inclusive de pessoa física —, CPF
  * mascarado e CNPJ inteiro. É publicação legítima da PGFN sob a LAI, e nada disso

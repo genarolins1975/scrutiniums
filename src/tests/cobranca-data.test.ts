@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Cobrança judicial de crédito (DataJud, agregação). O que se trava:
+ * Bancos cobrando na Justiça (DataJud, agregação). O que se trava:
  * - janela de 12 meses fecha antes dos 3 meses parciais; série contínua mensal; parciais marcados;
  * - Brasil = soma dos grupos; bancário ≤ todos em todo mês, grupo e UF; share bancário coerente;
  * - grupos: classes TPU declaradas (12154 e 159 somadas; 81; 40; 1117); série por grupo soma a série Brasil;
@@ -92,7 +92,7 @@ describe.skipIf(!U || !U.disponivel || !D.disponivel)("ufs.json: bloco de cobran
 describe("SPA: aba registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
     expect(app).toContain('cobranca: "/debt-collection-lawsuits"');
-    expect(app).toContain('cobranca: "Cobrança judicial de crédito"');
+    expect(app).toContain('cobranca: "Bancos cobrando na Justiça"');
     expect(app).toContain('cobranca: "renderCobranca"');
     expect(app).toContain('cobranca: ["cobranca"]');
     expect(app).toContain('cobranca: "cobranca"');
@@ -100,7 +100,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('cobranca: "emergentes"');
     expect(app).toMatch(/\n  cobranca: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.cb = {");
-    expect(html).toContain('data-view="cobranca">Cobrança judicial de crédito</button>');
+    expect(html).toContain('data-view="cobranca">Bancos cobrando na Justiça</button>');
     expect(html).toContain('id="view-cobranca"');
     expect(app).toContain('["cobranca", "Cobrança judicial", "cobranca"]');
     expect(app).toContain('["#uf-cobranca", "Cobrança"]');

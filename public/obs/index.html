@@ -19,7 +19,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='3' fill='%23966b48'/%3E%3Cpath d='M16 6l8 10-8 10-8-10z' fill='%23f3efe5'/%3E%3C/svg%3E">
 <link rel="preload" href="/obs/fonts/playfair-display.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/obs/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="/obs/styles.css?v=0.97.0">
+  <link rel="stylesheet" href="/obs/styles.css?v=0.98.0">
 </head>
 <body>
 <a class="skip" href="#main">Ir para o conteúdo</a>
@@ -41,59 +41,66 @@
         oninput="navFiltra(this.value)" autocomplete="off"></div>
     <nav class="tabs" id="tabs" aria-label="Navegação principal">
       <div class="navgroup">
-        <span class="navlabel">Diagnóstico</span>
-        <button data-view="overview" class="active">Visão geral</button>
+        <span class="navlabel">Começar</span>
+        <button data-view="mapa" class="active">Mapa do Observatório</button>
+        <button data-view="overview">Visão geral</button>
         <button data-view="alerts">Central de alertas <span class="navbadge" id="alertCount" hidden></span></button>
+      </div>
+      <div class="navgroup">
+        <span class="navlabel">Ciclo do crédito</span>
         <button data-view="pulse">Pulso do crédito</button>
-        <button data-view="ampliado">Crédito ampliado e mercado de capitais</button>
+        <button data-view="panorama">Quem toma crédito e onde</button>
+        <button data-view="leading">Sinais antecedentes</button>
         <button data-view="scenarios">Cenários</button>
-        <button data-view="leading">Sinais Antecedentes</button>
-        <button data-view="trends">Tendências de Busca</button>
+        <button data-view="trends">Buscas no Google</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Território</span>
-        <button data-view="panorama">Panorama do Crédito</button>
-        <button data-view="estados">Estados</button>
-        <button data-view="penetracao">Penetração e Gap</button>
-        <button data-view="moradia">Moradia e Habitação</button>
-        <button data-view="consignado">Consignado e Envelhecimento</button>
-      </div>
-      <div class="navgroup">
-        <span class="navlabel">Instituições</span>
+        <span class="navlabel">Instituições e funding</span>
         <button data-view="institutions">Instituições</button>
-        <button data-view="sfn">Entrantes e saídas do SFN</button>
-        <button data-view="funding">Funding e captação</button>
-        <button data-view="compare">Comparador</button>
-        <button data-view="operacional">Indicadores operacionais</button>
-        <button data-view="market">Mercado e Valor</button>
+        <button data-view="compare">Comparar instituições</button>
+        <button data-view="sfn">Quem entra e quem sai do SFN</button>
+        <button data-view="funding">Captação dos bancos</button>
+        <button data-view="operacional">Rede, pessoas e auditoria</button>
+        <button data-view="market">Bancos na bolsa</button>
       </div>
       <div class="navgroup">
         <span class="navlabel">Produtos e preços</span>
-        <button data-view="products">Produtos de Crédito</button>
-        <button data-view="juros">Taxas de Juros por IF</button>
+        <button data-view="products">Produtos de crédito</button>
+        <button data-view="juros">Juros por instituição</button>
         <button data-view="rural">Crédito rural</button>
         <button data-view="bndes">Crédito direcionado e BNDES</button>
+        <button data-view="ampliado">Bancos e mercado de capitais</button>
         <button data-view="consorcios">Consórcios</button>
-        <button data-view="pix">Pix e Pagamentos</button>
-        <button data-view="openfinance">Open Finance</button>
       </div>
       <div class="navgroup">
-        <span class="navlabel">Riscos e temas</span>
-        <button data-view="sectors">Risco setorial</button>
+        <span class="navlabel">Território e pessoas</span>
+        <button data-view="estados">Estados</button>
+        <button data-view="penetracao">Crédito por município</button>
+        <button data-view="moradia">Crédito imobiliário e moradia</button>
+        <button data-view="consignado">Consignado e aposentados</button>
         <button data-view="emprego">Emprego formal</button>
-        <button data-view="rj">Recuperações e Falências</button>
-        <button data-view="judicial">Ações judiciais</button>
-        <button data-view="cobranca">Cobrança judicial de crédito</button>
-        <button data-view="pgfn">Dívida Ativa da União</button>
+      </div>
+      <div class="navgroup">
+        <span class="navlabel">Risco, cobrança e recuperação</span>
+        <button data-view="sectors">Risco setorial</button>
+        <button data-view="cobranca">Bancos cobrando na Justiça</button>
+        <button data-view="rj">Recuperações e falências</button>
+        <button data-view="judicial">Clientes contra bancos na Justiça</button>
+        <button data-view="pgfn">Dívida com a União</button>
         <button data-view="desenrola">Desenrola Brasil</button>
-        <button data-view="bets">Bets e risco financeiro</button>
-        <button data-view="fraudes">Fraudes e risco de crédito</button>
-        <button data-view="conduta">Conduta e enforcement</button>
+      </div>
+      <div class="navgroup">
+        <span class="navlabel">Pagamentos, conduta e fronteiras</span>
+        <button data-view="pix">Pix e pagamentos</button>
+        <button data-view="openfinance">Open Finance</button>
+        <button data-view="conduta">Sanções e reclamações</button>
+        <button data-view="bets">Apostas e crédito das famílias</button>
+        <button data-view="fraudes">Golpes e fraudes</button>
       </div>
       <div class="navgroup">
         <span class="navlabel">Referência</span>
-        <button data-view="regulacao">Regulação do Crédito</button>
-        <button data-view="method">Metodologia e Fontes</button>
+        <button data-view="regulacao">Marcos regulatórios</button>
+        <button data-view="method">Metodologia e fontes</button>
         <button data-view="sobre">Sobre o Observatório</button>
       </div>
       <p id="navVazio" class="navvazio" hidden>nenhuma página com esse nome</p>
@@ -125,7 +132,8 @@
   </aside>
   <div class="content">
     <main id="main">
-      <section class="view active" id="view-overview"></section>
+      <section class="view active" id="view-mapa"></section>
+      <section class="view" id="view-overview"></section>
       <section class="view" id="view-pulse"></section>
       <section class="view" id="view-sectors"></section>
       <section class="view" id="view-rj"></section>
@@ -173,11 +181,11 @@
     </main>
     <footer>
       <div id="footDisclaimer"></div>
-      <div class="noprint">Dados abertos do BCB, CVM, IBGE, CNJ, PGFN e Ipeadata, com atribuição; a lista completa de coletores e o estado de cada fonte estão em <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia e Fontes</a>. · <a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> · <a href="/observatorio/about" onclick="nav('sobre');return false">Sobre</a></div>
+      <div class="noprint">Dados abertos do BCB, CVM, IBGE, CNJ, PGFN e Ipeadata, com atribuição; a lista completa de coletores e o estado de cada fonte estão em <a href="/observatorio/methodology" onclick="nav('method');return false">Metodologia e fontes</a>. · <a href="/observatorio/suggestions" onclick="nav('sugestoes');return false">Sugestões</a> · <a href="/observatorio/research" onclick="nav('research');return false">Perguntas rápidas</a> · <a href="/observatorio/about" onclick="nav('sobre');return false">Sobre</a></div>
     </footer>
   </div>
 </div>
 <div class="tooltip" id="tooltip" role="tooltip" aria-hidden="true"></div>
-<script src="/obs/app.min.js?v=0.97.0"></script>
+<script src="/obs/app.min.js?v=0.98.0"></script>
 </body>
 </html>

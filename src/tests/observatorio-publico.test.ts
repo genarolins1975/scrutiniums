@@ -112,7 +112,7 @@ describe("metadados por rota", () => {
 
   it("aba conhecida: título próprio, canônico próprio e dataset", () => {
     const m = resolverMeta("/bets-financial-risk");
-    expect(m.titulo).toContain("Bets e risco financeiro");
+    expect(m.titulo).toContain("Apostas e crédito das famílias");
     expect(m.canonico).toBe("https://scrutiniums.com/observatorio/bets-financial-risk");
     expect(m.gold).toBe("bets.json");
   });
@@ -141,7 +141,7 @@ describe("metadados por rota", () => {
 
   it("o HTML servido injeta title, description, OG, canônico e JSON-LD", () => {
     const html = montarHtml(resolverMeta("/financial-fraud"));
-    expect(html).toContain("<title>Fraudes e risco de crédito · Observatório Brasileiro de Crédito</title>");
+    expect(html).toContain("<title>Golpes e fraudes · Observatório Brasileiro de Crédito</title>");
     expect(html).toContain('<link rel="canonical" href="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('<meta property="og:url" content="https://scrutiniums.com/observatorio/financial-fraud">');
     expect(html).toContain('"@type":"Dataset"');

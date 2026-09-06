@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Funding e captação. O que se trava:
+ * Captação dos bancos. O que se trava:
  * - sistema (SGS): componentes com share sobre M4 coerente; M2 ≤ M3 ≤ M4; série termina no mês publicado;
  * - bancos (IF.data Passivo): varejo + mercado + repasses = captações (agregado e por instituição);
  *   composição soma as captações; shares por instituição somam ~100; instituições ordenadas por captação;
@@ -93,7 +93,7 @@ describe.skipIf(!D.disponivel || !D.fundos)("funding.json: fundos (CVM CDA)", ()
 describe("SPA: aba registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
     expect(app).toContain('funding: "/funding"');
-    expect(app).toContain('funding: "Funding e captação"');
+    expect(app).toContain('funding: "Captação dos bancos"');
     expect(app).toContain('funding: "renderFunding"');
     expect(app).toContain('funding: ["funding"]');
     expect(app).toContain('funding: "ifdata"');
@@ -101,7 +101,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('funding: "emergentes"');
     expect(app).toMatch(/\n  funding: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.fd = {");
-    expect(html).toContain('data-view="funding">Funding e captação</button>');
+    expect(html).toContain('data-view="funding">Captação dos bancos</button>');
     expect(html).toContain('id="view-funding"');
   });
   it("o renderizador vive no chunk emergentes e o pipeline registra coletores, gold e vintage", () => {

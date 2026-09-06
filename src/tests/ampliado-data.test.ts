@@ -4,13 +4,13 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Crédito ampliado e mercado de capitais. O que se trava:
+ * Bancos e mercado de capitais. O que se trava:
  * - três réguas separadas (saldo SGS, ofertas CVM, lastro CRI/CRA), cada uma com sua data;
  * - a composição do saldo fecha (componentes somam o total) e as participações somam 100;
  * - a janela de ofertas tem 12 meses fechados e o mês corrente fica fora; anual = soma do mensal;
  * - lastro: vencidos e atraso entre 0 e 100, meses parciais declarados e fora dos KPIs,
  *   exclusões por informe inconsistente contadas;
- * - o subíndice não bancário do Sinais Antecedentes tem quatro componentes declarados;
+ * - o subíndice não bancário do Sinais antecedentes tem quatro componentes declarados;
  * - a SPA registra a aba em todos os mapas.
  */
 const raiz = process.cwd();
@@ -104,7 +104,7 @@ describe.skipIf(!comDado)("ampliado.json: securitização (CVM CRI e CRA)", () =
   });
 });
 
-describe("Sinais Antecedentes: família não bancária com quatro componentes (E13)", () => {
+describe("Sinais antecedentes: família não bancária com quatro componentes (E13)", () => {
   it("SUB_DEF lista FIDC, CRI, CRA e emissões; o mês só entra com metade dos componentes", () => {
     expect(leading).toMatch(/"nao_bancario": \["fidc_inad_pct", "cri_venc_pct", "cra_venc_pct", "emissoes_divida_yoy"\]/);
     expect(leading).toContain('SINAL_INVERTIDO = {"ivgr_real_yoy", "emissoes_divida_yoy"}');
@@ -121,7 +121,7 @@ describe("Sinais Antecedentes: família não bancária com quatro componentes (E
 describe("SPA: aba registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
     expect(app).toContain('ampliado: "/broad-credit"');
-    expect(app).toContain('ampliado: "Crédito ampliado e mercado de capitais"');
+    expect(app).toContain('ampliado: "Bancos e mercado de capitais"');
     expect(app).toContain('ampliado: "renderAmpliado"');
     expect(app).toContain('ampliado: ["ampliado"]');
     expect(app).toContain('ampliado: "sgs"');
@@ -129,7 +129,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('ampliado: "emergentes"');
     expect(app).toMatch(/\n  ampliado: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.amp = {");
-    expect(html).toContain('data-view="ampliado">Crédito ampliado e mercado de capitais</button>');
+    expect(html).toContain('data-view="ampliado">Bancos e mercado de capitais</button>');
     expect(html).toContain('id="view-ampliado"');
   });
   it("o renderizador vive no chunk emergentes e declara as três réguas", () => {
