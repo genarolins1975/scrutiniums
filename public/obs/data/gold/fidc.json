@@ -1,0 +1,697 @@
+{
+ "disponivel": true,
+ "tipo": "DADO OBSERVADO (informes CVM) + CALCULADO (agregação, shares, subordinação, variações)",
+ "mes": "2026-07",
+ "anomes": "202607",
+ "mes_12m": "2025-07",
+ "meses_parciais": [
+  "2026-08"
+ ],
+ "fonte": {
+  "nome": "CVM — informes mensais de FIDC (dados abertos)",
+  "url": "https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/DADOS/",
+  "dicionario": "https://dados.cvm.gov.br/dados/FIDC/DOC/INF_MENSAL/META/meta_inf_mensal_fidc_txt.zip",
+  "licenca": "dados abertos da CVM",
+  "nivel": "A — informe regulatório mensal dos administradores à CVM"
+ },
+ "gerado_em": "2026-09-06T22:25:12+00:00",
+ "sistema": {
+  "n_fundos": 4188,
+  "carteira": 1009708317907.5277,
+  "inad_pct": 5.6,
+  "parcelas_inad_pct": 2.11,
+  "a_vencer_pct": 71.51,
+  "pl_total": 1015362464585.1285
+ },
+ "lastro": {
+  "grupos": [
+   {
+    "id": "F",
+    "nome": "Financeiro",
+    "valor": 349372683877.0288,
+    "share_pct": 44.85,
+    "d12_pp": 9.59,
+    "var_12m_pct": 56.19,
+    "sub": [
+     {
+      "id": "F1",
+      "nome": "Crédito pessoal",
+      "valor": 25222662568.830013,
+      "share_pct": 3.24
+     },
+     {
+      "id": "F2",
+      "nome": "Crédito pessoal consignado",
+      "valor": 20597471781.78,
+      "share_pct": 2.64
+     },
+     {
+      "id": "F3",
+      "nome": "Crédito corporativo",
+      "valor": 33420563918.03,
+      "share_pct": 4.29
+     },
+     {
+      "id": "F4",
+      "nome": "Middle market",
+      "valor": 738281422.93,
+      "share_pct": 0.09
+     },
+     {
+      "id": "F5",
+      "nome": "Veículos",
+      "valor": 3611127399.21,
+      "share_pct": 0.46
+     },
+     {
+      "id": "F6",
+      "nome": "Imobiliário empresarial",
+      "valor": 328991577.69,
+      "share_pct": 0.04
+     },
+     {
+      "id": "F7",
+      "nome": "Imobiliário residencial",
+      "valor": 1045884613.0799999,
+      "share_pct": 0.13
+     },
+     {
+      "id": "F8",
+      "nome": "Outros financeiros",
+      "valor": 264407700595.47995,
+      "share_pct": 33.94
+     }
+    ]
+   },
+   {
+    "id": "C",
+    "nome": "Comercial",
+    "valor": 135503014321.26994,
+    "share_pct": 17.39,
+    "d12_pp": -4.28,
+    "var_12m_pct": -1.43,
+    "sub": [
+     {
+      "id": "C1",
+      "nome": "Comercial",
+      "valor": 120281763458.60988,
+      "share_pct": 15.44
+     },
+     {
+      "id": "C2",
+      "nome": "Comercial: varejo",
+      "valor": 15221250862.659994,
+      "share_pct": 1.95
+     }
+    ]
+   },
+   {
+    "id": "A",
+    "nome": "Industrial",
+    "valor": 81173387749.38002,
+    "share_pct": 10.42,
+    "d12_pp": -2.07,
+    "var_12m_pct": 2.41,
+    "sub": []
+   },
+   {
+    "id": "G",
+    "nome": "Cartão de crédito",
+    "valor": 77330328774.24997,
+    "share_pct": 9.93,
+    "d12_pp": -1.42,
+    "var_12m_pct": 7.37,
+    "sub": []
+   },
+   {
+    "id": "D",
+    "nome": "Serviços",
+    "valor": 59365479482.26995,
+    "share_pct": 7.62,
+    "d12_pp": 0.09,
+    "var_12m_pct": 24.28,
+    "sub": [
+     {
+      "id": "D1",
+      "nome": "Serviços",
+      "valor": 47665563881.21999,
+      "share_pct": 6.12
+     },
+     {
+      "id": "D2",
+      "nome": "Serviços públicos (eletricidade, telefonia, transporte, saneamento)",
+      "valor": 8418204618.4000025,
+      "share_pct": 1.08
+     },
+     {
+      "id": "D3",
+      "nome": "Serviços educacionais",
+      "valor": 3061880199.74,
+      "share_pct": 0.39
+     },
+     {
+      "id": "D4",
+      "nome": "Entretenimento",
+      "valor": 219830782.90999997,
+      "share_pct": 0.03
+     }
+    ]
+   },
+   {
+    "id": "J",
+    "nome": "Ações judiciais",
+    "valor": 35127384761.23002,
+    "share_pct": 4.51,
+    "d12_pp": 0.71,
+    "var_12m_pct": 45.68,
+    "sub": []
+   },
+   {
+    "id": "I",
+    "nome": "Setor público",
+    "valor": 28832460272.829994,
+    "share_pct": 3.7,
+    "d12_pp": -2.09,
+    "var_12m_pct": -21.48,
+    "sub": [
+     {
+      "id": "I1",
+      "nome": "Precatórios",
+      "valor": 24835262463.549995,
+      "share_pct": 3.19
+     },
+     {
+      "id": "I2",
+      "nome": "Créditos tributários",
+      "valor": 3181674.02,
+      "share_pct": 0.0
+     },
+     {
+      "id": "I4",
+      "nome": "Setor público: outros",
+      "valor": 3994016135.2599993,
+      "share_pct": 0.51
+     }
+    ]
+   },
+   {
+    "id": "E",
+    "nome": "Agronegócio",
+    "valor": 8843931140.630005,
+    "share_pct": 1.14,
+    "d12_pp": -0.66,
+    "var_12m_pct": -22.69,
+    "sub": []
+   },
+   {
+    "id": "B",
+    "nome": "Mercado imobiliário (não financeiro)",
+    "valor": 3307951810.1899996,
+    "share_pct": 0.42,
+    "d12_pp": 0.14,
+    "var_12m_pct": 88.06,
+    "sub": []
+   },
+   {
+    "id": "H",
+    "nome": "Factoring",
+    "valor": 125705393.79,
+    "share_pct": 0.02,
+    "d12_pp": -0.01,
+    "var_12m_pct": -42.59,
+    "sub": [
+     {
+      "id": "H2",
+      "nome": "Factoring: corporativo",
+      "valor": 125705393.79,
+      "share_pct": 0.02
+     }
+    ]
+   },
+   {
+    "id": "K",
+    "nome": "Propriedade intelectual, marcas e patentes",
+    "valor": 0.0,
+    "share_pct": 0.0,
+    "d12_pp": 0.0,
+    "var_12m_pct": null,
+    "sub": []
+   }
+  ],
+  "base": 778982327582.8688,
+  "cobertura": {
+   "n_fundos": 3267,
+   "n_fundos_total": 4188,
+   "carteira_tab2": 778982327582.8705,
+   "carteira_tab1_cobertos": 849367476089.2096,
+   "carteira_tab1_total": 1009708317907.5277,
+   "share_carteira_pct": 84.12
+  }
+ },
+ "classes": {
+  "itens": [
+   {
+    "id": "senior",
+    "nome": "Sênior",
+    "pl": 326366456981.77844,
+    "n_fundos": 1561,
+    "share_pct": 62.24,
+    "d12_pp": 0.51
+   },
+   {
+    "id": "mezanino",
+    "nome": "Mezanino",
+    "pl": 73936051318.44112,
+    "n_fundos": 923,
+    "share_pct": 14.1,
+    "d12_pp": 0.04
+   },
+   {
+    "id": "subordinada",
+    "nome": "Subordinada",
+    "pl": 124045371882.99721,
+    "n_fundos": 1665,
+    "share_pct": 23.66,
+    "d12_pp": -0.55
+   }
+  ],
+  "pl_multiclasse": 524347880183.21674,
+  "subordinacao_pct": 37.76,
+  "d12_subordinacao_pp": -0.51,
+  "monoclasse": {
+   "pl": 487761486739.3159,
+   "n_fundos": 2470,
+   "share_pl_pct": 48.15
+  },
+  "cobertura": {
+   "n_fundos_ok": 4143,
+   "pl_ok": 1013002006165.3883,
+   "n_fundos_pl": 4180,
+   "pl_total": 1015362464585.1285,
+   "share_pl_pct": 99.77
+  }
+ },
+ "prazo": {
+  "faixas": [
+   {
+    "id": "30",
+    "nome": "até 30 dias",
+    "dias_fim": 30,
+    "a_vencer": 47901926710.979996,
+    "share_pct": 17.64,
+    "inad": 4552302808.980003,
+    "inad_share_pct": 39.55
+   },
+   {
+    "id": "60",
+    "nome": "31 a 60 dias",
+    "dias_fim": 60,
+    "a_vencer": 26940802604.370007,
+    "share_pct": 9.92,
+    "inad": 1239131549.7300005,
+    "inad_share_pct": 10.76
+   },
+   {
+    "id": "90",
+    "nome": "61 a 90 dias",
+    "dias_fim": 90,
+    "a_vencer": 16282701615.709995,
+    "share_pct": 5.99,
+    "inad": 775051178.5599997,
+    "inad_share_pct": 6.73
+   },
+   {
+    "id": "120",
+    "nome": "91 a 120 dias",
+    "dias_fim": 120,
+    "a_vencer": 11388575872.729992,
+    "share_pct": 4.19,
+    "inad": 509473287.62000024,
+    "inad_share_pct": 4.43
+   },
+   {
+    "id": "150",
+    "nome": "121 a 150 dias",
+    "dias_fim": 150,
+    "a_vencer": 9894022896.270016,
+    "share_pct": 3.64,
+    "inad": 440325254.6200001,
+    "inad_share_pct": 3.83
+   },
+   {
+    "id": "180",
+    "nome": "151 a 180 dias",
+    "dias_fim": 180,
+    "a_vencer": 8642060843.8,
+    "share_pct": 3.18,
+    "inad": 426461455.10999995,
+    "inad_share_pct": 3.7
+   },
+   {
+    "id": "360",
+    "nome": "181 a 360 dias",
+    "dias_fim": 360,
+    "a_vencer": 45313774740.47002,
+    "share_pct": 16.68,
+    "inad": 1780130535.7399993,
+    "inad_share_pct": 15.46
+   },
+   {
+    "id": "720",
+    "nome": "1 a 2 anos",
+    "dias_fim": 720,
+    "a_vencer": 13759518032.689997,
+    "share_pct": 5.07,
+    "inad": 666217706.1800004,
+    "inad_share_pct": 5.79
+   },
+   {
+    "id": "1080",
+    "nome": "2 a 3 anos",
+    "dias_fim": 1080,
+    "a_vencer": 9871649632.879997,
+    "share_pct": 3.63,
+    "inad": 434671710.40000004,
+    "inad_share_pct": 3.78
+   },
+   {
+    "id": "MAIOR_1080",
+    "nome": "acima de 3 anos",
+    "dias_fim": null,
+    "a_vencer": 81613907418.18993,
+    "share_pct": 30.05,
+    "inad": 687048856.7599999,
+    "inad_share_pct": 5.97
+   }
+  ],
+  "a_vencer": 271608940368.08997,
+  "inad": 11510814343.700005,
+  "antecipado": 29572771573.480003,
+  "curto_180_pct": 44.57,
+  "ate_360_pct": 61.25,
+  "longo_1080_pct": 30.05,
+  "inad_sobre_a_vencer_pct": 4.07,
+  "inad_acima_90_share_pct": 42.95,
+  "cobertura": {
+   "n_fundos": 1071,
+   "n_fundos_total": 4188,
+   "a_vencer": 271608940368.09,
+   "share_fundos_pct": 25.57
+  }
+ },
+ "serie": [
+  {
+   "mes": "2025-03",
+   "n_fundos": 3243,
+   "carteira": 762298797220.9196,
+   "inad_pct": 5.84,
+   "parcelas_inad_pct": 3.05,
+   "a_vencer_pct": 73.35,
+   "parcial": false,
+   "subordinacao_pct": 38.08,
+   "senior_pct": 61.92,
+   "financeiro_pct": 31.29,
+   "comercial_pct": 20.79
+  },
+  {
+   "mes": "2025-04",
+   "n_fundos": 3317,
+   "carteira": 776476451035.5107,
+   "inad_pct": 6.03,
+   "parcelas_inad_pct": 3.02,
+   "a_vencer_pct": 72.44,
+   "parcial": false,
+   "subordinacao_pct": 38.53,
+   "senior_pct": 61.47,
+   "financeiro_pct": 31.23,
+   "comercial_pct": 20.98
+  },
+  {
+   "mes": "2025-05",
+   "n_fundos": 3397,
+   "carteira": 792450433303.0603,
+   "inad_pct": 6.04,
+   "parcelas_inad_pct": 2.91,
+   "a_vencer_pct": 71.8,
+   "parcial": false,
+   "subordinacao_pct": 38.44,
+   "senior_pct": 61.56,
+   "financeiro_pct": 32.69,
+   "comercial_pct": 21.43
+  },
+  {
+   "mes": "2025-06",
+   "n_fundos": 3505,
+   "carteira": 861325454238.2532,
+   "inad_pct": 5.63,
+   "parcelas_inad_pct": 2.74,
+   "a_vencer_pct": 68.2,
+   "parcial": false,
+   "subordinacao_pct": 38.01,
+   "senior_pct": 61.99,
+   "financeiro_pct": 33.86,
+   "comercial_pct": 22.11
+  },
+  {
+   "mes": "2025-07",
+   "n_fundos": 3586,
+   "carteira": 873852552465.0482,
+   "inad_pct": 5.52,
+   "parcelas_inad_pct": 2.44,
+   "a_vencer_pct": 67.01,
+   "parcial": false,
+   "subordinacao_pct": 38.27,
+   "senior_pct": 61.73,
+   "financeiro_pct": 35.26,
+   "comercial_pct": 21.67
+  },
+  {
+   "mes": "2025-08",
+   "n_fundos": 3667,
+   "carteira": 881620649738.1812,
+   "inad_pct": 5.33,
+   "parcelas_inad_pct": 2.55,
+   "a_vencer_pct": 67.6,
+   "parcial": false,
+   "subordinacao_pct": 37.64,
+   "senior_pct": 62.36,
+   "financeiro_pct": 39.91,
+   "comercial_pct": 22.15
+  },
+  {
+   "mes": "2025-09",
+   "n_fundos": 3695,
+   "carteira": 891433860975.6017,
+   "inad_pct": 5.53,
+   "parcelas_inad_pct": 2.79,
+   "a_vencer_pct": 65.64,
+   "parcial": false,
+   "subordinacao_pct": 39.79,
+   "senior_pct": 60.21,
+   "financeiro_pct": 34.05,
+   "comercial_pct": 22.86
+  },
+  {
+   "mes": "2025-10",
+   "n_fundos": 3740,
+   "carteira": 900445456205.9777,
+   "inad_pct": 5.34,
+   "parcelas_inad_pct": 2.59,
+   "a_vencer_pct": 68.39,
+   "parcial": false,
+   "subordinacao_pct": 38.4,
+   "senior_pct": 61.6,
+   "financeiro_pct": 36.28,
+   "comercial_pct": 23.02
+  },
+  {
+   "mes": "2025-11",
+   "n_fundos": 3789,
+   "carteira": 910140301118.541,
+   "inad_pct": 5.38,
+   "parcelas_inad_pct": 2.51,
+   "a_vencer_pct": 69.4,
+   "parcial": false,
+   "subordinacao_pct": 39.23,
+   "senior_pct": 60.77,
+   "financeiro_pct": 36.31,
+   "comercial_pct": 21.91
+  },
+  {
+   "mes": "2025-12",
+   "n_fundos": 3882,
+   "carteira": 920397315753.3518,
+   "inad_pct": 4.95,
+   "parcelas_inad_pct": 3.41,
+   "a_vencer_pct": 70.48,
+   "parcial": false,
+   "subordinacao_pct": 37.42,
+   "senior_pct": 62.58,
+   "financeiro_pct": 36.91,
+   "comercial_pct": 21.41
+  },
+  {
+   "mes": "2026-01",
+   "n_fundos": 3931,
+   "carteira": 910933341650.4503,
+   "inad_pct": 4.87,
+   "parcelas_inad_pct": 3.09,
+   "a_vencer_pct": 70.98,
+   "parcial": false,
+   "subordinacao_pct": 37.37,
+   "senior_pct": 62.63,
+   "financeiro_pct": 37.96,
+   "comercial_pct": 20.96
+  },
+  {
+   "mes": "2026-02",
+   "n_fundos": 3948,
+   "carteira": 911950285702.0798,
+   "inad_pct": 5.07,
+   "parcelas_inad_pct": 3.05,
+   "a_vencer_pct": 71.34,
+   "parcial": false,
+   "subordinacao_pct": 38.09,
+   "senior_pct": 61.91,
+   "financeiro_pct": 36.49,
+   "comercial_pct": 21.58
+  },
+  {
+   "mes": "2026-03",
+   "n_fundos": 3986,
+   "carteira": 928914855360.489,
+   "inad_pct": 5.21,
+   "parcelas_inad_pct": 3.19,
+   "a_vencer_pct": 71.5,
+   "parcial": false,
+   "subordinacao_pct": 37.4,
+   "senior_pct": 62.6,
+   "financeiro_pct": 38.54,
+   "comercial_pct": 20.59
+  },
+  {
+   "mes": "2026-04",
+   "n_fundos": 4052,
+   "carteira": 965455434168.572,
+   "inad_pct": 5.09,
+   "parcelas_inad_pct": 2.82,
+   "a_vencer_pct": 72.27,
+   "parcial": false,
+   "subordinacao_pct": 37.35,
+   "senior_pct": 62.65,
+   "financeiro_pct": 42.38,
+   "comercial_pct": 17.84
+  },
+  {
+   "mes": "2026-05",
+   "n_fundos": 4087,
+   "carteira": 970983476608.4388,
+   "inad_pct": 5.6,
+   "parcelas_inad_pct": 2.14,
+   "a_vencer_pct": 71.68,
+   "parcial": false,
+   "subordinacao_pct": 37.8,
+   "senior_pct": 62.2,
+   "financeiro_pct": 42.75,
+   "comercial_pct": 16.43
+  },
+  {
+   "mes": "2026-06",
+   "n_fundos": 4156,
+   "carteira": 995836208250.6763,
+   "inad_pct": 5.77,
+   "parcelas_inad_pct": 2.2,
+   "a_vencer_pct": 72.02,
+   "parcial": false,
+   "subordinacao_pct": 37.4,
+   "senior_pct": 62.6,
+   "financeiro_pct": 45.51,
+   "comercial_pct": 16.84
+  },
+  {
+   "mes": "2026-07",
+   "n_fundos": 4188,
+   "carteira": 1009708317907.5277,
+   "inad_pct": 5.6,
+   "parcelas_inad_pct": 2.11,
+   "a_vencer_pct": 71.51,
+   "parcial": false,
+   "subordinacao_pct": 37.76,
+   "senior_pct": 62.24,
+   "financeiro_pct": 44.85,
+   "comercial_pct": 17.39
+  },
+  {
+   "mes": "2026-08",
+   "n_fundos": 625,
+   "carteira": 80042244167.41992,
+   "inad_pct": 7.49,
+   "parcelas_inad_pct": 2.91,
+   "a_vencer_pct": 62.89,
+   "parcial": true,
+   "subordinacao_pct": 32.83,
+   "senior_pct": 67.17,
+   "financeiro_pct": 49.59,
+   "comercial_pct": 19.48
+  }
+ ],
+ "sintese": "Em 2026-07, 4.188 FIDCs somavam R$ 1010 bilhões em carteira, com 5,60% em créditos inadimplentes. Entre os 3.267 fundos que abrem o lastro (84% da carteira), o maior segmento é financeiro (45%), puxado por outros financeiros e crédito corporativo. Entre os fundos com duas ou mais classes, a subordinação é de 38% do PL (mezanino e subordinada), abaixo de um ano antes em 0,5 p.p.; 48% do PL está em fundos de classe única, sem subordinação. Nos fundos que informam prazos, 45% dos direitos creditórios vencem em até 180 dias e 43% das parcelas inadimplentes têm mais de 90 dias de atraso.",
+ "metodo": "Informes mensais de FIDC da CVM agregados entre fundos. Sistema: tab I, fundos com carteira maior que zero. Lastro: tab II, onze grupos e subitens com os nomes do dicionário da CVM; shares sobre a carteira informada na tabela. Classes: tab X.2 (quantidade × valor da cota por classe e série, classificadas pelo texto em sênior, mezanino, subordinada e única), só de fundos cuja soma fecha com o PL da tab IV em ±20% e só entre fundos com duas ou mais classes; fundos de classe única ficam numa linha própria; subordinação = mezanino + subordinada ÷ PL dos multiclasse. Inadimplência do sistema = créditos existentes inadimplentes (I.2.a.3 e I.2.b.3) ÷ carteira. Prazos: tab VI, direitos creditórios a vencer por faixa e parcelas inadimplentes por faixa de atraso, entre os fundos que a informam. Mês com menos de 90% dos fundos do mês anterior é parcial e fica fora dos KPIs; variações contra o mesmo mês do ano anterior.",
+ "limitacoes": "Cada tabela tem cobertura própria e os shares valem só para a base coberta: o lastro cobre cerca de três quartos dos fundos, os prazos cerca de um quarto. 'Outros financeiros' é a maior categoria do lastro e a CVM não a abre. Não há corte por administrador, gestor, cedente ou UF. Classes com texto fora do padrão caem em 'outra'.",
+ "cautelas": [
+  "Atraso não é perda: a subordinação e as garantias de cada estrutura absorvem parte da inadimplência antes de atingir o cotista sênior.",
+  "Subordinação do sistema é média ponderada pelo PL entre fundos com duas ou mais classes; um fundo pode ter 5% ou 50%. Não avalia risco de nenhum fundo.",
+  "A carteira dos FIDCs não se soma ao crédito do SCR: parte dos direitos creditórios é cedida por bancos e já esteve no SCR."
+ ],
+ "catalogo": [
+  {
+   "nome": "Carteira",
+   "definicao": "direitos creditórios na carteira dos fundos",
+   "unidade": "R$",
+   "fonte": "CVM tab I (TAB_I2_VL_CARTEIRA)",
+   "limitacoes": "fundos com carteira > 0"
+  },
+  {
+   "nome": "Inadimplência",
+   "definicao": "créditos existentes inadimplentes ÷ carteira",
+   "unidade": "%",
+   "fonte": "CVM tab I (I.2.a.3 + I.2.b.3)",
+   "limitacoes": "atraso, não perda"
+  },
+  {
+   "nome": "A vencer com parcelas inadimplentes",
+   "definicao": "créditos a vencer que já têm parcela em atraso ÷ carteira",
+   "unidade": "%",
+   "fonte": "CVM tab I (I.2.a.2 + I.2.b.2)",
+   "limitacoes": "era chamada de inadimplência até 06/09/2026"
+  },
+  {
+   "nome": "Lastro",
+   "definicao": "carteira por segmento do direito creditório",
+   "unidade": "R$ e % da base coberta",
+   "fonte": "CVM tab II",
+   "limitacoes": "cobertura declarada"
+  },
+  {
+   "nome": "Classes de cota",
+   "definicao": "PL por classe = quantidade × valor da cota",
+   "unidade": "R$ e % do PL válido",
+   "fonte": "CVM tab X.2 e tab IV",
+   "limitacoes": "só fundos com soma ≈ PL"
+  },
+  {
+   "nome": "Subordinação",
+   "definicao": "mezanino + subordinada ÷ PL dos fundos com 2+ classes",
+   "unidade": "%",
+   "fonte": "calculado",
+   "limitacoes": "média do sistema; classe única fora"
+  },
+  {
+   "nome": "Prazo dos direitos creditórios",
+   "definicao": "a vencer por faixa; inadimplentes por faixa de atraso",
+   "unidade": "R$ e %",
+   "fonte": "CVM tab VI",
+   "limitacoes": "cobertura menor"
+  }
+ ]
+}

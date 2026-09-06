@@ -324,7 +324,7 @@ por instituição.
 | P1 | Auxiliares únicos de formatação no pipeline e na SPA | T5 | médio |
 | P1 | Testes de contrato para os 7 golds sem teste | T6 | baixo |
 | P1 | Glossário por aba na primeira ocorrência de jargão | A8 | médio · feito em v0.99.0 (§14) |
-| P2 | Painéis 1 e 2 do §6.4 (prazo da carteira; FIDC por lastro) | §6.4 | baixo |
+| P2 | Painéis 1 e 2 do §6.4 (prazo da carteira; FIDC por lastro) | §6.4 | baixo · feitos em v0.100.0 (§15) |
 | P2 | Bundles fora do git; chunks para Bancos na bolsa e Instituições | T7, §2.3 | médio |
 | P2 | Modo capítulo em Instituições; eixos de SVG a 11 px | §3.3 | médio |
 | P2 | Prestamista em Juros; radar normativo; PTC | §6.4 | baixo a médio |
@@ -587,4 +587,68 @@ core em 592 KB (606.198 bytes), chunk emergentes em 234 KB.
 ausência do cartão duplicado em Alertas, a lista do A8 no glossário, as regras de marcação e o bloco em
 Metodologia. Suíte completa em modo CI, `tsc`, `next lint`, e varredura em Chromium das 44 vistas em
 1440 px e de 8 abas em 390 px sem rolagem horizontal do documento.
+
+---
+
+## 15. Dois painéis do §6.4 (06/09/2026, noite, versão 0.100.0)
+
+Primeiro bloco do P2: os dois candidatos de esforço baixo e valor alto do inventário, ambos sobre dados
+que o pipeline já baixava.
+
+**Prazo da carteira** (`/loan-maturity`, gold `prazo.json`, builder `pipeline/prazo.py`). O SCR.data
+abre a carteira a vencer em seis faixas de prazo remanescente por UF e tipo de cliente, e o silver as
+guardava desde a primeira carga (`scr_uf`, colunas `pz*`, 31 meses desde 2024-01) sem nenhum painel
+ler. Regras: a vencer é a soma das faixas; vencido é a carteira ativa menos a vencer (o SCR.data só
+publica o atraso a partir de 15 dias; a parcela até 14 dias aparece por diferença); shares de prazo sobre
+a carteira a vencer; prazo médio residual é aproximação declarada pelo ponto médio das faixas, com 7.200
+dias para a faixa aberta acima de 5.400. Números de 2026-07 (BCB/SCR.data, carga de 06/09/2026):
+
+| Indicador | Total | PF | PJ |
+|---|---|---|---|
+| Carteira a vencer | R$ 7,33 tri | R$ 4,47 tri | R$ 2,85 tri |
+| Vence em até 12 meses | 42,3% | 39,5% | 46,7% |
+| Vence depois de 5 anos | 19,8% | 23,2% | 14,5% |
+| Prazo médio residual (aproximado) | 3,5 anos | 4,0 anos | 2,8 anos |
+| Vencido (todo atraso, % da carteira ativa) | 3,5% | 4,5% | 1,9% |
+
+A fatia de curto prazo subiu 0,4 p.p. em doze meses. A carteira mais curta é a de São Paulo (47% em 12
+meses) e a mais longa a do Piauí (4,9 anos). Sem corte por produto: o silver não guarda a malha completa
+do CSV por modalidade, e recarregar 31 zips do SCR.data só para isso não cabia nesta etapa; fica
+declarado em limitações. A página por UF ainda não recebe o bloco de prazo (próximo passo natural).
+
+**FIDCs por lastro e cota** (`/fidc-receivables`, gold `fidc.json`, builder `pipeline/fidc.py`). O
+coletor lia só a tabela I do informe mensal da CVM. Passa a ler também a tabela II (lastro por segmento,
+com os nomes do dicionário `meta_inf_mensal_fidc`), a X.2 contra a IV (PL por classe de cota) e a VI
+(prazos e atraso), sempre agregadas entre fundos, com três coberturas declaradas ao lado de cada número.
+Três achados de dados no caminho, todos resolvidos no coletor:
+
+- **A inadimplência dos FIDCs estava com o rótulo errado.** Pelo dicionário da CVM, I.2.a.1 é "créditos a
+  vencer e adimplentes", I.2.a.2 é "a vencer com parcelas inadimplentes" e I.2.a.3 é "créditos existentes
+  inadimplentes". O Observatório somava I.2.a.2 e chamava de "vencidos inadimplentes" (2,1% em 2026-07);
+  a inadimplência propriamente dita (I.2.a.3) é 5,6%. O coletor ganhou a coluna `cred_inad` com backfill
+  único dos 18 meses; `inad_pct` passa a ser créditos inadimplentes e a medida antiga segue publicada como
+  `parcelas_inad_pct`. O sinal antecedente `fidc_inad_pct` muda de série e de rótulo; a "atraso_pct"
+  antiga (a vencer adimplentes mais a vencer com parcelas inadimplentes, 71% da carteira) sai.
+- **A tabela de cotas tem erros grosseiros de unidade.** Um mezanino de R$ 30 trilhões em 2026-07. Só
+  entram fundos cuja soma das classes fecha com o PL da tabela IV em ±20%: 4.143 de 4.180 fundos, 99,8% do PL.
+- **A CVM renomeou 670 fundos de classe única de "Subordinada" para "Senior" em 2025-12.** Sem tratamento,
+  a subordinação do sistema cairia 20 pontos num mês sem nenhuma mudança real. Fundo com uma só classe não
+  tem subordinação, seja qual for o rótulo: a abertura por classe soma só fundos com duas ou mais classes
+  (52% do PL) e os de classe única ficam numa linha própria (48%). A série fica entre 37% e 39% nos 18
+  meses; o teste trava degrau acima de 10 p.p. num mês.
+
+Números de 2026-07 (CVM, informes recebidos até 06/09/2026): 4.188 fundos com carteira, R$ 1,01 tri de
+carteira, 5,6% de créditos inadimplentes; lastro aberto por 3.267 fundos (84% da carteira), financeiro
+45% (dos quais "outros financeiros" 34%, que a CVM não detalha), comercial 17%, industrial 10%, cartão de
+crédito 10%; subordinação de 37,8% entre fundos multiclasse (sênior 62%, subordinada 24%, mezanino 14%);
+entre os 1.071 fundos que informam prazos, 45% dos direitos creditórios vencem em até 180 dias e 43% das
+parcelas inadimplentes têm mais de 90 dias.
+
+**Registro.** Duas abas no chunk `emergentes` (Prazo em "Produtos e preços" após Produtos de crédito;
+FIDCs após Bancos e mercado de capitais), passos 3 e 1 do Mapa, guia, catálogo, telemetria, sitemap,
+padrão de abertura com placar e síntese, ponte a partir do cartão de FIDC em Bancos e mercado de capitais.
+Golds iniciais publicados junto com o código, como nos painéis anteriores; o pipeline os regera todo dia.
+Testes `prazo-data.test.ts` e `fidc-data.test.ts` travam a aritmética (faixas somam a vencer, shares
+somam 100, posições 1 a 27, classes somam o PL multiclasse, subitens somam o grupo), as coberturas abaixo
+de 100%, a estabilidade da subordinação, os rótulos corrigidos e o registro nos mapas.
 
