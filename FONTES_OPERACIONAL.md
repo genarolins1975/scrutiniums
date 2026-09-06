@@ -1466,3 +1466,69 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   (fora deste ambiente); massa salarial (salário médio de admissão) existe no Novo Caged
   e não é republicada pelo SGS nem pelo Ipeadata por seção.
 
+## 50. Funding e captação (06/09/2026)
+
+- **Pergunta:** de onde vem o dinheiro que os bancos emprestam, quanto de cada instituição
+  depende do mercado e quem, entre os fundos, carrega o papel de cada banco. Painel nº 9 da
+  avaliação de 05/09 (§6), P3 no backlog.
+- **Fontes (três réguas, nunca somadas):**
+  1. **BCB/SGS, meios de pagamento amplos** (27789, 27790, 1835, 7836, 27805 a 27816): saldos
+     de fim de mês em poder do público, em R$ mil (convertidos para R$ no builder). Dezesseis
+     séries novas em `config/config.json`, categoria `funding`, coletor `bcb_sgs`. Nomes
+     confirmados pelo SOAP `FachadaWSSGS` em 05/09/2026.
+  2. **BCB/IF.data, relatório Passivo** (API Olinda, TipoInstituicao=2): captações por
+     instituição abertas em depósitos (à vista, poupança, interfinanceiros, a prazo, outros),
+     compromissadas, LCI, LCA, letras financeiras, TVM no exterior, demais títulos e
+     empréstimos e repasses, mais dívida elegível a capital, PL e passivo total. Coletor
+     `pipeline/sources/ifdata_passivo.py`: colunas casadas por prefixo do nome porque os nomes
+     e as letras entre parênteses mudam nos planos contábeis de 2016, 2023 e 2025 ("Outros
+     depósitos" virou "Conta de pagamento pré-paga" + "Depósitos outros"; PL passa de (j) a
+     (i)). Histórico 2015-03 a 2026-03 carregado neste ambiente (45 trimestres, 1.046 a
+     1.551 instituições por período), capado por execução no CI como o Resumo.
+  3. **CVM, CDA bloco 5** ("Depósitos a prazo e outros títulos de IF", um zip mensal de 16 a
+     27 MB): letra financeira, CDB/RDB, DPGE e afins, posição a posição, com CNPJ do emissor,
+     vencimento e marcação de emissor ligado. Coletor `pipeline/sources/cvm_cda.py`: guarda só
+     a agregação mês × emissor (CNPJ raiz) × tipo × ligado, mais o PL total e o número de
+     classes do arquivo PL; 24 meses de história, 3 downloads por rodada, os 4 meses mais
+     novos recoletados a cada 7 dias.
+- **Achado de fonte, registrado:** o gestor pode adiar por até 90 dias a divulgação de uma
+  posição; nesse período a CVM publica o valor por classe e tipo, sem emissor, no arquivo
+  CONFID. Em 2026-07 havia R$ 442,7 bilhões do bloco 5 sob sigilo (liberação até
+  2027-01-27), contra R$ 481,2 bilhões abertos; em 2026-06, R$ 405,3 bilhões. O builder
+  marca como parcial todo mês com menos de 90% das classes com papel bancário do máximo dos
+  três meses anteriores e usa como referência o último mês pleno (2026-05, 3.206 classes);
+  comparar só com o mês anterior mascararia o segundo mês do sigilo. O valor sob sigilo e a
+  data de liberação são publicados por mês.
+- **Ponte CVM → IF.data:** o relatório Passivo é publicado por conglomerado FINANCEIRO
+  (código C..., ex.: "BRADESCO", C0010045) e o cadastro aponta, para cada CNPJ, o conglomerado
+  PRUDENCIAL (outro código C...). O builder faz CNPJ raiz do emissor → prudencial → código
+  financeiro presente no relatório, e agrega os emissores por essa chave (Itaú Unibanco S.A.
+  e Itaú Unibanco Holding viram um emissor). Denominador da razão "LF em fundos ÷ balanço":
+  letras financeiras (c3) mais instrumentos de dívida elegíveis a capital (h), onde ficam as
+  LF subordinadas e perpétuas; sem o (h), BB dava 216% e Santander 156%.
+- **Builder:** `pipeline/funding.py` → `funding.json` (114 KB): sistema (componentes de M4
+  com share e variação, série de 120 meses, poupança SBPE e rural), bancos (agregado,
+  composição por instrumento, grupos varejo/mercado/repasses que somam as captações, LTD só
+  onde depósitos são ao menos 10% das captações, HHI, 40 maiores com composição, por
+  segmento e por TCB, série trimestral desde 2015) e fundos (por tipo, 30 maiores emissores
+  com LF, CDB, DPGE, ligado, vencimento em 12 meses e razão contra o balanço, série mensal
+  com meses parciais e valor sob sigilo). Aba `/observatorio/funding` no grupo Instituições,
+  chunk `emergentes`, CSV das instituições; vintage `cda` em `meta.json`; vigília 60 dias.
+- **Achados na primeira carga:** M4 de R$ 15,82 trilhões em 2026-07 (+12,0% em 12 meses);
+  quotas de fundos monetários são 38% e depósitos a prazo 25%; títulos federais crescem
+  30,8% e depósitos à vista caem 1,4%. IF.data 2026-03: R$ 13,96 trilhões captados por 1.046
+  instituições, 53% varejo, 34% mercado, 13% repasses; crédito ÷ depósitos 1,18; cinco
+  maiores com 64% (HHI 924); S2 é o segmento mais dependente de mercado (59%), S5 o menos
+  (1%). CDA 2026-05: R$ 898,0 bilhões de papel bancário em 3.206 classes (6,5% do PL das
+  classes), 80% em letras financeiras, 16% em emissor ligado, 42% vencendo em 12 meses; 162
+  emissores, cinco maiores com 52% (HHI 754); Bradesco lidera com R$ 160,9 bilhões.
+- **Travas:** `src/tests/funding-data.test.ts` (shares sobre M4 e M2 ≤ M3 ≤ M4; varejo +
+  mercado + repasses = captações no agregado e por instituição; composição soma 100;
+  segmentos somam o corte; série trimestral sem buraco; tipos somam o total dos fundos;
+  emissores em ordem; papéis somam o valor; mês parcial excluído; razão só com LF no
+  balanço; aba registrada; coletores, gold e vintage no pipeline).
+- **Pendências:** custo de captação por instrumento e por instituição não existe em fonte
+  aberta (a taxa média de CDB do SGS 28663 parou em 2024-01); LCI e LCA em fundos estão no
+  bloco 6 do CDA (R$ 0,04 bilhão em 2026-07, irrelevante) e ficaram fora; pessoas físicas
+  como detentoras de LF e CDB não têm fonte pública por emissor.
+

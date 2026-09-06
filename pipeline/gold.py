@@ -785,6 +785,18 @@ def build_all(con, cfg, fetch_status):
             print(f"  [conduta] indisponível: {r_cd.get('motivo')}")
     except Exception as e:
         common.write_gold("conduta.json", {"disponivel": False, "error": str(e)})
+
+    # ---- Funding e captação (SGS meios de pagamento + IF.data Passivo + CVM CDA) ----
+    try:
+        from pipeline import funding as funding_mod
+        r_fd = funding_mod.build(con, cfg)
+        common.write_gold("funding.json", r_fd)
+        if r_fd.get("disponivel"):
+            print(f"  [funding] SGS {(r_fd.get('sistema') or {}).get('mes')} · IF.data {(r_fd.get('bancos') or {}).get('anomes')} · CDA {(r_fd.get('fundos') or {}).get('mes')}")
+        else:
+            print(f"  [funding] indisponível: {r_fd.get('motivo')}")
+    except Exception as e:
+        common.write_gold("funding.json", {"disponivel": False, "error": str(e)})
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
@@ -839,6 +851,7 @@ def build_all(con, cfg, fetch_status):
         "bcb_pas": _vg("SELECT MAX(decisao1_data) FROM bcb_pas_decisao"),
         "cvm_pas": _vg("SELECT MAX(ultima_mov) FROM cvm_pas_processo"),
         "caged": _vg("SELECT MAX(mes) FROM caged_uf"),
+        "cda": _vg("SELECT MAX(mes) FROM cda_coleta"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}

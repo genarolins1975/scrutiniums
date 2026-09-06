@@ -503,3 +503,36 @@ republicação pública por seção.
 e 8. Restam nº 9 (funding e captação) e nº 10 (consórcios, prioridade baixa); a PTC
 (outra metade do nº 4) espera dado estruturado do BCB.
 
+## 19. Painel nº 9: funding e captação (06/09/2026, madrugada)
+
+**O que foi construído.** Dois coletores novos (relatório Passivo do IF.data por instituição,
+com 45 trimestres de história; bloco 5 do CDA da CVM, agregado por emissor), dezesseis
+séries do SGS (meios de pagamento amplos), o builder `pipeline/funding.py` e a aba
+`/observatorio/funding` no grupo Instituições, em quatro seções (sistema, bancos, fundos,
+método). Três réguas declaradas e nunca somadas: o que o público tem aplicado, como cada
+banco se financia (varejo, mercado, repasses) e quem, nos fundos, carrega o papel de cada
+banco.
+
+**Evidência** (BCB/SGS, BCB/IF.data e CVM, consultas de 05 e 06/09/2026). M4 de R$ 15,82
+trilhões em 2026-07, +12,0% em 12 meses. IF.data 2026-03: R$ 13,96 trilhões captados por
+1.046 instituições, 53% em varejo, 34% em mercado e 13% em repasses; cinco maiores com 64%;
+S2 com 59% de mercado, S5 com 1%. CDA 2026-05: R$ 898,0 bilhões de papel bancário nos
+fundos, 80% em letras financeiras, 16% em emissor ligado ao gestor, 42% vencendo em 12
+meses; Bradesco R$ 160,9 bilhões (18%), Caixa R$ 88,0 bilhões, BTG R$ 82,2 bilhões. Em
+2026-07, R$ 442,7 bilhões do bloco estavam sob sigilo, sem emissor, com liberação até
+2027-01-27.
+
+**Inferência.** O funding de mercado dos grandes bancos passa pelos fundos: para Santander,
+BB, Votorantim e Daycoval, as letras financeiras em fundos equivalem a 70% a 96% do estoque
+de LF mais dívida elegível a capital do balanço; para a Caixa, 32%. O sigilo de 90 dias
+tira dois a três meses de visibilidade do CDA, e um painel que ignorasse isso mostraria
+uma queda de metade do estoque em junho de 2026 que não existe.
+
+**Recomendação.** Ler a dependência de mercado por segmento e modelo de negócio, não como
+fragilidade em si. A próxima régua útil, custo de captação por instrumento e instituição,
+não existe em fonte aberta; fica registrada como lacuna, não como estimativa.
+
+**Estado do §6 depois desta etapa.** Construídos: nº 1, 2, 3, 4 (metade Focus), 5, 6, 7, 8
+e 9. Resta o nº 10 (consórcios, prioridade baixa); a PTC (outra metade do nº 4) espera dado
+estruturado do BCB.
+
