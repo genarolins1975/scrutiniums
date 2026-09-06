@@ -223,6 +223,14 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     gold: "funding.json",
   },
   {
+    view: "consorcios",
+    caminho: "/consortia",
+    titulo: "Consórcios",
+    descricao:
+      "O crédito adjacente de veículos e imóveis: cotas ativas, carteira, contemplações, exclusões, custo do produto novo e o mapa por UF, do Panorama de Consórcios do Banco Central.",
+    gold: "consorcios.json",
+  },
+  {
     view: "bets",
     caminho: "/bets-financial-risk",
     titulo: "Bets e risco financeiro",

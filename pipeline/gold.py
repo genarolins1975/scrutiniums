@@ -797,6 +797,18 @@ def build_all(con, cfg, fetch_status):
             print(f"  [funding] indisponível: {r_fd.get('motivo')}")
     except Exception as e:
         common.write_gold("funding.json", {"disponivel": False, "error": str(e)})
+
+    # ---- Consórcios (BCB Panorama de Consórcios): antes das páginas por UF, que o consomem ----
+    try:
+        from pipeline import consorcios as consorcios_mod
+        r_cs = consorcios_mod.build(con, cfg)
+        common.write_gold("consorcios.json", r_cs)
+        if r_cs.get("disponivel"):
+            print(f"  [consorcios] {r_cs['trimestre']} · {r_cs['panorama']['cotas']:,.0f} cotas · carteira R$ {r_cs['panorama']['carteira'] / 1e9:,.1f} bi")
+        else:
+            print(f"  [consorcios] indisponível: {r_cs.get('motivo')}")
+    except Exception as e:
+        common.write_gold("consorcios.json", {"disponivel": False, "error": str(e)})
     # ---- Entrantes e saídas do SFN (cadastro Unicad + presença no IF.data + regimes) ----
     try:
         from pipeline import sfn as sfn_mod
@@ -852,6 +864,7 @@ def build_all(con, cfg, fetch_status):
         "cvm_pas": _vg("SELECT MAX(ultima_mov) FROM cvm_pas_processo"),
         "caged": _vg("SELECT MAX(mes) FROM caged_uf"),
         "cda": _vg("SELECT MAX(mes) FROM cda_coleta"),
+        "consorcios": _vg("SELECT MAX(database) FROM consorcios"),
     }
     # as três inadimplências, com valores vivos do MESMO acervo (verbete + chips na UI)
     inad = {}
