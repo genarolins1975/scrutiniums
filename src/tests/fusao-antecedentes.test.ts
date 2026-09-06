@@ -58,7 +58,7 @@ describe("fusão das páginas de antecedentes", () => {
   });
 
   it("a navegação passou a ter um item no lugar de dois", () => {
-    expect(html).toMatch(/data-view="leading">Sinais Antecedentes</);
+    expect(html).toMatch(/data-view="leading">Sinais antecedentes</);
     expect(html).not.toMatch(/Ciclo &amp; Antecedentes/);
     expect(html).not.toMatch(/Radar de Sinais/);
   });

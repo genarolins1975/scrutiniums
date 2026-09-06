@@ -145,7 +145,7 @@ export function resolverMeta(caminho: string): MetaObservatorio {
   const padrao = {
     titulo: NOME_PLATAFORMA,
     descricao:
-      "O crédito brasileiro explicado com rigor: carteira, inadimplência, produtos, instituições, mapa por UF e sinais antecedentes — fontes oficiais, metodologia aberta, acesso gratuito sem cadastro.",
+      "O crédito brasileiro explicado com rigor, do funding à cobrança: carteira, inadimplência, produtos, instituições, funding, mapa por UF e município, sinais antecedentes e cobrança judicial, com fontes oficiais, metodologia aberta e acesso gratuito sem cadastro. Comece pelo Mapa do Observatório.",
     canonico: `${BASE}/observatorio`,
   };
   if (caminho === "/" || caminho === "") {

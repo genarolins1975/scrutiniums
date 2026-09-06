@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Conduta e enforcement. O que se trava:
+ * Sanções e reclamações. O que se trava:
  * - BCB: janela de 12 meses coerente (multas ≤ decisões, PJ + PF ≤ decisões), penalidades somam as decisões,
  *   cobrança das multas soma 100, ano corrente marcado como parcial, lista recente em ordem cronológica;
  * - CVM: fases somam os processos, em curso + finalizados = processos, lista recente cronológica;
@@ -71,7 +71,7 @@ describe.skipIf(!D.disponivel)("regra editorial: sem ranking por instituição",
 describe("SPA: aba registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
     expect(app).toContain('conduta: "/conduct-enforcement"');
-    expect(app).toContain('conduta: "Conduta e enforcement"');
+    expect(app).toContain('conduta: "Sanções e reclamações"');
     expect(app).toContain('conduta: "renderConduta"');
     expect(app).toContain('conduta: ["conduta"]');
     expect(app).toContain('conduta: "bcb_pas"');
@@ -79,7 +79,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('conduta: "emergentes"');
     expect(app).toMatch(/\n  conduta: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.cd = {");
-    expect(html).toContain('data-view="conduta">Conduta e enforcement</button>');
+    expect(html).toContain('data-view="conduta">Sanções e reclamações</button>');
     expect(html).toContain('id="view-conduta"');
   });
   it("o renderizador vive no chunk emergentes e o pipeline registra coletores e gold", () => {

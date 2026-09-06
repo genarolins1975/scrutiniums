@@ -127,7 +127,7 @@ const AREAS = [
       "Preços, proventos e valuation dos bancos em bolsa, com a ponte do lucro reconstruída da DRE da CVM. Nada aqui é recomendação de investimento.",
   },
   {
-    titulo: "Bets e risco financeiro",
+    titulo: "Apostas e crédito das famílias",
     pergunta: "O que as apostas online fazem com a saúde financeira das famílias?",
     detalhe:
       "GGR, apostadores, autoexclusão e fluxo Pix com hierarquia de evidências A–E: o painel investiga a hipótese em vez de partir da conclusão, e diz onde a evidência termina.",

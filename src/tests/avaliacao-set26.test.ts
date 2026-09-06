@@ -136,7 +136,7 @@ describe("E9/E10 — guia em toda aba, um nome por aba", () => {
 
   it("o menu tem seis grupos pela pergunta do leitor; Perguntas e Sugestões saem do menu, ficam no rodapé", () => {
     const grupos = Array.from(html.matchAll(/<span class="navlabel">([^<]+)<\/span>/g)).map((m) => m[1]);
-    expect(grupos).toEqual(["Diagnóstico", "Território", "Instituições", "Produtos e preços", "Riscos e temas", "Referência"]);
+    expect(grupos).toEqual(["Começar", "Ciclo do crédito", "Instituições e funding", "Produtos e preços", "Território e pessoas", "Risco, cobrança e recuperação", "Pagamentos, conduta e fronteiras", "Referência"]);
     expect(html).not.toMatch(/data-view="research"/);
     expect(html).not.toMatch(/data-view="sugestoes"/);
     expect(html).toContain('href="/observatorio/research"');
@@ -226,8 +226,8 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
   });
 
   it("a versão dos ativos subiu junto com o app", () => {
-    expect(app).toContain('const APP_VERSION = "0.97.0";');
-    expect(html).toContain("?v=0.97.0");
+    expect(app).toContain('const APP_VERSION = "0.98.0";');
+    expect(html).toContain("?v=0.98.0");
     expect(html).not.toContain("?v=0.86.0");
   });
 });

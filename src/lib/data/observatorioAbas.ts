@@ -23,17 +23,25 @@ export type AbaObservatorio = {
 
 export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
+    view: "mapa",
+    caminho: "/map",
+    titulo: "Mapa do Observatório",
+    descricao:
+      "Por onde começar: o ciclo do crédito do funding à cobrança em sete passos, a pergunta que cada página responde, trilhas por perfil, como ler os selos e as réguas, e as fontes com a data de cada uma.",
+    gold: "meta.json",
+  },
+  {
     view: "overview",
     caminho: "/overview",
     titulo: "Visão geral",
     descricao:
-      "O diagnóstico do dia do crédito brasileiro: carteira, inadimplência, juros e alertas ativos, com dados oficiais e data-base declarada em cada número.",
+      "O diagnóstico do mês do crédito brasileiro: a frase classificada pelo IBCC, o que mudou, projeções e a inadimplência nas instituições, com fonte e data-base em cada número.",
     gold: "overview.json",
   },
   {
     view: "panorama",
     caminho: "/credit-panorama",
-    titulo: "Panorama do Crédito",
+    titulo: "Quem toma crédito e onde",
     descricao:
       "Onde está o crédito no Brasil: mapa por estado, faixa de renda, ocupação e produto, a partir dos agregados públicos do SCR, normalizado por habitante.",
     gold: "panorama.json",
@@ -43,13 +51,13 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/states",
     titulo: "Estados",
     descricao:
-      "As 27 unidades da federação lado a lado: carteira e inadimplência do SCR, penetração do crédito, presença bancária, Pix, moradia, consignado, crédito rural, BNDES e dívida ativa, com uma página por UF.",
+      "As 27 unidades da federação lado a lado: carteira e inadimplência, penetração do crédito, presença bancária, Pix, moradia, consignado, rural, emprego, consórcios e cobrança judicial, com uma página por UF.",
     gold: "ufs.json",
   },
   {
     view: "penetracao",
     caminho: "/credit-penetration",
-    titulo: "Penetração e Gap",
+    titulo: "Crédito por município",
     descricao:
       "Penetração do crédito por município e o gap frente ao potencial local, reconciliado com o SCR e com série histórica.",
     gold: "penetracao.json",
@@ -57,7 +65,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "moradia",
     caminho: "/housing-credit",
-    titulo: "Moradia e Habitação",
+    titulo: "Crédito imobiliário e moradia",
     descricao:
       "Crédito habitacional no Brasil: saldo, concessões e funding, e o que os dados públicos permitem — e não permitem — concluir sobre moradia.",
     gold: "moradia.json",
@@ -65,7 +73,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "consignado",
     caminho: "/payroll-lending-aging",
-    titulo: "Consignado e Envelhecimento",
+    titulo: "Consignado e aposentados",
     descricao:
       "Crédito consignado e envelhecimento populacional: carteira, taxas e demografia municipal, com a magnitude das correlações declarada.",
     gold: "consignado.json",
@@ -81,7 +89,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "leading",
     caminho: "/leading-signals",
-    titulo: "Sinais Antecedentes",
+    titulo: "Sinais antecedentes",
     descricao:
       "Subíndices de estresse de crédito — endividamento das famílias, garantias, judicialização e crédito não bancário — com alertas que exigem persistência.",
     gold: "leading.json",
@@ -89,7 +97,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "trends",
     caminho: "/search-trends",
-    titulo: "Tendências de Busca",
+    titulo: "Buscas no Google",
     descricao:
       "Termos de crédito e dívida no Google Trends como sinal complementar — nunca como evidência isolada.",
     gold: "trends.json",
@@ -99,15 +107,15 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/sectors",
     titulo: "Risco setorial",
     descricao:
-      "Carteira e inadimplência por setor econômico: evolução, comparação entre setores e concentração do risco.",
+      "Score de estresse por atividade econômica a partir do volume real (PIM, PMS e PMC do IBGE), das condições de crédito e do emprego formal da seção CNAE; não é inadimplência setorial, que não existe nas fontes públicas.",
     gold: "sectors.json",
   },
   {
     view: "rj",
     caminho: "/recoveries",
-    titulo: "Recuperações e Falências",
+    titulo: "Recuperações e falências",
     descricao:
-      "Recuperações judiciais e falências: pedidos e deferimentos ao longo do tempo, por porte e setor.",
+      "Recuperações judiciais e falências ajuizadas mês a mês nos tribunais (CNJ/DataJud), com funil processual por movimentos e cobertura declarada; sem corte por porte, que a fonte não traz.",
     gold: "rj.json",
   },
   {
@@ -115,13 +123,13 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/institutions",
     titulo: "Instituições",
     descricao:
-      "Capital, inadimplência, rentabilidade e carteira de cada instituição financeira brasileira (IF.data), com página própria por instituição.",
+      "Capital, inadimplência, rentabilidade e carteira dos conglomerados prudenciais e instituições independentes do IF.data, comparados dentro do próprio segmento (S1 a S5), com página própria por instituição.",
     gold: "institutions.json",
   },
   {
     view: "products",
     caminho: "/products",
-    titulo: "Produtos de Crédito",
+    titulo: "Produtos de crédito",
     descricao:
       "Consignado, cartão, veículos e imobiliário: carteira e atraso específicos de cada produto de crédito, com página própria por produto.",
     gold: "products.json",
@@ -129,7 +137,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "juros",
     caminho: "/interest-rates",
-    titulo: "Taxas de Juros por IF",
+    titulo: "Juros por instituição",
     descricao:
       "Taxas de juros de novas operações por instituição financeira e modalidade, a partir das divulgações do Banco Central.",
     gold: "juros.json",
@@ -137,7 +145,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "sfn",
     caminho: "/sfn-entries-exits",
-    titulo: "Entrantes e saídas do SFN",
+    titulo: "Quem entra e quem sai do SFN",
     descricao:
       "Quem está autorizado a funcionar hoje, por segmento e UF, quem entrou e quem saiu trimestre a trimestre no IF.data, as conversões de tipo e os regimes de resolução decretados pelo Banco Central.",
     gold: "sfn.json",
@@ -145,7 +153,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "compare",
     caminho: "/compare",
-    titulo: "Comparador",
+    titulo: "Comparar instituições",
     descricao:
       "Comparação lado a lado de instituições financeiras, com bloqueio automático de níveis de consolidação não comparáveis.",
     gold: "compare.json",
@@ -153,7 +161,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "market",
     caminho: "/market",
-    titulo: "Mercado e Valor",
+    titulo: "Bancos na bolsa",
     descricao:
       "Preços, proventos e valuation dos bancos listados em bolsa, com a ponte do lucro reconstruída da DRE da CVM. Nada aqui é recomendação de investimento.",
     gold: "market.json",
@@ -161,7 +169,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "ampliado",
     caminho: "/broad-credit",
-    titulo: "Crédito ampliado e mercado de capitais",
+    titulo: "Bancos e mercado de capitais",
     descricao:
       "Quanto do crédito a empresas e famílias vem dos bancos e quanto vem do mercado: saldo ampliado do BCB, ofertas públicas registradas na CVM e o lastro de CRI e CRA.",
     gold: "ampliado.json",
@@ -185,7 +193,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "pix",
     caminho: "/pix",
-    titulo: "Pix e Pagamentos",
+    titulo: "Pix e pagamentos",
     descricao:
       "A evolução do Pix desde o lançamento, comparada a cartões, TED e boleto: natureza dos fluxos, geografia municipal e o Mecanismo Especial de Devolução.",
     gold: "pix.json",
@@ -201,7 +209,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "conduta",
     caminho: "/conduct-enforcement",
-    titulo: "Conduta e enforcement",
+    titulo: "Sanções e reclamações",
     descricao:
       "Processos administrativos sancionadores do Banco Central e da CVM, penalidades, multas, inabilitações e recursos, mais o índice de reclamações, lidos como fluxo do sistema, sem ranking por instituição.",
     gold: "conduta.json",
@@ -217,7 +225,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "funding",
     caminho: "/funding",
-    titulo: "Funding e captação",
+    titulo: "Captação dos bancos",
     descricao:
       "De onde vem o dinheiro que os bancos emprestam: o que o público tem aplicado (SGS), como cada instituição se financia entre varejo, mercado e repasses (IF.data) e quem, nos fundos, carrega o papel de cada banco (CVM).",
     gold: "funding.json",
@@ -233,7 +241,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "cobranca",
     caminho: "/debt-collection-lawsuits",
-    titulo: "Cobrança judicial de crédito",
+    titulo: "Bancos cobrando na Justiça",
     descricao:
       "Execuções de título, busca e apreensão em alienação fiduciária, monitórias e execuções hipotecárias ajuizadas mês a mês nos tribunais estaduais (DataJud), no recorte bancário e com qualquer credor, por classe e UF.",
     gold: "cobranca.json",
@@ -241,7 +249,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "bets",
     caminho: "/bets-financial-risk",
-    titulo: "Bets e risco financeiro",
+    titulo: "Apostas e crédito das famílias",
     descricao:
       "Apostas online e saúde financeira: GGR, apostadores, autoexclusão e fluxo Pix, com hierarquia de evidências A–E, fontes primárias e sem correlação forçada.",
     gold: "bets.json",
@@ -249,7 +257,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "fraudes",
     caminho: "/financial-fraud",
-    titulo: "Fraudes e risco de crédito",
+    titulo: "Golpes e fraudes",
     descricao:
       "Golpes e fraudes financeiras no Brasil: perdas reportadas, devoluções via Pix/MED e tipologias — separando dado administrativo de estimativa privada.",
     gold: "fraudes.json",
@@ -257,7 +265,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "operacional",
     caminho: "/operational-indicators",
-    titulo: "Indicadores operacionais",
+    titulo: "Rede, pessoas e auditoria",
     descricao:
       "Gente, rede física e auditoria dos bancos brasileiros: empregados declarados no FRE, agências e municípios atendidos (ESTBAN) e auditor vigente — só fontes estruturadas oficiais.",
     gold: "operacional.json",
@@ -265,7 +273,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "judicial",
     caminho: "/lawsuits",
-    titulo: "Ações judiciais",
+    titulo: "Clientes contra bancos na Justiça",
     descricao:
       "A litigiosidade bancária no CNJ/DataJud: processos cíveis e trabalhistas em temas financeiros, por tribunal e por instituição.",
     gold: "judicial.json",
@@ -273,9 +281,9 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
   {
     view: "pgfn",
     caminho: "/federal-tax-debt",
-    titulo: "Dívida Ativa da União",
+    titulo: "Dívida com a União",
     descricao:
-      "Estoque, perfil dos devedores e recuperação da Dívida Ativa da União, a partir dos dados abertos da PGFN.",
+      "Estoque, perfil dos devedores e recuperação da Dívida com a União, a partir dos dados abertos da PGFN.",
     gold: "pgfn.json",
   },
   {
@@ -299,13 +307,13 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/alerts",
     titulo: "Central de alertas",
     descricao:
-      "A central de alertas do crédito brasileiro: sinais das cinco famílias de monitoramento, com regras de persistência e feed RSS público.",
+      "A central de alertas do crédito brasileiro: sinais de quatro famílias de monitoramento (macro, carteira, antecedentes e operacional), cada uma com seu universo, regras de persistência e feed RSS público.",
     gold: "alertas_central.json",
   },
   {
     view: "regulacao",
     caminho: "/regulacao",
-    titulo: "Regulação do Crédito",
+    titulo: "Marcos regulatórios",
     descricao:
       "A linha do tempo regulatória transversal do mercado de crédito: os marcos (leis e resoluções CMN/BCB) que explicam quebras visíveis nas séries, cada um com o texto oficial e os painéis que afeta.",
     gold: "regulacao.json",
@@ -315,12 +323,12 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/research",
     titulo: "Perguntas rápidas",
     descricao:
-      "Notas de pesquisa e leituras guiadas do acervo: o que as séries permitem concluir e onde termina a evidência.",
+      "Consultas determinísticas sobre os dados carregados, prontas para relatório ou aula: perguntas fixas, respostas com fonte e data, sem estimativa.",
   },
   {
     view: "method",
     caminho: "/methodology",
-    titulo: "Metodologia e Fontes",
+    titulo: "Metodologia e fontes",
     descricao:
       "As fontes oficiais, os conceitos, as fórmulas e os limites de cada indicador — a metodologia completa e aberta do Observatório.",
     gold: "method.json",
@@ -343,7 +351,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
 /** Rotas dinâmicas (prefixo → como titular a página). */
 export const PREFIXOS_DINAMICOS = [
   { prefixo: "/institutions/", view: "inst", rotulo: "Instituições financeiras" },
-  { prefixo: "/products/", view: "product", rotulo: "Produtos de Crédito" },
+  { prefixo: "/products/", view: "product", rotulo: "Produtos de crédito" },
   { prefixo: "/sectors/", view: "sector", rotulo: "Risco setorial" },
   { prefixo: "/presenca/", view: "presmun", rotulo: "Presença bancária municipal" },
   { prefixo: "/states/", view: "estado", rotulo: "Estados" },

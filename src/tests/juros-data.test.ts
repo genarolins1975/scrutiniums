@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { isViewSection, sectionLabel } from "@/lib/telemetry";
 
 /**
- * Consistência da aba Taxas de Juros por IF: rankings ordenados, estatísticas
+ * Consistência da aba Juros por instituição: rankings ordenados, estatísticas
  * coerentes (min ≤ p25 ≤ mediana ≤ p75 ≤ max), conceitos declarados (taxa de
  * novas operações ≠ CET ≠ carteira), séries mensais ordenadas e perfil por IF
  * consistente com os rankings.

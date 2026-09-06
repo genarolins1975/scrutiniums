@@ -41,7 +41,7 @@ describe("fonte canônica: marcadores e despacho", () => {
   });
 
   it("RENDER despacha por nome e ensureChunk checa presença antes de buscar", () => {
-    expect(app).toMatch(/const RENDER = \{ overview: "renderOverview"/);
+    expect(app).toMatch(/const RENDER = \{ mapa: "renderMapa", overview: "renderOverview"/);
     expect(app).toContain('function renderView(v) { const f = window[RENDER[v]];');
     expect(app).toContain('typeof window[RENDER[v]] === "function") return Promise.resolve();');
     expect(app).toContain("Promise.all([ensureData(v), ensureChunk(v)])");

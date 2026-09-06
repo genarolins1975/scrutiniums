@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Ações judiciais e instituições financeiras. O teste mais importante deste módulo é
+ * Clientes contra bancos na Justiça e instituições financeiras. O teste mais importante deste módulo é
  * negativo: garantir que a camada nacional (DataJud, que não publica as partes) NUNCA
  * carregue identificação de instituição, e que a camada nominal (TST) declare seu
  * recorte. Além disso: casos únicos ≤ registros, participações somando 100%, códigos

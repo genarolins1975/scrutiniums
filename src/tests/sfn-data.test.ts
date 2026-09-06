@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Entrantes e saídas do SFN. O que se trava:
+ * Quem entra e quem sai do SFN. O que se trava:
  * - cadastro: grupos somam o total, UFs somam o total, cooperativas por sistema somam as cooperativas;
  * - IF.data: série trimestral com entradas e saídas coerentes (n_t = n_{t-1} + entradas − saídas),
  *   último trimestre marcado como provisório, listas nominais só dos últimos oito trimestres;
@@ -88,7 +88,7 @@ describe.skipIf(!S.disponivel)("sfn.json: regimes e cautelas", () => {
 describe("SPA: aba registrada em todos os mapas", () => {
   it("rota, título, render, dados, vintage, coletores, chunk, guia, estado e HTML", () => {
     expect(app).toContain('sfn: "/sfn-entries-exits"');
-    expect(app).toContain('sfn: "Entrantes e saídas do SFN"');
+    expect(app).toContain('sfn: "Quem entra e quem sai do SFN"');
     expect(app).toContain('sfn: "renderSfn"');
     expect(app).toContain('sfn: ["sfn"]');
     expect(app).toContain('sfn: "ifdata"');
@@ -96,7 +96,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('sfn: "emergentes"');
     expect(app).toMatch(/\n  sfn: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.sfn = {");
-    expect(html).toContain('data-view="sfn">Entrantes e saídas do SFN</button>');
+    expect(html).toContain('data-view="sfn">Quem entra e quem sai do SFN</button>');
     expect(html).toContain('id="view-sfn"');
   });
   it("o renderizador vive no chunk emergentes e o pipeline registra coletor e gold", () => {

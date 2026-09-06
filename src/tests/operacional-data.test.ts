@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 /**
- * Indicadores operacionais (Fase 0): gente, rede e auditoria a partir de
+ * Rede, pessoas e auditoria (Fase 0): gente, rede e auditoria a partir de
  * fontes estruturadas oficiais. As invariantes protegidas aqui:
  * ausência nunca vira zero; escopos declarados; somas fecham; variações
  * extremas sempre carregam flag; nenhum nível abaixo de A (é tudo dado

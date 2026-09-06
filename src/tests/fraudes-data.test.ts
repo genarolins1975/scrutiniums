@@ -175,7 +175,7 @@ describe("fraudes.json: cadeia e explorador honestos", () => {
 describe("fraudes: integração com a plataforma", () => {
   it("telemetria reconhece obs:fraudes", () => {
     expect(isViewSection("obs:fraudes")).toBe(true);
-    expect(sectionLabel("obs:fraudes")).toMatch(/Fraudes/);
+    expect(sectionLabel("obs:fraudes")).toMatch(/fraudes/);
   });
 
   it("view registrada na SPA e pipeline copia todos os curados", () => {
