@@ -11,18 +11,30 @@ import base64
 import io
 import json
 import urllib.request
+import urllib.error
+import time
+import http.client
 import zipfile
 
 from pipeline import common
 
 
-def _http_bin(url, timeout=600):
-    """B3 responde 406 ao UA/Accept padrão do pipeline — usar cabeçalhos de navegador."""
+def _http_bin(url, timeout=600, retries=3):
+    """B3 responde 406 ao UA/Accept padrão do pipeline — usar cabeçalhos de navegador.
+    Com retry: o COTAHIST anual tem ~90 MB e o download cortado (IncompleteRead,
+    06/09/2026) sem nova tentativa derrubava o ano inteiro."""
     req = urllib.request.Request(url, headers={
         "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
         "Accept": "*/*"})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read(), {"url": url, "status": resp.status, "collected_at": common.now_utc()}
+    last_err = None
+    for tentativa in range(retries):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read(), {"url": url, "status": resp.status, "collected_at": common.now_utc()}
+        except (urllib.error.URLError, TimeoutError, OSError, http.client.HTTPException) as e:
+            last_err = e
+            time.sleep(5 * (tentativa + 1))
+    raise RuntimeError(f"Falha ao baixar {url}: {last_err}")
 
 COTAHIST = "https://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A{ano}.ZIP"
 DIV_API = "https://sistemaswebb3-listados.b3.com.br/listedCompaniesProxy/CompanyCall/GetListedCashDividends/{b64}"

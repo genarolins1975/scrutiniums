@@ -49,6 +49,11 @@ describe("D2: candidatos do IF.data gerados pela data corrente", () => {
     expect(jan26).toEqual(["202512", "202509"]);
     expect(cfg[0]).toMatch(/^\d{6}$/);
   });
+  it("coletores do REST do IF.data tratam período não publicado como ausência, não pane", () => {
+    for (const f of ["pipeline/sources/ifdata_ui.py", "pipeline/sources/ifdata_carteiras.py", "pipeline/sources/ifdata_funding.py"]) {
+      expect(read(f), f).toContain('"pulado": "período ainda não publicado na fonte"');
+    }
+  });
 });
 
 describe("D3: builders de Comparar e Consignado e sentinela que declara restauração", () => {
