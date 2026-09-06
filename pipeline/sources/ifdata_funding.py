@@ -89,6 +89,11 @@ def collect(con, cfg):
                                   "passivo (depósitos/captações) e DRE (juros de captação, serviços) -> institution_metrics")
             con.commit()
             results.append({"key": chave, "ok": True, "metricas": n})
+        except json.JSONDecodeError:
+            # o REST do IF.data responde HTTP 200 com o texto 'Erro interno' para
+            # período ainda não publicado (202606 em 06/09/2026): ausência, não pane
+            results.append({"key": chave, "ok": True, "pulado": "período ainda não publicado na fonte"})
+            continue
         except Exception as e:
             results.append({"key": chave, "ok": False, "error": str(e)[:200]})
     return results

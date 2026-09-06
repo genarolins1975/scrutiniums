@@ -88,6 +88,11 @@ def collect(con, cfg):
             common.record_lineage(con, f"institutions_capital:{anomes}", bronze_file, sha,
                                   "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência")
             results.append({"key": f"ifdata_capital:{anomes}", "ok": True, "metricas": n})
+        except json.JSONDecodeError:
+            # o REST do IF.data responde HTTP 200 com o texto 'Erro interno' para
+            # período ainda não publicado (202606 em 06/09/2026): ausência, não pane
+            results.append({"key": f"ifdata_capital:{anomes}", "ok": True, "pulado": "período ainda não publicado na fonte"})
+            continue
         except Exception as e:
             results.append({"key": f"ifdata_capital:{anomes}", "ok": False, "error": str(e)})
     return results
