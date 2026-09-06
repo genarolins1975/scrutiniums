@@ -79,6 +79,22 @@ def _declara_restaurados(regressoes):
     print("  restaurados declarados em meta.json:", ", ".join(f"{k} (há {v['dias']} d)" for k, v in restaurados.items()))
 
 
+def _queda_cobertura(pub, novo):
+    """Gold íntegro que cobre MENOS que a publicação anterior (chave `cobertura_n`,
+    declarada pelo builder): um silver recém-semeado no runner coleta a fonte em
+    lotes (cobrança judicial: 9 tribunais por rodada) e, sem esta regra, o gold
+    de 27 tribunais seria substituído por um de 9. Devolve a descrição da queda
+    ou None."""
+    try:
+        a = json.loads(pub.read_text()).get("cobertura_n")
+        b = json.loads(novo.read_text()).get("cobertura_n")
+    except Exception:
+        return None
+    if isinstance(a, (int, float)) and isinstance(b, (int, float)) and b < a:
+        return f"{b} de {a}"
+    return None
+
+
 def main():
     if not NOVO.is_dir() or not PUBLICADO.is_dir():
         print("sanidade_gold: diretórios ausentes — nada a comparar.")
@@ -95,6 +111,11 @@ def main():
         elif _stub(novo) is True:
             regressoes.append(f"{pub.name} (stub de erro)")
             shutil.copy2(pub, novo)
+        else:
+            queda = _queda_cobertura(pub, novo)
+            if queda:
+                regressoes.append(f"{pub.name} (cobertura caiu: {queda})")
+                shutil.copy2(pub, novo)
     if regressoes:
         print("REGRESSÃO DE GOLD — última publicação mantida para:")
         for r in regressoes:

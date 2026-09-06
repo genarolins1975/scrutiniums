@@ -417,3 +417,22 @@ reabsorção.
 **Não verificado.** Comportamento no runner: a primeira execução reabsorve 31 datas-base do SCR (estimativa de
 3 a 4 minutos a mais); a causa do stub do Consignado no CI é inferência até a próxima execução; a vigília
 por `workflow_run` só será exercitada quando o pipeline terminar.
+
+### 10.1 Primeira execução no runner (06/09/2026, 12:32 a 14:18 UTC)
+
+A execução diária pegou o commit do PR #87 três minutos antes do merge do PR #88 e terminou em falha na
+montagem do `meta.json` (parser da PGFN, já corrigido no #88); nada foi publicado. O log do runner
+confirmou o código novo: SCR com 31 datas-base reabsorvidas sem falha de piso, IF.data com candidatos
+automáticos (4 períodos, 202606 ainda vazio), Comparar com 2.302 instituições, Sicor com 241 agregações,
+Panorama com 4 alertas. A vigília disparou por `workflow_run` às 14:24 e abriu a issue #89 com as panes
+conhecidas (DJEN, Desenrola, IF.data parado), como desenhado.
+
+Dois achados novos do mesmo log, corrigidos em PR próprio:
+
+- **BNDES**: `bndes_op` falhou com 28 valores para 29 colunas. Um comentário no meio da tupla engolia o
+  valor contratado desde 05/09; o silver local tinha as operações de uma carga anterior e o defeito só
+  apareceu num silver vazio. Reproduzido com linha sintética e corrigido.
+- **Cobrança judicial**: o coletor traz 9 tribunais por rodada, então o primeiro run do runner publicaria 9
+  de 27 tribunais (143,8 mil casos em 12 meses contra 821,2 mil no gold publicado). Tribunal nunca coletado
+  passa a entrar todo na rodada, fora da cota; o builder declara `cobertura_n` e a sentinela trata gold
+  íntegro com cobertura menor que a publicada como regressão, restaurando a publicação anterior.

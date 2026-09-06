@@ -165,7 +165,9 @@ def _absorve_ops(con, txt):
         cod = g(r, "municipio_codigo")
         # seq = posição no arquivo: linhas idênticas (subcréditos do mesmo contrato) são operações distintas
         linhas.append((seq, g(r, "numero_do_contrato"), g(r, "cliente"), g(r, "cnpj"), g(r, "uf"), g(r, "municipio"),
-                       cod if cod and len(cod) == 7 and cod != "9999999" else None, data[:10],   # 9999999 = "SEM MUNICÍPIO" _num(r.get("valor_contratado_reais")) or 0.0,
+                       # 9999999 = "SEM MUNICÍPIO"
+                       cod if cod and len(cod) == 7 and cod != "9999999" else None, data[:10],
+                       _num(r.get("valor_contratado_reais")) or 0.0,
                        _num(r.get("valor_desembolsado_reais")) or 0.0, g(r, "custo_financeiro"), _num(r.get("juros")),
                        int(_num(r.get("prazo_carencia_meses")) or 0), int(_num(r.get("prazo_amortizacao_meses")) or 0),
                        g(r, "modalidade_de_apoio"), g(r, "forma_de_apoio"), g(r, "produto"), g(r, "instrumento_financeiro"),
