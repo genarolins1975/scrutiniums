@@ -1,19 +1,451 @@
 {
+ "amp_ef": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado a empresas e famílias - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_ext": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Dívida externa concedida a empresas e famílias - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_fg": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de fundos governamentais a empresas e famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_osf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de outras sociedades financeiras a empresas e famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_pib": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado a empresas e famílias em relação ao PIB",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_sec": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Títulos de dívida emitidos por empresas e famílias - securitizados",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_sfn": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos do SFN a empresas e famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_ef_tit": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Títulos de dívida emitidos por empresas e famílias - títulos privados",
+  "fonte": "BCB/SGS"
+ },
+ "amp_gov": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado concedido ao governo geral - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado concedido a famílias - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_ext": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Dívida externa concedida a famílias - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_fg": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de fundos governamentais a famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_osf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de outras sociedades financeiras a famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_pib": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado concedido a famílias em relação ao PIB",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_sec": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Instrumentos de securitização - devedores famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pf_sfn": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos do SFN a famílias",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pib": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado total em relação ao PIB",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado concedido a empresas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_ext": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Dívida externa concedida a empresas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_fg": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de fundos governamentais a empresas",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_osf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos de outras sociedades financeiras a empresas",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_pib": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado concedido a empresas em relação ao PIB",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_sec": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Instrumentos de securitização - devedores empresas",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_sfn": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Empréstimos e financiamentos do SFN a empresas",
+  "fonte": "BCB/SGS"
+ },
+ "amp_pj_tit": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Títulos de dívida emitidos por empresas - títulos privados",
+  "fonte": "BCB/SGS"
+ },
+ "amp_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 163,
+  "n_revisoes": 0,
+  "nome": "Crédito ampliado ao setor não financeiro - Total",
+  "fonte": "BCB/SGS"
+ },
  "cambio": {
-  "score": 98.4,
+  "score": 98.3,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
    "historico": 100.0,
-   "estabilidade": 89.3,
+   "estabilidade": 88.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 4,
+  "dias_sem_atualizar": 6,
   "ultima_ref": "2026-09-01",
   "n_obs": 885,
-  "n_revisoes": 19,
+  "n_revisoes": 20,
   "nome": "Taxa de câmbio comercial R$/US$ - compra - média mensal",
   "fonte": "Ipeadata"
+ },
+ "cambio_ptax": {
+  "score": 100.0,
+  "componentes": {
+   "completude": 100.0,
+   "atualidade": 100.0,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 37,
+  "ultima_ref": "2026-08-01",
+  "n_obs": 176,
+  "n_revisoes": 0,
+  "nome": "Taxa de câmbio - dólar americano (venda) - média mensal",
+  "fonte": "BCB/SGS"
  },
  "comprometimento": {
   "score": 65.9,
@@ -24,7 +456,7 @@
    "estabilidade": 74.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 9,
@@ -32,15 +464,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pf": {
-  "score": 81.6,
+  "score": 80.3,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 71.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 10,
@@ -48,15 +480,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_pj": {
-  "score": 81.2,
+  "score": 79.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -64,15 +496,15 @@
   "fonte": "BCB/SGS"
  },
  "concessoes_total": {
-  "score": 81.2,
+  "score": 79.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -80,15 +512,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_atraso": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -96,15 +528,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_conc": {
-  "score": 85.4,
+  "score": 84.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -112,15 +544,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_icc": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 163,
   "n_revisoes": 0,
@@ -128,15 +560,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_inad": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -144,15 +576,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_prazo_cart": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -160,15 +592,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_prazo_conc": {
-  "score": 85.4,
+  "score": 84.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -176,15 +608,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_saldo": {
-  "score": 85.4,
+  "score": 84.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -192,15 +624,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_inss_taxa": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -208,15 +640,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_priv_inad": {
-  "score": 85.4,
+  "score": 84.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -224,15 +656,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_priv_saldo": {
-  "score": 84.6,
+  "score": 83.3,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 91.4,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 3,
@@ -240,15 +672,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_pub_inad": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -256,15 +688,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_pub_saldo": {
-  "score": 84.2,
+  "score": 82.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 88.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 4,
@@ -272,15 +704,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_inad": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -288,15 +720,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_saldo": {
-  "score": 83.7,
+  "score": 82.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -304,15 +736,15 @@
   "fonte": "BCB/SGS"
  },
  "consig_total_taxa": {
-  "score": 85.4,
+  "score": 84.1,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 97.1,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 1,
@@ -328,7 +760,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 127,
+  "dias_sem_atualizar": 129,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -336,15 +768,15 @@
   "fonte": "CNJ/DataJud"
  },
  "credito_pib": {
-  "score": 71.7,
+  "score": 70.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 5.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 33,
@@ -352,20 +784,996 @@
   "fonte": "BCB/SGS"
  },
  "desemprego": {
-  "score": 85.8,
+  "score": 84.5,
   "componentes": {
-   "completude": 99.2,
-   "atualidade": 53.3,
+   "completude": 99.4,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
-  "n_obs": 122,
+  "n_obs": 173,
   "n_revisoes": 0,
   "nome": "Taxa de desocupação (PNAD Contínua, trimestre móvel)",
   "fonte": "IBGE"
+ },
+ "dir_conc_pf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Concessões direcionadas - Pessoas físicas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_conc_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Concessões direcionadas - Pessoas jurídicas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_conc_pj_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Concessões direcionadas - PJ - Financiamento com recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_conc_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Concessões de crédito com recursos direcionados - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_inad_pf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - direcionado - Pessoas físicas",
+  "fonte": "BCB/SGS"
+ },
+ "dir_inad_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - direcionado - Pessoas jurídicas",
+  "fonte": "BCB/SGS"
+ },
+ "dir_inad_pj_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - direcionado PJ - recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_inad_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Inadimplência (>90 dias) - recursos direcionados - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_prazo_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Prazo médio das concessões direcionadas - Pessoas jurídicas",
+  "fonte": "BCB/SGS"
+ },
+ "dir_prazo_pj_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Prazo médio das concessões direcionadas - PJ - recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_saldo_pf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo direcionado - Pessoas físicas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_saldo_pf_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo direcionado - PF - Financiamento com recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_saldo_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo direcionado - Pessoas jurídicas - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_saldo_pj_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo direcionado - PJ - Financiamento com recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_saldo_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo da carteira de crédito com recursos direcionados - Total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_taxa_pf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Taxa média de juros - recursos direcionados - Pessoas físicas",
+  "fonte": "BCB/SGS"
+ },
+ "dir_taxa_pj": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Taxa média de juros - recursos direcionados - Pessoas jurídicas",
+  "fonte": "BCB/SGS"
+ },
+ "dir_taxa_pj_bndes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Taxa média de juros - direcionado PJ - recursos do BNDES total",
+  "fonte": "BCB/SGS"
+ },
+ "dir_taxa_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Taxa média de juros - recursos direcionados - Total",
+  "fonte": "BCB/SGS"
+ },
+ "emp_A": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Agropecuária",
+  "fonte": "BCB/SGS"
+ },
+ "emp_B": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Indústrias extrativas",
+  "fonte": "BCB/SGS"
+ },
+ "emp_C": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Indústrias de transformação",
+  "fonte": "BCB/SGS"
+ },
+ "emp_D": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Eletricidade e gás",
+  "fonte": "BCB/SGS"
+ },
+ "emp_E": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Água, esgoto, atividades de gestão de resíduos e descontaminação",
+  "fonte": "BCB/SGS"
+ },
+ "emp_F": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Construção",
+  "fonte": "BCB/SGS"
+ },
+ "emp_G": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Comércio",
+  "fonte": "BCB/SGS"
+ },
+ "emp_H": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Transporte, armazenamento e correio",
+  "fonte": "BCB/SGS"
+ },
+ "emp_I": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Alojamento e alimentação",
+  "fonte": "BCB/SGS"
+ },
+ "emp_J": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Informação e comunicação",
+  "fonte": "BCB/SGS"
+ },
+ "emp_K": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades financeiras e seguros",
+  "fonte": "BCB/SGS"
+ },
+ "emp_L": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades imobiliárias",
+  "fonte": "BCB/SGS"
+ },
+ "emp_M": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades profissionais, científicas e técnicas",
+  "fonte": "BCB/SGS"
+ },
+ "emp_N": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades administrativas e serviços complementares",
+  "fonte": "BCB/SGS"
+ },
+ "emp_O": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Administração pública, defesa e seguridade social",
+  "fonte": "BCB/SGS"
+ },
+ "emp_P": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Educação",
+  "fonte": "BCB/SGS"
+ },
+ "emp_Q": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Saúde e serviços sociais",
+  "fonte": "BCB/SGS"
+ },
+ "emp_S": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Outras atividades de serviços",
+  "fonte": "BCB/SGS"
+ },
+ "emp_SERV": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Serviços",
+  "fonte": "BCB/SGS"
+ },
+ "emp_SIUP": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - SIUP",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_A": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Agropecuária - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_B": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Indústrias extrativas - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_C": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Indústrias de transformação - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_D": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Eletricidade e gás - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_E": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Água, esgoto, atividades de gestão de resíduos e descontaminação - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_F": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Construção - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_G": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Comércio - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_H": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Transporte, armazenamento e correio - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_I": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Alojamento e alimentação - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_J": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Informação e comunicação - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_K": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades financeiras e seguros - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_L": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades imobiliárias - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_M": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades profissionais, científicas e técnicas - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_N": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Atividades administrativas e serviços complementares - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_O": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Administração pública, defesa e seguridade social - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_P": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Educação - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_Q": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Saúde e serviços sociais - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_S": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Outras atividades de serviços - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_SERV": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Serviços - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_SIUP": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - SIUP - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_sa_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Total - dados dessazonalizados",
+  "fonte": "BCB/SGS"
+ },
+ "emp_total": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Estoque de empregos formais - Total",
+  "fonte": "BCB/SGS"
  },
  "endividamento": {
   "score": 66.3,
@@ -376,7 +1784,7 @@
    "estabilidade": 77.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 8,
@@ -392,7 +1800,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 127,
+  "dias_sem_atualizar": 129,
   "ultima_ref": "2026-05-01",
   "n_obs": 89,
   "n_revisoes": 0,
@@ -400,31 +1808,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_agregado": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
-  "n_revisoes": 690,
+  "n_revisoes": 693,
   "nome": "Falências ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjba": {
-  "score": 79.3,
+  "score": 78.0,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 89.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 2,
@@ -432,15 +1840,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjgo": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 111,
@@ -448,15 +1856,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjmg": {
-  "score": 76.8,
+  "score": 75.5,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 72.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 5,
@@ -464,31 +1872,31 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjpr": {
-  "score": 77.6,
+  "score": 73.8,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
-   "estabilidade": 78.0,
+   "estabilidade": 61.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
-  "n_revisoes": 4,
+  "n_revisoes": 7,
   "nome": "Falências ajuizadas — TJPR (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrj": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 132,
@@ -496,15 +1904,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjrs": {
-  "score": 73.5,
+  "score": 72.2,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 50.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 9,
@@ -512,15 +1920,15 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsc": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 228,
@@ -528,20 +1936,276 @@
   "fonte": "CNJ/DataJud"
  },
  "falencia_tjsp": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 305,
   "nome": "Falências ajuizadas — TJSP (novos processos/mês)",
   "fonte": "CNJ/DataJud"
+ },
+ "fd_compromissadas": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Operações compromissadas com títulos privados (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_fundos_monetarios": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Quotas de fundos monetários (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_letras_credito": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Letras de crédito (LCI e LCA, saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_lf": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Letras financeiras (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_m2": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - M2 (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_m3": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - M3 (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_m4": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - M4 (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_nao_residentes": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Haveres de não residentes (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_outros_titulos": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Outros títulos privados (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_papel_moeda": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento - Papel moeda em poder do público (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_poupanca": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Depósitos de poupança (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_poupanca_sbpe": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Saldo mensal de depósitos de poupança - SBPE e rural",
+  "fonte": "BCB/SGS"
+ },
+ "fd_prazo": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Depósitos a prazo (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_titulos_federais": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Títulos federais em poder do público/Selic (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_titulos_privados": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Títulos privados em poder do público (saldo em final de período)",
+  "fonte": "BCB/SGS"
+ },
+ "fd_vista": {
+  "score": 84.5,
+  "componentes": {
+   "completude": 99.4,
+   "atualidade": 48.9,
+   "historico": 100.0,
+   "estabilidade": 100.0,
+   "transparencia": 100.0
+  },
+  "dias_sem_atualizar": 68,
+  "ultima_ref": "2026-07-01",
+  "n_obs": 175,
+  "n_revisoes": 0,
+  "nome": "Meios de pagamento amplos - Depósitos à vista (saldo em final de período)",
+  "fonte": "BCB/SGS"
  },
  "ibc_br": {
   "score": 54.8,
@@ -552,7 +2216,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 173,
@@ -560,15 +2224,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pf": {
-  "score": 85.0,
+  "score": 83.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 94.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 2,
@@ -576,15 +2240,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_pj": {
-  "score": 83.7,
+  "score": 82.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -592,15 +2256,15 @@
   "fonte": "BCB/SGS"
  },
  "inad_total": {
-  "score": 83.3,
+  "score": 82.0,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 82.9,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 6,
@@ -608,15 +2272,15 @@
   "fonte": "BCB/SGS"
  },
  "ipca": {
-  "score": 85.9,
+  "score": 84.5,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 0,
@@ -632,7 +2296,7 @@
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 174,
   "n_revisoes": 365,
@@ -640,17 +2304,17 @@
   "fonte": "BCB/SGS"
  },
  "of_chamadas_dados_abertos": {
-  "score": 83.0,
+  "score": 83.2,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 15.0,
+   "historico": 15.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 8,
-  "ultima_ref": "2026-08-28",
-  "n_obs": 18,
+  "dias_sem_atualizar": 3,
+  "ultima_ref": "2026-09-04",
+  "n_obs": 19,
   "n_revisoes": 0,
   "nome": "Chamadas de API — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -664,7 +2328,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -680,7 +2344,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -696,7 +2360,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -712,7 +2376,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -720,17 +2384,17 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "of_sucesso_dados_abertos": {
-  "score": 83.0,
+  "score": 83.2,
   "componentes": {
    "completude": 100.0,
    "atualidade": 100.0,
-   "historico": 15.0,
+   "historico": 15.8,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 8,
-  "ultima_ref": "2026-08-28",
-  "n_obs": 18,
+  "dias_sem_atualizar": 3,
+  "ultima_ref": "2026-09-04",
+  "n_obs": 19,
   "n_revisoes": 0,
   "nome": "Taxa de sucesso das chamadas (códigos 2xx/3xx) — dados abertos",
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
@@ -744,7 +2408,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -760,7 +2424,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 36,
+  "dias_sem_atualizar": 38,
   "ultima_ref": "2026-07-31",
   "n_obs": 14,
   "n_revisoes": 0,
@@ -768,15 +2432,15 @@
   "fonte": "Open Finance Brasil (Dashboard do Cidadão)"
  },
  "papelao": {
-  "score": 86.0,
+  "score": 84.6,
   "componentes": {
    "completude": 99.8,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 559,
   "n_revisoes": 0,
@@ -784,15 +2448,15 @@
   "fonte": "Ipeadata"
  },
  "pim_129314": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -800,15 +2464,15 @@
   "fonte": "IBGE"
  },
  "pim_129315": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -816,15 +2480,15 @@
   "fonte": "IBGE"
  },
  "pim_129316": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -832,15 +2496,15 @@
   "fonte": "IBGE"
  },
  "pim_129317": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -848,15 +2512,15 @@
   "fonte": "IBGE"
  },
  "pim_129318": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -864,15 +2528,15 @@
   "fonte": "IBGE"
  },
  "pim_129319": {
-  "score": 77.0,
+  "score": 75.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 93.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 1,
@@ -880,15 +2544,15 @@
   "fonte": "IBGE"
  },
  "pim_129320": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -896,15 +2560,15 @@
   "fonte": "IBGE"
  },
  "pim_129321": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -912,15 +2576,15 @@
   "fonte": "IBGE"
  },
  "pim_129322": {
-  "score": 73.0,
+  "score": 71.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 66.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 5,
@@ -928,15 +2592,15 @@
   "fonte": "IBGE"
  },
  "pim_129323": {
-  "score": 73.0,
+  "score": 71.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 66.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 5,
@@ -944,15 +2608,15 @@
   "fonte": "IBGE"
  },
  "pim_129324": {
-  "score": 73.0,
+  "score": 71.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 66.2,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 5,
@@ -960,15 +2624,15 @@
   "fonte": "IBGE"
  },
  "pim_129325": {
-  "score": 76.0,
+  "score": 74.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 86.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 2,
@@ -976,15 +2640,15 @@
   "fonte": "IBGE"
  },
  "pim_129326": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -992,15 +2656,15 @@
   "fonte": "IBGE"
  },
  "pim_129330": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1008,15 +2672,15 @@
   "fonte": "IBGE"
  },
  "pim_129331": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1024,15 +2688,15 @@
   "fonte": "IBGE"
  },
  "pim_129332": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1040,15 +2704,15 @@
   "fonte": "IBGE"
  },
  "pim_129333": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1056,15 +2720,15 @@
   "fonte": "IBGE"
  },
  "pim_129334": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1072,15 +2736,15 @@
   "fonte": "IBGE"
  },
  "pim_129335": {
-  "score": 76.0,
+  "score": 74.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 86.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 2,
@@ -1088,15 +2752,15 @@
   "fonte": "IBGE"
  },
  "pim_129336": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1104,15 +2768,15 @@
   "fonte": "IBGE"
  },
  "pim_129337": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1120,15 +2784,15 @@
   "fonte": "IBGE"
  },
  "pim_129338": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1136,15 +2800,15 @@
   "fonte": "IBGE"
  },
  "pim_129339": {
-  "score": 76.0,
+  "score": 74.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 86.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 2,
@@ -1152,15 +2816,15 @@
   "fonte": "IBGE"
  },
  "pim_129340": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1168,15 +2832,15 @@
   "fonte": "IBGE"
  },
  "pim_129341": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1184,15 +2848,15 @@
   "fonte": "IBGE"
  },
  "pim_129342": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1200,15 +2864,15 @@
   "fonte": "IBGE"
  },
  "pim_56689": {
-  "score": 72.0,
+  "score": 70.7,
   "componentes": {
    "completude": 98.7,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 61.7,
    "estabilidade": 59.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 74,
   "n_revisoes": 6,
@@ -1224,7 +2888,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1240,7 +2904,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1256,7 +2920,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1272,7 +2936,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1288,7 +2952,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1304,7 +2968,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1320,7 +2984,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1336,7 +3000,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1352,7 +3016,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1368,7 +3032,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1384,7 +3048,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1400,7 +3064,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1416,7 +3080,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1432,7 +3096,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1448,7 +3112,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1464,7 +3128,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1480,7 +3144,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1496,7 +3160,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1512,7 +3176,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1528,7 +3192,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1544,7 +3208,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1560,7 +3224,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1576,7 +3240,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1592,7 +3256,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1608,7 +3272,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1624,7 +3288,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1640,7 +3304,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1656,7 +3320,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1672,7 +3336,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1688,7 +3352,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1704,7 +3368,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1720,7 +3384,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1736,7 +3400,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1752,7 +3416,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1768,7 +3432,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1784,7 +3448,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 72,
   "n_revisoes": 0,
@@ -1800,7 +3464,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1816,7 +3480,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1832,7 +3496,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1848,7 +3512,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1864,7 +3528,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1880,7 +3544,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1896,7 +3560,7 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 96,
+  "dias_sem_atualizar": 98,
   "ultima_ref": "2026-06-01",
   "n_obs": 54,
   "n_revisoes": 0,
@@ -1904,31 +3568,31 @@
   "fonte": "IBGE"
  },
  "recuperacao_judicial_agregado": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
-  "n_revisoes": 736,
+  "n_revisoes": 739,
   "nome": "Recuperações judiciais ajuizadas — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO",
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjba": {
-  "score": 80.1,
+  "score": 78.8,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 94.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 1,
@@ -1936,15 +3600,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjgo": {
-  "score": 73.5,
+  "score": 72.2,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 50.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 9,
@@ -1952,15 +3616,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjmg": {
-  "score": 78.5,
+  "score": 77.1,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 83.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 3,
@@ -1968,31 +3632,31 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjpr": {
-  "score": 74.3,
+  "score": 70.5,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
-   "estabilidade": 56.0,
+   "estabilidade": 39.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
-  "n_revisoes": 8,
+  "n_revisoes": 11,
   "nome": "Recuperações judiciais ajuizadas — TJPR (novos processos/mês)",
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrj": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 103,
@@ -2000,15 +3664,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjrs": {
-  "score": 75.2,
+  "score": 73.8,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 61.5,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 7,
@@ -2016,15 +3680,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsc": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 96,
@@ -2032,15 +3696,15 @@
   "fonte": "CNJ/DataJud"
  },
  "recuperacao_judicial_tjsp": {
-  "score": 65.9,
+  "score": 64.6,
   "componentes": {
    "completude": 98.9,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 75.8,
    "estabilidade": 0.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 91,
   "n_revisoes": 383,
@@ -2048,15 +3712,15 @@
   "fonte": "CNJ/DataJud"
  },
  "saldo_pf": {
-  "score": 81.2,
+  "score": 79.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2064,15 +3728,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_pj": {
-  "score": 81.2,
+  "score": 79.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2080,15 +3744,15 @@
   "fonte": "BCB/SGS"
  },
  "saldo_total": {
-  "score": 81.2,
+  "score": 79.8,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 68.6,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 11,
@@ -2104,23 +3768,23 @@
    "estabilidade": 100.0,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": -11,
-  "ultima_ref": "2026-09-16",
-  "n_obs": 2816,
+  "dias_sem_atualizar": 0,
+  "ultima_ref": "2026-09-07",
+  "n_obs": 2807,
   "n_revisoes": 0,
   "nome": "Meta para a taxa Selic",
   "fonte": "BCB/SGS"
  },
  "spread_pf": {
-  "score": 83.7,
+  "score": 82.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -2128,15 +3792,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_pj": {
-  "score": 82.0,
+  "score": 80.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2144,15 +3808,15 @@
   "fonte": "BCB/SGS"
  },
  "spread_total": {
-  "score": 82.0,
+  "score": 80.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2160,15 +3824,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pf": {
-  "score": 83.7,
+  "score": 82.4,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 85.7,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 5,
@@ -2176,15 +3840,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_pj": {
-  "score": 82.0,
+  "score": 80.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,
@@ -2192,15 +3856,15 @@
   "fonte": "BCB/SGS"
  },
  "taxa_total": {
-  "score": 82.0,
+  "score": 80.7,
   "componentes": {
    "completude": 99.4,
-   "atualidade": 53.3,
+   "atualidade": 48.9,
    "historico": 100.0,
    "estabilidade": 74.3,
    "transparencia": 100.0
   },
-  "dias_sem_atualizar": 66,
+  "dias_sem_atualizar": 68,
   "ultima_ref": "2026-07-01",
   "n_obs": 175,
   "n_revisoes": 9,

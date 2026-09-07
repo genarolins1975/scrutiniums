@@ -1,8 +1,9 @@
 {
  "ok": true,
- "gerado_em": "2026-08-04T22:30:41+00:00",
+ "gerado_em": "2026-09-07T17:05:45+00:00",
  "ano": 2025,
- "fator_ipca": 1.1935,
+ "fator_ipca": 1.1943,
+ "populacao_fonte": "IBGE Censo 2022 (pirâmide etária por município; a página trabalha por faixa etária, que só o Censo traz)",
  "brasil": {
   "selo": "observado",
   "populacao": 203080756,
@@ -20,10 +21,10 @@
   "pensoes": 8514399,
   "assistenciais": 6468831,
   "valor_dez": 74193453316.0,
-  "valor_real": 62166928547.0,
+  "valor_real": 62123442138.0,
   "valor_medio": 1781.71,
   "ben100_60": 129.7,
-  "peso": 18.78,
+  "peso": 18.77,
   "piramide": [
    {
     "g": "0 a 4",
@@ -113,35 +114,251 @@
  },
  "sgs": {
   "selo": "observado",
-  "data_base": "2026-06-01",
+  "data_base": "2026-07-01",
   "unidade_saldo": "R$ milhões",
   "atual": {
    "inss": {
-    "saldo": 281889.0,
-    "conc": 4112.0,
-    "taxa": 24.31,
-    "prazo_conc": 91.8,
-    "prazo_cart": 34.13,
-    "atraso": 1.7,
-    "inad": 1.95,
-    "icc": 23.56
+    "saldo": 277054.0,
+    "conc": 4719.0,
+    "taxa": 24.12,
+    "prazo_conc": 91.17,
+    "prazo_cart": 34.09,
+    "atraso": 1.63,
+    "inad": 2.14,
+    "icc": 23.58
    },
    "privado": {
-    "saldo": 113337.0,
-    "inad": 8.63
+    "saldo": 117661.0,
+    "inad": 10.03
    },
    "publico": {
-    "saldo": 390286.0,
-    "inad": 2.58
+    "saldo": 391595.0,
+    "inad": 2.69
    },
    "total": {
-    "saldo": 785512.0,
-    "inad": 3.23,
-    "taxa": 28.26
+    "saldo": 786311.0,
+    "inad": 3.59,
+    "taxa": 28.43
    }
   },
   "series": {
    "saldo": [
+    {
+     "d": "2012-01",
+     "inss": 45915.0,
+     "publico": 99925.0,
+     "privado": 15079.0
+    },
+    {
+     "d": "2012-02",
+     "inss": 47453.0,
+     "publico": 101150.0,
+     "privado": 15236.0
+    },
+    {
+     "d": "2012-03",
+     "inss": 48516.0,
+     "publico": 102283.0,
+     "privado": 15479.0
+    },
+    {
+     "d": "2012-04",
+     "inss": 49518.0,
+     "publico": 103938.0,
+     "privado": 15699.0
+    },
+    {
+     "d": "2012-05",
+     "inss": 50628.0,
+     "publico": 106174.0,
+     "privado": 16099.0
+    },
+    {
+     "d": "2012-06",
+     "inss": 51692.0,
+     "publico": 107964.0,
+     "privado": 16374.0
+    },
+    {
+     "d": "2012-07",
+     "inss": 52447.0,
+     "publico": 109544.0,
+     "privado": 16523.0
+    },
+    {
+     "d": "2012-08",
+     "inss": 53205.0,
+     "publico": 111643.0,
+     "privado": 16792.0
+    },
+    {
+     "d": "2012-09",
+     "inss": 52696.0,
+     "publico": 110922.0,
+     "privado": 17454.0
+    },
+    {
+     "d": "2012-10",
+     "inss": 53390.0,
+     "publico": 112922.0,
+     "privado": 17704.0
+    },
+    {
+     "d": "2012-11",
+     "inss": 53978.0,
+     "publico": 114425.0,
+     "privado": 17876.0
+    },
+    {
+     "d": "2012-12",
+     "inss": 54273.0,
+     "publico": 115318.0,
+     "privado": 17871.0
+    },
+    {
+     "d": "2013-01",
+     "inss": 55730.0,
+     "publico": 116994.0,
+     "privado": 18030.0
+    },
+    {
+     "d": "2013-02",
+     "inss": 57333.0,
+     "publico": 118705.0,
+     "privado": 18191.0
+    },
+    {
+     "d": "2013-03",
+     "inss": 58040.0,
+     "publico": 120926.0,
+     "privado": 18475.0
+    },
+    {
+     "d": "2013-04",
+     "inss": 59080.0,
+     "publico": 123370.0,
+     "privado": 18710.0
+    },
+    {
+     "d": "2013-05",
+     "inss": 60334.0,
+     "publico": 125700.0,
+     "privado": 18973.0
+    },
+    {
+     "d": "2013-06",
+     "inss": 61004.0,
+     "publico": 127534.0,
+     "privado": 19175.0
+    },
+    {
+     "d": "2013-07",
+     "inss": 61791.0,
+     "publico": 129358.0,
+     "privado": 19302.0
+    },
+    {
+     "d": "2013-08",
+     "inss": 62682.0,
+     "publico": 131060.0,
+     "privado": 19557.0
+    },
+    {
+     "d": "2013-09",
+     "inss": 63043.0,
+     "publico": 132391.0,
+     "privado": 19699.0
+    },
+    {
+     "d": "2013-10",
+     "inss": 63377.0,
+     "publico": 133923.0,
+     "privado": 19837.0
+    },
+    {
+     "d": "2013-11",
+     "inss": 63797.0,
+     "publico": 135376.0,
+     "privado": 19884.0
+    },
+    {
+     "d": "2013-12",
+     "inss": 64193.0,
+     "publico": 134576.0,
+     "privado": 17945.0
+    },
+    {
+     "d": "2014-01",
+     "inss": 65121.0,
+     "publico": 137512.0,
+     "privado": 17720.0
+    },
+    {
+     "d": "2014-02",
+     "inss": 66738.0,
+     "publico": 138235.0,
+     "privado": 18966.0
+    },
+    {
+     "d": "2014-03",
+     "inss": 67151.0,
+     "publico": 139703.0,
+     "privado": 19209.0
+    },
+    {
+     "d": "2014-04",
+     "inss": 67728.0,
+     "publico": 141346.0,
+     "privado": 19411.0
+    },
+    {
+     "d": "2014-05",
+     "inss": 68503.0,
+     "publico": 143257.0,
+     "privado": 19634.0
+    },
+    {
+     "d": "2014-06",
+     "inss": 69508.0,
+     "publico": 145147.0,
+     "privado": 19664.0
+    },
+    {
+     "d": "2014-07",
+     "inss": 70347.0,
+     "publico": 146941.0,
+     "privado": 19828.0
+    },
+    {
+     "d": "2014-08",
+     "inss": 70682.0,
+     "publico": 148692.0,
+     "privado": 20106.0
+    },
+    {
+     "d": "2014-09",
+     "inss": 71054.0,
+     "publico": 149603.0,
+     "privado": 20236.0
+    },
+    {
+     "d": "2014-10",
+     "inss": 72595.0,
+     "publico": 151924.0,
+     "privado": 20861.0
+    },
+    {
+     "d": "2014-11",
+     "inss": 73686.0,
+     "publico": 152557.0,
+     "privado": 20988.0
+    },
+    {
+     "d": "2014-12",
+     "inss": 74752.0,
+     "publico": 153920.0,
+     "privado": 20763.0
+    },
     {
      "d": "2015-01",
      "inss": 75956.0,
@@ -926,7 +1143,7 @@
      "d": "2025-11",
      "inss": 278841.0,
      "publico": 380682.0,
-     "privado": 71305.0
+     "privado": 71311.0
     },
     {
      "d": "2025-12",
@@ -943,13 +1160,13 @@
     {
      "d": "2026-02",
      "inss": 282503.0,
-     "publico": 382191.0,
+     "publico": 382193.0,
      "privado": 92857.0
     },
     {
      "d": "2026-03",
      "inss": 283772.0,
-     "publico": 384545.0,
+     "publico": 384548.0,
      "privado": 102058.0
     },
     {
@@ -961,17 +1178,275 @@
     {
      "d": "2026-05",
      "inss": 281196.0,
-     "publico": 388656.0,
-     "privado": 109140.0
+     "publico": 388663.0,
+     "privado": 109156.0
     },
     {
      "d": "2026-06",
-     "inss": 281889.0,
-     "publico": 390286.0,
-     "privado": 113337.0
+     "inss": 281879.0,
+     "publico": 390281.0,
+     "privado": 113350.0
+    },
+    {
+     "d": "2026-07",
+     "inss": 277054.0,
+     "publico": 391595.0,
+     "privado": 117661.0
     }
    ],
    "inad": [
+    {
+     "d": "2012-01",
+     "inss": 1.66,
+     "publico": 3.04,
+     "privado": 5.71,
+     "total": 2.89
+    },
+    {
+     "d": "2012-02",
+     "inss": 1.69,
+     "publico": 3.01,
+     "privado": 5.63,
+     "total": 2.87
+    },
+    {
+     "d": "2012-03",
+     "inss": 1.64,
+     "publico": 2.99,
+     "privado": 5.68,
+     "total": 2.85
+    },
+    {
+     "d": "2012-04",
+     "inss": 1.7,
+     "publico": 3.01,
+     "privado": 5.7,
+     "total": 2.88
+    },
+    {
+     "d": "2012-05",
+     "inss": 1.7,
+     "publico": 3.03,
+     "privado": 5.53,
+     "total": 2.88
+    },
+    {
+     "d": "2012-06",
+     "inss": 1.64,
+     "publico": 2.96,
+     "privado": 5.32,
+     "total": 2.79
+    },
+    {
+     "d": "2012-07",
+     "inss": 1.64,
+     "publico": 2.91,
+     "privado": 5.07,
+     "total": 2.74
+    },
+    {
+     "d": "2012-08",
+     "inss": 1.69,
+     "publico": 2.98,
+     "privado": 5.25,
+     "total": 2.81
+    },
+    {
+     "d": "2012-09",
+     "inss": 1.73,
+     "publico": 2.86,
+     "privado": 5.32,
+     "total": 2.77
+    },
+    {
+     "d": "2012-10",
+     "inss": 1.72,
+     "publico": 2.85,
+     "privado": 5.47,
+     "total": 2.77
+    },
+    {
+     "d": "2012-11",
+     "inss": 1.72,
+     "publico": 2.73,
+     "privado": 5.49,
+     "total": 2.7
+    },
+    {
+     "d": "2012-12",
+     "inss": 1.77,
+     "publico": 2.76,
+     "privado": 5.66,
+     "total": 2.75
+    },
+    {
+     "d": "2013-01",
+     "inss": 1.75,
+     "publico": 2.75,
+     "privado": 5.68,
+     "total": 2.74
+    },
+    {
+     "d": "2013-02",
+     "inss": 1.74,
+     "publico": 2.81,
+     "privado": 5.72,
+     "total": 2.77
+    },
+    {
+     "d": "2013-03",
+     "inss": 1.7,
+     "publico": 2.77,
+     "privado": 5.71,
+     "total": 2.73
+    },
+    {
+     "d": "2013-04",
+     "inss": 1.76,
+     "publico": 2.71,
+     "privado": 5.22,
+     "total": 2.67
+    },
+    {
+     "d": "2013-05",
+     "inss": 1.96,
+     "publico": 2.93,
+     "privado": 5.18,
+     "total": 2.85
+    },
+    {
+     "d": "2013-06",
+     "inss": 1.69,
+     "publico": 2.83,
+     "privado": 4.81,
+     "total": 2.68
+    },
+    {
+     "d": "2013-07",
+     "inss": 1.79,
+     "publico": 2.87,
+     "privado": 4.9,
+     "total": 2.74
+    },
+    {
+     "d": "2013-08",
+     "inss": 1.8,
+     "publico": 2.84,
+     "privado": 4.95,
+     "total": 2.73
+    },
+    {
+     "d": "2013-09",
+     "inss": 1.84,
+     "publico": 2.88,
+     "privado": 5.03,
+     "total": 2.77
+    },
+    {
+     "d": "2013-10",
+     "inss": 1.89,
+     "publico": 2.75,
+     "privado": 4.95,
+     "total": 2.7
+    },
+    {
+     "d": "2013-11",
+     "inss": 1.92,
+     "publico": 2.7,
+     "privado": 4.83,
+     "total": 2.67
+    },
+    {
+     "d": "2013-12",
+     "inss": 1.94,
+     "publico": 2.66,
+     "privado": 5.4,
+     "total": 2.67
+    },
+    {
+     "d": "2014-01",
+     "inss": 1.95,
+     "publico": 2.6,
+     "privado": 5.44,
+     "total": 2.64
+    },
+    {
+     "d": "2014-02",
+     "inss": 1.94,
+     "publico": 2.58,
+     "privado": 5.12,
+     "total": 2.6
+    },
+    {
+     "d": "2014-03",
+     "inss": 1.96,
+     "publico": 2.6,
+     "privado": 5.24,
+     "total": 2.63
+    },
+    {
+     "d": "2014-04",
+     "inss": 1.9,
+     "publico": 2.58,
+     "privado": 5.35,
+     "total": 2.61
+    },
+    {
+     "d": "2014-05",
+     "inss": 1.88,
+     "publico": 2.67,
+     "privado": 5.53,
+     "total": 2.68
+    },
+    {
+     "d": "2014-06",
+     "inss": 1.87,
+     "publico": 2.47,
+     "privado": 5.17,
+     "total": 2.52
+    },
+    {
+     "d": "2014-07",
+     "inss": 1.88,
+     "publico": 2.5,
+     "privado": 5.31,
+     "total": 2.55
+    },
+    {
+     "d": "2014-08",
+     "inss": 1.86,
+     "publico": 2.56,
+     "privado": 5.3,
+     "total": 2.58
+    },
+    {
+     "d": "2014-09",
+     "inss": 1.87,
+     "publico": 2.57,
+     "privado": 5.32,
+     "total": 2.59
+    },
+    {
+     "d": "2014-10",
+     "inss": 1.82,
+     "publico": 2.45,
+     "privado": 5.11,
+     "total": 2.49
+    },
+    {
+     "d": "2014-11",
+     "inss": 1.8,
+     "publico": 2.37,
+     "privado": 5.0,
+     "total": 2.42
+    },
+    {
+     "d": "2014-12",
+     "inss": 1.8,
+     "publico": 2.3,
+     "privado": 4.93,
+     "total": 2.37
+    },
     {
      "d": "2015-01",
      "inss": 1.77,
@@ -1935,11 +2410,198 @@
      "d": "2026-06",
      "inss": 1.95,
      "publico": 2.58,
-     "privado": 8.63,
+     "privado": 8.68,
      "total": 3.23
+    },
+    {
+     "d": "2026-07",
+     "inss": 2.14,
+     "publico": 2.69,
+     "privado": 10.03,
+     "total": 3.59
     }
    ],
    "taxa": [
+    {
+     "d": "2012-01",
+     "inss": 31.09,
+     "total": 28.53
+    },
+    {
+     "d": "2012-02",
+     "inss": 31.22,
+     "total": 28.63
+    },
+    {
+     "d": "2012-03",
+     "inss": 31.25,
+     "total": 28.56
+    },
+    {
+     "d": "2012-04",
+     "inss": 29.83,
+     "total": 27.49
+    },
+    {
+     "d": "2012-05",
+     "inss": 28.59,
+     "total": 26.59
+    },
+    {
+     "d": "2012-06",
+     "inss": 27.25,
+     "total": 25.68
+    },
+    {
+     "d": "2012-07",
+     "inss": 27.15,
+     "total": 25.37
+    },
+    {
+     "d": "2012-08",
+     "inss": 27.01,
+     "total": 24.93
+    },
+    {
+     "d": "2012-09",
+     "inss": 27.21,
+     "total": 25.16
+    },
+    {
+     "d": "2012-10",
+     "inss": 26.75,
+     "total": 24.81
+    },
+    {
+     "d": "2012-11",
+     "inss": 26.61,
+     "total": 24.63
+    },
+    {
+     "d": "2012-12",
+     "inss": 26.71,
+     "total": 24.47
+    },
+    {
+     "d": "2013-01",
+     "inss": 27.08,
+     "total": 24.52
+    },
+    {
+     "d": "2013-02",
+     "inss": 27.16,
+     "total": 24.78
+    },
+    {
+     "d": "2013-03",
+     "inss": 26.84,
+     "total": 24.67
+    },
+    {
+     "d": "2013-04",
+     "inss": 26.64,
+     "total": 24.4
+    },
+    {
+     "d": "2013-05",
+     "inss": 26.7,
+     "total": 24.22
+    },
+    {
+     "d": "2013-06",
+     "inss": 26.71,
+     "total": 24.27
+    },
+    {
+     "d": "2013-07",
+     "inss": 26.82,
+     "total": 24.37
+    },
+    {
+     "d": "2013-08",
+     "inss": 26.97,
+     "total": 24.48
+    },
+    {
+     "d": "2013-09",
+     "inss": 27.27,
+     "total": 24.32
+    },
+    {
+     "d": "2013-10",
+     "inss": 27.33,
+     "total": 24.61
+    },
+    {
+     "d": "2013-11",
+     "inss": 27.2,
+     "total": 24.5
+    },
+    {
+     "d": "2013-12",
+     "inss": 27.3,
+     "total": 24.38
+    },
+    {
+     "d": "2014-01",
+     "inss": 27.49,
+     "total": 24.93
+    },
+    {
+     "d": "2014-02",
+     "inss": 27.8,
+     "total": 25.13
+    },
+    {
+     "d": "2014-03",
+     "inss": 27.77,
+     "total": 25.33
+    },
+    {
+     "d": "2014-04",
+     "inss": 27.76,
+     "total": 25.32
+    },
+    {
+     "d": "2014-05",
+     "inss": 27.86,
+     "total": 25.58
+    },
+    {
+     "d": "2014-06",
+     "inss": 27.89,
+     "total": 25.62
+    },
+    {
+     "d": "2014-07",
+     "inss": 27.92,
+     "total": 25.92
+    },
+    {
+     "d": "2014-08",
+     "inss": 27.89,
+     "total": 25.91
+    },
+    {
+     "d": "2014-09",
+     "inss": 27.81,
+     "total": 25.96
+    },
+    {
+     "d": "2014-10",
+     "inss": 27.94,
+     "total": 25.58
+    },
+    {
+     "d": "2014-11",
+     "inss": 27.93,
+     "total": 25.8
+    },
+    {
+     "d": "2014-12",
+     "inss": 28.05,
+     "total": 25.98
+    },
     {
      "d": "2015-01",
      "inss": 28.32,
@@ -2593,7 +3255,7 @@
     {
      "d": "2025-11",
      "inss": 23.84,
-     "total": 27.05
+     "total": 27.04
     },
     {
      "d": "2025-12",
@@ -2629,9 +3291,158 @@
      "d": "2026-06",
      "inss": 24.31,
      "total": 28.26
+    },
+    {
+     "d": "2026-07",
+     "inss": 24.12,
+     "total": 28.43
     }
    ],
    "conc": [
+    {
+     "d": "2012-01",
+     "inss": 2836.0
+    },
+    {
+     "d": "2012-02",
+     "inss": 2957.0
+    },
+    {
+     "d": "2012-03",
+     "inss": 2607.0
+    },
+    {
+     "d": "2012-04",
+     "inss": 2594.0
+    },
+    {
+     "d": "2012-05",
+     "inss": 2956.0
+    },
+    {
+     "d": "2012-06",
+     "inss": 2839.0
+    },
+    {
+     "d": "2012-07",
+     "inss": 2725.0
+    },
+    {
+     "d": "2012-08",
+     "inss": 2615.0
+    },
+    {
+     "d": "2012-09",
+     "inss": 1948.0
+    },
+    {
+     "d": "2012-10",
+     "inss": 2786.0
+    },
+    {
+     "d": "2012-11",
+     "inss": 2658.0
+    },
+    {
+     "d": "2012-12",
+     "inss": 2226.0
+    },
+    {
+     "d": "2013-01",
+     "inss": 3581.0
+    },
+    {
+     "d": "2013-02",
+     "inss": 3914.0
+    },
+    {
+     "d": "2013-03",
+     "inss": 3572.0
+    },
+    {
+     "d": "2013-04",
+     "inss": 3703.0
+    },
+    {
+     "d": "2013-05",
+     "inss": 3769.0
+    },
+    {
+     "d": "2013-06",
+     "inss": 3239.0
+    },
+    {
+     "d": "2013-07",
+     "inss": 3378.0
+    },
+    {
+     "d": "2013-08",
+     "inss": 3413.0
+    },
+    {
+     "d": "2013-09",
+     "inss": 2894.0
+    },
+    {
+     "d": "2013-10",
+     "inss": 3442.0
+    },
+    {
+     "d": "2013-11",
+     "inss": 3053.0
+    },
+    {
+     "d": "2013-12",
+     "inss": 2947.0
+    },
+    {
+     "d": "2014-01",
+     "inss": 3579.0
+    },
+    {
+     "d": "2014-02",
+     "inss": 5548.0
+    },
+    {
+     "d": "2014-03",
+     "inss": 3603.0
+    },
+    {
+     "d": "2014-04",
+     "inss": 3649.0
+    },
+    {
+     "d": "2014-05",
+     "inss": 3591.0
+    },
+    {
+     "d": "2014-06",
+     "inss": 3639.0
+    },
+    {
+     "d": "2014-07",
+     "inss": 4091.0
+    },
+    {
+     "d": "2014-08",
+     "inss": 3586.0
+    },
+    {
+     "d": "2014-09",
+     "inss": 3701.0
+    },
+    {
+     "d": "2014-10",
+     "inss": 6001.0
+    },
+    {
+     "d": "2014-11",
+     "inss": 5363.0
+    },
+    {
+     "d": "2014-12",
+     "inss": 4472.0
+    },
     {
      "d": "2015-01",
      "inss": 4221.0
@@ -3154,7 +3965,7 @@
     },
     {
      "d": "2025-11",
-     "inss": 4712.0
+     "inss": 4749.0
     },
     {
      "d": "2025-12",
@@ -3183,9 +3994,157 @@
     {
      "d": "2026-06",
      "inss": 4112.0
+    },
+    {
+     "d": "2026-07",
+     "inss": 4719.0
     }
    ],
    "prazo": [
+    {
+     "d": "2012-01",
+     "inss": 56.7
+    },
+    {
+     "d": "2012-02",
+     "inss": 56.57
+    },
+    {
+     "d": "2012-03",
+     "inss": 55.6
+    },
+    {
+     "d": "2012-04",
+     "inss": 55.0
+    },
+    {
+     "d": "2012-05",
+     "inss": 54.87
+    },
+    {
+     "d": "2012-06",
+     "inss": 55.57
+    },
+    {
+     "d": "2012-07",
+     "inss": 55.63
+    },
+    {
+     "d": "2012-08",
+     "inss": 55.57
+    },
+    {
+     "d": "2012-09",
+     "inss": 55.87
+    },
+    {
+     "d": "2012-10",
+     "inss": 55.67
+    },
+    {
+     "d": "2012-11",
+     "inss": 55.83
+    },
+    {
+     "d": "2012-12",
+     "inss": 56.07
+    },
+    {
+     "d": "2013-01",
+     "inss": 56.57
+    },
+    {
+     "d": "2013-02",
+     "inss": 57.1
+    },
+    {
+     "d": "2013-03",
+     "inss": 56.9
+    },
+    {
+     "d": "2013-04",
+     "inss": 57.17
+    },
+    {
+     "d": "2013-05",
+     "inss": 57.4
+    },
+    {
+     "d": "2013-06",
+     "inss": 57.3
+    },
+    {
+     "d": "2013-07",
+     "inss": 57.4
+    },
+    {
+     "d": "2013-08",
+     "inss": 57.5
+    },
+    {
+     "d": "2013-09",
+     "inss": 57.8
+    },
+    {
+     "d": "2013-10",
+     "inss": 57.77
+    },
+    {
+     "d": "2013-11",
+     "inss": 57.53
+    },
+    {
+     "d": "2013-12",
+     "inss": 57.63
+    },
+    {
+     "d": "2014-01",
+     "inss": 57.7
+    },
+    {
+     "d": "2014-02",
+     "inss": 58.27
+    },
+    {
+     "d": "2014-03",
+     "inss": 57.73
+    },
+    {
+     "d": "2014-04",
+     "inss": 57.73
+    },
+    {
+     "d": "2014-05",
+     "inss": 57.5
+    },
+    {
+     "d": "2014-06",
+     "inss": 57.8
+    },
+    {
+     "d": "2014-07",
+     "inss": 57.57
+    },
+    {
+     "d": "2014-08",
+     "inss": 57.43
+    },
+    {
+     "d": "2014-09",
+     "inss": 57.7
+    },
+    {
+     "d": "2014-10",
+     "inss": 68.1
+    },
+    {
+     "d": "2014-11",
+     "inss": 69.03
+    },
+    {
+     "d": "2014-12",
+     "inss": 68.4
+    },
     {
      "d": "2015-01",
      "inss": 67.6
@@ -3708,7 +4667,7 @@
     },
     {
      "d": "2025-11",
-     "inss": 85.27
+     "inss": 85.33
     },
     {
      "d": "2025-12",
@@ -3737,6 +4696,10 @@
     {
      "d": "2026-06",
      "inss": 91.8
+    },
+    {
+     "d": "2026-07",
+     "inss": 91.17
     }
    ]
   },
@@ -3880,7 +4843,6 @@
  "reclamacoes": {
   "selo": "observado",
   "competencias": [
-   "2025-07",
    "2025-08",
    "2025-09",
    "2025-10",
@@ -3890,433 +4852,430 @@
    "2026-02",
    "2026-03",
    "2026-04",
-   "2026-06"
+   "2026-06",
+   "2026-07"
   ],
-  "de": "2025-07",
-  "ate": "2026-06",
-  "total": 105026,
-  "municipios": 4168,
+  "de": "2025-08",
+  "ate": "2026-07",
+  "total": 110437,
+  "municipios": 4231,
   "instituicoes": [
    {
     "nome": "Banco Bmg",
-    "total": 10089,
-    "idosos": 6586,
-    "part_idosos": 65.28,
-    "avaliadas": 2171,
-    "taxa_resolucao": 26.44,
-    "nota": 2.09
+    "total": 10153,
+    "idosos": 6576,
+    "part_idosos": 64.77,
+    "avaliadas": 2218,
+    "taxa_resolucao": 26.38,
+    "nota": 2.07
    },
    {
     "nome": "Banco Agibank (Agiplan)",
-    "total": 7448,
-    "idosos": 4487,
-    "part_idosos": 60.24,
-    "avaliadas": 1616,
-    "taxa_resolucao": 14.17,
-    "nota": 1.69
+    "total": 7673,
+    "idosos": 4594,
+    "part_idosos": 59.87,
+    "avaliadas": 1639,
+    "taxa_resolucao": 15.44,
+    "nota": 1.73
    },
    {
     "nome": "Facta Financeira",
-    "total": 7349,
-    "idosos": 4174,
-    "part_idosos": 56.8,
-    "avaliadas": 1752,
-    "taxa_resolucao": 19.18,
-    "nota": 1.74
+    "total": 7470,
+    "idosos": 4137,
+    "part_idosos": 55.38,
+    "avaliadas": 1792,
+    "taxa_resolucao": 19.48,
+    "nota": 1.75
    },
    {
     "nome": "Banco Santander",
-    "total": 7221,
-    "idosos": 3574,
-    "part_idosos": 49.49,
-    "avaliadas": 1406,
-    "taxa_resolucao": 18.49,
-    "nota": 1.89
+    "total": 7355,
+    "idosos": 3564,
+    "part_idosos": 48.46,
+    "avaliadas": 1448,
+    "taxa_resolucao": 15.95,
+    "nota": 1.81
    },
    {
     "nome": "Banco Pan",
-    "total": 6901,
-    "idosos": 3662,
-    "part_idosos": 53.06,
-    "avaliadas": 1756,
-    "taxa_resolucao": 13.9,
-    "nota": 1.69
+    "total": 7210,
+    "idosos": 3781,
+    "part_idosos": 52.44,
+    "avaliadas": 1850,
+    "taxa_resolucao": 15.35,
+    "nota": 1.7
    },
    {
     "nome": "Banco Bradesco",
-    "total": 6132,
-    "idosos": 3278,
-    "part_idosos": 53.46,
-    "avaliadas": 1076,
-    "taxa_resolucao": 14.5,
-    "nota": 1.77
-   },
-   {
-    "nome": "Banco Daycoval",
-    "total": 4580,
-    "idosos": 2398,
-    "part_idosos": 52.36,
-    "avaliadas": 841,
-    "taxa_resolucao": 37.22,
-    "nota": 2.45
+    "total": 6348,
+    "idosos": 3315,
+    "part_idosos": 52.22,
+    "avaliadas": 1122,
+    "taxa_resolucao": 16.31,
+    "nota": 1.82
    },
    {
     "nome": "Banco Master (antigo Banco Máxima)",
-    "total": 4561,
-    "idosos": 1631,
-    "part_idosos": 35.76,
-    "avaliadas": 1179,
-    "taxa_resolucao": 14.59,
-    "nota": 1.6
+    "total": 5604,
+    "idosos": 1841,
+    "part_idosos": 32.85,
+    "avaliadas": 1296,
+    "taxa_resolucao": 13.81,
+    "nota": 1.58
+   },
+   {
+    "nome": "Banco Daycoval",
+    "total": 4794,
+    "idosos": 2490,
+    "part_idosos": 51.94,
+    "avaliadas": 893,
+    "taxa_resolucao": 35.83,
+    "nota": 2.38
    },
    {
     "nome": "Banco do Brasil",
-    "total": 3405,
-    "idosos": 1179,
-    "part_idosos": 34.63,
-    "avaliadas": 739,
-    "taxa_resolucao": 26.39,
+    "total": 3669,
+    "idosos": 1237,
+    "part_idosos": 33.71,
+    "avaliadas": 789,
+    "taxa_resolucao": 26.36,
     "nota": 2.17
    },
    {
     "nome": "Banco Mercantil do Brasil",
-    "total": 3105,
-    "idosos": 1673,
-    "part_idosos": 53.88,
-    "avaliadas": 851,
-    "taxa_resolucao": 22.8,
-    "nota": 1.91
-   },
-   {
-    "nome": "Capital Consig",
-    "total": 2953,
-    "idosos": 1367,
-    "part_idosos": 46.29,
-    "avaliadas": 882,
-    "taxa_resolucao": 19.5,
-    "nota": 1.74
+    "total": 3414,
+    "idosos": 1793,
+    "part_idosos": 52.52,
+    "avaliadas": 879,
+    "taxa_resolucao": 22.41,
+    "nota": 1.9
    },
    {
     "nome": "Caixa Econômica Federal",
-    "total": 2844,
-    "idosos": 1120,
-    "part_idosos": 39.38,
-    "avaliadas": 639,
-    "taxa_resolucao": 33.02,
-    "nota": 2.28
-   },
-   {
-    "nome": "Banco C6 Consignado (Banco Ficsa)",
-    "total": 2721,
-    "idosos": 1257,
-    "part_idosos": 46.2,
-    "avaliadas": 673,
-    "taxa_resolucao": 28.83,
-    "nota": 2.07
-   },
-   {
-    "nome": "Banco Pine",
-    "total": 2625,
-    "idosos": 1495,
-    "part_idosos": 56.95,
-    "avaliadas": 569,
-    "taxa_resolucao": 19.33,
-    "nota": 1.72
-   },
-   {
-    "nome": "Crefisa",
-    "total": 2466,
-    "idosos": 617,
-    "part_idosos": 25.02,
-    "avaliadas": 706,
-    "taxa_resolucao": 18.7,
-    "nota": 1.76
-   },
-   {
-    "nome": "Itaú Unibanco Consignado",
-    "total": 2251,
-    "idosos": 964,
-    "part_idosos": 42.83,
-    "avaliadas": 545,
-    "taxa_resolucao": 25.32,
-    "nota": 2.03
-   },
-   {
-    "nome": "Itaú Consignado",
-    "total": 2074,
-    "idosos": 1563,
-    "part_idosos": 75.36,
-    "avaliadas": 366,
-    "taxa_resolucao": 42.62,
-    "nota": 2.64
-   },
-   {
-    "nome": "Banco Inbursa",
-    "total": 1929,
-    "idosos": 1329,
-    "part_idosos": 68.9,
-    "avaliadas": 347,
-    "taxa_resolucao": 26.22,
-    "nota": 2.19
-   },
-   {
-    "nome": "Nubank",
-    "total": 1739,
-    "idosos": 272,
-    "part_idosos": 15.64,
-    "avaliadas": 344,
-    "taxa_resolucao": 18.31,
-    "nota": 1.88
-   },
-   {
-    "nome": "Paraná Banco",
-    "total": 1516,
-    "idosos": 956,
-    "part_idosos": 63.06,
-    "avaliadas": 306,
-    "taxa_resolucao": 37.58,
-    "nota": 2.4
-   },
-   {
-    "nome": "Banco Safra",
-    "total": 1492,
-    "idosos": 799,
-    "part_idosos": 53.55,
-    "avaliadas": 251,
-    "taxa_resolucao": 23.9,
-    "nota": 2.1
-   },
-   {
-    "nome": "Banrisul",
-    "total": 1484,
-    "idosos": 997,
-    "part_idosos": 67.18,
-    "avaliadas": 212,
-    "taxa_resolucao": 18.87,
-    "nota": 1.7
-   },
-   {
-    "nome": "Banco Itaú Unibanco",
-    "total": 1332,
-    "idosos": 327,
-    "part_idosos": 24.55,
-    "avaliadas": 276,
-    "taxa_resolucao": 23.55,
-    "nota": 2.07
-   },
-   {
-    "nome": "Banco Digio",
-    "total": 1294,
-    "idosos": 893,
-    "part_idosos": 69.01,
-    "avaliadas": 191,
-    "taxa_resolucao": 34.55,
+    "total": 3067,
+    "idosos": 1178,
+    "part_idosos": 38.41,
+    "avaliadas": 682,
+    "taxa_resolucao": 34.02,
     "nota": 2.27
    },
    {
-    "nome": "Parati Financeira",
-    "total": 1244,
-    "idosos": 506,
-    "part_idosos": 40.68,
-    "avaliadas": 353,
-    "taxa_resolucao": 22.38,
-    "nota": 1.78
-   },
-   {
-    "nome": "BRB - Banco de Brasília",
-    "total": 1234,
-    "idosos": 675,
-    "part_idosos": 54.7,
-    "avaliadas": 309,
-    "taxa_resolucao": 18.45,
-    "nota": 1.87
-   },
-   {
-    "nome": "Banco BNP Paribas",
-    "total": 925,
-    "idosos": 685,
-    "part_idosos": 74.05,
-    "avaliadas": 111,
-    "taxa_resolucao": 5.41,
-    "nota": 1.36
-   },
-   {
-    "nome": "Ativos S.A",
-    "total": 834,
-    "idosos": 36,
-    "part_idosos": 4.32,
-    "avaliadas": 219,
-    "taxa_resolucao": 36.53,
-    "nota": 2.45
-   },
-   {
-    "nome": "FACTA INTERMEDIACAO DE NEGOCIOS",
-    "total": 827,
-    "idosos": 549,
-    "part_idosos": 66.38,
-    "avaliadas": 130,
-    "taxa_resolucao": 3.08,
-    "nota": 1.35
-   },
-   {
-    "nome": "Banco Inter (Banco Intermedium)",
-    "total": 817,
-    "idosos": 302,
-    "part_idosos": 36.96,
-    "avaliadas": 183,
-    "taxa_resolucao": 25.14,
-    "nota": 1.85
-   },
-   {
-    "nome": "Recovery do Brasil Consultoria",
-    "total": 746,
-    "idosos": 36,
-    "part_idosos": 4.83,
-    "avaliadas": 135,
-    "taxa_resolucao": 11.11,
-    "nota": 1.47
-   },
-   {
-    "nome": "QI Tech",
-    "total": 729,
-    "idosos": 425,
-    "part_idosos": 58.3,
-    "avaliadas": 129,
-    "taxa_resolucao": 19.38,
-    "nota": 1.72
-   },
-   {
-    "nome": "Bradesco Cartões",
-    "total": 727,
-    "idosos": 367,
-    "part_idosos": 50.48,
-    "avaliadas": 149,
-    "taxa_resolucao": 9.4,
-    "nota": 1.57
-   },
-   {
-    "nome": "Picpay Instituição de Pagamento S/A",
-    "total": 406,
-    "idosos": 120,
-    "part_idosos": 29.56,
-    "avaliadas": 125,
-    "taxa_resolucao": 21.6,
-    "nota": 1.85
-   },
-   {
-    "nome": "Financeira BRB",
-    "total": 398,
-    "idosos": 252,
-    "part_idosos": 63.32,
-    "avaliadas": 69,
-    "taxa_resolucao": 18.84,
+    "nome": "Capital Consig",
+    "total": 3053,
+    "idosos": 1402,
+    "part_idosos": 45.92,
+    "avaliadas": 899,
+    "taxa_resolucao": 18.69,
     "nota": 1.73
    },
    {
-    "nome": "Cartões Itaú",
-    "total": 396,
+    "nome": "Banco C6 Consignado (Banco Ficsa)",
+    "total": 2846,
+    "idosos": 1221,
+    "part_idosos": 42.9,
+    "avaliadas": 688,
+    "taxa_resolucao": 27.03,
+    "nota": 2.04
+   },
+   {
+    "nome": "Banco Pine",
+    "total": 2806,
+    "idosos": 1508,
+    "part_idosos": 53.74,
+    "avaliadas": 586,
+    "taxa_resolucao": 19.62,
+    "nota": 1.75
+   },
+   {
+    "nome": "Itaú Unibanco Consignado",
+    "total": 2659,
+    "idosos": 1154,
+    "part_idosos": 43.4,
+    "avaliadas": 629,
+    "taxa_resolucao": 27.19,
+    "nota": 1.99
+   },
+   {
+    "nome": "Crefisa",
+    "total": 2595,
+    "idosos": 610,
+    "part_idosos": 23.51,
+    "avaliadas": 710,
+    "taxa_resolucao": 19.15,
+    "nota": 1.81
+   },
+   {
+    "nome": "Itaú Consignado",
+    "total": 1867,
+    "idosos": 1402,
+    "part_idosos": 75.09,
+    "avaliadas": 326,
+    "taxa_resolucao": 40.8,
+    "nota": 2.57
+   },
+   {
+    "nome": "Nubank",
+    "total": 1848,
+    "idosos": 282,
+    "part_idosos": 15.26,
+    "avaliadas": 363,
+    "taxa_resolucao": 17.36,
+    "nota": 1.89
+   },
+   {
+    "nome": "Banco Inbursa",
+    "total": 1770,
+    "idosos": 1228,
+    "part_idosos": 69.38,
+    "avaliadas": 319,
+    "taxa_resolucao": 27.59,
+    "nota": 2.24
+   },
+   {
+    "nome": "Banco Safra",
+    "total": 1650,
+    "idosos": 885,
+    "part_idosos": 53.64,
+    "avaliadas": 275,
+    "taxa_resolucao": 24.36,
+    "nota": 2.08
+   },
+   {
+    "nome": "Paraná Banco",
+    "total": 1555,
+    "idosos": 982,
+    "part_idosos": 63.15,
+    "avaliadas": 302,
+    "taxa_resolucao": 34.44,
+    "nota": 2.3
+   },
+   {
+    "nome": "Banrisul",
+    "total": 1510,
+    "idosos": 1013,
+    "part_idosos": 67.09,
+    "avaliadas": 209,
+    "taxa_resolucao": 19.62,
+    "nota": 1.74
+   },
+   {
+    "nome": "Parati Financeira",
+    "total": 1389,
+    "idosos": 551,
+    "part_idosos": 39.67,
+    "avaliadas": 395,
+    "taxa_resolucao": 22.78,
+    "nota": 1.8
+   },
+   {
+    "nome": "Banco Itaú Unibanco",
+    "total": 1352,
+    "idosos": 320,
+    "part_idosos": 23.67,
+    "avaliadas": 273,
+    "taxa_resolucao": 24.54,
+    "nota": 2.08
+   },
+   {
+    "nome": "Banco Digio",
+    "total": 1311,
+    "idosos": 865,
+    "part_idosos": 65.98,
+    "avaliadas": 191,
+    "taxa_resolucao": 34.03,
+    "nota": 2.24
+   },
+   {
+    "nome": "BRB - Banco de Brasília",
+    "total": 1280,
+    "idosos": 680,
+    "part_idosos": 53.12,
+    "avaliadas": 312,
+    "taxa_resolucao": 16.67,
+    "nota": 1.86
+   },
+   {
+    "nome": "Ativos S.A",
+    "total": 920,
+    "idosos": 41,
+    "part_idosos": 4.46,
+    "avaliadas": 243,
+    "taxa_resolucao": 37.04,
+    "nota": 2.49
+   },
+   {
+    "nome": "FACTA INTERMEDIACAO DE NEGOCIOS",
+    "total": 911,
+    "idosos": 605,
+    "part_idosos": 66.41,
+    "avaliadas": 143,
+    "taxa_resolucao": 2.8,
+    "nota": 1.34
+   },
+   {
+    "nome": "Banco BNP Paribas",
+    "total": 903,
+    "idosos": 669,
+    "part_idosos": 74.09,
+    "avaliadas": 113,
+    "taxa_resolucao": 7.08,
+    "nota": 1.42
+   },
+   {
+    "nome": "Recovery do Brasil Consultoria",
+    "total": 854,
     "idosos": 38,
-    "part_idosos": 9.6,
-    "avaliadas": 96,
-    "taxa_resolucao": 18.75,
+    "part_idosos": 4.45,
+    "avaliadas": 152,
+    "taxa_resolucao": 11.18,
+    "nota": 1.44
+   },
+   {
+    "nome": "Banco Inter (Banco Intermedium)",
+    "total": 841,
+    "idosos": 298,
+    "part_idosos": 35.43,
+    "avaliadas": 181,
+    "taxa_resolucao": 24.31,
+    "nota": 1.84
+   },
+   {
+    "nome": "Bradesco Cartões",
+    "total": 761,
+    "idosos": 386,
+    "part_idosos": 50.72,
+    "avaliadas": 157,
+    "taxa_resolucao": 8.92,
+    "nota": 1.52
+   },
+   {
+    "nome": "QI Tech",
+    "total": 755,
+    "idosos": 425,
+    "part_idosos": 56.29,
+    "avaliadas": 125,
+    "taxa_resolucao": 18.4,
+    "nota": 1.71
+   },
+   {
+    "nome": "Picpay Instituição de Pagamento S/A",
+    "total": 550,
+    "idosos": 158,
+    "part_idosos": 28.73,
+    "avaliadas": 150,
+    "taxa_resolucao": 22.0,
     "nota": 1.91
    },
    {
     "nome": "Creditas",
-    "total": 394,
-    "idosos": 5,
-    "part_idosos": 1.27,
-    "avaliadas": 85,
-    "taxa_resolucao": 29.41,
-    "nota": 2.3
+    "total": 430,
+    "idosos": 4,
+    "part_idosos": 0.93,
+    "avaliadas": 95,
+    "taxa_resolucao": 29.47,
+    "nota": 2.32
    },
    {
-    "nome": "Banco Seguro",
-    "total": 244,
-    "idosos": 156,
-    "part_idosos": 63.93,
-    "avaliadas": 51,
-    "taxa_resolucao": 43.14,
-    "nota": 2.46
+    "nome": "Cartões Itaú",
+    "total": 417,
+    "idosos": 36,
+    "part_idosos": 8.63,
+    "avaliadas": 102,
+    "taxa_resolucao": 17.65,
+    "nota": 1.83
    },
    {
-    "nome": "Eagle Sociedade de Crédito Direto",
-    "total": 241,
-    "idosos": 73,
-    "part_idosos": 30.29,
-    "avaliadas": 72,
-    "taxa_resolucao": 26.39,
-    "nota": 2.05
-   },
-   {
-    "nome": "Banco Digimais",
-    "total": 238,
-    "idosos": 101,
-    "part_idosos": 42.44,
-    "avaliadas": 64,
-    "taxa_resolucao": 28.12,
-    "nota": 1.97
-   },
-   {
-    "nome": "Bradesco Financiamentos",
-    "total": 224,
-    "idosos": 113,
-    "part_idosos": 50.45,
-    "avaliadas": 43,
-    "taxa_resolucao": 11.63,
-    "nota": 1.52
-   },
-   {
-    "nome": "Itapeva Recuperação de Créditos",
-    "total": 218,
-    "idosos": 8,
-    "part_idosos": 3.67,
-    "avaliadas": 46,
-    "taxa_resolucao": 10.87,
-    "nota": 1.4
+    "nome": "Financeira BRB",
+    "total": 403,
+    "idosos": 254,
+    "part_idosos": 63.03,
+    "avaliadas": 66,
+    "taxa_resolucao": 18.18,
+    "nota": 1.7
    },
    {
     "nome": "Itaú Consignado (DESATIVADO - Atual Itaú Unibanco Consignado)",
-    "total": 216,
-    "idosos": 150,
-    "part_idosos": 69.44,
-    "avaliadas": 25,
-    "taxa_resolucao": 20.0,
-    "nota": 1.68
+    "total": 372,
+    "idosos": 255,
+    "part_idosos": 68.55,
+    "avaliadas": 37,
+    "taxa_resolucao": 29.73,
+    "nota": 2.21
+   },
+   {
+    "nome": "Banco Seguro",
+    "total": 282,
+    "idosos": 183,
+    "part_idosos": 64.89,
+    "avaliadas": 57,
+    "taxa_resolucao": 47.37,
+    "nota": 2.55
+   },
+   {
+    "nome": "Itapeva Recuperação de Créditos",
+    "total": 268,
+    "idosos": 11,
+    "part_idosos": 4.1,
+    "avaliadas": 53,
+    "taxa_resolucao": 13.21,
+    "nota": 1.39
+   },
+   {
+    "nome": "Banco Digimais",
+    "total": 260,
+    "idosos": 100,
+    "part_idosos": 38.46,
+    "avaliadas": 68,
+    "taxa_resolucao": 26.47,
+    "nota": 1.96
+   },
+   {
+    "nome": "Eagle Sociedade de Crédito Direto",
+    "total": 221,
+    "idosos": 67,
+    "part_idosos": 30.32,
+    "avaliadas": 66,
+    "taxa_resolucao": 22.73,
+    "nota": 1.92
+   },
+   {
+    "nome": "NEON Financeira",
+    "total": 213,
+    "idosos": 5,
+    "part_idosos": 2.35,
+    "avaliadas": 56,
+    "taxa_resolucao": 17.86,
+    "nota": 1.75
+   },
+   {
+    "nome": "Bradesco Financiamentos",
+    "total": 213,
+    "idosos": 100,
+    "part_idosos": 46.95,
+    "avaliadas": 43,
+    "taxa_resolucao": 13.95,
+    "nota": 1.54
    },
    {
     "nome": "Sicredi",
     "total": 207,
-    "idosos": 48,
-    "part_idosos": 23.19,
+    "idosos": 44,
+    "part_idosos": 21.26,
     "avaliadas": 42,
-    "taxa_resolucao": 33.33,
-    "nota": 2.37
+    "taxa_resolucao": 26.19,
+    "nota": 2.05
    },
    {
-    "nome": "NEON Financeira",
-    "total": 207,
-    "idosos": 7,
-    "part_idosos": 3.38,
-    "avaliadas": 56,
-    "taxa_resolucao": 14.29,
-    "nota": 1.63
-   },
-   {
-    "nome": "Facta Seguradora",
-    "total": 205,
-    "idosos": 47,
-    "part_idosos": 22.93,
-    "avaliadas": 68,
-    "taxa_resolucao": 13.24,
-    "nota": 1.46
+    "nome": "NBC Bank",
+    "total": 200,
+    "idosos": 115,
+    "part_idosos": 57.5,
+    "avaliadas": 52,
+    "taxa_resolucao": 15.38,
+    "nota": 1.45
    }
   ],
   "serie": [
-   {
-    "d": "2025-07",
-    "n": 8549
-   },
    {
     "d": "2025-08",
     "n": 9220
@@ -4356,240 +5315,316 @@
    {
     "d": "2026-06",
     "n": 11781
+   },
+   {
+    "d": "2026-07",
+    "n": 13960
    }
   ],
   "aviso": "Reclamação registrada no consumidor.gov.br sobre a categoria dedicada a beneficiários do INSS. Mede propensão a reclamar, não incidência de problema: depende de acesso digital, de conhecimento do canal e do tamanho da base de clientes. Contagem bruta não é ranking de conduta."
  },
  "scr": {
   "selo": "observado",
-  "data_base": "2026-05",
-  "total_nacional": 796078927459.0,
-  "aposentados_nacional": 159941111837.0,
-  "part_aposentados": 20.09,
-  "operacoes_aposentados": 13056977,
+  "data_base": "2026-07",
+  "total_nacional": 791617245135.0,
+  "aposentados_nacional": 155808164756.0,
+  "part_aposentados": 19.68,
+  "operacoes_aposentados": 12756001,
   "por_uf": {
    "AC": {
-    "total": 4474324348.0,
-    "aposentados": 769177401.0,
-    "part_aposentados": 17.19,
-    "operacoes_aposentados": 47370,
-    "inad_aposentados": 2.0,
+    "total": 4490937186.0,
+    "aposentados": 766018635.0,
+    "part_aposentados": 17.06,
+    "operacoes_aposentados": 47962,
+    "inad_aposentados": 2.04,
     "inad_total": 2.69
    },
    "AL": {
-    "total": 11249181699.0,
-    "aposentados": 2172332555.0,
-    "part_aposentados": 19.31,
-    "operacoes_aposentados": 198496,
-    "inad_aposentados": 2.05,
-    "inad_total": 2.64
+    "total": 11184872256.0,
+    "aposentados": 2113703428.0,
+    "part_aposentados": 18.9,
+    "operacoes_aposentados": 196127,
+    "inad_aposentados": 2.2,
+    "inad_total": 3.03
    },
    "AM": {
-    "total": 12966396968.0,
-    "aposentados": 1936782177.0,
-    "part_aposentados": 14.94,
-    "operacoes_aposentados": 159023,
-    "inad_aposentados": 2.53,
-    "inad_total": 3.88
+    "total": 13045894182.0,
+    "aposentados": 1920875599.0,
+    "part_aposentados": 14.72,
+    "operacoes_aposentados": 156370,
+    "inad_aposentados": 2.41,
+    "inad_total": 4.29
    },
    "AP": {
-    "total": 6874713686.0,
-    "aposentados": 724029169.0,
-    "part_aposentados": 10.53,
-    "operacoes_aposentados": 34815,
-    "inad_aposentados": 3.36,
-    "inad_total": 3.68
+    "total": 6756623975.0,
+    "aposentados": 684882228.0,
+    "part_aposentados": 10.14,
+    "operacoes_aposentados": 33078,
+    "inad_aposentados": 3.13,
+    "inad_total": 3.72
    },
    "BA": {
-    "total": 44468847170.0,
-    "aposentados": 7371539387.0,
-    "part_aposentados": 16.58,
-    "operacoes_aposentados": 709185,
-    "inad_aposentados": 2.8,
-    "inad_total": 3.35
+    "total": 44239776842.0,
+    "aposentados": 7177328263.0,
+    "part_aposentados": 16.22,
+    "operacoes_aposentados": 672101,
+    "inad_aposentados": 1.96,
+    "inad_total": 3.16
    },
    "CE": {
-    "total": 29110204113.0,
-    "aposentados": 3702004605.0,
-    "part_aposentados": 12.72,
-    "operacoes_aposentados": 328347,
-    "inad_aposentados": 1.91,
-    "inad_total": 2.62
+    "total": 29319836395.0,
+    "aposentados": 3676382336.0,
+    "part_aposentados": 12.54,
+    "operacoes_aposentados": 325840,
+    "inad_aposentados": 1.87,
+    "inad_total": 2.81
    },
    "DF": {
-    "total": 24951718785.0,
-    "aposentados": 5857573630.0,
-    "part_aposentados": 23.48,
-    "operacoes_aposentados": 256384,
-    "inad_aposentados": 1.86,
-    "inad_total": 2.36
-   },
-   "ES": {
-    "total": 13123661269.0,
-    "aposentados": 2992528045.0,
-    "part_aposentados": 22.8,
-    "operacoes_aposentados": 239049,
-    "inad_aposentados": 1.92,
-    "inad_total": 2.87
-   },
-   "GO": {
-    "total": 27499615189.0,
-    "aposentados": 5317542583.0,
-    "part_aposentados": 19.34,
-    "operacoes_aposentados": 354836,
-    "inad_aposentados": 2.83,
-    "inad_total": 3.5
-   },
-   "MA": {
-    "total": 24617943348.0,
-    "aposentados": 2511020699.0,
-    "part_aposentados": 10.2,
-    "operacoes_aposentados": 275773,
-    "inad_aposentados": 2.14,
-    "inad_total": 2.82
-   },
-   "MG": {
-    "total": 66874500704.0,
-    "aposentados": 14088130943.0,
-    "part_aposentados": 21.07,
-    "operacoes_aposentados": 1194575,
-    "inad_aposentados": 1.93,
-    "inad_total": 3.25
-   },
-   "MS": {
-    "total": 15181236012.0,
-    "aposentados": 3035115445.0,
-    "part_aposentados": 19.99,
-    "operacoes_aposentados": 192883,
-    "inad_aposentados": 2.28,
-    "inad_total": 3.4
-   },
-   "MT": {
-    "total": 14619842881.0,
-    "aposentados": 2441724588.0,
-    "part_aposentados": 16.7,
-    "operacoes_aposentados": 176191,
-    "inad_aposentados": 2.88,
-    "inad_total": 3.44
-   },
-   "PA": {
-    "total": 33712541002.0,
-    "aposentados": 4477759184.0,
-    "part_aposentados": 13.28,
-    "operacoes_aposentados": 263183,
-    "inad_aposentados": 2.01,
-    "inad_total": 3.04
-   },
-   "PB": {
-    "total": 14425451080.0,
-    "aposentados": 2385840248.0,
-    "part_aposentados": 16.54,
-    "operacoes_aposentados": 189654,
-    "inad_aposentados": 2.26,
-    "inad_total": 2.58
-   },
-   "PE": {
-    "total": 28918961279.0,
-    "aposentados": 5718566416.0,
-    "part_aposentados": 19.77,
-    "operacoes_aposentados": 470610,
-    "inad_aposentados": 2.14,
-    "inad_total": 2.83
-   },
-   "PI": {
-    "total": 12469480980.0,
-    "aposentados": 1677751550.0,
-    "part_aposentados": 13.45,
-    "operacoes_aposentados": 135619,
-    "inad_aposentados": 2.15,
-    "inad_total": 2.66
-   },
-   "PR": {
-    "total": 44974301868.0,
-    "aposentados": 8085113285.0,
-    "part_aposentados": 17.98,
-    "operacoes_aposentados": 724311,
-    "inad_aposentados": 1.65,
-    "inad_total": 3.02
-   },
-   "RJ": {
-    "total": 74682340770.0,
-    "aposentados": 21068364302.0,
-    "part_aposentados": 28.21,
-    "operacoes_aposentados": 1605903,
-    "inad_aposentados": 2.83,
-    "inad_total": 3.88
-   },
-   "RN": {
-    "total": 13620653840.0,
-    "aposentados": 2718705632.0,
-    "part_aposentados": 19.96,
-    "operacoes_aposentados": 192657,
-    "inad_aposentados": 2.14,
-    "inad_total": 2.52
-   },
-   "RO": {
-    "total": 7434648312.0,
-    "aposentados": 1218527372.0,
-    "part_aposentados": 16.39,
-    "operacoes_aposentados": 76033,
-    "inad_aposentados": 2.32,
+    "total": 18881399157.0,
+    "aposentados": 4324571535.0,
+    "part_aposentados": 22.9,
+    "operacoes_aposentados": 194603,
+    "inad_aposentados": 2.2,
     "inad_total": 3.06
    },
-   "RR": {
-    "total": 4449055781.0,
-    "aposentados": 397360857.0,
-    "part_aposentados": 8.93,
-    "operacoes_aposentados": 22859,
-    "inad_aposentados": 2.98,
-    "inad_total": 4.14
+   "ES": {
+    "total": 13270564580.0,
+    "aposentados": 2965755835.0,
+    "part_aposentados": 22.35,
+    "operacoes_aposentados": 236352,
+    "inad_aposentados": 1.87,
+    "inad_total": 3.21
    },
-   "RS": {
-    "total": 46004977983.0,
-    "aposentados": 10903366696.0,
-    "part_aposentados": 23.7,
-    "operacoes_aposentados": 981627,
-    "inad_aposentados": 2.98,
+   "GO": {
+    "total": 26654105100.0,
+    "aposentados": 5012019028.0,
+    "part_aposentados": 18.8,
+    "operacoes_aposentados": 339788,
+    "inad_aposentados": 2.99,
     "inad_total": 3.98
    },
+   "MA": {
+    "total": 24759123808.0,
+    "aposentados": 2489904561.0,
+    "part_aposentados": 10.06,
+    "operacoes_aposentados": 273866,
+    "inad_aposentados": 2.08,
+    "inad_total": 2.96
+   },
+   "MG": {
+    "total": 67621913963.0,
+    "aposentados": 14003432455.0,
+    "part_aposentados": 20.71,
+    "operacoes_aposentados": 1182231,
+    "inad_aposentados": 1.89,
+    "inad_total": 3.54
+   },
+   "MS": {
+    "total": 15284184943.0,
+    "aposentados": 3018499936.0,
+    "part_aposentados": 19.75,
+    "operacoes_aposentados": 190796,
+    "inad_aposentados": 2.35,
+    "inad_total": 3.7
+   },
+   "MT": {
+    "total": 14635809108.0,
+    "aposentados": 2389685363.0,
+    "part_aposentados": 16.33,
+    "operacoes_aposentados": 172665,
+    "inad_aposentados": 2.94,
+    "inad_total": 3.75
+   },
+   "PA": {
+    "total": 33899071430.0,
+    "aposentados": 4446654811.0,
+    "part_aposentados": 13.12,
+    "operacoes_aposentados": 260342,
+    "inad_aposentados": 1.98,
+    "inad_total": 3.31
+   },
+   "PB": {
+    "total": 14350564155.0,
+    "aposentados": 2351317637.0,
+    "part_aposentados": 16.38,
+    "operacoes_aposentados": 186888,
+    "inad_aposentados": 2.28,
+    "inad_total": 2.76
+   },
+   "PE": {
+    "total": 29147942152.0,
+    "aposentados": 5694299963.0,
+    "part_aposentados": 19.54,
+    "operacoes_aposentados": 468512,
+    "inad_aposentados": 2.1,
+    "inad_total": 3.15
+   },
+   "PI": {
+    "total": 12518403727.0,
+    "aposentados": 1656688362.0,
+    "part_aposentados": 13.23,
+    "operacoes_aposentados": 134374,
+    "inad_aposentados": 2.07,
+    "inad_total": 2.87
+   },
+   "PR": {
+    "total": 45711746471.0,
+    "aposentados": 8038289559.0,
+    "part_aposentados": 17.58,
+    "operacoes_aposentados": 713031,
+    "inad_aposentados": 1.59,
+    "inad_total": 3.41
+   },
+   "RJ": {
+    "total": 74480714038.0,
+    "aposentados": 20733764698.0,
+    "part_aposentados": 27.84,
+    "operacoes_aposentados": 1574698,
+    "inad_aposentados": 2.94,
+    "inad_total": 4.19
+   },
+   "RN": {
+    "total": 13615343946.0,
+    "aposentados": 2679542206.0,
+    "part_aposentados": 19.68,
+    "operacoes_aposentados": 190922,
+    "inad_aposentados": 2.15,
+    "inad_total": 2.75
+   },
+   "RO": {
+    "total": 7456710897.0,
+    "aposentados": 1210159185.0,
+    "part_aposentados": 16.23,
+    "operacoes_aposentados": 75209,
+    "inad_aposentados": 2.22,
+    "inad_total": 3.27
+   },
+   "RR": {
+    "total": 4423418575.0,
+    "aposentados": 378251035.0,
+    "part_aposentados": 8.55,
+    "operacoes_aposentados": 21868,
+    "inad_aposentados": 2.64,
+    "inad_total": 4.61
+   },
+   "RS": {
+    "total": 46257510537.0,
+    "aposentados": 10714856271.0,
+    "part_aposentados": 23.16,
+    "operacoes_aposentados": 962454,
+    "inad_aposentados": 2.65,
+    "inad_total": 4.18
+   },
    "SC": {
-    "total": 28141000247.0,
-    "aposentados": 6295840260.0,
-    "part_aposentados": 22.37,
-    "operacoes_aposentados": 561289,
-    "inad_aposentados": 1.76,
-    "inad_total": 3.37
+    "total": 28527123343.0,
+    "aposentados": 6229870749.0,
+    "part_aposentados": 21.84,
+    "operacoes_aposentados": 553312,
+    "inad_aposentados": 1.68,
+    "inad_total": 3.8
    },
    "SE": {
-    "total": 7502570971.0,
-    "aposentados": 1556623764.0,
-    "part_aposentados": 20.75,
-    "operacoes_aposentados": 125048,
-    "inad_aposentados": 2.39,
-    "inad_total": 3.2
+    "total": 5650856065.0,
+    "aposentados": 1041470353.0,
+    "part_aposentados": 18.43,
+    "operacoes_aposentados": 102932,
+    "inad_aposentados": 2.66,
+    "inad_total": 3.91
    },
    "SP": {
-    "total": 176978026367.0,
-    "aposentados": 39671772517.0,
-    "part_aposentados": 22.42,
-    "operacoes_aposentados": 3485197,
-    "inad_aposentados": 1.83,
-    "inad_total": 3.84
+    "total": 179214070023.0,
+    "aposentados": 39301188986.0,
+    "part_aposentados": 21.93,
+    "operacoes_aposentados": 3438174,
+    "inad_aposentados": 1.8,
+    "inad_total": 4.22
    },
    "TO": {
-    "total": 6752730807.0,
-    "aposentados": 846018526.0,
-    "part_aposentados": 12.53,
-    "operacoes_aposentados": 56060,
-    "inad_aposentados": 2.97,
-    "inad_total": 3.61
+    "total": 6218728279.0,
+    "aposentados": 788751739.0,
+    "part_aposentados": 12.68,
+    "operacoes_aposentados": 51506,
+    "inad_aposentados": 2.79,
+    "inad_total": 4.2
    }
   },
   "serie_total": [
    {
+    "d": "2024-01",
+    "saldo": 643.2,
+    "op": 71.04,
+    "inad": 2.51
+   },
+   {
+    "d": "2024-02",
+    "saldo": 649.98,
+    "op": 71.89,
+    "inad": 2.47
+   },
+   {
+    "d": "2024-03",
+    "saldo": 654.12,
+    "op": 71.7,
+    "inad": 2.47
+   },
+   {
+    "d": "2024-04",
+    "saldo": 658.01,
+    "op": 71.68,
+    "inad": 2.42
+   },
+   {
+    "d": "2024-05",
+    "saldo": 661.65,
+    "op": 71.66,
+    "inad": 2.46
+   },
+   {
+    "d": "2024-06",
+    "saldo": 665.61,
+    "op": 71.51,
+    "inad": 2.44
+   },
+   {
+    "d": "2024-07",
+    "saldo": 671.82,
+    "op": 71.45,
+    "inad": 2.51
+   },
+   {
+    "d": "2024-08",
+    "saldo": 676.72,
+    "op": 71.32,
+    "inad": 2.5
+   },
+   {
+    "d": "2024-09",
+    "saldo": 681.31,
+    "op": 71.23,
+    "inad": 2.53
+   },
+   {
+    "d": "2024-10",
+    "saldo": 685.39,
+    "op": 69.41,
+    "inad": 2.49
+   },
+   {
+    "d": "2024-11",
+    "saldo": 689.41,
+    "op": 68.7,
+    "inad": 2.46
+   },
+   {
+    "d": "2024-12",
+    "saldo": 690.9,
+    "op": 68.42,
+    "inad": 2.5
+   },
+   {
     "d": "2025-01",
-    "saldo": 697.08,
-    "op": 70.81,
+    "saldo": 698.25,
+    "op": 70.97,
     "inad": 2.62
    },
    {
@@ -4600,9 +5635,9 @@
    },
    {
     "d": "2025-03",
-    "saldo": 711.3,
-    "op": 71.68,
-    "inad": 2.55
+    "saldo": 711.89,
+    "op": 71.8,
+    "inad": 2.56
    },
    {
     "d": "2025-04",
@@ -4624,9 +5659,9 @@
    },
    {
     "d": "2025-07",
-    "saldo": 724.97,
+    "saldo": 723.86,
     "op": 73.27,
-    "inad": 2.68
+    "inad": 2.67
    },
    {
     "d": "2025-08",
@@ -4654,13 +5689,13 @@
    },
    {
     "d": "2025-12",
-    "saldo": 751.81,
+    "saldo": 751.8,
     "op": 79.62,
     "inad": 2.88
    },
    {
     "d": "2026-01",
-    "saldo": 765.71,
+    "saldo": 765.72,
     "op": 82.12,
     "inad": 2.93
    },
@@ -4678,23 +5713,107 @@
    },
    {
     "d": "2026-04",
-    "saldo": 789.97,
+    "saldo": 789.99,
     "op": 86.78,
     "inad": 3.23
    },
    {
     "d": "2026-05",
-    "saldo": 796.08,
-    "op": 87.58,
+    "saldo": 796.11,
+    "op": 87.59,
     "inad": 3.38
+   },
+   {
+    "d": "2026-06",
+    "saldo": 797.9,
+    "op": 88.35,
+    "inad": 3.42
+   },
+   {
+    "d": "2026-07",
+    "saldo": 791.62,
+    "op": 88.17,
+    "inad": 3.68
    }
   ],
   "serie_aposentados": [
    {
+    "d": "2024-01",
+    "saldo": 155.69,
+    "op": 14.44,
+    "inad": 2.12
+   },
+   {
+    "d": "2024-02",
+    "saldo": 156.79,
+    "op": 14.59,
+    "inad": 2.06
+   },
+   {
+    "d": "2024-03",
+    "saldo": 157.01,
+    "op": 14.44,
+    "inad": 2.06
+   },
+   {
+    "d": "2024-04",
+    "saldo": 157.09,
+    "op": 14.37,
+    "inad": 2.03
+   },
+   {
+    "d": "2024-05",
+    "saldo": 160.09,
+    "op": 14.51,
+    "inad": 2.04
+   },
+   {
+    "d": "2024-06",
+    "saldo": 160.37,
+    "op": 14.41,
+    "inad": 2.02
+   },
+   {
+    "d": "2024-07",
+    "saldo": 161.66,
+    "op": 14.37,
+    "inad": 2.07
+   },
+   {
+    "d": "2024-08",
+    "saldo": 162.14,
+    "op": 14.3,
+    "inad": 2.06
+   },
+   {
+    "d": "2024-09",
+    "saldo": 158.93,
+    "op": 13.94,
+    "inad": 2.11
+   },
+   {
+    "d": "2024-10",
+    "saldo": 159.23,
+    "op": 13.81,
+    "inad": 2.07
+   },
+   {
+    "d": "2024-11",
+    "saldo": 159.54,
+    "op": 13.68,
+    "inad": 2.05
+   },
+   {
+    "d": "2024-12",
+    "saldo": 159.38,
+    "op": 13.61,
+    "inad": 2.11
+   },
+   {
     "d": "2025-01",
-    "saldo": 159.89,
-    "op": 14.06,
-    "inad": 2.2
+    "saldo": 164.01,
+    "op": 14.4,
+    "inad": 2.21
    },
    {
     "d": "2025-02",
@@ -4704,9 +5823,9 @@
    },
    {
     "d": "2025-03",
-    "saldo": 161.65,
-    "op": 14.03,
-    "inad": 2.15
+    "saldo": 165.45,
+    "op": 14.34,
+    "inad": 2.17
    },
    {
     "d": "2025-04",
@@ -4728,8 +5847,8 @@
    },
    {
     "d": "2025-07",
-    "saldo": 158.61,
-    "op": 13.49,
+    "saldo": 162.18,
+    "op": 13.76,
     "inad": 2.22
    },
    {
@@ -4758,14 +5877,14 @@
    },
    {
     "d": "2025-12",
-    "saldo": 159.0,
-    "op": 13.12,
-    "inad": 2.26
+    "saldo": 159.4,
+    "op": 13.16,
+    "inad": 2.25
    },
    {
     "d": "2026-01",
-    "saldo": 159.59,
-    "op": 13.21,
+    "saldo": 160.19,
+    "op": 13.26,
     "inad": 2.22
    },
    {
@@ -4782,66 +5901,78 @@
    },
    {
     "d": "2026-04",
-    "saldo": 160.11,
-    "op": 13.1,
+    "saldo": 160.38,
+    "op": 13.13,
     "inad": 2.21
    },
    {
     "d": "2026-05",
-    "saldo": 159.94,
-    "op": 13.06,
+    "saldo": 160.13,
+    "op": 13.07,
     "inad": 2.22
+   },
+   {
+    "d": "2026-06",
+    "saldo": 159.2,
+    "op": 13.0,
+    "inad": 2.17
+   },
+   {
+    "d": "2026-07",
+    "saldo": 155.81,
+    "op": 12.76,
+    "inad": 2.16
    }
   ],
   "composicao_ocupacao": [
    {
     "grupo": "Servidor ou empregado público",
-    "saldo": 271341537215.0,
-    "part": 34.08,
-    "op": 13563442,
-    "inad": 2.83
+    "saldo": 263780428658.0,
+    "part": 33.32,
+    "op": 13115111,
+    "inad": 2.79
    },
    {
     "grupo": "Outros",
-    "saldo": 240918796702.0,
-    "part": 30.26,
-    "op": 44365550,
-    "inad": 4.2
+    "saldo": 243622654890.0,
+    "part": 30.78,
+    "op": 45124472,
+    "inad": 4.88
    },
    {
     "grupo": "Aposentado/pensionista",
-    "saldo": 159941111837.0,
-    "part": 20.09,
-    "op": 13056977,
-    "inad": 2.22
+    "saldo": 155808164756.0,
+    "part": 19.68,
+    "op": 12756001,
+    "inad": 2.16
    },
    {
     "grupo": "Empregado de empresa privada",
-    "saldo": 89801298114.0,
-    "part": 11.28,
-    "op": 12140540,
-    "inad": 4.93
+    "saldo": 93963981005.0,
+    "part": 11.87,
+    "op": 12692711,
+    "inad": 5.68
    },
    {
     "grupo": "Empresário",
-    "saldo": 16519520562.0,
-    "part": 2.08,
-    "op": 2048100,
-    "inad": 2.75
+    "saldo": 16656852453.0,
+    "part": 2.1,
+    "op": 2052318,
+    "inad": 2.92
    },
    {
     "grupo": "Autônomo",
-    "saldo": 15367837815.0,
-    "part": 1.93,
-    "op": 2099815,
-    "inad": 3.57
+    "saldo": 15509577300.0,
+    "part": 1.96,
+    "op": 2115942,
+    "inad": 3.9
    },
    {
     "grupo": "MEI",
-    "saldo": 2188825214.0,
-    "part": 0.27,
-    "op": 307976,
-    "inad": 4.72
+    "saldo": 2275586072.0,
+    "part": 0.29,
+    "op": 318272,
+    "inad": 5.27
    }
   ],
   "aviso_grupo": "O grupo “Aposentado/pensionista” do SCR é mais amplo que o público do INSS: inclui aposentados e pensionistas de regimes próprios de previdência. Não é, e não é chamado aqui de, consignado do INSS."
@@ -4861,21 +5992,21 @@
    "ass": 40976,
    "elegiveis": 73074,
    "vdez": 174517169.0,
-   "vreal": 146228486.0,
+   "vreal": 146126198.0,
    "ben100_60": 153.8,
-   "peso": 16.62,
+   "peso": 16.61,
    "prural": 67.05,
    "pass": 33.98,
-   "cons_obs": 769177401.0,
-   "cons_total": 4474324348.0,
-   "part_apos": 17.19,
-   "op_apos": 47370,
-   "inad_apos": 2.0,
-   "cons_por_elegivel": 10526.0,
-   "cons_sobre_mes": 5.26,
-   "saldo_por_operacao": 16238.0,
+   "cons_obs": 766018635.0,
+   "cons_total": 4490937186.0,
+   "part_apos": 17.06,
+   "op_apos": 47962,
+   "inad_apos": 2.04,
+   "cons_por_elegivel": 10483.0,
+   "cons_sobre_mes": 5.24,
+   "saldo_por_operacao": 15971.0,
    "outras_censo": 26.27,
-   "cons_por_60": 9809.0,
+   "cons_por_60": 9769.0,
    "renda_por_hab": 1060.0,
    "ben_medio": 1447.06,
    "pass_uf": 33.98
@@ -4894,21 +6025,21 @@
    "ass": 140764,
    "elegiveis": 439603,
    "vdez": 932459579.0,
-   "vreal": 781310822.0,
+   "vreal": 780764287.0,
    "ben100_60": 152.6,
-   "peso": 24.23,
+   "peso": 24.21,
    "prural": 45.51,
    "pass": 22.54,
-   "cons_obs": 2172332555.0,
-   "cons_total": 11249181699.0,
-   "part_apos": 19.31,
-   "op_apos": 198496,
-   "inad_apos": 2.05,
-   "cons_por_elegivel": 4942.0,
-   "cons_sobre_mes": 2.78,
-   "saldo_por_operacao": 10944.0,
+   "cons_obs": 2113703428.0,
+   "cons_total": 11184872256.0,
+   "part_apos": 18.9,
+   "op_apos": 196127,
+   "inad_apos": 2.2,
+   "cons_por_elegivel": 4808.0,
+   "cons_sobre_mes": 2.71,
+   "saldo_por_operacao": 10777.0,
    "outras_censo": 32.41,
-   "cons_por_60": 5308.0,
+   "cons_por_60": 5165.0,
    "renda_por_hab": 1031.0,
    "ben_medio": 1493.05,
    "pass_uf": 22.54
@@ -4927,21 +6058,21 @@
    "ass": 155830,
    "elegiveis": 276338,
    "vdez": 691066835.0,
-   "vreal": 579047081.0,
+   "vreal": 578642031.0,
    "ben100_60": 128.1,
-   "peso": 15.05,
+   "peso": 15.04,
    "prural": 48.54,
    "pass": 34.08,
-   "cons_obs": 1936782177.0,
-   "cons_total": 12966396968.0,
-   "part_apos": 14.94,
-   "op_apos": 159023,
-   "inad_apos": 2.53,
-   "cons_por_elegivel": 7009.0,
-   "cons_sobre_mes": 3.34,
-   "saldo_por_operacao": 12179.0,
+   "cons_obs": 1920875599.0,
+   "cons_total": 13045894182.0,
+   "part_apos": 14.72,
+   "op_apos": 156370,
+   "inad_apos": 2.41,
+   "cons_por_elegivel": 6951.0,
+   "cons_sobre_mes": 3.32,
+   "saldo_por_operacao": 12284.0,
    "outras_censo": 23.09,
-   "cons_por_60": 5425.0,
+   "cons_por_60": 5381.0,
    "renda_por_hab": 976.0,
    "ben_medio": 1511.19,
    "pass_uf": 34.08
@@ -4960,21 +6091,21 @@
    "ass": 38482,
    "elegiveis": 41068,
    "vdez": 114075965.0,
-   "vreal": 95584611.0,
+   "vreal": 95517748.0,
    "ben100_60": 134.0,
-   "peso": 11.48,
+   "peso": 11.47,
    "prural": 54.37,
    "pass": 46.38,
-   "cons_obs": 724029169.0,
-   "cons_total": 6874713686.0,
-   "part_apos": 10.53,
-   "op_apos": 34815,
-   "inad_apos": 3.36,
-   "cons_por_elegivel": 17630.0,
-   "cons_sobre_mes": 7.57,
-   "saldo_por_operacao": 20796.0,
+   "cons_obs": 684882228.0,
+   "cons_total": 6756623975.0,
+   "part_apos": 10.14,
+   "op_apos": 33078,
+   "inad_apos": 3.13,
+   "cons_por_elegivel": 16677.0,
+   "cons_sobre_mes": 7.17,
+   "saldo_por_operacao": 20705.0,
    "outras_censo": 19.71,
-   "cons_por_60": 11694.0,
+   "cons_por_60": 11061.0,
    "renda_por_hab": 1135.0,
    "ben_medio": 1374.92,
    "pass_uf": 46.38
@@ -4993,21 +6124,21 @@
    "ass": 603823,
    "elegiveis": 2287975,
    "vdez": 4691253147.0,
-   "vreal": 3930815809.0,
+   "vreal": 3928066162.0,
    "ben100_60": 139.7,
-   "peso": 25.83,
+   "peso": 25.82,
    "prural": 56.55,
    "pass": 20.02,
-   "cons_obs": 7371539387.0,
-   "cons_total": 44468847170.0,
-   "part_apos": 16.58,
-   "op_apos": 709185,
-   "inad_apos": 2.8,
-   "cons_por_elegivel": 3222.0,
-   "cons_sobre_mes": 1.88,
-   "saldo_por_operacao": 10394.0,
+   "cons_obs": 7177328263.0,
+   "cons_total": 44239776842.0,
+   "part_apos": 16.22,
+   "op_apos": 672101,
+   "inad_apos": 1.96,
+   "cons_por_elegivel": 3137.0,
+   "cons_sobre_mes": 1.83,
+   "saldo_por_operacao": 10679.0,
    "outras_censo": 32.07,
-   "cons_por_60": 3414.0,
+   "cons_por_60": 3324.0,
    "renda_por_hab": 1076.0,
    "ben_medio": 1555.15,
    "pass_uf": 20.02
@@ -5026,21 +6157,21 @@
    "ass": 434666,
    "elegiveis": 1358580,
    "vdez": 2730004119.0,
-   "vreal": 2287479062.0,
+   "vreal": 2285878947.0,
    "ben100_60": 145.1,
-   "peso": 24.71,
+   "peso": 24.69,
    "prural": 60.19,
    "pass": 23.22,
-   "cons_obs": 3702004605.0,
-   "cons_total": 29110204113.0,
-   "part_apos": 12.72,
-   "op_apos": 328347,
-   "inad_apos": 1.91,
-   "cons_por_elegivel": 2725.0,
-   "cons_sobre_mes": 1.62,
-   "saldo_por_operacao": 11275.0,
+   "cons_obs": 3676382336.0,
+   "cons_total": 29319836395.0,
+   "part_apos": 12.54,
+   "op_apos": 325840,
+   "inad_apos": 1.87,
+   "cons_por_elegivel": 2706.0,
+   "cons_sobre_mes": 1.61,
+   "saldo_por_operacao": 11283.0,
    "outras_censo": 31.58,
-   "cons_por_60": 2869.0,
+   "cons_por_60": 2849.0,
    "renda_por_hab": 1053.0,
    "ben_medio": 1458.35,
    "pass_uf": 23.22
@@ -5059,22 +6190,22 @@
    "ass": 80099,
    "elegiveis": 283883,
    "vdez": 857614714.0,
-   "vreal": 718598074.0,
+   "vreal": 718095407.0,
    "ben100_60": 108.6,
    "peso": 8.58,
    "prural": 5.97,
    "pass": 20.21,
-   "cons_obs": 5857573630.0,
-   "cons_total": 24951718785.0,
-   "part_apos": 23.48,
-   "op_apos": 256384,
-   "inad_apos": 1.86,
-   "cons_por_elegivel": 20634.0,
-   "cons_sobre_mes": 8.15,
-   "saldo_por_operacao": 22847.0,
+   "cons_obs": 4324571535.0,
+   "cons_total": 18881399157.0,
+   "part_apos": 22.9,
+   "op_apos": 194603,
+   "inad_apos": 2.2,
+   "cons_por_elegivel": 15234.0,
+   "cons_sobre_mes": 6.02,
+   "saldo_por_operacao": 22223.0,
    "outras_censo": 22.33,
-   "cons_por_60": 16044.0,
-   "renda_por_hab": 2973.0,
+   "cons_por_60": 11845.0,
+   "renda_por_hab": 2971.0,
    "ben_medio": 2163.79,
    "pass_uf": 20.21
   },
@@ -5092,22 +6223,22 @@
    "ass": 111977,
    "elegiveis": 645947,
    "vdez": 1425270550.0,
-   "vreal": 1194238689.0,
+   "vreal": 1193403307.0,
    "ben100_60": 127.0,
-   "peso": 19.0,
+   "peso": 18.99,
    "prural": 30.32,
    "pass": 13.96,
-   "cons_obs": 2992528045.0,
-   "cons_total": 13123661269.0,
-   "part_apos": 22.8,
-   "op_apos": 239049,
-   "inad_apos": 1.92,
-   "cons_por_elegivel": 4633.0,
-   "cons_sobre_mes": 2.51,
-   "saldo_por_operacao": 12518.0,
+   "cons_obs": 2965755835.0,
+   "cons_total": 13270564580.0,
+   "part_apos": 22.35,
+   "op_apos": 236352,
+   "inad_apos": 1.87,
+   "cons_por_elegivel": 4591.0,
+   "cons_sobre_mes": 2.49,
+   "saldo_por_operacao": 12548.0,
    "outras_censo": 23.85,
-   "cons_por_60": 4740.0,
-   "renda_por_hab": 1640.0,
+   "cons_por_60": 4697.0,
+   "renda_por_hab": 1639.0,
    "ben_medio": 1777.18,
    "pass_uf": 13.96
   },
@@ -5125,21 +6256,21 @@
    "ass": 220961,
    "elegiveis": 837903,
    "vdez": 1838433206.0,
-   "vreal": 1540428982.0,
+   "vreal": 1539351436.0,
    "ben100_60": 117.8,
-   "peso": 12.93,
+   "peso": 12.92,
    "prural": 34.41,
    "pass": 19.45,
-   "cons_obs": 5317542583.0,
-   "cons_total": 27499615189.0,
-   "part_apos": 19.34,
-   "op_apos": 354836,
-   "inad_apos": 2.83,
-   "cons_por_elegivel": 6346.0,
-   "cons_sobre_mes": 3.45,
-   "saldo_por_operacao": 14986.0,
+   "cons_obs": 5012019028.0,
+   "cons_total": 26654105100.0,
+   "part_apos": 18.8,
+   "op_apos": 339788,
+   "inad_apos": 2.99,
+   "cons_por_elegivel": 5982.0,
+   "cons_sobre_mes": 3.26,
+   "saldo_por_operacao": 14750.0,
    "outras_censo": 19.1,
-   "cons_por_60": 5514.0,
+   "cons_por_60": 5197.0,
    "renda_por_hab": 1688.0,
    "ben_medio": 1618.18,
    "pass_uf": 19.45
@@ -5158,21 +6289,21 @@
    "ass": 217156,
    "elegiveis": 1075843,
    "vdez": 1774676777.0,
-   "vreal": 1487007269.0,
+   "vreal": 1485967092.0,
    "ben100_60": 162.8,
-   "peso": 24.45,
+   "peso": 24.44,
    "prural": 79.8,
    "pass": 16.22,
-   "cons_obs": 2511020699.0,
-   "cons_total": 24617943348.0,
-   "part_apos": 10.2,
-   "op_apos": 275773,
-   "inad_apos": 2.14,
-   "cons_por_elegivel": 2334.0,
-   "cons_sobre_mes": 1.69,
-   "saldo_por_operacao": 9105.0,
+   "cons_obs": 2489904561.0,
+   "cons_total": 24759123808.0,
+   "part_apos": 10.06,
+   "op_apos": 273866,
+   "inad_apos": 2.08,
+   "cons_por_elegivel": 2314.0,
+   "cons_sobre_mes": 1.68,
+   "saldo_por_operacao": 9092.0,
    "outras_censo": 31.44,
-   "cons_por_60": 3055.0,
+   "cons_por_60": 3029.0,
    "renda_por_hab": 897.0,
    "ben_medio": 1325.94,
    "pass_uf": 16.22
@@ -5191,22 +6322,22 @@
    "ass": 606722,
    "elegiveis": 3821977,
    "vdez": 8151976870.0,
-   "vreal": 6830567132.0,
+   "vreal": 6825789079.0,
    "ben100_60": 128.2,
-   "peso": 20.74,
+   "peso": 20.72,
    "prural": 27.79,
    "pass": 12.93,
-   "cons_obs": 14088130943.0,
-   "cons_total": 66874500704.0,
-   "part_apos": 21.07,
-   "op_apos": 1194575,
-   "inad_apos": 1.93,
-   "cons_por_elegivel": 3686.0,
-   "cons_sobre_mes": 2.06,
-   "saldo_por_operacao": 11793.0,
+   "cons_obs": 14003432455.0,
+   "cons_total": 67621913963.0,
+   "part_apos": 20.71,
+   "op_apos": 1182231,
+   "inad_apos": 1.89,
+   "cons_por_elegivel": 3664.0,
+   "cons_sobre_mes": 2.05,
+   "saldo_por_operacao": 11845.0,
    "outras_censo": 25.61,
-   "cons_por_60": 3849.0,
-   "renda_por_hab": 1603.0,
+   "cons_por_60": 3826.0,
+   "renda_por_hab": 1604.0,
    "ben_medio": 1737.45,
    "pass_uf": 12.93
   },
@@ -5224,21 +6355,21 @@
    "ass": 114417,
    "elegiveis": 350752,
    "vdez": 813278947.0,
-   "vreal": 681448995.0,
+   "vreal": 680972314.0,
    "ben100_60": 130.5,
-   "peso": 14.56,
+   "peso": 14.55,
    "prural": 27.82,
    "pass": 22.42,
-   "cons_obs": 3035115445.0,
-   "cons_total": 15181236012.0,
-   "part_apos": 19.99,
-   "op_apos": 192883,
-   "inad_apos": 2.28,
-   "cons_por_elegivel": 8653.0,
-   "cons_sobre_mes": 4.45,
-   "saldo_por_operacao": 15736.0,
+   "cons_obs": 3018499936.0,
+   "cons_total": 15284184943.0,
+   "part_apos": 19.75,
+   "op_apos": 190796,
+   "inad_apos": 2.35,
+   "cons_por_elegivel": 8606.0,
+   "cons_sobre_mes": 4.43,
+   "saldo_por_operacao": 15821.0,
    "outras_censo": 20.35,
-   "cons_por_60": 7761.0,
+   "cons_por_60": 7718.0,
    "renda_por_hab": 1698.0,
    "ben_medio": 1593.85,
    "pass_uf": 22.42
@@ -5257,22 +6388,22 @@
    "ass": 116044,
    "elegiveis": 408341,
    "vdez": 897869548.0,
-   "vreal": 752327726.0,
+   "vreal": 751801465.0,
    "ben100_60": 133.1,
-   "peso": 11.34,
+   "peso": 11.33,
    "prural": 41.5,
    "pass": 20.26,
-   "cons_obs": 2441724588.0,
-   "cons_total": 14619842881.0,
-   "part_apos": 16.7,
-   "op_apos": 176191,
-   "inad_apos": 2.88,
-   "cons_por_elegivel": 5980.0,
-   "cons_sobre_mes": 3.25,
-   "saldo_por_operacao": 13858.0,
+   "cons_obs": 2389685363.0,
+   "cons_total": 14635809108.0,
+   "part_apos": 16.33,
+   "op_apos": 172665,
+   "inad_apos": 2.94,
+   "cons_por_elegivel": 5852.0,
+   "cons_sobre_mes": 3.18,
+   "saldo_por_operacao": 13840.0,
    "outras_censo": 15.48,
-   "cons_por_60": 5672.0,
-   "renda_por_hab": 1813.0,
+   "cons_por_60": 5551.0,
+   "renda_por_hab": 1814.0,
    "ben_medio": 1567.25,
    "pass_uf": 20.26
   },
@@ -5290,21 +6421,21 @@
    "ass": 313008,
    "elegiveis": 802062,
    "vdez": 1652628548.0,
-   "vreal": 1384742673.0,
+   "vreal": 1383774031.0,
    "ben100_60": 132.9,
-   "peso": 17.23,
+   "peso": 17.22,
    "prural": 63.02,
    "pass": 26.88,
-   "cons_obs": 4477759184.0,
-   "cons_total": 33712541002.0,
-   "part_apos": 13.28,
-   "op_apos": 263183,
-   "inad_apos": 2.01,
-   "cons_por_elegivel": 5583.0,
-   "cons_sobre_mes": 3.23,
-   "saldo_por_operacao": 17014.0,
+   "cons_obs": 4446654811.0,
+   "cons_total": 33899071430.0,
+   "part_apos": 13.12,
+   "op_apos": 260342,
+   "inad_apos": 1.98,
+   "cons_por_elegivel": 5544.0,
+   "cons_sobre_mes": 3.21,
+   "saldo_por_operacao": 17080.0,
    "outras_censo": 26.26,
-   "cons_por_60": 5110.0,
+   "cons_por_60": 5074.0,
    "renda_por_hab": 990.0,
    "ben_medio": 1419.37,
    "pass_uf": 26.88
@@ -5323,21 +6454,21 @@
    "ass": 179167,
    "elegiveis": 655207,
    "vdez": 1308953703.0,
-   "vreal": 1096776436.0,
+   "vreal": 1096009230.0,
    "ben100_60": 143.9,
-   "peso": 25.24,
+   "peso": 25.22,
    "prural": 55.19,
    "pass": 20.24,
-   "cons_obs": 2385840248.0,
-   "cons_total": 14425451080.0,
-   "part_apos": 16.54,
-   "op_apos": 189654,
-   "inad_apos": 2.26,
-   "cons_por_elegivel": 3641.0,
-   "cons_sobre_mes": 2.18,
-   "saldo_por_operacao": 12580.0,
+   "cons_obs": 2351317637.0,
+   "cons_total": 14350564155.0,
+   "part_apos": 16.38,
+   "op_apos": 186888,
+   "inad_apos": 2.28,
+   "cons_por_elegivel": 3589.0,
+   "cons_sobre_mes": 2.15,
+   "saldo_por_operacao": 12581.0,
    "outras_censo": 34.88,
-   "cons_por_60": 3877.0,
+   "cons_por_60": 3821.0,
    "renda_por_hab": 1093.0,
    "ben_medio": 1478.79,
    "pass_uf": 20.24
@@ -5356,21 +6487,21 @@
    "ass": 424228,
    "elegiveis": 1270675,
    "vdez": 2792911851.0,
-   "vreal": 2340189649.0,
+   "vreal": 2338552662.0,
    "ben100_60": 133.7,
-   "peso": 22.75,
+   "peso": 22.73,
    "prural": 46.84,
    "pass": 23.82,
-   "cons_obs": 5718566416.0,
-   "cons_total": 28918961279.0,
-   "part_apos": 19.77,
-   "op_apos": 470610,
-   "inad_apos": 2.14,
-   "cons_por_elegivel": 4500.0,
-   "cons_sobre_mes": 2.44,
-   "saldo_por_operacao": 12151.0,
+   "cons_obs": 5694299963.0,
+   "cons_total": 29147942152.0,
+   "part_apos": 19.54,
+   "op_apos": 468512,
+   "inad_apos": 2.1,
+   "cons_por_elegivel": 4481.0,
+   "cons_sobre_mes": 2.43,
+   "saldo_por_operacao": 12154.0,
    "outras_censo": 30.57,
-   "cons_por_60": 4293.0,
+   "cons_por_60": 4274.0,
    "renda_por_hab": 1136.0,
    "ben_medio": 1568.09,
    "pass_uf": 23.82
@@ -5389,21 +6520,21 @@
    "ass": 112317,
    "elegiveis": 620307,
    "vdez": 1096122286.0,
-   "vreal": 918444321.0,
+   "vreal": 917801859.0,
    "ben100_60": 156.2,
-   "peso": 27.9,
+   "peso": 27.88,
    "prural": 70.48,
    "pass": 14.56,
-   "cons_obs": 1677751550.0,
-   "cons_total": 12469480980.0,
-   "part_apos": 13.45,
-   "op_apos": 135619,
-   "inad_apos": 2.15,
-   "cons_por_elegivel": 2705.0,
-   "cons_sobre_mes": 1.83,
-   "saldo_por_operacao": 12371.0,
+   "cons_obs": 1656688362.0,
+   "cons_total": 12518403727.0,
+   "part_apos": 13.23,
+   "op_apos": 134374,
+   "inad_apos": 2.07,
+   "cons_por_elegivel": 2671.0,
+   "cons_sobre_mes": 1.81,
+   "saldo_por_operacao": 12329.0,
    "outras_censo": 35.73,
-   "cons_por_60": 3397.0,
+   "cons_por_60": 3354.0,
    "renda_por_hab": 1006.0,
    "ben_medio": 1420.81,
    "pass_uf": 14.56
@@ -5422,22 +6553,22 @@
    "ass": 278882,
    "elegiveis": 2025652,
    "vdez": 4380103149.0,
-   "vreal": 3670102244.0,
+   "vreal": 3667534969.0,
    "ben100_60": 129.8,
-   "peso": 16.4,
+   "peso": 16.38,
    "prural": 26.71,
    "pass": 11.35,
-   "cons_obs": 8085113285.0,
-   "cons_total": 44974301868.0,
-   "part_apos": 17.98,
-   "op_apos": 724311,
-   "inad_apos": 1.65,
-   "cons_por_elegivel": 3991.0,
-   "cons_sobre_mes": 2.2,
-   "saldo_por_operacao": 11162.0,
+   "cons_obs": 8038289559.0,
+   "cons_total": 45711746471.0,
+   "part_apos": 17.58,
+   "op_apos": 713031,
+   "inad_apos": 1.59,
+   "cons_por_elegivel": 3968.0,
+   "cons_sobre_mes": 2.19,
+   "saldo_por_operacao": 11273.0,
    "outras_censo": 21.0,
-   "cons_por_60": 4271.0,
-   "renda_por_hab": 1955.0,
+   "cons_por_60": 4246.0,
+   "renda_por_hab": 1956.0,
    "ben_medio": 1782.59,
    "pass_uf": 11.35
   },
@@ -5455,21 +6586,21 @@
    "ass": 519083,
    "elegiveis": 2626442,
    "vdez": 6749515227.0,
-   "vreal": 5655440097.0,
+   "vreal": 5651484059.0,
    "ben100_60": 109.8,
-   "peso": 19.16,
+   "peso": 19.15,
    "prural": 2.57,
    "pass": 15.63,
-   "cons_obs": 21068364302.0,
-   "cons_total": 74682340770.0,
-   "part_apos": 28.21,
-   "op_apos": 1605903,
-   "inad_apos": 2.83,
-   "cons_por_elegivel": 8022.0,
-   "cons_sobre_mes": 3.73,
-   "saldo_por_operacao": 13119.0,
+   "cons_obs": 20733764698.0,
+   "cons_total": 74480714038.0,
+   "part_apos": 27.84,
+   "op_apos": 1574698,
+   "inad_apos": 2.94,
+   "cons_por_elegivel": 7894.0,
+   "cons_sobre_mes": 3.67,
+   "saldo_por_operacao": 13167.0,
    "outras_censo": 28.82,
-   "cons_por_60": 6963.0,
+   "cons_por_60": 6853.0,
    "renda_por_hab": 1838.0,
    "ben_medio": 2031.86,
    "pass_uf": 15.63
@@ -5488,22 +6619,22 @@
    "ass": 130595,
    "elegiveis": 518422,
    "vdez": 1022586806.0,
-   "vreal": 856828710.0,
+   "vreal": 856229350.0,
    "ben100_60": 138.1,
-   "peso": 20.88,
+   "peso": 20.86,
    "prural": 51.64,
    "pass": 18.99,
-   "cons_obs": 2718705632.0,
-   "cons_total": 13620653840.0,
-   "part_apos": 19.96,
-   "op_apos": 192657,
-   "inad_apos": 2.14,
-   "cons_por_elegivel": 5244.0,
-   "cons_sobre_mes": 3.17,
-   "saldo_por_operacao": 14112.0,
+   "cons_obs": 2679542206.0,
+   "cons_total": 13615343946.0,
+   "part_apos": 19.68,
+   "op_apos": 190922,
+   "inad_apos": 2.15,
+   "cons_por_elegivel": 5169.0,
+   "cons_sobre_mes": 3.13,
+   "saldo_por_operacao": 14035.0,
    "outras_censo": 33.15,
-   "cons_por_60": 5460.0,
-   "renda_por_hab": 1242.0,
+   "cons_por_60": 5382.0,
+   "renda_por_hab": 1243.0,
    "ben_medio": 1486.76,
    "pass_uf": 18.99
   },
@@ -5521,22 +6652,22 @@
    "ass": 61809,
    "elegiveis": 220124,
    "vdez": 456779558.0,
-   "vreal": 382737032.0,
+   "vreal": 382469304.0,
    "ben100_60": 157.8,
-   "peso": 17.7,
+   "peso": 17.69,
    "prural": 61.44,
    "pass": 19.98,
-   "cons_obs": 1218527372.0,
-   "cons_total": 7434648312.0,
-   "part_apos": 16.39,
-   "op_apos": 76033,
-   "inad_apos": 2.32,
-   "cons_por_elegivel": 5536.0,
-   "cons_sobre_mes": 3.18,
-   "saldo_por_operacao": 16026.0,
+   "cons_obs": 1210159185.0,
+   "cons_total": 7456710897.0,
+   "part_apos": 16.23,
+   "op_apos": 75209,
+   "inad_apos": 2.22,
+   "cons_por_elegivel": 5498.0,
+   "cons_sobre_mes": 3.16,
+   "saldo_por_operacao": 16091.0,
    "outras_censo": 21.37,
-   "cons_por_60": 6216.0,
-   "renda_por_hab": 1368.0,
+   "cons_por_60": 6173.0,
+   "renda_por_hab": 1367.0,
    "ben_medio": 1476.54,
    "pass_uf": 19.98
   },
@@ -5554,21 +6685,21 @@
    "ass": 24988,
    "elegiveis": 36647,
    "vdez": 89430470.0,
-   "vreal": 74934073.0,
+   "vreal": 74881656.0,
    "ben100_60": 127.4,
-   "peso": 10.54,
+   "peso": 10.53,
    "prural": 59.92,
    "pass": 38.87,
-   "cons_obs": 397360857.0,
-   "cons_total": 4449055781.0,
-   "part_apos": 8.93,
-   "op_apos": 22859,
-   "inad_apos": 2.98,
-   "cons_por_elegivel": 10843.0,
-   "cons_sobre_mes": 5.3,
-   "saldo_por_operacao": 17383.0,
+   "cons_obs": 378251035.0,
+   "cons_total": 4423418575.0,
+   "part_apos": 8.55,
+   "op_apos": 21868,
+   "inad_apos": 2.64,
+   "cons_por_elegivel": 10321.0,
+   "cons_sobre_mes": 5.05,
+   "saldo_por_operacao": 17297.0,
    "outras_censo": 19.28,
-   "cons_por_60": 7875.0,
+   "cons_por_60": 7496.0,
    "renda_por_hab": 1117.0,
    "ben_medio": 1391.09,
    "pass_uf": 38.87
@@ -5587,22 +6718,22 @@
    "ass": 266045,
    "elegiveis": 2546463,
    "vdez": 5616819833.0,
-   "vreal": 4706351054.0,
+   "vreal": 4703058913.0,
    "ben100_60": 137.8,
-   "peso": 21.31,
+   "peso": 21.29,
    "prural": 23.44,
    "pass": 8.8,
-   "cons_obs": 10903366696.0,
-   "cons_total": 46004977983.0,
-   "part_apos": 23.7,
-   "op_apos": 981627,
-   "inad_apos": 2.98,
-   "cons_por_elegivel": 4282.0,
-   "cons_sobre_mes": 2.32,
-   "saldo_por_operacao": 11107.0,
+   "cons_obs": 10714856271.0,
+   "cons_total": 46257510537.0,
+   "part_apos": 23.16,
+   "op_apos": 962454,
+   "inad_apos": 2.65,
+   "cons_por_elegivel": 4208.0,
+   "cons_sobre_mes": 2.28,
+   "saldo_por_operacao": 11133.0,
    "outras_censo": 27.29,
-   "cons_por_60": 4971.0,
-   "renda_por_hab": 2029.0,
+   "cons_por_60": 4885.0,
+   "renda_por_hab": 2030.0,
    "ben_medio": 1857.9,
    "pass_uf": 8.8
   },
@@ -5620,21 +6751,21 @@
    "ass": 110820,
    "elegiveis": 1488783,
    "vdez": 3383156675.0,
-   "vreal": 2834757649.0,
+   "vreal": 2832774707.0,
    "ben100_60": 152.5,
-   "peso": 16.86,
+   "peso": 16.85,
    "prural": 19.34,
    "pass": 6.14,
-   "cons_obs": 6295840260.0,
-   "cons_total": 28141000247.0,
-   "part_apos": 22.37,
-   "op_apos": 561289,
-   "inad_apos": 1.76,
-   "cons_por_elegivel": 4229.0,
-   "cons_sobre_mes": 2.22,
-   "saldo_por_operacao": 11217.0,
+   "cons_obs": 6229870749.0,
+   "cons_total": 28527123343.0,
+   "part_apos": 21.84,
+   "op_apos": 553312,
+   "inad_apos": 1.68,
+   "cons_por_elegivel": 4185.0,
+   "cons_sobre_mes": 2.2,
+   "saldo_por_operacao": 11259.0,
    "outras_censo": 20.27,
-   "cons_por_60": 5316.0,
+   "cons_por_60": 5260.0,
    "renda_por_hab": 2209.0,
    "ben_medio": 1873.54,
    "pass_uf": 6.14
@@ -5653,21 +6784,21 @@
    "ass": 93668,
    "elegiveis": 325774,
    "vdez": 693358618.0,
-   "vreal": 580967373.0,
+   "vreal": 580560980.0,
    "ben100_60": 151.5,
-   "peso": 22.33,
+   "peso": 22.32,
    "prural": 48.82,
    "pass": 20.99,
-   "cons_obs": 1556623764.0,
-   "cons_total": 7502570971.0,
-   "part_apos": 20.75,
-   "op_apos": 125048,
-   "inad_apos": 2.39,
-   "cons_por_elegivel": 4778.0,
-   "cons_sobre_mes": 2.68,
-   "saldo_por_operacao": 12448.0,
+   "cons_obs": 1041470353.0,
+   "cons_total": 5650856065.0,
+   "part_apos": 18.43,
+   "op_apos": 102932,
+   "inad_apos": 2.66,
+   "cons_por_elegivel": 3197.0,
+   "cons_sobre_mes": 1.79,
+   "saldo_por_operacao": 10118.0,
    "outras_censo": 31.07,
-   "cons_por_60": 5284.0,
+   "cons_por_60": 3535.0,
    "renda_por_hab": 1177.0,
    "ben_medio": 1553.71,
    "pass_uf": 20.99
@@ -5686,21 +6817,21 @@
    "ass": 1017441,
    "elegiveis": 7426415,
    "vdez": 19479846815.0,
-   "vreal": 16322225088.0,
+   "vreal": 16310807523.0,
    "ben100_60": 118.1,
-   "peso": 17.67,
+   "peso": 17.66,
    "prural": 6.11,
    "pass": 11.26,
-   "cons_obs": 39671772517.0,
-   "cons_total": 176978026367.0,
-   "part_apos": 22.42,
-   "op_apos": 3485197,
-   "inad_apos": 1.83,
-   "cons_por_elegivel": 5342.0,
-   "cons_sobre_mes": 2.43,
-   "saldo_por_operacao": 11383.0,
+   "cons_obs": 39301188986.0,
+   "cons_total": 179214070023.0,
+   "part_apos": 21.93,
+   "op_apos": 3438174,
+   "inad_apos": 1.8,
+   "cons_por_elegivel": 5292.0,
+   "cons_sobre_mes": 2.41,
+   "saldo_por_operacao": 11431.0,
    "outras_censo": 20.72,
-   "cons_por_60": 5185.0,
+   "cons_por_60": 5137.0,
    "renda_por_hab": 2080.0,
    "ben_medio": 2155.33,
    "pass_uf": 11.26
@@ -5719,21 +6850,21 @@
    "ass": 54863,
    "elegiveis": 194820,
    "vdez": 378742351.0,
-   "vreal": 317349410.0,
+   "vreal": 317127421.0,
    "ben100_60": 139.7,
-   "peso": 15.13,
+   "peso": 15.12,
    "prural": 63.95,
    "pass": 20.79,
-   "cons_obs": 846018526.0,
-   "cons_total": 6752730807.0,
-   "part_apos": 12.53,
-   "op_apos": 56060,
-   "inad_apos": 2.97,
-   "cons_por_elegivel": 4343.0,
-   "cons_sobre_mes": 2.67,
-   "saldo_por_operacao": 15091.0,
+   "cons_obs": 788751739.0,
+   "cons_total": 6218728279.0,
+   "part_apos": 12.68,
+   "op_apos": 51506,
+   "inad_apos": 2.79,
+   "cons_por_elegivel": 4049.0,
+   "cons_sobre_mes": 2.49,
+   "saldo_por_operacao": 15314.0,
    "outras_censo": 21.16,
-   "cons_por_60": 4478.0,
+   "cons_por_60": 4175.0,
    "renda_por_hab": 1388.0,
    "ben_medio": 1434.94,
    "pass_uf": 20.79
@@ -5742,14 +6873,14 @@
  "circularidade": {
   "selo": "observado",
   "n_uf": 27,
-  "referencia": -0.406,
+  "referencia": -0.462,
   "especificacoes": [
    {
     "id": "compartilhada",
     "rotulo": "Peso dos benefícios × consignado por benefício elegível",
     "esquerdo": "peso",
     "direito": "cons_por_elegivel",
-    "r": -0.72,
+    "r": -0.734,
     "n": 27,
     "referencia": false,
     "obs": "A quantidade de benefícios está no numerador de um lado e no denominador do outro. Foi a especificação publicada na primeira versão desta página, e superestima a associação."
@@ -5759,7 +6890,7 @@
     "rotulo": "Peso dos benefícios × consignado por pessoa de 60 anos ou mais",
     "esquerdo": "peso",
     "direito": "cons_por_60",
-    "r": -0.701,
+    "r": -0.721,
     "n": 27,
     "referencia": false,
     "obs": "Tira a quantidade de benefícios do denominador do lado direito. O lado esquerdo continua vindo do registro da Previdência."
@@ -5769,7 +6900,7 @@
     "rotulo": "Rendimento de outras fontes × consignado por benefício elegível",
     "esquerdo": "outras_censo",
     "direito": "cons_por_elegivel",
-    "r": -0.421,
+    "r": -0.462,
     "n": 27,
     "referencia": false,
     "obs": "Troca o lado esquerdo por medida exclusivamente do Censo. Sobra a quantidade de benefícios no denominador do lado direito."
@@ -5779,28 +6910,28 @@
     "rotulo": "Rendimento de outras fontes × consignado por pessoa de 60 anos ou mais",
     "esquerdo": "outras_censo",
     "direito": "cons_por_60",
-    "r": -0.406,
+    "r": -0.462,
     "n": 27,
     "referencia": true,
     "obs": "Nenhum termo compartilhado. É a especificação de referência desta página."
    }
   ],
-  "correlacao_mecanica": -0.263,
+  "correlacao_mecanica": -0.264,
   "controles": [
    {
     "variavel": "renda domiciliar por habitante",
-    "parcial_referencia": -0.235,
-    "parcial_compartilhada": -0.666
+    "parcial_referencia": -0.346,
+    "parcial_compartilhada": -0.714
    },
    {
     "variavel": "participação de benefícios assistenciais",
-    "parcial_referencia": -0.384,
-    "parcial_compartilhada": -0.663
+    "parcial_referencia": -0.454,
+    "parcial_compartilhada": -0.692
    },
    {
     "variavel": "participação da clientela rural",
-    "parcial_referencia": -0.337,
-    "parcial_compartilhada": -0.697
+    "parcial_referencia": -0.41,
+    "parcial_compartilhada": -0.721
    }
   ],
   "mecanismo": {
@@ -5808,25 +6939,25 @@
    "testados": [
     {
      "variavel": "valor médio do benefício",
-     "com_consignado_por_60": 0.283,
+     "com_consignado_por_60": 0.209,
      "com_peso": -0.229,
      "leitura": "Margem consignável é percentual do benefício, então benefício maior comportaria saldo maior. A associação é fraca demais para sustentar o resultado."
     },
     {
      "variavel": "participação de benefícios assistenciais",
-     "com_consignado_por_60": 0.45,
+     "com_consignado_por_60": 0.523,
      "com_peso": -0.377,
      "leitura": "Benefício assistencial tem regra de consignação distinta. A associação tem sinal oposto ao que a hipótese previa."
     },
     {
      "variavel": "participação da clientela rural",
-     "com_consignado_por_60": -0.297,
+     "com_consignado_por_60": -0.257,
      "com_peso": 0.327,
      "leitura": "Aposentadoria rural concentra-se no piso previdenciário. Associação fraca."
     },
     {
      "variavel": "renda domiciliar por habitante",
-     "com_consignado_por_60": 0.449,
+     "com_consignado_por_60": 0.364,
      "com_peso": -0.49,
      "leitura": "Estados mais pobres teriam menos crédito de qualquer natureza. Explica parte da associação, não a maior parte."
     }
@@ -6270,140 +7401,140 @@
      "c": "2302404",
      "n": "Boa Viagem",
      "uf": "CE",
-     "v": 53.89,
+     "v": 53.85,
      "sel": "media"
     },
     {
      "c": "2921500",
      "n": "Monte Santo",
      "uf": "BA",
-     "v": 53.42,
+     "v": 53.38,
      "sel": "alta"
     },
     {
      "c": "2301307",
      "n": "Araripe",
      "uf": "CE",
-     "v": 53.14,
+     "v": 53.1,
      "sel": "media"
     },
     {
      "c": "2313203",
      "n": "Tamboril",
      "uf": "CE",
-     "v": 52.71,
+     "v": 52.67,
      "sel": "alta"
     },
     {
      "c": "2305902",
      "n": "Ipueiras",
      "uf": "CE",
-     "v": 52.25,
+     "v": 52.21,
      "sel": "alta"
     },
     {
      "c": "2314102",
      "n": "Viçosa do Ceará",
      "uf": "CE",
-     "v": 52.14,
+     "v": 52.11,
      "sel": "media"
     },
     {
      "c": "2922904",
      "n": "Nova Soure",
      "uf": "BA",
-     "v": 51.89,
+     "v": 51.85,
      "sel": "alta"
     },
     {
      "c": "2304657",
      "n": "Graça",
      "uf": "CE",
-     "v": 51.84,
+     "v": 51.81,
      "sel": "alta"
     },
     {
      "c": "2309508",
      "n": "Orós",
      "uf": "CE",
-     "v": 51.76,
+     "v": 51.72,
      "sel": "alta"
     },
     {
      "c": "2304236",
      "n": "Croatá",
      "uf": "CE",
-     "v": 51.69,
+     "v": 51.65,
      "sel": "alta"
     },
     {
      "c": "2924504",
      "n": "Pindaí",
      "uf": "BA",
-     "v": 51.5,
+     "v": 51.46,
      "sel": "alta"
     },
     {
      "c": "2205805",
      "n": "Luzilândia",
      "uf": "PI",
-     "v": 50.8,
+     "v": 50.77,
      "sel": "media"
     },
     {
      "c": "2931053",
      "n": "Tanque Novo",
      "uf": "BA",
-     "v": 50.2,
+     "v": 50.17,
      "sel": "alta"
     },
     {
      "c": "2303204",
      "n": "Caririaçu",
      "uf": "CE",
-     "v": 50.17,
+     "v": 50.13,
      "sel": "alta"
     },
     {
      "c": "2703205",
      "n": "Igreja Nova",
      "uf": "AL",
-     "v": 49.86,
+     "v": 49.83,
      "sel": "alta"
     },
     {
      "c": "2920106",
      "n": "Mairi",
      "uf": "BA",
-     "v": 49.86,
+     "v": 49.82,
      "sel": "alta"
     },
     {
      "c": "2110500",
      "n": "São Bento",
      "uf": "MA",
-     "v": 49.72,
+     "v": 49.68,
      "sel": "media"
     },
     {
      "c": "2925808",
      "n": "Queimadas",
      "uf": "BA",
-     "v": 49.69,
+     "v": 49.65,
      "sel": "alta"
     },
     {
      "c": "2305209",
      "n": "Hidrolândia",
      "uf": "CE",
-     "v": 49.5,
+     "v": 49.46,
      "sel": "alta"
     },
     {
      "c": "2921203",
      "n": "Miguel Calmon",
      "uf": "BA",
-     "v": 49.5,
+     "v": 49.46,
      "sel": "alta"
     }
    ],
@@ -6840,283 +7971,283 @@
      "c": "3550308",
      "n": "São Paulo",
      "uf": "SP",
-     "v": 10504761147.0,
+     "v": 10406633657.0,
      "sel": "alta"
     },
     {
      "c": "3304557",
      "n": "Rio de Janeiro",
      "uf": "RJ",
-     "v": 9227369247.0,
+     "v": 9080823742.0,
      "sel": "alta"
     },
     {
      "c": "5300108",
      "n": "Brasília",
      "uf": "DF",
-     "v": 5857573630.0,
+     "v": 4324571535.0,
      "sel": "alta"
     },
     {
      "c": "3106200",
      "n": "Belo Horizonte",
      "uf": "MG",
-     "v": 1944221689.0,
+     "v": 1932532939.0,
      "sel": "alta"
     },
     {
      "c": "4314902",
      "n": "Porto Alegre",
      "uf": "RS",
-     "v": 1408577877.0,
+     "v": 1384224700.0,
      "sel": "alta"
     },
     {
      "c": "4106902",
      "n": "Curitiba",
      "uf": "PR",
-     "v": 1384683796.0,
+     "v": 1376664607.0,
      "sel": "alta"
     },
     {
      "c": "2611606",
      "n": "Recife",
      "uf": "PE",
-     "v": 1206494090.0,
+     "v": 1201374392.0,
      "sel": "alta"
     },
     {
      "c": "3509502",
      "n": "Campinas",
      "uf": "SP",
-     "v": 1202715112.0,
+     "v": 1191480262.0,
      "sel": "alta"
     },
     {
      "c": "5208707",
      "n": "Goiânia",
      "uf": "GO",
-     "v": 1192187636.0,
+     "v": 1123689566.0,
      "sel": "alta"
     },
     {
      "c": "2927408",
      "n": "Salvador",
      "uf": "BA",
-     "v": 1108101393.0,
+     "v": 1078907271.0,
      "sel": "alta"
     },
     {
      "c": "5002704",
      "n": "Campo Grande",
      "uf": "MS",
-     "v": 960484172.0,
+     "v": 955226074.0,
      "sel": "alta"
     },
     {
      "c": "1302603",
      "n": "Manaus",
      "uf": "AM",
-     "v": 942598912.0,
+     "v": 934857452.0,
      "sel": "alta"
     },
     {
      "c": "3304904",
      "n": "São Gonçalo",
      "uf": "RJ",
-     "v": 924854637.0,
+     "v": 910166454.0,
      "sel": "alta"
     },
     {
      "c": "3301702",
      "n": "Duque de Caxias",
      "uf": "RJ",
-     "v": 920250217.0,
+     "v": 905635160.0,
      "sel": "alta"
     },
     {
      "c": "1501402",
      "n": "Belém",
      "uf": "PA",
-     "v": 896392608.0,
+     "v": 890165893.0,
      "sel": "alta"
     },
     {
      "c": "3518800",
      "n": "Guarulhos",
      "uf": "SP",
-     "v": 856677568.0,
+     "v": 848675138.0,
      "sel": "alta"
     },
     {
      "c": "3303302",
      "n": "Niterói",
      "uf": "RJ",
-     "v": 849619704.0,
+     "v": 836126372.0,
      "sel": "alta"
     },
     {
      "c": "2304400",
      "n": "Fortaleza",
      "uf": "CE",
-     "v": 771320445.0,
+     "v": 765981991.0,
      "sel": "alta"
     },
     {
      "c": "3547809",
      "n": "Santo André",
      "uf": "SP",
-     "v": 734907097.0,
+     "v": 728042154.0,
      "sel": "alta"
     },
     {
      "c": "3303500",
      "n": "Nova Iguaçu",
      "uf": "RJ",
-     "v": 715802755.0,
+     "v": 704434653.0,
      "sel": "alta"
     }
    ],
    "exposicao_por_beneficio": [
     {
-     "c": "5300108",
-     "n": "Brasília",
-     "uf": "DF",
-     "v": 20634.0,
-     "sel": "alta"
-    },
-    {
      "c": "1600154",
      "n": "Pedra Branca do Amapari",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "alta"
     },
     {
      "c": "1600204",
      "n": "Calçoene",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
      "c": "1600279",
      "n": "Laranjal do Jari",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
      "c": "1600303",
      "n": "Macapá",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "alta"
     },
     {
      "c": "1600402",
      "n": "Mazagão",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
      "c": "1600501",
      "n": "Oiapoque",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
      "c": "1600535",
      "n": "Porto Grande",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "alta"
     },
     {
      "c": "1600600",
      "n": "Santana",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
      "c": "1600709",
      "n": "Tartarugalzinho",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "alta"
     },
     {
      "c": "1600808",
      "n": "Vitória do Jari",
      "uf": "AP",
-     "v": 17630.0,
+     "v": 16677.0,
      "sel": "media"
     },
     {
-     "c": "1400050",
-     "n": "Alto Alegre",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "5300108",
+     "n": "Brasília",
+     "uf": "DF",
+     "v": 15234.0,
      "sel": "alta"
     },
     {
-     "c": "1400100",
-     "n": "Boa Vista",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200013",
+     "n": "Acrelândia",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "alta"
     },
     {
-     "c": "1400159",
-     "n": "Bonfim",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200104",
+     "n": "Brasiléia",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "media"
     },
     {
-     "c": "1400209",
-     "n": "Caracaraí",
-     "uf": "RR",
-     "v": 10843.0,
-     "sel": "alta"
-    },
-    {
-     "c": "1400308",
-     "n": "Mucajaí",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200138",
+     "n": "Bujari",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "media"
     },
     {
-     "c": "1400407",
-     "n": "Normandia",
-     "uf": "RR",
-     "v": 10843.0,
-     "sel": "media"
-    },
-    {
-     "c": "1400456",
-     "n": "Pacaraima",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200252",
+     "n": "Epitaciolândia",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "alta"
     },
     {
-     "c": "1400472",
-     "n": "Rorainópolis",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200302",
+     "n": "Feijó",
+     "uf": "AC",
+     "v": 10483.0,
+     "sel": "media"
+    },
+    {
+     "c": "1200336",
+     "n": "Mâncio Lima",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "alta"
     },
     {
-     "c": "1400704",
-     "n": "Uiramutã",
-     "uf": "RR",
-     "v": 10843.0,
+     "c": "1200344",
+     "n": "Manoel Urbano",
+     "uf": "AC",
+     "v": 10483.0,
      "sel": "media"
+    },
+    {
+     "c": "1200351",
+     "n": "Marechal Thaumaturgo",
+     "uf": "AC",
+     "v": 10483.0,
+     "sel": "media"
+    },
+    {
+     "c": "1200385",
+     "n": "Plácido de Castro",
+     "uf": "AC",
+     "v": 10483.0,
+     "sel": "alta"
     }
    ],
    "servico_da_divida": [
@@ -7124,140 +8255,140 @@
      "c": "1600709",
      "n": "Tartarugalzinho",
      "uf": "AP",
-     "v": 17.26,
+     "v": 16.33,
      "sel": "alta"
     },
     {
      "c": "1600501",
      "n": "Oiapoque",
      "uf": "AP",
-     "v": 16.86,
+     "v": 15.95,
      "sel": "media"
     },
     {
      "c": "1600204",
      "n": "Calçoene",
      "uf": "AP",
-     "v": 16.83,
+     "v": 15.92,
      "sel": "media"
     },
     {
      "c": "1600402",
      "n": "Mazagão",
      "uf": "AP",
-     "v": 16.72,
+     "v": 15.81,
      "sel": "media"
     },
     {
      "c": "1600154",
      "n": "Pedra Branca do Amapari",
      "uf": "AP",
-     "v": 16.26,
+     "v": 15.38,
      "sel": "alta"
     },
     {
      "c": "1600535",
      "n": "Porto Grande",
      "uf": "AP",
-     "v": 15.87,
+     "v": 15.02,
      "sel": "alta"
     },
     {
      "c": "1600808",
      "n": "Vitória do Jari",
      "uf": "AP",
-     "v": 15.67,
+     "v": 14.82,
      "sel": "media"
     },
     {
      "c": "1600600",
      "n": "Santana",
      "uf": "AP",
-     "v": 15.5,
+     "v": 14.67,
      "sel": "media"
     },
     {
      "c": "1600303",
      "n": "Macapá",
      "uf": "AP",
-     "v": 15.11,
+     "v": 14.29,
      "sel": "alta"
     },
     {
      "c": "1600279",
      "n": "Laranjal do Jari",
      "uf": "AP",
-     "v": 13.87,
+     "v": 13.12,
      "sel": "media"
-    },
-    {
-     "c": "5300108",
-     "n": "Brasília",
-     "uf": "DF",
-     "v": 11.35,
-     "sel": "alta"
     },
     {
      "c": "1400407",
      "n": "Normandia",
      "uf": "RR",
-     "v": 10.54,
+     "v": 10.04,
      "sel": "media"
     },
     {
      "c": "1400704",
      "n": "Uiramutã",
      "uf": "RR",
-     "v": 10.25,
+     "v": 9.75,
      "sel": "media"
-    },
-    {
-     "c": "1400456",
-     "n": "Pacaraima",
-     "uf": "RR",
-     "v": 10.08,
-     "sel": "alta"
-    },
-    {
-     "c": "1400209",
-     "n": "Caracaraí",
-     "uf": "RR",
-     "v": 10.06,
-     "sel": "alta"
-    },
-    {
-     "c": "1400159",
-     "n": "Bonfim",
-     "uf": "RR",
-     "v": 10.03,
-     "sel": "media"
-    },
-    {
-     "c": "1400472",
-     "n": "Rorainópolis",
-     "uf": "RR",
-     "v": 9.97,
-     "sel": "alta"
-    },
-    {
-     "c": "1400050",
-     "n": "Alto Alegre",
-     "uf": "RR",
-     "v": 9.93,
-     "sel": "alta"
     },
     {
      "c": "1200393",
      "n": "Porto Walter",
      "uf": "AC",
-     "v": 9.72,
+     "v": 9.68,
      "sel": "alta"
     },
     {
      "c": "1200336",
      "n": "Mâncio Lima",
      "uf": "AC",
-     "v": 9.68,
+     "v": 9.64,
+     "sel": "alta"
+    },
+    {
+     "c": "1200344",
+     "n": "Manoel Urbano",
+     "uf": "AC",
+     "v": 9.6,
+     "sel": "media"
+    },
+    {
+     "c": "1400456",
+     "n": "Pacaraima",
+     "uf": "RR",
+     "v": 9.59,
+     "sel": "alta"
+    },
+    {
+     "c": "1400209",
+     "n": "Caracaraí",
+     "uf": "RR",
+     "v": 9.58,
+     "sel": "alta"
+    },
+    {
+     "c": "1400159",
+     "n": "Bonfim",
+     "uf": "RR",
+     "v": 9.54,
+     "sel": "media"
+    },
+    {
+     "c": "1400472",
+     "n": "Rorainópolis",
+     "uf": "RR",
+     "v": 9.49,
+     "sel": "alta"
+    },
+    {
+     "c": "1400050",
+     "n": "Alto Alegre",
+     "uf": "RR",
+     "v": 9.45,
      "sel": "alta"
     }
    ],
@@ -7329,7 +8460,7 @@
      "c": "1301506",
      "n": "Envira",
      "uf": "AM",
-     "v": 80.7,
+     "v": 80.6,
      "sel": "media"
     },
     {
@@ -7437,7 +8568,7 @@
    "t": "Consignado de aposentados e pensionistas",
    "selo": "observado",
    "d": "Saldo do produto Consignado para o grupo ocupacional Aposentado/pensionista no SCR, por unidade da federação.",
-   "f": "BCB, SCR.data, data-base 2026-05.",
+   "f": "BCB, SCR.data, data-base 2026-07.",
    "l": "Mais amplo que o público do INSS (inclui regimes próprios) e ao mesmo tempo cobre só 57% do saldo que o SGS registra como consignado do INSS. Nunca é somado nem trocado pela série do SGS."
   },
   {
@@ -7460,307 +8591,307 @@
   "geografia": "nacional",
   "modalidade": "Crédito pessoal consignado INSS - Prefixado",
   "janela": {
-   "inicio": "2026-06-22",
-   "fim": null
+   "inicio": "2026-08-17",
+   "fim": "2026-08-21"
   },
   "stats": {
    "n": 36,
-   "min": 18.85,
-   "p25": 22.52,
-   "mediana": 24.38,
-   "p75": 24.99,
-   "max": 34.55
+   "min": 19.79,
+   "p25": 22.34,
+   "mediana": 24.23,
+   "p75": 24.79,
+   "max": 25.48
   },
-  "spread_selic": 10.13,
-  "delta_3m": 0.93,
+  "spread_selic": 10.23,
+  "delta_3m": -0.26,
   "ranking": [
-   {
-    "cnpj8": "17167412",
-    "nome": "FINANCEIRA ALFA S.A. - SCFI",
-    "taxa_am": 1.45,
-    "taxa_aa": 18.85,
-    "posicao": 1,
-    "vs_mediana": -5.53
-   },
    {
     "cnpj8": "30680829",
     "nome": "NU FINANCEIRA S.A. CFI",
     "taxa_am": 1.52,
-    "taxa_aa": 19.82,
+    "taxa_aa": 19.79,
+    "posicao": 1,
+    "vs_mediana": -4.44
+   },
+   {
+    "cnpj8": "61820817",
+    "nome": "BCO PAULISTA S.A.",
+    "taxa_am": 1.52,
+    "taxa_aa": 19.84,
     "posicao": 2,
-    "vs_mediana": -4.56
+    "vs_mediana": -4.39
    },
    {
-    "cnpj8": "62144175",
-    "nome": "BCO PINE S.A.",
-    "taxa_am": 1.56,
-    "taxa_aa": 20.37,
+    "cnpj8": "09464032",
+    "nome": "MIDWAY S.A. - SCFI",
+    "taxa_am": 1.55,
+    "taxa_aa": 20.29,
     "posicao": 3,
-    "vs_mediana": -4.01
-   },
-   {
-    "cnpj8": "10264663",
-    "nome": "BANCOSEGURO S.A.",
-    "taxa_am": 1.6,
-    "taxa_aa": 20.91,
-    "posicao": 4,
-    "vs_mediana": -3.47
+    "vs_mediana": -3.94
    },
    {
     "cnpj8": "58160789",
     "nome": "BCO SAFRA S.A.",
-    "taxa_am": 1.63,
-    "taxa_aa": 21.37,
+    "taxa_am": 1.58,
+    "taxa_aa": 20.65,
+    "posicao": 4,
+    "vs_mediana": -3.58
+   },
+   {
+    "cnpj8": "10264663",
+    "nome": "BANCOSEGURO S.A.",
+    "taxa_am": 1.59,
+    "taxa_aa": 20.86,
     "posicao": 5,
-    "vs_mediana": -3.01
+    "vs_mediana": -3.37
+   },
+   {
+    "cnpj8": "04866275",
+    "nome": "BANCO INBURSA",
+    "taxa_am": 1.63,
+    "taxa_aa": 21.43,
+    "posicao": 6,
+    "vs_mediana": -2.8
+   },
+   {
+    "cnpj8": "03311443",
+    "nome": "MEUTUDO SCFI",
+    "taxa_am": 1.68,
+    "taxa_aa": 22.11,
+    "posicao": 7,
+    "vs_mediana": -2.12
    },
    {
     "cnpj8": "00416968",
     "nome": "BANCO INTER",
     "taxa_am": 1.69,
-    "taxa_aa": 22.24,
-    "posicao": 6,
-    "vs_mediana": -2.14
-   },
-   {
-    "cnpj8": "04866275",
-    "nome": "BANCO INBURSA",
-    "taxa_am": 1.7,
-    "taxa_aa": 22.35,
-    "posicao": 7,
-    "vs_mediana": -2.03
-   },
-   {
-    "cnpj8": "02038232",
-    "nome": "BANCO SICOOB S.A.",
-    "taxa_am": 1.7,
-    "taxa_aa": 22.45,
+    "taxa_aa": 22.23,
     "posicao": 8,
-    "vs_mediana": -1.93
-   },
-   {
-    "cnpj8": "03311443",
-    "nome": "PARATI - CFI S.A.",
-    "taxa_am": 1.71,
-    "taxa_aa": 22.5,
-    "posicao": 9,
-    "vs_mediana": -1.88
+    "vs_mediana": -2.0
    },
    {
     "cnpj8": "09516419",
     "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
-    "taxa_am": 1.71,
-    "taxa_aa": 22.53,
-    "posicao": 10,
-    "vs_mediana": -1.85
+    "taxa_am": 1.69,
+    "taxa_aa": 22.3,
+    "posicao": 9,
+    "vs_mediana": -1.93
    },
    {
     "cnpj8": "92702067",
     "nome": "BCO DO ESTADO DO RS S.A.",
-    "taxa_am": 1.72,
-    "taxa_aa": 22.64,
-    "posicao": 11,
-    "vs_mediana": -1.74
+    "taxa_am": 1.7,
+    "taxa_aa": 22.35,
+    "posicao": 10,
+    "vs_mediana": -1.88
    },
    {
     "cnpj8": "10664513",
     "nome": "BCO AGIBANK S.A.",
-    "taxa_am": 1.75,
-    "taxa_aa": 23.15,
+    "taxa_am": 1.71,
+    "taxa_aa": 22.63,
+    "posicao": 11,
+    "vs_mediana": -1.6
+   },
+   {
+    "cnpj8": "02038232",
+    "nome": "BANCO SICOOB S.A.",
+    "taxa_am": 1.73,
+    "taxa_aa": 22.81,
     "posicao": 12,
-    "vs_mediana": -1.23
+    "vs_mediana": -1.42
    },
    {
     "cnpj8": "01181521",
-    "nome": "BCO COOPERATIVO SICREDI S.A.",
+    "nome": "BANCO COOPERATIVO SICREDI",
     "taxa_am": 1.75,
-    "taxa_aa": 23.18,
+    "taxa_aa": 23.14,
     "posicao": 13,
-    "vs_mediana": -1.2
+    "vs_mediana": -1.09
+   },
+   {
+    "cnpj8": "28127603",
+    "nome": "BCO BANESTES S.A.",
+    "taxa_am": 1.76,
+    "taxa_aa": 23.28,
+    "posicao": 14,
+    "vs_mediana": -0.95
    },
    {
     "cnpj8": "00556603",
     "nome": "BANCO BARI S.A.",
     "taxa_am": 1.77,
-    "taxa_aa": 23.47,
-    "posicao": 14,
-    "vs_mediana": -0.91
+    "taxa_aa": 23.41,
+    "posicao": 15,
+    "vs_mediana": -0.82
    },
    {
     "cnpj8": "13009717",
     "nome": "BCO DO EST. DE SE S.A.",
-    "taxa_am": 1.79,
-    "taxa_aa": 23.69,
-    "posicao": 15,
-    "vs_mediana": -0.69
+    "taxa_am": 1.78,
+    "taxa_aa": 23.59,
+    "posicao": 16,
+    "vs_mediana": -0.64
    },
    {
     "cnpj8": "60701190",
     "nome": "ITAÚ UNIBANCO S.A.",
-    "taxa_am": 1.8,
-    "taxa_aa": 23.93,
-    "posicao": 16,
-    "vs_mediana": -0.45
-   },
-   {
-    "cnpj8": "28127603",
-    "nome": "BCO BANESTES S.A.",
-    "taxa_am": 1.83,
-    "taxa_aa": 24.28,
+    "taxa_am": 1.82,
+    "taxa_aa": 24.12,
     "posicao": 17,
-    "vs_mediana": -0.1
+    "vs_mediana": -0.11
    },
    {
     "cnpj8": "59285411",
     "nome": "BANCO PAN",
+    "taxa_am": 1.82,
+    "taxa_aa": 24.13,
+    "posicao": 18,
+    "vs_mediana": -0.1
+   },
+   {
+    "cnpj8": "61186680",
+    "nome": "BCO BMG S.A.",
     "taxa_am": 1.83,
     "taxa_aa": 24.33,
-    "posicao": 18,
-    "vs_mediana": -0.05
+    "posicao": 19,
+    "vs_mediana": 0.1
+   },
+   {
+    "cnpj8": "20443996",
+    "nome": "BECKER FINANCEIRA SA - CFI",
+    "taxa_am": 1.83,
+    "taxa_aa": 24.34,
+    "posicao": 20,
+    "vs_mediana": 0.11
    },
    {
     "cnpj8": "00000000",
     "nome": "BCO DO BRASIL S.A.",
     "taxa_am": 1.84,
-    "taxa_aa": 24.42,
-    "posicao": 19,
-    "vs_mediana": 0.04
+    "taxa_aa": 24.41,
+    "posicao": 21,
+    "vs_mediana": 0.18
    },
    {
     "cnpj8": "00360305",
     "nome": "CAIXA ECONOMICA FEDERAL",
     "taxa_am": 1.84,
-    "taxa_aa": 24.45,
-    "posicao": 20,
-    "vs_mediana": 0.07
-   },
-   {
-    "cnpj8": "20443996",
-    "nome": "BECKER FINANCEIRA SA - CFI",
-    "taxa_am": 1.84,
     "taxa_aa": 24.46,
-    "posicao": 21,
-    "vs_mediana": 0.08
+    "posicao": 22,
+    "vs_mediana": 0.23
    },
    {
     "cnpj8": "62232889",
     "nome": "BCO DAYCOVAL S.A",
-    "taxa_am": 1.84,
-    "taxa_aa": 24.46,
-    "posicao": 22,
-    "vs_mediana": 0.08
+    "taxa_am": 1.85,
+    "taxa_aa": 24.59,
+    "posicao": 23,
+    "vs_mediana": 0.36
    },
    {
-    "cnpj8": "61186680",
-    "nome": "BCO BMG S.A.",
-    "taxa_am": 1.84,
-    "taxa_aa": 24.51,
-    "posicao": 23,
-    "vs_mediana": 0.13
+    "cnpj8": "60746948",
+    "nome": "BCO BRADESCO S.A.",
+    "taxa_am": 1.86,
+    "taxa_aa": 24.7,
+    "posicao": 24,
+    "vs_mediana": 0.47
    },
    {
     "cnpj8": "61348538",
     "nome": "BCO C6 CONSIG",
-    "taxa_am": 1.85,
-    "taxa_aa": 24.56,
-    "posicao": 24,
-    "vs_mediana": 0.18
+    "taxa_am": 1.86,
+    "taxa_aa": 24.71,
+    "posicao": 25,
+    "vs_mediana": 0.48
+   },
+   {
+    "cnpj8": "36947229",
+    "nome": "COBUCCIO S.A. SCFI",
+    "taxa_am": 1.86,
+    "taxa_aa": 24.76,
+    "posicao": 26,
+    "vs_mediana": 0.53
+   },
+   {
+    "cnpj8": "15581638",
+    "nome": "FACTA S.A. CFI",
+    "taxa_am": 1.86,
+    "taxa_aa": 24.79,
+    "posicao": 27,
+    "vs_mediana": 0.56
    },
    {
     "cnpj8": "90400888",
     "nome": "BCO SANTANDER (BRASIL) S.A.",
     "taxa_am": 1.86,
-    "taxa_aa": 24.73,
-    "posicao": 25,
-    "vs_mediana": 0.35
+    "taxa_aa": 24.79,
+    "posicao": 28,
+    "vs_mediana": 0.56
    },
    {
     "cnpj8": "74828799",
     "nome": "NOVO BCO CONTINENTAL S.A. - BM",
     "taxa_am": 1.87,
     "taxa_aa": 24.93,
-    "posicao": 26,
-    "vs_mediana": 0.55
+    "posicao": 29,
+    "vs_mediana": 0.7
+   },
+   {
+    "cnpj8": "00795423",
+    "nome": "BANCO SEMEAR",
+    "taxa_am": 1.87,
+    "taxa_aa": 24.96,
+    "posicao": 30,
+    "vs_mediana": 0.73
    },
    {
     "cnpj8": "27098060",
     "nome": "BANCO DIGIO",
     "taxa_am": 1.88,
-    "taxa_aa": 24.98,
-    "posicao": 27,
-    "vs_mediana": 0.6
+    "taxa_aa": 25.0,
+    "posicao": 31,
+    "vs_mediana": 0.77
    },
    {
     "cnpj8": "17184037",
     "nome": "BCO MERCANTIL DO BRASIL S.A.",
     "taxa_am": 1.88,
-    "taxa_aa": 25.03,
-    "posicao": 28,
-    "vs_mediana": 0.65
-   },
-   {
-    "cnpj8": "00795423",
-    "nome": "BANCO SEMEAR",
-    "taxa_am": 1.88,
-    "taxa_aa": 25.07,
-    "posicao": 29,
-    "vs_mediana": 0.69
-   },
-   {
-    "cnpj8": "33136888",
-    "nome": "BRB - CFI S/A",
-    "taxa_am": 1.88,
-    "taxa_aa": 25.07,
-    "posicao": 30,
-    "vs_mediana": 0.69
+    "taxa_aa": 25.01,
+    "posicao": 32,
+    "vs_mediana": 0.78
    },
    {
     "cnpj8": "11760553",
     "nome": "GAZINCRED S.A. SCFI",
     "taxa_am": 1.88,
-    "taxa_aa": 25.08,
-    "posicao": 31,
-    "vs_mediana": 0.7
+    "taxa_aa": 25.1,
+    "posicao": 33,
+    "vs_mediana": 0.87
    },
    {
-    "cnpj8": "15581638",
-    "nome": "FACTA S.A. CFI",
-    "taxa_am": 1.89,
-    "taxa_aa": 25.12,
-    "posicao": 32,
-    "vs_mediana": 0.74
+    "cnpj8": "33136888",
+    "nome": "BRB - CFI S/A",
+    "taxa_am": 1.88,
+    "taxa_aa": 25.1,
+    "posicao": 34,
+    "vs_mediana": 0.87
    },
    {
     "cnpj8": "08357240",
     "nome": "BCO CSF S.A.",
     "taxa_am": 1.89,
-    "taxa_aa": 25.15,
-    "posicao": 33,
-    "vs_mediana": 0.77
+    "taxa_aa": 25.16,
+    "posicao": 35,
+    "vs_mediana": 0.93
    },
    {
     "cnpj8": "14388334",
     "nome": "PARANA BCO S.A.",
     "taxa_am": 1.91,
-    "taxa_aa": 25.5,
-    "posicao": 34,
-    "vs_mediana": 1.12
-   },
-   {
-    "cnpj8": "61820817",
-    "nome": "BCO PAULISTA S.A.",
-    "taxa_am": 2.48,
-    "taxa_aa": 34.1,
-    "posicao": 35,
-    "vs_mediana": 9.72
-   },
-   {
-    "cnpj8": "60746948",
-    "nome": "BCO BRADESCO S.A.",
-    "taxa_am": 2.5,
-    "taxa_aa": 34.55,
+    "taxa_aa": 25.48,
     "posicao": 36,
-    "vs_mediana": 10.17
+    "vs_mediana": 1.25
    }
   ],
   "serie_mensal": [
@@ -7974,11 +9105,19 @@
    },
    {
     "ref": "2026-07-01",
-    "mediana": 24.38,
-    "p25": 22.69,
-    "p75": 24.93,
-    "min": 19.86,
+    "mediana": 24.26,
+    "p25": 22.38,
+    "p75": 24.82,
+    "min": 19.78,
     "n": 35
+   },
+   {
+    "ref": "2026-08-01",
+    "mediana": 24.23,
+    "p25": 22.34,
+    "p75": 24.79,
+    "min": 19.79,
+    "n": 36
    }
   ],
   "aviso": "Taxa média das operações contratadas na janela divulgada, por instituição. Não é a carteira da instituição, não permite calcular participação de mercado e não existe em nível municipal ou estadual."
@@ -7986,18 +9125,18 @@
  "totais": {
   "municipios": 5570,
   "selos": {
-   "alta": 3137,
+   "alta": 3139,
    "media": 946,
-   "baixa": 1487,
+   "baixa": 1485,
    "sem_dado": 0
   },
-  "incoerentes": 870,
+  "incoerentes": 868,
   "saturacao": {
    "baixa_penetracao": 388,
-   "penetracao_elevada": 3276,
-   "possivel_saturacao": 419
+   "penetracao_elevada": 3440,
+   "possivel_saturacao": 257
   },
-  "dependencia_acima_50": 168,
+  "dependencia_acima_50": 167,
   "dependencia_35_50": 604
  },
  "municipios_arquivo": "consignado_mun.json"

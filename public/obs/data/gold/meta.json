@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
  },
- "gerado_em": "2026-09-05T12:52:16+00:00",
+ "gerado_em": "2026-09-07T17:05:51+00:00",
  "vintages": {
   "sgs": "2026-07",
   "ifdata": "2026-03",
@@ -14,7 +14,28 @@
   "fidc": "2026-08",
   "datajud": "2026-07",
   "trends": "2026-06",
-  "txjuros": "2026-08"
+  "txjuros": "2026-08",
+  "susep": "2026-06",
+  "sadipem": "2026-09",
+  "siconfi": "2026-04",
+  "tesouro_garantias": "2026-04",
+  "sicor": "2026-08",
+  "cvm_ofertas": "2026-09",
+  "securit": "2026-08",
+  "bndes": "2026-03",
+  "focus": "2026-08",
+  "sfn_cadastro": "2026-09",
+  "bcb_pas": "2026-09",
+  "cvm_pas": "2026-09",
+  "caged": "2026-07",
+  "cda": "2026-08",
+  "consorcios": "2026-03",
+  "cobranca": "2026-08",
+  "pix": "2026-07",
+  "estban": "2026-06",
+  "openfinance": "2026-09",
+  "pgfn": "2026-06",
+  "desenrola": "2026-06"
  },
  "inad_conceitos": {
   "sgs": {
@@ -33,10 +54,58 @@
    "def": "atraso ≥15 dias por operação (coluna 'Vencido a Partir de 15 Dias', IF.data) — varia por produto e instituição; não existe como taxa única nacional."
   }
  },
+ "carteira_conceitos": {
+  "sgs": {
+   "v": 7372.2,
+   "ref": "2026-07",
+   "nome": "Saldo das operações de crédito (SGS 20539)",
+   "def": "carteira do SFN no conceito das estatísticas monetárias do BCB: operações de crédito das instituições financeiras, sem TVM nem crédito externo."
+  },
+  "scr": {
+   "v": 7590.3,
+   "ref": "2026-07",
+   "nome": "Carteira ativa (SCR.data)",
+   "def": "soma da carteira ativa por UF do cliente nos agregados públicos do SCR, que inclui operações abaixo do piso e classificações que o SGS agrega de outro modo; fica alguns por cento acima do SGS."
+  },
+  "ampliado": {
+   "v": 6989.0,
+   "ref": "2026-07",
+   "nome": "Empréstimos e financiamentos do SFN a empresas e famílias (crédito ampliado)",
+   "def": "parcela bancária do crédito ampliado ao setor não financeiro (BCB), conceito do balanço de pagamentos e da dívida; exclui o que o SGS conta como crédito a governo."
+  },
+  "estban": {
+   "v": 12739.9,
+   "ref": "2026-06",
+   "nome": "Operações de crédito por agência (ESTBAN)",
+   "def": "saldo contábil por agência, atribuído ao município da agência e não ao do cliente: as sedes em Brasília e São Paulo concentram carteiras nacionais, por isso o total supera em muito as demais réguas e a página municipal usa o ESTBAN só para penetração relativa."
+  }
+ },
+ "if_contagens": {
+  "ifdata_resumo": {
+   "n": 1422,
+   "ref": "202603",
+   "def": "instituições e conglomerados com o relatório Resumo no IF.data na data-base; é o universo das fichas e do screener."
+  },
+  "ifdata_qualquer_relatorio": {
+   "n": 2359,
+   "ref": "202603",
+   "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."
+  },
+  "cadastro_sedes": {
+   "n": 1743,
+   "ref": "2026-09-07",
+   "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."
+  }
+ },
  "fontes_status": {
   "bcb_sgs": {
-   "ok": 37,
-   "falhas": []
+   "ok": 141,
+   "falhas": [
+    {
+     "key": "consig_total_saldo",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    }
+   ]
   },
   "ibge": {
    "ok": 4,
@@ -47,13 +116,8 @@
    "falhas": []
   },
   "ifdata": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "ifdata",
-     "erro": "nenhum AnoMes disponível (Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/IFDATA/versao/v1/odata/IfDataValores(AnoMes=@AnoMes,TipoInstituicao=@TipoInstituicao,Relatorio=@Relatorio)?%40AnoMes=202503&%40TipoInstituicao=2&%40Relatorio=%27T%27&%24format=json&%24filter=NomeRelatorio%20eq%20%27Resumo%27: HTTP Error 500: Internal Server Error)"
-    }
-   ]
+   "ok": 4,
+   "falhas": []
   },
   "ifdata_ui": {
    "ok": 5,
@@ -72,35 +136,35 @@
    "falhas": [
     {
      "key": "djen_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     },
     {
      "key": "djen_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=recupera%C3%A7%C3%A3o+judicial&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-22&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "HTTP 403 da CDN (CloudFront): origem do runner bloqueada pelo Comunica PJe; fonte acessível só de rede brasileira ou navegador"
     }
    ]
   },
@@ -109,35 +173,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-07&dataDisponibilizacaoFim=2026-09-05: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-09&dataDisponibilizacaoFim=2026-09-07: HTTP Error 403: Forbidden"
     }
    ]
   },
@@ -162,7 +226,7 @@
    "falhas": []
   },
   "fidc": {
-   "ok": 1,
+   "ok": 18,
    "falhas": []
   },
   "trends_manual": {
@@ -175,17 +239,8 @@
    ]
   },
   "scr_data": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "scr_data:2024",
-     "erro": "IncompleteRead(8388608 bytes read, 167661309 more expected)"
-    },
-    {
-     "key": "scr_data:2026",
-     "erro": "IncompleteRead(33554432 bytes read, 72143254 more expected)"
-    }
-   ]
+   "ok": 2,
+   "falhas": []
   },
   "geo_ibge": {
    "ok": 1,
@@ -200,7 +255,7 @@
    "falhas": [
     {
      "key": "tst_ranking",
-     "erro": "competência não localizada no HTML (mudou o layout?)"
+     "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
     }
    ]
   },
@@ -213,7 +268,7 @@
    "falhas": [
     {
      "key": "desenrola",
-     "erro": "colunas ausentes no CSV: ['COD_CONGLOMERADO_FINANCEIRO', 'DATA_BASE', 'NOME_CONGLOMERADO_FINANCEIRO', 'NUMERO_OPERACOES', 'TIPO_DESENROLA', 'UNIDADE_FEDERACAO', 'VOLUME_OPERACOES'] (esquema da fonte mudou)"
+     "erro": "resposta HTML no lugar do CSV (bloqueio ou manutenção do portal): b'<?xml version=\"1.0\" encoding=\"pt-br\"?>\\r\\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\\r\\n  \"http://www.w3.org/T'"
     }
    ]
   },
@@ -266,15 +321,11 @@
    "falhas": []
   },
   "pilar3": {
-   "ok": 12,
+   "ok": 13,
    "falhas": [
     {
-     "key": "pilar3:60498557",
-     "erro": "could not convert string to float: '34.56%'"
-    },
-    {
      "key": "pilar3:17184037",
-     "erro": "HTTP Error 500: Internal Server Error"
+     "erro": "HTTP Error 503: Service Unavailable"
     },
     {
      "key": "pilar3:00416968",
@@ -313,6 +364,10 @@
      "erro": "HTTP Error 404: Not Found"
     },
     {
+     "key": "pilar3:04862600",
+     "erro": "HTTP Error 403: Forbidden"
+    },
+    {
      "key": "pilar3:04913711",
      "erro": "HTTP Error 503: Service Unavailable"
     },
@@ -333,10 +388,6 @@
      "erro": "HTTP Error 403: Forbidden"
     },
     {
-     "key": "pilar3:22896431",
-     "erro": "HTTP Error 503: Service Unavailable"
-    },
-    {
      "key": "pilar3:25683434",
      "erro": "HTTP Error 520: <none>"
     },
@@ -347,10 +398,6 @@
     {
      "key": "pilar3:33172537",
      "erro": "Expecting value: line 1 column 103 (char 102)"
-    },
-    {
-     "key": "pilar3:33264668",
-     "erro": "could not convert string to float: '7,68'"
     },
     {
      "key": "pilar3:33657248",
@@ -369,10 +416,6 @@
      "erro": "trimestreReferencia fora do padrão: ''"
     },
     {
-     "key": "pilar3:58616418",
-     "erro": "'str' object has no attribute 'get'"
-    },
-    {
      "key": "pilar3:60770336",
      "erro": "<urlopen error [Errno -2] Name or service not known>"
     },
@@ -382,7 +425,7 @@
     },
     {
      "key": "pilar3:62232889",
-     "erro": "HTTP Error 404: Not Found"
+     "erro": "Remote end closed connection without response"
     },
     {
      "key": "pilar3:62331228",
@@ -413,6 +456,87 @@
   "correspondentes": {
    "ok": 1,
    "falhas": []
+  },
+  "sicor": {
+   "ok": 207,
+   "falhas": [
+    {
+     "key": "sicor_fonte:2020-03",
+     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2703%27&$format=json: HTTP Error 504: Gateway Time-out"
+    },
+    {
+     "key": "sicor_fonte:2020-02",
+     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2702%27&$format=json: HTTP Error 504: Gateway Time-out"
+    },
+    {
+     "key": "sicor_fonte:2020-01",
+     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2701%27&$format=json: HTTP Error 504: Gateway Time-out"
+    }
+   ]
+  },
+  "cvm_ofertas": {
+   "ok": 1,
+   "falhas": []
+  },
+  "cvm_securit": {
+   "ok": 4,
+   "falhas": []
+  },
+  "bndes": {
+   "ok": 18,
+   "falhas": []
+  },
+  "focus": {
+   "ok": 6,
+   "falhas": []
+  },
+  "sfn_cadastro": {
+   "ok": 4,
+   "falhas": []
+  },
+  "bcb_pas": {
+   "ok": 3,
+   "falhas": []
+  },
+  "cvm_pas": {
+   "ok": 1,
+   "falhas": []
+  },
+  "ipea_caged": {
+   "ok": 2,
+   "falhas": []
+  },
+  "ifdata_passivo": {
+   "ok": 10,
+   "falhas": []
+  },
+  "cvm_cda": {
+   "ok": 4,
+   "falhas": []
+  },
+  "bcb_consorcios": {
+   "ok": 1,
+   "falhas": []
+  },
+  "susep_ses": {
+   "ok": 1,
+   "falhas": []
+  },
+  "sadipem": {
+   "ok": 1,
+   "falhas": []
+  },
+  "siconfi_rgf": {
+   "ok": 1,
+   "falhas": []
+  },
+  "tesouro_garantias": {
+   "ok": 1,
+   "falhas": []
+  },
+  "datajud_cobranca": {
+   "ok": 18,
+   "falhas": []
   }
  },
  "fontes_reais": [
@@ -421,14 +545,19 @@
   "BCB/DASFN Pilar 3",
   "BCB/EPAE",
   "BCB/ESTBAN",
+  "BCB/Focus",
   "BCB/IF.data",
   "BCB/Mercado Imobiliário",
+  "BCB/PAS (Gepad)",
   "BCB/Pix",
   "BCB/Reclamações",
+  "BCB/SCR.data",
   "BCB/SGS",
   "BCB/Unicad",
+  "BCB/Unicad (instituições em funcionamento)",
   "BCB/regimes",
   "BCB/txjuros",
+  "BNDES/Dados abertos",
   "CNJ/DJEN",
   "CNJ/DataJud",
   "CVM/DFP e ITR",
@@ -436,6 +565,9 @@
   "CVM/FRE",
   "CVM/FRE e FCA",
   "CVM/IPE",
+  "CVM/Ofertas públicas",
+  "CVM/Processos sancionadores",
+  "CVM/Securitizadoras (CRI e CRA)",
   "IBGE",
   "IBGE/Censo 2022",
   "Ipeadata",
@@ -444,8 +576,19 @@
   "PGFN",
   "PNCP",
   "RI das companhias",
+  "SUSEP/SES",
   "TST",
-  "consumidor.gov.br"
+  "Tesouro/Garantias da União",
+  "Tesouro/Sadipem",
+  "Tesouro/Siconfi (RGF)",
+  "bcb_consorcios",
+  "consumidor.gov.br",
+  "cvm_cda",
+  "datajud_cobranca",
+  "ifdata_passivo",
+  "ipea_caged",
+  "sicor"
  ],
- "fontes_demo": []
+ "fontes_demo": [],
+ "builders_falhos": []
 }

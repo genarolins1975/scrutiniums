@@ -9,13 +9,13 @@
   "sede": "Bebedouro/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 64,
+  "n_pares": 63,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:51:57+00:00",
+  "atualizado_em": "2026-09-07T17:05:26+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 54.037.916",
   "participante_open_finance": null
@@ -28,7 +28,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 28.9% (acima da mediana do grupo S3: 16.9%).",
+    "texto": "Basileia de 28.9% (acima da mediana do grupo S3: 16.8%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -53,7 +53,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 64,
+  "quantidade": 63,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -118,8 +118,8 @@
   ],
   "quartis_basileia": {
    "q1": 13.5,
-   "mediana": 16.9,
-   "q3": 23.8
+   "mediana": 16.8,
+   "q3": 23.3
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -128,7 +128,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-05"
+  "calculado_em": "2026-09-07"
  },
  "kpis": [
   {
@@ -219,7 +219,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 28.9% (acima da mediana do grupo S3: 16.9%).",
+   "texto": "Basileia de 28.9% (acima da mediana do grupo S3: 16.8%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -240,8 +240,8 @@
    "unit": "%",
    "d_tri": -0.18,
    "vs_pares": "acima",
-   "mediana_grupo": 16.9,
-   "percentil": 87.7
+   "mediana_grupo": 16.82,
+   "percentil": 89.3
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -250,7 +250,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 9.53,
-   "percentil": 23.8
+   "percentil": 22.6
   },
   {
    "indicador": "ROE do período",
@@ -259,7 +259,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 2.45,
-   "percentil": 41.3
+   "percentil": 40.3
   }
  ],
  "carteira": {
@@ -931,7 +931,6 @@
     6.72,
     8.88,
     -0.31,
-    -20.36,
     3.97,
     15.61,
     2.81,
@@ -999,7 +998,6 @@
     17.3,
     19.04,
     12.95,
-    35.57,
     15.1,
     29.55,
     26.02,
@@ -1009,7 +1007,7 @@
     18.57
    ],
    "meu": 28.92,
-   "mediana": 16.9
+   "mediana": 16.82
   },
   "alav": {
    "valores": [
@@ -1065,7 +1063,6 @@
     5.47,
     22.67,
     3.14,
-    1.41,
     4.56,
     19.25,
     5.66,
@@ -1203,107 +1200,107 @@
    },
    {
     "anomes": "201903",
-    "score": 35.2
+    "score": 35.4
    },
    {
     "anomes": "201906",
-    "score": 33.6
+    "score": 33.8
    },
    {
     "anomes": "201909",
-    "score": 37.3
+    "score": 37.0
    },
    {
     "anomes": "201912",
-    "score": 44.3
+    "score": 44.2
    },
    {
     "anomes": "202003",
-    "score": 37.7
-   },
-   {
-    "anomes": "202006",
-    "score": 37.7
-   },
-   {
-    "anomes": "202009",
-    "score": 41.0
-   },
-   {
-    "anomes": "202012",
-    "score": 39.4
-   },
-   {
-    "anomes": "202103",
-    "score": 32.6
-   },
-   {
-    "anomes": "202106",
     "score": 37.5
    },
    {
-    "anomes": "202109",
+    "anomes": "202006",
+    "score": 37.5
+   },
+   {
+    "anomes": "202009",
+    "score": 41.7
+   },
+   {
+    "anomes": "202012",
+    "score": 39.6
+   },
+   {
+    "anomes": "202103",
+    "score": 33.1
+   },
+   {
+    "anomes": "202106",
     "score": 37.7
    },
    {
-    "anomes": "202112",
-    "score": 35.8
-   },
-   {
-    "anomes": "202203",
-    "score": 31.6
-   },
-   {
-    "anomes": "202206",
-    "score": 31.1
-   },
-   {
-    "anomes": "202209",
-    "score": 29.8
-   },
-   {
-    "anomes": "202212",
-    "score": 29.4
-   },
-   {
-    "anomes": "202303",
-    "score": 33.0
-   },
-   {
-    "anomes": "202306",
-    "score": 31.1
-   },
-   {
-    "anomes": "202309",
-    "score": 33.9
-   },
-   {
-    "anomes": "202312",
-    "score": 34.4
-   },
-   {
-    "anomes": "202403",
-    "score": 36.2
-   },
-   {
-    "anomes": "202406",
-    "score": 35.3
-   },
-   {
-    "anomes": "202409",
+    "anomes": "202109",
     "score": 38.4
    },
    {
+    "anomes": "202112",
+    "score": 35.5
+   },
+   {
+    "anomes": "202203",
+    "score": 31.7
+   },
+   {
+    "anomes": "202206",
+    "score": 31.6
+   },
+   {
+    "anomes": "202209",
+    "score": 30.3
+   },
+   {
+    "anomes": "202212",
+    "score": 29.5
+   },
+   {
+    "anomes": "202303",
+    "score": 32.7
+   },
+   {
+    "anomes": "202306",
+    "score": 30.8
+   },
+   {
+    "anomes": "202309",
+    "score": 34.1
+   },
+   {
+    "anomes": "202312",
+    "score": 34.5
+   },
+   {
+    "anomes": "202403",
+    "score": 36.8
+   },
+   {
+    "anomes": "202406",
+    "score": 35.4
+   },
+   {
+    "anomes": "202409",
+    "score": 38.6
+   },
+   {
     "anomes": "202412",
-    "score": 37.1
+    "score": 37.3
    },
    {
     "anomes": "202503",
-    "score": 36.9
+    "score": 37.1
    },
    {
     "anomes": "202506",
-    "score": 35.2
+    "score": 35.6
    },
    {
     "anomes": "202509",

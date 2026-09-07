@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-05T12:52:00+00:00",
+ "gerado_em": "2026-09-07T17:05:29+00:00",
  "paginas": 1422,
  "anomes": "202603",
  "instituicoes": [
@@ -495,7 +495,7 @@
    "cod": "18189547",
    "nome": "Cloudwalk Instituição De Pagamento E Servicos Ltda",
    "razao": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SERVICOS LTDA",
-   "sr": "S?",
+   "sr": "S4",
    "ativo_brl": 19069767498.1,
    "piloto": false
   },
@@ -1413,8 +1413,8 @@
   },
   {
    "cod": "82065285",
-   "nome": "Cooperativa De Credito, Poupança E Investimento Parque Das Araucarias - Sicredi Parque Das Araucarias Pr/Sc/Sp",
-   "razao": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO PARQUE DAS ARAUCARIAS - SICREDI PARQUE DAS ARAUCARIAS PR/SC/SP",
+   "nome": "Cooperativa De Crédito, Poupança E Investimento Soma Pr/Sc/Sp - Sicredi Soma",
+   "razao": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SOMA PR/SC/SP - SICREDI SOMA",
    "sr": "S4",
    "ativo_brl": 4482134780.09,
    "piloto": false
@@ -2085,8 +2085,8 @@
   },
   {
    "cod": "87900411",
-   "nome": "Cooperativa De Crédito, Poupança E Investimento De Espumoso - Sicredi Espumoso Rs/Mg",
-   "razao": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE ESPUMOSO - SICREDI ESPUMOSO RS/MG",
+   "nome": "Cooperativa De Crédito, Poupança E Investimento Sementes Do Sul - Sicredi Sementes Do Sul",
+   "razao": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SEMENTES DO SUL - SICREDI SEMENTES DO SUL",
    "sr": "S4",
    "ativo_brl": 2619979169.85,
    "piloto": false
@@ -2933,8 +2933,8 @@
   },
   {
    "cod": "05863726",
-   "nome": "Cooperativa De Crédito E Economia Com Interação Solidária Do Planalto Serra Do Rio Grande Do Sul - Cresol Planalto Serra",
-   "razao": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DO PLANALTO SERRA DO RIO GRANDE DO SUL - CRESOL PLANALTO SERRA",
+   "nome": "Cooperativa De Crédito E Economia Com Interação Solidária Do Planalto Serra Sul Do Rio Grande Do Sul - Cresol Planalto Serra Sul",
+   "razao": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DO PLANALTO SERRA SUL DO RIO GRANDE DO SUL - CRESOL PLANALTO SERRA SUL",
    "sr": "S5",
    "ativo_brl": 1470289218.94,
    "piloto": false
@@ -3165,8 +3165,8 @@
   },
   {
    "cod": "20520298",
-   "nome": "Adiq Instituição De Pagamento S.A.",
-   "razao": "ADIQ INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "nome": "Bs2 Payments Instituição De Pagamento S.A.",
+   "razao": "BS2 PAYMENTS INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": "S3",
    "ativo_brl": 1241743952.67,
    "piloto": false
@@ -3245,8 +3245,8 @@
   },
   {
    "cod": "62816426",
-   "nome": "Société Générale Equipment Finance S.A. - Arrendamento Mercantil",
-   "razao": "SOCIÉTÉ GÉNÉRALE EQUIPMENT FINANCE S.A. - ARRENDAMENTO MERCANTIL",
+   "nome": "Bpce Equipment Solutions Brasil S.A. - Arrendamento Mercantil",
+   "razao": "BPCE EQUIPMENT SOLUTIONS BRASIL S.A. - ARRENDAMENTO MERCANTIL",
    "sr": "S4",
    "ativo_brl": 1195414881.83,
    "piloto": false
@@ -3357,8 +3357,8 @@
   },
   {
    "cod": "02923389",
-   "nome": "Cooperativa De Crédito, Poupança E Investimento Sicredi Serigy - Sicredi Serigy",
-   "razao": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI SERIGY - SICREDI SERIGY",
+   "nome": "Cooperativa De Crédito, Poupança E Investimento Sicredi Serigy - Sicredi Serigy Se/Ba",
+   "razao": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI SERIGY - SICREDI SERIGY SE/BA",
    "sr": "S4",
    "ativo_brl": 1106491370.35,
    "piloto": false
@@ -3773,8 +3773,8 @@
   },
   {
    "cod": "09092759",
-   "nome": "Alpha Servicos De Rede De Autoatendimento S.A.",
-   "razao": "ALPHA SERVICOS DE REDE DE AUTOATENDIMENTO S.A.",
+   "nome": "Naip Instituição De Pagamento S.A.",
+   "razao": "NAIP INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": "S?",
    "ativo_brl": 859707889.32,
    "piloto": false
@@ -3997,8 +3997,8 @@
   },
   {
    "cod": "09590601",
-   "nome": "Cooperativa De Crédito Da Serra Catarinense - Credicomin",
-   "razao": "COOPERATIVA DE CRÉDITO DA SERRA CATARINENSE - CREDICOMIN",
+   "nome": "Cooperativa De Crédito - Credicomin",
+   "razao": "COOPERATIVA DE CRÉDITO - CREDICOMIN",
    "sr": "S5",
    "ativo_brl": 741083560.33,
    "piloto": false
@@ -4101,9 +4101,9 @@
   },
   {
    "cod": "05503849",
-   "nome": "Sf3 Crédito, Financiamento E Investimento S.A.",
-   "razao": "SF3 CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-   "sr": "S5",
+   "nome": "Cloudwalk Financeira S.A. Crédito, Financiamento E Investimento",
+   "razao": "CLOUDWALK FINANCEIRA S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
+   "sr": "S4",
    "ativo_brl": 701088054.74,
    "piloto": false
   },
@@ -5349,8 +5349,8 @@
   },
   {
    "cod": "32343119",
-   "nome": "Mentore Bank Instituicao De Pagamento S.A.",
-   "razao": "MENTORE BANK INSTITUICAO DE PAGAMENTO S.A.",
+   "nome": "Mêntore Instituição De Pagamento S.A.",
+   "razao": "MÊNTORE INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": "S?",
    "ativo_brl": 334080957.45,
    "piloto": false
@@ -6317,8 +6317,8 @@
   },
   {
    "cod": "45691128",
-   "nome": "Cooperativa De Economia E Crédito Mútuo Dos Empregados Da Johnson & Johnson",
-   "razao": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA JOHNSON & JOHNSON",
+   "nome": "Cooperativa De Economia E Crédito Mútuo E Benefícios Sociais Becooper",
+   "razao": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO E BENEFÍCIOS SOCIAIS BECOOPER",
    "sr": "S5",
    "ativo_brl": 157764077.42,
    "piloto": false
@@ -6493,8 +6493,8 @@
   },
   {
    "cod": "44373041",
-   "nome": "Cooperativa De Crédito Rural - Credicana",
-   "razao": "COOPERATIVA DE CRÉDITO RURAL - CREDICANA",
+   "nome": "Cooperativa De Crédito Uniprime Credicana",
+   "razao": "COOPERATIVA DE CRÉDITO UNIPRIME CREDICANA",
    "sr": "S5",
    "ativo_brl": 138977677.7,
    "piloto": false
@@ -6637,8 +6637,8 @@
   },
   {
    "cod": "23114447",
-   "nome": "Flagship Instituicao De Pagamentos Ltda",
-   "razao": "FLAGSHIP INSTITUICAO DE PAGAMENTOS LTDA",
+   "nome": "Flagship Instituicao De Pagamento Ltda",
+   "razao": "FLAGSHIP INSTITUICAO DE PAGAMENTO LTDA",
    "sr": "S?",
    "ativo_brl": 124118547.6,
    "piloto": false
@@ -6885,8 +6885,8 @@
   },
   {
    "cod": "62562012",
-   "nome": "Cooperativa De Economia E Crédito Mútuo Dos Funcionários Da Nestlé - Credi Nestlé",
-   "razao": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA NESTLÉ - CREDI NESTLÉ",
+   "nome": "Cooperativa De Economia E Crédito Mútuo Dos Funcionários Da  Nestlé - Nescred",
+   "razao": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA  NESTLÉ - NESCRED",
    "sr": "S5",
    "ativo_brl": 101504980.92,
    "piloto": false
@@ -6981,8 +6981,8 @@
   },
   {
    "cod": "05545390",
-   "nome": "Cooperativa De Crédito - Sicredi Coomamp",
-   "razao": "COOPERATIVA DE CRÉDITO - SICREDI COOMAMP",
+   "nome": "Cooperativa De Crédito - Sicredi Lençóis",
+   "razao": "COOPERATIVA DE CRÉDITO - SICREDI LENÇÓIS",
    "sr": "S4",
    "ativo_brl": 93869103.67,
    "piloto": false
@@ -7023,7 +7023,7 @@
    "cod": "44815065",
    "nome": "Pay2All Instituicao De Pagamento Ltda",
    "razao": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
-   "sr": "S1",
+   "sr": "S?",
    "ativo_brl": 89599291.33,
    "piloto": false
   },
@@ -7117,8 +7117,8 @@
   },
   {
    "cod": "42259084",
-   "nome": "Sbcash Sociedade De Crédito Direto S.A.",
-   "razao": "SBCASH SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "nome": "Artta Sociedade De Crédito Direto S.A",
+   "razao": "ARTTA SOCIEDADE DE CRÉDITO DIRETO S.A",
    "sr": "S5",
    "ativo_brl": 82375002.1,
    "piloto": false
@@ -8519,7 +8519,7 @@
    "cod": "60717928",
    "nome": "Torra Sociedade De Crédito Direto S.A.",
    "razao": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": "S?",
+   "sr": "S5",
    "ativo_brl": 19061217.59,
    "piloto": false
   },
@@ -9631,7 +9631,7 @@
    "cod": "87963450",
    "nome": "Nikos Distribuidora De Títulos E Valores Mobiliários Ltda.",
    "razao": "NIKOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-   "sr": "S3",
+   "sr": "S4",
    "ativo_brl": 7379369.63,
    "piloto": false
   },
@@ -9653,8 +9653,8 @@
   },
   {
    "cod": "54024532",
-   "nome": "Appmax Instituicao De Pagamento Ltda",
-   "razao": "APPMAX INSTITUICAO DE PAGAMENTO LTDA",
+   "nome": "Max Instituição De Pagamento Ltda",
+   "razao": "MAX INSTITUIÇÃO DE PAGAMENTO LTDA",
    "sr": "S?",
    "ativo_brl": 7268615.34,
    "piloto": false
@@ -9829,8 +9829,8 @@
   },
   {
    "cod": "52833288",
-   "nome": "Lb Bank Instituicao De Pagamento Ltda",
-   "razao": "LB BANK INSTITUICAO DE PAGAMENTO LTDA",
+   "nome": "Lb Pay Instituição De Pagamento Ltda",
+   "razao": "LB PAY INSTITUIÇÃO DE PAGAMENTO LTDA",
    "sr": "S?",
    "ativo_brl": 6320158.5,
    "piloto": false
@@ -9887,7 +9887,7 @@
    "cod": "60236532",
    "nome": "Bm4 Sociedade De Crédito Direto S.A.",
    "razao": "BM4 SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": "S?",
+   "sr": "S5",
    "ativo_brl": 5997803.13,
    "piloto": false
   },
@@ -9973,8 +9973,8 @@
   },
   {
    "cod": "42622791",
-   "nome": "Trybe Sociedade De Crédito Direto S.A.",
-   "razao": "TRYBE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "nome": "Mottu Sociedade De Crédito Direto S.A.",
+   "razao": "MOTTU SOCIEDADE DE CRÉDITO DIRETO S.A.",
    "sr": "S5",
    "ativo_brl": 5703336.6,
    "piloto": false
@@ -10159,7 +10159,7 @@
    "cod": "07945233",
    "nome": "Pólocred   Sociedade De Crédito Ao Microempreendedor E À Empresa De Pequeno Porte Ltda.",
    "razao": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-   "sr": "S5",
+   "sr": "S4",
    "ativo_brl": 4729430.92,
    "piloto": false
   },
@@ -10309,8 +10309,8 @@
   },
   {
    "cod": "05747018",
-   "nome": "Cooperativa De Crédito Mútuo Dos Funcionários Da Fiep, Sesi, Senai, Iel E Do Condomínio Edifício Agostinho Velloso Da Silveira (Ceavs  - Credfisp Ltda.",
-   "razao": "COOPERATIVA DE CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA FIEP, SESI, SENAI, IEL E DO CONDOMÍNIO EDIFÍCIO AGOSTINHO VELLOSO DA SILVEIRA (CEAVS  - CREDFISP LTDA.",
+   "nome": "Cooperativa De Crédito Mútuo Dos Funcionários Da Fiepb, Sesi, Senai, Iel E Do Condomínio Edifício Agostinho Velloso Da Silveira (Ceavs  - Credfisp Ltda.",
+   "razao": "COOPERATIVA DE CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA FIEPB, SESI, SENAI, IEL E DO CONDOMÍNIO EDIFÍCIO AGOSTINHO VELLOSO DA SILVEIRA (CEAVS  - CREDFISP LTDA.",
    "sr": "S5",
    "ativo_brl": 3749584.46,
    "piloto": false

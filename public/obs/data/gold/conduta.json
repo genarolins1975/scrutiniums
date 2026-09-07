@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-05T23:04:41+00:00",
+ "gerado_em": "2026-09-07T17:05:49+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1295 processos sancionadores em 1ª instância, com 1408 decisões por apenado: 1318 multas somando R$ 75.8 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 68 processos sancionadores em 12 meses (198 acusados); 251 seguem em curso, com idade mediana de 23 meses, e os finalizados levaram 30 meses em mediana.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1295 processos sancionadores em 1ª instância, com 1408 decisões por apenado: 1318 multas somando R$ 75.8 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (197 acusados); 251 seguem em curso, com idade mediana de 23 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-09-03",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11385
   },
   "janela_12m": {
-   "ini": "2025-09-05",
+   "ini": "2025-09-07",
    "decisoes": 1408,
    "processos": 1295,
    "multas_n": 1318,
@@ -49,17 +49,17 @@
    "pf": 986
   },
   "janela_12m_anterior": {
-   "decisoes": 1022,
-   "processos": 780,
-   "multas_n": 832,
-   "multas_valor": 32316354.119999997,
+   "decisoes": 941,
+   "processos": 747,
+   "multas_n": 781,
+   "multas_valor": 25471063.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
-   "inabilitacoes": 27,
-   "sem_penalidade": 162,
-   "recursos": 146,
-   "pj": 306,
-   "pf": 716
+   "inabilitacoes": 26,
+   "sem_penalidade": 133,
+   "recursos": 134,
+   "pj": 291,
+   "pf": 650
   },
   "penas_12m": [
    {
@@ -203,9 +203,9 @@
    }
   ],
   "tempo_citacao_decisao_meses": {
-   "mediana": 3.0,
+   "mediana": 2.9,
    "p90": 31.4,
-   "n": 3213
+   "n": 3194
   },
   "anual": [
    {
@@ -941,9 +941,9 @@
    "finalizados": 319
   },
   "abertos_12m": {
-   "ini": "2025-09-05",
-   "processos": 68,
-   "acusados": 198
+   "ini": "2025-09-07",
+   "processos": 67,
+   "acusados": 197
   },
   "fases": [
    {
@@ -1516,7 +1516,40 @@
   "nota": "Processo a processo, com a fase atual e os acusados. A base não traz o resultado (absolvição, multa, termo de compromisso): 'finalizado' é o fim do rito. Objeto reproduzido como publicado pela CVM, truncado. Sem ranking por nome."
  },
  "reclamacoes": {
-  "disponivel": false
+  "disponivel": true,
+  "serie": [
+   {
+    "periodo": "2025-3",
+    "mediana": 53.95,
+    "p90": 943.01,
+    "n_instituicoes": 69
+   },
+   {
+    "periodo": "2025-4",
+    "mediana": 60.73,
+    "p90": 902.77,
+    "n_instituicoes": 65
+   },
+   {
+    "periodo": "2026-1",
+    "mediana": 56.83,
+    "p90": 836.13,
+    "n_instituicoes": 70
+   },
+   {
+    "periodo": "2026-2",
+    "mediana": 69.64,
+    "p90": 1388.76,
+    "n_instituicoes": 70
+   }
+  ],
+  "ultimo": {
+   "periodo": "2026-2",
+   "mediana": 69.64,
+   "p90": 1388.76,
+   "n_instituicoes": 70
+  },
+  "nota": "índice de reclamações (reclamações procedentes por milhão de clientes) do ranking trimestral do BCB; mediana e p90 entre as instituições do ranking, sem nome."
  },
  "catalogo": [
   {

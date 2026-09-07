@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 64,
+  "n_pares": 63,
   "conglomerado_prudencial": "C0080628",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:51:58+00:00",
+  "atualizado_em": "2026-09-07T17:05:27+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -28,7 +28,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.9%).",
+    "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.8%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 64,
+  "quantidade": 63,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -136,8 +136,8 @@
   ],
   "quartis_basileia": {
    "q1": 13.5,
-   "mediana": 16.9,
-   "q3": 23.8
+   "mediana": 16.8,
+   "q3": 23.3
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -146,7 +146,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-05"
+  "calculado_em": "2026-09-07"
  },
  "kpis": [
   {
@@ -237,7 +237,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.9%).",
+   "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.8%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -258,8 +258,8 @@
    "unit": "%",
    "d_tri": 0.73,
    "vs_pares": "acima",
-   "mediana_grupo": 16.9,
-   "percentil": 73.7
+   "mediana_grupo": 16.82,
+   "percentil": 75.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -268,7 +268,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 9.53,
-   "percentil": 14.3
+   "percentil": 12.9
   },
   {
    "indicador": "ROE do período",
@@ -277,7 +277,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 2.45,
-   "percentil": 61.9
+   "percentil": 61.3
   }
  ],
  "carteira": {
@@ -733,7 +733,6 @@
     6.72,
     8.88,
     -0.31,
-    -20.36,
     3.97,
     15.61,
     2.81,
@@ -801,7 +800,6 @@
     17.3,
     19.04,
     12.95,
-    35.57,
     15.1,
     29.55,
     26.02,
@@ -811,7 +809,7 @@
     18.57
    ],
    "meu": 23.26,
-   "mediana": 16.9
+   "mediana": 16.82
   },
   "alav": {
    "valores": [
@@ -867,7 +865,6 @@
     5.47,
     22.67,
     3.14,
-    1.41,
     4.56,
     19.25,
     5.66,
@@ -1005,15 +1002,15 @@
    },
    {
     "anomes": "201903",
-    "score": 33.8
+    "score": 34.5
    },
    {
     "anomes": "201906",
-    "score": 32.3
+    "score": 32.9
    },
    {
     "anomes": "201909",
-    "score": 30.3
+    "score": 30.4
    },
    {
     "anomes": "201912",
@@ -1021,15 +1018,15 @@
    },
    {
     "anomes": "202003",
-    "score": 18.0
+    "score": 18.3
    },
    {
     "anomes": "202006",
-    "score": 21.5
+    "score": 21.4
    },
    {
     "anomes": "202009",
-    "score": 31.1
+    "score": 31.6
    },
    {
     "anomes": "202012",
@@ -1037,7 +1034,7 @@
    },
    {
     "anomes": "202103",
-    "score": 32.2
+    "score": 32.4
    },
    {
     "anomes": "202106",
@@ -1045,15 +1042,15 @@
    },
    {
     "anomes": "202109",
-    "score": 34.7
+    "score": 34.9
    },
    {
     "anomes": "202112",
-    "score": 23.3
+    "score": 23.2
    },
    {
     "anomes": "202203",
-    "score": 20.6
+    "score": 20.5
    },
    {
     "anomes": "202206",
@@ -1061,11 +1058,11 @@
    },
    {
     "anomes": "202209",
-    "score": 23.7
+    "score": 24.1
    },
    {
     "anomes": "202212",
-    "score": 15.6
+    "score": 15.4
    },
    {
     "anomes": "202303",
@@ -1077,15 +1074,15 @@
    },
    {
     "anomes": "202309",
-    "score": 16.1
+    "score": 16.4
    },
    {
     "anomes": "202312",
-    "score": 14.3
+    "score": 14.1
    },
    {
     "anomes": "202403",
-    "score": 21.4
+    "score": 21.8
    },
    {
     "anomes": "202406",
@@ -1101,11 +1098,11 @@
    },
    {
     "anomes": "202503",
-    "score": 22.2
+    "score": 22.6
    },
    {
     "anomes": "202506",
-    "score": 35.7
+    "score": 35.9
    },
    {
     "anomes": "202509",

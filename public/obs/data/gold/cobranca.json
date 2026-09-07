@@ -18,6 +18,7 @@
   "inicio": "2025-07",
   "fim": "2026-06"
  },
+ "cobertura_n": 27,
  "cobertura": {
   "tribunais": 27,
   "ufs": [
@@ -50,8 +51,8 @@
    "TO"
   ],
   "faltam": [],
-  "coletado_em": "2026-09-06T04:45:01+00:00",
-  "populacao_coberta_pct": 100.0
+  "coletado_em": "2026-09-07T17:05:13+00:00",
+  "populacao_coberta_pct": null
  },
  "brasil": {
   "casos_12m": 821234,
@@ -60,8 +61,8 @@
   "casos_12m_todos": 1809792,
   "var_12m_todos_pct": 11.42,
   "bancario_share": 45.38,
-  "por_mil_hab": 3.85,
-  "por_bi_carteira": 108.4
+  "por_mil_hab": null,
+  "por_bi_carteira": null
  },
  "grupos": [
   {
@@ -3329,11 +3330,11 @@
    "var_12m_pct": 32.16,
    "casos_12m_todos": 484427,
    "bancario_share": 42.61,
-   "por_mil_hab": 4.48,
-   "por_bi_carteira": 90.8,
-   "inad_scr": 3.76,
-   "carteira_scr": 2273019350831,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 49453,
     "busca_apreensao": 143303,
@@ -3341,9 +3342,7 @@
     "exec_hipotecaria": 1
    },
    "posicoes": {
-    "casos_12m": 1,
-    "por_mil_hab": 8,
-    "por_bi_carteira": 24
+    "casos_12m": 1
    }
   },
   {
@@ -3356,11 +3355,11 @@
    "var_12m_pct": 21.72,
    "casos_12m_todos": 145933,
    "bancario_share": 53.42,
-   "por_mil_hab": 9.52,
-   "por_bi_carteira": 187.7,
-   "inad_scr": 3.71,
-   "carteira_scr": 415398547020,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 27231,
     "busca_apreensao": 43641,
@@ -3368,9 +3367,7 @@
     "exec_hipotecaria": 7
    },
    "posicoes": {
-    "casos_12m": 2,
-    "por_mil_hab": 1,
-    "por_bi_carteira": 2
+    "casos_12m": 2
    }
   },
   {
@@ -3383,11 +3380,11 @@
    "var_12m_pct": 23.35,
    "casos_12m_todos": 165378,
    "bancario_share": 45.76,
-   "por_mil_hab": 6.36,
-   "por_bi_carteira": 133.8,
-   "inad_scr": 4.48,
-   "carteira_scr": 565502109363,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 22878,
     "busca_apreensao": 45512,
@@ -3395,9 +3392,7 @@
     "exec_hipotecaria": 16
    },
    "posicoes": {
-    "casos_12m": 3,
-    "por_mil_hab": 4,
-    "por_bi_carteira": 6
+    "casos_12m": 3
    }
   },
   {
@@ -3410,11 +3405,11 @@
    "var_12m_pct": -10.49,
    "casos_12m_todos": 162084,
    "bancario_share": 44.76,
-   "por_mil_hab": 3.39,
-   "por_bi_carteira": 108.2,
-   "inad_scr": 4.64,
-   "carteira_scr": 670588994801,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 25807,
     "busca_apreensao": 40279,
@@ -3422,9 +3417,7 @@
     "exec_hipotecaria": 3
    },
    "posicoes": {
-    "casos_12m": 4,
-    "por_mil_hab": 12,
-    "por_bi_carteira": 16
+    "casos_12m": 4
    }
   },
   {
@@ -3437,11 +3430,11 @@
    "var_12m_pct": 22.84,
    "casos_12m_todos": 141686,
    "bancario_share": 47.63,
-   "por_mil_hab": 6.01,
-   "por_bi_carteira": 126.6,
-   "inad_scr": 4.87,
-   "carteira_scr": 533124912274,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 24028,
     "busca_apreensao": 37822,
@@ -3449,9 +3442,7 @@
     "exec_hipotecaria": 9
    },
    "posicoes": {
-    "casos_12m": 5,
-    "por_mil_hab": 5,
-    "por_bi_carteira": 10
+    "casos_12m": 5
    }
   },
   {
@@ -3464,11 +3455,11 @@
    "var_12m_pct": 1.27,
    "casos_12m_todos": 68337,
    "bancario_share": 55.56,
-   "por_mil_hab": 2.55,
-   "por_bi_carteira": 128.3,
-   "inad_scr": 5.5,
-   "carteira_scr": 295943945051,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 8196,
     "busca_apreensao": 26563,
@@ -3476,9 +3467,7 @@
     "exec_hipotecaria": 3
    },
    "posicoes": {
-    "casos_12m": 6,
-    "por_mil_hab": 17,
-    "por_bi_carteira": 8
+    "casos_12m": 6
    }
   },
   {
@@ -3491,11 +3480,11 @@
    "var_12m_pct": 24.54,
    "casos_12m_todos": 108613,
    "bancario_share": 32.59,
-   "por_mil_hab": 4.77,
-   "por_bi_carteira": 103.3,
-   "inad_scr": 7.09,
-   "carteira_scr": 342635579190,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 9518,
     "busca_apreensao": 22997,
@@ -3503,9 +3492,7 @@
     "exec_hipotecaria": 2
    },
    "posicoes": {
-    "casos_12m": 7,
-    "por_mil_hab": 7,
-    "por_bi_carteira": 22
+    "casos_12m": 7
    }
   },
   {
@@ -3518,11 +3505,11 @@
    "var_12m_pct": -25.2,
    "casos_12m_todos": 68265,
    "bancario_share": 44.53,
-   "por_mil_hab": 1.77,
-   "por_bi_carteira": 53.3,
-   "inad_scr": 4.28,
-   "carteira_scr": 570498663343,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 6449,
     "busca_apreensao": 22088,
@@ -3530,9 +3517,7 @@
     "exec_hipotecaria": 1
    },
    "posicoes": {
-    "casos_12m": 8,
-    "por_mil_hab": 26,
-    "por_bi_carteira": 27
+    "casos_12m": 8
    }
   },
   {
@@ -3545,11 +3530,11 @@
    "var_12m_pct": 10.02,
    "casos_12m_todos": 56730,
    "bancario_share": 49.32,
-   "por_mil_hab": 7.19,
-   "por_bi_carteira": 106.2,
-   "inad_scr": 5.98,
-   "carteira_scr": 263386323304,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 10761,
     "busca_apreensao": 13807,
@@ -3557,9 +3542,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 9,
-    "por_mil_hab": 3,
-    "por_bi_carteira": 19
+    "casos_12m": 9
    }
   },
   {
@@ -3572,11 +3555,11 @@
    "var_12m_pct": -2.7,
    "casos_12m_todos": 43590,
    "bancario_share": 46.27,
-   "por_mil_hab": 2.11,
-   "por_bi_carteira": 116.5,
-   "inad_scr": 5.34,
-   "carteira_scr": 173163454663,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 2998,
     "busca_apreensao": 15788,
@@ -3584,9 +3567,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 10,
-    "por_mil_hab": 23,
-    "por_bi_carteira": 13
+    "casos_12m": 10
    }
   },
   {
@@ -3599,11 +3580,11 @@
    "var_12m_pct": 9.04,
    "casos_12m_todos": 36090,
    "bancario_share": 55.3,
-   "por_mil_hab": 2.15,
-   "por_bi_carteira": 113.7,
-   "inad_scr": 5.01,
-   "carteira_scr": 175502328743,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 3332,
     "busca_apreensao": 15514,
@@ -3611,9 +3592,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 11,
-    "por_mil_hab": 21,
-    "por_bi_carteira": 14
+    "casos_12m": 11
    }
   },
   {
@@ -3626,11 +3605,11 @@
    "var_12m_pct": 2.55,
    "casos_12m_todos": 35612,
    "bancario_share": 52.49,
-   "por_mil_hab": 2.15,
-   "por_bi_carteira": 111.2,
-   "inad_scr": 6.33,
-   "carteira_scr": 168067572491,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 4579,
     "busca_apreensao": 12556,
@@ -3638,9 +3617,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 12,
-    "por_mil_hab": 22,
-    "por_bi_carteira": 15
+    "casos_12m": 12
    }
   },
   {
@@ -3653,11 +3630,11 @@
    "var_12m_pct": 6.72,
    "casos_12m_todos": 33276,
    "bancario_share": 44.66,
-   "por_mil_hab": 5.08,
-   "por_bi_carteira": 104.3,
-   "inad_scr": 7.37,
-   "carteira_scr": 142410350379,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 4975,
     "busca_apreensao": 7887,
@@ -3665,9 +3642,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 13,
-    "por_mil_hab": 6,
-    "por_bi_carteira": 20
+    "casos_12m": 13
    }
   },
   {
@@ -3680,11 +3655,11 @@
    "var_12m_pct": 13.99,
    "casos_12m_todos": 29890,
    "bancario_share": 47.31,
-   "por_mil_hab": 3.43,
-   "por_bi_carteira": 107.1,
-   "inad_scr": 4.02,
-   "carteira_scr": 132031861103,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 4784,
     "busca_apreensao": 8147,
@@ -3692,9 +3667,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 14,
-    "por_mil_hab": 10,
-    "por_bi_carteira": 17
+    "casos_12m": 14
    }
   },
   {
@@ -3707,11 +3680,11 @@
    "var_12m_pct": 25.45,
    "casos_12m_todos": 28889,
    "bancario_share": 47.19,
-   "por_mil_hab": 1.94,
-   "por_bi_carteira": 119.6,
-   "inad_scr": 9.11,
-   "carteira_scr": 113963129555,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 4362,
     "busca_apreensao": 7966,
@@ -3719,9 +3692,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 15,
-    "por_mil_hab": 25,
-    "por_bi_carteira": 12
+    "casos_12m": 15
    }
   },
   {
@@ -3734,11 +3705,11 @@
    "var_12m_pct": 8.7,
    "casos_12m_todos": 36215,
    "bancario_share": 36.09,
-   "por_mil_hab": 7.46,
-   "por_bi_carteira": 203.4,
-   "inad_scr": 6.82,
-   "carteira_scr": 64264906136,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 7320,
     "busca_apreensao": 4260,
@@ -3746,9 +3717,7 @@
     "exec_hipotecaria": 2
    },
    "posicoes": {
-    "casos_12m": 16,
-    "por_mil_hab": 2,
-    "por_bi_carteira": 1
+    "casos_12m": 16
    }
   },
   {
@@ -3761,11 +3730,11 @@
    "var_12m_pct": 20.95,
    "casos_12m_todos": 23421,
    "bancario_share": 52.62,
-   "por_mil_hab": 2.85,
-   "por_bi_carteira": 154.2,
-   "inad_scr": 5.78,
-   "carteira_scr": 79940028523,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1745,
     "busca_apreensao": 9948,
@@ -3773,9 +3742,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 17,
-    "por_mil_hab": 15,
-    "por_bi_carteira": 4
+    "casos_12m": 17
    }
   },
   {
@@ -3788,11 +3755,11 @@
    "var_12m_pct": 12.83,
    "casos_12m_todos": 18817,
    "bancario_share": 58.28,
-   "por_mil_hab": 3.4,
-   "por_bi_carteira": 183.0,
-   "inad_scr": 5.72,
-   "carteira_scr": 59919861792,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1029,
     "busca_apreensao": 9505,
@@ -3800,9 +3767,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 18,
-    "por_mil_hab": 11,
-    "por_bi_carteira": 3
+    "casos_12m": 18
    }
   },
   {
@@ -3815,11 +3780,11 @@
    "var_12m_pct": 109.56,
    "casos_12m_todos": 20982,
    "bancario_share": 44.4,
-   "por_mil_hab": 3.11,
-   "por_bi_carteira": 58.7,
-   "inad_scr": 3.54,
-   "carteira_scr": 158790725856,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 2530,
     "busca_apreensao": 5767,
@@ -3827,9 +3792,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 19,
-    "por_mil_hab": 13,
-    "por_bi_carteira": 26
+    "casos_12m": 19
    }
   },
   {
@@ -3842,11 +3805,11 @@
    "var_12m_pct": 6.09,
    "casos_12m_todos": 16955,
    "bancario_share": 52.67,
-   "por_mil_hab": 2.64,
-   "por_bi_carteira": 129.2,
-   "inad_scr": 4.88,
-   "carteira_scr": 69098546175,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1943,
     "busca_apreensao": 6477,
@@ -3854,9 +3817,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 20,
-    "por_mil_hab": 16,
-    "por_bi_carteira": 7
+    "casos_12m": 20
    }
   },
   {
@@ -3869,11 +3830,11 @@
    "var_12m_pct": 12.2,
    "casos_12m_todos": 20738,
    "bancario_share": 42.45,
-   "por_mil_hab": 2.55,
-   "por_bi_carteira": 121.6,
-   "inad_scr": 5.24,
-   "carteira_scr": 72411629099,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1822,
     "busca_apreensao": 6258,
@@ -3881,9 +3842,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 21,
-    "por_mil_hab": 18,
-    "por_bi_carteira": 11
+    "casos_12m": 21
    }
   },
   {
@@ -3896,11 +3855,11 @@
    "var_12m_pct": 18.88,
    "casos_12m_todos": 20163,
    "bancario_share": 34.91,
-   "por_mil_hab": 1.69,
-   "por_bi_carteira": 91.2,
-   "inad_scr": 5.51,
-   "carteira_scr": 77176431593,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1850,
     "busca_apreensao": 4315,
@@ -3908,9 +3867,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 22,
-    "por_mil_hab": 27,
-    "por_bi_carteira": 23
+    "casos_12m": 22
    }
   },
   {
@@ -3923,11 +3880,11 @@
    "var_12m_pct": 22.99,
    "casos_12m_todos": 14587,
    "bancario_share": 41.56,
-   "por_mil_hab": 3.82,
-   "por_bi_carteira": 103.4,
-   "inad_scr": 8.45,
-   "carteira_scr": 58641650575,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 2289,
     "busca_apreensao": 2877,
@@ -3935,9 +3892,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 23,
-    "por_mil_hab": 9,
-    "por_bi_carteira": 21
+    "casos_12m": 23
    }
   },
   {
@@ -3950,11 +3905,11 @@
    "var_12m_pct": -1.22,
    "casos_12m_todos": 12382,
    "bancario_share": 43.69,
-   "por_mil_hab": 2.35,
-   "por_bi_carteira": 127.5,
-   "inad_scr": 5.51,
-   "carteira_scr": 42436269253,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 1898,
     "busca_apreensao": 2771,
@@ -3962,9 +3917,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 24,
-    "por_mil_hab": 20,
-    "por_bi_carteira": 9
+    "casos_12m": 24
    }
   },
   {
@@ -3977,11 +3930,11 @@
    "var_12m_pct": 31.83,
    "casos_12m_todos": 3977,
    "bancario_share": 57.28,
-   "por_mil_hab": 3.08,
-   "por_bi_carteira": 136.6,
-   "inad_scr": 6.46,
-   "carteira_scr": 16681437431,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 396,
     "busca_apreensao": 1688,
@@ -3989,9 +3942,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 25,
-    "por_mil_hab": 14,
-    "por_bi_carteira": 5
+    "casos_12m": 25
    }
   },
   {
@@ -4004,11 +3955,11 @@
    "var_12m_pct": 12.23,
    "casos_12m_todos": 4289,
    "bancario_share": 49.43,
-   "por_mil_hab": 2.4,
-   "por_bi_carteira": 106.6,
-   "inad_scr": 6.46,
-   "carteira_scr": 19893198780,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 886,
     "busca_apreensao": 1087,
@@ -4016,9 +3967,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 26,
-    "por_mil_hab": 19,
-    "por_bi_carteira": 18
+    "casos_12m": 26
    }
   },
   {
@@ -4031,11 +3980,11 @@
    "var_12m_pct": 3.15,
    "casos_12m_todos": 8466,
    "bancario_share": 18.98,
-   "por_mil_hab": 1.99,
-   "por_bi_carteira": 82.6,
-   "inad_scr": 5.63,
-   "carteira_scr": 19451954316,
-   "data_scr": "2026-07",
+   "por_mil_hab": null,
+   "por_bi_carteira": null,
+   "inad_scr": null,
+   "carteira_scr": null,
+   "data_scr": null,
    "grupos": {
     "execucao": 302,
     "busca_apreensao": 1154,
@@ -4043,9 +3992,7 @@
     "exec_hipotecaria": 0
    },
    "posicoes": {
-    "casos_12m": 27,
-    "por_mil_hab": 24,
-    "por_bi_carteira": 25
+    "casos_12m": 27
    }
   }
  ],
@@ -4091,7 +4038,7 @@
    "nome": "Empréstimo consignado"
   }
  ],
- "sintese": "Nos 12 meses até 2026-06, 821.234 ações de cobrança de crédito bancário foram ajuizadas nos 27 tribunais estaduais cobertos (+14,3% contra os 12 meses anteriores), 45% das 1.809.792 ações das mesmas classes com qualquer credor. A via mais usada é busca e apreensão em alienação fiduciária (519.977 casos, 63% do total); a maior intensidade por habitante está em Santa Catarina (9,5 por mil).",
+ "sintese": "Nos 12 meses até 2026-06, 821.234 ações de cobrança de crédito bancário foram ajuizadas nos 27 tribunais estaduais cobertos (+14,3% contra os 12 meses anteriores), 45% das 1.809.792 ações das mesmas classes com qualquer credor. A via mais usada é busca e apreensão em alienação fiduciária (519.977 casos, 63% do total).",
  "metodo": "Contagem de casos únicos (cardinalidade do número CNJ) por mês de ajuizamento, por classe TPU e tribunal, via agregação na API pública do DataJud; o mês é lido em dois espaços de data (documentos migrados em 'yyyyMMddHHmmss' e documentos em ISO-8601) e somado. Recorte bancário = assuntos TPU listados; total = qualquer credor. Os três últimos meses são parciais e ficam fora. Janela de 12 meses até o último mês fechado, comparada com os 12 meses anteriores. Por UF: casos bancários ÷ população (Censo 2022) e ÷ carteira de crédito do SCR em R$ bilhões; posições entre as UFs cobertas.",
  "limitacoes": "Cobertura do DataJud varia entre tribunais e ao longo do tempo (remessa atrasada e migrações de sistema); a série é mais fraca antes de 2020. Cardinalidade é estimativa (HyperLogLog++, erro típico abaixo de 1%). Execução e monitória cobram qualquer título: o recorte bancário depende do assunto cadastrado pelo tribunal, que nem sempre existe. Não há valor da causa nem identificação do credor na API pública.",
  "cautelas": [

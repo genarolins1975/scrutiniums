@@ -3868,8 +3868,8 @@
   },
   {
    "cod": "05503849",
-   "nome": "SF3 CRÉDITO, FINANCIAMENTO E INVESTIMENT",
-   "sr": "S5",
+   "nome": "CLOUDWALK FINANCEIRA S.A. CRÉDITO, FINAN",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 701088054.74,
    "carteira": 520918543.74,
@@ -3882,7 +3882,7 @@
   },
   {
    "cod": "05545390",
-   "nome": "COOPERATIVA DE CRÉDITO - SICREDI COOMAMP",
+   "nome": "COOPERATIVA DE CRÉDITO - SICREDI LENÇÓIS",
    "sr": "S4",
    "nivel": "indiv",
    "ativo": 93869103.67,
@@ -4639,7 +4639,7 @@
   {
    "cod": "07945233",
    "nome": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICRO",
-   "sr": "S5",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 4729430.92,
    "carteira": 133350.82,
@@ -4946,7 +4946,7 @@
   },
   {
    "cod": "09092759",
-   "nome": "ALPHA SERVICOS DE REDE DE AUTOATENDIMENT",
+   "nome": "NAIP INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": null,
    "nivel": "indiv",
    "ativo": 859707889.32,
@@ -5100,7 +5100,7 @@
   },
   {
    "cod": "09590601",
-   "nome": "COOPERATIVA DE CRÉDITO DA SERRA CATARINE",
+   "nome": "COOPERATIVA DE CRÉDITO - CREDICOMIN",
    "sr": "S5",
    "nivel": "indiv",
    "ativo": 741083560.33,
@@ -5828,7 +5828,7 @@
   },
   {
    "cod": "20520298",
-   "nome": "ADIQ INSTITUIÇÃO DE PAGAMENTO S.A.",
+   "nome": "BS2 PAYMENTS INSTITUIÇÃO DE PAGAMENTO S.",
    "sr": "S3",
    "nivel": "indiv",
    "ativo": 1241743952.67,
@@ -6814,7 +6814,7 @@
    "ativo": 20822649.94,
    "carteira": 0.0,
    "roe": 8.559342483900403,
-   "basileia": null,
+   "basileia": 36.7755172422468,
    "npl": null,
    "cobertura": null,
    "cart_ativo": 0.0,
@@ -6864,7 +6864,7 @@
   },
   {
    "cod": "32343119",
-   "nome": "MENTORE BANK INSTITUICAO DE PAGAMENTO S.",
+   "nome": "MÊNTORE INSTITUIÇÃO DE PAGAMENTO S.A.",
    "sr": null,
    "nivel": "indiv",
    "ativo": 334080957.45,
@@ -7164,7 +7164,7 @@
    "ativo": 19419104.81,
    "carteira": 0.0,
    "roe": -6.434585867652642,
-   "basileia": null,
+   "basileia": 12.0360259030035,
    "npl": null,
    "cobertura": null,
    "cart_ativo": 0.0,
@@ -7500,7 +7500,7 @@
    "ativo": 114266877.81,
    "carteira": 0.0,
    "roe": -2.4415986396846447,
-   "basileia": null,
+   "basileia": 455.512629669065,
    "npl": null,
    "cobertura": null,
    "cart_ativo": 0.0,
@@ -7928,7 +7928,7 @@
   },
   {
    "cod": "44373041",
-   "nome": "COOPERATIVA DE CRÉDITO RURAL - CREDICANA",
+   "nome": "COOPERATIVA DE CRÉDITO UNIPRIME CREDICAN",
    "sr": "S5",
    "nivel": "indiv",
    "ativo": 138977677.7,
@@ -10616,7 +10616,7 @@
   },
   {
    "cod": "82065285",
-   "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVES",
+   "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES",
    "sr": "S4",
    "nivel": "indiv",
    "ativo": 4482134780.09,
@@ -16524,7 +16524,7 @@
   },
   {
    "cod": "42259084",
-   "nome": "SBCASH SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "nome": "ARTTA SOCIEDADE DE CRÉDITO DIRETO S.A",
    "sr": "S5",
    "nivel": "indiv",
    "ativo": 82375002.1,
@@ -16636,7 +16636,7 @@
   },
   {
    "cod": "42622791",
-   "nome": "TRYBE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+   "nome": "MOTTU SOCIEDADE DE CRÉDITO DIRETO S.A.",
    "sr": "S5",
    "nivel": "indiv",
    "ativo": 5703336.6,
@@ -17210,7 +17210,7 @@
   },
   {
    "cod": "23114447",
-   "nome": "FLAGSHIP INSTITUICAO DE PAGAMENTOS LTDA",
+   "nome": "FLAGSHIP INSTITUICAO DE PAGAMENTO LTDA",
    "sr": null,
    "nivel": "indiv",
    "ativo": 124118547.6,
@@ -17519,7 +17519,7 @@
   {
    "cod": "18189547",
    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SER",
-   "sr": null,
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 19069767498.1,
    "carteira": 0.0,
@@ -18709,7 +18709,7 @@
   {
    "cod": "87963450",
    "nome": "NIKOS DISTRIBUIDORA DE TÍTULOS E VALORES",
-   "sr": "S3",
+   "sr": "S4",
    "nivel": "indiv",
    "ativo": 7379369.63,
    "carteira": 0.0,
@@ -19240,7 +19240,7 @@
   },
   {
    "cod": "52833288",
-   "nome": "LB BANK INSTITUICAO DE PAGAMENTO LTDA",
+   "nome": "LB PAY INSTITUIÇÃO DE PAGAMENTO LTDA",
    "sr": null,
    "nivel": "indiv",
    "ativo": 6320158.5,
@@ -19450,7 +19450,7 @@
   },
   {
    "cod": "54024532",
-   "nome": "APPMAX INSTITUICAO DE PAGAMENTO LTDA",
+   "nome": "MAX INSTITUIÇÃO DE PAGAMENTO LTDA",
    "sr": null,
    "nivel": "indiv",
    "ativo": 7268615.34,
@@ -19577,7 +19577,7 @@
   {
    "cod": "60717928",
    "nome": "TORRA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 19061217.59,
    "carteira": 0.0,
@@ -19632,7 +19632,7 @@
   },
   {
    "cod": "62816426",
-   "nome": "SOCIÉTÉ GÉNÉRALE EQUIPMENT FINANCE S.A. ",
+   "nome": "BPCE EQUIPMENT SOLUTIONS BRASIL S.A. - A",
    "sr": "S4",
    "nivel": "indiv",
    "ativo": 1195414881.83,
@@ -19661,7 +19661,7 @@
   {
    "cod": "60236532",
    "nome": "BM4 SOCIEDADE DE CRÉDITO DIRETO S.A.",
-   "sr": null,
+   "sr": "S5",
    "nivel": "indiv",
    "ativo": 5997803.13,
    "carteira": 187804.82,
@@ -19675,7 +19675,7 @@
   {
    "cod": "44815065",
    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
-   "sr": "S1",
+   "sr": null,
    "nivel": "indiv",
    "ativo": 89599291.33,
    "carteira": 0.0,

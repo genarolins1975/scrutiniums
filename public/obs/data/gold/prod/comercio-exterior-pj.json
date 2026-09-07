@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-05T12:52:12+00:00",
+ "gerado_em": "2026-09-07T17:05:43+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -58,18 +58,18 @@
   "disponivel": true,
   "modelo": "est(i,p) = phi_i × beta × m_p × atraso15(i,p) — piso 0, teto de sanidade 100",
   "sem_intercepto": "MQO pela origem, de propósito: um intercepto de nível dominava os produtos de atraso baixo e o teto virava a estimativa. Migração: atraso zero ⇒ estimado zero.",
-  "beta": 1.07,
-  "r2_nao_centrado": 0.794,
-  "ep_beta": 0.0176,
+  "beta": 1.064,
+  "r2_nao_centrado": 0.795,
+  "ep_beta": 0.0175,
   "n_ifs": 957,
   "m_produtos": {
-   "capital-de-giro-pj": 1.06,
-   "cartao-de-credito-pf": 0.69,
+   "capital-de-giro-pj": 1.07,
+   "cartao-de-credito-pf": 0.7,
    "comercio-exterior-pj": 0.27,
-   "consignado-pf": 1.51,
-   "credito-pessoal-pf": 0.9,
-   "recebiveis-pj": 0.68,
-   "veiculos-pf": 1.16
+   "consignado-pf": 1.49,
+   "credito-pessoal-pf": 0.91,
+   "recebiveis-pj": 0.69,
+   "veiculos-pf": 1.17
   },
   "phi_winsorizados": 34,
   "phi_limites": [
@@ -78,7 +78,7 @@
   ],
   "estimativas": 6027,
   "estimativas_baixa_cobertura": 23,
-  "estimativas_teto_sanidade": 46,
+  "estimativas_teto_sanidade": 47,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -245,7 +245,7 @@
     "npl_prod_est": {
      "pct": 0.11,
      "m_produto": 0.27,
-     "phi_if": 1.6,
+     "phi_if": 1.61,
      "cobertura_if_pct": 80.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -297,9 +297,9 @@
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 0.46,
+     "pct": 0.47,
      "m_produto": 0.27,
-     "phi_if": 1.28,
+     "phi_if": 1.29,
      "cobertura_if_pct": 75.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -324,7 +324,7 @@
     "npl_prod_est": {
      "pct": 0.84,
      "m_produto": 0.27,
-     "phi_if": 1.77,
+     "phi_if": 1.78,
      "cobertura_if_pct": 95.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -430,7 +430,7 @@
     "npl_prod_est": {
      "pct": 0.08,
      "m_produto": 0.27,
-     "phi_if": 1.68,
+     "phi_if": 1.69,
      "cobertura_if_pct": 80.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -455,7 +455,7 @@
     "npl_prod_est": {
      "pct": 0.02,
      "m_produto": 0.27,
-     "phi_if": 0.92,
+     "phi_if": 0.93,
      "cobertura_if_pct": 61.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -572,7 +572,7 @@
     "npl_prod_est": {
      "pct": 1.38,
      "m_produto": 0.27,
-     "phi_if": 1.55,
+     "phi_if": 1.56,
      "cobertura_if_pct": 87.3,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -597,7 +597,7 @@
     "npl_prod_est": {
      "pct": 0.04,
      "m_produto": 0.27,
-     "phi_if": 1.85,
+     "phi_if": 1.86,
      "cobertura_if_pct": 90.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -776,7 +776,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.54,
+     "pct": 0.55,
      "m_produto": 0.27,
      "phi_if": 1.19,
      "cobertura_if_pct": 96.3,
@@ -837,7 +837,7 @@
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 0.14,
+     "pct": 0.15,
      "m_produto": 0.27,
      "phi_if": 0.88,
      "cobertura_if_pct": 85.2,
@@ -862,7 +862,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.8,
+     "pct": 4.81,
      "m_produto": 0.27,
      "phi_if": 1.71,
      "cobertura_if_pct": 93.4,
@@ -1036,7 +1036,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.31,
+     "phi_if": 1.33,
      "cobertura_if_pct": 94.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1061,9 +1061,9 @@
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 6.45,
+     "pct": 6.46,
      "m_produto": 0.27,
-     "phi_if": 2.21,
+     "phi_if": 2.22,
      "cobertura_if_pct": 83.1,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1106,7 +1106,7 @@
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 7.48,
+     "pct": 7.49,
      "m_produto": 0.27,
      "phi_if": 4.0,
      "cobertura_if_pct": 75.6,
@@ -1183,9 +1183,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.97,
+     "pct": 0.98,
      "m_produto": 0.27,
-     "phi_if": 1.41,
+     "phi_if": 1.42,
      "cobertura_if_pct": 98.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1330,7 +1330,7 @@
     "npl_prod_est": {
      "pct": 0.15,
      "m_produto": 0.27,
-     "phi_if": 1.33,
+     "phi_if": 1.34,
      "cobertura_if_pct": 67.0,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1380,7 +1380,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.46,
+     "phi_if": 1.47,
      "cobertura_if_pct": 69.3,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1430,7 +1430,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.93,
+     "phi_if": 1.94,
      "cobertura_if_pct": 95.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1455,7 +1455,7 @@
     "npl_prod_est": {
      "pct": 0.03,
      "m_produto": 0.27,
-     "phi_if": 3.55,
+     "phi_if": 3.53,
      "cobertura_if_pct": 50.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1548,9 +1548,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.76,
+     "pct": 3.78,
      "m_produto": 0.27,
-     "phi_if": 1.38,
+     "phi_if": 1.39,
      "cobertura_if_pct": 84.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1575,7 +1575,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 2.66,
+     "phi_if": 2.67,
      "cobertura_if_pct": 82.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1650,7 +1650,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.24,
+     "pct": 6.25,
      "m_produto": 0.27,
      "phi_if": 4.0,
      "cobertura_if_pct": 95.6,
@@ -1761,7 +1761,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 2.43,
+     "phi_if": 2.44,
      "cobertura_if_pct": 84.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1811,7 +1811,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 2.0,
+     "phi_if": 2.01,
      "cobertura_if_pct": 81.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1861,7 +1861,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.96,
+     "phi_if": 1.97,
      "cobertura_if_pct": 91.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1884,9 +1884,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.94,
+     "pct": 19.17,
      "m_produto": 0.27,
-     "phi_if": 2.12,
+     "phi_if": 2.14,
      "cobertura_if_pct": 98.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1911,7 +1911,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.85,
+     "phi_if": 1.86,
      "cobertura_if_pct": 85.8,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1920,7 +1920,7 @@
    },
    {
     "cod": "82065285",
-    "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO PARQUE DAS ARAUCARIAS - SICREDI PARQUE DAS ARAUCARIAS PR/SC/SP",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SOMA PR/SC/SP - SICREDI SOMA",
     "sr": "S4",
     "nivel": "individual",
     "carteira_brl": 7989207.47,
@@ -1936,7 +1936,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 2.24,
+     "phi_if": 2.25,
      "cobertura_if_pct": 88.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2061,7 +2061,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": 0.27,
-     "phi_if": 1.9,
+     "phi_if": 1.91,
      "cobertura_if_pct": 90.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2311,13 +2311,13 @@
     "serie": [
      {
       "anomes": "202503",
-      "total_brl": 45976705307.26,
-      "n_inst": 25
+      "total_brl": 45919013580.48,
+      "n_inst": 24
      },
      {
       "anomes": "202506",
-      "total_brl": 47030501740.91,
-      "n_inst": 25
+      "total_brl": 47000087414.74,
+      "n_inst": 24
      },
      {
       "anomes": "202509",
@@ -2339,12 +2339,12 @@
      {
       "anomes": "202503",
       "agg_pct": 0.29,
-      "n": 25
+      "n": 24
      },
      {
       "anomes": "202506",
       "agg_pct": 0.45,
-      "n": 25
+      "n": 24
      },
      {
       "anomes": "202509",
@@ -5470,28 +5470,28 @@
          "mediana_aa": 10.28,
          "p25_aa": 8.3,
          "p75_aa": 11.03,
-         "n": 10
+         "n": 9
         },
         {
          "inicio": "2023-12-11",
          "mediana_aa": 8.97,
          "p25_aa": 8.32,
-         "p75_aa": 11.98,
-         "n": 10
+         "p75_aa": 11.8,
+         "n": 9
         },
         {
          "inicio": "2023-12-18",
          "mediana_aa": 7.59,
          "p25_aa": 6.6,
-         "p75_aa": 11.28,
-         "n": 13
+         "p75_aa": 10.06,
+         "n": 12
         },
         {
          "inicio": "2023-12-26",
-         "mediana_aa": 8.67,
+         "mediana_aa": 7.24,
          "p25_aa": 6.42,
-         "p75_aa": 11.05,
-         "n": 11
+         "p75_aa": 11.0,
+         "n": 10
         },
         {
          "inicio": "2024-01-02",
@@ -5532,15 +5532,15 @@
          "inicio": "2024-02-05",
          "mediana_aa": 8.86,
          "p25_aa": 7.04,
-         "p75_aa": 9.75,
-         "n": 13
+         "p75_aa": 9.14,
+         "n": 12
         },
         {
          "inicio": "2024-02-14",
          "mediana_aa": 7.55,
          "p25_aa": 7.03,
-         "p75_aa": 10.5,
-         "n": 13
+         "p75_aa": 9.57,
+         "n": 12
         },
         {
          "inicio": "2024-02-20",
@@ -5553,8 +5553,8 @@
          "inicio": "2024-02-26",
          "mediana_aa": 8.88,
          "p25_aa": 7.24,
-         "p75_aa": 10.24,
-         "n": 13
+         "p75_aa": 10.02,
+         "n": 12
         },
         {
          "inicio": "2024-03-04",
@@ -5565,10 +5565,10 @@
         },
         {
          "inicio": "2024-03-11",
-         "mediana_aa": 8.86,
-         "p25_aa": 7.65,
+         "mediana_aa": 8.7,
+         "p25_aa": 6.12,
          "p75_aa": 10.6,
-         "n": 15
+         "n": 14
         },
         {
          "inicio": "2024-03-18",
@@ -5595,8 +5595,8 @@
          "inicio": "2024-04-08",
          "mediana_aa": 8.16,
          "p25_aa": 6.9,
-         "p75_aa": 9.81,
-         "n": 13
+         "p75_aa": 9.78,
+         "n": 12
         },
         {
          "inicio": "2024-04-15",
@@ -5607,10 +5607,10 @@
         },
         {
          "inicio": "2024-04-22",
-         "mediana_aa": 9.64,
+         "mediana_aa": 9.19,
          "p25_aa": 5.83,
-         "p75_aa": 11.43,
-         "n": 11
+         "p75_aa": 10.69,
+         "n": 10
         },
         {
          "inicio": "2024-04-29",
@@ -5679,8 +5679,8 @@
          "inicio": "2024-07-01",
          "mediana_aa": 7.73,
          "p25_aa": 6.82,
-         "p75_aa": 9.91,
-         "n": 10
+         "p75_aa": 9.37,
+         "n": 9
         },
         {
          "inicio": "2024-07-08",
@@ -5712,10 +5712,10 @@
         },
         {
          "inicio": "2024-08-05",
-         "mediana_aa": 9.68,
-         "p25_aa": 7.37,
+         "mediana_aa": 9.4,
+         "p25_aa": 6.08,
          "p75_aa": 11.02,
-         "n": 12
+         "n": 11
         },
         {
          "inicio": "2024-08-12",
@@ -5735,8 +5735,8 @@
          "inicio": "2024-08-26",
          "mediana_aa": 7.86,
          "p25_aa": 6.25,
-         "p75_aa": 9.21,
-         "n": 14
+         "p75_aa": 9.18,
+         "n": 13
         },
         {
          "inicio": "2024-09-02",
@@ -5763,8 +5763,8 @@
          "inicio": "2024-09-23",
          "mediana_aa": 8.65,
          "p25_aa": 5.86,
-         "p75_aa": 9.2,
-         "n": 13
+         "p75_aa": 8.92,
+         "n": 12
         },
         {
          "inicio": "2024-09-30",
@@ -5922,17 +5922,17 @@
         },
         {
          "inicio": "2025-03-05",
-         "mediana_aa": 6.66,
-         "p25_aa": 5.28,
+         "mediana_aa": 5.44,
+         "p25_aa": 5.26,
          "p75_aa": 9.07,
-         "n": 12
+         "n": 11
         },
         {
          "inicio": "2025-03-11",
-         "mediana_aa": 8.1,
+         "mediana_aa": 7.73,
          "p25_aa": 6.15,
-         "p75_aa": 10.52,
-         "n": 11
+         "p75_aa": 10.5,
+         "n": 10
         },
         {
          "inicio": "2025-03-17",

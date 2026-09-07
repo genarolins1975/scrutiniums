@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-05T12:51:51+00:00",
+ "gerado_em": "2026-09-07T17:05:20+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 336,
-  "total_editais": 1122,
+  "total_contratos_if": 338,
+  "total_editais": 1125,
   "backfill_completo": true,
   "ranking": [
    {
@@ -145,9 +145,9 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 72,
+    "contratos": 74,
     "ufs": 14,
-    "como_receita": 23
+    "como_receita": 24
    },
    {
     "cnpj8": "90400888",
@@ -573,6 +573,21 @@
     "url": "https://pncp.gov.br/contratos/83102350000196/2026/1165"
    },
    {
+    "controle": "03576220000156-2-000095/2026",
+    "ente": "MUNICIPIO DE BATAGUASSU",
+    "esfera": "Municipal",
+    "municipio": "Bataguassu",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-02",
+    "vig_fim": "2031-09-01",
+    "valor": 1256700.0,
+    "receita": true,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/03576220000156/2026/95"
+   },
+   {
     "controle": "22646525000131-2-000108/2026",
     "ente": "MUNICIPIO DE MONTE SIAO",
     "esfera": "Municipal",
@@ -888,6 +903,21 @@
     "url": "https://pncp.gov.br/contratos/18715409000150/2026/128"
    },
    {
+    "controle": "01612351000116-2-000010/2026",
+    "ente": "MUNICIPIO DE MARCACAO",
+    "esfera": "Municipal",
+    "municipio": "Marcação",
+    "uf": "PB",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-07-07",
+    "vig_fim": "2031-07-07",
+    "valor": 50500.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/01612351000116/2026/10"
+   },
+   {
     "controle": "07248660000135-2-000170/2026",
     "ente": "DEFENSORIA PUBLICA DO ESTADO DO TOCANTINS",
     "esfera": "Estadual",
@@ -1126,47 +1156,35 @@
     "banco": "BANCO BRADESCO S/A",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/83102277000152/2026/454"
-   },
-   {
-    "controle": "27142058000711-2-000002/2026",
-    "ente": "MUNICIPIO DE VITORIA",
-    "esfera": "Municipal",
-    "municipio": "Vitória",
-    "uf": "ES",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-05-27",
-    "vig_fim": "2031-07-07",
-    "valor": 31073000.0,
-    "receita": false,
-    "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "cnpj8": "90400888",
-    "url": "https://pncp.gov.br/contratos/27142058000711/2026/2"
-   },
-   {
-    "controle": "18296681000142-2-000173/2026",
-    "ente": "MUNICIPIO DE POMPEU",
-    "esfera": "Municipal",
-    "municipio": "Pompéu",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-05-27",
-    "vig_fim": "2031-05-27",
-    "valor": 1000000.0,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL.",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/18296681000142/2026/173"
    }
   ],
   "editais_recentes": [
    {
-    "ente": "UBERLANDIA CAMARA MUNICIPAL",
-    "municipio": "Uberlândia",
+    "ente": "MUNICIPIO DE RIACHO DOS MACHADOS",
+    "municipio": "Riacho dos Machados",
     "uf": "MG",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-07",
+    "url": "https://pncp.gov.br/compras/16925208000151/2026/47"
+   },
+   {
+    "ente": "SUPERINTENDENCIA DE AGUA E ESGOTO DE CATANDUVA",
+    "municipio": "Catanduva",
+    "uf": "SP",
     "modalidade": "Dispensa",
     "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-04",
+    "url": "https://pncp.gov.br/compras/10559279000100/2026/69"
+   },
+   {
+    "ente": "MUNICIPIO DE CORREGO FUNDO",
+    "municipio": "Córrego Fundo",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/20720165000145/2026/40"
+    "url": "https://pncp.gov.br/compras/01614862000177/2026/68"
    },
    {
     "ente": "MUNICIPIO DE CONCEICAO DAS ALAGOAS",
@@ -1176,6 +1194,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-03",
     "url": "https://pncp.gov.br/compras/18428854000139/2026/80"
+   },
+   {
+    "ente": "UBERLANDIA CAMARA MUNICIPAL",
+    "municipio": "Uberlândia",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/20720165000145/2026/40"
    },
    {
     "ente": "MUNICIPIO DE COREAU",
@@ -1196,6 +1223,15 @@
     "url": "https://pncp.gov.br/compras/18243287000146/2026/130"
    },
    {
+    "ente": "MUNICIPIO DE ESPERANCA",
+    "municipio": "Esperança",
+    "uf": "PB",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-03",
+    "url": "https://pncp.gov.br/compras/08993909000108/2026/141"
+   },
+   {
     "ente": "CAMARA MUNICIPAL DE JUNDIAI",
     "municipio": "Jundiaí",
     "uf": "SP",
@@ -1214,15 +1250,6 @@
     "url": "https://pncp.gov.br/compras/01505643000150/2026/118"
    },
    {
-    "ente": "MUNICIPIO DE ESPERANCA",
-    "municipio": "Esperança",
-    "uf": "PB",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/08993909000108/2026/141"
-   },
-   {
     "ente": "MUNICIPIO DE FRUTA DE LEITE",
     "municipio": "Fruta de Leite",
     "uf": "MG",
@@ -1239,33 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-01",
     "url": "https://pncp.gov.br/compras/95993085000162/2026/50"
-   },
-   {
-    "ente": "MUNICIPIO DE CAMACHO",
-    "municipio": "Camacho",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-01",
-    "url": "https://pncp.gov.br/compras/18308726000151/2026/76"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO VICENTE",
-    "municipio": "São Vicente",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-01",
-    "url": "https://pncp.gov.br/compras/46177523000109/2026/249"
-   },
-   {
-    "ente": "MUNICIPIO DE VARZEA PAULISTA",
-    "municipio": "Várzea Paulista",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-01",
-    "url": "https://pncp.gov.br/compras/45780087000103/2026/110"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

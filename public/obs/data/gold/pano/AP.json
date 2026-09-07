@@ -34,7 +34,7 @@
   },
   {
    "p": "2024-08",
-   "inad": 3.71
+   "inad": 3.83
   },
   {
    "p": "2024-09",
@@ -54,7 +54,7 @@
   },
   {
    "p": "2025-01",
-   "inad": 4.03
+   "inad": 4.15
   },
   {
    "p": "2025-02",
@@ -62,11 +62,11 @@
   },
   {
    "p": "2025-03",
-   "inad": 4.24
+   "inad": 4.38
   },
   {
    "p": "2025-04",
-   "inad": 4.49
+   "inad": 4.64
   },
   {
    "p": "2025-05",
@@ -78,7 +78,7 @@
   },
   {
    "p": "2025-07",
-   "inad": 4.9
+   "inad": 5.04
   },
   {
    "p": "2025-08",
@@ -90,11 +90,11 @@
   },
   {
    "p": "2025-10",
-   "inad": 5.12
+   "inad": 5.28
   },
   {
    "p": "2025-11",
-   "inad": 5.08
+   "inad": 5.23
   },
   {
    "p": "2025-12",
@@ -156,11 +156,11 @@
   },
   {
    "p": "2024-07",
-   "v": 14864309605
+   "v": 14863366426
   },
   {
    "p": "2024-08",
-   "v": 15615248371
+   "v": 15067153993
   },
   {
    "p": "2024-09",
@@ -180,7 +180,7 @@
   },
   {
    "p": "2025-01",
-   "v": 16462800953
+   "v": 15930871630
   },
   {
    "p": "2025-02",
@@ -188,11 +188,11 @@
   },
   {
    "p": "2025-03",
-   "v": 16750434127
+   "v": 16220278436
   },
   {
    "p": "2025-04",
-   "v": 16982436467
+   "v": 16451874063
   },
   {
    "p": "2025-05",
@@ -204,7 +204,7 @@
   },
   {
    "p": "2025-07",
-   "v": 17794061898
+   "v": 17315547844
   },
   {
    "p": "2025-08",
@@ -216,19 +216,19 @@
   },
   {
    "p": "2025-10",
-   "v": 18417488520
+   "v": 17891706013
   },
   {
    "p": "2025-11",
-   "v": 18650033104
+   "v": 18123945758
   },
   {
    "p": "2025-12",
-   "v": 18340038769
+   "v": 18338777030
   },
   {
    "p": "2026-01",
-   "v": 18629609341
+   "v": 18627488307
   },
   {
    "p": "2026-02",
@@ -240,143 +240,143 @@
   },
   {
    "p": "2026-04",
-   "v": 19711178580
+   "v": 19712473208
   },
   {
    "p": "2026-05",
-   "v": 19755254602
+   "v": 19755096865
   },
   {
    "p": "2026-06",
-   "v": 19555531660
+   "v": 19554300126
   },
   {
    "p": "2026-07",
-   "v": 19451954316
+   "v": 19496325305
   }
  ],
  "produtos_pf": [
   {
-   "saldo": 6714881247,
-   "n_op": 379881,
+   "saldo": 6756623975,
+   "n_op": 391227,
    "n_op_parcial": true,
-   "atraso15_90": 0.33,
+   "atraso15_90": 0.34,
    "atraso90": 0.97,
-   "inad": 3.7,
+   "inad": 3.72,
    "ap": 6.71,
-   "saldo_inad": 248380408,
-   "saldo_medio_op": 17671,
+   "saldo_inad": 251201789,
+   "saldo_medio_op": 17265,
    "grupo": "Consignado",
-   "part": 51.02,
-   "contrib_inad": 16.47
+   "part": 51.17,
+   "contrib_inad": 16.62
   },
   {
-   "saldo": 1708509163,
-   "n_op": 48843,
+   "saldo": 1708530470,
+   "n_op": 48844,
    "n_op_parcial": true,
    "atraso15_90": 1.11,
    "atraso90": 1.76,
    "inad": 6.46,
    "ap": 8.76,
-   "saldo_inad": 110416260,
-   "saldo_medio_op": 34891,
+   "saldo_inad": 110364577,
+   "saldo_medio_op": 34890,
    "grupo": "Veículos",
-   "part": 12.98,
-   "contrib_inad": 7.62
+   "part": 12.94,
+   "contrib_inad": 7.61
   },
   {
-   "saldo": 1353620915,
+   "saldo": 1353587626,
    "n_op": 7509,
    "n_op_parcial": true,
    "atraso15_90": 0.16,
    "atraso90": 0.07,
    "inad": 0.87,
-   "ap": 5.26,
+   "ap": 5.25,
    "saldo_inad": 11820169,
-   "saldo_medio_op": 176154,
+   "saldo_medio_op": 176149,
    "grupo": "Imobiliário",
-   "part": 10.29,
+   "part": 10.25,
    "contrib_inad": 0.25
   },
   {
-   "saldo": 1256128811,
-   "n_op": 652165,
+   "saldo": 1256198959,
+   "n_op": 652825,
    "n_op_parcial": true,
    "atraso15_90": 0.0,
    "atraso90": 0.0,
    "inad": 0.0,
    "ap": 2.33,
    "saldo_inad": 23579,
-   "saldo_medio_op": 1925,
+   "saldo_medio_op": 1923,
    "grupo": "Cartão — à vista",
-   "part": 9.54,
+   "part": 9.51,
    "contrib_inad": 0.01
   },
   {
-   "saldo": 1146228538,
-   "n_op": 701093,
+   "saldo": 1147110080,
+   "n_op": 702367,
    "n_op_parcial": true,
    "atraso15_90": 2.57,
    "atraso90": 5.89,
-   "inad": 15.81,
-   "ap": 20.0,
-   "saldo_inad": 181165152,
-   "saldo_medio_op": 1632,
+   "inad": 15.79,
+   "ap": 19.98,
+   "saldo_inad": 181170161,
+   "saldo_medio_op": 1630,
    "grupo": "Crédito pessoal",
-   "part": 8.71,
-   "contrib_inad": 17.13
+   "part": 8.69,
+   "contrib_inad": 17.1
   },
   {
-   "saldo": 474838890,
-   "n_op": 667619,
+   "saldo": 476219570,
+   "n_op": 668253,
    "n_op_parcial": true,
-   "atraso15_90": 8.68,
-   "atraso90": 36.84,
-   "inad": 38.32,
-   "ap": 45.69,
-   "saldo_inad": 181969460,
-   "saldo_medio_op": 709,
+   "atraso15_90": 8.65,
+   "atraso90": 36.74,
+   "inad": 38.21,
+   "ap": 45.55,
+   "saldo_inad": 181962019,
+   "saldo_medio_op": 710,
    "grupo": "Cartão — parcelado/financiado",
    "part": 3.61,
-   "contrib_inad": 44.39
+   "contrib_inad": 44.3
   },
   {
-   "saldo": 319811809,
-   "n_op": 67544,
+   "saldo": 319828871,
+   "n_op": 67541,
    "n_op_parcial": true,
    "atraso15_90": 2.82,
    "atraso90": 7.31,
-   "inad": 17.36,
+   "inad": 17.35,
    "ap": 35.08,
-   "saldo_inad": 55503640,
-   "saldo_medio_op": 4418,
+   "saldo_inad": 55506061,
+   "saldo_medio_op": 4419,
    "grupo": "Outros",
-   "part": 2.43,
-   "contrib_inad": 5.93
+   "part": 2.42,
+   "contrib_inad": 5.92
   },
   {
-   "saldo": 80003689,
-   "n_op": 95331,
+   "saldo": 80322814,
+   "n_op": 95948,
    "n_op_parcial": true,
-   "atraso15_90": 15.63,
-   "atraso90": 17.55,
-   "inad": 17.56,
-   "ap": 51.34,
-   "saldo_inad": 14047740,
-   "saldo_medio_op": 838,
+   "atraso15_90": 15.58,
+   "atraso90": 17.57,
+   "inad": 17.58,
+   "ap": 51.23,
+   "saldo_inad": 14121556,
+   "saldo_medio_op": 836,
    "grupo": "Cartão — rotativo",
    "part": 0.61,
-   "contrib_inad": 3.56
+   "contrib_inad": 3.57
   },
   {
-   "saldo": 62475227,
-   "n_op": 69626,
+   "saldo": 62472336,
+   "n_op": 69620,
    "n_op_parcial": true,
    "atraso15_90": 7.67,
    "atraso90": 19.64,
    "inad": 20.0,
    "ap": 24.8,
-   "saldo_inad": 12492425,
+   "saldo_inad": 12492239,
    "saldo_medio_op": 896,
    "grupo": "Cheque especial",
    "part": 0.47,
@@ -483,15 +483,15 @@
    "contrib_inad": 0.0
   },
   {
-   "saldo": 112433232,
-   "n_op": 15907,
+   "saldo": 112414414,
+   "n_op": 15904,
    "n_op_parcial": true,
    "atraso15_90": 0.01,
    "atraso90": 0.0,
    "inad": 0.0,
    "ap": 1.74,
    "saldo_inad": 0,
-   "saldo_medio_op": 6843,
+   "saldo_medio_op": 6844,
    "grupo": "Cartão — à vista",
    "part": 1.79,
    "contrib_inad": 0.0
@@ -511,29 +511,29 @@
    "contrib_inad": 0.0
   },
   {
-   "saldo": 41744698,
-   "n_op": 4381,
+   "saldo": 41739853,
+   "n_op": 4388,
    "n_op_parcial": true,
    "atraso15_90": null,
    "atraso90": null,
    "inad": null,
    "ap": null,
    "saldo_inad": 8354017,
-   "saldo_medio_op": 7458,
+   "saldo_medio_op": 7494,
    "grupo": "Cheque especial",
    "part": 0.66,
    "contrib_inad": 7.43
   },
   {
-   "saldo": 37625122,
-   "n_op": 9717,
+   "saldo": 37623752,
+   "n_op": 9715,
    "n_op_parcial": true,
    "atraso15_90": null,
    "atraso90": null,
    "inad": null,
    "ap": null,
    "saldo_inad": 20762045,
-   "saldo_medio_op": 3492,
+   "saldo_medio_op": 3493,
    "grupo": "Cartão — parcelado/financiado",
    "part": 0.6,
    "contrib_inad": 18.3
@@ -567,15 +567,15 @@
    "contrib_inad": 0.5
   },
   {
-   "saldo": 4985617,
-   "n_op": 2305,
+   "saldo": 4985226,
+   "n_op": 2304,
    "n_op_parcial": true,
    "atraso15_90": null,
    "atraso90": null,
    "inad": null,
    "ap": null,
    "saldo_inad": 320324,
-   "saldo_medio_op": 1936,
+   "saldo_medio_op": 1937,
    "grupo": "Cartão — rotativo",
    "part": 0.08,
    "contrib_inad": 0.3
@@ -583,230 +583,230 @@
  ],
  "renda_pf": [
   {
-   "saldo": 3775874248,
-   "n_op": 292845,
+   "saldo": 3777270407,
+   "n_op": 293008,
    "n_op_parcial": true,
    "atraso15_90": 0.6,
    "atraso90": 1.65,
-   "inad": 4.24,
+   "inad": 4.23,
    "ap": 8.09,
-   "saldo_inad": 159912836,
-   "saldo_medio_op": 12838,
+   "saldo_inad": 159944786,
+   "saldo_medio_op": 12835,
    "grupo": "Mais de 5 a 10 salários mínimos",
-   "part": 28.69,
-   "contrib_inad": 15.84
+   "part": 28.6,
+   "contrib_inad": 15.81
   },
   {
-   "saldo": 2385204221,
-   "n_op": 125032,
+   "saldo": 2386266929,
+   "n_op": 125122,
    "n_op_parcial": true,
    "atraso15_90": 0.55,
    "atraso90": 1.48,
    "inad": 3.62,
    "ap": 6.8,
-   "saldo_inad": 86412685,
-   "saldo_medio_op": 18961,
+   "saldo_inad": 86423242,
+   "saldo_medio_op": 18956,
    "grupo": "Mais de 10 a 20 salários mínimos",
-   "part": 18.12,
-   "contrib_inad": 8.93
+   "part": 18.07,
+   "contrib_inad": 8.92
   },
   {
-   "saldo": 2331078493,
-   "n_op": 375781,
+   "saldo": 2333132800,
+   "n_op": 376197,
    "n_op_parcial": true,
    "atraso15_90": 0.93,
    "atraso90": 2.53,
    "inad": 5.76,
-   "ap": 9.72,
-   "saldo_inad": 134383789,
-   "saldo_medio_op": 6184,
+   "ap": 9.71,
+   "saldo_inad": 134470569,
+   "saldo_medio_op": 6183,
    "grupo": "Mais de 3 a 5 salários mínimos",
-   "part": 17.71,
-   "contrib_inad": 14.96
+   "part": 17.67,
+   "contrib_inad": 14.93
   },
   {
-   "saldo": 1212951294,
-   "n_op": 708227,
+   "saldo": 1225733030,
+   "n_op": 712707,
    "n_op_parcial": true,
    "atraso15_90": 2.19,
-   "atraso90": 6.17,
-   "inad": 11.33,
-   "ap": 16.52,
-   "saldo_inad": 137431400,
-   "saldo_medio_op": 1709,
+   "atraso90": 6.14,
+   "inad": 11.29,
+   "ap": 16.43,
+   "saldo_inad": 138402814,
+   "saldo_medio_op": 1716,
    "grupo": "Mais de 1 a 2 salários mínimos",
-   "part": 9.22,
-   "contrib_inad": 19.0
+   "part": 9.28,
+   "contrib_inad": 19.04
   },
   {
-   "saldo": 1185729215,
-   "n_op": 308335,
+   "saldo": 1189025315,
+   "n_op": 309111,
    "n_op_parcial": true,
    "atraso15_90": 1.42,
    "atraso90": 4.11,
-   "inad": 8.06,
-   "ap": 12.68,
-   "saldo_inad": 95510794,
-   "saldo_medio_op": 3823,
+   "inad": 8.05,
+   "ap": 12.67,
+   "saldo_inad": 95712856,
+   "saldo_medio_op": 3824,
    "grupo": "Mais de 2 a 3 salários mínimos",
-   "part": 9.01,
-   "contrib_inad": 12.38
+   "part": 9.0,
+   "contrib_inad": 12.37
   },
   {
-   "saldo": 960811062,
-   "n_op": 43846,
+   "saldo": 960834292,
+   "n_op": 43850,
    "n_op_parcial": true,
    "atraso15_90": 0.73,
    "atraso90": 1.99,
    "inad": 4.71,
    "ap": 7.03,
    "saldo_inad": 45282192,
-   "saldo_medio_op": 20770,
+   "saldo_medio_op": 20769,
    "grupo": "Acima de 20 salários mínimos",
-   "part": 7.3,
-   "contrib_inad": 4.85
+   "part": 7.28,
+   "contrib_inad": 4.84
   },
   {
-   "saldo": 851254916,
-   "n_op": 651932,
+   "saldo": 872292828,
+   "n_op": 658635,
    "n_op_parcial": true,
-   "atraso15_90": 2.49,
-   "atraso90": 7.44,
-   "inad": 11.76,
-   "ap": 15.57,
-   "saldo_inad": 100126152,
-   "saldo_medio_op": 1301,
+   "atraso15_90": 2.46,
+   "atraso90": 7.3,
+   "inad": 11.64,
+   "ap": 15.39,
+   "saldo_inad": 101573656,
+   "saldo_medio_op": 1320,
    "grupo": "Até 1 salário mínimo",
-   "part": 6.47,
-   "contrib_inad": 16.08
+   "part": 6.61,
+   "contrib_inad": 16.12
   },
   {
-   "saldo": 280851616,
-   "n_op": 90527,
+   "saldo": 283462733,
+   "n_op": 92390,
    "n_op_parcial": true,
-   "atraso15_90": 1.55,
-   "atraso90": 6.2,
-   "inad": 9.77,
-   "ap": 13.54,
-   "saldo_inad": 27441214,
-   "saldo_medio_op": 3054,
+   "atraso15_90": 1.54,
+   "atraso90": 6.17,
+   "inad": 9.71,
+   "ap": 13.44,
+   "saldo_inad": 27514333,
+   "saldo_medio_op": 3020,
    "grupo": "Indisponível",
-   "part": 2.13,
-   "contrib_inad": 4.42
+   "part": 2.15,
+   "contrib_inad": 4.43
   },
   {
-   "saldo": 177067437,
-   "n_op": 93342,
+   "saldo": 177200580,
+   "n_op": 93370,
    "n_op_parcial": true,
    "atraso15_90": 3.75,
    "atraso90": 7.92,
-   "inad": 22.74,
-   "ap": 25.42,
-   "saldo_inad": 40257128,
-   "saldo_medio_op": 1879,
+   "inad": 22.73,
+   "ap": 25.41,
+   "saldo_inad": 40277057,
+   "saldo_medio_op": 1880,
    "grupo": "Sem rendimento",
-   "part": 1.35,
-   "contrib_inad": 3.56
+   "part": 1.34,
+   "contrib_inad": 3.55
   }
  ],
  "ocupacao_pf": [
   {
-   "saldo": 7637696749,
-   "n_op": 651529,
+   "saldo": 7642901638,
+   "n_op": 652718,
    "n_op_parcial": true,
    "atraso15_90": 0.57,
    "atraso90": 1.76,
    "inad": 4.46,
    "ap": 8.19,
-   "saldo_inad": 340465888,
-   "saldo_medio_op": 11712,
+   "saldo_inad": 340530221,
+   "saldo_medio_op": 11698,
    "grupo": "Servidor ou empregado público",
-   "part": 58.03,
-   "contrib_inad": 34.02
+   "part": 57.88,
+   "contrib_inad": 33.98
   },
   {
-   "saldo": 2682497106,
-   "n_op": 1480060,
+   "saldo": 2711213083,
+   "n_op": 1490343,
    "n_op_parcial": true,
    "atraso15_90": 2.18,
-   "atraso90": 6.03,
-   "inad": 10.83,
-   "ap": 14.72,
-   "saldo_inad": 290502627,
-   "saldo_medio_op": 1797,
+   "atraso90": 5.99,
+   "inad": 10.79,
+   "ap": 14.65,
+   "saldo_inad": 292633096,
+   "saldo_medio_op": 1804,
    "grupo": "Outros",
-   "part": 20.38,
-   "contrib_inad": 41.05
+   "part": 20.53,
+   "contrib_inad": 41.1
   },
   {
-   "saldo": 951517613,
-   "n_op": 92123,
+   "saldo": 954108354,
+   "n_op": 92535,
    "n_op_parcial": true,
    "atraso15_90": 0.67,
-   "atraso90": 1.83,
-   "inad": 4.6,
+   "atraso90": 1.82,
+   "inad": 4.61,
    "ap": 7.67,
-   "saldo_inad": 43805613,
-   "saldo_medio_op": 10219,
+   "saldo_inad": 44027915,
+   "saldo_medio_op": 10202,
    "grupo": "Aposentado/pensionista",
    "part": 7.23,
    "contrib_inad": 4.41
   },
   {
-   "saldo": 780058635,
-   "n_op": 270631,
+   "saldo": 786027030,
+   "n_op": 272663,
    "n_op_parcial": true,
    "atraso15_90": 1.6,
-   "atraso90": 4.13,
-   "inad": 7.87,
-   "ap": 12.0,
-   "saldo_inad": 61411114,
-   "saldo_medio_op": 2846,
+   "atraso90": 4.11,
+   "inad": 7.85,
+   "ap": 11.95,
+   "saldo_inad": 61690132,
+   "saldo_medio_op": 2847,
    "grupo": "Empregado de empresa privada",
-   "part": 5.93,
+   "part": 5.95,
    "contrib_inad": 8.18
   },
   {
-   "saldo": 757978240,
-   "n_op": 108911,
+   "saldo": 758949166,
+   "n_op": 109185,
    "n_op_parcial": true,
    "atraso15_90": 1.71,
    "atraso90": 4.29,
-   "inad": 8.09,
-   "ap": 12.72,
-   "saldo_inad": 61324103,
-   "saldo_medio_op": 6631,
+   "inad": 8.11,
+   "ap": 12.73,
+   "saldo_inad": 61521031,
+   "saldo_medio_op": 6623,
    "grupo": "Empresário",
-   "part": 5.76,
+   "part": 5.75,
    "contrib_inad": 8.25
   },
   {
-   "saldo": 284032657,
-   "n_op": 67599,
+   "saldo": 285099888,
+   "n_op": 67899,
    "n_op_parcial": true,
    "atraso15_90": 1.66,
    "atraso90": 4.41,
-   "inad": 8.19,
-   "ap": 12.43,
-   "saldo_inad": 23271128,
-   "saldo_medio_op": 3945,
+   "inad": 8.2,
+   "ap": 12.42,
+   "saldo_inad": 23378065,
+   "saldo_medio_op": 3943,
    "grupo": "Autônomo",
    "part": 2.16,
    "contrib_inad": 3.18
   },
   {
-   "saldo": 67041500,
-   "n_op": 19014,
+   "saldo": 66919755,
+   "n_op": 19047,
    "n_op_parcial": true,
    "atraso15_90": 2.02,
-   "atraso90": 5.39,
-   "inad": 8.92,
-   "ap": 13.46,
-   "saldo_inad": 5977717,
-   "saldo_medio_op": 3314,
+   "atraso90": 5.33,
+   "inad": 8.7,
+   "ap": 13.25,
+   "saldo_inad": 5821046,
+   "saldo_medio_op": 3302,
    "grupo": "MEI",
    "part": 0.51,
-   "contrib_inad": 0.92
+   "contrib_inad": 0.9
   }
  ],
  "setor_pj": [
@@ -825,15 +825,15 @@
    "contrib_inad": 0.0
   },
   {
-   "saldo": 1630205743,
-   "n_op": 32169,
+   "saldo": 1630218120,
+   "n_op": 32172,
    "n_op_parcial": true,
    "atraso15_90": 1.41,
    "atraso90": 3.63,
    "inad": 8.79,
    "ap": 13.28,
    "saldo_inad": 143236669,
-   "saldo_medio_op": 45819,
+   "saldo_medio_op": 45815,
    "grupo": "Comércio; reparação de veículos automotores e motocicletas",
    "part": 25.91,
    "contrib_inad": 54.54
@@ -853,15 +853,15 @@
    "contrib_inad": 0.0
   },
   {
-   "saldo": 346952153,
-   "n_op": 3754,
+   "saldo": 346938400,
+   "n_op": 3750,
    "n_op_parcial": true,
    "atraso15_90": 0.61,
    "atraso90": 1.94,
    "inad": 4.65,
    "ap": 10.63,
    "saldo_inad": 16138659,
-   "saldo_medio_op": 47275,
+   "saldo_medio_op": 47321,
    "grupo": "Indústrias de transformação",
    "part": 5.51,
    "contrib_inad": 6.21
@@ -881,43 +881,43 @@
    "contrib_inad": 7.2
   },
   {
-   "saldo": 242636492,
-   "n_op": 2697,
+   "saldo": 242637548,
+   "n_op": 2698,
    "n_op_parcial": true,
    "atraso15_90": 1.46,
    "atraso90": 4.98,
    "inad": 12.65,
    "ap": 16.99,
    "saldo_inad": 30704420,
-   "saldo_medio_op": 54100,
+   "saldo_medio_op": 54081,
    "grupo": "Construção",
    "part": 3.86,
    "contrib_inad": 11.15
   },
   {
-   "saldo": 226334631,
-   "n_op": 2785,
+   "saldo": 226464044,
+   "n_op": 2795,
    "n_op_parcial": true,
    "atraso15_90": 0.48,
    "atraso90": 1.13,
    "inad": 3.17,
    "ap": 4.81,
    "saldo_inad": 7180865,
-   "saldo_medio_op": 17754,
+   "saldo_medio_op": 17768,
    "grupo": "Atividades profissionais, científicas e técnicas",
    "part": 3.6,
    "contrib_inad": 2.35
   },
   {
-   "saldo": 153357500,
-   "n_op": 3358,
+   "saldo": 153332676,
+   "n_op": 3352,
    "n_op_parcial": true,
    "atraso15_90": 6.18,
    "atraso90": 3.42,
-   "inad": 6.43,
-   "ap": 11.09,
+   "inad": 6.44,
+   "ap": 11.1,
    "saldo_inad": 9867061,
-   "saldo_medio_op": 31027,
+   "saldo_medio_op": 31075,
    "grupo": "Atividades administrativas e serviços complementares",
    "part": 2.44,
    "contrib_inad": 4.83
@@ -937,7 +937,7 @@
    "contrib_inad": 0.42
   },
   {
-   "saldo": 100185682,
+   "saldo": 100056848,
    "n_op": 785,
    "n_op_parcial": true,
    "atraso15_90": 0.3,
@@ -993,15 +993,15 @@
    "contrib_inad": 0.17
   },
   {
-   "saldo": 32416599,
-   "n_op": 2609,
+   "saldo": 32416795,
+   "n_op": 2607,
    "n_op_parcial": true,
    "atraso15_90": null,
    "atraso90": null,
    "inad": null,
    "ap": null,
    "saldo_inad": 3247485,
-   "saldo_medio_op": 8659,
+   "saldo_medio_op": 8666,
    "grupo": "Outras atividades de serviços",
    "part": 0.52,
    "contrib_inad": 1.58
@@ -1035,15 +1035,15 @@
    "contrib_inad": 1.08
   },
   {
-   "saldo": 23117360,
-   "n_op": 954,
+   "saldo": 23116304,
+   "n_op": 953,
    "n_op_parcial": true,
    "atraso15_90": null,
    "atraso90": null,
    "inad": null,
    "ap": null,
    "saldo_inad": 1668946,
-   "saldo_medio_op": 20966,
+   "saldo_medio_op": 20987,
    "grupo": "Educação",
    "part": 0.37,
    "contrib_inad": 0.63

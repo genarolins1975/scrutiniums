@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-05T12:51:51+00:00",
+ "gerado_em": "2026-09-07T17:05:20+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -37,8 +37,8 @@
    "cnpj8_rede": "60701190",
    "correspondentes": {
     "nome": "ITAÚ UNIBANCO S.A.",
-    "pontos": 8475,
-    "correspondentes": 8194,
+    "pontos": 8480,
+    "correspondentes": 8199,
     "municipios": 1077
    },
    "empregados": {
@@ -354,11 +354,11 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 1242,
-    "posto": 2170,
+    "agencia": 1238,
+    "posto": 2180,
     "pae": 519,
-    "total": 3931,
-    "municipios": 846,
+    "total": 3937,
+    "municipios": 847,
     "nome": "ITAÚ UNIBANCO S.A."
    },
    "clientes": null,
@@ -373,9 +373,9 @@
    "cnpj8_rede": "00000000",
    "correspondentes": {
     "nome": "BANCO DO BRASIL S.A.",
-    "pontos": 46470,
-    "correspondentes": 42950,
-    "municipios": 5405
+    "pontos": 45271,
+    "correspondentes": 41764,
+    "municipios": 5398
    },
    "empregados": {
     "serie": [
@@ -700,11 +700,11 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 3929,
-    "posto": 1401,
-    "pae": 5020,
-    "total": 10350,
-    "municipios": 3099,
+    "agencia": 3910,
+    "posto": 1419,
+    "pae": 5011,
+    "total": 10340,
+    "municipios": 3097,
     "nome": "BANCO DO BRASIL S.A."
    },
    "clientes": [
@@ -741,9 +741,9 @@
    "cnpj8_rede": "60746948",
    "correspondentes": {
     "nome": "BANCO BRADESCO S.A.",
-    "pontos": 31480,
-    "correspondentes": 29626,
-    "municipios": 5340
+    "pontos": 30911,
+    "correspondentes": 29095,
+    "municipios": 5332
    },
    "empregados": {
     "serie": [
@@ -1063,11 +1063,11 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 1963,
-    "posto": 2354,
+    "agencia": 1957,
+    "posto": 2361,
     "pae": 9036,
-    "total": 13353,
-    "municipios": 4117,
+    "total": 13354,
+    "municipios": 4116,
     "nome": "BANCO BRADESCO S.A."
    },
    "clientes": [
@@ -1146,9 +1146,9 @@
    "cnpj8_rede": "90400888",
    "correspondentes": {
     "nome": "BANCO SANTANDER (BRASIL) S.A.",
-    "pontos": 280,
-    "correspondentes": 277,
-    "municipios": 133
+    "pontos": 319,
+    "correspondentes": 316,
+    "municipios": 148
    },
    "empregados": {
     "serie": [
@@ -1464,9 +1464,9 @@
    },
    "pontos": {
     "agencia": 1177,
-    "posto": 2505,
-    "pae": 578,
-    "total": 4260,
+    "posto": 2503,
+    "pae": 575,
+    "total": 4255,
     "municipios": 667,
     "nome": "BANCO SANTANDER (BRASIL) S.A."
    },
@@ -1588,9 +1588,9 @@
    "cnpj8_rede": "30306294",
    "correspondentes": {
     "nome": "BANCO BTG PACTUAL S.A.",
-    "pontos": 374,
-    "correspondentes": 374,
-    "municipios": 86
+    "pontos": 378,
+    "correspondentes": 378,
+    "municipios": 87
    },
    "empregados": {
     "serie": [
@@ -2303,8 +2303,8 @@
    "cnpj8_rede": "92702067",
    "correspondentes": {
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.",
-    "pontos": 969,
-    "correspondentes": 942,
+    "pontos": 970,
+    "correspondentes": 943,
     "municipios": 372
    },
    "empregados": {
@@ -2649,9 +2649,9 @@
    "cnpj8_rede": "61186680",
    "correspondentes": {
     "nome": "BANCO BMG S.A.",
-    "pontos": 1075,
-    "correspondentes": 998,
-    "municipios": 419
+    "pontos": 1081,
+    "correspondentes": 1003,
+    "municipios": 418
    },
    "empregados": {
     "serie": [
@@ -2721,7 +2721,7 @@
       },
       "var_aa_pct": 4.6,
       "fre_ano": 2026,
-      "versao": 5
+      "versao": 6
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -3049,9 +3049,9 @@
    "cnpj8_rede": "62144175",
    "correspondentes": {
     "nome": "BANCO PINE S.A.",
-    "pontos": 29,
-    "correspondentes": 16,
-    "municipios": 14
+    "pontos": 30,
+    "correspondentes": 17,
+    "municipios": 15
    },
    "empregados": {
     "serie": [
@@ -3121,7 +3121,7 @@
       },
       "var_aa_pct": 19.1,
       "fre_ano": 2026,
-      "versao": 19
+      "versao": 20
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4129,7 +4129,7 @@
       },
       "var_aa_pct": -3.5,
       "fre_ano": 2026,
-      "versao": 10
+      "versao": 11
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4513,7 +4513,7 @@
       },
       "var_aa_pct": 13.7,
       "fre_ano": 2026,
-      "versao": 3
+      "versao": 4
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -6351,8 +6351,8 @@
    "cnpj8_rede": "62232889",
    "correspondentes": {
     "nome": "BANCO DAYCOVAL S.A.",
-    "pontos": 550,
-    "correspondentes": 544,
+    "pontos": 551,
+    "correspondentes": 545,
     "municipios": 219
    },
    "empregados": {
@@ -6692,9 +6692,9 @@
    "cnpj8_rede": "14388334",
    "correspondentes": {
     "nome": "PARANÁ BANCO S.A.",
-    "pontos": 211,
-    "correspondentes": 205,
-    "municipios": 124
+    "pontos": 217,
+    "correspondentes": 211,
+    "municipios": 126
    },
    "empregados": {
     "serie": [
@@ -7281,8 +7281,8 @@
    "cnpj8_rede": "59285411",
    "correspondentes": {
     "nome": "BANCO PAN S.A.",
-    "pontos": 8398,
-    "correspondentes": 8372,
+    "pontos": 8402,
+    "correspondentes": 8376,
     "municipios": 1147
    },
    "empregados": {
@@ -7995,9 +7995,9 @@
    "cnpj8_rede": "00360305",
    "correspondentes": {
     "nome": "CAIXA ECONOMICA FEDERAL",
-    "pontos": 17588,
-    "correspondentes": 17398,
-    "municipios": 4959
+    "pontos": 17554,
+    "correspondentes": 17365,
+    "municipios": 4958
    },
    "empregados": null,
    "auditor": null,
@@ -8223,10 +8223,10 @@
    },
    "pontos": {
     "agencia": 2986,
-    "posto": 872,
+    "posto": 874,
     "pae": 3536,
-    "total": 7394,
-    "municipios": 1748,
+    "total": 7396,
+    "municipios": 1750,
     "nome": "CAIXA ECONOMICA FEDERAL"
    },
    "clientes": [
@@ -8533,10 +8533,10 @@
     "escopo": "banco operacional (CNPJ-raiz no ESTBAN); pode diferir da holding listada"
    },
    "pontos": {
-    "agencia": 132,
+    "agencia": 133,
     "posto": 111,
     "pae": 0,
-    "total": 243,
+    "total": 244,
     "municipios": 60,
     "nome": "BANCO SAFRA S.A."
    },
@@ -31729,25 +31729,25 @@
   }
  },
  "dependencias": {
-  "posicao": "27/08/2026",
+  "posicao": "03/09/2026",
   "fonte": {
    "nome": "BCB — cadastro de agências, postos e postos eletrônicos (Unicad)",
    "url": "https://www.bcb.gov.br/fis/info/agencias.asp",
    "nivel": "A"
   },
   "totais": {
-   "agencia": 13854,
-   "posto": 22798,
-   "pae": 22211
+   "agencia": 13827,
+   "posto": 22825,
+   "pae": 22194
   },
   "instituicoes_com_ponto": 1183,
   "municipios": {
-   "com_agencia": 2901,
-   "com_posto_ou_pae": 5166,
-   "com_qualquer_ponto": 5191,
+   "com_agencia": 2899,
+   "com_posto_ou_pae": 5164,
+   "com_qualquer_ponto": 5189,
    "so_posto_sem_agencia": 2290,
-   "sem_dependencia": 380,
-   "sem_dependencia_com_correspondente": 380,
+   "sem_dependencia": 382,
+   "sem_dependencia_com_correspondente": 382,
    "sem_nenhum_ponto": 0,
    "total_municipios": 5571,
    "denominador": "lista de municípios do IBGE carregada pelo pipeline; inclui Fernando de Noronha e Boa Esperança do Norte (MT), instalado depois do Censo 2022 e por isso ausente da malha usada nos painéis municipais"
@@ -31755,18 +31755,18 @@
   "por_cnpj8": {
    "00360305": {
     "agencia": 2986,
-    "posto": 872,
+    "posto": 874,
     "pae": 3536,
-    "total": 7394,
-    "municipios": 1748,
+    "total": 7396,
+    "municipios": 1750,
     "nome": "CAIXA ECONOMICA FEDERAL"
    },
    "00000000": {
-    "agencia": 3929,
-    "posto": 1401,
-    "pae": 5020,
-    "total": 10350,
-    "municipios": 3099,
+    "agencia": 3910,
+    "posto": 1419,
+    "pae": 5011,
+    "total": 10340,
+    "municipios": 3097,
     "nome": "BANCO DO BRASIL S.A."
    },
    "04913711": {
@@ -31794,11 +31794,11 @@
     "nome": "BANCO ABC BRASIL S.A."
    },
    "60701190": {
-    "agencia": 1242,
-    "posto": 2170,
+    "agencia": 1238,
+    "posto": 2180,
     "pae": 519,
-    "total": 3931,
-    "municipios": 846,
+    "total": 3937,
+    "municipios": 847,
     "nome": "ITAÚ UNIBANCO S.A."
    },
    "48176336": {
@@ -31810,11 +31810,11 @@
     "nome": "PAGOL SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "60746948": {
-    "agencia": 1963,
-    "posto": 2354,
+    "agencia": 1957,
+    "posto": 2361,
     "pae": 9036,
-    "total": 13353,
-    "municipios": 4117,
+    "total": 13354,
+    "municipios": 4116,
     "nome": "BANCO BRADESCO S.A."
    },
    "04902979": {
@@ -31826,18 +31826,18 @@
     "nome": "BANCO DA AMAZONIA S.A."
    },
    "58160789": {
-    "agencia": 132,
+    "agencia": 133,
     "posto": 111,
     "pae": 0,
-    "total": 243,
+    "total": 244,
     "municipios": 60,
     "nome": "BANCO SAFRA S.A."
    },
    "90400888": {
     "agencia": 1177,
-    "posto": 2505,
-    "pae": 578,
-    "total": 4260,
+    "posto": 2503,
+    "pae": 575,
+    "total": 4255,
     "municipios": 667,
     "nome": "BANCO SANTANDER (BRASIL) S.A."
    },
@@ -32393,14 +32393,6 @@
     "municipios": 1,
     "nome": "SANTS SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "58006471": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "BARU DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
-   },
    "36947229": {
     "agencia": 2,
     "posto": 0,
@@ -32409,6 +32401,14 @@
     "municipios": 2,
     "nome": "COBUCCIO S/A - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTOS"
    },
+   "58006471": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "BARU DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+   },
    "01858774": {
     "agencia": 2,
     "posto": 0,
@@ -32416,14 +32416,6 @@
     "total": 2,
     "municipios": 1,
     "nome": "BANCO BV S.A."
-   },
-   "43774196": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "AGROLEND SOCIEDADE DE CREDITO, FINANCIAMENTO E INVESTIMENTO S.A."
    },
    "35479592": {
     "agencia": 1,
@@ -32955,10 +32947,10 @@
    },
    "11495073": {
     "agencia": 1,
-    "posto": 12,
+    "posto": 13,
     "pae": 0,
-    "total": 13,
-    "municipios": 4,
+    "total": 14,
+    "municipios": 5,
     "nome": "OM DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA"
    },
    "11758741": {
@@ -33275,9 +33267,9 @@
    },
    "17508380": {
     "agencia": 2,
-    "posto": 1,
+    "posto": 2,
     "pae": 0,
-    "total": 3,
+    "total": 4,
     "municipios": 2,
     "nome": "INVEST SOCIEDADE CORRETORA DE CÂMBIO LTDA."
    },
@@ -33897,6 +33889,14 @@
     "municipios": 1,
     "nome": "VITREO DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A."
    },
+   "08609934": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "MONEYCORP BANCO DE CÂMBIO S.A."
+   },
    "55428859": {
     "agencia": 1,
     "posto": 0,
@@ -34319,7 +34319,7 @@
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "TRUSTEE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+    "nome": "TRUSTEE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA. - EM LIQUIDAÇÃO EXTRAJUDICIAL"
    },
    "62307848": {
     "agencia": 1,
@@ -34521,14 +34521,6 @@
     "municipios": 1,
     "nome": "RV2 SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A."
    },
-   "02801938": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "BANCO MORGAN STANLEY S.A."
-   },
    "03384738": {
     "agencia": 1,
     "posto": 0,
@@ -34617,14 +34609,6 @@
     "municipios": 1,
     "nome": "CORA SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A."
    },
-   "15761217": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "CORRETORA DE CÂMBIO AÇORIANA LIMITADA."
-   },
    "03317692": {
     "agencia": 1,
     "posto": 0,
@@ -34640,6 +34624,14 @@
     "total": 2,
     "municipios": 2,
     "nome": "XP SERVIÇOS FINANCEIROS DTVM LTDA"
+   },
+   "02801938": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "BANCO MORGAN STANLEY S.A."
    },
    "92816560": {
     "agencia": 3,
@@ -34699,10 +34691,10 @@
    },
    "36583700": {
     "agencia": 1,
-    "posto": 0,
+    "posto": 1,
     "pae": 0,
-    "total": 1,
-    "municipios": 1,
+    "total": 2,
+    "municipios": 2,
     "nome": "QISTA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO"
    },
    "45854066": {
@@ -34712,6 +34704,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "WNT CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A."
+   },
+   "15761217": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "CORRETORA DE CÂMBIO AÇORIANA LIMITADA."
    },
    "34978626": {
     "agencia": 1,
@@ -34929,13 +34929,13 @@
     "municipios": 1,
     "nome": "FIDÚCIA SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LIMITADA."
    },
-   "61194353": {
+   "62331228": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "ITAU CORRETORA DE VALORES S.A."
+    "nome": "DEUTSCHE BANK S.A. - BANCO ALEMAO"
    },
    "42047025": {
     "agencia": 1,
@@ -34969,6 +34969,14 @@
     "municipios": 1,
     "nome": "CONSEGTUR CORRETORA DE CÂMBIO LTDA."
    },
+   "65505918": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "XTB BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+   },
    "45716916": {
     "agencia": 1,
     "posto": 0,
@@ -34984,6 +34992,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "FONTECRED - SOCIEDADE DE CRÉDITO DIRETO S/A"
+   },
+   "54264235": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "VBS SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "48529228": {
     "agencia": 1,
@@ -35097,13 +35113,13 @@
     "municipios": 1,
     "nome": "BIT SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "54264235": {
+   "61384004": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "VBS SOCIEDADE DE CRÉDITO DIRETO S.A."
+    "nome": "AVENUE SECURITIES BANCO DE INVESTIMENTO S.A."
    },
    "08520517": {
     "agencia": 1,
@@ -35297,14 +35313,6 @@
     "municipios": 1,
     "nome": "SIMPAUL CORRETORA DE CAMBIO E VALORES MOBILIARIOS  S.A."
    },
-   "61384004": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "AVENUE SECURITIES BANCO DE INVESTIMENTO S.A."
-   },
    "34270520": {
     "agencia": 1,
     "posto": 0,
@@ -35497,13 +35505,13 @@
     "municipios": 1,
     "nome": "BEM - DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA"
    },
-   "08609934": {
+   "12063256": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "MONEYCORP BANCO DE CÂMBIO S.A."
+    "nome": "MONETAR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
    "48584954": {
     "agencia": 1,
@@ -35569,6 +35577,14 @@
     "municipios": 6,
     "nome": "BANCO BRADESCO FINANCIAMENTOS S.A."
    },
+   "50585090": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "BANCO BMG CONSIGNADO S.A."
+   },
    "36266751": {
     "agencia": 1,
     "posto": 6,
@@ -35615,7 +35631,7 @@
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "BANVOX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA"
+    "nome": "BANVOX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA - EM LIQUIDAÇÃO EXTRAJUDICIAL"
    },
    "61021673": {
     "agencia": 1,
@@ -35640,6 +35656,14 @@
     "total": 1,
     "municipios": 1,
     "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A."
+   },
+   "61194353": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "ITAU CORRETORA DE VALORES S.A."
    },
    "17772370": {
     "agencia": 1,
@@ -35737,13 +35761,13 @@
     "municipios": 1,
     "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "12063256": {
+   "15489568": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "MONETAR DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
+    "nome": "INTRA INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA"
    },
    "39587424": {
     "agencia": 1,
@@ -35788,9 +35812,9 @@
    "07679404": {
     "agencia": 1,
     "posto": 0,
-    "pae": 1605,
-    "total": 1606,
-    "municipios": 396,
+    "pae": 1598,
+    "total": 1599,
+    "municipios": 394,
     "nome": "BANCO TOPÁZIO S.A."
    },
    "45056494": {
@@ -35881,13 +35905,13 @@
     "municipios": 1,
     "nome": "GLOBAL INVESTMENT SERVICES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA."
    },
-   "62331228": {
+   "62418140": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "DEUTSCHE BANK S.A. - BANCO ALEMAO"
+    "nome": "INTRAG DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA."
    },
    "34088029": {
     "agencia": 1,
@@ -35929,14 +35953,6 @@
     "municipios": 1,
     "nome": "NATURA &CO PAY SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "32402502": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "QI SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
    "97447304": {
     "agencia": 1,
     "posto": 0,
@@ -35969,13 +35985,13 @@
     "municipios": 1,
     "nome": "GO SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "62418140": {
+   "32402502": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "INTRAG DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA."
+    "nome": "QI SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
    "10371492": {
     "agencia": 1,
@@ -36043,9 +36059,9 @@
    },
    "02992317": {
     "agencia": 1,
-    "posto": 1,
+    "posto": 0,
     "pae": 0,
-    "total": 2,
+    "total": 1,
     "municipios": 1,
     "nome": "INTEX BANK BANCO DE CÂMBIO S.A."
    },
@@ -36225,14 +36241,6 @@
     "municipios": 1,
     "nome": "ACCREDITO - SOCIEDADE DE CRÉDITO DIRETO S.A."
    },
-   "51118718": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "NVIO BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A."
-   },
    "24361690": {
     "agencia": 1,
     "posto": 0,
@@ -36401,6 +36409,14 @@
     "municipios": 1,
     "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS"
    },
+   "51118718": {
+    "agencia": 1,
+    "posto": 0,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "NVIO BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A."
+   },
    "60814191": {
     "agencia": 1,
     "posto": 0,
@@ -36513,13 +36529,13 @@
     "municipios": 1,
     "nome": "RB INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LIMITADA"
    },
-   "15489568": {
+   "43774196": {
     "agencia": 1,
     "posto": 0,
     "pae": 0,
     "total": 1,
     "municipios": 1,
-    "nome": "INTRA INVESTIMENTOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA"
+    "nome": "AGROLEND SOCIEDADE DE CREDITO, FINANCIAMENTO E INVESTIMENTO S.A."
    },
    "48795256": {
     "agencia": 1,
@@ -36592,14 +36608,6 @@
     "total": 1,
     "municipios": 1,
     "nome": "CSILATINA ARRENDAMENTO MERCANTIL S.A."
-   },
-   "50585090": {
-    "agencia": 1,
-    "posto": 0,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "BANCO BMG CONSIGNADO S.A."
    },
    "45745537": {
     "agencia": 1,
@@ -36945,14 +36953,6 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION"
    },
-   "62562012": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA  NESTLÉ - NESCRED"
-   },
    "42445122": {
     "agencia": 0,
     "posto": 1,
@@ -36993,6 +36993,14 @@
     "municipios": 1,
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DO GRUPO BASF"
    },
+   "62562012": {
+    "agencia": 0,
+    "posto": 1,
+    "pae": 0,
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA  NESTLÉ - NESCRED"
+   },
    "33735192": {
     "agencia": 0,
     "posto": 2,
@@ -37000,6 +37008,94 @@
     "total": 2,
     "municipios": 2,
     "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO JOHN F. KENNEDY LTDA"
+   },
+   "81367880": {
+    "agencia": 0,
+    "posto": 30,
+    "pae": 0,
+    "total": 30,
+    "municipios": 25,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS SUL CATARINENSE - SICOOB CREDISULCA SC"
+   },
+   "62673470": {
+    "agencia": 0,
+    "posto": 20,
+    "pae": 0,
+    "total": 20,
+    "municipios": 16,
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB COOPMIL"
+   },
+   "01009908": {
+    "agencia": 0,
+    "posto": 4,
+    "pae": 0,
+    "total": 4,
+    "municipios": 2,
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DE PARA DE MINAS LTDA - SICOOB ASCICRED"
+   },
+   "02493000": {
+    "agencia": 0,
+    "posto": 9,
+    "pae": 0,
+    "total": 9,
+    "municipios": 7,
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO NOS ESTADOS DE ALAGOAS, SERGIPE E BAHIA - SICOOB LESTE"
+   },
+   "26014175": {
+    "agencia": 0,
+    "posto": 9,
+    "pae": 14,
+    "total": 23,
+    "municipios": 10,
+    "nome": "COOPERATIVA DE CRÉDITO GUARANICREDI LTDA. - SICOOB GUARANICREDI"
+   },
+   "33021064": {
+    "agencia": 0,
+    "posto": 33,
+    "pae": 0,
+    "total": 33,
+    "municipios": 29,
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO ARAGUAIA E XINGU - SICREDI ARAXINGU"
+   },
+   "26178111": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 9,
+    "total": 15,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO UNIÃO CENTRO OESTE LTDA. - SICOOB UNIÃO CENTRO OESTE"
+   },
+   "70241658": {
+    "agencia": 0,
+    "posto": 6,
+    "pae": 0,
+    "total": 6,
+    "municipios": 5,
+    "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI RECIFE"
+   },
+   "70431630": {
+    "agencia": 0,
+    "posto": 46,
+    "pae": 0,
+    "total": 46,
+    "municipios": 39,
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIVALES - SICREDI UNIVALES MT/RO"
+   },
+   "70937271": {
+    "agencia": 0,
+    "posto": 26,
+    "pae": 0,
+    "total": 26,
+    "municipios": 23,
+    "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DA ÁREA DA SAÚDE E DE LIVRE ADMISSÃO LTDA - UNICRED ALIANÇA"
+   },
+   "05392810": {
+    "agencia": 0,
+    "posto": 33,
+    "pae": 0,
+    "total": 33,
+    "municipios": 19,
+    "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO MERIDIONAL DO BRASIL - SICOOB MERIDIONAL"
    },
    "64276058": {
     "agencia": 0,
@@ -37096,6 +37192,14 @@
     "total": 14,
     "municipios": 7,
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DE FURNAS E DAS DEMAIS EMPRESAS DO SISTEMA ELETROBRÁS LTDA. - SICOOB CECREMEF"
+   },
+   "07412987": {
+    "agencia": 0,
+    "posto": 17,
+    "pae": 0,
+    "total": 17,
+    "municipios": 11,
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL ALIANÇA"
    },
    "09033698": {
     "agencia": 0,
@@ -37347,11 +37451,11 @@
    },
    "26555235": {
     "agencia": 0,
-    "posto": 23,
+    "posto": 25,
     "pae": 0,
-    "total": 23,
-    "municipios": 10,
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SORRISO - SICREDI CELEIRO MT/RR"
+    "total": 25,
+    "municipios": 12,
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CELEIRO CENTRO NORTE - SICREDI CELEIRO CENTRO NORTE"
    },
    "26563270": {
     "agencia": 0,
@@ -37467,10 +37571,10 @@
    },
    "24431221": {
     "agencia": 0,
-    "posto": 12,
+    "posto": 19,
     "pae": 0,
-    "total": 12,
-    "municipios": 9,
+    "total": 19,
+    "municipios": 15,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA TRANSAMAZÔNICA - CRESOL TRANSAMAZÔNICA"
    },
    "20062766": {
@@ -37665,13 +37769,13 @@
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SUL RIOGRANDENSE - SICREDI ORIGENS RS"
    },
-   "07412987": {
+   "73092827": {
     "agencia": 0,
-    "posto": 17,
+    "posto": 1,
     "pae": 0,
-    "total": 17,
-    "municipios": 11,
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL ALIANÇA"
+    "total": 1,
+    "municipios": 1,
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES DO MINISTERIO DA EDUCAÇÃO EM SÃO PAULO - COOPEMESP"
    },
    "03519240": {
     "agencia": 0,
@@ -38001,14 +38105,6 @@
     "municipios": 15,
     "nome": "COOPERATIVA DE CRÉDITO SUL-SERRANA DO ESPÍRITO SANTO"
    },
-   "32983165": {
-    "agencia": 0,
-    "posto": 24,
-    "pae": 0,
-    "total": 24,
-    "municipios": 16,
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO"
-   },
    "32995755": {
     "agencia": 0,
     "posto": 100,
@@ -38019,10 +38115,10 @@
    },
    "02057584": {
     "agencia": 0,
-    "posto": 24,
+    "posto": 23,
     "pae": 0,
-    "total": 24,
-    "municipios": 24,
+    "total": 23,
+    "municipios": 23,
     "nome": "COOPERATIVA DE CRÉDITO SICOOB SERTÃO LTDA"
    },
    "25743311": {
@@ -38096,94 +38192,6 @@
     "total": 13,
     "municipios": 12,
     "nome": "COOPERATIVA DE CRÉDITO ORIGINAL - SICOOB ORIGINAL"
-   },
-   "81367880": {
-    "agencia": 0,
-    "posto": 30,
-    "pae": 0,
-    "total": 30,
-    "municipios": 25,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS SUL CATARINENSE - SICOOB CREDISULCA SC"
-   },
-   "62673470": {
-    "agencia": 0,
-    "posto": 20,
-    "pae": 0,
-    "total": 20,
-    "municipios": 16,
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB COOPMIL"
-   },
-   "01009908": {
-    "agencia": 0,
-    "posto": 4,
-    "pae": 0,
-    "total": 4,
-    "municipios": 2,
-    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSAO DE PARA DE MINAS LTDA - SICOOB ASCICRED"
-   },
-   "02493000": {
-    "agencia": 0,
-    "posto": 9,
-    "pae": 0,
-    "total": 9,
-    "municipios": 7,
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO NOS ESTADOS DE ALAGOAS, SERGIPE E BAHIA - SICOOB LESTE"
-   },
-   "26014175": {
-    "agencia": 0,
-    "posto": 9,
-    "pae": 14,
-    "total": 23,
-    "municipios": 10,
-    "nome": "COOPERATIVA DE CRÉDITO GUARANICREDI LTDA. - SICOOB GUARANICREDI"
-   },
-   "33021064": {
-    "agencia": 0,
-    "posto": 33,
-    "pae": 0,
-    "total": 33,
-    "municipios": 29,
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO ARAGUAIA E XINGU - SICREDI ARAXINGU"
-   },
-   "26178111": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 9,
-    "total": 15,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO UNIÃO CENTRO OESTE LTDA. - SICOOB UNIÃO CENTRO OESTE"
-   },
-   "70241658": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 0,
-    "total": 6,
-    "municipios": 5,
-    "nome": "SICREDI RECIFE - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI RECIFE"
-   },
-   "70431630": {
-    "agencia": 0,
-    "posto": 46,
-    "pae": 0,
-    "total": 46,
-    "municipios": 39,
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIVALES - SICREDI UNIVALES MT/RO"
-   },
-   "70937271": {
-    "agencia": 0,
-    "posto": 26,
-    "pae": 0,
-    "total": 26,
-    "municipios": 23,
-    "nome": "COOPERATIVA DE CRÉDITO DOS PROFISSIONAIS DA ÁREA DA SAÚDE E DE LIVRE ADMISSÃO LTDA - UNICRED ALIANÇA"
-   },
-   "05392810": {
-    "agencia": 0,
-    "posto": 33,
-    "pae": 0,
-    "total": 33,
-    "municipios": 19,
-    "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO MERIDIONAL DO BRASIL - SICOOB MERIDIONAL"
    },
    "19962468": {
     "agencia": 0,
@@ -38320,14 +38328,6 @@
     "total": 2,
     "municipios": 1,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO SUL DO MARANHÃO - SICREDI SUL DO MARANHÃO"
-   },
-   "73092827": {
-    "agencia": 0,
-    "posto": 1,
-    "pae": 0,
-    "total": 1,
-    "municipios": 1,
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES DO MINISTERIO DA EDUCAÇÃO EM SÃO PAULO - COOPEMESP"
    },
    "73113243": {
     "agencia": 0,
@@ -38499,9 +38499,9 @@
    },
    "87780268": {
     "agencia": 0,
-    "posto": 72,
+    "posto": 73,
     "pae": 0,
-    "total": 72,
+    "total": 73,
     "municipios": 61,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO DE ESTADOS RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI UNIESTADOS"
    },
@@ -38859,10 +38859,10 @@
    },
    "42898825": {
     "agencia": 0,
-    "posto": 54,
+    "posto": 55,
     "pae": 14,
-    "total": 68,
-    "municipios": 27,
+    "total": 69,
+    "municipios": 28,
     "nome": "SICOOB CREDICOM - COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS MEDICOS E PROFISSIONAIS DA AREA DE SAUDE DO BRASIL LTDA."
    },
    "03269540": {
@@ -38923,10 +38923,10 @@
    },
    "05276770": {
     "agencia": 0,
-    "posto": 45,
+    "posto": 46,
     "pae": 0,
-    "total": 45,
-    "municipios": 40,
+    "total": 46,
+    "municipios": 41,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA FRONTEIRAS PR/SC/SP/ES - CRESOL FRONTEIRAS PR/SC/SP/ES"
    },
    "07465539": {
@@ -38944,6 +38944,14 @@
     "total": 31,
     "municipios": 23,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NOSSA TERRA - SICREDI NOSSA TERRA PR/SP"
+   },
+   "02641969": {
+    "agencia": 0,
+    "posto": 17,
+    "pae": 0,
+    "total": 17,
+    "municipios": 14,
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS NOVA TRENTO   SICOOB TRENTOCREDI SC"
    },
    "02934201": {
     "agencia": 0,
@@ -39092,8 +39100,8 @@
    "24795049": {
     "agencia": 0,
     "posto": 34,
-    "pae": 55,
-    "total": 89,
+    "pae": 58,
+    "total": 92,
     "municipios": 28,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO SUDOESTE GOIANO"
    },
@@ -39497,14 +39505,6 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA DE GOIÁS - CRESOL GOIÁS"
    },
-   "04013172": {
-    "agencia": 0,
-    "posto": 20,
-    "pae": 0,
-    "total": 20,
-    "municipios": 16,
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB 3 COLINAS"
-   },
    "05861932": {
     "agencia": 0,
     "posto": 16,
@@ -39513,13 +39513,13 @@
     "municipios": 14,
     "nome": "COOPERATIVA DE CRÉDITO MÚTUO DA ADVOCACIA"
    },
-   "02641969": {
+   "65239402": {
     "agencia": 0,
-    "posto": 17,
-    "pae": 0,
-    "total": 17,
-    "municipios": 14,
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS NOVA TRENTO   SICOOB TRENTOCREDI SC"
+    "posto": 5,
+    "pae": 5,
+    "total": 10,
+    "municipios": 3,
+    "nome": "COOPERATIVA DE CRÉDITO UNIÃO DO CENTRO OESTE DE MINAS LTDA. - SICOOB CENTRO UNIÃO"
    },
    "04663561": {
     "agencia": 0,
@@ -39836,8 +39836,8 @@
    "13776742": {
     "agencia": 0,
     "posto": 1,
-    "pae": 30,
-    "total": 31,
+    "pae": 29,
+    "total": 30,
     "municipios": 10,
     "nome": "RENDIMENTOPAY INSTITUIÇÃO DE PAGAMENTO S.A."
    },
@@ -39851,10 +39851,10 @@
    },
    "03042597": {
     "agencia": 0,
-    "posto": 28,
+    "posto": 29,
     "pae": 0,
-    "total": 28,
-    "municipios": 9,
+    "total": 29,
+    "municipios": 10,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE CAMPO GRANDE E REGIÃO - SICREDI CAMPO GRANDE MS/GO"
    },
    "01699652": {
@@ -40215,7 +40215,7 @@
     "pae": 0,
     "total": 19,
     "municipios": 16,
-    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MUTUO DOS SERVIDORES MUNICIPAIS DA REGIÃO METROPOLITANA DO VALE DO PARAIBA E LITORAL NORTE"
+    "nome": "SICOOB CRESSEM - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES MUNICIPAIS"
    },
    "06078926": {
     "agencia": 0,
@@ -40243,10 +40243,10 @@
    },
    "22749014": {
     "agencia": 0,
-    "posto": 11,
+    "posto": 12,
     "pae": 6,
-    "total": 17,
-    "municipios": 11,
+    "total": 18,
+    "municipios": 12,
     "nome": "COOPERATIVA DE CRÉDITO DA REGIÃO CENTRAL DE MINAS LTDA. - SICOOB UNIÃO CENTRAL"
    },
    "22753982": {
@@ -40256,6 +40256,14 @@
     "total": 23,
     "municipios": 9,
     "nome": "COOPERATIVA DE CRÉDITO CREDISETE LTDA. - SICOOB CREDISETE"
+   },
+   "04013172": {
+    "agencia": 0,
+    "posto": 20,
+    "pae": 0,
+    "total": 20,
+    "municipios": 16,
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB 3 COLINAS"
    },
    "22760839": {
     "agencia": 0,
@@ -40273,13 +40281,13 @@
     "municipios": 11,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO CENTRO-SUL GOIANO LTDA"
    },
-   "65239402": {
+   "02179673": {
     "agencia": 0,
-    "posto": 5,
-    "pae": 5,
-    "total": 10,
-    "municipios": 3,
-    "nome": "COOPERATIVA DE CRÉDITO UNIÃO DO CENTRO OESTE DE MINAS LTDA. - SICOOB CENTRO UNIÃO"
+    "posto": 6,
+    "pae": 0,
+    "total": 6,
+    "municipios": 6,
+    "nome": "COOPERATIVA DE CRÉDITO LIVRE ADMISSÃO SICOOB OURICRED"
    },
    "65229254": {
     "agencia": 0,
@@ -40539,10 +40547,10 @@
    },
    "78825270": {
     "agencia": 0,
-    "posto": 103,
+    "posto": 104,
     "pae": 0,
-    "total": 103,
-    "municipios": 66,
+    "total": 104,
+    "municipios": 67,
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS - SICOOB MAXICRÉDITO"
    },
    "94433109": {
@@ -40825,14 +40833,6 @@
     "municipios": 24,
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTERESTADOS - SICREDI INTERESTADOS"
    },
-   "02179673": {
-    "agencia": 0,
-    "posto": 6,
-    "pae": 0,
-    "total": 6,
-    "municipios": 6,
-    "nome": "COOPERATIVA DE CRÉDITO LIVRE ADMISSÃO SICOOB OURICRED"
-   },
    "85291086": {
     "agencia": 0,
     "posto": 17,
@@ -40859,10 +40859,10 @@
    },
    "08075352": {
     "agencia": 0,
-    "posto": 59,
+    "posto": 58,
     "pae": 0,
-    "total": 59,
-    "municipios": 50,
+    "total": 58,
+    "municipios": 49,
     "nome": "COOPERATIVA DE CRÉDITO DOS TRANSPORTES, CORREIOS E LOGÍSTICA DO BRASIL - TRANSPOCRED"
    },
    "07494300": {
@@ -41123,10 +41123,10 @@
    },
    "02844024": {
     "agencia": 0,
-    "posto": 15,
+    "posto": 16,
     "pae": 0,
-    "total": 15,
-    "municipios": 12,
+    "total": 16,
+    "municipios": 13,
     "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA CRESOL EVOLUÇÃO"
    },
    "01657678": {
@@ -41235,107 +41235,107 @@
   ]
  },
  "correspondentes": {
-  "posicao": "27/08/2026",
+  "posicao": "06/09/2026",
   "fonte": {
    "nome": "BCB — Correspondentes no País (cadastro por contratante e município)",
    "url": "https://www.bcb.gov.br/fis/info/correspondentes.asp",
    "nivel": "A"
   },
   "totais": {
-   "pontos": 216866,
-   "contratantes": 279,
-   "municipios": 5571
+   "pontos": 215187,
+   "contratantes": 277,
+   "municipios": 5570
   },
   "por_cnpj8": {
    "59285411": {
     "nome": "BANCO PAN S.A.",
-    "pontos": 8398,
-    "correspondentes": 8372,
+    "pontos": 8402,
+    "correspondentes": 8376,
     "municipios": 1147
    },
    "07707650": {
     "nome": "SANTANDER SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "pontos": 30331,
-    "correspondentes": 30057,
-    "municipios": 1757
+    "pontos": 30258,
+    "correspondentes": 29990,
+    "municipios": 1763
    },
    "00000000": {
     "nome": "BANCO DO BRASIL S.A.",
-    "pontos": 46470,
-    "correspondentes": 42950,
-    "municipios": 5405
+    "pontos": 45271,
+    "correspondentes": 41764,
+    "municipios": 5398
    },
    "61348538": {
     "nome": "BANCO C6 CONSIGNADO S.A.",
-    "pontos": 677,
-    "correspondentes": 677,
-    "municipios": 323
+    "pontos": 689,
+    "correspondentes": 689,
+    "municipios": 326
    },
    "60746948": {
     "nome": "BANCO BRADESCO S.A.",
-    "pontos": 31480,
-    "correspondentes": 29626,
-    "municipios": 5340
+    "pontos": 30911,
+    "correspondentes": 29095,
+    "municipios": 5332
    },
    "62232889": {
     "nome": "BANCO DAYCOVAL S.A.",
-    "pontos": 550,
-    "correspondentes": 544,
+    "pontos": 551,
+    "correspondentes": 545,
     "municipios": 219
    },
    "27351731": {
     "nome": "REALIZE SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "pontos": 548,
-    "correspondentes": 300,
-    "municipios": 246
+    "pontos": 547,
+    "correspondentes": 299,
+    "municipios": 245
    },
    "45437547": {
     "nome": "SAFRA SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "pontos": 6469,
-    "correspondentes": 6239,
+    "pontos": 6504,
+    "correspondentes": 6272,
     "municipios": 916
    },
    "62063177": {
     "nome": "SAFRA LEASING S.A. ARRENDAMENTO MERCANTIL",
-    "pontos": 2337,
-    "correspondentes": 2267,
-    "municipios": 525
+    "pontos": 2349,
+    "correspondentes": 2279,
+    "municipios": 526
    },
    "31872495": {
     "nome": "BANCO C6 S.A.",
-    "pontos": 2532,
-    "correspondentes": 2443,
-    "municipios": 702
+    "pontos": 2590,
+    "correspondentes": 2501,
+    "municipios": 706
    },
    "90400888": {
     "nome": "BANCO SANTANDER (BRASIL) S.A.",
-    "pontos": 280,
-    "correspondentes": 277,
-    "municipios": 133
+    "pontos": 319,
+    "correspondentes": 316,
+    "municipios": 148
    },
    "59588111": {
     "nome": "BANCO VOTORANTIM S.A.",
-    "pontos": 14854,
-    "correspondentes": 14744,
-    "municipios": 1772
+    "pontos": 14863,
+    "correspondentes": 14753,
+    "municipios": 1775
    },
    "60701190": {
     "nome": "ITAÚ UNIBANCO S.A.",
-    "pontos": 8475,
-    "correspondentes": 8194,
+    "pontos": 8480,
+    "correspondentes": 8199,
     "municipios": 1077
    },
    "10371492": {
     "nome": "BANCO YAMAHA MOTOR DO BRASIL S.A.",
     "pontos": 226,
-    "correspondentes": 213,
-    "municipios": 169
+    "correspondentes": 214,
+    "municipios": 168
    },
    "00360305": {
     "nome": "CAIXA ECONOMICA FEDERAL",
-    "pontos": 17588,
-    "correspondentes": 17398,
-    "municipios": 4959
+    "pontos": 17554,
+    "correspondentes": 17365,
+    "municipios": 4958
    },
    "17351180": {
     "nome": "BANCO TRIANGULO S.A.",
@@ -41345,21 +41345,21 @@
    },
    "87900601": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO BOTUCARAÍ - SICREDI BOTUCARAÍ RS/MG",
-    "pontos": 166,
-    "correspondentes": 166,
-    "municipios": 33
+    "pontos": 171,
+    "correspondentes": 171,
+    "municipios": 34
    },
    "88099247": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO RAÍZES - SICREDI RAÍZES RS/SC/MG",
-    "pontos": 210,
-    "correspondentes": 208,
+    "pontos": 211,
+    "correspondentes": 209,
     "municipios": 34
    },
    "61186680": {
     "nome": "BANCO BMG S.A.",
-    "pontos": 1075,
-    "correspondentes": 998,
-    "municipios": 419
+    "pontos": 1081,
+    "correspondentes": 1003,
+    "municipios": 418
    },
    "02923389": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI SERIGY - SICREDI SERIGY SE/BA",
@@ -41369,27 +41369,27 @@
    },
    "88894548": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO - SICREDI UNIAO RS/ES",
-    "pontos": 756,
-    "correspondentes": 753,
-    "municipios": 66
+    "pontos": 755,
+    "correspondentes": 752,
+    "municipios": 67
    },
    "92702067": {
     "nome": "BANCO DO ESTADO DO RIO GRANDE DO SUL S.A.",
-    "pontos": 969,
-    "correspondentes": 942,
+    "pontos": 970,
+    "correspondentes": 943,
     "municipios": 372
    },
    "04379829": {
     "nome": "NEGRESCO S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTOS",
     "pontos": 5691,
-    "correspondentes": 4821,
-    "municipios": 1543
+    "correspondentes": 4834,
+    "municipios": 1541
    },
    "59109165": {
     "nome": "BANCO VOLKSWAGEN S.A.",
-    "pontos": 400,
-    "correspondentes": 384,
-    "municipios": 217
+    "pontos": 403,
+    "correspondentes": 387,
+    "municipios": 215
    },
    "06881898": {
     "nome": "FINANCEIRA ITAÚ CBD S.A. CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
@@ -41405,9 +41405,9 @@
    },
    "60779196": {
     "nome": "CREFISA S.A.-CREDITO, FINANCIAMENTO E INVESTIMENTOS",
-    "pontos": 1317,
-    "correspondentes": 788,
-    "municipios": 746
+    "pontos": 1318,
+    "correspondentes": 789,
+    "municipios": 747
    },
    "10348181": {
     "nome": "COOPERATIVA DE CRÉDITO DO VALE DO ITAJAÍ E LITORAL CATARINENSE - SICREDI VALE LITORAL SC",
@@ -41435,9 +41435,9 @@
    },
    "95594941": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DAS REGIÕES CENTRO DO RS E MG - SICREDI REGIÃO CENTRO RS/MG",
-    "pontos": 143,
-    "correspondentes": 143,
-    "municipios": 32
+    "pontos": 145,
+    "correspondentes": 145,
+    "municipios": 33
    },
    "00000208": {
     "nome": "BRB - BANCO DE BRASILIA S.A.",
@@ -41447,51 +41447,51 @@
    },
    "03502961": {
     "nome": "STELLANTIS FINANCIAMENTOS SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A",
-    "pontos": 1334,
-    "correspondentes": 1151,
+    "pontos": 1348,
+    "correspondentes": 1160,
     "municipios": 355
    },
    "87780268": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO DE ESTADOS RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI UNIESTADOS",
-    "pontos": 214,
-    "correspondentes": 214,
+    "pontos": 208,
+    "correspondentes": 208,
     "municipios": 46
    },
    "91586982": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI PIONEIRA RS - SICREDI PIONEIRA RS",
-    "pontos": 413,
-    "correspondentes": 413,
+    "pontos": 415,
+    "correspondentes": 415,
     "municipios": 32
    },
    "89990501": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE IBIRAIARAS - SICREDI IBIRAIARAS RS/MG",
-    "pontos": 77,
-    "correspondentes": 77,
+    "pontos": 79,
+    "correspondentes": 79,
     "municipios": 16
    },
    "05040481": {
     "nome": "BANCO DE LAGE LANDEN BRASIL S.A.",
-    "pontos": 1236,
-    "correspondentes": 1174,
-    "municipios": 478
+    "pontos": 1244,
+    "correspondentes": 1181,
+    "municipios": 479
    },
    "07799277": {
     "nome": "VALOR S/A SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 120,
-    "correspondentes": 118,
-    "municipios": 63
+    "pontos": 119,
+    "correspondentes": 117,
+    "municipios": 59
    },
    "30306294": {
     "nome": "BANCO BTG PACTUAL S.A.",
-    "pontos": 374,
-    "correspondentes": 374,
-    "municipios": 86
+    "pontos": 378,
+    "correspondentes": 378,
+    "municipios": 87
    },
    "60872504": {
     "nome": "ITAÚ UNIBANCO HOLDING S.A.",
-    "pontos": 589,
-    "correspondentes": 563,
-    "municipios": 244
+    "pontos": 595,
+    "correspondentes": 569,
+    "municipios": 245
    },
    "89468565": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA REGIÃO DA PRODUÇÃO - SICREDI REGIÃO DA PRODUÇÃO RS/SC/MG",
@@ -41501,15 +41501,15 @@
    },
    "33040601": {
     "nome": "MERCANTIL FINANCEIRA S.A. - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO.",
-    "pontos": 92,
-    "correspondentes": 88,
+    "pontos": 91,
+    "correspondentes": 87,
     "municipios": 60
    },
    "32997490": {
     "nome": "CREDITAS SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "pontos": 286,
-    "correspondentes": 278,
-    "municipios": 121
+    "pontos": 292,
+    "correspondentes": 283,
+    "municipios": 125
    },
    "06040559": {
     "nome": "KREDILIG S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
@@ -41519,27 +41519,27 @@
    },
    "81099491": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO PIQUIRI ABCD - SICREDI VALE DO PIQUIRI ABCD PR/SP",
-    "pontos": 569,
-    "correspondentes": 565,
+    "pontos": 570,
+    "correspondentes": 566,
     "municipios": 63
    },
    "95213211": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CAMINHO DAS ÁGUAS RS - SICREDI CAMINHO DAS ÁGUAS RS",
-    "pontos": 313,
-    "correspondentes": 313,
+    "pontos": 312,
+    "correspondentes": 312,
     "municipios": 40
    },
    "27098060": {
     "nome": "BANCO DIGIO S.A.",
-    "pontos": 245,
-    "correspondentes": 244,
+    "pontos": 243,
+    "correspondentes": 242,
     "municipios": 148
    },
    "88471024": {
     "nome": "COOPERATIVA DE CRÉDITO GERAÇÕES - SICREDI GERAÇÕES RS/MG",
-    "pontos": 40,
-    "correspondentes": 40,
-    "municipios": 15
+    "pontos": 41,
+    "correspondentes": 41,
+    "municipios": 16
    },
    "81466286": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CAMPOS GERAIS, GRANDE CURITIBA, VALE DO RIBEIRA E FORÇA DOS VENTOS - SICREDI CAMPOS GERAIS E GRANDE CURITIBA PR/SP",
@@ -41549,7 +41549,7 @@
    },
    "04184779": {
     "nome": "BANCO BRADESCARD S.A.",
-    "pontos": 329,
+    "pontos": 332,
     "correspondentes": 176,
     "municipios": 152
    },
@@ -41561,20 +41561,20 @@
    },
    "68900810": {
     "nome": "BANCO RENDIMENTO S.A.",
-    "pontos": 84,
-    "correspondentes": 80,
-    "municipios": 42
+    "pontos": 89,
+    "correspondentes": 85,
+    "municipios": 41
    },
    "77984870": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO TERRA DOS PINHEIRAIS DO PARANÁ E NOROESTE PAULISTA - SICREDI PLANALTO DAS ÁGUAS PR/SP",
-    "pontos": 43,
-    "correspondentes": 39,
+    "pontos": 44,
+    "correspondentes": 40,
     "municipios": 20
    },
    "07207996": {
     "nome": "BANCO BRADESCO FINANCIAMENTOS S.A.",
-    "pontos": 416,
-    "correspondentes": 414,
+    "pontos": 422,
+    "correspondentes": 420,
     "municipios": 227
    },
    "25536764": {
@@ -41609,8 +41609,8 @@
    },
    "79052122": {
     "nome": "COOPERATIVA DE CREDITO, POUPANÇA E INVESTIMENTO ALIANÇA - SICREDI ALIANÇA PR/SP",
-    "pontos": 329,
-    "correspondentes": 328,
+    "pontos": 330,
+    "correspondentes": 329,
     "municipios": 48
    },
    "78907607": {
@@ -41633,14 +41633,14 @@
    },
    "38486817": {
     "nome": "BANCO DE DESENVOLVIMENTO DE MINAS GERAIS S.A.-BDMG",
-    "pontos": 685,
-    "correspondentes": 680,
-    "municipios": 258
+    "pontos": 648,
+    "correspondentes": 647,
+    "municipios": 233
    },
    "95424891": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO VALE DO RIO PARDO - SICREDI VALE DO RIO PARDO RS",
-    "pontos": 78,
-    "correspondentes": 78,
+    "pontos": 73,
+    "correspondentes": 73,
     "municipios": 12
    },
    "13009717": {
@@ -41657,8 +41657,8 @@
    },
    "24654881": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIÃO DOS ESTADOS DE MATO GROSSO DO SUL, TOCANTINS E OESTE DA BAHIA - SICREDI UNIÃO MS/TO E OESTE DA BA",
-    "pontos": 51,
-    "correspondentes": 51,
+    "pontos": 50,
+    "correspondentes": 50,
     "municipios": 28
    },
    "82065285": {
@@ -41675,8 +41675,8 @@
    },
    "11285104": {
     "nome": "NEON FINANCEIRA - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A",
-    "pontos": 116,
-    "correspondentes": 116,
+    "pontos": 115,
+    "correspondentes": 115,
     "municipios": 58
    },
    "70241658": {
@@ -41687,9 +41687,9 @@
    },
    "14388334": {
     "nome": "PARANÁ BANCO S.A.",
-    "pontos": 211,
-    "correspondentes": 205,
-    "municipios": 124
+    "pontos": 217,
+    "correspondentes": 211,
+    "municipios": 126
    },
    "05351887": {
     "nome": "ZEMA CRÉDITO, FINANCIAMENTO E INVESTIMENTO S/A",
@@ -41705,8 +41705,8 @@
    },
    "92555150": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA REGIÃO ALTOS DA SERRA - SICREDI ALTOS DA SERRA RS/SC",
-    "pontos": 144,
-    "correspondentes": 142,
+    "pontos": 143,
+    "correspondentes": 141,
     "municipios": 33
    },
    "33022690": {
@@ -41747,8 +41747,8 @@
    },
    "92228410": {
     "nome": "OMNI S.A. - CREDITO FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 199,
-    "correspondentes": 193,
+    "pontos": 200,
+    "correspondentes": 194,
     "municipios": 153
    },
    "33021064": {
@@ -41777,9 +41777,9 @@
    },
    "33890605": {
     "nome": "FONTECRED - SOCIEDADE DE CRÉDITO DIRETO S/A",
-    "pontos": 85,
-    "correspondentes": 85,
-    "municipios": 62
+    "pontos": 95,
+    "correspondentes": 92,
+    "municipios": 67
    },
    "87853206": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO BRANCO - SICREDI OURO BRANCO RS/MG",
@@ -41794,15 +41794,15 @@
     "municipios": 44
    },
    "26555235": {
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SORRISO - SICREDI CELEIRO MT/RR",
-    "pontos": 50,
-    "correspondentes": 50,
-    "municipios": 9
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CELEIRO CENTRO NORTE - SICREDI CELEIRO CENTRO NORTE",
+    "pontos": 71,
+    "correspondentes": 71,
+    "municipios": 20
    },
    "37442605": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NORTE MATO-GROSSENSE E OESTE PARAENSE - SICREDI GRANDES RIOS MT/PA/AM",
-    "pontos": 48,
-    "correspondentes": 48,
+    "pontos": 49,
+    "correspondentes": 49,
     "municipios": 19
    },
    "73113243": {
@@ -41815,7 +41815,7 @@
     "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A.",
     "pontos": 396,
     "correspondentes": 393,
-    "municipios": 247
+    "municipios": 248
    },
    "87733770": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CONEXÃO - SICREDI CONEXÃO",
@@ -41837,8 +41837,8 @@
    },
    "90608712": {
     "nome": "COOPERATIVA DE CRÉDITO SICREDI SERRANA RS/ES",
-    "pontos": 65,
-    "correspondentes": 65,
+    "pontos": 66,
+    "correspondentes": 66,
     "municipios": 14
    },
    "22639377": {
@@ -41867,9 +41867,9 @@
    },
    "26549311": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTEGRAÇÃO DO SUL DE MATO GROSSO, AMAPÁ E PARÁ - SICREDI INTEGRAÇÃO MT/AP/PA",
-    "pontos": 57,
-    "correspondentes": 57,
-    "municipios": 7
+    "pontos": 58,
+    "correspondentes": 58,
+    "municipios": 8
    },
    "32995755": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SUDOESTE MT/PA - SICREDI SUDOESTE MT/PA",
@@ -41909,7 +41909,7 @@
    },
    "09464032": {
     "nome": "MIDWAY S.A. - SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 341,
+    "pontos": 342,
     "correspondentes": 162,
     "municipios": 162
    },
@@ -41921,8 +41921,8 @@
    },
    "03584906": {
     "nome": "AGÊNCIA DE FOMENTO DO PARANÁ S.A.",
-    "pontos": 183,
-    "correspondentes": 183,
+    "pontos": 184,
+    "correspondentes": 184,
     "municipios": 93
    },
    "43180355": {
@@ -41945,9 +41945,9 @@
    },
    "87900411": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SEMENTES DO SUL - SICREDI SEMENTES DO SUL",
-    "pontos": 78,
-    "correspondentes": 78,
-    "municipios": 17
+    "pontos": 79,
+    "correspondentes": 79,
+    "municipios": 18
    },
    "03042597": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE CAMPO GRANDE E REGIÃO - SICREDI CAMPO GRANDE MS/GO",
@@ -41961,29 +41961,23 @@
     "correspondentes": 18,
     "municipios": 9
    },
-   "36583700": {
-    "nome": "QISTA S.A. - CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 15,
-    "correspondentes": 14,
-    "municipios": 9
-   },
    "26408161": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CENTRO SUL DO MATO GROSSO DO SUL E BAHIA - SICREDI CENTRO-SUL MS/BA",
-    "pontos": 40,
-    "correspondentes": 40,
+    "pontos": 41,
+    "correspondentes": 41,
     "municipios": 16
    },
    "01852137": {
     "nome": "BANCO BRASILEIRO DE CRÉDITO SOCIEDADE ANÔNIMA",
-    "pontos": 311,
-    "correspondentes": 236,
-    "municipios": 112
+    "pontos": 310,
+    "correspondentes": 235,
+    "municipios": 111
    },
    "87795639": {
     "nome": "COOPERATIVA DE CRÉDITO ALIANÇA - SICREDI ALIANÇA",
     "pontos": 79,
     "correspondentes": 77,
-    "municipios": 25
+    "municipios": 24
    },
    "26529420": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO OURO VERDE - SICREDI OURO VERDE MT/PA",
@@ -41999,9 +41993,9 @@
    },
    "88530142": {
     "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO LIBERDADE - SICREDI LIBERDADE",
-    "pontos": 41,
-    "correspondentes": 41,
-    "municipios": 13
+    "pontos": 42,
+    "correspondentes": 42,
+    "municipios": 14
    },
    "03017677": {
     "nome": "BANCO J. SAFRA S.A.",
@@ -42011,9 +42005,9 @@
    },
    "87781530": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO INTEGRAÇÃO DE ESTADOS DO RIO GRANDE DO SUL, SANTA CATARINA E MINAS GERAIS - SICREDI INTEGRAÇÃO DE ESTADOS RS/SC/MG",
-    "pontos": 27,
-    "correspondentes": 27,
-    "municipios": 8
+    "pontos": 28,
+    "correspondentes": 28,
+    "municipios": 9
    },
    "91159764": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE LAJEADO - SICREDI INTEGRAÇÃO RS/MG",
@@ -42029,14 +42023,14 @@
    },
    "78414067": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VANGUARDA - SICREDI VANGUARDA PR/SP/RJ",
-    "pontos": 185,
-    "correspondentes": 185,
+    "pontos": 187,
+    "correspondentes": 187,
     "municipios": 34
    },
    "60935819": {
     "nome": "BANCO SANY BRASIL S.A.",
-    "pontos": 32,
-    "correspondentes": 32,
+    "pontos": 31,
+    "correspondentes": 31,
     "municipios": 26
    },
    "78632767": {
@@ -42047,9 +42041,9 @@
    },
    "90729369": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO REGIÕES DAS CULTURAS - SICREDI DAS CULTURAS RS/MG",
-    "pontos": 54,
-    "correspondentes": 53,
-    "municipios": 17
+    "pontos": 51,
+    "correspondentes": 50,
+    "municipios": 15
    },
    "23903068": {
     "nome": "BANCO KOMATSU DO BRASIL S.A.",
@@ -42071,8 +42065,8 @@
    },
    "70431630": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO UNIVALES - SICREDI UNIVALES MT/RO",
-    "pontos": 111,
-    "correspondentes": 109,
+    "pontos": 114,
+    "correspondentes": 112,
     "municipios": 30
    },
    "79086997": {
@@ -42095,8 +42089,8 @@
    },
    "04862600": {
     "nome": "PORTOSEG S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 67,
-    "correspondentes": 67,
+    "pontos": 68,
+    "correspondentes": 68,
     "municipios": 31
    },
    "08357240": {
@@ -42104,12 +42098,6 @@
     "pontos": 576,
     "correspondentes": 342,
     "municipios": 223
-   },
-   "32983165": {
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO",
-    "pontos": 42,
-    "correspondentes": 42,
-    "municipios": 14
    },
    "62307848": {
     "nome": "BANCO RCI BRASIL S.A.",
@@ -42119,14 +42107,14 @@
    },
    "10664513": {
     "nome": "BANCO AGIBANK S.A.",
-    "pontos": 126,
-    "correspondentes": 106,
-    "municipios": 99
+    "pontos": 129,
+    "correspondentes": 108,
+    "municipios": 101
    },
    "11581339": {
     "nome": "BMP SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E A EMPRESA DE PEQUENO PORTE LTDA.",
-    "pontos": 47,
-    "correspondentes": 47,
+    "pontos": 48,
+    "correspondentes": 48,
     "municipios": 21
    },
    "35977097": {
@@ -42179,8 +42167,8 @@
    },
    "21332862": {
     "nome": "CARTOS SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "pontos": 6,
-    "correspondentes": 6,
+    "pontos": 7,
+    "correspondentes": 7,
     "municipios": 6
    },
    "81607046": {
@@ -42263,9 +42251,9 @@
    },
    "41180092": {
     "nome": "COOPERATIVA DE CRÉDITO - SICREDI EXPANSÃO",
-    "pontos": 10,
-    "correspondentes": 10,
-    "municipios": 6
+    "pontos": 12,
+    "correspondentes": 12,
+    "municipios": 8
    },
    "06332931": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CERRADO DE GOIÁS - SICREDI CERRADO GO",
@@ -42299,8 +42287,8 @@
    },
    "92796564": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SUL RIOGRANDENSE - SICREDI ORIGENS RS",
-    "pontos": 25,
-    "correspondentes": 24,
+    "pontos": 26,
+    "correspondentes": 25,
     "municipios": 5
    },
    "71237184": {
@@ -42329,9 +42317,9 @@
    },
    "81192106": {
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO NOSSA TERRA - SICREDI NOSSA TERRA PR/SP",
-    "pontos": 15,
-    "correspondentes": 14,
-    "municipios": 7
+    "pontos": 16,
+    "correspondentes": 15,
+    "municipios": 8
    },
    "07679404": {
     "nome": "BANCO TOPÁZIO S.A.",
@@ -42343,12 +42331,6 @@
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE CARMO DO RIO CLARO LTDA - SICOOB CREDICARMO",
     "pontos": 1,
     "correspondentes": 1,
-    "municipios": 1
-   },
-   "21670187": {
-    "nome": "COOPERATIVA DE CRÉDITO CREDIBOM LTDA. - SICOOB CREDIBOM",
-    "pontos": 5,
-    "correspondentes": 4,
     "municipios": 1
    },
    "78834975": {
@@ -42401,15 +42383,15 @@
    },
    "18282093": {
     "nome": "OXY COMPANHIA HIPOTECÁRIA",
-    "pontos": 12,
-    "correspondentes": 12,
-    "municipios": 10
+    "pontos": 13,
+    "correspondentes": 13,
+    "municipios": 11
    },
    "62144175": {
     "nome": "BANCO PINE S.A.",
-    "pontos": 29,
-    "correspondentes": 16,
-    "municipios": 14
+    "pontos": 30,
+    "correspondentes": 17,
+    "municipios": 15
    },
    "01739375": {
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE  LAGOA DA PRATA E REGIÃO LTDA.   SICOOB LAGOACRED GERAIS",
@@ -42605,8 +42587,8 @@
    },
    "36321990": {
     "nome": "AGORACRED S/A SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO",
-    "pontos": 1361,
-    "correspondentes": 1313,
+    "pontos": 1362,
+    "correspondentes": 1314,
     "municipios": 162
    },
    "39664698": {
@@ -42704,6 +42686,12 @@
     "pontos": 79,
     "correspondentes": 62,
     "municipios": 60
+   },
+   "21670187": {
+    "nome": "COOPERATIVA DE CRÉDITO CREDIBOM LTDA. - SICOOB CREDIBOM",
+    "pontos": 2,
+    "correspondentes": 1,
+    "municipios": 1
    },
    "02015588": {
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO CENTRO SUL RONDONIENSE - SICOOB CREDIP.",
@@ -43772,40 +43760,6 @@
     "nome": "BANCO BMG S/A",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 55997474.75,
-       "membros": 12.67,
-       "media_por_membro_brl": 4419690,
-       "composicao": {
-        "salario": 16965623.63,
-        "beneficios": 6483086.83,
-        "bonus": 0.0,
-        "participacao_resultados": 15838056.84,
-        "baseada_acoes": 14892032.25,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 1818675.2
-       },
-       "maior": 9559490.38,
-       "media_individual": 4419690.19
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 118690842.42,
-       "membros": 12.75,
-       "media_por_membro_brl": 9309086,
-       "composicao": {
-        "salario": 19633698.95,
-        "beneficios": 8682647.56,
-        "bonus": 0.0,
-        "participacao_resultados": 17662178.95,
-        "baseada_acoes": 72260233.63,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -43835,6 +43789,40 @@
         "bonus": 0.0,
         "participacao_resultados": 0.0,
         "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 55997474.75,
+       "membros": 12.67,
+       "media_por_membro_brl": 4419690,
+       "composicao": {
+        "salario": 16965623.63,
+        "beneficios": 6483086.83,
+        "bonus": 0.0,
+        "participacao_resultados": 15838056.84,
+        "baseada_acoes": 14892032.25,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 1818675.2
+       },
+       "maior": 9559490.38,
+       "media_individual": 4419690.19
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 118690842.42,
+       "membros": 12.75,
+       "media_por_membro_brl": 9309086,
+       "composicao": {
+        "salario": 19633698.95,
+        "beneficios": 8682647.56,
+        "bonus": 0.0,
+        "participacao_resultados": 17662178.95,
+        "baseada_acoes": 72260233.63,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0
        }
@@ -44419,40 +44407,6 @@
     "nome": "BANESTES S.A. - BCO EST ESPIRITO SANTO",
     "fre_ano": 2026,
     "orgaos": {
-     "Diretoria Estatutária": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 6246359.76,
-       "membros": 8.0,
-       "media_por_membro_brl": 780795,
-       "composicao": {
-        "salario": 3339754.24,
-        "beneficios": 1797665.14,
-        "bonus": 0.0,
-        "participacao_resultados": 788899.35,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 320041.03,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 451309.79,
-       "media_individual": 424372.27
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 6998687.58,
-       "membros": 8.0,
-       "media_por_membro_brl": 874836,
-       "composicao": {
-        "salario": 3555365.27,
-        "beneficios": 2199522.5,
-        "bonus": 0.0,
-        "participacao_resultados": 898314.03,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 345485.78,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Conselho de Administração": {
       "realizado": {
        "exercicio": "2025",
@@ -44483,6 +44437,40 @@
         "participacao_resultados": 507105.05,
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 6246359.76,
+       "membros": 8.0,
+       "media_por_membro_brl": 780795,
+       "composicao": {
+        "salario": 3339754.24,
+        "beneficios": 1797665.14,
+        "bonus": 0.0,
+        "participacao_resultados": 788899.35,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 320041.03,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 451309.79,
+       "media_individual": 424372.27
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 6998687.58,
+       "membros": 8.0,
+       "media_por_membro_brl": 874836,
+       "composicao": {
+        "salario": 3555365.27,
+        "beneficios": 2199522.5,
+        "bonus": 0.0,
+        "participacao_resultados": 898314.03,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 345485.78,
         "cessacao_cargo": 0.0
        }
       }
@@ -44735,11 +44723,11 @@
   {
    "id": "municipios_sem_dependencia",
    "rotulo": "Municípios sem agência, posto ou posto eletrônico",
-   "valor": 380,
-   "exibir": "380 de 5.571",
-   "unidade": "municípios · posição 27/08/2026",
+   "valor": 382,
+   "exibir": "382 de 5.571",
+   "unidade": "municípios · posição 03/09/2026",
    "conceito": "Municípios sem nenhuma dependência própria de instituição financeira no cadastro do BCB. NÃO é ausência de atendimento: praticamente todos são atendidos por correspondentes (lotéricas, mercados, farmácias), que são terceiros contratados e prestam serviço de escopo variável",
-   "data_ref": "27/08/2026",
+   "data_ref": "03/09/2026",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB — cadastro de dependências (Unicad), contra a lista de municípios do IBGE",
@@ -44750,9 +44738,9 @@
    "rotulo": "Municípios atendidos só por posto ou terminal, sem agência",
    "valor": 2290,
    "exibir": "2.290",
-   "unidade": "municípios · posição 27/08/2026",
+   "unidade": "municípios · posição 03/09/2026",
    "conceito": "Municípios com posto de atendimento ou posto eletrônico, mas nenhuma agência cadastrada — a presença física existe em formato reduzido",
-   "data_ref": "27/08/2026",
+   "data_ref": "03/09/2026",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB — cadastro de dependências (derivação por diferença de conjuntos)",
@@ -44763,9 +44751,9 @@
    "rotulo": "Municípios sem dependência e sem correspondente",
    "valor": 0,
    "exibir": "0",
-   "unidade": "municípios · posição 27/08/2026",
+   "unidade": "municípios · posição 03/09/2026",
    "conceito": "Municípios sem agência, posto, posto eletrônico E sem correspondente contratado por qualquer instituição. É a lacuna de presença física de fato — e ela é praticamente inexistente, o que desloca a discussão de cobertura para o TIPO de ponto disponível",
-   "data_ref": "27/08/2026",
+   "data_ref": "03/09/2026",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB — cadastros de dependências e de correspondentes, contra a lista do IBGE",
@@ -44774,11 +44762,11 @@
   {
    "id": "postos_atendimento",
    "rotulo": "Postos de atendimento e postos eletrônicos no país",
-   "valor": 45009,
-   "exibir": "45.009",
-   "unidade": "pontos · posição 27/08/2026",
+   "valor": 45019,
+   "exibir": "45.019",
+   "unidade": "pontos · posição 03/09/2026",
    "conceito": "Soma dos postos de atendimento (PAB, PAC, PAA, câmbio, microcrédito) e dos postos de atendimento eletrônico cadastrados no BCB. Conceito distinto de agência, e distinto das agências processadas do ESTBAN — os três nunca se somam entre si",
-   "data_ref": "27/08/2026",
+   "data_ref": "03/09/2026",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB — cadastro de dependências (soma de dois cadastros)",
@@ -44787,11 +44775,11 @@
   {
    "id": "municipios_so_correspondente",
    "rotulo": "Municípios sem dependência, mas com correspondente",
-   "valor": 380,
-   "exibir": "380",
-   "unidade": "municípios · posição 27/08/2026",
+   "valor": 382,
+   "exibir": "382",
+   "unidade": "municípios · posição 03/09/2026",
    "conceito": "Municípios em que a presença bancária existe apenas por correspondente — lotérica, mercado, farmácia — sem nenhuma dependência própria de instituição financeira. O serviço prestado varia por contrato e não equivale ao de uma agência",
-   "data_ref": "27/08/2026",
+   "data_ref": "03/09/2026",
    "nivel": "A",
    "status": "calculado",
    "fonte": "BCB — cadastros de dependências e de correspondentes",

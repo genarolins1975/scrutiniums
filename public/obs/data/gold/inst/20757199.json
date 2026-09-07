@@ -9,13 +9,13 @@
   "sede": "São Paulo/SP",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 139,
+  "n_pares": 137,
   "conglomerado_prudencial": "C0086299",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:51:59+00:00",
+  "atualizado_em": "2026-09-07T17:05:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 20.757.199",
   "participante_open_finance": null
@@ -28,7 +28,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 48.2% (acima da mediana do grupo S?: 29.2%).",
+    "texto": "Basileia de 48.2% (acima da mediana do grupo S?: 28.2%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -58,15 +58,11 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 139,
+  "quantidade": 137,
   "maiores_membros": [
    {
     "cod": "01027058",
     "nome": "CIELO S.A. - INSTITUIÇÃO DE PAGAMENTO"
-   },
-   {
-    "cod": "18189547",
-    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SER"
    },
    {
     "cod": "14796606",
@@ -119,12 +115,16 @@
    {
     "cod": "00991143",
     "nome": "WORLDPAY DO BRASIL INSTITUICAO DE PAGAME"
+   },
+   {
+    "cod": "09092759",
+    "nome": "NAIP INSTITUIÇÃO DE PAGAMENTO S.A."
    }
   ],
   "quartis_basileia": {
-   "q1": 14.8,
-   "mediana": 29.2,
-   "q3": 77.7
+   "q1": 13.9,
+   "mediana": 28.2,
+   "q3": 74.4
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -218,7 +218,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 48.2% (acima da mediana do grupo S?: 29.2%).",
+   "texto": "Basileia de 48.2% (acima da mediana do grupo S?: 28.2%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -234,17 +234,17 @@
    "unit": "%",
    "d_tri": -4.23,
    "vs_pares": "acima",
-   "mediana_grupo": 29.21,
-   "percentil": 66.3
+   "mediana_grupo": 28.17,
+   "percentil": 67.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
    "valor": 3.51,
    "unit": "×",
    "d_tri": null,
-   "vs_pares": "acima",
-   "mediana_grupo": 3.49,
-   "percentil": 50.7
+   "vs_pares": "na média",
+   "mediana_grupo": 3.51,
+   "percentil": 50.0
   },
   {
    "indicador": "ROE do período",
@@ -253,7 +253,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 1.31,
-   "percentil": 29.7
+   "percentil": 29.4
   }
  ],
  "carteira": {
@@ -416,7 +416,6 @@
     -29.32,
     -20.99,
     -1.83,
-    13.44,
     9.23,
     -10.17,
     5.99,
@@ -426,6 +425,7 @@
     3.23,
     1.38,
     2.89,
+    24.06,
     -0.25,
     -4.11,
     1.47,
@@ -516,8 +516,6 @@
     13.16,
     -2.44,
     0.54,
-    -9.71,
-    2.21,
     14.64,
     -8.6,
     -20.17,
@@ -558,7 +556,6 @@
     -71.02,
     126.47,
     14.77,
-    31.14,
     48.98,
     15.44,
     22.98,
@@ -568,6 +565,7 @@
     290.92,
     147.38,
     3.21,
+    37.77,
     -35.63,
     -21.96,
     18.47,
@@ -629,9 +627,10 @@
     89.31,
     2328.49,
     -12.32,
+    36.78,
+    12.04,
+    455.51,
     100.99,
-    247.09,
-    3954.56,
     12.32,
     21.43,
     202.56,
@@ -641,7 +640,7 @@
     43.52
    ],
    "meu": 48.21,
-   "mediana": 29.21
+   "mediana": 28.17
   },
   "alav": {
    "valores": [
@@ -669,7 +668,6 @@
     1.89,
     14.46,
     16.65,
-    9.37,
     4.16,
     21.8,
     8.16,
@@ -679,6 +677,7 @@
     2.3,
     1.06,
     1.09,
+    6.59,
     3.08,
     12.99,
     1.5,
@@ -769,8 +768,6 @@
     5.13,
     1.57,
     1.01,
-    1.01,
-    1.02,
     5.42,
     7.43,
     6.57,
@@ -786,7 +783,7 @@
     1.0
    ],
    "meu": 3.51,
-   "mediana": 3.49
+   "mediana": 3.51
   }
  },
  "score_ref": {

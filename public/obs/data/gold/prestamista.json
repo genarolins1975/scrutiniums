@@ -9,10 +9,10 @@
   "licenca": "dados abertos da SUSEP",
   "nivel": "A — estatística oficial do supervisor de seguros, mensal"
  },
- "gerado_em": "2026-09-06T23:13:27+00:00",
+ "gerado_em": "2026-09-07T17:05:53+00:00",
  "coleta": {
-  "last_modified": "Mon, 31 Aug 2026 03:47:22 GMT",
-  "coletado_em": "2026-09-06T23:11:06+00:00",
+  "last_modified": "Mon, 07 Sep 2026 03:46:13 GMT",
+  "coletado_em": "2026-09-07T16:48:09+00:00",
   "requisicoes": 12,
   "mb_lidos": 37.8
  },
@@ -41,7 +41,7 @@
   "premio_12m": 30028786755.634895,
   "var_12m_pct": 11.4,
   "premio_mes": 2731876763.831,
-  "sinistralidade_12m_pct": 21.22,
+  "sinistralidade_12m_pct": 21.15,
   "comissao_12m_pct": 36.88,
   "n_empresas": 65,
   "concessoes_pf_12m": 4532642000000.0,
@@ -53,11 +53,11 @@
    "cogrupo": "sem_grupo",
    "nome": "Sem grupo econômico (empresas independentes)",
    "premio": 9953892858.604895,
-   "sinistro": 1910674385.415608,
-   "comissao": 4192613063.96438,
+   "sinistro": 1893140740.7556078,
+   "comissao": 4193336114.44438,
    "n_empresas": 66,
    "share_pct": 33.15,
-   "comissao_pct": 42.12
+   "comissao_pct": 42.13
   },
   {
    "cogrupo": "00035",
@@ -306,7 +306,7 @@
    "nome": "FACTA SEGURADORA S/A",
    "grupo": "Sem grupo econômico (empresas independentes)",
    "premio": 692030762.67,
-   "sinistro": 84606768.69999999,
+   "sinistro": 66331628.20999999,
    "comissao": 171756625.1899998,
    "share_pct": 2.3,
    "comissao_pct": 24.82
@@ -1093,11 +1093,11 @@
   {
    "mes": "2026-06",
    "premio": 2731876763.831,
-   "premio_ganho": 2335965413.019,
-   "sinistro_ocorrido": 581238963.1529999,
-   "comissao": 965719632.0543836,
-   "sinistralidade_pct": 24.88,
-   "comissao_pct": 35.35,
+   "premio_ganho": 2336938432.669,
+   "sinistro_ocorrido": 563705318.4929999,
+   "comissao": 966442682.5343837,
+   "sinistralidade_pct": 24.12,
+   "comissao_pct": 35.38,
    "n_empresas": 65,
    "concessoes_pf": 385986000000.0,
    "premio_sobre_concessoes_pct": 0.71,

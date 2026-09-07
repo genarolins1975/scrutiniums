@@ -9,23 +9,28 @@
   "sede": "João Pessoa/PB",
   "segmento": "S?",
   "grupo_pares": "S?",
-  "n_pares": 139,
-  "conglomerado_prudencial": null,
+  "n_pares": 137,
+  "conglomerado_prudencial": "C0088417",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:52:00+00:00",
+  "atualizado_em": "2026-09-07T17:05:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 31.531.997",
   "participante_open_finance": null
  },
  "resumo_executivo": {
   "avaliacao_geral": {
-   "texto": "Avaliação limitada: capital regulatório não reportado neste corte.",
+   "texto": "Capitalização acima da mediana do grupo S?, rentabilidade do período acima da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S?"
   },
   "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 36.8% (acima da mediana do grupo S?: 28.2%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
    {
     "tipo": "ok",
     "texto": "ROE do período de 8.6%.",
@@ -41,6 +46,10 @@
    {
     "texto": "Patrimônio líquido: +9.4% no trimestre.",
     "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: -17.28p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
    }
   ],
   "limitacoes_informacionais": [
@@ -52,15 +61,11 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 139,
+  "quantidade": 137,
   "maiores_membros": [
    {
     "cod": "01027058",
     "nome": "CIELO S.A. - INSTITUIÇÃO DE PAGAMENTO"
-   },
-   {
-    "cod": "18189547",
-    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SER"
    },
    {
     "cod": "14796606",
@@ -113,12 +118,16 @@
    {
     "cod": "00991143",
     "nome": "WORLDPAY DO BRASIL INSTITUICAO DE PAGAME"
+   },
+   {
+    "cod": "09092759",
+    "nome": "NAIP INSTITUIÇÃO DE PAGAMENTO S.A."
    }
   ],
   "quartis_basileia": {
-   "q1": 14.8,
-   "mediana": 29.2,
-   "q3": 77.7
+   "q1": 13.9,
+   "mediana": 28.2,
+   "q3": 74.4
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -181,6 +190,20 @@
    "fonte": "BCB IF.data (Olinda)"
   },
   {
+   "label": "Índice de Basileia",
+   "v": 36.7755172422468,
+   "unit": "%",
+   "d_tri": -17.28,
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    17.6277,
+    22.3664,
+    54.0536,
+    36.7755
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
    "label": "ROE do período (padronizado)",
    "v": 8.56,
    "unit": "%",
@@ -193,19 +216,33 @@
  "destaques": [
   {
    "tipo": "ok",
+   "texto": "Basileia de 36.8% (acima da mediana do grupo S?: 28.2%).",
+   "base": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "tipo": "ok",
    "texto": "ROE do período de 8.6%.",
    "base": "calculado sobre IF.data"
   }
  ],
  "capital_tabela": [
   {
+   "indicador": "Índice de Basileia",
+   "valor": 36.78,
+   "unit": "%",
+   "d_tri": -17.28,
+   "vs_pares": "acima",
+   "mediana_grupo": 28.17,
+   "percentil": 56.9
+  },
+  {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
    "valor": 2.52,
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 3.49,
-   "percentil": 40.6
+   "mediana_grupo": 3.51,
+   "percentil": 39.7
   },
   {
    "indicador": "ROE do período",
@@ -214,7 +251,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 1.31,
-   "percentil": 76.1
+   "percentil": 75.7
   }
  ],
  "carteira": {
@@ -289,7 +326,6 @@
     -29.32,
     -20.99,
     -1.83,
-    13.44,
     9.23,
     -10.17,
     5.99,
@@ -299,6 +335,7 @@
     3.23,
     1.38,
     2.89,
+    24.06,
     -0.25,
     -4.11,
     1.47,
@@ -389,8 +426,6 @@
     13.16,
     -2.44,
     0.54,
-    -9.71,
-    2.21,
     14.64,
     -8.6,
     -20.17,
@@ -407,6 +442,115 @@
    ],
    "meu": 8.56,
    "mediana": 1.31
+  },
+  "basileia": {
+   "valores": [
+    18.59,
+    71.12,
+    8.51,
+    74.25,
+    31.23,
+    15.49,
+    22.81,
+    16.43,
+    157.09,
+    125.44,
+    28.17,
+    37.83,
+    17.44,
+    13.89,
+    203.97,
+    48.21,
+    -286.63,
+    -100.1,
+    -71.02,
+    126.47,
+    14.77,
+    48.98,
+    15.44,
+    22.98,
+    14.99,
+    215.64,
+    33.41,
+    290.92,
+    147.38,
+    3.21,
+    37.77,
+    -35.63,
+    -21.96,
+    18.47,
+    15.09,
+    15.65,
+    348.58,
+    -23.14,
+    -80.11,
+    39.17,
+    -0.76,
+    19.48,
+    29.21,
+    77.66,
+    7.77,
+    99.74,
+    8.08,
+    15.88,
+    16.12,
+    26.96,
+    65.45,
+    89.04,
+    10.61,
+    35.67,
+    1.33,
+    10.15,
+    20.32,
+    37.23,
+    12.37,
+    78.68,
+    74.42,
+    27.41,
+    81.76,
+    23.03,
+    54.43,
+    40.69,
+    40.15,
+    15.01,
+    22.82,
+    14.82,
+    39.87,
+    63.29,
+    18.41,
+    10.88,
+    36.57,
+    -59.11,
+    86.82,
+    292.92,
+    -2.15,
+    57.29,
+    24.04,
+    0.77,
+    976.0,
+    36.25,
+    6.1,
+    301.1,
+    -91.06,
+    283.21,
+    103.99,
+    89.31,
+    2328.49,
+    -12.32,
+    36.78,
+    12.04,
+    455.51,
+    100.99,
+    12.32,
+    21.43,
+    202.56,
+    458.76,
+    42.82,
+    45.43,
+    43.52
+   ],
+   "meu": 36.78,
+   "mediana": 28.17
   },
   "alav": {
    "valores": [
@@ -434,7 +578,6 @@
     1.89,
     14.46,
     16.65,
-    9.37,
     4.16,
     21.8,
     8.16,
@@ -444,6 +587,7 @@
     2.3,
     1.06,
     1.09,
+    6.59,
     3.08,
     12.99,
     1.5,
@@ -534,8 +678,6 @@
     5.13,
     1.57,
     1.01,
-    1.01,
-    1.02,
     5.42,
     7.43,
     6.57,
@@ -551,7 +693,7 @@
     1.0
    ],
    "meu": 2.52,
-   "mediana": 3.49
+   "mediana": 3.51
   }
  },
  "score_ref": {

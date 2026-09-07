@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-05T12:52:18+00:00",
+ "gerado_em": "2026-09-07T17:05:53+00:00",
  "tipo": "DADO OBSERVADO",
  "fonte": "BCB txjuros (Olinda) — taxas médias das operações contratadas por IF, por modalidade",
  "selic_meta": 14.0,
@@ -906,7 +906,7 @@
    "carteira_scr": {
     "produto": "Veículos",
     "cliente": "PF",
-    "saldo": 422039354917,
+    "saldo": 422040222675,
     "inad": 6.69,
     "atraso15_90": 1.03,
     "data_base": "2026-07"
@@ -1940,9 +1940,9 @@
    "carteira_scr": {
     "produto": "Cartão — parcelado/financiado",
     "cliente": "PF",
-    "saldo": 165561538767,
-    "inad": 39.47,
-    "atraso15_90": 8.09,
+    "saldo": 166402036765,
+    "inad": 39.27,
+    "atraso15_90": 8.05,
     "data_base": "2026-07"
    }
   },
@@ -2998,9 +2998,9 @@
    "carteira_scr": {
     "produto": "Cartão — rotativo",
     "cliente": "PF",
-    "saldo": 22677632327,
-    "inad": 14.07,
-    "atraso15_90": 18.46,
+    "saldo": 22876261393,
+    "inad": 14.05,
+    "atraso15_90": 18.35,
     "data_base": "2026-07"
    }
   },
@@ -3928,7 +3928,7 @@
    "carteira_scr": {
     "produto": "Cheque especial",
     "cliente": "PF",
-    "saldo": 38319277464,
+    "saldo": 38319277467,
     "inad": 16.64,
     "atraso15_90": 6.62,
     "data_base": "2026-07"
@@ -4842,9 +4842,9 @@
    "carteira_scr": {
     "produto": "Consignado",
     "cliente": "PF",
-    "saldo": 779031468622,
-    "inad": 3.65,
-    "atraso15_90": 0.43,
+    "saldo": 791617245135,
+    "inad": 3.68,
+    "atraso15_90": 0.44,
     "data_base": "2026-07"
    }
   },
@@ -5860,9 +5860,9 @@
    "carteira_scr": {
     "produto": "Consignado",
     "cliente": "PF",
-    "saldo": 779031468622,
-    "inad": 3.65,
-    "atraso15_90": 0.43,
+    "saldo": 791617245135,
+    "inad": 3.68,
+    "atraso15_90": 0.44,
     "data_base": "2026-07"
    }
   },
@@ -6800,9 +6800,9 @@
    "carteira_scr": {
     "produto": "Consignado",
     "cliente": "PF",
-    "saldo": 779031468622,
-    "inad": 3.65,
-    "atraso15_90": 0.43,
+    "saldo": 791617245135,
+    "inad": 3.68,
+    "atraso15_90": 0.44,
     "data_base": "2026-07"
    }
   },
@@ -7954,8 +7954,8 @@
    "carteira_scr": {
     "produto": "Crédito pessoal",
     "cliente": "PF",
-    "saldo": 373217555201,
-    "inad": 11.34,
+    "saldo": 373711976603,
+    "inad": 11.33,
     "atraso15_90": 2.23,
     "data_base": "2026-07"
    }
@@ -8900,7 +8900,7 @@
    "carteira_scr": {
     "produto": "Comércio exterior",
     "cliente": "PJ",
-    "saldo": 306762835743,
+    "saldo": 307131246549,
     "inad": 0.49,
     "atraso15_90": 0.32,
     "data_base": "2026-07"
@@ -9774,8 +9774,8 @@
    "carteira_scr": {
     "produto": "Recebíveis descontados",
     "cliente": "PJ",
-    "saldo": 35987178662,
-    "inad": 4.42,
+    "saldo": 36192199335,
+    "inad": 4.43,
     "atraso15_90": 1.16,
     "data_base": "2026-07"
    }
@@ -10744,7 +10744,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -11682,7 +11682,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -12636,7 +12636,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -13614,7 +13614,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -14536,7 +14536,7 @@
    "carteira_scr": {
     "produto": "Cheque especial",
     "cliente": "PJ",
-    "saldo": 19729253439,
+    "saldo": 19729575006,
     "inad": 19.92,
     "atraso15_90": 6.96,
     "data_base": "2026-07"
@@ -15450,7 +15450,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -16388,7 +16388,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"
@@ -17246,8 +17246,8 @@
    "carteira_scr": {
     "produto": "Recebíveis descontados",
     "cliente": "PJ",
-    "saldo": 35987178662,
-    "inad": 4.42,
+    "saldo": 36192199335,
+    "inad": 4.43,
     "atraso15_90": 1.16,
     "data_base": "2026-07"
    }
@@ -18280,8 +18280,8 @@
    "carteira_scr": {
     "produto": "Recebíveis descontados",
     "cliente": "PJ",
-    "saldo": 35987178662,
-    "inad": 4.42,
+    "saldo": 36192199335,
+    "inad": 4.43,
     "atraso15_90": 1.16,
     "data_base": "2026-07"
    }
@@ -19114,7 +19114,7 @@
    "carteira_scr": {
     "produto": "Capital de giro",
     "cliente": "PJ",
-    "saldo": 840933526046,
+    "saldo": 841601296348,
     "inad": 5.23,
     "atraso15_90": 0.87,
     "data_base": "2026-07"

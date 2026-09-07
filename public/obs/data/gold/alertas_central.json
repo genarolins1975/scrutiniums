@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-05T15:51:43+00:00",
+ "gerado_em": "2026-09-07T17:05:51+00:00",
  "familias": [
   {
    "id": "macro",
@@ -27,7 +27,7 @@
    "persistencia": "a própria regra exige alta em 2 datas-base consecutivas",
    "limitacao": "Inadimplência arrastada por submodalidade: o ciclo do cartão migra saldos entre à vista, rotativo e parcelamento entre datas-base, então o nível por submodalidade não é comparável às séries SGS por modalidade.",
    "view": "panorama",
-   "ativos": 2,
+   "ativos": 4,
    "arquivo": "panorama.json",
    "disponivel": true
   },
@@ -82,36 +82,36 @@
    "id": "macro:stale_data:convolacao_falencia_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 127 dias",
+   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 129 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 127,
+   "valor": 129,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "8 execuções anteriores",
+   "evidencia_persistencia": "9 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.27,
+   "ordem": 0.29,
    "serie_recente": null
   },
   {
    "id": "macro:stale_data:extincao_rj_agregado",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 127 dias",
+   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 129 dias",
    "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 127,
+   "valor": 129,
    "limiar": 100,
    "referencia": null,
    "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "8 execuções anteriores",
+   "evidencia_persistencia": "9 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
    },
-   "ordem": 0.27,
+   "ordem": 0.29,
    "serie_recente": null
   },
   {
@@ -124,7 +124,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "68 execuções anteriores",
+   "evidencia_persistencia": "69 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -251,8 +251,8 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Consignado · PF — inadimplência (arrastada)",
-   "detalhe": "3.23% → 3.65% (2026-04 → 2026-07). Δ3m +0.42 p.p. · Δ12m +0.97 p.p. · carteira R$ 779.0 bi.",
-   "valor": 3.65,
+   "detalhe": "3.23% → 3.68% (2026-04 → 2026-07). Δ3m +0.45 p.p. · Δ12m +1.01 p.p. · carteira R$ 791.6 bi.",
+   "valor": 3.68,
    "limiar": null,
    "referencia": "2026-07",
    "fonte": "BCB/SCR.data",
@@ -261,7 +261,43 @@
    "link": {
     "view": "panorama"
    },
-   "ordem": 0.97
+   "ordem": 1.01
+  },
+  {
+   "id": "carteira:uf_variacao_saldo:Distrito Federal (DF)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Distrito Federal (DF) — carteira ativa (variação entre datas-base)",
+   "detalhe": "179127260920.00% → 159068225779.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "valor": 159068225779,
+   "limiar": null,
+   "referencia": "2026-07",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "DF"
+   },
+   "ordem": 0
+  },
+  {
+   "id": "carteira:uf_variacao_saldo:Sergipe (SE)",
+   "familia": "carteira",
+   "nivel": null,
+   "titulo": "Sergipe (SE) — carteira ativa (variação entre datas-base)",
+   "detalhe": "47797130037.00% → 42572749154.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "valor": 42572749154,
+   "limiar": null,
+   "referencia": "2026-07",
+   "fonte": "BCB/SCR.data",
+   "evidencia_persistencia": "alta em 2 datas-base consecutivas (exigido pela regra)",
+   "recorrente": null,
+   "link": {
+    "view": "panorama",
+    "uf": "SE"
+   },
+   "ordem": 0
   },
   {
    "id": "openfinance:taxa de sucesso — dados transacionais",
@@ -451,7 +487,7 @@
    "ordem": 0.0
   }
  ],
- "total": 16,
+ "total": 18,
  "niveis": [
   "informativo",
   "atencao",

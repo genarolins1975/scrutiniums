@@ -1,0 +1,80 @@
+{
+ "cod": "04310638",
+ "nome": "CECM COMERCIANTES DE AUTOMOTORES, PEÇAS E SERVIÇOS DE CUIABÁ E VÁRZEA GRANDE E EMPREGADOS EM SANEAMENTO DO MATO GROSSO E FUNCIONÁRIOS DO SISTEMA FIEMT, FECOMÉRCIO, FAMATO E FETRAMAR - SICOOB MULTIPLO",
+ "sr": null,
+ "tcb": "B3S",
+ "porte_quartil": null,
+ "nivel": "instituição individual",
+ "anomes_list": [
+  "201503",
+  "201506",
+  "201509",
+  "201512",
+  "201603",
+  "201606",
+  "201609",
+  "201612",
+  "201703",
+  "201706",
+  "201709",
+  "201712",
+  "201803",
+  "201806",
+  "201809",
+  "201812",
+  "201903",
+  "201906",
+  "201909",
+  "201912",
+  "202003",
+  "202006",
+  "202009",
+  "202012",
+  "202103",
+  "202106",
+  "202109",
+  "202112",
+  "202203",
+  "202206",
+  "202209",
+  "202212",
+  "202303",
+  "202306",
+  "202309",
+  "202312",
+  "202403",
+  "202406",
+  "202409",
+  "202412",
+  "202503",
+  "202506",
+  "202509",
+  "202512",
+  "202603"
+ ],
+ "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
+ "metrics": {
+  "ativo_total": {
+   "201503": 11386302.55
+  },
+  "patrimonio_liquido": {
+   "201503": 1900794.73
+  },
+  "carteira_credito": {
+   "201503": 6502671.54
+  },
+  "captacoes": {
+   "201503": 8287522.95
+  },
+  "lucro_liquido": {
+   "201503": -644035.93
+  },
+  "roe_periodo": {
+   "201503": -33.88245557688389
+  },
+  "cart_ativo_pct": {
+   "201503": 57.10959735564026
+  }
+ },
+ "gerado_em": "2026-09-07T17:05:34+00:00"
+}

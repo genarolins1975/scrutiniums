@@ -3148,75 +3148,75 @@
    "historico_score": [
     {
      "anomes": "202012",
-     "score": 78.4
+     "score": 78.5
     },
     {
      "anomes": "202103",
-     "score": 54.6
+     "score": 54.8
     },
     {
      "anomes": "202106",
-     "score": 49.6
+     "score": 50.5
     },
     {
      "anomes": "202109",
-     "score": 48.7
+     "score": 49.6
     },
     {
      "anomes": "202112",
-     "score": 50.9
+     "score": 51.4
     },
     {
      "anomes": "202203",
-     "score": 52.2
+     "score": 53.1
     },
     {
      "anomes": "202206",
-     "score": 52.2
+     "score": 52.6
     },
     {
      "anomes": "202209",
-     "score": 54.0
+     "score": 54.9
     },
     {
      "anomes": "202212",
-     "score": 48.7
-    },
-    {
-     "anomes": "202303",
-     "score": 50.5
-    },
-    {
-     "anomes": "202306",
-     "score": 50.0
-    },
-    {
-     "anomes": "202309",
-     "score": 46.0
-    },
-    {
-     "anomes": "202312",
-     "score": 43.8
-    },
-    {
-     "anomes": "202403",
-     "score": 48.2
-    },
-    {
-     "anomes": "202406",
-     "score": 45.5
-    },
-    {
-     "anomes": "202409",
-     "score": 50.5
-    },
-    {
-     "anomes": "202412",
      "score": 49.1
     },
     {
+     "anomes": "202303",
+     "score": 50.9
+    },
+    {
+     "anomes": "202306",
+     "score": 50.9
+    },
+    {
+     "anomes": "202309",
+     "score": 46.8
+    },
+    {
+     "anomes": "202312",
+     "score": 44.5
+    },
+    {
+     "anomes": "202403",
+     "score": 49.1
+    },
+    {
+     "anomes": "202406",
+     "score": 46.4
+    },
+    {
+     "anomes": "202409",
+     "score": 50.9
+    },
+    {
+     "anomes": "202412",
+     "score": 49.6
+    },
+    {
      "anomes": "202503",
-     "score": 49.3
+     "score": 49.4
     },
     {
      "anomes": "202506",
@@ -5037,43 +5037,43 @@
    "historico_score": [
     {
      "anomes": "202009",
-     "score": 54.3
+     "score": 54.8
     },
     {
      "anomes": "202012",
-     "score": 53.8
+     "score": 54.3
     },
     {
      "anomes": "202103",
-     "score": 59.3
+     "score": 59.9
     },
     {
      "anomes": "202106",
-     "score": 71.1
+     "score": 71.5
     },
     {
      "anomes": "202109",
-     "score": 64.8
+     "score": 65.1
     },
     {
      "anomes": "202112",
-     "score": 67.7
+     "score": 68.0
     },
     {
      "anomes": "202203",
-     "score": 55.2
+     "score": 55.4
     },
     {
      "anomes": "202206",
-     "score": 57.8
+     "score": 57.9
     },
     {
      "anomes": "202209",
-     "score": 62.7
+     "score": 62.9
     },
     {
      "anomes": "202212",
-     "score": 72.3
+     "score": 72.7
     },
     {
      "anomes": "202303",
@@ -5081,19 +5081,19 @@
     },
     {
      "anomes": "202306",
-     "score": 78.5
+     "score": 78.6
     },
     {
      "anomes": "202309",
-     "score": 80.8
+     "score": 80.9
     },
     {
      "anomes": "202312",
-     "score": 78.1
+     "score": 78.2
     },
     {
      "anomes": "202403",
-     "score": 54.0
+     "score": 54.1
     },
     {
      "anomes": "202406",
@@ -5109,11 +5109,11 @@
     },
     {
      "anomes": "202503",
-     "score": 59.9
+     "score": 60.6
     },
     {
      "anomes": "202506",
-     "score": 61.3
+     "score": 61.4
     },
     {
      "anomes": "202509",
@@ -5705,7 +5705,7 @@
     },
     {
      "anomes": "201903",
-     "score": 50.0
+     "score": 51.0
     },
     {
      "anomes": "201906",
@@ -5713,99 +5713,99 @@
     },
     {
      "anomes": "201909",
-     "score": 42.1
-    },
-    {
-     "anomes": "201912",
-     "score": 39.0
-    },
-    {
-     "anomes": "202003",
-     "score": 47.4
-    },
-    {
-     "anomes": "202006",
-     "score": 52.7
-    },
-    {
-     "anomes": "202009",
-     "score": 44.8
-    },
-    {
-     "anomes": "202012",
-     "score": 46.6
-    },
-    {
-     "anomes": "202103",
-     "score": 61.4
-    },
-    {
-     "anomes": "202106",
-     "score": 40.9
-    },
-    {
-     "anomes": "202109",
      "score": 42.4
     },
     {
+     "anomes": "201912",
+     "score": 39.3
+    },
+    {
+     "anomes": "202003",
+     "score": 47.8
+    },
+    {
+     "anomes": "202006",
+     "score": 53.1
+    },
+    {
+     "anomes": "202009",
+     "score": 45.1
+    },
+    {
+     "anomes": "202012",
+     "score": 46.5
+    },
+    {
+     "anomes": "202103",
+     "score": 61.6
+    },
+    {
+     "anomes": "202106",
+     "score": 41.2
+    },
+    {
+     "anomes": "202109",
+     "score": 43.1
+    },
+    {
      "anomes": "202112",
-     "score": 41.4
+     "score": 41.7
     },
     {
      "anomes": "202203",
-     "score": 33.3
-    },
-    {
-     "anomes": "202206",
-     "score": 37.5
-    },
-    {
-     "anomes": "202209",
-     "score": 51.3
-    },
-    {
-     "anomes": "202212",
      "score": 33.9
     },
     {
+     "anomes": "202206",
+     "score": 38.2
+    },
+    {
+     "anomes": "202209",
+     "score": 52.2
+    },
+    {
+     "anomes": "202212",
+     "score": 34.5
+    },
+    {
      "anomes": "202303",
-     "score": 51.3
+     "score": 51.4
     },
     {
      "anomes": "202306",
-     "score": 43.9
+     "score": 44.2
     },
     {
      "anomes": "202309",
-     "score": 31.2
+     "score": 31.8
     },
     {
      "anomes": "202312",
-     "score": 31.7
+     "score": 32.2
     },
     {
      "anomes": "202403",
-     "score": 38.0
+     "score": 38.6
     },
     {
      "anomes": "202406",
-     "score": 41.5
+     "score": 41.8
     },
     {
      "anomes": "202409",
-     "score": 43.3
+     "score": 43.6
     },
     {
      "anomes": "202412",
-     "score": 29.7
+     "score": 29.8
     },
     {
      "anomes": "202503",
-     "score": 39.4
+     "score": 39.6
     },
     {
      "anomes": "202506",
-     "score": 32.8
+     "score": 33.0
     },
     {
      "anomes": "202509",
@@ -6186,35 +6186,35 @@
     },
     {
      "anomes": "201903",
-     "score": 66.2
+     "score": 66.5
     },
     {
      "anomes": "201906",
-     "score": 67.7
+     "score": 68.1
     },
     {
      "anomes": "201909",
-     "score": 69.8
+     "score": 70.1
     },
     {
      "anomes": "201912",
-     "score": 70.6
+     "score": 70.5
     },
     {
      "anomes": "202003",
-     "score": 72.4
+     "score": 72.3
     },
     {
      "anomes": "202006",
-     "score": 68.4
+     "score": 68.7
     },
     {
      "anomes": "202009",
-     "score": 64.2
+     "score": 64.9
     },
     {
      "anomes": "202012",
-     "score": 67.3
+     "score": 67.2
     },
     {
      "anomes": "202103",
@@ -6222,35 +6222,35 @@
     },
     {
      "anomes": "202106",
-     "score": 52.1
+     "score": 52.6
     },
     {
      "anomes": "202109",
-     "score": 60.6
+     "score": 61.2
     },
     {
      "anomes": "202112",
-     "score": 62.1
+     "score": 61.9
     },
     {
      "anomes": "202203",
-     "score": 61.4
+     "score": 61.1
     },
     {
      "anomes": "202206",
-     "score": 57.7
+     "score": 57.9
     },
     {
      "anomes": "202209",
-     "score": 46.9
+     "score": 47.8
     },
     {
      "anomes": "202212",
-     "score": 32.1
+     "score": 32.2
     },
     {
      "anomes": "202303",
-     "score": 28.1
+     "score": 28.2
     },
     {
      "anomes": "202306",
@@ -6266,11 +6266,11 @@
     },
     {
      "anomes": "202403",
-     "score": 23.7
+     "score": 23.6
     },
     {
      "anomes": "202406",
-     "score": 23.6
+     "score": 23.7
     },
     {
      "anomes": "202409",
@@ -6515,11 +6515,11 @@
     },
     {
      "anomes": "201903",
-     "score": 57.0
+     "score": 57.5
     },
     {
      "anomes": "201906",
-     "score": 57.3
+     "score": 57.9
     },
     {
      "anomes": "201909",
@@ -6531,35 +6531,35 @@
     },
     {
      "anomes": "202003",
-     "score": 55.7
+     "score": 55.8
     },
     {
      "anomes": "202006",
-     "score": 57.5
+     "score": 58.0
     },
     {
      "anomes": "202009",
-     "score": 51.7
+     "score": 52.2
     },
     {
      "anomes": "202012",
-     "score": 51.7
+     "score": 52.1
     },
     {
      "anomes": "202103",
-     "score": 51.7
+     "score": 52.1
     },
     {
      "anomes": "202106",
-     "score": 45.7
+     "score": 46.0
     },
     {
      "anomes": "202109",
-     "score": 45.8
+     "score": 46.1
     },
     {
      "anomes": "202112",
-     "score": 47.0
+     "score": 46.9
     },
     {
      "anomes": "202203",
@@ -6567,19 +6567,19 @@
     },
     {
      "anomes": "202206",
-     "score": 50.0
+     "score": 50.4
     },
     {
      "anomes": "202209",
-     "score": 52.6
+     "score": 53.1
     },
     {
      "anomes": "202212",
-     "score": 54.9
+     "score": 55.0
     },
     {
      "anomes": "202303",
-     "score": 51.8
+     "score": 51.9
     },
     {
      "anomes": "202306",
@@ -6587,7 +6587,7 @@
     },
     {
      "anomes": "202309",
-     "score": 52.2
+     "score": 52.7
     },
     {
      "anomes": "202312",
@@ -6595,27 +6595,27 @@
     },
     {
      "anomes": "202403",
-     "score": 56.2
+     "score": 56.4
     },
     {
      "anomes": "202406",
-     "score": 56.7
+     "score": 56.8
     },
     {
      "anomes": "202409",
-     "score": 55.8
+     "score": 55.9
     },
     {
      "anomes": "202412",
-     "score": 53.0
+     "score": 53.1
     },
     {
      "anomes": "202503",
-     "score": 56.3
+     "score": 56.6
     },
     {
      "anomes": "202506",
-     "score": 52.9
+     "score": 53.3
     },
     {
      "anomes": "202509",
@@ -6857,91 +6857,91 @@
     },
     {
      "anomes": "201903",
-     "score": 48.6
+     "score": 49.0
     },
     {
      "anomes": "201906",
-     "score": 50.5
+     "score": 51.0
     },
     {
      "anomes": "201909",
-     "score": 50.9
+     "score": 51.4
     },
     {
      "anomes": "201912",
-     "score": 54.8
+     "score": 55.4
     },
     {
      "anomes": "202003",
-     "score": 48.2
+     "score": 48.7
     },
     {
      "anomes": "202006",
-     "score": 47.8
+     "score": 48.2
     },
     {
      "anomes": "202009",
-     "score": 52.1
+     "score": 52.6
     },
     {
      "anomes": "202012",
-     "score": 56.4
+     "score": 56.9
     },
     {
      "anomes": "202103",
-     "score": 52.1
+     "score": 52.6
     },
     {
      "anomes": "202106",
-     "score": 53.9
+     "score": 54.4
     },
     {
      "anomes": "202109",
-     "score": 51.7
+     "score": 52.1
     },
     {
      "anomes": "202112",
-     "score": 54.3
+     "score": 54.4
     },
     {
      "anomes": "202203",
-     "score": 57.5
+     "score": 57.6
     },
     {
      "anomes": "202206",
-     "score": 55.6
+     "score": 56.1
     },
     {
      "anomes": "202209",
-     "score": 57.4
+     "score": 58.0
     },
     {
      "anomes": "202212",
-     "score": 56.2
+     "score": 56.8
     },
     {
      "anomes": "202303",
-     "score": 53.1
+     "score": 53.2
     },
     {
      "anomes": "202306",
-     "score": 57.5
+     "score": 57.6
     },
     {
      "anomes": "202309",
-     "score": 54.0
+     "score": 54.5
     },
     {
      "anomes": "202312",
-     "score": 56.2
+     "score": 56.8
     },
     {
      "anomes": "202403",
-     "score": 55.8
+     "score": 56.4
     },
     {
      "anomes": "202406",
-     "score": 54.0
+     "score": 54.5
     },
     {
      "anomes": "202409",
@@ -6949,15 +6949,15 @@
     },
     {
      "anomes": "202412",
-     "score": 53.9
+     "score": 54.0
     },
     {
      "anomes": "202503",
-     "score": 61.9
+     "score": 62.3
     },
     {
      "anomes": "202506",
-     "score": 61.7
+     "score": 61.8
     },
     {
      "anomes": "202509",
@@ -7198,59 +7198,59 @@
     },
     {
      "anomes": "202212",
-     "score": 30.9
+     "score": 33.0
     },
     {
      "anomes": "202303",
-     "score": 29.8
+     "score": 31.8
     },
     {
      "anomes": "202306",
-     "score": 29.0
-    },
-    {
-     "anomes": "202309",
-     "score": 30.0
-    },
-    {
-     "anomes": "202312",
-     "score": 53.6
-    },
-    {
-     "anomes": "202403",
      "score": 31.2
     },
     {
+     "anomes": "202309",
+     "score": 32.1
+    },
+    {
+     "anomes": "202312",
+     "score": 55.7
+    },
+    {
+     "anomes": "202403",
+     "score": 33.3
+    },
+    {
      "anomes": "202406",
-     "score": 27.5
+     "score": 29.8
     },
     {
      "anomes": "202409",
-     "score": 32.5
+     "score": 35.7
     },
     {
      "anomes": "202412",
-     "score": 32.9
+     "score": 36.2
     },
     {
      "anomes": "202503",
-     "score": 59.0
+     "score": 60.8
     },
     {
      "anomes": "202506",
-     "score": 61.4
+     "score": 63.0
     },
     {
      "anomes": "202509",
-     "score": 57.1
+     "score": 59.1
     },
     {
      "anomes": "202512",
-     "score": 68.6
+     "score": 69.9
     },
     {
      "anomes": "202603",
-     "score": 72.5
+     "score": 73.6
     }
    ],
    "vulnerabilidade": {
@@ -7283,50 +7283,50 @@
    "carteira_brl": 19992075310.69,
    "pl_brl": 3078705076.06,
    "lucro_brl": -87228121.6600001,
-   "score": 72.5,
-   "score_anterior": 68.6,
-   "score_delta": 3.9,
+   "score": 73.6,
+   "score_anterior": 69.9,
+   "score_delta": 3.7,
    "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 12.26,
      "percentil_pares": 0.0,
      "risco": 100.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": -2.83,
      "percentil_pares": 0.0,
      "risco": 100.0,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 31.14,
-     "percentil_pares": 91.3,
-     "risco": 91.3,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 91.7,
+     "risco": 91.7,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 20.85,
-     "percentil_pares": 26.1,
-     "risco": 26.1,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 29.2,
+     "risco": 29.2,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 54.05,
-     "percentil_pares": 17.4,
-     "risco": 17.4,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 20.8,
+     "risco": 20.8,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 5158,
@@ -7488,59 +7488,59 @@
     },
     {
      "anomes": "202212",
-     "score": 33.3
+     "score": 34.1
     },
     {
      "anomes": "202303",
-     "score": 27.4
+     "score": 28.4
     },
     {
      "anomes": "202306",
-     "score": 22.4
+     "score": 23.8
     },
     {
      "anomes": "202309",
-     "score": 35.0
+     "score": 35.7
     },
     {
      "anomes": "202312",
-     "score": 38.1
+     "score": 39.8
     },
     {
      "anomes": "202403",
-     "score": 30.0
+     "score": 32.1
     },
     {
      "anomes": "202406",
-     "score": 35.0
+     "score": 36.9
     },
     {
      "anomes": "202409",
-     "score": 22.5
+     "score": 25.0
     },
     {
      "anomes": "202412",
-     "score": 46.1
+     "score": 47.5
     },
     {
      "anomes": "202503",
-     "score": 30.4
+     "score": 32.9
     },
     {
      "anomes": "202506",
-     "score": 30.2
+     "score": 32.5
     },
     {
      "anomes": "202509",
-     "score": 40.9
+     "score": 42.7
     },
     {
      "anomes": "202512",
-     "score": 47.6
+     "score": 48.9
     },
     {
      "anomes": "202603",
-     "score": 34.3
+     "score": 35.4
     }
    ],
    "vulnerabilidade": {
@@ -7573,50 +7573,50 @@
    "carteira_brl": 0.0,
    "pl_brl": 3318488035.05,
    "lucro_brl": 999066599.97,
-   "score": 34.3,
-   "score_anterior": 47.6,
-   "score_delta": -13.3,
+   "score": 35.4,
+   "score_anterior": 48.9,
+   "score_delta": -13.5,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 14.37,
-     "percentil_pares": 20.0,
-     "risco": 80.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 19.0,
+     "risco": 81.0,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 30.11,
      "percentil_pares": 100.0,
      "risco": 0.0,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 25.77,
-     "percentil_pares": 82.6,
-     "risco": 82.6,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 83.3,
+     "risco": 83.3,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.0,
      "percentil_pares": 0.0,
      "risco": 0.0,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 36.49,
-     "percentil_pares": 8.7,
-     "risco": 8.7,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -8339,59 +8339,59 @@
     },
     {
      "anomes": "202212",
-     "score": 15.5
+     "score": 17.0
     },
     {
      "anomes": "202303",
-     "score": 15.5
+     "score": 18.1
     },
     {
      "anomes": "202306",
-     "score": 21.1
+     "score": 23.8
     },
     {
      "anomes": "202309",
-     "score": 21.2
+     "score": 22.6
     },
     {
      "anomes": "202312",
-     "score": 21.4
+     "score": 23.9
     },
     {
      "anomes": "202403",
-     "score": 18.8
+     "score": 21.4
     },
     {
      "anomes": "202406",
-     "score": 25.0
+     "score": 27.4
     },
     {
      "anomes": "202409",
-     "score": 28.8
+     "score": 30.9
     },
     {
      "anomes": "202412",
-     "score": 30.3
+     "score": 32.5
     },
     {
      "anomes": "202503",
-     "score": 27.0
+     "score": 29.7
     },
     {
      "anomes": "202506",
-     "score": 28.2
+     "score": 30.6
     },
     {
      "anomes": "202509",
-     "score": 28.9
+     "score": 31.3
     },
     {
      "anomes": "202512",
-     "score": 29.2
+     "score": 32.1
     },
     {
      "anomes": "202603",
-     "score": 46.6
+     "score": 48.8
     }
    ],
    "vulnerabilidade": {
@@ -8424,50 +8424,50 @@
    "carteira_brl": 666000403.71,
    "pl_brl": 5795354990.46,
    "lucro_brl": 231210787.76,
-   "score": 46.6,
-   "score_anterior": 29.2,
-   "score_delta": 17.4,
+   "score": 48.8,
+   "score_anterior": 32.1,
+   "score_delta": 16.7,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 14.19,
-     "percentil_pares": 15.0,
-     "risco": 85.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 14.3,
+     "risco": 85.7,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 3.99,
-     "percentil_pares": 69.6,
-     "risco": 30.4,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 66.7,
+     "risco": 33.3,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 12.49,
-     "percentil_pares": 60.9,
-     "risco": 60.9,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.92,
-     "percentil_pares": 21.7,
-     "risco": 21.7,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 63.42,
-     "percentil_pares": 34.8,
-     "risco": 34.8,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -8629,11 +8629,11 @@
     },
     {
      "anomes": "201903",
-     "score": 47.7
+     "score": 48.1
     },
     {
      "anomes": "201906",
-     "score": 45.5
+     "score": 45.8
     },
     {
      "anomes": "201909",
@@ -8641,7 +8641,7 @@
     },
     {
      "anomes": "201912",
-     "score": 51.3
+     "score": 51.4
     },
     {
      "anomes": "202003",
@@ -8649,31 +8649,31 @@
     },
     {
      "anomes": "202006",
-     "score": 53.5
+     "score": 54.0
     },
     {
      "anomes": "202009",
-     "score": 53.5
+     "score": 54.4
     },
     {
      "anomes": "202012",
-     "score": 54.2
+     "score": 54.8
     },
     {
      "anomes": "202103",
-     "score": 50.9
+     "score": 51.3
     },
     {
      "anomes": "202106",
-     "score": 49.6
-    },
-    {
-     "anomes": "202109",
      "score": 50.0
     },
     {
+     "anomes": "202109",
+     "score": 50.9
+    },
+    {
      "anomes": "202112",
-     "score": 53.0
+     "score": 53.1
     },
     {
      "anomes": "202203",
@@ -8681,55 +8681,55 @@
     },
     {
      "anomes": "202206",
-     "score": 45.7
+     "score": 46.5
     },
     {
      "anomes": "202209",
-     "score": 45.2
+     "score": 46.0
     },
     {
      "anomes": "202212",
-     "score": 42.0
+     "score": 42.3
     },
     {
      "anomes": "202303",
-     "score": 42.0
+     "score": 42.2
     },
     {
      "anomes": "202306",
-     "score": 45.6
+     "score": 45.5
     },
     {
      "anomes": "202309",
-     "score": 42.9
+     "score": 43.6
     },
     {
      "anomes": "202312",
-     "score": 43.8
+     "score": 44.1
     },
     {
      "anomes": "202403",
-     "score": 39.8
+     "score": 40.5
     },
     {
      "anomes": "202406",
-     "score": 42.4
+     "score": 42.7
     },
     {
      "anomes": "202409",
-     "score": 40.6
+     "score": 40.9
     },
     {
      "anomes": "202412",
-     "score": 41.4
+     "score": 41.7
     },
     {
      "anomes": "202503",
-     "score": 40.1
+     "score": 40.2
     },
     {
      "anomes": "202506",
-     "score": 38.0
+     "score": 38.2
     },
     {
      "anomes": "202509",
@@ -8991,51 +8991,51 @@
     },
     {
      "anomes": "201903",
-     "score": 50.5
+     "score": 50.9
     },
     {
      "anomes": "201906",
-     "score": 45.0
+     "score": 45.4
     },
     {
      "anomes": "201909",
-     "score": 52.2
+     "score": 52.7
     },
     {
      "anomes": "201912",
-     "score": 33.3
+     "score": 33.5
     },
     {
      "anomes": "202003",
-     "score": 39.9
+     "score": 40.2
     },
     {
      "anomes": "202006",
-     "score": 35.5
+     "score": 35.7
     },
     {
      "anomes": "202009",
-     "score": 44.0
+     "score": 44.8
     },
     {
      "anomes": "202012",
-     "score": 34.3
+     "score": 34.5
     },
     {
      "anomes": "202103",
-     "score": 31.8
+     "score": 32.3
     },
     {
      "anomes": "202106",
-     "score": 28.4
+     "score": 29.0
     },
     {
      "anomes": "202109",
-     "score": 30.9
+     "score": 31.5
     },
     {
      "anomes": "202112",
-     "score": 27.6
+     "score": 27.2
     },
     {
      "anomes": "202203",
@@ -9043,11 +9043,11 @@
     },
     {
      "anomes": "202206",
-     "score": 27.6
+     "score": 28.1
     },
     {
      "anomes": "202209",
-     "score": 27.2
+     "score": 27.7
     },
     {
      "anomes": "202212",
@@ -9059,39 +9059,39 @@
     },
     {
      "anomes": "202306",
-     "score": 30.3
-    },
-    {
-     "anomes": "202309",
-     "score": 31.7
-    },
-    {
-     "anomes": "202312",
      "score": 29.9
     },
     {
+     "anomes": "202309",
+     "score": 31.8
+    },
+    {
+     "anomes": "202312",
+     "score": 30.0
+    },
+    {
      "anomes": "202403",
-     "score": 37.0
+     "score": 37.2
     },
     {
      "anomes": "202406",
-     "score": 35.7
+     "score": 35.5
     },
     {
      "anomes": "202409",
-     "score": 34.4
+     "score": 34.1
     },
     {
      "anomes": "202412",
-     "score": 37.5
+     "score": 37.3
     },
     {
      "anomes": "202503",
-     "score": 41.2
+     "score": 41.5
     },
     {
      "anomes": "202506",
-     "score": 41.9
+     "score": 42.2
     },
     {
      "anomes": "202509",
@@ -9349,15 +9349,15 @@
     },
     {
      "anomes": "201903",
-     "score": 44.9
+     "score": 45.3
     },
     {
      "anomes": "201906",
-     "score": 45.5
+     "score": 45.8
     },
     {
      "anomes": "201909",
-     "score": 47.4
+     "score": 47.8
     },
     {
      "anomes": "201912",
@@ -9365,15 +9365,15 @@
     },
     {
      "anomes": "202003",
-     "score": 63.6
+     "score": 63.8
     },
     {
      "anomes": "202006",
-     "score": 59.6
+     "score": 59.8
     },
     {
      "anomes": "202009",
-     "score": 49.5
+     "score": 50.0
     },
     {
      "anomes": "202012",
@@ -9381,71 +9381,71 @@
     },
     {
      "anomes": "202103",
-     "score": 48.3
+     "score": 48.7
     },
     {
      "anomes": "202106",
-     "score": 51.7
+     "score": 52.2
     },
     {
      "anomes": "202109",
-     "score": 64.0
+     "score": 64.7
     },
     {
      "anomes": "202112",
-     "score": 65.5
+     "score": 65.8
     },
     {
      "anomes": "202203",
-     "score": 70.2
+     "score": 70.5
     },
     {
      "anomes": "202206",
-     "score": 72.0
+     "score": 72.4
     },
     {
      "anomes": "202209",
-     "score": 65.4
+     "score": 66.1
     },
     {
      "anomes": "202212",
-     "score": 68.3
+     "score": 68.6
     },
     {
      "anomes": "202303",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202306",
-     "score": 67.1
+     "score": 67.4
     },
     {
      "anomes": "202309",
-     "score": 80.8
+     "score": 81.4
     },
     {
      "anomes": "202312",
-     "score": 78.1
+     "score": 78.6
     },
     {
      "anomes": "202403",
-     "score": 72.3
+     "score": 72.7
     },
     {
      "anomes": "202406",
-     "score": 68.3
+     "score": 68.7
     },
     {
      "anomes": "202409",
-     "score": 74.1
+     "score": 74.5
     },
     {
      "anomes": "202412",
-     "score": 65.5
+     "score": 65.4
     },
     {
      "anomes": "202503",
-     "score": 58.9
+     "score": 59.3
     },
     {
      "anomes": "202509",
@@ -9699,23 +9699,23 @@
     },
     {
      "anomes": "201903",
-     "score": 53.7
+     "score": 54.2
     },
     {
      "anomes": "201906",
-     "score": 56.8
+     "score": 57.4
     },
     {
      "anomes": "201909",
-     "score": 61.8
+     "score": 62.0
     },
     {
      "anomes": "201912",
-     "score": 65.8
+     "score": 66.0
     },
     {
      "anomes": "202003",
-     "score": 61.4
+     "score": 61.6
     },
     {
      "anomes": "202006",
@@ -9723,27 +9723,27 @@
     },
     {
      "anomes": "202009",
-     "score": 57.3
+     "score": 58.3
     },
     {
      "anomes": "202012",
-     "score": 55.9
+     "score": 56.5
     },
     {
      "anomes": "202103",
-     "score": 53.8
+     "score": 54.3
     },
     {
      "anomes": "202106",
-     "score": 51.7
+     "score": 52.2
     },
     {
      "anomes": "202109",
-     "score": 46.2
+     "score": 46.5
     },
     {
      "anomes": "202112",
-     "score": 45.3
+     "score": 45.2
     },
     {
      "anomes": "202203",
@@ -9755,23 +9755,23 @@
     },
     {
      "anomes": "202209",
-     "score": 43.5
-    },
-    {
-     "anomes": "202212",
      "score": 43.8
     },
     {
+     "anomes": "202212",
+     "score": 43.6
+    },
+    {
      "anomes": "202303",
-     "score": 42.9
+     "score": 42.7
     },
     {
      "anomes": "202306",
-     "score": 44.8
+     "score": 44.6
     },
     {
      "anomes": "202309",
-     "score": 44.2
+     "score": 44.6
     },
     {
      "anomes": "202312",
@@ -9779,23 +9779,23 @@
     },
     {
      "anomes": "202403",
-     "score": 49.1
+     "score": 49.5
     },
     {
      "anomes": "202406",
-     "score": 59.8
+     "score": 60.0
     },
     {
      "anomes": "202409",
-     "score": 56.7
+     "score": 56.8
     },
     {
      "anomes": "202412",
-     "score": 63.4
+     "score": 63.6
     },
     {
      "anomes": "202503",
-     "score": 69.4
+     "score": 69.5
     },
     {
      "anomes": "202506",
@@ -9997,35 +9997,35 @@
    "historico_score": [
     {
      "anomes": "202309",
-     "score": 55.8
+     "score": 56.4
     },
     {
      "anomes": "202312",
-     "score": 58.9
+     "score": 59.1
     },
     {
      "anomes": "202403",
-     "score": 57.6
+     "score": 57.7
     },
     {
      "anomes": "202406",
-     "score": 59.8
+     "score": 60.0
     },
     {
      "anomes": "202409",
-     "score": 61.1
+     "score": 61.4
     },
     {
      "anomes": "202412",
-     "score": 59.5
+     "score": 59.6
     },
     {
      "anomes": "202503",
-     "score": 50.9
+     "score": 51.6
     },
     {
      "anomes": "202506",
-     "score": 56.8
+     "score": 57.0
     },
     {
      "anomes": "202509",
@@ -10187,31 +10187,31 @@
    "historico_score": [
     {
      "anomes": "202109",
-     "score": 77.9
+     "score": 78.5
     },
     {
      "anomes": "202112",
-     "score": 72.8
+     "score": 73.2
     },
     {
      "anomes": "202203",
-     "score": 59.2
+     "score": 59.4
     },
     {
      "anomes": "202206",
-     "score": 66.8
+     "score": 67.1
     },
     {
      "anomes": "202209",
-     "score": 61.4
+     "score": 62.0
     },
     {
      "anomes": "202212",
-     "score": 60.2
+     "score": 60.5
     },
     {
      "anomes": "202303",
-     "score": 51.3
+     "score": 51.8
     },
     {
      "anomes": "202306",
@@ -10219,35 +10219,35 @@
     },
     {
      "anomes": "202309",
-     "score": 53.5
+     "score": 54.1
     },
     {
      "anomes": "202312",
-     "score": 54.0
+     "score": 54.5
     },
     {
      "anomes": "202403",
-     "score": 54.4
+     "score": 55.0
     },
     {
      "anomes": "202406",
-     "score": 53.1
+     "score": 53.6
     },
     {
      "anomes": "202409",
-     "score": 52.6
+     "score": 53.2
     },
     {
      "anomes": "202412",
-     "score": 45.7
+     "score": 46.0
     },
     {
      "anomes": "202503",
-     "score": 52.8
+     "score": 53.1
     },
     {
      "anomes": "202506",
-     "score": 53.3
+     "score": 53.7
     },
     {
      "anomes": "202509",
@@ -10501,11 +10501,11 @@
     },
     {
      "anomes": "201903",
-     "score": 43.5
+     "score": 43.9
     },
     {
      "anomes": "201906",
-     "score": 47.7
+     "score": 48.1
     },
     {
      "anomes": "201909",
@@ -10517,7 +10517,7 @@
     },
     {
      "anomes": "202003",
-     "score": 45.6
+     "score": 45.5
     },
     {
      "anomes": "202006",
@@ -10525,67 +10525,67 @@
     },
     {
      "anomes": "202009",
-     "score": 46.5
+     "score": 47.4
     },
     {
      "anomes": "202012",
-     "score": 46.1
+     "score": 46.5
     },
     {
      "anomes": "202103",
-     "score": 47.9
+     "score": 48.2
     },
     {
      "anomes": "202106",
-     "score": 52.6
+     "score": 53.1
     },
     {
      "anomes": "202109",
-     "score": 55.5
+     "score": 56.5
     },
     {
      "anomes": "202112",
-     "score": 58.2
-    },
-    {
-     "anomes": "202203",
      "score": 58.4
     },
     {
+     "anomes": "202203",
+     "score": 58.5
+    },
+    {
      "anomes": "202206",
-     "score": 60.8
+     "score": 61.4
     },
     {
      "anomes": "202209",
-     "score": 61.0
-    },
-    {
-     "anomes": "202212",
-     "score": 60.7
-    },
-    {
-     "anomes": "202303",
-     "score": 62.0
-    },
-    {
-     "anomes": "202306",
-     "score": 66.7
-    },
-    {
-     "anomes": "202309",
-     "score": 59.4
-    },
-    {
-     "anomes": "202312",
      "score": 62.1
     },
     {
+     "anomes": "202212",
+     "score": 60.9
+    },
+    {
+     "anomes": "202303",
+     "score": 62.3
+    },
+    {
+     "anomes": "202306",
+     "score": 67.0
+    },
+    {
+     "anomes": "202309",
+     "score": 60.0
+    },
+    {
+     "anomes": "202312",
+     "score": 62.3
+    },
+    {
      "anomes": "202403",
-     "score": 60.2
+     "score": 60.5
     },
     {
      "anomes": "202406",
-     "score": 53.6
+     "score": 53.7
     },
     {
      "anomes": "202409",
@@ -10593,15 +10593,15 @@
     },
     {
      "anomes": "202412",
-     "score": 57.7
+     "score": 57.9
     },
     {
      "anomes": "202503",
-     "score": 62.4
+     "score": 62.8
     },
     {
      "anomes": "202506",
-     "score": 58.5
+     "score": 58.9
     },
     {
      "anomes": "202509",
@@ -10706,55 +10706,55 @@
    "historico_score": [
     {
      "anomes": "202303",
-     "score": 76.2
+     "score": 77.3
     },
     {
      "anomes": "202306",
-     "score": 71.0
+     "score": 72.5
     },
     {
      "anomes": "202309",
-     "score": 83.8
+     "score": 84.5
     },
     {
      "anomes": "202312",
-     "score": 83.3
+     "score": 84.1
     },
     {
      "anomes": "202403",
-     "score": 88.8
+     "score": 89.3
     },
     {
      "anomes": "202406",
-     "score": 83.8
+     "score": 84.5
     },
     {
      "anomes": "202409",
-     "score": 80.0
+     "score": 80.9
     },
     {
      "anomes": "202412",
-     "score": 88.2
+     "score": 88.8
     },
     {
      "anomes": "202503",
-     "score": 95.0
+     "score": 95.2
     },
     {
      "anomes": "202506",
-     "score": 90.9
+     "score": 91.3
     },
     {
      "anomes": "202509",
-     "score": 96.4
+     "score": 96.6
     },
     {
      "anomes": "202512",
-     "score": 92.7
+     "score": 93.0
     },
     {
      "anomes": "202603",
-     "score": 87.0
+     "score": 87.5
     }
    ],
    "vulnerabilidade": null,
@@ -10770,42 +10770,42 @@
    "carteira_brl": 45931485358.11,
    "pl_brl": 1439957755.24,
    "lucro_brl": 36264108.4199996,
-   "score": 87.0,
-   "score_anterior": 92.7,
-   "score_delta": -5.7,
+   "score": 87.5,
+   "score_anterior": 93.0,
+   "score_delta": -5.5,
    "faixa": "risco muito elevado",
    "dimensoes": {
     "rentabilidade": {
      "valor": 2.52,
-     "percentil_pares": 43.5,
-     "risco": 56.5,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 41.7,
+     "risco": 58.3,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 35.02,
      "percentil_pares": 100.0,
      "risco": 100.0,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 91.09,
-     "percentil_pares": 91.3,
-     "risco": 91.3,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 91.7,
+     "risco": 91.7,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 96.61,
      "percentil_pares": 100.0,
      "risco": 100.0,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -10949,31 +10949,31 @@
     },
     {
      "anomes": "201903",
-     "score": 30.6
+     "score": 31.1
     },
     {
      "anomes": "201906",
-     "score": 35.5
+     "score": 36.1
     },
     {
      "anomes": "201909",
-     "score": 28.5
+     "score": 29.0
     },
     {
      "anomes": "201912",
-     "score": 28.5
+     "score": 28.6
     },
     {
      "anomes": "202003",
-     "score": 43.9
+     "score": 44.2
     },
     {
      "anomes": "202006",
-     "score": 39.9
+     "score": 40.2
     },
     {
      "anomes": "202009",
-     "score": 28.4
+     "score": 28.9
     },
     {
      "anomes": "202012",
@@ -10981,15 +10981,15 @@
     },
     {
      "anomes": "202103",
-     "score": 33.5
+     "score": 34.0
     },
     {
      "anomes": "202106",
-     "score": 33.6
+     "score": 33.8
     },
     {
      "anomes": "202109",
-     "score": 31.0
+     "score": 31.5
     },
     {
      "anomes": "202112",
@@ -10997,23 +10997,23 @@
     },
     {
      "anomes": "202203",
-     "score": 22.8
-    },
-    {
-     "anomes": "202206",
-     "score": 25.0
-    },
-    {
-     "anomes": "202209",
-     "score": 24.1
-    },
-    {
-     "anomes": "202212",
      "score": 23.2
     },
     {
+     "anomes": "202206",
+     "score": 25.4
+    },
+    {
+     "anomes": "202209",
+     "score": 24.6
+    },
+    {
+     "anomes": "202212",
+     "score": 23.6
+    },
+    {
      "anomes": "202303",
-     "score": 21.0
+     "score": 21.4
     },
     {
      "anomes": "202306",
@@ -11021,23 +11021,23 @@
     },
     {
      "anomes": "202309",
-     "score": 22.3
+     "score": 22.8
     },
     {
      "anomes": "202312",
-     "score": 25.9
+     "score": 26.4
     },
     {
      "anomes": "202403",
-     "score": 26.3
+     "score": 26.8
     },
     {
      "anomes": "202406",
-     "score": 30.8
+     "score": 30.9
     },
     {
      "anomes": "202409",
-     "score": 23.2
+     "score": 23.7
     },
     {
      "anomes": "202412",
@@ -11045,11 +11045,11 @@
     },
     {
      "anomes": "202503",
-     "score": 28.5
+     "score": 28.9
     },
     {
      "anomes": "202506",
-     "score": 25.9
+     "score": 26.4
     },
     {
      "anomes": "202509",
@@ -11241,15 +11241,15 @@
    "historico_score": [
     {
      "anomes": "202412",
-     "score": 59.0
+     "score": 59.2
     },
     {
      "anomes": "202503",
-     "score": 83.1
+     "score": 83.2
     },
     {
      "anomes": "202506",
-     "score": 84.3
+     "score": 84.4
     },
     {
      "anomes": "202509",
@@ -11432,7 +11432,7 @@
     },
     {
      "anomes": "201912",
-     "score": 22.4
+     "score": 22.3
     },
     {
      "anomes": "202003",
@@ -11444,11 +11444,11 @@
     },
     {
      "anomes": "202009",
-     "score": 18.1
+     "score": 18.4
     },
     {
      "anomes": "202012",
-     "score": 20.4
+     "score": 20.2
     },
     {
      "anomes": "202103",
@@ -11460,11 +11460,11 @@
     },
     {
      "anomes": "202109",
-     "score": 20.8
+     "score": 21.1
     },
     {
      "anomes": "202112",
-     "score": 22.0
+     "score": 21.9
     },
     {
      "anomes": "202203",
@@ -11484,15 +11484,15 @@
     },
     {
      "anomes": "202303",
-     "score": 21.9
+     "score": 21.8
     },
     {
      "anomes": "202306",
-     "score": 21.5
+     "score": 21.4
     },
     {
      "anomes": "202309",
-     "score": 22.3
+     "score": 22.7
     },
     {
      "anomes": "202312",
@@ -11774,103 +11774,103 @@
     },
     {
      "anomes": "201903",
-     "score": 57.0
+     "score": 57.5
     },
     {
      "anomes": "201906",
-     "score": 56.3
-    },
-    {
-     "anomes": "201909",
-     "score": 57.9
-    },
-    {
-     "anomes": "201912",
      "score": 57.0
     },
     {
+     "anomes": "201909",
+     "score": 58.1
+    },
+    {
+     "anomes": "201912",
+     "score": 57.2
+    },
+    {
      "anomes": "202003",
-     "score": 48.7
+     "score": 48.6
     },
     {
      "anomes": "202006",
-     "score": 49.1
+     "score": 49.5
     },
     {
      "anomes": "202009",
-     "score": 56.9
+     "score": 57.9
     },
     {
      "anomes": "202012",
-     "score": 55.9
+     "score": 56.0
     },
     {
      "anomes": "202103",
-     "score": 52.1
+     "score": 52.6
     },
     {
      "anomes": "202106",
-     "score": 54.7
+     "score": 55.2
     },
     {
      "anomes": "202109",
-     "score": 56.8
+     "score": 57.3
     },
     {
      "anomes": "202112",
-     "score": 59.9
+     "score": 60.1
     },
     {
      "anomes": "202203",
-     "score": 56.1
+     "score": 56.3
     },
     {
      "anomes": "202206",
-     "score": 55.1
+     "score": 55.7
     },
     {
      "anomes": "202209",
-     "score": 58.3
+     "score": 59.0
     },
     {
      "anomes": "202212",
-     "score": 54.9
+     "score": 55.0
     },
     {
      "anomes": "202303",
-     "score": 51.4
-    },
-    {
-     "anomes": "202306",
-     "score": 53.5
-    },
-    {
-     "anomes": "202309",
-     "score": 52.7
-    },
-    {
-     "anomes": "202312",
-     "score": 51.4
-    },
-    {
-     "anomes": "202403",
-     "score": 52.2
-    },
-    {
-     "anomes": "202406",
      "score": 51.8
     },
     {
+     "anomes": "202306",
+     "score": 53.6
+    },
+    {
+     "anomes": "202309",
+     "score": 53.2
+    },
+    {
+     "anomes": "202312",
+     "score": 51.9
+    },
+    {
+     "anomes": "202403",
+     "score": 52.8
+    },
+    {
+     "anomes": "202406",
+     "score": 52.3
+    },
+    {
      "anomes": "202409",
-     "score": 52.2
+     "score": 52.8
     },
     {
      "anomes": "202412",
-     "score": 53.0
+     "score": 53.5
     },
     {
      "anomes": "202503",
-     "score": 54.5
+     "score": 54.7
     },
     {
      "anomes": "202506",
@@ -12128,103 +12128,103 @@
     },
     {
      "anomes": "201903",
-     "score": 59.2
+     "score": 59.9
     },
     {
      "anomes": "201906",
-     "score": 60.0
-    },
-    {
-     "anomes": "201909",
-     "score": 59.6
-    },
-    {
-     "anomes": "201912",
-     "score": 64.5
-    },
-    {
-     "anomes": "202003",
-     "score": 57.5
-    },
-    {
-     "anomes": "202006",
-     "score": 57.9
-    },
-    {
-     "anomes": "202009",
-     "score": 64.7
-    },
-    {
-     "anomes": "202012",
-     "score": 63.1
-    },
-    {
-     "anomes": "202103",
-     "score": 61.0
-    },
-    {
-     "anomes": "202106",
-     "score": 63.8
-    },
-    {
-     "anomes": "202109",
-     "score": 64.4
-    },
-    {
-     "anomes": "202112",
-     "score": 63.8
-    },
-    {
-     "anomes": "202203",
-     "score": 57.9
-    },
-    {
-     "anomes": "202206",
-     "score": 57.3
-    },
-    {
-     "anomes": "202209",
-     "score": 60.1
-    },
-    {
-     "anomes": "202212",
-     "score": 62.0
-    },
-    {
-     "anomes": "202303",
-     "score": 60.3
-    },
-    {
-     "anomes": "202306",
-     "score": 57.9
-    },
-    {
-     "anomes": "202309",
-     "score": 58.5
-    },
-    {
-     "anomes": "202312",
-     "score": 61.6
-    },
-    {
-     "anomes": "202403",
-     "score": 63.8
-    },
-    {
-     "anomes": "202406",
      "score": 60.2
     },
     {
-     "anomes": "202409",
-     "score": 61.1
+     "anomes": "201909",
+     "score": 60.2
     },
     {
-     "anomes": "202412",
+     "anomes": "201912",
+     "score": 64.7
+    },
+    {
+     "anomes": "202003",
+     "score": 57.6
+    },
+    {
+     "anomes": "202006",
+     "score": 58.0
+    },
+    {
+     "anomes": "202009",
+     "score": 64.9
+    },
+    {
+     "anomes": "202012",
+     "score": 62.9
+    },
+    {
+     "anomes": "202103",
+     "score": 60.8
+    },
+    {
+     "anomes": "202106",
+     "score": 63.6
+    },
+    {
+     "anomes": "202109",
+     "score": 64.7
+    },
+    {
+     "anomes": "202112",
+     "score": 63.6
+    },
+    {
+     "anomes": "202203",
+     "score": 58.0
+    },
+    {
+     "anomes": "202206",
+     "score": 57.5
+    },
+    {
+     "anomes": "202209",
+     "score": 60.2
+    },
+    {
+     "anomes": "202212",
+     "score": 61.8
+    },
+    {
+     "anomes": "202303",
+     "score": 60.0
+    },
+    {
+     "anomes": "202306",
+     "score": 57.6
+    },
+    {
+     "anomes": "202309",
      "score": 58.6
     },
     {
+     "anomes": "202312",
+     "score": 61.4
+    },
+    {
+     "anomes": "202403",
+     "score": 64.1
+    },
+    {
+     "anomes": "202406",
+     "score": 60.0
+    },
+    {
+     "anomes": "202409",
+     "score": 61.4
+    },
+    {
+     "anomes": "202412",
+     "score": 58.8
+    },
+    {
      "anomes": "202503",
-     "score": 60.8
+     "score": 61.2
     },
     {
      "anomes": "202506",
@@ -12490,71 +12490,71 @@
     },
     {
      "anomes": "201903",
-     "score": 72.2
+     "score": 72.7
     },
     {
      "anomes": "201906",
-     "score": 69.5
+     "score": 69.9
     },
     {
      "anomes": "201909",
-     "score": 69.7
+     "score": 70.1
     },
     {
      "anomes": "201912",
-     "score": 68.4
+     "score": 68.8
     },
     {
      "anomes": "202003",
-     "score": 69.3
+     "score": 69.7
     },
     {
      "anomes": "202006",
-     "score": 64.0
+     "score": 64.7
     },
     {
      "anomes": "202009",
-     "score": 66.4
+     "score": 67.1
     },
     {
      "anomes": "202012",
-     "score": 69.5
-    },
-    {
-     "anomes": "202103",
-     "score": 71.6
-    },
-    {
-     "anomes": "202106",
-     "score": 72.4
-    },
-    {
-     "anomes": "202109",
-     "score": 71.6
-    },
-    {
-     "anomes": "202112",
-     "score": 72.0
-    },
-    {
-     "anomes": "202203",
-     "score": 71.9
-    },
-    {
-     "anomes": "202206",
      "score": 69.8
     },
     {
+     "anomes": "202103",
+     "score": 72.0
+    },
+    {
+     "anomes": "202106",
+     "score": 72.8
+    },
+    {
+     "anomes": "202109",
+     "score": 72.4
+    },
+    {
+     "anomes": "202112",
+     "score": 72.4
+    },
+    {
+     "anomes": "202203",
+     "score": 72.3
+    },
+    {
+     "anomes": "202206",
+     "score": 70.2
+    },
+    {
      "anomes": "202209",
-     "score": 66.2
+     "score": 67.0
     },
     {
      "anomes": "202212",
-     "score": 67.4
+     "score": 67.8
     },
     {
      "anomes": "202303",
-     "score": 58.0
+     "score": 58.2
     },
     {
      "anomes": "202306",
@@ -12562,31 +12562,31 @@
     },
     {
      "anomes": "202309",
-     "score": 55.4
+     "score": 55.9
     },
     {
      "anomes": "202312",
-     "score": 52.7
+     "score": 53.2
     },
     {
      "anomes": "202403",
-     "score": 53.1
+     "score": 53.6
     },
     {
      "anomes": "202406",
-     "score": 54.9
+     "score": 55.0
     },
     {
      "anomes": "202409",
-     "score": 55.8
+     "score": 56.4
     },
     {
      "anomes": "202412",
-     "score": 57.4
+     "score": 57.0
     },
     {
      "anomes": "202503",
-     "score": 49.3
+     "score": 49.6
     },
     {
      "anomes": "202506",
@@ -12780,11 +12780,11 @@
    "historico_score": [
     {
      "anomes": "202412",
-     "score": 82.3
+     "score": 82.5
     },
     {
      "anomes": "202503",
-     "score": 69.7
+     "score": 69.9
     },
     {
      "anomes": "202506",
@@ -13010,67 +13010,67 @@
     },
     {
      "anomes": "201903",
-     "score": 66.2
+     "score": 67.0
     },
     {
      "anomes": "201906",
-     "score": 63.6
+     "score": 64.3
     },
     {
      "anomes": "201909",
-     "score": 64.9
+     "score": 65.2
     },
     {
      "anomes": "201912",
-     "score": 65.3
+     "score": 65.6
     },
     {
      "anomes": "202003",
-     "score": 67.1
+     "score": 67.4
     },
     {
      "anomes": "202006",
-     "score": 69.3
+     "score": 70.1
     },
     {
      "anomes": "202009",
-     "score": 58.2
+     "score": 59.2
     },
     {
      "anomes": "202012",
-     "score": 56.8
+     "score": 57.3
     },
     {
      "anomes": "202103",
-     "score": 69.5
+     "score": 69.8
     },
     {
      "anomes": "202106",
-     "score": 61.2
+     "score": 61.8
     },
     {
      "anomes": "202109",
-     "score": 59.3
+     "score": 59.9
     },
     {
      "anomes": "202112",
-     "score": 62.5
+     "score": 62.3
     },
     {
      "anomes": "202203",
-     "score": 60.5
+     "score": 60.7
     },
     {
      "anomes": "202206",
-     "score": 63.4
+     "score": 63.6
     },
     {
      "anomes": "202209",
-     "score": 62.7
+     "score": 62.9
     },
     {
      "anomes": "202212",
-     "score": 63.4
+     "score": 63.6
     },
     {
      "anomes": "202303",
@@ -13078,35 +13078,35 @@
     },
     {
      "anomes": "202306",
-     "score": 59.6
+     "score": 59.4
     },
     {
      "anomes": "202309",
-     "score": 61.2
+     "score": 61.4
     },
     {
      "anomes": "202312",
-     "score": 55.8
+     "score": 55.9
     },
     {
      "anomes": "202403",
-     "score": 55.8
+     "score": 55.9
     },
     {
      "anomes": "202406",
-     "score": 58.0
+     "score": 57.7
     },
     {
      "anomes": "202409",
-     "score": 59.8
+     "score": 60.0
     },
     {
      "anomes": "202412",
-     "score": 56.5
+     "score": 56.6
     },
     {
      "anomes": "202503",
-     "score": 55.5
+     "score": 55.8
     },
     {
      "anomes": "202506",
@@ -13318,51 +13318,51 @@
     },
     {
      "anomes": "201903",
-     "score": 34.7
+     "score": 35.4
     },
     {
      "anomes": "201906",
-     "score": 38.6
+     "score": 38.9
     },
     {
      "anomes": "201909",
-     "score": 36.9
+     "score": 37.1
     },
     {
      "anomes": "201912",
-     "score": 42.1
+     "score": 42.4
     },
     {
      "anomes": "202003",
-     "score": 33.3
+     "score": 33.5
     },
     {
      "anomes": "202006",
-     "score": 38.6
-    },
-    {
-     "anomes": "202009",
      "score": 38.8
     },
     {
+     "anomes": "202009",
+     "score": 39.0
+    },
+    {
      "anomes": "202012",
-     "score": 39.9
+     "score": 39.6
     },
     {
      "anomes": "202103",
-     "score": 35.6
+     "score": 35.4
     },
     {
      "anomes": "202106",
-     "score": 37.9
+     "score": 37.7
     },
     {
      "anomes": "202109",
-     "score": 37.3
+     "score": 38.0
     },
     {
      "anomes": "202112",
-     "score": 37.9
+     "score": 38.1
     },
     {
      "anomes": "202203",
@@ -13370,55 +13370,55 @@
     },
     {
      "anomes": "202206",
-     "score": 30.6
+     "score": 30.7
     },
     {
      "anomes": "202209",
-     "score": 32.9
+     "score": 33.1
     },
     {
      "anomes": "202212",
-     "score": 33.9
+     "score": 33.6
     },
     {
      "anomes": "202303",
-     "score": 32.1
+     "score": 31.8
     },
     {
      "anomes": "202306",
-     "score": 36.0
+     "score": 35.7
     },
     {
      "anomes": "202309",
-     "score": 33.9
+     "score": 34.1
     },
     {
      "anomes": "202312",
-     "score": 34.4
+     "score": 34.1
     },
     {
      "anomes": "202403",
-     "score": 33.9
+     "score": 34.1
     },
     {
      "anomes": "202406",
-     "score": 34.4
+     "score": 34.1
     },
     {
      "anomes": "202409",
-     "score": 38.9
+     "score": 38.6
     },
     {
      "anomes": "202412",
-     "score": 40.1
+     "score": 39.9
     },
     {
      "anomes": "202503",
-     "score": 40.0
+     "score": 40.7
     },
     {
      "anomes": "202506",
-     "score": 41.2
+     "score": 41.3
     },
     {
      "anomes": "202509",
@@ -13618,47 +13618,47 @@
     },
     {
      "anomes": "201903",
-     "score": 35.7
+     "score": 36.3
     },
     {
      "anomes": "201906",
-     "score": 37.3
+     "score": 37.5
     },
     {
      "anomes": "201909",
-     "score": 35.1
+     "score": 35.2
     },
     {
      "anomes": "201912",
-     "score": 19.8
+     "score": 19.6
     },
     {
      "anomes": "202003",
-     "score": 31.1
+     "score": 31.2
     },
     {
      "anomes": "202006",
-     "score": 31.6
+     "score": 31.7
     },
     {
      "anomes": "202009",
-     "score": 34.9
+     "score": 35.5
     },
     {
      "anomes": "202012",
-     "score": 31.4
+     "score": 31.5
     },
     {
      "anomes": "202103",
-     "score": 31.0
+     "score": 31.1
     },
     {
      "anomes": "202106",
-     "score": 34.9
+     "score": 35.1
     },
     {
      "anomes": "202109",
-     "score": 42.4
+     "score": 43.1
     },
     {
      "anomes": "202112",
@@ -13666,39 +13666,39 @@
     },
     {
      "anomes": "202203",
-     "score": 30.3
+     "score": 30.4
     },
     {
      "anomes": "202206",
-     "score": 35.8
+     "score": 36.0
     },
     {
      "anomes": "202209",
-     "score": 34.2
+     "score": 34.8
     },
     {
      "anomes": "202212",
-     "score": 27.6
+     "score": 28.2
     },
     {
      "anomes": "202303",
-     "score": 42.0
+     "score": 42.3
     },
     {
      "anomes": "202306",
-     "score": 44.7
+     "score": 45.1
     },
     {
      "anomes": "202309",
-     "score": 28.1
+     "score": 28.6
     },
     {
      "anomes": "202312",
-     "score": 24.6
+     "score": 24.5
     },
     {
      "anomes": "202403",
-     "score": 42.0
+     "score": 42.3
     },
     {
      "anomes": "202406",
@@ -13706,19 +13706,19 @@
     },
     {
      "anomes": "202409",
-     "score": 23.7
+     "score": 24.1
     },
     {
      "anomes": "202412",
-     "score": 28.0
+     "score": 28.5
     },
     {
      "anomes": "202503",
-     "score": 19.4
+     "score": 19.7
     },
     {
      "anomes": "202506",
-     "score": 17.2
+     "score": 17.5
     },
     {
      "anomes": "202509",
@@ -13823,23 +13823,23 @@
    "historico_score": [
     {
      "anomes": "202503",
-     "score": 73.8
+     "score": 75.0
     },
     {
      "anomes": "202506",
-     "score": 70.5
+     "score": 71.8
     },
     {
      "anomes": "202509",
-     "score": 78.6
+     "score": 79.5
     },
     {
      "anomes": "202512",
-     "score": 91.7
+     "score": 92.0
     },
     {
      "anomes": "202603",
-     "score": 93.5
+     "score": 93.7
     }
    ],
    "vulnerabilidade": null,
@@ -13855,42 +13855,42 @@
    "carteira_brl": 27830666432.44,
    "pl_brl": 932122715.73,
    "lucro_brl": -3226358.60000001,
-   "score": 93.5,
-   "score_anterior": 91.7,
-   "score_delta": 1.8,
+   "score": 93.7,
+   "score_anterior": 92.0,
+   "score_delta": 1.7,
    "faixa": "risco muito elevado",
    "dimensoes": {
     "rentabilidade": {
      "valor": -0.35,
-     "percentil_pares": 13.0,
-     "risco": 87.0,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 12.5,
+     "risco": 87.5,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 32.57,
-     "percentil_pares": 95.7,
-     "risco": 95.7,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 95.8,
+     "risco": 95.8,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 91.68,
-     "percentil_pares": 95.7,
-     "risco": 95.7,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 95.8,
+     "risco": 95.8,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 95.14,
-     "percentil_pares": 95.7,
-     "risco": 95.7,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 95.8,
+     "risco": 95.8,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -14048,35 +14048,35 @@
     },
     {
      "anomes": "201903",
-     "score": 57.4
+     "score": 58.0
     },
     {
      "anomes": "201906",
-     "score": 61.4
+     "score": 61.5
     },
     {
      "anomes": "201909",
-     "score": 61.0
+     "score": 61.1
     },
     {
      "anomes": "201912",
-     "score": 61.9
+     "score": 62.1
     },
     {
      "anomes": "202003",
-     "score": 59.7
+     "score": 59.8
     },
     {
      "anomes": "202006",
-     "score": 60.5
+     "score": 60.7
     },
     {
      "anomes": "202009",
-     "score": 58.2
+     "score": 58.8
     },
     {
      "anomes": "202012",
-     "score": 57.2
+     "score": 57.3
     },
     {
      "anomes": "202103",
@@ -14084,15 +14084,15 @@
     },
     {
      "anomes": "202106",
-     "score": 54.7
+     "score": 54.8
     },
     {
      "anomes": "202109",
-     "score": 55.5
+     "score": 56.0
     },
     {
      "anomes": "202112",
-     "score": 55.2
+     "score": 55.3
     },
     {
      "anomes": "202203",
@@ -14100,11 +14100,11 @@
     },
     {
      "anomes": "202206",
-     "score": 49.1
+     "score": 49.6
     },
     {
      "anomes": "202209",
-     "score": 48.2
+     "score": 48.6
     },
     {
      "anomes": "202212",
@@ -14112,7 +14112,7 @@
     },
     {
      "anomes": "202303",
-     "score": 50.5
+     "score": 50.4
     },
     {
      "anomes": "202306",
@@ -14120,7 +14120,7 @@
     },
     {
      "anomes": "202309",
-     "score": 56.2
+     "score": 56.8
     },
     {
      "anomes": "202312",
@@ -14128,15 +14128,15 @@
     },
     {
      "anomes": "202403",
-     "score": 57.1
+     "score": 57.3
     },
     {
      "anomes": "202406",
-     "score": 55.4
+     "score": 55.5
     },
     {
      "anomes": "202409",
-     "score": 58.0
+     "score": 58.2
     },
     {
      "anomes": "202412",
@@ -14144,11 +14144,11 @@
     },
     {
      "anomes": "202503",
-     "score": 45.2
+     "score": 45.4
     },
     {
      "anomes": "202506",
-     "score": 44.4
+     "score": 44.8
     },
     {
      "anomes": "202509",
@@ -14338,43 +14338,43 @@
    "historico_score": [
     {
      "anomes": "202312",
-     "score": 53.6
+     "score": 53.4
     },
     {
      "anomes": "202403",
-     "score": 57.5
+     "score": 58.4
     },
     {
      "anomes": "202406",
-     "score": 53.8
+     "score": 54.8
     },
     {
      "anomes": "202409",
-     "score": 57.5
+     "score": 58.4
     },
     {
      "anomes": "202412",
-     "score": 50.0
+     "score": 51.2
     },
     {
      "anomes": "202503",
-     "score": 57.7
+     "score": 59.0
     },
     {
      "anomes": "202506",
-     "score": 54.5
+     "score": 55.7
     },
     {
      "anomes": "202509",
-     "score": 58.8
+     "score": 59.8
     },
     {
      "anomes": "202512",
-     "score": 58.8
+     "score": 59.7
     },
     {
      "anomes": "202603",
-     "score": 61.9
+     "score": 62.7
     }
    ],
    "vulnerabilidade": {
@@ -14407,50 +14407,50 @@
    "carteira_brl": 23462857801.86,
    "pl_brl": 3971105794.18,
    "lucro_brl": 104067537.02,
-   "score": 61.9,
-   "score_anterior": 58.8,
-   "score_delta": 3.1,
+   "score": 62.7,
+   "score_anterior": 59.7,
+   "score_delta": 3.0,
    "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 15.42,
-     "percentil_pares": 35.0,
-     "risco": 65.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 33.3,
+     "risco": 66.7,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 2.62,
-     "percentil_pares": 47.8,
-     "risco": 52.2,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 45.8,
+     "risco": 54.2,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 6.93,
-     "percentil_pares": 8.7,
-     "risco": 8.7,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 8.3,
+     "risco": 8.3,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 85.25,
-     "percentil_pares": 87.0,
-     "risco": 87.0,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 82.59,
-     "percentil_pares": 69.6,
-     "risco": 69.6,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 70.8,
+     "risco": 70.8,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 4661,
@@ -14624,107 +14624,107 @@
     },
     {
      "anomes": "201903",
-     "score": 82.8
+     "score": 83.5
     },
     {
      "anomes": "201906",
-     "score": 70.9
+     "score": 71.3
     },
     {
      "anomes": "201909",
-     "score": 73.7
+     "score": 74.1
     },
     {
      "anomes": "201912",
-     "score": 63.6
+     "score": 63.9
     },
     {
      "anomes": "202003",
-     "score": 66.7
+     "score": 67.0
     },
     {
      "anomes": "202006",
-     "score": 64.0
+     "score": 64.3
     },
     {
      "anomes": "202009",
-     "score": 66.8
+     "score": 67.6
     },
     {
      "anomes": "202012",
-     "score": 65.2
+     "score": 65.1
     },
     {
      "anomes": "202103",
-     "score": 66.1
+     "score": 66.4
     },
     {
      "anomes": "202106",
-     "score": 58.6
+     "score": 59.2
     },
     {
      "anomes": "202109",
-     "score": 56.3
+     "score": 56.9
     },
     {
      "anomes": "202112",
-     "score": 66.8
+     "score": 67.1
     },
     {
      "anomes": "202203",
-     "score": 58.4
+     "score": 59.0
     },
     {
      "anomes": "202206",
-     "score": 55.6
+     "score": 56.1
     },
     {
      "anomes": "202209",
-     "score": 64.9
+     "score": 65.6
     },
     {
      "anomes": "202212",
-     "score": 67.8
+     "score": 68.2
     },
     {
      "anomes": "202303",
-     "score": 71.5
+     "score": 71.8
     },
     {
      "anomes": "202306",
-     "score": 66.2
+     "score": 66.5
     },
     {
      "anomes": "202309",
-     "score": 78.1
+     "score": 79.1
     },
     {
      "anomes": "202312",
-     "score": 77.7
+     "score": 78.2
     },
     {
      "anomes": "202403",
-     "score": 79.5
+     "score": 80.0
     },
     {
      "anomes": "202406",
-     "score": 79.9
+     "score": 80.5
     },
     {
      "anomes": "202409",
-     "score": 77.2
+     "score": 77.3
     },
     {
      "anomes": "202412",
-     "score": 78.9
+     "score": 79.0
     },
     {
      "anomes": "202503",
-     "score": 66.7
+     "score": 66.9
     },
     {
      "anomes": "202506",
-     "score": 66.6
+     "score": 66.9
     },
     {
      "anomes": "202509",
@@ -14936,15 +14936,15 @@
     },
     {
      "anomes": "201906",
-     "score": 35.0
+     "score": 35.2
     },
     {
      "anomes": "201909",
-     "score": 53.5
+     "score": 53.6
     },
     {
      "anomes": "201912",
-     "score": 53.5
+     "score": 53.6
     },
     {
      "anomes": "202003",
@@ -14952,87 +14952,87 @@
     },
     {
      "anomes": "202006",
-     "score": 42.1
+     "score": 42.4
     },
     {
      "anomes": "202009",
-     "score": 31.5
+     "score": 31.6
     },
     {
      "anomes": "202012",
-     "score": 39.0
+     "score": 38.8
     },
     {
      "anomes": "202103",
-     "score": 40.2
+     "score": 40.0
     },
     {
      "anomes": "202106",
-     "score": 39.6
+     "score": 39.5
     },
     {
      "anomes": "202109",
-     "score": 44.1
+     "score": 44.4
     },
     {
      "anomes": "202112",
-     "score": 43.1
+     "score": 43.0
     },
     {
      "anomes": "202203",
-     "score": 40.4
+     "score": 40.2
     },
     {
      "anomes": "202206",
-     "score": 37.5
+     "score": 37.2
     },
     {
      "anomes": "202209",
-     "score": 38.6
+     "score": 38.8
     },
     {
      "anomes": "202212",
-     "score": 39.7
+     "score": 39.5
     },
     {
      "anomes": "202303",
-     "score": 36.2
+     "score": 35.9
     },
     {
      "anomes": "202306",
-     "score": 36.4
+     "score": 36.1
     },
     {
      "anomes": "202309",
-     "score": 37.5
+     "score": 37.8
     },
     {
      "anomes": "202312",
-     "score": 39.8
+     "score": 39.6
     },
     {
      "anomes": "202403",
-     "score": 34.8
+     "score": 35.0
     },
     {
      "anomes": "202406",
-     "score": 36.6
+     "score": 36.4
     },
     {
      "anomes": "202409",
-     "score": 38.4
+     "score": 38.6
     },
     {
      "anomes": "202412",
-     "score": 39.2
+     "score": 39.5
     },
     {
      "anomes": "202503",
-     "score": 38.7
+     "score": 39.3
     },
     {
      "anomes": "202506",
-     "score": 37.4
+     "score": 37.9
     },
     {
      "anomes": "202509",
@@ -15219,7 +15219,7 @@
     },
     {
      "anomes": "201906",
-     "score": 48.2
+     "score": 48.1
     },
     {
      "anomes": "201909",
@@ -15235,15 +15235,15 @@
     },
     {
      "anomes": "202006",
-     "score": 45.6
+     "score": 45.5
     },
     {
      "anomes": "202009",
-     "score": 43.1
+     "score": 43.4
     },
     {
      "anomes": "202012",
-     "score": 47.5
+     "score": 47.4
     },
     {
      "anomes": "202103",
@@ -15255,7 +15255,7 @@
     },
     {
      "anomes": "202109",
-     "score": 48.3
+     "score": 48.7
     },
     {
      "anomes": "202112",
@@ -15263,47 +15263,47 @@
     },
     {
      "anomes": "202203",
-     "score": 43.4
+     "score": 43.3
     },
     {
      "anomes": "202206",
-     "score": 42.2
+     "score": 42.1
     },
     {
      "anomes": "202209",
-     "score": 37.3
+     "score": 37.5
     },
     {
      "anomes": "202212",
-     "score": 40.6
+     "score": 40.5
     },
     {
      "anomes": "202303",
-     "score": 41.1
+     "score": 40.9
     },
     {
      "anomes": "202306",
-     "score": 40.4
+     "score": 40.2
     },
     {
      "anomes": "202309",
-     "score": 41.5
+     "score": 41.8
     },
     {
      "anomes": "202312",
-     "score": 46.0
+     "score": 45.9
     },
     {
      "anomes": "202403",
-     "score": 42.9
+     "score": 42.7
     },
     {
      "anomes": "202406",
-     "score": 41.1
+     "score": 40.9
     },
     {
      "anomes": "202409",
-     "score": 43.3
+     "score": 43.1
     },
     {
      "anomes": "202412",
@@ -15311,11 +15311,11 @@
     },
     {
      "anomes": "202503",
-     "score": 44.3
+     "score": 45.1
     },
     {
      "anomes": "202506",
-     "score": 47.8
+     "score": 47.9
     },
     {
      "anomes": "202509",
@@ -15567,31 +15567,31 @@
     },
     {
      "anomes": "201903",
-     "score": 42.1
+     "score": 42.5
     },
     {
      "anomes": "201906",
-     "score": 40.9
+     "score": 41.2
     },
     {
      "anomes": "201909",
-     "score": 44.7
+     "score": 45.1
     },
     {
      "anomes": "201912",
-     "score": 46.1
+     "score": 46.0
     },
     {
      "anomes": "202003",
-     "score": 40.8
+     "score": 41.1
     },
     {
      "anomes": "202006",
-     "score": 43.4
+     "score": 43.3
     },
     {
      "anomes": "202009",
-     "score": 47.9
+     "score": 48.2
     },
     {
      "anomes": "202012",
@@ -15599,39 +15599,39 @@
     },
     {
      "anomes": "202103",
-     "score": 43.6
+     "score": 44.0
     },
     {
      "anomes": "202106",
-     "score": 44.8
+     "score": 45.1
     },
     {
      "anomes": "202109",
-     "score": 51.2
+     "score": 51.7
     },
     {
      "anomes": "202112",
-     "score": 49.5
+     "score": 49.6
     },
     {
      "anomes": "202203",
-     "score": 62.3
+     "score": 62.5
     },
     {
      "anomes": "202206",
-     "score": 65.5
+     "score": 65.8
     },
     {
      "anomes": "202209",
-     "score": 68.9
+     "score": 69.2
     },
     {
      "anomes": "202212",
-     "score": 61.6
+     "score": 61.8
     },
     {
      "anomes": "202303",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202306",
@@ -15639,35 +15639,35 @@
     },
     {
      "anomes": "202309",
-     "score": 70.5
+     "score": 70.9
     },
     {
      "anomes": "202312",
-     "score": 58.5
+     "score": 58.2
     },
     {
      "anomes": "202403",
-     "score": 50.5
+     "score": 50.9
     },
     {
      "anomes": "202406",
-     "score": 52.7
+     "score": 52.3
     },
     {
      "anomes": "202409",
-     "score": 50.4
+     "score": 50.5
     },
     {
      "anomes": "202412",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202503",
-     "score": 60.3
+     "score": 61.0
     },
     {
      "anomes": "202506",
-     "score": 62.1
+     "score": 62.2
     },
     {
      "anomes": "202509",
@@ -15887,15 +15887,15 @@
     },
     {
      "anomes": "201903",
-     "score": 33.8
+     "score": 34.5
     },
     {
      "anomes": "201906",
-     "score": 32.3
+     "score": 32.9
     },
     {
      "anomes": "201909",
-     "score": 30.3
+     "score": 30.4
     },
     {
      "anomes": "201912",
@@ -15903,15 +15903,15 @@
     },
     {
      "anomes": "202003",
-     "score": 18.0
+     "score": 18.3
     },
     {
      "anomes": "202006",
-     "score": 21.5
+     "score": 21.4
     },
     {
      "anomes": "202009",
-     "score": 31.1
+     "score": 31.6
     },
     {
      "anomes": "202012",
@@ -15919,7 +15919,7 @@
     },
     {
      "anomes": "202103",
-     "score": 32.2
+     "score": 32.4
     },
     {
      "anomes": "202106",
@@ -15927,15 +15927,15 @@
     },
     {
      "anomes": "202109",
-     "score": 34.7
+     "score": 34.9
     },
     {
      "anomes": "202112",
-     "score": 23.3
+     "score": 23.2
     },
     {
      "anomes": "202203",
-     "score": 20.6
+     "score": 20.5
     },
     {
      "anomes": "202206",
@@ -15943,11 +15943,11 @@
     },
     {
      "anomes": "202209",
-     "score": 23.7
+     "score": 24.1
     },
     {
      "anomes": "202212",
-     "score": 15.6
+     "score": 15.4
     },
     {
      "anomes": "202303",
@@ -15959,15 +15959,15 @@
     },
     {
      "anomes": "202309",
-     "score": 16.1
+     "score": 16.4
     },
     {
      "anomes": "202312",
-     "score": 14.3
+     "score": 14.1
     },
     {
      "anomes": "202403",
-     "score": 21.4
+     "score": 21.8
     },
     {
      "anomes": "202406",
@@ -15983,11 +15983,11 @@
     },
     {
      "anomes": "202503",
-     "score": 22.2
+     "score": 22.6
     },
     {
      "anomes": "202506",
-     "score": 35.7
+     "score": 35.9
     },
     {
      "anomes": "202509",
@@ -16210,15 +16210,15 @@
     },
     {
      "anomes": "201912",
-     "score": 30.7
+     "score": 30.3
     },
     {
      "anomes": "202003",
-     "score": 32.0
+     "score": 31.7
     },
     {
      "anomes": "202006",
-     "score": 34.6
+     "score": 34.4
     },
     {
      "anomes": "202009",
@@ -16226,31 +16226,31 @@
     },
     {
      "anomes": "202012",
-     "score": 35.6
+     "score": 35.4
     },
     {
      "anomes": "202103",
-     "score": 28.8
+     "score": 28.9
     },
     {
      "anomes": "202106",
-     "score": 28.0
+     "score": 28.1
     },
     {
      "anomes": "202109",
-     "score": 40.2
+     "score": 40.5
     },
     {
      "anomes": "202112",
-     "score": 32.3
+     "score": 32.0
     },
     {
      "anomes": "202203",
-     "score": 41.7
+     "score": 41.5
     },
     {
      "anomes": "202206",
-     "score": 43.1
+     "score": 43.0
     },
     {
      "anomes": "202209",
@@ -16258,7 +16258,7 @@
     },
     {
      "anomes": "202212",
-     "score": 39.3
+     "score": 39.1
     },
     {
      "anomes": "202303",
@@ -16270,7 +16270,7 @@
     },
     {
      "anomes": "202309",
-     "score": 50.5
+     "score": 50.9
     },
     {
      "anomes": "202312",
@@ -16278,11 +16278,11 @@
     },
     {
      "anomes": "202403",
-     "score": 40.6
+     "score": 40.9
     },
     {
      "anomes": "202406",
-     "score": 42.0
+     "score": 41.8
     },
     {
      "anomes": "202409",
@@ -16294,11 +16294,11 @@
     },
     {
      "anomes": "202503",
-     "score": 44.3
+     "score": 44.7
     },
     {
      "anomes": "202506",
-     "score": 45.1
+     "score": 45.3
     },
     {
      "anomes": "202509",
@@ -16403,11 +16403,11 @@
    "historico_score": [
     {
      "anomes": "202512",
-     "score": 28.2
+     "score": 30.0
     },
     {
      "anomes": "202603",
-     "score": 40.2
+     "score": 41.6
     }
    ],
    "vulnerabilidade": null,
@@ -16423,42 +16423,42 @@
    "carteira_brl": 10397570041.22,
    "pl_brl": 2757802760.0,
    "lucro_brl": 56773730.0900005,
-   "score": 40.2,
-   "score_anterior": 28.2,
-   "score_delta": 12.0,
+   "score": 41.6,
+   "score_anterior": 30.0,
+   "score_delta": 11.6,
    "faixa": "atenção",
    "dimensoes": {
     "rentabilidade": {
      "valor": 2.06,
-     "percentil_pares": 39.1,
-     "risco": 60.9,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 37.5,
+     "risco": 62.5,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 7.7,
-     "percentil_pares": 13.0,
-     "risco": 13.0,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 48.97,
-     "percentil_pares": 43.5,
-     "risco": 43.5,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 45.8,
+     "risco": 45.8,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 68.4,
-     "percentil_pares": 43.5,
-     "risco": 43.5,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 45.8,
+     "risco": 45.8,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -16538,11 +16538,11 @@
    "historico_score": [
     {
      "anomes": "202212",
-     "score": 36.6
+     "score": 36.9
     },
     {
      "anomes": "202303",
-     "score": 42.0
+     "score": 42.3
     },
     {
      "anomes": "202306",
@@ -16550,35 +16550,35 @@
     },
     {
      "anomes": "202309",
-     "score": 38.4
+     "score": 39.1
     },
     {
      "anomes": "202312",
-     "score": 39.3
+     "score": 39.5
     },
     {
      "anomes": "202403",
-     "score": 45.5
+     "score": 45.9
     },
     {
      "anomes": "202406",
-     "score": 46.4
+     "score": 46.8
     },
     {
      "anomes": "202409",
-     "score": 46.0
+     "score": 46.4
     },
     {
      "anomes": "202412",
-     "score": 44.0
+     "score": 44.3
     },
     {
      "anomes": "202503",
-     "score": 57.1
+     "score": 56.9
     },
     {
      "anomes": "202506",
-     "score": 54.4
+     "score": 54.3
     },
     {
      "anomes": "202509",
@@ -16836,107 +16836,107 @@
     },
     {
      "anomes": "201903",
-     "score": 56.0
+     "score": 56.6
     },
     {
      "anomes": "201906",
-     "score": 57.7
+     "score": 58.4
     },
     {
      "anomes": "201909",
-     "score": 61.0
+     "score": 61.2
     },
     {
      "anomes": "201912",
-     "score": 61.4
+     "score": 61.6
     },
     {
      "anomes": "202003",
-     "score": 62.7
+     "score": 63.0
     },
     {
      "anomes": "202006",
-     "score": 63.6
+     "score": 63.8
     },
     {
      "anomes": "202009",
-     "score": 57.8
+     "score": 58.3
     },
     {
      "anomes": "202012",
-     "score": 63.6
+     "score": 63.8
     },
     {
      "anomes": "202103",
-     "score": 56.8
+     "score": 56.9
     },
     {
      "anomes": "202106",
-     "score": 66.4
+     "score": 66.7
     },
     {
      "anomes": "202109",
-     "score": 60.6
+     "score": 61.2
     },
     {
      "anomes": "202112",
-     "score": 64.2
+     "score": 64.5
     },
     {
      "anomes": "202203",
-     "score": 67.5
+     "score": 67.9
     },
     {
      "anomes": "202206",
-     "score": 66.0
+     "score": 66.2
     },
     {
      "anomes": "202209",
-     "score": 68.0
+     "score": 68.8
     },
     {
      "anomes": "202212",
-     "score": 74.1
+     "score": 74.5
     },
     {
      "anomes": "202303",
-     "score": 68.3
+     "score": 68.6
     },
     {
      "anomes": "202306",
-     "score": 68.0
+     "score": 68.3
     },
     {
      "anomes": "202309",
-     "score": 71.9
+     "score": 72.7
     },
     {
      "anomes": "202312",
-     "score": 72.8
+     "score": 73.2
     },
     {
      "anomes": "202403",
-     "score": 71.9
+     "score": 72.3
     },
     {
      "anomes": "202406",
-     "score": 72.8
+     "score": 73.2
     },
     {
      "anomes": "202409",
-     "score": 67.4
+     "score": 67.2
     },
     {
      "anomes": "202412",
-     "score": 68.1
+     "score": 68.0
     },
     {
      "anomes": "202503",
-     "score": 69.5
+     "score": 69.9
     },
     {
      "anomes": "202506",
-     "score": 69.6
+     "score": 69.7
     },
     {
      "anomes": "202509",
@@ -17194,47 +17194,47 @@
     },
     {
      "anomes": "201903",
-     "score": 75.0
+     "score": 75.5
     },
     {
      "anomes": "201906",
-     "score": 72.7
+     "score": 73.2
     },
     {
      "anomes": "201909",
-     "score": 48.7
+     "score": 49.1
     },
     {
      "anomes": "201912",
-     "score": 64.5
+     "score": 64.7
     },
     {
      "anomes": "202003",
-     "score": 64.0
+     "score": 64.3
     },
     {
      "anomes": "202006",
-     "score": 85.1
+     "score": 85.3
     },
     {
      "anomes": "202009",
-     "score": 84.5
+     "score": 85.1
     },
     {
      "anomes": "202012",
-     "score": 69.5
+     "score": 69.4
     },
     {
      "anomes": "202103",
-     "score": 72.5
+     "score": 72.8
     },
     {
      "anomes": "202106",
-     "score": 79.3
+     "score": 79.8
     },
     {
      "anomes": "202109",
-     "score": 67.0
+     "score": 67.7
     },
     {
      "anomes": "202112",
@@ -17242,15 +17242,15 @@
     },
     {
      "anomes": "202203",
-     "score": 75.4
+     "score": 75.5
     },
     {
      "anomes": "202206",
-     "score": 76.7
+     "score": 76.8
     },
     {
      "anomes": "202209",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202212",
@@ -17262,27 +17262,27 @@
     },
     {
      "anomes": "202306",
-     "score": 65.3
+     "score": 65.6
     },
     {
      "anomes": "202309",
-     "score": 68.8
+     "score": 69.5
     },
     {
      "anomes": "202312",
-     "score": 71.0
+     "score": 71.3
     },
     {
      "anomes": "202403",
-     "score": 66.5
+     "score": 66.8
     },
     {
      "anomes": "202406",
-     "score": 67.9
+     "score": 68.2
     },
     {
      "anomes": "202409",
-     "score": 67.4
+     "score": 67.8
     },
     {
      "anomes": "202412",
@@ -17290,11 +17290,11 @@
     },
     {
      "anomes": "202503",
-     "score": 63.4
+     "score": 63.5
     },
     {
      "anomes": "202506",
-     "score": 67.2
+     "score": 67.5
     },
     {
      "anomes": "202509",
@@ -17538,107 +17538,107 @@
     },
     {
      "anomes": "201903",
-     "score": 54.6
+     "score": 54.7
     },
     {
      "anomes": "201906",
-     "score": 56.8
+     "score": 57.0
     },
     {
      "anomes": "201909",
-     "score": 54.4
+     "score": 54.5
     },
     {
      "anomes": "201912",
-     "score": 41.7
+     "score": 41.5
     },
     {
      "anomes": "202003",
-     "score": 40.4
+     "score": 40.2
     },
     {
      "anomes": "202006",
-     "score": 48.2
+     "score": 48.6
     },
     {
      "anomes": "202009",
-     "score": 62.1
-    },
-    {
-     "anomes": "202012",
-     "score": 61.5
-    },
-    {
-     "anomes": "202103",
-     "score": 56.8
-    },
-    {
-     "anomes": "202106",
-     "score": 58.2
-    },
-    {
-     "anomes": "202109",
-     "score": 64.8
-    },
-    {
-     "anomes": "202112",
-     "score": 66.0
-    },
-    {
-     "anomes": "202203",
      "score": 63.2
     },
     {
+     "anomes": "202012",
+     "score": 62.0
+    },
+    {
+     "anomes": "202103",
+     "score": 57.3
+    },
+    {
+     "anomes": "202106",
+     "score": 58.8
+    },
+    {
+     "anomes": "202109",
+     "score": 65.5
+    },
+    {
+     "anomes": "202112",
+     "score": 66.7
+    },
+    {
+     "anomes": "202203",
+     "score": 63.8
+    },
+    {
      "anomes": "202206",
-     "score": 62.5
+     "score": 63.1
     },
     {
      "anomes": "202209",
-     "score": 66.2
+     "score": 67.0
     },
     {
      "anomes": "202212",
-     "score": 63.9
+     "score": 64.6
     },
     {
      "anomes": "202303",
-     "score": 64.3
+     "score": 65.0
     },
     {
      "anomes": "202306",
-     "score": 65.8
+     "score": 66.5
     },
     {
      "anomes": "202309",
-     "score": 65.2
+     "score": 66.4
     },
     {
      "anomes": "202312",
-     "score": 67.4
+     "score": 68.2
     },
     {
      "anomes": "202403",
-     "score": 72.3
+     "score": 73.2
     },
     {
      "anomes": "202406",
-     "score": 70.5
+     "score": 71.3
     },
     {
      "anomes": "202409",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202412",
-     "score": 68.5
+     "score": 68.8
     },
     {
      "anomes": "202503",
-     "score": 73.1
+     "score": 73.6
     },
     {
      "anomes": "202506",
-     "score": 68.5
+     "score": 68.7
     },
     {
      "anomes": "202509",
@@ -17842,63 +17842,63 @@
     },
     {
      "anomes": "201903",
-     "score": 34.2
+     "score": 34.9
     },
     {
      "anomes": "201906",
-     "score": 38.2
-    },
-    {
-     "anomes": "201909",
-     "score": 42.1
-    },
-    {
-     "anomes": "201912",
-     "score": 39.9
-    },
-    {
-     "anomes": "202003",
-     "score": 42.5
-    },
-    {
-     "anomes": "202006",
-     "score": 50.0
-    },
-    {
-     "anomes": "202009",
-     "score": 47.8
-    },
-    {
-     "anomes": "202012",
-     "score": 50.0
-    },
-    {
-     "anomes": "202103",
-     "score": 47.0
-    },
-    {
-     "anomes": "202106",
-     "score": 48.7
-    },
-    {
-     "anomes": "202109",
-     "score": 38.5
-    },
-    {
-     "anomes": "202112",
-     "score": 34.0
-    },
-    {
-     "anomes": "202203",
-     "score": 34.6
-    },
-    {
-     "anomes": "202206",
      "score": 38.4
     },
     {
+     "anomes": "201909",
+     "score": 42.4
+    },
+    {
+     "anomes": "201912",
+     "score": 40.2
+    },
+    {
+     "anomes": "202003",
+     "score": 42.9
+    },
+    {
+     "anomes": "202006",
+     "score": 50.4
+    },
+    {
+     "anomes": "202009",
+     "score": 48.2
+    },
+    {
+     "anomes": "202012",
+     "score": 50.5
+    },
+    {
+     "anomes": "202103",
+     "score": 47.4
+    },
+    {
+     "anomes": "202106",
+     "score": 49.1
+    },
+    {
+     "anomes": "202109",
+     "score": 39.2
+    },
+    {
+     "anomes": "202112",
+     "score": 34.2
+    },
+    {
+     "anomes": "202203",
+     "score": 34.8
+    },
+    {
+     "anomes": "202206",
+     "score": 38.6
+    },
+    {
      "anomes": "202209",
-     "score": 35.1
+     "score": 35.7
     },
     {
      "anomes": "202212",
@@ -17906,43 +17906,43 @@
     },
     {
      "anomes": "202303",
-     "score": 38.0
+     "score": 38.2
     },
     {
      "anomes": "202306",
-     "score": 43.9
+     "score": 44.2
     },
     {
      "anomes": "202309",
-     "score": 36.6
+     "score": 37.2
     },
     {
      "anomes": "202312",
-     "score": 35.2
+     "score": 35.5
     },
     {
      "anomes": "202403",
-     "score": 48.2
+     "score": 48.6
     },
     {
      "anomes": "202406",
-     "score": 45.5
+     "score": 45.9
     },
     {
      "anomes": "202409",
-     "score": 41.5
+     "score": 41.8
     },
     {
      "anomes": "202412",
-     "score": 44.8
+     "score": 45.2
     },
     {
      "anomes": "202503",
-     "score": 37.8
+     "score": 38.2
     },
     {
      "anomes": "202506",
-     "score": 34.3
+     "score": 34.4
     },
     {
      "anomes": "202509",
@@ -18196,15 +18196,15 @@
     },
     {
      "anomes": "201903",
-     "score": 44.9
+     "score": 45.3
     },
     {
      "anomes": "201906",
-     "score": 44.1
+     "score": 44.5
     },
     {
      "anomes": "201909",
-     "score": 45.2
+     "score": 45.5
     },
     {
      "anomes": "201912",
@@ -18216,83 +18216,83 @@
     },
     {
      "anomes": "202006",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202009",
-     "score": 52.6
-    },
-    {
-     "anomes": "202012",
-     "score": 52.5
-    },
-    {
-     "anomes": "202103",
-     "score": 50.8
-    },
-    {
-     "anomes": "202106",
      "score": 53.5
     },
     {
+     "anomes": "202012",
+     "score": 52.6
+    },
+    {
+     "anomes": "202103",
+     "score": 51.7
+    },
+    {
+     "anomes": "202106",
+     "score": 54.0
+    },
+    {
      "anomes": "202109",
-     "score": 52.1
+     "score": 52.6
     },
     {
      "anomes": "202112",
-     "score": 56.5
+     "score": 56.6
     },
     {
      "anomes": "202203",
-     "score": 57.9
-    },
-    {
-     "anomes": "202206",
-     "score": 60.8
-    },
-    {
-     "anomes": "202209",
-     "score": 58.8
-    },
-    {
-     "anomes": "202212",
-     "score": 63.0
-    },
-    {
-     "anomes": "202303",
-     "score": 60.7
-    },
-    {
-     "anomes": "202306",
-     "score": 59.6
-    },
-    {
-     "anomes": "202309",
-     "score": 60.3
-    },
-    {
-     "anomes": "202312",
-     "score": 58.5
-    },
-    {
-     "anomes": "202403",
      "score": 58.0
     },
     {
+     "anomes": "202206",
+     "score": 61.0
+    },
+    {
+     "anomes": "202209",
+     "score": 59.4
+    },
+    {
+     "anomes": "202212",
+     "score": 63.2
+    },
+    {
+     "anomes": "202303",
+     "score": 60.9
+    },
+    {
+     "anomes": "202306",
+     "score": 59.8
+    },
+    {
+     "anomes": "202309",
+     "score": 60.9
+    },
+    {
+     "anomes": "202312",
+     "score": 58.6
+    },
+    {
+     "anomes": "202403",
+     "score": 58.6
+    },
+    {
      "anomes": "202406",
-     "score": 56.2
+     "score": 56.4
     },
     {
      "anomes": "202409",
-     "score": 61.6
+     "score": 61.4
     },
     {
      "anomes": "202412",
-     "score": 59.5
+     "score": 59.2
     },
     {
      "anomes": "202503",
-     "score": 69.3
+     "score": 69.8
     },
     {
      "anomes": "202506",
@@ -18470,59 +18470,59 @@
    "historico_score": [
     {
      "anomes": "202212",
-     "score": 40.2
+     "score": 37.5
     },
     {
      "anomes": "202303",
-     "score": 16.4
+     "score": 14.8
     },
     {
      "anomes": "202306",
-     "score": 15.4
+     "score": 15.0
     },
     {
      "anomes": "202309",
-     "score": 29.6
+     "score": 29.8
     },
     {
      "anomes": "202312",
-     "score": 23.8
+     "score": 23.9
     },
     {
      "anomes": "202403",
-     "score": 17.9
+     "score": 15.5
     },
     {
      "anomes": "202406",
-     "score": 18.2
+     "score": 14.3
     },
     {
      "anomes": "202409",
-     "score": 17.4
+     "score": 15.5
     },
     {
      "anomes": "202412",
-     "score": 18.4
+     "score": 15.0
     },
     {
      "anomes": "202503",
-     "score": 17.0
+     "score": 13.3
     },
     {
      "anomes": "202506",
-     "score": 18.3
+     "score": 13.9
     },
     {
      "anomes": "202509",
-     "score": 18.7
+     "score": 14.6
     },
     {
      "anomes": "202512",
-     "score": 10.8
+     "score": 7.2
     },
     {
      "anomes": "202603",
-     "score": 10.4
+     "score": 9.2
     }
    ],
    "vulnerabilidade": {
@@ -18548,57 +18548,57 @@
    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SERVICOS LTDA",
    "tcb": "N4",
    "uf": "SP",
-   "grupo_pares": "S?",
-   "grupo_pares_label": "S?",
-   "grupo_fallback": true,
+   "grupo_pares": "S4",
+   "grupo_pares_label": "S4 — porte inferior a 0,1% do PIB",
+   "grupo_fallback": false,
    "ativo_total_brl": 19069767498.1,
    "carteira_brl": 0.0,
    "pl_brl": 2034425955.17,
    "lucro_brl": 273335794.11,
-   "score": 10.4,
-   "score_anterior": 10.8,
-   "score_delta": -0.4,
+   "score": 9.2,
+   "score_anterior": 7.2,
+   "score_delta": 2.0,
    "faixa": "risco muito baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 31.14,
-     "percentil_pares": 95.6,
-     "risco": 4.4,
-     "mediana_pares": 16.18,
-     "q1_pares": 14.22,
-     "q3_pares": 20.1
+     "percentil_pares": 100.0,
+     "risco": 0.0,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 13.44,
-     "percentil_pares": 98.0,
-     "risco": 2.0,
-     "mediana_pares": 3.0,
+     "percentil_pares": 95.8,
+     "risco": 4.2,
+     "mediana_pares": 3.11,
      "q1_pares": 1.32,
-     "q3_pares": 4.48
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 9.37,
-     "percentil_pares": 36.4,
-     "risco": 36.4,
-     "mediana_pares": 10.73,
-     "q1_pares": 6.93,
-     "q3_pares": 16.17
+     "percentil_pares": 33.3,
+     "risco": 33.3,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.0,
      "percentil_pares": 0.0,
      "risco": 0.0,
-     "mediana_pares": 45.09,
-     "q1_pares": 15.7,
-     "q3_pares": 61.0
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 8.2,
-     "percentil_pares": 9.1,
-     "risco": 9.1,
-     "mediana_pares": 73.21,
-     "q1_pares": 52.23,
-     "q3_pares": 82.04
+     "percentil_pares": 8.3,
+     "risco": 8.3,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -18758,107 +18758,107 @@
     },
     {
      "anomes": "201903",
-     "score": 35.2
+     "score": 35.4
     },
     {
      "anomes": "201906",
-     "score": 33.6
+     "score": 33.8
     },
     {
      "anomes": "201909",
-     "score": 37.3
+     "score": 37.0
     },
     {
      "anomes": "201912",
-     "score": 44.3
+     "score": 44.2
     },
     {
      "anomes": "202003",
-     "score": 37.7
-    },
-    {
-     "anomes": "202006",
-     "score": 37.7
-    },
-    {
-     "anomes": "202009",
-     "score": 41.0
-    },
-    {
-     "anomes": "202012",
-     "score": 39.4
-    },
-    {
-     "anomes": "202103",
-     "score": 32.6
-    },
-    {
-     "anomes": "202106",
      "score": 37.5
     },
     {
-     "anomes": "202109",
+     "anomes": "202006",
+     "score": 37.5
+    },
+    {
+     "anomes": "202009",
+     "score": 41.7
+    },
+    {
+     "anomes": "202012",
+     "score": 39.6
+    },
+    {
+     "anomes": "202103",
+     "score": 33.1
+    },
+    {
+     "anomes": "202106",
      "score": 37.7
     },
     {
-     "anomes": "202112",
-     "score": 35.8
-    },
-    {
-     "anomes": "202203",
-     "score": 31.6
-    },
-    {
-     "anomes": "202206",
-     "score": 31.1
-    },
-    {
-     "anomes": "202209",
-     "score": 29.8
-    },
-    {
-     "anomes": "202212",
-     "score": 29.4
-    },
-    {
-     "anomes": "202303",
-     "score": 33.0
-    },
-    {
-     "anomes": "202306",
-     "score": 31.1
-    },
-    {
-     "anomes": "202309",
-     "score": 33.9
-    },
-    {
-     "anomes": "202312",
-     "score": 34.4
-    },
-    {
-     "anomes": "202403",
-     "score": 36.2
-    },
-    {
-     "anomes": "202406",
-     "score": 35.3
-    },
-    {
-     "anomes": "202409",
+     "anomes": "202109",
      "score": 38.4
     },
     {
+     "anomes": "202112",
+     "score": 35.5
+    },
+    {
+     "anomes": "202203",
+     "score": 31.7
+    },
+    {
+     "anomes": "202206",
+     "score": 31.6
+    },
+    {
+     "anomes": "202209",
+     "score": 30.3
+    },
+    {
+     "anomes": "202212",
+     "score": 29.5
+    },
+    {
+     "anomes": "202303",
+     "score": 32.7
+    },
+    {
+     "anomes": "202306",
+     "score": 30.8
+    },
+    {
+     "anomes": "202309",
+     "score": 34.1
+    },
+    {
+     "anomes": "202312",
+     "score": 34.5
+    },
+    {
+     "anomes": "202403",
+     "score": 36.8
+    },
+    {
+     "anomes": "202406",
+     "score": 35.4
+    },
+    {
+     "anomes": "202409",
+     "score": 38.6
+    },
+    {
      "anomes": "202412",
-     "score": 37.1
+     "score": 37.3
     },
     {
      "anomes": "202503",
-     "score": 36.9
+     "score": 37.1
     },
     {
      "anomes": "202506",
-     "score": 35.2
+     "score": 35.6
     },
     {
      "anomes": "202509",
@@ -19018,75 +19018,75 @@
    "historico_score": [
     {
      "anomes": "202103",
-     "score": 38.1
+     "score": 38.4
     },
     {
      "anomes": "202106",
-     "score": 38.0
+     "score": 38.2
     },
     {
      "anomes": "202109",
-     "score": 41.1
+     "score": 41.8
     },
     {
      "anomes": "202112",
-     "score": 34.9
+     "score": 35.1
     },
     {
      "anomes": "202203",
-     "score": 39.9
+     "score": 40.2
     },
     {
      "anomes": "202206",
-     "score": 42.7
+     "score": 43.0
     },
     {
      "anomes": "202209",
-     "score": 31.2
+     "score": 31.7
     },
     {
      "anomes": "202212",
-     "score": 26.4
+     "score": 26.8
     },
     {
      "anomes": "202303",
-     "score": 33.5
+     "score": 33.6
     },
     {
      "anomes": "202306",
-     "score": 38.6
+     "score": 38.8
     },
     {
      "anomes": "202309",
-     "score": 33.9
+     "score": 34.5
     },
     {
      "anomes": "202312",
-     "score": 31.2
+     "score": 31.3
     },
     {
      "anomes": "202403",
-     "score": 34.8
+     "score": 35.0
     },
     {
      "anomes": "202406",
-     "score": 36.6
+     "score": 36.8
     },
     {
      "anomes": "202409",
-     "score": 37.9
+     "score": 38.2
     },
     {
      "anomes": "202412",
-     "score": 25.4
+     "score": 25.5
     },
     {
      "anomes": "202503",
-     "score": 40.5
+     "score": 40.6
     },
     {
      "anomes": "202506",
-     "score": 43.8
+     "score": 43.9
     },
     {
      "anomes": "202509",
@@ -19286,39 +19286,39 @@
     },
     {
      "anomes": "201903",
-     "score": 60.6
+     "score": 61.3
     },
     {
      "anomes": "201906",
-     "score": 63.2
+     "score": 63.0
     },
     {
      "anomes": "201909",
-     "score": 54.0
+     "score": 53.6
     },
     {
      "anomes": "201912",
-     "score": 64.5
+     "score": 64.3
     },
     {
      "anomes": "202003",
-     "score": 63.2
+     "score": 63.4
     },
     {
      "anomes": "202006",
-     "score": 42.6
+     "score": 42.4
     },
     {
      "anomes": "202009",
-     "score": 34.9
+     "score": 35.1
     },
     {
      "anomes": "202012",
-     "score": 39.9
+     "score": 39.6
     },
     {
      "anomes": "202103",
-     "score": 45.8
+     "score": 45.7
     },
     {
      "anomes": "202106",
@@ -19326,67 +19326,67 @@
     },
     {
      "anomes": "202109",
-     "score": 44.5
+     "score": 44.8
     },
     {
      "anomes": "202112",
-     "score": 44.4
+     "score": 44.3
     },
     {
      "anomes": "202203",
-     "score": 39.9
+     "score": 39.7
     },
     {
      "anomes": "202206",
-     "score": 38.8
+     "score": 38.6
     },
     {
      "anomes": "202209",
-     "score": 34.6
+     "score": 34.8
     },
     {
      "anomes": "202212",
-     "score": 38.0
+     "score": 37.8
     },
     {
      "anomes": "202303",
-     "score": 35.2
+     "score": 35.0
     },
     {
      "anomes": "202306",
-     "score": 36.0
+     "score": 35.7
     },
     {
      "anomes": "202309",
-     "score": 40.2
-    },
-    {
-     "anomes": "202312",
-     "score": 42.4
-    },
-    {
-     "anomes": "202403",
-     "score": 37.5
-    },
-    {
-     "anomes": "202406",
-     "score": 37.5
-    },
-    {
-     "anomes": "202409",
-     "score": 39.3
-    },
-    {
-     "anomes": "202412",
      "score": 40.5
     },
     {
+     "anomes": "202312",
+     "score": 42.3
+    },
+    {
+     "anomes": "202403",
+     "score": 37.8
+    },
+    {
+     "anomes": "202406",
+     "score": 37.3
+    },
+    {
+     "anomes": "202409",
+     "score": 39.1
+    },
+    {
+     "anomes": "202412",
+     "score": 40.4
+    },
+    {
      "anomes": "202503",
-     "score": 33.7
+     "score": 34.3
     },
     {
      "anomes": "202506",
-     "score": 33.8
+     "score": 34.0
     },
     {
      "anomes": "202509",
@@ -19640,19 +19640,19 @@
     },
     {
      "anomes": "201903",
-     "score": 53.7
+     "score": 54.2
     },
     {
      "anomes": "201906",
-     "score": 56.8
+     "score": 57.4
     },
     {
      "anomes": "201909",
-     "score": 59.2
+     "score": 59.4
     },
     {
      "anomes": "201912",
-     "score": 60.5
+     "score": 60.7
     },
     {
      "anomes": "202003",
@@ -19660,87 +19660,87 @@
     },
     {
      "anomes": "202006",
-     "score": 53.0
+     "score": 53.1
     },
     {
      "anomes": "202009",
-     "score": 54.8
+     "score": 55.3
     },
     {
      "anomes": "202012",
-     "score": 58.5
+     "score": 58.6
     },
     {
      "anomes": "202103",
-     "score": 60.6
+     "score": 60.8
     },
     {
      "anomes": "202106",
-     "score": 59.5
+     "score": 59.7
     },
     {
      "anomes": "202109",
-     "score": 56.4
+     "score": 56.9
     },
     {
      "anomes": "202112",
-     "score": 58.6
+     "score": 58.8
     },
     {
      "anomes": "202203",
-     "score": 57.1
+     "score": 57.6
     },
     {
      "anomes": "202206",
-     "score": 58.6
+     "score": 59.2
     },
     {
      "anomes": "202209",
-     "score": 57.0
+     "score": 57.6
     },
     {
      "anomes": "202212",
-     "score": 63.0
+     "score": 63.2
     },
     {
      "anomes": "202303",
-     "score": 60.7
+     "score": 60.9
     },
     {
      "anomes": "202306",
-     "score": 65.3
-    },
-    {
-     "anomes": "202309",
-     "score": 67.4
-    },
-    {
-     "anomes": "202312",
-     "score": 71.4
-    },
-    {
-     "anomes": "202403",
-     "score": 68.3
-    },
-    {
-     "anomes": "202406",
      "score": 65.6
     },
     {
+     "anomes": "202309",
+     "score": 68.2
+    },
+    {
+     "anomes": "202312",
+     "score": 71.8
+    },
+    {
+     "anomes": "202403",
+     "score": 69.1
+    },
+    {
+     "anomes": "202406",
+     "score": 65.5
+    },
+    {
      "anomes": "202409",
-     "score": 64.7
+     "score": 64.5
     },
     {
      "anomes": "202412",
-     "score": 67.2
+     "score": 67.1
     },
     {
      "anomes": "202503",
-     "score": 51.7
+     "score": 52.2
     },
     {
      "anomes": "202506",
-     "score": 66.9
+     "score": 67.4
     },
     {
      "anomes": "202509",
@@ -19906,59 +19906,59 @@
     },
     {
      "anomes": "202212",
-     "score": 52.4
+     "score": 52.3
     },
     {
      "anomes": "202303",
-     "score": 57.2
+     "score": 58.0
     },
     {
      "anomes": "202306",
-     "score": 57.9
+     "score": 60.0
     },
     {
      "anomes": "202309",
-     "score": 61.2
+     "score": 63.1
     },
     {
      "anomes": "202312",
-     "score": 57.2
+     "score": 59.1
     },
     {
      "anomes": "202403",
-     "score": 62.5
+     "score": 64.3
     },
     {
      "anomes": "202406",
-     "score": 61.2
+     "score": 63.1
     },
     {
      "anomes": "202409",
-     "score": 62.5
+     "score": 64.3
     },
     {
      "anomes": "202412",
-     "score": 63.2
+     "score": 65.0
     },
     {
      "anomes": "202503",
-     "score": 57.4
-    },
-    {
-     "anomes": "202506",
-     "score": 57.7
-    },
-    {
-     "anomes": "202509",
-     "score": 57.6
-    },
-    {
-     "anomes": "202512",
      "score": 59.5
     },
     {
+     "anomes": "202506",
+     "score": 59.7
+    },
+    {
+     "anomes": "202509",
+     "score": 59.6
+    },
+    {
+     "anomes": "202512",
+     "score": 61.2
+    },
+    {
      "anomes": "202603",
-     "score": 58.5
+     "score": 60.4
     }
    ],
    "vulnerabilidade": {
@@ -19991,50 +19991,50 @@
    "carteira_brl": 156874692.27,
    "pl_brl": 577173667.76,
    "lucro_brl": -5256767.6100001,
-   "score": 58.5,
-   "score_anterior": 59.5,
-   "score_delta": -1.0,
-   "faixa": "atenção",
+   "score": 60.4,
+   "score_anterior": 61.2,
+   "score_delta": -0.8,
+   "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 22.44,
-     "percentil_pares": 90.0,
-     "risco": 10.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 85.7,
+     "risco": 14.3,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": -0.91,
-     "percentil_pares": 8.7,
-     "risco": 91.3,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 8.3,
+     "risco": 91.7,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 30.81,
-     "percentil_pares": 87.0,
-     "risco": 87.0,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.88,
-     "percentil_pares": 17.4,
-     "risco": 17.4,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 20.8,
+     "risco": 20.8,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 89.3,
-     "percentil_pares": 87.0,
-     "risco": 87.0,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 87.5,
+     "risco": 87.5,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -20194,59 +20194,59 @@
     },
     {
      "anomes": "202212",
-     "score": 54.8
+     "score": 55.6
     },
     {
      "anomes": "202303",
-     "score": 48.8
+     "score": 51.1
     },
     {
      "anomes": "202306",
-     "score": 48.7
+     "score": 51.2
     },
     {
      "anomes": "202309",
-     "score": 62.5
+     "score": 64.3
     },
     {
      "anomes": "202312",
-     "score": 61.9
+     "score": 63.6
     },
     {
      "anomes": "202403",
-     "score": 46.2
+     "score": 48.8
     },
     {
      "anomes": "202406",
-     "score": 42.5
+     "score": 45.2
     },
     {
      "anomes": "202409",
-     "score": 55.0
+     "score": 57.1
     },
     {
      "anomes": "202412",
-     "score": 57.9
+     "score": 60.0
     },
     {
      "anomes": "202503",
-     "score": 50.6
+     "score": 53.0
     },
     {
      "anomes": "202506",
-     "score": 43.1
+     "score": 45.6
     },
     {
      "anomes": "202509",
-     "score": 57.9
+     "score": 59.8
     },
     {
      "anomes": "202512",
-     "score": 52.0
+     "score": 54.0
     },
     {
      "anomes": "202603",
-     "score": 45.4
+     "score": 47.8
     }
    ],
    "vulnerabilidade": {
@@ -20279,50 +20279,50 @@
    "carteira_brl": 94876106.04,
    "pl_brl": 751320120.63,
    "lucro_brl": 26417367.26,
-   "score": 45.4,
-   "score_anterior": 52.0,
-   "score_delta": -6.6,
+   "score": 47.8,
+   "score_anterior": 54.0,
+   "score_delta": -6.2,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 15.17,
-     "percentil_pares": 25.0,
-     "risco": 75.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 23.8,
+     "risco": 76.2,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 3.52,
-     "percentil_pares": 60.9,
-     "risco": 39.1,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 58.3,
+     "risco": 41.7,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 23.65,
-     "percentil_pares": 78.3,
-     "risco": 78.3,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 79.2,
+     "risco": 79.2,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.53,
-     "percentil_pares": 8.7,
-     "risco": 8.7,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 12.5,
+     "risco": 12.5,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 60.59,
-     "percentil_pares": 26.1,
-     "risco": 26.1,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 29.2,
+     "risco": 29.2,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -20472,51 +20472,51 @@
     },
     {
      "anomes": "201903",
-     "score": 38.4
+     "score": 38.7
     },
     {
      "anomes": "201906",
-     "score": 40.5
+     "score": 40.8
     },
     {
      "anomes": "201909",
-     "score": 39.5
+     "score": 39.7
     },
     {
      "anomes": "201912",
-     "score": 42.1
+     "score": 41.9
     },
     {
      "anomes": "202003",
-     "score": 38.1
+     "score": 37.9
     },
     {
      "anomes": "202006",
-     "score": 39.0
+     "score": 38.9
     },
     {
      "anomes": "202009",
-     "score": 43.9
+     "score": 44.3
     },
     {
      "anomes": "202012",
-     "score": 38.6
+     "score": 38.4
     },
     {
      "anomes": "202103",
-     "score": 40.7
-    },
-    {
-     "anomes": "202106",
      "score": 40.5
     },
     {
+     "anomes": "202106",
+     "score": 40.4
+    },
+    {
      "anomes": "202109",
-     "score": 40.7
+     "score": 41.0
     },
     {
      "anomes": "202112",
-     "score": 42.6
+     "score": 42.5
     },
     {
      "anomes": "202203",
@@ -20524,15 +20524,15 @@
     },
     {
      "anomes": "202206",
-     "score": 46.6
+     "score": 46.5
     },
     {
      "anomes": "202209",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202212",
-     "score": 49.6
+     "score": 49.5
     },
     {
      "anomes": "202303",
@@ -20544,19 +20544,19 @@
     },
     {
      "anomes": "202309",
-     "score": 46.9
+     "score": 47.3
     },
     {
      "anomes": "202312",
-     "score": 42.4
+     "score": 42.3
     },
     {
      "anomes": "202403",
-     "score": 38.4
+     "score": 38.6
     },
     {
      "anomes": "202406",
-     "score": 41.5
+     "score": 41.4
     },
     {
      "anomes": "202409",
@@ -20564,15 +20564,15 @@
     },
     {
      "anomes": "202412",
-     "score": 51.3
+     "score": 51.4
     },
     {
      "anomes": "202503",
-     "score": 49.7
+     "score": 50.1
     },
     {
      "anomes": "202506",
-     "score": 43.4
+     "score": 43.7
     },
     {
      "anomes": "202509",
@@ -20810,95 +20810,95 @@
     },
     {
      "anomes": "201903",
-     "score": 29.2
+     "score": 29.7
     },
     {
      "anomes": "201906",
-     "score": 32.7
+     "score": 33.3
     },
     {
      "anomes": "201909",
-     "score": 53.5
+     "score": 54.0
     },
     {
      "anomes": "201912",
-     "score": 34.6
-    },
-    {
-     "anomes": "202003",
-     "score": 56.1
-    },
-    {
-     "anomes": "202006",
-     "score": 57.0
-    },
-    {
-     "anomes": "202009",
-     "score": 46.6
-    },
-    {
-     "anomes": "202012",
-     "score": 32.6
-    },
-    {
-     "anomes": "202103",
-     "score": 50.4
-    },
-    {
-     "anomes": "202106",
-     "score": 40.5
-    },
-    {
-     "anomes": "202109",
-     "score": 35.6
-    },
-    {
-     "anomes": "202112",
-     "score": 48.3
-    },
-    {
-     "anomes": "202203",
-     "score": 24.1
-    },
-    {
-     "anomes": "202206",
-     "score": 27.6
-    },
-    {
-     "anomes": "202209",
-     "score": 38.6
-    },
-    {
-     "anomes": "202212",
      "score": 34.8
     },
     {
+     "anomes": "202003",
+     "score": 56.7
+    },
+    {
+     "anomes": "202006",
+     "score": 57.6
+    },
+    {
+     "anomes": "202009",
+     "score": 47.4
+    },
+    {
+     "anomes": "202012",
+     "score": 33.2
+    },
+    {
+     "anomes": "202103",
+     "score": 50.9
+    },
+    {
+     "anomes": "202106",
+     "score": 40.8
+    },
+    {
+     "anomes": "202109",
+     "score": 36.2
+    },
+    {
+     "anomes": "202112",
+     "score": 48.7
+    },
+    {
+     "anomes": "202203",
+     "score": 24.6
+    },
+    {
+     "anomes": "202206",
+     "score": 28.1
+    },
+    {
+     "anomes": "202209",
+     "score": 39.3
+    },
+    {
+     "anomes": "202212",
+     "score": 35.0
+    },
+    {
      "anomes": "202303",
-     "score": 34.4
+     "score": 34.5
     },
     {
      "anomes": "202306",
-     "score": 37.3
+     "score": 37.5
     },
     {
      "anomes": "202309",
-     "score": 34.0
+     "score": 34.5
     },
     {
      "anomes": "202312",
-     "score": 35.7
+     "score": 35.9
     },
     {
      "anomes": "202403",
-     "score": 20.1
+     "score": 20.4
     },
     {
      "anomes": "202406",
-     "score": 30.8
+     "score": 30.9
     },
     {
      "anomes": "202409",
-     "score": 21.0
+     "score": 20.9
     },
     {
      "anomes": "202412",
@@ -20906,11 +20906,11 @@
     },
     {
      "anomes": "202503",
-     "score": 25.9
+     "score": 25.7
     },
     {
      "anomes": "202506",
-     "score": 17.2
+     "score": 17.1
     },
     {
      "anomes": "202509",
@@ -21172,47 +21172,47 @@
     },
     {
      "anomes": "201903",
-     "score": 33.8
+     "score": 34.0
     },
     {
      "anomes": "201906",
-     "score": 32.3
+     "score": 32.4
     },
     {
      "anomes": "201909",
-     "score": 36.9
+     "score": 37.0
     },
     {
      "anomes": "201912",
-     "score": 38.6
+     "score": 38.4
     },
     {
      "anomes": "202003",
-     "score": 36.0
+     "score": 35.7
     },
     {
      "anomes": "202006",
-     "score": 37.3
+     "score": 37.0
     },
     {
      "anomes": "202009",
-     "score": 37.9
+     "score": 38.6
     },
     {
      "anomes": "202012",
-     "score": 41.1
+     "score": 41.0
     },
     {
      "anomes": "202103",
-     "score": 42.4
+     "score": 42.7
     },
     {
      "anomes": "202106",
-     "score": 43.5
+     "score": 43.9
     },
     {
      "anomes": "202109",
-     "score": 46.6
+     "score": 46.9
     },
     {
      "anomes": "202112",
@@ -21228,39 +21228,39 @@
     },
     {
      "anomes": "202209",
-     "score": 46.9
+     "score": 47.3
     },
     {
      "anomes": "202212",
-     "score": 46.0
+     "score": 45.9
     },
     {
      "anomes": "202303",
-     "score": 44.7
+     "score": 44.5
     },
     {
      "anomes": "202306",
-     "score": 43.9
+     "score": 43.7
     },
     {
      "anomes": "202309",
-     "score": 44.7
+     "score": 45.0
     },
     {
      "anomes": "202312",
-     "score": 46.9
+     "score": 46.8
     },
     {
      "anomes": "202403",
-     "score": 44.2
+     "score": 44.5
     },
     {
      "anomes": "202406",
-     "score": 40.6
+     "score": 40.5
     },
     {
      "anomes": "202409",
-     "score": 41.5
+     "score": 41.4
     },
     {
      "anomes": "202412",
@@ -21268,11 +21268,11 @@
     },
     {
      "anomes": "202503",
-     "score": 26.6
+     "score": 26.8
     },
     {
      "anomes": "202506",
-     "score": 27.5
+     "score": 27.7
     },
     {
      "anomes": "202509",
@@ -21516,19 +21516,19 @@
     },
     {
      "anomes": "201903",
-     "score": 50.4
+     "score": 50.5
     },
     {
      "anomes": "201906",
-     "score": 52.7
+     "score": 53.2
     },
     {
      "anomes": "201909",
-     "score": 52.6
+     "score": 52.7
     },
     {
      "anomes": "201912",
-     "score": 56.6
+     "score": 56.7
     },
     {
      "anomes": "202003",
@@ -21536,15 +21536,15 @@
     },
     {
      "anomes": "202006",
-     "score": 54.8
+     "score": 54.9
     },
     {
      "anomes": "202009",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202012",
-     "score": 54.6
+     "score": 54.8
     },
     {
      "anomes": "202103",
@@ -21556,11 +21556,11 @@
     },
     {
      "anomes": "202109",
-     "score": 53.0
+     "score": 53.4
     },
     {
      "anomes": "202112",
-     "score": 51.7
+     "score": 51.8
     },
     {
      "anomes": "202203",
@@ -21572,7 +21572,7 @@
     },
     {
      "anomes": "202209",
-     "score": 52.2
+     "score": 52.7
     },
     {
      "anomes": "202212",
@@ -21588,7 +21588,7 @@
     },
     {
      "anomes": "202309",
-     "score": 49.5
+     "score": 50.0
     },
     {
      "anomes": "202312",
@@ -21596,7 +21596,7 @@
     },
     {
      "anomes": "202403",
-     "score": 52.2
+     "score": 52.3
     },
     {
      "anomes": "202406",
@@ -21616,7 +21616,7 @@
     },
     {
      "anomes": "202506",
-     "score": 52.8
+     "score": 53.1
     },
     {
      "anomes": "202509",
@@ -21870,67 +21870,67 @@
     },
     {
      "anomes": "201903",
-     "score": 49.1
+     "score": 49.5
     },
     {
      "anomes": "201906",
-     "score": 50.0
+     "score": 50.5
     },
     {
      "anomes": "201909",
-     "score": 57.5
+     "score": 57.6
     },
     {
      "anomes": "201912",
-     "score": 54.8
+     "score": 54.9
     },
     {
      "anomes": "202003",
-     "score": 54.8
+     "score": 54.9
     },
     {
      "anomes": "202006",
-     "score": 55.3
+     "score": 55.4
     },
     {
      "anomes": "202009",
-     "score": 54.8
-    },
-    {
-     "anomes": "202012",
-     "score": 58.1
-    },
-    {
-     "anomes": "202103",
-     "score": 63.5
-    },
-    {
-     "anomes": "202106",
-     "score": 62.1
-    },
-    {
-     "anomes": "202109",
-     "score": 55.5
-    },
-    {
-     "anomes": "202112",
-     "score": 61.6
-    },
-    {
-     "anomes": "202203",
      "score": 55.2
     },
     {
+     "anomes": "202012",
+     "score": 58.2
+    },
+    {
+     "anomes": "202103",
+     "score": 63.8
+    },
+    {
+     "anomes": "202106",
+     "score": 62.3
+    },
+    {
+     "anomes": "202109",
+     "score": 56.0
+    },
+    {
+     "anomes": "202112",
+     "score": 61.9
+    },
+    {
+     "anomes": "202203",
+     "score": 55.4
+    },
+    {
      "anomes": "202206",
-     "score": 59.9
+     "score": 60.1
     },
     {
      "anomes": "202209",
-     "score": 54.8
+     "score": 55.3
     },
     {
      "anomes": "202212",
-     "score": 57.6
+     "score": 57.7
     },
     {
      "anomes": "202303",
@@ -21938,39 +21938,39 @@
     },
     {
      "anomes": "202306",
-     "score": 56.6
+     "score": 56.7
     },
     {
      "anomes": "202309",
-     "score": 54.5
+     "score": 55.0
     },
     {
      "anomes": "202312",
-     "score": 63.0
+     "score": 63.2
     },
     {
      "anomes": "202403",
-     "score": 56.2
+     "score": 56.8
     },
     {
      "anomes": "202406",
-     "score": 54.9
+     "score": 55.0
     },
     {
      "anomes": "202409",
-     "score": 52.2
+     "score": 52.3
     },
     {
      "anomes": "202412",
-     "score": 54.8
+     "score": 54.4
     },
     {
      "anomes": "202503",
-     "score": 55.1
+     "score": 55.3
     },
     {
      "anomes": "202506",
-     "score": 54.5
+     "score": 54.8
     },
     {
      "anomes": "202509",
@@ -22083,27 +22083,27 @@
    "historico_score": [
     {
      "anomes": "202412",
-     "score": 43.4
+     "score": 43.8
     },
     {
      "anomes": "202503",
-     "score": 34.2
+     "score": 35.6
     },
     {
      "anomes": "202506",
-     "score": 36.7
+     "score": 37.8
     },
     {
      "anomes": "202509",
-     "score": 35.3
+     "score": 36.5
     },
     {
      "anomes": "202512",
-     "score": 35.1
+     "score": 36.2
     },
     {
      "anomes": "202603",
-     "score": 24.3
+     "score": 26.0
     }
    ],
    "vulnerabilidade": {
@@ -22136,50 +22136,50 @@
    "carteira_brl": 0.0,
    "pl_brl": 718599443.32,
    "lucro_brl": 22355610.18,
-   "score": 24.3,
-   "score_anterior": 35.1,
-   "score_delta": -10.8,
+   "score": 26.0,
+   "score_anterior": 36.2,
+   "score_delta": -10.2,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 23.09,
-     "percentil_pares": 100.0,
-     "risco": 0.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 95.2,
+     "risco": 4.8,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 3.11,
-     "percentil_pares": 52.2,
-     "risco": 47.8,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 22.46,
-     "percentil_pares": 73.9,
-     "risco": 73.9,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.0,
      "percentil_pares": 0.0,
      "risco": 0.0,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 0.0,
      "percentil_pares": 0.0,
      "risco": 0.0,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -22291,59 +22291,59 @@
     },
     {
      "anomes": "202212",
-     "score": 48.8
+     "score": 50.0
     },
     {
      "anomes": "202303",
-     "score": 47.6
+     "score": 50.0
     },
     {
      "anomes": "202306",
-     "score": 51.3
+     "score": 53.8
     },
     {
      "anomes": "202309",
-     "score": 55.0
+     "score": 56.0
     },
     {
      "anomes": "202312",
-     "score": 48.8
+     "score": 50.0
     },
     {
      "anomes": "202403",
-     "score": 50.0
+     "score": 52.4
     },
     {
      "anomes": "202406",
-     "score": 52.5
+     "score": 54.8
     },
     {
      "anomes": "202409",
-     "score": 50.0
+     "score": 52.4
     },
     {
      "anomes": "202412",
-     "score": 48.7
+     "score": 51.2
     },
     {
      "anomes": "202503",
-     "score": 56.4
+     "score": 57.6
     },
     {
      "anomes": "202506",
-     "score": 54.7
+     "score": 55.9
     },
     {
      "anomes": "202509",
-     "score": 45.9
+     "score": 47.5
     },
     {
      "anomes": "202512",
-     "score": 48.9
+     "score": 50.9
     },
     {
      "anomes": "202603",
-     "score": 54.7
+     "score": 56.5
     }
    ],
    "vulnerabilidade": {
@@ -22376,50 +22376,50 @@
    "carteira_brl": 3427091589.86,
    "pl_brl": 1315104921.72,
    "lucro_brl": 21574839.5299996,
-   "score": 54.7,
-   "score_anterior": 48.9,
-   "score_delta": 5.8,
+   "score": 56.5,
+   "score_anterior": 50.9,
+   "score_delta": 5.6,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 20.04,
-     "percentil_pares": 80.0,
-     "risco": 20.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 76.2,
+     "risco": 23.8,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 1.64,
-     "percentil_pares": 30.4,
-     "risco": 69.6,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 29.2,
+     "risco": 70.8,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 11.93,
-     "percentil_pares": 56.5,
-     "risco": 56.5,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 58.3,
+     "risco": 58.3,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 21.84,
-     "percentil_pares": 30.4,
-     "risco": 30.4,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 33.3,
+     "risco": 33.3,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 83.06,
-     "percentil_pares": 73.9,
-     "risco": 73.9,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 3088,
@@ -22519,23 +22519,23 @@
     },
     {
      "anomes": "201912",
-     "score": 34.6
+     "score": 34.8
     },
     {
      "anomes": "202003",
-     "score": 50.4
+     "score": 50.9
     },
     {
      "anomes": "202006",
-     "score": 41.2
+     "score": 41.5
     },
     {
      "anomes": "202009",
-     "score": 46.6
+     "score": 47.4
     },
     {
      "anomes": "202012",
-     "score": 47.9
+     "score": 48.3
     },
     {
      "anomes": "202103",
@@ -22543,15 +22543,15 @@
     },
     {
      "anomes": "202106",
-     "score": 47.9
+     "score": 48.2
     },
     {
      "anomes": "202109",
-     "score": 57.2
+     "score": 57.3
     },
     {
      "anomes": "202112",
-     "score": 56.0
+     "score": 56.1
     },
     {
      "anomes": "202203",
@@ -22559,11 +22559,11 @@
     },
     {
      "anomes": "202206",
-     "score": 53.0
+     "score": 53.1
     },
     {
      "anomes": "202209",
-     "score": 56.6
+     "score": 56.7
     },
     {
      "anomes": "202212",
@@ -22571,7 +22571,7 @@
     },
     {
      "anomes": "202303",
-     "score": 55.8
+     "score": 55.9
     },
     {
      "anomes": "202306",
@@ -22579,15 +22579,15 @@
     },
     {
      "anomes": "202309",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202312",
-     "score": 36.2
+     "score": 35.9
     },
     {
      "anomes": "202403",
-     "score": 49.5
+     "score": 49.6
     },
     {
      "anomes": "202406",
@@ -22595,19 +22595,19 @@
     },
     {
      "anomes": "202409",
-     "score": 37.5
+     "score": 37.8
     },
     {
      "anomes": "202412",
-     "score": 41.4
+     "score": 41.7
     },
     {
      "anomes": "202503",
-     "score": 46.9
+     "score": 47.3
     },
     {
      "anomes": "202506",
-     "score": 47.0
+     "score": 47.7
     },
     {
      "anomes": "202509",
@@ -22817,31 +22817,31 @@
     },
     {
      "anomes": "201906",
-     "score": 67.7
+     "score": 68.0
     },
     {
      "anomes": "201909",
-     "score": 67.1
+     "score": 67.4
     },
     {
      "anomes": "201912",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202003",
-     "score": 63.1
+     "score": 63.4
     },
     {
      "anomes": "202006",
-     "score": 64.5
+     "score": 64.3
     },
     {
      "anomes": "202009",
-     "score": 63.8
+     "score": 64.0
     },
     {
      "anomes": "202012",
-     "score": 65.2
+     "score": 65.1
     },
     {
      "anomes": "202103",
@@ -22849,27 +22849,27 @@
     },
     {
      "anomes": "202106",
-     "score": 69.0
+     "score": 69.3
     },
     {
      "anomes": "202109",
-     "score": 68.7
+     "score": 69.4
     },
     {
      "anomes": "202112",
-     "score": 71.6
+     "score": 71.9
     },
     {
      "anomes": "202203",
-     "score": 65.3
+     "score": 65.6
     },
     {
      "anomes": "202206",
-     "score": 65.5
+     "score": 66.2
     },
     {
      "anomes": "202209",
-     "score": 69.3
+     "score": 70.1
     },
     {
      "anomes": "202212",
@@ -22877,19 +22877,19 @@
     },
     {
      "anomes": "202303",
-     "score": 67.4
+     "score": 67.7
     },
     {
      "anomes": "202306",
-     "score": 66.7
+     "score": 67.0
     },
     {
      "anomes": "202309",
-     "score": 69.2
+     "score": 70.0
     },
     {
      "anomes": "202312",
-     "score": 74.1
+     "score": 74.5
     },
     {
      "anomes": "202403",
@@ -22897,23 +22897,23 @@
     },
     {
      "anomes": "202406",
-     "score": 79.9
+     "score": 80.0
     },
     {
      "anomes": "202409",
-     "score": 81.7
+     "score": 81.8
     },
     {
      "anomes": "202412",
-     "score": 86.2
+     "score": 86.4
     },
     {
      "anomes": "202503",
-     "score": 91.1
+     "score": 91.5
     },
     {
      "anomes": "202506",
-     "score": 90.3
+     "score": 90.4
     },
     {
      "anomes": "202509",
@@ -23155,15 +23155,15 @@
     },
     {
      "anomes": "201903",
-     "score": 47.7
+     "score": 48.1
     },
     {
      "anomes": "201906",
-     "score": 49.1
+     "score": 49.5
     },
     {
      "anomes": "201909",
-     "score": 58.8
+     "score": 58.9
     },
     {
      "anomes": "201912",
@@ -23171,7 +23171,7 @@
     },
     {
      "anomes": "202003",
-     "score": 55.7
+     "score": 55.8
     },
     {
      "anomes": "202006",
@@ -23179,23 +23179,23 @@
     },
     {
      "anomes": "202009",
-     "score": 41.0
+     "score": 41.7
     },
     {
      "anomes": "202012",
-     "score": 39.9
+     "score": 40.1
     },
     {
      "anomes": "202103",
-     "score": 43.6
+     "score": 44.4
     },
     {
      "anomes": "202106",
-     "score": 43.1
+     "score": 43.9
     },
     {
      "anomes": "202109",
-     "score": 42.8
+     "score": 43.1
     },
     {
      "anomes": "202112",
@@ -23203,15 +23203,15 @@
     },
     {
      "anomes": "202203",
-     "score": 44.8
+     "score": 44.6
     },
     {
      "anomes": "202206",
-     "score": 43.5
+     "score": 43.9
     },
     {
      "anomes": "202209",
-     "score": 46.1
+     "score": 46.4
     },
     {
      "anomes": "202212",
@@ -23219,43 +23219,43 @@
     },
     {
      "anomes": "202303",
-     "score": 42.0
+     "score": 41.8
     },
     {
      "anomes": "202306",
-     "score": 41.7
+     "score": 41.5
     },
     {
      "anomes": "202309",
-     "score": 40.6
+     "score": 40.9
     },
     {
      "anomes": "202312",
-     "score": 43.7
-    },
-    {
-     "anomes": "202403",
-     "score": 51.3
-    },
-    {
-     "anomes": "202406",
-     "score": 47.8
-    },
-    {
-     "anomes": "202409",
-     "score": 43.3
-    },
-    {
-     "anomes": "202412",
      "score": 43.6
     },
     {
+     "anomes": "202403",
+     "score": 51.4
+    },
+    {
+     "anomes": "202406",
+     "score": 47.7
+    },
+    {
+     "anomes": "202409",
+     "score": 43.2
+    },
+    {
+     "anomes": "202412",
+     "score": 43.4
+    },
+    {
      "anomes": "202503",
-     "score": 49.3
+     "score": 49.8
     },
     {
      "anomes": "202506",
-     "score": 49.0
+     "score": 49.6
     },
     {
      "anomes": "202509",
@@ -23529,15 +23529,15 @@
     },
     {
      "anomes": "202006",
-     "score": 50.4
+     "score": 50.5
     },
     {
      "anomes": "202009",
-     "score": 53.0
+     "score": 53.1
     },
     {
      "anomes": "202012",
-     "score": 55.5
+     "score": 55.6
     },
     {
      "anomes": "202103",
@@ -23545,15 +23545,15 @@
     },
     {
      "anomes": "202106",
-     "score": 51.7
+     "score": 51.8
     },
     {
      "anomes": "202109",
-     "score": 37.7
+     "score": 37.9
     },
     {
      "anomes": "202112",
-     "score": 38.4
+     "score": 38.2
     },
     {
      "anomes": "202203",
@@ -23561,27 +23561,27 @@
     },
     {
      "anomes": "202206",
-     "score": 47.0
+     "score": 46.9
     },
     {
      "anomes": "202209",
-     "score": 50.0
+     "score": 50.4
     },
     {
      "anomes": "202212",
-     "score": 47.3
+     "score": 47.2
     },
     {
      "anomes": "202303",
-     "score": 38.4
+     "score": 38.2
     },
     {
      "anomes": "202306",
-     "score": 47.0
+     "score": 46.9
     },
     {
      "anomes": "202309",
-     "score": 43.8
+     "score": 44.1
     },
     {
      "anomes": "202312",
@@ -23589,15 +23589,15 @@
     },
     {
      "anomes": "202403",
-     "score": 48.7
+     "score": 48.6
     },
     {
      "anomes": "202406",
-     "score": 49.6
+     "score": 49.5
     },
     {
      "anomes": "202409",
-     "score": 47.8
+     "score": 47.7
     },
     {
      "anomes": "202412",
@@ -23605,7 +23605,7 @@
     },
     {
      "anomes": "202503",
-     "score": 37.4
+     "score": 37.5
     },
     {
      "anomes": "202506",
@@ -23817,55 +23817,55 @@
     },
     {
      "anomes": "202303",
-     "score": 40.5
+     "score": 43.2
     },
     {
      "anomes": "202306",
-     "score": 42.1
+     "score": 45.0
     },
     {
      "anomes": "202309",
-     "score": 40.0
+     "score": 41.7
     },
     {
      "anomes": "202312",
-     "score": 38.1
+     "score": 40.9
     },
     {
      "anomes": "202403",
-     "score": 41.2
+     "score": 42.9
     },
     {
      "anomes": "202406",
-     "score": 40.0
+     "score": 41.7
     },
     {
      "anomes": "202409",
-     "score": 38.8
+     "score": 40.5
     },
     {
      "anomes": "202412",
-     "score": 38.2
+     "score": 40.0
     },
     {
      "anomes": "202503",
-     "score": 29.5
+     "score": 32.1
     },
     {
      "anomes": "202506",
-     "score": 37.8
+     "score": 39.7
     },
     {
      "anomes": "202509",
-     "score": 48.7
+     "score": 51.1
     },
     {
      "anomes": "202512",
-     "score": 46.7
+     "score": 48.0
     },
     {
      "anomes": "202603",
-     "score": 44.2
+     "score": 45.7
     }
    ],
    "vulnerabilidade": {
@@ -23898,50 +23898,50 @@
    "carteira_brl": 124826862.34,
    "pl_brl": 694298448.78,
    "lucro_brl": 9172949.06000002,
-   "score": 44.2,
-   "score_anterior": 46.7,
-   "score_delta": -2.5,
+   "score": 45.7,
+   "score_anterior": 48.0,
+   "score_delta": -2.3,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 15.68,
-     "percentil_pares": 40.0,
-     "risco": 60.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 38.1,
+     "risco": 61.9,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 1.32,
-     "percentil_pares": 26.1,
-     "risco": 73.9,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 25.0,
+     "risco": 75.0,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 20.63,
-     "percentil_pares": 69.6,
-     "risco": 69.6,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 70.8,
+     "risco": 70.8,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 0.87,
-     "percentil_pares": 13.0,
-     "risco": 13.0,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 16.7,
+     "risco": 16.7,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 2.61,
-     "percentil_pares": 4.3,
-     "risco": 4.3,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 4.2,
+     "risco": 4.2,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -24027,27 +24027,27 @@
    "historico_score": [
     {
      "anomes": "202412",
-     "score": 71.0
+     "score": 71.2
     },
     {
      "anomes": "202503",
-     "score": 65.7
+     "score": 66.3
     },
     {
      "anomes": "202506",
-     "score": 66.4
+     "score": 66.9
     },
     {
      "anomes": "202509",
-     "score": 69.4
+     "score": 69.6
     },
     {
      "anomes": "202512",
-     "score": 73.8
+     "score": 74.9
     },
     {
      "anomes": "202603",
-     "score": 80.6
+     "score": 81.4
     }
    ],
    "vulnerabilidade": {
@@ -24080,50 +24080,50 @@
    "carteira_brl": 12846593043.69,
    "pl_brl": 1403577364.52,
    "lucro_brl": 8623459.30000001,
-   "score": 80.6,
-   "score_anterior": 73.8,
-   "score_delta": 6.8,
+   "score": 81.4,
+   "score_anterior": 74.9,
+   "score_delta": 6.5,
    "faixa": "risco muito elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 13.46,
-     "percentil_pares": 10.0,
-     "risco": 90.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 9.5,
+     "risco": 90.5,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 0.61,
-     "percentil_pares": 21.7,
-     "risco": 78.3,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 20.8,
+     "risco": 79.2,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 9.93,
-     "percentil_pares": 43.5,
-     "risco": 43.5,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 45.8,
+     "risco": 45.8,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 92.17,
      "percentil_pares": 100.0,
      "risco": 100.0,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 89.48,
-     "percentil_pares": 91.3,
-     "risco": 91.3,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 91.7,
+     "risco": 91.7,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -24209,91 +24209,91 @@
     },
     {
      "anomes": "201903",
-     "score": 44.0
+     "score": 44.3
     },
     {
      "anomes": "201906",
-     "score": 45.9
+     "score": 46.3
     },
     {
      "anomes": "201909",
-     "score": 45.2
+     "score": 45.5
     },
     {
      "anomes": "201912",
-     "score": 48.7
-    },
-    {
-     "anomes": "202003",
-     "score": 41.6
-    },
-    {
-     "anomes": "202006",
-     "score": 42.5
-    },
-    {
-     "anomes": "202009",
-     "score": 41.8
-    },
-    {
-     "anomes": "202012",
-     "score": 44.9
-    },
-    {
-     "anomes": "202103",
-     "score": 44.0
-    },
-    {
-     "anomes": "202206",
-     "score": 46.1
-    },
-    {
-     "anomes": "202209",
-     "score": 43.9
-    },
-    {
-     "anomes": "202212",
-     "score": 44.6
-    },
-    {
-     "anomes": "202303",
-     "score": 43.3
-    },
-    {
-     "anomes": "202306",
-     "score": 43.9
-    },
-    {
-     "anomes": "202309",
-     "score": 48.2
-    },
-    {
-     "anomes": "202312",
-     "score": 48.2
-    },
-    {
-     "anomes": "202403",
-     "score": 48.7
-    },
-    {
-     "anomes": "202406",
      "score": 49.1
     },
     {
+     "anomes": "202003",
+     "score": 42.0
+    },
+    {
+     "anomes": "202006",
+     "score": 42.9
+    },
+    {
+     "anomes": "202009",
+     "score": 42.1
+    },
+    {
+     "anomes": "202012",
+     "score": 45.2
+    },
+    {
+     "anomes": "202103",
+     "score": 44.4
+    },
+    {
+     "anomes": "202206",
+     "score": 46.5
+    },
+    {
+     "anomes": "202209",
+     "score": 44.2
+    },
+    {
+     "anomes": "202212",
+     "score": 45.0
+    },
+    {
+     "anomes": "202303",
+     "score": 43.6
+    },
+    {
+     "anomes": "202306",
+     "score": 44.2
+    },
+    {
+     "anomes": "202309",
+     "score": 48.6
+    },
+    {
+     "anomes": "202312",
+     "score": 48.6
+    },
+    {
+     "anomes": "202403",
+     "score": 49.1
+    },
+    {
+     "anomes": "202406",
+     "score": 49.5
+    },
+    {
      "anomes": "202409",
-     "score": 48.2
+     "score": 48.6
     },
     {
      "anomes": "202412",
-     "score": 49.6
+     "score": 50.0
     },
     {
      "anomes": "202503",
-     "score": 41.1
+     "score": 41.5
     },
     {
      "anomes": "202506",
-     "score": 39.7
+     "score": 40.0
     },
     {
      "anomes": "202509",
@@ -24765,59 +24765,59 @@
     },
     {
      "anomes": "202212",
-     "score": 39.3
+     "score": 39.8
     },
     {
      "anomes": "202303",
-     "score": 38.1
+     "score": 39.8
     },
     {
      "anomes": "202306",
-     "score": 31.6
+     "score": 33.8
     },
     {
      "anomes": "202309",
-     "score": 35.0
+     "score": 35.7
     },
     {
      "anomes": "202312",
-     "score": 39.3
+     "score": 39.8
     },
     {
      "anomes": "202403",
-     "score": 42.5
+     "score": 44.1
     },
     {
      "anomes": "202406",
-     "score": 40.0
+     "score": 41.6
     },
     {
      "anomes": "202409",
-     "score": 27.5
+     "score": 29.8
     },
     {
      "anomes": "202412",
-     "score": 29.0
+     "score": 31.2
     },
     {
      "anomes": "202503",
-     "score": 38.0
+     "score": 39.8
     },
     {
      "anomes": "202506",
-     "score": 39.2
+     "score": 40.8
     },
     {
      "anomes": "202509",
-     "score": 38.1
+     "score": 40.1
     },
     {
      "anomes": "202512",
-     "score": 39.0
+     "score": 40.6
     },
     {
      "anomes": "202603",
-     "score": 33.5
+     "score": 35.4
     }
    ],
    "vulnerabilidade": {
@@ -24850,50 +24850,50 @@
    "carteira_brl": 8105163006.27,
    "pl_brl": 2082999559.82,
    "lucro_brl": 86038307.5899999,
-   "score": 33.5,
-   "score_anterior": 39.0,
-   "score_delta": -5.5,
+   "score": 35.4,
+   "score_anterior": 40.6,
+   "score_delta": -5.2,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 18.37,
-     "percentil_pares": 70.0,
-     "risco": 30.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 66.7,
+     "risco": 33.3,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 4.13,
-     "percentil_pares": 82.6,
-     "risco": 17.4,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 79.2,
+     "risco": 20.8,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 6.53,
-     "percentil_pares": 4.3,
-     "risco": 4.3,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 4.2,
+     "risco": 4.2,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 59.59,
-     "percentil_pares": 69.6,
-     "risco": 69.6,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 70.8,
+     "risco": 70.8,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 46.77,
-     "percentil_pares": 13.0,
-     "risco": 13.0,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 16.7,
+     "risco": 16.7,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 2311,
@@ -25061,11 +25061,11 @@
     },
     {
      "anomes": "201903",
-     "score": 53.2
+     "score": 53.8
     },
     {
      "anomes": "201906",
-     "score": 52.8
+     "score": 53.2
     },
     {
      "anomes": "201909",
@@ -25077,31 +25077,31 @@
     },
     {
      "anomes": "202003",
-     "score": 47.4
+     "score": 47.3
     },
     {
      "anomes": "202006",
-     "score": 57.9
+     "score": 58.0
     },
     {
      "anomes": "202009",
-     "score": 44.4
+     "score": 44.8
     },
     {
      "anomes": "202012",
-     "score": 46.2
+     "score": 46.1
     },
     {
      "anomes": "202103",
-     "score": 46.6
+     "score": 46.5
     },
     {
      "anomes": "202106",
-     "score": 48.3
+     "score": 48.2
     },
     {
      "anomes": "202109",
-     "score": 46.2
+     "score": 46.5
     },
     {
      "anomes": "202112",
@@ -25109,55 +25109,55 @@
     },
     {
      "anomes": "202203",
-     "score": 42.5
+     "score": 42.4
     },
     {
      "anomes": "202206",
-     "score": 43.1
+     "score": 43.4
     },
     {
      "anomes": "202209",
-     "score": 42.1
+     "score": 42.4
     },
     {
      "anomes": "202212",
-     "score": 43.7
+     "score": 43.6
     },
     {
      "anomes": "202303",
-     "score": 38.8
+     "score": 38.6
     },
     {
      "anomes": "202306",
-     "score": 39.0
+     "score": 38.8
     },
     {
      "anomes": "202309",
-     "score": 36.6
+     "score": 36.8
     },
     {
      "anomes": "202312",
-     "score": 41.9
+     "score": 42.3
     },
     {
      "anomes": "202403",
-     "score": 43.8
+     "score": 44.5
     },
     {
      "anomes": "202406",
-     "score": 46.0
+     "score": 45.9
     },
     {
      "anomes": "202409",
-     "score": 44.2
+     "score": 44.5
     },
     {
      "anomes": "202412",
-     "score": 42.2
+     "score": 42.1
     },
     {
      "anomes": "202503",
-     "score": 51.9
+     "score": 52.0
     },
     {
      "anomes": "202506",
@@ -25455,59 +25455,59 @@
     },
     {
      "anomes": "202212",
-     "score": 60.7
+     "score": 60.2
     },
     {
      "anomes": "202303",
-     "score": 60.7
+     "score": 61.4
     },
     {
      "anomes": "202306",
-     "score": 64.5
+     "score": 65.0
     },
     {
      "anomes": "202309",
-     "score": 66.2
+     "score": 65.5
     },
     {
      "anomes": "202312",
-     "score": 66.7
-    },
-    {
-     "anomes": "202403",
-     "score": 71.2
-    },
-    {
-     "anomes": "202406",
-     "score": 68.8
-    },
-    {
-     "anomes": "202409",
-     "score": 66.2
-    },
-    {
-     "anomes": "202412",
-     "score": 57.9
-    },
-    {
-     "anomes": "202503",
-     "score": 60.1
-    },
-    {
-     "anomes": "202506",
      "score": 67.0
     },
     {
+     "anomes": "202403",
+     "score": 71.4
+    },
+    {
+     "anomes": "202406",
+     "score": 69.0
+    },
+    {
+     "anomes": "202409",
+     "score": 66.7
+    },
+    {
+     "anomes": "202412",
+     "score": 58.8
+    },
+    {
+     "anomes": "202503",
+     "score": 61.1
+    },
+    {
+     "anomes": "202506",
+     "score": 67.6
+    },
+    {
      "anomes": "202509",
-     "score": 64.1
+     "score": 64.8
     },
     {
      "anomes": "202512",
-     "score": 64.7
+     "score": 66.1
     },
     {
      "anomes": "202603",
-     "score": 61.9
+     "score": 63.6
     }
    ],
    "vulnerabilidade": {
@@ -25540,50 +25540,50 @@
    "carteira_brl": 9210211504.36,
    "pl_brl": 1316854868.86,
    "lucro_brl": 23297276.4399999,
-   "score": 61.9,
-   "score_anterior": 64.7,
-   "score_delta": -2.8,
+   "score": 63.6,
+   "score_anterior": 66.1,
+   "score_delta": -2.5,
    "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 17.21,
-     "percentil_pares": 60.0,
-     "risco": 40.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 57.1,
+     "risco": 42.9,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 1.77,
-     "percentil_pares": 34.8,
-     "risco": 65.2,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 33.3,
+     "risco": 66.7,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 10.18,
-     "percentil_pares": 47.8,
-     "risco": 47.8,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 68.7,
-     "percentil_pares": 78.3,
-     "risco": 78.3,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 79.2,
+     "risco": 79.2,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 86.82,
-     "percentil_pares": 78.3,
-     "risco": 78.3,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 79.2,
+     "risco": 79.2,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -25701,59 +25701,59 @@
     },
     {
      "anomes": "202212",
-     "score": 41.7
+     "score": 42.0
     },
     {
      "anomes": "202303",
-     "score": 46.4
+     "score": 47.8
     },
     {
      "anomes": "202306",
-     "score": 48.7
+     "score": 50.0
     },
     {
      "anomes": "202309",
-     "score": 55.0
+     "score": 54.8
     },
     {
      "anomes": "202312",
-     "score": 48.8
+     "score": 48.9
     },
     {
      "anomes": "202403",
-     "score": 60.0
+     "score": 60.7
     },
     {
      "anomes": "202406",
-     "score": 47.5
+     "score": 48.8
     },
     {
      "anomes": "202409",
-     "score": 51.2
+     "score": 52.4
     },
     {
      "anomes": "202412",
-     "score": 43.4
+     "score": 45.0
     },
     {
      "anomes": "202503",
-     "score": 59.5
+     "score": 60.3
     },
     {
      "anomes": "202506",
-     "score": 65.0
+     "score": 65.5
     },
     {
      "anomes": "202509",
-     "score": 48.0
+     "score": 49.4
     },
     {
      "anomes": "202512",
-     "score": 44.5
+     "score": 46.4
     },
     {
      "anomes": "202603",
-     "score": 57.5
+     "score": 58.9
     }
    ],
    "vulnerabilidade": {
@@ -25786,50 +25786,50 @@
    "carteira_brl": 7616525967.53,
    "pl_brl": 1206584783.94,
    "lucro_brl": 613064.450000033,
-   "score": 57.5,
-   "score_anterior": 44.5,
-   "score_delta": 13.0,
+   "score": 58.9,
+   "score_anterior": 46.4,
+   "score_delta": 12.5,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 15.35,
-     "percentil_pares": 30.0,
-     "risco": 70.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 28.6,
+     "risco": 71.4,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 0.05,
-     "percentil_pares": 17.4,
-     "risco": 82.6,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 16.7,
+     "risco": 83.3,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 11.06,
-     "percentil_pares": 52.2,
-     "risco": 52.2,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 54.2,
+     "risco": 54.2,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 57.09,
-     "percentil_pares": 65.2,
-     "risco": 65.2,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 66.7,
+     "risco": 66.7,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 62.83,
-     "percentil_pares": 30.4,
-     "risco": 30.4,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 33.3,
+     "risco": 33.3,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 2250,
@@ -25939,47 +25939,47 @@
    "historico_score": [
     {
      "anomes": "202309",
-     "score": 41.2
+     "score": 41.6
     },
     {
      "anomes": "202312",
-     "score": 39.3
+     "score": 39.8
     },
     {
      "anomes": "202403",
-     "score": 41.2
+     "score": 42.9
     },
     {
      "anomes": "202406",
-     "score": 36.2
+     "score": 38.1
     },
     {
      "anomes": "202409",
-     "score": 36.2
+     "score": 38.1
     },
     {
      "anomes": "202412",
-     "score": 36.8
+     "score": 38.8
     },
     {
      "anomes": "202503",
-     "score": 42.7
+     "score": 44.2
     },
     {
      "anomes": "202506",
-     "score": 42.6
+     "score": 44.0
     },
     {
      "anomes": "202509",
-     "score": 37.4
+     "score": 39.1
     },
     {
      "anomes": "202512",
-     "score": 38.9
+     "score": 41.0
     },
     {
      "anomes": "202603",
-     "score": 40.8
+     "score": 43.0
     }
    ],
    "vulnerabilidade": {
@@ -26012,50 +26012,50 @@
    "carteira_brl": 7484059278.78,
    "pl_brl": 1396904207.16,
    "lucro_brl": 71308703.8899999,
-   "score": 40.8,
-   "score_anterior": 38.9,
-   "score_delta": 1.9,
+   "score": 43.0,
+   "score_anterior": 41.0,
+   "score_delta": 2.0,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 16.89,
-     "percentil_pares": 50.0,
-     "risco": 50.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 47.6,
+     "risco": 52.4,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 5.1,
-     "percentil_pares": 95.7,
-     "risco": 4.3,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 91.7,
+     "risco": 8.3,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 9.4,
-     "percentil_pares": 34.8,
-     "risco": 34.8,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 57.0,
-     "percentil_pares": 60.9,
-     "risco": 60.9,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 65.61,
-     "percentil_pares": 39.1,
-     "risco": 39.1,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 41.7,
+     "risco": 41.7,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 2303,
@@ -26289,59 +26289,59 @@
     },
     {
      "anomes": "202212",
-     "score": 53.6
+     "score": 53.4
     },
     {
      "anomes": "202303",
-     "score": 61.9
+     "score": 63.6
     },
     {
      "anomes": "202306",
-     "score": 76.3
+     "score": 77.5
     },
     {
      "anomes": "202309",
-     "score": 75.0
+     "score": 76.2
     },
     {
      "anomes": "202312",
-     "score": 61.9
+     "score": 63.6
     },
     {
      "anomes": "202403",
-     "score": 65.0
+     "score": 66.7
     },
     {
      "anomes": "202406",
-     "score": 48.8
+     "score": 51.2
     },
     {
      "anomes": "202409",
-     "score": 57.5
+     "score": 58.4
     },
     {
      "anomes": "202412",
-     "score": 55.2
+     "score": 57.5
     },
     {
      "anomes": "202503",
-     "score": 71.8
+     "score": 73.2
     },
     {
      "anomes": "202506",
-     "score": 69.8
+     "score": 71.2
     },
     {
      "anomes": "202509",
-     "score": 62.8
+     "score": 63.5
     },
     {
      "anomes": "202512",
-     "score": 59.8
+     "score": 61.4
     },
     {
      "anomes": "202603",
-     "score": 64.2
+     "score": 65.7
     }
    ],
    "vulnerabilidade": {
@@ -26374,50 +26374,50 @@
    "carteira_brl": 4951824620.74,
    "pl_brl": 971102580.58,
    "lucro_brl": 30563763.2699999,
-   "score": 64.2,
-   "score_anterior": 59.8,
-   "score_delta": 4.4,
+   "score": 65.7,
+   "score_anterior": 61.4,
+   "score_delta": 4.3,
    "faixa": "risco elevado",
    "dimensoes": {
     "capital_basileia": {
      "valor": 13.31,
-     "percentil_pares": 5.0,
-     "risco": 95.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 4.8,
+     "risco": 95.2,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 3.15,
-     "percentil_pares": 56.5,
-     "risco": 43.5,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 54.2,
+     "risco": 45.8,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 13.48,
-     "percentil_pares": 65.2,
-     "risco": 65.2,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 66.7,
+     "risco": 66.7,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 37.82,
-     "percentil_pares": 34.8,
-     "risco": 34.8,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 37.5,
+     "risco": 37.5,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 88.56,
-     "percentil_pares": 82.6,
-     "risco": 82.6,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 83.3,
+     "risco": 83.3,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -26577,63 +26577,63 @@
     },
     {
      "anomes": "201903",
-     "score": 61.6
+     "score": 62.3
     },
     {
      "anomes": "201906",
-     "score": 57.3
+     "score": 57.9
     },
     {
      "anomes": "201909",
-     "score": 60.1
+     "score": 60.3
     },
     {
      "anomes": "201912",
-     "score": 61.4
+     "score": 61.6
     },
     {
      "anomes": "202003",
-     "score": 58.8
+     "score": 58.9
     },
     {
      "anomes": "202006",
-     "score": 56.1
+     "score": 56.3
     },
     {
      "anomes": "202009",
-     "score": 55.6
+     "score": 56.1
     },
     {
      "anomes": "202012",
-     "score": 53.8
+     "score": 53.9
     },
     {
      "anomes": "202103",
-     "score": 60.1
+     "score": 60.4
     },
     {
      "anomes": "202106",
-     "score": 57.8
+     "score": 57.9
     },
     {
      "anomes": "202109",
-     "score": 58.5
+     "score": 59.0
     },
     {
      "anomes": "202112",
-     "score": 59.9
+     "score": 60.1
     },
     {
      "anomes": "202203",
-     "score": 65.8
+     "score": 66.1
     },
     {
      "anomes": "202206",
-     "score": 58.6
+     "score": 59.2
     },
     {
      "anomes": "202209",
-     "score": 68.0
+     "score": 68.8
     },
     {
      "anomes": "202212",
@@ -26641,31 +26641,31 @@
     },
     {
      "anomes": "202303",
-     "score": 69.6
+     "score": 70.0
     },
     {
      "anomes": "202306",
-     "score": 66.7
+     "score": 67.0
     },
     {
      "anomes": "202309",
-     "score": 71.0
+     "score": 71.8
     },
     {
      "anomes": "202312",
-     "score": 73.7
+     "score": 74.1
     },
     {
      "anomes": "202403",
-     "score": 79.0
+     "score": 79.5
     },
     {
      "anomes": "202406",
-     "score": 83.0
+     "score": 83.7
     },
     {
      "anomes": "202409",
-     "score": 82.6
+     "score": 83.2
     },
     {
      "anomes": "202412",
@@ -26673,11 +26673,11 @@
     },
     {
      "anomes": "202503",
-     "score": 80.8
+     "score": 81.2
     },
     {
      "anomes": "202506",
-     "score": 80.9
+     "score": 81.0
     },
     {
      "anomes": "202509",
@@ -26915,59 +26915,59 @@
     },
     {
      "anomes": "202212",
-     "score": 41.6
-    },
-    {
-     "anomes": "202303",
-     "score": 45.2
-    },
-    {
-     "anomes": "202306",
-     "score": 44.7
-    },
-    {
-     "anomes": "202309",
-     "score": 41.2
-    },
-    {
-     "anomes": "202312",
-     "score": 41.7
-    },
-    {
-     "anomes": "202403",
-     "score": 41.2
-    },
-    {
-     "anomes": "202406",
-     "score": 41.2
-    },
-    {
-     "anomes": "202409",
-     "score": 41.2
-    },
-    {
-     "anomes": "202412",
      "score": 42.1
     },
     {
+     "anomes": "202303",
+     "score": 46.6
+    },
+    {
+     "anomes": "202306",
+     "score": 46.2
+    },
+    {
+     "anomes": "202309",
+     "score": 41.7
+    },
+    {
+     "anomes": "202312",
+     "score": 42.0
+    },
+    {
+     "anomes": "202403",
+     "score": 42.9
+    },
+    {
+     "anomes": "202406",
+     "score": 42.9
+    },
+    {
+     "anomes": "202409",
+     "score": 42.9
+    },
+    {
+     "anomes": "202412",
+     "score": 43.8
+    },
+    {
      "anomes": "202503",
-     "score": 25.7
+     "score": 27.8
     },
     {
      "anomes": "202506",
-     "score": 28.8
+     "score": 30.6
     },
     {
      "anomes": "202509",
-     "score": 26.1
+     "score": 28.1
     },
     {
      "anomes": "202512",
-     "score": 29.5
+     "score": 31.2
     },
     {
      "anomes": "202603",
-     "score": 26.8
+     "score": 28.6
     }
    ],
    "vulnerabilidade": {
@@ -27000,50 +27000,50 @@
    "carteira_brl": 7015815522.68,
    "pl_brl": 1519904157.28,
    "lucro_brl": 59343324.87,
-   "score": 26.8,
-   "score_anterior": 29.5,
-   "score_delta": -2.7,
+   "score": 28.6,
+   "score_anterior": 31.2,
+   "score_delta": -2.6,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 20.29,
-     "percentil_pares": 85.0,
-     "risco": 15.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 81.0,
+     "risco": 19.0,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 3.9,
-     "percentil_pares": 65.2,
-     "risco": 34.8,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 62.5,
+     "risco": 37.5,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 8.37,
-     "percentil_pares": 21.7,
-     "risco": 21.7,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 20.8,
+     "risco": 20.8,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 55.17,
-     "percentil_pares": 56.5,
-     "risco": 56.5,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 58.3,
+     "risco": 58.3,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 60.55,
-     "percentil_pares": 21.7,
-     "risco": 21.7,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 1742,
@@ -27153,35 +27153,35 @@
    "historico_score": [
     {
      "anomes": "202406",
-     "score": 43.8
+     "score": 45.2
     },
     {
      "anomes": "202409",
-     "score": 42.5
+     "score": 44.0
     },
     {
      "anomes": "202412",
-     "score": 42.1
+     "score": 43.8
     },
     {
      "anomes": "202503",
-     "score": 37.0
-    },
-    {
-     "anomes": "202506",
-     "score": 37.4
-    },
-    {
-     "anomes": "202509",
      "score": 38.6
     },
     {
+     "anomes": "202506",
+     "score": 38.8
+    },
+    {
+     "anomes": "202509",
+     "score": 40.1
+    },
+    {
      "anomes": "202512",
-     "score": 34.6
+     "score": 36.7
     },
     {
      "anomes": "202603",
-     "score": 33.6
+     "score": 36.0
     }
    ],
    "vulnerabilidade": {
@@ -27214,50 +27214,50 @@
    "carteira_brl": 6194351955.94,
    "pl_brl": 1338191469.96,
    "lucro_brl": 63645272.95,
-   "score": 33.6,
-   "score_anterior": 34.6,
-   "score_delta": -1.0,
+   "score": 36.0,
+   "score_anterior": 36.7,
+   "score_delta": -0.7,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 17.17,
-     "percentil_pares": 55.0,
-     "risco": 45.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 52.4,
+     "risco": 47.6,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 4.76,
-     "percentil_pares": 91.3,
-     "risco": 8.7,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 87.5,
+     "risco": 12.5,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 9.47,
-     "percentil_pares": 39.1,
-     "risco": 39.1,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 41.7,
+     "risco": 41.7,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 48.87,
-     "percentil_pares": 39.1,
-     "risco": 39.1,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 41.7,
+     "risco": 41.7,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 69.42,
-     "percentil_pares": 47.8,
-     "risco": 47.8,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 1823,
@@ -27423,31 +27423,31 @@
     },
     {
      "anomes": "201903",
-     "score": 59.3
+     "score": 59.9
     },
     {
      "anomes": "201906",
-     "score": 60.9
+     "score": 61.6
     },
     {
      "anomes": "201909",
-     "score": 63.6
+     "score": 64.3
     },
     {
      "anomes": "201912",
-     "score": 61.0
+     "score": 61.2
     },
     {
      "anomes": "202003",
-     "score": 62.7
+     "score": 63.0
     },
     {
      "anomes": "202006",
-     "score": 55.3
+     "score": 55.4
     },
     {
      "anomes": "202009",
-     "score": 50.9
+     "score": 51.3
     },
     {
      "anomes": "202012",
@@ -27455,15 +27455,15 @@
     },
     {
      "anomes": "202103",
-     "score": 45.8
+     "score": 46.1
     },
     {
      "anomes": "202106",
-     "score": 45.7
+     "score": 46.1
     },
     {
      "anomes": "202109",
-     "score": 45.8
+     "score": 46.1
     },
     {
      "anomes": "202112",
@@ -27471,59 +27471,59 @@
     },
     {
      "anomes": "202203",
-     "score": 57.5
+     "score": 57.6
     },
     {
      "anomes": "202206",
-     "score": 59.9
+     "score": 60.1
     },
     {
      "anomes": "202209",
-     "score": 72.8
+     "score": 73.2
     },
     {
      "anomes": "202212",
-     "score": 71.0
+     "score": 71.4
     },
     {
      "anomes": "202303",
-     "score": 69.7
+     "score": 70.0
     },
     {
      "anomes": "202306",
-     "score": 73.7
+     "score": 74.1
     },
     {
      "anomes": "202309",
-     "score": 63.0
+     "score": 63.6
     },
     {
      "anomes": "202312",
-     "score": 68.3
+     "score": 68.6
     },
     {
      "anomes": "202403",
-     "score": 56.2
+     "score": 56.8
     },
     {
      "anomes": "202406",
-     "score": 58.9
+     "score": 59.1
     },
     {
      "anomes": "202409",
-     "score": 59.4
+     "score": 59.1
     },
     {
      "anomes": "202412",
-     "score": 56.5
+     "score": 56.1
     },
     {
      "anomes": "202503",
-     "score": 62.5
+     "score": 62.9
     },
     {
      "anomes": "202506",
-     "score": 65.9
+     "score": 66.1
     },
     {
      "anomes": "202509",
@@ -27651,31 +27651,31 @@
    "historico_score": [
     {
      "anomes": "202106",
-     "score": 62.1
-    },
-    {
-     "anomes": "202109",
-     "score": 58.9
-    },
-    {
-     "anomes": "202112",
-     "score": 60.8
-    },
-    {
-     "anomes": "202203",
      "score": 62.3
     },
     {
+     "anomes": "202109",
+     "score": 59.0
+    },
+    {
+     "anomes": "202112",
+     "score": 61.0
+    },
+    {
+     "anomes": "202203",
+     "score": 62.5
+    },
+    {
      "anomes": "202206",
-     "score": 56.5
+     "score": 56.6
     },
     {
      "anomes": "202209",
-     "score": 40.8
+     "score": 41.0
     },
     {
      "anomes": "202503",
-     "score": 15.1
+     "score": 15.4
     },
     {
      "anomes": "202509",
@@ -27852,15 +27852,15 @@
     },
     {
      "anomes": "202212",
-     "score": 44.0
+     "score": 44.3
     },
     {
      "anomes": "202303",
-     "score": 45.2
+     "score": 46.6
     },
     {
      "anomes": "202306",
-     "score": 44.7
+     "score": 45.0
     },
     {
      "anomes": "202309",
@@ -27868,35 +27868,35 @@
     },
     {
      "anomes": "202312",
-     "score": 45.2
+     "score": 45.5
     },
     {
      "anomes": "202403",
-     "score": 51.2
+     "score": 52.4
     },
     {
      "anomes": "202406",
-     "score": 56.2
+     "score": 57.1
     },
     {
      "anomes": "202409",
-     "score": 51.2
+     "score": 52.4
     },
     {
      "anomes": "202506",
-     "score": 41.4
+     "score": 42.8
     },
     {
      "anomes": "202509",
-     "score": 56.0
+     "score": 56.8
     },
     {
      "anomes": "202512",
-     "score": 48.5
+     "score": 49.5
     },
     {
      "anomes": "202603",
-     "score": 44.4
+     "score": 45.6
     }
    ],
    "vulnerabilidade": {
@@ -27929,50 +27929,50 @@
    "carteira_brl": 7487560115.29,
    "pl_brl": 1344157813.39,
    "lucro_brl": 54584721.69,
-   "score": 44.4,
-   "score_anterior": 48.5,
-   "score_delta": -4.1,
+   "score": 45.6,
+   "score_anterior": 49.5,
+   "score_delta": -3.9,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 15.79,
-     "percentil_pares": 45.0,
-     "risco": 55.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 42.9,
+     "risco": 57.1,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 4.06,
-     "percentil_pares": 78.3,
-     "risco": 21.7,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 75.0,
+     "risco": 25.0,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 8.47,
-     "percentil_pares": 26.1,
-     "risco": 26.1,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 25.0,
+     "risco": 25.0,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 65.8,
-     "percentil_pares": 73.9,
-     "risco": 73.9,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 75.0,
+     "risco": 75.0,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 74.14,
-     "percentil_pares": 56.5,
-     "risco": 56.5,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 58.3,
+     "risco": 58.3,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 1992,
@@ -28098,35 +28098,35 @@
     },
     {
      "anomes": "202403",
-     "score": 51.2
+     "score": 52.4
     },
     {
      "anomes": "202406",
-     "score": 46.2
+     "score": 47.6
     },
     {
      "anomes": "202409",
-     "score": 45.0
+     "score": 46.4
     },
     {
      "anomes": "202503",
-     "score": 34.9
+     "score": 36.6
     },
     {
      "anomes": "202506",
-     "score": 31.8
+     "score": 33.4
     },
     {
      "anomes": "202509",
-     "score": 34.6
+     "score": 36.1
     },
     {
      "anomes": "202512",
-     "score": 33.3
+     "score": 35.4
     },
     {
      "anomes": "202603",
-     "score": 31.9
+     "score": 33.4
     }
    ],
    "vulnerabilidade": {
@@ -28159,50 +28159,50 @@
    "carteira_brl": 5955693601.29,
    "pl_brl": 1254584427.92,
    "lucro_brl": 50286708.51,
-   "score": 31.9,
-   "score_anterior": 33.3,
-   "score_delta": -1.4,
+   "score": 33.4,
+   "score_anterior": 35.4,
+   "score_delta": -2.0,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 18.25,
-     "percentil_pares": 65.0,
-     "risco": 35.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 61.9,
+     "risco": 38.1,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 4.01,
-     "percentil_pares": 73.9,
-     "risco": 26.1,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 70.8,
+     "risco": 29.2,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 9.05,
-     "percentil_pares": 30.4,
-     "risco": 30.4,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 29.2,
+     "risco": 29.2,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 52.43,
-     "percentil_pares": 47.8,
-     "risco": 47.8,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 50.0,
+     "risco": 50.0,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 72.65,
-     "percentil_pares": 52.2,
-     "risco": 52.2,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 54.2,
+     "risco": 54.2,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     },
     "concentracao_setorial": {
      "valor": 1726,
@@ -28392,19 +28392,19 @@
     },
     {
      "anomes": "202506",
-     "score": 49.2
+     "score": 50.7
     },
     {
      "anomes": "202509",
-     "score": 40.0
+     "score": 40.9
     },
     {
      "anomes": "202512",
-     "score": 46.3
+     "score": 47.7
     },
     {
      "anomes": "202603",
-     "score": 57.2
+     "score": 58.2
     }
    ],
    "vulnerabilidade": {
@@ -28437,50 +28437,50 @@
    "carteira_brl": 9212201125.86,
    "pl_brl": 1419172898.34,
    "lucro_brl": -34959071.5599999,
-   "score": 57.2,
-   "score_anterior": 46.3,
-   "score_delta": 10.9,
+   "score": 58.2,
+   "score_anterior": 47.7,
+   "score_delta": 10.5,
    "faixa": "atenção",
    "dimensoes": {
     "capital_basileia": {
      "valor": 19.52,
-     "percentil_pares": 75.0,
-     "risco": 25.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 71.4,
+     "risco": 28.6,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": -2.46,
-     "percentil_pares": 4.3,
-     "risco": 95.7,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 4.2,
+     "risco": 95.8,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 7.97,
-     "percentil_pares": 17.4,
-     "risco": 17.4,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "percentil_pares": 16.7,
+     "risco": 16.7,
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 81.42,
-     "percentil_pares": 82.6,
-     "risco": 82.6,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 83.3,
+     "risco": 83.3,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 80.78,
-     "percentil_pares": 65.2,
-     "risco": 65.2,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 66.7,
+     "risco": 66.7,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   },
@@ -28602,107 +28602,107 @@
     },
     {
      "anomes": "201903",
-     "score": 31.0
+     "score": 31.1
     },
     {
      "anomes": "201906",
-     "score": 32.7
-    },
-    {
-     "anomes": "201909",
-     "score": 36.4
-    },
-    {
-     "anomes": "201912",
-     "score": 38.6
-    },
-    {
-     "anomes": "202003",
      "score": 32.9
     },
     {
-     "anomes": "202006",
-     "score": 32.5
+     "anomes": "201909",
+     "score": 36.6
     },
     {
-     "anomes": "202009",
-     "score": 31.4
+     "anomes": "201912",
+     "score": 38.8
     },
     {
-     "anomes": "202012",
+     "anomes": "202003",
      "score": 33.0
     },
     {
+     "anomes": "202006",
+     "score": 32.6
+    },
+    {
+     "anomes": "202009",
+     "score": 31.6
+    },
+    {
+     "anomes": "202012",
+     "score": 33.2
+    },
+    {
      "anomes": "202103",
-     "score": 33.5
+     "score": 33.6
     },
     {
      "anomes": "202106",
-     "score": 31.9
+     "score": 32.0
     },
     {
      "anomes": "202109",
-     "score": 31.8
+     "score": 32.4
     },
     {
      "anomes": "202112",
-     "score": 31.0
+     "score": 31.1
     },
     {
      "anomes": "202203",
-     "score": 34.7
+     "score": 34.8
     },
     {
      "anomes": "202206",
-     "score": 32.8
+     "score": 32.9
     },
     {
      "anomes": "202209",
-     "score": 36.0
+     "score": 36.1
     },
     {
      "anomes": "202212",
-     "score": 38.4
+     "score": 38.6
     },
     {
      "anomes": "202303",
-     "score": 33.5
+     "score": 33.6
     },
     {
      "anomes": "202306",
-     "score": 36.9
+     "score": 36.6
     },
     {
      "anomes": "202309",
-     "score": 39.8
+     "score": 40.0
     },
     {
      "anomes": "202312",
-     "score": 40.2
+     "score": 40.5
     },
     {
      "anomes": "202403",
-     "score": 38.4
+     "score": 38.2
     },
     {
      "anomes": "202406",
-     "score": 37.5
+     "score": 37.3
     },
     {
      "anomes": "202409",
-     "score": 40.6
+     "score": 40.5
     },
     {
      "anomes": "202412",
-     "score": 40.1
+     "score": 39.9
     },
     {
      "anomes": "202503",
-     "score": 32.1
+     "score": 31.9
     },
     {
      "anomes": "202506",
-     "score": 30.7
+     "score": 30.5
     },
     {
      "anomes": "202509",
@@ -28983,11 +28983,11 @@
    "historico_score": [
     {
      "anomes": "202512",
-     "score": 29.4
+     "score": 31.5
     },
     {
      "anomes": "202603",
-     "score": 26.2
+     "score": 28.6
     }
    ],
    "vulnerabilidade": {
@@ -29020,50 +29020,50 @@
    "carteira_brl": 5640756342.22,
    "pl_brl": 1894618870.88,
    "lucro_brl": 86209326.82,
-   "score": 26.2,
-   "score_anterior": 29.4,
-   "score_delta": -3.2,
+   "score": 28.6,
+   "score_anterior": 31.5,
+   "score_delta": -2.9,
    "faixa": "risco baixo",
    "dimensoes": {
     "capital_basileia": {
      "valor": 22.7,
-     "percentil_pares": 95.0,
-     "risco": 5.0,
-     "mediana_pares": 16.89,
-     "q1_pares": 15.17,
-     "q3_pares": 19.52
+     "percentil_pares": 90.5,
+     "risco": 9.5,
+     "mediana_pares": 17.03,
+     "q1_pares": 15.21,
+     "q3_pares": 19.91
     },
     "rentabilidade": {
      "valor": 4.55,
-     "percentil_pares": 87.0,
-     "risco": 13.0,
-     "mediana_pares": 2.87,
-     "q1_pares": 1.14,
-     "q3_pares": 4.02
+     "percentil_pares": 83.3,
+     "risco": 16.7,
+     "mediana_pares": 3.11,
+     "q1_pares": 1.32,
+     "q3_pares": 4.06
     },
     "alavancagem": {
      "valor": 5.6,
      "percentil_pares": 0.0,
      "risco": 0.0,
-     "mediana_pares": 10.62,
-     "q1_pares": 8.44,
-     "q3_pares": 22.76
+     "mediana_pares": 10.18,
+     "q1_pares": 8.47,
+     "q3_pares": 22.46
     },
     "concentracao_credito": {
      "valor": 53.19,
-     "percentil_pares": 52.2,
-     "risco": 52.2,
-     "mediana_pares": 52.81,
-     "q1_pares": 15.87,
-     "q3_pares": 66.52
+     "percentil_pares": 54.2,
+     "risco": 54.2,
+     "mediana_pares": 52.43,
+     "q1_pares": 0.92,
+     "q3_pares": 65.8
     },
     "dependencia_captacoes": {
      "valor": 80.36,
-     "percentil_pares": 60.9,
-     "risco": 60.9,
-     "mediana_pares": 71.03,
-     "q1_pares": 60.58,
-     "q3_pares": 84.0
+     "percentil_pares": 62.5,
+     "risco": 62.5,
+     "mediana_pares": 69.42,
+     "q1_pares": 60.55,
+     "q3_pares": 83.06
     }
    }
   }
@@ -29181,7 +29181,7 @@
    "label": "S3 — porte entre 0,1% e 1% do PIB"
   },
   "S?": {
-   "n": 2,
+   "n": 1,
    "pool_fallback": true,
    "stats": {
     "basileia_pct": {
@@ -29218,33 +29218,33 @@
    "label": "S?"
   },
   "S4": {
-   "n": 24,
+   "n": 25,
    "pool_fallback": false,
    "stats": {
     "basileia_pct": {
-     "q1": 15.17,
-     "mediana": 16.89,
-     "q3": 19.52
+     "q1": 15.21,
+     "mediana": 17.03,
+     "q3": 19.91
     },
     "roe_pct": {
-     "q1": 1.14,
-     "mediana": 2.87,
-     "q3": 4.02
+     "q1": 1.32,
+     "mediana": 3.11,
+     "q3": 4.06
     },
     "alavancagem": {
-     "q1": 8.44,
-     "mediana": 10.62,
-     "q3": 22.76
+     "q1": 8.47,
+     "mediana": 10.18,
+     "q3": 22.46
     },
     "carteira_ativo_pct": {
-     "q1": 15.87,
-     "mediana": 52.81,
-     "q3": 66.52
+     "q1": 0.92,
+     "mediana": 52.43,
+     "q3": 65.8
     },
     "captacoes_ativo_pct": {
-     "q1": 60.58,
-     "mediana": 71.03,
-     "q3": 84.0
+     "q1": 60.55,
+     "mediana": 69.42,
+     "q3": 83.06
     },
     "hhi_setorial": {
      "q1": 1865.25,

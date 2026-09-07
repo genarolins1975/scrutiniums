@@ -9,13 +9,13 @@
   "sede": "Joinville/SC",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 390,
+  "n_pares": 394,
   "conglomerado_prudencial": "C0088651",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:52:00+00:00",
+  "atualizado_em": "2026-09-07T17:05:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 62.448.932",
   "participante_open_finance": null
@@ -49,7 +49,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 390,
+  "quantidade": 394,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -80,6 +80,10 @@
     "nome": "MERCADO PAGO IP - PRUDENCIAL"
    },
    {
+    "cod": "18189547",
+    "nome": "CLOUDWALK INSTITUIÇÃO DE PAGAMENTO E SER"
+   },
+   {
     "cod": "13220493",
     "nome": "BR PARTNERS BANCO DE INVESTIMENTO S.A."
    },
@@ -106,10 +110,6 @@
    {
     "cod": "26529420",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVES"
-   },
-   {
-    "cod": "C0030881",
-    "nome": "PARANÁ BANCO"
    }
   ],
   "quartis_basileia": {
@@ -205,7 +205,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 20.46,
+   "mediana_grupo": 20.5,
    "percentil": 100.0
   },
   {
@@ -215,7 +215,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 5.64,
-   "percentil": 30.6
+   "percentil": 30.8
   },
   {
    "indicador": "ROE do período",
@@ -224,7 +224,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 1.94,
-   "percentil": 9.8
+   "percentil": 9.9
   }
  ],
  "carteira": {
@@ -311,6 +311,7 @@
     8.49,
     -1.85,
     -1.2,
+    32.14,
     2.26,
     -2.02,
     0.68,
@@ -328,6 +329,7 @@
     -22.09,
     2.93,
     0.66,
+    -0.5,
     -0.05,
     -45.18,
     -0.67,
@@ -551,6 +553,7 @@
     9.26,
     3.99,
     20.9,
+    -20.36,
     0.61,
     1.77,
     2.27,
@@ -593,6 +596,7 @@
     -20.31,
     2.64,
     -1.78,
+    13.44,
     -120.42,
     3.09,
     15.05,
@@ -940,6 +944,7 @@
     30.93,
     10.06,
     17.87,
+    35.57,
     22.97,
     21.49,
     27.67,
@@ -973,6 +978,7 @@
     21.34,
     206.24,
     9.49,
+    31.14,
     15.52,
     26.07,
     34.24,
@@ -1012,7 +1018,7 @@
     89.84
    ],
    "meu": 52496.08,
-   "mediana": 20.46
+   "mediana": 20.5
   },
   "alav": {
    "valores": [
@@ -1073,6 +1079,7 @@
     11.06,
     5.5,
     1.78,
+    7.3,
     4.88,
     6.93,
     1.41,
@@ -1090,6 +1097,7 @@
     7.24,
     5.51,
     7.42,
+    1.06,
     10.03,
     4.07,
     2.98,
@@ -1313,6 +1321,7 @@
     20.08,
     14.65,
     7.84,
+    1.41,
     7.29,
     4.02,
     5.61,
@@ -1355,6 +1364,7 @@
     2.18,
     1.63,
     69.75,
+    9.37,
     1.04,
     6.94,
     29.75,

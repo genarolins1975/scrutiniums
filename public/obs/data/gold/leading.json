@@ -1,11 +1,11 @@
 {
- "gerado_em": "2026-09-05T12:52:04+00:00",
+ "gerado_em": "2026-09-07T17:05:34+00:00",
  "versao_metodologica": "v1.0 (MVP Fase 1)",
  "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes.",
  "sintese": {
-  "texto": "1 de 4 famílias de sinais estão em deterioração e 1 em melhora. As maiores pressões vêm de crédito não bancário (fidcs) e garantias e patrimônio. A inadimplência observada também já subiu no período — sinais e materialização caminham juntos.",
+  "texto": "0 de 4 famílias de sinais estão em deterioração e 1 em melhora. As maiores pressões vêm de garantias e patrimônio e pressão financeira das famílias. A inadimplência observada também já subiu no período — sinais e materialização caminham juntos.",
   "confianca": "moderada",
-  "n_deteriorando": 1,
+  "n_deteriorando": 0,
   "n_melhorando": 1,
   "inad_reagiu": true,
   "cobertura": "4/6 subíndices (Buscas integrado via exportação manual — página Tendências de Busca)"
@@ -522,19 +522,19 @@
   },
   "empresarial_judicial": {
    "nome": "Estresse Empresarial e Judicial",
-   "z_atual": -1.05,
-   "delta_3m": -1.06,
+   "z_atual": -1.02,
+   "delta_3m": -1.0,
    "tendencia": "caindo",
    "cobertura": "2/2 componentes",
    "confianca": "moderada",
    "contribuicoes": {
     "rj_yoy": -1.11,
-    "falencias_yoy": -0.99
+    "falencias_yoy": -0.93
    },
    "serie": [
     {
      "p": "202208",
-     "z": 2.07,
+     "z": 2.08,
      "n_comp": 2
     },
     {
@@ -549,7 +549,7 @@
     },
     {
      "p": "202211",
-     "z": 1.14,
+     "z": 1.17,
      "n_comp": 2
     },
     {
@@ -569,7 +569,7 @@
     },
     {
      "p": "202303",
-     "z": 0.64,
+     "z": 0.6,
      "n_comp": 2
     },
     {
@@ -579,7 +579,7 @@
     },
     {
      "p": "202305",
-     "z": 1.5,
+     "z": 1.51,
      "n_comp": 2
     },
     {
@@ -589,7 +589,7 @@
     },
     {
      "p": "202307",
-     "z": 0.83,
+     "z": 0.84,
      "n_comp": 2
     },
     {
@@ -609,7 +609,7 @@
     },
     {
      "p": "202311",
-     "z": -0.62,
+     "z": -0.64,
      "n_comp": 2
     },
     {
@@ -694,7 +694,7 @@
     },
     {
      "p": "202504",
-     "z": -0.12,
+     "z": -0.11,
      "n_comp": 2
     },
     {
@@ -754,7 +754,7 @@
     },
     {
      "p": "202604",
-     "z": 0.01,
+     "z": -0.02,
      "n_comp": 2
     },
     {
@@ -764,130 +764,273 @@
     },
     {
      "p": "202606",
-     "z": 1.08,
+     "z": 1.06,
      "n_comp": 2
     },
     {
      "p": "202607",
-     "z": -1.05,
+     "z": -1.02,
      "n_comp": 2
     }
    ],
    "ultima_ref": "202607"
   },
   "nao_bancario": {
-   "nome": "Crédito Não Bancário (FIDCs)",
-   "z_atual": 0.11,
-   "delta_3m": 1.47,
-   "tendencia": "subindo",
-   "cobertura": "1/1 componentes",
-   "confianca": "moderada",
+   "nome": "Crédito Não Bancário (FIDCs, CRI, CRA e emissões)",
+   "z_atual": 0.31,
+   "delta_3m": 0.02,
+   "tendencia": "estável",
+   "cobertura": "3/4 componentes",
+   "confianca": "baixa",
    "contribuicoes": {
-    "fidc_inad_pct": 0.11
+    "fidc_inad_pct": 0.53,
+    "cri_venc_pct": -1.08,
+    "cra_venc_pct": 1.22,
+    "emissoes_divida_yoy": 0.86
    },
    "serie": [
     {
-     "p": "202501",
+     "p": "202208",
      "z": -0.48,
-     "n_comp": 1
+     "n_comp": 3
+    },
+    {
+     "p": "202209",
+     "z": -0.16,
+     "n_comp": 3
+    },
+    {
+     "p": "202210",
+     "z": -0.12,
+     "n_comp": 3
+    },
+    {
+     "p": "202211",
+     "z": 0.05,
+     "n_comp": 3
+    },
+    {
+     "p": "202212",
+     "z": 0.29,
+     "n_comp": 3
+    },
+    {
+     "p": "202301",
+     "z": 0.08,
+     "n_comp": 3
+    },
+    {
+     "p": "202302",
+     "z": 0.14,
+     "n_comp": 3
+    },
+    {
+     "p": "202303",
+     "z": 0.17,
+     "n_comp": 3
+    },
+    {
+     "p": "202304",
+     "z": 0.42,
+     "n_comp": 3
+    },
+    {
+     "p": "202305",
+     "z": 0.38,
+     "n_comp": 3
+    },
+    {
+     "p": "202306",
+     "z": 0.48,
+     "n_comp": 3
+    },
+    {
+     "p": "202307",
+     "z": 0.12,
+     "n_comp": 3
+    },
+    {
+     "p": "202308",
+     "z": -0.34,
+     "n_comp": 3
+    },
+    {
+     "p": "202309",
+     "z": -0.23,
+     "n_comp": 3
+    },
+    {
+     "p": "202310",
+     "z": -0.24,
+     "n_comp": 3
+    },
+    {
+     "p": "202311",
+     "z": -0.3,
+     "n_comp": 3
+    },
+    {
+     "p": "202312",
+     "z": 0.55,
+     "n_comp": 3
+    },
+    {
+     "p": "202401",
+     "z": 0.5,
+     "n_comp": 3
+    },
+    {
+     "p": "202402",
+     "z": 0.43,
+     "n_comp": 3
+    },
+    {
+     "p": "202403",
+     "z": 0.32,
+     "n_comp": 3
+    },
+    {
+     "p": "202404",
+     "z": 0.18,
+     "n_comp": 3
+    },
+    {
+     "p": "202405",
+     "z": 0.1,
+     "n_comp": 3
+    },
+    {
+     "p": "202406",
+     "z": -0.22,
+     "n_comp": 3
+    },
+    {
+     "p": "202407",
+     "z": -0.36,
+     "n_comp": 3
+    },
+    {
+     "p": "202408",
+     "z": -0.45,
+     "n_comp": 3
+    },
+    {
+     "p": "202409",
+     "z": -0.44,
+     "n_comp": 3
+    },
+    {
+     "p": "202410",
+     "z": -1.24,
+     "n_comp": 3
+    },
+    {
+     "p": "202411",
+     "z": -1.12,
+     "n_comp": 3
+    },
+    {
+     "p": "202412",
+     "z": -1.04,
+     "n_comp": 3
+    },
+    {
+     "p": "202501",
+     "z": -0.96,
+     "n_comp": 3
     },
     {
      "p": "202502",
-     "z": -0.32,
-     "n_comp": 1
+     "z": -0.41,
+     "n_comp": 3
     },
     {
      "p": "202503",
-     "z": 0.09,
-     "n_comp": 1
+     "z": 0.34,
+     "n_comp": 4
     },
     {
      "p": "202504",
-     "z": -0.1,
-     "n_comp": 1
+     "z": 0.58,
+     "n_comp": 4
     },
     {
      "p": "202505",
-     "z": -0.19,
-     "n_comp": 1
+     "z": 0.76,
+     "n_comp": 4
     },
     {
      "p": "202506",
-     "z": -0.21,
-     "n_comp": 1
+     "z": 0.48,
+     "n_comp": 4
     },
     {
      "p": "202507",
-     "z": -0.83,
-     "n_comp": 1
+     "z": 0.53,
+     "n_comp": 4
     },
     {
      "p": "202508",
-     "z": -0.61,
-     "n_comp": 1
+     "z": 0.23,
+     "n_comp": 4
     },
     {
      "p": "202509",
-     "z": -0.14,
-     "n_comp": 1
+     "z": 0.73,
+     "n_comp": 4
     },
     {
      "p": "202510",
-     "z": -0.53,
-     "n_comp": 1
+     "z": 0.78,
+     "n_comp": 4
     },
     {
      "p": "202511",
-     "z": -0.6,
-     "n_comp": 1
+     "z": 0.73,
+     "n_comp": 4
     },
     {
      "p": "202512",
-     "z": 1.11,
-     "n_comp": 1
+     "z": 0.43,
+     "n_comp": 4
     },
     {
      "p": "202601",
-     "z": 0.72,
-     "n_comp": 1
+     "z": 0.49,
+     "n_comp": 4
     },
     {
      "p": "202602",
-     "z": 0.39,
-     "n_comp": 1
+     "z": 0.46,
+     "n_comp": 4
     },
     {
      "p": "202603",
-     "z": 0.86,
-     "n_comp": 1
+     "z": 1.02,
+     "n_comp": 4
     },
     {
      "p": "202604",
-     "z": -0.01,
-     "n_comp": 1
+     "z": 0.29,
+     "n_comp": 4
     },
     {
      "p": "202605",
-     "z": -1.36,
-     "n_comp": 1
+     "z": 0.42,
+     "n_comp": 4
     },
     {
      "p": "202606",
-     "z": -1.31,
-     "n_comp": 1
+     "z": 0.23,
+     "n_comp": 4
     },
     {
      "p": "202607",
-     "z": 3.41,
-     "n_comp": 1
-    },
-    {
-     "p": "202608",
-     "z": 0.11,
-     "n_comp": 1
+     "z": 0.31,
+     "n_comp": 3
     }
    ],
-   "ultima_ref": "202608"
+   "ultima_ref": "202607"
   }
  },
  "catalogo": [
@@ -1012,16 +1155,67 @@
   },
   {
    "signal_id": "fidc_inad_pct",
-   "name": "FIDCs — créditos vencidos inadimplentes / carteira",
+   "name": "FIDCs — créditos inadimplentes / carteira",
    "category": "nao_bancario",
    "description": "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs).",
-   "economic_rationale": "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs). Deterioração aqui pode anteceder o sistema bancário — originadores mais arriscados sentem o ciclo primeiro. Atraso ≠ perda: subordinação e garantias absorvem parte (estruturas heterogêneas).",
+   "economic_rationale": "FIDCs concentram crédito originado fora dos bancos (recebíveis, consignado privado, PMEs). Deterioração aqui pode anteceder o sistema bancário — originadores mais arriscados sentem o ciclo primeiro. Atraso ≠ perda: subordinação e garantias absorvem parte (estruturas heterogêneas). Meses com entrega parcial dos informes ficam fora.",
    "source_id": "CVM — informes mensais FIDC (tab I)",
    "frequency": "mensal",
    "geography_level": "Brasil",
    "original_unit": "%",
    "transformation": "% da carteira agregada",
    "expected_sign": "+",
+   "quality_status": "observado/calculado",
+   "license_status": "dados abertos",
+   "methodology_version": "v1.0",
+   "classificacao_conceitual": "antecedente candidato"
+  },
+  {
+   "signal_id": "cri_venc_pct",
+   "name": "CRI — créditos vencidos do lastro / créditos vinculados",
+   "category": "nao_bancario",
+   "description": "Certificados de recebíveis carregam crédito imobiliário fora dos balanços bancários; o lastro que deixa de pagar aparece no informe mensal da securitizadora antes de qualquer provisão bancária.",
+   "economic_rationale": "Certificados de recebíveis carregam crédito imobiliário fora dos balanços bancários; o lastro que deixa de pagar aparece no informe mensal da securitizadora antes de qualquer provisão bancária. Vencido ≠ perda: subordinação, sobrecolateral e coobrigação absorvem parte. Informe com erro de unidade e mês com entrega parcial ficam fora.",
+   "source_id": "CVM — informes mensais de securitizadoras (Res. 60)",
+   "frequency": "mensal",
+   "geography_level": "Brasil",
+   "original_unit": "%",
+   "transformation": "% dos créditos vinculados (agregado do sistema)",
+   "expected_sign": "+",
+   "quality_status": "observado/calculado",
+   "license_status": "dados abertos",
+   "methodology_version": "v1.0",
+   "classificacao_conceitual": "antecedente candidato"
+  },
+  {
+   "signal_id": "cra_venc_pct",
+   "name": "CRA — créditos vencidos do lastro / créditos vinculados",
+   "category": "nao_bancario",
+   "description": "Certificados de recebíveis carregam crédito do agronegócio fora dos balanços bancários; o lastro que deixa de pagar aparece no informe mensal da securitizadora antes de qualquer provisão bancária.",
+   "economic_rationale": "Certificados de recebíveis carregam crédito do agronegócio fora dos balanços bancários; o lastro que deixa de pagar aparece no informe mensal da securitizadora antes de qualquer provisão bancária. Vencido ≠ perda: subordinação, sobrecolateral e coobrigação absorvem parte. Informe com erro de unidade e mês com entrega parcial ficam fora.",
+   "source_id": "CVM — informes mensais de securitizadoras (Res. 60)",
+   "frequency": "mensal",
+   "geography_level": "Brasil",
+   "original_unit": "%",
+   "transformation": "% dos créditos vinculados (agregado do sistema)",
+   "expected_sign": "+",
+   "quality_status": "observado/calculado",
+   "license_status": "dados abertos",
+   "methodology_version": "v1.0",
+   "classificacao_conceitual": "antecedente candidato"
+  },
+  {
+   "signal_id": "emissoes_divida_yoy",
+   "name": "Emissões de dívida corporativa (debêntures e notas) — soma 12m, variação 12m",
+   "category": "nao_bancario",
+   "description": "Quando o mercado de capitais fecha para as empresas, a demanda volta aos bancos e o refinanciamento encarece: queda forte das emissões antecede aperto de crédito PJ.",
+   "economic_rationale": "Quando o mercado de capitais fecha para as empresas, a demanda volta aos bancos e o refinanciamento encarece: queda forte das emissões antecede aperto de crédito PJ. Alta é folga de funding. Valor registrado das ofertas encerradas (CVM), não a colocação final; fundos abertos fora.",
+   "source_id": "CVM — ofertas públicas de distribuição",
+   "frequency": "mensal",
+   "geography_level": "Brasil",
+   "original_unit": "%",
+   "transformation": "variação 12m da soma móvel de 12 meses (%)",
+   "expected_sign": "-",
    "quality_status": "observado/calculado",
    "license_status": "dados abertos",
    "methodology_version": "v1.0",
@@ -2434,7 +2628,7 @@
    },
    {
     "p": "202504",
-    "v": -14.815
+    "v": -13.889
    },
    {
     "p": "202505",
@@ -2482,7 +2676,7 @@
    },
    {
     "p": "202604",
-    "v": 7.609
+    "v": 5.376
    },
    {
     "p": "202605",
@@ -2490,7 +2684,7 @@
    },
    {
     "p": "202606",
-    "v": 8.791
+    "v": 7.692
    },
    {
     "p": "202607",
@@ -2576,7 +2770,7 @@
    },
    {
     "p": "202203",
-    "v": -1.205
+    "v": 0.0
    },
    {
     "p": "202204",
@@ -2608,7 +2802,7 @@
    },
    {
     "p": "202211",
-    "v": 16.923
+    "v": 18.462
    },
    {
     "p": "202212",
@@ -2624,7 +2818,7 @@
    },
    {
     "p": "202303",
-    "v": 36.585
+    "v": 34.94
    },
    {
     "p": "202304",
@@ -2656,7 +2850,7 @@
    },
    {
     "p": "202311",
-    "v": -11.842
+    "v": -12.987
    },
    {
     "p": "202312",
@@ -2784,89 +2978,851 @@
    },
    {
     "p": "202607",
-    "v": -25.758
+    "v": -24.242
    }
   ],
   "fidc_inad_pct": [
    {
-    "p": "202501",
-    "v": 2.615
-   },
-   {
-    "p": "202502",
-    "v": 2.696
-   },
-   {
     "p": "202503",
-    "v": 2.9
+    "v": 6.27
    },
    {
     "p": "202504",
-    "v": 2.806
+    "v": 6.47
    },
    {
     "p": "202505",
-    "v": 2.762
+    "v": 6.49
    },
    {
     "p": "202506",
-    "v": 2.75
+    "v": 5.65
    },
    {
     "p": "202507",
-    "v": 2.442
+    "v": 5.52
    },
    {
     "p": "202508",
-    "v": 2.55
+    "v": 5.33
    },
    {
     "p": "202509",
-    "v": 2.786
+    "v": 5.53
    },
    {
     "p": "202510",
-    "v": 2.591
+    "v": 5.34
    },
    {
     "p": "202511",
-    "v": 2.558
+    "v": 5.49
    },
    {
     "p": "202512",
-    "v": 3.413
+    "v": 4.95
    },
    {
     "p": "202601",
-    "v": 3.214
+    "v": 4.96
    },
    {
     "p": "202602",
-    "v": 3.051
+    "v": 5.08
    },
    {
     "p": "202603",
-    "v": 3.286
+    "v": 5.26
    },
    {
     "p": "202604",
-    "v": 2.851
+    "v": 5.15
    },
    {
     "p": "202605",
-    "v": 2.174
+    "v": 5.67
    },
    {
     "p": "202606",
-    "v": 2.202
+    "v": 5.81
+   }
+  ],
+  "cri_venc_pct": [
+   {
+    "p": "202207",
+    "v": 1.61
+   },
+   {
+    "p": "202208",
+    "v": 1.66
+   },
+   {
+    "p": "202209",
+    "v": 1.74
+   },
+   {
+    "p": "202210",
+    "v": 1.75
+   },
+   {
+    "p": "202211",
+    "v": 1.77
+   },
+   {
+    "p": "202212",
+    "v": 2.05
+   },
+   {
+    "p": "202301",
+    "v": 1.9
+   },
+   {
+    "p": "202302",
+    "v": 1.96
+   },
+   {
+    "p": "202303",
+    "v": 1.91
+   },
+   {
+    "p": "202304",
+    "v": 2.04
+   },
+   {
+    "p": "202305",
+    "v": 1.88
+   },
+   {
+    "p": "202306",
+    "v": 2.01
+   },
+   {
+    "p": "202307",
+    "v": 1.69
+   },
+   {
+    "p": "202308",
+    "v": 1.27
+   },
+   {
+    "p": "202309",
+    "v": 1.39
+   },
+   {
+    "p": "202310",
+    "v": 1.41
+   },
+   {
+    "p": "202311",
+    "v": 1.42
+   },
+   {
+    "p": "202312",
+    "v": 1.73
+   },
+   {
+    "p": "202401",
+    "v": 1.68
+   },
+   {
+    "p": "202402",
+    "v": 1.7
+   },
+   {
+    "p": "202403",
+    "v": 1.71
+   },
+   {
+    "p": "202404",
+    "v": 1.7
+   },
+   {
+    "p": "202405",
+    "v": 1.76
+   },
+   {
+    "p": "202406",
+    "v": 1.53
+   },
+   {
+    "p": "202407",
+    "v": 1.56
+   },
+   {
+    "p": "202408",
+    "v": 1.55
+   },
+   {
+    "p": "202409",
+    "v": 1.54
+   },
+   {
+    "p": "202410",
+    "v": 0.88
+   },
+   {
+    "p": "202411",
+    "v": 0.9
+   },
+   {
+    "p": "202412",
+    "v": 1.04
+   },
+   {
+    "p": "202501",
+    "v": 1.15
+   },
+   {
+    "p": "202502",
+    "v": 1.54
+   },
+   {
+    "p": "202503",
+    "v": 1.66
+   },
+   {
+    "p": "202504",
+    "v": 1.68
+   },
+   {
+    "p": "202505",
+    "v": 1.72
+   },
+   {
+    "p": "202506",
+    "v": 1.8
+   },
+   {
+    "p": "202507",
+    "v": 1.86
+   },
+   {
+    "p": "202508",
+    "v": 1.46
+   },
+   {
+    "p": "202509",
+    "v": 1.87
+   },
+   {
+    "p": "202510",
+    "v": 2.03
+   },
+   {
+    "p": "202511",
+    "v": 2.0
+   },
+   {
+    "p": "202512",
+    "v": 2.03
+   },
+   {
+    "p": "202601",
+    "v": 2.11
+   },
+   {
+    "p": "202602",
+    "v": 1.66
+   },
+   {
+    "p": "202603",
+    "v": 2.08
+   },
+   {
+    "p": "202604",
+    "v": 1.62
+   },
+   {
+    "p": "202605",
+    "v": 1.49
+   },
+   {
+    "p": "202606",
+    "v": 1.27
    },
    {
     "p": "202607",
-    "v": 4.562
+    "v": 1.34
+   }
+  ],
+  "cra_venc_pct": [
+   {
+    "p": "202008",
+    "v": 0.28
+   },
+   {
+    "p": "202009",
+    "v": 0.29
+   },
+   {
+    "p": "202010",
+    "v": 0.25
+   },
+   {
+    "p": "202011",
+    "v": 0.24
+   },
+   {
+    "p": "202012",
+    "v": 0.25
+   },
+   {
+    "p": "202101",
+    "v": 0.26
+   },
+   {
+    "p": "202102",
+    "v": 0.25
+   },
+   {
+    "p": "202103",
+    "v": 0.31
+   },
+   {
+    "p": "202104",
+    "v": 0.26
+   },
+   {
+    "p": "202105",
+    "v": 0.28
+   },
+   {
+    "p": "202106",
+    "v": 0.13
+   },
+   {
+    "p": "202107",
+    "v": 0.12
+   },
+   {
+    "p": "202108",
+    "v": 0.2
+   },
+   {
+    "p": "202109",
+    "v": 0.09
+   },
+   {
+    "p": "202110",
+    "v": 0.09
+   },
+   {
+    "p": "202111",
+    "v": 0.02
+   },
+   {
+    "p": "202112",
+    "v": 0.04
+   },
+   {
+    "p": "202201",
+    "v": 0.04
+   },
+   {
+    "p": "202202",
+    "v": 0.0
+   },
+   {
+    "p": "202203",
+    "v": 0.02
+   },
+   {
+    "p": "202204",
+    "v": 0.03
+   },
+   {
+    "p": "202205",
+    "v": 0.03
+   },
+   {
+    "p": "202206",
+    "v": 0.03
+   },
+   {
+    "p": "202207",
+    "v": 0.01
+   },
+   {
+    "p": "202208",
+    "v": 0.09
+   },
+   {
+    "p": "202209",
+    "v": 0.21
+   },
+   {
+    "p": "202210",
+    "v": 0.12
+   },
+   {
+    "p": "202211",
+    "v": 0.22
+   },
+   {
+    "p": "202212",
+    "v": 0.16
+   },
+   {
+    "p": "202301",
+    "v": 0.1
+   },
+   {
+    "p": "202302",
+    "v": 0.05
+   },
+   {
+    "p": "202303",
+    "v": 0.05
+   },
+   {
+    "p": "202304",
+    "v": 0.12
+   },
+   {
+    "p": "202305",
+    "v": 0.21
+   },
+   {
+    "p": "202306",
+    "v": 0.14
+   },
+   {
+    "p": "202307",
+    "v": 0.14
+   },
+   {
+    "p": "202308",
+    "v": 0.14
+   },
+   {
+    "p": "202309",
+    "v": 0.13
+   },
+   {
+    "p": "202310",
+    "v": 0.14
+   },
+   {
+    "p": "202311",
+    "v": 0.09
+   },
+   {
+    "p": "202312",
+    "v": 0.56
+   },
+   {
+    "p": "202401",
+    "v": 0.56
+   },
+   {
+    "p": "202402",
+    "v": 0.54
+   },
+   {
+    "p": "202403",
+    "v": 0.54
+   },
+   {
+    "p": "202404",
+    "v": 0.54
+   },
+   {
+    "p": "202405",
+    "v": 0.53
+   },
+   {
+    "p": "202406",
+    "v": 0.59
+   },
+   {
+    "p": "202407",
+    "v": 0.56
+   },
+   {
+    "p": "202408",
+    "v": 0.55
+   },
+   {
+    "p": "202409",
+    "v": 0.58
+   },
+   {
+    "p": "202410",
+    "v": 0.57
+   },
+   {
+    "p": "202411",
+    "v": 0.67
+   },
+   {
+    "p": "202412",
+    "v": 0.63
+   },
+   {
+    "p": "202501",
+    "v": 0.65
+   },
+   {
+    "p": "202502",
+    "v": 0.7
+   },
+   {
+    "p": "202503",
+    "v": 0.75
+   },
+   {
+    "p": "202504",
+    "v": 0.76
+   },
+   {
+    "p": "202505",
+    "v": 0.79
+   },
+   {
+    "p": "202506",
+    "v": 0.8
+   },
+   {
+    "p": "202507",
+    "v": 0.82
+   },
+   {
+    "p": "202508",
+    "v": 0.99
+   },
+   {
+    "p": "202509",
+    "v": 1.03
+   },
+   {
+    "p": "202510",
+    "v": 1.01
+   },
+   {
+    "p": "202511",
+    "v": 0.88
+   },
+   {
+    "p": "202512",
+    "v": 0.78
+   },
+   {
+    "p": "202601",
+    "v": 0.74
+   },
+   {
+    "p": "202602",
+    "v": 1.08
+   },
+   {
+    "p": "202603",
+    "v": 1.24
+   },
+   {
+    "p": "202604",
+    "v": 0.9
+   },
+   {
+    "p": "202605",
+    "v": 0.85
+   },
+   {
+    "p": "202606",
+    "v": 0.75
+   },
+   {
+    "p": "202607",
+    "v": 0.81
+   }
+  ],
+  "emissoes_divida_yoy": [
+   {
+    "p": "202009",
+    "v": -25.996
+   },
+   {
+    "p": "202010",
+    "v": -35.717
+   },
+   {
+    "p": "202011",
+    "v": -34.567
+   },
+   {
+    "p": "202012",
+    "v": -36.961
+   },
+   {
+    "p": "202101",
+    "v": -34.143
+   },
+   {
+    "p": "202102",
+    "v": -31.359
+   },
+   {
+    "p": "202103",
+    "v": -24.578
+   },
+   {
+    "p": "202104",
+    "v": -21.35
+   },
+   {
+    "p": "202105",
+    "v": -5.027
+   },
+   {
+    "p": "202106",
+    "v": 16.109
+   },
+   {
+    "p": "202107",
+    "v": 32.224
+   },
+   {
+    "p": "202108",
+    "v": 44.541
+   },
+   {
+    "p": "202109",
+    "v": 60.163
+   },
+   {
+    "p": "202110",
+    "v": 90.013
+   },
+   {
+    "p": "202111",
+    "v": 92.001
+   },
+   {
+    "p": "202112",
+    "v": 104.055
+   },
+   {
+    "p": "202201",
+    "v": 99.688
+   },
+   {
+    "p": "202202",
+    "v": 99.119
+   },
+   {
+    "p": "202203",
+    "v": 96.236
+   },
+   {
+    "p": "202204",
+    "v": 91.131
+   },
+   {
+    "p": "202205",
+    "v": 94.559
+   },
+   {
+    "p": "202206",
+    "v": 78.623
+   },
+   {
+    "p": "202207",
+    "v": 54.324
+   },
+   {
+    "p": "202208",
+    "v": 47.978
+   },
+   {
+    "p": "202209",
+    "v": 32.692
+   },
+   {
+    "p": "202210",
+    "v": 16.735
+   },
+   {
+    "p": "202211",
+    "v": 9.191
+   },
+   {
+    "p": "202212",
+    "v": 12.942
+   },
+   {
+    "p": "202301",
+    "v": 9.758
+   },
+   {
+    "p": "202302",
+    "v": 2.713
+   },
+   {
+    "p": "202303",
+    "v": -9.037
+   },
+   {
+    "p": "202304",
+    "v": -13.72
+   },
+   {
+    "p": "202305",
+    "v": -21.142
+   },
+   {
+    "p": "202306",
+    "v": -23.559
+   },
+   {
+    "p": "202307",
+    "v": -25.125
+   },
+   {
+    "p": "202308",
+    "v": -27.504
+   },
+   {
+    "p": "202309",
+    "v": -24.762
+   },
+   {
+    "p": "202310",
+    "v": -19.424
+   },
+   {
+    "p": "202311",
+    "v": -15.922
+   },
+   {
+    "p": "202312",
+    "v": -19.047
+   },
+   {
+    "p": "202401",
+    "v": -19.274
+   },
+   {
+    "p": "202402",
+    "v": -9.249
+   },
+   {
+    "p": "202403",
+    "v": 7.698
+   },
+   {
+    "p": "202404",
+    "v": 25.617
+   },
+   {
+    "p": "202405",
+    "v": 45.65
+   },
+   {
+    "p": "202406",
+    "v": 62.235
+   },
+   {
+    "p": "202407",
+    "v": 81.999
+   },
+   {
+    "p": "202408",
+    "v": 92.334
+   },
+   {
+    "p": "202409",
+    "v": 92.989
+   },
+   {
+    "p": "202410",
+    "v": 97.577
+   },
+   {
+    "p": "202411",
+    "v": 98.775
+   },
+   {
+    "p": "202412",
+    "v": 103.689
+   },
+   {
+    "p": "202501",
+    "v": 114.01
+   },
+   {
+    "p": "202502",
+    "v": 105.204
+   },
+   {
+    "p": "202503",
+    "v": 81.197
+   },
+   {
+    "p": "202504",
+    "v": 59.93
+   },
+   {
+    "p": "202505",
+    "v": 38.923
+   },
+   {
+    "p": "202506",
+    "v": 22.059
+   },
+   {
+    "p": "202507",
+    "v": 13.82
+   },
+   {
+    "p": "202508",
+    "v": 10.792
+   },
+   {
+    "p": "202509",
+    "v": 8.613
+   },
+   {
+    "p": "202510",
+    "v": 3.479
+   },
+   {
+    "p": "202511",
+    "v": 4.067
+   },
+   {
+    "p": "202512",
+    "v": -3.189
+   },
+   {
+    "p": "202601",
+    "v": -5.644
+   },
+   {
+    "p": "202602",
+    "v": -12.629
+   },
+   {
+    "p": "202603",
+    "v": -10.092
+   },
+   {
+    "p": "202604",
+    "v": -6.699
+   },
+   {
+    "p": "202605",
+    "v": -6.268
+   },
+   {
+    "p": "202606",
+    "v": -7.514
+   },
+   {
+    "p": "202607",
+    "v": -11.848
    },
    {
     "p": "202608",
-    "v": 2.91
+    "v": -15.675
    }
   ]
  },
@@ -2951,27 +3907,27 @@
    "corrs": [
     {
      "lag": 0,
-     "corr": 0.094,
+     "corr": 0.092,
      "n": 72
     },
     {
      "lag": 1,
-     "corr": 0.144,
+     "corr": 0.142,
      "n": 71
     },
     {
      "lag": 2,
-     "corr": 0.152,
+     "corr": 0.15,
      "n": 70
     },
     {
      "lag": 3,
-     "corr": 0.162,
+     "corr": 0.161,
      "n": 69
     },
     {
      "lag": 4,
-     "corr": 0.163,
+     "corr": 0.164,
      "n": 68
     },
     {
@@ -2981,12 +3937,12 @@
     },
     {
      "lag": 6,
-     "corr": 0.214,
+     "corr": 0.215,
      "n": 66
     },
     {
      "lag": 7,
-     "corr": 0.222,
+     "corr": 0.223,
      "n": 65
     },
     {
@@ -2996,17 +3952,17 @@
     },
     {
      "lag": 9,
-     "corr": 0.16,
+     "corr": 0.161,
      "n": 63
     },
     {
      "lag": 10,
-     "corr": 0.145,
+     "corr": 0.146,
      "n": 62
     },
     {
      "lag": 11,
-     "corr": 0.13,
+     "corr": 0.131,
      "n": 61
     },
     {
@@ -3028,69 +3984,294 @@
     {
      "lag": 0,
      "corr": null,
-     "n": 19
+     "n": 16
     },
     {
      "lag": 1,
      "corr": null,
-     "n": 18
+     "n": 16
     },
     {
      "lag": 2,
      "corr": null,
-     "n": 17
+     "n": 15
     },
     {
      "lag": 3,
      "corr": null,
-     "n": 16
+     "n": 14
     },
     {
      "lag": 4,
      "corr": null,
-     "n": 15
+     "n": 13
     },
     {
      "lag": 5,
      "corr": null,
-     "n": 14
+     "n": 12
     },
     {
      "lag": 6,
      "corr": null,
-     "n": 13
+     "n": 11
     },
     {
      "lag": 7,
      "corr": null,
-     "n": 12
+     "n": 10
     },
     {
      "lag": 8,
      "corr": null,
-     "n": 11
+     "n": 9
     },
     {
      "lag": 9,
      "corr": null,
-     "n": 10
+     "n": 8
     },
     {
      "lag": 10,
      "corr": null,
-     "n": 9
+     "n": 7
     },
     {
      "lag": 11,
      "corr": null,
-     "n": 8
+     "n": 6
     },
     {
      "lag": 12,
      "corr": null,
-     "n": 7
+     "n": 5
     }
    ]
+  },
+  {
+   "signal_id": "cri_venc_pct",
+   "corrs": [
+    {
+     "lag": 0,
+     "corr": 0.133,
+     "n": 49
+    },
+    {
+     "lag": 1,
+     "corr": 0.26,
+     "n": 48
+    },
+    {
+     "lag": 2,
+     "corr": 0.361,
+     "n": 47
+    },
+    {
+     "lag": 3,
+     "corr": 0.377,
+     "n": 46
+    },
+    {
+     "lag": 4,
+     "corr": 0.43,
+     "n": 45
+    },
+    {
+     "lag": 5,
+     "corr": 0.315,
+     "n": 44
+    },
+    {
+     "lag": 6,
+     "corr": 0.263,
+     "n": 43
+    },
+    {
+     "lag": 7,
+     "corr": 0.16,
+     "n": 42
+    },
+    {
+     "lag": 8,
+     "corr": 0.033,
+     "n": 41
+    },
+    {
+     "lag": 9,
+     "corr": -0.096,
+     "n": 40
+    },
+    {
+     "lag": 10,
+     "corr": -0.196,
+     "n": 39
+    },
+    {
+     "lag": 11,
+     "corr": -0.281,
+     "n": 38
+    },
+    {
+     "lag": 12,
+     "corr": -0.301,
+     "n": 37
+    }
+   ],
+   "melhor_lag": 4,
+   "melhor_corr": 0.43,
+   "n": 45,
+   "status": "antecedente candidato (correlação defasada > contemporânea)",
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
+  },
+  {
+   "signal_id": "cra_venc_pct",
+   "corrs": [
+    {
+     "lag": 0,
+     "corr": 0.74,
+     "n": 72
+    },
+    {
+     "lag": 1,
+     "corr": 0.732,
+     "n": 71
+    },
+    {
+     "lag": 2,
+     "corr": 0.733,
+     "n": 70
+    },
+    {
+     "lag": 3,
+     "corr": 0.722,
+     "n": 69
+    },
+    {
+     "lag": 4,
+     "corr": 0.72,
+     "n": 68
+    },
+    {
+     "lag": 5,
+     "corr": 0.711,
+     "n": 67
+    },
+    {
+     "lag": 6,
+     "corr": 0.69,
+     "n": 66
+    },
+    {
+     "lag": 7,
+     "corr": 0.688,
+     "n": 65
+    },
+    {
+     "lag": 8,
+     "corr": 0.69,
+     "n": 64
+    },
+    {
+     "lag": 9,
+     "corr": 0.683,
+     "n": 63
+    },
+    {
+     "lag": 10,
+     "corr": 0.667,
+     "n": 62
+    },
+    {
+     "lag": 11,
+     "corr": 0.656,
+     "n": 61
+    },
+    {
+     "lag": 12,
+     "corr": 0.642,
+     "n": 60
+    }
+   ],
+   "melhor_lag": 0,
+   "melhor_corr": 0.74,
+   "n": 72,
+   "status": "associação contemporânea/exploratória",
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
+  },
+  {
+   "signal_id": "emissoes_divida_yoy",
+   "corrs": [
+    {
+     "lag": 0,
+     "corr": -0.227,
+     "n": 71
+    },
+    {
+     "lag": 1,
+     "corr": -0.186,
+     "n": 70
+    },
+    {
+     "lag": 2,
+     "corr": -0.141,
+     "n": 69
+    },
+    {
+     "lag": 3,
+     "corr": -0.092,
+     "n": 68
+    },
+    {
+     "lag": 4,
+     "corr": -0.039,
+     "n": 67
+    },
+    {
+     "lag": 5,
+     "corr": 0.026,
+     "n": 66
+    },
+    {
+     "lag": 6,
+     "corr": 0.101,
+     "n": 65
+    },
+    {
+     "lag": 7,
+     "corr": 0.172,
+     "n": 64
+    },
+    {
+     "lag": 8,
+     "corr": 0.25,
+     "n": 63
+    },
+    {
+     "lag": 9,
+     "corr": 0.327,
+     "n": 62
+    },
+    {
+     "lag": 10,
+     "corr": 0.405,
+     "n": 61
+    },
+    {
+     "lag": 11,
+     "corr": 0.48,
+     "n": 60
+    },
+    {
+     "lag": 12,
+     "corr": 0.55,
+     "n": 59
+    }
+   ],
+   "melhor_lag": 12,
+   "melhor_corr": 0.55,
+   "n": 59,
+   "status": "antecedente candidato (correlação defasada > contemporânea)",
+   "ressalva": "correlação NÃO valida antecedência: promoção plena exige Granger + ganho fora da amostra + estabilidade (protocolo da aba Protocolo e regimes)."
   },
   {
    "signal_id": "comprometimento",
@@ -3328,6 +4509,11 @@
    "fonte": "CVM FIDC",
    "status": "dados abertos",
    "uso": "integrado"
+  },
+  {
+   "fonte": "CVM securitizadoras (CRI e CRA) e ofertas públicas",
+   "status": "dados abertos",
+   "uso": "integrado (05/09/2026) — página Crédito ampliado"
   },
   {
    "fonte": "CNJ/DataJud",

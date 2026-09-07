@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-05T12:51:51+00:00",
+ "gerado_em": "2026-09-07T17:05:20+00:00",
  "titulo": "Recordes nas séries",
  "recordes": [
   {
@@ -52,6 +52,42 @@
    "rotulo": "máximo de toda a série (desde 2012-01)"
   },
   {
+   "serie": "dir_inad_total",
+   "nome": "Inadimplência (>90 dias) - recursos direcionados - Total",
+   "unidade": "%",
+   "tipo": "maximo_historico",
+   "valor": 2.91,
+   "ref": "2026-07-01",
+   "desde": "2012-01-01",
+   "meses": 174,
+   "anos": 14.5,
+   "rotulo": "máximo de toda a série (desde 2012-01)"
+  },
+  {
+   "serie": "dir_inad_pf",
+   "nome": "Inadimplência (>90 dias) - direcionado - Pessoas físicas",
+   "unidade": "%",
+   "tipo": "maximo_historico",
+   "valor": 3.37,
+   "ref": "2026-07-01",
+   "desde": "2012-01-01",
+   "meses": 174,
+   "anos": 14.5,
+   "rotulo": "máximo de toda a série (desde 2012-01)"
+  },
+  {
+   "serie": "dir_prazo_pj",
+   "nome": "Prazo médio das concessões direcionadas - Pessoas jurídicas",
+   "unidade": "meses",
+   "tipo": "menor_desde",
+   "valor": 72.54,
+   "ref": "2026-07-01",
+   "desde": "2012-01-01",
+   "meses": 174,
+   "anos": 14.5,
+   "rotulo": "menor desde 2012-01"
+  },
+  {
    "serie": "comprometimento",
    "nome": "Comprometimento de renda das famílias com o serviço da dívida do SFN",
    "unidade": "%",
@@ -88,6 +124,18 @@
    "rotulo": "maior desde 2017-11"
   },
   {
+   "serie": "dir_inad_pj",
+   "nome": "Inadimplência (>90 dias) - direcionado - Pessoas jurídicas",
+   "unidade": "%",
+   "tipo": "maior_desde",
+   "valor": 2.08,
+   "ref": "2026-07-01",
+   "desde": "2020-08-01",
+   "meses": 71,
+   "anos": 5.9,
+   "rotulo": "maior desde 2020-08"
+  },
+  {
    "serie": "consig_inss_inad",
    "nome": "Consignado INSS - inadimplência acima de 90 dias",
    "unidade": "%",
@@ -112,7 +160,7 @@
    "rotulo": "maior desde 2024-05"
   }
  ],
- "series_elegiveis": 28,
+ "series_elegiveis": 42,
  "janela_minima_meses": 24,
  "metodo": "Para a observação mais recente de cada série elegível: máximo/mínimo de toda a série histórica, ou 'maior/menor desde <mês>' quando a janela é de pelo menos 24 meses. Só séries de razão (%, p.p., meses) — séries nominais em R$ e índices de nível (IVG-R, IBC-Br) crescem com o tempo e fariam recorde trivial todo mês, então ficam fora. Recalculado do zero a cada execução.",
  "cautelas": [

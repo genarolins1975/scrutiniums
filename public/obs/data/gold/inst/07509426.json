@@ -15,7 +15,7 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:51:55+00:00",
+  "atualizado_em": "2026-09-07T17:05:24+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 07.509.426",
   "participante_open_finance": null
@@ -29,7 +29,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Basileia de 13.4% (abaixo da mediana do grupo S5: 30.0%).",
+    "texto": "Basileia de 13.4% (abaixo da mediana do grupo S5: 30.1%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -127,8 +127,8 @@
   ],
   "quartis_basileia": {
    "q1": 18.9,
-   "mediana": 30.0,
-   "q3": 91.9
+   "mediana": 30.1,
+   "q3": 92.3
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -222,7 +222,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Basileia de 13.4% (abaixo da mediana do grupo S5: 30.0%).",
+   "texto": "Basileia de 13.4% (abaixo da mediana do grupo S5: 30.1%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -243,7 +243,7 @@
    "unit": "%",
    "d_tri": -0.06,
    "vs_pares": "abaixo",
-   "mediana_grupo": 29.99,
+   "mediana_grupo": 30.09,
    "percentil": 5.2
   },
   {
@@ -252,7 +252,7 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.27,
+   "mediana_grupo": 4.25,
    "percentil": 91.9
   },
   {
@@ -1129,7 +1129,6 @@
     2.31,
     -4.56,
     -1.43,
-    32.14,
     2.01,
     5.02,
     -66.9,
@@ -1185,7 +1184,6 @@
     5.15,
     4.82,
     -5.53,
-    -0.5,
     7.44,
     0.74,
     7.71,
@@ -1281,7 +1279,9 @@
     2.16,
     0.32,
     -1.08,
-    8.45
+    8.45,
+    1.27,
+    3.69
    ],
    "meu": -0.12,
    "mediana": 2.01
@@ -1690,7 +1690,7 @@
     96.15
    ],
    "meu": 13.45,
-   "mediana": 29.99
+   "mediana": 30.09
   },
   "alav": {
    "valores": [
@@ -1941,7 +1941,6 @@
     4.81,
     6.58,
     7.75,
-    7.3,
     1.19,
     9.59,
     3.4,
@@ -1997,7 +1996,6 @@
     4.76,
     1.49,
     9.9,
-    1.06,
     11.57,
     8.65,
     7.25,
@@ -2093,10 +2091,12 @@
     1.05,
     1.07,
     1.19,
-    4.0
+    4.0,
+    1.15,
+    5.39
    ],
    "meu": 9.71,
-   "mediana": 4.27
+   "mediana": 4.25
   }
  },
  "score_ref": {

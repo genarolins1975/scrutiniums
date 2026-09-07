@@ -9,13 +9,13 @@
   "sede": "Brasília/DF",
   "segmento": "S1",
   "grupo_pares": "S1 — grandes (≥10% do PIB ou atividade internacional)",
-  "n_pares": 11,
+  "n_pares": 10,
   "conglomerado_prudencial": "C0080738",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-05T12:51:59+00:00",
+  "atualizado_em": "2026-09-07T17:05:28+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 00.360.305",
   "participante_open_finance": true
@@ -71,7 +71,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 11,
+  "quantidade": 10,
   "maiores_membros": [
    {
     "cod": "C0010069",
@@ -110,10 +110,6 @@
     "nome": "BITZ INSTITUICAO DE PAGAMENTO S.A."
    },
    {
-    "cod": "44815065",
-    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA"
-   },
-   {
     "cod": "40473435",
     "nome": "REPASSES FINANCEIROS E SOLUCOES TECNOLOG"
    }
@@ -126,7 +122,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-05"
+  "calculado_em": "2026-09-07"
  },
  "kpis": [
   {
@@ -244,7 +240,7 @@
    "d_tri": -1.26,
    "vs_pares": "na média",
    "mediana_grupo": 15.13,
-   "percentil": 50.0
+   "percentil": 60.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -252,8 +248,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 10.98,
-   "percentil": 90.0
+   "mediana_grupo": 13.26,
+   "percentil": 88.9
   },
   {
    "indicador": "ROE do período",
@@ -262,7 +258,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 2.84,
-   "percentil": 40.0
+   "percentil": 44.4
   }
  ],
  "carteira": {
@@ -590,7 +586,6 @@
     2.07,
     5.82,
     2.69,
-    24.06,
     -0.15,
     -48.85
    ],
@@ -604,8 +599,7 @@
     15.15,
     14.23,
     15.91,
-    15.13,
-    37.77
+    15.13
    ],
    "meu": 15.13,
    "mediana": 15.13
@@ -620,12 +614,11 @@
     4.12,
     21.01,
     20.38,
-    6.59,
     1.02,
     2.61
    ],
    "meu": 20.38,
-   "mediana": 10.98
+   "mediana": 13.26
   }
  },
  "score_ref": {

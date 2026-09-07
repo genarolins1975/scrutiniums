@@ -1244,10 +1244,9 @@
    "cotas": 2882880.0,
    "share": 22.17,
    "var_12m_pct": 11.49,
-   "por_mil_hab": 62.6,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 1,
-    "por_mil_hab": 12
+    "cotas": 1
    }
   },
   {
@@ -1257,10 +1256,9 @@
    "cotas": 1316700.0,
    "share": 10.13,
    "var_12m_pct": 13.16,
-   "por_mil_hab": 61.5,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 2,
-    "por_mil_hab": 14
+    "cotas": 2
    }
   },
   {
@@ -1270,10 +1268,9 @@
    "cotas": 1174960.0,
    "share": 9.04,
    "var_12m_pct": 16.26,
-   "por_mil_hab": 98.8,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 3,
-    "por_mil_hab": 3
+    "cotas": 3
    }
   },
   {
@@ -1283,10 +1280,9 @@
    "cotas": 885460.0,
    "share": 6.81,
    "var_12m_pct": 12.31,
-   "por_mil_hab": 59.5,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 4,
-    "por_mil_hab": 15
+    "cotas": 4
    }
   },
   {
@@ -1296,10 +1292,9 @@
    "cotas": 785680.0,
    "share": 6.04,
    "var_12m_pct": 4.04,
-   "por_mil_hab": 69.9,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 5,
-    "por_mil_hab": 8
+    "cotas": 5
    }
   },
   {
@@ -1309,10 +1304,9 @@
    "cotas": 625300.0,
    "share": 4.81,
    "var_12m_pct": 15.34,
-   "por_mil_hab": 76.4,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 6,
-    "por_mil_hab": 6
+    "cotas": 6
    }
   },
   {
@@ -1322,10 +1316,9 @@
    "cotas": 515220.0,
    "share": 3.96,
    "var_12m_pct": 8.85,
-   "por_mil_hab": 69.4,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 7,
-    "por_mil_hab": 9
+    "cotas": 7
    }
   },
   {
@@ -1335,10 +1328,9 @@
    "cotas": 503820.0,
    "share": 3.87,
    "var_12m_pct": 12.13,
-   "por_mil_hab": 29.3,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 8,
-    "por_mil_hab": 27
+    "cotas": 8
    }
   },
   {
@@ -1348,10 +1340,9 @@
    "cotas": 458770.0,
    "share": 3.53,
    "var_12m_pct": 7.15,
-   "por_mil_hab": 52.7,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 9,
-    "por_mil_hab": 19
+    "cotas": 9
    }
   },
   {
@@ -1361,10 +1352,9 @@
    "cotas": 453960.0,
    "share": 3.49,
    "var_12m_pct": 13.72,
-   "por_mil_hab": 116.6,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 10,
-    "por_mil_hab": 1
+    "cotas": 10
    }
   },
   {
@@ -1374,10 +1364,9 @@
    "cotas": 406740.0,
    "share": 3.13,
    "var_12m_pct": 12.41,
-   "por_mil_hab": 58.0,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 11,
-    "por_mil_hab": 16
+    "cotas": 11
    }
   },
   {
@@ -1387,10 +1376,9 @@
    "cotas": 405120.0,
    "share": 3.12,
    "var_12m_pct": 13.19,
-   "por_mil_hab": 42.4,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 12,
-    "por_mil_hab": 22
+    "cotas": 12
    }
   },
   {
@@ -1400,10 +1388,9 @@
    "cotas": 386190.0,
    "share": 2.97,
    "var_12m_pct": 13.17,
-   "por_mil_hab": 41.7,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 13,
-    "por_mil_hab": 23
+    "cotas": 13
    }
   },
   {
@@ -1413,10 +1400,9 @@
    "cotas": 289490.0,
    "share": 2.23,
    "var_12m_pct": 18.26,
-   "por_mil_hab": 70.1,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 14,
-    "por_mil_hab": 7
+    "cotas": 14
    }
   },
   {
@@ -1426,10 +1412,9 @@
    "cotas": 248560.0,
    "share": 1.91,
    "var_12m_pct": 15.47,
-   "por_mil_hab": 85.0,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 15,
-    "por_mil_hab": 5
+    "cotas": 15
    }
   },
   {
@@ -1439,10 +1424,9 @@
    "cotas": 231630.0,
    "share": 1.78,
    "var_12m_pct": 16.32,
-   "por_mil_hab": 68.4,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 16,
-    "por_mil_hab": 10
+    "cotas": 16
    }
   },
   {
@@ -1452,10 +1436,9 @@
    "cotas": 203240.0,
    "share": 1.56,
    "var_12m_pct": 16.4,
-   "por_mil_hab": 48.8,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 17,
-    "por_mil_hab": 20
+    "cotas": 17
    }
   },
   {
@@ -1465,10 +1448,9 @@
    "cotas": 193920.0,
    "share": 1.49,
    "var_12m_pct": 14.14,
-   "por_mil_hab": 64.7,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 18,
-    "por_mil_hab": 11
+    "cotas": 18
    }
   },
   {
@@ -1478,10 +1460,9 @@
    "cotas": 178550.0,
    "share": 1.37,
    "var_12m_pct": 15.1,
-   "por_mil_hab": 55.4,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 19,
-    "por_mil_hab": 17
+    "cotas": 19
    }
   },
   {
@@ -1491,10 +1472,9 @@
    "cotas": 177380.0,
    "share": 1.36,
    "var_12m_pct": 12.24,
-   "por_mil_hab": 101.2,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 20,
-    "por_mil_hab": 2
+    "cotas": 20
    }
   },
   {
@@ -1504,10 +1484,9 @@
    "cotas": 153830.0,
    "share": 1.18,
    "var_12m_pct": 10.26,
-   "por_mil_hab": 96.9,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 21,
-    "por_mil_hab": 4
+    "cotas": 21
    }
   },
   {
@@ -1517,10 +1496,9 @@
    "cotas": 149530.0,
    "share": 1.15,
    "var_12m_pct": 11.45,
-   "por_mil_hab": 43.3,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 22,
-    "por_mil_hab": 21
+    "cotas": 22
    }
   },
   {
@@ -1530,10 +1508,9 @@
    "cotas": 142140.0,
    "share": 1.09,
    "var_12m_pct": 16.48,
-   "por_mil_hab": 61.8,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 23,
-    "por_mil_hab": 13
+    "cotas": 23
    }
   },
   {
@@ -1543,10 +1520,9 @@
    "cotas": 131620.0,
    "share": 1.01,
    "var_12m_pct": 11.52,
-   "por_mil_hab": 30.5,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 24,
-    "por_mil_hab": 26
+    "cotas": 24
    }
   },
   {
@@ -1556,10 +1532,9 @@
    "cotas": 48580.0,
    "share": 0.37,
    "var_12m_pct": 11.19,
-   "por_mil_hab": 54.9,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 25,
-    "por_mil_hab": 18
+    "cotas": 25
    }
   },
   {
@@ -1569,10 +1544,9 @@
    "cotas": 27540.0,
    "share": 0.21,
    "var_12m_pct": 1.29,
-   "por_mil_hab": 34.1,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 26,
-    "por_mil_hab": 25
+    "cotas": 26
    }
   },
   {
@@ -1582,14 +1556,13 @@
    "cotas": 25620.0,
    "share": 0.2,
    "var_12m_pct": 5.96,
-   "por_mil_hab": 34.7,
+   "por_mil_hab": null,
    "posicoes": {
-    "cotas": 27,
-    "por_mil_hab": 24
+    "cotas": 27
    }
   }
  ],
- "cotas_por_mil_hab_br": 60.9,
+ "cotas_por_mil_hab_br": null,
  "conferencias": [
   {
    "regra": "cotas ativas: soma das seções (11 a 16) = total (10)",

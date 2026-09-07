@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-05T12:51:52+00:00",
+ "gerado_em": "2026-09-07T17:05:21+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-09-05T12:51:52+00:00",
+    "atualizado_em": "2026-09-07T17:05:21+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1464,7 +1464,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-09-05T12:51:52+00:00",
+    "atualizado_em": "2026-09-07T17:05:21+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2549,91 +2549,91 @@
      },
      {
       "anomes": "201903",
-      "score": 48.6
+      "score": 49.0
      },
      {
       "anomes": "201906",
-      "score": 50.5
+      "score": 51.0
      },
      {
       "anomes": "201909",
-      "score": 50.9
+      "score": 51.4
      },
      {
       "anomes": "201912",
-      "score": 54.8
+      "score": 55.4
      },
      {
       "anomes": "202003",
-      "score": 48.2
+      "score": 48.7
      },
      {
       "anomes": "202006",
-      "score": 47.8
+      "score": 48.2
      },
      {
       "anomes": "202009",
-      "score": 52.1
+      "score": 52.6
      },
      {
       "anomes": "202012",
-      "score": 56.4
+      "score": 56.9
      },
      {
       "anomes": "202103",
-      "score": 52.1
+      "score": 52.6
      },
      {
       "anomes": "202106",
-      "score": 53.9
+      "score": 54.4
      },
      {
       "anomes": "202109",
-      "score": 51.7
+      "score": 52.1
      },
      {
       "anomes": "202112",
-      "score": 54.3
+      "score": 54.4
      },
      {
       "anomes": "202203",
-      "score": 57.5
+      "score": 57.6
      },
      {
       "anomes": "202206",
-      "score": 55.6
+      "score": 56.1
      },
      {
       "anomes": "202209",
-      "score": 57.4
+      "score": 58.0
      },
      {
       "anomes": "202212",
-      "score": 56.2
+      "score": 56.8
      },
      {
       "anomes": "202303",
-      "score": 53.1
+      "score": 53.2
      },
      {
       "anomes": "202306",
-      "score": 57.5
+      "score": 57.6
      },
      {
       "anomes": "202309",
-      "score": 54.0
+      "score": 54.5
      },
      {
       "anomes": "202312",
-      "score": 56.2
+      "score": 56.8
      },
      {
       "anomes": "202403",
-      "score": 55.8
+      "score": 56.4
      },
      {
       "anomes": "202406",
-      "score": 54.0
+      "score": 54.5
      },
      {
       "anomes": "202409",
@@ -2641,15 +2641,15 @@
      },
      {
       "anomes": "202412",
-      "score": 53.9
+      "score": 54.0
      },
      {
       "anomes": "202503",
-      "score": 61.9
+      "score": 62.3
      },
      {
       "anomes": "202506",
-      "score": 61.7
+      "score": 61.8
      },
      {
       "anomes": "202509",
@@ -2836,7 +2836,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "2026-T1",
-    "atualizado_em": "2026-09-05T12:51:52+00:00",
+    "atualizado_em": "2026-09-07T17:05:21+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -3961,15 +3961,15 @@
      },
      {
       "anomes": "201903",
-      "score": 44.9
+      "score": 45.3
      },
      {
       "anomes": "201906",
-      "score": 45.5
+      "score": 45.8
      },
      {
       "anomes": "201909",
-      "score": 47.4
+      "score": 47.8
      },
      {
       "anomes": "201912",
@@ -3977,15 +3977,15 @@
      },
      {
       "anomes": "202003",
-      "score": 63.6
+      "score": 63.8
      },
      {
       "anomes": "202006",
-      "score": 59.6
+      "score": 59.8
      },
      {
       "anomes": "202009",
-      "score": 49.5
+      "score": 50.0
      },
      {
       "anomes": "202012",
@@ -3993,71 +3993,71 @@
      },
      {
       "anomes": "202103",
-      "score": 48.3
+      "score": 48.7
      },
      {
       "anomes": "202106",
-      "score": 51.7
+      "score": 52.2
      },
      {
       "anomes": "202109",
-      "score": 64.0
+      "score": 64.7
      },
      {
       "anomes": "202112",
-      "score": 65.5
+      "score": 65.8
      },
      {
       "anomes": "202203",
-      "score": 70.2
+      "score": 70.5
      },
      {
       "anomes": "202206",
-      "score": 72.0
+      "score": 72.4
      },
      {
       "anomes": "202209",
-      "score": 65.4
+      "score": 66.1
      },
      {
       "anomes": "202212",
-      "score": 68.3
+      "score": 68.6
      },
      {
       "anomes": "202303",
-      "score": 71.0
+      "score": 71.4
      },
      {
       "anomes": "202306",
-      "score": 67.1
+      "score": 67.4
      },
      {
       "anomes": "202309",
-      "score": 80.8
+      "score": 81.4
      },
      {
       "anomes": "202312",
-      "score": 78.1
+      "score": 78.6
      },
      {
       "anomes": "202403",
-      "score": 72.3
+      "score": 72.7
      },
      {
       "anomes": "202406",
-      "score": 68.3
+      "score": 68.7
      },
      {
       "anomes": "202409",
-      "score": 74.1
+      "score": 74.5
      },
      {
       "anomes": "202412",
-      "score": 65.5
+      "score": 65.4
      },
      {
       "anomes": "202503",
-      "score": 58.9
+      "score": 59.3
      },
      {
       "anomes": "202509",
