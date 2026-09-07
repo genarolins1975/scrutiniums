@@ -1,0 +1,1674 @@
+{
+ "disponivel": true,
+ "tipo": "DADO OBSERVADO (Sadipem, STN) + CALCULADO (agregações, shares, posições)",
+ "mes": "2026-08",
+ "mes_parcial": "2026-09",
+ "janela_12m": {
+  "ini": "2025-09",
+  "fim": "2026-08"
+ },
+ "fonte": {
+  "nome": "Tesouro Nacional — Sadipem, análises de operações de crédito de estados e municípios (API Tesouro Transparente)",
+  "url": "https://www.tesourotransparente.gov.br/ckan/dataset/analises-de-operacoes-de-credito-de-estados-e-municipios",
+  "api": "https://apidatalake.tesouro.gov.br/ords/sadipem/tt/pvl",
+  "licenca": "dados abertos do Tesouro Nacional",
+  "nivel": "A — registro administrativo da STN, atualizado continuamente"
+ },
+ "gerado_em": "2026-09-07T02:36:44+00:00",
+ "coleta": {
+  "linhas": 26534,
+  "paginas": 6,
+  "mb": 13.7,
+  "data_status_max": "2026-09-04",
+  "coletado_em": "2026-09-07T02:33:02+00:00"
+ },
+ "kpis": {
+  "mes": "2026-08",
+  "deferidos_12m_n": 1231,
+  "deferidos_12m_valor": 80534760174.03003,
+  "pgfn_12m_n": 277,
+  "pgfn_12m_valor": 67856441480.08001,
+  "var_12m_valor_pct": 136.48,
+  "var_12m_n_pct": 112.24,
+  "municipios_12m_valor": 30659155090.56,
+  "estados_12m_valor": 49875605083.47,
+  "municipios_12m_n": 1161,
+  "estados_12m_n": 70,
+  "garantia_uniao_12m_n": 277,
+  "garantia_uniao_12m_valor": 67856441480.08001,
+  "externas_12m_n": 45,
+  "moeda_estrangeira_12m_n": 45,
+  "taxa_deferimento_12m_pct": 89.01,
+  "concluidos_12m_n": 1383,
+  "em_tramitacao_n": 269,
+  "em_tramitacao_valor": 18620758252.760002,
+  "em_tramitacao_desde": "2023-09",
+  "renegociacao_uniao_12m_n": 0,
+  "renegociacao_uniao_12m_valor": 0,
+  "entes_12m": 866
+ },
+ "serie_anual": [
+  {
+   "ano": "2008",
+   "deferidos_n": 1117,
+   "deferidos_valor": 8816074848.019999,
+   "municipios_valor": 3841802398.5400004,
+   "estados_valor": 4974272449.48,
+   "garantia_uniao_valor": 0,
+   "externas_n": 39,
+   "pgfn_valor": 0,
+   "renegociacao_uniao_valor": 384541034.93,
+   "arquivados_n": 857,
+   "parcial": false
+  },
+  {
+   "ano": "2009",
+   "deferidos_n": 513,
+   "deferidos_valor": 9986414052.800001,
+   "municipios_valor": 1194873718.83,
+   "estados_valor": 8791540333.97,
+   "garantia_uniao_valor": 4548333000.0,
+   "externas_n": 48,
+   "pgfn_valor": 4548333000.0,
+   "renegociacao_uniao_valor": 356070000.0,
+   "arquivados_n": 329,
+   "parcial": false
+  },
+  {
+   "ano": "2010",
+   "deferidos_n": 1167,
+   "deferidos_valor": 20926498099.239983,
+   "municipios_valor": 7152320509.009995,
+   "estados_valor": 13774177590.230001,
+   "garantia_uniao_valor": 4395230000.0,
+   "externas_n": 24,
+   "pgfn_valor": 4395230000.0,
+   "renegociacao_uniao_valor": 3728000000.0,
+   "arquivados_n": 178,
+   "parcial": false
+  },
+  {
+   "ano": "2011",
+   "deferidos_n": 733,
+   "deferidos_valor": 7292728957.010001,
+   "municipios_valor": 3413344040.4600005,
+   "estados_valor": 3879384916.5500007,
+   "garantia_uniao_valor": 2241668206.4700003,
+   "externas_n": 19,
+   "pgfn_valor": 2241668206.4700003,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 186,
+   "parcial": false
+  },
+  {
+   "ano": "2012",
+   "deferidos_n": 876,
+   "deferidos_valor": 25901348769.059994,
+   "municipios_valor": 2912288095.1399994,
+   "estados_valor": 22989060673.919994,
+   "garantia_uniao_valor": 16216017802.74,
+   "externas_n": 44,
+   "pgfn_valor": 16216017802.74,
+   "renegociacao_uniao_valor": 3527000000.0,
+   "arquivados_n": 234,
+   "parcial": false
+  },
+  {
+   "ano": "2013",
+   "deferidos_n": 736,
+   "deferidos_valor": 57452180097.51001,
+   "municipios_valor": 6990506999.41,
+   "estados_valor": 50461673098.100006,
+   "garantia_uniao_valor": 43378623599.34001,
+   "externas_n": 38,
+   "pgfn_valor": 43378623599.34001,
+   "renegociacao_uniao_valor": 2004000000.0,
+   "arquivados_n": 264,
+   "parcial": false
+  },
+  {
+   "ano": "2014",
+   "deferidos_n": 999,
+   "deferidos_valor": 36278570660.85999,
+   "municipios_valor": 14846068373.6,
+   "estados_valor": 21432502287.260002,
+   "garantia_uniao_valor": 15883309656.129995,
+   "externas_n": 25,
+   "pgfn_valor": 15883309656.129995,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 136,
+   "parcial": false
+  },
+  {
+   "ano": "2015",
+   "deferidos_n": 490,
+   "deferidos_valor": 5948175894.609999,
+   "municipios_valor": 3917021645.8900003,
+   "estados_valor": 2031154248.7199998,
+   "garantia_uniao_valor": 2513694263.64,
+   "externas_n": 1,
+   "pgfn_valor": 2513694263.64,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 104,
+   "parcial": false
+  },
+  {
+   "ano": "2016",
+   "deferidos_n": 536,
+   "deferidos_valor": 8689238209.179998,
+   "municipios_valor": 2561856282.82,
+   "estados_valor": 6127381926.36,
+   "garantia_uniao_valor": 4989233123.92,
+   "externas_n": 18,
+   "pgfn_valor": 4989233123.92,
+   "renegociacao_uniao_valor": 158426217.68,
+   "arquivados_n": 164,
+   "parcial": false
+  },
+  {
+   "ano": "2017",
+   "deferidos_n": 660,
+   "deferidos_valor": 9601921199.03,
+   "municipios_valor": 3361065066.99,
+   "estados_valor": 6240856132.04,
+   "garantia_uniao_valor": 3510264231.34,
+   "externas_n": 13,
+   "pgfn_valor": 3510264231.34,
+   "renegociacao_uniao_valor": 245065059474.44,
+   "arquivados_n": 79,
+   "parcial": false
+  },
+  {
+   "ano": "2018",
+   "deferidos_n": 958,
+   "deferidos_valor": 11492096221.379997,
+   "municipios_valor": 8219917034.159999,
+   "estados_valor": 3272179187.22,
+   "garantia_uniao_valor": 2864863767.980001,
+   "externas_n": 22,
+   "pgfn_valor": 2864863767.980001,
+   "renegociacao_uniao_valor": 23413137296.77,
+   "arquivados_n": 150,
+   "parcial": false
+  },
+  {
+   "ano": "2019",
+   "deferidos_n": 1654,
+   "deferidos_valor": 17448989889.66,
+   "municipios_valor": 14827670539.6,
+   "estados_valor": 2621319350.06,
+   "garantia_uniao_valor": 4767604338.77,
+   "externas_n": 23,
+   "pgfn_valor": 4767604338.77,
+   "renegociacao_uniao_valor": 865643619.98,
+   "arquivados_n": 69,
+   "parcial": false
+  },
+  {
+   "ano": "2020",
+   "deferidos_n": 914,
+   "deferidos_valor": 13553672211.269995,
+   "municipios_valor": 9813153952.880001,
+   "estados_valor": 3740518258.39,
+   "garantia_uniao_valor": 5291117881.879999,
+   "externas_n": 10,
+   "pgfn_valor": 5291117881.879999,
+   "renegociacao_uniao_valor": 68742230547.99,
+   "arquivados_n": 63,
+   "parcial": false
+  },
+  {
+   "ano": "2021",
+   "deferidos_n": 1142,
+   "deferidos_valor": 15162883151.040007,
+   "municipios_valor": 9357655491.33,
+   "estados_valor": 5805227659.71,
+   "garantia_uniao_valor": 6167647021.85,
+   "externas_n": 13,
+   "pgfn_valor": 6167647021.85,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 60,
+   "parcial": false
+  },
+  {
+   "ano": "2022",
+   "deferidos_n": 1260,
+   "deferidos_valor": 20080975859.54,
+   "municipios_valor": 13936272751.540003,
+   "estados_valor": 6144703108.0,
+   "garantia_uniao_valor": 6785596228.32,
+   "externas_n": 29,
+   "pgfn_valor": 6785596228.32,
+   "renegociacao_uniao_valor": 138164074.55,
+   "arquivados_n": 70,
+   "parcial": false
+  },
+  {
+   "ano": "2023",
+   "deferidos_n": 1356,
+   "deferidos_valor": 37421985813.24,
+   "municipios_valor": 25833367531.269997,
+   "estados_valor": 11588618281.97,
+   "garantia_uniao_valor": 20047831000.0,
+   "externas_n": 18,
+   "pgfn_valor": 20047831000.0,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 138,
+   "parcial": false
+  },
+  {
+   "ano": "2024",
+   "deferidos_n": 842,
+   "deferidos_valor": 45646005381.68,
+   "municipios_valor": 19777661285.420002,
+   "estados_valor": 25868344096.26,
+   "garantia_uniao_valor": 37965689326.299995,
+   "externas_n": 34,
+   "pgfn_valor": 37965689326.299995,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 46,
+   "parcial": false
+  },
+  {
+   "ano": "2025",
+   "deferidos_n": 907,
+   "deferidos_valor": 57565562648.7,
+   "municipios_valor": 20284952260.569992,
+   "estados_valor": 37280610388.130005,
+   "garantia_uniao_valor": 48772644549.62,
+   "externas_n": 25,
+   "pgfn_valor": 48772644549.62,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 164,
+   "parcial": false
+  },
+  {
+   "ano": "2026",
+   "deferidos_n": 885,
+   "deferidos_valor": 56731188518.19,
+   "municipios_valor": 23541095443.220005,
+   "estados_valor": 33190093074.969997,
+   "garantia_uniao_valor": 46087397160.75001,
+   "externas_n": 37,
+   "pgfn_valor": 46087397160.75001,
+   "renegociacao_uniao_valor": 0,
+   "arquivados_n": 55,
+   "parcial": true
+  }
+ ],
+ "serie_mensal": [
+  {
+   "mes": "2023-09",
+   "n": 161,
+   "valor": 4918798400.08,
+   "municipios_valor": 3154088118.11,
+   "parcial": false
+  },
+  {
+   "mes": "2023-10",
+   "n": 83,
+   "valor": 2606468514.4,
+   "municipios_valor": 2101468514.4,
+   "parcial": false
+  },
+  {
+   "mes": "2023-11",
+   "n": 125,
+   "valor": 2674694101.86,
+   "municipios_valor": 2042786101.8600001,
+   "parcial": false
+  },
+  {
+   "mes": "2023-12",
+   "n": 92,
+   "valor": 1928580511.87,
+   "municipios_valor": 1298580511.87,
+   "parcial": false
+  },
+  {
+   "mes": "2024-01",
+   "n": 49,
+   "valor": 407298805.78999996,
+   "municipios_valor": 407298805.78999996,
+   "parcial": false
+  },
+  {
+   "mes": "2024-02",
+   "n": 28,
+   "valor": 260511006.28,
+   "municipios_valor": 260511006.28,
+   "parcial": false
+  },
+  {
+   "mes": "2024-03",
+   "n": 111,
+   "valor": 6504425391.84,
+   "municipios_valor": 1544527391.84,
+   "parcial": false
+  },
+  {
+   "mes": "2024-04",
+   "n": 102,
+   "valor": 916054213.39,
+   "municipios_valor": 616054213.39,
+   "parcial": false
+  },
+  {
+   "mes": "2024-05",
+   "n": 176,
+   "valor": 12003380451.51,
+   "municipios_valor": 1751335451.5099998,
+   "parcial": false
+  },
+  {
+   "mes": "2024-06",
+   "n": 89,
+   "valor": 7685981618.0,
+   "municipios_valor": 7685981618.0,
+   "parcial": false
+  },
+  {
+   "mes": "2024-07",
+   "n": 133,
+   "valor": 9165592234.570002,
+   "municipios_valor": 3956320762.0799994,
+   "parcial": false
+  },
+  {
+   "mes": "2024-08",
+   "n": 119,
+   "valor": 4157408973.93,
+   "municipios_valor": 2572579763.3700004,
+   "parcial": false
+  },
+  {
+   "mes": "2024-09",
+   "n": 11,
+   "valor": 266600000.0,
+   "municipios_valor": 266600000.0,
+   "parcial": false
+  },
+  {
+   "mes": "2024-10",
+   "n": 3,
+   "valor": 2627670413.21,
+   "municipios_valor": 0,
+   "parcial": false
+  },
+  {
+   "mes": "2024-11",
+   "n": 10,
+   "valor": 1102000000.0,
+   "municipios_valor": 387000000.0,
+   "parcial": false
+  },
+  {
+   "mes": "2024-12",
+   "n": 11,
+   "valor": 549082273.16,
+   "municipios_valor": 329452273.15999997,
+   "parcial": false
+  },
+  {
+   "mes": "2025-01",
+   "n": 4,
+   "valor": 139772719.36,
+   "municipios_valor": 0,
+   "parcial": false
+  },
+  {
+   "mes": "2025-02",
+   "n": 3,
+   "valor": 57910000.0,
+   "municipios_valor": 57910000.0,
+   "parcial": false
+  },
+  {
+   "mes": "2025-03",
+   "n": 35,
+   "valor": 3342961985.02,
+   "municipios_valor": 278164908.08,
+   "parcial": false
+  },
+  {
+   "mes": "2025-04",
+   "n": 25,
+   "valor": 354405965.0,
+   "municipios_valor": 354405965.0,
+   "parcial": false
+  },
+  {
+   "mes": "2025-05",
+   "n": 116,
+   "valor": 5634108442.179998,
+   "municipios_valor": 3290610431.2000003,
+   "parcial": false
+  },
+  {
+   "mes": "2025-06",
+   "n": 122,
+   "valor": 4492711557.25,
+   "municipios_valor": 2140677012.8500001,
+   "parcial": false
+  },
+  {
+   "mes": "2025-07",
+   "n": 155,
+   "valor": 11944181904.400002,
+   "municipios_valor": 4906390312.120001,
+   "parcial": false
+  },
+  {
+   "mes": "2025-08",
+   "n": 85,
+   "valor": 3544119861.7,
+   "municipios_valor": 1802663072.54,
+   "parcial": false
+  },
+  {
+   "mes": "2025-09",
+   "n": 104,
+   "valor": 14146178248.220001,
+   "municipios_valor": 2437469872.6299996,
+   "parcial": false
+  },
+  {
+   "mes": "2025-10",
+   "n": 90,
+   "valor": 3023101634.830001,
+   "municipios_valor": 1823101634.8300002,
+   "parcial": false
+  },
+  {
+   "mes": "2025-11",
+   "n": 78,
+   "valor": 3881255572.46,
+   "municipios_valor": 1518050293.04,
+   "parcial": false
+  },
+  {
+   "mes": "2025-12",
+   "n": 90,
+   "valor": 7004854758.28,
+   "municipios_valor": 1675508758.28,
+   "parcial": false
+  },
+  {
+   "mes": "2026-01",
+   "n": 34,
+   "valor": 4238969952.79,
+   "municipios_valor": 720355666.88,
+   "parcial": false
+  },
+  {
+   "mes": "2026-02",
+   "n": 22,
+   "valor": 989206449.06,
+   "municipios_valor": 142325000.0,
+   "parcial": false
+  },
+  {
+   "mes": "2026-03",
+   "n": 133,
+   "valor": 7330549530.310001,
+   "municipios_valor": 3564399065.56,
+   "parcial": false
+  },
+  {
+   "mes": "2026-04",
+   "n": 106,
+   "valor": 6083924236.610001,
+   "municipios_valor": 3283924236.61,
+   "parcial": false
+  },
+  {
+   "mes": "2026-05",
+   "n": 182,
+   "valor": 11125538744.68,
+   "municipios_valor": 3907166999.9400005,
+   "parcial": false
+  },
+  {
+   "mes": "2026-06",
+   "n": 133,
+   "valor": 8339493437.349999,
+   "municipios_valor": 2976493437.3500004,
+   "parcial": false
+  },
+  {
+   "mes": "2026-07",
+   "n": 179,
+   "valor": 11057865772.359995,
+   "municipios_valor": 6546538288.359999,
+   "parcial": false
+  },
+  {
+   "mes": "2026-08",
+   "n": 80,
+   "valor": 3313821837.0800004,
+   "municipios_valor": 2063821837.0800004,
+   "parcial": false
+  },
+  {
+   "mes": "2026-09",
+   "n": 16,
+   "valor": 4251818557.95,
+   "municipios_valor": 336070911.44,
+   "parcial": true
+  }
+ ],
+ "credores_12m": [
+  {
+   "nome": "Banco do Brasil S/A",
+   "n": 252,
+   "valor": 47548789077.170006,
+   "estados_n": 27,
+   "municipios_n": 225,
+   "share_valor_pct": 59.04,
+   "share_n_pct": 20.47
+  },
+  {
+   "nome": "Caixa Econômica Federal",
+   "n": 417,
+   "valor": 17624889792.05,
+   "estados_n": 7,
+   "municipios_n": 410,
+   "share_valor_pct": 21.88,
+   "share_n_pct": 33.87
+  },
+  {
+   "nome": "Banco Nacional de Desenvolvimento Econômico e Social",
+   "n": 13,
+   "valor": 4011403487.0,
+   "estados_n": 8,
+   "municipios_n": 5,
+   "share_valor_pct": 4.98,
+   "share_n_pct": 1.06
+  },
+  {
+   "nome": "Banco Itaú Unibanco S/A",
+   "n": 3,
+   "valor": 3846881449.06,
+   "estados_n": 2,
+   "municipios_n": 1,
+   "share_valor_pct": 4.78,
+   "share_n_pct": 0.24
+  },
+  {
+   "nome": "Banco Bradesco S/A",
+   "n": 3,
+   "valor": 2246205279.42,
+   "estados_n": 3,
+   "municipios_n": 0,
+   "share_valor_pct": 2.79,
+   "share_n_pct": 0.24
+  },
+  {
+   "nome": "Agência de Fomento do Estado de São Paulo",
+   "n": 136,
+   "valor": 1800646047.6499999,
+   "estados_n": 0,
+   "municipios_n": 136,
+   "share_valor_pct": 2.24,
+   "share_n_pct": 11.05
+  },
+  {
+   "nome": "Banco Regional de Desenvolvimento do Extremo Sul",
+   "n": 96,
+   "valor": 619120864.8499999,
+   "estados_n": 0,
+   "municipios_n": 96,
+   "share_valor_pct": 0.77,
+   "share_n_pct": 7.8
+  },
+  {
+   "nome": "Banco de Desenvolvimento de Minas Gerais S/A",
+   "n": 75,
+   "valor": 568720430.7,
+   "estados_n": 0,
+   "municipios_n": 75,
+   "share_valor_pct": 0.71,
+   "share_n_pct": 6.09
+  },
+  {
+   "nome": "Bank of China (Brasil) Banco Múltiplo S/A",
+   "n": 1,
+   "valor": 530473067.54,
+   "estados_n": 0,
+   "municipios_n": 1,
+   "share_valor_pct": 0.66,
+   "share_n_pct": 0.08
+  },
+  {
+   "nome": "Banco Santander (Brasil) S.A.",
+   "n": 1,
+   "valor": 500000000.0,
+   "estados_n": 0,
+   "municipios_n": 1,
+   "share_valor_pct": 0.62,
+   "share_n_pct": 0.08
+  },
+  {
+   "nome": "Banco do Estado do Espírito Santo",
+   "n": 3,
+   "valor": 270000000.0,
+   "estados_n": 0,
+   "municipios_n": 3,
+   "share_valor_pct": 0.34,
+   "share_n_pct": 0.24
+  },
+  {
+   "nome": "Agência de Fomento do Paraná S/A",
+   "n": 81,
+   "valor": 260739333.14000002,
+   "estados_n": 0,
+   "municipios_n": 81,
+   "share_valor_pct": 0.32,
+   "share_n_pct": 6.58
+  }
+ ],
+ "credores_60m": [
+  {
+   "nome": "Banco do Brasil S/A",
+   "n": 1417,
+   "valor": 96073072619.74998,
+   "estados_n": 55,
+   "municipios_n": 1362,
+   "share_valor_pct": 42.71,
+   "share_n_pct": 23.49
+  },
+  {
+   "nome": "Caixa Econômica Federal",
+   "n": 2079,
+   "valor": 62072367813.32001,
+   "estados_n": 38,
+   "municipios_n": 2041,
+   "share_valor_pct": 27.59,
+   "share_n_pct": 34.47
+  },
+  {
+   "nome": "Banco Nacional de Desenvolvimento Econômico e Social",
+   "n": 63,
+   "valor": 35395028043.46001,
+   "estados_n": 35,
+   "municipios_n": 28,
+   "share_valor_pct": 15.73,
+   "share_n_pct": 1.04
+  },
+  {
+   "nome": "Banco Itaú Unibanco S/A",
+   "n": 7,
+   "valor": 7117556162.23,
+   "estados_n": 5,
+   "municipios_n": 2,
+   "share_valor_pct": 3.16,
+   "share_n_pct": 0.12
+  },
+  {
+   "nome": "Agência de Fomento do Estado de São Paulo",
+   "n": 427,
+   "valor": 4599467679.41,
+   "estados_n": 0,
+   "municipios_n": 427,
+   "share_valor_pct": 2.04,
+   "share_n_pct": 7.08
+  },
+  {
+   "nome": "Banco Santander (Brasil) S.A.",
+   "n": 7,
+   "valor": 3636244000.0,
+   "estados_n": 4,
+   "municipios_n": 3,
+   "share_valor_pct": 1.62,
+   "share_n_pct": 0.12
+  },
+  {
+   "nome": "Banco Bradesco S/A",
+   "n": 4,
+   "valor": 3114098489.33,
+   "estados_n": 4,
+   "municipios_n": 0,
+   "share_valor_pct": 1.38,
+   "share_n_pct": 0.07
+  },
+  {
+   "nome": "Banco de Brasília S/A",
+   "n": 22,
+   "valor": 2718000000.0,
+   "estados_n": 7,
+   "municipios_n": 15,
+   "share_valor_pct": 1.21,
+   "share_n_pct": 0.36
+  },
+  {
+   "nome": "Banco de Desenvolvimento de Minas Gerais S/A",
+   "n": 751,
+   "valor": 2148691003.6000004,
+   "estados_n": 0,
+   "municipios_n": 751,
+   "share_valor_pct": 0.96,
+   "share_n_pct": 12.45
+  },
+  {
+   "nome": "Agência de Fomento do Paraná S/A",
+   "n": 454,
+   "valor": 1943849495.17,
+   "estados_n": 0,
+   "municipios_n": 454,
+   "share_valor_pct": 0.86,
+   "share_n_pct": 7.53
+  },
+  {
+   "nome": "Banco Regional de Desenvolvimento do Extremo Sul",
+   "n": 209,
+   "valor": 1894986678.84,
+   "estados_n": 0,
+   "municipios_n": 209,
+   "share_valor_pct": 0.84,
+   "share_n_pct": 3.46
+  },
+  {
+   "nome": "Pessoa Jurídica",
+   "n": 17,
+   "valor": 1150683529.15,
+   "estados_n": 13,
+   "municipios_n": 4,
+   "share_valor_pct": 0.51,
+   "share_n_pct": 0.28
+  }
+ ],
+ "finalidades_12m": [
+  {
+   "nome": "Infraestrutura",
+   "n": 891,
+   "valor": 62925742859.69001,
+   "estados_n": 40,
+   "municipios_n": 851,
+   "share_valor_pct": 78.13,
+   "share_n_pct": 72.38
+  },
+  {
+   "nome": "Reestruturação e recomposição do principal de dívidas",
+   "n": 10,
+   "valor": 5543042785.91,
+   "estados_n": 10,
+   "municipios_n": 0,
+   "share_valor_pct": 6.88,
+   "share_n_pct": 0.81
+  },
+  {
+   "nome": "Novo PAC",
+   "n": 51,
+   "valor": 4388335393.88,
+   "estados_n": 1,
+   "municipios_n": 50,
+   "share_valor_pct": 5.45,
+   "share_n_pct": 4.14
+  },
+  {
+   "nome": "Amortização de dívida",
+   "n": 5,
+   "valor": 2988000000.0,
+   "estados_n": 1,
+   "municipios_n": 4,
+   "share_valor_pct": 3.71,
+   "share_n_pct": 0.41
+  },
+  {
+   "nome": "Pró-Transporte",
+   "n": 15,
+   "valor": 1997414637.5800002,
+   "estados_n": 0,
+   "municipios_n": 15,
+   "share_valor_pct": 2.48,
+   "share_n_pct": 1.22
+  },
+  {
+   "nome": "Multissetorial",
+   "n": 80,
+   "valor": 772433048.24,
+   "estados_n": 0,
+   "municipios_n": 80,
+   "share_valor_pct": 0.96,
+   "share_n_pct": 6.5
+  },
+  {
+   "nome": "Desenvolvimento sustentável",
+   "n": 25,
+   "valor": 642201846.54,
+   "estados_n": 2,
+   "municipios_n": 23,
+   "share_valor_pct": 0.8,
+   "share_n_pct": 2.03
+  },
+  {
+   "nome": "Aquisição de máquinas, equipamentos e veículos",
+   "n": 68,
+   "valor": 500050579.83,
+   "estados_n": 0,
+   "municipios_n": 68,
+   "share_valor_pct": 0.62,
+   "share_n_pct": 5.52
+  },
+  {
+   "nome": "PMAT",
+   "n": 2,
+   "valor": 207000000.0,
+   "estados_n": 0,
+   "municipios_n": 2,
+   "share_valor_pct": 0.26,
+   "share_n_pct": 0.16
+  },
+  {
+   "nome": "Pró-Moradia",
+   "n": 5,
+   "valor": 117040719.13,
+   "estados_n": 0,
+   "municipios_n": 5,
+   "share_valor_pct": 0.15,
+   "share_n_pct": 0.41
+  },
+  {
+   "nome": "Saneamento básico",
+   "n": 5,
+   "valor": 104236133.59,
+   "estados_n": 0,
+   "municipios_n": 5,
+   "share_valor_pct": 0.13,
+   "share_n_pct": 0.41
+  },
+  {
+   "nome": "Aquisição de terrenos, imóveis e/ou construção de instalações",
+   "n": 24,
+   "valor": 102496815.84,
+   "estados_n": 0,
+   "municipios_n": 24,
+   "share_valor_pct": 0.13,
+   "share_n_pct": 1.95
+  }
+ ],
+ "tipos_credor_12m": [
+  {
+   "nome": "Instituição Financeira Nacional",
+   "n": 1184,
+   "valor": 80479760174.03003,
+   "estados_n": 47,
+   "municipios_n": 1137,
+   "share_valor_pct": 99.93,
+   "share_n_pct": 96.18
+  },
+  {
+   "nome": "Outras Organizações",
+   "n": 2,
+   "valor": 55000000.0,
+   "estados_n": 0,
+   "municipios_n": 2,
+   "share_valor_pct": 0.07,
+   "share_n_pct": 0.16
+  },
+  {
+   "nome": "Instituição Financeira Internacional",
+   "n": 45,
+   "valor": 0.0,
+   "estados_n": 23,
+   "municipios_n": 22,
+   "share_valor_pct": 0.0,
+   "share_n_pct": 3.66
+  }
+ ],
+ "status_12m": [
+  {
+   "id": "deferido",
+   "nome": "Deferido: limites verificados, operação liberada",
+   "n": 954,
+   "valor": 12678318693.949993,
+   "share_n_pct": 62.97
+  },
+  {
+   "id": "pgfn",
+   "nome": "Manifestação técnica favorável, encaminhado à PGFN (garantia da União)",
+   "n": 277,
+   "valor": 67856441480.08001,
+   "share_n_pct": 18.28
+  },
+  {
+   "id": "arquivado",
+   "nome": "Arquivado, indeferido ou cancelado",
+   "n": 152,
+   "valor": 7873258076.660001,
+   "share_n_pct": 10.03
+  },
+  {
+   "id": "regularizado",
+   "nome": "Regularizado (operação contratada sem PVL prévio, depois regularizada)",
+   "n": 3,
+   "valor": 841578.94,
+   "share_n_pct": 0.2
+  },
+  {
+   "id": "tramitacao",
+   "nome": "Em análise ou em retificação",
+   "n": 129,
+   "valor": 9204100844.56,
+   "share_n_pct": 8.51
+  }
+ ],
+ "moedas_12m": [
+  {
+   "moeda": "Dólar dos EUA",
+   "n": 39,
+   "valor_na_moeda": 4164766254.0
+  },
+  {
+   "moeda": "Euro",
+   "n": 5,
+   "valor_na_moeda": 496120000.0
+  },
+  {
+   "moeda": "Iene",
+   "n": 1,
+   "valor_na_moeda": 58000000000.0
+  }
+ ],
+ "ufs": [
+  {
+   "uf": "AC",
+   "nome": "Acre",
+   "regiao": "Norte",
+   "n": 2,
+   "valor": 187000000.0,
+   "share_valor_pct": 0.23,
+   "municipios_n": 1,
+   "estado_n": 1,
+   "estado_valor": 120000000.0,
+   "valor_hab": 210.63,
+   "entes": 2,
+   "credor_principal": "Banco Nacional de Desenvolvimento Econômico e Social",
+   "posicoes": {
+    "valor": 24,
+    "valor_hab": 17,
+    "n": 24
+   }
+  },
+  {
+   "uf": "AL",
+   "nome": "Alagoas",
+   "regiao": "Nordeste",
+   "n": 7,
+   "valor": 1337517449.06,
+   "share_valor_pct": 1.66,
+   "municipios_n": 6,
+   "estado_n": 1,
+   "estado_valor": 846881449.06,
+   "valor_hab": 415.23,
+   "entes": 4,
+   "credor_principal": "Banco Itaú Unibanco S/A",
+   "posicoes": {
+    "valor": 16,
+    "valor_hab": 11,
+    "n": 22
+   }
+  },
+  {
+   "uf": "AM",
+   "nome": "Amazonas",
+   "regiao": "Norte",
+   "n": 5,
+   "valor": 2155000000.0,
+   "share_valor_pct": 2.68,
+   "municipios_n": 3,
+   "estado_n": 2,
+   "estado_valor": 1462000000.0,
+   "valor_hab": 494.16,
+   "entes": 4,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 11,
+    "valor_hab": 8,
+    "n": 23
+   }
+  },
+  {
+   "uf": "AP",
+   "nome": "Amapá",
+   "regiao": "Norte",
+   "n": 1,
+   "valor": 536150464.75,
+   "share_valor_pct": 0.67,
+   "municipios_n": 0,
+   "estado_n": 1,
+   "estado_valor": 536150464.75,
+   "valor_hab": 661.95,
+   "entes": 1,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 20,
+    "valor_hab": 4,
+    "n": 25
+   }
+  },
+  {
+   "uf": "BA",
+   "nome": "Bahia",
+   "regiao": "Nordeste",
+   "n": 54,
+   "valor": 7624401648.820001,
+   "share_valor_pct": 9.47,
+   "municipios_n": 49,
+   "estado_n": 5,
+   "estado_valor": 5800000000.0,
+   "valor_hab": 512.07,
+   "entes": 38,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 3,
+    "valor_hab": 7,
+    "n": 6
+   }
+  },
+  {
+   "uf": "CE",
+   "nome": "Ceará",
+   "regiao": "Nordeste",
+   "n": 41,
+   "valor": 6705724029.4,
+   "share_valor_pct": 8.33,
+   "municipios_n": 31,
+   "estado_n": 10,
+   "estado_valor": 4883469257.49,
+   "valor_hab": 720.87,
+   "entes": 23,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 4,
+    "valor_hab": 3,
+    "n": 7
+   }
+  },
+  {
+   "uf": "DF",
+   "nome": "Distrito Federal",
+   "regiao": "Centro-Oeste",
+   "n": 0,
+   "valor": 0,
+   "share_valor_pct": 0.0,
+   "municipios_n": 0,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 0.0,
+   "entes": 0,
+   "credor_principal": null,
+   "posicoes": {
+    "valor": 26,
+    "valor_hab": 26,
+    "n": 26
+   }
+  },
+  {
+   "uf": "ES",
+   "nome": "Espírito Santo",
+   "regiao": "Sudeste",
+   "n": 15,
+   "valor": 2619000000.0,
+   "share_valor_pct": 3.25,
+   "municipios_n": 10,
+   "estado_n": 5,
+   "estado_valor": 1900000000.0,
+   "valor_hab": 630.98,
+   "entes": 9,
+   "credor_principal": "Banco Nacional de Desenvolvimento Econômico e Social",
+   "posicoes": {
+    "valor": 9,
+    "valor_hab": 5,
+    "n": 12
+   }
+  },
+  {
+   "uf": "GO",
+   "nome": "Goiás",
+   "regiao": "Centro-Oeste",
+   "n": 24,
+   "valor": 599680628.0,
+   "share_valor_pct": 0.74,
+   "municipios_n": 23,
+   "estado_n": 1,
+   "estado_valor": 0,
+   "valor_hab": 80.01,
+   "entes": 20,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 19,
+    "valor_hab": 23,
+    "n": 9
+   }
+  },
+  {
+   "uf": "MA",
+   "nome": "Maranhão",
+   "regiao": "Nordeste",
+   "n": 12,
+   "valor": 1422591161.74,
+   "share_valor_pct": 1.77,
+   "municipios_n": 11,
+   "estado_n": 1,
+   "estado_valor": 1300000000.0,
+   "valor_hab": 202.52,
+   "entes": 11,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 15,
+    "valor_hab": 18,
+    "n": 15
+   }
+  },
+  {
+   "uf": "MG",
+   "nome": "Minas Gerais",
+   "regiao": "Sudeste",
+   "n": 177,
+   "valor": 3336308861.42,
+   "share_valor_pct": 4.14,
+   "municipios_n": 176,
+   "estado_n": 1,
+   "estado_valor": 0,
+   "valor_hab": 155.46,
+   "entes": 144,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 7,
+    "valor_hab": 19,
+    "n": 3
+   }
+  },
+  {
+   "uf": "MS",
+   "nome": "Mato Grosso do Sul",
+   "regiao": "Centro-Oeste",
+   "n": 13,
+   "valor": 1282677736.59,
+   "share_valor_pct": 1.59,
+   "municipios_n": 11,
+   "estado_n": 2,
+   "estado_valor": 950000000.0,
+   "valor_hab": 435.35,
+   "entes": 11,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 17,
+    "valor_hab": 10,
+    "n": 14
+   }
+  },
+  {
+   "uf": "MT",
+   "nome": "Mato Grosso",
+   "regiao": "Centro-Oeste",
+   "n": 10,
+   "valor": 451218514.52,
+   "share_valor_pct": 0.56,
+   "municipios_n": 10,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 114.22,
+   "entes": 10,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 22,
+    "valor_hab": 21,
+    "n": 18
+   }
+  },
+  {
+   "uf": "PA",
+   "nome": "Pará",
+   "regiao": "Norte",
+   "n": 12,
+   "valor": 2503740000.0,
+   "share_valor_pct": 3.11,
+   "municipios_n": 5,
+   "estado_n": 7,
+   "estado_valor": 1756740000.0,
+   "valor_hab": 285.94,
+   "entes": 5,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 10,
+    "valor_hab": 15,
+    "n": 16
+   }
+  },
+  {
+   "uf": "PB",
+   "nome": "Paraíba",
+   "regiao": "Nordeste",
+   "n": 8,
+   "valor": 146026415.0,
+   "share_valor_pct": 0.18,
+   "municipios_n": 5,
+   "estado_n": 3,
+   "estado_valor": 0,
+   "valor_hab": 34.91,
+   "entes": 6,
+   "credor_principal": "Banco de Brasília S/A",
+   "posicoes": {
+    "valor": 25,
+    "valor_hab": 25,
+    "n": 21
+   }
+  },
+  {
+   "uf": "PE",
+   "nome": "Pernambuco",
+   "regiao": "Nordeste",
+   "n": 22,
+   "valor": 4217297366.55,
+   "share_valor_pct": 5.24,
+   "municipios_n": 19,
+   "estado_n": 3,
+   "estado_valor": 3262532763.42,
+   "valor_hab": 440.07,
+   "entes": 15,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 6,
+    "valor_hab": 9,
+    "n": 10
+   }
+  },
+  {
+   "uf": "PI",
+   "nome": "Piauí",
+   "regiao": "Nordeste",
+   "n": 31,
+   "valor": 13588133020.66,
+   "share_valor_pct": 16.87,
+   "municipios_n": 18,
+   "estado_n": 13,
+   "estado_valor": 13503042785.91,
+   "valor_hab": 4005.21,
+   "entes": 15,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 2,
+    "valor_hab": 1,
+    "n": 8
+   }
+  },
+  {
+   "uf": "PR",
+   "nome": "Paraná",
+   "regiao": "Sul",
+   "n": 160,
+   "valor": 1728455432.1400003,
+   "share_valor_pct": 2.15,
+   "municipios_n": 159,
+   "estado_n": 1,
+   "estado_valor": 0,
+   "valor_hab": 144.61,
+   "entes": 98,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 14,
+    "valor_hab": 20,
+    "n": 4
+   }
+  },
+  {
+   "uf": "RJ",
+   "nome": "Rio de Janeiro",
+   "regiao": "Sudeste",
+   "n": 18,
+   "valor": 1744726747.63,
+   "share_valor_pct": 2.17,
+   "municipios_n": 18,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 101.29,
+   "entes": 9,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 13,
+    "valor_hab": 22,
+    "n": 11
+   }
+  },
+  {
+   "uf": "RN",
+   "nome": "Rio Grande do Norte",
+   "regiao": "Nordeste",
+   "n": 12,
+   "valor": 245504267.86,
+   "share_valor_pct": 0.3,
+   "municipios_n": 12,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 70.88,
+   "entes": 8,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 23,
+    "valor_hab": 24,
+    "n": 17
+   }
+  },
+  {
+   "uf": "RO",
+   "nome": "Rondônia",
+   "regiao": "Norte",
+   "n": 9,
+   "valor": 514000000.0,
+   "share_valor_pct": 0.64,
+   "municipios_n": 8,
+   "estado_n": 1,
+   "estado_valor": 383000000.0,
+   "valor_hab": 292.49,
+   "entes": 8,
+   "credor_principal": "Banco Bradesco S/A",
+   "posicoes": {
+    "valor": 21,
+    "valor_hab": 14,
+    "n": 20
+   }
+  },
+  {
+   "uf": "RR",
+   "nome": "Roraima",
+   "regiao": "Norte",
+   "n": 0,
+   "valor": 0,
+   "share_valor_pct": 0.0,
+   "municipios_n": 0,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 0.0,
+   "entes": 0,
+   "credor_principal": null,
+   "posicoes": {
+    "valor": 27,
+    "valor_hab": 27,
+    "n": 27
+   }
+  },
+  {
+   "uf": "RS",
+   "nome": "Rio Grande do Sul",
+   "regiao": "Sul",
+   "n": 189,
+   "valor": 2851582911.74,
+   "share_valor_pct": 3.54,
+   "municipios_n": 189,
+   "estado_n": 0,
+   "estado_valor": 0,
+   "valor_hab": 253.85,
+   "entes": 150,
+   "credor_principal": "Caixa Econômica Federal",
+   "posicoes": {
+    "valor": 8,
+    "valor_hab": 16,
+    "n": 2
+   }
+  },
+  {
+   "uf": "SC",
+   "nome": "Santa Catarina",
+   "regiao": "Sul",
+   "n": 158,
+   "valor": 4910601426.369999,
+   "share_valor_pct": 6.1,
+   "municipios_n": 156,
+   "estado_n": 2,
+   "estado_valor": 2600000000.0,
+   "valor_hab": 590.73,
+   "entes": 134,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 5,
+    "valor_hab": 6,
+    "n": 5
+   }
+  },
+  {
+   "uf": "SE",
+   "nome": "Sergipe",
+   "regiao": "Nordeste",
+   "n": 10,
+   "valor": 909200000.0,
+   "share_valor_pct": 1.13,
+   "municipios_n": 4,
+   "estado_n": 6,
+   "estado_valor": 850000000.0,
+   "valor_hab": 394.06,
+   "entes": 4,
+   "credor_principal": "Banco Bradesco S/A",
+   "posicoes": {
+    "valor": 18,
+    "valor_hab": 12,
+    "n": 19
+   }
+  },
+  {
+   "uf": "SP",
+   "nome": "São Paulo",
+   "regiao": "Sudeste",
+   "n": 226,
+   "valor": 16961572091.779995,
+   "share_valor_pct": 21.06,
+   "municipios_n": 223,
+   "estado_n": 3,
+   "estado_valor": 8021788362.84,
+   "valor_hab": 367.3,
+   "entes": 123,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 1,
+    "valor_hab": 13,
+    "n": 1
+   }
+  },
+  {
+   "uf": "TO",
+   "nome": "Tocantins",
+   "regiao": "Norte",
+   "n": 15,
+   "valor": 1956650000.0,
+   "share_valor_pct": 2.43,
+   "municipios_n": 14,
+   "estado_n": 1,
+   "estado_valor": 1700000000.0,
+   "valor_hab": 1225.98,
+   "entes": 14,
+   "credor_principal": "Banco do Brasil S/A",
+   "posicoes": {
+    "valor": 12,
+    "valor_hab": 2,
+    "n": 13
+   }
+  }
+ ],
+ "maiores_12m": [
+  {
+   "interessado": "São Paulo",
+   "uf": "SP",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 5453174076.93,
+   "data_status": "2026-05-22",
+   "num_pvl": "PVL02.001887/2025-08"
+  },
+  {
+   "interessado": "Piauí",
+   "uf": "PI",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 4980000000.0,
+   "data_status": "2026-06-24",
+   "num_pvl": "PVL02.000807/2026-70"
+  },
+  {
+   "interessado": "Piauí",
+   "uf": "PI",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2980000000.0,
+   "data_status": "2025-09-11",
+   "num_pvl": "PVL02.001167/2025-34"
+  },
+  {
+   "interessado": "Santa Catarina",
+   "uf": "SC",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2600000000.0,
+   "data_status": "2025-09-19",
+   "num_pvl": "PVL02.001276/2025-51"
+  },
+  {
+   "interessado": "São Paulo",
+   "uf": "SP",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2568614285.91,
+   "data_status": "2026-01-05",
+   "num_pvl": "PVL02.001814/2025-16"
+  },
+  {
+   "interessado": "Ceará",
+   "uf": "CE",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2460000000.0,
+   "data_status": "2026-03-16",
+   "num_pvl": "PVL02.000218/2026-91"
+  },
+  {
+   "interessado": "Bahia",
+   "uf": "BA",
+   "tipo_interessado": "Estado",
+   "credor": "Banco Itaú Unibanco S/A",
+   "finalidade": "Amortização de dívida",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2000000000.0,
+   "data_status": "2025-12-26",
+   "num_pvl": "PVL02.001476/2025-12"
+  },
+  {
+   "interessado": "Bahia",
+   "uf": "BA",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 2000000000.0,
+   "data_status": "2026-04-29",
+   "num_pvl": "PVL02.000145/2026-38"
+  },
+  {
+   "interessado": "Piauí",
+   "uf": "PI",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Reestruturação e recomposição do principal de dívidas",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 1969696969.7,
+   "data_status": "2025-09-10",
+   "num_pvl": "PVL02.001153/2025-11"
+  },
+  {
+   "interessado": "Pernambuco",
+   "uf": "PE",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 1749327484.0,
+   "data_status": "2026-07-30",
+   "num_pvl": "PVL02.000350/2026-01"
+  },
+  {
+   "interessado": "Tocantins",
+   "uf": "TO",
+   "tipo_interessado": "Estado",
+   "credor": "Banco do Brasil S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 1700000000.0,
+   "data_status": "2025-12-30",
+   "num_pvl": "PVL02.001939/2025-38"
+  },
+  {
+   "interessado": "Pernambuco",
+   "uf": "PE",
+   "tipo_interessado": "Estado",
+   "credor": "Banco Bradesco S/A",
+   "finalidade": "Infraestrutura",
+   "tipo_operacao": "Operação contratual interna (com garantia da União)",
+   "valor": 1513205279.42,
+   "data_status": "2025-11-24",
+   "num_pvl": "PVL02.001964/2025-11"
+  }
+ ],
+ "sintese": "Em 12 meses até 2026-08, a verificação de limites liberou 1.231 operações de crédito de mercado para 866 estados e municípios, R$ 80,5 bilhões (+136% sobre os 12 meses anteriores). Municípios são 38% do valor e 94% das operações. O maior credor é Banco do Brasil S/A (59% do valor) e a maior finalidade, infraestrutura (78%). São Paulo concentra 21% do valor liberado. A taxa de deferimento entre os pleitos concluídos foi de 89%. Operações com garantia da União, de estados na maior parte, respondem por R$ 67,9 bilhões (84% do valor).",
+ "metodo": "Base inteira de PVLs do Sadipem lida pela API do Tesouro Transparente e substituída a cada coleta. Data de referência é a data do status. Mês de referência é o último mês fechado; o mês corrente aparece como parcial. Operação liberada = status Deferido, Deferido (PVL-IF), Deferido (decisão judicial) ou Encaminhado à PGFN com manifestação técnica favorável (rito das operações com garantia da União: a STN conclui a verificação e a PGFN formaliza a garantia). Arquivado, indeferido e cancelado formam 'arquivado'; regularizado à parte; o restante é tramitação, contada só nos últimos 36 meses. Crédito de mercado exclui credor União e finalidade de renegociação de dívidas, que ficam numa linha própria. Valores em reais somados; moeda estrangeira contada e listada, nunca convertida. Taxa de deferimento = deferidos ÷ (deferidos + arquivados) concluídos na janela. Por UF, valor por habitante com a população do IBGE (SIDRA 6579); posições entre as 27 UFs.",
+ "limitacoes": "Deferimento não é contratação nem desembolso: o Sadipem registra a verificação de limites, não o contrato. Um pleito pode ser protocolado, deferido e arquivado em datas diferentes; só a data do status atual é publicada. Operações em moeda estrangeira não entram nas somas. Antes de 2017 a base é menos completa (o rito PVL-IF começou depois).",
+ "cautelas": [
+  "O valor liberado num ano é dominado por poucas operações grandes de estados; compare municípios e estados separadamente.",
+  "Renegociação com a União não é crédito novo: é reperfilamento de dívida antiga e fica fora da série de mercado.",
+  "Meses recentes mudam: pleitos em tramitação viram deferidos ou arquivados nas coletas seguintes."
+ ],
+ "catalogo": [
+  {
+   "nome": "Operações liberadas",
+   "definicao": "PVLs deferidos ou com manifestação técnica favorável encaminhada à PGFN, crédito de mercado",
+   "unidade": "n e R$",
+   "fonte": "Sadipem (API tt/pvl)",
+   "limitacoes": "não é contratação"
+  },
+  {
+   "nome": "Taxa de deferimento",
+   "definicao": "liberados ÷ (liberados + arquivados) concluídos em 12 meses",
+   "unidade": "%",
+   "fonte": "calculado",
+   "limitacoes": "tramitação fora"
+  },
+  {
+   "nome": "Em tramitação",
+   "definicao": "pleitos de mercado sem decisão, com status nos últimos 36 meses",
+   "unidade": "n e R$",
+   "fonte": "Sadipem",
+   "limitacoes": "pleitos parados há mais de 3 anos ficam fora"
+  },
+  {
+   "nome": "Garantia da União",
+   "definicao": "operações internas ou externas com garantia da União",
+   "unidade": "n e R$",
+   "fonte": "Sadipem (tipo de operação)",
+   "limitacoes": "só deferidas"
+  },
+  {
+   "nome": "Renegociação com a União",
+   "definicao": "credor União ou finalidade de renegociação",
+   "unidade": "R$",
+   "fonte": "Sadipem",
+   "limitacoes": "fora da série de mercado"
+  },
+  {
+   "nome": "Valor por habitante",
+   "definicao": "valor deferido em 12 meses ÷ população da UF",
+   "unidade": "R$",
+   "fonte": "Sadipem e IBGE SIDRA 6579",
+   "limitacoes": "domicílio do ente"
+  }
+ ]
+}

@@ -48,6 +48,7 @@ export const VIEW_SECTIONS = [
   "obs:cobranca",
   "obs:prazo",
   "obs:fidc",
+  "obs:subnacional",
   "obs:sugestoes",
   // Plataforma (páginas Next)
   "app:conta",
@@ -97,6 +98,7 @@ export const SECTION_LABELS: Record<ViewSection, string> = {
   "obs:cobranca": "Observatório · Bancos cobrando na Justiça",
   "obs:prazo": "Observatório · Prazo da carteira",
   "obs:fidc": "Observatório · FIDCs por lastro e cota",
+  "obs:subnacional": "Observatório · Crédito a estados e municípios",
   "obs:sugestoes": "Observatório · Sugestões",
   "app:conta": "Plataforma · Conta",
 };

@@ -36,7 +36,7 @@ describe("T5: um só lugar para _r, _share, _mes_menos, _mil e _dec no pipeline"
     expect((app.match(/const pct = \(v, d = \d\) => v == null/g) || []).length).toBe(0);
     expect((app.match(/const (n0|brl) = v => v == null/g) || []).length).toBe(0);
     expect((app.match(/const bi = v =>/g) || []).length).toBe(0);
-    expect((app.match(/const bi = fmt\.brlBi(DeMilhoes)?;/g) || []).length).toBe(3);
+    expect((app.match(/const bi = fmt\.brlBi(DeMilhoes)?;/g) || []).length).toBe(4);
   });
 });
 

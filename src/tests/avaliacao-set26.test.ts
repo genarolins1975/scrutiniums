@@ -226,8 +226,8 @@ describe("2.2/2.3 — sem alert(), fontes do meta derivadas, uma metodologia", (
   });
 
   it("a versão dos ativos subiu junto com o app", () => {
-    expect(app).toContain('const APP_VERSION = "0.102.0";');
-    expect(html).toContain("?v=0.102.0");
+    expect(app).toContain('const APP_VERSION = "0.103.0";');
+    expect(html).toContain("?v=0.103.0");
     expect(html).not.toContain("?v=0.86.0");
   });
 });

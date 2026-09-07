@@ -35,6 +35,7 @@ state.cs = { met: "cotas", uf: "cotas" };
 state.cb = { grupo: "todas", uf: "por_mil_hab" };
 state.pz = { cli: "total", serie: "curto_12m_pct", uf: "curto_12m_pct" };
 state.fi = { serie: "inad_pct", lastro: "F" };
+state.sn = { cred: "12m", uf: "valor", serie: "valor" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -50,7 +51,7 @@ const ROUTES = { mapa: "/map", overview: "/overview", pulse: "/credit",
   sector: "/sectors/", openfinance: "/open-finance", scenarios: "/scenarios", alerts: "/alerts",
   research: "/research", method: "/methodology", regulacao: "/regulacao",
   products: "/products", product: "/products/", compare: "/compare", market: "/market", leading: "/leading-signals",
-  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding", consorcios: "/consortia", cobranca: "/debt-collection-lawsuits", prazo: "/loan-maturity", fidc: "/fidc-receivables" };
+  trends: "/search-trends", panorama: "/credit-panorama", bets: "/bets-financial-risk", fraudes: "/financial-fraud", juros: "/interest-rates", sugestoes: "/suggestions", pix: "/pix", sobre: "/about", judicial: "/lawsuits", pgfn: "/federal-tax-debt", desenrola: "/desenrola", penetracao: "/credit-penetration", moradia: "/housing-credit", consignado: "/payroll-lending-aging", operacional: "/operational-indicators", presmun: "/presenca/", rural: "/rural-credit", ampliado: "/broad-credit", bndes: "/directed-credit-bndes", estados: "/states", estado: "/states/", sfn: "/sfn-entries-exits", conduta: "/conduct-enforcement", emprego: "/formal-employment", funding: "/funding", consorcios: "/consortia", cobranca: "/debt-collection-lawsuits", prazo: "/loan-maturity", fidc: "/fidc-receivables", subnacional: "/subnational-credit" };
 const PATH_MODE = !location.pathname.includes("/web/") && location.protocol !== "file:";
 // Embutido na plataforma Scrutiniums: rotas sob /observatorio, dados estáticos sob /obs/.
 const BASE = "/observatorio";
@@ -235,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.102.0";
+const APP_VERSION = "0.103.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -290,6 +291,7 @@ const VIEW_DATA = {
   cobranca: ["cobranca"],
   prazo: ["prazo"],
   fidc: ["fidc"],
+  subnacional: ["subnacional"],
 };
 /* Gold que falhou no carregamento fica marcado como null (e o motivo em
    GOLD_FALHAS): quem chama distingue "ainda não pedido" (undefined) de "pediu e
@@ -2544,7 +2546,7 @@ const MAPA_CICLO = [
   { n: 1, id: "funding", titulo: "De onde vem o dinheiro", pergunta: "Como os bancos se financiam, quanto do crédito vem do mercado de capitais e o que lastreia os fundos de recebíveis?", views: ["funding", "ampliado", "fidc"] },
   { n: 2, id: "sistema", titulo: "Quem empresta", pergunta: "Quais instituições, quem entra e quem sai, com que capital, resultado, rede e valor de mercado?", views: ["sfn", "institutions", "compare", "operacional", "market"] },
   { n: 3, id: "produtos", titulo: "O que se empresta e a que preço", pergunta: "Produtos, prazos, taxas, crédito rural, direcionado e a alternativa do consórcio", views: ["products", "prazo", "juros", "rural", "bndes", "consorcios"] },
-  { n: 4, id: "tomadores", titulo: "Para quem e onde", pergunta: "Território, moradia, consignado e o emprego que paga a parcela", views: ["panorama", "estados", "penetracao", "moradia", "consignado", "emprego"] },
+  { n: 4, id: "tomadores", titulo: "Para quem e onde", pergunta: "Território, moradia, consignado e o emprego que paga a parcela", views: ["panorama", "estados", "penetracao", "moradia", "consignado", "emprego", "subnacional"] },
   { n: 5, id: "risco", titulo: "O ciclo e o que vem", pergunta: "Estoque, concessões, inadimplência, risco por setor, sinais antecedentes, cenários e alertas", views: ["pulse", "sectors", "leading", "scenarios", "alerts", "trends"] },
   { n: 6, id: "cobranca", titulo: "Quando o crédito atrasa", pergunta: "Renegociação, cobrança judicial, recuperações e falências e dívida com a União", views: ["desenrola", "cobranca", "rj", "pgfn"] },
   { n: 7, id: "supervisao", titulo: "Regras, trilhos e conduta", pergunta: "Regulação, sanções e reclamações, litígios de consumo, Pix, Open Finance e as fronteiras do risco", views: ["regulacao", "conduta", "judicial", "pix", "openfinance", "bets", "fraudes"] },
@@ -2554,7 +2556,7 @@ const MAPA_TRILHAS = [
   { perfil: "Analista de risco de crédito", quem: "acompanha ciclo, setores, instituições e funding", passos: ["pulse", "leading", "sectors", "institutions", "funding", "cobranca", "scenarios"] },
   { perfil: "Regulador ou supervisor", quem: "olha estrutura do sistema, conduta e efeitos de regra", passos: ["sfn", "funding", "conduta", "cobranca", "rj", "regulacao", "method"] },
 ];
-const MAPA_FONTES = { sgs: "BCB/SGS (séries de crédito, juros e moeda)", ifdata: "BCB/IF.data (balanços por instituição)", scr: "BCB/SCR.data (carteira por UF e tomador)", b3: "B3 (mercado)", fidc: "CVM (FIDC)",
+const MAPA_FONTES = { sgs: "BCB/SGS (séries de crédito, juros e moeda)", ifdata: "BCB/IF.data (balanços por instituição)", scr: "BCB/SCR.data (carteira por UF e tomador)", b3: "B3 (mercado)", fidc: "CVM (FIDC)", sadipem: "Tesouro Nacional/Sadipem (PVL de estados e municípios)",
   datajud: "CNJ/DataJud (recuperações e falências)", trends: "Google Trends", txjuros: "BCB (taxas por instituição)", susep_ses: "SUSEP/SES (seguro prestamista)", sicor: "BCB/MDCR (crédito rural)", cvm_ofertas: "CVM (ofertas públicas)", securit: "CVM (CRI e CRA)",
   bndes: "BNDES (desembolsos)", focus: "BCB/Focus (expectativas)", sfn_cadastro: "BCB/Unicad (cadastro do SFN)", bcb_pas: "BCB/Gepad (processos sancionadores)", cvm_pas: "CVM (processos sancionadores)",
   caged: "MTE/Novo Caged (emprego)", cda: "CVM/CDA (carteiras de fundos)", consorcios: "BCB (Panorama de Consórcios)", cobranca: "CNJ/DataJud (cobrança judicial)" };
@@ -2628,7 +2630,7 @@ function verbetesCarteiraIF(meta, compacto) {
 const VIEW_VINTAGE = { mapa: "sgs", overview: "sgs", pulse: "sgs", leading: "sgs", scenarios: "sgs",
   alerts: "sgs", sectors: "ifdata", rj: "datajud", institutions: "ifdata", inst: "ifdata",
   products: "ifdata", product: "ifdata", compare: "ifdata", research: "ifdata",
-  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios", prazo: "scr", fidc: "fidc", cobranca: "cobranca" };
+  market: "b3", panorama: "scr", trends: "trends", sector: "ifdata", rural: "sicor", ampliado: "sgs", bndes: "bndes", estados: "scr", estado: "scr", sfn: "ifdata", conduta: "bcb_pas", emprego: "caged", funding: "ifdata", consorcios: "consorcios", prazo: "scr", fidc: "fidc", cobranca: "cobranca", subnacional: "sadipem" };
 function pageVintage(view) {
   const vs = (state.data.meta || {}).vintages || {};
   return vs[VIEW_VINTAGE[view]] || null;
@@ -2869,6 +2871,10 @@ const GUIA = {
     importa: "FIDCs são o maior canal de crédito fora dos bancos: mais de um trilhão de reais em direitos creditórios cedidos por empresas, financeiras e originadores digitais. A CVM publica todo mês o lastro (o que é o crédito), as classes de cota (quem perde primeiro) e os prazos.",
     ler: "Lastro diz de onde vem o crédito; subordinação diz quanto do PL absorve perdas antes do cotista sênior; prazos dizem quão rápido a carteira gira. Cada tabela tem cobertura própria, declarada ao lado do número.",
     nao: "Atraso não é perda: a subordinação e as garantias absorvem parte da inadimplência. A subordinação é média do sistema entre fundos com duas ou mais classes, não a de nenhum fundo. Não se soma ao SCR: parte do lastro já passou pelos bancos." },
+  subnacional: { q: "Quanto crédito estados e municípios podem tomar, com quem, para quê e onde?",
+    importa: "Antes de contratar crédito, estado ou município passa pela verificação de limites da LRF na STN ou no banco credor (o PVL do Sadipem). É o único registro público que mostra o fluxo de crédito ao setor público subnacional antes do contrato: quem pediu, quanto, com que credor, com ou sem garantia da União.",
+    ler: "Comece pelo valor liberado em 12 meses e pela fatia dos municípios; depois a série anual (estados fazem o valor, municípios fazem a contagem), os credores, a tabela por UF e as maiores operações. Renegociação com a União fica fora da série de mercado.",
+    nao: "Deferido não é contratado nem desembolsado. Moeda estrangeira não entra nas somas. Uma operação grande de estado com garantia da União muda o ano inteiro. Meses recentes mudam quando pleitos em tramitação são decididos." },
   cobranca: { q: "Quanto crédito está sendo cobrado na Justiça, e onde?",
     importa: "Entre a inadimplência do SCR e a recuperação judicial existe a cobrança: execução de título, busca e apreensão do bem alienado, monitória e execução hipotecária. É o crédito que virou processo, e diz quanto o credor está disposto a pagar para recuperar o que emprestou.",
     ler: "Comece pelos casos de cobrança bancária em 12 meses e pela variação; depois pela classe (a busca e apreensão é o caminho do financiamento de veículos) e pela UF, em casos por mil habitantes e por R$ bilhão de carteira. O total com qualquer credor (condomínio, locador, fornecedor) é contexto, nunca soma.",
@@ -3215,7 +3221,7 @@ function phActions(itens, controles) {
    quando TODAS as chaves do coletor falharam e a falha não é a ausência normal
    do mês ainda não publicado (404). */
 const VIEW_COLETORES = {
-  panorama: ["scr_data"], prazo: ["scr_data"], fidc: ["fidc"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
+  panorama: ["scr_data"], prazo: ["scr_data"], fidc: ["fidc"], subnacional: ["sadipem"], rj: ["djen", "datajud"], judicial: ["judicial", "datajud"],
   desenrola: ["desenrola"], trends: ["trends_manual"], consignado: ["previdencia", "reclamacoes_consig"],
   pix: ["pix_bcb"], juros: ["txjuros", "susep_ses"], institutions: ["ifdata"], inst: ["ifdata"], products: ["ifdata"],
   product: ["ifdata"], compare: ["ifdata"], market: ["b3_market", "cvm_dfp"], leading: ["fidc"],
@@ -3302,6 +3308,7 @@ const GLOSSARIO = [
   { t: "CNAE", re: "CNAE", d: "Classificação Nacional de Atividades Econômicas do IBGE, usada para agrupar empresas por setor." },
   { t: "TCB", re: "TCB", d: "Tipo de consolidado bancário no IF.data: B1 e B2 bancos, B3 cooperativas, B4 bancos de desenvolvimento, N instituições não bancárias." },
   { t: "Sicor", re: "Sicor", d: "Sistema de Operações do Crédito Rural e do Proagro, do BCB: cada contrato de crédito rural, com finalidade, produto e município." },
+  { t: "PVL", re: "PVLs?", d: "Pedido de Verificação de Limites e condições: análise, pela STN ou pelo banco credor, de que a operação de crédito de um estado ou município cabe nos limites da LRF e das Resoluções 40 e 43 do Senado. Deferido não é contratado." },
   { t: "FIDC", re: "FIDCs?", d: "Fundo de Investimento em Direitos Creditórios: fundo que compra recebíveis; a inadimplência da carteira é informada mensalmente à CVM." },
   { t: "CRI e CRA", re: "CRI(?:/CRA)?", d: "Certificados de Recebíveis Imobiliários e do Agronegócio: títulos lastreados em créditos, registrados na CVM." },
   { t: "PGFN", re: "PGFN", d: "Procuradoria-Geral da Fazenda Nacional: administra a dívida ativa da União e publica a lista de devedores." },
@@ -9976,6 +9983,142 @@ window.fiCSV = () => {
   dlFile(`obc_fidc_serie_${D.anomes}.csv`, head + cols.join(";") + "\n" + D.serie.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
 };
 
+/* ---------- Crédito a estados e municípios (Sadipem, Tesouro Nacional) ---------- */
+function snSet(k, v) { state.sn[k] = v; renderSubnacional(); }
+window.snSet = snSet;
+function renderSubnacional() {
+  const el = document.getElementById("view-subnacional");
+  const D = state.data.subnacional;
+  if (!D) { el.innerHTML = loadingCard("Crédito a estados e municípios"); return; }
+  if (!D.disponivel) {
+    el.innerHTML = pageHead({ title: "Crédito a estados e municípios", desc: "Painel indisponível nesta execução." }) + `<div class="card"><p class="src">${D.motivo || D.error || "sem dados"}</p></div>`;
+    return;
+  }
+  const F = state.sn;
+  const K = D.kpis;
+  const pct = (v, d = 1) => fmt.pct(v, d);
+  const n0 = fmt.n0;
+  const brl = fmt.money;
+  const bi = fmt.brlBi;
+  const rotulosFim = window.innerWidth > 640;
+  const head = pageHead({
+    title: "Crédito a estados e municípios", vintage: D.mes,
+    seals: `${badge("observado", "pedidos de verificação de limites (PVL) do Sadipem, registro administrativo da STN")} ${badge("calculado", "agregações por ano, credor, finalidade e UF; shares e posições calculados")}`,
+    desc: "Quanto crédito a verificação de limites da LRF liberou para estados e municípios, com quem, para quê e onde.",
+    fontes: "Tesouro Nacional (Sadipem, API Tesouro Transparente); IBGE (população)",
+    actions: `<button class="btn ghost small" onclick="snCSV()">baixar CSV (série anual)</button>`,
+  });
+  const topCred = D.credores_12m[0], topFin = D.finalidades_12m[0];
+  const shareMun = K.deferidos_12m_valor ? K.municipios_12m_valor / K.deferidos_12m_valor * 100 : null;
+  const sharePgfn = K.deferidos_12m_valor ? K.pgfn_12m_valor / K.deferidos_12m_valor * 100 : null;
+  const aberturaHtml = abertura({
+    placar: [
+      { l: "Liberado em 12 meses", v: bi(K.deferidos_12m_valor), sub: `${n0(K.deferidos_12m_n)} operações${K.var_12m_valor_pct != null ? ` · ${K.var_12m_valor_pct >= 0 ? "+" : ""}${fmt.n(K.var_12m_valor_pct, 0)}% em valor contra os 12 meses anteriores` : ""}`, href: "#sn-mensal" },
+      { l: "Entes atendidos", v: n0(K.entes_12m), sub: `${n0(K.municipios_12m_n)} operações de municípios e ${n0(K.estados_12m_n)} de estados`, href: "#sn-ufs" },
+      { l: "Municípios no valor", v: pct(shareMun, 0), sub: `${bi(K.municipios_12m_valor)} · estados ${bi(K.estados_12m_valor)}`, href: "#sn-anual" },
+      { l: "Com garantia da União", v: pct(sharePgfn, 0), sub: `${n0(K.pgfn_12m_n)} operações, ${bi(K.pgfn_12m_valor)}, encaminhadas à PGFN`, href: "#sn-funil" },
+      { l: "Taxa de deferimento", v: pct(K.taxa_deferimento_12m_pct, 0), sub: `entre ${n0(K.concluidos_12m_n)} pleitos concluídos · ${n0(K.em_tramitacao_n)} em tramitação (${bi(K.em_tramitacao_valor)})`, href: "#sn-funil" },
+    ],
+    sintese: [D.sintese],
+    ref: `Sadipem, status até ${D.coleta.data_status_max || D.mes} · janela ${D.janela_12m.ini} a ${D.janela_12m.fim}${D.mes_parcial ? ` · ${D.mes_parcial} parcial, fora dos KPIs` : ""}`,
+  });
+
+  /* ---------- série anual ---------- */
+  const SA = D.serie_anual || [];
+  const fechados = SA.filter(a => !a.parcial);
+  const seriesA = [
+    { pts: fechados.map(a => ({ x: a.ano + "-07-01", y: a.municipios_valor / 1e9 })), color: "#1d4e89", label: "municípios" },
+    { pts: fechados.map(a => ({ x: a.ano + "-07-01", y: a.estados_valor / 1e9 })), color: "#b45309", label: "estados e DF" },
+  ];
+  const anual = secWrap("sn-anual", `${sechead("Ano a ano: quanto a verificação de limites liberou", `${fechados.length ? fechados[0].ano : "–"} a ${fechados.length ? fechados[fechados.length - 1].ano : "–"} · crédito de mercado, valores em reais`)}
+  <div class="grid g2">
+    <div class="card"><h4>Valor liberado por ano, R$ bi ${badge("observado")}</h4>
+      ${lineChart({ series: seriesA, h: 220, endLabels: rotulosFim, unit: "R$ bi", dec: 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: "valor liberado por ano, municípios e estados" })}
+      <p class="src">Ano da data do status. Renegociações com a União ficam fora da série e aparecem na tabela ao lado; ${D.mes_parcial ? `${D.mes_parcial.slice(0, 4)} é parcial.` : ""}</p></div>
+    <div class="card"><h4>Por ano ${badge("observado")}</h4>
+      <div class="tblwrap"><table class="data compact"><thead><tr><th>Ano</th><th style="text-align:right">Operações</th><th style="text-align:right">Liberado</th><th style="text-align:right">Municípios</th><th style="text-align:right">Garantia da União</th><th style="text-align:right">Renegociação União</th><th style="text-align:right">Arquivados</th></tr></thead>
+      <tbody>${SA.slice(-10).reverse().map(a => `<tr><td>${a.ano}${a.parcial ? " <span class='src'>parcial</span>" : ""}</td><td style="text-align:right">${n0(a.deferidos_n)}</td><td style="text-align:right">${bi(a.deferidos_valor)}</td><td style="text-align:right">${bi(a.municipios_valor)}</td><td style="text-align:right">${bi(a.garantia_uniao_valor)}</td><td style="text-align:right">${a.renegociacao_uniao_valor ? bi(a.renegociacao_uniao_valor) : "–"}</td><td style="text-align:right">${n0(a.arquivados_n)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="src">Renegociação com a União é reperfilamento de dívida antiga (São Paulo em 2017, Rio Grande do Sul em 2020), não crédito novo.</p></div>
+  </div>`);
+
+  /* ---------- credores e finalidades ---------- */
+  const barras = (lista, cor, campo = "share_valor_pct") => {
+    const mx = Math.max(...lista.map(x => x[campo] || 0), 1);
+    return lista.map(x => `<div class="contrib"><span class="lbl" style="width:190px" title="${attr(x.nome)}">${x.nome.length > 34 ? x.nome.slice(0, 32) + "…" : x.nome}</span><span class="bar ${cor}" style="width:${Math.max(2, (x[campo] || 0) / mx * 150)}px"></span><span class="num">${pct(x[campo])} <span class="src">${brl(x.valor)} · ${n0(x.n)} op.${x.estados_n ? ` (${n0(x.estados_n)} de estados)` : ""}</span></span></div>`).join("");
+  };
+  const credores = secWrap("sn-credores", `${sechead("Com quem e para quê", `12 meses até ${D.mes} · share do valor liberado`)}
+  <div class="grid g2">
+    <div class="card"><h4>Credores ${badge("observado")}</h4>
+      <div class="controls"><label class="src">janela <select onchange="snSet('cred', this.value)" aria-label="janela dos credores"><option value="12m" ${F.cred !== "60m" ? "selected" : ""}>12 meses</option><option value="60m" ${F.cred === "60m" ? "selected" : ""}>60 meses</option></select></label></div>
+      ${barras(F.cred === "60m" ? D.credores_60m : D.credores_12m, "pos")}
+      <p class="src">Bancos públicos federais (Banco do Brasil, Caixa, BNDES) dominam o valor; agências de fomento estaduais e o BRDE dominam a contagem de operações pequenas de municípios. Credores em moeda estrangeira aparecem só na contagem.</p></div>
+    <div class="card"><h4>Finalidades ${badge("observado")}</h4>
+      ${barras(D.finalidades_12m, "pos")}
+      <h5 style="margin-top:12px">Tipo de credor</h5>
+      ${D.tipos_credor_12m.map(t => `<p class="src">• ${t.nome}: ${n0(t.n)} operações, ${brl(t.valor)}</p>`).join("")}
+      ${D.moedas_12m.length ? `<h5 style="margin-top:12px">Moeda estrangeira (fora das somas)</h5>${D.moedas_12m.map(m => `<p class="src">• ${m.moeda}: ${n0(m.n)} operações, ${fmt.n(m.valor_na_moeda / 1e6, 0)} milhões na moeda</p>`).join("")}` : ""}
+      <div class="grid g2" style="margin-top:8px">${ponte("Crédito direcionado e BNDES", "bndes", null, "os desembolsos do banco de fomento, do lado de quem empresta")}${ponte("Estados: o crédito privado por UF", "estados", null, "carteira de famílias e empresas em cada estado")}</div></div>
+  </div>`);
+
+  /* ---------- UFs ---------- */
+  const chave = ["valor", "valor_hab", "n"].includes(F.uf) ? F.uf : "valor";
+  const ufsOrd = D.ufs.slice().sort((a, b) => (b[chave] || 0) - (a[chave] || 0));
+  const ufs = secWrap("sn-ufs", `${sechead("Onde", `27 UFs · 12 meses até ${D.mes} · estado mais os seus municípios`)}
+  <div class="card"><div class="controls"><label class="src">ordenar por <select onchange="snSet('uf', this.value)" aria-label="ordenar UFs"><option value="valor" ${chave === "valor" ? "selected" : ""}>valor liberado</option><option value="valor_hab" ${chave === "valor_hab" ? "selected" : ""}>valor por habitante</option><option value="n" ${chave === "n" ? "selected" : ""}>número de operações</option></select></label></div>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>#</th><th>UF</th><th>Região</th><th style="text-align:right">Liberado</th><th style="text-align:right">% do país</th><th style="text-align:right">R$/hab</th><th style="text-align:right">Operações</th><th style="text-align:right">Entes</th><th style="text-align:right">Do estado</th><th>Maior credor</th></tr></thead>
+    <tbody>${ufsOrd.map((u, i) => `<tr><td>${i + 1}</td><td><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false"><b>${u.uf}</b> ${u.nome}</a></td><td class="src">${u.regiao || ""}</td><td style="text-align:right">${brl(u.valor)}</td><td style="text-align:right">${pct(u.share_valor_pct)}</td><td style="text-align:right">${u.valor_hab != null ? fmt.n(u.valor_hab, 0) : "–"}</td><td style="text-align:right">${n0(u.n)}</td><td style="text-align:right">${n0(u.entes)}</td><td style="text-align:right">${u.estado_valor ? brl(u.estado_valor) : "–"}</td><td class="src">${u.credor_principal || "–"}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">Valor por habitante usa a população da UF (IBGE, SIDRA 6579). "Do estado" é a parte tomada pelo governo estadual; o resto é de municípios. Uma operação grande de um estado muda o ranking inteiro: leia junto com a coluna de operações.</p></div>`);
+
+  /* ---------- maiores ---------- */
+  const maiores = secWrap("sn-maiores", `${sechead("As maiores operações liberadas", `12 meses até ${D.mes}`)}
+  <div class="card"><div class="tblwrap"><table class="data compact"><thead><tr><th>Ente</th><th>UF</th><th>Credor</th><th>Finalidade</th><th>Tipo</th><th style="text-align:right">Valor</th><th>Status em</th></tr></thead>
+    <tbody>${D.maiores_12m.map(m => `<tr><td><b>${m.interessado}</b> <span class="src">${m.tipo_interessado}</span></td><td>${m.uf}</td><td class="src">${m.credor}</td><td class="src">${m.finalidade || "–"}</td><td class="src">${m.tipo_operacao || "–"}</td><td style="text-align:right">${brl(m.valor)}</td><td class="src">${fmt.d ? fmt.d(m.data_status) : m.data_status}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">PVL deferido ou com manifestação favorável não é contrato assinado nem desembolso: a operação pode nunca ser contratada.</p></div>`);
+
+  /* ---------- funil ---------- */
+  const stMax = Math.max(...D.status_12m.map(s => s.share_n_pct || 0), 1);
+  const funil = secWrap("sn-funil", `${sechead("O que a verificação decidiu", `pleitos de mercado com status em 12 meses até ${D.mes}`)}
+  <div class="grid g2">
+    <div class="card"><h4>Status dos pleitos ${badge("observado")}</h4>
+      ${D.status_12m.map(s => `<div class="contrib"><span class="lbl" style="width:190px">${s.nome.split(":")[0].split(",")[0]}</span><span class="bar ${s.id === "arquivado" ? "neg" : "pos"}" style="width:${Math.max(2, (s.share_n_pct || 0) / stMax * 150)}px"></span><span class="num">${pct(s.share_n_pct)} <span class="src">${n0(s.n)} · ${brl(s.valor)}</span></span></div>`).join("")}
+      <p class="src">Taxa de deferimento de ${pct(K.taxa_deferimento_12m_pct)}: liberados ÷ (liberados + arquivados). Em tramitação: ${n0(K.em_tramitacao_n)} pleitos (${brl(K.em_tramitacao_valor)}) com status desde ${K.em_tramitacao_desde}; pleitos parados há mais de três anos ficam fora.</p></div>
+    <div class="card"><h4>Dois ritos, dois desfechos ${badge("observado")}</h4>
+      ${D.status_12m.map(s => `<p class="src"><b>${s.nome.split(":")[0].split(" (")[0]}</b>: ${s.nome.includes(":") ? s.nome.split(":")[1].trim() : s.nome.includes("(") ? s.nome.slice(s.nome.indexOf("(") + 1, -1) : ""}</p>`).join("")}
+      <p class="src">Operações sem garantia da União terminam em "Deferido" (pela STN) ou "Deferido (PVL-IF)" (pelo próprio banco credor, para municípios). Operações com garantia da União terminam na STN como "Encaminhado à PGFN com manifestação técnica favorável": a verificação foi favorável e a PGFN formaliza a garantia. As duas formas contam como liberadas.</p>
+      ${K.externas_12m_n ? `<p class="src">${n0(K.externas_12m_n)} operações externas (credor internacional ou moeda estrangeira) liberadas no período.</p>` : ""}</div>
+  </div>`);
+
+  /* ---------- mensal ---------- */
+  const SM = (D.serie_mensal || []).filter(p => !p.parcial);
+  const met = F.serie === "n" ? "n" : "valor";
+  const seriesM = met === "n"
+    ? [{ pts: SM.map(p => ({ x: p.mes + "-01", y: p.n })), color: "#1d4e89", label: "operações liberadas" }]
+    : [{ pts: SM.map(p => ({ x: p.mes + "-01", y: p.valor / 1e9 })), color: "#1d4e89", label: "total" }, { pts: SM.map(p => ({ x: p.mes + "-01", y: p.municipios_valor / 1e9 })), color: "#2f7d4f", label: "municípios" }];
+  const mensal = secWrap("sn-mensal", `${sechead("Mês a mês", `${SM.length ? SM[0].mes : "–"} a ${D.mes} · mês corrente parcial fora`)}
+  <div class="card"><div class="controls"><label class="src">métrica <select onchange="snSet('serie', this.value)" aria-label="escolher métrica"><option value="valor" ${met === "valor" ? "selected" : ""}>valor liberado (R$ bi)</option><option value="n" ${met === "n" ? "selected" : ""}>operações liberadas</option></select></label></div>
+    ${lineChart({ series: seriesM, h: 200, endLabels: rotulosFim, unit: met === "n" ? "op." : "R$ bi", dec: met === "n" ? 0 : 1, fonte: "Tesouro Nacional, Sadipem", status: "observado", aria: (met === "n" ? "operações" : "valor") + " liberado por mês" })}
+    <p class="src">Mês da data do status. A série é irregular por natureza: uma operação de estado com garantia da União vale meses de operações municipais. Meses recentes mudam nas coletas seguintes, quando pleitos em tramitação são decididos.</p></div>`);
+
+  /* ---------- método ---------- */
+  const metodo = secWrap("sn-metodo", `${sechead("Método, coberturas e cautelas")}
+  <div class="card"><p>${D.metodo}</p>
+    <div class="tblwrap"><table class="data compact"><thead><tr><th>Indicador</th><th>Definição</th><th>Unidade</th><th>Fonte</th><th>Limitações</th></tr></thead>
+    <tbody>${(D.catalogo || []).map(c => `<tr><td><b>${c.nome}</b></td><td class="src">${c.definicao}</td><td>${c.unidade}</td><td class="src">${c.fonte}</td><td class="src">${c.limitacoes}</td></tr>`).join("")}</tbody></table></div>
+    <p class="src">${D.limitacoes}</p>
+    <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
+    <p class="src">${badge("observado")} <a href="${attr(D.fonte.url)}" target="_blank" rel="noopener">${D.fonte.nome}</a> · <a href="${attr(D.fonte.api)}" target="_blank" rel="noopener">API</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}). Coleta de ${n0(D.coleta.linhas)} pleitos em ${n0(D.coleta.paginas)} páginas (${D.coleta.mb} MB), ${D.coleta.coletado_em ? D.coleta.coletado_em.slice(0, 10) : ""}.</p></div>`);
+  el.innerHTML = head + aberturaHtml
+    + subnavFixa([["#sn-anual", "Por ano"], ["#sn-credores", "Credores"], ["#sn-ufs", "UFs"], ["#sn-maiores", "Maiores"], ["#sn-funil", "Decisões"], ["#sn-mensal", "Série"], ["#sn-metodo", "Método"]])
+    + anual + credores + ufs + maiores + funil + mensal + metodo;
+}
+window.snCSV = () => {
+  const D = state.data.subnacional;
+  if (!D || !D.disponivel) return;
+  const cols = ["ano", "deferidos_n", "deferidos_valor", "municipios_valor", "estados_valor", "garantia_uniao_valor", "externas_n", "renegociacao_uniao_valor", "arquivados_n", "parcial"];
+  const head = `# Observatório Brasileiro de Crédito — crédito a estados e municípios, série anual (Tesouro Nacional, Sadipem PVL)\n# valores em R$, crédito de mercado liberado (deferido ou manifestação favorável à PGFN) por ano da data do status; renegociação com a União em coluna própria\n`;
+  dlFile(`obc_subnacional_anual_${D.mes}.csv`, head + cols.join(";") + "\n" + D.serie_anual.map(p => cols.map(c => csvEsc(p[c])).join(";")).join("\n"), "text/csv");
+};
+
 /* @chunk:emergentes:fim */
 /* ---------- Sugestões (feedback dos usuários → painel de administração) ---------- */
 const SG_CATEGORIAS = [
@@ -12199,10 +12342,10 @@ function renderPresencaMun() {
    renderView resolve window[nome] na hora — painéis dos chunks só
    existem depois que ensureChunk os injeta. Com o app inteiro num
    arquivo (dev), a checagem de presença torna tudo transparente. */
-const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc" };
+const RENDER = { mapa: "renderMapa", overview: "renderOverview", pulse: "renderPulse", sectors: "renderSectors", rj: "renderRJ", institutions: "renderInstitutions", inst: "renderInstPage", sector: "renderSectorPage", openfinance: "renderOpenFinance", scenarios: "renderScenarios", alerts: "renderAlerts", research: "renderResearch", method: "renderMethod", products: "renderProducts", product: "renderProductPage", compare: "renderCompare", market: "renderMarket", leading: "renderLeading", trends: "renderTrends", panorama: "renderPanorama", regulacao: "renderRegulacao", bets: "renderBets", fraudes: "renderFraudes", juros: "renderJuros", sugestoes: "renderSugestoes", pix: "renderPix", sobre: "renderSobre", judicial: "renderJudicial", pgfn: "renderPgfn", desenrola: "renderDesenrola", penetracao: "renderPenetracao", moradia: "renderMoradia", consignado: "renderConsignado", operacional: "renderOperacional", presmun: "renderPresencaMun", rural: "renderRural", ampliado: "renderAmpliado", bndes: "renderBndes", estados: "renderEstados", estado: "renderEstados", sfn: "renderSfn", conduta: "renderConduta", emprego: "renderEmprego", funding: "renderFunding", consorcios: "renderConsorcios", cobranca: "renderCobranca", prazo: "renderPrazo", fidc: "renderFidc", subnacional: "renderSubnacional" };
 function renderView(v) { const f = window[RENDER[v]]; if (typeof f === "function") f(); }
 const CHUNK_OF_VIEW = { desenrola: "municipal", penetracao: "municipal", moradia: "municipal",
-  consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes" };
+  consignado: "municipal", rural: "municipal", institutions: "emergentes", inst: "emergentes", market: "emergentes", bets: "emergentes", fraudes: "emergentes", juros: "emergentes", ampliado: "emergentes", bndes: "emergentes", estados: "emergentes", estado: "emergentes", sfn: "emergentes", conduta: "emergentes", emprego: "emergentes", funding: "emergentes", consorcios: "emergentes", cobranca: "emergentes", prazo: "emergentes", fidc: "emergentes", subnacional: "emergentes" };
 const chunksCarregados = {};
 function ensureChunk(v) {
   const c = CHUNK_OF_VIEW[v];
@@ -12279,7 +12422,7 @@ function renderRegulacao() {
 }
 
 function rerenderCurrent() { const v = currentView(); renderView(v); }
-const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota" };
+const VIEW_TITLES = { mapa: "Mapa do Observatório", overview: "Visão geral", pulse: "Pulso do crédito", sectors: "Risco setorial", rj: "Recuperações e falências", institutions: "Instituições", inst: "Instituição", sector: "Setor", openfinance: "Open Finance", scenarios: "Cenários", alerts: "Central de alertas", research: "Perguntas rápidas", regulacao: "Marcos regulatórios", method: "Metodologia e fontes", products: "Produtos de crédito", product: "Produto", compare: "Comparar instituições", market: "Bancos na bolsa", leading: "Sinais antecedentes", trends: "Buscas no Google", panorama: "Quem toma crédito e onde", bets: "Apostas e crédito das famílias", fraudes: "Golpes e fraudes", juros: "Juros por instituição", sugestoes: "Sugestões", pix: "Pix e pagamentos", sobre: "Sobre o Observatório", judicial: "Clientes contra bancos na Justiça", pgfn: "Dívida com a União", desenrola: "Desenrola Brasil", penetracao: "Crédito por município", moradia: "Crédito imobiliário e moradia", consignado: "Consignado e aposentados", operacional: "Rede, pessoas e auditoria", presmun: "Presença bancária municipal", rural: "Crédito rural", ampliado: "Bancos e mercado de capitais", bndes: "Crédito direcionado e BNDES", estados: "Estados", estado: "Estado", sfn: "Quem entra e quem sai do SFN", conduta: "Sanções e reclamações", emprego: "Emprego formal", funding: "Captação dos bancos", consorcios: "Consórcios", cobranca: "Bancos cobrando na Justiça" , prazo: "Prazo da carteira", fidc: "FIDCs por lastro e cota", subnacional: "Crédito a estados e municípios" };
 /* ---------- telemetria de navegação (sem PII): registra a aba aberta ---------- */
 let lastPingedView = null;
 function pingView(v) {

@@ -751,3 +751,67 @@ com parciais só depois do mês publicado, método e cautelas, coletor por faixa
 SPA); suíte completa em modo CI com 919 testes, `tsc`, `next lint`; Chromium a 1440 e 390 px na aba Juros
 com a seção, placar, síntese, dois gráficos, verbete marcado, sem erro e sem rolagem horizontal.
 
+
+## 18. Crédito a estados e municípios (07/09/2026, madrugada, versão 0.103.0)
+
+Primeiro painel do P3: o crédito ao setor público subnacional, que nenhuma aba cobria. Fonte única e
+aberta: os pedidos de verificação de limites e condições (PVL) do Sadipem, Tesouro Nacional, pela API
+ORDS do Tesouro Transparente (`apidatalake.tesouro.gov.br/ords/sadipem/tt/pvl`). Antes de contratar
+crédito, estado, DF ou município passa pela verificação da LRF e das Resoluções 40 e 43 do Senado, feita
+pela STN ou pelo próprio banco credor (rito PVL-IF). É o único registro público do fluxo de crédito ao
+ente antes do contrato.
+
+**Coletor** (`pipeline/sources/sadipem.py`). A API devolve a base inteira em páginas de 5.000; o parâmetro
+`ano` documentado é ignorado pelo servidor (as mesmas 3.323 linhas para qualquer ano na sondagem), então o
+coletor pagina sem filtro e substitui a tabela a cada coleta, porque o status dos pleitos muda com o
+tempo. Coleta de 07/09/2026: 26.534 pleitos em 6 páginas e 13,7 MB, status de 2002 a 04/09/2026; piso de
+10 mil linhas contra base truncada; extrato bronze dos 2.000 pleitos mais recentes; vigília de 60 dias.
+
+**Builder** (`pipeline/subnacional.py`, gold `subnacional.json`). Três decisões de leitura, cada uma
+verificada contra a base:
+
+- Operação liberada é Deferido, Deferido (PVL-IF), Deferido (decisão judicial) e também "Encaminhado à
+  PGFN com manifestação técnica favorável". O último é o desfecho da STN nas operações com garantia da
+  União, quase todas de estados: em 24 meses são R$ 72 bilhões nesse status contra R$ 2 bilhões em
+  "Deferido" puro para estados. Sem essa leitura os estados sumiam do painel.
+- Crédito de mercado exclui credor União e finalidade de renegociação. A renegociação de São Paulo em 2017
+  (R$ 223 bilhões) e a do Rio Grande do Sul em 2020 (R$ 69 bilhões) ficam numa coluna própria da série
+  anual; somadas ao resto, esconderiam tudo.
+- Mês de referência é o último fechado (a base é contínua, o mês corrente está sempre parcial); pleitos em
+  tramitação contam só com status nos últimos 36 meses (havia pleitos parados desde 2010 somando
+  R$ 305 bilhões).
+
+Números de 12 meses até 2026-08 (Sadipem, status até 04/09/2026; população IBGE SIDRA 6579):
+
+| Indicador | Valor |
+|---|---|
+| Operações liberadas, crédito de mercado | 1.231 para 866 entes, R$ 80,5 bi (+136% sobre os 12 meses anteriores) |
+| Municípios | 94% das operações, 38% do valor (R$ 30,7 bi) |
+| Com garantia da União (encaminhadas à PGFN) | 277 operações, R$ 67,9 bi, 84% do valor |
+| Maior credor | Banco do Brasil, 59% do valor; Caixa 22%; BNDES 5% |
+| Maior finalidade | Infraestrutura, 78% do valor |
+| Taxa de deferimento entre pleitos concluídos | 89% |
+| Em tramitação (status desde 2023-09) | 269 pleitos, R$ 18,6 bi |
+| Moeda estrangeira (só contadas) | 45 operações: 39 em dólar, 5 em euro, 1 em iene |
+
+Aba nova "Crédito a estados e municípios" em Território e pessoas (rota `/subnational-credit`, chunk
+emergentes, nó 4 do mapa): placar e síntese, série anual desde 2008 (municípios e estados, tabela com
+garantia da União e renegociação), credores em 12 ou 60 meses, finalidades, tipo de credor e moedas,
+tabela das 27 UFs ordenável por valor, valor por habitante e operações com link para a página do estado,
+as 12 maiores operações, o funil de status com a explicação dos dois ritos, série mensal de 36 meses e
+método. `PVL` entra no glossário; `sadipem` no mapa de fontes, vintage e linhagem; catálogo público e
+telemetria atualizados. Cautela editorial repetida em três lugares: deferido não é contratado nem
+desembolsado.
+
+**Sondagens negativas desta rodada**, para não repetir: dados.gov.br responde 401 à API CKAN sem chave;
+dados.mj.gov.br (Sindec, reclamações de Procons) tem o CONNECT recusado pelo proxy deste ambiente; a base
+CNPJ da Receita (arquivos mensais) devolve 404 ou reset de conexão. Do Tesouro, além do Sadipem, o CKAN
+do Tesouro Transparente lista os datasets de garantias honradas, dívida consolidada dos entes (RGF) e
+transferências, candidatos para uma segunda camada deste painel.
+
+**Validação.** `subnacional-data.test.ts` (janela fechada, estados + municípios = total, PGFN dentro do
+total, credores e finalidades ordenados com shares até 100%, moeda estrangeira só contada, série anual com
+São Paulo 2017 fora do mercado, 36 meses fechados, 27 UFs com posições completas, método e cautelas,
+coletor e registros na SPA); suíte completa em modo CI com 927 testes, `tsc`, `next lint`; Chromium a 1440
+e 390 px na aba nova com placar, síntese, sete seções, dois gráficos, botão no menu e no mapa, sem erro
+de página e sem rolagem horizontal.
