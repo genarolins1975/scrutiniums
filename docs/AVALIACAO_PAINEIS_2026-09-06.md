@@ -815,3 +815,60 @@ São Paulo 2017 fora do mercado, 36 meses fechados, 27 UFs com posições comple
 coletor e registros na SPA); suíte completa em modo CI com 927 testes, `tsc`, `next lint`; Chromium a 1440
 e 390 px na aba nova com placar, síntese, sete seções, dois gráficos, botão no menu e no mapa, sem erro
 de página e sem rolagem horizontal.
+
+## 19. Dívida dos estados e garantias da União no painel subnacional (07/09/2026, madrugada, versão 0.104.0)
+
+Segunda camada do painel Crédito a estados e municípios: o §18 mediu o fluxo (PVLs liberados); esta etapa
+mede o estoque (quanto cada estado deve) e o que a União garante. Duas fontes novas, ambas do Tesouro e
+abertas.
+
+**Dívida consolidada dos estados** (coletor `pipeline/sources/siconfi_rgf.py`). API Siconfi `tt/rgf`,
+RGF Anexo 02 (Demonstrativo da Dívida Consolidada Líquida), poder Executivo, quadrimestral, uma requisição
+por UF e exercício com filtro de anexo; o relatório do 3º quadrimestre traz as colunas dos três, então basta
+o último período publicado. Coleta inicial de 07/09/2026: 378 requisições em 347 s, 27 UFs, exercícios 2015
+a 2026 (1º quadrimestre), 19.063 linhas de 21 contas selecionadas; nas execuções seguintes só o exercício
+corrente e o anterior são refeitos. Municípios ficam fora: 5,5 mil entes com periodicidade variável, e a
+pergunta é estadual.
+
+**Garantias da União** (coletor `pipeline/sources/tesouro_garantias.py`). Dois CSVs do Tesouro
+Transparente com todos os contratos internos (935) e externos (426) garantidos pela União desde 2010,
+posição de 30/04/2026. O mutuário vem em texto livre e em dois padrões ("Estado de Sergipe" e "Est. Bahia";
+"Município de Santos" e "Mun. Belo Horizonte/MG"); a UF é resolvida pelo nome do estado com tolerância a
+erro de grafia da fonte ("Segipe"), pelo sufixo do município ou pelo cadastro do IBGE quando o nome é único
+no país (5.290 de 5.571). Ficam sem UF 53 contratos de municípios homônimos, declarados. O que não existe em
+dado aberto estruturado, e o painel diz: garantias honradas (o que a União pagou por inadimplência do ente)
+e saldo devedor por contrato; a busca no CKAN por "honradas", "contragarantias" e "recuperação de garantias"
+não devolve dataset.
+
+Números (Siconfi RGF, 1º quadrimestre de 2026; garantias na posição de 30/04/2026):
+
+| Indicador | Valor |
+|---|---|
+| DCL dos 26 estados e DF | R$ 923 bi, 72% da RCL (era 120% em 2015 e 115% em 2020) |
+| Dívida bruta renegociada com a União | R$ 780 bi, 61% da dívida consolidada bruta |
+| Acima do limite do Senado (200% da RCL) | 1 UF: RJ, 219% |
+| Mais endividados sobre a RCL | RJ 219%, RS 172%, MG 157%, SP 116% |
+| Contratos com garantia da União desde 2010 | 1.361, dos quais 1.303 de estados, DF e municípios |
+| Valor dos contratos internos de entes | R$ 254 bi (estados e DF 67% do valor interno total) |
+| Contratos externos | 426, US$ 58 bi nos 391 em dólar; 35 em euro, iene e SDR só contados |
+| Assinados em 12 meses até 2026-08 | 147 contratos, R$ 43 bi nos internos de entes |
+
+Três decisões de leitura: a série anual do agregado usa o 3º quadrimestre de cada exercício e, no corrente,
+o último quadrimestre comum a pelo menos 20 UFs; a linha "reestruturação da dívida de estados e municípios"
+existe no plano de contas desde 2017 e aparece zerada antes, o que o painel declara; credores e maiores
+contratos garantidos consideram só entes subnacionais, porque Correios (R$ 12 bi em 2025), BNDES, Caixa e
+Sabesp entram nos CSVs e distorceriam o ranking; entram nos totais como "outros".
+
+Na SPA, duas seções novas na aba (Quanto os estados devem; O que a União garante), placar com a DCL sobre
+a RCL no lugar da taxa de deferimento quando a dívida está disponível, tabela das 27 UFs ordenável por
+DCL ÷ RCL, valor, por habitante, parte com a União e uso do limite, com sparkline desde 2015 e marcas de
+limite e alerta. Páginas por UF ganham o bloco "Crédito ao estado e aos municípios" (PVL liberado, DCL e
+posição, parte com a União, uso do limite, contratos garantidos); `ufs.json` passa a trazer o recorte
+`subnacional` com duas réguas de posição a partir da próxima execução diária. Vigília de 200 dias para as
+duas fontes (quadrimestral com folga); vintages `siconfi` e `tesouro_garantias` no meta.
+
+**Validação.** `subnacional-camada2.test.ts` (faixas do agregado, 27 UFs com posições completas, coerência
+entre "acima do limite" e o limite declarado, série desde 2015 com União zerada antes de 2017, garantias com
+entes separados de estatais e honras declaradas ausentes, coletores e registros, seções na SPA e bloco por
+UF condicionado à publicação de `ufs.json`); suíte completa em modo CI, `tsc`, `next lint`; Chromium a 1440
+e 390 px na aba com as nove seções e na página de um estado com o bloco novo.

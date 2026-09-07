@@ -54,7 +54,7 @@ FONTE_ROTULO = {
     "bcb_sgs": "BCB/SGS", "ibge": "IBGE", "ipeadata": "Ipeadata", "ifdata": "BCB/IF.data",
     "ifdata_ui": "BCB/IF.data", "ifdata_carteiras": "BCB/IF.data", "ifdata_funding": "BCB/IF.data",
     "datajud": "CNJ/DataJud", "djen": "CNJ/DJEN", "djen_credores": "CNJ/DJEN",
-    "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros", "susep_ses": "SUSEP/SES", "sadipem": "Tesouro/Sadipem",
+    "openfinance": "Open Finance Brasil", "reclamacoes": "BCB/Reclamações", "txjuros": "BCB/txjuros", "susep_ses": "SUSEP/SES", "sadipem": "Tesouro/Sadipem", "siconfi_rgf": "Tesouro/Siconfi (RGF)", "tesouro_garantias": "Tesouro/Garantias da União",
     "b3_market": "B3", "cvm_dfp": "CVM/DFP e ITR", "fidc": "CVM/FIDC", "trends_manual": "Google Trends",
     "cvm_ofertas": "CVM/Ofertas públicas", "cvm_securit": "CVM/Securitizadoras (CRI e CRA)", "bndes": "BNDES/Dados abertos", "focus": "BCB/Focus", "sfn_cadastro": "BCB/Unicad (instituições em funcionamento)", "bcb_pas": "BCB/PAS (Gepad)", "cvm_pas": "CVM/Processos sancionadores",
     "scr_data": "BCB/SCR.data", "geo_ibge": "IBGE", "pix_bcb": "BCB/Pix", "judicial": "TST",
@@ -938,7 +938,9 @@ def build_all(con, cfg, fetch_status):
         common.write_gold("subnacional.json", r_sn)
         if r_sn.get("disponivel"):
             K = r_sn["kpis"]
-            print(f"  [subnacional] {r_sn['mes']} · {K['deferidos_12m_n']:,} operações liberadas em 12 m · R$ {K['deferidos_12m_valor'] / 1e9:,.1f} bi · {K['entes_12m']:,} entes")
+            dv = (r_sn.get("divida") or {}).get("kpis") or {}
+            print(f"  [subnacional] {r_sn['mes']} · {K['deferidos_12m_n']:,} operações liberadas em 12 m · R$ {K['deferidos_12m_valor'] / 1e9:,.1f} bi · {K['entes_12m']:,} entes"
+                  + (f" · DCL estados R$ {dv['dcl'] / 1e9:,.0f} bi ({dv['dcl_rcl_pct']}% da RCL, {dv['periodo']})" if dv.get("dcl") else " · dívida indisponível"))
         else:
             print(f"  [subnacional] indisponível: {r_sn.get('motivo')}")
     except Exception as e:
@@ -1002,6 +1004,8 @@ def build_all(con, cfg, fetch_status):
         "txjuros": _vg("SELECT MAX(fim) FROM taxas_inst"),
         "susep": _vg("SELECT MAX(mes) FROM susep_prestamista"),
         "sadipem": _vg("SELECT MAX(data_status) FROM sadipem_pvl"),
+        "siconfi": _vg("SELECT exercicio || '-' || substr('0' || (quadrimestre * 4), -2) FROM siconfi_rgf2 WHERE quadrimestre > 0 ORDER BY exercicio DESC, quadrimestre DESC LIMIT 1"),
+        "tesouro_garantias": _vg("SELECT MAX(posicao) FROM tesouro_garantias_coleta"),
         "sicor": _vg("SELECT MAX(mes) FROM sicor_uf"),
         "cvm_ofertas": _vg("SELECT MAX(mes) FROM cvm_ofertas WHERE status IN ('Encerrada/registrada','Oferta Encerrada')"),
         "securit": _vg("SELECT MAX(ref) FROM securit_cert"),
