@@ -259,7 +259,7 @@ export const ABAS_OBSERVATORIO: AbaObservatorio[] = [
     caminho: "/subnational-credit",
     titulo: "Crédito a estados e municípios",
     descricao:
-      "Quanto crédito a verificação de limites da LRF liberou para estados e municípios, com que credores, para que finalidade e em que UF, lido dos pedidos de verificação de limites (PVL) do Sadipem, Tesouro Nacional.",
+      "Crédito liberado pela verificação de limites da LRF a estados e municípios (Sadipem), a dívida consolidada de cada estado sobre a receita (RGF) e os contratos com garantia da União, tudo do Tesouro Nacional.",
     gold: "subnacional.json",
   },
   {

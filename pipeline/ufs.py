@@ -43,6 +43,7 @@ def build(con=None, cfg=None):
     cons = g("consorcios.json")
     cob = g("cobranca.json")
     prz = g("prazo.json")
+    snc = g("subnacional.json")
     if not pan.get("mapa"):
         return {"disponivel": False, "motivo": "panorama.json sem recorte por UF — o Panorama do Crédito precisa existir antes das páginas por UF"}
     por_uf = {}
@@ -59,6 +60,9 @@ def build(con=None, cfg=None):
     cons_uf = idx(cons.get("ufs"))
     cob_uf = idx(cob.get("ufs"))
     prz_uf = idx(prz.get("ufs"))
+    snc_uf = idx(snc.get("ufs"))
+    snc_dv = idx((snc.get("divida") or {}).get("ufs"))
+    snc_ga = idx((snc.get("garantias") or {}).get("ufs"))
     # penetração: agregado do municipal
     pen_agg = {}
     for m in pen_mun.get("municipios") or []:
@@ -86,7 +90,7 @@ def build(con=None, cfg=None):
         tot_prod = sum(x["saldo"] for x in prods)
         for x in prods:
             x["share"] = _share(x["saldo"], tot_prod); x["inad_pct"] = _share(x["inad"], x["saldo"]); x["pf_share"] = _share(x["pf"], x["saldo"])
-        pr = pres_uf.get(uf, {}); px = pix_uf.get(uf, {}); mo = mor_uf.get(uf, {}); co = con_uf.get(uf, {}); ru = rur_uf.get(uf, {}); bn = bnd_uf.get(uf, {}); pg = pgf_uf.get(uf, {}); em = emp_uf.get(uf, {}); cs = cons_uf.get(uf, {}); cb = cob_uf.get(uf, {}); pz = prz_uf.get(uf, {})
+        pr = pres_uf.get(uf, {}); px = pix_uf.get(uf, {}); mo = mor_uf.get(uf, {}); co = con_uf.get(uf, {}); ru = rur_uf.get(uf, {}); bn = bnd_uf.get(uf, {}); pg = pgf_uf.get(uf, {}); em = emp_uf.get(uf, {}); cs = cons_uf.get(uf, {}); cb = cob_uf.get(uf, {}); pz = prz_uf.get(uf, {}); sc = snc_uf.get(uf, {}); dv = snc_dv.get(uf, {}); ga = snc_ga.get(uf, {})
         ufs.append({
             "uf": uf, "nome": NOMES[uf], "prep": PREP[uf], "regiao": REGIOES[uf], "cod": p.get("cod"),
             "pop": pg.get("populacao") or co.get("pop") or (pe.get("pop") or None),
@@ -123,10 +127,15 @@ def build(con=None, cfg=None):
             "prazo": {"data_base": prz.get("data_base"), "a_vencer": pz.get("a_vencer"), "share_a_vencer": pz.get("share_a_vencer"), "curto_12m_pct": pz.get("curto_12m_pct"),
                       "longo_5a_pct": pz.get("longo_5a_pct"), "prazo_medio_anos": pz.get("prazo_medio_anos"), "vencido_pct": pz.get("vencido_pct"),
                       "pf_curto_12m_pct": (pz.get("pf") or {}).get("curto_12m_pct"), "pj_curto_12m_pct": (pz.get("pj") or {}).get("curto_12m_pct")} if pz else None,
+            "subnacional": {"mes": snc.get("mes"), "liberado_12m_valor": sc.get("valor"), "liberado_12m_n": sc.get("n"), "entes": sc.get("entes"), "valor_hab": sc.get("valor_hab"),
+                            "credor_principal": sc.get("credor_principal"), "share_valor_pct": sc.get("share_valor_pct"),
+                            "dcl": dv.get("dcl"), "dcl_rcl_pct": dv.get("dcl_rcl_pct"), "dcl_hab": dv.get("dcl_hab"), "uniao_share_pct": dv.get("uniao_share_pct"),
+                            "uso_limite_pct": dv.get("uso_limite_pct"), "acima_limite": dv.get("acima_limite"), "periodo_divida": dv.get("periodo"),
+                            "garantias_n": ga.get("n"), "garantias_internas_valor": ga.get("internas_valor")} if sc else None,
         })
     # posições entre as 27 UFs (1 = maior, salvo onde "menor" é o desejável e está dito na SPA)
     for bloco, chave in (("scr", "saldo"), ("scr", "per_capita"), ("scr", "inad"), ("scr", "cresc12"), ("penetracao", "penetracao"), ("penetracao", "cred_adulto"),
-                         ("presenca", "agencias_100mil"), ("pix", "q_hab"), ("moradia", "pgp"), ("consignado", "cons_por_elegivel"), ("rural", "valor_hab"), ("bndes", "valor_hab"), ("prazo", "curto_12m_pct"), ("prazo", "prazo_medio_anos"), ("emprego", "saldo_12m"), ("emprego", "retencao_pct"), ("consorcios", "cotas"), ("consorcios", "por_mil_hab"), ("cobranca", "por_mil_hab"), ("cobranca", "por_bi_carteira"), ("pgfn", "insc_pf_por_mil_hab")):
+                         ("presenca", "agencias_100mil"), ("pix", "q_hab"), ("moradia", "pgp"), ("consignado", "cons_por_elegivel"), ("rural", "valor_hab"), ("bndes", "valor_hab"), ("prazo", "curto_12m_pct"), ("prazo", "prazo_medio_anos"), ("subnacional", "valor_hab"), ("subnacional", "dcl_rcl_pct"), ("emprego", "saldo_12m"), ("emprego", "retencao_pct"), ("consorcios", "cotas"), ("consorcios", "por_mil_hab"), ("cobranca", "por_mil_hab"), ("cobranca", "por_bi_carteira"), ("pgfn", "insc_pf_por_mil_hab")):
         _rank(ufs, chave, bloco)
     # síntese por UF (determinística, com números da própria página)
     for u in ufs:
@@ -153,10 +162,10 @@ def build(con=None, cfg=None):
         "disponivel": True, "gerado_em": common.now_utc(),
         "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
         "datas": {"scr": pan.get("data_base"), "penetracao": (g("penetracao.json").get("data_base_credito")), "presenca": (pres.get("posicao") or {}), "pix": pix.get("data_base") or pix.get("mes"),
-                  "moradia": (mor.get("datas") or {}).get("scr"), "consignado": (con_g.get("scr") or {}).get("data_base"), "rural": rur.get("janela"), "bndes": (bnd.get("desembolsos") or {}).get("janela"), "pgfn": pgf.get("data_base"), "emprego": emp.get("ufs_mes"), "consorcios": cons.get("trimestre"), "cobranca": cob.get("mes"), "prazo": prz.get("data_base")},
+                  "moradia": (mor.get("datas") or {}).get("scr"), "consignado": (con_g.get("scr") or {}).get("data_base"), "rural": rur.get("janela"), "bndes": (bnd.get("desembolsos") or {}).get("janela"), "pgfn": pgf.get("data_base"), "emprego": emp.get("ufs_mes"), "consorcios": cons.get("trimestre"), "cobranca": cob.get("mes"), "prazo": prz.get("data_base"), "subnacional": snc.get("mes")},
         "brasil": brasil, "ufs": ufs,
         "fontes": ["BCB/SCR.data (Panorama)", "BCB/ESTBAN e IBGE Censo 2022 (Penetração)", "BCB/Unicad e Correspondentes (Presença)", "BCB/Pix", "BCB e IBGE (Moradia)", "INSS e SCR (Consignado)",
-                   "BCB/MDCR (Crédito rural)", "BNDES dados abertos", "PGFN (Dívida ativa)", "MTE/Novo Caged via Ipeadata (Emprego formal)", "BCB Panorama de Consórcios", "CNJ DataJud (Cobrança judicial)", "BCB/SCR.data (Prazo da carteira)"],
+                   "BCB/MDCR (Crédito rural)", "BNDES dados abertos", "PGFN (Dívida ativa)", "MTE/Novo Caged via Ipeadata (Emprego formal)", "BCB Panorama de Consórcios", "CNJ DataJud (Cobrança judicial)", "BCB/SCR.data (Prazo da carteira)", "Tesouro Nacional: Sadipem, Siconfi RGF e garantias da União (Crédito ao setor público)"],
         "cautelas": [
             "Cada bloco tem a própria data-base e a própria régua; posições em ranking são calculadas entre as 27 UFs dentro de um mesmo bloco e nunca cruzam blocos.",
             "Nada aqui é coletado de novo: a página reúne o recorte estadual dos painéis temáticos. Um bloco ausente significa que o painel de origem não publicou o recorte, não que o dado seja zero.",

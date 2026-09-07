@@ -35,7 +35,7 @@ state.cs = { met: "cotas", uf: "cotas" };
 state.cb = { grupo: "todas", uf: "por_mil_hab" };
 state.pz = { cli: "total", serie: "curto_12m_pct", uf: "curto_12m_pct" };
 state.fi = { serie: "inad_pct", lastro: "F" };
-state.sn = { cred: "12m", uf: "valor", serie: "valor" };
+state.sn = { cred: "12m", uf: "valor", serie: "valor", dv: "dcl_rcl_pct" };
 state.bn = { serie: "porte", ops: "produto", uf: "valor" };
 state.amp = { seg: "ef", vis: "share", emis: "familia", medida: "valor", sec: "cri" };
 state.ru = { evol: "finalidade", medida: "valor", met: "valor_hab", sel: null, rank: "maior", uf: "todas" };
@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.103.0";
+const APP_VERSION = "0.104.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -2873,7 +2873,7 @@ const GUIA = {
     nao: "Atraso não é perda: a subordinação e as garantias absorvem parte da inadimplência. A subordinação é média do sistema entre fundos com duas ou mais classes, não a de nenhum fundo. Não se soma ao SCR: parte do lastro já passou pelos bancos." },
   subnacional: { q: "Quanto crédito estados e municípios podem tomar, com quem, para quê e onde?",
     importa: "Antes de contratar crédito, estado ou município passa pela verificação de limites da LRF na STN ou no banco credor (o PVL do Sadipem). É o único registro público que mostra o fluxo de crédito ao setor público subnacional antes do contrato: quem pediu, quanto, com que credor, com ou sem garantia da União.",
-    ler: "Comece pelo valor liberado em 12 meses e pela fatia dos municípios; depois a série anual (estados fazem o valor, municípios fazem a contagem), os credores, a tabela por UF e as maiores operações. Renegociação com a União fica fora da série de mercado.",
+    ler: "Comece pelo valor liberado em 12 meses e pela fatia dos municípios; depois a série anual (estados fazem o valor, municípios fazem a contagem), os credores, a tabela por UF e as maiores operações. Em seguida o estoque: quanto cada estado deve em relação à receita (RGF) e o que a União garante. Renegociação com a União fica fora da série de mercado.",
     nao: "Deferido não é contratado nem desembolsado. Moeda estrangeira não entra nas somas. Uma operação grande de estado com garantia da União muda o ano inteiro. Meses recentes mudam quando pleitos em tramitação são decididos." },
   cobranca: { q: "Quanto crédito está sendo cobrado na Justiça, e onde?",
     importa: "Entre a inadimplência do SCR e a recuperação judicial existe a cobrança: execução de título, busca e apreensão do bem alienado, monitória e execução hipotecária. É o crédito que virou processo, e diz quanto o credor está disposto a pagar para recuperar o que emprestou.",
@@ -8597,7 +8597,7 @@ function renderEstados() {
   const head = pageHead({
     title: `Crédito ${u.prep} (${u.uf})`, vintage: s.data_base,
     seals: `${badge("observado")} ${badge("calculado", "posições entre as 27 UFs dentro de cada bloco")}`,
-    desc: `${u.nome}, ${u.regiao}: carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES, emprego formal, consórcios, cobrança judicial e dívida ativa, cada bloco com sua fonte e data.`,
+    desc: `${u.nome}, ${u.regiao}: carteira e inadimplência, penetração, presença bancária, Pix, moradia, consignado, crédito rural, BNDES, emprego formal, consórcios, cobrança judicial, dívida ativa e crédito ao setor público, cada bloco com sua fonte e data.`,
     fontes: (U.fontes || []).join(" · "),
     actions: seletor(u.uf),
   });
@@ -8649,6 +8649,12 @@ function renderEstados() {
     <dl class="ppgrid">${linha("Carteira a vencer", brl(pz.a_vencer), `${pct(pz.share_a_vencer)} do Brasil`)}${linha("Vence em até 12 meses", pct(pz.curto_12m_pct), `${pos(u, "prazo.curto_12m_pct")} · PF ${pct(pz.pf_curto_12m_pct, 0)} · PJ ${pct(pz.pj_curto_12m_pct, 0)}`)}${linha("Vence depois de 5 anos", pct(pz.longo_5a_pct))}
       ${linha("Prazo médio residual (aproximado)", pz.prazo_medio_anos != null ? fmt.n(pz.prazo_medio_anos, 1) + " anos" : "–", `${pos(u, "prazo.prazo_medio_anos")} · Brasil ${B.prazo_medio_anos != null ? fmt.n(B.prazo_medio_anos, 1) + " anos" : "–"}`)}${linha("Vencido (todo atraso)", pct(pz.vencido_pct), "carteira ativa menos a vencer")}</dl>`,
     "prazo", "pz-ufs", `Perfil de vencimentos, série mensal e as 27 UFs — Prazo da carteira`);
+  const sub = u.subnacional || {};
+  const snB = bloco("uf-subnacional", "Crédito ao estado e aos municípios", `Tesouro Nacional (Sadipem, Siconfi RGF, garantias) · 12 meses até ${sub.mes || U.datas.subnacional || "–"}`, sub.liberado_12m_valor == null ? `<p class="src">recorte ainda não publicado: o painel Crédito a estados e municípios precisa rodar antes desta página.</p>` : `
+    <dl class="ppgrid">${linha("Crédito liberado em 12 meses (PVL)", brl(sub.liberado_12m_valor), `${n0(sub.liberado_12m_n)} operações · ${n0(sub.entes)} entes · ${pos(u, "subnacional.valor_hab")} por habitante (R$ ${n0(sub.valor_hab)})`)}${linha("Maior credor", sub.credor_principal || "–")}
+      ${linha("Dívida consolidada líquida do estado", sub.dcl != null ? brl(sub.dcl) : "–", sub.dcl_rcl_pct != null ? `${fmt.n(sub.dcl_rcl_pct, 0)}% da RCL · ${pos(u, "subnacional.dcl_rcl_pct")} (1º = mais endividado) · ${sub.periodo_divida || ""}${sub.acima_limite ? " · acima do limite do Senado" : ""}` : "RGF não entregue")}${linha("Parte da dívida com a União", pct(sub.uniao_share_pct, 0))}${linha("Uso do limite do Senado", pct(sub.uso_limite_pct, 0), "DCL ÷ 200% da RCL")}
+      ${linha("Contratos com garantia da União desde 2010", n0(sub.garantias_n), sub.garantias_internas_valor ? `${brl(sub.garantias_internas_valor)} nos internos` : "")}</dl>`,
+    "subnacional", "sn-divida", `PVLs, dívida dos estados e garantias da União, com as 27 UFs — Crédito a estados e municípios`);
   const pgB = bloco("uf-pgfn", "Dívida ativa da União", `PGFN · ${pg.data_base || U.datas.pgfn || "–"}`, pg.valor == null ? `<p class="src">recorte não publicado.</p>` : `
     <dl class="ppgrid">${linha("Valor inscrito", brl(pg.valor), `${pct(pg.part_br)} do Brasil`)}${linha("Inscrições", n0(pg.inscricoes), `valor médio R$ ${n0(pg.valor_medio)}`)}${linha("Inscrições de PF por mil habitantes", pg.insc_pf_por_mil_hab != null ? fmt.n(pg.insc_pf_por_mil_hab, 1) : "–", pos(u, "pgfn.insc_pf_por_mil_hab"))}${linha("Parte de PJ no valor", pct(pg.pj_valor != null && pg.valor ? pg.pj_valor / pg.valor * 100 : null, 0))}</dl>`,
     "pgfn", null, `O mapa da dívida ativa por UF, safras e situação — Dívida com a União`);
@@ -8665,8 +8671,8 @@ function renderEstados() {
     "cobranca", "cb-ufs", `Execuções, busca e apreensão e monitórias mês a mês, por classe e UF — Bancos cobrando na Justiça`);
   document.title = `Crédito ${u.prep} (${u.uf}) · ${state.data.meta ? state.data.meta.plataforma.name : "Observatório Brasileiro de Crédito"}`;
   el.innerHTML = head + sintese + placarHtml
-    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-prazo", "Prazo"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-cobranca", "Cobrança"], ["#uf-pgfn", "Dívida ativa"]])
-    + scr + pzB + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + cbB + pgB
+    + subnavFixa([["#uf-scr", "Carteira"], ["#uf-prazo", "Prazo"], ["#uf-penetracao", "Penetração"], ["#uf-presenca", "Presença"], ["#uf-pix", "Pix"], ["#uf-moradia", "Moradia"], ["#uf-consignado", "Consignado"], ["#uf-rural", "Rural"], ["#uf-bndes", "BNDES"], ["#uf-emprego", "Emprego"], ["#uf-consorcios", "Consórcios"], ["#uf-cobranca", "Cobrança"], ["#uf-pgfn", "Dívida ativa"], ["#uf-subnacional", "Setor público"]])
+    + scr + pzB + pen + pres + pixB + morB + conB + rurB + bnB + emB + csB + cbB + pgB + snB
     + `<div class="card" style="margin-top:14px"><h4>Outros estados</h4><p>${ufs.filter(x => x.regiao === u.regiao && x.uf !== u.uf).map(x => `<a href="/observatorio/states/${x.uf}" onclick="ufNav('${x.uf}');return false">${x.nome}</a>`).join(" · ")} <span class="src">(${u.regiao})</span> · <a href="/observatorio/states" onclick="nav('estados');return false">todas as UFs →</a></p>
     <p class="src">${(U.cautelas || []).join(" ")}</p></div>`;
 }
@@ -10004,8 +10010,8 @@ function renderSubnacional() {
   const head = pageHead({
     title: "Crédito a estados e municípios", vintage: D.mes,
     seals: `${badge("observado", "pedidos de verificação de limites (PVL) do Sadipem, registro administrativo da STN")} ${badge("calculado", "agregações por ano, credor, finalidade e UF; shares e posições calculados")}`,
-    desc: "Quanto crédito a verificação de limites da LRF liberou para estados e municípios, com quem, para quê e onde.",
-    fontes: "Tesouro Nacional (Sadipem, API Tesouro Transparente); IBGE (população)",
+    desc: "Quanto crédito a verificação de limites da LRF liberou para estados e municípios, com quem, para quê e onde; quanto os estados devem e o que a União garante.",
+    fontes: "Tesouro Nacional (Sadipem, Siconfi RGF e garantias da União, Tesouro Transparente); IBGE (população)",
     actions: `<button class="btn ghost small" onclick="snCSV()">baixar CSV (série anual)</button>`,
   });
   const topCred = D.credores_12m[0], topFin = D.finalidades_12m[0];
@@ -10017,7 +10023,9 @@ function renderSubnacional() {
       { l: "Entes atendidos", v: n0(K.entes_12m), sub: `${n0(K.municipios_12m_n)} operações de municípios e ${n0(K.estados_12m_n)} de estados`, href: "#sn-ufs" },
       { l: "Municípios no valor", v: pct(shareMun, 0), sub: `${bi(K.municipios_12m_valor)} · estados ${bi(K.estados_12m_valor)}`, href: "#sn-anual" },
       { l: "Com garantia da União", v: pct(sharePgfn, 0), sub: `${n0(K.pgfn_12m_n)} operações, ${bi(K.pgfn_12m_valor)}, encaminhadas à PGFN`, href: "#sn-funil" },
-      { l: "Taxa de deferimento", v: pct(K.taxa_deferimento_12m_pct, 0), sub: `entre ${n0(K.concluidos_12m_n)} pleitos concluídos · ${n0(K.em_tramitacao_n)} em tramitação (${bi(K.em_tramitacao_valor)})`, href: "#sn-funil" },
+      D.divida && D.divida.disponivel
+        ? { l: "Dívida líquida dos estados", v: pct(D.divida.kpis.dcl_rcl_pct, 0), sub: `da receita corrente líquida · ${bi(D.divida.kpis.dcl)} · ${n0(D.divida.kpis.ufs_acima_limite)} UF${D.divida.kpis.ufs_acima_limite === 1 ? "" : "s"} acima do limite · ${D.divida.kpis.periodo}`, href: "#sn-divida" }
+        : { l: "Taxa de deferimento", v: pct(K.taxa_deferimento_12m_pct, 0), sub: `entre ${n0(K.concluidos_12m_n)} pleitos concluídos · ${n0(K.em_tramitacao_n)} em tramitação (${bi(K.em_tramitacao_valor)})`, href: "#sn-funil" },
     ],
     sintese: [D.sintese],
     ref: `Sadipem, status até ${D.coleta.data_status_max || D.mes} · janela ${D.janela_12m.ini} a ${D.janela_12m.fim}${D.mes_parcial ? ` · ${D.mes_parcial} parcial, fora dos KPIs` : ""}`,
@@ -10088,6 +10096,62 @@ function renderSubnacional() {
       ${K.externas_12m_n ? `<p class="src">${n0(K.externas_12m_n)} operações externas (credor internacional ou moeda estrangeira) liberadas no período.</p>` : ""}</div>
   </div>`);
 
+  /* ---------- dívida consolidada dos estados (Siconfi, RGF Anexo 02) ---------- */
+  const DV = D.divida || {};
+  let dividaSec = "";
+  if (DV.disponivel) {
+    const KD = DV.kpis;
+    const chaveDv = ["dcl_rcl_pct", "dcl", "dcl_hab", "uniao_share_pct", "uso_limite_pct"].includes(F.dv) ? F.dv : "dcl_rcl_pct";
+    const ufsDv = DV.ufs.filter(u => u.disponivel).sort((a, b) => ((b[chaveDv] != null ? b[chaveDv] : -1e18) - (a[chaveDv] != null ? a[chaveDv] : -1e18)));
+    const SD = (DV.serie_anual || []);
+    const seriesD = [{ pts: SD.map(a => ({ x: a.ano + "-07-01", y: a.dcl_rcl_pct })), color: "#b45309", label: "DCL ÷ RCL, 27 UFs" }];
+    dividaSec = secWrap("sn-divida", `${sechead("Quanto os estados devem", `Siconfi, RGF Anexo 02 · ${KD.periodo || "–"} · ${n0(KD.n_ufs)} de 27 UFs com entrega`)}
+    <div class="grid g2">
+      <div class="card"><h4>Dívida consolidada líquida dos estados e do DF ${badge("observado")}</h4>
+        <div class="big">${bi(KD.dcl)} <span style="font-size:13px;color:var(--text-3)">${pct(KD.dcl_rcl_pct, 0)} da receita corrente líquida</span></div>
+        <dl class="ppgrid" style="margin-top:8px"><div><dt>Dívida consolidada bruta</dt><dd>${bi(KD.dc)}</dd></div><div><dt>Com a União (reestruturação)</dt><dd>${bi(KD.reestruturacao_uniao)} <span class="src">${pct(KD.uniao_share_pct, 0)} da bruta</span></dd></div>
+        <div><dt>Acima do limite do Senado</dt><dd>${n0(KD.ufs_acima_limite)} UF${KD.ufs_acima_limite === 1 ? "" : "s"} <span class="src">${(KD.ufs_acima_limite_lista || []).join(", ") || "nenhuma"}</span></dd></div><div><dt>Acima do limite de alerta</dt><dd>${n0(KD.ufs_acima_alerta)} UF${KD.ufs_acima_alerta === 1 ? "" : "s"}</dd></div></dl>
+        ${lineChart({ series: seriesD, h: 180, endLabels: rotulosFim, unit: "%", dec: 0, fonte: "Tesouro Nacional, Siconfi (RGF)", status: "observado", aria: "dívida consolidada líquida sobre receita corrente líquida, soma das UFs, por ano" })}
+        <p class="src">Soma das 27 UFs no 3º quadrimestre de cada exercício; ${SD.length && SD[SD.length - 1].parcial ? `${SD[SD.length - 1].ano} usa o ${SD[SD.length - 1].quadrimestre}º quadrimestre.` : ""} O limite (Resolução 40/2001 do Senado) é 200% da RCL; a maior parte da dívida dos estados grandes é a renegociada com a União nos anos 1990.</p></div>
+      <div class="card"><h4>Por UF ${badge("observado")}</h4>
+        <div class="controls"><label class="src">ordenar por <select onchange="snSet('dv', this.value)" aria-label="ordenar dívida por UF"><option value="dcl_rcl_pct" ${chaveDv === "dcl_rcl_pct" ? "selected" : ""}>DCL ÷ RCL</option><option value="dcl" ${chaveDv === "dcl" ? "selected" : ""}>DCL em reais</option><option value="dcl_hab" ${chaveDv === "dcl_hab" ? "selected" : ""}>DCL por habitante</option><option value="uniao_share_pct" ${chaveDv === "uniao_share_pct" ? "selected" : ""}>parte com a União</option><option value="uso_limite_pct" ${chaveDv === "uso_limite_pct" ? "selected" : ""}>uso do limite</option></select></label></div>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">DCL</th><th style="text-align:right">÷ RCL</th><th style="text-align:right">Uso do limite</th><th style="text-align:right">Com a União</th><th style="text-align:right">R$/hab</th><th style="text-align:right">12 m</th><th>Desde 2015</th><th>Período</th></tr></thead>
+        <tbody>${ufsDv.map(u => `<tr class="${u.acima_limite ? "alerta" : ""}"><td><a href="/observatorio/states/${u.uf}" onclick="ufNav('${u.uf}');return false"><b>${u.uf}</b></a></td><td style="text-align:right">${bi(u.dcl)}</td><td style="text-align:right">${u.dcl_rcl_pct != null ? fmt.n(u.dcl_rcl_pct, 0) + "%" : "–"}${u.acima_limite ? " ⚠" : u.acima_alerta ? " ▲" : ""}</td><td style="text-align:right">${pct(u.uso_limite_pct, 0)}</td><td style="text-align:right">${pct(u.uniao_share_pct, 0)}</td><td style="text-align:right">${u.dcl_hab != null ? fmt.n(u.dcl_hab, 0) : "–"}</td><td style="text-align:right">${u.var_dcl_12m_pct != null ? fmt.pp(u.var_dcl_12m_pct) + "%" : "–"}</td><td>${sparkline((u.serie || []).map(p => p.dcl_rcl_pct).filter(v => v != null))}</td><td class="src">${u.periodo}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">⚠ acima do limite do Senado · ▲ acima do limite de alerta (90% do limite). DCL negativa é caixa maior que dívida. "12 m" compara com o 3º quadrimestre do exercício anterior. Percentuais são os declarados pelo ente no RGF; municípios ficam fora.</p></div>
+    </div>`);
+  } else if (D.divida) {
+    dividaSec = secWrap("sn-divida", `${sechead("Quanto os estados devem", "Siconfi, RGF Anexo 02")}<div class="card"><p class="src">${D.divida.motivo || "indisponível"}</p></div>`);
+  }
+
+  /* ---------- garantias da União (contratos internos e externos) ---------- */
+  const G = D.garantias || {};
+  let garSec = "";
+  if (G.disponivel) {
+    const KG = G.kpis;
+    const SG = (G.serie_anual || []).filter(a => a.ano >= 2010);
+    const seriesG = [{ pts: SG.map(a => ({ x: a.ano + "-07-01", y: a.estados_valor / 1e9 })), color: "#b45309", label: "estados e DF" }, { pts: SG.map(a => ({ x: a.ano + "-07-01", y: a.municipios_valor / 1e9 })), color: "#1d4e89", label: "municípios" }];
+    const usd = v => v == null ? "–" : "US$ " + fmt.n(v / 1e9, 1) + " bi";
+    const ufsG = G.ufs.filter(u => u.n).sort((a, b) => b.internas_valor - a.internas_valor).slice(0, 12);
+    garSec = secWrap("sn-garantias", `${sechead("O que a União garante", `Tesouro Transparente, contratos com garantia da União · posição ${fmt.d(G.posicao)}`)}
+    <div class="grid g2">
+      <div class="card"><h4>Contratos garantidos desde 2010 ${badge("observado")}</h4>
+        <dl class="ppgrid"><div><dt>Internos</dt><dd>${n0(KG.internas_n)} contratos · ${bi(KG.internas_valor)}</dd></div><div><dt>Externos</dt><dd>${n0(KG.externas_n)} contratos · ${usd(KG.externas_usd)} <span class="src">só os em dólar; ${n0(KG.externas_outras_moedas_n)} em outras moedas</span></dd></div>
+        <div><dt>Estados e DF no valor interno</dt><dd>${pct(KG.estados_share_valor_pct, 0)}</dd></div><div><dt>Assinados em 12 meses</dt><dd>${n0(KG.contratos_12m)} <span class="src">${bi(KG.internas_valor_12m)} internos · ${n0(KG.externas_12m_n)} externos · ${G.janela_12m.ini} a ${G.janela_12m.fim}</span></dd></div></dl>
+        ${lineChart({ series: seriesG, h: 180, endLabels: rotulosFim, unit: "R$ bi", dec: 1, fonte: "Tesouro Nacional (CODIV)", status: "observado", aria: "valor dos contratos internos com garantia da União por ano, estados e municípios" })}
+        <p class="src">Contratos internos por ano de assinatura, em reais. ${G.nota}</p></div>
+      <div class="card"><h4>Credores e mutuários ${badge("observado")}</h4>
+        ${(G.credores_internas || []).slice(0, 5).map(c => `<div class="contrib"><span class="lbl" style="width:150px">${c.nome}</span><span class="bar pos" style="width:${Math.max(2, c.valor / Math.max(G.credores_internas[0].valor, 1) * 150)}px"></span><span class="num">${brl(c.valor)} <span class="src">${n0(c.n)} contratos internos</span></span></div>`).join("")}
+        <p class="src">Externos: ${(G.credores_externas || []).slice(0, 5).map(c => `${c.nome} (${n0(c.n)})`).join(" · ")}.</p>
+        <h5 style="margin-top:12px">Por tipo de mutuário</h5>${(G.tipos || []).map(t => `<p class="src">• ${t.tipo}: ${n0(t.n)} contratos, ${brl(t.internas_valor)} internos, ${n0(t.externas_n)} externos</p>`).join("")}
+        <h5 style="margin-top:12px">UFs com mais valor garantido (contratos internos)</h5>
+        <div class="tblwrap"><table class="data compact"><thead><tr><th>UF</th><th style="text-align:right">Contratos</th><th style="text-align:right">Internos</th><th style="text-align:right">Externos</th></tr></thead>
+        <tbody>${ufsG.map(u => `<tr><td><b>${u.uf}</b> ${u.nome}</td><td style="text-align:right">${n0(u.n)} <span class="src">${n0(u.estado_n)} do estado</span></td><td style="text-align:right">${brl(u.internas_valor)}</td><td style="text-align:right">${n0(u.externas_n)}${u.externas_usd ? ` <span class="src">${usd(u.externas_usd)}</span>` : ""}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">${n0(KG.municipios_sem_uf)} contratos de municípios homônimos ficam sem UF. Os dez maiores contratos internos: ${(G.maiores_internas || []).slice(0, 5).map(m => `${m.mutuario} (${m.credor}, ${m.ano}, ${brl(m.valor)})`).join("; ")}.</p></div>
+    </div>`);
+  } else if (D.garantias) {
+    garSec = secWrap("sn-garantias", `${sechead("O que a União garante", "Tesouro Transparente")}<div class="card"><p class="src">${D.garantias.motivo || "indisponível"}</p></div>`);
+  }
+
   /* ---------- mensal ---------- */
   const SM = (D.serie_mensal || []).filter(p => !p.parcial);
   const met = F.serie === "n" ? "n" : "valor";
@@ -10108,8 +10172,8 @@ function renderSubnacional() {
     <h5 style="margin-top:12px">Cautelas</h5>${(D.cautelas || []).map(c => `<p class="src">• ${c}</p>`).join("")}
     <p class="src">${badge("observado")} <a href="${attr(D.fonte.url)}" target="_blank" rel="noopener">${D.fonte.nome}</a> · <a href="${attr(D.fonte.api)}" target="_blank" rel="noopener">API</a> (${D.fonte.licenca}; nível ${D.fonte.nivel}). Coleta de ${n0(D.coleta.linhas)} pleitos em ${n0(D.coleta.paginas)} páginas (${D.coleta.mb} MB), ${D.coleta.coletado_em ? D.coleta.coletado_em.slice(0, 10) : ""}.</p></div>`);
   el.innerHTML = head + aberturaHtml
-    + subnavFixa([["#sn-anual", "Por ano"], ["#sn-credores", "Credores"], ["#sn-ufs", "UFs"], ["#sn-maiores", "Maiores"], ["#sn-funil", "Decisões"], ["#sn-mensal", "Série"], ["#sn-metodo", "Método"]])
-    + anual + credores + ufs + maiores + funil + mensal + metodo;
+    + subnavFixa([["#sn-anual", "Por ano"], ["#sn-credores", "Credores"], ["#sn-ufs", "UFs"], ["#sn-maiores", "Maiores"], ["#sn-funil", "Decisões"], ["#sn-divida", "Dívida"], ["#sn-garantias", "Garantias"], ["#sn-mensal", "Série"], ["#sn-metodo", "Método"]])
+    + anual + credores + ufs + maiores + funil + dividaSec + garSec + mensal + metodo;
 }
 window.snCSV = () => {
   const D = state.data.subnacional;
