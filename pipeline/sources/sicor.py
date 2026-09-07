@@ -297,8 +297,11 @@ def collect(con, cfg):
     results = []
     leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
     gasto_leve = 0
-    for recurso, fn in leves:
-        for mes in _meses_historia():
+    # mês-maior, recurso-menor: os quatro recursos leves recebem os meses recentes primeiro. Na ordem
+    # antiga (recurso-maior) o gênero só era coletado depois de UF, fonte e faixa esgotarem a história,
+    # e o runner publicou rural.json com gênero zerado em 07/09/2026.
+    for mes in _meses_historia():
+        for recurso, fn in leves:
             if gasto_leve >= CAP_LEVES:
                 break
             key = f"sicor_{recurso}:{mes}"

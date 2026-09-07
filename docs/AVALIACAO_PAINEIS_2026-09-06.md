@@ -872,3 +872,37 @@ entre "acima do limite" e o limite declarado, série desde 2015 com União zerad
 entes separados de estatais e honras declaradas ausentes, coletores e registros, seções na SPA e bloco por
 UF condicionado à publicação de `ufs.json`); suíte completa em modo CI, `tsc`, `next lint`; Chromium a 1440
 e 390 px na aba com as nove seções e na página de um estado com o bloco novo.
+
+## 20. Primeira execução diária completa e três reparos de gold (07/09/2026, tarde)
+
+A execução diária de 07/09 (run 34134336452, 14:41 a 17:06 UTC, código da v0.104.0) foi a primeira com
+todo o código dos PRs #87 a #99. O pipeline concluiu e publicou (commit a4feee3): SCR sem reabsorção e
+sem falha de piso, Consignado e Comparar sem stub, BNDES sem a falha de binding, cobrança judicial com
+os 27 tribunais (821 mil casos bancários em 12 meses), Sadipem, Siconfi (RGF 2015 a 2026, 378
+requisições), garantias da União e SUSEP coletados, sentinela sem regressão, meta.json com 29 vintages e
+`builders_falhos` vazio, ufs.json com os blocos de prazo e subnacional. A execução de 06/09 (código do
+PR #87) tinha falhado em `_vg_trimestre`, consignado e bndes_op, corrigidos nos PRs #88 e #90.
+
+O CI encadeado pelo `workflow_run` falhou em quatro testes de contrato, todos sobre golds publicados com
+campo vazio. Causas e correções:
+
+- **Consórcios e cobrança sem per capita** (27 UFs com `por_mil_hab` nulo; `ufs.json` sem posição nessas
+  réguas). Os dois builders liam a população de `ufs.json`, que no runner não existe antes de `ufs.py`
+  rodar (data/gold começa vazio a cada execução; só silver e bronze vêm do cache). Correção:
+  `common.populacao_uf(con)` lê `geo_uf` (IBGE SIDRA 6579, a mesma régua das páginas por UF) com
+  `ufs.json` como reserva; cobrança lê a carteira do SCR em `panorama.json`, escrito antes dela.
+- **Rural sem gênero** (`mulheres_share_qtd` 0, `por_uf` vazio). O recurso leve de gênero do Sicor era o
+  último da fila recurso-maior e a cota de 200 requisições acabava em UF, fonte e faixa da história
+  inteira. Correção: fila mês-maior (recente primeiro), recurso-menor; a janela de 12 meses dos quatro
+  recursos custa 48 requisições e entra na primeira execução.
+- **BNDES sem operações não automáticas** (`operacoes.disponivel` falso). Em 06/09 o hash do CSV foi
+  guardado antes da absorção, que falhou com 28 de 29 colunas; em 07/09 o coletor viu hash inalterado e
+  pulou, com a tabela vazia. Correção: hash inalterado não vale quando a tabela alvo está vazia.
+
+Os quatro golds foram reparados em produção a partir do silver local e do próprio gold publicado, sem
+esperar a próxima execução: consórcios reconstruído (segmentos e série idênticos ao publicado, per capita
+preenchido); cobrança remendada com população e carteira (mesmas fórmulas do builder, 27 tribunais
+preservados); BNDES com o bloco de operações do mesmo CSV (1.484 contratos, R$ 83,8 bi entre 2025-07 e
+2026-06) e a frase da síntese; rural com o bloco de gênero da janela completa (37,5% das cédulas de PF
+para mulheres, 19,9% do valor); `ufs.json` reconstruído sobre os golds publicados. A execução de 08/09
+regenera tudo do silver do runner. Teste `pipeline-0709.test.ts`; suíte em modo CI com 939 testes.
