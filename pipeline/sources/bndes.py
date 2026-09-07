@@ -214,6 +214,8 @@ def collect(con, cfg):
         key = f"bndes:{tabela}"
         try:
             txt, sha, mudou = _baixa(con, pkg, nome, cache, timeout=300 if tipo == "ops" else 120)
+            if not mudou and con.execute(f"SELECT COUNT(*) FROM {tabela}").fetchone()[0] == 0:
+                mudou = True  # o hash foi guardado numa execução cuja absorção falhou (06/09/2026, bndes_op com 28 de 29 colunas)
             if not mudou:
                 results.append({"key": key, "ok": True, "nota": "inalterado (hash)"})
                 continue

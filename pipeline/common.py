@@ -276,6 +276,23 @@ def get_meta(con, key):
     return dict(zip(cols, row))
 
 
+def populacao_uf(con):
+    """População por UF (IBGE SIDRA 6579) lida do silver geo_uf, a mesma régua de ufs.json e das
+    páginas por UF. Reserva: ufs.json já publicado. Os builders que dividem por habitante
+    (consórcios, cobrança) rodam antes de ufs.py e, no runner, data/gold começa vazio a cada
+    execução (07/09/2026: por_mil_hab nulo nas 27 UFs); por isso a fonte primária é o banco."""
+    pop = {}
+    try:
+        pop = {uf: p for uf, p in con.execute("SELECT uf, populacao FROM geo_uf").fetchall() if p}
+    except Exception:
+        pop = {}
+    if len(pop) < 27:
+        for u in ((ler_gold_opcional("ufs.json") or {}).get("ufs") or []):
+            if u.get("pop") and not pop.get(u["uf"]):
+                pop[u["uf"]] = u["pop"]
+    return pop
+
+
 def ler_gold_opcional(name):
     """Lê um gold já escrito, ou None. Serve para módulos que reaproveitam algo de
     outro (a malha do IBGE, por exemplo) sem tornar a dependência obrigatória."""

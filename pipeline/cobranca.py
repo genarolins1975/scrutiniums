@@ -86,7 +86,15 @@ def build(con, cfg=None):
     tot12 = {rec: sum(g[rec]["casos_12m"] for g in grupos) for rec in ("todos", "bancario")}
     tot12a = {rec: sum(g[rec]["casos_12m_anterior"] for g in grupos) for rec in ("todos", "bancario")}
     # UFs
+    # população do silver (geo_uf) e carteira do SCR pelo panorama.json, escrito antes deste builder;
+    # ufs.json é reserva (no runner, data/gold começa vazio e ufs.py roda depois)
+    pop_uf = common.populacao_uf(con)
+    pan = common.ler_gold_opcional("panorama.json") or {}
+    scr_uf = {m["uf"]: {"saldo": m.get("saldo"), "inad": m.get("inad"), "data_base": pan.get("data_base")} for m in (pan.get("mapa") or []) if m.get("uf")}
     ufs_gold = {u["uf"]: u for u in ((common.ler_gold_opcional("ufs.json") or {}).get("ufs") or [])}
+    for uf in set(pop_uf) | set(scr_uf):
+        ufs_gold.setdefault(uf, {})
+        ufs_gold[uf] = dict(ufs_gold[uf], pop=pop_uf.get(uf) or ufs_gold[uf].get("pop"), scr=scr_uf.get(uf) or ufs_gold[uf].get("scr"))
     ufs = []
     for trib in coletados:
         uf = TRIBUNAIS[trib]

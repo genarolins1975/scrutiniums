@@ -120,7 +120,7 @@ def build(con, cfg=None):
         p["carteira_imoveis"] = _v(por[x], 23); p["carteira_automoveis"] = _v(por[x], 24)
         serie.append(p)
     # UFs
-    pop = {u["uf"]: u.get("pop") for u in ((common.ler_gold_opcional("ufs.json") or {}).get("ufs") or [])}
+    pop = common.populacao_uf(con)
     ufs = []
     for i, uf in UF_IDS.items():
         c = _v(d, i)
