@@ -48,6 +48,7 @@ MESES_PRODUTO = 14
 MESES_RECOLETA = 2       # mês corrente e anterior: parciais, sempre recoletados
 CAP_PESADOS = 40         # requisições pesadas (IF, município, produto) por execução
 CAP_LEVES = 200          # requisições leves (UF, fonte, faixa, gênero) por execução
+ORCAMENTO_S = 1500       # 25 min por execução: a Olinda responde em segundos ou em minutos (504 aos 60 s); o resto fica para o dia seguinte
 
 VALORES = ("QtdCusteio", "VlCusteio", "QtdInvestimento", "VlInvestimento",
            "QtdComercializacao", "VlComercializacao", "QtdIndustrializacao", "VlIndustrializacao")
@@ -293,8 +294,11 @@ def _coleta_nomes(con, mes):
 
 
 def collect(con, cfg):
+    import time as _time
     _ensure(con)
     results = []
+    t0 = _time.monotonic()
+    estourou = lambda: _time.monotonic() - t0 > ORCAMENTO_S
     leves = [("uf", _coleta_uf), ("fonte", _coleta_fonte), ("faixa", _coleta_faixa), ("genero", _coleta_genero)]
     gasto_leve = 0
     # mês-maior, recurso-menor: os quatro recursos leves recebem os meses recentes primeiro. Na ordem
@@ -302,7 +306,7 @@ def collect(con, cfg):
     # e o runner publicou rural.json com gênero zerado em 07/09/2026.
     for mes in _meses_historia():
         for recurso, fn in leves:
-            if gasto_leve >= CAP_LEVES:
+            if gasto_leve >= CAP_LEVES or estourou():
                 break
             key = f"sicor_{recurso}:{mes}"
             if _ja_coletado(con, recurso, mes):
@@ -321,7 +325,7 @@ def collect(con, cfg):
     gasto = 0
     for recurso, fn, n_meses in pesados:
         for mes in _meses_atras(n_meses):
-            if gasto >= CAP_PESADOS:
+            if gasto >= CAP_PESADOS or estourou():
                 break
             key = f"sicor_{recurso}:{mes}"
             if _ja_coletado(con, recurso, mes):
