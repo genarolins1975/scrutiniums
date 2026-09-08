@@ -906,3 +906,15 @@ preservados); BNDES com o bloco de operações do mesmo CSV (1.484 contratos, R$
 2026-06) e a frase da síntese; rural com o bloco de gênero da janela completa (37,5% das cédulas de PF
 para mulheres, 19,9% do valor); `ufs.json` reconstruído sobre os golds publicados. A execução de 08/09
 regenera tudo do silver do runner. Teste `pipeline-0709.test.ts`; suíte em modo CI com 939 testes.
+
+### 20.1 Orçamento de tempo da coleta (08/09/2026)
+
+A execução de 08/09 (run 34230689843, 13:15 UTC) foi cancelada pelo teto de 150 minutos do job ainda
+na coleta, sem log útil (a saída do Python estava em buffer) e sem publicar nada; a de 07/09 tinha
+levado 2h25. Três mudanças: `run.py` cronometra cada coletor, escreve sem buffer e pula os coletores
+restantes quando a coleta passa de 120 minutos (`OBS_ORCAMENTO_COLETA_MIN`), registrando "pulado" no
+status; o gold é sempre reconstruído e publicado com o silver existente, e a coleta pulada volta no
+dia seguinte. O job passa a 300 minutos de teto. Dois coletores ganharam freio próprio: Pilar 3 faz
+uma tentativa de 60 s por instituição (as falhas são 404, DNS e 520 persistentes; duas tentativas de
+90 s custavam até 90 minutos) e o Sicor para aos 25 minutos por execução. Issue #101 aberta pelo job
+de alerta registra a ocorrência.

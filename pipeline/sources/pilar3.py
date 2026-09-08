@@ -177,7 +177,7 @@ def collect(con, cfg):
         alvo = regs[-1]
         url, nome = alvo["URLDados"], alvo.get("NomeInstituicao", "")
         try:
-            payload = json.loads(_fetch(url))
+            payload = json.loads(_fetch(url, timeout=60, tentativas=1))  # falhas por instituição são persistentes (404, DNS, 520): não vale a retentativa
             if isinstance(payload, str):
                 payload = json.loads(payload)  # JSON duplamente codificado ('str' object has no attribute 'get')
             if isinstance(payload, list):
