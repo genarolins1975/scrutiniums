@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-07T17:05:49+00:00",
+ "gerado_em": "2026-09-09T15:18:39+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1295 processos sancionadores em 1ª instância, com 1408 decisões por apenado: 1318 multas somando R$ 75.8 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 67 processos sancionadores em 12 meses (197 acusados); 251 seguem em curso, com idade mediana de 23 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1295 processos sancionadores em 1ª instância, com 1408 decisões por apenado: 1318 multas somando R$ 75.8 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 65 processos sancionadores em 12 meses (194 acusados); 248 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-09-03",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11385
   },
   "janela_12m": {
-   "ini": "2025-09-07",
+   "ini": "2025-09-09",
    "decisoes": 1408,
    "processos": 1295,
    "multas_n": 1318,
@@ -91,8 +91,8 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 849,
-    "share": 60.3
+    "n": 852,
+    "share": 60.51
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
@@ -101,8 +101,8 @@
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 117,
-    "share": 8.31
+    "n": 116,
+    "share": 8.24
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -116,8 +116,8 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 47,
-    "share": 3.34
+    "n": 45,
+    "share": 3.2
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
@@ -158,13 +158,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11871,
-    "share": 87.49
+    "n": 11875,
+    "share": 87.52
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 863,
-    "share": 6.36
+    "n": 862,
+    "share": 6.35
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -188,13 +188,13 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 78,
+    "n": 77,
     "share": 0.57
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 47,
-    "share": 0.35
+    "n": 45,
+    "share": 0.33
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -205,7 +205,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.9,
    "p90": 31.4,
-   "n": 3194
+   "n": 3185
   },
   "anual": [
    {
@@ -933,23 +933,23 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-08-11",
-  "ultima_movimentacao": "2026-09-03",
+  "ultima_movimentacao": "2026-09-08",
   "acervo": {
    "processos": 570,
    "acusados": 2036,
-   "em_curso": 251,
-   "finalizados": 319
+   "em_curso": 248,
+   "finalizados": 322
   },
   "abertos_12m": {
-   "ini": "2025-09-07",
-   "processos": 67,
-   "acusados": 197
+   "ini": "2025-09-09",
+   "processos": 65,
+   "acusados": 194
   },
   "fases": [
    {
     "fase": "Finalizado",
-    "n": 319,
-    "share": 55.96
+    "n": 322,
+    "share": 56.49
    },
    {
     "fase": "Julgamento",
@@ -963,8 +963,8 @@
    },
    {
     "fase": "Recurso CRSFN",
-    "n": 43,
-    "share": 7.54
+    "n": 40,
+    "share": 7.02
    },
    {
     "fase": "Intimação após julgamento",
@@ -1095,14 +1095,14 @@
    }
   ],
   "duracao_finalizados_meses": {
-   "mediana": 29.9,
-   "p90": 63.7,
-   "n": 319
+   "mediana": 30.7,
+   "p90": 65.1,
+   "n": 322
   },
   "idade_em_curso_meses": {
-   "mediana": 23,
-   "acima_36": 94,
-   "n": 251
+   "mediana": 22.0,
+   "acima_36": 91,
+   "n": 248
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1149,10 +1149,10 @@
    {
     "ano": "2019",
     "processos": 44,
-    "finalizados": 35,
+    "finalizados": 36,
     "acusados": 206,
     "incompleto": false,
-    "finalizados_share": 79.55
+    "finalizados_share": 81.82
    },
    {
     "ano": "2020",
@@ -1165,10 +1165,10 @@
    {
     "ano": "2021",
     "processos": 94,
-    "finalizados": 71,
+    "finalizados": 72,
     "acusados": 294,
     "incompleto": false,
-    "finalizados_share": 75.53
+    "finalizados_share": 76.6
    },
    {
     "ano": "2022",
@@ -1181,10 +1181,10 @@
    {
     "ano": "2023",
     "processos": 77,
-    "finalizados": 54,
+    "finalizados": 55,
     "acusados": 202,
     "incompleto": false,
-    "finalizados_share": 70.13
+    "finalizados_share": 71.43
    },
    {
     "ano": "2024",
@@ -1258,7 +1258,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-08-27",
+    "ultima_mov": "2026-09-08",
     "acusados": 5,
     "objeto": "O presente Termo de Acusação originou-se dos Processos Administrativos CVM no 19957.003516/2025-00 e 19957.010677/2025-41, instaurados pela Superintendência de Relações com Empresas - SEP para apurar possíveis irregulari"
    },

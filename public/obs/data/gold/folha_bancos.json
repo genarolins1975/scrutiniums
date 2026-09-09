@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-07T17:05:20+00:00",
+ "gerado_em": "2026-09-09T15:18:20+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 338,
-  "total_editais": 1125,
+  "total_contratos_if": 339,
+  "total_editais": 1128,
   "backfill_completo": true,
   "ranking": [
    {
@@ -145,9 +145,9 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 74,
+    "contratos": 75,
     "ufs": 14,
-    "como_receita": 24
+    "como_receita": 25
    },
    {
     "cnpj8": "90400888",
@@ -557,6 +557,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "45276128000110-2-000913/2026",
+    "ente": "MUNICIPIO DE ARARAQUARA",
+    "esfera": "Municipal",
+    "municipio": "Araraquara",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-03",
+    "vig_fim": "2031-09-03",
+    "valor": 15500619.22,
+    "receita": true,
+    "banco": "BANCO BRADESCO S/A",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/45276128000110/2026/913"
+   },
    {
     "controle": "83102350000196-2-001165/2026",
     "ente": "MUNICIPIO DE BOTUVERA",
@@ -1141,24 +1156,36 @@
     "banco": "COOPERATIVA DE CREDITO SICOOB PRIMAVERA",
     "cnpj8": "05241619",
     "url": "https://pncp.gov.br/contratos/15023963000188/2026/10"
-   },
-   {
-    "controle": "83102277000152-2-000454/2026",
-    "ente": "MUNICIPIO DE ITAJAI",
-    "esfera": "Municipal",
-    "municipio": "Itajaí",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-06-03",
-    "vig_fim": "2031-06-08",
-    "valor": 28600200.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/83102277000152/2026/454"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE CURRAL DE DENTRO",
+    "municipio": "Curral de Dentro",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/01613076000155/2026/33"
+   },
+   {
+    "ente": "INSTITUTO DE PREVIDENCIA SOCIAL DO MUNICIPIO DE PAULISTA",
+    "municipio": "Paulista",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-08",
+    "url": "https://pncp.gov.br/compras/07010511000133/2026/8"
+   },
+   {
+    "ente": "MUNICIPIO DE BERTIOGA",
+    "municipio": "Bertioga",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-08",
+    "url": "https://pncp.gov.br/compras/68020916000147/2026/190"
+   },
    {
     "ente": "MUNICIPIO DE RIACHO DOS MACHADOS",
     "municipio": "Riacho dos Machados",
@@ -1239,33 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-03",
     "url": "https://pncp.gov.br/compras/51864114000110/2026/108"
-   },
-   {
-    "ente": "MUNICIPIO DE CATALAO",
-    "municipio": "Catalão",
-    "uf": "GO",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/01505643000150/2026/118"
-   },
-   {
-    "ente": "MUNICIPIO DE FRUTA DE LEITE",
-    "municipio": "Fruta de Leite",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-02",
-    "url": "https://pncp.gov.br/compras/01612483000148/2026/37"
-   },
-   {
-    "ente": "MUNICIPIO DE PASSOS MAIA",
-    "municipio": "Passos Maia",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-01",
-    "url": "https://pncp.gov.br/compras/95993085000162/2026/50"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

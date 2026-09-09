@@ -9,13 +9,13 @@
   "sede": "Rio de Janeiro/RJ",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 394,
+  "n_pares": 393,
   "conglomerado_prudencial": "C0081672",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "atualizado_em": "2026-09-07T17:05:25+00:00",
+  "atualizado_em": "2026-09-09T15:18:24+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 31.880.826",
   "participante_open_finance": null
@@ -72,7 +72,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 394,
+  "quantidade": 393,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -138,7 +138,7 @@
   "quartis_basileia": {
    "q1": 15.7,
    "mediana": 20.5,
-   "q3": 35.0
+   "q3": 34.5
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -258,8 +258,8 @@
    "unit": "%",
    "d_tri": 0.99,
    "vs_pares": "abaixo",
-   "mediana_grupo": 20.5,
-   "percentil": 41.3
+   "mediana_grupo": 20.46,
+   "percentil": 41.4
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -268,7 +268,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 5.64,
-   "percentil": 60.8
+   "percentil": 60.7
   },
   {
    "indicador": "ROE do período",
@@ -1196,7 +1196,6 @@
     9.26,
     3.99,
     20.9,
-    -20.36,
     0.61,
     1.77,
     2.27,
@@ -1587,7 +1586,6 @@
     30.93,
     10.06,
     17.87,
-    35.57,
     22.97,
     21.49,
     27.67,
@@ -1661,7 +1659,7 @@
     89.84
    ],
    "meu": 18.4,
-   "mediana": 20.5
+   "mediana": 20.46
   },
   "alav": {
    "valores": [
@@ -1964,7 +1962,6 @@
     20.08,
     14.65,
     7.84,
-    1.41,
     7.29,
     4.02,
     5.61,

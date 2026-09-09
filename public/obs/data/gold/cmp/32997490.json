@@ -1,7 +1,7 @@
 {
  "cod": "32997490",
  "nome": "CREDITAS SOCIEDADE DE CRÉDITO DIRETO S.A.",
- "sr": "S4",
+ "sr": "S5",
  "tcb": "N1",
  "porte_quartil": null,
  "nivel": "instituição individual",
@@ -315,5 +315,5 @@
    "202509": 0.0
   }
  },
- "gerado_em": "2026-09-07T17:05:33+00:00"
+ "gerado_em": "2026-09-09T15:18:29+00:00"
 }

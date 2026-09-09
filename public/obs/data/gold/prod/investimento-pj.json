@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-07T17:05:43+00:00",
+ "gerado_em": "2026-09-09T15:18:35+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -4671,7 +4671,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.37,
+     "pct": 5.38,
      "m_produto": null,
      "phi_if": 3.39,
      "cobertura_if_pct": 80.5,
@@ -5373,7 +5373,7 @@
     "npl_prod_est": {
      "pct": 3.84,
      "m_produto": null,
-     "phi_if": 2.99,
+     "phi_if": 2.98,
      "cobertura_if_pct": 82.2,
      "baixa_cobertura": false,
      "perfil_neutro": true,
