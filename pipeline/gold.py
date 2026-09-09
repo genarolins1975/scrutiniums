@@ -118,7 +118,14 @@ def _if_contagens(con):
     try:
         am = con.execute("SELECT MAX(anomes) FROM institution_metrics").fetchone()[0]
         out["ifdata_resumo"] = {"n": con.execute("SELECT COUNT(DISTINCT cod_inst) FROM institution_metrics WHERE anomes=? AND source_report='Resumo'", (am,)).fetchone()[0],
-                                "ref": am, "def": "instituições e conglomerados com o relatório Resumo no IF.data na data-base; é o universo das fichas e do screener."}
+                                "ref": am, "def": "instituições e conglomerados com balanço (Ativo Total) entregue no Resumo do IF.data na data-base; é o universo do ranking, do screener e das estatísticas de pares das fichas."}
+        try:
+            r = con.execute("SELECT COUNT(*), SUM(entregou=0) FROM ifdata_universo WHERE anomes=?", (am,)).fetchone()
+            if r and r[0]:
+                out["ifdata_lista"] = {"n": r[0], "ref": am, "sem_balanco": r[1],
+                                       "def": "códigos na relação do Resumo do IF.data na data-base, com ou sem balanço entregue (saldo nulo na fonte = atraso, RAET, retardatário); é a régua de entradas e saídas do painel Quem entra e quem sai."}
+        except Exception:
+            pass
         out["ifdata_qualquer_relatorio"] = {"n": con.execute("SELECT COUNT(DISTINCT cod_inst) FROM institution_metrics WHERE anomes=?", (am,)).fetchone()[0],
                                             "ref": am, "def": "entidades com pelo menos uma métrica em qualquer relatório do IF.data na data-base (Resumo, Carteiras, Capital, DRE); universo do Comparar."}
     except Exception:

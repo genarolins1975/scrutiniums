@@ -6734,15 +6734,18 @@ function renderInstitutions() {
     const basMed = _mediana(todos.map(i => i.basileia_pct));
     const N = state.data.npl && state.data.npl.ok ? state.data.npl : null;
     const tri = fmtTri(inst.anomes);
+    const semBal = Array.isArray(inst.sem_balanco_na_data_base) ? inst.sem_balanco_na_data_base : null;
+    const semBalGrandes = semBal ? semBal.filter(x => (x.ativo_ultima_entrega || 0) >= 1e9) : [];
     return abertura({
       placar: [
-        { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}` },
+        { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}${semBal ? ` · ${fmt.n0(semBal.length)} na lista sem balanço` : ""}` },
         { l: "Em risco elevado ou muito elevado", v: todos.length ? fmt.n0(nAlto) : null, sub: `${fmt.n0(nPiora)} pioraram o score no trimestre` },
         { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
         { l: "Inadimplência mediana", v: N ? fmt.pct(N.sistema.mediana_inad_pct, 2) : null, sub: N ? `${fmt.n0(N.n_instituicoes)} instituições com carteira · ${fmt.n0(N.sistema.subindo_no_trimestre)} subindo no trimestre · ${N.data_base}` : "" },
       ],
       sintese: [
         todos.length ? `Dos ${todos.length} maiores conglomerados por ativo em ${tri}, ${nAlto} estão em risco elevado ou muito elevado pelo score de pares e ${nPiora} pioraram no trimestre.` : null,
+        semBalGrandes.length ? `Fora do corte por falta de balanço em ${tri} (constam da lista do IF.data com saldo nulo: atraso, RAET ou retardatário), com ativo acima de R$ 1 bi na última entrega: ${semBalGrandes.slice(0, 6).map(x => `${x.nome} (última entrega ${fmtTri(x.ultima_entrega)}, ${fmt.money(x.ativo_ultima_entrega)})`).join("; ")}${semBalGrandes.length > 6 ? ` e mais ${semBalGrandes.length - 6}` : ""}. Não é saída: a ficha de cada uma segue disponível na última entrega.` : null,
         basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
         "O score compara cada instituição com o próprio grupo de pares (S1 a S5); é régua relativa, não nota de solvência.",
       ],
@@ -6946,12 +6949,14 @@ function renderInstPage() {
 function renderInstPageData(el, pg) {
   const cab = pg.cabecalho;
   const sc = pg.score_ref || {};
+  const lacuna = cab.sem_balanco_na_data_base;
+  const avisoLacuna = lacuna ? `<div class="card" style="border-left:4px solid #b45309;margin-bottom:12px"><b>Sem balanço em ${lacuna.data_base}.</b> ${lacuna.texto}</div>` : "";
   const kpiCard = k => `<div class="card kpi">
     <h4>${k.label}</h4>
     <div class="big" style="font-size:21px">${k.unit === "R$" ? fmt.money(k.v) : fmt.n(k.v, 2) + k.unit}</div>
-    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down good" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : ""}
+    ${k.d_tri != null ? `<div class="delta ${k.d_tri >= 0 ? "down good" : "up"}">${k.d_tri >= 0 ? "▲" : "▼"} ${fmt.n(Math.abs(k.d_tri), 1)}${k.d_tri_tipo} vs. trim. anterior</div>` : (k.hist && k.hist.length > 1 && k.d_tri_tipo ? `<div class="src">sem variação trimestral: o trimestre anterior faltou na fonte</div>` : "")}
     ${k.hist && k.hist.length > 2 ? sparkline(k.hist, 150, 30) : ""}
-    <div class="src">${k.fonte}</div></div>`;
+    <div class="src">${k.periodo ? k.periodo + " · " : ""}${k.fonte}</div></div>`;
   const destIcon = t => t === "ok" ? "✅" : "⚠️";
   const capRow = c => `<tr><td>${c.indicador}</td><td><b>${fmt.n(c.valor, 2)}${c.unit}</b></td>
     <td>${c.d_tri != null ? fmt.pp(c.d_tri) + " p.p." : "–"}</td>
@@ -6985,7 +6990,8 @@ function renderInstPageData(el, pg) {
   const subnav = subnavFixa(subnavItens);
   el.innerHTML = `
   <div class="controls"><button class="btn ghost small" onclick="nav('institutions')">← instituições</button>
-    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
+    <span class="src">Instituições Financeiras › <b>${cab.nome_comercial}</b> · data-base ${cab.data_base}${cab.data_base_universo && cab.data_base_universo !== cab.data_base ? ` (universo em ${cab.data_base_universo})` : ""} · atualizado ${cab.atualizado_em.slice(0, 16).replace("T", " ")} UTC</span></div>
+  ${avisoLacuna}
   <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
     <div style="flex:2;min-width:300px">
       <h2 style="margin:4px 0">${cab.nome_comercial} <span class="seal aprox">${cab.consolidacao}</span></h2>
@@ -9769,6 +9775,7 @@ function mktScreener(M) {
       <label>Ativos ≥ <input type="text" value="${st.fativo}" style="width:60px" onchange="scrSet('fativo', this.value)" aria-label="ativos mínimos">R$ bi</label>` : ""}
       <span class="src">${rows.length} resultado(s)${rows.length > 100 ? " · exibindo top-100" : ""} · data-base ${st.modo === "listadas" ? fmt.d(M.valuation[0].data_preco) : fmtTri(S.data_base)}</span>
     </div>
+    ${st.modo === "reguladas" && Array.isArray(S.sem_balanco_na_data_base) && S.sem_balanco_na_data_base.length ? `<p class="src">${fmt.n0(S.sem_balanco_na_data_base.length)} instituições constam da lista do IF.data em ${fmtTri(S.data_base)} sem balanço entregue (saldo nulo na fonte: atraso, RAET, retardatário) e ficam fora do screener até entregar; as maiores: ${S.sem_balanco_na_data_base.slice(0, 5).map(x => `${x.nome} (última entrega ${fmtTri(x.ultima_entrega)})`).join("; ")}.</p>` : ""}
     <div class="tblwrap"><table class="data compact rankmini"><thead><tr><th>Instituição</th>${th("ativo", "Ativos")}${th("roe", "ROE", "listadas: ROE da companhia (CVM); reguladas: ROE do período IF.data")}${th("basileia", "Basileia")}${th("npl", "Inad. >90d")}${th("cresc4t", "Δ carteira 4T")}${th("pvp", "P/VP")}${th("yield12", "Yield 12m")}${th("ret12", "Ret. total 12m")}</tr></thead>
     <tbody>${shown.map(linha).join("")}</tbody></table></div>
     ${leitura([["Como interpretar", "métricas de mercado só existem para as listadas do piloto — 'n/a' nas demais (nunca zero)"],

@@ -1369,6 +1369,24 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   fora do CI expôs um buraco no config: a janela `auto:5` já não cobria 2025-03 e a lista
   fixa de histórico terminava em 2024-12; `load_config` passou a construir a ponte entre
   os dois.
+- **Impacto nos demais painéis (09/09/2026):** o mesmo erro (lacuna de entrega lida
+  como ausência da instituição, ou dois pontos não vizinhos lidos como "trimestre
+  anterior") existia em tudo que lê `institution_metrics`. Régua única em
+  `pipeline/ifdata_lacunas.py`: (i) `sem_balanco(con, anomes)` lista nome a nome quem
+  consta da relação do IF.data na data-base sem balanço, com a última entrega e o ativo
+  dela; (ii) `variacao_tri` só calcula variação entre trimestres vizinhos. Aplicado em:
+  fichas por instituição e índice de busca (`inst_pages_all.py`: BRB, sem balanço em
+  2026-T1, sumia do site; agora a ficha é montada na última entrega, 2025-T3, com aviso
+  no cabeçalho, fora das estatísticas de pares, e o score declara o motivo; ABN AMRO
+  mostrava "variação vs. trimestre anterior" entre 2025-T3 e 2026-T1); ranking das 100
+  maiores (`indicators.py`, campo `sem_balanco_na_data_base` e nota nominal na aba
+  Instituições); screener (`market.py`); inadimplência por IF (`npl.py`); páginas
+  piloto (`inst_pages.py`, que ainda comparava com o PRIMEIRO trimestre da série como
+  "ano"); escala das IFs na camada nominal do judicial (`judicial.py`, última entrega
+  da instituição declarada por linha); verbete de contagens (`gold.py`, nova régua
+  `ifdata_lista`: 1.461 na lista em 2026-03, 1.422 com balanço, 39 sem). Trava em
+  `src/tests/ifdata-lacunas.test.ts`. Comparar instituições (`compare.py`) preserva a
+  série com buracos e o gráfico já os mostra; sem mudança.
 - **Regras:** o trimestre mais recente do IF.data recebe retardatários por semanas; as
   saídas nele são provisórias e ficam marcadas; KPIs usam os quatro trimestres fechados.
   Entrada não é instituição nova e saída não é quebra: a leitura é nominal, com a data

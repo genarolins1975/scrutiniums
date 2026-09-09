@@ -8,6 +8,7 @@ import re
 from datetime import date
 
 from pipeline import common
+from pipeline import ifdata_lacunas as lacunas
 
 
 def _mean_std(vals):
@@ -653,7 +654,11 @@ def build_institution_scores(con, cfg, elasticidades=None, severe_shocks=None):
     return {
         "ok": True, "tipo": "DADO CALCULADO", "anomes": anomes,
         "anomes_anterior": periods[1] if len(periods) > 1 else None,
-        "instituicoes": out, "grupos": {g: {**gs, "label": PEER_GROUP_LABELS.get(g, g)} for g, gs in group_stats.items()},
+        "instituicoes": out,
+        # quem consta da lista do IF.data na data-base sem balanço (BRB em 2026-T1) fica
+        # fora do corte, declarado nome a nome; None enquanto ifdata_universo não cobre a data-base
+        "sem_balanco_na_data_base": lacunas.sem_balanco(con, anomes),
+        "nota_universo": lacunas.NOTA_SEM_BALANCO, "grupos": {g: {**gs, "label": PEER_GROUP_LABELS.get(g, g)} for g, gs in group_stats.items()},
         "metodo": (f"Grupos de pares = segmento prudencial (Res. 4.553): percentil de cada razão dentro do "
                    f"próprio grupo (IF.data {anomes}); grupos com <5 membros no corte dos {top_n} maiores usam "
                    f"o conjunto completo (sinalizado). Score = média das dimensões disponíveis — até 5: capital "

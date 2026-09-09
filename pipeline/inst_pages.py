@@ -10,6 +10,7 @@ import re
 import unicodedata
 
 from pipeline import common
+from pipeline import ifdata_lacunas as lacunas
 from pipeline.indicators import PEER_GROUP_LABELS, carteira_profile
 
 PERIODOS_LBL = {"202603": "2026-T1", "202512": "2025-T4", "202509": "2025-T3",
@@ -44,8 +45,11 @@ def _indicador(con, cod, metric, nome, unit, fonte, status, peers_vals=None, tra
         return None
     vals = [(a, transform(v) if transform else v) for a, v in s]
     atual = vals[-1]
-    d_tri = round(atual[1] - vals[-2][1], 4) if len(vals) > 1 else None
-    d_ano = round(atual[1] - vals[0][1], 4) if len(vals) >= 5 else None
+    # variações só contra o trimestre VIZINHO e contra exatamente quatro trimestres antes;
+    # lacuna de entrega no meio vira nulo declarado, nunca diferença contra outro período
+    d_tri = lacunas.variacao_tri(vals, casas=4)
+    v4 = lacunas.valor_ha_n_trimestres(vals, 4)
+    d_ano = round(atual[1] - v4, 4) if v4 is not None else None
     out = {"nome": nome, "valor": round(atual[1], 4), "periodo": PERIODOS_LBL.get(atual[0], atual[0]),
            "d_tri": d_tri, "d_ano": d_ano, "unit": unit, "fonte": fonte, "status": status,
            "historico": [{"p": PERIODOS_LBL.get(a, a), "v": round(v, 4)} for a, v in vals]}

@@ -458,6 +458,8 @@ def _screener(con):
             "cart_ativo": _metric_value(pv, "cart_ativo_pct"),
             "cresc4t": (cart / cart_prev - 1) * 100 if (cart and cart_prev) else None,
         })
+    from pipeline import ifdata_lacunas as lacunas
     return {"data_base": latest, "n": len(rows), "linhas": rows,
+            "sem_balanco_na_data_base": lacunas.sem_balanco(con, latest),
             "aviso": "Ferramenta de pesquisa. Não constitui recomendação de investimento.",
             "nota": "fundamentos IF.data (trimestral); métricas de mercado existem apenas para as listadas do piloto — 'não aplicável' para as demais."}

@@ -59,10 +59,15 @@ def _escala_por_codigo(con):
     if not ult:
         return {}, None
     out = {}
-    for cod, metric, valor in _rows(con,
-            """SELECT cod_inst, metric, value FROM institution_metrics
-               WHERE anomes = ? AND metric IN ('ativo_total','carteira_credito')""", (ult,)):
-        out.setdefault(cod, {})[metric] = valor
+    # escala na data-base; quem consta da lista sem balanço nela (BRB em 2026-T1) usa a
+    # própria última entrega, declarada por linha em `anomes` (nunca escala ausente = zero)
+    for cod, metric, valor, am in _rows(con,
+            """SELECT m.cod_inst, m.metric, m.value, m.anomes FROM institution_metrics m
+               JOIN (SELECT cod_inst, MAX(anomes) AS am FROM institution_metrics WHERE metric='ativo_total' AND anomes <= ? GROUP BY cod_inst) u
+                 ON u.cod_inst = m.cod_inst AND u.am = m.anomes
+               WHERE m.metric IN ('ativo_total','carteira_credito')""", (ult,)):
+        d = out.setdefault(cod, {"anomes": am})
+        d[metric] = valor
     return out, ult
 
 
@@ -158,6 +163,7 @@ def build(con, cfg):
                 "eh_if": bool(eh_if), "cod_if": cod_if, "confianca": conf,
                 "part_top10": round(proc / total_top10 * 100, 2) if total_top10 else None,
                 "entidade_escala": nome_if,
+                "data_escala": (met or {}).get("anomes"),
                 "ativo_total": ativo, "carteira_credito": carteira,
                 # normalização: processos por R$ 100 bi de ativo (denominador declarado)
                 "por_100bi_ativo": round(proc / (ativo / 1e11), 1) if ativo else None,
@@ -200,7 +206,7 @@ def build(con, cfg):
         {"id": "por_100bi_ativo", "nome": "Casos novos no TST por R$ 100 bi de ativo", "definicao": "normalização pela escala da instituição",
          "formula": "casos novos ÷ (ativo total ÷ 100 bi)", "unidade": "processos por R$ 100 bi",
          "fonte": "TST + BCB/IF.data", "nivel": "instituição líder do conglomerado",
-         "cobertura": f"escala na data-base {data_escala}",
+         "cobertura": f"escala na data-base {data_escala} (ou na última entrega da instituição, declarada por linha, quando ela consta do IF.data sem balanço nessa data)",
          "limitacoes": "numerador e denominador têm períodos e perímetros distintos; leitura apenas de ordem de grandeza",
          "versao": "v1"},
     ]
