@@ -105,7 +105,7 @@ def _baixa(con, pkg, nome, cache, timeout=120):
     bronze_file, sha = common.save_bronze("bndes", f"{pkg}__{nome[:50].replace(' ', '_').replace('/', '-')}", body, meta)
     ja = con.execute("SELECT sha FROM bndes_coleta WHERE recurso=?", (f"{pkg}:{nome}",)).fetchone()
     if ja and ja[0] == sha:
-        return None, sha, False
+        return _decode(body), sha, False  # texto devolvido mesmo inalterado: o chamador pode forçar a absorção
     con.execute("INSERT OR REPLACE INTO bndes_coleta VALUES(?,?,?,?)", (f"{pkg}:{nome}", sha, common.now_utc(), url))
     common.record_lineage(con, "bndes.json", bronze_file, sha, f"BNDES dados abertos: {pkg} / {nome}")
     return _decode(body), sha, True
@@ -214,8 +214,13 @@ def collect(con, cfg):
         key = f"bndes:{tabela}"
         try:
             txt, sha, mudou = _baixa(con, pkg, nome, cache, timeout=300 if tipo == "ops" else 120)
-            if not mudou and con.execute(f"SELECT COUNT(*) FROM {tabela}").fetchone()[0] == 0:
-                mudou = True  # o hash foi guardado numa execução cuja absorção falhou (06/09/2026, bndes_op com 28 de 29 colunas)
+            # hash guardado numa execução cuja absorção falhou (06/09/2026, bndes_op com 28 de 29 colunas):
+            # tabela alvo vazia obriga a absorver de novo. Mensal e anual vivem em bndes_mensal/bndes_anual
+            # com a coluna tabela; ops, fontes e ifs têm tabela própria.
+            vazia = {"mensal": lambda: con.execute("SELECT COUNT(*) FROM bndes_mensal WHERE tabela=?", (tabela,)).fetchone()[0] == 0,
+                     "anual": lambda: con.execute("SELECT COUNT(*) FROM bndes_anual WHERE tabela=?", (tabela,)).fetchone()[0] == 0}
+            if not mudou and vazia.get(tipo, lambda: con.execute(f"SELECT COUNT(*) FROM {tabela}").fetchone()[0] == 0)():
+                mudou = True
             if not mudou:
                 results.append({"key": key, "ok": True, "nota": "inalterado (hash)"})
                 continue

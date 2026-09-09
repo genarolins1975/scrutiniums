@@ -38,8 +38,10 @@ describe("Sicor: recursos leves em ordem de mês", () => {
 describe("BNDES: hash inalterado não vale com tabela vazia", () => {
   it("collect força a absorção quando a tabela alvo está vazia", () => {
     const b = read("pipeline/sources/bndes.py");
-    expect(b).toContain('if not mudou and con.execute(f"SELECT COUNT(*) FROM {tabela}").fetchone()[0] == 0:');
+    expect(b).toContain('return _decode(body), sha, False');
+    expect(b).toContain('"mensal": lambda: con.execute("SELECT COUNT(*) FROM bndes_mensal WHERE tabela=?", (tabela,)).fetchone()[0] == 0');
     expect(b).toContain("mudou = True");
+    expect(b).not.toContain('if not mudou and con.execute(f"SELECT COUNT(*) FROM {tabela}")');
   });
 });
 
