@@ -1326,9 +1326,21 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
      segmento (`sfn_hist`) e contagem por coleta (`sfn_contagem`). Uma relação fora do ar
      descarta a coleta inteira, para que a falha não vire onda de saídas.
   2. BCB/IF.data, já coletado pelo pipeline (cadastro e resumo trimestral desde 2015-03,
-     tipo de instituição 2): presença de cada código no relatório resumo por trimestre.
-     Entrada = primeiro trimestre reportado; saída = deixou de reportar; conversão =
-     mesmo nome sai com um tipo de consolidado e entra com outro.
+     tipo de instituição 2). Duas presenças por trimestre: na LISTA do resumo (tabela
+     `ifdata_universo`, gravada pelo coletor `ifdata.py` a partir de 09/09/2026 com
+     situação, data de início de atividade e CNPJ líder do cadastro do trimestre; a
+     fonte publica a linha com saldo nulo para quem consta e não entregou) e com
+     BALANÇO entregue (`institution_metrics`, Ativo Total). Entrada = primeiro
+     trimestre em que o código aparece na lista em toda a série; saída = trimestre
+     seguinte ao último em que aparece, sem retorno. Faltar um trimestre e voltar é
+     ausência temporária; constar da lista sem balanço (atraso, RAET, retardatário) é
+     lista própria. Nenhum dos dois é entrada ou saída. Troca de código = mesmo CNPJ
+     líder (ou mesmo nome) sai com um código e entra com outro; conversão de tipo é a
+     troca em que o tipo de consolidado muda. A data de início de atividade separa
+     entrada de instituição nova (até 12 meses) de instituição antiga com código novo;
+     o CNPJ (próprio ou líder) cruzado com o Unicad diz se quem saiu segue autorizado.
+     Sem `ifdata_universo` em todos os trimestres, a régua cai para "balanço entregue"
+     com as mesmas definições (`ifd.regua` declara qual está em uso).
   3. Regimes de resolução: gold `regimes.json` já publicado.
 - **Builder:** `pipeline/sfn.py` → `sfn.json`: cadastro por grupo (Bancos, Cooperativas,
   Instituições de pagamento, Fintechs de crédito, Financeiras e crédito especializado,
@@ -1345,13 +1357,29 @@ exibida, nunca quadrática), recordes (sem categorias), pior faixa de renda
   421 das 707 sociedades. No IF.data, 1.430 reportantes em 2025-12, com 92 entradas e 77
   saídas nos quatro trimestres fechados; 2026-03 ainda provisório. Os SGS 24881 a 25581 (quantidade de sedes por segmento e
   região) são anuais e param em 2022: registrados como fronteira, não usados.
+- **Correção de critério (09/09/2026):** o painel comparava só dois trimestres vizinhos
+  com a régua "balanço entregue", e um atraso de entrega virava "saída" seguida de
+  "entrada": ABN AMRO (na lista em 4T 2025 com saldo nulo, entregou de novo em 1T 2026)
+  e Neon (2T 2025, voltou em 3T 2025) apareciam como entrantes; FACTA e Sem Parar, idem;
+  BRB (sem balanço desde 4T 2025) aparecia como saída. Com a régua da lista e a primeira
+  e última presença em toda a série: 1.466 códigos na lista em 4T 2025, 1.430 com balanço
+  e 36 sem; nos quatro trimestres fechados, 79 entradas (57 instituições novas, 15 já
+  existentes, 7 trocas de código) e 47 saídas (30 fora do Unicad hoje, 10 ainda
+  autorizadas, 7 trocas de código); 4 ausências temporárias e 16 retornos. A regeneração
+  fora do CI expôs um buraco no config: a janela `auto:5` já não cobria 2025-03 e a lista
+  fixa de histórico terminava em 2024-12; `load_config` passou a construir a ponte entre
+  os dois.
 - **Regras:** o trimestre mais recente do IF.data recebe retardatários por semanas; as
   saídas nele são provisórias e ficam marcadas; KPIs usam os quatro trimestres fechados.
-  Saída não é quebra: fusão, incorporação e troca de código também tiram um nome da
-  lista, e a leitura é nominal.
+  Entrada não é instituição nova e saída não é quebra: a leitura é nominal, com a data
+  de início de atividade, o cruzamento com o Unicad e a lista de regimes ao lado.
 - **Travas:** `src/tests/sfn-data.test.ts` (grupos, UFs e regiões somam o total; série
-  trimestral fecha em n = n anterior + entradas − saídas; provisório marcado; listas só
-  dos últimos oito trimestres; regimes coerentes com regimes.json; aba registrada).
+  trimestral fecha em lista = lista anterior + entradas + retornos − saídas − ausências;
+  um código nunca sai antes de entrar nem aparece duas vezes na mesma lista; quem consta
+  da lista sem balanço não é saída no mesmo trimestre; classe de cada entrada e saída
+  declarada e "nova" só com início de atividade em até 12 meses; provisório marcado;
+  listas só dos últimos oito trimestres; regimes coerentes com regimes.json; aba
+  registrada com o cartão "Como ler esta lista").
 - **Pendências:** distinguir motivo da saída (fusão, incorporação, cancelamento) pelo
   ato do BCB (Sisbacen, texto) fica fora da Fase 0; a série do cadastro com nomes
   cresce daqui em diante.

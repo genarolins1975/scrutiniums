@@ -6,8 +6,12 @@ import { join } from "node:path";
 /**
  * Quem entra e quem sai do SFN. O que se trava:
  * - cadastro: grupos somam o total, UFs somam o total, cooperativas por sistema somam as cooperativas;
- * - IF.data: série trimestral com entradas e saídas coerentes (n_t = n_{t-1} + entradas − saídas),
- *   último trimestre marcado como provisório, listas nominais só dos últimos oito trimestres;
+ * - IF.data: série trimestral com entradas, saídas, ausências e retornos coerentes
+ *   (universo_t = universo_{t-1} + entradas + retornos − saídas − ausências), último trimestre
+ *   marcado como provisório, listas nominais só dos últimos oito trimestres, e a regra que
+ *   evita o falso "sai e volta": entrada é a primeira presença do código em toda a série e
+ *   saída é a última, então um mesmo código nunca tem saída antes de entrada nem aparece
+ *   duas vezes na mesma lista;
  * - regimes: vigentes e decretados em 12 meses coerentes com regimes.json;
  * - a SPA registra a aba em todos os mapas e o pipeline registra o coletor.
  */
@@ -50,12 +54,14 @@ describe.skipIf(!comCadastro)("sfn.json: cadastro de instituições em funcionam
 
 describe.skipIf(!comIfdata)("sfn.json: reportantes do IF.data", () => {
   const I = S.ifdata;
-  it("a série fecha: reportantes de t = t−1 + entradas − saídas; último trimestre é provisório", () => {
+  const uni = (p: any) => p.universo ?? p.n;
+  it("a série fecha: lista de t = t−1 + entradas + retornos − saídas − ausências; último trimestre é provisório", () => {
     const ser = I.serie;
     expect(ser.length).toBeGreaterThanOrEqual(2);
     for (let i = 1; i < ser.length; i++) {
-      expect(ser[i].n, ser[i].anomes).toBe(ser[i - 1].n + ser[i].entradas - ser[i].saidas);
+      expect(uni(ser[i]), ser[i].anomes).toBe(uni(ser[i - 1]) + ser[i].entradas + (ser[i].retornos ?? 0) - ser[i].saidas - (ser[i].ausencias ?? 0));
       expect(soma(Object.entries(ser[i].por_tcb).map(([, v]) => ({ v })), "v"), ser[i].anomes).toBe(ser[i].n);
+      if (ser[i].sem_resumo != null) expect(ser[i].universo - ser[i].n, ser[i].anomes).toBe(ser[i].sem_resumo);
     }
     expect(ser[ser.length - 1].provisorio).toBe(true);
     expect(ser.filter((p: any) => p.provisorio).length).toBe(1);
@@ -71,6 +77,31 @@ describe.skipIf(!comIfdata)("sfn.json: reportantes do IF.data", () => {
     for (const x of I.saidas.filter((s: any) => s.anomes === I.ultimo)) expect(x.provisorio).toBe(true);
     expect(soma(I.por_tcb, "share")).toBeCloseTo(100, 0);
   });
+  it("um código nunca sai antes de entrar nem aparece duas vezes na mesma lista (atraso de entrega não é saída seguida de entrada)", () => {
+    const ent = new Map<string, string>(I.entradas.map((x: any) => [x.cod, x.anomes]));
+    const sai = new Map<string, string>(I.saidas.map((x: any) => [x.cod, x.anomes]));
+    expect(ent.size).toBe(I.entradas.length);
+    expect(sai.size).toBe(I.saidas.length);
+    sai.forEach((am, cod) => { if (ent.has(cod)) expect((ent.get(cod) as string) < am, cod).toBe(true); });
+    for (const x of I.ausencias ?? []) expect(x.voltou_em > x.anomes, x.nome).toBe(true);
+    for (const x of I.sem_resumo ?? []) {
+      expect(sai.get(x.cod), `${x.nome} consta da lista em ${x.anomes}: não pode ser saída no mesmo trimestre`).not.toBe(x.anomes);
+      if (x.voltou_em) expect(x.voltou_em > x.anomes).toBe(true);
+    }
+  });
+  it.skipIf(I.regua !== "lista")("régua da lista: cada entrada e saída tem leitura declarada; instituição nova só com início de atividade recente", () => {
+    const meses = (a: string, b: string) => (+b.slice(0, 4) - +a.slice(0, 4)) * 12 + (+b.slice(4, 6) - +a.slice(4, 6));
+    for (const x of I.entradas) {
+      expect(["nova", "antiga", "troca_codigo", "sem_data"], x.nome).toContain(x.classe);
+      if (x.classe === "nova") expect(meses(x.inicio_atividade, x.anomes), x.nome).toBeLessThanOrEqual(I.meses_nova);
+      if (x.classe === "antiga") expect(meses(x.inicio_atividade, x.anomes), x.nome).toBeGreaterThan(I.meses_nova);
+    }
+    for (const x of I.saidas) expect(["fora_cadastro", "autorizada_hoje", "troca_codigo", "sem_cruzamento"], x.nome).toContain(x.classe);
+    const fechados = new Set(I.serie.filter((p: any) => !p.provisorio).slice(-4).map((p: any) => p.anomes));
+    expect(I.kpis.entradas_4t_novas + I.kpis.entradas_4t_antigas + I.kpis.entradas_4t_troca).toBeLessThanOrEqual(I.kpis.entradas_4t);
+    expect(I.entradas.filter((x: any) => fechados.has(x.anomes) && x.classe === "nova").length).toBe(I.kpis.entradas_4t_novas);
+    for (const c of I.conversoes) expect(c.de_cod, c.nome).not.toBe(c.para_cod);
+  });
 });
 
 describe.skipIf(!S.disponivel)("sfn.json: regimes e cautelas", () => {
@@ -82,6 +113,7 @@ describe.skipIf(!S.disponivel)("sfn.json: regimes e cautelas", () => {
     }
     expect(S.cautelas.join(" ")).toMatch(/três réguas/);
     expect(S.cautelas.join(" ")).toMatch(/não é falência|não é quebra/);
+    expect(S.cautelas.join(" ")).toMatch(/não é instituição nova/);
   });
 });
 
@@ -96,6 +128,7 @@ describe("SPA: aba registrada em todos os mapas", () => {
     expect(app).toContain('sfn: "emergentes"');
     expect(app).toMatch(/\n  sfn: \{ q: "[^"]+\?"/);
     expect(app).toContain("state.sfn = {");
+    expect(app).toContain("Como ler esta lista");
     expect(html).toContain('data-view="sfn">Quem entra e quem sai do SFN</button>');
     expect(html).toContain('id="view-sfn"');
   });

@@ -1,16 +1,24 @@
 """Entrantes e saídas do SFN — gold sfn.json.
 
-Duas réguas, declaradas e nunca somadas:
+Três réguas, declaradas e nunca somadas:
 1. **Cadastro** (BCB/Unicad, Olinda): quem está autorizado e em funcionamento HOJE, por
    grupo, segmento, UF e, nas cooperativas, por sistema. O cadastro não tem data de
    início: a série de entradas e saídas nasce com a primeira coleta e cresce daí em
    diante (`sfn_hist`), com nomes.
-2. **Quem entrega o IF.data** (BCB, trimestral desde 2015): instituições e conglomerados
-   que reportam o resumo em cada trimestre, por tipo de consolidado (b1 a n4). Entrada =
-   primeiro trimestre reportado; saída = último trimestre reportado antes do mais
-   recente; mudança de tipo = conversão (SCD que vira banco, por exemplo). É a única
-   história pública com nomes e datas; cobre o universo que reporta ao IF.data, não o
-   cadastro inteiro (instituições de pagamento e corretoras pequenas ficam de fora).
+2. **Lista do IF.data** (BCB, trimestral desde 2015): códigos presentes na relação do
+   resumo em cada trimestre (`ifdata_universo`, com ou sem balanço entregue) e quem de
+   fato entregou o Ativo Total (`institution_metrics`). Entrada = PRIMEIRO trimestre em
+   que o código aparece em toda a série; saída = trimestre seguinte ao ÚLTIMO em que
+   aparece, sem retorno. Faltar um trimestre e voltar é ausência temporária; constar da
+   lista com saldo nulo (atraso, RAET, retardatário) é "na lista sem balanço". Nenhum
+   dos dois é entrada ou saída. Comparar só dois trimestres vizinhos, como o painel
+   fazia até 09/2026, transformava um atraso de entrega em "saída" seguida de
+   "entrada" (ABN AMRO em 4T 2025, Neon em 2T 2025).
+   A data de início de atividade do cadastro do IF.data separa entrada de instituição
+   nova (até 12 meses) de instituição antiga com código novo; o cruzamento do CNPJ
+   (próprio ou líder) com o Unicad diz se quem saiu segue autorizado hoje.
+   Sem `ifdata_universo` para todos os trimestres, a régua cai para "resumo entregue",
+   com as mesmas definições de primeira e última presença.
 3. **Regimes de resolução** (BCB, Olinda): as saídas forçadas, com data e tipo.
 
 Regras: ausência é nulo; o trimestre mais recente do IF.data pode estar incompleto
@@ -108,6 +116,41 @@ def _cadastro(con):
 
 
 # ---------------------------------------------------------------- IF.data (trimestral)
+JANELA_NOMINAL = 8      # trimestres com lista nome a nome
+MESES_NOVA = 12         # início de atividade até 12 meses antes do trimestre de entrada = instituição nova
+
+
+def _meses_entre(ini, am):
+    """Meses entre dois AAAAMM (positivo se `am` é posterior)."""
+    return (int(am[:4]) - int(ini[:4])) * 12 + (int(am[4:6]) - int(ini[4:6]))
+
+
+def _fmt_am(am):
+    return f"{am[4:6]}/{am[:4]}" if am and len(am) == 6 else (am or "")
+
+
+def _universo(con, tri):
+    """Régua de universo: lista do Resumo por trimestre (`ifdata_universo`), se cobrir todos os
+    trimestres com métricas; senão, None (o builder cai na régua 'resumo entregue')."""
+    try:
+        cobertos = {r[0] for r in con.execute("SELECT DISTINCT anomes FROM ifdata_universo")}
+    except Exception:
+        return None, {}
+    if any(t not in cobertos for t in tri):
+        return None, {}
+    pres, info = {}, {}
+    tri_set = set(tri)
+    for cod, am, e, nome, tcb, uf, sr, td, sit, ini, lider, ini_l in con.execute(
+            "SELECT cod_inst, anomes, entregou, nome, tcb, uf, sr, td, situacao, inicio_atividade, cnpj_lider, inicio_lider FROM ifdata_universo ORDER BY anomes"):
+        if am not in tri_set:
+            continue
+        pres.setdefault(cod, set()).add(am)
+        # o registro mais recente prevalece (ORDER BY anomes): nome, tipo e situação de hoje
+        info[cod] = {"nome": nome, "tcb": tcb, "uf": uf, "sr": sr, "td": td, "situacao": sit,
+                     "inicio_atividade": ini, "cnpj_lider": lider, "inicio_lider": ini_l}
+    return pres, info
+
+
 def _ifdata(con):
     try:
         tri = [r[0] for r in con.execute("SELECT DISTINCT anomes FROM institution_metrics WHERE metric='ativo_total' ORDER BY anomes")]
@@ -115,63 +158,178 @@ def _ifdata(con):
         tri = []
     if len(tri) < 2:
         return {"disponivel": False, "motivo": "menos de dois trimestres do IF.data na silver"}
-    pres = {}
+    entregou = {}
     for cod, am in con.execute("SELECT DISTINCT cod_inst, anomes FROM institution_metrics WHERE metric='ativo_total'"):
-        pres.setdefault(cod, set()).add(am)
+        entregou.setdefault(cod, set()).add(am)
     cad = {c: (nm, t, u, sr) for c, nm, t, u, sr in con.execute("SELECT cod_inst, name, tcb, uf, sr FROM institutions")}
     ativo = {}
     for cod, am, v in con.execute("SELECT cod_inst, anomes, value FROM institution_metrics WHERE metric='ativo_total'"):
         ativo[(cod, am)] = v
-    ult, pen = tri[-1], tri[-2]
+    pres, info = _universo(con, tri)
+    regua_universo = pres is not None
+    if not regua_universo:
+        pres = entregou
+    try:
+        sedes = {r[0] for r in con.execute("SELECT cnpj8 FROM sfn_sedes")}
+    except Exception:
+        sedes = set()
+    ult = tri[-1]
     primeiro = tri[0]
-    serie = []
+    first = {c: min(s) for c, s in pres.items()}
+    last = {c: max(s) for c, s in pres.items()}
+    por_tri = {am: {c for c, s in pres.items() if am in s} for am in tri}
+
+    def dados(c):
+        nm, t, u, sr = cad.get(c) or (None, None, None, None)
+        i = info.get(c) or {}
+        return {"cod": c, "nome": i.get("nome") or nm or c, "tcb": i.get("tcb") or t, "tcb_nome": TCB.get(i.get("tcb") or t),
+                "uf": i.get("uf") or u, "sr": i.get("sr") or sr}
+
+    def cnpj8(c):
+        if len(c) == 8 and c.isdigit():
+            return c
+        return (info.get(c) or {}).get("cnpj_lider")
+
+    serie, eventos = [], {}
     for i, am in enumerate(tri):
-        atuais = {c for c, s in pres.items() if am in s}
+        U = por_tri[am]
+        D = {c for c in U if am in entregou.get(c, ())} if regua_universo else U
         por_tcb = {}
-        for c in atuais:
-            t = (cad.get(c) or (None, "?", None, None))[1] or "?"
+        for c in D:
+            t = (info.get(c) or {}).get("tcb") or (cad.get(c) or (None, "?", None, None))[1] or "?"
             por_tcb[t] = por_tcb.get(t, 0) + 1
-        ent = sai = 0
+        ent = sai = ret = aus = None
         if i > 0:
-            ant = {c for c, s in pres.items() if tri[i - 1] in s}
-            ent = len(atuais - ant)
-            sai = len(ant - atuais)
-        serie.append({"anomes": am, "n": len(atuais), "entradas": ent if i else None, "saidas": sai if i else None, "por_tcb": por_tcb, "provisorio": am == ult})
-    # listas nominais dos últimos 8 trimestres
-    def lista(tipo, am_i):
-        am, ant = tri[am_i], tri[am_i - 1]
-        atuais = {c for c, s in pres.items() if am in s}; antes = {c for c, s in pres.items() if ant in s}
-        cods = (atuais - antes) if tipo == "entrada" else (antes - atuais)
-        out = []
-        for c in cods:
-            nm, t, u, sr = cad.get(c) or (c, None, None, None)
-            out.append({"cod": c, "nome": nm, "tcb": t, "tcb_nome": TCB.get(t), "uf": u, "sr": sr, "anomes": am,
-                        "ativo": ativo.get((c, am if tipo == "entrada" else ant)), "provisorio": am == ult and tipo == "saida"})
-        return sorted(out, key=lambda x: -(x["ativo"] or 0))
-    janela = list(range(max(1, len(tri) - 8), len(tri)))
-    entradas = [x for i in reversed(janela) for x in lista("entrada", i)]
-    saidas = [x for i in reversed(janela) for x in lista("saida", i)]
-    # conversões: mudança de tcb entre o cadastro atual e a primeira presença? o cadastro guarda só o tipo atual;
-    # conversão observável = instituição que aparece com tipo novo enquanto o código antigo sai (mesmo nome)
-    # aqui: instituições cujo tipo atual difere do tipo dominante do nome em saídas — mantido simples: por nome igual
-    nomes_saida = {(x["nome"] or "").strip().upper(): x for x in saidas if x["nome"]}
+            ant = por_tri[tri[i - 1]]
+            novos, sumidos = U - ant, ant - U
+            e_set = {c for c in novos if first[c] == am}          # primeira presença de sempre
+            s_set = {c for c in sumidos if last[c] == tri[i - 1]}  # última presença de sempre
+            eventos[am] = {"entradas": e_set, "saidas": s_set, "retornos": novos - e_set, "ausencias": sumidos - s_set, "sem_resumo": U - D}
+            ent, sai, ret, aus = len(e_set), len(s_set), len(novos - e_set), len(sumidos - s_set)
+        else:
+            eventos[am] = {"entradas": set(), "saidas": set(), "retornos": set(), "ausencias": set(), "sem_resumo": U - D}
+        serie.append({"anomes": am, "n": len(D), "universo": len(U), "sem_resumo": len(U - D) if regua_universo else None,
+                      "entradas": ent, "saidas": sai, "retornos": ret, "ausencias": aus, "por_tcb": por_tcb, "provisorio": am == ult})
+
+    # ---- listas nominais dos últimos oito trimestres
+    janela = tri[max(1, len(tri) - JANELA_NOMINAL):]
+
+    def ultimo_entregue(c, ate):
+        ams = sorted(a for a in entregou.get(c, ()) if a <= ate)
+        return ams[-1] if ams else None
+
+    entradas, saidas, sem_resumo, retornos, ausencias = [], [], [], [], []
+    for am in reversed(janela):
+        ev = eventos[am]
+        i = tri.index(am)
+        ant = tri[i - 1]
+        for c in ev["entradas"]:
+            x = dados(c)
+            inf = info.get(c) or {}
+            inicios = [v for v in (inf.get("inicio_atividade"), inf.get("inicio_lider")) if v]
+            ini = min(inicios) if inicios else None
+            x.update({"anomes": am, "ativo": ativo.get((c, am)), "provisorio": False, "inicio_atividade": ini, "cnpj8": cnpj8(c), "entregou": am in entregou.get(c, ())})
+            if ini is None:
+                x["classe"], x["leitura"] = "sem_data", "início de atividade não informado no cadastro"
+            elif _meses_entre(ini, am) <= MESES_NOVA:
+                x["classe"], x["leitura"] = "nova", f"instituição nova: início de atividade em {_fmt_am(ini)}"
+            else:
+                x["classe"], x["leitura"] = "antiga", f"já existia (atividade desde {_fmt_am(ini)}): passou a reportar ou ganhou novo código"
+            entradas.append(x)
+        for c in ev["saidas"]:
+            x = dados(c)
+            ue = ultimo_entregue(c, ant)
+            k8 = cnpj8(c)
+            x.update({"anomes": am, "ativo": ativo.get((c, ue)) if ue else None, "ultimo_entregue": ue, "provisorio": am == ult, "cnpj8": k8,
+                      "situacao": (info.get(c) or {}).get("situacao")})
+            if not sedes or not k8:
+                x["classe"], x["leitura"], x["no_cadastro_hoje"] = "sem_cruzamento", "sem cruzamento com o cadastro do Unicad", None
+            elif k8 in sedes:
+                x["classe"], x["leitura"], x["no_cadastro_hoje"] = "autorizada_hoje", "ainda autorizada hoje (Unicad): deixou de reportar, mudou de código ou foi consolidada", True
+            else:
+                x["classe"], x["leitura"], x["no_cadastro_hoje"] = "fora_cadastro", "fora do cadastro do Unicad hoje: saiu do sistema", False
+            saidas.append(x)
+        for c in ev["retornos"]:
+            x = dados(c)
+            antes = max(a for a in pres[c] if a < am)
+            x.update({"anomes": am, "ausente_desde": tri[tri.index(antes) + 1], "ativo": ativo.get((c, am))})
+            retornos.append(x)
+        for c in ev["ausencias"]:
+            x = dados(c); volta = min(a for a in pres[c] if a > am)
+            x.update({"anomes": am, "voltou_em": volta, "ativo": ativo.get((c, ultimo_entregue(c, ant))) if ultimo_entregue(c, ant) else None})
+            ausencias.append(x)
+    if regua_universo:
+        # uma linha por sequência contínua de trimestres sem balanço (BRB em 4T 2025 e 1T 2026 é
+        # uma linha "desde 4T 2025", não duas), só para sequências que tocam a janela nominal
+        janela_set = set(janela)
+        for c, s in pres.items():
+            falta = sorted(a for a in s if a not in entregou.get(c, ()))
+            if not falta:
+                continue
+            seqs, atual = [], [falta[0]]
+            for a in falta[1:]:
+                if tri.index(a) == tri.index(atual[-1]) + 1:
+                    atual.append(a)
+                else:
+                    seqs.append(atual); atual = [a]
+            seqs.append(atual)
+            for seq in seqs:
+                if not any(a in janela_set for a in seq):
+                    continue
+                x = dados(c)
+                ue = ultimo_entregue(c, seq[0])
+                depois = sorted(a for a in entregou.get(c, ()) if a > seq[-1])
+                x.update({"anomes": seq[-1], "desde": seq[0], "trimestres": len(seq), "ultimo_entregue": ue, "ativo": ativo.get((c, ue)) if ue else None,
+                          "voltou_em": depois[0] if depois else None, "nunca_entregou": ue is None, "situacao": (info.get(c) or {}).get("situacao"),
+                          "saiu_da_lista": seq[-1] != ult and not depois and max(s) == seq[-1]})
+                sem_resumo.append(x)
+    ordem = lambda xs: sorted(xs, key=lambda x: (-int(x["anomes"]), -(x.get("ativo") or 0)))
+    entradas, saidas, sem_resumo = ordem(entradas), ordem(saidas), ordem(sem_resumo)
+
+    # ---- trocas de código: mesmo CNPJ líder (ou mesmo nome) sai com um código e entra com outro
+    chave = lambda x: x.get("cnpj8") or (x["nome"] or "").strip().upper()
+    por_chave_saida = {}
+    for x in saidas:
+        por_chave_saida.setdefault(chave(x), []).append(x)
     conversoes = []
     for x in entradas:
-        k = (x["nome"] or "").strip().upper()
-        if k in nomes_saida and nomes_saida[k]["tcb"] != x["tcb"]:
-            conversoes.append({"nome": x["nome"], "de": nomes_saida[k]["tcb"], "para": x["tcb"], "anomes": x["anomes"]})
-    # saldo líquido por tipo nos últimos 4 trimestres fechados (exclui o provisório)
+        k = chave(x)
+        cands = [y for y in por_chave_saida.get(k, []) if y["cod"] != x["cod"]] if k else []
+        if not cands:
+            nomes = [y for y in saidas if y["cod"] != x["cod"] and (y["nome"] or "").strip().upper() == (x["nome"] or "").strip().upper() and x["nome"]]
+            cands = nomes
+        if cands:
+            y = cands[0]
+            x["classe"], x["leitura"] = "troca_codigo", f"mesma instituição: antes reportava como {y['nome']} ({y['cod']})"
+            y["classe"], y["leitura"] = "troca_codigo", f"mesma instituição: passou a reportar como {x['nome']} ({x['cod']})"
+            conversoes.append({"nome": x["nome"], "de": y["tcb"], "para": x["tcb"], "de_cod": y["cod"], "para_cod": x["cod"], "anomes": x["anomes"],
+                               "tipo": "conversão de tipo" if y["tcb"] != x["tcb"] else "novo código, mesmo tipo"})
+
+    # ---- KPIs dos últimos 4 trimestres fechados (exclui o provisório)
     fechados = [s for s in serie if not s["provisorio"]][-4:]
     ult_fechado = fechados[-1] if fechados else None
     por_tcb_ult = [{"tcb": t, "nome": TCB.get(t, t), "n": k, "share": _share(k, ult_fechado["n"])} for t, k in sorted((ult_fechado or {"por_tcb": {}})["por_tcb"].items(), key=lambda x: -x[1])]
     var_4t = {t: (ult_fechado["por_tcb"].get(t, 0) - (fechados[0]["por_tcb"].get(t, 0) if len(fechados) > 1 else 0)) for t in (ult_fechado or {"por_tcb": {}})["por_tcb"]} if ult_fechado else {}
+    am_fechados = {s["anomes"] for s in fechados}
+    classes = lambda xs, cls: sum(1 for x in xs if x["anomes"] in am_fechados and x["classe"] == cls)
+    regua_txt = ("lista do Resumo (presença na relação do trimestre, com ou sem balanço entregue)" if regua_universo
+                 else "resumo entregue (presença com Ativo Total no trimestre)")
     return {
         "disponivel": True, "trimestres": len(tri), "primeiro": primeiro, "ultimo": ult, "ultimo_fechado": ult_fechado["anomes"] if ult_fechado else None,
-        "kpis": {"reportantes": ult_fechado["n"] if ult_fechado else None, "entradas_4t": sum(s["entradas"] or 0 for s in fechados), "saidas_4t": sum(s["saidas"] or 0 for s in fechados),
+        "regua": "lista" if regua_universo else "entregue", "regua_texto": regua_txt, "janela_nominal": JANELA_NOMINAL, "meses_nova": MESES_NOVA,
+        "kpis": {"reportantes": ult_fechado["n"] if ult_fechado else None, "universo": ult_fechado["universo"] if ult_fechado else None,
+                 "sem_resumo": ult_fechado["sem_resumo"] if ult_fechado else None,
+                 "entradas_4t": sum(s["entradas"] or 0 for s in fechados), "saidas_4t": sum(s["saidas"] or 0 for s in fechados),
+                 "entradas_4t_novas": classes(entradas, "nova"), "entradas_4t_antigas": classes(entradas, "antiga"), "entradas_4t_troca": classes(entradas, "troca_codigo"),
+                 "saidas_4t_fora_cadastro": classes(saidas, "fora_cadastro"), "saidas_4t_autorizadas": classes(saidas, "autorizada_hoje"), "saidas_4t_troca": classes(saidas, "troca_codigo"),
+                 "ausencias_4t": sum(s["ausencias"] or 0 for s in fechados), "retornos_4t": sum(s["retornos"] or 0 for s in fechados),
                  "provisorio_entradas": serie[-1]["entradas"], "provisorio_saidas": serie[-1]["saidas"]},
-        "serie": serie, "por_tcb": por_tcb_ult, "var_4t_por_tcb": var_4t, "entradas": entradas[:80], "saidas": saidas[:80], "conversoes": conversoes[:40], "tcb": TCB,
-        "nota": ("Quem entrega o resumo do IF.data em cada trimestre, por tipo de consolidado. Entrada = primeiro trimestre reportado no acervo; saída = deixou de reportar. "
-                 "O trimestre mais recente ainda recebe retardatários: as saídas nele são provisórias. Cobre o universo que reporta ao IF.data, não o cadastro inteiro."),
+        "serie": serie, "por_tcb": por_tcb_ult, "var_4t_por_tcb": var_4t,
+        "entradas": entradas[:120], "saidas": saidas[:120], "ausencias": ordem(ausencias)[:80], "retornos": ordem(retornos)[:80], "sem_resumo": sem_resumo[:200] if regua_universo else None,
+        "conversoes": conversoes[:40], "tcb": TCB,
+        "nota": (f"Régua: {regua_txt}. Entrada = primeiro trimestre em que o código aparece em toda a série (desde {_fmt_am(primeiro)}); "
+                 "saída = trimestre seguinte ao último em que aparece, sem retorno depois. Quem falta um trimestre e volta é ausência temporária, não entrada nem saída. "
+                 "O trimestre mais recente ainda recebe retardatários: as saídas nele são provisórias."),
     }
 
 
@@ -200,9 +358,12 @@ def _menos_meses(n):
 
 # ---------------------------------------------------------------- build
 def build(con, cfg=None):
-    cad = _cadastro(con)
-    ifd = _ifdata(con)
-    reg = _regimes(con)
+    return _montar(_cadastro(con), _ifdata(con), _regimes(con))
+
+
+def _montar(cad, ifd, reg):
+    """Monta o gold a partir das três seções já calculadas (separado de `build` para que
+    uma seção possa ser reconstruída sozinha, preservando as outras)."""
     if not cad.get("disponivel") and not ifd.get("disponivel"):
         return {"disponivel": False, "motivo": "silver sem cadastro do Unicad nem trimestres do IF.data — coleta ainda não rodou"}
     frases = []
@@ -213,26 +374,38 @@ def build(con, cfg=None):
                       f"e {g.get('Fintechs de crédito', {}).get('n', 0)} fintechs de crédito (SCD e SEP).")
     if ifd.get("disponivel") and ifd["kpis"]["reportantes"]:
         k = ifd["kpis"]
-        frases.append(f"No IF.data, {k['reportantes']} instituições e conglomerados reportaram em {ifd['ultimo_fechado']}; nos quatro trimestres fechados houve "
-                      f"{k['entradas_4t']} entradas e {k['saidas_4t']} saídas.")
+        uf = ifd["ultimo_fechado"]
+        tri_txt = f"{ {'03': '1T', '06': '2T', '09': '3T', '12': '4T'}.get(uf[4:6], uf[4:6])} {uf[:4]}"
+        frases.append(f"No IF.data, {k['reportantes']} instituições e conglomerados entregaram o resumo de {tri_txt}"
+                      + (f" ({k['sem_resumo']} constavam da lista sem balanço entregue)" if k.get("sem_resumo") else "")
+                      + f"; nos quatro trimestres fechados, {k['entradas_4t']} códigos apareceram pela primeira vez na lista"
+                      + (f" ({k['entradas_4t_novas']} instituições novas, {k['entradas_4t_antigas']} já existentes que passaram a reportar ou mudaram de código)" if ifd.get("regua") == "lista" else "")
+                      + f" e {k['saidas_4t']} deixaram a lista"
+                      + (f" ({k['saidas_4t_fora_cadastro']} fora do cadastro do BCB hoje, {k['saidas_4t_autorizadas']} ainda autorizadas)" if ifd.get("regua") == "lista" else "") + ".")
     if reg.get("disponivel"):
         frases.append(f"{reg['vigentes']} instituições estão sob regime de resolução, {reg['decretados_12m']} decretados nos últimos 12 meses.")
+    regua_lista = ifd.get("regua") == "lista"
     return {
         "disponivel": True, "gerado_em": common.now_utc(), "fontes": FONTES, "sintese": " ".join(frases),
         "cadastro": cad, "ifdata": ifd, "regimes": reg,
         "catalogo": [
             {"id": "sedes", "nome": "Sedes em funcionamento", "definicao": "instituições autorizadas pelo BCB com sede em funcionamento na data da coleta, por grupo e segmento", "unidade": "instituições", "fonte": "BCB/Unicad", "limitacoes": "posição do dia; sem data de início; conglomerados não consolidados"},
             {"id": "entradas_saidas_cadastro", "nome": "Entradas e saídas no cadastro", "definicao": "CNPJ que aparece (ou some) entre duas coletas do cadastro", "unidade": "instituições", "fonte": "calculado", "limitacoes": "série nasce na primeira coleta do Observatório; uma relação fora do ar não vira saída (a coleta é descartada)"},
-            {"id": "reportantes", "nome": "Reportantes do IF.data", "definicao": "instituições e conglomerados com resumo publicado no trimestre, por tipo de consolidado", "unidade": "instituições", "fonte": "BCB/IF.data", "limitacoes": "universo do IF.data (tipo de instituição 2); último trimestre recebe retardatários"},
-            {"id": "entradas_saidas_ifdata", "nome": "Entradas e saídas no IF.data", "definicao": "primeiro trimestre reportado (entrada) e trimestre seguinte ao último reportado (saída)", "unidade": "instituições", "fonte": "calculado", "limitacoes": "saída pode ser fusão, incorporação, mudança de código ou cancelamento; o painel não distingue sem o ato do BCB"},
+            {"id": "reportantes", "nome": "Reportantes do IF.data", "definicao": "instituições e conglomerados com Ativo Total publicado no resumo do trimestre, por tipo de consolidado", "unidade": "instituições", "fonte": "BCB/IF.data", "limitacoes": "universo do IF.data (tipo de instituição 2); último trimestre recebe retardatários"},
+            {"id": "universo", "nome": "Na lista do IF.data", "definicao": "códigos presentes na relação do resumo do trimestre, com ou sem balanço entregue (saldo nulo = listada sem resumo)", "unidade": "instituições", "fonte": "BCB/IF.data", "limitacoes": "régua disponível só com a tabela de universo coletada para todos os trimestres; até lá o painel usa o resumo entregue"},
+            {"id": "entradas_saidas_ifdata", "nome": "Entradas e saídas no IF.data", "definicao": "entrada = primeiro trimestre em que o código aparece em toda a série; saída = trimestre seguinte ao último em que aparece, sem retorno; falta de um trimestre com retorno é ausência temporária", "unidade": "instituições", "fonte": "calculado", "limitacoes": "entrada pode ser instituição antiga com código novo (a data de início de atividade do cadastro separa os casos); saída pode ser fusão, incorporação, troca de código ou cancelamento; o cruzamento com o Unicad diz se o CNPJ segue autorizado hoje"},
         ],
         "cautelas": [
             "Cadastro (posição do dia), reportantes do IF.data (trimestral) e regimes (lista vigente) são três réguas; não se somam.",
-            "Saída do IF.data não é falência: fusões, incorporações e trocas de código de conglomerado também tiram uma instituição da lista. A leitura nominal está na tabela para cada caso.",
+            "Entrada no IF.data não é instituição nova: um banco antigo que passa a reportar sob novo código de conglomerado aparece como entrada. A data de início de atividade do cadastro, publicada na tabela, separa 'instituição nova' de 'já existia'.",
+            "Saída do IF.data não é falência: fusões, incorporações e trocas de código de conglomerado também tiram uma instituição da lista. O cruzamento com o Unicad diz se o CNPJ segue autorizado hoje; a lista de regimes diz se houve intervenção.",
+            "Uma instituição que consta da lista mas não entregou o balanço (saldo nulo na fonte: atraso, RAET, retardatário) não é saída. Ela fica na coluna 'sem resumo' do trimestre e some dela quando entrega." if regua_lista else
+            "Uma instituição que falta um trimestre e volta no seguinte não é saída nem entrada: é ausência temporária e fica em lista própria.",
             "O trimestre mais recente do IF.data recebe retardatários por semanas; as saídas nele são provisórias e ficam marcadas.",
             "O cadastro do Unicad não publica data de início: a história das entradas e saídas com nomes começa na primeira coleta do Observatório e cresce daí em diante.",
             "Instituição de pagamento e fintech de crédito são segmentos regulatórios: uma mesma empresa pode ter mais de uma licença, cada uma com um CNPJ.",
         ],
-        "metodo": ("Cadastro pelas quatro relações da API Olinda, espelhado a cada coleta com histórico próprio por CNPJ; IF.data pela presença de cada código no relatório resumo trimestral "
-                   "já coletado pelo pipeline; regimes pelo gold já publicado. Agregação em Python (stdlib), sem estimativa."),
+        "metodo": ("Cadastro pelas quatro relações da API Olinda, espelhado a cada coleta com histórico próprio por CNPJ; IF.data pela presença de cada código na relação do resumo trimestral "
+                   "(com o cadastro do trimestre: data de início de atividade, CNPJ líder e situação) e pelo Ativo Total entregue; entradas e saídas pela primeira e pela última presença "
+                   "em toda a série, nunca por comparação de dois trimestres vizinhos apenas; regimes pelo gold já publicado. Agregação em Python (stdlib), sem estimativa."),
     }

@@ -57,6 +57,15 @@ def load_config():
     if isinstance(cand, str) and cand.startswith("auto"):
         n = int(cand.split(":")[1]) if ":" in cand else 5
         ifd["anomes_candidates"] = anomes_candidatos(n)
+    # A janela automática anda a cada trimestre e a lista fixa de histórico termina em
+    # 2024-12: sem esta ponte, os trimestres entre os dois (2025-03 em 09/2026, depois
+    # 2025-06...) nunca seriam recoletados se o cache do silver expirasse. Regenerando
+    # o sfn.json fora do CI em 09/09/2026, a série veio com 44 trimestres em vez de 45.
+    hist = ifd.get("anomes_history")
+    if isinstance(hist, list) and hist and isinstance(ifd.get("anomes_candidates"), list) and ifd["anomes_candidates"]:
+        topo, piso = max(hist), min(ifd["anomes_candidates"])
+        ponte = [a for a in anomes_candidatos(60) if topo < a < piso and a not in hist]
+        ifd["anomes_history"] = ponte + hist
     return cfg
 
 

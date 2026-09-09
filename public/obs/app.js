@@ -8698,18 +8698,19 @@ function renderSfn() {
   const grp = nome => (C.grupos || []).find(g => g.grupo === nome) || { n: null };
   const head = pageHead({
     title: "Quem entra e quem sai do SFN", vintage: I.ultimo ? `${I.ultimo.slice(0, 4)}-${I.ultimo.slice(4, 6)}` : null,
-    seals: `${badge("observado", "cadastro do BCB, presença no IF.data e lista de regimes")} ${badge("calculado", "entradas, saídas e conversões derivadas da presença trimestre a trimestre")}`,
-    desc: "Quem está autorizado a funcionar hoje, quem entrou e quem saiu trimestre a trimestre, as conversões de tipo e os regimes de resolução decretados pelo Banco Central.",
+    seals: `${badge("observado", "cadastro do BCB, presença no IF.data e lista de regimes")} ${badge("calculado", "entradas, saídas e trocas de código derivadas da primeira e da última presença na série trimestral")}`,
+    desc: "Quem está autorizado a funcionar hoje, quem apareceu pela primeira vez e quem deixou a lista do IF.data trimestre a trimestre (separando instituição nova de código novo, e saída de atraso na entrega), as trocas de código e os regimes de resolução decretados pelo Banco Central.",
     fontes: "BCB/Unicad (instituições em funcionamento) · BCB/IF.data (cadastro e resumo trimestral) · BCB/Regimes de resolução",
-    actions: `<button class="btn ghost small" onclick="sfnCSV()">baixar CSV (entradas e saídas do IF.data)</button>`,
+    actions: `<button class="btn ghost small" onclick="sfnCSV()">baixar CSV (entradas, saídas e lista sem balanço do IF.data)</button>`,
   });
   const sintese = `<p class="pan-sintese">${S.sintese}</p><div class="src">Síntese determinística · cadastro ${C.data || "–"} · IF.data até ${tri(I.ultimo)} (último fechado ${tri(I.ultimo_fechado)}) · regimes ${(R.gerado_em || "").slice(0, 10)}</div>`;
   const kI = I.kpis || {};
+  const regLista = I.regua === "lista";
   const placarHtml = placar([
     { l: "Sedes autorizadas hoje", v: n0(C.total), sub: C.total ? `${n0(grp("Bancos").n)} bancos · ${n0(grp("Cooperativas de crédito").n)} cooperativas` : "cadastro ainda não coletado", href: "#sfn-cadastro" },
     { l: "Instituições de pagamento e fintechs", v: C.total ? `${n0(grp("Instituições de pagamento").n)} · ${n0(grp("Fintechs de crédito").n)}` : "–", sub: "IPs · SCD e SEP", href: "#sfn-cadastro" },
-    { l: "Reportantes do IF.data", v: n0(kI.reportantes), sub: I.ultimo_fechado ? `em ${tri(I.ultimo_fechado)}` : "", href: "#sfn-ifdata" },
-    { l: "Entradas e saídas (4 trimestres)", v: kI.entradas_4t != null ? `+${n0(kI.entradas_4t)} · −${n0(kI.saidas_4t)}` : "–", sub: "primeiro e último trimestre reportados", href: "#sfn-lista" },
+    { l: "Reportantes do IF.data", v: n0(kI.reportantes), sub: I.ultimo_fechado ? `entregaram o resumo de ${tri(I.ultimo_fechado)}${kI.sem_resumo != null ? ` · ${n0(kI.sem_resumo)} na lista sem balanço` : ""}` : "", href: "#sfn-ifdata" },
+    { l: "Entradas e saídas na lista (4 trimestres)", v: kI.entradas_4t != null ? `+${n0(kI.entradas_4t)} · −${n0(kI.saidas_4t)}` : "–", sub: regLista ? `${n0(kI.entradas_4t_novas)} instituições novas · ${n0(kI.saidas_4t_fora_cadastro)} fora do cadastro hoje` : "primeira e última presença na série", href: "#sfn-lista" },
     { l: "Sob regime de resolução", v: n0(R.vigentes), sub: R.disponivel ? `${n0(R.decretados_12m)} decretados em 12 meses` : "", href: "#sfn-regimes" },
   ]);
 
@@ -8764,20 +8765,50 @@ function renderSfn() {
         ${chartFooter({ fonte: "BCB — IF.data, presença no relatório resumo (tipo de instituição 2)", periodo: `${tri(I.primeiro)}–${tri(I.ultimo)}`, atualizado: (S.gerado_em || "").slice(0, 10), unidade: "instituições e conglomerados", nota: "último trimestre ainda recebe retardatários" })}
         <p class="src">${tcbs.map(t => `<b>${t}</b> ${I.tcb[t]}`).join(" · ")}.</p></div>
       <div class="card"><h4>Entradas e saídas por trimestre ${badge("calculado")}</h4>
-        <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>Trimestre</th><th style="text-align:right">Reportantes</th><th style="text-align:right">Entradas</th><th style="text-align:right">Saídas</th><th style="text-align:right">Líquido</th></tr></thead>
-        <tbody>${ser.slice().reverse().slice(0, 24).map(p => `<tr><td>${tri(p.anomes)}${p.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td style="text-align:right">${n0(p.n)}</td><td style="text-align:right" class="up good">${p.entradas != null ? "+" + n0(p.entradas) : "–"}</td><td style="text-align:right" class="down">${p.saidas != null ? "−" + n0(p.saidas) : "–"}</td><td style="text-align:right">${p.entradas != null ? fmt.pp(p.entradas - p.saidas) : "–"}</td></tr>`).join("")}</tbody></table></div>
+        <div class="tblwrap" style="max-height:420px"><table class="data compact"><thead><tr><th>Trimestre</th><th style="text-align:right">Entregaram</th>${regLista ? '<th style="text-align:right">Na lista sem balanço</th>' : ""}<th style="text-align:right">Entradas</th><th style="text-align:right">Saídas</th><th style="text-align:right">Líquido</th><th style="text-align:right">Faltou e voltou</th></tr></thead>
+        <tbody>${ser.slice().reverse().slice(0, 24).map(p => `<tr><td>${tri(p.anomes)}${p.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td style="text-align:right">${n0(p.n)}</td>${regLista ? `<td style="text-align:right">${p.sem_resumo != null ? n0(p.sem_resumo) : "–"}</td>` : ""}<td style="text-align:right" class="up good">${p.entradas != null ? "+" + n0(p.entradas) : "–"}</td><td style="text-align:right" class="down">${p.saidas != null ? "−" + n0(p.saidas) : "–"}</td><td style="text-align:right">${p.entradas != null ? fmt.pp(p.entradas - p.saidas) : "–"}</td><td style="text-align:right" class="src">${p.ausencias != null ? `${n0(p.ausencias)} · ${n0(p.retornos)}` : "–"}</td></tr>`).join("")}</tbody></table></div>
+        <p class="src">Entrada = primeiro trimestre do código em toda a série; saída = deixou a lista e não voltou. "Faltou e voltou" = ausências temporárias iniciadas no trimestre · retornos no trimestre; nenhuma das duas conta como entrada ou saída.${regLista ? " \"Na lista sem balanço\" = constava da relação do trimestre com saldo nulo na fonte (atraso, RAET, retardatário)." : ""}</p>
         <div style="margin-top:8px">${(I.por_tcb || []).map(x => `<div class="contrib"><span class="lbl" style="width:60px"><b>${x.tcb}</b></span><span class="bar pos" style="width:${Math.min(150, (x.share || 0) * 1.5)}px;background:${cores[x.tcb] || "#999"}"></span><span class="num">${n0(x.n)} <span class="src">${pct(x.share)} · ${(I.var_4t_por_tcb || {})[x.tcb] != null ? fmt.pp(I.var_4t_por_tcb[x.tcb]) + " em 4 trimestres" : ""}</span></span></div>`).join("")}</div>
         <p class="src">${I.nota}</p></div>
     </div>`);
-    const L = F.lista === "saidas" ? I.saidas : F.lista === "conversoes" ? I.conversoes : I.entradas;
-    lista = secWrap("sfn-lista", `${sechead("Nome a nome", `últimos oito trimestres · ${n0(I.entradas.length)} entradas · ${n0(I.saidas.length)} saídas · ${n0(I.conversoes.length)} conversões`)}
-    <div class="controls"><span class="seg">${[["entradas", "entradas"], ["saidas", "saídas"], ["conversoes", "conversões de tipo"]].map(([v, l]) => `<button class="${F.lista === v ? "active" : ""}" onclick="sfnSet('lista','${v}')">${l}</button>`).join("")}</span></div>
-    <div class="card">${F.lista === "conversoes" ? `<div class="tblwrap" style="max-height:480px"><table class="data compact"><thead><tr><th>Trimestre</th><th>Instituição</th><th>De</th><th>Para</th></tr></thead>
-      <tbody>${L.length ? L.map(x => `<tr><td>${tri(x.anomes)}</td><td><b>${x.nome}</b></td><td>${x.de} <span class="src">${I.tcb[x.de] || ""}</span></td><td>${x.para} <span class="src">${I.tcb[x.para] || ""}</span></td></tr>`).join("") : `<tr><td colspan="4" class="src">nenhuma conversão observável pelo nome nos últimos oito trimestres.</td></tr>`}</tbody></table></div>
-      <p class="src">Conversão observável = mesmo nome sai com um tipo e entra com outro (uma SCD que vira banco, por exemplo). Trocas de razão social escapam a este critério.</p>`
-      : `<div class="tblwrap" style="max-height:520px"><table class="data compact"><thead><tr><th>Trimestre</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Segmento</th><th style="text-align:right">Ativo total</th></tr></thead>
-      <tbody>${L.map(x => `<tr><td>${tri(x.anomes)}${x.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td><b>${x.cod && x.cod.startsWith("C") || /^\d{8}$/.test(x.cod || "") ? `<a href="/observatorio/institutions/${x.cod}" onclick="nav('inst',{instCod:'${x.cod}'});return false">${x.nome || x.cod}</a>` : (x.nome || x.cod)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${x.sr || "–"}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`).join("")}</tbody></table></div>
-      <p class="src">${F.lista === "saidas" ? "Saída não é quebra: fusão, incorporação, troca de código de conglomerado e cancelamento voluntário também tiram um nome da lista. O ativo é o do último trimestre reportado." : "Entrada = primeiro trimestre com resumo no acervo; instituições antigas que só passaram a reportar contam como entrada. O ativo é o do trimestre de entrada."}</p>`}</div>`);
+    const semResumo = Array.isArray(I.sem_resumo) ? I.sem_resumo : null;
+    const ausencias = Array.isArray(I.ausencias) ? I.ausencias : [];
+    const listas = [["entradas", `entradas (${n0(I.entradas.length)})`], ["saidas", `saídas (${n0(I.saidas.length)})`]];
+    if (semResumo) listas.push(["sem_resumo", `na lista sem balanço (${n0(semResumo.length)})`]);
+    if (ausencias.length) listas.push(["ausencias", `faltou e voltou (${n0(ausencias.length)})`]);
+    listas.push(["conversoes", `trocas de código (${n0(I.conversoes.length)})`]);
+    if (!listas.some(([v]) => v === F.lista)) F.lista = "entradas";
+    const L = F.lista === "saidas" ? I.saidas : F.lista === "conversoes" ? I.conversoes : F.lista === "sem_resumo" ? (semResumo || []) : F.lista === "ausencias" ? ausencias : I.entradas;
+    const linkInst = x => x.cod && (x.cod.startsWith("C") || /^\d{8}$/.test(x.cod)) ? `<a href="/observatorio/institutions/${x.cod}" onclick="nav('inst',{instCod:'${x.cod}'});return false">${x.nome || x.cod}</a>` : (x.nome || x.cod);
+    const am = v => v ? `${v.slice(4, 6)}/${v.slice(0, 4)}` : "–";
+    const classeSel = { nova: "good", antiga: "", troca_codigo: "", sem_data: "", fora_cadastro: "down", autorizada_hoje: "", sem_cruzamento: "" };
+    const leitura = x => x.leitura ? `<span class="${classeSel[x.classe] || ""}">${x.leitura}</span>` : "–";
+    const comoLer = `<div class="card" style="margin-bottom:12px"><h4>Como ler esta lista</h4>
+      <p><b>Entrada</b> é o primeiro trimestre, em toda a série desde ${tri(I.primeiro)}, em que um código aparece ${regLista ? "na relação do resumo" : "com resumo entregue"}. Isso inclui instituições novas e também instituições antigas que ganharam um código novo de conglomerado ou só agora passaram a reportar. A coluna "Início de atividade" (cadastro do BCB) separa os dois casos: até ${I.meses_nova || 12} meses antes do trimestre de entrada, é instituição nova; antes disso, já existia.</p>
+      <p><b>Saída</b> é o trimestre seguinte ao último em que o código aparece, sem retorno depois. Saída não é quebra: fusão, incorporação, troca de código de conglomerado e cancelamento voluntário também tiram um nome da lista. A coluna "Hoje no Unicad" diz se o CNPJ segue autorizado a funcionar na data da coleta; os regimes de resolução estão na seção seguinte.</p>
+      <p><b>Não conta como entrada nem como saída:</b> ${regLista ? "instituição que consta da lista mas não entregou o balanço do trimestre (saldo nulo na fonte: atraso, RAET, retardatário), listada em \"na lista sem balanço\"; " : ""}instituição que falta um trimestre e volta no seguinte ("faltou e voltou"); e a mesma instituição que sai com um código e entra com outro ("trocas de código", pareadas pelo CNPJ líder ou pelo nome).</p></div>`;
+    const cab = F.lista === "conversoes" ? "<tr><th>Trimestre</th><th>Instituição</th><th>De</th><th>Para</th><th>Tipo</th></tr>"
+      : F.lista === "saidas" ? "<tr><th>Trimestre</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Último resumo</th><th>Hoje no Unicad</th><th>Leitura</th><th style=\"text-align:right\">Último ativo</th></tr>"
+      : F.lista === "sem_resumo" ? "<tr><th>Sem balanço desde</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Último resumo entregue</th><th>Situação</th><th style=\"text-align:right\">Último ativo</th></tr>"
+      : F.lista === "ausencias" ? "<tr><th>Trimestre ausente</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Voltou em</th><th style=\"text-align:right\">Último ativo</th></tr>"
+      : "<tr><th>Trimestre</th><th>Instituição</th><th>Tipo</th><th>UF</th><th>Início de atividade</th><th>Leitura</th><th style=\"text-align:right\">Ativo na entrada</th></tr>";
+    const linha = x => F.lista === "conversoes" ? `<tr><td>${tri(x.anomes)}</td><td><b>${x.nome}</b></td><td>${x.de} <span class="src">${I.tcb[x.de] || ""}${x.de_cod ? ` · ${x.de_cod}` : ""}</span></td><td>${x.para} <span class="src">${I.tcb[x.para] || ""}${x.para_cod ? ` · ${x.para_cod}` : ""}</span></td><td class="src">${x.tipo || (x.de !== x.para ? "conversão de tipo" : "novo código")}</td></tr>`
+      : F.lista === "saidas" ? `<tr><td>${tri(x.anomes)}${x.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td><b>${linkInst(x)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${x.ultimo_entregue ? tri(x.ultimo_entregue) : "–"}</td><td>${x.no_cadastro_hoje == null ? "–" : x.no_cadastro_hoje ? "sim" : '<span class="down">não</span>'}</td><td class="src">${leitura(x)}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`
+      : F.lista === "sem_resumo" ? `<tr><td>${tri(x.desde || x.anomes)}${x.trimestres > 1 ? ` <span class="src">(${n0(x.trimestres)} trim.)</span>` : ""}</td><td><b>${linkInst(x)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${x.nunca_entregou ? '<span class="src">nunca entregou</span>' : tri(x.ultimo_entregue)}</td><td class="src">${x.voltou_em ? `voltou a entregar em ${tri(x.voltou_em)}` : x.saiu_da_lista ? `deixou a lista em ${tri(x.anomes)} sem entregar` : `ainda sem balanço em ${tri(x.anomes)}`}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`
+      : F.lista === "ausencias" ? `<tr><td>${tri(x.anomes)}</td><td><b>${linkInst(x)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${tri(x.voltou_em)}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`
+      : `<tr><td>${tri(x.anomes)}${x.provisorio ? ' <span class="src">(provisório)</span>' : ""}</td><td><b>${linkInst(x)}</b></td><td>${x.tcb || "–"} <span class="src">${x.tcb_nome || ""}</span></td><td>${x.uf || "–"}</td><td>${am(x.inicio_atividade)}</td><td class="src">${leitura(x)}</td><td style="text-align:right">${brl(x.ativo)}</td></tr>`;
+    const vazio = { conversoes: "nenhuma troca de código observável (mesmo CNPJ líder ou mesmo nome) nos últimos oito trimestres.", sem_resumo: "todas as instituições listadas entregaram o balanço nos últimos oito trimestres.", ausencias: "nenhuma ausência temporária nos últimos oito trimestres.", entradas: "nenhuma entrada nos últimos oito trimestres.", saidas: "nenhuma saída nos últimos oito trimestres." };
+    const rodape = { conversoes: "Troca de código observável = a mesma instituição (mesmo CNPJ líder no cadastro do IF.data ou mesmo nome) sai com um código e entra com outro. Uma SCD que vira banco é conversão de tipo; um conglomerado reorganizado é novo código com o mesmo tipo.",
+      saidas: "Saída não é quebra: fusão, incorporação, troca de código de conglomerado e cancelamento voluntário também tiram um nome da lista. O ativo é o do último resumo entregue. Saída no trimestre mais recente é provisória (retardatários).",
+      sem_resumo: "A fonte publica a linha da instituição com saldo nulo: ela está na relação do trimestre, mas o balanço não foi entregue ou ainda não foi divulgado. Não é entrada nem saída. Uma linha por sequência contínua de trimestres sem balanço; a sequência termina quando a instituição entrega de novo ou deixa a lista.",
+      ausencias: "Instituição que faltou neste trimestre e voltou depois. Não conta como saída nem, no retorno, como entrada.",
+      entradas: "Entrada = primeiro trimestre do código em toda a série. Instituição antiga com código novo ou que só agora passou a reportar também conta; a coluna Leitura separa os casos pela data de início de atividade do cadastro do BCB. O ativo é o do trimestre de entrada." };
+    lista = secWrap("sfn-lista", `${sechead("Nome a nome", `últimos ${I.janela_nominal || 8} trimestres · ${n0(I.entradas.length)} entradas · ${n0(I.saidas.length)} saídas${semResumo ? ` · ${n0(semResumo.length)} na lista sem balanço` : ""} · ${n0(I.conversoes.length)} trocas de código`)}
+    ${comoLer}
+    <div class="controls"><span class="seg">${listas.map(([v, l]) => `<button class="${F.lista === v ? "active" : ""}" onclick="sfnSet('lista','${v}')">${l}</button>`).join("")}</span></div>
+    <div class="card"><div class="tblwrap" style="max-height:520px"><table class="data compact"><thead>${cab}</thead>
+      <tbody>${L.length ? L.map(linha).join("") : `<tr><td colspan="8" class="src">${vazio[F.lista]}</td></tr>`}</tbody></table></div>
+      <p class="src">${rodape[F.lista]}</p></div>`);
   }
 
   /* ---------- regimes ---------- */
@@ -8801,9 +8832,10 @@ function renderSfn() {
 window.sfnCSV = () => {
   const S = state.data.sfn;
   if (!S || !S.ifdata || !S.ifdata.disponivel) return;
-  const cols = ["tipo", "anomes", "cod", "nome", "tcb", "uf", "sr", "ativo", "provisorio"];
-  const linhas = [...S.ifdata.entradas.map(x => ({ tipo: "entrada", ...x })), ...S.ifdata.saidas.map(x => ({ tipo: "saida", ...x }))];
-  const head = `# Observatório Brasileiro de Crédito — entradas e saídas de reportantes do IF.data (últimos oito trimestres)\n# fonte: BCB/IF.data (presença no relatório resumo) · saída no último trimestre é provisória\n# exportado: ${new Date().toISOString()}\n`;
+  const cols = ["tipo", "anomes", "cod", "nome", "tcb", "uf", "sr", "ativo", "provisorio", "classe", "leitura", "inicio_atividade", "no_cadastro_hoje", "ultimo_entregue", "voltou_em"];
+  const linhas = [...S.ifdata.entradas.map(x => ({ tipo: "entrada", ...x })), ...S.ifdata.saidas.map(x => ({ tipo: "saida", ...x })),
+    ...(S.ifdata.sem_resumo || []).map(x => ({ tipo: "na_lista_sem_balanco", ...x })), ...(S.ifdata.ausencias || []).map(x => ({ tipo: "faltou_e_voltou", ...x }))];
+  const head = `# Observatório Brasileiro de Crédito — entradas e saídas na lista do IF.data (últimos oito trimestres)\n# fonte: BCB/IF.data · régua: ${S.ifdata.regua_texto || "presença no relatório resumo"} · entrada = primeira presença na série; saída = última presença, sem retorno · saída no último trimestre é provisória\n# exportado: ${new Date().toISOString()}\n`;
   dlFile(`obc_sfn_entradas_saidas_${S.ifdata.ultimo}.csv`, head + cols.join(";") + "\n" + linhas.map(l => cols.map(c => csvEsc(l[c])).join(";")).join("\n"), "text/csv");
 };
 
