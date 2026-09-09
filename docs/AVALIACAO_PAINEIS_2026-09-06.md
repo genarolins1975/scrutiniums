@@ -918,3 +918,15 @@ dia seguinte. O job passa a 300 minutos de teto. Dois coletores ganharam freio p
 uma tentativa de 60 s por instituição (as falhas são 404, DNS e 520 persistentes; duas tentativas de
 90 s custavam até 90 minutos) e o Sicor para aos 25 minutos por execução. Issue #101 aberta pelo job
 de alerta registra a ocorrência.
+
+### 20.2 Execução de 09/09 e o guarda do BNDES
+
+A execução de 09/09 (run 34356311406) publicou em 1h58 com o orçamento intacto: coleta de 118 minutos,
+gold em 27 segundos, nenhum coletor pulado. Os mais lentos: Sicor 31 min, Ipeadata/Caged 18 min (duas
+séries com erro de DNS e retentativas), DataJud 16 min, TST 13 min. Consórcios, cobrança e rural saíram
+íntegros do silver do runner. O BNDES não: o guarda de "tabela vazia" do dia anterior consultava o nome
+lógico das tabelas mensais e anuais (`des_porte`, que vive em `bndes_mensal` com a coluna `tabela`) e,
+no recurso de operações, forçava a absorção com texto nulo, porque `_baixa` só devolvia o CSV quando o
+hash mudava. Corrigido: `_baixa` devolve o texto sempre e o guarda consulta a tabela real de cada tipo;
+o bloco de operações foi reposto no gold publicado a partir do mesmo CSV. Teste local com `bndes_op`
+esvaziada numa cópia do silver: 23.815 operações reabsorvidas.
