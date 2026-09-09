@@ -11,6 +11,7 @@ melhora < -0,20 p.p. em 4 trimestres; estável ±0,20; piora moderada +0,20 a +0
 piora relevante > +0,50.
 """
 from pipeline import common
+from pipeline import ifdata_lacunas as lacunas
 from pipeline.indicators import PEER_GROUP_LABELS
 
 TREND_RULES = {"melhora": -0.20, "estavel_max": 0.20, "piora_moderada_max": 0.50}
@@ -82,7 +83,8 @@ def build(con, cfg):
         if not serie:
             continue
         atual = serie[-1]
-        d_tri = round(atual["inad_pct"] - serie[-2]["inad_pct"], 2) if len(serie) > 1 else None
+        # só entre trimestres vizinhos: se o anterior faltou (lacuna de entrega), nulo declarado
+        d_tri = lacunas.variacao_tri([(x["anomes"], x["inad_pct"]) for x in serie], casas=2)
         d_ano = round(atual["inad_pct"] - serie[0]["inad_pct"], 2) if len(serie) >= 5 else None
         cresc = (round((atual["carteira_brl"] / serie[0]["carteira_brl"] - 1) * 100, 1)
                  if len(serie) >= 5 and serie[0]["carteira_brl"] else None)

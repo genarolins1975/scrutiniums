@@ -15,6 +15,7 @@ import re
 import unicodedata
 
 from pipeline import common
+from pipeline import ifdata_lacunas as lacunas
 from pipeline.indicators import PEER_GROUP_LABELS, carteira_profile
 from pipeline.products import TAXONOMY as PROD_TAXONOMY, venc_key as prod_venc_key
 
@@ -114,6 +115,16 @@ def build_all(con, cfg, inst_gold, of_gold):
         return {"ok": False}
     anomes = periods[0]
     periods_hist_set = set(periods_hist)
+    # lacunas de entrega (auditoria de 09/09/2026): quem consta da lista do IF.data na
+    # data-base sem balanço entregue (BRB em 2026-T1, ABN AMRO em 2025-T4) NÃO some do
+    # site: a ficha é montada na última entrega da instituição, declarada no cabeçalho,
+    # fora das estatísticas de pares (que usam só quem entregou na data-base).
+    sem_bal = lacunas.sem_balanco(con, anomes)
+    ref = {}   # cod -> trimestre de referência da ficha (data-base, ou última entrega se faltou)
+    for x in (sem_bal or []):
+        if x["ultima_entrega"] and x["ultima_entrega"] in periods_hist_set:
+            ref[x["cod_inst"]] = x["ultima_entrega"]
+    sem_bal_por_cod = {x["cod_inst"]: x for x in (sem_bal or [])}
 
     # carrega tudo em memória (1 query)
     hist = {}   # cod -> metric -> [(anomes, v)]
@@ -124,14 +135,18 @@ def build_all(con, cfg, inst_gold, of_gold):
            for r in con.execute("SELECT cod_inst, name, tcb, uf, municipio, sr, cod_congl_prud FROM institutions").fetchall()}
 
     def now(cod, m):
-        s = hist.get(cod, {}).get(m, [])
-        return s[-1][1] if s and s[-1][0] == anomes else None
+        alvo = ref.get(cod, anomes)
+        for a, v in hist.get(cod, {}).get(m, []):
+            if a == alvo:
+                return v
+        return None
 
-    universo = [c for c in hist if now(c, "ativo_total") and now(c, "patrimonio_liquido")]
+    universo = [c for c in hist if c not in ref and now(c, "ativo_total") and now(c, "patrimonio_liquido")]
+    atrasadas = [c for c in ref if now(c, "ativo_total") and now(c, "patrimonio_liquido")]
 
     # razões por instituição + grupos de pares completos
     ratios = {}
-    for c in universo:
+    for c in universo + atrasadas:
         pl, at = now(c, "patrimonio_liquido"), now(c, "ativo_total")
         r = {"ativo": at, "pl": pl, "carteira": now(c, "carteira_credito"),
              "lucro": now(c, "lucro_liquido")}
@@ -188,9 +203,10 @@ def build_all(con, cfg, inst_gold, of_gold):
     F_CAP = "BCB IF.data (Informações de Capital)"
     index = []
     n_pages = 0
-    for cod in universo:
+    for cod in universo + atrasadas:
         c0 = cad.get(cod, {})
         nome = c0.get("name") or cod
+        anomes_inst = ref.get(cod, anomes)
         sr = c0.get("sr", "S?")
         toks = _tokens(nome)
         piloto = pilotos.get(cod, {})
@@ -201,17 +217,17 @@ def build_all(con, cfg, inst_gold, of_gold):
             s = hist.get(cod, {}).get(metric, [])
             if not s:
                 return None
-            vals = [(a, transform(v) if transform else v) for a, v in s if a in periods]
+            vals = [(a, transform(v) if transform else v) for a, v in s if a in periods and a <= anomes_inst]
             if not vals:
                 return None
             atual = vals[-1][1]
             d_tri = None
             # lucro é acumulado no ano-calendário do IF.data: variação trimestral seria
-            # artefato da virada de ano — suprimida (ausência ≠ zero)
-            if len(vals) > 1 and metric != "lucro_liquido":
-                prev = vals[-2][1]
-                d_tri = round((atual / prev - 1) * 100, 1) if unit == "R$" and prev else round(atual - prev, 2)
-            return {"label": label, "v": atual, "unit": unit, "d_tri": d_tri,
+            # artefato da virada de ano — suprimida (ausência ≠ zero). Só entre trimestres
+            # VIZINHOS: se o anterior faltou (lacuna de entrega), a variação é nula.
+            if metric != "lucro_liquido":
+                d_tri = lacunas.variacao_tri(vals, relativa=(unit == "R$"), casas=1 if unit == "R$" else 2)
+            return {"label": label, "v": atual, "unit": unit, "d_tri": d_tri, "periodo": PERIODOS_LBL.get(vals[-1][0], vals[-1][0]),
                     "d_tri_tipo": "%" if unit == "R$" else "p.p.",
                     "hist": [round(v, 4) for _, v in vals], "fonte": F_IF if unit == "R$" else F_CAP}
 
@@ -241,8 +257,9 @@ def build_all(con, cfg, inst_gold, of_gold):
                 continue
             s5 = hist.get(cod, {}).get({"basileia": "indice_basileia"}.get(met, ""), [])
             d_tri = None
-            if met == "basileia" and len(s5) > 1:
-                d_tri = round((s5[-1][1] - s5[-2][1]) * 100, 2)
+            if met == "basileia":
+                s5r = [(a, v * 100) for a, v in s5 if a <= anomes_inst]
+                d_tri = lacunas.variacao_tri(s5r, casas=2)
             cap_table.append({"indicador": label, "valor": round(r[met], 2), "unit": unit,
                               "d_tri": d_tri, "vs_pares": vs(met),
                               "mediana_grupo": round(gs[met]["mediana"], 2) if gs.get(met, {}).get("mediana") is not None else None,
@@ -253,7 +270,7 @@ def build_all(con, cfg, inst_gold, of_gold):
             cart = now(cod, pkey)
             if not cart or cart <= 0:
                 continue
-            venc = at_anomes(cod, prod_venc_key(pkey), anomes)
+            venc = at_anomes(cod, prod_venc_key(pkey), anomes_inst)
             pct = venc / cart * 100 if venc is not None else None
             stats = prod_atraso_stats.get(slug, [])
             serie_at = []
@@ -272,7 +289,7 @@ def build_all(con, cfg, inst_gold, of_gold):
             })
         atraso_itens.sort(key=lambda x: -x["carteira_brl"])
 
-        met_all = {m: s[-1][1] for m, s in hist.get(cod, {}).items() if s and s[-1][0] == anomes}
+        met_all = {m: v for m, s in hist.get(cod, {}).items() for a, v in s if a == anomes_inst}
         perfil = carteira_profile(met_all)
         pf_total = met_all.get("cart_pf_mod:total_da_carteira_de_pessoa_fisica")
         pj_total = met_all.get("cart_pj:total_da_carteira_de_pessoa_juridica")
@@ -338,6 +355,11 @@ def build_all(con, cfg, inst_gold, of_gold):
                              "base": "BCB rdrweb"})
 
         ig = inst_by_cod.get(cod)
+        lac = sem_bal_por_cod.get(cod)
+        aviso_lacuna = ({"data_base": PERIODOS_LBL.get(anomes, anomes), "ultima_entrega": PERIODOS_LBL.get(anomes_inst, anomes_inst),
+                         "texto": (f"Consta da lista do IF.data em {PERIODOS_LBL.get(anomes, anomes)} sem balanço entregue (saldo nulo na fonte: atraso, RAET ou "
+                                   f"retardatário). A ficha usa a última entrega, {PERIODOS_LBL.get(anomes_inst, anomes_inst)}; as comparações com pares usam a data-base deles.")}
+                        if cod in ref else None)
 
         # resumo executivo em 5 blocos (§8.3): frases curtas, cada uma com base
         fortes = [d for d in dest if d["tipo"] == "ok"][:4]
@@ -399,7 +421,8 @@ def build_all(con, cfg, inst_gold, of_gold):
                 "capital": piloto.get("capital", "não classificado"),
                 "modelo": piloto.get("modelo"),
                 "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-                "data_base": PERIODOS_LBL.get(anomes, anomes), "atualizado_em": common.now_utc(),
+                "data_base": PERIODOS_LBL.get(anomes_inst, anomes_inst), "data_base_universo": PERIODOS_LBL.get(anomes, anomes),
+                "sem_balanco_na_data_base": aviso_lacuna, "atualizado_em": common.now_utc(),
                 "aviso_pares": piloto.get("aviso_pares"),
                 "cnpj": _cnpj_cabecalho(cod),
                 "participante_open_finance": bool(of_entry) or None,
@@ -417,9 +440,10 @@ def build_all(con, cfg, inst_gold, of_gold):
                                  for met in ("roe", "basileia", "alav") if r.get(met) is not None},
             "score_ref": ({k: ig.get(k) for k in ("score", "score_delta", "faixa", "dimensoes",
                                                   "historico_score", "vulnerabilidade", "dimensoes_disponiveis")}
-                          if ig else {"indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."}),
+                          if ig else {"indisponivel": (f"Score não calculado: a instituição consta da lista do IF.data em {PERIODOS_LBL.get(anomes, anomes)} sem balanço entregue (última entrega {PERIODOS_LBL.get(anomes_inst, anomes_inst)})."
+                                                       if cod in ref else "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero).")}),
             "atraso_produtos": ({
-                "data_base": PERIODOS_LBL.get(anomes, anomes),
+                "data_base": PERIODOS_LBL.get(anomes_inst, anomes_inst),
                 "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
                 "nota": ("Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência "
                          ">90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo "
@@ -435,12 +459,16 @@ def build_all(con, cfg, inst_gold, of_gold):
         n_pages += 1
         index.append({"cod": cod, "nome": page["cabecalho"]["nome_comercial"],
                       "razao": nome, "sr": sr, "ativo_brl": r["ativo"],
-                      "piloto": cod in pilotos})
+                      "piloto": cod in pilotos, "sem_balanco": cod in ref, "data_base": anomes_inst})
     index.sort(key=lambda x: -(x["ativo_brl"] or 0))
     common.write_gold("inst_index.json", {
         "gerado_em": common.now_utc(), "paginas": n_pages, "anomes": anomes,
         "instituicoes": index,
+        "sem_balanco_na_data_base": ([{"cod": x["cod_inst"], "nome": x["nome"], "ultima_entrega": x["ultima_entrega"], "ativo_ultima_entrega": x["ativo_ultima_entrega"],
+                                        "com_pagina": x["cod_inst"] in ref} for x in sem_bal] if sem_bal is not None else None),
         "nota": "Uma página por conglomerado prudencial com dados no IF.data; pares = grupo prudencial completo; "
-                "matching de reclamações/Open Finance/RJ por tokens distintivos do nome (nome da fonte sempre exibido).",
+                "matching de reclamações/Open Finance/RJ por tokens distintivos do nome (nome da fonte sempre exibido). "
+                "Instituição na lista do IF.data sem balanço na data-base mantém a página na última entrega (declarada no cabeçalho) "
+                "e fica fora das estatísticas de pares; sem entrega nos 44 trimestres da série, não há página.",
     })
     return {"ok": True, "paginas": n_pages}

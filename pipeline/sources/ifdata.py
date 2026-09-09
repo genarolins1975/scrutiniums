@@ -26,6 +26,50 @@ def _odata(base, entity, params, filt=None):
     return common.http_get(url, timeout=120)
 
 
+def _ensure_universo(con):
+    """`ifdata_universo`: quem está na LISTA do Resumo em cada trimestre, tenha ou não
+    entregado o balanço, com os campos do cadastro do trimestre (situação, data de
+    início de atividade, CNPJ líder). É a régua de universo do painel "Quem entra e
+    quem sai": uma instituição listada com saldo nulo (atraso, RAET, retardatário)
+    não é saída; só deixa o universo quem some da lista."""
+    con.execute("""CREATE TABLE IF NOT EXISTS ifdata_universo(
+        cod_inst TEXT, anomes TEXT, entregou INTEGER, nome TEXT, tcb TEXT, uf TEXT, sr TEXT, td TEXT,
+        situacao TEXT, inicio_atividade TEXT, cnpj_lider TEXT, inicio_lider TEXT, PRIMARY KEY(cod_inst, anomes))""")
+
+
+def _inicio(v):
+    """DataInicioAtividade do cadastro (AAAAMM). 180001 é sentinela do BCB para 'sem data'."""
+    if v is None:
+        return None
+    s = str(v).strip()
+    return s if len(s) == 6 and s.isdigit() and s >= "190001" else None
+
+
+def _gravar_universo(con, anomes, values, cadastro):
+    """Uma linha por CodInst presente no Resumo do trimestre; entregou=1 se o Ativo Total
+    veio com saldo (mesma régua de `institution_metrics`), 0 se a linha veio nula."""
+    _ensure_universo(con)
+    cad = {i.get("CodInst"): i for i in cadastro if i.get("CodInst")}
+    entregou = {}
+    for row in values:
+        cod = row.get("CodInst")
+        if not cod:
+            continue
+        entregou.setdefault(cod, 0)
+        col = (row.get("NomeColuna") or "").replace("\n", " ").strip()
+        if col == "Ativo Total" and row.get("Saldo") is not None:
+            entregou[cod] = 1
+    linhas = []
+    for cod, e in entregou.items():
+        i = cad.get(cod) or {}
+        lider = (i.get("CnpjInstituicaoLider") or "").strip() or None
+        ini_lider = _inicio((cad.get(lider) or {}).get("DataInicioAtividade")) if lider else None
+        linhas.append((cod, anomes, e, i.get("NomeInstituicao"), i.get("Tcb"), i.get("Uf"), i.get("Sr"), i.get("Td"),
+                       i.get("Situacao"), _inicio(i.get("DataInicioAtividade")), lider, ini_lider))
+    con.executemany("INSERT OR REPLACE INTO ifdata_universo VALUES(?,?,?,?,?,?,?,?,?,?,?,?)", linhas)
+    return len(linhas)
+
+
 def collect(con, cfg):
     """Coleta todos os períodos configurados (histórico de score e variação trimestral)."""
     c = cfg["ifdata"]
@@ -48,6 +92,7 @@ def collect(con, cfg):
             bronze_c, sha_c = common.save_bronze("ifdata", f"cadastro_{anomes}", body_c, meta_c)
 
             names = {}
+            n_uni = _gravar_universo(con, anomes, values, cadastro)
             for inst in cadastro:
                 names[inst["CodInst"]] = inst
                 con.execute(
@@ -82,10 +127,11 @@ def collect(con, cfg):
                                   "IF.data Olinda Resumo (Saldo em R$); mapeamento de colunas para métricas")
             common.record_lineage(con, f"institutions:{anomes}", bronze_c, sha_c, "IF.data cadastro")
             results.append({"key": f"ifdata:{anomes}", "ok": True, "anomes": anomes, "metricas": n,
-                            "instituicoes": len(names)})
+                            "instituicoes": len(names), "universo": n_uni})
         except Exception as e:
             last_err = e
     results.extend(_backfill_historico(con, cfg))
+    results.extend(_backfill_universo(con, cfg))
     if results:
         return results
     return [{"key": "ifdata", "ok": False, "error": f"nenhum AnoMes disponível ({last_err})"}]
@@ -139,7 +185,9 @@ def _backfill_historico(con, cfg):
                 continue
             _, sha_v = common.save_bronze("ifdata", f"resumo_{anomes}_t{c['tipo_instituicao']}", body, meta)
             body_c, meta_c = _odata(c["base_url"], "IfDataCadastro", {"AnoMes": anomes})
-            for inst in json.loads(body_c).get("value", []):
+            cadastro_hist = json.loads(body_c).get("value", [])
+            _gravar_universo(con, anomes, values, cadastro_hist)
+            for inst in cadastro_hist:
                 con.execute(
                     """INSERT OR IGNORE INTO institutions(cod_inst, name, tcb, uf, municipio, sr, cod_congl_prud, collected_at)
                        VALUES(?,?,?,?,?,?,?,?)""",
@@ -164,4 +212,37 @@ def _backfill_historico(con, cfg):
         except Exception as e:
             results.append({"key": f"ifdata_hist:{anomes}", "ok": False, "error": str(e)[:200]})
             feitos += 1  # falha também consome o cap: rodada nunca fica presa num período quebrado
+    return results
+
+
+def _backfill_universo(con, cfg):
+    """Preenche `ifdata_universo` nos trimestres cujas métricas já estão no silver mas
+    que foram coletados antes de a tabela existir. Recoleta Resumo + cadastro do
+    trimestre (dois pedidos, ~4 MB) e nada mais: as métricas não são tocadas.
+    Capado por execução (`universo_por_execucao`, padrão 48 = a história inteira
+    numa rodada, ~6 min) e idempotente: trimestre já preenchido é pulado."""
+    c = cfg["ifdata"]
+    _ensure_universo(con)
+    cap = int(c.get("universo_por_execucao") or 48)
+    if cap <= 0:
+        return []
+    com_metricas = [r[0] for r in con.execute("SELECT DISTINCT anomes FROM institution_metrics WHERE metric='ativo_total' ORDER BY anomes DESC")]
+    com_universo = {r[0] for r in con.execute("SELECT DISTINCT anomes FROM ifdata_universo")}
+    faltam = [a for a in com_metricas if a not in com_universo][:cap]
+    results = []
+    for anomes in faltam:
+        try:
+            body, meta = _odata(c["base_url"], "IfDataValores",
+                                {"AnoMes": anomes, "TipoInstituicao": c["tipo_instituicao"], "Relatorio": "'T'"},
+                                filt="NomeRelatorio eq 'Resumo'")
+            values = json.loads(body).get("value", [])
+            if not values:
+                results.append({"key": f"ifdata_universo:{anomes}", "ok": True, "pulado": "sem dados na fonte"})
+                continue
+            body_c, meta_c = _odata(c["base_url"], "IfDataCadastro", {"AnoMes": anomes})
+            n = _gravar_universo(con, anomes, values, json.loads(body_c).get("value", []))
+            con.commit()
+            results.append({"key": f"ifdata_universo:{anomes}", "ok": True, "universo": n})
+        except Exception as e:
+            results.append({"key": f"ifdata_universo:{anomes}", "ok": False, "error": str(e)[:200]})
     return results
