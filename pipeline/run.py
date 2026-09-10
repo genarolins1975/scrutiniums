@@ -30,7 +30,34 @@ from pipeline.sources import (bcb_sgs, ibge, ipeadata, ifdata, ifdata_ui, ifdata
 # passou dos 150 minutos do job e o runner cancelou tudo antes do gold: um dia inteiro sem publicar.
 # Estourado o orçamento, os coletores restantes são pulados (registrados em status como "pulado")
 # e o gold é reconstruído com o silver que já existe; a coleta pulada volta no dia seguinte.
-ORCAMENTO_COLETA_MIN = float(os.environ.get("OBS_ORCAMENTO_COLETA_MIN", "120"))
+ORCAMENTO_COLETA_MIN = float(os.environ.get("OBS_ORCAMENTO_COLETA_MIN", "150"))
+
+
+# Ordem da coleta em duas camadas. A primeira reúne os coletores leves e as fontes de que
+# quase todas as abas dependem; a segunda, os pesados (Sicor, Caged, DataJud, TST, CVM DFP),
+# cada um com freio próprio. Em 10/09/2026 o orçamento estourou com os pesados no meio da fila
+# e 28 coletores leves ficaram para trás (BNDES, Sadipem, Siconfi, consórcios, Focus...):
+# quando o orçamento acabar, tem de cair sobre quem custa caro e já é limitado por dentro.
+COLETORES_LEVES = [("bcb_sgs", bcb_sgs), ("ibge", ibge), ("ipeadata", ipeadata),
+                   ("ifdata", ifdata), ("ifdata_ui", ifdata_ui), ("ifdata_carteiras", ifdata_carteiras),
+                   ("djen", djen), ("djen_credores", djen_credores),
+                   ("openfinance", openfinance), ("reclamacoes", reclamacoes), ("txjuros", txjuros),
+                   ("b3_market", b3_market), ("fidc", fidc), ("trends_manual", trends_manual),
+                   ("scr_data", scr_data), ("geo_ibge", geo_ibge), ("pix_bcb", pix_bcb),
+                   ("pgfn", pgfn), ("desenrola", desenrola), ("censo2022", censo2022), ("estban", estban),
+                   ("mercado_imobiliario", mercado_imobiliario), ("previdencia", previdencia),
+                   ("reclamacoes_consig", reclamacoes_consig),
+                   ("operacional", operacional), ("releases", releases), ("releases_ext", releases_ext),
+                   ("epae", epae), ("dependencias", dependencias), ("pncp_folha", pncp_folha),
+                   ("ifdata_funding", ifdata_funding), ("pilar3", pilar3), ("regimes", regimes),
+                   ("remuneracao", remuneracao), ("correspondentes", correspondentes),
+                   ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes), ("focus", focus),
+                   ("sfn_cadastro", sfn_cadastro), ("bcb_pas", bcb_pas), ("cvm_pas", cvm_pas),
+                   ("ifdata_passivo", ifdata_passivo), ("cvm_cda", cvm_cda), ("bcb_consorcios", bcb_consorcios),
+                   ("susep_ses", susep_ses), ("sadipem", sadipem),
+                   ("siconfi_rgf", siconfi_rgf), ("tesouro_garantias", tesouro_garantias)]
+COLETORES_PESADOS = [("sicor", sicor), ("ipea_caged", ipea_caged), ("datajud", datajud),
+                     ("datajud_cobranca", datajud_cobranca), ("judicial", judicial), ("cvm_dfp", cvm_dfp)]
 
 
 def _log(msg):
@@ -45,28 +72,7 @@ def main():
     status = {}
     t_coleta = time.monotonic()
     if not skip_fetch:
-        for name, mod in [("bcb_sgs", bcb_sgs), ("ibge", ibge), ("ipeadata", ipeadata),
-                          ("ifdata", ifdata), ("ifdata_ui", ifdata_ui),
-                          ("ifdata_carteiras", ifdata_carteiras), ("datajud", datajud),
-                          ("djen", djen), ("djen_credores", djen_credores),
-                          ("openfinance", openfinance), ("reclamacoes", reclamacoes),
-                          ("txjuros", txjuros),
-                          ("b3_market", b3_market), ("cvm_dfp", cvm_dfp), ("fidc", fidc),
-                          ("trends_manual", trends_manual), ("scr_data", scr_data), ("geo_ibge", geo_ibge),
-                          ("pix_bcb", pix_bcb), ("judicial", judicial), ("pgfn", pgfn), ("desenrola", desenrola), ("censo2022", censo2022), ("estban", estban),
-                          ("mercado_imobiliario", mercado_imobiliario),
-                          ("previdencia", previdencia), ("reclamacoes_consig", reclamacoes_consig),
-                          ("operacional", operacional), ("releases", releases),
-                          ("releases_ext", releases_ext), ("epae", epae),
-                          ("dependencias", dependencias),
-                          ("pncp_folha", pncp_folha),
-                          ("ifdata_funding", ifdata_funding),
-                          ("pilar3", pilar3),
-                          ("regimes", regimes),
-                          ("remuneracao", remuneracao),
-                          ("correspondentes", correspondentes),
-                          ("sicor", sicor),
-                          ("cvm_ofertas", cvm_ofertas), ("cvm_securit", cvm_securit), ("bndes", bndes), ("focus", focus), ("sfn_cadastro", sfn_cadastro), ("bcb_pas", bcb_pas), ("cvm_pas", cvm_pas), ("ipea_caged", ipea_caged), ("ifdata_passivo", ifdata_passivo), ("cvm_cda", cvm_cda), ("bcb_consorcios", bcb_consorcios), ("susep_ses", susep_ses), ("sadipem", sadipem), ("siconfi_rgf", siconfi_rgf), ("tesouro_garantias", tesouro_garantias), ("datajud_cobranca", datajud_cobranca)]:
+        for name, mod in COLETORES_LEVES + COLETORES_PESADOS:
             decorrido_min = (time.monotonic() - t_coleta) / 60
             if decorrido_min > ORCAMENTO_COLETA_MIN:
                 status[name] = {"ok": 0, "falhas": [], "pulado": f"orçamento de coleta de {ORCAMENTO_COLETA_MIN:.0f} min esgotado após {decorrido_min:.0f} min; volta na próxima execução"}

@@ -24,6 +24,12 @@ import urllib.request
 
 from pipeline import common
 
+# Freio por execução: em 10/09/2026 dois tribunais responderam 504 e o coletor levou 25 min.
+# Passado o orçamento, os pares tribunal × classe restantes são declarados pulados e voltam
+# na próxima execução; as séries por tribunal já no silver seguem valendo e o agregado é
+# reconstruído a partir delas (rebuild_agregados).
+ORCAMENTO_S = 900
+
 
 def _post(url, payload, api_key, timeout=90, retries=3):
     body = json.dumps(payload).encode()
@@ -108,7 +114,7 @@ FUNIL_MOVIMENTOS = {
 }
 
 
-def collect_funil(con, cfg):
+def collect_funil(con, cfg, estourou=lambda: False):
     """Funil processual REAL da classe 129 por tribunal: nº de processos que registram cada
     movimento-marco (agregação terms em movimentos.codigo — 1 requisição por tribunal).
 
@@ -121,6 +127,9 @@ def collect_funil(con, cfg):
         collected_at TEXT, PRIMARY KEY(tribunal, codigo))""")
     results = []
     for trib in c["tribunais"]:
+        if estourou():
+            results.append({"key": f"funil_{trib}", "ok": False, "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
+            continue
         try:
             q = {"size": 0, "track_total_hits": True,
                  "query": {"term": {"classe.codigo": 129}},
@@ -242,8 +251,14 @@ def collect(con, cfg):
     results = []
     inicio = c.get("serie_inicio", "2019-01")
     agg_by_class = {}  # classe_slug -> {ym: count} agregado dos tribunais
+    t0 = time.monotonic()
+    estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S
     for trib in c["tribunais"]:
         for classe, slug in c["classes"].items():
+            if estourou():
+                results.append({"key": f"{slug}_{trib}", "ok": False,
+                                "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
+                continue
             try:
                 docs, truncated = _fetch_class(c["base_url"], trib, classe, c["api_key_publica"],
                                                c["page_size"], c["max_pages_por_consulta"],
@@ -292,7 +307,7 @@ def collect(con, cfg):
             except Exception as e:
                 results.append({"key": f"{slug}_{trib}", "ok": False, "error": str(e)})
     rebuild_agregados(con, cfg)
-    results.extend(collect_funil(con, cfg))
+    results.extend(collect_funil(con, cfg, estourou))
     return results
 
 

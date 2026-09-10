@@ -11,6 +11,7 @@ e payout — correspondência de entidades em docs/AUDITORIA_MERCADO.md.
 """
 import csv
 import io
+import time
 import zipfile
 
 from pipeline import common
@@ -20,6 +21,10 @@ DFP = "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/dfp_cia_aberta_{a
 ITR = "https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/itr_cia_aberta_{ano}.zip"
 DFP_ANOS = [2024, 2025]
 ITR_ANOS = [2026]
+# Freio por execução: em 10/09/2026 dados.cvm.gov.br estava inalcançável do runner e as três
+# transferências (600 s × 3 tentativas cada) custaram 21 min sem coletar nada. Falha de
+# conexão num arquivo pula os demais da mesma origem; o orçamento cobre o resto.
+ORCAMENTO_S = 600
 
 
 def _fmt_cnpj(c):
@@ -103,16 +108,24 @@ def collect(con, cfg):
     _ensure_tables(con)
     wanted = set(CNPJ_MAP)
     results = []
+    t0 = time.monotonic()
+    inacessivel = None
     for url_tpl, anos, kind in ((DFP, DFP_ANOS, "anual"), (ITR, ITR_ANOS, "tri")):
         for ano in anos:
             key = f"cvm_{kind}:{ano}"
+            if inacessivel:
+                results.append({"key": key, "ok": False, "error": f"pulado: origem inacessível nesta execução ({inacessivel})"})
+                continue
+            if time.monotonic() - t0 > ORCAMENTO_S:
+                results.append({"key": key, "ok": False, "error": f"orçamento de {ORCAMENTO_S} s esgotado; volta na próxima execução"})
+                continue
             try:
                 have = con.execute("SELECT COUNT(*) FROM market_fin WHERE kind=? AND period_end LIKE ?",
                                    (kind, f"{ano - 1 if kind == 'anual' else ano}%")).fetchone()[0]
                 if kind == "anual" and ano < max(DFP_ANOS) and have >= len(COMPANIES):
                     results.append({"key": key, "ok": True, "cache": True})
                     continue
-                body, meta = common.http_get(url_tpl.format(ano=ano), timeout=600)
+                body, meta = common.http_get(url_tpl.format(ano=ano), timeout=300, retries=2)
                 pref = "dfp" if kind == "anual" else "itr"
                 dre = _scan_zip(body, f"{pref}_cia_aberta_DRE_con_{ano}.csv", wanted)
                 bpp = _scan_zip(body, f"{pref}_cia_aberta_BPP_con_{ano}.csv", wanted)
@@ -133,4 +146,6 @@ def collect(con, cfg):
                 results.append({"key": key, "ok": True, "periodos": n, "linhas_dre": len(dre)})
             except Exception as e:
                 results.append({"key": key, "ok": False, "error": str(e)})
+                if "urlopen error" in str(e):  # conexão, DNS ou rota: não é do arquivo, é da origem
+                    inacessivel = str(e).split("urlopen error", 1)[1].strip(" >")[:80]
     return results
