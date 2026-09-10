@@ -3,7 +3,7 @@
  "nome": "BOLT CARD INSTITUIÇÃO DE PAGAMENTOS LTDA.",
  "sr": "S4",
  "tcb": "N4",
- "porte_quartil": "P3",
+ "porte_quartil": "P2",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -80,7 +81,8 @@
    "202506": 628800407.59,
    "202509": 761305221.9,
    "202512": 724530697.53,
-   "202603": 327449497.4
+   "202603": 327449497.4,
+   "202606": 218166101.02
   },
   "patrimonio_liquido": {
    "201912": 20041299.93,
@@ -108,7 +110,8 @@
    "202506": 106145895.2,
    "202509": 98886914.02,
    "202512": 93496601.63,
-   "202603": 95947858.88
+   "202603": 95947858.88,
+   "202606": 93926595.01
   },
   "carteira_credito": {
    "201912": 170229167.69,
@@ -136,7 +139,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201912": 0.0,
@@ -164,7 +168,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201912": 44225884.02,
@@ -192,7 +197,8 @@
    "202506": 20658701.55,
    "202509": 9591581.82,
    "202512": 35247659.43,
-   "202603": 2529537.25
+   "202603": 2529537.25,
+   "202606": 572933.43
   },
   "roe_periodo": {
    "201912": 220.67372962069135,
@@ -220,7 +226,8 @@
    "202506": 19.462553413935503,
    "202509": 9.699546107850116,
    "202512": 37.69940170605108,
-   "202603": 2.636366542752809
+   "202603": 2.636366542752809,
+   "202606": 0.6099799848370976
   },
   "cart_ativo_pct": {
    "201912": 97.95863970322233,
@@ -248,60 +255,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "05425526",
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL DESENVOLVIMENTO",
-    "sr": "S5",
-    "ativo_brl": 327740782.95
-   },
-   {
-    "cod": "33862244",
-    "nome": "BGC LIQUIDEZ DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "cod": "11836226",
+    "nome": "AGÊNCIA DE FOMENTO E DESENVOLVIMENTO DO ESTADO DO PIAUÍ S.A.",
     "sr": "S4",
-    "ativo_brl": 327135858.54
+    "ativo_brl": 218103424.07
    },
    {
-    "cod": "07070495",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO EMPREENDEDORES - SICREDI EMPREENDEDORES PR",
+    "cod": "02338666",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO CREDIEMBRAPA LTDA - SICOOB.",
+    "sr": "S5",
+    "ativo_brl": 216979666.51
+   },
+   {
+    "cod": "22575466",
+    "nome": "SRM BANK INSTITUIÇÃO DE PAGAMENTO S/A",
     "sr": "S4",
-    "ativo_brl": 326572136.79
+    "ativo_brl": 219609445.42
    },
    {
-    "cod": "00122327",
-    "nome": "SANTINVEST S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTOS",
+    "cod": "01657678",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE SÃO SEBASTIÃO DO PARAÍSO LTDA. - SICOOB PARAÍSOCRED",
     "sr": "S5",
-    "ativo_brl": 328839278.57
+    "ativo_brl": 219822923.56
    },
    {
-    "cod": "03918382",
-    "nome": "AGENCIA DE FOMENTO DE GOIAS S/A",
+    "cod": "49173791",
+    "nome": "C&A PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 212161438.16
+   },
+   {
+    "cod": "02031139",
+    "nome": "SICOOB CREDIMONTES - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO REGIONAL DE MONTES CLAROS LTDA",
+    "sr": "S5",
+    "ativo_brl": 226339201.91
+   },
+   {
+    "cod": "29759316",
+    "nome": "SERVNET INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 226716821.19
+   },
+   {
+    "cod": "32206435",
+    "nome": "SUL AMERICA INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS S.A.",
     "sr": "S4",
-    "ativo_brl": 325330021.13
-   },
-   {
-    "cod": "07194313",
-    "nome": "COOPERATIVA DE CRÉDITO HORIZONTE - SICOOB HORIZONTE",
-    "sr": "S5",
-    "ativo_brl": 329621573.05
-   },
-   {
-    "cod": "01439107",
-    "nome": "BARRACRED - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO",
-    "sr": "S5",
-    "ativo_brl": 329926719.62
-   },
-   {
-    "cod": "94243839",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DO VALE DAS ANTAS LTDA. - UNICRED PIONEIRA",
-    "sr": "S5",
-    "ativo_brl": 330433297.43
+    "ativo_brl": 228176285.56
    }
   ]
  }

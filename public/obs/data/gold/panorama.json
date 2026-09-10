@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-09T15:18:33+00:00",
+ "gerado_em": "2026-09-10T15:19:07+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-07",
  "data_base_anterior": "2026-06",
@@ -346,12 +346,12 @@
   },
   {
    "p": "2026-06",
-   "saldo": 7637108040261,
+   "saldo": 7637070356443,
    "inad": 4.63,
    "atraso15_90": 1.03,
    "ap": 8.22,
-   "pf": 4685369466552,
-   "pj": 2951738573709
+   "pf": 4685348686301,
+   "pj": 2951721670143
   },
   {
    "p": "2026-07",
@@ -3292,7 +3292,7 @@
    "grupo": "Distrito Federal (DF)",
    "indicador": "carteira ativa (variação entre datas-base)",
    "atual": 159067976443,
-   "anterior": 179127260920,
+   "anterior": 179123948981,
    "delta_pct": -11.2,
    "periodo": "2026-06 → 2026-07",
    "nota": "Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
@@ -3307,7 +3307,7 @@
    "grupo": "Sergipe (SE)",
    "indicador": "carteira ativa (variação entre datas-base)",
    "atual": 42571993941,
-   "anterior": 47797130037,
+   "anterior": 47797021467,
    "delta_pct": -10.9,
    "periodo": "2026-06 → 2026-07",
    "nota": "Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",

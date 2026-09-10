@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -73,7 +74,8 @@
    "202506": 3154491873.57,
    "202509": 3225152655.52,
    "202512": 3663012699.26,
-   "202603": 3364463228.41
+   "202603": 3364463228.41,
+   "202606": 3489799862.3
   },
   "patrimonio_liquido": {
    "202109": 286655684.92,
@@ -94,7 +96,8 @@
    "202506": 436310536.54,
    "202509": 457959155.59,
    "202512": 438639682.78,
-   "202603": 474902188.02
+   "202603": 474902188.02,
+   "202606": 528358249.26
   },
   "carteira_credito": {
    "202109": 0.0,
@@ -115,14 +118,16 @@
    "202506": 2547488934.85,
    "202509": 2566995006.38,
    "202512": 2901450143.15,
-   "202603": 2578040884.29
+   "202603": 2578040884.29,
+   "202606": 2651602868.71
   },
   "carteira_pf": {
    "202503": 2454774422.94,
    "202506": 2596827877.92,
    "202509": 2616711790.05,
    "202512": 2957644744.18,
-   "202603": 2627970541.43
+   "202603": 2627970541.43,
+   "202606": 2702958646.97
   },
   "captacoes": {
    "202109": 0.0,
@@ -143,7 +148,8 @@
    "202506": 425371.34,
    "202509": 438117.38,
    "202512": 447809.21,
-   "202603": 469208.82
+   "202603": 469208.82,
+   "202606": 486122.98
   },
   "lucro_liquido": {
    "202109": 79890828.44,
@@ -164,42 +170,48 @@
    "202506": 48801502.08,
    "202509": 21648619.05,
    "202512": 36541200.2,
-   "202603": 36262505.24
+   "202603": 36262505.24,
+   "202606": 54922970.09
   },
   "indice_basileia": {
    "202503": 14.6030741746169,
    "202506": 14.6716142095272,
    "202509": 15.4525300543706,
    "202512": 13.909018130412502,
-   "202603": 15.363258827130899
+   "202603": 15.363258827130899,
+   "202606": 17.2121905688457
   },
   "indice_capital_principal": {
    "202503": 14.6030741746169,
    "202506": 14.6716142095272,
    "202509": 15.4525300543706,
    "202512": 13.909018130412502,
-   "202603": 15.363258827130899
+   "202603": 15.363258827130899,
+   "202606": 17.2121905688457
   },
   "indice_capital_nivel1": {
    "202503": 14.6030741746169,
    "202506": 14.6716142095272,
    "202509": 15.4525300543706,
    "202512": 13.909018130412502,
-   "202603": 15.363258827130899
+   "202603": 15.363258827130899,
+   "202606": 17.2121905688457
   },
   "patrimonio_referencia": {
    "202503": 384768045.84,
    "202506": 401721740.82,
    "202509": 425643358.54,
    "202512": 412497573.49,
-   "202603": 449559207.98
+   "202603": 449559207.98,
+   "202606": 511697642.47
   },
   "rwa": {
    "202503": 1711328349.56,
    "202506": 1814573790.73,
    "202509": 1814772032.1,
    "202512": 2025934258.34,
-   "202603": 1867000563.84
+   "202603": 1867000563.84,
+   "202606": 1913682888.29
   },
   "roe_periodo": {
    "202109": 27.869961296004288,
@@ -220,7 +232,8 @@
    "202506": 11.18503863486826,
    "202509": 4.727194289217683,
    "202512": 8.33057327791459,
-   "202603": 7.635783989791356
+   "202603": 7.635783989791356,
+   "202606": 10.395024619549934
   },
   "cart_ativo_pct": {
    "202109": 0.0,
@@ -241,67 +254,69 @@
    "202506": 80.75750507377141,
    "202509": 79.59297684673834,
    "202512": 79.20939350650215,
-   "202603": 76.62562225441077
+   "202603": 76.62562225441077,
+   "202606": 75.981516801437
   },
   "atraso15_cartao_de_credito_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "03042597",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE CAMPO GRANDE E REGIÃO - SICREDI CAMPO GRANDE MS",
+    "cod": "76059997",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO PROGRESSO - SICREDI PROGRESSO PR/SP",
     "sr": "S4",
-    "ativo_brl": 3368343571.37
+    "ativo_brl": 3496716865.61
+   },
+   {
+    "cod": "02466552",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB VALE SUL",
+    "sr": "S5",
+    "ativo_brl": 3521401335.36
    },
    {
     "cod": "87900601",
     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO BOTUCARAÍ - SICREDI BOTUCARAÍ RS/MG",
     "sr": "S4",
-    "ativo_brl": 3357442493.1
+    "ativo_brl": 3533412308.08
    },
    {
-    "cod": "76059997",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO PROGRESSO - SICREDI PROGRESSO PR/SP",
+    "cod": "03042597",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DE CAMPO GRANDE E REGIÃO - SICREDI CAMPO GRANDE MS",
     "sr": "S4",
-    "ativo_brl": 3393206165.1
+    "ativo_brl": 3371023439.98
    },
    {
-    "cod": "78907607",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO CENTRO SUL - SICREDI CENTRO SUL PR/SC/RJ",
+    "cod": "24313102",
+    "nome": "99PAY INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": "S5",
+    "ativo_brl": 3355480116.6
+   },
+   {
+    "cod": "01658426",
+    "nome": "COOPERFORTE COOPERATIVA DE CRÉDITO E INVESTIMENTOS LTDA",
+    "sr": "S5",
+    "ativo_brl": 3697063753.37
+   },
+   {
+    "cod": "02885855",
+    "nome": "BADESUL DESENVOLVIMENTO S.A - AGÊNCIA DE FOMENTO/RS",
     "sr": "S4",
-    "ativo_brl": 3321184292.1
+    "ativo_brl": 3771044922.34
    },
    {
     "cod": "14796606",
     "nome": "ADYEN DO BRASIL INSTITUICAO DE PAGAMENTO LTDA.",
     "sr": null,
-    "ativo_brl": 3526958153.16
-   },
-   {
-    "cod": "87510475",
-    "nome": "COOPERATIVA DE CRÉDITO ROTA DAS TERRAS - SICREDI ROTA DAS TERRAS RS/MG",
-    "sr": "S4",
-    "ativo_brl": 3156509813.48
-   },
-   {
-    "cod": "26178533",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO PONTAL DO TRIANGULO LTDA - SICOOB CREDIPONTAL",
-    "sr": "S5",
-    "ativo_brl": 3146123240.82
-   },
-   {
-    "cod": "06332931",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CERRADO DE GOIÁS - SICREDI CERRADO GO",
-    "sr": "S4",
-    "ativo_brl": 3144869301.33
+    "ativo_brl": 3178633057.75
    }
   ]
  }

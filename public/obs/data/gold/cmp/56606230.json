@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -61,7 +62,8 @@
    "202506": 1465292.93,
    "202509": 1452553.64,
    "202512": 2042079.29,
-   "202603": 2088759.83
+   "202603": 2088759.83,
+   "202606": 2398754.16
   },
   "patrimonio_liquido": {
    "202409": 1444616.52,
@@ -70,7 +72,8 @@
    "202506": 1165688.65,
    "202509": 1142905.58,
    "202512": 1235203.29,
-   "202603": 1289327.24
+   "202603": 1289327.24,
+   "202606": 1356890.36
   },
   "carteira_credito": {
    "202409": 0.0,
@@ -79,19 +82,22 @@
    "202506": 516538.81,
    "202509": 810689.01,
    "202512": 2001906.69,
-   "202603": 2041559.66
+   "202603": 2041559.66,
+   "202606": 2031389.72
   },
   "carteira_pf": {
    "202503": 48940.04,
    "202506": 11084.24,
    "202509": 57279.96,
-   "202512": 78607.2
+   "202512": 78607.2,
+   "202606": 47520.72
   },
   "carteira_pj": {
    "202503": 179935.46,
    "202506": 518215.54,
    "202509": 778546.07,
-   "202512": 1977846.17
+   "202512": 1977846.17,
+   "202606": 2056555.65
   },
   "captacoes": {
    "202409": 0.0,
@@ -100,7 +106,8 @@
    "202506": 290000.0,
    "202509": 290000.0,
    "202512": 761351.67,
-   "202603": 769301.67
+   "202603": 769301.67,
+   "202606": 797915.0
   },
   "lucro_liquido": {
    "202409": -55383.48,
@@ -109,32 +116,37 @@
    "202506": -157891.75,
    "202509": -22783.07,
    "202512": 69514.64,
-   "202603": 54123.95
+   "202603": 54123.95,
+   "202606": 121687.07
   },
   "indice_basileia": {
    "202503": 270.3258975676,
    "202506": 183.589368212073,
    "202509": 132.436707173939,
-   "202512": 74.2432260028705
+   "202512": 74.2432260028705,
+   "202606": 81.20805795298111
   },
   "patrimonio_referencia": {
    "202503": 1239847.08,
    "202506": 1165688.65,
    "202509": 1142905.58,
-   "202512": 1235203.29
+   "202512": 1235203.29,
+   "202606": 1356890.36
   },
   "rwa": {
    "202503": 416953.65,
    "202506": 577221.31,
    "202509": 784529.53,
-   "202512": 1512477.49
+   "202512": 1512477.49,
+   "202606": 1578577.22
   },
   "provisao_credito": {
    "202503": 4353.47,
    "202506": 10064.25,
    "202509": 15943.1,
    "202512": 38921.15,
-   "202603": 39779.88
+   "202603": 39779.88,
+   "202606": 50285.52
   },
   "roe_periodo": {
    "202409": -3.8337842073133706,
@@ -143,7 +155,17 @@
    "202506": -13.544933289004746,
    "202509": -1.9934341382776344,
    "202512": 5.627789414323855,
-   "202603": 4.197844295913581
+   "202603": 4.197844295913581,
+   "202606": 8.968084200996165
+  },
+  "npl_pct": {
+   "202606": 0.10324720295204874
+  },
+  "ativos_problematicos_pct": {
+   "202606": 0.10324720295204874
+  },
+  "cobertura_pct": {
+   "202606": 2314.744982507825
   },
   "cart_ativo_pct": {
    "202409": 0.0,
@@ -152,72 +174,75 @@
    "202506": 35.25157321273638,
    "202509": 55.81129589128289,
    "202512": 98.03276003058627,
-   "202603": 97.74027778004519
+   "202603": 97.74027778004519,
+   "202606": 84.68519841983306
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
-   "202512": 0.0
+   "202512": 0.0,
+   "202606": 8.284175828985756
   },
   "atraso15_capital_de_giro_pj": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
-   "202512": 0.0
+   "202512": 0.0,
+   "202606": 0.19027736983436358
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:04+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "47227569",
-    "nome": "GLOBAL INVESTMENT SERVICES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 2094923.86
+    "cod": "07651495",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO PODER JUDICIÁRIO E SERVIDORES PÚBLICOS DO ESTADO DE SÃO PAULO - SPCRED",
+    "sr": "S5",
+    "ativo_brl": 2396903.17
    },
    {
     "cod": "37943755",
     "nome": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2059919.09
+    "ativo_brl": 2394445.9
    },
    {
-    "cod": "58526733",
-    "nome": "DIVI SOCIEDADE DE CREDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 2120363.9
-   },
-   {
-    "cod": "55251092",
-    "nome": "PAGBRASIL INSTITUICAO DE PAGAMENTO LTDA.",
+    "cod": "53058329",
+    "nome": "LA FINTECA INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2123771.26
+    "ativo_brl": 2443769.48
    },
    {
-    "cod": "71590442",
-    "nome": "LASTRO RDV DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 2215283.92
-   },
-   {
-    "cod": "48721937",
-    "nome": "CREDPAR - SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "cod": "28762249",
+    "nome": "SADOC SOCIEDADE CORRETORA DE CÂMBIO LTDA.",
     "sr": "S5",
-    "ativo_brl": 1964407.52
+    "ativo_brl": 2496289.56
    },
    {
-    "cod": "40819834",
-    "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "cod": "47593544",
+    "nome": "RED SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 1935837.19
+    "ativo_brl": 2514341.58
    },
    {
     "cod": "73279093",
     "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 1916279.57
+    "ativo_brl": 2599293.64
+   },
+   {
+    "cod": "34190991",
+    "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
+    "sr": "S4",
+    "ativo_brl": 2658493.05
+   },
+   {
+    "cod": "23010182",
+    "nome": "GOOD CORRETORA DE CÂMBIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 2665289.83
    }
   ]
  }

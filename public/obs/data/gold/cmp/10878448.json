@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -82,7 +83,8 @@
    "202506": 2664167423.58,
    "202509": 2811170009.75,
    "202512": 2788017705.31,
-   "202603": 2671580160.86
+   "202603": 2671580160.86,
+   "202606": 2784825232.69
   },
   "patrimonio_liquido": {
    "201906": 16821314.38,
@@ -112,7 +114,8 @@
    "202506": 545566114.49,
    "202509": 565412862.56,
    "202512": 571637767.9,
-   "202603": 585327255.99
+   "202603": 585327255.99,
+   "202606": 580721102.19
   },
   "carteira_credito": {
    "201906": 0.0,
@@ -142,7 +145,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201906": 379026927.63,
@@ -172,7 +176,8 @@
    "202506": 210983300.77,
    "202509": 216363433.06,
    "202512": 241838573.56,
-   "202603": 213742923.14
+   "202603": 213742923.14,
+   "202606": 164003832.51
   },
   "lucro_liquido": {
    "201906": -56918150.98,
@@ -202,28 +207,32 @@
    "202506": 8963586.90000004,
    "202509": 15898712.24,
    "202512": 20271367.18,
-   "202603": 3325180.00000001
+   "202603": 3325180.00000001,
+   "202606": 2654717.06
   },
   "indice_basileia": {
    "202503": 39.542079379621796,
    "202506": 50.83145487455229,
    "202509": 63.0987077910967,
    "202512": 66.2805788417354,
-   "202603": 71.12471913271689
+   "202603": 71.12471913271689,
+   "202606": 65.0184241882091
   },
   "patrimonio_referencia": {
    "202503": 543310777.97,
    "202506": 545566114.49,
    "202509": 565412862.56,
    "202512": 571637767.9,
-   "202603": 585327255.99
+   "202603": 585327255.99,
+   "202606": 580721102.19
   },
   "rwa": {
    "202503": 511291580.76,
    "202506": 334328964.26,
    "202509": 327267678.94,
    "202512": 443621545.69,
-   "202603": 485874698.44
+   "202603": 485874698.44,
+   "202606": 596897877.47
   },
   "roe_periodo": {
    "201906": -338.3692242722355,
@@ -253,7 +262,8 @@
    "202506": 1.6429882028833993,
    "202509": 2.811876646741986,
    "202512": 3.546191017866089,
-   "202603": 0.5680890418089156
+   "202603": 0.5680890418089156,
+   "202606": 0.4571414832332769
   },
   "cart_ativo_pct": {
    "201906": 0.0,
@@ -283,60 +293,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "08075352",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPRESÁRIOS E EMPREGADOS DOS TRANSPORTES E CORREIOS DO SUL DO BRASIL - TRANSPOCRED",
-    "sr": "S5",
-    "ativo_brl": 2678324005.22
-   },
-   {
     "cod": "04814563",
     "nome": "BANCO AFINZ S.A. - BANCO MÚLTIPLO",
     "sr": "S4",
-    "ativo_brl": 2663148707.72
-   },
-   {
-    "cod": "85291086",
-    "nome": "COOPERATIVA DE CRÉDITO LITORÂNEA",
-    "sr": "S5",
-    "ativo_brl": 2656788514.17
-   },
-   {
-    "cod": "45283173",
-    "nome": "BBVA BRASIL BANCO DE INVESTIMENTO S.A.",
-    "sr": "S4",
-    "ativo_brl": 2651923239.9
-   },
-   {
-    "cod": "19540550",
-    "nome": "ASAAS GESTÃO FINANCEIRA INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "sr": "S4",
-    "ativo_brl": 2693371351.89
-   },
-   {
-    "cod": "17343510",
-    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA RAIZ - CRESOL RAIZ",
-    "sr": "S5",
-    "ativo_brl": 2702798855.56
-   },
-   {
-    "cod": "78858107",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS AURIVERDE -  SICOOB - CREDIAL SC/RS",
-    "sr": "S5",
-    "ativo_brl": 2717001323.89
+    "ativo_brl": 2761340763.76
    },
    {
     "cod": "05888589",
     "nome": "COOPERATIVA DE CRÉDITO SUL - SICOOB SUL",
     "sr": "S5",
-    "ativo_brl": 2717094759.22
+    "ativo_brl": 2820180078.13
+   },
+   {
+    "cod": "87437687",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SUL E SUDESTE - CENTRAL SICREDI SUL/SUDESTE",
+    "sr": "S3",
+    "ativo_brl": 2830095876.88
+   },
+   {
+    "cod": "85291086",
+    "nome": "COOPERATIVA DE CRÉDITO LITORÂNEA",
+    "sr": "S5",
+    "ativo_brl": 2842195885.23
+   },
+   {
+    "cod": "16668076",
+    "nome": "SUMUP INSTITUICAO DE PAGAMENTO BRASIL LTDA",
+    "sr": "S4",
+    "ativo_brl": 2843509822.12
+   },
+   {
+    "cod": "88471024",
+    "nome": "COOPERATIVA DE CRÉDITO GERAÇÕES - SICREDI GERAÇÕES RS/MG",
+    "sr": "S4",
+    "ativo_brl": 2849992674.0
+   },
+   {
+    "cod": "81014060",
+    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DE ASSOCIADOS ITAIPU SICOOB CREDITAIPU",
+    "sr": "S5",
+    "ativo_brl": 2859377144.2
+   },
+   {
+    "cod": "87900411",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SEMENTES DO SUL - SICREDI SEMENTES DO SUL",
+    "sr": "S4",
+    "ativo_brl": 2712139344.72
    }
   ]
  }

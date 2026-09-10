@@ -3,7 +3,7 @@
  "nome": "LEND SOCIEDADE DE CRÉDITO DIRETO S.A.",
  "sr": "S5",
  "tcb": "N1",
- "porte_quartil": "P2",
+ "porte_quartil": "P1",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -77,7 +78,8 @@
    "202506": 13091307.49,
    "202509": 11490343.1,
    "202512": 17217477.97,
-   "202603": 23576936.5
+   "202603": 23576936.5,
+   "202606": 18497267.23
   },
   "patrimonio_liquido": {
    "202009": 1528492.93,
@@ -102,7 +104,8 @@
    "202506": 855892.42,
    "202509": 1096517.2,
    "202512": 1279421.41,
-   "202603": 9780774.99
+   "202603": 9780774.99,
+   "202606": 10944465.92
   },
   "carteira_credito": {
    "202009": 0.0,
@@ -127,10 +130,12 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 265915.33
+   "202603": 265915.33,
+   "202606": 219836.44
   },
   "carteira_pj": {
-   "202603": 265915.33
+   "202603": 265915.33,
+   "202606": 214783.84
   },
   "captacoes": {
    "202009": 0.0,
@@ -155,7 +160,8 @@
    "202506": 11818226.54,
    "202509": 10033506.15,
    "202512": 5043571.94,
-   "202603": 7168051.31
+   "202603": 7168051.31,
+   "202606": 6174797.44
   },
   "lucro_liquido": {
    "202009": -20604.16,
@@ -180,28 +186,32 @@
    "202506": -220354.69,
    "202509": 131906.55,
    "202512": 431885.87,
-   "202603": 549453.94
+   "202603": 549453.94,
+   "202606": 712199.96
   },
   "indice_basileia": {
    "202503": 33.0767676793796,
    "202506": 16.3358184103264,
    "202509": 15.335636434643702,
    "202512": 8.94223184662668,
-   "202603": 19.946266950311735
+   "202603": 19.946266950311735,
+   "202606": 29.0862140845668
   },
   "patrimonio_referencia": {
    "202503": 920996.73,
    "202506": 422385.38,
    "202509": 565808.82,
    "202512": 661325.7,
-   "202603": 4258069.88
+   "202603": 4258069.88,
+   "202606": 4364395.03
   },
   "rwa": {
    "202503": 2392530.39,
    "202506": 2124746.25,
    "202509": 2091487.69,
    "202512": 6539759.79,
-   "202603": 20454071.57
+   "202603": 20454071.57,
+   "202606": 14204213.31
   },
   "roe_periodo": {
    "202009": -1.3480049266567429,
@@ -226,7 +236,8 @@
    "202506": -25.745605972301984,
    "202509": 12.029592422262049,
    "202512": 33.756342251612004,
-   "202603": 5.617693286695269
+   "202603": 5.617693286695269,
+   "202606": 6.507398032996021
   },
   "cart_ativo_pct": {
    "202009": 0.0,
@@ -251,60 +262,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 1.1278620952302265
+   "202603": 1.1278620952302265,
+   "202606": 1.188480640229146
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "03058464",
-    "nome": "AGENCIA DE FOMENTO DO ESTADO DE RORAIMA S/A",
+    "cod": "13673855",
+    "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A",
     "sr": "S4",
-    "ativo_brl": 23045000.71
+    "ativo_brl": 18545369.39
    },
    {
-    "cod": "21040668",
-    "nome": "GLOBAL EXCHANGE DO BRASIL SOCIEDADE CORRETORA DE CÂMBIO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 22797095.55
-   },
-   {
-    "cod": "53822116",
-    "nome": "MW INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 24836562.83
-   },
-   {
-    "cod": "00460065",
-    "nome": "COLUNA S/A DISTRIBUIDORA DE TITULOS E VALORES MOBILIÁRIOS",
-    "sr": "S4",
-    "ativo_brl": 21997348.63
-   },
-   {
-    "cod": "42047025",
-    "nome": "UNAVANTI SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "cod": "44728700",
+    "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 25538465.05
+    "ativo_brl": 18323883.98
    },
    {
-    "cod": "44471172",
-    "nome": "INICIADOR INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 25614230.63
+    "cod": "73302408",
+    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
+    "sr": "S4",
+    "ativo_brl": 18225736.13
    },
    {
-    "cod": "54811417",
-    "nome": "WOOVI INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 26666612.25
+    "cod": "45756448",
+    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 18118941.63
    },
    {
-    "cod": "31531997",
-    "nome": "CONPAY INSTITUIÇÃO DE PAGAMENTO E TECNOLOGIA S.A",
-    "sr": null,
-    "ativo_brl": 20822649.94
+    "cod": "53146221",
+    "nome": "FAMÍLIA PAULISTA COMPANHIA HIPOTECÁRIA",
+    "sr": "S5",
+    "ativo_brl": 18010293.76
+   },
+   {
+    "cod": "44921281",
+    "nome": "NIXFIN SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 17966809.37
+   },
+   {
+    "cod": "35977097",
+    "nome": "UP.P SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 17900648.72
+   },
+   {
+    "cod": "50579044",
+    "nome": "LEVYCAM - CORRETORA DE CAMBIO E VALORES LTDA.",
+    "sr": "S4",
+    "ativo_brl": 17667412.98
    }
   ]
  }

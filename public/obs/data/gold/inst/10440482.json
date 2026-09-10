@@ -14,8 +14,10 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "2026-T1",
-  "atualizado_em": "2026-09-09T15:18:25+00:00",
+  "data_base": "202606",
+  "data_base_universo": "202606",
+  "sem_balanco_na_data_base": null,
+  "atualizado_em": "2026-09-10T15:18:59+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 10.440.482",
   "participante_open_finance": null
@@ -28,22 +30,18 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "ROE do período de 5.8%.",
+    "texto": "ROE do período de 13.8%.",
     "base": "calculado sobre IF.data"
    }
   ],
   "pontos_atencao": [],
   "mudancas_recentes": [
    {
-    "texto": "Ativos totais: -5.8% no trimestre.",
+    "texto": "Patrimônio líquido: +7.5% no trimestre.",
     "base": "BCB IF.data (Olinda)"
    },
    {
-    "texto": "Patrimônio líquido: +3.5% no trimestre.",
-    "base": "BCB IF.data (Olinda)"
-   },
-   {
-    "texto": "Score relativo caiu 3.5 pontos no grupo de pares.",
+    "texto": "Score relativo caiu 7.2 pontos no grupo de pares.",
     "base": "Observatório (calculado)"
    }
   ],
@@ -107,36 +105,38 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-09"
+  "calculado_em": "2026-09-10"
  },
  "kpis": [
   {
    "label": "Ativos totais",
-   "v": 74743715559.79,
+   "v": 74198666716.01,
    "unit": "R$",
-   "d_tri": -5.8,
+   "d_tri": -0.7,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    70979524436.75,
     73429347629.72,
     75739273406.63,
     79310427905.09,
-    74743715559.79
+    74743715559.79,
+    74198666716.01
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Patrimônio líquido",
-   "v": 3557409534.02,
+   "v": 3825316209.38,
    "unit": "R$",
-   "d_tri": 3.5,
+   "d_tri": 7.5,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    3149014073.47,
     3176022063.34,
     3300581236.32,
     3435786837.9,
-    3557409534.02
+    3557409534.02,
+    3825316209.38
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
@@ -144,7 +144,8 @@
    "label": "Carteira de crédito",
    "v": 0.0,
    "unit": "R$",
-   "d_tri": 0.0,
+   "d_tri": null,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -157,22 +158,23 @@
   },
   {
    "label": "Lucro líquido (acum. ano IF.data)",
-   "v": 207198222.03,
+   "v": 529100647.39,
    "unit": "R$",
    "d_tri": null,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    104790167.28,
     246910312.28,
     124935308.19,
     385100331.27,
-    207198222.03
+    207198222.03,
+    529100647.39
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "ROE do período (padronizado)",
-   "v": 5.82,
+   "v": 13.83,
    "unit": "%",
    "d_tri": null,
    "d_tri_tipo": "p.p.",
@@ -183,28 +185,28 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "ROE do período de 5.8%.",
+   "texto": "ROE do período de 13.8%.",
    "base": "calculado sobre IF.data"
   }
  ],
  "capital_tabela": [
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
-   "valor": 21.01,
+   "valor": 19.4,
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 13.26,
-   "percentil": 100.0
+   "mediana_grupo": 13.15,
+   "percentil": 88.9
   },
   {
    "indicador": "ROE do período",
-   "valor": 5.82,
+   "valor": 13.83,
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 2.84,
-   "percentil": 88.9
+   "mediana_grupo": 6.53,
+   "percentil": 100.0
   }
  ],
  "carteira": {
@@ -350,6 +352,10 @@
    {
     "p": "2026-T1",
     "v": 339.3
+   },
+   {
+    "p": "202606",
+    "v": 336.8
    }
   ],
   "PL": [
@@ -488,6 +494,10 @@
    {
     "p": "2026-T1",
     "v": 198.5
+   },
+   {
+    "p": "202606",
+    "v": 213.4
    }
   ]
  },
@@ -495,73 +505,73 @@
  "comparacao_grupo": {
   "roe": {
    "valores": [
-    2.84,
-    5.78,
-    3.98,
-    1.68,
-    6.11,
-    2.07,
-    5.82,
-    2.69,
-    -0.15,
-    -48.85
+    6.53,
+    11.11,
+    7.52,
+    3.57,
+    11.85,
+    3.63,
+    13.83,
+    5.56,
+    2.09,
+    -81.74
    ],
-   "meu": 5.82,
-   "mediana": 2.84
+   "meu": 13.83,
+   "mediana": 6.53
   },
   "alav": {
    "valores": [
-    10.98,
-    13.58,
-    13.26,
-    13.88,
-    10.85,
-    4.12,
-    21.01,
-    20.38,
-    1.02,
-    2.61
+    11.0,
+    13.15,
+    13.16,
+    14.15,
+    11.1,
+    4.33,
+    19.4,
+    20.01,
+    1.0,
+    4.38
    ],
-   "meu": 21.01,
-   "mediana": 13.26
+   "meu": 19.4,
+   "mediana": 13.15
   }
  },
  "score_ref": {
-  "score": 28.6,
-  "score_delta": -3.5,
+  "score": 21.4,
+  "score_delta": -7.2,
   "faixa": "risco baixo",
   "dimensoes": {
    "rentabilidade": {
-    "valor": 5.82,
-    "percentil_pares": 85.7,
-    "risco": 14.3,
-    "mediana_pares": 3.41,
-    "q1_pares": 2.54,
-    "q3_pares": 5.79
+    "valor": 13.83,
+    "percentil_pares": 100.0,
+    "risco": 0.0,
+    "mediana_pares": 7.02,
+    "q1_pares": 5.08,
+    "q3_pares": 11.29
    },
    "alavancagem": {
-    "valor": 21.01,
-    "percentil_pares": 100.0,
-    "risco": 100.0,
-    "mediana_pares": 13.42,
-    "q1_pares": 10.95,
-    "q3_pares": 15.51
+    "valor": 19.4,
+    "percentil_pares": 85.7,
+    "risco": 85.7,
+    "mediana_pares": 13.16,
+    "q1_pares": 11.07,
+    "q3_pares": 15.46
    },
    "concentracao_credito": {
     "valor": 0.0,
     "percentil_pares": 0.0,
     "risco": 0.0,
-    "mediana_pares": 41.35,
-    "q1_pares": 17.37,
-    "q3_pares": 43.29
+    "mediana_pares": 41.47,
+    "q1_pares": 14.85,
+    "q3_pares": 44.11
    },
    "dependencia_captacoes": {
-    "valor": 0.33,
+    "valor": 0.62,
     "percentil_pares": 0.0,
     "risco": 0.0,
-    "mediana_pares": 77.23,
-    "q1_pares": 54.32,
-    "q3_pares": 78.85
+    "mediana_pares": 77.63,
+    "q1_pares": 55.65,
+    "q3_pares": 78.74
    }
   },
   "historico_score": [
@@ -700,6 +710,10 @@
    {
     "anomes": "202603",
     "score": 28.6
+   },
+   {
+    "anomes": "202606",
+    "score": 21.4
    }
   ],
   "vulnerabilidade": null,

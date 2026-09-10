@@ -3,7 +3,7 @@
  "nome": "B3 INSTITUICAO DE PAGAMENTO LTDA",
  "sr": "S4",
  "tcb": "N4",
- "porte_quartil": "P1",
+ "porte_quartil": "P2",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -61,7 +62,8 @@
    "202506": 3515929.1,
    "202509": 3341704.56,
    "202512": 3227343.67,
-   "202603": 2955232.3
+   "202603": 2955232.3,
+   "202606": 37899680.4
   },
   "patrimonio_liquido": {
    "202409": 892277.69,
@@ -70,7 +72,8 @@
    "202506": 3466193.13,
    "202509": 3312787.28,
    "202512": 3126612.78,
-   "202603": 2845256.85
+   "202603": 2845256.85,
+   "202606": 37660511.7
   },
   "carteira_credito": {
    "202409": 0.0,
@@ -79,7 +82,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202409": 0.0,
@@ -88,7 +92,8 @@
    "202506": 7375.66,
    "202509": 5326.11,
    "202512": 3791.69,
-   "202603": 2297.72
+   "202603": 2297.72,
+   "202606": 584.32
   },
   "lucro_liquido": {
    "202409": -83397.46,
@@ -97,7 +102,8 @@
    "202506": -203772.73,
    "202509": -153830.37,
    "202512": -340043.7,
-   "202603": -282177.41
+   "202603": -282177.41,
+   "202606": -457278.41
   },
   "roe_periodo": {
    "202409": -9.346581331648,
@@ -106,7 +112,8 @@
    "202506": -5.878862554897511,
    "202509": -4.643532982896505,
    "202512": -10.875785520201195,
-   "202603": -9.917467029382601
+   "202603": -9.917467029382601,
+   "202606": -1.2142118876202097
   },
   "cart_ativo_pct": {
    "202409": 0.0,
@@ -115,60 +122,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "47215387",
-    "nome": "CATÁLISE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
-    "sr": "S4",
-    "ativo_brl": 2952972.92
-   },
-   {
-    "cod": "05331882",
-    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA GKN DO BRASIL LTDA",
+    "cod": "01997612",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA FUNDAÇÃO ZERBINI E DA FUNDAÇÃO FACULDADE DE MEDICINA (FFM) - COOPINCOR",
     "sr": "S5",
-    "ativo_brl": 2998591.9
+    "ativo_brl": 37685530.36
    },
    {
-    "cod": "05658367",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO SEBRAE BAHIA LTDA.",
+    "cod": "00336036",
+    "nome": "COINVALORES CORRETORA DE CÂMBIO E VALORES MOBILIÁRIOS LTDA.",
     "sr": "S5",
-    "ativo_brl": 3029743.9
+    "ativo_brl": 37558884.8
    },
    {
-    "cod": "56047774",
-    "nome": "NAGRO SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 3048273.74
-   },
-   {
-    "cod": "02230138",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DE KYN COMÉRCIO VAREJISTA E ATACADISTA - COOPER KYN",
-    "sr": "S5",
-    "ativo_brl": 3049850.51
-   },
-   {
-    "cod": "62451088",
-    "nome": "CONLIFE SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "cod": "12102128",
+    "nome": "SAFETYPAY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2856800.03
+    "ativo_brl": 37554127.11
    },
    {
-    "cod": "56030613",
-    "nome": "E.SIGA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "53263331",
+    "nome": "COBANSA COMPANHIA HIPOTECARIA",
     "sr": "S5",
-    "ativo_brl": 3076860.32
+    "ativo_brl": 37440604.71
    },
    {
-    "cod": "44564204",
-    "nome": "FINLEV SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "18684408",
+    "nome": "AZIMUT BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 38557908.6
+   },
+   {
+    "cod": "88325113",
+    "nome": "COOPERATIVA    DE    ECONOMIA    E    CRÉDITO   MÚTUO  MINUANO",
     "sr": "S5",
-    "ativo_brl": 2833525.16
+    "ativo_brl": 37114167.19
+   },
+   {
+    "cod": "04414354",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DO ABC - COOPER 7",
+    "sr": "S5",
+    "ativo_brl": 36984503.19
+   },
+   {
+    "cod": "18140913",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA CBMM LTDA.",
+    "sr": "S5",
+    "ativo_brl": 36688405.07
    }
   ]
  }

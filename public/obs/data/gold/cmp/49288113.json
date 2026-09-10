@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -64,7 +65,8 @@
    "202506": 80930474.8,
    "202509": 85072418.76,
    "202512": 96845485.95,
-   "202603": 87708577.57
+   "202603": 87708577.57,
+   "202606": 112564149.23
   },
   "patrimonio_liquido": {
    "202312": 1020018.73,
@@ -76,7 +78,8 @@
    "202506": 76772239.25,
    "202509": 78019474.46,
    "202512": 78367483.22,
-   "202603": 79414914.37
+   "202603": 79414914.37,
+   "202606": 80136872.93
   },
   "carteira_credito": {
    "202312": 0.0,
@@ -88,14 +91,16 @@
    "202506": 53629.93,
    "202509": 51347.09,
    "202512": 46962.59,
-   "202603": 45626.06
+   "202603": 45626.06,
+   "202606": 42728.55
   },
   "carteira_pf": {
    "202503": 41052.45,
    "202506": 52052.8,
    "202509": 54003.54,
    "202512": 46445.6,
-   "202603": 45288.09
+   "202603": 45288.09,
+   "202606": 42463.85
   },
   "captacoes": {
    "202312": 0.0,
@@ -107,7 +112,8 @@
    "202506": 2824908.79,
    "202509": 5008397.34,
    "202512": 14854421.21,
-   "202603": 5940303.66
+   "202603": 5940303.66,
+   "202606": 29553871.46
   },
   "lucro_liquido": {
    "202312": -400929.42,
@@ -119,42 +125,48 @@
    "202506": 1749501.08,
    "202509": 1247235.21,
    "202512": 2637049.81,
-   "202603": 1047431.15
+   "202603": 1047431.15,
+   "202606": 1769389.71
   },
   "indice_basileia": {
    "202503": 402.310414121055,
    "202506": 144.864403925604,
    "202509": 557.5345430903,
    "202512": 329.30230190033296,
-   "202603": 250.96933925054802
+   "202603": 250.96933925054802,
+   "202606": 164.99773268435501
   },
   "indice_capital_principal": {
    "202503": 402.310414121055,
    "202506": 144.864403925604,
    "202509": 557.5345430903,
    "202512": 329.30230190033296,
-   "202603": 250.96933925054802
+   "202603": 250.96933925054802,
+   "202606": 164.99773268435501
   },
   "indice_capital_nivel1": {
    "202503": 402.310414121055,
    "202506": 144.864403925604,
    "202509": 557.5345430903,
    "202512": 329.30230190033296,
-   "202603": 250.96933925054802
+   "202603": 250.96933925054802,
+   "202606": 164.99773268435501
   },
   "patrimonio_referencia": {
    "202503": 14506362.23,
    "202506": 15422239.25,
    "202509": 78019474.46,
    "202512": 78367483.22,
-   "202603": 79414914.37
+   "202603": 79414914.37,
+   "202606": 80136872.93
   },
   "rwa": {
    "202503": 546782.49,
    "202506": 7587001.56,
    "202509": 8952691.12,
    "202512": 18757070.48,
-   "202603": 21912895.69
+   "202603": 21912895.69,
+   "202606": 38838091.38
   },
   "roe_periodo": {
    "202312": -39.30608411474954,
@@ -166,7 +178,8 @@
    "202506": 2.2788199186205187,
    "202509": 1.5986203683536067,
    "202512": 3.364979582918396,
-   "202603": 1.3189350618952256
+   "202603": 1.3189350618952256,
+   "202606": 2.2079595139001387
   },
   "cart_ativo_pct": {
    "202312": 0.0,
@@ -178,67 +191,69 @@
    "202506": 0.06626666917812275,
    "202509": 0.06035691796286714,
    "202512": 0.04849228597422304,
-   "202603": 0.0520200660688927
+   "202603": 0.0520200660688927,
+   "202606": 0.037959288363379036
   },
   "atraso15_consignado_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "28650236",
-    "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
-    "sr": "S4",
-    "ativo_brl": 87797536.11
-   },
-   {
-    "cod": "33959738",
-    "nome": "MOVA SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "cod": "38224857",
+    "nome": "DELCRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 87017908.49
+    "ativo_brl": 112886634.51
    },
    {
-    "cod": "44815065",
-    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "36690516",
+    "nome": "PAY INSTITUICAO DE PAGAMENTO S.A.",
     "sr": null,
-    "ativo_brl": 89599291.33
+    "ativo_brl": 112953039.58
    },
    {
-    "cod": "02217068",
-    "nome": "COOPERATIVA DE CRÉDITO DOS CONTADORES, ADMINISTRADORES DE EMPRESAS, ECONOMISTAS E CORRETORES DE SEGUROS LTDA. - SICOOB CREDITABIL",
+    "cod": "33630661",
+    "nome": "GOWD INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 112954335.48
+   },
+   {
+    "cod": "20308187",
+    "nome": "PROVER PROMOCAO DE VENDAS INSTITUICAO DE PAGAMENTO LTDA",
     "sr": "S5",
-    "ativo_brl": 84798463.29
+    "ativo_brl": 110960335.28
    },
    {
-    "cod": "40768766",
-    "nome": "LIONS TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "cod": "40710595",
+    "nome": "NG CASH INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 110323231.2
+   },
+   {
+    "cod": "17819084",
+    "nome": "PAGCERTO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 115367304.99
+   },
+   {
+    "cod": "02685483",
+    "nome": "CM CAPITAL MARKETS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 82968624.36
+    "ativo_brl": 109462724.81
    },
    {
-    "cod": "58158387",
-    "nome": "DIRECAO S.A. CREDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S5",
-    "ativo_brl": 82883568.93
-   },
-   {
-    "cod": "42259084",
-    "nome": "ARTTA SOCIEDADE DE CRÉDITO DIRETO S.A",
-    "sr": "S5",
-    "ativo_brl": 82375002.1
-   },
-   {
-    "cod": "33588252",
-    "nome": "BANCO INDUSCRED DE INVESTIMENTO S.A.",
-    "sr": "S4",
-    "ativo_brl": 81834896.35
+    "cod": "50871921",
+    "nome": "MT INSTITUICAO DE PAGAMENTO SA",
+    "sr": null,
+    "ativo_brl": 117065543.57
    }
   ]
  }

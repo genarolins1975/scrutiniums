@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -66,7 +67,8 @@
    "202506": 2494879657.59,
    "202509": 1860251876.5,
    "202512": 1930579001.45,
-   "202603": 1936018478.97
+   "202603": 1936018478.97,
+   "202606": 2556126831.17
   },
   "patrimonio_liquido": {
    "202306": 1176296372.69,
@@ -80,7 +82,8 @@
    "202506": 1408630506.99,
    "202509": 1475306626.76,
    "202512": 921076076.5,
-   "202603": 977176329.23
+   "202603": 977176329.23,
+   "202606": 1032178890.01
   },
   "carteira_credito": {
    "202306": 0.0,
@@ -94,7 +97,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202306": 0.0,
@@ -108,7 +112,8 @@
    "202506": 0.0,
    "202509": 181774097.42,
    "202512": 298346655.18,
-   "202603": 319275001.8
+   "202603": 319275001.8,
+   "202606": 844082348.39
   },
   "lucro_liquido": {
    "202306": 68206510.62,
@@ -122,42 +127,48 @@
    "202506": 99100858.86,
    "202509": 66676119.77,
    "202512": 166965421.8,
-   "202603": 56100252.73
+   "202603": 56100252.73,
+   "202606": 110534996.91
   },
   "indice_basileia": {
    "202503": 75.6149986539188,
    "202506": 81.69462467623269,
    "202509": 86.36892348855541,
    "202512": 51.26121565755491,
-   "202603": 59.5990066471892
+   "202603": 59.5990066471892,
+   "202606": 65.0375417283789
   },
   "indice_capital_principal": {
    "202503": 75.6149986539188,
    "202506": 81.69462467623269,
    "202509": 86.36892348855541,
    "202512": 51.26121565755491,
-   "202603": 59.5990066471892
+   "202603": 59.5990066471892,
+   "202606": 65.0375417283789
   },
   "indice_capital_nivel1": {
    "202503": 75.6149986539188,
    "202506": 81.69462467623269,
    "202509": 86.36892348855541,
    "202512": 51.26121565755491,
-   "202603": 59.5990066471892
+   "202603": 59.5990066471892,
+   "202606": 65.0375417283789
   },
   "patrimonio_referencia": {
    "202503": 973694978.98,
    "202506": 1036674291.02,
    "202509": 1116651725.04,
    "202512": 568711849.73,
-   "202603": 634062266.86
+   "202603": 634062266.86,
+   "202606": 691496779.34
   },
   "rwa": {
    "202503": 344173222.2,
    "202506": 324887277.58,
    "202509": 305144677.41,
    "202512": 122422698.31,
-   "202603": 116288021.68
+   "202603": 116288021.68,
+   "202606": 115634542.29
   },
   "roe_periodo": {
    "202306": 5.798412050189589,
@@ -171,7 +182,8 @@
    "202506": 7.035262857664598,
    "202509": 4.5194753795982745,
    "202512": 18.12721294797412,
-   "202603": 5.741057274095673
+   "202603": 5.741057274095673,
+   "202606": 10.70889920146779
   },
   "cart_ativo_pct": {
    "202306": 0.0,
@@ -185,60 +197,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "88530142",
-    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO LIBERDADE - SICREDI LIBERDADE",
+    "cod": "03130170",
+    "nome": "BRASIL CARD INSTITUIÇÃO DE PAGAMENTOS LTDA",
     "sr": "S4",
-    "ativo_brl": 1929405644.1
+    "ativo_brl": 2550497930.17
    },
    {
     "cod": "00106180",
     "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DOS ESTADOS DE MATO GROSSO, MATO GROSSO DO SUL E DO MUNICÍPIO DE CACOAL/RO - SICOOB CENTRAL RONDON",
     "sr": "S4",
-    "ativo_brl": 1926368157.44
+    "ativo_brl": 2547146212.04
    },
    {
-    "cod": "01389651",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DO PLANALTO CATARINENSE SICOOB CREDIPLANALTO SC/RS",
+    "cod": "32474884",
+    "nome": "COOPERATIVA DE CRÉDITO SUL-LITORÂNEA DO ESPÍRITO SANTO",
     "sr": "S5",
-    "ativo_brl": 1920309752.83
+    "ativo_brl": 2565709021.75
    },
    {
-    "cod": "72257793",
-    "nome": "SICREDI CEARÁ - COOPERATIVA DE CRÉDITO DO ESTADO DO CEARÁ",
-    "sr": "S4",
-    "ativo_brl": 1956825233.33
-   },
-   {
-    "cod": "07599206",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO METROPOLITANA DE GOIÂNIA LTDA.",
+    "cod": "01060307",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA UNIÃO DOS VALES DO PIRANGA E MATIPÓ LTDA. - SICOOB UNIÃO DOS VALES",
     "sr": "S5",
-    "ativo_brl": 1974035689.33
+    "ativo_brl": 2545638974.0
    },
    {
-    "cod": "01727929",
-    "nome": "COOPERATIVA DE CRÉDITO UNICRED EVOLUÇÃO LTDA. - UNICRED EVOLUÇÃO",
+    "cod": "04463602",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA REGIÃO CENTRO OESTE PAULISTA - SICREDI CENTRO OESTE PAULISTA",
+    "sr": "S4",
+    "ativo_brl": 2532711848.82
+   },
+   {
+    "cod": "01736516",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO CENTRAL E OESTE MINEIRO LTDA. - SICOOB DIVICRED",
     "sr": "S5",
-    "ativo_brl": 1891728617.79
+    "ativo_brl": 2581413434.64
    },
    {
-    "cod": "62931522",
-    "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DO ESTADO DE SÃO PAULO - SICOOB CENTRAL CECRESP",
-    "sr": "S4",
-    "ativo_brl": 1861387509.45
+    "cod": "86829827",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO VALE - SICOOB CREDIVALE/SC",
+    "sr": "S5",
+    "ativo_brl": 2582546325.04
    },
    {
-    "cod": "82937293",
-    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE SANTA CATARINA S.A.-BADESC",
+    "cod": "81115149",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO GRANDES LAGOS DO PARANÁ E LITORAL PAULISTA - SICREDI GRANDES LAGOS PR/SP",
     "sr": "S4",
-    "ativo_brl": 2014026736.02
+    "ativo_brl": 2527552401.32
    }
   ]
  }

@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -58,131 +59,143 @@
    "202506": 172922834.68,
    "202509": 221200034.44,
    "202512": 401172815.8,
-   "202603": 384455151.64
+   "202603": 384455151.64,
+   "202606": 462957190.76
   },
   "patrimonio_liquido": {
    "202506": 12283747.46,
    "202509": 21464176.94,
    "202512": 20094399.06,
-   "202603": 22912630.36
+   "202603": 22912630.36,
+   "202606": 25057333.33
   },
   "carteira_credito": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202506": 160109824.23,
    "202509": 198434476.83,
    "202512": 375602177.65,
-   "202603": 356887741.25
+   "202603": 356887741.25,
+   "202606": 431404330.75
   },
   "lucro_liquido": {
    "202506": 988348.4,
    "202509": 1369777.88,
    "202512": 1655181.63,
-   "202603": 2686054.8
+   "202603": 2686054.8,
+   "202606": 4830757.77
   },
   "indice_basileia": {
    "202503": 105.409114877684,
    "202506": 67.1294338030859,
    "202509": 96.1911355778101,
    "202512": 67.9413930396957,
-   "202603": 59.200325952491895
+   "202603": 59.200325952491895,
+   "202606": 53.5054892150968
   },
   "indice_capital_principal": {
    "202503": 105.409114877684,
    "202506": 67.1294338030859,
    "202509": 96.1911355778101,
    "202512": 67.9413930396957,
-   "202603": 59.200325952491895
+   "202603": 59.200325952491895,
+   "202606": 53.5054892150968
   },
   "indice_capital_nivel1": {
    "202503": 105.409114877684,
    "202506": 67.1294338030859,
    "202509": 96.1911355778101,
    "202512": 67.9413930396957,
-   "202603": 59.200325952491895
+   "202603": 59.200325952491895,
+   "202606": 53.5054892150968
   },
   "patrimonio_referencia": {
    "202503": 11633424.28,
    "202506": 12283747.46,
    "202509": 21464176.94,
    "202512": 20094399.06,
-   "202603": 22912630.36
+   "202603": 22912630.36,
+   "202606": 25057333.33
   },
   "rwa": {
    "202503": 11033880.92,
    "202506": 18296032.22,
    "202509": 22309980.82,
    "202512": 29571967.93,
-   "202603": 38702408.47
+   "202603": 38702408.47,
+   "202606": 46830186.14
   },
   "roe_periodo": {
    "202506": 8.045984364448989,
    "202509": 6.381693012636895,
    "202512": 8.237029756688827,
-   "202603": 11.723031174496718
+   "202603": 11.723031174496718,
+   "202606": 19.278818325876497
   },
   "cart_ativo_pct": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:04+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "03750034",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS JUÍZES E CARREIRAS PÚBLICAS DO DIREITO DO ESTADO DO RIO GRANDE DO SUL - SICREDI AJURIS RS",
-    "sr": "S4",
-    "ativo_brl": 382993684.34
+    "cod": "03485130",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL ENCOSTAS DA SERRA GERAL",
+    "sr": "S5",
+    "ativo_brl": 465105789.18
    },
    {
-    "cod": "01848322",
-    "nome": "UNIPRIME DO IGUAÇU - COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO",
+    "cod": "02883398",
+    "nome": "COOPERATIVA DE CRÉDITO DO VALE DO ITAJAÍ E VALE DO ITAPOCÚ - SICOOB MULTICREDI",
     "sr": "S5",
-    "ativo_brl": 387171485.57
+    "ativo_brl": 458826318.58
+   },
+   {
+    "cod": "71154256",
+    "nome": "COOPERATIVA DE CRÉDITO SACRAMENTO LTDA - SICOOB SACRAMENTO",
+    "sr": "S5",
+    "ativo_brl": 458658676.43
    },
    {
     "cod": "72128440",
     "nome": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO DO RIO DE JANEIRO - SICREDI RIO RJ",
     "sr": "S4",
-    "ativo_brl": 388287005.74
+    "ativo_brl": 457817853.65
    },
    {
-    "cod": "71441406",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE PEDRO LEOPOLDO LTDA - SICOOB CREDIPEL",
+    "cod": "71163315",
+    "nome": "COOPERATIVA DE CRÉDITO UNICRED AMPLA LTDA - UNICRED AMPLA",
     "sr": "S5",
-    "ativo_brl": 388584390.42
+    "ativo_brl": 468226267.74
    },
    {
-    "cod": "04565791",
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE ARATIBA - CRESOL ARATIBA",
+    "cod": "04694278",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS INTEGRANTES DO MINISTÉRIO PÚBLICO E DA DEFENSORIA PÚBLICA NO ESTADO DO RIO DE JANEIRO LIMITADA. - SICOOB COMPERJ",
     "sr": "S5",
-    "ativo_brl": 388870038.29
+    "ativo_brl": 457477643.83
    },
    {
-    "cod": "01073966",
-    "nome": "COOPERATIVA DE CRÉDITO RURAL DE ABELARDO LUZ - SULCREDI/CREDILUZ",
+    "cod": "02000895",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DO PODER JUDICIÁRIO, DO TRIBUNAL DE CONTAS ESTADUAL E DEMAIS ÓRGÃOS PÚBLICOS MUNICIPAIS, ESTADUAIS E FEDERAIS NO ESTADO DO RIO DE JANEIRO LTDA.",
     "sr": "S5",
-    "ativo_brl": 390208108.82
+    "ativo_brl": 457291078.56
    },
    {
-    "cod": "02405189",
-    "nome": "COOPERATIVA DE CRÉDITO DA GRANDE FLORIANÓPOLIS - ÚNILOS",
+    "cod": "82096447",
+    "nome": "CREDI&GENTE - COOPERATIVA DE CRÉDITO E INVESTIMENTOS",
     "sr": "S5",
-    "ativo_brl": 378682574.17
-   },
-   {
-    "cod": "25404542",
-    "nome": "COOPERATIVA DE CREDITO DE LIVRE ADMISSÃO DO VALE DO GORUTUBA LTDA - SICOOB CREDIVAG",
-    "sr": "S5",
-    "ativo_brl": 378582941.25
+    "ativo_brl": 454673438.89
    }
   ]
  }

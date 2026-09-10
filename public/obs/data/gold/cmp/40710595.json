@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -58,114 +59,133 @@
    "202506": 51459305.6,
    "202509": 115814582.15,
    "202512": 122205658.36,
-   "202603": 114266877.81
+   "202603": 114266877.81,
+   "202606": 110323231.2
   },
   "patrimonio_liquido": {
    "202506": 13006522.23,
    "202509": 10392103.87,
    "202512": 74577690.25,
-   "202603": 72800201.52
+   "202603": 72800201.52,
+   "202606": 65312008.39
   },
   "carteira_credito": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
+  },
+  "carteira_pf": {
+   "202606": 24463.91
   },
   "captacoes": {
    "202506": 17187892.99,
    "202509": 16419779.65,
    "202512": 19909578.16,
-   "202603": 16828886.82
+   "202603": 16828886.82,
+   "202606": 17847034.89
   },
   "lucro_liquido": {
    "202506": -9479039.03,
    "202509": -2614418.36,
    "202512": -4134234.9,
-   "202603": -1777488.73
+   "202603": -1777488.73,
+   "202606": -9392123.6
   },
   "indice_basileia": {
    "202506": 45.496054232409996,
    "202509": 17.1693415727417,
    "202512": 347.588427072528,
-   "202603": 455.512629669065
+   "202603": 455.512629669065,
+   "202606": 365.333478249741
   },
   "patrimonio_referencia": {
    "202506": 13006522.23,
    "202509": 11044706.05,
    "202512": 75323319.7,
-   "202603": 73651130.5
+   "202603": 73651130.5,
+   "202606": 66108208.91
   },
   "rwa": {
    "202506": 20287444.19,
    "202509": 54573336.23,
    "202512": 15427188.05,
-   "202603": 10321800.48
+   "202603": 10321800.48,
+   "202606": 11952200.44
+  },
+  "provisao_credito": {
+   "202606": 6633.75
   },
   "roe_periodo": {
    "202506": -72.87912066252625,
    "202509": -25.15773892086781,
    "202512": -5.5435276771661615,
-   "202603": -2.4415986396846447
+   "202603": -2.4415986396846447,
+   "202606": -14.380393179637757
   },
   "cart_ativo_pct": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202606": 8.698037231170325
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "03603683",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS - SICOOB COOPERPLAN CREDSEF",
-    "sr": "S5",
-    "ativo_brl": 114076429.15
-   },
-   {
-    "cod": "04257795",
-    "nome": "NOVA FUTURA CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "cod": "19962468",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DA ADVOCACIA E SERVENTUÁRIOS DO PODER JUDICIÁRIO NO ESTADO DO RIO GRANDE DO SUL - SICREDI COOABCRED RS",
     "sr": "S4",
-    "ativo_brl": 114477878.82
+    "ativo_brl": 110618823.31
    },
    {
-    "cod": "04985665",
-    "nome": "CREDISIS OESTE - COOPERATIVA DE CRÉDITO E INVESTIMENTO DO OESTE",
+    "cod": "20308187",
+    "nome": "PROVER PROMOCAO DE VENDAS INSTITUICAO DE PAGAMENTO LTDA",
     "sr": "S5",
-    "ativo_brl": 113229871.74
+    "ativo_brl": 110960335.28
    },
    {
-    "cod": "08041950",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SISTEMA DE JUSTIÇA NO ESTADO DO CEARÁ - SICREDI COOPERJURIS",
-    "sr": "S4",
-    "ativo_brl": 115440102.67
+    "cod": "04230630",
+    "nome": "JBCRED S.A. SOCIEDADE DE CREDITO, FINANCIAMENTO E INVESTIMENTO",
+    "sr": "S5",
+    "ativo_brl": 109621572.56
    },
    {
     "cod": "02685483",
     "nome": "CM CAPITAL MARKETS CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 115606536.23
+    "ativo_brl": 109462724.81
    },
    {
-    "cod": "17315359",
-    "nome": "SITA SOCIEDADE CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
-    "sr": "S4",
-    "ativo_brl": 112701238.4
-   },
-   {
-    "cod": "10175348",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DE LIVRE ADMISSÃO DA REGIÃO ADMINISTRATIVA DE SOROCABA - SICOOB COOPERASO",
+    "cod": "51489318",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MAGISTRADOS DE SÃO PAULO - MAGISCRED",
     "sr": "S5",
-    "ativo_brl": 116147125.03
+    "ativo_brl": 111364833.47
+   },
+   {
+    "cod": "03102185",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO CENTRO NORDESTE - SICOOB CENTRO NORDESTE",
+    "sr": "S5",
+    "ativo_brl": 111803122.04
+   },
+   {
+    "cod": "48632754",
+    "nome": "VIA CAPITAL - SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "sr": "S5",
+    "ativo_brl": 111955936.26
    },
    {
     "cod": "01374196",
     "nome": "COOPERATIVA DE CRÉDITO DE SÃO FRANCISCO DE SALES LTDA. - SICOOB CREDISALES",
     "sr": "S5",
-    "ativo_brl": 117069653.53
+    "ativo_brl": 108214101.74
    }
   ]
  }

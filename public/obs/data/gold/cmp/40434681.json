@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -74,7 +75,8 @@
    "202506": 49875327.38,
    "202509": 144049573.14,
    "202512": 47966646.29,
-   "202603": 31699325.86
+   "202603": 31699325.86,
+   "202606": 52318554.55
   },
   "patrimonio_liquido": {
    "202106": 1320727.2,
@@ -96,7 +98,8 @@
    "202506": 2893250.86,
    "202509": 6246842.79,
    "202512": 6912228.36,
-   "202603": 7098247.7
+   "202603": 7098247.7,
+   "202606": 7539230.34
   },
   "carteira_credito": {
    "202106": 0.0,
@@ -118,7 +121,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202106": 0.0,
@@ -140,7 +144,8 @@
    "202506": 39237034.49,
    "202509": 131621926.78,
    "202512": 37644360.4,
-   "202603": 21758511.78
+   "202603": 21758511.78,
+   "202606": 42531970.07
   },
   "lucro_liquido": {
    "202106": -179272.8,
@@ -162,42 +167,48 @@
    "202506": -2974259.23,
    "202509": 3358704.51,
    "202512": 4024105.68,
-   "202603": 184012.33
+   "202603": 184012.33,
+   "202606": 625387.749999999
   },
   "indice_basileia": {
    "202503": 13.0741587836944,
    "202506": 6.45790797680377,
    "202509": 13.2722362181008,
    "202512": 13.1836538331874,
-   "202603": 12.6889414729118
+   "202603": 12.6889414729118,
+   "202606": 14.001021613035599
   },
   "indice_capital_principal": {
    "202503": 13.0741587836944,
    "202506": 6.45790797680377,
    "202509": 13.2722362181008,
    "202512": 13.1836538331874,
-   "202603": 12.6889414729118
+   "202603": 12.6889414729118,
+   "202606": 14.001021613035599
   },
   "indice_capital_nivel1": {
    "202503": 13.0741587836944,
    "202506": 6.45790797680377,
    "202509": 13.2722362181008,
    "202512": 13.1836538331874,
-   "202603": 12.6889414729118
+   "202603": 12.6889414729118,
+   "202606": 14.001021613035599
   },
   "patrimonio_referencia": {
    "202503": 6637648.64,
    "202506": 2863016.64,
    "202509": 6219960.14,
    "202512": 6888697.28,
-   "202603": 7078068.19
+   "202603": 7078068.19,
+   "202606": 7522402.4
   },
   "rwa": {
    "202503": 15563663.63,
    "202506": 19765132.18,
    "202509": 22452537.07,
    "202512": 29020418.63,
-   "202603": 28680987.44
+   "202603": 28680987.44,
+   "202606": 26906937.94
   },
   "roe_periodo": {
    "202106": -13.573794800319098,
@@ -219,7 +230,8 @@
    "202506": -102.7999082665096,
    "202509": 53.766432466919824,
    "202512": 58.21719813666573,
-   "202603": 2.592362760178121
+   "202603": 2.592362760178121,
+   "202606": 8.295113981091058
   },
   "cart_ativo_pct": {
    "202106": 0.0,
@@ -241,60 +253,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "18684408",
-    "nome": "AZIMUT BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "cod": "02024442",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO COLORADO",
+    "sr": "S5",
+    "ativo_brl": 52453702.25
+   },
+   {
+    "cod": "12272183",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DOS PLANTADORES DE CANA DE ALAGOAS",
+    "sr": "S5",
+    "ativo_brl": 52508451.24
+   },
+   {
+    "cod": "52440987",
+    "nome": "SANTS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 53463977.13
+   },
+   {
+    "cod": "01864151",
+    "nome": "COOPERATIVA  ECONOMIA CRÉDITO MÚTUO  SERVS E EMPREGADOS PÚBLICOS MUNIC DE BELO HORIZONTE BETIM BRUMADINHO CONTAGEM IBIRITÉ NOVA LIMA RIBEIRÃO DAS NEVES SABARÁ SANTA LUZIA E VESPASIANO SICOOB CREDISERV",
+    "sr": "S5",
+    "ativo_brl": 53539113.42
+   },
+   {
+    "cod": "21040668",
+    "nome": "GLOBAL EXCHANGE DO BRASIL SOCIEDADE CORRETORA DE CÂMBIO LTDA.",
     "sr": "S4",
-    "ativo_brl": 31675967.85
+    "ativo_brl": 51010835.21
    },
    {
-    "cod": "48718183",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ERICSSON - COOPERICSSON",
-    "sr": "S5",
-    "ativo_brl": 31551551.63
-   },
-   {
-    "cod": "40429946",
-    "nome": "BANCO PORTO REAL DE INVESTIMENTOS S.A",
+    "cod": "10769660",
+    "nome": "AGÊNCIA DE FOMENTO DE ALAGOAS S.A.",
     "sr": "S4",
-    "ativo_brl": 32129377.52
+    "ativo_brl": 53901311.67
    },
    {
-    "cod": "46743997",
-    "nome": "TTSCD SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "83325811",
+    "nome": "CREDISIS COOPERUFPA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS FEDERAIS E ESTADUAIS E DAS ENTIDADES DE ENSINO COM SEUS RESPECTIVOS FUNCIONÁRIOS NO ESTADO DO PARÁ",
     "sr": "S5",
-    "ativo_brl": 32254461.45
+    "ativo_brl": 54012248.53
    },
    {
-    "cod": "89960090",
-    "nome": "RB INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LIMITADA",
-    "sr": "S4",
-    "ativo_brl": 30991907.92
-   },
-   {
-    "cod": "44746352",
-    "nome": "COOPERATIVA DE CRÉDITO DOS FORNECEDORES DE CANA DE BARRA BONITA E REGIÃO",
+    "cod": "09004796",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO SICOOB CRED-ACILPA",
     "sr": "S5",
-    "ativo_brl": 32451920.62
-   },
-   {
-    "cod": "20110153",
-    "nome": "PAGHIPER INSTITUIÇAO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 32653598.4
-   },
-   {
-    "cod": "35274306",
-    "nome": "PINTOS S.A. CREDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S5",
-    "ativo_brl": 30716782.63
+    "ativo_brl": 54457926.23
    }
   ]
  }

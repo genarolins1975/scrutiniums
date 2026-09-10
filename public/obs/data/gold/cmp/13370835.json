@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -86,7 +87,8 @@
    "202506": 1995694236.51,
    "202509": 2055900632.47,
    "202512": 2157163564.46,
-   "202603": 2483628842.09
+   "202603": 2483628842.09,
+   "202606": 2609954622.98
   },
   "patrimonio_liquido": {
    "201806": 12102214.37,
@@ -120,7 +122,8 @@
    "202506": 193223676.59,
    "202509": 195016901.72,
    "202512": 199142037.55,
-   "202603": 202635862.82
+   "202603": 202635862.82,
+   "202606": 206150610.14
   },
   "carteira_credito": {
    "201806": 0.0,
@@ -154,21 +157,24 @@
    "202506": 5512466.54,
    "202509": 8817336.55,
    "202512": 9883261.05,
-   "202603": 22764905.64
+   "202603": 22764905.64,
+   "202606": 28813074.54
   },
   "carteira_pf": {
    "202503": 278930.59,
    "202506": 2911618.03,
    "202509": 6474242.46,
    "202512": 6814681.43,
-   "202603": 13285553.02
+   "202603": 13285553.02,
+   "202606": 19588784.04
   },
   "carteira_pj": {
    "202503": 3181381.88,
    "202506": 2707614.11,
    "202509": 2473337.32,
    "202512": 3284345.01,
-   "202603": 9962739.3
+   "202603": 9962739.3,
+   "202606": 9870938.87
   },
   "captacoes": {
    "201806": 51317717.3,
@@ -202,7 +208,8 @@
    "202506": 1533743342.13,
    "202509": 1645916244.46,
    "202512": 1654901718.47,
-   "202603": 1913684205.38
+   "202603": 1913684205.38,
+   "202606": 1997770876.88
   },
   "lucro_liquido": {
    "201806": 4575864.96,
@@ -236,7 +243,8 @@
    "202506": -4244805.82999997,
    "202509": 1792053.89000001,
    "202512": 5917189.72,
-   "202603": 4256658.58999999
+   "202603": 4256658.58999999,
+   "202606": 5610683.63
   },
   "indice_basileia": {
    "202503": 14.9756372979926,
@@ -288,14 +296,16 @@
    "202506": -2.196835245510308,
    "202509": 0.9189223468297083,
    "202512": 2.9713413565502607,
-   "202603": 2.100644244686909
+   "202603": 2.100644244686909,
+   "202606": 2.721642990137017
   },
   "ativos_problematicos_pct": {
    "202503": 3.1264338390804345,
    "202506": 1.92525201494879,
    "202509": 1.21399509890707,
    "202512": 1.071235733887236,
-   "202603": 0.4653433401081736
+   "202603": 0.4653433401081736,
+   "202606": 0.4764066872888316
   },
   "cart_ativo_pct": {
    "201806": 0.0,
@@ -329,67 +339,69 @@
    "202506": 0.276217991671911,
    "202509": 0.428879509580513,
    "202512": 0.45816002146661816,
-   "202603": 0.9165985373580656
+   "202603": 0.9165985373580656,
+   "202606": 1.103968409500612
   },
   "atraso15_cartao_de_credito_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
+    "cod": "62318407",
+    "nome": "S3 CACEIS BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 2556126831.17
+   },
+   {
+    "cod": "00106180",
+    "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DOS ESTADOS DE MATO GROSSO, MATO GROSSO DO SUL E DO MUNICÍPIO DE CACOAL/RO - SICOOB CENTRAL RONDON",
+    "sr": "S4",
+    "ativo_brl": 2547146212.04
+   },
+   {
     "cod": "32223020",
     "nome": "FLASH TECNOLOGIA E  INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2378711642.16
-   },
-   {
-    "cod": "14568725",
-    "nome": "COOPERATIVA CENTRAL DE ECONOMIA E CRÉDITO SICOOB UNIMAIS RIO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 2600020885.51
-   },
-   {
-    "cod": "04632856",
-    "nome": "CREDISIS - CENTRAL DE COOPERATIVAS DE CRÉDITO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 2621348027.3
+    "ativo_brl": 2526251833.44
    },
    {
     "cod": "10878448",
     "nome": "PAYPAL DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
     "sr": null,
-    "ativo_brl": 2671580160.86
+    "ativo_brl": 2784825232.69
    },
    {
-    "cod": "33667205",
-    "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DO CENTRO NORTE DO BRASIL - CENTRAL SICREDI CENTRO NORTE",
-    "sr": "S4",
-    "ativo_brl": 2193970480.09
+    "cod": "87437687",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DO SUL E SUDESTE - CENTRAL SICREDI SUL/SUDESTE",
+    "sr": "S3",
+    "ativo_brl": 2830095876.88
    },
    {
     "cod": "16668076",
     "nome": "SUMUP INSTITUICAO DE PAGAMENTO BRASIL LTDA",
     "sr": "S4",
-    "ativo_brl": 2814576087.81
+    "ativo_brl": 2843509822.12
    },
    {
-    "cod": "37880206",
-    "nome": "CORA SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "sr": "S5",
-    "ativo_brl": 2896494198.33
+    "cod": "22177858",
+    "nome": "INTER PAG INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": "S3",
+    "ativo_brl": 2922090961.72
    },
    {
-    "cod": "07679404",
-    "nome": "BANCO TOPÁZIO S.A.",
+    "cod": "14568725",
+    "nome": "COOPERATIVA CENTRAL DE ECONOMIA E CRÉDITO SICOOB UNIMAIS RIO LTDA.",
     "sr": "S4",
-    "ativo_brl": 2126085639.0
+    "ativo_brl": 2971468160.27
    }
   ]
  }

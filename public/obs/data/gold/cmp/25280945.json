@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -93,7 +94,8 @@
    "202506": 2216503.22,
    "202509": 2438959.03,
    "202512": 2333396.75,
-   "202603": 2417905.51
+   "202603": 2417905.51,
+   "202606": 3121595.85
   },
   "patrimonio_liquido": {
    "201609": 896786.78,
@@ -134,7 +136,8 @@
    "202506": 1662802.08,
    "202509": 1749014.72,
    "202512": 1200000.0,
-   "202603": 1274950.23
+   "202603": 1274950.23,
+   "202606": 2453533.81
   },
   "carteira_credito": {
    "201609": 0.0,
@@ -175,7 +178,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201609": 0.0,
@@ -216,7 +220,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201609": -103213.22,
@@ -257,28 +262,32 @@
    "202506": 258346.8,
    "202509": 191387.64,
    "202512": 300162.67,
-   "202603": 97426.2299999999
+   "202603": 97426.2299999999,
+   "202606": 163839.81
   },
   "indice_basileia": {
    "202503": 26.310935164510802,
    "202506": 26.8337789965303,
    "202509": 26.7479792683464,
    "202512": 18.6305912137265,
-   "202603": 19.2519569555222
+   "202603": 19.2519569555222,
+   "202606": 16.612806539657498
   },
   "patrimonio_referencia": {
    "202503": 1740528.7,
    "202506": 1662802.08,
    "202509": 1749014.72,
    "202512": 1200000.0,
-   "202603": 1274950.23
+   "202603": 1274950.23,
+   "202606": 1141033.81
   },
   "rwa": {
    "202503": 774678.73,
    "202506": 742972.95,
    "202509": 930699.8,
    "202512": 891517.21,
-   "202603": 1032593.98
+   "202603": 1032593.98,
+   "202606": 1231316.43
   },
   "roe_periodo": {
    "201609": -11.509226306837396,
@@ -319,7 +328,8 @@
    "202506": 15.53683406506203,
    "202509": 10.942597441375451,
    "202512": 25.013555833333335,
-   "202603": 7.641571232157031
+   "202603": 7.641571232157031,
+   "202606": 6.6777074492403266
   },
   "cart_ativo_pct": {
    "201609": 0.0,
@@ -360,60 +370,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "18145784",
-    "nome": "NUMATUR CORRETORA DE CÂMBIO LTDA.",
+    "cod": "24235459",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS SIDERÚRGICAS, METALÚRGICAS E ELETRO-MECÂNICAS DE JOÃO MONLEVADE LTDA. - CREDIBELGO",
     "sr": "S5",
-    "ativo_brl": 2379030.67
+    "ativo_brl": 3127531.92
    },
    {
-    "cod": "34254279",
-    "nome": "NEXOOS SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "cod": "28244622",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA JOLIMODE ROUPAS E EMPRESAS COLIGADAS LTDA",
     "sr": "S5",
-    "ativo_brl": 2364492.69
+    "ativo_brl": 3103818.21
    },
    {
-    "cod": "03635061",
-    "nome": "CREDBRASIL - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-    "sr": "S5",
-    "ativo_brl": 2474635.94
+    "cod": "51982465",
+    "nome": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 3097551.57
    },
    {
-    "cod": "03674133",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS EM INSTITUIÇÕES DO SISTEMA FINANCEIRO NAS REGIÕES DE SÃO PAULO E CAMPINAS (SP) - CREDISCOOP",
+    "cod": "05658367",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO SEBRAE BAHIA LTDA.",
     "sr": "S5",
-    "ativo_brl": 2339227.24
+    "ativo_brl": 3146961.85
    },
    {
-    "cod": "11165756",
-    "nome": "GLOBAL FINANÇAS SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-    "sr": "S5",
-    "ativo_brl": 2533084.63
-   },
-   {
-    "cod": "62605290",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DAS EMPRESAS DO GRUPO INDORAMA NO BRASIL",
-    "sr": "S5",
-    "ativo_brl": 2554525.59
-   },
-   {
-    "cod": "77162881",
-    "nome": "DEBONI DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "cod": "97447304",
+    "nome": "MOMENTO DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 2279564.92
+    "ativo_brl": 3178863.58
    },
    {
-    "cod": "49035310",
-    "nome": "QUEROCRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "19324634",
+    "nome": "LAMARA SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 2273139.93
+    "ativo_brl": 3053828.13
+   },
+   {
+    "cod": "56030613",
+    "nome": "E.SIGA SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 3038212.78
+   },
+   {
+    "cod": "02192115",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA VIACAO NOSSA SENHORA DO AMPARO LTDA. - COPERFAMP",
+    "sr": "S5",
+    "ativo_brl": 3028041.48
    }
   ]
  }

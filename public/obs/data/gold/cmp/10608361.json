@@ -50,14 +50,16 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
   "provisao_credito": {
    "202512": 30174171.7,
-   "202603": 30155378.07
+   "202603": 30155378.07,
+   "202606": 28807443.49
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00"
+ "gerado_em": "2026-09-10T15:19:03+00:00"
 }

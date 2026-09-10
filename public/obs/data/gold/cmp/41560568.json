@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -67,7 +68,8 @@
    "202506": 1088618.61,
    "202509": 1112760.48,
    "202512": 1130119.03,
-   "202603": 1096761.41
+   "202603": 1096761.41,
+   "202606": 1087088.12
   },
   "patrimonio_liquido": {
    "202303": 1083727.92,
@@ -82,7 +84,8 @@
    "202506": 1076380.7,
    "202509": 1093648.18,
    "202512": 1107616.7,
-   "202603": 976815.99
+   "202603": 976815.99,
+   "202606": 1077767.85
   },
   "carteira_credito": {
    "202303": 0.0,
@@ -97,7 +100,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202303": 0.0,
@@ -112,7 +116,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "202303": 83727.92,
@@ -127,28 +132,32 @@
    "202506": -35747.94,
    "202509": 17267.48,
    "202512": 31236.0,
-   "202603": -23184.01
+   "202603": -23184.01,
+   "202606": -29848.85
   },
   "indice_basileia": {
    "202503": 99.5600686364299,
    "202506": 91.78657213241999,
    "202509": 91.20157095957691,
    "202512": 89.5507124320395,
-   "202603": 75.68222597927459
+   "202603": 75.68222597927459,
+   "202606": 84.718481473784
   },
   "patrimonio_referencia": {
    "202503": 1094202.34,
    "202506": 1076380.7,
    "202509": 1093648.18,
    "202512": 1107616.7,
-   "202603": 976815.99
+   "202603": 976815.99,
+   "202606": 1077767.85
   },
   "rwa": {
    "202503": 237993.31,
    "202506": 228532.83,
    "202509": 312995.83,
    "202512": 327771.06,
-   "202603": 382142.97
+   "202603": 382142.97,
+   "202606": 398612.05
   },
   "roe_periodo": {
    "202303": 7.725917036445827,
@@ -163,7 +172,8 @@
    "202506": -3.321124208191396,
    "202509": 1.5788880113163997,
    "202512": 2.8201091587008396,
-   "202603": -2.373426544747696
+   "202603": -2.373426544747696,
+   "202606": -2.7695064387010615
   },
   "cart_ativo_pct": {
    "202303": 0.0,
@@ -178,60 +188,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "41349521",
-    "nome": "CF GROUP SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
-    "sr": "S5",
-    "ativo_brl": 1105120.51
-   },
-   {
     "cod": "00968834",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA MOSAIC FERTILIZANTES DO BRASIL - COCRESGO LTDA.",
     "sr": "S5",
-    "ativo_brl": 1109789.05
+    "ativo_brl": 1079566.03
    },
    {
     "cod": "45341994",
     "nome": "CREDIMÓVEL SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 1120379.16
+    "ativo_brl": 1100159.82
+   },
+   {
+    "cod": "41349521",
+    "nome": "CF GROUP SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 1073827.61
+   },
+   {
+    "cod": "10280601",
+    "nome": "FIDUCIAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S5",
+    "ativo_brl": 1070394.39
+   },
+   {
+    "cod": "59855096",
+    "nome": "EURO17 SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1112707.82
+   },
+   {
+    "cod": "80202872",
+    "nome": "CORREPARTI CORRETORA DE CAMBIO LTDA",
+    "sr": "S5",
+    "ativo_brl": 1021515.45
    },
    {
     "cod": "28435685",
     "nome": "COOPERATIVA DE CRÉDITO DE CAPITAL E EMPRÉSTIMO DOS TRABALHADORES NAS EMPRESAS DE TECNOLOGIA E INFORMÁTICA DE BELO HORIZONTE E CIDADES LIMÍTROFES LTDA - COOPERINFOR",
     "sr": "S5",
-    "ativo_brl": 1135646.83
+    "ativo_brl": 1166576.55
    },
    {
-    "cod": "58674454",
-    "nome": "PB SOCIEDADE DE CREDITO DIRETO S.A.",
+    "cod": "05591437",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO SERVIDORES PÚBLICOS ATIVOS, INATIVOS E PENSIONISTAS DA ADMINISTRAÇÃO DIRETA, INDIRETA E ASSEMBLÉIA LEGISLATIVA DO ESTADO DO RIO GRANDE SUL - COOPSERGS",
     "sr": "S5",
-    "ativo_brl": 1043318.2
-   },
-   {
-    "cod": "01301541",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS BANCÁRIOS DO TRIÂNGULO LTDA.",
-    "sr": "S5",
-    "ativo_brl": 1038208.14
-   },
-   {
-    "cod": "44323831",
-    "nome": "ATUAL CORRETORA DE CÂMBIO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 1037815.47
-   },
-   {
-    "cod": "44064068",
-    "nome": "OPPENS SOCIEDADE DE EMPRESTIMO ENTRE PESSOAS S.A",
-    "sr": "S5",
-    "ativo_brl": 1160116.24
+    "ativo_brl": 1170418.53
    }
   ]
  }

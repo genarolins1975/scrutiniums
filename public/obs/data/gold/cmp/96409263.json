@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 8573633.87,
    "202509": 8696034.03,
    "202512": 8757852.29,
-   "202603": 8673376.16
+   "202603": 8673376.16,
+   "202606": 8817840.82
   },
   "patrimonio_liquido": {
    "201503": 5241877.2,
@@ -146,7 +148,8 @@
    "202506": 8420798.6,
    "202509": 8532538.33,
    "202512": 8562253.13,
-   "202603": 8518643.75
+   "202603": 8518643.75,
+   "202606": 8646689.29
   },
   "carteira_credito": {
    "201503": 4720376.83,
@@ -193,14 +196,16 @@
    "202506": 6463556.4,
    "202509": 6485858.68,
    "202512": 6479445.27,
-   "202603": 6424592.54
+   "202603": 6424592.54,
+   "202606": 6420770.79
   },
   "carteira_pf": {
    "202503": 6052159.28,
    "202506": 6492529.82,
    "202509": 6528861.8,
    "202512": 6537959.88,
-   "202603": 6495834.53
+   "202603": 6495834.53,
+   "202606": 6503295.65
   },
   "carteira_pj": {
    "202506": 48321.54,
@@ -253,7 +258,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201503": 99076.27,
@@ -300,35 +306,40 @@
    "202506": 313777.9,
    "202509": 201625.6,
    "202512": 386928.87,
-   "202603": 204959.43
+   "202603": 204959.43,
+   "202606": 412847.5
   },
   "indice_basileia": {
    "202503": 116.45186579803399,
    "202506": 115.95428528638101,
    "202509": 115.373705414751,
    "202512": 116.62245145321899,
-   "202603": 114.416736246863
+   "202603": 114.416736246863,
+   "202606": 113.654472618074
   },
   "patrimonio_referencia": {
    "202503": 8326585.56,
    "202506": 8405080.76,
    "202509": 8516820.49,
    "202512": 8544649.13,
-   "202603": 8501039.75
+   "202603": 8501039.75,
+   "202606": 8629085.29
   },
   "rwa": {
    "202503": 6802403.75,
    "202506": 6900781.65,
    "202509": 7007802.95,
    "202512": 6952622.26,
-   "202603": 7029260.21
+   "202603": 7029260.21,
+   "202606": 7191753.51
   },
   "provisao_credito": {
    "202503": 71462.82,
    "202506": 77294.96,
    "202509": 78834.71,
    "202512": 81351.04,
-   "202603": 80549.87
+   "202603": 80549.87,
+   "202606": 82524.86
   },
   "roe_periodo": {
    "201503": 1.8900913970285302,
@@ -375,7 +386,11 @@
    "202506": 3.7262249687339635,
    "202509": 2.36302014947995,
    "202512": 4.519007603784775,
-   "202603": 2.406010111644826
+   "202603": 2.406010111644826,
+   "202606": 4.774630915412482
+  },
+  "ativos_problematicos_pct": {
+   "202606": 14.592989017806685
   },
   "cart_ativo_pct": {
    "201503": 87.37017303545585,
@@ -422,21 +437,24 @@
    "202506": 75.38876161503268,
    "202509": 74.58409957487252,
    "202512": 73.98440913873874,
-   "202603": 74.07256899140415
+   "202603": 74.07256899140415,
+   "202606": 72.81568040372042
   },
   "atraso15_consignado_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "atraso15_capital_de_giro_pj": {
    "202506": 0.0,
@@ -445,57 +463,57 @@
    "202603": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "38129006",
-    "nome": "NUMBRS SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 8708871.93
+    "cod": "44459799",
+    "nome": "KLAVI INSTITUIÇÃO DE PAGAMENTOS E GESTÃO DE DADOS LTDA.",
+    "sr": null,
+    "ativo_brl": 8678800.17
    },
    {
-    "cod": "17352220",
-    "nome": "SENSO CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
+    "cod": "47133056",
+    "nome": "TRANSFERO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 8963043.68
+   },
+   {
+    "cod": "53899051",
+    "nome": "UNICRED DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 8567896.04
+    "ativo_brl": 9060137.65
    },
    {
-    "cod": "56198117",
-    "nome": "SQUID SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 8422423.9
-   },
-   {
-    "cod": "57598120",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO TELEFÔNICA",
-    "sr": "S5",
-    "ativo_brl": 8421334.83
+    "cod": "57030391",
+    "nome": "NDD INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 9120931.08
    },
    {
     "cod": "52935442",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO ALIANÇA - COOPERNITRO",
     "sr": "S5",
-    "ativo_brl": 9031484.9
+    "ativo_brl": 8487222.25
    },
    {
-    "cod": "50946592",
-    "nome": "SETHI SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "10853017",
+    "nome": "GET MONEY CORRETORA DE CÂMBIO S.A.",
     "sr": "S5",
-    "ativo_brl": 9086189.33
+    "ativo_brl": 8455278.1
    },
    {
-    "cod": "34669130",
-    "nome": "LP DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 9099804.69
+    "cod": "62280490",
+    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 9209610.78
    },
    {
     "cod": "71384697",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES NAS INDÚSTRIAS DE EXTRAÇÃO DE FERRO E METAIS BÁSICOS DA REGIÃO DE CONGONHAS LTDA. - COOFERSE",
     "sr": "S5",
-    "ativo_brl": 9115614.24
+    "ativo_brl": 9234316.25
    }
   ]
  }

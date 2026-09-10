@@ -14,8 +14,10 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "2026-T1",
-  "atualizado_em": "2026-09-09T15:18:25+00:00",
+  "data_base": "202606",
+  "data_base_universo": "202606",
+  "sem_balanco_na_data_base": null,
+  "atualizado_em": "2026-09-10T15:18:59+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 40.473.435",
   "participante_open_finance": null
@@ -29,17 +31,17 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "ROE do período de -48.8% — resultado negativo no acumulado.",
+    "texto": "ROE do período de -81.7% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
    }
   ],
   "mudancas_recentes": [
    {
-    "texto": "Ativos totais: +33.7% no trimestre.",
+    "texto": "Ativos totais: +97.5% no trimestre.",
     "base": "BCB IF.data (Olinda)"
    },
    {
-    "texto": "Patrimônio líquido: +19.1% no trimestre.",
+    "texto": "Patrimônio líquido: +17.6% no trimestre.",
     "base": "BCB IF.data (Olinda)"
    }
   ],
@@ -102,31 +104,33 @@
  "kpis": [
   {
    "label": "Ativos totais",
-   "v": 60329131.26,
+   "v": 119143511.36,
    "unit": "R$",
-   "d_tri": 33.7,
+   "d_tri": 97.5,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    44685678.41,
     42573862.3,
     49647208.64,
     45110389.69,
-    60329131.26
+    60329131.26,
+    119143511.36
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Patrimônio líquido",
-   "v": 23117477.97,
+   "v": 27186212.25,
    "unit": "R$",
-   "d_tri": 19.1,
+   "d_tri": 17.6,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    21172661.4,
     17630168.64,
     18053175.12,
     19409357.98,
-    23117477.97
+    23117477.97,
+    27186212.25
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
@@ -134,7 +138,8 @@
    "label": "Carteira de crédito",
    "v": 0.0,
    "unit": "R$",
-   "d_tri": 0.0,
+   "d_tri": null,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -147,22 +152,23 @@
   },
   {
    "label": "Lucro líquido (acum. ano IF.data)",
-   "v": -11291880.01,
+   "v": -22223145.73,
    "unit": "R$",
    "d_tri": null,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    -17376315.91,
     -30918808.67,
     -48776993.52,
     -59420810.66,
-    -11291880.01
+    -11291880.01,
+    -22223145.73
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "ROE do período (padronizado)",
-   "v": -48.85,
+   "v": -81.74,
    "unit": "%",
    "d_tri": null,
    "d_tri_tipo": "p.p.",
@@ -173,27 +179,27 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "ROE do período de -48.8% — resultado negativo no acumulado.",
+   "texto": "ROE do período de -81.7% — resultado negativo no acumulado.",
    "base": "calculado sobre IF.data"
   }
  ],
  "capital_tabela": [
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
-   "valor": 2.61,
+   "valor": 4.38,
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 13.26,
-   "percentil": 11.1
+   "mediana_grupo": 13.15,
+   "percentil": 22.2
   },
   {
    "indicador": "ROE do período",
-   "valor": -48.85,
+   "valor": -81.74,
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 2.84,
+   "mediana_grupo": 6.53,
    "percentil": 0.0
   }
  ],
@@ -244,6 +250,10 @@
    {
     "p": "2026-T1",
     "v": 141.6
+   },
+   {
+    "p": "202606",
+    "v": 279.7
    }
   ],
   "PL": [
@@ -286,6 +296,10 @@
    {
     "p": "2026-T1",
     "v": 744.5
+   },
+   {
+    "p": "202606",
+    "v": 875.5
    }
   ]
  },
@@ -293,35 +307,35 @@
  "comparacao_grupo": {
   "roe": {
    "valores": [
-    2.84,
-    5.78,
-    3.98,
-    1.68,
-    6.11,
-    2.07,
-    5.82,
-    2.69,
-    -0.15,
-    -48.85
+    6.53,
+    11.11,
+    7.52,
+    3.57,
+    11.85,
+    3.63,
+    13.83,
+    5.56,
+    2.09,
+    -81.74
    ],
-   "meu": -48.85,
-   "mediana": 2.84
+   "meu": -81.74,
+   "mediana": 6.53
   },
   "alav": {
    "valores": [
-    10.98,
-    13.58,
-    13.26,
-    13.88,
-    10.85,
-    4.12,
-    21.01,
-    20.38,
-    1.02,
-    2.61
+    11.0,
+    13.15,
+    13.16,
+    14.15,
+    11.1,
+    4.33,
+    19.4,
+    20.01,
+    1.0,
+    4.38
    ],
-   "meu": 2.61,
-   "mediana": 13.26
+   "meu": 4.38,
+   "mediana": 13.15
   }
  },
  "score_ref": {

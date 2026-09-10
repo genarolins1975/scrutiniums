@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -75,7 +76,8 @@
    "202506": 61745767.46,
    "202509": 69976779.62,
    "202512": 67196865.48,
-   "202603": 77359314.74
+   "202603": 77359314.74,
+   "202606": 77903687.84
   },
   "patrimonio_liquido": {
    "202103": 1438810.46,
@@ -98,7 +100,8 @@
    "202506": 9742299.59,
    "202509": 12744360.82,
    "202512": 7297148.05,
-   "202603": 16170182.22
+   "202603": 16170182.22,
+   "202606": 20697805.93
   },
   "carteira_credito": {
    "202103": 0.0,
@@ -121,7 +124,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202103": 0.0,
@@ -144,7 +148,8 @@
    "202506": 0.0,
    "202509": 49634801.24,
    "202512": 51165267.6,
-   "202603": 56025016.91
+   "202603": 56025016.91,
+   "202606": 49902333.24
   },
   "lucro_liquido": {
    "202103": -61189.54,
@@ -167,42 +172,48 @@
    "202506": 4239247.09,
    "202509": 3354256.59,
    "202512": 6726467.18000001,
-   "202603": 4373034.17
+   "202603": 4373034.17,
+   "202606": 8900657.88
   },
   "indice_basileia": {
    "202503": 22.2103438084773,
    "202506": 26.2768285792525,
    "202509": 32.9579204304027,
    "202512": 15.915581189071402,
-   "202603": 29.3387338159598
+   "202603": 29.3387338159598,
+   "202606": 40.0900305286992
   },
   "indice_capital_principal": {
    "202503": 22.2103438084773,
    "202506": 26.2768285792525,
    "202509": 32.9579204304027,
    "202512": 15.915581189071402,
-   "202603": 29.3387338159598
+   "202603": 29.3387338159598,
+   "202606": 40.0900305286992
   },
   "indice_capital_nivel1": {
    "202503": 22.2103438084773,
    "202506": 26.2768285792525,
    "202509": 32.9579204304027,
    "202512": 15.915581189071402,
-   "202603": 29.3387338159598
+   "202603": 29.3387338159598,
+   "202606": 40.0900305286992
   },
   "patrimonio_referencia": {
    "202503": 7472815.45,
    "202506": 9742299.59,
    "202509": 12744360.82,
    "202512": 7297148.05,
-   "202603": 16170182.22
+   "202603": 16170182.22,
+   "202606": 20697805.93
   },
   "rwa": {
    "202503": 7055418.84,
    "202506": 10483529.81,
    "202509": 5195409.77,
    "202512": 12384821.39,
-   "202603": 15701955.42
+   "202603": 15701955.42,
+   "202606": 12209487.23
   },
   "roe_periodo": {
    "202103": -4.252786708264548,
@@ -225,7 +236,8 @@
    "202506": 43.51382392665673,
    "202509": 26.31953565482933,
    "202512": 92.17939849802019,
-   "202603": 27.043815032530905
+   "202603": 27.043815032530905,
+   "202606": 43.00290528427039
   },
   "cart_ativo_pct": {
    "202103": 0.0,
@@ -248,60 +260,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "34878543",
-    "nome": "CLARO PAY S.A. - INSTITUIÇÃO DE PAGAMENTO",
-    "sr": null,
-    "ativo_brl": 77231928.67
+    "cod": "13178690",
+    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DE PERNAMBUCO S.A.",
+    "sr": "S4",
+    "ativo_brl": 77787331.75
    },
    {
-    "cod": "37753531",
-    "nome": "TRANSFERSMILE INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 76893665.26
-   },
-   {
-    "cod": "06339468",
-    "nome": "GRAZZIOTIN FINANCEIRA S/A - CRÉDITO, FINANCIAMENTO E INVESTIMENTOS",
+    "cod": "03139644",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DO ESTADO DE SÃO PAULO - CREDIPAULISTA",
     "sr": "S5",
-    "ativo_brl": 77973912.24
+    "ativo_brl": 77111837.38
+   },
+   {
+    "cod": "26191078",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO SUL DO MARANHÃO - SICREDI SUL DO MARANHÃO",
+    "sr": "S4",
+    "ativo_brl": 76861608.56
    },
    {
     "cod": "19402130",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FUNDAÇÃO HOSPITALAR E EMPREGADOS DOS ESTABELECIMENTOS HOSPITALARES DE BELO HORIZONTE, REGIÃO METROPOLITANA E ZONA DA MATA LTDA.- SICOOB CECREF",
     "sr": "S5",
-    "ativo_brl": 76341527.61
-   },
-   {
-    "cod": "59379565",
-    "nome": "99PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 78809028.1
-   },
-   {
-    "cod": "68757681",
-    "nome": "SIMPAUL CORRETORA DE CAMBIO E VALORES MOBILIARIOS  S.A.",
-    "sr": "S4",
-    "ativo_brl": 78810770.38
-   },
-   {
-    "cod": "33924028",
-    "nome": "COOPERATIVA DE CRÉDITO CLÁSSICA DOS EMPREGADOS DA VALE S/A E ENTIDADES VINCULADAS LTDA. - SICOOB COOPVALE",
-    "sr": "S5",
-    "ativo_brl": 75823773.0
+    "ativo_brl": 79194399.54
    },
    {
     "cod": "80271455",
     "nome": "BANCO RNX S.A.",
     "sr": "S4",
-    "ativo_brl": 79466638.86
+    "ativo_brl": 75906470.62
+   },
+   {
+    "cod": "92935741",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO BANRISUL",
+    "sr": "S5",
+    "ativo_brl": 80342546.18
+   },
+   {
+    "cod": "28650236",
+    "nome": "GALAPAGOS CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 80676986.26
+   },
+   {
+    "cod": "33588252",
+    "nome": "BANCO INDUSCRED DE INVESTIMENTO S.A.",
+    "sr": "S4",
+    "ativo_brl": 80988231.79
    }
   ]
  }

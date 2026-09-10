@@ -50,112 +50,123 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
   "ativo_total": {
    "202509": 134476857.98,
    "202512": 130109103.27,
-   "202603": 121694062.26
+   "202603": 121694062.26,
+   "202606": 129822080.97
   },
   "patrimonio_liquido": {
    "202509": 16272611.9,
    "202512": 16371074.33,
-   "202603": 16242124.99
+   "202603": 16242124.99,
+   "202606": 16132242.67
   },
   "carteira_credito": {
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202509": 1448768.25,
    "202512": 1347062.19,
-   "202603": 1250143.59
+   "202603": 1250143.59,
+   "202606": 1144865.81
   },
   "lucro_liquido": {
    "202509": -525771.279999999,
    "202512": -428277.85,
-   "202603": -128949.339999999
+   "202603": -128949.339999999,
+   "202606": -238831.66
   },
   "indice_basileia": {
    "202509": 21.8362332633968,
    "202512": 22.0266218392912,
-   "202603": 21.4287043848805
+   "202603": 21.4287043848805,
+   "202606": 19.9077034381976
   },
   "patrimonio_referencia": {
    "202509": 16272611.9,
    "202512": 16371074.33,
-   "202603": 16242124.99
+   "202603": 16242124.99,
+   "202606": 16132242.67
   },
   "rwa": {
    "202509": 34681644.5,
    "202512": 34011199.05,
-   "202603": 37570697.0
+   "202603": 37570697.0,
+   "202606": 43460451.13
   },
   "roe_periodo": {
    "202509": -3.2310196004858875,
    "202512": -2.6160644156088195,
-   "202603": -0.7939191459208135
+   "202603": -0.7939191459208135,
+   "202606": -1.480461612718847
   },
   "cart_ativo_pct": {
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:04+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "51489318",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MAGISTRADOS DE SÃO PAULO - MAGISCRED",
+    "cod": "35136120",
+    "nome": "NVIO BRASIL BITSO INSTITUIÇÃO DE PAGAMENTO LTDA",
     "sr": "S5",
-    "ativo_brl": 122296385.3
+    "ativo_brl": 131222425.05
    },
    {
-    "cod": "03862898",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO DE LIVRE ADMISSÃO DOS EMPREGADOS DOS CORREIOS LTDA. - SICOOB COOPERCORREIOS",
-    "sr": "S5",
-    "ativo_brl": 123057104.23
-   },
-   {
-    "cod": "58290800",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION",
-    "sr": "S5",
-    "ativo_brl": 123689800.09
-   },
-   {
-    "cod": "23114447",
-    "nome": "FLAGSHIP INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "34471744",
+    "nome": "PAGME INSTITUIÇÃO DE PAGAMENTO LTDA.",
     "sr": null,
-    "ativo_brl": 124118547.6
-   },
-   {
-    "cod": "01648418",
-    "nome": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
-    "sr": null,
-    "ativo_brl": 118103622.16
+    "ativo_brl": 132048396.42
    },
    {
     "cod": "37715993",
     "nome": "ACCREDITO - SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 117862927.66
+    "ativo_brl": 132610891.09
    },
    {
-    "cod": "17079937",
-    "nome": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "cod": "09488496",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL COOPERACRED",
+    "sr": "S5",
+    "ativo_brl": 127041967.97
+   },
+   {
+    "cod": "58290800",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION",
+    "sr": "S5",
+    "ativo_brl": 126610426.26
+   },
+   {
+    "cod": "06078926",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS ESCRIVÃES, NOTÁRIOS E REGISTRADORES NO ESTADO DO PARANÁ - SICREDI CREDENOREG PR",
     "sr": "S4",
-    "ativo_brl": 125884676.6
+    "ativo_brl": 133305153.38
    },
    {
-    "cod": "37511258",
-    "nome": "INOVANTI INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "sr": null,
-    "ativo_brl": 117440118.62
+    "cod": "11414839",
+    "nome": "EAGLE INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": "S5",
+    "ativo_brl": 133375683.31
+   },
+   {
+    "cod": "32648370",
+    "nome": "FAIR CORRETORA DE CAMBIO S.A.",
+    "sr": "S4",
+    "ativo_brl": 126171058.3
    }
   ]
  }

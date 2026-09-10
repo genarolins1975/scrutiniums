@@ -3,7 +3,7 @@
  "nome": "RB INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LIMITADA",
  "sr": "S4",
  "tcb": "N2",
- "porte_quartil": "P2",
+ "porte_quartil": null,
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -284,35 +285,40 @@
    "202506": 14.4022309810404,
    "202509": 16.1392428379185,
    "202512": 17.6159846993834,
-   "202603": 18.2884792944186
+   "202603": 18.2884792944186,
+   "202606": 19.0026798367934
   },
   "indice_capital_principal": {
    "202503": 15.8716240171289,
    "202506": 14.4022309810404,
    "202509": 16.1392428379185,
    "202512": 17.6159846993834,
-   "202603": 18.2884792944186
+   "202603": 18.2884792944186,
+   "202606": 19.0026798367934
   },
   "indice_capital_nivel1": {
    "202503": 15.8716240171289,
    "202506": 14.4022309810404,
    "202509": 16.1392428379185,
    "202512": 17.6159846993834,
-   "202603": 18.2884792944186
+   "202603": 18.2884792944186,
+   "202606": 19.0026798367934
   },
   "patrimonio_referencia": {
    "202503": 6215988.95,
    "202506": 5612200.61,
    "202509": 6013151.8,
    "202512": 6509927.66,
-   "202603": 6921439.77
+   "202603": 6921439.77,
+   "202606": 7295710.64
   },
   "rwa": {
    "202503": 780012.93,
    "202506": 437223.15,
    "202509": 1252120.4,
    "202512": 946979.38,
-   "202603": 1215716.36
+   "202603": 1215716.36,
+   "202606": 1594885.77
   },
   "roe_periodo": {
    "201503": 55.87669580364242,
@@ -405,58 +411,5 @@
    "202603": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
- "semelhantes": {
-  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
-  "lista": [
-   {
-    "cod": "35274306",
-    "nome": "PINTOS S.A. CREDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S5",
-    "ativo_brl": 30716782.63
-   },
-   {
-    "cod": "51118615",
-    "nome": "INTEGRAÇÃO DE CRÉDITO E COBRANÇA SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 30634661.3
-   },
-   {
-    "cod": "04831810",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DE PINHÃO - CRESERV CREDISIS",
-    "sr": "S5",
-    "ativo_brl": 30634043.26
-   },
-   {
-    "cod": "48718183",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ERICSSON - COOPERICSSON",
-    "sr": "S5",
-    "ativo_brl": 31551551.63
-   },
-   {
-    "cod": "18394228",
-    "nome": "CDC SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 30340777.18
-   },
-   {
-    "cod": "18684408",
-    "nome": "AZIMUT BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
-    "sr": "S4",
-    "ativo_brl": 31675967.85
-   },
-   {
-    "cod": "40434681",
-    "nome": "AZUMI DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 31699325.86
-   },
-   {
-    "cod": "03535065",
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB CREDMETAL",
-    "sr": "S5",
-    "ativo_brl": 30011301.34
-   }
-  ]
- }
+ "gerado_em": "2026-09-10T15:19:03+00:00"
 }

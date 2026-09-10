@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 318206346.61,
    "202509": 305847001.68,
    "202512": 365260119.97,
-   "202603": 327135858.54
+   "202603": 327135858.54,
+   "202606": 370283451.64
   },
   "patrimonio_liquido": {
    "201503": 23337806.51,
@@ -146,7 +148,8 @@
    "202506": 222635174.86,
    "202509": 231829641.99,
    "202512": 243207483.44,
-   "202603": 253108207.43
+   "202603": 253108207.43,
+   "202606": 266605392.88
   },
   "carteira_credito": {
    "201503": 0.0,
@@ -193,7 +196,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201503": 0.0,
@@ -240,7 +244,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 23678467.44,
-   "202603": 3748450.16
+   "202603": 3748450.16,
+   "202606": 1443629.77
   },
   "lucro_liquido": {
    "201503": 2290771.29,
@@ -287,42 +292,48 @@
    "202506": 12264873.13,
    "202509": 9395882.86,
    "202512": 21453963.87,
-   "202603": 9783209.84
+   "202603": 9783209.84,
+   "202606": 22646278.32
   },
   "indice_basileia": {
    "202503": 47.8198124709586,
    "202506": 42.0058814084706,
    "202509": 44.647288297348496,
    "202512": 47.2613423873228,
-   "202603": 51.764502319240805
+   "202603": 51.764502319240805,
+   "202606": 50.5281762620304
   },
   "indice_capital_principal": {
    "202503": 47.8198124709586,
    "202506": 42.0058814084706,
    "202509": 44.647288297348496,
    "202512": 47.2613423873228,
-   "202603": 51.764502319240805
+   "202603": 51.764502319240805,
+   "202606": 50.5281762620304
   },
   "indice_capital_nivel1": {
    "202503": 47.8198124709586,
    "202506": 42.0058814084706,
    "202509": 44.647288297348496,
    "202512": 47.2613423873228,
-   "202603": 51.764502319240805
+   "202603": 51.764502319240805,
+   "202606": 50.5281762620304
   },
   "patrimonio_referencia": {
    "202503": 217545233.12,
    "202506": 220930891.38,
    "202509": 230242814.9,
    "202512": 241738112.74,
-   "202603": 251756293.12
+   "202603": 251756293.12,
+   "202606": 265370934.96
   },
   "rwa": {
    "202503": 63803275.28,
    "202506": 82753662.83,
    "202509": 71439606.66,
    "202512": 88529839.62,
-   "202603": 76330666.0
+   "202603": 76330666.0,
+   "202606": 97384486.89
   },
   "roe_periodo": {
    "201503": 9.815709497027619,
@@ -369,7 +380,8 @@
    "202506": 5.508955688476692,
    "202509": 4.052925579035873,
    "202512": 8.821259759999432,
-   "202603": 3.865228211813582
+   "202603": 3.865228211813582,
+   "202606": 8.49430616363907
   },
   "cart_ativo_pct": {
    "201503": 0.0,
@@ -416,60 +428,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "28080769",
-    "nome": "BOLT CARD INSTITUIÇÃO DE PAGAMENTOS LTDA.",
+    "cod": "51342763",
+    "nome": "REVOLUT SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 370004687.76
+   },
+   {
+    "cod": "97489280",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO SICREDI INTEGRAÇÃO BAHIA - SICREDI INTEGRAÇÃO BAHIA",
     "sr": "S4",
-    "ativo_brl": 327449497.4
+    "ativo_brl": 369319000.32
    },
    {
-    "cod": "07070495",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO EMPREENDEDORES - SICREDI EMPREENDEDORES PR",
+    "cod": "03183937",
+    "nome": "AGÊNCIA DE FOMENTO DO ESTADO DO AMAZONAS S.A. - AFEAM",
     "sr": "S4",
-    "ativo_brl": 326572136.79
+    "ativo_brl": 367623027.59
    },
    {
-    "cod": "05425526",
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL DESENVOLVIMENTO",
+    "cod": "04379829",
+    "nome": "NEGRESCO S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTOS",
     "sr": "S5",
-    "ativo_brl": 327740782.95
+    "ativo_brl": 367063484.23
    },
    {
-    "cod": "00122327",
-    "nome": "SANTINVEST S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTOS",
+    "cod": "02876918",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB NORTE SUL LTDA",
     "sr": "S5",
-    "ativo_brl": 328839278.57
+    "ativo_brl": 365231633.15
    },
    {
-    "cod": "03918382",
-    "nome": "AGENCIA DE FOMENTO DE GOIAS S/A",
-    "sr": "S4",
-    "ativo_brl": 325330021.13
-   },
-   {
-    "cod": "07194313",
-    "nome": "COOPERATIVA DE CRÉDITO HORIZONTE - SICOOB HORIZONTE",
+    "cod": "37631058",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE PALMEIRAS E REGIÃO LTDA.",
     "sr": "S5",
-    "ativo_brl": 329621573.05
+    "ativo_brl": 362439574.89
    },
    {
-    "cod": "01439107",
-    "nome": "BARRACRED - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO",
+    "cod": "01073966",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DE ABELARDO LUZ - SULCREDI/CREDILUZ",
     "sr": "S5",
-    "ativo_brl": 329926719.62
+    "ativo_brl": 378719870.02
    },
    {
-    "cod": "94243839",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DO VALE DAS ANTAS LTDA. - UNICRED PIONEIRA",
+    "cod": "04565791",
+    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE ARATIBA - CRESOL ARATIBA",
     "sr": "S5",
-    "ativo_brl": 330433297.43
+    "ativo_brl": 378912420.4
    }
   ]
  }

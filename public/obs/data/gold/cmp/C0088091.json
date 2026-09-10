@@ -50,10 +50,14 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
+  "carteira_pf": {
+   "202606": 5194419.36
+  },
   "indice_basileia": {
    "202503": 87.1652909383196
   },
@@ -62,7 +66,22 @@
   },
   "rwa": {
    "202503": 3916872.86
+  },
+  "npl_pct": {
+   "202606": 31.862031832562703
+  },
+  "ativos_problematicos_pct": {
+   "202606": 31.862031832562703
+  },
+  "atraso15_cartao_de_credito_pf": {
+   "202606": 0.0
+  },
+  "atraso15_consignado_pf": {
+   "202606": 3.529524622572245
+  },
+  "atraso15_credito_pessoal_pf": {
+   "202606": 63.85150770479494
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00"
+ "gerado_em": "2026-09-10T15:19:04+00:00"
 }

@@ -3,7 +3,7 @@
  "nome": "SUL AMERICA INVESTIMENTOS DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS S.A.",
  "sr": "S4",
  "tcb": "N2",
- "porte_quartil": "P3",
+ "porte_quartil": "P2",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 212716643.85,
    "202509": 242775233.57,
    "202512": 261957559.44,
-   "202603": 270455820.14
+   "202603": 270455820.14,
+   "202606": 228176285.56
   },
   "patrimonio_liquido": {
    "201503": 41525259.33,
@@ -146,7 +148,8 @@
    "202506": 185349838.98,
    "202509": 212457175.47,
    "202512": 209831007.73,
-   "202603": 228745537.56
+   "202603": 228745537.56,
+   "202606": 197217803.82
   },
   "carteira_credito": {
    "201503": 0.0,
@@ -193,7 +196,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201503": 0.0,
@@ -240,7 +244,8 @@
    "202506": 1155593.23,
    "202509": 1207923.2,
    "202512": 1122091.77,
-   "202603": 1033770.12
+   "202603": 1033770.12,
+   "202606": 942886.02
   },
   "lucro_liquido": {
    "201503": 4594018.13,
@@ -287,42 +292,48 @@
    "202506": 31565714.52,
    "202509": 27107343.9,
    "202512": 42595016.07,
-   "202603": 19105690.99
+   "202603": 19105690.99,
+   "202606": 30391082.09
   },
   "indice_basileia": {
    "202503": 126.678866166012,
    "202506": 115.082869368097,
    "202509": 107.88707966409198,
    "202512": 99.58146911479821,
-   "202603": 113.651529178069
+   "202603": 113.651529178069,
+   "202606": 92.7405462696297
   },
   "indice_capital_principal": {
    "202503": 126.678866166012,
    "202506": 115.082869368097,
    "202509": 107.88707966409198,
    "202512": 99.58146911479821,
-   "202603": 113.651529178069
+   "202603": 113.651529178069,
+   "202606": 92.7405462696297
   },
   "indice_capital_nivel1": {
    "202503": 126.678866166012,
    "202506": 115.082869368097,
    "202509": 107.88707966409198,
    "202512": 99.58146911479821,
-   "202603": 113.651529178069
+   "202603": 113.651529178069,
+   "202606": 92.7405462696297
   },
   "patrimonio_referencia": {
    "202503": 227901393.02,
    "202506": 184867323.77,
    "202509": 211923713.57,
    "202512": 209201515.59,
-   "202603": 227941506.55
+   "202603": 227941506.55,
+   "202606": 196281839.47
   },
   "rwa": {
    "202503": 85248798.12,
    "202506": 65982410.71,
    "202509": 89730464.25,
    "202512": 103380191.85,
-   "202603": 84188764.76
+   "202603": 84188764.76,
+   "202606": 95273202.55
   },
   "roe_periodo": {
    "201503": 11.063189499893245,
@@ -369,7 +380,8 @@
    "202506": 17.03034364297779,
    "202509": 12.758968408590036,
    "202512": 20.299676644935687,
-   "202603": 8.352377578071254
+   "202603": 8.352377578071254,
+   "202606": 15.409907980588727
   },
   "cart_ativo_pct": {
    "201503": 0.0,
@@ -416,60 +428,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "00694877",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DO BRASIL CENTRAL LTDA. - SICOOB EXECUTIVO",
-    "sr": "S5",
-    "ativo_brl": 270927938.95
-   },
-   {
-    "cod": "06910457",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE SANTA CRUZ DAS PALMEIRAS E REGIÃO",
-    "sr": "S5",
-    "ativo_brl": 269157035.04
-   },
-   {
-    "cod": "71230338",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ARCOS LTDA. - SICOOB ARCOMCREDI",
-    "sr": "S5",
-    "ativo_brl": 267060672.97
-   },
-   {
-    "cod": "00411939",
-    "nome": "FINAMAX S.A. - CREDITO, FINANCIAMENTO E INVESTIMENTO",
-    "sr": "S5",
-    "ativo_brl": 274640207.03
-   },
-   {
-    "cod": "25363615",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB COOPJUS LTDA.",
-    "sr": "S5",
-    "ativo_brl": 274663029.59
-   },
-   {
-    "cod": "09437293",
-    "nome": "BRINKS PAY INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "29759316",
+    "nome": "SERVNET INSTITUIÇÃO DE PAGAMENTO LTDA.",
     "sr": null,
-    "ativo_brl": 274813381.89
+    "ativo_brl": 226716821.19
    },
    {
-    "cod": "20308187",
-    "nome": "PROVER PROMOCAO DE VENDAS INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "02031139",
+    "nome": "SICOOB CREDIMONTES - COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO REGIONAL DE MONTES CLAROS LTDA",
     "sr": "S5",
-    "ativo_brl": 265598233.18
+    "ativo_brl": 226339201.91
    },
    {
-    "cod": "35523352",
-    "nome": "BEES INSTITUICAO DE PAGAMENTO LTDA.",
+    "cod": "62928320",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FEDERAÇÃO DO COMÉRCIO, SESC E SENAC DE SÃO PAULO",
+    "sr": "S5",
+    "ativo_brl": 231371847.59
+   },
+   {
+    "cod": "10868663",
+    "nome": "ACG INSTITUIÇÃO DE PAGAMENTO S.A.",
     "sr": null,
-    "ativo_brl": 264151645.62
+    "ativo_brl": 231820869.08
+   },
+   {
+    "cod": "04886317",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS INTEGRANTES DA MAGISTRATURA E DO MINISTÉRIO PÚBLICO NO ESTADO DO PARANÁ - SICREDI CREDJURIS",
+    "sr": "S4",
+    "ativo_brl": 231904880.94
+   },
+   {
+    "cod": "12815827",
+    "nome": "ROADCARD INSTITUICAO DE PAGAMENTO INTEGRADO DA LOGISTICA S.A.",
+    "sr": null,
+    "ativo_brl": 233621620.74
+   },
+   {
+    "cod": "01699652",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DA REGIÃO DE GUAXUPÉ LTDA. - SICOOB ACICREDI",
+    "sr": "S5",
+    "ativo_brl": 235463060.18
+   },
+   {
+    "cod": "05463934",
+    "nome": "COOPERATIVA DE CREDITO CREDLIDER - SICOOB CREDLIDER",
+    "sr": "S5",
+    "ativo_brl": 236594191.65
    }
   ]
  }

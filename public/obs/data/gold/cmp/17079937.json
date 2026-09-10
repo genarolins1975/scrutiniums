@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -69,7 +70,8 @@
    "202506": 238098948.48,
    "202509": 283443523.74,
    "202512": 260102112.58,
-   "202603": 125884676.6
+   "202603": 125884676.6,
+   "202606": 167871717.19
   },
   "patrimonio_liquido": {
    "202209": 26940811.44,
@@ -86,7 +88,8 @@
    "202506": 21027814.51,
    "202509": 20215234.24,
    "202512": 15405379.72,
-   "202603": 8930210.07999999
+   "202603": 8930210.07999999,
+   "202606": 16207317.75
   },
   "carteira_credito": {
    "202209": 0.0,
@@ -103,21 +106,24 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "carteira_pf": {
    "202503": 173607.81,
    "202506": 647943.53,
    "202509": 2567318.44,
    "202512": 209174.41,
-   "202603": 195813.23
+   "202603": 195813.23,
+   "202606": 183888.78
   },
   "carteira_pj": {
    "202503": 15302.91,
    "202506": 374203.09,
    "202509": 40982.4,
    "202512": 41607.12,
-   "202603": 42241.4
+   "202603": 42241.4,
+   "202606": 42885.32
   },
   "captacoes": {
    "202209": 128507684.56,
@@ -134,7 +140,8 @@
    "202506": 155639282.81,
    "202509": 208997318.0,
    "202512": 149096332.01,
-   "202603": 85504879.13
+   "202603": 85504879.13,
+   "202606": 72427133.1
   },
   "lucro_liquido": {
    "202209": 4905543.58,
@@ -151,14 +158,16 @@
    "202506": -7097142.14,
    "202509": -812580.270000001,
    "202512": -5622434.79000001,
-   "202603": -5899655.61
+   "202603": -5899655.61,
+   "202606": 1377452.06
   },
   "provisao_credito": {
    "202503": 9407.01,
    "202506": 38050.54,
    "202509": 98785.78,
    "202512": 83323.97,
-   "202603": 104703.81
+   "202603": 104703.81,
+   "202606": 124604.75
   },
   "roe_periodo": {
    "202209": 18.208596244122628,
@@ -175,25 +184,29 @@
    "202506": -33.751211456734495,
    "202509": -4.019643108523293,
    "202512": -36.49656738224178,
-   "202603": -66.06401817145165
+   "202603": -66.06401817145165,
+   "202606": 8.498951407304888
   },
   "npl_pct": {
    "202503": 6.026629933970925,
    "202509": 3.562678375704545,
    "202512": 61.51322627308319,
-   "202603": 66.41897702220705
+   "202603": 66.41897702220705,
+   "202606": 68.75507829156857
   },
   "ativos_problematicos_pct": {
    "202503": 6.026629933970925,
    "202509": 9.352268199246526,
    "202512": 78.10420887056554,
-   "202603": 84.16339140305735
+   "202603": 84.16339140305735,
+   "202606": 87.66610913680178
   },
   "cobertura_pct": {
    "202503": 82.62671333646611,
    "202509": 106.30657698753312,
    "202512": 54.013945331701585,
-   "202603": 66.22068521052446
+   "202603": 66.22068521052446,
+   "202606": 79.91648340343504
   },
   "cart_ativo_pct": {
    "202209": 0.0,
@@ -210,67 +223,69 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "atraso15_capital_de_giro_pj": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "02904138",
-    "nome": "COOPERATIVA DE CRÉDITO RURAL E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE ÁUREA - CRESOL ÁUREA",
+    "cod": "49654502",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DOS FORNECEDORES DE CANA DA REGIÃO DE CATANDUVA-COFOCRED",
     "sr": "S5",
-    "ativo_brl": 126744889.93
+    "ativo_brl": 169215959.26
    },
    {
-    "cod": "06078926",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS ESCRIVÃES, NOTÁRIOS E REGISTRADORES NO ESTADO DO PARANÁ - SICREDI CREDENOREG PR",
+    "cod": "46277273",
+    "nome": "GPATIVA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO PÃO DE AÇÚCAR",
+    "sr": "S5",
+    "ativo_brl": 170226430.16
+   },
+   {
+    "cod": "12481100",
+    "nome": "BIZ INSTITUIÇÃO DE PAGAMENTO S.A.",
     "sr": "S4",
-    "ativo_brl": 127271235.33
+    "ativo_brl": 164526893.37
    },
    {
-    "cod": "23114447",
-    "nome": "FLAGSHIP INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "20757199",
+    "nome": "PAY4FUN INSTITUICAO DE PAGAMENTO S.A.",
     "sr": null,
-    "ativo_brl": 124118547.6
+    "ativo_brl": 171605740.53
    },
    {
-    "cod": "09488496",
-    "nome": "COOPERATIVA DE CRÉDITO E ECONOMIA COM INTERAÇÃO SOLIDÁRIA - CRESOL COOPERACRED",
+    "cod": "02448839",
+    "nome": "COOPERATIVA DE CRÉDITO DE RIO RUFINO - SICOOB CREDIUNIÃO",
     "sr": "S5",
-    "ativo_brl": 127680329.72
+    "ativo_brl": 172499314.83
    },
    {
-    "cod": "58290800",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION",
+    "cod": "02562412",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES DO GRUPO SÃO MARTINHO   USICRED",
     "sr": "S5",
-    "ativo_brl": 123689800.09
+    "ativo_brl": 161051624.36
    },
    {
-    "cod": "35136120",
-    "nome": "NVIO BRASIL BITSO INSTITUIÇÃO DE PAGAMENTO LTDA",
+    "cod": "45691128",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO E BENEFÍCIOS SOCIAIS BECOOPER",
     "sr": "S5",
-    "ativo_brl": 128666016.45
+    "ativo_brl": 159468832.17
    },
    {
-    "cod": "03862898",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO DE LIVRE ADMISSÃO DOS EMPREGADOS DOS CORREIOS LTDA. - SICOOB COOPERCORREIOS",
+    "cod": "04572960",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MILITARES ESTADUAIS DE SANTA CATARINA - CREDPOM",
     "sr": "S5",
-    "ativo_brl": 123057104.23
-   },
-   {
-    "cod": "04894460",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA JUSTIÇA DO ESTADO DE MINAS GERAIS LTDA. - SICOOB CREDJUS",
-    "sr": "S5",
-    "ativo_brl": 129060309.3
+    "ativo_brl": 177348235.63
    }
   ]
  }

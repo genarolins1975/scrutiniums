@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -69,6 +70,21 @@
   "lucro_liquido": {
    "202412": 4555369.03
   },
+  "indice_basileia": {
+   "202606": 12.2517232419055
+  },
+  "indice_capital_principal": {
+   "202606": 12.2517232419055
+  },
+  "indice_capital_nivel1": {
+   "202606": 12.2517232419055
+  },
+  "patrimonio_referencia": {
+   "202606": 22257220.77
+  },
+  "rwa": {
+   "202606": 28640829.81
+  },
   "roe_periodo": {
    "202412": 70.93199329366875
   },
@@ -76,5 +92,5 @@
    "202412": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00"
+ "gerado_em": "2026-09-10T15:19:03+00:00"
 }

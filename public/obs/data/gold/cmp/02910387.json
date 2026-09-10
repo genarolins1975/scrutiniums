@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 2513278.58,
    "202509": 2581531.5,
    "202512": 2632923.19,
-   "202603": 2692089.06
+   "202603": 2692089.06,
+   "202606": 2733871.75
   },
   "patrimonio_liquido": {
    "201503": 2239964.92,
@@ -146,7 +148,8 @@
    "202506": 2441147.82,
    "202509": 2513838.54,
    "202512": 2522093.15,
-   "202603": 2624673.14
+   "202603": 2624673.14,
+   "202606": 2669111.15
   },
   "carteira_credito": {
    "201503": 1860659.4,
@@ -193,14 +196,16 @@
    "202506": 1321026.39,
    "202509": 1378567.89,
    "202512": 1342394.62,
-   "202603": 1349318.82
+   "202603": 1349318.82,
+   "202606": 1248075.09
   },
   "carteira_pf": {
    "202503": 1321094.09,
    "202506": 1341423.27,
    "202509": 1398368.69,
    "202512": 1362113.33,
-   "202603": 1365927.77
+   "202603": 1365927.77,
+   "202606": 1263822.65
   },
   "captacoes": {
    "201503": 0.0,
@@ -247,7 +252,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201503": 45523.56,
@@ -294,35 +300,40 @@
    "202506": 65875.16,
    "202509": 34905.55,
    "202512": 69533.14,
-   "202603": 24370.26
+   "202603": 24370.26,
+   "202606": 53929.96
   },
   "indice_basileia": {
    "202503": 118.09592942501801,
    "202506": 121.613589967738,
    "202509": 119.494908617228,
    "202512": 118.993119394437,
-   "202603": 120.144655517414
+   "202603": 120.144655517414,
+   "202606": 122.66494267633502
   },
   "patrimonio_referencia": {
    "202503": 2406182.36,
    "202506": 2451442.99,
    "202509": 2524133.71,
    "202512": 2522093.15,
-   "202603": 2624673.14
+   "202603": 2624673.14,
+   "202606": 2669111.15
   },
   "rwa": {
    "202503": 1900825.02,
    "202506": 1879107.84,
    "202509": 1965461.21,
    "202512": 1972653.99,
-   "202603": 2023913.19
+   "202603": 2023913.19,
+   "202606": 2015255.43
   },
   "provisao_credito": {
    "202503": 23867.74,
    "202506": 20396.88,
    "202509": 19759.06,
    "202512": 19718.71,
-   "202603": 16608.95
+   "202603": 16608.95,
+   "202606": 15747.56
   },
   "roe_periodo": {
    "201503": 2.0323336135103403,
@@ -369,7 +380,8 @@
    "202506": 2.698532201134793,
    "202509": 1.3885358762937894,
    "202512": 2.7569616134122565,
-   "202603": 0.9285064730002913
+   "202603": 0.9285064730002913,
+   "202606": 2.020521325985244
   },
   "npl_pct": {
    "202503": 0.6721368347049376
@@ -428,74 +440,77 @@
    "202506": 52.56187676576624,
    "202509": 53.40116477370119,
    "202512": 50.9849518245916,
-   "202603": 50.12162636253943
+   "202603": 50.12162636253943,
+   "202606": 45.65229111424119
   },
   "atraso15_consignado_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 0.2552178146079412,
    "202506": 0.0735700661109129,
    "202509": 0.0,
    "202512": 0.2578000426220803,
-   "202603": 0.04751891727666489
+   "202603": 0.04751891727666489,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "48703302",
-    "nome": "FINAZO SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "18145784",
+    "nome": "NUMATUR CORRETORA DE CÂMBIO LTDA.",
     "sr": "S5",
-    "ativo_brl": 2701761.34
+    "ativo_brl": 2708974.12
    },
    {
     "cod": "23010182",
     "nome": "GOOD CORRETORA DE CÂMBIO LTDA",
     "sr": "S5",
-    "ativo_brl": 2703379.65
+    "ativo_brl": 2665289.83
+   },
+   {
+    "cod": "02230138",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DE KYN COMÉRCIO VAREJISTA E ATACADISTA - COOPER KYN",
+    "sr": "S5",
+    "ativo_brl": 2662193.27
    },
    {
     "cod": "34190991",
     "nome": "EUROINVEST S.A. CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
     "sr": "S4",
-    "ativo_brl": 2747930.4
+    "ativo_brl": 2658493.05
+   },
+   {
+    "cod": "73279093",
+    "nome": "PACIFIC INVEST DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 2599293.64
    },
    {
     "cod": "42445122",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PONTIFÍCIA UNIVERSIDADE CATÓLICA DO RIO DE JANEIRO E EMPREGADOS EM ESTABELECIMENTOS PRIVADOS DE ENSINO DO MUNICÍPIO DO RIO DE JANEIRO LTDA.",
     "sr": "S5",
-    "ativo_brl": 2573805.01
+    "ativo_brl": 2565240.94
    },
    {
-    "cod": "62605290",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DAS EMPRESAS DO GRUPO INDORAMA NO BRASIL",
+    "cod": "55428859",
+    "nome": "FREEX CORRETORA DE CAMBIO S.A.",
     "sr": "S5",
-    "ativo_brl": 2554525.59
+    "ativo_brl": 2934348.34
    },
    {
-    "cod": "47215387",
-    "nome": "CATÁLISE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
-    "sr": "S4",
-    "ativo_brl": 2952972.92
-   },
-   {
-    "cod": "47825528",
-    "nome": "B3 INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": "S4",
-    "ativo_brl": 2955232.3
-   },
-   {
-    "cod": "25280945",
-    "nome": "AVS CORRETORA DE CÂMBIO LTDA.",
+    "cod": "47593544",
+    "nome": "RED SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 2417905.51
+    "ativo_brl": 2514341.58
    }
   ]
  }

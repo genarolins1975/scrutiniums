@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 9569025.69,
    "202509": 9524393.54,
    "202512": 9431275.42,
-   "202603": 9401823.02
+   "202603": 9401823.02,
+   "202606": 9520914.02
   },
   "patrimonio_liquido": {
    "201503": 3910849.53,
@@ -146,7 +148,8 @@
    "202506": 5376939.73,
    "202509": 5298664.91,
    "202512": 5287820.51,
-   "202603": 5268463.61
+   "202603": 5268463.61,
+   "202606": 5513369.55
   },
   "carteira_credito": {
    "201503": 4659752.27,
@@ -193,14 +196,16 @@
    "202506": 7953152.56,
    "202509": 8001826.29,
    "202512": 7914590.2,
-   "202603": 7796100.39
+   "202603": 7796100.39,
+   "202606": 7947674.13
   },
   "carteira_pf": {
    "202503": 8051058.15,
    "202506": 8004722.85,
    "202509": 8075282.64,
    "202512": 7959376.97,
-   "202603": 7840574.26
+   "202603": 7840574.26,
+   "202606": 7994004.99
   },
   "captacoes": {
    "201503": 883891.3,
@@ -247,7 +252,8 @@
    "202506": 3387508.61,
    "202509": 3420241.61,
    "202512": 3432753.61,
-   "202603": 3416169.24
+   "202603": 3416169.24,
+   "202606": 3576283.04
   },
   "lucro_liquido": {
    "201503": 343249.3,
@@ -294,35 +300,40 @@
    "202506": 55332.8399999999,
    "202509": 13169.1299999999,
    "202512": 20802.96,
-   "202603": 6376.49999999994
+   "202603": 6376.49999999994,
+   "202606": 16967.0500000002
   },
   "indice_basileia": {
    "202503": 70.5062016179473,
    "202506": 68.7696792663745,
    "202509": 67.1768928752128,
    "202512": 67.6257566265605,
-   "202603": 67.2285193880752
+   "202603": 67.2285193880752,
+   "202606": 69.51271272605321
   },
   "patrimonio_referencia": {
    "202503": 5518935.52,
    "202506": 5376939.73,
    "202509": 5298664.91,
    "202512": 5287820.51,
-   "202603": 5268463.61
+   "202603": 5268463.61,
+   "202606": 5513369.55
   },
   "rwa": {
    "202503": 7309984.4,
    "202506": 7301160.8,
    "202509": 7348858.28,
    "202512": 7280468.49,
-   "202603": 7277400.07
+   "202603": 7277400.07,
+   "202606": 7372205.33
   },
   "provisao_credito": {
    "202503": 48423.76,
    "202506": 51570.3,
    "202509": 73456.35,
    "202512": 44861.43,
-   "202603": 44541.32
+   "202603": 44541.32,
+   "202606": 46391.52
   },
   "roe_periodo": {
    "201503": 8.776847520390282,
@@ -369,7 +380,8 @@
    "202506": 1.0290768128063041,
    "202509": 0.2485367582906823,
    "202512": 0.39341274842175,
-   "202603": 0.12103148986161337
+   "202603": 0.12103148986161337,
+   "202606": 0.307743746290328
   },
   "cart_ativo_pct": {
    "201503": 90.66496008499331,
@@ -416,74 +428,77 @@
    "202506": 83.1135041084836,
    "202509": 84.01402416221454,
    "202512": 83.91855658478904,
-   "202603": 82.92115660352007
+   "202603": 82.92115660352007,
+   "202606": 83.47595738502426
   },
   "atraso15_consignado_pf": {
    "202503": 0.04054603178547514,
    "202506": 0.05779415807453585,
    "202509": 0.13934782177957086,
    "202512": 0.018825025922487356,
-   "202603": 0.021202316537954954
+   "202603": 0.021202316537954954,
+   "202606": 0.029571690556669913
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 2.925839046336605,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:28+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "43268960",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO AVIBRAS - COOPER AVIBRAS",
-    "sr": "S5",
-    "ativo_brl": 9530155.09
+    "cod": "32982245",
+    "nome": "PAYFACE INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 9443648.27
    },
    {
     "cod": "57259525",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA FACULDADE DE CIÊNCIAS AGRÁRIAS E VETERINÁRIAS - CAMPUS DE JABOTICABAL/SP - COOPERFAC",
     "sr": "S5",
-    "ativo_brl": 9620789.76
+    "ativo_brl": 9685231.24
    },
    {
-    "cod": "45457891",
-    "nome": "LEV DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "cod": "62280490",
+    "nome": "TRADERS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
     "sr": "S4",
-    "ativo_brl": 9152889.21
+    "ativo_brl": 9209610.78
    },
    {
-    "cod": "71384697",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS TRABALHADORES NAS INDÚSTRIAS DE EXTRAÇÃO DE FERRO E METAIS BÁSICOS DA REGIÃO DE CONGONHAS LTDA. - COOFERSE",
+    "cod": "00731320",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA MORLAN - CRED MORLAN",
     "sr": "S5",
-    "ativo_brl": 9115614.24
+    "ativo_brl": 9141929.58
    },
    {
-    "cod": "34669130",
-    "nome": "LP DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "cod": "57030391",
+    "nome": "NDD INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 9099804.69
+    "ativo_brl": 9120931.08
    },
    {
-    "cod": "50946592",
-    "nome": "SETHI SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 9086189.33
-   },
-   {
-    "cod": "73302408",
-    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
+    "cod": "53899051",
+    "nome": "UNICRED DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 9792295.9
+    "ativo_brl": 9060137.65
    },
    {
-    "cod": "04316357",
-    "nome": "SOCIALCRED S/A - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE",
+    "cod": "47133056",
+    "nome": "TRANSFERO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 8963043.68
+   },
+   {
+    "cod": "96409263",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA FACULDADE DE ENGENHARIA DE ILHA SOLTEIRA - COOPERFEIS",
     "sr": "S5",
-    "ativo_brl": 9831265.34
+    "ativo_brl": 8817840.82
    }
   ]
  }

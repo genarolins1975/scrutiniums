@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 9666380.75,
    "202509": 9701651.46,
    "202512": 7164645.07,
-   "202603": 9966931.69
+   "202603": 9966931.69,
+   "202606": 17667412.98
   },
   "patrimonio_liquido": {
    "201503": 2258013.76,
@@ -146,7 +148,8 @@
    "202506": 2751212.46,
    "202509": 2912581.64,
    "202512": 3030311.95,
-   "202603": 3090510.43
+   "202603": 3090510.43,
+   "202606": 4525786.05
   },
   "carteira_credito": {
    "201503": 0.0,
@@ -193,7 +196,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201503": 0.0,
@@ -240,7 +244,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201503": -52322.71,
@@ -287,42 +292,48 @@
    "202506": 14601.4499999995,
    "202509": 161369.180000001,
    "202512": 279099.490000002,
-   "202603": 60198.4799999999
+   "202603": 60198.4799999999,
+   "202606": 1495474.1
   },
   "indice_basileia": {
    "202503": 13.998445090005,
    "202506": 13.660926289841498,
    "202509": 14.2613546546811,
    "202512": 15.166859407238201,
-   "202603": 14.9442108657821
+   "202603": 14.9442108657821,
+   "202606": 16.073515101825002
   },
   "indice_capital_principal": {
    "202503": 13.998445090005,
    "202506": 13.660926289841498,
    "202509": 14.2613546546811,
    "202512": 15.166859407238201,
-   "202603": 14.9442108657821
+   "202603": 14.9442108657821,
+   "202606": 16.073515101825002
   },
   "indice_capital_nivel1": {
    "202503": 13.998445090005,
    "202506": 13.660926289841498,
    "202509": 14.2613546546811,
    "202512": 15.166859407238201,
-   "202603": 14.9442108657821
+   "202603": 14.9442108657821,
+   "202606": 16.073515101825002
   },
   "patrimonio_referencia": {
    "202503": 2848190.37,
    "202506": 2749712.46,
    "202509": 2911081.64,
    "202512": 3028811.95,
-   "202603": 3089010.43
+   "202603": 3089010.43,
+   "202606": 3693826.88
   },
   "rwa": {
    "202503": 1296062.62,
    "202506": 1283612.96,
    "202509": 1359527.98,
    "202512": 1366844.55,
-   "202603": 1262967.34
+   "202603": 1262967.34,
+   "202606": 2378248.44
   },
   "roe_periodo": {
    "201503": -2.3172006710889135,
@@ -369,7 +380,8 @@
    "202506": 0.5307278231794392,
    "202509": 5.540417400969437,
    "202512": 9.210256059611355,
-   "202603": 1.9478491130670572
+   "202603": 1.9478491130670572,
+   "202606": 33.0434113207804
   },
   "cart_ativo_pct": {
    "201503": 0.0,
@@ -416,60 +428,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "05746715",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES DA SECRETARIA DE DEFESA SOCIAL DO ESTADO DE MINAS GERAIS LTDA. - COOPSESP",
+    "cod": "20833976",
+    "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES PÚBLICOS MUNICIPAIS DE TIMÓTEO LTDA. - COOPERTIM",
     "sr": "S5",
-    "ativo_brl": 9911730.08
+    "ativo_brl": 17679816.68
    },
    {
-    "cod": "51212088",
-    "nome": "G5 SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 9877312.97
-   },
-   {
-    "cod": "04316357",
-    "nome": "SOCIALCRED S/A - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE",
-    "sr": "S5",
-    "ativo_brl": 9831265.34
-   },
-   {
-    "cod": "07693858",
-    "nome": "HSCM - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-    "sr": "S5",
-    "ativo_brl": 10117605.25
-   },
-   {
-    "cod": "45045671",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ELGIN",
-    "sr": "S5",
-    "ativo_brl": 10136892.1
-   },
-   {
-    "cod": "73302408",
-    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
-    "sr": "S4",
-    "ativo_brl": 9792295.9
-   },
-   {
-    "cod": "37168145",
-    "nome": "APROMS NET INSTITUICAO DE PAGAMENTO LTDA.",
+    "cod": "45860531",
+    "nome": "IDEA MAKER INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 9745136.95
+    "ativo_brl": 17607639.33
    },
    {
-    "cod": "17826860",
-    "nome": "BMS SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "25104230",
+    "nome": "PAGARE INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 17585678.24
+   },
+   {
+    "cod": "37678915",
+    "nome": "FIDD DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 17512728.17
+   },
+   {
+    "cod": "30944783",
+    "nome": "PAGPRIME INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 17489753.81
+   },
+   {
+    "cod": "02814832",
+    "nome": "COOPERATIVA DE CRÉDITO COOPHARMA",
     "sr": "S5",
-    "ativo_brl": 9689703.26
+    "ativo_brl": 17467231.99
+   },
+   {
+    "cod": "35977097",
+    "nome": "UP.P SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
+    "sr": "S5",
+    "ativo_brl": 17900648.72
+   },
+   {
+    "cod": "92675578",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO SISTEMA FIERGS - CRESUL",
+    "sr": "S5",
+    "ativo_brl": 17380728.82
    }
   ]
  }

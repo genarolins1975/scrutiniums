@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -74,7 +75,8 @@
    "202506": 7333003.58,
    "202509": 7653683.0,
    "202512": 3866124.62,
-   "202603": 6862295.57
+   "202603": 6862295.57,
+   "202606": 5352022.0
   },
   "patrimonio_liquido": {
    "202106": 1334982.63,
@@ -96,7 +98,8 @@
    "202506": 1324824.88,
    "202509": 1510178.36,
    "202512": 1456704.65,
-   "202603": 1319131.64
+   "202603": 1319131.64,
+   "202606": 1351940.64
   },
   "carteira_credito": {
    "202106": 0.0,
@@ -118,7 +121,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202106": 0.0,
@@ -140,7 +144,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "202106": -665017.37,
@@ -162,42 +167,48 @@
    "202506": 252261.72,
    "202509": 185353.479999999,
    "202512": 131879.77,
-   "202603": -137573.01
+   "202603": -137573.01,
+   "202606": -104764.010000001
   },
   "indice_basileia": {
    "202503": 15.041755606593599,
    "202506": 7.4549523621584,
    "202509": 15.0416694061458,
    "202512": 16.3453491848907,
-   "202603": 11.5962838037141
+   "202603": 11.5962838037141,
+   "202606": 12.4596358065081
   },
   "indice_capital_principal": {
    "202503": 15.041755606593599,
    "202506": 7.4549523621584,
    "202509": 15.0416694061458,
    "202512": 16.3453491848907,
-   "202603": 11.5962838037141
+   "202603": 11.5962838037141,
+   "202606": 12.4596358065081
   },
   "indice_capital_nivel1": {
    "202503": 15.041755606593599,
    "202506": 7.4549523621584,
    "202509": 15.0416694061458,
    "202512": 16.3453491848907,
-   "202603": 11.5962838037141
+   "202603": 11.5962838037141,
+   "202606": 12.4596358065081
   },
   "patrimonio_referencia": {
    "202503": 1133503.65,
    "202506": 1148483.22,
    "202509": 1306330.03,
    "202512": 1264049.65,
-   "202603": 1137638.33
+   "202603": 1137638.33,
+   "202606": 1181562.63
   },
   "rwa": {
    "202503": 470152.78,
    "202506": 475903.89,
    "202509": 485304.88,
    "202512": 304915.02,
-   "202603": 379826.27
+   "202603": 379826.27,
+   "202606": 364176.32
   },
   "roe_periodo": {
    "202106": -49.81468335659169,
@@ -219,7 +230,8 @@
    "202506": 19.04113696898567,
    "202509": 12.273615150994415,
    "202512": 9.053295051951677,
-   "202603": -10.429058467584024
+   "202603": -10.429058467584024,
+   "202606": -7.749157536975957
   },
   "cart_ativo_pct": {
    "202106": 0.0,
@@ -241,60 +253,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "45756448",
-    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-    "sr": "S5",
-    "ativo_brl": 6855590.11
+    "cod": "08323197",
+    "nome": "IUPI INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 5339496.8
    },
    {
-    "cod": "05419025",
-    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MÚTUO DOS PROFESSORES ESTADUAIS DA REGIÃO METROPOLITANA DE PORTO ALEGRE - EDUCREDI",
-    "sr": "S5",
-    "ativo_brl": 6884211.36
+    "cod": "62264924",
+    "nome": "QORE DISTRIBUIDORA DE TITULOS E VALORES MOBILIÁRIOS LTDA",
+    "sr": "S4",
+    "ativo_brl": 5314297.16
    },
    {
-    "cod": "00141155",
-    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS EMPREGADOS DAS EMPRESAS DE TRANSPORTES COLETIVOS RODOVIÁRIOS DE PASSAGEIROS DO GRANDE RIO LTDA",
+    "cod": "88952130",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO GERDAU - AÇOS FINOS PIRATINI",
     "sr": "S5",
-    "ativo_brl": 6884856.65
+    "ativo_brl": 5397508.55
    },
    {
-    "cod": "19086249",
-    "nome": "EXECUTIVE CORRETORA DE CÂMBIO LTDA.",
+    "cod": "05740092",
+    "nome": "COOPERATIVA DE CRÉDITO DOS METALÚRGICOS DO ABC - CREDABC",
     "sr": "S5",
-    "ativo_brl": 6907579.68
+    "ativo_brl": 5399359.15
    },
    {
-    "cod": "50032584",
-    "nome": "LOAN BRASIL SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 6955029.22
+    "cod": "57707777",
+    "nome": "GURU CORRETORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 5427783.41
    },
    {
-    "cod": "00913314",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA MAGNESITA REFRATÁRIOS S.A. LTDA. - CECREM",
+    "cod": "03422007",
+    "nome": "COOPERATIVA DE CRÉDITO DOS BANCÁRIOS DE SÃO PAULO E MUNICÍPIOS LIMÍTROFES",
     "sr": "S5",
-    "ativo_brl": 6957697.02
+    "ativo_brl": 5429735.62
    },
    {
-    "cod": "19495266",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DA COMPANHIA INDUSTRIAL CATAGUASES E DA BAUMINAS LTDA. - COOPECIC",
+    "cod": "44564204",
+    "nome": "FINLEV SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 6735453.97
+    "ativo_brl": 5265217.35
    },
    {
-    "cod": "48707451",
-    "nome": "PERCAPITAL SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "03990888",
+    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS SERVIDORES PUBLICOS MUNICIPAIS DE PORTO ALEGRE",
     "sr": "S5",
-    "ativo_brl": 6998887.59
+    "ativo_brl": 5224725.27
    }
   ]
  }

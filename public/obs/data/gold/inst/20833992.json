@@ -1,0 +1,1716 @@
+{
+ "cod_inst": "20833992",
+ "caso": null,
+ "cabecalho": {
+  "nome_comercial": "Cooperativa De Crédito Mútuo Dos Empregados Do Centro Universitário Newton Paiva Ltda. - Credipaiva",
+  "razao_social_fonte_bcb": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DO CENTRO UNIVERSITÁRIO NEWTON PAIVA LTDA. - CREDIPAIVA",
+  "codigo_bcb": "20833992",
+  "tcb": "B3S",
+  "sede": "Belo Horizonte/MG",
+  "segmento": "S5",
+  "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
+  "n_pares": 796,
+  "conglomerado_prudencial": null,
+  "capital": "não classificado",
+  "modelo": null,
+  "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
+  "data_base": "2025-T4",
+  "data_base_universo": "202606",
+  "sem_balanco_na_data_base": {
+   "data_base": "202606",
+   "ultima_entrega": "2025-T4",
+   "texto": "Consta da lista do IF.data em 202606 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2025-T4; as comparações com pares usam a data-base deles."
+  },
+  "atualizado_em": "2026-09-10T15:19:00+00:00",
+  "aviso_pares": null,
+  "cnpj": "raiz 20.833.992",
+  "participante_open_finance": null
+ },
+ "resumo_executivo": {
+  "avaliacao_geral": {
+   "texto": "Avaliação limitada: capital regulatório não reportado neste corte.",
+   "base": "BCB IF.data (Informações de Capital) + medianas do grupo S5"
+  },
+  "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "ROE do período de 1.0%.",
+    "base": "calculado sobre IF.data"
+   }
+  ],
+  "pontos_atencao": [
+   {
+    "tipo": "warn",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5890, piso sobre os 76.7% setorialmente identificados).",
+    "base": "IF.data carteiras por CNAE"
+   }
+  ],
+  "mudancas_recentes": [
+   {
+    "texto": "Ativos totais: +500.1% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Patrimônio líquido: +1707.6% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Carteira de crédito: -8.1% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: -79.72p.p. no trimestre.",
+    "base": "BCB IF.data (Informações de Capital)"
+   }
+  ],
+  "limitacoes_informacionais": [
+   "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "LCR / NSFR e composição de funding",
+   "Composição de receita, margem e eficiência",
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+  ]
+ },
+ "grupo_pares_composicao": {
+  "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
+  "quantidade": 796,
+  "maiores_membros": [
+   {
+    "cod": "32430233",
+    "nome": "COOPERATIVA DE CRÉDITO CONEXÃO - SICOOB "
+   },
+   {
+    "cod": "04088208",
+    "nome": "SEM PARAR INSTITUICAO DE PAGAMENTO LTDA"
+   },
+   {
+    "cod": "42898825",
+    "nome": "SICOOB CREDICOM - COOPERATIVA DE ECONOMI"
+   },
+   {
+    "cod": "37395399",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO"
+   },
+   {
+    "cod": "81607046",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO"
+   },
+   {
+    "cod": "03632872",
+    "nome": "COOPERATIVA DE CRÉDITO E INVESTIMENTO DO"
+   },
+   {
+    "cod": "00815319",
+    "nome": "COOPERATIVA DE CRÉDITO SUL-SERRANA DO ES"
+   },
+   {
+    "cod": "03459850",
+    "nome": "COOPERATIVA DE CRÉDITO SICOOB METROPOLIT"
+   },
+   {
+    "cod": "03320525",
+    "nome": "COOPERATIVA DE CRÉDITO ARACOOP LTDA. - S"
+   },
+   {
+    "cod": "32467086",
+    "nome": "COOPERATIVA DE CRÉDITO SUL DO ESPÍRITO S"
+   },
+   {
+    "cod": "02015588",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO"
+   },
+   {
+    "cod": "78834975",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO"
+   },
+   {
+    "cod": "19468242",
+    "nome": "ZOOP TECNOLOGIA & INSTITUICAO DE PAGAMEN"
+   },
+   {
+    "cod": "24795049",
+    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO"
+   },
+   {
+    "cod": "31804966",
+    "nome": "COOPERATIVA DE CRÉDITO COOPERMAIS - SICO"
+   }
+  ],
+  "quartis_basileia": {
+   "q1": 18.9,
+   "mediana": 30.1,
+   "q3": 91.2
+  },
+  "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
+ },
+ "score_meta": null,
+ "kpis": [
+  {
+   "label": "Ativos totais",
+   "v": 15249665.11,
+   "unit": "R$",
+   "d_tri": 500.1,
+   "periodo": "2025-T4",
+   "d_tri_tipo": "%",
+   "hist": [
+    653898.6,
+    2540991.19,
+    15249665.11
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Patrimônio líquido",
+   "v": 8486900.59,
+   "unit": "R$",
+   "d_tri": 1707.6,
+   "periodo": "2025-T4",
+   "d_tri_tipo": "%",
+   "hist": [
+    653617.36,
+    469519.26,
+    8486900.59
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Carteira de crédito",
+   "v": 2314556.99,
+   "unit": "R$",
+   "d_tri": -8.1,
+   "periodo": "2025-T4",
+   "d_tri_tipo": "%",
+   "hist": [
+    358409.12,
+    2517766.06,
+    2314556.99
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Lucro líquido (acum. ano IF.data)",
+   "v": 86571.06,
+   "unit": "R$",
+   "d_tri": null,
+   "periodo": "2025-T4",
+   "d_tri_tipo": "%",
+   "hist": [
+    -544.53,
+    -32398.98,
+    86571.06
+   ],
+   "fonte": "BCB IF.data (Olinda)"
+  },
+  {
+   "label": "Índice de Basileia",
+   "v": 25.008918712697298,
+   "unit": "%",
+   "d_tri": -79.72,
+   "periodo": "2025-T3",
+   "d_tri_tipo": "p.p.",
+   "hist": [
+    104.7303,
+    25.0089
+   ],
+   "fonte": "BCB IF.data (Informações de Capital)"
+  },
+  {
+   "label": "ROE do período (padronizado)",
+   "v": 1.02,
+   "unit": "%",
+   "d_tri": null,
+   "d_tri_tipo": "p.p.",
+   "hist": [],
+   "fonte": "calculado"
+  }
+ ],
+ "destaques": [
+  {
+   "tipo": "ok",
+   "texto": "ROE do período de 1.0%.",
+   "base": "calculado sobre IF.data"
+  },
+  {
+   "tipo": "warn",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 5890, piso sobre os 76.7% setorialmente identificados).",
+   "base": "IF.data carteiras por CNAE"
+  }
+ ],
+ "capital_tabela": [
+  {
+   "indicador": "Ativo ÷ PL (alavancagem contábil)",
+   "valor": 1.8,
+   "unit": "×",
+   "d_tri": null,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 4.37,
+   "percentil": 36.9
+  },
+  {
+   "indicador": "ROE do período",
+   "valor": 1.02,
+   "unit": "%",
+   "d_tri": null,
+   "vs_pares": "abaixo",
+   "mediana_grupo": 4.5,
+   "percentil": 26.9
+  }
+ ],
+ "carteira": {
+  "donut_cliente": [
+   {
+    "label": "Pessoa Física",
+    "v": 329470.75
+   },
+   {
+    "label": "Pessoa Jurídica",
+    "v": 2064524.68
+   }
+  ],
+  "perfil": {
+   "hhi_setorial": 5890,
+   "hhi_cobertura_pct": 76.7,
+   "top_cnae": [
+    [
+     "comercio_reparacao_de_veiculos_automotores_e_mot",
+     76.7
+    ],
+    [
+     "outros",
+     23.3
+    ]
+   ],
+   "pme_share_pct": 100.0,
+   "top_mod_pf": [
+    [
+     "emprestimo_sem_consignacao_em_folha",
+     100.0
+    ]
+   ],
+   "top_mod_pj": [
+    [
+     "capital_de_giro",
+     100.0
+    ]
+   ]
+  },
+  "total_pf": 329470.75,
+  "total_pj": 2064524.68
+ },
+ "evolucao_base100": {
+  "Ativos": [
+   {
+    "p": "201509",
+    "v": 100.0
+   },
+   {
+    "p": "201512",
+    "v": 101.8
+   },
+   {
+    "p": "201603",
+    "v": 104.9
+   },
+   {
+    "p": "201606",
+    "v": 109.2
+   },
+   {
+    "p": "201609",
+    "v": 111.2
+   },
+   {
+    "p": "201612",
+    "v": 112.4
+   },
+   {
+    "p": "201703",
+    "v": 124.4
+   },
+   {
+    "p": "201706",
+    "v": 128.2
+   },
+   {
+    "p": "201709",
+    "v": 132.6
+   },
+   {
+    "p": "201712",
+    "v": 138.7
+   },
+   {
+    "p": "201803",
+    "v": 148.7
+   },
+   {
+    "p": "201806",
+    "v": 157.7
+   },
+   {
+    "p": "201809",
+    "v": 170.0
+   },
+   {
+    "p": "201812",
+    "v": 175.3
+   },
+   {
+    "p": "201903",
+    "v": 176.2
+   },
+   {
+    "p": "201906",
+    "v": 177.2
+   },
+   {
+    "p": "201909",
+    "v": 175.0
+   },
+   {
+    "p": "201912",
+    "v": 174.6
+   },
+   {
+    "p": "202003",
+    "v": 174.5
+   },
+   {
+    "p": "202006",
+    "v": 173.7
+   },
+   {
+    "p": "202009",
+    "v": 181.0
+   },
+   {
+    "p": "202012",
+    "v": 188.3
+   },
+   {
+    "p": "202103",
+    "v": 185.2
+   },
+   {
+    "p": "202106",
+    "v": 185.9
+   },
+   {
+    "p": "202109",
+    "v": 188.2
+   },
+   {
+    "p": "202112",
+    "v": 190.0
+   },
+   {
+    "p": "202203",
+    "v": 195.9
+   },
+   {
+    "p": "202206",
+    "v": 199.7
+   },
+   {
+    "p": "202209",
+    "v": 201.0
+   },
+   {
+    "p": "202212",
+    "v": 199.2
+   },
+   {
+    "p": "202303",
+    "v": 201.1
+   },
+   {
+    "p": "202306",
+    "v": 201.8
+   },
+   {
+    "p": "202309",
+    "v": 199.0
+   },
+   {
+    "p": "202312",
+    "v": 194.0
+   },
+   {
+    "p": "202403",
+    "v": 183.8
+   },
+   {
+    "p": "202406",
+    "v": 182.4
+   },
+   {
+    "p": "202409",
+    "v": 181.4
+   },
+   {
+    "p": "202412",
+    "v": 179.2
+   },
+   {
+    "p": "2025-T1",
+    "v": 157.7
+   },
+   {
+    "p": "2025-T2",
+    "v": 159.8
+   },
+   {
+    "p": "2025-T3",
+    "v": 621.1
+   },
+   {
+    "p": "2025-T4",
+    "v": 3727.5
+   }
+  ],
+  "Carteira": [
+   {
+    "p": "201509",
+    "v": 100.0
+   },
+   {
+    "p": "201512",
+    "v": 121.6
+   },
+   {
+    "p": "201603",
+    "v": 119.1
+   },
+   {
+    "p": "201606",
+    "v": 116.6
+   },
+   {
+    "p": "201609",
+    "v": 123.1
+   },
+   {
+    "p": "201612",
+    "v": 120.1
+   },
+   {
+    "p": "201703",
+    "v": 178.3
+   },
+   {
+    "p": "201706",
+    "v": 176.8
+   },
+   {
+    "p": "201709",
+    "v": 163.5
+   },
+   {
+    "p": "201712",
+    "v": 155.5
+   },
+   {
+    "p": "201803",
+    "v": 180.4
+   },
+   {
+    "p": "201806",
+    "v": 196.1
+   },
+   {
+    "p": "201809",
+    "v": 228.5
+   },
+   {
+    "p": "201812",
+    "v": 220.2
+   },
+   {
+    "p": "201903",
+    "v": 253.1
+   },
+   {
+    "p": "201906",
+    "v": 270.2
+   },
+   {
+    "p": "201909",
+    "v": 271.7
+   },
+   {
+    "p": "201912",
+    "v": 246.0
+   },
+   {
+    "p": "202003",
+    "v": 225.1
+   },
+   {
+    "p": "202006",
+    "v": 177.3
+   },
+   {
+    "p": "202009",
+    "v": 178.3
+   },
+   {
+    "p": "202012",
+    "v": 143.5
+   },
+   {
+    "p": "202103",
+    "v": 146.7
+   },
+   {
+    "p": "202106",
+    "v": 125.8
+   },
+   {
+    "p": "202109",
+    "v": 171.7
+   },
+   {
+    "p": "202112",
+    "v": 192.5
+   },
+   {
+    "p": "202203",
+    "v": 199.6
+   },
+   {
+    "p": "202206",
+    "v": 245.0
+   },
+   {
+    "p": "202209",
+    "v": 261.2
+   },
+   {
+    "p": "202212",
+    "v": 265.7
+   },
+   {
+    "p": "202303",
+    "v": 269.6
+   },
+   {
+    "p": "202306",
+    "v": 250.1
+   },
+   {
+    "p": "202309",
+    "v": 270.3
+   },
+   {
+    "p": "202312",
+    "v": 262.3
+   },
+   {
+    "p": "202403",
+    "v": 277.1
+   },
+   {
+    "p": "202406",
+    "v": 244.2
+   },
+   {
+    "p": "202409",
+    "v": 244.0
+   },
+   {
+    "p": "202412",
+    "v": 300.9
+   },
+   {
+    "p": "2025-T1",
+    "v": 270.5
+   },
+   {
+    "p": "2025-T2",
+    "v": 166.8
+   },
+   {
+    "p": "2025-T3",
+    "v": 1171.6
+   },
+   {
+    "p": "2025-T4",
+    "v": 1077.0
+   }
+  ],
+  "PL": [
+   {
+    "p": "201509",
+    "v": 100.0
+   },
+   {
+    "p": "201512",
+    "v": 102.4
+   },
+   {
+    "p": "201603",
+    "v": 105.3
+   },
+   {
+    "p": "201606",
+    "v": 108.9
+   },
+   {
+    "p": "201609",
+    "v": 110.5
+   },
+   {
+    "p": "201612",
+    "v": 112.8
+   },
+   {
+    "p": "201703",
+    "v": 118.9
+   },
+   {
+    "p": "201706",
+    "v": 127.8
+   },
+   {
+    "p": "201709",
+    "v": 131.4
+   },
+   {
+    "p": "201712",
+    "v": 139.0
+   },
+   {
+    "p": "201803",
+    "v": 148.3
+   },
+   {
+    "p": "201806",
+    "v": 157.8
+   },
+   {
+    "p": "201809",
+    "v": 167.2
+   },
+   {
+    "p": "201812",
+    "v": 175.4
+   },
+   {
+    "p": "201903",
+    "v": 176.4
+   },
+   {
+    "p": "201906",
+    "v": 176.1
+   },
+   {
+    "p": "201909",
+    "v": 175.8
+   },
+   {
+    "p": "201912",
+    "v": 175.4
+   },
+   {
+    "p": "202003",
+    "v": 176.1
+   },
+   {
+    "p": "202006",
+    "v": 175.4
+   },
+   {
+    "p": "202009",
+    "v": 182.3
+   },
+   {
+    "p": "202012",
+    "v": 189.7
+   },
+   {
+    "p": "202103",
+    "v": 186.6
+   },
+   {
+    "p": "202106",
+    "v": 187.8
+   },
+   {
+    "p": "202109",
+    "v": 190.2
+   },
+   {
+    "p": "202112",
+    "v": 190.1
+   },
+   {
+    "p": "202203",
+    "v": 195.6
+   },
+   {
+    "p": "202206",
+    "v": 200.0
+   },
+   {
+    "p": "202209",
+    "v": 201.9
+   },
+   {
+    "p": "202212",
+    "v": 200.9
+   },
+   {
+    "p": "202303",
+    "v": 203.4
+   },
+   {
+    "p": "202306",
+    "v": 202.5
+   },
+   {
+    "p": "202309",
+    "v": 199.1
+   },
+   {
+    "p": "202312",
+    "v": 194.5
+   },
+   {
+    "p": "202403",
+    "v": 183.7
+   },
+   {
+    "p": "202406",
+    "v": 182.7
+   },
+   {
+    "p": "202409",
+    "v": 183.5
+   },
+   {
+    "p": "202412",
+    "v": 181.5
+   },
+   {
+    "p": "2025-T1",
+    "v": 159.8
+   },
+   {
+    "p": "2025-T2",
+    "v": 162.4
+   },
+   {
+    "p": "2025-T3",
+    "v": 116.6
+   },
+   {
+    "p": "2025-T4",
+    "v": 2108.1
+   }
+  ]
+ },
+ "evolucao_nota": "Base 100 no primeiro trimestre disponível da instituição (backfill desde 2015 quando reportado). A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — leia a inflexão nessa data como mudança de régua, não de negócio.",
+ "comparacao_grupo": {
+  "roe": {
+   "valores": [
+    -1.38,
+    6.5,
+    -14.61,
+    -0.58,
+    4.82,
+    -3.44,
+    -2.63,
+    -29.73,
+    7.74,
+    4.71,
+    3.84,
+    6.45,
+    0.31,
+    -7.58,
+    7.52,
+    12.08,
+    8.11,
+    2.4,
+    4.84,
+    3.56,
+    -0.91,
+    3.82,
+    9.61,
+    2.65,
+    13.63,
+    2.02,
+    10.06,
+    4.85,
+    1.76,
+    5.44,
+    4.35,
+    -0.32,
+    -1.37,
+    11.72,
+    1.89,
+    5.57,
+    -27.32,
+    4.14,
+    15.89,
+    -18.96,
+    6.84,
+    6.17,
+    4.53,
+    13.13,
+    2.9,
+    13.36,
+    6.5,
+    11.65,
+    11.02,
+    6.5,
+    1.9,
+    5.94,
+    12.34,
+    12.48,
+    4.46,
+    9.58,
+    7.95,
+    7.25,
+    12.92,
+    3.55,
+    13.21,
+    6.78,
+    6.16,
+    9.38,
+    9.93,
+    3.83,
+    3.62,
+    -24.72,
+    5.03,
+    6.15,
+    6.83,
+    9.75,
+    9.02,
+    10.39,
+    9.0,
+    1.49,
+    5.14,
+    8.24,
+    6.14,
+    5.74,
+    8.61,
+    10.74,
+    6.83,
+    3.96,
+    -0.18,
+    10.56,
+    -5.64,
+    7.25,
+    9.11,
+    12.52,
+    0.16,
+    12.62,
+    7.47,
+    6.51,
+    6.89,
+    5.54,
+    0.95,
+    0.69,
+    -16.95,
+    5.82,
+    1.84,
+    10.21,
+    -15.11,
+    4.91,
+    3.04,
+    11.47,
+    0.97,
+    2.19,
+    -8.82,
+    1.71,
+    7.01,
+    7.37,
+    7.01,
+    2.67,
+    11.87,
+    5.52,
+    4.49,
+    5.88,
+    4.49,
+    8.71,
+    4.63,
+    1.85,
+    3.22,
+    0.53,
+    6.64,
+    -0.11,
+    7.22,
+    4.57,
+    1.47,
+    2.02,
+    3.71,
+    -1.72,
+    1.35,
+    -0.06,
+    -0.96,
+    1.98,
+    -5.1,
+    3.51,
+    4.59,
+    -5.23,
+    0.87,
+    2.82,
+    5.82,
+    28.37,
+    -8.44,
+    10.75,
+    6.88,
+    2.81,
+    -11.78,
+    -16.14,
+    8.76,
+    -11.41,
+    6.58,
+    5.05,
+    -4.85,
+    6.28,
+    2.24,
+    7.04,
+    2.52,
+    7.65,
+    0.44,
+    0.03,
+    2.23,
+    1.19,
+    -7.97,
+    10.96,
+    6.87,
+    2.44,
+    -1.76,
+    2.82,
+    1.52,
+    3.9,
+    -2.79,
+    -0.2,
+    1.25,
+    2.51,
+    5.23,
+    0.01,
+    8.58,
+    0.69,
+    0.27,
+    11.81,
+    11.18,
+    4.89,
+    1.1,
+    11.71,
+    42.67,
+    0.19,
+    3.45,
+    6.24,
+    0.15,
+    20.45,
+    -9.51,
+    1.85,
+    8.29,
+    4.85,
+    3.84,
+    5.12,
+    5.12,
+    8.79,
+    1.14,
+    10.66,
+    5.86,
+    -39.43,
+    0.14,
+    5.94,
+    2.68,
+    6.76,
+    2.09,
+    9.17,
+    -16.96,
+    36.41,
+    8.03,
+    6.82,
+    6.67,
+    -3.98,
+    4.35,
+    3.02,
+    4.49,
+    3.66,
+    -9.27,
+    9.83,
+    5.5,
+    6.74,
+    -18.59,
+    12.46,
+    4.71,
+    0.47,
+    6.59,
+    1.51,
+    6.8,
+    2.73,
+    21.21,
+    -0.58,
+    5.95,
+    -2.59,
+    0.67,
+    -4.15,
+    -0.45,
+    9.24,
+    -38.12,
+    6.24,
+    -1.7,
+    1.68,
+    4.07,
+    10.27,
+    -97.16,
+    8.87,
+    3.59,
+    -0.75,
+    -10.6,
+    4.91,
+    0.76,
+    3.04,
+    1.65,
+    -0.08,
+    8.1,
+    5.86,
+    4.95,
+    0.57,
+    -0.44,
+    3.85,
+    5.56,
+    2.38,
+    4.7,
+    -7.45,
+    3.52,
+    4.1,
+    7.87,
+    20.78,
+    10.28,
+    -7.49,
+    2.67,
+    -3.12,
+    9.69,
+    0.11,
+    4.42,
+    9.35,
+    4.55,
+    5.64,
+    5.59,
+    5.06,
+    11.6,
+    1.93,
+    2.49,
+    8.96,
+    6.02,
+    7.58,
+    10.39,
+    -0.91,
+    18.37,
+    1.0,
+    -8.81,
+    6.73,
+    16.05,
+    12.41,
+    9.43,
+    4.42,
+    -0.33,
+    1.02,
+    9.31,
+    11.95,
+    8.47,
+    6.11,
+    3.28,
+    -7.48,
+    -54.08,
+    -1.85,
+    20.11,
+    5.16,
+    9.94,
+    6.26,
+    1.12,
+    9.16,
+    11.81,
+    3.04,
+    -3.72,
+    1.15,
+    -7.09,
+    -0.92,
+    -4.75,
+    -1.76,
+    9.92,
+    9.02,
+    9.25,
+    6.34,
+    5.41,
+    3.3,
+    6.14,
+    -10.49,
+    0.92,
+    -1.57,
+    0.33,
+    5.11,
+    3.89,
+    3.85,
+    11.54,
+    33.05,
+    -2.88,
+    11.04,
+    9.12,
+    1.62,
+    43.91,
+    -9.51,
+    -6.57,
+    13.78,
+    -1.13,
+    2.48,
+    4.68,
+    4.73,
+    13.79,
+    -26.01,
+    0.01,
+    -17.52,
+    -37.27,
+    5.28,
+    8.48,
+    1.9,
+    5.45,
+    7.33,
+    69.21,
+    3.75,
+    1.96,
+    3.95,
+    1.12,
+    4.87,
+    5.4,
+    30.37,
+    8.82,
+    -3.67,
+    19.03,
+    5.1,
+    1.36,
+    -0.26,
+    7.67,
+    8.99,
+    3.26,
+    2.95,
+    7.31,
+    3.35,
+    5.1,
+    0.35,
+    4.51,
+    -4.3,
+    2.36,
+    16.89,
+    4.16,
+    5.55,
+    -3.98,
+    4.7,
+    2.06,
+    6.0,
+    10.74,
+    6.04,
+    11.42,
+    3.94,
+    8.03,
+    9.09,
+    4.21,
+    9.54
+   ],
+   "meu": 1.02,
+   "mediana": 4.5
+  },
+  "alav": {
+   "valores": [
+    8.15,
+    11.53,
+    1.99,
+    1.09,
+    7.73,
+    6.92,
+    7.45,
+    2.03,
+    5.77,
+    5.64,
+    6.16,
+    1.02,
+    1.73,
+    5.65,
+    5.97,
+    5.79,
+    6.66,
+    1.09,
+    1.02,
+    2.2,
+    4.32,
+    1.06,
+    7.04,
+    1.13,
+    9.39,
+    9.61,
+    10.28,
+    1.87,
+    5.04,
+    1.03,
+    7.31,
+    7.01,
+    6.29,
+    6.94,
+    1.1,
+    7.29,
+    12.97,
+    1.03,
+    10.67,
+    4.75,
+    8.43,
+    1.09,
+    1.12,
+    5.58,
+    1.02,
+    7.4,
+    10.45,
+    7.9,
+    7.31,
+    7.04,
+    8.79,
+    6.86,
+    7.43,
+    7.02,
+    5.01,
+    8.42,
+    7.07,
+    6.29,
+    5.36,
+    7.14,
+    9.76,
+    7.96,
+    11.59,
+    8.44,
+    5.45,
+    8.89,
+    1.12,
+    9.58,
+    2.05,
+    1.03,
+    4.37,
+    6.88,
+    1.04,
+    5.63,
+    5.77,
+    3.43,
+    10.46,
+    1.09,
+    1.03,
+    1.04,
+    5.14,
+    8.27,
+    6.56,
+    1.1,
+    14.76,
+    6.44,
+    1.18,
+    1.15,
+    7.45,
+    6.65,
+    3.48,
+    5.51,
+    8.99,
+    1.09,
+    6.13,
+    7.04,
+    3.39,
+    5.15,
+    8.57,
+    6.38,
+    8.24,
+    4.38,
+    1.32,
+    8.23,
+    6.73,
+    9.88,
+    1.7,
+    5.45,
+    6.13,
+    4.45,
+    1.22,
+    1.04,
+    7.35,
+    1.12,
+    5.59,
+    7.11,
+    1.19,
+    1.08,
+    7.47,
+    4.02,
+    1.02,
+    7.24,
+    8.73,
+    1.06,
+    4.05,
+    1.22,
+    6.87,
+    5.55,
+    7.94,
+    1.02,
+    7.53,
+    10.0,
+    6.47,
+    4.33,
+    8.89,
+    10.44,
+    6.6,
+    4.67,
+    1.09,
+    1.06,
+    1.02,
+    3.55,
+    5.94,
+    3.38,
+    9.22,
+    9.66,
+    4.17,
+    11.22,
+    2.84,
+    8.47,
+    8.92,
+    9.18,
+    9.67,
+    6.56,
+    2.51,
+    3.54,
+    2.12,
+    7.63,
+    7.07,
+    5.84,
+    1.0,
+    1.11,
+    5.2,
+    1.01,
+    2.87,
+    8.34,
+    3.28,
+    6.67,
+    10.7,
+    10.6,
+    3.35,
+    6.72,
+    1.12,
+    10.08,
+    11.95,
+    5.1,
+    1.58,
+    1.05,
+    6.99,
+    7.19,
+    1.1,
+    1.24,
+    5.91,
+    1.07,
+    8.73,
+    2.41,
+    12.08,
+    1.02,
+    8.22,
+    8.79,
+    10.94,
+    4.48,
+    11.46,
+    1.74,
+    7.01,
+    1.09,
+    6.06,
+    9.36,
+    8.02,
+    10.77,
+    1.62,
+    6.57,
+    5.45,
+    15.98,
+    3.75,
+    3.82,
+    4.74,
+    1.04,
+    1.04,
+    3.38,
+    4.6,
+    1.53,
+    9.89,
+    2.31,
+    4.53,
+    1.13,
+    1.03,
+    2.45,
+    1.16,
+    8.27,
+    2.24,
+    6.57,
+    7.22,
+    9.23,
+    9.35,
+    7.56,
+    8.48,
+    8.19,
+    8.74,
+    6.32,
+    7.91,
+    7.83,
+    1.5,
+    1.11,
+    8.44,
+    10.47,
+    1.14,
+    1.02,
+    9.71,
+    5.6,
+    3.99,
+    4.92,
+    7.41,
+    7.66,
+    1.18,
+    9.86,
+    2.96,
+    4.75,
+    1.02,
+    3.57,
+    1.01,
+    1.19,
+    1.07,
+    1.11,
+    1.71,
+    4.96,
+    7.84,
+    9.06,
+    8.58,
+    7.21,
+    10.19,
+    9.15,
+    2.07,
+    1.09,
+    9.13,
+    1.68,
+    8.08,
+    7.36,
+    7.05,
+    3.12,
+    1.77,
+    7.52,
+    1.04,
+    2.46,
+    11.0,
+    9.6,
+    11.05,
+    8.73,
+    8.02,
+    7.67,
+    7.19,
+    6.49,
+    1.03,
+    8.47,
+    6.7,
+    7.24,
+    6.14,
+    4.37,
+    6.37,
+    4.19,
+    3.84,
+    1.52,
+    7.39,
+    1.28,
+    10.07,
+    5.55,
+    1.53,
+    8.45,
+    11.91,
+    8.49,
+    6.81,
+    8.82,
+    6.73,
+    6.42,
+    6.92,
+    9.93,
+    14.6,
+    6.34,
+    2.64,
+    8.23,
+    9.85,
+    9.09,
+    9.67,
+    7.57,
+    6.66,
+    5.1,
+    1.03,
+    4.25,
+    5.74,
+    1.01,
+    10.46,
+    6.17,
+    4.79,
+    7.82,
+    5.63,
+    7.44,
+    5.88,
+    4.58,
+    6.45,
+    9.83,
+    8.3,
+    7.19,
+    7.98,
+    6.57,
+    5.08,
+    7.92,
+    9.8,
+    1.12,
+    8.14,
+    8.7,
+    7.82,
+    1.02,
+    1.88,
+    1.22,
+    2.49,
+    5.6,
+    8.69,
+    1.07,
+    1.9,
+    5.62,
+    6.78,
+    1.36,
+    1.28,
+    14.76,
+    9.87,
+    3.27,
+    7.27,
+    1.11,
+    1.18,
+    8.91,
+    1.69,
+    4.68,
+    2.34,
+    2.02,
+    2.0,
+    1.05,
+    1.21,
+    3.59,
+    1.06,
+    1.02,
+    1.43,
+    1.1,
+    1.11,
+    3.02,
+    8.39,
+    1.76,
+    1.01,
+    2.36,
+    6.99,
+    1.2,
+    7.01,
+    3.94,
+    1.22,
+    2.81,
+    1.13,
+    1.6,
+    1.06,
+    1.05,
+    1.2,
+    8.69,
+    1.21,
+    5.96,
+    6.82,
+    5.96,
+    6.84,
+    9.97,
+    6.52,
+    5.39,
+    8.82,
+    6.43
+   ],
+   "meu": 1.8,
+   "mediana": 4.37
+  }
+ },
+ "score_ref": {
+  "indisponivel": "Score não calculado: a instituição consta da lista do IF.data em 202606 sem balanço entregue (última entrega 2025-T4)."
+ },
+ "atraso_produtos": {
+  "data_base": "2025-T4",
+  "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
+  "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
+  "itens": [
+   {
+    "slug": "capital-de-giro-pj",
+    "produto": "Capital de giro",
+    "seg": "PJ",
+    "carteira_brl": 2064524.68,
+    "atraso15_pct": 0.42,
+    "mediana_produto_pct": 1.79,
+    "percentil_no_produto": 17.3,
+    "n_universo": 745,
+    "serie": [
+     {
+      "p": "2025-T3",
+      "pct": 0.0
+     },
+     {
+      "p": "2025-T4",
+      "pct": 0.42
+     },
+     {
+      "p": "2026-T1",
+      "pct": 1.0
+     }
+    ]
+   },
+   {
+    "slug": "credito-pessoal-pf",
+    "produto": "Crédito pessoal não consignado",
+    "seg": "PF",
+    "carteira_brl": 329470.75,
+    "atraso15_pct": 7.61,
+    "mediana_produto_pct": 3.68,
+    "percentil_no_produto": 74.9,
+    "n_universo": 881,
+    "serie": [
+     {
+      "p": "2025-T2",
+      "pct": 2.77
+     },
+     {
+      "p": "2025-T3",
+      "pct": 1.89
+     },
+     {
+      "p": "2025-T4",
+      "pct": 7.61
+     },
+     {
+      "p": "2026-T1",
+      "pct": 5.76
+     },
+     {
+      "p": "202606",
+      "pct": 2.41
+     }
+    ]
+   }
+  ]
+ },
+ "openfinance": null,
+ "reclamacoes": [],
+ "rj_citacoes": {
+  "casos": 0,
+  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
+ },
+ "indisponiveis": [
+  {
+   "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
+   "motivo": "Não exposta por instituição no corte público do IF.data."
+  },
+  {
+   "indicador": "LCR / NSFR e composição de funding",
+   "motivo": "Exigem Pilar 3 por instituição — não integrado."
+  },
+  {
+   "indicador": "Composição de receita, margem e eficiência",
+   "motivo": "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."
+  },
+  {
+   "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  }
+ ]
+}

@@ -9,13 +9,15 @@
   "sede": "São Paulo/SP",
   "segmento": "S3",
   "grupo_pares": "S3 — porte entre 0,1% e 1% do PIB",
-  "n_pares": 64,
+  "n_pares": 63,
   "conglomerado_prudencial": "C0080628",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "2026-T1",
-  "atualizado_em": "2026-09-09T15:18:25+00:00",
+  "data_base": "202606",
+  "data_base_universo": "202606",
+  "sem_balanco_na_data_base": null,
+  "atualizado_em": "2026-09-10T15:18:59+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -28,38 +30,38 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.9%).",
+    "texto": "Basileia de 28.7% (acima da mediana do grupo S3: 16.6%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
     "tipo": "ok",
-    "texto": "ROE do período de 3.2%.",
+    "texto": "ROE do período de 6.2%.",
     "base": "calculado sobre IF.data"
    }
   ],
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 6610, piso sobre os 100.0% setorialmente identificados).",
+    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 8857, piso sobre os 100.0% setorialmente identificados).",
     "base": "IF.data carteiras por CNAE"
    }
   ],
   "mudancas_recentes": [
    {
-    "texto": "Patrimônio líquido: +3.3% no trimestre.",
+    "texto": "Ativos totais: -21.9% no trimestre.",
     "base": "BCB IF.data (Olinda)"
    },
    {
-    "texto": "Carteira de crédito: +292044741.54% no trimestre.",
+    "texto": "Patrimônio líquido: +10.4% no trimestre.",
     "base": "BCB IF.data (Olinda)"
    },
    {
-    "texto": "Índice de Basileia: +0.73p.p. no trimestre.",
+    "texto": "Carteira de crédito: -20.4% no trimestre.",
+    "base": "BCB IF.data (Olinda)"
+   },
+   {
+    "texto": "Índice de Basileia: +5.47p.p. no trimestre.",
     "base": "BCB IF.data (Informações de Capital)"
-   },
-   {
-    "texto": "Score relativo subiu 3.3 pontos no grupo de pares.",
-    "base": "Observatório (calculado)"
    }
   ],
   "limitacoes_informacionais": [
@@ -71,7 +73,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 64,
+  "quantidade": 63,
   "maiores_membros": [
    {
     "cod": "C0052058",
@@ -82,20 +84,20 @@
     "nome": "C6 BANK"
    },
    {
-    "cod": "C0020107",
-    "nome": "JP MORGAN CHASE"
-   },
-   {
     "cod": "18236120",
     "nome": "NU PAGAMENTOS S.A. - INSTITUIÇÃO DE PAGA"
    },
    {
-    "cod": "C0051884",
-    "nome": "INTER"
+    "cod": "C0020107",
+    "nome": "JP MORGAN CHASE"
    },
    {
     "cod": "C0051987",
     "nome": "DAYCOVAL"
+   },
+   {
+    "cod": "C0051884",
+    "nome": "INTER"
    },
    {
     "cod": "C0041856",
@@ -110,12 +112,12 @@
     "nome": "BANCO VOLKSWAGEN S.A."
    },
    {
-    "cod": "01023570",
-    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A."
-   },
-   {
     "cod": "01522368",
     "nome": "BANCO BNP PARIBAS BRASIL S.A."
+   },
+   {
+    "cod": "01023570",
+    "nome": "BANCO RABOBANK INTERNATIONAL BRASIL S.A."
    },
    {
     "cod": "C0051956",
@@ -126,18 +128,18 @@
     "nome": "BMG"
    },
    {
-    "cod": "C0051255",
-    "nome": "BOFA MERRILL LYNCH"
-   },
-   {
     "cod": "C0052632",
     "nome": "PICPAY - FINANCEIRO"
+   },
+   {
+    "cod": "C0020152",
+    "nome": "MERCANTIL DO BRASIL"
    }
   ],
   "quartis_basileia": {
-   "q1": 13.5,
-   "mediana": 16.9,
-   "q3": 23.8
+   "q1": 14.0,
+   "mediana": 16.6,
+   "q3": 25.0
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
@@ -146,87 +148,92 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-09"
+  "calculado_em": "2026-09-10"
  },
  "kpis": [
   {
    "label": "Ativos totais",
-   "v": 23845140844.72,
+   "v": 18630283555.73,
    "unit": "R$",
-   "d_tri": 0.1,
+   "d_tri": -21.9,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    24120130390.6,
     26733727033.4,
     21759031411.19,
     23832465350.91,
-    23845140844.72
+    23845140844.72,
+    18630283555.73
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Patrimônio líquido",
-   "v": 6619947669.51,
+   "v": 7310558203.87,
    "unit": "R$",
-   "d_tri": 3.3,
+   "d_tri": 10.4,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    5927151204.78,
     6351455092.2,
     6547933281.23,
     6408681985.15,
-    6619947669.51
+    6619947669.51,
+    7310558203.87
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Carteira de crédito",
-   "v": 292044741.54,
+   "v": 232467614.27,
    "unit": "R$",
-   "d_tri": 292044741.54,
+   "d_tri": -20.4,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
     0.0,
     0.0,
-    0.0,
-    292044741.54
+    292044741.54,
+    232467614.27
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Lucro líquido (acum. ano IF.data)",
-   "v": 211096066.970001,
+   "v": 454611033.97,
    "unit": "R$",
    "d_tri": null,
+   "periodo": "202606",
    "d_tri_tipo": "%",
    "hist": [
-    144405462.31,
     244044841.54,
     196493195.92,
     583313153.1,
-    211096066.97
+    211096066.97,
+    454611033.97
    ],
    "fonte": "BCB IF.data (Olinda)"
   },
   {
    "label": "Índice de Basileia",
-   "v": 23.255066892259,
+   "v": 28.726157242023,
    "unit": "%",
-   "d_tri": 0.73,
+   "d_tri": 5.47,
+   "periodo": "202606",
    "d_tri_tipo": "p.p.",
    "hist": [
-    23.3288,
     22.6031,
     21.4568,
     22.5223,
-    23.2551
+    23.2551,
+    28.7262
    ],
    "fonte": "BCB IF.data (Informações de Capital)"
   },
   {
    "label": "ROE do período (padronizado)",
-   "v": 3.19,
+   "v": 6.22,
    "unit": "%",
    "d_tri": null,
    "d_tri_tipo": "p.p.",
@@ -237,71 +244,67 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 23.3% (acima da mediana do grupo S3: 16.9%).",
+   "texto": "Basileia de 28.7% (acima da mediana do grupo S3: 16.6%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
    "tipo": "ok",
-   "texto": "ROE do período de 3.2%.",
+   "texto": "ROE do período de 6.2%.",
    "base": "calculado sobre IF.data"
   },
   {
    "tipo": "warn",
-   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 6610, piso sobre os 100.0% setorialmente identificados).",
+   "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 8857, piso sobre os 100.0% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
   }
  ],
  "capital_tabela": [
   {
    "indicador": "Índice de Basileia",
-   "valor": 23.26,
+   "valor": 28.73,
    "unit": "%",
-   "d_tri": 0.73,
+   "d_tri": 5.47,
    "vs_pares": "acima",
-   "mediana_grupo": 16.9,
-   "percentil": 73.7
+   "mediana_grupo": 16.58,
+   "percentil": 83.6
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
-   "valor": 3.6,
+   "valor": 2.55,
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 9.53,
-   "percentil": 14.3
+   "mediana_grupo": 9.26,
+   "percentil": 9.7
   },
   {
    "indicador": "ROE do período",
-   "valor": 3.19,
+   "valor": 6.22,
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 2.45,
-   "percentil": 61.9
+   "mediana_grupo": 4.81,
+   "percentil": 62.9
   }
  ],
  "carteira": {
   "donut_cliente": [
    {
     "label": "Pessoa Jurídica",
-    "v": 365574690.57
+    "v": 374327187.84
    }
   ],
   "perfil": {
-   "hhi_setorial": 6610,
+   "hhi_setorial": 8857,
    "hhi_cobertura_pct": 100.0,
    "top_cnae": [
     [
      "comercio_reparacao_de_veiculos_automotores_e_mot",
-     79.9
-    ],
-    [
-     "servicos_industriais_de_utilidade_publica",
-     13.9
+     93.9
     ],
     [
      "industrias_extrativas",
-     5.9
+     5.8
     ],
     [
      "industrias_de_transformacao",
@@ -317,363 +320,363 @@
    ]
   },
   "total_pf": null,
-  "total_pj": 365574690.57
+  "total_pj": 374327187.84
  },
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "201506",
+    "p": "201509",
     "v": 100.0
    },
    {
-    "p": "201509",
-    "v": 126.8
-   },
-   {
     "p": "201512",
-    "v": 105.3
+    "v": 83.1
    },
    {
     "p": "201603",
-    "v": 140.0
+    "v": 110.4
    },
    {
     "p": "201606",
-    "v": 82.4
+    "v": 65.0
    },
    {
     "p": "201609",
-    "v": 97.6
+    "v": 76.9
    },
    {
     "p": "201612",
-    "v": 68.1
+    "v": 53.7
    },
    {
     "p": "201703",
-    "v": 77.3
+    "v": 60.9
    },
    {
     "p": "201706",
-    "v": 61.8
+    "v": 48.7
    },
    {
     "p": "201709",
-    "v": 91.3
+    "v": 72.0
    },
    {
     "p": "201712",
-    "v": 98.2
+    "v": 77.5
    },
    {
     "p": "201803",
-    "v": 93.4
+    "v": 73.7
    },
    {
     "p": "201806",
-    "v": 102.1
+    "v": 80.5
    },
    {
     "p": "201809",
-    "v": 127.3
+    "v": 100.4
    },
    {
     "p": "201812",
-    "v": 134.9
+    "v": 106.4
    },
    {
     "p": "201903",
-    "v": 165.8
+    "v": 130.8
    },
    {
     "p": "201906",
-    "v": 166.3
+    "v": 131.2
    },
    {
     "p": "201909",
-    "v": 165.3
+    "v": 130.4
    },
    {
     "p": "201912",
-    "v": 132.6
+    "v": 104.6
    },
    {
     "p": "202003",
-    "v": 214.5
+    "v": 169.2
    },
    {
     "p": "202006",
-    "v": 178.4
+    "v": 140.7
    },
    {
     "p": "202009",
-    "v": 172.3
+    "v": 135.9
    },
    {
     "p": "202012",
-    "v": 152.8
+    "v": 120.5
    },
    {
     "p": "202103",
-    "v": 141.4
+    "v": 111.5
    },
    {
     "p": "202106",
-    "v": 199.4
+    "v": 157.3
    },
    {
     "p": "202109",
-    "v": 187.9
+    "v": 148.2
    },
    {
     "p": "202112",
-    "v": 159.2
+    "v": 125.5
    },
    {
     "p": "202203",
-    "v": 168.5
+    "v": 132.9
    },
    {
     "p": "202206",
-    "v": 184.5
+    "v": 145.6
    },
    {
     "p": "202209",
-    "v": 173.2
+    "v": 136.6
    },
    {
     "p": "202212",
-    "v": 160.6
+    "v": 126.7
    },
    {
     "p": "202303",
-    "v": 172.6
+    "v": 136.1
    },
    {
     "p": "202306",
-    "v": 157.1
+    "v": 124.0
    },
    {
     "p": "202309",
-    "v": 142.6
+    "v": 112.5
    },
    {
     "p": "202312",
-    "v": 145.7
+    "v": 114.9
    },
    {
     "p": "202403",
-    "v": 155.2
+    "v": 122.4
    },
    {
     "p": "202406",
-    "v": 253.6
+    "v": 200.0
    },
    {
     "p": "202409",
-    "v": 156.9
+    "v": 123.7
    },
    {
     "p": "202412",
-    "v": 196.5
+    "v": 155.0
    },
    {
     "p": "2025-T1",
-    "v": 172.6
+    "v": 136.2
    },
    {
     "p": "2025-T2",
-    "v": 191.3
+    "v": 150.9
    },
    {
     "p": "2025-T3",
-    "v": 155.7
+    "v": 122.8
    },
    {
     "p": "2025-T4",
-    "v": 170.6
+    "v": 134.5
    },
    {
     "p": "2026-T1",
-    "v": 170.7
+    "v": 134.6
+   },
+   {
+    "p": "202606",
+    "v": 105.2
    }
   ],
   "PL": [
    {
-    "p": "201506",
+    "p": "201509",
     "v": 100.0
    },
    {
-    "p": "201509",
-    "v": 105.6
-   },
-   {
     "p": "201512",
-    "v": 106.4
+    "v": 100.7
    },
    {
     "p": "201603",
-    "v": 109.2
+    "v": 103.4
    },
    {
     "p": "201606",
-    "v": 116.7
+    "v": 110.5
    },
    {
     "p": "201609",
-    "v": 118.0
+    "v": 111.8
    },
    {
     "p": "201612",
-    "v": 116.4
+    "v": 110.3
    },
    {
     "p": "201703",
-    "v": 119.6
+    "v": 113.3
    },
    {
     "p": "201706",
-    "v": 130.6
+    "v": 123.7
    },
    {
     "p": "201709",
-    "v": 133.1
+    "v": 126.1
    },
    {
     "p": "201712",
-    "v": 128.5
+    "v": 121.7
    },
    {
     "p": "201803",
-    "v": 129.1
+    "v": 122.3
    },
    {
     "p": "201806",
-    "v": 137.5
+    "v": 130.2
    },
    {
     "p": "201809",
-    "v": 139.2
+    "v": 131.9
    },
    {
     "p": "201812",
-    "v": 140.5
+    "v": 133.1
    },
    {
     "p": "201903",
-    "v": 142.4
+    "v": 134.9
    },
    {
     "p": "201906",
-    "v": 155.4
+    "v": 147.2
    },
    {
     "p": "201909",
-    "v": 158.7
+    "v": 150.3
    },
    {
     "p": "201912",
-    "v": 155.2
+    "v": 147.0
    },
    {
     "p": "202003",
-    "v": 165.6
+    "v": 156.9
    },
    {
     "p": "202006",
-    "v": 175.9
+    "v": 166.6
    },
    {
     "p": "202009",
-    "v": 177.1
+    "v": 167.7
    },
    {
     "p": "202012",
-    "v": 180.5
+    "v": 171.0
    },
    {
     "p": "202103",
-    "v": 176.0
+    "v": 166.7
    },
    {
     "p": "202106",
-    "v": 188.9
+    "v": 178.9
    },
    {
     "p": "202109",
-    "v": 189.0
+    "v": 179.1
    },
    {
     "p": "202112",
-    "v": 193.1
+    "v": 182.9
    },
    {
     "p": "202203",
-    "v": 199.0
+    "v": 188.5
    },
    {
     "p": "202206",
-    "v": 208.0
+    "v": 197.0
    },
    {
     "p": "202209",
-    "v": 213.1
+    "v": 201.9
    },
    {
     "p": "202212",
-    "v": 212.4
+    "v": 201.1
    },
    {
     "p": "202303",
-    "v": 215.7
+    "v": 204.3
    },
    {
     "p": "202306",
-    "v": 231.4
+    "v": 219.1
    },
    {
     "p": "202309",
-    "v": 240.2
+    "v": 227.5
    },
    {
     "p": "202312",
-    "v": 239.0
+    "v": 226.3
    },
    {
     "p": "202403",
-    "v": 245.3
+    "v": 232.3
    },
    {
     "p": "202406",
-    "v": 260.0
+    "v": 246.2
    },
    {
     "p": "202409",
-    "v": 262.8
+    "v": 248.9
    },
    {
     "p": "202412",
-    "v": 257.9
+    "v": 244.3
    },
    {
     "p": "2025-T1",
-    "v": 264.7
+    "v": 250.7
    },
    {
     "p": "2025-T2",
-    "v": 283.7
+    "v": 268.7
    },
    {
     "p": "2025-T3",
-    "v": 292.4
+    "v": 277.0
    },
    {
     "p": "2025-T4",
-    "v": 286.2
+    "v": 271.1
    },
    {
     "p": "2026-T1",
-    "v": 295.6
+    "v": 280.0
+   },
+   {
+    "p": "202606",
+    "v": 309.2
    }
   ]
  },
@@ -681,261 +684,257 @@
  "comparacao_grupo": {
   "roe": {
    "valores": [
-    2.45,
-    0.59,
-    1.95,
-    -0.59,
-    4.47,
-    0.66,
-    1.99,
-    -3.52,
+    5.01,
+    1.55,
+    4.76,
+    -3.81,
+    9.9,
+    4.85,
+    4.49,
+    -5.33,
     0.0,
-    3.99,
-    -2.6,
-    3.0,
-    -0.0,
-    1.72,
-    1.63,
-    2.43,
-    5.47,
-    -2.13,
-    7.57,
-    0.16,
-    -1.39,
-    3.68,
-    1.22,
-    1.31,
-    1.46,
-    3.06,
-    5.22,
-    0.0,
-    2.8,
-    4.75,
-    9.07,
-    3.72,
-    3.47,
-    -1.11,
-    3.36,
-    3.04,
-    3.31,
-    8.65,
-    4.24,
-    1.21,
-    3.19,
-    -0.98,
-    5.29,
-    4.54,
-    6.0,
-    0.47,
-    4.17,
-    6.89,
+    8.73,
+    -6.03,
+    6.52,
+    0.25,
+    2.88,
+    4.44,
+    4.76,
+    10.62,
+    -3.86,
+    9.49,
+    2.65,
+    1.19,
+    6.65,
+    4.5,
     2.36,
+    6.07,
+    4.81,
+    11.01,
+    0.0,
+    5.46,
+    8.59,
+    17.52,
+    9.03,
+    7.05,
+    -4.93,
+    3.42,
+    0.04,
+    6.8,
+    17.51,
+    7.95,
+    1.63,
+    6.22,
+    -2.78,
+    11.7,
+    9.56,
+    11.78,
+    5.64,
+    4.89,
+    14.14,
+    3.29,
+    17.61,
+    17.98,
+    -0.72,
+    12.46,
+    27.93,
+    4.8,
+    2.5,
+    3.27,
+    1.84,
+    5.22,
     6.72,
-    8.88,
-    -0.31,
-    -20.36,
-    3.97,
-    15.61,
-    2.81,
-    1.32,
-    1.31,
-    1.27,
-    3.06,
-    4.78,
-    0.08,
-    -0.61,
-    0.95
+    0.15,
+    -0.47,
+    1.88
    ],
-   "meu": 3.19,
-   "mediana": 2.45
+   "meu": 6.22,
+   "mediana": 4.81
   },
   "basileia": {
    "valores": [
-    13.12,
-    58.12,
-    13.48,
-    15.41,
-    12.63,
+    13.87,
+    58.73,
+    14.21,
+    15.75,
     13.01,
-    16.82,
-    13.16,
-    36.07,
-    15.13,
-    12.93,
-    17.75,
-    20.6,
-    22.05,
-    28.92,
-    24.42,
-    11.49,
-    12.82,
-    19.63,
-    25.86,
-    26.8,
-    18.89,
-    13.12,
-    18.76,
-    15.31,
-    16.34,
-    34.64,
-    25.39,
-    19.65,
-    23.79,
-    16.03,
-    14.04,
-    12.1,
-    36.82,
+    13.02,
+    16.74,
+    9.08,
+    36.62,
+    15.68,
+    12.87,
+    14.74,
+    22.01,
+    20.95,
+    29.3,
+    24.97,
+    11.23,
+    12.49,
+    19.43,
+    34.56,
+    27.8,
     17.29,
-    13.53,
-    15.83,
-    13.22,
-    24.96,
-    13.07,
-    23.26,
-    11.6,
-    30.67,
     13.98,
-    13.55,
-    22.82,
-    14.68,
-    17.3,
-    19.04,
-    12.95,
-    35.57,
-    15.1,
-    29.55,
-    26.02,
-    15.96,
-    16.02,
-    16.9,
-    18.57
+    18.74,
+    16.1,
+    13.06,
+    33.81,
+    25.52,
+    22.04,
+    21.69,
+    17.22,
+    14.89,
+    13.32,
+    35.86,
+    16.5,
+    15.32,
+    16.18,
+    14.31,
+    26.72,
+    13.08,
+    28.73,
+    13.89,
+    29.79,
+    14.4,
+    12.84,
+    23.36,
+    13.89,
+    17.21,
+    17.91,
+    12.57,
+    15.51,
+    32.29,
+    28.85,
+    16.58,
+    15.93,
+    23.4
    ],
-   "meu": 23.26,
-   "mediana": 16.9
+   "meu": 28.73,
+   "mediana": 16.58
   },
   "alav": {
    "valores": [
-    26.06,
-    1.45,
-    9.96,
-    9.63,
-    9.53,
-    9.0,
-    8.77,
-    12.38,
-    14.23,
+    27.55,
+    1.42,
+    9.6,
+    9.26,
+    9.29,
+    9.26,
+    9.56,
+    8.25,
+    14.2,
     6.93,
-    11.79,
-    17.94,
-    1.86,
-    5.98,
-    5.15,
-    3.97,
-    14.67,
-    11.11,
-    5.95,
-    10.12,
-    4.96,
-    20.23,
-    8.23,
-    7.24,
-    10.61,
-    16.62,
-    4.53,
-    1.97,
-    5.82,
-    10.22,
-    13.46,
-    16.42,
-    11.9,
-    3.48,
-    15.52,
-    10.46,
-    9.35,
-    20.62,
-    6.48,
-    8.5,
-    3.6,
-    17.49,
-    5.65,
-    13.29,
-    13.13,
-    9.87,
-    14.85,
-    19.09,
-    6.56,
-    5.47,
-    22.67,
-    3.14,
-    1.41,
-    4.56,
-    19.25,
-    5.66,
-    1.39,
-    5.13,
-    11.99,
-    1.03,
-    14.8,
-    16.73,
+    12.0,
+    18.99,
+    1.88,
+    6.22,
+    5.09,
+    3.91,
+    15.58,
+    11.64,
+    6.17,
+    7.21,
+    4.62,
+    20.72,
+    8.98,
+    7.23,
+    10.76,
+    18.86,
+    4.76,
     1.07,
-    5.23
+    5.35,
+    8.73,
+    13.76,
+    17.0,
+    11.56,
+    3.42,
+    15.65,
+    11.75,
+    9.3,
+    20.85,
+    5.49,
+    8.56,
+    2.55,
+    19.08,
+    5.73,
+    13.62,
+    14.06,
+    10.24,
+    14.91,
+    20.0,
+    7.06,
+    5.26,
+    24.43,
+    3.12,
+    4.39,
+    17.84,
+    5.15,
+    1.34,
+    4.8,
+    12.48,
+    1.03,
+    15.99,
+    18.67,
+    1.07,
+    4.61
    ],
-   "meu": 3.6,
-   "mediana": 9.53
+   "meu": 2.55,
+   "mediana": 9.26
   }
  },
  "score_ref": {
-  "score": 32.9,
-  "score_delta": 3.3,
+  "score": 31.4,
+  "score_delta": -1.5,
   "faixa": "risco baixo",
   "dimensoes": {
    "capital_basileia": {
-    "valor": 23.26,
-    "percentil_pares": 76.9,
-    "risco": 23.1,
+    "valor": 28.73,
+    "percentil_pares": 82.4,
+    "risco": 17.6,
     "mediana_pares": 16.34,
-    "q1_pares": 13.53,
-    "q3_pares": 22.82
+    "q1_pares": 13.89,
+    "q3_pares": 22.37
    },
    "rentabilidade": {
-    "valor": 3.19,
-    "percentil_pares": 55.6,
-    "risco": 44.4,
-    "mediana_pares": 3.0,
-    "q1_pares": 1.24,
-    "q3_pares": 4.5
+    "valor": 6.22,
+    "percentil_pares": 57.4,
+    "risco": 42.6,
+    "mediana_pares": 5.01,
+    "q1_pares": 2.51,
+    "q3_pares": 9.26
    },
    "alavancagem": {
-    "valor": 3.6,
-    "percentil_pares": 5.6,
-    "risco": 5.6,
-    "mediana_pares": 10.12,
-    "q1_pares": 5.96,
-    "q3_pares": 14.74
+    "valor": 2.55,
+    "percentil_pares": 3.7,
+    "risco": 3.7,
+    "mediana_pares": 9.56,
+    "q1_pares": 5.95,
+    "q3_pares": 15.24
    },
    "concentracao_credito": {
-    "valor": 1.22,
+    "valor": 1.25,
     "percentil_pares": 11.1,
     "risco": 11.1,
-    "mediana_pares": 48.72,
-    "q1_pares": 18.61,
-    "q3_pares": 64.31
+    "mediana_pares": 48.08,
+    "q1_pares": 18.11,
+    "q3_pares": 64.85
    },
    "dependencia_captacoes": {
-    "valor": 23.3,
+    "valor": 25.09,
     "percentil_pares": 16.7,
     "risco": 16.7,
-    "mediana_pares": 74.1,
-    "q1_pares": 36.86,
-    "q3_pares": 81.8
+    "mediana_pares": 73.35,
+    "q1_pares": 41.97,
+    "q3_pares": 81.88
    },
    "concentracao_setorial": {
-    "valor": 6610,
+    "valor": 8857,
     "percentil_pares": 96.7,
     "risco": 96.7,
-    "mediana_pares": 2404.0,
-    "q1_pares": 1999.0,
-    "q3_pares": 3471.5
+    "mediana_pares": 2426.0,
+    "q1_pares": 1981.0,
+    "q3_pares": 3559.5
    }
   },
   "historico_score": [
@@ -1118,6 +1117,10 @@
    {
     "anomes": "202603",
     "score": 32.9
+   },
+   {
+    "anomes": "202606",
+    "score": 31.4
    }
   ],
   "vulnerabilidade": {
@@ -1131,10 +1134,10 @@
     -0.02,
     -0.0
    ],
-   "basileia_atual_pct": 23.26,
+   "basileia_atual_pct": 28.73,
    "basileia_pos_choque_pct": [
-    23.23,
-    23.25
+    28.71,
+    28.72
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },

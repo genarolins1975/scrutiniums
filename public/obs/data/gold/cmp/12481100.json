@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -62,7 +63,8 @@
    "202506": 77004347.24,
    "202509": 99397323.89,
    "202512": 138440413.63,
-   "202603": 142348324.62
+   "202603": 142348324.62,
+   "202606": 164526893.37
   },
   "patrimonio_liquido": {
    "202406": 2516995.63,
@@ -72,7 +74,8 @@
    "202506": 384611.58,
    "202509": 7456283.19,
    "202512": 7401393.06,
-   "202603": 7564639.27
+   "202603": 7564639.27,
+   "202606": 7060917.68
   },
   "carteira_credito": {
    "202406": 0.0,
@@ -82,7 +85,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 2545317.24
+   "202603": 2545317.24,
+   "202606": 2017525.21
   },
   "captacoes": {
    "202406": 44324632.09,
@@ -92,7 +96,8 @@
    "202506": 70248748.11,
    "202509": 82242908.39,
    "202512": 99929620.69,
-   "202603": 96721116.27
+   "202603": 96721116.27,
+   "202606": 113582502.3
   },
   "lucro_liquido": {
    "202406": 422220.15,
@@ -102,7 +107,8 @@
    "202506": -2182547.62,
    "202509": 171671.61,
    "202512": 116781.479999999,
-   "202603": 163246.21
+   "202603": 163246.21,
+   "202606": -340475.38
   },
   "roe_periodo": {
    "202406": 16.77476690732276,
@@ -112,7 +118,8 @@
    "202506": -567.4679945934025,
    "202509": 2.302375132830758,
    "202512": 1.577831079275217,
-   "202603": 2.1580171132205224
+   "202603": 2.1580171132205224,
+   "202606": -4.821970676196866
   },
   "cart_ativo_pct": {
    "202406": 0.0,
@@ -122,60 +129,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 1.788090760319621
+   "202603": 1.788090760319621,
+   "202606": 1.2262586186823834
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "34006497",
-    "nome": "ASTRO INSTITUICAO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 142521519.53
-   },
-   {
-    "cod": "04307598",
-    "nome": "FIDÚCIA SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LIMITADA.",
-    "sr": "S5",
-    "ativo_brl": 141622983.86
-   },
-   {
-    "cod": "08030602",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS CORRETORES DE SEGUROS DO ESTADO DE SÃO PAULO - SICOOB CREDICOR/SP",
-    "sr": "S5",
-    "ativo_brl": 144321486.31
-   },
-   {
-    "cod": "40083667",
-    "nome": "CAPITAL CONSIG SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 145746835.7
+    "cod": "17079937",
+    "nome": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": "S4",
+    "ativo_brl": 167871717.19
    },
    {
     "cod": "20757199",
     "nome": "PAY4FUN INSTITUICAO DE PAGAMENTO S.A.",
     "sr": null,
-    "ativo_brl": 138195121.39
+    "ativo_brl": 171605740.53
    },
    {
-    "cod": "43394419",
-    "nome": "GOOGLE PAY BRASIL INSTITUICAO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 134846352.24
+    "cod": "01330387",
+    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E SERVIÇOS FINANCEIROS DE AGRICULTORES E AEROPORTUÁRIOS DO BRASIL - CREHNOR",
+    "sr": "S5",
+    "ativo_brl": 173390162.99
+   },
+   {
+    "cod": "08030602",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS CORRETORES DE SEGUROS DO ESTADO DE SÃO PAULO - SICOOB CREDICOR/SP",
+    "sr": "S5",
+    "ativo_brl": 148686514.08
    },
    {
     "cod": "25238191",
     "nome": "BELLUNO INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 134360908.27
+    "ativo_brl": 145935027.92
    },
    {
-    "cod": "38224857",
-    "nome": "DELCRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 150982059.66
+    "cod": "34006497",
+    "nome": "ASTRO INSTITUICAO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 143904359.48
+   },
+   {
+    "cod": "44815065",
+    "nome": "PAY2ALL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 142910967.63
+   },
+   {
+    "cod": "01648418",
+    "nome": "NSTECH IP INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 141946024.37
    }
   ]
  }

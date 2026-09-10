@@ -3,7 +3,7 @@
  "nome": "BOKU NETWORK BRASIL INSTITUICAO DE PAGAMENTO LTDA",
  "sr": null,
  "tcb": "N4",
- "porte_quartil": null,
+ "porte_quartil": "P2",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,28 +50,106 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
+  "ativo_total": {
+   "202606": 21004870.68
+  },
+  "patrimonio_liquido": {
+   "202606": 5672295.53
+  },
+  "carteira_credito": {
+   "202606": 0.0
+  },
+  "captacoes": {
+   "202606": 57.96
+  },
+  "lucro_liquido": {
+   "202606": -458199.61
+  },
   "indice_basileia": {
    "202506": 251.86725336843,
    "202509": 353.003071404745,
    "202512": 349.266382487824,
-   "202603": 276.380251158629
+   "202603": 276.380251158629,
+   "202606": 88.78524042566809
   },
   "patrimonio_referencia": {
    "202506": 3275108.73,
    "202509": 6168004.84,
    "202512": 6130495.14,
-   "202603": 6005037.48
+   "202603": 6005037.48,
+   "202606": 5672295.53
   },
   "rwa": {
    "202506": 1300331.17,
    "202509": 1747294.82,
    "202512": 1755249.13,
-   "202603": 2172744.78
+   "202603": 2172744.78,
+   "202606": 6388727.95
+  },
+  "roe_periodo": {
+   "202606": -8.077851507853294
+  },
+  "cart_ativo_pct": {
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00"
+ "gerado_em": "2026-09-10T15:19:03+00:00",
+ "semelhantes": {
+  "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
+  "lista": [
+   {
+    "cod": "15173776",
+    "nome": "SOCIAL BANK BANCO MÚLTIPLO S/A",
+    "sr": "S4",
+    "ativo_brl": 20971584.88
+   },
+   {
+    "cod": "35542555",
+    "nome": "UNLIMIT BRASIL INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 20903613.22
+   },
+   {
+    "cod": "05289612",
+    "nome": "ASPECIR - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
+    "sr": "S5",
+    "ativo_brl": 21256255.48
+   },
+   {
+    "cod": "48786608",
+    "nome": "ASAAS SOCIEDADE DE CREDITO DIRETO S.A.",
+    "sr": "S4",
+    "ativo_brl": 21338002.33
+   },
+   {
+    "cod": "04998845",
+    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DA MINERAÇÃO RIO DO NORTE",
+    "sr": "S5",
+    "ativo_brl": 21393429.3
+   },
+   {
+    "cod": "43730498",
+    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DE ELEVADORES ATLAS",
+    "sr": "S5",
+    "ativo_brl": 20435656.16
+   },
+   {
+    "cod": "16944141",
+    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
+    "sr": "S4",
+    "ativo_brl": 21749120.83
+   },
+   {
+    "cod": "05548335",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO GRUPO JAL LTDA.",
+    "sr": "S5",
+    "ativo_brl": 21780685.67
+   }
+  ]
+ }
 }

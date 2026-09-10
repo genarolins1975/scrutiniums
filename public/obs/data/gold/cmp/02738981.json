@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 1977534.78,
    "202509": 1977604.98,
    "202512": 2045214.8,
-   "202603": 2051269.34
+   "202603": 2051269.34,
+   "202606": 2116042.64
   },
   "patrimonio_liquido": {
    "201503": 849258.81,
@@ -146,7 +148,8 @@
    "202506": 1822782.89,
    "202509": 1795193.61,
    "202512": 1800818.4,
-   "202603": 1814198.8
+   "202603": 1814198.8,
+   "202606": 1960946.21
   },
   "carteira_credito": {
    "201503": 851589.54,
@@ -193,14 +196,16 @@
    "202506": 1482292.79,
    "202509": 1429771.51,
    "202512": 1364853.87,
-   "202603": 1459652.28
+   "202603": 1459652.28,
+   "202606": 1575269.65
   },
   "carteira_pf": {
    "202503": 1519624.39,
    "202506": 1498398.84,
    "202509": 1445178.22,
    "202512": 1379034.83,
-   "202603": 1474985.03
+   "202603": 1474985.03,
+   "202606": 1592511.8
   },
   "captacoes": {
    "201503": 0.0,
@@ -247,7 +252,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "201503": 24355.94,
@@ -294,35 +300,40 @@
    "202506": 83735.08,
    "202509": 61668.1,
    "202512": 147024.2,
-   "202603": 62283.05
+   "202603": 62283.05,
+   "202606": 115206.21
   },
   "indice_basileia": {
    "202503": 103.570570115198,
    "202506": 107.028396723935,
    "202509": 104.53125200342099,
    "202512": 100.12517353606401,
-   "202603": 101.489096423718
+   "202603": 101.489096423718,
+   "202606": 107.08756510792601
   },
   "patrimonio_referencia": {
    "202503": 1720562.15,
    "202506": 1822782.89,
    "202509": 1795193.61,
    "202512": 1800818.4,
-   "202603": 1814198.8
+   "202603": 1814198.8,
+   "202606": 1960946.21
   },
   "rwa": {
    "202503": 1564725.17,
    "202506": 1606562.41,
    "202509": 1614610.5,
    "202512": 1695802.55,
-   "202603": 1677969.49
+   "202603": 1677969.49,
+   "202606": 1721550.93
   },
   "provisao_credito": {
    "202503": 18573.87,
    "202506": 16106.05,
    "202509": 15406.71,
    "202512": 14180.96,
-   "202603": 15332.75
+   "202603": 15332.75,
+   "202606": 17242.15
   },
   "roe_periodo": {
    "201503": 2.867905485725841,
@@ -369,22 +380,26 @@
    "202506": 4.593804366904059,
    "202509": 3.435178225706808,
    "202512": 8.164299076464346,
-   "202603": 3.4330884796087395
+   "202603": 3.4330884796087395,
+   "202606": 5.87503162567626
   },
   "npl_pct": {
    "202512": 0.2937336977921,
-   "202603": 0.7276460290583424
+   "202603": 0.7276460290583424,
+   "202606": 0.4600154297129855
   },
   "ativos_problematicos_pct": {
    "202503": 1.191660920893748,
    "202506": 0.7426894430857942,
    "202509": 0.7234208110332578,
    "202512": 0.6952754050454258,
-   "202603": 0.7276460290583424
+   "202603": 0.7276460290583424,
+   "202606": 0.4600154297129855
   },
   "cobertura_pct": {
    "202512": 350.087515954072,
-   "202603": 142.86053703318933
+   "202603": 142.86053703318933,
+   "202606": 235.36200824483333
   },
   "cart_ativo_pct": {
    "201503": 94.86659794509474,
@@ -431,74 +446,77 @@
    "202506": 74.95659772921921,
    "202509": 72.29813458499686,
    "202512": 66.73401101928266,
-   "202603": 71.15848960137043
+   "202603": 71.15848960137043,
+   "202606": 74.44413549246815
   },
   "atraso15_consignado_pf": {
    "202503": 0.038347415767637436,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.061707493576542316,
-   "202603": 0.05934772793161965
+   "202603": 0.05934772793161965,
+   "202606": 0.09723870226578861
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 0.0,
    "202506": 0.22498459844354665,
    "202509": 0.29999800329428317,
    "202512": 2.419834973756364,
-   "202603": 6.151451319154775
+   "202603": 6.151451319154775,
+   "202606": 6.934160510311497
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "37943755",
-    "nome": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 2059919.09
-   },
-   {
-    "cod": "88043187",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PROLEC GE BRASIL TRANSMISSÃO DE ENERGIA S.A.",
-    "sr": "S5",
-    "ativo_brl": 2071164.42
-   },
-   {
-    "cod": "47227569",
-    "nome": "GLOBAL INVESTMENT SERVICES DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "cod": "77162881",
+    "nome": "DEBONI DISTRIBUIDORA DE TITULOS E VALORES MOBILIARIOS LTDA",
     "sr": "S4",
-    "ativo_brl": 2094923.86
+    "ativo_brl": 2134141.78
    },
    {
     "cod": "68314921",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DAS EMPRESAS DE DIVERSÕES DO ESTADO DE SÃO PAULO",
     "sr": "S5",
-    "ativo_brl": 2108119.81
+    "ativo_brl": 2144152.1
    },
    {
     "cod": "58526733",
     "nome": "DIVI SOCIEDADE DE CREDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 2120363.9
+    "ativo_brl": 2074707.33
    },
    {
-    "cod": "55251092",
-    "nome": "PAGBRASIL INSTITUICAO DE PAGAMENTO LTDA.",
+    "cod": "10749264",
+    "nome": "GDC PARTNERS SERVIÇOS FIDUCIÁRIOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S5",
+    "ativo_brl": 2029101.09
+   },
+   {
+    "cod": "88043187",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA PROLEC GE BRASIL TRANSMISSÃO DE ENERGIA S.A.",
+    "sr": "S5",
+    "ativo_brl": 1975112.48
+   },
+   {
+    "cod": "07327045",
+    "nome": "CORPORE SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 1948582.93
+   },
+   {
+    "cod": "18340695",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA INDÚSTRIA DE PAPÉIS SUDESTE LTDA . - CREDESTE",
+    "sr": "S5",
+    "ativo_brl": 1874485.57
+   },
+   {
+    "cod": "37943755",
+    "nome": "PLUGGY BRASIL INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2123771.26
-   },
-   {
-    "cod": "48721937",
-    "nome": "CREDPAR - SOCIEDADE DE CRÉDITO DIRETO S/A",
-    "sr": "S5",
-    "ativo_brl": 1964407.52
-   },
-   {
-    "cod": "40819834",
-    "nome": "FIDO SOCIEDADE DE EMPRÉSTIMO ENTRE PESSOAS S.A.",
-    "sr": "S5",
-    "ativo_brl": 1935837.19
+    "ativo_brl": 2394445.9
    }
   ]
  }

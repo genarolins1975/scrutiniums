@@ -3,7 +3,7 @@
  "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A",
  "sr": "S4",
  "tcb": "N2",
- "porte_quartil": "P2",
+ "porte_quartil": "P1",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -98,7 +99,8 @@
    "202506": 160881160.75,
    "202509": 83031552.54,
    "202512": 39661868.1,
-   "202603": 27157224.7
+   "202603": 27157224.7,
+   "202606": 18545369.39
   },
   "patrimonio_liquido": {
    "201503": 988310.37,
@@ -144,7 +146,8 @@
    "202506": 14186545.07,
    "202509": 15269109.41,
    "202512": 12490451.45,
-   "202603": 11081538.22
+   "202603": 11081538.22,
+   "202606": 9215361.01
   },
   "carteira_credito": {
    "201503": 0.0,
@@ -190,7 +193,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "201503": 0.0,
@@ -236,7 +240,8 @@
    "202506": 133886992.91,
    "202509": 53983690.34,
    "202512": 13851023.68,
-   "202603": 6650208.64
+   "202603": 6650208.64,
+   "202606": 1217092.2
   },
   "lucro_liquido": {
    "201503": -229125.4,
@@ -282,42 +287,48 @@
    "202506": 1881178.83,
    "202509": 1082564.34,
    "202512": 148363.690000001,
-   "202603": -1408913.23
+   "202603": -1408913.23,
+   "202606": -3275090.44
   },
   "indice_basileia": {
    "202503": 9.906064321074789,
    "202506": 29.3832824058655,
    "202509": 29.675383757785,
    "202512": 23.052127611769098,
-   "202603": 17.389251806793197
+   "202603": 17.389251806793197,
+   "202606": 13.927533800709199
   },
   "indice_capital_principal": {
    "202503": 9.906064321074789,
    "202506": 29.3832824058655,
    "202509": 29.675383757785,
    "202512": 23.052127611769098,
-   "202603": 17.389251806793197
+   "202603": 17.389251806793197,
+   "202606": 13.927533800709199
   },
   "indice_capital_nivel1": {
    "202503": 9.906064321074789,
    "202506": 29.3832824058655,
    "202509": 29.675383757785,
    "202512": 23.052127611769098,
-   "202603": 17.389251806793197
+   "202603": 17.389251806793197,
+   "202606": 13.927533800709199
   },
   "patrimonio_referencia": {
    "202503": 4439264.63,
    "202506": 12573528.6,
    "202509": 13431241.39,
    "202512": 10396457.19,
-   "202603": 8758338.79
+   "202603": 8758338.79,
+   "202606": 6803991.0
   },
   "rwa": {
    "202503": 5524921.24,
    "202506": 5794992.66,
    "202509": 6922007.64,
    "202512": 7578453.86,
-   "202603": 8405812.07
+   "202603": 8405812.07,
+   "202606": 7772064.18
   },
   "roe_periodo": {
    "201503": -23.18354708754093,
@@ -363,7 +374,8 @@
    "202506": 13.260302777863025,
    "202509": 7.0898983754154665,
    "202512": 1.1878168743052198,
-   "202603": -12.7140583015559
+   "202603": -12.7140583015559,
+   "202606": -35.539469766252815
   },
   "cart_ativo_pct": {
    "201503": 0.0,
@@ -409,60 +421,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "04051232",
-    "nome": "COOPER BENEFICIOS INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 27152577.39
+    "cod": "02115870",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS PÚBLICOS MUNICIPAIS DE ITAPIRA - CREDITA",
+    "sr": "S5",
+    "ativo_brl": 18553528.04
    },
    {
-    "cod": "00250699",
-    "nome": "AGK CORRETORA DE CAMBIO S.A.",
+    "cod": "37526080",
+    "nome": "LEND SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 18497267.23
+   },
+   {
+    "cod": "44728700",
+    "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 18323883.98
+   },
+   {
+    "cod": "02083914",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS POLICIAIS FEDERAIS E SERVIDORES PÚBLICOS NO ESPÍRITO SANTO - CREDFEDERAL",
+    "sr": "S5",
+    "ativo_brl": 18255231.76
+   },
+   {
+    "cod": "73302408",
+    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
     "sr": "S4",
-    "ativo_brl": 27416319.36
+    "ativo_brl": 18225736.13
    },
    {
-    "cod": "20062766",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS COLABORADORES DO GRUPO EMPRESARIAL A COSTA LTDA.",
+    "cod": "02232228",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO SBF LTDA. - COOPER ATIVA SBF",
     "sr": "S5",
-    "ativo_brl": 27505697.16
+    "ativo_brl": 18914127.59
    },
    {
-    "cod": "54811417",
-    "nome": "WOOVI INSTITUICAO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 26666612.25
-   },
-   {
-    "cod": "16944141",
-    "nome": "BROKER BRASIL CORRETORA DE CÂMBIO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 27809153.21
-   },
-   {
-    "cod": "39738065",
-    "nome": "FFCRED SOCIEDADE DE CRÉDITO DIRETO S.A..",
+    "cod": "45756448",
+    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
     "sr": "S5",
-    "ativo_brl": 27823585.22
+    "ativo_brl": 18118941.63
    },
    {
-    "cod": "05040680",
-    "nome": "COOPERATIVA DE CRÉDITO DOS MAGISTRADOS DO ESTADO DO RIO DE JANEIRO LTDA. - MAGICREDI-RJ",
+    "cod": "20622809",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA SAMARCO MINERAÇÃO S.A. LTDA - CREDISAM",
     "sr": "S5",
-    "ativo_brl": 28073336.68
-   },
-   {
-    "cod": "04791645",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES DA ASSEMBLEIA LEGISLATIVA DO ESTADO DE SÃO PAULO - COOPERALESP",
-    "sr": "S5",
-    "ativo_brl": 26196029.37
+    "ativo_brl": 18081103.44
    }
   ]
  }

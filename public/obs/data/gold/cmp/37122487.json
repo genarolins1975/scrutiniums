@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -74,7 +75,8 @@
    "202506": 217775709.0,
    "202509": 232971825.97,
    "202512": 213040729.03,
-   "202603": 182996851.36
+   "202603": 182996851.36,
+   "202606": 179977246.48
   },
   "patrimonio_liquido": {
    "202106": 23616437.76,
@@ -96,7 +98,8 @@
    "202506": 35525573.09,
    "202509": 35262048.65,
    "202512": 37902958.65,
-   "202603": 38114473.38
+   "202603": 38114473.38,
+   "202606": 45772360.53
   },
   "carteira_credito": {
    "202106": 9847.52,
@@ -118,7 +121,8 @@
    "202506": 101690758.82,
    "202509": 94852293.98,
    "202512": 81562268.6900001,
-   "202603": 68320394.24
+   "202603": 68320394.24,
+   "202606": 60127695.04
   },
   "captacoes": {
    "202106": 0.0,
@@ -140,7 +144,8 @@
    "202506": 171275230.77,
    "202509": 184097480.52,
    "202512": 156559366.8,
-   "202603": 132584241.03
+   "202603": 132584241.03,
+   "202606": 128012466.84
   },
   "lucro_liquido": {
    "202106": -1190419.56,
@@ -162,14 +167,16 @@
    "202506": -857000.079999992,
    "202509": -127526.779999994,
    "202512": 2506174.82,
-   "202603": 206713.239999991
+   "202603": 206713.239999991,
+   "202606": 7868064.49
   },
   "provisao_credito": {
    "202503": 114056953.0,
    "202506": 135183978.37,
    "202509": 165122093.48,
    "202512": 188617570.32,
-   "202603": 199243132.77
+   "202603": 199243132.77,
+   "202606": 187214853.95
   },
   "roe_periodo": {
    "202106": -5.04063979545745,
@@ -191,7 +198,8 @@
    "202506": -2.4123469530776593,
    "202509": -0.3616544837362818,
    "202512": 6.612082299807484,
-   "202603": 0.5423484090651522
+   "202603": 0.5423484090651522,
+   "202606": 17.189553693310472
   },
   "cart_ativo_pct": {
    "202106": 0.03520803561702935,
@@ -213,60 +221,61 @@
    "202506": 46.695179773240916,
    "202509": 40.71406213393984,
    "202512": 38.28482424997459,
-   "202603": 37.33419112528713
+   "202603": 37.33419112528713,
+   "202606": 33.408498138503134
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
+    "cod": "05477038",
+    "nome": "COOPERATIVA DE CRÉDITO NO PIAUÍ - SICOOB PIAUÍ",
+    "sr": "S5",
+    "ativo_brl": 177424143.78
+   },
+   {
     "cod": "07946216",
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO SICOOB UNIÃO SUDESTE",
     "sr": "S5",
-    "ativo_brl": 181560135.89
+    "ativo_brl": 185906689.89
+   },
+   {
+    "cod": "20757199",
+    "nome": "PAY4FUN INSTITUICAO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 171605740.53
    },
    {
     "cod": "52046299",
     "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DO ATACADÃO",
     "sr": "S5",
-    "ativo_brl": 184487937.71
+    "ativo_brl": 190193431.74
    },
    {
-    "cod": "44128548",
-    "nome": "POMELO INSTITUICAO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 186920340.6
-   },
-   {
-    "cod": "27084098",
-    "nome": "TRANSFEERA INSTITUIÇÃO DE PAGAMENTO S.A",
-    "sr": null,
-    "ativo_brl": 190439264.56
+    "cod": "46277273",
+    "nome": "GPATIVA - COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO PÃO DE AÇÚCAR",
+    "sr": "S5",
+    "ativo_brl": 170226430.16
    },
    {
     "cod": "02254376",
     "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO DE ASSOCIADOS DE DORES DO INDAIÁ LTDA - SICOOB COOPCREDI",
     "sr": "S5",
-    "ativo_brl": 173542970.55
+    "ativo_brl": 190466517.78
    },
    {
-    "cod": "04572960",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MILITARES ESTADUAIS DE SANTA CATARINA - CREDPOM",
+    "cod": "49654502",
+    "nome": "COOPERATIVA DE CRÉDITO RURAL DOS FORNECEDORES DE CANA DA REGIÃO DE CATANDUVA-COFOCRED",
     "sr": "S5",
-    "ativo_brl": 169815438.59
+    "ativo_brl": 169215959.26
    },
    {
-    "cod": "07314204",
-    "nome": "VOX INSTITUICAO DE PAGAMENTO S.A.",
+    "cod": "44128548",
+    "nome": "POMELO INSTITUICAO DE PAGAMENTO LTDA.",
     "sr": null,
-    "ativo_brl": 197455521.44
-   },
-   {
-    "cod": "37554441",
-    "nome": "COOPERATIVA DE CRÉDITO SICOOB UNI SUL MS",
-    "sr": "S5",
-    "ativo_brl": 197511901.21
+    "ativo_brl": 192019899.09
    }
   ]
  }

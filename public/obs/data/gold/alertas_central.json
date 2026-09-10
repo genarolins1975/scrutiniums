@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-09T15:18:41+00:00",
+ "gerado_em": "2026-09-10T15:19:16+00:00",
  "familias": [
   {
    "id": "macro",
@@ -12,7 +12,7 @@
    "persistencia": "número de execuções anteriores em que a mesma regra disparou",
    "limitacao": "Séries agregadas: um alerta macro descreve o sistema, nunca uma instituição.",
    "view": "pulse",
-   "ativos": 3,
+   "ativos": 2,
    "arquivo": "alerts.json",
    "disponivel": true
   },
@@ -79,39 +79,21 @@
  ],
  "alertas": [
   {
-   "id": "macro:stale_data:convolacao_falencia_agregado",
+   "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "Série 'Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 131 dias",
-   "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 131,
+   "titulo": "20 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (132 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (132 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (101 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 20,
    "limiar": 100,
    "referencia": null,
-   "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "10 execuções anteriores",
+   "fonte": "múltiplas",
+   "evidencia_persistencia": "18 execuções anteriores",
    "recorrente": true,
    "link": {
-    "view": "pulse"
+    "view": "method"
    },
-   "ordem": 0.31,
-   "serie_recente": null
-  },
-  {
-   "id": "macro:stale_data:extincao_rj_agregado",
-   "familia": "macro",
-   "nivel": "informativo",
-   "titulo": "Série 'Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO' sem atualização há 131 dias",
-   "detalhe": "Última referência conhecida; limiar: 100 dias. Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 131,
-   "limiar": 100,
-   "referencia": null,
-   "fonte": "CNJ/DataJud",
-   "evidencia_persistencia": "10 execuções anteriores",
-   "recorrente": true,
-   "link": {
-    "view": "pulse"
-   },
-   "ordem": 0.31,
+   "ordem": 0.8,
    "serie_recente": null
   },
   {
@@ -124,7 +106,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "70 execuções anteriores",
+   "evidencia_persistencia": "71 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -268,7 +250,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Distrito Federal (DF) — carteira ativa (variação entre datas-base)",
-   "detalhe": "179127260920.00% → 159067976443.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "detalhe": "179123948981.00% → 159067976443.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
    "valor": 159067976443,
    "limiar": null,
    "referencia": "2026-07",
@@ -286,7 +268,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Sergipe (SE) — carteira ativa (variação entre datas-base)",
-   "detalhe": "47797130037.00% → 42571993941.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "detalhe": "47797021467.00% → 42571993941.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
    "valor": 42571993941,
    "limiar": null,
    "referencia": "2026-07",
@@ -487,7 +469,7 @@
    "ordem": 0.0
   }
  ],
- "total": 18,
+ "total": 17,
  "niveis": [
   "informativo",
   "atencao",

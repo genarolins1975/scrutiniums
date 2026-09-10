@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -76,7 +77,8 @@
    "202506": 2772379620.97,
    "202509": 2642168696.56,
    "202512": 2919592450.91,
-   "202603": 2606343062.45
+   "202603": 2606343062.45,
+   "202606": 2308204401.69
   },
   "patrimonio_liquido": {
    "202012": 16486098.03,
@@ -100,7 +102,8 @@
    "202506": 445006164.73,
    "202509": 447754561.57,
    "202512": 485721374.96,
-   "202603": 498960428.05
+   "202603": 498960428.05,
+   "202606": 505452255.56
   },
   "carteira_credito": {
    "202012": 0.0,
@@ -124,21 +127,24 @@
    "202506": 274319.32,
    "202509": 245972.79,
    "202512": 307911.93,
-   "202603": 159874.85
+   "202603": 159874.85,
+   "202606": 325300.48
   },
   "carteira_pf": {
    "202503": 4269.74,
    "202506": 3768.5,
    "202509": 5332.33,
    "202512": 41503651.07,
-   "202603": 99243339.35
+   "202603": 99243339.35,
+   "202606": 450871384.8
   },
   "carteira_pj": {
    "202503": 160779.6,
    "202506": 343192.1,
    "202509": 246115.5,
    "202512": 312613.45,
-   "202603": 156929.99
+   "202603": 156929.99,
+   "202606": 329807.49
   },
   "captacoes": {
    "202012": 115624306.99,
@@ -162,7 +168,8 @@
    "202506": 137220858.29,
    "202509": 152353610.7,
    "202512": 158411897.23,
-   "202603": 171550112.71
+   "202603": 171550112.71,
+   "202606": 166160724.83
   },
   "lucro_liquido": {
    "202012": -10884547.04,
@@ -186,7 +193,8 @@
    "202506": 17672810.35,
    "202509": -2136854.72,
    "202512": 33642805.22,
-   "202603": 11005230.96
+   "202603": 11005230.96,
+   "202606": 18736296.38
   },
   "indice_basileia": {
    "202503": 19.696074633796,
@@ -206,7 +214,8 @@
   "provisao_credito": {
    "202509": 89.88,
    "202512": 1042138.31,
-   "202603": 5558960.02
+   "202603": 5558960.02,
+   "202606": 21971425.88
   },
   "roe_periodo": {
    "202012": -66.02257866108296,
@@ -230,16 +239,20 @@
    "202506": 3.9713630395935486,
    "202509": -0.47723795655087564,
    "202512": 6.92635880452462,
-   "202603": 2.205632018356611
+   "202603": 2.205632018356611,
+   "202606": 3.7068380195952844
   },
   "npl_pct": {
-   "202603": 3.5419359458246715
+   "202603": 3.5419359458246715,
+   "202606": 3.0279174641938975
   },
   "ativos_problematicos_pct": {
-   "202603": 3.5419359458246715
+   "202603": 3.5419359458246715,
+   "202606": 3.0279174641938975
   },
   "cobertura_pct": {
-   "202603": 157.8938761864007
+   "202603": 157.8938761864007,
+   "202606": 160.82144900061738
   },
   "cart_ativo_pct": {
    "202012": 0.0,
@@ -263,71 +276,74 @@
    "202506": 0.009894724298399698,
    "202509": 0.009309503602864077,
    "202512": 0.01054640108772811,
-   "202603": 0.006134067778848552
+   "202603": 0.006134067778848552,
+   "202606": 0.01409322674204349
   },
   "atraso15_cartao_de_credito_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "atraso15_credito_pessoal_pf": {
    "202512": 1.0709673440134242,
-   "202603": 4.371727592470808
+   "202603": 4.371727592470808,
+   "202606": 3.836827859038303
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "14568725",
-    "nome": "COOPERATIVA CENTRAL DE ECONOMIA E CRÉDITO SICOOB UNIMAIS RIO LTDA.",
+    "cod": "62931522",
+    "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DO ESTADO DE SÃO PAULO - SICOOB CENTRAL CECRESP",
     "sr": "S4",
-    "ativo_brl": 2600020885.51
+    "ativo_brl": 2256754857.01
    },
    {
-    "cod": "04632856",
-    "nome": "CREDISIS - CENTRAL DE COOPERATIVAS DE CRÉDITO LTDA.",
-    "sr": "S4",
-    "ativo_brl": 2621348027.3
-   },
-   {
-    "cod": "10878448",
-    "nome": "PAYPAL DO BRASIL INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "cod": "21018182",
+    "nome": "EBANX INSTITUICAO DE PAGAMENTOS LTDA.",
     "sr": null,
-    "ativo_brl": 2671580160.86
+    "ativo_brl": 2157396619.12
    },
    {
-    "cod": "16668076",
-    "nome": "SUMUP INSTITUICAO DE PAGAMENTO BRASIL LTDA",
-    "sr": "S4",
-    "ativo_brl": 2814576087.81
+    "cod": "03816413",
+    "nome": "PAGUEVELOZ INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 2109510010.84
    },
    {
     "cod": "32223020",
     "nome": "FLASH TECNOLOGIA E  INSTITUICAO DE PAGAMENTO LTDA",
     "sr": null,
-    "ativo_brl": 2378711642.16
+    "ativo_brl": 2526251833.44
    },
    {
-    "cod": "37880206",
-    "nome": "CORA SOCIEDADE DE CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "sr": "S5",
-    "ativo_brl": 2896494198.33
+    "cod": "80230774",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS ESTADOS DO PARANÁ, SÃO PAULO E RIO DE JANEIRO - CENTRAL SICREDI PR/SP/RJ",
+    "sr": "S4",
+    "ativo_brl": 2094137082.76
    },
    {
-    "cod": "22177858",
-    "nome": "INTER PAG INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "sr": "S3",
-    "ativo_brl": 2980655358.07
+    "cod": "00106180",
+    "nome": "CENTRAL DAS COOPERATIVAS DE CRÉDITO DOS ESTADOS DE MATO GROSSO, MATO GROSSO DO SUL E DO MUNICÍPIO DE CACOAL/RO - SICOOB CENTRAL RONDON",
+    "sr": "S4",
+    "ativo_brl": 2547146212.04
    },
    {
-    "cod": "24313102",
-    "nome": "99PAY INSTITUICAO DE PAGAMENTO S.A.",
-    "sr": "S5",
-    "ativo_brl": 3003739937.04
+    "cod": "34148882",
+    "nome": "COOPERATIVA CENTRAL DE CRÉDITO DA BAHIA LTDA - SICOOB CENTRAL BA",
+    "sr": "S4",
+    "ativo_brl": 2085621820.62
+   },
+   {
+    "cod": "62318407",
+    "nome": "S3 CACEIS BRASIL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "sr": "S4",
+    "ativo_brl": 2556126831.17
    }
   ]
  }

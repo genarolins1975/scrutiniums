@@ -3,7 +3,7 @@
  "nome": "CONPAY INSTITUIÇÃO DE PAGAMENTO E TECNOLOGIA S.A",
  "sr": null,
  "tcb": "N4",
- "porte_quartil": "P2",
+ "porte_quartil": "P1",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -58,114 +59,124 @@
    "202506": 7916424.57,
    "202509": 11063433.24,
    "202512": 12227203.69,
-   "202603": 20822649.94
+   "202603": 20822649.94,
+   "202606": 14202951.51
   },
   "patrimonio_liquido": {
    "202506": 4219950.4,
    "202509": 6897130.13,
    "202512": 7546022.87,
-   "202603": 8252371.62
+   "202603": 8252371.62,
+   "202606": 6890645.36
   },
   "carteira_credito": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202506": 642977.12,
    "202509": 653917.53,
    "202512": 623020.86,
-   "202603": 8262083.66
+   "202603": 8262083.66,
+   "202606": 947640.38
   },
   "lucro_liquido": {
    "202506": 880292.92,
    "202509": 677179.73,
    "202512": 2206365.39,
-   "202603": 706348.75
+   "202603": 706348.75,
+   "202606": -655377.510000002
   },
   "indice_basileia": {
    "202506": 17.6276854428942,
    "202509": 22.366367774013,
    "202512": 54.053569629683196,
-   "202603": 36.7755172422468
+   "202603": 36.7755172422468,
+   "202606": 36.1483166767595
   },
   "patrimonio_referencia": {
    "202506": 1804772.53,
    "202509": 2719542.54,
    "202512": 7449407.92,
-   "202603": 8234783.32
+   "202603": 8234783.32,
+   "202606": 6389165.2
   },
   "rwa": {
    "202506": 1869090.18,
    "202509": 3015306.88,
    "202512": 3637823.28,
-   "202603": 11300256.33
+   "202603": 11300256.33,
+   "202606": 6151060.56
   },
   "roe_periodo": {
    "202506": 20.86026698323279,
    "202509": 9.818282636926266,
    "202512": 29.238784827589587,
-   "202603": 8.559342483900403
+   "202603": 8.559342483900403,
+   "202606": -9.511119434537289
   },
   "cart_ativo_pct": {
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "15173776",
-    "nome": "SOCIAL BANK BANCO MÚLTIPLO S/A",
+    "cod": "49947715",
+    "nome": "ZM SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 14241395.41
+   },
+   {
+    "cod": "34978626",
+    "nome": "INTEGRAL ACCESS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
     "sr": "S4",
-    "ativo_brl": 20747625.12
+    "ativo_brl": 13910056.46
    },
    {
-    "cod": "16683062",
-    "nome": "MERCANTIL DO BRASIL CORRETORA S.A. - CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS",
-    "sr": "S3",
-    "ativo_brl": 20198367.66
+    "cod": "12651789",
+    "nome": "SISPAY INSTITUIÇÃO DE PAGAMENTO LTDA.",
+    "sr": null,
+    "ativo_brl": 13862907.75
    },
    {
-    "cod": "47631123",
-    "nome": "WEALTH HIGH GOVERNANCE DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "cod": "03639902",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DO PODER EXECUTIVO FEDERAL NO ESTADO DO ESPÍRITO SANTO - CREDES",
     "sr": "S5",
-    "ativo_brl": 20184184.37
+    "ativo_brl": 13844475.42
    },
    {
-    "cod": "35911258",
-    "nome": "STARCRED SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "17508380",
+    "nome": "INVEST CORRETORA DE CÂMBIO LTDA.",
     "sr": "S5",
-    "ativo_brl": 20178045.79
+    "ativo_brl": 13820607.22
    },
    {
-    "cod": "04998845",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DA MINERAÇÃO RIO DO NORTE",
-    "sr": "S5",
-    "ativo_brl": 21556379.27
+    "cod": "43215815",
+    "nome": "BELVO INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 14724205.76
    },
    {
-    "cod": "05289612",
-    "nome": "ASPECIR - SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-    "sr": "S5",
-    "ativo_brl": 21562565.01
+    "cod": "72600026",
+    "nome": "RIO BRAVO INVESTIMENTOS - DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "sr": "S4",
+    "ativo_brl": 14730889.19
    },
    {
-    "cod": "01235921",
-    "nome": "COOPERATIVA DE CRÉDITO DOS SERVIDORES PÚBLICOS MUNICIPAIS DA GRANDE VITÓRIA/ES",
+    "cod": "04478231",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MEMBROS DO MINISTÉRIO PÚBLICO DE SÃO PAULO - PROMOCRED",
     "sr": "S5",
-    "ativo_brl": 20092084.33
-   },
-   {
-    "cod": "43730498",
-    "nome": "COOPERATIVA DE CRÉDITO DOS EMPREGADOS DE ELEVADORES ATLAS",
-    "sr": "S5",
-    "ativo_brl": 20000072.14
+    "ativo_brl": 13634350.58
    }
   ]
  }

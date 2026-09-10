@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -70,7 +71,8 @@
    "202506": 107158354.01,
    "202509": 88227066.55,
    "202512": 105966713.52,
-   "202603": 124118547.6
+   "202603": 124118547.6,
+   "202606": 70010388.15
   },
   "patrimonio_liquido": {
    "202206": 26524197.94,
@@ -88,7 +90,8 @@
    "202506": 18500560.15,
    "202509": 16092425.04,
    "202512": 16032690.23,
-   "202603": 16390828.85
+   "202603": 16390828.85,
+   "202606": 16268691.45
   },
   "carteira_credito": {
    "202206": 0.0,
@@ -106,7 +109,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202206": 73162027.12,
@@ -124,7 +128,8 @@
    "202506": 84469278.64,
    "202509": 68489705.52,
    "202512": 82253626.88,
-   "202603": 102719889.93
+   "202603": 102719889.93,
+   "202606": 48842334.38
   },
   "lucro_liquido": {
    "202206": 1031349.72,
@@ -142,28 +147,32 @@
    "202506": 1148935.71,
    "202509": 1048022.14,
    "202512": 988287.329999999,
-   "202603": 358138.62
+   "202603": 358138.62,
+   "202606": 236001.220000002
   },
   "indice_basileia": {
    "202503": 25.222300906644403,
    "202506": 22.6214972253564,
    "202509": 18.8194948108259,
    "202512": 17.1406684889641,
-   "202603": 13.890442996135599
+   "202603": 13.890442996135599,
+   "202606": 13.1815292561684
   },
   "patrimonio_referencia": {
    "202503": 17630135.46,
    "202506": 18500560.15,
    "202509": 16092425.04,
    "202512": 15778863.2,
-   "202603": 16065426.7
+   "202603": 16065426.7,
+   "202606": 15842288.48
   },
   "rwa": {
    "202503": 7215127.42,
    "202506": 7922277.78,
    "202509": 5353688.56,
    "202512": 5569765.73,
-   "202603": 14194297.46
+   "202603": 14194297.46,
+   "202606": 3261920.78
   },
   "roe_periodo": {
    "202206": 3.888335181078806,
@@ -181,7 +190,8 @@
    "202506": 6.210275260233134,
    "202509": 6.512518389211028,
    "202512": 6.164201489720911,
-   "202603": 2.184993957764375
+   "202603": 2.184993957764375,
+   "202606": 1.4506466037869445
   },
   "cart_ativo_pct": {
    "202206": 0.0,
@@ -199,60 +209,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "58290800",
-    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS EMPREGADOS DA MAXION - CREDMAXION",
-    "sr": "S5",
-    "ativo_brl": 123689800.09
-   },
-   {
-    "cod": "03862898",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO DE LIVRE ADMISSÃO DOS EMPREGADOS DOS CORREIOS LTDA. - SICOOB COOPERCORREIOS",
-    "sr": "S5",
-    "ativo_brl": 123057104.23
-   },
-   {
-    "cod": "17079937",
-    "nome": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "sr": "S4",
-    "ativo_brl": 125884676.6
-   },
-   {
-    "cod": "51489318",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS MAGISTRADOS DE SÃO PAULO - MAGISCRED",
-    "sr": "S5",
-    "ativo_brl": 122296385.3
-   },
-   {
-    "cod": "19875244",
-    "nome": "COOPERATIVA DE CRÉDITO DE LIVRE ADMISSÃO - SICOOB COPESITA",
-    "sr": "S5",
-    "ativo_brl": 126270391.39
-   },
-   {
-    "cod": "47377613",
-    "nome": "SOLVER INSTITUICAO DE PAGAMENTO LTDA",
+    "cod": "27970567",
+    "nome": "HINOVA PAY INSTITUICAO DE PAGAMENTO S.A.",
     "sr": null,
-    "ativo_brl": 121694062.26
+    "ativo_brl": 70194736.82
    },
    {
-    "cod": "02904138",
-    "nome": "COOPERATIVA DE CRÉDITO RURAL E ECONOMIA COM INTERAÇÃO SOLIDÁRIA DE ÁUREA - CRESOL ÁUREA",
-    "sr": "S5",
-    "ativo_brl": 126744889.93
-   },
-   {
-    "cod": "06078926",
-    "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DOS ESCRIVÃES, NOTÁRIOS E REGISTRADORES NO ESTADO DO PARANÁ - SICREDI CREDENOREG PR",
+    "cod": "33132044",
+    "nome": "BANCO CEDULA S.A.",
     "sr": "S4",
-    "ativo_brl": 127271235.33
+    "ativo_brl": 70282900.88
+   },
+   {
+    "cod": "32615247",
+    "nome": "COOPERATIVA DE CREDITO SICOOB COOPEC LTDA.",
+    "sr": "S5",
+    "ativo_brl": 70569282.86
+   },
+   {
+    "cod": "17768068",
+    "nome": "PINPAG INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "sr": null,
+    "ativo_brl": 68887582.72
+   },
+   {
+    "cod": "51556307",
+    "nome": "MOVILEPAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 68721395.2
+   },
+   {
+    "cod": "42259084",
+    "nome": "ARTTA SOCIEDADE DE CRÉDITO DIRETO S.A",
+    "sr": "S5",
+    "ativo_brl": 68526210.96
+   },
+   {
+    "cod": "33924028",
+    "nome": "COOPERATIVA DE CRÉDITO CLÁSSICA DOS EMPREGADOS DA VALE S/A E ENTIDADES VINCULADAS LTDA. - SICOOB COOPVALE",
+    "sr": "S5",
+    "ativo_brl": 71618869.63
+   },
+   {
+    "cod": "38653626",
+    "nome": "F & F INSTITUICAO DE PAGAMENTO S. A.",
+    "sr": "S5",
+    "ativo_brl": 68009865.26
    }
   ]
  }

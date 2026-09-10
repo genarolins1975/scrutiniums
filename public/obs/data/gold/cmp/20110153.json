@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -59,123 +60,133 @@
    "202506": 35478942.25,
    "202509": 34489599.91,
    "202512": 35396487.78,
-   "202603": 32653598.4
+   "202603": 32653598.4,
+   "202606": 31897974.9
   },
   "patrimonio_liquido": {
    "202503": 2951423.76,
    "202506": 4080567.16,
    "202509": 4581256.94,
    "202512": 5045749.45,
-   "202603": 5280487.11
+   "202603": 5280487.11,
+   "202606": 5273777.37
   },
   "carteira_credito": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "lucro_liquido": {
    "202503": 198533.76,
    "202506": 1221589.9,
    "202509": 385740.16,
    "202512": 493577.39,
-   "202603": 125562.51
+   "202603": 125562.51,
+   "202606": 189154.01
   },
   "indice_basileia": {
    "202503": 120.42979612717599,
    "202506": 139.44934317692602,
    "202509": 85.0449783996344,
    "202512": 79.3965774992625,
-   "202603": 89.3149879832363
+   "202603": 89.3149879832363,
+   "202606": 89.9495266595009
   },
   "patrimonio_referencia": {
    "202503": 2950678.76,
    "202506": 4079822.16,
    "202509": 4580511.94,
    "202512": 4423843.65,
-   "202603": 4658700.31
+   "202603": 4658700.31,
+   "202606": 4833630.37
   },
   "rwa": {
    "202503": 2450123.52,
    "202506": 2925666.1,
    "202509": 5385982.66,
    "202512": 5571828.92,
-   "202603": 5216032.44
+   "202603": 5216032.44,
+   "202606": 5373712.82
   },
   "roe_periodo": {
    "202503": 6.726711449934253,
    "202506": 29.936767417399885,
    "202509": 8.419963452213617,
    "202512": 9.782043180919338,
-   "202603": 2.377858469954678
+   "202603": 2.377858469954678,
+   "202606": 3.586689325871183
   },
   "cart_ativo_pct": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:04+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
+    "cod": "57487987",
+    "nome": "VIVO PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 31966391.35
+   },
+   {
+    "cod": "52076716",
+    "nome": "AWX BRASIL  INSTITUICAO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 31699071.36
+   },
+   {
     "cod": "44746352",
     "nome": "COOPERATIVA DE CRÉDITO DOS FORNECEDORES DE CANA DE BARRA BONITA E REGIÃO",
     "sr": "S5",
-    "ativo_brl": 32451920.62
+    "ativo_brl": 32135919.06
    },
    {
-    "cod": "46241852",
-    "nome": "COMPREV - CRÉDITO, FINANCIAMENTO E INVESTIMENTO S.A.",
-    "sr": "S5",
-    "ativo_brl": 32887818.85
-   },
-   {
-    "cod": "27842177",
-    "nome": "BPY CORRETORA DE CÂMBIO, TÍTULOS E VALORES MOBILIÁRIOS S.A.",
+    "cod": "20155248",
+    "nome": "UNIDA DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
     "sr": "S4",
-    "ativo_brl": 33027691.27
-   },
-   {
-    "cod": "53263331",
-    "nome": "COBANSA COMPANHIA HIPOTECARIA",
-    "sr": "S5",
-    "ativo_brl": 33031456.96
-   },
-   {
-    "cod": "46743997",
-    "nome": "TTSCD SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S5",
-    "ativo_brl": 32254461.45
+    "ativo_brl": 32166007.02
    },
    {
     "cod": "40429946",
     "nome": "BANCO PORTO REAL DE INVESTIMENTOS S.A",
     "sr": "S4",
-    "ativo_brl": 32129377.52
+    "ativo_brl": 32201273.77
    },
    {
-    "cod": "57487987",
-    "nome": "VIVO PAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "04831810",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS SERVIDORES PÚBLICOS DE PINHÃO - CRESERV CREDISIS",
     "sr": "S5",
-    "ativo_brl": 33188976.79
+    "ativo_brl": 31581111.2
    },
    {
-    "cod": "40434681",
-    "nome": "AZUMI DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
+    "cod": "48718183",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS DA ERICSSON - COOPERICSSON",
+    "sr": "S5",
+    "ativo_brl": 31519056.33
+   },
+   {
+    "cod": "08673569",
+    "nome": "F.D'GOLD - DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
     "sr": "S4",
-    "ativo_brl": 31699325.86
+    "ativo_brl": 32362345.53
    }
   ]
  }

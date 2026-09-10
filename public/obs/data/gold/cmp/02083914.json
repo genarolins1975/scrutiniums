@@ -3,7 +3,7 @@
  "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS POLICIAIS FEDERAIS E SERVIDORES PÚBLICOS NO ESPÍRITO SANTO - CREDFEDERAL",
  "sr": "S5",
  "tcb": "B3S",
- "porte_quartil": "P2",
+ "porte_quartil": "P1",
  "nivel": "instituição individual",
  "anomes_list": [
   "201503",
@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -99,7 +100,8 @@
    "202506": 17513986.01,
    "202509": 18027074.1,
    "202512": 17610103.67,
-   "202603": 17865499.62
+   "202603": 17865499.62,
+   "202606": 18255231.76
   },
   "patrimonio_liquido": {
    "201503": 2418304.92,
@@ -146,7 +148,8 @@
    "202506": 5147508.7,
    "202509": 5264950.17,
    "202512": 5268475.66,
-   "202603": 5336574.76
+   "202603": 5336574.76,
+   "202606": 5325915.08
   },
   "carteira_credito": {
    "201503": 5067179.73,
@@ -193,14 +196,16 @@
    "202506": 10928396.65,
    "202509": 10690769.18,
    "202512": 10276434.22,
-   "202603": 10332569.08
+   "202603": 10332569.08,
+   "202606": 10792990.46
   },
   "carteira_pf": {
    "202503": 11307812.75,
    "202506": 11008348.01,
    "202509": 10777143.64,
    "202512": 10413860.6,
-   "202603": 10460070.34
+   "202603": 10460070.34,
+   "202606": 10919693.83
   },
   "captacoes": {
    "201503": 3807145.39,
@@ -247,7 +252,8 @@
    "202506": 11508665.34,
    "202509": 11898597.62,
    "202512": 11682185.1,
-   "202603": 11932349.44
+   "202603": 11932349.44,
+   "202606": 12247941.3
   },
   "lucro_liquido": {
    "201503": -24940.56,
@@ -294,35 +300,40 @@
    "202506": 168364.98,
    "202509": 53075.1299999999,
    "202512": 59953.0300000001,
-   "202603": 64866.35
+   "202603": 64866.35,
+   "202606": 79421.7300000002
   },
   "indice_basileia": {
    "202503": 32.6124413300661,
    "202506": 33.9222021365008,
    "202509": 33.4071976107119,
    "202512": 34.087754032573706,
-   "202603": 33.6908015356456
+   "202603": 33.6908015356456,
+   "202606": 33.0137347038273
   },
   "patrimonio_referencia": {
    "202503": 5112882.12,
    "202506": 5147456.98,
    "202509": 5264950.17,
    "202512": 5267975.66,
-   "202603": 5336074.76
+   "202603": 5336074.76,
+   "202606": 5325415.08
   },
   "rwa": {
    "202503": 15256752.36,
    "202506": 14753348.82,
    "202509": 15330242.51,
    "202512": 15024473.73,
-   "202603": 15392231.84
+   "202603": 15392231.84,
+   "202606": 15684766.72
   },
   "provisao_credito": {
    "202503": 84842.43,
    "202506": 79951.36,
    "202509": 86374.46,
    "202512": 137426.38,
-   "202603": 127501.26
+   "202603": 127501.26,
+   "202606": 126703.37
   },
   "roe_periodo": {
    "201503": -1.031324039980864,
@@ -369,7 +380,8 @@
    "202506": 3.270805156677054,
    "202509": 1.0080841847739634,
    "202512": 1.1379578054271602,
-   "202603": 1.2155053178717206
+   "202603": 1.2155053178717206,
+   "202606": 1.491231625120095
   },
   "npl_pct": {
    "202506": 0.014498724046061475,
@@ -379,7 +391,8 @@
   "ativos_problematicos_pct": {
    "202506": 0.014498724046061475,
    "202512": 0.975543402222995,
-   "202603": 0.5160708125792585
+   "202603": 0.5160708125792585,
+   "202606": 0.8799781522812165
   },
   "cobertura_pct": {
    "202506": 5009.264004711573,
@@ -431,74 +444,77 @@
    "202506": 62.39811225017645,
    "202509": 59.30396203341728,
    "202512": 58.355330624808296,
-   "202603": 57.835321148438155
+   "202603": 57.835321148438155,
+   "202606": 59.12272493658004
   },
   "atraso15_consignado_pf": {
    "202503": 0.04059883845923367,
    "202506": 0.0,
    "202509": 0.0038635640312092963,
    "202512": 0.031193544160552856,
-   "202603": 0.053507476840768
+   "202603": 0.053507476840768,
+   "202606": 0.0
   },
   "atraso15_credito_pessoal_pf": {
    "202503": 0.0,
    "202506": 0.0,
    "202509": 0.14106750092014092,
    "202512": 0.0,
-   "202603": 1.579458699537987
+   "202603": 1.579458699537987,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "49686505",
-    "nome": "WASU - WALLET SUPPORT INSTITUIÇÃO DE PAGAMENTO LTDA",
-    "sr": null,
-    "ativo_brl": 17856086.27
+    "cod": "73302408",
+    "nome": "EXIM CORRETORA DE CAMBIO LTDA",
+    "sr": "S4",
+    "ativo_brl": 18225736.13
    },
    {
-    "cod": "12651789",
-    "nome": "SISPAY INSTITUIÇÃO DE PAGAMENTO LTDA.",
-    "sr": null,
-    "ativo_brl": 17918981.19
-   },
-   {
-    "cod": "28979546",
-    "nome": "PARTNERBANK INSTITUICAO DE PAGAMENTO S.A.",
-    "sr": null,
-    "ativo_brl": 17589908.79
-   },
-   {
-    "cod": "92675578",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO SISTEMA FIERGS - CRESUL",
+    "cod": "44728700",
+    "nome": "ATF SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 17462234.83
+    "ativo_brl": 18323883.98
    },
    {
-    "cod": "24361690",
-    "nome": "LIMINE TRUST DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 18301005.1
-   },
-   {
-    "cod": "02232228",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO SBF LTDA. - COOPER ATIVA SBF",
+    "cod": "45756448",
+    "nome": "MICROCASH SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
     "sr": "S5",
-    "ativo_brl": 18345071.52
+    "ativo_brl": 18118941.63
    },
    {
-    "cod": "02929977",
-    "nome": "AGENCIA DE FOMENTO DO AMAPA S.A.",
-    "sr": "S4",
-    "ativo_brl": 17388222.36
+    "cod": "20622809",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA SAMARCO MINERAÇÃO S.A. LTDA - CREDISAM",
+    "sr": "S5",
+    "ativo_brl": 18081103.44
    },
    {
-    "cod": "01582158",
-    "nome": "OPPORTUNITY DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA",
+    "cod": "02588819",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DA UNIÃO MARISTA DO BRASIL E SUAS ASSOCIADAS, PROVÍNCIA MARISTA BRASIL CENTRO-NORTE E UNIÃO BRASILEIRA DE EDUCAÇÃO CATÓLICA.",
+    "sr": "S5",
+    "ativo_brl": 18010030.67
+   },
+   {
+    "cod": "13673855",
+    "nome": "OSLO CAPITAL DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS S.A",
     "sr": "S4",
-    "ativo_brl": 17356014.18
+    "ativo_brl": 18545369.39
+   },
+   {
+    "cod": "44921281",
+    "nome": "NIXFIN SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "sr": "S5",
+    "ativo_brl": 17966809.37
+   },
+   {
+    "cod": "02115870",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS FUNCIONÁRIOS PÚBLICOS MUNICIPAIS DE ITAPIRA - CREDITA",
+    "sr": "S5",
+    "ativo_brl": 18553528.04
    }
   ]
  }

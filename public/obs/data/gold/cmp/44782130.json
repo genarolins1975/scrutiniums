@@ -50,7 +50,8 @@
   "202506",
   "202509",
   "202512",
-  "202603"
+  "202603",
+  "202606"
  ],
  "fonte": "BCB IF.data (Olinda + interface, conglomerados prudenciais tipo 2 e instituições individuais)",
  "metrics": {
@@ -65,7 +66,8 @@
    "202506": 127313823.89,
    "202509": 37084552.98,
    "202512": 27051847.66,
-   "202603": 47450135.73
+   "202603": 47450135.73,
+   "202606": 40919733.85
   },
   "patrimonio_liquido": {
    "202309": 1500000.0,
@@ -78,7 +80,8 @@
    "202506": 1895956.5,
    "202509": 2027858.08,
    "202512": 2101603.11,
-   "202603": 2472608.4
+   "202603": 2472608.4,
+   "202606": 4362011.54
   },
   "carteira_credito": {
    "202309": 0.0,
@@ -91,7 +94,8 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   },
   "captacoes": {
    "202309": 0.0,
@@ -104,7 +108,8 @@
    "202506": 125279564.15,
    "202509": 34906541.11,
    "202512": 24781999.45,
-   "202603": 44846988.86
+   "202603": 44846988.86,
+   "202606": 36060901.28
   },
   "lucro_liquido": {
    "202309": 0.0,
@@ -117,7 +122,8 @@
    "202506": -40449.25,
    "202509": 131901.58,
    "202512": 205646.61,
-   "202603": 371005.29
+   "202603": 371005.29,
+   "202606": 531407.230000001
   },
   "indice_basileia": {
    "202503": 546.6489480296781,
@@ -165,7 +171,8 @@
    "202506": -2.1334482093866605,
    "202509": 6.504477867603041,
    "202512": 9.785225812689248,
-   "202603": 15.004611729055034
+   "202603": 15.004611729055034,
+   "202606": 12.182618618198362
   },
   "cart_ativo_pct": {
    "202309": 0.0,
@@ -178,60 +185,61 @@
    "202506": 0.0,
    "202509": 0.0,
    "202512": 0.0,
-   "202603": 0.0
+   "202603": 0.0,
+   "202606": 0.0
   }
  },
- "gerado_em": "2026-09-09T15:18:29+00:00",
+ "gerado_em": "2026-09-10T15:19:03+00:00",
  "semelhantes": {
   "criterios": "mesmo nível de consolidação; ativos entre 1/3 e 3× dos ativos da instituição; especialização em crédito (carteira÷ativos) dentro de ±15 p.p. quando ambas reportam; mix PF (carteira PF ÷ carteira PF+PJ) dentro de ±20 p.p. quando ambas reportam; ordenadas pela proximidade de porte (razão de ativos). Máx. 8.",
   "lista": [
    {
-    "cod": "40475846",
-    "nome": "J17 - SOCIEDADE DE CRÉDITO DIRETO S/A",
+    "cod": "53776852",
+    "nome": "COOPERATIVA DE CREDITO DOS FORNECEDORES DE CANA E DEMAIS PRODUTORES RURAIS DO CENTRO DO ESTADO DE SAO PAULO - CREDICENTRO",
     "sr": "S5",
-    "ativo_brl": 46736793.46
+    "ativo_brl": 41076495.2
    },
    {
-    "cod": "35470647",
-    "nome": "HEDGEPOINT GLOBAL MARKETS DISTRIBUIDORA DE TITULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 45814329.49
-   },
-   {
-    "cod": "51556307",
-    "nome": "MOVILEPAY SOCIEDADE DE CRÉDITO DIRETO S.A.",
+    "cod": "36452762",
+    "nome": "BIGCASH SOCIEDADE DE CREDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 49158199.36
+    "ativo_brl": 40681792.25
    },
    {
-    "cod": "01062439",
-    "nome": "COOPERATIVA DE ECONOMIA E CREDITO MUTUO DOS FUNCIONARIOS DA COMIGO",
+    "cod": "33423888",
+    "nome": "VILLELA INSTITUICAO DE PAGAMENTO S/A.",
+    "sr": null,
+    "ativo_brl": 40669317.95
+   },
+   {
+    "cod": "02275781",
+    "nome": "COOPERATIVA DE CRÉDITO MÚTUO DOS SERVIDORES FEDERAIS NA PARAÍBA - SICOOB COOPERCRET",
     "sr": "S5",
-    "ativo_brl": 49427239.02
+    "ativo_brl": 41310550.15
    },
    {
-    "cod": "24074692",
-    "nome": "GUITTA CORRETORA DE CAMBIO LTDA.",
+    "cod": "92858380",
+    "nome": "CORRETORA GERAL DE VALORES E CÂMBIO LTDA",
     "sr": "S4",
-    "ativo_brl": 45497097.62
+    "ativo_brl": 41820319.08
    },
    {
-    "cod": "02024442",
-    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO COLORADO",
+    "cod": "34088029",
+    "nome": "LISTO SOCIEDADE DE CREDITO DIRETO S.A.",
     "sr": "S5",
-    "ativo_brl": 49770484.51
+    "ativo_brl": 41968148.9
    },
    {
-    "cod": "39664698",
-    "nome": "CREDSYSTEM SOCIEDADE DE CRÉDITO DIRETO S.A.",
-    "sr": "S4",
-    "ativo_brl": 49833930.93
+    "cod": "62284385",
+    "nome": "COOPERATIVA DE ECONOMIA E CRÉDITO MÚTUO DOS EMPREGADOS DO GRUPO SCHAEFFLER",
+    "sr": "S5",
+    "ativo_brl": 39814873.79
    },
    {
-    "cod": "38429045",
-    "nome": "FÊNIX DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-    "sr": "S4",
-    "ativo_brl": 50249037.08
+    "cod": "54024532",
+    "nome": "MAX INSTITUIÇÃO DE PAGAMENTO LTDA",
+    "sr": null,
+    "ativo_brl": 39718938.73
    }
   ]
  }

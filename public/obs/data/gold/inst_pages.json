@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-09T15:18:21+00:00",
+ "gerado_em": "2026-09-10T15:18:54+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -19,17 +19,17 @@
     "capital": "aberto",
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
-    "data_base": "2026-T1",
-    "atualizado_em": "2026-09-09T15:18:21+00:00",
+    "data_base": "202606",
+    "atualizado_em": "2026-09-10T15:18:54+00:00",
     "aviso_pares": null
    },
    "indicadores": [
     {
      "nome": "Ativos totais",
-     "valor": 2832306405072.48,
-     "periodo": "2026-T1",
-     "d_tri": 90807076250.6899,
-     "d_ano": 1625844634671.14,
+     "valor": 2845762304464.61,
+     "periodo": "202606",
+     "d_tri": 13455899392.1299,
+     "d_ano": 256229614487.8198,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -213,17 +213,21 @@
       {
        "p": "2026-T1",
        "v": 2832306405072.48
+      },
+      {
+       "p": "202606",
+       "v": 2845762304464.61
       }
      ],
-     "mediana_pares": 2022759229603.23,
+     "mediana_pares": 2043928672730.85,
      "percentil_pares": 100.0
     },
     {
      "nome": "Patrimônio líquido",
-     "valor": 208510824472.85,
-     "periodo": "2026-T1",
-     "d_tri": 3485762445.73,
-     "d_ano": 105361548507.77,
+     "valor": 216426188543.37,
+     "periodo": "202606",
+     "d_tri": 7915364070.52,
+     "d_ano": 7420848161.02,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -407,17 +411,21 @@
       {
        "p": "2026-T1",
        "v": 208510824472.85
+      },
+      {
+       "p": "202606",
+       "v": 216426188543.37
       }
      ],
-     "mediana_pares": 114888416558.19,
+     "mediana_pares": 118367792299.28,
      "percentil_pares": 100.0
     },
     {
      "nome": "Carteira de crédito",
-     "valor": 1176966466520.58,
-     "periodo": "2026-T1",
-     "d_tri": -12814643786.53,
-     "d_ano": 708917120173.74,
+     "valor": 1190712067284.91,
+     "periodo": "202606",
+     "d_tri": 13745600764.3298,
+     "d_ano": 83732719693.96,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -601,17 +609,21 @@
       {
        "p": "2026-T1",
        "v": 1176966466520.58
+      },
+      {
+       "p": "202606",
+       "v": 1190712067284.91
       }
      ],
-     "mediana_pares": 894567349144.29,
+     "mediana_pares": 928041484636.07,
      "percentil_pares": 85.7
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
-     "valor": 12059014288.35,
-     "periodo": "2026-T1",
-     "d_tri": -11962373540.1402,
-     "d_ano": 6275852617.3,
+     "valor": 24035566659.77,
+     "periodo": "202606",
+     "d_tri": 11976552371.42,
+     "d_ano": 1746183022.6502,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -795,17 +807,21 @@
       {
        "p": "2026-T1",
        "v": 12059014288.35
+      },
+      {
+       "p": "202606",
+       "v": 24035566659.77
       }
      ],
-     "mediana_pares": 3919151685.47,
+     "mediana_pares": 7524653494.37,
      "percentil_pares": 100.0
     },
     {
      "nome": "Índice de Basileia",
-     "valor": 14.7697,
-     "periodo": "2026-T1",
-     "d_tri": -0.4141,
-     "d_ano": -0.8744,
+     "valor": 15.3516,
+     "periodo": "202606",
+     "d_tri": 0.5819,
+     "d_ano": -1.1802,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -829,17 +845,21 @@
       {
        "p": "2026-T1",
        "v": 14.7697
+      },
+      {
+       "p": "202606",
+       "v": 15.3516
       }
      ],
-     "mediana_pares": 15.1344,
-     "percentil_pares": 20.0
+     "mediana_pares": 15.4543,
+     "percentil_pares": 40.0
     },
     {
      "nome": "Capital principal",
-     "valor": 11.9663,
-     "periodo": "2026-T1",
-     "d_tri": -0.3617,
-     "d_ano": -0.6424,
+     "valor": 12.3087,
+     "periodo": "202606",
+     "d_tri": 0.3424,
+     "d_ano": -0.8071,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -863,17 +883,21 @@
       {
        "p": "2026-T1",
        "v": 11.9663
+      },
+      {
+       "p": "202606",
+       "v": 12.3087
       }
      ],
-     "mediana_pares": 11.588,
+     "mediana_pares": 11.5869,
      "percentil_pares": 80.0
     },
     {
      "nome": "Razão de alavancagem",
-     "valor": 6.476,
-     "periodo": "2026-T1",
-     "d_tri": -0.5011,
-     "d_ano": -0.9913,
+     "valor": 6.7532,
+     "periodo": "202606",
+     "d_tri": 0.2772,
+     "d_ano": -0.7905,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -897,17 +921,21 @@
       {
        "p": "2026-T1",
        "v": 6.476
+      },
+      {
+       "p": "202606",
+       "v": 6.7532
       }
      ],
-     "mediana_pares": 6.9874,
-     "percentil_pares": 40.0
+     "mediana_pares": 6.9719,
+     "percentil_pares": 20.0
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
-     "valor": 1310657899476.35,
-     "periodo": "2026-T1",
-     "d_tri": -1563471822.3799,
-     "d_ano": 77559689553.0701,
+     "valor": 1343828469030.03,
+     "periodo": "202606",
+     "d_tri": 33170569553.6799,
+     "d_ano": 107333047518.1301,
      "unit": "R$",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -931,16 +959,20 @@
       {
        "p": "2026-T1",
        "v": 1310657899476.35
+      },
+      {
+       "p": "202606",
+       "v": 1343828469030.03
       }
      ],
-     "mediana_pares": 985898064498.13,
+     "mediana_pares": 1027578063175.31,
      "percentil_pares": 100.0
     }
    ],
    "calculados": [
     {
      "nome": "ROE do período (lucro acumulado ÷ PL)",
-     "valor": 5.78,
+     "valor": 11.11,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -948,7 +980,7 @@
     },
     {
      "nome": "Carteira ÷ captações",
-     "valor": 52.9,
+     "valor": 53.7,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -956,7 +988,7 @@
     },
     {
      "nome": "Participação na carteira (universo top-30)",
-     "valor": 16.24,
+     "valor": 16.12,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -982,120 +1014,120 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1737,
-    "hhi_cobertura_pct": 78.0,
+    "hhi_setorial": 1645,
+    "hhi_cobertura_pct": 76.7,
     "top_cnae": [
      [
       "industrias_de_transformacao",
-      28.8
+      28.1
      ],
      [
       "comercio_reparacao_de_veiculos_automotores_e_mot",
-      27.8
+      26.7
      ],
      [
       "outros",
-      22.0
+      23.3
      ],
      [
       "transporte_armazenagem_e_correio",
-      9.2
+      9.9
      ],
      [
       "construcao",
-      6.3
+      6.2
      ]
     ],
-    "pme_share_pct": 19.4,
+    "pme_share_pct": 19.7,
     "top_mod_pf": [
      [
-      "cartao_de_credito",
-      30.8
+      "habitacao",
+      30.5
      ],
      [
-      "habitacao",
-      29.7
+      "cartao_de_credito",
+      30.4
      ],
      [
       "emprestimo_com_consignacao_em_folha",
-      16.0
+      16.3
      ],
      [
       "outros_creditos",
-      8.3
+      8.2
      ]
     ],
     "top_mod_pj": [
      [
       "capital_de_giro",
-      37.3
+      38.7
      ],
      [
       "comercio_exterior",
-      12.8
+      13.2
      ],
      [
       "operacoes_com_recebiveis",
-      9.8
+      9.7
      ],
      [
       "financiamento_de_infraestrutura_desenvolvimento_",
-      9.7
+      9.1
      ]
     ]
    },
    "score_ref": {
-    "score": 65.7,
-    "score_delta": -2.4,
-    "faixa": "risco elevado",
+    "score": 57.6,
+    "score_delta": -8.1,
+    "faixa": "atenção",
     "dimensoes": {
      "capital_basileia": {
-      "valor": 14.77,
-      "percentil_pares": 20.0,
-      "risco": 80.0,
-      "mediana_pares": 15.02,
-      "q1_pares": 14.8,
-      "q3_pares": 15.15
+      "valor": 15.35,
+      "percentil_pares": 40.0,
+      "risco": 60.0,
+      "mediana_pares": 15.4,
+      "q1_pares": 15.34,
+      "q3_pares": 15.53
      },
      "rentabilidade": {
-      "valor": 5.78,
+      "valor": 11.11,
       "percentil_pares": 71.4,
       "risco": 28.6,
-      "mediana_pares": 3.41,
-      "q1_pares": 2.54,
-      "q3_pares": 5.79
+      "mediana_pares": 7.02,
+      "q1_pares": 5.08,
+      "q3_pares": 11.29
      },
      "alavancagem": {
-      "valor": 13.58,
-      "percentil_pares": 57.1,
-      "risco": 57.1,
-      "mediana_pares": 13.42,
-      "q1_pares": 10.95,
-      "q3_pares": 15.51
+      "valor": 13.15,
+      "percentil_pares": 42.9,
+      "risco": 42.9,
+      "mediana_pares": 13.16,
+      "q1_pares": 11.07,
+      "q3_pares": 15.46
      },
      "concentracao_credito": {
-      "valor": 41.56,
+      "valor": 41.84,
       "percentil_pares": 57.1,
       "risco": 57.1,
-      "mediana_pares": 41.35,
-      "q1_pares": 17.37,
-      "q3_pares": 43.29
+      "mediana_pares": 41.47,
+      "q1_pares": 14.85,
+      "q3_pares": 44.11
      },
      "dependencia_captacoes": {
-      "valor": 78.58,
-      "percentil_pares": 71.4,
-      "risco": 71.4,
-      "mediana_pares": 77.23,
-      "q1_pares": 54.32,
-      "q3_pares": 78.85
+      "valor": 77.88,
+      "percentil_pares": 57.1,
+      "risco": 57.1,
+      "mediana_pares": 77.63,
+      "q1_pares": 55.65,
+      "q3_pares": 78.74
      },
      "concentracao_setorial": {
-      "valor": 1737,
+      "valor": 1645,
       "percentil_pares": 100.0,
       "risco": 100.0,
-      "mediana_pares": 1503.5,
-      "q1_pares": 1428.25,
-      "q3_pares": 1578.0
+      "mediana_pares": 1576.0,
+      "q1_pares": 1437.0,
+      "q3_pares": 1597.0
      }
     },
     "historico_score": [
@@ -1278,6 +1310,10 @@
      {
       "anomes": "202603",
       "score": 65.7
+     },
+     {
+      "anomes": "202606",
+      "score": 57.6
      }
     ],
     "vulnerabilidade": {
@@ -1288,44 +1324,21 @@
       1.29
      ],
      "impacto_basileia_pp": [
-      -0.52,
+      -0.51,
       -0.07
      ],
-     "basileia_atual_pct": 14.77,
+     "basileia_atual_pct": 15.35,
      "basileia_pos_choque_pct": [
-      14.25,
-      14.7
+      14.84,
+      15.28
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": {
-     "tipo": "DADO CALCULADO",
-     "custo_aa_pct": 7.85,
-     "meses_dre": 3,
-     "media_pontas": true,
-     "captacoes_brl": 2150956827043.47,
-     "dep_total_brl": 1110285283212.25,
-     "dep_captacoes_pct": 51.6,
-     "mix_depositos_pct": {
-      "vista": 11.1,
-      "poupanca": 15.5,
-      "prazo": 72.0,
-      "interfinanceiro": 1.3,
-      "outros": 0.1
-     },
-     "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
-     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
-    },
+    "captacao": null,
     "modelo_negocio": {
-     "receita_servicos_pct": 41.7,
-     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
-     "eficiencia_pct": 65.2,
-     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
-     "despesas_pessoal_brl": -6962308198.95,
-     "despesas_admin_brl": -7596272629.25,
-     "credito_ativo_pct": 41.6,
-     "captacoes_ativo_pct": 78.6
+     "credito_ativo_pct": 41.8,
+     "captacoes_ativo_pct": 77.9
     }
    },
    "openfinance": {
@@ -1382,7 +1395,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 151.5,
+     "valor": 154.4,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -1391,44 +1404,29 @@
    ],
    "sintese": [
     {
-     "frase": "Itaú Unibanco é um conglomerado prudencial S1 — grandes (≥10% do PIB ou atividade internacional) com ativos de R$ 2832.3 bi e carteira de R$ 1177.0 bi (2026-T1).",
-     "base": "IF.data 202603; observado regulatório",
+     "frase": "Itaú Unibanco é um conglomerado prudencial S1 — grandes (≥10% do PIB ou atividade internacional) com ativos de R$ 2845.8 bi e carteira de R$ 1190.7 bi (None).",
+     "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: industrias de transformacao (28.8%), comercio reparacao de veiculos automotores e mot (27.8%), transporte armazenagem e correio (9.2%) — 22.0% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1737.",
+     "frase": "Setores identificados na carteira PJ: industrias de transformacao (28.1%), comercio reparacao de veiculos automotores e mot (26.7%), transporte armazenagem e correio (9.9%) — 23.3% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1645.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
     {
-     "frase": "Micro e pequenas empresas representam 19.4% da carteira PJ classificada por porte.",
+     "frase": "Micro e pequenas empresas representam 19.7% da carteira PJ classificada por porte.",
      "base": "IF.data carteira por porte (observado)",
      "status": "calculado"
     },
     {
-     "frase": "Basileia de 14.77% em 2026-T1 (queda vs. trimestre anterior).",
+     "frase": "Basileia de 15.35% em None (alta vs. trimestre anterior).",
      "base": "IF.data Informações de Capital (observado regulatório)",
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.25% e 14.7% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 14.84% e 15.28% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
-    },
-    {
-     "frase": "Custo de captação estimado em 7.85% a.a. (|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
-     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
-     "status": "calculado"
-    },
-    {
-     "frase": "Receitas de serviços respondem por 41.7% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
-    },
-    {
-     "frase": "Índice de eficiência de 65.2% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
     },
     {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 46.87 (posição 101 do arquivo) — indicador operacional/reputacional, não de solvência.",
@@ -1463,17 +1461,17 @@
     "capital": "fechado",
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
-    "data_base": "2026-T1",
-    "atualizado_em": "2026-09-09T15:18:21+00:00",
+    "data_base": "202606",
+    "atualizado_em": "2026-09-10T15:18:54+00:00",
     "aviso_pares": null
    },
    "indicadores": [
     {
      "nome": "Ativos totais",
-     "valor": 96601086208.82,
-     "periodo": "2026-T1",
-     "d_tri": -3140322114.47,
-     "d_ano": 74552057333.09,
+     "valor": 107666101778.98,
+     "periodo": "202606",
+     "d_tri": 11065015570.16,
+     "d_ano": 21535751899.89,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -1645,17 +1643,21 @@
       {
        "p": "2026-T1",
        "v": 96601086208.82
+      },
+      {
+       "p": "202606",
+       "v": 107666101778.98
       }
      ],
-     "mediana_pares": 24076148063.03,
-     "percentil_pares": 90.7
+     "mediana_pares": 24178316109.3,
+     "percentil_pares": 92.6
     },
     {
      "nome": "Patrimônio líquido",
-     "valor": 7356622444.34,
-     "periodo": "2026-T1",
-     "d_tri": 281274220.26,
-     "d_ano": 4569870966.64,
+     "valor": 7655721350.67,
+     "periodo": "202606",
+     "d_tri": 299098906.33,
+     "d_ano": -11183749.75,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -1827,17 +1829,21 @@
       {
        "p": "2026-T1",
        "v": 7356622444.34
+      },
+      {
+       "p": "202606",
+       "v": 7655721350.67
       }
      ],
-     "mediana_pares": 3019310074.57,
+     "mediana_pares": 3078957488.52,
      "percentil_pares": 90.7
     },
     {
      "nome": "Carteira de crédito",
-     "valor": 60109398652.51,
-     "periodo": "2026-T1",
-     "d_tri": -488001094.2,
-     "d_ano": 46431225105.61,
+     "valor": 63321103247.21,
+     "periodo": "202606",
+     "d_tri": 3211704594.7,
+     "d_ano": 8697153804.81,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -2009,17 +2015,21 @@
       {
        "p": "2026-T1",
        "v": 60109398652.51
+      },
+      {
+       "p": "202606",
+       "v": 63321103247.21
       }
      ],
-     "mediana_pares": 11282154615.29,
+     "mediana_pares": 10952866893.46,
      "percentil_pares": 94.4
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
-     "valor": 441285602.16,
-     "periodo": "2026-T1",
-     "d_tri": -487574289.93,
-     "d_ano": 190148765.84,
+     "valor": 901620603.12,
+     "periodo": "202606",
+     "d_tri": 460335000.96,
+     "d_ano": 33899849.52,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -2191,17 +2201,21 @@
       {
        "p": "2026-T1",
        "v": 441285602.16
+      },
+      {
+       "p": "202606",
+       "v": 901620603.12
       }
      ],
-     "mediana_pares": 59702872.05,
+     "mediana_pares": 154450871.54,
      "percentil_pares": 92.6
     },
     {
      "nome": "Índice de Basileia",
-     "valor": 13.5455,
-     "periodo": "2026-T1",
-     "d_tri": 0.2068,
-     "d_ano": -0.8915,
+     "valor": 12.8353,
+     "periodo": "202606",
+     "d_tri": -0.7102,
+     "d_ano": -1.0908,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -2225,17 +2239,21 @@
       {
        "p": "2026-T1",
        "v": 13.5455
+      },
+      {
+       "p": "202606",
+       "v": 12.8353
       }
      ],
-     "mediana_pares": 16.3401,
-     "percentil_pares": 26.9
+     "mediana_pares": 16.1796,
+     "percentil_pares": 7.7
     },
     {
      "nome": "Capital principal",
-     "valor": 9.7698,
-     "periodo": "2026-T1",
-     "d_tri": 0.1859,
-     "d_ano": -2.4537,
+     "valor": 9.3461,
+     "periodo": "202606",
+     "d_tri": -0.4237,
+     "d_ano": -2.4818,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -2259,17 +2277,21 @@
       {
        "p": "2026-T1",
        "v": 9.7698
+      },
+      {
+       "p": "202606",
+       "v": 9.3461
       }
      ],
-     "mediana_pares": 14.1929,
-     "percentil_pares": 15.4
+     "mediana_pares": 13.9035,
+     "percentil_pares": 7.7
     },
     {
      "nome": "Razão de alavancagem",
-     "valor": 9.5825,
-     "periodo": "2026-T1",
-     "d_tri": 0.4879,
-     "d_ano": 0.4079,
+     "valor": 8.8563,
+     "periodo": "202606",
+     "d_tri": -0.7262,
+     "d_ano": -0.9875,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -2293,17 +2315,21 @@
       {
        "p": "2026-T1",
        "v": 9.5825
+      },
+      {
+       "p": "202606",
+       "v": 8.8563
       }
      ],
-     "mediana_pares": 9.6566,
-     "percentil_pares": 47.9
+     "mediana_pares": 9.8646,
+     "percentil_pares": 39.6
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
-     "valor": 60981349393.3,
-     "periodo": "2026-T1",
-     "d_tri": -356106692.65,
-     "d_ano": 9545596488.06,
+     "valor": 64341903318.41,
+     "periodo": "202606",
+     "d_tri": 3360553925.11,
+     "d_ano": 8796373805.65,
      "unit": "R$",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -2327,16 +2353,20 @@
       {
        "p": "2026-T1",
        "v": 60981349393.3
+      },
+      {
+       "p": "202606",
+       "v": 64341903318.41
       }
      ],
-     "mediana_pares": 12247691978.65,
+     "mediana_pares": 12617009908.02,
      "percentil_pares": 96.2
     }
    ],
    "calculados": [
     {
      "nome": "ROE do período (lucro acumulado ÷ PL)",
-     "valor": 6.0,
+     "valor": 11.78,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -2344,7 +2374,7 @@
     },
     {
      "nome": "Carteira ÷ captações",
-     "valor": 76.6,
+     "valor": 70.5,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -2352,7 +2382,7 @@
     },
     {
      "nome": "Participação na carteira (universo top-30)",
-     "valor": 0.83,
+     "valor": 0.86,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -2378,120 +2408,120 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1507,
-    "hhi_cobertura_pct": 71.7,
+    "hhi_setorial": 1508,
+    "hhi_cobertura_pct": 73.4,
     "top_cnae": [
      [
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      28.0
+     ],
+     [
       "outros",
-      28.3
+      26.6
      ],
      [
       "industrias_de_transformacao",
-      27.3
-     ],
-     [
-      "comercio_reparacao_de_veiculos_automotores_e_mot",
-      26.3
+      25.4
      ],
      [
       "transporte_armazenagem_e_correio",
-      5.9
+      6.2
      ],
      [
-      "construcao",
-      4.2
+      "administracao_publica_defesa_e_seguridade_social",
+      4.4
      ]
     ],
-    "pme_share_pct": 8.7,
+    "pme_share_pct": 8.4,
     "top_mod_pf": [
      [
       "emprestimo_com_consignacao_em_folha",
-      62.0
+      62.2
      ],
      [
       "veiculos",
-      16.3
+      17.3
      ],
      [
       "cartao_de_credito",
-      11.2
+      10.6
      ],
      [
       "outros_creditos",
-      9.3
+      8.8
      ]
     ],
     "top_mod_pj": [
      [
       "operacoes_com_recebiveis",
-      43.4
+      45.3
      ],
      [
       "capital_de_giro",
-      19.7
+      17.3
      ],
      [
       "investimento",
-      16.3
+      16.0
      ],
      [
       "comercio_exterior",
-      9.6
+      10.0
      ]
     ]
    },
    "score_ref": {
-    "score": 50.1,
-    "score_delta": -0.6,
+    "score": 54.5,
+    "score_delta": 4.4,
     "faixa": "atenção",
     "dimensoes": {
      "capital_basileia": {
-      "valor": 13.55,
-      "percentil_pares": 26.9,
-      "risco": 73.1,
+      "valor": 12.84,
+      "percentil_pares": 7.8,
+      "risco": 92.2,
       "mediana_pares": 16.34,
-      "q1_pares": 13.53,
-      "q3_pares": 22.82
+      "q1_pares": 13.89,
+      "q3_pares": 22.37
      },
      "rentabilidade": {
-      "valor": 6.0,
+      "valor": 11.78,
       "percentil_pares": 87.0,
       "risco": 13.0,
-      "mediana_pares": 3.0,
-      "q1_pares": 1.24,
-      "q3_pares": 4.5
+      "mediana_pares": 5.01,
+      "q1_pares": 2.51,
+      "q3_pares": 9.26
      },
      "alavancagem": {
-      "valor": 13.13,
-      "percentil_pares": 66.7,
-      "risco": 66.7,
-      "mediana_pares": 10.12,
-      "q1_pares": 5.96,
-      "q3_pares": 14.74
+      "valor": 14.06,
+      "percentil_pares": 70.4,
+      "risco": 70.4,
+      "mediana_pares": 9.56,
+      "q1_pares": 5.95,
+      "q3_pares": 15.24
      },
      "concentracao_credito": {
-      "valor": 62.22,
-      "percentil_pares": 72.2,
-      "risco": 72.2,
-      "mediana_pares": 48.72,
-      "q1_pares": 18.61,
-      "q3_pares": 64.31
+      "valor": 58.81,
+      "percentil_pares": 68.5,
+      "risco": 68.5,
+      "mediana_pares": 48.08,
+      "q1_pares": 18.11,
+      "q3_pares": 64.85
      },
      "dependencia_captacoes": {
-      "valor": 81.27,
-      "percentil_pares": 72.2,
-      "risco": 72.2,
-      "mediana_pares": 74.1,
-      "q1_pares": 36.86,
-      "q3_pares": 81.8
+      "valor": 83.39,
+      "percentil_pares": 79.6,
+      "risco": 79.6,
+      "mediana_pares": 73.35,
+      "q1_pares": 41.97,
+      "q3_pares": 81.88
      },
      "concentracao_setorial": {
-      "valor": 1507,
+      "valor": 1508,
       "percentil_pares": 3.3,
       "risco": 3.3,
-      "mediana_pares": 2404.0,
-      "q1_pares": 1999.0,
-      "q3_pares": 3471.5
+      "mediana_pares": 2426.0,
+      "q1_pares": 1981.0,
+      "q3_pares": 3559.5
      }
     },
     "historico_score": [
@@ -2662,6 +2692,10 @@
      {
       "anomes": "202603",
       "score": 50.1
+     },
+     {
+      "anomes": "202606",
+      "score": 54.5
      }
     ],
     "vulnerabilidade": {
@@ -2675,41 +2709,18 @@
       -0.57,
       -0.08
      ],
-     "basileia_atual_pct": 13.55,
+     "basileia_atual_pct": 12.84,
      "basileia_pos_choque_pct": [
-      12.97,
-      13.46
+      12.26,
+      12.75
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": {
-     "tipo": "DADO CALCULADO",
-     "custo_aa_pct": 10.64,
-     "meses_dre": 3,
-     "media_pontas": true,
-     "captacoes_brl": 78512415890.97,
-     "dep_total_brl": 27320537282.73,
-     "dep_captacoes_pct": 34.8,
-     "mix_depositos_pct": {
-      "vista": 7.1,
-      "poupanca": 0.0,
-      "prazo": 90.2,
-      "interfinanceiro": 2.7,
-      "outros": 0.0
-     },
-     "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
-     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
-    },
+    "captacao": null,
     "modelo_negocio": {
-     "receita_servicos_pct": 18.6,
-     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
-     "eficiencia_pct": 63.8,
-     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
-     "despesas_pessoal_brl": -255990023.83,
-     "despesas_admin_brl": -278298628.58,
-     "credito_ativo_pct": 62.2,
-     "captacoes_ativo_pct": 81.3
+     "credito_ativo_pct": 58.8,
+     "captacoes_ativo_pct": 83.4
     }
    },
    "openfinance": null,
@@ -2758,8 +2769,17 @@
    "alertas": [
     {
      "severidade": "atencao",
+     "indicador": "Índice de Basileia",
+     "valor": 12.84,
+     "benchmark": 13.55,
+     "periodo": null,
+     "fonte": "BCB IF.data (interface, Informações de Capital)",
+     "justificativa": "Queda superior a 0,5 p.p. no trimestre."
+    },
+    {
+     "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 339.5,
+     "valor": 362.9,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -2768,44 +2788,29 @@
    ],
    "sintese": [
     {
-     "frase": "Banco Daycoval é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 96.6 bi e carteira de R$ 60.1 bi (2026-T1).",
-     "base": "IF.data 202603; observado regulatório",
+     "frase": "Banco Daycoval é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 107.7 bi e carteira de R$ 63.3 bi (None).",
+     "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: industrias de transformacao (27.3%), comercio reparacao de veiculos automotores e mot (26.3%), transporte armazenagem e correio (5.9%) — 28.3% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1507.",
+     "frase": "Setores identificados na carteira PJ: comercio reparacao de veiculos automotores e mot (28.0%), industrias de transformacao (25.4%), transporte armazenagem e correio (6.2%) — 26.6% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1508.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
     {
-     "frase": "Micro e pequenas empresas representam 8.7% da carteira PJ classificada por porte.",
+     "frase": "Micro e pequenas empresas representam 8.4% da carteira PJ classificada por porte.",
      "base": "IF.data carteira por porte (observado)",
      "status": "calculado"
     },
     {
-     "frase": "Basileia de 13.55% em 2026-T1 (alta vs. trimestre anterior).",
+     "frase": "Basileia de 12.84% em None (queda vs. trimestre anterior).",
      "base": "IF.data Informações de Capital (observado regulatório)",
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.97% e 13.46% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.26% e 12.75% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
-    },
-    {
-     "frase": "Custo de captação estimado em 10.64% a.a. (|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
-     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
-     "status": "calculado"
-    },
-    {
-     "frase": "Receitas de serviços respondem por 18.6% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
-    },
-    {
-     "frase": "Índice de eficiência de 63.8% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
     },
     {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 60.17 (posição 36 do arquivo) — indicador operacional/reputacional, não de solvência.",
@@ -2835,17 +2840,17 @@
     "capital": "fechado",
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
-    "data_base": "2026-T1",
-    "atualizado_em": "2026-09-09T15:18:21+00:00",
+    "data_base": "202606",
+    "atualizado_em": "2026-09-10T15:18:54+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
     {
      "nome": "Ativos totais",
-     "valor": 58293902409.67,
-     "periodo": "2026-T1",
-     "d_tri": -1076822099.94,
-     "d_ano": 32347657226.57,
+     "valor": 61250495431.21,
+     "periodo": "202606",
+     "d_tri": 2956593021.54,
+     "d_ano": null,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -3025,17 +3030,21 @@
       {
        "p": "2026-T1",
        "v": 58293902409.67
+      },
+      {
+       "p": "202606",
+       "v": 61250495431.21
       }
      ],
-     "mediana_pares": 24076148063.03,
+     "mediana_pares": 24178316109.3,
      "percentil_pares": 85.2
     },
     {
      "nome": "Patrimônio líquido",
-     "valor": 5248107457.67,
-     "periodo": "2026-T1",
-     "d_tri": -17262861.56,
-     "d_ano": 2540019029.6,
+     "valor": 5264244028.71,
+     "periodo": "202606",
+     "d_tri": 16136571.04,
+     "d_ano": null,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -3215,17 +3224,21 @@
       {
        "p": "2026-T1",
        "v": 5248107457.67
+      },
+      {
+       "p": "202606",
+       "v": 5264244028.71
       }
      ],
-     "mediana_pares": 3019310074.57,
-     "percentil_pares": 74.1
+     "mediana_pares": 3078957488.52,
+     "percentil_pares": 72.2
     },
     {
      "nome": "Carteira de crédito",
-     "valor": 48315779249.57,
-     "periodo": "2026-T1",
-     "d_tri": -806195776.7,
-     "d_ano": 26563500504.46,
+     "valor": 50345581739.39,
+     "periodo": "202606",
+     "d_tri": 2029802489.82,
+     "d_ano": null,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -3405,17 +3418,21 @@
       {
        "p": "2026-T1",
        "v": 48315779249.57
+      },
+      {
+       "p": "202606",
+       "v": 50345581739.39
       }
      ],
-     "mediana_pares": 11282154615.29,
+     "mediana_pares": 10952866893.46,
      "percentil_pares": 92.6
     },
     {
      "nome": "Lucro líquido (acumulado no ano IF.data — não é 12m móvel)",
-     "valor": -111881645.33,
-     "periodo": "2026-T1",
-     "d_tri": -459776580.26,
-     "d_ano": -198600079.23,
+     "valor": -203091130.15,
+     "periodo": "202606",
+     "d_tri": -91209484.82,
+     "d_ano": null,
      "unit": "R$",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "observado regulatório",
@@ -3595,17 +3612,21 @@
       {
        "p": "2026-T1",
        "v": -111881645.33
+      },
+      {
+       "p": "202606",
+       "v": -203091130.15
       }
      ],
-     "mediana_pares": 59702872.05,
-     "percentil_pares": 0.0
+     "mediana_pares": 154450871.54,
+     "percentil_pares": 1.9
     },
     {
      "nome": "Índice de Basileia",
-     "valor": 12.8163,
-     "periodo": "2026-T1",
-     "d_tri": -0.1283,
-     "d_ano": -0.5312,
+     "valor": 12.4903,
+     "periodo": "202606",
+     "d_tri": -0.326,
+     "d_ano": -0.3072,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -3629,17 +3650,21 @@
       {
        "p": "2026-T1",
        "v": 12.8163
+      },
+      {
+       "p": "202606",
+       "v": 12.4903
       }
      ],
-     "mediana_pares": 16.3401,
-     "percentil_pares": 7.7
+     "mediana_pares": 16.1796,
+     "percentil_pares": 3.8
     },
     {
      "nome": "Capital principal",
-     "valor": 11.4314,
-     "periodo": "2026-T1",
-     "d_tri": -0.0571,
-     "d_ano": -0.6038,
+     "valor": 10.9296,
+     "periodo": "202606",
+     "d_tri": -0.5017,
+     "d_ano": -0.2655,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -3663,17 +3688,21 @@
       {
        "p": "2026-T1",
        "v": 11.4314
+      },
+      {
+       "p": "202606",
+       "v": 10.9296
       }
      ],
-     "mediana_pares": 14.1929,
-     "percentil_pares": 28.8
+     "mediana_pares": 13.9035,
+     "percentil_pares": 21.2
     },
     {
      "nome": "Razão de alavancagem",
-     "valor": 8.9821,
-     "periodo": "2026-T1",
-     "d_tri": 0.1029,
-     "d_ano": -0.7426,
+     "valor": 8.4208,
+     "periodo": "202606",
+     "d_tri": -0.5613,
+     "d_ano": -0.5288,
      "unit": "%",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -3697,17 +3726,21 @@
       {
        "p": "2026-T1",
        "v": 8.9821
+      },
+      {
+       "p": "202606",
+       "v": 8.4208
       }
      ],
-     "mediana_pares": 9.6566,
-     "percentil_pares": 39.6
+     "mediana_pares": 9.8646,
+     "percentil_pares": 35.4
     },
     {
      "nome": "Ativos ponderados pelo risco (RWA)",
-     "valor": 42161443224.63,
-     "periodo": "2026-T1",
-     "d_tri": -727419543.63,
-     "d_ano": 519428157.22,
+     "valor": 43438113256.41,
+     "periodo": "202606",
+     "d_tri": 1276670031.78,
+     "d_ano": 720198770.7,
      "unit": "R$",
      "fonte": "BCB IF.data (interface, Informações de Capital)",
      "status": "observado regulatório",
@@ -3731,16 +3764,20 @@
       {
        "p": "2026-T1",
        "v": 42161443224.63
+      },
+      {
+       "p": "202606",
+       "v": 43438113256.41
       }
      ],
-     "mediana_pares": 12247691978.65,
-     "percentil_pares": 86.5
+     "mediana_pares": 12617009908.02,
+     "percentil_pares": 88.5
     }
    ],
    "calculados": [
     {
      "nome": "ROE do período (lucro acumulado ÷ PL)",
-     "valor": -2.13,
+     "valor": -3.86,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -3748,7 +3785,7 @@
     },
     {
      "nome": "Carteira ÷ captações",
-     "valor": 107.6,
+     "valor": 105.1,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -3756,7 +3793,7 @@
     },
     {
      "nome": "Participação na carteira (universo top-30)",
-     "valor": 0.67,
+     "valor": 0.68,
      "unit": "%",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
      "status": "calculado",
@@ -3782,116 +3819,116 @@
     }
    ],
    "carteira_perfil": {
-    "hhi_setorial": 1998,
-    "hhi_cobertura_pct": 77.8,
+    "hhi_setorial": 1746,
+    "hhi_cobertura_pct": 72.4,
     "top_cnae": [
      [
-      "transporte_armazenagem_e_correio",
-      31.9
+      "comercio_reparacao_de_veiculos_automotores_e_mot",
+      29.2
      ],
      [
-      "comercio_reparacao_de_veiculos_automotores_e_mot",
-      29.9
+      "transporte_armazenagem_e_correio",
+      28.6
      ],
      [
       "outros",
-      22.2
+      27.6
      ],
      [
       "industrias_de_transformacao",
-      7.2
+      6.6
      ],
      [
       "construcao",
-      6.0
+      5.4
      ]
     ],
-    "pme_share_pct": 34.7,
+    "pme_share_pct": 32.7,
     "top_mod_pf": [
      [
       "veiculos",
       99.7
      ],
      [
-      "emprestimo_com_consignacao_em_folha",
+      "emprestimo_sem_consignacao_em_folha",
       0.2
      ],
      [
-      "emprestimo_sem_consignacao_em_folha",
-      0.2
+      "emprestimo_com_consignacao_em_folha",
+      0.1
      ]
     ],
     "top_mod_pj": [
      [
       "investimento",
-      77.8
+      71.6
      ],
      [
       "operacoes_com_recebiveis",
-      19.9
+      26.5
      ],
      [
       "financiamento_de_infraestrutura_desenvolvimento_",
-      1.6
+      1.3
      ],
      [
       "capital_de_giro",
-      0.5
+      0.3
      ]
     ]
    },
    "score_ref": {
-    "score": 70.2,
-    "score_delta": 7.9,
+    "score": 69.2,
+    "score_delta": -1.0,
     "faixa": "risco elevado",
     "dimensoes": {
      "capital_basileia": {
-      "valor": 12.82,
-      "percentil_pares": 7.7,
-      "risco": 92.3,
+      "valor": 12.49,
+      "percentil_pares": 3.9,
+      "risco": 96.1,
       "mediana_pares": 16.34,
-      "q1_pares": 13.53,
-      "q3_pares": 22.82
+      "q1_pares": 13.89,
+      "q3_pares": 22.37
      },
      "rentabilidade": {
-      "valor": -2.13,
-      "percentil_pares": 3.7,
-      "risco": 96.3,
-      "mediana_pares": 3.0,
-      "q1_pares": 1.24,
-      "q3_pares": 4.5
+      "valor": -3.86,
+      "percentil_pares": 5.6,
+      "risco": 94.4,
+      "mediana_pares": 5.01,
+      "q1_pares": 2.51,
+      "q3_pares": 9.26
      },
      "alavancagem": {
-      "valor": 11.11,
-      "percentil_pares": 57.4,
-      "risco": 57.4,
-      "mediana_pares": 10.12,
-      "q1_pares": 5.96,
-      "q3_pares": 14.74
+      "valor": 11.64,
+      "percentil_pares": 59.3,
+      "risco": 59.3,
+      "mediana_pares": 9.56,
+      "q1_pares": 5.95,
+      "q3_pares": 15.24
      },
      "concentracao_credito": {
-      "valor": 82.88,
-      "percentil_pares": 87.0,
-      "risco": 87.0,
-      "mediana_pares": 48.72,
-      "q1_pares": 18.61,
-      "q3_pares": 64.31
+      "valor": 82.2,
+      "percentil_pares": 88.9,
+      "risco": 88.9,
+      "mediana_pares": 48.08,
+      "q1_pares": 18.11,
+      "q3_pares": 64.85
      },
      "dependencia_captacoes": {
-      "valor": 77.01,
-      "percentil_pares": 64.8,
-      "risco": 64.8,
-      "mediana_pares": 74.1,
-      "q1_pares": 36.86,
-      "q3_pares": 81.8
+      "valor": 78.23,
+      "percentil_pares": 66.7,
+      "risco": 66.7,
+      "mediana_pares": 73.35,
+      "q1_pares": 41.97,
+      "q3_pares": 81.88
      },
      "concentracao_setorial": {
-      "valor": 1998,
-      "percentil_pares": 23.3,
-      "risco": 23.3,
-      "mediana_pares": 2404.0,
-      "q1_pares": 1999.0,
-      "q3_pares": 3471.5
+      "valor": 1746,
+      "percentil_pares": 10.0,
+      "risco": 10.0,
+      "mediana_pares": 2426.0,
+      "q1_pares": 1981.0,
+      "q3_pares": 3559.5
      }
     },
     "historico_score": [
@@ -4070,6 +4107,10 @@
      {
       "anomes": "202603",
       "score": 70.2
+     },
+     {
+      "anomes": "202606",
+      "score": 69.2
      }
     ],
     "vulnerabilidade": {
@@ -4081,43 +4122,20 @@
      ],
      "impacto_basileia_pp": [
       -0.67,
-      -0.09
+      -0.1
      ],
-     "basileia_atual_pct": 12.82,
+     "basileia_atual_pct": 12.49,
      "basileia_pos_choque_pct": [
-      12.15,
-      12.72
+      11.82,
+      12.39
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": {
-     "tipo": "DADO CALCULADO",
-     "custo_aa_pct": 15.25,
-     "meses_dre": 3,
-     "media_pontas": true,
-     "captacoes_brl": 44499848137.34,
-     "dep_total_brl": 26558653500.15,
-     "dep_captacoes_pct": 59.7,
-     "mix_depositos_pct": {
-      "vista": 0.0,
-      "poupanca": 0.0,
-      "prazo": 67.6,
-      "interfinanceiro": 32.4,
-      "outros": 0.0
-     },
-     "formula": "|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior",
-     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
-    },
+    "captacao": null,
     "modelo_negocio": {
-     "receita_servicos_pct": 40.4,
-     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
-     "eficiencia_pct": 95.2,
-     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
-     "despesas_pessoal_brl": -2581240.66,
-     "despesas_admin_brl": -177001917.63,
-     "credito_ativo_pct": 82.9,
-     "captacoes_ativo_pct": 77.0
+     "credito_ativo_pct": 82.2,
+     "captacoes_ativo_pct": 78.2
     }
    },
    "openfinance": null,
@@ -4167,7 +4185,7 @@
     {
      "severidade": "atencao",
      "indicador": "Crescimento da carteira (4 trim.)",
-     "valor": 122.1,
+     "valor": 131.4,
      "benchmark": 30,
      "periodo": "12m",
      "fonte": "BCB IF.data (Olinda, conglomerado prudencial)",
@@ -4176,44 +4194,29 @@
    ],
    "sintese": [
     {
-     "frase": "Banco Volkswagen é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 58.3 bi e carteira de R$ 48.3 bi (2026-T1).",
-     "base": "IF.data 202603; observado regulatório",
+     "frase": "Banco Volkswagen é um conglomerado prudencial S3 — porte entre 0,1% e 1% do PIB com ativos de R$ 61.3 bi e carteira de R$ 50.3 bi (None).",
+     "base": "IF.data 202606; observado regulatório",
      "status": "observado regulatório"
     },
     {
-     "frase": "Setores identificados na carteira PJ: transporte armazenagem e correio (31.9%), comercio reparacao de veiculos automotores e mot (29.9%), industrias de transformacao (7.2%) — 22.2% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1998.",
+     "frase": "Setores identificados na carteira PJ: comercio reparacao de veiculos automotores e mot (29.2%), transporte armazenagem e correio (28.6%), industrias de transformacao (6.6%) — 27.6% da carteira não é setorialmente individualizado pela fonte ('outros'); HHI setorial (piso) 1746.",
      "base": "IF.data carteiras por CNAE (observado); shares calculadas",
      "status": "calculado"
     },
     {
-     "frase": "Micro e pequenas empresas representam 34.7% da carteira PJ classificada por porte.",
+     "frase": "Micro e pequenas empresas representam 32.7% da carteira PJ classificada por porte.",
      "base": "IF.data carteira por porte (observado)",
      "status": "calculado"
     },
     {
-     "frase": "Basileia de 12.82% em 2026-T1 (queda vs. trimestre anterior).",
+     "frase": "Basileia de 12.49% em None (queda vs. trimestre anterior).",
      "base": "IF.data Informações de Capital (observado regulatório)",
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.15% e 12.72% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.82% e 12.39% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
-    },
-    {
-     "frase": "Custo de captação estimado em 15.25% a.a. (|despesa de juros de captações acumulada em 3 meses (DRE IF.data)| × 12/3 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
-     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
-     "status": "calculado"
-    },
-    {
-     "frase": "Receitas de serviços respondem por 40.4% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
-    },
-    {
-     "frase": "Índice de eficiência de 95.2% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
-     "base": "IF.data UI (DRE); cálculo do Observatório",
-     "status": "calculado"
     },
     {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 243.71 (posição 186 do arquivo) — indicador operacional/reputacional, não de solvência.",
@@ -4230,8 +4233,8 @@
  ],
  "cobertura_top30": {
   "basileia_pct": 93,
-  "carteira_detalhada_pct": 89,
-  "historico_5t_pct": 98,
+  "carteira_detalhada_pct": 90,
+  "historico_5t_pct": 99,
   "reclamacoes_match_pct": 30,
   "openfinance_match_pct": 41
  },
