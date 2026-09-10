@@ -48,7 +48,7 @@ describe("BNDES: hash inalterado não vale com tabela vazia", () => {
 describe("orçamento de tempo da coleta (08/09/2026: job cancelado aos 150 min sem publicar)", () => {
   it("run.py pula coletores depois do orçamento, cronometra cada um e escreve sem buffer; job com teto de 300 min", () => {
     const r = read("pipeline/run.py");
-    expect(r).toContain('ORCAMENTO_COLETA_MIN = float(os.environ.get("OBS_ORCAMENTO_COLETA_MIN", "120"))');
+    expect(r).toContain('ORCAMENTO_COLETA_MIN = float(os.environ.get("OBS_ORCAMENTO_COLETA_MIN", "150"))');
     expect(r).toContain("if decorrido_min > ORCAMENTO_COLETA_MIN:");
     expect(r).toContain('"segundos": round(time.monotonic() - t0)');
     expect(r).toContain("print(msg, flush=True)");
@@ -63,3 +63,36 @@ describe("orçamento de tempo da coleta (08/09/2026: job cancelado aos 150 min s
   });
 });
 
+describe("fila em duas camadas e freios dos pesados (10/09/2026: 28 coletores leves pulados)", () => {
+  it("run.py coleta os leves antes dos pesados; cada pesado tem orçamento próprio", () => {
+    const r = read("pipeline/run.py");
+    expect(r).toContain("for name, mod in COLETORES_LEVES + COLETORES_PESADOS:");
+    const leves = r.slice(r.indexOf("COLETORES_LEVES = ["), r.indexOf("COLETORES_PESADOS = ["));
+    for (const k of ["bndes", "sadipem", "siconfi_rgf", "bcb_consorcios", "focus", "ifdata"]) expect(leves).toContain(`("${k}", ${k})`);
+    const pesados = r.slice(r.indexOf("COLETORES_PESADOS = ["), r.indexOf("def _log("));
+    for (const k of ["sicor", "ipea_caged", "datajud", "datajud_cobranca", "judicial", "cvm_dfp"]) expect(pesados).toContain(`("${k}", ${k})`);
+    // nenhum coletor importado fica fora da fila
+    const imp = r.match(/from pipeline\.sources import \(([^)]*)\)/)![1].split(",").map((x) => x.trim()).filter(Boolean);
+    for (const m of imp) expect(r, m).toContain(`", ${m})`);
+    const j = read("pipeline/sources/judicial.py");
+    expect(j).toContain("ORCAMENTO_S = 600");
+    expect(j).toContain("def _es(base, key, tribunal, payload, timeout=60, retries=2):");
+    expect(j).toContain("pulados.append(trib)");
+    const d = read("pipeline/sources/datajud.py");
+    expect(d).toContain("ORCAMENTO_S = 900");
+    expect(d).toContain("results.extend(collect_funil(con, cfg, estourou))");
+    const c = read("pipeline/sources/cvm_dfp.py");
+    expect(c).toContain("ORCAMENTO_S = 600");
+    expect(c).toContain("timeout=300, retries=2");
+    expect(c).toContain('if "urlopen error" in str(e):');
+    const g = read("pipeline/sources/ipea_caged.py");
+    expect(g).toContain("timeout=300, retries=1");
+    expect(g).toContain('if "urlopen error" in str(e):');
+  });
+
+  it("coletor pulado pelo orçamento continua contando como fonte real no meta.json", () => {
+    expect(read("pipeline/gold.py")).toContain('((v.get("ok") or 0) > 0 or v.get("pulado"))');
+    const m = JSON.parse(read("public/obs/data/gold/meta.json"));
+    expect(m.fontes_reais.length).toBeGreaterThan(40);
+  });
+});

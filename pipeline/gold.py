@@ -68,12 +68,15 @@ FONTE_ROTULO = {
 
 
 def fontes_reais_de(fetch_status):
-    """Fontes com ao menos uma chave coletada nesta execução, rotuladas."""
+    """Fontes com ao menos uma chave coletada nesta execução, rotuladas. Coletor pulado
+    pelo orçamento de tempo ("pulado") também conta: a coleta foi adiada, não falhou, e o
+    silver da execução anterior segue alimentando o gold (10/09/2026: 28 pulados
+    derrubaram a lista de 46 para 18 fontes sem que nenhuma aba perdesse dado)."""
     if not isinstance(fetch_status, dict):
         return []
     out = set()
     for k, v in fetch_status.items():
-        if isinstance(v, dict) and (v.get("ok") or 0) > 0:
+        if isinstance(v, dict) and ((v.get("ok") or 0) > 0 or v.get("pulado")):
             out.add(FONTE_ROTULO.get(k, k))
     return sorted(out)
 

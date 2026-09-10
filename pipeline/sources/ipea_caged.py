@@ -22,6 +22,8 @@ UF_IBGE = {"11": "RO", "12": "AC", "13": "AM", "14": "RR", "15": "PA", "16": "AP
            "24": "RN", "25": "PB", "26": "PE", "27": "AL", "28": "SE", "29": "BA", "31": "MG", "32": "ES", "33": "RJ", "35": "SP",
            "41": "PR", "42": "SC", "43": "RS", "50": "MS", "51": "MT", "52": "GO", "53": "DF"}
 DIAS_ENTRE_COLETAS = 3
+# Em 09/09/2026 as duas séries falharam por DNS e custaram 18 min (duas tentativas de 300 s
+# cada). Uma tentativa por série; falha de conexão na primeira pula a segunda, da mesma origem.
 
 
 def _ensure(con):
@@ -32,14 +34,18 @@ def _ensure(con):
 def collect(con, cfg):
     _ensure(con)
     results = []
+    inacessivel = None
     for codigo, coluna in SERIES.items():
         key = f"ipea_caged:{codigo}"
+        if inacessivel:
+            results.append({"key": key, "ok": False, "error": f"pulado: origem inacessível nesta execução ({inacessivel})"})
+            continue
         try:
             ja = con.execute("SELECT sha, collected_at FROM caged_coleta WHERE recurso=?", (key,)).fetchone()
             if ja and common.coletado_recentemente(ja[1], DIAS_ENTRE_COLETAS):
                 results.append({"key": key, "ok": True, "nota": f"coletado há menos de {DIAS_ENTRE_COLETAS} dias"})
                 continue
-            body, meta = common.http_get(BASE.format(codigo), timeout=300, retries=2)
+            body, meta = common.http_get(BASE.format(codigo), timeout=300, retries=1)
             valores = json.loads(body)["value"]
             rows = []
             for r in valores:
@@ -66,4 +72,6 @@ def collect(con, cfg):
             results.append({"key": key, "ok": True, "linhas": len(rows), "ultimo_mes": max(r[0] for r in rows)})
         except Exception as e:
             results.append({"key": key, "ok": False, "error": str(e)[:160]})
+            if "urlopen error" in str(e):
+                inacessivel = str(e).split("urlopen error", 1)[1].strip(" >")[:80]
     return results

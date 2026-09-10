@@ -930,3 +930,30 @@ no recurso de operações, forçava a absorção com texto nulo, porque `_baixa`
 hash mudava. Corrigido: `_baixa` devolve o texto sempre e o guarda consulta a tabela real de cada tipo;
 o bloco de operações foi reposto no gold publicado a partir do mesmo CSV. Teste local com `bndes_op`
 esvaziada numa cópia do silver: 23.815 operações reabsorvidas.
+
+### 20.3 Execução de 10/09: fila em duas camadas e freios nos pesados
+
+A execução de 10/09 (run 34481589860, 13:16 UTC) publicou às 15:19 com o orçamento estourado: 121
+minutos de coleta e 28 coletores pulados, entre eles BNDES, Sadipem, Siconfi, garantias, consórcios,
+Focus, cadastro do SFN e Sicor. Quatro coletores consumiram 101 minutos: TST/DataJud (`judicial`) 37
+min com a API do CNJ em 504, DataJud 25 min pelo mesmo motivo, CVM DFP 21 min com `dados.cvm.gov.br`
+inalcançável (três arquivos, 600 s e três tentativas cada) e IF.data 18 min pelo preenchimento único
+da tabela de universo do PR #104. O gold saiu do silver do runner sem regressão, mas `bndes.json`
+voltou a publicar sem operações (o silver do runner ainda não tinha absorvido o CSV depois do reparo de
+09/09) e o CI de main falhou em dois testes: `fontes_reais` caiu de 46 para 18 rótulos, porque coletor
+pulado contava como ausente, e `operacoes.disponivel` falso.
+
+Correções: (1) `run.py` coleta em duas camadas, primeiro os 49 leves, depois os seis pesados (Sicor,
+Caged, DataJud, DataJud cobrança, TST, CVM DFP); quando o orçamento acabar, cai sobre quem custa caro e
+já é limitado por dentro, nunca sobre os leves; o orçamento sobe para 150 minutos, com 300 de teto no
+job. (2) Freios próprios: `judicial` para aos 600 s (tribunais restantes declarados em `pulados`;
+consultas de 60 s com duas tentativas), `datajud` aos 900 s (pares tribunal × classe restantes
+declarados como falha "orçamento esgotado"; o agregado é reconstruído das séries por tribunal que já
+estão no silver), `cvm_dfp` aos 600 s, com 300 s e duas tentativas por arquivo e pulo dos demais
+arquivos quando a origem responde com erro de conexão, e Caged com uma tentativa por série e o mesmo
+pulo por origem inacessível. (3) `fontes_reais_de` conta coletor pulado como fonte presente: a coleta
+foi adiada, o silver anterior segue alimentando o gold. Golds publicados reparados sem esperar a
+próxima execução: `meta.json` com a lista recomputada pela mesma função (45 fontes) e `bndes.json` com
+o bloco de operações e a frase da síntese do gold de 09/09 (mesmo CSV, janela 2025-07 a 2026-06).
+Teste em `pipeline-0709.test.ts`. Custo esperado da fila com os freios: leves em torno de 45 minutos,
+pesados limitados a 25 + 10 + 15 + 5 + 10 + 10.

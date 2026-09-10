@@ -66,6 +66,10 @@ UF_DO_TRIBUNAL = {"tjsp": "SP", "tjrj": "RJ", "tjmg": "MG", "tjrs": "RS", "tjpr"
                   "tjba": "BA", "tjgo": "GO", "tjpe": "PE", "tjce": "CE",
                   "trt2": "SP", "trt1": "RJ", "trt15": "SP", "trt3": "MG", "trt4": "RS"}
 TST_URL = "https://www.tst.jus.br/web/estatistica/tst/ranking-das-partes"
+# Freio por execução: em 10/09/2026 a API do DataJud respondia com 504 e o coletor levou 37 min
+# (260 agregações, três tentativas de 120 s cada). Passado o orçamento, os tribunais restantes
+# ficam para a próxima execução; o que já foi coletado está gravado tribunal a tribunal.
+ORCAMENTO_S = 600
 
 
 def _ensure(con):
@@ -83,7 +87,7 @@ def _ensure(con):
     """)
 
 
-def _es(base, key, tribunal, payload, timeout=120, retries=3):
+def _es(base, key, tribunal, payload, timeout=60, retries=2):
     body = json.dumps(payload).encode()
     last = None
     for i in range(retries):
@@ -99,10 +103,13 @@ def _es(base, key, tribunal, payload, timeout=120, retries=3):
     raise last
 
 
-def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa):
+def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa, estourou=lambda: False):
     agora = common.now_utc()
-    linhas, tribs = [], []
+    linhas, tribs, pulados = [], [], []
     for trib in tribunais:
+        if estourou():
+            pulados.append(trib)  # orçamento esgotado: volta na próxima execução
+            continue
         try:
             tot = _es(base, key, trib, {"size": 0})
             tribs.append((trib, ramo, UF_DO_TRIBUNAL.get(trib), tot["hits"]["total"]["value"], agora))
@@ -110,6 +117,8 @@ def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa):
             continue  # tribunal indisponível: não entra (ausência ≠ zero)
         for categoria, bloco in taxonomia.items():
             for cod, nome in bloco["codigos"].items():
+                if estourou():
+                    break
                 try:
                     d = _es(base, key, trib, {
                         "size": 0,
@@ -133,7 +142,11 @@ def _coleta_ramo(con, base, key, tribunais, taxonomia, ramo, pausa):
         con.executemany("INSERT OR REPLACE INTO jud_assunto VALUES(?,?,?,?,?,?,?,?)",
                         [l for l in linhas if l[0] == trib])
         con.commit()
-    return {"tribunais": len(tribs), "linhas": len(linhas)}
+    out = {"tribunais": len(tribs), "linhas": len(linhas)}
+    if pulados:
+        out["pulados"] = pulados
+        out["nota"] = f"orçamento de {ORCAMENTO_S} s esgotado; {len(pulados)} tribunais voltam na próxima execução"
+    return out
 
 
 # ------------------------------------------------ resolução de entidades (camada nominal)
@@ -205,15 +218,17 @@ def collect(con, cfg):
     dj = cfg["datajud"]
     base, key = dj["base_url"], dj["api_key_publica"]
     pausa = float(dj.get("pausa_entre_requisicoes_s", 2.0)) / 4
+    t0 = time.monotonic()
+    estourou = lambda: time.monotonic() - t0 > ORCAMENTO_S
     out = []
     try:
         out.append({"key": "jud_civel", "ok": True,
-                    **_coleta_ramo(con, base, key, TRIBUNAIS_CIVEL, TAXONOMIA_CIVEL, "civel", pausa)})
+                    **_coleta_ramo(con, base, key, TRIBUNAIS_CIVEL, TAXONOMIA_CIVEL, "civel", pausa, estourou)})
     except Exception as e:
         out.append({"key": "jud_civel", "ok": False, "error": str(e)[:180]})
     try:
         out.append({"key": "jud_trabalhista", "ok": True,
-                    **_coleta_ramo(con, base, key, TRIBUNAIS_TRABALHO, TAXONOMIA_TRABALHISTA, "trabalhista", pausa)})
+                    **_coleta_ramo(con, base, key, TRIBUNAIS_TRABALHO, TAXONOMIA_TRABALHISTA, "trabalhista", pausa, estourou)})
     except Exception as e:
         out.append({"key": "jud_trabalhista", "ok": False, "error": str(e)[:180]})
     try:
