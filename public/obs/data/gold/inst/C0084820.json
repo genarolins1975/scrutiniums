@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-10T15:19:00+00:00",
+  "atualizado_em": "2026-09-11T14:51:02+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -142,7 +142,7 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-10"
+  "calculado_em": "2026-09-11"
  },
  "kpis": [
   {
@@ -1142,7 +1142,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "MERCADO PAGO",
-  "chamadas_semana": 6283655295.0,
+  "chamadas_semana": 8863717005.0,
   "share_pct": 10.2,
   "familias_api": 34,
   "papeis": [

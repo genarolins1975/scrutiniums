@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-10T15:19:07+00:00",
+ "gerado_em": "2026-09-11T14:51:16+00:00",
  "fonte": "BCB SCR.data v2 (dados abertos) — agregados públicos protegidos pelo BCB",
  "data_base": "2026-07",
  "data_base_anterior": "2026-06",
@@ -301,12 +301,12 @@
   },
   {
    "p": "2026-01",
-   "saldo": 7433658072694,
+   "saldo": 7433647424286,
    "inad": 4.42,
    "atraso15_90": 0.91,
-   "ap": 7.86,
-   "pf": 4566353330784,
-   "pj": 2867304741910
+   "ap": 7.8,
+   "pf": 4566341081632,
+   "pj": 2867306342653
   },
   {
    "p": "2026-02",
@@ -432,7 +432,7 @@
    "cresc12": 11.37,
    "d_inad_3m": -0.24,
    "d_inad_12m": 1.0,
-   "z_inad": 1.5,
+   "z_inad": 1.51,
    "prod_dominante": "Outros",
    "renda_dominante": "Mais de 5 a 10 salários mínimos"
   },

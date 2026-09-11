@@ -68,8 +68,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.0,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 2136173349813.06,
+    "dep_total_brl": 1143007756249.48,
+    "dep_captacoes_pct": 53.5,
+    "mix_depositos_pct": {
+     "vista": 11.2,
+     "poupanca": 15.1,
+     "prazo": 72.7,
+     "interfinanceiro": 0.9,
+     "outros": 0.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 39.9,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 61.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -13136021505.11,
+    "despesas_admin_brl": -15449912592.86,
     "credito_ativo_pct": 41.8,
     "captacoes_ativo_pct": 77.9
    },
@@ -411,8 +434,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.14,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 2065049822634.33,
+    "dep_total_brl": 1010286439823.78,
+    "dep_captacoes_pct": 48.9,
+    "mix_depositos_pct": {
+     "vista": 8.5,
+     "poupanca": 21.4,
+     "prazo": 63.0,
+     "interfinanceiro": 7.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 58.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 89.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -14481786819.09,
+    "despesas_admin_brl": -8427702469.11,
     "credito_ativo_pct": 43.7,
     "captacoes_ativo_pct": 80.1
    },
@@ -754,8 +800,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.73,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 2062974004881.17,
+    "dep_total_brl": 828670513791.22,
+    "dep_captacoes_pct": 40.2,
+    "mix_depositos_pct": {
+     "vista": 6.8,
+     "poupanca": 48.9,
+     "prazo": 43.6,
+     "interfinanceiro": 0.7,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 41.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 81.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -15706086496.36,
+    "despesas_admin_brl": -7350543788.66,
     "credito_ativo_pct": 57.5,
     "captacoes_ativo_pct": 87.1
    },
@@ -993,8 +1062,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.28,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 1570296199306.65,
+    "dep_total_brl": 782696928592.1499,
+    "dep_captacoes_pct": 49.8,
+    "mix_depositos_pct": {
+     "vista": 4.1,
+     "poupanca": 15.5,
+     "prazo": 75.9,
+     "interfinanceiro": 4.4,
+     "outros": 0.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 51.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 81.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -11958978697.91,
+    "despesas_admin_brl": -11456050593.51,
     "credito_ativo_pct": 45.4,
     "captacoes_ativo_pct": 78.3
    },
@@ -1336,8 +1428,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.06,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 988144805946.7,
+    "dep_total_brl": 504432555078.49,
+    "dep_captacoes_pct": 51.0,
+    "mix_depositos_pct": {
+     "vista": 7.7,
+     "poupanca": 10.2,
+     "prazo": 80.5,
+     "interfinanceiro": 1.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 27.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 34.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -3897311334.66,
+    "despesas_admin_brl": -8844221301.92,
     "credito_ativo_pct": 41.1,
     "captacoes_ativo_pct": 77.4
    },
@@ -1659,8 +1774,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.5,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 627936188686.37,
+    "dep_total_brl": 1075517914.52,
+    "dep_captacoes_pct": 0.2,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 100.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 7.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 29.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -1764954111.77,
+    "despesas_admin_brl": -231160868.93,
     "credito_ativo_pct": 35.0,
     "captacoes_ativo_pct": 61.6
    },
@@ -2002,8 +2140,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.34,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 605192470637.22,
+    "dep_total_brl": 211868589841.47,
+    "dep_captacoes_pct": 35.0,
+    "mix_depositos_pct": {
+     "vista": 5.8,
+     "poupanca": 0.0,
+     "prazo": 91.5,
+     "interfinanceiro": 2.7,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 19.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 45.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -3545585593.76,
+    "despesas_admin_brl": -6964567187.8,
     "credito_ativo_pct": 19.8,
     "captacoes_ativo_pct": 71.1
    },
@@ -2337,8 +2498,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.79,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 199181890669.37,
+    "dep_total_brl": 71403357026.74,
+    "dep_captacoes_pct": 35.8,
+    "mix_depositos_pct": {
+     "vista": 2.2,
+     "poupanca": 0.0,
+     "prazo": 97.6,
+     "interfinanceiro": 0.2,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 25.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 40.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -1111854601.13,
+    "despesas_admin_brl": -3395930638.75,
     "credito_ativo_pct": 10.3,
     "captacoes_ativo_pct": 74.3
    },
@@ -2596,8 +2780,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.4,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 214814580131.89,
+    "dep_total_brl": 71543382088.66,
+    "dep_captacoes_pct": 33.3,
+    "mix_depositos_pct": {
+     "vista": 3.1,
+     "poupanca": 2.6,
+     "prazo": 92.3,
+     "interfinanceiro": 2.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 28.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 67.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -1637258768.22,
+    "despesas_admin_brl": -1467644241.03,
     "credito_ativo_pct": 50.4,
     "captacoes_ativo_pct": 78.9
    },
@@ -2935,8 +3142,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.04,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 228759278590.0,
+    "dep_total_brl": 189130030758.95,
+    "dep_captacoes_pct": 82.7,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 98.5,
+     "interfinanceiro": 0.1,
+     "outros": 1.4
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 46.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 87.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -2097309847.74,
+    "despesas_admin_brl": -7733845786.88,
     "credito_ativo_pct": 28.4,
     "captacoes_ativo_pct": 84.3
    },
@@ -3178,7 +3408,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.07,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 202002314673.75,
+    "dep_total_brl": 86939628438.28,
+    "dep_captacoes_pct": 43.0,
+    "mix_depositos_pct": {
+     "vista": 0.2,
+     "poupanca": 40.0,
+     "prazo": 9.6,
+     "interfinanceiro": 50.2,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 21.4,
     "captacoes_ativo_pct": 86.2
@@ -3521,7 +3768,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.13,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 187111431727.73,
+    "dep_total_brl": 146713059798.07,
+    "dep_captacoes_pct": 78.4,
+    "mix_depositos_pct": {
+     "vista": 0.2,
+     "poupanca": 9.4,
+     "prazo": 7.8,
+     "interfinanceiro": 82.5,
+     "outros": 0.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 20.1,
     "captacoes_ativo_pct": 84.3
@@ -3794,8 +4058,25 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.85,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 16821615842.28,
+    "dep_total_brl": 0.0,
+    "dep_captacoes_pct": null,
+    "mix_depositos_pct": null,
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 86.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 130.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -266783450.68,
+    "despesas_admin_brl": -997448144.53,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 9.4
    },
@@ -4048,8 +4329,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.42,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 133805795987.16,
+    "dep_total_brl": 77725894824.90001,
+    "dep_captacoes_pct": 58.1,
+    "mix_depositos_pct": {
+     "vista": 7.8,
+     "poupanca": 0.0,
+     "prazo": 91.3,
+     "interfinanceiro": 0.9,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 61.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 116.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -800335432.47,
+    "despesas_admin_brl": -876373078.79,
     "credito_ativo_pct": 15.0,
     "captacoes_ativo_pct": 79.7
    },
@@ -4391,8 +4695,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.16,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 148621694571.96,
+    "dep_total_brl": 105570368938.4,
+    "dep_captacoes_pct": 71.0,
+    "mix_depositos_pct": {
+     "vista": 2.8,
+     "poupanca": 10.2,
+     "prazo": 83.5,
+     "interfinanceiro": 3.2,
+     "outros": 0.4
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 35.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 109.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -1315730074.87,
+    "despesas_admin_brl": -1103429712.38,
     "credito_ativo_pct": 35.0,
     "captacoes_ativo_pct": 87.0
    },
@@ -4734,8 +5061,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.88,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 123637642270.35,
+    "dep_total_brl": 92274279136.95,
+    "dep_captacoes_pct": 74.6,
+    "mix_depositos_pct": {
+     "vista": 2.4,
+     "poupanca": 0.0,
+     "prazo": 85.7,
+     "interfinanceiro": 0.4,
+     "outros": 11.5
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 41.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 63.7,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -532283179.22,
+    "despesas_admin_brl": -1292587385.27,
     "credito_ativo_pct": 58.0,
     "captacoes_ativo_pct": 72.5
    },
@@ -4981,8 +5331,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.05,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 113719231298.94,
+    "dep_total_brl": 27585449458.079998,
+    "dep_captacoes_pct": 24.3,
+    "mix_depositos_pct": {
+     "vista": 4.1,
+     "poupanca": 0.0,
+     "prazo": 94.1,
+     "interfinanceiro": 0.7,
+     "outros": 1.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 20.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 50.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -878323235.72,
+    "despesas_admin_brl": -906818576.87,
     "credito_ativo_pct": 51.9,
     "captacoes_ativo_pct": 73.8
    },
@@ -5466,7 +5839,24 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.6,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 10369163060.94,
+    "dep_total_brl": 210532193.14,
+    "dep_captacoes_pct": 2.0,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 0.0,
+     "outros": 100.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 8.9
@@ -5739,8 +6129,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 5.7,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 74145737905.61,
+    "dep_total_brl": 24179471833.52,
+    "dep_captacoes_pct": 32.6,
+    "mix_depositos_pct": {
+     "vista": 8.9,
+     "poupanca": 0.0,
+     "prazo": 90.6,
+     "interfinanceiro": 0.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 82.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 83.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -731169441.32,
+    "despesas_admin_brl": -234694909.31,
     "credito_ativo_pct": 3.5,
     "captacoes_ativo_pct": 75.3
    },
@@ -6074,8 +6487,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.32,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 89777746601.13,
+    "dep_total_brl": 30383020817.23,
+    "dep_captacoes_pct": 33.8,
+    "mix_depositos_pct": {
+     "vista": 9.7,
+     "poupanca": 0.0,
+     "prazo": 87.9,
+     "interfinanceiro": 2.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 18.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 62.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -513813260.19,
+    "despesas_admin_brl": -569997094.23,
     "credito_ativo_pct": 58.8,
     "captacoes_ativo_pct": 83.4
    },
@@ -6396,8 +6832,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.84,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 75181176820.75,
+    "dep_total_brl": 68621365329.51,
+    "dep_captacoes_pct": 91.3,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 12.5,
+     "interfinanceiro": 1.5,
+     "outros": 86.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 62.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 176.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -628771435.39,
+    "despesas_admin_brl": -2930051281.72,
     "credito_ativo_pct": 21.3,
     "captacoes_ativo_pct": 56.6
    },
@@ -6671,8 +7130,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.19,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 76843982800.34,
+    "dep_total_brl": 58322383665.54,
+    "dep_captacoes_pct": 75.9,
+    "mix_depositos_pct": {
+     "vista": 2.9,
+     "poupanca": 2.4,
+     "prazo": 94.2,
+     "interfinanceiro": 0.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 33.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 73.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -480702095.35,
+    "despesas_admin_brl": -1210504289.84,
     "credito_ativo_pct": 45.6,
     "captacoes_ativo_pct": 77.0
    },
@@ -6988,7 +7470,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 7.6,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 21917507780.78,
+    "dep_total_brl": 12301768729.259998,
+    "dep_captacoes_pct": 56.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 87.6,
+     "interfinanceiro": 8.6,
+     "outros": 3.8
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 39.6
@@ -7275,8 +7774,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.06,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 23269170709.19,
+    "dep_total_brl": 12723857894.03,
+    "dep_captacoes_pct": 54.7,
+    "mix_depositos_pct": {
+     "vista": 30.3,
+     "poupanca": 10.1,
+     "prazo": 52.7,
+     "interfinanceiro": 6.9,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 39.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 54.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -1601569805.17,
+    "despesas_admin_brl": -1466426585.92,
     "credito_ativo_pct": 21.9,
     "captacoes_ativo_pct": 28.7
    },
@@ -7556,7 +8078,18 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 26.84,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 457227146.41,
+    "dep_total_brl": 0.0,
+    "dep_captacoes_pct": null,
+    "mix_depositos_pct": null,
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 0.6
@@ -7812,7 +8345,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.67,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 49189434889.26,
+    "dep_total_brl": 39780554773.159996,
+    "dep_captacoes_pct": 80.9,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 85.1,
+     "interfinanceiro": 12.7,
+     "outros": 2.2
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 1.0,
     "captacoes_ativo_pct": 63.6
@@ -8083,8 +8633,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.46,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 51770733814.87,
+    "dep_total_brl": 7997142424.73,
+    "dep_captacoes_pct": 15.4,
+    "mix_depositos_pct": {
+     "vista": 7.4,
+     "poupanca": 0.0,
+     "prazo": 87.3,
+     "interfinanceiro": 5.2,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 16.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 54.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -296838935.19,
+    "despesas_admin_brl": -200063727.37,
     "credito_ativo_pct": 31.8,
     "captacoes_ativo_pct": 75.9
    },
@@ -8426,8 +8999,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.71,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 15601131698.55,
+    "dep_total_brl": 6319782204.91,
+    "dep_captacoes_pct": 40.5,
+    "mix_depositos_pct": {
+     "vista": 35.0,
+     "poupanca": 12.6,
+     "prazo": 51.4,
+     "interfinanceiro": 1.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 23.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 48.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -416869948.87,
+    "despesas_admin_brl": -444641663.61,
     "credito_ativo_pct": 57.5,
     "captacoes_ativo_pct": 23.2
    },
@@ -8765,8 +9361,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 15.43,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 47526237078.92,
+    "dep_total_brl": 29619644870.93,
+    "dep_captacoes_pct": 62.3,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 64.3,
+     "interfinanceiro": 35.7,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 31.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 76.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -4434254.56,
+    "despesas_admin_brl": -370090349.26,
     "credito_ativo_pct": 82.2,
     "captacoes_ativo_pct": 78.2
    },
@@ -9104,8 +9723,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 6.68,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 30194291695.56,
+    "dep_total_brl": 9495214695.85,
+    "dep_captacoes_pct": 31.4,
+    "mix_depositos_pct": {
+     "vista": 17.8,
+     "poupanca": 0.0,
+     "prazo": 74.9,
+     "interfinanceiro": 7.3,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 19.9,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 130.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -447354813.17,
+    "despesas_admin_brl": -301837102.57,
     "credito_ativo_pct": 11.4,
     "captacoes_ativo_pct": 58.7
    },
@@ -9303,8 +9945,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 7.01,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 44719472447.72,
+    "dep_total_brl": 2324513852.18,
+    "dep_captacoes_pct": 5.2,
+    "mix_depositos_pct": {
+     "vista": 1.9,
+     "poupanca": 0.0,
+     "prazo": 78.1,
+     "interfinanceiro": 20.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 7.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 48.7,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -217166073.36,
+    "despesas_admin_brl": -197933941.91,
     "credito_ativo_pct": 69.4,
     "captacoes_ativo_pct": 81.8
    },
@@ -9730,8 +10395,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.81,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 31489583847.52,
+    "dep_total_brl": 19907223428.78,
+    "dep_captacoes_pct": 63.2,
+    "mix_depositos_pct": {
+     "vista": 2.8,
+     "poupanca": 0.0,
+     "prazo": 86.6,
+     "interfinanceiro": 10.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 4.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 81.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -61915721.61,
+    "despesas_admin_brl": -1178701310.57,
     "credito_ativo_pct": 67.8,
     "captacoes_ativo_pct": 61.5
    },
@@ -9961,8 +10649,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.13,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 40529558388.36,
+    "dep_total_brl": 24199351302.89,
+    "dep_captacoes_pct": 59.7,
+    "mix_depositos_pct": {
+     "vista": 1.4,
+     "poupanca": 0.0,
+     "prazo": 97.6,
+     "interfinanceiro": 1.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 2.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 67.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -216386424.02,
+    "despesas_admin_brl": -1050971872.81,
     "credito_ativo_pct": 45.3,
     "captacoes_ativo_pct": 72.1
    },
@@ -10290,8 +11001,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.03,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 35114848262.1,
+    "dep_total_brl": 34285115340.17,
+    "dep_captacoes_pct": 97.6,
+    "mix_depositos_pct": {
+     "vista": 0.2,
+     "poupanca": 0.0,
+     "prazo": 96.0,
+     "interfinanceiro": 0.1,
+     "outros": 3.8
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 39.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 80.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -435270869.44,
+    "despesas_admin_brl": -1346982338.5,
     "credito_ativo_pct": 58.8,
     "captacoes_ativo_pct": 71.1
    },
@@ -10469,8 +11203,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.76,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 33176749021.37,
+    "dep_total_brl": 21765468639.16,
+    "dep_captacoes_pct": 65.6,
+    "mix_depositos_pct": {
+     "vista": 2.1,
+     "poupanca": 0.5,
+     "prazo": 96.5,
+     "interfinanceiro": 0.9,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 10.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 57.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -399194828.83,
+    "despesas_admin_brl": -862719724.01,
     "credito_ativo_pct": 54.8,
     "captacoes_ativo_pct": 73.3
    },
@@ -10804,8 +11561,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.9,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 38599750994.44,
+    "dep_total_brl": 26791600537.489998,
+    "dep_captacoes_pct": 69.4,
+    "mix_depositos_pct": {
+     "vista": 3.9,
+     "poupanca": 17.7,
+     "prazo": 74.8,
+     "interfinanceiro": 3.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 22.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 63.7,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -251325320.88,
+    "despesas_admin_brl": -235744572.35,
     "credito_ativo_pct": 29.3,
     "captacoes_ativo_pct": 90.7
    },
@@ -11125,8 +11905,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.17,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 21612730281.55,
+    "dep_total_brl": 17973433381.14,
+    "dep_captacoes_pct": 83.2,
+    "mix_depositos_pct": {
+     "vista": 10.2,
+     "poupanca": 0.0,
+     "prazo": 86.4,
+     "interfinanceiro": 3.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 49.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 50.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -812745693.62,
+    "despesas_admin_brl": -233732820.55,
     "credito_ativo_pct": 6.4,
     "captacoes_ativo_pct": 52.4
    },
@@ -11408,6 +12211,8 @@
    "carteira_perfil": null,
    "captacao": null,
    "modelo_negocio": {
+    "receita_servicos_pct": 21.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 13.9
    },
@@ -11741,8 +12546,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.82,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 31390767360.54,
+    "dep_total_brl": 18051101280.84,
+    "dep_captacoes_pct": 57.5,
+    "mix_depositos_pct": {
+     "vista": 0.6,
+     "poupanca": 0.0,
+     "prazo": 93.9,
+     "interfinanceiro": 5.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 0.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 36.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -87154119.7,
+    "despesas_admin_brl": -289955665.24,
     "credito_ativo_pct": 51.4,
     "captacoes_ativo_pct": 83.5
    },
@@ -12076,8 +12904,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.59,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 34779684164.71,
+    "dep_total_brl": 21541165595.77,
+    "dep_captacoes_pct": 61.9,
+    "mix_depositos_pct": {
+     "vista": 2.8,
+     "poupanca": 0.0,
+     "prazo": 91.7,
+     "interfinanceiro": 5.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 2.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 98.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -82453279.92,
+    "despesas_admin_brl": -166508386.22,
     "credito_ativo_pct": 48.1,
     "captacoes_ativo_pct": 87.7
    },
@@ -12230,8 +13081,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.46,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 31293095489.83,
+    "dep_total_brl": 5642213742.48,
+    "dep_captacoes_pct": 18.0,
+    "mix_depositos_pct": {
+     "vista": 13.5,
+     "poupanca": 0.0,
+     "prazo": 52.1,
+     "interfinanceiro": 34.3,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 9.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 25.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -90441843.83,
+    "despesas_admin_brl": -66421646.38,
     "credito_ativo_pct": 46.1,
     "captacoes_ativo_pct": 86.6
    },
@@ -12575,8 +13449,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.34,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 884328214.95,
+    "dep_total_brl": 322149743.72,
+    "dep_captacoes_pct": 36.4,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 4.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 158.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -23748083.68,
+    "despesas_admin_brl": -20434466.41,
     "credito_ativo_pct": 0.3,
     "captacoes_ativo_pct": 2.6
    },
@@ -12856,8 +13753,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.65,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 13179674426.06,
+    "dep_total_brl": 1407177012.03,
+    "dep_captacoes_pct": 10.7,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 83.4,
+     "interfinanceiro": 16.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 36.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 94.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -420683286.25,
+    "despesas_admin_brl": -104368507.91,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 39.2
    },
@@ -13183,8 +14103,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 7.14,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 23606985503.03,
+    "dep_total_brl": 224286980.5,
+    "dep_captacoes_pct": 1.0,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 4.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 30.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -137841073.45,
+    "despesas_admin_brl": -64200832.73,
     "credito_ativo_pct": 79.7,
     "captacoes_ativo_pct": 76.3
    },
@@ -13518,8 +14461,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.49,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 25411466240.18,
+    "dep_total_brl": 16193172029.93,
+    "dep_captacoes_pct": 63.7,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 91.4,
+     "interfinanceiro": 8.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 13.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 25.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -75408859.98,
+    "despesas_admin_brl": -188581452.57,
     "credito_ativo_pct": 83.9,
     "captacoes_ativo_pct": 82.5
    },
@@ -13667,8 +14633,27 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 14.4,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 681809885.11,
+    "dep_total_brl": 679739290.05,
+    "dep_captacoes_pct": 99.7,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 5.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
     "credito_ativo_pct": 1.0,
     "captacoes_ativo_pct": 2.4
    },
@@ -13950,6 +14935,12 @@
    },
    "captacao": null,
    "modelo_negocio": {
+    "receita_servicos_pct": 2.9,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 45.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -14703509.23,
+    "despesas_admin_brl": -7325822.42,
     "credito_ativo_pct": 2.3,
     "captacoes_ativo_pct": 0.0
    },
@@ -14281,8 +15272,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.51,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 7427570850.94,
+    "dep_total_brl": 1505740596.6100001,
+    "dep_captacoes_pct": 20.3,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 53.5,
+     "interfinanceiro": 46.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 99.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 44.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -91872260.47,
+    "despesas_admin_brl": -547096576.08,
     "credito_ativo_pct": 80.4,
     "captacoes_ativo_pct": 27.2
    },
@@ -14616,7 +15630,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.99,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 19821706707.92,
+    "dep_total_brl": 4840667305.48,
+    "dep_captacoes_pct": 24.4,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 95.3,
+     "interfinanceiro": 4.7,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 84.4,
     "captacoes_ativo_pct": 82.0
@@ -14908,8 +15939,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.42,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 4877270555.2,
+    "dep_total_brl": 3209652248.15,
+    "dep_captacoes_pct": 65.8,
+    "mix_depositos_pct": {
+     "vista": 0.5,
+     "poupanca": 0.0,
+     "prazo": 41.1,
+     "interfinanceiro": 58.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 83.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 67.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -144076642.49,
+    "despesas_admin_brl": -672819002.98,
     "credito_ativo_pct": 76.5,
     "captacoes_ativo_pct": 20.5
    },
@@ -15307,8 +16361,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.71,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 24086283058.69,
+    "dep_total_brl": 16671933606.96,
+    "dep_captacoes_pct": 69.2,
+    "mix_depositos_pct": {
+     "vista": 1.4,
+     "poupanca": 0.0,
+     "prazo": 98.1,
+     "interfinanceiro": 0.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 7.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 46.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -78309328.68,
+    "despesas_admin_brl": -61110067.6,
     "credito_ativo_pct": 24.5,
     "captacoes_ativo_pct": 87.8
    },
@@ -15634,8 +16711,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 86.5,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 2981496609.46,
+    "dep_total_brl": 2976628843.48,
+    "dep_captacoes_pct": 99.8,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 56.7,
+     "interfinanceiro": 0.0,
+     "outros": 43.3
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 38.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 81.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -122404236.34,
+    "despesas_admin_brl": -586179395.23,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 6.0
    },
@@ -15841,8 +16941,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.63,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 17510829233.5,
+    "dep_total_brl": 5680203119.47,
+    "dep_captacoes_pct": 32.4,
+    "mix_depositos_pct": {
+     "vista": 11.1,
+     "poupanca": 0.0,
+     "prazo": 82.4,
+     "interfinanceiro": 6.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 3.9,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 101.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -75887972.02,
+    "despesas_admin_brl": -41540147.89,
     "credito_ativo_pct": 51.3,
     "captacoes_ativo_pct": 78.6
    },
@@ -16166,8 +17289,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 4.82,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 15460387114.03,
+    "dep_total_brl": 6776995486.32,
+    "dep_captacoes_pct": 43.8,
+    "mix_depositos_pct": {
+     "vista": 8.2,
+     "poupanca": 0.0,
+     "prazo": 35.2,
+     "interfinanceiro": 56.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 33.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 72.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -164118175.77,
+    "despesas_admin_brl": -156760506.52,
     "credito_ativo_pct": 17.4,
     "captacoes_ativo_pct": 71.1
    },
@@ -16461,8 +17607,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.73,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 18223336825.62,
+    "dep_total_brl": 15435872337.76,
+    "dep_captacoes_pct": 84.7,
+    "mix_depositos_pct": {
+     "vista": 8.4,
+     "poupanca": 14.3,
+     "prazo": 75.3,
+     "interfinanceiro": 2.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 12.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 76.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -437148250.92,
+    "despesas_admin_brl": -329361568.65,
     "credito_ativo_pct": 72.0,
     "captacoes_ativo_pct": 85.0
    },
@@ -16800,8 +17969,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.34,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 17573247000.09,
+    "dep_total_brl": 3916252316.63,
+    "dep_captacoes_pct": 22.3,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 38.2,
+     "interfinanceiro": 61.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 0.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 55.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -45945059.36,
+    "despesas_admin_brl": -84809267.43,
     "credito_ativo_pct": 93.0,
     "captacoes_ativo_pct": 84.7
    },
@@ -17121,8 +18313,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 5.4,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 14040180496.12,
+    "dep_total_brl": 892826777.92,
+    "dep_captacoes_pct": 6.4,
+    "mix_depositos_pct": {
+     "vista": 1.5,
+     "poupanca": 0.0,
+     "prazo": 98.5,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 3.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 19.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -82652959.98,
+    "despesas_admin_brl": -39907154.33,
     "credito_ativo_pct": 43.4,
     "captacoes_ativo_pct": 69.7
    },
@@ -17278,8 +18493,31 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.07,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 1544427781.38,
+    "dep_total_brl": 1257128135.62,
+    "dep_captacoes_pct": 81.4,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 0.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 51.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -14098090.2,
+    "despesas_admin_brl": -4488131.95,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 8.0
    },
@@ -17613,8 +18851,27 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.42,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 13307187695.75,
+    "dep_total_brl": 7661996009.85,
+    "dep_captacoes_pct": 57.6,
+    "mix_depositos_pct": {
+     "vista": 22.3,
+     "poupanca": 1.3,
+     "prazo": 76.4,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 52.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
     "credito_ativo_pct": 48.1,
     "captacoes_ativo_pct": 70.8
    },
@@ -17918,8 +19175,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 14.41,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 5741956733.68,
+    "dep_total_brl": 1939280365.46,
+    "dep_captacoes_pct": 33.8,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 99.6,
+     "interfinanceiro": 0.4,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 29.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 97.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -456235651.18,
+    "despesas_admin_brl": -215032930.21,
     "credito_ativo_pct": 1.2,
     "captacoes_ativo_pct": 25.1
    },
@@ -18229,8 +19509,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 5.04,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 16192669658.62,
+    "dep_total_brl": 1152671325.75,
+    "dep_captacoes_pct": 7.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 99.0,
+     "interfinanceiro": 1.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 29.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 101.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -47551596.54,
+    "despesas_admin_brl": -61348347.81,
     "credito_ativo_pct": 1.0,
     "captacoes_ativo_pct": 88.7
    },
@@ -18444,8 +19747,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.56,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 16003930194.29,
+    "dep_total_brl": 14162196918.900002,
+    "dep_captacoes_pct": 88.5,
+    "mix_depositos_pct": {
+     "vista": 5.3,
+     "poupanca": 0.0,
+     "prazo": 94.7,
+     "interfinanceiro": 0.1,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 14.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 71.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -147944797.34,
+    "despesas_admin_brl": -121721723.94,
     "credito_ativo_pct": 44.6,
     "captacoes_ativo_pct": 88.3
    },
@@ -18771,8 +20097,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.32,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12615297745.61,
+    "dep_total_brl": 6074148609.03,
+    "dep_captacoes_pct": 48.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 35.4,
+     "interfinanceiro": 64.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 33.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 56.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -127412176.47,
+    "despesas_admin_brl": -217436665.46,
     "credito_ativo_pct": 76.4,
     "captacoes_ativo_pct": 73.4
    },
@@ -19058,7 +20407,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.23,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 10293913390.44,
+    "dep_total_brl": 1086845197.84,
+    "dep_captacoes_pct": 10.6,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 100.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 0.6,
     "captacoes_ativo_pct": 58.0
@@ -19498,8 +20864,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.08,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12675485565.47,
+    "dep_total_brl": 11915589727.25,
+    "dep_captacoes_pct": 94.0,
+    "mix_depositos_pct": {
+     "vista": 14.3,
+     "poupanca": 7.8,
+     "prazo": 77.9,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 47.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 101.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -148340091.44,
+    "despesas_admin_brl": -276222716.46,
     "credito_ativo_pct": 49.8,
     "captacoes_ativo_pct": 72.3
    },
@@ -19803,8 +21192,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 6.04,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12726403902.78,
+    "dep_total_brl": 1212112480.3700001,
+    "dep_captacoes_pct": 9.5,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 8.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 36.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -94828773.84,
+    "despesas_admin_brl": -29326494.35,
     "credito_ativo_pct": 14.9,
     "captacoes_ativo_pct": 75.7
    },
@@ -20032,8 +21444,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 7.24,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12899482861.9,
+    "dep_total_brl": 4887466846.8,
+    "dep_captacoes_pct": 37.9,
+    "mix_depositos_pct": {
+     "vista": 12.3,
+     "poupanca": 0.0,
+     "prazo": 87.7,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 22.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 71.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -183476572.94,
+    "despesas_admin_brl": -77832207.73,
     "credito_ativo_pct": 31.5,
     "captacoes_ativo_pct": 77.4
    },
@@ -20303,8 +21738,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.06,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 11692860715.1,
+    "dep_total_brl": 803936156.5,
+    "dep_captacoes_pct": 6.9,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 6.2,
+     "interfinanceiro": 93.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 27.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 32.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -35319687.3,
+    "despesas_admin_brl": -99773480.54,
     "credito_ativo_pct": 85.8,
     "captacoes_ativo_pct": 73.6
    },
@@ -20630,8 +22088,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 5.89,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 4768978284.55,
+    "dep_total_brl": 317018930.39,
+    "dep_captacoes_pct": 6.6,
+    "mix_depositos_pct": {
+     "vista": 0.1,
+     "poupanca": 0.0,
+     "prazo": 99.9,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 34.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 70.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -492066569.15,
+    "despesas_admin_brl": -384673955.63,
     "credito_ativo_pct": 18.8,
     "captacoes_ativo_pct": 44.7
    },
@@ -20973,8 +22454,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 14.56,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9139324736.43,
+    "dep_total_brl": 8740247442.91,
+    "dep_captacoes_pct": 95.6,
+    "mix_depositos_pct": {
+     "vista": 17.2,
+     "poupanca": 0.0,
+     "prazo": 79.3,
+     "interfinanceiro": 3.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 36.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 71.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -126210911.04,
+    "despesas_admin_brl": -123104684.0,
     "credito_ativo_pct": 56.4,
     "captacoes_ativo_pct": 58.0
    },
@@ -21288,8 +22792,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.11,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 11810886666.24,
+    "dep_total_brl": 788217895.64,
+    "dep_captacoes_pct": 6.7,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 85.8,
+     "interfinanceiro": 14.2,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 4.4,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 46.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -83533220.59,
+    "despesas_admin_brl": -51794253.42,
     "credito_ativo_pct": 60.0,
     "captacoes_ativo_pct": 76.6
    },
@@ -21577,8 +23104,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.77,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 282391961.73,
+    "dep_total_brl": 12909696.76,
+    "dep_captacoes_pct": 4.6,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 0.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 41.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -16578437.46,
+    "despesas_admin_brl": -11526749.14,
     "credito_ativo_pct": 0.8,
     "captacoes_ativo_pct": 1.9
    },
@@ -21830,8 +23380,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 4.88,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12505200990.03,
+    "dep_total_brl": 2845255710.2000003,
+    "dep_captacoes_pct": 22.8,
+    "mix_depositos_pct": {
+     "vista": 3.4,
+     "poupanca": 0.0,
+     "prazo": 94.1,
+     "interfinanceiro": 2.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 17.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 44.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -52089964.44,
+    "despesas_admin_brl": -28156088.37,
     "credito_ativo_pct": 21.8,
     "captacoes_ativo_pct": 83.2
    },
@@ -22023,7 +23596,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.64,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 2549731719.45,
+    "dep_total_brl": 166444912.92,
+    "dep_captacoes_pct": 6.5,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 100.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 5.8,
     "captacoes_ativo_pct": 17.0
@@ -22306,8 +23896,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.98,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 13090687330.85,
+    "dep_total_brl": 12222611753.68,
+    "dep_captacoes_pct": 93.4,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 100.0,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 3.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 39.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -11187189.74,
+    "despesas_admin_brl": -56869888.44,
     "credito_ativo_pct": 92.5,
     "captacoes_ativo_pct": 89.6
    },
@@ -22477,8 +24090,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.6,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12843999182.19,
+    "dep_total_brl": 5176000425.05,
+    "dep_captacoes_pct": 40.3,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 97.7,
+     "interfinanceiro": 2.3,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 94.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 99.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -35881428.44,
+    "despesas_admin_brl": -107846192.58,
     "credito_ativo_pct": 95.1,
     "captacoes_ativo_pct": 91.0
    },
@@ -22740,8 +24376,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.31,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 12590519170.11,
+    "dep_total_brl": 6965271915.12,
+    "dep_captacoes_pct": 55.3,
+    "mix_depositos_pct": {
+     "vista": 0.2,
+     "poupanca": 0.0,
+     "prazo": 95.0,
+     "interfinanceiro": 4.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 0.7,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 74.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -55639207.41,
+    "despesas_admin_brl": -130875504.89,
     "credito_ativo_pct": 71.3,
     "captacoes_ativo_pct": 87.7
    },
@@ -23075,8 +24734,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 14.66,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 6937118263.3,
+    "dep_total_brl": 6493212769.03,
+    "dep_captacoes_pct": 93.6,
+    "mix_depositos_pct": {
+     "vista": 20.8,
+     "poupanca": 0.5,
+     "prazo": 77.1,
+     "interfinanceiro": 1.7,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 32.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 62.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -92352943.88,
+    "despesas_admin_brl": -112030310.02,
     "credito_ativo_pct": 57.7,
     "captacoes_ativo_pct": 48.6
    },
@@ -23354,8 +25036,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.43,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9530471890.74,
+    "dep_total_brl": 8043254343.25,
+    "dep_captacoes_pct": 84.4,
+    "mix_depositos_pct": {
+     "vista": 23.0,
+     "poupanca": 2.2,
+     "prazo": 74.7,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 23.8,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 38.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -40945593.32,
+    "despesas_admin_brl": -55733960.23,
     "credito_ativo_pct": 59.4,
     "captacoes_ativo_pct": 67.7
    },
@@ -23557,8 +25262,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 14.26,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9042222856.13,
+    "dep_total_brl": 8949636436.84,
+    "dep_captacoes_pct": 99.0,
+    "mix_depositos_pct": {
+     "vista": 11.1,
+     "poupanca": 0.0,
+     "prazo": 79.0,
+     "interfinanceiro": 9.9,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 35.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 89.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -138627568.19,
+    "despesas_admin_brl": -128717659.64,
     "credito_ativo_pct": 56.5,
     "captacoes_ativo_pct": 64.5
    },
@@ -23792,8 +25520,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.98,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9570689693.98,
+    "dep_total_brl": 9088583585.67,
+    "dep_captacoes_pct": 95.0,
+    "mix_depositos_pct": {
+     "vista": 16.6,
+     "poupanca": 0.0,
+     "prazo": 82.8,
+     "interfinanceiro": 0.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 32.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 62.1,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -107419341.82,
+    "despesas_admin_brl": -111193144.94,
     "credito_ativo_pct": 53.8,
     "captacoes_ativo_pct": 68.5
    },
@@ -23999,8 +25750,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.25,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9533765528.32,
+    "dep_total_brl": 9236044373.93,
+    "dep_captacoes_pct": 96.9,
+    "mix_depositos_pct": {
+     "vista": 12.7,
+     "poupanca": 1.2,
+     "prazo": 85.3,
+     "interfinanceiro": 0.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 29.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 55.4,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -88269591.48,
+    "despesas_admin_brl": -88222520.66,
     "credito_ativo_pct": 46.4,
     "captacoes_ativo_pct": 70.2
    },
@@ -24194,8 +25968,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.19,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 8451752052.46,
+    "dep_total_brl": 8123075449.2,
+    "dep_captacoes_pct": 96.1,
+    "mix_depositos_pct": {
+     "vista": 19.6,
+     "poupanca": 0.0,
+     "prazo": 79.6,
+     "interfinanceiro": 0.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 28.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 63.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -143725624.83,
+    "despesas_admin_brl": -135352727.16,
     "credito_ativo_pct": 50.5,
     "captacoes_ativo_pct": 62.6
    },
@@ -24461,7 +26258,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 13.56,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 10812970370.78,
+    "dep_total_brl": 6418404087.67,
+    "dep_captacoes_pct": 59.4,
+    "mix_depositos_pct": {
+     "vista": 14.3,
+     "poupanca": 0.1,
+     "prazo": 85.6,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 53.1,
     "captacoes_ativo_pct": 80.4
@@ -24804,8 +26618,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.48,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 11530298252.27,
+    "dep_total_brl": 11078378410.18,
+    "dep_captacoes_pct": 96.1,
+    "mix_depositos_pct": {
+     "vista": 13.6,
+     "poupanca": 23.1,
+     "prazo": 60.6,
+     "interfinanceiro": 2.7,
+     "outros": 0.1
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 27.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 76.2,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -144786105.01,
+    "despesas_admin_brl": -149783166.96,
     "credito_ativo_pct": 39.4,
     "captacoes_ativo_pct": 88.1
    },
@@ -25131,8 +26968,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.99,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 10991677718.36,
+    "dep_total_brl": 3366297974.57,
+    "dep_captacoes_pct": 30.6,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 52.5,
+     "interfinanceiro": 47.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 10.0,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 50.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -48919216.37,
+    "despesas_admin_brl": -186983148.06,
     "credito_ativo_pct": 84.5,
     "captacoes_ativo_pct": 85.0
    },
@@ -25474,7 +27334,24 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 9.23,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 10577133152.18,
+    "dep_total_brl": 1635405687.44,
+    "dep_captacoes_pct": 15.5,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 4.2,
+     "interfinanceiro": 95.8,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
     "credito_ativo_pct": 83.4,
     "captacoes_ativo_pct": 83.0
@@ -25747,8 +27624,31 @@
   },
   {
    "carteira_perfil": null,
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 8.6,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 3248317096.35,
+    "dep_total_brl": 1303006102.25,
+    "dep_captacoes_pct": 40.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 0.0,
+     "outros": 100.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 48.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 85.9,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -163978638.11,
+    "despesas_admin_brl": -1014600923.09,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 26.1
    },
@@ -25917,8 +27817,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 12.23,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9065459860.95,
+    "dep_total_brl": 8853199031.68,
+    "dep_captacoes_pct": 97.7,
+    "mix_depositos_pct": {
+     "vista": 13.0,
+     "poupanca": 0.0,
+     "prazo": 84.5,
+     "interfinanceiro": 2.5,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 29.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 64.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -89354389.1,
+    "despesas_admin_brl": -104318635.88,
     "credito_ativo_pct": 50.8,
     "captacoes_ativo_pct": 74.1
    },
@@ -26106,8 +28029,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 5.6,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9398798438.33,
+    "dep_total_brl": 3116798908.08,
+    "dep_captacoes_pct": 33.2,
+    "mix_depositos_pct": {
+     "vista": 9.7,
+     "poupanca": 0.0,
+     "prazo": 90.3,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 8.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 64.0,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -76061095.7,
+    "despesas_admin_brl": -67862611.61,
     "credito_ativo_pct": 28.7,
     "captacoes_ativo_pct": 78.2
    },
@@ -26429,8 +28375,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 6.49,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 8767330493.1,
+    "dep_total_brl": 494447826.49,
+    "dep_captacoes_pct": 5.6,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 47.4,
+     "interfinanceiro": 52.6,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 72.6,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 64.8,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -29810982.13,
+    "despesas_admin_brl": -1193909011.95,
     "credito_ativo_pct": 83.2,
     "captacoes_ativo_pct": 79.5
    },
@@ -26696,8 +28665,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.79,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 8857749775.46,
+    "dep_total_brl": 8510557411.71,
+    "dep_captacoes_pct": 96.1,
+    "mix_depositos_pct": {
+     "vista": 15.0,
+     "poupanca": 0.1,
+     "prazo": 84.9,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 46.3,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 153.3,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -111011579.38,
+    "despesas_admin_brl": -97644208.04,
     "credito_ativo_pct": 65.6,
     "captacoes_ativo_pct": 74.3
    },
@@ -26919,8 +28911,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 11.72,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 9078257396.26,
+    "dep_total_brl": 7695295585.78,
+    "dep_captacoes_pct": 84.8,
+    "mix_depositos_pct": {
+     "vista": 12.1,
+     "poupanca": 0.3,
+     "prazo": 87.6,
+     "interfinanceiro": 0.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 12.1,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 44.6,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -91505894.15,
+    "despesas_admin_brl": -47239120.08,
     "credito_ativo_pct": 50.0,
     "captacoes_ativo_pct": 78.6
    },
@@ -27038,8 +29053,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 26.62,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 3229621768.81,
+    "dep_total_brl": 66710479.720000006,
+    "dep_captacoes_pct": 2.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 100.0,
+     "outros": 0.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 3.2,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 67.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -64296974.02,
+    "despesas_admin_brl": -18175775.06,
     "credito_ativo_pct": 45.5,
     "captacoes_ativo_pct": 28.6
    },
@@ -27349,8 +29387,31 @@
      ]
     ]
    },
-   "captacao": null,
+   "captacao": {
+    "tipo": "DADO CALCULADO",
+    "custo_aa_pct": 10.79,
+    "meses_dre": 6,
+    "media_pontas": true,
+    "captacoes_brl": 1423695207.17,
+    "dep_total_brl": 129350363.23,
+    "dep_captacoes_pct": 9.1,
+    "mix_depositos_pct": {
+     "vista": 0.0,
+     "poupanca": 0.0,
+     "prazo": 0.0,
+     "interfinanceiro": 0.0,
+     "outros": 100.0
+    },
+    "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+    "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+   },
    "modelo_negocio": {
+    "receita_servicos_pct": 92.5,
+    "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+    "eficiencia_pct": 56.5,
+    "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+    "despesas_pessoal_brl": -157818403.46,
+    "despesas_admin_brl": -421966824.16,
     "credito_ativo_pct": 0.0,
     "captacoes_ativo_pct": 12.8
    },

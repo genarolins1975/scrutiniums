@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-10T15:18:54+00:00",
+ "gerado_em": "2026-09-11T14:50:54+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 339,
-  "total_editais": 1128,
+  "total_contratos_if": 341,
+  "total_editais": 1131,
   "backfill_completo": true,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 129,
+    "contratos": 130,
     "ufs": 21,
     "como_receita": 18
    },
@@ -190,6 +190,13 @@
     "contratos": 3,
     "ufs": 1,
     "como_receita": 1
+   },
+   {
+    "cnpj8": "07512780",
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "01604998",
@@ -253,13 +260,6 @@
     "contratos": 2,
     "ufs": 1,
     "como_receita": 1
-   },
-   {
-    "cnpj8": "07512780",
-    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
    },
    {
     "cnpj8": "17343510",
@@ -557,6 +557,36 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "83102350000196-2-001199/2026",
+    "ente": "MUNICIPIO DE BOTUVERA",
+    "esfera": "Municipal",
+    "municipio": "Botuverá",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-10",
+    "vig_fim": "2027-09-09",
+    "valor": 0.01,
+    "receita": false,
+    "banco": "COOPERATIVA DE CREDITO COM INTERACAO SOLIDARIA DO VALE EUROPEU - CRESOL VALE EUROPEU",
+    "cnpj8": "07512780",
+    "url": "https://pncp.gov.br/contratos/83102350000196/2026/1199"
+   },
+   {
+    "controle": "83509547000144-2-000096/2026",
+    "ente": "CAMARA DE VEREADORES DO MUNICIPIO DE LAGES",
+    "esfera": "Municipal",
+    "municipio": "Lages",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-09",
+    "vig_fim": "2031-09-15",
+    "valor": 84000.0,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
+   },
    {
     "controle": "45276128000110-2-000913/2026",
     "ente": "MUNICIPIO DE ARARAQUARA",
@@ -1126,39 +1156,27 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/82575812000120/2026/664"
-   },
-   {
-    "controle": "48568372000145-2-000002/2026",
-    "ente": "CAMARA MUNICIPAL DE SAO CAETANO DO SUL",
-    "esfera": "Municipal",
-    "municipio": "São Caetano do Sul",
-    "uf": "SP",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-06-10",
-    "vig_fim": "2031-06-09",
-    "valor": 0.0,
-    "receita": true,
-    "banco": "BANCO DO BRASIL S.A.",
-    "cnpj8": "00000000",
-    "url": "https://pncp.gov.br/contratos/48568372000145/2026/2"
-   },
-   {
-    "controle": "15023963000188-2-000010/2026",
-    "ente": "MUNICIPIO DE NOVA BRASILANDIA",
-    "esfera": "Municipal",
-    "municipio": "Nova Brasilândia",
-    "uf": "MT",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-06-03",
-    "vig_fim": "2031-06-03",
-    "valor": 157500.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO SICOOB PRIMAVERA",
-    "cnpj8": "05241619",
-    "url": "https://pncp.gov.br/contratos/15023963000188/2026/10"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE TAIO",
+    "municipio": "Taió",
+    "uf": "SC",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-10",
+    "url": "https://pncp.gov.br/compras/82765488000102/2026/165"
+   },
+   {
+    "ente": "MUNICIPIO DE FRONTEIRA",
+    "municipio": "Fronteira",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-10",
+    "url": "https://pncp.gov.br/compras/18449140000107/2026/118"
+   },
    {
     "ente": "MUNICIPIO DE CURRAL DE DENTRO",
     "municipio": "Curral de Dentro",
@@ -1167,6 +1185,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-09",
     "url": "https://pncp.gov.br/compras/01613076000155/2026/33"
+   },
+   {
+    "ente": "MUNICIPIO DE CAPITAO LEONIDAS MARQUES",
+    "municipio": "Capitão Leônidas Marques",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/76208834000159/2026/344"
    },
    {
     "ente": "INSTITUTO DE PREVIDENCIA SOCIAL DO MUNICIPIO DE PAULISTA",
@@ -1239,33 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-03",
     "url": "https://pncp.gov.br/compras/07598618000144/2026/96"
-   },
-   {
-    "ente": "MUNICIPIO DE CARMO DO RIO CLARO",
-    "municipio": "Carmo do Rio Claro",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/18243287000146/2026/130"
-   },
-   {
-    "ente": "MUNICIPIO DE ESPERANCA",
-    "municipio": "Esperança",
-    "uf": "PB",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/08993909000108/2026/141"
-   },
-   {
-    "ente": "CAMARA MUNICIPAL DE JUNDIAI",
-    "municipio": "Jundiaí",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/51864114000110/2026/108"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

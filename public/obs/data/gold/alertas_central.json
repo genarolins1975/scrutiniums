@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-10T15:19:16+00:00",
+ "gerado_em": "2026-09-11T14:51:30+00:00",
  "familias": [
   {
    "id": "macro",
@@ -83,12 +83,12 @@
    "familia": "macro",
    "nivel": "informativo",
    "titulo": "20 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (132 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (132 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (101 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (133 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (133 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (102 dias). Ausência de dado novo NÃO foi interpretada como zero.",
    "valor": 20,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "18 execuções anteriores",
+   "evidencia_persistencia": "19 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
@@ -106,7 +106,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "71 execuções anteriores",
+   "evidencia_persistencia": "72 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -286,34 +286,34 @@
    "familia": "openfinance",
    "nivel": "relevante",
    "titulo": "taxa de sucesso — dados transacionais",
-   "detalhe": "94.24 contra limiar 97 há 14 semanas (dado de 2026-07-31).",
-   "valor": 94.24,
+   "detalhe": "94.93 contra limiar 97 há 18 semanas (dado de 2026-08-28).",
+   "valor": 94.93,
    "limiar": 97,
-   "referencia": "2026-07-31",
+   "referencia": "2026-08-28",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "14 semanas consecutivas fora do limiar",
+   "evidencia_persistencia": "18 semanas consecutivas fora do limiar",
    "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 14
+   "ordem": 18
   },
   {
    "id": "openfinance:taxa de sucesso — iniciacao pagamento",
    "familia": "openfinance",
    "nivel": "relevante",
    "titulo": "taxa de sucesso — iniciacao pagamento",
-   "detalhe": "94.04 contra limiar 97 há 6 semanas (dado de 2026-07-31).",
-   "valor": 94.04,
+   "detalhe": "91.93 contra limiar 97 há 10 semanas (dado de 2026-08-28).",
+   "valor": 91.93,
    "limiar": 97,
-   "referencia": "2026-07-31",
+   "referencia": "2026-08-28",
    "fonte": "Dashboard do Cidadão",
-   "evidencia_persistencia": "6 semanas consecutivas fora do limiar",
+   "evidencia_persistencia": "10 semanas consecutivas fora do limiar",
    "recorrente": true,
    "link": {
     "view": "openfinance"
    },
-   "ordem": 6
+   "ordem": 10
   },
   {
    "id": "operacional:rede:queda_12m:Brb Banco De Brasilia S.A.:2026-06",

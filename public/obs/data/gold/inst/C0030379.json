@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-10T15:18:59+00:00",
+  "atualizado_em": "2026-09-11T14:51:01+00:00",
   "aviso_pares": null,
   "cnpj": "90.400.888/0001-42 (companhia listada/holding)",
   "participante_open_finance": true
@@ -117,7 +117,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-10"
+  "calculado_em": "2026-09-11"
  },
  "kpis": [
   {
@@ -1606,7 +1606,7 @@
  },
  "openfinance": {
   "organisation": "SANTANDER BRASIL",
-  "chamadas_semana": 5635137908.0,
+  "chamadas_semana": 7912344739.0,
   "share_pct": 9.1,
   "familias_api": 53,
   "papeis": [

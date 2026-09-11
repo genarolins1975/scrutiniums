@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-10T15:19:16+00:00",
+ "gerado_em": "2026-09-11T14:51:30+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -626,7 +626,7 @@
     "saldo_medio_op": 4860,
     "prod_dominante": "Outros",
     "renda_dominante": "Mais de 5 a 10 salários mínimos",
-    "z_inad": 1.5
+    "z_inad": 1.51
    },
    "produtos": [
     {
@@ -1701,12 +1701,12 @@
    },
    "subnacional": {
     "mes": "2026-08",
-    "liberado_12m_valor": 6705724029.4,
-    "liberado_12m_n": 41,
+    "liberado_12m_valor": 6695724029.4,
+    "liberado_12m_n": 40,
     "entes": 23,
-    "valor_hab": 723.47,
+    "valor_hab": 722.39,
     "credor_principal": "Banco do Brasil S/A",
-    "share_valor_pct": 8.33,
+    "share_valor_pct": 8.32,
     "dcl": 9979447801.59,
     "dcl_rcl_pct": 24.4,
     "dcl_hab": 1076.67,

@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-10T15:18:54+00:00",
+ "gerado_em": "2026-09-11T14:50:55+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-10T15:18:54+00:00",
+    "atualizado_em": "2026-09-11T14:50:54+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1335,16 +1335,39 @@
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": null,
+    "captacao": {
+     "tipo": "DADO CALCULADO",
+     "custo_aa_pct": 8.0,
+     "meses_dre": 6,
+     "media_pontas": true,
+     "captacoes_brl": 2136173349813.06,
+     "dep_total_brl": 1143007756249.48,
+     "dep_captacoes_pct": 53.5,
+     "mix_depositos_pct": {
+      "vista": 11.2,
+      "poupanca": 15.1,
+      "prazo": 72.7,
+      "interfinanceiro": 0.9,
+      "outros": 0.1
+     },
+     "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+    },
     "modelo_negocio": {
+     "receita_servicos_pct": 39.9,
+     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+     "eficiencia_pct": 61.2,
+     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+     "despesas_pessoal_brl": -13136021505.11,
+     "despesas_admin_brl": -15449912592.86,
      "credito_ativo_pct": 41.8,
      "captacoes_ativo_pct": 77.9
     }
    },
    "openfinance": {
     "organisation": "ITAÚ UNIBANCO",
-    "chamadas_semana": 5371594886.0,
-    "share_pct": 8.7,
+    "chamadas_semana": 7460505098.0,
+    "share_pct": 8.6,
     "familias_api": null,
     "papeis": null,
     "match_diretorio": false
@@ -1429,12 +1452,27 @@
      "status": "cenário"
     },
     {
+     "frase": "Custo de captação estimado em 8.0% a.a. (|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
+     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
+     "status": "calculado"
+    },
+    {
+     "frase": "Receitas de serviços respondem por 39.9% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
+    },
+    {
+     "frase": "Índice de eficiência de 61.2% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
+    },
+    {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 46.87 (posição 101 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
     },
     {
-     "frase": "No Open Finance, responde por 8.7% das chamadas transacionais.",
+     "frase": "No Open Finance, responde por 8.6% das chamadas transacionais.",
      "base": "Dashboard do Cidadão + diretório oficial (observado)",
      "status": "observado"
     },
@@ -1462,7 +1500,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-10T15:18:54+00:00",
+    "atualizado_em": "2026-09-11T14:50:54+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2717,8 +2755,31 @@
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": null,
+    "captacao": {
+     "tipo": "DADO CALCULADO",
+     "custo_aa_pct": 10.32,
+     "meses_dre": 6,
+     "media_pontas": true,
+     "captacoes_brl": 89777746601.13,
+     "dep_total_brl": 30383020817.23,
+     "dep_captacoes_pct": 33.8,
+     "mix_depositos_pct": {
+      "vista": 9.7,
+      "poupanca": 0.0,
+      "prazo": 87.9,
+      "interfinanceiro": 2.4,
+      "outros": 0.0
+     },
+     "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+    },
     "modelo_negocio": {
+     "receita_servicos_pct": 18.0,
+     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+     "eficiencia_pct": 62.5,
+     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+     "despesas_pessoal_brl": -513813260.19,
+     "despesas_admin_brl": -569997094.23,
      "credito_ativo_pct": 58.8,
      "captacoes_ativo_pct": 83.4
     }
@@ -2813,6 +2874,21 @@
      "status": "cenário"
     },
     {
+     "frase": "Custo de captação estimado em 10.32% a.a. (|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
+     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
+     "status": "calculado"
+    },
+    {
+     "frase": "Receitas de serviços respondem por 18.0% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
+    },
+    {
+     "frase": "Índice de eficiência de 62.5% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
+    },
+    {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 60.17 (posição 36 do arquivo) — indicador operacional/reputacional, não de solvência.",
      "base": "BCB rdrweb (observado regulatório)",
      "status": "observado regulatório"
@@ -2841,7 +2917,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-10T15:18:54+00:00",
+    "atualizado_em": "2026-09-11T14:50:55+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [
@@ -4132,8 +4208,31 @@
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
     },
     "dimensoes_disponiveis": "6/6",
-    "captacao": null,
+    "captacao": {
+     "tipo": "DADO CALCULADO",
+     "custo_aa_pct": 15.43,
+     "meses_dre": 6,
+     "media_pontas": true,
+     "captacoes_brl": 47526237078.92,
+     "dep_total_brl": 29619644870.93,
+     "dep_captacoes_pct": 62.3,
+     "mix_depositos_pct": {
+      "vista": 0.0,
+      "poupanca": 0.0,
+      "prazo": 64.3,
+      "interfinanceiro": 35.7,
+      "outros": 0.0
+     },
+     "formula": "|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior",
+     "limitacoes": "Aproximação: estoque de pontas de trimestre, não saldo médio diário; mistura funding de varejo e mercado; a DRE do IF.data acumula por semestre."
+    },
     "modelo_negocio": {
+     "receita_servicos_pct": 31.0,
+     "receita_servicos_conceito": "serviços (pagamentos + tarifas + outras rendas) ÷ (resultado de intermediação financeira + serviços); DRE IF.data acumulada por semestre — proxy do peso de receitas de serviço, omitida quando a intermediação é negativa",
+     "eficiencia_pct": 76.8,
+     "eficiencia_conceito": "(|despesas de pessoal| + |despesas administrativas|) ÷ (resultado de intermediação financeira + rendas de serviços), DRE IF.data do mesmo período — quanto MENOR, mais eficiente; omitido quando a intermediação é negativa. Não inclui despesas tributárias nem outras operacionais.",
+     "despesas_pessoal_brl": -4434254.56,
+     "despesas_admin_brl": -370090349.26,
      "credito_ativo_pct": 82.2,
      "captacoes_ativo_pct": 78.2
     }
@@ -4217,6 +4316,21 @@
      "frase": "Em cenário severamente adverso, a Basileia ficaria entre 11.82% e 12.39% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
+    },
+    {
+     "frase": "Custo de captação estimado em 15.43% a.a. (|despesa de juros de captações acumulada em 6 meses (DRE IF.data)| × 12/6 ÷ média das captações totais nas pontas atual e anterior) — estimativa sobre estoques de ponta, não saldo médio diário.",
+     "base": "IF.data UI (passivo + DRE); cálculo do Observatório com fórmula declarada",
+     "status": "calculado"
+    },
+    {
+     "frase": "Receitas de serviços respondem por 31.0% da receita operacional (serviços ÷ intermediação + serviços, DRE IF.data).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
+    },
+    {
+     "frase": "Índice de eficiência de 76.8% (pessoal + administrativas ÷ receita operacional do mesmo período — quanto menor, mais eficiente).",
+     "base": "IF.data UI (DRE); cálculo do Observatório",
+     "status": "calculado"
     },
     {
      "frase": "No Ranking de Reclamações do BCB (2026-T2), índice 243.71 (posição 186 do arquivo) — indicador operacional/reputacional, não de solvência.",

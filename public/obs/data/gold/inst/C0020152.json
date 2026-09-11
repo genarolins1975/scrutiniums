@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-10T15:18:59+00:00",
+  "atualizado_em": "2026-09-11T14:51:01+00:00",
   "aviso_pares": null,
   "cnpj": "17.184.037/0001-10 (companhia listada/holding)",
   "participante_open_finance": true
@@ -153,7 +153,7 @@
   "confianca": "moderada",
   "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-10"
+  "calculado_em": "2026-09-11"
  },
  "kpis": [
   {
@@ -1658,7 +1658,7 @@
  },
  "openfinance": {
   "organisation": "BANCO MERCANTIL DO BRASIL",
-  "chamadas_semana": 169771.0,
+  "chamadas_semana": 157255.0,
   "share_pct": 0.0,
   "familias_api": 43,
   "papeis": [

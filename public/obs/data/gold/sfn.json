@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-10T15:19:16+00:00",
+ "gerado_em": "2026-09-11T14:51:30+00:00",
  "fontes": {
   "cadastro": {
    "nome": "BCB — Relação de instituições em funcionamento (Unicad, API Olinda)",
@@ -24,10 +24,10 @@
    "nivel": "A — lista oficial vigente, diária"
   }
  },
- "sintese": "Em 2026-09-09, 1742 sedes estavam autorizadas e em funcionamento: 166 bancos, 752 cooperativas de crédito, 195 instituições de pagamento e 148 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (40 fora do cadastro do BCB hoje, 7 ainda autorizadas). 23 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
+ "sintese": "Em 2026-09-11, 1742 sedes estavam autorizadas e em funcionamento: 166 bancos, 751 cooperativas de crédito, 195 instituições de pagamento e 149 fintechs de crédito (SCD e SEP). No IF.data, 1422 instituições e conglomerados entregaram o resumo de 1T 2026 (39 constavam da lista sem balanço entregue); nos quatro trimestres fechados, 75 códigos apareceram pela primeira vez na lista (59 instituições novas, 14 já existentes que passaram a reportar ou mudaram de código) e 50 deixaram a lista (40 fora do cadastro do BCB hoje, 7 ainda autorizadas). 23 instituições estão sob regime de resolução, 21 decretados nos últimos 12 meses.",
  "cadastro": {
   "disponivel": true,
-  "data": "2026-09-09",
+  "data": "2026-09-11",
   "total": 1742,
   "grupos": [
    {
@@ -73,11 +73,11 @@
    {
     "grupo": "Cooperativas de crédito",
     "cor": "#2f7d4f",
-    "n": 752,
+    "n": 751,
     "segmentos": [
      {
       "segmento": "Cooperativa de crédito (singular)",
-      "n": 720
+      "n": 719
      },
      {
       "segmento": "Cooperativa de crédito (central)",
@@ -92,7 +92,7 @@
       "n": 2
      }
     ],
-    "share": 43.17
+    "share": 43.11
    },
    {
     "grupo": "Instituições de pagamento",
@@ -109,18 +109,18 @@
    {
     "grupo": "Fintechs de crédito",
     "cor": "#6b46a3",
-    "n": 148,
+    "n": 149,
     "segmentos": [
      {
       "segmento": "Sociedade de Crédito Direto",
-      "n": 136
+      "n": 137
      },
      {
       "segmento": "Sociedade de Empréstimo entre Pessoas",
       "n": 12
      }
     ],
-    "share": 8.5
+    "share": 8.55
    },
    {
     "grupo": "Financeiras e crédito especializado",
@@ -207,11 +207,11 @@
    {
     "uf": "SP",
     "regiao": "Sudeste",
-    "n": 742,
+    "n": 743,
     "bancos": 116,
     "cooperativas": 152,
     "ips": 135,
-    "fintechs": 79
+    "fintechs": 80
    },
    {
     "uf": "MG",
@@ -297,9 +297,9 @@
    {
     "uf": "MT",
     "regiao": "Centro-Oeste",
-    "n": 22,
+    "n": 21,
     "bancos": 0,
-    "cooperativas": 18,
+    "cooperativas": 17,
     "ips": 0,
     "fintechs": 0
    },
@@ -451,10 +451,10 @@
   "regioes": [
    {
     "regiao": "Sudeste",
-    "n": 1081,
+    "n": 1082,
     "cooperativas": 365,
     "bancos": 138,
-    "share": 62.06
+    "share": 62.11
    },
    {
     "regiao": "Sul",
@@ -465,10 +465,10 @@
    },
    {
     "regiao": "Centro-Oeste",
-    "n": 104,
-    "cooperativas": 69,
+    "n": 103,
+    "cooperativas": 68,
     "bancos": 4,
-    "share": 5.97
+    "share": 5.91
    },
    {
     "regiao": "Nordeste",
@@ -486,32 +486,32 @@
    }
   ],
   "cooperativas": {
-   "n": 752,
+   "n": 751,
    "por_sistema": [
     {
      "sistema": "Sicoob",
      "n": 328,
-     "share": 43.62
+     "share": 43.68
     },
     {
      "sistema": "Independente ou outra central",
-     "n": 212,
-     "share": 28.19
+     "n": 199,
+     "share": 26.5
     },
     {
      "sistema": "Sicredi",
-     "n": 104,
-     "share": 13.83
+     "n": 103,
+     "share": 13.72
     },
     {
      "sistema": "Cresol",
      "n": 59,
-     "share": 7.85
+     "share": 7.86
     },
     {
      "sistema": "Unicred",
      "n": 25,
-     "share": 3.32
+     "share": 3.33
     },
     {
      "sistema": "CrediSIS",
@@ -519,31 +519,31 @@
      "share": 1.86
     },
     {
+     "sistema": "Ailos",
+     "n": 14,
+     "share": 1.86
+    },
+    {
      "sistema": "Uniprime",
      "n": 9,
      "share": 1.2
-    },
-    {
-     "sistema": "Ailos",
-     "n": 1,
-     "share": 0.13
     }
    ],
    "por_associacao": [
     {
      "criterio": "Livre Admissão",
-     "n": 407,
-     "share": 54.12
+     "n": 406,
+     "share": 54.06
     },
     {
      "criterio": "Empregados ou Servidores",
      "n": 226,
-     "share": 30.05
+     "share": 30.09
     },
     {
      "criterio": "Atividade Profissional",
      "n": 37,
-     "share": 4.92
+     "share": 4.93
     },
     {
      "criterio": "não informado",
@@ -568,7 +568,7 @@
     {
      "criterio": "Empresários",
      "n": 8,
-     "share": 1.06
+     "share": 1.07
     },
     {
      "criterio": "Natureza Associativa ou Cadeia de Negócios",
@@ -580,27 +580,27 @@
     {
      "categoria": "Clássica",
      "n": 506,
-     "share": 67.29
+     "share": 67.38
     },
     {
      "categoria": "Capital e Empréstimo",
      "n": 144,
-     "share": 19.15
+     "share": 19.17
     },
     {
      "categoria": "Plena",
-     "n": 70,
-     "share": 9.31
+     "n": 69,
+     "share": 9.19
     },
     {
      "categoria": "Não Informada",
      "n": 27,
-     "share": 3.59
+     "share": 3.6
     },
     {
      "categoria": "não informada",
      "n": 5,
-     "share": 0.66
+     "share": 0.67
     }
    ]
   },
@@ -613,6 +613,14 @@
    "desde": "2026-09-06",
    "entradas": [
     {
+     "cnpj8": "67093727",
+     "nome": "NINE - SOCIEDADE DE CRÉDITO DIRETO S.A.",
+     "grupo": "Fintechs de crédito",
+     "segmento": "Sociedade de Crédito Direto",
+     "uf": "SP",
+     "data": "2026-09-11"
+    },
+    {
      "cnpj8": "32246162",
      "nome": "AIBR INSTITUIÇÃO DE PAGAMENTO LTDA.",
      "grupo": "Instituições de pagamento",
@@ -622,6 +630,14 @@
     }
    ],
    "saidas": [
+    {
+     "cnpj8": "32983165",
+     "nome": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO VALE DO CERRADO - SICREDI VALE DO CERRADO",
+     "grupo": "Cooperativas de crédito",
+     "segmento": "Cooperativa de crédito (singular)",
+     "uf": "MT",
+     "data": "2026-09-09"
+    },
     {
      "cnpj8": "17352220",
      "nome": "SENSO CORRETORA DE CAMBIO E VALORES MOBILIARIOS S.A",
@@ -670,6 +686,17 @@
      "Cooperativas de crédito": 752,
      "Financeiras e crédito especializado": 125,
      "Fintechs de crédito": 148,
+     "Fomento e desenvolvimento": 20,
+     "Instituições de pagamento": 195,
+     "Mercado de capitais e câmbio": 206
+    },
+    {
+     "data": "2026-09-11",
+     "Bancos": 166,
+     "Consórcios": 130,
+     "Cooperativas de crédito": 751,
+     "Financeiras e crédito especializado": 125,
+     "Fintechs de crédito": 149,
      "Fomento e desenvolvimento": 20,
      "Instituições de pagamento": 195,
      "Mercado de capitais e câmbio": 206
@@ -942,8 +969,8 @@
      "N1": 103,
      "B2": 34,
      "B3C": 37,
-     "B4": 4,
-     "N4": 6
+     "N4": 6,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -963,8 +990,8 @@
      "N1": 103,
      "B2": 34,
      "B3C": 37,
-     "B4": 4,
-     "N4": 6
+     "N4": 6,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -984,8 +1011,8 @@
      "N1": 102,
      "B2": 34,
      "B3C": 37,
-     "B4": 4,
-     "N4": 7
+     "N4": 7,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1005,8 +1032,8 @@
      "N1": 101,
      "B2": 34,
      "B3C": 37,
-     "B4": 4,
-     "N4": 8
+     "N4": 8,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1026,8 +1053,8 @@
      "N1": 102,
      "B2": 34,
      "B3C": 37,
-     "B4": 4,
-     "N4": 10
+     "N4": 10,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1047,8 +1074,8 @@
      "N1": 104,
      "B2": 34,
      "B3C": 36,
-     "B4": 4,
-     "N4": 11
+     "N4": 11,
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1067,9 +1094,9 @@
      "B1": 105,
      "N1": 106,
      "B2": 35,
+     "N4": 13,
      "B3C": 36,
-     "B4": 4,
-     "N4": 13
+     "B4": 4
     },
     "provisorio": false
    },
@@ -1088,9 +1115,9 @@
      "B1": 105,
      "N1": 107,
      "B2": 35,
+     "N4": 18,
      "B3C": 36,
      "B4": 4,
-     "N4": 18,
      "?": 1
     },
     "provisorio": false
@@ -1110,9 +1137,9 @@
      "B1": 104,
      "N1": 108,
      "B2": 34,
+     "N4": 18,
      "B3C": 36,
      "B4": 4,
-     "N4": 18,
      "?": 1
     },
     "provisorio": false
@@ -1132,9 +1159,9 @@
      "B1": 105,
      "N1": 109,
      "B2": 34,
+     "N4": 20,
      "B3C": 36,
      "B4": 4,
-     "N4": 20,
      "?": 1
     },
     "provisorio": false
@@ -1154,8 +1181,8 @@
      "B1": 105,
      "N1": 113,
      "B2": 34,
-     "B3C": 36,
      "N4": 22,
+     "B3C": 36,
      "B4": 4,
      "?": 1
     },
@@ -1176,8 +1203,8 @@
      "B1": 103,
      "N1": 123,
      "B2": 35,
-     "B3C": 36,
      "N4": 24,
+     "B3C": 36,
      "B4": 4,
      "?": 1
     },
@@ -1198,8 +1225,8 @@
      "B1": 103,
      "N1": 131,
      "B2": 34,
-     "B3C": 36,
      "N4": 26,
+     "B3C": 36,
      "B4": 4,
      "?": 1
     },
@@ -1220,8 +1247,8 @@
      "B1": 103,
      "N1": 134,
      "B2": 35,
-     "B3C": 36,
      "N4": 28,
+     "B3C": 36,
      "B4": 4,
      "?": 1
     },
@@ -1242,8 +1269,8 @@
      "B1": 101,
      "N1": 141,
      "B2": 35,
-     "B3C": 36,
      "N4": 31,
+     "B3C": 36,
      "B4": 4,
      "?": 1
     },
@@ -1264,8 +1291,8 @@
      "B1": 103,
      "N1": 145,
      "B2": 35,
-     "B3C": 35,
      "N4": 33,
+     "B3C": 35,
      "B4": 4,
      "?": 1
     },
@@ -1285,9 +1312,9 @@
      "N2": 130,
      "B1": 102,
      "N1": 158,
+     "N4": 37,
      "B2": 35,
      "B3C": 35,
-     "N4": 37,
      "B4": 4,
      "?": 1
     },
@@ -1305,9 +1332,9 @@
     "por_tcb": {
      "B3S": 815,
      "N2": 128,
-     "N4": 44,
      "B1": 104,
      "N1": 163,
+     "N4": 44,
      "B2": 35,
      "B3C": 35,
      "B4": 4,
@@ -1327,9 +1354,9 @@
     "por_tcb": {
      "B3S": 812,
      "N2": 127,
-     "N4": 47,
      "B1": 103,
      "N1": 165,
+     "N4": 47,
      "B2": 34,
      "B3C": 35,
      "B4": 4,
@@ -1349,8 +1376,8 @@
     "por_tcb": {
      "B3S": 803,
      "N2": 128,
-     "N4": 55,
      "B1": 102,
+     "N4": 55,
      "N1": 170,
      "B2": 33,
      "B3C": 35,
@@ -1371,8 +1398,8 @@
     "por_tcb": {
      "B3S": 796,
      "N2": 127,
-     "N4": 72,
      "B1": 103,
+     "N4": 72,
      "N1": 184,
      "B2": 33,
      "B3C": 33,
@@ -1393,8 +1420,8 @@
     "por_tcb": {
      "B3S": 788,
      "N2": 128,
-     "N4": 83,
      "B1": 102,
+     "N4": 83,
      "N1": 190,
      "B2": 33,
      "B3C": 32,
@@ -1415,8 +1442,8 @@
     "por_tcb": {
      "B3S": 784,
      "N2": 129,
-     "N4": 87,
      "B1": 102,
+     "N4": 87,
      "N1": 195,
      "B2": 33,
      "B3C": 32,
@@ -1437,8 +1464,8 @@
     "por_tcb": {
      "B3S": 777,
      "N2": 133,
-     "N4": 96,
      "B1": 101,
+     "N4": 96,
      "N1": 202,
      "B2": 33,
      "B3C": 32,
@@ -1459,8 +1486,8 @@
     "por_tcb": {
      "B3S": 768,
      "N2": 131,
-     "N4": 103,
      "B1": 99,
+     "N4": 103,
      "N1": 212,
      "B2": 32,
      "B3C": 32,
@@ -1480,9 +1507,9 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 767,
-     "N4": 114,
      "N2": 131,
      "B1": 100,
+     "N4": 114,
      "N1": 214,
      "B2": 32,
      "B3C": 32,
@@ -1502,9 +1529,9 @@
     "ausencias": 2,
     "por_tcb": {
      "B3S": 760,
-     "N4": 125,
      "N2": 128,
      "B1": 97,
+     "N4": 125,
      "N1": 218,
      "B2": 32,
      "B3C": 31,
@@ -1524,9 +1551,9 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 757,
-     "N4": 139,
      "N2": 130,
      "B1": 97,
+     "N4": 139,
      "N1": 223,
      "B2": 31,
      "B3C": 30,
@@ -1546,9 +1573,9 @@
     "ausencias": 7,
     "por_tcb": {
      "B3S": 753,
-     "N4": 144,
      "N2": 133,
      "B1": 98,
+     "N4": 144,
      "N1": 224,
      "B2": 32,
      "B3C": 27,
@@ -1567,10 +1594,10 @@
     "ausencias": 3,
     "por_tcb": {
      "B3S": 752,
-     "N4": 152,
+     "N1": 222,
      "N2": 128,
      "B1": 97,
-     "N1": 222,
+     "N4": 152,
      "B2": 32,
      "B3C": 29,
      "B4": 4
@@ -1588,10 +1615,10 @@
     "ausencias": 1,
     "por_tcb": {
      "B3S": 748,
-     "N4": 157,
+     "N1": 224,
      "N2": 128,
      "B1": 97,
-     "N1": 224,
+     "N4": 157,
      "B2": 31,
      "B3C": 29,
      "B4": 4
@@ -1609,10 +1636,10 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 747,
-     "N4": 161,
+     "N1": 227,
      "N2": 127,
      "B1": 96,
-     "N1": 227,
+     "N4": 161,
      "B2": 33,
      "B3C": 29,
      "B4": 4
@@ -1630,10 +1657,10 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 734,
+     "N1": 233,
      "N4": 181,
      "N2": 123,
      "B1": 93,
-     "N1": 233,
      "B2": 33,
      "B3C": 29,
      "B4": 4
@@ -1651,9 +1678,9 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 719,
+     "N1": 237,
      "N4": 182,
      "N2": 124,
-     "N1": 237,
      "B1": 94,
      "B2": 33,
      "B3C": 29,
@@ -1672,9 +1699,9 @@
     "ausencias": 0,
     "por_tcb": {
      "B3S": 710,
+     "N1": 234,
      "N4": 183,
      "N2": 119,
-     "N1": 234,
      "B1": 94,
      "B2": 33,
      "B3C": 29,
@@ -1735,9 +1762,9 @@
   ],
   "var_4t_por_tcb": {
    "B3S": -29,
+   "N1": 13,
    "N4": 25,
    "N2": -4,
-   "N1": 13,
    "B1": -3,
    "B2": 2,
    "B3C": 0,
@@ -2881,22 +2908,6 @@
     "leitura": "instituição nova: início de atividade em 08/2025"
    },
    {
-    "cod": "C0052657",
-    "nome": "PLENO",
-    "tcb": "B1",
-    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
-    "uf": "SP",
-    "sr": "S4",
-    "anomes": "202509",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "196708",
-    "cnpj8": "61024352",
-    "entregou": false,
-    "classe": "antiga",
-    "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
-   },
-   {
     "cod": "C0084820",
     "nome": "MERCADO PAGO IP - PRUDENCIAL",
     "tcb": "N1",
@@ -2927,6 +2938,22 @@
     "entregou": false,
     "classe": "troca_codigo",
     "leitura": "mesma instituição: antes reportava como OXY COMPANHIA HIPOTECÁRIA (18282093)"
+   },
+   {
+    "cod": "C0052657",
+    "nome": "PLENO",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S4",
+    "anomes": "202509",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "196708",
+    "cnpj8": "61024352",
+    "entregou": false,
+    "classe": "antiga",
+    "leitura": "já existia (atividade desde 08/1967): passou a reportar ou ganhou novo código"
    },
    {
     "cod": "32343119",
@@ -3633,22 +3660,6 @@
     "leitura": "instituição nova: início de atividade em 10/2024"
    },
    {
-    "cod": "04891850",
-    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
-    "tcb": "B3C",
-    "tcb_nome": "Cooperativa central ou confederação",
-    "uf": "DF",
-    "sr": null,
-    "anomes": "202412",
-    "ativo": null,
-    "provisorio": false,
-    "inicio_atividade": "202410",
-    "cnpj8": "04891850",
-    "entregou": false,
-    "classe": "nova",
-    "leitura": "instituição nova: início de atividade em 10/2024"
-   },
-   {
     "cod": "03795072",
     "nome": "CONFEDERACAO DAS COOPERATIVAS DO SICREDI - CONFEDERACAO SICREDI",
     "tcb": "B3C",
@@ -3660,6 +3671,22 @@
     "provisorio": false,
     "inicio_atividade": "202410",
     "cnpj8": "03795072",
+    "entregou": false,
+    "classe": "nova",
+    "leitura": "instituição nova: início de atividade em 10/2024"
+   },
+   {
+    "cod": "04891850",
+    "nome": "CONFEDERACAO NACIONAL DAS COOPERATIVAS DO SICOOB LTDA",
+    "tcb": "B3C",
+    "tcb_nome": "Cooperativa central ou confederação",
+    "uf": "DF",
+    "sr": null,
+    "anomes": "202412",
+    "ativo": null,
+    "provisorio": false,
+    "inicio_atividade": "202410",
+    "cnpj8": "04891850",
     "entregou": false,
     "classe": "nova",
     "leitura": "instituição nova: início de atividade em 10/2024"
@@ -5540,17 +5567,6 @@
     "ativo": null
    },
    {
-    "cod": "33884941",
-    "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
-    "tcb": "B1",
-    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
-    "uf": "SP",
-    "sr": "S3",
-    "anomes": "202512",
-    "ausente_desde": "201806",
-    "ativo": null
-   },
-   {
     "cod": "51834986",
     "nome": "MH SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "tcb": "N1",
@@ -5559,6 +5575,17 @@
     "sr": "S5",
     "anomes": "202512",
     "ausente_desde": "202412",
+    "ativo": null
+   },
+   {
+    "cod": "33884941",
+    "nome": "BANCO MASTER MÚLTIPLO S.A. - SOB RAET",
+    "tcb": "B1",
+    "tcb_nome": "Banco comercial ou múltiplo com carteira comercial",
+    "uf": "SP",
+    "sr": "S3",
+    "anomes": "202512",
+    "ausente_desde": "201806",
     "ativo": null
    },
    {
@@ -5672,17 +5699,6 @@
     "ativo": 3882177.47
    },
    {
-    "cod": "23757411",
-    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
-    "tcb": "N4",
-    "tcb_nome": "Instituição de pagamento",
-    "uf": "MG",
-    "sr": null,
-    "anomes": "202412",
-    "ausente_desde": "202306",
-    "ativo": null
-   },
-   {
     "cod": "46009412",
     "nome": "FOR YOU SOCIEDADE DE CRÉDITO DIRETO S.A.",
     "tcb": "N1",
@@ -5691,6 +5707,17 @@
     "sr": "S5",
     "anomes": "202412",
     "ausente_desde": "202406",
+    "ativo": null
+   },
+   {
+    "cod": "23757411",
+    "nome": "RCCL INSTITUIÇÃO DE PAGAMENTO S.A.",
+    "tcb": "N4",
+    "tcb_nome": "Instituição de pagamento",
+    "uf": "MG",
+    "sr": null,
+    "anomes": "202412",
+    "ausente_desde": "202306",
     "ativo": null
    },
    {
@@ -7775,7 +7802,7 @@
     "uf": "SP"
    }
   ],
-  "gerado_em": "2026-09-10T15:18:54+00:00"
+  "gerado_em": "2026-09-11T14:50:54+00:00"
  },
  "catalogo": [
   {

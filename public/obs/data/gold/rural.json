@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-10T15:19:13+00:00",
+ "gerado_em": "2026-09-11T14:51:25+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -38,8 +38,8 @@
   "pronaf_share": 20.77,
   "controlada_share": 59.6,
   "equalizada_share": 24.01,
-  "mulheres_share_qtd": 36.06,
-  "mulheres_share_valor": 19.79,
+  "mulheres_share_qtd": 37.53,
+  "mulheres_share_valor": 19.94,
   "cooperativas_share": 28.33,
   "acima_1mi_share_valor": 54.6,
   "ate_20mil_share_qtd": 60.57,
@@ -1968,15 +1968,15 @@
   },
   {
    "mes": "2026-08",
-   "custeio": 18657872379.78,
-   "investimento": 5009995076.5,
-   "comercializacao": 2553446328.3,
-   "industrializacao": 2063806400.0,
-   "qtd": 159863,
-   "agricola": 18508871548.52,
-   "pecuaria": 9776248636.06,
+   "custeio": 19572167602.99,
+   "investimento": 5677607413.77,
+   "comercializacao": 2666465907.32,
+   "industrializacao": 2106081400.0,
+   "qtd": 176729,
+   "agricola": 19622090045.23,
+   "pecuaria": 10400232278.85,
    "parcial": true,
-   "valor": 28285120184.58
+   "valor": 30022322324.08
   }
  ],
  "safras": [
@@ -2136,12 +2136,12 @@
   },
   {
    "safra": "2026/27",
-   "valor": 49278209907.22,
-   "qtd": 334988,
-   "custeio": 33503884810.27,
-   "investimento": 7785183278.8,
-   "comercializacao": 4184936896.03,
-   "industrializacao": 3804204922.12,
+   "valor": 51015412046.72,
+   "qtd": 351854,
+   "custeio": 34418180033.48,
+   "investimento": 8452795616.07,
+   "comercializacao": 4297956475.05,
+   "industrializacao": 3846479922.12,
    "meses": 2,
    "incompleta": true
   }
@@ -2388,10 +2388,10 @@
    },
    {
     "safra": "2026/27",
-    "PRONAF": 14612590764.46,
-    "PRONAMP": 11765715013.01,
-    "Demais programas": 2368475729.98,
-    "Sem programa": 20531428399.77,
+    "PRONAF": 15132579390.77,
+    "PRONAMP": 12165406299.92,
+    "Demais programas": 2571700251.41,
+    "Sem programa": 21145726104.62,
     "incompleta": true
    }
   ],
@@ -2841,15 +2841,15 @@
    },
    {
     "safra": "2026/27",
-    "BNDES e Finame": 2122058490.65,
-    "Outras fontes": 70668972.49,
-    "Funcafé": 1094918571.42,
-    "Fundos constitucionais (FNE, FNO, FCO)": 4361684270.23,
-    "LCA": 17867423557.19,
-    "Exigibilidades (MCR 6.2)": 18223482947.28,
-    "Poupança rural": 4849976917.31,
-    "Recursos livres": 667618942.1,
-    "Tesouro Nacional": 20377238.55,
+    "BNDES e Finame": 2372363297.58,
+    "Outras fontes": 73534240.77,
+    "Funcafé": 1169131340.42,
+    "Fundos constitucionais (FNE, FNO, FCO)": 4609756350.07,
+    "LCA": 18666974278.0,
+    "Exigibilidades (MCR 6.2)": 18269045061.78,
+    "Poupança rural": 5127070710.46,
+    "Recursos livres": 707107029.09,
+    "Tesouro Nacional": 20429738.55,
     "incompleta": true
    }
   ],
@@ -2987,192 +2987,204 @@
    "fim": "2026-07"
   },
   "universo": "pessoas físicas com sexo informado no Sicor (a MDCR não abre pessoas jurídicas por gênero)",
-  "cobertura_valor_pct": 32.5,
-  "mulheres_share_valor": 19.79,
-  "mulheres_share_qtd": 36.06,
-  "ticket_mulheres": 52724.62,
-  "ticket_homens": 120496.56,
+  "cobertura_valor_pct": 72.12,
+  "mulheres_share_valor": 19.94,
+  "mulheres_share_qtd": 37.53,
+  "ticket_mulheres": 52200.45,
+  "ticket_homens": 125929.19,
   "por_uf": [
    {
-    "uf": "PE",
+    "uf": "PI",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 32.11,
-    "mulheres_share_qtd": 48.01
+    "mulheres_share_valor": 28.51,
+    "mulheres_share_qtd": 51.39
    },
    {
     "uf": "PB",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 40.69,
-    "mulheres_share_qtd": 47.55
+    "mulheres_share_valor": 40.23,
+    "mulheres_share_qtd": 50.23
    },
    {
-    "uf": "AP",
-    "regiao": "Norte",
-    "mulheres_share_valor": 45.0,
-    "mulheres_share_qtd": 46.9
+    "uf": "PE",
+    "regiao": "Nordeste",
+    "mulheres_share_valor": 31.27,
+    "mulheres_share_qtd": 50.23
    },
    {
     "uf": "RN",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 42.6,
-    "mulheres_share_qtd": 46.86
-   },
-   {
-    "uf": "PI",
-    "regiao": "Nordeste",
-    "mulheres_share_valor": 26.63,
-    "mulheres_share_qtd": 46.66
-   },
-   {
-    "uf": "AL",
-    "regiao": "Nordeste",
-    "mulheres_share_valor": 32.74,
-    "mulheres_share_qtd": 46.36
+    "mulheres_share_valor": 41.58,
+    "mulheres_share_qtd": 49.52
    },
    {
     "uf": "BA",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 23.3,
-    "mulheres_share_qtd": 46.23
+    "mulheres_share_valor": 24.03,
+    "mulheres_share_qtd": 49.26
+   },
+   {
+    "uf": "AL",
+    "regiao": "Nordeste",
+    "mulheres_share_valor": 32.88,
+    "mulheres_share_qtd": 49.04
    },
    {
     "uf": "CE",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 37.37,
-    "mulheres_share_qtd": 45.49
+    "mulheres_share_valor": 36.25,
+    "mulheres_share_qtd": 48.99
    },
    {
     "uf": "MA",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 23.53,
-    "mulheres_share_qtd": 45.15
+    "mulheres_share_valor": 24.55,
+    "mulheres_share_qtd": 48.89
+   },
+   {
+    "uf": "AP",
+    "regiao": "Norte",
+    "mulheres_share_valor": 50.15,
+    "mulheres_share_qtd": 48.47
    },
    {
     "uf": "SE",
     "regiao": "Nordeste",
-    "mulheres_share_valor": 28.5,
-    "mulheres_share_qtd": 43.29
+    "mulheres_share_valor": 27.24,
+    "mulheres_share_qtd": 46.63
    },
    {
     "uf": "AM",
     "regiao": "Norte",
-    "mulheres_share_valor": 28.99,
-    "mulheres_share_qtd": 41.84
+    "mulheres_share_valor": 26.56,
+    "mulheres_share_qtd": 40.88
    },
    {
     "uf": "AC",
     "regiao": "Norte",
-    "mulheres_share_valor": 27.54,
-    "mulheres_share_qtd": 39.9
-   },
-   {
-    "uf": "PA",
-    "regiao": "Norte",
-    "mulheres_share_valor": 18.9,
-    "mulheres_share_qtd": 38.29
+    "mulheres_share_valor": 26.89,
+    "mulheres_share_qtd": 39.69
    },
    {
     "uf": "RR",
     "regiao": "Norte",
-    "mulheres_share_valor": 21.24,
-    "mulheres_share_qtd": 35.31
+    "mulheres_share_valor": 21.34,
+    "mulheres_share_qtd": 38.02
+   },
+   {
+    "uf": "PA",
+    "regiao": "Norte",
+    "mulheres_share_valor": 17.97,
+    "mulheres_share_qtd": 37.62
    },
    {
     "uf": "DF",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 12.7,
-    "mulheres_share_qtd": 30.58
-   },
-   {
-    "uf": "TO",
-    "regiao": "Norte",
-    "mulheres_share_valor": 14.4,
-    "mulheres_share_qtd": 30.22
+    "mulheres_share_valor": 17.27,
+    "mulheres_share_qtd": 36.88
    },
    {
     "uf": "MS",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 19.72,
-    "mulheres_share_qtd": 28.06
+    "mulheres_share_valor": 21.54,
+    "mulheres_share_qtd": 30.01
    },
    {
     "uf": "MG",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 16.12,
-    "mulheres_share_qtd": 27.35
+    "mulheres_share_valor": 16.7,
+    "mulheres_share_qtd": 29.37
    },
    {
-    "uf": "RO",
+    "uf": "TO",
     "regiao": "Norte",
-    "mulheres_share_valor": 14.47,
-    "mulheres_share_qtd": 23.84
+    "mulheres_share_valor": 15.1,
+    "mulheres_share_qtd": 28.94
    },
    {
     "uf": "GO",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 20.3,
-    "mulheres_share_qtd": 23.7
+    "mulheres_share_valor": 19.84,
+    "mulheres_share_qtd": 23.65
+   },
+   {
+    "uf": "RO",
+    "regiao": "Norte",
+    "mulheres_share_valor": 15.96,
+    "mulheres_share_qtd": 22.71
    },
    {
     "uf": "MT",
     "regiao": "Centro-Oeste",
-    "mulheres_share_valor": 15.69,
-    "mulheres_share_qtd": 21.83
+    "mulheres_share_valor": 16.92,
+    "mulheres_share_qtd": 21.93
    },
    {
     "uf": "SP",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 16.96,
-    "mulheres_share_qtd": 19.53
+    "mulheres_share_valor": 18.99,
+    "mulheres_share_qtd": 19.07
    },
    {
     "uf": "PR",
     "regiao": "Sul",
-    "mulheres_share_valor": 22.02,
-    "mulheres_share_qtd": 19.47
+    "mulheres_share_valor": 21.64,
+    "mulheres_share_qtd": 19.04
    },
    {
     "uf": "RS",
     "regiao": "Sul",
-    "mulheres_share_valor": 19.93,
-    "mulheres_share_qtd": 19.2
-   },
-   {
-    "uf": "SC",
-    "regiao": "Sul",
-    "mulheres_share_valor": 19.42,
-    "mulheres_share_qtd": 18.39
+    "mulheres_share_valor": 19.78,
+    "mulheres_share_qtd": 18.33
    },
    {
     "uf": "ES",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 16.32,
-    "mulheres_share_qtd": 17.94
+    "mulheres_share_valor": 15.69,
+    "mulheres_share_qtd": 18.02
+   },
+   {
+    "uf": "SC",
+    "regiao": "Sul",
+    "mulheres_share_valor": 18.67,
+    "mulheres_share_qtd": 17.19
    },
    {
     "uf": "RJ",
     "regiao": "Sudeste",
-    "mulheres_share_valor": 12.09,
-    "mulheres_share_qtd": 11.85
+    "mulheres_share_valor": 11.66,
+    "mulheres_share_qtd": 11.68
    }
   ],
   "serie_safra": [
    {
+    "safra": "2022/23",
+    "mulheres_share_valor": 16.82,
+    "mulheres_share_qtd": 32.07,
+    "incompleta": false
+   },
+   {
+    "safra": "2023/24",
+    "mulheres_share_valor": 18.22,
+    "mulheres_share_qtd": 33.95,
+    "incompleta": false
+   },
+   {
     "safra": "2024/25",
-    "mulheres_share_valor": 19.33,
-    "mulheres_share_qtd": 38.78,
+    "mulheres_share_valor": 18.68,
+    "mulheres_share_qtd": 34.36,
     "incompleta": false
    },
    {
     "safra": "2025/26",
-    "mulheres_share_valor": 19.74,
-    "mulheres_share_qtd": 36.54,
+    "mulheres_share_valor": 19.9,
+    "mulheres_share_qtd": 37.65,
     "incompleta": false
    },
    {
     "safra": "2026/27",
-    "mulheres_share_valor": 19.77,
-    "mulheres_share_qtd": 29.98,
+    "mulheres_share_valor": 19.76,
+    "mulheres_share_qtd": 30.31,
     "incompleta": true
    }
   ]

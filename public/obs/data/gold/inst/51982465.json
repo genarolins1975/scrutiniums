@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-10T15:18:59+00:00",
+  "atualizado_em": "2026-09-11T14:51:02+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 51.982.465",
   "participante_open_finance": true
@@ -715,7 +715,7 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "INFINIA BRASIL INSTITUICAO DE PAGAMENTO LTDA",
-  "chamadas_semana": 569272.0,
+  "chamadas_semana": 551450.0,
   "share_pct": 0.0,
   "familias_api": 6,
   "papeis": [

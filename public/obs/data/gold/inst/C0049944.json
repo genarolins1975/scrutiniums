@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-10T15:18:59+00:00",
+  "atualizado_em": "2026-09-11T14:51:01+00:00",
   "aviso_pares": null,
   "cnpj": "30.306.294/0001-45 (companhia listada/holding)",
   "participante_open_finance": true
@@ -128,7 +128,7 @@
   "confianca": "moderada",
   "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-10"
+  "calculado_em": "2026-09-11"
  },
  "kpis": [
   {
@@ -1577,8 +1577,8 @@
  },
  "openfinance": {
   "organisation": "BANCO BTG PACTUAL",
-  "chamadas_semana": 1814687791.0,
-  "share_pct": 2.9,
+  "chamadas_semana": 2571677366.0,
+  "share_pct": 3.0,
   "familias_api": 43,
   "papeis": [
    "CONTA",
