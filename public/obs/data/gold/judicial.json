@@ -1,7 +1,7 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-11T14:51:09+00:00",
- "coletado_em": "2026-09-11T14:40:22+00:00",
+ "gerado_em": "2026-09-12T14:02:37+00:00",
+ "coletado_em": "2026-09-12T13:51:55+00:00",
  "aviso_permanente": "O volume de processos não constitui, isoladamente, evidência de irregularidade ou de pior qualidade institucional. Os resultados são influenciados pela escala, perfil de clientes, presença geográfica, modelo de negócio, organização societária, acesso à Justiça, práticas locais de litigância e cobertura das bases.",
  "limitacao_central": "Nenhuma fonte pública nacional atribui processos judiciais a uma instituição financeira identificada. O DataJud público não publica as partes — verificamos campo a campo: o documento traz classe, assuntos, movimentos, órgão julgador e número do processo, e nenhum identificador de parte. Por isso esta página tem duas camadas que nunca se cruzam.",
  "camada_nacional": {
@@ -134,12 +134,12 @@
     "tribunal": "TJBA",
     "ramo": "civel",
     "uf": "BA",
-    "casos_unicos": 2690354,
-    "registros": 3859637,
+    "casos_unicos": 2710880,
+    "registros": 3882941,
     "registros_indice": 10000,
     "por_categoria": {
      "indenizatorias": 1403110,
-     "revisionais": 1019523,
+     "revisionais": 1040049,
      "garantias_cobranca": 267721
     }
    },
@@ -227,16 +227,16 @@
     "registros": 13046643,
     "casos_unicos": 10839825,
     "razao_reg_caso": 1.204,
-    "part": 41.02
+    "part": 40.99
    },
    {
     "ramo": "civel",
     "categoria": "revisionais",
     "rotulo": "Revisionais de contrato bancário",
-    "registros": 12322967,
-    "casos_unicos": 10529674,
+    "registros": 12346271,
+    "casos_unicos": 10550200,
     "razao_reg_caso": 1.17,
-    "part": 39.85
+    "part": 39.89
    },
    {
     "ramo": "trabalhista",
@@ -254,7 +254,7 @@
     "registros": 5381633,
     "casos_unicos": 5055567,
     "razao_reg_caso": 1.064,
-    "part": 19.13
+    "part": 19.12
    },
    {
     "ramo": "trabalhista",
@@ -406,19 +406,19 @@
    },
    {
     "ramo": "civel",
+    "categoria": "revisionais",
+    "codigo": 4960,
+    "nome": "Cédula de Crédito Bancário",
+    "registros": 1560424,
+    "casos_unicos": 1458873
+   },
+   {
+    "ramo": "civel",
     "categoria": "garantias_cobranca",
     "codigo": 4970,
     "nome": "Cheque",
     "registros": 1531201,
     "casos_unicos": 1442135
-   },
-   {
-    "ramo": "civel",
-    "categoria": "revisionais",
-    "codigo": 4960,
-    "nome": "Cédula de Crédito Bancário",
-    "registros": 1537120,
-    "casos_unicos": 1438347
    },
    {
     "ramo": "trabalhista",
@@ -568,7 +568,7 @@
    "fgts",
    "adicionais"
   ],
-  "total_civel_casos": 26425066,
+  "total_civel_casos": 26445592,
   "total_trabalhista_casos": 27532115,
   "nota_temporal": "Contagens sobre o acervo acumulado do índice, sem recorte temporal: o campo de ajuizamento mistura datas ISO-8601 com carimbos de 14 dígitos migrados de sistemas legados, que o índice interpreta como epoch-millis e joga para os anos 2609–2612. Séries anuais exigiriam reinterpretar as datas documento a documento — lacuna declarada.",
   "nota_polo": "O DataJud não informa polo ativo nem passivo. As categorias de garantias e cobrança (alienação fiduciária, arrendamento, cheque) são tipicamente promovidas PELA instituição e por isso ficam separadas das revisionais e indenizatórias, que são tipicamente contra ela."

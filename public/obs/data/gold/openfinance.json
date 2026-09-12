@@ -15,7 +15,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:44+00:00"
+    "last_collected_at": "2026-09-12T12:46:34+00:00"
    },
    "obs": [
     {
@@ -100,7 +100,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0
@@ -118,7 +118,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/consents",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:44+00:00"
+    "last_collected_at": "2026-09-12T12:46:34+00:00"
    },
    "obs": [
     {
@@ -203,7 +203,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0
@@ -221,7 +221,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:46+00:00"
+    "last_collected_at": "2026-09-12T12:46:36+00:00"
    },
    "obs": [
     {
@@ -306,7 +306,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0
@@ -324,7 +324,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:52+00:00"
+    "last_collected_at": "2026-09-12T12:46:43+00:00"
    },
    "obs": [
     {
@@ -413,7 +413,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 7,
+    "dias_sem_atualizar": 8,
     "ultima_ref": "2026-09-04",
     "n_obs": 19,
     "n_revisoes": 0
@@ -431,7 +431,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:55+00:00"
+    "last_collected_at": "2026-09-12T12:46:46+00:00"
    },
    "obs": [
     {
@@ -516,7 +516,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0
@@ -534,7 +534,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:51+00:00"
+    "last_collected_at": "2026-09-12T12:46:41+00:00"
    },
    "obs": [
     {
@@ -619,7 +619,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0
@@ -637,7 +637,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:53+00:00"
+    "last_collected_at": "2026-09-12T12:46:44+00:00"
    },
    "obs": [
     {
@@ -726,7 +726,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 7,
+    "dias_sem_atualizar": 8,
     "ultima_ref": "2026-09-04",
     "n_obs": 19,
     "n_revisoes": 0
@@ -744,7 +744,7 @@
     "url": "https://dashboard.openfinancebrasil.org.br/api/api-requests",
     "segment": "of",
     "category": "openfinance",
-    "last_collected_at": "2026-09-11T13:22:56+00:00"
+    "last_collected_at": "2026-09-12T12:46:47+00:00"
    },
    "obs": [
     {
@@ -829,7 +829,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 14,
+    "dias_sem_atualizar": 15,
     "ultima_ref": "2026-08-28",
     "n_obs": 18,
     "n_revisoes": 0

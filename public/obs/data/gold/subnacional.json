@@ -14,13 +14,13 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-09-11T14:51:29+00:00",
+ "gerado_em": "2026-09-12T14:02:59+00:00",
  "coleta": {
-  "linhas": 26550,
+  "linhas": 26555,
   "paginas": 6,
   "mb": 13.7,
-  "data_status_max": "2026-09-10",
-  "coletado_em": "2026-09-11T13:42:49+00:00"
+  "data_status_max": "2026-09-11",
+  "coletado_em": "2026-09-12T13:00:45+00:00"
  },
  "kpis": {
   "mes": "2026-08",
@@ -40,8 +40,8 @@
   "moeda_estrangeira_12m_n": 45,
   "taxa_deferimento_12m_pct": 89.0,
   "concluidos_12m_n": 1382,
-  "em_tramitacao_n": 275,
-  "em_tramitacao_valor": 18432958826.16,
+  "em_tramitacao_n": 274,
+  "em_tramitacao_valor": 18446324173.67,
   "em_tramitacao_desde": "2023-09",
   "renegociacao_uniao_12m_n": 0,
   "renegociacao_uniao_12m_valor": 0,
@@ -284,15 +284,15 @@
   },
   {
    "ano": "2026",
-   "deferidos_n": 894,
-   "deferidos_valor": 56967692639.11,
-   "municipios_valor": 23777599564.14,
+   "deferidos_n": 899,
+   "deferidos_valor": 56998345425.28,
+   "municipios_valor": 23808252350.31,
    "estados_valor": 33190093074.97,
    "garantia_uniao_valor": 46285967160.75,
    "externas_n": 37,
    "pgfn_valor": 46285967160.75,
    "renegociacao_uniao_valor": 0,
-   "arquivados_n": 56,
+   "arquivados_n": 57,
    "parcial": true
   }
  ],
@@ -551,9 +551,9 @@
   },
   {
    "mes": "2026-09",
-   "n": 26,
-   "valor": 4498322678.87,
-   "municipios_valor": 582575032.36,
+   "n": 31,
+   "valor": 4528975465.04,
+   "municipios_valor": 613227818.53,
    "parcial": true
   }
  ],
@@ -922,21 +922,21 @@
    "nome": "Deferido: limites verificados, operação liberada",
    "n": 953,
    "valor": 12668318693.95,
-   "share_n_pct": 63.28
+   "share_n_pct": 63.45
   },
   {
    "id": "pgfn",
    "nome": "Manifestação técnica favorável, encaminhado à PGFN (garantia da União)",
    "n": 277,
    "valor": 67856441480.08,
-   "share_n_pct": 18.39
+   "share_n_pct": 18.44
   },
   {
    "id": "arquivado",
    "nome": "Arquivado, indeferido ou cancelado",
    "n": 152,
    "valor": 7873258076.66,
-   "share_n_pct": 10.09
+   "share_n_pct": 10.12
   },
   {
    "id": "regularizado",
@@ -948,9 +948,9 @@
   {
    "id": "tramitacao",
    "nome": "Em análise ou em retificação",
-   "n": 121,
-   "valor": 8763947523.25,
-   "share_n_pct": 8.03
+   "n": 117,
+   "valor": 8704565876.449999,
+   "share_n_pct": 7.79
   }
  ],
  "moedas_12m": [

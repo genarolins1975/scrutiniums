@@ -4766,6 +4766,42 @@
   "anomes_ifdata_razao": "202606",
   "serie": [
    {
+    "mes": "2025-06",
+    "valor": 790848002577.3201,
+    "n_emissores": 189,
+    "lf": 620931404031.7001,
+    "cdb": 145636061377.41,
+    "ligado_share": 17.87,
+    "n_classes": 3295,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-07",
+    "valor": 807456086474.6593,
+    "n_emissores": 189,
+    "lf": 630025485085.4792,
+    "cdb": 151362065618.35004,
+    "ligado_share": 17.69,
+    "n_classes": 3236,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-08",
+    "valor": 830831784256.6395,
+    "n_emissores": 190,
+    "lf": 644030928569.1295,
+    "cdb": 159317825018.11002,
+    "ligado_share": 18.6,
+    "n_classes": 3289,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
     "mes": "2025-09",
     "valor": 846551294972.7599,
     "n_emissores": 180,

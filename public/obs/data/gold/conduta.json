@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-11T14:51:27+00:00",
+ "gerado_em": "2026-09-12T14:02:55+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1295 processos sancionadores em 1ª instância, com 1408 decisões por apenado: 1318 multas somando R$ 75.8 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 64 processos sancionadores em 12 meses (192 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1280 processos sancionadores em 1ª instância, com 1393 decisões por apenado: 1303 multas somando R$ 75.4 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (190 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-09-03",
@@ -35,52 +35,52 @@
    "apenados_distintos": 11385
   },
   "janela_12m": {
-   "ini": "2025-09-11",
-   "decisoes": 1408,
-   "processos": 1295,
-   "multas_n": 1318,
-   "multas_valor": 75756700.0,
+   "ini": "2025-09-12",
+   "decisoes": 1393,
+   "processos": 1280,
+   "multas_n": 1303,
+   "multas_valor": 75419200.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 13,
    "sem_penalidade": 72,
    "recursos": 150,
-   "pj": 422,
-   "pf": 986
+   "pj": 416,
+   "pf": 977
   },
   "janela_12m_anterior": {
-   "decisoes": 927,
-   "processos": 733,
-   "multas_n": 767,
-   "multas_valor": 25158563.9,
+   "decisoes": 937,
+   "processos": 743,
+   "multas_n": 777,
+   "multas_valor": 25371063.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 26,
    "sem_penalidade": 133,
    "recursos": 133,
-   "pj": 288,
-   "pf": 639
+   "pj": 292,
+   "pf": 645
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1318,
-    "share": 93.61
+    "n": 1303,
+    "share": 93.54
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 72,
-    "share": 5.11
+    "share": 5.17
    },
    {
     "pena": "INABILITAÇÃO",
     "n": 13,
-    "share": 0.92
+    "share": 0.93
    },
    {
     "pena": "DEVOLVER SUBVENÇÃO",
     "n": 3,
-    "share": 0.21
+    "share": 0.22
    },
    {
     "pena": "PROIBIÇÃO DE ATIV/OP",
@@ -91,58 +91,58 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 855,
-    "share": 60.72
+    "n": 841,
+    "share": 60.37
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 167,
-    "share": 11.86
+    "n": 166,
+    "share": 11.92
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 122,
-    "share": 8.66
+    "n": 121,
+    "share": 8.69
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 92,
-    "share": 6.53
+    "share": 6.6
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 64,
-    "share": 4.55
+    "share": 4.59
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
     "n": 43,
-    "share": 3.05
+    "share": 3.09
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 24,
-    "share": 1.7
+    "share": 1.72
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 22,
-    "share": 1.56
+    "share": 1.58
    },
    {
     "situacao": "PENALIDADE EXTINTA",
     "n": 9,
-    "share": 0.64
+    "share": 0.65
    },
    {
     "situacao": "PENALIDADE ESTÁ EM CUMPRIMENTO",
     "n": 4,
-    "share": 0.28
+    "share": 0.29
    },
    {
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
     "n": 3,
-    "share": 0.21
+    "share": 0.22
    },
    {
     "situacao": "PENALIDADE ENCAMINHADA PARA A STN",
@@ -153,18 +153,23 @@
     "situacao": "EM PRAZO DE RECURSO",
     "n": 1,
     "share": 0.07
+   },
+   {
+    "situacao": "PENALIDADE ESTÁ SUSPENSA",
+    "n": 1,
+    "share": 0.07
    }
   ],
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11879,
-    "share": 87.55
+    "n": 11881,
+    "share": 87.56
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 869,
-    "share": 6.4
+    "n": 867,
+    "share": 6.39
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -173,7 +178,7 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 170,
+    "n": 169,
     "share": 1.25
    },
    {
@@ -183,7 +188,7 @@
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
-    "n": 89,
+    "n": 90,
     "share": 0.66
    },
    {
@@ -941,9 +946,9 @@
    "finalizados": 323
   },
   "abertos_12m": {
-   "ini": "2025-09-11",
-   "processos": 64,
-   "acusados": 192
+   "ini": "2025-09-12",
+   "processos": 63,
+   "acusados": 190
   },
   "fases": [
    {

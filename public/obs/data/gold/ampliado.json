@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-11T14:51:27+00:00",
+ "gerado_em": "2026-09-12T14:02:55+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -10409,7 +10409,7 @@
    "n_lideres": 37
   },
   "coleta": {
-   "em": "2026-09-11T13:35:26+00:00",
+   "em": "2026-09-12T12:56:29+00:00",
    "ofertas_regime_anterior": 45702,
    "ofertas_res160": 14435
   },
