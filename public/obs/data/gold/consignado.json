@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-12T14:02:50+00:00",
+ "gerado_em": "2026-09-13T15:27:19+00:00",
  "ano": 2025,
  "fator_ipca": 1.1905,
  "populacao_fonte": "IBGE Censo 2022 (pirâmide etária por município; a página trabalha por faixa etária, que só o Censo traz)",
@@ -5915,7 +5915,7 @@
    },
    {
     "d": "2026-01",
-    "saldo": 160.38,
+    "saldo": 160.39,
     "op": 13.28,
     "inad": 2.22
    },

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-12T14:02:21+00:00",
+ "gerado_em": "2026-09-13T15:26:56+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 341,
-  "total_editais": 1131,
+  "total_editais": 1135,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1160,6 +1160,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE TRES LAGOAS",
+    "municipio": "Três Lagoas",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-10",
+    "url": "https://pncp.gov.br/compras/03184041000173/2026/99"
+   },
+   {
     "ente": "MUNICIPIO DE TAIO",
     "municipio": "Taió",
     "uf": "SC",
@@ -1176,6 +1185,33 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-10",
     "url": "https://pncp.gov.br/compras/18449140000107/2026/118"
+   },
+   {
+    "ente": "MUNICIPIO DE JABOATAO DOS GUARARAPES",
+    "municipio": "Jaboatão dos Guararapes",
+    "uf": "PE",
+    "modalidade": "Inexigibilidade",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/10377679000196/2026/221"
+   },
+   {
+    "ente": "MUNICIPIO DE VERDEJANTE",
+    "municipio": "Verdejante",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/11348570000193/2026/61"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO JOSE DOS CAMPOS",
+    "municipio": "São José dos Campos",
+    "uf": "SP",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/46643466000106/2026/967"
    },
    {
     "ente": "MUNICIPIO DE CURRAL DE DENTRO",
@@ -1230,42 +1266,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-04",
     "url": "https://pncp.gov.br/compras/10559279000100/2026/69"
-   },
-   {
-    "ente": "MUNICIPIO DE CORREGO FUNDO",
-    "municipio": "Córrego Fundo",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/01614862000177/2026/68"
-   },
-   {
-    "ente": "MUNICIPIO DE CONCEICAO DAS ALAGOAS",
-    "municipio": "Conceição das Alagoas",
-    "uf": "MG",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/18428854000139/2026/80"
-   },
-   {
-    "ente": "UBERLANDIA CAMARA MUNICIPAL",
-    "municipio": "Uberlândia",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/20720165000145/2026/40"
-   },
-   {
-    "ente": "MUNICIPIO DE COREAU",
-    "municipio": "Coreaú",
-    "uf": "CE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-03",
-    "url": "https://pncp.gov.br/compras/07598618000144/2026/96"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

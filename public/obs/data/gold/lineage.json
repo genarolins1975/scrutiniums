@@ -2,1403 +2,1403 @@
  "linhagem_recente": [
   {
    "gold_object": "market_fin:tri:2026",
-   "bronze_file": "data/bronze/cvm/20260912/itr_2026_extrato.ce49e1021465.json",
+   "bronze_file": "data/bronze/cvm/20260913/itr_2026_extrato.ce49e1021465.json",
    "sha256": "ce49e1021465d1d10ae146474100cb74482fb3c983cf923ad4f18619123f7044",
    "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-09-12T14:02:13+00:00"
-  },
-  {
-   "gold_object": "market_fin:anual:2025",
-   "bronze_file": "data/bronze/cvm/20260912/dfp_2025_extrato.9f78a34b0e36.json",
-   "sha256": "9f78a34b0e36ddddef5dee2b3e013e8254cf7ac55ea87e6c25aa313ac1690bfd",
-   "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-09-12T14:02:07+00:00"
+   "created_at": "2026-09-13T15:26:50+00:00"
   },
   {
    "gold_object": "market_fin:anual:2024",
-   "bronze_file": "data/bronze/cvm/20260912/dfp_2024_extrato.12b9b60ac6d3.json",
+   "bronze_file": "data/bronze/cvm/20260913/dfp_2024_extrato.12b9b60ac6d3.json",
    "sha256": "12b9b60ac6d36728b7dfeba7ee8bfc8927721d2d60e4dd9beffa6c8485c41dd8",
    "transform": "CVM DFP/ITR consolidado — lucro (DS_CONTA exato) e PL; escala MIL aplicada",
-   "created_at": "2026-09-12T14:02:02+00:00"
+   "created_at": "2026-09-13T15:26:38+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjto.b833a5028e08.json",
-   "sha256": "b833a5028e089e715c4a8dfa4952c1a0192962e9c5003df2cf532d7884e1081f",
-   "transform": "CNJ DataJud TJTO: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:51:55+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjgo.356a266ffea1.json",
+   "sha256": "356a266ffea11565ab6a282ca927505b10e19d4bed7615aa9c8f2915074f743b",
+   "transform": "CNJ DataJud TJGO: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:16:33+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjsp.0a7a2cfe48a3.json",
-   "sha256": "0a7a2cfe48a3edb97a592b4c16e0525005bd5ce6a320bd2bdd57c902eac1dd44",
-   "transform": "CNJ DataJud TJSP: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:50:57+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjes.42b4f7f88d93.json",
+   "sha256": "42b4f7f88d93e00b902f96f22b7959f16e2c3f6dbaeff588bdfa4dad48741e88",
+   "transform": "CNJ DataJud TJES: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:15:46+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjse.099497ab66d4.json",
-   "sha256": "099497ab66d49de12174bb7a1d89988970b3e8c5f7e2e70f4c1900675d5759b7",
-   "transform": "CNJ DataJud TJSE: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:49:20+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjdft.d3d85e86f11e.json",
+   "sha256": "d3d85e86f11e9b8920dddbafe0cd6c96ab33ac6398afb9d6e6fe73365cfc83da",
+   "transform": "CNJ DataJud TJDFT: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:14:54+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjsc.0588b1da368c.json",
-   "sha256": "0588b1da368cbfc827c32b672010510bfa56c77eebfa070495c254a71c5a43de",
-   "transform": "CNJ DataJud TJSC: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:48:41+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjce.533d50eba387.json",
+   "sha256": "533d50eba387c8e5d592e9573c5b209f9487d33cf3d97e1f0408a994e2e8b2a5",
+   "transform": "CNJ DataJud TJCE: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:14:16+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjrs.79edeceb4a20.json",
-   "sha256": "79edeceb4a200a82e6946389ddc8d13e9919a041d1883137bc538c749ba64179",
-   "transform": "CNJ DataJud TJRS: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:47:44+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjba.6350f8405841.json",
+   "sha256": "6350f8405841be08867f9ba30fb3fc10ccf1bd1d7858aaa34582e2f0fd725e91",
+   "transform": "CNJ DataJud TJBA: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:13:35+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjrr.cdd560345149.json",
-   "sha256": "cdd5603451493a07077a2e6f1c0743c9ef6d32b21c1621d19897e5a3c1bcfa5e",
-   "transform": "CNJ DataJud TJRR: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:46:49+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjap.72e8450e2c51.json",
+   "sha256": "72e8450e2c51f70a3ca4c6f61375c7f3cf50717f611f25bd6e4b6b272dc3d4d4",
+   "transform": "CNJ DataJud TJAP: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:12:27+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjro.0f55f4b240dd.json",
-   "sha256": "0f55f4b240ddbb8325e5b4bddb4595ef185e077febe22eb97122659fe052b2a0",
-   "transform": "CNJ DataJud TJRO: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:46:03+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjam.f79979508098.json",
+   "sha256": "f799795080981f019868f680b81a8b90eded5d9b11b1c06946432b1f9647b1c1",
+   "transform": "CNJ DataJud TJAM: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:11:43+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjrn.2e5c3f60d18a.json",
-   "sha256": "2e5c3f60d18a720a59e025fae2cd4234a41b64be718ee48eb17e14d6be4a1961",
-   "transform": "CNJ DataJud TJRN: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:45:21+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjal.2d6851a73e30.json",
+   "sha256": "2d6851a73e30dc875202712386f128f2b9c75f32a3a1b4b88fedb56eab854601",
+   "transform": "CNJ DataJud TJAL: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:11:15+00:00"
   },
   {
    "gold_object": "cobranca.json",
-   "bronze_file": "data/bronze/datajud/20260912/cobranca_tjrj.f7e03d36ab65.json",
-   "sha256": "f7e03d36ab65b1d4f669c922470f5571edc3e0d1c93d81217cec0cccba00c599",
-   "transform": "CNJ DataJud TJRJ: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
-   "created_at": "2026-09-12T13:44:08+00:00"
-  },
-  {
-   "gold_object": "series:recuperacao_judicial_tjpr",
-   "bronze_file": "data/bronze/datajud/20260912/recuperacao_judicial_tjpr.6fcdf43dc1be.json",
-   "sha256": "6fcdf43dc1be64ce373519298dd8dc786b583441df4cddefb470b208cc6d84f8",
-   "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:43:07+00:00"
+   "bronze_file": "data/bronze/datajud/20260913/cobranca_tjac.8b4fc8e23830.json",
+   "sha256": "8b4fc8e238309c76efe07b10aa6b7c8483680cfe10521f0776d5eed92d865765",
+   "transform": "CNJ DataJud TJAC: cobrança judicial por classe e mês (agregação em dois espaços de data), recortes todos e bancário",
+   "created_at": "2026-09-13T15:10:29+00:00"
   },
   {
    "gold_object": "series:falencia_tjrs",
-   "bronze_file": "data/bronze/datajud/20260912/falencia_tjrs.8caf3382f668.json",
+   "bronze_file": "data/bronze/datajud/20260913/falencia_tjrs.8caf3382f668.json",
    "sha256": "8caf3382f668b4d7f905dadd6229d071717bf9c19a47c0a687c5ae067852d75a",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:40:09+00:00"
+   "created_at": "2026-09-13T15:02:30+00:00"
   },
   {
    "gold_object": "series:recuperacao_judicial_tjrs",
-   "bronze_file": "data/bronze/datajud/20260912/recuperacao_judicial_tjrs.b09027e918ba.json",
+   "bronze_file": "data/bronze/datajud/20260913/recuperacao_judicial_tjrs.b09027e918ba.json",
    "sha256": "b09027e918ba2c22ff1ee39d5de64fbf4be46a5f069be118eed6342aa3a60031",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:39:27+00:00"
+   "created_at": "2026-09-13T15:01:14+00:00"
   },
   {
    "gold_object": "series:falencia_tjmg",
-   "bronze_file": "data/bronze/datajud/20260912/falencia_tjmg.f38c3d6dd170.json",
+   "bronze_file": "data/bronze/datajud/20260913/falencia_tjmg.f38c3d6dd170.json",
    "sha256": "f38c3d6dd170b695e9bdba6db70043a016400d7c29d6e151772ead96fc8faa49",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:39:07+00:00"
+   "created_at": "2026-09-13T15:00:42+00:00"
   },
   {
    "gold_object": "series:recuperacao_judicial_tjmg",
-   "bronze_file": "data/bronze/datajud/20260912/recuperacao_judicial_tjmg.c26909c0c129.json",
+   "bronze_file": "data/bronze/datajud/20260913/recuperacao_judicial_tjmg.c26909c0c129.json",
    "sha256": "c26909c0c129b6fca6b35c129197c634f3b886a3029c9e89a8ed3e97dfd76c8c",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:37:28+00:00"
+   "created_at": "2026-09-13T14:58:39+00:00"
   },
   {
    "gold_object": "series:falencia_tjrj",
-   "bronze_file": "data/bronze/datajud/20260912/falencia_tjrj.802dc7ad32b1.json",
+   "bronze_file": "data/bronze/datajud/20260913/falencia_tjrj.802dc7ad32b1.json",
    "sha256": "802dc7ad32b1900c4b9db605b2fb4114644138d1dfcd70acc991ae2e7be05acc",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:37:11+00:00"
+   "created_at": "2026-09-13T14:57:40+00:00"
   },
   {
    "gold_object": "series:recuperacao_judicial_tjrj",
-   "bronze_file": "data/bronze/datajud/20260912/recuperacao_judicial_tjrj.e7cb852eac88.json",
+   "bronze_file": "data/bronze/datajud/20260913/recuperacao_judicial_tjrj.e7cb852eac88.json",
    "sha256": "e7cb852eac88be5339add8240d6eb927549cf6c6b554a2a419b75531d6016ad6",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:34:29+00:00"
+   "created_at": "2026-09-13T14:56:14+00:00"
   },
   {
    "gold_object": "series:falencia_tjsp",
-   "bronze_file": "data/bronze/datajud/20260912/falencia_tjsp.9abb7eb5062b.json",
+   "bronze_file": "data/bronze/datajud/20260913/falencia_tjsp.9abb7eb5062b.json",
    "sha256": "9abb7eb5062b2ef6e42d65cf2790594a89faece6a4c8da7661b9dac1387a18a4",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:32:32+00:00"
+   "created_at": "2026-09-13T14:54:39+00:00"
   },
   {
    "gold_object": "series:recuperacao_judicial_tjsp",
-   "bronze_file": "data/bronze/datajud/20260912/recuperacao_judicial_tjsp.160418a52668.json",
+   "bronze_file": "data/bronze/datajud/20260913/recuperacao_judicial_tjsp.160418a52668.json",
    "sha256": "160418a52668ddbdb8336cf920b19d9a1ed8ffd49b799f901470f2d225896707",
    "transform": "DataJud _search paginado; dedupe numeroProcesso; parse local de datas; contagem mensal",
-   "created_at": "2026-09-12T13:28:37+00:00"
+   "created_at": "2026-09-13T14:52:23+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
-   "sha256": "c895ddd3b71df0313ef9e9b5a078a00f81735897d436d169af559dcd4fa9c8d6",
-   "transform": "sicor_genero:2022-01",
-   "created_at": "2026-09-12T13:27:08+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "75f1e3628cc457f2e76c1ee79e7f1efda0a4caf467d441ba106538c9726dc5e6",
+   "transform": "sicor_genero:2018-01",
+   "created_at": "2026-09-13T14:50:51+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
-   "sha256": "78dcb0da35a6e51660f7d54d88a6d59e9ebf85d17b89aa8b1691f55ebb01c744",
-   "transform": "sicor_genero:2022-02",
-   "created_at": "2026-09-12T13:26:13+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "2a6de4ad4a84b568dd015810416caffefd9e042d9dee4eec44c0b7f156a639ab",
+   "transform": "sicor_faixa:2018-01",
+   "created_at": "2026-09-13T14:50:15+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
-   "sha256": "3eae63b6d7b3a39e8f9caeb38053a0f64427a594e5bdc17daecb32db0433982e",
-   "transform": "sicor_genero:2022-03",
-   "created_at": "2026-09-12T13:25:13+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "4a1fc1c2ac2c8b9991ce3a9c499ba5289960d44a4a21afcbcd236abaf7e78d2a",
+   "transform": "sicor_genero:2018-02",
+   "created_at": "2026-09-13T14:50:11+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
-   "sha256": "8e946d9c1af1f0237f75449561645292a8226db7e967b3c63d73e0798f2f8821",
-   "transform": "sicor_genero:2022-04",
-   "created_at": "2026-09-12T13:23:59+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "1e8d5ff012572ea8c0679f0b628bcb14d3a9e708ca3f95dd7635adcf8dd6e015",
+   "transform": "sicor_faixa:2018-02",
+   "created_at": "2026-09-13T14:49:45+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
-   "sha256": "e439cebcb0182f7a2840e3db3ef9c76c3d2690b9e0737fea20dd24aef4b97297",
-   "transform": "sicor_genero:2022-05",
-   "created_at": "2026-09-12T13:22:13+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "b013f27592c42157b4597cbcfe776b09383e87bb1575a5bf8a79138b2eb084ee",
+   "transform": "sicor_genero:2018-03",
+   "created_at": "2026-09-13T14:49:39+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
-   "sha256": "fd48af64ff1d352090fd2e0f63235c3f51b083aaefa2eda3bfe55251215f7f66",
-   "transform": "sicor_genero:2022-06",
-   "created_at": "2026-09-12T13:21:08+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "8d7f382d390977fbd59624dea15e7a40eb2d6255c7b0a672d20f6fcc685ab0e4",
+   "transform": "sicor_faixa:2018-03",
+   "created_at": "2026-09-13T14:49:19+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
-   "sha256": "d11bb1f7ad4e5dc71947ef7c4202db502101f781c83043f32f99ca5170d2b82c",
-   "transform": "sicor_genero:2022-07",
-   "created_at": "2026-09-12T13:20:02+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "9ce8644a57b4dc15b69720bb43032dd46cafbd01ac3fab4c82487ae1797335eb",
+   "transform": "sicor_genero:2018-04",
+   "created_at": "2026-09-13T14:49:15+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
-   "sha256": "06635c4765578a1d52dca0ee7b36dd7f898566202a9ff6b5f5bffeb981e91d88",
-   "transform": "sicor_genero:2022-08",
-   "created_at": "2026-09-12T13:18:43+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "fb1f01532fb5ff051ddd6fbca929ead431d89ac8bdfeda6064cc2e1d3fd61365",
+   "transform": "sicor_faixa:2018-04",
+   "created_at": "2026-09-13T14:48:56+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
-   "sha256": "2679090321cd7938dd403c91357c08e76857c3194ccd0c01391deb1033d65e50",
-   "transform": "sicor_genero:2022-09",
-   "created_at": "2026-09-12T13:17:30+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "72bfb42da153444af35bdaa8db17b7415fdb2e105e4909b54193eb50c2763cc5",
+   "transform": "sicor_genero:2018-05",
+   "created_at": "2026-09-13T14:48:51+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
-   "sha256": "03692c7754a4ae7a0323d5d94abe2e341c10b9e840db785e83f4a316f9633570",
-   "transform": "sicor_genero:2022-10",
-   "created_at": "2026-09-12T13:16:43+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "0806858a97aa60f7b43b06a20056298e09bf9effdef208e064c665745bb7cd1a",
+   "transform": "sicor_faixa:2018-05",
+   "created_at": "2026-09-13T14:48:31+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
-   "sha256": "870ab820d66ae5772fdf5fe03124034e1e1a2e14b2f2f33ba469f535f5f920ed",
-   "transform": "sicor_genero:2022-11",
-   "created_at": "2026-09-12T13:15:44+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "1276cd33070dc0e9c50c85d9c4d30ccf9579d40c6c2704af31484060f74b2eaf",
+   "transform": "sicor_genero:2018-06",
+   "created_at": "2026-09-13T14:48:26+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272022%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
-   "sha256": "aaf7aa9f10036136b553c9dd44a73e6a5dfad95ec7d79231e33e8b203c9d8dd1",
-   "transform": "sicor_genero:2022-12",
-   "created_at": "2026-09-12T13:13:55+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "c59d20ea55eacbd66bbfc4dcacf565be4bc766289ec9da838d19ca46060c19ab",
+   "transform": "sicor_faixa:2018-06",
+   "created_at": "2026-09-13T14:48:06+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
-   "sha256": "313088a9e3b64fb582e2a859313240034f69e976120ca8a65c79c362778b9928",
-   "transform": "sicor_genero:2023-01",
-   "created_at": "2026-09-12T13:12:50+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "70447d606d19996bf6122f92824cd215d3caae543f456260b74551d218e4527d",
+   "transform": "sicor_genero:2018-07",
+   "created_at": "2026-09-13T14:48:01+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
-   "sha256": "cccf0b60500c316cab4f7cb11f8d2e3891f278c604c5f8ea055c27275494e203",
-   "transform": "sicor_genero:2023-02",
-   "created_at": "2026-09-12T13:11:24+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "573afb65430b9689daee7edb52e9a0530442fe9cdeed15787d66aadc8c6c1365",
+   "transform": "sicor_faixa:2018-07",
+   "created_at": "2026-09-13T14:47:41+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
-   "sha256": "ae21ff415031bf7b4da01c86cbddacba174b7132960bf07d876d95bc787a9912",
-   "transform": "sicor_genero:2023-03",
-   "created_at": "2026-09-12T13:09:43+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "ddbf1ab49fff40163936fcc4069f3b1859ae5dabfa30bcac4d4a85dc642b029a",
+   "transform": "sicor_genero:2018-08",
+   "created_at": "2026-09-13T14:47:37+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
-   "sha256": "553c9657c354ec600cc947e139d8257c66c85b2547a6b3143b16a80ed0333d42",
-   "transform": "sicor_genero:2023-04",
-   "created_at": "2026-09-12T13:07:53+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "0ed59336cbc9c731aeee4323b92611f98ed05b98c1573e916c697164823a39e8",
+   "transform": "sicor_faixa:2018-08",
+   "created_at": "2026-09-13T14:47:18+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
-   "sha256": "6f9b2103cca29e23ced4a36497b042841dab150544685e6d926fa1ab493cf751",
-   "transform": "sicor_genero:2023-07",
-   "created_at": "2026-09-12T13:06:33+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "60033bbcc83a4ad5df77b02503a8e4e0f0ca082b37236c8593dc1486a200defd",
+   "transform": "sicor_genero:2018-09",
+   "created_at": "2026-09-13T14:47:13+00:00"
   },
   {
    "gold_object": "rural.json",
-   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272023%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
-   "sha256": "da95955bc5895e71a056a6fa038ef881518827398e124fea1d2560bcfea346d2",
-   "transform": "sicor_genero:2023-08",
-   "created_at": "2026-09-12T13:05:51+00:00"
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "b0e517a78a25478e06dda14895fbc0962ad32d2d64d7faad4d4c0592c5014386",
+   "transform": "sicor_faixa:2018-09",
+   "created_at": "2026-09-13T14:46:54+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "557d457b8828b3c2c04b5de6e010c54884c002eb953f0731e399274d8394c1a1",
+   "transform": "sicor_genero:2018-10",
+   "created_at": "2026-09-13T14:46:50+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "3b0000a49b800beb8e5df701d348961a5dae6f021305ce6680025188479d0db3",
+   "transform": "sicor_faixa:2018-10",
+   "created_at": "2026-09-13T14:46:30+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "7ddb454428550c558637acd7fd67e5da90eb34f5a48389917e12c5dec5b62b35",
+   "transform": "sicor_genero:2018-11",
+   "created_at": "2026-09-13T14:46:27+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "6f9a3f47eaef5d0f23c0c5622b281bfafd28b706935c8c27d5d2171c0c4d7647",
+   "transform": "sicor_faixa:2018-11",
+   "created_at": "2026-09-13T14:46:07+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "f12cc9efb29b01fe2c3ee8d993977a8a0c8585171af1b3d50545ae69192cba15",
+   "transform": "sicor_genero:2018-12",
+   "created_at": "2026-09-13T14:46:02+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272018%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "df45e8999427b827074b96a7c38bee5e90c93920a3ff9eab2e67f838afc5b29f",
+   "transform": "sicor_faixa:2018-12",
+   "created_at": "2026-09-13T14:45:32+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "acbbeb5138183138aa833bde63287ef135103134772b3564e037b72eb68313b0",
+   "transform": "sicor_genero:2019-01",
+   "created_at": "2026-09-13T14:45:29+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "a0cb274e88565be0a7563f39c10d1958d111336e3fad896dd7970717aba9d101",
+   "transform": "sicor_faixa:2019-01",
+   "created_at": "2026-09-13T14:45:08+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "39c13e6edd602ec9963467f935df6633332124d6d26330f6e504a5f3e0ff91da",
+   "transform": "sicor_genero:2019-02",
+   "created_at": "2026-09-13T14:45:01+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "b5aeb9705f654e61b95016900fff321d0f10484e523472a2e4bcb6c2d075c794",
+   "transform": "sicor_faixa:2019-02",
+   "created_at": "2026-09-13T14:44:39+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "1754b193f16fcb59c4ec14444bfaa0a7c7adf8de3a7a374cbb5012fb798501f5",
+   "transform": "sicor_genero:2019-03",
+   "created_at": "2026-09-13T14:44:35+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "129db4c91946c83d8e03052d3eaf1605ec5ebcc2e489d419b0ee7049be94ad49",
+   "transform": "sicor_faixa:2019-03",
+   "created_at": "2026-09-13T14:44:02+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "668367f807a7df0f58b88f066752b75fc744a9b3f153941cf96de58661d4aeb9",
+   "transform": "sicor_genero:2019-04",
+   "created_at": "2026-09-13T14:43:54+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "4e87935de4ef58a1fc64dee1e3ecac3b9cb0df6b43f59d081468d9de6c20696e",
+   "transform": "sicor_faixa:2019-04",
+   "created_at": "2026-09-13T14:43:20+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "6af32214a55246bf29e233533e7c74d72e52d0e1d00e37cc05f2c3cafa489786",
+   "transform": "sicor_genero:2019-05",
+   "created_at": "2026-09-13T14:43:14+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "b22a8423b82ba670adeb754f68c5c00aec4e818b9e9bdc43369e4c3884dfb084",
+   "transform": "sicor_faixa:2019-05",
+   "created_at": "2026-09-13T14:42:37+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "957a6bc9ffaa4b00bc054b33c1d6e58ad3355aba5d0fef7eca43b412739d8f71",
+   "transform": "sicor_genero:2019-06",
+   "created_at": "2026-09-13T14:42:32+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "2290319dc39128fe058460b068a08229f07d7455ff85a0a4da1d97442a19d053",
+   "transform": "sicor_faixa:2019-06",
+   "created_at": "2026-09-13T14:42:12+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "61bbd6601ea6709d2f8991d8ffb8e033798f5cc5461d48d26227de9369d912b0",
+   "transform": "sicor_genero:2019-07",
+   "created_at": "2026-09-13T14:42:07+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "d9cdea6b61d6e81c664e9913fe1fca5ad3551065b2733253778019f41a0b2368",
+   "transform": "sicor_faixa:2019-07",
+   "created_at": "2026-09-13T14:41:44+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "bcf46388436fe8f7807c6065c0c3bfbfadfaac17c111e3d3da6f53e04044051f",
+   "transform": "sicor_genero:2019-08",
+   "created_at": "2026-09-13T14:41:39+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "762dd0c2227cccd693a486e71d8ab39f97f749b497250eef7e8143b83bc1f84e",
+   "transform": "sicor_faixa:2019-08",
+   "created_at": "2026-09-13T14:41:17+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "b7eca340a1abf21935b274add7df2a66cc38897e489a8d25d0952747dc5520fc",
+   "transform": "sicor_genero:2019-09",
+   "created_at": "2026-09-13T14:41:13+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "91d90ccf2480c33b002297f32b4ae8c0ff941cee4ed21cf7f1af36cd275fd49f",
+   "transform": "sicor_faixa:2019-09",
+   "created_at": "2026-09-13T14:40:50+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "629bbf3a4acb3320b87cc1e6f4ed34017be0ceced3a08058235855981e2ca34e",
+   "transform": "sicor_genero:2019-10",
+   "created_at": "2026-09-13T14:40:46+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "3c67e07163239b8c4b8a379380e675159486a9689df3fa9228f1df51d14d215d",
+   "transform": "sicor_faixa:2019-10",
+   "created_at": "2026-09-13T14:40:25+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "f912dcf9e4eb40f6f939b7ab13fbfe1c0c81e0733ea1f2732a2994aeedcc85b2",
+   "transform": "sicor_genero:2019-11",
+   "created_at": "2026-09-13T14:40:20+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "d2d728f2f85f96bd1292d7072020c3ae61903f4e79b3815c0661cf8e15a205ef",
+   "transform": "sicor_faixa:2019-11",
+   "created_at": "2026-09-13T14:39:51+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "5dec4d486c8e01353c298ae240df7085bb0802136e361cababd7871dbd800d64",
+   "transform": "sicor_genero:2019-12",
+   "created_at": "2026-09-13T14:39:45+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272019%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "4a98505e0f2d0ae959fd0b4b7b5e4caca56c9a66bc93cc1f5656c8fcbf6c2061",
+   "transform": "sicor_faixa:2019-12",
+   "created_at": "2026-09-13T14:39:17+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "dab57a73d972c95ced071ffd6a212e33669eaa6a16fa6691663e0ca5d5b97685",
+   "transform": "sicor_genero:2020-01",
+   "created_at": "2026-09-13T14:39:13+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "c2e914449aefa15b53559ac7124e4964bda394ffed43c36022d7b667344a3616",
+   "transform": "sicor_faixa:2020-01",
+   "created_at": "2026-09-13T14:38:48+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "a7892efc9c1f9b5b33131e8cb5c4e0d62de21a390d500671c13696e1dd053d1a",
+   "transform": "sicor_fonte:2020-01",
+   "created_at": "2026-09-13T14:38:44+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "7907d0483b109fb94544e8065ed35dbc77d3d54824c30e76c0383a52e6921a3d",
+   "transform": "sicor_genero:2020-02",
+   "created_at": "2026-09-13T14:38:29+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "e2ec4f4305a6395dae550ab982efa58aff8b7c19b15c3372cac5b29fca64256b",
+   "transform": "sicor_faixa:2020-02",
+   "created_at": "2026-09-13T14:38:07+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "b3d447965834becb93141b06e743fc28b39a443688b00179b8b9e9ce66c828bd",
+   "transform": "sicor_fonte:2020-02",
+   "created_at": "2026-09-13T14:38:03+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "bbd4dfc608c33276767abeb14afb25329da779796a718becc61686b912f8da02",
+   "transform": "sicor_genero:2020-03",
+   "created_at": "2026-09-13T14:37:43+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "55a2f45dae91d8481b41d34f171e99bbdd52c8a7243fa00083571380ad60ad96",
+   "transform": "sicor_faixa:2020-03",
+   "created_at": "2026-09-13T14:37:20+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "502eb168c4528bf2b9beca607f38a0e48ed79e959f568930c4da5eb6f48cda52",
+   "transform": "sicor_fonte:2020-03",
+   "created_at": "2026-09-13T14:37:14+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "ed8c4b8c749131f276741ee2e2a4e081de9cbe7bcf56f8f7035895732c04c4ed",
+   "transform": "sicor_genero:2020-04",
+   "created_at": "2026-09-13T14:37:00+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "4f323c8ca2a7c9a497a683dd0b57e8c38ce3b5a0b11e714435138f7d378d8ca1",
+   "transform": "sicor_faixa:2020-04",
+   "created_at": "2026-09-13T14:36:38+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "d14b020985f70e452dc1b7c5d9a9ffb351a5ab79f427f32d26b2773f24a55164",
+   "transform": "sicor_genero:2020-05",
+   "created_at": "2026-09-13T14:36:32+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "74213608ea3ded08bd2431014d583520017d7d8937e7fafaa64738de57434c7b",
+   "transform": "sicor_faixa:2020-05",
+   "created_at": "2026-09-13T14:36:09+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "6a3114ce086dd4bbe5923907053edaaed2810a23a54442153b0359041e092f4e",
+   "transform": "sicor_genero:2020-06",
+   "created_at": "2026-09-13T14:36:02+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "2a4796ffb9fa095abaa81844ad075ee0598bbbf737a133d7a2d058803b9a74ec",
+   "transform": "sicor_faixa:2020-06",
+   "created_at": "2026-09-13T14:35:36+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "ed4c6eb27e5b2e78075e16e6d288d81de47d3ff781db5b75a5b1d0ee6ffb2f31",
+   "transform": "sicor_genero:2020-07",
+   "created_at": "2026-09-13T14:35:31+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "4bc9c60af7d706c6b2487679e0c99f88199d7bbc24a048e62278de719086f7f7",
+   "transform": "sicor_faixa:2020-07",
+   "created_at": "2026-09-13T14:35:08+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "bfad82241d1d6afc9484d35afc294a0d2b77a214f626b795d1fd8360be80ff06",
+   "transform": "sicor_genero:2020-08",
+   "created_at": "2026-09-13T14:34:59+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "aa3bb87596e4d45e4ba691e98dc70c033000af03bde746c04913213b2939d786",
+   "transform": "sicor_faixa:2020-08",
+   "created_at": "2026-09-13T14:34:21+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "52face7648ce9a49f66d7d19bcf08687a8ee8eb8c4dece5c23e1708dcf1ad166",
+   "transform": "sicor_genero:2020-09",
+   "created_at": "2026-09-13T14:34:14+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "0565f222bdb74f4d6689b6d454aa516646aa760a57f0b156f24c125ad71c4e83",
+   "transform": "sicor_faixa:2020-09",
+   "created_at": "2026-09-13T14:33:37+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "bceebf781471717ca8026356d1e52ba0fd17dcc486642528e4deda5f08fe7ddf",
+   "transform": "sicor_genero:2020-10",
+   "created_at": "2026-09-13T14:33:33+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "44ed726516d0df4a7ee9ccb37fc68414f311b777f2d24758adde594cf7e8c160",
+   "transform": "sicor_faixa:2020-10",
+   "created_at": "2026-09-13T14:33:12+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "594575331612a8192e7f79bb08958598683d1fb565594ded698ea8d0cef41402",
+   "transform": "sicor_genero:2020-11",
+   "created_at": "2026-09-13T14:33:08+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "861de2d3a65907b9f2dc6a143b913d6c359fa11e4db4f8de6d89e5ea01a6c115",
+   "transform": "sicor_faixa:2020-11",
+   "created_at": "2026-09-13T14:32:47+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "34e02b9fa71044d77feba9f9d95c169584480b2f2c861e67bd2665cc1c1147cd",
+   "transform": "sicor_genero:2020-12",
+   "created_at": "2026-09-13T14:32:43+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272020%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "207df937cf36ad6d85060deea13c1d31922bea869ecd747c2c6f406bc148a24a",
+   "transform": "sicor_faixa:2020-12",
+   "created_at": "2026-09-13T14:32:15+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "430b076bcc71807e38eef7ddced9c57ca3acc4ee0988a056d5cfd03e5d7c160c",
+   "transform": "sicor_genero:2021-01",
+   "created_at": "2026-09-13T14:32:10+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2701%27&$format=json",
+   "sha256": "dc8060a7b46ffb811c87f7d4fc4ada318fdda451ac9dfe82856491cc4c624137",
+   "transform": "sicor_faixa:2021-01",
+   "created_at": "2026-09-13T14:31:49+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "c1cfce2bccc222a50c983d3428ef9a5aab4ca2a808c6cc14a3f22bc672761562",
+   "transform": "sicor_genero:2021-02",
+   "created_at": "2026-09-13T14:31:44+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2702%27&$format=json",
+   "sha256": "056b217f19f47cb22c743da7a3417ae252ae440589e4781da8c4712bb68348f9",
+   "transform": "sicor_faixa:2021-02",
+   "created_at": "2026-09-13T14:31:23+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "8f26e46f1ae8cf22b23cf75ff77fb4ff2d0f55877b5e8c473416f32b50d2f872",
+   "transform": "sicor_genero:2021-03",
+   "created_at": "2026-09-13T14:31:19+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2703%27&$format=json",
+   "sha256": "f666ab634d67e96bf38a4a24769a1bdd124b23209a0b95e8030554302f6b6c1e",
+   "transform": "sicor_faixa:2021-03",
+   "created_at": "2026-09-13T14:30:56+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2704%27&$format=json",
+   "sha256": "e5d35f2651a0bd52c49778f3810840c047a1431f1d04d1029de232b4d48c5c1f",
+   "transform": "sicor_genero:2021-04",
+   "created_at": "2026-09-13T14:30:52+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2705%27&$format=json",
+   "sha256": "52478b04d96c0b5f745acb6c680a875d394936c19620874c557fdd66d670e79d",
+   "transform": "sicor_genero:2021-05",
+   "created_at": "2026-09-13T14:30:29+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2706%27&$format=json",
+   "sha256": "e98400e77dacfd877cf0c23d6b809354a15b7727ca3e21ff0954eac67606d775",
+   "transform": "sicor_genero:2021-06",
+   "created_at": "2026-09-13T14:30:06+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2707%27&$format=json",
+   "sha256": "5e540acbe68c112b6eb46e4d9d35ec7030360b54300a65023bc3274aeb062599",
+   "transform": "sicor_genero:2021-07",
+   "created_at": "2026-09-13T14:29:46+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
+   "sha256": "16e3cf01f129fdea6a317eb3e92b00e4c06e133a3eaf6c13a13b1bb43ca0b223",
+   "transform": "sicor_genero:2021-08",
+   "created_at": "2026-09-13T14:29:24+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
+   "sha256": "fce67c5af5933c0095c7907016ca1267f982972d5bcba9a4c65a2c0874efe30f",
+   "transform": "sicor_genero:2021-09",
+   "created_at": "2026-09-13T14:29:01+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2710%27&$format=json",
+   "sha256": "d14861a018ec26f2f500226c9ea3f01120d4e7d210bb1c89d8d7a6957a82a4f3",
+   "transform": "sicor_genero:2021-10",
+   "created_at": "2026-09-13T14:28:37+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2711%27&$format=json",
+   "sha256": "968c282477e76a4dc04c2e28ba0cdf3f77eed4a7781d84dff185bd398bd200c9",
+   "transform": "sicor_genero:2021-11",
+   "created_at": "2026-09-13T14:28:15+00:00"
+  },
+  {
+   "gold_object": "rural.json",
+   "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272021%27%20and%20MesEmissao%20eq%20%2712%27&$format=json",
+   "sha256": "89cc6603708b54bc2ea77b0ddf94fe8f9aebf299a0cdb03f39ac43a88e118c96",
+   "transform": "sicor_genero:2021-12",
+   "created_at": "2026-09-13T14:27:54+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
-   "sha256": "1ebd85f9eee571d7159760b4ddc177a20fc4fd855e0b36e77e22e6ff8acda85e",
+   "sha256": "33639d2694623571ff384dd1c8409113e0bd4359dbd8177dac50f1b9a1a34c09",
    "transform": "sicor_genero:2026-08",
-   "created_at": "2026-09-12T13:05:08+00:00"
+   "created_at": "2026-09-13T14:27:32+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
-   "sha256": "f10e79e38e121add7cbd7c8ce99e99850ac293f4af6bd44ab6378619650bb717",
+   "sha256": "c1691da8222f93e0330c57b59824a7a36d71d3b2d202950cda683f722eb942a6",
    "transform": "sicor_faixa:2026-08",
-   "created_at": "2026-09-12T13:04:28+00:00"
+   "created_at": "2026-09-13T14:27:11+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
    "sha256": "a1fcab8c1b08d0d8700cb01b8c02212f25bb33227137bf4224c3e28dcc86d2d3",
    "transform": "sicor_fonte:2026-08",
-   "created_at": "2026-09-12T13:04:27+00:00"
+   "created_at": "2026-09-13T14:27:06+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUF?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json",
-   "sha256": "f09a01f27cb4b632c7449f700c3ef492d46a89d69d0c72acc86d0020098e0bf4",
+   "sha256": "896549dcdae32bf9e24c40ffe8979b95fe517f949ba68154acda67313544185f",
    "transform": "sicor_uf:2026-08",
-   "created_at": "2026-09-12T13:03:55+00:00"
+   "created_at": "2026-09-13T14:26:53+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
    "sha256": "9555a932c49f56a95117d1b5c7671907a7d202297bfec3553a0aa33c741575e6",
    "transform": "sicor_genero:2026-09",
-   "created_at": "2026-09-12T13:03:54+00:00"
+   "created_at": "2026-09-13T14:26:38+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/Faixa?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
    "sha256": "6f219435299327d998662aee74562fe45f933b7edd9952fb44e3de4599a10a51",
    "transform": "sicor_faixa:2026-09",
-   "created_at": "2026-09-12T13:03:53+00:00"
+   "created_at": "2026-09-13T14:26:15+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
    "sha256": "b1b90200f7bed9ba2d21d760fa1b2e82618eab9ddc7fc27dbc8916f75201ea68",
    "transform": "sicor_fonte:2026-09",
-   "created_at": "2026-09-12T13:03:40+00:00"
+   "created_at": "2026-09-13T14:26:11+00:00"
   },
   {
    "gold_object": "rural.json",
    "bronze_file": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUF?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json",
    "sha256": "f86ec7f471f8aae86af90a4c50dac8974f109d3e72d170b9ce4c5d536b89ba90",
    "transform": "sicor_uf:2026-09",
-   "created_at": "2026-09-12T13:03:02+00:00"
+   "created_at": "2026-09-13T14:25:56+00:00"
   },
   {
    "gold_object": "tesouro_garantias_externa:2026-04-30",
-   "bronze_file": "data/bronze/tesouro_garantias/20260912/externa_20260430.9d8589de68f1.json",
+   "bronze_file": "data/bronze/tesouro_garantias/20260913/externa_20260430.9d8589de68f1.json",
    "sha256": "9d8589de68f198c755adaecfd61d795672cdd28b82ef52ab5817f54edb5f2469",
    "transform": "Tesouro Transparente: contratos externas com garantia da União, posição 2026-04-30",
-   "created_at": "2026-09-12T13:02:03+00:00"
+   "created_at": "2026-09-13T14:25:41+00:00"
   },
   {
    "gold_object": "tesouro_garantias_interna:2026-04-30",
-   "bronze_file": "data/bronze/tesouro_garantias/20260912/interna_20260430.8cccc37420ae.json",
+   "bronze_file": "data/bronze/tesouro_garantias/20260913/interna_20260430.8cccc37420ae.json",
    "sha256": "8cccc37420aee2db528b7b1b5f7ca0121d1213bfdc1a9cf68043f84df2a3a269",
    "transform": "Tesouro Transparente: contratos internas com garantia da União, posição 2026-04-30",
-   "created_at": "2026-09-12T13:02:02+00:00"
+   "created_at": "2026-09-13T14:25:40+00:00"
   },
   {
    "gold_object": "siconfi_rgf2:2026q1",
-   "bronze_file": "data/bronze/siconfi_rgf/20260912/anexo02_2026q1.2ce3b72e6632.json",
+   "bronze_file": "data/bronze/siconfi_rgf/20260913/anexo02_2026q1.2ce3b72e6632.json",
    "sha256": "2ce3b72e6632be3ca9bd56c9ee6f9907fe919355ac1a69c4c14801afa565c346",
    "transform": "Tesouro Nacional, API Siconfi tt/rgf: RGF Anexo 02 (dívida consolidada líquida) por estado e exercício, último período publicado",
-   "created_at": "2026-09-12T13:01:59+00:00"
+   "created_at": "2026-09-13T14:25:38+00:00"
   },
   {
    "gold_object": "sadipem_pvl:2026-09-11",
-   "bronze_file": "data/bronze/sadipem/20260912/pvl_202609.04eb0ec5322a.json",
-   "sha256": "04eb0ec5322ab8774ae10a4174e63e12a86807b282998449e8c00a61292f4664",
+   "bronze_file": "data/bronze/sadipem/20260913/pvl_202609.4b667de27dfd.json",
+   "sha256": "4b667de27dfd722cbe1dee66bb05f95ce5b4ff8ba2d2ce43003e9bcae2757f56",
    "transform": "Tesouro Nacional, API Sadipem tt/pvl: pedidos de verificação de limites de estados e municípios, base inteira paginada",
-   "created_at": "2026-09-12T13:00:45+00:00"
+   "created_at": "2026-09-13T14:24:25+00:00"
   },
   {
    "gold_object": "funding.json",
-   "bronze_file": "data/bronze/cvm_cda/20260912/blc5_202506.3df604b9db47.json",
-   "sha256": "3df604b9db47695e56500b3e1adb34bc23eb1d4c9cc2f118e8463fc744d869d3",
-   "transform": "CVM CDA 202506, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
-   "created_at": "2026-09-12T13:00:31+00:00"
+   "bronze_file": "data/bronze/cvm_cda/20260913/blc5_202606.55c02a9f813f.json",
+   "sha256": "55c02a9f813f9b6a936285376c496d35552060ecd8f485d4396a1320faf1a2d2",
+   "transform": "CVM CDA 202606, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
+   "created_at": "2026-09-13T14:24:08+00:00"
   },
   {
    "gold_object": "funding.json",
-   "bronze_file": "data/bronze/cvm_cda/20260912/blc5_202507.0b97562a4eff.json",
-   "sha256": "0b97562a4efff51641f0f0e89482f8a034300531004eb618c3320427ca9f4495",
-   "transform": "CVM CDA 202507, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
-   "created_at": "2026-09-12T13:00:25+00:00"
+   "bronze_file": "data/bronze/cvm_cda/20260913/blc5_202607.53038b9f3e46.json",
+   "sha256": "53038b9f3e4679cefaf07478f570e78773ea5ccd7e2b1e7a80b9a146227a1365",
+   "transform": "CVM CDA 202607, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
+   "created_at": "2026-09-13T14:24:04+00:00"
   },
   {
    "gold_object": "funding.json",
-   "bronze_file": "data/bronze/cvm_cda/20260912/blc5_202508.3caa4be99123.json",
-   "sha256": "3caa4be99123fe053c89b22a406846bd2d8bc6500335fba41a79e11baf450457",
-   "transform": "CVM CDA 202508, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
-   "created_at": "2026-09-12T13:00:19+00:00"
+   "bronze_file": "data/bronze/cvm_cda/20260913/blc5_202608.b69ac64f3f6c.json",
+   "sha256": "b69ac64f3f6c6f60328606e977eae173b7cadb173e3dcf39354688ac83e28035",
+   "transform": "CVM CDA 202608, bloco 5 (depósitos a prazo e outros títulos de IF) agregado por emissor, tipo e vínculo",
+   "created_at": "2026-09-13T14:24:00+00:00"
   },
   {
-   "gold_object": "conduta.json",
-   "bronze_file": "data/bronze/cvm_pas/20260912/processo_sancionador.19862e281e9d.json",
-   "sha256": "19862e281e9d0e47db6e52c7dcc985d50a4dc121ab6d3b3228bd01b35f074b7d",
-   "transform": "CVM processos sancionadores: processo e acusados, acervo inteiro substituído a cada coleta",
-   "created_at": "2026-09-12T12:57:55+00:00"
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201503",
+   "sha256": "83429c240e61d20eca4ac18b53753304e4c076d74828ab0ac219c2f4cf7d49dc",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:23:50+00:00"
   },
   {
-   "gold_object": "conduta.json",
-   "bronze_file": "data/bronze/bcb_pas/20260912/QuadroGeralProcessoAdministrativoSancionador.543523478f65.json",
-   "sha256": "543523478f651717b7d6657adeca694cbe2cd865acc7ecb1f1f484bb62372c14",
-   "transform": "BCB/Gepad QuadroGeralProcessoAdministrativoSancionador: acervo inteiro substituído a cada coleta",
-   "created_at": "2026-09-12T12:57:52+00:00"
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201506",
+   "sha256": "a1234ba995d4afdbcfc6aeb7a9a9931d62f53bbd4566951569772886b9b71993",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:23:38+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201509",
+   "sha256": "eec0bdefc442987211e3309d9e60db7c288b261b7c7a2f0ff40cfa8124383243",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:23:25+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201512",
+   "sha256": "30e2fbdcf38a838dafe869a3817658d1aa9c594e1a4baf0216b13d150fcb0186",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:19:49+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201603",
+   "sha256": "a72de066f8137ecb2e358330649d2ea6751ef68f332b683e88e349e983ac2e7f",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:17:54+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201606",
+   "sha256": "e6682346bc42db5fe540f7504952ce499d3a1eeeb37457bbbb5766ad3069e746",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:15:42+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201609",
+   "sha256": "040522e90200934cc0f867baa26bbdf434fc2a3cedb07499b84610213a5b262a",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:14:51+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201612",
+   "sha256": "3625211524939c441d1b52ae26f553b61e9e2b021c9a34a67025c80123543fed",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:14:39+00:00"
+  },
+  {
+   "gold_object": "funding.json",
+   "bronze_file": "ifdata/passivo_201703",
+   "sha256": "7b0cd0f3f695024738be3d3076e92545a9a7f2e0b88c6ac02411321ff37fa216",
+   "transform": "IF.data Olinda, relatório Passivo: captações por instrumento, por instituição (colunas casadas por prefixo do nome)",
+   "created_at": "2026-09-13T14:14:27+00:00"
   },
   {
    "gold_object": "sfn.json",
-   "bronze_file": "data/bronze/sfn_cadastro/20260912/SedesConsorcios.b2c750848dfa.json",
-   "sha256": "b2c750848dfaba2ee54fa5b4641dc536874e9d239de32ab038bfe007ef0e0d5f",
+   "bronze_file": "data/bronze/sfn_cadastro/20260913/SedesConsorcios.ea720bcec3f4.json",
+   "sha256": "ea720bcec3f4b5cdb13f74c325146101054a5da8fa69c62d67ec10f8698e884c",
    "transform": "BCB/Unicad SedesConsorcios: cadastro de sedes em funcionamento, posição do dia",
-   "created_at": "2026-09-12T12:57:49+00:00"
+   "created_at": "2026-09-13T14:14:00+00:00"
   },
   {
    "gold_object": "sfn.json",
-   "bronze_file": "data/bronze/sfn_cadastro/20260912/SedesSociedades.5b21e2f18a90.json",
-   "sha256": "5b21e2f18a906055870e3b5013779d315a785fe551c72b21d8f8f00bf38da03d",
+   "bronze_file": "data/bronze/sfn_cadastro/20260913/SedesSociedades.805393cb2824.json",
+   "sha256": "805393cb282481bbd92618962368e7cf63abdd00672fd61637207b35a0e9d281",
    "transform": "BCB/Unicad SedesSociedades: cadastro de sedes em funcionamento, posição do dia",
-   "created_at": "2026-09-12T12:57:47+00:00"
+   "created_at": "2026-09-13T14:13:58+00:00"
   },
   {
    "gold_object": "sfn.json",
-   "bronze_file": "data/bronze/sfn_cadastro/20260912/SedesCooperativas.91b349e0e475.json",
+   "bronze_file": "data/bronze/sfn_cadastro/20260913/SedesCooperativas.91b349e0e475.json",
    "sha256": "91b349e0e47581e2c43edc1497c35a59e4aecab965dd0bcd036f025be86274fd",
    "transform": "BCB/Unicad SedesCooperativas: cadastro de sedes em funcionamento, posição do dia",
-   "created_at": "2026-09-12T12:57:42+00:00"
+   "created_at": "2026-09-13T14:13:51+00:00"
   },
   {
    "gold_object": "sfn.json",
-   "bronze_file": "data/bronze/sfn_cadastro/20260912/SedesBancoComMultCE.9ef2346ba7f1.json",
-   "sha256": "9ef2346ba7f1649113d3d7a9909b3e4dfb9d81124904529a2f249137691dae7a",
+   "bronze_file": "data/bronze/sfn_cadastro/20260913/SedesBancoComMultCE.dba722ffd7e6.json",
+   "sha256": "dba722ffd7e68d1520b7c32039b14913fdf81cfd1af97377cb17c38ee0e3dd77",
    "transform": "BCB/Unicad SedesBancoComMultCE: cadastro de sedes em funcionamento, posição do dia",
-   "created_at": "2026-09-12T12:57:27+00:00"
+   "created_at": "2026-09-13T14:13:47+00:00"
   },
   {
    "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/selic_reunioes.f3cff8ae15b6.json",
-   "sha256": "f3cff8ae15b64189c801c2e75a61240ae2f3456d800e220a0cf02eeded7f87b5",
-   "transform": "BCB Focus, Selic esperada por reunião do Copom (base 0)",
-   "created_at": "2026-09-12T12:57:23+00:00"
-  },
-  {
-   "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/anuais_Taxa_de_desocupação.ccb0059dccde.json",
-   "sha256": "ccb0059dccdee9c84e0a287875aec2ad288e6f9ee7d39e924bdf4c25ffc563be",
+   "bronze_file": "data/bronze/focus/20260913/anuais_Taxa_de_desocupação.ec6a6912e849.json",
+   "sha256": "ec6a6912e8491ff87ff093d477bba86bf0927e7b3bc6f80ddcf56e05203d5be8",
    "transform": "BCB Focus, expectativas anuais de Taxa de desocupação (base 0), últimos 400 dias de divulgação",
-   "created_at": "2026-09-12T12:57:22+00:00"
+   "created_at": "2026-09-13T14:13:44+00:00"
   },
   {
    "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/anuais_Câmbio.e573d96d8fe6.json",
-   "sha256": "e573d96d8fe666cef9037a77c6d355e0b68f7fc91a642d1a2c8d2b6c3b0fe45c",
+   "bronze_file": "data/bronze/focus/20260913/selic_reunioes.e98808f7a257.json",
+   "sha256": "e98808f7a2577b69e4d794bd3e81d552b616f7954770b1a0e13fa36eff1d6aa1",
+   "transform": "BCB Focus, Selic esperada por reunião do Copom (base 0)",
+   "created_at": "2026-09-13T14:13:44+00:00"
+  },
+  {
+   "gold_object": "scenario.json",
+   "bronze_file": "data/bronze/focus/20260913/anuais_Câmbio.925ef0d65a9c.json",
+   "sha256": "925ef0d65a9c6ea10a6f3856caadca9e46e9c378992efce79382a5e4bf27af42",
    "transform": "BCB Focus, expectativas anuais de Câmbio (base 0), últimos 400 dias de divulgação",
-   "created_at": "2026-09-12T12:57:20+00:00"
+   "created_at": "2026-09-13T14:13:42+00:00"
   },
   {
    "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/anuais_PIB_Total.6e8a12e6d734.json",
-   "sha256": "6e8a12e6d734cea37089b4125de1a23d50d0d4cfe32edf8841172c5c93620bb8",
+   "bronze_file": "data/bronze/focus/20260913/anuais_PIB_Total.5d8e20af1058.json",
+   "sha256": "5d8e20af1058faa29acde33678d2fe7cf3338cb14f8544f408c528233059087e",
    "transform": "BCB Focus, expectativas anuais de PIB Total (base 0), últimos 400 dias de divulgação",
-   "created_at": "2026-09-12T12:57:19+00:00"
+   "created_at": "2026-09-13T14:13:41+00:00"
   },
   {
    "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/anuais_IPCA.5186f8078a73.json",
-   "sha256": "5186f8078a73e11d3f180a405f8d2013afab0fd3e8b68b23d534762a4bc5e1c6",
+   "bronze_file": "data/bronze/focus/20260913/anuais_IPCA.dae78d96d862.json",
+   "sha256": "dae78d96d8624eef9c55439a371fe9ffdd2a9b514adf8b253f84aab4c9aff82d",
    "transform": "BCB Focus, expectativas anuais de IPCA (base 0), últimos 400 dias de divulgação",
-   "created_at": "2026-09-12T12:57:18+00:00"
+   "created_at": "2026-09-13T14:13:40+00:00"
   },
   {
    "gold_object": "scenario.json",
-   "bronze_file": "data/bronze/focus/20260912/anuais_Selic.698c3882f9c9.json",
-   "sha256": "698c3882f9c927ffc732d15b5587ddae3171f7ebc009e09949fb90b7394d6251",
+   "bronze_file": "data/bronze/focus/20260913/anuais_Selic.cc4feb2527a1.json",
+   "sha256": "cc4feb2527a1bd9d8a8d0ac21409535ecdd8f545aa3e8ea0577ccb8cb01cd841",
    "transform": "BCB Focus, expectativas anuais de Selic (base 0), últimos 400 dias de divulgação",
-   "created_at": "2026-09-12T12:57:16+00:00"
+   "created_at": "2026-09-13T14:13:39+00:00"
   },
   {
    "gold_object": "ampliado.json",
-   "bronze_file": "data/bronze/cvm_ofertas/20260912/oferta_distribuicao.09ad561dfd21.json",
-   "sha256": "09ad561dfd21e1d134334efb10212f966fd484da65dde34707098725d60d4915",
-   "transform": "CVM ofertas públicas (regime anterior + Res. 160): uma linha por oferta, família do ativo pelo nome, mês do registro (ou do início), valor total/registrado",
-   "created_at": "2026-09-12T12:56:29+00:00"
+   "bronze_file": "data/bronze/cvm_securit/20260913/cra_2026.b1d0338fb2bb.json",
+   "sha256": "b1d0338fb2bb0fd5165c7d861d1d78780ff730dca31cdbf9d9f7a6c5ea852484",
+   "transform": "CVM informe mensal CRA 2026: última versão por certificado e mês; créditos, vencidos, atraso, PDD, ativo; segmentos do lastro e situação das séries",
+   "created_at": "2026-09-13T14:13:11+00:00"
+  },
+  {
+   "gold_object": "ampliado.json",
+   "bronze_file": "data/bronze/cvm_securit/20260913/cra_2025.b332395ed37b.json",
+   "sha256": "b332395ed37be51d50df4b59a6a191802cbb7df00ffea2bd4c7d3be51f3489d0",
+   "transform": "CVM informe mensal CRA 2025: última versão por certificado e mês; créditos, vencidos, atraso, PDD, ativo; segmentos do lastro e situação das séries",
+   "created_at": "2026-09-13T14:13:09+00:00"
+  },
+  {
+   "gold_object": "ampliado.json",
+   "bronze_file": "data/bronze/cvm_securit/20260913/cri_2026.986178763caa.json",
+   "sha256": "986178763caaf90fc6f994bfa8e38f3c6d3a7cfd9f62f136455422669b9dbea2",
+   "transform": "CVM informe mensal CRI 2026: última versão por certificado e mês; créditos, vencidos, atraso, PDD, ativo; segmentos do lastro e situação das séries",
+   "created_at": "2026-09-13T14:13:07+00:00"
+  },
+  {
+   "gold_object": "ampliado.json",
+   "bronze_file": "data/bronze/cvm_securit/20260913/cri_2025.90ea9cd37354.json",
+   "sha256": "90ea9cd37354c29687f14f452da3c7a5a3b47221e6d03e64f0e706e5211223ac",
+   "transform": "CVM informe mensal CRI 2025: última versão por certificado e mês; créditos, vencidos, atraso, PDD, ativo; segmentos do lastro e situação das séries",
+   "created_at": "2026-09-13T14:13:04+00:00"
   },
   {
    "gold_object": "regimes.json",
-   "bronze_file": "data/bronze/regimes/20260912/regimes_vigentes.b8dd22e42f6c.json",
+   "bronze_file": "data/bronze/regimes/20260913/regimes_vigentes.b8dd22e42f6c.json",
    "sha256": "b8dd22e42f6c73edc3d6aa2fbfb384c41e2ba2a66595c876448288e03738da2d",
    "transform": "BCB Olinda regimes_especiais (lista vigente diária) -> vigentes + histórico append-only",
-   "created_at": "2026-09-12T12:56:21+00:00"
+   "created_at": "2026-09-13T14:12:56+00:00"
   },
   {
-   "gold_object": "folha_bancos.json",
-   "bronze_file": "pncp_folha/contratos_novos.json",
-   "sha256": "3dc7bb5e6f6f0fb7e814182eb589803c5a0b137c0e75740d758f1cdbc4cbcf17",
-   "transform": "detalhe de contratos PNCP -> pncp_folha_contratos",
-   "created_at": "2026-09-12T12:52:42+00:00"
+   "gold_object": "operacional.json",
+   "bronze_file": "unicad_posto.csv",
+   "sha256": "f094d5a5e7a64318adca925067b48c410d9535be18535c7d0bc6806ac53d1bfe",
+   "transform": "Unicad/PostosAtendimento -> dep_unidades (posto, agregado por município e tipo de posto)",
+   "created_at": "2026-09-13T14:08:33+00:00"
+  },
+  {
+   "gold_object": "operacional.json",
+   "bronze_file": "unicad_agencia.csv",
+   "sha256": "2fa51c277dbf231789c5a61f2fec16abf1086d5e4b0f8d0b8f88d675e45396b1",
+   "transform": "Unicad/Agencias -> dep_unidades (agencia, agregado por município e tipo de posto)",
+   "created_at": "2026-09-13T14:08:28+00:00"
   },
   {
    "gold_object": "operacional.json",
    "bronze_file": "fre_cia_aberta_2026.zip",
-   "sha256": "2799b964d3ffb6b4cba9e9c003c201fe57e64aa9effb93ccccafe676e351a79b",
+   "sha256": "cf05f42605f0f327857d7187ab25ad641f8b775be8287c84db59be2fb04a4fd2",
    "transform": "FRE empregado_posicao_local -> oper_empregados (maior versão por companhia)",
-   "created_at": "2026-09-12T12:52:18+00:00"
+   "created_at": "2026-09-13T14:08:03+00:00"
   },
   {
    "gold_object": "operacional.json",
    "bronze_file": "fca_cia_aberta_2026.zip",
-   "sha256": "a076bea5575125aa5d8b81faf58e27f6f5b74e738f538811fe4f8f54d9546c31",
+   "sha256": "42f837cc94f988e59440b30a7bee7df0497f46888a308f9adae5eb22fffa6f4d",
    "transform": "FCA auditor -> oper_auditores; FCA geral -> oper_cadastro_cvm (setor de atividade)",
-   "created_at": "2026-09-12T12:52:15+00:00"
+   "created_at": "2026-09-13T14:08:01+00:00"
   },
   {
-   "gold_object": "moradia.json",
-   "bronze_file": "bronze/mercado_imobiliario/series",
-   "sha256": "48dd5564d0cc99716258326ab84edd3b8c152cd3dc73c6dc83729465aff6651d",
-   "transform": "BCB Informações do Mercado Imobiliário -> crédito habitacional por UF (residencial/PF, segmentos SFH, FGTS, livre, home equity e comercial)",
-   "created_at": "2026-09-12T12:51:43+00:00"
-  },
-  {
-   "gold_object": "pix.json",
-   "bronze_file": "pix/pix_tx_202606.csv",
-   "sha256": "92ccc3052226bece51b711d90a60fc0343a720b78b56950414fc4bccd6f7d9a3",
-   "transform": "base transacional Pix (SPI) -> silver pix_tx; cobertura ~91% da qtd do universo doc 1201 (declarada)",
-   "created_at": "2026-09-12T12:50:07+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bmi",
-   "bronze_file": "data/bronze/b3_proventos/20260912/bmi.ec4ce064e84a.json",
-   "sha256": "ec4ce064e84af5084feb670d22947de4cc545e8a1f6f06cf7c23d2cf9dd7b7c7",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:24+00:00"
-  },
-  {
-   "gold_object": "market_dividends:alfa",
-   "bronze_file": "data/bronze/b3_proventos/20260912/alfa.805be0c9d8df.json",
-   "sha256": "805be0c9d8df40f0da4a30de21ff92c2cda9f5b93ef67a44869771e8a104d43f",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:23+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banese",
-   "bronze_file": "data/bronze/b3_proventos/20260912/banese.a477ce2e59a6.json",
-   "sha256": "a477ce2e59a665c96599b0124d5e338f9c5fdedadb1be4e95614961b84d7d148",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:22+00:00"
-  },
-  {
-   "gold_object": "market_dividends:brpartners",
-   "bronze_file": "data/bronze/b3_proventos/20260912/brpartners.7f2497d1f20e.json",
-   "sha256": "7f2497d1f20e149b6e7ed8ea061d7d231aa05450a2fff7c215dbbb10d6a4b25b",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:22+00:00"
-  },
-  {
-   "gold_object": "market_dividends:brb",
-   "bronze_file": "data/bronze/b3_proventos/20260912/brb.a8f9a1232bef.json",
-   "sha256": "a8f9a1232bef37280331dc15a8082a4c76ed7521f8900b888a0a3a08ce95fb2f",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:21+00:00"
-  },
-  {
-   "gold_object": "market_dividends:mercantil",
-   "bronze_file": "data/bronze/b3_proventos/20260912/mercantil.9433d684a803.json",
-   "sha256": "9433d684a803e193ebf5f8a891c3dca28b7e37770b6913205b16d8323588406a",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:20+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banestes",
-   "bronze_file": "data/bronze/b3_proventos/20260912/banestes.50415cecca8f.json",
-   "sha256": "50415cecca8f77b57362fc877fdbfbc8c6594b2a0fd139271ed494011e304c47",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:19+00:00"
-  },
-  {
-   "gold_object": "market_dividends:nordeste",
-   "bronze_file": "data/bronze/b3_proventos/20260912/nordeste.35b0eb1dbcca.json",
-   "sha256": "35b0eb1dbcca76563fbae9e649ade38c1de37a1942ba8a41fdda8e83fb83558e",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:17+00:00"
-  },
-  {
-   "gold_object": "market_dividends:pine",
-   "bronze_file": "data/bronze/b3_proventos/20260912/pine.d64dfa31b992.json",
-   "sha256": "d64dfa31b992ff8b7d398540998a38603fd1e9bcfd93e7660ad68cca54427ccb",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:16+00:00"
-  },
-  {
-   "gold_object": "market_dividends:amazonia",
-   "bronze_file": "data/bronze/b3_proventos/20260912/amazonia.e8392e18394f.json",
-   "sha256": "e8392e18394f35ea8122b9542284492907198d91e4fbbba10dd7706b53a4d298",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:16+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bmg",
-   "bronze_file": "data/bronze/b3_proventos/20260912/bmg.1239197c139a.json",
-   "sha256": "1239197c139ad2bd25a651f5b778a377e78a1428890e2e07cddb2744c352f89d",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:15+00:00"
-  },
-  {
-   "gold_object": "market_dividends:banrisul",
-   "bronze_file": "data/bronze/b3_proventos/20260912/banrisul.eff24de5c2f9.json",
-   "sha256": "eff24de5c2f95b5fbe750f0fecd020131c50ed5e10213cb5aa809b3fa751d698",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:14+00:00"
-  },
-  {
-   "gold_object": "market_dividends:abc",
-   "bronze_file": "data/bronze/b3_proventos/20260912/abc.2d8b4020b6ea.json",
-   "sha256": "2d8b4020b6eae5970b01a1bd8d13b57555fff5fd14139e8e3e2fa795fabc40b1",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:13+00:00"
-  },
-  {
-   "gold_object": "market_dividends:btg",
-   "bronze_file": "data/bronze/b3_proventos/20260912/btg.17956a5efaf9.json",
-   "sha256": "17956a5efaf935eb80ed9b7ea28554ed2fa4a322622d7803dc4a2e44128a2811",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:12+00:00"
-  },
-  {
-   "gold_object": "market_dividends:santander",
-   "bronze_file": "data/bronze/b3_proventos/20260912/santander.52667e7ee77d.json",
-   "sha256": "52667e7ee77d60c0ee851d7163e47bc5d787416a857359cd731ef00a15379dfe",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:10+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bradesco",
-   "bronze_file": "data/bronze/b3_proventos/20260912/bradesco.a7695049d6ec.json",
-   "sha256": "a7695049d6ecd7b2bad9369f339d6d8be5a0d5302594e1dc4b93126db3fcc238",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:09+00:00"
-  },
-  {
-   "gold_object": "market_dividends:bb",
-   "bronze_file": "data/bronze/b3_proventos/20260912/bb.001df8aaad6e.json",
-   "sha256": "001df8aaad6ed00064e99ddb57d0da77ea95310f8c0f61e652c889fc54607557",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:04+00:00"
-  },
-  {
-   "gold_object": "market_dividends:itau",
-   "bronze_file": "data/bronze/b3_proventos/20260912/itau.09a2a2fbc1d7.json",
-   "sha256": "09a2a2fbc1d77d6b58874c1b9e8f8daf4fc4061911c47c8197420984cb3d6a73",
-   "transform": "B3 GetListedCashDividends — dividendos e JCP por classe, valor por ação, data ex e fechamento cum",
-   "created_at": "2026-09-12T12:49:02+00:00"
-  },
-  {
-   "gold_object": "market_prices:2026",
-   "bronze_file": "data/bronze/b3_cotahist/20260912/extrato_2026.fd96c8c446ea.json",
-   "sha256": "fd96c8c446ea92dcebe00ec8618d1dcde98e5b3c92b7be42c77af98da3e99bf2",
-   "transform": "B3 COTAHIST anual — fechamento e volume, mercado à vista, lote padrão; preços NÃO ajustados",
-   "created_at": "2026-09-12T12:48:57+00:00"
+   "gold_object": "panorama.json",
+   "bronze_file": "tmp_scr/scrdata_2026.zip::scrdata_202601.csv",
+   "sha256": "cf7fffb4238e92bbc49d891bbf2bea6f2e9f4ab969ac380065447d7ed7e6ef82",
+   "transform": "linhas-base SCR.data v2 -> fatos scr_* (agregação por mês; -1 = supressão preservada)",
+   "created_at": "2026-09-13T13:54:38+00:00"
   },
   {
    "gold_object": "taxas:PE:Vendor - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Vendor_-_Prefixado.a63ffe2ce95a.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Vendor_-_Prefixado.a63ffe2ce95a.json",
    "sha256": "a63ffe2ce95a02844848d4bc1227e362926e1714d727d0d98b291e56bdaf43e4",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:48+00:00"
+   "created_at": "2026-09-13T13:50:22+00:00"
   },
   {
    "gold_object": "taxas:PE:Adiantamento sobre contratos de câmbio (",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Adiantamento_sobre_contratos_de_câmbio_(.7c79b0640aae.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Adiantamento_sobre_contratos_de_câmbio_(.7c79b0640aae.json",
    "sha256": "7c79b0640aae6c372f753004068680d76746079d01eac5d73ae8ad587b6ff456",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:44+00:00"
+   "created_at": "2026-09-13T13:50:19+00:00"
   },
   {
    "gold_object": "taxas:PE:Antecipação de faturas de cartão de créd",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Antecipação_de_faturas_de_cartão_de_créd.f22bfef0847f.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Antecipação_de_faturas_de_cartão_de_créd.f22bfef0847f.json",
    "sha256": "f22bfef0847f5f35954c3081a7bc21cf5e164c1f370162f98ca2149c9b4979cd",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:39+00:00"
+   "created_at": "2026-09-13T13:50:14+00:00"
   },
   {
    "gold_object": "taxas:PE:Desconto de cheques - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Desconto_de_cheques_-_Prefixado.cbebba510da9.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Desconto_de_cheques_-_Prefixado.cbebba510da9.json",
    "sha256": "cbebba510da925eb4adfa498656d504358caf152793e13d657cb9d0a07235067",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:35+00:00"
+   "created_at": "2026-09-13T13:50:11+00:00"
   },
   {
    "gold_object": "taxas:PE:Desconto de duplicatas - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Desconto_de_duplicatas_-_Prefixado.a8e6f1940ca3.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Desconto_de_duplicatas_-_Prefixado.a8e6f1940ca3.json",
    "sha256": "a8e6f1940ca3f5f6642e4168bb220cd4a54aad2aecbe17a3257869641e2cdb0f",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:31+00:00"
+   "created_at": "2026-09-13T13:50:07+00:00"
   },
   {
    "gold_object": "taxas:PE:Cheque especial - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Cheque_especial_-_Prefixado.cebde1fa5ad1.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Cheque_especial_-_Prefixado.cebde1fa5ad1.json",
    "sha256": "cebde1fa5ad1a03c53dbb125e4e382261a6c6136f3ed9eb45a5730946a25bcd3",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:26+00:00"
+   "created_at": "2026-09-13T13:50:03+00:00"
   },
   {
    "gold_object": "taxas:PE:Conta garantida - Pós-fixado referenciad",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Conta_garantida_-_Pós-fixado_referenciad.3f02a58db8a0.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Conta_garantida_-_Pós-fixado_referenciad.3f02a58db8a0.json",
    "sha256": "3f02a58db8a055479d3870a4a640403c3159ac2b829c1e45be1db0fc028ee386",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:22+00:00"
+   "created_at": "2026-09-13T13:49:59+00:00"
   },
   {
    "gold_object": "taxas:PE:Conta garantida - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Conta_garantida_-_Prefixado.e784caada0ff.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Conta_garantida_-_Prefixado.e784caada0ff.json",
    "sha256": "e784caada0ffb17a69b410b422d01f721808bf62aa6ee75ef8ae6fa0ed95c626",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:17+00:00"
+   "created_at": "2026-09-13T13:49:55+00:00"
   },
   {
    "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Capital_de_giro_com_prazo_superior_a_365.542580b3f997.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Capital_de_giro_com_prazo_superior_a_365.542580b3f997.json",
    "sha256": "542580b3f997d2f853de799c57f09cc16156891d3ce77f9a22ba6c7004584533",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:13+00:00"
+   "created_at": "2026-09-13T13:49:52+00:00"
   },
   {
    "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Capital_de_giro_com_prazo_até_365_dias_-.b15ca9887e6e.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Capital_de_giro_com_prazo_até_365_dias_-.b15ca9887e6e.json",
    "sha256": "b15ca9887e6ea58481d5568dfbe8b4c06891f1ee2a047b32830a880a498fa79f",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:08+00:00"
+   "created_at": "2026-09-13T13:49:48+00:00"
   },
   {
    "gold_object": "taxas:PE:Capital de giro com prazo superior a 365",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Capital_de_giro_com_prazo_superior_a_365.ca73686c306c.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Capital_de_giro_com_prazo_superior_a_365.ca73686c306c.json",
    "sha256": "ca73686c306cb31c1cf47213bcdff24cc928b85de38813ff0e12a03147bea7a6",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:04+00:00"
+   "created_at": "2026-09-13T13:49:44+00:00"
   },
   {
    "gold_object": "taxas:PE:Capital de giro com prazo até 365 dias -",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Capital_de_giro_com_prazo_até_365_dias_-.9e7f45dc40c4.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Capital_de_giro_com_prazo_até_365_dias_-.9e7f45dc40c4.json",
    "sha256": "9e7f45dc40c4121863f51350a48f25b476f56667cc5d919833618827b7442734",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:48:00+00:00"
+   "created_at": "2026-09-13T13:49:40+00:00"
   },
   {
    "gold_object": "taxas:PE:Cheque especial - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Cheque_especial_-_Prefixado.791f69f7bdb2.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Cheque_especial_-_Prefixado.791f69f7bdb2.json",
    "sha256": "791f69f7bdb2cb8d35eddd38e888d1f1ddd7bd5b56089de104d8f66a231e9fb1",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:55+00:00"
+   "created_at": "2026-09-13T13:49:36+00:00"
   },
   {
    "gold_object": "taxas:PE:Aquisição de veículos - Prefixado",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Aquisição_de_veículos_-_Prefixado.a1929a5992db.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Aquisição_de_veículos_-_Prefixado.a1929a5992db.json",
    "sha256": "a1929a5992db7689e02135ee520dec329fbba86d89dc134db2d8c86cd9cf20f2",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:51+00:00"
+   "created_at": "2026-09-13T13:49:31+00:00"
   },
   {
    "gold_object": "taxas:PE:Crédito pessoal não consignado - Prefixa",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Crédito_pessoal_não_consignado_-_Prefixa.705456e7a944.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Crédito_pessoal_não_consignado_-_Prefixa.705456e7a944.json",
    "sha256": "705456e7a944e5af2ff0e64795978ff50b7f527954f426991f00a8b554d928de",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:47+00:00"
+   "created_at": "2026-09-13T13:49:27+00:00"
   },
   {
    "gold_object": "taxas:PE:Crédito pessoal consignado público - Pre",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Crédito_pessoal_consignado_público_-_Pre.a02c7465f2ec.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Crédito_pessoal_consignado_público_-_Pre.a02c7465f2ec.json",
    "sha256": "a02c7465f2ec4e43a60fdadf67f9a75384755d481f1ae5ecd9046043dba3726e",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:42+00:00"
+   "created_at": "2026-09-13T13:49:23+00:00"
   },
   {
    "gold_object": "taxas:PE:Crédito pessoal consignado privado - Pre",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Crédito_pessoal_consignado_privado_-_Pre.1aa2f9e6fda1.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Crédito_pessoal_consignado_privado_-_Pre.1aa2f9e6fda1.json",
    "sha256": "1aa2f9e6fda1ec37b7072e4c97bc742d5c3243a66e27afdea8f2d0849dea2632",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:37+00:00"
+   "created_at": "2026-09-13T13:49:19+00:00"
   },
   {
    "gold_object": "taxas:PE:Crédito pessoal consignado INSS - Prefix",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Crédito_pessoal_consignado_INSS_-_Prefix.9feccc30afde.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Crédito_pessoal_consignado_INSS_-_Prefix.9feccc30afde.json",
    "sha256": "9feccc30afdea4eacf1a5611e12f0518fffce59fa847438194591704a4a6c19c",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:32+00:00"
+   "created_at": "2026-09-13T13:49:15+00:00"
   },
   {
    "gold_object": "taxas:PE:Cartão de crédito - parcelado - Prefixad",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Cartão_de_crédito_-_parcelado_-_Prefixad.7eabba264d6e.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Cartão_de_crédito_-_parcelado_-_Prefixad.7eabba264d6e.json",
    "sha256": "7eabba264d6e8e64a86c57f69518c82c9c9cfb19ac6dedcfabee208a65e22c43",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:27+00:00"
+   "created_at": "2026-09-13T13:49:10+00:00"
   },
   {
    "gold_object": "taxas:PE:Cartão de crédito - rotativo total - Pre",
-   "bronze_file": "data/bronze/txjuros/20260912/PE_Cartão_de_crédito_-_rotativo_total_-_Pre.58b021bf1a52.json",
+   "bronze_file": "data/bronze/txjuros/20260913/PE_Cartão_de_crédito_-_rotativo_total_-_Pre.58b021bf1a52.json",
    "sha256": "58b021bf1a524078a100382abfc027b686d943be7c357b13b71340bc19035b30",
    "transform": "txjuros Olinda v2 — janela mais recente por modalidade, identificação por cnpj8",
-   "created_at": "2026-09-12T12:47:22+00:00"
+   "created_at": "2026-09-13T13:49:06+00:00"
   },
   {
    "gold_object": "reclamacoes:2025T3",
-   "bronze_file": "data/bronze/reclamacoes/20260912/ranking_2025T3.4f7f9305da19.json",
+   "bronze_file": "data/bronze/reclamacoes/20260913/ranking_2025T3.4f7f9305da19.json",
    "sha256": "4f7f9305da19e78c8c6ef50ca5b6ac6b5b0d431bb128ceac78777424f50a5c65",
    "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-09-12T12:47:15+00:00"
+   "created_at": "2026-09-13T13:49:00+00:00"
   },
   {
    "gold_object": "reclamacoes:2025T4",
-   "bronze_file": "data/bronze/reclamacoes/20260912/ranking_2025T4.ffc20dac2c76.json",
+   "bronze_file": "data/bronze/reclamacoes/20260913/ranking_2025T4.ffc20dac2c76.json",
    "sha256": "ffc20dac2c76fe2d46def2aedd505b5c18e72024e4eec887c7776bb76a1b09b6",
    "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-09-12T12:47:13+00:00"
+   "created_at": "2026-09-13T13:48:59+00:00"
   },
   {
    "gold_object": "reclamacoes:2026T1",
-   "bronze_file": "data/bronze/reclamacoes/20260912/ranking_2026T1.f81d408167b5.json",
+   "bronze_file": "data/bronze/reclamacoes/20260913/ranking_2026T1.f81d408167b5.json",
    "sha256": "f81d408167b5b9af42cbc9e5955466787637952afde15ed1cfc7752465a7fb79",
    "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-09-12T12:47:11+00:00"
+   "created_at": "2026-09-13T13:48:58+00:00"
   },
   {
    "gold_object": "reclamacoes:2026T2",
-   "bronze_file": "data/bronze/reclamacoes/20260912/ranking_2026T2.cc5d759cf081.json",
+   "bronze_file": "data/bronze/reclamacoes/20260913/ranking_2026T2.cc5d759cf081.json",
    "sha256": "cc5d759cf08123bb87bd87c4ef1c30a256a2c761ee5b702366ec9f4437bbdf6c",
    "transform": "CSV latin-1 do rdrweb; índice com vírgula decimal; posição = ordem do arquivo",
-   "created_at": "2026-09-12T12:47:09+00:00"
+   "created_at": "2026-09-13T13:48:57+00:00"
   },
   {
    "gold_object": "of_participants",
-   "bronze_file": "data/bronze/openfinance/20260912/directory_participants.b7ad0ca4a6f9.json",
-   "sha256": "b7ad0ca4a6f9661b38c36bf03e2f53b467288a40f6f25871868cc29dd8d962c4",
+   "bronze_file": "data/bronze/openfinance/20260913/directory_participants.9f5bc1b19024.json",
+   "sha256": "9f5bc1b1902438a1ab8a0bf1d1e7c3a1277e01477d37e92946bcd57fe13703ea",
    "transform": "diretório oficial: papéis e famílias de API por organização",
-   "created_at": "2026-09-12T12:47:07+00:00"
+   "created_at": "2026-09-13T13:48:55+00:00"
   },
   {
    "gold_object": "of_ranking:payment-initiation",
-   "bronze_file": "data/bronze/openfinance/20260912/ranking_org_iniciacao_pagamento.a13bdf21957b.json",
+   "bronze_file": "data/bronze/openfinance/20260913/ranking_org_iniciacao_pagamento.a13bdf21957b.json",
    "sha256": "a13bdf21957b0bc64e6a28f87af32743d241e811f6c47ae9936d54b2e4d9301b",
    "transform": "POST axis=organisation",
-   "created_at": "2026-09-12T12:46:53+00:00"
+   "created_at": "2026-09-13T13:48:43+00:00"
   },
   {
    "gold_object": "of_ranking:open-data",
-   "bronze_file": "data/bronze/openfinance/20260912/ranking_org_dados_abertos.a0f6bc497933.json",
+   "bronze_file": "data/bronze/openfinance/20260913/ranking_org_dados_abertos.a0f6bc497933.json",
    "sha256": "a0f6bc49793316e41af361d454e76fd8501c70c22a176b0ad8001dd12b4c3a2f",
    "transform": "POST axis=organisation",
-   "created_at": "2026-09-12T12:46:52+00:00"
+   "created_at": "2026-09-13T13:48:41+00:00"
   },
   {
    "gold_object": "of_ranking:transactional-data",
-   "bronze_file": "data/bronze/openfinance/20260912/ranking_org_dados_transacionais.3cd96c9fe2f5.json",
+   "bronze_file": "data/bronze/openfinance/20260913/ranking_org_dados_transacionais.3cd96c9fe2f5.json",
    "sha256": "3cd96c9fe2f53805299280edccf8299162cc00d1e929d352fb6566c054690073",
    "transform": "POST axis=organisation",
-   "created_at": "2026-09-12T12:46:50+00:00"
+   "created_at": "2026-09-13T13:48:40+00:00"
   },
   {
    "gold_object": "series:of_consentimentos_transmitidos",
-   "bronze_file": "data/bronze/openfinance/20260912/consents_server.e0fc2a6acd9d.json",
+   "bronze_file": "data/bronze/openfinance/20260913/consents_server.e0fc2a6acd9d.json",
    "sha256": "e0fc2a6acd9d8cabeedcfca8fca6f05142ad9b1540c280c56ac98a89763347cd",
    "transform": "POST /api/consents; série semanal",
-   "created_at": "2026-09-12T12:46:34+00:00"
+   "created_at": "2026-09-13T13:48:25+00:00"
   },
   {
    "gold_object": "series:of_consentimentos_recebidos",
-   "bronze_file": "data/bronze/openfinance/20260912/consents_client.a5e8001630e3.json",
+   "bronze_file": "data/bronze/openfinance/20260913/consents_client.a5e8001630e3.json",
    "sha256": "a5e8001630e3c6362723c03ca02ec9fb80c51a27def21f4f32751c37e5cd9d47",
    "transform": "POST /api/consents; série semanal",
-   "created_at": "2026-09-12T12:46:34+00:00"
+   "created_at": "2026-09-13T13:48:25+00:00"
   },
   {
    "gold_object": "institutions_carteiras:202506",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/carteiras_202506.a8537bff8e7a.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/carteiras_202506.a8537bff8e7a.json",
    "sha256": "a8537bff8e7af0c698a4e76095e13c132496aac8e9343b9f2ea95158dda81ef6",
    "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-09-12T12:43:16+00:00"
+   "created_at": "2026-09-13T13:45:09+00:00"
   },
   {
    "gold_object": "institutions_carteiras:202509",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/carteiras_202509.4a0a08d472d2.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/carteiras_202509.4a0a08d472d2.json",
    "sha256": "4a0a08d472d29b42e5474c51a7fc22d6f62ec01411a6360858cdd794fdcafb90",
    "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-09-12T12:43:01+00:00"
+   "created_at": "2026-09-13T13:44:58+00:00"
   },
   {
    "gold_object": "institutions_carteiras:202512",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/carteiras_202512.e9fb9597f177.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/carteiras_202512.e9fb9597f177.json",
    "sha256": "e9fb9597f177df1150c8cc73af8e8f064f23f72420ede2e6933b7d48e7e2321a",
    "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-09-12T12:42:48+00:00"
+   "created_at": "2026-09-13T13:44:43+00:00"
   },
   {
    "gold_object": "institutions_carteiras:202603",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/carteiras_202603.b5ab946cacf9.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/carteiras_202603.b5ab946cacf9.json",
    "sha256": "b5ab946cacf9d9fbb12e855607ca62e21734dd916083a9b23a73e7e0d4118d51",
    "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-09-12T12:42:35+00:00"
+   "created_at": "2026-09-13T13:44:29+00:00"
   },
   {
    "gold_object": "institutions_carteiras:202606",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/carteiras_202606.4404c6186ac6.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/carteiras_202606.4404c6186ac6.json",
    "sha256": "4404c6186ac6febb122078dd40dd02e51041100e54c5e0ac4cc5fc7e337a9275",
    "transform": "IF.data UI dados_3 (categorias + inadimplência lid 148834 + ativos problemáticos 148833) e dados_1 (perda esperada crédito 140202)",
-   "created_at": "2026-09-12T12:42:20+00:00"
+   "created_at": "2026-09-13T13:44:16+00:00"
   },
   {
    "gold_object": "institutions_capital:202506",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/capital_202506.f73523664463.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/capital_202506.f73523664463.json",
    "sha256": "f735236644633abd807618784bf210e76ecbb08dcaa0e4011c1a7649665821c8",
    "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-09-12T12:42:06+00:00"
+   "created_at": "2026-09-13T13:44:00+00:00"
   },
   {
    "gold_object": "institutions_capital:202509",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/capital_202509.2f7098ce96f0.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/capital_202509.2f7098ce96f0.json",
    "sha256": "2f7098ce96f013eba65933c8ab2286cd8c9b0f3946798e6e55411443d78f568f",
    "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-09-12T12:42:04+00:00"
+   "created_at": "2026-09-13T13:43:59+00:00"
   },
   {
    "gold_object": "institutions_capital:202512",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/capital_202512.bcf3e48faa92.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/capital_202512.bcf3e48faa92.json",
    "sha256": "bcf3e48faa92bcc388c74f35bc744407f3dd84ee8b662b129fb4e81bc0099db5",
    "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-09-12T12:42:02+00:00"
+   "created_at": "2026-09-13T13:43:57+00:00"
   },
   {
    "gold_object": "institutions_capital:202603",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/capital_202603.3318e2ca3f21.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/capital_202603.3318e2ca3f21.json",
    "sha256": "3318e2ca3f217cfefbb05c7cae3519c8629e6f4217b343d1b86c406b493cfde9",
    "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-09-12T12:42:00+00:00"
+   "created_at": "2026-09-13T13:43:56+00:00"
   },
   {
    "gold_object": "institutions_capital:202606",
-   "bronze_file": "data/bronze/ifdata_ui/20260912/capital_202606.a2b28dff2b82.json",
+   "bronze_file": "data/bronze/ifdata_ui/20260913/capital_202606.a2b28dff2b82.json",
    "sha256": "a2b28dff2b82883135326c74a8bcb477b5937379da8b17a8d964c0934c07c3ad",
    "transform": "IF.data UI dados_5.json; lids 79649/50/59/60/61/62/64 -> métricas de capital; zeros tratados como ausência",
-   "created_at": "2026-09-12T12:41:58+00:00"
+   "created_at": "2026-09-13T13:43:54+00:00"
   },
   {
-   "gold_object": "series:cambio",
-   "bronze_file": "data/bronze/ipeadata/20260912/BM12_ERC12.d5f46994911a.json",
-   "sha256": "d5f46994911af44961b0ab708cb3a047c5ea52586f857d2e688545c44121f84e",
-   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
-   "created_at": "2026-09-12T12:40:45+00:00"
+   "gold_object": "institutions:202506",
+   "bronze_file": "data/bronze/ifdata/20260913/resumo_202506_t2.7d3bb591bb65.json",
+   "sha256": "7d3bb591bb65531cee19af5aad06e9d57d09ba4f02021baa83cdb55aab658c1b",
+   "transform": "IF.data Olinda Resumo (Saldo em R$); mapeamento de colunas para métricas",
+   "created_at": "2026-09-13T13:43:52+00:00"
   },
   {
-   "gold_object": "series:papelao",
-   "bronze_file": "data/bronze/ipeadata/20260912/ABPO12_PAPEL12.a86714d04641.json",
-   "sha256": "a86714d04641d127966b2319509f283970b6658faaf1b20eae06b3fff8de73eb",
-   "transform": "parse OData4 ValoresSerie; VALDATA->ISO date",
-   "created_at": "2026-09-12T12:39:58+00:00"
+   "gold_object": "institutions:202506",
+   "bronze_file": "data/bronze/ifdata/20260913/cadastro_202506.1cc71c92b195.json",
+   "sha256": "1cc71c92b1954e8cb5cf2c79581e56619059d856f7417ef1aafbb3e58e7e019a",
+   "transform": "IF.data cadastro",
+   "created_at": "2026-09-13T13:43:52+00:00"
   },
   {
-   "gold_object": "series:pmc_setorial",
-   "bronze_file": "data/bronze/ibge/20260912/pmc_setorial.8a5147be0ac6.json",
-   "sha256": "8a5147be0ac64ddbebcd7ec606887cfd9679c6487cd94b1a2bb90741baf520a9",
-   "transform": "parse Sidra (pmc_setorial); um key por atividade, índice de volume 2022=100",
-   "created_at": "2026-09-12T12:39:12+00:00"
+   "gold_object": "institutions:202509",
+   "bronze_file": "data/bronze/ifdata/20260913/resumo_202509_t2.a7d6d611766d.json",
+   "sha256": "a7d6d611766d44194159a14a8ba2581029f5f1939060e56de2d5ac636eb68ab7",
+   "transform": "IF.data Olinda Resumo (Saldo em R$); mapeamento de colunas para métricas",
+   "created_at": "2026-09-13T13:43:42+00:00"
   },
   {
-   "gold_object": "series:pms_setorial",
-   "bronze_file": "data/bronze/ibge/20260912/pms_setorial.ef70d1f60fdc.json",
-   "sha256": "ef70d1f60fdcfa29a0678ca835aa8e41f8afe9ab2bae32196796e8b45082ffb2",
-   "transform": "parse Sidra (pms_setorial); um key por atividade, índice de volume 2022=100",
-   "created_at": "2026-09-12T12:39:09+00:00"
+   "gold_object": "institutions:202509",
+   "bronze_file": "data/bronze/ifdata/20260913/cadastro_202509.6b8e70315977.json",
+   "sha256": "6b8e703159776d273d8a56a39d9fc9d46a5cb8406b4ee8b31aeb1aadaf3b2285",
+   "transform": "IF.data cadastro",
+   "created_at": "2026-09-13T13:43:42+00:00"
   },
   {
-   "gold_object": "series:pim_setorial",
-   "bronze_file": "data/bronze/ibge/20260912/pim_setorial.a93a682748b7.json",
-   "sha256": "a93a682748b75de9064634c2e958dc2d41c423b9d0036208838cce9c2a525463",
-   "transform": "parse Sidra t8888 v12606 c544; um key por atividade CNAE",
-   "created_at": "2026-09-12T12:39:05+00:00"
+   "gold_object": "institutions:202512",
+   "bronze_file": "data/bronze/ifdata/20260913/resumo_202512_t2.da36e4982fc7.json",
+   "sha256": "da36e4982fc7f6b025285083f6eca1fce018c3fadef9d64796e974f4cb6a795c",
+   "transform": "IF.data Olinda Resumo (Saldo em R$); mapeamento de colunas para métricas",
+   "created_at": "2026-09-13T13:41:24+00:00"
   },
   {
-   "gold_object": "series:desemprego",
-   "bronze_file": "data/bronze/ibge/20260912/pnad_desemprego.1118e7d382bc.json",
-   "sha256": "1118e7d382bc152d6558223a9f5332be7f084c45b60229dd01cd8a0f2d213962",
-   "transform": "parse API v3 agregados; período AAAAMM->ISO (mês final do trimestre móvel)",
-   "created_at": "2026-09-12T12:39:03+00:00"
+   "gold_object": "institutions:202512",
+   "bronze_file": "data/bronze/ifdata/20260913/cadastro_202512.a95de1ae7b0b.json",
+   "sha256": "a95de1ae7b0b20175bc7fb55ba31860383c538ecd2cb6348ea6b4d4ceba85cb0",
+   "transform": "IF.data cadastro",
+   "created_at": "2026-09-13T13:41:24+00:00"
   },
   {
-   "gold_object": "series:fd_papel_moeda",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27789.efd21839b8ce.json",
-   "sha256": "efd21839b8ce02dc8578da396c82c68a091f3d226dec6b73fc5a85a46cfddf48",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:39:01+00:00"
-  },
-  {
-   "gold_object": "series:fd_nao_residentes",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27816.8213e1839948.json",
-   "sha256": "8213e183994876451b8913b1cb4e2deb22dbe21acf3fa56549d6f6692741e63f",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:39:00+00:00"
-  },
-  {
-   "gold_object": "series:fd_m4",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27815.6ed613865c2a.json",
-   "sha256": "6ed613865c2a6fedc88364c4342b5189d2d29d891f5511467b90a16589322cd9",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:59+00:00"
-  },
-  {
-   "gold_object": "series:fd_titulos_federais",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27814.5b48576a02e4.json",
-   "sha256": "5b48576a02e499390d141d733ca90d7c664625fec98e8d39cf7848f03fbe5397",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:58+00:00"
-  },
-  {
-   "gold_object": "series:fd_m3",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27813.742bad55a456.json",
-   "sha256": "742bad55a45651d1e9e41846a6f56d3f33c361be165b217935ac159af4000c94",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:57+00:00"
-  },
-  {
-   "gold_object": "series:fd_fundos_monetarios",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27811.3cb08fff17ef.json",
-   "sha256": "3cb08fff17efdca4b4e587f6943c934c0cddbb895747e2951add5c7cbb67730d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:56+00:00"
-  },
-  {
-   "gold_object": "series:fd_compromissadas",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27812.e71a5e1ae6a4.json",
-   "sha256": "e71a5e1ae6a44eb4ff982fdf762dcbc3a848bdf469712b3530b1bbb643d0a87d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:56+00:00"
-  },
-  {
-   "gold_object": "series:fd_titulos_privados",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27809.aa7a8a617036.json",
-   "sha256": "aa7a8a6170367bd6f2c478381c4a16efb7f072e4db601aee9bc4a0c9bbdb5f66",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:54+00:00"
-  },
-  {
-   "gold_object": "series:fd_m2",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27810.b9edc9334b5e.json",
-   "sha256": "b9edc9334b5e7f7c0e530a5f97c7e878b4941e5e4e248873c91ab513a82a4a48",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:54+00:00"
-  },
-  {
-   "gold_object": "series:fd_outros_titulos",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27808.5f7d5564732b.json",
-   "sha256": "5f7d5564732bb6db0994aef9bebc3b58edd93ecad89f2948df70d1577c6ebcfe",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:53+00:00"
-  },
-  {
-   "gold_object": "series:fd_letras_credito",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27807.881920b2ce7b.json",
-   "sha256": "881920b2ce7ba56df7f9e809ad67acbb40015c3b06746517f69767365363bf31",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:52+00:00"
-  },
-  {
-   "gold_object": "series:fd_lf",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27806.12c697e20090.json",
-   "sha256": "12c697e20090ac29e6a1ced73f6257bdd78af6d0aa89e046cda9b3e548068f1d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:51+00:00"
-  },
-  {
-   "gold_object": "series:fd_prazo",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27805.606d0f6139de.json",
-   "sha256": "606d0f6139decdc36dbbe711667e0e99b247765d76951248fb4169654b34da12",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:50+00:00"
-  },
-  {
-   "gold_object": "series:fd_poupanca_sbpe",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_7836.dc23dd87da95.json",
-   "sha256": "dc23dd87da95fb026dbd59590f71c63523a0959ce15a16df384817509cc53e94",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:49+00:00"
-  },
-  {
-   "gold_object": "series:fd_poupanca",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_1835.951a88d98565.json",
-   "sha256": "951a88d98565aff73be037d73b912056330fb3d662a4de472dfde9fec223bdf9",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:48+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_S",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28804.af28f1e7b9e9.json",
-   "sha256": "af28f1e7b9e91167975b3bedfa0cb7b8cda88a3b292d04e9aa4ed1aab1c4ff2e",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:46+00:00"
-  },
-  {
-   "gold_object": "series:fd_vista",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_27790.f672728aa32f.json",
-   "sha256": "f672728aa32fdb352e4e72af00090476f4b6132b9cd48a843e665594dca26f80",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:46+00:00"
-  },
-  {
-   "gold_object": "series:emp_S",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28783.219719e19abb.json",
-   "sha256": "219719e19abb3372ca8aacaea3a2fcccde51ce5341f02e15e9f548337fdea838",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:45+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_Q",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28803.16780985a6a5.json",
-   "sha256": "16780985a6a5ccb8952432b262c444497a760ff2fecae1b1b545844c010d541d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:43+00:00"
-  },
-  {
-   "gold_object": "series:emp_Q",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28782.183ca0c350b9.json",
-   "sha256": "183ca0c350b9b7ff5db1018e882ee58a69845d6e8e04a1982bdc0076729b6836",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:42+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_P",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28802.9ec52d33dd18.json",
-   "sha256": "9ec52d33dd18722737df861fb866fde292d10cde747b63398e47e5166da5dff0",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:41+00:00"
-  },
-  {
-   "gold_object": "series:emp_P",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28781.b743b105f95c.json",
-   "sha256": "b743b105f95caf7cfa35ec2447b89aadf55c0a277b766546474ed1d66b6f1a75",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:40+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_O",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28801.1e57ce025e10.json",
-   "sha256": "1e57ce025e108edf797cb74363af26bb74d8e16d73230ed8666d15159b625fc8",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:39+00:00"
-  },
-  {
-   "gold_object": "series:emp_O",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28780.1d222325aa91.json",
-   "sha256": "1d222325aa9160aae9040abc06c3f46b4a979c860e8f732b0475d802062d3af1",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:38+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_N",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28800.02bbc52b04ff.json",
-   "sha256": "02bbc52b04ff4d389cfdfd65a9e8066f66bb992f7074d4e930c6e9e26b057059",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:37+00:00"
-  },
-  {
-   "gold_object": "series:emp_N",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28779.8aa342491b1a.json",
-   "sha256": "8aa342491b1aa3c701fa597daeb95ad022a833c43d5813129100eff0703b5eac",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:36+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_M",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28799.11221ae85a40.json",
-   "sha256": "11221ae85a407f14ecbc850f7bb71826f4b29d8f8c275d8169d33ba8d917636e",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:34+00:00"
-  },
-  {
-   "gold_object": "series:emp_M",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28778.5dcfd3d3a2f0.json",
-   "sha256": "5dcfd3d3a2f0cd4999f9ddee8770f2fcf1ce917e88787f6d1e7f3ee7371572af",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:33+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_L",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28798.077dc4ce421e.json",
-   "sha256": "077dc4ce421ea47a20d3981ef6e40715c403f3bd746878db0a98d8d569674a15",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:32+00:00"
-  },
-  {
-   "gold_object": "series:emp_L",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28777.10e371531f8e.json",
-   "sha256": "10e371531f8e28d059cbf1e63567015baca3898c1f9a31983c443c42409923b9",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:31+00:00"
-  },
-  {
-   "gold_object": "series:emp_K",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28776.8eee1a41d4f2.json",
-   "sha256": "8eee1a41d4f2dc0c03afb4d338d7fec78c76a0541bc370c403473d26d15ef436",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:30+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_K",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28797.69c57d270f0a.json",
-   "sha256": "69c57d270f0af789c6f2011f3d99d1040504ac02d951e7de4b741267c59d13e9",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:30+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_J",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28796.a3cbf8617bf4.json",
-   "sha256": "a3cbf8617bf45f454982bc89acc8033378a8b7cc641ac26310731aba765100eb",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:29+00:00"
-  },
-  {
-   "gold_object": "series:emp_J",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28775.f1ff4b095894.json",
-   "sha256": "f1ff4b09589439227ba2ac045e63f084ef8885f9539e33bb3f2371b0b5368b26",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:27+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_I",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28795.8a1bc3554bc1.json",
-   "sha256": "8a1bc3554bc111cfcca996ee2aa3a516c2e34440872dca3fa53175aead9c0ddf",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:26+00:00"
-  },
-  {
-   "gold_object": "series:emp_I",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28774.db195cfea90f.json",
-   "sha256": "db195cfea90fa5e9bc3c2a398cbdd5d0773ee0c7ec708f3afb09e09dce28ad8e",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:25+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_H",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28794.dbacd56aab10.json",
-   "sha256": "dbacd56aab10038eadb81cdcf341ded3d1493ee87481fba5d747aafd7768228e",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:24+00:00"
-  },
-  {
-   "gold_object": "series:emp_H",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28773.747d0daa7d6b.json",
-   "sha256": "747d0daa7d6bff75533f2899056f9d04cb03c2b55d7547052f2c8a298881bb65",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:23+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_SERV",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28793.6fa08c89de93.json",
-   "sha256": "6fa08c89de9326906e05ad95ef13a5e95837a54031282f46dd64a39e4145ce62",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:22+00:00"
-  },
-  {
-   "gold_object": "series:emp_SERV",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28772.620943d27715.json",
-   "sha256": "620943d27715073862680f8bcefe073d22c85e861baa5f5340e19e0f5ac4b242",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:20+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_G",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28792.a549a0b49b7d.json",
-   "sha256": "a549a0b49b7db3303663fb9d326e157ddbd022b3ae62da2bb7eeb94d4d9f6227",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:19+00:00"
-  },
-  {
-   "gold_object": "series:emp_G",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28771.68ea4a05f7aa.json",
-   "sha256": "68ea4a05f7aa15753a62c60cc640b695dce7ec98f0826c6675edcbfdc1d0bb14",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:18+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_F",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28791.d686a046ab0a.json",
-   "sha256": "d686a046ab0a5a6f849ccbd06a106a20f5fdd80c30460ffcd93fb7eb1927d721",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:17+00:00"
-  },
-  {
-   "gold_object": "series:emp_F",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28770.2e234a2cc28b.json",
-   "sha256": "2e234a2cc28bef95d8d14330d730ecea872fd409bd249ec0d0d2a647c31b5264",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:16+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_E",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28790.cd259bae1ec6.json",
-   "sha256": "cd259bae1ec6f88cbc2698eec20b9025d1f2aa3527bfe80eb7407115d2e53c0a",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:15+00:00"
-  },
-  {
-   "gold_object": "series:emp_E",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28769.2ca567d18837.json",
-   "sha256": "2ca567d1883713a6487cb23d9a672121db74da8ed9384203e982df919ea007e3",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:14+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_D",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28789.52e9f5d697f5.json",
-   "sha256": "52e9f5d697f572bbeae1d564a652d75ca6be5091a0d3356ec67196d8a505c983",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:13+00:00"
-  },
-  {
-   "gold_object": "series:emp_D",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28768.f8d0ff894f96.json",
-   "sha256": "f8d0ff894f96ceeaa8498edc5d05366f3016b24ac754c72eb4de1ad84245a947",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:12+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_SIUP",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28788.5ed5314ba867.json",
-   "sha256": "5ed5314ba867c3016aac4d900501f72d3de8588c055b1c23b2610b65a74c678a",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:11+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_C",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28787.6490fe32b25b.json",
-   "sha256": "6490fe32b25b478b39ee9c041e973db436959f533dd8e8b8b1e501797fcf36af",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:09+00:00"
-  },
-  {
-   "gold_object": "series:emp_SIUP",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28767.693b6a760e85.json",
-   "sha256": "693b6a760e85ad6e8138fecf3c2eb3e5d616d7be78b3814ab904c16dfa55b653",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:09+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_B",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28786.e5e8de36a08c.json",
-   "sha256": "e5e8de36a08cd6b887e0fa828d74b4cb16ac41dd4162ac8521aa2eb0796bb209",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:07+00:00"
-  },
-  {
-   "gold_object": "series:emp_C",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28766.ff72e8aa4f43.json",
-   "sha256": "ff72e8aa4f434c15553d6f2d901662749d530e8f43a7934fa5ca8f8ed92184e2",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:07+00:00"
-  },
-  {
-   "gold_object": "series:emp_B",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28765.5d3a45d0a21d.json",
-   "sha256": "5d3a45d0a21df97adf0fc274b98f75bd563853a92336cbdd057ccb42137bba65",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:06+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_A",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28785.69bdd072cefd.json",
-   "sha256": "69bdd072cefd183b417b59cb2a018b16a21caa3e6a540e946e2b5eea2658349d",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:05+00:00"
-  },
-  {
-   "gold_object": "series:emp_A",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28764.25a59f200e29.json",
-   "sha256": "25a59f200e2909af89afa491e3bfa57c0986f4ac6eea571a1c29c76272c37772",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:04+00:00"
-  },
-  {
-   "gold_object": "series:emp_sa_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28784.702b92001e3a.json",
-   "sha256": "702b92001e3a8e835939c8f1adea5b16907aea81d8ddf713304a937c9ada8748",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:03+00:00"
-  },
-  {
-   "gold_object": "series:emp_total",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_28763.157dd08d17db.json",
-   "sha256": "157dd08d17dbae07bd7c5270b5259b0a72f30e0b4d3235afefe9c45f00afaa54",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:02+00:00"
-  },
-  {
-   "gold_object": "series:cambio_ptax",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_3698.9792325773fb.json",
-   "sha256": "9792325773fb5c4e6456c90794b3c6d4a5322828ae10f6bb663f66d109b26104",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:01+00:00"
-  },
-  {
-   "gold_object": "series:desemprego",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_24369.69751d202f2c.json",
-   "sha256": "69751d202f2c9248ad1501a024868e57fbf7bf4d549231115b72db7688eb31b4",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:38:00+00:00"
-  },
-  {
-   "gold_object": "series:dir_prazo_pj_bndes",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_20906.01e5758c179c.json",
-   "sha256": "01e5758c179c1cece8c8f1eb1bc81e7bf5e599e575e4f24732a23053727bf5fb",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:37:59+00:00"
-  },
-  {
-   "gold_object": "series:dir_prazo_pj",
-   "bronze_file": "data/bronze/bcb_sgs/20260912/sgs_20896.f2027a879d13.json",
-   "sha256": "f2027a879d1354323f3e418074d2d7b66747bf2f5ea2984cc537027b7e1d7c19",
-   "transform": "parse JSON SGS; datas dd/mm/aaaa->ISO; valores para float",
-   "created_at": "2026-09-12T12:37:57+00:00"
+   "gold_object": "institutions:202603",
+   "bronze_file": "data/bronze/ifdata/20260913/resumo_202603_t2.276e34d76148.json",
+   "sha256": "276e34d76148a6739cc30d2d1907f2cd74be4f2bdbb037bac1666fa073fa1834",
+   "transform": "IF.data Olinda Resumo (Saldo em R$); mapeamento de colunas para métricas",
+   "created_at": "2026-09-13T13:41:12+00:00"
   }
  ],
  "n_revisoes_total": 3943,
