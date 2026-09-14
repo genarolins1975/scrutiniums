@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-13T15:27:23+00:00",
+ "gerado_em": "2026-09-14T17:34:58+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -24,18 +24,18 @@
    "nivel": "A — informe regulatório por certificado, mensal"
   }
  },
- "sintese": "Em 2026-07, empresas e famílias deviam R$ 12.2 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 33% e os títulos privados por 21%. O mercado de capitais registrou R$ 950 bi em ofertas encerradas entre 2025-09 e 2026-08 (+2% sobre os 12 meses anteriores), dos quais R$ 423 bi em debêntures e notas comerciais. Securitização — CRI: R$ 261 bi de créditos vinculados em 2026-07, 1.3% vencidos; CRA: R$ 185 bi de créditos vinculados em 2026-07, 0.8% vencidos.",
+ "sintese": "Em 2026-07, empresas e famílias deviam R$ 12.2 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 33% e os títulos privados por 21%. O mercado de capitais registrou R$ 952 bi em ofertas encerradas entre 2025-09 e 2026-08 (+2% sobre os 12 meses anteriores), dos quais R$ 424 bi em debêntures e notas comerciais. Securitização — CRI: R$ 261 bi de créditos vinculados em 2026-07, 1.3% vencidos; CRA: R$ 185 bi de créditos vinculados em 2026-07, 0.8% vencidos.",
  "saldo": {
   "disponivel": true,
   "mes": "2026-07",
   "unidade": "R$ milhões (saldo de fim de mês, nominal)",
   "total_setor_nao_financeiro": 21878407.0,
   "governo_geral": 9651478.0,
-  "total_pib_pct": 164.9,
+  "total_pib_pct": 165.01,
   "kpis": {
    "ef": {
     "saldo": 12226929.0,
-    "pib_pct": 92.16,
+    "pib_pct": 92.22,
     "var_12m_pct": 8.8,
     "sfn_share": 57.16,
     "mercado_share": 22.27,
@@ -93,7 +93,7 @@
    },
    "pj": {
     "saldo": 7211483.0,
-    "pib_pct": 54.36,
+    "pib_pct": 54.39,
     "var_12m_pct": 7.1,
     "sfn_share": 32.56,
     "mercado_share": 36.22,
@@ -151,7 +151,7 @@
    },
    "pf": {
     "saldo": 5015446.0,
-    "pib_pct": 37.8,
+    "pib_pct": 37.83,
     "var_12m_pct": 11.2,
     "sfn_share": 92.53,
     "mercado_share": 2.2,
@@ -493,7 +493,7 @@
     {
      "mes": "2015-01",
      "total": 4314679.0,
-     "pib_pct": 74.43,
+     "pib_pct": 74.39,
      "sfn": 2891260.0,
      "osf": 66788.0,
      "fg": 80740.0,
@@ -505,7 +505,7 @@
     {
      "mes": "2015-02",
      "total": 4392772.0,
-     "pib_pct": 75.59,
+     "pib_pct": 75.58,
      "sfn": 2901261.0,
      "osf": 67999.0,
      "fg": 81107.0,
@@ -601,7 +601,7 @@
     {
      "mes": "2015-10",
      "total": 4842461.0,
-     "pib_pct": 81.19,
+     "pib_pct": 81.18,
      "sfn": 3015813.0,
      "osf": 75087.0,
      "fg": 90308.0,
@@ -637,7 +637,7 @@
     {
      "mes": "2016-01",
      "total": 4937737.0,
-     "pib_pct": 82.25,
+     "pib_pct": 82.24,
      "sfn": 3047722.0,
      "osf": 77325.0,
      "fg": 92030.0,
@@ -649,7 +649,7 @@
     {
      "mes": "2016-02",
      "total": 4910593.0,
-     "pib_pct": 81.49,
+     "pib_pct": 81.48,
      "sfn": 3030272.0,
      "osf": 78032.0,
      "fg": 92124.0,
@@ -673,7 +673,7 @@
     {
      "mes": "2016-04",
      "total": 4716707.0,
-     "pib_pct": 77.79,
+     "pib_pct": 77.8,
      "sfn": 2989811.0,
      "osf": 77376.0,
      "fg": 92323.0,
@@ -757,7 +757,7 @@
     {
      "mes": "2016-11",
      "total": 4665277.0,
-     "pib_pct": 74.8,
+     "pib_pct": 74.79,
      "sfn": 2957177.0,
      "osf": 81055.0,
      "fg": 95694.0,
@@ -781,7 +781,7 @@
     {
      "mes": "2017-01",
      "total": 4597440.0,
-     "pib_pct": 72.99,
+     "pib_pct": 72.97,
      "sfn": 2928657.0,
      "osf": 80954.0,
      "fg": 98169.0,
@@ -817,7 +817,7 @@
     {
      "mes": "2017-04",
      "total": 4607280.0,
-     "pib_pct": 72.29,
+     "pib_pct": 72.3,
      "sfn": 2923982.0,
      "osf": 82311.0,
      "fg": 98520.0,
@@ -973,7 +973,7 @@
     {
      "mes": "2018-05",
      "total": 4850437.0,
-     "pib_pct": 71.92,
+     "pib_pct": 71.93,
      "sfn": 2949889.0,
      "osf": 86742.0,
      "fg": 112501.0,
@@ -1117,7 +1117,7 @@
     {
      "mes": "2019-05",
      "total": 5385148.0,
-     "pib_pct": 75.24,
+     "pib_pct": 75.22,
      "sfn": 3128797.0,
      "osf": 94362.0,
      "fg": 124813.0,
@@ -1213,7 +1213,7 @@
     {
      "mes": "2020-01",
      "total": 5745153.0,
-     "pib_pct": 77.38,
+     "pib_pct": 77.37,
      "sfn": 3294068.0,
      "osf": 96929.0,
      "fg": 137169.0,
@@ -1225,7 +1225,7 @@
     {
      "mes": "2020-02",
      "total": 5836037.0,
-     "pib_pct": 78.17,
+     "pib_pct": 78.16,
      "sfn": 3311027.0,
      "osf": 96468.0,
      "fg": 134878.0,
@@ -1249,7 +1249,7 @@
     {
      "mes": "2020-04",
      "total": 6238132.0,
-     "pib_pct": 83.65,
+     "pib_pct": 83.67,
      "sfn": 3400969.0,
      "osf": 100472.0,
      "fg": 137764.0,
@@ -1261,7 +1261,7 @@
     {
      "mes": "2020-05",
      "total": 6234862.0,
-     "pib_pct": 84.06,
+     "pib_pct": 84.07,
      "sfn": 3411826.0,
      "osf": 100958.0,
      "fg": 139742.0,
@@ -1285,7 +1285,7 @@
     {
      "mes": "2020-07",
      "total": 6252274.0,
-     "pib_pct": 84.06,
+     "pib_pct": 84.07,
      "sfn": 3477843.0,
      "osf": 101066.0,
      "fg": 143018.0,
@@ -1297,7 +1297,7 @@
     {
      "mes": "2020-08",
      "total": 6382592.0,
-     "pib_pct": 85.73,
+     "pib_pct": 85.74,
      "sfn": 3543698.0,
      "osf": 102776.0,
      "fg": 145048.0,
@@ -1333,7 +1333,7 @@
     {
      "mes": "2020-11",
      "total": 6548938.0,
-     "pib_pct": 86.83,
+     "pib_pct": 86.84,
      "sfn": 3751174.0,
      "osf": 104339.0,
      "fg": 152201.0,
@@ -1357,7 +1357,7 @@
     {
      "mes": "2021-01",
      "total": 6662250.0,
-     "pib_pct": 86.82,
+     "pib_pct": 86.81,
      "sfn": 3808116.0,
      "osf": 110729.0,
      "fg": 156888.0,
@@ -1441,7 +1441,7 @@
     {
      "mes": "2021-08",
      "total": 7096707.0,
-     "pib_pct": 82.52,
+     "pib_pct": 82.51,
      "sfn": 4128437.0,
      "osf": 119751.0,
      "fg": 156861.0,
@@ -1501,7 +1501,7 @@
     {
      "mes": "2022-01",
      "total": 7584891.0,
-     "pib_pct": 83.77,
+     "pib_pct": 83.76,
      "sfn": 4456426.0,
      "osf": 126810.0,
      "fg": 161022.0,
@@ -1513,7 +1513,7 @@
     {
      "mes": "2022-02",
      "total": 7592972.0,
-     "pib_pct": 83.43,
+     "pib_pct": 83.42,
      "sfn": 4504043.0,
      "osf": 127638.0,
      "fg": 162039.0,
@@ -1573,7 +1573,7 @@
     {
      "mes": "2022-07",
      "total": 8071169.0,
-     "pib_pct": 84.15,
+     "pib_pct": 84.14,
      "sfn": 4775868.0,
      "osf": 139600.0,
      "fg": 171286.0,
@@ -1681,7 +1681,7 @@
     {
      "mes": "2023-04",
      "total": 8811584.0,
-     "pib_pct": 84.56,
+     "pib_pct": 84.57,
      "sfn": 5204364.0,
      "osf": 150503.0,
      "fg": 181410.0,
@@ -1801,7 +1801,7 @@
     {
      "mes": "2024-02",
      "total": 9452374.0,
-     "pib_pct": 85.17,
+     "pib_pct": 85.18,
      "sfn": 5557412.0,
      "osf": 166723.0,
      "fg": 196304.0,
@@ -1825,7 +1825,7 @@
     {
      "mes": "2024-04",
      "total": 9707373.0,
-     "pib_pct": 86.61,
+     "pib_pct": 86.6,
      "sfn": 5648234.0,
      "osf": 169572.0,
      "fg": 198149.0,
@@ -1897,7 +1897,7 @@
     {
      "mes": "2024-10",
      "total": 10500507.0,
-     "pib_pct": 89.97,
+     "pib_pct": 89.96,
      "sfn": 5978899.0,
      "osf": 185298.0,
      "fg": 207670.0,
@@ -1933,7 +1933,7 @@
     {
      "mes": "2025-01",
      "total": 10867547.0,
-     "pib_pct": 91.76,
+     "pib_pct": 91.75,
      "sfn": 6144501.0,
      "osf": 195741.0,
      "fg": 213094.0,
@@ -2053,7 +2053,7 @@
     {
      "mes": "2025-11",
      "total": 11587971.0,
-     "pib_pct": 91.57,
+     "pib_pct": 91.58,
      "sfn": 6661805.0,
      "osf": 219230.0,
      "fg": 228591.0,
@@ -2113,7 +2113,7 @@
     {
      "mes": "2026-04",
      "total": 12002029.0,
-     "pib_pct": 92.05,
+     "pib_pct": 92.06,
      "sfn": 6891387.0,
      "osf": 228553.0,
      "fg": 233388.0,
@@ -2137,7 +2137,7 @@
     {
      "mes": "2026-06",
      "total": 12226943.0,
-     "pib_pct": 92.68,
+     "pib_pct": 92.7,
      "sfn": 6965633.0,
      "osf": 233332.0,
      "fg": 233406.0,
@@ -2149,7 +2149,7 @@
     {
      "mes": "2026-07",
      "total": 12226929.0,
-     "pib_pct": 92.16,
+     "pib_pct": 92.22,
      "sfn": 6989006.0,
      "osf": 235156.0,
      "fg": 233624.0,
@@ -2415,7 +2415,7 @@
     {
      "mes": "2014-10",
      "total": 2605418.0,
-     "pib_pct": 45.58,
+     "pib_pct": 45.57,
      "sfn": 1421553.0,
      "osf": 16592.0,
      "fg": 34033.0,
@@ -2451,7 +2451,7 @@
     {
      "mes": "2015-01",
      "total": 2747671.0,
-     "pib_pct": 47.4,
+     "pib_pct": 47.38,
      "sfn": 1461871.0,
      "osf": 18008.0,
      "fg": 36158.0,
@@ -2559,7 +2559,7 @@
     {
      "mes": "2015-10",
      "total": 3192607.0,
-     "pib_pct": 53.53,
+     "pib_pct": 53.52,
      "sfn": 1520498.0,
      "osf": 22825.0,
      "fg": 38645.0,
@@ -2595,7 +2595,7 @@
     {
      "mes": "2016-01",
      "total": 3258533.0,
-     "pib_pct": 54.28,
+     "pib_pct": 54.27,
      "sfn": 1527089.0,
      "osf": 24205.0,
      "fg": 39232.0,
@@ -2607,7 +2607,7 @@
     {
      "mes": "2016-02",
      "total": 3230073.0,
-     "pib_pct": 53.6,
+     "pib_pct": 53.59,
      "sfn": 1508729.0,
      "osf": 24528.0,
      "fg": 39332.0,
@@ -2631,7 +2631,7 @@
     {
      "mes": "2016-04",
      "total": 3038064.0,
-     "pib_pct": 50.1,
+     "pib_pct": 50.11,
      "sfn": 1464696.0,
      "osf": 23241.0,
      "fg": 43724.0,
@@ -2739,7 +2739,7 @@
     {
      "mes": "2017-01",
      "total": 2861975.0,
-     "pib_pct": 45.43,
+     "pib_pct": 45.42,
      "sfn": 1355792.0,
      "osf": 25427.0,
      "fg": 44892.0,
@@ -2775,7 +2775,7 @@
     {
      "mes": "2017-04",
      "total": 2859016.0,
-     "pib_pct": 44.86,
+     "pib_pct": 44.87,
      "sfn": 1339196.0,
      "osf": 26272.0,
      "fg": 44682.0,
@@ -2787,7 +2787,7 @@
     {
      "mes": "2017-05",
      "total": 2853345.0,
-     "pib_pct": 44.54,
+     "pib_pct": 44.55,
      "sfn": 1322713.0,
      "osf": 26806.0,
      "fg": 44523.0,
@@ -2919,7 +2919,7 @@
     {
      "mes": "2018-04",
      "total": 2899355.0,
-     "pib_pct": 43.08,
+     "pib_pct": 43.07,
      "sfn": 1252647.0,
      "osf": 27218.0,
      "fg": 45530.0,
@@ -2931,7 +2931,7 @@
     {
      "mes": "2018-05",
      "total": 2976385.0,
-     "pib_pct": 44.13,
+     "pib_pct": 44.14,
      "sfn": 1255732.0,
      "osf": 28454.0,
      "fg": 45763.0,
@@ -3027,7 +3027,7 @@
     {
      "mes": "2019-01",
      "total": 3119315.0,
-     "pib_pct": 44.37,
+     "pib_pct": 44.38,
      "sfn": 1264289.0,
      "osf": 31251.0,
      "fg": 50096.0,
@@ -3075,7 +3075,7 @@
     {
      "mes": "2019-05",
      "total": 3328683.0,
-     "pib_pct": 46.5,
+     "pib_pct": 46.49,
      "sfn": 1259210.0,
      "osf": 33750.0,
      "fg": 50626.0,
@@ -3099,7 +3099,7 @@
     {
      "mes": "2019-07",
      "total": 3277539.0,
-     "pib_pct": 45.45,
+     "pib_pct": 45.44,
      "sfn": 1238427.0,
      "osf": 32582.0,
      "fg": 52491.0,
@@ -3171,7 +3171,7 @@
     {
      "mes": "2020-01",
      "total": 3514719.0,
-     "pib_pct": 47.34,
+     "pib_pct": 47.33,
      "sfn": 1261497.0,
      "osf": 34814.0,
      "fg": 57041.0,
@@ -3183,7 +3183,7 @@
     {
      "mes": "2020-02",
      "total": 3597569.0,
-     "pib_pct": 48.19,
+     "pib_pct": 48.18,
      "sfn": 1269427.0,
      "osf": 34100.0,
      "fg": 57162.0,
@@ -3207,7 +3207,7 @@
     {
      "mes": "2020-04",
      "total": 4009741.0,
-     "pib_pct": 53.77,
+     "pib_pct": 53.78,
      "sfn": 1372250.0,
      "osf": 37768.0,
      "fg": 58935.0,
@@ -3219,7 +3219,7 @@
     {
      "mes": "2020-05",
      "total": 4008383.0,
-     "pib_pct": 54.04,
+     "pib_pct": 54.05,
      "sfn": 1385004.0,
      "osf": 38018.0,
      "fg": 60338.0,
@@ -3291,7 +3291,7 @@
     {
      "mes": "2020-11",
      "total": 4136326.0,
-     "pib_pct": 54.84,
+     "pib_pct": 54.85,
      "sfn": 1546351.0,
      "osf": 39658.0,
      "fg": 69766.0,
@@ -3459,7 +3459,7 @@
     {
      "mes": "2022-01",
      "total": 4629680.0,
-     "pib_pct": 51.13,
+     "pib_pct": 51.12,
      "sfn": 1721330.0,
      "osf": 51803.0,
      "fg": 79669.0,
@@ -3471,7 +3471,7 @@
     {
      "mes": "2022-02",
      "total": 4617852.0,
-     "pib_pct": 50.74,
+     "pib_pct": 50.73,
      "sfn": 1747748.0,
      "osf": 51709.0,
      "fg": 80877.0,
@@ -3507,7 +3507,7 @@
     {
      "mes": "2022-05",
      "total": 4649948.0,
-     "pib_pct": 49.58,
+     "pib_pct": 49.57,
      "sfn": 1793789.0,
      "osf": 54956.0,
      "fg": 85169.0,
@@ -3543,7 +3543,7 @@
     {
      "mes": "2022-08",
      "total": 4929053.0,
-     "pib_pct": 50.83,
+     "pib_pct": 50.82,
      "sfn": 1837730.0,
      "osf": 59420.0,
      "fg": 89113.0,
@@ -3579,7 +3579,7 @@
     {
      "mes": "2022-11",
      "total": 5202871.0,
-     "pib_pct": 52.05,
+     "pib_pct": 52.06,
      "sfn": 1906153.0,
      "osf": 62104.0,
      "fg": 93102.0,
@@ -3603,7 +3603,7 @@
     {
      "mes": "2023-01",
      "total": 5258868.0,
-     "pib_pct": 51.73,
+     "pib_pct": 51.72,
      "sfn": 1931950.0,
      "osf": 60356.0,
      "fg": 95550.0,
@@ -3639,7 +3639,7 @@
     {
      "mes": "2023-04",
      "total": 5286332.0,
-     "pib_pct": 50.73,
+     "pib_pct": 50.74,
      "sfn": 1923056.0,
      "osf": 62549.0,
      "fg": 97808.0,
@@ -3747,7 +3747,7 @@
     {
      "mes": "2024-01",
      "total": 5574780.0,
-     "pib_pct": 50.57,
+     "pib_pct": 50.56,
      "sfn": 1986427.0,
      "osf": 69445.0,
      "fg": 107838.0,
@@ -3783,7 +3783,7 @@
     {
      "mes": "2024-04",
      "total": 5789698.0,
-     "pib_pct": 51.66,
+     "pib_pct": 51.65,
      "sfn": 2001575.0,
      "osf": 72150.0,
      "fg": 109796.0,
@@ -3831,7 +3831,7 @@
     {
      "mes": "2024-08",
      "total": 6202975.0,
-     "pib_pct": 53.92,
+     "pib_pct": 53.93,
      "sfn": 2051639.0,
      "osf": 77444.0,
      "fg": 115335.0,
@@ -3867,7 +3867,7 @@
     {
      "mes": "2024-11",
      "total": 6489534.0,
-     "pib_pct": 55.33,
+     "pib_pct": 55.32,
      "sfn": 2125915.0,
      "osf": 81803.0,
      "fg": 119037.0,
@@ -3891,7 +3891,7 @@
     {
      "mes": "2025-01",
      "total": 6551063.0,
-     "pib_pct": 55.32,
+     "pib_pct": 55.31,
      "sfn": 2131442.0,
      "osf": 84299.0,
      "fg": 123281.0,
@@ -4071,7 +4071,7 @@
     {
      "mes": "2026-04",
      "total": 7047615.0,
-     "pib_pct": 54.05,
+     "pib_pct": 54.06,
      "sfn": 2317019.0,
      "osf": 94210.0,
      "fg": 136786.0,
@@ -4083,7 +4083,7 @@
     {
      "mes": "2026-05",
      "total": 7126823.0,
-     "pib_pct": 54.38,
+     "pib_pct": 54.37,
      "sfn": 2335049.0,
      "osf": 95171.0,
      "fg": 137010.0,
@@ -4095,7 +4095,7 @@
     {
      "mes": "2026-06",
      "total": 7234119.0,
-     "pib_pct": 54.83,
+     "pib_pct": 54.84,
      "sfn": 2362965.0,
      "osf": 96915.0,
      "fg": 137557.0,
@@ -4107,7 +4107,7 @@
     {
      "mes": "2026-07",
      "total": 7211483.0,
-     "pib_pct": 54.36,
+     "pib_pct": 54.39,
      "sfn": 2348276.0,
      "osf": 97699.0,
      "fg": 137891.0,
@@ -4337,7 +4337,7 @@
     {
      "mes": "2014-07",
      "total": 1459457.0,
-     "pib_pct": 26.01,
+     "pib_pct": 26.02,
      "sfn": 1332357.0,
      "osf": 46349.0,
      "fg": 40212.0,
@@ -4409,7 +4409,7 @@
     {
      "mes": "2015-01",
      "total": 1567008.0,
-     "pib_pct": 27.03,
+     "pib_pct": 27.02,
      "sfn": 1429389.0,
      "osf": 48780.0,
      "fg": 44582.0,
@@ -4565,7 +4565,7 @@
     {
      "mes": "2016-02",
      "total": 1680520.0,
-     "pib_pct": 27.89,
+     "pib_pct": 27.88,
      "sfn": 1521543.0,
      "osf": 53504.0,
      "fg": 52792.0,
@@ -4589,7 +4589,7 @@
     {
      "mes": "2016-04",
      "total": 1678643.0,
-     "pib_pct": 27.68,
+     "pib_pct": 27.69,
      "sfn": 1525115.0,
      "osf": 54135.0,
      "fg": 48599.0,
@@ -4697,7 +4697,7 @@
     {
      "mes": "2017-01",
      "total": 1735465.0,
-     "pib_pct": 27.55,
+     "pib_pct": 27.54,
      "sfn": 1572865.0,
      "osf": 55527.0,
      "fg": 53277.0,
@@ -4733,7 +4733,7 @@
     {
      "mes": "2017-04",
      "total": 1748264.0,
-     "pib_pct": 27.43,
+     "pib_pct": 27.44,
      "sfn": 1584786.0,
      "osf": 56039.0,
      "fg": 53838.0,
@@ -4745,7 +4745,7 @@
     {
      "mes": "2017-05",
      "total": 1759924.0,
-     "pib_pct": 27.47,
+     "pib_pct": 27.48,
      "sfn": 1594997.0,
      "osf": 56230.0,
      "fg": 54911.0,
@@ -4877,7 +4877,7 @@
     {
      "mes": "2018-04",
      "total": 1864191.0,
-     "pib_pct": 27.7,
+     "pib_pct": 27.69,
      "sfn": 1685171.0,
      "osf": 58069.0,
      "fg": 65946.0,
@@ -4997,7 +4997,7 @@
     {
      "mes": "2019-02",
      "total": 2003694.0,
-     "pib_pct": 28.36,
+     "pib_pct": 28.35,
      "sfn": 1822145.0,
      "osf": 59835.0,
      "fg": 71818.0,
@@ -5033,7 +5033,7 @@
     {
      "mes": "2019-05",
      "total": 2056465.0,
-     "pib_pct": 28.73,
+     "pib_pct": 28.72,
      "sfn": 1869587.0,
      "osf": 60612.0,
      "fg": 74187.0,
@@ -5057,7 +5057,7 @@
     {
      "mes": "2019-07",
      "total": 2084657.0,
-     "pib_pct": 28.91,
+     "pib_pct": 28.9,
      "sfn": 1898176.0,
      "osf": 61119.0,
      "fg": 76321.0,
@@ -5165,7 +5165,7 @@
     {
      "mes": "2020-04",
      "total": 2228391.0,
-     "pib_pct": 29.88,
+     "pib_pct": 29.89,
      "sfn": 2028719.0,
      "osf": 62704.0,
      "fg": 78829.0,
@@ -5213,7 +5213,7 @@
     {
      "mes": "2020-08",
      "total": 2291838.0,
-     "pib_pct": 30.78,
+     "pib_pct": 30.79,
      "sfn": 2091204.0,
      "osf": 63783.0,
      "fg": 79894.0,
@@ -5273,7 +5273,7 @@
     {
      "mes": "2021-01",
      "total": 2463815.0,
-     "pib_pct": 32.11,
+     "pib_pct": 32.1,
      "sfn": 2252298.0,
      "osf": 65766.0,
      "fg": 83456.0,
@@ -5357,7 +5357,7 @@
     {
      "mes": "2021-08",
      "total": 2721684.0,
-     "pib_pct": 31.65,
+     "pib_pct": 31.64,
      "sfn": 2495054.0,
      "osf": 71931.0,
      "fg": 81685.0,
@@ -5417,7 +5417,7 @@
     {
      "mes": "2022-01",
      "total": 2955211.0,
-     "pib_pct": 32.64,
+     "pib_pct": 32.63,
      "sfn": 2735096.0,
      "osf": 75007.0,
      "fg": 81353.0,
@@ -5561,7 +5561,7 @@
     {
      "mes": "2023-01",
      "total": 3459360.0,
-     "pib_pct": 34.03,
+     "pib_pct": 34.02,
      "sfn": 3221831.0,
      "osf": 85077.0,
      "fg": 84147.0,
@@ -5741,7 +5741,7 @@
     {
      "mes": "2024-04",
      "total": 3917675.0,
-     "pib_pct": 34.96,
+     "pib_pct": 34.95,
      "sfn": 3646659.0,
      "osf": 97422.0,
      "fg": 88353.0,
@@ -5849,7 +5849,7 @@
     {
      "mes": "2025-01",
      "total": 4316484.0,
-     "pib_pct": 36.45,
+     "pib_pct": 36.44,
      "sfn": 4013059.0,
      "osf": 111442.0,
      "fg": 89813.0,
@@ -6053,7 +6053,7 @@
     {
      "mes": "2026-06",
      "total": 4992824.0,
-     "pib_pct": 37.84,
+     "pib_pct": 37.85,
      "sfn": 4602668.0,
      "osf": 136417.0,
      "fg": 95849.0,
@@ -6065,7 +6065,7 @@
     {
      "mes": "2026-07",
      "total": 5015446.0,
-     "pib_pct": 37.8,
+     "pib_pct": 37.83,
      "sfn": 4640730.0,
      "osf": 137457.0,
      "fg": 95733.0,
@@ -6238,16 +6238,16 @@
   "ultimo_mes_com_oferta": "2026-08",
   "unidade": "R$ (valor total da oferta no regime anterior; valor registrado da oferta encerrada na Res. 160)",
   "kpis": {
-   "valor_12m": 950103417494.23,
-   "n_12m": 3342,
-   "var_12m_pct": 2.3,
-   "divida_corporativa_12m": 423407510794.53,
-   "securitizacao_12m": 264741466495.74,
-   "divida_corporativa_var_12m_pct": -15.7,
-   "profissional_share": 80.08,
-   "incentivadas_share_debentures": 31.4,
-   "hhi_lideres": 1695,
-   "top5_lideres_share": 79.31,
+   "valor_12m": 951528417494.23,
+   "n_12m": 3352,
+   "var_12m_pct": 2.5,
+   "divida_corporativa_12m": 424407510794.53,
+   "securitizacao_12m": 264966466495.74,
+   "divida_corporativa_var_12m_pct": -15.5,
+   "profissional_share": 80.11,
+   "incentivadas_share_debentures": 31.32,
+   "hhi_lideres": 1688,
+   "top5_lideres_share": 79.13,
    "emissores_distintos_divida": 637
   },
   "familias": [
@@ -6267,72 +6267,72 @@
   "por_familia": [
    {
     "familia": "Debêntures",
-    "valor": 374268917576.53,
-    "n": 524,
-    "share": 39.39,
-    "var_12m_pct": -17.4
+    "valor": 375268917576.53,
+    "n": 525,
+    "share": 39.44,
+    "var_12m_pct": -17.2
    },
    {
     "familia": "Cotas de FII e FIAGRO",
-    "valor": 139845566065.07,
-    "n": 465,
-    "share": 14.72,
-    "var_12m_pct": 83.7
+    "valor": 139945566065.07,
+    "n": 467,
+    "share": 14.71,
+    "var_12m_pct": 83.8
    },
    {
     "familia": "Cotas de FIDC",
-    "valor": 110762098136.09,
-    "n": 1031,
+    "valor": 110987098136.09,
+    "n": 1037,
     "share": 11.66,
-    "var_12m_pct": -14.0
+    "var_12m_pct": -13.8
    },
    {
     "familia": "Outros títulos de securitização",
     "valor": 80116006493.6,
     "n": 122,
-    "share": 8.43,
+    "share": 8.42,
     "var_12m_pct": 212.7
    },
    {
     "familia": "Notas comerciais e promissórias",
     "valor": 49138593218.0,
     "n": 266,
-    "share": 5.17,
+    "share": 5.16,
     "var_12m_pct": 0.3
    },
    {
     "familia": "Ações",
     "valor": 49117609626.03,
     "n": 17,
-    "share": 5.17,
+    "share": 5.16,
     "var_12m_pct": 565.5
    },
    {
     "familia": "CRI",
     "valor": 42146404866.05,
     "n": 422,
-    "share": 4.44,
+    "share": 4.43,
     "var_12m_pct": -16.1
    },
    {
     "familia": "Cotas de FIP",
     "valor": 36859049006.81,
     "n": 202,
-    "share": 3.88,
+    "share": 3.87,
     "var_12m_pct": -2.2
    },
    {
     "familia": "Cotas de outros fundos",
-    "valor": 35763556881.23,
-    "n": 173,
-    "share": 3.76,
-    "var_12m_pct": -36.8
+    "valor": 35863556881.23,
+    "n": 174,
+    "share": 3.77,
+    "var_12m_pct": -36.6
    },
    {
     "familia": "CRA",
     "valor": 31716957000.0,
     "n": 112,
-    "share": 3.34,
+    "share": 3.33,
     "var_12m_pct": -20.2
    },
    {
@@ -9659,29 +9659,29 @@
    },
    {
     "mes": "2026-03",
-    "total": 80348150281.26001,
-    "n": 286,
+    "total": 81618150281.26001,
+    "n": 291,
     "Outros títulos de securitização": 7112818107.0,
-    "Debêntures": 36616245370.0,
+    "Debêntures": 37616245370.0,
     "CRI": 4449446598.18,
     "CRA": 1221950000.0,
-    "Cotas de FIDC": 14086417932.259998,
-    "Cotas de FII e FIAGRO": 6537869459.37,
+    "Cotas de FIDC": 14156417932.259998,
+    "Cotas de FII e FIAGRO": 6637869459.37,
     "Ações": 704426068.75,
     "Notas comerciais e promissórias": 3924670000.0,
     "Cotas de FIP": 5062046819.52,
-    "Cotas de outros fundos": 632259926.18,
+    "Cotas de outros fundos": 732259926.18,
     "Letras financeiras": 0.0,
     "Outros": 0.0,
-    "divida_corporativa": 40540915370.0,
-    "securitizacao": 26870632637.44
+    "divida_corporativa": 41540915370.0,
+    "securitizacao": 26940632637.44
    },
    {
     "mes": "2026-04",
-    "total": 49152820106.73999,
-    "n": 179,
+    "total": 49157820106.73999,
+    "n": 180,
     "Outros": 52042453.84,
-    "Cotas de FIDC": 6959000447.66,
+    "Cotas de FIDC": 6964000447.66,
     "Debêntures": 19805205000.0,
     "CRI": 2704109783.36,
     "Notas comerciais e promissórias": 4525653000.0,
@@ -9693,7 +9693,7 @@
     "Ações": 203539817.0,
     "Letras financeiras": 0.0,
     "divida_corporativa": 24330858000.0,
-    "securitizacao": 13050802760.02
+    "securitizacao": 13055802760.02
    },
    {
     "mes": "2026-05",
@@ -9716,22 +9716,22 @@
    },
    {
     "mes": "2026-06",
-    "total": 77235629327.26001,
-    "n": 181,
+    "total": 77385629327.26001,
+    "n": 185,
     "Outros": 35830947.24,
     "CRA": 1237995000.0,
     "Debêntures": 22153775230.0,
     "CRI": 2701441000.0,
     "Ações": 8428184894.530001,
     "Notas comerciais e promissórias": 10373499460.0,
-    "Cotas de FIDC": 7172977927.32,
+    "Cotas de FIDC": 7322977927.32,
     "Outros títulos de securitização": 10265626111.6,
     "Cotas de FII e FIAGRO": 11720837297.81,
     "Cotas de outros fundos": 859480000.0,
     "Cotas de FIP": 2285981458.76,
     "Letras financeiras": 0.0,
     "divida_corporativa": 32527274690.0,
-    "securitizacao": 21378040038.92
+    "securitizacao": 21528040038.92
    },
    {
     "mes": "2026-07",
@@ -10111,19 +10111,19 @@
    },
    {
     "ano": "2026",
-    "total": 483803509854.64996,
-    "n": 1595,
-    "divida_corporativa": 208435029345.48,
-    "securitizacao": 135004051183.61,
+    "total": 485228509854.64996,
+    "n": 1605,
+    "divida_corporativa": 209435029345.48,
+    "securitizacao": 135229051183.61,
     "meses": 8,
     "Ações": 37763485663.03,
     "CRA": 8920804000.0,
     "CRI": 19978401899.58,
-    "Cotas de FIDC": 58041180415.43,
-    "Cotas de FII e FIAGRO": 66369403644.96,
+    "Cotas de FIDC": 58266180415.43,
+    "Cotas de FII e FIAGRO": 66469403644.96,
     "Cotas de FIP": 20909459508.989998,
-    "Cotas de outros fundos": 15167155073.059998,
-    "Debêntures": 177622143485.48,
+    "Cotas de outros fundos": 15267155073.059998,
+    "Debêntures": 178622143485.48,
     "Letras financeiras": 0.0,
     "Notas comerciais e promissórias": 30812885860.0,
     "Outros": 154925435.52,
@@ -10136,52 +10136,52 @@
     "ini": "2025-09",
     "fim": "2026-08"
    },
-   "valor": 949734758869.41,
-   "n": 3334,
+   "valor": 951159758869.41,
+   "n": 3344,
    "publico_alvo": [
     {
      "publico": "Profissional",
-     "n": 2913,
-     "valor": 760590123163.59,
-     "share": 80.08
+     "n": 2923,
+     "valor": 762015123163.59,
+     "share": 80.11
     },
     {
      "publico": "Qualificado",
      "n": 338,
      "valor": 118812465064.92,
-     "share": 12.51
+     "share": 12.49
     },
     {
      "publico": "Público Geral",
      "n": 83,
      "valor": 70332170640.9,
-     "share": 7.41
+     "share": 7.39
     }
    ],
    "regime_distribuicao": [
     {
      "regime": "Melhores Esforços",
-     "n": 2349,
-     "valor": 422971211157.52,
-     "share": 44.54
+     "n": 2359,
+     "valor": 424396211157.52,
+     "share": 44.62
     },
     {
      "regime": "Garantia Firme de Colocação",
      "n": 843,
      "valor": 417450668266.63,
-     "share": 43.95
+     "share": 43.89
     },
     {
      "regime": "Misto",
      "n": 123,
      "valor": 59159945887.98,
-     "share": 6.23
+     "share": 6.22
     },
     {
      "regime": "Garantia Firme de Liquidação",
      "n": 17,
      "valor": 47396342560.48,
-     "share": 4.99
+     "share": 4.98
     },
     {
      "regime": "não informado",
@@ -10191,16 +10191,16 @@
     }
    ],
    "debentures": {
-    "valor": 374268917576.53,
-    "n": 524,
-    "incentivadas_share": 31.4,
+    "valor": 375268917576.53,
+    "n": 525,
+    "incentivadas_share": 31.32,
     "incentivadas_n": 138,
-    "sustentaveis_share": 7.09,
+    "sustentaveis_share": 7.07,
     "sustentaveis_n": 29
    },
    "em_andamento": {
-    "n": 1495,
-    "valor_registrado": 423561561028.63
+    "n": 1503,
+    "valor_registrado": 424974303940.35
    }
   },
   "divida_corporativa": {
@@ -10208,8 +10208,8 @@
     "ini": "2025-09",
     "fim": "2026-08"
    },
-   "valor": 423407510794.53,
-   "n": 790,
+   "valor": 424407510794.53,
+   "n": 791,
    "emissores_distintos": 637,
    "top_emissores": [
     {
@@ -10217,21 +10217,21 @@
      "cnpj": "06.047.087/0001-39",
      "n": 4,
      "valor": 11725100000.0,
-     "share": 2.77
+     "share": 2.76
     },
     {
      "nome": "CIA SANEAMENTO BÁSICO ESTADO SÃO PAULO",
      "cnpj": "43.776.517/0001-80",
      "n": 4,
      "valor": 11626764571.0,
-     "share": 2.75
+     "share": 2.74
     },
     {
      "nome": "ISA ENERGIA BRASIL S.A.",
      "cnpj": "02.998.611/0001-04",
      "n": 5,
      "valor": 9354626000.0,
-     "share": 2.21
+     "share": 2.2
     },
     {
      "nome": "LOCALIZA RENT A CAR SA",
@@ -10259,7 +10259,7 @@
      "cnpj": "00.001.180/0001-26",
      "n": 5,
      "valor": 6500000000.0,
-     "share": 1.54
+     "share": 1.53
     },
     {
      "nome": "CIA DE ELETRICIDADE DO ESTADO DA BAHIA - COELBA",
@@ -10324,56 +10324,56 @@
      "cnpj": "04.845.753/0001-59",
      "n": 231,
      "valor": 124677794744.0,
-     "share": 29.45
+     "share": 29.38
     },
     {
      "nome": "BANCO BRADESCO BBI S.A.",
      "cnpj": "06.271.464/0001-19",
      "n": 186,
      "valor": 93360875806.05,
-     "share": 22.05
+     "share": 22.0
     },
     {
      "nome": "BTG PACTUAL INVESTMENT BANKING LTDA.",
      "cnpj": "46.482.072/0001-13",
      "n": 35,
      "valor": 45475764000.0,
-     "share": 10.74
+     "share": 10.72
     },
     {
      "nome": "BANCO SANTANDER (BRASIL) S.A.",
      "cnpj": "90.400.888/0001-42",
      "n": 65,
      "valor": 38530987304.0,
-     "share": 9.1
+     "share": 9.08
     },
     {
      "nome": "XP INVESTIMENTOS CCTVM S.A.",
      "cnpj": "02.332.886/0001-04",
      "n": 42,
      "valor": 33774025000.0,
-     "share": 7.98
+     "share": 7.96
     },
     {
      "nome": "UBS BB Corretora de Câmbio, Títulos e Valores Mobiliários S.A.",
      "cnpj": "02.819.125/0001-73",
      "n": 51,
      "valor": 26349280000.0,
-     "share": 6.22
+     "share": 6.21
     },
     {
      "nome": "BANCO NACIONAL DE DESENVOLVIMENTO ECONÔMICO E SOCIAL - BNDES",
      "cnpj": "33.657.248/0001-89",
      "n": 18,
      "valor": 24666400000.0,
-     "share": 5.83
+     "share": 5.81
     },
     {
      "nome": "CAIXA ECONOMICA FEDERAL",
      "cnpj": "00.360.305/0001-04",
      "n": 28,
      "valor": 8210000000.0,
-     "share": 1.94
+     "share": 1.93
     },
     {
      "nome": "BANCO VOTORANTIM S.A.",
@@ -10394,7 +10394,7 @@
      "cnpj": "33.479.023/0001-80",
      "n": 6,
      "valor": 3663000000.0,
-     "share": 0.87
+     "share": 0.86
     },
     {
      "nome": "BANCO BNP PARIBAS BRASIL S/A",
@@ -10404,14 +10404,14 @@
      "share": 0.59
     }
    ],
-   "hhi_lideres": 1695,
-   "top5_lideres_share": 79.31,
-   "n_lideres": 37
+   "hhi_lideres": 1688,
+   "top5_lideres_share": 79.13,
+   "n_lideres": 38
   },
   "coleta": {
-   "em": "2026-09-12T12:56:29+00:00",
+   "em": "2026-09-14T16:04:13+00:00",
    "ofertas_regime_anterior": 45702,
-   "ofertas_res160": 14435
+   "ofertas_res160": 14457
   },
   "nota": "Fluxo pela data do registro (ou do início, nas dispensadas do regime anterior). Regime anterior: valor total da oferta. Res. 160 (rito automático): valor registrado das ofertas encerradas; as em andamento aparecem à parte e não entram nos totais. Fundos abertos com registro automático (ICVM 555) ficam fora: o valor lá é teto cadastral."
  },

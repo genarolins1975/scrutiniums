@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-13T15:27:09+00:00",
+ "gerado_em": "2026-09-14T17:34:39+00:00",
  "versao_metodologica": "v1.0 (MVP Fase 1)",
  "principio": "Nenhum indicador isolado determina a conclusão. Coincidente ≠ antecedente ≠ contexto ≠ associação. 'Antecedente candidato' aqui NÃO é validação plena — a promoção usa o protocolo da aba Protocolo e regimes.",
  "sintese": {
@@ -3802,27 +3802,27 @@
    },
    {
     "p": "202603",
-    "v": -10.092
+    "v": -9.911
    },
    {
     "p": "202604",
-    "v": -6.699
+    "v": -6.512
    },
    {
     "p": "202605",
-    "v": -6.268
+    "v": -6.074
    },
    {
     "p": "202606",
-    "v": -7.514
+    "v": -7.314
    },
    {
     "p": "202607",
-    "v": -11.848
+    "v": -11.648
    },
    {
     "p": "202608",
-    "v": -15.666
+    "v": -15.467
    }
   ]
  },
@@ -4203,7 +4203,7 @@
    "corrs": [
     {
      "lag": 0,
-     "corr": -0.227,
+     "corr": -0.226,
      "n": 71
     },
     {
@@ -4218,7 +4218,7 @@
     },
     {
      "lag": 3,
-     "corr": -0.092,
+     "corr": -0.091,
      "n": 68
     },
     {

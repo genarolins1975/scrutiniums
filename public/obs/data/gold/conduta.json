@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-13T15:27:23+00:00",
+ "gerado_em": "2026-09-14T17:34:58+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,48 +24,48 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1273 processos sancionadores em 1ª instância, com 1386 decisões por apenado: 1296 multas somando R$ 75.2 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (190 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1275 processos sancionadores em 1ª instância, com 1388 decisões por apenado: 1298 multas somando R$ 75.3 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (190 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-09-03",
+  "ultima_decisao": "2026-09-14",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16939,
-   "processos": 13028,
-   "apenados_distintos": 11385
+   "decisoes": 16941,
+   "processos": 13030,
+   "apenados_distintos": 11386
   },
   "janela_12m": {
-   "ini": "2025-09-13",
-   "decisoes": 1386,
-   "processos": 1273,
-   "multas_n": 1296,
-   "multas_valor": 75244200.0,
+   "ini": "2025-09-14",
+   "decisoes": 1388,
+   "processos": 1275,
+   "multas_n": 1298,
+   "multas_valor": 75294200.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 13,
    "sem_penalidade": 72,
    "recursos": 150,
    "pj": 409,
-   "pf": 977
+   "pf": 979
   },
   "janela_12m_anterior": {
-   "decisoes": 939,
-   "processos": 745,
-   "multas_n": 779,
-   "multas_valor": 25421063.9,
+   "decisoes": 933,
+   "processos": 739,
+   "multas_n": 773,
+   "multas_valor": 25283563.9,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 26,
    "sem_penalidade": 133,
    "recursos": 133,
-   "pj": 297,
-   "pf": 642
+   "pj": 294,
+   "pf": 639
   },
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1296,
-    "share": 93.51
+    "n": 1298,
+    "share": 93.52
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
@@ -91,38 +91,38 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 835,
-    "share": 60.25
+    "n": 837,
+    "share": 60.3
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 166,
-    "share": 11.98
+    "n": 169,
+    "share": 12.18
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
     "n": 120,
-    "share": 8.66
+    "share": 8.65
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 92,
-    "share": 6.64
+    "share": 6.63
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 64,
-    "share": 4.62
+    "share": 4.61
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 43,
-    "share": 3.1
+    "n": 41,
+    "share": 2.95
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 24,
-    "share": 1.73
+    "n": 23,
+    "share": 1.66
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -163,13 +163,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11881,
-    "share": 87.56
+    "n": 11885,
+    "share": 87.58
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 867,
-    "share": 6.39
+    "n": 869,
+    "share": 6.4
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -178,8 +178,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 169,
-    "share": 1.25
+    "n": 172,
+    "share": 1.27
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -188,18 +188,18 @@
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
-    "n": 90,
-    "share": 0.66
+    "n": 88,
+    "share": 0.65
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 76,
-    "share": 0.56
+    "n": 73,
+    "share": 0.54
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 43,
-    "share": 0.32
+    "n": 41,
+    "share": 0.3
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
@@ -210,7 +210,7 @@
   "tempo_citacao_decisao_meses": {
    "mediana": 2.9,
    "p90": 31.4,
-   "n": 3185
+   "n": 3187
   },
   "anual": [
    {
@@ -410,21 +410,41 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1156,
-    "processos": 1091,
-    "multas_n": 1104,
-    "multas_valor": 67723000.0,
+    "decisoes": 1158,
+    "processos": 1093,
+    "multas_n": 1106,
+    "multas_valor": 67773000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 110,
-    "pf": 833,
+    "pf": 835,
     "pj": 323,
     "incompleto": true,
-    "recurso_share": 9.52,
+    "recurso_share": 9.5,
     "sem_penalidade_share": 3.89
    }
   ],
   "recentes": [
+   {
+    "pas": "312201",
+    "nome": "JOAO BATISTA DE OLIVEIRA FILHO",
+    "pessoa": "PF",
+    "decisao": "2026-09-14",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
+   {
+    "pas": "312198",
+    "nome": "SHIH LI CHUNG",
+    "pessoa": "PF",
+    "decisao": "2026-09-14",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+   },
    {
     "pas": "300727",
     "nome": "FABIO SENDODA YAMATE",
@@ -433,7 +453,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "312216",
@@ -804,26 +824,6 @@
     "multa": 10000.0,
     "recurso": "NÃO",
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "300141",
-    "nome": "ELO SERVICOS S.A.",
-    "pessoa": "PJ",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 25000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "282943",
-    "nome": "ERNESTO GONZALES",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -946,7 +946,7 @@
    "finalizados": 323
   },
   "abertos_12m": {
-   "ini": "2025-09-13",
+   "ini": "2025-09-14",
    "processos": 63,
    "acusados": 190
   },

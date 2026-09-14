@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 388,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0085702",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-13T15:27:03+00:00",
+  "atualizado_em": "2026-09-14T17:34:32+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 20.855.875",
   "participante_open_finance": true
@@ -60,7 +60,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 388,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -252,7 +252,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 4.1,
-   "percentil": 89.7
+   "percentil": 89.6
   }
  ],
  "carteira": {
@@ -598,7 +598,6 @@
     -68.91,
     4.7,
     -1.55,
-    -3.74,
     15.62,
     2.66,
     7.18,
@@ -992,7 +991,6 @@
     9.83,
     5.6,
     7.29,
-    1.07,
     8.35,
     2.32,
     1.13,

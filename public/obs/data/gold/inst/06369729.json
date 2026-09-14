@@ -9,7 +9,7 @@
   "sede": "Otacílio Costa/SC",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 796,
+  "n_pares": 797,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-13T15:27:00+00:00",
+  "atualizado_em": "2026-09-14T17:34:29+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 06.369.729",
   "participante_open_finance": null
@@ -64,7 +64,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 796,
+  "quantidade": 797,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -259,8 +259,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.37,
-   "percentil": 36.2
+   "mediana_grupo": 4.33,
+   "percentil": 36.3
   },
   {
    "indicador": "ROE do período",
@@ -268,7 +268,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.5,
+   "mediana_grupo": 4.49,
    "percentil": 85.2
   }
  ],
@@ -1123,6 +1123,7 @@
     12.41,
     9.43,
     4.42,
+    -3.74,
     -0.33,
     1.02,
     9.31,
@@ -1223,11 +1224,10 @@
     3.94,
     8.03,
     9.09,
-    4.21,
-    9.54
+    4.21
    ],
    "meu": 10.28,
-   "mediana": 4.5
+   "mediana": 4.49
   },
   "basileia": {
    "valores": [
@@ -1935,6 +1935,7 @@
     5.55,
     1.53,
     8.45,
+    1.07,
     11.91,
     8.49,
     6.81,
@@ -2035,11 +2036,10 @@
     9.97,
     6.52,
     5.39,
-    8.82,
-    6.43
+    8.82
    ],
    "meu": 1.77,
-   "mediana": 4.37
+   "mediana": 4.33
   }
  },
  "score_ref": {
