@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-14T17:35:02+00:00",
+ "gerado_em": "2026-09-15T15:46:41+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -5387,9 +5387,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 30401,
-    "var_12m_pct": -25.2,
-    "casos_12m_todos": 68265,
+    "casos_12m": 30419,
+    "var_12m_pct": -25.16,
+    "casos_12m_todos": 68279,
     "por_mil_hab": 1.77,
     "por_bi_carteira": 53.2
    },
@@ -5672,11 +5672,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 8803,
-    "var_12m_pct": 12.2,
-    "casos_12m_todos": 20738,
+    "casos_12m": 8807,
+    "var_12m_pct": 12.25,
+    "casos_12m_todos": 20733,
     "por_mil_hab": 2.55,
-    "por_bi_carteira": 121.2
+    "por_bi_carteira": 121.3
    },
    "prazo": {
     "data_base": "2026-07",
@@ -5957,9 +5957,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 13071,
-    "var_12m_pct": 8.7,
-    "casos_12m_todos": 36215,
+    "casos_12m": 13070,
+    "var_12m_pct": 8.69,
+    "casos_12m_todos": 36155,
     "por_mil_hab": 7.46,
     "por_bi_carteira": 203.0
    },
@@ -6242,9 +6242,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 2278,
-    "var_12m_pct": 31.83,
-    "casos_12m_todos": 3977,
+    "casos_12m": 2277,
+    "var_12m_pct": 31.77,
+    "casos_12m_todos": 3975,
     "por_mil_hab": 3.08,
     "por_bi_carteira": 136.0
    },
@@ -7099,7 +7099,7 @@
     "mes": "2026-06",
     "casos_12m": 5410,
     "var_12m_pct": -1.22,
-    "casos_12m_todos": 12382,
+    "casos_12m_todos": 12380,
     "por_mil_hab": 2.35,
     "por_bi_carteira": 127.1
    },
@@ -7667,11 +7667,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 6062,
-    "var_12m_pct": 22.99,
-    "casos_12m_todos": 14587,
-    "por_mil_hab": 3.82,
-    "por_bi_carteira": 103.2
+    "casos_12m": 6082,
+    "var_12m_pct": 23.39,
+    "casos_12m_todos": 14586,
+    "por_mil_hab": 3.83,
+    "por_bi_carteira": 103.5
    },
    "prazo": {
     "data_base": "2026-07",

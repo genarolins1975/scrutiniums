@@ -1882,8 +1882,8 @@
    },
    {
     "sr": "S4",
-    "n": 326,
-    "captacoes": 830379900746.4302,
+    "n": 325,
+    "captacoes": 830307473613.3302,
     "share_sfn": 5.82,
     "varejo_share": 68.15,
     "mercado_share": 13.37,
@@ -1892,8 +1892,8 @@
    },
    {
     "sr": "S5",
-    "n": 537,
-    "captacoes": 368921787847.4498,
+    "n": 538,
+    "captacoes": 368994214980.5498,
     "share_sfn": 2.59,
     "varejo_share": 96.76,
     "mercado_share": 1.1,
@@ -4927,6 +4927,42 @@
   },
   "anomes_ifdata_razao": "202606",
   "serie": [
+   {
+    "mes": "2024-12",
+    "valor": 708935216190.6204,
+    "n_emissores": 179,
+    "lf": 542569918944.3203,
+    "cdb": 140203854553.41,
+    "ligado_share": 18.64,
+    "n_classes": 3213,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-01",
+    "valor": 713931754375.8402,
+    "n_emissores": 179,
+    "lf": 549061380672.9902,
+    "cdb": 139023611516.14,
+    "ligado_share": 18.7,
+    "n_classes": 3102,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2025-02",
+    "valor": 750486458623.6907,
+    "n_emissores": 181,
+    "lf": 575169578820.5306,
+    "cdb": 151323704273.42,
+    "ligado_share": 19.15,
+    "n_classes": 3274,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
    {
     "mes": "2025-03",
     "valor": 762536830744.4894,

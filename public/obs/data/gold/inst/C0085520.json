@@ -9,7 +9,7 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 387,
+  "n_pares": 385,
   "conglomerado_prudencial": "C0085520",
   "capital": "não classificado",
   "modelo": null,
@@ -17,17 +17,22 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-14T17:34:33+00:00",
+  "atualizado_em": "2026-09-15T15:46:10+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
  },
  "resumo_executivo": {
   "avaliacao_geral": {
-   "texto": "Capitalização abaixo da mediana do grupo S4, rentabilidade do período acima da mediana.",
+   "texto": "Capitalização acima da mediana do grupo S4, rentabilidade do período acima da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S4"
   },
   "pontos_fortes": [
+   {
+    "tipo": "ok",
+    "texto": "Basileia de 21.0% (acima da mediana do grupo S4: 21.0%).",
+    "base": "BCB IF.data (Informações de Capital)"
+   },
    {
     "tipo": "ok",
     "texto": "ROE do período de 7.8%.",
@@ -35,11 +40,6 @@
    }
   ],
   "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Basileia de 21.0% (abaixo da mediana do grupo S4: 21.1%).",
-    "base": "BCB IF.data (Informações de Capital)"
-   },
    {
     "tipo": "warn",
     "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 9863, piso sobre os 99.3% setorialmente identificados).",
@@ -69,7 +69,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 385,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -134,7 +134,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.0,
-   "mediana": 21.1,
+   "mediana": 21.0,
    "q3": 34.7
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -223,8 +223,8 @@
  ],
  "destaques": [
   {
-   "tipo": "warn",
-   "texto": "Basileia de 21.0% (abaixo da mediana do grupo S4: 21.1%).",
+   "tipo": "ok",
+   "texto": "Basileia de 21.0% (acima da mediana do grupo S4: 21.0%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -244,9 +244,9 @@
    "valor": 20.99,
    "unit": "%",
    "d_tri": -0.43,
-   "vs_pares": "abaixo",
-   "mediana_grupo": 21.13,
-   "percentil": 49.9
+   "vs_pares": "na média",
+   "mediana_grupo": 20.99,
+   "percentil": 50.0
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -255,7 +255,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 6.0,
-   "percentil": 63.2
+   "percentil": 63.3
   },
   {
    "indicador": "ROE do período",
@@ -264,7 +264,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 4.1,
-   "percentil": 73.1
+   "percentil": 73.2
   }
  ],
  "carteira": {
@@ -655,7 +655,6 @@
     16.41,
     14.25,
     35.8,
-    -57.45,
     19.93,
     1.08,
     -34.3,
@@ -695,7 +694,6 @@
     3.64,
     0.43,
     -5.26,
-    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1040,7 +1038,6 @@
     79.86,
     33.0,
     17.56,
-    24.61,
     103.49,
     23.57,
     22.02,
@@ -1113,7 +1110,7 @@
     40.66
    ],
    "meu": 20.99,
-   "mediana": 21.13
+   "mediana": 20.99
   },
   "alav": {
    "valores": [
@@ -1408,7 +1405,6 @@
     18.68,
     8.14,
     7.99,
-    1.56,
     184.71,
     7.58,
     5.45,
@@ -1448,7 +1444,6 @@
     4.57,
     4.19,
     7.17,
-    10.36,
     5.93,
     1.47,
     1.81,

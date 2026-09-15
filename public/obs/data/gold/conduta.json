@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-14T17:34:58+00:00",
+ "gerado_em": "2026-09-15T15:46:36+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1275 processos sancionadores em 1ª instância, com 1388 decisões por apenado: 1298 multas somando R$ 75.3 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (190 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 31 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1279 processos sancionadores em 1ª instância, com 1392 decisões por apenado: 1302 multas somando R$ 75.4 milhões (mediana R$ 25 mil), 13 inabilitações e 72 decisões sem penalidade; 150 apenados recorreram. 389 pessoas seguem inabilitadas. A CVM abriu 63 processos sancionadores em 12 meses (190 acusados); 245 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-09-14",
+  "ultima_decisao": "2026-09-15",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16941,
-   "processos": 13030,
-   "apenados_distintos": 11386
+   "decisoes": 16945,
+   "processos": 13034,
+   "apenados_distintos": 11388
   },
   "janela_12m": {
-   "ini": "2025-09-14",
-   "decisoes": 1388,
-   "processos": 1275,
-   "multas_n": 1298,
-   "multas_valor": 75294200.0,
+   "ini": "2025-09-15",
+   "decisoes": 1392,
+   "processos": 1279,
+   "multas_n": 1302,
+   "multas_valor": 75394200.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 13,
    "sem_penalidade": 72,
    "recursos": 150,
-   "pj": 409,
-   "pf": 979
+   "pj": 410,
+   "pf": 982
   },
   "janela_12m_anterior": {
    "decisoes": 933,
@@ -64,18 +64,18 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1298,
-    "share": 93.52
+    "n": 1302,
+    "share": 93.53
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 72,
-    "share": 5.19
+    "share": 5.17
    },
    {
     "pena": "INABILITAÇÃO",
     "n": 13,
-    "share": 0.94
+    "share": 0.93
    },
    {
     "pena": "DEVOLVER SUBVENÇÃO",
@@ -91,43 +91,43 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 837,
-    "share": 60.3
+    "n": 839,
+    "share": 60.27
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 169,
-    "share": 12.18
+    "n": 162,
+    "share": 11.64
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 120,
-    "share": 8.65
+    "n": 126,
+    "share": 9.05
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
     "n": 92,
-    "share": 6.63
+    "share": 6.61
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
     "n": 64,
-    "share": 4.61
+    "share": 4.6
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 41,
-    "share": 2.95
+    "n": 40,
+    "share": 2.87
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 23,
-    "share": 1.66
+    "share": 1.65
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 22,
-    "share": 1.59
+    "share": 1.58
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -136,6 +136,11 @@
    },
    {
     "situacao": "PENALIDADE ESTÁ EM CUMPRIMENTO",
+    "n": 4,
+    "share": 0.29
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
     "n": 4,
     "share": 0.29
    },
@@ -163,13 +168,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11885,
-    "share": 87.58
+    "n": 11887,
+    "share": 87.57
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 869,
-    "share": 6.4
+    "n": 875,
+    "share": 6.45
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -178,8 +183,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 172,
-    "share": 1.27
+    "n": 165,
+    "share": 1.22
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -198,19 +203,24 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 41,
-    "share": 0.3
+    "n": 40,
+    "share": 0.29
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 4,
+    "share": 0.03
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.9,
    "p90": 31.4,
-   "n": 3187
+   "n": 3190
   },
   "anual": [
    {
@@ -410,21 +420,61 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1158,
-    "processos": 1093,
-    "multas_n": 1106,
-    "multas_valor": 67773000.0,
+    "decisoes": 1162,
+    "processos": 1097,
+    "multas_n": 1110,
+    "multas_valor": 67873000.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 110,
-    "pf": 835,
-    "pj": 323,
+    "pf": 838,
+    "pj": 324,
     "incompleto": true,
-    "recurso_share": 9.5,
-    "sem_penalidade_share": 3.89
+    "recurso_share": 9.47,
+    "sem_penalidade_share": 3.87
    }
   ],
   "recentes": [
+   {
+    "pas": "312206",
+    "nome": "BERNARDO ALONSO MARTINEZ",
+    "pessoa": "PF",
+    "decisao": "2026-09-15",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "312217",
+    "nome": "DANIELE CESANO",
+    "pessoa": "PF",
+    "decisao": "2026-09-15",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "312208",
+    "nome": "MINERACAO VALE VERDE DO BRASIL LTDA.",
+    "pessoa": "PJ",
+    "decisao": "2026-09-15",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "312203",
+    "nome": "SERGIO MARINHO ALVES",
+    "pessoa": "PF",
+    "decisao": "2026-09-15",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
    {
     "pas": "312201",
     "nome": "JOAO BATISTA DE OLIVEIRA FILHO",
@@ -493,7 +543,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "311433",
@@ -784,46 +834,6 @@
     "multa": null,
     "recurso": "NÃO",
     "situacao": "NÃO HOUVE PENALIDADE"
-   },
-   {
-    "pas": "282943",
-    "nome": "CLAUDIONOR MOURA",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "NÃO HOUVE PENALIDADE",
-    "multa": null,
-    "recurso": "NÃO",
-    "situacao": "NÃO HOUVE PENALIDADE"
-   },
-   {
-    "pas": "282943",
-    "nome": "DANILO GRIMALDI",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "293627",
-    "nome": "DULCE CONSUELO ALVES GOBBE",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 244000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "282943",
-    "nome": "DURVAL QUIEZI",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    }
   ],
   "inabilitados": {
@@ -938,23 +948,23 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-08-11",
-  "ultima_movimentacao": "2026-09-10",
+  "ultima_movimentacao": "2026-09-14",
   "acervo": {
    "processos": 570,
    "acusados": 2036,
-   "em_curso": 247,
-   "finalizados": 323
+   "em_curso": 245,
+   "finalizados": 325
   },
   "abertos_12m": {
-   "ini": "2025-09-14",
+   "ini": "2025-09-15",
    "processos": 63,
    "acusados": 190
   },
   "fases": [
    {
     "fase": "Finalizado",
-    "n": 323,
-    "share": 56.67
+    "n": 325,
+    "share": 57.02
    },
    {
     "fase": "Julgamento",
@@ -973,8 +983,8 @@
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 10,
-    "share": 1.75
+    "n": 8,
+    "share": 1.4
    }
   ],
   "areas": [
@@ -1100,14 +1110,14 @@
    }
   ],
   "duracao_finalizados_meses": {
-   "mediana": 31.0,
+   "mediana": 30.4,
    "p90": 65.9,
-   "n": 323
+   "n": 325
   },
   "idade_em_curso_meses": {
    "mediana": 22,
    "acima_36": 90,
-   "n": 247
+   "n": 245
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1194,18 +1204,18 @@
    {
     "ano": "2024",
     "processos": 65,
-    "finalizados": 36,
+    "finalizados": 37,
     "acusados": 186,
     "incompleto": false,
-    "finalizados_share": 55.38
+    "finalizados_share": 56.92
    },
    {
     "ano": "2025",
     "processos": 85,
-    "finalizados": 6,
+    "finalizados": 7,
     "acusados": 259,
     "incompleto": false,
-    "finalizados_share": 7.06
+    "finalizados_share": 8.24
    },
    {
     "ano": "2026",
@@ -1343,7 +1353,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-08-19",
+    "ultima_mov": "2026-09-11",
     "acusados": 2,
     "objeto": "O presente Termo de Acusação originou-se do Processo Administrativo CVM no 19957.016625/2025-89, instaurado pela Superintendência de Normas Contábeis - SNC após o recebimento de comunicação enviada por Deloitte Touche To"
    },

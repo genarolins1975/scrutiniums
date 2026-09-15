@@ -9,7 +9,7 @@
   "sede": "Rio de Janeiro/RJ",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 797,
+  "n_pares": 798,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-14T17:34:30+00:00",
+  "atualizado_em": "2026-09-15T15:46:07+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 33.735.192",
   "participante_open_finance": null
@@ -50,7 +50,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 797,
+  "quantidade": 798,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -221,8 +221,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.33,
-   "percentil": 33.7
+   "mediana_grupo": 4.37,
+   "percentil": 33.6
   },
   {
    "indicador": "ROE do período",
@@ -230,7 +230,7 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "abaixo",
-   "mediana_grupo": 4.49,
+   "mediana_grupo": 4.5,
    "percentil": 18.2
   }
  ],
@@ -1186,7 +1186,7 @@
     4.21
    ],
    "meu": -0.76,
-   "mediana": 4.49
+   "mediana": 4.5
   },
   "alav": {
    "valores": [
@@ -1592,7 +1592,7 @@
     8.82
    ],
    "meu": 1.58,
-   "mediana": 4.33
+   "mediana": 4.37
   }
  },
  "score_ref": {

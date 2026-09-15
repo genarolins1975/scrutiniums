@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-14T17:34:34+00:00",
+ "gerado_em": "2026-09-15T15:46:10+00:00",
  "paginas": 1457,
  "anomes": "202606",
  "instituicoes": [
@@ -7897,7 +7897,7 @@
    "cod": "17079937",
    "nome": "Pinbank Brasil Instituição De Pagamento S.A.",
    "razao": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
-   "sr": "S4",
+   "sr": "S5",
    "ativo_brl": 167871717.19,
    "piloto": false,
    "sem_balanco": false,
@@ -12627,7 +12627,7 @@
    "cod": "87963450",
    "nome": "Nikos Distribuidora De Títulos E Valores Mobiliários Ltda.",
    "razao": "NIKOS DISTRIBUIDORA DE TÍTULOS E VALORES MOBILIÁRIOS LTDA.",
-   "sr": "S4",
+   "sr": "S3",
    "ativo_brl": 6274169.55,
    "piloto": false,
    "sem_balanco": false,

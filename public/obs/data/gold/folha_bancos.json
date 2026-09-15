@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-14T17:34:25+00:00",
+ "gerado_em": "2026-09-15T15:46:01+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 341,
-  "total_editais": 1135,
+  "total_contratos_if": 342,
+  "total_editais": 1137,
   "backfill_completo": true,
   "ranking": [
    {
@@ -190,6 +190,13 @@
     "contratos": 3,
     "ufs": 1,
     "como_receita": 1
+   },
+   {
+    "cnpj8": "03965737",
+    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
+    "contratos": 2,
+    "ufs": 1,
+    "como_receita": 0
    },
    {
     "cnpj8": "07512780",
@@ -437,13 +444,6 @@
     "como_receita": 0
    },
    {
-    "cnpj8": "03965737",
-    "banco": "COOPERATIVA DE CRÉDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA VANGUARDA - CRESOL VANGUARDA",
-    "contratos": 1,
-    "ufs": 1,
-    "como_receita": 0
-   },
-   {
     "cnpj8": "37076205",
     "banco": "SICOOB JUDICIARIO",
     "contratos": 1,
@@ -557,6 +557,21 @@
    }
   ],
   "recentes": [
+   {
+    "controle": "82804212000196-2-000840/2026",
+    "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
+    "esfera": "Municipal",
+    "municipio": "Águas de Chapecó",
+    "uf": "SC",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-14",
+    "vig_fim": "2031-09-13",
+    "valor": 419772.16,
+    "receita": false,
+    "banco": "COOP. DE CREDITO E INVESTIMENTO COM INTERAÇÃO SOLIDÁRIA - VANGUARDA CRESOL VANGUARDA",
+    "cnpj8": "03965737",
+    "url": "https://pncp.gov.br/contratos/82804212000196/2026/840"
+   },
    {
     "controle": "83102350000196-2-001199/2026",
     "ente": "MUNICIPIO DE BOTUVERA",
@@ -1141,32 +1156,26 @@
     "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO INTEGRACAO DE ESTADOS DO RS, SC E MG SICREDI INTEGRACAO DE ESTADOS RS/SC/MG",
     "cnpj8": "87781530",
     "url": "https://pncp.gov.br/contratos/18307470000168/2026/31"
-   },
-   {
-    "controle": "82575812000120-2-000664/2026",
-    "ente": "MUNICIPIO DE PORTO BELO",
-    "esfera": "Municipal",
-    "municipio": "Porto Belo",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-06-11",
-    "vig_fim": "2031-06-11",
-    "valor": 0.01,
-    "receita": false,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/82575812000120/2026/664"
    }
   ],
   "editais_recentes": [
    {
-    "ente": "MUNICIPIO DE TRES LAGOAS",
-    "municipio": "Três Lagoas",
-    "uf": "MS",
+    "ente": "MUNICIPIO DE RIO NEGRO",
+    "municipio": "Rio Negro",
+    "uf": "PR",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-10",
-    "url": "https://pncp.gov.br/compras/03184041000173/2026/99"
+    "publicacao": "2026-09-14",
+    "url": "https://pncp.gov.br/compras/76002641000147/2026/324"
+   },
+   {
+    "ente": "UBERLANDIA CAMARA MUNICIPAL",
+    "municipio": "Uberlândia",
+    "uf": "MG",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-14",
+    "url": "https://pncp.gov.br/compras/20720165000145/2026/42"
    },
    {
     "ente": "MUNICIPIO DE TAIO",
@@ -1187,6 +1196,15 @@
     "url": "https://pncp.gov.br/compras/18449140000107/2026/118"
    },
    {
+    "ente": "MUNICIPIO DE TRES LAGOAS",
+    "municipio": "Três Lagoas",
+    "uf": "MS",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-10",
+    "url": "https://pncp.gov.br/compras/03184041000173/2026/99"
+   },
+   {
     "ente": "MUNICIPIO DE JABOATAO DOS GUARARAPES",
     "municipio": "Jaboatão dos Guararapes",
     "uf": "PE",
@@ -1194,6 +1212,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-09",
     "url": "https://pncp.gov.br/compras/10377679000196/2026/221"
+   },
+   {
+    "ente": "MUNICIPIO DE CAPITAO LEONIDAS MARQUES",
+    "municipio": "Capitão Leônidas Marques",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-09",
+    "url": "https://pncp.gov.br/compras/76208834000159/2026/344"
    },
    {
     "ente": "MUNICIPIO DE VERDEJANTE",
@@ -1223,24 +1250,6 @@
     "url": "https://pncp.gov.br/compras/01613076000155/2026/33"
    },
    {
-    "ente": "MUNICIPIO DE CAPITAO LEONIDAS MARQUES",
-    "municipio": "Capitão Leônidas Marques",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-09",
-    "url": "https://pncp.gov.br/compras/76208834000159/2026/344"
-   },
-   {
-    "ente": "INSTITUTO DE PREVIDENCIA SOCIAL DO MUNICIPIO DE PAULISTA",
-    "municipio": "Paulista",
-    "uf": "PE",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-08",
-    "url": "https://pncp.gov.br/compras/07010511000133/2026/8"
-   },
-   {
     "ente": "MUNICIPIO DE BERTIOGA",
     "municipio": "Bertioga",
     "uf": "SP",
@@ -1250,22 +1259,13 @@
     "url": "https://pncp.gov.br/compras/68020916000147/2026/190"
    },
    {
-    "ente": "MUNICIPIO DE RIACHO DOS MACHADOS",
-    "municipio": "Riacho dos Machados",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
+    "ente": "INSTITUTO DE PREVIDENCIA SOCIAL DO MUNICIPIO DE PAULISTA",
+    "municipio": "Paulista",
+    "uf": "PE",
+    "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-07",
-    "url": "https://pncp.gov.br/compras/16925208000151/2026/47"
-   },
-   {
-    "ente": "SUPERINTENDENCIA DE AGUA E ESGOTO DE CATANDUVA",
-    "municipio": "Catanduva",
-    "uf": "SP",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-04",
-    "url": "https://pncp.gov.br/compras/10559279000100/2026/69"
+    "publicacao": "2026-09-08",
+    "url": "https://pncp.gov.br/compras/07010511000133/2026/8"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

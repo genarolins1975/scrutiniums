@@ -17,21 +17,21 @@
      "url": "https://api-publica.datajud.cnj.jus.br",
      "segment": "pj",
      "category": "recuperacao_judicial",
-     "last_collected_at": "2026-09-14T17:06:07+00:00"
+     "last_collected_at": "2026-09-15T15:26:20+00:00"
     },
     "qualidade": {
-     "score": 59.9,
+     "score": 59.3,
      "componentes": {
       "completude": 98.9,
-      "atualidade": 33.3,
+      "atualidade": 31.1,
       "historico": 75.8,
       "estabilidade": 0.0,
       "transparencia": 100.0
      },
-     "dias_sem_atualizar": 75,
+     "dias_sem_atualizar": 76,
      "ultima_ref": "2026-07-01",
      "n_obs": 91,
-     "n_revisoes": 739
+     "n_revisoes": 740
     },
     "obs": [
      {
@@ -216,7 +216,7 @@
      },
      {
       "ref": "2022-10-01",
-      "v": 122.0
+      "v": 121.0
      },
      {
       "ref": "2022-11-01",
@@ -534,7 +534,7 @@
      },
      {
       "ref": "2022-10-01",
-      "v": 17.308
+      "v": 16.346
      },
      {
       "ref": "2022-11-01",
@@ -582,7 +582,7 @@
      },
      {
       "ref": "2023-10-01",
-      "v": -4.918
+      "v": -4.132
      },
      {
       "ref": "2023-11-01",
@@ -732,18 +732,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjsp/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-14T16:49:13+00:00"
+      "last_collected_at": "2026-09-15T15:12:08+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 383
@@ -1128,21 +1128,21 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrj/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-14T17:00:08+00:00"
+      "last_collected_at": "2026-09-15T15:17:51+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
-      "n_revisoes": 103
+      "n_revisoes": 104
      },
      "obs": [
       {
@@ -1327,7 +1327,7 @@
       },
       {
        "ref": "2022-10-01",
-       "v": 72.0
+       "v": 71.0
       },
       {
        "ref": "2022-11-01",
@@ -1524,18 +1524,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjmg/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-13T14:58:39+00:00"
+      "last_collected_at": "2026-09-15T15:20:09+00:00"
      },
      "qualidade": {
-      "score": 72.5,
+      "score": 71.8,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 83.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 3
@@ -1920,18 +1920,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrs/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-13T15:01:14+00:00"
+      "last_collected_at": "2026-09-15T15:24:25+00:00"
      },
      "qualidade": {
-      "score": 69.2,
+      "score": 68.5,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 61.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 7
@@ -2319,15 +2319,15 @@
       "last_collected_at": "2026-09-12T13:43:07+00:00"
      },
      "qualidade": {
-      "score": 65.9,
+      "score": 65.2,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 39.6,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 11
@@ -2715,15 +2715,15 @@
       "last_collected_at": "2026-09-10T14:02:41+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 96
@@ -3111,15 +3111,15 @@
       "last_collected_at": "2026-09-10T14:03:26+00:00"
      },
      "qualidade": {
-      "score": 74.1,
+      "score": 73.4,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 94.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 1
@@ -3507,15 +3507,15 @@
       "last_collected_at": "2026-09-10T14:04:41+00:00"
      },
      "qualidade": {
-      "score": 67.5,
+      "score": 66.8,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 50.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 9
@@ -3895,37 +3895,37 @@
      {
       "h": 1,
       "ref_date": "2026-08-01",
-      "p50": 79.1105,
-      "p10": 42.7171,
-      "p90": 112.2283
+      "p50": 79.1107,
+      "p10": 42.7588,
+      "p90": 112.2307
      },
      {
       "h": 3,
       "ref_date": "2026-10-01",
-      "p50": 86.1034,
-      "p10": 43.458,
-      "p90": 124.4632
+      "p50": 86.1196,
+      "p10": 43.4701,
+      "p90": 124.4751
      },
      {
       "h": 6,
       "ref_date": "2027-01-01",
-      "p50": 68.7895,
-      "p10": 36.3742,
-      "p90": 108.4963
+      "p50": 68.7888,
+      "p10": 36.3734,
+      "p90": 108.4955
      },
      {
       "h": 9,
       "ref_date": "2027-04-01",
-      "p50": 75.9392,
-      "p10": 47.3392,
-      "p90": 119.125
+      "p50": 75.9384,
+      "p10": 47.3384,
+      "p90": 119.1245
      },
      {
       "h": 12,
       "ref_date": "2027-07-01",
-      "p50": 69.1691,
-      "p10": 45.024,
-      "p90": 104.1852
+      "p50": 69.168,
+      "p10": 45.0331,
+      "p90": 104.1842
      }
     ],
     "diagnostico": {
@@ -3938,7 +3938,7 @@
        "ar1_diferencas": 0.176,
        "holt": 0.163
       },
-      "mae_ensemble_backtest": 19.8543,
+      "mae_ensemble_backtest": 19.8504,
       "mae_naive_backtest": 19.0571,
       "ganho_vs_naive_pct": -4.2,
       "n_backtests": 35,
@@ -3953,13 +3953,13 @@
      "3": {
       "pesos": {
        "ultimo_valor": 0.151,
-       "sazonal_ingenuo": 0.233,
+       "sazonal_ingenuo": 0.234,
        "drift": 0.148,
        "media_movel_6m": 0.173,
        "ar1_diferencas": 0.154,
        "holt": 0.14
       },
-      "mae_ensemble_backtest": 25.1941,
+      "mae_ensemble_backtest": 25.1847,
       "mae_naive_backtest": 27.7647,
       "ganho_vs_naive_pct": 9.3,
       "n_backtests": 34,
@@ -3979,7 +3979,7 @@
        "media_movel_6m": 0.195,
        "ar1_diferencas": 0.179
       },
-      "mae_ensemble_backtest": 24.6775,
+      "mae_ensemble_backtest": 24.6774,
       "mae_naive_backtest": 27.0645,
       "ganho_vs_naive_pct": 8.8,
       "n_backtests": 31,
@@ -4019,7 +4019,7 @@
        "media_movel_6m": 0.238,
        "ar1_diferencas": 0.194
       },
-      "mae_ensemble_backtest": 18.3278,
+      "mae_ensemble_backtest": 18.3277,
       "mae_naive_backtest": 18.64,
       "ganho_vs_naive_pct": 1.7,
       "n_backtests": 25,
@@ -4033,37 +4033,37 @@
       "trajetoria": [
        {
         "ref": "2024-08-01",
-        "previsto": 128.3361,
+        "previsto": 128.3362,
         "realizado": 125.0
        },
        {
         "ref": "2024-09-01",
-        "previsto": 117.7354,
+        "previsto": 117.7345,
         "realizado": 117.0
        },
        {
         "ref": "2024-10-01",
-        "previsto": 120.4231,
+        "previsto": 120.4229,
         "realizado": 111.0
        },
        {
         "ref": "2024-11-01",
-        "previsto": 95.1469,
+        "previsto": 95.1454,
         "realizado": 82.0
        },
        {
         "ref": "2024-12-01",
-        "previsto": 99.6351,
+        "previsto": 99.6353,
         "realizado": 87.0
        },
        {
         "ref": "2025-01-01",
-        "previsto": 63.3177,
+        "previsto": 63.3157,
         "realizado": 89.0
        },
        {
         "ref": "2025-02-01",
-        "previsto": 88.244,
+        "previsto": 88.245,
         "realizado": 95.0
        },
        {
@@ -4078,77 +4078,77 @@
        },
        {
         "ref": "2025-05-01",
-        "previsto": 100.859,
+        "previsto": 100.8585,
         "realizado": 96.0
        },
        {
         "ref": "2025-06-01",
-        "previsto": 156.4683,
+        "previsto": 156.4705,
         "realizado": 91.0
        },
        {
         "ref": "2025-07-01",
-        "previsto": 129.7529,
+        "previsto": 129.7512,
         "realizado": 110.0
        },
        {
         "ref": "2025-08-01",
-        "previsto": 126.0679,
+        "previsto": 126.0676,
         "realizado": 101.0
        },
        {
         "ref": "2025-09-01",
-        "previsto": 120.4497,
+        "previsto": 120.4492,
         "realizado": 112.0
        },
        {
         "ref": "2025-10-01",
-        "previsto": 115.4385,
+        "previsto": 115.438,
         "realizado": 121.0
        },
        {
         "ref": "2025-11-01",
-        "previsto": 92.2908,
+        "previsto": 92.2896,
         "realizado": 153.0
        },
        {
         "ref": "2025-12-01",
-        "previsto": 90.5546,
+        "previsto": 90.5545,
         "realizado": 89.0
        },
        {
         "ref": "2026-01-01",
-        "previsto": 90.9351,
+        "previsto": 90.9349,
         "realizado": 76.0
        },
        {
         "ref": "2026-02-01",
-        "previsto": 94.4186,
+        "previsto": 94.4185,
         "realizado": 78.0
        },
        {
         "ref": "2026-03-01",
-        "previsto": 124.8452,
+        "previsto": 124.8462,
         "realizado": 108.0
        },
        {
         "ref": "2026-04-01",
-        "previsto": 96.1632,
+        "previsto": 96.1617,
         "realizado": 98.0
        },
        {
         "ref": "2026-05-01",
-        "previsto": 95.997,
+        "previsto": 95.9968,
         "realizado": 108.0
        },
        {
         "ref": "2026-06-01",
-        "previsto": 92.6306,
+        "previsto": 92.6302,
         "realizado": 98.0
        },
        {
         "ref": "2026-07-01",
-        "previsto": 107.3394,
+        "previsto": 107.3398,
         "realizado": 68.0
        }
       ]
@@ -4173,21 +4173,21 @@
      "url": "https://api-publica.datajud.cnj.jus.br",
      "segment": "pj",
      "category": "recuperacao_judicial",
-     "last_collected_at": "2026-09-14T17:06:07+00:00"
+     "last_collected_at": "2026-09-15T15:26:20+00:00"
     },
     "qualidade": {
-     "score": 59.9,
+     "score": 59.3,
      "componentes": {
       "completude": 98.9,
-      "atualidade": 33.3,
+      "atualidade": 31.1,
       "historico": 75.8,
       "estabilidade": 0.0,
       "transparencia": 100.0
      },
-     "dias_sem_atualizar": 75,
+     "dias_sem_atualizar": 76,
      "ultima_ref": "2026-07-01",
      "n_obs": 91,
-     "n_revisoes": 693
+     "n_revisoes": 695
     },
     "obs": [
      {
@@ -4372,7 +4372,7 @@
      },
      {
       "ref": "2022-10-01",
-      "v": 85.0
+      "v": 86.0
      },
      {
       "ref": "2022-11-01",
@@ -4532,7 +4532,7 @@
      },
      {
       "ref": "2026-02-01",
-      "v": 40.0
+      "v": 39.0
      },
      {
       "ref": "2026-03-01",
@@ -4690,7 +4690,7 @@
      },
      {
       "ref": "2022-10-01",
-      "v": 16.438
+      "v": 17.808
      },
      {
       "ref": "2022-11-01",
@@ -4738,7 +4738,7 @@
      },
      {
       "ref": "2023-10-01",
-      "v": 16.471
+      "v": 15.116
      },
      {
       "ref": "2023-11-01",
@@ -4850,7 +4850,7 @@
      },
      {
       "ref": "2026-02-01",
-      "v": -39.394
+      "v": -40.909
      },
      {
       "ref": "2026-03-01",
@@ -4888,18 +4888,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjsp/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-14T16:56:55+00:00"
+      "last_collected_at": "2026-09-15T15:15:50+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 305
@@ -5284,21 +5284,21 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrj/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-14T17:06:07+00:00"
+      "last_collected_at": "2026-09-15T15:19:46+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
-      "n_revisoes": 132
+      "n_revisoes": 134
      },
      "obs": [
       {
@@ -5483,7 +5483,7 @@
       },
       {
        "ref": "2022-10-01",
-       "v": 17.0
+       "v": 18.0
       },
       {
        "ref": "2022-11-01",
@@ -5643,7 +5643,7 @@
       },
       {
        "ref": "2026-02-01",
-       "v": 12.0
+       "v": 11.0
       },
       {
        "ref": "2026-03-01",
@@ -5680,18 +5680,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjmg/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-13T15:00:42+00:00"
+      "last_collected_at": "2026-09-15T15:24:08+00:00"
      },
      "qualidade": {
-      "score": 70.8,
+      "score": 70.1,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 72.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 5
@@ -6076,18 +6076,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrs/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-13T15:02:30+00:00"
+      "last_collected_at": "2026-09-15T15:26:20+00:00"
      },
      "qualidade": {
-      "score": 67.5,
+      "score": 66.8,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 50.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 9
@@ -6475,15 +6475,15 @@
       "last_collected_at": "2026-09-09T13:44:23+00:00"
      },
      "qualidade": {
-      "score": 69.2,
+      "score": 68.5,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 61.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 7
@@ -6871,15 +6871,15 @@
       "last_collected_at": "2026-09-10T14:03:14+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 228
@@ -7267,15 +7267,15 @@
       "last_collected_at": "2026-09-10T14:04:04+00:00"
      },
      "qualidade": {
-      "score": 73.3,
+      "score": 72.6,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 89.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 2
@@ -7663,15 +7663,15 @@
       "last_collected_at": "2026-09-10T14:04:59+00:00"
      },
      "qualidade": {
-      "score": 59.9,
+      "score": 59.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 33.3,
+       "atualidade": 31.1,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 75,
+      "dias_sem_atualizar": 76,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 111
@@ -8051,37 +8051,37 @@
      {
       "h": 1,
       "ref_date": "2026-08-01",
-      "p50": 56.9229,
-      "p10": 29.1229,
-      "p90": 81.145
+      "p50": 56.8872,
+      "p10": 29.0872,
+      "p90": 81.1093
      },
      {
       "h": 3,
       "ref_date": "2026-10-01",
-      "p50": 53.8359,
-      "p10": 30.7772,
-      "p90": 82.5814
+      "p50": 53.818,
+      "p10": 30.7475,
+      "p90": 82.6749
      },
      {
       "h": 6,
       "ref_date": "2027-01-01",
-      "p50": 46.3718,
-      "p10": 23.0074,
-      "p90": 73.924
+      "p50": 46.3402,
+      "p10": 22.976,
+      "p90": 73.8926
      },
      {
       "h": 9,
       "ref_date": "2027-04-01",
-      "p50": 49.4788,
-      "p10": 26.5842,
-      "p90": 79.6873
+      "p50": 49.4486,
+      "p10": 25.9145,
+      "p90": 79.6571
      },
      {
       "h": 12,
       "ref_date": "2027-07-01",
-      "p50": 40.225,
-      "p10": 19.5039,
-      "p90": 63.5039
+      "p50": 40.2278,
+      "p10": 19.5008,
+      "p90": 63.5008
      }
     ],
     "diagnostico": {
@@ -8092,11 +8092,11 @@
        "drift": 0.159,
        "media_movel_6m": 0.176,
        "ar1_diferencas": 0.173,
-       "holt": 0.176
+       "holt": 0.175
       },
-      "mae_ensemble_backtest": 15.1503,
-      "mae_naive_backtest": 15.8,
-      "ganho_vs_naive_pct": 4.1,
+      "mae_ensemble_backtest": 15.1968,
+      "mae_naive_backtest": 15.8571,
+      "ganho_vs_naive_pct": 4.2,
       "n_backtests": 35,
       "cobertura_banda": {
        "cobertura_oos_pct": 83.3,
@@ -8115,9 +8115,9 @@
        "ar1_diferencas": 0.163,
        "holt": 0.156
       },
-      "mae_ensemble_backtest": 16.9855,
-      "mae_naive_backtest": 18.0,
-      "ganho_vs_naive_pct": 5.6,
+      "mae_ensemble_backtest": 17.0264,
+      "mae_naive_backtest": 18.0588,
+      "ganho_vs_naive_pct": 5.7,
       "n_backtests": 34,
       "cobertura_banda": {
        "cobertura_oos_pct": 70.6,
@@ -8136,8 +8136,8 @@
        "ar1_diferencas": 0.164,
        "holt": 0.141
       },
-      "mae_ensemble_backtest": 18.4002,
-      "mae_naive_backtest": 19.1935,
+      "mae_ensemble_backtest": 18.4326,
+      "mae_naive_backtest": 19.2258,
       "ganho_vs_naive_pct": 4.1,
       "n_backtests": 31,
       "cobertura_banda": {
@@ -8157,9 +8157,9 @@
        "ar1_diferencas": 0.157,
        "holt": 0.141
       },
-      "mae_ensemble_backtest": 18.6176,
-      "mae_naive_backtest": 19.4643,
-      "ganho_vs_naive_pct": 4.4,
+      "mae_ensemble_backtest": 18.6532,
+      "mae_naive_backtest": 19.5,
+      "ganho_vs_naive_pct": 4.3,
       "n_backtests": 28,
       "cobertura_banda": {
        "cobertura_oos_pct": 71.4,
@@ -8175,8 +8175,8 @@
        "sazonal_ingenuo": 0.341,
        "ar1_diferencas": 0.318
       },
-      "mae_ensemble_backtest": 16.0832,
-      "mae_naive_backtest": 15.72,
+      "mae_ensemble_backtest": 16.1232,
+      "mae_naive_backtest": 15.76,
       "ganho_vs_naive_pct": -2.3,
       "n_backtests": 25,
       "cobertura_banda": {
@@ -8189,42 +8189,42 @@
       "trajetoria": [
        {
         "ref": "2024-08-01",
-        "previsto": 125.8435,
+        "previsto": 125.844,
         "realizado": 75.0
        },
        {
         "ref": "2024-09-01",
-        "previsto": 76.2218,
+        "previsto": 76.2204,
         "realizado": 74.0
        },
        {
         "ref": "2024-10-01",
-        "previsto": 99.1629,
+        "previsto": 99.1635,
         "realizado": 97.0
        },
        {
         "ref": "2024-11-01",
-        "previsto": 70.174,
+        "previsto": 70.1736,
         "realizado": 79.0
        },
        {
         "ref": "2024-12-01",
-        "previsto": 85.702,
+        "previsto": 85.7023,
         "realizado": 58.0
        },
        {
         "ref": "2025-01-01",
-        "previsto": 54.6649,
+        "previsto": 54.6646,
         "realizado": 40.0
        },
        {
         "ref": "2025-02-01",
-        "previsto": 74.3325,
+        "previsto": 74.3327,
         "realizado": 66.0
        },
        {
         "ref": "2025-03-01",
-        "previsto": 77.7759,
+        "previsto": 77.776,
         "realizado": 55.0
        },
        {
@@ -8234,7 +8234,7 @@
        },
        {
         "ref": "2025-05-01",
-        "previsto": 87.4572,
+        "previsto": 87.4574,
         "realizado": 70.0
        },
        {
@@ -8244,7 +8244,7 @@
        },
        {
         "ref": "2025-07-01",
-        "previsto": 106.8569,
+        "previsto": 106.8573,
         "realizado": 66.0
        },
        {
@@ -8259,37 +8259,37 @@
        },
        {
         "ref": "2025-10-01",
-        "previsto": 96.561,
+        "previsto": 96.5612,
         "realizado": 65.0
        },
        {
         "ref": "2025-11-01",
-        "previsto": 81.7944,
+        "previsto": 81.7945,
         "realizado": 60.0
        },
        {
         "ref": "2025-12-01",
-        "previsto": 59.8227,
+        "previsto": 59.8226,
         "realizado": 59.0
        },
        {
         "ref": "2026-01-01",
-        "previsto": 40.4435,
+        "previsto": 40.4433,
         "realizado": 40.0
        },
        {
         "ref": "2026-02-01",
-        "previsto": 63.5804,
-        "realizado": 40.0
+        "previsto": 63.5805,
+        "realizado": 39.0
        },
        {
         "ref": "2026-03-01",
-        "previsto": 55.6451,
+        "previsto": 55.645,
         "realizado": 67.0
        },
        {
         "ref": "2026-04-01",
-        "previsto": 77.424,
+        "previsto": 77.4241,
         "realizado": 74.0
        },
        {
@@ -8299,7 +8299,7 @@
        },
        {
         "ref": "2026-06-01",
-        "previsto": 52.2413,
+        "previsto": 52.2412,
         "realizado": 73.0
        },
        {
@@ -8352,7 +8352,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 136,
+    "dias_sem_atualizar": 137,
     "ultima_ref": "2026-05-01",
     "n_obs": 89,
     "n_revisoes": 0
@@ -9043,7 +9043,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 136,
+    "dias_sem_atualizar": 137,
     "ultima_ref": "2026-05-01",
     "n_obs": 89,
     "n_revisoes": 0

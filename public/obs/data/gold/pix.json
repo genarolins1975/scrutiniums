@@ -1,10 +1,10 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-14T17:34:46+00:00",
+ "gerado_em": "2026-09-15T15:46:23+00:00",
  "mes": "2026-07",
  "cobertura_tx_pct": 90.8,
  "mes_tx": "2026-07",
- "sintese": "Em 2026-07, o Pix registrou 7.98 bilhões de transações (+19.5% em 12 meses) movimentando R$ 3.80 trilhões (+24.4%), com valor médio de R$ 477 por transação. No trimestre 2026-T2, o Pix respondeu por 55.4% da quantidade de transações entre os instrumentos comparados. Pagamentos de pessoas a empresas (P2B) já são 46% da quantidade na base transacional.",
+ "sintese": "Em 2026-07, o Pix registrou 7.98 bilhões de transações (+19.5% em 12 meses) movimentando R$ 3.80 trilhões (+24.4%), com valor médio de R$ 477 por transação. No trimestre 2026-T2, o Pix respondeu por 56.1% da quantidade de transações entre os instrumentos comparados. Pagamentos de pessoas a empresas (P2B) já são 46% da quantidade na base transacional.",
  "kpis": {
   "qtd": {
    "v": 7975215710.0,
@@ -26,7 +26,7 @@
    "data": "2026-08-31"
   },
   "part_tri": {
-   "v": 55.4,
+   "v": 56.1,
    "tri": "2026-T2"
   }
  },
@@ -8098,16 +8098,16 @@
      "v": 2372911280000.0
     },
     "CartaoCredito": {
-     "q": 5429801850.0,
-     "v": 697983770000.0
+     "q": 5168196640.0,
+     "v": 691288800000.0
     },
     "CartaoDebito": {
      "q": 3972384230.0,
      "v": 233608960000.0
     },
     "CartaoPrePago": {
-     "q": 2136633380.0,
-     "v": 82326500000.0
+     "q": 1875028180.0,
+     "v": 75631530000.0
     },
     "Cheque": {
      "q": 37574430.0,
@@ -8152,16 +8152,16 @@
      "v": 2465938690000.0
     },
     "CartaoCredito": {
-     "q": 5658871230.0,
-     "v": 734027500000.0
+     "q": 5398420430.0,
+     "v": 727091730000.0
     },
     "CartaoDebito": {
      "q": 4030175370.0,
      "v": 236373910000.0
     },
     "CartaoPrePago": {
-     "q": 2182537240.0,
-     "v": 84160250000.0
+     "q": 1922086440.0,
+     "v": 77224480000.0
     },
     "Cheque": {
      "q": 36145060.0,
@@ -8314,16 +8314,16 @@
      "v": 2425370820000.0
     },
     "CartaoCredito": {
-     "q": 6060463090.0,
-     "v": 814134530000.0
+     "q": 5792304130.0,
+     "v": 806955980000.0
     },
     "CartaoDebito": {
      "q": 3966315800.0,
      "v": 227630170000.0
     },
     "CartaoPrePago": {
-     "q": 2151539240.0,
-     "v": 83788470000.0
+     "q": 1883380280.0,
+     "v": 76609930000.0
     },
     "Cheque": {
      "q": 29439480.0,
@@ -8368,16 +8368,16 @@
      "v": 2421489530000.0
     },
     "CartaoCredito": {
-     "q": 6090515780.0,
-     "v": 820074350000.0
+     "q": 5819055610.0,
+     "v": 812376740000.0
     },
     "CartaoDebito": {
      "q": 4076645480.0,
      "v": 235419040000.0
     },
     "CartaoPrePago": {
-     "q": 2210723150.0,
-     "v": 87124250000.0
+     "q": 1939262980.0,
+     "v": 79426640000.0
     },
     "Cheque": {
      "q": 27773280.0,
@@ -13926,686 +13926,674 @@
    },
    {
     "p": "2026-09",
-    "v": 1403293024258.9998
+    "v": 1540711405578.3699
    }
   ]
  },
  "epae_matriz": {
-  "mes": "2026-07",
-  "mes_yoy": "2025-07",
+  "mes": "2026-08",
+  "mes_yoy": "2025-08",
   "ano_fechado": 2025,
   "universo": "Pix liquidado no SPI (tabela especial EPAE do BCB): fora ficam transferências internas à mesma instituição, devoluções, saques/troco e mesma titularidade. Universo DIFERENTE do bloco por natureza acima (Pix_DadosAbertos) — os dois nunca se somam, e os totais não têm por que coincidir.",
   "revisao": "o BC revisa os quatro últimos meses a cada divulgação (definitivo em m-4)",
   "recebedores_pf": [
    {
     "setor": "Comercio, reparacao de veiculos automotores e motocicletas",
-    "v": 113.964,
-    "part": 30.26,
-    "yoy": 18.2,
+    "v": 120.45,
+    "part": 32.02,
+    "yoy": 24.7,
     "ano": 1125.19
    },
    {
     "setor": "Atividades financeiras, de seguros e servicos relacionados",
-    "v": 46.972,
-    "part": 12.47,
-    "yoy": 57.5,
+    "v": 45.56,
+    "part": 12.11,
+    "yoy": 35.6,
     "ano": 393.94
    },
    {
-    "setor": "Artes, cultura, esporte e recreacao",
-    "v": 37.875,
-    "part": 10.06,
-    "yoy": -2.4,
-    "ano": 416.84
-   },
-   {
     "setor": "Atividades administrativas e servicos complementares",
-    "v": 37.107,
-    "part": 9.85,
-    "yoy": 24.9,
+    "v": 38.061,
+    "part": 10.12,
+    "yoy": 34.0,
     "ano": 326.24
    },
    {
+    "setor": "Artes, cultura, esporte e recreacao",
+    "v": 33.228,
+    "part": 8.83,
+    "yoy": -19.2,
+    "ano": 416.84
+   },
+   {
     "setor": "Atividades profissionais, cientificas e tecnicas",
-    "v": 32.125,
-    "part": 8.53,
-    "yoy": 63.0,
+    "v": 31.721,
+    "part": 8.43,
+    "yoy": 58.3,
     "ano": 287.98
    },
    {
     "setor": "Informacao e comunicacao",
-    "v": 21.599,
-    "part": 5.74,
-    "yoy": 67.2,
+    "v": 19.502,
+    "part": 5.19,
+    "yoy": 44.0,
     "ano": 143.17
    },
    {
     "setor": "Industrias de transformacao",
-    "v": 15.301,
-    "part": 4.06,
-    "yoy": 10.2,
+    "v": 15.442,
+    "part": 4.11,
+    "yoy": 12.9,
     "ano": 158.19
    },
    {
     "setor": "Alojamento e alimentacao",
-    "v": 10.519,
-    "part": 2.79,
-    "yoy": 22.6,
+    "v": 10.636,
+    "part": 2.83,
+    "yoy": 21.2,
     "ano": 103.08
    },
    {
     "setor": "Outras atividades de servicos",
-    "v": 9.647,
-    "part": 2.56,
-    "yoy": 40.2,
+    "v": 10.495,
+    "part": 2.79,
+    "yoy": 52.8,
     "ano": 79.86
    },
    {
     "setor": "Construcao",
-    "v": 9.645,
-    "part": 2.56,
-    "yoy": 17.0,
+    "v": 9.327,
+    "part": 2.48,
+    "yoy": 13.3,
     "ano": 94.75
    },
    {
     "setor": "Saude humana e servicos sociais",
-    "v": 7.804,
-    "part": 2.07,
-    "yoy": 24.0,
+    "v": 7.497,
+    "part": 1.99,
+    "yoy": 23.5,
     "ano": 69.95
    },
    {
     "setor": "Transporte, armazenagem e correio",
-    "v": 6.822,
-    "part": 1.81,
-    "yoy": 18.4,
+    "v": 6.769,
+    "part": 1.8,
+    "yoy": 20.2,
     "ano": 64.31
    },
    {
     "setor": "Administracao publica, defesa e seguridade social",
-    "v": 6.42,
-    "part": 1.7,
-    "yoy": 26.7,
+    "v": 6.032,
+    "part": 1.6,
+    "yoy": 24.4,
     "ano": 64.88
    },
    {
     "setor": "Eletricidade e gas",
-    "v": 5.891,
-    "part": 1.56,
-    "yoy": 23.0,
+    "v": 6.017,
+    "part": 1.6,
+    "yoy": 28.8,
     "ano": 57.19
    },
    {
     "setor": "Educacao",
-    "v": 5.053,
-    "part": 1.34,
-    "yoy": -19.2,
+    "v": 5.557,
+    "part": 1.48,
+    "yoy": 11.3,
     "ano": 55.77
    },
    {
     "setor": "Atividades imobiliarias",
-    "v": 5.01,
-    "part": 1.33,
-    "yoy": 29.2,
+    "v": 4.843,
+    "part": 1.29,
+    "yoy": 26.5,
     "ano": 45.3
    },
    {
-    "setor": "Agua, esgoto, atividades de gestao de residuos e descontaminacao",
-    "v": 2.234,
-    "part": 0.59,
-    "yoy": 27.8,
-    "ano": 20.33
-   },
-   {
     "setor": "Agricultura",
-    "v": 2.169,
-    "part": 0.58,
-    "yoy": 17.2,
+    "v": 2.258,
+    "part": 0.6,
+    "yoy": 27.5,
     "ano": 20.95
    },
    {
+    "setor": "Agua, esgoto, atividades de gestao de residuos e descontaminacao",
+    "v": 2.251,
+    "part": 0.6,
+    "yoy": 28.8,
+    "ano": 20.33
+   },
+   {
     "setor": "Industrias extrativas",
-    "v": 0.376,
+    "v": 0.394,
     "part": 0.1,
-    "yoy": 10.4,
+    "yoy": 8.8,
     "ano": 3.6
    },
    {
     "setor": "Servicos domesticos",
-    "v": 0.072,
+    "v": 0.071,
     "part": 0.02,
-    "yoy": 53.7,
+    "yoy": 52.3,
     "ano": 0.56
    },
    {
     "setor": "Organismos internacionais e outras instituicoes extraterritoriais",
-    "v": 0.009,
+    "v": 0.008,
     "part": 0.0,
-    "yoy": 1.2,
+    "yoy": 10.2,
     "ano": 0.1
    },
    {
     "setor": "Outros",
     "v": 0.001,
     "part": 0.0,
-    "yoy": -62.8,
+    "yoy": 129.7,
     "ano": 0.08
    }
   ],
   "matriz": {
    "Administracao publica, defesa e seguridade social": {
-    "Administracao publica, defesa e seguridade social": 2.294,
-    "Agricultura": 0.352,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.1,
-    "Alojamento e alimentacao": 0.05,
-    "Artes, cultura, esporte e recreacao": 0.119,
-    "Atividades administrativas e servicos complementares": 0.599,
-    "Atividades financeiras, de seguros e servicos relacionados": 2.368,
-    "Atividades imobiliarias": 0.06,
-    "Atividades profissionais, cientificas e tecnicas": 0.512,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 3.174,
-    "Construcao": 0.446,
-    "Educacao": 0.109,
-    "Eletricidade e gas": 0.061,
-    "Industrias de transformacao": 1.911,
-    "Industrias extrativas": 4.52,
-    "Informacao e comunicacao": 0.33,
-    "Outras atividades de servicos": 0.504,
-    "Outros": 0.0,
-    "Pessoa Fisica": 5.648,
-    "Saude humana e servicos sociais": 0.743,
+    "Administracao publica, defesa e seguridade social": 3.059,
+    "Agricultura": 0.088,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.065,
+    "Alojamento e alimentacao": 0.039,
+    "Artes, cultura, esporte e recreacao": 0.089,
+    "Atividades administrativas e servicos complementares": 0.455,
+    "Atividades financeiras, de seguros e servicos relacionados": 2.068,
+    "Atividades imobiliarias": 0.031,
+    "Atividades profissionais, cientificas e tecnicas": 0.436,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 1.817,
+    "Construcao": 0.48,
+    "Educacao": 0.094,
+    "Eletricidade e gas": 0.018,
+    "Industrias de transformacao": 1.347,
+    "Industrias extrativas": 0.517,
+    "Informacao e comunicacao": 0.31,
+    "Outras atividades de servicos": 5.491,
+    "Pessoa Fisica": 2.668,
+    "Saude humana e servicos sociais": 0.792,
     "Servicos domesticos": 0.001,
-    "Transporte, armazenagem e correio": 0.724
+    "Transporte, armazenagem e correio": 0.326
    },
    "Agricultura": {
-    "Administracao publica, defesa e seguridade social": 0.226,
-    "Agricultura": 0.963,
+    "Administracao publica, defesa e seguridade social": 0.187,
+    "Agricultura": 0.919,
     "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.005,
-    "Alojamento e alimentacao": 0.05,
-    "Artes, cultura, esporte e recreacao": 0.004,
-    "Atividades administrativas e servicos complementares": 0.678,
-    "Atividades financeiras, de seguros e servicos relacionados": 1.068,
-    "Atividades imobiliarias": 0.091,
-    "Atividades profissionais, cientificas e tecnicas": 0.26,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 1.335,
-    "Construcao": 0.134,
-    "Educacao": 0.016,
-    "Eletricidade e gas": 0.027,
-    "Industrias de transformacao": 1.086,
-    "Industrias extrativas": 0.025,
-    "Informacao e comunicacao": 0.036,
-    "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.021,
-    "Outros": 0.006,
-    "Pessoa Fisica": 4.948,
-    "Saude humana e servicos sociais": 0.013,
+    "Alojamento e alimentacao": 0.045,
+    "Artes, cultura, esporte e recreacao": 0.007,
+    "Atividades administrativas e servicos complementares": 0.452,
+    "Atividades financeiras, de seguros e servicos relacionados": 1.287,
+    "Atividades imobiliarias": 0.076,
+    "Atividades profissionais, cientificas e tecnicas": 0.222,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 1.418,
+    "Construcao": 0.148,
+    "Educacao": 0.015,
+    "Eletricidade e gas": 0.024,
+    "Industrias de transformacao": 0.844,
+    "Industrias extrativas": 0.032,
+    "Informacao e comunicacao": 0.037,
+    "Outras atividades de servicos": 0.027,
+    "Outros": 0.0,
+    "Pessoa Fisica": 5.051,
+    "Saude humana e servicos sociais": 0.014,
     "Servicos domesticos": 0.0,
-    "Transporte, armazenagem e correio": 0.413
+    "Transporte, armazenagem e correio": 0.423
    },
    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": {
-    "Administracao publica, defesa e seguridade social": 0.107,
-    "Agricultura": 0.005,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.426,
+    "Administracao publica, defesa e seguridade social": 0.085,
+    "Agricultura": 0.007,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.375,
     "Alojamento e alimentacao": 0.015,
     "Artes, cultura, esporte e recreacao": 0.003,
-    "Atividades administrativas e servicos complementares": 0.268,
-    "Atividades financeiras, de seguros e servicos relacionados": 0.419,
-    "Atividades imobiliarias": 0.018,
-    "Atividades profissionais, cientificas e tecnicas": 0.178,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.748,
-    "Construcao": 0.179,
+    "Atividades administrativas e servicos complementares": 0.262,
+    "Atividades financeiras, de seguros e servicos relacionados": 0.403,
+    "Atividades imobiliarias": 0.015,
+    "Atividades profissionais, cientificas e tecnicas": 0.167,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.696,
+    "Construcao": 0.197,
     "Educacao": 0.008,
-    "Eletricidade e gas": 0.039,
-    "Industrias de transformacao": 0.35,
-    "Industrias extrativas": 0.018,
-    "Informacao e comunicacao": 0.031,
+    "Eletricidade e gas": 0.041,
+    "Industrias de transformacao": 0.327,
+    "Industrias extrativas": 0.011,
+    "Informacao e comunicacao": 0.028,
     "Outras atividades de servicos": 0.022,
     "Outros": 0.0,
-    "Pessoa Fisica": 1.193,
+    "Pessoa Fisica": 1.152,
     "Saude humana e servicos sociais": 0.005,
     "Servicos domesticos": 0.0,
-    "Transporte, armazenagem e correio": 0.141
+    "Transporte, armazenagem e correio": 0.159
    },
    "Alojamento e alimentacao": {
-    "Administracao publica, defesa e seguridade social": 0.745,
-    "Agricultura": 0.039,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.069,
-    "Alojamento e alimentacao": 1.719,
-    "Artes, cultura, esporte e recreacao": 0.088,
-    "Atividades administrativas e servicos complementares": 1.039,
-    "Atividades financeiras, de seguros e servicos relacionados": 2.161,
-    "Atividades imobiliarias": 0.212,
-    "Atividades profissionais, cientificas e tecnicas": 0.531,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 4.269,
-    "Construcao": 0.314,
-    "Educacao": 0.081,
-    "Eletricidade e gas": 0.226,
-    "Industrias de transformacao": 0.912,
-    "Industrias extrativas": 0.004,
-    "Informacao e comunicacao": 0.2,
+    "Administracao publica, defesa e seguridade social": 0.707,
+    "Agricultura": 0.036,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.07,
+    "Alojamento e alimentacao": 1.72,
+    "Artes, cultura, esporte e recreacao": 0.092,
+    "Atividades administrativas e servicos complementares": 1.019,
+    "Atividades financeiras, de seguros e servicos relacionados": 2.038,
+    "Atividades imobiliarias": 0.202,
+    "Atividades profissionais, cientificas e tecnicas": 0.519,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 4.228,
+    "Construcao": 0.308,
+    "Educacao": 0.078,
+    "Eletricidade e gas": 0.228,
+    "Industrias de transformacao": 0.915,
+    "Industrias extrativas": 0.003,
+    "Informacao e comunicacao": 0.199,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.141,
+    "Outras atividades de servicos": 0.142,
     "Outros": 0.0,
-    "Pessoa Fisica": 14.641,
-    "Saude humana e servicos sociais": 0.055,
+    "Pessoa Fisica": 14.789,
+    "Saude humana e servicos sociais": 0.056,
     "Servicos domesticos": 0.002,
-    "Transporte, armazenagem e correio": 0.223
+    "Transporte, armazenagem e correio": 0.221
    },
    "Artes, cultura, esporte e recreacao": {
-    "Administracao publica, defesa e seguridade social": 0.365,
+    "Administracao publica, defesa e seguridade social": 0.327,
     "Agricultura": 0.012,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.016,
-    "Alojamento e alimentacao": 0.109,
-    "Artes, cultura, esporte e recreacao": 0.733,
-    "Atividades administrativas e servicos complementares": 0.688,
-    "Atividades financeiras, de seguros e servicos relacionados": 1.43,
-    "Atividades imobiliarias": 0.086,
-    "Atividades profissionais, cientificas e tecnicas": 0.997,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.671,
-    "Construcao": 0.173,
-    "Educacao": 0.096,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.017,
+    "Alojamento e alimentacao": 0.11,
+    "Artes, cultura, esporte e recreacao": 0.647,
+    "Atividades administrativas e servicos complementares": 0.644,
+    "Atividades financeiras, de seguros e servicos relacionados": 1.318,
+    "Atividades imobiliarias": 0.082,
+    "Atividades profissionais, cientificas e tecnicas": 0.849,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.674,
+    "Construcao": 0.176,
+    "Educacao": 0.093,
     "Eletricidade e gas": 0.038,
-    "Industrias de transformacao": 0.218,
-    "Industrias extrativas": 0.002,
-    "Informacao e comunicacao": 0.492,
+    "Industrias de transformacao": 0.208,
+    "Industrias extrativas": 0.001,
+    "Informacao e comunicacao": 0.464,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.08,
-    "Outros": 0.0,
-    "Pessoa Fisica": 32.738,
-    "Saude humana e servicos sociais": 0.034,
+    "Outras atividades de servicos": 0.079,
+    "Pessoa Fisica": 29.435,
+    "Saude humana e servicos sociais": 0.029,
     "Servicos domesticos": 0.001,
-    "Transporte, armazenagem e correio": 0.1
+    "Transporte, armazenagem e correio": 0.098
    },
    "Atividades administrativas e servicos complementares": {
-    "Administracao publica, defesa e seguridade social": 1.441,
-    "Agricultura": 0.201,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.228,
-    "Alojamento e alimentacao": 1.308,
-    "Artes, cultura, esporte e recreacao": 0.532,
-    "Atividades administrativas e servicos complementares": 10.188,
-    "Atividades financeiras, de seguros e servicos relacionados": 10.901,
-    "Atividades imobiliarias": 1.415,
-    "Atividades profissionais, cientificas e tecnicas": 8.38,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 22.106,
-    "Construcao": 1.468,
-    "Educacao": 1.171,
-    "Eletricidade e gas": 0.202,
-    "Industrias de transformacao": 5.314,
-    "Industrias extrativas": 0.7,
-    "Informacao e comunicacao": 1.672,
+    "Administracao publica, defesa e seguridade social": 1.298,
+    "Agricultura": 0.237,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.222,
+    "Alojamento e alimentacao": 1.284,
+    "Artes, cultura, esporte e recreacao": 0.595,
+    "Atividades administrativas e servicos complementares": 10.243,
+    "Atividades financeiras, de seguros e servicos relacionados": 12.271,
+    "Atividades imobiliarias": 1.436,
+    "Atividades profissionais, cientificas e tecnicas": 8.536,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 21.692,
+    "Construcao": 1.48,
+    "Educacao": 1.18,
+    "Eletricidade e gas": 0.197,
+    "Industrias de transformacao": 5.494,
+    "Industrias extrativas": 0.577,
+    "Informacao e comunicacao": 1.674,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.001,
-    "Outras atividades de servicos": 0.84,
-    "Outros": 0.071,
-    "Pessoa Fisica": 23.785,
-    "Saude humana e servicos sociais": 0.611,
+    "Outras atividades de servicos": 0.863,
+    "Outros": 0.003,
+    "Pessoa Fisica": 23.185,
+    "Saude humana e servicos sociais": 0.33,
     "Servicos domesticos": 0.008,
-    "Transporte, armazenagem e correio": 2.33
+    "Transporte, armazenagem e correio": 2.403
    },
    "Atividades financeiras, de seguros e servicos relacionados": {
-    "Administracao publica, defesa e seguridade social": 1.105,
-    "Agricultura": 0.444,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.186,
-    "Alojamento e alimentacao": 2.231,
-    "Artes, cultura, esporte e recreacao": 0.471,
-    "Atividades administrativas e servicos complementares": 6.202,
-    "Atividades financeiras, de seguros e servicos relacionados": 53.361,
-    "Atividades imobiliarias": 1.288,
-    "Atividades profissionais, cientificas e tecnicas": 10.774,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 25.354,
-    "Construcao": 2.889,
-    "Educacao": 0.957,
-    "Eletricidade e gas": 0.263,
-    "Industrias de transformacao": 11.876,
-    "Industrias extrativas": 0.506,
-    "Informacao e comunicacao": 3.325,
+    "Administracao publica, defesa e seguridade social": 0.842,
+    "Agricultura": 0.392,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.168,
+    "Alojamento e alimentacao": 2.313,
+    "Artes, cultura, esporte e recreacao": 0.412,
+    "Atividades administrativas e servicos complementares": 5.925,
+    "Atividades financeiras, de seguros e servicos relacionados": 58.898,
+    "Atividades imobiliarias": 1.297,
+    "Atividades profissionais, cientificas e tecnicas": 9.459,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 25.645,
+    "Construcao": 3.009,
+    "Educacao": 1.088,
+    "Eletricidade e gas": 1.254,
+    "Industrias de transformacao": 11.186,
+    "Industrias extrativas": 0.267,
+    "Informacao e comunicacao": 3.036,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.001,
-    "Outras atividades de servicos": 1.014,
-    "Outros": 0.045,
-    "Pessoa Fisica": 33.523,
-    "Saude humana e servicos sociais": 5.849,
+    "Outras atividades de servicos": 1.025,
+    "Outros": 0.009,
+    "Pessoa Fisica": 33.555,
+    "Saude humana e servicos sociais": 5.446,
     "Servicos domesticos": 0.006,
-    "Transporte, armazenagem e correio": 4.002
+    "Transporte, armazenagem e correio": 4.171
    },
    "Atividades imobiliarias": {
-    "Administracao publica, defesa e seguridade social": 0.54,
-    "Agricultura": 0.056,
+    "Administracao publica, defesa e seguridade social": 0.292,
+    "Agricultura": 0.066,
     "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.028,
     "Alojamento e alimentacao": 0.078,
     "Artes, cultura, esporte e recreacao": 0.031,
-    "Atividades administrativas e servicos complementares": 0.676,
-    "Atividades financeiras, de seguros e servicos relacionados": 1.173,
-    "Atividades imobiliarias": 1.196,
-    "Atividades profissionais, cientificas e tecnicas": 0.579,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 1.025,
-    "Construcao": 1.129,
-    "Educacao": 0.044,
-    "Eletricidade e gas": 0.034,
-    "Industrias de transformacao": 0.646,
-    "Industrias extrativas": 0.021,
-    "Informacao e comunicacao": 0.113,
+    "Atividades administrativas e servicos complementares": 0.662,
+    "Atividades financeiras, de seguros e servicos relacionados": 1.304,
+    "Atividades imobiliarias": 1.262,
+    "Atividades profissionais, cientificas e tecnicas": 0.569,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.99,
+    "Construcao": 1.21,
+    "Educacao": 0.043,
+    "Eletricidade e gas": 0.029,
+    "Industrias de transformacao": 0.654,
+    "Industrias extrativas": 0.023,
+    "Informacao e comunicacao": 0.108,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.091,
-    "Outros": 0.002,
-    "Pessoa Fisica": 8.384,
-    "Saude humana e servicos sociais": 0.04,
-    "Servicos domesticos": 0.003,
-    "Transporte, armazenagem e correio": 0.124
+    "Outras atividades de servicos": 0.085,
+    "Outros": 0.0,
+    "Pessoa Fisica": 8.427,
+    "Saude humana e servicos sociais": 0.051,
+    "Servicos domesticos": 0.002,
+    "Transporte, armazenagem e correio": 0.119
    },
    "Atividades profissionais, cientificas e tecnicas": {
-    "Administracao publica, defesa e seguridade social": 1.716,
-    "Agricultura": 0.106,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.083,
-    "Alojamento e alimentacao": 2.123,
-    "Artes, cultura, esporte e recreacao": 0.378,
-    "Atividades administrativas e servicos complementares": 3.481,
-    "Atividades financeiras, de seguros e servicos relacionados": 14.835,
-    "Atividades imobiliarias": 0.397,
-    "Atividades profissionais, cientificas e tecnicas": 31.863,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 6.249,
-    "Construcao": 1.227,
-    "Educacao": 0.424,
-    "Eletricidade e gas": 0.212,
-    "Industrias de transformacao": 1.908,
-    "Industrias extrativas": 0.288,
-    "Informacao e comunicacao": 2.466,
+    "Administracao publica, defesa e seguridade social": 1.455,
+    "Agricultura": 0.1,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.077,
+    "Alojamento e alimentacao": 1.833,
+    "Artes, cultura, esporte e recreacao": 0.392,
+    "Atividades administrativas e servicos complementares": 3.438,
+    "Atividades financeiras, de seguros e servicos relacionados": 14.106,
+    "Atividades imobiliarias": 0.409,
+    "Atividades profissionais, cientificas e tecnicas": 23.852,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 5.791,
+    "Construcao": 1.293,
+    "Educacao": 0.437,
+    "Eletricidade e gas": 0.228,
+    "Industrias de transformacao": 1.844,
+    "Industrias extrativas": 0.194,
+    "Informacao e comunicacao": 2.107,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.506,
-    "Outros": 0.005,
-    "Pessoa Fisica": 39.294,
-    "Saude humana e servicos sociais": 0.345,
+    "Outras atividades de servicos": 0.508,
+    "Outros": 0.001,
+    "Pessoa Fisica": 40.437,
+    "Saude humana e servicos sociais": 0.32,
     "Servicos domesticos": 0.003,
-    "Transporte, armazenagem e correio": 1.212
+    "Transporte, armazenagem e correio": 1.136
    },
    "Comercio, reparacao de veiculos automotores e motocicletas": {
-    "Administracao publica, defesa e seguridade social": 5.531,
-    "Agricultura": 2.706,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.641,
-    "Alojamento e alimentacao": 1.065,
-    "Artes, cultura, esporte e recreacao": 0.283,
-    "Atividades administrativas e servicos complementares": 14.615,
-    "Atividades financeiras, de seguros e servicos relacionados": 21.791,
-    "Atividades imobiliarias": 1.737,
-    "Atividades profissionais, cientificas e tecnicas": 8.819,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 92.158,
-    "Construcao": 2.571,
-    "Educacao": 0.606,
-    "Eletricidade e gas": 0.681,
-    "Industrias de transformacao": 33.822,
-    "Industrias extrativas": 5.348,
-    "Informacao e comunicacao": 2.287,
-    "Organismos internacionais e outras instituicoes extraterritoriais": 0.001,
-    "Outras atividades de servicos": 0.928,
-    "Outros": 0.08,
-    "Pessoa Fisica": 91.573,
-    "Saude humana e servicos sociais": 0.423,
-    "Servicos domesticos": 0.008,
-    "Transporte, armazenagem e correio": 9.088
+    "Administracao publica, defesa e seguridade social": 5.119,
+    "Agricultura": 3.005,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.654,
+    "Alojamento e alimentacao": 1.077,
+    "Artes, cultura, esporte e recreacao": 0.269,
+    "Atividades administrativas e servicos complementares": 17.45,
+    "Atividades financeiras, de seguros e servicos relacionados": 19.486,
+    "Atividades imobiliarias": 1.822,
+    "Atividades profissionais, cientificas e tecnicas": 9.698,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 90.889,
+    "Construcao": 2.515,
+    "Educacao": 0.588,
+    "Eletricidade e gas": 0.708,
+    "Industrias de transformacao": 33.408,
+    "Industrias extrativas": 6.048,
+    "Informacao e comunicacao": 2.369,
+    "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
+    "Outras atividades de servicos": 0.963,
+    "Outros": 0.01,
+    "Pessoa Fisica": 96.074,
+    "Saude humana e servicos sociais": 0.418,
+    "Servicos domesticos": 0.007,
+    "Transporte, armazenagem e correio": 8.939
    },
    "Construcao": {
-    "Administracao publica, defesa e seguridade social": 1.209,
-    "Agricultura": 0.085,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.148,
-    "Alojamento e alimentacao": 0.474,
-    "Artes, cultura, esporte e recreacao": 0.055,
-    "Atividades administrativas e servicos complementares": 2.431,
-    "Atividades financeiras, de seguros e servicos relacionados": 3.8,
-    "Atividades imobiliarias": 0.807,
-    "Atividades profissionais, cientificas e tecnicas": 2.208,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 4.571,
-    "Construcao": 7.821,
-    "Educacao": 0.13,
-    "Eletricidade e gas": 0.068,
-    "Industrias de transformacao": 2.403,
-    "Industrias extrativas": 0.203,
-    "Informacao e comunicacao": 0.326,
+    "Administracao publica, defesa e seguridade social": 1.015,
+    "Agricultura": 0.108,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.128,
+    "Alojamento e alimentacao": 0.468,
+    "Artes, cultura, esporte e recreacao": 0.048,
+    "Atividades administrativas e servicos complementares": 2.432,
+    "Atividades financeiras, de seguros e servicos relacionados": 3.716,
+    "Atividades imobiliarias": 0.808,
+    "Atividades profissionais, cientificas e tecnicas": 2.166,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 4.582,
+    "Construcao": 7.587,
+    "Educacao": 0.137,
+    "Eletricidade e gas": 0.082,
+    "Industrias de transformacao": 2.347,
+    "Industrias extrativas": 0.19,
+    "Informacao e comunicacao": 0.313,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.17,
-    "Outros": 0.002,
-    "Pessoa Fisica": 17.813,
-    "Saude humana e servicos sociais": 0.088,
+    "Outras atividades de servicos": 0.171,
+    "Outros": 0.0,
+    "Pessoa Fisica": 17.698,
+    "Saude humana e servicos sociais": 0.099,
     "Servicos domesticos": 0.004,
-    "Transporte, armazenagem e correio": 0.781
+    "Transporte, armazenagem e correio": 0.798
    },
    "Educacao": {
-    "Administracao publica, defesa e seguridade social": 0.509,
-    "Agricultura": 0.007,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.019,
-    "Alojamento e alimentacao": 0.121,
+    "Administracao publica, defesa e seguridade social": 0.455,
+    "Agricultura": 0.008,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.02,
+    "Alojamento e alimentacao": 0.122,
     "Artes, cultura, esporte e recreacao": 0.063,
-    "Atividades administrativas e servicos complementares": 0.647,
-    "Atividades financeiras, de seguros e servicos relacionados": 1.322,
-    "Atividades imobiliarias": 0.137,
-    "Atividades profissionais, cientificas e tecnicas": 0.616,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.842,
-    "Construcao": 0.307,
-    "Educacao": 1.071,
-    "Eletricidade e gas": 0.046,
-    "Industrias de transformacao": 0.22,
-    "Industrias extrativas": 0.003,
-    "Informacao e comunicacao": 0.354,
+    "Atividades administrativas e servicos complementares": 0.651,
+    "Atividades financeiras, de seguros e servicos relacionados": 1.363,
+    "Atividades imobiliarias": 0.136,
+    "Atividades profissionais, cientificas e tecnicas": 0.607,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.879,
+    "Construcao": 0.326,
+    "Educacao": 1.106,
+    "Eletricidade e gas": 0.041,
+    "Industrias de transformacao": 0.225,
+    "Industrias extrativas": 0.002,
+    "Informacao e comunicacao": 0.381,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.18,
+    "Outras atividades de servicos": 0.177,
     "Outros": 0.0,
-    "Pessoa Fisica": 5.818,
-    "Saude humana e servicos sociais": 0.173,
+    "Pessoa Fisica": 6.056,
+    "Saude humana e servicos sociais": 0.146,
     "Servicos domesticos": 0.001,
-    "Transporte, armazenagem e correio": 0.07
+    "Transporte, armazenagem e correio": 0.064
    },
    "Eletricidade e gas": {
-    "Administracao publica, defesa e seguridade social": 0.117,
-    "Agricultura": 0.021,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.025,
-    "Alojamento e alimentacao": 0.007,
-    "Artes, cultura, esporte e recreacao": 0.004,
-    "Atividades administrativas e servicos complementares": 0.158,
-    "Atividades financeiras, de seguros e servicos relacionados": 3.702,
-    "Atividades imobiliarias": 0.017,
-    "Atividades profissionais, cientificas e tecnicas": 0.365,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.169,
-    "Construcao": 0.403,
-    "Educacao": 0.011,
-    "Eletricidade e gas": 1.814,
-    "Industrias de transformacao": 0.503,
-    "Industrias extrativas": 0.091,
-    "Informacao e comunicacao": 0.031,
-    "Outras atividades de servicos": 0.344,
-    "Outros": 0.0,
-    "Pessoa Fisica": 0.115,
-    "Saude humana e servicos sociais": 0.003,
+    "Administracao publica, defesa e seguridade social": 0.169,
+    "Agricultura": 0.015,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.019,
+    "Alojamento e alimentacao": 0.005,
+    "Artes, cultura, esporte e recreacao": 0.001,
+    "Atividades administrativas e servicos complementares": 0.17,
+    "Atividades financeiras, de seguros e servicos relacionados": 3.806,
+    "Atividades imobiliarias": 0.014,
+    "Atividades profissionais, cientificas e tecnicas": 0.502,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.32,
+    "Construcao": 0.51,
+    "Educacao": 0.042,
+    "Eletricidade e gas": 1.887,
+    "Industrias de transformacao": 0.492,
+    "Industrias extrativas": 0.122,
+    "Informacao e comunicacao": 0.041,
+    "Outras atividades de servicos": 0.073,
+    "Pessoa Fisica": 0.185,
+    "Saude humana e servicos sociais": 0.004,
     "Servicos domesticos": 0.0,
-    "Transporte, armazenagem e correio": 0.032
+    "Transporte, armazenagem e correio": 0.034
    },
    "Industrias de transformacao": {
-    "Administracao publica, defesa e seguridade social": 2.779,
-    "Agricultura": 3.091,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.522,
-    "Alojamento e alimentacao": 0.485,
-    "Artes, cultura, esporte e recreacao": 0.079,
-    "Atividades administrativas e servicos complementares": 4.285,
-    "Atividades financeiras, de seguros e servicos relacionados": 17.468,
-    "Atividades imobiliarias": 0.755,
-    "Atividades profissionais, cientificas e tecnicas": 3.143,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 18.329,
-    "Construcao": 1.631,
-    "Educacao": 0.283,
-    "Eletricidade e gas": 0.755,
-    "Industrias de transformacao": 28.056,
-    "Industrias extrativas": 1.092,
-    "Informacao e comunicacao": 1.566,
+    "Administracao publica, defesa e seguridade social": 2.624,
+    "Agricultura": 3.022,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.47,
+    "Alojamento e alimentacao": 0.473,
+    "Artes, cultura, esporte e recreacao": 0.072,
+    "Atividades administrativas e servicos complementares": 4.459,
+    "Atividades financeiras, de seguros e servicos relacionados": 16.526,
+    "Atividades imobiliarias": 0.56,
+    "Atividades profissionais, cientificas e tecnicas": 3.026,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 19.805,
+    "Construcao": 1.499,
+    "Educacao": 0.282,
+    "Eletricidade e gas": 0.788,
+    "Industrias de transformacao": 27.659,
+    "Industrias extrativas": 1.055,
+    "Informacao e comunicacao": 0.738,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.443,
-    "Outros": 0.14,
-    "Pessoa Fisica": 31.377,
-    "Saude humana e servicos sociais": 0.139,
+    "Outras atividades de servicos": 0.427,
+    "Outros": 0.041,
+    "Pessoa Fisica": 30.442,
+    "Saude humana e servicos sociais": 0.142,
     "Servicos domesticos": 0.003,
-    "Transporte, armazenagem e correio": 6.153
+    "Transporte, armazenagem e correio": 6.107
    },
    "Industrias extrativas": {
-    "Administracao publica, defesa e seguridade social": 0.262,
-    "Agricultura": 0.061,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.003,
-    "Alojamento e alimentacao": 0.024,
-    "Artes, cultura, esporte e recreacao": 0.002,
-    "Atividades administrativas e servicos complementares": 0.144,
-    "Atividades financeiras, de seguros e servicos relacionados": 0.529,
+    "Administracao publica, defesa e seguridade social": 0.242,
+    "Agricultura": 0.062,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.004,
+    "Alojamento e alimentacao": 0.017,
+    "Artes, cultura, esporte e recreacao": 0.001,
+    "Atividades administrativas e servicos complementares": 0.149,
+    "Atividades financeiras, de seguros e servicos relacionados": 0.565,
     "Atividades imobiliarias": 0.012,
-    "Atividades profissionais, cientificas e tecnicas": 0.158,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.4,
-    "Construcao": 0.23,
-    "Educacao": 0.01,
-    "Eletricidade e gas": 0.02,
-    "Industrias de transformacao": 0.277,
-    "Industrias extrativas": 1.162,
-    "Informacao e comunicacao": 0.03,
-    "Outras atividades de servicos": 0.007,
+    "Atividades profissionais, cientificas e tecnicas": 0.149,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.388,
+    "Construcao": 0.233,
+    "Educacao": 0.007,
+    "Eletricidade e gas": 0.022,
+    "Industrias de transformacao": 0.261,
+    "Industrias extrativas": 0.577,
+    "Informacao e comunicacao": 0.027,
+    "Outras atividades de servicos": 0.006,
     "Outros": 0.0,
-    "Pessoa Fisica": 0.5,
+    "Pessoa Fisica": 0.505,
     "Saude humana e servicos sociais": 0.005,
     "Servicos domesticos": 0.0,
-    "Transporte, armazenagem e correio": 0.421
+    "Transporte, armazenagem e correio": 0.401
    },
    "Informacao e comunicacao": {
-    "Administracao publica, defesa e seguridade social": 1.065,
-    "Agricultura": 0.016,
+    "Administracao publica, defesa e seguridade social": 0.991,
+    "Agricultura": 0.012,
     "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.011,
-    "Alojamento e alimentacao": 0.218,
-    "Artes, cultura, esporte e recreacao": 0.182,
-    "Atividades administrativas e servicos complementares": 1.589,
-    "Atividades financeiras, de seguros e servicos relacionados": 5.841,
-    "Atividades imobiliarias": 0.204,
-    "Atividades profissionais, cientificas e tecnicas": 3.417,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 4.081,
-    "Construcao": 0.358,
-    "Educacao": 0.446,
-    "Eletricidade e gas": 0.113,
-    "Industrias de transformacao": 0.799,
+    "Alojamento e alimentacao": 0.21,
+    "Artes, cultura, esporte e recreacao": 0.181,
+    "Atividades administrativas e servicos complementares": 1.58,
+    "Atividades financeiras, de seguros e servicos relacionados": 6.026,
+    "Atividades imobiliarias": 0.225,
+    "Atividades profissionais, cientificas e tecnicas": 2.937,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 2.873,
+    "Construcao": 0.38,
+    "Educacao": 0.466,
+    "Eletricidade e gas": 0.098,
+    "Industrias de transformacao": 0.662,
     "Industrias extrativas": 0.004,
-    "Informacao e comunicacao": 4.563,
+    "Informacao e comunicacao": 4.63,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.399,
-    "Outros": 0.014,
-    "Pessoa Fisica": 14.995,
-    "Saude humana e servicos sociais": 0.1,
+    "Outras atividades de servicos": 0.39,
+    "Outros": 0.002,
+    "Pessoa Fisica": 14.221,
+    "Saude humana e servicos sociais": 0.122,
     "Servicos domesticos": 0.001,
-    "Transporte, armazenagem e correio": 1.715
+    "Transporte, armazenagem e correio": 0.922
    },
    "Organismos internacionais e outras instituicoes extraterritoriais": {
-    "Administracao publica, defesa e seguridade social": 0.002,
+    "Administracao publica, defesa e seguridade social": 0.001,
     "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.0,
-    "Alojamento e alimentacao": 0.001,
+    "Alojamento e alimentacao": 0.002,
     "Artes, cultura, esporte e recreacao": 0.0,
     "Atividades administrativas e servicos complementares": 0.006,
     "Atividades financeiras, de seguros e servicos relacionados": 0.007,
     "Atividades imobiliarias": 0.001,
-    "Atividades profissionais, cientificas e tecnicas": 0.004,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.001,
-    "Construcao": 0.002,
-    "Educacao": 0.002,
+    "Atividades profissionais, cientificas e tecnicas": 0.005,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.002,
+    "Construcao": 0.001,
+    "Educacao": 0.001,
     "Eletricidade e gas": 0.0,
     "Industrias de transformacao": 0.001,
     "Informacao e comunicacao": 0.001,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.003,
-    "Pessoa Fisica": 0.024,
-    "Saude humana e servicos sociais": 0.001,
-    "Servicos domesticos": 0.0,
-    "Transporte, armazenagem e correio": 0.001
-   },
-   "Outras atividades de servicos": {
-    "Administracao publica, defesa e seguridade social": 0.405,
-    "Agricultura": 0.018,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.049,
-    "Alojamento e alimentacao": 0.221,
-    "Artes, cultura, esporte e recreacao": 0.455,
-    "Atividades administrativas e servicos complementares": 1.306,
-    "Atividades financeiras, de seguros e servicos relacionados": 1.138,
-    "Atividades imobiliarias": 0.137,
-    "Atividades profissionais, cientificas e tecnicas": 0.955,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 2.193,
-    "Construcao": 0.425,
-    "Educacao": 0.255,
-    "Eletricidade e gas": 0.113,
-    "Industrias de transformacao": 0.521,
-    "Industrias extrativas": 0.006,
-    "Informacao e comunicacao": 0.363,
-    "Organismos internacionais e outras instituicoes extraterritoriais": 0.001,
-    "Outras atividades de servicos": 1.08,
-    "Outros": 0.003,
-    "Pessoa Fisica": 9.825,
-    "Saude humana e servicos sociais": 0.316,
-    "Servicos domesticos": 0.003,
-    "Transporte, armazenagem e correio": 1.072
-   },
-   "Outros": {
-    "Administracao publica, defesa e seguridade social": 0.0,
-    "Agricultura": 0.0,
-    "Alojamento e alimentacao": 0.0,
-    "Artes, cultura, esporte e recreacao": 0.0,
-    "Atividades administrativas e servicos complementares": 0.001,
-    "Atividades financeiras, de seguros e servicos relacionados": 0.005,
-    "Atividades imobiliarias": 0.0,
-    "Atividades profissionais, cientificas e tecnicas": 0.0,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 0.001,
-    "Construcao": 0.0,
-    "Educacao": 0.0,
-    "Eletricidade e gas": 0.0,
-    "Industrias de transformacao": 0.001,
-    "Informacao e comunicacao": 0.0,
-    "Outras atividades de servicos": 0.0,
-    "Outros": 0.011,
-    "Pessoa Fisica": 0.003,
+    "Outras atividades de servicos": 0.002,
+    "Pessoa Fisica": 0.021,
     "Saude humana e servicos sociais": 0.0,
     "Transporte, armazenagem e correio": 0.001
    },
-   "Pessoa Fisica": {
-    "Administracao publica, defesa e seguridade social": 6.42,
-    "Agricultura": 2.169,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 2.234,
-    "Alojamento e alimentacao": 10.519,
-    "Artes, cultura, esporte e recreacao": 37.875,
-    "Atividades administrativas e servicos complementares": 37.107,
-    "Atividades financeiras, de seguros e servicos relacionados": 46.972,
-    "Atividades imobiliarias": 5.01,
-    "Atividades profissionais, cientificas e tecnicas": 32.125,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 113.964,
-    "Construcao": 9.645,
-    "Educacao": 5.053,
-    "Eletricidade e gas": 5.891,
-    "Industrias de transformacao": 15.301,
-    "Industrias extrativas": 0.376,
-    "Informacao e comunicacao": 21.599,
-    "Organismos internacionais e outras instituicoes extraterritoriais": 0.009,
-    "Outras atividades de servicos": 9.647,
+   "Outras atividades de servicos": {
+    "Administracao publica, defesa e seguridade social": 0.382,
+    "Agricultura": 0.019,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.049,
+    "Alojamento e alimentacao": 0.235,
+    "Artes, cultura, esporte e recreacao": 0.696,
+    "Atividades administrativas e servicos complementares": 1.283,
+    "Atividades financeiras, de seguros e servicos relacionados": 1.143,
+    "Atividades imobiliarias": 0.141,
+    "Atividades profissionais, cientificas e tecnicas": 1.114,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 2.244,
+    "Construcao": 0.464,
+    "Educacao": 0.247,
+    "Eletricidade e gas": 0.116,
+    "Industrias de transformacao": 0.6,
+    "Industrias extrativas": 0.005,
+    "Informacao e comunicacao": 0.427,
+    "Organismos internacionais e outras instituicoes extraterritoriais": 0.001,
+    "Outras atividades de servicos": 1.378,
+    "Outros": 0.0,
+    "Pessoa Fisica": 10.519,
+    "Saude humana e servicos sociais": 0.369,
+    "Servicos domesticos": 0.003,
+    "Transporte, armazenagem e correio": 0.748
+   },
+   "Outros": {
+    "Administracao publica, defesa e seguridade social": 0.0,
+    "Alojamento e alimentacao": 0.0,
+    "Atividades administrativas e servicos complementares": 0.0,
+    "Atividades financeiras, de seguros e servicos relacionados": 0.0,
+    "Atividades profissionais, cientificas e tecnicas": 0.0,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 0.001,
+    "Construcao": 0.0,
+    "Industrias de transformacao": 0.0,
+    "Outras atividades de servicos": 0.0,
     "Outros": 0.001,
-    "Pessoa Fisica": 454.389,
-    "Saude humana e servicos sociais": 7.804,
-    "Servicos domesticos": 0.072,
-    "Transporte, armazenagem e correio": 6.822
+    "Pessoa Fisica": 0.005,
+    "Transporte, armazenagem e correio": 0.001
+   },
+   "Pessoa Fisica": {
+    "Administracao publica, defesa e seguridade social": 6.032,
+    "Agricultura": 2.258,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 2.251,
+    "Alojamento e alimentacao": 10.636,
+    "Artes, cultura, esporte e recreacao": 33.228,
+    "Atividades administrativas e servicos complementares": 38.061,
+    "Atividades financeiras, de seguros e servicos relacionados": 45.56,
+    "Atividades imobiliarias": 4.843,
+    "Atividades profissionais, cientificas e tecnicas": 31.721,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 120.45,
+    "Construcao": 9.327,
+    "Educacao": 5.557,
+    "Eletricidade e gas": 6.017,
+    "Industrias de transformacao": 15.442,
+    "Industrias extrativas": 0.394,
+    "Informacao e comunicacao": 19.502,
+    "Organismos internacionais e outras instituicoes extraterritoriais": 0.008,
+    "Outras atividades de servicos": 10.495,
+    "Outros": 0.001,
+    "Pessoa Fisica": 452.658,
+    "Saude humana e servicos sociais": 7.497,
+    "Servicos domesticos": 0.071,
+    "Transporte, armazenagem e correio": 6.769
    },
    "Saude humana e servicos sociais": {
-    "Administracao publica, defesa e seguridade social": 1.053,
-    "Agricultura": 0.008,
+    "Administracao publica, defesa e seguridade social": 0.882,
+    "Agricultura": 0.011,
     "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.029,
-    "Alojamento e alimentacao": 0.132,
-    "Artes, cultura, esporte e recreacao": 0.028,
-    "Atividades administrativas e servicos complementares": 2.046,
-    "Atividades financeiras, de seguros e servicos relacionados": 2.447,
-    "Atividades imobiliarias": 0.17,
-    "Atividades profissionais, cientificas e tecnicas": 0.756,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 1.818,
-    "Construcao": 0.373,
+    "Alojamento e alimentacao": 0.139,
+    "Artes, cultura, esporte e recreacao": 0.03,
+    "Atividades administrativas e servicos complementares": 1.022,
+    "Atividades financeiras, de seguros e servicos relacionados": 2.442,
+    "Atividades imobiliarias": 0.158,
+    "Atividades profissionais, cientificas e tecnicas": 0.831,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 1.705,
+    "Construcao": 0.371,
     "Educacao": 0.221,
-    "Eletricidade e gas": 0.064,
-    "Industrias de transformacao": 0.471,
+    "Eletricidade e gas": 0.061,
+    "Industrias de transformacao": 0.453,
     "Industrias extrativas": 0.002,
-    "Informacao e comunicacao": 0.248,
+    "Informacao e comunicacao": 0.253,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.221,
-    "Outros": 0.001,
-    "Pessoa Fisica": 13.609,
-    "Saude humana e servicos sociais": 4.871,
+    "Outras atividades de servicos": 0.193,
+    "Outros": 0.0,
+    "Pessoa Fisica": 13.28,
+    "Saude humana e servicos sociais": 4.712,
     "Servicos domesticos": 0.002,
-    "Transporte, armazenagem e correio": 0.111
+    "Transporte, armazenagem e correio": 0.109
    },
    "Servicos domesticos": {
     "Administracao publica, defesa e seguridade social": 0.001,
@@ -14614,7 +14602,7 @@
     "Alojamento e alimentacao": 0.001,
     "Artes, cultura, esporte e recreacao": 0.0,
     "Atividades administrativas e servicos complementares": 0.004,
-    "Atividades financeiras, de seguros e servicos relacionados": 0.005,
+    "Atividades financeiras, de seguros e servicos relacionados": 0.006,
     "Atividades imobiliarias": 0.0,
     "Atividades profissionais, cientificas e tecnicas": 0.002,
     "Comercio, reparacao de veiculos automotores e motocicletas": 0.011,
@@ -14623,7 +14611,7 @@
     "Eletricidade e gas": 0.001,
     "Industrias de transformacao": 0.001,
     "Industrias extrativas": 0.0,
-    "Informacao e comunicacao": 0.001,
+    "Informacao e comunicacao": 0.002,
     "Outras atividades de servicos": 0.001,
     "Pessoa Fisica": 0.078,
     "Saude humana e servicos sociais": 0.0,
@@ -14631,29 +14619,29 @@
     "Transporte, armazenagem e correio": 0.001
    },
    "Transporte, armazenagem e correio": {
-    "Administracao publica, defesa e seguridade social": 1.689,
-    "Agricultura": 0.133,
-    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.079,
-    "Alojamento e alimentacao": 0.228,
-    "Artes, cultura, esporte e recreacao": 0.042,
-    "Atividades administrativas e servicos complementares": 3.114,
-    "Atividades financeiras, de seguros e servicos relacionados": 6.432,
-    "Atividades imobiliarias": 0.291,
-    "Atividades profissionais, cientificas e tecnicas": 1.464,
-    "Comercio, reparacao de veiculos automotores e motocicletas": 7.406,
-    "Construcao": 1.124,
-    "Educacao": 0.091,
-    "Eletricidade e gas": 0.086,
-    "Industrias de transformacao": 1.697,
-    "Industrias extrativas": 0.086,
-    "Informacao e comunicacao": 0.905,
+    "Administracao publica, defesa e seguridade social": 1.264,
+    "Agricultura": 0.145,
+    "Agua, esgoto, atividades de gestao de residuos e descontaminacao": 0.08,
+    "Alojamento e alimentacao": 0.243,
+    "Artes, cultura, esporte e recreacao": 0.037,
+    "Atividades administrativas e servicos complementares": 2.717,
+    "Atividades financeiras, de seguros e servicos relacionados": 6.475,
+    "Atividades imobiliarias": 0.313,
+    "Atividades profissionais, cientificas e tecnicas": 1.431,
+    "Comercio, reparacao de veiculos automotores e motocicletas": 7.24,
+    "Construcao": 0.963,
+    "Educacao": 0.084,
+    "Eletricidade e gas": 0.071,
+    "Industrias de transformacao": 1.84,
+    "Industrias extrativas": 0.087,
+    "Informacao e comunicacao": 0.557,
     "Organismos internacionais e outras instituicoes extraterritoriais": 0.0,
-    "Outras atividades de servicos": 0.37,
-    "Outros": 0.002,
-    "Pessoa Fisica": 16.28,
+    "Outras atividades de servicos": 0.337,
+    "Outros": 0.0,
+    "Pessoa Fisica": 15.992,
     "Saude humana e servicos sociais": 0.086,
     "Servicos domesticos": 0.002,
-    "Transporte, armazenagem e correio": 12.27
+    "Transporte, armazenagem e correio": 11.618
    }
   },
   "nota_bets": "A seção 'Artes, cultura, esporte e recreacao' inclui a divisão de jogos e apostas, mas NÃO a isola — a leitura dedicada está no painel de bets."
@@ -15352,11 +15340,6 @@
  "spi": {
   "diario_ult90": [
    {
-    "p": "2026-06-16",
-    "q": 222667253.0,
-    "v": 111566625.55
-   },
-   {
     "p": "2026-06-17",
     "q": 226495849.0,
     "v": 107733604.77
@@ -15798,8 +15781,13 @@
    },
    {
     "p": "2026-09-13",
-    "q": 179500981.0,
-    "v": 21848829.32
+    "q": 179533367.0,
+    "v": 21857923.38
+   },
+   {
+    "p": "2026-09-14",
+    "q": 228028376.0,
+    "v": 137409287.26
    }
   ],
   "pico": {
@@ -15810,251 +15798,246 @@
   "intradia": [
    {
     "h": "00:00",
-    "q": 2709361.0,
-    "v": 409598569.94
+    "q": 2675513.0,
+    "v": 409779959.96
    },
    {
     "h": "00:30",
-    "q": 2314724.0,
-    "v": 236869492.21
+    "q": 2287731.0,
+    "v": 235638633.55
    },
    {
     "h": "01:00",
-    "q": 1904691.0,
-    "v": 291457787.8
+    "q": 1877742.0,
+    "v": 291649640.6
    },
    {
     "h": "01:30",
-    "q": 1509004.0,
-    "v": 181368047.31
+    "q": 1484176.0,
+    "v": 180025410.74
    },
    {
     "h": "02:00",
-    "q": 1217242.0,
-    "v": 144908628.3
+    "q": 1197349.0,
+    "v": 145718953.62
    },
    {
     "h": "02:30",
-    "q": 998948.0,
-    "v": 100215605.0
+    "q": 984558.0,
+    "v": 99341023.48
    },
    {
     "h": "03:00",
-    "q": 870858.0,
-    "v": 431718310.95
+    "q": 859762.0,
+    "v": 467675775.95
    },
    {
     "h": "03:30",
-    "q": 744317.0,
-    "v": 274857562.3
+    "q": 735363.0,
+    "v": 278822595.66
    },
    {
     "h": "04:00",
-    "q": 745438.0,
-    "v": 459132329.1
+    "q": 738364.0,
+    "v": 466798705.3
    },
    {
     "h": "04:30",
-    "q": 696160.0,
-    "v": 123430230.42
+    "q": 690049.0,
+    "v": 123282863.11
    },
    {
     "h": "05:00",
-    "q": 863970.0,
-    "v": 150126299.49
+    "q": 860916.0,
+    "v": 150611707.57
    },
    {
     "h": "05:30",
-    "q": 1187525.0,
-    "v": 260644542.01
+    "q": 1186204.0,
+    "v": 261430083.14
    },
    {
     "h": "06:00",
-    "q": 1893336.0,
-    "v": 651301411.97
+    "q": 1902762.0,
+    "v": 657108289.34
    },
    {
     "h": "06:30",
-    "q": 2544660.0,
-    "v": 841166046.81
+    "q": 2559467.0,
+    "v": 845074235.03
    },
    {
     "h": "07:00",
-    "q": 3338381.0,
-    "v": 1540404357.16
+    "q": 3358898.0,
+    "v": 1570176764.98
    },
    {
     "h": "07:30",
-    "q": 3926947.0,
-    "v": 1419828829.39
+    "q": 3941601.0,
+    "v": 1441859516.33
    },
    {
     "h": "08:00",
-    "q": 4558207.0,
-    "v": 1979032851.45
+    "q": 4567538.0,
+    "v": 2027980836.48
    },
    {
     "h": "08:30",
-    "q": 5215968.0,
-    "v": 2182197079.56
+    "q": 5218794.0,
+    "v": 2245539382.12
    },
    {
     "h": "09:00",
-    "q": 5841221.0,
-    "v": 3371480951.69
+    "q": 5839711.0,
+    "v": 3465375589.05
    },
    {
     "h": "09:30",
-    "q": 6326276.0,
-    "v": 3850823164.02
+    "q": 6316425.0,
+    "v": 4032274263.52
    },
    {
     "h": "10:00",
-    "q": 6681338.0,
-    "v": 3879502273.14
+    "q": 6661072.0,
+    "v": 3990672681.87
    },
    {
     "h": "10:30",
-    "q": 6965450.0,
-    "v": 3764016605.39
+    "q": 6935483.0,
+    "v": 3858058312.34
    },
    {
     "h": "11:00",
-    "q": 7298366.0,
-    "v": 4399057730.13
+    "q": 7268558.0,
+    "v": 4519032873.61
    },
    {
     "h": "11:30",
-    "q": 7619719.0,
-    "v": 4010222306.84
+    "q": 7590679.0,
+    "v": 4151502046.33
    },
    {
     "h": "12:00",
-    "q": 7840602.0,
-    "v": 3830579106.69
+    "q": 7817879.0,
+    "v": 3946615424.66
    },
    {
     "h": "12:30",
-    "q": 7753830.0,
-    "v": 3211627974.0
+    "q": 7737913.0,
+    "v": 3300746393.94
    },
    {
     "h": "13:00",
-    "q": 7367837.0,
-    "v": 3088362104.12
+    "q": 7352249.0,
+    "v": 3193741237.47
    },
    {
     "h": "13:30",
-    "q": 7028634.0,
-    "v": 3369603358.67
+    "q": 7012444.0,
+    "v": 3478562561.71
    },
    {
     "h": "14:00",
-    "q": 6847585.0,
-    "v": 3792495353.55
+    "q": 6831273.0,
+    "v": 3926433492.92
    },
    {
     "h": "14:30",
-    "q": 6820873.0,
-    "v": 4210503267.37
+    "q": 6810396.0,
+    "v": 4358892745.23
    },
    {
     "h": "15:00",
-    "q": 6923865.0,
-    "v": 4552692133.64
+    "q": 6919472.0,
+    "v": 4717639837.76
    },
    {
     "h": "15:30",
-    "q": 7067106.0,
-    "v": 5193693617.87
+    "q": 7070628.0,
+    "v": 5472799673.39
    },
    {
     "h": "16:00",
-    "q": 7129780.0,
-    "v": 4950270395.15
+    "q": 7136424.0,
+    "v": 5135485271.21
    },
    {
     "h": "16:30",
-    "q": 7338998.0,
-    "v": 4853538533.67
+    "q": 7353032.0,
+    "v": 5060146334.53
    },
    {
     "h": "17:00",
-    "q": 7634389.0,
-    "v": 5278985178.49
+    "q": 7657421.0,
+    "v": 5476402252.0
    },
    {
     "h": "17:30",
-    "q": 7853943.0,
-    "v": 3841488728.87
+    "q": 7879112.0,
+    "v": 3959734399.19
    },
    {
     "h": "18:00",
-    "q": 8108025.0,
-    "v": 2799455199.92
+    "q": 8124052.0,
+    "v": 2926901074.14
    },
    {
     "h": "18:30",
-    "q": 8079541.0,
-    "v": 3214563221.28
+    "q": 8084806.0,
+    "v": 3330935742.48
    },
    {
     "h": "19:00",
-    "q": 7807164.0,
-    "v": 2109349589.21
+    "q": 7804039.0,
+    "v": 2153048985.29
    },
    {
     "h": "19:30",
-    "q": 7428703.0,
-    "v": 2273330453.24
+    "q": 7418647.0,
+    "v": 2400802409.42
    },
    {
     "h": "20:00",
-    "q": 6959020.0,
-    "v": 1173609112.54
+    "q": 6939562.0,
+    "v": 1187276561.6
    },
    {
     "h": "20:30",
-    "q": 6601301.0,
-    "v": 1044896097.06
+    "q": 6578804.0,
+    "v": 1060250955.0
    },
    {
     "h": "21:00",
-    "q": 6162150.0,
-    "v": 864126766.95
+    "q": 6141752.0,
+    "v": 874800334.06
    },
    {
     "h": "21:30",
-    "q": 5592277.0,
-    "v": 746122842.9
+    "q": 5568536.0,
+    "v": 754032980.53
    },
    {
     "h": "22:00",
-    "q": 4955561.0,
-    "v": 630387972.1
+    "q": 4930215.0,
+    "v": 636750103.6
    },
    {
     "h": "22:30",
-    "q": 4312444.0,
-    "v": 560455801.44
+    "q": 4281653.0,
+    "v": 568019106.06
    },
    {
     "h": "23:00",
-    "q": 3653254.0,
-    "v": 432074892.1
+    "q": 3616815.0,
+    "v": 433459607.18
    },
    {
     "h": "23:30",
-    "q": 2972486.0,
-    "v": 360545429.91
+    "q": 2937921.0,
+    "v": 363927077.42
    }
   ],
   "disponibilidade": [
-   {
-    "p": "2024-08-01",
-    "i": 99.97886,
-    "min": 99.9
-   },
    {
     "p": "2024-09-01",
     "i": 99.97044,
@@ -16168,6 +16151,11 @@
    {
     "p": "2026-07-01",
     "i": 99.99925,
+    "min": 99.9
+   },
+   {
+    "p": "2026-08-01",
+    "i": 99.991,
     "min": 99.9
    }
   ],

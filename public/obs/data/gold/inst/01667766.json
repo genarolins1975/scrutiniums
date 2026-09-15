@@ -9,7 +9,7 @@
   "sede": "Nova Serrana/MG",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 797,
+  "n_pares": 798,
   "conglomerado_prudencial": null,
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-14T17:34:28+00:00",
+  "atualizado_em": "2026-09-15T15:46:05+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 01.667.766",
   "participante_open_finance": null
@@ -78,7 +78,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 797,
+  "quantidade": 798,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -278,8 +278,8 @@
    "unit": "×",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.33,
-   "percentil": 71.7
+   "mediana_grupo": 4.37,
+   "percentil": 71.6
   },
   {
    "indicador": "ROE do período",
@@ -287,8 +287,8 @@
    "unit": "%",
    "d_tri": null,
    "vs_pares": "acima",
-   "mediana_grupo": 4.49,
-   "percentil": 75.5
+   "mediana_grupo": 4.5,
+   "percentil": 75.4
   }
  ],
  "carteira": {
@@ -1310,7 +1310,7 @@
     4.21
    ],
    "meu": 7.95,
-   "mediana": 4.49
+   "mediana": 4.5
   },
   "basileia": {
    "valores": [
@@ -2122,7 +2122,7 @@
     8.82
    ],
    "meu": 7.07,
-   "mediana": 4.33
+   "mediana": 4.37
   }
  },
  "score_ref": {
