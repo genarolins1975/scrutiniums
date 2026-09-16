@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-15T15:46:41+00:00",
+ "gerado_em": "2026-09-16T16:01:35+00:00",
  "familias": [
   {
    "id": "macro",
@@ -82,18 +82,18 @@
    "id": "macro:stale_data",
    "familia": "macro",
    "nivel": "informativo",
-   "titulo": "6 séries mensais além do limiar de atualidade (100 dias desde a referência)",
-   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (137 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (137 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (106 dias). Ausência de dado novo NÃO foi interpretada como zero.",
-   "valor": 6,
+   "titulo": "5 séries mensais além do limiar de atualidade (100 dias desde a referência)",
+   "detalhe": "Defasagem conta a partir da data de referência (inclui o atraso normal de publicação da fonte). Mais defasadas: Convolações de RJ em falência (mov. 202) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (138 dias); Extinções de processos de RJ (mov. 456) — agregado TJSP,TJRJ,TJMG,TJRS,TJPR,TJSC,TJBA,TJGO (138 dias); Comprometimento de renda das famílias com o serviço da dívida do SFN (107 dias). Ausência de dado novo NÃO foi interpretada como zero.",
+   "valor": 5,
    "limiar": 100,
    "referencia": null,
    "fonte": "múltiplas",
-   "evidencia_persistencia": "23 execuções anteriores",
+   "evidencia_persistencia": "24 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "method"
    },
-   "ordem": 0.94,
+   "ordem": 0.95,
    "serie_recente": null
   },
   {
@@ -106,7 +106,7 @@
    "limiar": 28.0,
    "referencia": "2026-06",
    "fonte": "BCB/SGS",
-   "evidencia_persistencia": "76 execuções anteriores",
+   "evidencia_persistencia": "77 execuções anteriores",
    "recorrente": true,
    "link": {
     "view": "pulse"
@@ -216,7 +216,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Veículos · PF — inadimplência (arrastada)",
-   "detalhe": "6.30% → 6.69% (2026-04 → 2026-07). Δ3m +0.39 p.p. · Δ12m +1.14 p.p. · carteira R$ 422.0 bi.",
+   "detalhe": "6.30% → 6.69% (2026-04 → 2026-07). Δ3m +0.39 p.p. · Δ12m +1.14 p.p. · carteira R$ 422.1 bi.",
    "valor": 6.69,
    "limiar": null,
    "referencia": "2026-07",
@@ -233,7 +233,7 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Consignado · PF — inadimplência (arrastada)",
-   "detalhe": "3.23% → 3.68% (2026-04 → 2026-07). Δ3m +0.45 p.p. · Δ12m +1.01 p.p. · carteira R$ 791.6 bi.",
+   "detalhe": "3.23% → 3.68% (2026-04 → 2026-07). Δ3m +0.45 p.p. · Δ12m +1.01 p.p. · carteira R$ 791.8 bi.",
    "valor": 3.68,
    "limiar": null,
    "referencia": "2026-07",
@@ -250,8 +250,8 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Distrito Federal (DF) — carteira ativa (variação entre datas-base)",
-   "detalhe": "179123948981.00% → 159067976443.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
-   "valor": 159067976443,
+   "detalhe": "179123948981.00% → 159079623208.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "valor": 159079623208,
    "limiar": null,
    "referencia": "2026-07",
    "fonte": "BCB/SCR.data",
@@ -268,8 +268,8 @@
    "familia": "carteira",
    "nivel": null,
    "titulo": "Sergipe (SE) — carteira ativa (variação entre datas-base)",
-   "detalhe": "47797021467.00% → 42571993941.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
-   "valor": 42571993941,
+   "detalhe": "47797021467.00% → 42573426349.00% (2026-06 → 2026-07). . Variação de carteira acima do usual entre duas datas-base do SCR.data: pode ser revisão ou reclassificação na fonte (UF do cliente, modalidade), não deterioração. Conferir antes de ler como fato econômico.",
+   "valor": 42573426349,
    "limiar": null,
    "referencia": "2026-07",
    "fonte": "BCB/SCR.data",

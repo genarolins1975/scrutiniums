@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-15T15:46:06+00:00",
+  "atualizado_em": "2026-09-16T16:01:02+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 04.913.711",
   "participante_open_finance": null
@@ -135,7 +135,7 @@
   "confianca": "moderada",
   "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-15"
+  "calculado_em": "2026-09-16"
  },
  "kpis": [
   {
@@ -1346,7 +1346,7 @@
    ],
    "basileia_atual_pct": 16.74,
    "basileia_pos_choque_pct": [
-    16.01,
+    16.02,
     16.64
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."

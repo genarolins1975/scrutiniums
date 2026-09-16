@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-15T15:46:30+00:00",
+ "gerado_em": "2026-09-16T16:01:26+00:00",
  "ano": 2025,
  "fator_ipca": 1.1905,
  "populacao_fonte": "IBGE Censo 2022 (pirâmide etária por município; a página trabalha por faixa etária, que só o Censo traz)",
@@ -5358,224 +5358,224 @@
  "scr": {
   "selo": "observado",
   "data_base": "2026-07",
-  "total_nacional": 791617668571.0,
-  "aposentados_nacional": 155819100673.0,
-  "part_aposentados": 19.68,
-  "operacoes_aposentados": 12756718,
+  "total_nacional": 791772694344.0,
+  "aposentados_nacional": 155922094108.0,
+  "part_aposentados": 19.69,
+  "operacoes_aposentados": 12764959,
   "por_uf": {
    "AC": {
-    "total": 4490937980.0,
-    "aposentados": 766001492.0,
+    "total": 4490758234.0,
+    "aposentados": 766138230.0,
     "part_aposentados": 17.06,
-    "operacoes_aposentados": 47961,
+    "operacoes_aposentados": 47966,
     "inad_aposentados": 2.04,
     "inad_total": 2.69
    },
    "AL": {
-    "total": 11184830641.0,
-    "aposentados": 2114231943.0,
-    "part_aposentados": 18.9,
-    "operacoes_aposentados": 196167,
+    "total": 11185305046.0,
+    "aposentados": 2115405968.0,
+    "part_aposentados": 18.91,
+    "operacoes_aposentados": 196266,
     "inad_aposentados": 2.2,
     "inad_total": 3.03
    },
    "AM": {
-    "total": 13045518513.0,
-    "aposentados": 1920900765.0,
-    "part_aposentados": 14.72,
-    "operacoes_aposentados": 156358,
-    "inad_aposentados": 2.41,
-    "inad_total": 4.29
+    "total": 13046265872.0,
+    "aposentados": 1922816577.0,
+    "part_aposentados": 14.74,
+    "operacoes_aposentados": 156470,
+    "inad_aposentados": 2.42,
+    "inad_total": 4.3
    },
    "AP": {
-    "total": 6756340178.0,
-    "aposentados": 684989523.0,
-    "part_aposentados": 10.14,
-    "operacoes_aposentados": 33080,
+    "total": 6756529683.0,
+    "aposentados": 685543464.0,
+    "part_aposentados": 10.15,
+    "operacoes_aposentados": 33124,
     "inad_aposentados": 3.13,
     "inad_total": 3.72
    },
    "BA": {
-    "total": 44240426052.0,
-    "aposentados": 7177769579.0,
-    "part_aposentados": 16.22,
-    "operacoes_aposentados": 672154,
+    "total": 44242466669.0,
+    "aposentados": 7181524271.0,
+    "part_aposentados": 16.23,
+    "operacoes_aposentados": 672555,
     "inad_aposentados": 1.96,
     "inad_total": 3.16
    },
    "CE": {
-    "total": 29320188644.0,
-    "aposentados": 3676783942.0,
+    "total": 29325363188.0,
+    "aposentados": 3678143753.0,
     "part_aposentados": 12.54,
-    "operacoes_aposentados": 325881,
+    "operacoes_aposentados": 326070,
     "inad_aposentados": 1.87,
     "inad_total": 2.81
    },
    "DF": {
-    "total": 18881282683.0,
-    "aposentados": 4324842548.0,
+    "total": 18881458861.0,
+    "aposentados": 4326565969.0,
     "part_aposentados": 22.91,
-    "operacoes_aposentados": 194627,
+    "operacoes_aposentados": 194722,
     "inad_aposentados": 2.2,
-    "inad_total": 3.05
+    "inad_total": 3.06
    },
    "ES": {
-    "total": 13270939657.0,
-    "aposentados": 2966057018.0,
+    "total": 13283582527.0,
+    "aposentados": 2968814366.0,
     "part_aposentados": 22.35,
-    "operacoes_aposentados": 236376,
+    "operacoes_aposentados": 236549,
     "inad_aposentados": 1.87,
     "inad_total": 3.21
    },
    "GO": {
-    "total": 26654830438.0,
-    "aposentados": 5012117216.0,
-    "part_aposentados": 18.8,
-    "operacoes_aposentados": 339792,
+    "total": 26659860964.0,
+    "aposentados": 5014812709.0,
+    "part_aposentados": 18.81,
+    "operacoes_aposentados": 339971,
     "inad_aposentados": 2.99,
     "inad_total": 3.98
    },
    "MA": {
-    "total": 24759298372.0,
-    "aposentados": 2490207168.0,
-    "part_aposentados": 10.06,
-    "operacoes_aposentados": 273908,
+    "total": 24761215449.0,
+    "aposentados": 2492364480.0,
+    "part_aposentados": 10.07,
+    "operacoes_aposentados": 274193,
     "inad_aposentados": 2.08,
     "inad_total": 2.96
    },
    "MG": {
-    "total": 67622201066.0,
-    "aposentados": 14004666542.0,
-    "part_aposentados": 20.71,
-    "operacoes_aposentados": 1182303,
+    "total": 67627803965.0,
+    "aposentados": 14011537902.0,
+    "part_aposentados": 20.72,
+    "operacoes_aposentados": 1182942,
     "inad_aposentados": 1.89,
     "inad_total": 3.54
    },
    "MS": {
-    "total": 15284375291.0,
-    "aposentados": 3018351937.0,
-    "part_aposentados": 19.75,
-    "operacoes_aposentados": 190794,
-    "inad_aposentados": 2.35,
+    "total": 15283592171.0,
+    "aposentados": 3020218235.0,
+    "part_aposentados": 19.76,
+    "operacoes_aposentados": 190911,
+    "inad_aposentados": 2.36,
     "inad_total": 3.7
    },
    "MT": {
-    "total": 14635579754.0,
-    "aposentados": 2390119315.0,
-    "part_aposentados": 16.33,
-    "operacoes_aposentados": 172685,
+    "total": 14634610969.0,
+    "aposentados": 2390696308.0,
+    "part_aposentados": 16.34,
+    "operacoes_aposentados": 172731,
     "inad_aposentados": 2.94,
     "inad_total": 3.75
    },
    "PA": {
-    "total": 33898588920.0,
-    "aposentados": 4446826965.0,
+    "total": 33915328616.0,
+    "aposentados": 4450252961.0,
     "part_aposentados": 13.12,
-    "operacoes_aposentados": 260356,
-    "inad_aposentados": 1.98,
+    "operacoes_aposentados": 260542,
+    "inad_aposentados": 1.99,
     "inad_total": 3.31
    },
    "PB": {
-    "total": 14350681578.0,
-    "aposentados": 2351364282.0,
-    "part_aposentados": 16.39,
-    "operacoes_aposentados": 186886,
+    "total": 14355271813.0,
+    "aposentados": 2353853510.0,
+    "part_aposentados": 16.4,
+    "operacoes_aposentados": 187076,
     "inad_aposentados": 2.28,
-    "inad_total": 2.76
+    "inad_total": 2.77
    },
    "PE": {
-    "total": 29147682152.0,
-    "aposentados": 5694494293.0,
-    "part_aposentados": 19.54,
-    "operacoes_aposentados": 468544,
+    "total": 29149766351.0,
+    "aposentados": 5698984388.0,
+    "part_aposentados": 19.55,
+    "operacoes_aposentados": 468846,
     "inad_aposentados": 2.1,
     "inad_total": 3.15
    },
    "PI": {
-    "total": 12519028181.0,
-    "aposentados": 1656858530.0,
-    "part_aposentados": 13.23,
-    "operacoes_aposentados": 134383,
+    "total": 12520950893.0,
+    "aposentados": 1658076754.0,
+    "part_aposentados": 13.24,
+    "operacoes_aposentados": 134494,
     "inad_aposentados": 2.07,
     "inad_total": 2.87
    },
    "PR": {
-    "total": 45712329593.0,
-    "aposentados": 8039142390.0,
+    "total": 45714739081.0,
+    "aposentados": 8042595633.0,
     "part_aposentados": 17.59,
-    "operacoes_aposentados": 713112,
+    "operacoes_aposentados": 713381,
     "inad_aposentados": 1.59,
     "inad_total": 3.41
    },
    "RJ": {
-    "total": 74480173885.0,
-    "aposentados": 20733905705.0,
+    "total": 74514408742.0,
+    "aposentados": 20745302748.0,
     "part_aposentados": 27.84,
-    "operacoes_aposentados": 1574729,
+    "operacoes_aposentados": 1575525,
     "inad_aposentados": 2.94,
     "inad_total": 4.19
    },
    "RN": {
-    "total": 13615394041.0,
-    "aposentados": 2679771625.0,
-    "part_aposentados": 19.68,
-    "operacoes_aposentados": 190933,
+    "total": 13619571577.0,
+    "aposentados": 2682288757.0,
+    "part_aposentados": 19.69,
+    "operacoes_aposentados": 191176,
     "inad_aposentados": 2.15,
     "inad_total": 2.75
    },
    "RO": {
-    "total": 7456600643.0,
-    "aposentados": 1210143930.0,
-    "part_aposentados": 16.23,
-    "operacoes_aposentados": 75205,
+    "total": 7457758211.0,
+    "aposentados": 1210828185.0,
+    "part_aposentados": 16.24,
+    "operacoes_aposentados": 75264,
     "inad_aposentados": 2.22,
     "inad_total": 3.27
    },
    "RR": {
-    "total": 4423394806.0,
-    "aposentados": 378305436.0,
-    "part_aposentados": 8.55,
-    "operacoes_aposentados": 21871,
+    "total": 4453689092.0,
+    "aposentados": 378850930.0,
+    "part_aposentados": 8.51,
+    "operacoes_aposentados": 21914,
     "inad_aposentados": 2.64,
-    "inad_total": 4.61
+    "inad_total": 4.59
    },
    "RS": {
-    "total": 46256386407.0,
-    "aposentados": 10715931996.0,
-    "part_aposentados": 23.17,
-    "operacoes_aposentados": 962500,
-    "inad_aposentados": 2.65,
-    "inad_total": 4.18
+    "total": 46286645031.0,
+    "aposentados": 10738758013.0,
+    "part_aposentados": 23.2,
+    "operacoes_aposentados": 964452,
+    "inad_aposentados": 2.7,
+    "inad_total": 4.19
    },
    "SC": {
-    "total": 28527840928.0,
-    "aposentados": 6230690214.0,
-    "part_aposentados": 21.84,
-    "operacoes_aposentados": 553332,
-    "inad_aposentados": 1.68,
+    "total": 28534657575.0,
+    "aposentados": 6234268324.0,
+    "part_aposentados": 21.85,
+    "operacoes_aposentados": 553661,
+    "inad_aposentados": 1.69,
     "inad_total": 3.8
    },
    "SE": {
-    "total": 5650893175.0,
-    "aposentados": 1041586935.0,
-    "part_aposentados": 18.43,
-    "operacoes_aposentados": 102948,
+    "total": 5651643108.0,
+    "aposentados": 1042216100.0,
+    "part_aposentados": 18.44,
+    "operacoes_aposentados": 103020,
     "inad_aposentados": 2.66,
     "inad_total": 3.91
    },
    "SP": {
-    "total": 179213114727.0,
-    "aposentados": 39304054054.0,
-    "part_aposentados": 21.93,
-    "operacoes_aposentados": 3438312,
+    "total": 179200580929.0,
+    "aposentados": 39322133324.0,
+    "part_aposentados": 21.94,
+    "operacoes_aposentados": 3439605,
     "inad_aposentados": 1.8,
     "inad_total": 4.22
    },
    "TO": {
-    "total": 6218810268.0,
-    "aposentados": 788985330.0,
+    "total": 6218869726.0,
+    "aposentados": 789102251.0,
     "part_aposentados": 12.69,
-    "operacoes_aposentados": 51521,
+    "operacoes_aposentados": 51533,
     "inad_aposentados": 2.79,
     "inad_total": 4.2
    }
@@ -5763,8 +5763,8 @@
    },
    {
     "d": "2026-07",
-    "saldo": 791.62,
-    "op": 88.17,
+    "saldo": 791.77,
+    "op": 88.19,
     "inad": 3.68
    }
   ],
@@ -5951,59 +5951,59 @@
    },
    {
     "d": "2026-07",
-    "saldo": 155.82,
+    "saldo": 155.92,
     "op": 12.76,
-    "inad": 2.16
+    "inad": 2.17
    }
   ],
   "composicao_ocupacao": [
    {
     "grupo": "Servidor ou empregado público",
-    "saldo": 263778144168.0,
-    "part": 33.32,
-    "op": 13115074,
+    "saldo": 263863279676.0,
+    "part": 33.33,
+    "op": 13127938,
     "inad": 2.79
    },
    {
     "grupo": "Outros",
-    "saldo": 243616052154.0,
-    "part": 30.77,
-    "op": 45123559,
+    "saldo": 243576656013.0,
+    "part": 30.76,
+    "op": 45117931,
     "inad": 4.88
    },
    {
     "grupo": "Aposentado/pensionista",
-    "saldo": 155819100673.0,
-    "part": 19.68,
-    "op": 12756718,
-    "inad": 2.16
+    "saldo": 155922094108.0,
+    "part": 19.69,
+    "op": 12764959,
+    "inad": 2.17
    },
    {
     "grupo": "Empregado de empresa privada",
-    "saldo": 93964706352.0,
+    "saldo": 93973057776.0,
     "part": 11.87,
-    "op": 12693152,
+    "op": 12697541,
     "inad": 5.68
    },
    {
     "grupo": "Empresário",
-    "saldo": 16656088257.0,
+    "saldo": 16651362216.0,
     "part": 2.1,
-    "op": 2052256,
+    "op": 2051747,
     "inad": 2.92
    },
    {
     "grupo": "Autônomo",
-    "saldo": 15507968334.0,
+    "saldo": 15510884553.0,
     "part": 1.96,
-    "op": 2115892,
+    "op": 2116054,
     "inad": 3.9
    },
    {
     "grupo": "MEI",
-    "saldo": 2275608634.0,
+    "saldo": 2275360001.0,
     "part": 0.29,
-    "op": 318302,
+    "op": 318330,
     "inad": 5.27
    }
   ],
@@ -6029,16 +6029,16 @@
    "peso": 16.66,
    "prural": 67.05,
    "pass": 33.98,
-   "cons_obs": 766001492.0,
-   "cons_total": 4490937980.0,
+   "cons_obs": 766138230.0,
+   "cons_total": 4490758234.0,
    "part_apos": 17.06,
-   "op_apos": 47961,
+   "op_apos": 47966,
    "inad_apos": 2.04,
-   "cons_por_elegivel": 10483.0,
+   "cons_por_elegivel": 10484.0,
    "cons_sobre_mes": 5.23,
-   "saldo_por_operacao": 15971.0,
+   "saldo_por_operacao": 15973.0,
    "outras_censo": 26.27,
-   "cons_por_60": 9768.0,
+   "cons_por_60": 9770.0,
    "renda_por_hab": 1060.0,
    "ben_medio": 1447.06,
    "pass_uf": 33.98
@@ -6062,16 +6062,16 @@
    "peso": 24.29,
    "prural": 45.51,
    "pass": 22.54,
-   "cons_obs": 2114231943.0,
-   "cons_total": 11184830641.0,
-   "part_apos": 18.9,
-   "op_apos": 196167,
+   "cons_obs": 2115405968.0,
+   "cons_total": 11185305046.0,
+   "part_apos": 18.91,
+   "op_apos": 196266,
    "inad_apos": 2.2,
-   "cons_por_elegivel": 4809.0,
+   "cons_por_elegivel": 4812.0,
    "cons_sobre_mes": 2.7,
    "saldo_por_operacao": 10778.0,
    "outras_censo": 32.41,
-   "cons_por_60": 5166.0,
+   "cons_por_60": 5169.0,
    "renda_por_hab": 1031.0,
    "ben_medio": 1493.05,
    "pass_uf": 22.54
@@ -6095,16 +6095,16 @@
    "peso": 15.09,
    "prural": 48.54,
    "pass": 34.08,
-   "cons_obs": 1920900765.0,
-   "cons_total": 13045518513.0,
-   "part_apos": 14.72,
-   "op_apos": 156358,
-   "inad_apos": 2.41,
-   "cons_por_elegivel": 6951.0,
+   "cons_obs": 1922816577.0,
+   "cons_total": 13046265872.0,
+   "part_apos": 14.74,
+   "op_apos": 156470,
+   "inad_apos": 2.42,
+   "cons_por_elegivel": 6958.0,
    "cons_sobre_mes": 3.31,
-   "saldo_por_operacao": 12285.0,
+   "saldo_por_operacao": 12289.0,
    "outras_censo": 23.09,
-   "cons_por_60": 5381.0,
+   "cons_por_60": 5386.0,
    "renda_por_hab": 976.0,
    "ben_medio": 1511.19,
    "pass_uf": 34.08
@@ -6128,16 +6128,16 @@
    "peso": 11.51,
    "prural": 54.37,
    "pass": 46.38,
-   "cons_obs": 684989523.0,
-   "cons_total": 6756340178.0,
-   "part_apos": 10.14,
-   "op_apos": 33080,
+   "cons_obs": 685543464.0,
+   "cons_total": 6756529683.0,
+   "part_apos": 10.15,
+   "op_apos": 33124,
    "inad_apos": 3.13,
-   "cons_por_elegivel": 16679.0,
+   "cons_por_elegivel": 16693.0,
    "cons_sobre_mes": 7.15,
-   "saldo_por_operacao": 20707.0,
+   "saldo_por_operacao": 20696.0,
    "outras_censo": 19.71,
-   "cons_por_60": 11063.0,
+   "cons_por_60": 11072.0,
    "renda_por_hab": 1135.0,
    "ben_medio": 1374.92,
    "pass_uf": 46.38
@@ -6161,16 +6161,16 @@
    "peso": 25.9,
    "prural": 56.55,
    "pass": 20.02,
-   "cons_obs": 7177769579.0,
-   "cons_total": 44240426052.0,
-   "part_apos": 16.22,
-   "op_apos": 672154,
+   "cons_obs": 7181524271.0,
+   "cons_total": 44242466669.0,
+   "part_apos": 16.23,
+   "op_apos": 672555,
    "inad_apos": 1.96,
-   "cons_por_elegivel": 3137.0,
+   "cons_por_elegivel": 3139.0,
    "cons_sobre_mes": 1.82,
-   "saldo_por_operacao": 10679.0,
+   "saldo_por_operacao": 10678.0,
    "outras_censo": 32.07,
-   "cons_por_60": 3324.0,
+   "cons_por_60": 3326.0,
    "renda_por_hab": 1076.0,
    "ben_medio": 1555.15,
    "pass_uf": 20.02
@@ -6194,16 +6194,16 @@
    "peso": 24.77,
    "prural": 60.19,
    "pass": 23.22,
-   "cons_obs": 3676783942.0,
-   "cons_total": 29320188644.0,
+   "cons_obs": 3678143753.0,
+   "cons_total": 29325363188.0,
    "part_apos": 12.54,
-   "op_apos": 325881,
+   "op_apos": 326070,
    "inad_apos": 1.87,
-   "cons_por_elegivel": 2706.0,
+   "cons_por_elegivel": 2707.0,
    "cons_sobre_mes": 1.6,
-   "saldo_por_operacao": 11283.0,
+   "saldo_por_operacao": 11280.0,
    "outras_censo": 31.58,
-   "cons_por_60": 2849.0,
+   "cons_por_60": 2850.0,
    "renda_por_hab": 1053.0,
    "ben_medio": 1458.35,
    "pass_uf": 23.22
@@ -6227,16 +6227,16 @@
    "peso": 8.61,
    "prural": 5.97,
    "pass": 20.21,
-   "cons_obs": 4324842548.0,
-   "cons_total": 18881282683.0,
+   "cons_obs": 4326565969.0,
+   "cons_total": 18881458861.0,
    "part_apos": 22.91,
-   "op_apos": 194627,
+   "op_apos": 194722,
    "inad_apos": 2.2,
-   "cons_por_elegivel": 15235.0,
-   "cons_sobre_mes": 6.0,
-   "saldo_por_operacao": 22221.0,
+   "cons_por_elegivel": 15241.0,
+   "cons_sobre_mes": 6.01,
+   "saldo_por_operacao": 22219.0,
    "outras_censo": 22.33,
-   "cons_por_60": 11846.0,
+   "cons_por_60": 11851.0,
    "renda_por_hab": 2970.0,
    "ben_medio": 2163.79,
    "pass_uf": 20.21
@@ -6260,16 +6260,16 @@
    "peso": 19.05,
    "prural": 30.32,
    "pass": 13.96,
-   "cons_obs": 2966057018.0,
-   "cons_total": 13270939657.0,
+   "cons_obs": 2968814366.0,
+   "cons_total": 13283582527.0,
    "part_apos": 22.35,
-   "op_apos": 236376,
+   "op_apos": 236549,
    "inad_apos": 1.87,
-   "cons_por_elegivel": 4592.0,
+   "cons_por_elegivel": 4596.0,
    "cons_sobre_mes": 2.48,
-   "saldo_por_operacao": 12548.0,
+   "saldo_por_operacao": 12551.0,
    "outras_censo": 23.85,
-   "cons_por_60": 4698.0,
+   "cons_por_60": 4702.0,
    "renda_por_hab": 1639.0,
    "ben_medio": 1777.18,
    "pass_uf": 13.96
@@ -6293,16 +6293,16 @@
    "peso": 12.96,
    "prural": 34.41,
    "pass": 19.45,
-   "cons_obs": 5012117216.0,
-   "cons_total": 26654830438.0,
-   "part_apos": 18.8,
-   "op_apos": 339792,
+   "cons_obs": 5014812709.0,
+   "cons_total": 26659860964.0,
+   "part_apos": 18.81,
+   "op_apos": 339971,
    "inad_apos": 2.99,
-   "cons_por_elegivel": 5982.0,
+   "cons_por_elegivel": 5985.0,
    "cons_sobre_mes": 3.25,
    "saldo_por_operacao": 14751.0,
    "outras_censo": 19.1,
-   "cons_por_60": 5197.0,
+   "cons_por_60": 5200.0,
    "renda_por_hab": 1689.0,
    "ben_medio": 1618.18,
    "pass_uf": 19.45
@@ -6326,16 +6326,16 @@
    "peso": 24.51,
    "prural": 79.8,
    "pass": 16.22,
-   "cons_obs": 2490207168.0,
-   "cons_total": 24759298372.0,
-   "part_apos": 10.06,
-   "op_apos": 273908,
+   "cons_obs": 2492364480.0,
+   "cons_total": 24761215449.0,
+   "part_apos": 10.07,
+   "op_apos": 274193,
    "inad_apos": 2.08,
-   "cons_por_elegivel": 2315.0,
+   "cons_por_elegivel": 2317.0,
    "cons_sobre_mes": 1.67,
-   "saldo_por_operacao": 9091.0,
+   "saldo_por_operacao": 9090.0,
    "outras_censo": 31.44,
-   "cons_por_60": 3030.0,
+   "cons_por_60": 3032.0,
    "renda_por_hab": 898.0,
    "ben_medio": 1325.94,
    "pass_uf": 16.22
@@ -6359,16 +6359,16 @@
    "peso": 20.79,
    "prural": 27.79,
    "pass": 12.93,
-   "cons_obs": 14004666542.0,
-   "cons_total": 67622201066.0,
-   "part_apos": 20.71,
-   "op_apos": 1182303,
+   "cons_obs": 14011537902.0,
+   "cons_total": 67627803965.0,
+   "part_apos": 20.72,
+   "op_apos": 1182942,
    "inad_apos": 1.89,
-   "cons_por_elegivel": 3664.0,
+   "cons_por_elegivel": 3666.0,
    "cons_sobre_mes": 2.05,
    "saldo_por_operacao": 11845.0,
    "outras_censo": 25.61,
-   "cons_por_60": 3826.0,
+   "cons_por_60": 3828.0,
    "renda_por_hab": 1604.0,
    "ben_medio": 1737.45,
    "pass_uf": 12.93
@@ -6392,16 +6392,16 @@
    "peso": 14.6,
    "prural": 27.82,
    "pass": 22.42,
-   "cons_obs": 3018351937.0,
-   "cons_total": 15284375291.0,
-   "part_apos": 19.75,
-   "op_apos": 190794,
-   "inad_apos": 2.35,
-   "cons_por_elegivel": 8605.0,
+   "cons_obs": 3020218235.0,
+   "cons_total": 15283592171.0,
+   "part_apos": 19.76,
+   "op_apos": 190911,
+   "inad_apos": 2.36,
+   "cons_por_elegivel": 8611.0,
    "cons_sobre_mes": 4.42,
    "saldo_por_operacao": 15820.0,
    "outras_censo": 20.35,
-   "cons_por_60": 7718.0,
+   "cons_por_60": 7723.0,
    "renda_por_hab": 1697.0,
    "ben_medio": 1593.85,
    "pass_uf": 22.42
@@ -6425,16 +6425,16 @@
    "peso": 11.37,
    "prural": 41.5,
    "pass": 20.26,
-   "cons_obs": 2390119315.0,
-   "cons_total": 14635579754.0,
-   "part_apos": 16.33,
-   "op_apos": 172685,
+   "cons_obs": 2390696308.0,
+   "cons_total": 14634610969.0,
+   "part_apos": 16.34,
+   "op_apos": 172731,
    "inad_apos": 2.94,
-   "cons_por_elegivel": 5853.0,
+   "cons_por_elegivel": 5855.0,
    "cons_sobre_mes": 3.17,
    "saldo_por_operacao": 13841.0,
    "outras_censo": 15.48,
-   "cons_por_60": 5552.0,
+   "cons_por_60": 5554.0,
    "renda_por_hab": 1813.0,
    "ben_medio": 1567.25,
    "pass_uf": 20.26
@@ -6458,16 +6458,16 @@
    "peso": 17.27,
    "prural": 63.02,
    "pass": 26.88,
-   "cons_obs": 4446826965.0,
-   "cons_total": 33898588920.0,
+   "cons_obs": 4450252961.0,
+   "cons_total": 33915328616.0,
    "part_apos": 13.12,
-   "op_apos": 260356,
-   "inad_apos": 1.98,
-   "cons_por_elegivel": 5544.0,
-   "cons_sobre_mes": 3.2,
-   "saldo_por_operacao": 17080.0,
+   "op_apos": 260542,
+   "inad_apos": 1.99,
+   "cons_por_elegivel": 5549.0,
+   "cons_sobre_mes": 3.21,
+   "saldo_por_operacao": 17081.0,
    "outras_censo": 26.26,
-   "cons_por_60": 5074.0,
+   "cons_por_60": 5078.0,
    "renda_por_hab": 990.0,
    "ben_medio": 1419.37,
    "pass_uf": 26.88
@@ -6491,16 +6491,16 @@
    "peso": 25.3,
    "prural": 55.19,
    "pass": 20.24,
-   "cons_obs": 2351364282.0,
-   "cons_total": 14350681578.0,
-   "part_apos": 16.39,
-   "op_apos": 186886,
+   "cons_obs": 2353853510.0,
+   "cons_total": 14355271813.0,
+   "part_apos": 16.4,
+   "op_apos": 187076,
    "inad_apos": 2.28,
-   "cons_por_elegivel": 3589.0,
+   "cons_por_elegivel": 3593.0,
    "cons_sobre_mes": 2.14,
    "saldo_por_operacao": 12582.0,
    "outras_censo": 34.88,
-   "cons_por_60": 3821.0,
+   "cons_por_60": 3825.0,
    "renda_por_hab": 1093.0,
    "ben_medio": 1478.79,
    "pass_uf": 20.24
@@ -6524,16 +6524,16 @@
    "peso": 22.8,
    "prural": 46.84,
    "pass": 23.82,
-   "cons_obs": 5694494293.0,
-   "cons_total": 29147682152.0,
-   "part_apos": 19.54,
-   "op_apos": 468544,
+   "cons_obs": 5698984388.0,
+   "cons_total": 29149766351.0,
+   "part_apos": 19.55,
+   "op_apos": 468846,
    "inad_apos": 2.1,
-   "cons_por_elegivel": 4481.0,
+   "cons_por_elegivel": 4485.0,
    "cons_sobre_mes": 2.43,
-   "saldo_por_operacao": 12154.0,
+   "saldo_por_operacao": 12155.0,
    "outras_censo": 30.57,
-   "cons_por_60": 4275.0,
+   "cons_por_60": 4278.0,
    "renda_por_hab": 1136.0,
    "ben_medio": 1568.09,
    "pass_uf": 23.82
@@ -6557,16 +6557,16 @@
    "peso": 27.97,
    "prural": 70.48,
    "pass": 14.56,
-   "cons_obs": 1656858530.0,
-   "cons_total": 12519028181.0,
-   "part_apos": 13.23,
-   "op_apos": 134383,
+   "cons_obs": 1658076754.0,
+   "cons_total": 12520950893.0,
+   "part_apos": 13.24,
+   "op_apos": 134494,
    "inad_apos": 2.07,
-   "cons_por_elegivel": 2671.0,
+   "cons_por_elegivel": 2673.0,
    "cons_sobre_mes": 1.8,
-   "saldo_por_operacao": 12329.0,
+   "saldo_por_operacao": 12328.0,
    "outras_censo": 35.73,
-   "cons_por_60": 3355.0,
+   "cons_por_60": 3357.0,
    "renda_por_hab": 1006.0,
    "ben_medio": 1420.81,
    "pass_uf": 14.56
@@ -6590,16 +6590,16 @@
    "peso": 16.44,
    "prural": 26.71,
    "pass": 11.35,
-   "cons_obs": 8039142390.0,
-   "cons_total": 45712329593.0,
+   "cons_obs": 8042595633.0,
+   "cons_total": 45714739081.0,
    "part_apos": 17.59,
-   "op_apos": 713112,
+   "op_apos": 713381,
    "inad_apos": 1.59,
-   "cons_por_elegivel": 3969.0,
-   "cons_sobre_mes": 2.18,
-   "saldo_por_operacao": 11273.0,
+   "cons_por_elegivel": 3970.0,
+   "cons_sobre_mes": 2.19,
+   "saldo_por_operacao": 11274.0,
    "outras_censo": 21.0,
-   "cons_por_60": 4247.0,
+   "cons_por_60": 4248.0,
    "renda_por_hab": 1956.0,
    "ben_medio": 1782.59,
    "pass_uf": 11.35
@@ -6623,16 +6623,16 @@
    "peso": 19.21,
    "prural": 2.57,
    "pass": 15.63,
-   "cons_obs": 20733905705.0,
-   "cons_total": 74480173885.0,
+   "cons_obs": 20745302748.0,
+   "cons_total": 74514408742.0,
    "part_apos": 27.84,
-   "op_apos": 1574729,
+   "op_apos": 1575525,
    "inad_apos": 2.94,
-   "cons_por_elegivel": 7894.0,
+   "cons_por_elegivel": 7899.0,
    "cons_sobre_mes": 3.66,
    "saldo_por_operacao": 13167.0,
    "outras_censo": 28.82,
-   "cons_por_60": 6853.0,
+   "cons_por_60": 6857.0,
    "renda_por_hab": 1838.0,
    "ben_medio": 2031.86,
    "pass_uf": 15.63
@@ -6656,16 +6656,16 @@
    "peso": 20.93,
    "prural": 51.64,
    "pass": 18.99,
-   "cons_obs": 2679771625.0,
-   "cons_total": 13615394041.0,
-   "part_apos": 19.68,
-   "op_apos": 190933,
+   "cons_obs": 2682288757.0,
+   "cons_total": 13619571577.0,
+   "part_apos": 19.69,
+   "op_apos": 191176,
    "inad_apos": 2.15,
-   "cons_por_elegivel": 5169.0,
+   "cons_por_elegivel": 5174.0,
    "cons_sobre_mes": 3.12,
-   "saldo_por_operacao": 14035.0,
+   "saldo_por_operacao": 14030.0,
    "outras_censo": 33.15,
-   "cons_por_60": 5382.0,
+   "cons_por_60": 5387.0,
    "renda_por_hab": 1243.0,
    "ben_medio": 1486.76,
    "pass_uf": 18.99
@@ -6689,16 +6689,16 @@
    "peso": 17.75,
    "prural": 61.44,
    "pass": 19.98,
-   "cons_obs": 1210143930.0,
-   "cons_total": 7456600643.0,
-   "part_apos": 16.23,
-   "op_apos": 75205,
+   "cons_obs": 1210828185.0,
+   "cons_total": 7457758211.0,
+   "part_apos": 16.24,
+   "op_apos": 75264,
    "inad_apos": 2.22,
-   "cons_por_elegivel": 5498.0,
-   "cons_sobre_mes": 3.15,
-   "saldo_por_operacao": 16091.0,
+   "cons_por_elegivel": 5501.0,
+   "cons_sobre_mes": 3.16,
+   "saldo_por_operacao": 16088.0,
    "outras_censo": 21.37,
-   "cons_por_60": 6173.0,
+   "cons_por_60": 6176.0,
    "renda_por_hab": 1367.0,
    "ben_medio": 1476.54,
    "pass_uf": 19.98
@@ -6722,16 +6722,16 @@
    "peso": 10.56,
    "prural": 59.92,
    "pass": 38.87,
-   "cons_obs": 378305436.0,
-   "cons_total": 4423394806.0,
-   "part_apos": 8.55,
-   "op_apos": 21871,
+   "cons_obs": 378850930.0,
+   "cons_total": 4453689092.0,
+   "part_apos": 8.51,
+   "op_apos": 21914,
    "inad_apos": 2.64,
-   "cons_por_elegivel": 10323.0,
+   "cons_por_elegivel": 10338.0,
    "cons_sobre_mes": 5.04,
-   "saldo_por_operacao": 17297.0,
+   "saldo_por_operacao": 17288.0,
    "outras_censo": 19.28,
-   "cons_por_60": 7497.0,
+   "cons_por_60": 7508.0,
    "renda_por_hab": 1117.0,
    "ben_medio": 1391.09,
    "pass_uf": 38.87
@@ -6755,16 +6755,16 @@
    "peso": 21.36,
    "prural": 23.44,
    "pass": 8.8,
-   "cons_obs": 10715931996.0,
-   "cons_total": 46256386407.0,
-   "part_apos": 23.17,
-   "op_apos": 962500,
-   "inad_apos": 2.65,
-   "cons_por_elegivel": 4208.0,
-   "cons_sobre_mes": 2.27,
-   "saldo_por_operacao": 11133.0,
+   "cons_obs": 10738758013.0,
+   "cons_total": 46286645031.0,
+   "part_apos": 23.2,
+   "op_apos": 964452,
+   "inad_apos": 2.7,
+   "cons_por_elegivel": 4217.0,
+   "cons_sobre_mes": 2.28,
+   "saldo_por_operacao": 11135.0,
    "outras_censo": 27.29,
-   "cons_por_60": 4885.0,
+   "cons_por_60": 4896.0,
    "renda_por_hab": 2030.0,
    "ben_medio": 1857.9,
    "pass_uf": 8.8
@@ -6788,16 +6788,16 @@
    "peso": 16.9,
    "prural": 19.34,
    "pass": 6.14,
-   "cons_obs": 6230690214.0,
-   "cons_total": 28527840928.0,
-   "part_apos": 21.84,
-   "op_apos": 553332,
-   "inad_apos": 1.68,
-   "cons_por_elegivel": 4185.0,
+   "cons_obs": 6234268324.0,
+   "cons_total": 28534657575.0,
+   "part_apos": 21.85,
+   "op_apos": 553661,
+   "inad_apos": 1.69,
+   "cons_por_elegivel": 4187.0,
    "cons_sobre_mes": 2.19,
    "saldo_por_operacao": 11260.0,
    "outras_censo": 20.27,
-   "cons_por_60": 5261.0,
+   "cons_por_60": 5264.0,
    "renda_por_hab": 2210.0,
    "ben_medio": 1873.54,
    "pass_uf": 6.14
@@ -6821,16 +6821,16 @@
    "peso": 22.39,
    "prural": 48.82,
    "pass": 20.99,
-   "cons_obs": 1041586935.0,
-   "cons_total": 5650893175.0,
-   "part_apos": 18.43,
-   "op_apos": 102948,
+   "cons_obs": 1042216100.0,
+   "cons_total": 5651643108.0,
+   "part_apos": 18.44,
+   "op_apos": 103020,
    "inad_apos": 2.66,
-   "cons_por_elegivel": 3197.0,
+   "cons_por_elegivel": 3199.0,
    "cons_sobre_mes": 1.79,
-   "saldo_por_operacao": 10118.0,
+   "saldo_por_operacao": 10117.0,
    "outras_censo": 31.07,
-   "cons_por_60": 3535.0,
+   "cons_por_60": 3538.0,
    "renda_por_hab": 1177.0,
    "ben_medio": 1553.71,
    "pass_uf": 20.99
@@ -6854,16 +6854,16 @@
    "peso": 17.72,
    "prural": 6.11,
    "pass": 11.26,
-   "cons_obs": 39304054054.0,
-   "cons_total": 179213114727.0,
-   "part_apos": 21.93,
-   "op_apos": 3438312,
+   "cons_obs": 39322133324.0,
+   "cons_total": 179200580929.0,
+   "part_apos": 21.94,
+   "op_apos": 3439605,
    "inad_apos": 1.8,
-   "cons_por_elegivel": 5292.0,
+   "cons_por_elegivel": 5295.0,
    "cons_sobre_mes": 2.4,
-   "saldo_por_operacao": 11431.0,
+   "saldo_por_operacao": 11432.0,
    "outras_censo": 20.72,
-   "cons_por_60": 5137.0,
+   "cons_por_60": 5140.0,
    "renda_por_hab": 2079.0,
    "ben_medio": 2155.33,
    "pass_uf": 11.26
@@ -6887,16 +6887,16 @@
    "peso": 15.17,
    "prural": 63.95,
    "pass": 20.79,
-   "cons_obs": 788985330.0,
-   "cons_total": 6218810268.0,
+   "cons_obs": 789102251.0,
+   "cons_total": 6218869726.0,
    "part_apos": 12.69,
-   "op_apos": 51521,
+   "op_apos": 51533,
    "inad_apos": 2.79,
    "cons_por_elegivel": 4050.0,
    "cons_sobre_mes": 2.48,
-   "saldo_por_operacao": 15314.0,
+   "saldo_por_operacao": 15313.0,
    "outras_censo": 21.16,
-   "cons_por_60": 4176.0,
+   "cons_por_60": 4177.0,
    "renda_por_hab": 1388.0,
    "ben_medio": 1434.94,
    "pass_uf": 20.79
@@ -6948,7 +6948,7 @@
     "obs": "Nenhum termo compartilhado. É a especificação de referência desta página."
    }
   ],
-  "correlacao_mecanica": -0.264,
+  "correlacao_mecanica": -0.263,
   "controles": [
    {
     "variavel": "renda domiciliar por habitante",
@@ -8003,140 +8003,140 @@
      "c": "3550308",
      "n": "São Paulo",
      "uf": "SP",
-     "v": 10407392303.0,
+     "v": 10412179546.0,
      "sel": "alta"
     },
     {
      "c": "3304557",
      "n": "Rio de Janeiro",
      "uf": "RJ",
-     "v": 9080885499.0,
+     "v": 9085877093.0,
      "sel": "alta"
     },
     {
      "c": "5300108",
      "n": "Brasília",
      "uf": "DF",
-     "v": 4324842548.0,
+     "v": 4326565969.0,
      "sel": "alta"
     },
     {
      "c": "3106200",
      "n": "Belo Horizonte",
      "uf": "MG",
-     "v": 1932703248.0,
+     "v": 1933651525.0,
      "sel": "alta"
     },
     {
      "c": "4314902",
      "n": "Porto Alegre",
      "uf": "RS",
-     "v": 1384363670.0,
+     "v": 1387312505.0,
      "sel": "alta"
     },
     {
      "c": "4106902",
      "n": "Curitiba",
      "uf": "PR",
-     "v": 1376810665.0,
+     "v": 1377402079.0,
      "sel": "alta"
     },
     {
      "c": "2611606",
      "n": "Recife",
      "uf": "PE",
-     "v": 1201415391.0,
+     "v": 1202362705.0,
      "sel": "alta"
     },
     {
      "c": "3509502",
      "n": "Campinas",
      "uf": "SP",
-     "v": 1191567122.0,
+     "v": 1192115225.0,
      "sel": "alta"
     },
     {
      "c": "5208707",
      "n": "Goiânia",
      "uf": "GO",
-     "v": 1123711580.0,
+     "v": 1124315907.0,
      "sel": "alta"
     },
     {
      "c": "2927408",
      "n": "Salvador",
      "uf": "BA",
-     "v": 1078973611.0,
+     "v": 1079538022.0,
      "sel": "alta"
     },
     {
      "c": "5002704",
      "n": "Campo Grande",
      "uf": "MS",
-     "v": 955179239.0,
+     "v": 955769842.0,
      "sel": "alta"
     },
     {
      "c": "1302603",
      "n": "Manaus",
      "uf": "AM",
-     "v": 934869699.0,
+     "v": 935802092.0,
      "sel": "alta"
     },
     {
      "c": "3304904",
      "n": "São Gonçalo",
      "uf": "RJ",
-     "v": 910172644.0,
+     "v": 910672949.0,
      "sel": "alta"
     },
     {
      "c": "3301702",
      "n": "Duque de Caxias",
      "uf": "RJ",
-     "v": 905641319.0,
+     "v": 906139133.0,
      "sel": "alta"
     },
     {
      "c": "1501402",
      "n": "Belém",
      "uf": "PA",
-     "v": 890200356.0,
+     "v": 890886199.0,
      "sel": "alta"
     },
     {
      "c": "3518800",
      "n": "Guarulhos",
      "uf": "SP",
-     "v": 848737007.0,
+     "v": 849127413.0,
      "sel": "alta"
     },
     {
      "c": "3303302",
      "n": "Niterói",
      "uf": "RJ",
-     "v": 836132059.0,
+     "v": 836591665.0,
      "sel": "alta"
     },
     {
      "c": "2304400",
      "n": "Fortaleza",
      "uf": "CE",
-     "v": 766065666.0,
+     "v": 766348986.0,
      "sel": "alta"
     },
     {
      "c": "3547809",
      "n": "Santo André",
      "uf": "SP",
-     "v": 728095228.0,
+     "v": 728430141.0,
      "sel": "alta"
     },
     {
      "c": "3303500",
      "n": "Nova Iguaçu",
      "uf": "RJ",
-     "v": 704439444.0,
+     "v": 704826661.0,
      "sel": "alta"
     }
    ],
@@ -8145,140 +8145,140 @@
      "c": "1600154",
      "n": "Pedra Branca do Amapari",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "alta"
     },
     {
      "c": "1600204",
      "n": "Calçoene",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "1600279",
      "n": "Laranjal do Jari",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "1600303",
      "n": "Macapá",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "alta"
     },
     {
      "c": "1600402",
      "n": "Mazagão",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "1600501",
      "n": "Oiapoque",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "1600535",
      "n": "Porto Grande",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "alta"
     },
     {
      "c": "1600600",
      "n": "Santana",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "1600709",
      "n": "Tartarugalzinho",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "alta"
     },
     {
      "c": "1600808",
      "n": "Vitória do Jari",
      "uf": "AP",
-     "v": 16679.0,
+     "v": 16693.0,
      "sel": "media"
     },
     {
      "c": "5300108",
      "n": "Brasília",
      "uf": "DF",
-     "v": 15235.0,
+     "v": 15241.0,
      "sel": "alta"
     },
     {
      "c": "1200013",
      "n": "Acrelândia",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "alta"
     },
     {
      "c": "1200104",
      "n": "Brasiléia",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "media"
     },
     {
      "c": "1200138",
      "n": "Bujari",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "media"
     },
     {
      "c": "1200252",
      "n": "Epitaciolândia",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "alta"
     },
     {
      "c": "1200302",
      "n": "Feijó",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "media"
     },
     {
      "c": "1200336",
      "n": "Mâncio Lima",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "alta"
     },
     {
      "c": "1200344",
      "n": "Manoel Urbano",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "media"
     },
     {
      "c": "1200351",
      "n": "Marechal Thaumaturgo",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "media"
     },
     {
      "c": "1200385",
      "n": "Plácido de Castro",
      "uf": "AC",
-     "v": 10483.0,
+     "v": 10484.0,
      "sel": "alta"
     }
    ],
@@ -8287,84 +8287,84 @@
      "c": "1600709",
      "n": "Tartarugalzinho",
      "uf": "AP",
-     "v": 16.33,
+     "v": 16.34,
      "sel": "alta"
     },
     {
      "c": "1600501",
      "n": "Oiapoque",
      "uf": "AP",
-     "v": 15.95,
+     "v": 15.96,
      "sel": "media"
     },
     {
      "c": "1600204",
      "n": "Calçoene",
      "uf": "AP",
-     "v": 15.92,
+     "v": 15.93,
      "sel": "media"
     },
     {
      "c": "1600402",
      "n": "Mazagão",
      "uf": "AP",
-     "v": 15.82,
+     "v": 15.83,
      "sel": "media"
     },
     {
      "c": "1600154",
      "n": "Pedra Branca do Amapari",
      "uf": "AP",
-     "v": 15.38,
+     "v": 15.4,
      "sel": "alta"
     },
     {
      "c": "1600535",
      "n": "Porto Grande",
      "uf": "AP",
-     "v": 15.02,
+     "v": 15.03,
      "sel": "alta"
     },
     {
      "c": "1600808",
      "n": "Vitória do Jari",
      "uf": "AP",
-     "v": 14.82,
+     "v": 14.83,
      "sel": "media"
     },
     {
      "c": "1600600",
      "n": "Santana",
      "uf": "AP",
-     "v": 14.67,
+     "v": 14.68,
      "sel": "media"
     },
     {
      "c": "1600303",
      "n": "Macapá",
      "uf": "AP",
-     "v": 14.3,
+     "v": 14.31,
      "sel": "alta"
     },
     {
      "c": "1600279",
      "n": "Laranjal do Jari",
      "uf": "AP",
-     "v": 13.12,
+     "v": 13.13,
      "sel": "media"
     },
     {
      "c": "1400407",
      "n": "Normandia",
      "uf": "RR",
-     "v": 10.04,
+     "v": 10.05,
      "sel": "media"
     },
     {
      "c": "1400704",
      "n": "Uiramutã",
      "uf": "RR",
-     "v": 9.75,
+     "v": 9.77,
      "sel": "media"
     },
     {
@@ -8378,7 +8378,14 @@
      "c": "1200336",
      "n": "Mâncio Lima",
      "uf": "AC",
-     "v": 9.64,
+     "v": 9.65,
+     "sel": "alta"
+    },
+    {
+     "c": "1400456",
+     "n": "Pacaraima",
+     "uf": "RR",
+     "v": 9.61,
      "sel": "alta"
     },
     {
@@ -8389,38 +8396,31 @@
      "sel": "media"
     },
     {
-     "c": "1400456",
-     "n": "Pacaraima",
-     "uf": "RR",
-     "v": 9.6,
-     "sel": "alta"
-    },
-    {
      "c": "1400209",
      "n": "Caracaraí",
      "uf": "RR",
-     "v": 9.58,
+     "v": 9.59,
      "sel": "alta"
     },
     {
      "c": "1400159",
      "n": "Bonfim",
      "uf": "RR",
-     "v": 9.55,
+     "v": 9.56,
      "sel": "media"
     },
     {
      "c": "1400472",
      "n": "Rorainópolis",
      "uf": "RR",
-     "v": 9.5,
+     "v": 9.51,
      "sel": "alta"
     },
     {
      "c": "1400050",
      "n": "Alto Alegre",
      "uf": "RR",
-     "v": 9.45,
+     "v": 9.46,
      "sel": "alta"
     }
    ],
@@ -8623,75 +8623,75 @@
   "geografia": "nacional",
   "modalidade": "Crédito pessoal consignado INSS - Prefixado",
   "janela": {
-   "inicio": "2026-08-24",
-   "fim": "2026-08-28"
+   "inicio": "2026-08-25",
+   "fim": "2026-08-31"
   },
   "stats": {
    "n": 36,
-   "min": 19.81,
-   "p25": 22.31,
-   "mediana": 24.16,
-   "p75": 24.78,
-   "max": 25.56
+   "min": 19.79,
+   "p25": 22.24,
+   "mediana": 24.23,
+   "p75": 24.79,
+   "max": 25.52
   },
-  "spread_selic": 10.16,
-  "delta_3m": -0.33,
+  "spread_selic": 10.23,
+  "delta_3m": -0.26,
   "ranking": [
    {
     "cnpj8": "30680829",
     "nome": "NU FINANCEIRA S.A. CFI",
     "taxa_am": 1.52,
-    "taxa_aa": 19.81,
+    "taxa_aa": 19.79,
     "posicao": 1,
-    "vs_mediana": -4.35
+    "vs_mediana": -4.44
    },
    {
     "cnpj8": "61820817",
     "nome": "BCO PAULISTA S.A.",
-    "taxa_am": 1.52,
-    "taxa_aa": 19.82,
+    "taxa_am": 1.53,
+    "taxa_aa": 20.01,
     "posicao": 2,
-    "vs_mediana": -4.34
+    "vs_mediana": -4.22
    },
    {
     "cnpj8": "62144175",
     "nome": "BCO PINE S.A.",
-    "taxa_am": 1.57,
-    "taxa_aa": 20.52,
+    "taxa_am": 1.55,
+    "taxa_aa": 20.32,
     "posicao": 3,
-    "vs_mediana": -3.64
+    "vs_mediana": -3.91
    },
    {
     "cnpj8": "10264663",
     "nome": "BANCOSEGURO S.A.",
     "taxa_am": 1.57,
-    "taxa_aa": 20.59,
+    "taxa_aa": 20.48,
     "posicao": 4,
-    "vs_mediana": -3.57
+    "vs_mediana": -3.75
    },
    {
     "cnpj8": "58160789",
     "nome": "BCO SAFRA S.A.",
-    "taxa_am": 1.58,
-    "taxa_aa": 20.68,
+    "taxa_am": 1.57,
+    "taxa_aa": 20.61,
     "posicao": 5,
-    "vs_mediana": -3.48
+    "vs_mediana": -3.62
    },
    {
     "cnpj8": "09464032",
     "nome": "MIDWAY S.A. - SCFI",
-    "taxa_am": 1.61,
-    "taxa_aa": 21.13,
+    "taxa_am": 1.6,
+    "taxa_aa": 21.0,
     "posicao": 6,
-    "vs_mediana": -3.03
+    "vs_mediana": -3.23
    },
    {
     "cnpj8": "03311443",
     "nome": "MEUTUDO SCFI",
     "taxa_am": 1.65,
-    "taxa_aa": 21.75,
+    "taxa_aa": 21.65,
     "posicao": 7,
-    "vs_mediana": -2.41
+    "vs_mediana": -2.58
    },
    {
     "cnpj8": "00416968",
@@ -8699,143 +8699,143 @@
     "taxa_am": 1.67,
     "taxa_aa": 22.03,
     "posicao": 8,
+    "vs_mediana": -2.2
+   },
+   {
+    "cnpj8": "04866275",
+    "nome": "BANCO INBURSA",
+    "taxa_am": 1.68,
+    "taxa_aa": 22.1,
+    "posicao": 9,
     "vs_mediana": -2.13
    },
    {
     "cnpj8": "09516419",
     "nome": "PICPAY BANK - BANCO MÚLTIPLO S.A",
     "taxa_am": 1.69,
-    "taxa_aa": 22.27,
-    "posicao": 9,
-    "vs_mediana": -1.89
-   },
-   {
-    "cnpj8": "04866275",
-    "nome": "BANCO INBURSA",
-    "taxa_am": 1.69,
-    "taxa_aa": 22.33,
+    "taxa_aa": 22.29,
     "posicao": 10,
-    "vs_mediana": -1.83
+    "vs_mediana": -1.94
    },
    {
     "cnpj8": "92702067",
     "nome": "BCO DO ESTADO DO RS S.A.",
-    "taxa_am": 1.7,
+    "taxa_am": 1.71,
     "taxa_aa": 22.49,
     "posicao": 11,
-    "vs_mediana": -1.67
+    "vs_mediana": -1.74
    },
    {
     "cnpj8": "02038232",
     "nome": "BANCO SICOOB S.A.",
     "taxa_am": 1.73,
-    "taxa_aa": 22.87,
+    "taxa_aa": 22.88,
     "posicao": 12,
-    "vs_mediana": -1.29
+    "vs_mediana": -1.35
    },
    {
     "cnpj8": "10664513",
     "nome": "BCO AGIBANK S.A.",
     "taxa_am": 1.73,
-    "taxa_aa": 22.89,
+    "taxa_aa": 22.9,
     "posicao": 13,
+    "vs_mediana": -1.33
+   },
+   {
+    "cnpj8": "00556603",
+    "nome": "BANCO BARI S.A.",
+    "taxa_am": 1.74,
+    "taxa_aa": 22.96,
+    "posicao": 14,
     "vs_mediana": -1.27
    },
    {
     "cnpj8": "01181521",
     "nome": "BANCO COOPERATIVO SICREDI",
     "taxa_am": 1.76,
-    "taxa_aa": 23.24,
-    "posicao": 14,
-    "vs_mediana": -0.92
-   },
-   {
-    "cnpj8": "00556603",
-    "nome": "BANCO BARI S.A.",
-    "taxa_am": 1.76,
-    "taxa_aa": 23.31,
+    "taxa_aa": 23.22,
     "posicao": 15,
-    "vs_mediana": -0.85
-   },
-   {
-    "cnpj8": "28127603",
-    "nome": "BCO BANESTES S.A.",
-    "taxa_am": 1.77,
-    "taxa_aa": 23.39,
-    "posicao": 16,
-    "vs_mediana": -0.77
+    "vs_mediana": -1.01
    },
    {
     "cnpj8": "13009717",
     "nome": "BCO DO EST. DE SE S.A.",
     "taxa_am": 1.78,
-    "taxa_aa": 23.56,
+    "taxa_aa": 23.54,
+    "posicao": 16,
+    "vs_mediana": -0.69
+   },
+   {
+    "cnpj8": "28127603",
+    "nome": "BCO BANESTES S.A.",
+    "taxa_am": 1.81,
+    "taxa_aa": 24.07,
     "posicao": 17,
-    "vs_mediana": -0.6
+    "vs_mediana": -0.16
    },
    {
     "cnpj8": "60701190",
     "nome": "ITAÚ UNIBANCO S.A.",
     "taxa_am": 1.82,
-    "taxa_aa": 24.15,
+    "taxa_aa": 24.16,
     "posicao": 18,
-    "vs_mediana": -0.01
+    "vs_mediana": -0.07
    },
    {
     "cnpj8": "59285411",
     "nome": "BANCO PAN",
-    "taxa_am": 1.82,
-    "taxa_aa": 24.16,
-    "posicao": 19,
-    "vs_mediana": 0.0
-   },
-   {
-    "cnpj8": "62232889",
-    "nome": "BCO DAYCOVAL S.A",
     "taxa_am": 1.83,
-    "taxa_aa": 24.33,
-    "posicao": 20,
-    "vs_mediana": 0.17
+    "taxa_aa": 24.3,
+    "posicao": 19,
+    "vs_mediana": 0.07
    },
    {
     "cnpj8": "61186680",
     "nome": "BCO BMG S.A.",
     "taxa_am": 1.83,
-    "taxa_aa": 24.35,
+    "taxa_aa": 24.34,
+    "posicao": 20,
+    "vs_mediana": 0.11
+   },
+   {
+    "cnpj8": "62232889",
+    "nome": "BCO DAYCOVAL S.A",
+    "taxa_am": 1.83,
+    "taxa_aa": 24.34,
     "posicao": 21,
-    "vs_mediana": 0.19
+    "vs_mediana": 0.11
+   },
+   {
+    "cnpj8": "20443996",
+    "nome": "BECKER FINANCEIRA SA - CFI",
+    "taxa_am": 1.83,
+    "taxa_aa": 24.35,
+    "posicao": 22,
+    "vs_mediana": 0.12
    },
    {
     "cnpj8": "00000000",
     "nome": "BCO DO BRASIL S.A.",
     "taxa_am": 1.84,
-    "taxa_aa": 24.43,
-    "posicao": 22,
-    "vs_mediana": 0.27
-   },
-   {
-    "cnpj8": "20443996",
-    "nome": "BECKER FINANCEIRA SA - CFI",
-    "taxa_am": 1.84,
-    "taxa_aa": 24.43,
+    "taxa_aa": 24.44,
     "posicao": 23,
-    "vs_mediana": 0.27
+    "vs_mediana": 0.21
    },
    {
     "cnpj8": "00360305",
     "nome": "CAIXA ECONOMICA FEDERAL",
     "taxa_am": 1.84,
-    "taxa_aa": 24.46,
+    "taxa_aa": 24.47,
     "posicao": 24,
-    "vs_mediana": 0.3
+    "vs_mediana": 0.24
    },
    {
     "cnpj8": "60746948",
     "nome": "BCO BRADESCO S.A.",
-    "taxa_am": 1.86,
-    "taxa_aa": 24.67,
+    "taxa_am": 1.85,
+    "taxa_aa": 24.66,
     "posicao": 25,
-    "vs_mediana": 0.51
+    "vs_mediana": 0.43
    },
    {
     "cnpj8": "61348538",
@@ -8843,47 +8843,47 @@
     "taxa_am": 1.86,
     "taxa_aa": 24.73,
     "posicao": 26,
-    "vs_mediana": 0.57
+    "vs_mediana": 0.5
    },
    {
     "cnpj8": "90400888",
     "nome": "BCO SANTANDER (BRASIL) S.A.",
     "taxa_am": 1.86,
-    "taxa_aa": 24.76,
+    "taxa_aa": 24.78,
     "posicao": 27,
-    "vs_mediana": 0.6
+    "vs_mediana": 0.55
    },
    {
     "cnpj8": "15581638",
     "nome": "FACTA S.A. CFI",
-    "taxa_am": 1.87,
-    "taxa_aa": 24.84,
+    "taxa_am": 1.86,
+    "taxa_aa": 24.82,
     "posicao": 28,
-    "vs_mediana": 0.68
+    "vs_mediana": 0.59
    },
    {
     "cnpj8": "74828799",
     "nome": "NOVO BCO CONTINENTAL S.A. - BM",
     "taxa_am": 1.87,
-    "taxa_aa": 24.84,
+    "taxa_aa": 24.88,
     "posicao": 29,
-    "vs_mediana": 0.68
+    "vs_mediana": 0.65
    },
    {
     "cnpj8": "00795423",
     "nome": "BANCO SEMEAR",
-    "taxa_am": 1.87,
-    "taxa_aa": 24.96,
+    "taxa_am": 1.88,
+    "taxa_aa": 24.97,
     "posicao": 30,
-    "vs_mediana": 0.8
+    "vs_mediana": 0.74
    },
    {
     "cnpj8": "27098060",
     "nome": "BANCO DIGIO",
     "taxa_am": 1.88,
-    "taxa_aa": 24.99,
+    "taxa_aa": 25.0,
     "posicao": 31,
-    "vs_mediana": 0.83
+    "vs_mediana": 0.77
    },
    {
     "cnpj8": "17184037",
@@ -8891,15 +8891,15 @@
     "taxa_am": 1.88,
     "taxa_aa": 25.03,
     "posicao": 32,
-    "vs_mediana": 0.87
+    "vs_mediana": 0.8
    },
    {
     "cnpj8": "11760553",
     "nome": "GAZINCRED S.A. SCFI",
     "taxa_am": 1.88,
-    "taxa_aa": 25.09,
+    "taxa_aa": 25.08,
     "posicao": 33,
-    "vs_mediana": 0.93
+    "vs_mediana": 0.85
    },
    {
     "cnpj8": "33136888",
@@ -8907,23 +8907,23 @@
     "taxa_am": 1.88,
     "taxa_aa": 25.09,
     "posicao": 34,
-    "vs_mediana": 0.93
+    "vs_mediana": 0.86
    },
    {
     "cnpj8": "08357240",
     "nome": "BCO CSF S.A.",
     "taxa_am": 1.89,
-    "taxa_aa": 25.14,
+    "taxa_aa": 25.12,
     "posicao": 35,
-    "vs_mediana": 0.98
+    "vs_mediana": 0.89
    },
    {
     "cnpj8": "14388334",
     "nome": "PARANA BCO S.A.",
     "taxa_am": 1.91,
-    "taxa_aa": 25.56,
+    "taxa_aa": 25.52,
     "posicao": 36,
-    "vs_mediana": 1.4
+    "vs_mediana": 1.29
    }
   ],
   "serie_mensal": [
@@ -9145,10 +9145,10 @@
    },
    {
     "ref": "2026-08-01",
-    "mediana": 24.16,
-    "p25": 22.31,
-    "p75": 24.78,
-    "min": 19.81,
+    "mediana": 24.23,
+    "p25": 22.24,
+    "p75": 24.79,
+    "min": 19.79,
     "n": 36
    }
   ],

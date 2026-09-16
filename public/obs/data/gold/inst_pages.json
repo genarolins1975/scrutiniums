@@ -1,6 +1,6 @@
 {
  "ok": true,
- "gerado_em": "2026-09-15T15:46:03+00:00",
+ "gerado_em": "2026-09-16T16:00:59+00:00",
  "nota": "Entrega inicial (§22): 3 pilotos antes de escalar. Nível de consolidação disponível: conglomerado prudencial (IF.data tipo 2).",
  "paginas": [
   {
@@ -20,7 +20,7 @@
     "modelo": "banco universal",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-15T15:46:02+00:00",
+    "atualizado_em": "2026-09-16T16:00:59+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -1500,7 +1500,7 @@
     "modelo": "banco médio (crédito a empresas e consignado)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-15T15:46:02+00:00",
+    "atualizado_em": "2026-09-16T16:00:59+00:00",
     "aviso_pares": null
    },
    "indicadores": [
@@ -2749,7 +2749,7 @@
      ],
      "basileia_atual_pct": 12.84,
      "basileia_pos_choque_pct": [
-      12.26,
+      12.27,
       12.75
      ],
      "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
@@ -2869,7 +2869,7 @@
      "status": "observado regulatório"
     },
     {
-     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.26% e 12.75% (intervalo, condicional às hipóteses).",
+     "frase": "Em cenário severamente adverso, a Basileia ficaria entre 12.27% e 12.75% (intervalo, condicional às hipóteses).",
      "base": "Cenário do Observatório (elasticidades empíricas + LGD 45% ÷ RWA)",
      "status": "cenário"
     },
@@ -2917,7 +2917,7 @@
     "modelo": "financeira de montadora (financiamento de veículos)",
     "consolidacao": "Conglomerado prudencial (IF.data tipo 2) — visões 'instituição individual' e 'conglomerado financeiro' não integradas nesta versão (sem alternância simulada)",
     "data_base": "202606",
-    "atualizado_em": "2026-09-15T15:46:02+00:00",
+    "atualizado_em": "2026-09-16T16:00:59+00:00",
     "aviso_pares": "Modelo de negócio de financeira de montadora: a comparação com o grupo prudencial S3 (bancos diversificados) tem limitações — usar a mediana dos pares com cautela."
    },
    "indicadores": [

@@ -26,7 +26,7 @@
   "pib_pp": {
    "value": -0.003,
    "range": [
-    -0.027,
+    -0.026,
     0.021
    ],
    "lag_desc": "por p.p. de crescimento do PIB",
@@ -8397,7 +8397,7 @@
   "atual": {
    "selic_meta": {
     "v": 14.0,
-    "ref": "2026-09-15"
+    "ref": "2026-09-16"
    },
    "desemprego": {
     "v": 5.3,
@@ -8405,7 +8405,7 @@
    },
    "ibc_yoy": {
     "v": 1.48,
-    "ref": "2026-06"
+    "ref": "2026-07"
    },
    "cambio": {
     "v": 5.1532,

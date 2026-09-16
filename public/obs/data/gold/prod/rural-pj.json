@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-15T15:46:28+00:00",
+ "gerado_em": "2026-09-16T16:01:23+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -79,7 +79,7 @@
   ],
   "estimativas": 6012,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 62,
+  "estimativas_teto_sanidade": 61,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -1027,7 +1027,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.8,
+     "phi_if": 1.81,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1177,7 +1177,7 @@
     "npl_prod_est": {
      "pct": 0.0,
      "m_produto": null,
-     "phi_if": 1.83,
+     "phi_if": 1.84,
      "cobertura_if_pct": 98.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -1352,7 +1352,7 @@
     "npl_prod_est": {
      "pct": 3.69,
      "m_produto": null,
-     "phi_if": 1.86,
+     "phi_if": 1.87,
      "cobertura_if_pct": 94.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,

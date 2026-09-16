@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-15T15:46:01+00:00",
+ "gerado_em": "2026-09-16T16:00:58+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,7 +131,7 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 342,
+  "total_contratos_if": 343,
   "total_editais": 1137,
   "backfill_completo": true,
   "ranking": [
@@ -159,8 +159,8 @@
    {
     "cnpj8": "60701190",
     "banco": "ITAU UNIBANCO S.A.",
-    "contratos": 16,
-    "ufs": 5,
+    "contratos": 17,
+    "ufs": 6,
     "como_receita": 2
    },
    {
@@ -601,6 +601,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
+   },
+   {
+    "controle": "75741330000137-2-000118/2026",
+    "ente": "MUNICIPIO DE IVAIPORA",
+    "esfera": "Municipal",
+    "municipio": "Ivaiporã",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-08",
+    "vig_fim": "2031-09-07",
+    "valor": 1610005.0,
+    "receita": false,
+    "banco": "ITAU UNIBANCO S.A",
+    "cnpj8": "60701190",
+    "url": "https://pncp.gov.br/contratos/75741330000137/2026/118"
    },
    {
     "controle": "45276128000110-2-000913/2026",
@@ -1141,21 +1156,6 @@
     "banco": "BANCO BRADESCO S.A.",
     "cnpj8": "60746948",
     "url": "https://pncp.gov.br/contratos/08160467000100/2026/29"
-   },
-   {
-    "controle": "18307470000168-2-000031/2026",
-    "ente": "MUNICIPIO DE SAO GERALDO DA PIEDADE",
-    "esfera": "Municipal",
-    "municipio": "São Geraldo da Piedade",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "assinatura": "2026-06-11",
-    "vig_fim": "2031-06-11",
-    "valor": 0.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO INTEGRACAO DE ESTADOS DO RS, SC E MG SICREDI INTEGRACAO DE ESTADOS RS/SC/MG",
-    "cnpj8": "87781530",
-    "url": "https://pncp.gov.br/contratos/18307470000168/2026/31"
    }
   ],
   "editais_recentes": [

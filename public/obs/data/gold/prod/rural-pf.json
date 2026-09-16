@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-15T15:46:28+00:00",
+ "gerado_em": "2026-09-16T16:01:23+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -79,7 +79,7 @@
   ],
   "estimativas": 6012,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 62,
+  "estimativas_teto_sanidade": 61,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -427,7 +427,7 @@
     "npl_prod_est": {
      "pct": 9.94,
      "m_produto": null,
-     "phi_if": 1.86,
+     "phi_if": 1.87,
      "cobertura_if_pct": 94.3,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -527,7 +527,7 @@
     "npl_prod_est": {
      "pct": 2.56,
      "m_produto": null,
-     "phi_if": 1.8,
+     "phi_if": 1.81,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -550,7 +550,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.96,
+     "pct": 5.95,
      "m_produto": null,
      "phi_if": 1.32,
      "cobertura_if_pct": 97.1,
@@ -575,7 +575,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 9.74,
+     "pct": 9.73,
      "m_produto": null,
      "phi_if": 4.0,
      "cobertura_if_pct": 29.0,
@@ -625,7 +625,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.8,
+     "pct": 3.79,
      "m_produto": null,
      "phi_if": 1.99,
      "cobertura_if_pct": 87.4,
@@ -1500,7 +1500,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 17.44,
+     "pct": 17.43,
      "m_produto": null,
      "phi_if": 1.62,
      "cobertura_if_pct": 94.9,
@@ -4177,7 +4177,7 @@
     "npl_prod_est": {
      "pct": 2.94,
      "m_produto": null,
-     "phi_if": 1.83,
+     "phi_if": 1.84,
      "cobertura_if_pct": 98.6,
      "baixa_cobertura": false,
      "perfil_neutro": true,
@@ -4900,7 +4900,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.93,
+     "pct": 2.92,
      "m_produto": null,
      "phi_if": 1.25,
      "cobertura_if_pct": 84.9,
@@ -5050,7 +5050,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.71,
+     "pct": 3.7,
      "m_produto": null,
      "phi_if": 2.77,
      "cobertura_if_pct": 98.9,
@@ -5850,7 +5850,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.53,
+     "pct": 6.52,
      "m_produto": null,
      "phi_if": 1.06,
      "cobertura_if_pct": 78.3,
@@ -6150,7 +6150,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.55,
+     "pct": 4.54,
      "m_produto": null,
      "phi_if": 1.53,
      "cobertura_if_pct": 88.8,
@@ -8666,7 +8666,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.08,
+     "pct": 2.07,
      "m_produto": null,
      "phi_if": 1.44,
      "cobertura_if_pct": 86.1,
@@ -10332,7 +10332,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 12.26,
+     "pct": 12.27,
      "m_produto": null,
      "phi_if": 1.84,
      "cobertura_if_pct": 96.4,

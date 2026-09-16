@@ -309,6 +309,82 @@
      "n_obs": 169
     },
     {
+     "candidato": "ibc_br",
+     "transformacao": "yoy",
+     "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
+     "melhor_defasagem_meses": 1,
+     "correlacao_melhor_defasagem": 0.137,
+     "ccf": [
+      {
+       "lag": 0,
+       "corr": 0.015
+      },
+      {
+       "lag": 1,
+       "corr": 0.137
+      },
+      {
+       "lag": 2,
+       "corr": 0.104
+      },
+      {
+       "lag": 3,
+       "corr": 0.083
+      },
+      {
+       "lag": 4,
+       "corr": 0.1
+      },
+      {
+       "lag": 5,
+       "corr": 0.086
+      },
+      {
+       "lag": 6,
+       "corr": 0.053
+      },
+      {
+       "lag": 7,
+       "corr": 0.084
+      },
+      {
+       "lag": 8,
+       "corr": 0.088
+      },
+      {
+       "lag": 9,
+       "corr": 0.067
+      },
+      {
+       "lag": 10,
+       "corr": 0.058
+      },
+      {
+       "lag": 11,
+       "corr": 0.073
+      },
+      {
+       "lag": 12,
+       "corr": 0.029
+      }
+     ],
+     "granger_F": 1.5,
+     "granger_significativo_5pct": false,
+     "ganho_oos_pct": 2.3,
+     "estabilidade_metade1": -0.268,
+     "estabilidade_metade2": 0.353,
+     "estavel": false,
+     "criterios": {
+      "lideranca_temporal": false,
+      "granger_5pct": false,
+      "ganho_oos": true,
+      "estabilidade": false
+     },
+     "criterios_atendidos": "1/4",
+     "status": "reprovado",
+     "n_obs": 160
+    },
+    {
      "candidato": "papelao",
      "transformacao": "yoy",
      "racional": "Expedição de papelão antecipa produção e vendas; queda reduz renda e capacidade de pagamento.",
@@ -383,82 +459,6 @@
      "criterios_atendidos": "0/4",
      "status": "reprovado",
      "n_obs": 171
-    },
-    {
-     "candidato": "ibc_br",
-     "transformacao": "yoy",
-     "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
-     "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.133,
-     "ccf": [
-      {
-       "lag": 0,
-       "corr": 0.014
-      },
-      {
-       "lag": 1,
-       "corr": 0.133
-      },
-      {
-       "lag": 2,
-       "corr": 0.106
-      },
-      {
-       "lag": 3,
-       "corr": 0.083
-      },
-      {
-       "lag": 4,
-       "corr": 0.09
-      },
-      {
-       "lag": 5,
-       "corr": 0.092
-      },
-      {
-       "lag": 6,
-       "corr": 0.052
-      },
-      {
-       "lag": 7,
-       "corr": 0.077
-      },
-      {
-       "lag": 8,
-       "corr": 0.088
-      },
-      {
-       "lag": 9,
-       "corr": 0.068
-      },
-      {
-       "lag": 10,
-       "corr": 0.053
-      },
-      {
-       "lag": 11,
-       "corr": 0.076
-      },
-      {
-       "lag": 12,
-       "corr": 0.027
-      }
-     ],
-     "granger_F": 1.4,
-     "granger_significativo_5pct": false,
-     "ganho_oos_pct": 2.7,
-     "estabilidade_metade1": -0.267,
-     "estabilidade_metade2": 0.363,
-     "estavel": false,
-     "criterios": {
-      "lideranca_temporal": false,
-      "granger_5pct": false,
-      "ganho_oos": true,
-      "estabilidade": false
-     },
-     "criterios_atendidos": "1/4",
-     "status": "reprovado",
-     "n_obs": 159
     },
     {
      "candidato": "concessoes_total",
@@ -1006,66 +1006,66 @@
      "transformacao": "yoy",
      "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
      "melhor_defasagem_meses": 8,
-     "correlacao_melhor_defasagem": 0.182,
+     "correlacao_melhor_defasagem": 0.177,
      "ccf": [
       {
        "lag": 0,
-       "corr": 0.02
+       "corr": 0.021
       },
       {
        "lag": 1,
-       "corr": 0.165
+       "corr": 0.168
       },
       {
        "lag": 2,
-       "corr": 0.161
+       "corr": 0.156
       },
       {
        "lag": 3,
-       "corr": 0.132
+       "corr": 0.13
       },
       {
        "lag": 4,
-       "corr": 0.166
+       "corr": 0.175
       },
       {
        "lag": 5,
-       "corr": 0.164
+       "corr": 0.153
       },
       {
        "lag": 6,
-       "corr": 0.114
+       "corr": 0.112
       },
       {
        "lag": 7,
-       "corr": 0.146
+       "corr": 0.152
       },
       {
        "lag": 8,
-       "corr": 0.182
+       "corr": 0.177
       },
       {
        "lag": 9,
-       "corr": 0.147
+       "corr": 0.142
       },
       {
        "lag": 10,
-       "corr": 0.143
+       "corr": 0.145
       },
       {
        "lag": 11,
-       "corr": 0.145
+       "corr": 0.137
       },
       {
        "lag": 12,
        "corr": 0.101
       }
      ],
-     "granger_F": 2.09,
+     "granger_F": 2.21,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": 5.0,
+     "ganho_oos_pct": 4.5,
      "estabilidade_metade1": 0.01,
-     "estabilidade_metade2": 0.224,
+     "estabilidade_metade2": 0.204,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1075,7 +1075,7 @@
      },
      "criterios_atendidos": "1/4",
      "status": "reprovado",
-     "n_obs": 159
+     "n_obs": 160
     },
     {
      "candidato": "papelao",
@@ -1775,15 +1775,15 @@
      "transformacao": "yoy",
      "racional": "Atividade agregada antecede renda e emprego, que determinam a capacidade de servir dívidas.",
      "melhor_defasagem_meses": 1,
-     "correlacao_melhor_defasagem": 0.062,
+     "correlacao_melhor_defasagem": 0.064,
      "ccf": [
       {
        "lag": 0,
-       "corr": -0.004
+       "corr": -0.003
       },
       {
        "lag": 1,
-       "corr": 0.062
+       "corr": 0.064
       },
       {
        "lag": 2,
@@ -1791,23 +1791,23 @@
       },
       {
        "lag": 3,
-       "corr": 0.011
+       "corr": 0.012
       },
       {
        "lag": 4,
-       "corr": -0.007
+       "corr": -0.002
       },
       {
        "lag": 5,
-       "corr": -0.001
+       "corr": -0.002
       },
       {
        "lag": 6,
-       "corr": -0.014
+       "corr": -0.013
       },
       {
        "lag": 7,
-       "corr": -0.003
+       "corr": 0.0
       },
       {
        "lag": 8,
@@ -1819,7 +1819,7 @@
       },
       {
        "lag": 10,
-       "corr": -0.046
+       "corr": -0.043
       },
       {
        "lag": 11,
@@ -1827,14 +1827,14 @@
       },
       {
        "lag": 12,
-       "corr": -0.044
+       "corr": -0.042
       }
      ],
-     "granger_F": 0.39,
+     "granger_F": 0.41,
      "granger_significativo_5pct": false,
-     "ganho_oos_pct": -0.1,
-     "estabilidade_metade1": -0.281,
-     "estabilidade_metade2": 0.331,
+     "ganho_oos_pct": 0.3,
+     "estabilidade_metade1": -0.283,
+     "estabilidade_metade2": 0.33,
      "estavel": false,
      "criterios": {
       "lideranca_temporal": false,
@@ -1844,7 +1844,7 @@
      },
      "criterios_atendidos": "0/4",
      "status": "reprovado",
-     "n_obs": 159
+     "n_obs": 160
     }
    ],
    "n_testes_executados": 8,
@@ -1852,5 +1852,5 @@
    "limitacoes": "Aproximação qui-quadrado no teste F; sem controle formal de múltiplos testes (mitigado por lista ex-ante pequena); ganho OOS medido em h=1 — horizontes longos na integração ao ensemble (Fase 2b); dados revisados podem diferir do vintage disponível em tempo real (nowcasting na Fase 2b)."
   }
  },
- "gerado_em": "2026-09-15T15:46:02+00:00"
+ "gerado_em": "2026-09-16T16:00:58+00:00"
 }

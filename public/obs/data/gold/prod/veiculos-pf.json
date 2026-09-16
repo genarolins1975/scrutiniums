@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-15T15:46:28+00:00",
+ "gerado_em": "2026-09-16T16:01:23+00:00",
  "fonte": "BCB IF.data — carteiras por modalidade (relatórios 123/128), conglomerados prudenciais e instituições individuais",
  "frequencia": "trimestral",
  "anomes_list": [
@@ -79,7 +79,7 @@
   ],
   "estimativas": 6012,
   "estimativas_baixa_cobertura": 19,
-  "estimativas_teto_sanidade": 62,
+  "estimativas_teto_sanidade": 61,
   "reconciliacao": "a média ponderada por carteira das estimativas de cada IF reproduz o >90d TOTAL observado da instituição — exata, exceto onde o phi foi winsorizado (contado)",
   "conceito_atraso": "o \"vencido >=15d\" dos rel. 123/128 comporta-se empiricamente como banda curta (consignado do BB: 0,45% vs banda 15-90 do SCR 0,42%) — por isso a estimativa de >90d PODE exceder o atraso do produto: é a migração acumulada no estoque, não uma fração do atraso corrente.",
   "hipoteses": "(1) dentro da IF, a migração relativa entre produtos segue o perfil do sistema (SCR); (2) o perfil do SCR (arrastada ÷ banda 15-90) vale como razão ENTRE produtos, nunca como nível; (3) produtos sem par no SCR recebem perfil neutro 1,0, sinalizado por linha.",
@@ -198,7 +198,7 @@
     "npl_inst_pct": 4.03,
     "basileia_pct": 15.34,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 24.62
+     "Aquisição de veículos - Prefixado": 24.26
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -277,7 +277,7 @@
     "npl_inst_pct": 2.33,
     "basileia_pct": 15.35,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 27.55
+     "Aquisição de veículos - Prefixado": 27.5
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -304,7 +304,7 @@
     "npl_inst_pct": 6.02,
     "basileia_pct": 12.49,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 21.37
+     "Aquisição de veículos - Prefixado": 21.45
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -356,7 +356,7 @@
     "npl_inst_pct": 1.76,
     "basileia_pct": 18.14,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 21.58
+     "Aquisição de veículos - Prefixado": 21.59
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -385,7 +385,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.37,
+     "pct": 18.38,
      "m_produto": 1.17,
      "phi_if": 1.06,
      "cobertura_if_pct": 65.1,
@@ -408,7 +408,7 @@
     "npl_inst_pct": 0.88,
     "basileia_pct": 15.06,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 19.79
+     "Aquisição de veículos - Prefixado": 20.06
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -435,7 +435,7 @@
     "npl_inst_pct": 2.32,
     "basileia_pct": 19.43,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 17.65
+     "Aquisição de veículos - Prefixado": 17.62
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -462,7 +462,7 @@
     "npl_inst_pct": 6.53,
     "basileia_pct": 19.63,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 32.73
+     "Aquisição de veículos - Prefixado": 33.03
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -514,7 +514,7 @@
     "npl_inst_pct": 0.51,
     "basileia_pct": 13.01,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.41
+     "Aquisição de veículos - Prefixado": 22.15
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -541,11 +541,11 @@
     "npl_inst_pct": 2.52,
     "basileia_pct": 12.84,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 46.39
+     "Aquisição de veículos - Prefixado": 46.35
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 6.73,
+     "pct": 6.74,
      "m_produto": 1.17,
      "phi_if": 1.45,
      "cobertura_if_pct": 86.4,
@@ -595,7 +595,7 @@
     "npl_inst_pct": 8.96,
     "basileia_pct": 17.17,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 35.34
+     "Aquisição de veículos - Prefixado": 35.46
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -647,7 +647,7 @@
     "npl_inst_pct": 5.25,
     "basileia_pct": 11.31,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 27.03
+     "Aquisição de veículos - Prefixado": 26.95
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -699,7 +699,7 @@
     "npl_inst_pct": 12.63,
     "basileia_pct": 13.89,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 26.91
+     "Aquisição de veículos - Prefixado": 26.32
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -726,7 +726,7 @@
     "npl_inst_pct": 2.05,
     "basileia_pct": 13.08,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 8.61
+     "Aquisição de veículos - Prefixado": 9.6
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -753,7 +753,7 @@
     "npl_inst_pct": 3.74,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 23.04
+     "Aquisição de veículos - Prefixado": 22.8
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -830,7 +830,7 @@
     "npl_inst_pct": 8.38,
     "basileia_pct": 12.87,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 20.82
+     "Aquisição de veículos - Prefixado": 20.19
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -907,7 +907,7 @@
     "npl_inst_pct": 1.17,
     "basileia_pct": 23.4,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 18.7
+     "Aquisição de veículos - Prefixado": 18.56
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -959,7 +959,7 @@
     "npl_inst_pct": 3.11,
     "basileia_pct": 24.97,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 19.66
+     "Aquisição de veículos - Prefixado": 21.4
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1040,7 +1040,7 @@
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 8.82,
+     "pct": 8.83,
      "m_produto": 1.17,
      "phi_if": 1.28,
      "cobertura_if_pct": 98.2,
@@ -1165,11 +1165,11 @@
     "npl_inst_pct": 9.48,
     "basileia_pct": 14.2,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 7.27,
+     "pct": 7.28,
      "m_produto": 1.17,
      "phi_if": 2.67,
      "cobertura_if_pct": 88.8,
@@ -1267,11 +1267,11 @@
     "npl_inst_pct": 6.43,
     "basileia_pct": 13.02,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 13.76
+     "Aquisição de veículos - Prefixado": 13.85
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
-     "pct": 10.21,
+     "pct": 10.22,
      "m_produto": 1.17,
      "phi_if": 1.14,
      "cobertura_if_pct": 98.7,
@@ -1421,7 +1421,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 16.53,
+     "pct": 16.54,
      "m_produto": 1.17,
      "phi_if": 2.55,
      "cobertura_if_pct": 90.4,
@@ -1471,7 +1471,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 19.17,
+     "pct": 19.18,
      "m_produto": 1.17,
      "phi_if": 1.42,
      "cobertura_if_pct": 89.5,
@@ -1569,13 +1569,13 @@
     "npl_inst_pct": 8.16,
     "basileia_pct": 16.45,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 24.8
+     "Aquisição de veículos - Prefixado": 24.43
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
      "pct": 8.36,
      "m_produto": 1.17,
-     "phi_if": 1.6,
+     "phi_if": 1.59,
      "cobertura_if_pct": 99.9,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -1623,7 +1623,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.13,
+     "pct": 8.14,
      "m_produto": 1.17,
      "phi_if": 1.25,
      "cobertura_if_pct": 66.1,
@@ -1696,7 +1696,7 @@
     "npl_inst_pct": 18.62,
     "basileia_pct": 17.05,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 48.94
+     "Aquisição de veículos - Prefixado": 48.03
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -1750,7 +1750,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.29,
+     "pct": 2.3,
      "m_produto": 1.17,
      "phi_if": 1.71,
      "cobertura_if_pct": 98.6,
@@ -2048,7 +2048,7 @@
     "npl_inst_pct": 5.04,
     "basileia_pct": 21.82,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2127,7 +2127,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.31,
+     "pct": 4.32,
      "m_produto": 1.17,
      "phi_if": 1.86,
      "cobertura_if_pct": 89.1,
@@ -2227,7 +2227,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.62,
+     "pct": 3.63,
      "m_produto": 1.17,
      "phi_if": 1.52,
      "cobertura_if_pct": 80.8,
@@ -2327,7 +2327,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.58,
+     "pct": 2.59,
      "m_produto": 1.17,
      "phi_if": 2.02,
      "cobertura_if_pct": 97.7,
@@ -2477,7 +2477,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 19.89,
+     "pct": 19.9,
      "m_produto": 1.17,
      "phi_if": 2.73,
      "cobertura_if_pct": 90.2,
@@ -2550,7 +2550,7 @@
     "npl_inst_pct": 2.85,
     "basileia_pct": 24.26,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2629,7 +2629,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.62,
+     "pct": 4.63,
      "m_produto": 1.17,
      "phi_if": 1.94,
      "cobertura_if_pct": 82.5,
@@ -2706,7 +2706,7 @@
     "npl_prod_est": {
      "pct": 3.47,
      "m_produto": 1.17,
-     "phi_if": 1.8,
+     "phi_if": 1.81,
      "cobertura_if_pct": 81.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -2927,7 +2927,7 @@
     "npl_inst_pct": 4.1,
     "basileia_pct": 24.16,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -2954,7 +2954,7 @@
     "npl_inst_pct": 10.69,
     "basileia_pct": 16.36,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3056,7 +3056,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.99,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3260,7 +3260,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 8.36,
+     "pct": 8.37,
      "m_produto": 1.17,
      "phi_if": 1.15,
      "cobertura_if_pct": 36.1,
@@ -3335,7 +3335,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 9.88,
+     "pct": 9.89,
      "m_produto": 1.17,
      "phi_if": 2.68,
      "cobertura_if_pct": 90.7,
@@ -3408,7 +3408,7 @@
     "npl_inst_pct": 5.07,
     "basileia_pct": 14.4,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3487,7 +3487,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.8,
+     "pct": 3.81,
      "m_produto": 1.17,
      "phi_if": 2.52,
      "cobertura_if_pct": 69.1,
@@ -3560,7 +3560,7 @@
     "npl_inst_pct": 3.3,
     "basileia_pct": 15.41,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3587,7 +3587,7 @@
     "npl_inst_pct": 5.21,
     "basileia_pct": 16.68,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3941,7 +3941,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 19.44,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -3968,7 +3968,7 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 22.53,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4195,7 +4195,7 @@
     "npl_inst_pct": 5.88,
     "basileia_pct": 18.26,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4372,7 +4372,7 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 19.01,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4476,9 +4476,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 1.45,
+     "pct": 1.46,
      "m_produto": 1.17,
-     "phi_if": 2.5,
+     "phi_if": 2.51,
      "cobertura_if_pct": 99.2,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -4574,7 +4574,7 @@
     "npl_inst_pct": 4.93,
     "basileia_pct": 15.73,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -4728,7 +4728,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 58.61,
+     "pct": 58.62,
      "m_produto": 1.17,
      "phi_if": 1.17,
      "cobertura_if_pct": 83.3,
@@ -4926,7 +4926,7 @@
     "npl_inst_pct": 2.31,
     "basileia_pct": 22.33,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5278,7 +5278,7 @@
     "npl_inst_pct": 3.24,
     "basileia_pct": 14.88,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5355,7 +5355,7 @@
     "npl_inst_pct": 5.93,
     "basileia_pct": 14.68,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5432,7 +5432,7 @@
     "npl_inst_pct": 5.53,
     "basileia_pct": 23.49,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5486,7 +5486,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 11.44,
+     "pct": 11.45,
      "m_produto": 1.17,
      "phi_if": 1.29,
      "cobertura_if_pct": 75.8,
@@ -5586,7 +5586,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 11.05,
+     "pct": 11.06,
      "m_produto": 1.17,
      "phi_if": 2.67,
      "cobertura_if_pct": 92.4,
@@ -5709,11 +5709,11 @@
     "npl_inst_pct": 7.19,
     "basileia_pct": 15.75,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 7.18,
+     "pct": 7.19,
      "m_produto": 1.17,
      "phi_if": 1.84,
      "cobertura_if_pct": 75.6,
@@ -5738,7 +5738,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 11.01,
+     "pct": 11.02,
      "m_produto": 1.17,
      "phi_if": 2.71,
      "cobertura_if_pct": 86.5,
@@ -5761,7 +5761,7 @@
     "npl_inst_pct": 5.97,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5813,7 +5813,7 @@
     "npl_inst_pct": 3.9,
     "basileia_pct": 15.91,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -5844,7 +5844,7 @@
     "npl_prod_est": {
      "pct": 3.46,
      "m_produto": 1.17,
-     "phi_if": 1.83,
+     "phi_if": 1.84,
      "cobertura_if_pct": 98.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -5917,7 +5917,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.06,
+     "pct": 2.07,
      "m_produto": 1.17,
      "phi_if": 1.82,
      "cobertura_if_pct": 98.6,
@@ -6140,7 +6140,7 @@
     "npl_inst_pct": 4.83,
     "basileia_pct": 12.43,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6192,7 +6192,7 @@
     "npl_inst_pct": 9.22,
     "basileia_pct": 17.86,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6221,7 +6221,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.49,
+     "pct": 6.5,
      "m_produto": 1.17,
      "phi_if": 2.32,
      "cobertura_if_pct": 96.0,
@@ -6294,7 +6294,7 @@
     "npl_inst_pct": 6.02,
     "basileia_pct": 15.64,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6346,7 +6346,7 @@
     "npl_inst_pct": 8.5,
     "basileia_pct": 17.34,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6373,7 +6373,7 @@
     "npl_inst_pct": 6.22,
     "basileia_pct": 15.45,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6400,11 +6400,11 @@
     "npl_inst_pct": 9.86,
     "basileia_pct": 15.27,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 13.63,
+     "pct": 13.64,
      "m_produto": 1.17,
      "phi_if": 2.01,
      "cobertura_if_pct": 71.0,
@@ -6577,7 +6577,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 15.56,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6654,7 +6654,7 @@
     "npl_inst_pct": 5.28,
     "basileia_pct": 18.61,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6683,7 +6683,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.02,
+     "pct": 2.03,
      "m_produto": 1.17,
      "phi_if": 1.58,
      "cobertura_if_pct": 96.6,
@@ -6706,7 +6706,7 @@
     "npl_inst_pct": 6.79,
     "basileia_pct": 13.45,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6783,7 +6783,7 @@
     "npl_inst_pct": 6.47,
     "basileia_pct": 14.04,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -6810,7 +6810,7 @@
     "npl_inst_pct": 5.31,
     "basileia_pct": 17.01,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7112,11 +7112,11 @@
     "npl_inst_pct": 5.62,
     "basileia_pct": 16.86,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 7.96,
+     "pct": 7.97,
      "m_produto": 1.17,
      "phi_if": 1.27,
      "cobertura_if_pct": 85.4,
@@ -7164,11 +7164,11 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 17.47,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 12.76,
+     "pct": 12.77,
      "m_produto": 1.17,
      "phi_if": 2.37,
      "cobertura_if_pct": 78.1,
@@ -7291,7 +7291,7 @@
     "npl_inst_pct": 5.18,
     "basileia_pct": 14.49,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7345,7 +7345,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 9.79,
+     "pct": 9.8,
      "m_produto": 1.17,
      "phi_if": 2.66,
      "cobertura_if_pct": 96.8,
@@ -7520,7 +7520,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 13.4,
+     "pct": 13.41,
      "m_produto": 1.17,
      "phi_if": 2.0,
      "cobertura_if_pct": 98.6,
@@ -7595,7 +7595,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 23.19,
+     "pct": 23.2,
      "m_produto": 1.17,
      "phi_if": 1.62,
      "cobertura_if_pct": 94.9,
@@ -7618,7 +7618,7 @@
     "npl_inst_pct": 7.76,
     "basileia_pct": 14.44,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7670,7 +7670,7 @@
     "npl_inst_pct": 5.13,
     "basileia_pct": 19.55,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7726,7 +7726,7 @@
     "npl_prod_est": {
      "pct": 4.43,
      "m_produto": 1.17,
-     "phi_if": 2.53,
+     "phi_if": 2.52,
      "cobertura_if_pct": 78.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -7797,7 +7797,7 @@
     "npl_inst_pct": 6.24,
     "basileia_pct": 16.67,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7849,7 +7849,7 @@
     "npl_inst_pct": 6.16,
     "basileia_pct": 16.19,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -7901,7 +7901,7 @@
     "npl_inst_pct": 7.06,
     "basileia_pct": 17.07,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8055,7 +8055,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.95,
+     "pct": 2.96,
      "m_produto": 1.17,
      "phi_if": 2.04,
      "cobertura_if_pct": 98.2,
@@ -8078,7 +8078,7 @@
     "npl_inst_pct": 9.92,
     "basileia_pct": 18.48,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8230,7 +8230,7 @@
     "npl_inst_pct": 5.01,
     "basileia_pct": 20.47,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8257,7 +8257,7 @@
     "npl_inst_pct": 7.0,
     "basileia_pct": 14.59,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8284,7 +8284,7 @@
     "npl_inst_pct": 4.51,
     "basileia_pct": 14.52,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8463,7 +8463,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 5.54,
+     "pct": 5.55,
      "m_produto": 1.17,
      "phi_if": 1.91,
      "cobertura_if_pct": 96.3,
@@ -8586,11 +8586,11 @@
     "npl_inst_pct": 3.55,
     "basileia_pct": 18.28,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 3.83,
+     "pct": 3.84,
      "m_produto": 1.17,
      "phi_if": 1.52,
      "cobertura_if_pct": 87.6,
@@ -8613,7 +8613,7 @@
     "npl_inst_pct": 6.12,
     "basileia_pct": 20.94,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8690,7 +8690,7 @@
     "npl_inst_pct": 4.35,
     "basileia_pct": 18.65,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8717,7 +8717,7 @@
     "npl_inst_pct": 7.2,
     "basileia_pct": 16.25,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8769,7 +8769,7 @@
     "npl_inst_pct": 4.44,
     "basileia_pct": 12.48,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8871,7 +8871,7 @@
     "npl_inst_pct": 8.77,
     "basileia_pct": 13.21,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8898,7 +8898,7 @@
     "npl_inst_pct": 7.35,
     "basileia_pct": 17.94,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -8975,7 +8975,7 @@
     "npl_inst_pct": 35.68,
     "basileia_pct": 14.15,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 39.77
+     "Aquisição de veículos - Prefixado": 39.78
     },
     "taxa_casamento": "cnpj8",
     "npl_prod_est": {
@@ -9202,7 +9202,7 @@
     "npl_inst_pct": 5.27,
     "basileia_pct": 16.23,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9331,7 +9331,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 6.9,
+     "pct": 6.91,
      "m_produto": 1.17,
      "phi_if": 1.8,
      "cobertura_if_pct": 87.6,
@@ -9406,7 +9406,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 15.28,
+     "pct": 15.29,
      "m_produto": 1.17,
      "phi_if": 2.16,
      "cobertura_if_pct": 86.8,
@@ -9479,7 +9479,7 @@
     "npl_inst_pct": 5.79,
     "basileia_pct": 16.01,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9656,7 +9656,7 @@
     "npl_inst_pct": 7.47,
     "basileia_pct": 15.77,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9733,7 +9733,7 @@
     "npl_inst_pct": 8.02,
     "basileia_pct": 15.15,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9760,7 +9760,7 @@
     "npl_inst_pct": 2.91,
     "basileia_pct": 18.54,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9812,11 +9812,11 @@
     "npl_inst_pct": 9.1,
     "basileia_pct": 15.55,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
-     "pct": 14.55,
+     "pct": 14.56,
      "m_produto": 1.17,
      "phi_if": 2.02,
      "cobertura_if_pct": 87.0,
@@ -9864,7 +9864,7 @@
     "npl_inst_pct": 4.41,
     "basileia_pct": 15.21,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -9941,7 +9941,7 @@
     "npl_inst_pct": 5.85,
     "basileia_pct": 22.83,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10393,7 +10393,7 @@
     "npl_inst_pct": 5.59,
     "basileia_pct": 15.6,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10497,7 +10497,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 14.71,
+     "pct": 14.72,
      "m_produto": 1.17,
      "phi_if": 1.6,
      "cobertura_if_pct": 92.4,
@@ -10520,7 +10520,7 @@
     "npl_inst_pct": 3.77,
     "basileia_pct": 13.74,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -10626,7 +10626,7 @@
     "npl_prod_est": {
      "pct": 14.19,
      "m_produto": 1.17,
-     "phi_if": 1.07,
+     "phi_if": 1.06,
      "cobertura_if_pct": 86.4,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -10899,7 +10899,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 7.9,
+     "pct": 7.91,
      "m_produto": 1.17,
      "phi_if": 2.13,
      "cobertura_if_pct": 94.9,
@@ -11024,7 +11024,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 19.27,
+     "pct": 19.28,
      "m_produto": 1.17,
      "phi_if": 2.46,
      "cobertura_if_pct": 89.3,
@@ -11147,7 +11147,7 @@
     "npl_inst_pct": 5.36,
     "basileia_pct": 23.4,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -11174,13 +11174,13 @@
     "npl_inst_pct": 4.96,
     "basileia_pct": 19.29,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
      "pct": 4.62,
      "m_produto": 1.17,
-     "phi_if": 3.34,
+     "phi_if": 3.35,
      "cobertura_if_pct": 97.6,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -11451,7 +11451,7 @@
     "npl_inst_pct": 15.7,
     "basileia_pct": 14.32,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.11
+     "Aquisição de veículos - Prefixado": 21.75
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -12130,7 +12130,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 69.47,
+     "pct": 69.5,
      "m_produto": 1.17,
      "phi_if": 1.17,
      "cobertura_if_pct": 100.1,
@@ -12180,7 +12180,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 36.86,
+     "pct": 36.87,
      "m_produto": 1.17,
      "phi_if": 3.67,
      "cobertura_if_pct": 80.5,
@@ -12255,7 +12255,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 2.29,
+     "pct": 2.3,
      "m_produto": 1.17,
      "phi_if": 2.65,
      "cobertura_if_pct": 98.5,
@@ -12280,7 +12280,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 35.18,
+     "pct": 35.19,
      "m_produto": 1.17,
      "phi_if": 2.38,
      "cobertura_if_pct": 81.2,
@@ -12380,7 +12380,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.76,
+     "pct": 4.77,
      "m_produto": 1.17,
      "phi_if": 1.35,
      "cobertura_if_pct": 97.2,
@@ -12855,7 +12855,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.96,
+     "pct": 4.97,
      "m_produto": 1.17,
      "phi_if": 2.21,
      "cobertura_if_pct": 97.4,
@@ -12905,7 +12905,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 7.75,
+     "pct": 7.76,
      "m_produto": 1.17,
      "phi_if": 2.37,
      "cobertura_if_pct": 88.8,
@@ -12980,7 +12980,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 17.43,
+     "pct": 17.44,
      "m_produto": 1.17,
      "phi_if": 1.86,
      "cobertura_if_pct": 81.2,
@@ -13130,9 +13130,9 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 48.94,
+     "pct": 48.95,
      "m_produto": 1.17,
-     "phi_if": 1.86,
+     "phi_if": 1.87,
      "cobertura_if_pct": 94.3,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -13230,7 +13230,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 27.81,
+     "pct": 27.82,
      "m_produto": 1.17,
      "phi_if": 1.4,
      "cobertura_if_pct": 75.9,
@@ -13346,7 +13346,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 12.71,
+     "pct": 12.72,
      "m_produto": 1.17,
      "phi_if": 3.07,
      "cobertura_if_pct": 98.3,
@@ -13487,7 +13487,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 3.29,
+     "pct": 3.3,
      "m_produto": 1.17,
      "phi_if": 3.04,
      "cobertura_if_pct": 99.2,
@@ -13762,7 +13762,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 18.65,
+     "pct": 18.66,
      "m_produto": 1.17,
      "phi_if": 2.13,
      "cobertura_if_pct": 93.2,
@@ -13912,7 +13912,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 16.68,
+     "pct": 16.69,
      "m_produto": 1.17,
      "phi_if": 3.01,
      "cobertura_if_pct": 96.2,
@@ -14012,7 +14012,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 4.97,
+     "pct": 4.98,
      "m_produto": 1.17,
      "phi_if": 1.36,
      "cobertura_if_pct": 97.1,
@@ -14187,7 +14187,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 20.07,
+     "pct": 20.08,
      "m_produto": 1.17,
      "phi_if": 3.06,
      "cobertura_if_pct": 97.3,
@@ -14487,7 +14487,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 0.97,
+     "pct": 0.98,
      "m_produto": 1.17,
      "phi_if": 1.76,
      "cobertura_if_pct": 96.5,
@@ -14803,7 +14803,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 77.8,
+     "pct": 77.84,
      "m_produto": 1.17,
      "phi_if": 3.8,
      "cobertura_if_pct": 98.4,
@@ -14880,7 +14880,7 @@
     "npl_prod_est": {
      "pct": 12.81,
      "m_produto": 1.17,
-     "phi_if": 3.27,
+     "phi_if": 3.28,
      "cobertura_if_pct": 98.7,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -14903,7 +14903,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 34.48,
+     "pct": 34.49,
      "m_produto": 1.17,
      "phi_if": 0.84,
      "cobertura_if_pct": 99.4,
@@ -14953,7 +14953,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 35.02,
+     "pct": 35.03,
      "m_produto": 1.17,
      "phi_if": 1.69,
      "cobertura_if_pct": 87.2,
@@ -15005,7 +15005,7 @@
     "npl_prod_est": {
      "pct": 100.0,
      "m_produto": 1.17,
-     "phi_if": 3.54,
+     "phi_if": 3.55,
      "cobertura_if_pct": 99.5,
      "baixa_cobertura": false,
      "perfil_neutro": false,
@@ -15028,7 +15028,7 @@
     "taxas_novas": null,
     "taxa_casamento": null,
     "npl_prod_est": {
-     "pct": 28.06,
+     "pct": 28.07,
      "m_produto": 1.17,
      "phi_if": 1.15,
      "cobertura_if_pct": 94.9,
@@ -15101,7 +15101,7 @@
     "npl_inst_pct": 3.08,
     "basileia_pct": 17.22,
     "taxas_novas": {
-     "Aquisição de veículos - Prefixado": 22.12
+     "Aquisição de veículos - Prefixado": 22.1
     },
     "taxa_casamento": "nome",
     "npl_prod_est": {
@@ -15435,14 +15435,14 @@
     {
      "segmento": "PESSOA FÍSICA",
      "modalidade": "Aquisição de veículos - Prefixado",
-     "inicio": "2026-08-25",
-     "fim": "2026-08-31",
+     "inicio": "2026-08-26",
+     "fim": "2026-09-01",
      "n_inst": 37,
-     "mediana_aa": 22.77,
-     "p25_aa": 19.66,
-     "p75_aa": 27.03,
-     "min_aa": 8.61,
-     "max_aa": 48.94,
+     "mediana_aa": 22.8,
+     "p25_aa": 20.06,
+     "p75_aa": 26.95,
+     "min_aa": 9.6,
+     "max_aa": 48.03,
      "moeda_estrangeira": false,
      "serie": [
       {
@@ -16216,19 +16216,19 @@
        "n": 37
       },
       {
-       "inicio": "2026-08-25",
-       "mediana_aa": 22.77,
-       "p25_aa": 19.66,
-       "p75_aa": 27.03,
+       "inicio": "2026-08-26",
+       "mediana_aa": 22.8,
+       "p25_aa": 20.06,
+       "p75_aa": 26.95,
        "n": 37
       }
      ],
      "por_segmento": {
       "S1": {
        "n": 9,
-       "mediana_aa": 22.77,
-       "p25_aa": 15.06,
-       "p75_aa": 25.41,
+       "mediana_aa": 22.81,
+       "p25_aa": 14.94,
+       "p75_aa": 25.48,
        "serie": [
         {
          "inicio": "2024-07-26",
@@ -17001,19 +17001,19 @@
          "n": 9
         },
         {
-         "inicio": "2026-08-25",
-         "mediana_aa": 22.77,
-         "p25_aa": 15.06,
-         "p75_aa": 25.41,
+         "inicio": "2026-08-26",
+         "mediana_aa": 22.81,
+         "p25_aa": 14.94,
+         "p75_aa": 25.48,
          "n": 9
         }
        ]
       },
       "S3": {
        "n": 15,
-       "mediana_aa": 21.37,
-       "p25_aa": 19.66,
-       "p75_aa": 23.92,
+       "mediana_aa": 21.45,
+       "p25_aa": 20.19,
+       "p75_aa": 23.62,
        "serie": [
         {
          "inicio": "2024-07-26",
@@ -17786,19 +17786,19 @@
          "n": 14
         },
         {
-         "inicio": "2026-08-25",
-         "mediana_aa": 21.37,
-         "p25_aa": 19.66,
-         "p75_aa": 23.92,
+         "inicio": "2026-08-26",
+         "mediana_aa": 21.45,
+         "p25_aa": 20.19,
+         "p75_aa": 23.62,
          "n": 15
         }
        ]
       },
       "S4": {
        "n": 9,
-       "mediana_aa": 24.8,
-       "p25_aa": 19.79,
-       "p75_aa": 32.73,
+       "mediana_aa": 24.43,
+       "p25_aa": 20.06,
+       "p75_aa": 33.03,
        "serie": [
         {
          "inicio": "2024-07-26",
@@ -18571,10 +18571,10 @@
          "n": 9
         },
         {
-         "inicio": "2026-08-25",
-         "mediana_aa": 24.8,
-         "p25_aa": 19.79,
-         "p75_aa": 32.73,
+         "inicio": "2026-08-26",
+         "mediana_aa": 24.43,
+         "p25_aa": 20.06,
+         "p75_aa": 33.03,
          "n": 9
         }
        ]
@@ -18584,8 +18584,8 @@
       {
        "cnpj8": "60814191",
        "nome": "BCO MERCEDES-BENZ S.A.",
-       "taxa_am": 0.69,
-       "taxa_aa": 8.61,
+       "taxa_am": 0.77,
+       "taxa_aa": 9.6,
        "posicao": 1,
        "cod_congl": "C0080563",
        "sr": "S3"
@@ -18593,8 +18593,8 @@
       {
        "cnpj8": "04452473",
        "nome": "BMW SA CFI",
-       "taxa_am": 0.82,
-       "taxa_aa": 10.29,
+       "taxa_am": 0.86,
+       "taxa_aa": 10.82,
        "posicao": 2,
        "cod_congl": "C0080635",
        "sr": "S4"
@@ -18603,7 +18603,7 @@
        "cnpj8": "62307848",
        "nome": "BCO RCI BRASIL S.A.",
        "taxa_am": 0.9,
-       "taxa_aa": 11.33,
+       "taxa_aa": 11.37,
        "posicao": 3,
        "cod_congl": "C0080185",
        "sr": "S1"
@@ -18612,7 +18612,7 @@
        "cnpj8": "00360305",
        "nome": "CAIXA ECONOMICA FEDERAL",
        "taxa_am": 1.01,
-       "taxa_aa": 12.75,
+       "taxa_aa": 12.77,
        "posicao": 4,
        "cod_congl": "C0080738",
        "sr": "S1"
@@ -18620,8 +18620,8 @@
       {
        "cnpj8": "04902979",
        "nome": "BCO DA AMAZONIA S.A.",
-       "taxa_am": 1.08,
-       "taxa_aa": 13.76,
+       "taxa_am": 1.09,
+       "taxa_aa": 13.85,
        "posicao": 5,
        "cod_congl": "C0081249",
        "sr": "S3"
@@ -18629,8 +18629,8 @@
       {
        "cnpj8": "30172491",
        "nome": "BANCO HYUNDAI CAPITAL BRASIL",
-       "taxa_am": 1.18,
-       "taxa_aa": 15.06,
+       "taxa_am": 1.17,
+       "taxa_aa": 14.94,
        "posicao": 6,
        "cod_congl": "C0080185",
        "sr": "S1"
@@ -18648,7 +18648,7 @@
        "cnpj8": "59274605",
        "nome": "BCO GM S.A.",
        "taxa_am": 1.36,
-       "taxa_aa": 17.65,
+       "taxa_aa": 17.62,
        "posicao": 8,
        "cod_congl": "C0080848",
        "sr": "S3"
@@ -18656,36 +18656,27 @@
       {
        "cnpj8": "52067630",
        "nome": "BANCO TRATON BRASIL S.A.",
-       "taxa_am": 1.44,
-       "taxa_aa": 18.7,
+       "taxa_am": 1.43,
+       "taxa_aa": 18.56,
        "posicao": 9,
        "cod_congl": "C0088534",
        "sr": "S3"
       },
       {
-       "cnpj8": "58017179",
-       "nome": "BCO VOLVO BRASIL S.A.",
-       "taxa_am": 1.51,
-       "taxa_aa": 19.66,
-       "posicao": 10,
-       "cod_congl": "C0080769",
-       "sr": "S3"
-      },
-      {
        "cnpj8": "03502961",
        "nome": "STELLANTIS FINANCIAMENTOS CFI",
-       "taxa_am": 1.52,
-       "taxa_aa": 19.79,
-       "posicao": 11,
+       "taxa_am": 1.54,
+       "taxa_aa": 20.06,
+       "posicao": 10,
        "cod_congl": "C0087298",
        "sr": "S4"
       },
       {
        "cnpj8": "11417016",
        "nome": "SCANIA BCO S.A.",
-       "taxa_am": 1.59,
-       "taxa_aa": 20.82,
-       "posicao": 12,
+       "taxa_am": 1.54,
+       "taxa_aa": 20.19,
+       "posicao": 11,
        "cod_congl": "C0080776",
        "sr": "S3"
       },
@@ -18694,15 +18685,24 @@
        "nome": "BANCO CNH INDUSTRIAL CAPITAL S.A",
        "taxa_am": 1.59,
        "taxa_aa": 20.87,
-       "posicao": 13,
+       "posicao": 12,
        "cod_congl": "C0081407",
+       "sr": "S3"
+      },
+      {
+       "cnpj8": "58017179",
+       "nome": "BCO VOLVO BRASIL S.A.",
+       "taxa_am": 1.63,
+       "taxa_aa": 21.4,
+       "posicao": 13,
+       "cod_congl": "C0080769",
        "sr": "S3"
       },
       {
        "cnpj8": "59109165",
        "nome": "BCO VOLKSWAGEN S.A",
        "taxa_am": 1.63,
-       "taxa_aa": 21.37,
+       "taxa_aa": 21.45,
        "posicao": 14,
        "cod_congl": "C0080202",
        "sr": "S3"
@@ -18711,7 +18711,7 @@
        "cnpj8": "45437547",
        "nome": "SAFRA SCFI S.A.",
        "taxa_am": 1.64,
-       "taxa_aa": 21.58,
+       "taxa_aa": 21.59,
        "posicao": 15,
        "cod_congl": "C0080109",
        "sr": "S2"
@@ -18719,8 +18719,8 @@
       {
        "cnpj8": "00416968",
        "nome": "BANCO INTER",
-       "taxa_am": 1.68,
-       "taxa_aa": 22.11,
+       "taxa_am": 1.65,
+       "taxa_aa": 21.75,
        "posicao": 16,
        "cod_congl": "C0080996",
        "sr": "S3"
@@ -18729,7 +18729,7 @@
        "cnpj8": "00000000",
        "nome": "BCO DO BRASIL S.A.",
        "taxa_am": 1.68,
-       "taxa_aa": 22.12,
+       "taxa_aa": 22.1,
        "posicao": 17,
        "cod_congl": "C0080329",
        "sr": "S1"
@@ -18737,35 +18737,35 @@
       {
        "cnpj8": "03215790",
        "nome": "BCO TOYOTA DO BRASIL S.A.",
-       "taxa_am": 1.7,
-       "taxa_aa": 22.41,
+       "taxa_am": 1.68,
+       "taxa_aa": 22.15,
        "posicao": 18,
        "cod_congl": "C0081562",
        "sr": "S3"
       },
       {
-       "cnpj8": "60746948",
-       "nome": "BCO BRADESCO S.A.",
-       "taxa_am": 1.72,
-       "taxa_aa": 22.77,
-       "posicao": 19,
-       "cod_congl": "C0080075",
-       "sr": "S1"
-      },
-      {
        "cnpj8": "33603457",
        "nome": "BCO RODOBENS S.A.",
-       "taxa_am": 1.74,
-       "taxa_aa": 23.04,
-       "posicao": 20,
+       "taxa_am": 1.73,
+       "taxa_aa": 22.8,
+       "posicao": 19,
        "cod_congl": "C0080855",
        "sr": "S4"
       },
       {
+       "cnpj8": "60746948",
+       "nome": "BCO BRADESCO S.A.",
+       "taxa_am": 1.73,
+       "taxa_aa": 22.81,
+       "posicao": 20,
+       "cod_congl": "C0080075",
+       "sr": "S1"
+      },
+      {
        "cnpj8": "33136888",
        "nome": "BRB - CFI S/A",
-       "taxa_am": 1.8,
-       "taxa_aa": 23.92,
+       "taxa_am": 1.78,
+       "taxa_aa": 23.62,
        "posicao": 21,
        "cod_congl": "C0080288",
        "sr": "S3"
@@ -18773,8 +18773,8 @@
       {
        "cnpj8": "07707650",
        "nome": "SANTANDER SCFI S.A.",
-       "taxa_am": 1.85,
-       "taxa_aa": 24.62,
+       "taxa_am": 1.83,
+       "taxa_aa": 24.26,
        "posicao": 22,
        "cod_congl": "C0080185",
        "sr": "S1"
@@ -18782,8 +18782,8 @@
       {
        "cnpj8": "22639377",
        "nome": "SINOSSERRA S/A - SCFI",
-       "taxa_am": 1.86,
-       "taxa_aa": 24.8,
+       "taxa_am": 1.84,
+       "taxa_aa": 24.43,
        "posicao": 23,
        "cod_congl": "C0084552",
        "sr": "S4"
@@ -18801,7 +18801,7 @@
        "cnpj8": "07207996",
        "nome": "BCO BRADESCO FINANC. S.A.",
        "taxa_am": 1.91,
-       "taxa_aa": 25.41,
+       "taxa_aa": 25.48,
        "posicao": 25,
        "cod_congl": "C0080075",
        "sr": "S1"
@@ -18809,8 +18809,8 @@
       {
        "cnpj8": "31872495",
        "nome": "BCO C6 S.A.",
-       "taxa_am": 1.96,
-       "taxa_aa": 26.22,
+       "taxa_am": 1.95,
+       "taxa_aa": 26.08,
        "posicao": 26,
        "cod_congl": "C0084844",
        "sr": "S3"
@@ -18818,8 +18818,8 @@
       {
        "cnpj8": "04862600",
        "nome": "PORTOSEG S.A. CFI",
-       "taxa_am": 2.01,
-       "taxa_aa": 26.91,
+       "taxa_am": 1.97,
+       "taxa_aa": 26.32,
        "posicao": 27,
        "cod_congl": "C0080642",
        "sr": "S3"
@@ -18828,7 +18828,7 @@
        "cnpj8": "01852137",
        "nome": "BCO BRASILEIRO DE CRÉDITO S.A.",
        "taxa_am": 2.01,
-       "taxa_aa": 27.03,
+       "taxa_aa": 26.95,
        "posicao": 28,
        "cod_congl": "C0084480",
        "sr": "S4"
@@ -18837,7 +18837,7 @@
        "cnpj8": "60872504",
        "nome": "ITAÚ UNIBANCO HOLDING S.A.",
        "taxa_am": 2.05,
-       "taxa_aa": 27.55,
+       "taxa_aa": 27.5,
        "posicao": 29,
        "cod_congl": "C0080099",
        "sr": "S1"
@@ -18854,8 +18854,8 @@
       {
        "cnpj8": "03634220",
        "nome": "BCO HONDA S.A.",
-       "taxa_am": 2.39,
-       "taxa_aa": 32.73,
+       "taxa_am": 2.41,
+       "taxa_aa": 33.03,
        "posicao": 31,
        "cod_congl": "C0080611",
        "sr": "S4"
@@ -18863,8 +18863,8 @@
       {
        "cnpj8": "10371492",
        "nome": "BCO YAMAHA MOTOR S.A.",
-       "taxa_am": 2.55,
-       "taxa_aa": 35.34,
+       "taxa_am": 2.56,
+       "taxa_aa": 35.46,
        "posicao": 32,
        "cod_congl": "C0080721",
        "sr": "S4"
@@ -18873,7 +18873,7 @@
        "cnpj8": "59285411",
        "nome": "BANCO PAN",
        "taxa_am": 2.81,
-       "taxa_aa": 39.48,
+       "taxa_aa": 39.47,
        "posicao": 33,
        "cod_congl": "C0080336",
        "sr": "S1"
@@ -18882,7 +18882,7 @@
        "cnpj8": "36321990",
        "nome": "AGORACRED S/A SCFI",
        "taxa_am": 2.83,
-       "taxa_aa": 39.77,
+       "taxa_aa": 39.78,
        "posicao": 34,
        "cod_congl": "C0083618",
        "sr": "S5"
@@ -18890,8 +18890,8 @@
       {
        "cnpj8": "62232889",
        "nome": "BCO DAYCOVAL S.A",
-       "taxa_am": 3.23,
-       "taxa_aa": 46.39,
+       "taxa_am": 3.22,
+       "taxa_aa": 46.35,
        "posicao": 35,
        "cod_congl": "C0081744",
        "sr": "S3"
@@ -18908,8 +18908,8 @@
       {
        "cnpj8": "00411939",
        "nome": "FINAMAX S.A. CFI",
-       "taxa_am": 3.38,
-       "taxa_aa": 48.94,
+       "taxa_am": 3.32,
+       "taxa_aa": 48.03,
        "posicao": 37,
        "cod_congl": "C0083436",
        "sr": "S5"

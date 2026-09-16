@@ -1692,9 +1692,9 @@
    }
   ],
   "poupanca_sbpe": {
-   "mes": "2026-07",
-   "valor": 1019852000.0,
-   "var_12m_pct": 0.02
+   "mes": "2026-08",
+   "valor": 1015786000.0,
+   "var_12m_pct": -0.28
   },
   "nota": "Saldos em poder do público (M4 e componentes), fim de período. Letras financeiras e depósitos a prazo aqui excluem o que está com outras instituições financeiras; por isso não fecham com o IF.data."
  },
@@ -4927,6 +4927,30 @@
   },
   "anomes_ifdata_razao": "202606",
   "serie": [
+   {
+    "mes": "2024-10",
+    "valor": 665523822310.8801,
+    "n_emissores": 184,
+    "lf": 511960799358.65015,
+    "cdb": 131812202846.16,
+    "ligado_share": 18.66,
+    "n_classes": 3234,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
+   {
+    "mes": "2024-11",
+    "valor": 686129974394.2998,
+    "n_emissores": 181,
+    "lf": 530162219317.6498,
+    "cdb": 133504229742.54001,
+    "ligado_share": 18.38,
+    "n_classes": 3232,
+    "parcial": false,
+    "sob_sigilo": 0.0,
+    "sigilo_ate": null
+   },
    {
     "mes": "2024-12",
     "valor": 708935216190.6204,

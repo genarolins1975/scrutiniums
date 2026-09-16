@@ -9,7 +9,7 @@
   "licenca": "dados abertos do BCB",
   "nivel": "A — registro administrativo do supervisor, mensal"
  },
- "gerado_em": "2026-09-15T15:46:39+00:00",
+ "gerado_em": "2026-09-16T16:01:34+00:00",
  "faixas": [
   {
    "id": "ate90",
@@ -56,16 +56,16 @@
  ],
  "brasil": {
   "total": {
-   "saldo": 7590319042720.122,
-   "a_vencer": 7325116052373.639,
-   "vencido": 265202990346.4834,
+   "saldo": 7590678851302.605,
+   "a_vencer": 7325449662733.509,
+   "vencido": 265229188569.09668,
    "vencido_pct": 3.49,
    "faixas": {
-    "ate90": 1411749720790.358,
-    "de91a360": 1688448808619.489,
-    "de361a1080": 1905438034137.072,
-    "de1081a1800": 869000808339.7695,
-    "de1801a5400": 1140067169656.0203,
+    "ate90": 1411773494620.167,
+    "de91a360": 1688551212896.8293,
+    "de361a1080": 1905559986122.8022,
+    "de1081a1800": 869046482048.0702,
+    "de1801a5400": 1140106976214.7102,
     "mais5400": 310411510830.93005
    },
    "shares": {
@@ -85,29 +85,29 @@
     "longo_5a_pct": 0.07,
     "prazo_medio_anos": 0.01,
     "vencido_pct": 0.54,
-    "a_vencer_pct": 8.74
+    "a_vencer_pct": 8.75
    }
   },
   "PF": {
-   "saldo": 4680273432527.745,
-   "a_vencer": 4471519279507.59,
-   "vencido": 208754153020.15527,
+   "saldo": 4680624620807.231,
+   "a_vencer": 4471849003071.41,
+   "vencido": 208775617735.8213,
    "vencido_pct": 4.46,
    "faixas": {
-    "ate90": 810912926494.6492,
-    "de91a360": 956161803846.27,
-    "de361a1080": 1109636330365.9805,
-    "de1081a1800": 557805927491.7998,
-    "de1801a5400": 789950119270.6803,
+    "ate90": 810953277081.5587,
+    "de91a360": 956259790420.9706,
+    "de361a1080": 1109750140043.1702,
+    "de1081a1800": 557848773227.0702,
+    "de1801a5400": 789984850260.4302,
     "mais5400": 247052172038.21014
    },
    "shares": {
-    "ate90": 18.14,
+    "ate90": 18.13,
     "de91a360": 21.38,
     "de361a1080": 24.82,
     "de1081a1800": 12.47,
     "de1801a5400": 17.67,
-    "mais5400": 5.53
+    "mais5400": 5.52
    },
    "curto_12m_pct": 39.52,
    "medio_1a5_pct": 37.29,
@@ -118,24 +118,24 @@
     "longo_5a_pct": 0.27,
     "prazo_medio_anos": 0.02,
     "vencido_pct": 0.69,
-    "a_vencer_pct": 8.76
+    "a_vencer_pct": 8.77
    }
   },
   "PJ": {
-   "saldo": 2910045610192.3784,
-   "a_vencer": 2853596772866.05,
-   "vencido": 56448837326.32861,
+   "saldo": 2910054230495.375,
+   "a_vencer": 2853600659662.0986,
+   "vencido": 56453570833.27637,
    "vencido_pct": 1.94,
    "faixas": {
-    "ate90": 600836794295.7089,
-    "de91a360": 732287004773.2194,
-    "de361a1080": 795801703771.0917,
-    "de1081a1800": 311194880847.96985,
-    "de1801a5400": 350117050385.33997,
-    "mais5400": 63359338792.72002
+    "ate90": 600820217538.6082,
+    "de91a360": 732291422475.8589,
+    "de361a1080": 795809846079.6317,
+    "de1081a1800": 311197708821.0,
+    "de1801a5400": 350122125954.28,
+    "mais5400": 63359338792.72
    },
    "shares": {
-    "ate90": 21.06,
+    "ate90": 21.05,
     "de91a360": 25.66,
     "de361a1080": 27.89,
     "de1081a1800": 10.91,
@@ -879,21 +879,21 @@
   {
    "ref": "2026-07",
    "total": {
-    "a_vencer": 7325116052373.639,
+    "a_vencer": 7325449662733.509,
     "vencido_pct": 3.49,
     "curto_12m_pct": 42.32,
     "longo_5a_pct": 19.8,
     "prazo_medio_anos": 3.52
    },
    "PF": {
-    "a_vencer": 4471519279507.59,
+    "a_vencer": 4471849003071.41,
     "vencido_pct": 4.46,
     "curto_12m_pct": 39.52,
     "longo_5a_pct": 23.19,
     "prazo_medio_anos": 3.97
    },
    "PJ": {
-    "a_vencer": 2853596772866.05,
+    "a_vencer": 2853600659662.0986,
     "vencido_pct": 1.94,
     "curto_12m_pct": 46.72,
     "longo_5a_pct": 14.49,
@@ -906,13 +906,13 @@
    "uf": "AC",
    "nome": "Acre",
    "regiao": "Norte",
-   "saldo": 19934121769.379982,
-   "a_vencer": 18970695506.699993,
+   "saldo": 19933474839.039978,
+   "a_vencer": 18970114861.809994,
    "share_a_vencer": 0.26,
    "vencido_pct": 4.83,
    "curto_12m_pct": 38.95,
    "medio_1a5_pct": 43.22,
-   "longo_5a_pct": 17.83,
+   "longo_5a_pct": 17.82,
    "prazo_medio_anos": 3.34,
    "shares": {
     "ate90": 15.91,
@@ -923,14 +923,14 @@
     "mais5400": 3.01
    },
    "pf": {
-    "a_vencer": 14283488206.609991,
+    "a_vencer": 14282921010.549994,
     "vencido_pct": 5.51,
-    "curto_12m_pct": 40.12,
+    "curto_12m_pct": 40.13,
     "longo_5a_pct": 15.72,
     "prazo_medio_anos": 3.06
    },
    "pj": {
-    "a_vencer": 4687207300.090002,
+    "a_vencer": 4687193851.260001,
     "vencido_pct": 2.72,
     "curto_12m_pct": 35.38,
     "longo_5a_pct": 24.25,
@@ -949,8 +949,8 @@
    "uf": "AL",
    "nome": "Alagoas",
    "regiao": "Nordeste",
-   "saldo": 60135298904.33002,
-   "a_vencer": 57490972150.87999,
+   "saldo": 60134420557.73,
+   "a_vencer": 57490101424.179985,
    "share_a_vencer": 0.78,
    "vencido_pct": 4.4,
    "curto_12m_pct": 41.33,
@@ -966,16 +966,16 @@
     "mais5400": 4.76
    },
    "pf": {
-    "a_vencer": 41286349877.30999,
+    "a_vencer": 41285791495.54999,
     "vencido_pct": 5.26,
     "curto_12m_pct": 42.31,
     "longo_5a_pct": 22.37,
     "prazo_medio_anos": 3.89
    },
    "pj": {
-    "a_vencer": 16204622273.57,
+    "a_vencer": 16204309928.63,
     "vencido_pct": 2.14,
-    "curto_12m_pct": 38.83,
+    "curto_12m_pct": 38.82,
     "longo_5a_pct": 16.89,
     "prazo_medio_anos": 3.11
    },
@@ -992,8 +992,8 @@
    "uf": "AM",
    "nome": "Amazonas",
    "regiao": "Norte",
-   "saldo": 80163943326.28989,
-   "a_vencer": 77045504745.46997,
+   "saldo": 80160020422.78987,
+   "a_vencer": 77042063636.62997,
    "share_a_vencer": 1.05,
    "vencido_pct": 3.89,
    "curto_12m_pct": 40.96,
@@ -1001,22 +1001,22 @@
    "longo_5a_pct": 18.08,
    "prazo_medio_anos": 3.29,
    "shares": {
-    "ate90": 18.1,
+    "ate90": 18.09,
     "de91a360": 22.86,
     "de361a1080": 28.6,
-    "de1081a1800": 12.35,
+    "de1081a1800": 12.36,
     "de1801a5400": 15.14,
     "mais5400": 2.94
    },
    "pf": {
-    "a_vencer": 44004125455.79998,
+    "a_vencer": 44000897717.87998,
     "vencido_pct": 5.04,
     "curto_12m_pct": 42.83,
     "longo_5a_pct": 18.34,
-    "prazo_medio_anos": 3.39
+    "prazo_medio_anos": 3.38
    },
    "pj": {
-    "a_vencer": 33041379289.66999,
+    "a_vencer": 33041165918.749996,
     "vencido_pct": 2.32,
     "curto_12m_pct": 38.47,
     "longo_5a_pct": 17.74,
@@ -1035,13 +1035,13 @@
    "uf": "AP",
    "nome": "Amapá",
    "regiao": "Norte",
-   "saldo": 19496075527.9,
-   "a_vencer": 18800326532.35001,
+   "saldo": 19496236205.90999,
+   "a_vencer": 18800561754.750008,
    "share_a_vencer": 0.26,
    "vencido_pct": 3.57,
    "curto_12m_pct": 37.34,
    "medio_1a5_pct": 43.15,
-   "longo_5a_pct": 19.51,
+   "longo_5a_pct": 19.5,
    "prazo_medio_anos": 3.42,
    "shares": {
     "ate90": 17.43,
@@ -1052,14 +1052,14 @@
     "mais5400": 2.12
    },
    "pf": {
-    "a_vencer": 12669201234.69001,
+    "a_vencer": 12669443277.02001,
     "vencido_pct": 4.06,
     "curto_12m_pct": 37.35,
     "longo_5a_pct": 18.23,
     "prazo_medio_anos": 3.32
    },
    "pj": {
-    "a_vencer": 6131125297.659998,
+    "a_vencer": 6131118477.729998,
     "vencido_pct": 2.54,
     "curto_12m_pct": 37.32,
     "longo_5a_pct": 22.14,
@@ -1078,33 +1078,33 @@
    "uf": "BA",
    "nome": "Bahia",
    "regiao": "Nordeste",
-   "saldo": 296528833781.9795,
-   "a_vencer": 283929014809.5899,
+   "saldo": 296543718400.08966,
+   "a_vencer": 283945657141.10986,
    "share_a_vencer": 3.88,
    "vencido_pct": 4.25,
    "curto_12m_pct": 41.2,
    "medio_1a5_pct": 38.3,
-   "longo_5a_pct": 20.51,
+   "longo_5a_pct": 20.5,
    "prazo_medio_anos": 3.59,
    "shares": {
     "ate90": 19.38,
     "de91a360": 21.82,
     "de361a1080": 25.05,
     "de1081a1800": 13.25,
-    "de1801a5400": 16.5,
+    "de1801a5400": 16.49,
     "mais5400": 4.01
    },
    "pf": {
-    "a_vencer": 182255358110.9199,
+    "a_vencer": 182243712353.3699,
     "vencido_pct": 5.44,
     "curto_12m_pct": 43.88,
     "longo_5a_pct": 19.99,
     "prazo_medio_anos": 3.54
    },
    "pj": {
-    "a_vencer": 101673656698.66998,
+    "a_vencer": 101701944787.73999,
     "vencido_pct": 2.04,
-    "curto_12m_pct": 36.38,
+    "curto_12m_pct": 36.39,
     "longo_5a_pct": 21.43,
     "prazo_medio_anos": 3.69
    },
@@ -1121,8 +1121,8 @@
    "uf": "CE",
    "nome": "Ceará",
    "regiao": "Nordeste",
-   "saldo": 175938172730.72968,
-   "a_vencer": 169170767734.00974,
+   "saldo": 175951932473.74963,
+   "a_vencer": 169183812196.3097,
    "share_a_vencer": 2.31,
    "vencido_pct": 3.85,
    "curto_12m_pct": 39.39,
@@ -1138,14 +1138,14 @@
     "mais5400": 6.51
    },
    "pf": {
-    "a_vencer": 112011415181.9498,
+    "a_vencer": 112024660828.13976,
     "vencido_pct": 4.52,
     "curto_12m_pct": 42.21,
     "longo_5a_pct": 22.97,
     "prazo_medio_anos": 3.95
    },
    "pj": {
-    "a_vencer": 57159352552.05994,
+    "a_vencer": 57159151368.169945,
     "vencido_pct": 2.51,
     "curto_12m_pct": 33.85,
     "longo_5a_pct": 26.66,
@@ -1164,37 +1164,37 @@
    "uf": "DF",
    "nome": "Distrito Federal",
    "regiao": "Centro-Oeste",
-   "saldo": 159067976443.03983,
-   "a_vencer": 155004257668.36996,
+   "saldo": 159079623207.6401,
+   "a_vencer": 155015903977.95,
    "share_a_vencer": 2.12,
    "vencido_pct": 2.55,
-   "curto_12m_pct": 32.25,
+   "curto_12m_pct": 32.26,
    "medio_1a5_pct": 34.16,
-   "longo_5a_pct": 33.59,
+   "longo_5a_pct": 33.58,
    "prazo_medio_anos": 4.85,
    "shares": {
     "ate90": 15.51,
-    "de91a360": 16.74,
+    "de91a360": 16.75,
     "de361a1080": 22.21,
     "de1081a1800": 11.94,
     "de1801a5400": 28.48,
     "mais5400": 5.1
    },
    "pf": {
-    "a_vencer": 87328085442.41,
+    "a_vencer": 87340533029.97005,
     "vencido_pct": 3.57,
-    "curto_12m_pct": 38.8,
-    "longo_5a_pct": 24.92,
+    "curto_12m_pct": 38.81,
+    "longo_5a_pct": 24.91,
     "prazo_medio_anos": 4.17
    },
    "pj": {
-    "a_vencer": 67676172225.95996,
+    "a_vencer": 67675370947.979965,
     "vencido_pct": 1.21,
-    "curto_12m_pct": 23.81,
+    "curto_12m_pct": 23.8,
     "longo_5a_pct": 44.78,
     "prazo_medio_anos": 5.72
    },
-   "d12_curto_12m_pp": 1.59,
+   "d12_curto_12m_pp": 1.6,
    "d12_prazo_medio_anos": -0.31,
    "posicoes": {
     "curto_12m_pct": 27,
@@ -1207,11 +1207,11 @@
    "uf": "ES",
    "nome": "Espírito Santo",
    "regiao": "Sudeste",
-   "saldo": 132287488537.63983,
-   "a_vencer": 128377564268.26016,
+   "saldo": 132310447367.85986,
+   "a_vencer": 128400060621.47017,
    "share_a_vencer": 1.75,
    "vencido_pct": 2.96,
-   "curto_12m_pct": 45.44,
+   "curto_12m_pct": 45.45,
    "medio_1a5_pct": 38.1,
    "longo_5a_pct": 16.46,
    "prazo_medio_anos": 3.06,
@@ -1224,20 +1224,20 @@
     "mais5400": 2.75
    },
    "pf": {
-    "a_vencer": 75988316210.1001,
+    "a_vencer": 76001759590.53009,
     "vencido_pct": 3.71,
     "curto_12m_pct": 41.22,
     "longo_5a_pct": 21.72,
     "prazo_medio_anos": 3.71
    },
    "pj": {
-    "a_vencer": 52389248058.16007,
-    "vencido_pct": 1.85,
+    "a_vencer": 52398301030.94009,
+    "vencido_pct": 1.84,
     "curto_12m_pct": 51.58,
     "longo_5a_pct": 8.83,
     "prazo_medio_anos": 2.13
    },
-   "d12_curto_12m_pp": 0.05,
+   "d12_curto_12m_pp": 0.06,
    "d12_prazo_medio_anos": -0.02,
    "posicoes": {
     "curto_12m_pct": 2,
@@ -1250,37 +1250,37 @@
    "uf": "GO",
    "nome": "Goiás",
    "regiao": "Centro-Oeste",
-   "saldo": 343328386161.4998,
-   "a_vencer": 325872588003.94006,
+   "saldo": 343306435135.14026,
+   "a_vencer": 325848663027.96014,
    "share_a_vencer": 4.45,
-   "vencido_pct": 5.08,
-   "curto_12m_pct": 39.08,
+   "vencido_pct": 5.09,
+   "curto_12m_pct": 39.07,
    "medio_1a5_pct": 40.11,
-   "longo_5a_pct": 20.81,
+   "longo_5a_pct": 20.82,
    "prazo_medio_anos": 3.73,
    "shares": {
     "ate90": 16.34,
-    "de91a360": 22.74,
+    "de91a360": 22.73,
     "de361a1080": 27.41,
     "de1081a1800": 12.7,
-    "de1801a5400": 16.01,
+    "de1801a5400": 16.02,
     "mais5400": 4.8
    },
    "pf": {
-    "a_vencer": 240007591913.53998,
+    "a_vencer": 240014911852.49008,
     "vencido_pct": 5.8,
     "curto_12m_pct": 36.47,
     "longo_5a_pct": 24.45,
     "prazo_medio_anos": 4.19
    },
    "pj": {
-    "a_vencer": 85864996090.40009,
+    "a_vencer": 85833751175.4701,
     "vencido_pct": 3.02,
     "curto_12m_pct": 46.35,
     "longo_5a_pct": 10.64,
-    "prazo_medio_anos": 2.43
+    "prazo_medio_anos": 2.44
    },
-   "d12_curto_12m_pp": -1.22,
+   "d12_curto_12m_pp": -1.23,
    "d12_prazo_medio_anos": 0.15,
    "posicoes": {
     "curto_12m_pct": 19,
@@ -1293,31 +1293,31 @@
    "uf": "MA",
    "nome": "Maranhão",
    "regiao": "Nordeste",
-   "saldo": 114406313430.99008,
-   "a_vencer": 106818010737.8801,
+   "saldo": 114448512937.86018,
+   "a_vencer": 106839346128.50008,
    "share_a_vencer": 1.46,
-   "vencido_pct": 6.63,
+   "vencido_pct": 6.65,
    "curto_12m_pct": 41.16,
-   "medio_1a5_pct": 42.54,
-   "longo_5a_pct": 16.3,
+   "medio_1a5_pct": 42.55,
+   "longo_5a_pct": 16.29,
    "prazo_medio_anos": 3.24,
    "shares": {
     "ate90": 17.82,
     "de91a360": 23.34,
     "de361a1080": 28.68,
     "de1081a1800": 13.86,
-    "de1801a5400": 12.66,
+    "de1801a5400": 12.65,
     "mais5400": 3.64
    },
    "pf": {
-    "a_vencer": 83143750902.2701,
-    "vencido_pct": 7.33,
+    "a_vencer": 83166296597.83008,
+    "vencido_pct": 7.35,
     "curto_12m_pct": 41.26,
-    "longo_5a_pct": 18.63,
+    "longo_5a_pct": 18.62,
     "prazo_medio_anos": 3.48
    },
    "pj": {
-    "a_vencer": 23674259835.610004,
+    "a_vencer": 23673049530.670002,
     "vencido_pct": 4.09,
     "curto_12m_pct": 40.81,
     "longo_5a_pct": 8.1,
@@ -1336,8 +1336,8 @@
    "uf": "MG",
    "nome": "Minas Gerais",
    "regiao": "Sudeste",
-   "saldo": 672052561396.608,
-   "a_vencer": 648361004449.2302,
+   "saldo": 672112330989.9781,
+   "a_vencer": 648418956547.1599,
    "share_a_vencer": 8.85,
    "vencido_pct": 3.53,
    "curto_12m_pct": 44.03,
@@ -1353,14 +1353,14 @@
     "mais5400": 4.01
    },
    "pf": {
-    "a_vencer": 427285918761.4404,
+    "a_vencer": 427339280030.8401,
     "vencido_pct": 4.19,
-    "curto_12m_pct": 41.12,
+    "curto_12m_pct": 41.13,
     "longo_5a_pct": 22.79,
     "prazo_medio_anos": 3.89
    },
    "pj": {
-    "a_vencer": 221075085687.7898,
+    "a_vencer": 221079676516.3199,
     "vencido_pct": 2.21,
     "curto_12m_pct": 49.65,
     "longo_5a_pct": 9.32,
@@ -1379,8 +1379,8 @@
    "uf": "MS",
    "nome": "Mato Grosso do Sul",
    "regiao": "Centro-Oeste",
-   "saldo": 142653712356.3297,
-   "a_vencer": 135692366908.21,
+   "saldo": 142647136004.93958,
+   "a_vencer": 135686348727.68005,
    "share_a_vencer": 1.85,
    "vencido_pct": 4.88,
    "curto_12m_pct": 39.91,
@@ -1396,14 +1396,14 @@
     "mais5400": 3.84
    },
    "pf": {
-    "a_vencer": 97743785964.54997,
+    "a_vencer": 97737780353.47003,
     "vencido_pct": 5.57,
     "curto_12m_pct": 37.97,
     "longo_5a_pct": 20.58,
     "prazo_medio_anos": 3.69
    },
    "pj": {
-    "a_vencer": 37948580943.660034,
+    "a_vencer": 37948568374.21002,
     "vencido_pct": 3.06,
     "curto_12m_pct": 44.91,
     "longo_5a_pct": 15.87,
@@ -1422,8 +1422,8 @@
    "uf": "MT",
    "nome": "Mato Grosso",
    "regiao": "Centro-Oeste",
-   "saldo": 263790378369.77002,
-   "a_vencer": 252622236517.0602,
+   "saldo": 263787502260.30988,
+   "a_vencer": 252619310430.48013,
    "share_a_vencer": 3.45,
    "vencido_pct": 4.23,
    "curto_12m_pct": 39.85,
@@ -1439,14 +1439,14 @@
     "mais5400": 2.53
    },
    "pf": {
-    "a_vencer": 170705178865.22012,
+    "a_vencer": 170701250432.27008,
     "vencido_pct": 5.0,
     "curto_12m_pct": 38.48,
     "longo_5a_pct": 17.54,
     "prazo_medio_anos": 3.38
    },
    "pj": {
-    "a_vencer": 81917057651.84007,
+    "a_vencer": 81918059998.21005,
     "vencido_pct": 2.6,
     "curto_12m_pct": 42.71,
     "longo_5a_pct": 9.65,
@@ -1465,8 +1465,8 @@
    "uf": "PA",
    "nome": "Pará",
    "regiao": "Norte",
-   "saldo": 168440129234.87955,
-   "a_vencer": 160662172883.33005,
+   "saldo": 168445152353.19937,
+   "a_vencer": 160667467826.62006,
    "share_a_vencer": 2.19,
    "vencido_pct": 4.62,
    "curto_12m_pct": 42.05,
@@ -1482,14 +1482,14 @@
     "mais5400": 2.78
    },
    "pf": {
-    "a_vencer": 107225265099.2701,
+    "a_vencer": 107229375210.46008,
     "vencido_pct": 5.62,
     "curto_12m_pct": 42.57,
-    "longo_5a_pct": 15.75,
+    "longo_5a_pct": 15.74,
     "prazo_medio_anos": 3.07
    },
    "pj": {
-    "a_vencer": 53436907784.05996,
+    "a_vencer": 53438092616.159966,
     "vencido_pct": 2.53,
     "curto_12m_pct": 41.0,
     "longo_5a_pct": 15.28,
@@ -1498,7 +1498,7 @@
    "d12_curto_12m_pp": 0.87,
    "d12_prazo_medio_anos": -0.01,
    "posicoes": {
-    "curto_12m_pct": 7,
+    "curto_12m_pct": 6,
     "longo_5a_pct": 25,
     "prazo_medio_anos": 24,
     "vencido_pct": 7
@@ -1508,11 +1508,11 @@
    "uf": "PB",
    "nome": "Paraíba",
    "regiao": "Nordeste",
-   "saldo": 77371511230.00002,
-   "a_vencer": 74030396980.09996,
+   "saldo": 77379516845.0599,
+   "a_vencer": 74037727241.01999,
    "share_a_vencer": 1.01,
    "vencido_pct": 4.32,
-   "curto_12m_pct": 37.55,
+   "curto_12m_pct": 37.56,
    "medio_1a5_pct": 35.7,
    "longo_5a_pct": 26.74,
    "prazo_medio_anos": 4.48,
@@ -1525,20 +1525,20 @@
     "mais5400": 7.68
    },
    "pf": {
-    "a_vencer": 60706684229.179955,
+    "a_vencer": 60713499522.719986,
     "vencido_pct": 3.85,
     "curto_12m_pct": 36.95,
     "longo_5a_pct": 29.53,
     "prazo_medio_anos": 4.83
    },
    "pj": {
-    "a_vencer": 13323712750.920006,
+    "a_vencer": 13324227718.300007,
     "vencido_pct": 6.38,
     "curto_12m_pct": 40.32,
-    "longo_5a_pct": 14.05,
+    "longo_5a_pct": 14.04,
     "prazo_medio_anos": 2.9
    },
-   "d12_curto_12m_pp": -0.62,
+   "d12_curto_12m_pp": -0.61,
    "d12_prazo_medio_anos": 0.11,
    "posicoes": {
     "curto_12m_pct": 21,
@@ -1551,13 +1551,13 @@
    "uf": "PE",
    "nome": "Pernambuco",
    "regiao": "Nordeste",
-   "saldo": 173624937041.0999,
-   "a_vencer": 166440785259.94992,
+   "saldo": 173634062048.47986,
+   "a_vencer": 166448517136.7299,
    "share_a_vencer": 2.27,
    "vencido_pct": 4.14,
    "curto_12m_pct": 42.41,
    "medio_1a5_pct": 37.08,
-   "longo_5a_pct": 20.52,
+   "longo_5a_pct": 20.51,
    "prazo_medio_anos": 3.61,
    "shares": {
     "ate90": 20.17,
@@ -1568,14 +1568,14 @@
     "mais5400": 4.76
    },
    "pf": {
-    "a_vencer": 116845744378.21985,
+    "a_vencer": 116851725162.56981,
     "vencido_pct": 4.96,
     "curto_12m_pct": 42.66,
     "longo_5a_pct": 22.73,
     "prazo_medio_anos": 3.91
    },
    "pj": {
-    "a_vencer": 49595040881.730064,
+    "a_vencer": 49596791974.160065,
     "vencido_pct": 2.15,
     "curto_12m_pct": 41.83,
     "longo_5a_pct": 15.3,
@@ -1594,8 +1594,8 @@
    "uf": "PI",
    "nome": "Piauí",
    "regiao": "Nordeste",
-   "saldo": 69302961997.11009,
-   "a_vencer": 66935240240.43999,
+   "saldo": 69303268937.61009,
+   "a_vencer": 66935232696.49996,
    "share_a_vencer": 0.91,
    "vencido_pct": 3.42,
    "curto_12m_pct": 33.88,
@@ -1611,14 +1611,14 @@
     "mais5400": 8.99
    },
    "pf": {
-    "a_vencer": 39069249281.51998,
+    "a_vencer": 39069260121.04995,
     "vencido_pct": 4.71,
     "curto_12m_pct": 39.58,
     "longo_5a_pct": 22.32,
-    "prazo_medio_anos": 3.91
+    "prazo_medio_anos": 3.9
    },
    "pj": {
-    "a_vencer": 27865990958.920006,
+    "a_vencer": 27865972575.450012,
     "vencido_pct": 1.55,
     "curto_12m_pct": 25.89,
     "longo_5a_pct": 40.81,
@@ -1637,8 +1637,8 @@
    "uf": "PR",
    "nome": "Paraná",
    "regiao": "Sul",
-   "saldo": 566429081807.7871,
-   "a_vencer": 548005394294.0009,
+   "saldo": 566444154359.1075,
+   "a_vencer": 548016855118.3211,
    "share_a_vencer": 7.48,
    "vencido_pct": 3.25,
    "curto_12m_pct": 41.84,
@@ -1654,14 +1654,14 @@
     "mais5400": 3.54
    },
    "pf": {
-    "a_vencer": 340834738583.11053,
+    "a_vencer": 340848246749.21063,
     "vencido_pct": 3.87,
     "curto_12m_pct": 38.49,
     "longo_5a_pct": 23.59,
     "prazo_medio_anos": 4.02
    },
    "pj": {
-    "a_vencer": 207170655710.89035,
+    "a_vencer": 207168608369.11044,
     "vencido_pct": 2.23,
     "curto_12m_pct": 47.36,
     "longo_5a_pct": 7.06,
@@ -1680,12 +1680,12 @@
    "uf": "RJ",
    "nome": "Rio de Janeiro",
    "regiao": "Sudeste",
-   "saldo": 571914908813.5009,
-   "a_vencer": 553376207610.7303,
+   "saldo": 571938998681.432,
+   "a_vencer": 553399799557.54,
    "share_a_vencer": 7.55,
    "vencido_pct": 3.24,
    "curto_12m_pct": 36.53,
-   "medio_1a5_pct": 37.86,
+   "medio_1a5_pct": 37.87,
    "longo_5a_pct": 25.6,
    "prazo_medio_anos": 4.06,
    "shares": {
@@ -1697,14 +1697,14 @@
     "mais5400": 3.81
    },
    "pf": {
-    "a_vencer": 278261061613.19037,
+    "a_vencer": 278286440134.2701,
     "vencido_pct": 4.89,
     "curto_12m_pct": 42.62,
     "longo_5a_pct": 21.38,
     "prazo_medio_anos": 3.67
    },
    "pj": {
-    "a_vencer": 275115145997.54,
+    "a_vencer": 275113359423.27,
     "vencido_pct": 1.51,
     "curto_12m_pct": 30.38,
     "longo_5a_pct": 29.88,
@@ -1723,8 +1723,8 @@
    "uf": "RN",
    "nome": "Rio Grande do Norte",
    "regiao": "Nordeste",
-   "saldo": 72606672183.35986,
-   "a_vencer": 69699979818.21002,
+   "saldo": 72612195181.46986,
+   "a_vencer": 69704657035.66998,
    "share_a_vencer": 0.95,
    "vencido_pct": 4.0,
    "curto_12m_pct": 37.17,
@@ -1733,21 +1733,21 @@
    "prazo_medio_anos": 4.24,
    "shares": {
     "ate90": 17.79,
-    "de91a360": 19.37,
+    "de91a360": 19.38,
     "de361a1080": 25.02,
     "de1081a1800": 12.66,
     "de1801a5400": 18.8,
     "mais5400": 6.35
    },
    "pf": {
-    "a_vencer": 51348720823.69,
+    "a_vencer": 51352185512.76997,
     "vencido_pct": 4.48,
     "curto_12m_pct": 38.39,
     "longo_5a_pct": 26.77,
     "prazo_medio_anos": 4.46
    },
    "pj": {
-    "a_vencer": 18351258994.52001,
+    "a_vencer": 18352471522.900017,
     "vencido_pct": 2.64,
     "curto_12m_pct": 33.76,
     "longo_5a_pct": 20.61,
@@ -1766,11 +1766,11 @@
    "uf": "RO",
    "nome": "Rondônia",
    "regiao": "Norte",
-   "saldo": 64375528146.73984,
-   "a_vencer": 60948736944.92996,
+   "saldo": 64377520221.2099,
+   "a_vencer": 60950156702.14997,
    "share_a_vencer": 0.83,
    "vencido_pct": 5.32,
-   "curto_12m_pct": 42.06,
+   "curto_12m_pct": 42.05,
    "medio_1a5_pct": 42.6,
    "longo_5a_pct": 15.34,
    "prazo_medio_anos": 3.05,
@@ -1783,23 +1783,23 @@
     "mais5400": 2.47
    },
    "pf": {
-    "a_vencer": 49383324979.21995,
+    "a_vencer": 49384835147.909966,
     "vencido_pct": 5.64,
     "curto_12m_pct": 40.3,
     "longo_5a_pct": 17.15,
     "prazo_medio_anos": 3.27
    },
    "pj": {
-    "a_vencer": 11565411965.71001,
+    "a_vencer": 11565321554.24001,
     "vencido_pct": 3.95,
     "curto_12m_pct": 49.53,
     "longo_5a_pct": 7.62,
     "prazo_medio_anos": 2.07
    },
-   "d12_curto_12m_pp": 0.13,
+   "d12_curto_12m_pp": 0.12,
    "d12_prazo_medio_anos": 0.11,
    "posicoes": {
-    "curto_12m_pct": 6,
+    "curto_12m_pct": 7,
     "longo_5a_pct": 26,
     "prazo_medio_anos": 27,
     "vencido_pct": 3
@@ -1809,38 +1809,38 @@
    "uf": "RR",
    "nome": "Roraima",
    "regiao": "Norte",
-   "saldo": 16745866326.010012,
-   "a_vencer": 16040651846.499996,
+   "saldo": 16776718426.060009,
+   "a_vencer": 16070564698.980001,
    "share_a_vencer": 0.22,
    "vencido_pct": 4.21,
-   "curto_12m_pct": 37.49,
-   "medio_1a5_pct": 43.5,
+   "curto_12m_pct": 37.47,
+   "medio_1a5_pct": 43.52,
    "longo_5a_pct": 19.02,
-   "prazo_medio_anos": 3.43,
+   "prazo_medio_anos": 3.44,
    "shares": {
-    "ate90": 15.83,
-    "de91a360": 21.66,
-    "de361a1080": 29.33,
-    "de1081a1800": 14.17,
-    "de1801a5400": 16.29,
-    "mais5400": 2.73
+    "ate90": 15.82,
+    "de91a360": 21.65,
+    "de361a1080": 29.34,
+    "de1081a1800": 14.18,
+    "de1801a5400": 16.3,
+    "mais5400": 2.72
    },
    "pf": {
-    "a_vencer": 12438444542.729994,
+    "a_vencer": 12468169697.25,
     "vencido_pct": 4.71,
-    "curto_12m_pct": 38.38,
+    "curto_12m_pct": 38.35,
     "longo_5a_pct": 18.96,
     "prazo_medio_anos": 3.48
    },
    "pj": {
-    "a_vencer": 3602207303.7700024,
+    "a_vencer": 3602395001.7300024,
     "vencido_pct": 2.45,
     "curto_12m_pct": 34.42,
     "longo_5a_pct": 19.22,
     "prazo_medio_anos": 3.27
    },
-   "d12_curto_12m_pp": 0.68,
-   "d12_prazo_medio_anos": -0.02,
+   "d12_curto_12m_pp": 0.66,
+   "d12_prazo_medio_anos": -0.01,
    "posicoes": {
     "curto_12m_pct": 22,
     "longo_5a_pct": 15,
@@ -1852,13 +1852,13 @@
    "uf": "RS",
    "nome": "Rio Grande do Sul",
    "regiao": "Sul",
-   "saldo": 534497639706.8778,
-   "a_vencer": 516299900239.3804,
+   "saldo": 534544645472.3884,
+   "a_vencer": 516340609787.56036,
    "share_a_vencer": 7.05,
-   "vencido_pct": 3.4,
+   "vencido_pct": 3.41,
    "curto_12m_pct": 40.32,
    "medio_1a5_pct": 41.9,
-   "longo_5a_pct": 17.79,
+   "longo_5a_pct": 17.78,
    "prazo_medio_anos": 3.35,
    "shares": {
     "ate90": 15.75,
@@ -1869,14 +1869,14 @@
     "mais5400": 3.43
    },
    "pf": {
-    "a_vencer": 330693685183.8402,
+    "a_vencer": 330743449513.4902,
     "vencido_pct": 4.09,
     "curto_12m_pct": 36.61,
-    "longo_5a_pct": 22.62,
+    "longo_5a_pct": 22.61,
     "prazo_medio_anos": 3.95
    },
    "pj": {
-    "a_vencer": 185606215055.54016,
+    "a_vencer": 185597160274.0702,
     "vencido_pct": 2.16,
     "curto_12m_pct": 46.92,
     "longo_5a_pct": 9.18,
@@ -1895,8 +1895,8 @@
    "uf": "SC",
    "nome": "Santa Catarina",
    "regiao": "Sul",
-   "saldo": 416111112386.77014,
-   "a_vencer": 405756262232.2801,
+   "saldo": 416277783482.7305,
+   "a_vencer": 405912735140.2004,
    "share_a_vencer": 5.54,
    "vencido_pct": 2.49,
    "curto_12m_pct": 40.48,
@@ -1912,17 +1912,17 @@
     "mais5400": 3.49
    },
    "pf": {
-    "a_vencer": 223998242710.47998,
-    "vencido_pct": 3.15,
-    "curto_12m_pct": 38.2,
-    "longo_5a_pct": 22.78,
+    "a_vencer": 224139709018.42032,
+    "vencido_pct": 3.16,
+    "curto_12m_pct": 38.21,
+    "longo_5a_pct": 22.77,
     "prazo_medio_anos": 3.92
    },
    "pj": {
-    "a_vencer": 181758019521.80008,
+    "a_vencer": 181773026121.7801,
     "vencido_pct": 1.66,
     "curto_12m_pct": 43.29,
-    "longo_5a_pct": 12.71,
+    "longo_5a_pct": 12.72,
     "prazo_medio_anos": 2.69
    },
    "d12_curto_12m_pp": -0.12,
@@ -1938,31 +1938,31 @@
    "uf": "SE",
    "nome": "Sergipe",
    "regiao": "Nordeste",
-   "saldo": 42571993941.39009,
-   "a_vencer": 40744721101.070015,
+   "saldo": 42573426348.53012,
+   "a_vencer": 40744711648.8,
    "share_a_vencer": 0.56,
-   "vencido_pct": 4.29,
+   "vencido_pct": 4.3,
    "curto_12m_pct": 43.29,
    "medio_1a5_pct": 34.46,
    "longo_5a_pct": 22.25,
    "prazo_medio_anos": 3.87,
    "shares": {
     "ate90": 20.14,
-    "de91a360": 23.14,
+    "de91a360": 23.15,
     "de361a1080": 23.53,
     "de1081a1800": 10.93,
-    "de1801a5400": 16.08,
+    "de1801a5400": 16.07,
     "mais5400": 6.18
    },
    "pf": {
-    "a_vencer": 31550414613.110016,
-    "vencido_pct": 4.79,
+    "a_vencer": 31550406474.54,
+    "vencido_pct": 4.8,
     "curto_12m_pct": 41.61,
     "longo_5a_pct": 26.29,
     "prazo_medio_anos": 4.37
    },
    "pj": {
-    "a_vencer": 9194306487.96,
+    "a_vencer": 9194305174.259998,
     "vencido_pct": 2.54,
     "curto_12m_pct": 49.06,
     "longo_5a_pct": 8.39,
@@ -1981,8 +1981,8 @@
    "uf": "SP",
    "nome": "São Paulo",
    "regiao": "Sudeste",
-   "saldo": 2277794471896.071,
-   "a_vencer": 2213033941369.1685,
+   "saldo": 2277738755161.6616,
+   "a_vencer": 2212981138500.717,
    "share_a_vencer": 30.21,
    "vencido_pct": 2.84,
    "curto_12m_pct": 46.89,
@@ -1998,14 +1998,14 @@
     "mais5400": 4.82
    },
    "pf": {
-    "a_vencer": 1201214413982.5889,
+    "a_vencer": 1201172114065.3987,
     "vencido_pct": 3.91,
     "curto_12m_pct": 38.67,
     "longo_5a_pct": 26.45,
     "prazo_medio_anos": 4.33
    },
    "pj": {
-    "a_vencer": 1011819527386.5793,
+    "a_vencer": 1011809024435.3179,
     "vencido_pct": 1.54,
     "curto_12m_pct": 56.65,
     "longo_5a_pct": 10.87,
@@ -2024,10 +2024,10 @@
    "uf": "TO",
    "nome": "Tocantins",
    "regiao": "Norte",
-   "saldo": 58748965272.04,
-   "a_vencer": 54986351521.599945,
+   "saldo": 58720862980.63001,
+   "a_vencer": 54978589166.70995,
    "share_a_vencer": 0.75,
-   "vencido_pct": 6.4,
+   "vencido_pct": 6.37,
    "curto_12m_pct": 39.19,
    "medio_1a5_pct": 43.5,
    "longo_5a_pct": 17.31,
@@ -2035,23 +2035,23 @@
    "shares": {
     "ate90": 15.39,
     "de91a360": 23.8,
-    "de361a1080": 29.49,
+    "de361a1080": 29.48,
     "de1081a1800": 14.02,
     "de1801a5400": 14.84,
     "mais5400": 2.47
    },
    "pf": {
-    "a_vencer": 39236723360.62996,
-    "vencido_pct": 7.79,
+    "a_vencer": 39230348171.439964,
+    "vencido_pct": 7.74,
     "curto_12m_pct": 39.95,
     "longo_5a_pct": 17.16,
     "prazo_medio_anos": 3.31
    },
    "pj": {
-    "a_vencer": 15749628160.96999,
+    "a_vencer": 15748240995.269989,
     "vencido_pct": 2.78,
     "curto_12m_pct": 37.3,
-    "longo_5a_pct": 17.67,
+    "longo_5a_pct": 17.68,
     "prazo_medio_anos": 3.11
    },
    "d12_curto_12m_pp": -1.65,
