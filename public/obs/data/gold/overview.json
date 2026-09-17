@@ -1,12 +1,12 @@
 {
- "gerado_em": "2026-09-16T16:00:58+00:00",
+ "gerado_em": "2026-09-17T15:43:20+00:00",
  "diagnostico": {
   "ok": true,
   "tipo": "DADO CALCULADO",
   "frase": "As condições de crédito permanecem restritivas (IBCC 94.8, percentil histórico 18), em fase de contração, com sinais mistos entre os indicadores monitorados.",
   "ref": "2026-06-01",
   "confianca": "moderada",
-  "confianca_motivo": "qualidade média dos dados 73/100; score setorial com 1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
+  "confianca_motivo": "qualidade média dos dados 72/100; score setorial com 1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero; IBCC com pesos iguais (v0.2); sem corte por porte/modalidade fina no MVP",
   "evidencias": [
    {
     "texto": "componente mais negativo do IBCC: Capacidade de pagamento (-3.09)",
@@ -1296,54 +1296,55 @@
      {
       "h": 1,
       "ref_date": "2026-08-01",
-      "p50": 57.5338,
-      "p10": 26.1028,
-      "p90": 91.4409
+      "p50": 79.2291,
+      "p10": 43.4007,
+      "p90": 112.5018
      },
      {
       "h": 3,
       "ref_date": "2026-10-01",
-      "p50": 60.5657,
-      "p10": 23.4483,
-      "p90": 98.6241
+      "p50": 86.5092,
+      "p10": 43.8666,
+      "p90": 124.8622
      },
      {
       "h": 6,
       "ref_date": "2027-01-01",
-      "p50": 51.9448,
-      "p10": 20.2987,
-      "p90": 87.7295
+      "p50": 69.3589,
+      "p10": 37.4007,
+      "p90": 108.9228
      },
      {
       "h": 9,
       "ref_date": "2027-04-01",
-      "p50": 48.4844,
-      "p10": 25.5947,
-      "p90": 100.415
+      "p50": 76.42,
+      "p10": 47.8533,
+      "p90": 119.6182
      },
      {
       "h": 12,
       "ref_date": "2027-07-01",
-      "p50": 49.8703,
-      "p10": 26.9578,
-      "p90": 81.909
+      "p50": 69.8273,
+      "p10": 45.114,
+      "p90": 104.8434
      }
     ],
     "diagnostico": {
      "1": {
       "pesos": {
-       "ultimo_valor": 0.201,
-       "drift": 0.2,
-       "media_movel_6m": 0.194,
-       "ar1_diferencas": 0.207,
-       "holt": 0.197
+       "ultimo_valor": 0.173,
+       "sazonal_ingenuo": 0.154,
+       "drift": 0.172,
+       "media_movel_6m": 0.163,
+       "ar1_diferencas": 0.176,
+       "holt": 0.163
       },
-      "mae_ensemble_backtest": 19.2848,
+      "mae_ensemble_backtest": 19.8983,
       "mae_naive_backtest": 19.1714,
-      "ganho_vs_naive_pct": -0.6,
+      "ganho_vs_naive_pct": -3.8,
       "n_backtests": 35,
       "cobertura_banda": {
-       "cobertura_oos_pct": 72.2,
+       "cobertura_oos_pct": 77.8,
        "nominal_pct": 80.0,
        "n_calibracao": 17,
        "n_teste": 18,
@@ -1352,16 +1353,16 @@
      },
      "3": {
       "pesos": {
-       "ultimo_valor": 0.159,
-       "sazonal_ingenuo": 0.208,
-       "drift": 0.155,
-       "media_movel_6m": 0.165,
-       "ar1_diferencas": 0.165,
-       "holt": 0.148
+       "ultimo_valor": 0.151,
+       "sazonal_ingenuo": 0.233,
+       "drift": 0.148,
+       "media_movel_6m": 0.173,
+       "ar1_diferencas": 0.154,
+       "holt": 0.14
       },
-      "mae_ensemble_backtest": 23.6445,
-      "mae_naive_backtest": 24.7647,
-      "ganho_vs_naive_pct": 4.5,
+      "mae_ensemble_backtest": 25.1479,
+      "mae_naive_backtest": 27.7941,
+      "ganho_vs_naive_pct": 9.5,
       "n_backtests": 34,
       "cobertura_banda": {
        "cobertura_oos_pct": 76.5,
@@ -1373,18 +1374,18 @@
      },
      "6": {
       "pesos": {
-       "ultimo_valor": 0.188,
-       "sazonal_ingenuo": 0.255,
-       "drift": 0.18,
-       "media_movel_6m": 0.192,
-       "ar1_diferencas": 0.185
+       "ultimo_valor": 0.183,
+       "sazonal_ingenuo": 0.269,
+       "drift": 0.174,
+       "media_movel_6m": 0.195,
+       "ar1_diferencas": 0.179
       },
-      "mae_ensemble_backtest": 24.0371,
-      "mae_naive_backtest": 25.5161,
-      "ganho_vs_naive_pct": 5.8,
+      "mae_ensemble_backtest": 24.5971,
+      "mae_naive_backtest": 26.9032,
+      "ganho_vs_naive_pct": 8.6,
       "n_backtests": 31,
       "cobertura_banda": {
-       "cobertura_oos_pct": 87.5,
+       "cobertura_oos_pct": 93.8,
        "nominal_pct": 80.0,
        "n_calibracao": 15,
        "n_teste": 16,
@@ -1393,38 +1394,38 @@
      },
      "9": {
       "pesos": {
-       "ultimo_valor": 0.18,
-       "sazonal_ingenuo": 0.232,
-       "drift": 0.169,
-       "media_movel_6m": 0.24,
-       "ar1_diferencas": 0.179
+       "ultimo_valor": 0.174,
+       "sazonal_ingenuo": 0.236,
+       "drift": 0.161,
+       "media_movel_6m": 0.259,
+       "ar1_diferencas": 0.17
       },
-      "mae_ensemble_backtest": 23.13,
-      "mae_naive_backtest": 25.75,
-      "ganho_vs_naive_pct": 10.2,
+      "mae_ensemble_backtest": 22.1698,
+      "mae_naive_backtest": 25.5357,
+      "ganho_vs_naive_pct": 13.2,
       "n_backtests": 28,
       "cobertura_banda": {
-       "cobertura_oos_pct": 64.3,
+       "cobertura_oos_pct": 71.4,
        "nominal_pct": 80.0,
        "n_calibracao": 14,
        "n_teste": 14,
-       "leitura": "abaixo do nominal — a banda deve ser lida como indicativa, não como garantia"
+       "leitura": "compatível com o nominal de 80%, dada a amostra pequena"
       }
      },
      "12": {
       "pesos": {
-       "ultimo_valor": 0.201,
-       "sazonal_ingenuo": 0.201,
-       "drift": 0.185,
-       "media_movel_6m": 0.206,
-       "ar1_diferencas": 0.206
+       "ultimo_valor": 0.197,
+       "sazonal_ingenuo": 0.197,
+       "drift": 0.175,
+       "media_movel_6m": 0.237,
+       "ar1_diferencas": 0.195
       },
-      "mae_ensemble_backtest": 20.1215,
-      "mae_naive_backtest": 20.0,
-      "ganho_vs_naive_pct": -0.6,
+      "mae_ensemble_backtest": 18.3139,
+      "mae_naive_backtest": 18.64,
+      "ganho_vs_naive_pct": 1.7,
       "n_backtests": 25,
       "cobertura_banda": {
-       "cobertura_oos_pct": 61.5,
+       "cobertura_oos_pct": 46.2,
        "nominal_pct": 80.0,
        "n_calibracao": 12,
        "n_teste": 13,
@@ -1433,123 +1434,123 @@
       "trajetoria": [
        {
         "ref": "2024-08-01",
-        "previsto": 112.0859,
-        "realizado": 117.0
+        "previsto": 128.1843,
+        "realizado": 125.0
        },
        {
         "ref": "2024-09-01",
-        "previsto": 104.4197,
-        "realizado": 105.0
+        "previsto": 117.6669,
+        "realizado": 117.0
        },
        {
         "ref": "2024-10-01",
-        "previsto": 101.7383,
-        "realizado": 94.0
+        "previsto": 120.3489,
+        "realizado": 111.0
        },
        {
         "ref": "2024-11-01",
-        "previsto": 80.6959,
-        "realizado": 70.0
-       },
-       {
-        "ref": "2024-12-01",
-        "previsto": 88.4709,
-        "realizado": 72.0
-       },
-       {
-        "ref": "2025-01-01",
-        "previsto": 55.3051,
-        "realizado": 73.0
-       },
-       {
-        "ref": "2025-02-01",
-        "previsto": 82.207,
-        "realizado": 79.0
-       },
-       {
-        "ref": "2025-03-01",
-        "previsto": 86.5971,
-        "realizado": 113.0
-       },
-       {
-        "ref": "2025-04-01",
-        "previsto": 93.9116,
-        "realizado": 74.0
-       },
-       {
-        "ref": "2025-05-01",
-        "previsto": 88.9266,
-        "realizado": 81.0
-       },
-       {
-        "ref": "2025-06-01",
-        "previsto": 144.2528,
-        "realizado": 69.0
-       },
-       {
-        "ref": "2025-07-01",
-        "previsto": 107.4738,
-        "realizado": 95.0
-       },
-       {
-        "ref": "2025-08-01",
-        "previsto": 115.7425,
-        "realizado": 75.0
-       },
-       {
-        "ref": "2025-09-01",
-        "previsto": 108.0591,
-        "realizado": 90.0
-       },
-       {
-        "ref": "2025-10-01",
-        "previsto": 98.3317,
-        "realizado": 92.0
-       },
-       {
-        "ref": "2025-11-01",
-        "previsto": 77.9746,
-        "realizado": 129.0
-       },
-       {
-        "ref": "2025-12-01",
-        "previsto": 74.7071,
-        "realizado": 61.0
-       },
-       {
-        "ref": "2026-01-01",
-        "previsto": 74.6698,
-        "realizado": 56.0
-       },
-       {
-        "ref": "2026-02-01",
-        "previsto": 78.1465,
-        "realizado": 52.0
-       },
-       {
-        "ref": "2026-03-01",
-        "previsto": 105.4385,
+        "previsto": 95.0791,
         "realizado": 82.0
        },
        {
+        "ref": "2024-12-01",
+        "previsto": 99.5576,
+        "realizado": 87.0
+       },
+       {
+        "ref": "2025-01-01",
+        "previsto": 63.2923,
+        "realizado": 89.0
+       },
+       {
+        "ref": "2025-02-01",
+        "previsto": 88.1992,
+        "realizado": 95.0
+       },
+       {
+        "ref": "2025-03-01",
+        "previsto": 98.4363,
+        "realizado": 134.0
+       },
+       {
+        "ref": "2025-04-01",
+        "previsto": 103.4328,
+        "realizado": 93.0
+       },
+       {
+        "ref": "2025-05-01",
+        "previsto": 100.8349,
+        "realizado": 96.0
+       },
+       {
+        "ref": "2025-06-01",
+        "previsto": 156.434,
+        "realizado": 91.0
+       },
+       {
+        "ref": "2025-07-01",
+        "previsto": 129.7468,
+        "realizado": 110.0
+       },
+       {
+        "ref": "2025-08-01",
+        "previsto": 126.0445,
+        "realizado": 100.0
+       },
+       {
+        "ref": "2025-09-01",
+        "previsto": 120.4263,
+        "realizado": 112.0
+       },
+       {
+        "ref": "2025-10-01",
+        "previsto": 115.4129,
+        "realizado": 121.0
+       },
+       {
+        "ref": "2025-11-01",
+        "previsto": 92.2667,
+        "realizado": 153.0
+       },
+       {
+        "ref": "2025-12-01",
+        "previsto": 90.5226,
+        "realizado": 89.0
+       },
+       {
+        "ref": "2026-01-01",
+        "previsto": 90.9061,
+        "realizado": 76.0
+       },
+       {
+        "ref": "2026-02-01",
+        "previsto": 94.3911,
+        "realizado": 78.0
+       },
+       {
+        "ref": "2026-03-01",
+        "previsto": 124.8159,
+        "realizado": 108.0
+       },
+       {
         "ref": "2026-04-01",
-        "previsto": 77.0077,
-        "realizado": 65.0
+        "previsto": 96.1526,
+        "realizado": 98.0
        },
        {
         "ref": "2026-05-01",
-        "previsto": 79.7916,
-        "realizado": 61.0
+        "previsto": 95.9714,
+        "realizado": 108.0
        },
        {
         "ref": "2026-06-01",
-        "previsto": 70.91,
-        "realizado": 61.0
+        "previsto": 92.6067,
+        "realizado": 97.0
        },
        {
         "ref": "2026-07-01",
-        "previsto": 90.9589,
-        "realizado": 62.0
+        "previsto": 107.3117,
+        "realizado": 69.0
        }
       ]
      }

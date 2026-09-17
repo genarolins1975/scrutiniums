@@ -1,12 +1,12 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-16T16:01:35+00:00",
+ "gerado_em": "2026-09-17T15:44:01+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
   "penetracao": "2026-06",
   "presenca": {},
-  "pix": "2026-07",
+  "pix": "2026-08",
   "moradia": "2026-07",
   "consignado": "2026-07",
   "rural": {
@@ -173,7 +173,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 7215834983,
     "q_pag": 32624887,
     "t_pag": 221.18,
@@ -458,7 +458,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 23077079844,
     "q_pag": 101321867,
     "t_pag": 227.76,
@@ -743,7 +743,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 43094499560,
     "q_pag": 187053280,
     "t_pag": 230.39,
@@ -1028,7 +1028,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 6929470548,
     "q_pag": 38573754,
     "t_pag": 179.64,
@@ -1313,7 +1313,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 115078132466,
     "q_pag": 488761679,
     "t_pag": 235.45,
@@ -1397,11 +1397,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 37969,
-    "var_12m_pct": 1.27,
-    "casos_12m_todos": 68337,
+    "casos_12m": 37934,
+    "var_12m_pct": 1.32,
+    "casos_12m_todos": 68221,
     "por_mil_hab": 2.55,
-    "por_bi_carteira": 128.0
+    "por_bi_carteira": 127.9
    },
    "prazo": {
     "data_base": "2026-07",
@@ -1598,7 +1598,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 78096296567,
     "q_pag": 307677998,
     "t_pag": 253.82,
@@ -1883,7 +1883,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 67543961348,
     "q_pag": 134243867,
     "t_pag": 503.14,
@@ -2168,7 +2168,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 57044056080,
     "q_pag": 132234624,
     "t_pag": 431.39,
@@ -2453,7 +2453,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 98600186959,
     "q_pag": 249266361,
     "t_pag": 395.56,
@@ -2594,7 +2594,7 @@
     "consorcios.cotas": 7,
     "consorcios.por_mil_hab": 9,
     "cobranca.por_mil_hab": 7,
-    "cobranca.por_bi_carteira": 22,
+    "cobranca.por_bi_carteira": 21,
     "pgfn.insc_pf_por_mil_hab": 12
    },
    "sintese": "O crédito em Goiás somava R$ 343 bilhões em 2026-07, 4,5% do Brasil, R$ 46.245 por habitante (8º entre as 27 UFs), com inadimplência de 7,09% (4º) e crescimento de +7,3% em 12 meses. Penetração de 119% da renda anual (7º), com 51 de 246 municípios abaixo do esperado pelo modelo."
@@ -2738,7 +2738,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 51111869419,
     "q_pag": 250036405,
     "t_pag": 204.42,
@@ -2822,11 +2822,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 13633,
-    "var_12m_pct": 25.45,
-    "casos_12m_todos": 28889,
-    "por_mil_hab": 1.94,
-    "por_bi_carteira": 119.1
+    "casos_12m": 13711,
+    "var_12m_pct": 26.3,
+    "casos_12m_todos": 28932,
+    "por_mil_hab": 1.95,
+    "por_bi_carteira": 119.8
    },
    "prazo": {
     "data_base": "2026-07",
@@ -3023,7 +3023,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 253558807154,
     "q_pag": 599490181,
     "t_pag": 422.96,
@@ -3308,7 +3308,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 37264231376,
     "q_pag": 99504027,
     "t_pag": 374.5,
@@ -3392,11 +3392,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 14860,
-    "var_12m_pct": 6.72,
-    "casos_12m_todos": 33276,
-    "por_mil_hab": 5.08,
-    "por_bi_carteira": 104.2
+    "casos_12m": 14468,
+    "var_12m_pct": 6.03,
+    "casos_12m_todos": 33185,
+    "por_mil_hab": 4.95,
+    "por_bi_carteira": 101.4
    },
    "prazo": {
     "data_base": "2026-07",
@@ -3449,7 +3449,7 @@
     "consorcios.cotas": 15,
     "consorcios.por_mil_hab": 5,
     "cobranca.por_mil_hab": 6,
-    "cobranca.por_bi_carteira": 20,
+    "cobranca.por_bi_carteira": 22,
     "pgfn.insc_pf_por_mil_hab": 4
    },
    "sintese": "O crédito em Mato Grosso do Sul somava R$ 143 bilhões em 2026-07, 1,9% do Brasil, R$ 48.774 por habitante (5º entre as 27 UFs), com inadimplência de 7,37% (3º) e crescimento de +6,1% em 12 meses. Penetração de 115% da renda anual (9º), com 27 de 79 municípios abaixo do esperado pelo modelo."
@@ -3593,7 +3593,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 71570440555,
     "q_pag": 121230466,
     "t_pag": 590.37,
@@ -3677,11 +3677,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 27982,
-    "var_12m_pct": 10.02,
-    "casos_12m_todos": 56730,
-    "por_mil_hab": 7.19,
-    "por_bi_carteira": 106.1
+    "casos_12m": 28024,
+    "var_12m_pct": 10.51,
+    "casos_12m_todos": 56710,
+    "por_mil_hab": 7.2,
+    "por_bi_carteira": 106.2
    },
    "prazo": {
     "data_base": "2026-07",
@@ -3878,7 +3878,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 66046102416,
     "q_pag": 325553916,
     "t_pag": 202.87,
@@ -3962,11 +3962,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 18691,
-    "var_12m_pct": 2.55,
-    "casos_12m_todos": 35612,
+    "casos_12m": 18731,
+    "var_12m_pct": 2.74,
+    "casos_12m_todos": 35681,
     "por_mil_hab": 2.15,
-    "por_bi_carteira": 111.0
+    "por_bi_carteira": 111.2
    },
    "prazo": {
     "data_base": "2026-07",
@@ -4163,7 +4163,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 36368645274,
     "q_pag": 182044780,
     "t_pag": 199.78,
@@ -4247,11 +4247,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 7039,
-    "var_12m_pct": 18.88,
-    "casos_12m_todos": 20163,
-    "por_mil_hab": 1.69,
-    "por_bi_carteira": 91.0
+    "casos_12m": 7081,
+    "var_12m_pct": 19.59,
+    "casos_12m_todos": 20188,
+    "por_mil_hab": 1.7,
+    "por_bi_carteira": 91.5
    },
    "prazo": {
     "data_base": "2026-07",
@@ -4448,7 +4448,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 78091851156,
     "q_pag": 322267478,
     "t_pag": 242.32,
@@ -4532,11 +4532,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 20167,
-    "var_12m_pct": -2.7,
-    "casos_12m_todos": 43590,
-    "por_mil_hab": 2.11,
-    "por_bi_carteira": 116.1
+    "casos_12m": 20473,
+    "var_12m_pct": -1.41,
+    "casos_12m_todos": 43902,
+    "por_mil_hab": 2.14,
+    "por_bi_carteira": 117.9
    },
    "prazo": {
     "data_base": "2026-07",
@@ -4733,7 +4733,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 25178950427,
     "q_pag": 119517933,
     "t_pag": 210.67,
@@ -4817,11 +4817,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 8930,
-    "var_12m_pct": 6.09,
-    "casos_12m_todos": 16955,
+    "casos_12m": 8952,
+    "var_12m_pct": 6.33,
+    "casos_12m_todos": 16972,
     "por_mil_hab": 2.64,
-    "por_bi_carteira": 128.9
+    "por_bi_carteira": 129.2
    },
    "prazo": {
     "data_base": "2026-07",
@@ -5018,7 +5018,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 212362966506,
     "q_pag": 382356199,
     "t_pag": 555.41,
@@ -5303,7 +5303,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 264787948291,
     "q_pag": 626790131,
     "t_pag": 422.45,
@@ -5588,7 +5588,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 25788910121,
     "q_pag": 116373925,
     "t_pag": 221.6,
@@ -5873,7 +5873,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 19089146404,
     "q_pag": 57754504,
     "t_pag": 330.52,
@@ -6158,7 +6158,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 7042133154,
     "q_pag": 37890165,
     "t_pag": 185.86,
@@ -6443,7 +6443,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 140371597555,
     "q_pag": 300974372,
     "t_pag": 466.39,
@@ -6728,7 +6728,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 144515360713,
     "q_pag": 216297105,
     "t_pag": 668.13,
@@ -7013,7 +7013,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 17984992919,
     "q_pag": 76105458,
     "t_pag": 236.32,
@@ -7298,7 +7298,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 1200761327005,
     "q_pag": 1800526141,
     "t_pag": 666.89,
@@ -7583,7 +7583,7 @@
    },
    "presenca": null,
    "pix": {
-    "mes": "2026-07",
+    "mes": "2026-08",
     "v_pag": 18239237283,
     "q_pag": 55440863,
     "t_pag": 328.99,
@@ -7724,7 +7724,7 @@
     "consorcios.cotas": 21,
     "consorcios.por_mil_hab": 4,
     "cobranca.por_mil_hab": 9,
-    "cobranca.por_bi_carteira": 21,
+    "cobranca.por_bi_carteira": 20,
     "pgfn.insc_pf_por_mil_hab": 9
    },
    "sintese": "O crédito no Tocantins somava R$ 59 bilhões em 2026-07, 0,8% do Brasil, R$ 37.004 por habitante (9º entre as 27 UFs), com inadimplência de 8,42% (2º) e crescimento de +8,9% em 12 meses. Penetração de 143% da renda anual (3º), com 1 de 139 municípios abaixo do esperado pelo modelo."

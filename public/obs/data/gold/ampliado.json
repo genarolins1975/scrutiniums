@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-16T16:01:31+00:00",
+ "gerado_em": "2026-09-17T15:43:56+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -6238,13 +6238,13 @@
   "ultimo_mes_com_oferta": "2026-08",
   "unidade": "R$ (valor total da oferta no regime anterior; valor registrado da oferta encerrada na Res. 160)",
   "kpis": {
-   "valor_12m": 954775416590.51,
-   "n_12m": 3376,
-   "var_12m_pct": 2.8,
+   "valor_12m": 955304931692.56,
+   "n_12m": 3389,
+   "var_12m_pct": 2.9,
    "divida_corporativa_12m": 424407510794.53,
-   "securitizacao_12m": 266998066566.74,
+   "securitizacao_12m": 267145051568.79,
    "divida_corporativa_var_12m_pct": -15.5,
-   "profissional_share": 80.08,
+   "profissional_share": 80.09,
    "incentivadas_share_debentures": 31.32,
    "hhi_lideres": 1688,
    "top5_lideres_share": 79.13,
@@ -6269,35 +6269,35 @@
     "familia": "Debêntures",
     "valor": 375268917576.53,
     "n": 525,
-    "share": 39.3,
+    "share": 39.28,
     "var_12m_pct": -17.2
    },
    {
     "familia": "Cotas de FII e FIAGRO",
-    "valor": 141127103981.75,
-    "n": 472,
-    "share": 14.78,
-    "var_12m_pct": 85.3
+    "valor": 141398634081.75,
+    "n": 474,
+    "share": 14.8,
+    "var_12m_pct": 85.7
    },
    {
     "familia": "Cotas de FIDC",
-    "valor": 111850098207.09,
-    "n": 1046,
-    "share": 11.71,
-    "var_12m_pct": -13.2
+    "valor": 111947098209.14,
+    "n": 1053,
+    "share": 11.72,
+    "var_12m_pct": -13.1
    },
    {
     "familia": "Outros títulos de securitização",
     "valor": 80766006493.6,
     "n": 123,
-    "share": 8.46,
+    "share": 8.45,
     "var_12m_pct": 215.2
    },
    {
     "familia": "Notas comerciais e promissórias",
     "valor": 49138593218.0,
     "n": 266,
-    "share": 5.15,
+    "share": 5.14,
     "var_12m_pct": 0.3
    },
    {
@@ -6309,22 +6309,22 @@
    },
    {
     "familia": "CRI",
-    "valor": 42665004866.05,
-    "n": 428,
+    "valor": 42714989866.05,
+    "n": 430,
     "share": 4.47,
-    "var_12m_pct": -15.1
+    "var_12m_pct": -15.0
    },
    {
     "familia": "Cotas de FIP",
-    "valor": 36877910006.81,
-    "n": 204,
-    "share": 3.86,
-    "var_12m_pct": -2.2
+    "valor": 36977910006.81,
+    "n": 205,
+    "share": 3.87,
+    "var_12m_pct": -1.9
    },
    {
     "familia": "Cotas de outros fundos",
-    "valor": 35878556989.83,
-    "n": 175,
+    "valor": 35889556989.83,
+    "n": 176,
     "share": 3.76,
     "var_12m_pct": -36.6
    },
@@ -9621,11 +9621,11 @@
    },
    {
     "mes": "2026-01",
-    "total": 63763976276.83,
-    "n": 251,
+    "total": 63773976276.83,
+    "n": 253,
     "Outros": 31874034.44,
     "Debêntures": 27954907374.0,
-    "Cotas de FIDC": 7809608454.34,
+    "Cotas de FIDC": 7819608454.34,
     "Cotas de outros fundos": 1601899887.25,
     "Cotas de FII e FIAGRO": 9761862554.57,
     "Notas comerciais e promissórias": 3895000000.0,
@@ -9636,7 +9636,7 @@
     "CRA": 440000000.0,
     "Letras financeiras": 0.0,
     "divida_corporativa": 31849907374.0,
-    "securitizacao": 10534241454.34
+    "securitizacao": 10544241454.34
    },
    {
     "mes": "2026-02",
@@ -9659,22 +9659,22 @@
    },
    {
     "mes": "2026-03",
-    "total": 82767549386.02,
-    "n": 307,
+    "total": 82975534388.07002,
+    "n": 315,
     "Outros títulos de securitização": 7112818107.0,
     "Debêntures": 37616245370.0,
-    "CRI": 4535446598.18,
+    "CRI": 4585431598.18,
     "CRA": 1221950000.0,
-    "Cotas de FIDC": 15009418003.259998,
+    "Cotas de FIDC": 15056418005.309998,
     "Cotas de FII e FIAGRO": 6814407384.53,
     "Ações": 704426068.75,
     "Notas comerciais e promissórias": 3924670000.0,
-    "Cotas de FIP": 5080907819.52,
-    "Cotas de outros fundos": 747260034.78,
+    "Cotas de FIP": 5180907819.52,
+    "Cotas de outros fundos": 758260034.78,
     "Letras financeiras": 0.0,
     "Outros": 0.0,
     "divida_corporativa": 41540915370.0,
-    "securitizacao": 27879632708.44
+    "securitizacao": 27976617710.489998
    },
    {
     "mes": "2026-04",
@@ -9697,14 +9697,14 @@
    },
    {
     "mes": "2026-05",
-    "total": 56061549999.189995,
-    "n": 188,
+    "total": 56161549999.189995,
+    "n": 189,
     "Outros títulos de securitização": 8256572000.0,
     "Cotas de FIDC": 4584166167.030001,
     "CRA": 1828500000.0,
     "Debêntures": 13365500000.0,
     "CRI": 2224666288.16,
-    "Cotas de FII e FIAGRO": 7763817549.22,
+    "Cotas de FII e FIAGRO": 7863817549.22,
     "Ações": 5870546483.0,
     "Cotas de outros fundos": 1747465521.3899999,
     "Notas comerciais e promissórias": 3099699000.0,
@@ -9716,27 +9716,27 @@
    },
    {
     "mes": "2026-06",
-    "total": 78090629327.26001,
-    "n": 187,
+    "total": 78130629327.26001,
+    "n": 188,
     "Outros": 35830947.24,
     "CRA": 1237995000.0,
     "Debêntures": 22153775230.0,
     "CRI": 2701441000.0,
     "Ações": 8428184894.530001,
     "Notas comerciais e promissórias": 10373499460.0,
-    "Cotas de FIDC": 7322977927.32,
+    "Cotas de FIDC": 7362977927.32,
     "Outros títulos de securitização": 10915626111.6,
     "Cotas de FII e FIAGRO": 11775837297.81,
     "Cotas de outros fundos": 859480000.0,
     "Cotas de FIP": 2285981458.76,
     "Letras financeiras": 0.0,
     "divida_corporativa": 32527274690.0,
-    "securitizacao": 22178040038.92
+    "securitizacao": 22218040038.92
    },
    {
     "mes": "2026-07",
-    "total": 67383521698.869995,
-    "n": 138,
+    "total": 67555051798.869995,
+    "n": 139,
     "CRI": 2423922629.0,
     "Debêntures": 23861678000.0,
     "Cotas de FIDC": 4804701753.18,
@@ -9744,7 +9744,7 @@
     "Cotas de outros fundos": 258974999.97,
     "Cotas de FIP": 256004199.11,
     "Notas comerciais e promissórias": 2949029400.0,
-    "Cotas de FII e FIAGRO": 10455541746.61,
+    "Cotas de FII e FIAGRO": 10627071846.61,
     "Ações": 9559521850.0,
     "Outros títulos de securitização": 11279147121.0,
     "Letras financeiras": 0.0,
@@ -10111,18 +10111,18 @@
    },
    {
     "ano": "2026",
-    "total": 488432908950.93,
-    "n": 1627,
+    "total": 488962424052.98,
+    "n": 1640,
     "divida_corporativa": 209435029345.48,
-    "securitizacao": 137218051254.61,
+    "securitizacao": 137365036256.66002,
     "meses": 8,
     "Ações": 37763485663.03,
     "CRA": 8920804000.0,
-    "CRI": 20464401899.58,
-    "Cotas de FIDC": 59119180486.43,
-    "Cotas de FII e FIAGRO": 67650941561.64,
-    "Cotas de FIP": 20928320508.989998,
-    "Cotas de outros fundos": 15282155181.659998,
+    "CRI": 20514386899.58,
+    "Cotas de FIDC": 59216180488.47999,
+    "Cotas de FII e FIAGRO": 67922471661.64,
+    "Cotas de FIP": 21028320508.989998,
+    "Cotas de outros fundos": 15293155181.659998,
     "Debêntures": 178622143485.48,
     "Letras financeiras": 0.0,
     "Notas comerciais e promissórias": 30812885860.0,
@@ -10136,20 +10136,20 @@
     "ini": "2025-09",
     "fim": "2026-08"
    },
-   "valor": 954406757965.69,
-   "n": 3368,
+   "valor": 954936273067.74,
+   "n": 3381,
    "publico_alvo": [
     {
      "publico": "Profissional",
-     "n": 2945,
-     "valor": 764292122197.35,
-     "share": 80.08
+     "n": 2958,
+     "valor": 764821637299.4,
+     "share": 80.09
     },
     {
      "publico": "Qualificado",
      "n": 340,
      "valor": 119782465127.44,
-     "share": 12.55
+     "share": 12.54
     },
     {
      "publico": "Público Geral",
@@ -10161,15 +10161,15 @@
    "regime_distribuicao": [
     {
      "regime": "Melhores Esforços",
-     "n": 2382,
-     "valor": 426993210253.8,
-     "share": 44.74
+     "n": 2394,
+     "valor": 427482725355.85,
+     "share": 44.77
     },
     {
      "regime": "Garantia Firme de Colocação",
-     "n": 844,
-     "valor": 418100668266.63,
-     "share": 43.81
+     "n": 845,
+     "valor": 418140668266.63,
+     "share": 43.79
     },
     {
      "regime": "Misto",
@@ -10181,7 +10181,7 @@
      "regime": "Garantia Firme de Liquidação",
      "n": 17,
      "valor": 47396342560.48,
-     "share": 4.97
+     "share": 4.96
     },
     {
      "regime": "não informado",
@@ -10199,8 +10199,8 @@
     "sustentaveis_n": 29
    },
    "em_andamento": {
-    "n": 1506,
-    "valor_registrado": 422973576129.44
+    "n": 1512,
+    "valor_registrado": 426854490091.16
    }
   },
   "divida_corporativa": {
@@ -10409,9 +10409,9 @@
    "n_lideres": 38
   },
   "coleta": {
-   "em": "2026-09-16T14:33:06+00:00",
+   "em": "2026-09-17T14:33:48+00:00",
    "ofertas_regime_anterior": 45702,
-   "ofertas_res160": 14493
+   "ofertas_res160": 14516
   },
   "nota": "Fluxo pela data do registro (ou do início, nas dispensadas do regime anterior). Regime anterior: valor total da oferta. Res. 160 (rito automático): valor registrado das ofertas encerradas; as em andamento aparecem à parte e não entram nos totais. Fundos abertos com registro automático (ICVM 555) ficam fora: o valor lá é teto cadastral."
  },

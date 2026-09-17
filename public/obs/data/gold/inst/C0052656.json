@@ -9,7 +9,7 @@
   "sede": "Porto Alegre/RS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 385,
+  "n_pares": 386,
   "conglomerado_prudencial": "C0085805",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-16T16:01:06+00:00",
+  "atualizado_em": "2026-09-17T15:43:29+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": null
@@ -30,7 +30,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 46.1% (acima da mediana do grupo S4: 21.0%).",
+    "texto": "Basileia de 46.1% (acima da mediana do grupo S4: 21.1%).",
     "base": "BCB IF.data (Informações de Capital)"
    }
   ],
@@ -68,7 +68,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 385,
+  "quantidade": 386,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -133,7 +133,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.0,
-   "mediana": 21.0,
+   "mediana": 21.1,
    "q3": 34.7
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -223,7 +223,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 46.1% (acima da mediana do grupo S4: 21.0%).",
+   "texto": "Basileia de 46.1% (acima da mediana do grupo S4: 21.1%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -239,8 +239,8 @@
    "unit": "%",
    "d_tri": -5.98,
    "vs_pares": "acima",
-   "mediana_grupo": 20.99,
-   "percentil": 81.2
+   "mediana_grupo": 21.13,
+   "percentil": 81.3
   },
   {
    "indicador": "Ativo ÷ PL (alavancagem contábil)",
@@ -258,7 +258,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 4.1,
-   "percentil": 11.5
+   "percentil": 11.7
   }
  ],
  "carteira": {
@@ -677,6 +677,7 @@
     16.41,
     14.25,
     35.8,
+    -57.45,
     19.93,
     1.08,
     -34.3,
@@ -1060,6 +1061,7 @@
     79.86,
     33.0,
     17.56,
+    24.61,
     103.49,
     23.57,
     22.02,
@@ -1132,7 +1134,7 @@
     40.66
    ],
    "meu": 46.08,
-   "mediana": 20.99
+   "mediana": 21.13
   },
   "alav": {
    "valores": [
@@ -1427,6 +1429,7 @@
     18.68,
     8.14,
     7.99,
+    1.56,
     184.71,
     7.58,
     5.45,

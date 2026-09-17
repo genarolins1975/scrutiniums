@@ -72,13 +72,13 @@
    "cambio_pct10": 4
   },
   "focus_2026": {
-   "selic_pp": -0.25,
+   "selic_pp": 0.0,
    "desemprego_pp": 0.0,
    "pib_pp": 0.5,
    "cambio_pct10": 0.0
   },
   "focus_2027": {
-   "selic_pp": -2.0,
+   "selic_pp": -1.75,
    "desemprego_pp": 0.5,
    "pib_pp": 0.0,
    "cambio_pct10": 0.0
@@ -8396,8 +8396,8 @@
   ],
   "atual": {
    "selic_meta": {
-    "v": 14.0,
-    "ref": "2026-09-16"
+    "v": 13.75,
+    "ref": "2026-09-17"
    },
    "desemprego": {
     "v": 5.3,
@@ -8414,13 +8414,13 @@
   },
   "presets": {
    "focus_2026": {
-    "selic_pp": -0.25,
+    "selic_pp": 0.0,
     "desemprego_pp": 0.0,
     "pib_pp": 0.5,
     "cambio_pct10": 0.0
    },
    "focus_2027": {
-    "selic_pp": -2.0,
+    "selic_pp": -1.75,
     "desemprego_pp": 0.5,
     "pib_pp": 0.0,
     "cambio_pct10": 0.0
@@ -8430,7 +8430,7 @@
    "focus_2026": {
     "ano": "2026",
     "bruto": {
-     "selic_pp": -0.25,
+     "selic_pp": 0.0,
      "desemprego_pp": 0.0,
      "pib_pp": 0.41,
      "cambio_pct10": 0.09
@@ -8445,7 +8445,7 @@
    "focus_2027": {
     "ano": "2027",
     "bruto": {
-     "selic_pp": -2.0,
+     "selic_pp": -1.75,
      "desemprego_pp": 0.5,
      "pib_pp": -0.03,
      "cambio_pct10": 0.24
