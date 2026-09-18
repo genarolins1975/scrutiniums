@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-17T15:43:29+00:00",
+  "atualizado_em": "2026-09-18T15:00:59+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 36.690.516",
   "participante_open_finance": true
@@ -737,8 +737,8 @@
  "atraso_produtos": null,
  "openfinance": {
   "organisation": "PICPAY",
-  "chamadas_semana": 7519135510.0,
-  "share_pct": 8.7,
+  "chamadas_semana": 6851186293.0,
+  "share_pct": 8.6,
   "familias_api": 32,
   "papeis": [
    "CONTA",

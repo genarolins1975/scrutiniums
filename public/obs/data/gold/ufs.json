@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-17T15:44:01+00:00",
+ "gerado_em": "2026-09-18T15:01:29+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -1453,7 +1453,7 @@
     "emprego.retencao_pct": 9,
     "consorcios.cotas": 4,
     "consorcios.por_mil_hab": 15,
-    "cobranca.por_mil_hab": 17,
+    "cobranca.por_mil_hab": 18,
     "cobranca.por_bi_carteira": 8,
     "pgfn.insc_pf_por_mil_hab": 23
    },
@@ -5159,7 +5159,7 @@
     "consorcios.cotas": 3,
     "consorcios.por_mil_hab": 3,
     "cobranca.por_mil_hab": 4,
-    "cobranca.por_bi_carteira": 6,
+    "cobranca.por_bi_carteira": 5,
     "pgfn.insc_pf_por_mil_hab": 16
    },
    "sintese": "O crédito no Paraná somava R$ 566 bilhões em 2026-07, 7,5% do Brasil, R$ 47.638 por habitante (6º entre as 27 UFs), com inadimplência de 4,48% (22º) e crescimento de +9,6% em 12 meses. Penetração de 90% da renda anual (14º), com 76 de 399 municípios abaixo do esperado pelo modelo."
@@ -5387,9 +5387,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 30419,
-    "var_12m_pct": -25.16,
-    "casos_12m_todos": 68279,
+    "casos_12m": 30437,
+    "var_12m_pct": -25.14,
+    "casos_12m_todos": 68296,
     "por_mil_hab": 1.77,
     "por_bi_carteira": 53.2
    },
@@ -5672,11 +5672,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 8807,
-    "var_12m_pct": 12.25,
-    "casos_12m_todos": 20733,
-    "por_mil_hab": 2.55,
-    "por_bi_carteira": 121.3
+    "casos_12m": 8830,
+    "var_12m_pct": 12.63,
+    "casos_12m_todos": 20708,
+    "por_mil_hab": 2.56,
+    "por_bi_carteira": 121.6
    },
    "prazo": {
     "data_base": "2026-07",
@@ -5728,7 +5728,7 @@
     "emprego.retencao_pct": 15,
     "consorcios.cotas": 22,
     "consorcios.por_mil_hab": 21,
-    "cobranca.por_mil_hab": 18,
+    "cobranca.por_mil_hab": 17,
     "cobranca.por_bi_carteira": 11,
     "pgfn.insc_pf_por_mil_hab": 18
    },
@@ -5957,11 +5957,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 13070,
-    "var_12m_pct": 8.69,
-    "casos_12m_todos": 36155,
-    "por_mil_hab": 7.46,
-    "por_bi_carteira": 203.0
+    "casos_12m": 13024,
+    "var_12m_pct": 8.56,
+    "casos_12m_todos": 36010,
+    "por_mil_hab": 7.43,
+    "por_bi_carteira": 202.3
    },
    "prazo": {
     "data_base": "2026-07",
@@ -6242,11 +6242,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 2277,
-    "var_12m_pct": 31.77,
-    "casos_12m_todos": 3975,
-    "por_mil_hab": 3.08,
-    "por_bi_carteira": 135.7
+    "casos_12m": 2215,
+    "var_12m_pct": 29.08,
+    "casos_12m_todos": 3904,
+    "por_mil_hab": 3.0,
+    "por_bi_carteira": 132.0
    },
    "prazo": {
     "data_base": "2026-07",
@@ -6299,7 +6299,7 @@
     "consorcios.cotas": 27,
     "consorcios.por_mil_hab": 24,
     "cobranca.por_mil_hab": 14,
-    "cobranca.por_bi_carteira": 5,
+    "cobranca.por_bi_carteira": 6,
     "pgfn.insc_pf_por_mil_hab": 7
    },
    "sintese": "O crédito em Roraima somava R$ 17 bilhões em 2026-07, 0,2% do Brasil, R$ 22.709 por habitante (15º entre as 27 UFs), com inadimplência de 6,45% (7º) e crescimento de +17,7% em 12 meses. Penetração de 118% da renda anual (8º), com 0 de 15 municípios abaixo do esperado pelo modelo."
@@ -6527,11 +6527,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 67484,
-    "var_12m_pct": 22.84,
-    "casos_12m_todos": 141686,
-    "por_mil_hab": 6.01,
-    "por_bi_carteira": 126.2
+    "casos_12m": 67685,
+    "var_12m_pct": 23.18,
+    "casos_12m_todos": 141965,
+    "por_mil_hab": 6.03,
+    "por_bi_carteira": 126.6
    },
    "prazo": {
     "data_base": "2026-07",
@@ -6812,11 +6812,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 77959,
-    "var_12m_pct": 21.72,
-    "casos_12m_todos": 145933,
-    "por_mil_hab": 9.52,
-    "por_bi_carteira": 187.3
+    "casos_12m": 78057,
+    "var_12m_pct": 21.84,
+    "casos_12m_todos": 146044,
+    "por_mil_hab": 9.53,
+    "por_bi_carteira": 187.5
    },
    "prazo": {
     "data_base": "2026-07",
@@ -7382,11 +7382,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 206433,
-    "var_12m_pct": 32.16,
-    "casos_12m_todos": 484427,
+    "casos_12m": 206674,
+    "var_12m_pct": 31.89,
+    "casos_12m_todos": 484928,
     "por_mil_hab": 4.48,
-    "por_bi_carteira": 90.6
+    "por_bi_carteira": 90.7
    },
    "prazo": {
     "data_base": "2026-07",

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-17T15:43:56+00:00",
+ "gerado_em": "2026-09-18T15:01:24+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11388
   },
   "janela_12m": {
-   "ini": "2025-09-17",
+   "ini": "2025-09-18",
    "decisoes": 1390,
    "processos": 1277,
    "multas_n": 1300,
@@ -91,18 +91,18 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 840,
-    "share": 60.43
+    "n": 845,
+    "share": 60.79
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 146,
-    "share": 10.5
+    "n": 145,
+    "share": 10.43
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 140,
-    "share": 10.07
+    "n": 136,
+    "share": 9.78
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -163,13 +163,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11891,
-    "share": 87.59
+    "n": 11896,
+    "share": 87.63
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 889,
-    "share": 6.55
+    "n": 885,
+    "share": 6.52
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -178,8 +178,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 149,
-    "share": 1.1
+    "n": 148,
+    "share": 1.09
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -938,7 +938,7 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-08-11",
-  "ultima_movimentacao": "2026-09-15",
+  "ultima_movimentacao": "2026-09-17",
   "acervo": {
    "processos": 570,
    "acusados": 2036,
@@ -946,7 +946,7 @@
    "finalizados": 325
   },
   "abertos_12m": {
-   "ini": "2025-09-17",
+   "ini": "2025-09-18",
    "processos": 60,
    "acusados": 180
   },
@@ -958,8 +958,8 @@
    },
    {
     "fase": "Julgamento",
-    "n": 111,
-    "share": 19.47
+    "n": 109,
+    "share": 19.12
    },
    {
     "fase": "Citação e envio de defesas",
@@ -973,8 +973,8 @@
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 6,
-    "share": 1.05
+    "n": 8,
+    "share": 1.4
    }
   ],
   "areas": [
@@ -1303,7 +1303,7 @@
     "area": "GEA-4",
     "fase": "Citação e envio de defesas",
     "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-27",
+    "ultima_mov": "2026-09-17",
     "acusados": 1,
     "objeto": "Trata­-se da suspensão do registro de companhia aberta da CIA INDUSTRIAL SCHLOSSER S.A. (\"Schlosser\" ou \"Companhia\"), no âmbito do Processo CVM 19957.005180/2026-92, comunicada à Companhia por meio do Ofício nº 12/2026/C"
    },

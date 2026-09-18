@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-17T15:43:19+00:00",
+ "gerado_em": "2026-09-18T15:00:50+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,14 +131,14 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 344,
-  "total_editais": 1144,
+  "total_contratos_if": 346,
+  "total_editais": 1147,
   "backfill_completo": true,
   "ranking": [
    {
     "cnpj8": "00360305",
     "banco": "CAIXA ECONOMICA FEDERAL",
-    "contratos": 130,
+    "contratos": 131,
     "ufs": 21,
     "como_receita": 18
    },
@@ -272,6 +272,13 @@
     "cnpj8": "03065046",
     "banco": "COOPERATIVA DE CRÉDITO, POUPANÇA E INVESTIMENTO DO NOROESTE DO ESTADO DE SÃO PAULO - SICREDI NOROEST",
     "contratos": 2,
+    "ufs": 1,
+    "como_receita": 1
+   },
+   {
+    "cnpj8": "25395435",
+    "banco": "COOPERATIVA DE CRÃ‰DITO CREDICAF LTDA - SICOOB CRED",
+    "contratos": 1,
     "ufs": 1,
     "como_receita": 1
    },
@@ -558,6 +565,21 @@
   ],
   "recentes": [
    {
+    "controle": "18715490000178-2-000060/2026",
+    "ente": "MUNICIPIO DE IBIRITE",
+    "esfera": "Municipal",
+    "municipio": "Ibirité",
+    "uf": "MG",
+    "modalidade": "Dispensa",
+    "assinatura": "2026-09-16",
+    "vig_fim": "2031-09-28",
+    "valor": 7452569.14,
+    "receita": false,
+    "banco": "CAIXA ECONOMICA FEDERAL",
+    "cnpj8": "00360305",
+    "url": "https://pncp.gov.br/contratos/18715490000178/2026/60"
+   },
+   {
     "controle": "82804212000196-2-000840/2026",
     "ente": "MUNICIPIO DE AGUAS DE CHAPECO",
     "esfera": "Municipal",
@@ -616,6 +638,21 @@
     "banco": "CAIXA ECONOMICA FEDERAL",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/83509547000144/2026/96"
+   },
+   {
+    "controle": "18392522000141-2-000085/2026",
+    "ente": "MUNICIPIO DE LAJINHA",
+    "esfera": "Municipal",
+    "municipio": "Lajinha",
+    "uf": "MG",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-09",
+    "vig_fim": "2036-09-09",
+    "valor": 1500200.0,
+    "receita": true,
+    "banco": "COOPERATIVA DE CRÃ‰DITO CREDICAF LTDA - SICOOB CRED",
+    "cnpj8": "25395435",
+    "url": "https://pncp.gov.br/contratos/18392522000141/2026/85"
    },
    {
     "controle": "75741330000137-2-000118/2026",
@@ -1126,39 +1163,27 @@
     "banco": "BANCO SANTANDER (BRASIL) S.A.",
     "cnpj8": "90400888",
     "url": "https://pncp.gov.br/contratos/82909409000190/2026/361"
-   },
-   {
-    "controle": "07620701000172-2-000012/2026",
-    "ente": "MUNICIPIO DE BREJO SANTO",
-    "esfera": "Municipal",
-    "municipio": "Brejo Santo",
-    "uf": "CE",
-    "modalidade": "Dispensa",
-    "assinatura": "2026-06-17",
-    "vig_fim": "2031-06-17",
-    "valor": 1743989.14,
-    "receita": true,
-    "banco": "CAIXA ECONOMICA FEDERAL",
-    "cnpj8": "00360305",
-    "url": "https://pncp.gov.br/contratos/07620701000172/2026/12"
-   },
-   {
-    "controle": "81648859000103-2-000038/2026",
-    "ente": "MUNICIPIO DE BITURUNA",
-    "esfera": "Municipal",
-    "municipio": "Bituruna",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-06-16",
-    "vig_fim": "2027-06-16",
-    "valor": 250000.0,
-    "receita": false,
-    "banco": "COOPERATIVA DE CREDITO, POUPANCA E INVESTIMENTO CENTRO SUL - SICREDI CENTRO SUL PR/SC/RJ",
-    "cnpj8": "78907607",
-    "url": "https://pncp.gov.br/contratos/81648859000103/2026/38"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE CASTRO",
+    "municipio": "Castro",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-17",
+    "url": "https://pncp.gov.br/compras/77001311000108/2026/558"
+   },
+   {
+    "ente": "MUNICIPIO DE CASTRO",
+    "municipio": "Castro",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-17",
+    "url": "https://pncp.gov.br/compras/77001311000108/2026/557"
+   },
    {
     "ente": "MUNICIPIO DE SANTA EFIGENIA DE MINAS",
     "municipio": "Santa Efigênia de Minas",
@@ -1187,15 +1212,6 @@
     "url": "https://pncp.gov.br/compras/08358053000190/2026/156"
    },
    {
-    "ente": "TRIBUNAL DE CONTAS DO ESTADO DO ACRE",
-    "municipio": "Rio Branco",
-    "uf": "AC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-16",
-    "url": "https://pncp.gov.br/compras/04035135000143/2026/15"
-   },
-   {
     "ente": "MUNICIPIO DE SAO JOAO DO TIGRE",
     "municipio": "São João do Tigre",
     "uf": "PB",
@@ -1205,13 +1221,13 @@
     "url": "https://pncp.gov.br/compras/09074592000160/2026/32"
    },
    {
-    "ente": "MUNICIPIO DE SITIO NOVO",
-    "municipio": "Sítio Novo",
-    "uf": "RN",
+    "ente": "TRIBUNAL DE CONTAS DO ESTADO DO ACRE",
+    "municipio": "Rio Branco",
+    "uf": "AC",
     "modalidade": "Dispensa",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-15",
-    "url": "https://pncp.gov.br/compras/08160756000100/2026/6"
+    "publicacao": "2026-09-16",
+    "url": "https://pncp.gov.br/compras/04035135000143/2026/15"
    },
    {
     "ente": "MUNICIPIO DE IBIRITE",
@@ -1221,6 +1237,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-15",
     "url": "https://pncp.gov.br/compras/18715490000178/2026/111"
+   },
+   {
+    "ente": "MUNICIPIO DE SITIO NOVO",
+    "municipio": "Sítio Novo",
+    "uf": "RN",
+    "modalidade": "Dispensa",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-15",
+    "url": "https://pncp.gov.br/compras/08160756000100/2026/6"
    },
    {
     "ente": "MUNICIPIO DE RIO NEGRO",
@@ -1241,31 +1266,13 @@
     "url": "https://pncp.gov.br/compras/20720165000145/2026/42"
    },
    {
-    "ente": "MUNICIPIO DE TAIO",
-    "municipio": "Taió",
-    "uf": "SC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-10",
-    "url": "https://pncp.gov.br/compras/82765488000102/2026/165"
-   },
-   {
-    "ente": "MUNICIPIO DE FRONTEIRA",
-    "municipio": "Fronteira",
-    "uf": "MG",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-10",
-    "url": "https://pncp.gov.br/compras/18449140000107/2026/118"
-   },
-   {
-    "ente": "MUNICIPIO DE TRES LAGOAS",
-    "municipio": "Três Lagoas",
-    "uf": "MS",
+    "ente": "MUNICIPIO DE RIO NEGRO",
+    "municipio": "Rio Negro",
+    "uf": "PR",
     "modalidade": "Pregão - Eletrônico",
     "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-10",
-    "url": "https://pncp.gov.br/compras/03184041000173/2026/99"
+    "publicacao": "2026-09-14",
+    "url": "https://pncp.gov.br/compras/76002641000147/2026/323"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",
