@@ -14,13 +14,13 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-09-18T15:01:28+00:00",
+ "gerado_em": "2026-09-19T14:10:19+00:00",
  "coleta": {
-  "linhas": 26573,
+  "linhas": 26575,
   "paginas": 6,
   "mb": 13.7,
-  "data_status_max": "2026-09-17",
-  "coletado_em": "2026-09-18T13:47:25+00:00"
+  "data_status_max": "2026-09-18",
+  "coletado_em": "2026-09-19T13:20:43+00:00"
  },
  "kpis": {
   "mes": "2026-08",
@@ -41,7 +41,7 @@
   "taxa_deferimento_12m_pct": 89.0,
   "concluidos_12m_n": 1382,
   "em_tramitacao_n": 263,
-  "em_tramitacao_valor": 19135410878.52,
+  "em_tramitacao_valor": 19689542878.52,
   "em_tramitacao_desde": "2023-09",
   "renegociacao_uniao_12m_n": 0,
   "renegociacao_uniao_12m_valor": 0,
@@ -284,9 +284,9 @@
   },
   {
    "ano": "2026",
-   "deferidos_n": 928,
-   "deferidos_valor": 57426808720.43,
-   "municipios_valor": 24236715645.46,
+   "deferidos_n": 930,
+   "deferidos_valor": 57449528720.43,
+   "municipios_valor": 24259435645.46,
    "estados_valor": 33190093074.97,
    "garantia_uniao_valor": 46426965972.75,
    "externas_n": 37,
@@ -551,9 +551,9 @@
   },
   {
    "mes": "2026-09",
-   "n": 60,
-   "valor": 4957438760.19,
-   "municipios_valor": 1041691113.68,
+   "n": 62,
+   "valor": 4980158760.19,
+   "municipios_valor": 1064411113.68,
    "parcial": true
   }
  ],
@@ -922,21 +922,21 @@
    "nome": "Deferido: limites verificados, operação liberada",
    "n": 953,
    "valor": 12668318693.95,
-   "share_n_pct": 63.83
+   "share_n_pct": 63.92
   },
   {
    "id": "pgfn",
    "nome": "Manifestação técnica favorável, encaminhado à PGFN (garantia da União)",
    "n": 277,
    "valor": 67856441480.08,
-   "share_n_pct": 18.55
+   "share_n_pct": 18.58
   },
   {
    "id": "arquivado",
    "nome": "Arquivado, indeferido ou cancelado",
    "n": 152,
    "valor": 7873258076.66,
-   "share_n_pct": 10.18
+   "share_n_pct": 10.19
   },
   {
    "id": "regularizado",
@@ -948,9 +948,9 @@
   {
    "id": "tramitacao",
    "nome": "Em análise ou em retificação",
-   "n": 108,
-   "valor": 8525565876.45,
-   "share_n_pct": 7.23
+   "n": 106,
+   "valor": 6120772935.21,
+   "share_n_pct": 7.11
   }
  ],
  "moedas_12m": [
@@ -3288,26 +3288,26 @@
     "regiao": "Nordeste",
     "disponivel": true,
     "exercicio": 2026,
-    "quadrimestre": 1,
-    "periodo": "2026 · 1º quadrimestre",
-    "dc": 9274544122.57,
-    "dcl": 8724011064.16,
-    "rcl": 20116059372.08,
-    "dcl_rcl_pct": 43.4,
-    "dc_rcl_pct": 46.11,
-    "reestruturacao_uniao": 683075571.3,
-    "uniao_share_pct": 7.37,
-    "emprestimos_internos": 1684089399.16,
-    "emprestimos_externos": 1336365164.57,
-    "precatorios_vencidos": 5419899380.01,
-    "disponibilidade_caixa": 283830437.2,
-    "limite_senado": 40232118744.16,
-    "limite_alerta": 36208906869.74,
-    "uso_limite_pct": 21.68,
+    "quadrimestre": 2,
+    "periodo": "2026 · 2º quadrimestre",
+    "dc": 8972966058.1,
+    "dcl": 8221978533.83,
+    "rcl": 20961883945.1,
+    "dcl_rcl_pct": 39.2,
+    "dc_rcl_pct": 42.81,
+    "reestruturacao_uniao": 700182232.31,
+    "uniao_share_pct": 7.8,
+    "emprestimos_internos": 1626484480.79,
+    "emprestimos_externos": 1349301221.3,
+    "precatorios_vencidos": 5151775621.05,
+    "disponibilidade_caixa": 484284903.06,
+    "limite_senado": 41923767890.2,
+    "limite_alerta": 37731391101.18,
+    "uso_limite_pct": 19.61,
     "acima_alerta": false,
     "acima_limite": false,
-    "dcl_hab": 2524.87,
-    "var_dcl_12m_pct": -7.9,
+    "dcl_hab": 2379.57,
+    "var_dcl_12m_pct": -13.2,
     "serie": [
      {
       "ano": 2015,

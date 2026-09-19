@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-18T15:01:22+00:00",
+ "gerado_em": "2026-09-19T14:10:13+00:00",
  "fonte": {
   "nome": "BCB — Matriz de Dados do Crédito Rural (MDCR/Sicor)",
   "url": "https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/",
@@ -3194,9 +3194,15 @@
   ],
   "serie_safra": [
    {
+    "safra": "2012/13",
+    "mulheres_share_valor": 14.69,
+    "mulheres_share_qtd": 23.74,
+    "incompleta": true
+   },
+   {
     "safra": "2013/14",
-    "mulheres_share_valor": 15.22,
-    "mulheres_share_qtd": 23.59,
+    "mulheres_share_valor": 15.01,
+    "mulheres_share_qtd": 22.54,
     "incompleta": false
    },
    {

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-18T15:01:29+00:00",
+ "gerado_em": "2026-09-19T14:10:20+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -1967,9 +1967,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 9367,
-    "var_12m_pct": 106.69,
-    "casos_12m_todos": 21067,
+    "casos_12m": 9373,
+    "var_12m_pct": 105.91,
+    "casos_12m_todos": 21083,
     "por_mil_hab": 3.13,
     "por_bi_carteira": 58.9
    },
@@ -2252,11 +2252,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 14201,
-    "var_12m_pct": 14.61,
-    "casos_12m_todos": 29921,
+    "casos_12m": 14209,
+    "var_12m_pct": 14.68,
+    "casos_12m_todos": 29927,
     "por_mil_hab": 3.44,
-    "por_bi_carteira": 107.3
+    "por_bi_carteira": 107.4
    },
    "prazo": {
     "data_base": "2026-07",
@@ -5697,13 +5697,13 @@
     "valor_hab": 71.05,
     "credor_principal": "Caixa Econômica Federal",
     "share_valor_pct": 0.3,
-    "dcl": 8724011064.16,
-    "dcl_rcl_pct": 43.4,
-    "dcl_hab": 2524.87,
-    "uniao_share_pct": 7.37,
-    "uso_limite_pct": 21.68,
+    "dcl": 8221978533.83,
+    "dcl_rcl_pct": 39.2,
+    "dcl_hab": 2379.57,
+    "uniao_share_pct": 7.8,
+    "uso_limite_pct": 19.61,
     "acima_limite": false,
-    "periodo_divida": "2026 · 1º quadrimestre",
+    "periodo_divida": "2026 · 2º quadrimestre",
     "garantias_n": 11,
     "garantias_internas_valor": 2444978549.57
    },
