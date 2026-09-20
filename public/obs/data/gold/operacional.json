@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-19T14:09:42+00:00",
+ "gerado_em": "2026-09-20T14:21:03+00:00",
  "versao": 1,
  "disponivel": true,
  "titulo": "Indicadores operacionais",
@@ -2721,7 +2721,7 @@
       },
       "var_aa_pct": 4.6,
       "fre_ano": 2026,
-      "versao": 6
+      "versao": 7
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -4833,6 +4833,23 @@
       "var_aa_pct": -0.5,
       "fre_ano": 2025,
       "versao": 34
+     },
+     {
+      "ref": "2026-12-31",
+      "total": 3532,
+      "lideranca": 757,
+      "nao_lideranca": 2775,
+      "regioes": {
+       "Norte": 48,
+       "Nordeste": 150,
+       "Centro_Oeste": 3289,
+       "Sudeste": 42,
+       "Sul": 3,
+       "Exterior": 0
+      },
+      "var_aa_pct": 5.2,
+      "fre_ano": 2026,
+      "versao": 1
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -5178,7 +5195,7 @@
       },
       "var_aa_pct": 49.1,
       "fre_ano": 2026,
-      "versao": 4
+      "versao": 5
      }
     ],
     "fonte": "CVM/FRE, tabela de empregados (item 10.1)",
@@ -44460,6 +44477,81 @@
     }
    },
    {
+    "cnpj8": "00000208",
+    "nome": "BRB BANCO DE BRASILIA S.A.",
+    "fre_ano": 2026,
+    "orgaos": {
+     "Diretoria Estatutária": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 6151888.34,
+       "membros": 10.0,
+       "media_por_membro_brl": 615189,
+       "composicao": {
+        "salario": 4580861.81,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 1571026.53,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 1076556.66,
+       "media_individual": 745683.44
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 9741357.17,
+       "membros": 10.0,
+       "media_por_membro_brl": 974136,
+       "composicao": {
+        "salario": 6871258.94,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 2870098.23,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 1018028.09,
+       "membros": 9.0,
+       "media_por_membro_brl": 113114,
+       "composicao": {
+        "salario": 1018028.09,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 148617.24,
+       "media_individual": 125993.58
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1416832.56,
+       "membros": 9.0,
+       "media_por_membro_brl": 157426,
+       "composicao": {
+        "salario": 1416832.56,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 0.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     }
+    }
+   },
+   {
     "cnpj8": "62307848",
     "nome": "BANCO RCI BRASIL S.A.",
     "fre_ano": 2026,
@@ -44564,40 +44656,6 @@
     "nome": "BCO ESTADO DE SERGIPE S.A. - BANESE",
     "fre_ano": 2026,
     "orgaos": {
-     "Conselho de Administração": {
-      "realizado": {
-       "exercicio": "2025",
-       "total_brl": 1052510.51,
-       "membros": 8.0,
-       "media_por_membro_brl": 131564,
-       "composicao": {
-        "salario": 799998.24,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 252512.27,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       },
-       "maior": 131563.81,
-       "media_individual": 131563.81
-      },
-      "previsto": {
-       "exercicio": "2026",
-       "total_brl": 1297780.05,
-       "membros": 9.0,
-       "media_por_membro_brl": 144198,
-       "composicao": {
-        "salario": 961780.05,
-        "beneficios": 0.0,
-        "bonus": 0.0,
-        "participacao_resultados": 336000.0,
-        "baseada_acoes": 0.0,
-        "pos_emprego": 0.0,
-        "cessacao_cargo": 0.0
-       }
-      }
-     },
      "Diretoria Estatutária": {
       "realizado": {
        "exercicio": "2025",
@@ -44626,6 +44684,40 @@
         "beneficios": 1642347.14,
         "bonus": 0.0,
         "participacao_resultados": 240000.0,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       }
+      }
+     },
+     "Conselho de Administração": {
+      "realizado": {
+       "exercicio": "2025",
+       "total_brl": 1052510.51,
+       "membros": 8.0,
+       "media_por_membro_brl": 131564,
+       "composicao": {
+        "salario": 799998.24,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 252512.27,
+        "baseada_acoes": 0.0,
+        "pos_emprego": 0.0,
+        "cessacao_cargo": 0.0
+       },
+       "maior": 131563.81,
+       "media_individual": 131563.81
+      },
+      "previsto": {
+       "exercicio": "2026",
+       "total_brl": 1297780.05,
+       "membros": 9.0,
+       "media_por_membro_brl": 144198,
+       "composicao": {
+        "salario": 961780.05,
+        "beneficios": 0.0,
+        "bonus": 0.0,
+        "participacao_resultados": 336000.0,
         "baseada_acoes": 0.0,
         "pos_emprego": 0.0,
         "cessacao_cargo": 0.0

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-19T14:10:15+00:00",
+ "gerado_em": "2026-09-20T14:21:25+00:00",
  "fontes": {
   "sgs": {
    "nome": "BCB — Estatísticas de crédito ampliado ao setor não financeiro (SGS)",
@@ -24,7 +24,7 @@
    "nivel": "A — informe regulatório por certificado, mensal"
   }
  },
- "sintese": "Em 2026-07, empresas e famílias deviam R$ 12.2 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 33% e os títulos privados por 21%. O mercado de capitais registrou R$ 956 bi em ofertas encerradas entre 2025-09 e 2026-08 (+3% sobre os 12 meses anteriores), dos quais R$ 424 bi em debêntures e notas comerciais. Securitização — CRI: R$ 261 bi de créditos vinculados em 2026-07, 1.3% vencidos; CRA: R$ 185 bi de créditos vinculados em 2026-07, 0.8% vencidos.",
+ "sintese": "Em 2026-07, empresas e famílias deviam R$ 12.2 tri (92% do PIB); 57% desse saldo está no SFN e 22% em títulos e securitização. Nas empresas, o SFN responde por 33% e os títulos privados por 21%. O mercado de capitais registrou R$ 956 bi em ofertas encerradas entre 2025-09 e 2026-08 (+3% sobre os 12 meses anteriores), dos quais R$ 424 bi em debêntures e notas comerciais. Securitização — CRI: R$ 261 bi de créditos vinculados em 2026-07, 1.4% vencidos; CRA: R$ 185 bi de créditos vinculados em 2026-07, 0.8% vencidos.",
  "saldo": {
   "disponivel": true,
   "mes": "2026-07",
@@ -10426,12 +10426,12 @@
      "2026-08"
     ],
     "kpis": {
-     "n_cert": 2374,
-     "creditos": 260771651240.48016,
-     "vencidos_pct": 1.34,
-     "atraso_pct": 1.97,
+     "n_cert": 2378,
+     "creditos": 260906912062.45013,
+     "vencidos_pct": 1.36,
+     "atraso_pct": 2.0,
      "pdd_pct": 2.39,
-     "var_12m_pct": 7.5,
+     "var_12m_pct": 7.6,
      "vencidos_pct_12m_atras": 1.86
     },
     "serie": [
@@ -11409,38 +11409,38 @@
      },
      {
       "mes": "2026-06",
-      "n_cert": 2333,
-      "n_com_credito": 2316,
-      "creditos": 261772336531.24933,
-      "vencidos_pct": 1.27,
-      "atraso_pct": 2.57,
-      "pdd_pct": 2.34,
-      "ativo": 264434683472.83047,
+      "n_cert": 2352,
+      "n_com_credito": 2335,
+      "creditos": 262971877270.42932,
+      "vencidos_pct": 1.72,
+      "atraso_pct": 2.56,
+      "pdd_pct": 2.33,
+      "ativo": 265634224212.01047,
       "excluidos_unidade": 17,
       "parcial": false
      },
      {
       "mes": "2026-07",
-      "n_cert": 2374,
-      "n_com_credito": 2344,
-      "creditos": 260771651240.48016,
-      "vencidos_pct": 1.34,
-      "atraso_pct": 1.97,
+      "n_cert": 2378,
+      "n_com_credito": 2358,
+      "creditos": 260906912062.45013,
+      "vencidos_pct": 1.36,
+      "atraso_pct": 2.0,
       "pdd_pct": 2.39,
-      "ativo": 263479302031.39975,
-      "excluidos_unidade": 30,
+      "ativo": 263615013043.36972,
+      "excluidos_unidade": 20,
       "parcial": false
      },
      {
       "mes": "2026-08",
-      "n_cert": 2,
-      "n_com_credito": 2,
-      "creditos": 67635875.92999999,
-      "vencidos_pct": 96.88,
-      "atraso_pct": 0.02,
-      "pdd_pct": 0.0,
-      "ativo": 74852688.28,
-      "excluidos_unidade": 0,
+      "n_cert": 18,
+      "n_com_credito": 17,
+      "creditos": 1013610709.9499999,
+      "vencidos_pct": 17.16,
+      "atraso_pct": 22.89,
+      "pdd_pct": 1.82,
+      "ativo": 1043815225.24,
+      "excluidos_unidade": 1,
       "parcial": true
      }
     ],
@@ -11448,62 +11448,64 @@
      {
       "segmento": "Outros",
       "valor": 90572669218.41998,
-      "share": 49.76
+      "share": 49.64
      },
      {
       "segmento": "Aquisição de imóveis",
       "valor": 37927000716.04001,
-      "share": 20.84
+      "share": 20.79
      },
      {
       "segmento": "Incorporação imobiliária",
-      "valor": 22039254379.53999,
-      "share": 12.11
+      "valor": 22487697694.049995,
+      "share": 12.32
      },
      {
       "segmento": "Multipropriedade",
       "valor": 12417872917.799997,
-      "share": 6.82
+      "share": 6.81
      },
      {
       "segmento": "Aluguéis",
       "valor": 8736838163.570002,
-      "share": 4.8
+      "share": 4.79
      },
      {
       "segmento": "Home equity",
       "valor": 6266921896.429997,
-      "share": 3.44
+      "share": 3.43
      },
      {
       "segmento": "Loteamento",
       "valor": 4054437042.37,
-      "share": 2.23
+      "share": 2.22
      }
     ],
     "series_situacao": [
      {
       "situacao": "Adimplente",
       "n": 4431,
-      "valor": 156962550707.19962,
-      "share_n": 93.21,
+      "valor": 157062233189.6396,
+      "share_n": 93.13,
       "share_valor": 94.57
      },
      {
       "situacao": "Em atraso",
-      "n": 323,
-      "valor": 9019032530.100002,
-      "share_n": 6.79,
+      "n": 327,
+      "valor": 9023245188.560001,
+      "share_n": 6.87,
       "share_valor": 5.43
      }
     ],
-    "excluidos_unidade_ultimo_mes": 30
+    "excluidos_unidade_ultimo_mes": 20
    },
    "cra": {
     "nome": "CRA",
     "mes": "2026-07",
     "primeiro_mes_com_credito": "2019-09",
-    "meses_parciais": [],
+    "meses_parciais": [
+     "2026-08"
+    ],
     "kpis": {
      "n_cert": 648,
      "creditos": 185222708429.55002,
@@ -12509,6 +12511,18 @@
       "ativo": 186463960530.07007,
       "excluidos_unidade": 10,
       "parcial": false
+     },
+     {
+      "mes": "2026-08",
+      "n_cert": 6,
+      "n_com_credito": 6,
+      "creditos": 1360934422.01,
+      "vencidos_pct": 40.48,
+      "atraso_pct": 0.0,
+      "pdd_pct": 0.0,
+      "ativo": 1360934422.01,
+      "excluidos_unidade": 0,
+      "parcial": true
      }
     ],
     "segmentos": [

@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-19T14:09:42+00:00",
+ "gerado_em": "2026-09-20T14:21:03+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 346,
-  "total_editais": 1147,
+  "total_editais": 1150,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1167,6 +1167,33 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE JARAGUA",
+    "municipio": "Jaraguá",
+    "uf": "GO",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-18",
+    "url": "https://pncp.gov.br/compras/01223916000173/2026/88"
+   },
+   {
+    "ente": "MUNICIPIO DE SAO JOSE DO VALE DO RIO PRETO",
+    "municipio": "São José do Vale do Rio Preto",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-18",
+    "url": "https://pncp.gov.br/compras/32001836000105/2026/217"
+   },
+   {
+    "ente": "MUNICIPIO DE ADRIANOPOLIS",
+    "municipio": "Adrianópolis",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-17",
+    "url": "https://pncp.gov.br/compras/76105642000117/2026/27"
+   },
+   {
     "ente": "MUNICIPIO DE CASTRO",
     "municipio": "Castro",
     "uf": "PR",
@@ -1246,33 +1273,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-15",
     "url": "https://pncp.gov.br/compras/08160756000100/2026/6"
-   },
-   {
-    "ente": "MUNICIPIO DE RIO NEGRO",
-    "municipio": "Rio Negro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-14",
-    "url": "https://pncp.gov.br/compras/76002641000147/2026/324"
-   },
-   {
-    "ente": "UBERLANDIA CAMARA MUNICIPAL",
-    "municipio": "Uberlândia",
-    "uf": "MG",
-    "modalidade": "Credenciamento",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-14",
-    "url": "https://pncp.gov.br/compras/20720165000145/2026/42"
-   },
-   {
-    "ente": "MUNICIPIO DE RIO NEGRO",
-    "municipio": "Rio Negro",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-14",
-    "url": "https://pncp.gov.br/compras/76002641000147/2026/323"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

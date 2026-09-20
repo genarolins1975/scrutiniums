@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-19T14:10:20+00:00",
+ "gerado_em": "2026-09-20T14:21:28+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -2594,7 +2594,7 @@
     "consorcios.cotas": 7,
     "consorcios.por_mil_hab": 9,
     "cobranca.por_mil_hab": 7,
-    "cobranca.por_bi_carteira": 21,
+    "cobranca.por_bi_carteira": 22,
     "pgfn.insc_pf_por_mil_hab": 12
    },
    "sintese": "O crédito em Goiás somava R$ 343 bilhões em 2026-07, 4,5% do Brasil, R$ 46.245 por habitante (8º entre as 27 UFs), com inadimplência de 7,09% (4º) e crescimento de +7,3% em 12 meses. Penetração de 119% da renda anual (7º), com 51 de 246 municípios abaixo do esperado pelo modelo."
@@ -3392,11 +3392,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 14468,
-    "var_12m_pct": 6.03,
-    "casos_12m_todos": 33185,
-    "por_mil_hab": 4.95,
-    "por_bi_carteira": 101.4
+    "casos_12m": 14829,
+    "var_12m_pct": 6.74,
+    "casos_12m_todos": 33119,
+    "por_mil_hab": 5.07,
+    "por_bi_carteira": 104.0
    },
    "prazo": {
     "data_base": "2026-07",
@@ -3449,7 +3449,7 @@
     "consorcios.cotas": 15,
     "consorcios.por_mil_hab": 5,
     "cobranca.por_mil_hab": 6,
-    "cobranca.por_bi_carteira": 22,
+    "cobranca.por_bi_carteira": 20,
     "pgfn.insc_pf_por_mil_hab": 4
    },
    "sintese": "O crédito em Mato Grosso do Sul somava R$ 143 bilhões em 2026-07, 1,9% do Brasil, R$ 48.774 por habitante (5º entre as 27 UFs), com inadimplência de 7,37% (3º) e crescimento de +6,1% em 12 meses. Penetração de 115% da renda anual (9º), com 27 de 79 municípios abaixo do esperado pelo modelo."
@@ -3962,9 +3962,9 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 18731,
-    "var_12m_pct": 2.74,
-    "casos_12m_todos": 35681,
+    "casos_12m": 18732,
+    "var_12m_pct": 2.73,
+    "casos_12m_todos": 35687,
     "por_mil_hab": 2.15,
     "por_bi_carteira": 111.2
    },
@@ -7724,7 +7724,7 @@
     "consorcios.cotas": 21,
     "consorcios.por_mil_hab": 4,
     "cobranca.por_mil_hab": 9,
-    "cobranca.por_bi_carteira": 20,
+    "cobranca.por_bi_carteira": 21,
     "pgfn.insc_pf_por_mil_hab": 9
    },
    "sintese": "O crédito no Tocantins somava R$ 59 bilhões em 2026-07, 0,8% do Brasil, R$ 37.004 por habitante (9º entre as 27 UFs), com inadimplência de 8,42% (2º) e crescimento de +8,9% em 12 meses. Penetração de 143% da renda anual (3º), com 1 de 139 municípios abaixo do esperado pelo modelo."
