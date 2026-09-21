@@ -9,7 +9,7 @@
   "sede": "Joinville/SC",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0085771",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-20T14:21:07+00:00",
+  "atualizado_em": "2026-09-21T17:20:16+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 19.540.550",
   "participante_open_finance": null
@@ -30,7 +30,7 @@
   "pontos_fortes": [
    {
     "tipo": "ok",
-    "texto": "Basileia de 41.3% (acima da mediana do grupo S4: 21.1%).",
+    "texto": "Basileia de 41.3% (acima da mediana do grupo S4: 21.0%).",
     "base": "BCB IF.data (Informações de Capital)"
    },
    {
@@ -74,7 +74,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -139,7 +139,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.0,
-   "mediana": 21.1,
+   "mediana": 21.0,
    "q3": 34.7
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -239,7 +239,7 @@
  "destaques": [
   {
    "tipo": "ok",
-   "texto": "Basileia de 41.3% (acima da mediana do grupo S4: 21.1%).",
+   "texto": "Basileia de 41.3% (acima da mediana do grupo S4: 21.0%).",
    "base": "BCB IF.data (Informações de Capital)"
   },
   {
@@ -265,7 +265,7 @@
    "unit": "%",
    "d_tri": -19.01,
    "vs_pares": "acima",
-   "mediana_grupo": 21.13,
+   "mediana_grupo": 20.99,
    "percentil": 79.3
   },
   {
@@ -275,7 +275,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 6.0,
-   "percentil": 64.2
+   "percentil": 64.0
   },
   {
    "indicador": "ROE do período",
@@ -284,7 +284,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 4.1,
-   "percentil": 30.9
+   "percentil": 30.8
   }
  ],
  "carteira": {
@@ -589,6 +589,7 @@
     -68.91,
     4.7,
     -1.55,
+    -3.74,
     15.62,
     2.66,
     7.18,
@@ -807,7 +808,6 @@
     16.41,
     14.25,
     35.8,
-    -57.45,
     19.93,
     1.08,
     -34.3,
@@ -847,6 +847,7 @@
     3.64,
     0.43,
     -5.26,
+    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1191,7 +1192,6 @@
     79.86,
     33.0,
     17.56,
-    24.61,
     103.49,
     23.57,
     22.02,
@@ -1264,7 +1264,7 @@
     40.66
    ],
    "meu": 41.31,
-   "mediana": 21.13
+   "mediana": 20.99
   },
   "alav": {
    "valores": [
@@ -1341,6 +1341,7 @@
     9.83,
     5.6,
     7.29,
+    1.07,
     8.35,
     2.32,
     1.13,
@@ -1559,7 +1560,6 @@
     18.68,
     8.14,
     7.99,
-    1.56,
     184.71,
     7.58,
     5.45,
@@ -1599,6 +1599,7 @@
     4.57,
     4.19,
     7.17,
+    10.36,
     5.93,
     1.47,
     1.81,

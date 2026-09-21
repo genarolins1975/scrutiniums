@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-20T14:21:28+00:00",
+ "gerado_em": "2026-09-21T17:20:47+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -19,7 +19,7 @@
   },
   "pgfn": "2026-06",
   "emprego": "2026-07",
-  "consorcios": "2026-T1",
+  "consorcios": "2026-T2",
   "cobranca": "2026-06",
   "prazo": "2026-07",
   "subnacional": "2026-08"
@@ -249,11 +249,11 @@
     "retencao_pct": 7.96
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 48580.0,
-    "share": 0.37,
-    "var_12m_pct": 11.19,
-    "por_mil_hab": 54.9
+    "trimestre": "2026-T2",
+    "cotas": 50500.0,
+    "share": 0.38,
+    "var_12m_pct": 13.23,
+    "por_mil_hab": 57.1
    },
    "cobranca": {
     "mes": "2026-06",
@@ -534,11 +534,11 @@
     "retencao_pct": 6.15
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 178550.0,
-    "share": 1.37,
-    "var_12m_pct": 15.1,
-    "por_mil_hab": 55.4
+    "trimestre": "2026-T2",
+    "cotas": 184670.0,
+    "share": 1.38,
+    "var_12m_pct": 15.06,
+    "por_mil_hab": 57.3
    },
    "cobranca": {
     "mes": "2026-06",
@@ -819,11 +819,11 @@
     "retencao_pct": 6.58
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 131620.0,
+    "trimestre": "2026-T2",
+    "cotas": 135070.0,
     "share": 1.01,
-    "var_12m_pct": 11.52,
-    "por_mil_hab": 30.5
+    "var_12m_pct": 11.79,
+    "por_mil_hab": 31.3
    },
    "cobranca": {
     "mes": "2026-06",
@@ -1104,11 +1104,11 @@
     "retencao_pct": 11.06
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 27540.0,
+    "trimestre": "2026-T2",
+    "cotas": 27560.0,
     "share": 0.21,
-    "var_12m_pct": 1.29,
-    "por_mil_hab": 34.1
+    "var_12m_pct": 1.81,
+    "por_mil_hab": 34.2
    },
    "cobranca": {
     "mes": "2026-06",
@@ -1389,11 +1389,11 @@
     "retencao_pct": 6.97
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 885460.0,
-    "share": 6.81,
-    "var_12m_pct": 12.31,
-    "por_mil_hab": 59.5
+    "trimestre": "2026-T2",
+    "cotas": 911850.0,
+    "share": 6.82,
+    "var_12m_pct": 12.59,
+    "por_mil_hab": 61.3
    },
    "cobranca": {
     "mes": "2026-06",
@@ -1674,11 +1674,11 @@
     "retencao_pct": 6.23
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 386190.0,
+    "trimestre": "2026-T2",
+    "cotas": 397180.0,
     "share": 2.97,
-    "var_12m_pct": 13.17,
-    "por_mil_hab": 41.7
+    "var_12m_pct": 12.76,
+    "por_mil_hab": 42.9
    },
    "cobranca": {
     "mes": "2026-06",
@@ -1959,11 +1959,11 @@
     "retencao_pct": 9.32
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 193920.0,
+    "trimestre": "2026-T2",
+    "cotas": 199880.0,
     "share": 1.49,
-    "var_12m_pct": 14.14,
-    "por_mil_hab": 64.7
+    "var_12m_pct": 14.83,
+    "por_mil_hab": 66.7
    },
    "cobranca": {
     "mes": "2026-06",
@@ -2244,11 +2244,11 @@
     "retencao_pct": 2.8
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 289490.0,
+    "trimestre": "2026-T2",
+    "cotas": 298410.0,
     "share": 2.23,
-    "var_12m_pct": 18.26,
-    "por_mil_hab": 70.1
+    "var_12m_pct": 16.57,
+    "por_mil_hab": 72.3
    },
    "cobranca": {
     "mes": "2026-06",
@@ -2529,11 +2529,11 @@
     "retencao_pct": 2.27
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 515220.0,
-    "share": 3.96,
-    "var_12m_pct": 8.85,
-    "por_mil_hab": 69.4
+    "trimestre": "2026-T2",
+    "cotas": 524760.0,
+    "share": 3.92,
+    "var_12m_pct": 8.5,
+    "por_mil_hab": 70.7
    },
    "cobranca": {
     "mes": "2026-06",
@@ -2814,11 +2814,11 @@
     "retencao_pct": 7.99
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 406740.0,
-    "share": 3.13,
-    "var_12m_pct": 12.41,
-    "por_mil_hab": 58.0
+    "trimestre": "2026-T2",
+    "cotas": 422720.0,
+    "share": 3.16,
+    "var_12m_pct": 12.39,
+    "por_mil_hab": 60.2
    },
    "cobranca": {
     "mes": "2026-06",
@@ -3099,11 +3099,11 @@
     "retencao_pct": 1.44
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 1316700.0,
-    "share": 10.13,
-    "var_12m_pct": 13.16,
-    "por_mil_hab": 61.5
+    "trimestre": "2026-T2",
+    "cotas": 1355990.0,
+    "share": 10.14,
+    "var_12m_pct": 12.52,
+    "por_mil_hab": 63.4
    },
    "cobranca": {
     "mes": "2026-06",
@@ -3384,11 +3384,11 @@
     "retencao_pct": 2.79
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 248560.0,
-    "share": 1.91,
-    "var_12m_pct": 15.47,
-    "por_mil_hab": 85.0
+    "trimestre": "2026-T2",
+    "cotas": 257660.00000000003,
+    "share": 1.93,
+    "var_12m_pct": 16.08,
+    "por_mil_hab": 88.1
    },
    "cobranca": {
     "mes": "2026-06",
@@ -3669,11 +3669,11 @@
     "retencao_pct": 2.54
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 453960.0,
-    "share": 3.49,
-    "var_12m_pct": 13.72,
-    "por_mil_hab": 116.6
+    "trimestre": "2026-T2",
+    "cotas": 471680.0,
+    "share": 3.53,
+    "var_12m_pct": 13.97,
+    "por_mil_hab": 121.1
    },
    "cobranca": {
     "mes": "2026-06",
@@ -3731,7 +3731,7 @@
     "subnacional.dcl_rcl_pct": 26,
     "emprego.saldo_12m": 15,
     "emprego.retencao_pct": 18,
-    "consorcios.cotas": 10,
+    "consorcios.cotas": 9,
     "consorcios.por_mil_hab": 1,
     "cobranca.por_mil_hab": 3,
     "cobranca.por_bi_carteira": 19,
@@ -3954,11 +3954,11 @@
     "retencao_pct": 4.53
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 458770.0,
-    "share": 3.53,
-    "var_12m_pct": 7.15,
-    "por_mil_hab": 52.7
+    "trimestre": "2026-T2",
+    "cotas": 465950.0,
+    "share": 3.48,
+    "var_12m_pct": 5.92,
+    "por_mil_hab": 53.5
    },
    "cobranca": {
     "mes": "2026-06",
@@ -4016,7 +4016,7 @@
     "subnacional.dcl_rcl_pct": 22,
     "emprego.saldo_12m": 11,
     "emprego.retencao_pct": 14,
-    "consorcios.cotas": 9,
+    "consorcios.cotas": 10,
     "consorcios.por_mil_hab": 19,
     "cobranca.por_mil_hab": 22,
     "cobranca.por_bi_carteira": 15,
@@ -4239,11 +4239,11 @@
     "retencao_pct": 10.06
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 203240.0,
-    "share": 1.56,
-    "var_12m_pct": 16.4,
-    "por_mil_hab": 48.8
+    "trimestre": "2026-T2",
+    "cotas": 211490.0,
+    "share": 1.58,
+    "var_12m_pct": 17.03,
+    "por_mil_hab": 50.8
    },
    "cobranca": {
     "mes": "2026-06",
@@ -4524,11 +4524,11 @@
     "retencao_pct": 8.68
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 405120.0,
+    "trimestre": "2026-T2",
+    "cotas": 417590.0,
     "share": 3.12,
-    "var_12m_pct": 13.19,
-    "por_mil_hab": 42.4
+    "var_12m_pct": 13.13,
+    "por_mil_hab": 43.7
    },
    "cobranca": {
     "mes": "2026-06",
@@ -4809,11 +4809,11 @@
     "retencao_pct": 9.83
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 231630.0,
-    "share": 1.78,
-    "var_12m_pct": 16.32,
-    "por_mil_hab": 68.4
+    "trimestre": "2026-T2",
+    "cotas": 241210.0,
+    "share": 1.8,
+    "var_12m_pct": 16.04,
+    "por_mil_hab": 71.3
    },
    "cobranca": {
     "mes": "2026-06",
@@ -4872,7 +4872,7 @@
     "emprego.saldo_12m": 17,
     "emprego.retencao_pct": 3,
     "consorcios.cotas": 16,
-    "consorcios.por_mil_hab": 10,
+    "consorcios.por_mil_hab": 8,
     "cobranca.por_mil_hab": 16,
     "cobranca.por_bi_carteira": 7,
     "pgfn.insc_pf_por_mil_hab": 11
@@ -5094,18 +5094,18 @@
     "retencao_pct": 2.28
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 1174960.0,
-    "share": 9.04,
-    "var_12m_pct": 16.26,
-    "por_mil_hab": 98.8
+    "trimestre": "2026-T2",
+    "cotas": 1211020.0,
+    "share": 9.05,
+    "var_12m_pct": 15.46,
+    "por_mil_hab": 101.8
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 75679,
-    "var_12m_pct": 23.35,
-    "casos_12m_todos": 165378,
-    "por_mil_hab": 6.36,
+    "casos_12m": 75692,
+    "var_12m_pct": 23.33,
+    "casos_12m_todos": 165388,
+    "por_mil_hab": 6.37,
     "por_bi_carteira": 133.6
    },
    "prazo": {
@@ -5379,11 +5379,11 @@
     "retencao_pct": 5.61
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 503820.0,
+    "trimestre": "2026-T2",
+    "cotas": 518299.99999999994,
     "share": 3.87,
-    "var_12m_pct": 12.13,
-    "por_mil_hab": 29.3
+    "var_12m_pct": 11.93,
+    "por_mil_hab": 30.1
    },
    "cobranca": {
     "mes": "2026-06",
@@ -5664,17 +5664,17 @@
     "retencao_pct": 2.9
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 149530.0,
-    "share": 1.15,
-    "var_12m_pct": 11.45,
-    "por_mil_hab": 43.3
+    "trimestre": "2026-T2",
+    "cotas": 153090.0,
+    "share": 1.14,
+    "var_12m_pct": 11.8,
+    "por_mil_hab": 44.3
    },
    "cobranca": {
     "mes": "2026-06",
     "casos_12m": 8830,
-    "var_12m_pct": 12.63,
-    "casos_12m_todos": 20708,
+    "var_12m_pct": 12.66,
+    "casos_12m_todos": 20687,
     "por_mil_hab": 2.56,
     "por_bi_carteira": 121.6
    },
@@ -5949,11 +5949,11 @@
     "retencao_pct": 2.08
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 177380.0,
-    "share": 1.36,
-    "var_12m_pct": 12.24,
-    "por_mil_hab": 101.2
+    "trimestre": "2026-T2",
+    "cotas": 183420.0,
+    "share": 1.37,
+    "var_12m_pct": 12.67,
+    "por_mil_hab": 104.7
    },
    "cobranca": {
     "mes": "2026-06",
@@ -6234,11 +6234,11 @@
     "retencao_pct": 2.49
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 25620.0,
-    "share": 0.2,
-    "var_12m_pct": 5.96,
-    "por_mil_hab": 34.7
+    "trimestre": "2026-T2",
+    "cotas": 26030.0,
+    "share": 0.19,
+    "var_12m_pct": 6.64,
+    "por_mil_hab": 35.2
    },
    "cobranca": {
     "mes": "2026-06",
@@ -6519,11 +6519,11 @@
     "retencao_pct": 0.64
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 785680.0,
-    "share": 6.04,
-    "var_12m_pct": 4.04,
-    "por_mil_hab": 69.9
+    "trimestre": "2026-T2",
+    "cotas": 791180.0,
+    "share": 5.91,
+    "var_12m_pct": 2.97,
+    "por_mil_hab": 70.4
    },
    "cobranca": {
     "mes": "2026-06",
@@ -6582,7 +6582,7 @@
     "emprego.saldo_12m": 21,
     "emprego.retencao_pct": 27,
     "consorcios.cotas": 5,
-    "consorcios.por_mil_hab": 8,
+    "consorcios.por_mil_hab": 10,
     "cobranca.por_mil_hab": 5,
     "cobranca.por_bi_carteira": 10,
     "pgfn.insc_pf_por_mil_hab": 10
@@ -6804,19 +6804,19 @@
     "retencao_pct": 2.12
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 625300.0,
-    "share": 4.81,
-    "var_12m_pct": 15.34,
-    "por_mil_hab": 76.4
+    "trimestre": "2026-T2",
+    "cotas": 649430.0,
+    "share": 4.86,
+    "var_12m_pct": 15.58,
+    "por_mil_hab": 79.3
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 78057,
-    "var_12m_pct": 21.84,
-    "casos_12m_todos": 146044,
-    "por_mil_hab": 9.53,
-    "por_bi_carteira": 187.5
+    "casos_12m": 78085,
+    "var_12m_pct": 21.88,
+    "casos_12m_todos": 146078,
+    "por_mil_hab": 9.54,
+    "por_bi_carteira": 187.6
    },
    "prazo": {
     "data_base": "2026-07",
@@ -7089,11 +7089,11 @@
     "retencao_pct": 9.26
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 142140.0,
-    "share": 1.09,
-    "var_12m_pct": 16.48,
-    "por_mil_hab": 61.8
+    "trimestre": "2026-T2",
+    "cotas": 147520.0,
+    "share": 1.1,
+    "var_12m_pct": 17.27,
+    "por_mil_hab": 64.2
    },
    "cobranca": {
     "mes": "2026-06",
@@ -7374,11 +7374,11 @@
     "retencao_pct": 2.27
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 2882880.0,
+    "trimestre": "2026-T2",
+    "cotas": 2965900.0,
     "share": 22.17,
-    "var_12m_pct": 11.49,
-    "por_mil_hab": 62.6
+    "var_12m_pct": 11.77,
+    "por_mil_hab": 64.4
    },
    "cobranca": {
     "mes": "2026-06",
@@ -7659,11 +7659,11 @@
     "retencao_pct": 0.68
    },
    "consorcios": {
-    "trimestre": "2026-T1",
-    "cotas": 153830.0,
-    "share": 1.18,
-    "var_12m_pct": 10.26,
-    "por_mil_hab": 96.9
+    "trimestre": "2026-T2",
+    "cotas": 156220.0,
+    "share": 1.17,
+    "var_12m_pct": 8.14,
+    "por_mil_hab": 98.4
    },
    "cobranca": {
     "mes": "2026-06",

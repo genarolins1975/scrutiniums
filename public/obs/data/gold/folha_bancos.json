@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-20T14:21:03+00:00",
+ "gerado_em": "2026-09-21T17:20:08+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 346,
-  "total_editais": 1150,
+  "total_editais": 1151,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1167,6 +1167,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "MUNICIPIO DE CALDAS NOVAS",
+    "municipio": "Caldas Novas",
+    "uf": "GO",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-21",
+    "url": "https://pncp.gov.br/compras/01787506000155/2026/182"
+   },
+   {
     "ente": "MUNICIPIO DE JARAGUA",
     "municipio": "Jaraguá",
     "uf": "GO",
@@ -1264,15 +1273,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-15",
     "url": "https://pncp.gov.br/compras/18715490000178/2026/111"
-   },
-   {
-    "ente": "MUNICIPIO DE SITIO NOVO",
-    "municipio": "Sítio Novo",
-    "uf": "RN",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-15",
-    "url": "https://pncp.gov.br/compras/08160756000100/2026/6"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

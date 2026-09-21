@@ -9,7 +9,7 @@
   "sede": "São Paulo/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 386,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0084686",
   "capital": "não classificado",
   "modelo": null,
@@ -17,7 +17,7 @@
   "data_base": "202606",
   "data_base_universo": "202606",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-20T14:21:08+00:00",
+  "atualizado_em": "2026-09-21T17:20:17+00:00",
   "aviso_pares": null,
   "cnpj": "não disponível nas fontes integradas",
   "participante_open_finance": true
@@ -73,7 +73,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 386,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -138,7 +138,7 @@
   ],
   "quartis_basileia": {
    "q1": 16.0,
-   "mediana": 21.1,
+   "mediana": 21.0,
    "q3": 34.7
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
@@ -148,7 +148,7 @@
   "confianca": "baixa",
   "confianca_motivo": "4/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
   "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-20"
+  "calculado_em": "2026-09-21"
  },
  "kpis": [
   {
@@ -259,7 +259,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 4.1,
-   "percentil": 67.3
+   "percentil": 67.1
   }
  ],
  "carteira": {
@@ -425,6 +425,7 @@
     -68.91,
     4.7,
     -1.55,
+    -3.74,
     15.62,
     2.66,
     7.18,
@@ -643,7 +644,6 @@
     16.41,
     14.25,
     35.8,
-    -57.45,
     19.93,
     1.08,
     -34.3,
@@ -683,6 +683,7 @@
     3.64,
     0.43,
     -5.26,
+    8.5,
     5.78,
     -21.99,
     4.51,
@@ -817,6 +818,7 @@
     9.83,
     5.6,
     7.29,
+    1.07,
     8.35,
     2.32,
     1.13,
@@ -1035,7 +1037,6 @@
     18.68,
     8.14,
     7.99,
-    1.56,
     184.71,
     7.58,
     5.45,
@@ -1075,6 +1076,7 @@
     4.57,
     4.19,
     7.17,
+    10.36,
     5.93,
     1.47,
     1.81,

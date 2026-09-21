@@ -1,7 +1,7 @@
 {
  "disponivel": true,
  "tipo": "DADO OBSERVADO (SUSEP SES) + CALCULADO (agregação, razões, shares)",
- "mes": "2026-06",
+ "mes": "2026-07",
  "meses_parciais": [],
  "fonte": {
   "nome": "SUSEP — Sistema de Estatísticas da SUSEP (SES), base completa",
@@ -9,165 +9,165 @@
   "licenca": "dados abertos da SUSEP",
   "nivel": "A — estatística oficial do supervisor de seguros, mensal"
  },
- "gerado_em": "2026-09-20T14:21:30+00:00",
+ "gerado_em": "2026-09-21T17:20:50+00:00",
  "coleta": {
-  "last_modified": "Mon, 14 Sep 2026 03:44:57 GMT",
-  "coletado_em": "2026-09-14T16:08:07+00:00",
-  "requisicoes": 12,
-  "mb_lidos": 37.8
+  "last_modified": "Mon, 21 Sep 2026 04:13:25 GMT",
+  "coletado_em": "2026-09-21T16:14:46+00:00",
+  "requisicoes": 13,
+  "mb_lidos": 41.9
  },
  "ramos": [
   {
    "id": "0977",
    "nome": "Prestamista (exceto habitacional e rural)",
-   "premio_12m": 20443408459.58489,
-   "share_pct": 68.08
+   "premio_12m": 20589636904.51589,
+   "share_pct": 68.15
   },
   {
    "id": "1061",
    "nome": "Prestamista habitacional (apólice de mercado)",
-   "premio_12m": 6375575913.169995,
-   "share_pct": 21.23
+   "premio_12m": 6437858543.160001,
+   "share_pct": 21.31
   },
   {
    "id": "1377",
    "nome": "Prestamista (exceto habitacional e rural), plano novo",
-   "premio_12m": 3209802382.8799963,
-   "share_pct": 10.69
+   "premio_12m": 3183280885.319997,
+   "share_pct": 10.54
   }
  ],
  "kpis": {
-  "mes": "2026-06",
-  "premio_12m": 30028786755.634895,
-  "var_12m_pct": 11.4,
-  "premio_mes": 2731876763.831,
-  "sinistralidade_12m_pct": 21.19,
-  "comissao_12m_pct": 36.88,
-  "n_empresas": 65,
-  "concessoes_pf_12m": 4532642000000.0,
+  "mes": "2026-07",
+  "premio_12m": 30210776332.995895,
+  "var_12m_pct": 11.83,
+  "premio_mes": 2505678408.69,
+  "sinistralidade_12m_pct": 20.95,
+  "comissao_12m_pct": 37.09,
+  "n_empresas": 66,
+  "concessoes_pf_12m": 4573666000000.0,
   "premio_sobre_concessoes_pct": 0.66,
-  "top5_grupos_share_pct": 47.83
+  "top5_grupos_share_pct": 47.5
  },
  "grupos": [
   {
    "cogrupo": "sem_grupo",
    "nome": "Sem grupo econômico (empresas independentes)",
-   "premio": 9953892858.604895,
-   "sinistro": 1902810674.2256079,
-   "comissao": 4193336114.44438,
+   "premio": 10143496640.585896,
+   "sinistro": 1920699039.844609,
+   "comissao": 4271345538.4937987,
    "n_empresas": 66,
-   "share_pct": 33.15,
-   "comissao_pct": 42.13
+   "share_pct": 33.58,
+   "comissao_pct": 42.11
   },
   {
    "cogrupo": "00035",
    "nome": "ITAÚ",
-   "premio": 3562808532.78,
-   "sinistro": 376118216.79,
-   "comissao": 516301693.40000004,
+   "premio": 3653039175.0000005,
+   "sinistro": 377323778.96,
+   "comissao": 517994688.11,
    "n_empresas": 2,
-   "share_pct": 11.86,
-   "comissao_pct": 14.49
+   "share_pct": 12.09,
+   "comissao_pct": 14.18
   },
   {
    "cogrupo": "01203",
    "nome": "CARDIF",
-   "premio": 2959761882.5699997,
-   "sinistro": 193346115.58000007,
-   "comissao": 924252281.1599996,
+   "premio": 2960153821.15,
+   "sinistro": 195083941.38000008,
+   "comissao": 931229340.7599998,
    "n_empresas": 1,
-   "share_pct": 9.86,
-   "comissao_pct": 31.23
+   "share_pct": 9.8,
+   "comissao_pct": 31.46
   },
   {
    "cogrupo": "01233",
    "nome": "BBMAPFRE",
-   "premio": 2840080662.13,
-   "sinistro": 1165656806.37,
-   "comissao": 1507326875.22,
+   "premio": 2844496428.520001,
+   "sinistro": 1145290232.7,
+   "comissao": 1522778812.45,
    "n_empresas": 2,
-   "share_pct": 9.46,
-   "comissao_pct": 53.07
+   "share_pct": 9.42,
+   "comissao_pct": 53.53
   },
   {
    "cogrupo": "00230",
    "nome": "CAIXA ECONÔMICA S/A",
-   "premio": 2795790427.2399993,
-   "sinistro": 933598511.7699999,
-   "comissao": 816157300.7200001,
+   "premio": 2756032946.0999994,
+   "sinistro": 938494588.88,
+   "comissao": 812890183.6700002,
    "n_empresas": 2,
-   "share_pct": 9.31,
-   "comissao_pct": 29.19
+   "share_pct": 9.12,
+   "comissao_pct": 29.49
   },
   {
    "cogrupo": "00027",
    "nome": "BRADESCO",
-   "premio": 2204433267.0999994,
-   "sinistro": 374362591.8099999,
-   "comissao": 322517911.86,
+   "premio": 2136765863.2499998,
+   "sinistro": 356107207.40999997,
+   "comissao": 348433813.1999999,
    "n_empresas": 3,
-   "share_pct": 7.34,
-   "comissao_pct": 14.63
+   "share_pct": 7.07,
+   "comissao_pct": 16.31
   },
   {
    "cogrupo": "00531",
    "nome": "ZURICH",
-   "premio": 1422077916.3400004,
-   "sinistro": 87479782.36,
-   "comissao": 734360946.1299999,
+   "premio": 1461842543.8,
+   "sinistro": 87805639.67999999,
+   "comissao": 789596914.2499998,
    "n_empresas": 2,
-   "share_pct": 4.74,
-   "comissao_pct": 51.64
+   "share_pct": 4.84,
+   "comissao_pct": 54.01
   },
   {
    "cogrupo": "00825",
    "nome": "ICATU",
-   "premio": 1372673308.9500003,
-   "sinistro": 329204480.63,
-   "comissao": 478123399.1800001,
+   "premio": 1372928543.8000004,
+   "sinistro": 321365663.2399999,
+   "comissao": 482507314.55,
    "n_empresas": 2,
-   "share_pct": 4.57,
-   "comissao_pct": 34.83
+   "share_pct": 4.54,
+   "comissao_pct": 35.14
   },
   {
    "cogrupo": "00213",
    "nome": "GENERALLI",
-   "premio": 728963923.2700001,
-   "sinistro": 92735808.58000003,
-   "comissao": 647733810.23,
+   "premio": 682788222.6300001,
+   "sinistro": 82908145.34000002,
+   "comissao": 578701198.6700002,
    "n_empresas": 1,
-   "share_pct": 2.43,
-   "comissao_pct": 88.86
+   "share_pct": 2.26,
+   "comissao_pct": 84.76
   },
   {
    "cogrupo": "00345",
    "nome": "SAFRA",
-   "premio": 505890220.66999996,
-   "sinistro": 29077247.81,
-   "comissao": 107803388.52999999,
+   "premio": 497973381.74999994,
+   "sinistro": 30433189.060000002,
+   "comissao": 109136466.83000001,
    "n_empresas": 2,
-   "share_pct": 1.68,
-   "comissao_pct": 21.31
+   "share_pct": 1.65,
+   "comissao_pct": 21.92
   },
   {
    "cogrupo": "01212",
    "nome": "MAPFRE",
-   "premio": 464590471.56000006,
-   "sinistro": 82024682.40000002,
-   "comissao": 208093321.86000004,
+   "premio": 474865137.3700001,
+   "sinistro": 79533147.55,
+   "comissao": 219482309.41000006,
    "n_empresas": 2,
-   "share_pct": 1.55,
-   "comissao_pct": 44.79
+   "share_pct": 1.57,
+   "comissao_pct": 46.22
   },
   {
    "cogrupo": "00051",
    "nome": "PORTO SEGURO",
-   "premio": 365250297.9400001,
-   "sinistro": 48099133.93,
-   "comissao": 132049687.05,
+   "premio": 365165708.91,
+   "sinistro": 45376004.129999995,
+   "comissao": 135469713.74,
    "n_empresas": 3,
-   "share_pct": 1.22,
-   "comissao_pct": 36.15
+   "share_pct": 1.21,
+   "comissao_pct": 37.1
   }
  ],
  "empresas": [
@@ -175,167 +175,154 @@
    "coenti": "05321",
    "nome": "ITAU SEGUROS S/A",
    "grupo": "ITAÚ",
-   "premio": 3562808532.78,
-   "sinistro": 376118216.79,
-   "comissao": 516301693.40000004,
-   "share_pct": 11.86,
-   "comissao_pct": 14.49
+   "premio": 3653039175.0000005,
+   "sinistro": 377323778.96,
+   "comissao": 517994688.11,
+   "share_pct": 12.09,
+   "comissao_pct": 14.18
   },
   {
    "coenti": "06548",
    "nome": "CARDIF DO BRASIL VIDA E PREVIDÊNCIA S/A",
    "grupo": "CARDIF",
-   "premio": 2959761882.5699997,
-   "sinistro": 193346115.58000007,
-   "comissao": 924252281.1599996,
-   "share_pct": 9.86,
-   "comissao_pct": 31.23
+   "premio": 2960153821.15,
+   "sinistro": 195083941.38000008,
+   "comissao": 931229340.7599998,
+   "share_pct": 9.8,
+   "comissao_pct": 31.46
   },
   {
    "coenti": "06785",
    "nome": "Brasilseg Companhia de Seguros",
    "grupo": "BBMAPFRE",
-   "premio": 2840080662.13,
-   "sinistro": 1165656806.37,
-   "comissao": 1507326875.22,
-   "share_pct": 9.46,
-   "comissao_pct": 53.07
+   "premio": 2844496428.520001,
+   "sinistro": 1145290232.7,
+   "comissao": 1522778812.45,
+   "share_pct": 9.42,
+   "comissao_pct": 53.53
   },
   {
    "coenti": "05070",
    "nome": "Zurich Santander Brasil Seguros e Previdencia S/A",
    "grupo": "Sem grupo econômico (empresas independentes)",
-   "premio": 1781478812.8399997,
-   "sinistro": 374059179.13000005,
-   "comissao": 1106230122.0100002,
-   "share_pct": 5.93,
-   "comissao_pct": 62.1
+   "premio": 1729644675.8000002,
+   "sinistro": 370606784.82000005,
+   "comissao": 1093339124.7200003,
+   "share_pct": 5.73,
+   "comissao_pct": 63.21
   },
   {
    "coenti": "05631",
    "nome": "CAIXA SEGURADORA S/A",
    "grupo": "CAIXA ECONÔMICA S/A",
-   "premio": 1610859225.73,
-   "sinistro": 605893090.67,
-   "comissao": 140962243.09,
-   "share_pct": 5.36,
+   "premio": 1607601092.9199998,
+   "sinistro": 606468797.3100001,
+   "comissao": 140704397.28,
+   "share_pct": 5.32,
    "comissao_pct": 8.75
-  },
-  {
-   "coenti": "06866",
-   "nome": "BRADESCO VIDA E PREVIDÊNCIA S.A.",
-   "grupo": "BRADESCO",
-   "premio": 1567917720.2099998,
-   "sinistro": 234288177.31000003,
-   "comissao": 319141692.39,
-   "share_pct": 5.22,
-   "comissao_pct": 20.35
   },
   {
    "coenti": "03476",
    "nome": "XS3 SEGUROS S.A.",
    "grupo": "Sem grupo econômico (empresas independentes)",
-   "premio": 1552691406.15,
-   "sinistro": 366797777.99,
-   "comissao": 310643391.44000006,
-   "share_pct": 5.17,
+   "premio": 1594065428.2500002,
+   "sinistro": 388101052.79999995,
+   "comissao": 318939046.81,
+   "share_pct": 5.28,
    "comissao_pct": 20.01
+  },
+  {
+   "coenti": "06866",
+   "nome": "BRADESCO VIDA E PREVIDÊNCIA S.A.",
+   "grupo": "BRADESCO",
+   "premio": 1495967017.6399996,
+   "sinistro": 212721757.68000007,
+   "comissao": 344054697.28999996,
+   "share_pct": 4.95,
+   "comissao_pct": 23.0
   },
   {
    "coenti": "05495",
    "nome": "Zurich Minas Brasil Seguros S/A",
    "grupo": "ZURICH",
-   "premio": 1422077916.3400004,
-   "sinistro": 87479782.36,
-   "comissao": 734360946.1299999,
-   "share_pct": 4.74,
-   "comissao_pct": 51.64
+   "premio": 1461842543.8,
+   "sinistro": 87805639.67999999,
+   "comissao": 789596914.2499998,
+   "share_pct": 4.84,
+   "comissao_pct": 54.01
   },
   {
    "coenti": "06351",
    "nome": "METROPOLITAN LIFE SEGUROS E PREVIDÊNCIA",
    "grupo": "Sem grupo econômico (empresas independentes)",
-   "premio": 1356255081.6000001,
-   "sinistro": 80535079.93,
-   "comissao": 552889611.6700002,
-   "share_pct": 4.52,
-   "comissao_pct": 40.77
+   "premio": 1345389413.1000004,
+   "sinistro": 84626734.49,
+   "comissao": 591818398.2600002,
+   "share_pct": 4.45,
+   "comissao_pct": 43.99
   },
   {
    "coenti": "08141",
    "nome": "CAIXA VIDA E PREVIDÊNCIA S/A",
    "grupo": "CAIXA ECONÔMICA S/A",
-   "premio": 1184931201.51,
-   "sinistro": 327705421.1,
-   "comissao": 675195057.6299999,
-   "share_pct": 3.95,
-   "comissao_pct": 56.98
-  },
-  {
-   "coenti": "05142",
-   "nome": "ICATU SEGUROS S.A",
-   "grupo": "ICATU",
-   "premio": 1062199015.8000001,
-   "sinistro": 238720469.11,
-   "comissao": 386108820.3800001,
-   "share_pct": 3.54,
-   "comissao_pct": 36.35
+   "premio": 1148431853.18,
+   "sinistro": 332025791.57,
+   "comissao": 672185786.39,
+   "share_pct": 3.8,
+   "comissao_pct": 58.53
   },
   {
    "coenti": "03654",
    "nome": "SICOOB SEGURADORA DE VIDA E PREVIDENCIA S. A.",
    "grupo": "Sem grupo econômico (empresas independentes)",
-   "premio": 1055992418.4508954,
-   "sinistro": 250784571.19760734,
-   "comissao": 583150611.06,
-   "share_pct": 3.52,
-   "comissao_pct": 55.22
+   "premio": 1092032314.6408954,
+   "sinistro": 253274808.83760732,
+   "comissao": 588434570.83,
+   "share_pct": 3.61,
+   "comissao_pct": 53.88
+  },
+  {
+   "coenti": "05142",
+   "nome": "ICATU SEGUROS S.A",
+   "grupo": "ICATU",
+   "premio": 1065795979.2600001,
+   "sinistro": 234753941.92999998,
+   "comissao": 390461652.90000004,
+   "share_pct": 3.53,
+   "comissao_pct": 36.64
   },
   {
    "coenti": "05908",
    "nome": "GENERALI  BRASIL  SEGUROS S.A.",
    "grupo": "GENERALLI",
-   "premio": 728963923.2700001,
-   "sinistro": 92735808.58000003,
-   "comissao": 647733810.23,
-   "share_pct": 2.43,
-   "comissao_pct": 88.86
+   "premio": 682788222.6300001,
+   "sinistro": 82908145.34000002,
+   "comissao": 578701198.6700002,
+   "share_pct": 2.26,
+   "comissao_pct": 84.76
   },
   {
    "coenti": "01261",
    "nome": "FACTA SEGURADORA S/A",
    "grupo": "Sem grupo econômico (empresas independentes)",
-   "premio": 692030762.67,
-   "sinistro": 76001561.67999999,
-   "comissao": 171756625.1899998,
-   "share_pct": 2.3,
-   "comissao_pct": 24.82
+   "premio": 654213864.21,
+   "sinistro": 70060661.03999999,
+   "comissao": 179536411.4699998,
+   "share_pct": 2.17,
+   "comissao_pct": 27.44
   },
   {
    "coenti": "05312",
    "nome": "BRADESCO AUTO/RE COMPANHIA DE SEGUROS",
    "grupo": "BRADESCO",
-   "premio": 636515546.89,
-   "sinistro": 140074414.5,
-   "comissao": 3376219.47,
+   "premio": 640798845.61,
+   "sinistro": 143385449.73000002,
+   "comissao": 4379115.91,
    "share_pct": 2.12,
-   "comissao_pct": 0.53
+   "comissao_pct": 0.68
   }
  ],
  "serie": [
-  {
-   "mes": "2021-07",
-   "premio": 1688184383.8384082,
-   "premio_ganho": 1302544475.9486902,
-   "sinistro_ocorrido": 572303196.758256,
-   "comissao": 465740773.89,
-   "sinistralidade_pct": 43.94,
-   "comissao_pct": 27.59,
-   "n_empresas": 52,
-   "concessoes_pf": 240061000000.0,
-   "premio_sobre_concessoes_pct": 0.7,
-   "parcial": false
-  },
   {
    "mes": "2021-08",
    "premio": 1686204502.4775953,
@@ -1095,16 +1082,29 @@
    "premio": 2731876763.831,
    "premio_ganho": 2336938432.669,
    "sinistro_ocorrido": 563705318.4929999,
-   "comissao": 966442682.5343837,
+   "comissao": 966442770.4143836,
    "sinistralidade_pct": 24.12,
    "comissao_pct": 35.38,
    "n_empresas": 65,
    "concessoes_pf": 385986000000.0,
    "premio_sobre_concessoes_pct": 0.71,
    "parcial": false
+  },
+  {
+   "mes": "2026-07",
+   "premio": 2505678408.69,
+   "premio_ganho": 2435712343.721,
+   "sinistro_ocorrido": 494810803.436,
+   "comissao": 990872210.1494201,
+   "sinistralidade_pct": 20.31,
+   "comissao_pct": 39.55,
+   "n_empresas": 66,
+   "concessoes_pf": 406405000000.0,
+   "premio_sobre_concessoes_pct": 0.62,
+   "parcial": false
   }
  ],
- "sintese": "Em 12 meses até 2026-06, o seguro prestamista movimentou R$ 30,0 bilhões em prêmios, +11,4% sobre os 12 meses anteriores. Isso equivale a 0,66% das concessões de crédito a pessoas físicas no período. De cada R$ 100 de prêmio, R$ 37 ficam como comissão de quem vende e a sinistralidade é de 21% do prêmio ganho. Os cinco maiores grupos concentram 48% do prêmio.",
+ "sintese": "Em 12 meses até 2026-07, o seguro prestamista movimentou R$ 30,2 bilhões em prêmios, +11,8% sobre os 12 meses anteriores. Isso equivale a 0,66% das concessões de crédito a pessoas físicas no período. De cada R$ 100 de prêmio, R$ 37 ficam como comissão de quem vende e a sinistralidade é de 21% do prêmio ganho. Os cinco maiores grupos concentram 48% do prêmio.",
  "metodo": "SES da SUSEP, ramos 0977, 1377 e 1061, agregados por mês, empresa e grupo econômico. Prêmio direto mede tamanho; sinistralidade = sinistro ocorrido ÷ prêmio ganho; comissão = despesa de comercialização ÷ prêmio direto. Razão sobre as concessões PF do SGS (série 20633) com 12 meses de cada lado. Mês com prêmio abaixo de 70% da mediana dos 12 anteriores é parcial e fica fora dos KPIs. Nomes de grupo e empresa vêm do cadastro da SUSEP; código sem grupo fica declarado.",
  "limitacoes": "A SUSEP não publica o prêmio por operação de crédito nem por instituição financeira: a seguradora do grupo vende para o banco do grupo, para outros bancos e para varejistas, e o SES não separa o canal. A razão sobre concessões é ordem de grandeza do sistema, não custo por contrato. Sinistro direto está zerado nos ramos novos e não é usado.",
  "cautelas": [

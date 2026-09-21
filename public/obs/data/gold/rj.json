@@ -17,18 +17,18 @@
      "url": "https://api-publica.datajud.cnj.jus.br",
      "segment": "pj",
      "category": "recuperacao_judicial",
-     "last_collected_at": "2026-09-20T14:05:13+00:00"
+     "last_collected_at": "2026-09-21T17:03:16+00:00"
     },
     "qualidade": {
-     "score": 55.9,
+     "score": 55.3,
      "componentes": {
       "completude": 98.9,
-      "atualidade": 20.0,
+      "atualidade": 17.8,
       "historico": 75.8,
       "estabilidade": 0.0,
       "transparencia": 100.0
      },
-     "dias_sem_atualizar": 81,
+     "dias_sem_atualizar": 82,
      "ultima_ref": "2026-07-01",
      "n_obs": 91,
      "n_revisoes": 935
@@ -732,18 +732,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjsp/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T13:56:06+00:00"
+      "last_collected_at": "2026-09-21T16:47:31+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 565
@@ -1128,18 +1128,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrj/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T13:58:03+00:00"
+      "last_collected_at": "2026-09-21T16:51:06+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 105
@@ -1524,18 +1524,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjmg/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T13:58:57+00:00"
+      "last_collected_at": "2026-09-21T16:53:12+00:00"
      },
      "qualidade": {
-      "score": 68.5,
+      "score": 67.8,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 83.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 3
@@ -1920,18 +1920,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrs/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T14:01:21+00:00"
+      "last_collected_at": "2026-09-21T16:55:12+00:00"
      },
      "qualidade": {
-      "score": 63.5,
+      "score": 62.9,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 50.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 9
@@ -2316,18 +2316,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjpr/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T14:03:09+00:00"
+      "last_collected_at": "2026-09-21T16:57:36+00:00"
      },
      "qualidade": {
-      "score": 61.1,
+      "score": 60.4,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 34.1,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 12
@@ -2715,15 +2715,15 @@
       "last_collected_at": "2026-09-20T14:04:17+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 100
@@ -3111,15 +3111,15 @@
       "last_collected_at": "2026-09-20T14:04:37+00:00"
      },
      "qualidade": {
-      "score": 69.3,
+      "score": 68.6,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 89.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 2
@@ -3507,15 +3507,15 @@
       "last_collected_at": "2026-09-20T14:05:02+00:00"
      },
      "qualidade": {
-      "score": 57.8,
+      "score": 57.1,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 12.1,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 16
@@ -4173,18 +4173,18 @@
      "url": "https://api-publica.datajud.cnj.jus.br",
      "segment": "pj",
      "category": "recuperacao_judicial",
-     "last_collected_at": "2026-09-20T14:05:13+00:00"
+     "last_collected_at": "2026-09-21T17:03:16+00:00"
     },
     "qualidade": {
-     "score": 55.9,
+     "score": 55.3,
      "componentes": {
       "completude": 98.9,
-      "atualidade": 20.0,
+      "atualidade": 17.8,
       "historico": 75.8,
       "estabilidade": 0.0,
       "transparencia": 100.0
      },
-     "dias_sem_atualizar": 81,
+     "dias_sem_atualizar": 82,
      "ultima_ref": "2026-07-01",
      "n_obs": 91,
      "n_revisoes": 815
@@ -4888,18 +4888,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjsp/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T13:57:21+00:00"
+      "last_collected_at": "2026-09-21T16:49:41+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 420
@@ -5284,18 +5284,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrj/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T13:58:46+00:00"
+      "last_collected_at": "2026-09-21T16:52:18+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 134
@@ -5680,18 +5680,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjmg/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T14:01:07+00:00"
+      "last_collected_at": "2026-09-21T16:54:57+00:00"
      },
      "qualidade": {
-      "score": 66.8,
+      "score": 66.2,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 72.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 5
@@ -6076,18 +6076,18 @@
       "url": "https://api-publica.datajud.cnj.jus.br/api_publica_tjrs/_search",
       "segment": "pj",
       "category": "recuperacao_judicial",
-      "last_collected_at": "2026-09-20T14:02:34+00:00"
+      "last_collected_at": "2026-09-21T16:56:17+00:00"
      },
      "qualidade": {
-      "score": 61.9,
+      "score": 61.2,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 39.6,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 11
@@ -6475,15 +6475,15 @@
       "last_collected_at": "2026-09-20T14:04:10+00:00"
      },
      "qualidade": {
-      "score": 65.2,
+      "score": 64.5,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 61.5,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 7
@@ -6871,15 +6871,15 @@
       "last_collected_at": "2026-09-20T14:04:34+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 229
@@ -7267,15 +7267,15 @@
       "last_collected_at": "2026-09-20T14:04:48+00:00"
      },
      "qualidade": {
-      "score": 69.3,
+      "score": 68.6,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 89.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 2
@@ -7663,15 +7663,15 @@
       "last_collected_at": "2026-09-20T14:05:13+00:00"
      },
      "qualidade": {
-      "score": 55.9,
+      "score": 55.3,
       "componentes": {
        "completude": 98.9,
-       "atualidade": 20.0,
+       "atualidade": 17.8,
        "historico": 75.8,
        "estabilidade": 0.0,
        "transparencia": 100.0
       },
-      "dias_sem_atualizar": 81,
+      "dias_sem_atualizar": 82,
       "ultima_ref": "2026-07-01",
       "n_obs": 91,
       "n_revisoes": 114
@@ -8352,7 +8352,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 142,
+    "dias_sem_atualizar": 143,
     "ultima_ref": "2026-05-01",
     "n_obs": 89,
     "n_revisoes": 0
@@ -9043,7 +9043,7 @@
      "estabilidade": 100.0,
      "transparencia": 100.0
     },
-    "dias_sem_atualizar": 142,
+    "dias_sem_atualizar": 143,
     "ultima_ref": "2026-05-01",
     "n_obs": 89,
     "n_revisoes": 0
