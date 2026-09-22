@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "disclaimer": "Plataforma acadêmica e analítica. Scores e projeções não constituem rating, classificação regulatória ou recomendação de investimento."
  },
- "gerado_em": "2026-09-21T17:20:47+00:00",
+ "gerado_em": "2026-09-22T15:02:56+00:00",
  "vintages": {
   "sgs": "2026-07",
   "ifdata": "2026-06",
@@ -99,61 +99,93 @@
   },
   "cadastro_sedes": {
    "n": 1741,
-   "ref": "2026-09-21",
+   "ref": "2026-09-22",
    "def": "sedes autorizadas e em funcionamento no cadastro do BCB (Unicad) na data da coleta; inclui cooperativas, IPs e SCDs que não reportam ao IF.data."
   }
  },
  "fontes_status": {
   "bcb_sgs": {
-   "ok": 137,
+   "ok": 129,
    "falhas": [
     {
-     "key": "saldo_pj",
+     "key": "saldo_pf",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "amp_pf_fg",
+     "key": "consig_inss_atraso",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "amp_pf_pib",
+     "key": "consig_inss_inad",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "dir_saldo_pf",
+     "key": "amp_ef_osf",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "dir_inad_pj",
+     "key": "amp_pj_ext",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "amp_pf",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "dir_conc_pj_bndes",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "emp_sa_B",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "emp_C",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "emp_sa_K",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "emp_M",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "emp_P",
+     "erro": "Expecting value: line 1 column 1 (char 0)"
+    },
+    {
+     "key": "fd_papel_moeda",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     }
    ],
-   "segundos": 405
+   "segundos": 1095
   },
   "ibge": {
    "ok": 4,
    "falhas": [],
-   "segundos": 4
+   "segundos": 3
   },
   "ipeadata": {
    "ok": 2,
    "falhas": [],
-   "segundos": 141
+   "segundos": 92
   },
   "ifdata": {
    "ok": 5,
    "falhas": [],
-   "segundos": 116
+   "segundos": 129
   },
   "ifdata_ui": {
    "ok": 5,
    "falhas": [],
-   "segundos": 7
+   "segundos": 16
   },
   "ifdata_carteiras": {
    "ok": 5,
    "falhas": [],
-   "segundos": 59
+   "segundos": 225
   },
   "djen": {
    "ok": 0,
@@ -198,35 +230,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-23&dataDisponibilizacaoFim=2026-09-21: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
     }
    ],
    "segundos": 97
@@ -234,22 +266,22 @@
   "openfinance": {
    "ok": 18,
    "falhas": [],
-   "segundos": 31
+   "segundos": 29
   },
   "reclamacoes": {
    "ok": 4,
    "falhas": [],
-   "segundos": 9
+   "segundos": 8
   },
   "txjuros": {
    "ok": 20,
    "falhas": [],
-   "segundos": 96
+   "segundos": 123
   },
   "b3_market": {
    "ok": 22,
    "falhas": [],
-   "segundos": 152
+   "segundos": 100
   },
   "fidc": {
    "ok": 0,
@@ -269,7 +301,7 @@
   "scr_data": {
    "ok": 2,
    "falhas": [],
-   "segundos": 40
+   "segundos": 2
   },
   "geo_ibge": {
    "ok": 1,
@@ -279,7 +311,7 @@
   "pix_bcb": {
    "ok": 11,
    "falhas": [],
-   "segundos": 436
+   "segundos": 101
   },
   "pgfn": {
    "ok": 3,
@@ -304,7 +336,7 @@
   "estban": {
    "ok": 1,
    "falhas": [],
-   "segundos": 5
+   "segundos": 4
   },
   "mercado_imobiliario": {
    "ok": 1,
@@ -317,19 +349,14 @@
    "segundos": 0
   },
   "reclamacoes_consig": {
-   "ok": 0,
-   "falhas": [
-    {
-     "key": "reclamacoes_consig",
-     "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/publicacoes.json?indicadorTipoPublicacao=2: HTTP Error 504: Gateway Timeout"
-    }
-   ],
-   "segundos": 102
+   "ok": 1,
+   "falhas": [],
+   "segundos": 41
   },
   "operacional": {
    "ok": 2,
    "falhas": [],
-   "segundos": 9
+   "segundos": 3
   },
   "releases": {
    "ok": 1,
@@ -349,12 +376,12 @@
   "dependencias": {
    "ok": 3,
    "falhas": [],
-   "segundos": 10
+   "segundos": 0
   },
   "pncp_folha": {
    "ok": 2,
    "falhas": [],
-   "segundos": 90
+   "segundos": 104
   },
   "ifdata_funding": {
    "ok": 5,
@@ -366,7 +393,7 @@
    "falhas": [
     {
      "key": "pilar3:17184037",
-     "erro": "HTTP Error 503: Service Unavailable"
+     "erro": "HTTP Error 500: Internal Server Error"
     },
     {
      "key": "pilar3:00416968",
@@ -481,22 +508,22 @@
      "erro": "HTTP Error 520: <none>"
     }
    ],
-   "segundos": 170
+   "segundos": 178
   },
   "regimes": {
    "ok": 1,
    "falhas": [],
-   "segundos": 1
+   "segundos": 0
   },
   "remuneracao": {
    "ok": 1,
    "falhas": [],
-   "segundos": 7
+   "segundos": 2
   },
   "correspondentes": {
    "ok": 1,
    "falhas": [],
-   "segundos": 10
+   "segundos": 0
   },
   "cvm_ofertas": {
    "ok": 1,
@@ -506,32 +533,32 @@
   "cvm_securit": {
    "ok": 4,
    "falhas": [],
-   "segundos": 17
+   "segundos": 7
   },
   "bndes": {
    "ok": 18,
    "falhas": [],
-   "segundos": 36
+   "segundos": 44
   },
   "focus": {
    "ok": 6,
    "falhas": [],
-   "segundos": 8
+   "segundos": 5
   },
   "sfn_cadastro": {
    "ok": 4,
    "falhas": [],
-   "segundos": 23
+   "segundos": 32
   },
   "bcb_pas": {
    "ok": 3,
    "falhas": [],
-   "segundos": 5
+   "segundos": 4
   },
   "cvm_pas": {
    "ok": 1,
    "falhas": [],
-   "segundos": 2
+   "segundos": 1
   },
   "ifdata_passivo": {
    "ok": 1,
@@ -539,144 +566,54 @@
    "segundos": 0
   },
   "cvm_cda": {
-   "ok": 4,
+   "ok": 1,
    "falhas": [],
-   "segundos": 52
+   "segundos": 7
   },
   "bcb_consorcios": {
-   "ok": 2,
+   "ok": 1,
    "falhas": [],
-   "segundos": 8
+   "segundos": 0
   },
   "susep_ses": {
    "ok": 1,
    "falhas": [],
-   "segundos": 54
+   "segundos": 1
   },
   "sadipem": {
    "ok": 1,
    "falhas": [],
-   "segundos": 14
+   "segundos": 9
   },
   "siconfi_rgf": {
    "ok": 1,
    "falhas": [],
-   "segundos": 88
+   "segundos": 46
   },
   "tesouro_garantias": {
    "ok": 1,
    "falhas": [],
-   "segundos": 4
+   "segundos": 2
   },
   "sicor": {
-   "ok": 4,
-   "falhas": [
-    {
-     "key": "sicor_fonte:2026-09",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "sicor_genero:2026-09",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "sicor_fonte:2026-08",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/FonteRecursos?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "sicor_genero:2026-08",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/RegiaoUFGenero?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "sicor_if:2026-09",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/SegmentoIF?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2709%27&$format=json: HTTP Error 500: Internal Server Error"
-    },
-    {
-     "key": "sicor_if:2026-08",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/SegmentoIF?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "sicor_nomes",
-     "erro": "Falha ao coletar https://olinda.bcb.gov.br/olinda/servico/SICOR/versao/v2/odata/ProgramaSubprogramaRegiaoUF?$filter=AnoEmissao%20eq%20%272026%27%20and%20MesEmissao%20eq%20%2708%27&$format=json: HTTP Error 500: Internal Server Error"
-    }
-   ],
-   "segundos": 1634
+   "ok": 15,
+   "falhas": [],
+   "segundos": 248
   },
   "ipea_caged": {
    "ok": 2,
    "falhas": [],
-   "segundos": 183
+   "segundos": 0
   },
   "datajud": {
-   "ok": 9,
-   "falhas": [
-    {
-     "key": "falencia_tjpr",
-     "erro": "DataJud POST falhou: HTTP Error 504: Gateway Time-out"
-    },
-    {
-     "key": "recuperacao_judicial_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "recuperacao_judicial_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "recuperacao_judicial_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "falencia_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjsp",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjrj",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjmg",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjrs",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjpr",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjsc",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjba",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    },
-    {
-     "key": "funil_tjgo",
-     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
-    }
-   ],
-   "segundos": 988
+   "ok": 24,
+   "falhas": [],
+   "segundos": 586
   },
   "datajud_cobranca": {
    "ok": 9,
    "falhas": [],
-   "segundos": 387
+   "segundos": 229
   },
   "judicial": {
    "ok": 2,
@@ -686,12 +623,12 @@
      "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
     }
    ],
-   "segundos": 602
+   "segundos": 518
   },
   "cvm_dfp": {
    "ok": 3,
    "falhas": [],
-   "segundos": 16
+   "segundos": 46
   }
  },
  "fontes_reais": [
@@ -736,6 +673,7 @@
   "Tesouro/Sadipem",
   "Tesouro/Siconfi (RGF)",
   "bcb_consorcios",
+  "consumidor.gov.br",
   "cvm_cda",
   "datajud_cobranca",
   "ifdata_passivo",

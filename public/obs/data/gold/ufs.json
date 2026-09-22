@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-21T17:20:47+00:00",
+ "gerado_em": "2026-09-22T15:02:56+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -2252,11 +2252,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 14209,
-    "var_12m_pct": 14.68,
-    "casos_12m_todos": 29927,
+    "casos_12m": 14217,
+    "var_12m_pct": 14.77,
+    "casos_12m_todos": 29929,
     "por_mil_hab": 3.44,
-    "por_bi_carteira": 107.4
+    "por_bi_carteira": 107.5
    },
    "prazo": {
     "data_base": "2026-07",

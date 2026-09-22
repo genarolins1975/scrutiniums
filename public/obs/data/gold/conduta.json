@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-21T17:20:42+00:00",
+ "gerado_em": "2026-09-22T15:02:51+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,29 +24,29 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1267 processos sancionadores em 1ª instância, com 1336 decisões por apenado: 1278 multas somando R$ 71.6 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 133 apenados recorreram. 387 pessoas seguem inabilitadas. A CVM abriu 58 processos sancionadores em 12 meses (177 acusados); 245 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1269 processos sancionadores em 1ª instância, com 1338 decisões por apenado: 1280 multas somando R$ 71.7 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 133 apenados recorreram. 387 pessoas seguem inabilitadas. A CVM abriu 59 processos sancionadores em 12 meses (183 acusados); 246 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
-  "ultima_decisao": "2026-09-15",
+  "ultima_decisao": "2026-09-22",
   "primeira_decisao": "2013-01-16",
   "acervo": {
-   "decisoes": 16946,
-   "processos": 13035,
-   "apenados_distintos": 11388
+   "decisoes": 16948,
+   "processos": 13037,
+   "apenados_distintos": 11390
   },
   "janela_12m": {
-   "ini": "2025-09-21",
-   "decisoes": 1336,
-   "processos": 1267,
-   "multas_n": 1278,
-   "multas_valor": 71635500.0,
+   "ini": "2025-09-22",
+   "decisoes": 1338,
+   "processos": 1269,
+   "multas_n": 1280,
+   "multas_valor": 71685500.0,
    "multa_mediana": 25000.0,
    "multa_p90": 25000.0,
    "inabilitacoes": 3,
    "sem_penalidade": 51,
    "recursos": 133,
    "pj": 396,
-   "pf": 940
+   "pf": 942
   },
   "janela_12m_anterior": {
    "decisoes": 990,
@@ -64,13 +64,13 @@
   "penas_12m": [
    {
     "pena": "MULTA",
-    "n": 1278,
-    "share": 95.66
+    "n": 1280,
+    "share": 95.67
    },
    {
     "pena": "NÃO HOUVE PENALIDADE",
     "n": 51,
-    "share": 3.82
+    "share": 3.81
    },
    {
     "pena": "INABILITAÇÃO",
@@ -91,23 +91,23 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 842,
-    "share": 63.02
+    "n": 846,
+    "share": 63.23
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
     "n": 145,
-    "share": 10.85
+    "share": 10.84
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 131,
-    "share": 9.81
+    "n": 128,
+    "share": 9.57
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 93,
-    "share": 6.96
+    "n": 97,
+    "share": 7.25
    },
    {
     "situacao": "NÃO HOUVE PENALIDADE",
@@ -116,13 +116,13 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 41,
-    "share": 3.07
+    "n": 36,
+    "share": 2.69
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 24,
-    "share": 1.8
+    "share": 1.79
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -133,6 +133,11 @@
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
     "n": 3,
     "share": 0.22
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 2,
+    "share": 0.15
    },
    {
     "situacao": "PENALIDADE ENCAMINHADA PARA A STN",
@@ -158,13 +163,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11898,
-    "share": 87.64
+    "n": 11902,
+    "share": 87.66
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 883,
-    "share": 6.5
+    "n": 880,
+    "share": 6.48
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -178,8 +183,8 @@
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
-    "n": 116,
-    "share": 0.85
+    "n": 120,
+    "share": 0.88
    },
    {
     "situacao": "PENALIDADE ESTÁ SUSPENSA",
@@ -189,23 +194,28 @@
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
     "n": 74,
-    "share": 0.55
+    "share": 0.54
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 41,
-    "share": 0.3
+    "n": 36,
+    "share": 0.27
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
+   },
+   {
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
+    "n": 2,
+    "share": 0.01
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.9,
    "p90": 31.4,
-   "n": 3180
+   "n": 3179
   },
   "anual": [
    {
@@ -405,21 +415,41 @@
    },
    {
     "ano": "2026",
-    "decisoes": 1163,
-    "processos": 1098,
-    "multas_n": 1111,
-    "multas_valor": 67885500.0,
+    "decisoes": 1165,
+    "processos": 1100,
+    "multas_n": 1113,
+    "multas_valor": 67935500.0,
     "inabilitacoes": 3,
     "sem_penalidade": 45,
     "recursos": 115,
-    "pf": 839,
+    "pf": 841,
     "pj": 324,
     "incompleto": true,
-    "recurso_share": 9.89,
-    "sem_penalidade_share": 3.87
+    "recurso_share": 9.87,
+    "sem_penalidade_share": 3.86
    }
   ],
   "recentes": [
+   {
+    "pas": "312204",
+    "nome": "BASHIR MUSSA GAZI",
+    "pessoa": "PF",
+    "decisao": "2026-09-22",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
+   {
+    "pas": "312207",
+    "nome": "MANUEL GONZALEZ CUNA",
+    "pessoa": "PF",
+    "decisao": "2026-09-22",
+    "pena": "MULTA",
+    "multa": 25000.0,
+    "recurso": "NÃO",
+    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+   },
    {
     "pas": "312875",
     "nome": "ALPHONSE GUILHERME VOIGT",
@@ -638,7 +668,7 @@
     "pena": "MULTA",
     "multa": 12500.0,
     "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
+    "situacao": "MULTA PAGA"
    },
    {
     "pas": "300143",
@@ -799,26 +829,6 @@
     "multa": null,
     "recurso": "NÃO",
     "situacao": "NÃO HOUVE PENALIDADE"
-   },
-   {
-    "pas": "282943",
-    "nome": "CARLOS ALBERTO DE CARVALHO",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "MULTA",
-    "multa": 10000.0,
-    "recurso": "NÃO",
-    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
-   },
-   {
-    "pas": "282943",
-    "nome": "CELSO ATIENZA",
-    "pessoa": "PF",
-    "decisao": "2026-08-12",
-    "pena": "NÃO HOUVE PENALIDADE",
-    "multa": null,
-    "recurso": "NÃO",
-    "situacao": "NÃO HOUVE PENALIDADE"
    }
   ],
   "inabilitados": {
@@ -933,95 +943,95 @@
  "cvm": {
   "disponivel": true,
   "ultima_abertura": "2026-08-11",
-  "ultima_movimentacao": "2026-09-18",
+  "ultima_movimentacao": "2026-09-21",
   "acervo": {
-   "processos": 570,
-   "acusados": 2036,
-   "em_curso": 245,
+   "processos": 571,
+   "acusados": 2042,
+   "em_curso": 246,
    "finalizados": 325
   },
   "abertos_12m": {
-   "ini": "2025-09-21",
-   "processos": 58,
-   "acusados": 177
+   "ini": "2025-09-22",
+   "processos": 59,
+   "acusados": 183
   },
   "fases": [
    {
     "fase": "Finalizado",
     "n": 325,
-    "share": 57.02
+    "share": 56.92
    },
    {
     "fase": "Julgamento",
-    "n": 109,
-    "share": 19.12
+    "n": 108,
+    "share": 18.91
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 86,
-    "share": 15.09
+    "n": 87,
+    "share": 15.24
    },
    {
     "fase": "Recurso CRSFN",
     "n": 42,
-    "share": 7.37
+    "share": 7.36
    },
    {
     "fase": "Intimação após julgamento",
-    "n": 8,
-    "share": 1.4
+    "n": 9,
+    "share": 1.58
    }
   ],
   "areas": [
    {
     "area": "GEA-3",
-    "n": 88,
-    "share": 15.44
+    "n": 89,
+    "share": 15.59
    },
    {
     "area": "GEA-4",
     "n": 86,
-    "share": 15.09
+    "share": 15.06
    },
    {
     "area": "GNA",
     "n": 78,
-    "share": 13.68
+    "share": 13.66
    },
    {
     "area": "GMA",
     "n": 53,
-    "share": 9.3
+    "share": 9.28
    },
    {
     "area": "GER-3",
     "n": 50,
-    "share": 8.77
+    "share": 8.76
    },
    {
     "area": "GSUI-2",
     "n": 36,
-    "share": 6.32
+    "share": 6.3
    },
    {
     "area": "GSAF",
     "n": 33,
-    "share": 5.79
+    "share": 5.78
    },
    {
     "area": "GPS-3",
     "n": 26,
-    "share": 4.56
+    "share": 4.55
    },
    {
     "area": "GAIN",
     "n": 25,
-    "share": 4.39
+    "share": 4.38
    },
    {
     "area": "GPS-2",
     "n": 25,
-    "share": 4.39
+    "share": 4.38
    },
    {
     "area": "GPS-1",
@@ -1100,9 +1110,9 @@
    "n": 325
   },
   "idade_em_curso_meses": {
-   "mediana": 22,
+   "mediana": 22.0,
    "acima_36": 90,
-   "n": 245
+   "n": 246
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1204,9 +1214,9 @@
    },
    {
     "ano": "2026",
-    "processos": 40,
+    "processos": 41,
     "finalizados": 0,
-    "acusados": 101,
+    "acusados": 107,
     "incompleto": true,
     "finalizados_share": 0.0
    }
@@ -1221,6 +1231,16 @@
     "ultima_mov": "2026-08-17",
     "acusados": 5,
     "objeto": "Apurar a análise da ausência ou atraso ne entrega, por parte da SUGOI S.A., de informações periódicas previstas no art. 22 da Resolução CVM nº 80/2022 (\"Resolução 80\")"
+   },
+   {
+    "nup": "19957013613202683",
+    "abertura": "2026-08-06",
+    "area": "GEA-3",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-09-14",
+    "acusados": 6,
+    "objeto": "O presente termo de acusação originou-se do Processo CVM nº 19957.004044/2025-02, instaurado com o fim de analisar reclamação em face da Inepar S.A. Indústria e Construções - Em recuperação judicial, sobre eventos relaci"
    },
    {
     "nup": "19957012377202688",
@@ -1370,7 +1390,7 @@
     "local": "Gerência de Controle de Processos Sancionadores",
     "ultima_mov": "2026-07-16",
     "acusados": 1,
-    "objeto": "A PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA. violou o caput do art. 31 da Resolução CVM nº 23/2021 ao prestar serviço das demonstrações contábeis para um mesmo cliente por prazo superior a cinco exercícios soci"
+    "objeto": "A PRICEWATERHOUSECOOPERS AUDITORES INDEPENDENTES LTDA. violou o caput do art. 31 da Resolução CVM nº 23/2021 ao prestar serviço de auditoria das demonstrações contábeis para um mesmo cliente por prazo superior a cinco ex"
    },
    {
     "nup": "19957008514202680",
@@ -1501,16 +1521,6 @@
     "ultima_mov": "2026-06-19",
     "acusados": 2,
     "objeto": "1) ausência de análise da razoabilidade das premissas e dos dados utilizados na elaboração do laudo de avaliação do ativodo Fundo 2) falha na análise de reconhecimento de receita decorrente da assunção da dívida do Fundo"
-   },
-   {
-    "nup": "19957002059202617",
-    "abertura": "2026-02-23",
-    "area": "GEA-3",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-07-23",
-    "acusados": 1,
-    "objeto": "Analisar reclamações apresentadas por acionistas minoritários acerca de eventual prestação de informações falsas em Fato Relevante divulgado em 19.02.2025 pela PDG REALTY S.A. EMPREENDIMENTOS E PARTICIPAÇÕES."
    }
   ],
   "nota": "Processo a processo, com a fase atual e os acusados. A base não traz o resultado (absolvição, multa, termo de compromisso): 'finalizado' é o fim do rito. Objeto reproduzido como publicado pela CVM, truncado. Sem ranking por nome."

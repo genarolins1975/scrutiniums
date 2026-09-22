@@ -51,16 +51,16 @@
    "TO"
   ],
   "faltam": [],
-  "coletado_em": "2026-09-21T17:09:41+00:00",
+  "coletado_em": "2026-09-22T14:52:45+00:00",
   "populacao_coberta_pct": 100.0
  },
  "brasil": {
-  "casos_12m": 822250,
-  "casos_12m_anterior": 718523,
+  "casos_12m": 822258,
+  "casos_12m_anterior": 718520,
   "var_12m_pct": 14.44,
-  "casos_12m_todos": 1810138,
+  "casos_12m_todos": 1810140,
   "var_12m_todos_pct": 11.42,
-  "bancario_share": 45.42,
+  "bancario_share": 45.43,
   "por_mil_hab": 3.85,
   "por_bi_carteira": 108.3
  },
@@ -73,14 +73,14 @@
     159
    ],
    "todos": {
-    "casos_12m": 1095956,
-    "casos_12m_anterior": 1015145,
+    "casos_12m": 1095955,
+    "casos_12m_anterior": 1015148,
     "var_12m_pct": 7.96,
-    "registros_12m": 1099847
+    "registros_12m": 1099846
    },
    "bancario": {
     "casos_12m": 233729,
-    "casos_12m_anterior": 215640,
+    "casos_12m_anterior": 215641,
     "var_12m_pct": 8.39,
     "registros_12m": 233839
    },
@@ -202,7 +202,7 @@
     },
     {
      "mes": "2020-08",
-     "todos": 54489,
+     "todos": 54488,
      "bancario": 8172,
      "parcial": false
     },
@@ -274,8 +274,8 @@
     },
     {
      "mes": "2021-08",
-     "todos": 61605,
-     "bancario": 10953,
+     "todos": 61606,
+     "bancario": 10954,
      "parcial": false
     },
     {
@@ -322,8 +322,8 @@
     },
     {
      "mes": "2022-04",
-     "todos": 65074,
-     "bancario": 12516,
+     "todos": 65073,
+     "bancario": 12515,
      "parcial": false
     },
     {
@@ -335,7 +335,7 @@
     {
      "mes": "2022-06",
      "todos": 77080,
-     "bancario": 16246,
+     "bancario": 16247,
      "parcial": false
     },
     {
@@ -382,14 +382,14 @@
     },
     {
      "mes": "2023-02",
-     "todos": 66890,
+     "todos": 66891,
      "bancario": 17203,
      "parcial": false
     },
     {
      "mes": "2023-03",
-     "todos": 90739,
-     "bancario": 20210,
+     "todos": 90741,
+     "bancario": 20211,
      "parcial": false
     },
     {
@@ -400,7 +400,7 @@
     },
     {
      "mes": "2023-05",
-     "todos": 89113,
+     "todos": 89114,
      "bancario": 19954,
      "parcial": false
     },
@@ -412,7 +412,7 @@
     },
     {
      "mes": "2023-07",
-     "todos": 87525,
+     "todos": 87524,
      "bancario": 19963,
      "parcial": false
     },
@@ -424,7 +424,7 @@
     },
     {
      "mes": "2023-09",
-     "todos": 80493,
+     "todos": 80492,
      "bancario": 18253,
      "parcial": false
     },
@@ -472,14 +472,14 @@
     },
     {
      "mes": "2024-05",
-     "todos": 86820,
+     "todos": 86819,
      "bancario": 19128,
      "parcial": false
     },
     {
      "mes": "2024-06",
-     "todos": 84562,
-     "bancario": 20267,
+     "todos": 84563,
+     "bancario": 20268,
      "parcial": false
     },
     {
@@ -502,7 +502,7 @@
     },
     {
      "mes": "2024-10",
-     "todos": 96934,
+     "todos": 96935,
      "bancario": 20069,
      "parcial": false
     },
@@ -514,14 +514,14 @@
     },
     {
      "mes": "2024-12",
-     "todos": 75720,
+     "todos": 75721,
      "bancario": 16742,
      "parcial": false
     },
     {
      "mes": "2025-01",
      "todos": 76013,
-     "bancario": 17105,
+     "bancario": 17106,
      "parcial": false
     },
     {
@@ -550,13 +550,13 @@
     },
     {
      "mes": "2025-06",
-     "todos": 82525,
+     "todos": 82526,
      "bancario": 16529,
      "parcial": false
     },
     {
      "mes": "2025-07",
-     "todos": 97337,
+     "todos": 97336,
      "bancario": 18237,
      "parcial": false
     },
@@ -568,7 +568,7 @@
     },
     {
      "mes": "2025-09",
-     "todos": 93284,
+     "todos": 93283,
      "bancario": 19695,
      "parcial": false
     },
@@ -610,38 +610,38 @@
     },
     {
      "mes": "2026-04",
-     "todos": 95233,
+     "todos": 95232,
      "bancario": 21555,
      "parcial": false
     },
     {
      "mes": "2026-05",
-     "todos": 94336,
+     "todos": 94337,
      "bancario": 21102,
      "parcial": false
     },
     {
      "mes": "2026-06",
-     "todos": 94962,
+     "todos": 94963,
      "bancario": 20925,
      "parcial": false
     },
     {
      "mes": "2026-07",
-     "todos": 74262,
-     "bancario": 15603,
+     "todos": 74264,
+     "bancario": 15605,
      "parcial": true
     },
     {
      "mes": "2026-08",
-     "todos": 40424,
-     "bancario": 8462,
+     "todos": 40428,
+     "bancario": 8463,
      "parcial": true
     },
     {
      "mes": "2026-09",
-     "todos": 2672,
-     "bancario": 623,
+     "todos": 2929,
+     "bancario": 685,
      "parcial": true
     }
    ]
@@ -653,16 +653,16 @@
     81
    ],
    "todos": {
-    "casos_12m": 530512,
-    "casos_12m_anterior": 464627,
+    "casos_12m": 530521,
+    "casos_12m_anterior": 464624,
     "var_12m_pct": 14.18,
-    "registros_12m": 530534
+    "registros_12m": 530543
    },
    "bancario": {
-    "casos_12m": 520871,
-    "casos_12m_anterior": 455211,
-    "var_12m_pct": 14.42,
-    "registros_12m": 520892
+    "casos_12m": 520881,
+    "casos_12m_anterior": 455208,
+    "var_12m_pct": 14.43,
+    "registros_12m": 520902
    },
    "bancario_share": 98.18,
    "serie": [
@@ -722,8 +722,8 @@
     },
     {
      "mes": "2019-10",
-     "todos": 23675,
-     "bancario": 22311,
+     "todos": 23674,
+     "bancario": 22310,
      "parcial": false
     },
     {
@@ -968,8 +968,8 @@
     },
     {
      "mes": "2023-03",
-     "todos": 46360,
-     "bancario": 45386,
+     "todos": 46358,
+     "bancario": 45384,
      "parcial": false
     },
     {
@@ -1010,7 +1010,7 @@
     },
     {
      "mes": "2023-10",
-     "todos": 38483,
+     "todos": 38482,
      "bancario": 37631,
      "parcial": false
     },
@@ -1058,8 +1058,8 @@
     },
     {
      "mes": "2024-06",
-     "todos": 39861,
-     "bancario": 39109,
+     "todos": 39860,
+     "bancario": 39108,
      "parcial": false
     },
     {
@@ -1082,8 +1082,8 @@
     },
     {
      "mes": "2024-10",
-     "todos": 42378,
-     "bancario": 41485,
+     "todos": 42377,
+     "bancario": 41484,
      "parcial": false
     },
     {
@@ -1106,8 +1106,8 @@
     },
     {
      "mes": "2025-02",
-     "todos": 38663,
-     "bancario": 37947,
+     "todos": 38662,
+     "bancario": 37946,
      "parcial": false
     },
     {
@@ -1130,14 +1130,14 @@
     },
     {
      "mes": "2025-06",
-     "todos": 37213,
-     "bancario": 36493,
+     "todos": 37212,
+     "bancario": 36492,
      "parcial": false
     },
     {
      "mes": "2025-07",
-     "todos": 41408,
-     "bancario": 40464,
+     "todos": 41409,
+     "bancario": 40465,
      "parcial": false
     },
     {
@@ -1154,8 +1154,8 @@
     },
     {
      "mes": "2025-10",
-     "todos": 42685,
-     "bancario": 42032,
+     "todos": 42683,
+     "bancario": 42031,
      "parcial": false
     },
     {
@@ -1172,8 +1172,8 @@
     },
     {
      "mes": "2026-01",
-     "todos": 44391,
-     "bancario": 43682,
+     "todos": 44392,
+     "bancario": 43683,
      "parcial": false
     },
     {
@@ -1190,38 +1190,38 @@
     },
     {
      "mes": "2026-04",
-     "todos": 53074,
-     "bancario": 52161,
+     "todos": 53075,
+     "bancario": 52162,
      "parcial": false
     },
     {
      "mes": "2026-05",
-     "todos": 50405,
-     "bancario": 49404,
+     "todos": 50408,
+     "bancario": 49407,
      "parcial": false
     },
     {
      "mes": "2026-06",
-     "todos": 48858,
-     "bancario": 48009,
+     "todos": 48863,
+     "bancario": 48014,
      "parcial": false
     },
     {
      "mes": "2026-07",
-     "todos": 34248,
-     "bancario": 33484,
+     "todos": 34253,
+     "bancario": 33489,
      "parcial": true
     },
     {
      "mes": "2026-08",
-     "todos": 19956,
-     "bancario": 19570,
+     "todos": 19967,
+     "bancario": 19581,
      "parcial": true
     },
     {
      "mes": "2026-09",
-     "todos": 985,
-     "bancario": 971,
+     "todos": 1118,
+     "bancario": 1103,
      "parcial": true
     }
    ]
@@ -1233,16 +1233,16 @@
     40
    ],
    "todos": {
-    "casos_12m": 183566,
-    "casos_12m_anterior": 144815,
+    "casos_12m": 183560,
+    "casos_12m_anterior": 144811,
     "var_12m_pct": 26.76,
-    "registros_12m": 183593
+    "registros_12m": 183587
    },
    "bancario": {
-    "casos_12m": 67606,
-    "casos_12m_anterior": 47643,
+    "casos_12m": 67604,
+    "casos_12m_anterior": 47642,
     "var_12m_pct": 41.9,
-    "registros_12m": 67609
+    "registros_12m": 67607
    },
    "bancario_share": 36.83,
    "serie": [
@@ -1260,7 +1260,7 @@
     },
     {
      "mes": "2019-03",
-     "todos": 6209,
+     "todos": 6208,
      "bancario": 1079,
      "parcial": false
     },
@@ -1308,7 +1308,7 @@
     },
     {
      "mes": "2019-11",
-     "todos": 8982,
+     "todos": 8981,
      "bancario": 1307,
      "parcial": false
     },
@@ -1380,25 +1380,25 @@
     },
     {
      "mes": "2020-11",
-     "todos": 8603,
+     "todos": 8602,
      "bancario": 1824,
      "parcial": false
     },
     {
      "mes": "2020-12",
-     "todos": 9659,
+     "todos": 9657,
      "bancario": 2014,
      "parcial": false
     },
     {
      "mes": "2021-01",
-     "todos": 6935,
+     "todos": 6934,
      "bancario": 1656,
      "parcial": false
     },
     {
      "mes": "2021-02",
-     "todos": 8358,
+     "todos": 8357,
      "bancario": 1733,
      "parcial": false
     },
@@ -1422,7 +1422,7 @@
     },
     {
      "mes": "2021-06",
-     "todos": 9152,
+     "todos": 9151,
      "bancario": 2205,
      "parcial": false
     },
@@ -1440,14 +1440,14 @@
     },
     {
      "mes": "2021-09",
-     "todos": 9452,
+     "todos": 9451,
      "bancario": 2454,
      "parcial": false
     },
     {
      "mes": "2021-10",
      "todos": 8662,
-     "bancario": 2116,
+     "bancario": 2117,
      "parcial": false
     },
     {
@@ -1458,14 +1458,14 @@
     },
     {
      "mes": "2021-12",
-     "todos": 9037,
+     "todos": 9034,
      "bancario": 2244,
      "parcial": false
     },
     {
      "mes": "2022-01",
-     "todos": 6471,
-     "bancario": 2012,
+     "todos": 6470,
+     "bancario": 2011,
      "parcial": false
     },
     {
@@ -1494,13 +1494,13 @@
     },
     {
      "mes": "2022-06",
-     "todos": 10898,
-     "bancario": 3482,
+     "todos": 10897,
+     "bancario": 3481,
      "parcial": false
     },
     {
      "mes": "2022-07",
-     "todos": 12025,
+     "todos": 12024,
      "bancario": 4049,
      "parcial": false
     },
@@ -1530,38 +1530,38 @@
     },
     {
      "mes": "2022-12",
-     "todos": 11098,
-     "bancario": 3779,
+     "todos": 11096,
+     "bancario": 3777,
      "parcial": false
     },
     {
      "mes": "2023-01",
-     "todos": 10134,
-     "bancario": 3944,
+     "todos": 10132,
+     "bancario": 3943,
      "parcial": false
     },
     {
      "mes": "2023-02",
-     "todos": 11266,
-     "bancario": 4063,
+     "todos": 11263,
+     "bancario": 4060,
      "parcial": false
     },
     {
      "mes": "2023-03",
-     "todos": 14191,
+     "todos": 14190,
      "bancario": 4333,
      "parcial": false
     },
     {
      "mes": "2023-04",
-     "todos": 11745,
+     "todos": 11744,
      "bancario": 3843,
      "parcial": false
     },
     {
      "mes": "2023-05",
-     "todos": 13320,
-     "bancario": 4873,
+     "todos": 13319,
+     "bancario": 4872,
      "parcial": false
     },
     {
@@ -1572,25 +1572,25 @@
     },
     {
      "mes": "2023-07",
-     "todos": 12509,
-     "bancario": 4363,
+     "todos": 12505,
+     "bancario": 4361,
      "parcial": false
     },
     {
      "mes": "2023-08",
-     "todos": 13758,
+     "todos": 13757,
      "bancario": 5110,
      "parcial": false
     },
     {
      "mes": "2023-09",
      "todos": 10913,
-     "bancario": 3736,
+     "bancario": 3737,
      "parcial": false
     },
     {
      "mes": "2023-10",
-     "todos": 11623,
+     "todos": 11624,
      "bancario": 3883,
      "parcial": false
     },
@@ -1608,14 +1608,14 @@
     },
     {
      "mes": "2024-01",
-     "todos": 12559,
-     "bancario": 4721,
+     "todos": 12558,
+     "bancario": 4720,
      "parcial": false
     },
     {
      "mes": "2024-02",
-     "todos": 12049,
-     "bancario": 3738,
+     "todos": 12048,
+     "bancario": 3737,
      "parcial": false
     },
     {
@@ -1626,7 +1626,7 @@
     },
     {
      "mes": "2024-04",
-     "todos": 14552,
+     "todos": 14551,
      "bancario": 4643,
      "parcial": false
     },
@@ -1650,7 +1650,7 @@
     },
     {
      "mes": "2024-08",
-     "todos": 13061,
+     "todos": 13059,
      "bancario": 3951,
      "parcial": false
     },
@@ -1668,7 +1668,7 @@
     },
     {
      "mes": "2024-11",
-     "todos": 11722,
+     "todos": 11721,
      "bancario": 3847,
      "parcial": false
     },
@@ -1692,8 +1692,8 @@
     },
     {
      "mes": "2025-03",
-     "todos": 10451,
-     "bancario": 3440,
+     "todos": 10450,
+     "bancario": 3439,
      "parcial": false
     },
     {
@@ -1716,14 +1716,14 @@
     },
     {
      "mes": "2025-07",
-     "todos": 13966,
+     "todos": 13965,
      "bancario": 4796,
      "parcial": false
     },
     {
      "mes": "2025-08",
-     "todos": 13381,
-     "bancario": 4613,
+     "todos": 13380,
+     "bancario": 4612,
      "parcial": false
     },
     {
@@ -1740,7 +1740,7 @@
     },
     {
      "mes": "2025-11",
-     "todos": 14450,
+     "todos": 14449,
      "bancario": 4747,
      "parcial": false
     },
@@ -1752,14 +1752,14 @@
     },
     {
      "mes": "2026-01",
-     "todos": 12636,
-     "bancario": 5042,
+     "todos": 12633,
+     "bancario": 5041,
      "parcial": false
     },
     {
      "mes": "2026-02",
-     "todos": 13827,
-     "bancario": 5393,
+     "todos": 13826,
+     "bancario": 5392,
      "parcial": false
     },
     {
@@ -1782,8 +1782,8 @@
     },
     {
      "mes": "2026-06",
-     "todos": 18123,
-     "bancario": 7785,
+     "todos": 18124,
+     "bancario": 7786,
      "parcial": false
     },
     {
@@ -1800,8 +1800,8 @@
     },
     {
      "mes": "2026-09",
-     "todos": 544,
-     "bancario": 245,
+     "todos": 586,
+     "bancario": 265,
      "parcial": true
     }
    ]
@@ -2411,7 +2411,7 @@
   {
    "mes": "2019-03",
    "parcial": false,
-   "todos": 62293,
+   "todos": 62292,
    "bancario": 18981,
    "execucao": 7314,
    "busca_apreensao": 10586,
@@ -2481,17 +2481,17 @@
   {
    "mes": "2019-10",
    "parcial": false,
-   "todos": 101559,
-   "bancario": 33413,
+   "todos": 101558,
+   "bancario": 33412,
    "execucao": 9391,
-   "busca_apreensao": 22311,
+   "busca_apreensao": 22310,
    "monitoria": 1711,
    "exec_hipotecaria": 0
   },
   {
    "mes": "2019-11",
    "parcial": false,
-   "todos": 90156,
+   "todos": 90155,
    "bancario": 30407,
    "execucao": 8515,
    "busca_apreensao": 20585,
@@ -2581,7 +2581,7 @@
   {
    "mes": "2020-08",
    "parcial": false,
-   "todos": 83136,
+   "todos": 83135,
    "bancario": 28749,
    "execucao": 8172,
    "busca_apreensao": 18573,
@@ -2611,7 +2611,7 @@
   {
    "mes": "2020-11",
    "parcial": false,
-   "todos": 79908,
+   "todos": 79907,
    "bancario": 29432,
    "execucao": 7884,
    "busca_apreensao": 19724,
@@ -2621,7 +2621,7 @@
   {
    "mes": "2020-12",
    "parcial": false,
-   "todos": 76605,
+   "todos": 76603,
    "bancario": 27260,
    "execucao": 8246,
    "busca_apreensao": 17000,
@@ -2631,7 +2631,7 @@
   {
    "mes": "2021-01",
    "parcial": false,
-   "todos": 68257,
+   "todos": 68256,
    "bancario": 27015,
    "execucao": 6669,
    "busca_apreensao": 18689,
@@ -2641,7 +2641,7 @@
   {
    "mes": "2021-02",
    "parcial": false,
-   "todos": 82534,
+   "todos": 82533,
    "bancario": 31679,
    "execucao": 7917,
    "busca_apreensao": 22029,
@@ -2681,7 +2681,7 @@
   {
    "mes": "2021-06",
    "parcial": false,
-   "todos": 97608,
+   "todos": 97607,
    "bancario": 40201,
    "execucao": 11422,
    "busca_apreensao": 26573,
@@ -2701,9 +2701,9 @@
   {
    "mes": "2021-08",
    "parcial": false,
-   "todos": 95451,
-   "bancario": 36305,
-   "execucao": 10953,
+   "todos": 95452,
+   "bancario": 36306,
+   "execucao": 10954,
    "busca_apreensao": 22905,
    "monitoria": 2446,
    "exec_hipotecaria": 1
@@ -2711,7 +2711,7 @@
   {
    "mes": "2021-09",
    "parcial": false,
-   "todos": 92401,
+   "todos": 92400,
    "bancario": 35265,
    "execucao": 10167,
    "busca_apreensao": 22644,
@@ -2722,10 +2722,10 @@
    "mes": "2021-10",
    "parcial": false,
    "todos": 90692,
-   "bancario": 36101,
+   "bancario": 36102,
    "execucao": 9622,
    "busca_apreensao": 24362,
-   "monitoria": 2116,
+   "monitoria": 2117,
    "exec_hipotecaria": 1
   },
   {
@@ -2741,7 +2741,7 @@
   {
    "mes": "2021-12",
    "parcial": false,
-   "todos": 92600,
+   "todos": 92597,
    "bancario": 37535,
    "execucao": 11118,
    "busca_apreensao": 24173,
@@ -2751,11 +2751,11 @@
   {
    "mes": "2022-01",
    "parcial": false,
-   "todos": 82806,
-   "bancario": 39334,
+   "todos": 82805,
+   "bancario": 39333,
    "execucao": 9809,
    "busca_apreensao": 27513,
-   "monitoria": 2012,
+   "monitoria": 2011,
    "exec_hipotecaria": 0
   },
   {
@@ -2781,9 +2781,9 @@
   {
    "mes": "2022-04",
    "parcial": false,
-   "todos": 110355,
-   "bancario": 49925,
-   "execucao": 12516,
+   "todos": 110354,
+   "bancario": 49924,
+   "execucao": 12515,
    "busca_apreensao": 34631,
    "monitoria": 2778,
    "exec_hipotecaria": 0
@@ -2801,17 +2801,17 @@
   {
    "mes": "2022-06",
    "parcial": false,
-   "todos": 131973,
+   "todos": 131972,
    "bancario": 62529,
-   "execucao": 16246,
+   "execucao": 16247,
    "busca_apreensao": 42801,
-   "monitoria": 3482,
+   "monitoria": 3481,
    "exec_hipotecaria": 0
   },
   {
    "mes": "2022-07",
    "parcial": false,
-   "todos": 133991,
+   "todos": 133990,
    "bancario": 63124,
    "execucao": 17519,
    "busca_apreensao": 41556,
@@ -2861,47 +2861,47 @@
   {
    "mes": "2022-12",
    "parcial": false,
-   "todos": 117418,
-   "bancario": 56442,
+   "todos": 117416,
+   "bancario": 56440,
    "execucao": 16606,
    "busca_apreensao": 36056,
-   "monitoria": 3779,
+   "monitoria": 3777,
    "exec_hipotecaria": 1
   },
   {
    "mes": "2023-01",
    "parcial": false,
-   "todos": 118742,
-   "bancario": 58005,
+   "todos": 118740,
+   "bancario": 58004,
    "execucao": 17906,
    "busca_apreensao": 36154,
-   "monitoria": 3944,
+   "monitoria": 3943,
    "exec_hipotecaria": 1
   },
   {
    "mes": "2023-02",
    "parcial": false,
-   "todos": 115795,
-   "bancario": 58183,
+   "todos": 115793,
+   "bancario": 58180,
    "execucao": 17203,
    "busca_apreensao": 36915,
-   "monitoria": 4063,
+   "monitoria": 4060,
    "exec_hipotecaria": 2
   },
   {
    "mes": "2023-03",
    "parcial": false,
-   "todos": 151311,
-   "bancario": 69932,
-   "execucao": 20210,
-   "busca_apreensao": 45386,
+   "todos": 151310,
+   "bancario": 69931,
+   "execucao": 20211,
+   "busca_apreensao": 45384,
    "monitoria": 4333,
    "exec_hipotecaria": 3
   },
   {
    "mes": "2023-04",
    "parcial": false,
-   "todos": 125629,
+   "todos": 125628,
    "bancario": 60469,
    "execucao": 17201,
    "busca_apreensao": 39423,
@@ -2912,10 +2912,10 @@
    "mes": "2023-05",
    "parcial": false,
    "todos": 149401,
-   "bancario": 70936,
+   "bancario": 70935,
    "execucao": 19954,
    "busca_apreensao": 46109,
-   "monitoria": 4873,
+   "monitoria": 4872,
    "exec_hipotecaria": 0
   },
   {
@@ -2931,17 +2931,17 @@
   {
    "mes": "2023-07",
    "parcial": false,
-   "todos": 144325,
-   "bancario": 67779,
+   "todos": 144320,
+   "bancario": 67777,
    "execucao": 19963,
    "busca_apreensao": 43452,
-   "monitoria": 4363,
+   "monitoria": 4361,
    "exec_hipotecaria": 1
   },
   {
    "mes": "2023-08",
    "parcial": false,
-   "todos": 157200,
+   "todos": 157199,
    "bancario": 75889,
    "execucao": 23564,
    "busca_apreensao": 47213,
@@ -2951,11 +2951,11 @@
   {
    "mes": "2023-09",
    "parcial": false,
-   "todos": 128467,
-   "bancario": 58315,
+   "todos": 128466,
+   "bancario": 58316,
    "execucao": 18253,
    "busca_apreensao": 36323,
-   "monitoria": 3736,
+   "monitoria": 3737,
    "exec_hipotecaria": 3
   },
   {
@@ -2991,21 +2991,21 @@
   {
    "mes": "2024-01",
    "parcial": false,
-   "todos": 122956,
-   "bancario": 59305,
+   "todos": 122955,
+   "bancario": 59304,
    "execucao": 16486,
    "busca_apreensao": 38095,
-   "monitoria": 4721,
+   "monitoria": 4720,
    "exec_hipotecaria": 3
   },
   {
    "mes": "2024-02",
    "parcial": false,
-   "todos": 126841,
-   "bancario": 58757,
+   "todos": 126840,
+   "bancario": 58756,
    "execucao": 17386,
    "busca_apreensao": 37631,
-   "monitoria": 3738,
+   "monitoria": 3737,
    "exec_hipotecaria": 2
   },
   {
@@ -3021,7 +3021,7 @@
   {
    "mes": "2024-04",
    "parcial": false,
-   "todos": 151891,
+   "todos": 151890,
    "bancario": 68352,
    "execucao": 19304,
    "busca_apreensao": 44403,
@@ -3031,7 +3031,7 @@
   {
    "mes": "2024-05",
    "parcial": false,
-   "todos": 141304,
+   "todos": 141303,
    "bancario": 63311,
    "execucao": 19128,
    "busca_apreensao": 40219,
@@ -3043,8 +3043,8 @@
    "parcial": false,
    "todos": 136368,
    "bancario": 63211,
-   "execucao": 20267,
-   "busca_apreensao": 39109,
+   "execucao": 20268,
+   "busca_apreensao": 39108,
    "monitoria": 3835,
    "exec_hipotecaria": 0
   },
@@ -3061,7 +3061,7 @@
   {
    "mes": "2024-08",
    "parcial": false,
-   "todos": 145140,
+   "todos": 145138,
    "bancario": 63925,
    "execucao": 18903,
    "busca_apreensao": 41070,
@@ -3082,16 +3082,16 @@
    "mes": "2024-10",
    "parcial": false,
    "todos": 153226,
-   "bancario": 66497,
+   "bancario": 66496,
    "execucao": 20069,
-   "busca_apreensao": 41485,
+   "busca_apreensao": 41484,
    "monitoria": 4941,
    "exec_hipotecaria": 2
   },
   {
    "mes": "2024-11",
    "parcial": false,
-   "todos": 125086,
+   "todos": 125085,
    "bancario": 54447,
    "execucao": 16173,
    "busca_apreensao": 34425,
@@ -3101,7 +3101,7 @@
   {
    "mes": "2024-12",
    "parcial": false,
-   "todos": 121432,
+   "todos": 121433,
    "bancario": 52396,
    "execucao": 16742,
    "busca_apreensao": 31660,
@@ -3112,8 +3112,8 @@
    "mes": "2025-01",
    "parcial": false,
    "todos": 127931,
-   "bancario": 61506,
-   "execucao": 17105,
+   "bancario": 61507,
+   "execucao": 17106,
    "busca_apreensao": 40768,
    "monitoria": 3629,
    "exec_hipotecaria": 4
@@ -3121,21 +3121,21 @@
   {
    "mes": "2025-02",
    "parcial": false,
-   "todos": 131774,
-   "bancario": 60105,
+   "todos": 131773,
+   "bancario": 60104,
    "execucao": 18527,
-   "busca_apreensao": 37947,
+   "busca_apreensao": 37946,
    "monitoria": 3626,
    "exec_hipotecaria": 5
   },
   {
    "mes": "2025-03",
    "parcial": false,
-   "todos": 126790,
-   "bancario": 56365,
+   "todos": 126789,
+   "bancario": 56364,
    "execucao": 16941,
    "busca_apreensao": 35981,
-   "monitoria": 3440,
+   "monitoria": 3439,
    "exec_hipotecaria": 3
   },
   {
@@ -3162,36 +3162,36 @@
    "mes": "2025-06",
    "parcial": false,
    "todos": 131504,
-   "bancario": 56776,
+   "bancario": 56775,
    "execucao": 16529,
-   "busca_apreensao": 36493,
+   "busca_apreensao": 36492,
    "monitoria": 3749,
    "exec_hipotecaria": 5
   },
   {
    "mes": "2025-07",
    "parcial": false,
-   "todos": 152722,
-   "bancario": 63502,
+   "todos": 152721,
+   "bancario": 63503,
    "execucao": 18237,
-   "busca_apreensao": 40464,
+   "busca_apreensao": 40465,
    "monitoria": 4796,
    "exec_hipotecaria": 5
   },
   {
    "mes": "2025-08",
    "parcial": false,
-   "todos": 147779,
-   "bancario": 64671,
+   "todos": 147778,
+   "bancario": 64670,
    "execucao": 18513,
    "busca_apreensao": 41538,
-   "monitoria": 4613,
+   "monitoria": 4612,
    "exec_hipotecaria": 7
   },
   {
    "mes": "2025-09",
    "parcial": false,
-   "todos": 150262,
+   "todos": 150261,
    "bancario": 65932,
    "execucao": 19695,
    "busca_apreensao": 41176,
@@ -3201,17 +3201,17 @@
   {
    "mes": "2025-10",
    "parcial": false,
-   "todos": 159974,
-   "bancario": 67630,
+   "todos": 159972,
+   "bancario": 67629,
    "execucao": 20134,
-   "busca_apreensao": 42032,
+   "busca_apreensao": 42031,
    "monitoria": 5456,
    "exec_hipotecaria": 8
   },
   {
    "mes": "2025-11",
    "parcial": false,
-   "todos": 131380,
+   "todos": 131379,
    "bancario": 54879,
    "execucao": 16562,
    "busca_apreensao": 33568,
@@ -3231,21 +3231,21 @@
   {
    "mes": "2026-01",
    "parcial": false,
-   "todos": 132108,
+   "todos": 132106,
    "bancario": 65558,
    "execucao": 16833,
-   "busca_apreensao": 43682,
-   "monitoria": 5042,
+   "busca_apreensao": 43683,
+   "monitoria": 5041,
    "exec_hipotecaria": 1
   },
   {
    "mes": "2026-02",
    "parcial": false,
-   "todos": 141335,
-   "bancario": 66792,
+   "todos": 141334,
+   "bancario": 66791,
    "execucao": 19051,
    "busca_apreensao": 42348,
-   "monitoria": 5393,
+   "monitoria": 5392,
    "exec_hipotecaria": 0
   },
   {
@@ -3262,60 +3262,60 @@
    "mes": "2026-04",
    "parcial": false,
    "todos": 164093,
-   "bancario": 79824,
+   "bancario": 79825,
    "execucao": 21555,
-   "busca_apreensao": 52161,
+   "busca_apreensao": 52162,
    "monitoria": 6103,
    "exec_hipotecaria": 5
   },
   {
    "mes": "2026-05",
    "parcial": false,
-   "todos": 162479,
-   "bancario": 77550,
+   "todos": 162483,
+   "bancario": 77553,
    "execucao": 21102,
-   "busca_apreensao": 49404,
+   "busca_apreensao": 49407,
    "monitoria": 7043,
    "exec_hipotecaria": 1
   },
   {
    "mes": "2026-06",
    "parcial": false,
-   "todos": 161952,
-   "bancario": 76721,
+   "todos": 161959,
+   "bancario": 76727,
    "execucao": 20925,
-   "busca_apreensao": 48009,
-   "monitoria": 7785,
+   "busca_apreensao": 48014,
+   "monitoria": 7786,
    "exec_hipotecaria": 2
   },
   {
    "mes": "2026-07",
    "parcial": true,
-   "todos": 122781,
-   "bancario": 55677,
-   "execucao": 15603,
-   "busca_apreensao": 33484,
+   "todos": 122788,
+   "bancario": 55684,
+   "execucao": 15605,
+   "busca_apreensao": 33489,
    "monitoria": 6586,
    "exec_hipotecaria": 4
   },
   {
    "mes": "2026-08",
    "parcial": true,
-   "todos": 67656,
-   "bancario": 31206,
-   "execucao": 8462,
-   "busca_apreensao": 19570,
+   "todos": 67671,
+   "bancario": 31218,
+   "execucao": 8463,
+   "busca_apreensao": 19581,
    "monitoria": 3170,
    "exec_hipotecaria": 4
   },
   {
    "mes": "2026-09",
    "parcial": true,
-   "todos": 4202,
-   "bancario": 1840,
-   "execucao": 623,
-   "busca_apreensao": 971,
-   "monitoria": 245,
+   "todos": 4634,
+   "bancario": 2054,
+   "execucao": 685,
+   "busca_apreensao": 1103,
+   "monitoria": 265,
    "exec_hipotecaria": 1
   }
  ],
@@ -3676,20 +3676,20 @@
    "nome": "Espírito Santo",
    "regiao": "Sudeste",
    "tribunal": "TJES",
-   "casos_12m": 14209,
-   "casos_12m_anterior": 12390,
-   "var_12m_pct": 14.68,
-   "casos_12m_todos": 29927,
-   "bancario_share": 47.48,
+   "casos_12m": 14217,
+   "casos_12m_anterior": 12387,
+   "var_12m_pct": 14.77,
+   "casos_12m_todos": 29929,
+   "bancario_share": 47.5,
    "por_mil_hab": 3.44,
-   "por_bi_carteira": 107.4,
+   "por_bi_carteira": 107.5,
    "inad_scr": 4.02,
    "carteira_scr": 132310447368,
    "data_scr": "2026-07",
    "grupos": {
     "execucao": 4791,
-    "busca_apreensao": 8212,
-    "monitoria": 1206,
+    "busca_apreensao": 8222,
+    "monitoria": 1204,
     "exec_hipotecaria": 0
    },
    "posicoes": {
@@ -4092,7 +4092,7 @@
    "nome": "Empréstimo consignado"
   }
  ],
- "sintese": "Nos 12 meses até 2026-06, 822.250 ações de cobrança de crédito bancário foram ajuizadas nos 27 tribunais estaduais cobertos (+14,4% contra os 12 meses anteriores), 45% das 1.810.138 ações das mesmas classes com qualquer credor. A via mais usada é busca e apreensão em alienação fiduciária (520.871 casos, 63% do total); a maior intensidade por habitante está em Santa Catarina (9,5 por mil).",
+ "sintese": "Nos 12 meses até 2026-06, 822.258 ações de cobrança de crédito bancário foram ajuizadas nos 27 tribunais estaduais cobertos (+14,4% contra os 12 meses anteriores), 45% das 1.810.140 ações das mesmas classes com qualquer credor. A via mais usada é busca e apreensão em alienação fiduciária (520.881 casos, 63% do total); a maior intensidade por habitante está em Santa Catarina (9,5 por mil).",
  "metodo": "Contagem de casos únicos (cardinalidade do número CNJ) por mês de ajuizamento, por classe TPU e tribunal, via agregação na API pública do DataJud; o mês é lido em dois espaços de data (documentos migrados em 'yyyyMMddHHmmss' e documentos em ISO-8601) e somado. Recorte bancário = assuntos TPU listados; total = qualquer credor. Os três últimos meses são parciais e ficam fora. Janela de 12 meses até o último mês fechado, comparada com os 12 meses anteriores. Por UF: casos bancários ÷ população (Censo 2022) e ÷ carteira de crédito do SCR em R$ bilhões; posições entre as UFs cobertas.",
  "limitacoes": "Cobertura do DataJud varia entre tribunais e ao longo do tempo (remessa atrasada e migrações de sistema); a série é mais fraca antes de 2020. Cardinalidade é estimativa (HyperLogLog++, erro típico abaixo de 1%). Execução e monitória cobram qualquer título: o recorte bancário depende do assunto cadastrado pelo tribunal, que nem sempre existe. Não há valor da causa nem identificação do credor na API pública.",
  "cautelas": [
