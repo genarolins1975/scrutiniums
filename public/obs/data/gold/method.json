@@ -78,7 +78,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pf",
@@ -96,7 +96,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — inad_pj",
@@ -114,7 +114,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_total",
@@ -132,7 +132,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pf",
@@ -150,7 +150,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — concessoes_pj",
@@ -168,7 +168,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_total",
@@ -186,7 +186,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pf",
@@ -204,7 +204,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — saldo_pj",
@@ -222,7 +222,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_total",
@@ -240,7 +240,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pf",
@@ -258,7 +258,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — spread_pj",
@@ -276,7 +276,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_total",
@@ -294,7 +294,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pf",
@@ -312,7 +312,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Ensemble univariado — taxa_pj",
@@ -330,7 +330,7 @@
    "incerteza": "Quantis preditivos p10/p50/p90 por deslocamento dos quantis dos resíduos fora da amostra (conformal)",
    "limitacoes": "Univariado; não modela quebras estruturais nem covariáveis; bandas refletem erro histórico recente",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "IBCC",
@@ -345,7 +345,7 @@
    "incerteza": "Sensível à janela histórica; pesos fixos",
    "limitacoes": "Pesos iguais entre componentes (versão explicável); PCA/fatores dinâmicos previstos na Fase 2. Sujeito a revisões das séries de origem.",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Score de instituições",
@@ -361,7 +361,7 @@
    "incerteza": "Sem Basileia/liquidez; ROE não anualizado",
    "limitacoes": "Sem liquidez, inadimplência por IF ou qualidade de resultado (Fase 3b). ROE acumulado do período IF.data, não anualizado. Score relativo ao grupo, não absoluto. Instituições sem capital reportado têm a dimensão omitida (nunca imputada; nº de dimensões exibido). Vulnerabilidade usa choque agregado uniforme — sem heterogeneidade de carteira. Custo de captação é estimativa (fórmula declarada por instituição): estoque de pontas, não saldo médio diário; DRE do IF.data acumula por semestre (mar/set=3m, jun/dez=6m).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Estresse setorial",
@@ -376,7 +376,7 @@
    "incerteza": "1 de 4 componentes demonstrativo (estresse empresarial (RJ)), com peso zero",
    "limitacoes": "As três pesquisas medem VOLUME de atividade, não inadimplência setorial (indisponível nas fontes públicas). Condições de crédito ainda sem corte setorial (usa agregado PJ). Emprego entra por seção CNAE, não por divisão: as 24 divisões da transformação recebem o mesmo z; grupos da PMS que cruzam seções recebem a média das seções listadas. Universos distintos por pesquisa — os scores são comparáveis na régua (z-score da própria história), não nos níveis absolutos entre pesquisas. O componente de RJ está em construção e FORA do score. Normalização por nº de empresas/estoque de crédito setorial entra com o SCR (Fase 4).",
    "versao": "0.2.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Protocolo de indicadores antecedentes",
@@ -391,7 +391,7 @@
    "incerteza": "F aproximado por qui-quadrado; sem correção de múltiplos testes formal; sem vintages em tempo real ainda",
    "limitacoes": "Ganho medido em h=1; integração ao ensemble de previsão na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Detector de regimes",
@@ -406,7 +406,7 @@
    "incerteza": "Univariado; uma quebra por busca; sensível a revisões",
    "limitacoes": "Bai-Perron múltiplo e Markov-switching na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   },
   {
    "nome": "Elasticidades de cenário (empíricas)",
@@ -421,7 +421,7 @@
    "incerteza": "Sem HAC (incerteza subestimada com dados sobrepostos); associação, não causalidade",
    "limitacoes": "Identificação causal e heterogeneidade por segmento na Fase 2b",
    "versao": "0.3.0",
-   "atualizado_em": "2026-09-22T15:02:18+00:00"
+   "atualizado_em": "2026-09-23T15:35:27+00:00"
   }
  ],
  "score_cards": [
@@ -653,62 +653,26 @@
  ],
  "fontes_status": {
   "bcb_sgs": {
-   "ok": 129,
+   "ok": 138,
    "falhas": [
     {
-     "key": "saldo_pf",
+     "key": "selic_meta",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "consig_inss_atraso",
+     "key": "consig_inss_icc",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "consig_inss_inad",
+     "key": "consig_pub_inad",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     },
     {
-     "key": "amp_ef_osf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pj_ext",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "amp_pf",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "dir_conc_pj_bndes",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_B",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_C",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_sa_K",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_M",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "emp_P",
-     "erro": "Expecting value: line 1 column 1 (char 0)"
-    },
-    {
-     "key": "fd_papel_moeda",
+     "key": "amp_ef_ext",
      "erro": "Expecting value: line 1 column 1 (char 0)"
     }
    ],
-   "segundos": 1095
+   "segundos": 429
   },
   "ibge": {
    "ok": 4,
@@ -718,22 +682,22 @@
   "ipeadata": {
    "ok": 2,
    "falhas": [],
-   "segundos": 92
+   "segundos": 2
   },
   "ifdata": {
    "ok": 5,
    "falhas": [],
-   "segundos": 129
+   "segundos": 120
   },
   "ifdata_ui": {
    "ok": 5,
    "falhas": [],
-   "segundos": 16
+   "segundos": 6
   },
   "ifdata_carteiras": {
    "ok": 5,
    "falhas": [],
-   "segundos": 225
+   "segundos": 73
   },
   "djen": {
    "ok": 0,
@@ -778,35 +742,35 @@
    "falhas": [
     {
      "key": "credores_TJSP",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSP&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRJ",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRJ&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJMG",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJMG&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJRS",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJRS&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJPR",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJPR&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJSC",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJSC&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJBA",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJBA&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     },
     {
      "key": "credores_TJGO",
-     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-24&dataDisponibilizacaoFim=2026-09-22: HTTP Error 403: Forbidden"
+     "erro": "Falha ao coletar https://comunicaapi.pje.jus.br/api/v1/comunicacao?pagina=1&itensPorPagina=100&texto=rela%C3%A7%C3%A3o+de+credores&siglaTribunal=TJGO&dataDisponibilizacaoInicio=2026-07-25&dataDisponibilizacaoFim=2026-09-23: HTTP Error 403: Forbidden"
     }
    ],
    "segundos": 97
@@ -814,7 +778,7 @@
   "openfinance": {
    "ok": 18,
    "falhas": [],
-   "segundos": 29
+   "segundos": 31
   },
   "reclamacoes": {
    "ok": 4,
@@ -824,12 +788,12 @@
   "txjuros": {
    "ok": 20,
    "falhas": [],
-   "segundos": 123
+   "segundos": 185
   },
   "b3_market": {
    "ok": 22,
    "falhas": [],
-   "segundos": 100
+   "segundos": 116
   },
   "fidc": {
    "ok": 0,
@@ -849,7 +813,7 @@
   "scr_data": {
    "ok": 2,
    "falhas": [],
-   "segundos": 2
+   "segundos": 74
   },
   "geo_ibge": {
    "ok": 1,
@@ -859,7 +823,7 @@
   "pix_bcb": {
    "ok": 11,
    "falhas": [],
-   "segundos": 101
+   "segundos": 97
   },
   "pgfn": {
    "ok": 3,
@@ -889,7 +853,7 @@
   "mercado_imobiliario": {
    "ok": 1,
    "falhas": [],
-   "segundos": 20
+   "segundos": 18
   },
   "previdencia": {
    "ok": 4,
@@ -897,14 +861,19 @@
    "segundos": 0
   },
   "reclamacoes_consig": {
-   "ok": 1,
-   "falhas": [],
-   "segundos": 41
+   "ok": 0,
+   "falhas": [
+    {
+     "key": "reclamacoes_consig",
+     "erro": "Falha ao coletar https://www.consumidor.gov.br/pages/publicacao/externo/publicacoes.json?indicadorTipoPublicacao=2: HTTP Error 504: Gateway Timeout"
+    }
+   ],
+   "segundos": 103
   },
   "operacional": {
    "ok": 2,
    "falhas": [],
-   "segundos": 3
+   "segundos": 7
   },
   "releases": {
    "ok": 1,
@@ -919,7 +888,7 @@
   "epae": {
    "ok": 1,
    "falhas": [],
-   "segundos": 0
+   "segundos": 1
   },
   "dependencias": {
    "ok": 3,
@@ -929,7 +898,7 @@
   "pncp_folha": {
    "ok": 2,
    "falhas": [],
-   "segundos": 104
+   "segundos": 121
   },
   "ifdata_funding": {
    "ok": 5,
@@ -937,11 +906,11 @@
    "segundos": 0
   },
   "pilar3": {
-   "ok": 11,
+   "ok": 10,
    "falhas": [
     {
      "key": "pilar3:17184037",
-     "erro": "HTTP Error 500: Internal Server Error"
+     "erro": "HTTP Error 503: Service Unavailable"
     },
     {
      "key": "pilar3:00416968",
@@ -978,6 +947,10 @@
     {
      "key": "pilar3:04332281",
      "erro": "HTTP Error 404: Not Found"
+    },
+    {
+     "key": "pilar3:04862600",
+     "erro": "HTTP Error 403: Forbidden"
     },
     {
      "key": "pilar3:04913711",
@@ -1056,12 +1029,12 @@
      "erro": "HTTP Error 520: <none>"
     }
    ],
-   "segundos": 178
+   "segundos": 184
   },
   "regimes": {
    "ok": 1,
    "falhas": [],
-   "segundos": 0
+   "segundos": 4
   },
   "remuneracao": {
    "ok": 1,
@@ -1076,32 +1049,32 @@
   "cvm_ofertas": {
    "ok": 1,
    "falhas": [],
-   "segundos": 5
+   "segundos": 4
   },
   "cvm_securit": {
    "ok": 4,
    "falhas": [],
-   "segundos": 7
+   "segundos": 6
   },
   "bndes": {
    "ok": 18,
    "falhas": [],
-   "segundos": 44
+   "segundos": 25
   },
   "focus": {
    "ok": 6,
    "falhas": [],
-   "segundos": 5
+   "segundos": 6
   },
   "sfn_cadastro": {
    "ok": 4,
    "falhas": [],
-   "segundos": 32
+   "segundos": 8
   },
   "bcb_pas": {
    "ok": 3,
    "falhas": [],
-   "segundos": 4
+   "segundos": 11
   },
   "cvm_pas": {
    "ok": 1,
@@ -1136,17 +1109,17 @@
   "siconfi_rgf": {
    "ok": 1,
    "falhas": [],
-   "segundos": 46
+   "segundos": 44
   },
   "tesouro_garantias": {
    "ok": 1,
    "falhas": [],
-   "segundos": 2
+   "segundos": 3
   },
   "sicor": {
    "ok": 15,
    "falhas": [],
-   "segundos": 248
+   "segundos": 266
   },
   "ipea_caged": {
    "ok": 2,
@@ -1154,14 +1127,107 @@
    "segundos": 0
   },
   "datajud": {
-   "ok": 24,
-   "falhas": [],
-   "segundos": 586
+   "ok": 1,
+   "falhas": [
+    {
+     "key": "falencia_tjsp",
+     "erro": "DataJud POST falhou: HTTP Error 504: Gateway Time-out"
+    },
+    {
+     "key": "recuperacao_judicial_tjrj",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjrj",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjmg",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjmg",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjrs",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjrs",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjpr",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjpr",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjsc",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjsc",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjba",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjba",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "recuperacao_judicial_tjgo",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "falencia_tjgo",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjsp",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjrj",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjmg",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjrs",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjpr",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjsc",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjba",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    },
+    {
+     "key": "funil_tjgo",
+     "erro": "orçamento de 900 s esgotado; volta na próxima execução"
+    }
+   ],
+   "segundos": 1094
   },
   "datajud_cobranca": {
    "ok": 9,
    "falhas": [],
-   "segundos": 229
+   "segundos": 1674
   },
   "judicial": {
    "ok": 2,
@@ -1171,12 +1237,12 @@
      "erro": "bloqueio WAF do TST (HTTP 202, desafio JavaScript da AWS): a página só abre em navegador"
     }
    ],
-   "segundos": 518
+   "segundos": 606
   },
   "cvm_dfp": {
    "ok": 3,
    "falhas": [],
-   "segundos": 46
+   "segundos": 13
   }
  }
 }

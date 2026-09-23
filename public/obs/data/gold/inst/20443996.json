@@ -9,7 +9,7 @@
   "sede": "Cerro Largo/RS",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 385,
+  "n_pares": 387,
   "conglomerado_prudencial": "C0084507",
   "capital": "não classificado",
   "modelo": null,
@@ -21,7 +21,7 @@
    "ultima_entrega": "2026-T1",
    "texto": "Consta da lista do IF.data em 202606 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-09-22T15:02:26+00:00",
+  "atualizado_em": "2026-09-23T15:35:35+00:00",
   "aviso_pares": null,
   "cnpj": "raiz 20.443.996",
   "participante_open_finance": null
@@ -73,7 +73,7 @@
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 385,
+  "quantidade": 387,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -264,7 +264,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 6.0,
-   "percentil": 36.7
+   "percentil": 36.8
   },
   {
    "indicador": "ROE do período",
@@ -933,6 +933,7 @@
     -68.91,
     4.7,
     -1.55,
+    -3.74,
     15.62,
     2.66,
     7.18,
@@ -1190,6 +1191,7 @@
     3.64,
     0.43,
     -5.26,
+    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1683,6 +1685,7 @@
     9.83,
     5.6,
     7.29,
+    1.07,
     8.35,
     2.32,
     1.13,
@@ -1940,6 +1943,7 @@
     4.57,
     4.19,
     7.17,
+    10.36,
     5.93,
     1.47,
     1.81,

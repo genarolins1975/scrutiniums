@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-22T15:02:51+00:00",
+ "gerado_em": "2026-09-23T15:36:01+00:00",
  "fontes": {
   "bcb": {
    "nome": "BCB — Processos administrativos sancionadores (Gepad, API Olinda)",
@@ -24,7 +24,7 @@
    "nivel": "A — divulgação oficial trimestral"
   }
  },
- "sintese": "Nos últimos 12 meses o BCB decidiu 1269 processos sancionadores em 1ª instância, com 1338 decisões por apenado: 1280 multas somando R$ 71.7 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 133 apenados recorreram. 387 pessoas seguem inabilitadas. A CVM abriu 59 processos sancionadores em 12 meses (183 acusados); 246 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
+ "sintese": "Nos últimos 12 meses o BCB decidiu 1269 processos sancionadores em 1ª instância, com 1338 decisões por apenado: 1280 multas somando R$ 71.7 milhões (mediana R$ 25 mil), 3 inabilitações e 51 decisões sem penalidade; 133 apenados recorreram. 387 pessoas seguem inabilitadas. A CVM abriu 60 processos sancionadores em 12 meses (184 acusados); 247 seguem em curso, com idade mediana de 22 meses, e os finalizados levaram 30 meses em mediana. Índice mediano de reclamações no ranking do BCB: 69.64 em 2026-2.",
  "bcb": {
   "disponivel": true,
   "ultima_decisao": "2026-09-22",
@@ -35,7 +35,7 @@
    "apenados_distintos": 11390
   },
   "janela_12m": {
-   "ini": "2025-09-22",
+   "ini": "2025-09-23",
    "decisoes": 1338,
    "processos": 1269,
    "multas_n": 1280,
@@ -91,18 +91,18 @@
   "situacao_12m": [
    {
     "situacao": "MULTA PAGA",
-    "n": 846,
-    "share": 63.23
+    "n": 848,
+    "share": 63.38
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 145,
-    "share": 10.84
+    "n": 137,
+    "share": 10.24
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 128,
-    "share": 9.57
+    "n": 133,
+    "share": 9.94
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -116,13 +116,13 @@
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 36,
-    "share": 2.69
+    "n": 38,
+    "share": 2.84
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 24,
-    "share": 1.79
+    "n": 25,
+    "share": 1.87
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -133,11 +133,6 @@
     "situacao": "AGUARDANDO INÍCIO DO CUMPRIMENTO",
     "n": 3,
     "share": 0.22
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 2,
-    "share": 0.15
    },
    {
     "situacao": "PENALIDADE ENCAMINHADA PARA A STN",
@@ -163,13 +158,13 @@
   "cobranca_multas": [
    {
     "situacao": "MULTA PAGA",
-    "n": 11902,
-    "share": 87.66
+    "n": 11904,
+    "share": 87.67
    },
    {
     "situacao": "MULTA TRANSFERIDA PARA COBRANÇA",
-    "n": 880,
-    "share": 6.48
+    "n": 885,
+    "share": 6.52
    },
    {
     "situacao": "PENALIDADE EXTINTA",
@@ -178,8 +173,8 @@
    },
    {
     "situacao": "MULTA VENCIDA E NÃO PAGA",
-    "n": 148,
-    "share": 1.09
+    "n": 140,
+    "share": 1.03
    },
    {
     "situacao": "AGUARDANDO JULGAMENTO DE RECURSO PELA 2ª INSTÂNCIA",
@@ -193,29 +188,24 @@
    },
    {
     "situacao": "MULTA ESTÁ EM RECEBIMENTO PARCELADO",
-    "n": 74,
-    "share": 0.54
+    "n": 75,
+    "share": 0.55
    },
    {
     "situacao": "AGUARDANDO PAGAMENTO DA MULTA",
-    "n": 36,
-    "share": 0.27
+    "n": 38,
+    "share": 0.28
    },
    {
     "situacao": "AGUARDANDO RETORNO DO PROCESSO AO BC APÓS JULGAMENTO DE 2ª INSTÂNCIA",
     "n": 15,
     "share": 0.11
-   },
-   {
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL",
-    "n": 2,
-    "share": 0.01
    }
   ],
   "tempo_citacao_decisao_meses": {
    "mediana": 2.9,
    "p90": 31.4,
-   "n": 3179
+   "n": 3171
   },
   "anual": [
    {
@@ -438,7 +428,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "312207",
@@ -448,7 +438,7 @@
     "pena": "MULTA",
     "multa": 25000.0,
     "recurso": "NÃO",
-    "situacao": "REGISTRO DE MULTA NÃO DISPONÍVEL"
+    "situacao": "AGUARDANDO PAGAMENTO DA MULTA"
    },
    {
     "pas": "312875",
@@ -942,81 +932,81 @@
  },
  "cvm": {
   "disponivel": true,
-  "ultima_abertura": "2026-08-11",
-  "ultima_movimentacao": "2026-09-21",
+  "ultima_abertura": "2026-09-02",
+  "ultima_movimentacao": "2026-09-22",
   "acervo": {
-   "processos": 571,
-   "acusados": 2042,
-   "em_curso": 246,
+   "processos": 572,
+   "acusados": 2043,
+   "em_curso": 247,
    "finalizados": 325
   },
   "abertos_12m": {
-   "ini": "2025-09-22",
-   "processos": 59,
-   "acusados": 183
+   "ini": "2025-09-23",
+   "processos": 60,
+   "acusados": 184
   },
   "fases": [
    {
     "fase": "Finalizado",
     "n": 325,
-    "share": 56.92
+    "share": 56.82
    },
    {
     "fase": "Julgamento",
     "n": 108,
-    "share": 18.91
+    "share": 18.88
    },
    {
     "fase": "Citação e envio de defesas",
-    "n": 87,
-    "share": 15.24
+    "n": 88,
+    "share": 15.38
    },
    {
     "fase": "Recurso CRSFN",
     "n": 42,
-    "share": 7.36
+    "share": 7.34
    },
    {
     "fase": "Intimação após julgamento",
     "n": 9,
-    "share": 1.58
+    "share": 1.57
    }
   ],
   "areas": [
    {
     "area": "GEA-3",
-    "n": 89,
-    "share": 15.59
+    "n": 90,
+    "share": 15.73
    },
    {
     "area": "GEA-4",
     "n": 86,
-    "share": 15.06
+    "share": 15.03
    },
    {
     "area": "GNA",
     "n": 78,
-    "share": 13.66
+    "share": 13.64
    },
    {
     "area": "GMA",
     "n": 53,
-    "share": 9.28
+    "share": 9.27
    },
    {
     "area": "GER-3",
     "n": 50,
-    "share": 8.76
+    "share": 8.74
    },
    {
     "area": "GSUI-2",
     "n": 36,
-    "share": 6.3
+    "share": 6.29
    },
    {
     "area": "GSAF",
     "n": 33,
-    "share": 5.78
+    "share": 5.77
    },
    {
     "area": "GPS-3",
@@ -1026,37 +1016,37 @@
    {
     "area": "GAIN",
     "n": 25,
-    "share": 4.38
+    "share": 4.37
    },
    {
     "area": "GPS-2",
     "n": 25,
-    "share": 4.38
+    "share": 4.37
    },
    {
     "area": "GPS-1",
     "n": 15,
-    "share": 2.63
+    "share": 2.62
    },
    {
     "area": "GSEC-2",
     "n": 7,
-    "share": 1.23
+    "share": 1.22
    },
    {
     "area": "GSR-1",
     "n": 7,
-    "share": 1.23
+    "share": 1.22
    },
    {
     "area": "GIMOR",
     "n": 7,
-    "share": 1.23
+    "share": 1.22
    },
    {
     "area": "GEA-5",
     "n": 7,
-    "share": 1.23
+    "share": 1.22
    },
    {
     "area": "SEFIS",
@@ -1081,27 +1071,27 @@
    {
     "area": "GSEC-1",
     "n": 3,
-    "share": 0.53
+    "share": 0.52
    },
    {
     "area": "GCP",
     "n": 1,
-    "share": 0.18
+    "share": 0.17
    },
    {
     "area": "GIFI",
     "n": 1,
-    "share": 0.18
+    "share": 0.17
    },
    {
     "area": "GER-1",
     "n": 1,
-    "share": 0.18
+    "share": 0.17
    },
    {
     "area": "DSEC",
     "n": 1,
-    "share": 0.18
+    "share": 0.17
    }
   ],
   "duracao_finalizados_meses": {
@@ -1110,9 +1100,9 @@
    "n": 325
   },
   "idade_em_curso_meses": {
-   "mediana": 22.0,
+   "mediana": 22,
    "acima_36": 90,
-   "n": 246
+   "n": 247
   },
   "acusados_por_processo": 3.6,
   "anual": [
@@ -1214,14 +1204,24 @@
    },
    {
     "ano": "2026",
-    "processos": 41,
+    "processos": 42,
     "finalizados": 0,
-    "acusados": 107,
+    "acusados": 108,
     "incompleto": true,
     "finalizados_share": 0.0
    }
   ],
   "recentes": [
+   {
+    "nup": "19957014658202675",
+    "abertura": "2026-09-02",
+    "area": "GEA-3",
+    "fase": "Citação e envio de defesas",
+    "local": "Gerência de Controle de Processos Sancionadores",
+    "ultima_mov": "2026-09-22",
+    "acusados": 1,
+    "objeto": "Termo de Acusação instaurado para apurar a responsabilidade do ex-DRI da Gafisa S.A. por infração ao art. 3º, §5º da Instrução CVM nº 358/2002, ao divulgar de forma incompleta o fato relevante de 08.03.2021."
+   },
    {
     "nup": "19957013739202658",
     "abertura": "2026-08-11",
@@ -1511,16 +1511,6 @@
     "ultima_mov": "2026-08-06",
     "acusados": 2,
     "objeto": "Apurar infrações ao art. 155, §1º, e ao art. 157, §4º, da Lei nº 6.404/1976, em conjunto com os arts. 3º e 8º da Resolução CVM nº 44/2021, relacionadas (i) à divulgação, em 06.03.2024, pelo Presidente do Conselho de Admi"
-   },
-   {
-    "nup": "19957018683202547",
-    "abertura": "2026-03-09",
-    "area": "GNA",
-    "fase": "Citação e envio de defesas",
-    "local": "Gerência de Controle de Processos Sancionadores",
-    "ultima_mov": "2026-06-19",
-    "acusados": 2,
-    "objeto": "1) ausência de análise da razoabilidade das premissas e dos dados utilizados na elaboração do laudo de avaliação do ativodo Fundo 2) falha na análise de reconhecimento de receita decorrente da assunção da dívida do Fundo"
    }
   ],
   "nota": "Processo a processo, com a fase atual e os acusados. A base não traz o resultado (absolvição, multa, termo de compromisso): 'finalizado' é o fim do rito. Objeto reproduzido como publicado pela CVM, truncado. Sem ranking por nome."

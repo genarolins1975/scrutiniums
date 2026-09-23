@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-22T15:02:56+00:00",
+ "gerado_em": "2026-09-23T15:36:07+00:00",
  "populacao_fonte": "IBGE SIDRA 6579 (estimativa anual por UF); os per capita desta página e das páginas por UF usam esta população",
  "datas": {
   "scr": "2026-07",
@@ -1397,11 +1397,11 @@
    },
    "cobranca": {
     "mes": "2026-06",
-    "casos_12m": 37934,
-    "var_12m_pct": 1.32,
-    "casos_12m_todos": 68221,
-    "por_mil_hab": 2.55,
-    "por_bi_carteira": 127.9
+    "casos_12m": 36878,
+    "var_12m_pct": 0.61,
+    "casos_12m_todos": 66079,
+    "por_mil_hab": 2.48,
+    "por_bi_carteira": 124.4
    },
    "prazo": {
     "data_base": "2026-07",
@@ -1454,7 +1454,7 @@
     "consorcios.cotas": 4,
     "consorcios.por_mil_hab": 15,
     "cobranca.por_mil_hab": 18,
-    "cobranca.por_bi_carteira": 8,
+    "cobranca.por_bi_carteira": 10,
     "pgfn.insc_pf_por_mil_hab": 23
    },
    "sintese": "O crédito na Bahia somava R$ 297 bilhões em 2026-07, 3,9% do Brasil, R$ 19.941 por habitante (19º entre as 27 UFs), com inadimplência de 5,50% (15º) e crescimento de +10,0% em 12 meses. Penetração de 64% da renda anual (24º), com 93 de 417 municípios abaixo do esperado pelo modelo."
@@ -6584,7 +6584,7 @@
     "consorcios.cotas": 5,
     "consorcios.por_mil_hab": 10,
     "cobranca.por_mil_hab": 5,
-    "cobranca.por_bi_carteira": 10,
+    "cobranca.por_bi_carteira": 9,
     "pgfn.insc_pf_por_mil_hab": 10
    },
    "sintese": "O crédito no Rio Grande do Sul somava R$ 535 bilhões em 2026-07, 7,0% do Brasil, R$ 47.586 por habitante (7º entre as 27 UFs), com inadimplência de 4,87% (20º) e crescimento de +8,3% em 12 meses. Penetração de 128% da renda anual (5º), com 181 de 497 municípios abaixo do esperado pelo modelo."
@@ -7154,7 +7154,7 @@
     "consorcios.cotas": 23,
     "consorcios.por_mil_hab": 13,
     "cobranca.por_mil_hab": 20,
-    "cobranca.por_bi_carteira": 9,
+    "cobranca.por_bi_carteira": 8,
     "pgfn.insc_pf_por_mil_hab": 6
    },
    "sintese": "O crédito em Sergipe somava R$ 43 bilhões em 2026-07, 0,6% do Brasil, R$ 18.515 por habitante (25º entre as 27 UFs), com inadimplência de 5,51% (14º) e crescimento de +0,7% em 12 meses. Penetração de 87% da renda anual (16º), com 19 de 75 municípios abaixo do esperado pelo modelo."

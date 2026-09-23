@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-22T15:02:18+00:00",
+ "gerado_em": "2026-09-23T15:35:26+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -132,7 +132,7 @@
  "pncp": {
   "disponivel": true,
   "total_contratos_if": 346,
-  "total_editais": 1152,
+  "total_editais": 1153,
   "backfill_completo": true,
   "ranking": [
    {
@@ -1167,6 +1167,15 @@
   ],
   "editais_recentes": [
    {
+    "ente": "CAMARA MUNICIPAL DE BARRA MANSA",
+    "municipio": "Barra Mansa",
+    "uf": "RJ",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-22",
+    "url": "https://pncp.gov.br/compras/29052875000119/2026/25"
+   },
+   {
     "ente": "MUNICIPIO DE CAMBUI",
     "municipio": "Cambuí",
     "uf": "MG",
@@ -1203,15 +1212,6 @@
     "url": "https://pncp.gov.br/compras/32001836000105/2026/217"
    },
    {
-    "ente": "MUNICIPIO DE ADRIANOPOLIS",
-    "municipio": "Adrianópolis",
-    "uf": "PR",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-17",
-    "url": "https://pncp.gov.br/compras/76105642000117/2026/27"
-   },
-   {
     "ente": "MUNICIPIO DE CASTRO",
     "municipio": "Castro",
     "uf": "PR",
@@ -1228,6 +1228,15 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-17",
     "url": "https://pncp.gov.br/compras/77001311000108/2026/557"
+   },
+   {
+    "ente": "MUNICIPIO DE ADRIANOPOLIS",
+    "municipio": "Adrianópolis",
+    "uf": "PR",
+    "modalidade": "Pregão - Eletrônico",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-17",
+    "url": "https://pncp.gov.br/compras/76105642000117/2026/27"
    },
    {
     "ente": "MUNICIPIO DE SANTA EFIGENIA DE MINAS",
@@ -1255,15 +1264,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-16",
     "url": "https://pncp.gov.br/compras/08358053000190/2026/156"
-   },
-   {
-    "ente": "MUNICIPIO DE SAO JOAO DO TIGRE",
-    "municipio": "São João do Tigre",
-    "uf": "PB",
-    "modalidade": "Pregão - Eletrônico",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-16",
-    "url": "https://pncp.gov.br/compras/09074592000160/2026/32"
    },
    {
     "ente": "TRIBUNAL DE CONTAS DO ESTADO DO ACRE",
