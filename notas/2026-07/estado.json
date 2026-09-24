@@ -1,0 +1,29 @@
+{
+ "versao": 2,
+ "data_base": "2026-07",
+ "retro": false,
+ "gold_dir": "public/obs/data/gold",
+ "criado_em": "2026-09-24T18:21:41+00:00",
+ "concluidas": [
+  "analista_familias",
+  "analista_empresas",
+  "replicador",
+  "consolidador",
+  "critico",
+  "revisao@0",
+  "validacao_mecanica@0",
+  "revisao@1",
+  "validacao_mecanica@1",
+  "validador_constitucional@1"
+ ],
+ "rodada_revisao": 1,
+ "devolucoes": 1,
+ "rodadas": [
+  {
+   "rodada": 0,
+   "validador_mecanico": "bloquear",
+   "unanime": false
+  }
+ ],
+ "pendente": "revisor_independente_1"
+}

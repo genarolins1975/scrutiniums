@@ -1,0 +1,54 @@
+{
+ "versao_validador": "validador_mecanico_v3",
+ "decisao": "bloquear",
+ "falhas": [
+  "M6",
+  "M11"
+ ],
+ "itens": [
+  {
+   "codigo": "M6",
+   "linha": 28,
+   "motivo": "spread_pj.delta_mes_pp citado sem sinal e sem palavra de direção"
+  },
+  {
+   "codigo": "M11",
+   "linha": 26,
+   "motivo": "o texto antes de inad_pf.delta_12m_pp fala de taxa, não de inad"
+  },
+  {
+   "codigo": "M11",
+   "linha": 26,
+   "motivo": "o texto antes de comprometimento.delta_12m_pp fala de inad, não de comprometimento"
+  },
+  {
+   "codigo": "M11",
+   "linha": 26,
+   "motivo": "o texto antes de endividamento.delta_mes_pp fala de taxa, não de endividamento"
+  },
+  {
+   "codigo": "M11",
+   "linha": 28,
+   "motivo": "o texto antes de taxa_pj.delta_mes_pp fala de saldo, não de taxa"
+  },
+  {
+   "codigo": "M11",
+   "linha": 28,
+   "motivo": "o texto antes de spread_pj.delta_mes_pp fala de taxa, não de spread"
+  },
+  {
+   "codigo": "M11",
+   "linha": 28,
+   "motivo": "o texto antes de spread_pj.delta_12m_pp fala de taxa, não de spread"
+  },
+  {
+   "codigo": "M11",
+   "linha": 28,
+   "motivo": "o texto antes de concessoes_pj.var_12m_real_pct fala de spread, não de concessoes"
+  }
+ ],
+ "nota_sha256": "e636220d283c0d091375c6aa0c61789ac7833447ab8ed457cbabebb3a445c33b",
+ "sha256_fatos": "e0c39bc7981548688ac604396222743f446cc2869ef97af64d0a5f7a4335e36c",
+ "degrau_declarado": "1",
+ "reconstruido": "validação da rodada 0 refeita em 24/09/2026 sobre saidas/revisao.md (validador determinístico); o arquivo original foi sobrescrito por defeito de nome corrigido no mesmo PR"
+}
