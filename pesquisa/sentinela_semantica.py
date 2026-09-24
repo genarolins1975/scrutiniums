@@ -148,7 +148,7 @@ def avaliar(rodada):
             nota_base = f.read()
     else:
         nota_base = base()[0]
-    decisoes, pareceres, faltando = {}, {}, []
+    decisoes, pareceres, faltando, incoerentes = {}, {}, [], []
     for c in cs:
         for r in oq.REVISORES:
             p = os.path.join(rodada, "saidas", f"{_nome(c, r)}.md")
@@ -157,7 +157,10 @@ def avaliar(rodada):
                 continue
             with open(p, encoding="utf-8") as f:
                 pareceres[(c["id"], r)] = f.read()
-            decisoes[(c["id"], r)] = oq.decisao_do_parecer(pareceres[(c["id"], r)])
+            decisoes[(c["id"], r)] = oq.decisao_do_parecer(pareceres[(c["id"], r)], r)
+            declarada = oq.decisao_declarada(pareceres[(c["id"], r)])
+            if declarada and declarada != decisoes[(c["id"], r)]:
+                incoerentes.append(f"{_nome(c, r)}: declarou {declarada}, itens dizem {decisoes[(c['id'], r)]}")
     erros = [c for c in cs if c["esperado"] == "devolver"]
     limpos = [c for c in cs if c["esperado"] == "aprovar"]
     pegou = lambda c, r: decisoes.get((c["id"], r)) not in (None, "aprovar")  # sem decisão conta como devolver
@@ -194,6 +197,8 @@ def avaliar(rodada):
                                               for c in comuns) / len(comuns), 4) if comuns else None)
     res = {
         "n_casos_com_erro": len(erros), "n_controles": len(limpos), "respostas_faltando": faltando,
+        "regra_de_decisao": "revisores no formato ITEM devolvem se e só se houver item grave (orquestrador.decisao_do_parecer)",
+        "decisao_declarada_incoerente_com_itens": incoerentes,
         "por_revisor": por_revisor,
         "recall_painel": round(len(painel) / len(completos), 4) if completos else None,
         "recall_painel_atribuido": round(len(painel_atribuido) / len(atribuiveis), 4) if atribuiveis else None,

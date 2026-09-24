@@ -1,8 +1,14 @@
 {
- "regra_de_decisao": "linha DECISÃO do parecer (regra vigente até a rodada 2)",
+ "nota": "reclassificação mecânica dos mesmos pareceres pela regra nova (devolução só com item grave); os revisores não conheciam a regra ao responder, por isso não substitui uma rodada nova",
  "n_casos_com_erro": 14,
  "n_controles": 4,
  "respostas_faltando": [],
+ "regra_de_decisao": "revisores no formato ITEM devolvem se e só se houver item grave (orquestrador.decisao_do_parecer)",
+ "decisao_declarada_incoerente_com_itens": [
+  "SS04__revisor_independente: declarou devolver, itens dizem aprovar",
+  "SS11__revisor_independente: declarou devolver, itens dizem aprovar",
+  "SC04__terceiro_revisor: declarou devolver, itens dizem aprovar"
+ ],
  "por_revisor": {
   "validador_constitucional": {
    "recall": 1.0,
@@ -11,15 +17,15 @@
    "sem_decisao": 0
   },
   "revisor_independente": {
-   "recall": 0.8571,
-   "recall_atribuido": 0.9231,
+   "recall": 0.7143,
+   "recall_atribuido": 0.7692,
    "rejeicao_indevida": 0,
    "sem_decisao": 0
   },
   "terceiro_revisor": {
    "recall": 1.0,
    "recall_atribuido": 1.0,
-   "rejeicao_indevida": 4,
+   "rejeicao_indevida": 3,
    "sem_decisao": 0
   }
  },
@@ -27,7 +33,7 @@
  "recall_painel_atribuido": 1.0,
  "n_atribuiveis": 13,
  "nao_vistos_por_nenhum": [],
- "rejeicao_indevida": 4,
+ "rejeicao_indevida": 3,
  "perdidos_por_todos": [],
  "por_categoria": {
   "definicao": {
@@ -41,7 +47,7 @@
    "n": 2,
    "painel": 2,
    "validador_constitucional": 2,
-   "revisor_independente": 2,
+   "revisor_independente": 1,
    "terceiro_revisor": 2
   },
   "atribuicao": {
@@ -69,7 +75,7 @@
    "n": 1,
    "painel": 1,
    "validador_constitucional": 1,
-   "revisor_independente": 1,
+   "revisor_independente": 0,
    "terceiro_revisor": 1
   },
   "juizo": {
@@ -95,9 +101,9 @@
   }
  },
  "concordancia_par_a_par": {
-  "validador_constitucional×revisor_independente": 0.8889,
-  "validador_constitucional×terceiro_revisor": 0.7778,
-  "revisor_independente×terceiro_revisor": 0.6667
+  "validador_constitucional×revisor_independente": 0.7778,
+  "validador_constitucional×terceiro_revisor": 0.8333,
+  "revisor_independente×terceiro_revisor": 0.6111
  },
  "revisores": {
   "validador_constitucional": {

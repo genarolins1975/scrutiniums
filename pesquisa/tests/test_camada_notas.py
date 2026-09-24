@@ -301,6 +301,22 @@ class Orquestrador(unittest.TestCase):
         self.assertEqual(oq.decisao_do_parecer("tudo certo"), "sem_decisao")
         self.assertEqual(oq.decisao_do_parecer("ITEM [leve]: a | b | c\nDECISÃO: aprovar"), "aprovar")
 
+    def test_decisao_derivada_dos_itens_e_nao_da_linha(self):
+        grave, moderada = "ITEM [grave]: a | b | c\n", "ITEM moderada: a | b | c\n"
+        for papel in ("revisor_independente", "terceiro_revisor"):
+            self.assertEqual(oq.decisao_do_parecer(grave + "DECISÃO: aprovar", papel), "devolver")
+            self.assertEqual(oq.decisao_do_parecer(moderada + "DECISÃO: devolver", papel), "aprovar")
+            self.assertEqual(oq.decisao_do_parecer("DECISÃO: aprovar", papel), "aprovar")
+            self.assertEqual(oq.decisao_do_parecer("sem formato", papel), "sem_decisao")
+        v = "validador_constitucional"
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: falha: x\nDECISÃO: aprovar", v), "devolver")
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: ok\nDECISÃO: devolver", v), "aprovar")
+
+    def test_historico_do_terceiro_revisor_traz_a_variacao_real_e_a_formula(self):
+        h = oq.historico_bruto(GOLD_FIXA, "2026-07")
+        self.assertIn("yoy_real", h)
+        self.assertIn("SGS 433", h)
+
 
 class Auditor(unittest.TestCase):
     def setUp(self):

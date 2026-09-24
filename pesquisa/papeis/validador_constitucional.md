@@ -20,4 +20,6 @@ Responda com uma linha por critério e uma decisão final. Este formato substitu
     C5: ok | falha: <trecho e motivo>
     DECISÃO: aprovar | devolver
 
-Você não pode bloquear nem reverter bloqueio do validador mecânico. Na dúvida, devolva com o motivo.
+Cada falha é violação da constituição e devolve a nota; a decisão é derivada das linhas C1 a C5 por código (qualquer falha devolve, todas ok aprovam). Aponte falha quando o leitor sairia com crença falsa ou a constituição for violada; sugestão de melhoria sem violação é ok. Na dúvida sobre se há violação, marque falha e diga por quê.
+
+Você não pode bloquear nem reverter bloqueio do validador mecânico.

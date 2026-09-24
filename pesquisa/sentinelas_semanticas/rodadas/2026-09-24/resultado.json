@@ -1,4 +1,5 @@
 {
+ "regra_de_decisao": "linha DECISÃO do parecer (regra vigente até a rodada 2)",
  "n_casos_com_erro": 14,
  "n_controles": 4,
  "respostas_faltando": [],

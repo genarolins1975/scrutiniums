@@ -6,7 +6,7 @@ Por decisão do dono do projeto, nenhuma etapa deste projeto tem revisão humana
 
 ## Art. 1. Números
 
-1. Todo número publicado vem da camada gold determinística ou de um pacote de fatos derivado dela por fórmula declarada (diferença ou variação percentual entre dois valores da gold). Nenhum outro caminho.
+1. Todo número publicado vem da camada gold determinística (inclusive campo calculado pelo pipeline e publicado na gold com a fórmula declarada, como a variação real deflacionada pelo IPCA) ou de um pacote de fatos derivado dela por fórmula declarada (diferença ou variação percentual entre dois valores da gold). Nenhum outro caminho.
 2. Agente não calcula, estima, arredonda, converte nem digita número. O texto referencia fatos por identificador; o valor é inserido depois, mecanicamente, a partir do pacote.
 3. Exceção existente: valor transcrito de documento primário (Fase 2) só vale se o código confirmar que o trecho literal citado contém o valor. Transcrição não é cálculo.
 4. Revisão posterior da fonte não torna errada a nota antiga: a nota vale para a gold que a gerou, identificada por hash. A revisão é registrada, não apagada.
@@ -44,7 +44,7 @@ O motivo é de governança: o dono do projeto é conselheiro do FGC e diretor da
 2. Os revisores não veem os rascunhos, o raciocínio dos autores, as objeções do crítico nem o parecer um do outro.
 3. As três revisões diferem em pelo menos três destas características: modelo, fornecedor, evidência recebida, mandato e forma de apresentação dos dados. As características de cada uma ficam registradas no manifesto da nota.
 4. Nenhum revisor aprova número; a checagem de números é mecânica.
-5. A nota só é aprovada por unanimidade. Qualquer devolução volta à revisão; esgotado o limite de rodadas, a nota é rejeitada e não é publicada.
+5. A nota só é aprovada por unanimidade. Revisor devolve se e só se apontar item grave (o leitor sairia com crença falsa sobre um fato, ou há violação desta constituição); a decisão é derivada dos itens por código. Itens moderados e leves são sugestões registradas e não bloqueiam. Qualquer devolução volta à revisão; esgotado o limite de rodadas, a nota é rejeitada e não é publicada.
 6. Bloqueio do validador mecânico não é revertido por ninguém.
 
 ## Art. 7. Linguagem

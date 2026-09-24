@@ -48,6 +48,7 @@ NOTAS = os.path.join(RAIZ, "notas")
 PAPEIS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "papeis")
 ETAPAS_INICIAIS = ["analista_familias", "analista_empresas", "replicador", "consolidador", "critico"]
 REVISORES = ["validador_constitucional", "revisor_independente", "terceiro_revisor"]
+REVISORES_POR_ITEM = {"revisor_independente", "terceiro_revisor"}  # formato ITEM [grave|moderada|leve]
 ETAPAS_DA_RODADA = ["revisao", "validacao_mecanica"] + REVISORES
 PAPEL_DA_ETAPA = {"revisao": "consolidador"}
 MODELOS_COM_FALLBACK = {"claude-opus-5", "claude-fable-5-1"}
@@ -126,7 +127,8 @@ def historico_bruto(gold_dir, data_base, meses=MESES_HISTORICO):
     with open(os.path.join(gold_dir, fc.ARQUIVO), encoding="utf-8") as f:
         pulse = json.load(f)
     linhas = [f"Histórico publicado na gold até {data_base} (valores como estão na gold; yoy = variação "
-              f"em doze meses publicada pelo pipeline)."]
+              f"em doze meses publicada pelo pipeline; yoy_real = a mesma variação deflacionada, publicada "
+              f"na gold com a fórmula declarada)."]
     for key, rotulo, _fam in fc.ESCOPO:
         s = pulse.get("series", {}).get(key)
         if not s:
@@ -134,10 +136,14 @@ def historico_bruto(gold_dir, data_base, meses=MESES_HISTORICO):
         meta = s.get("meta") or {}
         obs = [o for o in s.get("obs") or [] if o["ref"][:7] <= data_base][-meses:]
         yoy = {o["ref"]: o["v"] for o in s.get("yoy") or []}
+        real = {o["ref"]: o["v"] for o in s.get("yoy_real") or []}
         linhas.append(f"\n{rotulo} [{meta.get('unit')}; {meta.get('source')} {meta.get('series_code')}]")
+        if s.get("yoy_real_nota"):
+            linhas.append(f"  yoy_real publicado na gold: {s['yoy_real_nota']}")
         for o in obs:
-            y = yoy.get(o["ref"])
-            linhas.append(f"  {o['ref'][:7]}: {o['v']}" + (f" (yoy {y})" if y is not None else ""))
+            y, yr = yoy.get(o["ref"]), real.get(o["ref"])
+            linhas.append(f"  {o['ref'][:7]}: {o['v']}" + (f" (yoy {y}" + (f"; yoy_real {yr}" if yr is not None else "") + ")"
+                                                          if y is not None else ""))
     return "\n".join(linhas)
 
 
@@ -177,8 +183,11 @@ def _objecoes_da_rodada(ciclo, rodada):
     partes = []
     for r in REVISORES:
         s = _saida(ciclo, r, rodada)
-        if s and decisao_do_parecer(s) != "aprovar":
-            partes.append(f"Parecer de um revisor independente ({'A' if r == REVISORES[0] else 'B' if r == REVISORES[1] else 'C'}):\n{s}")
+        rotulo = "ABC"[REVISORES.index(r)]
+        if s and decisao_do_parecer(s, r) != "aprovar":
+            partes.append(f"Parecer de um revisor independente ({rotulo}), que devolveu:\n{s}")
+        elif s and ITEM_QUALQUER.search(s):
+            partes.append(f"Sugestões de um revisor independente ({rotulo}), que aprovou (não bloqueiam):\n{s}")
     return "\n\n".join(partes) or "nenhuma"
 
 
@@ -219,10 +228,35 @@ def entrada_revisor(revisor, nota_final, pacote, gold_dir):
     raise ValueError(revisor)
 
 
-def decisao_do_parecer(texto):
-    """'aprovar' ou 'devolver'; parecer sem decisão legível conta como devolução."""
+ITEM_GRAVE = re.compile(r"^\s*ITEM\s*\[?\s*grave\s*\]?\s*:", re.M | re.I)
+CRITERIO_FALHA = re.compile(r"^\s*C\d\s*:\s*falha", re.M | re.I)
+CRITERIO_OK = re.compile(r"^\s*C\d\s*:\s*ok", re.M | re.I)
+ITEM_QUALQUER = re.compile(r"^\s*ITEM\s*\[?\s*(grave|moderada|leve)\s*\]?\s*:", re.M | re.I)
+
+
+def decisao_declarada(texto):
     m = re.findall(r"DECISÃO:\s*(aprovar|devolver)", texto or "")
-    return m[-1] if m else "sem_decisao"
+    return m[-1] if m else None
+
+
+def decisao_do_parecer(texto, papel=None):
+    """'aprovar', 'devolver' ou 'sem_decisao' (que conta como devolução).
+
+    Revisores no formato ITEM (revisor independente e terceiro revisor): a decisão é derivada
+    dos itens por código, não da linha DECISÃO. Devolve se e só se houver item grave;
+    moderadas e leves são sugestões registradas que não bloqueiam (constituição v2, art. 6.5).
+    Validador constitucional (formato C1 a C5): qualquer falha devolve, todas ok aprovam.
+    Sem papel informado: vale a linha DECISÃO."""
+    declarada = decisao_declarada(texto)
+    if papel == "validador_constitucional":
+        if CRITERIO_FALHA.search(texto or ""):
+            return "devolver"
+        return "aprovar" if CRITERIO_OK.search(texto or "") else (declarada or "sem_decisao")
+    if papel in REVISORES_POR_ITEM:
+        if ITEM_GRAVE.search(texto or ""):
+            return "devolver"
+        return "aprovar" if (declarada or ITEM_QUALQUER.search(texto or "")) else "sem_decisao"
+    return declarada or "sem_decisao"
 
 
 # ---------------------------------------------------------------- backends
@@ -336,7 +370,7 @@ def _rodada(ciclo, estado, pacote, backend, cfg, gold_dir):
         if not feito(revisor):
             _rodar_agente(ciclo, revisor, pacote, backend, cfg, r, gold_dir)
             _marcar(ciclo, estado, f"{revisor}@{r}")
-        registro[revisor] = decisao_do_parecer(_saida(ciclo, revisor, r))
+        registro[revisor] = decisao_do_parecer(_saida(ciclo, revisor, r), revisor)
     registro["unanime"] = all(registro[x] == "aprovar" for x in REVISORES)
     return registro
 
