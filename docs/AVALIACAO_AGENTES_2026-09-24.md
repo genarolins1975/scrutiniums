@@ -634,3 +634,53 @@ A bateria mede o que o validador mecânico não vê. Cada caso planta um erro se
 3. Pedir ao autor independente uma segunda nota base e mais casos de seleção e generalização, as categorias em que dois dos três revisores falharam.
 4. Aplicar os casos de omissão à fonte da nota (antes da renderização), para que a tabela de fontes acompanhe o corte.
 5. Reextrair o trecho literal dos 22 valores do legado do guidance, para esvaziar a lista.
+
+---
+
+## 9. Primeiro ciclo real: jul/2026 (24/09/2026)
+
+**Base (E).** Gold publicada em 24/09/2026, 15:24 UTC (commit `acc5c6e` na main), com data base jul/2026 na série âncora `saldo_total`. Ciclo em `notas/2026-07/`. Cada papel rodou em subagente isolado, lendo só o próprio prompt, com o modelo do papel: Opus nos autores e no validador constitucional, Sonnet no revisor independente e Fable no terceiro revisor. Backend manual: o modelo servido não é registrado por código (`uso/` vazio), então a métrica de independência comprometida fica sem dado.
+
+**Resultado (E).** Nota rejeitada; nada publicado (`notas/2026-07/decisao.json`; `python3 -m pesquisa.auditor notas/`: "nota não aprovada: nada foi publicado").
+
+| Rodada | Validador mecânico (v3) | Validador constitucional | Revisor independente | Terceiro revisor |
+|---|---|---|---|---|
+| 0 | bloquear (1 M6, 7 M11) | não rodou | não rodou | não rodou |
+| 1 | aprovar | devolver (4 falhas) | devolver (2 graves) | devolver (2 graves) |
+| 2 | bloquear (1 M6, 1 M11) | não rodou | não rodou | não rodou |
+
+Com três rodadas no limite (`max_rodadas_revisao`), a nota foi rejeitada.
+
+**O que os revisores acharam na rodada 1 (E).** Os três apontaram, cada um sem ver os outros, os mesmos dois defeitos graves:
+
+1. "Só na taxa e no spread o segmento foi em sentido oposto ao do agregado": falso diante da própria nota, porque o saldo das pessoas jurídicas caiu 0,7% no mês enquanto o total subiu 0,3%.
+2. "Uma leitura independente dos mesmos fatos atribui…": a divergência entre analista e replicador entrou no texto como se fosse fato.
+
+O validador constitucional acrescentou um critério de refutação que pressupunha a causa da queda do saldo. A concordância entre os três na rodada foi total (`metricas.json`).
+
+**Os dois bloqueios mecânicos foram falso positivo (E).** Nas rodadas 0 e 2 o texto nomeava a série depois do número ("alta de X da taxa das pessoas físicas, alta de Y da inadimplência…"; "tiveram alta: de X a inadimplência… e de Y o comprometimento"). O M11 e o M6 liam o complemento do número anterior como contexto do seguinte. Correção em `validador_mecanico_v4` (`_trecho_proprio`). Os padrões reais viraram os controles L07 e L08: a v3 dá 2 falsos bloqueios em 7 controles; a v4, zero. O caso S36 confere que a correção não esconde segmento trocado. Recall de 100% em 36 casos. Com a v4, as três versões do ciclo passam no validador mecânico.
+
+**Defeito de registro corrigido (E).** A validação da rodada 0 tinha o mesmo nome do arquivo da última validação e foi sobrescrita na rodada 1. Cada rodada agora grava `validacao_mecanica_<rodada>.json`. A rodada 0 foi refeita sobre `saidas/revisao.md` (validador determinístico): o resultado é idêntico ao original, "bloquear" com 8 itens.
+
+**Medida fora do ciclo (E).** Os revisores não chegaram a ler a versão da rodada 2. Rodei os três sobre ela, com os mesmos prompts de um ciclo real (`pesquisa/experimentos/2026-07_revisores_sobre_rodada2/`). Resultado: revisor independente aprovou sem itens; terceiro revisor aprovou com cinco itens moderados e um leve; validador constitucional devolveu por C3, porque o título dá os dois horizontes para pessoas físicas e só o do mês para pessoas jurídicas. O terceiro revisor anotou a mesma assimetria como moderada. Essa medida não muda a decisão do ciclo e não conta para degrau.
+
+**Outras medidas (E).**
+
+- Concordância replicador × analistas: Jaccard dos destaques de 0,43 nos dois recortes; leitura igual em empresas (deterioração) e diferente em famílias (analista: misto; replicador: deterioração).
+- O crítico levantou 7 objeções.
+- A nota tem 1.463 palavras antes da tabela de fontes, com duas inferências.
+
+**Inferência (I).**
+
+- O desenho pegou o que importava: os dois erros reais da nota foram vistos pelos três revisores, e nenhum chegou a público.
+- A rejeição, porém, veio mais da ferramenta do que da nota. Duas das três rodadas foram gastas com falso positivo do validador mecânico, e a nota perdeu as rodadas em que poderia ter corrigido o que os revisores pediram.
+- A versão da rodada 2 estava a uma correção de título da unanimidade.
+- O validador constitucional não tem gradação: qualquer falha devolve. Por isso ele bloqueia por pontos que o terceiro revisor classifica como moderados. Essa diferença de régua é o próximo ponto de atrito provável.
+
+**Recomendação (R).**
+
+1. Manter a decisão: jul/2026 fica rejeitado. Refazer o mesmo mês até aprovar contaria duas vezes a mesma data base e esvaziaria o critério de degrau.
+2. Separar o orçamento de rodadas: bloqueio mecânico por formato não deveria consumir as rodadas de revisão semântica. É mudança de regra (art. 6.5 e `max_rodadas_revisao`). Proponho decidir antes do próximo ciclo, não depois de ver o resultado dele.
+3. Dar gradação ao validador constitucional (falha grave e observação), com a mesma regra dos outros revisores: só grave devolve.
+4. Instruir o consolidador a não levar para o texto a divergência entre analista e replicador. Ela é insumo do crítico, não conteúdo da nota.
+5. O próximo ciclo depende da divulgação de ago/2026 pelo BCB. O calendário continua não consultado.
