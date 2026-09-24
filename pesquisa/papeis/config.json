@@ -1,0 +1,14 @@
+{
+ "versao": 1,
+ "nota": "Modelo por papel. Todos em claude-opus-5 até a decisão do editor sobre um segundo fornecedor ou modelo para o replicador e o validador constitucional (docs/AVALIACAO_AGENTES_2026-09-24.md, seção 3c). O modelo que efetivamente respondeu (inclusive em fallback por recusa) é registrado em uso/<etapa>.json.",
+ "segundo_fornecedor": "pendente de decisão do editor",
+ "max_rodadas_revisao": 3,
+ "papeis": {
+  "analista_familias": {"modelo": "claude-opus-5", "esforco": "high"},
+  "analista_empresas": {"modelo": "claude-opus-5", "esforco": "high"},
+  "replicador": {"modelo": "claude-opus-5", "esforco": "high"},
+  "consolidador": {"modelo": "claude-opus-5", "esforco": "high"},
+  "critico": {"modelo": "claude-opus-5", "esforco": "high"},
+  "validador_constitucional": {"modelo": "claude-opus-5", "esforco": "high"}
+ }
+}

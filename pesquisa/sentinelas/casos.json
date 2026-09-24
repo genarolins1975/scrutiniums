@@ -1,0 +1,640 @@
+{
+ "versao": 1,
+ "descricao": "Casos sentinela: a nota limpa (nota_limpa.md) com um erro plantado por caso. Cada caso declara a decisão e as checagens esperadas. Mede o recall do validador por categoria e o falso bloqueio nas variantes limpas (docs/AVALIACAO_AGENTES_2026-09-24.md, seção 4e). Um caso por ciclo entra cego no fluxo real (pesquisa/orquestrador.py).",
+ "casos": [
+  {
+   "id": "S01",
+   "categoria": "numero_digitado",
+   "descricao": "número por extenso trocado por algarismo",
+   "substituir": [
+    [
+     "acima de noventa dias",
+     "acima de 90 dias"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M3"
+    ]
+   }
+  },
+  {
+   "id": "S02",
+   "categoria": "numero_digitado",
+   "descricao": "valor do fato digitado no lugar do marcador",
+   "substituir": [
+    [
+     "subiu para {{inad_total.nivel}}",
+     "subiu para 4,88%"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M3"
+    ]
+   }
+  },
+  {
+   "id": "S03",
+   "categoria": "numero_digitado",
+   "descricao": "data digitada no título",
+   "substituir": [
+    [
+     "# Conjuntura do crédito, {{data_base}}",
+     "# Conjuntura do crédito, julho de 2026"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M3"
+    ]
+   }
+  },
+  {
+   "id": "S04",
+   "categoria": "numero_digitado",
+   "descricao": "valor digitado errado (arredondamento do agente)",
+   "substituir": [
+    [
+     "com queda de {{taxa_total.delta_mes_pp|abs}} no mês",
+     "com queda de 1,3 p.p. no mês"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M3"
+    ]
+   }
+  },
+  {
+   "id": "S05",
+   "categoria": "fato_inexistente",
+   "descricao": "marcador com id inexistente",
+   "substituir": [
+    [
+     "{{inad_pf.nivel}}",
+     "{{inad_pf.nivel_ajustado}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M2"
+    ]
+   }
+  },
+  {
+   "id": "S06",
+   "categoria": "fato_inexistente",
+   "descricao": "fato inventado (variação que o pacote não traz)",
+   "substituir": [
+    [
+     "queda de {{saldo_pj.var_mes_pct|abs}}",
+     "queda de {{saldo_pj.var_mes_pct|abs}} e alta de {{saldo_pj.var_trimestre_pct|abs}} no trimestre"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M2"
+    ]
+   }
+  },
+  {
+   "id": "S07",
+   "categoria": "pacote",
+   "descricao": "nota declara outro pacote",
+   "cabecalho": {
+    "pacote_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+   },
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M1"
+    ]
+   }
+  },
+  {
+   "id": "S08",
+   "categoria": "pacote",
+   "descricao": "pacote adulterado depois de gerado",
+   "pacote": {
+    "alterar_valor": [
+     "inad_total.nivel",
+     4.99
+    ],
+    "recalcular_sha": false
+   },
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M1"
+    ]
+   }
+  },
+  {
+   "id": "S09",
+   "categoria": "pacote",
+   "descricao": "data base da nota difere da do pacote",
+   "cabecalho": {
+    "data_base": "2026-06"
+   },
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M1"
+    ]
+   }
+  },
+  {
+   "id": "S10",
+   "categoria": "direcao",
+   "descricao": "queda descrita como alta",
+   "substituir": [
+    [
+     "com queda de {{taxa_total.delta_mes_pp|abs}} no mês",
+     "com alta de {{taxa_total.delta_mes_pp|abs}} no mês"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S11",
+   "categoria": "direcao",
+   "descricao": "alta descrita como queda",
+   "substituir": [
+    [
+     "alta de {{inad_total.delta_mes_pp|abs}} no mês",
+     "queda de {{inad_total.delta_mes_pp|abs}} no mês"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S12",
+   "categoria": "direcao",
+   "descricao": "valor sem sinal e sem palavra de direção",
+   "substituir": [
+    [
+     "com alta de {{saldo_total.var_12m_pct|abs}}",
+     "com variação de {{saldo_total.var_12m_pct|abs}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S13",
+   "categoria": "direcao",
+   "descricao": "nível com direção que contraria todas as variações da série",
+   "substituir": [
+    [
+     "subiu para {{inad_total.nivel}}",
+     "caiu para {{inad_total.nivel}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S14",
+   "categoria": "direcao",
+   "descricao": "estabilidade declarada com variação diferente de zero",
+   "substituir": [
+    [
+     "O spread médio ficou em {{spread_total.nivel}}, com queda de {{spread_total.delta_mes_pp|abs}}.",
+     "O spread médio manteve estabilidade no mês, com {{spread_total.delta_mes_pp}}."
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S15",
+   "categoria": "direcao",
+   "descricao": "elipse herda a direção errada",
+   "substituir": [
+    [
+     "no mês e de {{inad_total.delta_12m_pp|abs}} em doze meses",
+     "no mês e de {{taxa_pj.delta_12m_pp|abs}} em doze meses"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M6"
+    ]
+   }
+  },
+  {
+   "id": "S16",
+   "categoria": "recorte",
+   "descricao": "número de outra série (spread no lugar da inadimplência)",
+   "substituir": [
+    [
+     "subiu para {{inad_total.nivel}}",
+     "subiu para {{spread_total.nivel}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M11"
+    ]
+   }
+  },
+  {
+   "id": "S17",
+   "categoria": "recorte",
+   "descricao": "número do outro segmento (PJ no lugar de PF)",
+   "substituir": [
+    [
+     "Nas pessoas físicas, a inadimplência ficou em {{inad_pf.nivel}}",
+     "Nas pessoas físicas, a inadimplência ficou em {{inad_pj.nivel}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M11"
+    ]
+   }
+  },
+  {
+   "id": "S18",
+   "categoria": "recorte",
+   "descricao": "saldo trocado por concessões",
+   "substituir": [
+    [
+     "As concessões somaram {{concessoes_total.nivel}}",
+     "As concessões somaram {{saldo_total.nivel}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M11"
+    ]
+   }
+  },
+  {
+   "id": "S19",
+   "categoria": "data",
+   "descricao": "fato defasado citado sem a própria data",
+   "substituir": [
+    [
+     "{{endividamento.nivel}} da renda acumulada em doze meses em {{data:endividamento.nivel}}",
+     "{{endividamento.nivel}} da renda acumulada em doze meses"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M4"
+    ]
+   }
+  },
+  {
+   "id": "S20",
+   "categoria": "classe",
+   "descricao": "parágrafo sem classe",
+   "substituir": [
+    [
+     "[EVIDÊNCIA] As concessões",
+     "As concessões"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M5"
+    ]
+   }
+  },
+  {
+   "id": "S21",
+   "categoria": "classe",
+   "descricao": "evidência sem fato do pacote",
+   "acrescentar": "[EVIDÊNCIA] O crédito seguiu em expansão no período.",
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M5"
+    ]
+   }
+  },
+  {
+   "id": "S22",
+   "categoria": "classe",
+   "descricao": "inferência sem declarar o que a refutaria",
+   "substituir": [
+    [
+     " Refutaria esta leitura: revisão da inadimplência na próxima divulgação do BCB, ou alta da taxa média nas modalidades de maior peso.",
+     ""
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M5"
+    ]
+   }
+  },
+  {
+   "id": "S23",
+   "categoria": "classe",
+   "descricao": "recomendação em nota rotineira",
+   "acrescentar": "[RECOMENDAÇÃO] Acompanhar a inadimplência das pessoas físicas, hoje em {{inad_pf.nivel}}.",
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M5"
+    ]
+   }
+  },
+  {
+   "id": "S24",
+   "categoria": "lexico",
+   "descricao": "adjetivo valorativo sem régua",
+   "substituir": [
+    [
+     "com alta de {{concessoes_total.var_12m_pct|abs}}",
+     "com forte alta de {{concessoes_total.var_12m_pct|abs}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M7"
+    ]
+   }
+  },
+  {
+   "id": "S25",
+   "categoria": "lexico",
+   "descricao": "juízo valorativo",
+   "substituir": [
+    [
+     "o que sugere que",
+     "o que é preocupante e sugere que"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M7"
+    ]
+   }
+  },
+  {
+   "id": "S26",
+   "categoria": "lexico",
+   "descricao": "vocabulário de rating",
+   "substituir": [
+    [
+     "do custo do crédito no período.",
+     "do custo do crédito no período, sem efeito sobre o rating soberano."
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M7"
+    ]
+   }
+  },
+  {
+   "id": "S27",
+   "categoria": "lexico",
+   "descricao": "previsão que não está na gold",
+   "substituir": [
+    [
+     "não veio do custo do crédito no período.",
+     "não veio do custo do crédito no período e deverá persistir."
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M7"
+    ]
+   }
+  },
+  {
+   "id": "S28",
+   "categoria": "lexico",
+   "descricao": "faixa verbal de risco",
+   "acrescentar": "[INFERÊNCIA] Com a inadimplência em {{inad_total.nivel}}, o sistema estaria em risco elevado. Refutaria esta leitura: queda da inadimplência.",
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M7"
+    ]
+   }
+  },
+  {
+   "id": "S29",
+   "categoria": "linguagem",
+   "descricao": "hífen na prosa",
+   "substituir": [
+    [
+     "a piora da qualidade da carteira",
+     "a piora de curto-prazo da qualidade da carteira"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M8"
+    ]
+   }
+  },
+  {
+   "id": "S30",
+   "categoria": "linguagem",
+   "descricao": "travessão na prosa",
+   "substituir": [
+    [
+     ", o que sugere que",
+     " — o que sugere que"
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M8"
+    ]
+   }
+  },
+  {
+   "id": "S31",
+   "categoria": "lacuna",
+   "descricao": "lacuna do pacote omitida",
+   "pacote": {
+    "acrescentar_lacuna": {
+     "fato": "saldo_pj.var_12m_pct",
+     "motivo": "observação de jul/2025 ausente na gold; não estimada"
+    },
+    "recalcular_sha": true
+   },
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M9"
+    ]
+   }
+  },
+  {
+   "id": "S32",
+   "categoria": "tema_sensivel",
+   "descricao": "instituição nomeada no degrau 1",
+   "substituir": [
+    [
+     "nas modalidades de maior peso.",
+     "nas modalidades de maior peso, como o consignado do Itaú."
+    ]
+   ],
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M10"
+    ]
+   }
+  },
+  {
+   "id": "S33",
+   "categoria": "tema_sensivel",
+   "descricao": "FGC mencionado sem declaração de interesse",
+   "acrescentar": "[EVIDÊNCIA] O saldo total de {{saldo_total.nivel}} não se confunde com a base coberta pelo FGC.",
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M10"
+    ]
+   }
+  },
+  {
+   "id": "S34",
+   "categoria": "tema_sensivel",
+   "descricao": "Open Finance mencionado sem declaração de interesse",
+   "acrescentar": "[EVIDÊNCIA] As concessões de {{concessoes_total.nivel}} não distinguem operações originadas via Open Finance.",
+   "esperado": {
+    "decisao": "devolver",
+    "codigos": [
+     "M10"
+    ]
+   }
+  }
+ ],
+ "controles_limpos": [
+  {
+   "id": "L01",
+   "descricao": "nota limpa, sem alteração",
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L02",
+   "descricao": "tema sensível no degrau 3 com declaração de interesse",
+   "substituir": [
+    [
+     "nas modalidades de maior peso.",
+     "nas modalidades de maior peso, como o consignado do Itaú."
+    ]
+   ],
+   "cabecalho": {
+    "degrau": "3",
+    "declaracao_interesse": "O editor chefe é conselheiro do FGC e diretor da Associação Open Finance Brasil."
+   },
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L03",
+   "descricao": "direção depois do número e ordem diferente das frases",
+   "substituir": [
+    [
+     "com queda de {{taxa_total.delta_mes_pp|abs}} no mês",
+     "com recuo de {{taxa_total.delta_mes_pp|abs}} no mês"
+    ],
+    [
+     "subiu para {{inad_total.nivel}}",
+     "avançou para {{inad_total.nivel}}"
+    ]
+   ],
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L04",
+   "descricao": "lacuna declarada quando o pacote tem lacuna",
+   "pacote": {
+    "acrescentar_lacuna": {
+     "fato": "saldo_pj.var_12m_pct",
+     "motivo": "observação de jul/2025 ausente na gold; não estimada"
+    },
+    "recalcular_sha": true
+   },
+   "acrescentar": "[EVIDÊNCIA] O pacote desta nota declara lacunas, não estimadas: {{lacunas}}. O saldo das pessoas jurídicas ficou em {{saldo_pj.nivel}}.",
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L05",
+   "descricao": "data declarada num fato cobre os demais da mesma série e referência (falso positivo do M4 no ciclo retrospectivo de jun/2026)",
+   "substituir": [
+    [
+     "O endividamento das famílias com o sistema financeiro foi de {{endividamento.nivel}} da renda acumulada em doze meses em {{data:endividamento.nivel}}",
+     "O endividamento das famílias com o sistema financeiro, com referência em {{data:endividamento.nivel}}, foi de {{endividamento.nivel}} da renda acumulada em doze meses, com queda de {{endividamento.delta_mes_pp|abs}} no mês"
+    ]
+   ],
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L06",
+   "descricao": "parágrafo de evidência que só declara lacunas (falso positivo do M5 no ciclo retrospectivo de jun/2026)",
+   "acrescentar": "[EVIDÊNCIA] Lacunas do pacote: {{lacunas}}.",
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  }
+ ]
+}
