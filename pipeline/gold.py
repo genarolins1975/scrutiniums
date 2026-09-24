@@ -205,7 +205,10 @@ def build_all(con, cfg, fetch_status):
     # ---- Módulo 3: instituições (com capital real e vulnerabilidade a cenário severo) ----
     inst = build_institution_scores(con, cfg, elast["elasticidades"],
                                     cfg["scenario"]["presets"]["severamente_adverso"])
-    common.write_gold("institutions.json", inst)
+    # regra nominal (24/09/2026): o score segue calculado aqui, mas sai da gold só como
+    # distribuição anônima por grupo; nome nunca acompanha score, faixa ou variação
+    from pipeline import regra_nominal
+    common.write_gold("institutions.json", regra_nominal.institutions_publicavel(inst))
 
     # ---- Painel de inadimplência por instituição (v0.16) ----
     from pipeline import npl as npl_mod
@@ -1089,16 +1092,21 @@ def build_all(con, cfg, fetch_status):
     # ---- EPAE: fluxos Pix da seção CNAE de artes, cultura, esporte e recreação ----
     # Insumo público dos estudos que atribuem parcela às bets. Republicado como
     # dado OBSERVADO da seção inteira; a atribuição a apostas fica com quem a faz.
+    # Os três builders abaixo rodavam sem guarda: uma tabela ausente no silver (semente
+    # antiga, fonte nunca coletada) derrubava a execução inteira antes da linhagem e do
+    # meta (avaliação de 24/09/2026: gold não reconstruía a partir da semente versionada).
+    # Falha vira stub declarado, como nos demais builders; a sentinela mantém a
+    # publicação anterior no ar.
     from pipeline import epae as epae_mod
-    epae_mod.build(con)
-
-    # ---- Presença bancária física por município (dependências + correspondentes) ----
     from pipeline import presenca as presenca_mod
-    presenca_mod.build(con, cfg)
-
-    # ---- Taxas de juros por modalidade × IF (txjuros) ----
     from pipeline import juros as juros_mod
-    juros_mod.build(con)
+    for nome_gold, construir in (("epae.json", lambda: epae_mod.build(con)),
+                                 ("presenca_mun.json", lambda: presenca_mod.build(con, cfg)),
+                                 ("juros.json", lambda: juros_mod.build(con))):
+        try:
+            construir()
+        except Exception as e:
+            common.stub(nome_gold, e)
     # ---- Seguro prestamista (SUSEP SES): camada da aba Juros, fora da taxa ----
     try:
         from pipeline import prestamista as prestamista_mod

@@ -1,0 +1,44 @@
+{
+ "ciclo": "2026-06",
+ "data_base": "2026-06",
+ "retrospectivo": true,
+ "validador_mecanico": {
+  "decisao_final": "aprovar",
+  "falhas_finais": [],
+  "devolucoes": 0,
+  "rodadas_revisao": 0
+ },
+ "validador_constitucional": "devolver",
+ "concordancia": {
+  "familias": {
+   "jaccard_destaques": 0.6667,
+   "leitura_analista": "deterioração",
+   "leitura_replicador": "deterioração",
+   "leitura_concorda": true
+  },
+  "empresas": {
+   "jaccard_destaques": 0.6667,
+   "leitura_analista": "melhora",
+   "leitura_replicador": "misto",
+   "leitura_concorda": false
+  }
+ },
+ "uso": {
+  "por_papel": {},
+  "total": null,
+  "nota": "sem chamadas de API registradas (backend manual ou ciclo não executado)"
+ },
+ "editor": {
+  "minutos": null,
+  "decisao": null,
+  "erros_factuais_encontrados": 0,
+  "preenchido": false
+ },
+ "sentinelas": {
+  "recall_total": 1.0,
+  "n_casos": 34,
+  "recall_numerico": 1.0,
+  "falso_bloqueio": 0,
+  "versao_validador": "validador_mecanico_v2"
+ }
+}

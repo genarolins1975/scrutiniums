@@ -22,7 +22,9 @@ import { join } from "node:path";
  *  - a soma municipal reconcilia com o Boletim Estatístico de dezembro de 2025, e o único
  *    resíduo tolerado é o município que existe na Previdência e não no universo do Censo.
  */
-const ARQ = join(process.cwd(), "data/gold/consignado.json");
+// Lê o gold PUBLICADO, como os demais testes de dados: apontando para data/gold (que não
+// existe no clone limpo do CI), estes testes ficaram pulados em todo CI até 24/09/2026.
+const ARQ = join(process.cwd(), "public/obs/data/gold/consignado.json");
 const existe = existsSync(ARQ);
 const bruto = existe ? readFileSync(ARQ, "utf-8") : "{}";
 const C: any = JSON.parse(bruto);
@@ -611,13 +613,18 @@ d("séries e demografia do Censo 2022", () => {
 
   it("a inadimplência do consignado do INSS é muito menor que a do privado", () => {
     // É o dado mais eloquente do bloco, e o teste protege contra troca de rótulos entre
-    // as séries: 1,95% no INSS contra 8,63% no consignado privado.
+    // as séries. Relacional, não fixado: o valor fixo (1,95% contra 8,63%) envelheceu com o
+    // dado e o teste passou a falhar contra o gold publicado (avaliação de 24/09/2026).
     const a = C.sgs.atual;
     expect(a.inss.inad, `INSS ${a.inss.inad} vs privado ${a.privado.inad}`)
       .toBeLessThan(a.privado.inad);
-    expect(a.inss.inad).toBeCloseTo(1.95, 2);
-    expect(a.privado.inad).toBeCloseTo(8.63, 2);
     expect(a.inss.inad).toBeLessThan(a.publico.inad);
+    // o "atual" é o último ponto da própria série, rótulo a rótulo
+    const inad = C.sgs.series.inad;
+    const ultimo = inad[inad.length - 1];
+    expect(a.inss.inad).toBe(ultimo.inss);
+    expect(a.privado.inad).toBe(ultimo.privado);
+    expect(a.publico.inad).toBe(ultimo.publico);
   });
 
   it("as séries do SGS estão ordenadas no tempo e não são vazias", () => {

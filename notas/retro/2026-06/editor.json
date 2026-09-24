@@ -1,0 +1,9 @@
+{
+ "inicio": null,
+ "fim": null,
+ "minutos": null,
+ "decisao": null,
+ "erros_factuais_encontrados": [],
+ "observacoes": null,
+ "instrucao": "Preencher ao revisar: inicio e fim em ISO 8601, decisao publicar | editar | rejeitar; cada erro factual que o validador deixou passar vai para erros_factuais_encontrados e para pesquisa/registro_erros.json."
+}

@@ -2,7 +2,9 @@
 
 Somente biblioteca padrão (portabilidade do protótipo). Princípios:
 - bronze é imutável: cada coleta gera arquivo novo com sha256 + metadados da requisição;
-- silver nunca sobrescreve observação: divergência gera registro em `revisions` e novo vintage;
+- silver guarda só o valor vigente de cada observação; divergência atualiza o valor e
+  registra o anterior em `revisions` (não há consulta "como estava em tal data": o
+  vintage de uma nota é congelado pelo pacote de fatos, pesquisa/fatos_conjuntura.py);
 - ausência de dado não é zero: simplesmente não há linha.
 """
 import gzip

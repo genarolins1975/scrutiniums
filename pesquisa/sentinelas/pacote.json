@@ -1,0 +1,1277 @@
+{
+ "tipo": "pacote_fatos_conjuntura",
+ "versao_contrato": 1,
+ "data_base": "2026-07",
+ "serie_ancora": "saldo_total",
+ "gold": {
+  "pulse.json": {
+   "sha256": "311f1831da99c57f09818b96f727b181e60e674a65b00f906b12e1ad359edb1d",
+   "gerado_em": "2026-09-23T15:35:19+00:00"
+  },
+  "meta.json": {
+   "sha256": "c0a251bc904f08c5797e55e67780e675939bb09d003b734e6e80f973af55e979",
+   "gerado_em": "2026-09-23T15:36:07+00:00",
+   "vintage_sgs": "2026-07"
+  }
+ },
+ "escopo_excluido": [
+  "selic_meta",
+  "ipca",
+  "ibc_br",
+  "desemprego",
+  "papelao",
+  "cambio"
+ ],
+ "fatos": [
+  {
+   "id": "saldo_total.nivel",
+   "rotulo": "Saldo da carteira de crédito, total",
+   "tipo": "observado",
+   "valor": 7372243.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 7,37 trilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20539",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_total",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_total.var_mes_pct",
+   "rotulo": "Saldo da carteira de crédito, total: variação no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.257708,
+   "unidade": "%",
+   "texto": "+0,3%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20539",
+   "texto_abs": "0,3%",
+   "sinal": "+",
+   "formula": "variacao_pct",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_total",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "saldo_total.var_12m_pct",
+   "rotulo": "Saldo da carteira de crédito, total: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 9.491,
+   "unidade": "%",
+   "texto": "+9,5%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20539",
+   "texto_abs": "9,5%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_total",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_total.var_12m_real_pct",
+   "rotulo": "Saldo da carteira de crédito, total: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 4.833,
+   "unidade": "%",
+   "texto": "+4,8%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20539",
+   "texto_abs": "4,8%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_total",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pf.nivel",
+   "rotulo": "Saldo da carteira de crédito, pessoas físicas",
+   "tipo": "observado",
+   "valor": 4640730.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 4,64 trilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20541",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pf",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pf.var_mes_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas físicas: variação no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.826955,
+   "unidade": "%",
+   "texto": "+0,8%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20541",
+   "texto_abs": "0,8%",
+   "sinal": "+",
+   "formula": "variacao_pct",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_pf",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "saldo_pf.var_12m_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas físicas: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 10.789,
+   "unidade": "%",
+   "texto": "+10,8%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20541",
+   "texto_abs": "10,8%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pf",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pf.var_12m_real_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas físicas: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 6.076,
+   "unidade": "%",
+   "texto": "+6,1%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20541",
+   "texto_abs": "6,1%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pf",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pj.nivel",
+   "rotulo": "Saldo da carteira de crédito, pessoas jurídicas",
+   "tipo": "observado",
+   "valor": 2731513.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 2,73 trilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20540",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pj",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pj.var_mes_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas jurídicas: variação no mês",
+   "tipo": "calculado_pacote",
+   "valor": -0.694824,
+   "unidade": "%",
+   "texto": "−0,7%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20540",
+   "texto_abs": "0,7%",
+   "sinal": "−",
+   "formula": "variacao_pct",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "saldo_pj",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "saldo_pj.var_12m_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas jurídicas: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 7.354,
+   "unidade": "%",
+   "texto": "+7,4%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20540",
+   "texto_abs": "7,4%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pj",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "saldo_pj.var_12m_real_pct",
+   "rotulo": "Saldo da carteira de crédito, pessoas jurídicas: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 2.787,
+   "unidade": "%",
+   "texto": "+2,8%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20540",
+   "texto_abs": "2,8%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "saldo_pj",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_total.nivel",
+   "rotulo": "Concessões de crédito no mês, total",
+   "tipo": "observado",
+   "valor": 736820.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 736,8 bilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20631",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_total",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_total.var_12m_pct",
+   "rotulo": "Concessões de crédito no mês, total: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 13.383,
+   "unidade": "%",
+   "texto": "+13,4%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20631",
+   "texto_abs": "13,4%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_total",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_total.var_12m_real_pct",
+   "rotulo": "Concessões de crédito no mês, total: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 8.56,
+   "unidade": "%",
+   "texto": "+8,6%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20631",
+   "texto_abs": "8,6%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_total",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pf.nivel",
+   "rotulo": "Concessões de crédito no mês, pessoas físicas",
+   "tipo": "observado",
+   "valor": 406405.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 406,4 bilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20633",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pf",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pf.var_12m_pct",
+   "rotulo": "Concessões de crédito no mês, pessoas físicas: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 11.228,
+   "unidade": "%",
+   "texto": "+11,2%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20633",
+   "texto_abs": "11,2%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pf",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pf.var_12m_real_pct",
+   "rotulo": "Concessões de crédito no mês, pessoas físicas: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 6.496,
+   "unidade": "%",
+   "texto": "+6,5%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20633",
+   "texto_abs": "6,5%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pf",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pj.nivel",
+   "rotulo": "Concessões de crédito no mês, pessoas jurídicas",
+   "tipo": "observado",
+   "valor": 330415.0,
+   "unidade": "R$ milhões",
+   "texto": "R$ 330,4 bilhões",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20632",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pj",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pj.var_12m_pct",
+   "rotulo": "Concessões de crédito no mês, pessoas jurídicas: variação em 12 meses, nominal",
+   "tipo": "calculado_pipeline",
+   "valor": 16.152,
+   "unidade": "%",
+   "texto": "+16,2%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20632",
+   "texto_abs": "16,2%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pj",
+    "campo": "yoy",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "concessoes_pj.var_12m_real_pct",
+   "rotulo": "Concessões de crédito no mês, pessoas jurídicas: variação em 12 meses, real (IPCA)",
+   "tipo": "calculado_pipeline",
+   "valor": 11.211,
+   "unidade": "%",
+   "texto": "+11,2%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20632",
+   "texto_abs": "11,2%",
+   "sinal": "+",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "concessoes_pj",
+    "campo": "yoy_real",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "taxa_total.nivel",
+   "rotulo": "Taxa média de juros das operações de crédito, total",
+   "tipo": "observado",
+   "valor": 32.08,
+   "unidade": "% a.a.",
+   "texto": "32,08% a.a.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20714",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "taxa_total",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "taxa_total.delta_mes_pp",
+   "rotulo": "Taxa média de juros das operações de crédito, total: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -1.25,
+   "unidade": "p.p.",
+   "texto": "−1,25 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20714",
+   "texto_abs": "1,25 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_total",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "taxa_total.delta_12m_pp",
+   "rotulo": "Taxa média de juros das operações de crédito, total: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.33,
+   "unidade": "p.p.",
+   "texto": "+0,33 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20714",
+   "texto_abs": "0,33 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_total",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "taxa_pf.nivel",
+   "rotulo": "Taxa média de juros, pessoas físicas",
+   "tipo": "observado",
+   "valor": 37.41,
+   "unidade": "% a.a.",
+   "texto": "37,41% a.a.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20716",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "taxa_pf",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "taxa_pf.delta_mes_pp",
+   "rotulo": "Taxa média de juros, pessoas físicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -1.97,
+   "unidade": "p.p.",
+   "texto": "−1,97 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20716",
+   "texto_abs": "1,97 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pf",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "taxa_pf.delta_12m_pp",
+   "rotulo": "Taxa média de juros, pessoas físicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 1.0,
+   "unidade": "p.p.",
+   "texto": "+1,00 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20716",
+   "texto_abs": "1,00 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pf",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "taxa_pj.nivel",
+   "rotulo": "Taxa média de juros, pessoas jurídicas",
+   "tipo": "observado",
+   "valor": 20.97,
+   "unidade": "% a.a.",
+   "texto": "20,97% a.a.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20715",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "taxa_pj",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "taxa_pj.delta_mes_pp",
+   "rotulo": "Taxa média de juros, pessoas jurídicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.24,
+   "unidade": "p.p.",
+   "texto": "+0,24 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20715",
+   "texto_abs": "0,24 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pj",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "taxa_pj.delta_12m_pp",
+   "rotulo": "Taxa média de juros, pessoas jurídicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": -0.62,
+   "unidade": "p.p.",
+   "texto": "−0,62 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20715",
+   "texto_abs": "0,62 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "taxa_pj",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_total.nivel",
+   "rotulo": "Spread médio das operações de crédito, total",
+   "tipo": "observado",
+   "valor": 20.88,
+   "unidade": "p.p.",
+   "texto": "20,88 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20783",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "spread_total",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "spread_total.delta_mes_pp",
+   "rotulo": "Spread médio das operações de crédito, total: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -0.98,
+   "unidade": "p.p.",
+   "texto": "−0,98 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20783",
+   "texto_abs": "0,98 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_total",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_total.delta_12m_pp",
+   "rotulo": "Spread médio das operações de crédito, total: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.31,
+   "unidade": "p.p.",
+   "texto": "+0,31 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20783",
+   "texto_abs": "0,31 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_total",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_pf.nivel",
+   "rotulo": "Spread médio, pessoas físicas",
+   "tipo": "observado",
+   "valor": 26.65,
+   "unidade": "p.p.",
+   "texto": "26,65 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20785",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "spread_pf",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "spread_pf.delta_mes_pp",
+   "rotulo": "Spread médio, pessoas físicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -1.87,
+   "unidade": "p.p.",
+   "texto": "−1,87 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20785",
+   "texto_abs": "1,87 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pf",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_pf.delta_12m_pp",
+   "rotulo": "Spread médio, pessoas físicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.96,
+   "unidade": "p.p.",
+   "texto": "+0,96 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20785",
+   "texto_abs": "0,96 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pf",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_pj.nivel",
+   "rotulo": "Spread médio, pessoas jurídicas",
+   "tipo": "observado",
+   "valor": 8.87,
+   "unidade": "p.p.",
+   "texto": "8,87 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20784",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "spread_pj",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "spread_pj.delta_mes_pp",
+   "rotulo": "Spread médio, pessoas jurídicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.88,
+   "unidade": "p.p.",
+   "texto": "+0,88 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20784",
+   "texto_abs": "0,88 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pj",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "spread_pj.delta_12m_pp",
+   "rotulo": "Spread médio, pessoas jurídicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": -0.53,
+   "unidade": "p.p.",
+   "texto": "−0,53 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20784",
+   "texto_abs": "0,53 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "spread_pj",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_total.nivel",
+   "rotulo": "Inadimplência acima de 90 dias, total",
+   "tipo": "observado",
+   "valor": 4.88,
+   "unidade": "%",
+   "texto": "4,88%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21082",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "inad_total",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "inad_total.delta_mes_pp",
+   "rotulo": "Inadimplência acima de 90 dias, total: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.3,
+   "unidade": "p.p.",
+   "texto": "+0,30 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21082",
+   "texto_abs": "0,30 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_total",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_total.delta_12m_pp",
+   "rotulo": "Inadimplência acima de 90 dias, total: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.92,
+   "unidade": "p.p.",
+   "texto": "+0,92 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21082",
+   "texto_abs": "0,92 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_total",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_total",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_pf.nivel",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas físicas",
+   "tipo": "observado",
+   "valor": 5.81,
+   "unidade": "%",
+   "texto": "5,81%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21084",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "inad_pf",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "inad_pf.delta_mes_pp",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas físicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.39,
+   "unidade": "p.p.",
+   "texto": "+0,39 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21084",
+   "texto_abs": "0,39 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pf",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_pf.delta_12m_pp",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas físicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 1.15,
+   "unidade": "p.p.",
+   "texto": "+1,15 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21084",
+   "texto_abs": "1,15 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pf",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pf",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_pj.nivel",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas jurídicas",
+   "tipo": "observado",
+   "valor": 3.31,
+   "unidade": "%",
+   "texto": "3,31%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21083",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "inad_pj",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "inad_pj.delta_mes_pp",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas jurídicas: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.13,
+   "unidade": "p.p.",
+   "texto": "+0,13 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21083",
+   "texto_abs": "0,13 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pj",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "inad_pj.delta_12m_pp",
+   "rotulo": "Inadimplência acima de 90 dias, pessoas jurídicas: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.52,
+   "unidade": "p.p.",
+   "texto": "+0,52 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 21083",
+   "texto_abs": "0,52 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pj",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "inad_pj",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "credito_pib.nivel",
+   "rotulo": "Saldo da carteira de crédito em relação ao PIB",
+   "tipo": "observado",
+   "valor": 55.6,
+   "unidade": "%",
+   "texto": "55,60%",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20622",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "credito_pib",
+    "campo": "obs",
+    "ref": "2026-07-01"
+   }
+  },
+  {
+   "id": "credito_pib.delta_mes_pp",
+   "rotulo": "Saldo da carteira de crédito em relação ao PIB: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -0.15,
+   "unidade": "p.p.",
+   "texto": "−0,15 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20622",
+   "texto_abs": "0,15 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "credito_pib",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "credito_pib",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    }
+   ]
+  },
+  {
+   "id": "credito_pib.delta_12m_pp",
+   "rotulo": "Saldo da carteira de crédito em relação ao PIB: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 1.22,
+   "unidade": "p.p.",
+   "texto": "+1,22 p.p.",
+   "data_ref": "2026-07",
+   "fonte": "BCB/SGS 20622",
+   "texto_abs": "1,22 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "credito_pib",
+     "campo": "obs",
+     "ref": "2026-07-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "credito_pib",
+     "campo": "obs",
+     "ref": "2025-07-01"
+    }
+   ]
+  },
+  {
+   "id": "endividamento.nivel",
+   "rotulo": "Endividamento das famílias com o SFN em relação à renda de 12 meses",
+   "tipo": "observado",
+   "valor": 49.75,
+   "unidade": "%",
+   "texto": "49,75%",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29037",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "endividamento",
+    "campo": "obs",
+    "ref": "2026-06-01"
+   }
+  },
+  {
+   "id": "endividamento.delta_mes_pp",
+   "rotulo": "Endividamento das famílias com o SFN em relação à renda de 12 meses: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": -0.08,
+   "unidade": "p.p.",
+   "texto": "−0,08 p.p.",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29037",
+   "texto_abs": "0,08 p.p.",
+   "sinal": "−",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "endividamento",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "endividamento",
+     "campo": "obs",
+     "ref": "2026-05-01"
+    }
+   ]
+  },
+  {
+   "id": "endividamento.delta_12m_pp",
+   "rotulo": "Endividamento das famílias com o SFN em relação à renda de 12 meses: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 0.93,
+   "unidade": "p.p.",
+   "texto": "+0,93 p.p.",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29037",
+   "texto_abs": "0,93 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "endividamento",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "endividamento",
+     "campo": "obs",
+     "ref": "2025-06-01"
+    }
+   ]
+  },
+  {
+   "id": "comprometimento.nivel",
+   "rotulo": "Comprometimento de renda das famílias com o serviço da dívida",
+   "tipo": "observado",
+   "valor": 28.85,
+   "unidade": "%",
+   "texto": "28,85%",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29034",
+   "origem": {
+    "arquivo": "pulse.json",
+    "serie": "comprometimento",
+    "campo": "obs",
+    "ref": "2026-06-01"
+   }
+  },
+  {
+   "id": "comprometimento.delta_mes_pp",
+   "rotulo": "Comprometimento de renda das famílias com o serviço da dívida: diferença no mês",
+   "tipo": "calculado_pacote",
+   "valor": 0.36,
+   "unidade": "p.p.",
+   "texto": "+0,36 p.p.",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29034",
+   "texto_abs": "0,36 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "comprometimento",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "comprometimento",
+     "campo": "obs",
+     "ref": "2026-05-01"
+    }
+   ]
+  },
+  {
+   "id": "comprometimento.delta_12m_pp",
+   "rotulo": "Comprometimento de renda das famílias com o serviço da dívida: diferença em 12 meses",
+   "tipo": "calculado_pacote",
+   "valor": 1.68,
+   "unidade": "p.p.",
+   "texto": "+1,68 p.p.",
+   "data_ref": "2026-06",
+   "fonte": "BCB/SGS 29034",
+   "texto_abs": "1,68 p.p.",
+   "sinal": "+",
+   "formula": "diferenca",
+   "insumos": [
+    {
+     "arquivo": "pulse.json",
+     "serie": "comprometimento",
+     "campo": "obs",
+     "ref": "2026-06-01"
+    },
+    {
+     "arquivo": "pulse.json",
+     "serie": "comprometimento",
+     "campo": "obs",
+     "ref": "2025-06-01"
+    }
+   ]
+  }
+ ],
+ "sha256_fatos": "22a616c90b1aa5b52c53290b90edeaa4ad21951d20f0b12f07e1b21abe208257",
+ "lacunas": [],
+ "defasagens": [
+  {
+   "serie": "endividamento",
+   "data_ref": "2026-06",
+   "data_base": "2026-07",
+   "nota": "divulgação com defasagem própria; citar com a data de referência do fato"
+  },
+  {
+   "serie": "comprometimento",
+   "data_ref": "2026-06",
+   "data_base": "2026-07",
+   "nota": "divulgação com defasagem própria; citar com a data de referência do fato"
+  }
+ ],
+ "avisos": []
+}

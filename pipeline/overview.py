@@ -147,7 +147,8 @@ def build_diagnosis(con, ibcc, changes, sectors, quality_avg, has_demo_component
     dir_txt = ("com deterioração predominante nos indicadores monitorados" if n_det > n_mel
                else "com melhora predominante nos indicadores monitorados" if n_mel > n_det
                else "com sinais mistos entre os indicadores monitorados")
-    frase = (f"As condições de crédito permanecem {nivel} (IBCC {atual['valor']:.1f}, "
+    ibcc_txt = f"{atual['valor']:.1f}".replace(".", ",")  # formato brasileiro na prosa
+    frase = (f"As condições de crédito permanecem {nivel} (IBCC {ibcc_txt}, "
              f"percentil histórico {pct:.0f}), em fase de {fase}, {dir_txt}.")
 
     conf = "moderada" if quality_avg and quality_avg >= 65 else "baixa"

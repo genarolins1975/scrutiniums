@@ -66,5 +66,13 @@ jobs:
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h
         run: python3 -m compileall -q pipeline
 
+      - name: Testes Python (pipeline e camada de pesquisa)
+        # stdlib, sem rede: regra nominal, relatório automático, pacote de fatos,
+        # validador e casos sentinela, conferidos contra a gold publicada; nada
+        # aqui escreve em data/ ou public/
+        run: |
+          python3 -m unittest discover -s pipeline/tests -t .
+          python3 -m unittest discover -s pesquisa/tests -t .
+
       - name: Testes
         run: npx vitest run

@@ -15,7 +15,7 @@ const app = read("public/obs/app.js");
 describe("Instituições: detalhe de linha sob demanda", () => {
   it("as linhas trazem só o gatilho; o corpo vem de instDetalheHtml no toggle, uma vez por linha", () => {
     expect(app).toContain('<td><details class="decomp" data-inst="${i.cod_inst}"><summary>abrir</summary><div class="lazy src">carregando…</div></details></td>');
-    expect(app).toMatch(/function instDetalheHtml\(i\) \{[\s\S]*?Condição atual — decomposição/);
+    expect(app).toMatch(/function instDetalheHtml\(i\) \{[\s\S]*?Posição nos pares por dimensão/);
     expect(app).toContain('el.querySelectorAll("details[data-inst]").forEach(d => d.addEventListener("toggle"');
     expect(app).toContain('if (!d.open || d.dataset.pronto) return;');
     expect(app).toContain("INST_POR_COD = Object.fromEntries(list.map(i => [i.cod_inst, i]));");

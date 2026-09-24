@@ -236,7 +236,7 @@ const fmt = {
    Mesma família da correção do mcard — nunca altera o conteúdo visível, só o atributo. */
 const attr = s => String(s == null ? "" : s).replace(/<[^>]*>/g, "").replace(/"/g, "&quot;").replace(/\s+/g, " ").trim();
 
-const APP_VERSION = "0.105.0";
+const APP_VERSION = "0.106.0";
 // Contato do responsável: injetado no <head> pelo route handler (src/lib/contato.ts é a
 // fonte única); o fallback cobre o uso local sem a plataforma.
 const LINKEDIN_URL = ((document.querySelector('meta[name="obs:linkedin"]') || {}).content)
@@ -599,7 +599,7 @@ const CONCEITOS = {
     intuicao: "O score responde uma pergunta modesta e útil: 'comparado aos semelhantes, este banco está mais frágil ou mais sólido nas dimensões que dá para medir com dado público?'. É a média dos percentis de risco em até 6 dimensões (capital, rentabilidade, alavancagem, concentrações, dependência de captações). 50 = típico do grupo; 80 = mais frágil que a maioria; 20 = mais sólido.",
     calculo: "Cada dimensão vira um percentil dentro do grupo de pares; o score é a média das dimensões DISPONÍVEIS (sem dado = dimensão omitida, nunca imputada — e o número de dimensões usadas é exibido). Histórico trimestral desde 2015.",
     historia: "A inspiração são os sistemas de vigilância dos supervisores (como o CAMELS americano, dos anos 1980), adaptados ao que é público: sem dados confidenciais de liquidez diária ou qualidade de gestão, o painel mede menos dimensões — e diz exatamente quais.",
-    regulacao: "Não é rating nem recomendação — o disclaimer acompanha cada uso. Ratings privados usam informação não pública e julgamento; isto aqui é aritmética declarada sobre dado aberto.",
+    regulacao: "Não é rating nem recomendação. Por regra editorial de 24/09/2026, o score não é publicado ao lado do nome de nenhuma instituição: as faixas não foram calibradas contra desfechos conhecidos. Sai apenas a distribuição anônima por grupo de pares.",
     armadilhas: "Score relativo NUNCA é probabilidade de quebra: um grupo inteiro pode estar saudável (ou doente) e os percentis não veem. Use-o como triagem — as dimensões abertas em cada ficha são o conteúdo real.",
     veja: ["percentil-quartis", "indice-de-basileia", "roe"],
   },
@@ -6655,8 +6655,8 @@ let INST_POR_COD = {};
 function instDetalheHtml(i) {
   const v = i.vulnerabilidade;
   const nd = Object.keys(i.dimensoes).length;
-  return `        <h5>Condição atual — decomposição (${nd} dimensões)</h5>
-        ${Object.entries(i.dimensoes).map(([k, d]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")}</span><span class="bar ${d.risco > 50 ? "neg" : "pos"}" style="width:${d.risco * 0.9}px"></span><span class="num">${d.risco} · valor ${fmt.n(d.valor, 1)} · p${d.percentil_pares} · quartis [${fmt.n(d.q1_pares, 1)}–${fmt.n(d.q3_pares, 1)}]</span></div>`).join("")}
+  return `        <h5>Posição nos pares por dimensão (${nd} dimensões) ${badge("observado")}</h5>
+        ${Object.entries(i.dimensoes).map(([k, d]) => `<div class="contrib"><span class="lbl">${k.replace(/_/g, " ")}</span><span class="bar" style="width:${(d.percentil_pares || 0) * 0.9}px"></span><span class="num">valor ${fmt.n(d.valor, 1)} · p${d.percentil_pares} no grupo · mediana ${fmt.n(d.mediana_pares, 1)} · quartis [${fmt.n(d.q1_pares, 1)} a ${fmt.n(d.q3_pares, 1)}]</span></div>`).join("")}
         ${v ? `<h5>Vulnerabilidade a choques ${badge("cenario")}</h5><div class="src">Cenário ${v.cenario}: Basileia ${fmt.n(v.basileia_atual_pct, 2)}% → ${fmt.n(v.basileia_pos_choque_pct[0], 2)}–${fmt.n(v.basileia_pos_choque_pct[1], 2)}% (impacto ${fmt.pp(v.impacto_basileia_pp[0])} a ${fmt.pp(v.impacto_basileia_pp[1])} p.p.). ${v.metodo}</div>` : ""}
         ${i.carteira_perfil ? `<h5>Composição da carteira ${badge("observado")}</h5><div class="src">
           ${i.carteira_perfil.pme_share_pct != null ? `<b>PME na carteira PJ:</b> ${i.carteira_perfil.pme_share_pct}% · ` : ""}
@@ -6676,7 +6676,7 @@ function instDetalheHtml(i) {
           ${i.modelo_negocio.credito_ativo_pct != null ? `<b>crédito/ativo:</b> ${i.modelo_negocio.credito_ativo_pct}% · ` : ""}
           ${i.modelo_negocio.captacoes_ativo_pct != null ? `<b>captações/ativo:</b> ${i.modelo_negocio.captacoes_ativo_pct}%` : ""}
         </div>` : ""}
-        <div class="src">Peso igual entre dimensões disponíveis; dimensão sem dado é omitida, nunca imputada.</div>`;
+        <div class="src">Percentil dentro do grupo de pares; dimensão sem dado é omitida, nunca imputada. Score composto e faixa de risco não são publicados por instituição (regra editorial de 24/09/2026).</div>`;
 }
 function renderInstitutions() {
   const el = document.getElementById("view-institutions");
@@ -6694,7 +6694,6 @@ function renderInstitutions() {
   if (state.data.npl && state.data.npl.ok) state.data.npl.instituicoes.forEach(x => { nplMap[x.cod_inst] = x; });
   const sorters = {
     ativo: (a, b) => b.ativo_total_brl - a.ativo_total_brl,
-    score: (a, b) => b.score - a.score,
     nome: (a, b) => a.nome.localeCompare(b.nome),
     inad: (a, b) => ((nplMap[b.cod_inst] || {}).inad_pct || -1) - ((nplMap[a.cod_inst] || {}).inad_pct || -1),
     deterioracao: (a, b) => ((nplMap[b.cod_inst] || {}).d_ano_pp ?? -99) - ((nplMap[a.cod_inst] || {}).d_ano_pp ?? -99),
@@ -6715,10 +6714,6 @@ function renderInstitutions() {
         return q ? `<b>${fmt.n(q.inad_pct, 2)}%</b><div class="src">Δtri ${fmt.pp(q.d_tri_pp)} · 4T ${q.d_ano_pp != null ? fmt.pp(q.d_ano_pp) : "–"} p.p.</div><div class="src ${q.tendencia.includes("piora") ? "up" : q.tendencia === "melhora" ? "down good" : ""}">${q.tendencia}</div>` : "<span class='src'>n/d</span>";
       })()}</td>
       <td>${fmt.n(i.dimensoes.rentabilidade ? i.dimensoes.rentabilidade.valor : null, 1)}% <span class="src">med. ${i.dimensoes.rentabilidade ? fmt.n(i.dimensoes.rentabilidade.mediana_pares, 1) : "–"}%</span></td>
-      <td><span class="scorebar"><i style="left:${i.score * 0.9}px"></i></span> <b>${i.score}</b>
-        ${i.score_delta != null ? `<span class="${i.score_delta > 0 ? "up" : "down good"}">(${fmt.pp(i.score_delta)})</span>` : ""}
-        <div class="src">${i.faixa} · ${i.dimensoes_disponiveis} dim.</div></td>
-      <td>${sparkline((i.historico_score || []).map(h => h.score))}<div class="src">${(i.historico_score || []).length} trim.</div></td>
       <td>${v ? `${fmt.n(v.basileia_pos_choque_pct[0], 1)}–${fmt.n(v.basileia_pos_choque_pct[1], 1)}% ${badge("cenario", v.metodo)}<div class="src">Δinad ${fmt.pp(v.delta_inad_pp[0])} a ${fmt.pp(v.delta_inad_pp[1])} p.p.</div>` : "<span class='src'>sem RWA/Basileia</span>"}</td>
       <td><details class="decomp" data-inst="${i.cod_inst}"><summary>abrir</summary><div class="lazy src">carregando…</div></details></td>
     </tr>`;
@@ -6729,8 +6724,7 @@ function renderInstitutions() {
     fontes: "BCB IF.data (Olinda + interface)" })}
   ${(() => {
     const todos = inst.instituicoes || [];
-    const nAlto = todos.filter(i => /elevado/.test(i.faixa || "")).length;
-    const nPiora = todos.filter(i => i.score_delta != null && i.score_delta > 0).length;
+    const cpMed = _mediana(todos.map(i => i.capital_principal_pct));
     const basMed = _mediana(todos.map(i => i.basileia_pct));
     const N = state.data.npl && state.data.npl.ok ? state.data.npl : null;
     const tri = fmtTri(inst.anomes);
@@ -6739,15 +6733,15 @@ function renderInstitutions() {
     return abertura({
       placar: [
         { l: "Conglomerados avaliados", v: todos.length ? fmt.n0(todos.length) : null, sub: `maiores por ativo · IF.data ${tri}${semBal ? ` · ${fmt.n0(semBal.length)} na lista sem balanço` : ""}` },
-        { l: "Em risco elevado ou muito elevado", v: todos.length ? fmt.n0(nAlto) : null, sub: `${fmt.n0(nPiora)} pioraram o score no trimestre` },
+        { l: "Capital principal mediano", v: fmt.pct(cpMed, 1), sub: `entre os ${todos.length} avaliados` },
         { l: "Basileia mediana", v: fmt.pct(basMed, 1), sub: `entre os ${todos.length} avaliados` },
         { l: "Inadimplência mediana", v: N ? fmt.pct(N.sistema.mediana_inad_pct, 2) : null, sub: N ? `${fmt.n0(N.n_instituicoes)} instituições com carteira · ${fmt.n0(N.sistema.subindo_no_trimestre)} subindo no trimestre · ${N.data_base}` : "" },
       ],
       sintese: [
-        todos.length ? `Dos ${todos.length} maiores conglomerados por ativo em ${tri}, ${nAlto} estão em risco elevado ou muito elevado pelo score de pares e ${nPiora} pioraram no trimestre.` : null,
+        todos.length ? `Os ${todos.length} maiores conglomerados por ativo em ${tri} aparecem com métricas observadas e sua posição no próprio grupo de pares.` : null,
         semBalGrandes.length ? `Fora do corte por falta de balanço em ${tri} (constam da lista do IF.data com saldo nulo: atraso, RAET ou retardatário), com ativo acima de R$ 1 bi na última entrega: ${semBalGrandes.slice(0, 6).map(x => `${x.nome} (última entrega ${fmtTri(x.ultima_entrega)}, ${fmt.money(x.ativo_ultima_entrega)})`).join("; ")}${semBalGrandes.length > 6 ? ` e mais ${semBalGrandes.length - 6}` : ""}. Não é saída: a ficha de cada uma segue disponível na última entrega.` : null,
         basMed != null ? `A Basileia mediana é ${fmt.pct(basMed, 1)}${N ? `; entre as ${fmt.n0(N.n_instituicoes)} instituições com carteira, a inadimplência mediana é ${fmt.pct(N.sistema.mediana_inad_pct, 2)}, subindo em ${fmt.n0(N.sistema.subindo_no_trimestre)} delas no trimestre` : ""}.` : null,
-        "O score compara cada instituição com o próprio grupo de pares (S1 a S5); é régua relativa, não nota de solvência.",
+        "Score composto e faixa de risco não são publicados por instituição nomeada: as faixas não foram calibradas contra desfechos (regra editorial de 24/09/2026). A distribuição anônima do score por grupo está no JSON da aba.",
       ],
       ref: `BCB IF.data ${tri} · quartis por grupo de pares · método em Metodologia`,
     });
@@ -6759,10 +6753,10 @@ function renderInstitutions() {
   <div class="controls">
     <label>grupo de pares <select onchange="setFilter('instGroup', this.value)">${groups.map(g => `<option value="${g}" ${f.instGroup === g ? "selected" : ""}>${g === "todos" ? "todos" : (inst.grupos[g] ? inst.grupos[g].label : g)}</option>`).join("")}</select></label>
     <span class="seg">${[["todos", "todas"], ["banco", "bancos"], ["coop", "cooperativas"], ["naobanco", "não bancárias"]].map(([k, l]) => `<button class="${(f.instTipo || "todos") === k ? "active" : ""}" onclick="setFilter('instTipo','${k}')">${l}</button>`).join("")}</span>
-    <span class="seg">${[["ativo", "por ativo"], ["score", "por score"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
+    <span class="seg">${[["ativo", "por ativo"], ["inad", "por inadimplência"], ["deterioracao", "por deterioração 4T"], ["nome", "A–Z"]].map(([k, l]) => `<button class="${f.sortInst === k ? "active" : ""}" onclick="setFilter('sortInst','${k}')">${l}</button>`).join("")}</span>
     <button class="btn ghost small" onclick="exportInstitutions()">baixar JSON</button>
   </div>
-  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>${termo("score-relativo","Score risco")}${state.data.meta && state.data.meta.gerado_em ? ` <span class="src" title="data de cálculo do score composto — recalculado no ciclo diário">de ${fmt.d(state.data.meta.gerado_em.slice(0, 10))}</span>` : ""}</th><th>Evolução (5 trim.)</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
+  <div class="tblwrap"><table class="data"><thead><tr><th>Instituição / grupo</th><th>Ativo / ${termo("carteira-de-credito","carteira")}</th><th>${termo("indice-de-basileia","Basileia")}</th><th>${termo("inadimplencia-90","Inadimplência")} ${badge("observado","carteira >90d ÷ carteira ativa — IF.data instrumentos financeiros")}</th><th>${termo("roe","ROE")} per.</th><th>Basileia pós-choque severo</th><th>Ficha</th></tr></thead><tbody>${rows}</tbody></table></div>
   <details class="decomp" style="margin:8px 0 14px"><summary>método do score e limitações</summary>
     <div class="note" style="margin-top:6px"><b>Método:</b> ${inst.metodo}<br><b>Limitações:</b> ${inst.limitacoes}</div></details>
   ${guidanceSecao()}
@@ -6948,7 +6942,8 @@ function renderInstPage() {
 
 function renderInstPageData(el, pg) {
   const cab = pg.cabecalho;
-  const sc = pg.score_ref || {};
+  // regra nominal (24/09/2026): lê só comparacao_pares; o score_ref de golds antigos nunca é exibido
+  const sc = pg.comparacao_pares || {};
   const lacuna = cab.sem_balanco_na_data_base;
   const avisoLacuna = lacuna ? `<div class="card" style="border-left:4px solid #b45309;margin-bottom:12px"><b>Sem balanço em ${lacuna.data_base}.</b> ${lacuna.texto}</div>` : "";
   const kpiCard = k => `<div class="card kpi">
@@ -6976,7 +6971,6 @@ function renderInstPageData(el, pg) {
   const cmpLbl = { roe: "ROE do período (%)", basileia: "Índice de Basileia (%)", alav: "Alavancagem (×)" };
   const re = pg.resumo_executivo;
   const gpc = pg.grupo_pares_composicao;
-  const smeta = pg.score_meta;
   const operSec = operBlocoInst(cab);
   const listadaSec = instListadaSecao(pg, cab);
   const temCaptacao = !!(sc.captacao || sc.modelo_negocio);
@@ -7001,21 +6995,16 @@ function renderInstPageData(el, pg) {
         <span class="chip">${cab.grupo_pares} · ${cab.n_pares} pares</span>
         <span class="chip">Capital ${cab.capital}</span>
         ${cab.modelo ? `<span class="chip">${cab.modelo}</span>` : ""}
-        ${cab.participante_open_finance ? `<span class="chip">Open Finance: no top-20 de chamadas</span>` : ""}
         <span class="chip">Conglomerado ${cab.conglomerado_prudencial || "–"}</span>
       </div>
       ${cab.aviso_pares ? `<div class="note warn" style="margin-top:8px"><b>Comparabilidade:</b> ${cab.aviso_pares}</div>` : ""}
       ${guiaPagina("inst")}${fontePane("inst")}
     </div>
     <div class="card" style="flex:1;min-width:230px">
-      <h4>${termo("score-relativo","Score de risco")} ${badge("calculado")}</h4>
-      ${sc.score != null ? `<div class="big">${sc.score}<span style="font-size:13px">/100</span></div>
-        <div class="delta neutral">${sc.faixa}${sc.score_delta != null ? ` · ${fmt.pp(sc.score_delta)} no trim.` : ""} · relativo aos pares</div>
-        <span class="scorebar" style="width:150px"><i style="left:${sc.score * 1.5}px"></i></span>
-        ${sc.historico_score ? sparkline(sc.historico_score.map(h => h.score), 150, 26) : ""}
-        ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${sc.vulnerabilidade.basileia_pos_choque_pct[0]}–${sc.vulnerabilidade.basileia_pos_choque_pct[1]}%</div>` : ""}
-        ${smeta ? `<div class="src"><b>Cobertura dos dados:</b> ${smeta.cobertura_dados_pct}% · <b>Confiança:</b> ${smeta.confianca} ${dica(smeta.confianca_motivo)} · ${smeta.versao_metodologica}${smeta.calculado_em ? ` · calculado em ${fmt.d(smeta.calculado_em)}` : ""}</div>` : ""}`
-      : `<p class="src">${sc.indisponivel || "não calculado"}</p>`}
+      <h4>Posição nos pares ${badge("observado")}</h4>
+      ${sc.dimensoes ? Object.entries(sc.dimensoes).map(([k, d]) => `<div class="src">${k.replace(/_/g, " ")}: <b>${fmt.n(d.valor, 1)}</b> · p${d.percentil_pares} no grupo (mediana ${fmt.n(d.mediana_pares, 1)})</div>`).join("") : `<p class="src">${sc.indisponivel || "comparação indisponível"}</p>`}
+      ${sc.vulnerabilidade ? `<div class="src">${badge("cenario")} Basileia pós-cenário severo: ${fmt.n(sc.vulnerabilidade.basileia_pos_choque_pct[0], 1)} a ${fmt.n(sc.vulnerabilidade.basileia_pos_choque_pct[1], 1)}%</div>` : ""}
+      <div class="src">${termo("score-relativo","Score composto")} e faixa de risco não são publicados por instituição (regra editorial de 24/09/2026).</div>
       <div class="src">${state.data.meta ? state.data.meta.plataforma.disclaimer : ""}</div>
     </div>
   </div>
@@ -7168,10 +7157,9 @@ function renderInstPageData(el, pg) {
       ${pg.reclamacoes.length ? `<div class="big" style="font-size:22px">${pg.reclamacoes[0].indice != null ? fmt.n(pg.reclamacoes[0].indice, 1) : "n/d"}</div>
         <div class="src">índice em ${pg.reclamacoes[0].periodo} · ${fmt.n0(pg.reclamacoes[0].reclamacoes)} reclamações · ${pg.reclamacoes[0].clientes ? fmt.n0(pg.reclamacoes[0].clientes / 1e6) + " mi clientes" : ""}</div>
         ${sparkline(pg.reclamacoes.slice().reverse().map(r => r.indice).filter(v => v != null), 150, 26)}
-        <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte} · assuntos por instituição não disponíveis no CSV público</div>`
+        <div class="src">nome na fonte: ${pg.reclamacoes[0].nome_fonte}${pg.reclamacoes[0].casamento ? ` · ligação por ${{ cnpj: "CNPJ", nome_identico_bcb: "nome idêntico publicado pelo BCB", mapa_curado: "mapa curado" }[pg.reclamacoes[0].casamento] || pg.reclamacoes[0].casamento}` : ""} · assuntos por instituição não disponíveis no CSV público</div>`
       : "<p class='src'>sem correspondência no Ranking de Reclamações do BCB (pode não atingir o volume mínimo do ranking).</p>"}
-      <div class="src" style="margin-top:6px"><b>Citações em RJs (DJEN, 60d):</b> ${pg.rj_citacoes.casos} casos · ${pg.rj_citacoes.nota}</div>
-      ${pg.openfinance ? `<div class="src" style="margin-top:6px"><b>Open Finance:</b> ${pg.openfinance.share_pct}% das chamadas transacionais</div>` : ""}
+      <div class="src" style="margin-top:6px">Open Finance e citações em listas de credores de RJ não aparecem por instituição: as fontes públicas não trazem CNPJ, e a regra editorial não aceita casamento por nome.</div>
     </div>
   </div>
   <div id="instSimilares"></div>

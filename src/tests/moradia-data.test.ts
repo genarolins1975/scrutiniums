@@ -19,7 +19,9 @@ import { join } from "node:path";
  *  - nenhum texto usa vocabulário de vendas ("ticket médio", "market share") nem afirma
  *    demanda comprovada.
  */
-const ARQ = join(process.cwd(), "data/gold/moradia.json");
+// Lê o gold PUBLICADO, como os demais testes de dados: apontando para data/gold (que não
+// existe no clone limpo do CI), estes testes ficaram pulados em todo CI até 24/09/2026.
+const ARQ = join(process.cwd(), "public/obs/data/gold/moradia.json");
 const existe = existsSync(ARQ);
 const bruto = existe ? readFileSync(ARQ, "utf-8") : "{}";
 const M: any = JSON.parse(bruto);
