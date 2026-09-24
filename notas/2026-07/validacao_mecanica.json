@@ -1,0 +1,23 @@
+{
+ "versao_validador": "validador_mecanico_v3",
+ "decisao": "bloquear",
+ "falhas": [
+  "M6",
+  "M11"
+ ],
+ "itens": [
+  {
+   "codigo": "M6",
+   "linha": 26,
+   "motivo": "comprometimento.delta_mes_pp citado sem sinal e sem palavra de direção"
+  },
+  {
+   "codigo": "M11",
+   "linha": 26,
+   "motivo": "o texto antes de comprometimento.delta_mes_pp fala de inad, não de comprometimento"
+  }
+ ],
+ "nota_sha256": "f7dd1babfc8de5536e93a752e0ad61edf3bc9401909239c8f3ce34afc31d8160",
+ "sha256_fatos": "e0c39bc7981548688ac604396222743f446cc2869ef97af64d0a5f7a4335e36c",
+ "degrau_declarado": "1"
+}

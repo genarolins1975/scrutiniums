@@ -1,0 +1,47 @@
+{
+ "versao": 2,
+ "data_base": "2026-07",
+ "retro": false,
+ "gold_dir": "public/obs/data/gold",
+ "criado_em": "2026-09-24T18:21:41+00:00",
+ "concluidas": [
+  "analista_familias",
+  "analista_empresas",
+  "replicador",
+  "consolidador",
+  "critico",
+  "revisao@0",
+  "validacao_mecanica@0",
+  "revisao@1",
+  "validacao_mecanica@1",
+  "validador_constitucional@1",
+  "revisor_independente@1",
+  "terceiro_revisor@1",
+  "revisao@2",
+  "validacao_mecanica@2",
+  "render"
+ ],
+ "rodada_revisao": 2,
+ "devolucoes": 3,
+ "rodadas": [
+  {
+   "rodada": 0,
+   "validador_mecanico": "bloquear",
+   "unanime": false
+  },
+  {
+   "rodada": 1,
+   "validador_mecanico": "aprovar",
+   "validador_constitucional": "devolver",
+   "revisor_independente": "devolver",
+   "terceiro_revisor": "devolver",
+   "unanime": false
+  },
+  {
+   "rodada": 2,
+   "validador_mecanico": "bloquear",
+   "unanime": false
+  }
+ ],
+ "decisao_final": "rejeitada"
+}

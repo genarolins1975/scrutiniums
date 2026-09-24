@@ -157,7 +157,10 @@ def sistema_do_papel(papel):
 
 
 def _nome(etapa, rodada=0):
-    """Arquivo da etapa; cada rodada de revisão tem o seu (revisao, revisao_1, ...)."""
+    """Arquivo da etapa; cada rodada de revisão tem o seu (revisao, revisao_1, ...). A validação
+    mecânica leva o número da rodada sempre, porque `validacao_mecanica.json` guarda a última."""
+    if etapa == "validacao_mecanica":
+        return f"{etapa}_{rodada}"
     return f"{etapa}_{rodada}" if etapa in ETAPAS_DA_RODADA and rodada else etapa
 
 

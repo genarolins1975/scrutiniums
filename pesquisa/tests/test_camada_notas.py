@@ -231,6 +231,14 @@ class Orquestrador(unittest.TestCase):
         self.assertFalse(m["revisores"]["independencia_comprometida"])
         self.assertEqual(m["concordancia"]["familias"]["jaccard_destaques"], round(3 / 7, 4))
 
+    def test_cada_rodada_guarda_a_propria_validacao_mecanica(self):
+        chamadas = []
+        e = oq.executar(self.ciclo, backend_simulado(chamadas), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "aprovada")
+        v0 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_0.json"), encoding="utf-8"))
+        v1 = json.load(open(os.path.join(self.ciclo, "validacao_mecanica_1.json"), encoding="utf-8"))
+        self.assertEqual((v0["decisao"], v1["decisao"]), ("devolver", "aprovar"))
+
     def test_devolucao_de_um_revisor_volta_a_revisao(self):
         e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(1,)), GOLD_FIXA)
         self.assertEqual(e["decisao_final"], "aprovada")

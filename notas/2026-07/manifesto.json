@@ -1,0 +1,84 @@
+{
+ "tipo": "manifesto_nota",
+ "versao": 1,
+ "data_base": "2026-07",
+ "gold": {
+  "pulse.json": {
+   "sha256": "896a5d8a7b7d3c0b518ed48e81c368f8b5912eaf36a576c14dea74cf4108c84f",
+   "gerado_em": "2026-09-24T15:24:21+00:00"
+  },
+  "meta.json": {
+   "sha256": "bfbac65a06d6fabc8111f105864995f107090dc5f12d83b2f08bb877973c8289",
+   "gerado_em": "2026-09-24T15:25:15+00:00",
+   "vintage_sgs": "2026-07"
+  }
+ },
+ "gold_commit": "acc5c6e5fc215af9116db71a9b1d79fa8ab7ad70",
+ "sha256_fatos": "e0c39bc7981548688ac604396222743f446cc2869ef97af64d0a5f7a4335e36c",
+ "constituicao_sha256": "db4a3ba452c737b3b684000d784a68e1e119263019effa643e9845508f62a820",
+ "nota_sha256": "f7dd1babfc8de5536e93a752e0ad61edf3bc9401909239c8f3ce34afc31d8160",
+ "nota_final_sha256": "7743a94bdc1237bdfd8666e8757aaf24e20fbc9df0d531d15c27bdc275054936",
+ "validador": {
+  "decisao": "bloquear",
+  "versao": "validador_mecanico_v3"
+ },
+ "papeis": {
+  "analista_familias": {
+   "modelo": "claude-opus-5",
+   "esforco": "high",
+   "instrucoes_sha256": "4b404261218417d77b4fc4865f181e46d49936dd213eb9dcfbc561c6427cd931"
+  },
+  "analista_empresas": {
+   "modelo": "claude-opus-5",
+   "esforco": "high",
+   "instrucoes_sha256": "a7a115d762e8e6918da79b908e6735ead017278278dae5149d9538e29de1ddc0"
+  },
+  "replicador": {
+   "modelo": "claude-opus-5",
+   "esforco": "high",
+   "instrucoes_sha256": "f7b2a59b82ee011b7b619ace4ddd75877ffbf7e0ad4d6fe32c15fcfde6b7bd33"
+  },
+  "consolidador": {
+   "modelo": "claude-opus-5",
+   "esforco": "high",
+   "instrucoes_sha256": "ca5c18dc22edb8b664b41e554625f87380ae4a3977930479c4cbfeefab2af91f"
+  },
+  "critico": {
+   "modelo": "claude-opus-5",
+   "esforco": "high",
+   "instrucoes_sha256": "6e2fb15e5847c52f8b0ecfd703a8f971e01960b289b38209554eaf81a1341b88"
+  },
+  "validador_constitucional": {
+   "modelo": "claude-opus-5",
+   "fornecedor": "anthropic",
+   "esforco": "high",
+   "evidencia": "fatos do pacote",
+   "apresentacao": "tabela markdown",
+   "mandato": "conformidade à constituição",
+   "instrucoes_sha256": "57ca59992206de381371bebacc3be05628de21868bc3deb00a5b6157067bd7fb"
+  },
+  "revisor_independente": {
+   "modelo": "claude-sonnet-5",
+   "fornecedor": "anthropic",
+   "esforco": "high",
+   "evidencia": "fatos do pacote com ponteiros para a gold",
+   "apresentacao": "JSON",
+   "mandato": "fidelidade à evidência",
+   "instrucoes_sha256": "1a6fd4b93daedb1d168abb5d7925f9389a0f24577b91c906f10137befe3fdf86"
+  },
+  "terceiro_revisor": {
+   "modelo": "claude-fable-5-1",
+   "fornecedor": "anthropic",
+   "esforco": "high",
+   "evidencia": "histórico bruto das séries na gold",
+   "apresentacao": "série mensal",
+   "mandato": "leitor cético",
+   "instrucoes_sha256": "03d4bb58eab6d264d2109b05f19ce409ed0ef30b042480aaf1be2d929cc80401"
+  }
+ },
+ "como_verificar": [
+  "git checkout <gold_commit>",
+  "python3 -m pesquisa.fatos_conjuntura --verificar pacote.json",
+  "python3 -m pesquisa.validador nota.md --pacote pacote.json"
+ ]
+}

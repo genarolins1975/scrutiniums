@@ -1,0 +1,49 @@
+{
+ "decisao": "rejeitada",
+ "rodadas": [
+  {
+   "rodada": 0,
+   "validador_mecanico": "bloquear",
+   "unanime": false
+  },
+  {
+   "rodada": 1,
+   "validador_mecanico": "aprovar",
+   "validador_constitucional": "devolver",
+   "revisor_independente": "devolver",
+   "terceiro_revisor": "devolver",
+   "unanime": false
+  },
+  {
+   "rodada": 2,
+   "validador_mecanico": "bloquear",
+   "unanime": false
+  }
+ ],
+ "regra": "aprovada só com validador mecânico e os três revisores aprovando (constituição v2, art. 6.5)",
+ "revisores": {
+  "validador_constitucional": {
+   "modelo": "claude-opus-5",
+   "fornecedor": "anthropic",
+   "evidencia": "fatos do pacote",
+   "apresentacao": "tabela markdown",
+   "mandato": "conformidade à constituição"
+  },
+  "revisor_independente": {
+   "modelo": "claude-sonnet-5",
+   "fornecedor": "anthropic",
+   "evidencia": "fatos do pacote com ponteiros para a gold",
+   "apresentacao": "JSON",
+   "mandato": "fidelidade à evidência"
+  },
+  "terceiro_revisor": {
+   "modelo": "claude-fable-5-1",
+   "fornecedor": "anthropic",
+   "evidencia": "histórico bruto das séries na gold",
+   "apresentacao": "série mensal",
+   "mandato": "leitor cético"
+  }
+ },
+ "revisao_humana": false,
+ "publicacao": "rejeitada: não é publicada"
+}
