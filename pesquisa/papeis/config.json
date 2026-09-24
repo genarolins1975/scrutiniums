@@ -2,6 +2,7 @@
  "versao": 2,
  "nota": "Modelo e características por papel. Os três revisores (validador_constitucional, revisor_independente, terceiro_revisor) precisam diferir, dois a dois, em pelo menos três das características listadas em caracteristicas_de_independencia (constituição v2, art. 6.3); o orquestrador confere antes de rodar e recusa configuração que não cumpra. O modelo que efetivamente respondeu (inclusive em fallback por recusa) é registrado em uso/<etapa>.json; se dois revisores forem servidos pelo mesmo modelo, a métrica marca a independência como comprometida.",
  "max_rodadas_revisao": 3,
+ "max_bloqueios_mecanicos": 3,
  "papeis": {
   "analista_familias": {
    "modelo": "claude-opus-5",

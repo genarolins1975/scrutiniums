@@ -174,9 +174,10 @@ CONSTITUCIONAL = "C1: ok\nC2: ok\nC3: ok\nC4: ok\nC5: ok\nDECISÃO: aprovar\n"
 DEVOLVE = "ITEM [grave]: trecho | problema | solução\nDECISÃO: devolver\n"
 
 
-def backend_simulado(chamadas, devolver_revisor_rodadas=()):
-    """Rodada 0: a revisão sai com adjetivo proibido (validador mecânico devolve). Rodada 1:
-    nota limpa; os revisores aprovam, salvo o terceiro nas rodadas listadas."""
+def backend_simulado(chamadas, devolver_revisor_rodadas=(), mecanica_ruim=(0,), constitucional=None):
+    """Nas rodadas de `mecanica_ruim` (padrão: só a 0) a revisão sai com adjetivo proibido e o
+    validador mecânico devolve; nas demais, nota limpa, e os revisores aprovam, salvo o terceiro
+    nas rodadas listadas."""
     def backend(etapa, sistema, usuario, papel_cfg, ciclo=None, nome=None):
         chamadas.append((nome or etapa, etapa, usuario, sistema))
         rodada = int(nome.rsplit("_", 1)[1]) if nome and nome != etapa else 0
@@ -187,10 +188,10 @@ def backend_simulado(chamadas, devolver_revisor_rodadas=()):
         elif etapa == "critico":
             texto = "SEM OBJEÇÕES"
         elif etapa == "validador_constitucional":
-            texto = CONSTITUCIONAL
+            texto = constitucional or CONSTITUCIONAL
         elif etapa in ("revisor_independente", "terceiro_revisor"):
             texto = DEVOLVE if etapa == "terceiro_revisor" and rodada in devolver_revisor_rodadas else "DECISÃO: aprovar\n"
-        elif etapa == "revisao" and rodada == 0:
+        elif etapa == "revisao" and rodada in mecanica_ruim:
             texto = LIMPA.replace("com alta de {{concessoes_total.var_12m_pct|abs}}", "com forte alta de {{concessoes_total.var_12m_pct|abs}}")
         else:
             texto = LIMPA
@@ -247,10 +248,28 @@ class Orquestrador(unittest.TestCase):
         with open(os.path.join(self.ciclo, "prompts", "revisao_2.md"), encoding="utf-8") as f:
             self.assertIn("ITEM [grave]", f.read())  # a devolução chega à revisão seguinte
 
-    def test_sem_unanimidade_no_limite_a_nota_e_rejeitada(self):
-        e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(0, 1, 2)), GOLD_FIXA)
+    def test_sem_unanimidade_em_tres_rodadas_lidas_a_nota_e_rejeitada(self):
+        e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(1, 2, 3)), GOLD_FIXA)
         self.assertEqual(e["decisao_final"], "rejeitada")
+        self.assertEqual((e["rodadas_lidas"], e["bloqueios_mecanicos"]), (3, 1))
         self.assertEqual(self._json("decisao.json")["publicacao"], "rejeitada: não é publicada")
+
+    def test_bloqueio_mecanico_nao_consome_rodada_dos_revisores(self):
+        # dois bloqueios mecânicos e uma devolução dos revisores: antes do art. 6.5 revisto, rejeitada
+        e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(1,), mecanica_ruim=(0, 2)), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "aprovada")
+        self.assertEqual((e["rodadas_lidas"], e["bloqueios_mecanicos"]), (1, 2))
+
+    def test_tres_bloqueios_mecanicos_rejeitam(self):
+        e = oq.executar(self.ciclo, backend_simulado([], mecanica_ruim=(0, 1, 2)), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "rejeitada")
+        self.assertEqual(e["bloqueios_mecanicos"], 3)
+        self.assertNotIn("validador_constitucional", e["rodadas"][-1])
+
+    def test_observacao_do_validador_constitucional_nao_devolve(self):
+        obs = "C1: ok\nC2: ok\nC3: observação: título assimétrico\nC4: ok\nC5: ok\nDECISÃO: devolver\n"
+        e = oq.executar(self.ciclo, backend_simulado([], constitucional=obs), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "aprovada")
 
     def test_isolamento_e_evidencias_diferentes_por_revisor(self):
         chamadas = []
@@ -319,6 +338,8 @@ class Orquestrador(unittest.TestCase):
         v = "validador_constitucional"
         self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: falha: x\nDECISÃO: aprovar", v), "devolver")
         self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: ok\nDECISÃO: devolver", v), "aprovar")
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: falha grave: x\nC3: observação: y", v), "devolver")
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC3: observação: y\nDECISÃO: devolver", v), "aprovar")
 
     def test_historico_do_terceiro_revisor_traz_a_variacao_real_e_a_formula(self):
         h = oq.historico_bruto(GOLD_FIXA, "2026-07")
