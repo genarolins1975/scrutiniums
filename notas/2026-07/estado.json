@@ -14,7 +14,8 @@
   "validacao_mecanica@0",
   "revisao@1",
   "validacao_mecanica@1",
-  "validador_constitucional@1"
+  "validador_constitucional@1",
+  "revisor_independente@1"
  ],
  "rodada_revisao": 1,
  "devolucoes": 1,
@@ -25,5 +26,5 @@
    "unanime": false
   }
  ],
- "pendente": "revisor_independente_1"
+ "pendente": "terceiro_revisor_1"
 }
