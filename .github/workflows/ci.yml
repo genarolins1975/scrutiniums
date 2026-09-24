@@ -66,5 +66,10 @@ jobs:
         # interessa pegar erro de sintaxe/import antes do agendamento das 6h
         run: python3 -m compileall -q pipeline
 
+      - name: Testes da camada de pesquisa
+        # pacote de fatos da nota de conjuntura (stdlib, sem rede), conferido
+        # contra a gold publicada; nada aqui escreve em data/ ou public/
+        run: python3 -m unittest discover -s pesquisa/tests -t .
+
       - name: Testes
         run: npx vitest run
