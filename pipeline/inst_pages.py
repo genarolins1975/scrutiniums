@@ -5,16 +5,14 @@ com o motivo); nível de consolidação único e explícito (conglomerado pruden
 tipo 2); classificação da origem de cada dado; síntese frase a frase com base declarada;
 mediana dos pares como benchmark; sem exposição nominal inferida.
 """
-import json
 import re
 import unicodedata
 
 from pipeline import common
 from pipeline import ifdata_lacunas as lacunas
+from pipeline import regra_nominal
 from pipeline.indicators import PEER_GROUP_LABELS, carteira_profile
-
-PERIODOS_LBL = {"202603": "2026-T1", "202512": "2025-T4", "202509": "2025-T3",
-                "202506": "2025-T2", "202503": "2025-T1"}
+from pipeline.inst_pages_all import PERIODOS_LBL  # rótulo de trimestre calculado, não tabelado
 
 INDISPONIVEIS = [
     ("LCR / NSFR", "Relatórios de Pilar 3 por instituição ainda não integrados (fase futura); indisponível no IF.data via API."),
@@ -145,14 +143,7 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
             pass
         cnpj_bcb = recl[0]["cnpj"] if recl else None
 
-        # citações em recuperações judiciais (exposição OBSERVADA em publicações)
-        rj_cit = 0
-        try:
-            for (bancos,) in con.execute("SELECT bancos FROM rj_credores").fetchall():
-                if any(_match_alias(b["nome"], p["aliases"]) for b in json.loads(bancos or "[]")):
-                    rj_cit += 1
-        except Exception:
-            pass
+        # citações em listas de credores de RJ: fora da página (regra editorial de 24/09/2026; a fonte não traz CNPJ do credor)
 
         # alertas da instituição (quantitativos, com justificativa)
         alertas = []
@@ -167,12 +158,7 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
             alertas.append({"severidade": "atencao", "indicador": "Crescimento da carteira (4 trim.)",
                             "valor": round((cart[-1][1] / cart[0][1] - 1) * 100, 1), "benchmark": 30,
                             "periodo": "12m", "fonte": F_IF,
-                            "justificativa": "Crescimento acima de 30% em 4 trimestres — checar apetite de risco."})
-        if ig.get("score_delta") is not None and ig["score_delta"] > 10:
-            alertas.append({"severidade": "atencao", "indicador": "Score de risco relativo",
-                            "valor": ig["score"], "benchmark": ig.get("score_anterior"),
-                            "periodo": anomes, "fonte": "Observatório (calculado)",
-                            "justificativa": f"Alta de {ig['score_delta']} pontos no trimestre dentro do grupo de pares."})
+                            "justificativa": "Crescimento acima de 30% em 4 trimestres."})
 
         # síntese factual frase a frase
         sintese = []
@@ -209,9 +195,6 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
         if recl:
             sintese.append({"frase": f"No Ranking de Reclamações do BCB ({recl[0]['periodo']}), índice {recl[0]['indice'] if recl[0]['indice'] is not None else 'n/d'} (posição {recl[0]['posicao']} do arquivo) — indicador operacional/reputacional, não de solvência.",
                             "base": "BCB rdrweb (observado regulatório)", "status": "observado regulatório"})
-        if rj_cit:
-            sintese.append({"frase": f"Citado como credor em {rj_cit} processos de RJ/falência com publicação recente (exposição observada em listas de credores; não mede exposição total).",
-                            "base": "CNJ/DJEN, janela de 60 dias (observado)", "status": "observado"})
         if of_entry:
             fam_txt = (f" e publica {of_entry['familias_api']} famílias de API"
                        if of_entry.get("familias_api") else "")
@@ -235,12 +218,13 @@ def build(con, cfg, inst_gold, of_gold, quality_avg):
             "indicadores": inds, "calculados": calculados,
             "indisponiveis": [{"indicador": a, "motivo": b} for a, b in INDISPONIVEIS],
             "carteira_perfil": perfil,
-            "score_ref": {k: ig.get(k) for k in ("score", "score_delta", "faixa", "dimensoes",
-                                                 "historico_score", "vulnerabilidade", "dimensoes_disponiveis",
-                                                 "captacao", "modelo_negocio")} if ig else None,
+            # regra nominal (24/09/2026): sem score, faixa, variação ou histórico de score
+            "comparacao_pares": ({**{k: ig.get(k) for k in ("vulnerabilidade", "dimensoes_disponiveis",
+                                                            "captacao", "modelo_negocio")},
+                                  "dimensoes": regra_nominal.dimensoes_publicaveis(ig.get("dimensoes")),
+                                  "regra_editorial": regra_nominal.VERSAO} if ig else None),
             "openfinance": of_entry,
             "reclamacoes": recl[:4],
-            "rj_citacoes": {"casos": rj_cit, "nota": "presença em listas de credores publicadas (janela 60d) — não mede exposição total"},
             "alertas": alertas,
             "sintese": sintese,
         })

@@ -131,7 +131,50 @@ jobs:
           rsync -a --delete data/gold/ public/obs/data/gold/
           git status --porcelain public/obs/data | head -20
 
+      # Até 24/09/2026 os testes de conteúdo só rodavam DEPOIS do push (ci.yml via
+      # workflow_run): número errado com cara de número ia ao ar e era acusado horas
+      # depois. Agora a gold do dia passa pela suíte inteira ANTES do commit; reprovada,
+      # nada é publicado, a última publicação íntegra segue no ar e a issue abaixo acusa.
+      - name: Node para os testes de conteúdo
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Testes de conteúdo sobre a gold do dia (antes de publicar)
+        id: testes
+        continue-on-error: true
+        run: |
+          npm ci
+          node scripts/minify-obs.mjs
+          npx vitest run
+          python3 -m unittest discover -s pipeline/tests -t .
+          python3 -m unittest discover -s pesquisa/tests -t .
+
+      - name: Reter publicação reprovada
+        if: steps.testes.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          git checkout -- public/obs/data
+          git clean -fdq public/obs/data
+          TITULO="Testes de conteúdo reprovaram a gold do dia: publicação retida"
+          CORPO="Execução de $(date -u +%d/%m/%Y\ %H:%M) UTC: ${RUN_URL}
+
+          A gold reconstruída hoje não passou na suíte de testes de conteúdo e NÃO foi
+          publicada. O site segue servindo a última publicação aprovada. O log do passo
+          *Testes de conteúdo* mostra cada teste reprovado."
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "Nova ocorrência: ${RUN_URL}"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi
+
       - name: Commit e push das atualizações
+        if: steps.testes.outcome == 'success'
         run: |
           git config user.name "pipeline-observatorio[bot]"
           git config user.email "pipeline@scrutiniums.com"

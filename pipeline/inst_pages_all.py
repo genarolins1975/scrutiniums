@@ -11,11 +11,13 @@ Arquitetura: um JSON por instituição em data/gold/inst/{cod}.json (carregado s
 dados, não só o top-30).
 """
 import json
+import os
 import re
 import unicodedata
 
 from pipeline import common
 from pipeline import ifdata_lacunas as lacunas
+from pipeline import regra_nominal
 from pipeline.indicators import PEER_GROUP_LABELS, carteira_profile
 from pipeline.products import TAXONOMY as PROD_TAXONOMY, venc_key as prod_venc_key
 
@@ -58,8 +60,23 @@ def _cnpj_cabecalho(cod):
         return f"raiz {cod[:2]}.{cod[2:5]}.{cod[5:8]}"
     return _CNPJ_CONGL.get(cod, "não disponível nas fontes integradas")
 
-PERIODOS_LBL = {"202603": "2026-T1", "202512": "2025-T4", "202509": "2025-T3",
-                "202506": "2025-T2", "202503": "2025-T1"}
+def rotulo_trimestre(anomes):
+    """'202606' → '2026-T2'. Calculado, não tabelado: o dicionário fixo que existia aqui
+    terminava em 202603 e a ficha publicou '202606' cru (avaliação de 24/09/2026)."""
+    a = str(anomes or "")
+    if re.fullmatch(r"\d{4}(0[1-9]|1[0-2])", a):
+        return f"{a[:4]}-T{(int(a[4:]) - 1) // 3 + 1}"
+    return a
+
+
+class _Rotulos(dict):
+    """Compatibilidade com o antigo PERIODOS_LBL.get(anomes, padrão)."""
+    def get(self, k, padrao=None):
+        r = rotulo_trimestre(k)
+        return r if r != str(k or "") else padrao
+
+
+PERIODOS_LBL = _Rotulos()
 GENERIC_TOKENS = {"BANCO", "BCO", "BRASIL", "BRASILEIRO", "NACIONAL", "S.A", "S.A.", "SA",
                   "LTDA", "CREDITO", "CRÉDITO", "COOPERATIVA", "COOPERATIVO", "CENTRAL",
                   "INSTITUICAO", "PAGAMENTO", "PAGAMENTOS", "FINANCEIRA", "FINANCIAMENTO",
@@ -71,6 +88,9 @@ INDISPONIVEIS = [
     ("LCR / NSFR e composição de funding", "Exigem Pilar 3 por instituição — não integrado."),
     ("Composição de receita, margem e eficiência", "Exigem o DRE detalhado (templates 116-118 do IF.data) — mapeado, não integrado."),
     ("Notícias, ratings e documentos (ITR/DFP/Pilar 3)", "Pipelines de CVM/RI/agências/imprensa não integrados."),
+    ("Open Finance por instituição", "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."),
+    ("Citações em listas de credores de RJ", "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."),
+    ("Score composto e faixa de risco", "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."),
 ]
 
 
@@ -83,10 +103,48 @@ def _tokens(nome):
 
 
 def _match_nome(alvo_tokens, candidato_nome):
+    """Casamento por palavras distintivas. NÃO usar para atribuir dado a instituição
+    nomeada (regra editorial de 24/09/2026): o teste de substring fazia "BANK" casar com
+    PINBANK e CITIBANK. Mantido só para diagnóstico de cobertura."""
     if not alvo_tokens:
         return False
     cu = _sem_acento(candidato_nome)
     return all(t in cu for t in alvo_tokens[:2])
+
+
+MAPA_NOMES = os.path.join(common.ROOT, "config", "mapa_nomes_fonte.json")
+
+
+def _nome_canonico(s):
+    s = _sem_acento(s).replace("(CONGLOMERADO)", "").replace("- PRUDENCIAL", "")
+    return re.sub(r"\s+", " ", s).strip()
+
+
+def mapa_nomes_aprovados(fonte):
+    """nome da fonte (canônico) → código IF.data, só entradas com status 'aprovado' e
+    revisor registrado. Candidatas em revisão não produzem casamento."""
+    try:
+        with open(MAPA_NOMES, encoding="utf-8") as f:
+            entradas = json.load(f).get("entradas", [])
+    except (OSError, ValueError):
+        return {}
+    return {_nome_canonico(e["nome_fonte"]): e["cod"] for e in entradas
+            if e.get("fonte") == fonte and e.get("status") == "aprovado" and e.get("revisor")}
+
+
+def casamento_reclamacao(cod, nome_bcb, nome_fonte, cnpj, mapa):
+    """Como a linha de reclamações se liga à instituição, ou None. Três vias, todas por
+    identidade: CNPJ raiz igual ao código (instituição individual), nome idêntico publicado
+    pelo próprio BCB nas duas bases, ou mapa curado aprovado."""
+    raiz = re.sub(r"\D", "", cnpj or "")[:8]
+    if raiz and re.fullmatch(r"\d{8}", cod or "") and raiz == cod:
+        return "cnpj"
+    canon = _nome_canonico(nome_fonte)
+    if canon and canon == _nome_canonico(nome_bcb):
+        return "nome_identico_bcb"
+    if mapa.get(canon) == cod:
+        return "mapa_curado"
+    return None
 
 
 def _pctl(vals, v):
@@ -103,7 +161,7 @@ def _mediana(vals):
     return sv[len(sv) // 2]
 
 
-def build_all(con, cfg, inst_gold, of_gold):
+def build_all(con, cfg, inst_gold, of_gold=None):
     pilotos = {p["cod_inst"]: p for p in cfg.get("inst_pages", {}).get("pilotos", [])}
     cur = con.execute("SELECT DISTINCT anomes FROM institution_metrics WHERE metric='ativo_total' ORDER BY anomes DESC")
     # periods (5 tri) governa as seções da metodologia vigente; periods_hist
@@ -186,17 +244,11 @@ def build_all(con, cfg, inst_gold, of_gold):
     recl_rows = []
     try:
         recl_rows = con.execute("""SELECT ano, trimestre, nome, indice, reclamacoes_reguladas,
-                                          clientes, posicao FROM reclamacoes
+                                          clientes, posicao, cnpj FROM reclamacoes
                                    ORDER BY ano DESC, trimestre DESC""").fetchall()
     except Exception:
         pass
-    rj_bancos = []
-    try:
-        for (bancos,) in con.execute("SELECT bancos FROM rj_credores").fetchall():
-            rj_bancos.append([b["nome"] for b in json.loads(bancos or "[]")])
-    except Exception:
-        pass
-    of_rank = of_gold.get("ranking", []) if of_gold and not of_gold.get("demo", True) else []
+    mapa_recl = mapa_nomes_aprovados("reclamacoes")
     inst_by_cod = {i["cod_inst"]: i for i in inst_gold.get("instituicoes", [])}
 
     F_IF = "BCB IF.data (Olinda)"
@@ -208,7 +260,6 @@ def build_all(con, cfg, inst_gold, of_gold):
         nome = c0.get("name") or cod
         anomes_inst = ref.get(cod, anomes)
         sr = c0.get("sr", "S?")
-        toks = _tokens(nome)
         piloto = pilotos.get(cod, {})
         r = ratios[cod]
         gs = gstats.get(sr, {})
@@ -315,12 +366,15 @@ def build_all(con, cfg, inst_gold, of_gold):
                           "A série de CARTEIRA cruza a fronteira da Res. 4.966 em 2025-T1 (carteira classificada → régua nova) — "
                           "leia a inflexão nessa data como mudança de régua, não de negócio.") if ev_longa else None)
 
-        # reclamações / OF / RJ (matching conservador por tokens distintivos)
+        # reclamações: só por identidade (CNPJ raiz = código, nome idêntico publicado pelo
+        # próprio BCB, ou mapa curado aprovado). O casamento por palavras distintivas que
+        # existia aqui atribuía ao C6 Bank as reclamações de TBanks, Pinbank, Ouribank e
+        # Citibank (avaliação de 24/09/2026). Open Finance e listas de credores de RJ não têm
+        # CNPJ na fonte pública: saem da ficha até haver identificador.
         recl = [{"periodo": f"{a}-T{t}", "indice": i2, "reclamacoes": nr, "clientes": cl,
-                 "posicao_arquivo": pos, "nome_fonte": n2}
-                for a, t, n2, i2, nr, cl, pos in recl_rows if _match_nome(toks, n2)][:4]
-        of_entry = next((o for o in of_rank if _match_nome(toks, o["organisation"])), None)
-        rj_cit = sum(1 for bancos in rj_bancos if any(_match_nome(toks, b) for b in bancos)) if toks else 0
+                 "posicao_arquivo": pos, "nome_fonte": n2, "casamento": como}
+                for a, t, n2, i2, nr, cl, pos, cn in recl_rows
+                for como in [casamento_reclamacao(cod, nome, n2, cn, mapa_recl)] if como][:4]
 
         # destaques rule-based
         dest = []
@@ -333,7 +387,7 @@ def build_all(con, cfg, inst_gold, of_gold):
         if len(s_cart) >= 5 and s_cart[0][1]:
             g4 = (s_cart[-1][1] / s_cart[0][1] - 1) * 100
             dest.append({"tipo": "warn" if g4 > 30 else "ok",
-                         "texto": f"Carteira {'cresceu' if g4 >= 0 else 'caiu'} {abs(g4):.1f}% em 4 trimestres" + (" — acima de 30%, checar apetite de risco." if g4 > 30 else "."),
+                         "texto": f"Carteira {'cresceu' if g4 >= 0 else 'caiu'} {abs(g4):.1f}% em 4 trimestres" + (", acima de 30%." if g4 > 30 else "."),
                          "base": F_IF})
         if r.get("roe") is not None:
             dest.append({"tipo": "warn" if r["roe"] < 0 else "ok",
@@ -346,7 +400,7 @@ def build_all(con, cfg, inst_gold, of_gold):
                                                    f"piso sobre os {perfil.get('hhi_cobertura_pct', '–')}% setorialmente identificados)."),
                          "base": "IF.data carteiras por CNAE"})
         if recl and recl[0]["indice"] is not None:
-            meds = [x for _, _, n2, x, *_ in recl_rows if x is not None]
+            meds = [x for _, _, _n2, x, *_ in recl_rows if x is not None]
             med_r = _mediana(meds)
             if med_r:
                 bad = recl[0]["indice"] > med_r
@@ -368,9 +422,6 @@ def build_all(con, cfg, inst_gold, of_gold):
         for k in kpis:
             if k.get("d_tri") is not None and abs(k["d_tri"]) >= (3 if k["unit"] == "R$" else 0.3):
                 mudancas_rec.append({"texto": f"{k['label']}: {'+' if k['d_tri'] > 0 else ''}{k['d_tri']}{k['d_tri_tipo']} no trimestre.", "base": k["fonte"]})
-        if ig and ig.get("score_delta") is not None and abs(ig["score_delta"]) >= 3:
-            mudancas_rec.append({"texto": f"Score relativo {'subiu' if ig['score_delta'] > 0 else 'caiu'} {abs(ig['score_delta'])} pontos no grupo de pares.", "base": "Observatório (calculado)"})
-        n_dims_score = len((ig or {}).get("dimensoes", {})) if ig else 0
         aval = None
         if r.get("basileia") is not None and gs.get("basileia", {}).get("mediana") is not None:
             pos_b = "acima" if r["basileia"] >= gs["basileia"]["mediana"] else "abaixo"
@@ -397,18 +448,6 @@ def build_all(con, cfg, inst_gold, of_gold):
             "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data.",
         }
 
-        # score: cobertura e confiança (§8.11)
-        score_meta = None
-        if ig:
-            cobertura_pct = round(n_dims_score / 6 * 100)
-            score_meta = {"cobertura_dados_pct": cobertura_pct,
-                          "confianca": "moderada" if cobertura_pct >= 80 else "baixa",
-                          "confianca_motivo": f"{n_dims_score}/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-                          "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-                          # vintage explícito: um número composto sem data induz
-                          # leitura de "agora" — achado da auditoria de 12/08
-                          "calculado_em": common.now_utc()[:10]}
-
         page = {
             "cod_inst": cod, "caso": piloto.get("caso"),
             "cabecalho": {
@@ -425,10 +464,8 @@ def build_all(con, cfg, inst_gold, of_gold):
                 "sem_balanco_na_data_base": aviso_lacuna, "atualizado_em": common.now_utc(),
                 "aviso_pares": piloto.get("aviso_pares"),
                 "cnpj": _cnpj_cabecalho(cod),
-                "participante_open_finance": bool(of_entry) or None,
             },
             "resumo_executivo": resumo_exec, "grupo_pares_composicao": grupo_comp,
-            "score_meta": score_meta,
             "kpis": kpis, "destaques": dest, "capital_tabela": cap_table,
             "carteira": {"donut_cliente": donut_cliente, "perfil": perfil,
                          "total_pf": pf_total, "total_pj": pj_total},
@@ -438,10 +475,15 @@ def build_all(con, cfg, inst_gold, of_gold):
                                        "meu": round(r[met], 2) if r.get(met) is not None else None,
                                        "mediana": round(gs[met]["mediana"], 2) if gs.get(met, {}).get("mediana") is not None else None}
                                  for met in ("roe", "basileia", "alav") if r.get(met) is not None},
-            "score_ref": ({k: ig.get(k) for k in ("score", "score_delta", "faixa", "dimensoes",
-                                                  "historico_score", "vulnerabilidade", "dimensoes_disponiveis")}
-                          if ig else {"indisponivel": (f"Score não calculado: a instituição consta da lista do IF.data em {PERIODOS_LBL.get(anomes, anomes)} sem balanço entregue (última entrega {PERIODOS_LBL.get(anomes_inst, anomes_inst)})."
-                                                       if cod in ref else "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero).")}),
+            # regra nominal: dimensões observadas com pares, sem score, faixa nem componente de risco
+            "comparacao_pares": ({"dimensoes": regra_nominal.dimensoes_publicaveis(ig.get("dimensoes")),
+                                  "dimensoes_disponiveis": ig.get("dimensoes_disponiveis"),
+                                  "vulnerabilidade": ig.get("vulnerabilidade"),
+                                  "regra_editorial": regra_nominal.VERSAO,
+                                  "nota": regra_nominal.NOTA}
+                                 if ig else {"indisponivel": (f"Comparação por dimensões não calculada: a instituição consta da lista do IF.data em {PERIODOS_LBL.get(anomes, anomes)} sem balanço entregue (última entrega {PERIODOS_LBL.get(anomes_inst, anomes_inst)})."
+                                                              if cod in ref else "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero)."),
+                                             "regra_editorial": regra_nominal.VERSAO}),
             "atraso_produtos": ({
                 "data_base": PERIODOS_LBL.get(anomes_inst, anomes_inst),
                 "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
@@ -449,10 +491,7 @@ def build_all(con, cfg, inst_gold, of_gold):
                          ">90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo "
                          "de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto)."),
                 "itens": atraso_itens} if atraso_itens else None),
-            "openfinance": of_entry,
             "reclamacoes": recl,
-            "rj_citacoes": {"casos": rj_cit,
-                            "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"},
             "indisponiveis": [{"indicador": a, "motivo": b} for a, b in INDISPONIVEIS],
         }
         common.write_gold(f"inst/{cod}.json", page)
@@ -467,7 +506,8 @@ def build_all(con, cfg, inst_gold, of_gold):
         "sem_balanco_na_data_base": ([{"cod": x["cod_inst"], "nome": x["nome"], "ultima_entrega": x["ultima_entrega"], "ativo_ultima_entrega": x["ativo_ultima_entrega"],
                                         "com_pagina": x["cod_inst"] in ref} for x in sem_bal] if sem_bal is not None else None),
         "nota": "Uma página por conglomerado prudencial com dados no IF.data; pares = grupo prudencial completo; "
-                "matching de reclamações/Open Finance/RJ por tokens distintivos do nome (nome da fonte sempre exibido). "
+                "reclamações ligadas só por identidade (CNPJ, nome idêntico publicado pelo BCB ou mapa curado aprovado); "
+                "Open Finance e listas de credores de RJ fora da ficha por não trazerem CNPJ; score e faixa de risco não publicados por instituição (regra editorial de 24/09/2026). "
                 "Instituição na lista do IF.data sem balanço na data-base mantém a página na última entrega (declarada no cabeçalho) "
                 "e fica fora das estatísticas de pares; sem entrega nos 44 trimestres da série, não há página.",
     })
