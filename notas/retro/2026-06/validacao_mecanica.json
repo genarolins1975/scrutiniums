@@ -1,0 +1,9 @@
+{
+ "versao_validador": "validador_mecanico_v2",
+ "decisao": "aprovar",
+ "falhas": [],
+ "itens": [],
+ "nota_sha256": "c60f540217880247a52733af0fc44512adeb1f4f40f082f99a460c84396e45e0",
+ "sha256_fatos": "f2cfc9564ec3a8fa66fdb69d6d6c97b711159e3eb5a9ab21f4700b5e6b46de07",
+ "degrau_declarado": "1"
+}

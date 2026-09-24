@@ -2,6 +2,8 @@
 
 **Data:** 24/09/2026. **Base:** ramo `main` no commit `fe048da` (23/09/2026, 15:37 UTC); gold publicada gerada em 23/09/2026, 15:36 UTC. **Para:** editor chefe. **Convenção:** **E** evidência, **I** inferência, **R** recomendação. Todo número traz fonte e data; o que não foi medido está na seção 6.
 
+> **Atualização do mesmo dia.** Por decisão do editor, as correções e as melhorias propostas foram executadas neste ramo. O que foi feito, o que se mediu e o que continua pendente estão na seção 7. As seções 1 a 6 ficam como diagnóstico da manhã de 24/09/2026 e não foram reescritas.
+
 ---
 
 ## Sumário executivo
@@ -486,3 +488,70 @@ python3 -m pesquisa.fatos_conjuntura --verificar notas/AAAA-MM/pacote.json
 - **Calibração do score por instituição** contra desfechos: não testada.
 - **Efeito da diversidade de modelos sobre erro correlacionado:** não medido.
 - **Afirmações dos levantamentos de apoio:** foram conferidas por amostragem. As que cito com linha foram conferidas diretamente, exceto as referências a `docs/AUDITORIA_*` e `docs/AVALIACAO_*` marcadas na seção 3, que vêm do levantamento.
+
+---
+
+## 7. Execução em 24/09/2026: correções e melhorias
+
+### a) Correções de produção (commit `6fb66a3`)
+
+| Achado | O que mudou | Evidência de que funciona |
+|---|---|---|
+| Faixa verbal e score por instituição nomeada (3b) | `pipeline/regra_nominal.py`: `institutions.json` sai sem score, faixa, variação e histórico de score e sem o componente de risco das dimensões; o score segue calculado e sai só como distribuição anônima por grupo, com piso de 5 membros. Fichas trocam `score_ref` por `comparacao_pares`. SPA sem coluna, ordenação, placar e síntese por faixa. Relatório sem score de instituição | Gold reconstruída a partir da semente: 1.422 fichas, zero campos proibidos; `pipeline/tests/test_regra_nominal.py`; `src/tests/regra-nominal.test.ts`, com travas gated que mordem na primeira gold com a marca `regra_nominal_v1` |
+| Recomendação a instituição nomeada | Sai "checar apetite de risco" das fichas e dos pilotos | Trava em `regra-nominal.test.ts` |
+| Casamento por semelhança de nome (novo achado, registro E005) | Reclamações só por CNPJ, nome idêntico publicado pelo BCB ou mapa curado aprovado (`config/mapa_nomes_fonte.json`, 25 candidatas em revisão, nenhuma aprovada). Open Finance e credores de RJ saem das fichas | Na gold reconstruída, 159 fichas casam por nome idêntico e 27 por CNPJ; o teste do caso C6 Bank (Pinbank, Citibank, Ouribank, TBanks) não casa |
+| Gold publicada antes dos testes (3a) | `atualizar-dados.yml`: vitest e testes Python rodam sobre a gold do dia antes do commit; reprovada, a publicação é retida e uma issue acusa | Validação do YAML; efeito só observável na próxima execução diária |
+| Testes de moradia e consignado nunca rodavam no CI | Passam a ler a gold publicada; o valor fixado 1,95/8,63 vira conferência relacional | Vitest: 92 arquivos, 1.085 testes aprovados, nenhum pulado (antes: 126 pulados) |
+| Data base crua nas fichas (registro E006) | Rótulo de trimestre calculado | `inst/*.json` da gold reconstruída com `2026-T1` |
+| Relatório automático (registro E007) | Reescrito: formato brasileiro com sinal de menos, ano da soma de RJ calculado, rótulo da variação corrigido, sem referência a arquivo inexistente, sem credores de RJ por nome | `pipeline/tests/test_report.py` sobre a gold publicada |
+| Gold não reconstruía a partir da semente | epae, presença e juros com guarda de stub | Execução local a partir de `silver-seed.db.gz` termina com código 0; 13 builders viram stub declarado por tabela ausente na semente |
+| Diagnóstico com decimal inglês ("IBCC 94.8") | Formato brasileiro | Teste do relatório |
+| `.pyc` versionados | Retirados do índice | `git ls-files` sem `__pycache__` |
+
+### b) Melhorias do piloto (PRs 2 a 6 do plano, neste ramo)
+
+| PR do plano | Entregue | Testes |
+|---|---|---|
+| 2 | `pesquisa/validador.py` (M1 a M11; M11 confere série e segmento do texto que antecede cada número), `pesquisa/sentinela.py` e `pesquisa/sentinelas/` (34 casos, 6 controles limpos), `pesquisa/registro.py` e `pesquisa/registro_erros.json` (7 erros publicados registrados, com fonte) | Recall de 100% em 34 casos, zero falso bloqueio em 6 controles; toda checagem coberta por ao menos um caso |
+| 3 | `pesquisa/nota.py`: formato com marcadores, renderizador determinístico, tabela de fontes, frase de sujeição a revisão e manifesto | Renderização determinística, sem marcador residual |
+| 4 | `pesquisa/verificador_fonte.py`: API do SGS com três tentativas; falha de rede vira "não verificado" | Contra a API em 24/09/2026: 16 séries conferidas, 2 não verificadas (HTTP 502); testes com fixture sem rede |
+| 5 | `pesquisa/papeis/` (seis papéis e regras comuns) e `pesquisa/orquestrador.py` (modo manual e modo API com o SDK oficial, `claude-opus-5` em todos os papéis, fallback do servidor para recusas, escrita só em `notas/`) | Ciclo completo simulado com uma devolução, isolamento das entradas por papel, modo manual retomável, recusa de escrita fora de `notas/` |
+| 6 | `pesquisa/metricas.py`: métricas por ciclo e critério de degrau (ciclos limpos consecutivos, rebaixamento por erro relevante, bateria com pelo menos 50 casos) | Promoção, zeragem por erro, exclusão dos retrospectivos, rebaixamento |
+
+Camada de pesquisa: 49 testes. Pipeline: 21 testes. Todos rodam no CI e antes da publicação diária.
+
+### c) Ciclo retrospectivo de jun/2026 (`notas/retro/2026-06/`)
+
+**Método (E).** Gold da data (commit `238e5f9`, 27/08/2026), recortada às 18 séries do escopo. Cada papel executado por um agente em contexto separado, que leu só o próprio prompt, gerado pelo orquestrador em modo manual. Todos os agentes são do mesmo modelo que escreveu o validador: a medida de homogeneidade fica para o ciclo com segundo modelo.
+
+**Resultados (E).**
+
+| Medida | Valor |
+|---|---|
+| Números errados na nota final | 0: nenhum número foi digitado por agente; todos vieram do pacote |
+| Validador mecânico | aprovou a nota revisada sem devolução |
+| Falsos positivos do validador achados em saída real | 2 (M4 exigia a data do mesmo id; M5 não aceitava `{{lacunas}}` como evidência); corrigidos na versão 2 e travados como controles L05 e L06 |
+| Erro de definição que o código não pega | 1 ("renda acumulada no ano" onde a série é renda de 12 meses), apontado pelo crítico como grave e corrigido na revisão |
+| Objeções do crítico | 10 (2 graves, 4 moderadas, 4 leves) |
+| Validador constitucional | devolveu: C2 (mecanismo de oferta que os fatos não identificam) e C3 (horizonte escolhido conforme o sinal) |
+| Concordância replicador × analistas | Jaccard dos destaques de 0,67 nos dois recortes; leitura igual em famílias (deterioração), diferente em empresas (analista: melhora; replicador: misto) |
+| Tamanho da nota | 1.216 palavras antes da tabela de fontes, com quatro inferências |
+| Tokens | medidos só como consumo dos agentes em sessão (de 53 mil a 71 mil por papel, 433 mil no total, incluindo a sobrecarga fixa de cada sessão); não comparáveis ao custo por API, que não foi medido |
+| Minutos de editor | não medidos: a revisão do editor é a próxima etapa (`notas/retro/2026-06/editor.json`) |
+
+**I.** A cadeia funciona como desenhada: o código garante os números, o crítico pega o que o código não pega, e o validador constitucional devolve por motivos que um editor reconheceria. O ponto fraco não é exatidão, é edição: a nota sai longa, repetitiva e com uma inferência a mais. Isso consome minutos de editor, a métrica que decide se o piloto vale a pena.
+
+**R.**
+1. Limitar a nota a cerca de 600 palavras e a duas inferências nas instruções do consolidador, depois da revisão do editor sobre este ciclo, e não antes.
+2. Rodar o retrospectivo de mai/2026 com o segundo modelo no replicador e no validador constitucional, para medir o erro correlacionado.
+3. Pedir ao editor, ou a um modelo que não escreveu o validador, dez casos sentinela novos, para tirar o viés de autoria do recall de 100%.
+
+### d) O que continua pendente
+
+- **Decisões do editor:** aprovação da constituição e das instruções dos papéis; revisor substituto do art. 6; segundo fornecedor; N do degrau 2; aprovação das 25 candidatas do mapa de nomes.
+- **Basileia após choque por instituição nomeada.** Continua publicada nas fichas e na aba Instituições. É cenário, não métrica observada, e fica perto do juízo de risco que a regra retira. Decisão do editor.
+- **Aba Recuperações & Falências.** Continua nomeando bancos citados em listas de credores do DJEN, a partir do texto das publicações. A regra foi aplicada às fichas e ao relatório, não ao painel.
+- **Meta sem os últimos builders.** `meta.json` é gravado antes de epae, presença e juros; falha nesses três não entra em `builders_falhos`.
+- **Gold publicada.** Ainda é a anterior às correções; a regra nominal e os demais ajustes entram na primeira execução diária depois do merge.
+- **Ciclos 1 a 3 (PR 7).** Dependem de data base nova do BCB e da execução com a API ou em modo manual; o calendário de divulgação não foi consultado.
+

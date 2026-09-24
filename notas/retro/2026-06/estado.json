@@ -1,0 +1,20 @@
+{
+ "data_base": "2026-06",
+ "retro": true,
+ "gold_dir": "notas/retro/2026-06/gold_238e5f9",
+ "criado_em": "2026-09-24T08:42:29+00:00",
+ "concluidas": [
+  "analista_familias",
+  "analista_empresas",
+  "replicador",
+  "consolidador",
+  "critico",
+  "revisao",
+  "validacao_mecanica",
+  "validador_constitucional",
+  "render"
+ ],
+ "rodada_revisao": 0,
+ "devolucoes": 0,
+ "decisao_constitucional": "devolver"
+}

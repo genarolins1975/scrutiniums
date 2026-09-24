@@ -1,0 +1,5 @@
+C1: ok
+C2: falha: primeira inferência, trecho "Os fatos de volume não mostram restrição de oferta" e "sem sinal de aperto de volume no pacote". Motivo: saldo e concessões são quantidades de equilíbrio; alta real de volume não separa oferta de demanda, e o pacote não tem fato de oferta. A frase atribui um mecanismo que os fatos não identificam. A refutação declarada (concessões a pessoas físicas com queda real) também não testa oferta.
+C3: falha: quarta inferência, leitura alternativa para famílias. Trecho "da alta da taxa no mês ... e da alta do saldo no mês ... e lê deterioração das condições das famílias". Motivo: escolhe o horizonte de cada fato conforme o sinal que sustenta a leitura. Usa a alta mensal da taxa e do saldo, mas omite, no mesmo horizonte mensal, a queda da inadimplência de pessoas físicas e a queda do endividamento, ambas no pacote. Também toma a alta do saldo no mês como base de deterioração sem dizer por quê. O mesmo recorte aparece para empresas: usa a queda mensal de taxa e spread junto da alta interanual da inadimplência e omite a queda mensal da inadimplência de pessoas jurídicas.
+C4: ok
+DECISÃO: devolver

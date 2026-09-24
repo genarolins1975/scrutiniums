@@ -1,0 +1,56 @@
+{
+ "tipo": "manifesto_nota",
+ "versao": 1,
+ "data_base": "2026-06",
+ "gold": {
+  "pulse.json": {
+   "sha256": "767af979a638716860c29d832619f36add1dcd9b2f52fdc8a9b0849f9ab5a0ed",
+   "gerado_em": "2026-08-27T20:15:16+00:00"
+  },
+  "meta.json": {
+   "sha256": "177f1f337a68a5d2e00b676c8d56ffe92086590645a1c213cd52f80d872ab22a",
+   "gerado_em": "2026-08-27T20:15:48+00:00",
+   "vintage_sgs": "2026-06"
+  }
+ },
+ "gold_commit": null,
+ "sha256_fatos": "f2cfc9564ec3a8fa66fdb69d6d6c97b711159e3eb5a9ab21f4700b5e6b46de07",
+ "constituicao_sha256": "dad64c6f134649ba8de92e73438f4f751b6e276bc3fde8df74e28970ef4cf68d",
+ "nota_sha256": "c60f540217880247a52733af0fc44512adeb1f4f40f082f99a460c84396e45e0",
+ "nota_final_sha256": "1c36c4812f2afd006138b4a80c82d7e8c1ee7f91ebe0730d4308307416ae921b",
+ "validador": {
+  "decisao": "aprovar",
+  "versao": "validador_mecanico_v2"
+ },
+ "papeis": {
+  "analista_familias": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "777b593b5fa77bd1936ea5dfed36b10bd30c22a34306bcf348376b32d94987e4"
+  },
+  "analista_empresas": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "6f495d259334e26b0ea6ffd6f89cbd773f116c7eac06c0eca4361e9c384c6272"
+  },
+  "replicador": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "deac9a62c7ccdff4169f88840c10c5399bd172b2e7bec5ebd013d6010d171b99"
+  },
+  "consolidador": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "88a167b8346dee603d643c12df9a490d9417498d1acee4897a91324df3953d4e"
+  },
+  "critico": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "044f52e9abb4a5ab12288f2af35e597740b45ef400228bcb025cd0695098e543"
+  },
+  "validador_constitucional": {
+   "modelo": "claude-opus-5",
+   "instrucoes_sha256": "f1f06c9a5bd56de85bcbb2792376ccffbb339d11d0d7b4ecd07e3fffb3dcaa01"
+  }
+ },
+ "como_verificar": [
+  "git checkout <gold_commit>",
+  "python3 -m pesquisa.fatos_conjuntura --verificar pacote.json",
+  "python3 -m pesquisa.validador nota.md --pacote pacote.json"
+ ]
+}
