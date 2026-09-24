@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:33+00:00",
+  "atualizado_em": "2026-09-24T15:24:40+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 53.518.684",
-  "participante_open_finance": null
+  "cnpj": "raiz 53.518.684"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -67,7 +66,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -142,20 +144,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": {
-  "cobertura_dados_pct": 100,
-  "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-23"
- },
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 16666011147.64,
    "unit": "R$",
    "d_tri": 9.2,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     13511351651.95,
@@ -171,7 +166,7 @@
    "v": 1628233774.86,
    "unit": "R$",
    "d_tri": 5.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1430276429.63,
@@ -187,7 +182,7 @@
    "v": 5254438748.1,
    "unit": "R$",
    "d_tri": 7.2,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     4493078115.02,
@@ -203,7 +198,7 @@
    "v": 91853869.6400004,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     77232965.12,
@@ -219,7 +214,7 @@
    "v": 23.360693402377,
    "unit": "%",
    "d_tri": 0.54,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     23.3188,
@@ -344,139 +339,139 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "201609",
+    "p": "2016-T3",
     "v": 100.0
    },
    {
-    "p": "201612",
+    "p": "2016-T4",
     "v": 45.4
    },
    {
-    "p": "201703",
+    "p": "2017-T1",
     "v": 45.7
    },
    {
-    "p": "201706",
+    "p": "2017-T2",
     "v": 47.9
    },
    {
-    "p": "201709",
+    "p": "2017-T3",
     "v": 49.8
    },
    {
-    "p": "201712",
+    "p": "2017-T4",
     "v": 47.7
    },
    {
-    "p": "201803",
+    "p": "2018-T1",
     "v": 50.0
    },
    {
-    "p": "201806",
+    "p": "2018-T2",
     "v": 67.1
    },
    {
-    "p": "201809",
+    "p": "2018-T3",
     "v": 77.0
    },
    {
-    "p": "201812",
+    "p": "2018-T4",
     "v": 64.7
    },
    {
-    "p": "201903",
+    "p": "2019-T1",
     "v": 68.0
    },
    {
-    "p": "201906",
+    "p": "2019-T2",
     "v": 82.6
    },
    {
-    "p": "201909",
+    "p": "2019-T3",
     "v": 134.8
    },
    {
-    "p": "201912",
+    "p": "2019-T4",
     "v": 172.1
    },
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 464.4
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 503.3
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 648.1
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 571.4
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 585.0
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 621.5
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 668.5
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 723.2
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 815.5
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 1061.3
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 998.6
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 829.9
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 1128.6
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 1340.7
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 899.0
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 985.6
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 940.7
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 1001.7
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 753.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 848.3
    },
    {
@@ -500,145 +495,145 @@
     "v": 569.8
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 622.1
    }
   ],
   "PL": [
    {
-    "p": "201609",
+    "p": "2016-T3",
     "v": 100.0
    },
    {
-    "p": "201612",
+    "p": "2016-T4",
     "v": 67.2
    },
    {
-    "p": "201703",
+    "p": "2017-T1",
     "v": 69.5
    },
    {
-    "p": "201706",
+    "p": "2017-T2",
     "v": 70.3
    },
    {
-    "p": "201709",
+    "p": "2017-T3",
     "v": 71.8
    },
    {
-    "p": "201712",
+    "p": "2017-T4",
     "v": 66.4
    },
    {
-    "p": "201803",
+    "p": "2018-T1",
     "v": 67.7
    },
    {
-    "p": "201806",
+    "p": "2018-T2",
     "v": 67.7
    },
    {
-    "p": "201809",
+    "p": "2018-T3",
     "v": 68.8
    },
    {
-    "p": "201812",
+    "p": "2018-T4",
     "v": 68.3
    },
    {
-    "p": "201903",
+    "p": "2019-T1",
     "v": 68.1
    },
    {
-    "p": "201906",
+    "p": "2019-T2",
     "v": 69.8
    },
    {
-    "p": "201909",
+    "p": "2019-T3",
     "v": 69.7
    },
    {
-    "p": "201912",
+    "p": "2019-T4",
     "v": 68.5
    },
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 68.9
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 71.8
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 70.5
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 70.4
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 66.7
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 68.0
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 66.4
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 63.4
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 64.7
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 64.3
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 65.6
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 67.3
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 66.1
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 68.9
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 70.2
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 76.3
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 77.3
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 78.1
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 82.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 84.7
    },
    {
@@ -662,7 +657,7 @@
     "v": 98.7
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 103.9
    }
   ]
@@ -873,15 +868,11 @@
    "mediana": 9.26
   }
  },
- "score_ref": {
-  "score": 46.1,
-  "score_delta": -4.3,
-  "faixa": "atenção",
+ "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 23.36,
     "percentil_pares": 76.5,
-    "risco": 23.5,
     "mediana_pares": 16.34,
     "q1_pares": 13.89,
     "q3_pares": 22.37
@@ -889,7 +880,6 @@
    "rentabilidade": {
     "valor": 5.64,
     "percentil_pares": 53.7,
-    "risco": 46.3,
     "mediana_pares": 5.01,
     "q1_pares": 2.51,
     "q3_pares": 9.26
@@ -897,7 +887,6 @@
    "alavancagem": {
     "valor": 10.24,
     "percentil_pares": 53.7,
-    "risco": 53.7,
     "mediana_pares": 9.56,
     "q1_pares": 5.95,
     "q3_pares": 15.24
@@ -905,7 +894,6 @@
    "concentracao_credito": {
     "valor": 31.53,
     "percentil_pares": 35.2,
-    "risco": 35.2,
     "mediana_pares": 48.08,
     "q1_pares": 18.11,
     "q3_pares": 64.85
@@ -913,7 +901,6 @@
    "dependencia_captacoes": {
     "valor": 77.4,
     "percentil_pares": 64.8,
-    "risco": 64.8,
     "mediana_pares": 73.35,
     "q1_pares": 41.97,
     "q3_pares": 81.88
@@ -921,130 +908,12 @@
    "concentracao_setorial": {
     "valor": 2433,
     "percentil_pares": 53.3,
-    "risco": 53.3,
     "mediana_pares": 2426.0,
     "q1_pares": 1981.0,
     "q3_pares": 3559.5
    }
   },
-  "historico_score": [
-   {
-    "anomes": "201609",
-    "score": 16.7
-   },
-   {
-    "anomes": "201909",
-    "score": 28.1
-   },
-   {
-    "anomes": "201912",
-    "score": 34.8
-   },
-   {
-    "anomes": "202003",
-    "score": 50.9
-   },
-   {
-    "anomes": "202006",
-    "score": 41.5
-   },
-   {
-    "anomes": "202009",
-    "score": 47.4
-   },
-   {
-    "anomes": "202012",
-    "score": 48.3
-   },
-   {
-    "anomes": "202103",
-    "score": 48.7
-   },
-   {
-    "anomes": "202106",
-    "score": 48.2
-   },
-   {
-    "anomes": "202109",
-    "score": 57.3
-   },
-   {
-    "anomes": "202112",
-    "score": 56.1
-   },
-   {
-    "anomes": "202203",
-    "score": 48.2
-   },
-   {
-    "anomes": "202206",
-    "score": 53.1
-   },
-   {
-    "anomes": "202209",
-    "score": 56.7
-   },
-   {
-    "anomes": "202212",
-    "score": 51.4
-   },
-   {
-    "anomes": "202303",
-    "score": 55.9
-   },
-   {
-    "anomes": "202306",
-    "score": 51.3
-   },
-   {
-    "anomes": "202309",
-    "score": 50.0
-   },
-   {
-    "anomes": "202312",
-    "score": 35.9
-   },
-   {
-    "anomes": "202403",
-    "score": 49.6
-   },
-   {
-    "anomes": "202406",
-    "score": 49.5
-   },
-   {
-    "anomes": "202409",
-    "score": 37.8
-   },
-   {
-    "anomes": "202412",
-    "score": 41.7
-   },
-   {
-    "anomes": "202503",
-    "score": 47.3
-   },
-   {
-    "anomes": "202506",
-    "score": 47.7
-   },
-   {
-    "anomes": "202509",
-    "score": 51.8
-   },
-   {
-    "anomes": "202512",
-    "score": 44.6
-   },
-   {
-    "anomes": "202603",
-    "score": 50.4
-   },
-   {
-    "anomes": "202606",
-    "score": 46.1
-   }
-  ],
+  "dimensoes_disponiveis": "6/6",
   "vulnerabilidade": {
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
@@ -1063,10 +932,11 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "regra_editorial": "regra_nominal_v1",
+  "nota": "Score composto e faixa verbal de risco não são publicados por instituição nomeada: as faixas não foram calibradas contra desfechos conhecidos (regra editorial de 24/09/2026, docs/CONSTITUICAO.md, art. 5). Cada métrica segue publicada como valor observado, com percentil, mediana e quartis do grupo de pares, data base e fonte."
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -1097,7 +967,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
@@ -1129,7 +999,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
@@ -1161,52 +1031,24 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": null,
-   "reclamacoes": 9,
-   "clientes": 6357.0,
-   "posicao_arquivo": 17,
-   "nome_fonte": "BANCO HSBC (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": null,
-   "reclamacoes": 10,
-   "clientes": 6243.0,
-   "posicao_arquivo": 17,
-   "nome_fonte": "BANCO HSBC (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": null,
-   "reclamacoes": 13,
-   "clientes": 6203.0,
-   "posicao_arquivo": 17,
-   "nome_fonte": "BANCO HSBC (conglomerado)"
-  },
   {
    "periodo": "2025-T3",
    "indice": null,
    "reclamacoes": 20,
    "clientes": 6181.0,
    "posicao_arquivo": 18,
-   "nome_fonte": "BANCO HSBC S.A."
+   "nome_fonte": "BANCO HSBC S.A.",
+   "casamento": "cnpj"
   }
  ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1223,6 +1065,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

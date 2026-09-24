@@ -9,18 +9,17 @@
   "sede": "Uberlândia/MG",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 387,
+  "n_pares": 385,
   "conglomerado_prudencial": "C0086770",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 49.288.113",
-  "participante_open_finance": null
+  "cnpj": "raiz 49.288.113"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -63,12 +62,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 385,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -138,14 +140,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 112564149.23,
    "unit": "R$",
    "d_tri": 28.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     80930474.8,
@@ -161,7 +162,7 @@
    "v": 80136872.93,
    "unit": "R$",
    "d_tri": 0.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     76772239.25,
@@ -177,7 +178,7 @@
    "v": 42728.55,
    "unit": "R$",
    "d_tri": -6.4,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     53629.93,
@@ -193,7 +194,7 @@
    "v": 1769389.71,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1749501.08,
@@ -209,7 +210,7 @@
    "v": 164.99773268435501,
    "unit": "%",
    "d_tri": -85.97,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     144.8644,
@@ -264,7 +265,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 6.0,
-   "percentil": 15.8
+   "percentil": 15.6
   },
   {
    "indicador": "ROE do período",
@@ -273,7 +274,7 @@
    "d_tri": null,
    "vs_pares": "abaixo",
    "mediana_grupo": 4.1,
-   "percentil": 38.6
+   "percentil": 38.5
   }
  ],
  "carteira": {
@@ -297,23 +298,23 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 1047.7
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 1711.4
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 1766.8
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 897.6
    },
    {
@@ -337,29 +338,29 @@
     "v": 4598.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 5901.3
    }
   ],
   "PL": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 71.9
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 1286.8
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 1303.6
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 1340.4
    },
    {
@@ -383,7 +384,7 @@
     "v": 7785.6
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 7856.4
    }
   ]
@@ -465,7 +466,6 @@
     -68.91,
     4.7,
     -1.55,
-    -3.74,
     15.62,
     2.66,
     7.18,
@@ -723,7 +723,6 @@
     3.64,
     0.43,
     -5.26,
-    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1217,7 +1216,6 @@
     9.83,
     5.6,
     7.29,
-    1.07,
     8.35,
     2.32,
     1.13,
@@ -1475,7 +1473,6 @@
     4.57,
     4.19,
     7.17,
-    10.36,
     5.93,
     1.47,
     1.81,
@@ -1536,11 +1533,12 @@
    "mediana": 6.0
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -1571,14 +1569,13 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [
   {
    "periodo": "2026-T2",
@@ -1586,7 +1583,8 @@
    "reclamacoes": 6,
    "clientes": 323.0,
    "posicao_arquivo": 105,
-   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO"
+   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO",
+   "casamento": "cnpj"
   },
   {
    "periodo": "2026-T1",
@@ -1594,7 +1592,8 @@
    "reclamacoes": 14,
    "clientes": 248.0,
    "posicao_arquivo": 111,
-   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO"
+   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO",
+   "casamento": "cnpj"
   },
   {
    "periodo": "2025-T4",
@@ -1602,7 +1601,8 @@
    "reclamacoes": 10,
    "clientes": 222.0,
    "posicao_arquivo": 103,
-   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO"
+   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO",
+   "casamento": "cnpj"
   },
   {
    "periodo": "2025-T3",
@@ -1610,13 +1610,10 @@
    "reclamacoes": 2,
    "clientes": 708.0,
    "posicao_arquivo": 110,
-   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO"
+   "nome_fonte": "KANASTRA FINANCEIRA S.A, CREDITO, FINANCIAMENTO E INVESTIMENTO",
+   "casamento": "cnpj"
   }
  ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1633,6 +1630,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

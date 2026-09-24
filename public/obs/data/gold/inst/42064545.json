@@ -15,16 +15,15 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2025-T4",
-  "data_base_universo": "202606",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": {
-   "data_base": "202606",
+   "data_base": "2026-T2",
    "ultima_entrega": "2025-T4",
-   "texto": "Consta da lista do IF.data em 202606 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2025-T4; as comparações com pares usam a data-base deles."
+   "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2025-T4; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-09-23T15:35:35+00:00",
+  "atualizado_em": "2026-09-24T15:24:43+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 42.064.545",
-  "participante_open_finance": null
+  "cnpj": "raiz 42.064.545"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -53,7 +52,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -128,7 +130,6 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
@@ -232,55 +233,55 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 100.0
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 101.8
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 99.8
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 98.1
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 98.5
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 98.5
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 98.2
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 97.9
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 102.4
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 102.6
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 103.2
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 91.2
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 98.9
    },
    {
@@ -302,55 +303,55 @@
   ],
   "PL": [
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 100.0
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 101.8
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 104.0
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 101.2
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 101.8
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 101.9
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 101.7
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 101.3
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 102.3
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 103.2
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 103.6
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 93.4
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 101.5
    },
    {
@@ -662,16 +663,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score não calculado: a instituição consta da lista do IF.data em 202606 sem balanço entregue (última entrega 2025-T4)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões não calculada: a instituição consta da lista do IF.data em 2026-T2 sem balanço entregue (última entrega 2025-T4).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -688,6 +685,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

@@ -9,18 +9,17 @@
   "sede": "Contagem/MG",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 796,
+  "n_pares": 798,
   "conglomerado_prudencial": "C0086691",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 48.528.314",
-  "participante_open_finance": null
+  "cnpj": "raiz 48.528.314"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -68,12 +67,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 796,
+  "quantidade": 798,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -143,14 +145,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 3769167.14,
    "unit": "R$",
    "d_tri": -7.8,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     4626725.6,
@@ -166,7 +167,7 @@
    "v": 3713764.04,
    "unit": "R$",
    "d_tri": -8.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     4516335.89,
@@ -182,7 +183,7 @@
    "v": 1919.49,
    "unit": "R$",
    "d_tri": -28.0,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     204380.27,
@@ -198,7 +199,7 @@
    "v": -527817.34,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -159035.79,
@@ -214,7 +215,7 @@
    "v": 91.1642414334524,
    "unit": "%",
    "d_tri": -0.81,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     96.1618,
@@ -302,23 +303,23 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 99.6
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 94.3
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 91.6
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 86.4
    },
    {
@@ -342,29 +343,29 @@
     "v": 75.1
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 69.3
    }
   ],
   "PL": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 98.9
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 95.0
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 92.3
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 86.8
    },
    {
@@ -388,7 +389,7 @@
     "v": 75.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 69.0
    }
   ]
@@ -695,6 +696,7 @@
     12.41,
     9.43,
     4.42,
+    -3.74,
     -0.33,
     1.02,
     9.31,
@@ -795,8 +797,7 @@
     3.94,
     8.03,
     9.09,
-    4.21,
-    9.54
+    4.21
    ],
    "meu": -14.21,
    "mediana": 4.5
@@ -1507,6 +1508,7 @@
     5.55,
     1.53,
     8.45,
+    1.07,
     11.91,
     8.49,
     6.81,
@@ -1607,18 +1609,18 @@
     9.97,
     6.52,
     5.39,
-    8.82,
-    6.43
+    8.82
    ],
    "meu": 1.01,
    "mediana": 4.37
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -1649,19 +1651,14 @@
       "pct": 64.44
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 91.17
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1678,6 +1675,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

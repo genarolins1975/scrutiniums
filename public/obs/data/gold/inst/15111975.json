@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:33+00:00",
+  "atualizado_em": "2026-09-24T15:24:40+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 15.111.975",
-  "participante_open_finance": null
+  "cnpj": "raiz 15.111.975"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -54,7 +53,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -129,14 +131,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 1273180228.03,
    "unit": "R$",
    "d_tri": -17.6,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1516315789.28,
@@ -152,7 +153,7 @@
    "v": 49569040.58,
    "unit": "R$",
    "d_tri": -1.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     40572524.55,
@@ -168,7 +169,7 @@
    "v": 0.0,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -184,7 +185,7 @@
    "v": -9328564.3,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -29703411.38,
@@ -200,7 +201,7 @@
    "v": 16.2071907348613,
    "unit": "%",
    "d_tri": 0.71,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     -7.9383,
@@ -271,75 +272,75 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 100.0
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 112.3
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 111.0
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 131.3
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 151.6
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 178.8
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 221.8
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 248.2
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 297.0
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 332.2
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 347.3
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 355.3
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 388.9
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 459.4
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 607.4
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 667.0
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 625.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 621.8
    },
    {
@@ -363,81 +364,81 @@
     "v": 641.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 528.0
    }
   ],
   "PL": [
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 100.0
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 94.2
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 81.9
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 70.3
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 56.8
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 81.7
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 75.1
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 67.9
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 63.7
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 63.5
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 63.6
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 60.6
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 59.4
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 58.4
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 59.5
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 64.2
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 72.1
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 79.0
    },
    {
@@ -461,7 +462,7 @@
     "v": 56.4
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 55.7
    }
   ]
@@ -880,49 +881,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": null,
-   "reclamacoes": 47,
-   "clientes": 502475.0,
-   "posicao_arquivo": 102,
-   "nome_fonte": "IUGU IP (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": null,
-   "reclamacoes": 58,
-   "clientes": 274982.0,
-   "posicao_arquivo": 108,
-   "nome_fonte": "IUGU IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": null,
-   "reclamacoes": 80,
-   "clientes": 286862.0,
-   "posicao_arquivo": 100,
-   "nome_fonte": "IUGU IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 171.45,
-   "reclamacoes": 96,
-   "clientes": 259469.0,
-   "posicao_arquivo": 107,
-   "nome_fonte": "IUGU IP (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -939,6 +903,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

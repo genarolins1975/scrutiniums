@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:35+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 34.878.543",
-  "participante_open_finance": null
+  "cnpj": "raiz 34.878.543"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -38,11 +37,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -666.5% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Índice de reclamações 455.3 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-    "base": "BCB rdrweb"
    }
   ],
   "mudancas_recentes": [
@@ -63,7 +57,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -138,14 +135,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 30992689.45,
    "unit": "R$",
    "d_tri": -59.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     90808126.34,
@@ -161,7 +157,7 @@
    "v": 8987702.89,
    "unit": "R$",
    "d_tri": -71.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     30251605.0,
@@ -177,7 +173,7 @@
    "v": 0.0,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -193,7 +189,7 @@
    "v": -59902165.63,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -30617277.33,
@@ -209,7 +205,7 @@
    "v": -31.0721995545704,
    "unit": "%",
    "d_tri": -18.75,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     34.005,
@@ -240,11 +236,6 @@
    "tipo": "warn",
    "texto": "ROE do período de -666.5% — resultado negativo no acumulado.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Índice de reclamações 455.3 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-   "base": "BCB rdrweb"
   }
  ],
  "capital_tabela": [
@@ -305,7 +296,7 @@
     "v": 80.1
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 32.1
    }
   ],
@@ -331,7 +322,7 @@
     "v": 68.1
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 19.1
    }
   ]
@@ -750,49 +741,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": 455.3,
-   "reclamacoes": 72,
-   "clientes": 75302.0,
-   "posicao_arquivo": 63,
-   "nome_fonte": "CLARO PAY IP (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": 83.66,
-   "reclamacoes": 201,
-   "clientes": 1191994.0,
-   "posicao_arquivo": 68,
-   "nome_fonte": "CLARO PAY IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": null,
-   "reclamacoes": 85,
-   "clientes": 1177423.0,
-   "posicao_arquivo": 64,
-   "nome_fonte": "CLARO PAY IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 43.3,
-   "reclamacoes": 124,
-   "clientes": 1145410.0,
-   "posicao_arquivo": 71,
-   "nome_fonte": "CLARO PAY IP (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -809,6 +763,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 12.651.789",
-  "participante_open_finance": null
+  "cnpj": "raiz 12.651.789"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -54,7 +53,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -129,14 +131,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 13862907.75,
    "unit": "R$",
    "d_tri": -22.6,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     18108177.69,
@@ -152,7 +153,7 @@
    "v": 3372782.49,
    "unit": "R$",
    "d_tri": 0.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     5065630.56,
@@ -168,7 +169,7 @@
    "v": 0.0,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -184,7 +185,7 @@
    "v": 508421.3,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     2354286.35,
@@ -200,7 +201,7 @@
    "v": 41.8118943002965,
    "unit": "%",
    "d_tri": 6.14,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     51.0872,
@@ -271,19 +272,19 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 100.0
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 192.2
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 106.2
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 121.3
    },
    {
@@ -307,25 +308,25 @@
     "v": 120.4
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 93.2
    }
   ],
   "PL": [
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 100.0
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 59.0
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 92.3
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 135.1
    },
    {
@@ -349,7 +350,7 @@
     "v": 73.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 73.4
    }
   ]
@@ -768,16 +769,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -794,6 +791,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

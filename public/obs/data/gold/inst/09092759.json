@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:35+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 09.092.759",
-  "participante_open_finance": null
+  "cnpj": "raiz 09.092.759"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -37,7 +36,7 @@
   "pontos_atencao": [
    {
     "tipo": "warn",
-    "texto": "Carteira cresceu 886053669.3% em 4 trimestres — acima de 30%, checar apetite de risco.",
+    "texto": "Carteira cresceu 886053669.3% em 4 trimestres, acima de 30%.",
     "base": "BCB IF.data (Olinda)"
    }
   ],
@@ -59,7 +58,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -134,14 +136,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 773588158.92,
    "unit": "R$",
    "d_tri": -10.0,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     68122528.18,
@@ -157,7 +158,7 @@
    "v": 257790871.17,
    "unit": "R$",
    "d_tri": 12.2,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     64716609.05,
@@ -173,7 +174,7 @@
    "v": 48732957.31,
    "unit": "R$",
    "d_tri": 3.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     5.5,
@@ -189,7 +190,7 @@
    "v": 40468138.09,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1477135.46,
@@ -213,7 +214,7 @@
  "destaques": [
   {
    "tipo": "warn",
-   "texto": "Carteira cresceu 886053669.3% em 4 trimestres — acima de 30%, checar apetite de risco.",
+   "texto": "Carteira cresceu 886053669.3% em 4 trimestres, acima de 30%.",
    "base": "BCB IF.data (Olinda)"
   },
   {
@@ -267,7 +268,7 @@
     "v": 1262.0
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 1135.6
    }
   ],
@@ -289,7 +290,7 @@
     "v": 858160136.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 886053769.3
    }
   ],
@@ -311,7 +312,7 @@
     "v": 355.1
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 398.3
    }
   ]
@@ -607,41 +608,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": null,
-   "reclamacoes": 50,
-   "clientes": 2605023.0,
-   "posicao_arquivo": 122,
-   "nome_fonte": "NAIP IP (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": null,
-   "reclamacoes": 48,
-   "clientes": 2335133.0,
-   "posicao_arquivo": 124,
-   "nome_fonte": "NAIP IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": null,
-   "reclamacoes": 35,
-   "clientes": 1902214.0,
-   "posicao_arquivo": 115,
-   "nome_fonte": "NAIP IP (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -658,6 +630,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

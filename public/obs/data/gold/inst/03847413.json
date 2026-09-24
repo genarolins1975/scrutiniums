@@ -9,18 +9,17 @@
   "sede": "Aracaju/SE",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 387,
+  "n_pares": 385,
   "conglomerado_prudencial": "C0081634",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 03.847.413",
-  "participante_open_finance": null
+  "cnpj": "raiz 03.847.413"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -51,12 +50,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 385,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -126,14 +128,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 1115323263.05,
    "unit": "R$",
    "d_tri": 0.0,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1119119431.54,
@@ -149,7 +150,7 @@
    "v": 64056474.4,
    "unit": "R$",
    "d_tri": -7.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     88000474.49,
@@ -165,7 +166,7 @@
    "v": 590507155.79,
    "unit": "R$",
    "d_tri": -1.7,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     584167666.74,
@@ -181,7 +182,7 @@
    "v": -11436306.46,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -6005635.99,
@@ -222,7 +223,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 6.0,
-   "percentil": 92.5
+   "percentil": 92.4
   },
   {
    "indicador": "ROE do período",
@@ -243,11 +244,11 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 107.0
    },
    {
@@ -271,17 +272,17 @@
     "v": 108.6
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 108.6
    }
   ],
   "Carteira": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 107.2
    },
    {
@@ -305,17 +306,17 @@
     "v": 100.8
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 99.1
    }
   ],
   "PL": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 90.7
    },
    {
@@ -339,7 +340,7 @@
     "v": 63.4
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 58.7
    }
   ]
@@ -421,7 +422,6 @@
     -68.91,
     4.7,
     -1.55,
-    -3.74,
     15.62,
     2.66,
     7.18,
@@ -679,7 +679,6 @@
     3.64,
     0.43,
     -5.26,
-    8.5,
     5.78,
     -21.99,
     4.51,
@@ -814,7 +813,6 @@
     9.83,
     5.6,
     7.29,
-    1.07,
     8.35,
     2.32,
     1.13,
@@ -1072,7 +1070,6 @@
     4.57,
     4.19,
     7.17,
-    10.36,
     5.93,
     1.47,
     1.81,
@@ -1133,16 +1130,12 @@
    "mediana": 6.0
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1159,6 +1152,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

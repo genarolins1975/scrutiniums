@@ -1,6 +1,6 @@
 {
  "disponivel": true,
- "gerado_em": "2026-09-23T15:35:26+00:00",
+ "gerado_em": "2026-09-24T15:24:28+00:00",
  "titulo": "Quem banca a folha dos servidores",
  "leiloes": [
   {
@@ -131,8 +131,8 @@
  },
  "pncp": {
   "disponivel": true,
-  "total_contratos_if": 346,
-  "total_editais": 1153,
+  "total_contratos_if": 349,
+  "total_editais": 1154,
   "backfill_completo": true,
   "ranking": [
    {
@@ -145,8 +145,8 @@
    {
     "cnpj8": "60746948",
     "banco": "BANCO BRADESCO S.A.",
-    "contratos": 75,
-    "ufs": 14,
+    "contratos": 78,
+    "ufs": 15,
     "como_receita": 25
    },
    {
@@ -595,6 +595,21 @@
     "url": "https://pncp.gov.br/contratos/82804212000196/2026/840"
    },
    {
+    "controle": "06116743000108-2-000113/2026",
+    "ente": "MUNICIPIO DE BREJO",
+    "esfera": "Municipal",
+    "municipio": "Brejo",
+    "uf": "MA",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-09-14",
+    "vig_fim": "2031-09-14",
+    "valor": 94120000.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO S.A.",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/06116743000108/2026/113"
+   },
+   {
     "controle": "83102350000196-2-001199/2026",
     "ente": "MUNICIPIO DE BOTUVERA",
     "esfera": "Municipal",
@@ -880,6 +895,21 @@
     "url": "https://pncp.gov.br/contratos/08109126000100/2026/482"
    },
    {
+    "controle": "07387343000108-2-000014/2026",
+    "ente": "MUNICIPIO DE BATURITE",
+    "esfera": "Municipal",
+    "municipio": "Baturité",
+    "uf": "CE",
+    "modalidade": "Pregão - Eletrônico",
+    "assinatura": "2026-08-05",
+    "vig_fim": "2027-08-25",
+    "valor": 2792400.0,
+    "receita": false,
+    "banco": "BANCO BRADESCO SA",
+    "cnpj8": "60746948",
+    "url": "https://pncp.gov.br/contratos/07387343000108/2026/14"
+   },
+   {
     "controle": "07615750000117-2-000067/2026",
     "ente": "MUNICIPIO DE JAGUARUANA",
     "esfera": "Municipal",
@@ -1133,39 +1163,18 @@
     "banco": "Caixa Economica Federal",
     "cnpj8": "00360305",
     "url": "https://pncp.gov.br/contratos/03073673000160/2026/51"
-   },
-   {
-    "controle": "45511847000179-2-000094/2026",
-    "ente": "MUNICIPIO DE ARACATUBA",
-    "esfera": "Municipal",
-    "municipio": "Araçatuba",
-    "uf": "SP",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-06-26",
-    "vig_fim": "2031-06-25",
-    "valor": 12300000.0,
-    "receita": false,
-    "banco": "BANCO BRADESCO S/A",
-    "cnpj8": "60746948",
-    "url": "https://pncp.gov.br/contratos/45511847000179/2026/94"
-   },
-   {
-    "controle": "82909409000190-2-000361/2026",
-    "ente": "MUNICIPIO DE IMBITUBA",
-    "esfera": "Municipal",
-    "municipio": "Imbituba",
-    "uf": "SC",
-    "modalidade": "Pregão - Eletrônico",
-    "assinatura": "2026-06-19",
-    "vig_fim": "2031-06-19",
-    "valor": 3500000.0,
-    "receita": false,
-    "banco": "BANCO SANTANDER (BRASIL) S.A.",
-    "cnpj8": "90400888",
-    "url": "https://pncp.gov.br/contratos/82909409000190/2026/361"
    }
   ],
   "editais_recentes": [
+   {
+    "ente": "MUNICIPIO DE VALE DE SAO DOMINGOS",
+    "municipio": "Vale de São Domingos",
+    "uf": "MT",
+    "modalidade": "Credenciamento",
+    "situacao": "Divulgada no PNCP",
+    "publicacao": "2026-09-24",
+    "url": "https://pncp.gov.br/compras/04215993000170/2026/58"
+   },
    {
     "ente": "CAMARA MUNICIPAL DE BARRA MANSA",
     "municipio": "Barra Mansa",
@@ -1264,15 +1273,6 @@
     "situacao": "Divulgada no PNCP",
     "publicacao": "2026-09-16",
     "url": "https://pncp.gov.br/compras/08358053000190/2026/156"
-   },
-   {
-    "ente": "TRIBUNAL DE CONTAS DO ESTADO DO ACRE",
-    "municipio": "Rio Branco",
-    "uf": "AC",
-    "modalidade": "Dispensa",
-    "situacao": "Divulgada no PNCP",
-    "publicacao": "2026-09-16",
-    "url": "https://pncp.gov.br/compras/04035135000143/2026/15"
    }
   ],
   "criterio_if": "Heurística declarada sobre a razão social do fornecedor (denominações do sistema financeiro + marcas bancárias); contratos de software/assessoria de folha ficam fora pelo objeto. Contagem por CNPJ-raiz do fornecedor, como registrado pelo próprio ente no PNCP.",

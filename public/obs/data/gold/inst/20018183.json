@@ -9,18 +9,17 @@
   "sede": "São Paulo/SP",
   "segmento": "S5",
   "grupo_pares": "S5 — porte reduzido / metodologia simplificada",
-  "n_pares": 796,
+  "n_pares": 798,
   "conglomerado_prudencial": "C0085513",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 20.018.183",
-  "participante_open_finance": null
+  "cnpj": "raiz 20.018.183"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -68,12 +67,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 796,
+  "quantidade": 798,
   "maiores_membros": [
    {
     "cod": "32430233",
@@ -143,14 +145,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 1176868182.36,
    "unit": "R$",
    "d_tri": 5.2,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     804238533.35,
@@ -166,7 +167,7 @@
    "v": 132115304.37,
    "unit": "R$",
    "d_tri": 8.0,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     120419160.03,
@@ -182,7 +183,7 @@
    "v": 42391774.99,
    "unit": "R$",
    "d_tri": 9.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     59042824.9,
@@ -198,7 +199,7 @@
    "v": -13960513.99,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -5698710.07,
@@ -214,7 +215,7 @@
    "v": 18.328254904400097,
    "unit": "%",
    "d_tri": -2.61,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     28.5157,
@@ -269,7 +270,7 @@
    "d_tri": null,
    "vs_pares": "acima",
    "mediana_grupo": 4.37,
-   "percentil": 87.4
+   "percentil": 87.3
   },
   {
    "indicador": "ROE do período",
@@ -329,11 +330,11 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 186.1
    },
    {
@@ -357,17 +358,17 @@
     "v": 157.9
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 166.1
    }
   ],
   "Carteira": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 86.4
    },
    {
@@ -391,17 +392,17 @@
     "v": 214.9
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 236.2
    }
   ],
   "PL": [
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 100.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 158.1
    },
    {
@@ -425,7 +426,7 @@
     "v": 153.2
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 165.5
    }
   ]
@@ -732,6 +733,7 @@
     12.41,
     9.43,
     4.42,
+    -3.74,
     -0.33,
     1.02,
     9.31,
@@ -832,8 +834,7 @@
     3.94,
     8.03,
     9.09,
-    4.21,
-    9.54
+    4.21
    ],
    "meu": -10.57,
    "mediana": 4.5
@@ -1544,6 +1545,7 @@
     5.55,
     1.53,
     8.45,
+    1.07,
     11.91,
     8.49,
     6.81,
@@ -1644,18 +1646,18 @@
     9.97,
     6.52,
     5.39,
-    8.82,
-    6.43
+    8.82
    ],
    "meu": 8.91,
    "mediana": 4.37
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -1682,19 +1684,14 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1711,6 +1708,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

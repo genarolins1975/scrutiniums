@@ -9,18 +9,17 @@
   "sede": "São Paulo/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 387,
+  "n_pares": 385,
   "conglomerado_prudencial": "C0081799",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:33+00:00",
+  "atualizado_em": "2026-09-24T15:24:39+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 92.874.270",
-  "participante_open_finance": null
+  "cnpj": "raiz 92.874.270"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -44,11 +43,6 @@
     "tipo": "warn",
     "texto": "ROE do período de -175.7% — resultado negativo no acumulado.",
     "base": "calculado sobre IF.data"
-   },
-   {
-    "tipo": "warn",
-    "texto": "Índice de reclamações 1916.4 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-    "base": "BCB rdrweb"
    }
   ],
   "mudancas_recentes": [
@@ -69,12 +63,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 385,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -144,14 +141,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 9817919929.0,
    "unit": "R$",
    "d_tri": -1.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     9976611193.13,
@@ -167,7 +163,7 @@
    "v": 330916894.37,
    "unit": "R$",
    "d_tri": -58.8,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     673110441.01,
@@ -183,7 +179,7 @@
    "v": 1491826002.94,
    "unit": "R$",
    "d_tri": -5.1,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1772504051.67,
@@ -199,7 +195,7 @@
    "v": -581405581.28,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     42068773.96,
@@ -215,7 +211,7 @@
    "v": -4.61891616143403,
    "unit": "%",
    "d_tri": -16.28,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     18.5561,
@@ -251,11 +247,6 @@
    "tipo": "warn",
    "texto": "ROE do período de -175.7% — resultado negativo no acumulado.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Índice de reclamações 1916.4 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-   "base": "BCB rdrweb"
   }
  ],
  "capital_tabela": [
@@ -357,155 +348,155 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "201509",
+    "p": "2015-T3",
     "v": 100.0
    },
    {
-    "p": "201512",
+    "p": "2015-T4",
     "v": 126.3
    },
    {
-    "p": "201603",
+    "p": "2016-T1",
     "v": 130.5
    },
    {
-    "p": "201606",
+    "p": "2016-T2",
     "v": 128.8
    },
    {
-    "p": "201609",
+    "p": "2016-T3",
     "v": 128.0
    },
    {
-    "p": "201612",
+    "p": "2016-T4",
     "v": 119.0
    },
    {
-    "p": "201703",
+    "p": "2017-T1",
     "v": 140.3
    },
    {
-    "p": "201706",
+    "p": "2017-T2",
     "v": 138.8
    },
    {
-    "p": "201709",
+    "p": "2017-T3",
     "v": 155.0
    },
    {
-    "p": "201712",
+    "p": "2017-T4",
     "v": 156.9
    },
    {
-    "p": "201803",
+    "p": "2018-T1",
     "v": 146.9
    },
    {
-    "p": "201806",
+    "p": "2018-T2",
     "v": 162.4
    },
    {
-    "p": "201809",
+    "p": "2018-T3",
     "v": 164.3
    },
    {
-    "p": "201812",
+    "p": "2018-T4",
     "v": 180.3
    },
    {
-    "p": "201903",
+    "p": "2019-T1",
     "v": 196.6
    },
    {
-    "p": "201906",
+    "p": "2019-T2",
     "v": 197.2
    },
    {
-    "p": "201909",
+    "p": "2019-T3",
     "v": 225.9
    },
    {
-    "p": "201912",
+    "p": "2019-T4",
     "v": 263.3
    },
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 288.8
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 319.9
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 360.5
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 471.3
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 489.4
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 504.0
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 571.7
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 617.2
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 675.6
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 700.5
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 762.6
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 807.2
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 863.3
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 875.2
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 930.4
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 957.9
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 947.9
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 961.4
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 1044.1
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 1093.7
    },
    {
@@ -529,161 +520,161 @@
     "v": 1145.8
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 1124.3
    }
   ],
   "Carteira": [
    {
-    "p": "201509",
+    "p": "2015-T3",
     "v": 100.0
    },
    {
-    "p": "201512",
+    "p": "2015-T4",
     "v": 106.0
    },
    {
-    "p": "201603",
+    "p": "2016-T1",
     "v": 106.3
    },
    {
-    "p": "201606",
+    "p": "2016-T2",
     "v": 109.4
    },
    {
-    "p": "201609",
+    "p": "2016-T3",
     "v": 105.5
    },
    {
-    "p": "201612",
+    "p": "2016-T4",
     "v": 108.6
    },
    {
-    "p": "201703",
+    "p": "2017-T1",
     "v": 111.2
    },
    {
-    "p": "201706",
+    "p": "2017-T2",
     "v": 113.6
    },
    {
-    "p": "201709",
+    "p": "2017-T3",
     "v": 117.3
    },
    {
-    "p": "201712",
+    "p": "2017-T4",
     "v": 117.1
    },
    {
-    "p": "201803",
+    "p": "2018-T1",
     "v": 116.2
    },
    {
-    "p": "201806",
+    "p": "2018-T2",
     "v": 114.0
    },
    {
-    "p": "201809",
+    "p": "2018-T3",
     "v": 118.4
    },
    {
-    "p": "201812",
+    "p": "2018-T4",
     "v": 124.8
    },
    {
-    "p": "201903",
+    "p": "2019-T1",
     "v": 131.6
    },
    {
-    "p": "201906",
+    "p": "2019-T2",
     "v": 146.0
    },
    {
-    "p": "201909",
+    "p": "2019-T3",
     "v": 160.8
    },
    {
-    "p": "201912",
+    "p": "2019-T4",
     "v": 176.2
    },
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 192.3
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 189.8
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 190.2
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 207.9
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 220.3
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 250.9
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 284.5
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 323.7
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 347.5
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 380.3
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 393.1
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 393.0
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 373.2
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 329.4
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 337.0
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 333.8
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 260.0
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 275.7
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 277.1
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 290.9
    },
    {
@@ -707,161 +698,161 @@
     "v": 192.4
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 182.7
    }
   ],
   "PL": [
    {
-    "p": "201509",
+    "p": "2015-T3",
     "v": 100.0
    },
    {
-    "p": "201512",
+    "p": "2015-T4",
     "v": 98.8
    },
    {
-    "p": "201603",
+    "p": "2016-T1",
     "v": 101.6
    },
    {
-    "p": "201606",
+    "p": "2016-T2",
     "v": 104.7
    },
    {
-    "p": "201609",
+    "p": "2016-T3",
     "v": 109.0
    },
    {
-    "p": "201612",
+    "p": "2016-T4",
     "v": 105.8
    },
    {
-    "p": "201703",
+    "p": "2017-T1",
     "v": 110.5
    },
    {
-    "p": "201706",
+    "p": "2017-T2",
     "v": 115.8
    },
    {
-    "p": "201709",
+    "p": "2017-T3",
     "v": 122.6
    },
    {
-    "p": "201712",
+    "p": "2017-T4",
     "v": 118.7
    },
    {
-    "p": "201803",
+    "p": "2018-T1",
     "v": 125.3
    },
    {
-    "p": "201806",
+    "p": "2018-T2",
     "v": 131.6
    },
    {
-    "p": "201809",
+    "p": "2018-T3",
     "v": 136.8
    },
    {
-    "p": "201812",
+    "p": "2018-T4",
     "v": 133.3
    },
    {
-    "p": "201903",
+    "p": "2019-T1",
     "v": 143.4
    },
    {
-    "p": "201906",
+    "p": "2019-T2",
     "v": 160.2
    },
    {
-    "p": "201909",
+    "p": "2019-T3",
     "v": 185.8
    },
    {
-    "p": "201912",
+    "p": "2019-T4",
     "v": 189.5
    },
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 199.4
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 203.4
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 209.8
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 211.3
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 231.9
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 296.0
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 303.7
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 304.6
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 298.6
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 312.9
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 318.0
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 270.0
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 228.0
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 253.5
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 420.7
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 459.2
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 560.8
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 655.5
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 638.7
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 616.2
    },
    {
@@ -885,7 +876,7 @@
     "v": 708.6
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 291.8
    }
   ]
@@ -967,7 +958,6 @@
     -68.91,
     4.7,
     -1.55,
-    -3.74,
     15.62,
     2.66,
     7.18,
@@ -1225,7 +1215,6 @@
     3.64,
     0.43,
     -5.26,
-    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1719,7 +1708,6 @@
     9.83,
     5.6,
     7.29,
-    1.07,
     8.35,
     2.32,
     1.13,
@@ -1977,7 +1965,6 @@
     4.57,
     4.19,
     7.17,
-    10.36,
     5.93,
     1.47,
     1.81,
@@ -2038,11 +2025,12 @@
    "mediana": 6.0
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -2073,7 +2061,7 @@
       "pct": 7.93
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 11.24
      }
     ]
@@ -2105,7 +2093,7 @@
       "pct": 6.16
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 9.08
      }
     ]
@@ -2137,7 +2125,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 4.55
      }
     ]
@@ -2169,7 +2157,7 @@
       "pct": 20.4
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 53.86
      }
     ]
@@ -2201,7 +2189,7 @@
       "pct": 14.38
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 56.76
      }
     ]
@@ -2233,7 +2221,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
@@ -2265,52 +2253,14 @@
       "pct": 76.13
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 76.09
      }
     ]
    }
   ]
  },
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": 1916.43,
-   "reclamacoes": 814,
-   "clientes": 196938.0,
-   "posicao_arquivo": 16,
-   "nome_fonte": "BANCO DIGIMAIS (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": 1665.06,
-   "reclamacoes": 675,
-   "clientes": 190636.0,
-   "posicao_arquivo": 16,
-   "nome_fonte": "BANCO DIGIMAIS (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": 1464.12,
-   "reclamacoes": 722,
-   "clientes": 199026.0,
-   "posicao_arquivo": 16,
-   "nome_fonte": "BANCO DIGIMAIS (conglomerado)"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 1552.43,
-   "reclamacoes": 680,
-   "clientes": 177576.0,
-   "posicao_arquivo": 17,
-   "nome_fonte": "BANCO DIGIMAIS (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -2327,6 +2277,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

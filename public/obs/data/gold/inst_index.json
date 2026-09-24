@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-23T15:35:35+00:00",
+ "gerado_em": "2026-09-24T15:24:43+00:00",
  "paginas": 1457,
  "anomes": "202606",
  "instituicoes": [
@@ -7897,7 +7897,7 @@
    "cod": "17079937",
    "nome": "Pinbank Brasil Instituição De Pagamento S.A.",
    "razao": "PINBANK BRASIL INSTITUIÇÃO DE PAGAMENTO S.A.",
-   "sr": "S4",
+   "sr": "S5",
    "ativo_brl": 167871717.19,
    "piloto": false,
    "sem_balanco": false,
@@ -13087,7 +13087,7 @@
    "cod": "07945233",
    "nome": "Pólocred   Sociedade De Crédito Ao Microempreendedor E À Empresa De Pequeno Porte Ltda.",
    "razao": "PÓLOCRED   SOCIEDADE DE CRÉDITO AO MICROEMPREENDEDOR E À EMPRESA DE PEQUENO PORTE LTDA.",
-   "sr": "S4",
+   "sr": "S5",
    "ativo_brl": 4621529.47,
    "piloto": false,
    "sem_balanco": false,
@@ -14940,5 +14940,5 @@
    "com_pagina": false
   }
  ],
- "nota": "Uma página por conglomerado prudencial com dados no IF.data; pares = grupo prudencial completo; matching de reclamações/Open Finance/RJ por tokens distintivos do nome (nome da fonte sempre exibido). Instituição na lista do IF.data sem balanço na data-base mantém a página na última entrega (declarada no cabeçalho) e fica fora das estatísticas de pares; sem entrega nos 44 trimestres da série, não há página."
+ "nota": "Uma página por conglomerado prudencial com dados no IF.data; pares = grupo prudencial completo; reclamações ligadas só por identidade (CNPJ, nome idêntico publicado pelo BCB ou mapa curado aprovado); Open Finance e listas de credores de RJ fora da ficha por não trazerem CNPJ; score e faixa de risco não publicados por instituição (regra editorial de 24/09/2026). Instituição na lista do IF.data sem balanço na data-base mantém a página na última entrega (declarada no cabeçalho) e fica fora das estatísticas de pares; sem entrega nos 44 trimestres da série, não há página."
 }

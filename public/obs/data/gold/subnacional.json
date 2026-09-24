@@ -14,13 +14,13 @@
   "licenca": "dados abertos do Tesouro Nacional",
   "nivel": "A — registro administrativo da STN, atualizado continuamente"
  },
- "gerado_em": "2026-09-23T15:36:06+00:00",
+ "gerado_em": "2026-09-24T15:25:14+00:00",
  "coleta": {
-  "linhas": 26589,
+  "linhas": 26595,
   "paginas": 6,
   "mb": 13.8,
-  "data_status_max": "2026-09-22",
-  "coletado_em": "2026-09-23T14:33:39+00:00"
+  "data_status_max": "2026-09-23",
+  "coletado_em": "2026-09-24T14:29:18+00:00"
  },
  "kpis": {
   "mes": "2026-08",
@@ -40,8 +40,8 @@
   "moeda_estrangeira_12m_n": 45,
   "taxa_deferimento_12m_pct": 89.0,
   "concluidos_12m_n": 1382,
-  "em_tramitacao_n": 267,
-  "em_tramitacao_valor": 19912990928.48,
+  "em_tramitacao_n": 264,
+  "em_tramitacao_valor": 20111165374.01,
   "em_tramitacao_desde": "2023-09",
   "renegociacao_uniao_12m_n": 0,
   "renegociacao_uniao_12m_valor": 0,
@@ -284,13 +284,13 @@
   },
   {
    "ano": "2026",
-   "deferidos_n": 940,
-   "deferidos_valor": 57719842590.47,
-   "municipios_valor": 24529749515.5,
+   "deferidos_n": 949,
+   "deferidos_valor": 58226747998.94,
+   "municipios_valor": 25036654923.97,
    "estados_valor": 33190093074.97,
-   "garantia_uniao_valor": 46426965972.75,
-   "externas_n": 37,
-   "pgfn_valor": 46426965972.75,
+   "garantia_uniao_valor": 46614061671.22,
+   "externas_n": 38,
+   "pgfn_valor": 46614061671.22,
    "renegociacao_uniao_valor": 0,
    "arquivados_n": 57,
    "parcial": true
@@ -551,9 +551,9 @@
   },
   {
    "mes": "2026-09",
-   "n": 72,
-   "valor": 5250472630.23,
-   "municipios_valor": 1334724983.72,
+   "n": 81,
+   "valor": 5757378038.7,
+   "municipios_valor": 1841630392.19,
    "parcial": true
   }
  ],

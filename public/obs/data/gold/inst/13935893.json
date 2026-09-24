@@ -15,29 +15,22 @@
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
   "data_base": "2026-T1",
-  "data_base_universo": "202606",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": {
-   "data_base": "202606",
+   "data_base": "2026-T2",
    "ultima_entrega": "2026-T1",
-   "texto": "Consta da lista do IF.data em 202606 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
+   "texto": "Consta da lista do IF.data em 2026-T2 sem balanço entregue (saldo nulo na fonte: atraso, RAET ou retardatário). A ficha usa a última entrega, 2026-T1; as comparações com pares usam a data-base deles."
   },
-  "atualizado_em": "2026-09-23T15:35:35+00:00",
+  "atualizado_em": "2026-09-24T15:24:43+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 13.935.893",
-  "participante_open_finance": null
+  "cnpj": "raiz 13.935.893"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
    "texto": "Capitalização abaixo da mediana do grupo S?, rentabilidade do período abaixo da mediana.",
    "base": "BCB IF.data (Informações de Capital) + medianas do grupo S?"
   },
-  "pontos_fortes": [
-   {
-    "tipo": "ok",
-    "texto": "Índice de reclamações 27.7 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-    "base": "BCB rdrweb"
-   }
-  ],
+  "pontos_fortes": [],
   "pontos_atencao": [
    {
     "tipo": "warn",
@@ -73,7 +66,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -148,7 +144,6 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
@@ -250,11 +245,6 @@
    "tipo": "warn",
    "texto": "Concentração setorial elevada na carteira PJ (HHI ≥ 3085, piso sobre os 57.7% setorialmente identificados).",
    "base": "IF.data carteiras por CNAE"
-  },
-  {
-   "tipo": "ok",
-   "texto": "Índice de reclamações 27.7 (abaixo da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-   "base": "BCB rdrweb"
   }
  ],
  "capital_tabela": [
@@ -337,55 +327,55 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 100.0
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 60.9
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 79.9
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 91.0
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 113.6
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 89.0
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 130.4
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 179.0
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 204.5
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 193.7
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 280.9
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 364.5
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 364.8
    },
    {
@@ -411,55 +401,55 @@
   ],
   "Carteira": [
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 100.0
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 0.0
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 0.0
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 0.0
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 0.0
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 0.0
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 0.0
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 0.0
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 0.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 0.0
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 0.0
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 0.0
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 0.0
    },
    {
@@ -485,55 +475,55 @@
   ],
   "PL": [
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 100.0
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 95.8
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 109.7
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 110.2
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 89.4
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 98.6
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 92.5
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 97.3
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 98.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 146.1
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 480.8
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 540.4
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 559.6
    },
    {
@@ -972,8 +962,9 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score não calculado: a instituição consta da lista do IF.data em 202606 sem balanço entregue (última entrega 2026-T1)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões não calculada: a instituição consta da lista do IF.data em 2026-T2 sem balanço entregue (última entrega 2026-T1).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": {
   "data_base": "2026-T1",
@@ -1014,45 +1005,7 @@
    }
   ]
  },
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": 27.67,
-   "reclamacoes": 859,
-   "clientes": 12559463.0,
-   "posicao_arquivo": 59,
-   "nome_fonte": "CELCOIN IP (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": 12.97,
-   "reclamacoes": 473,
-   "clientes": 10932983.0,
-   "posicao_arquivo": 64,
-   "nome_fonte": "CELCOIN IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": 19.23,
-   "reclamacoes": 440,
-   "clientes": 9477305.0,
-   "posicao_arquivo": 60,
-   "nome_fonte": "CELCOIN IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 34.9,
-   "reclamacoes": 497,
-   "clientes": 7985634.0,
-   "posicao_arquivo": 67,
-   "nome_fonte": "CELCOIN IP (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -1069,6 +1022,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

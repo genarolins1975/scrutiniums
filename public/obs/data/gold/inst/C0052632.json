@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "não disponível nas fontes integradas",
-  "participante_open_finance": null
+  "cnpj": "não disponível nas fontes integradas"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -42,7 +41,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Carteira cresceu 79.5% em 4 trimestres — acima de 30%, checar apetite de risco.",
+    "texto": "Carteira cresceu 79.5% em 4 trimestres, acima de 30%.",
     "base": "BCB IF.data (Olinda)"
    }
   ],
@@ -64,7 +63,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -139,20 +141,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": {
-  "cobertura_dados_pct": 83,
-  "confianca": "moderada",
-  "confianca_motivo": "5/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-23"
- },
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 49039328293.54,
    "unit": "R$",
    "d_tri": 12.0,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     32083492008.14,
@@ -168,7 +163,7 @@
    "v": 2625968954.95,
    "unit": "R$",
    "d_tri": 0.4,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     997397632.55,
@@ -184,7 +179,7 @@
    "v": 28852168753.62,
    "unit": "R$",
    "d_tri": 13.2,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     16073020361.04,
@@ -200,7 +195,7 @@
    "v": 3889139.70999929,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     -95841716.38,
@@ -216,7 +211,7 @@
    "v": 15.9308630973624,
    "unit": "%",
    "d_tri": -0.97,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     11.067,
@@ -245,7 +240,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Carteira cresceu 79.5% em 4 trimestres — acima de 30%, checar apetite de risco.",
+   "texto": "Carteira cresceu 79.5% em 4 trimestres, acima de 30%.",
    "base": "BCB IF.data (Olinda)"
   },
   {
@@ -357,7 +352,7 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 100.0
    },
    {
@@ -381,13 +376,13 @@
     "v": 167.7
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 187.8
    }
   ],
   "Carteira": [
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 100.0
    },
    {
@@ -411,13 +406,13 @@
     "v": 190.3
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 215.5
    }
   ],
   "PL": [
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 100.0
    },
    {
@@ -441,7 +436,7 @@
     "v": 334.8
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 336.0
    }
   ]
@@ -652,15 +647,11 @@
    "mediana": 9.26
   }
  },
- "score_ref": {
-  "score": 66.9,
-  "score_delta": 2.1,
-  "faixa": "risco elevado",
+ "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.93,
     "percentil_pares": 45.1,
-    "risco": 54.9,
     "mediana_pares": 16.34,
     "q1_pares": 13.89,
     "q3_pares": 22.37
@@ -668,7 +659,6 @@
    "rentabilidade": {
     "valor": 0.15,
     "percentil_pares": 14.8,
-    "risco": 85.2,
     "mediana_pares": 5.01,
     "q1_pares": 2.51,
     "q3_pares": 9.26
@@ -676,7 +666,6 @@
    "alavancagem": {
     "valor": 18.67,
     "percentil_pares": 85.2,
-    "risco": 85.2,
     "mediana_pares": 9.56,
     "q1_pares": 5.95,
     "q3_pares": 15.24
@@ -684,7 +673,6 @@
    "concentracao_credito": {
     "valor": 58.83,
     "percentil_pares": 70.4,
-    "risco": 70.4,
     "mediana_pares": 48.08,
     "q1_pares": 18.11,
     "q3_pares": 64.85
@@ -692,42 +680,12 @@
    "dependencia_captacoes": {
     "valor": 71.06,
     "percentil_pares": 38.9,
-    "risco": 38.9,
     "mediana_pares": 73.35,
     "q1_pares": 41.97,
     "q3_pares": 81.88
    }
   },
-  "historico_score": [
-   {
-    "anomes": "202412",
-    "score": 59.2
-   },
-   {
-    "anomes": "202503",
-    "score": 83.2
-   },
-   {
-    "anomes": "202506",
-    "score": 84.4
-   },
-   {
-    "anomes": "202509",
-    "score": 70.3
-   },
-   {
-    "anomes": "202512",
-    "score": 80.7
-   },
-   {
-    "anomes": "202603",
-    "score": 64.8
-   },
-   {
-    "anomes": "202606",
-    "score": 66.9
-   }
-  ],
+  "dimensoes_disponiveis": "5/6",
   "vulnerabilidade": {
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
@@ -746,10 +704,11 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "5/6"
+  "regra_editorial": "regra_nominal_v1",
+  "nota": "Score composto e faixa verbal de risco não são publicados por instituição nomeada: as faixas não foram calibradas contra desfechos conhecidos (regra editorial de 24/09/2026, docs/CONSTITUICAO.md, art. 5). Cada métrica segue publicada como valor observado, com percentil, mediana e quartis do grupo de pares, data base e fonte."
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -780,7 +739,7 @@
       "pct": 2.47
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 3.19
      }
     ]
@@ -812,7 +771,7 @@
       "pct": 6.49
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 8.46
      }
     ]
@@ -844,7 +803,7 @@
       "pct": 0.71
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 1.43
      }
     ]
@@ -876,7 +835,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.01
      }
     ]
@@ -900,19 +859,14 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -929,6 +883,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

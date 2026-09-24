@@ -14,13 +14,12 @@
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:33+00:00",
+  "atualizado_em": "2026-09-24T15:24:40+00:00",
   "aviso_pares": null,
-  "cnpj": "raiz 21.018.182",
-  "participante_open_finance": null
+  "cnpj": "raiz 21.018.182"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -39,13 +38,7 @@
     "base": "calculado sobre IF.data"
    }
   ],
-  "pontos_atencao": [
-   {
-    "tipo": "warn",
-    "texto": "Índice de reclamações 226.4 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-    "base": "BCB rdrweb"
-   }
-  ],
+  "pontos_atencao": [],
   "mudancas_recentes": [
    {
     "texto": "Ativos totais: +36.7% no trimestre.",
@@ -64,7 +57,10 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
@@ -139,14 +135,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": null,
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 2157396619.12,
    "unit": "R$",
    "d_tri": 36.7,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     1530604846.01,
@@ -162,7 +157,7 @@
    "v": 161393259.68,
    "unit": "R$",
    "d_tri": 26.3,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     92978764.42,
@@ -178,7 +173,7 @@
    "v": 0.0,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     0.0,
@@ -194,7 +189,7 @@
    "v": 59137563.84,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     41237043.77,
@@ -210,7 +205,7 @@
    "v": 78.50326000295081,
    "unit": "%",
    "d_tri": 4.26,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     73.6153,
@@ -241,11 +236,6 @@
    "tipo": "ok",
    "texto": "ROE do período de 36.6%.",
    "base": "calculado sobre IF.data"
-  },
-  {
-   "tipo": "warn",
-   "texto": "Índice de reclamações 226.4 (acima da mediana do ranking 61.1) — indicador operacional, não de solvência.",
-   "base": "BCB rdrweb"
   }
  ],
  "capital_tabela": [
@@ -286,83 +276,83 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 100.0
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 134.7
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 169.0
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 174.2
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 513.6
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 1125.8
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 1283.4
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 1030.4
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 475.5
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 494.5
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 571.8
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 650.5
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 808.0
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 350.0
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 414.6
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 457.4
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 533.4
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 438.8
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 723.5
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 1300.9
    },
    {
@@ -386,89 +376,89 @@
     "v": 2604.5
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 3559.7
    }
   ],
   "PL": [
    {
-    "p": "202003",
+    "p": "2020-T1",
     "v": 100.0
    },
    {
-    "p": "202006",
+    "p": "2020-T2",
     "v": 58.9
    },
    {
-    "p": "202009",
+    "p": "2020-T3",
     "v": 87.3
    },
    {
-    "p": "202012",
+    "p": "2020-T4",
     "v": 27.1
    },
    {
-    "p": "202103",
+    "p": "2021-T1",
     "v": 70.4
    },
    {
-    "p": "202106",
+    "p": "2021-T2",
     "v": 76.9
    },
    {
-    "p": "202109",
+    "p": "2021-T3",
     "v": 108.4
    },
    {
-    "p": "202112",
+    "p": "2021-T4",
     "v": 2783.5
    },
    {
-    "p": "202203",
+    "p": "2022-T1",
     "v": 2862.1
    },
    {
-    "p": "202206",
+    "p": "2022-T2",
     "v": 2940.2
    },
    {
-    "p": "202209",
+    "p": "2022-T3",
     "v": 3198.1
    },
    {
-    "p": "202212",
+    "p": "2022-T4",
     "v": 3486.2
    },
    {
-    "p": "202303",
+    "p": "2023-T1",
     "v": 3613.0
    },
    {
-    "p": "202306",
+    "p": "2023-T2",
     "v": 2841.4
    },
    {
-    "p": "202309",
+    "p": "2023-T3",
     "v": 2920.0
    },
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 2975.6
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 3061.5
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 806.5
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 949.2
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 1291.3
    },
    {
@@ -492,7 +482,7 @@
     "v": 3189.3
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 4027.9
    }
   ]
@@ -911,49 +901,12 @@
    "mediana": 3.76
   }
  },
- "score_ref": {
-  "indisponivel": "Score relativo calculado para o corte das 100 maiores IFs por ativo — esta instituição está fora do corte (sem nota, nunca nota zero)."
+ "comparacao_pares": {
+  "indisponivel": "Comparação por dimensões calculada para o corte das 100 maiores IFs por ativo; esta instituição está fora do corte (sem valor, nunca zero).",
+  "regra_editorial": "regra_nominal_v1"
  },
  "atraso_produtos": null,
- "openfinance": null,
- "reclamacoes": [
-  {
-   "periodo": "2026-T2",
-   "indice": 226.41,
-   "reclamacoes": 116,
-   "clientes": 248637.0,
-   "posicao_arquivo": 77,
-   "nome_fonte": "EBANX IP (conglomerado)"
-  },
-  {
-   "periodo": "2026-T1",
-   "indice": 165.56,
-   "reclamacoes": 92,
-   "clientes": 321240.0,
-   "posicao_arquivo": 83,
-   "nome_fonte": "EBANX IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T4",
-   "indice": 24.31,
-   "reclamacoes": 113,
-   "clientes": 2631803.0,
-   "posicao_arquivo": 78,
-   "nome_fonte": "EBANX IP (conglomerado)"
-  },
-  {
-   "periodo": "2025-T3",
-   "indice": 29.75,
-   "reclamacoes": 149,
-   "clientes": 2564728.0,
-   "posicao_arquivo": 85,
-   "nome_fonte": "EBANX IP (conglomerado)"
-  }
- ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
+ "reclamacoes": [],
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -970,6 +923,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }

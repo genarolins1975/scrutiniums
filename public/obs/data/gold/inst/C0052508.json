@@ -9,18 +9,17 @@
   "sede": "São Paulo/SP",
   "segmento": "S4",
   "grupo_pares": "S4 — porte inferior a 0,1% do PIB",
-  "n_pares": 387,
+  "n_pares": 385,
   "conglomerado_prudencial": "C0087298",
   "capital": "não classificado",
   "modelo": null,
   "consolidacao": "Conglomerado prudencial (IF.data tipo 2)",
-  "data_base": "202606",
-  "data_base_universo": "202606",
+  "data_base": "2026-T2",
+  "data_base_universo": "2026-T2",
   "sem_balanco_na_data_base": null,
-  "atualizado_em": "2026-09-23T15:35:34+00:00",
+  "atualizado_em": "2026-09-24T15:24:42+00:00",
   "aviso_pares": null,
-  "cnpj": "não disponível nas fontes integradas",
-  "participante_open_finance": null
+  "cnpj": "não disponível nas fontes integradas"
  },
  "resumo_executivo": {
   "avaliacao_geral": {
@@ -42,7 +41,7 @@
    },
    {
     "tipo": "warn",
-    "texto": "Carteira cresceu 49.8% em 4 trimestres — acima de 30%, checar apetite de risco.",
+    "texto": "Carteira cresceu 49.8% em 4 trimestres, acima de 30%.",
     "base": "BCB IF.data (Olinda)"
    },
    {
@@ -73,12 +72,15 @@
    "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
    "LCR / NSFR e composição de funding",
    "Composição de receita, margem e eficiência",
-   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)"
+   "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
+   "Open Finance por instituição",
+   "Citações em listas de credores de RJ",
+   "Score composto e faixa de risco"
   ]
  },
  "grupo_pares_composicao": {
   "criterio": "Segmento prudencial (Res. CMN 4.553) — corte por porte/relevância sistêmica; NÃO diferencia modelo de negócio",
-  "quantidade": 387,
+  "quantidade": 385,
   "maiores_membros": [
    {
     "cod": "10573521",
@@ -148,20 +150,13 @@
   },
   "estabilidade": "Composição varia trimestralmente conforme entrada/saída de dados no IF.data."
  },
- "score_meta": {
-  "cobertura_dados_pct": 100,
-  "confianca": "moderada",
-  "confianca_motivo": "6/6 dimensões com dado; sem liquidez/qualidade de carteira por IF; faixas não calibradas empiricamente",
-  "versao_metodologica": "score v3 (v0.5.0 da plataforma)",
-  "calculado_em": "2026-09-23"
- },
  "kpis": [
   {
    "label": "Ativos totais",
    "v": 30785055997.01,
    "unit": "R$",
    "d_tri": 11.9,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     19605595943.62,
@@ -177,7 +172,7 @@
    "v": 4531399056.7,
    "unit": "R$",
    "d_tri": 14.1,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     3224753853.39,
@@ -193,7 +188,7 @@
    "v": 25840767379.13,
    "unit": "R$",
    "d_tri": 10.1,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     17246481342.49,
@@ -209,7 +204,7 @@
    "v": 254721420.21,
    "unit": "R$",
    "d_tri": null,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "%",
    "hist": [
     209543960.64,
@@ -225,7 +220,7 @@
    "v": 15.0633501498025,
    "unit": "%",
    "d_tri": -0.36,
-   "periodo": "202606",
+   "periodo": "2026-T2",
    "d_tri_tipo": "p.p.",
    "hist": [
     18.0251,
@@ -254,7 +249,7 @@
   },
   {
    "tipo": "warn",
-   "texto": "Carteira cresceu 49.8% em 4 trimestres — acima de 30%, checar apetite de risco.",
+   "texto": "Carteira cresceu 49.8% em 4 trimestres, acima de 30%.",
    "base": "BCB IF.data (Olinda)"
   },
   {
@@ -369,23 +364,23 @@
  "evolucao_base100": {
   "Ativos": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 96.1
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 108.0
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 122.9
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 146.1
    },
    {
@@ -409,29 +404,29 @@
     "v": 222.6
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 249.0
    }
   ],
   "Carteira": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 99.6
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 114.2
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 133.5
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 153.7
    },
    {
@@ -455,29 +450,29 @@
     "v": 228.1
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 251.2
    }
   ],
   "PL": [
    {
-    "p": "202312",
+    "p": "2023-T4",
     "v": 100.0
    },
    {
-    "p": "202403",
+    "p": "2024-T1",
     "v": 115.3
    },
    {
-    "p": "202406",
+    "p": "2024-T2",
     "v": 130.9
    },
    {
-    "p": "202409",
+    "p": "2024-T3",
     "v": 136.2
    },
    {
-    "p": "202412",
+    "p": "2024-T4",
     "v": 161.4
    },
    {
@@ -501,7 +496,7 @@
     "v": 231.3
    },
    {
-    "p": "202606",
+    "p": "2026-T2",
     "v": 263.9
    }
   ]
@@ -583,7 +578,6 @@
     -68.91,
     4.7,
     -1.55,
-    -3.74,
     15.62,
     2.66,
     7.18,
@@ -841,7 +835,6 @@
     3.64,
     0.43,
     -5.26,
-    8.5,
     5.78,
     -21.99,
     4.51,
@@ -1335,7 +1328,6 @@
     9.83,
     5.6,
     7.29,
-    1.07,
     8.35,
     2.32,
     1.13,
@@ -1593,7 +1585,6 @@
     4.57,
     4.19,
     7.17,
-    10.36,
     5.93,
     1.47,
     1.81,
@@ -1654,15 +1645,11 @@
    "mediana": 6.0
   }
  },
- "score_ref": {
-  "score": 65.7,
-  "score_delta": 3.0,
-  "faixa": "risco elevado",
+ "comparacao_pares": {
   "dimensoes": {
    "capital_basileia": {
     "valor": 15.06,
     "percentil_pares": 23.8,
-    "risco": 76.2,
     "mediana_pares": 16.74,
     "q1_pares": 15.09,
     "q3_pares": 20.85
@@ -1670,7 +1657,6 @@
    "rentabilidade": {
     "valor": 5.62,
     "percentil_pares": 41.7,
-    "risco": 58.3,
     "mediana_pares": 6.43,
     "q1_pares": 3.49,
     "q3_pares": 7.85
@@ -1678,7 +1664,6 @@
    "alavancagem": {
     "valor": 6.79,
     "percentil_pares": 12.5,
-    "risco": 12.5,
     "mediana_pares": 10.83,
     "q1_pares": 8.61,
     "q3_pares": 22.53
@@ -1686,7 +1671,6 @@
    "concentracao_credito": {
     "valor": 83.94,
     "percentil_pares": 87.5,
-    "risco": 87.5,
     "mediana_pares": 49.95,
     "q1_pares": 1.02,
     "q3_pares": 65.56
@@ -1694,7 +1678,6 @@
    "dependencia_captacoes": {
     "valor": 82.54,
     "percentil_pares": 70.8,
-    "risco": 70.8,
     "mediana_pares": 70.17,
     "q1_pares": 57.98,
     "q3_pares": 83.18
@@ -1702,58 +1685,12 @@
    "concentracao_setorial": {
     "valor": 4745,
     "percentil_pares": 88.9,
-    "risco": 88.9,
     "mediana_pares": 2233.0,
     "q1_pares": 1846.25,
     "q3_pares": 2870.0
    }
   },
-  "historico_score": [
-   {
-    "anomes": "202312",
-    "score": 53.4
-   },
-   {
-    "anomes": "202403",
-    "score": 58.4
-   },
-   {
-    "anomes": "202406",
-    "score": 54.8
-   },
-   {
-    "anomes": "202409",
-    "score": 58.4
-   },
-   {
-    "anomes": "202412",
-    "score": 51.2
-   },
-   {
-    "anomes": "202503",
-    "score": 59.0
-   },
-   {
-    "anomes": "202506",
-    "score": 55.7
-   },
-   {
-    "anomes": "202509",
-    "score": 59.8
-   },
-   {
-    "anomes": "202512",
-    "score": 59.7
-   },
-   {
-    "anomes": "202603",
-    "score": 62.7
-   },
-   {
-    "anomes": "202606",
-    "score": 65.7
-   }
-  ],
+  "dimensoes_disponiveis": "6/6",
   "vulnerabilidade": {
    "tipo": "CENÁRIO",
    "cenario": "severamente adverso",
@@ -1772,10 +1709,11 @@
    ],
    "metodo": "Δinad agregada (elasticidades × choques severos; elasticidades com sinal contraintuitivo são excluídas) × carteira × LGD 45% ÷ RWA. Aproximação: choque agregado aplicado uniformemente; sem mitigação de garantias/hedge."
   },
-  "dimensoes_disponiveis": "6/6"
+  "regra_editorial": "regra_nominal_v1",
+  "nota": "Score composto e faixa verbal de risco não são publicados por instituição nomeada: as faixas não foram calibradas contra desfechos conhecidos (regra editorial de 24/09/2026, docs/CONSTITUICAO.md, art. 5). Cada métrica segue publicada como valor observado, com percentil, mediana e quartis do grupo de pares, data base e fonte."
  },
  "atraso_produtos": {
-  "data_base": "202606",
+  "data_base": "2026-T2",
   "fonte": "BCB IF.data — subcoluna 'Vencido a Partir de 15 Dias' dos relatórios 123 (PF) / 128 (PJ), por modalidade × instituição",
   "nota": "Atraso ≥15 dias da modalidade (vencido ÷ carteira). Conceito de ATRASO — não é a inadimplência >90d (Res. 4.966), que a fonte pública não decompõe por modalidade. Percentil dentro do universo de instituições que reportam o produto (percentil alto = mais atraso que os pares do produto).",
   "itens": [
@@ -1806,7 +1744,7 @@
       "pct": 0.39
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.41
      }
     ]
@@ -1838,7 +1776,7 @@
       "pct": 0.02
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.02
      }
     ]
@@ -1870,7 +1808,7 @@
       "pct": 0.34
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.44
      }
     ]
@@ -1902,7 +1840,7 @@
       "pct": 0.06
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
@@ -1922,7 +1860,7 @@
       "pct": 0.0
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 0.0
      }
     ]
@@ -1954,14 +1892,13 @@
       "pct": 23.57
      },
      {
-      "p": "202606",
+      "p": "2026-T2",
       "pct": 21.52
      }
     ]
    }
   ]
  },
- "openfinance": null,
  "reclamacoes": [
   {
    "periodo": "2026-T2",
@@ -1969,7 +1906,8 @@
    "reclamacoes": 134,
    "clientes": 335470.0,
    "posicao_arquivo": 169,
-   "nome_fonte": "STELLANTIS (conglomerado)"
+   "nome_fonte": "STELLANTIS (conglomerado)",
+   "casamento": "nome_identico_bcb"
   },
   {
    "periodo": "2026-T1",
@@ -1977,7 +1915,8 @@
    "reclamacoes": 138,
    "clientes": 296208.0,
    "posicao_arquivo": 172,
-   "nome_fonte": "STELLANTIS (conglomerado)"
+   "nome_fonte": "STELLANTIS (conglomerado)",
+   "casamento": "nome_identico_bcb"
   },
   {
    "periodo": "2025-T4",
@@ -1985,7 +1924,8 @@
    "reclamacoes": 85,
    "clientes": 273301.0,
    "posicao_arquivo": 166,
-   "nome_fonte": "STELLANTIS (conglomerado)"
+   "nome_fonte": "STELLANTIS (conglomerado)",
+   "casamento": "nome_identico_bcb"
   },
   {
    "periodo": "2025-T3",
@@ -1993,13 +1933,10 @@
    "reclamacoes": 61,
    "clientes": 224935.0,
    "posicao_arquivo": 168,
-   "nome_fonte": "STELLANTIS (conglomerado)"
+   "nome_fonte": "STELLANTIS (conglomerado)",
+   "casamento": "nome_identico_bcb"
   }
  ],
- "rj_citacoes": {
-  "casos": 0,
-  "nota": "presença em listas de credores publicadas (DJEN, 60d); matching por tokens distintivos do nome — não mede exposição total"
- },
  "indisponiveis": [
   {
    "indicador": "Qualidade da carteira (inadimplência, atrasos, provisões, cobertura)",
@@ -2016,6 +1953,18 @@
   {
    "indicador": "Notícias, ratings e documentos (ITR/DFP/Pilar 3)",
    "motivo": "Pipelines de CVM/RI/agências/imprensa não integrados."
+  },
+  {
+   "indicador": "Open Finance por instituição",
+   "motivo": "O ranking público não traz CNPJ; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Citações em listas de credores de RJ",
+   "motivo": "As listas publicadas no DJEN não trazem CNPJ do credor; casamento por nome não é aceito pela regra editorial."
+  },
+  {
+   "indicador": "Score composto e faixa de risco",
+   "motivo": "Não publicados por instituição nomeada: faixas não calibradas contra desfechos (regra editorial de 24/09/2026)."
   }
  ]
 }
