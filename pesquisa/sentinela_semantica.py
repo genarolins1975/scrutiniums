@@ -215,12 +215,14 @@ def avaliar(rodada):
     return res
 
 
-def ultimo_resultado():
-    """Resultado mais recente, para o critério de degrau (metricas.degrau)."""
-    rs = sorted(p for p in (os.path.join(DIR, "rodadas", d, "resultado.json")
-                            for d in (os.listdir(os.path.join(DIR, "rodadas")) if os.path.isdir(os.path.join(DIR, "rodadas")) else []))
-                if os.path.exists(p))
-    return _json(rs[-1]) if rs else None
+def ultimo_resultado(base=None):
+    """Resultado mais recente, para o critério de degrau (metricas.degrau). Ordena pelo nome da
+    rodada (AAAA-MM-DD, AAAA-MM-DD-r2, ...), não pelo caminho: em caminho, "-" vem antes de "/"
+    e a primeira rodada do dia passaria por mais recente."""
+    raiz = base or os.path.join(DIR, "rodadas")
+    nomes = sorted(d for d in (os.listdir(raiz) if os.path.isdir(raiz) else [])
+                   if os.path.exists(os.path.join(raiz, d, "resultado.json")))
+    return _json(os.path.join(raiz, nomes[-1], "resultado.json")) if nomes else None
 
 
 def main(argv=None):

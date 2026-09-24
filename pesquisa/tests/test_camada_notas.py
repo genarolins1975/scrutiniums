@@ -504,6 +504,15 @@ class BateriaSemantica(unittest.TestCase):
         self.assertEqual(r["por_revisor"][oq.REVISORES[2]]["recall"], round((len(erros) - 1) / len(erros), 4))
         self.assertTrue(os.path.exists(os.path.join(tmp, "resultado.json")))
 
+    def test_ultimo_resultado_e_a_ultima_rodada_do_dia(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        for nome, marca in (("2026-09-24", 1), ("2026-09-24-r2", 2), ("2026-09-24-r4", 4), ("2026-09-23-r9", 9)):
+            os.makedirs(os.path.join(tmp, nome))
+            with open(os.path.join(tmp, nome, "resultado.json"), "w", encoding="utf-8") as f:
+                json.dump({"marca": marca}, f)
+        self.assertEqual(ss.ultimo_resultado(tmp)["marca"], 4)
+
     def test_resposta_faltando_nao_entra_no_painel(self):
         tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, tmp)

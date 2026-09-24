@@ -1,18 +1,7 @@
 {
  "n_casos_com_erro": 14,
  "n_controles": 4,
- "respostas_faltando": [
-  "SS09__revisor_independente",
-  "SS10__revisor_independente",
-  "SS11__revisor_independente",
-  "SS13__revisor_independente",
-  "SS14__revisor_independente",
-  "SC01__revisor_independente",
-  "SC02__revisor_independente",
-  "SC02__terceiro_revisor",
-  "SC03__revisor_independente",
-  "SC04__revisor_independente"
- ],
+ "respostas_faltando": [],
  "regra_de_decisao": "revisores no formato ITEM devolvem se e só se houver item grave (orquestrador.decisao_do_parecer)",
  "decisao_declarada_incoerente_com_itens": [],
  "por_revisor": {
@@ -23,8 +12,8 @@
    "sem_decisao": 0
   },
   "revisor_independente": {
-   "recall": 1.0,
-   "recall_atribuido": 1.0,
+   "recall": 0.7857,
+   "recall_atribuido": 0.8462,
    "rejeicao_indevida": 0,
    "sem_decisao": 0
   },
@@ -37,7 +26,7 @@
  },
  "recall_painel": 1.0,
  "recall_painel_atribuido": 1.0,
- "n_atribuiveis": 9,
+ "n_atribuiveis": 13,
  "nao_vistos_por_nenhum": [],
  "rejeicao_indevida": 0,
  "perdidos_por_todos": [],
@@ -70,7 +59,35 @@
    "revisor_independente": 2,
    "terceiro_revisor": 2
   },
+  "selecao": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 0,
+   "terceiro_revisor": 1
+  },
+  "generalizacao": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 0,
+   "terceiro_revisor": 1
+  },
   "juizo": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
+  },
+  "previsao_disfarcada": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
+  },
+  "tema_vedado_indireto": {
    "n": 1,
    "painel": 1,
    "validador_constitucional": 1,
@@ -79,9 +96,9 @@
   }
  },
  "concordancia_par_a_par": {
-  "validador_constitucional×revisor_independente": 1.0,
-  "validador_constitucional×terceiro_revisor": 0.9412,
-  "revisor_independente×terceiro_revisor": 1.0
+  "validador_constitucional×revisor_independente": 0.8333,
+  "validador_constitucional×terceiro_revisor": 0.9444,
+  "revisor_independente×terceiro_revisor": 0.8889
  },
  "revisores": {
   "validador_constitucional": {
