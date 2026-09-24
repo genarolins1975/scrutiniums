@@ -402,6 +402,14 @@ class Degrau(unittest.TestCase):
         ms = [self._m(f"2026-{i:02d}", comprometida=i == 3) for i in range(1, 4)]
         self.assertEqual(metricas.degrau(ms, {"erros": []}, semantica=self.SEM)["degrau"], 1)
 
+    def test_resumo_ignora_ciclo_no_formato_anterior_a_v2(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        os.makedirs(os.path.join(tmp, "retro", "2026-06"))
+        with open(os.path.join(tmp, "retro", "2026-06", "metricas.json"), "w", encoding="utf-8") as f:
+            json.dump({"ciclo": "2026-06", "data_base": "2026-06", "editor": {}}, f)
+        self.assertEqual(metricas.main([tmp]), 0)
+
     def test_erro_relevante_publicado_rebaixa(self):
         ms = [self._m(f"2026-{i:02d}") for i in range(1, 5)]
         reg = {"erros": [{"tipo_nota": "conjuntura", "gravidade": "relevante", "publicado": True}]}

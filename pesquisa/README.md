@@ -29,7 +29,7 @@ A regra está em `papeis/config.json` e é verificada pelo orquestrador antes de
 | `revisor_independente` | `claude-sonnet-5` | fatos do pacote com ponteiros para a gold | JSON | fidelidade à evidência |
 | `terceiro_revisor` | `claude-fable-5-1` | histórico bruto das séries na gold (13 meses) | série mensal | leitor cético |
 
-Cada revisor roda em contexto isolado: não vê o parecer dos outros, nem os rascunhos, nem a saída dos analistas. Nenhum revisor aprova número (isso é do validador mecânico). Qualquer item grave obriga devolução; qualquer devolução volta a nota à revisão; sem unanimidade em `max_rodadas_revisao` rodadas a nota é rejeitada e nada sai. Fornecedor ainda é o mesmo nos três: a diferença de fornecedor depende de chave de outra API (pendência registrada no próprio `config.json`).
+Cada revisor roda em contexto isolado: não vê o parecer dos outros, nem os rascunhos, nem a saída dos analistas. Nenhum revisor aprova número (isso é do validador mecânico). A decisão é derivada dos itens por código (`orquestrador.decisao_do_parecer`): só item grave devolve (no validador constitucional, qualquer falha de C1 a C5); moderadas e leves são sugestões registradas. Qualquer devolução volta a nota à revisão; sem unanimidade em `max_rodadas_revisao` rodadas a nota é rejeitada e nada sai. Fornecedor ainda é o mesmo nos três: a diferença de fornecedor depende de chave de outra API (pendência registrada no próprio `config.json`).
 
 ## Um ciclo
 
@@ -66,4 +66,5 @@ python3 -m unittest discover -s pesquisa/tests -t .
 
 - A bateria mecânica foi escrita pelo mesmo autor do validador; a semântica foi escrita por um agente de modelo distinto dos três revisores, mas do mesmo fornecedor.
 - Os três revisores são do mesmo fornecedor. Erro correlacionado é medido pela lista `perdidos_por_todos` da bateria semântica, não eliminado.
-- A bateria semântica usa uma única nota base; recall medido nela não garante recall em notas de outra estrutura.
+- A bateria semântica usa uma única nota base (`sentinelas_semanticas/nota_base.md`); recall medido nela não garante recall em notas de outra estrutura. Resultados por rodada e o que cada uma revelou: `docs/AVALIACAO_AGENTES_2026-09-24.md`, seção 8.
+- Casos de omissão são aplicados ao texto renderizado; a tabela de fontes continua listando o fato removido.

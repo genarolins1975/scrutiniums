@@ -173,7 +173,9 @@ def degrau(metricas_ciclos, reg=None, n_minimo=N_MINIMO_DEGRAU_2, semantica=None
         motivos.append(f"{consecutivos} de {n_minimo} ciclos aprovados e auditados sem erro factual")
     if rebaixado:
         motivos.append("erro relevante publicado no registro: rebaixado ao degrau 1")
-    if not mecanica_ok:
+    if not ult:
+        motivos.append("bateria mecânica sem medida em ciclo (nenhum ciclo no formato da constituição v2)")
+    elif not mecanica_ok:
         motivos.append("bateria mecânica abaixo do critério (recall numérico de 100% e zero falso bloqueio)")
     if not sem_ok:
         motivos.append(f"bateria semântica dos revisores abaixo do critério (painel pegando pelo menos "
@@ -187,6 +189,9 @@ def main(argv=None):
     base = (argv or sys.argv[1:] or ["notas"])[0]
     ms = [_json(p) for p in sorted(glob.glob(os.path.join(base, "**", "metricas.json"), recursive=True))]
     ms = [m for m in ms if m]
+    for m in [m for m in ms if "revisores" not in m]:
+        print(f"{m['ciclo']:10s} base {m.get('data_base')}: formato anterior à constituição v2, não conta para degrau")
+    ms = [m for m in ms if "revisores" in m]
     for m in ms:
         print(f"{m['ciclo']:10s} base {m['data_base']} retro={m['retrospectivo']} validador={m['validador_mecanico']['decisao_final']} "
               f"devoluções={m['validador_mecanico']['devolucoes']} decisão={m['revisores']['decisao_final']} "
