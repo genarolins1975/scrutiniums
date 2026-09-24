@@ -571,6 +571,18 @@
     ]
    },
    "categoria": "tema_sensivel"
+  },
+  {
+   "id": "S36",
+   "categoria": "recorte",
+   "descricao": "segmento trocado depois do complemento posposto do número anterior (a correção do L07 não pode esconder atribuição errada)",
+   "acrescentar": "[EVIDÊNCIA] Em doze meses, houve alta de {{taxa_pf.delta_12m_pp|abs}} da taxa das pessoas físicas e, nas pessoas jurídicas, alta de {{inad_pf.delta_12m_pp|abs}} da inadimplência.",
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M11"
+    ]
+   }
   }
  ],
  "controles_limpos": [
@@ -634,6 +646,24 @@
    "id": "L06",
    "descricao": "parágrafo de evidência que só declara lacunas (falso positivo do M5 no ciclo retrospectivo de jun/2026)",
    "acrescentar": "[EVIDÊNCIA] Lacunas do pacote: {{lacunas}}.",
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L07",
+   "descricao": "série nomeada depois do número, em sequência (falso positivo do M11 no ciclo jul/2026, rodada 0)",
+   "acrescentar": "[EVIDÊNCIA] Em doze meses, houve alta de {{taxa_pf.delta_12m_pp|abs}} da taxa das pessoas físicas, alta de {{inad_pf.delta_12m_pp|abs}} da inadimplência das pessoas físicas e alta de {{comprometimento.delta_12m_pp|abs}} do comprometimento de renda das famílias, este com data de referência {{data:comprometimento.nivel}}.",
+   "esperado": {
+    "decisao": "aprovar",
+    "codigos": []
+   }
+  },
+  {
+   "id": "L08",
+   "descricao": "direção única antes de dois pontos, cada número seguido da sua série (falso positivo do M6 e do M11 no ciclo jul/2026, rodada 2)",
+   "acrescentar": "[EVIDÊNCIA] No mês, tiveram alta: de {{inad_pf.delta_mes_pp|abs}} a inadimplência das pessoas físicas e de {{comprometimento.delta_mes_pp|abs}} o comprometimento de renda das famílias, este com data de referência {{data:comprometimento.nivel}}.",
    "esperado": {
     "decisao": "aprovar",
     "codigos": []

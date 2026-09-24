@@ -35,7 +35,7 @@ import sys
 from pesquisa import fatos_conjuntura as fc
 from pesquisa import nota as nt
 
-VERSAO = "validador_mecanico_v3"
+VERSAO = "validador_mecanico_v4"
 BLOQUEIAM = {"M1", "M2", "M3", "M6", "M10", "M11"}
 FRASE_REFUTACAO = "Refutaria esta leitura:"
 
@@ -183,6 +183,25 @@ def _m5(cab, blocos, fatos):
     return out
 
 
+SEPARADOR = re.compile(r",|;|:|\se\s")
+
+
+def _trecho_proprio(trecho, tem_anterior):
+    """Texto que qualifica o marcador, sem o complemento posposto do marcador anterior.
+
+    Em "alta de {{a}} da taxa das pessoas físicas, e alta de {{b}} da inadimplência" o trecho
+    antes de b começa com "da taxa das pessoas físicas", que qualifica a e não b. Com marcador
+    anterior na frase, a primeira oração do trecho (até vírgula, ponto e vírgula, dois pontos ou
+    " e ") é descartada quando não traz palavra de direção. Falso positivo achado no ciclo
+    jul/2026 (rodadas 0 e 2); controles L07 e L08."""
+    if not tem_anterior:
+        return trecho
+    m = SEPARADOR.search(trecho)
+    if not m or _direcao_antes(trecho[:m.start()]) is not None:
+        return trecho
+    return trecho[m.start():]
+
+
 def _direcao_antes(trecho):
     ult, sinal = -1, None
     for s, rx in RE_DIRECAO.items():
@@ -215,7 +234,7 @@ def _m6(blocos, fatos):
                 if modo:
                     continue
                 f = fatos.get(fid)
-                antes = _sem_marcadores(frase[fim_anterior:ini])
+                antes = _trecho_proprio(_sem_marcadores(frase[fim_anterior:ini]), fim_anterior > 0)
                 fim_anterior = fim
                 if not f:
                     continue
@@ -296,7 +315,7 @@ def _m11(blocos, fatos):
                     fim_anterior = fim
                     continue
                 fam, seg = _familia_segmento(fid)
-                trecho = _sem_marcadores(frase[fim_anterior:ini])
+                trecho = _trecho_proprio(_sem_marcadores(frase[fim_anterior:ini]), fim_anterior > 0)
                 fim_anterior = fim
                 if not fam:
                     continue

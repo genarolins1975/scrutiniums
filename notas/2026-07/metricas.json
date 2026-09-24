@@ -1,0 +1,74 @@
+{
+ "ciclo": "2026-07",
+ "data_base": "2026-07",
+ "retrospectivo": false,
+ "validador_mecanico": {
+  "decisao_final": "bloquear",
+  "falhas_finais": [
+   "M6",
+   "M11"
+  ],
+  "devolucoes": 3,
+  "rodadas_revisao": 2
+ },
+ "concordancia": {
+  "familias": {
+   "jaccard_destaques": 0.4286,
+   "leitura_analista": "misto",
+   "leitura_replicador": "deterioração",
+   "leitura_concorda": false
+  },
+  "empresas": {
+   "jaccard_destaques": 0.4286,
+   "leitura_analista": "deterioração",
+   "leitura_replicador": "deterioração",
+   "leitura_concorda": true
+  }
+ },
+ "uso": {
+  "por_papel": {},
+  "total": null,
+  "nota": "sem chamadas de API registradas (backend manual ou ciclo não executado)"
+ },
+ "revisores": {
+  "decisao_final": "rejeitada",
+  "rodadas": [
+   {
+    "rodada": 0,
+    "validador_mecanico": "bloquear",
+    "unanime": false
+   },
+   {
+    "rodada": 1,
+    "validador_mecanico": "aprovar",
+    "validador_constitucional": "devolver",
+    "revisor_independente": "devolver",
+    "terceiro_revisor": "devolver",
+    "unanime": false
+   },
+   {
+    "rodada": 2,
+    "validador_mecanico": "bloquear",
+    "unanime": false
+   }
+  ],
+  "concordancia_entre_revisores": {
+   "validador_constitucional×revisor_independente": 1.0,
+   "validador_constitucional×terceiro_revisor": 1.0,
+   "revisor_independente×terceiro_revisor": 1.0
+  },
+  "modelos_que_responderam": null,
+  "independencia_comprometida": null
+ },
+ "auditoria": {
+  "auditado": false,
+  "erros_factuais": null
+ },
+ "sentinelas": {
+  "recall_total": 1.0,
+  "n_casos": 35,
+  "recall_numerico": 1.0,
+  "falso_bloqueio": 0,
+  "versao_validador": "validador_mecanico_v3"
+ }
+}
