@@ -10,12 +10,14 @@ import shutil
 import tempfile
 import unittest
 
+from pesquisa import auditor
 from pesquisa import fatos_conjuntura as fc
 from pesquisa import metricas
 from pesquisa import nota as nt
 from pesquisa import orquestrador as oq
 from pesquisa import registro
 from pesquisa import sentinela
+from pesquisa import sentinela_semantica as ss
 from pesquisa import validador as vd
 from pesquisa import verificador_fonte as vf
 
@@ -168,13 +170,16 @@ LEITURA_FAMILIAS: deterioração
 DESTAQUES_EMPRESAS: inad_pj.delta_mes_pp, saldo_pj.var_mes_pct, taxa_pj.delta_mes_pp, spread_pj.delta_mes_pp, credito_pib.delta_mes_pp
 LEITURA_EMPRESAS: misto
 """
-CONSTITUCIONAL = "C1: ok\nC2: ok\nC3: ok\nC4: ok\nDECISÃO: aprovar\n"
+CONSTITUCIONAL = "C1: ok\nC2: ok\nC3: ok\nC4: ok\nC5: ok\nDECISÃO: aprovar\n"
+DEVOLVE = "ITEM [grave]: trecho | problema | solução\nDECISÃO: devolver\n"
 
 
-def backend_simulado(chamadas):
-    """Primeira revisão devolve nota com adjetivo proibido; a segunda corrige."""
-    def backend(etapa, sistema, usuario, papel_cfg, ciclo=None):
-        chamadas.append((etapa, usuario))
+def backend_simulado(chamadas, devolver_revisor_rodadas=()):
+    """Rodada 0: a revisão sai com adjetivo proibido (validador mecânico devolve). Rodada 1:
+    nota limpa; os revisores aprovam, salvo o terceiro nas rodadas listadas."""
+    def backend(etapa, sistema, usuario, papel_cfg, ciclo=None, nome=None):
+        chamadas.append((nome or etapa, etapa, usuario, sistema))
+        rodada = int(nome.rsplit("_", 1)[1]) if nome and nome != etapa else 0
         if etapa.startswith("analista"):
             texto = ANALISTA
         elif etapa == "replicador":
@@ -183,7 +188,9 @@ def backend_simulado(chamadas):
             texto = "SEM OBJEÇÕES"
         elif etapa == "validador_constitucional":
             texto = CONSTITUCIONAL
-        elif etapa == "revisao" and sum(1 for e, _ in chamadas if e == "revisao") == 1:
+        elif etapa in ("revisor_independente", "terceiro_revisor"):
+            texto = DEVOLVE if etapa == "terceiro_revisor" and rodada in devolver_revisor_rodadas else "DECISÃO: aprovar\n"
+        elif etapa == "revisao" and rodada == 0:
             texto = LIMPA.replace("com alta de {{concessoes_total.var_12m_pct|abs}}", "com forte alta de {{concessoes_total.var_12m_pct|abs}}")
         else:
             texto = LIMPA
@@ -201,39 +208,84 @@ class Orquestrador(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.base, ignore_errors=True)
 
-    def test_ciclo_completo_com_uma_devolucao(self):
+    def _json(self, rel):
+        with open(os.path.join(self.ciclo, rel), encoding="utf-8") as f:
+            return json.load(f)
+
+    def test_aprovada_por_unanimidade_depois_de_uma_devolucao_mecanica(self):
         chamadas = []
         e = oq.executar(self.ciclo, backend_simulado(chamadas), GOLD_FIXA)
-        self.assertNotIn("pendente", e)
+        self.assertEqual(e["decisao_final"], "aprovada")
         self.assertEqual(e["devolucoes"], 1)
-        self.assertEqual(e["decisao_constitucional"], "aprovar")
-        for arq in ("pacote.json", "nota.md", "nota_final.md", "validador.json", "manifesto.json",
-                    "metricas.json", "editor.json", "prompts/replicador.md", "saidas/revisao_1.md", "uso/revisao_1.json"):
+        self.assertEqual([r["validador_mecanico"] for r in e["rodadas"]], ["devolver", "aprovar"])
+        for arq in ("pacote.json", "nota.md", "nota_final.md", "validador.json", "manifesto.json", "decisao.json",
+                    "metricas.json", "validacao_mecanica_1.json", "saidas/revisao_1.md", "saidas/terceiro_revisor_1.md"):
             self.assertTrue(os.path.exists(os.path.join(self.ciclo, arq)), arq)
-        with open(os.path.join(self.ciclo, "metricas.json"), encoding="utf-8") as f:
-            m = json.load(f)
-        self.assertEqual(m["validador_mecanico"]["decisao_final"], "aprovar")
+        self.assertFalse(os.path.exists(os.path.join(self.ciclo, "editor.json")))
+        d = self._json("decisao.json")
+        self.assertFalse(d["revisao_humana"])
+        self.assertEqual(set(d["revisores"]), set(oq.REVISORES))
+        m = self._json("metricas.json")
+        self.assertEqual(m["revisores"]["decisao_final"], "aprovada")
+        self.assertEqual(m["uso"]["total"]["input_tokens"], 1000 * 10)  # 5 iniciais + 2 revisões + 3 revisores
+        self.assertFalse(m["revisores"]["independencia_comprometida"])
         self.assertEqual(m["concordancia"]["familias"]["jaccard_destaques"], round(3 / 7, 4))
-        self.assertTrue(m["concordancia"]["familias"]["leitura_concorda"])
-        self.assertEqual(m["uso"]["total"]["input_tokens"], 1000 * 8)
-        self.assertIsNone(m["editor"]["minutos"])
 
-    def test_isolamento_das_entradas(self):
+    def test_devolucao_de_um_revisor_volta_a_revisao(self):
+        e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(1,)), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "aprovada")
+        self.assertEqual(e["rodadas"][1]["terceiro_revisor"], "devolver")
+        self.assertTrue(e["rodadas"][2]["unanime"])
+        with open(os.path.join(self.ciclo, "prompts", "revisao_2.md"), encoding="utf-8") as f:
+            self.assertIn("ITEM [grave]", f.read())  # a devolução chega à revisão seguinte
+
+    def test_sem_unanimidade_no_limite_a_nota_e_rejeitada(self):
+        e = oq.executar(self.ciclo, backend_simulado([], devolver_revisor_rodadas=(0, 1, 2)), GOLD_FIXA)
+        self.assertEqual(e["decisao_final"], "rejeitada")
+        self.assertEqual(self._json("decisao.json")["publicacao"], "rejeitada: não é publicada")
+
+    def test_isolamento_e_evidencias_diferentes_por_revisor(self):
         chamadas = []
         oq.executar(self.ciclo, backend_simulado(chamadas), GOLD_FIXA)
-        por_etapa = {}
-        for etapa, usuario in chamadas:
-            por_etapa.setdefault(etapa, usuario)
-        self.assertNotIn("DESTAQUES:", por_etapa["replicador"])        # não vê os analistas
-        self.assertNotIn("LEITURA_FAMILIAS", por_etapa["consolidador"])  # não vê o replicador na primeira versão
-        self.assertNotIn("DESTAQUES", por_etapa["validador_constitucional"])  # só a nota renderizada
-        self.assertNotIn("SEM OBJEÇÕES", por_etapa["validador_constitucional"])
-        self.assertIn("LEITURA_EMPRESAS", por_etapa["revisao"])          # a revisão vê a divergência
+        prim = {}
+        for nome, etapa, usuario, sistema in chamadas:
+            prim.setdefault(etapa, (usuario, sistema))
+        self.assertNotIn("DESTAQUES:", prim["replicador"][0])
+        self.assertIn("LEITURA_EMPRESAS", prim["revisao"][0])
+        for r in oq.REVISORES:
+            usuario, sistema = prim[r]
+            for alheio in ("DESTAQUES", "SEM OBJEÇÕES", "LEITURA_", "Rascunho"):
+                self.assertNotIn(alheio, usuario, f"{r} viu {alheio}")
+            self.assertIn("Regras comuns aos revisores", sistema)
+            self.assertNotIn("Você nunca escreve número", sistema)
+        self.assertIn("| id | fato |", prim["validador_constitucional"][0])
+        self.assertIn('"fatos": [', prim["revisor_independente"][0])
+        self.assertNotIn("| id | fato |", prim["revisor_independente"][0])
+        self.assertIn("Histórico publicado na gold", prim["terceiro_revisor"][0])
+        self.assertNotIn("| id | fato |", prim["terceiro_revisor"][0])
+        self.assertNotIn('"fatos": [', prim["terceiro_revisor"][0])
+
+    def test_configuracao_versionada_cumpre_a_independencia(self):
+        cfg = oq._config()
+        self.assertEqual(oq.verificar_independencia(cfg), [])
+        modelos = [cfg["papeis"][r]["modelo"] for r in oq.REVISORES]
+        self.assertEqual(len(set(modelos)), 3)
+
+    def test_configuracao_sem_independencia_e_recusada(self):
+        cfg = copy.deepcopy(oq._config())
+        cfg["papeis"]["terceiro_revisor"] = dict(cfg["papeis"]["revisor_independente"])
+        self.assertTrue(oq.verificar_independencia(cfg))
+        original = oq._config
+        oq._config = lambda: cfg
+        try:
+            with self.assertRaises(ValueError):
+                oq.executar(self.ciclo, backend_simulado([]), GOLD_FIXA)
+        finally:
+            oq._config = original
 
     def test_modo_manual_para_na_primeira_etapa_e_retoma(self):
         e = oq.executar(self.ciclo, oq.backend_manual, GOLD_FIXA)
         self.assertEqual(e["pendente"], "analista_familias")
-        self.assertTrue(os.path.exists(os.path.join(self.ciclo, "prompts", "analista_familias.md")))
         with open(os.path.join(self.ciclo, "saidas", "analista_familias.md"), "w", encoding="utf-8") as f:
             f.write(ANALISTA)
         e = oq.executar(self.ciclo, oq.backend_manual, GOLD_FIXA)
@@ -245,38 +297,192 @@ class Orquestrador(unittest.TestCase):
         with self.assertRaises(PermissionError):
             oq._gravar(self.ciclo, "../../../pipeline/x.py", "x")
 
-    def test_prompt_de_sistema_traz_constituicao_e_regras(self):
-        s = oq.sistema_do_papel("analista_familias")
-        self.assertIn("Constituição editorial", s)
-        self.assertIn("Você nunca escreve número", s)
+    def test_parecer_sem_decisao_conta_como_devolucao(self):
+        self.assertEqual(oq.decisao_do_parecer("tudo certo"), "sem_decisao")
+        self.assertEqual(oq.decisao_do_parecer("ITEM [leve]: a | b | c\nDECISÃO: aprovar"), "aprovar")
+
+    def test_decisao_derivada_dos_itens_e_nao_da_linha(self):
+        grave, moderada = "ITEM [grave]: a | b | c\n", "ITEM moderada: a | b | c\n"
+        for papel in ("revisor_independente", "terceiro_revisor"):
+            self.assertEqual(oq.decisao_do_parecer(grave + "DECISÃO: aprovar", papel), "devolver")
+            self.assertEqual(oq.decisao_do_parecer(moderada + "DECISÃO: devolver", papel), "aprovar")
+            self.assertEqual(oq.decisao_do_parecer("DECISÃO: aprovar", papel), "aprovar")
+            self.assertEqual(oq.decisao_do_parecer("sem formato", papel), "sem_decisao")
+        v = "validador_constitucional"
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: falha: x\nDECISÃO: aprovar", v), "devolver")
+        self.assertEqual(oq.decisao_do_parecer("C1: ok\nC2: ok\nDECISÃO: devolver", v), "aprovar")
+
+    def test_historico_do_terceiro_revisor_traz_a_variacao_real_e_a_formula(self):
+        h = oq.historico_bruto(GOLD_FIXA, "2026-07")
+        self.assertIn("yoy_real", h)
+        self.assertIn("SGS 433", h)
+
+
+class Auditor(unittest.TestCase):
+    def setUp(self):
+        os.makedirs(oq.NOTAS, exist_ok=True)
+        self.base = tempfile.mkdtemp(prefix="teste_", dir=oq.NOTAS)
+        self.ciclo = os.path.join(self.base, "2026-07")
+        oq.executar(self.ciclo, backend_simulado([]), GOLD_FIXA)
+
+    def tearDown(self):
+        shutil.rmtree(self.base, ignore_errors=True)
+
+    def test_nota_aprovada_integra_passa(self):
+        r = auditor.auditar_ciclo(self.ciclo)
+        self.assertEqual(r["erros_factuais"], [])
+        self.assertEqual(r["fatos_revisados_pela_fonte"] is None or r["fatos_revisados_pela_fonte"] >= 0, True)
+
+    def test_texto_editado_a_mao_e_erro(self):
+        path = os.path.join(self.ciclo, "nota_final.md")
+        with open(path, encoding="utf-8") as f:
+            t = f.read()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(t.replace("4,88%", "4,98%"))
+        r = auditor.auditar_ciclo(self.ciclo)
+        self.assertTrue(any("renderização" in e["problema"] for e in r["erros_factuais"]))
+
+    def test_fato_que_nao_reproduz_na_gold_e_erro_e_vira_errata(self):
+        pp = os.path.join(self.ciclo, "pacote.json")
+        with open(pp, encoding="utf-8") as f:
+            p = json.load(f)
+        next(x for x in p["fatos"] if x["id"] == "inad_total.nivel")["valor"] = 4.99
+        p["sha256_fatos"] = fc.sha256_fatos(p["fatos"])
+        with open(pp, "w", encoding="utf-8") as f:
+            json.dump(p, f)
+        r = auditor.auditar_ciclo(self.ciclo)
+        self.assertTrue(any(e.get("fato") == "inad_total.nivel" for e in r["erros_factuais"]))
+        reg = os.path.join(self.base, "registro.json")
+        with open(reg, "w", encoding="utf-8") as f:
+            json.dump({"erros": []}, f)
+        novos = auditor.registrar(self.ciclo, r, reg)
+        self.assertTrue(novos)
+        self.assertTrue(os.path.exists(os.path.join(self.ciclo, "errata.md")))
+        self.assertTrue(registro.erro_relevante_publicado(registro.carregar(reg), "conjuntura"))
+        self.assertEqual(auditor.registrar(self.ciclo, r, reg), [])  # não duplica
+
+    def test_nota_rejeitada_nao_e_auditada(self):
+        d = os.path.join(self.ciclo, "decisao.json")
+        with open(d, encoding="utf-8") as f:
+            x = json.load(f)
+        x["decisao"] = "rejeitada"
+        with open(d, "w", encoding="utf-8") as f:
+            json.dump(x, f)
+        self.assertFalse(auditor.auditar_ciclo(self.ciclo)["auditavel"])
 
 
 class Degrau(unittest.TestCase):
-    def _m(self, base, limpo=True, retro=False, sentinela_ok=True):
+    SEM = {"recall_painel": 0.95, "rejeicao_indevida": 0}
+
+    def _m(self, base, erros=0, retro=False, aprovada=True, comprometida=False):
         return {"data_base": base, "retrospectivo": retro,
-                "editor": {"preenchido": True, "erros_factuais_encontrados": 0 if limpo else 1},
-                "validador_mecanico": {"decisao_final": "aprovar"},
-                "sentinelas": {"recall_numerico": 1 if sentinela_ok else 0.9, "falso_bloqueio": 0, "n_casos": 60}}
+                "revisores": {"decisao_final": "aprovada" if aprovada else "rejeitada", "independencia_comprometida": comprometida},
+                "auditoria": {"auditado": True, "erros_factuais": erros},
+                "sentinelas": {"recall_numerico": 1, "falso_bloqueio": 0, "n_casos": 35}}
 
-    def test_seis_ciclos_limpos_promovem(self):
-        ms = [self._m(f"2026-{i:02d}") for i in range(1, 7)]
-        self.assertEqual(metricas.degrau(ms, {"erros": []})["degrau"], 2)
+    def test_tres_ciclos_limpos_com_bateria_semantica_promovem(self):
+        ms = [self._m(f"2026-{i:02d}", retro=i < 3) for i in range(1, 4)]
+        self.assertEqual(metricas.degrau(ms, {"erros": []}, semantica=self.SEM)["degrau"], 2)
 
-    def test_erro_zera_a_contagem_e_retro_nao_conta(self):
-        ms = [self._m(f"2026-{i:02d}") for i in range(1, 7)]
-        ms[3] = self._m("2026-04", limpo=False)
-        ms.append(self._m("2025-12", retro=True))
-        d = metricas.degrau(ms, {"erros": []})
-        self.assertEqual((d["degrau"], d["ciclos_limpos_consecutivos"]), (1, 2))
+    def test_sem_bateria_semantica_nao_promove(self):
+        ms = [self._m(f"2026-{i:02d}") for i in range(1, 5)]
+        self.assertEqual(metricas.degrau(ms, {"erros": []})["degrau"], 1)
+
+    def test_erro_do_auditor_zera_a_contagem(self):
+        ms = [self._m(f"2026-{i:02d}") for i in range(1, 6)]
+        ms[3] = self._m("2026-04", erros=1)
+        d = metricas.degrau(ms, {"erros": []}, semantica=self.SEM)
+        self.assertEqual((d["degrau"], d["ciclos_limpos_consecutivos"]), (1, 1))
+
+    def test_rejeitada_nao_conta_nem_quebra(self):
+        ms = [self._m("2026-01"), self._m("2026-02", aprovada=False), self._m("2026-03"), self._m("2026-04")]
+        self.assertEqual(metricas.degrau(ms, {"erros": []}, semantica=self.SEM)["ciclos_limpos_consecutivos"], 3)
+
+    def test_independencia_comprometida_nao_conta_como_limpo(self):
+        ms = [self._m(f"2026-{i:02d}", comprometida=i == 3) for i in range(1, 4)]
+        self.assertEqual(metricas.degrau(ms, {"erros": []}, semantica=self.SEM)["degrau"], 1)
+
+    def test_resumo_ignora_ciclo_no_formato_anterior_a_v2(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        os.makedirs(os.path.join(tmp, "retro", "2026-06"))
+        with open(os.path.join(tmp, "retro", "2026-06", "metricas.json"), "w", encoding="utf-8") as f:
+            json.dump({"ciclo": "2026-06", "data_base": "2026-06", "editor": {}}, f)
+        self.assertEqual(metricas.main([tmp]), 0)
 
     def test_erro_relevante_publicado_rebaixa(self):
-        ms = [self._m(f"2026-{i:02d}") for i in range(1, 8)]
+        ms = [self._m(f"2026-{i:02d}") for i in range(1, 5)]
         reg = {"erros": [{"tipo_nota": "conjuntura", "gravidade": "relevante", "publicado": True}]}
-        self.assertEqual(metricas.degrau(ms, reg)["degrau"], 1)
+        self.assertEqual(metricas.degrau(ms, reg, semantica=self.SEM)["degrau"], 1)
 
-    def test_bateria_pequena_ou_incompleta_nao_promove(self):
-        ms = [self._m(f"2026-{i:02d}", sentinela_ok=False) for i in range(1, 8)]
-        self.assertEqual(metricas.degrau(ms, {"erros": []})["degrau"], 1)
+
+class BateriaSemantica(unittest.TestCase):
+    def test_nota_base_passa_no_validador_mecanico(self):
+        with open(os.path.join(ss.DIR, "nota_base.md"), encoding="utf-8") as f:
+            self.assertEqual(vd.validar(f.read(), PACOTE)["decisao"], "aprovar")
+
+    def test_casos_aplicam_uma_vez_e_nao_criam_numero(self):
+        """O renderizador garante os números: caso que cria ou troca número mede erro que não existe."""
+        from collections import Counter
+        final, _ = ss.base()
+        num = lambda t: Counter(__import__("re").findall(r"\d+(?:,\d+)?", t))
+        for c in ss.casos():
+            nota = ss.aplicar(c, final)
+            self.assertNotEqual(nota, final, c["id"])
+            self.assertFalse(num(nota) - num(final), c["id"])
+
+    def test_atribuicao_exige_citar_o_trecho_plantado(self):
+        final, _ = ss.base()
+        caso = {"id": "X", "substituir": [["A inadimplência acima de noventa dias", "A inadimplência acima de sessenta dias"]]}
+        self.assertTrue(ss.atribuido(caso, 'ITEM [grave]: "acima de sessenta dias" | x | y', final))
+        self.assertFalse(ss.atribuido(caso, "ITEM [grave]: outra frase qualquer da nota | x | y", final))
+        omissao = {"id": "Y", "substituir": [["Os fatos do pacote não identificam a causa. ", ""]]}
+        self.assertIsNone(ss.atribuido(omissao, "qualquer parecer", final))
+
+    def test_trecho_ambiguo_falha_alto(self):
+        with self.assertRaises(ValueError):
+            ss.aplicar({"id": "X", "substituir": [["no mês", "em doze meses"]]}, ss.base()[0])
+
+    def test_avaliar_mede_recall_rejeicao_indevida_e_erro_correlacionado(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        os.makedirs(os.path.join(tmp, "saidas"))
+        casos = ss.casos()
+        erros = [c["id"] for c in casos if c["esperado"] == "devolver"]
+        limpos = [c["id"] for c in casos if c["esperado"] == "aprovar"]
+        perdido, meio = erros[0], erros[1]
+        for c in casos:
+            for r in oq.REVISORES:
+                if c["id"] == perdido or c["id"] in limpos:
+                    d = "aprovar"
+                elif c["id"] == meio:
+                    d = "devolver" if r == oq.REVISORES[2] else "aprovar"
+                else:
+                    d = "devolver"
+                texto = "ITEM [grave]: x | y | z\n" if d == "devolver" else ""
+                with open(os.path.join(tmp, "saidas", f"{c['id']}__{r}.md"), "w", encoding="utf-8") as f:
+                    f.write(texto + f"DECISÃO: {d}\n")
+        # um controle sem decisão conta como devolução indevida
+        with open(os.path.join(tmp, "saidas", f"{limpos[0]}__{oq.REVISORES[0]}.md"), "w", encoding="utf-8") as f:
+            f.write("texto sem linha de decisão\n")
+        r = ss.avaliar(tmp)
+        self.assertEqual(r["respostas_faltando"], [])
+        self.assertEqual(r["recall_painel"], round((len(erros) - 1) / len(erros), 4))
+        self.assertEqual(len(r["perdidos_por_todos"]), 1)
+        self.assertTrue(r["perdidos_por_todos"][0].startswith(perdido))
+        self.assertEqual(r["rejeicao_indevida"], 1)
+        self.assertEqual(r["por_revisor"][oq.REVISORES[0]]["sem_decisao"], 1)
+        self.assertEqual(r["por_revisor"][oq.REVISORES[2]]["recall"], round((len(erros) - 1) / len(erros), 4))
+        self.assertTrue(os.path.exists(os.path.join(tmp, "resultado.json")))
+
+    def test_resposta_faltando_nao_entra_no_painel(self):
+        tmp = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, tmp)
+        os.makedirs(os.path.join(tmp, "saidas"))
+        r = ss.avaliar(tmp)
+        self.assertEqual(len(r["respostas_faltando"]), len(ss.casos()) * len(oq.REVISORES))
+        self.assertIsNone(r["recall_painel"])
+        self.assertFalse(metricas.degrau([], {"erros": []}, semantica=r)["degrau"] == 2)
 
 
 if __name__ == "__main__":

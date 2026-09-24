@@ -1,21 +1,23 @@
 # Constituição editorial do Observatório Brasileiro de Crédito
 
-Versão 1, proposta em 24/09/2026. Vale para todo agente, para o validador e para o editor chefe. Em conflito com qualquer outro documento, prevalece esta. Só o editor chefe altera este texto, por PR próprio.
+Versão 2, de 24/09/2026. Vale para todo agente, para o validador mecânico e para os revisores. Em conflito com qualquer outro documento, prevalece esta. Só o dono do projeto altera este texto, por PR próprio.
+
+Por decisão do dono do projeto, nenhuma etapa deste projeto tem revisão humana. Quem cumpre o papel que seria de um editor é um conjunto de revisores independentes, todos agentes, somado a regras verificáveis por código. Onde a versão 1 pedia julgamento humano, esta versão proíbe o tema ou exige verificação mecânica.
 
 ## Art. 1. Números
 
-1. Todo número publicado vem da camada gold determinística ou de um pacote de fatos derivado dela por fórmula declarada (diferença ou variação percentual entre dois valores da gold). Nenhum outro caminho.
+1. Todo número publicado vem da camada gold determinística (inclusive campo calculado pelo pipeline e publicado na gold com a fórmula declarada, como a variação real deflacionada pelo IPCA) ou de um pacote de fatos derivado dela por fórmula declarada (diferença ou variação percentual entre dois valores da gold). Nenhum outro caminho.
 2. Agente não calcula, estima, arredonda, converte nem digita número. O texto referencia fatos por identificador; o valor é inserido depois, mecanicamente, a partir do pacote.
-3. Exceção existente: valor transcrito de documento primário (Fase 2) só vale com trecho literal que contenha o valor, verificado por máquina, e aprovação registrada do editor. Transcrição não é cálculo.
+3. Exceção existente: valor transcrito de documento primário (Fase 2) só vale se o código confirmar que o trecho literal citado contém o valor. Transcrição não é cálculo.
 4. Revisão posterior da fonte não torna errada a nota antiga: a nota vale para a gold que a gerou, identificada por hash. A revisão é registrada, não apagada.
 
 ## Art. 2. Três classes de afirmação
 
 Todo parágrafo declara uma classe. Parágrafo sem classe é devolvido.
 
-- **Evidência**: afirma o que o dado mostra. Só contém fatos do pacote, cada um com fonte e data de referência.
+- **Evidência**: afirma o que o dado mostra. Só contém fatos do pacote, cada um com fonte e data de referência, ou declara lacuna.
 - **Inferência**: leitura sobre a evidência. Diz de que evidência parte e o que a refutaria.
-- **Recomendação**: o que fazer ou acompanhar. Nota rotineira de dados não recomenda.
+- **Recomendação**: não existe nas notas do Observatório.
 
 ## Art. 3. Ausência
 
@@ -23,42 +25,48 @@ Dado não medido, não coletado ou não acessado é declarado como lacuna, com m
 
 ## Art. 4. Rastreabilidade
 
-Toda nota publicada leva seu pacote de reprodutibilidade: hash dos arquivos gold, hash dos fatos, commit, comando de verificação e o registro do validador. Qualquer leitor refaz cada número com o mesmo resultado.
+Toda nota leva seu pacote de reprodutibilidade: hash dos arquivos gold, hash dos fatos, commit, comando de verificação, o registro do validador e o parecer de cada revisor. Qualquer leitor refaz cada número com o mesmo resultado.
 
-## Art. 5. Instituições nomeadas
+## Art. 5. Temas vedados
 
-1. Nota não atribui juízo de risco, solidez, conduta ou recomendação a instituição identificada.
-2. Faixas verbais de score ("risco elevado" e similares) não aparecem em texto sobre instituição nomeada.
-3. Métrica nominal só entra observada, com grupo de pares, data base e fonte, e sempre passa pelo editor chefe.
+Nenhuma nota trata dos temas abaixo. O validador mecânico bloqueia; não há exceção nem aprovação que a reverta.
 
-## Art. 6. Conflito de interesse
+1. Instituição financeira nomeada.
+2. FGC, garantias de depósito, regimes de resolução, liquidação ou intervenção.
+3. Open Finance e seus participantes.
+4. Tese nova ou interpretação que vá além de ler os fatos do pacote.
 
-1. O editor chefe é conselheiro do FGC e diretor da Associação Open Finance Brasil. Temas que envolvam instituição associada ou garantida nominalmente, o FGC, garantias de depósito, regimes de resolução ou participantes do Open Finance levam declaração de interesse na própria nota.
-2. Nesses temas o editor pode se declarar impedido; a nota então exige revisor humano substituto, registrado. Sem substituto, não publica.
+O motivo é de governança: o dono do projeto é conselheiro do FGC e diretor da Associação Open Finance Brasil, e sem revisão humana não há quem se declare impedido. O tema fica fora em vez de ficar sem salvaguarda.
+
+## Art. 6. Revisão independente
+
+1. Cada nota passa por três revisões por agente, depois do validador mecânico: o validador constitucional, o revisor independente e o terceiro revisor.
+2. Os revisores não veem os rascunhos, o raciocínio dos autores, as objeções do crítico nem o parecer um do outro.
+3. As três revisões diferem em pelo menos três destas características: modelo, fornecedor, evidência recebida, mandato e forma de apresentação dos dados. As características de cada uma ficam registradas no manifesto da nota.
+4. Nenhum revisor aprova número; a checagem de números é mecânica.
+5. A nota só é aprovada por unanimidade. Revisor devolve se e só se apontar item grave (o leitor sairia com crença falsa sobre um fato, ou há violação desta constituição); a decisão é derivada dos itens por código. Itens moderados e leves são sugestões registradas e não bloqueiam. Qualquer devolução volta à revisão; esgotado o limite de rodadas, a nota é rejeitada e não é publicada.
+6. Bloqueio do validador mecânico não é revertido por ninguém.
 
 ## Art. 7. Linguagem
 
-Português do Brasil com acentuação correta. Sem hífen nem travessão na prosa; número negativo usa o sinal de menos. Sem adjetivo valorativo sobre número ("forte", "preocupante", "recorde") sem régua declarada no pacote. Sem vocabulário de rating, recomendação de investimento ou previsão não publicada na gold.
+Português do Brasil com acentuação correta. Sem hífen nem travessão na prosa; número negativo usa o sinal de menos. Sem adjetivo valorativo sobre número ("forte", "preocupante", "recorde") sem régua declarada no pacote. Sem vocabulário de rating, recomendação ou previsão.
 
-## Art. 8. Validador
+## Art. 8. Validador mecânico
 
-1. O validador roda em contexto separado dos autores e não recebe o raciocínio deles, só a nota, o pacote e esta constituição.
-2. Decide aprovar, devolver ou bloquear, sempre com motivo escrito por item. Bloqueio só é revertido pelo editor chefe, por registro escrito.
-3. A checagem de números é mecânica. A checagem de afirmações contra esta constituição pode usar modelo, mas nunca aprova número.
+Código, sem modelo de linguagem. Decide aprovar, devolver ou bloquear, com motivo escrito por item. Bloqueia número digitado, fato inexistente, pacote adulterado, direção contrária ao sinal, número no recorte errado e tema vedado.
 
 ## Art. 9. Degraus de autonomia
 
-1. **Degrau 1**: toda nota passa pelo editor chefe antes de publicar.
-2. **Degrau 2**: nota rotineira de dados publica após o validador, se o tipo de nota tiver histórico sem erro factual pelo número mínimo de ciclos fixado pelo editor.
-3. **Degrau 3**: interpretação, tese nova e tema dos arts. 5 e 6 sempre com o editor, em qualquer histórico.
-4. Promoção só por evidência medida e registrada. Erro relevante rebaixa o tipo de nota ao degrau 1 automaticamente e zera a contagem.
+1. **Degrau 1**: nota aprovada fica só no repositório (`notas/`).
+2. **Degrau 2**: nota aprovada é publicada no site, quando o tipo de nota cumprir, de forma medida e registrada: pelo menos três ciclos consecutivos sem erro factual achado pelo auditor; os revisores, em conjunto, pegando pelo menos 90% dos erros semânticos plantados; e nenhuma rejeição indevida nos controles limpos.
+3. Erro relevante publicado devolve o tipo de nota ao degrau 1 automaticamente e zera a contagem.
 
 ## Art. 10. Erro
 
-1. **Erro factual**: número, data de referência, fonte, sinal, unidade ou atribuição diferente do pacote.
-2. **Erro relevante**: erro factual publicado, ou violação dos arts. 5 ou 6.
-3. Erro publicado recebe errata datada no mesmo endereço, sem apagar o texto original, e entra no registro público de erros.
+1. **Erro factual**: número, data de referência, fonte, sinal, unidade, definição ou atribuição diferente do pacote.
+2. **Erro relevante**: erro factual publicado, ou nota publicada sobre tema vedado.
+3. O auditor confere todo mês cada nota aprovada contra a gold e a fonte primária. Erro achado por ele, por um revisor ou por leitor gera errata datada no mesmo endereço, sem apagar o texto original, e entra no registro público de erros.
 
 ## Art. 11. Fronteira
 
-Agentes leem a gold publicada e escrevem só na área de notas. Não escrevem no pipeline, na gold, em `public/` nem no ramo principal. Nada que um agente produza altera um número do Observatório.
+Agentes leem a gold publicada e escrevem só em `notas/`. Não escrevem no pipeline, na gold, em `public/` nem no ramo principal. Nada que um agente produza altera um número do Observatório.

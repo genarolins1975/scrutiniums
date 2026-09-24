@@ -1,0 +1,2 @@
+ITEM grave: "com preocupante alta de 0,92 p.p. em doze meses e de 0,30 p.p. no mês" | "Preocupante" é adjetivo valorativo aplicado a um número sem régua declarada no pacote de fatos. O Art. 7 da constituição veda expressamente vocabulário valorativo sobre número sem régua declarada e cita justamente "preocupante" como exemplo do que é proibido; a nota viola a constituição. | Remover o adjetivo e manter a frase só com o fato numérico, por exemplo: "com alta de 0,92 p.p. em doze meses e de 0,30 p.p. no mês", sem juízo de valor.
+DECISÃO: devolver

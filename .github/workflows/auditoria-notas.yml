@@ -1,0 +1,76 @@
+name: Auditoria das notas
+
+# Constituição v2, art. 10.3: sem revisão humana, o auditor confere todo mês cada nota
+# aprovada contra a gold que a gerou, o texto renderizado e a versão atual do validador.
+# Erro factual vira errata no ciclo e entrada no registro público de erros (commit do
+# bot), e abre issue. Revisão posterior da fonte não é erro: fica só contada.
+on:
+  schedule:
+    - cron: "0 12 5 * *" # dia 5, 09:00 em São Paulo
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: auditoria-notas
+  cancel-in-progress: false
+
+jobs:
+  auditar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (histórico completo, para ler a gold de cada commit)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Auditar notas aprovadas
+        id: auditar
+        run: |
+          set +e
+          python3 -m pesquisa.auditor notas --registrar --fonte
+          echo "codigo=$?" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Registrar auditoria
+        run: |
+          git config user.name "auditoria-notas[bot]"
+          git config user.email "pipeline@scrutiniums.com"
+          git add notas pesquisa/registro_erros.json
+          if git diff --cached --quiet; then
+            echo "Sem mudança na auditoria."
+            exit 0
+          fi
+          git commit -m "Auditoria mensal das notas (automática)"
+          for tentativa in 1 2 3 4; do
+            git pull --rebase origin main && git push && exit 0
+            sleep $((tentativa * 5))
+          done
+          echo "::error::não foi possível registrar a auditoria"
+          exit 1
+
+      - name: Abrir issue de erro factual
+        if: steps.auditar.outputs.codigo == '3'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITULO="Auditoria achou erro factual em nota aprovada"
+          CORPO="Execução: ${RUN_URL}
+
+          O auditor encontrou erro factual numa nota aprovada. A errata foi gravada no ciclo e o erro
+          entrou em pesquisa/registro_erros.json; o tipo de nota volta ao degrau 1."
+          EXISTENTE=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open \
+            --search "\"$TITULO\" in:title" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTENTE" ]; then
+            gh issue comment "$EXISTENTE" --repo "$GITHUB_REPOSITORY" --body "Nova ocorrência: ${RUN_URL}"
+          else
+            gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITULO" --body "$CORPO"
+          fi

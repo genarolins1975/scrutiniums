@@ -5,8 +5,9 @@ Confere a FONTE da nota (com marcadores) contra o pacote de fatos e contra a con
 
     bloquear  falha em M1 (pacote), M2 (fato inexistente), M3 (número digitado),
               M6 (direção contrária ao sinal) ou M11 (número no recorte errado)
+              ou M10 (tema vedado)
     devolver  qualquer outra falha
-    aprovar   nenhuma falha (no degrau 1, aprovar = encaminhar ao editor)
+    aprovar   nenhuma falha (a nota segue para as três revisões independentes)
 
 Checagens:
     M1  pacote íntegro e o mesmo declarado na nota; opcionalmente reproduzível na gold
@@ -14,14 +15,13 @@ Checagens:
     M3  nenhum dígito fora de marcador (nem em título, nem em data)
     M4  fato com defasagem própria vem com a data de referência no mesmo parágrafo
     M5  classe em todo parágrafo; Evidência e Inferência citam fato; Inferência declara
-        o que a refutaria; nota rotineira sem Recomendação
+        o que a refutaria; nenhuma Recomendação
     M6  palavra de direção coerente com o sinal do fato; valor sem sinal exige direção
     M7  léxico proibido: rating, recomendação, previsão, adjetivo valorativo sem régua,
         faixa verbal de risco
     M8  hífen ou travessão na prosa
     M9  lacunas do pacote declaradas quando existem
-    M10 tema sensível (instituição nomeada, FGC, Open Finance, resolução) exige degrau 3
-        e declaração de interesse
+    M10 tema vedado (instituição nomeada, FGC, Open Finance, resolução): bloqueia sempre
     M11 recorte: o texto que antecede o número fala da mesma série e do mesmo segmento
 
 Uso: python3 -m pesquisa.validador nota.md --pacote pacote.json [--gold DIR] [--saida validacao.json]
@@ -35,9 +35,8 @@ import sys
 from pesquisa import fatos_conjuntura as fc
 from pesquisa import nota as nt
 
-VERSAO = "validador_mecanico_v2"
-BLOQUEIAM = {"M1", "M2", "M3", "M6", "M11"}
-TIPOS_ROTINEIROS = {"conjuntura"}
+VERSAO = "validador_mecanico_v3"
+BLOQUEIAM = {"M1", "M2", "M3", "M6", "M10", "M11"}
 FRASE_REFUTACAO = "Refutaria esta leitura:"
 
 DIRECAO = {
@@ -59,7 +58,8 @@ PROIBIDOS = [
 ]
 
 SENSIVEIS = ["FGC", "Fundo Garantidor", "Open Finance", "garantia de depósito", "garantias de depósito",
-             "liquidação extrajudicial", "RAET", "intervenção", "regime de resolução", "regimes de resolução"]
+             "liquidação extrajudicial", "RAET", "intervenção", "regime de resolução", "regimes de resolução",
+             "resolução bancária", "Associação Open Finance"]
 INSTITUICOES = ["Itaú", "Bradesco", "Santander", "Caixa Econômica", "Banco do Brasil", "Nubank", "BTG",
                 "Sicredi", "Sicoob", "Banrisul", "C6 Bank", "PicPay", "Mercado Pago", "PagBank", "Stone",
                 "XP", "Safra", "Votorantim", "Daycoval", "BMG", "Agibank", "Pan", "Inter"]
@@ -178,8 +178,8 @@ def _m5(cab, blocos, fatos):
             out.append(_item("M5", b["linha"], "parágrafo de inferência sem nenhum fato do pacote"))
         if b["classe"] == "INFERÊNCIA" and FRASE_REFUTACAO not in b["texto"]:
             out.append(_item("M5", b["linha"], f"inferência sem declarar o que a refutaria ('{FRASE_REFUTACAO}')"))
-        if b["classe"] == "RECOMENDAÇÃO" and cab.get("tipo") in TIPOS_ROTINEIROS:
-            out.append(_item("M5", b["linha"], "nota rotineira de dados não recomenda"))
+        if b["classe"] == "RECOMENDAÇÃO":
+            out.append(_item("M5", b["linha"], "notas do Observatório não recomendam (constituição, art. 2)"))
     return out
 
 
@@ -273,20 +273,15 @@ def _m9(blocos, pacote):
 
 
 def _m10(cab, blocos, nomes_instituicoes):
+    """Tema vedado (constituição v2, art. 5): bloqueia sempre. Sem revisão humana não há
+    quem se declare impedido, então o tema fica fora da nota em qualquer degrau."""
     achados = set()
     for b in blocos:
         resto = _sem_marcadores(b["texto"])
         for termo in SENSIVEIS + list(nomes_instituicoes):
             if re.search(rf"(?<![\wÀ-ú]){re.escape(termo)}(?![\wÀ-ú])", resto):
                 achados.add(termo)
-    if not achados:
-        return []
-    out = []
-    if str(cab.get("degrau")) != "3":
-        out.append(_item("M10", None, f"tema sensível ({', '.join(sorted(achados))}) exige degrau 3"))
-    if not cab.get("declaracao_interesse"):
-        out.append(_item("M10", None, "tema sensível exige declaração de interesse do editor"))
-    return out
+    return [_item("M10", None, f"tema vedado: {termo}") for termo in sorted(achados)]
 
 
 def _m11(blocos, fatos):

@@ -1,0 +1,23 @@
+{
+ "validador_constitucional": {
+  "modelo": "claude-opus-5",
+  "fornecedor": "anthropic",
+  "evidencia": "fatos do pacote",
+  "apresentacao": "tabela markdown",
+  "mandato": "conformidade à constituição"
+ },
+ "revisor_independente": {
+  "modelo": "claude-sonnet-5",
+  "fornecedor": "anthropic",
+  "evidencia": "fatos do pacote com ponteiros para a gold",
+  "apresentacao": "JSON",
+  "mandato": "fidelidade à evidência"
+ },
+ "terceiro_revisor": {
+  "modelo": "claude-fable-5-1",
+  "fornecedor": "anthropic",
+  "evidencia": "histórico bruto das séries na gold",
+  "apresentacao": "série mensal",
+  "mandato": "leitor cético"
+ }
+}

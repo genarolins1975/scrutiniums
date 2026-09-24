@@ -1,7 +1,7 @@
 ---
 tipo: conjuntura
 data_base: 2026-07
-pacote_sha256: 22a616c90b1aa5b52c53290b90edeaa4ad21951d20f0b12f07e1b21abe208257
+pacote_sha256: e0c39bc7981548688ac604396222743f446cc2869ef97af64d0a5f7a4335e36c
 degrau: 1
 declaracao_interesse:
 ---

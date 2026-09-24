@@ -1,0 +1,126 @@
+{
+ "n_casos_com_erro": 14,
+ "n_controles": 4,
+ "respostas_faltando": [],
+ "regra_de_decisao": "revisores no formato ITEM devolvem se e só se houver item grave (orquestrador.decisao_do_parecer)",
+ "decisao_declarada_incoerente_com_itens": [],
+ "por_revisor": {
+  "validador_constitucional": {
+   "recall": 1.0,
+   "recall_atribuido": 1.0,
+   "rejeicao_indevida": 0,
+   "sem_decisao": 0
+  },
+  "revisor_independente": {
+   "recall": 0.7857,
+   "recall_atribuido": 0.8462,
+   "rejeicao_indevida": 0,
+   "sem_decisao": 0
+  },
+  "terceiro_revisor": {
+   "recall": 0.7857,
+   "recall_atribuido": 0.8462,
+   "rejeicao_indevida": 1,
+   "sem_decisao": 0
+  }
+ },
+ "recall_painel": 1.0,
+ "recall_painel_atribuido": 1.0,
+ "n_atribuiveis": 13,
+ "nao_vistos_por_nenhum": [],
+ "rejeicao_indevida": 1,
+ "perdidos_por_todos": [],
+ "por_categoria": {
+  "definicao": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 2,
+   "terceiro_revisor": 2
+  },
+  "horizonte": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 2,
+   "terceiro_revisor": 1
+  },
+  "atribuicao": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 2,
+   "terceiro_revisor": 2
+  },
+  "causalidade": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 2,
+   "terceiro_revisor": 2
+  },
+  "selecao": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 0,
+   "terceiro_revisor": 1
+  },
+  "generalizacao": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 0,
+   "terceiro_revisor": 0
+  },
+  "juizo": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
+  },
+  "previsao_disfarcada": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
+  },
+  "tema_vedado_indireto": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
+  }
+ },
+ "concordancia_par_a_par": {
+  "validador_constitucional×revisor_independente": 0.8333,
+  "validador_constitucional×terceiro_revisor": 0.7778,
+  "revisor_independente×terceiro_revisor": 0.8333
+ },
+ "revisores": {
+  "validador_constitucional": {
+   "modelo": "claude-opus-5",
+   "fornecedor": "anthropic",
+   "evidencia": "fatos do pacote",
+   "apresentacao": "tabela markdown",
+   "mandato": "conformidade à constituição"
+  },
+  "revisor_independente": {
+   "modelo": "claude-sonnet-5",
+   "fornecedor": "anthropic",
+   "evidencia": "fatos do pacote com ponteiros para a gold",
+   "apresentacao": "JSON",
+   "mandato": "fidelidade à evidência"
+  },
+  "terceiro_revisor": {
+   "modelo": "claude-fable-5-1",
+   "fornecedor": "anthropic",
+   "evidencia": "histórico bruto das séries na gold",
+   "apresentacao": "série mensal",
+   "mandato": "leitor cético"
+  }
+ }
+}

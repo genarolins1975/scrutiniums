@@ -1,0 +1,2 @@
+ITEM leve: O spread médio ficou em 20,88 p.p., com queda de 0,98 p.p. | o horizonte da queda (no mês) não é declarado explicitamente nesta frase, ao contrário da frase anterior sobre a taxa média, que diz "no mês"; a variação de 12 meses do mesmo spread também existe no pacote (+0,31 p.p.), o que torna a omissão do horizonte uma imprecisão de forma, ainda que o valor citado (−0,98 p.p.) só corresponda à variação no mês | acrescentar "no mês" após "com queda de 0,98 p.p.", no mesmo padrão da frase anterior
+DECISÃO: aprovar

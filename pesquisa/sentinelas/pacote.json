@@ -92,7 +92,7 @@
    "unidade": "%",
    "texto": "+4,8%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20539",
+   "fonte": "BCB/SGS 20539 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "4,8%",
    "sinal": "+",
    "origem": {
@@ -171,7 +171,7 @@
    "unidade": "%",
    "texto": "+6,1%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20541",
+   "fonte": "BCB/SGS 20541 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "6,1%",
    "sinal": "+",
    "origem": {
@@ -250,7 +250,7 @@
    "unidade": "%",
    "texto": "+2,8%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20540",
+   "fonte": "BCB/SGS 20540 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "2,8%",
    "sinal": "+",
    "origem": {
@@ -302,7 +302,7 @@
    "unidade": "%",
    "texto": "+8,6%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20631",
+   "fonte": "BCB/SGS 20631 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "8,6%",
    "sinal": "+",
    "origem": {
@@ -354,7 +354,7 @@
    "unidade": "%",
    "texto": "+6,5%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20633",
+   "fonte": "BCB/SGS 20633 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "6,5%",
    "sinal": "+",
    "origem": {
@@ -406,7 +406,7 @@
    "unidade": "%",
    "texto": "+11,2%",
    "data_ref": "2026-07",
-   "fonte": "BCB/SGS 20632",
+   "fonte": "BCB/SGS 20632 deflacionada pelo IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)",
    "texto_abs": "11,2%",
    "sinal": "+",
    "origem": {
@@ -1257,7 +1257,7 @@
    ]
   }
  ],
- "sha256_fatos": "22a616c90b1aa5b52c53290b90edeaa4ad21951d20f0b12f07e1b21abe208257",
+ "sha256_fatos": "e0c39bc7981548688ac604396222743f446cc2869ef97af64d0a5f7a4335e36c",
  "lacunas": [],
  "defasagens": [
   {

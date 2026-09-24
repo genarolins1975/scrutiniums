@@ -4,6 +4,8 @@
 
 > **Atualização do mesmo dia.** Por decisão do editor, as correções e as melhorias propostas foram executadas neste ramo. O que foi feito, o que se mediu e o que continua pendente estão na seção 7. As seções 1 a 6 ficam como diagnóstico da manhã de 24/09/2026 e não foram reescritas.
 
+> **Segunda atualização do mesmo dia.** O dono do projeto decidiu que não haverá revisão humana em nenhuma etapa. O papel de editor deixa de existir; o que as seções anteriores atribuem ao editor passa a ser cumprido por três revisores agentes independentes, por regras verificáveis por código e por um auditor em código. A execução e as medidas estão na seção 8, que prevalece sobre as seções 1 a 7 onde houver conflito.
+
 ---
 
 ## Sumário executivo
@@ -555,3 +557,80 @@ Camada de pesquisa: 49 testes. Pipeline: 21 testes. Todos rodam no CI e antes da
 - **Gold publicada.** Ainda é a anterior às correções; a regra nominal e os demais ajustes entram na primeira execução diária depois do merge.
 - **Ciclos 1 a 3 (PR 7).** Dependem de data base nova do BCB e da execução com a API ou em modo manual; o calendário de divulgação não foi consultado.
 
+
+---
+
+## 8. Governança sem revisão humana (24/09/2026)
+
+**Decisão (E).** O dono do projeto determinou que nenhuma etapa terá revisão humana. A constituição passou à versão 2 (`docs/CONSTITUICAO.md`): onde a versão 1 pedia julgamento humano, a versão 2 proíbe o tema ou exige verificação mecânica. Temas vedados (instituição nomeada, FGC, garantias, resolução, liquidação, intervenção, Open Finance, tese nova) são bloqueados pelo validador mecânico (M10), sem exceção nem reversão.
+
+### a) Três revisores agentes, por unanimidade
+
+A regra está em `pesquisa/papeis/config.json` e é conferida por `orquestrador.verificar_independencia` antes de qualquer chamada: cada par de revisores difere em pelo menos três de cinco características. Configuração que não cumpre é recusada (teste `test_configuracao_sem_independencia_e_recusada`).
+
+| Revisor | Modelo | Evidência | Apresentação | Mandato |
+|---|---|---|---|---|
+| validador constitucional | `claude-opus-5` | fatos do pacote | tabela | conformidade à constituição (C1 a C5) |
+| revisor independente | `claude-sonnet-5` | fatos com ponteiros para a gold | JSON | fidelidade à evidência |
+| terceiro revisor | `claude-fable-5-1` | histórico bruto da gold (13 meses, com variação nominal e real) | série mensal | leitor cético |
+
+Os pares diferem em quatro características (modelo, evidência, apresentação e mandato); fornecedor é o mesmo nos três. Cada revisor roda em contexto isolado e não vê rascunhos nem o parecer dos outros. A decisão de cada revisor é derivada dos itens por código (`orquestrador.decisao_do_parecer`): só item grave devolve; moderadas e leves são sugestões registradas. A nota só sai com os três aprovando; sem unanimidade em três rodadas, é rejeitada.
+
+### b) Controles que substituem o editor
+
+| Antes (editor) | Agora | Onde |
+|---|---|---|
+| Aprovar a nota | Unanimidade dos três revisores | `pesquisa/orquestrador.py`, `decisao.json` por ciclo |
+| Achar erro depois de publicado | Auditor mensal em código: integridade, reprodução na gold de origem, validador atual, fonte primária | `pesquisa/auditor.py`, `.github/workflows/auditoria-notas.yml` (dia 5) |
+| Aprovar valor da curadoria Fase 2 | Portão mecânico: o valor precisa aparecer no trecho literal citado | `pipeline/curadoria.py`, `pipeline/tests/test_curadoria.py` |
+| Aprovar nomes do mapa de fontes | As 25 candidatas foram descartadas: sem prova mecânica de identidade, não entram | `config/mapa_nomes_fonte.json` v2 |
+| Decidir promoção de degrau | Critério em código: 3 ciclos aprovados e auditados sem erro factual, bateria mecânica perfeita e bateria semântica com painel pegando pelo menos 90% dos erros plantados e zero rejeição indevida | `pesquisa/metricas.degrau` |
+
+**Legado da curadoria (E).** 22 valores do guidance (20 de `bb_2025` e 2 de `itau_2025`), aprovados antes da constituição v2, falham no portão porque o trecho citado é resumido com "…". Ficam numa lista travada por teste (`LEGADO_SEM_TRECHO`): nada entra nela, e o que for corrigido tem de sair. Nenhum valor novo fora do legado viola o portão (`python3 -m pipeline.curadoria`: 0 violações em 24/09/2026).
+
+### c) Bateria semântica dos revisores: três rodadas
+
+A bateria mede o que o validador mecânico não vê. Cada caso planta um erro semântico, sem mexer em número, e os controles trazem paráfrases corretas. Os casos foram escritos por um agente de modelo distinto dos três revisores e do autor do código (Haiku). Cada rodada rodou 54 revisões isoladas (18 casos × 3 revisores), com o mesmo prompt de um ciclo real. **Recall atribuído** exige que o parecer cite o trecho plantado; devolver por outro motivo não conta. Arquivos: `pesquisa/sentinelas_semanticas/rodadas/<rodada>/resultado.json`.
+
+| Medida | Rodada 1 | Rodada 2 | Rodada 3 |
+|---|---|---|---|
+| Nota base | `nota_limpa.md` | `nota_base.md` (nova) | `nota_base.md` |
+| Regra de decisão | linha DECISÃO | linha DECISÃO | derivada dos itens (só grave devolve) |
+| Recall do painel (14 erros) | 100% | 100% | 100% |
+| Recall do painel atribuído | 92,9% (13 de 14) | 100% (13 de 13 atribuíveis) | 100% (13 de 13) |
+| Erros que nenhum revisor citou | SS10 (alusão indireta ao FGC) | nenhum | nenhum |
+| Rejeição indevida do painel (4 controles) | 4 | 4 | 1 |
+| Recall individual: validador, independente, terceiro | 100%, 92,9%, 100% | 100%, 85,7%, 100% | 100%, 78,6%, 78,6% |
+| Rejeição indevida individual | 4, 1, 4 | 0, 0, 4 | 0, 0, 1 |
+
+**O que cada rodada revelou (E).**
+
+1. **Rodada 1: a nota base tinha dois defeitos reais que eu, autor do código e da nota, não vi e o validador mecânico aprova.** (i) A inferência "a piora da qualidade da carteira não veio do custo do crédito no período" descarta uma causa a partir de dois dados do mesmo mês, e a inadimplência acima de 90 dias reflete atrasos de meses anteriores. Os três revisores apontaram. (ii) A variação real era atribuída só à série nominal (BCB/SGS 20539), sem o deflator. Como os dois defeitos estavam em todos os 18 casos, os 4 controles não eram limpos e o recall estava inflado: o SS10 foi devolvido pelos três só por causa da base, sem que nenhum parecer citasse a alusão plantada.
+2. **Correções da rodada 1.** A fonte da variação real passou a citar o deflator (`fatos_conjuntura.DEFLATOR`: IPCA acumulado em 12 meses, IBGE via BCB/SGS 433). A bateria semântica ganhou nota base própria, sem causalidade e com os dois horizontes onde o sinal muda. A bateria mecânica manteve `nota_limpa.md`, porque oito casos mecânicos dependem daquele parágrafo e o defeito é semântico. Os casos foram reescritos pelo mesmo autor independente, que refez quatro após a checagem mecânica: número alterado, trecho não único, controle que mexia na inferência e controle que trocava a definição do indicador.
+3. **Rodada 2: o terceiro revisor bloqueou todos os controles.** Três devoluções vieram de item grave sobre a variação real (o histórico que ele recebia omitia o campo `yoy_real` publicado na gold) e uma só de itens moderados. Com unanimidade e "na dúvida, devolva", um leitor cético bloqueia qualquer nota por pedido de contexto.
+4. **Correções da rodada 2.** O histórico do terceiro revisor passou a trazer `yoy_real` e a fórmula declarada na gold. A regra de decisão ficou objetiva: só item grave devolve, com a severidade definida pela consequência para o leitor (`papeis/comum_revisores.md`), e a decisão é derivada dos itens por código. Constituição art. 1.1 e art. 6.5 atualizados. Reclassificar mecanicamente os pareceres da rodada 2 pela regra nova daria rejeição indevida 3, e não 4 (`reclassificacao_regra_grave.json`). Isso é inferência, porque os revisores não conheciam a regra; por isso rodei a rodada 3 com prompts novos, decidida de antemão como a última deste PR.
+5. **Rodada 3.** Validador constitucional e revisor independente aprovaram os 4 controles. O terceiro revisor devolveu o SC03 com um item grave: a nota dá a taxa por segmento só no mês (pessoas jurídicas, alta de 0,24 p.p.) e omite que, em doze meses, a taxa das pessoas jurídicas caiu (−0,62 p.p. no pacote). O ponto existe na própria nota base e não foi levantado nos outros três controles.
+
+**Inferência (I).**
+
+- O desenho em três revisores funciona como rede: em todas as rodadas o painel pegou os 14 erros plantados. Na rodada 3, dois erros (SS09, omissão; SS11, generalização) foram pegos só pelo validador constitucional. A cobertura de seleção e generalização depende hoje de um único revisor.
+- O maior valor medido não veio dos casos plantados: os revisores acharam dois defeitos reais que o autor e o código deixaram passar. É a evidência mais forte a favor de revisão por agentes independentes.
+- A rejeição indevida remanescente é de calibração de severidade, não de erro de leitura: o terceiro revisor classificou como grave uma omissão de horizonte que é discutível. Ele aplica o critério de forma inconsistente (grave em 1 dos 4 controles com o mesmo trecho). Com unanimidade, uma nota real com esse padrão seria devolvida uma vez e corrigida na revisão; o custo é uma rodada, não uma nota errada publicada.
+- Pelo critério em código, o tipo de nota fica no degrau 1: rejeição indevida 1, contra o mínimo de zero, e nenhum ciclo real auditado.
+
+**Limites declarados (E).**
+
+- Os três revisores são do mesmo fornecedor; a quinta característica (fornecedor) depende de chave de outra API (`config.json`, campo `pendente`).
+- Os casos foram escritos por agente do mesmo fornecedor, e o autor independente teve quatro casos devolvidos por mim, o que é intervenção do autor do código na bateria.
+- Os casos de omissão são aplicados ao texto renderizado, e a tabela de fontes continua listando o fato removido. Isso dá ao revisor uma pista que o ciclo real não daria; dois pareceres do revisor independente a registraram como item leve e ainda assim aprovaram (SS09 e SS10 na rodada 2).
+- Uma única nota base, com 18 casos, dá intervalos largos: 1 caso muda o recall individual em 7,1 pontos.
+- O recall atribuído usa trigramas do trecho plantado; um parecer que parafraseia sem citar conta como não atribuído (subcontagem conservadora).
+- Os pareceres foram produzidos por subagentes em sessão, não pela API: tokens e custo por revisão não foram medidos.
+
+**Recomendação (R).**
+
+1. Manter o degrau 1: nada vai ao site até três ciclos reais aprovados e auditados e uma rodada da bateria com zero rejeição indevida.
+2. Configurar chave de outro fornecedor para o terceiro revisor e rodar a bateria de novo; é a diferença de independência que falta.
+3. Pedir ao autor independente uma segunda nota base e mais casos de seleção e generalização, as categorias em que dois dos três revisores falharam.
+4. Aplicar os casos de omissão à fonte da nota (antes da renderização), para que a tabela de fontes acompanhe o corte.
+5. Reextrair o trecho literal dos 22 valores do legado do guidance, para esvaziar a lista.

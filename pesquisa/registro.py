@@ -10,7 +10,7 @@ from datetime import date
 
 ARQUIVO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "registro_erros.json")
 GRAVIDADES = {"factual", "relevante"}
-CANAIS = {"teste", "vigilia", "sentinela_gold", "auditoria", "avaliacao", "editor", "validador", "leitor"}
+CANAIS = {"teste", "vigilia", "sentinela_gold", "auditoria", "avaliacao", "auditor", "revisor", "validador", "leitor"}
 TIPOS = {"numero", "rotulo", "atribuicao", "data", "texto", "ficcao", "sinal", "unidade", "fonte"}
 OBRIGATORIOS = ("id", "superficie", "descricao", "tipo", "gravidade", "publicado", "data_publicacao",
                 "data_deteccao", "canal_deteccao", "correcao", "fonte_registro", "tipo_nota")

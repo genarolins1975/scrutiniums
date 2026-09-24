@@ -37,18 +37,24 @@ novas viram comentários nela. Um cheque de vigília que quebre (código ≠ 0 e
 
 ## Mensal
 
+- `auditoria-notas.yml` (dia 5, 12:00 UTC): roda `pesquisa.auditor` sobre as
+  notas aprovadas (integridade, reprodução na gold de origem, validador
+  atual, fonte primária no SGS). Erro factual vira errata no ciclo, entrada no
+  registro público de erros e issue "Auditoria achou erro factual em nota
+  aprovada"; o tipo de nota volta ao degrau 1.
 - `boletim-mensal.yml` (dia 1º): envia o boletim da central de alertas.
   **Pendência de configuração:** exige o segredo `BOLETIM_SECRET` no GitHub
   Actions e a variável homônima na Vercel; sem eles a rota devolve 403.
 
-## O que permanece manual — e por quê
+## O que permanece manual, o que deixou de ser, e por quê
 
-1. **Aprovação das extrações da Fase 2** (clientes, quadro de pessoal por
-   divulgação própria). Manual **por desenho**: valor extraído de documento por
-   LLM só é publicado com status `aprovado`, evidência completa (documento,
-   página, trecho literal) e revisor registrado. Automatizar este portão
-   contrariaria a metodologia — a reconciliação curadoria↔gold é testada, e o
-   que não foi aprovado simplesmente não existe para o leitor.
+1. **Portão da Fase 2** (clientes, quadro de pessoal, custos de TI, folha e
+   guidance por divulgação própria). Desde a constituição v2 (24/09/2026) **não há
+   revisão humana**: valor extraído de documento só é publicado se o código
+   encontrar o próprio valor no trecho literal citado (`pipeline/curadoria.py`,
+   travado por teste antes de cada publicação). Os 22 valores de guidance aprovados
+   antes da regra, com trecho resumido, ficam listados como legado e não servem de
+   precedente.
 2. **Curadoria de bets e fraudes** (`pipeline/curated/*.json`). As fontes
    centrais (Panoramas SPA) são PDFs semestrais sem API; a atualização segue o
    processo do FONTES_BETS.md §7. O que foi automatizado é a **detecção**: a

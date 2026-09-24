@@ -369,7 +369,7 @@
   {
    "id": "S23",
    "categoria": "classe",
-   "descricao": "recomendação em nota rotineira",
+   "descricao": "recomendação em qualquer nota",
    "acrescentar": "[RECOMENDAÇÃO] Acompanhar a inadimplência das pessoas físicas, hoje em {{inad_pf.nivel}}.",
    "esperado": {
     "decisao": "devolver",
@@ -513,7 +513,7 @@
   {
    "id": "S32",
    "categoria": "tema_sensivel",
-   "descricao": "instituição nomeada no degrau 1",
+   "descricao": "instituição nomeada",
    "substituir": [
     [
      "nas modalidades de maior peso.",
@@ -521,7 +521,7 @@
     ]
    ],
    "esperado": {
-    "decisao": "devolver",
+    "decisao": "bloquear",
     "codigos": [
      "M10"
     ]
@@ -530,10 +530,10 @@
   {
    "id": "S33",
    "categoria": "tema_sensivel",
-   "descricao": "FGC mencionado sem declaração de interesse",
+   "descricao": "FGC mencionado",
    "acrescentar": "[EVIDÊNCIA] O saldo total de {{saldo_total.nivel}} não se confunde com a base coberta pelo FGC.",
    "esperado": {
-    "decisao": "devolver",
+    "decisao": "bloquear",
     "codigos": [
      "M10"
     ]
@@ -542,28 +542,18 @@
   {
    "id": "S34",
    "categoria": "tema_sensivel",
-   "descricao": "Open Finance mencionado sem declaração de interesse",
+   "descricao": "Open Finance mencionado",
    "acrescentar": "[EVIDÊNCIA] As concessões de {{concessoes_total.nivel}} não distinguem operações originadas via Open Finance.",
    "esperado": {
-    "decisao": "devolver",
+    "decisao": "bloquear",
     "codigos": [
      "M10"
     ]
    }
-  }
- ],
- "controles_limpos": [
-  {
-   "id": "L01",
-   "descricao": "nota limpa, sem alteração",
-   "esperado": {
-    "decisao": "aprovar",
-    "codigos": []
-   }
   },
   {
-   "id": "L02",
-   "descricao": "tema sensível no degrau 3 com declaração de interesse",
+   "id": "S35",
+   "descricao": "tema vedado mesmo com degrau 3 e declaração de interesse no cabeçalho (constituição v2 não tem exceção)",
    "substituir": [
     [
      "nas modalidades de maior peso.",
@@ -574,6 +564,19 @@
     "degrau": "3",
     "declaracao_interesse": "O editor chefe é conselheiro do FGC e diretor da Associação Open Finance Brasil."
    },
+   "esperado": {
+    "decisao": "bloquear",
+    "codigos": [
+     "M10"
+    ]
+   },
+   "categoria": "tema_sensivel"
+  }
+ ],
+ "controles_limpos": [
+  {
+   "id": "L01",
+   "descricao": "nota limpa, sem alteração",
    "esperado": {
     "decisao": "aprovar",
     "codigos": []

@@ -1,0 +1,221 @@
+{
+ "autor": "agente independente (modelo Haiku, distinto dos três revisores e do autor do validador), 24/09/2026, sobre nota_base.md; quatro casos devolvidos ao autor pela checagem mecânica (número alterado, trecho não único, controle que mexia na inferência, controle que trocava a definição do indicador) e refeitos por ele",
+ "casos": [
+  {
+   "id": "SS01",
+   "categoria": "definicao",
+   "descricao": "Altera a definição de inadimplência de 90+ dias para 60+ dias, mudando o indicador medido",
+   "substituir": [
+    [
+     "A inadimplência acima de noventa dias ficou em 4,88%",
+     "A inadimplência acima de sessenta dias ficou em 4,88%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS02",
+   "categoria": "definicao",
+   "descricao": "Transforma alta nominal em alta real sem ajuste inflacionário, alterando a definição do indicador",
+   "substituir": [
+    [
+     "com alta de 9,5% em doze meses em termos nominais",
+     "com alta de 9,5% em doze meses em termos reais"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS03",
+   "categoria": "horizonte",
+   "descricao": "Muda o horizonte de variação mensal para variação anual, alterando a interpretação da dinâmica recente",
+   "substituir": [
+    [
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%",
+     "Em doze meses, a carteira das pessoas físicas teve alta de 0,8%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS04",
+   "categoria": "horizonte",
+   "descricao": "Apaga o horizonte mensal, deixando ambas variações em doze meses e obscurecendo a queda recente da taxa",
+   "substituir": [
+    [
+     "com queda de 1,25 p.p. no mês e alta de 0,33 p.p. em doze meses",
+     "com queda de 1,25 p.p. e alta de 0,33 p.p. em doze meses"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS05",
+   "categoria": "atribuicao",
+   "descricao": "Atribui ao segmento de pessoas físicas o valor de concessões das pessoas jurídicas, mantendo o mesmo percentual",
+   "substituir": [
+    [
+     "nas pessoas jurídicas, alta de 16,2%",
+     "nas pessoas físicas, alta de 16,2%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS06",
+   "categoria": "atribuicao",
+   "descricao": "Troca os segmentos mantendo os percentuais, atribuindo ao segmento errado a variação correta",
+   "substituir": [
+    [
+     "Em doze meses, em termos nominais, a carteira das pessoas físicas teve alta de 10,8%, e a das pessoas jurídicas, alta de 7,4%",
+     "Em doze meses, em termos nominais, a carteira das pessoas jurídicas teve alta de 10,8%, e a das pessoas físicas, alta de 7,4%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS07",
+   "categoria": "causalidade",
+   "descricao": "Cria mecanismo causal não sustentado pelos fatos, inferindo relação entre inadimplência e endividamento",
+   "substituir": [
+    [
+     "Os fatos do pacote não identificam a causa.",
+     "Os fatos do pacote indicam pressão no endividamento como causa da inadimplência."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS08",
+   "categoria": "causalidade",
+   "descricao": "Introduz causa não sustentada pelos dados para explicar a queda diferenciada na taxa de juros",
+   "substituir": [
+    [
+     "a taxa teve queda de 1,97 p.p.; nas pessoas jurídicas, alta de 0,24 p.p.",
+     "a taxa teve queda de 1,97 p.p. por redução da demanda; nas pessoas jurídicas, alta de 0,24 p.p. por pressão competitiva"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS09",
+   "categoria": "selecao",
+   "descricao": "Omite a variação mensal que mostra queda em pessoas jurídicas, selecionando apenas o horizonte anual favorável",
+   "substituir": [
+    [
+     "Em doze meses, em termos nominais, a carteira das pessoas físicas teve alta de 10,8%, e a das pessoas jurídicas, alta de 7,4%. No mês, a carteira das pessoas físicas teve alta de 0,8%, e a das pessoas jurídicas, queda de 0,7%.",
+     "Em doze meses, em termos nominais, a carteira das pessoas físicas teve alta de 10,8%, e a das pessoas jurídicas, alta de 7,4%."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS10",
+   "categoria": "selecao",
+   "descricao": "Omite a queda mensal significativa, escolhendo o horizonte anual para sugerir pressão altista na taxa",
+   "substituir": [
+    [
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a., com queda de 1,25 p.p. no mês e alta de 0,33 p.p. em doze meses.",
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a., com alta de 0,33 p.p. em doze meses."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS11",
+   "categoria": "generalizacao",
+   "descricao": "Generaliza movimento específico do mês como padrão geral, abstraindo os números concretos",
+   "substituir": [
+    [
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%, e a das pessoas jurídicas, queda de 0,7%.",
+     "A carteira de crédito no mês mostra padrão misto de comportamento entre segmentos."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS12",
+   "categoria": "juizo",
+   "descricao": "Adiciona adjetivo valorativo sem que os valores em si determinem sua severidade conforme critérios objetivos",
+   "substituir": [
+    [
+     "A inadimplência acima de noventa dias ficou em 4,88%, alta de 0,92 p.p. em doze meses e de 0,30 p.p. no mês.",
+     "A inadimplência acima de noventa dias ficou em 4,88%, com preocupante alta de 0,92 p.p. em doze meses e de 0,30 p.p. no mês."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS13",
+   "categoria": "previsao_disfarcada",
+   "descricao": "Apresenta projeção de acentuação futura como se fosse leitura do passado",
+   "substituir": [
+    [
+     "A inadimplência subiu em doze meses nos dois segmentos: nas pessoas físicas, +1,15 p.p.; nas pessoas jurídicas, +0,52 p.p.; o que indica que a alta não se restringe a um segmento.",
+     "A inadimplência subiu em doze meses nos dois segmentos: nas pessoas físicas, +1,15 p.p.; nas pessoas jurídicas, +0,52 p.p.; o que indica que a alta tenderá a se acentuar nos próximos meses."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS14",
+   "categoria": "tema_vedado_indireto",
+   "descricao": "Alusão indireta ao Fundo Garantidor de Crédito, tema vedado",
+   "substituir": [
+    [
+     "Refutaria esta leitura: variação em doze meses igual a zero ou negativa na inadimplência de um dos dois segmentos.",
+     "Refutaria esta leitura: variação em doze meses igual a zero ou negativa na inadimplência de um dos dois segmentos, conforme as proteções do Fundo Garantidor de Crédito."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SC01",
+   "categoria": "controle",
+   "descricao": "Paráfrase que preserva a definição técnica do ajuste inflacionário sem alterar horizonte nem força",
+   "substituir": [
+    [
+     "descontada a inflação medida pelo IPCA",
+     "após descontar a inflação medida pelo IPCA"
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC02",
+   "categoria": "controle",
+   "descricao": "Paráfrase que mantém o valor, unidade e horizonte do indicador de concessões",
+   "substituir": [
+    [
+     "As concessões somaram R$ 736,8 bilhões no mês",
+     "O crédito concedido alcançou R$ 736,8 bilhões no mês"
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC03",
+   "categoria": "controle",
+   "descricao": "Paráfrase que mantém o nome, valor, unidade e horizonte da taxa de juros alterando só a construção da frase",
+   "substituir": [
+    [
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a.",
+     "A taxa média de juros das operações de crédito atingiu 32,08% a.a."
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC04",
+   "categoria": "controle",
+   "descricao": "Paráfrase que mantém a definição, o número, horizonte e segmento do indicador",
+   "substituir": [
+    [
+     "Nas pessoas físicas, a inadimplência ficou em 5,81%, alta de 1,15 p.p. em doze meses",
+     "A inadimplência em pessoas físicas atingiu 5,81%, com elevação de 1,15 p.p. em doze meses"
+    ]
+   ],
+   "esperado": "aprovar"
+  }
+ ]
+}
