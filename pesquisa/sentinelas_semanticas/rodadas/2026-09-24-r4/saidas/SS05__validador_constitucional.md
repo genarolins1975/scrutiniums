@@ -1,0 +1,6 @@
+C1: ok
+C2: ok
+C3: observação: "As concessões somaram R$ 736,8 bilhões no mês, com alta de 13,4% sobre o mesmo mês do ano anterior" e demais parágrafos | a variação das concessões não diz que é nominal, embora o pacote traga também a real (+8,6%); a taxa e o spread por segmento aparecem só no mês, sem a diferença em 12 meses (taxa PF +1,00 p.p., taxa PJ −0,62 p.p.), e o spread PF e PJ fica de fora (spread PJ +0,88 p.p. no mês, sentido contrário ao total); o endividamento aparece sem variação (+0,93 p.p. em 12 meses) | declarar "nominal" nas concessões e acrescentar esses horizontes e segmentos para simetria
+C4: ok
+C5: falha grave: "nas pessoas físicas, alta de 16,2%, e nas pessoas físicas, alta de 11,2%" | erro de atribuição de segmento: no pacote, +16,2% é a variação em 12 meses das concessões às pessoas jurídicas (concessoes_pj.var_12m_pct), e +11,2% é a das pessoas físicas. O texto põe as duas nas pessoas físicas, o leitor fica com uma crença falsa sobre um fato e o segmento PJ some da leitura (a própria tabela de fontes liga 16,2% a pessoas jurídicas). Marco como grave, e não como observação, porque troca de segmento é erro factual de atribuição (art. 10.1) e não uma questão de redação | reescrever como "nas pessoas jurídicas, alta de 16,2%, e nas pessoas físicas, alta de 11,2%"
+DECISÃO: devolver

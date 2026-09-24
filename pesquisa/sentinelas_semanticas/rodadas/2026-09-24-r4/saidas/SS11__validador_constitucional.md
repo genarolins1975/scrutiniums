@@ -1,0 +1,6 @@
+C1: falha grave: "A carteira de crédito no mês mostra padrão misto de comportamento entre segmentos." é uma leitura (inferência) dentro de um parágrafo marcado como Evidência. Não cita nenhum fato do pacote nem a data de referência, não declara de que evidência parte e não diz o que a refutaria (art. 2). Os fatos que a sustentariam (saldo_pf.var_mes_pct +0,8%, saldo_pj.var_mes_pct −0,7%, saldo_total.var_mes_pct +0,3%) estão na tabela de fontes, mas não aparecem no texto. O leitor não fica sabendo que a carteira das pessoas jurídicas caiu no mês. Resolveria trocar a frase pelos fatos mensais por segmento, ou movê-la para um parágrafo de Inferência com base e critério de refutação.
+C2: ok
+C3: observação: nas concessões, "alta de 13,4% sobre o mesmo mês do ano anterior" e as altas por segmento não dizem que são nominais. No saldo, a nota separa nominal e real (concessoes_total.var_12m_real_pct +8,6%). Deixar isso explícito tornaria o tratamento simétrico. O endividamento aparece só com o nível, sem as diferenças disponíveis (endividamento.delta_12m_pp +0,93 p.p., endividamento.delta_mes_pp −0,08 p.p.). O comprometimento aparece sem a diferença no mês (comprometimento.delta_mes_pp +0,36 p.p.).
+C4: ok
+C5: ok
+DECISÃO: devolver
