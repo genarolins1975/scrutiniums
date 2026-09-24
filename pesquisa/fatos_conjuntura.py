@@ -58,6 +58,9 @@ ESCOPO = [
     ("endividamento", "Endividamento das famílias com o SFN em relação à renda de 12 meses", "taxa"),
     ("comprometimento", "Comprometimento de renda das famílias com o serviço da dívida", "taxa"),
 ]
+# Variação real: a nominal da série dividida pelo IPCA acumulado em 12 meses (pipeline/gold.py).
+# A fonte do fato cita as duas séries, para o leitor reproduzir o cálculo.
+DEFLATOR = "IPCA acumulado em 12 meses (IBGE via BCB/SGS 433)"
 ESCOPO_EXCLUIDO = ["selic_meta", "ipca", "ibc_br", "desemprego", "papelao", "cambio"]
 
 UNIDADES_ACEITAS = {"R$ milhões", "%", "% a.a.", "p.p."}
@@ -231,7 +234,8 @@ def construir(gold_dir=GOLD_PUBLICADA):
             _do_pipeline(fatos, lacunas, f"{key}.var_12m_pct", f"{rotulo}: variação em 12 meses, nominal",
                          key, "yoy", ref, pulse, fonte)
             _do_pipeline(fatos, lacunas, f"{key}.var_12m_real_pct",
-                         f"{rotulo}: variação em 12 meses, real (IPCA)", key, "yoy_real", ref, pulse, fonte)
+                         f"{rotulo}: variação em 12 meses, real (IPCA)", key, "yoy_real", ref, pulse,
+                         f"{fonte} deflacionada pelo {DEFLATOR}")
         if familia == "taxa":
             _derivado(fatos, lacunas, f"{key}.delta_mes_pp", f"{rotulo}: diferença no mês",
                       key, ref, _mes_anterior(ref, 1), "diferenca", pulse, fonte, "p.p.", 2)

@@ -8,14 +8,16 @@ Confira cada afirmação contra a constituição:
 - C1 toda inferência declara a base e o que a refutaria;
 - C2 não há causalidade indevida;
 - C3 não há seleção enviesada de fatos;
-- C4 o tom é neutro, sem juízo sobre instituição e sem recomendação.
+- C4 o tom é neutro, sem juízo sobre instituição e sem recomendação;
+- C5 não há tese nova nem interpretação além da leitura dos fatos (constituição, art. 5).
 
-Responda com uma linha por critério e uma decisão final:
+Responda com uma linha por critério e uma decisão final. Este formato substitui o formato ITEM das regras comuns:
 
     C1: ok | falha: <trecho e motivo>
     C2: ok | falha: <trecho e motivo>
     C3: ok | falha: <trecho e motivo>
     C4: ok | falha: <trecho e motivo>
+    C5: ok | falha: <trecho e motivo>
     DECISÃO: aprovar | devolver
 
 Você não pode bloquear nem reverter bloqueio do validador mecânico. Na dúvida, devolva com o motivo.

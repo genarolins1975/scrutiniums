@@ -1,0 +1,3 @@
+ITEM grave: "alta de 0,92 p.p. no mês e de 0,30 p.p. em doze meses" | O pacote traz inad_total.delta_mes_pp = +0,30 p.p. e inad_total.delta_12m_pp = +0,92 p.p.; a nota inverteu os dois valores entre os horizontes, e a própria tabela de fontes da nota (mais abaixo) lista os valores corretos (+0,30 p.p. no mês, +0,92 p.p. em 12 meses), contradizendo a prosa. | Trocar para "alta de 0,30 p.p. no mês e de 0,92 p.p. em doze meses".
+ITEM leve: "O spread médio ficou em 20,88 p.p., com queda de 0,98 p.p." | O valor bate com spread_total.delta_mes_pp, mas a frase não declara o horizonte (no mês), ficando implícito apenas pela frase anterior sobre a taxa de juros. | Acrescentar "no mês": "com queda de 0,98 p.p. no mês".
+DECISÃO: devolver

@@ -4,7 +4,9 @@ Por ciclo (notas/AAAA-MM/metricas.json):
     tokens e modelo que respondeu, por papel (uso/*.json)
     rodadas de devolução do validador mecânico e decisão final; decisão constitucional
     concordância replicador × analistas: Jaccard dos cinco destaques e leitura por recorte
-    minutos de editor e erros factuais que ele encontrou (editor.json)
+    decisão final e pareceres dos três revisores por rodada (decisao.json); concordância
+    entre revisores; independência comprometida quando dois revisores foram servidos pelo
+    mesmo modelo; erros factuais achados pelo auditor (auditoria.json)
     recall do validador na bateria sentinela e falso bloqueio
 
 Nada aqui é estimado: campo sem dado fica null.
@@ -22,7 +24,9 @@ from pesquisa import registro
 from pesquisa import sentinela
 
 TIPO_NOTA = "conjuntura"
-N_MINIMO_DEGRAU_2 = 6  # proposta; o número vale quando o editor o fixar (constituição, art. 9)
+N_MINIMO_DEGRAU_2 = 3  # constituição v2, art. 9.2
+RECALL_SEMANTICO_MINIMO = 0.9
+REVISORES = ["validador_constitucional", "revisor_independente", "terceiro_revisor"]
 CODIGOS_NUMERICOS = {"numero_digitado", "fato_inexistente", "pacote", "direcao", "recorte"}
 
 
@@ -84,17 +88,31 @@ def uso(ciclo):
             "nota": None if por_papel else "sem chamadas de API registradas (backend manual ou ciclo não executado)"}
 
 
-def editor(ciclo):
-    e = _json(os.path.join(ciclo, "editor.json")) or {}
-    minutos = e.get("minutos")
-    if minutos is None and e.get("inicio") and e.get("fim"):
-        try:
-            minutos = round((dt.datetime.fromisoformat(e["fim"]) - dt.datetime.fromisoformat(e["inicio"])).total_seconds() / 60, 1)
-        except ValueError:
-            minutos = None
-    return {"minutos": minutos, "decisao": e.get("decisao"),
-            "erros_factuais_encontrados": len(e.get("erros_factuais_encontrados") or []),
-            "preenchido": e.get("decisao") is not None}
+def revisores(ciclo):
+    d = _json(os.path.join(ciclo, "decisao.json")) or {}
+    rodadas = d.get("rodadas") or []
+    pares = {}
+    for a, b in ((REVISORES[0], REVISORES[1]), (REVISORES[0], REVISORES[2]), (REVISORES[1], REVISORES[2])):
+        comuns = [r for r in rodadas if r.get(a) and r.get(b)]
+        pares[f"{a}×{b}"] = (round(sum(r[a] == r[b] for r in comuns) / len(comuns), 4) if comuns else None)
+    servidos = {}
+    for p in glob.glob(os.path.join(ciclo, "uso", "*.json")):
+        u = _json(p)
+        if u.get("papel") in REVISORES and u.get("modelo_respondeu"):
+            servidos.setdefault(u["papel"], set()).add(u["modelo_respondeu"])
+    modelos = [m for ms in servidos.values() for m in ms]
+    return {"decisao_final": d.get("decisao"), "rodadas": rodadas,
+            "concordancia_entre_revisores": pares,
+            "modelos_que_responderam": {k: sorted(v) for k, v in servidos.items()} or None,
+            "independencia_comprometida": (len(modelos) != len(set(modelos))) if modelos else None}
+
+
+def auditoria(ciclo):
+    a = _json(os.path.join(ciclo, "auditoria.json"))
+    if not a:
+        return {"auditado": False, "erros_factuais": None}
+    return {"auditado": True, "auditado_em": a.get("auditado_em"), "erros_factuais": len(a.get("erros_factuais") or []),
+            "fatos_revisados_pela_fonte": a.get("fatos_revisados_pela_fonte")}
 
 
 def do_ciclo(ciclo):
@@ -108,10 +126,10 @@ def do_ciclo(ciclo):
         "retrospectivo": estado.get("retro", False),
         "validador_mecanico": {"decisao_final": v.get("decisao"), "falhas_finais": v.get("falhas"),
                                "devolucoes": estado.get("devolucoes"), "rodadas_revisao": estado.get("rodada_revisao")},
-        "validador_constitucional": estado.get("decisao_constitucional"),
         "concordancia": concordancia(ciclo),
         "uso": uso(ciclo),
-        "editor": editor(ciclo),
+        "revisores": revisores(ciclo),
+        "auditoria": auditoria(ciclo),
         "sentinelas": {"recall_total": bateria["recall_total"], "n_casos": bateria["n_casos"],
                        "recall_numerico": (round(sum(c["detectados"] for c in numericas) / sum(c["n"] for c in numericas), 4)
                                            if numericas else None),
@@ -120,19 +138,22 @@ def do_ciclo(ciclo):
 
 
 def ciclo_limpo(m):
-    """Limpo = editor revisou, não achou erro factual que o validador deixou passar, e a nota
-    não foi bloqueada no fim. Ciclo sem revisão do editor não conta (nem a favor, nem contra)."""
-    if not m["editor"]["preenchido"]:
+    """Limpo = nota aprovada pelos três revisores e auditada sem erro factual. Ciclo ainda
+    não auditado não conta (nem a favor, nem contra). Nota rejeitada não é erro: não saiu."""
+    if m["revisores"]["decisao_final"] != "aprovada":
         return None
-    return m["editor"]["erros_factuais_encontrados"] == 0 and m["validador_mecanico"]["decisao_final"] == "aprovar"
+    if not m["auditoria"]["auditado"]:
+        return None
+    return m["auditoria"]["erros_factuais"] == 0 and not m["revisores"].get("independencia_comprometida")
 
 
-def degrau(metricas_ciclos, reg=None, n_minimo=N_MINIMO_DEGRAU_2):
-    """Degrau em que o tipo de nota pode operar. Retrospectivos não contam para promoção."""
+def degrau(metricas_ciclos, reg=None, n_minimo=N_MINIMO_DEGRAU_2, semantica=None):
+    """Degrau do tipo de nota (constituição v2, art. 9). Retrospectivos contam para os três
+    ciclos; `semantica` é o resultado mais recente da bateria semântica dos revisores."""
     reg = reg or registro.carregar()
-    vivos = [m for m in sorted(metricas_ciclos, key=lambda m: m.get("data_base") or "") if not m.get("retrospectivo")]
+    ms = sorted(metricas_ciclos, key=lambda m: (m.get("data_base") or "", m.get("retrospectivo", False)))
     consecutivos = 0
-    for m in reversed(vivos):
+    for m in reversed(ms):
         limpo = ciclo_limpo(m)
         if limpo is None:
             continue
@@ -140,16 +161,24 @@ def degrau(metricas_ciclos, reg=None, n_minimo=N_MINIMO_DEGRAU_2):
             break
         consecutivos += 1
     rebaixado = registro.erro_relevante_publicado(reg, TIPO_NOTA)
-    ult = vivos[-1]["sentinelas"] if vivos else None
-    sentinela_ok = bool(ult and ult["recall_numerico"] == 1 and ult["falso_bloqueio"] == 0 and ult["n_casos"] >= 50)
-    apto = consecutivos >= n_minimo and not rebaixado and sentinela_ok
+    ult = ms[-1]["sentinelas"] if ms else None
+    mecanica_ok = bool(ult and ult["recall_numerico"] == 1 and ult["falso_bloqueio"] == 0)
+    atrib = (semantica or {}).get("recall_painel_atribuido")
+    sem_ok = bool(semantica and (semantica.get("recall_painel") or 0) >= RECALL_SEMANTICO_MINIMO
+                  and (atrib is None or atrib >= RECALL_SEMANTICO_MINIMO)
+                  and semantica.get("rejeicao_indevida", 1) == 0)
+    apto = consecutivos >= n_minimo and not rebaixado and mecanica_ok and sem_ok
     motivos = []
     if consecutivos < n_minimo:
-        motivos.append(f"{consecutivos} de {n_minimo} ciclos limpos consecutivos")
+        motivos.append(f"{consecutivos} de {n_minimo} ciclos aprovados e auditados sem erro factual")
     if rebaixado:
         motivos.append("erro relevante publicado no registro: rebaixado ao degrau 1")
-    if not sentinela_ok:
-        motivos.append("bateria sentinela abaixo do critério (recall numérico de 100%, zero falso bloqueio, pelo menos 50 casos)")
+    if not mecanica_ok:
+        motivos.append("bateria mecânica abaixo do critério (recall numérico de 100% e zero falso bloqueio)")
+    if not sem_ok:
+        motivos.append(f"bateria semântica dos revisores abaixo do critério (painel pegando pelo menos "
+                       f"{RECALL_SEMANTICO_MINIMO:.0%} dos erros plantados, também quando se exige que o parecer cite o "
+                       f"trecho plantado, e zero rejeição indevida) ou não medida")
     return {"degrau": 2 if apto else 1, "ciclos_limpos_consecutivos": consecutivos, "n_minimo": n_minimo,
             "motivos_para_permanecer_no_1": motivos}
 
@@ -160,8 +189,10 @@ def main(argv=None):
     ms = [m for m in ms if m]
     for m in ms:
         print(f"{m['ciclo']:10s} base {m['data_base']} retro={m['retrospectivo']} validador={m['validador_mecanico']['decisao_final']} "
-              f"devoluções={m['validador_mecanico']['devolucoes']} editor={m['editor']['minutos']} min")
-    print(json.dumps(degrau(ms), ensure_ascii=False, indent=1))
+              f"devoluções={m['validador_mecanico']['devolucoes']} decisão={m['revisores']['decisao_final']} "
+              f"auditoria={m['auditoria']['erros_factuais']}")
+    from pesquisa import sentinela_semantica  # importação tardia: o orquestrador importa este módulo
+    print(json.dumps(degrau(ms, semantica=sentinela_semantica.ultimo_resultado()), ensure_ascii=False, indent=1))
     return 0
 
 

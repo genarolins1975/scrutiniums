@@ -1,0 +1,2 @@
+ITEM leve: O spread médio ficou em 20,88 p.p., com queda de 0,98 p.p. | O horizonte da variação não fica explícito nesta frase (não diz "no mês"), ao contrário da frase anterior sobre a taxa de juros, que declara "no mês" explicitamente; a leitura correta só se sustenta por continuidade de contexto com a frase anterior. | Acrescentar "no mês" após "com queda de 0,98 p.p.", no mesmo padrão usado para a taxa de juros.
+DECISÃO: aprovar

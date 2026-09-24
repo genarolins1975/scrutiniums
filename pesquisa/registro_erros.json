@@ -3,7 +3,7 @@
  "descricao": "Registro público de erros do Observatório (docs/CONSTITUICAO.md, art. 10). Cada erro publicado fica registrado com datas, canal de detecção e correção; nada é apagado. Campo com valor null = não apurado, nunca estimado. Alimenta os degraus de autonomia: erro relevante em nota rebaixa o tipo de nota ao degrau 1.",
  "campos": {
   "gravidade": "factual (número, data, fonte, sinal, unidade, rótulo ou atribuição diferente do correto) ou relevante (erro factual publicado, ou violação dos arts. 5 ou 6)",
-  "canal_deteccao": "teste, vigilia, sentinela_gold, auditoria, avaliacao, editor, validador, leitor",
+  "canal_deteccao": "teste, vigilia, sentinela_gold, auditoria, avaliacao, auditor, revisor, validador, leitor",
   "tipo_nota": "tipo de nota do piloto em que o erro ocorreu; null quando o erro é de painel"
  },
  "erros": [

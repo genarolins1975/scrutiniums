@@ -1,0 +1,2 @@
+ITEM leve: | Taxa média de juros das operações de crédito, total: diferença no mês | −1,25 p.p. | jul/2026 | BCB/SGS 20714 | | a tabela de fontes cita este fato, mas nenhuma frase do corpo da nota afirma a variação no mês da taxa total (o texto vai do nível direto para a variação em doze meses); a tabela passa a citar um número que a prosa não usa | remover essa linha da tabela de fontes ou acrescentar no corpo a frase correspondente ("no mês, a taxa total teve queda de 1,25 p.p."), para que a tabela corresponda exatamente aos fatos citados na prosa
+DECISÃO: aprovar

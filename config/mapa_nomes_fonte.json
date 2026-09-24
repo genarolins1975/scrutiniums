@@ -1,7 +1,7 @@
 {
- "versao": 1,
+ "versao": 2,
  "atualizado_em": "2026-09-24",
- "processo": "Mapa explícito entre o nome publicado por uma fonte sem CNPJ e o código IF.data da instituição. Só entradas com status 'aprovado' e revisor registrado produzem casamento (pipeline/inst_pages_all.py, mapa_nomes_aprovados). Candidatas geradas em 24/09/2026 a partir das instituições com nome não idêntico ao da fonte; nenhuma aprovada. Casamento por palavras distintivas foi abolido pela regra editorial de 24/09/2026.",
+ "processo": "Mapa explícito entre nome de fonte sem CNPJ e código IF.data. Constituição v2: não há revisão humana, e casar por semelhança de nome não é verificável por código; por isso nenhuma entrada é aprovada e o casamento vale só por identidade (CNPJ raiz igual ao código ou nome idêntico publicado pelo BCB). Entrada só volta a existir se trouxer prova mecânica (por exemplo, CNPJ do conglomerado publicado pela própria fonte).",
  "rejeitadas": [
   {
    "fonte": "reclamacoes",
@@ -10,229 +10,255 @@
    "motivo": "o casamento por palavras ligava ao C6 Bank as linhas de TBanks, Pinbank, Ouribank, Citibank, Agibank e outras; nenhuma linha da fonte identifica o C6 Bank sem ambiguidade"
   }
  ],
- "entradas": [
+ "entradas": [],
+ "candidatas_descartadas": [
   {
    "fonte": "reclamacoes",
    "cod": "C0049944",
    "nome_bcb": "BTG PACTUAL",
    "nome_fonte": "BTG PACTUAL/BANCO PAN (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte reúne BTG Pactual e Banco Pan; aprovar só se o conglomerado prudencial for o mesmo"
+   "observacao": "a linha da fonte reúne BTG Pactual e Banco Pan; aprovar só se o conglomerado prudencial for o mesmo",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "01181521",
    "nome_bcb": "BANCO COOPERATIVO SICREDI S.A.",
    "nome_fonte": "BCO COOPERATIVO SICREDI (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "01027058",
    "nome_bcb": "CIELO S.A. - INSTITUIÇÃO DE PAGAMENTO",
    "nome_fonte": "CIELO IP (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "C0051987",
    "nome_bcb": "DAYCOVAL",
    "nome_fonte": "BCO DAYCOVAL S.A (conglomerado)",
-   "status": "em_revisao",
-   "revisor": null
+   "status": "descartada",
+   "revisor": null,
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "10573521",
    "nome_bcb": "MERCADO PAGO INSTITUIÇÃO DE PAGAMENTO LTDA.",
    "nome_fonte": "MERCADO PAGO IP (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "16501555",
    "nome_bcb": "STONE INSTITUIÇÃO DE PAGAMENTO S.A.",
    "nome_fonte": "STONE IP (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "07237373",
    "nome_bcb": "BANCO DO NORDESTE DO BRASIL S.A.",
    "nome_fonte": "BCO DO NORDESTE DO BRASIL S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "04902979",
    "nome_bcb": "BANCO DA AMAZONIA S.A.",
    "nome_fonte": "BCO DA AMAZONIA S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "59109165",
    "nome_bcb": "BANCO VOLKSWAGEN S.A.",
    "nome_fonte": "VOLKSWAGEN (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "01522368",
    "nome_bcb": "BANCO BNP PARIBAS BRASIL S.A.",
    "nome_fonte": "BNP PARIBAS (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "92894922",
    "nome_bcb": "BANCO ORIGINAL S.A.",
    "nome_fonte": "ORIGINAL (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "02992446",
    "nome_bcb": "BANCO CNH INDUSTRIAL CAPITAL S.A.",
    "nome_fonte": "BANCO CNH INDUSTRIAL CAPITAL S.A (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "08357240",
    "nome_bcb": "BANCO CSF S.A.",
    "nome_fonte": "BCO CSF S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "58616418",
    "nome_bcb": "BANCO FIBRA S.A.",
    "nome_fonte": "BCO FIBRA S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "58017179",
    "nome_bcb": "BANCO VOLVO BRASIL S.A.",
    "nome_fonte": "VOLVO (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "11417016",
    "nome_bcb": "SCANIA BANCO S.A.",
    "nome_fonte": "SCANIA (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "04866275",
    "nome_bcb": "BANCO INBURSA S.A.",
    "nome_fonte": "BCO INBURSA S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "05040481",
    "nome_bcb": "BANCO DE LAGE LANDEN BRASIL S.A.",
    "nome_fonte": "BCO DE LAGE LANDEN BRASIL S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "03215790",
    "nome_bcb": "BANCO TOYOTA DO BRASIL S.A.",
    "nome_fonte": "BCO TOYOTA DO BRASIL S.A. (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "22896431",
    "nome_bcb": "PICPAY INSTITUIÇÃO DE PAGAMENTO S.A.",
    "nome_fonte": "PICPAY (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "04088208",
    "nome_bcb": "SEM PARAR INSTITUICAO DE PAGAMENTO LTDA",
    "nome_fonte": "SEM PARAR IP (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "92874270",
    "nome_bcb": "BANCO DIGIMAIS S.A.",
    "nome_fonte": "BANCO DIGIMAIS (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "C0052010",
    "nome_bcb": "CREFISA",
    "nome_fonte": "CREFISA S.A. CFI (conglomerado)",
-   "status": "em_revisao",
-   "revisor": null
+   "status": "descartada",
+   "revisor": null,
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "28517628",
    "nome_bcb": "BANCO PACCAR S.A.",
    "nome_fonte": "BANCO PACCAR (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   },
   {
    "fonte": "reclamacoes",
    "cod": "04962772",
    "nome_bcb": "FISERV DO BRASIL  INSTITUIÇÃO DE PAGAMENTO LTDA",
    "nome_fonte": "FISERV DO BRASIL IP (conglomerado)",
-   "status": "em_revisao",
+   "status": "descartada",
    "revisor": null,
-   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado"
+   "observacao": "a linha da fonte é de conglomerado e a ficha é de instituição individual: aprovar só se a instituição for a líder do conglomerado",
+   "motivo": "sem revisão humana e sem prova mecânica de identidade (constituição v2)"
   }
  ]
 }

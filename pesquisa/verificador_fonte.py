@@ -14,6 +14,7 @@ Uso: python3 -m pesquisa.verificador_fonte pacote.json [--saida verificacao_font
 """
 import argparse
 import json
+import re
 import sys
 import time
 import urllib.request
@@ -51,7 +52,8 @@ def pontos_por_serie(pacote):
     for f in pacote.get("fatos", []):
         pts = [f["origem"]] if f.get("origem") else []
         pts += f.get("insumos") or []
-        codigo = f["fonte"].split()[-1] if f.get("fonte", "").startswith("BCB/SGS") else None
+        m = re.match(r"BCB/SGS (\d+)", f.get("fonte", ""))
+        codigo = m.group(1) if m else None  # a primeira série citada é a do próprio fato
         for o in pts:
             if o.get("campo") != "obs" or not codigo:
                 continue

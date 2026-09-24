@@ -1,0 +1,2 @@
+ITEM leve: "Saldo da carteira de crédito, pessoas físicas: variação no mês | +0,8% | jul/2026 | BCB/SGS 20541" e "Saldo da carteira de crédito, pessoas jurídicas: variação no mês | −0,7% | jul/2026 | BCB/SGS 20540" (tabela Fontes dos números) | Essas duas variações mensais do saldo por segmento não são citadas em nenhuma frase do corpo da nota; a tabela de fontes traz fatos que o texto não afirma | Remover essas duas linhas da tabela, ou incluir no corpo da nota a frase que cita essas variações mensais
+DECISÃO: aprovar

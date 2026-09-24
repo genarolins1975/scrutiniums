@@ -9,4 +9,4 @@ Não escreva nota. Responda apenas com quatro linhas exatamente neste formato:
     DESTAQUES_EMPRESAS: id1, id2, id3, id4, id5
     LEITURA_EMPRESAS: deterioração | melhora | misto
 
-Escolha os ids pela relevância que você atribui a cada fato, sem tentar adivinhar a escolha de outra pessoa. Sua leitura é comparada com a dos analistas; divergência não é erro, é informação para o editor.
+Escolha os ids pela relevância que você atribui a cada fato, sem tentar adivinhar a escolha de outra pessoa. Sua leitura é comparada com a dos analistas; divergência não é erro, é informação para a revisão e fica registrada na nota.

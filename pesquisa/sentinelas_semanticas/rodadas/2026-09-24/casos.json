@@ -1,0 +1,222 @@
+{
+ "autor": "agente independente (modelo Haiku, distinto dos três revisores e do autor do validador), 24/09/2026; ortografia corrigida sem alterar o conteúdo dos casos",
+ "nota_base": "pesquisa/sentinelas/nota_limpa.md e pacote.json no commit acc5c6e5f",
+ "casos": [
+  {
+   "id": "SS01",
+   "categoria": "definicao",
+   "descricao": "Muda a base de calculo da inadimplencia de acima de 90 dias para acima de 60 dias, alterando qual serie de fatos e sendo descrita",
+   "substituir": [
+    [
+     "A inadimplência acima de noventa dias subiu para 4,88%,",
+     "A inadimplência acima de sessenta dias subiu para 4,88%,"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS02",
+   "categoria": "horizonte",
+   "descricao": "Muda horizonte de variacao de 12 meses para variacao mensal, distorcendo o escopo temporal",
+   "substituir": [
+    [
+     "com alta de 13,4% sobre o mesmo mês do ano anterior;",
+     "com alta de 13,4% mês a mês;"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS03",
+   "categoria": "atribuicao",
+   "descricao": "Atribui taxa de juros total do sistema a apenas pessoas juridicas, confundindo agregado com segmento",
+   "substituir": [
+    [
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a.,",
+     "A taxa média de juros nas operações com pessoas jurídicas ficou em 32,08% a.a.,"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS04",
+   "categoria": "causalidade",
+   "descricao": "Transforma correlacao temporal em causalidade e inverte a conclusao sobre origem da inadimplencia",
+   "substituir": [
+    [
+     "A alta da inadimplência em jul/2026 ocorreu com a queda da taxa média de juros no mês (−1,25 p.p.), o que sugere que a piora da qualidade da carteira não veio do custo do crédito no período.",
+     "A alta da inadimplência em jul/2026 foi causada pela queda da taxa média de juros no mês (−1,25 p.p.), o que sugere que a piora da qualidade da carteira veio do custo do crédito no período."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS05",
+   "categoria": "selecao",
+   "descricao": "Remove menção a queda em pessoas juridicas, omitindo fato desfavorável que nuancia a conclusao",
+   "substituir": [
+    [
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%, e a das pessoas jurídicas, queda de 0,7%.",
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS06",
+   "categoria": "selecao",
+   "descricao": "Remove listagem de cenarios que refutariam a leitura, eliminando as salvaguardas da analise",
+   "substituir": [
+    [
+     "Refutaria esta leitura: revisão da inadimplência na próxima divulgação do BCB, ou alta da taxa média nas modalidades de maior peso.",
+     "Esta leitura é robusta e deve prevalecer nas próximas divulgações do BCB."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS07",
+   "categoria": "generalizacao",
+   "descricao": "Estende conclusao para padrao sistematico nao evidenciado pelos fatos apresentados",
+   "substituir": [
+    [
+     "As concessões somaram R$ 736,8 bilhões no mês, com alta de 13,4%",
+     "As concessões atingem sistematicamente R$ 736,8 bilhões ao mês, com alta de 13,4%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS08",
+   "categoria": "juizo",
+   "descricao": "Insere adjetivo valorativo que qualifica niveis de endividamento sem bases para tal julgamento",
+   "substituir": [
+    [
+     "O endividamento das famílias com o sistema financeiro foi de 49,75%",
+     "O preocupante endividamento das famílias com o sistema financeiro foi de 49,75%"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS09",
+   "categoria": "previsao_disfarcada",
+   "descricao": "Usa verbo que sugere tendencia ou movimento futuro em lugar de fato observado no periodo",
+   "substituir": [
+    [
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a.,",
+     "A taxa média de juros das operações de crédito caminha para 32,08% a.a.,"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS10",
+   "categoria": "tema_vedado_indireto",
+   "descricao": "Faz alusao indireta ao FGC ao especificar apenas instituicoes supervisionadas, carregando significado regulatorio nao explicito",
+   "substituir": [
+    [
+     "O saldo da carteira de crédito do sistema financeiro chegou a R$ 7,37 trilhões",
+     "O saldo da carteira de crédito das instituições supervisionadas chegou a R$ 7,37 trilhões"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS11",
+   "categoria": "definicao",
+   "descricao": "Muda a base de comparacao da variacao real de IPCA para inflacao futura projetada, alterando significado de regressao",
+   "substituir": [
+    [
+     "de 4,8% descontada a inflação.",
+     "de 4,8% ajustada pela inflação projetada."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS12",
+   "categoria": "horizonte",
+   "descricao": "Troca horizontes temporais dentro da mesma serie, invertendo variacao mensal com variacao de 12 meses",
+   "substituir": [
+    [
+     "alta de 0,30 p.p. no mês e de 0,92 p.p. em doze meses.",
+     "alta de 0,92 p.p. no mês e de 0,30 p.p. em doze meses."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS13",
+   "categoria": "atribuicao",
+   "descricao": "Atribui comportamento de pessoas fisicas a toda economia, confundindo parte agregada com o todo macroeconomico",
+   "substituir": [
+    [
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%,",
+     "No mês, a carteira da economia teve alta de 0,8%,"
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SS14",
+   "categoria": "causalidade",
+   "descricao": "Muda relacao de independencia para causalidade direta e inverte sentido, sugerindo que queda de taxa causou inadimplencia",
+   "substituir": [
+    [
+     "A alta da inadimplência em jul/2026 ocorreu com a queda da taxa média de juros no mês (−1,25 p.p.), o que sugere que a piora da qualidade da carteira não veio do custo do crédito no período.",
+     "A queda da taxa média de juros no mês (−1,25 p.p.) resultou na alta da inadimplência em jul/2026, o que comprova que a piora da qualidade da carteira veio do custo do crédito no período."
+    ]
+   ],
+   "esperado": "devolver"
+  },
+  {
+   "id": "SC01",
+   "categoria": "controle",
+   "descricao": "Parafrase correta que mantem fatos e relacoes semanticas do trecho original sobre saldo e variacoes",
+   "substituir": [
+    [
+     "O saldo da carteira de crédito do sistema financeiro chegou a R$ 7,37 trilhões em jul/2026, com alta de 9,5% em doze meses em termos nominais e de 4,8% descontada a inflação.",
+     "Em jul/2026, o saldo da carteira de crédito do sistema financeiro totalizava R$ 7,37 trilhões, com elevação nominal de 9,5% em doze meses e ganho real de 4,8%."
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC02",
+   "categoria": "controle",
+   "descricao": "Parafrase correta que expressa movimento de carteiras por segmento sem alterar significado dos dados",
+   "substituir": [
+    [
+     "No mês, a carteira das pessoas físicas teve alta de 0,8%, e a das pessoas jurídicas, queda de 0,7%.",
+     "Em julho, o saldo de pessoas físicas cresceu 0,8%, enquanto o de pessoas jurídicas caiu 0,7%."
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC03",
+   "categoria": "controle",
+   "descricao": "Parafrase correta que mantem taxa e spread com suas variacoes mensais sem distorcao de horizontes",
+   "substituir": [
+    [
+     "A taxa média de juros das operações de crédito ficou em 32,08% a.a., com queda de 1,25 p.p. no mês. O spread médio ficou em 20,88 p.p., com queda de 0,98 p.p.",
+     "As operações de crédito registraram taxa média de 32,08% a.a. (recuo mensal de 1,25 p.p.) e spread de 20,88 p.p. (redução de 0,98 p.p.)."
+    ]
+   ],
+   "esperado": "aprovar"
+  },
+  {
+   "id": "SC04",
+   "categoria": "controle",
+   "descricao": "Parafrase correta que preserva concessoes totais e variacoes por segmento com dados identicos",
+   "substituir": [
+    [
+     "As concessões somaram R$ 736,8 bilhões no mês, com alta de 13,4% sobre o mesmo mês do ano anterior; nas pessoas jurídicas, alta de 16,2%, e nas pessoas físicas, alta de 11,2%.",
+     "As concessões do mês chegaram a R$ 736,8 bilhões, crescendo 13,4% frente ao mesmo mês do ano anterior, com aumento de 16,2% em pessoas jurídicas e 11,2% em pessoas físicas."
+    ]
+   ],
+   "esperado": "aprovar"
+  }
+ ]
+}
