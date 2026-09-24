@@ -2,16 +2,11 @@
  "n_casos_com_erro": 14,
  "n_controles": 4,
  "respostas_faltando": [
-  "SS03__terceiro_revisor",
-  "SS04__terceiro_revisor",
-  "SS07__terceiro_revisor",
   "SS08__terceiro_revisor",
   "SS10__terceiro_revisor",
   "SS12__terceiro_revisor",
   "SS13__terceiro_revisor",
-  "SC01__terceiro_revisor",
   "SC02__terceiro_revisor",
-  "SC03__terceiro_revisor",
   "SC04__terceiro_revisor"
  ],
  "por_revisor": {
@@ -30,18 +25,25 @@
   "terceiro_revisor": {
    "recall": 1.0,
    "recall_atribuido": 1.0,
-   "rejeicao_indevida": 0,
+   "rejeicao_indevida": 2,
    "sem_decisao": 0
   }
  },
  "recall_painel": 1.0,
  "recall_painel_atribuido": 1.0,
- "n_atribuiveis": 6,
+ "n_atribuiveis": 9,
  "nao_vistos_por_nenhum": [],
- "rejeicao_indevida": 0,
+ "rejeicao_indevida": 2,
  "perdidos_por_todos": [],
  "por_categoria": {
   "definicao": {
+   "n": 2,
+   "painel": 2,
+   "validador_constitucional": 2,
+   "revisor_independente": 2,
+   "terceiro_revisor": 2
+  },
+  "horizonte": {
    "n": 2,
    "painel": 2,
    "validador_constitucional": 2,
@@ -54,6 +56,13 @@
    "validador_constitucional": 2,
    "revisor_independente": 2,
    "terceiro_revisor": 2
+  },
+  "causalidade": {
+   "n": 1,
+   "painel": 1,
+   "validador_constitucional": 1,
+   "revisor_independente": 1,
+   "terceiro_revisor": 1
   },
   "selecao": {
    "n": 1,
@@ -79,8 +88,8 @@
  },
  "concordancia_par_a_par": {
   "validador_constitucional×revisor_independente": 0.8889,
-  "validador_constitucional×terceiro_revisor": 1.0,
-  "revisor_independente×terceiro_revisor": 0.8571
+  "validador_constitucional×terceiro_revisor": 0.8333,
+  "revisor_independente×terceiro_revisor": 0.75
  },
  "revisores": {
   "validador_constitucional": {
