@@ -1,0 +1,6 @@
+C1: ok
+C2: ok
+C3: observação: "As concessões somaram R$ 736,8 bilhões no mês, com alta de 13,4% sobre o mesmo mês do ano anterior; nas pessoas jurídicas, alta de 16,2%, e nas pessoas físicas, alta de 11,2%." não diz que as variações são nominais, ao contrário do parágrafo do saldo, e o pacote tem as variações reais (+8,6% total, +11,2% PJ, +6,5% PF); e "O endividamento das famílias com o sistema financeiro foi de 49,75% da renda acumulada em doze meses em jun/2026" vem sem variação, enquanto o comprometimento traz a sua (o pacote tem +0,93 p.p. em doze meses). A leitura não se inverte, mas declarar "nominal" nas concessões e dar a variação do endividamento deixaria a nota mais completa e simétrica.
+C4: ok
+C5: falha grave: "A inadimplência acima de sessenta dias ficou em 4,88%" troca a definição do fato do pacote, que é inadimplência acima de 90 dias (inad_total.nivel, BCB/SGS 21082, como a própria tabela de fontes da nota registra). O leitor fica com uma crença falsa sobre qual indicador foi medido (erro factual de definição, art. 10.1), e a frase afirma algo diferente do que o fato diz, em vez de só lê-lo. Registro aqui porque o formato não tem linha própria para definição e, na dúvida, a regra manda marcar falha grave. Correção: escrever "acima de 90 dias", como está no pacote.
+DECISÃO: devolver

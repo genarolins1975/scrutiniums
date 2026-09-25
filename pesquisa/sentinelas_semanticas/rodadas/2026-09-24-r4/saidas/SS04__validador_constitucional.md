@@ -1,0 +1,6 @@
+C1: ok
+C2: ok
+C3: falha grave: "A taxa média de juros das operações de crédito ficou em 32,08% a.a., com queda de 1,25 p.p. e alta de 0,33 p.p. em doze meses." A queda de 1,25 p.p. aparece sem horizonte, e a frase coloca na mesma variação uma queda e uma alta com um único "em doze meses" no fim. Pelo pacote, a queda de 1,25 p.p. é a diferença no mês (taxa_total.delta_mes_pp). O leitor pode entender que a taxa caiu 1,25 p.p. em doze meses, ou ler as duas variações como contraditórias. Está na dúvida entre grave e observação e foi marcada como grave porque omite o horizonte de um fato citado. Resolveria escrever "com queda de 1,25 p.p. no mês e alta de 0,33 p.p. em doze meses". Observações que não devolvem a nota: (a) em "alta de 13,4% sobre o mesmo mês do ano anterior", e nas altas de PJ e PF que vêm depois, falta dizer que a variação é nominal, embora o parágrafo anterior separe nominal e real (IPCA); resolveria acrescentar "em termos nominais". (b) Nas taxas por segmento só aparece a variação no mês (PF −1,97 p.p., PJ +0,24 p.p.). Em doze meses o sinal se inverte nos dois segmentos (PF +1,00 p.p., PJ −0,62 p.p.), e o pacote traz esses valores; resolveria citá-los para a leitura ficar completa.
+C4: ok
+C5: ok
+DECISÃO: devolver

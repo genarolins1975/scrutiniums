@@ -31,6 +31,23 @@ from pipeline import common
 ORCAMENTO_S = 900
 
 
+def exige_resposta_completa(d):
+    """Resposta com shard recusado ou estourado não é dado: é contagem parcial com HTTP 200.
+
+    O Elasticsearch do DataJud, com a fila de busca cheia, recusa a execução em parte dos
+    shards (es_rejected_execution_exception) e devolve 200 com as agregações só dos shards
+    que responderam. Na consulta de diagnóstico de 25/09/2026 o TJSP, busca e apreensão,
+    caiu de 144 mil para 21 mil casos em 12 meses com status 200. É a explicação mais
+    provável do "todos" abaixo do bancário que reteve a publicação do mesmo dia. Quem
+    chama trata como falha e tenta de novo; esgotadas as tentativas, o tribunal não é
+    regravado."""
+    sh = d.get("_shards") or {}
+    if d.get("timed_out") or sh.get("failed"):
+        motivo = ((sh.get("failures") or [{}])[0].get("reason") or {}).get("type", "timed_out")
+        raise RuntimeError(f"resposta parcial do DataJud: {sh.get('failed', 0)} de {sh.get('total', '?')} shards falharam ({motivo})")
+    return d
+
+
 def _post(url, payload, api_key, timeout=90, retries=3):
     body = json.dumps(payload).encode()
     last = None
@@ -42,7 +59,7 @@ def _post(url, payload, api_key, timeout=90, retries=3):
                 "User-Agent": common.USER_AGENT,
             })
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                return json.loads(resp.read())
+                return exige_resposta_completa(json.loads(resp.read()))
         except Exception as e:
             last = e
             time.sleep(5 * (attempt + 1))  # backoff educado (limite de taxa da API pública)
