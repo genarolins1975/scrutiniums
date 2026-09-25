@@ -154,7 +154,9 @@ describe("Execução no runner de 06/09: BNDES, cobrança em lotes e cobertura n
   it("cobrança judicial: tribunal nunca coletado entra todo na rodada, fora da cota", () => {
     const src = read("pipeline/sources/datajud_cobranca.py");
     expect(src).toContain("faltantes = [t for t in ordem if t not in ultimo]");
-    expect(src).toContain("lote = faltantes if faltantes else ordem[:TRIBUNAIS_POR_EXECUCAO]");
+    // 25/09/2026: tribunal com silver incoerente (bancário acima do total) também entra fora da cota
+    expect(src).toContain("suspeitos = [t for t in incoerentes(con) if t in ultimo]");
+    expect(src).toContain("lote = faltantes if faltantes else suspeitos + [t for t in ordem if t not in suspeitos][:TRIBUNAIS_POR_EXECUCAO]");
     expect(read("pipeline/cobranca.py")).toContain('"cobertura_n": len(coletados)');
   });
   it("sentinela: gold íntegro com cobertura menor que a publicada é regressão", () => {
