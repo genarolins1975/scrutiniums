@@ -24,10 +24,10 @@ export default function PrevisoesPage() {
       <MarcaVisita secao="energia:pld-previsoes" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> · Histórico de previsões
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">PLD</Link> · Histórico de previsões
         </nav>
         <CabecalhoModulo rotulo="Arquivo imutável" titulo="O que a plataforma registrou, em cada dia">
-          Cada previsão, publicada ou de rodada interna, vira um registro permanente com sha256 do conteúdo. Nenhum registro é sobrescrito: uma correção
+          Cada previsão, publicada ou de rodada interna, vira um registro permanente com uma impressão digital do conteúdo (sha256), que denuncia qualquer alteração. Nenhum registro é sobrescrito: uma correção
           cria registro novo que aponta para o original, com o motivo. O realizado e o erro entram depois, em apurações separadas.
         </CabecalhoModulo>
         {!p ? (

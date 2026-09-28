@@ -44,8 +44,8 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
       <MarcaVisita secao="energia:pld-modelos" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> ·{" "}
-          <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Modelos</Link> · {m.codigo}
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">PLD</Link> ·{" "}
+          <Link href="/setor-eletrico/pld/modelos" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Modelos</Link> · {m.codigo}
         </nav>
         <header className="pb-6 pt-4">
           <p className="rotulo text-mineral">Cartão do modelo · versão {m.versao}</p>
@@ -85,7 +85,7 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
           </L>
           <L k="Dados de treinamento">{m.dados_treinamento}</L>
           <L k="Janela histórica">{m.janela}</L>
-          <L k="Horário de corte e elegibilidade">{reg.definicoes.cenario_de_elegibilidade}. Corte operacional: {reg.definicoes.corte_operacional}.</L>
+          <L k="Horário de corte e elegibilidade">{reg.definicoes.cenario_de_elegibilidade.replace(/\.$/, "")}. Corte operacional: {reg.definicoes.corte_operacional}.</L>
           <L k="Quantis">{reg.definicoes.quantis}</L>
           <L k="Referências de comparação">{m.benchmarks.length ? m.benchmarks.join(", ") : "É a referência simples contra a qual os demais são comparados."}</L>
           <L k="Teste retrospectivo, métricas e calibração">
@@ -105,6 +105,10 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
           <L k="Versão do código">{m.versao_codigo ? <span className="font-mono text-xs">{m.versao_codigo}</span> : "não informada"}</L>
           <L k="Snapshot">{m.snapshot ?? "não informado"}</L>
           <L k="Evidências">
+            <p className="mb-2 text-xs text-carvao-muted">
+              Arquivos internos da pesquisa, ainda não publicados. O caminho e o sha256 permitem conferir, quando forem publicados, que são exatamente
+              os arquivos citados aqui.
+            </p>
             <ul className="space-y-2">
               {m.evidencias.map((e) => (
                 <li key={e.arquivo + e.descricao}>

@@ -15,7 +15,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
     <header className="border-b border-linha bg-superficie">
       <div className="mx-auto flex max-w-page flex-wrap items-center justify-between gap-x-6 gap-y-2 px-6 pt-4">
         <div className="flex min-w-0 items-center gap-4">
-          <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] items-center gap-2.5">
+          <Link href="/" aria-label="Scrutiniums: página inicial" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-2.5 sm:justify-start">
             <LogoMark size={20} />
             <span className="hidden font-serif text-base uppercase tracking-wide2 text-carvao sm:inline">Scrutiniums</span>
           </Link>
@@ -48,7 +48,7 @@ export function CabecalhoEnergia({ atual }: { atual: string }) {
                 <Link
                   href={m.href}
                   aria-current={ativo ? "page" : undefined}
-                  className={`rotulo inline-flex min-h-[44px] items-center gap-1 whitespace-nowrap border-b-2 px-2 ${
+                  className={`rotulo inline-flex min-h-[44px] min-w-[44px] items-center justify-center gap-1 whitespace-nowrap border-b-2 px-2 ${
                     ativo ? "border-energia text-carvao" : "border-transparent text-carvao-muted hover:text-carvao"
                   }`}
                 >

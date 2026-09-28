@@ -181,3 +181,57 @@ describe("auditoria final: regressões", () => {
     }
   });
 });
+
+describe("auditoria final B: regressões", () => {
+  it("selo da tela de escolha quebra linha em tela estreita", () => {
+    const t = ler("src/app/app/(foco)/observatorios/page.tsx");
+    expect(t).toContain("flex flex-wrap items-start justify-between");
+    expect(t).not.toMatch(/rotulo shrink-0 border border-linha px-2 py-1 text-mineral">sua última escolha/);
+  });
+
+  it("gavetas da amplitude usam a proveniência da amplitude, sem recuar para a de outra grandeza", () => {
+    for (const f of ["src/app/setor-eletrico/pld/page.tsx", "src/app/setor-eletrico/rede/page.tsx"]) {
+      expect(ler(f), f).not.toMatch(/proveniencia\.amplitude \?\?/);
+      expect(ler(f), f).toContain("textoAmplitude(");
+    }
+    const r = JSON.parse(ler("public/energia/gold/rede.json"));
+    expect(r.resumo_amplitude.media_30d).not.toBeNull();
+    expect(r.proveniencia.fluxo.formula).toMatch(/média_30d/);
+  });
+
+  it("\"O que mudou\" diz o que mudou nos painéis de amplitude e de fluxos", () => {
+    expect(ler("src/app/setor-eletrico/pld/page.tsx")).not.toMatch(/oQueMudou=\{<>Último dia com PLD/);
+    expect(ler("src/app/setor-eletrico/rede/page.tsx")).not.toMatch(/oQueMudou=\{<>Série de /);
+  });
+
+  it("dica de termo é reposicionada para caber na tela", () => {
+    const t = ler("src/components/evidencia/TermoDica.tsx");
+    expect(t).toContain("posiciona");
+    expect(t).toContain("calc(100vw-2rem)");
+  });
+
+  it("sem jargão interno nas páginas e no rodapé", () => {
+    expect(ler("src/components/energia/RodapeEnergia.tsx")).not.toMatch(/Gold processada|· pipeline/);
+    expect(ler("pipeline/energia/catalogo.py")).not.toMatch(/Coletado pelo pipeline com bronze/);
+    expect(ler("src/app/setor-eletrico/pld/page.tsx")).not.toMatch(/pipeline\/energia\/governanca\.py/);
+    const reg = JSON.parse(ler("pipeline/energia/registro_modelos.json"));
+    expect(reg.publicacao_resultados.motivo).not.toMatch(/G4|G23/);
+    for (const c of reg.publicacao_resultados.condicoes) expect(c).not.toMatch(/G4|G23/);
+    for (const m of reg.modelos) {
+      expect(m.auditoria, m.codigo).not.toMatch(/G0 a G3|contexto separado/);
+      expect(m.falhas_conhecidas.join(" "), m.codigo).not.toMatch(/G23-R1/);
+    }
+    expect(Object.keys(reg.fonte.codigos_internos)).toEqual(expect.arrayContaining(["E2B-C123-v1", "G23-R1"]));
+  });
+
+  it("verbete SIN existe com trecho da captura primária da CCEE", () => {
+    const t = ler("src/lib/energia/conteudo/conceitos.ts");
+    expect(t).toContain('slug: "sin"');
+    const cap = ler("pipeline/energia/seed/ccee_documentos/v20260928T110709Z/package_show_pld_horario_submercado.json");
+    expect(cap).toContain("Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional");
+  });
+
+  it("série coincidente no gráfico de períodos do PLD é declarada", () => {
+    expect(ler("src/components/energia/PldPeriodos.tsx")).toContain("function sobrepostos(");
+  });
+});

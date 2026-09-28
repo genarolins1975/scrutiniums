@@ -34,6 +34,24 @@ REGRAS = {
 }
 
 
+def _resumo_amplitude(amp):
+    """Resumo da amplitude diária calculado sobre os valores não arredondados: último dia,
+    média dos 30 dias até ele, média dos 30 dias anteriores e maior valor dos 30 dias."""
+    if not amp:
+        return None
+    ult = max(amp)
+    fim = c.d(ult)
+    j30 = [k for k in ((fim - timedelta(days=i)).isoformat() for i in range(30)) if k in amp]
+    j30a = [k for k in ((fim - timedelta(days=i)).isoformat() for i in range(30, 60)) if k in amp]
+    kmax = max(j30, key=lambda k: amp[k])
+    return {
+        "dia": ult, "valor": c.r(amp[ult]),
+        "media_30d": c.r(c.media([amp[k] for k in j30])) if len(j30) == 30 else None,
+        "media_30d_anterior": c.r(c.media([amp[k] for k in j30a])) if len(j30a) == 30 else None,
+        "maior_30d": {"dia": kmax, "valor": c.r(amp[kmax])},
+    }
+
+
 def _milhar(n):
     return f"{n:,}".replace(",", ".")
 
@@ -65,10 +83,12 @@ def construir(con):
     dia_ref = dias[-1]
     fim = c.d(dia_ref)
     ult30 = [(fim - timedelta(days=i)).isoformat() for i in range(30)]
+    ant30 = [(fim - timedelta(days=i)).isoformat() for i in range(30, 60)]
 
     fronteiras = []
     for (a, b), p in zip(ons.FRONTEIRAS, pares):
         f30 = [fluxo[p][k] for k in ult30 if k in fluxo[p]]
+        f30a = [fluxo[p][k] for k in ant30 if k in fluxo[p]]
         dif = {k: pld_d[b][k] - pld_d[a][k] for k in dias if k in pld_d[a] and k in pld_d[b]}
         dif30 = [dif[k] for k in ult30 if k in dif]
         fronteiras.append({
@@ -77,6 +97,7 @@ def construir(con):
             "fluxo_dia": c.r(fluxo[p].get(dia_ref), 0),
             "programado_dia": c.r(prog[p].get(dia_ref), 0),
             "fluxo_media_30d": c.r(c.media(f30), 0) if len(f30) == 30 else None,
+            "fluxo_media_30d_anterior": c.r(c.media(f30a), 0) if len(f30a) == 30 else None,
             "dias_sentido_canonico_30d": sum(1 for x in f30 if x > 0),
             "diferenca_preco_ultimo_dia_comum": None if not dif else {"dia": max(dif), "valor": c.r(dif[max(dif)])},
             "dias_com_diferenca_30d": sum(1 for x in dif30 if abs(x) > LIMIAR_DIFERENCA_DIA),
@@ -116,12 +137,14 @@ def construir(con):
     ini = (fim - timedelta(days=365)).isoformat()
     serie = [{"d": k, **{p: c.r(fluxo[p].get(k), 0) for p in pares}} for k in dias if k >= ini]
     dias_pld = sorted(set.intersection(*(set(v) for v in pld_d.values())))
-    spread = []
+    spread, amp_bruta = [], {}
     for k in dias_pld:
         if k < ini:
             continue
         vals = [pld_d[sm][k] for sm in c.ORDEM_SM]
-        spread.append({"d": k, "amplitude": c.r(max(vals) - min(vals))})
+        amp_bruta[k] = max(vals) - min(vals)
+        spread.append({"d": k, "amplitude": c.r(amp_bruta[k])})
+    resumo_amplitude = _resumo_amplitude(amp_bruta)
     base.escreve_csv("intercambio_diario.csv", ["data"] + [f"fluxo_{p}" for p in pares] + [f"programado_{p}" for p in pares],
                      [[k] + [fluxo[p].get(k) for p in pares] + [prog[p].get(k) for p in pares] for k in dias])
     meta = c.meta_ons(DS_INT)
@@ -135,8 +158,9 @@ def construir(con):
         fonte=c.fonte_ons("intercambio-nacional", DS_INT, "Intercâmbios Entre Subsistemas"),
         unidade="MWmed", frequencia="horária, agregada por dia", periodo={"inicio": dias[0], "fim": dia_ref},
         cobertura={"inicio": dias[0], "fim": dia_ref}, capturado_em=c.ultima_captura(snap_int), snapshot=snap_int,
-        transformacoes=["orientação canônica por fronteira com sinal", "média das 24 horas do dia"],
-        formula="fluxo_dia(par) = (1/24) × Σ sinal × intercâmbio_verificado(h)",
+        transformacoes=["orientação canônica por fronteira com sinal", "média das 24 horas do dia",
+                        "média de 30 dias das médias diárias (os 30 dias até o dia de referência e os 30 anteriores), só com os 30 dias completos"],
+        formula="fluxo_dia(par) = (1/24) × Σ sinal × intercâmbio_verificado(h); média_30d = média de fluxo_dia nos 30 dias da janela",
         limitacoes=lim, download="/energia/series/intercambio_diario.csv", notas_fonte=meta.get("notas"),
     )
     prov_spread = c.proveniencia(
@@ -181,7 +205,7 @@ def construir(con):
         **c.cabecalho("rede.json"),
         "dia_referencia": dia_ref, "dia_referencia_liquido": dia_liq, "ultimo_dia_pld": dias_pld[-1] if dias_pld else None,
         "regras": REGRAS, "limiar_diferenca_dia": LIMIAR_DIFERENCA_DIA, "fronteiras": fronteiras, "liquido_subsistemas": liq, "balanco_sin": balanco_sin,
-        "serie_fluxos": serie, "serie_amplitude_pld": spread,
+        "serie_fluxos": serie, "serie_amplitude_pld": spread, "resumo_amplitude": resumo_amplitude,
         "limites_integrados": False,
         "proveniencia": {"fluxo": prov, "diferenca": prov_spread, "amplitude": prov_amplitude,
                          **({"saldos": prov_saldos} if prov_saldos else {})}, "fonte_notas": meta.get("notas"),

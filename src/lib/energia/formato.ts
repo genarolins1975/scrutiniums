@@ -9,7 +9,8 @@ export const AUSENTE = "–";
 
 export function num(v: number | null | undefined, casas = 1): string {
   if (v === null || v === undefined || !Number.isFinite(v)) return AUSENTE;
-  return v.toLocaleString(L, { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  // sinal de menos tipográfico (U+2212), o mesmo de sinal(), em vez do hífen
+  return v.toLocaleString(L, { minimumFractionDigits: casas, maximumFractionDigits: casas }).replace(/^-/, "\u2212");
 }
 
 export function reais(v: number | null | undefined, casas = 2): string {

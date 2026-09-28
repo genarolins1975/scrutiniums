@@ -28,12 +28,12 @@ export function FocoHeader({ titulo }: { titulo?: string }) {
           <SwitcherObservatorio atual={null} />
           <Link
             href="/app/conta"
-            className="rotulo hidden min-h-[44px] items-center text-carvao-muted hover:text-bronze sm:inline-flex"
+            className="rotulo hidden min-h-[44px] min-w-[44px] items-center justify-center text-carvao-muted hover:text-bronze sm:inline-flex"
           >
             Conta
           </Link>
           <form action="/api/auth/sair" method="post">
-            <button type="submit" className="rotulo min-h-[44px] text-mineral hover:text-bronze">
+            <button type="submit" className="rotulo min-h-[44px] min-w-[44px] px-1 text-mineral hover:text-bronze">
               Sair
             </button>
           </form>

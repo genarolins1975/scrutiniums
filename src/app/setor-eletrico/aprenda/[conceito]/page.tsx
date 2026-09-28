@@ -47,7 +47,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
       <MarcaVisita secao="energia:aprenda" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Aprenda</Link> · {c.grupo}
+          <Link href="/setor-eletrico/aprenda" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Aprenda</Link> · {c.grupo}
         </nav>
         <header className="pb-6 pt-4">
           <h1 className="font-serif text-[clamp(2rem,4.4vw,3rem)] leading-tight text-carvao">
@@ -114,7 +114,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
               const rc = conceito(r);
               return rc ? (
                 <li key={r}>
-                  <Link href={`/setor-eletrico/aprenda/${r}`} className="rotulo inline-flex min-h-[40px] items-center border border-linha px-3 text-carvao hover:border-energia">
+                  <Link href={`/setor-eletrico/aprenda/${r}`} className="rotulo inline-flex min-h-[44px] items-center border border-linha px-3 text-carvao hover:border-energia">
                     {rc.sigla ?? rc.nome}
                   </Link>
                 </li>

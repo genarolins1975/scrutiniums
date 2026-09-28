@@ -37,7 +37,7 @@ export function SwitcherObservatorio({
             <li key={d.id}>
               <Link
                 href={d.rotaRaiz}
-                aria-current={d.id === atual ? "page" : undefined}
+                aria-current={d.id === atual ? "true" : undefined}
                 className="flex min-h-[44px] flex-col justify-center px-3 py-2 hover:bg-papel"
               >
                 <span className="flex items-center gap-2 text-sm text-carvao">

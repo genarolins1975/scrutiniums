@@ -92,7 +92,7 @@ export function DiagramaFormacao({ nos }: { nos: NoComEstado[] }) {
         {botao("pld", true)}
       </div>
 
-      <section id="formacao-painel" aria-live="polite" aria-labelledby="formacao-painel-titulo" className="border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start">
+      <section id="formacao-painel" aria-live="polite" aria-labelledby="formacao-painel-titulo" className="scroll-mt-28 border border-linha bg-superficie p-5 md:p-6 lg:sticky lg:top-24 lg:self-start">
         <p className="rotulo text-mineral">Etapa selecionada</p>
         <h3 id="formacao-painel-titulo" className="mt-1 font-serif text-xl text-carvao">
           {atual.titulo}

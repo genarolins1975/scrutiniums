@@ -69,7 +69,7 @@ export default function CargaPage() {
                 <>
                   A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS.{" "}
                   {c.serie[0] && c.serie[0].d >= "2023-04-29"
-                    ? "Todo o período deste gráfico está no regime atual, em vigor desde 29/04/2023 (inclui a estimativa de MMGD); as mudanças de mar/21 e de 29/04/2023 são anteriores a ele."
+                    ? "Todo o período deste gráfico está no regime atual, em vigor desde 29/04/2023 (inclui a estimativa de micro e minigeração distribuída, MMGD); as mudanças de mar/21 e de 29/04/2023 são anteriores a ele."
                     : "As linhas verticais marcam as mudanças de regime dentro do período."}
                 </>
               }

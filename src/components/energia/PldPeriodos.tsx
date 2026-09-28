@@ -38,6 +38,39 @@ const SMS = [
 const n = (v: number | null | undefined, c = 2) =>
   v === null || v === undefined ? "sem dado" : v.toLocaleString("pt-BR", { minimumFractionDigits: c, maximumFractionDigits: c });
 const p = (v: number) => `${(v * 100).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%`;
+/**
+ * Submercados cujas linhas se sobrepõem no gráfico: em todos os pontos do período, a
+ * distância entre eles fica abaixo de 0,5% da amplitude do eixo. Devolve cada grupo com a
+ * maior distância observada, para a nota dizer o número em vez de afirmar igualdade.
+ */
+function sobrepostos(serie: Record<string, string | number | null>[]): { ids: string[]; maior: number }[] {
+  const vals = serie.flatMap((r) => SMS.map((s) => r[s.id])).filter((v): v is number => typeof v === "number");
+  if (!vals.length) return [];
+  const tol = Math.max(0.005, 0.005 * (Math.max(...vals) - Math.min(...vals)));
+  const dist = (a: string, b: string) => {
+    let m = 0;
+    for (const r of serie) {
+      const x = r[a];
+      const y = r[b];
+      if (x === null || y === null) {
+        if (x !== y) return Infinity;
+        continue;
+      }
+      m = Math.max(m, Math.abs(Number(x) - Number(y)));
+    }
+    return m;
+  };
+  const grupos: { ids: string[]; maior: number }[] = [];
+  for (const s of SMS) {
+    const g = grupos.find((grupo) => grupo.ids.every((id) => dist(id, s.id) <= tol));
+    if (g) {
+      g.maior = Math.max(g.maior, ...g.ids.map((id) => dist(id, s.id)));
+      g.ids.push(s.id);
+    } else grupos.push({ ids: [s.id], maior: 0 });
+  }
+  return grupos.filter((g) => g.ids.length > 1);
+}
+
 const quando = (s: string) => `${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4)} ${s.slice(11, 13)}h`;
 
 /**
@@ -99,6 +132,17 @@ export function PldPeriodos({ periodos, limiar }: { periodos: PeriodoPld[]; limi
             altura={280}
           />
         </div>
+        {at.serie.length > 0 &&
+          sobrepostos(at.serie).map((g) => {
+            const nomes = g.ids.map((id) => SMS.find((s) => s.id === id)!.rotulo).join(", ").replace(/, ([^,]*)$/, " e $1");
+            return (
+              <p key={g.ids.join("-")} className="mt-2 text-xs text-carvao-muted">
+                {g.maior === 0
+                  ? `${nomes} tiveram o mesmo valor em todos os pontos deste período: as linhas se sobrepõem no gráfico.`
+                  : `${nomes} ficaram a no máximo R$\u00a0${n(g.maior)}/MWh um do outro em todos os pontos deste período: no gráfico, as linhas se sobrepõem. Os valores de cada um estão na tabela.`}
+              </p>
+            );
+          })}
 
         <p className="mt-6 flex flex-wrap items-center gap-2 text-xs text-mineral">
           Respostas e estatísticas abaixo: calculadas pela Scrutiniums a partir dos valores horários publicados pela CCEE

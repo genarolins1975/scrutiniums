@@ -92,7 +92,7 @@ def construir(anterior=None):
         "apuracoes": apuracoes,
         "regras": {
             "estados": "PESQUISA e VALIDAÇÃO nunca alimentam a previsão principal; só PRODUÇÃO.",
-            "imutabilidade": "Cada registro tem sha256 do conteúdo canônico; correção cria novo registro com substitui e motivo, sem apagar o original.",
+            "imutabilidade": "Cada registro tem uma impressão digital do conteúdo (sha256): qualquer alteração a denuncia. Correção cria um registro novo que aponta para o original e declara o motivo; o original nunca é apagado.",
             "calibracao": f"Faixa P10 a P90 só é chamada de faixa de 80% quando a cobertura empírica fora do ajuste fica entre {int(g.CALIBRACAO_MIN * 100)}% e {int(g.CALIBRACAO_MAX * 100)}% com pelo menos {g.CALIBRACAO_N_MIN} casos (regra proposta, a ratificar).",
             "look_ahead": "Toda variável de entrada precisa ter sido capturada até o horário de corte da previsão.",
         },

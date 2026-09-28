@@ -23,7 +23,7 @@ export default function ModelosPage() {
       <MarcaVisita secao="energia:pld-modelos" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] items-center underline underline-offset-4">PLD</Link> · Modelos
+          <Link href="/setor-eletrico/pld" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">PLD</Link> · Modelos
         </nav>
         <CabecalhoModulo rotulo="Registro de modelos" titulo="Modelos de previsão do PLD e seu estado">
           Todo modelo tem estado explícito: pesquisa, validação, produção ou aposentado. Só um modelo em produção pode alimentar a previsão
@@ -83,6 +83,18 @@ export default function ModelosPage() {
                   Documento de pesquisa {m.fonte.artefato} (sha256 <span className="break-all font-mono text-xs">{m.fonte.artefato_sha256}</span>),
                   experimento {m.fonte.experimento}, snapshot de dados {m.fonte.snapshot}. Estado da revisão: {m.fonte.estado_da_revisao}.
                 </p>
+                {m.fonte.codigos_internos && (
+                  <>
+                    <p className="rotulo mt-3">Códigos internos da pesquisa, citados para rastreabilidade</p>
+                    <dl className="mt-1 space-y-1">
+                      {Object.entries(m.fonte.codigos_internos).map(([k, v]) => (
+                        <div key={k}>
+                          <dt className="inline font-mono">{k}</dt>: <dd className="inline">{v}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </>
+                )}
               </details>
             </section>
           </>

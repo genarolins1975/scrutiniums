@@ -111,7 +111,7 @@ export default function GeracaoPage() {
                   chaveX="d"
                   series={[
                     { id: "termica_7d", rotulo: "Térmica, 7 dias", cor: "var(--serie-termica)", espessura: 2.5 },
-                    { id: "mediana", rotulo: "Mediana do ano anterior", cor: "var(--serie-referencia)", tracejada: true },
+                    { id: "mediana", rotulo: "Mediana do ano anterior", sigla: "Mediana", cor: "var(--serie-referencia)", tracejada: true },
                   ]}
                   banda={{ inferior: "p10", superior: "p90", rotulo: "10º a 90º percentil" }}
                   unidade="%"
@@ -130,7 +130,7 @@ export default function GeracaoPage() {
               subtitulo="Geração verificada do SIN por fonte, hora a hora · MWmed · valores observados"
               natureza="OBSERVADO"
               porQueImporta={<>Mostra como cada fonte se distribui ao longo das horas do dia de referência. Pode ser lido ao lado da curva horária do PLD, sem que a coincidência de horários indique causa.</>}
-              oQueMudou={<>Pico solar do dia: {num(Math.max(...g.perfil_horario_sin.map((p) => p.solar ?? 0)), 0)} MWmed.</>}
+              oQueMudou={<>Pico solar do dia: {num(Math.max(...g.perfil_horario_sin.map((p) => p.solar ?? 0)), 0)} <Unidade u="MWmed" />.</>}
               comoInterpretar={<>Cada linha é uma fonte; a soma das linhas é a geração verificada total em cada hora.</>}
               naoConcluir={<>Um único dia não representa o padrão sazonal; feriados e eventos climáticos alteram o perfil.</>}
               proveniencia={g.proveniencia.geracao}
@@ -176,7 +176,7 @@ export default function GeracaoPage() {
             <div className="border border-linha bg-superficie p-6">
               <h2 className="font-serif text-xl text-carvao">Composição por subsistema, últimos 30 dias</h2>
               <div className="mt-4">
-                <BarrasMix linhas={g.regioes.map((r) => ({ rotulo: r.nome, mix: r["30d"] }))} />
+                <BarrasMix linhas={g.regioes.map((r) => ({ rotulo: r.nome, mix: r["30d"] }))} tabela />
               </div>
             </div>
           </Bloco>

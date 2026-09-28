@@ -7,6 +7,7 @@ import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
 import { carimbo } from "@/lib/energia/formato";
+import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -70,7 +71,7 @@ export default function DadosEnergiaPage() {
         <p className="mt-3 text-xs text-mineral">
           Estados cumulativos: um conjunto utilizado em indicador passou por todos os anteriores. Metadados colhidos das APIs oficiais:{" "}
           {Object.entries(cat.portais)
-            .map(([o, p]) => `${o} ${p.conjuntos} ${p.conjuntos === 1 ? "conjunto" : "conjuntos"} (${p.colhido_em ? carimbo(p.colhido_em) : "sem coleta"})`)
+            .map(([o, p]) => `${o}, ${p.conjuntos} ${p.conjuntos === 1 ? "conjunto" : "conjuntos"}, ${p.colhido_em ? `colhidos em ${carimbo(p.colhido_em)}` : "sem coleta"}`)
             .join("; ")}
           .
         </p>
@@ -84,7 +85,10 @@ export default function DadosEnergiaPage() {
                 <Link href={`/setor-eletrico/dados/${e.slug}`} className="flex h-full flex-col border border-linha bg-superficie p-5 hover:border-energia">
                   <span className="rotulo text-mineral">{e.orgao} · {e.estado}</span>
                   <span className="mt-2 font-serif text-lg text-carvao">{e.titulo}</span>
-                  <span className="mt-1 text-sm text-carvao-muted">Usado em: {Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u))).join(", ")}{e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}</span>
+                  <span className="mt-1 text-sm text-carvao-muted">
+                    Usado em: {(DATASETS_INTEGRADOS.find((d) => d.catalogoId === e.id)?.paginas.map((p) => p.rotulo) ?? Array.from(new Set(e.usado_em.map((u) => PAGINA_DA_GOLD[u] ?? u)))).join(", ")}
+                    {e.modelos.length ? ` · modelos ${e.modelos.join(", ")}` : ""}
+                  </span>
                   {e.quebras.length > 0 && <span className="mt-1 text-xs text-aviso">{e.quebras.length} mudanças metodológicas declaradas pela fonte</span>}
                 </Link>
               </li>

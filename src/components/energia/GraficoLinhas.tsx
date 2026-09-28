@@ -289,7 +289,9 @@ export function GraficoLinhas({
             const f = r.itens[0];
             const curto = (s: SerieLinha) => s.sigla ?? s.rotulo;
             const texto =
-              r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(" · ") : largura < 520 || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
+              r.itens.length > 1 ? r.itens.map((i) => curto(i.s)).join(largura < 520 ? "·" : " · ") : largura < 520 || f.s.rotulo.length > 18 ? curto(f.s) : f.s.rotulo;
+            // rótulo que não cabe na margem direita é omitido: a legenda identifica a série
+            if (x(f.i) + 8 + texto.length * 6.2 > w - 2) return null;
             return (
               <g key={f.s.id}>
                 <circle cx={x(f.i)} cy={y(f.v)} r="3.5" fill={f.s.cor} stroke="var(--cor-superficie)" strokeWidth="1.5" />

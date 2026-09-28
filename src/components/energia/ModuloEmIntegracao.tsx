@@ -3,6 +3,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { CabecalhoModulo } from "@/components/energia/CabecalhoModulo";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold } from "@/lib/energia/gold";
+import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 
 /**
  * Módulo ainda sem dados integrados: escopo, perguntas que vai responder,
@@ -73,15 +74,22 @@ export function ModuloEmIntegracao({
               ))}
             </ul>
             {conceitos && conceitos.length > 0 && (
-              <p className="mt-4 text-sm text-carvao-muted">
-                Verbetes relacionados:{" "}
-                {conceitos.map((c, i) => (
-                  <span key={c.slug}>
-                    {i > 0 && " · "}
-                    <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="text-energia-dark underline underline-offset-4">{c.rotulo}</Link>
-                  </span>
-                ))}
-              </p>
+              <>
+                <p className="mt-4 text-sm text-carvao-muted">Verbetes relacionados:</p>
+                <ul className="mt-1 text-sm">
+                  {conceitos.map((c) => {
+                    const v = CONCEITOS.find((x) => x.slug === c.slug);
+                    return (
+                      <li key={c.slug}>
+                        <Link href={`/setor-eletrico/aprenda/${c.slug}`} className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">
+                          {v && v.nome !== c.rotulo ? `${c.rotulo}: ${v.nome}` : c.rotulo}
+                        </Link>
+                        {v?.estado === "PENDENTE" && <span className="text-mineral"> · verbete em preparação, nome ainda sem conferência na fonte primária</span>}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </>
             )}
           </section>
         </div>

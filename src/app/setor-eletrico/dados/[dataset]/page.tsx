@@ -47,7 +47,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
       <MarcaVisita secao="energia:dados" />
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
-          <Link href="/setor-eletrico/dados" className="inline-flex min-h-[44px] items-center underline underline-offset-4">Dados</Link> · {e.orgao}
+          <Link href="/setor-eletrico/dados" className="inline-flex min-h-[44px] min-w-[44px] items-center justify-center underline underline-offset-4">Dados</Link> · {e.orgao}
         </nav>
         <header className="pb-6 pt-4">
           <p className="rotulo text-mineral">{e.orgao} · {e.estado}</p>

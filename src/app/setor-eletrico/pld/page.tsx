@@ -16,6 +16,7 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { carimbo, dataBR, horaLocal, num, pct, reais, rotuloRegra } from "@/lib/energia/formato";
+import { textoAmplitude } from "@/lib/energia/resumos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { NOS_FORMACAO, PLD_NAO_E, TIPOS_RELACAO } from "@/lib/energia/conteudo/pld";
 import { conceito } from "@/lib/energia/conteudo/conceitos";
@@ -227,7 +228,7 @@ export default function PldPage() {
                     <p className="mt-2 flex flex-wrap items-center gap-2 leading-relaxed text-carvao">
                       <span>
                         Nos 12 meses até {dataBR(ger.dia_referencia)}, a geração hidráulica respondeu por{" "}
-                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do SIN
+                        {pct(ger.regioes.find((r) => r.rg === "SIN")!["12m"]!.participacao.hidraulica)} da geração verificada do <Termo slug="sin">SIN</Termo>
                         (ONS, Balanço de Energia nos Subsistemas).
                       </span>
                       <SeloNatureza natureza="CALCULADO" />
@@ -349,7 +350,7 @@ export default function PldPage() {
                     pergunta="Em que horas o preço sobe, e as regiões se separam?"
                     subtitulo="PLD por submercado · R$/MWh nominais · hora local de Brasília"
                     porQueImporta={<>O PLD é horário. A curva mostra em que horas do dia o preço de cada submercado sobe ou cai e se os quatro seguem juntos.</>}
-                    oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de R$ {num(pld.limiar_diferenca, 0)}/MWh entre submercados.</>}
+                    oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de {reais(pld.limiar_diferenca)}/MWh entre submercados.</>}
                     comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
                     naoConcluir={<>Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes, não auditados nesta fase.</>}
                     proveniencia={pld.proveniencia.horario}
@@ -424,6 +425,15 @@ export default function PldPage() {
                     <SobreEsteDado p={pld.proveniencia.diario} rotulo="Sobre o PLD médio" />
                     <SobreEsteDado p={rede.proveniencia.fluxo} rotulo="Sobre os fluxos" />
                   </div>
+                  <TabelaDados
+                    titulo="Dados do mapa: PLD médio por submercado e fluxo por fronteira"
+                    colunas={["Item", "Valor", "Unidade", "Dia"]}
+                    linhas={[
+                      ...pld.cartoes.map((c) => [`PLD médio, ${c.nome}`, c.media_dia, "R$/MWh", dataBR(pld.dia_referencia)] as (string | number | null)[]),
+                      ...rede.fronteiras.map((f) => [`Fluxo ${f.nome}`, f.fluxo_dia === null ? null : num(f.fluxo_dia, 0), "MWmed", dataBR(rede.dia_referencia)] as (string | number | null)[]),
+                    ]}
+                    casas={[null, 2, null, null]}
+                  />
                 </div>
                 <div className="space-y-4 leading-relaxed text-carvao">
                   <p>
@@ -457,10 +467,10 @@ export default function PldPage() {
                     pergunta="Quando os submercados se separaram no último ano?"
                     subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh"
                     porQueImporta={<>Picos desta série marcam dias em que os PLDs médios das regiões ficaram mais distantes entre si.</>}
-                    oQueMudou={<>Último dia com PLD: {dataBR(rede.ultimo_dia_pld)}.</>}
+                    oQueMudou={<>{textoAmplitude(rede.resumo_amplitude)}</>}
                     comoInterpretar={<>Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.</>}
                     naoConcluir={<>A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A causa de uma separação não é atribuída.</>}
-                    proveniencia={rede.proveniencia.amplitude ?? rede.proveniencia.diferenca}
+                    proveniencia={rede.proveniencia.amplitude}
                   >
                     <GraficoLinhas
                       titulo="Diferença entre o maior e o menor PLD médio diário"
@@ -560,7 +570,7 @@ export default function PldPage() {
                   ))}
               </dl>
               <p className="mt-4 text-sm text-carvao-muted">
-                Validações automatizadas em <code className="font-mono text-xs">pipeline/energia/governanca.py</code> bloqueiam: publicação de modelo não promovido, uso de dado posterior ao corte, alteração silenciosa de registro publicado, previsão sem versão ou snapshot, faixa não calibrada rotulada como 80%, cenário como previsão e ausência como número.
+                Validações automáticas, executadas a cada atualização antes de publicar (validador de governança do código do portal), bloqueiam: publicação de modelo não promovido, uso de dado posterior ao corte, alteração silenciosa de registro publicado, previsão sem versão ou snapshot, faixa não calibrada rotulada como 80%, cenário como previsão e ausência como número.
               </p>
             </div>
           </Capitulo>

@@ -63,8 +63,10 @@ export default function MetodologiaEnergia() {
       <main id="conteudo" tabIndex={-1} className="mx-auto max-w-page px-6 pb-16">
         <CabecalhoModulo rotulo="Metodologia" titulo="Como os números deste observatório são produzidos, e o que eles não dizem">
           Esta página descreve o caminho de cada número: da fonte primária à tela, com as regras que produzem cada classificação.
-          A documentação técnica completa (arquitetura, catálogo de fontes, auditabilidade e governança de previsão) é mantida no repositório
-          do projeto, junto com o código que produz cada número.
+          A documentação técnica completa (arquitetura, catálogo de fontes, auditabilidade e governança de previsão) está no{" "}
+          <a href="https://github.com/genarolins1975/scrutiniums/tree/main/docs/observatorios" target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">
+            repositório público do projeto ↗
+          </a>, junto com o código que produz cada número.
         </CabecalhoModulo>
 
         <S id="natureza" titulo="Taxonomia de natureza do dado">
@@ -104,17 +106,21 @@ export default function MetodologiaEnergia() {
         </S>
 
         <S id="linhagem" titulo="Linhagem e vintages">
+          <p>
+            O processamento tem três camadas, com nomes usuais em engenharia de dados: bronze guarda o arquivo original de cada captura, silver guarda o
+            histórico de observações por captura (vintage) e gold reúne os dados processados que as páginas publicam.
+          </p>
           <pre tabIndex={0} aria-label="Linhagem dos dados, do arquivo da fonte à visualização (rolável)" className="overflow-x-auto border border-linha bg-superficie p-4 font-mono text-xs leading-relaxed text-carvao">{`FONTE (CCEE, ONS, ANEEL)
   ↓ captura: arquivo original, sha256, url, capturado_em, publicado_em (metadado da fonte)
 BRONZE: cópia imutável por captura
   ↓ normalização determinística
-SILVER: observações por vintage (append only)
+SILVER (histórico): observações por vintage; só acrescenta, nunca apaga
   ↓ regras publicadas
 GOLD (dados processados): indicadores com proveniência, publicados em /energia/gold
   ↓
 INDICADOR → VISUALIZAÇÃO | MODELO
 
-Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
+Previsões: VINTAGE DA FONTE → VARIÁVEIS DE ENTRADA → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
           <p>
             Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
             nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem
@@ -166,8 +172,8 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
         <S id="limitacoes" titulo="Limitações gerais desta fase">
           <ul className="list-disc space-y-2 pl-5">
             <li>
-              O portal de dados abertos da CCEE recusou requisições automatizadas (HTTP 403) em tentativas manuais na manhã de 28/09/2026, não registradas no log de coletas, e aceitou a coleta direta do pipeline mais tarde no mesmo dia; o
-              histórico de 2021 a 2025 vem das capturas primárias de 27/09/2026, versionadas com sha256. A coleta direta é tentada em cada execução agendada do pipeline.{" "}
+              O portal de dados abertos da CCEE negou acesso a requisições automatizadas em tentativas manuais na manhã de 28/09/2026, não registradas no log de coletas, e aceitou a coleta automática mais tarde no mesmo dia; o
+              histórico de 2021 a 2025 vem das capturas primárias de 27/09/2026, versionadas com sha256. A coleta direta é tentada em cada execução agendada da atualização.{" "}
               {meta?.fontes?.ccee_pld_horario?.ultima_tentativa
                 ? `Última tentativa: ${carimbo(meta.fontes.ccee_pld_horario.ultima_tentativa.tentado_em)}, ${meta.fontes.ccee_pld_horario.ultima_tentativa.ok ? "bem-sucedida" : "sem sucesso"}.`
                 : "Nenhuma tentativa registrada nesta publicação."}
@@ -184,7 +190,7 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
         <S id="versao" titulo="Versão desta publicação">
           {meta ? (
             <p className="text-sm">
-              Gold processada em {carimbo(meta.gerado_em)} · pipeline {meta.versao_pipeline}
+              Dados processados em {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
               {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""} · coleta executada nesta publicação: {meta.coleta_executada ? "sim" : "não (reconstrução a partir do estado salvo)"} ·
               falhas de construção: {meta.builders_falhos.length} · regressões retidas: {meta.regressoes.length}.
             </p>

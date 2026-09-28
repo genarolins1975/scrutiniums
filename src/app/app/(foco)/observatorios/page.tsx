@@ -72,12 +72,12 @@ export default async function EscolhaObservatorioPage() {
                 className="relative flex h-full flex-col border border-linha bg-superficie p-8"
               >
                 <span aria-hidden="true" className={`absolute inset-x-0 top-0 h-[3px] ${energia ? "bg-energia" : "bg-bronze"}`} />
-                <div className="flex items-start justify-between gap-4">
-                  <h2 id={`escolha-${d.id}`} className="font-serif text-2xl leading-snug text-carvao">
+                <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+                  <h2 id={`escolha-${d.id}`} className="min-w-0 font-serif text-2xl leading-snug text-carvao">
                     {d.nome}
                   </h2>
                   {ultimo === d.id && (
-                    <span className="rotulo shrink-0 border border-linha px-2 py-1 text-mineral">sua última escolha aqui</span>
+                    <span className="rotulo border border-linha px-2 py-1 text-mineral">sua última escolha aqui</span>
                   )}
                 </div>
                 <p className="mt-4 flex-1 text-sm leading-relaxed text-carvao-muted">{d.descricaoCurta}</p>

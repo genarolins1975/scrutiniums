@@ -12,6 +12,7 @@ import { TabelaDados } from "@/components/energia/TabelaDados";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { dataBR, num, reais, rotuloRegra } from "@/lib/energia/formato";
+import { textoAmplitude, textoFluxos30d } from "@/lib/energia/resumos";
 
 export const dynamic = "force-static";
 export const metadata: Metadata = {
@@ -106,6 +107,7 @@ export default function RedePage() {
               oQueMudou={<>{r.liquido_subsistemas.map((l) => `${l.nome}: ${num(l.dia, 0)} MWmed no dia, média de 30 dias ${num(l.media_30d, 0)}`).join("; ")}.</>}
               comoInterpretar={
                 <>
+                  Além dos quatro subsistemas, o balanço do ONS publica um valor de intercâmbio para o <Termo slug="sin">SIN</Termo> inteiro. O que ele representa não foi conferido na documentação do ONS; a plataforma apenas compara esse valor com a soma dos quatro saldos.{" "}
                   {r.balanco_sin
                     ? `Em ${dataBR(r.balanco_sin.dia)}, a soma dos quatro saldos foi ${num(r.balanco_sin.soma_saldos, 0)} MWmed e o intercâmbio do SIN no mesmo balanço, ${num(r.balanco_sin.intercambio_sin, 0)} MWmed. Nos 365 dias até essa data, a média diária do intercâmbio do SIN passou de 1 MWmed em módulo em ${r.balanco_sin.dias_sin_nao_nulo_365} dias; nesses dias, os saldos não somam zero. `
                     : ""}
@@ -132,7 +134,7 @@ export default function RedePage() {
               pergunta="Como os fluxos mudaram ao longo do último ano?"
               subtitulo="Intercâmbio médio diário por fronteira · MWmed · positivo no sentido indicado"
               porQueImporta={<>Uma janela de 12 meses mostra como o sentido e o volume dos fluxos variam ao longo do ano; a página não atribui essas variações a causas.</>}
-              oQueMudou={<>Série de {dataBR(r.serie_fluxos[0]?.d as string)} a {dataBR(r.dia_referencia)}.</>}
+              oQueMudou={<>{textoFluxos30d(r)}</>}
               comoInterpretar={<>Valores negativos significam fluxo no sentido oposto ao indicado na legenda.</>}
               naoConcluir={<>Fluxo não é capacidade: sem os limites, não se sabe quanto faltou para o teto em cada dia.</>}
               proveniencia={r.proveniencia.fluxo}
@@ -146,10 +148,10 @@ export default function RedePage() {
               pergunta="Em que dias os preços dos submercados se separaram?"
               subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh · último ano"
               porQueImporta={<>Picos marcam dias em que os PLDs médios dos submercados ficaram mais distantes entre si.</>}
-              oQueMudou={<>Maior diferença da série: {reais(Math.max(...r.serie_amplitude_pld.map((a) => a.amplitude)))}/MWh.</>}
+              oQueMudou={<>{textoAmplitude(r.resumo_amplitude)}</>}
               comoInterpretar={<>Zero significa médias diárias iguais nos quatro submercados; diferenças de poucas horas podem sumir na média diária.</>}
               naoConcluir={<>A série não diz qual fronteira causou a separação.</>}
-              proveniencia={r.proveniencia.amplitude ?? r.proveniencia.diferenca}
+              proveniencia={r.proveniencia.amplitude}
             >
               <GraficoLinhas
                 titulo="Diferença diária entre o maior e o menor PLD"

@@ -262,6 +262,7 @@ export type RedeGold = Cabecalho & {
     fluxo_dia: number | null;
     programado_dia: number | null;
     fluxo_media_30d: number | null;
+    fluxo_media_30d_anterior?: number | null;
     dias_sentido_canonico_30d: number;
     diferenca_preco_ultimo_dia_comum: { dia: string; valor: number } | null;
     dias_com_diferenca_30d: number;
@@ -270,6 +271,13 @@ export type RedeGold = Cabecalho & {
   liquido_subsistemas: { sm: Submercado; nome: string; dia: number | null; media_30d: number | null }[];
   serie_fluxos: ({ d: string } & Record<string, number | null | string>)[];
   serie_amplitude_pld: { d: string; amplitude: number }[];
+  resumo_amplitude?: {
+    dia: string;
+    valor: number;
+    media_30d: number | null;
+    media_30d_anterior: number | null;
+    maior_30d: { dia: string; valor: number };
+  } | null;
   limites_integrados: boolean;
   balanco_sin?: {
     dia: string;
@@ -281,7 +289,7 @@ export type RedeGold = Cabecalho & {
     horas_total: number;
     dias_divergentes: string[];
   } | null;
-  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; amplitude?: Proveniencia; saldos?: Proveniencia };
+  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; amplitude: Proveniencia; saldos?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
 };
@@ -341,7 +349,7 @@ export type Modelo = {
 };
 
 export type ModelosGold = Cabecalho & {
-  fonte: Record<string, string>;
+  fonte: Record<string, string> & { codigos_internos?: Record<string, string> };
   publicacao_resultados: { liberada: boolean; motivo: string; condicoes: string[] };
   definicoes: Record<string, string>;
   modelos: Modelo[];

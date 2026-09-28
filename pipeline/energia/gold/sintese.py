@@ -19,7 +19,7 @@ def nbr(v, casas=1):
     if v is None:
         return "–"
     s = f"{abs(v):,.{casas}f}".replace(",", "X").replace(".", ",").replace("X", ".")
-    return ("-" if v < 0 else "") + s
+    return ("\u2212" if v < 0 else "") + s  # sinal de menos tipográfico, como na interface
 
 
 def _t(texto, **kw):
@@ -141,7 +141,7 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
             "/setor-eletrico/rede")
         atraso = (hoje - c.d(pld["dia_referencia"])).days
         add("pld_defasagem", "Série de PLD sem atualização recente",
-            "Último dia de PLD integrado mais de 2 dias antes da data de processamento da gold.",
+            "Último dia de PLD integrado mais de 2 dias antes da data de processamento dos dados.",
             atraso > 2,
             f"Último dia integrado: {c.data_br(pld['dia_referencia'])}, {atraso} {'dia' if atraso == 1 else 'dias'} antes do processamento de {c.data_br(hoje.isoformat())}. {'A última coleta direta na CCEE foi bem-sucedida.' if (pld.get('coleta_direta') or {}).get('ok') else 'A última tentativa de coleta direta na CCEE falhou ou não foi feita.'}",
             "/setor-eletrico/dados/ccee-pld-horario", tipo="dados")

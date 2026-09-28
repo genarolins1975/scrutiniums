@@ -35,6 +35,32 @@ export function exemploDe(slug: string): Exemplo {
         href: "/setor-eletrico/pld#hoje",
       };
     }
+    case "mcp": {
+      if (!integra(pld)) return null;
+      const se = pld.cartoes.find((c) => c.sm === "SE" && c.max_hora !== null);
+      if (!se) return null;
+      return {
+        partes: [
+          t(`Na hora mais cara de ${dataBR(pld.dia_referencia)} no Sudeste/Centro-Oeste (${se.quando_max.slice(11, 13)}h), o PLD foi `),
+          t(`${reais(se.max_hora)}/MWh`, "OBSERVADO"),
+          t(": segundo a CCEE, esse é o preço do Mercado de Curto Prazo naquela hora e submercado. Os balanços e resultados do mercado, que a CCEE publica em outros conjuntos, ainda não estão integrados a este observatório."),
+        ],
+        href: "/setor-eletrico/pld#o-que-e",
+      };
+    }
+    case "sin": {
+      if (!integra(hid)) return null;
+      const s = hid.subsistemas.find((x) => x.sm === "SIN");
+      if (!s || s.ear.valor === null) return null;
+      return {
+        partes: [
+          t(`Em ${dataBR(s.ear.dia)}, a EAR do SIN, calculada pela soma das EAR dos quatro subsistemas dividida pela soma das EAR máximas, era `),
+          t(`${pct(s.ear.valor)} da EAR máxima`, "CALCULADO"),
+          t("."),
+        ],
+        href: "/setor-eletrico/agua-e-clima#ear",
+      };
+    }
     case "submercado": {
       if (!integra(pld)) return null;
       return {

@@ -141,7 +141,7 @@ def construir(brutos):
         "definicoes_estado": {
             "CATALOGADO": "Existência e metadados registrados.",
             "EM INTEGRAÇÃO": "Coletor em desenvolvimento ou bloqueado por acesso.",
-            "INTEGRADO": "Coletado pelo pipeline com bronze, sha256 e silver.",
+            "INTEGRADO": "Coletado automaticamente: o arquivo original fica guardado e identificado por sha256, e as observações entram no histórico de capturas.",
             "VALIDADO": "Integrado e com validações automáticas passando.",
             "UTILIZADO EM INDICADOR": "Alimenta indicador publicado no portal.",
             "UTILIZADO EM MODELO": "Alimenta modelo registrado (em qualquer estado).",

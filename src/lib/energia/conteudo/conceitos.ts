@@ -190,6 +190,31 @@ export const CONCEITOS: Conceito[] = [
     vejaNoPortal: [{ rotulo: "Por que os submercados diferem", href: "/setor-eletrico/pld#submercados" }],
   },
   {
+    slug: "sin",
+    sigla: "SIN",
+    nome: "Sistema Interligado Nacional",
+    grupo: "Operação",
+    estado: "CONFERIDO",
+    conferidoEm: "2026-09-28",
+    emUmaFrase:
+      "Nome do sistema elétrico interligado do país. A CCEE descreve os quatro submercados (Norte, Nordeste, Sul e Sudeste) como submercados \"de atuação no SIN\".",
+    porQueImporta:
+      "Nos dados do ONS usados aqui, os valores do SIN aparecem ao lado dos quatro subsistemas: a EAR e a carga do SIN, por exemplo, reúnem os quatro. Como cada número do SIN é obtido está na regra de cada indicador.",
+    comoEMedido:
+      "Não é uma grandeza: é o recorte. Quando a plataforma calcula um valor para o SIN, a regra do indicador diz como (por exemplo, a EAR do SIN é a soma das EAR dos subsistemas dividida pela soma das EAR máximas).",
+    relacoes: ["submercado", "intercambio"],
+    fontes: [
+      {
+        orgao: "CCEE",
+        documento: "Portal de dados abertos, conjunto PLD_HORARIO_SUBMERCADO (descrição do campo SUBMERCADO), capturado em 28/09/2026",
+        url: "https://dadosabertos.ccee.org.br/dataset/pld_horario_submercado",
+        trecho: "Representa os quatro (4) submercados de atuação no SIN  - Sistema Interligado Nacional correspondentes a Norte (N), Nordeste (NE), Sul (S) e Sudeste (SE).",
+      },
+    ],
+    limitacoes: ["A abrangência física do SIN (quais sistemas isolados ficam de fora) não foi conferida em documento do ONS nesta fase."],
+    vejaNoPortal: [{ rotulo: "Visão geral do sistema", href: "/setor-eletrico" }],
+  },
+  {
     slug: "cvu",
     sigla: "CVU",
     nome: "Custo Variável Unitário",
@@ -197,7 +222,7 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Custo variável unitário das usinas térmicas considerado pelo ONS no Programa Mensal da Operação e usado nos modelos NEWAVE, DECOMP e DESSEM.",
+      "Valor atribuído a cada usina térmica que o ONS considera no Programa Mensal da Operação e na execução dos modelos NEWAVE, DECOMP e DESSEM. A fonte descreve o CVU pelo uso; o que compõe esse custo não foi conferido nesta fase.",
     porQueImporta:
       "Segundo o ONS, é usado na execução dos modelos NEWAVE, DECOMP e DESSEM, nas decisões de programação e no acompanhamento dos custos da operação.",
     comoEMedido: "Valor por usina térmica, publicado pelo ONS no conjunto CVU das Usinas Térmicas; a unidade será conferida no dicionário de dados quando o conjunto for integrado.",

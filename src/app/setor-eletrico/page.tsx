@@ -84,7 +84,7 @@ export default function VisaoGeralEnergia() {
             O que está acontecendo no sistema elétrico brasileiro?
           </h1>
           <p className="mt-4 max-w-prose2 leading-relaxed text-carvao-muted md:text-lg">
-            Água, geração, consumo, rede e preço, lidos a partir dos dados abertos do ONS e da CCEE. Cada número leva à
+            Água, geração, consumo, rede e preço do <Termo slug="sin">Sistema Interligado Nacional (SIN)</Termo>, lidos a partir dos dados abertos do ONS e da CCEE. Cada número leva à
             sua fonte; o que ainda não está integrado aparece como ausência, nunca como estimativa.
           </p>
           {meta && (
@@ -121,7 +121,7 @@ export default function VisaoGeralEnergia() {
               </ul>
               <p className="mt-6 flex flex-wrap items-center gap-2 border-t border-linha pt-4 text-xs text-mineral">
                 <SeloNatureza natureza="CALCULADO" /> {sintese.nota} Cada frase usa a data de referência da sua fonte.{" "}
-                <Link href="/setor-eletrico/metodologia#sintese" className="text-energia-dark underline underline-offset-4">Regras das frases</Link>
+                <Link href="/setor-eletrico/metodologia#sintese" className="inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4">Regras das frases</Link>
               </p>
             </div>
           ) : (
@@ -170,7 +170,7 @@ export default function VisaoGeralEnergia() {
               subtitulo="EAR do SIN · % da EAR máxima, com faixa histórica do 10º ao 90º percentil"
               natureza="CALCULADO"
               porQueImporta={<>A <Termo slug="ear">EAR</Termo> mede a energia associada à água guardada nos reservatórios; a <Termo slug="ena">ENA</Termo> mede, em energia, as vazões naturais que chegam a eles. As duas definições são do ONS.</>}
-              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} <Unidade u="p.p." />. A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 1)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
+              oQueMudou={<>Em 30 dias, a EAR do SIN variou {sinal(hidSin.ear.variacao_30d_pp)} <Unidade u="p.p." /> A ENA acumulada em 30 dias está em {pct(hidSin.ena.pct_mlt_30d, 1)} da MLT{hidSin.ena.faixa_30d ? `, ${ROTULO_FAIXA_USUAL[hidSin.ena.faixa_30d]}` : ""}.{hid.desvio_principal ? ` Maior desvio frente à mediana da data: ${hid.desvio_principal.nome} (${sinal(hid.desvio_principal.desvio_pp)} p.p.).` : ""}</>}
               comoInterpretar={<>A faixa sombreada mostra, para cada data, onde a EAR esteve em 80% dos anos desde 2001 (10º a 90º percentil). Fora dela, o valor está fora da faixa usual para a data.</>}
               naoConcluir={<>Este painel não relaciona EAR ou ENA ao preço nem calcula quanto da ENA vira armazenamento. A capacidade máxima de armazenamento mudou ao longo do tempo.</>}
               proveniencia={hid.proveniencia.ear_sin}
@@ -230,6 +230,7 @@ export default function VisaoGeralEnergia() {
                   { rotulo: "Últimos 30 dias", mix: gSin["30d"] },
                   { rotulo: "Últimos 12 meses", mix: gSin["12m"] },
                 ]}
+                tabela
               />
             </PainelEvidencia>
           ) : (

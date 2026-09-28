@@ -1,4 +1,5 @@
 import type { FonteGeracao, Mix } from "@/lib/energia/tipos";
+import { TabelaDados } from "@/components/energia/TabelaDados";
 
 export const COR_FONTE: Record<FonteGeracao, string> = {
   hidraulica: "var(--serie-hidraulica)",
@@ -28,7 +29,17 @@ const TEXTO_SOBRE: Record<FonteGeracao, string> = {
  * Segmentos separados por 2px, rótulo visível nos segmentos a partir de 6%, e
  * dica nativa com MWmed e participação em todos (tabela equivalente ao lado).
  */
-export function BarrasMix({ linhas }: { linhas: { rotulo: string; detalhe?: string; mix: Mix; destaque?: boolean }[] }) {
+/** Participação exata a partir dos MWmed (evita arredondar de novo o percentual já arredondado). */
+const parte = (m: NonNullable<Mix>, f: FonteGeracao) => (m.total_mwmed > 0 ? (100 * m.mwmed[f]) / m.total_mwmed : m.participacao[f]);
+
+export function BarrasMix({
+  linhas,
+  tabela = false,
+}: {
+  linhas: { rotulo: string; detalhe?: string; mix: Mix; destaque?: boolean }[];
+  /** Inclui a tabela equivalente (participação e total), quando a página não tem outra. */
+  tabela?: boolean;
+}) {
   return (
     <div>
       <ul className="mb-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-carvao-muted" aria-label="Legenda">
@@ -59,7 +70,7 @@ export function BarrasMix({ linhas }: { linhas: { rotulo: string; detalhe?: stri
                     >
                       {p >= 6 && (
                         <span className={`px-1.5 text-[0.7rem] font-medium tabular-nums ${TEXTO_SOBRE[f]}`}>
-                          {p.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}%
+                          {parte(l.mix!, f).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}%
                         </span>
                       )}
                     </div>
@@ -72,6 +83,14 @@ export function BarrasMix({ linhas }: { linhas: { rotulo: string; detalhe?: stri
           </li>
         ))}
       </ul>
+      {tabela && (
+        <TabelaDados
+          titulo="Participação de cada fonte na geração verificada, por linha do gráfico"
+          colunas={["Linha", ...ORDEM_FONTES.map((f) => `${NOME_FONTE[f]} (%)`), "Total (MWmed)"]}
+          linhas={linhas.map((l) => [l.rotulo, ...ORDEM_FONTES.map((f) => l.mix?.participacao[f] ?? null), l.mix?.total_mwmed ?? null])}
+          casas={[null, 1, 1, 1, 1, 0]}
+        />
+      )}
     </div>
   );
 }

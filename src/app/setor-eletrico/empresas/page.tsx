@@ -19,14 +19,14 @@ export default function EmpresasPage() {
       perguntas={[
         "Quais usinas, linhas e concessões pertencem a cada grupo econômico?",
         "Quanto da capacidade instalada está com cada grupo e em cada fonte?",
-        "Como estão os indicadores de qualidade (DEC e FEC), perdas e tarifas de cada distribuidora?",
+        "Como estão os indicadores coletivos de continuidade, DEC (Duração Equivalente de Interrupção por Unidade Consumidora) e FEC (Frequência Equivalente de Interrupção por Unidade Consumidora), além de perdas e tarifas, de cada distribuidora?",
         "Quais companhias listadas têm quais ativos, e o que dizem suas demonstrações?",
       ]}
       temas={["empresas", "distribuicao", "geracao"]}
       orgaos={["ANEEL", "CVM", "B3"]}
       pendencias={[
-        "Cadastro mestre de entidades com regras documentadas de ligação (CNPJ, CEG, código ANEEL, código CVM).",
-        "Integração dos conjuntos da ANEEL (SIGA, agentes, composição societária, DEC e FEC, tarifas) e das demonstrações da CVM.",
+        "Cadastro mestre de entidades com regras documentadas de ligação (CNPJ, CEG, que é o Código Único de Empreendimentos de Geração, código ANEEL, código CVM).",
+        "Integração dos conjuntos da ANEEL (SIGA, o Sistema de Informações de Geração da ANEEL; agentes; composição societária; DEC e FEC; tarifas) e das demonstrações da CVM. Nomes das siglas conforme as descrições dos conjuntos no portal de dados abertos da ANEEL.",
       ]}
     />
   );

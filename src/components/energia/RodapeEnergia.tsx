@@ -20,7 +20,7 @@ export function RodapeEnergia() {
           </p>
           {meta && (
             <p className="mt-3 text-xs text-mineral">
-              Gold processada em {carimbo(meta.gerado_em)} · pipeline {meta.versao_pipeline}
+              Dados processados em {carimbo(meta.gerado_em)} · versão do processamento {meta.versao_pipeline}
               {meta.versao_codigo ? ` · código ${meta.versao_codigo}` : ""}
             </p>
           )}
