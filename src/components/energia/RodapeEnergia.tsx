@@ -26,6 +26,7 @@ export function RodapeEnergia() {
           )}
         </div>
         <ul className="space-y-2 text-sm">
+          <li><Link href="/setor-eletrico" className="text-carvao underline-offset-4 hover:underline">Mapa do Observatório: por onde começar</Link></li>
           <li><Link href="/setor-eletrico/dados" className="text-carvao underline-offset-4 hover:underline">Catálogo de dados e downloads</Link></li>
           <li><Link href="/setor-eletrico/metodologia" className="text-carvao underline-offset-4 hover:underline">Metodologia e regras publicadas</Link></li>
           <li><Link href="/setor-eletrico/pld/modelos" className="text-carvao underline-offset-4 hover:underline">Registro de modelos do PLD</Link></li>

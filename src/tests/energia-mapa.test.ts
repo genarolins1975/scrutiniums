@@ -93,6 +93,36 @@ describe("mapa do observatório", () => {
   });
 });
 
+describe("auditoria do mapa: regressões", () => {
+  it("cabeçalhos mostram a data de cada fonte, sem uma data única de operação", () => {
+    for (const f of ["src/app/setor-eletrico/page.tsx", "src/app/setor-eletrico/visao-geral/page.tsx"]) {
+      const t = ler(f);
+      expect(t, f).toContain("linhaDeDatas()");
+      expect(t, f).not.toMatch(/Operação \(ONS\) (até )?\{/);
+    }
+  });
+
+  it("hash com % malformado não derruba a página", () => {
+    for (const f of ["src/components/energia/RedirecionaAncoraAntiga.tsx", "src/components/evidencia/ModoProfundidade.tsx"]) {
+      const t = ler(f);
+      expect(t, f).toMatch(/try \{\s*h = decodeURIComponent\(h\);\s*\} catch/);
+    }
+  });
+
+  it("gráfico reserva a altura final já no HTML do servidor, e âncoras abaixo dele não se deslocam", () => {
+    expect(ler("src/components/energia/GraficoLinhas.tsx")).toMatch(/width="100%"\s*height=\{h\}/);
+  });
+
+  it("como ler explica faixa usual, conferência e leituras, nomes e réguas, e o canal de correções", () => {
+    const t = ler("src/app/setor-eletrico/page.tsx");
+    for (const titulo of ["Mediana, faixa usual e percentil", "Conferido, pendente ou leitura", "Nomes e réguas que se confundem", "Correções e sugestões"]) {
+      expect(t, titulo).toContain(`titulo="${titulo}"`);
+    }
+    expect(t).toContain("O que o mapa não permite concluir");
+    expect(t).toContain('href="/observatorio/suggestions"');
+  });
+});
+
 describe("\"Usado nas páginas\" de cada conjunto", () => {
   it("lista toda página que lê a gold alimentada pelo conjunto", async () => {
     const { DATASETS_INTEGRADOS } = await import("@/lib/energia/datasets");

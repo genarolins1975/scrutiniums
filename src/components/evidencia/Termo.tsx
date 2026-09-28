@@ -8,12 +8,12 @@ import { TermoDica } from "@/components/evidencia/TermoDica";
  * não mostra definição. A base de verbetes fica no servidor; o cliente recebe
  * só o texto da dica.
  */
-export function Termo({ slug, children }: { slug: string; children: ReactNode }) {
+export function Termo({ slug, children, alvo = false }: { slug: string; children: ReactNode; alvo?: boolean }) {
   const c = conceito(slug);
   if (!c) return <>{children}</>;
   const dica = c.estado === "CONFERIDO" && c.emUmaFrase ? c.emUmaFrase : "Verbete em preparação: fonte primária ainda não conferida.";
   return (
-    <TermoDica href={`/setor-eletrico/aprenda/${c.slug}`} rotulo={`${c.sigla ? `${c.sigla} · ` : ""}${c.nome}`} dica={dica}>
+    <TermoDica href={`/setor-eletrico/aprenda/${c.slug}`} rotulo={`${c.sigla ? `${c.sigla} · ` : ""}${c.nome}`} dica={dica} alvo={alvo}>
       {children}
     </TermoDica>
   );

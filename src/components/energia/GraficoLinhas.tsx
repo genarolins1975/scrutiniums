@@ -240,8 +240,11 @@ export function GraficoLinhas({
           </li>
         )}
       </ul>
+      {/* altura fixa em pixels: o HTML do servidor já reserva a altura final, e âncoras abaixo
+          do gráfico não se deslocam quando a largura real é medida no cliente */}
       <svg
         width="100%"
+        height={h}
         viewBox={`0 0 ${w} ${h}`}
         role="img"
         aria-labelledby={`${uid}-t`}

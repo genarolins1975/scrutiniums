@@ -15,6 +15,7 @@ import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 import { gold, integra } from "@/lib/energia/gold";
 import { dataBR, num, pct, reais, sinal } from "@/lib/energia/formato";
 import { ROTULO_FAIXA_USUAL, sin } from "@/lib/energia/leituras";
+import { linhaDeDatas } from "@/lib/energia/referencias";
 
 export const dynamic = "force-static";
 
@@ -89,11 +90,10 @@ export default function VisaoGeralEnergia() {
           </p>
           {meta && (
             <p className="mt-4 text-xs text-mineral">
-              Operação (ONS) até {integra(hid) ? dataBR(hid.dia_referencia_ear) : "sem dado"} · PLD (CCEE) até{" "}
-              {integra(pld) ? dataBR(pld.dia_referencia) : "sem dado"}
+              Dados: {linhaDeDatas()}
               {integra(pld) && pld.coleta_direta
                 ? pld.coleta_direta.ok
-                  ? " · última coleta direta na CCEE bem-sucedida."
+                  ? " · última coleta direta na CCEE concluída com sucesso."
                   : " · a última tentativa de coleta direta na CCEE falhou; o PLD vem da captura primária mais recente."
                 : "."}
             </p>

@@ -62,7 +62,7 @@ export const PASSOS: Passo[] = [
     titulo: "A água nos reservatórios",
     pergunta: PAGINAS_MAPA["agua-e-clima"].pergunta,
     texto:
-      "A energia armazenada (EAR) é a energia associada à água guardada nos reservatórios; a energia natural afluente (ENA) expressa em energia as vazões naturais que chegam a eles. O ONS publica as duas todos os dias, por subsistema. A página compara cada valor com o mesmo dia do calendário nos anos anteriores, para separar o que é da estação do que é incomum.",
+      "Segundo o ONS, a energia armazenada (EAR) é a energia associada à água guardada nos reservatórios, e a energia natural afluente (ENA) é a energia produzível a partir das vazões naturais que chegam a eles. O ONS publica as duas todos os dias, por subsistema. A página compara cada valor com o mesmo dia do calendário nos anos anteriores, para separar o que é da estação do que é incomum.",
     conceitos: [
       { slug: "ear", rotulo: "EAR" },
       { slug: "ena", rotulo: "ENA" },
@@ -81,7 +81,7 @@ export const PASSOS: Passo[] = [
     titulo: "A geração por fonte",
     pergunta: PAGINAS_MAPA.geracao.pergunta,
     texto:
-      "O balanço de energia do ONS registra, hora a hora e por subsistema, a geração verificada das usinas hidráulicas, térmicas, eólicas e fotovoltaicas. A página mostra a participação de cada fonte no dia, em 7 e 30 dias e em 12 meses. A partir de 29/04/2023 o balanço passa a incluir, na solar, a estimativa de micro e minigeração distribuída (leitura a partir do dado, não conferida em documento do ONS); comparações que atravessam essa data não são homogêneas.",
+      "O balanço de energia do ONS registra, hora a hora e por subsistema, a geração verificada das usinas hidráulicas, térmicas, eólicas e fotovoltaicas. A página mostra a participação de cada fonte no dia, em 7 e 30 dias e em 12 meses. Em 29/04/2023 a solar do SIN no balanço mais que dobra de um dia para o outro, na mesma data em que o ONS passa a incluir na carga a estimativa de micro e minigeração distribuída. A leitura de que o salto é essa estimativa é da Scrutiniums, a partir do dado, e não foi conferida em documento do ONS; por isso as comparações não atravessam essa data.",
     conceitos: [
       { slug: "geracao-centralizada", rotulo: "geração verificada" },
       { slug: "geracao-distribuida", rotulo: "MMGD" },
@@ -95,7 +95,7 @@ export const PASSOS: Passo[] = [
     titulo: "O consumo: a carga",
     pergunta: PAGINAS_MAPA.carga.pergunta,
     texto:
-      "A carga é a energia atendida no sistema interligado, publicada pelo ONS por subsistema em base diária. O que entra na conta mudou em março de 2021 e em 29/04/2023, quando passou a incluir a estimativa de micro e minigeração distribuída; a página só compara períodos do mesmo regime.",
+      "Segundo o ONS, a carga é a energia atendida no sistema interligado, publicada por subsistema em base diária. O que entra na conta mudou em março de 2021 e em 29/04/2023, quando passou a incluir a estimativa de micro e minigeração distribuída, como declara a descrição do conjunto; a página só compara períodos do mesmo regime.",
     conceitos: [{ slug: "carga", rotulo: "carga" }],
     paginas: ["carga"],
     fontes: [{ rotulo: "Carga de energia diária (ONS)", chave: "carga" }],
@@ -106,7 +106,7 @@ export const PASSOS: Passo[] = [
     titulo: "A rede entre as regiões",
     pergunta: PAGINAS_MAPA.rede.pergunta,
     texto:
-      "O intercâmbio é o fluxo de energia entre subsistemas, medido nas linhas de transmissão de fronteira. A página mostra o fluxo diário em cada fronteira, o saldo de cada subsistema e se os preços das regiões se separaram. Os limites de intercâmbio ainda não estão integrados: sem eles, a página não afirma que a rede atingiu limite.",
+      "Segundo o ONS, o intercâmbio é o fluxo de energia entre subsistemas, medido nas linhas de transmissão de fronteira. A página mostra o fluxo diário em cada fronteira, o saldo de cada subsistema e se os preços das regiões se separaram. Os limites de intercâmbio ainda não estão integrados: sem eles, a página não afirma que a rede atingiu limite.",
     conceitos: [
       { slug: "intercambio", rotulo: "intercâmbio" },
       { slug: "submercado", rotulo: "submercado" },
@@ -145,7 +145,7 @@ export const PASSOS: Passo[] = [
     titulo: "Contratos, empresas, expansão e regras",
     pergunta: "Quem contrata a energia, quem é dono dos ativos, o que está chegando e que regras mudaram?",
     texto:
-      "Como a energia é contratada e liquidada, quem é dono de usinas e linhas, que capacidade está chegando e que regras mudaram. Estes quatro módulos estão em integração: mostram escopo, perguntas e as fontes já catalogadas, sem nenhum número publicado.",
+      "Como a energia é contratada e liquidada, quem é dono de usinas e linhas, que capacidade está chegando e que regras mudaram. Estes quatro módulos estão em integração: mostram escopo, perguntas e as fontes já catalogadas, sem nenhum número publicado. Os verbetes dos conceitos abaixo ainda estão em preparação, sem definição publicada até a fonte primária ser conferida.",
     conceitos: [
       { slug: "acl", rotulo: "ACL" },
       { slug: "acr", rotulo: "ACR" },

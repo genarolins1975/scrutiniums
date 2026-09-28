@@ -12,7 +12,8 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
  * um termo perto da margem direita não empurra a página para o lado.
  */
 const MARGEM = 16;
-export function TermoDica({ href, rotulo, dica, children }: { href: string; rotulo: string; dica: string; children: ReactNode }) {
+/** `alvo`: fora de texto corrido (listas de termos), o termo ganha altura de toque de 44 px. */
+export function TermoDica({ href, rotulo, dica, children, alvo = false }: { href: string; rotulo: string; dica: string; children: ReactNode; alvo?: boolean }) {
   const id = useId();
   const [fechada, setFechada] = useState(false);
   const [sobre, setSobre] = useState(false);
@@ -39,7 +40,7 @@ export function TermoDica({ href, rotulo, dica, children }: { href: string; rotu
   return (
     <span
       ref={raiz}
-      className={`termo relative inline ${fechada ? "termo-fechada" : ""}`}
+      className={`termo relative ${alvo ? "inline-flex min-h-[44px] items-center" : "inline"} ${fechada ? "termo-fechada" : ""}`}
       onFocus={posiciona}
       onKeyDown={(e) => {
         if (e.key === "Escape") setFechada(true);

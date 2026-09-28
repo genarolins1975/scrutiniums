@@ -3,18 +3,21 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { RedirecionaAncoraAntiga } from "@/components/energia/RedirecionaAncoraAntiga";
+import { Conferido } from "@/components/evidencia/Conferido";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { NATUREZAS, SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { Termo } from "@/components/evidencia/Termo";
 import { Unidade } from "@/components/evidencia/Unidade";
 import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
+import { LINKEDIN_URL } from "@/lib/contato";
 import { CONCEITOS } from "@/lib/energia/conteudo/conceitos";
 import { DATASETS_INTEGRADOS } from "@/lib/energia/datasets";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { gold, integra } from "@/lib/energia/gold";
-import { ANCORAS_VISAO_GERAL, GRUPOS_PERGUNTAS, PAGINAS_MAPA, PASSOS, TRILHAS, type FontePasso } from "@/lib/energia/mapa";
+import { ANCORAS_VISAO_GERAL, GRUPOS_PERGUNTAS, PAGINAS_MAPA, PASSOS, TRILHAS } from "@/lib/energia/mapa";
 import { MODULOS_ENERGIA } from "@/lib/energia/navegacao";
+import { datasDeReferencia, linhaDeDatas, type ChaveReferencia } from "@/lib/energia/referencias";
 import type { Natureza } from "@/lib/energia/tipos";
 
 export const dynamic = "force-static";
@@ -26,8 +29,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/setor-eletrico" },
 };
 
-/** Conjunto integrado → chave de data de referência usada nos passos. */
-const CHAVE_DO_CONJUNTO: Record<string, FontePasso["chave"]> = {
+/** Conjunto integrado → chave de data de referência. */
+const CHAVE_DO_CONJUNTO: Record<string, ChaveReferencia> = {
   ccee_pld_horario: "pld",
   ear_subsistema_di: "ear",
   ena_subsistema_di: "ena",
@@ -37,28 +40,12 @@ const CHAVE_DO_CONJUNTO: Record<string, FontePasso["chave"]> = {
   cmo_se: "cmo",
 };
 
-/** Referência dos dados de cada fonte, como frase ("até 26/09/2026"), lida da gold do build; sem gold, null. */
-function datasDeReferencia(): Record<FontePasso["chave"], string | null> {
-  const hid = gold.hidrologia();
-  const ger = gold.geracao();
-  const car = gold.carga();
-  const rede = gold.rede();
-  const pld = gold.pld();
-  const cmo = gold.cmo();
-  return {
-    ear: integra(hid) ? `até ${dataBR(hid.dia_referencia_ear)}` : null,
-    ena: integra(hid) ? `até ${dataBR(hid.dia_referencia_ena)}` : null,
-    geracao: integra(ger) ? `até ${dataBR(ger.dia_referencia)}` : null,
-    carga: integra(car) ? `até ${dataBR(car.dia_referencia)}` : null,
-    intercambio: integra(rede) ? `até ${dataBR(rede.dia_referencia)}` : null,
-    saldos: integra(rede) && rede.dia_referencia_liquido ? `até ${dataBR(rede.dia_referencia_liquido)}` : null,
-    pld: integra(pld) ? `até ${dataBR(pld.dia_referencia)}` : null,
-    // o ONS identifica a semana operativa por uma data, que pode ser posterior ao dia de hoje
-    cmo: integra(cmo) ? `última semana operativa publicada, que o ONS identifica pela data ${dataBR(cmo.semana_referencia)}` : null,
-  };
-}
+/** Nome legível quando o catálogo da fonte traz só o identificador técnico. */
+const NOME_LEGIVEL: Record<string, string> = { "ccee-pld-horario": "PLD horário por submercado" };
 
 const ORDEM_NATUREZAS: Natureza[] = ["OBSERVADO", "CALCULADO", "ESTIMADO", "PREVISTO", "CENARIO"];
+
+const PAGINAS_COM_PROFUNDIDADE = ["PLD", "Água e clima", "Geração", "Carga", "Rede"];
 
 const MODOS = [
   { id: "entender", rotulo: "Entender", dica: "O essencial em poucos minutos: a resposta, por que importa e o limite da leitura.", href: "/setor-eletrico/pld" },
@@ -67,7 +54,7 @@ const MODOS = [
 ];
 
 const SEIS_PERGUNTAS: [string, string][] = [
-  ["O que estou vendo", "o título é a pergunta; o subtítulo diz o dado, a unidade e o período."],
+  ["O que estou vendo", "o título diz a pergunta ou a resposta curta a ela; o subtítulo diz o dado, a unidade e o período."],
   ["Por que importa", "o que o número ajuda a entender sobre o sistema."],
   ["O que mudou", "a variação recente, calculada pela regra da página."],
   ["Como interpretar", "como ler o gráfico ou a tabela sem erro."],
@@ -75,7 +62,57 @@ const SEIS_PERGUNTAS: [string, string][] = [
   ["Fonte", "órgão, conjunto e data de referência, com a ficha Sobre este dado."],
 ];
 
+/** Nomes e réguas que parecem iguais e não são; cada item usa só o que está conferido nos verbetes e nas unidades. */
+const NOMES_E_REGUAS: [string, ReactNode][] = [
+  [
+    "Subsistema e submercado",
+    <>
+      O ONS publica por <strong className="font-medium text-carvao">subsistema</strong>; a CCEE calcula o PLD por{" "}
+      <Termo slug="submercado">submercado</Termo>. Os conjuntos usados aqui identificam as regiões pelos mesmos códigos (N, NE, S e SE), e a
+      plataforma chama a última de Sudeste/Centro-Oeste.
+    </>,
+  ],
+  [
+    "CMO e PLD",
+    <>
+      O <Termo slug="cmo">CMO</Termo> é o custo marginal publicado pelo ONS, semanal (modelo DECOMP) e semi-horário (modelo DESSEM). O{" "}
+      <Termo slug="pld">PLD</Termo> é o preço que a CCEE calcula para cada hora com base no CMO, dentro dos limites mínimo e máximos vigentes.
+      Não são o mesmo número.
+    </>,
+  ],
+  [
+    "PLD e tarifa",
+    <>O PLD não é a tarifa do consumidor atendido pela distribuidora: essa conta segue a TE e a TUSD, resultantes dos processos tarifários da ANEEL.</>,
+  ],
+  [
+    "MWmed e MWmês",
+    <>
+      <Unidade u="MWmed" /> é a energia de um período dividida pelas horas do período: carga, geração e intercâmbio vêm nessa unidade.{" "}
+      <Unidade u="MWmês" /> é a unidade da energia armazenada (EAR).
+    </>,
+  ],
+  [
+    "% da EAR máxima e % da MLT",
+    <>
+      A <Termo slug="ear">EAR</Termo> aparece em percentual da capacidade máxima de armazenamento; a <Termo slug="ena">ENA</Termo>, em
+      percentual da <Termo slug="mlt">média de longo termo</Termo>. As referências são diferentes: os dois percentuais não se comparam entre si.
+    </>,
+  ],
+  [
+    "Valor do SIN",
+    <>
+      Os conjuntos do ONS usados aqui vêm por subsistema. O valor do <Termo slug="sin">SIN</Termo> é calculado pela plataforma a partir dos
+      quatro, com a regra declarada no indicador, e por isso leva o selo Calculado.
+    </>,
+  ],
+  [
+    "Hora, dia e mês",
+    <>O PLD é horário; o PLD médio do dia e o do mês são médias calculadas, com a fórmula na ficha do número. Médias de períodos diferentes não são o mesmo número e não se somam.</>,
+  ],
+];
+
 const link = "inline-flex min-h-[44px] items-center text-energia-dark underline underline-offset-4 hover:text-carvao";
+const linkTexto = "text-energia-dark underline underline-offset-4 hover:text-carvao";
 
 function Secao({ id, numero, rotulo, titulo, subtitulo, children }: { id: string; numero: string; rotulo: string; titulo: string; subtitulo: string; children: ReactNode }) {
   return (
@@ -105,9 +142,9 @@ function Cartao({ titulo, children }: { titulo: string; children: ReactNode }) {
 export default function MapaDoObservatorio() {
   const datas = datasDeReferencia();
   const pld = gold.pld();
+  const hid = gold.hidrologia();
   const rede = gold.rede();
   const modelos = gold.modelos();
-  const previsoes = gold.previsoes();
   const cat = gold.catalogo();
   const meta = gold.meta();
 
@@ -117,6 +154,21 @@ export default function MapaDoObservatorio() {
   const pendentes = CONCEITOS.filter((c) => c.estado === "PENDENTE");
   const nModelos = integra(modelos) ? modelos.modelos.length : null;
   const nProducao = integra(modelos) ? modelos.em_producao.length : null;
+  const manuais = cat ? cat.entradas.filter((e) => !e.metadados_verificados).length : 0;
+
+  const linhasFontes = DATASETS_INTEGRADOS.map((d) => {
+    const e = cat?.entradas.find((x) => x.id === d.catalogoId);
+    const f = meta?.fontes[d.interno];
+    const chave = CHAVE_DO_CONJUNTO[d.interno];
+    const titulo = NOME_LEGIVEL[d.slug] ? `${NOME_LEGIVEL[d.slug]} (${e?.titulo ?? d.slug})` : (e?.titulo ?? d.slug);
+    return {
+      d,
+      titulo,
+      orgao: `${e?.orgao ?? "órgão não informado"}${e?.licenca ? ` · ${e.licenca}` : ""}`,
+      referencia: (chave && datas[chave]) ?? "sem dado nesta publicação",
+      captura: f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura",
+    };
+  });
 
   return (
     <>
@@ -133,12 +185,12 @@ export default function MapaDoObservatorio() {
             este mapa mostra onde está cada um e como lê-lo.
           </p>
           <p className="mt-5 text-sm text-carvao">
-            {DATASETS_INTEGRADOS.length} conjuntos de dados integrados, do ONS e da CCEE · {comDados} páginas com dados e {emIntegracao} em
+            {DATASETS_INTEGRADOS.length} conjuntos de dados integrados, do ONS e da CCEE · {comDados} módulos com dados e {emIntegracao} em
             integração · {conferidos.length} verbetes conferidos na fonte primária · quatro submercados
           </p>
           <p className="mt-2 text-xs text-mineral">
-            Operação (ONS) {datas.ear ?? "sem dado"} · PLD (CCEE) {datas.pld ?? "sem dado"}
-            {meta ? ` · dados processados em ${carimbo(meta.gerado_em)}` : ""}
+            Cada fonte tem a sua data. Dados: {linhaDeDatas()}
+            {meta ? ` · processados em ${carimbo(meta.gerado_em)}` : ""}
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Link
@@ -196,23 +248,24 @@ export default function MapaDoObservatorio() {
                 </div>
                 <p className="mt-4 font-medium text-carvao">{p.pergunta}</p>
                 <p className="mt-2 text-sm leading-relaxed text-carvao-muted">{p.texto}</p>
-                {p.id === "passo-preco" && nModelos !== null && (
+                {p.id === "passo-preco" && nModelos !== null && meta && (
                   <p className="mt-2 text-sm leading-relaxed text-carvao-muted">
                     {nProducao === 0
-                      ? `Hoje nenhum dos ${nModelos} modelos de previsão registrados está em produção; por isso não há previsão oficial publicada.`
-                      : `Hoje ${nProducao} dos ${nModelos} modelos de previsão registrados estão em produção.`}
+                      ? `Em ${dataBR(meta.gerado_em.slice(0, 10))}, nenhum dos ${nModelos} modelos de previsão registrados estava em produção; por isso não há previsão oficial publicada.`
+                      : `Em ${dataBR(meta.gerado_em.slice(0, 10))}, ${nProducao} dos ${nModelos} modelos de previsão registrados estavam em produção.`}
                   </p>
                 )}
-                <p className="mt-4 text-xs text-mineral">
-                  Conceitos:{" "}
-                  {p.conceitos.map((c, i) => (
-                    <span key={c.slug} className="text-sm text-carvao">
-                      {i > 0 && <span className="text-mineral"> · </span>}
-                      <Termo slug={c.slug}>{c.rotulo}</Termo>
-                    </span>
+                <p className="mt-4 text-xs text-mineral">Conceitos:</p>
+                <ul className="flex flex-wrap gap-x-3 text-sm text-carvao">
+                  {p.conceitos.map((c) => (
+                    <li key={c.slug}>
+                      <Termo slug={c.slug} alvo>
+                        {c.rotulo}
+                      </Termo>
+                    </li>
                   ))}
-                </p>
-                <p className="mt-4 text-xs text-mineral">{p.paginas.length > 1 ? "Páginas:" : "Página:"}</p>
+                </ul>
+                <p className="mt-3 text-xs text-mineral">{p.paginas.length > 1 ? "Páginas:" : "Página:"}</p>
                 <ul className="flex flex-wrap gap-x-4 text-sm">
                   {p.paginas.map((id) => {
                     const pg = PAGINAS_MAPA[id];
@@ -240,12 +293,21 @@ export default function MapaDoObservatorio() {
               </li>
             ))}
           </ol>
-          <p className="mt-6 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
-            Os seis passos são um roteiro de leitura. Os quatro primeiros descrevem a operação do sistema publicada pelo ONS: a água guardada e a
-            que chega (1), a geração por fonte (2), a carga (3) e o intercâmbio entre as regiões (4). O quinto trata do custo e do preço de curto
-            prazo, publicados pelo ONS e pela CCEE. O sexto reúne o que ainda está em integração. Relações entre essas grandezas que dependem dos
-            modelos oficiais aparecem, em cada página, marcadas como conferidas ou pendentes de conferência documental.
-          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <p className="text-sm leading-relaxed text-carvao-muted">
+              Os seis passos são um roteiro de leitura. Os quatro primeiros descrevem a operação do sistema publicada pelo ONS: a água guardada
+              e a que chega (1), a geração por fonte (2), a carga (3) e o intercâmbio entre as regiões (4). O quinto trata do custo e do preço de
+              curto prazo, publicados pelo ONS e pela CCEE. O sexto reúne o que ainda está em integração.
+            </p>
+            <div className="border-l-2 border-energia pl-4 text-sm leading-relaxed text-carvao-muted">
+              <p className="rotulo text-mineral">O que o mapa não permite concluir</p>
+              <p className="mt-1">
+                A ordem dos passos é didática: não descreve causa nem sequência física entre as grandezas. Relações que dependem dos modelos
+                oficiais aparecem marcadas como conferidas ou pendentes de conferência documental, como no diagrama de formação do preço do PLD,
+                ou não são afirmadas.
+              </p>
+            </div>
+          </div>
         </Secao>
 
         {/* 2. por pergunta */}
@@ -254,7 +316,7 @@ export default function MapaDoObservatorio() {
           numero="2"
           rotulo="Índice"
           titulo="Por pergunta"
-          subtitulo="A pergunta que cada página responde, na ordem do menu. Nas páginas de módulo, a pergunta é o próprio título da página."
+          subtitulo="A pergunta que cada página responde, agrupada por tema. Nas páginas de módulo, a pergunta é o próprio título da página."
         >
           <div className="grid gap-4 md:grid-cols-2">
             {GRUPOS_PERGUNTAS.map((g) => (
@@ -352,9 +414,14 @@ export default function MapaDoObservatorio() {
 
             <Cartao titulo="Sobre este dado: a ficha de cada número">
               <p>
-                O botão <span className="text-carvao">ⓘ Sobre este dado</span>, ao lado de cada painel, abre a ficha do número: natureza, fonte primária,
-                unidade, frequência, período de referência, data de publicação pela fonte (quando a fonte a informa de modo confiável), data de captura
-                pela Scrutiniums, fórmula, snapshot com sha256, versão do processamento, revisões detectadas, limitações e licença.
+                O botão <span className="text-carvao">ⓘ Sobre este dado</span>, no rodapé de cada painel, abre a ficha do número: natureza, fonte
+                primária, unidade, frequência, período de referência, data de publicação pela fonte (quando a fonte a informa de modo confiável),
+                data de captura, última validação, cobertura histórica, transformações, fórmula, snapshot e sha256, versão do processamento, revisões
+                detectadas, limitações, licença e a descrição da fonte.
+              </p>
+              <p>
+                Um painel que cita números de fontes ou naturezas diferentes traz uma ficha para cada um. O sha256 é a impressão digital de um
+                arquivo: qualquer mudança no conteúdo muda o código, o que permite conferir que o arquivo é o mesmo.
               </p>
               {integra(pld) ? (
                 <SobreEsteDado p={pld.proveniencia.diario} rotulo="Abrir a ficha real do PLD médio diário" />
@@ -375,19 +442,97 @@ export default function MapaDoObservatorio() {
                 ))}
               </ul>
               <p>
-                O seletor Profundidade fica no alto das páginas com dados. O modo escolhido fica no endereço da página, para compartilhar; sem
-                JavaScript, todos os níveis aparecem em ordem. Os links acima abrem a página do PLD em cada modo.
+                O seletor Profundidade fica no alto das páginas {PAGINAS_COM_PROFUNDIDADE.slice(0, -1).join(", ")} e{" "}
+                {PAGINAS_COM_PROFUNDIDADE.at(-1)}. O modo escolhido fica no endereço da página, para compartilhar; sem JavaScript, todos os níveis
+                aparecem em ordem. Os links acima abrem a página do PLD em cada modo.
               </p>
             </Cartao>
 
             <Cartao titulo="Termos e unidades se explicam">
               <p>
-                Siglas e conceitos sublinhados em pontilhado abrem uma dica curta ao passar o ponteiro ou ao chegar pelo teclado (Esc fecha); o link
-                leva ao verbete, com a fonte oficial e o trecho citado. No celular, o toque abre o verbete.
+                Siglas e conceitos sublinhados em pontilhado abrem uma dica curta ao passar o ponteiro ou ao chegar pelo teclado (Esc fecha). O link
+                de um conceito leva ao verbete, com a fonte oficial e o trecho citado; o de uma unidade, à seção de unidades da Metodologia. No
+                celular, o toque abre o verbete ou a seção.
               </p>
-              <p className="text-carvao">
-                Experimente: <Termo slug="pld">PLD</Termo> · <Termo slug="ear">EAR</Termo> · <Termo slug="submercado">submercado</Termo> ·{" "}
-                <Unidade u="MWmed" /> · <Unidade u="MWmês" /> · <Unidade u="p.p." />
+              <p className="text-carvao">Experimente:</p>
+              <ul className="flex flex-wrap gap-x-4 text-carvao">
+                <li>
+                  <Termo slug="pld" alvo>
+                    PLD
+                  </Termo>
+                </li>
+                <li>
+                  <Termo slug="ear" alvo>
+                    EAR
+                  </Termo>
+                </li>
+                <li>
+                  <Termo slug="submercado" alvo>
+                    submercado
+                  </Termo>
+                </li>
+                <li>
+                  <Unidade u="MWmed" alvo />
+                </li>
+                <li>
+                  <Unidade u="MWmês" alvo />
+                </li>
+                <li>
+                  <Unidade u="p.p." alvo />
+                </li>
+              </ul>
+            </Cartao>
+
+            <Cartao titulo="Nomes e réguas que se confundem">
+              <dl className="space-y-2">
+                {NOMES_E_REGUAS.map(([t, d]) => (
+                  <div key={t}>
+                    <dt className="font-medium text-carvao">{t}</dt>
+                    <dd>{d}</dd>
+                  </div>
+                ))}
+              </dl>
+            </Cartao>
+
+            <Cartao titulo="Mediana, faixa usual e percentil">
+              <p>
+                Para dizer se um valor é comum para a época, várias páginas o comparam com o mesmo dia do calendário nos anos anteriores.
+                {integra(hid) ? ` ${hid.regras.padrao_historico} ${hid.regras.faixa_usual}` : ""}
+              </p>
+              <p>
+                A mediana é o valor do meio: metade dos anos ficou abaixo dela. O percentil é a posição do valor na distribuição: no percentil 80,
+                cerca de 80% dos valores históricos da mesma data ficaram abaixo dele. Posição histórica não é risco nem previsão.
+              </p>
+              {integra(pld) && pld.regras.posicao_historica && (
+                <p>
+                  No PLD, a régua é outra: {pld.regras.posicao_historica.charAt(0).toLowerCase()}
+                  {pld.regras.posicao_historica.slice(1)}
+                </p>
+              )}
+            </Cartao>
+
+            <Cartao titulo="Conferido, pendente ou leitura">
+              <ul className="space-y-2">
+                <li>
+                  <Conferido ok />
+                  <span className="block">a afirmação tem trecho citado de documento primário da fonte.</span>
+                </li>
+                <li>
+                  <Conferido ok={false} />
+                  <span className="block">a afirmação ainda não tem trecho conferido em documento primário e fica marcada até ser conferida.</span>
+                </li>
+                <li>
+                  <span className="rotulo text-mineral">Leitura usual do setor, ainda não conferida</span>
+                  <span className="block">interpretação comum no setor, apresentada como tal, nunca como fato da fonte.</span>
+                </li>
+                <li>
+                  <span className="rotulo text-mineral">Leitura da Scrutiniums a partir do dado</span>
+                  <span className="block">o que a plataforma identificou no próprio dado, sem documento da fonte que o confirme.</span>
+                </li>
+              </ul>
+              <p>
+                Definição de conceito só entra com fonte primária e trecho citado. Hoje, {conferidos.length} verbetes estão conferidos e{" "}
+                {pendentes.length} estão em preparação, sem definição publicada: {pendentes.map((c) => c.sigla ?? c.nome.toLowerCase()).join(", ")}.
               </p>
             </Cartao>
 
@@ -399,36 +544,19 @@ export default function MapaDoObservatorio() {
               {integra(rede) && rede.regras.limites && <Indisponivel titulo="Exemplo real: limites de intercâmbio" motivo={rede.regras.limites} />}
             </Cartao>
 
-            <Cartao titulo="Conferido ou pendente">
-              <p>
-                Definição de conceito só entra com fonte primária e trecho citado. Hoje, {conferidos.length} verbetes estão conferidos e{" "}
-                {pendentes.length} estão em preparação, sem definição publicada até a fonte ser conferida:{" "}
-                {pendentes.map((c) => c.sigla ?? c.nome.toLowerCase()).join(", ")}.
-              </p>
-              <p>
-                O diagrama de formação do preço, no capítulo 2 do{" "}
-                <Link href="/setor-eletrico/pld#formacao" className={link}>
-                  PLD
-                </Link>
-                , marca cada relação entre as etapas como conferida ou pendente.
-              </p>
-            </Cartao>
-
             <Cartao titulo="Previsão só com modelo em produção">
               <p>
-                Um modelo de previsão passa pelos estados pesquisa, validação e produção.{" "}
-                {integra(previsoes) && previsoes.regras.estados
-                  ? previsoes.regras.estados.replace(/PESQUISA|VALIDAÇÃO|PRODUÇÃO/g, (s) => s.toLowerCase())
-                  : "Só um modelo em produção alimenta a previsão principal."}
+                Um modelo de previsão passa pelos estados pesquisa, validação e produção, e pode ser aposentado. Só um modelo em produção gera
+                previsão oficial; em pesquisa ou em validação, nunca.
               </p>
-              {nModelos !== null && (
+              {nModelos !== null && meta && (
                 <p className="text-carvao">
-                  Hoje: {nModelos} modelos registrados, {nProducao} em produção.
+                  Em {dataBR(meta.gerado_em.slice(0, 10))}: {nModelos} modelos registrados, {nProducao} em produção.
                 </p>
               )}
               <p>
                 Rodada interna de teste nunca aparece como previsão: o número fica retido. Cada registro do{" "}
-                <Link href="/setor-eletrico/pld/previsoes" className={link}>
+                <Link href="/setor-eletrico/pld/previsoes" className={linkTexto}>
                   histórico de previsões
                 </Link>{" "}
                 é permanente; uma correção cria registro novo que aponta para o original.
@@ -441,8 +569,9 @@ export default function MapaDoObservatorio() {
                 fonte, quando a fonte a informa de modo confiável, a data de captura pela Scrutiniums e a data de processamento.
               </p>
               <p>
-                Cada fonte tem o seu calendário: as páginas mostram a data de cada uma, em vez de uma data única de atualização que esconderia a
-                diferença.
+                Cada fonte tem o seu calendário: as páginas mostram a data de cada uma, em vez de uma data única que esconderia a diferença. Dia ou
+                mês incompleto é marcado como parcial ou fica fora da conta, conforme a regra da página; a geração diária, por exemplo, só usa dias
+                com as 24 horas.
               </p>
             </Cartao>
 
@@ -454,14 +583,21 @@ export default function MapaDoObservatorio() {
               <p>No gráfico, as setas do teclado percorrem os pontos, e cada ponto mostra data, valor e unidade.</p>
             </Cartao>
 
-            <Cartao titulo="O que observar: regras, não previsões">
+            <Cartao titulo="Síntese e alertas: regras, não previsões">
               <p>
-                Na{" "}
-                <Link href="/setor-eletrico/visao-geral#observar" className={link}>
+                A síntese do alto da{" "}
+                <Link href="/setor-eletrico/visao-geral#sistema" className={linkTexto}>
                   Visão geral
-                </Link>
-                , a lista &quot;O que observar&quot; avalia regras explícitas sobre os dados mais recentes, como armazenamento fora da faixa usual para
-                a data. Cada item mostra a regra e a evidência; nenhum é previsão.
+                </Link>{" "}
+                é montada por regras fixas, trecho a trecho, com link para a evidência de cada número; nenhum texto é redigido livremente.
+              </p>
+              <p>
+                A lista{" "}
+                <Link href="/setor-eletrico/visao-geral#observar" className={linkTexto}>
+                  O que observar
+                </Link>{" "}
+                avalia regras explícitas sobre os dados mais recentes, como armazenamento fora da faixa usual para a data. Cada item mostra a regra e
+                a evidência; nenhum é previsão.
               </p>
             </Cartao>
 
@@ -474,9 +610,23 @@ export default function MapaDoObservatorio() {
               <p>
                 Um conjunto só alimenta números depois de integrado: coletado automaticamente, com a cópia original identificada por sha256,
                 validação e proveniência. O estado de cada conjunto está em{" "}
-                <Link href="/setor-eletrico/dados" className={link}>
+                <Link href="/setor-eletrico/dados" className={linkTexto}>
                   Dados
                 </Link>
+                .
+              </p>
+            </Cartao>
+
+            <Cartao titulo="Correções e sugestões">
+              <p>
+                Encontrou um número, uma data ou um texto que não confere com a fonte? Diga a página e o trecho. Quem tem conta gratuita envia pela{" "}
+                <Link href="/observatorio/suggestions" className={linkTexto}>
+                  página de sugestões
+                </Link>{" "}
+                da plataforma, que chega direto à administração; também é possível escrever ao{" "}
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className={linkTexto}>
+                  responsável pela plataforma no LinkedIn
+                </a>
                 .
               </p>
             </Cartao>
@@ -491,7 +641,38 @@ export default function MapaDoObservatorio() {
           titulo="Fontes e atualidade"
           subtitulo="Cada conjunto integrado, a data a que os dados se referem, a última captura pela Scrutiniums e as páginas onde aparece."
         >
-          <div className="tabela-scroll border border-linha bg-superficie" tabIndex={0} role="region" aria-label="Fontes e atualidade (tabela rolável)">
+          {/* no celular, uma ficha por conjunto; a partir de md, a tabela com as quatro colunas */}
+          <ul className="space-y-3 md:hidden">
+            {linhasFontes.map((l) => (
+              <li key={l.d.slug} className="border border-linha bg-superficie p-4 text-sm">
+                <Link href={`/setor-eletrico/dados/${l.d.slug}`} className={link}>
+                  {l.titulo}
+                </Link>
+                <p className="text-xs text-mineral">{l.orgao}</p>
+                <dl className="mt-2 space-y-1">
+                  <div>
+                    <dt className="rotulo inline text-mineral">Referência dos dados: </dt>
+                    <dd className="inline text-carvao">{l.referencia}</dd>
+                  </div>
+                  <div>
+                    <dt className="rotulo inline text-mineral">Última captura: </dt>
+                    <dd className="inline text-carvao-muted">{l.captura}</dd>
+                  </div>
+                  <div>
+                    <dt className="rotulo text-mineral">Onde aparece</dt>
+                    <dd className="flex flex-wrap gap-x-3">
+                      {l.d.paginas.map((p) => (
+                        <Link key={p.href} href={p.href} className={link}>
+                          {p.rotulo}
+                        </Link>
+                      ))}
+                    </dd>
+                  </div>
+                </dl>
+              </li>
+            ))}
+          </ul>
+          <div className="tabela-scroll hidden border border-linha bg-superficie md:block" tabIndex={0} role="region" aria-label="Fontes e atualidade (tabela rolável)">
             <table className="w-full min-w-[44rem] border-collapse text-sm">
               <caption className="sr-only">Conjuntos integrados, data de referência, última captura e páginas onde aparecem</caption>
               <thead>
@@ -504,47 +685,41 @@ export default function MapaDoObservatorio() {
                 </tr>
               </thead>
               <tbody>
-                {DATASETS_INTEGRADOS.map((d) => {
-                  const e = cat?.entradas.find((x) => x.id === d.catalogoId);
-                  const f = meta?.fontes[d.interno];
-                  const chave = CHAVE_DO_CONJUNTO[d.interno];
-                  return (
-                    <tr key={d.slug} className="border-b border-linha align-middle last:border-b-0">
-                      <td className="px-3 py-2">
-                        <Link href={`/setor-eletrico/dados/${d.slug}`} className={link}>
-                          {e?.titulo ?? d.slug}
-                        </Link>
-                        <span className="block text-xs text-mineral">
-                          {e?.orgao ?? "órgão não informado"}
-                          {e?.licenca ? ` · ${e.licenca}` : ""}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-carvao">{(chave && datas[chave]) ?? "sem dado nesta publicação"}</td>
-                      <td className="px-3 py-2 text-carvao-muted">{f?.ultima_captura ? carimbo(f.ultima_captura) : "sem captura"}</td>
-                      <td className="px-3 py-2">
-                        <span className="flex flex-wrap gap-x-3">
-                          {d.paginas.map((p) => (
-                            <Link key={p.href} href={p.href} className={link}>
-                              {p.rotulo}
-                            </Link>
-                          ))}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
+                {linhasFontes.map((l) => (
+                  <tr key={l.d.slug} className="border-b border-linha align-middle last:border-b-0">
+                    <td className="px-3 py-2">
+                      <Link href={`/setor-eletrico/dados/${l.d.slug}`} className={link}>
+                        {l.titulo}
+                      </Link>
+                      <span className="block text-xs text-mineral">{l.orgao}</span>
+                    </td>
+                    <td className="px-3 py-2 text-carvao">{l.referencia}</td>
+                    <td className="px-3 py-2 text-carvao-muted">{l.captura}</td>
+                    <td className="px-3 py-2">
+                      <span className="flex flex-wrap gap-x-3">
+                        {l.d.paginas.map((p) => (
+                          <Link key={p.href} href={p.href} className={link}>
+                            {p.rotulo}
+                          </Link>
+                        ))}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
           <p className="mt-4 max-w-prose2 text-sm leading-relaxed text-carvao-muted">
             Todas as fontes integradas são abertas e oficiais, do ONS e da CCEE, com a licença informada na ficha de cada conjunto.
-            {cat ? ` O catálogo registra ${cat.total} conjuntos dos portais de dados abertos; ${DATASETS_INTEGRADOS.length} já estão integrados.` : ""} A
-            linhagem de cada arquivo, do download à página, está em{" "}
-            <Link href="/setor-eletrico/metodologia#linhagem" className={link}>
+            {cat
+              ? ` O catálogo registra ${cat.total} entradas: ${cat.total - manuais} colhidas das APIs dos portais de dados abertos e ${manuais} registradas à mão, com metadados ainda não verificados na fonte; ${DATASETS_INTEGRADOS.length} conjuntos já estão integrados.`
+              : ""}{" "}
+            A linhagem de cada arquivo, do download à página, está em{" "}
+            <Link href="/setor-eletrico/metodologia#linhagem" className={linkTexto}>
               Metodologia
             </Link>{" "}
             e em{" "}
-            <Link href="/setor-eletrico/dados" className={link}>
+            <Link href="/setor-eletrico/dados" className={linkTexto}>
               Dados
             </Link>
             .

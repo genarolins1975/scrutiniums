@@ -21,10 +21,10 @@ const UNIDADES = {
 
 export type UnidadeId = keyof typeof UNIDADES;
 
-export function Unidade({ u }: { u: UnidadeId }) {
+export function Unidade({ u, alvo = false }: { u: UnidadeId; alvo?: boolean }) {
   const x = UNIDADES[u];
   return (
-    <TermoDica href="/setor-eletrico/metodologia#unidades" rotulo={`${u} · ${x.nome}`} dica={x.dica}>
+    <TermoDica href="/setor-eletrico/metodologia#unidades" rotulo={`${u} · ${x.nome}`} dica={x.dica} alvo={alvo}>
       {u}
     </TermoDica>
   );

@@ -28,7 +28,12 @@ function nivelExigido(el: Element | null): Modo {
 }
 
 function alvoDoHash(): HTMLElement | null {
-  const h = decodeURIComponent(window.location.hash.slice(1));
+  let h = window.location.hash.slice(1);
+  try {
+    h = decodeURIComponent(h);
+  } catch {
+    // hash com % malformado: procura pelo texto cru em vez de derrubar a página
+  }
   return h ? document.getElementById(h) : null;
 }
 

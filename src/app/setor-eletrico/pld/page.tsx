@@ -6,6 +6,7 @@ import { PainelEvidencia } from "@/components/evidencia/PainelEvidencia";
 import { Indisponivel } from "@/components/evidencia/Indisponivel";
 import { SobreEsteDado } from "@/components/evidencia/SobreEsteDado";
 import { Termo } from "@/components/evidencia/Termo";
+import { Conferido } from "@/components/evidencia/Conferido";
 import { CartoesPld } from "@/components/energia/CartoesPld";
 import { DiagramaFormacao, type NoComEstado } from "@/components/energia/DiagramaFormacao";
 import { GraficoLinhas } from "@/components/energia/GraficoLinhas";
@@ -31,14 +32,6 @@ export const metadata: Metadata = {
     "O que é o PLD, o que ele não é, de onde vem o preço, o que aconteceu no último dia publicado nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
   alternates: { canonical: "/setor-eletrico/pld" },
 };
-
-function Conferido({ ok }: { ok: boolean }) {
-  return ok ? (
-    <span className="rotulo !text-[0.62rem] text-sucesso">● conferido na fonte</span>
-  ) : (
-    <span className="rotulo !text-[0.62rem] text-aviso">○ conferência documental pendente</span>
-  );
-}
 
 function Capitulo({ id, numero, titulo, subtitulo, children, nivel }: { id: string; numero: string; titulo: string; subtitulo?: string; children: React.ReactNode; nivel?: string }) {
   return (
