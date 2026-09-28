@@ -6,6 +6,7 @@ import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
 import { CONCEITOS, conceito } from "@/lib/energia/conteudo/conceitos";
 import { exemploDe } from "@/lib/energia/conteudo/exemplos";
 import { dataBR } from "@/lib/energia/formato";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -43,6 +44,7 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
   return (
     <>
       <CabecalhoEnergia atual="aprenda" />
+      <MarcaVisita secao="energia:aprenda" />
       <main className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/aprenda" className="underline underline-offset-4">Aprenda</Link> · {c.grupo}
@@ -84,7 +86,16 @@ export default function ConceitoPage({ params }: { params: { conceito: string } 
             <Campo rotulo="Exemplo real">
               {ex ? (
                 <p>
-                  {ex.texto} <span className="ml-1 align-middle"><SeloNatureza natureza={ex.natureza} /></span>{" "}
+                  {ex.partes.map((pt, i) => (
+                    <span key={i}>
+                      {pt.texto}
+                      {pt.natureza && (
+                        <span className="mx-1 align-middle">
+                          <SeloNatureza natureza={pt.natureza} />
+                        </span>
+                      )}
+                    </span>
+                  ))}{" "}
                   <Link href={ex.href} className="text-sm text-energia-dark underline underline-offset-4">ver no portal</Link>
                 </p>
               ) : (

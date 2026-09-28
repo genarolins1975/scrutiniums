@@ -14,7 +14,7 @@ export type ModuloEnergia = {
 
 export const MODULOS_ENERGIA: ModuloEnergia[] = [
   { slug: "visao-geral", href: "/setor-eletrico", rotulo: "Visão geral", resumo: "O sistema elétrico em poucos minutos.", integrado: true, secao: "energia:visao-geral" },
-  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço de curto prazo: o que é, de onde vem, o que acontece agora e o estado da previsão.", integrado: true, secao: "energia:pld" },
+  { slug: "pld", href: "/setor-eletrico/pld", rotulo: "PLD", resumo: "Preço horário por submercado: o que é, de onde vem, o que acontece agora e o estado da previsão.", integrado: true, secao: "energia:pld" },
   { slug: "agua-e-clima", href: "/setor-eletrico/agua-e-clima", rotulo: "Água e clima", resumo: "Energia armazenada e energia que chega aos reservatórios.", integrado: true, secao: "energia:agua-e-clima" },
   { slug: "geracao", href: "/setor-eletrico/geracao", rotulo: "Geração", resumo: "Com que fontes o sistema está atendendo a carga.", integrado: true, secao: "energia:geracao" },
   { slug: "carga", href: "/setor-eletrico/carga", rotulo: "Carga", resumo: "Quanto o sistema está consumindo e como isso se compara.", integrado: true, secao: "energia:carga" },

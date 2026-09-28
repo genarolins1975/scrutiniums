@@ -5,6 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { gold } from "@/lib/energia/gold";
 import { carimbo, dataBR } from "@/lib/energia/formato";
 import { DATASETS_INTEGRADOS, datasetPorSlug } from "@/lib/energia/datasets";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -34,6 +35,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
   return (
     <>
       <CabecalhoEnergia atual="dados" />
+      <MarcaVisita secao="energia:dados" />
       <main className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/dados" className="underline underline-offset-4">Dados</Link> · {e.orgao}
@@ -45,7 +47,7 @@ export default function DatasetPage({ params }: { params: { dataset: string } })
         </header>
         <dl className="grid gap-px border border-linha bg-linha md:grid-cols-2">
           {[
-            ["Página oficial do conjunto", <a key="u" href={e.url} target="_blank" rel="noopener noreferrer" className="text-energia-dark underline underline-offset-4">{e.url} ↗</a>],
+            ["Página oficial do conjunto", <a key="u" href={e.url} target="_blank" rel="noopener noreferrer" className="break-all text-energia-dark underline underline-offset-4">{e.url} ↗</a>],
             ["Licença", e.licenca ?? "não informada"],
             ["Última modificação de metadados na fonte", e.modificado_na_fonte ?? "não informada"],
             ["Formatos publicados", e.formatos.join(", ") || "não informado"],

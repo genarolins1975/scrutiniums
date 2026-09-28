@@ -38,6 +38,20 @@ def agora_utc():
     return datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
 
 
+def instante_utc(valor):
+    """Normaliza um instante para o formato canônico das vintages (AAAA-MM-DDTHH:MM:SSZ,
+    UTC). Exige fuso explícito: um instante sem fuso ou só com a data é ambíguo e, numa
+    consulta temporal, poderia antecipar dado (look-ahead). Frações de segundo são
+    truncadas para baixo, o que nunca antecipa."""
+    if not isinstance(valor, str) or len(valor) <= 10 or "T" not in valor:
+        raise ValueError(f"instante sem hora ou sem fuso: {valor!r}")
+    txt = valor[:-1] + "+00:00" if valor.endswith("Z") else valor
+    dt = datetime.fromisoformat(txt)
+    if dt.tzinfo is None:
+        raise ValueError(f"instante sem fuso: {valor!r}")
+    return dt.astimezone(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
 def versao_codigo():
     """Commit do código que gerou a gold (curto). None fora de um checkout git."""
     env = os.environ.get("GITHUB_SHA")
@@ -102,6 +116,7 @@ def registra_vintage(con, dataset, recurso, url, capturado_em, publicado_em, sha
     """Registra a captura. Mesmo sha256 do mesmo recurso = mesma vintage (idempotente).
     Retorna (vintage_id, nova)."""
     vid = f"{dataset}:{recurso}:{sha256[:16]}"
+    capturado_em = instante_utc(capturado_em)
     row = con.execute("SELECT 1 FROM vintages WHERE vintage_id=?", (vid,)).fetchone()
     if row:
         return vid, False
@@ -117,18 +132,20 @@ def registra_coleta(con, dataset, recurso, ok, detalhe=""):
                 (dataset, recurso, agora_utc(), 1 if ok else 0, str(detalhe)[:500]))
 
 
-def _ultimos_valores(con, dataset, series):
-    """{(serie, ref): valor} do último valor conhecido (vintage mais recente por captura)."""
+def _ultimos_valores(con, dataset, series, ate=None):
+    """{(serie, ref): valor} do último valor conhecido até a captura `ate` (inclusive)
+    pela ordem de captura, não de importação."""
     out = {}
     if not series:
         return out
     marcas = ",".join("?" * len(series))
+    filtro, extra = ("AND v.capturado_em <= ?", (ate,)) if ate else ("", ())
     cur = con.execute(
         f"""SELECT o.serie, o.ref, o.valor FROM observacoes o
             JOIN vintages v ON v.vintage_id = o.vintage_id
-            WHERE o.dataset=? AND o.serie IN ({marcas})
+            WHERE o.dataset=? AND o.serie IN ({marcas}) {filtro}
             ORDER BY v.capturado_em, o.rowid""",
-        (dataset, *series),
+        (dataset, *series, *extra),
     )
     for serie, ref, valor in cur:
         out[(serie, ref)] = valor
@@ -137,10 +154,20 @@ def _ultimos_valores(con, dataset, series):
 
 def grava_observacoes(con, dataset, vintage_id, linhas):
     """linhas: iterável de (serie, ref, valor). Retorna (novas, revisoes).
-    Valor None é ignorado: ausência não vira linha nem zero."""
-    linhas = [(s, r, v) for s, r, v in linhas if v is not None]
+    Valor None é ignorado: ausência não vira linha nem zero.
+
+    A comparação é com o valor conhecido na data de captura desta vintage (ordem de
+    captura, não de importação): importar uma vintage antiga depois de uma nova não
+    apaga o valor antigo da reconstituição temporal. Uma mesma (série, referência)
+    repetida dentro do arquivo fica com a última ocorrência e não conta como revisão."""
+    unicas = {}
+    for s_, r_, v_ in linhas:
+        if v_ is not None:
+            unicas[(s_, r_)] = v_
+    linhas = [(s_, r_, v_) for (s_, r_), v_ in unicas.items()]
     series = sorted({s for s, _, _ in linhas})
-    anteriores = _ultimos_valores(con, dataset, series)
+    cap = con.execute("SELECT capturado_em FROM vintages WHERE vintage_id=?", (vintage_id,)).fetchone()
+    anteriores = _ultimos_valores(con, dataset, series, ate=cap[0] if cap else None)
     novas, revisoes, lote = 0, 0, []
     for serie, ref, valor in linhas:
         ant = anteriores.get((serie, ref))
@@ -169,7 +196,7 @@ def como_estava_em(con, dataset, serie, instante):
     filtro = ""
     if instante is not None:
         filtro = "AND v.capturado_em <= ?"
-        params.append(instante)
+        params.append(instante_utc(instante))
     cur = con.execute(
         f"""SELECT o.ref, o.valor FROM observacoes o
             JOIN vintages v ON v.vintage_id = o.vintage_id

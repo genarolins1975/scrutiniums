@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "sintese.json",
- "gerado_em": "2026-09-28T09:46:06Z",
+ "gerado_em": "2026-09-28T10:59:55Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "frases": [
   {
@@ -40,7 +40,7 @@
    "regra": "ENA de 30 dias em % da MLT = soma da ENA bruta dos 30 dias ÷ soma da MLT implícita de cada dia (ENA ÷ percentual da MLT informado pelo ONS).",
    "trechos": [
     {
-     "texto": "Nos 30 dias até 26/09/2026, a água que chegou aos reservatórios equivaleu a "
+     "texto": "Nos 30 dias até 26/09/2026, a energia natural afluente (vazões naturais aos reservatórios, em energia) equivaleu a "
     },
     {
      "texto": "164% da média de longo termo",
@@ -100,15 +100,15 @@
   },
   {
    "id": "pld",
-   "ref": "2026-09-27",
+   "ref": "2026-09-28",
    "natureza": "CALCULADO",
    "regra": "Percentil da média diária do dia de referência na distribuição das médias diárias do mesmo submercado desde 01/01/2021, em valores nominais. Faixa baixa: abaixo do 25º percentil. Central: do 25º ao 75º. Alta: acima do 75º.",
    "trechos": [
     {
-     "texto": "Em 27/09/2026, o PLD médio do Sudeste/Centro-Oeste foi "
+     "texto": "Em 28/09/2026, o PLD médio do Sudeste/Centro-Oeste foi "
     },
     {
-     "texto": "R$ 71,82/MWh",
+     "texto": "R$ 105,27/MWh",
      "evidencia": "pld.json#cartoes.SE.media_dia",
      "href": "/setor-eletrico/pld#hoje"
     },
@@ -116,7 +116,7 @@
      "texto": ", "
     },
     {
-     "texto": "na faixa central da distribuição desde 2021 (percentil 47)",
+     "texto": "na faixa central da distribuição desde 2021 (percentil 53)",
      "evidencia": "pld.json#cartoes.SE.posicao",
      "href": "/setor-eletrico/pld#regras"
     },
@@ -124,7 +124,7 @@
      "texto": ", com diferença de "
     },
     {
-     "texto": "R$ 3,55/MWh entre o maior e o menor submercado",
+     "texto": "R$ 6,26/MWh entre o maior e o menor submercado",
      "evidencia": "pld.json#cartoes",
      "href": "/setor-eletrico/pld#submercados"
     },
@@ -158,16 +158,16 @@
    "titulo": "Diferença de preço entre submercados",
    "condicao": "Ao menos uma hora com diferença acima de R$ 1/MWh entre submercados nos últimos 30 dias da série de PLD.",
    "ativo": true,
-   "evidencia": "37 de 720 horas (5,1%); maior diferença R$ 82,15/MWh em 16/09/2026 às 16:00.",
+   "evidencia": "43 de 720 horas (6,0%); maior diferença R$ 82,15/MWh em 16/09/2026 às 16:00.",
    "href": "/setor-eletrico/rede",
    "tipo": "regra"
   },
   {
    "id": "pld_defasagem",
    "titulo": "Série de PLD sem atualização recente",
-   "condicao": "Último dia de PLD integrado mais de 2 dias antes de hoje.",
+   "condicao": "Último dia de PLD integrado mais de 2 dias antes da data de processamento da gold.",
    "ativo": false,
-   "evidencia": "Último dia integrado: 27/09/2026 (1 dia antes de hoje). A coleta direta na CCEE está bloqueada no ambiente de construção.",
+   "evidencia": "Último dia integrado: 28/09/2026, 0 dias antes do processamento de 28/09/2026. A última coleta direta na CCEE foi bem-sucedida.",
    "href": "/setor-eletrico/dados/ccee-pld-horario",
    "tipo": "dados"
   },
@@ -176,7 +176,7 @@
    "titulo": "Participação térmica incomum",
    "condicao": "Participação térmica dos últimos 7 dias acima do 90º ou abaixo do 10º percentil das janelas de 7 dias dos 365 dias anteriores.",
    "ativo": false,
-   "evidencia": "10,9% nos últimos 7 dias; faixa usual de 9,1% a 17,4% (percentil 29).",
+   "evidencia": "10,9% nos últimos 7 dias; faixa usual de 9,2% a 17,4% (percentil 29).",
    "href": "/setor-eletrico/geracao#termica",
    "tipo": "regra"
   },

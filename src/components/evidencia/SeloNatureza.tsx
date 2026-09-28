@@ -42,7 +42,8 @@ export const NATUREZAS: Record<Natureza, { rotulo: string; glifo: string; borda:
   },
 };
 
-export function SeloNatureza({ natureza }: { natureza: Natureza }) {
+/** `compacto`: só o glifo com borda, para cabeçalho de coluna; o rótulo segue para leitor de tela e dica. */
+export function SeloNatureza({ natureza, compacto = false }: { natureza: Natureza; compacto?: boolean }) {
   const n = NATUREZAS[natureza];
   return (
     <span
@@ -51,7 +52,7 @@ export function SeloNatureza({ natureza }: { natureza: Natureza }) {
     >
       <span aria-hidden="true">{n.glifo}</span>
       <span className="sr-only">Natureza do dado: </span>
-      {n.rotulo}
+      {compacto ? <span className="sr-only">{n.rotulo}</span> : n.rotulo}
     </span>
   );
 }

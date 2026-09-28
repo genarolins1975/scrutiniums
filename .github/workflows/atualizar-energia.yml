@@ -46,8 +46,10 @@ jobs:
 
       - name: Executar pipeline de energia
         id: pipeline
+        env:
+          SEM_COLETA: ${{ inputs.sem_coleta }}
         run: |
-          if [ "${{ inputs.sem_coleta }}" = "true" ]; then
+          if [ "$SEM_COLETA" = "true" ]; then
             python3 -u pipeline/energia/run.py --sem-coleta | tee energia.log
           else
             python3 -u pipeline/energia/run.py | tee energia.log

@@ -100,6 +100,27 @@ describe("arquivo imutável", () => {
   });
 });
 
+describe("imutabilidade contra a lista fixa de registros publicados", () => {
+  it("todo registro já publicado continua no arquivo versionado, com o mesmo sha256", () => {
+    // a lista fixa detecta edição mesmo quando o arquivo e a gold mudam juntos no mesmo commit
+    const fixos: [string, string][] = JSON.parse(readFileSync(join(raiz, "src", "tests", "fixtures", "previsoes-publicadas.json"), "utf-8")).registros;
+    const linhas = readFileSync(join(raiz, "pipeline", "energia", "previsoes", "arquivo.jsonl"), "utf-8")
+      .split("\n")
+      .filter((l) => l.trim())
+      .map((l) => JSON.parse(l));
+    const porId = new Map(linhas.map((r: any) => [r.forecast_id, r.sha256]));
+    expect(fixos.length).toBeGreaterThan(0);
+    for (const [id, sha] of fixos) expect(porId.get(id), id).toBe(sha);
+  });
+
+  it("na interface, número de rodada interna nunca aparece como previsão", () => {
+    const t = readFileSync(join(raiz, "src", "components", "energia", "ArquivoPrevisoes.tsx"), "utf-8");
+    expect(t).toContain('r.tipo !== "PUBLICACAO" || r.estado_modelo !== "PRODUCAO"');
+    expect(t).toContain("número retido");
+    expect(t).toContain("registrado_no_portal_em");
+  });
+});
+
 describe("resultados de pesquisa retidos não vazam para a interface", () => {
   it("com publicação retida, nenhuma métrica de desempenho está na gold nem nas páginas", () => {
     if (mods.publicacao_resultados.liberada) return;
@@ -121,6 +142,38 @@ describe("resultados de pesquisa retidos não vazam para a interface", () => {
       // números da pesquisa retida (ex.: MAE 32,97; cobertura 48,8%) não podem ser escritos à mão
       expect(t, f).not.toMatch(/32,97|48,8%|35,30|63,2%/);
     }
+  });
+});
+
+describe("mecanismos sem conferência não aparecem como fato nas páginas", () => {
+  it("formulações causais conhecidas não voltam aos painéis", () => {
+    const proibidas = [
+      /se compensam no SIN/i,
+      /pressiona fontes/i,
+      /termômetro da pressão/i,
+      /repõe o estoque/i,
+      /preço de curto prazo/i,
+      /modelos de otimização/i,
+      /água que chegou/i,
+      /tratou as regiões de forma separada/i,
+    ];
+    const dir = join(raiz, "src", "app", "setor-eletrico");
+    const arquivos: string[] = [];
+    const varre = (d: string) => {
+      for (const n of readdirSync(d)) {
+        const p = join(d, n);
+        if (statSync(p).isDirectory()) varre(p);
+        else if (p.endsWith(".tsx")) arquivos.push(p);
+      }
+    };
+    varre(dir);
+    arquivos.push(join(raiz, "src", "lib", "energia", "conteudo", "conceitos.ts"), join(raiz, "src", "lib", "energia", "conteudo", "pld.ts"));
+    const sintese = readFileSync(join(raiz, "public", "energia", "gold", "sintese.json"), "utf-8");
+    for (const f of arquivos) {
+      const t = readFileSync(f, "utf-8");
+      for (const re of proibidas) expect(t, `${f}: ${re}`).not.toMatch(re);
+    }
+    for (const re of proibidas) expect(sintese, `sintese.json: ${re}`).not.toMatch(re);
   });
 });
 

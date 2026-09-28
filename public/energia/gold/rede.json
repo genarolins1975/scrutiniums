@@ -1,13 +1,13 @@
 {
  "dominio": "energia",
  "gold": "rede.json",
- "gerado_em": "2026-09-28T09:46:06Z",
+ "gerado_em": "2026-09-28T10:59:54Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "dia_referencia": "2026-09-26",
  "dia_referencia_liquido": "2026-09-25",
- "ultimo_dia_pld": "2026-09-27",
+ "ultimo_dia_pld": "2026-09-28",
  "regras": {
   "fluxo": "Fluxo diário = média das 24 horas do intercâmbio verificado entre subsistemas, com sinal: positivo da primeira para a segunda ponta (N→NE, N→SE/CO, NE→SE/CO, S→SE/CO).",
   "liquido": "Intercâmbio líquido do subsistema = média diária do intercâmbio verificado no balanço de energia do ONS; positivo significa exportação.",
@@ -4138,6 +4138,10 @@
   {
    "d": "2026-09-27",
    "amplitude": 3.55
+  },
+  {
+   "d": "2026-09-28",
+   "amplitude": 6.26
   }
  ],
  "limites_integrados": false,
@@ -4159,9 +4163,9 @@
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
    },
-   "publicado_pela_fonte_em": null,
+   "publicado_pela_fonte_em": "2026-09-27T22:04:40.385538",
    "capturado_em": "2026-09-28T09:09:02Z",
-   "validado_em": "2026-09-28T09:46:06Z",
+   "validado_em": "2026-09-28T10:59:54Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
     "fim": "2026-09-26"
@@ -4176,8 +4180,12 @@
     "sha256": "c59c224c6bdb7afcd4d09b0b18223032386787b2782c8165650ca0f4984a3b5d"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:54Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "Limites de intercâmbio e restrições elétricas não estão integrados: fluxos altos não significam, por si, rede no limite.",
     "O fluxo por fronteira soma as linhas de transmissão entre os subsistemas; não identifica qual linha ou equipamento restringiu a transferência.",
@@ -4201,14 +4209,14 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-27"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:46:06Z",
+   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T10:59:54Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-27"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "PLD médio diário de cada submercado",
@@ -4216,18 +4224,70 @@
    ],
    "formula": "diferença(par) = PLD_dia(para) − PLD_dia(de)",
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-27T15:44:02Z",
-    "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:54Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "A série de PLD termina na última captura da CCEE; dias posteriores ficam sem diferença calculada.",
     "Limites de intercâmbio e restrições elétricas não estão integrados: fluxos altos não significam, por si, rede no limite."
    ],
    "download": null,
    "notas_fonte": null
+  },
+  "saldos": {
+   "indicador": "Saldo de intercâmbio por subsistema (balanço de energia)",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ONS",
+    "dataset": "Balanço de Energia nos Subsistemas",
+    "recurso": "balanco_energia_subsistema_ho (arquivos CSV anuais)",
+    "url_dataset": "https://dados.ons.org.br/dataset/balanco-energia-subsistema",
+    "url_primaria": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/balanco_energia_subsistema_ho/",
+    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS"
+   },
+   "unidade": "MWmed",
+   "frequencia": "horária, agregada por dia",
+   "periodo_referencia": {
+    "inicio": "2021-01-01",
+    "fim": "2026-09-25"
+   },
+   "publicado_pela_fonte_em": "2026-09-27T22:00:43.210439",
+   "capturado_em": "2026-09-28T09:08:46Z",
+   "validado_em": "2026-09-28T10:59:54Z",
+   "cobertura_historica": {
+    "inicio": "2021-01-01",
+    "fim": "2026-09-25"
+   },
+   "transformacoes": [
+    "média das 24 horas do dia do valor de intercâmbio do balanço de cada subsistema",
+    "média de 30 dias das médias diárias"
+   ],
+   "formula": "saldo_dia(s) = (1/24) × Σ intercâmbio_balanço(s, h); positivo = subsistema exportador, negativo = importador, conforme o sinal do ONS",
+   "snapshot": {
+    "id": "balanco_energia_subsistema_ho@2026-09-28T09:08:46Z",
+    "sha256": "be6df6321ee402d7c879e597576ad9a82acba3283f3b9783df4ce8f558e0ae02"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:54Z",
+    "total": 0,
+    "exemplos": []
+   },
+   "limitacoes": [
+    "A soma dos quatro saldos coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero; os saldos não se compensam entre si.",
+    "O Balanço de Energia e os Intercâmbios Entre Subsistemas são conjuntos distintos, com datas de referência que podem diferir.",
+    "Dados em processo de consistência recorrente do ONS, sujeitos a revisão."
+   ],
+   "download": null,
+   "notas_fonte": "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed."
   }
  },
  "fonte_notas": "Dados de intercâmbio entre subsistemas em base horária, em MWmed. As grandezas representam a soma das medidas de fluxo de potência ativa nas linhas de transmissão de fronteira entre os subsistemas.",

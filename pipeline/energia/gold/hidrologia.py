@@ -37,14 +37,21 @@ def _md(dia):
     return "02-28" if md == "02-29" else md
 
 
+def _entra_no_padrao(k, dia_ref):
+    """O padrão da data usa um valor por ano: 29/02 fica fora da distribuição (senão o
+    grupo de 28/02 contaria os anos bissextos duas vezes); um dia de referência 29/02
+    é comparado com a distribuição de 28/02."""
+    return k[5:10] != "02-29" and _md(k) == _md(dia_ref)
+
+
 def _sazonal(serie, dia_ref, ano_ini=ANO_INICIAL_PADRAO):
     """{md: (p10, p50, p90, n)} usando anos completos de ano_ini até o ano anterior ao de referência."""
     ano_ref = int(dia_ref[:4])
     por_md = {}
     for k, v in serie.items():
         a = int(k[:4])
-        if ano_ini <= a < ano_ref:
-            por_md.setdefault(_md(k), []).append(v)
+        if ano_ini <= a < ano_ref and k[5:10] != "02-29":
+            por_md.setdefault(k[5:10], []).append(v)
     return {md: (c.quantil(vs, 0.1), c.quantil(vs, 0.5), c.quantil(vs, 0.9), len(vs)) for md, vs in por_md.items()}
 
 
@@ -127,7 +134,7 @@ def construir(con):
                 "mediana_historica": c.r(p50, 1), "p10": c.r(p10, 1), "p90": c.r(p90, 1), "anos_na_base": n,
                 "desvio_mediana_pp": c.r(v - p50, 1) if p50 is not None else None,
                 "percentil_na_data": c.r(c.percentil_de(v, [x for k, x in ear_pct[sm].items()
-                                                            if _md(k) == _md(dia_ear) and ANO_INICIAL_PADRAO <= int(k[:4]) < int(dia_ear[:4])]), 1),
+                                                            if _entra_no_padrao(k, dia_ear) and ANO_INICIAL_PADRAO <= int(k[:4]) < int(dia_ear[:4])]), 1),
                 "faixa": _faixa(v, p10, p90),
             },
             "ena": {
@@ -174,7 +181,6 @@ def construir(con):
         fonte=c.fonte_ons("ear-diario-por-subsistema", EAR, "EAR Diário por Subsistema"),
         unidade="% da EAR máxima", frequencia="diária", periodo={"inicio": dias_ear[0], "fim": dia_ear},
         cobertura={"inicio": dias_ear[0], "fim": dia_ear}, capturado_em=c.ultima_captura(snap_ear), snapshot=snap_ear,
-        publicado_em=max((x["publicado_em"] or "" for x in snap_ear["capturas"]), default=None) or None,
         transformacoes=[], download="/energia/series/ear_diario.csv",
         limitacoes=lim_comum + ["A EAR máxima muda com a entrada e saída de reservatórios; comparações longas em percentual misturam capacidades diferentes."],
         notas_fonte=meta_ear.get("notas"),
@@ -194,15 +200,24 @@ def construir(con):
         unidade="% da EAR máxima", frequencia="diária", periodo={"inicio": f"{ANO_INICIAL_PADRAO}-01-01", "fim": f"{int(dia_ear[:4]) - 1}-12-31"},
         cobertura={"inicio": dias_ear[0], "fim": dia_ear}, capturado_em=c.ultima_captura(snap_ear), snapshot=snap_ear,
         transformacoes=["valores do mesmo dia do calendário em cada ano completo anterior", "quantis com interpolação linear"],
-        formula="mediana e percentis 10 e 90 de {EAR(ano, dia) : ano = 2001..ano_ref − 1}",
+        formula="mediana e percentis 10 e 90 de {EAR(ano, dia) : ano = 2001..ano_ref − 1}; percentil na data = rank médio do valor do dia nessa distribuição; 29/02 fica fora da distribuição e, como dia de referência, usa a de 28/02",
         limitacoes=lim_comum + ["Anos com capacidade de armazenamento diferente da atual entram com o mesmo peso."],
+    )
+    prov_ear_mensal = c.proveniencia(
+        indicador="EAR média mensal por subsistema e SIN, % da EAR máxima", natureza="CALCULADO",
+        fonte=c.fonte_ons("ear-diario-por-subsistema", EAR, "EAR Diário por Subsistema"),
+        unidade="% da EAR máxima", frequencia="mensal", periodo={"inicio": dias_ear[0][:7], "fim": dia_ear[:7]},
+        cobertura={"inicio": dias_ear[0], "fim": dia_ear}, capturado_em=c.ultima_captura(snap_ear), snapshot=snap_ear,
+        transformacoes=["média aritmética dos valores diários do mês", "SIN: média dos valores diários do SIN calculado"],
+        formula="EAR_mensal(s, m) = média de EAR%(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+        download="/energia/series/ear_diario.csv",
+        limitacoes=lim_comum + ["O mês corrente entra com os dias disponíveis e não é comparável a um mês completo."],
     )
     prov_ena = c.proveniencia(
         indicador="Energia natural afluente (ENA) bruta, % da MLT", natureza="OBSERVADO",
         fonte=c.fonte_ons("ena-diario-por-subsistema", ENA, "ENA Diário por Subsistema"),
         unidade="% da média de longo termo (MLT)", frequencia="diária", periodo={"inicio": dias_ena[0], "fim": dia_ena},
         cobertura={"inicio": dias_ena[0], "fim": dia_ena}, capturado_em=c.ultima_captura(snap_ena), snapshot=snap_ena,
-        publicado_em=max((x["publicado_em"] or "" for x in snap_ena["capturas"]), default=None) or None,
         transformacoes=[], download="/energia/series/ena_diario.csv",
         limitacoes=lim_comum + [
             "O conjunto não informa o período de referência da MLT.",
@@ -232,7 +247,8 @@ def construir(con):
         "serie_ena": serie_ena,
         "bandas_ear": serie_bandas,
         "mensal_ear": serie_mensal,
-        "proveniencia": {"ear": prov_ear, "ear_sin": prov_ear_sin, "padrao": prov_saz, "ena": prov_ena, "ena30": prov_ena30},
+        "proveniencia": {"ear": prov_ear, "ear_sin": prov_ear_sin, "padrao": prov_saz, "ear_mensal": prov_ear_mensal,
+                         "ena": prov_ena, "ena30": prov_ena30},
         "fonte_notas": {"ear": meta_ear.get("notas"), "ena": meta_ena.get("notas")},
         "downloads": [
             {"rotulo": "EAR diária por subsistema e SIN (CSV)", "url": "/energia/series/ear_diario.csv"},

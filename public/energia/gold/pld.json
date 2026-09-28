@@ -1,16 +1,20 @@
 {
  "dominio": "energia",
  "gold": "pld.json",
- "gerado_em": "2026-09-28T09:46:00Z",
+ "gerado_em": "2026-09-28T10:59:48Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "unidade": "R$/MWh (nominal)",
  "fuso": "Horário de Brasília (UTC-3, sem horário de verão no período)",
- "dia_referencia": "2026-09-27",
+ "dia_referencia": "2026-09-28",
  "primeira_hora": "2021-01-01T00:00",
- "ultima_hora": "2026-09-27T23:00",
- "coleta_direta": null,
+ "ultima_hora": "2026-09-28T23:00",
+ "coleta_direta": {
+  "tentado_em": "2026-09-28T10:55:46Z",
+  "ok": true,
+  "detalhe": "768258 bytes"
+ },
  "regras": {
   "dia_referencia": "Último dia com as 24 horas publicadas para os quatro submercados.",
   "media_diaria": "Média aritmética simples das 24 horas do dia (horário local de Brasília).",
@@ -25,401 +29,401 @@
   {
    "sm": "SE",
    "nome": "Sudeste/Centro-Oeste",
-   "media_dia": 71.82,
+   "media_dia": 105.27,
    "min_hora": 57.31,
-   "quando_min": "2026-09-27T04:00",
-   "max_hora": 101.35,
-   "quando_max": "2026-09-27T18:00",
+   "quando_min": "2026-09-28T06:00",
+   "max_hora": 361.95,
+   "quando_max": "2026-09-28T18:00",
    "variacao_dia_anterior": {
-    "abs": -3.25,
-    "pct": -4.3
+    "abs": 33.45,
+    "pct": 46.6
    },
-   "media_7d_anteriores": 124.2,
+   "media_7d_anteriores": 123.44,
    "variacao_vs_7d": {
-    "abs": -52.37,
-    "pct": -42.2
+    "abs": -18.17,
+    "pct": -14.7
    },
    "posicao": {
-    "percentil": 47.1,
+    "percentil": 53.4,
     "faixa": "central",
-    "n_dias": 2096,
+    "n_dias": 2097,
     "quartis": {
      "p25": 61.07,
-     "p50": 85.46,
-     "p75": 226.03
+     "p50": 85.6,
+     "p75": 225.92
     }
    },
    "menor_valor_ano": 57.31,
-   "horas_no_menor_valor_ano": 13
+   "horas_no_menor_valor_ano": 10
   },
   {
    "sm": "S",
    "nome": "Sul",
-   "media_dia": 68.28,
+   "media_dia": 99.01,
    "min_hora": 57.31,
-   "quando_min": "2026-09-27T00:00",
-   "max_hora": 101.34,
-   "quando_max": "2026-09-27T18:00",
+   "quando_min": "2026-09-28T00:00",
+   "max_hora": 361.94,
+   "quando_max": "2026-09-28T18:00",
    "variacao_dia_anterior": {
-    "abs": -2.72,
-    "pct": -3.8
+    "abs": 30.73,
+    "pct": 45.0
    },
-   "media_7d_anteriores": 121.09,
+   "media_7d_anteriores": 120.09,
    "variacao_vs_7d": {
-    "abs": -52.82,
-    "pct": -43.6
+    "abs": -21.08,
+    "pct": -17.6
    },
    "posicao": {
-    "percentil": 29.5,
+    "percentil": 52.5,
     "faixa": "central",
-    "n_dias": 2096,
+    "n_dias": 2097,
     "quartis": {
      "p25": 61.07,
-     "p50": 85.03,
-     "p75": 234.92
+     "p50": 85.31,
+     "p75": 234.88
     }
    },
    "menor_valor_ano": 57.31,
-   "horas_no_menor_valor_ano": 17
+   "horas_no_menor_valor_ano": 16
   },
   {
    "sm": "NE",
    "nome": "Nordeste",
-   "media_dia": 71.82,
+   "media_dia": 105.27,
    "min_hora": 57.31,
-   "quando_min": "2026-09-27T04:00",
-   "max_hora": 101.34,
-   "quando_max": "2026-09-27T18:00",
+   "quando_min": "2026-09-28T06:00",
+   "max_hora": 361.94,
+   "quando_max": "2026-09-28T18:00",
    "variacao_dia_anterior": {
-    "abs": -3.25,
-    "pct": -4.3
+    "abs": 33.45,
+    "pct": 46.6
    },
-   "media_7d_anteriores": 124.19,
+   "media_7d_anteriores": 123.44,
    "variacao_vs_7d": {
-    "abs": -52.37,
-    "pct": -42.2
+    "abs": -18.17,
+    "pct": -14.7
    },
    "posicao": {
-    "percentil": 53.5,
+    "percentil": 60.8,
     "faixa": "central",
-    "n_dias": 2096,
+    "n_dias": 2097,
     "quartis": {
      "p25": 61.07,
      "p50": 69.04,
-     "p75": 193.9
+     "p75": 193.82
     }
    },
    "menor_valor_ano": 57.31,
-   "horas_no_menor_valor_ano": 13
+   "horas_no_menor_valor_ano": 10
   },
   {
    "sm": "N",
    "nome": "Norte",
-   "media_dia": 71.83,
+   "media_dia": 105.27,
    "min_hora": 57.31,
-   "quando_min": "2026-09-27T04:00",
-   "max_hora": 101.35,
-   "quando_max": "2026-09-27T18:00",
+   "quando_min": "2026-09-28T06:00",
+   "max_hora": 361.95,
+   "quando_max": "2026-09-28T18:00",
    "variacao_dia_anterior": {
-    "abs": -3.25,
-    "pct": -4.3
+    "abs": 33.45,
+    "pct": 46.6
    },
-   "media_7d_anteriores": 124.2,
+   "media_7d_anteriores": 123.44,
    "variacao_vs_7d": {
-    "abs": -52.37,
-    "pct": -42.2
+    "abs": -18.17,
+    "pct": -14.7
    },
    "posicao": {
-    "percentil": 54.1,
+    "percentil": 60.1,
     "faixa": "central",
-    "n_dias": 2096,
+    "n_dias": 2097,
     "quartis": {
      "p25": 61.07,
      "p50": 69.04,
-     "p75": 201.4
+     "p75": 201.3
     }
    },
    "menor_valor_ano": 57.31,
-   "horas_no_menor_valor_ano": 13
+   "horas_no_menor_valor_ano": 10
   }
  ],
  "periodos": {
   "hoje": {
    "rotulo": "Dia de referência",
-   "inicio": "2026-09-27T00:00",
-   "fim": "2026-09-27T23:00",
+   "inicio": "2026-09-28T00:00",
+   "fim": "2026-09-28T23:00",
    "n_horas": 24,
    "por_submercado": {
     "SE": {
-     "media": 71.82,
+     "media": 105.27,
      "min": 57.31,
-     "quando_min": "2026-09-27T04:00",
-     "max": 101.35,
-     "quando_max": "2026-09-27T18:00",
-     "desvio_padrao": 17.6,
+     "quando_min": "2026-09-28T06:00",
+     "max": 361.95,
+     "quando_max": "2026-09-28T18:00",
+     "desvio_padrao": 81.83,
      "permanencia": {
-      "baixa": 0.5417,
-      "central": 0.4583,
-      "alta": 0.0
+      "baixa": 0.4167,
+      "central": 0.5,
+      "alta": 0.0833
      },
-     "frac_menor_valor_ano": 0.5417
+     "frac_menor_valor_ano": 0.4167
     },
     "S": {
-     "media": 68.28,
+     "media": 99.01,
      "min": 57.31,
-     "quando_min": "2026-09-27T00:00",
-     "max": 101.34,
-     "quando_max": "2026-09-27T18:00",
-     "desvio_padrao": 17.6,
+     "quando_min": "2026-09-28T00:00",
+     "max": 361.94,
+     "quando_max": "2026-09-28T18:00",
+     "desvio_padrao": 84.36,
      "permanencia": {
-      "baixa": 0.7083,
-      "central": 0.2917,
-      "alta": 0.0
+      "baixa": 0.6667,
+      "central": 0.25,
+      "alta": 0.0833
      },
-     "frac_menor_valor_ano": 0.7083
+     "frac_menor_valor_ano": 0.6667
     },
     "NE": {
-     "media": 71.82,
+     "media": 105.27,
      "min": 57.31,
-     "quando_min": "2026-09-27T04:00",
-     "max": 101.34,
-     "quando_max": "2026-09-27T18:00",
-     "desvio_padrao": 17.6,
+     "quando_min": "2026-09-28T06:00",
+     "max": 361.94,
+     "quando_max": "2026-09-28T18:00",
+     "desvio_padrao": 81.83,
      "permanencia": {
-      "baixa": 0.5417,
-      "central": 0.4583,
-      "alta": 0.0
+      "baixa": 0.4167,
+      "central": 0.5,
+      "alta": 0.0833
      },
-     "frac_menor_valor_ano": 0.5417
+     "frac_menor_valor_ano": 0.4167
     },
     "N": {
-     "media": 71.83,
+     "media": 105.27,
      "min": 57.31,
-     "quando_min": "2026-09-27T04:00",
-     "max": 101.35,
-     "quando_max": "2026-09-27T18:00",
-     "desvio_padrao": 17.6,
+     "quando_min": "2026-09-28T06:00",
+     "max": 361.95,
+     "quando_max": "2026-09-28T18:00",
+     "desvio_padrao": 81.83,
      "permanencia": {
-      "baixa": 0.5417,
-      "central": 0.4583,
-      "alta": 0.0
+      "baixa": 0.4167,
+      "central": 0.5,
+      "alta": 0.0833
      },
-     "frac_menor_valor_ano": 0.5417
+     "frac_menor_valor_ano": 0.4167
     }
    },
    "diferenca": {
-    "horas_acima_limiar": 4,
-    "frac_horas_acima_limiar": 0.1667,
-    "maior": 29.62,
-    "quando_maior": "2026-09-27T00:00"
+    "horas_acima_limiar": 6,
+    "frac_horas_acima_limiar": 0.25,
+    "maior": 28.98,
+    "quando_maior": "2026-09-28T00:00"
    }
   },
   "7d": {
    "rotulo": "Últimos 7 dias",
-   "inicio": "2026-09-21T00:00",
-   "fim": "2026-09-27T23:00",
+   "inicio": "2026-09-22T00:00",
+   "fim": "2026-09-28T23:00",
    "n_horas": 168,
    "por_submercado": {
     "SE": {
-     "media": 123.44,
+     "media": 121.8,
      "min": 57.31,
-     "quando_min": "2026-09-21T01:00",
+     "quando_min": "2026-09-22T06:00",
      "max": 1075.11,
      "quando_max": "2026-09-23T18:00",
-     "desvio_padrao": 159.79,
+     "desvio_padrao": 156.51,
      "permanencia": {
-      "baixa": 0.4524,
-      "central": 0.4762,
+      "baixa": 0.4286,
+      "central": 0.5,
       "alta": 0.0714
      },
-     "frac_menor_valor_ano": 0.4524
+     "frac_menor_valor_ano": 0.4286
     },
     "S": {
-     "media": 120.09,
+     "media": 117.55,
      "min": 57.31,
-     "quando_min": "2026-09-21T01:00",
+     "quando_min": "2026-09-22T06:00",
      "max": 1075.1,
      "quando_max": "2026-09-23T18:00",
-     "desvio_padrao": 160.61,
+     "desvio_padrao": 157.6,
      "permanencia": {
-      "baixa": 0.5238,
-      "central": 0.4048,
+      "baixa": 0.5357,
+      "central": 0.3929,
       "alta": 0.0714
      },
-     "frac_menor_valor_ano": 0.5238
+     "frac_menor_valor_ano": 0.5357
     },
     "NE": {
-     "media": 123.44,
+     "media": 121.8,
      "min": 57.31,
-     "quando_min": "2026-09-21T01:00",
+     "quando_min": "2026-09-22T06:00",
      "max": 1075.11,
      "quando_max": "2026-09-23T18:00",
-     "desvio_padrao": 159.79,
+     "desvio_padrao": 156.51,
      "permanencia": {
-      "baixa": 0.4524,
-      "central": 0.4583,
+      "baixa": 0.4286,
+      "central": 0.4821,
       "alta": 0.0893
      },
-     "frac_menor_valor_ano": 0.4524
+     "frac_menor_valor_ano": 0.4286
     },
     "N": {
-     "media": 123.44,
+     "media": 121.81,
      "min": 57.31,
-     "quando_min": "2026-09-21T01:00",
+     "quando_min": "2026-09-22T06:00",
      "max": 1075.11,
      "quando_max": "2026-09-23T18:00",
-     "desvio_padrao": 159.79,
+     "desvio_padrao": 156.51,
      "permanencia": {
-      "baixa": 0.4524,
-      "central": 0.4702,
+      "baixa": 0.4286,
+      "central": 0.494,
       "alta": 0.0774
      },
-     "frac_menor_valor_ano": 0.4524
+     "frac_menor_valor_ano": 0.4286
     }
    },
    "diferenca": {
-    "horas_acima_limiar": 19,
-    "frac_horas_acima_limiar": 0.1131,
+    "horas_acima_limiar": 25,
+    "frac_horas_acima_limiar": 0.1488,
     "maior": 56.05,
     "quando_maior": "2026-09-24T01:00"
    }
   },
   "30d": {
    "rotulo": "Últimos 30 dias",
-   "inicio": "2026-08-29T00:00",
-   "fim": "2026-09-27T23:00",
+   "inicio": "2026-08-30T00:00",
+   "fim": "2026-09-28T23:00",
    "n_horas": 720,
    "por_submercado": {
     "SE": {
-     "media": 130.39,
+     "media": 129.39,
      "min": 57.31,
-     "quando_min": "2026-08-29T07:00",
+     "quando_min": "2026-08-30T07:00",
      "max": 1611.04,
      "quando_max": "2026-08-31T18:00",
-     "desvio_padrao": 144.18,
+     "desvio_padrao": 144.52,
      "permanencia": {
-      "baixa": 0.4333,
-      "central": 0.5194,
-      "alta": 0.0472
+      "baixa": 0.4347,
+      "central": 0.5153,
+      "alta": 0.05
      },
-     "frac_menor_valor_ano": 0.4333
+     "frac_menor_valor_ano": 0.4347
     },
     "S": {
-     "media": 129.06,
+     "media": 127.85,
      "min": 57.31,
-     "quando_min": "2026-08-29T07:00",
+     "quando_min": "2026-08-30T07:00",
      "max": 1611.04,
      "quando_max": "2026-08-31T18:00",
-     "desvio_padrao": 144.58,
+     "desvio_padrao": 145.0,
      "permanencia": {
-      "baixa": 0.4611,
-      "central": 0.4986,
-      "alta": 0.0403
+      "baixa": 0.4708,
+      "central": 0.4861,
+      "alta": 0.0431
      },
-     "frac_menor_valor_ano": 0.4611
+     "frac_menor_valor_ano": 0.4708
     },
     "NE": {
-     "media": 130.0,
+     "media": 129.0,
      "min": 57.31,
-     "quando_min": "2026-08-29T07:00",
+     "quando_min": "2026-08-30T07:00",
      "max": 1611.04,
      "quando_max": "2026-08-31T18:00",
-     "desvio_padrao": 144.22,
+     "desvio_padrao": 144.57,
      "permanencia": {
-      "baixa": 0.4347,
-      "central": 0.475,
+      "baixa": 0.4361,
+      "central": 0.4736,
       "alta": 0.0903
      },
-     "frac_menor_valor_ano": 0.4347
+     "frac_menor_valor_ano": 0.4361
     },
     "N": {
-     "media": 130.24,
+     "media": 129.24,
      "min": 57.31,
-     "quando_min": "2026-08-29T07:00",
+     "quando_min": "2026-08-30T07:00",
      "max": 1611.04,
      "quando_max": "2026-08-31T18:00",
-     "desvio_padrao": 144.18,
+     "desvio_padrao": 144.53,
      "permanencia": {
-      "baixa": 0.4347,
-      "central": 0.4903,
+      "baixa": 0.4361,
+      "central": 0.4889,
       "alta": 0.075
      },
-     "frac_menor_valor_ano": 0.4347
+     "frac_menor_valor_ano": 0.4361
     }
    },
    "diferenca": {
-    "horas_acima_limiar": 37,
-    "frac_horas_acima_limiar": 0.0514,
+    "horas_acima_limiar": 43,
+    "frac_horas_acima_limiar": 0.0597,
     "maior": 82.15,
     "quando_maior": "2026-09-16T16:00"
    }
   },
   "12m": {
    "rotulo": "Últimos 12 meses",
-   "inicio": "2025-09-28T00:00",
-   "fim": "2026-09-27T23:00",
+   "inicio": "2025-09-29T00:00",
+   "fim": "2026-09-28T23:00",
    "n_horas": 8760,
    "por_submercado": {
     "SE": {
-     "media": 227.84,
+     "media": 227.61,
      "min": 57.31,
      "quando_min": "2026-01-01T08:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 139.75,
+     "desvio_padrao": 139.82,
      "permanencia": {
       "baixa": 0.2095,
-      "central": 0.3419,
-      "alta": 0.4486
+      "central": 0.3429,
+      "alta": 0.4476
      },
      "frac_menor_valor_ano": 0.2076
     },
     "S": {
-     "media": 246.03,
+     "media": 245.79,
      "min": 57.31,
      "quando_min": "2026-01-01T08:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 143.16,
+     "desvio_padrao": 143.27,
      "permanencia": {
-      "baixa": 0.1687,
-      "central": 0.3484,
-      "alta": 0.4829
+      "baixa": 0.1694,
+      "central": 0.349,
+      "alta": 0.4816
      },
-     "frac_menor_valor_ano": 0.1677
+     "frac_menor_valor_ano": 0.1684
     },
     "NE": {
-     "media": 208.43,
+     "media": 208.21,
      "min": 57.31,
      "quando_min": "2026-01-01T08:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 138.51,
+     "desvio_padrao": 138.55,
      "permanencia": {
-      "baixa": 0.2092,
-      "central": 0.2784,
-      "alta": 0.5123
+      "baixa": 0.2104,
+      "central": 0.2781,
+      "alta": 0.5115
      },
      "frac_menor_valor_ano": 0.2503
     },
     "N": {
-     "media": 212.03,
+     "media": 211.81,
      "min": 57.31,
      "quando_min": "2026-01-01T08:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 137.75,
+     "desvio_padrao": 137.8,
      "permanencia": {
-      "baixa": 0.2033,
+      "baixa": 0.2045,
       "central": 0.297,
-      "alta": 0.4997
+      "alta": 0.4985
      },
      "frac_menor_valor_ano": 0.2337
     }
    },
    "diferenca": {
-    "horas_acima_limiar": 2267,
-    "frac_horas_acima_limiar": 0.2588,
+    "horas_acima_limiar": 2271,
+    "frac_horas_acima_limiar": 0.2592,
     "maior": 824.13,
     "quando_maior": "2026-03-23T15:00"
    }
@@ -427,68 +431,68 @@
   "historico": {
    "rotulo": "Desde 01/01/2021",
    "inicio": "2021-01-01T00:00",
-   "fim": "2026-09-27T23:00",
-   "n_horas": 50304,
+   "fim": "2026-09-28T23:00",
+   "n_horas": 50328,
    "por_submercado": {
     "SE": {
-     "media": 160.86,
+     "media": 160.83,
      "min": 49.77,
      "quando_min": "2021-02-27T03:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 151.34,
+     "desvio_padrao": 151.32,
      "permanencia": {
-      "baixa": 0.2306,
-      "central": 0.5194,
+      "baixa": 0.2307,
+      "central": 0.5193,
       "alta": 0.25
      },
      "frac_menor_valor_ano": 0.4952
     },
     "S": {
-     "media": 164.61,
+     "media": 164.58,
      "min": 49.77,
      "quando_min": "2021-02-27T03:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 153.67,
+     "desvio_padrao": 153.65,
      "permanencia": {
-      "baixa": 0.2218,
-      "central": 0.5282,
+      "baixa": 0.222,
+      "central": 0.528,
       "alta": 0.25
      },
-     "frac_menor_valor_ano": 0.4866
+     "frac_menor_valor_ano": 0.4867
     },
     "NE": {
-     "media": 146.22,
+     "media": 146.2,
      "min": 49.77,
      "quando_min": "2021-02-27T03:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 147.15,
+     "desvio_padrao": 147.13,
      "permanencia": {
-      "baixa": 0.204,
-      "central": 0.546,
+      "baixa": 0.2041,
+      "central": 0.5459,
       "alta": 0.25
      },
-     "frac_menor_valor_ano": 0.5663
+     "frac_menor_valor_ano": 0.5662
     },
     "N": {
-     "media": 148.84,
+     "media": 148.82,
      "min": 49.77,
      "quando_min": "2021-02-27T00:00",
      "max": 1611.04,
      "quando_max": "2026-03-30T19:00",
-     "desvio_padrao": 149.35,
+     "desvio_padrao": 149.33,
      "permanencia": {
-      "baixa": 0.2157,
-      "central": 0.5343,
+      "baixa": 0.2158,
+      "central": 0.5342,
       "alta": 0.25
      },
-     "frac_menor_valor_ano": 0.5643
+     "frac_menor_valor_ano": 0.5642
     }
    },
    "diferenca": {
-    "horas_acima_limiar": 9822,
+    "horas_acima_limiar": 9828,
     "frac_horas_acima_limiar": 0.1953,
     "maior": 824.13,
     "quando_maior": "2026-03-23T15:00"
@@ -496,49 +500,49 @@
   }
  },
  "curva_horaria": {
-  "dia": "2026-09-27",
+  "dia": "2026-09-28",
   "horas": [
    {
     "h": "00:00",
-    "SE": 86.92,
+    "SE": 86.29,
     "S": 57.31,
-    "NE": 86.92,
-    "N": 86.93
+    "NE": 86.28,
+    "N": 86.29
    },
    {
     "h": "01:00",
-    "SE": 84.65,
+    "SE": 83.98,
     "S": 57.31,
-    "NE": 84.65,
-    "N": 84.66
+    "NE": 83.97,
+    "N": 83.98
    },
    {
     "h": "02:00",
-    "SE": 79.99,
+    "SE": 80.01,
     "S": 57.31,
-    "NE": 79.98,
-    "N": 79.99
+    "NE": 80.01,
+    "N": 80.02
    },
    {
     "h": "03:00",
-    "SE": 62.71,
+    "SE": 80.19,
     "S": 57.31,
-    "NE": 62.7,
-    "N": 62.71
+    "NE": 80.18,
+    "N": 80.19
    },
    {
     "h": "04:00",
-    "SE": 57.31,
+    "SE": 81.28,
     "S": 57.31,
-    "NE": 57.31,
-    "N": 57.31
+    "NE": 81.27,
+    "N": 81.28
    },
    {
     "h": "05:00",
-    "SE": 57.31,
+    "SE": 82.3,
     "S": 57.31,
-    "NE": 57.31,
-    "N": 57.31
+    "NE": 82.29,
+    "N": 82.3
    },
    {
     "h": "06:00",
@@ -612,231 +616,63 @@
    },
    {
     "h": "16:00",
-    "SE": 57.31,
-    "S": 57.31,
-    "NE": 57.31,
-    "N": 57.31
+    "SE": 99.96,
+    "S": 99.95,
+    "NE": 99.96,
+    "N": 99.97
    },
    {
     "h": "17:00",
-    "SE": 92.29,
-    "S": 92.28,
-    "NE": 92.28,
-    "N": 92.29
+    "SE": 153.14,
+    "S": 153.13,
+    "NE": 153.13,
+    "N": 153.14
    },
    {
     "h": "18:00",
-    "SE": 101.35,
-    "S": 101.34,
-    "NE": 101.34,
-    "N": 101.35
+    "SE": 361.95,
+    "S": 361.94,
+    "NE": 361.94,
+    "N": 361.95
    },
    {
     "h": "19:00",
-    "SE": 99.82,
-    "S": 99.81,
-    "NE": 99.82,
-    "N": 99.83
+    "SE": 335.09,
+    "S": 335.08,
+    "NE": 335.08,
+    "N": 335.09
    },
    {
     "h": "20:00",
-    "SE": 94.56,
-    "S": 94.55,
-    "NE": 94.56,
-    "N": 94.57
+    "SE": 186.28,
+    "S": 186.27,
+    "NE": 186.28,
+    "N": 186.29
    },
    {
     "h": "21:00",
-    "SE": 94.43,
-    "S": 94.43,
-    "NE": 94.43,
-    "N": 94.44
+    "SE": 119.34,
+    "S": 119.33,
+    "NE": 119.34,
+    "N": 119.35
    },
    {
     "h": "22:00",
-    "SE": 92.78,
-    "S": 92.77,
-    "NE": 92.77,
-    "N": 92.78
+    "SE": 105.81,
+    "S": 105.8,
+    "NE": 105.81,
+    "N": 105.82
    },
    {
     "h": "23:00",
-    "SE": 89.23,
-    "S": 89.22,
-    "NE": 89.22,
-    "N": 89.23
+    "SE": 97.8,
+    "S": 97.79,
+    "NE": 97.79,
+    "N": 97.8
    }
   ]
  },
  "horario_30d": [
-  {
-   "t": "2026-08-29T00:00",
-   "SE": 173.99,
-   "S": 173.98,
-   "NE": 173.99,
-   "N": 174.0
-  },
-  {
-   "t": "2026-08-29T01:00",
-   "SE": 171.94,
-   "S": 171.93,
-   "NE": 171.93,
-   "N": 171.94
-  },
-  {
-   "t": "2026-08-29T02:00",
-   "SE": 169.61,
-   "S": 169.6,
-   "NE": 169.61,
-   "N": 169.62
-  },
-  {
-   "t": "2026-08-29T03:00",
-   "SE": 168.9,
-   "S": 168.89,
-   "NE": 168.89,
-   "N": 168.9
-  },
-  {
-   "t": "2026-08-29T04:00",
-   "SE": 168.78,
-   "S": 168.77,
-   "NE": 168.78,
-   "N": 168.79
-  },
-  {
-   "t": "2026-08-29T05:00",
-   "SE": 168.3,
-   "S": 168.29,
-   "NE": 168.29,
-   "N": 168.3
-  },
-  {
-   "t": "2026-08-29T06:00",
-   "SE": 154.54,
-   "S": 154.53,
-   "NE": 154.53,
-   "N": 154.54
-  },
-  {
-   "t": "2026-08-29T07:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T08:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T09:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T10:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T11:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T12:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T13:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T14:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T15:00",
-   "SE": 57.31,
-   "S": 57.31,
-   "NE": 57.31,
-   "N": 57.31
-  },
-  {
-   "t": "2026-08-29T16:00",
-   "SE": 159.25,
-   "S": 159.24,
-   "NE": 159.24,
-   "N": 159.25
-  },
-  {
-   "t": "2026-08-29T17:00",
-   "SE": 200.77,
-   "S": 200.76,
-   "NE": 200.77,
-   "N": 200.78
-  },
-  {
-   "t": "2026-08-29T18:00",
-   "SE": 248.73,
-   "S": 248.72,
-   "NE": 248.73,
-   "N": 248.73
-  },
-  {
-   "t": "2026-08-29T19:00",
-   "SE": 212.34,
-   "S": 212.33,
-   "NE": 212.33,
-   "N": 212.34
-  },
-  {
-   "t": "2026-08-29T20:00",
-   "SE": 193.07,
-   "S": 193.06,
-   "NE": 193.06,
-   "N": 193.07
-  },
-  {
-   "t": "2026-08-29T21:00",
-   "SE": 184.04,
-   "S": 184.03,
-   "NE": 184.03,
-   "N": 184.04
-  },
-  {
-   "t": "2026-08-29T22:00",
-   "SE": 180.39,
-   "S": 180.38,
-   "NE": 180.39,
-   "N": 180.4
-  },
-  {
-   "t": "2026-08-29T23:00",
-   "SE": 177.68,
-   "S": 177.68,
-   "NE": 177.68,
-   "N": 177.69
-  },
   {
    "t": "2026-08-30T00:00",
    "SE": 172.92,
@@ -5708,6 +5544,174 @@
    "S": 89.22,
    "NE": 89.22,
    "N": 89.23
+  },
+  {
+   "t": "2026-09-28T00:00",
+   "SE": 86.29,
+   "S": 57.31,
+   "NE": 86.28,
+   "N": 86.29
+  },
+  {
+   "t": "2026-09-28T01:00",
+   "SE": 83.98,
+   "S": 57.31,
+   "NE": 83.97,
+   "N": 83.98
+  },
+  {
+   "t": "2026-09-28T02:00",
+   "SE": 80.01,
+   "S": 57.31,
+   "NE": 80.01,
+   "N": 80.02
+  },
+  {
+   "t": "2026-09-28T03:00",
+   "SE": 80.19,
+   "S": 57.31,
+   "NE": 80.18,
+   "N": 80.19
+  },
+  {
+   "t": "2026-09-28T04:00",
+   "SE": 81.28,
+   "S": 57.31,
+   "NE": 81.27,
+   "N": 81.28
+  },
+  {
+   "t": "2026-09-28T05:00",
+   "SE": 82.3,
+   "S": 57.31,
+   "NE": 82.29,
+   "N": 82.3
+  },
+  {
+   "t": "2026-09-28T06:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T07:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T08:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T09:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T10:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T11:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T12:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T13:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T14:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T15:00",
+   "SE": 57.31,
+   "S": 57.31,
+   "NE": 57.31,
+   "N": 57.31
+  },
+  {
+   "t": "2026-09-28T16:00",
+   "SE": 99.96,
+   "S": 99.95,
+   "NE": 99.96,
+   "N": 99.97
+  },
+  {
+   "t": "2026-09-28T17:00",
+   "SE": 153.14,
+   "S": 153.13,
+   "NE": 153.13,
+   "N": 153.14
+  },
+  {
+   "t": "2026-09-28T18:00",
+   "SE": 361.95,
+   "S": 361.94,
+   "NE": 361.94,
+   "N": 361.95
+  },
+  {
+   "t": "2026-09-28T19:00",
+   "SE": 335.09,
+   "S": 335.08,
+   "NE": 335.08,
+   "N": 335.09
+  },
+  {
+   "t": "2026-09-28T20:00",
+   "SE": 186.28,
+   "S": 186.27,
+   "NE": 186.28,
+   "N": 186.29
+  },
+  {
+   "t": "2026-09-28T21:00",
+   "SE": 119.34,
+   "S": 119.33,
+   "NE": 119.34,
+   "N": 119.35
+  },
+  {
+   "t": "2026-09-28T22:00",
+   "SE": 105.81,
+   "S": 105.8,
+   "NE": 105.81,
+   "N": 105.82
+  },
+  {
+   "t": "2026-09-28T23:00",
+   "SE": 97.8,
+   "S": 97.79,
+   "NE": 97.79,
+   "N": 97.8
   }
  ],
  "diario": [
@@ -20382,6 +20386,13 @@
    "S": 68.28,
    "NE": 71.82,
    "N": 71.83
+  },
+  {
+   "d": "2026-09-28",
+   "SE": 105.27,
+   "S": 99.01,
+   "NE": 105.27,
+   "N": 105.27
   }
  ],
  "mensal": [
@@ -20999,12 +21010,12 @@
   },
   {
    "m": "2026-09",
-   "dias": 27,
+   "dias": 28,
    "parcial": true,
-   "SE": 126.31,
-   "S": 124.84,
-   "NE": 125.99,
-   "N": 126.18
+   "SE": 125.56,
+   "S": 123.92,
+   "NE": 125.25,
+   "N": 125.44
   }
  ],
  "menor_valor_ano": [
@@ -21050,7 +21061,7 @@
   },
   {
    "ano": "2026",
-   "ate": "2026-09-27",
+   "ate": "2026-09-28",
    "SE": 57.31,
    "S": 57.31,
    "NE": 57.31,
@@ -21060,24 +21071,29 @@
  "quartis_horarios": {
   "SE": {
    "p25": 61.07,
-   "p75": 243.0
+   "p75": 242.98
   },
   "S": {
    "p25": 61.07,
-   "p75": 250.0
+   "p75": 249.97
   },
   "NE": {
    "p25": 58.6,
-   "p75": 195.9
+   "p75": 195.8
   },
   "N": {
    "p25": 58.6,
-   "p75": 205.09
+   "p75": 205.04
   }
  },
  "snapshot": {
-  "id": "ccee_pld_horario@2026-09-27T15:44:02Z",
-  "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178",
+  "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+  "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f",
+  "revisoes": {
+   "detectado_em": "2026-09-28T10:59:47Z",
+   "total": 0,
+   "exemplos": []
+  },
   "capturas": [
    {
     "recurso": "pld_horario_2021",
@@ -21116,10 +21132,10 @@
    },
    {
     "recurso": "pld_horario_2026",
-    "sha256": "e28cffcf3d406940c153d35d60d70287f40dbc75bb435c02186183db9ee607e0",
-    "capturado_em": "2026-09-27T15:44:02Z",
+    "sha256": "e1d39b3eb20bb609d12e6ceeb27ff1cf96810f3b5decbca70ebf1cf0842701b1",
+    "capturado_em": "2026-09-28T10:55:46Z",
     "publicado_em": "2026-06-09T16:37:15.091000",
-    "origem": "seed"
+    "origem": "coleta_direta"
    }
   ]
  },
@@ -21139,30 +21155,34 @@
    "frequencia": "horária",
    "periodo_referencia": {
     "inicio": "2021-01-01T00:00",
-    "fim": "2026-09-27T23:00"
+    "fim": "2026-09-28T23:00"
    },
    "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:46:00Z",
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T10:59:48Z",
    "cobertura_historica": {
     "inicio": "2021-01-01T00:00",
-    "fim": "2026-09-27T23:00"
+    "fim": "2026-09-28T23:00"
    },
    "transformacoes": [
     "leitura do CSV da CCEE; HORA local (0 a 23) convertida em AAAA-MM-DDTHH:00, horário de Brasília"
    ],
    "formula": null,
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-27T15:44:02Z",
-    "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:47Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 27/09/2026 (2026-09-27T15:44:02Z). A coleta direta no portal da CCEE está bloqueada no ambiente de construção (HTTP 403); horas publicadas depois da captura ainda não estão integradas."
+    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida."
    ],
    "download": "/energia/series/pld_horario.csv",
    "notas_fonte": "O PLD é calculado pela CCEE diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO). (Descrição da organização Preço de Liquidação das Diferenças no portal de dados abertos da CCEE, capturada em 27/09/2026.)"
@@ -21182,30 +21202,34 @@
    "frequencia": "diária",
    "periodo_referencia": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-27"
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:46:00Z",
+   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T10:59:48Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-27"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "média aritmética simples das 24 horas de cada dia; dias sem as 24 horas não recebem média"
    ],
    "formula": "PLD_dia(s) = (1/24) × Σ PLD_h(s), h = 0..23",
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-27T15:44:02Z",
-    "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:47Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 27/09/2026 (2026-09-27T15:44:02Z). A coleta direta no portal da CCEE está bloqueada no ambiente de construção (HTTP 403); horas publicadas depois da captura ainda não estão integradas.",
+    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
     "Média simples calculada pela Scrutiniums; pode diferir de médias publicadas por outras fontes com outra ponderação."
    ],
    "download": "/energia/series/pld_diario.csv",
@@ -21225,15 +21249,15 @@
    "unidade": "percentil (0 a 100)",
    "frequencia": "diária",
    "periodo_referencia": {
-    "inicio": "2026-09-27",
-    "fim": "2026-09-27"
+    "inicio": "2026-09-28",
+    "fim": "2026-09-28"
    },
-   "publicado_pela_fonte_em": null,
-   "capturado_em": "2026-09-27T15:44:02Z",
-   "validado_em": "2026-09-28T09:46:00Z",
+   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T10:59:48Z",
    "cobertura_historica": {
     "inicio": "2021-01-01",
-    "fim": "2026-09-27"
+    "fim": "2026-09-28"
    },
    "transformacoes": [
     "distribuição das médias diárias do submercado de 01/01/2021 ao dia de referência",
@@ -21241,19 +21265,73 @@
    ],
    "formula": "percentil = 100 × (nº de dias com média menor + 0,5 × nº de dias com média igual) ÷ nº de dias",
    "snapshot": {
-    "id": "ccee_pld_horario@2026-09-27T15:44:02Z",
-    "sha256": "2595a8c01260c23f8c38d08de19e4b704b96ed0bcf4d6d34f894eda75164f178"
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:47Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
     "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
-    "Série integrada a partir da captura primária de 27/09/2026 (2026-09-27T15:44:02Z). A coleta direta no portal da CCEE está bloqueada no ambiente de construção (HTTP 403); horas publicadas depois da captura ainda não estão integradas.",
+    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
     "A distribuição de referência cobre só o período do PLD horário (desde 2021); anos de hidrologia muito diferente pesam na classificação."
    ],
    "download": null,
+   "notas_fonte": null
+  },
+  "estatisticas": {
+   "indicador": "Estatísticas do PLD por período (média, mediana, quartis, extremos, desvio padrão, permanência, diferenças entre submercados)",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "CCEE",
+    "dataset": "PLD_HORARIO",
+    "recurso": "pld_horario_2021 a pld_horario_2026",
+    "url_dataset": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "url_primaria": "https://dadosabertos.ccee.org.br/dataset/pld_horario",
+    "licenca": "Creative Commons Attribution 4.0 (CC-BY-4.0), conforme o portal de dados abertos da CCEE"
+   },
+   "unidade": "R$/MWh (nominal); permanência em % das horas",
+   "frequencia": "por período (hoje, 7 dias, 30 dias, 12 meses, histórico)",
+   "periodo_referencia": {
+    "inicio": "2021-01-01T00:00",
+    "fim": "2026-09-28T23:00"
+   },
+   "publicado_pela_fonte_em": "2026-06-09T16:37:15.091000",
+   "capturado_em": "2026-09-28T10:55:46Z",
+   "validado_em": "2026-09-28T10:59:48Z",
+   "cobertura_historica": {
+    "inicio": "2021-01-01T00:00",
+    "fim": "2026-09-28T23:00"
+   },
+   "transformacoes": [
+    "seleção das horas do período",
+    "estatísticas descritivas sobre os valores horários",
+    "quartis com interpolação linear (tipo 7)"
+   ],
+   "formula": "média = Σ PLD_h ÷ n; mediana e quartis tipo 7 dos valores horários; desvio padrão amostral; permanência = % das horas abaixo de P25, entre P25 e P75 e acima de P75 da distribuição horária desde 01/01/2021; diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ 1.00/MWh",
+   "snapshot": {
+    "id": "ccee_pld_horario@2026-09-28T10:55:46Z",
+    "sha256": "521040bb1855b88779845a08d16b83db2ae8984bc2fe68f5e892cc7f0374df5f"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:47Z",
+    "total": 0,
+    "exemplos": []
+   },
+   "limitacoes": [
+    "Valores nominais em R$/MWh. Os limites regulatórios (mínimo, máximo horário e máximo estrutural) mudam a cada ano e não foram auditados nesta fase; comparações entre anos misturam regimes de limites diferentes.",
+    "A CCEE não informa a data de publicação de cada hora no arquivo; o campo last_modified do recurso no portal não acompanha as atualizações diárias.",
+    "Série integrada a partir da captura primária de 28/09/2026 (2026-09-28T10:55:46Z); horas publicadas depois dela ainda não estão integradas. A última tentativa de coleta direta no portal da CCEE (2026-09-28T10:55:46Z) foi bem-sucedida.",
+    "Estatísticas descritivas do período; não indicam tendência nem causa."
+   ],
+   "download": "/energia/series/pld_horario.csv",
    "notas_fonte": null
   }
  },

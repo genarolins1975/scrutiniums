@@ -53,7 +53,7 @@ export default function RedePage() {
               id="fluxos-dia"
               pergunta={`Fluxos entre subsistemas em ${dataBR(r.dia_referencia)}`}
               subtitulo="Intercâmbio médio verificado por fronteira · MWmed · e PLD médio diário por submercado"
-              porQueImporta={<>O <Termo slug="intercambio">intercâmbio</Termo> mostra quais regiões exportam e quais importam energia. Com preços, indica se os <Termo slug="submercado">submercados</Termo> operaram acoplados.</>}
+              porQueImporta={<>O <Termo slug="intercambio">intercâmbio</Termo> mostra quais regiões exportam e quais importam energia. Ao lado do PLD, mostra se os <Termo slug="submercado">submercados</Termo> tiveram preço igual ou diferente no mesmo dia; a razão de uma diferença não é identificada aqui.</>}
               oQueMudou={<>{r.fronteiras.map((f) => `${f.nome}: ${f.dias_sentido_canonico_30d} de 30 dias no sentido ${f.de}→${f.para}`).join("; ")}.</>}
               comoInterpretar={<>A seta aponta o sentido do fluxo médio do dia; a espessura é proporcional ao volume. As caixas trazem o PLD médio do último dia disponível.</>}
               naoConcluir={<>Sem os limites de transferência, fluxo alto não prova congestionamento, e a página não identifica qual linha ou equipamento restringiu a transferência.</>}
@@ -82,11 +82,11 @@ export default function RedePage() {
               pergunta="Quais regiões exportam e quais importam energia?"
               subtitulo={`Intercâmbio líquido por subsistema · MWmed · balanço de energia do ONS em ${dataBR(r.dia_referencia_liquido)}`}
               natureza="CALCULADO"
-              porQueImporta={<>O saldo de cada região é a diferença entre o que ela gera e o que consome; positivo significa exportação.</>}
+              porQueImporta={<>O balanço de energia do ONS traz, para cada subsistema, carga, geração por fonte e intercâmbio líquido. Positivo significa exportação líquida no dia; o sinal foi conferido contra os fluxos por fronteira.</>}
               oQueMudou={<>{r.liquido_subsistemas.map((l) => `${l.nome}: ${num(l.dia, 0)} MWmed no dia, média de 30 dias ${num(l.media_30d, 0)}`).join("; ")}.</>}
-              comoInterpretar={<>Saldos positivos e negativos se compensam no SIN. Um exportador estrutural depende das linhas para escoar sua geração.</>}
-              naoConcluir={<>Exportar muito não significa preço menor na região exportadora; o preço depende da formação conjunta do sistema e dos limites.</>}
-              proveniencia={r.proveniencia.fluxo}
+              comoInterpretar={<>Os quatro saldos não se compensam: a soma deles coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero. O dia do balanço pode diferir do dia dos fluxos por fronteira, porque são conjuntos distintos.</>}
+              naoConcluir={<>O saldo não diz por que a região exporta ou importa, nem se as linhas estavam no limite: os limites de intercâmbio não estão integrados.</>}
+              proveniencia={r.proveniencia.saldos ?? r.proveniencia.fluxo}
             >
               <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 {r.liquido_subsistemas.map((l) => (
@@ -104,7 +104,7 @@ export default function RedePage() {
               id="fluxos-12m"
               pergunta="Como os fluxos mudaram ao longo do último ano?"
               subtitulo="Intercâmbio médio diário por fronteira · MWmed · positivo no sentido indicado"
-              porQueImporta={<>A sazonalidade das chuvas, do vento e do sol muda o sentido e o volume dos fluxos ao longo do ano.</>}
+              porQueImporta={<>Uma janela de 12 meses mostra como o sentido e o volume dos fluxos variam ao longo do ano; a página não atribui essas variações a causas.</>}
               oQueMudou={<>Série de {dataBR(r.serie_fluxos[0]?.d as string)} a {dataBR(r.dia_referencia)}.</>}
               comoInterpretar={<>Valores negativos significam fluxo no sentido oposto ao indicado na legenda.</>}
               naoConcluir={<>Fluxo não é capacidade: sem os limites, não se sabe quanto faltou para o teto em cada dia.</>}
@@ -118,7 +118,7 @@ export default function RedePage() {
               id="amplitude-rede"
               pergunta="Em que dias os preços dos submercados se separaram?"
               subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh · último ano"
-              porQueImporta={<>Picos marcam dias em que o cálculo do preço tratou as regiões de forma separada.</>}
+              porQueImporta={<>Picos marcam dias em que os PLDs médios dos submercados ficaram mais distantes entre si.</>}
               oQueMudou={<>Maior diferença da série: {reais(Math.max(...r.serie_amplitude_pld.map((a) => a.amplitude)))}/MWh.</>}
               comoInterpretar={<>Zero significa médias diárias iguais nos quatro submercados; diferenças de poucas horas podem sumir na média diária.</>}
               naoConcluir={<>A série não diz qual fronteira causou a separação.</>}

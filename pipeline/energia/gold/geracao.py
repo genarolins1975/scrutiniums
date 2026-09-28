@@ -76,14 +76,18 @@ def construir(con):
             comparacao_anual.append({"ano": a, "7d": m7, "30d": m30})
 
     # participação térmica em janelas móveis de 7 dias nos 365 dias anteriores
-    def part_termica_7d(fim_iso):
-        m = mix("SIN", janela(7, c.d(fim_iso)))
-        return m["participacao"]["termica"] if m else None
-    hist = [part_termica_7d((fim - timedelta(days=i)).isoformat()) for i in range(7, 372)]
+    # sem arredondar antes da estatística: percentil e quantis sobre o valor bruto
+    def part_termica_7d(fim_):
+        ks = janela(7, fim_)
+        if not all(all(k in diario[(f, "SIN")] for f in FONTES) for k in ks):
+            return None
+        mw = {f: c.media([diario[(f, "SIN")][k] for k in ks]) for f in FONTES}
+        return 100 * mw["termica"] / sum(mw.values())
+    hist = [part_termica_7d(fim - timedelta(days=i)) for i in range(7, 372)]
     hist = [x for x in hist if x is not None]
-    atual_term = regioes[0]["7d"]["participacao"]["termica"] if regioes[0]["7d"] else None
+    atual_term = part_termica_7d(fim)
     termica_ctx = {
-        "participacao_7d": atual_term,
+        "participacao_7d": c.r(atual_term, 1),
         "mediana_365d": c.r(c.quantil(hist, 0.5), 1),
         "p10_365d": c.r(c.quantil(hist, 0.1), 1), "p90_365d": c.r(c.quantil(hist, 0.9), 1),
         "percentil": c.r(c.percentil_de(atual_term, hist), 1), "n_janelas": len(hist),

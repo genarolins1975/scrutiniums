@@ -27,6 +27,22 @@ MOTIVOS = {
 }
 
 
+def _atual_com_producao(cod, publicacoes, ultima_interna):
+    """Modelo em produção só vira previsão principal quando há publicação disponível
+    dele no arquivo; promovido sem publicação continua indisponível, com motivo."""
+    pubs = [r for r in publicacoes if r["modelo"] == cod and r["status"] == "DISPONIVEL"]
+    if pubs:
+        return {"disponivel": True, "modelo": cod, "ultima_publicacao": max(pubs, key=lambda r: r["emitido_em"])["forecast_id"]}
+    return {
+        "disponivel": False,
+        "motivo_codigo": "MODELO_EM_PRODUCAO_SEM_PUBLICACAO",
+        "motivo": f"O modelo {cod} está em produção, mas ainda não há publicação disponível dele no arquivo imutável.",
+        "ultima_execucao": ultima_interna,
+        "informacao_faltante": ["Primeira rodada de publicação do modelo em produção registrada no arquivo."],
+        "estado_pipeline": "Modelo promovido; aguardando a primeira publicação.",
+    }
+
+
 def construir(anterior=None):
     with open(REGISTRO, encoding="utf-8") as f:
         registro = json.load(f)
@@ -65,7 +81,7 @@ def construir(anterior=None):
             "Captura do PLD antes do corte de cada rodada (07h00 de Brasília).",
         ],
         "estado_pipeline": "Registro e arquivo de previsões ativos; nenhuma publicação oficial; agendamento das rodadas não instalado.",
-    } if not pode else {"disponivel": True, "modelo": cod}
+    } if not pode else _atual_com_producao(cod, publicacoes, ultima_interna)
     return {
         **c.cabecalho("previsoes.json"),
         "atual": atual,

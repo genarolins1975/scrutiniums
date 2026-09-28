@@ -17,7 +17,7 @@ export type TipoRelacao =
   | "contribuicao_modelo";
 
 export const TIPOS_RELACAO: Record<TipoRelacao, { rotulo: string; definicao: string }> = {
-  relacao_fisica: { rotulo: "Relação física", definicao: "Relação material entre grandezas: a água que chega repõe o estoque dos reservatórios." },
+  relacao_fisica: { rotulo: "Relação física", definicao: "Relação material entre grandezas, como a que liga vazões, volumes armazenados e geração." },
   mecanismo_economico: { rotulo: "Mecanismo econômico", definicao: "Relação estrutural de custo e escolha descrita na formação de preço." },
   informacao_modelos: { rotulo: "Informação usada pelos modelos oficiais", definicao: "Dado de entrada dos modelos de operação e de formação de preço." },
   resultado_modelos: { rotulo: "Resultado dos modelos oficiais", definicao: "Grandeza produzida pelos modelos NEWAVE, DECOMP e DESSEM." },
@@ -46,15 +46,15 @@ export const NOS_FORMACAO: NoFormacao[] = [
     id: "afluencias",
     titulo: "Chuva e afluências",
     sigla: "ENA",
-    oQueE: "Energia que a água que chega naturalmente aos reservatórios poderia produzir, calculada a partir das vazões naturais.",
+    oQueE: "Energia produzível a partir das vazões naturais aos reservatórios, calculada pelo ONS com as produtividades das usinas a 65% dos volumes úteis.",
     fonteOQueE: "ONS, ENA Diário por Subsistema",
     conferenciaOQueE: "CONFERIDO",
     relacaoSaida: {
       para: "reservatorios",
       tipo: "relacao_fisica",
-      texto: "A água que chega e não é vertida repõe o estoque dos reservatórios.",
-      conferencia: "CONFERIDO",
-      fonte: "ONS, definições de ENA armazenável e EAR",
+      texto: "A parte da afluência que não é vertida pode ser armazenada; a EAR resulta também das defluências e dos usos da água.",
+      conferencia: "PENDENTE",
+      fonte: "Documentação do ONS sobre balanço hídrico dos reservatórios (não acessada nesta fase)",
     },
     modulo: { rotulo: "Água e clima", href: "/setor-eletrico/agua-e-clima#ena" },
     conceito: "ena",
@@ -82,7 +82,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
   {
     id: "carga",
     titulo: "Carga",
-    oQueE: "Energia que o sistema precisa atender, medida pelo ONS por subsistema.",
+    oQueE: "Carga atendida no sistema interligado, publicada pelo ONS por subsistema em base diária, em MWmed.",
     fonteOQueE: "ONS, Carga de Energia Diária",
     conferenciaOQueE: "CONFERIDO",
     relacaoSaida: {
@@ -146,7 +146,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
   },
   {
     id: "otimizacao",
-    titulo: "Otimização da operação",
+    titulo: "Modelos oficiais (NEWAVE, DECOMP, DESSEM)",
     oQueE: "O cálculo do PLD é realizado por modelos computacionais: NEWAVE, DECOMP e DESSEM. O ONS publica o CMO estimado pelo DECOMP por semana operativa e pelo DESSEM em base semi-horária.",
     fonteOQueE: "CCEE, descrição oficial do PLD; ONS, CMO Semanal e CMO Semi-Horário",
     conferenciaOQueE: "CONFERIDO",
@@ -194,7 +194,7 @@ export const NOS_FORMACAO: NoFormacao[] = [
   {
     id: "pld",
     titulo: "PLD",
-    oQueE: "Preço de curto prazo calculado pela CCEE para cada hora do dia seguinte e para cada submercado.",
+    oQueE: "Valor em R$/MWh calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado.",
     fonteOQueE: "CCEE, descrição oficial do PLD",
     conferenciaOQueE: "CONFERIDO",
     modulo: { rotulo: "O que está acontecendo", href: "/setor-eletrico/pld#hoje" },
@@ -207,29 +207,29 @@ export const PLD_NAO_E: { titulo: string; porque: string; base: string; conferen
   {
     titulo: "Não é a sua tarifa de energia",
     porque:
-      "A conta de quem é atendido pela distribuidora segue a Tarifa de Energia (TE) e a Tarifa de Uso do Sistema de Distribuição (TUSD), definidas nos processos tarifários da ANEEL. O PLD é um preço do mercado de curto prazo da CCEE.",
+      "A conta de quem é atendido pela distribuidora segue a Tarifa de Energia (TE) e a Tarifa de Uso do Sistema de Distribuição (TUSD), resultantes dos processos tarifários da ANEEL. O PLD é calculado pela CCEE para cada hora e submercado com base no CMO.",
     base: "ANEEL, Tarifas de aplicação das distribuidoras; CCEE, descrição oficial do PLD",
     conferencia: "CONFERIDO",
   },
   {
     titulo: "Não é simplesmente o preço da última usina",
     porque:
-      "O PLD parte do CMO produzido por modelos de otimização da operação (NEWAVE, DECOMP e DESSEM), que decidem entre usar água agora ou guardá-la. Em um sistema com grandes reservatórios, o custo marginal inclui o valor futuro da água, não só o custo da usina mais cara acionada naquela hora.",
+      "O PLD tem como base o CMO, resultado dos modelos computacionais oficiais (NEWAVE, DECOMP e DESSEM). Na descrição usual do setor, ainda não conferida em documento primário nesta fase, esses modelos ponderam usar a água agora ou guardá-la, de modo que o custo marginal incorpora um valor futuro da água, e não apenas o custo da usina mais cara acionada naquela hora.",
     base: "CCEE, descrição oficial do PLD; mecanismo do valor da água com conferência documental pendente",
     conferencia: "PENDENTE",
   },
   {
     titulo: "Não é uma cotação de bolsa formada só por lances",
     porque:
-      "O PLD é calculado pela CCEE com modelos computacionais a partir do CMO, dentro de limites regulatórios. Não resulta do encontro de ofertas de compra e venda em um pregão.",
+      "Segundo a CCEE, o PLD é calculado por modelos computacionais com base no CMO, dentro de limites mínimo e máximos. A descrição oficial não menciona ofertas de compra e venda.",
     base: "CCEE, descrição oficial do PLD",
     conferencia: "CONFERIDO",
   },
   {
     titulo: "Não é uma previsão meteorológica",
     porque:
-      "Chuva e afluências influenciam o preço porque mudam a água disponível, mas o PLD é o preço calculado para cada hora do dia seguinte. Ele não diz se vai chover.",
-    base: "CCEE, descrição oficial do PLD; ONS, ENA e EAR",
+      "O PLD é calculado para cada hora do dia seguinte com base no CMO. Não é uma estimativa de chuva nem de afluência; a ENA publicada pelo ONS é que mede, em energia, as vazões naturais já verificadas.",
+    base: "CCEE, descrição oficial do PLD; ONS, ENA Diário por Subsistema",
     conferencia: "CONFERIDO",
   },
 ];

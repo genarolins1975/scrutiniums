@@ -40,7 +40,7 @@ const p = (v: number) => `${(v * 100).toLocaleString("pt-BR", { maximumFractionD
 const quando = (s: string) => `${s.slice(8, 10)}/${s.slice(5, 7)}/${s.slice(0, 4)} ${s.slice(11, 13)}h`;
 
 /**
- * O que está acontecendo, por período: Hoje | 7 dias | 30 dias | 12 meses |
+ * O que está acontecendo, por período: dia de referência | 7 dias | 30 dias | 12 meses |
  * Histórico. Todas as respostas vêm de regras publicadas (ver "Como
  * classificamos"); a tabela abaixo do gráfico é a mesma informação em texto.
  */

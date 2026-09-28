@@ -1,7 +1,7 @@
 {
  "dominio": "energia",
  "gold": "catalogo.json",
- "gerado_em": "2026-09-28T09:46:06Z",
+ "gerado_em": "2026-09-28T10:59:55Z",
  "versao_pipeline": "energia-0.1.0",
  "disponivel": true,
  "estados": [
@@ -22,19 +22,19 @@
  },
  "portais": {
   "ONS": {
-   "colhido_em": "2026-09-28T09:09:12Z",
+   "colhido_em": "2026-09-28T10:55:47Z",
    "conjuntos": 85,
    "erro": null
   },
   "ANEEL": {
-   "colhido_em": "2026-09-28T09:09:15Z",
+   "colhido_em": "2026-09-28T10:55:50Z",
    "conjuntos": 72,
    "erro": null
   },
   "CCEE": {
    "colhido_em": "2026-09-27T15:44:02Z",
    "conjuntos": 1,
-   "erro": "Portal bloqueado no ambiente de construção (HTTP 403); metadados do PLD_HORARIO vêm da captura versionada."
+   "erro": "Catálogo da CCEE não colhido automaticamente nesta fase; os metadados do PLD_HORARIO vêm da captura versionada de 27/09/2026 (o portal recusou a coleta automatizada com HTTP 403 na manhã de 28/09/2026)."
   }
  },
  "contagem": {
@@ -1238,7 +1238,7 @@
    "titulo": "Ouvidoria Setorial ANEEL",
    "url": "https://dadosabertos.aneel.gov.br/dataset/ouvidoria-setorial-aneel",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-27T10:02:55.433893",
+   "modificado_na_fonte": "2026-09-28T10:02:58.769753",
    "descricao": "A Ouvidoria Setorial apoia os consumidores na busca pela conciliação com a distribuidora em questões relacionadas à prestação do serviço público de energia elétrica. É um canal oferecido pela ANEEL para acesso direto da sociedade com a Agência: se o consumidor encontrar dificuldade no relacionamento com a distribuidora, pode procurar a intermediação da ANEEL.\n\nAs solicitações registradas na Ouvidoria Setorial, além de passarem pelo processo de análise e busca por solução por parte da Agência, subsidiam as ações de fiscalização, a elaboração dos atos regulatórios e os processos de tomada de dec",
    "n_recursos": 19,
    "formatos": [
@@ -1693,7 +1693,7 @@
    "titulo": "SIGA - Sistema de Informações de Geração da ANEEL",
    "url": "https://dadosabertos.aneel.gov.br/dataset/siga-sistema-de-informacoes-de-geracao-da-aneel",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-27T10:40:55.205770",
+   "modificado_na_fonte": "2026-09-28T10:40:54.274686",
    "descricao": "Este é o novo conjunto de dados extraídos do SIGA (banco de dados do Sistema de Informações de Geração da ANEEL), que contém as informações dos empreendimentos de geração de energia elétrica do parque gerador nacional em diversas fases: desde etapas anteriores à outorgas até a revogação. \n\nNo link https://www.aneel.gov.br/siga há mais informações sobre o conjunto de dados e o painel do SIGA.",
    "n_recursos": 5,
    "formatos": [
@@ -1787,7 +1787,7 @@
    "titulo": "Sistema de Gestão da Transmissão - SIGET",
    "url": "https://dadosabertos.aneel.gov.br/dataset/sistema-de-gestao-da-transmissao-siget",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-27T10:49:12.595413",
+   "modificado_na_fonte": "2026-09-28T10:49:03.593847",
    "descricao": "A expansão da rede básica de transmissão de energia elétrica tem seu planejamento centralizado. O Ministério de Minas e Energia — MME, a partir dos estudos técnicos elaborados pela Empresa de Pesquisa Energética — EPE e pelo Operador Nacional do Sistema Elétrico — ONS, consolida os programas de outorgas, observando os preceitos técnicos e de modicidade tarifária.\n\nDefinidos os Programas de Expansão pelo MME, a Agência Nacional de Energia Elétrica (ANEEL) operacionaliza a concessão de novas outorgas, observando a Lei 8.987/1995.\n\nAs outorgas de transmissão têm seus dados cadastrais atualizados ",
    "n_recursos": 34,
    "formatos": [
@@ -1881,7 +1881,7 @@
    "titulo": "Tarifas de aplicação das distribuidoras de energia elétrica",
    "url": "https://dadosabertos.aneel.gov.br/dataset/tarifas-distribuidoras-energia-eletrica",
    "licenca": "Open Data Commons Open Database License (ODbL)",
-   "modificado_na_fonte": "2026-09-27T10:03:32.992207",
+   "modificado_na_fonte": "2026-09-28T10:03:37.481381",
    "descricao": "Apresenta os valores das Tarifas de Energia - TE e das Tarifas de Uso do Sistema de Distribuição - TUSD, resultantes dos processos de reajustes tarifários das distribuidoras de energia elétrica.",
    "n_recursos": 3,
    "formatos": [
@@ -2576,7 +2576,7 @@
    "titulo": "Dados Hidráulicos por Reservatório – Base horária",
    "url": "https://dados.ons.org.br/dataset/dados_hidrologicos_ho",
    "licenca": "Creative Commons Atribuição",
-   "modificado_na_fonte": "2026-09-28T08:41:00.454220",
+   "modificado_na_fonte": "2026-09-28T10:26:48.597155",
    "descricao": "Dados hidráulicos de reservatórios em periodicidade horária, **não consistidos pelo ONS**. Os dados disponibilizados são de responsabilidade dos agentes de geração e refletem uma réplica exata do que foi encaminhado ao ONS. Pode haver lacunas de dados e podem ser realizadas alterações de dados.",
    "n_recursos": 609,
    "formatos": [

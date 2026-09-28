@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type {
   CargaGold,
@@ -21,9 +21,20 @@ import type {
  */
 const DIR = join(process.cwd(), "public", "energia", "gold");
 
+// Cache por arquivo e mtime: no build, várias páginas leem a mesma gold; na rota
+// dinâmica /app/observatorios, evita reprocessar centenas de KB a cada requisição.
+// Uma gold nova (mtime diferente) é relida.
+const cache = new Map<string, { mtime: number; dado: unknown }>();
+
 function ler<T>(nome: string): T | null {
   try {
-    return JSON.parse(readFileSync(join(DIR, nome), "utf-8")) as T;
+    const caminho = join(DIR, nome);
+    const mtime = statSync(caminho).mtimeMs;
+    const c = cache.get(nome);
+    if (c && c.mtime === mtime) return c.dado as T;
+    const dado = JSON.parse(readFileSync(caminho, "utf-8")) as T;
+    cache.set(nome, { mtime, dado });
+    return dado;
   } catch {
     return null;
   }

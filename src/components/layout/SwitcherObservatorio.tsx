@@ -28,7 +28,8 @@ export function SwitcherObservatorio({
           ▾
         </span>
       </summary>
-      <div className="absolute left-0 z-40 mt-1 hidden w-[min(18rem,calc(100vw-2rem))] border border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
+      {/* no celular o menu ocupa a largura útil (fixo, 1rem de margem) para não sair da tela */}
+      <div className="fixed inset-x-4 z-40 mt-1 hidden border sm:absolute sm:inset-x-auto sm:left-0 sm:w-[18rem] border-linha bg-superficie p-2 shadow-[0_8px_24px_rgba(26,29,33,0.12)] group-open:block">
         <p className="rotulo px-3 pb-1 pt-2 text-mineral">Observatórios</p>
         <ul>
           {DOMINIOS.map((d) => (

@@ -14,9 +14,11 @@ export const NOME_FONTE: Record<FonteGeracao, string> = {
 };
 export const ORDEM_FONTES: FonteGeracao[] = ["hidraulica", "termica", "eolica", "solar"];
 /** Texto sobre o segmento com contraste AA: branco só sobre o azul da hidráulica. */
+// Rótulo sobre a barra com contraste AA: sobre a térmica (laranja) nem branco
+// (3,9:1) nem carvão (4,4:1) passam, então o rótulo vai num fundo claro próprio.
 const TEXTO_SOBRE: Record<FonteGeracao, string> = {
   hidraulica: "text-white",
-  termica: "text-carvao",
+  termica: "mx-1 rounded-sm bg-superficie text-carvao",
   eolica: "text-carvao",
   solar: "text-carvao",
 };

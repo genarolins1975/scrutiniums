@@ -17,6 +17,7 @@ Regras publicadas (repetidas no JSON em `regras`, exibidas na página):
 """
 import os
 import sys
+import calendar
 from datetime import timedelta
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
@@ -46,6 +47,11 @@ LIMITACOES_BASE = [
 
 def _hora_local(ref):
     return ref[11:16]
+
+
+def mes_parcial(mes, dias_com_media):
+    """Mês parcial: menos dias completos do que os dias do calendário daquele mês."""
+    return dias_com_media < calendar.monthrange(int(mes[:4]), int(mes[5:7]))[1]
 
 
 def construir(con):
@@ -176,7 +182,7 @@ def construir(con):
     serie_mensal = []
     for mes in sorted(mensal):
         ks = mensal[mes]
-        serie_mensal.append({"m": mes, "dias": len(ks), "parcial": mes == dia_ref[:7] and len(ks) < 28,
+        serie_mensal.append({"m": mes, "dias": len(ks), "parcial": mes_parcial(mes, len(ks)),
                              **{sm: c.r(c.media([diario[sm][k] for k in ks])) for sm in c.ORDEM_SM}})
     anos = sorted({a for (_, a) in menor_ano})
     menores = [{"ano": a, "ate": dia_ref if a == dia_ref[:4] else f"{a}-12-31",
@@ -188,15 +194,22 @@ def construir(con):
     base.escreve_csv("pld_diario.csv", ["data", "SE", "S", "NE", "N"],
                      [[k] + [diario[sm][k] for sm in c.ORDEM_SM] for k in dias_completos])
 
+    # o texto sobre a coleta vem do registro da última tentativa, nunca fixo
+    if coleta and coleta.get("ok"):
+        situacao = f"A última tentativa de coleta direta no portal da CCEE ({coleta['tentado_em']}) foi bem-sucedida."
+    elif coleta:
+        situacao = (f"A última tentativa de coleta direta no portal da CCEE ({coleta['tentado_em']}) falhou "
+                    f"({(coleta.get('detalhe') or 'sem detalhe')[:80]}); a série usa a última captura bem-sucedida.")
+    else:
+        situacao = "A coleta direta no portal da CCEE não foi tentada nesta execução; a série usa a última captura bem-sucedida."
     limitacoes = LIMITACOES_BASE + [
-        f"Série integrada a partir da captura primária de {c.data_br(captura)} ({captura}). "
-        "A coleta direta no portal da CCEE está bloqueada no ambiente de construção (HTTP 403); horas publicadas depois da captura ainda não estão integradas.",
+        f"Série integrada a partir da captura primária de {c.data_br(captura)} ({captura}); horas publicadas depois dela ainda não estão integradas. {situacao}",
     ]
     periodo_total = {"inicio": primeira, "fim": ultima}
     prov_horario = c.proveniencia(
         indicador="PLD horário por submercado", natureza="OBSERVADO", fonte=c.FONTE_CCEE_PLD,
         unidade="R$/MWh (nominal)", frequencia="horária", periodo=periodo_total, cobertura=periodo_total,
-        capturado_em=captura, snapshot=snap, publicado_em=None,
+        capturado_em=captura, snapshot=snap, publicacao_informada=False,
         transformacoes=["leitura do CSV da CCEE; HORA local (0 a 23) convertida em AAAA-MM-DDTHH:00, horário de Brasília"],
         limitacoes=limitacoes, download="/energia/series/pld_horario.csv",
         notas_fonte="O PLD é calculado pela CCEE diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO). (Descrição da organização Preço de Liquidação das Diferenças no portal de dados abertos da CCEE, capturada em 27/09/2026.)",
@@ -219,6 +232,18 @@ def construir(con):
         formula="percentil = 100 × (nº de dias com média menor + 0,5 × nº de dias com média igual) ÷ nº de dias",
         limitacoes=limitacoes + ["A distribuição de referência cobre só o período do PLD horário (desde 2021); anos de hidrologia muito diferente pesam na classificação."],
     )
+    prov_estatisticas = c.proveniencia(
+        indicador="Estatísticas do PLD por período (média, mediana, quartis, extremos, desvio padrão, permanência, diferenças entre submercados)",
+        natureza="CALCULADO", fonte=c.FONTE_CCEE_PLD, unidade="R$/MWh (nominal); permanência em % das horas",
+        frequencia="por período (hoje, 7 dias, 30 dias, 12 meses, histórico)", periodo=periodo_total, cobertura=periodo_total,
+        capturado_em=captura, snapshot=snap,
+        transformacoes=["seleção das horas do período", "estatísticas descritivas sobre os valores horários", "quartis com interpolação linear (tipo 7)"],
+        formula=("média = Σ PLD_h ÷ n; mediana e quartis tipo 7 dos valores horários; desvio padrão amostral; "
+                 "permanência = % das horas abaixo de P25, entre P25 e P75 e acima de P75 da distribuição horária desde 01/01/2021; "
+                 f"diferença entre submercados = % das horas com |PLD_a − PLD_b| > R$ {LIMIAR_DIFERENCA:.2f}/MWh"),
+        limitacoes=limitacoes + ["Estatísticas descritivas do período; não indicam tendência nem causa."],
+        download="/energia/series/pld_horario.csv",
+    )
     return {
         **c.cabecalho("pld.json"),
         "unidade": "R$/MWh (nominal)",
@@ -237,7 +262,8 @@ def construir(con):
         "menor_valor_ano": menores,
         "quartis_horarios": {sm: {"p25": c.r(quartis_h[sm][0]), "p75": c.r(quartis_h[sm][1])} for sm in c.ORDEM_SM},
         "snapshot": snap,
-        "proveniencia": {"horario": prov_horario, "diario": prov_diario, "posicao": prov_posicao},
+        "proveniencia": {"horario": prov_horario, "diario": prov_diario, "posicao": prov_posicao,
+                         "estatisticas": prov_estatisticas},
         "downloads": [
             {"rotulo": "PLD horário, quatro submercados (CSV)", "url": "/energia/series/pld_horario.csv"},
             {"rotulo": "PLD médio diário, quatro submercados (CSV)", "url": "/energia/series/pld_diario.csv"},

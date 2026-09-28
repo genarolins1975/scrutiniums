@@ -148,19 +148,51 @@ def snapshot_de(con, dataset):
     return {
         "id": f"{dataset}@{caps[-1]}",
         "sha256": h,
+        "revisoes": revisoes_do_dataset(con, dataset),
         "capturas": [{"recurso": k, "sha256": ultimo[k]["sha256"], "capturado_em": ultimo[k]["capturado_em"],
                       "publicado_em": ultimo[k]["publicado_em"], "origem": ultimo[k]["origem"]}
                      for k in sorted(ultimo)],
     }
 
 
+def revisoes_do_dataset(con, dataset, limite=20):
+    """Revisões detectadas: observações (série, referência) que têm mais de um valor
+    entre as vintages integradas. grava_observacoes só grava valor novo ou alterado,
+    então cada linha extra de uma mesma (série, referência) é uma revisão da fonte."""
+    rows = con.execute(
+        """SELECT serie, ref, COUNT(*) FROM observacoes WHERE dataset=?
+           GROUP BY serie, ref HAVING COUNT(*) > 1 ORDER BY ref DESC, serie""",
+        (dataset,),
+    ).fetchall()
+    return {
+        "detectado_em": base.agora_utc(),
+        "total": len(rows),
+        "exemplos": [{"serie": a, "ref": b, "valores": n} for a, b, n in rows[:limite]],
+    }
+
+
+def publicacao_mais_recente(snapshot):
+    """Maior data de publicação informada pela fonte entre os arquivos do snapshot."""
+    datas = [x.get("publicado_em") for x in snapshot.get("capturas", []) if x.get("publicado_em")]
+    return max(datas) if datas else None
+
+
 def proveniencia(*, indicador, natureza, fonte, unidade, frequencia, periodo, cobertura,
                  capturado_em, snapshot, limitacoes, transformacoes=(), formula=None,
-                 publicado_em=None, revisoes=(), download=None, validado_em=None, notas_fonte=None):
+                 publicado_em=None, revisoes=None, download=None, validado_em=None, notas_fonte=None,
+                 publicacao_informada=True):
     assert natureza in NATUREZAS, natureza
     if natureza == "CALCULADO":
         assert formula, f"{indicador}: CALCULADO exige fórmula"
     assert limitacoes, f"{indicador}: limitações não podem ser vazias"
+    # publicação e revisões vêm do snapshot quando o builder não informa: a fonte
+    # informa a data de modificação de cada arquivo e as vintages guardam as revisões
+    # publicacao_informada=False: a data de modificação da fonte existe mas não
+    # acompanha a atualização do conteúdo (caso do PLD na CCEE); não é exibida
+    if publicado_em is None and publicacao_informada:
+        publicado_em = publicacao_mais_recente(snapshot)
+    if revisoes is None:
+        revisoes = snapshot.get("revisoes")
     return {
         "indicador": indicador,
         "natureza": natureza,
@@ -177,7 +209,7 @@ def proveniencia(*, indicador, natureza, fonte, unidade, frequencia, periodo, co
         "snapshot": {"id": snapshot.get("id"), "sha256": snapshot.get("sha256")},
         "versao_pipeline": base.VERSAO_PIPELINE,
         "versao_codigo": base.versao_codigo(),
-        "revisoes_conhecidas": list(revisoes),
+        "revisoes_conhecidas": revisoes,
         "limitacoes": list(limitacoes),
         "download": download,
         "notas_fonte": notas_fonte,

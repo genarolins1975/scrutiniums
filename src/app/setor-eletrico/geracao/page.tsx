@@ -57,7 +57,7 @@ export default function GeracaoPage() {
               subtitulo="Geração verificada do SIN por fonte · % do total por janela"
               porQueImporta={<>A composição mostra quanto o atendimento depende da água, do vento, do sol e das térmicas, e como isso mudou frente ao mesmo período de anos anteriores.</>}
               oQueMudou={<>Nos mesmos 7 dias de {g.comparacao_anual[0]?.ano}, a hidráulica tinha {pct(g.comparacao_anual[0]?.["7d"]?.participacao.hidraulica)} e as térmicas {pct(g.comparacao_anual[0]?.["7d"]?.participacao.termica)}; agora, {pct(sin["7d"]?.participacao.hidraulica)} e {pct(sin["7d"]?.participacao.termica)}.</>}
-              comoInterpretar={<>Cada barra soma 100%. Compare a semana atual com as mesmas semanas de anos anteriores para separar sazonalidade (chuva, vento, sol) de mudança estrutural.</>}
+              comoInterpretar={<>Cada barra soma 100%. Compare a semana atual com as mesmas semanas de anos anteriores para separar o que é padrão da época do que é diferente neste ano.</>}
               naoConcluir={<>Hidráulica, eólica e solar somadas não formam a participação renovável: a térmica do balanço inclui biomassa e outras fontes não separadas. Participação não é capacidade instalada.</>}
               proveniencia={g.proveniencia.geracao}
             >
@@ -89,7 +89,7 @@ export default function GeracaoPage() {
               pergunta={`Despacho térmico: ${pct(t.participacao_7d)} da geração nos últimos 7 dias, percentil ${num(t.percentil, 0)} do último ano`}
               subtitulo="Participação térmica em janelas móveis de 7 dias · SIN · %"
               natureza="CALCULADO"
-              porQueImporta={<>As térmicas têm <Termo slug="cvu">Custo Variável Unitário</Termo> considerado na programação da operação; seu peso no atendimento é um termômetro da pressão sobre o sistema.</>}
+              porQueImporta={<>As térmicas têm <Termo slug="cvu">Custo Variável Unitário</Termo> considerado na programação da operação; este painel mostra a participação delas na geração verificada, comparada à do último ano, sem identificar o motivo do despacho.</>}
               oQueMudou={<>Mediana dos 12 meses anteriores: {pct(t.mediana_365d)}; faixa usual (10º a 90º percentil) de {pct(t.p10_365d)} a {pct(t.p90_365d)}.</>}
               comoInterpretar={<>O percentil compara a semana atual com todas as {t.n_janelas} janelas de 7 dias do ano anterior. Acima do 90º ou abaixo do 10º percentil, a regra &quot;participação térmica incomum&quot; da Visão geral fica ativa.</>}
               naoConcluir={<>O balanço não separa as térmicas por combustível nem por motivo de despacho (mérito, restrição, segurança). O conjunto &quot;Geração Térmica por Motivo de Despacho&quot; está catalogado e ainda não integrado.</>}
@@ -113,7 +113,7 @@ export default function GeracaoPage() {
               pergunta={`Como a geração se distribuiu ao longo de ${dataBR(g.dia_referencia)}?`}
               subtitulo="Geração verificada do SIN por fonte, hora a hora · MWmed · valores observados"
               natureza="OBSERVADO"
-              porQueImporta={<>A solar concentra-se nas horas de sol; a hidráulica e as térmicas acompanham o restante da carga. O perfil diário ajuda a ler a curva horária do PLD.</>}
+              porQueImporta={<>Mostra como cada fonte se distribui ao longo das horas do dia de referência. Pode ser lido ao lado da curva horária do PLD, sem que a coincidência de horários indique causa.</>}
               oQueMudou={<>Pico solar do dia: {num(Math.max(...g.perfil_horario_sin.map((p) => p.solar ?? 0)), 0)} MWmed.</>}
               comoInterpretar={<>Cada linha é uma fonte; a soma das linhas é a geração verificada total em cada hora.</>}
               naoConcluir={<>Um único dia não representa o padrão sazonal; feriados e eventos climáticos alteram o perfil.</>}

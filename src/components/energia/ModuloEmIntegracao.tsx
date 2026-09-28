@@ -34,7 +34,8 @@ export function ModuloEmIntegracao({
 }) {
   const cat = gold.catalogo();
   const relacionados = (cat?.entradas ?? [])
-    .filter((e) => temas.includes(e.tema) && (!orgaos || orgaos.includes(e.orgao)) && !e.descontinuado)
+    // só o que ainda não foi integrado: fonte já usada em indicador aparece no próprio módulo
+    .filter((e) => temas.includes(e.tema) && (!orgaos || orgaos.includes(e.orgao)) && !e.descontinuado && !e.estado.startsWith("UTILIZADO"))
     .slice(0, 14);
   return (
     <>

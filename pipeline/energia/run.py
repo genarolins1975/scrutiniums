@@ -17,7 +17,7 @@ import traceback
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from pipeline.energia import base, catalogo  # noqa: E402
+from pipeline.energia import base, catalogo, validacoes  # noqa: E402
 from pipeline.energia.fontes import ccee, ons  # noqa: E402
 from pipeline.energia.gold import carga, cmo, geracao, hidrologia, modelos, pld, rede, sintese  # noqa: E402
 from pipeline.energia.gold import comum as c  # noqa: E402
@@ -66,11 +66,18 @@ def main(argv):
 
     regressoes, falhas = [], []
     g = {}
+    capturas = {ds: c.ultima_captura(c.snapshot_de(con, ds)) for ds in list(ons.DATASETS) + [ccee.DATASET]}
+
+    def construir_validado(nome, fn):
+        novo = construir(nome, fn, con)
+        erros = validacoes.viola_horizonte(nome, novo, capturas)
+        return c.stub(nome, "; ".join(erros)) if erros else novo
+
     for nome, fn in (("pld.json", pld.construir), ("hidrologia.json", hidrologia.construir),
                      ("carga.json", carga.construir), ("geracao.json", geracao.construir),
                      ("rede.json", rede.construir), ("cmo.json", cmo.construir)):
         print(f"[energia] gold {nome}", flush=True)
-        g[nome] = publicar(nome, construir(nome, fn, con), regressoes, falhas)
+        g[nome] = publicar(nome, construir_validado(nome, fn), regressoes, falhas)
     g["sintese.json"] = publicar("sintese.json",
                                  construir("sintese.json", sintese.construir, g["hidrologia.json"], g["carga.json"],
                                            g["geracao.json"], g["pld.json"], g["cmo.json"]), regressoes, falhas)

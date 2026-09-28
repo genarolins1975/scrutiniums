@@ -164,5 +164,123 @@ class GovernancaTest(unittest.TestCase):
         self.assertEqual(g.status_calibracao(0.80, 50), "AMOSTRA_INSUFICIENTE")
 
 
+class AuditoriaTemporalTest(unittest.TestCase):
+    """Correções da auditoria independente (achados A6, A13, A14 e A12)."""
+
+    def test_instante_exige_fuso_e_normaliza(self):
+        self.assertEqual(base.instante_utc("2026-09-05T00:00:00-03:00"), "2026-09-05T03:00:00Z")
+        self.assertEqual(base.instante_utc("2026-09-05T03:00:00.999Z"), "2026-09-05T03:00:00Z")
+        for ruim in ("2026-09-05", "2026-09-05T00:00:00", None):
+            with self.assertRaises(ValueError):
+                base.instante_utc(ruim)
+
+    def test_consulta_com_fuso_nao_antecipa(self):
+        con = _con()
+        v1, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T12:00:00Z", None, "1" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v1, [("s", "2026-08-31", 50.0)])
+        v2, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-10T12:00:00Z", None, "2" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v2, [("s", "2026-08-31", 52.5)])
+        # 10/09 09h00 em Brasília = 12h00 UTC: a segunda vintage já existe
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-10T09:00:00-03:00"), [("2026-08-31", 52.5)])
+        # 10/09 08h59 em Brasília: ainda não
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-10T08:59:00-03:00"), [("2026-08-31", 50.0)])
+        # instante com fuso positivo depois da captura em UTC não antecipa: 10/09 14h59 em UTC+3 = 11h59 UTC
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-10T14:59:00+03:00"), [("2026-08-31", 50.0)])
+
+    def test_vintage_antiga_importada_depois_nao_some(self):
+        con = _con()
+        nova, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-10T00:00:00Z", None, "2" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", nova, [("s", "2026-08-31", 50.0)])
+        antiga, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", None, "1" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", antiga, [("s", "2026-08-31", 50.0)])
+        self.assertEqual(base.como_estava_em(con, "ds", "s", "2026-09-05T00:00:00Z"), [("2026-08-31", 50.0)])
+
+    def test_duplicata_no_mesmo_arquivo_nao_e_revisao(self):
+        con = _con()
+        v, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", None, "1" * 64, 1, "teste", None)
+        self.assertEqual(base.grava_observacoes(con, "ds", v, [("s", "d", 1.0), ("s", "d", 2.0)]), (1, 0))
+        self.assertEqual(base.serie_vigente(con, "ds", "s"), [("d", 2.0)])
+
+    def test_revisoes_detectadas_no_snapshot(self):
+        from pipeline.energia.gold import comum as c
+        con = _con()
+        v1, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-01T00:00:00Z", "2026-08-31T20:00:00Z", "1" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v1, [("s", "d1", 1.0), ("s", "d2", 5.0)])
+        v2, _ = base.registra_vintage(con, "ds", "r", "u", "2026-09-02T00:00:00Z", "2026-09-01T20:00:00Z", "2" * 64, 1, "teste", None)
+        base.grava_observacoes(con, "ds", v2, [("s", "d1", 1.5), ("s", "d2", 5.0)])
+        snap = c.snapshot_de(con, "ds")
+        self.assertEqual(snap["revisoes"]["total"], 1)
+        self.assertEqual(snap["revisoes"]["exemplos"][0]["ref"], "d1")
+        prov = c.proveniencia(indicador="x", natureza="OBSERVADO", fonte={}, unidade="u", frequencia="f",
+                              periodo={}, cobertura={}, capturado_em="t", snapshot=snap, limitacoes=["l"])
+        self.assertEqual(prov["publicado_pela_fonte_em"], "2026-09-01T20:00:00Z")
+        self.assertEqual(prov["revisoes_conhecidas"]["total"], 1)
+
+    def test_bissexto_conta_uma_vez_no_padrao(self):
+        from pipeline.energia.gold import hidrologia as h
+        serie = {}
+        for a in range(2001, 2025):
+            serie[f"{a}-02-28"] = 10.0
+            if a % 4 == 0:
+                serie[f"{a}-02-29"] = 99.0
+        saz = h._sazonal(serie, "2025-03-01")
+        self.assertEqual(saz["02-28"][3], 24)
+        self.assertEqual(saz["02-28"][1], 10.0)
+        self.assertNotIn("02-29", saz)
+        self.assertTrue(h._entra_no_padrao("2023-02-28", "2024-02-29"))
+        self.assertFalse(h._entra_no_padrao("2020-02-29", "2024-02-28"))
+
+    def test_mes_parcial_pelo_calendario(self):
+        from pipeline.energia.gold import pld
+        self.assertTrue(pld.mes_parcial("2026-09", 28))
+        self.assertFalse(pld.mes_parcial("2026-09", 30))
+        self.assertTrue(pld.mes_parcial("2024-02", 28))
+        self.assertFalse(pld.mes_parcial("2024-02", 29))
+
+    def test_horizonte_de_publicacao(self):
+        from pipeline.energia import validacoes as v
+        cap = {"ccee_pld_horario": "2026-09-27T15:44:02Z", "cmo_se": "2026-09-28T09:00:00Z", "carga_energia_di": "2026-09-28T02:00:00Z"}
+        self.assertEqual(v.viola_horizonte("pld.json", {"disponivel": True, "ultima_hora": "2026-09-28T23:00"}, cap), [])
+        self.assertEqual(len(v.viola_horizonte("pld.json", {"disponivel": True, "ultima_hora": "2026-09-29T00:00"}, cap)), 1)
+        self.assertEqual(v.viola_horizonte("cmo.json", {"disponivel": True, "semana_referencia": "2026-10-09"}, cap), [])
+        # captura 28/09 02h00 UTC = 27/09 23h00 em Brasília: carga de 28/09 ainda não existia
+        self.assertEqual(len(v.viola_horizonte("carga.json", {"disponivel": True, "dia_referencia": "2026-09-28"}, cap)), 1)
+
+
+class GovernancaEndurecidaTest(unittest.TestCase):
+    """Achados A4 e A5: regras valem para rodada interna e datas com fuso."""
+
+    def _rec(self, **kw):
+        r = {"forecast_id": "x", "tipo": "RODADA_INTERNA", "status": "DISPONIVEL", "previsao": 100.0, "quantis": None,
+             "motivo": None, "modelo": "C1", "estado_modelo": "PESQUISA", "cutoff": "2026-09-27T10:00:00Z"}
+        r.update(kw)
+        r["sha256"] = g.hash_registro(r)
+        return r
+
+    def test_faixa_de_80_sem_calibracao_barrada_tambem_em_rodada_interna(self):
+        r = self._rec(quantis={"rotulo_faixa": "faixa de 80%"}, calibracao={"status": "DESCALIBRADO"})
+        self.assertTrue(any("80%" in x for x in g.valida_registro(r, {})))
+
+    def test_look_ahead_com_fusos_diferentes(self):
+        r = self._rec(features_usadas=[{"serie": "pld.SE", "capturado_em": "2026-09-27T08:00:00-03:00"}])
+        self.assertTrue(any("look-ahead" in x for x in g.valida_registro(r, {})))
+        ok = self._rec(features_usadas=[{"serie": "pld.SE", "capturado_em": "2026-09-27T06:59:00-03:00"}])
+        self.assertEqual(g.valida_registro(ok, {}), [])
+
+    def test_publicacao_exige_features_e_natureza(self):
+        mods = {"C1": {"estado": "PRODUCAO"}}
+        r = self._rec(tipo="PUBLICACAO", estado_modelo="PRODUCAO", versao_modelo="v", versao_codigo="c", snapshot="s",
+                      emitido_em="2026-09-27T10:30:00Z")
+        v = g.valida_registro(r, mods)
+        self.assertTrue(any("features_usadas" in x for x in v))
+        self.assertTrue(any("PREVISTO" in x for x in v))
+
+    def test_cenario_barrado_em_qualquer_campo(self):
+        r = self._rec(natureza="CENARIO")
+        self.assertTrue(g.valida_registro(r, {}))
+        r2 = self._rec(evidencia={"classe": "cenário de estresse"})
+        self.assertTrue(any("cenário" in x for x in g.valida_registro(r2, {})))
+
+
 if __name__ == "__main__":
     unittest.main()

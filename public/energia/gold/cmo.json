@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "cmo.json",
- "gerado_em": "2026-09-28T09:46:06Z",
+ "gerado_em": "2026-09-28T10:59:55Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "semana_referencia": "2026-10-02",
  "unidade": "R$/MWh",
@@ -1159,7 +1159,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:00:52.663769",
    "capturado_em": "2026-09-28T09:09:12Z",
-   "validado_em": "2026-09-28T09:46:06Z",
+   "validado_em": "2026-09-28T10:59:55Z",
    "cobertura_historica": {
     "inicio": "2005-01-07",
     "fim": "2026-10-02"
@@ -1171,8 +1171,12 @@
     "sha256": "0c92735cc77edc05022e65b2053fce1cae98f7dd59de17d26ca100638586baab"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:55Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "Valor estimado pelo modelo DECOMP e publicado pelo ONS: é resultado de modelo da fonte, não medição.",
     "CMO não é PLD: o PLD é calculado pela CCEE em base horária e aplica limites regulatórios.",

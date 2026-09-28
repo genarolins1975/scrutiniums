@@ -53,7 +53,14 @@ const nextConfig = {
     // (dados de exemplo) e foram substituídas pelos painéis reais do
     // Observatório. As rotas antigas apontam para o equivalente real.
     return [
-      // Área logada abre na escolha entre os dois observatórios.
+      // Visitante sem sessão: /app segue levando ao Observatório público, como
+      // antes (links legados). Com sessão, abre a escolha entre os observatórios.
+      {
+        source: "/app",
+        missing: [{ type: "cookie", key: "scrutiniums_session" }],
+        destination: "/observatorio",
+        permanent: false,
+      },
       { source: "/app", destination: "/app/observatorios", permanent: false },
       // Atalho simétrico ao /setor-eletrico; a SPA do Crédito segue em /observatorio.
       { source: "/credito", destination: "/observatorio", permanent: false },

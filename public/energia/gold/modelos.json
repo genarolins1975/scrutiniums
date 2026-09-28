@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "modelos.json",
- "gerado_em": "2026-09-28T09:46:06Z",
+ "gerado_em": "2026-09-28T10:59:55Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "fonte": {
   "artefato": "PLD_PREVISOES_EXPLICADAS v1-previa-r4",
@@ -52,7 +52,8 @@
    "benchmarks": [],
    "limitacoes": [
     "Não usa chuva, reservatórios (EAR) nem vazões (ENA): só preço passado.",
-    "No piloto operacional interno, o B0-v1 não publica quantis (estado NAO_CALIBRADO_NO_PILOTO)."
+    "No piloto operacional interno, o B0-v1 não publica quantis (estado NAO_CALIBRADO_NO_PILOTO).",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Para o PLD, que não é revisado depois de publicado, o efeito esperado é pequeno."
    ],
    "falhas_conhecidas": [
     "Rodada interna de 27/09/2026: 28 células sem número, porque nenhum PLD do período exigido havia sido capturado até o corte (SEM_PLD_CAPTURADO_ATE_O_CORTE); emissão depois do prazo das 08h00."
@@ -82,7 +83,7 @@
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Combinar referências simples com pesos fixos.",
-   "metodologia": "Mistura com pesos fixos de referências simples. A composição exata está no arquivo de configuração da pesquisa (projeto_pld/config/etapa2b_E2B-C123-v1.json). No mensal, exige 24 meses completos de treino e a variável sazonal exige o mesmo mês do ano anterior.",
+   "metodologia": "Mistura com pesos fixos de referências simples. A composição exata está no arquivo de configuração da pesquisa (projeto_pld/config/etapa2b_E2B-C123-v1.json).",
    "formula": null,
    "features": [
     "PLD horário do submercado (CCEE)"
@@ -95,7 +96,8 @@
    ],
    "limitacoes": [
     "Mensal com poucas entregas pontuadas: nenhum vencedor mensal pode ser declarado.",
-    "Intervalos com cobertura abaixo da nominal nos testes da pesquisa (números retidos até a liberação)."
+    "Intervalos com cobertura abaixo da nominal nos testes da pesquisa (números retidos até a liberação).",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Para o PLD, que não é revisado depois de publicado, o efeito esperado é pequeno."
    ],
    "falhas_conhecidas": [],
    "promovido_em": null,
@@ -123,7 +125,7 @@
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Corrigir a persistência com informações recentes de preço.",
-   "metodologia": "Parte de B0 e soma correções lineares em variáveis de preço padronizadas pela escala RMS, com coeficiente de B0 fixo em 1, sem intercepto e com penalização (parâmetro λ escolhido em cada origem de ajuste; λ = ZERO desliga a correção).",
+   "metodologia": "Parte de B0 e soma correções lineares em variáveis de preço padronizadas pela escala RMS, com coeficiente de B0 fixo em 1, sem intercepto e com penalização (parâmetro λ escolhido em cada origem de ajuste; λ = ZERO desliga a correção). No mensal, exige 24 meses completos de treino e a variável sazonal exige o mesmo mês do ano anterior; por isso só há previsões mensais a partir das origens de 2024.",
    "formula": "C2 = B0 + Σ_j (x_j / escala_rms_j) · beta_escalado_j; sem intercepto; coeficiente de B0 fixo em 1; λ = ZERO ⇒ todos os beta = 0 ⇒ C2 = B0",
    "features": [
     "Média móvel recente − B0",
@@ -141,7 +143,8 @@
     "A perda de quantis (métrica principal da fase 0) é inconclusiva para C2-P.",
     "Os intervalos do C2-P estão descalibrados no suporte comum: a faixa P10 a P90 não pode ser apresentada como faixa de 80%.",
     "Mensal sem quantis para C2: nenhum vencedor mensal.",
-    "Resultado exploratório: o período 2023 e 2024 já tinha sido examinado antes da definição dos candidatos."
+    "Resultado exploratório: o período 2023 e 2024 já tinha sido examinado antes da definição dos candidatos.",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Para o PLD, que não é revisado depois de publicado, o efeito esperado é pequeno."
    ],
    "falhas_conhecidas": [
     "Achado G23-R1 (revisão): o coeficiente da variável média dos 7 dias − B0 passou de 1 em parte das origens, o que pode amplificar o sinal de preço.",
@@ -182,7 +185,7 @@
    "estado": "PESQUISA",
    "papel": "Candidato",
    "objetivo": "Corrigir a persistência com informações de preço e de hidrologia.",
-   "metodologia": "Mesma estrutura do C2-P, com duas variáveis hidrológicas adicionais.",
+   "metodologia": "Mesma estrutura do C2-P, com duas variáveis hidrológicas adicionais. No mensal, exige 24 meses completos de treino e a variável sazonal exige o mesmo mês do ano anterior; por isso só há previsões mensais a partir das origens de 2024.",
    "formula": "C2 = B0 + Σ_j (x_j / escala_rms_j) · beta_escalado_j; sem intercepto; coeficiente de B0 fixo em 1; λ = ZERO ⇒ todos os beta = 0 ⇒ C2 = B0",
    "features": [
     "Média móvel recente − B0",
@@ -201,7 +204,8 @@
    "limitacoes": [
     "Intervalos descalibrados no suporte comum, como no C2-P.",
     "Mensal sem quantis: nenhum vencedor mensal.",
-    "Resultado exploratório sobre período já examinado."
+    "Resultado exploratório sobre período já examinado.",
+    "Backtest em pseudo tempo real: a pesquisa usou um único snapshot, capturado em 27/09/2026, com a regra de defasagem LAT1D; não reconstitui o dado como estava em cada origem. Para o PLD, que não é revisado depois de publicado, o efeito esperado é pequeno; para dados hidrológicos do ONS, que passam por consistência recorrente, há risco de look-ahead por revisão."
    ],
    "falhas_conhecidas": [
     "Achado G23-R1 (revisão): coeficiente da variável média dos 7 dias − B0 acima de 1 em parte das origens.",

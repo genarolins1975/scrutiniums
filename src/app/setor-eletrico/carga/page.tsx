@@ -62,7 +62,7 @@ export default function CargaPage() {
               }
               subtitulo="Carga diária do SIN · MWmed · últimos 3 anos"
               natureza="CALCULADO"
-              porQueImporta={<>Mais consumo exige mais geração e pressiona fontes de custo mais alto nos momentos de pico.</>}
+              porQueImporta={<>É o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração por fonte.</>}
               oQueMudou={<>Últimos 30 dias: {sin.ult30?.variacao_pct !== null && sin.ult30 ? `${sinal(sin.ult30.variacao_pct)}% sobre os mesmos dias do ano anterior` : "sem comparação homogênea"}. Maior carga diária em 12 meses: {num(sin.max_12m.valor, 0)} MWmed em {dataBR(sin.max_12m.dia)}.</>}
               comoInterpretar={<>A comparação anual só é mostrada quando os dois períodos estão no mesmo regime metodológico do ONS (as linhas verticais marcam as mudanças).</>}
               naoConcluir={<>A carga não é ajustada por temperatura, feriados ou dias úteis; variação de carga não mede, sozinha, atividade econômica. Desde 29/04/2023 a série inclui uma estimativa de MMGD feita pelo ONS com dados meteorológicos previstos.</>}
@@ -76,7 +76,7 @@ export default function CargaPage() {
               id="carga-sm"
               pergunta="Como a carga se distribui entre os subsistemas?"
               subtitulo="Carga diária por subsistema · MWmed · últimos 3 anos"
-              porQueImporta={<>O Sudeste/Centro-Oeste concentra a maior parte da carga; variações regionais ajudam a entender os fluxos entre subsistemas.</>}
+              porQueImporta={<>O Sudeste/Centro-Oeste concentra a maior parte da carga; comparar as trajetórias regionais mostra onde a carga variou mais.</>}
               oQueMudou={<>{c.subsistemas.filter((s) => s.sm !== "SIN").map((s) => `${s.nome}: ${s.ult7?.variacao_pct !== null && s.ult7 ? `${sinal(s.ult7.variacao_pct)}% em 7 dias` : "sem comparação"}`).join("; ")}.</>}
               comoInterpretar={<>Mesma régua para os quatro subsistemas: compare trajetórias, não só níveis.</>}
               naoConcluir={<>Crescimento regional de carga pode refletir mudança de metodologia ou de fronteira de medição; o ONS descreve as mudanças no conjunto de dados.</>}

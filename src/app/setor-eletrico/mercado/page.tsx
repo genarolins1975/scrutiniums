@@ -25,7 +25,7 @@ export default function MercadoPage() {
       temas={["mercado", "preco", "empresas"]}
       orgaos={["CCEE", "ANEEL"]}
       pendencias={[
-        "Acesso ao portal de dados abertos da CCEE: bloqueado no ambiente de construção (HTTP 403 em 28/09/2026). Integração depende de coleta a partir de outro ambiente ou de captura documentada.",
+        "Acesso automatizado ao portal de dados abertos da CCEE instável: recusado com HTTP 403 e, horas depois, bem-sucedido para o PLD_HORARIO em 28/09/2026. A integração dos conjuntos de mercado depende de coleta estável e de conferência documental das Regras de Comercialização.",
         "Conferência das definições nas Regras de Comercialização da CCEE e na Lei nº 10.848/2004 para os verbetes ACL, ACR, MRE, GSF e ESS.",
       ]}
       conceitos={[

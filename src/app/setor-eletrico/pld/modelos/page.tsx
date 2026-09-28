@@ -70,7 +70,7 @@ export default function ModelosPage() {
                 ))}
               </dl>
               <p className="mt-4 text-xs text-mineral">
-                Origem do registro: {m.fonte.artefato} (sha256 {m.fonte.artefato_sha256}), experimento {m.fonte.experimento}, snapshot {m.fonte.snapshot}. {m.fonte.estado_da_revisao}.
+                Origem do registro: {m.fonte.artefato} (sha256 <span className="break-all font-mono text-xs">{m.fonte.artefato_sha256}</span>), experimento {m.fonte.experimento}, snapshot {m.fonte.snapshot}. {m.fonte.estado_da_revisao}.
               </p>
             </section>
           </>

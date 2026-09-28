@@ -36,7 +36,8 @@ export type Proveniencia = {
   snapshot: { id: string | null; sha256: string | null };
   versao_pipeline: string;
   versao_codigo: string | null;
-  revisoes_conhecidas: unknown[];
+  /** Revisões detectadas entre as vintages integradas; null quando a detecção não se aplica. */
+  revisoes_conhecidas: { detectado_em: string; total: number; exemplos: { serie: string; ref: string; valores: number }[] } | null;
   limitacoes: string[];
   download: string | null;
   notas_fonte: string | null;
@@ -117,7 +118,7 @@ export type PldGold = Cabecalho & {
   menor_valor_ano: ({ ano: string; ate: string } & PontoSm)[];
   quartis_horarios: Record<Submercado, { p25: number | null; p75: number | null }>;
   snapshot: { id: string | null; sha256: string | null; capturas: unknown[] };
-  proveniencia: { horario: Proveniencia; diario: Proveniencia; posicao: Proveniencia };
+  proveniencia: { horario: Proveniencia; diario: Proveniencia; posicao: Proveniencia; estatisticas?: Proveniencia };
   downloads: Download[];
 };
 
@@ -167,7 +168,7 @@ export type HidrologiaGold = Cabecalho & {
   serie_ena: ({ d: string } & SerieRegiao)[];
   bandas_ear: ({ md: string } & Record<string, number | null | string>)[];
   mensal_ear: ({ m: string } & SerieRegiao)[];
-  proveniencia: { ear: Proveniencia; ear_sin: Proveniencia; padrao: Proveniencia; ena: Proveniencia; ena30: Proveniencia };
+  proveniencia: { ear: Proveniencia; ear_sin: Proveniencia; padrao: Proveniencia; ear_mensal?: Proveniencia; ena: Proveniencia; ena30: Proveniencia };
   fonte_notas: { ear: string | null; ena: string | null };
   downloads: Download[];
 };
@@ -256,7 +257,7 @@ export type RedeGold = Cabecalho & {
   serie_fluxos: ({ d: string } & Record<string, number | null | string>)[];
   serie_amplitude_pld: { d: string; amplitude: number }[];
   limites_integrados: boolean;
-  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia };
+  proveniencia: { fluxo: Proveniencia; diferenca: Proveniencia; saldos?: Proveniencia };
   fonte_notas: string | null;
   downloads: Download[];
 };
@@ -327,6 +328,10 @@ export type RegistroPrevisao = {
   cutoff: string;
   prazo?: string;
   emitido_em: string;
+  /** Data (AAAA-MM-DD, Brasília) em que o registro entrou no arquivo da plataforma. */
+  registrado_no_portal_em: string;
+  natureza?: "PREVISTO";
+  features_usadas?: { serie: string; capturado_em: string }[];
   frequencia: "W" | "M";
   horizonte: string;
   entrega: { id: string; inicio: string; fim: string };

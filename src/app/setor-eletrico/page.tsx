@@ -89,8 +89,12 @@ export default function VisaoGeralEnergia() {
           {meta && (
             <p className="mt-4 text-xs text-mineral">
               Operação (ONS) até {integra(hid) ? dataBR(hid.dia_referencia_ear) : "sem dado"} · PLD (CCEE) até{" "}
-              {integra(pld) ? dataBR(pld.dia_referencia) : "sem dado"} · a coleta direta na CCEE está bloqueada no ambiente de
-              construção; o PLD vem da captura primária mais recente.
+              {integra(pld) ? dataBR(pld.dia_referencia) : "sem dado"}
+              {integra(pld) && pld.coleta_direta
+                ? pld.coleta_direta.ok
+                  ? " · última coleta direta na CCEE bem-sucedida."
+                  : " · a última tentativa de coleta direta na CCEE falhou; o PLD vem da captura primária mais recente."
+                : "."}
             </p>
           )}
         </div>
@@ -125,13 +129,13 @@ export default function VisaoGeralEnergia() {
         </Secao>
 
         {/* Bloco 2 */}
-        <Secao id="preco" numero="2" rotulo="Preço" titulo="Quanto custa a energia no curto prazo em cada região?" cta={{ href: "/setor-eletrico/pld", texto: "Entender o PLD" }}>
+        <Secao id="preco" numero="2" rotulo="Preço" titulo="Quanto custa a energia, hora a hora, em cada região?" cta={{ href: "/setor-eletrico/pld", texto: "Entender o PLD" }}>
           {integra(pld) ? (
             <PainelEvidencia
               id="preco-painel"
               pergunta={`O PLD de ${dataBR(pld.dia_referencia)} nos quatro submercados`}
               subtitulo="PLD médio diário · R$/MWh nominais"
-              porQueImporta={<>O <Termo slug="pld">PLD</Termo> é o preço de curto prazo calculado pela CCEE para cada hora e submercado. Sinaliza quão caro está atender o sistema.</>}
+              porQueImporta={<>O <Termo slug="pld">PLD</Termo> é calculado pela CCEE para cada hora e submercado, com base no custo marginal de operação: o custo de atender uma unidade adicional de carga, segundo o ONS.</>}
               oQueMudou={<>No Sudeste/Centro-Oeste, {pld.cartoes[0].variacao_dia_anterior ? `${sinal(pld.cartoes[0].variacao_dia_anterior.abs, 2)} R$/MWh sobre o dia anterior` : "sem comparação com o dia anterior"}. Nos últimos 30 dias houve diferença acima de R$ 1/MWh entre submercados em {num(100 * pld.periodos["30d"].diferenca.frac_horas_acima_limiar)}% das horas.</>}
               comoInterpretar={<>A posição usa o percentil da média diária entre todas as médias diárias desde 01/01/2021, em valores nominais. Faixa baixa abaixo do 25º percentil, alta acima do 75º.</>}
               naoConcluir={<>O PLD não é a tarifa do consumidor e não é previsão. Comparações com anos anteriores misturam limites regulatórios diferentes, que não foram auditados nesta fase.</>}

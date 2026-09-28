@@ -22,12 +22,17 @@ export type RegraEditorial = {
   proveniencia: Proveniencia;
 };
 
+/** Outro número do mesmo painel com natureza ou transformação própria (padrão
+ * histórico, média de janela, saldo de outro conjunto): selo e gaveta próprios. */
+export type ProvenienciaComplementar = { rotulo: string; p: Proveniencia };
+
 export function PainelEvidencia({
   id,
   natureza,
   children,
   nivel,
   extraFonte,
+  complementares = [],
   ...r
 }: RegraEditorial & {
   id: string;
@@ -36,6 +41,7 @@ export function PainelEvidencia({
   /** Modo mínimo em que o painel aparece (ver ModoProfundidade). */
   nivel?: "entender" | "analisar" | "auditar";
   extraFonte?: ReactNode;
+  complementares?: ProvenienciaComplementar[];
 }) {
   const nat = natureza ?? r.proveniencia.natureza;
   return (
@@ -69,6 +75,16 @@ export function PainelEvidencia({
           )}
           <SobreEsteDado p={r.proveniencia} />
         </div>
+        {complementares.length > 0 && (
+          <ul className="flex w-full flex-wrap items-center gap-x-6 gap-y-1 border-t border-linha pt-2">
+            {complementares.map((c) => (
+              <li key={c.rotulo} className="flex flex-wrap items-center gap-2">
+                <SeloNatureza natureza={c.p.natureza} />
+                <SobreEsteDado p={c.p} rotulo={c.rotulo} />
+              </li>
+            ))}
+          </ul>
+        )}
       </footer>
     </section>
   );

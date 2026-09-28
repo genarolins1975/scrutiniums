@@ -51,7 +51,7 @@ def frases(hid, carga, ger, pld):
             out.append({
                 "id": "afluencias", "ref": n["dia"], "natureza": "CALCULADO", "regra": hid["regras"]["ena_30d"],
                 "trechos": [
-                    _t("Nos 30 dias até " + c.data_br(n["dia"]) + ", a água que chegou aos reservatórios equivaleu a "),
+                    _t("Nos 30 dias até " + c.data_br(n["dia"]) + ", a energia natural afluente (vazões naturais aos reservatórios, em energia) equivaleu a "),
                     _t(f"{nbr(n['pct_mlt_30d'], 0)}% da média de longo termo", evidencia="hidrologia.json#SIN.ena.pct_mlt_30d",
                        href="/setor-eletrico/agua-e-clima#ena"),
                     _t(" para a época."),
@@ -138,9 +138,9 @@ def observar(hid, carga, ger, pld, cmo, hoje=None):
             "/setor-eletrico/rede")
         atraso = (hoje - c.d(pld["dia_referencia"])).days
         add("pld_defasagem", "Série de PLD sem atualização recente",
-            "Último dia de PLD integrado mais de 2 dias antes de hoje.",
+            "Último dia de PLD integrado mais de 2 dias antes da data de processamento da gold.",
             atraso > 2,
-            f"Último dia integrado: {c.data_br(pld['dia_referencia'])} ({atraso} {'dia' if atraso == 1 else 'dias'} antes de hoje). A coleta direta na CCEE está bloqueada no ambiente de construção.",
+            f"Último dia integrado: {c.data_br(pld['dia_referencia'])}, {atraso} {'dia' if atraso == 1 else 'dias'} antes do processamento de {c.data_br(hoje.isoformat())}. {'A última coleta direta na CCEE foi bem-sucedida.' if (pld.get('coleta_direta') or {}).get('ok') else 'A última tentativa de coleta direta na CCEE falhou ou não foi feita.'}",
             "/setor-eletrico/dados/ccee-pld-horario", tipo="dados")
     if ger and ger.get("disponivel"):
         t = ger["termica_contexto"]

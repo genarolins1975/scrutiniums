@@ -89,8 +89,9 @@ INDICADOR → VISUALIZAÇÃO | MODELO
 Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO → REALIZADO → APURAÇÃO`}</pre>
           <p>
             Cada observação guarda a vintage de onde veio. Uma revisão da fonte (o ONS declara que seus dados passam por consistência recorrente) cria uma vintage
-            nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante, e é a única que features de modelo e
-            backtests podem usar: nenhuma previsão usa dado capturado depois do seu corte.
+            nova sem apagar a anterior. A consulta &quot;como estava em&quot; devolve o valor conhecido em qualquer instante (com fuso explícito, sem
+            ambiguidade de data) e é a que features de modelo em produção e backtests por vintage devem usar. O backtest da pesquisa atual foi feito
+            sobre um snapshot único, em pseudo tempo real; a limitação está declarada em cada cartão de modelo.
           </p>
           <p className="text-sm text-carvao-muted">
             Datas distinguidas: período de referência; publicação pela fonte (quando informada); captura pela Scrutiniums; corte da previsão; emissão.
@@ -136,11 +137,18 @@ Previsões: VINTAGE DA FONTE → FEATURES → VERSÃO DO MODELO → PUBLICAÇÃO
 
         <S id="limitacoes" titulo="Limitações gerais desta fase">
           <ul className="list-disc space-y-2 pl-5">
-            <li>O portal de dados abertos da CCEE respondeu HTTP 403 ao ambiente de construção em 28/09/2026. O PLD vem das capturas primárias de 27/09/2026 versionadas com sha256; a coleta direta é tentada a cada execução e a falha é registrada.</li>
+            <li>
+              O portal de dados abertos da CCEE recusou a coleta automatizada (HTTP 403) na manhã de 28/09/2026 e a aceitou mais tarde no mesmo dia; o
+              histórico de 2021 a 2025 vem das capturas primárias de 27/09/2026, versionadas com sha256. A coleta direta é tentada em cada execução agendada do pipeline.{" "}
+              {meta?.fontes?.ccee_pld_horario?.ultima_tentativa
+                ? `Última tentativa: ${carimbo(meta.fontes.ccee_pld_horario.ultima_tentativa.tentado_em)}, ${meta.fontes.ccee_pld_horario.ultima_tentativa.ok ? "bem-sucedida" : "sem sucesso"}.`
+                : "Nenhuma tentativa registrada nesta publicação."}
+            </li>
             <li>Os limites regulatórios do PLD (mínimo, máximo horário e estrutural) não foram auditados; o &quot;menor valor observado no ano&quot; é descritivo e nunca é chamado de piso.</li>
             <li>Limites de intercâmbio, CVU por usina, geração por usina e por motivo de despacho estão catalogados e ainda não integrados.</li>
             <li>Definições de conceitos cujas fontes primárias (CCEE, legislação) não foram acessadas aparecem como verbetes em preparação.</li>
             <li>Valores monetários em R$ nominais.</li>
+            <li>O histórico de vintages (bronze e silver) persiste no cache do GitHub Actions; a perda desse cache apagaria o registro de revisões anteriores, embora não a gold publicada.</li>
           </ul>
         </S>
 

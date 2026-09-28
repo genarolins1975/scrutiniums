@@ -5,6 +5,7 @@ import { CabecalhoEnergia } from "@/components/energia/CabecalhoEnergia";
 import { EstadoModelo } from "@/components/energia/EstadoModelo";
 import { gold } from "@/lib/energia/gold";
 import { dataBR } from "@/lib/energia/formato";
+import { MarcaVisita } from "@/components/telemetria/MarcaVisita";
 
 export const dynamic = "force-static";
 export const dynamicParams = false;
@@ -40,6 +41,7 @@ export default function ModelCard({ params }: { params: { modelo: string } }) {
   return (
     <>
       <CabecalhoEnergia atual="pld" />
+      <MarcaVisita secao="energia:pld-modelos" />
       <main className="mx-auto max-w-page px-6 pb-16">
         <nav aria-label="Trilha" className="pt-8 text-sm text-mineral">
           <Link href="/setor-eletrico/pld" className="underline underline-offset-4">PLD</Link> ·{" "}

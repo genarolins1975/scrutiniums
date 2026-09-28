@@ -1,6 +1,6 @@
 import type { PldGold } from "@/lib/energia/tipos";
 import { SeloNatureza } from "@/components/evidencia/SeloNatureza";
-import { dataBR, reais, sinal } from "@/lib/energia/formato";
+import { dataBR, num, reais, sinal } from "@/lib/energia/formato";
 import { ROTULO_FAIXA_PLD } from "@/lib/energia/leituras";
 
 const COR_SM: Record<string, string> = {
@@ -46,7 +46,7 @@ export function CartoesPld({ pld }: { pld: PldGold }) {
             <div className="flex justify-between gap-3">
               <dt className="text-mineral">Posição desde 2021</dt>
               <dd className="text-right text-carvao">
-                {c.posicao.percentil !== null ? `percentil ${Math.round(c.posicao.percentil)}` : "sem dado"}
+                {c.posicao.percentil !== null ? `percentil ${num(c.posicao.percentil, 1)}` : "sem dado"}
               </dd>
             </div>
           </dl>

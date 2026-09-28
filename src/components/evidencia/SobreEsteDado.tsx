@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useId, useRef } from "react";
 import type { Proveniencia } from "@/lib/energia/tipos";
 import { NATUREZAS } from "@/components/evidencia/SeloNatureza";
 
@@ -47,7 +47,9 @@ function Linha({ rotulo, children }: { rotulo: string; children: React.ReactNode
 
 export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Proveniencia; rotulo?: string }) {
   const ref = useRef<HTMLDialogElement>(null);
+  const tituloId = useId();
   const n = NATUREZAS[p.natureza];
+  const rev = p.revisoes_conhecidas;
   return (
     <>
       <button
@@ -61,7 +63,7 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
       </button>
       <dialog
         ref={ref}
-        aria-labelledby="sobre-titulo"
+        aria-labelledby={tituloId}
         className="m-0 ml-auto h-full max-h-none w-full max-w-none bg-superficie p-0 text-carvao backdrop:bg-carvao/40 sm:max-w-xl"
         onClick={(e) => {
           if (e.target === ref.current) ref.current?.close();
@@ -71,7 +73,7 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
           <header className="flex items-start justify-between gap-4 border-b border-linha px-6 py-5">
             <div>
               <p className="rotulo text-mineral">Sobre este dado</p>
-              <h2 id="sobre-titulo" className="mt-2 font-serif text-xl leading-snug text-carvao">
+              <h2 id={tituloId} className="mt-2 font-serif text-xl leading-snug text-carvao">
                 {p.indicador}
               </h2>
             </div>
@@ -99,7 +101,9 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
               <Linha rotulo="Período de referência">
                 {dataHora(p.periodo_referencia.inicio)} a {dataHora(p.periodo_referencia.fim)}
               </Linha>
-              <Linha rotulo="Publicado pela fonte em">{dataHora(p.publicado_pela_fonte_em)}</Linha>
+              <Linha rotulo="Publicado pela fonte em">
+                {p.publicado_pela_fonte_em ? `${dataHora(p.publicado_pela_fonte_em)} (arquivo mais recente, data de modificação informada pela fonte)` : "não informado pela fonte"}
+              </Linha>
               <Linha rotulo="Capturado pela Scrutiniums em">{dataHora(p.capturado_em)}</Linha>
               <Linha rotulo="Última validação">{dataHora(p.validado_em)}</Linha>
               <Linha rotulo="Cobertura histórica">
@@ -135,7 +139,17 @@ export function SobreEsteDado({ p, rotulo = "Sobre este dado" }: { p: Provenienc
                 {p.versao_codigo && <span className="text-mineral"> · código {p.versao_codigo}</span>}
               </Linha>
               <Linha rotulo="Revisões conhecidas">
-                {p.revisoes_conhecidas.length ? `${p.revisoes_conhecidas.length} registradas` : "Nenhuma revisão detectada entre as capturas integradas."}
+                {!rev ? (
+                  "Detecção de revisões não disponível para este indicador."
+                ) : rev.total === 0 ? (
+                  `Nenhuma revisão detectada entre as vintages integradas (verificado em ${dataHora(rev.detectado_em)}).`
+                ) : (
+                  <>
+                    {rev.total.toLocaleString("pt-BR")} observações com valor revisado pela fonte entre as vintages integradas (verificado em{" "}
+                    {dataHora(rev.detectado_em)}). Mais recentes:{" "}
+                    {rev.exemplos.slice(0, 5).map((e) => `${e.serie} em ${dataHora(e.ref)}`).join("; ")}.
+                  </>
+                )}
               </Linha>
               <Linha rotulo="Limitações">
                 <ul className="list-disc space-y-1.5 pl-5">

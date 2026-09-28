@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 /**
@@ -10,6 +11,8 @@ import { useEffect, useState } from "react";
  */
 export function AcessoConta({ destino }: { destino: string }) {
   const [logado, setLogado] = useState(false);
+  // volta para a página onde o visitante estava; `destino` é o fallback
+  const atual = usePathname() || destino;
   useEffect(() => {
     fetch("/api/auth/eu", { cache: "no-store" })
       .then((r) => setLogado(r.status === 204))
@@ -21,7 +24,7 @@ export function AcessoConta({ destino }: { destino: string }) {
     </Link>
   ) : (
     <Link
-      href={`/entrar?de=${encodeURIComponent(destino)}`}
+      href={`/entrar?de=${encodeURIComponent(atual)}`}
       className="rotulo inline-flex min-h-[44px] items-center text-carvao-muted hover:text-energia-dark"
     >
       Entrar

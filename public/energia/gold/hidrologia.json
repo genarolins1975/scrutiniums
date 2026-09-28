@@ -1,9 +1,9 @@
 {
  "dominio": "energia",
  "gold": "hidrologia.json",
- "gerado_em": "2026-09-28T09:46:01Z",
+ "gerado_em": "2026-09-28T10:59:49Z",
  "versao_pipeline": "energia-0.1.0",
- "versao_codigo": "7c164df226a7",
+ "versao_codigo": "f75418b29af9",
  "disponivel": true,
  "dia_referencia_ear": "2026-09-26",
  "dia_referencia_ena": "2026-09-26",
@@ -14377,21 +14377,21 @@
   },
   {
    "md": "02-28",
-   "SE_p10": 33.59,
+   "SE_p10": 31.17,
    "SE_p50": 64.65,
-   "SE_p90": 78.74,
-   "S_p10": 37.5,
+   "SE_p90": 78.63,
+   "S_p10": 38.65,
    "S_p50": 60.26,
-   "S_p90": 94.8,
-   "NE_p10": 31.3,
+   "S_p90": 93.48,
+   "NE_p10": 28.19,
    "NE_p50": 58.96,
-   "NE_p90": 84.74,
-   "N_p10": 44.18,
+   "NE_p90": 83.76,
+   "N_p10": 44.25,
    "N_p50": 77.02,
-   "N_p90": 97.84,
-   "SIN_p10": 38.38,
+   "N_p90": 97.43,
+   "SIN_p10": 38.14,
    "SIN_p50": 63.86,
-   "SIN_p90": 79.73
+   "SIN_p90": 79.21
   },
   {
    "md": "03-01",
@@ -22492,7 +22492,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:46:01Z",
+   "validado_em": "2026-09-28T10:59:49Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22504,8 +22504,12 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
     "A EAR máxima muda com a entrada e saída de reservatórios; comparações longas em percentual misturam capacidades diferentes."
@@ -22530,9 +22534,9 @@
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
    },
-   "publicado_pela_fonte_em": null,
+   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:46:01Z",
+   "validado_em": "2026-09-28T10:59:49Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22546,8 +22550,12 @@
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
     "O Sudeste/Centro-Oeste concentra a maior parte da capacidade de armazenamento e domina o agregado."
@@ -22572,9 +22580,9 @@
     "inicio": "2001-01-01",
     "fim": "2025-12-31"
    },
-   "publicado_pela_fonte_em": null,
+   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
    "capturado_em": "2026-09-28T09:07:40Z",
-   "validado_em": "2026-09-28T09:46:01Z",
+   "validado_em": "2026-09-28T10:59:49Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22583,19 +22591,70 @@
     "valores do mesmo dia do calendário em cada ano completo anterior",
     "quantis com interpolação linear"
    ],
-   "formula": "mediana e percentis 10 e 90 de {EAR(ano, dia) : ano = 2001..ano_ref − 1}",
+   "formula": "mediana e percentis 10 e 90 de {EAR(ano, dia) : ano = 2001..ano_ref − 1}; percentil na data = rank médio do valor do dia nessa distribuição; 29/02 fica fora da distribuição e, como dia de referência, usa a de 28/02",
    "snapshot": {
     "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
     "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
     "Anos com capacidade de armazenamento diferente da atual entram com o mesmo peso."
    ],
    "download": null,
+   "notas_fonte": null
+  },
+  "ear_mensal": {
+   "indicador": "EAR média mensal por subsistema e SIN, % da EAR máxima",
+   "natureza": "CALCULADO",
+   "fonte": {
+    "orgao": "ONS",
+    "dataset": "EAR Diário por Subsistema",
+    "recurso": "ear_subsistema_di (arquivos CSV anuais)",
+    "url_dataset": "https://dados.ons.org.br/dataset/ear-diario-por-subsistema",
+    "url_primaria": "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/ear_subsistema_di/",
+    "licenca": "Creative Commons Atribuição (CC-BY), conforme o portal de dados abertos do ONS"
+   },
+   "unidade": "% da EAR máxima",
+   "frequencia": "mensal",
+   "periodo_referencia": {
+    "inicio": "2000-01",
+    "fim": "2026-09"
+   },
+   "publicado_pela_fonte_em": "2026-09-27T22:01:33.439904",
+   "capturado_em": "2026-09-28T09:07:40Z",
+   "validado_em": "2026-09-28T10:59:49Z",
+   "cobertura_historica": {
+    "inicio": "2000-01-01",
+    "fim": "2026-09-26"
+   },
+   "transformacoes": [
+    "média aritmética dos valores diários do mês",
+    "SIN: média dos valores diários do SIN calculado"
+   ],
+   "formula": "EAR_mensal(s, m) = média de EAR%(s, d) para os dias d do mês m com dado; o mês corrente é parcial",
+   "snapshot": {
+    "id": "ear_subsistema_di@2026-09-28T09:07:40Z",
+    "sha256": "62286e54eff7ee969f8661d82f2bc6fa74860ea43403d07e027d0a890e0152b0"
+   },
+   "versao_pipeline": "energia-0.1.0",
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
+   "limitacoes": [
+    "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
+    "O mês corrente entra com os dias disponíveis e não é comparável a um mês completo."
+   ],
+   "download": "/energia/series/ear_diario.csv",
    "notas_fonte": null
   },
   "ena": {
@@ -22617,7 +22676,7 @@
    },
    "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T09:46:01Z",
+   "validado_em": "2026-09-28T10:59:49Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22629,8 +22688,12 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
     "O conjunto não informa o período de referência da MLT.",
@@ -22656,9 +22719,9 @@
     "inicio": "2026-08-28",
     "fim": "2026-09-26"
    },
-   "publicado_pela_fonte_em": null,
+   "publicado_pela_fonte_em": "2026-09-27T22:01:54.457065",
    "capturado_em": "2026-09-28T09:08:01Z",
-   "validado_em": "2026-09-28T09:46:01Z",
+   "validado_em": "2026-09-28T10:59:49Z",
    "cobertura_historica": {
     "inicio": "2000-01-01",
     "fim": "2026-09-26"
@@ -22673,8 +22736,12 @@
     "sha256": "004e24fa7127845e626be9c5cceb17bdda797afd5a6ab2fd55705f2d29f65178"
    },
    "versao_pipeline": "energia-0.1.0",
-   "versao_codigo": "7c164df226a7",
-   "revisoes_conhecidas": [],
+   "versao_codigo": "f75418b29af9",
+   "revisoes_conhecidas": {
+    "detectado_em": "2026-09-28T10:59:49Z",
+    "total": 0,
+    "exemplos": []
+   },
    "limitacoes": [
     "O ONS informa que os dados fazem parte de um processo de consistência recorrente e podem ser atualizados após a publicação; revisões entram como novas vintages.",
     "Janela de 30 dias suaviza eventos curtos de chuva."

@@ -47,7 +47,9 @@ PESQUISA ──(gate V)──> VALIDAÇÃO ──(gate P)──> PRODUÇÃO ─�
 
 ## Arquivo imutável de previsões
 
-`public/energia/gold/previsoes/arquivo.json` (append only) e `atual.json`.
+Fonte versionada: `pipeline/energia/previsoes/arquivo.jsonl` (uma linha por registro, append only) e `pipeline/energia/previsoes/apuracoes.jsonl` (realizado e erro, chaveados por `forecast_id`). Publicação: `public/energia/gold/previsoes.json`, com os campos `atual` (bloco principal), `rodadas`, `arquivo` e `apuracoes`. A cada execução, `governanca.valida_arquivo` confere o sha256 de cada registro e `governanca.valida_append_only` compara com a publicação anterior; o teste `energia-governanca.test.ts` também confere os registros contra uma lista fixa de `forecast_id` e sha256 já publicados, o que detecta edição mesmo quando a gold é regenerada no mesmo commit.
+
+Regras aplicadas a todo registro, publicado ou interno: sha256 confere; natureza, se declarada, é PREVISTO; nenhuma marca de cenário; faixa de 80% só com calibração CALIBRADO; nenhuma feature capturada depois do corte (datas comparadas como instantes com fuso, não como texto). Regras adicionais de publicação: modelo em PRODUÇÃO, versão de modelo e de código, snapshot, corte com fuso, `features_usadas` não vazia e natureza PREVISTO. Na interface, número de rodada interna nunca aparece como previsão: a coluna mostra "número retido". O filtro "ver o arquivo como estava em" usa a data de inclusão no arquivo (`registrado_no_portal_em`), não a de emissão pela rodada.
 
 | Campo | Conteúdo |
 | --- | --- |

@@ -19,6 +19,7 @@ import gzip
 import hashlib
 import io
 import json
+import re
 import os
 import sys
 
@@ -98,7 +99,8 @@ def coleta_direta(con, baixar=http_get):
     status = {"ok": True, "arquivos": 0, "novas": 0, "revisoes": 0, "falhas": []}
     for r in pacote.get("resources", []):
         nome = r.get("name") or ""
-        if not nome.startswith("pld_horario_"):
+        # o nome vem do CKAN e vira segmento de caminho no bronze: só o padrão esperado
+        if not re.fullmatch(r"pld_horario_\d{4}", nome):
             continue
         try:
             arq, _ = baixar(r["url"], timeout=180, accept="*/*")

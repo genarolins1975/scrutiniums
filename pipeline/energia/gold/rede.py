@@ -105,12 +105,30 @@ def construir(con):
         formula="diferença(par) = PLD_dia(para) − PLD_dia(de)",
         limitacoes=["A série de PLD termina na última captura da CCEE; dias posteriores ficam sem diferença calculada."] + lim[:1],
     )
+    prov_saldos = None
+    if dia_liq:
+        meta_bal = c.meta_ons(DS_BAL)
+        prov_saldos = c.proveniencia(
+            indicador="Saldo de intercâmbio por subsistema (balanço de energia)", natureza="CALCULADO",
+            fonte=c.fonte_ons("balanco-energia-subsistema", DS_BAL, "Balanço de Energia nos Subsistemas"),
+            unidade="MWmed", frequencia="horária, agregada por dia", periodo={"inicio": dias_liq[0], "fim": dia_liq},
+            cobertura={"inicio": dias_liq[0], "fim": dia_liq}, capturado_em=c.ultima_captura(snap_bal), snapshot=snap_bal,
+            transformacoes=["média das 24 horas do dia do valor de intercâmbio do balanço de cada subsistema",
+                            "média de 30 dias das médias diárias"],
+            formula="saldo_dia(s) = (1/24) × Σ intercâmbio_balanço(s, h); positivo = subsistema exportador, negativo = importador, conforme o sinal do ONS",
+            limitacoes=[
+                "A soma dos quatro saldos coincide, hora a hora, com o intercâmbio do SIN publicado no mesmo balanço, que não é zero; os saldos não se compensam entre si.",
+                "O Balanço de Energia e os Intercâmbios Entre Subsistemas são conjuntos distintos, com datas de referência que podem diferir.",
+                "Dados em processo de consistência recorrente do ONS, sujeitos a revisão.",
+            ],
+            notas_fonte=meta_bal.get("notas"),
+        )
     return {
         **c.cabecalho("rede.json"),
         "dia_referencia": dia_ref, "dia_referencia_liquido": dia_liq, "ultimo_dia_pld": dias_pld[-1] if dias_pld else None,
         "regras": REGRAS, "fronteiras": fronteiras, "liquido_subsistemas": liq,
         "serie_fluxos": serie, "serie_amplitude_pld": spread,
         "limites_integrados": False,
-        "proveniencia": {"fluxo": prov, "diferenca": prov_spread}, "fonte_notas": meta.get("notas"),
+        "proveniencia": {"fluxo": prov, "diferenca": prov_spread, **({"saldos": prov_saldos} if prov_saldos else {})}, "fonte_notas": meta.get("notas"),
         "downloads": [{"rotulo": "Intercâmbio diário por fronteira (CSV)", "url": "/energia/series/intercambio_diario.csv"}],
     }

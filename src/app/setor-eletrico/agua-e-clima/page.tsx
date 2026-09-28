@@ -59,8 +59,9 @@ export default function AguaPage() {
           titulo="Quanta energia está guardada nos reservatórios, e quanta água está chegando?"
           referencia={<>EAR e ENA do ONS até {dataBR(h.dia_referencia_ear)} · padrão histórico com anos completos desde 2001</>}
         >
-          A <Termo slug="ear">EAR</Termo> é o estoque; a <Termo slug="ena">ENA</Termo> é o fluxo que repõe o estoque. Nenhum dos dois, sozinho,
-          determina o preço, mas ambos entram na decisão de quanto gerar com água.
+          A <Termo slug="ear">EAR</Termo> mede a energia associada à água guardada nos reservatórios; a <Termo slug="ena">ENA</Termo> mede, em
+          energia, as vazões naturais que chegam a eles. As duas séries são publicadas pelo ONS; como entram na formação do preço é matéria dos
+          modelos oficiais, cuja conferência documental está pendente nesta fase.
         </CabecalhoModulo>
         <ModoProfundidade>
           <Bloco id="ear">
@@ -69,11 +70,12 @@ export default function AguaPage() {
               pergunta={`O SIN guarda ${pct(s.ear.valor)} da energia armazenável máxima, ${ROTULO_FAIXA_USUAL[s.ear.faixa ?? "dentro"]}`}
               subtitulo="EAR do SIN · % da EAR máxima · últimos 12 meses e faixa histórica da data"
               natureza="CALCULADO"
-              porQueImporta={<>Mostra quanta energia potencial está estocada em forma de água para atravessar os próximos meses.</>}
+              porQueImporta={<>Mostra quanto da capacidade de armazenamento do sistema interligado está ocupado, em energia, segundo a definição do ONS.</>}
               oQueMudou={<>Em 7 dias, {sinal(s.ear.variacao_7d_pp)} p.p.; em 30 dias, {sinal(s.ear.variacao_30d_pp)} p.p. Desvio frente à mediana da data: {sinal(s.ear.desvio_mediana_pp)} p.p.</>}
               comoInterpretar={<>A área sombreada é a faixa do 10º ao 90º percentil do mesmo dia do calendário nos anos completos desde 2001; a linha tracejada é a mediana.</>}
               naoConcluir={<>O agregado do SIN é dominado pelo Sudeste/Centro-Oeste, que concentra a maior capacidade. Um SIN confortável pode esconder um subsistema apertado.</>}
               proveniencia={h.proveniencia.ear_sin}
+              complementares={[{ rotulo: "Sobre a faixa histórica", p: h.proveniencia.padrao }]}
             >
               <GraficoLinhas
                 titulo="EAR do SIN nos últimos 12 meses com a faixa histórica da data"
@@ -99,6 +101,10 @@ export default function AguaPage() {
               comoInterpretar={<>A tabela abaixo mostra o valor do dia, a mediana, o 10º e o 90º percentil da data e a posição percentual. &quot;Fora da faixa usual&quot; significa abaixo do 10º ou acima do 90º percentil.</>}
               naoConcluir={<>O percentil mede posição histórica, não risco de desabastecimento. A capacidade máxima de cada subsistema mudou ao longo das décadas.</>}
               proveniencia={h.proveniencia.ear}
+              complementares={[
+                { rotulo: "Sobre a mediana, os percentis e a posição", p: h.proveniencia.padrao },
+                { rotulo: "Sobre a EAR do SIN", p: h.proveniencia.ear_sin },
+              ]}
             >
               <GraficoLinhas titulo="EAR por subsistema nos últimos 3 anos" dados={h.serie_ear} chaveX="d" series={SERIES_SM} unidade="%" />
               <div className="tabela-scroll mt-5">
@@ -106,8 +112,20 @@ export default function AguaPage() {
                   <caption className="sr-only">EAR por subsistema contra o padrão histórico da data</caption>
                   <thead>
                     <tr className="text-left text-xs text-mineral">
-                      {["Subsistema", "EAR", "Mediana da data", "10º a 90º percentil", "Percentil", "Leitura"].map((c) => (
-                        <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">{c}</th>
+                      {[
+                        ["Subsistema", null],
+                        ["EAR", "OBSERVADO"],
+                        ["Mediana da data", "CALCULADO"],
+                        ["10º a 90º percentil", "CALCULADO"],
+                        ["Percentil", "CALCULADO"],
+                        ["Leitura", null],
+                      ].map(([c, n]) => (
+                        <th key={c} scope="col" className="border-b border-linha px-2 py-2 font-medium">
+                          <span className="flex flex-wrap items-center gap-1.5">
+                            {c}
+                            {n && <SeloNatureza natureza={n as "OBSERVADO" | "CALCULADO"} compacto />}
+                          </span>
+                        </th>
                       ))}
                     </tr>
                   </thead>
@@ -135,11 +153,12 @@ export default function AguaPage() {
               id="ena-sm"
               pergunta={`Quanta água está chegando? No Sudeste/Centro-Oeste, ${pct(se.ena.pct_mlt_30d, 0)} da média de longo termo em 30 dias`}
               subtitulo="ENA bruta por subsistema · % da MLT · últimos 18 meses"
-              porQueImporta={<>A ENA indica se as afluências estão repondo o estoque. Valores acima de 100% da <Termo slug="mlt">MLT</Termo> significam mais água que a média de longo termo para a época.</>}
+              porQueImporta={<>A ENA expressa em energia as vazões naturais que chegam aos reservatórios; o ONS a indica como insumo de estudos energéticos e da projeção do custo marginal de operação. Acima de 100% da <Termo slug="mlt">MLT</Termo>, a ENA está acima da média de longo termo usada pelo ONS como referência.</>}
               oQueMudou={<>ENA de 30 dias: {h.subsistemas.map((x) => `${x.nome} ${pct(x.ena.pct_mlt_30d, 0)}${x.ena.faixa_30d && x.ena.faixa_30d !== "dentro" ? ` (${x.ena.faixa_30d} da faixa usual)` : ""}`).join("; ")}.</>}
               comoInterpretar={<>A série diária oscila muito; o acumulado de 30 dias, calculado como soma da ENA sobre soma da MLT, suaviza. A faixa usual compara com a mesma janela nos anos desde 2001.</>}
-              naoConcluir={<>ENA alta não se transfere integralmente a outro subsistema, e uma semana chuvosa não muda sozinha a situação dos reservatórios.</>}
-              proveniencia={h.proveniencia.ena}
+              naoConcluir={<>A ENA mede afluência natural, não armazenamento: quanto dela vira EAR depende de defluências, vertimentos e usos da água, que este painel não mostra. O período de referência da MLT não é informado pelo ONS.</>}
+              proveniencia={h.proveniencia.ena30}
+              complementares={[{ rotulo: "Sobre a ENA diária (gráfico)", p: h.proveniencia.ena }]}
             >
               <GraficoLinhas
                 titulo="ENA bruta por subsistema em % da MLT, últimos 18 meses"
@@ -167,7 +186,7 @@ export default function AguaPage() {
               oQueMudou={<>Último mês: {h.mensal_ear.at(-1)?.m.replace("-", "/")} (parcial se o mês não terminou).</>}
               comoInterpretar={<>Médias mensais dos valores diários publicados pelo ONS; o SIN é calculado pela soma das EAR sobre a soma das máximas.</>}
               naoConcluir={<>A EAR máxima mudou ao longo do período: percentuais de décadas diferentes não medem o mesmo volume.</>}
-              proveniencia={h.proveniencia.ear}
+              proveniencia={h.proveniencia.ear_mensal ?? h.proveniencia.ear}
             >
               <GraficoLinhas
                 titulo="EAR média mensal desde 2000"

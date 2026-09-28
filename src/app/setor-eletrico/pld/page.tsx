@@ -24,7 +24,7 @@ import type { PldGold } from "@/lib/energia/tipos";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "PLD: o preço de curto prazo da energia, explicado",
+  title: "PLD: o preço horário da energia por submercado, explicado",
   description:
     "O que é o PLD, o que ele não é, de onde vem o preço, o que acontece hoje nos quatro submercados e o estado real da previsão, com fonte, regra e limitação em cada número.",
   alternates: { canonical: "/setor-eletrico/pld" },
@@ -73,7 +73,7 @@ function periodos(p: PldGold): PeriodoPld[] {
     descricaoSerie,
   });
   return [
-    base("hoje", "Hoje", curva, "hora", `curva horária de ${dataBR(p.dia_referencia)} (valores observados)`),
+    base("hoje", `Dia ${dataBR(p.dia_referencia).slice(0, 5)}`, curva, "hora", `curva horária de ${dataBR(p.dia_referencia)} (valores observados)`),
     base("7d", "7 dias", h30.slice(-168), "hora", "valores horários (observados)"),
     base("30d", "30 dias", h30, "hora", "valores horários (observados)"),
     base("12m", "12 meses", diario.slice(-365), "data", "médias diárias (calculadas)"),
@@ -142,7 +142,7 @@ export default function PldPage() {
           <p className="rotulo text-mineral">Preço de Liquidação das Diferenças</p>
           <h1 className="mt-3 font-serif text-[clamp(2.6rem,6vw,4rem)] leading-none text-carvao">PLD</h1>
           <p className="mt-4 max-w-2xl font-serif text-xl leading-snug text-carvao-muted md:text-2xl">
-            O preço de curto prazo da energia no Brasil, explicado.
+            O preço horário da energia no Brasil, explicado.
           </p>
           <nav aria-label="Nesta página" className="mt-6 flex flex-wrap gap-x-5 gap-y-1 text-sm">
             {[
@@ -165,10 +165,10 @@ export default function PldPage() {
             <div className="grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
               <div>
                 <p className="font-serif text-xl leading-relaxed text-carvao md:text-2xl">
-                  É o preço de curto prazo da energia elétrica, calculado pela CCEE para cada hora do dia seguinte e para cada
-                  um dos quatro <Termo slug="submercado">submercados</Termo>. Ele parte do{" "}
-                  <Termo slug="cmo">custo marginal de operação</Termo>, produzido por modelos de otimização, e respeita limites
-                  mínimo e máximos definidos em regra.
+                  É um valor em R$/MWh que a CCEE calcula todos os dias para cada hora do dia seguinte e para cada um dos quatro{" "}
+                  <Termo slug="submercado">submercados</Termo>. O cálculo é feito por modelos computacionais (NEWAVE, DECOMP e
+                  DESSEM), tem como base o <Termo slug="cmo">custo marginal de operação</Termo> e respeita os limites mínimo e
+                  máximos vigentes.
                 </p>
                 <p className="mt-3 flex flex-wrap items-center gap-2 text-xs text-mineral">
                   Base: descrição oficial da CCEE no portal de dados abertos (conjunto PLD_HORARIO), capturada em 27/09/2026. <Conferido ok />
@@ -237,9 +237,9 @@ export default function PldPage() {
                   id="cmo"
                   pergunta="Qual custo marginal o ONS está publicando para cada subsistema?"
                   subtitulo="CMO semanal (modelo DECOMP) · R$/MWh · últimas 104 semanas operativas"
-                  porQueImporta={<>O <Termo slug="cmo">CMO</Termo> é a base do PLD. O semanal é publicado com antecedência para a semana operativa.</>}
+                  porQueImporta={<>O <Termo slug="cmo">CMO</Termo> é a base do PLD, segundo a CCEE. O ONS publica o CMO semanal estimado pelo DECOMP para cada semana operativa, por subsistema e patamar de carga.</>}
                   oQueMudou={<>Semana de {dataBR(cmo.semana_referencia)}: Sudeste/Centro-Oeste {reais(cmo.ultima_semana[0].semanal)} contra {reais(cmo.ultima_semana[0].semana_anterior)} na semana anterior.</>}
-                  comoInterpretar={<>Valores iguais entre subsistemas indicam custos marginais acoplados no modelo; valores diferentes indicam separação naquela semana.</>}
+                  comoInterpretar={<>Compare os subsistemas na mesma semana: valores iguais ou diferentes são saída do modelo DECOMP; a razão de uma diferença não é identificada aqui.</>}
                   naoConcluir={<>CMO não é PLD: o PLD é horário, calculado pela CCEE, e aplica limites regulatórios. O CMO é saída de modelo, não medição.</>}
                   proveniencia={cmo.proveniencia.cmo}
                 >
@@ -271,13 +271,16 @@ export default function PldPage() {
                     id="periodos"
                     pergunta="Em que horas o preço sobe, e as regiões se separam?"
                     subtitulo="PLD por submercado · R$/MWh nominais · hora local de Brasília"
-                    natureza="OBSERVADO"
-                    porQueImporta={<>O PLD é horário. A curva mostra em que momentos do dia o custo de atender o sistema aumenta e se os submercados seguem juntos.</>}
+                    porQueImporta={<>O PLD é horário. A curva mostra em que horas do dia o preço de cada submercado sobe ou cai e se os quatro seguem juntos.</>}
                     oQueMudou={<>Nos últimos 30 dias, {pld.periodos["30d"].diferenca.horas_acima_limiar} horas tiveram diferença acima de R$ {num(pld.limiar_diferenca, 0)}/MWh entre submercados.</>}
-                    comoInterpretar={<>Alterne os períodos. Hoje, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
+                    comoInterpretar={<>Alterne os períodos. O dia de referência, 7 e 30 dias mostram horas; 12 meses mostra médias diárias; o histórico, médias mensais desde 2021.</>}
                     naoConcluir={<>Uma posição alta ou baixa no histórico não diz para onde o preço vai. Anos diferentes têm limites regulatórios diferentes, não auditados nesta fase.</>}
                     proveniencia={pld.proveniencia.horario}
                     extraFonte={<>Captura primária de {carimbo(pld.proveniencia.horario.capturado_em)}.</>}
+                    complementares={[
+                      ...(pld.proveniencia.estatisticas ? [{ rotulo: "Sobre as estatísticas do período", p: pld.proveniencia.estatisticas }] : []),
+                      { rotulo: "Sobre as médias diárias e mensais", p: pld.proveniencia.diario },
+                    ]}
                   >
                     <PldPeriodos periodos={periodos(pld)} limiar={pld.limiar_diferenca} />
                   </PainelEvidencia>
@@ -361,10 +364,10 @@ export default function PldPage() {
                     id="amplitude"
                     pergunta="Quando os submercados se separaram no último ano?"
                     subtitulo="Diferença entre o maior e o menor PLD médio diário · R$/MWh"
-                    porQueImporta={<>Picos desta série marcam dias em que as regiões tiveram preços diferentes.</>}
+                    porQueImporta={<>Picos desta série marcam dias em que os PLDs médios das regiões ficaram mais distantes entre si.</>}
                     oQueMudou={<>Último dia com PLD: {dataBR(rede.ultimo_dia_pld)}.</>}
                     comoInterpretar={<>Zero significa os quatro submercados com a mesma média diária. A série usa médias diárias; diferenças de poucas horas podem sumir na média.</>}
-                    naoConcluir={<>A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados.</>}
+                    naoConcluir={<>A série não identifica qual fronteira ou linha causou a separação, nem se o limite de transferência foi atingido: os limites não estão integrados. A causa de uma separação não é atribuída.</>}
                     proveniencia={rede.proveniencia.diferenca}
                   >
                     <GraficoLinhas

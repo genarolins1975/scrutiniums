@@ -89,13 +89,17 @@ export default async function EscolhaObservatorioPage() {
                     ))}
                   </ul>
                 </div>
-                <Link
-                  href={`/app/observatorios/entrar?d=${d.id}`}
-                  className="rotulo mt-8 inline-flex min-h-[44px] items-center justify-center self-start bg-carvao px-6 text-marfim hover:bg-carvao-soft"
-                >
-                  Entrar <span aria-hidden="true" className="ml-2">→</span>
-                  <span className="sr-only"> no {d.nome}</span>
-                </Link>
+                {/* POST: a escolha grava cookie e evento; um link GET seria disparado pelo prefetch do Next */}
+                <form method="post" action="/app/observatorios/entrar" className="mt-8">
+                  <input type="hidden" name="d" value={d.id} />
+                  <button
+                    type="submit"
+                    className="rotulo inline-flex min-h-[44px] items-center justify-center bg-carvao px-6 text-marfim hover:bg-carvao-soft"
+                  >
+                    Entrar <span aria-hidden="true" className="ml-2">→</span>
+                    <span className="sr-only"> no {d.nome}</span>
+                  </button>
+                </form>
               </article>
             </li>
           );

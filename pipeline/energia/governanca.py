@@ -13,6 +13,7 @@ Cada regra corresponde a um item de docs/observatorios/PLD_GOVERNANCA_PREVISAO.m
 """
 import hashlib
 import json
+from datetime import datetime, timezone
 
 ESTADOS_MODELO = ("PESQUISA", "VALIDACAO", "PRODUCAO", "APOSENTADO")
 TIPOS_REGISTRO = ("PUBLICACAO", "RODADA_INTERNA")
@@ -30,6 +31,18 @@ def hash_registro(rec):
     """sha256 do conteúdo canônico do registro (sem o próprio campo sha256)."""
     x = {k: v for k, v in rec.items() if k != "sha256"}
     return hashlib.sha256(json.dumps(x, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+
+
+def _instante(valor):
+    """datetime UTC a partir de ISO com fuso ('Z' ou deslocamento). None se ausente ou
+    sem fuso: comparar datas como texto erra quando os fusos diferem."""
+    if not isinstance(valor, str) or "T" not in valor:
+        return None
+    try:
+        dt = datetime.fromisoformat(valor[:-1] + "+00:00" if valor.endswith("Z") else valor)
+    except ValueError:
+        return None
+    return dt.astimezone(timezone.utc) if dt.tzinfo else None
 
 
 def status_calibracao(cobertura, n):
@@ -51,8 +64,24 @@ def valida_registro(rec, modelos_por_codigo):
         v.append(f"{rec.get('forecast_id')}: status inválido {rec.get('status')}")
     if rec.get("sha256") != hash_registro(rec):
         v.append(f"{rec.get('forecast_id')}: sha256 não confere com o conteúdo")
-    if rec.get("natureza") == "CENARIO" or rec.get("tipo_valor") == "CENARIO":
+    # o arquivo só guarda previsões: natureza, quando declarada, é PREVISTO; nenhum
+    # campo do registro pode carregar a marca de cenário
+    if rec.get("natureza") not in (None, "PREVISTO"):
+        v.append(f"{rec.get('forecast_id')}: natureza {rec.get('natureza')} não pode entrar no arquivo de previsões")
+    if "CENARIO" in json.dumps(rec, ensure_ascii=False).upper().replace("CENÁRIO", "CENARIO"):
         v.append(f"{rec.get('forecast_id')}: cenário não pode entrar no arquivo de previsões")
+    # faixa de 80% exige calibração em qualquer tipo de registro, publicado ou interno
+    q = rec.get("quantis") or {}
+    if q.get("rotulo_faixa") == "faixa de 80%" and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
+        v.append(f"{rec.get('forecast_id')}: faixa rotulada como 80% sem calibração CALIBRADO")
+    # nenhum registro, publicado ou interno, pode usar dado capturado depois do corte
+    corte = _instante(rec.get("cutoff"))
+    for feat in rec.get("features_usadas") or []:
+        cap = _instante(feat.get("capturado_em"))
+        if feat.get("capturado_em") and cap is None:
+            v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} com capturado_em sem fuso")
+        elif cap and corte and cap > corte:
+            v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} capturada depois do cutoff (look-ahead)")
     # ausência nunca vira número
     if rec.get("status") == "INDISPONIVEL":
         if rec.get("previsao") is not None or rec.get("quantis"):
@@ -68,12 +97,13 @@ def valida_registro(rec, modelos_por_codigo):
         for campo in ("versao_modelo", "versao_codigo", "snapshot", "cutoff", "emitido_em"):
             if not rec.get(campo):
                 v.append(f"{rec.get('forecast_id')}: publicação sem {campo}")
-        for feat in rec.get("features_usadas") or []:
-            if feat.get("capturado_em") and rec.get("cutoff") and feat["capturado_em"] > rec["cutoff"]:
-                v.append(f"{rec.get('forecast_id')}: feature {feat.get('serie')} capturada depois do cutoff (look-ahead)")
-        q = rec.get("quantis") or {}
-        if q.get("rotulo_faixa") == "faixa de 80%" and (rec.get("calibracao") or {}).get("status") != "CALIBRADO":
-            v.append(f"{rec.get('forecast_id')}: faixa rotulada como 80% sem calibração CALIBRADO")
+        if _instante(rec.get("cutoff")) is None:
+            v.append(f"{rec.get('forecast_id')}: publicação com cutoff sem fuso")
+        # sem a lista de features não há como auditar look-ahead: publicação a exige
+        if not rec.get("features_usadas"):
+            v.append(f"{rec.get('forecast_id')}: publicação sem features_usadas")
+        if rec.get("natureza") != "PREVISTO":
+            v.append(f"{rec.get('forecast_id')}: publicação sem natureza PREVISTO")
     return v
 
 

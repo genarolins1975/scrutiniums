@@ -4,8 +4,8 @@
  * Regra: nenhuma definição escrita de memória. Cada verbete aponta o documento
  * primário e o estado de conferência:
  * - CONFERIDO: o texto foi escrito a partir do documento acessado na data indicada;
- * - PENDENTE: a fonte primária não foi acessada nesta fase (portal da CCEE e site
- *   do Planalto bloqueados no ambiente de construção em 28/09/2026). Verbete
+ * - PENDENTE: a fonte primária não foi acessada nesta fase (Regras de
+ *   Comercialização da CCEE e legislação no site do Planalto não acessadas). Verbete
  *   pendente aparece como "em preparação", sem definição.
  */
 
@@ -52,6 +52,17 @@ const CCEE_PLD: FonteOficial = {
     "O Preço de Liquidação das Diferenças (PLD) é calculado pela Câmara de Comercialização de Energia Elétrica (CCEE) diariamente para cada hora do dia seguinte, considerando a aplicação dos limites máximos (horário e estrutural) e mínimo vigentes para cada período de apuração e para cada submercado. Este cálculo é realizado por modelos computacionais (Newave, Decomp e Dessem) e tem como base o Custo Marginal de Operação (CMO).",
 };
 
+const TRECHO_CMO_SEMANAL =
+  "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal, estimados pelo modelo Decomp.";
+const TRECHO_CMO_SEMI =
+  "Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas.";
+const TRECHO_EAR =
+  "A Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios.";
+const TRECHO_BALANCO =
+  "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed.";
+const TRECHO_CARGA =
+  "Dados de carga por subsistema em base diária, medida em MWmed. Até fevereiro/2021, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS. Entre março/2021 e abril/23, os dados representam a carga atendida por usinas despachadas e/ou programadas pelo ONS, com base em dados recebidos pelo Sistema de Supervisão e Controle do ONS, mais a previsão de geração de usinas não despachadas pelo ONS. A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos.";
+
 export const CONCEITOS: Conceito[] = [
   {
     slug: "pld",
@@ -61,14 +72,15 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase:
-      "Preço de curto prazo da energia, calculado pela CCEE para cada hora do dia seguinte e para cada submercado, a partir do Custo Marginal de Operação e dentro de limites mínimo e máximos.",
+      "Valor em R$/MWh calculado pela CCEE diariamente para cada hora do dia seguinte e para cada submercado, com base no Custo Marginal de Operação e dentro dos limites mínimo e máximos vigentes.",
     porQueImporta:
-      "Como o nome indica, é o preço de liquidação das diferenças no mercado de curto prazo operado pela CCEE, e por ser calculado a partir do custo marginal de operação sinaliza, hora a hora, quão caro está atender o sistema. As regras de liquidação estão nas Regras de Comercialização da CCEE (conferência documental pendente nesta fase).",
+      "Tem como base o CMO, que o ONS define como o custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN. Como o PLD é usado na liquidação e quais diferenças ele liquida está nas Regras de Comercialização da CCEE, cuja conferência documental está pendente nesta fase.",
     comoEMedido:
       "Em R$/MWh, por hora e por submercado, publicado pela CCEE no conjunto PLD_HORARIO. Médias diárias, semanais ou mensais são agregações dessas horas.",
     relacoes: ["cmo", "submercado", "newave", "decomp", "dessem"],
     fontes: [
       CCEE_PLD,
+      ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL),
       {
         orgao: "ANEEL",
         documento: 'Portal de dados abertos, conjunto "Tarifas de aplicação das distribuidoras de energia elétrica"',
@@ -101,10 +113,8 @@ export const CONCEITOS: Conceito[] = [
       "Em R$/MWh, por subsistema e por patamar de carga (leve, média, pesada) na versão semanal. Na versão semi-horária, o CMO do subsistema é a média dos CMOs das barras ponderada pelas cargas.",
     relacoes: ["pld", "decomp", "dessem", "carga"],
     fontes: [
-      ONS("cmo-semanal", "CMO Semanal",
-        "Valores do custo, por unidade de energia produzida, para atender ao incremento de uma unidade de carga no SIN, chamado de Custo Marginal de Operação – CMO. Valores para cada semana operativa por subsistema, e por patamar de carga, além da média semanal, estimados pelo modelo Decomp."),
-      ONS("cmo-semi-horario", "CMO Semi-Horário",
-        "Este CMO é estimado pelo modelo DESSEM para cada barra do sistema em base semi-horária. O CMO do subsistema é obtido pelo média dos CMOs nas barras de cada subsistema, ponderados pelas respectivas cargas."),
+      ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL),
+      ONS("cmo-semi-horario", "CMO Semi-Horário", TRECHO_CMO_SEMI),
       CCEE_PLD,
     ],
     limitacoes: ["CMO não é PLD: o PLD aplica limites regulatórios e é calculado pela CCEE em base horária."],
@@ -119,7 +129,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Cada uma das quatro divisões do sistema interligado (Sudeste/Centro-Oeste, Sul, Nordeste e Norte) para as quais a CCEE calcula um PLD próprio.",
     porQueImporta:
-      "Preços de submercados podem diferir. Quando diferem, energia abundante em uma região não chega sem restrição à outra.",
+      "Os quatro valores de cada hora podem coincidir ou diferir. Por que diferem (limites de transmissão entre regiões, por exemplo) é matéria dos modelos e das regras da CCEE e do ONS, cuja conferência documental está pendente nesta fase: a plataforma mostra a diferença observada e o intercâmbio medido, sem atribuir causa.",
     comoEMedido:
       "O conjunto PLD_HORARIO traz um valor por hora para cada submercado. Nos dados do ONS as mesmas quatro regiões aparecem como subsistemas (SE, S, NE, N).",
     relacoes: ["pld", "intercambio"],
@@ -136,7 +146,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Custo variável unitário das usinas térmicas considerado pelo ONS no Programa Mensal da Operação e usado nos modelos NEWAVE, DECOMP e DESSEM.",
     porQueImporta:
-      "Entra na decisão de quais térmicas despachar e no acompanhamento dos custos da operação.",
+      "Segundo o ONS, é usado na execução dos modelos NEWAVE, DECOMP e DESSEM, nas decisões de programação e no acompanhamento dos custos da operação.",
     comoEMedido: "Em R$/MWh, por usina térmica, publicado pelo ONS no conjunto CVU das Usinas Térmicas.",
     relacoes: ["cmo", "newave", "decomp", "dessem"],
     fontes: [
@@ -156,13 +166,12 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Energia associada ao volume de água nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas a jusante na cascata.",
     porQueImporta:
-      "Mostra quanta energia potencial está guardada no sistema. É o estoque que permite atravessar períodos de pouca chuva.",
+      "Resume em uma grandeza, por subsistema, a energia que a água guardada nos reservatórios pode gerar na própria usina e nas usinas a jusante. Em percentual da EAR máxima, indica quanto da capacidade de armazenamento está ocupada.",
     comoEMedido:
       "Em MWmês e em percentual da EAR máxima (a capacidade caso todos os reservatórios estivessem cheios), por dia e por subsistema, bacia, REE ou reservatório.",
     relacoes: ["ena", "armazenamento", "ree"],
     fontes: [
-      ONS("ear-diario-por-subsistema", "EAR Diário por Subsistema",
-        "A Energia Armazenada (EAR) representa a energia associada ao volume de água disponível nos reservatórios que pode ser convertido em geração na própria usina e em todas as usinas à jusante na cascata. A grandeza de EAR leva em conta nível verificado nos reservatórios na data de referência. A grandeza de EAR máxima representa a capacidade de armazenamento caso todos os reservatórios do sistema estivessem cheios."),
+      ONS("ear-diario-por-subsistema", "EAR Diário por Subsistema", TRECHO_EAR),
     ],
     limitacoes: [
       "Percentual da EAR máxima: a capacidade muda com a entrada de reservatórios, o que afeta comparações longas.",
@@ -180,7 +189,7 @@ export const CONCEITOS: Conceito[] = [
     porQueImporta: "É a referência dos percentuais de EAR: 60% significa 60% dessa capacidade máxima.",
     comoEMedido: "Em MWmês, por subsistema, no conjunto EAR Diário por Subsistema do ONS (campo EAR máxima).",
     relacoes: ["ear"],
-    fontes: [ONS("ear-diario-por-subsistema", "EAR Diário por Subsistema")],
+    fontes: [ONS("ear-diario-por-subsistema", "EAR Diário por Subsistema", TRECHO_EAR)],
     vejaNoPortal: [{ rotulo: "Água e reservatórios", href: "/setor-eletrico/agua-e-clima#ear" }],
   },
   {
@@ -191,15 +200,15 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase:
-      "Energia que a água que chega naturalmente aos reservatórios poderia produzir, calculada pelo ONS a partir das vazões naturais.",
+      "Energia produzível a partir das vazões naturais aos reservatórios, calculada pelo ONS com as produtividades das usinas a 65% dos volumes úteis.",
     porQueImporta:
-      "É o fluxo de entrada do sistema hidráulico: indica se a água que chega repõe ou não o estoque armazenado.",
+      "Expressa em energia as vazões naturais que chegam aos reservatórios. O ONS indica que os dados servem de insumo para estudos energéticos e para a projeção do custo marginal de operação.",
     comoEMedido:
       "ENA bruta: produto das vazões naturais pelas produtividades das usinas a 65% dos volumes úteis. Publicada em MWmed e em percentual da média de longo termo (MLT), por dia.",
     relacoes: ["ear", "mlt"],
     fontes: [
       ONS("ena-diario-por-subsistema", "ENA Diário por Subsistema",
-        "A Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios."),
+        "A Energia Natural Afluente (ENA) Bruta representa a energia produzível pela usina e é calculada pelo produto das vazões naturais aos reservatórios com as produtividades a 65% dos volumes úteis. A ENA Armazenável considera as vazões naturais descontadas das vazões vertidas nos reservatórios. [...] os dados podem servir de insumo para estudos energéticos e projeção do custo marginal de operação."),
     ],
     limitacoes: ["O conjunto não informa o período de referência da MLT."],
     vejaNoPortal: [{ rotulo: "Quanta água está chegando", href: "/setor-eletrico/agua-e-clima#ena" }],
@@ -211,12 +220,20 @@ export const CONCEITOS: Conceito[] = [
     grupo: "Água",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
-    emUmaFrase: "Referência histórica usada pelo ONS para expressar a ENA em percentual: 100% equivale à média de longo termo.",
-    porQueImporta: "Permite dizer se a água que chega está acima ou abaixo do usual para a época, sem converter unidades.",
-    comoEMedido: "A ENA é publicada em percentual da MLT pelo ONS.",
+    emUmaFrase: "Média de longo termo: a referência em relação à qual o ONS publica a ENA em percentual.",
+    porQueImporta: "Permite ler a ENA de subsistemas de tamanhos diferentes na mesma escala relativa: 100% corresponde ao valor da MLT.",
+    comoEMedido:
+      "O ONS publica a ENA bruta e a ENA armazenável em MWmed e em percentual da MLT. O conjunto não informa como a MLT é calculada nem seu período de referência.",
     relacoes: ["ena"],
-    fontes: [ONS("ena-diario-por-subsistema", "ENA Diário por Subsistema")],
-    limitacoes: ["O período de referência da MLT não é informado no conjunto de dados."],
+    fontes: [
+      {
+        orgao: "ONS",
+        documento: 'Dicionário de dados do conjunto "ENA Diário por Subsistema"',
+        url: "https://ons-aws-prod-opendata.s3.amazonaws.com/dataset/ena_subsistema_di/DicionarioDados_EnaPorSubsistema.json",
+        trecho: "Valor de ENA bruta por Subsistema medido em percentual por média de longo termo-MLT (%)",
+      },
+    ],
+    limitacoes: ["O método de cálculo e o período de referência da MLT não são informados no conjunto de dados; leituras de \"acima ou abaixo do usual\" usam a distribuição histórica publicada pela plataforma, não a MLT."],
     vejaNoPortal: [{ rotulo: "ENA em % da MLT", href: "/setor-eletrico/agua-e-clima#ena" }],
   },
   {
@@ -236,14 +253,14 @@ export const CONCEITOS: Conceito[] = [
     grupo: "Operação",
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
-    emUmaFrase: "Energia que o sistema precisa atender, medida pelo ONS por subsistema em base diária.",
-    porQueImporta: "Mais carga exige mais geração; a carga é um dos dados que o operador considera ao programar a operação.",
+    emUmaFrase: "Carga atendida no sistema interligado, publicada pelo ONS por subsistema em base diária, em MWmed; o que entra na conta mudou em março de 2021 e em abril de 2023.",
+    porQueImporta: "É o lado da demanda no balanço de energia que o ONS publica por subsistema, ao lado da geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas.",
     comoEMedido:
       "Em MWmed. O conteúdo mudou ao longo do tempo: até fev/2021, carga atendida por usinas despachadas ou programadas pelo ONS; de mar/2021 a abr/2023, soma-se a previsão de usinas não despachadas; desde 29/04/2023, soma-se a estimativa da micro e minigeração distribuída.",
     relacoes: ["geracao-distribuida", "geracao-centralizada"],
     fontes: [
-      ONS("carga-energia", "Carga de Energia Diária",
-        "A partir de 29/04/2023, além dos dados anteriormente considerados, passou a ser incorporado o valor estimado da micro e minigeração distribuída (MMGD), com base em dados meteorológicos previstos."),
+      ONS("carga-energia", "Carga de Energia Diária", TRECHO_CARGA),
+      ONS("balanco-energia-subsistema", "Balanço de Energia nos Subsistemas", TRECHO_BALANCO),
     ],
     limitacoes: ["Comparações que atravessam 01/03/2021 ou 29/04/2023 não são homogêneas."],
     vejaNoPortal: [{ rotulo: "Carga e consumo", href: "/setor-eletrico/carga" }],
@@ -256,12 +273,11 @@ export const CONCEITOS: Conceito[] = [
     conferidoEm: "2026-09-28",
     emUmaFrase:
       "Geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas acompanhadas pelo ONS, verificada hora a hora.",
-    porQueImporta: "Mostra com que fontes o sistema está atendendo a carga em cada momento.",
+    porQueImporta: "Mostra, hora a hora e por subsistema, a oferta de energia por fonte ao lado da carga verificada.",
     comoEMedido: "Em MWmed, por hora e por subsistema, no Balanço de Energia nos Subsistemas do ONS.",
     relacoes: ["carga", "geracao-distribuida"],
     fontes: [
-      ONS("balanco-energia-subsistema", "Balanço de Energia nos Subsistemas",
-        "Informações da carga e oferta de energia verificados em periodicidade horária por subsistema. A oferta é representada pelos valores de geração das usinas hidráulicas, térmicas, eólicas e fotovoltaicas, em MWmed."),
+      ONS("balanco-energia-subsistema", "Balanço de Energia nos Subsistemas", TRECHO_BALANCO),
     ],
     limitacoes: [
       "O balanço não separa as térmicas por combustível.",
@@ -279,7 +295,7 @@ export const CONCEITOS: Conceito[] = [
     emUmaFrase:
       "Geração conectada por meio de unidades consumidoras, conforme regulamentado no art. 655-W da Resolução Normativa ANEEL 1.000/2021.",
     porQueImporta:
-      "Parte da energia consumida passa a ser produzida junto ao consumo; desde 29/04/2023 o ONS incorpora uma estimativa dela à carga.",
+      "É geração conectada por meio de unidades consumidoras; desde 29/04/2023 o ONS incorpora uma estimativa dela aos dados de carga.",
     comoEMedido:
       "A ANEEL publica a relação de empreendimentos por distribuidora, município, fonte e potência. A geração em si é estimada pelo ONS com dados meteorológicos previstos.",
     relacoes: ["carga", "geracao-centralizada"],
@@ -291,7 +307,7 @@ export const CONCEITOS: Conceito[] = [
         trecho:
           "dados referentes às conexões de microgeração e minigeração distribuída (MMGD) por meio de unidades consumidoras, conforme regulamentado no art. 655-W da Resolução Normativa ANEEL 1.000/2021",
       },
-      ONS("carga-energia", "Carga de Energia Diária"),
+      ONS("carga-energia", "Carga de Energia Diária", TRECHO_CARGA),
     ],
     limitacoes: ["A relação de empreendimentos da ANEEL está catalogada e ainda não integrada."],
     vejaNoPortal: [{ rotulo: "Carga e consumo", href: "/setor-eletrico/carga" }],
@@ -332,10 +348,14 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-27",
     emUmaFrase: "Um dos três modelos computacionais citados pela CCEE no cálculo do PLD, ao lado do DECOMP e do DESSEM.",
-    porQueImporta: "Faz parte da cadeia de modelos que produz o CMO, base do PLD.",
+    porQueImporta: "A CCEE informa que o cálculo do PLD é realizado por modelos computacionais, entre eles o NEWAVE. O papel de cada modelo na cadeia está pendente de conferência documental.",
     comoEMedido: "Modelo computacional; não é uma grandeza. Descrição de horizonte e formulação pendente de conferência documental.",
     relacoes: ["decomp", "dessem", "cmo", "pld"],
-    fontes: [CCEE_PLD, ONS("cvu-usitermica", "CVU das Usina Térmicas")],
+    fontes: [
+      CCEE_PLD,
+      ONS("cvu-usitermica", "CVU das Usina Térmicas",
+        "Custo Variável Unitário (CVU) de usinas térmicas considerado no Programa Mensal da Operação, conforme utilizado na execução do modelo NEWAVE, DECOMP, DESSEM, além de seu uso nas decisões de programação e acompanhamentos dos custos da operação."),
+    ],
     limitacoes: ["A documentação técnica do modelo não foi acessada nesta fase."],
     vejaNoPortal: [{ rotulo: "De onde vem o preço", href: "/setor-eletrico/pld#formacao" }],
   },
@@ -347,10 +367,10 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO publicado pelo ONS para cada semana operativa, por subsistema e patamar de carga.",
-    porQueImporta: "O CMO semanal do DECOMP é o sinal de custo que o ONS publica com antecedência para a semana operativa.",
+    porQueImporta: "Segundo o ONS, é o modelo que estima o CMO semanal publicado por subsistema e patamar de carga; a CCEE o cita entre os modelos do cálculo do PLD.",
     comoEMedido: "Modelo computacional; sua saída publicada é o CMO semanal em R$/MWh.",
     relacoes: ["cmo", "newave", "dessem"],
-    fontes: [ONS("cmo-semanal", "CMO Semanal"), CCEE_PLD],
+    fontes: [ONS("cmo-semanal", "CMO Semanal", TRECHO_CMO_SEMANAL), CCEE_PLD],
     vejaNoPortal: [{ rotulo: "CMO semanal", href: "/setor-eletrico/pld#formacao" }],
   },
   {
@@ -361,10 +381,10 @@ export const CONCEITOS: Conceito[] = [
     estado: "CONFERIDO",
     conferidoEm: "2026-09-28",
     emUmaFrase: "Modelo que estima o CMO em base semi-horária para cada barra do sistema, segundo o ONS.",
-    porQueImporta: "Traz a formação de custo para a escala da hora, que é a escala do PLD horário.",
+    porQueImporta: "Sua saída publicada tem resolução semi-horária, mais fina que a do CMO semanal; a CCEE o cita entre os modelos do cálculo do PLD.",
     comoEMedido: "Modelo computacional; sua saída publicada pelo ONS é o CMO semi-horário por barra e por subsistema.",
     relacoes: ["cmo", "decomp", "pld"],
-    fontes: [ONS("cmo-semi-horario", "CMO Semi-Horário"), CCEE_PLD],
+    fontes: [ONS("cmo-semi-horario", "CMO Semi-Horário", TRECHO_CMO_SEMI), CCEE_PLD],
     vejaNoPortal: [{ rotulo: "De onde vem o preço", href: "/setor-eletrico/pld#formacao" }],
   },
   {
